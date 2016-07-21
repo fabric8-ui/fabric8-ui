@@ -1,15 +1,15 @@
 {
-  "name": "angular2-webpack-starter",
-  "version": "5.0.5",
-  "description": "An Angular 2 Webpack Starter kit featuring Angular 2 (Router, Http, Forms, Services, Tests, E2E, Coverage), Karma, Protractor, Jasmine, Istanbul, TypeScript, and Webpack by AngularClass",
+  "name": "almighty-ui",
+  "version": "0.0.1",
+  "description": "The UI for the ALMighty project",
   "keywords": [
     "angular2",
     "webpack",
     "typescript"
   ],
-  "author": "Patrick Stapleton <patrick@angularclass.com>",
-  "homepage": "https://github.com/angularclass/angular2-webpack-starter",
-  "license": "MIT",
+  "author": "Joshua Wilson <josh@redhat.com>",
+  "homepage": "https://almighty.io",
+  "license": "Apache-2.0",
   "scripts": {
      "rimraf": "rimraf",
      "tslint": "tslint",
@@ -86,6 +86,7 @@
 
     "ie-shim": "^0.1.0",
     "core-js": "^2.4.0",
+    "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.6",
     "zone.js": "~0.6.12",
 
@@ -154,10 +155,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/angularclass/angular2-webpack-starter.git"
+    "url": "https://github.com/almighty/almight-ui.git"
   },
   "bugs": {
-    "url": "https://github.com/angularclass/angular2-webpack-starter/issues"
+    "url": "https://github.com/almighty/almight-ui/issues"
   },
   "engines": {
     "node": ">= 4.2.1",
