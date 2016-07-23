@@ -1,25 +1,25 @@
 "use strict";
 var router_1 = require('@angular/router');
-var heroes_component_1 = require('./heroes.component');
-var dashboard_component_1 = require("./dashboard.component");
-var hero_detail_component_1 = require("./hero-detail.component");
+var cards_component_1 = require('./cards.component');
+var board_component_1 = require("./board.component");
+var card_detail_component_1 = require("./card-detail.component");
 var routes = [
     {
-        path: 'heroes',
-        component: heroes_component_1.HeroesComponent
+        path: 'cards',
+        component: cards_component_1.CardsComponent
     },
     {
-        path: 'dashboard',
-        component: dashboard_component_1.DashboardComponent
+        path: 'board',
+        component: board_component_1.BoardComponent
     },
     {
         path: '',
-        redirectTo: '/dashboard',
+        redirectTo: '/board',
         pathMatch: 'full'
     },
     {
         path: 'detail/:id',
-        component: hero_detail_component_1.HeroDetailComponent
+        component: card_detail_component_1.CardDetailComponent
     },
 ];
 exports.appRouterProviders = [

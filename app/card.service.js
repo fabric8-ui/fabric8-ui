@@ -10,66 +10,67 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require("@angular/http");
-var HeroService = (function () {
-    function HeroService(http) {
+require('rxjs/add/operator/toPromise');
+var CardService = (function () {
+    function CardService(http) {
         this.http = http;
-        this.heroesUrl = 'app/heroes'; // URL to web api
+        this.cardsUrl = 'app/cards'; // URL to web api
     }
-    HeroService.prototype.handleError = function (error) {
+    CardService.prototype.handleError = function (error) {
         console.error('An error occurred', error);
         return Promise.reject(error.message || error);
     };
-    HeroService.prototype.getHeroes = function () {
-        return this.http.get(this.heroesUrl)
+    CardService.prototype.getCards = function () {
+        return this.http.get(this.cardsUrl)
             .toPromise()
             .then(function (response) { return response.json().data; })
             .catch(this.handleError);
     };
-    // Add new Hero
-    HeroService.prototype.post = function (hero) {
+    // Add new Card
+    CardService.prototype.post = function (card) {
         var headers = new http_1.Headers({
             'Content-Type': 'application/json' });
         return this.http
-            .post(this.heroesUrl, JSON.stringify(hero), { headers: headers })
+            .post(this.cardsUrl, JSON.stringify(card), { headers: headers })
             .toPromise()
             .then(function (res) { return res.json().data; })
             .catch(this.handleError);
     };
-    // Update existing Hero
-    HeroService.prototype.put = function (hero) {
+    // Update existing Card
+    CardService.prototype.put = function (card) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        var url = this.heroesUrl + "/" + hero.id;
+        var url = this.cardsUrl + "/" + card.id;
         return this.http
-            .put(url, JSON.stringify(hero), { headers: headers })
+            .put(url, JSON.stringify(card), { headers: headers })
             .toPromise()
-            .then(function () { return hero; })
+            .then(function () { return card; })
             .catch(this.handleError);
     };
-    HeroService.prototype.delete = function (hero) {
+    CardService.prototype.delete = function (card) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        var url = this.heroesUrl + "/" + hero.id;
+        var url = this.cardsUrl + "/" + card.id;
         return this.http
             .delete(url, headers)
             .toPromise()
             .catch(this.handleError);
     };
-    HeroService.prototype.save = function (hero) {
-        if (hero.id) {
-            return this.put(hero);
+    CardService.prototype.save = function (card) {
+        if (card.id) {
+            return this.put(card);
         }
-        return this.post(hero);
+        return this.post(card);
     };
-    HeroService.prototype.getHero = function (id) {
-        return this.getHeroes()
-            .then(function (heroes) { return heroes.find(function (hero) { return hero.id === id; }); });
+    CardService.prototype.getCard = function (id) {
+        return this.getCards()
+            .then(function (cards) { return cards.find(function (card) { return card.id === id; }); });
     };
-    HeroService = __decorate([
+    CardService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
-    ], HeroService);
-    return HeroService;
+    ], CardService);
+    return CardService;
 }());
-exports.HeroService = HeroService;
-//# sourceMappingURL=hero.service.js.map
+exports.CardService = CardService;
+//# sourceMappingURL=card.service.js.map

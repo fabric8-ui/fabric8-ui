@@ -1,0 +1,8 @@
+<h3>Top Cards</h3>
+<div class="grid grid-pad">
+  <div *ngFor="let card of cards" (click)="gotoDetail(card)" class="col-1-4">
+    <div class="module card">
+      <h4>{{card.name}}</h4>
+    </div>
+  </div>
+</div>

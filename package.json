@@ -1,5 +1,5 @@
 {
-  "name": "angular2-quickstart",
+  "name": "almighty-ui",
   "version": "1.0.0",
   "scripts": {
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
@@ -9,7 +9,8 @@
     "tsc:w": "tsc -w",
     "typings": "typings"
   },
-  "license": "ISC",
+  "author": "Joshua Wilson <josh@redhat.com>",
+  "license": "Apache-2.0",
   "dependencies": {
     "@angular/common": "2.0.0-rc.4",
     "@angular/compiler": "2.0.0-rc.4",

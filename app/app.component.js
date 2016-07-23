@@ -9,22 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var hero_service_1 = require('./hero.service');
 var router_1 = require('@angular/router');
+var card_service_1 = require('./card.service');
+var cards_component_1 = require('./cards.component');
+var board_component_1 = require('./board.component');
+var card_detail_component_1 = require('./card-detail.component');
 var AppComponent = (function () {
     function AppComponent() {
-        this.title = 'Tour of Heroes';
+        this.title = 'Red Hat ALM';
     }
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: "\n        <h1>{{title}}</h1>\n        <nav>\n          <a [routerLink]=\"['/dashboard']\" routerLinkActive=\"active\">Dashboard</a>\n          <a [routerLink]=\"['/heroes']\" routerLinkActive=\"active\">Heroes</a>\n        </nav>\n        <router-outlet></router-outlet>\n    ",
+            template: "\n    <h1>{{title}}</h1>\n    <nav>\n      <a [routerLink]=\"['/board']\" routerLinkActive=\"active\">Board</a>\n      <a [routerLink]=\"['/cards']\" routerLinkActive=\"active\">Cards</a>\n    </nav>\n    <router-outlet></router-outlet>\n  ",
             styleUrls: ['app/app.component.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES
             ],
             providers: [
-                hero_service_1.HeroService
+                card_service_1.CardService
+            ],
+            precompile: [
+                cards_component_1.CardsComponent,
+                board_component_1.BoardComponent,
+                card_detail_component_1.CardDetailComponent
             ]
         }), 
         __metadata('design:paramtypes', [])

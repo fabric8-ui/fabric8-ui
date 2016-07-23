@@ -10,67 +10,67 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var hero_1 = require('./hero');
-var hero_service_1 = require('./hero.service');
-var HeroDetailComponent = (function () {
-    function HeroDetailComponent(heroService, route) {
-        this.heroService = heroService;
+var card_1 = require('./card');
+var card_service_1 = require('./card.service');
+var CardDetailComponent = (function () {
+    function CardDetailComponent(cardService, route) {
+        this.cardService = cardService;
         this.route = route;
         this.close = new core_1.EventEmitter();
         this.navigated = false; // true if navigated here
     }
-    HeroDetailComponent.prototype.ngOnInit = function () {
+    CardDetailComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.sub = this.route.params.subscribe(function (params) {
             if (params['id'] !== undefined) {
                 var id = +params['id'];
                 _this.navigated = true;
-                _this.heroService.getHero(id)
-                    .then(function (hero) { return _this.hero = hero; });
+                _this.cardService.getCard(id)
+                    .then(function (card) { return _this.card = card; });
             }
             else {
                 _this.navigated = false;
-                _this.hero = new hero_1.Hero();
+                _this.card = new card_1.Card();
             }
         });
     };
-    HeroDetailComponent.prototype.ngOnDestroy = function () {
+    CardDetailComponent.prototype.ngOnDestroy = function () {
         this.sub.unsubscribe();
     };
-    HeroDetailComponent.prototype.save = function () {
+    CardDetailComponent.prototype.save = function () {
         var _this = this;
-        this.heroService
-            .save(this.hero)
-            .then(function (hero) {
-            _this.hero = hero; // saved hero, w/ id if new
-            _this.goBack(hero);
+        this.cardService
+            .save(this.card)
+            .then(function (card) {
+            _this.card = card; // saved card, w/ id if new
+            _this.goBack(card);
         })
             .catch(function (error) { return _this.error = error; }); // TODO: Display error message
     };
-    HeroDetailComponent.prototype.goBack = function (savedHero) {
-        if (savedHero === void 0) { savedHero = null; }
-        this.close.emit(savedHero);
+    CardDetailComponent.prototype.goBack = function (savedCard) {
+        if (savedCard === void 0) { savedCard = null; }
+        this.close.emit(savedCard);
         if (this.navigated) {
             window.history.back();
         }
     };
     __decorate([
         core_1.Input(), 
-        __metadata('design:type', hero_1.Hero)
-    ], HeroDetailComponent.prototype, "hero", void 0);
+        __metadata('design:type', card_1.Card)
+    ], CardDetailComponent.prototype, "card", void 0);
     __decorate([
         core_1.Output(), 
         __metadata('design:type', Object)
-    ], HeroDetailComponent.prototype, "close", void 0);
-    HeroDetailComponent = __decorate([
+    ], CardDetailComponent.prototype, "close", void 0);
+    CardDetailComponent = __decorate([
         core_1.Component({
-            selector: 'my-hero-detail',
-            templateUrl: 'app/hero-detail.component.html',
-            styleUrls: ['app/hero-detail.component.css']
+            selector: 'my-card-detail',
+            templateUrl: 'app/card-detail.component.html',
+            styleUrls: ['app/card-detail.component.css']
         }), 
-        __metadata('design:paramtypes', [hero_service_1.HeroService, router_1.ActivatedRoute])
-    ], HeroDetailComponent);
-    return HeroDetailComponent;
+        __metadata('design:paramtypes', [card_service_1.CardService, router_1.ActivatedRoute])
+    ], CardDetailComponent);
+    return CardDetailComponent;
 }());
-exports.HeroDetailComponent = HeroDetailComponent;
-//# sourceMappingURL=hero-detail.component.js.map
+exports.CardDetailComponent = CardDetailComponent;
+//# sourceMappingURL=card-detail.component.js.map
