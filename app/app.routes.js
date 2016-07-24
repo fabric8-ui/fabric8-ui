@@ -14,7 +14,7 @@ var routes = [
     },
     {
         path: '',
-        redirectTo: '/board',
+        redirectTo: '/cards',
         pathMatch: 'full'
     },
     {

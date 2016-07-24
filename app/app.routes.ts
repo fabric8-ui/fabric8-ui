@@ -14,7 +14,7 @@ const routes: RouterConfig = [
   },
   {
     path: '',
-    redirectTo: '/board',
+    redirectTo: '/cards',
     pathMatch: 'full'
   },
   {

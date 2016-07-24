@@ -1,4 +1,4 @@
-<h2>My Cards</h2>
+<h2>Cards</h2>
 <ul class="cards">
   <li *ngFor="let card of cards" (click)="onSelect(card)" [class.selected]="card === selectedCard">
     <span class="card-element">
@@ -10,11 +10,11 @@
 <div class="error" *ngIf="error">{{error}}</div>
 <button (click)="addCard()">Add New Card</button>
 <div *ngIf="addingCard">
-  <my-card-detail (close)="close($event)"></my-card-detail>
+  <card-detail (close)="close($event)"></card-detail>
 </div>
 <div *ngIf="selectedCard">
   <h2>
-    {{selectedCard.name | uppercase}} is my card
+    {{selectedCard.name | uppercase}} - {{selectedCard.description}}
   </h2>
   <button (click)="gotoDetail()">View Details</button>
 </div>

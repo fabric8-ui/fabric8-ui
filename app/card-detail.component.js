@@ -64,7 +64,7 @@ var CardDetailComponent = (function () {
     ], CardDetailComponent.prototype, "close", void 0);
     CardDetailComponent = __decorate([
         core_1.Component({
-            selector: 'my-card-detail',
+            selector: 'card-detail',
             templateUrl: 'app/card-detail.component.html',
             styleUrls: ['app/card-detail.component.css']
         }), 

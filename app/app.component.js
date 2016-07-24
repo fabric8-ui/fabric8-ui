@@ -16,12 +16,12 @@ var board_component_1 = require('./board.component');
 var card_detail_component_1 = require('./card-detail.component');
 var AppComponent = (function () {
     function AppComponent() {
-        this.title = 'Red Hat ALM';
+        this.title = 'Red Hat ALMighty';
     }
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: "\n    <h1>{{title}}</h1>\n    <nav>\n      <a [routerLink]=\"['/board']\" routerLinkActive=\"active\">Board</a>\n      <a [routerLink]=\"['/cards']\" routerLinkActive=\"active\">Cards</a>\n    </nav>\n    <router-outlet></router-outlet>\n  ",
+            template: "\n    <h1>{{title}}</h1>\n    <nav>\n      <a [routerLink]=\"['/board']\" routerLinkActive=\"active\">Board</a>\n      <a [routerLink]=\"['/cards']\" routerLinkActive=\"active\">Card List</a>\n    </nav>\n    <router-outlet></router-outlet>\n  ",
             styleUrls: ['app/app.component.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES

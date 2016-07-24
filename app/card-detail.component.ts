@@ -5,7 +5,7 @@ import { Card } from './card';
 import { CardService } from './card.service';
 
 @Component({
-  selector: 'my-card-detail',
+  selector: 'card-detail',
   templateUrl: 'app/card-detail.component.html',
   styleUrls: ['app/card-detail.component.css']
 })
