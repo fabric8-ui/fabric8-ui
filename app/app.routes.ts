@@ -1,12 +1,12 @@
 import { provideRouter, RouterConfig }  from '@angular/router';
-import {CardlistComponent} from './cardlist.component';
+import {CardListComponent} from './cardlist.component';
 import {BoardComponent} from "./board.component";
 import {CardDetailComponent} from "./card-detail.component";
 
 const routes: RouterConfig = [
   {
     path: 'cards',
-    component: CardlistComponent
+    component: CardListComponent
   },
   {
     path: 'board',

@@ -30,7 +30,7 @@ var AppComponent = (function () {
                 card_service_1.CardService
             ],
             precompile: [
-                cardlist_component_1.CardlistComponent,
+                cardlist_component_1.CardListComponent,
                 board_component_1.BoardComponent,
                 card_detail_component_1.CardDetailComponent
             ]

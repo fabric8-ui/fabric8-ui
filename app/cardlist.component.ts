@@ -11,7 +11,7 @@ import { CardDetailComponent } from './card-detail.component';
   styleUrls: ['app/cardlist.component.css'],
   directives: [CardDetailComponent]
 })
-export class CardlistComponent implements OnInit {
+export class CardListComponent implements OnInit {
   cards: Card[];
   selectedCard: Card;
   addingCard = false;
