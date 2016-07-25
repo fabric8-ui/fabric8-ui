@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var card_service_1 = require('./card.service');
-var cardlist_component_1 = require('./cardlist.component');
+var card_list_component_1 = require('./card-list.component');
 var board_component_1 = require('./board.component');
 var card_detail_component_1 = require('./card-detail.component');
 var AppComponent = (function () {
@@ -30,7 +30,7 @@ var AppComponent = (function () {
                 card_service_1.CardService
             ],
             precompile: [
-                cardlist_component_1.CardListComponent,
+                card_list_component_1.CardListComponent,
                 board_component_1.BoardComponent,
                 card_detail_component_1.CardDetailComponent
             ]

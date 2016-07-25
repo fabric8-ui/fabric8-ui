@@ -55,8 +55,8 @@ var CardListComponent = (function () {
     CardListComponent = __decorate([
         core_1.Component({
             selector: 'cards',
-            templateUrl: 'app/cardlist.component.html',
-            styleUrls: ['app/cardlist.component.css'],
+            templateUrl: 'app/card-list.component.html',
+            styleUrls: ['app/card-list.component.css'],
             directives: [card_detail_component_1.CardDetailComponent]
         }), 
         __metadata('design:paramtypes', [router_1.Router, card_service_1.CardService])
@@ -64,4 +64,4 @@ var CardListComponent = (function () {
     return CardListComponent;
 }());
 exports.CardListComponent = CardListComponent;
-//# sourceMappingURL=cardlist.component.js.map
+//# sourceMappingURL=card-list.component.js.map

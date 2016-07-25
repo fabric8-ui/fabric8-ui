@@ -1,5 +1,5 @@
 import { provideRouter, RouterConfig }  from '@angular/router';
-import {CardListComponent} from './cardlist.component';
+import {CardListComponent} from './card-list.component';
 import {BoardComponent} from "./board.component";
 import {CardDetailComponent} from "./card-detail.component";
 

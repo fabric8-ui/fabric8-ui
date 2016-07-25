@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
 import { CardService } from './card.service';
-import { CardListComponent } from './cardlist.component';
+import { CardListComponent } from './card-list.component';
 import { BoardComponent } from './board.component';
 import { CardDetailComponent } from './card-detail.component';
 

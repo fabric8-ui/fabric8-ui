@@ -7,8 +7,8 @@ import { CardDetailComponent } from './card-detail.component';
 
 @Component({
   selector: 'cards',
-  templateUrl: 'app/cardlist.component.html',
-  styleUrls: ['app/cardlist.component.css'],
+  templateUrl: 'app/card-list.component.html',
+  styleUrls: ['app/card-list.component.css'],
   directives: [CardDetailComponent]
 })
 export class CardListComponent implements OnInit {
