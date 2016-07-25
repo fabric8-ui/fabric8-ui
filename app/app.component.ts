@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
 import { CardService } from './card.service';
-import { CardsComponent } from './cards.component';
+import { CardlistComponent } from './cardlist.component';
 import { BoardComponent } from './board.component';
 import { CardDetailComponent } from './card-detail.component';
 
@@ -24,7 +24,7 @@ import { CardDetailComponent } from './card-detail.component';
     CardService
   ],
   precompile: [
-    CardsComponent,
+    CardlistComponent,
     BoardComponent,
     CardDetailComponent
   ]

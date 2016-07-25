@@ -1,12 +1,12 @@
 "use strict";
 var router_1 = require('@angular/router');
-var cards_component_1 = require('./cards.component');
+var cardlist_component_1 = require('./cardlist.component');
 var board_component_1 = require("./board.component");
 var card_detail_component_1 = require("./card-detail.component");
 var routes = [
     {
         path: 'cards',
-        component: cards_component_1.CardsComponent
+        component: cardlist_component_1.CardlistComponent
     },
     {
         path: 'board',

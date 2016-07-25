@@ -12,34 +12,34 @@ var core_1 = require('@angular/core');
 var router_1 = require("@angular/router");
 var card_service_1 = require('./card.service');
 var card_detail_component_1 = require('./card-detail.component');
-var CardsComponent = (function () {
-    function CardsComponent(router, cardService) {
+var CardlistComponent = (function () {
+    function CardlistComponent(router, cardService) {
         this.router = router;
         this.cardService = cardService;
         this.addingCard = false;
     }
-    CardsComponent.prototype.getCards = function () {
+    CardlistComponent.prototype.getCards = function () {
         var _this = this;
         this.cardService.getCards().then(function (cards) { return _this.cards = cards; });
     };
-    CardsComponent.prototype.ngOnInit = function () {
+    CardlistComponent.prototype.ngOnInit = function () {
         this.getCards();
     };
-    CardsComponent.prototype.onSelect = function (card) { this.selectedCard = card; };
-    CardsComponent.prototype.gotoDetail = function () {
+    CardlistComponent.prototype.onSelect = function (card) { this.selectedCard = card; };
+    CardlistComponent.prototype.gotoDetail = function () {
         this.router.navigate(['/detail', this.selectedCard.id]);
     };
-    CardsComponent.prototype.addCard = function () {
+    CardlistComponent.prototype.addCard = function () {
         this.addingCard = true;
         this.selectedCard = null;
     };
-    CardsComponent.prototype.close = function (savedCard) {
+    CardlistComponent.prototype.close = function (savedCard) {
         this.addingCard = false;
         if (savedCard) {
             this.getCards();
         }
     };
-    CardsComponent.prototype.deleteCard = function (card, event) {
+    CardlistComponent.prototype.deleteCard = function (card, event) {
         var _this = this;
         event.stopPropagation();
         this.cardService
@@ -52,16 +52,16 @@ var CardsComponent = (function () {
         })
             .catch(function (error) { return _this.error = error; });
     };
-    CardsComponent = __decorate([
+    CardlistComponent = __decorate([
         core_1.Component({
             selector: 'cards',
-            templateUrl: 'app/cards.component.html',
-            styleUrls: ['app/cards.component.css'],
+            templateUrl: 'app/cardlist.component.html',
+            styleUrls: ['app/cardlist.component.css'],
             directives: [card_detail_component_1.CardDetailComponent]
         }), 
         __metadata('design:paramtypes', [router_1.Router, card_service_1.CardService])
-    ], CardsComponent);
-    return CardsComponent;
+    ], CardlistComponent);
+    return CardlistComponent;
 }());
-exports.CardsComponent = CardsComponent;
-//# sourceMappingURL=cards.component.js.map
+exports.CardlistComponent = CardlistComponent;
+//# sourceMappingURL=cardlist.component.js.map

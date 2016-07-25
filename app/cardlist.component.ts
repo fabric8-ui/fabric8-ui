@@ -7,11 +7,11 @@ import { CardDetailComponent } from './card-detail.component';
 
 @Component({
   selector: 'cards',
-  templateUrl: 'app/cards.component.html',
-  styleUrls: ['app/cards.component.css'],
+  templateUrl: 'app/cardlist.component.html',
+  styleUrls: ['app/cardlist.component.css'],
   directives: [CardDetailComponent]
 })
-export class CardsComponent implements OnInit {
+export class CardlistComponent implements OnInit {
   cards: Card[];
   selectedCard: Card;
   addingCard = false;
