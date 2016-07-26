@@ -14,14 +14,14 @@ require('rxjs/add/operator/toPromise');
 var CardService = (function () {
     function CardService(http) {
         this.http = http;
-        this.cardsUrl = 'app/cards'; // URL to web api
+        this.cardListUrl = 'app/workItems'; // URL to web api
     }
     CardService.prototype.handleError = function (error) {
         console.error('An error occurred', error);
         return Promise.reject(error.message || error);
     };
     CardService.prototype.getCards = function () {
-        return this.http.get(this.cardsUrl)
+        return this.http.get(this.cardListUrl)
             .toPromise()
             .then(function (response) { return response.json().data; })
             .catch(this.handleError);
@@ -31,7 +31,7 @@ var CardService = (function () {
         var headers = new http_1.Headers({
             'Content-Type': 'application/json' });
         return this.http
-            .post(this.cardsUrl, JSON.stringify(card), { headers: headers })
+            .post(this.cardListUrl, JSON.stringify(card), { headers: headers })
             .toPromise()
             .then(function (res) { return res.json().data; })
             .catch(this.handleError);
@@ -40,7 +40,7 @@ var CardService = (function () {
     CardService.prototype.put = function (card) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        var url = this.cardsUrl + "/" + card.id;
+        var url = this.cardListUrl + "/" + card.id;
         return this.http
             .put(url, JSON.stringify(card), { headers: headers })
             .toPromise()
@@ -50,7 +50,7 @@ var CardService = (function () {
     CardService.prototype.delete = function (card) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        var url = this.cardsUrl + "/" + card.id;
+        var url = this.cardListUrl + "/" + card.id;
         return this.http
             .delete(url, headers)
             .toPromise()

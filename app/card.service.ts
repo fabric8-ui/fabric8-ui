@@ -6,7 +6,7 @@ import { Card } from './card';
 
 @Injectable()
 export class CardService {
-  private cardsUrl = 'app/cards';  // URL to web api
+  private cardListUrl = 'app/workItems';  // URL to web api
 
   constructor(private http: Http) { }
 
@@ -16,7 +16,7 @@ export class CardService {
   }
 
   getCards(): Promise<Card[]> {
-    return this.http.get(this.cardsUrl)
+    return this.http.get(this.cardListUrl)
       .toPromise()
       .then(response => response.json().data)
       .catch(this.handleError);
@@ -28,7 +28,7 @@ export class CardService {
       'Content-Type': 'application/json'});
 
     return this.http
-      .post(this.cardsUrl, JSON.stringify(card), {headers: headers})
+      .post(this.cardListUrl, JSON.stringify(card), {headers: headers})
       .toPromise()
       .then(res => res.json().data)
       .catch(this.handleError);
@@ -39,7 +39,7 @@ export class CardService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    let url = `${this.cardsUrl}/${card.id}`;
+    let url = `${this.cardListUrl}/${card.id}`;
 
     return this.http
       .put(url, JSON.stringify(card), {headers: headers})
@@ -52,7 +52,7 @@ export class CardService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    let url = `${this.cardsUrl}/${card.id}`;
+    let url = `${this.cardListUrl}/${card.id}`;
 
     return this.http
       .delete(url, headers)

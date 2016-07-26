@@ -5,7 +5,7 @@ var board_component_1 = require("./board.component");
 var card_detail_component_1 = require("./card-detail.component");
 var routes = [
     {
-        path: 'cards',
+        path: 'card-list',
         component: card_list_component_1.CardListComponent
     },
     {
@@ -14,7 +14,7 @@ var routes = [
     },
     {
         path: '',
-        redirectTo: '/cards',
+        redirectTo: '/card-list',
         pathMatch: 'full'
     },
     {

@@ -3,7 +3,7 @@ var InMemoryDataService = (function () {
     function InMemoryDataService() {
     }
     InMemoryDataService.prototype.createDb = function () {
-        var cards = [
+        var workItems = [
             { id: 21, name: 'Bullet Chart', description: 'Bullet Chart - Conceptual Design' },
             { id: 22, name: 'New Account', description: 'Create a New Account' },
             { id: 23, name: 'Login page', description: 'Login page should recognize when caps lock is on and throw a warning message' },
@@ -19,7 +19,7 @@ var InMemoryDataService = (function () {
             { id: 19, name: 'Color', description: 'Improve Color Management' },
             { id: 20, name: 'Empty State', description: 'Empty State - Additional Layout Example' }
         ];
-        return { cards: cards };
+        return { workItems: workItems };
     };
     return InMemoryDataService;
 }());

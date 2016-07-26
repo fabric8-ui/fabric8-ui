@@ -12,7 +12,7 @@ import { CardDetailComponent } from './card-detail.component';
     <h1>{{title}}</h1>
     <nav>
       <a [routerLink]="['/board']" routerLinkActive="active">Board</a>
-      <a [routerLink]="['/cards']" routerLinkActive="active">Card List</a>
+      <a [routerLink]="['/card-list']" routerLinkActive="active">Card List</a>
     </nav>
     <router-outlet></router-outlet>
   `,

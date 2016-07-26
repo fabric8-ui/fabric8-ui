@@ -2,13 +2,13 @@
   background-color: #CFD8DC !important;
   color: white;
 }
-.cards {
+.card-list {
   margin: 0 0 2em 0;
   list-style-type: none;
   padding: 0;
   width: 15em;
 }
-.cards li {
+.card-list li {
   cursor: pointer;
   position: relative;
   left: 0;
@@ -18,20 +18,20 @@
   height: 1.6em;
   border-radius: 4px;
 }
-.cards li.selected:hover {
+.card-list li.selected:hover {
   background-color: #BBD8DC !important;
   color: white;
 }
-.cards li:hover {
+.card-list li:hover {
   color: #607D8B;
   background-color: #DDD;
   left: .1em;
 }
-.cards .text {
+.card-list .text {
   position: relative;
   top: -3px;
 }
-.cards .badge {
+.card-list .badge {
   display: inline-block;
   font-size: small;
   color: white;

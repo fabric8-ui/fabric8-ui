@@ -5,7 +5,7 @@ import {CardDetailComponent} from "./card-detail.component";
 
 const routes: RouterConfig = [
   {
-    path: 'cards',
+    path: 'card-list',
     component: CardListComponent
   },
   {
@@ -14,7 +14,7 @@ const routes: RouterConfig = [
   },
   {
     path: '',
-    redirectTo: '/cards',
+    redirectTo: '/card-list',
     pathMatch: 'full'
   },
   {

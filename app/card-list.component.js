@@ -54,7 +54,7 @@ var CardListComponent = (function () {
     };
     CardListComponent = __decorate([
         core_1.Component({
-            selector: 'cards',
+            selector: 'card-list',
             templateUrl: 'app/card-list.component.html',
             styleUrls: ['app/card-list.component.css'],
             directives: [card_detail_component_1.CardDetailComponent]

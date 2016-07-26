@@ -6,7 +6,7 @@ import { CardService } from './card.service';
 import { CardDetailComponent } from './card-detail.component';
 
 @Component({
-  selector: 'cards',
+  selector: 'card-list',
   templateUrl: 'app/card-list.component.html',
   styleUrls: ['app/card-list.component.css'],
   directives: [CardDetailComponent]
