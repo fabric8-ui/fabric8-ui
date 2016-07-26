@@ -11,8 +11,8 @@ import { CardDetailComponent } from './card-detail.component';
   template: `
     <h1>{{title}}</h1>
     <nav>
+      <a [routerLink]="['/card-list']" routerLinkActive="active">Work Item List</a>
       <a [routerLink]="['/board']" routerLinkActive="active">Board</a>
-      <a [routerLink]="['/card-list']" routerLinkActive="active">Card List</a>
     </nav>
     <router-outlet></router-outlet>
   `,

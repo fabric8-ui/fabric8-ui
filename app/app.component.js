@@ -21,7 +21,7 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: "\n    <h1>{{title}}</h1>\n    <nav>\n      <a [routerLink]=\"['/board']\" routerLinkActive=\"active\">Board</a>\n      <a [routerLink]=\"['/card-list']\" routerLinkActive=\"active\">Card List</a>\n    </nav>\n    <router-outlet></router-outlet>\n  ",
+            template: "\n    <h1>{{title}}</h1>\n    <nav>\n      <a [routerLink]=\"['/card-list']\" routerLinkActive=\"active\">Work Item List</a>\n      <a [routerLink]=\"['/board']\" routerLinkActive=\"active\">Board</a>\n    </nav>\n    <router-outlet></router-outlet>\n  ",
             styleUrls: ['app/app.component.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES
