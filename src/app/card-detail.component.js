@@ -65,8 +65,8 @@ var CardDetailComponent = (function () {
     CardDetailComponent = __decorate([
         core_1.Component({
             selector: 'card-detail',
-            templateUrl: 'app/card-detail.component.html',
-            styleUrls: ['app/card-detail.component.css']
+            templateUrl: '/card-detail.component.html',
+            styleUrls: ['/card-detail.component.css']
         }), 
         __metadata('design:paramtypes', [card_service_1.CardService, router_1.ActivatedRoute])
     ], CardDetailComponent);

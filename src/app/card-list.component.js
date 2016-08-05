@@ -55,8 +55,8 @@ var CardListComponent = (function () {
     CardListComponent = __decorate([
         core_1.Component({
             selector: 'card-list',
-            templateUrl: 'app/card-list.component.html',
-            styleUrls: ['app/card-list.component.css'],
+            templateUrl: '/card-list.component.html',
+            styleUrls: ['/card-list.component.css'],
             directives: [card_detail_component_1.CardDetailComponent]
         }), 
         __metadata('design:paramtypes', [router_1.Router, card_service_1.CardService])

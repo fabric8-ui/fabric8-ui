@@ -29,8 +29,8 @@ var BoardComponent = (function () {
     BoardComponent = __decorate([
         core_1.Component({
             selector: 'my-board',
-            templateUrl: 'app/board.component.html',
-            styleUrls: ['app/board.component.css']
+            templateUrl: '/board.component.html',
+            styleUrls: ['/board.component.css']
         }), 
         __metadata('design:paramtypes', [router_1.Router, card_service_1.CardService])
     ], BoardComponent);

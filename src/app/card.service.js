@@ -14,7 +14,7 @@ require('rxjs/add/operator/toPromise');
 var CardService = (function () {
     function CardService(http) {
         this.http = http;
-        this.cardListUrl = 'app/workItems'; // URL to web api
+        this.cardListUrl = 'src/app/workItems'; // URL to web api
     }
     CardService.prototype.handleError = function (error) {
         console.error('An error occurred', error);
