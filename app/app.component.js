@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var login_component_1 = require('./login/login.component');
 var card_service_1 = require('./card.service');
 var card_list_component_1 = require('./card-list.component');
 var board_component_1 = require('./board.component');
@@ -17,11 +18,12 @@ var card_detail_component_1 = require('./card-detail.component');
 var AppComponent = (function () {
     function AppComponent() {
         this.title = 'Red Hat ALMighty';
+        this.loggedIn = false;
     }
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: "\n    <h1>{{title}}</h1>\n    <nav>\n      <a [routerLink]=\"['/card-list']\" routerLinkActive=\"active\">Work Item List</a>\n      <a [routerLink]=\"['/board']\" routerLinkActive=\"active\">Board</a>\n    </nav>\n    <router-outlet></router-outlet>\n  ",
+            template: "\n  <div *ngIf=\"loggedIn\" class=\"error\">\n    <h1>{{title}}</h1>\n    <nav>\n      <a [routerLink]=\"['/card-list']\" routerLinkActive=\"active\">Work Item List</a>\n      <a [routerLink]=\"['/board']\" routerLinkActive=\"active\">Board</a>\n    </nav>\n  </div>\n    <router-outlet></router-outlet>\n  ",
             styleUrls: ['app/app.component.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES
@@ -30,6 +32,7 @@ var AppComponent = (function () {
                 card_service_1.CardService
             ],
             precompile: [
+                login_component_1.LoginComponent,
                 card_list_component_1.CardListComponent,
                 board_component_1.BoardComponent,
                 card_detail_component_1.CardDetailComponent

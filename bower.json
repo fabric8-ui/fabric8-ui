@@ -1,0 +1,20 @@
+{
+  "name": "almighty-ui",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Joshua Wilson <josh@redhat.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "patternfly": "^3.8.1"
+  }
+}
