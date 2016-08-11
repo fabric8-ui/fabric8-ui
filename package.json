@@ -36,6 +36,7 @@
     "setup:workshop": "git checkout workshop/07-coverage && npm install && npm run validate && rimraf dist coverage && git checkout workshop/00-original-project",
     "setup:egghead": "git checkout prelesson/polyfill-promises && npm install && mkdir dist && npm run validate",
     "start": "webpack-dev-server --inline --progress --port 8080",
+    "docker:run": "webpack-dev-server --inline --progress --port 8080",
     "start-old": "webpack-dev-server --env.dev --content-base dist",
     "test": "karma start",
     "tsc": "tsc",
