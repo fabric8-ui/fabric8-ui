@@ -6,7 +6,8 @@ import { Card } from './card';
 
 @Injectable()
 export class CardService {
-  private cardListUrl = 'app/workItems';  // URL to web api
+  // private workItemUrl = 'app/workItems';  // URL to web api
+  private workItemUrl = 'http://localhost:8080/api/workitem';  // URL to web api
 
   constructor(private http: Http) { }
 
@@ -16,7 +17,8 @@ export class CardService {
   }
 
   getCards(): Promise<Card[]> {
-    return this.http.get(this.cardListUrl)
+    return this.http
+      .get(this.workItemUrl)
       .toPromise()
       .then(response => response.json().data)
       .catch(this.handleError);
@@ -24,11 +26,10 @@ export class CardService {
 
   // Add new Card
   private post(card: Card): Promise<Card> {
-    let headers = new Headers({
-      'Content-Type': 'application/json'});
+    let headers = new Headers({'Content-Type': 'application/json'});
 
     return this.http
-      .post(this.cardListUrl, JSON.stringify(card), {headers: headers})
+      .post(this.workItemUrl, JSON.stringify(card), {headers: headers})
       .toPromise()
       .then(res => res.json().data)
       .catch(this.handleError);
@@ -39,7 +40,8 @@ export class CardService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    let url = `${this.cardListUrl}/${card.id}`;
+    // let url = `${this.workItemUrl}/${card.id}`;
+    let url = `${this.workItemUrl}`;
 
     return this.http
       .put(url, JSON.stringify(card), {headers: headers})
@@ -52,7 +54,7 @@ export class CardService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    let url = `${this.cardListUrl}/${card.id}`;
+    let url = `${this.workItemUrl}/${card.id}`;
 
     return this.http
       .delete(url, headers)

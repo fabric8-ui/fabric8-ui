@@ -14,6 +14,6 @@ import { appRouterProviders }   from './app.routes';
 bootstrap(AppComponent, [
   appRouterProviders,
   HTTP_PROVIDERS,
-  { provide: XHRBackend, useClass: InMemoryBackendService }, // in-mem server
-  { provide: SEED_DATA, useClass: InMemoryDataService }      // in-mem server data
+  // { provide: XHRBackend, useClass: InMemoryBackendService }, // in-mem server
+  // { provide: SEED_DATA, useClass: InMemoryDataService }      // in-mem server data
 ]);
