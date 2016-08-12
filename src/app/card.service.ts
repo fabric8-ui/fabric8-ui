@@ -6,22 +6,40 @@ import { Card } from './card';
 
 @Injectable()
 export class CardService {
-  // private workItemUrl = 'app/workItems';  // URL to web api
-  private workItemUrl = 'http://localhost:8080/api/workitem';  // URL to web api
+  private cardListUrl = 'app/workItems';  // URL to web api
 
   constructor(private http: Http) { }
-
-  private handleError(error: any) {
-    console.error('An error occurred', error);
-    return Promise.reject(error.message || error);
-  }
 
   getCards(): Promise<Card[]> {
     return this.http
       .get(this.workItemUrl)
       .toPromise()
-      .then(response => response.json().data)
+      .then(response => response.json().data as Card[])
       .catch(this.handleError);
+  }
+
+  getCard(id: number) {
+    return this.getCards()
+        .then(cards => cards.find(card => card.id === id));
+  }
+
+  save(card: Card): Promise<Card>  {
+    if (card.id) {
+      return this.put(card);
+    }
+    return this.post(card);
+  }
+
+  delete(card: Card) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    let url = `${this.cardListUrl}/${card.id}`;
+
+    return this.http
+        .delete(url, {headers: headers})
+        .toPromise()
+        .catch(this.handleError);
   }
 
   // Add new Card
@@ -50,28 +68,9 @@ export class CardService {
       .catch(this.handleError);
   }
 
-  delete(card: Card) {
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-
-    let url = `${this.workItemUrl}/${card.id}`;
-
-    return this.http
-      .delete(url, headers)
-      .toPromise()
-      .catch(this.handleError);
-  }
-
-  save(card: Card): Promise<Card>  {
-    if (card.id) {
-      return this.put(card);
-    }
-    return this.post(card);
-  }
-
-  getCard(id: number) {
-    return this.getCards()
-      .then(cards => cards.find(card => card.id === id));
+  private handleError(error: any) {
+    console.error('An error occurred', error);
+    return Promise.reject(error.message || error);
   }
 
 }

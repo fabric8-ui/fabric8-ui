@@ -6,17 +6,12 @@ import { CardListComponent } from './card-list.component';
 import { BoardComponent } from './board.component';
 import { CardDetailComponent } from './card-detail.component';
 
+import '../../public/css/styles.css';
+
 @Component({
   selector: 'my-app',
-  template: `
-    <h1>{{title}}</h1>
-    <nav>
-      <a [routerLink]="['/card-list']" routerLinkActive="active">Work Item List</a>
-      <a [routerLink]="['/board']" routerLinkActive="active">Board</a>
-    </nav>
-    <router-outlet></router-outlet>
-  `,
-  styleUrls: ['app/app.component.css'],
+  templateUrl: './app.component.html',
+  styleUrls: ['/app.component.css'],
   directives: [
     ROUTER_DIRECTIVES
   ],

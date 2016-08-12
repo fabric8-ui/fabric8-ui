@@ -6,8 +6,8 @@ import { CardService } from './card.service';
 
 @Component({
   selector: 'my-board',
-  templateUrl: 'app/board.component.html',
-  styleUrls: ['app/board.component.css']
+  templateUrl: '/board.component.html',
+  styleUrls: ['/board.component.css']
 })
 export class BoardComponent implements OnInit {
   cards: Card[] = [];
