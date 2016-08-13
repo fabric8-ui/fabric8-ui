@@ -6,8 +6,8 @@ import { CardService } from './card.service';
 
 @Component({
   selector: 'card-detail',
-  templateUrl: 'app/card-detail.component.html',
-  styleUrls: ['app/card-detail.component.css']
+  templateUrl: '/card-detail.component.html',
+  styleUrls: ['/card-detail.component.css']
 })
 export class CardDetailComponent implements OnInit, OnDestroy {
   @Input() card: Card;

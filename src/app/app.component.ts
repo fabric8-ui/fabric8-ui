@@ -7,8 +7,11 @@ import { CardListComponent } from './card-list.component';
 import { BoardComponent } from './board.component';
 import { CardDetailComponent } from './card-detail.component';
 
+import '../../public/css/styles.css';
+
 @Component({
   selector: 'my-app',
+<<<<<<< HEAD:app/app.component.ts
   template: `
   <div *ngIf="loggedIn" class="error">
     <h1>{{title}}</h1>
@@ -20,6 +23,10 @@ import { CardDetailComponent } from './card-detail.component';
     <router-outlet></router-outlet>
   `,
   styleUrls: ['app/app.component.css'],
+=======
+  templateUrl: './app.component.html',
+  styleUrls: ['/app.component.css'],
+>>>>>>> upstream/master:src/app/app.component.ts
   directives: [
     ROUTER_DIRECTIVES
   ],
