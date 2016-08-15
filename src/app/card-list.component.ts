@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
 
 import { Card } from './card';
 import { CardService } from './card.service';
@@ -12,10 +12,10 @@ import { CardDetailComponent } from './card-detail.component';
   directives: [CardDetailComponent]
 })
 export class CardListComponent implements OnInit {
-  cards: Card[];
-  selectedCard: Card;
-  addingCard = false;
-  error: any;
+	cards: Card[];
+	selectedCard: Card;
+	addingCard = false;
+	error: any;
 
   constructor(
     private router: Router,
@@ -30,10 +30,16 @@ export class CardListComponent implements OnInit {
     this.getCards();
   }
 
-  onSelect(card: Card) { this.selectedCard = card; }
+  onSelect(card: Card) { 
+	  	this.selectedCard = card; 
+  		card.isExpanded = card.isExpanded ? !card.isExpanded : true;
+  }
 
-  gotoDetail() {
+  gotoDetail(card: Card) {
+	event.stopPropagation();
+	this.selectedCard = card; 
     this.router.navigate(['/detail', this.selectedCard.id]);
+	  
   }
 
   addCard() {
@@ -56,5 +62,7 @@ export class CardListComponent implements OnInit {
       })
       .catch(error => this.error = error);
   }
+	
+	
 }
 

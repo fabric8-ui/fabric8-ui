@@ -1,14 +1,10 @@
-import { provideRouter, RouterConfig }  from '@angular/router';
-import { LoginComponent }  from './login/login.component';
-import {CardListComponent} from './card-list.component';
+import { Routes, RouterModule } from '@angular/router';
+
 import {BoardComponent} from "./board.component";
+import {CardListComponent} from './card-list.component';
 import {CardDetailComponent} from "./card-detail.component";
 
-const routes: RouterConfig = [
-  {
-    path: 'login',
-    component: LoginComponent
-  },
+const appRoutes: Routes = [
   {
     path: 'card-list',
     component: CardListComponent
@@ -29,6 +25,4 @@ const routes: RouterConfig = [
 
 ];
 
-export const appRouterProviders = [
-  provideRouter(routes)
-];
+export const routing = RouterModule.forRoot(appRoutes);

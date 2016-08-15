@@ -1,0 +1,10 @@
+<div id="search-component">
+  <h4>Work Item Search</h4>
+  <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+  <div>
+    <div *ngFor="let card of cards | async"
+         (click)="gotoDetail(card)" class="search-result" >
+      {{card.name}}
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, OnDestroy, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 
 import { Card } from './card';
 import { CardService } from './card.service';
@@ -9,11 +9,10 @@ import { CardService } from './card.service';
   templateUrl: '/card-detail.component.html',
   styleUrls: ['/card-detail.component.css']
 })
-export class CardDetailComponent implements OnInit, OnDestroy {
+export class CardDetailComponent implements OnInit {
   @Input() card: Card;
   @Output() close = new EventEmitter();
   error: any;
-  sub: any;
   navigated = false; // true if navigated here
 
   constructor(
@@ -22,7 +21,7 @@ export class CardDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
+    this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         let id = +params['id'];
         this.navigated = true;
@@ -33,10 +32,6 @@ export class CardDetailComponent implements OnInit, OnDestroy {
         this.card = new Card();
       }
     });
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
   }
 
   save() {
