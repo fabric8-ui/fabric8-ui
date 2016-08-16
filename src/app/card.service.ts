@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import {Headers,Http} from "@angular/http";
+import { Headers, Http } from "@angular/http";
 
 import 'rxjs/add/operator/toPromise';
+
 import { Card } from './card';
 
 @Injectable()
 export class CardService {
-  private cardListUrl = 'app/workItems';  // URL to web api
+  // private workItemUrl = 'app/workItems';  // URL to web api
+  private workItemUrl = 'app/workItems';  // URL to web api
 
   constructor(private http: Http) { }
 
@@ -34,7 +36,7 @@ export class CardService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    let url = `${this.cardListUrl}/${card.id}`;
+    let url = `${this.workItemUrl}/${card.id}`;
 
     return this.http
         .delete(url, {headers: headers})
@@ -58,8 +60,8 @@ export class CardService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    // let url = `${this.workItemUrl}/${card.id}`;
-    let url = `${this.workItemUrl}`;
+    let url = `${this.workItemUrl}/${card.id}`;
+    // let url = `${this.workItemUrl}`;
 
     return this.http
       .put(url, JSON.stringify(card), {headers: headers})

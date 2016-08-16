@@ -2,13 +2,13 @@
 <ul class="card-list">
   <li *ngFor="let card of cards" (click)="onSelect(card)" [class.selected]="card === selectedCard">
     <span class="card-element">
-      <span class="badge">{{card.id}}</span> <strong>{{card.name}}</strong>}
+      <span class="badge">{{card.id}}</span> <strong>{{card.name}}</strong>
     </span>
     <button class="delete-button" (click)="deleteCard(card, $event)">Delete</button>
   </li>
 </ul>
 <div class="error" *ngIf="error">{{error}}</div>
-<button (click)="addCard()">Add New Work Item</button>
+<button (click)="addCard()">Add Work Item</button>
 <div *ngIf="addingCard">
   <card-detail (close)="close($event)"></card-detail>
 </div>
