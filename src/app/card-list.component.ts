@@ -11,6 +11,7 @@ import { CardDetailComponent } from './card-detail.component';
   styleUrls: ['/card-list.component.css'],
   directives: [CardDetailComponent]
 })
+
 export class CardListComponent implements OnInit {
 	cards: Card[];
 	selectedCard: Card;
@@ -30,16 +31,16 @@ export class CardListComponent implements OnInit {
     this.getCards();
   }
 
-  onSelect(card: Card) { 
-	  	this.selectedCard = card; 
+  onSelect(card: Card) {
+	  	this.selectedCard = card;
   		card.isExpanded = card.isExpanded ? !card.isExpanded : true;
   }
 
   gotoDetail(card: Card) {
 	event.stopPropagation();
-	this.selectedCard = card; 
+	this.selectedCard = card;
     this.router.navigate(['/detail', this.selectedCard.id]);
-	  
+
   }
 
   addCard() {
@@ -62,7 +63,6 @@ export class CardListComponent implements OnInit {
       })
       .catch(error => this.error = error);
   }
-	
-	
-}
 
+
+}

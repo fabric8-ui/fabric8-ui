@@ -12,13 +12,6 @@
   margin-right: 10px;
   color: #8b8d8f;
 }
-.card-details{  	
-	padding: 1% 8%;  
-<<<<<<< HEAD
-}
-.error {color:red;}
-button.delete-button{
-  float:right;
-  background-color: gray !important;
-  color:white;
+.card-details{
+	padding: 1% 8%;
 }

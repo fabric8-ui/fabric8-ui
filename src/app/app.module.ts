@@ -10,6 +10,10 @@ import { InMemoryDataService }               from './in-memory-data.service';
 import { AppComponent }  from './app.component';
 import { routing } from './app.routing';
 
+
+import { LoginComponent} from './login.component';
+import { HeaderComponent} from './header.component';
+import { FooterComponent} from './footer.component';
 import { BoardComponent} from './board.component';
 import { CardDetailComponent } from './card-detail.component';
 import { CardListComponent } from './card-list.component';
@@ -24,6 +28,9 @@ import { CardService } from './card.service';
         routing
     ],
     declarations: [
+        LoginComponent,
+        HeaderComponent,
+        FooterComponent,
         AppComponent,
         BoardComponent,
         CardDetailComponent,
