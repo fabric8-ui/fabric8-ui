@@ -1,13 +1,10 @@
 <app-header></app-header>
-
 <div class="container-fluid container-cards-pf">
 <button class="btn btn-primary" (click)="addCard()">Add New Work Item</button>
 <div *ngIf="addingCard">
   <card-detail (close)="close($event)"></card-detail>
 </div>
-
 <br /><br />
-
 <div class="container-fluid">
 	<div class="list-group list-view-pf list-view-pf-view">
 		<div *ngFor="let card of cards">
