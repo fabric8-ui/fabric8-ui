@@ -19,7 +19,7 @@ export class BoardComponent implements OnInit {
 
   ngOnInit() {
     this.cardService.getCards()
-        .then(cards => this.cards = cards.slice(1, 5));
+        .then(cards => this.cards);
   }
 
   gotoDetail(card: Card) {
