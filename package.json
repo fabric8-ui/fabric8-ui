@@ -57,11 +57,6 @@
     "rxjs": "5.0.0-beta.6",
     "zone.js": "^0.6.12"
   },
-  "config": {
-    "ghooks": {
-      "pre-commit": "opt --in pre-commit --exec \"npm run validate\""
-    }
-  },
   "devDependencies": {
     "angular2-template-loader": "^0.4.0",
     "chai": "3.5.0",

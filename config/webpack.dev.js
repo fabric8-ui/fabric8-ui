@@ -20,6 +20,8 @@ module.exports = webpackMerge(commonConfig, {
 
   devServer: {
     historyApiFallback: true,
-    stats: 'minimal'
+    stats: 'minimal',
+    inline: true,
+    colors: true
   }
 });
