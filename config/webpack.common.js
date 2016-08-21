@@ -11,10 +11,21 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.js', '.ts']
+    extensions: ['', '.webpack.js', '.wep.js', '.js', '.ts']
+  },
+
+  stats: {
+    colors: true,
+    reasons: true
   },
 
   module: {
+    // preLoaders: [
+    //   {
+    //     test: /\.ts$/,
+    //     loader: 'tslint'
+    //   }
+    // ],
     loaders: [
       {
         test: /\.ts$/,

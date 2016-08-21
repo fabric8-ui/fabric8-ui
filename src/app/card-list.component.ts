@@ -11,12 +11,11 @@ import { CardDetailComponent } from './card-detail.component';
   styleUrls: ['/card-list.component.css'],
   directives: [CardDetailComponent]
 })
-
 export class CardListComponent implements OnInit {
-	cards: Card[];
-	selectedCard: Card;
-	addingCard = false;
-	error: any;
+  cards: Card[];
+  selectedCard: Card;
+  addingCard = false;
+  error: any;
 
   constructor(
     private router: Router,
@@ -63,6 +62,5 @@ export class CardListComponent implements OnInit {
       })
       .catch(error => this.error = error);
   }
-
-
 }
+

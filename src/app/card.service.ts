@@ -8,7 +8,7 @@ import { Card } from './card';
 @Injectable()
 export class CardService {
   // private workItemUrl = 'app/workItems';  // URL to web api
-  private workItemUrl = 'app/workItems';  // URL to web api
+  private workItemUrl = 'http://localhost:8080/api/workitem';  // URL to web api
 
   constructor(private http: Http) { }
 
@@ -16,7 +16,8 @@ export class CardService {
     return this.http
       .get(this.workItemUrl)
       .toPromise()
-      .then(response => response.json().data as Card[])
+      // .then(response => response.json().data as Card[])
+      .then(response => response.json() as Card[])
       .catch(this.handleError);
   }
 
