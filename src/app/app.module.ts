@@ -37,8 +37,8 @@ import { CardService } from './card.service';
         CardSearchComponent
     ],
     providers: [
-        CardService//,
-        // { provide: XHRBackend}, useClass: InMemoryBackendService }, // in-mem server
+        CardService
+        // ,{ provide: XHRBackend, useClass: InMemoryBackendService }, // in-mem server
         // { provide: SEED_DATA,  useClass: InMemoryDataService }     // in-mem server data
     ],
     bootstrap: [ AppComponent ]
