@@ -1,7 +1,7 @@
 export class Card {
   id: number;
   name: string;
-  type: string = 'Story';
+  workItemType: string = 'Story';
   version: number;
   description: string;
   status: string = 'To Do';

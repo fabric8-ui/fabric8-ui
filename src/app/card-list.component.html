@@ -28,7 +28,7 @@
 						<span class="label" [ngClass]="{'label-warning': card.statusCode==0, 'label-primary': card.statusCode==1, 'label-success': card.statusCode==2 }">{{card.status}}</span>
 					</div>
 					<div class="list-view-pf-left type">
-						<span class='fa' [ngClass]="{'fa-bookmark': card.type=='story', 'fa-bug':card.type=='bug'}"></span>
+						<span class='fa' [ngClass]="{'fa-bookmark': card.workItemType=='story', 'fa-bug':card.workItemType=='bug'}"></span>
 							{{card.id}}
       		</div>
 	      <div class="list-view-pf-body">
@@ -53,6 +53,3 @@
 <div class="error" *ngIf="error">{{error}}</div>
 </div>
 <app-footer></app-footer>
-
-
-<!--[{"fields":{"system.owner":"tmaeder","system.state":"open"},"id":"1","name":"some name","type":"1","version":0}]-->
