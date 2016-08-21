@@ -30,10 +30,16 @@ export class CardListComponent implements OnInit {
     this.getCards();
   }
 
-  onSelect(card: Card) { this.selectedCard = card; }
+  onSelect(card: Card) {
+	  	this.selectedCard = card;
+  		card.isExpanded = card.isExpanded ? !card.isExpanded : true;
+  }
 
-  gotoDetail() {
+  gotoDetail(card: Card) {
+	event.stopPropagation();
+	this.selectedCard = card;
     this.router.navigate(['/detail', this.selectedCard.id]);
+
   }
 
   addCard() {
