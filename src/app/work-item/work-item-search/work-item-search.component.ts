@@ -5,7 +5,7 @@ import { Observable }        from 'rxjs/Observable';
 import { Subject }           from 'rxjs/Subject';
 
 import { WorkItemSearchService } from './work-item-search.service';
-import { WorkItem } from './work-item';
+import { WorkItem } from '../work-item';
 
 @Component({
     selector: 'work-item-search',

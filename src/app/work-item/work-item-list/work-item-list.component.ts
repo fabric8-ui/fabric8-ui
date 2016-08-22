@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 
-import { WorkItem } from './work-item';
-import { WorkItemService } from './work-item.service';
-import { WorkItemDetailComponent } from './work-item-detail.component';
+import { WorkItem } from '../work-item';
+import { WorkItemService } from '../work-item.service';
+import { WorkItemDetailComponent } from '../work-item-detail/work-item-detail.component';
 
 @Component({
   selector: 'work-item-list',

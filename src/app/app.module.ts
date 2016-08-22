@@ -10,14 +10,14 @@ import { InMemoryDataService }               from './in-memory-data.service';
 import { AppComponent }  from './app.component';
 import { routing } from './app.routing';
 
-import { LoginComponent} from './login.component';
-import { HeaderComponent} from './header.component';
-import { FooterComponent} from './footer.component';
-import { BoardComponent} from './board.component';
-import { WorkItemDetailComponent } from './work-item-detail.component';
-import { WorkItemListComponent } from './work-item-list.component';
-import { WorkItemSearchComponent } from './work-item-search.component';
-import { WorkItemService } from './work-item.service';
+import { LoginComponent} from './login/login.component';
+import { HeaderComponent} from './header/header.component';
+import { FooterComponent} from './footer/footer.component';
+import { BoardComponent} from './board/board.component';
+import { WorkItemDetailComponent } from './work-item/work-item-detail/work-item-detail.component';
+import { WorkItemListComponent } from './work-item/work-item-list/work-item-list.component';
+import { WorkItemSearchComponent } from './work-item/work-item-search/work-item-search.component';
+import { WorkItemService } from './work-item/work-item.service';
 
 @NgModule({
     imports: [

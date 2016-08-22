@@ -1,9 +1,9 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import {LoginComponent} from "./login.component";
-import {BoardComponent} from "./board.component";
-import {WorkItemListComponent} from './work-item-list.component';
-import {WorkItemDetailComponent} from "./work-item-detail.component";
+import {LoginComponent} from "./login/login.component";
+import {BoardComponent} from "./board/board.component";
+import {WorkItemListComponent} from './work-item/work-item-list/work-item-list.component';
+import {WorkItemDetailComponent} from "./work-item/work-item-detail/work-item-detail.component";
 
 const appRoutes: Routes = [
   {

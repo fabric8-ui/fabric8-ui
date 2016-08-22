@@ -1,7 +1,7 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
 
-import { WorkItem }           from './work-item';
+import { WorkItem }           from '../work-item';
 
 @Injectable()
 export class WorkItemSearchService {

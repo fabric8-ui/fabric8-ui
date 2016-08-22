@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { WorkItem } from './work-item';
-import { WorkItemService } from './work-item.service';
+import { WorkItem } from '../work-item';
+import { WorkItemService } from '../work-item.service';
 
 @Component({
   selector: 'work-item-detail',
