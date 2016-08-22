@@ -2,8 +2,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import {LoginComponent} from "./login.component";
 import {BoardComponent} from "./board.component";
-import {CardListComponent} from './card-list.component';
-import {CardDetailComponent} from "./card-detail.component";
+import {WorkItemListComponent} from './work-item-list.component';
+import {WorkItemDetailComponent} from "./work-item-detail.component";
 
 const appRoutes: Routes = [
   {
@@ -11,8 +11,8 @@ const appRoutes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'card-list',
-    component: CardListComponent
+    path: 'work-item-list',
+    component: WorkItemListComponent
   },
   {
     path: 'board',
@@ -20,12 +20,12 @@ const appRoutes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/card-list',
+    redirectTo: '/work-item-list',
     pathMatch: 'full'
   },
   {
     path: 'detail/:id',
-    component: CardDetailComponent
+    component: WorkItemDetailComponent
   },
 
 ];

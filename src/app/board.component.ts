@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Card } from './card';
-import { CardService } from './card.service';
+import { WorkItem } from './work-item';
+import { WorkItemService } from './work-item.service';
 
 @Component({
   selector: 'my-board',
@@ -10,20 +10,20 @@ import { CardService } from './card.service';
   styleUrls: ['/board.component.css']
 })
 export class BoardComponent implements OnInit {
-  cards: Card[] = [];
+  workItems: WorkItem[] = [];
 
   constructor(
     private router: Router,
-    private cardService: CardService) {
+    private workItemService: WorkItemService) {
   }
 
   ngOnInit() {
-    this.cardService.getCards()
-        .then(cards => this.cards = cards);
+    this.workItemService.getWorkItems()
+        .then(workItems => this.workItems = workItems);
   }
 
-  gotoDetail(card: Card) {
-    let link = ['/detail', card.id];
+  gotoDetail(workItem: WorkItem) {
+    let link = ['/detail', workItem.id];
     this.router.navigate(link);
   }
 }

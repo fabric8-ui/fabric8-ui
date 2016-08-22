@@ -1,4 +1,4 @@
-export class Card {
+export class WorkItem {
   id: number;
   name: string;
   workItemType: string = 'Story';
@@ -9,8 +9,8 @@ export class Card {
   fields: {
     "system.owner": string,
     "system.state": string
-  }
+  };
   //Temp hack. Need to separate view related parameters
-  //Need to create cardItem which in turn will be used by cardlist component
+  //Need to create workItem which in turn will be used by workItemList component
   isExpanded = false;
 }

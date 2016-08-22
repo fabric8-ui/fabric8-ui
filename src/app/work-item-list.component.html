@@ -1,17 +1,17 @@
 <app-header></app-header>
 <div class="container-fluid container-cards-pf">
-<button class="btn btn-primary" (click)="addCard()">Add New Work Item</button>
-<div *ngIf="addingCard">
-  <card-detail (close)="close($event)"></card-detail>
+<button class="btn btn-primary" (click)="addWorkItem()">Add New Work Item</button>
+<div *ngIf="addingWorkItem">
+  <work-item-detail (close)="close($event)"></work-item-detail>
 </div>
 <br /><br />
 <div class="container-fluid">
 	<div class="list-group list-view-pf list-view-pf-view">
-		<div *ngFor="let card of cards">
-			<div class="list-group-item" (click)="onSelect(card)" [class.selected]="card === selectedCard">
+		<div *ngFor="let workItem of workItems">
+			<div class="list-group-item" (click)="onSelect(workItem)" [class.selected]="workItem === selectedWorkItem">
 				<div class="list-view-pf-actions">
-					<button class="btn btn-default" (click)="gotoDetail(card)">View Details</button>
-					<button class="btn btn-default delete-button" (click)="deleteCard(card, $event)">Delete</button>
+					<button class="btn btn-default" (click)="gotoDetail(workItem)">View Details</button>
+					<button class="btn btn-default delete-button" (click)="deleteWorkItem(workItem, $event)">Delete</button>
 					<div class="dropdown pull-right dropdown-kebab-pf">
 						<button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 							<span class="fa fa-ellipsis-v"></span>
@@ -25,26 +25,26 @@
 				</div>
 				<div class="list-view-pf-main-info">
 					<div class="list-view-pf-left status">
-						<span class="label" [ngClass]="{'label-warning': card.statusCode==0, 'label-primary': card.statusCode==1, 'label-success': card.statusCode==2 }">{{card.status}}</span>
+						<span class="label" [ngClass]="{'label-warning': workItem.statusCode==0, 'label-primary': workItem.statusCode==1, 'label-success': workItem.statusCode==2 }">{{workItem.status}}</span>
 					</div>
 					<div class="list-view-pf-left type">
-						<span class='fa' [ngClass]="{'fa-bookmark': card.workItemType=='story', 'fa-bug':card.workItemType=='bug'}"></span>
-							{{card.id}}
+						<span class='fa' [ngClass]="{'fa-bookmark': workItem.workItemType=='story', 'fa-bug':workItem.workItemType=='bug'}"></span>
+							{{workItem.id}}
       		</div>
 	      <div class="list-view-pf-body">
 	        <div class="list-view-pf-description">
 	          <div class="list-group-item-heading">
-	             {{card.name}}
+	             {{workItem.name}}
 	          </div>
 						<div class="list-group-item-text">
-            	{{card.description}}
+            	{{workItem.description}}
           	</div>
 	        </div>
 	      </div>
     	</div>
 			</div>
-			<div *ngIf="card.isExpanded" class="card-details" >
-      			{{card.name | uppercase}} - {{card.description}}
+			<div *ngIf="workItem.isExpanded" class="work-item-details" >
+      			{{workItem.name | uppercase}} - {{workItem.description}}
 				<hr />
       		</div>
 		</div>

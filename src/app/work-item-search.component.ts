@@ -4,44 +4,44 @@ import { Router }            from '@angular/router';
 import { Observable }        from 'rxjs/Observable';
 import { Subject }           from 'rxjs/Subject';
 
-import { CardSearchService } from './card-search.service';
-import { Card } from './card';
+import { WorkItemSearchService } from './work-item-search.service';
+import { WorkItem } from './work-item';
 
 @Component({
-    selector: 'card-search',
-    templateUrl: '/card-search.component.html',
-    styleUrls:  ['/card-search.component.css'],
-    providers: [CardSearchService]
+    selector: 'work-item-search',
+    templateUrl: '/work-item-search.component.html',
+    styleUrls:  ['/work-item-search.component.css'],
+    providers: [WorkItemSearchService]
 })
-export class CardSearchComponent implements OnInit {
-    cards: Observable<Card[]>;
+export class WorkItemSearchComponent implements OnInit {
+    workItems: Observable<WorkItem[]>;
     private searchTerms = new Subject<string>();
 
     constructor(
-        private cardSearchService: CardSearchService,
+        private workItemSearchService: WorkItemSearchService,
         private router: Router) {}
 
     // Push a search term into the observable stream.
     search(term: string) { this.searchTerms.next(term); }
 
     ngOnInit() {
-        this.cards = this.searchTerms
+        this.workItems = this.searchTerms
             .debounceTime(300)        // wait for 300ms pause in events
             .distinctUntilChanged()   // ignore if next search term is same as previous
             .switchMap(term => term   // switch to new observable each time
                 // return the http search observable
-                ? this.cardSearchService.search(term)
+                ? this.workItemSearchService.search(term)
                 // or the observable of empty heroes if no search term
-                : Observable.of<Card[]>([]))
+                : Observable.of<WorkItem[]>([]))
             .catch(error => {
                 // TODO: real error handling
                 console.log(error);
-                return Observable.of<Card[]>([]);
+                return Observable.of<WorkItem[]>([]);
             });
     }
 
-    gotoDetail(card: Card) {
-        let link = ['/detail', card.id];
+    gotoDetail(workItem: WorkItem) {
+        let link = ['/detail', workItem.id];
         this.router.navigate(link);
     }
 }

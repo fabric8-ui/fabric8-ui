@@ -1,14 +1,14 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
 
-import { Card }           from './card';
+import { WorkItem }           from './work-item';
 
 @Injectable()
-export class CardSearchService {
+export class WorkItemSearchService {
     constructor(private http: Http) {}
     search(term: string) {
         return this.http
-            .get(`app/card-list/?name=${term}`)
-            .map((r: Response) => r.json().data as Card[]);
+            .get(`app/work-item-list/?name=${term}`)
+            .map((r: Response) => r.json().data as WorkItem[]);
     }
 }

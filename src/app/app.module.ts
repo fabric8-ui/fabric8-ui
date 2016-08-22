@@ -14,10 +14,10 @@ import { LoginComponent} from './login.component';
 import { HeaderComponent} from './header.component';
 import { FooterComponent} from './footer.component';
 import { BoardComponent} from './board.component';
-import { CardDetailComponent } from './card-detail.component';
-import { CardListComponent } from './card-list.component';
-import { CardSearchComponent } from './card-search.component';
-import { CardService } from './card.service';
+import { WorkItemDetailComponent } from './work-item-detail.component';
+import { WorkItemListComponent } from './work-item-list.component';
+import { WorkItemSearchComponent } from './work-item-search.component';
+import { WorkItemService } from './work-item.service';
 
 @NgModule({
     imports: [
@@ -32,12 +32,12 @@ import { CardService } from './card.service';
         FooterComponent,
         AppComponent,
         BoardComponent,
-        CardDetailComponent,
-        CardListComponent,
-        CardSearchComponent
+        WorkItemDetailComponent,
+        WorkItemListComponent,
+        WorkItemSearchComponent
     ],
     providers: [
-        CardService
+        WorkItemService
         // ,{ provide: XHRBackend, useClass: InMemoryBackendService }, // in-mem server
         // { provide: SEED_DATA,  useClass: InMemoryDataService }     // in-mem server data
     ],

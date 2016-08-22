@@ -1,13 +1,13 @@
 <app-header></app-header>
 <div class="container-fluid container-cards-pf">
-  <h3>Top Cards</h3>
+  <h3>Top WorkItems</h3>
   <div class="grid grid-pad">
-    <div *ngFor="let card of cards" (click)="gotoDetail(card)" class="col-1-4">
-      <div class="module card">
-        <h4>{{card.name}}</h4>
+    <div *ngFor="let workItem of workItems" (click)="gotoDetail(workItem)" class="col-1-4">
+      <div class="module workItem">
+        <h4>{{workItem.name}}</h4>
       </div>
     </div>
   </div>
-  <card-search></card-search>
+  <work-item-search></work-item-search>
 </div>
 <app-footer></app-footer>
