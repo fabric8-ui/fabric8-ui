@@ -8,7 +8,7 @@ import { WorkItem } from './work-item';
 @Injectable()
 export class WorkItemService {
   // private workItemUrl = 'app/workItems';  // URL to web api
-  private workItemUrl = 'http://localhost:8080/api/workitem';  // URL to web api
+  private workItemUrl = 'http://localhost:8080/api/workitems';  // URL to web api
 
   constructor(private http: Http) { }
 
