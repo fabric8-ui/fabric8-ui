@@ -11,6 +11,7 @@ import { AppComponent }  from './app.component';
 import { routing } from './app.routing';
 
 import { LoginComponent} from './login/login.component';
+import { LoginService } from './login/login.service';
 import { HeaderComponent} from './header/header.component';
 import { FooterComponent} from './footer/footer.component';
 import { BoardComponent} from './board/board.component';
@@ -18,6 +19,8 @@ import { WorkItemDetailComponent } from './work-item/work-item-detail/work-item-
 import { WorkItemListComponent } from './work-item/work-item-list/work-item-list.component';
 import { WorkItemSearchComponent } from './work-item/work-item-search/work-item-search.component';
 import { WorkItemService } from './work-item/work-item.service';
+
+
 
 @NgModule({
     imports: [
@@ -37,9 +40,10 @@ import { WorkItemService } from './work-item/work-item.service';
         WorkItemSearchComponent
     ],
     providers: [
+        LoginService,
         WorkItemService
-        // ,{ provide: XHRBackend, useClass: InMemoryBackendService }, // in-mem server
-        // { provide: SEED_DATA,  useClass: InMemoryDataService }     // in-mem server data
+        //,{ provide: XHRBackend, useClass: InMemoryBackendService }, // in-mem server
+        //{ provide: SEED_DATA,  useClass: InMemoryDataService }     // in-mem server data
     ],
     bootstrap: [ AppComponent ]
 })

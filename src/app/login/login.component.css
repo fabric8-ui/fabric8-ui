@@ -1,3 +1,9 @@
 .login-pf{
   background-color: #000000;
+  padding: 25% 10% 10% 10%;
+}
+.alert-error{
+  background-color: #ffe6e6;
+  border-color: #c00;
+  color: #363636;
 }
