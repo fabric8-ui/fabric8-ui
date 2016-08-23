@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
 })
 
 export class HeaderComponent {
-  title = 'Red Hat ALMighty';
+  title = 'Almighty';
 }
