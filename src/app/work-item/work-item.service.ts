@@ -62,7 +62,6 @@ export class WorkItemService {
     headers.append('Content-Type', 'application/json');
 
     let url = `${this.workItemUrl}/${workItem.id}`;
-    // let url = `${this.workItemUrl}`;
 
     return this.http
       .put(url, JSON.stringify(workItem), {headers: headers})
