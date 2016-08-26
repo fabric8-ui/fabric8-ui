@@ -2,7 +2,7 @@
 	<span id="badge">
   		<img src="../../assets/img/logo.svg" alt=" logo" />
 	</span>
-<div class="container">
+
   <div class="row">
     <div class="col-sm-12">
       <div id="brand">
@@ -12,19 +12,31 @@
 
     <div class="col-sm-7 col-md-6 col-lg-5 login">
       <form class="form-horizontal" role="form">
-        <a [routerLink]="['/work-item-list']"
-        	class="btn btn-primary btn-lg" >
-					<span class='fa fa-github'></span>
+					<button (click)="gitSignin()" class="btn btn-primary btn-lg" >
+						<span class='fa fa-github'></span>
 					Sign In with Github
-				</a>
-
+				</button>
       </form>
+			<div *ngIf="showError" class="alert alert-danger alert-error">
+				<button type="button" class="close" (click)="closeAlert()">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<span class="pficon pficon-error-circle-o"></span>
+					<strong>Status Code : {{statusCode}}</strong> - {{feedbackMessage}}.
+			</div>
+
+			<div *ngIf="showSuccess" class="alert alert-success alert-dismissable">
+		  	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+		    	<span class="pficon pficon-close"></span>
+		  	</button>
+		  	<span class="pficon pficon-ok"></span>
+		  		<strong>Status Code : {{statusCode}}</strong> - {{feedbackMessage}}.
+			</div>
+
     </div><!--/.col-*-->
     <div class="col-sm-5 col-md-6 col-lg-7 details">
       <p><strong>Welcome to PatternFly | open interface project!</strong>
         This is placeholder text, only. Use this area to place any information or introductory message about your application that may be relevant for users. For example, you might include news or information about the latest release of your product here&mdash;such as a version number.</p>
     </div><!--/.col-*-->
   </div><!--/.row-->
-</div><!--/.container-->
-
 </div>

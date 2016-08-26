@@ -14,6 +14,7 @@ import { AppComponent }  from './app.component';
 import { routing } from './app.routing';
 import { Logger } from './shared/logger.service';
 
+import { LoginService } from './login/login.service';
 import { BoardComponent} from './board/board.component';
 import { FooterComponent} from './footer/footer.component';
 import { HeaderComponent} from './header/header.component';
@@ -42,6 +43,7 @@ import { WorkItemService } from './work-item/work-item.service';
   ],
   providers: [
     Logger,
+    LoginService,
     WorkItemService
     // ,{ provide: XHRBackend, useClass: InMemoryBackendService }, // in-mem server
     // { provide: SEED_DATA,  useClass: InMemoryDataService }     // in-mem server data

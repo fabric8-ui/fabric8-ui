@@ -16,6 +16,12 @@ export class InMemoryDataService {
       {"fields":{"system.owner":"tmaeder","system.state":"open"},id: 19, name: 'Color', description: 'Improve Color Management',"workItemType":"1","version":0 ,status:'In Progress',statusCode:1, type: 'bug'},
       {"fields":{"system.owner":"tmaeder","system.state":"open"},id: 20, name: 'Empty State', description: 'Empty State - Additional Layout Example',"workItemType":"1","version":0 ,status:'To Do',statusCode:0, type: 'bug'}
     ];
-    return {workItems};
+
+    let loginStatus = {
+      "status": 200,
+      "responseText": "Good Job"
+  };
+
+    return {loginStatus, workItems};
   }
 }
