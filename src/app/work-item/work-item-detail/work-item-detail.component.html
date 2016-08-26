@@ -3,8 +3,28 @@
   <div>
     <label>id: </label>{{workItem.id}}</div>
   <div>
+    <label>fields owner: </label>
+    <input [(ngModel)]="workItem.fields['system.owner']" placeholder="owner" />
+  </div>
+  <div>
+    <label>fields state: </label>
+    <input [(ngModel)]="workItem.fields['system.state']" placeholder="state" />
+  </div>
+  <div>
     <label>name: </label>
     <input [(ngModel)]="workItem.name" placeholder="name" />
+  </div>
+  <div>
+    <label>workItemType: </label>
+    <input [(ngModel)]="workItem.type" placeholder="workItemType" />
+  </div>
+  <div>
+    <label>status: </label>
+    <input [(ngModel)]="workItem.status" placeholder="status" />
+  </div>
+  <div>
+    <label>description: </label>
+    <input [(ngModel)]="workItem.description" placeholder="description" />
   </div>
   <button (click)="goBack()">Back</button>
   <button (click)="save()">Save</button>

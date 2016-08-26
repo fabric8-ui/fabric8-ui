@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 
+import { Logger } from '../../shared/logger.service';
 import { WorkItem } from '../work-item';
 import { WorkItemService } from '../work-item.service';
 import { WorkItemDetailComponent } from '../work-item-detail/work-item-detail.component';
@@ -19,7 +20,8 @@ export class WorkItemListComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private workItemService: WorkItemService) {
+    private workItemService: WorkItemService,
+    private logger: Logger) {
   }
 
   getWorkItems() {
@@ -32,7 +34,7 @@ export class WorkItemListComponent implements OnInit {
 
   onSelect(workItem: WorkItem) {
 	  	this.selectedWorkItem = workItem;
-  		workItem.isExpanded = workItem.isExpanded ? !workItem.isExpanded : true;
+  		//workItem.isExpanded = workItem.isExpanded ? !workItem.isExpanded : true;
   }
 
   gotoDetail(workItem: WorkItem) {

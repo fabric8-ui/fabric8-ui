@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
+import { Logger } from '../../shared/logger.service';
 import { WorkItem } from '../work-item';
 import { WorkItemService } from '../work-item.service';
 
@@ -17,7 +18,8 @@ export class WorkItemDetailComponent implements OnInit {
 
   constructor(
     private workItemService: WorkItemService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private logger: Logger) {
   }
 
   ngOnInit() {
@@ -30,6 +32,7 @@ export class WorkItemDetailComponent implements OnInit {
       } else {
         this.navigated = false;
         this.workItem = new WorkItem();
+        this.workItem.fields = {"system.owner": '', "system.state": ''};
       }
     });
   }
@@ -39,6 +42,7 @@ export class WorkItemDetailComponent implements OnInit {
       .save(this.workItem)
       .then(workItem => {
         this.workItem = workItem; // saved workItem, w/ id if new
+        this.logger.log(`created and returned this workitem: ${workItem}`);
         this.goBack(workItem);
       })
       .catch(error => this.error = error); // TODO: Display error message
