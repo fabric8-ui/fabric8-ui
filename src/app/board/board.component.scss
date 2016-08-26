@@ -1,3 +1,5 @@
+@import "../../assets/stylesheets/variables";
+
 [class*='col-'] {
   float: left;
 }
@@ -25,7 +27,7 @@ h3 {
 .module {
   padding: 20px;
   text-align: center;
-  color: #eee;
+  color: $gray-lighter;
   max-height: 120px;
   min-width: 120px;
   background-color: #607D8B;
@@ -35,7 +37,7 @@ h4 {
   position: relative;
 }
 .module:hover {
-  background-color: #EEE;
+  background-color: $gray-lighter;
   cursor: pointer;
   color: #607d8b;
 }

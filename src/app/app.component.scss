@@ -1,0 +1,15 @@
+@import "../assets/stylesheets/color-variables";
+@import "../assets/stylesheets/variables";
+.navbar-header {
+    span{
+	color: $color-pf-white;
+	padding: 5px 10px;
+	font-size: 18px;
+    }
+}
+.footer{
+	text-align: center;
+	font-size: $font-size-small;
+	border-top: 1px solid $color-pf-blue-300;
+	margin-top: 2%;
+}
