@@ -7,8 +7,8 @@ import { LoginItem } from './login-item';
 
 @Injectable()
 export class LoginService {
-  private githubUrl = 'app/loginStatus';
-  //private githubUrl = 'http://localhost:8081/api/login/authorize ';  // URL to web api
+  // private githubUrl = 'app/loginStatus';
+  private githubUrl = 'http://localhost:8081/api/login/authorize ';  // URL to web api
 
 
   constructor(private http: Http) { }
@@ -17,8 +17,8 @@ export class LoginService {
     return this.http
       .get(this.githubUrl)
       .toPromise()
-      //.then(response => response.json())
-      .then(response => response.json().data as {})
+      .then(response => response.json())
+      // .then(response => response.json().data as {})
       .catch(this.handleError);
   }
 
