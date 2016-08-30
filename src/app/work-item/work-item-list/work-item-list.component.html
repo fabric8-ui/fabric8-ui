@@ -2,7 +2,7 @@
 <div class="container-fluid container-cards-pf">
 <button class="btn btn-primary" (click)="addWorkItem()">Add New Work Item</button>
 <div *ngIf="addingWorkItem">
-  <work-item-detail (close)="close($event)"></work-item-detail>
+  <work-item-quick-add (close)="close($event)"></work-item-quick-add>
 </div>
 <br /><br />
 <div class="container-fluid">
@@ -10,7 +10,7 @@
 		<div *ngFor="let workItem of workItems">
 			<div class="list-group-item" (click)="onSelect(workItem)" [class.selected]="workItem === selectedWorkItem">
 				<div class="list-view-pf-actions">
-					<button class="btn btn-default" (click)="gotoDetail(workItem)">View Details</button>
+					<button class="btn btn-default" (click)="gotoDetails(workItem)">View Details</button>
 					<button class="btn btn-default delete-button" (click)="deleteWorkItem(workItem, $event)">Delete</button>
 					<div class="dropdown pull-right dropdown-kebab-pf">
 						<button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

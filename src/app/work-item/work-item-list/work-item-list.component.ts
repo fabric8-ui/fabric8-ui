@@ -5,12 +5,13 @@ import { Logger } from '../../shared/logger.service';
 import { WorkItem } from '../work-item';
 import { WorkItemService } from '../work-item.service';
 import { WorkItemDetailComponent } from '../work-item-detail/work-item-detail.component';
+import { WorkItemQuickAddComponent } from '../work-item-quick-add/work-item-quick-add.component';
 
 @Component({
   selector: 'work-item-list',
   templateUrl: '/work-item-list.component.html',
   styleUrls: ['/work-item-list.component.css'],
-  directives: [WorkItemDetailComponent]
+  directives: [WorkItemDetailComponent, WorkItemQuickAddComponent]
 })
 export class WorkItemListComponent implements OnInit {
   workItems: WorkItem[];
@@ -37,7 +38,7 @@ export class WorkItemListComponent implements OnInit {
   		//workItem.isExpanded = workItem.isExpanded ? !workItem.isExpanded : true;
   }
 
-  gotoDetail(workItem: WorkItem) {
+  gotoDetails(workItem: WorkItem) {
 	event.stopPropagation();
 	this.selectedWorkItem = workItem;
     this.router.navigate(['/detail', this.selectedWorkItem.id]);
