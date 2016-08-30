@@ -32,7 +32,8 @@ export class WorkItemQuickAddComponent implements OnInit {
       } else {
         this.navigated = false;
         this.workItem = new WorkItem();
-        this.workItem.fields = {"system.owner": '', "system.state": ''};
+        this.workItem.fields = {"system.owner": 'me', "system.state": 'new'};
+        this.workItem.type = '1';
       }
     });
   }

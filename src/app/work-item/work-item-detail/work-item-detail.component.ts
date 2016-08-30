@@ -27,12 +27,15 @@ export class WorkItemDetailComponent implements OnInit {
       if (params['id'] !== undefined) {
         let id = +params['id'];
         this.navigated = true;
+        this.logger.log('details view with ID = ' + id);
         this.workItemService.getWorkItem(id)
           .then(workItem => this.workItem = workItem);
       } else {
         this.navigated = false;
         this.workItem = new WorkItem();
-        this.workItem.fields = {"system.owner": '', "system.state": ''};
+        this.logger.log('details view');
+        this.workItem.fields = {"system.owner": 'me', "system.state": 'new'};
+        this.workItem.type = '1';
       }
     });
   }
