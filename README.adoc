@@ -1,19 +1,20 @@
 = ALMighty UI
 
-== go to almighty-ui
+
+If this is the first time you are starting the UI you need to run
 
 ----
-If this is the first time you have started the UI you need to 'npm install'
+$ npm install
 ----
 
-To run it 
-----
-$npm start
-----
-
-== If you want to run the app with the in-memory dataset, you need to uncomment lines in:
+Start the app by executing the following. 
 
 ----
-  - work-item.service.ts for the URL and the GetWorkItems()
-  - app.module.ts in the Providers section
+$ npm start
 ----
+
+If you wish to run the app with the in-memory dataset, you need to uncomment the lines as follows:
+
+- The URL and the `GetWorkItems()` in  `src/app/work-item/work-item.service.ts`.
+- The `providers` section in `src/app/app.module.ts`
+
