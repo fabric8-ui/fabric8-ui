@@ -1,7 +1,8 @@
-export class InMemoryDataService {
+import { InMemoryDbService } from 'angular2-in-memory-web-api';
+export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     let workItems = [
-      {"fields":{"system.owner":"tmaeder","system.state":"open"},"id": 21, "name": 'Bullet Chart', description: 'Bullet Chart - Conceptual Design',"workItemType":"1","version":0 , status:'To Do', statusCode:0, type: 'story'},
+      {"fields":{"system.owner":"tmaeder","system.state":"open"},"id": "21", "name": 'Bullet Chart', description: 'Bullet Chart - Conceptual Design',"workItemType":"1","version":0 , status:'To Do', statusCode:0, type: 'story'},
       {"fields":{"system.owner":"tmaeder","system.state":"open"},id: 22, name: 'New Account', description: 'Create a New Account',"workItemType":"1","version":0 , status:'In Progress',statusCode:1, type: 'story'},
       {"fields":{"system.owner":"tmaeder","system.state":"open"},id: 23, name: 'Login page', description: 'Login page should recognize when caps lock is on and throw a warning message',"workItemType":"1","version":0 , status:'Done',statusCode:2, type: 'bug'},
       {"fields":{"system.owner":"tmaeder","system.state":"open"},id: 24, name: 'Splitter', description: 'Splitter - Expand/Collapse snap control',"workItemType":"1","version":0 ,status:'To Do',statusCode:0, type: 'story'},
@@ -20,7 +21,7 @@ export class InMemoryDataService {
     let loginStatus = {
       "status": 200,
       "responseText": "Good Job"
-  };
+    };
 
     return {loginStatus, workItems};
   }

@@ -11,10 +11,11 @@ import { WorkItemService } from '../work-item.service';
   styleUrls: ['/work-item-detail.component.css']
 })
 export class WorkItemDetailComponent implements OnInit {
-  @Input() workItem: WorkItem;
-  @Output() close = new EventEmitter();
-  error: any;
-  navigated = false; // true if navigated here
+  // @Input()
+  workItem: WorkItem;
+  // @Output() close = new EventEmitter();
+  // error: any;
+  // navigated = false; // true if navigated here
 
   constructor(
     private workItemService: WorkItemService,
@@ -22,37 +23,33 @@ export class WorkItemDetailComponent implements OnInit {
     private logger: Logger) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         let id = +params['id'];
-        this.navigated = true;
-        this.logger.log('details view with ID = ' + id);
+        // this.navigated = true;
         this.workItemService.getWorkItem(id)
           .then(workItem => this.workItem = workItem);
       } else {
-        this.navigated = false;
+        // this.navigated = false;
         this.workItem = new WorkItem();
-        this.logger.log('details view');
         this.workItem.fields = {"system.owner": 'me', "system.state": 'new'};
         this.workItem.type = '1';
       }
     });
   }
 
-  save() {
+  save(): void {
     this.workItemService
-      .save(this.workItem)
-      .then(workItem => {
-        this.workItem = workItem; // saved workItem, w/ id if new
-        this.logger.log(`created and returned this workitem: ${workItem}`);
-        this.goBack(workItem);
-      })
-      .catch(error => this.error = error); // TODO: Display error message
+      .update(this.workItem)
+      .then(this.goBack);
   }
 
-  goBack(savedWorkItem: WorkItem = null) {
-    this.close.emit(savedWorkItem);
-    if (this.navigated) { window.history.back(); }
+  // goBack(savedWorkItem: WorkItem = null): void {
+  goBack(): void {
+    // this.close.emit(savedWorkItem);
+    // if (this.navigated) {
+      window.history.back();
+    // }
   }
 }

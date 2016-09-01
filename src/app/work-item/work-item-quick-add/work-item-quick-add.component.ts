@@ -22,7 +22,7 @@ export class WorkItemQuickAddComponent implements OnInit {
     private logger: Logger) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         let id = +params['id'];
@@ -38,9 +38,9 @@ export class WorkItemQuickAddComponent implements OnInit {
     });
   }
 
-  save() {
+  save(): void {
     this.workItemService
-      .save(this.workItem)
+      .create(this.workItem)
       .then(workItem => {
         this.workItem = workItem; // saved workItem, w/ id if new
         this.logger.log(`created and returned this workitem: ${workItem}`);
@@ -49,7 +49,7 @@ export class WorkItemQuickAddComponent implements OnInit {
       .catch(error => this.error = error); // TODO: Display error message
   }
 
-  goBack(savedWorkItem: WorkItem = null) {
+  goBack(savedWorkItem: WorkItem = null): void {
     this.close.emit(savedWorkItem);
     if (this.navigated) { window.history.back(); }
   }
