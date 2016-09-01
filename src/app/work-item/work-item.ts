@@ -1,5 +1,5 @@
 export class WorkItem {
-  id: number;
+  id: string;
   name: string;
   workItemType: string;// = 'Story';
   type: string;
