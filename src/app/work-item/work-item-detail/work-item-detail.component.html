@@ -1,33 +1,61 @@
 <app-header></app-header>
+<div class="container-fluid screen-min-ht">
 <div *ngIf="workItem">
-  <h2>{{workItem.name}} details!</h2>
-  <div>
-    <label>id: </label>{{workItem.id}}</div>
-  <div>
-    <label>fields owner: </label>
-    <input [(ngModel)]="workItem.fields['system.owner']" placeholder="owner" />
+  <h1>{{workItem.name}} Details</h1>
+  <br />
+  <div class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-1 control-label">ID</label>
+      <div class="col-sm-5">
+        {{workItem.id}}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-1 control-label" for="wi-detail-name">Name</label>
+      <div class="col-sm-5">
+        <input type="text" [(ngModel)]="workItem.name" id="wi-detail-name" placeholder="Name (mandatory)" required class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-1 control-label" for="wi-detail-desc">Description</label>
+      <div class="col-sm-5">
+        <input type="text" [(ngModel)]="workItem.description" id="wi-detail-desc" placeholder="Description" class="form-control">
+      </div>
+    </div>
+    <br /><br />
+    <div class="form-group">
+      <label class="col-sm-1 control-label" for="wi-detail-type">Type</label>
+      <div class="col-sm-5">
+        <input type="text" [(ngModel)]="workItem.type" id="wi-detail-type" placeholder="Type" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-1 control-label" for="wi-detail-status">Status</label>
+      <div class="col-sm-5">
+        <input type="text" [(ngModel)]="workItem.status" id="wi-detail-status" placeholder="Status" class="form-control">
+      </div>
+    </div>
+    <br /><br />
+    <div class="form-group">
+      <label class="col-sm-1 control-label" for="wi-detail-owner">Owner</label>
+      <div class="col-sm-5">
+        <input type="text" [(ngModel)]="workItem.fields['system.owner']" id="wi-detail-owner" placeholder="Owner" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-1 control-label" for="wi-detail-state">State</label>
+      <div class="col-sm-5">
+        <input type="text" [(ngModel)]="workItem.fields['system.state']" id="wi-detail-state" placeholder="state" class="form-control">
+      </div>
+    </div>
+    <br /><br />
+    <div class="form-group">
+      <div class="col-sm-offset-1 col-sm-5">
+        <button type="submit" class="btn btn-primary" (click)="save()">Save</button>
+        <button type="submit" class="btn btn-default" (click)="goBack()">Back</button>
+      </div>
+    </div>
   </div>
-  <div>
-    <label>fields state: </label>
-    <input [(ngModel)]="workItem.fields['system.state']" placeholder="state" />
-  </div>
-  <div>
-    <label>name: </label>
-    <input [(ngModel)]="workItem.name" placeholder="name" />
-  </div>
-  <div>
-    <label>workItemType: </label>
-    <input [(ngModel)]="workItem.type" placeholder="workItemType" />
-  </div>
-  <div>
-    <label>status: </label>
-    <input [(ngModel)]="workItem.status" placeholder="status" />
-  </div>
-  <div>
-    <label>description: </label>
-    <input [(ngModel)]="workItem.description" placeholder="description" />
-  </div>
-  <button (click)="goBack()">Back</button>
-  <button (click)="save()">Save</button>
+</div>
 </div>
 <app-footer></app-footer>
