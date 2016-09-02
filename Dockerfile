@@ -9,4 +9,7 @@ COPY package.json /usr/src/app/
 RUN npm install
 COPY . /usr/src/app
 
-CMD [ "npm", "run", "docker:run" ]
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/local/bin/wait-for-it.sh
+RUN chmod +x /usr/local/bin/wait-for-it.sh
+
+ENTRYPOINT [ "npm", "start" ]
