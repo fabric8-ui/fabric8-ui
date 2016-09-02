@@ -27,7 +27,7 @@ export class LoginComponent {
   }
 
   checkStatus(loginStatus:any){
-    if(loginStatus.status==200)
+    if(loginStatus.token)
     {
       this.router.navigate(['work-item-list'],{});
     }else{
