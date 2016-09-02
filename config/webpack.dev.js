@@ -6,10 +6,12 @@ var helpers = require('./helpers');
 
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 const API_URL = process.env.API_URL = 'http://localhost:8080/api/';
+const PUBLIC_PATH = process.env.PUBLIC_PATH = 'http://localhost:8088/';
 
 const METADATA = webpackMerge(commonConfig.metadata, {
   API_URL: API_URL,
-  ENV: ENV
+  ENV: ENV,
+  PUBLIC_PATH: PUBLIC_PATH
 });
 
 module.exports = webpackMerge(commonConfig, {
@@ -17,7 +19,7 @@ module.exports = webpackMerge(commonConfig, {
 
   output: {
     path: helpers.root('dist'),
-    publicPath: 'http://localhost:8088/',
+    publicPath: METADATA.PUBLIC_PATH,
     filename: '[name].js',
     chunkFilename: '[id].chunk.js',
     sourceMapFilename: '[name].map'
@@ -39,7 +41,8 @@ module.exports = webpackMerge(commonConfig, {
     new webpack.DefinePlugin({
       'process.env': {
         'ENV': JSON.stringify(METADATA.ENV),
-        'API_URL' : JSON.stringify(METADATA.API_URL)
+        'API_URL' : JSON.stringify(METADATA.API_URL),
+        'PUBLIC_PATH' : JSON.stringify(METADATA.PUBLIC_PATH)
       }
     })
   ],
