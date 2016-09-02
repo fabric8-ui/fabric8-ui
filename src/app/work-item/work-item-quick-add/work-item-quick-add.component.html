@@ -1,12 +1,23 @@
-<div *ngIf="workItem">
-  <div>
-    <label>name: </label>
-    <input [(ngModel)]="workItem.name" placeholder="name" />
+<div class="list-view-pf-body">
+  <div class="list-view-pf-description">
+    <div class="list-group-item-heading">
+      <i>Quick Add a WorkItem</i>
+    </div>
+    <div class="list-group-item-text margin10">
+      <div class="form-group">
+        <input [(ngModel)]="workItem.name" (ngModelChange)="checkName()" class="form-control" placeholder="Name (mandatory field)" required />
+      </div>
+    </div>
+    <div class="list-group-item-text margin10">
+      <div class="form-group">
+        <input [(ngModel)]="workItem.description" class="form-control" placeholder="Description" />
+      </div>
+    </div>
+    <div class="list-group-item-text margin10">
+      <div class="form-group">
+        <a class='pficon-add-circle-o' [ngClass]="{'icon-btn': validName,'icon-btn-disabled':!validName}" (click)="save()"></a>&nbsp;&nbsp;
+        <a class='pficon-error-circle-o icon-btn' (click)="goBack()"></a>
+      </div>
+    </div>
   </div>
-  <div>
-    <label>description: </label>
-    <input [(ngModel)]="workItem.description" placeholder="description" />
-  </div>
-  <button (click)="goBack()">Back</button>
-  <button (click)="save()">Save</button>
 </div>

@@ -15,6 +15,7 @@ export class WorkItemQuickAddComponent implements OnInit {
   @Output() close = new EventEmitter();
   error: any;
   navigated = false; // true if navigated here
+  validName = false;
 
   constructor(
     private workItemService: WorkItemService,
@@ -30,6 +31,7 @@ export class WorkItemQuickAddComponent implements OnInit {
         this.workItemService.getWorkItem(id)
           .then(workItem => this.workItem = workItem);
       } else {
+        this.validName = false;
         this.navigated = false;
         this.workItem = new WorkItem();
         this.workItem.fields = {"system.owner": 'me', "system.state": 'new'};
@@ -39,18 +41,29 @@ export class WorkItemQuickAddComponent implements OnInit {
   }
 
   save(): void {
-    this.workItemService
-      .create(this.workItem)
-      .then(workItem => {
-        this.workItem = workItem; // saved workItem, w/ id if new
-        this.logger.log(`created and returned this workitem: ${workItem}`);
-        this.goBack(workItem);
-      })
-      .catch(error => this.error = error); // TODO: Display error message
+    if(this.validName){
+      this.workItemService
+        .create(this.workItem)
+        .then(workItem => {
+          this.workItem = workItem; // saved workItem, w/ id if new
+          this.logger.log(`created and returned this workitem: ${workItem}`);
+          this.goBack(workItem);
+        })
+        .catch(error => this.error = error); // TODO: Display error message
+    }
   }
 
   goBack(savedWorkItem: WorkItem = null): void {
     this.close.emit(savedWorkItem);
     if (this.navigated) { window.history.back(); }
+    this.ngOnInit();
+  }
+
+  checkName(){
+    if(this.workItem.name){
+      this.validName = true;
+    }else{
+      this.validName = false;
+    }
   }
 }

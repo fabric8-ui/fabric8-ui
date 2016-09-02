@@ -1,29 +1,19 @@
-label {
-  display: inline-block;
-  width: 6em;
-  margin: .5em 0;
-  color: #607D8B;
-  font-weight: bold;
+.icon-btn,
+.icon-btn-disabled{
+  font-size: 2em;
+  text-decoration: none;
 }
-input {
-  height: 2em;
-  font-size: 1em;
-  padding-left: .4em;
+.icon-btn{
+  color: #0088ce;
+  cursor: pointer;
 }
-button {
-  margin-top: 20px;
-  font-family: Arial;
-  background-color: #eee;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer; cursor: hand;
+.icon-btn-disabled{
+  color: #ebebeb;
+  cursor: default;
 }
-button:hover {
-  background-color: #cfd8dc;
+.margin10{
+  margin-top: 10px;
 }
-button:disabled {
-  background-color: #eee;
-  color: #ccc;
-  cursor: auto;
+.float-left{
+  float: left;
 }

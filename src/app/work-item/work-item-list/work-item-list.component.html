@@ -1,13 +1,10 @@
 <app-header></app-header>
-<div class="container-fluid container-cards-pf">
-<button class="btn btn-primary" (click)="addWorkItem()">Add New Work Item</button>
-<div *ngIf="addingWorkItem">
-  <work-item-quick-add (close)="close($event)"></work-item-quick-add>
-</div>
-<br /><br />
 <div class="container-fluid">
 	<div class="list-group list-view-pf list-view-pf-view">
-		<div *ngFor="let workItem of workItems">
+    <div><div class="list-group-item supress-hover" (click)="addWorkItem()">
+      <work-item-quick-add (close)="close($event)"></work-item-quick-add>
+    </div></div>
+    <div *ngFor="let workItem of workItems">
 			<div class="list-group-item" (click)="onSelect(workItem)"
 					 [class.selected]="workItem === selectedWorkItem">
 				<div class="list-view-pf-actions">
@@ -52,5 +49,4 @@
 	</div>
 </div>
 <div class="error" *ngIf="error">{{error}}</div>
-</div>
 <app-footer></app-footer>
