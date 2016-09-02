@@ -1,3 +1,6 @@
+.screen-min-ht{
+  min-height: 85%;
+}
 .status{
   width: 130px;
   text-align: left;
