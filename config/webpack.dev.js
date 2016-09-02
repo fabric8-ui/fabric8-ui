@@ -6,7 +6,7 @@ var helpers = require('./helpers');
 
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 const API_URL = process.env.API_URL = 'http://localhost:8080/api/';
-const PUBLIC_PATH = process.env.PUBLIC_PATH = 'http://localhost:8088/';
+const PUBLIC_PATH = process.env.PUBLIC_PATH = '/';
 
 const METADATA = webpackMerge(commonConfig.metadata, {
   API_URL: API_URL,
