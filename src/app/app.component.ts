@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
-import '../../public/scss/styles.scss';
-import './rxjs-extensions';
+
 
 @Component({
   selector: 'my-app',

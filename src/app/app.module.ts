@@ -1,4 +1,5 @@
 import './rxjs-extensions';
+import '../../public/scss/styles.scss';
 
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
