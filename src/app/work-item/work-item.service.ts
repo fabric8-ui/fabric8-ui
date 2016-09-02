@@ -10,6 +10,7 @@ export class WorkItemService {
   private headers = new Headers({'Content-Type': 'application/json'});
   // private workItemUrl = 'app/workItems';  // URL to web api
   private workItemUrl = 'http://localhost:8080/api/workitems';  // URL to web api
+  // private workItemUrl = 'http://demo.almighty.io/api/workitems';  // URL to web api
 
   constructor(private http: Http) { }
 
