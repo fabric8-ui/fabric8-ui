@@ -5,9 +5,8 @@ var commonConfig = require('./webpack.common.js');
 var helpers = require('./helpers');
 
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
-//const API_URL = process.env.API_URL = 'http://localhost:8080/api/';
-const API_URL = process.env.API_URL = 'http://demo.api.almighty.io/api/';
-const PUBLIC_PATH = process.env.PUBLIC_PATH = '/';
+const API_URL = process.env.API_URL || 'http://localhost:8080/api/';
+const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
 const METADATA = webpackMerge(commonConfig.metadata, {
   API_URL: API_URL,

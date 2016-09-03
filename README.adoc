@@ -18,3 +18,21 @@ If you wish to run the app with the in-memory dataset, you need to uncomment the
 - The URL and the `GetWorkItems()` in  `src/app/work-item/work-item.service.ts`.
 - The `providers` section in `src/app/app.module.ts`
 
+== Production build
+
+NOTE: In the CentOS 7, you need to install development tools: `yum group install "Development Tools"`
+
+To generate production build, set the API URL and run `npm` command as give below:
+
+----
+export API_URL="http://api.example.org/api/"
+npm run build:prod
+----
+
+The build output will be under `dist` directory.
+
+To create docker image, run this command immediatly after the previous command:
+
+----
+docker build -t almui .
+----
