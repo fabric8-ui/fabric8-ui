@@ -8,9 +8,9 @@ import { WorkItem } from './../work-item/work-item';
 
 
 @Component({
-	selector   : 'status-drawer',
+	selector: 'status-drawer',
 	templateUrl: './status-drawer.component.html',
-	styleUrls  : ['/status-drawer.component.css'],
+	styleUrls: ['./status-drawer.component.css'],
 })
 export class StatusDrawerComponent implements OnInit{
 	@Input() workItem: WorkItem;
