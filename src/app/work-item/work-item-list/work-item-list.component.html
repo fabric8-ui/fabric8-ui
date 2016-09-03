@@ -22,9 +22,8 @@
 					</div>
 				</div>
 				<div class="list-view-pf-main-info">
-					<div class="list-view-pf-left status">
-						<!--<span class="label" [ngClass]="{'label-warning': workItem.statusCode==0, 'label-primary': workItem.statusCode==1, 'label-success': workItem.statusCode==2 }">{{workItem.status}}</span>-->
-						<span class="label label-warning">{{workItem.status ? workItem.status : "Status"}}</span>
+					<div class="list-view-pf-left">
+						<status-drawer [workItem]="workItem"></status-drawer>						
 					</div>
 					<div class="list-view-pf-left type">
 						<!--<span class='fa' [ngClass]="{'fa-bookmark': workItem.workItemType=='story', 'fa-bug':workItem.workItemType=='bug'}"></span>-->

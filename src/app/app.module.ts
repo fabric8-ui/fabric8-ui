@@ -26,6 +26,7 @@ import { WorkItemListComponent } from './work-item/work-item-list/work-item-list
 import { WorkItemQuickAddComponent } from './work-item/work-item-quick-add/work-item-quick-add.component';
 import { WorkItemSearchComponent } from './work-item/work-item-search/work-item-search.component';
 import { WorkItemService } from './work-item/work-item.service';
+import { StatusDrawerComponent } from './shared-component/status-drawer.component';
 
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ import { WorkItemService } from './work-item/work-item.service';
     WorkItemDetailComponent,
     WorkItemQuickAddComponent,
     WorkItemListComponent,
-    WorkItemSearchComponent
+    WorkItemSearchComponent,
+	StatusDrawerComponent
   ],
   providers: [
     Logger,

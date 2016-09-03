@@ -1,15 +1,6 @@
 .screen-min-ht{
   min-height: 85%;
 }
-.status{
-  width: 130px;
-  text-align: left;
-}
-.status span.label{
-  border-radius: 10px;
-  padding: 5px 20px;
-  opacity: 0.7;
-}
 .type span{
   font-size: 12px;
   margin-right: 10px;
