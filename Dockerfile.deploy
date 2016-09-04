@@ -1,0 +1,6 @@
+FROM centos/nginx-16-centos7:1.6
+MAINTAINER "Konrad Kleine <kkleine@redhat.com>"
+ENV LANG=en_US.utf8
+
+RUN rm -rf /opt/rh/nginx16/root/usr/share/nginx/html/*
+COPY dist /opt/rh/nginx16/root/usr/share/nginx/html
