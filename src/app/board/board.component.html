@@ -4,7 +4,7 @@
   <div class="grid grid-pad">
     <div *ngFor="let workItem of workItems" (click)="gotoDetail(workItem)" class="col-1-4">
       <div class="module workItem">
-        <h4>{{workItem.name}}</h4>
+        <h4>{{workItem.fields['system.title']}}</h4>
       </div>
     </div>
   </div>

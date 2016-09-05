@@ -5,12 +5,12 @@
     </div>
     <div class="list-group-item-text margin10">
       <div class="form-group">
-        <input [(ngModel)]="workItem.name" (ngModelChange)="checkName()" class="form-control" placeholder="Name (mandatory field)" required />
+        <input [(ngModel)]="workItem.fields['system.title']" (ngModelChange)="checkTitle()" class="form-control" placeholder="Title (mandatory field)" required />
       </div>
     </div>
     <div class="list-group-item-text margin10">
       <div class="form-group">
-        <input [(ngModel)]="workItem.description" class="form-control" placeholder="Description" />
+        <input [(ngModel)]="workItem.fields['system.description']" class="form-control" placeholder="Description" />
       </div>
     </div>
     <div class="list-group-item-text margin10">

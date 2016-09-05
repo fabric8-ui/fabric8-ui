@@ -11,15 +11,15 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-1 control-label" for="wi-detail-name">Name</label>
+      <label class="col-sm-1 control-label" for="wi-detail-title">Title</label>
       <div class="col-sm-5">
-        <input type="text" [(ngModel)]="workItem.name" id="wi-detail-name" placeholder="Name (mandatory)" required class="form-control">
+        <input type="text" [(ngModel)]="workItem.fields['system.title']" id="wi-detail-title" placeholder="Title (mandatory)" required class="form-control">
       </div>
     </div>
     <div class="form-group">
       <label class="col-sm-1 control-label" for="wi-detail-desc">Description</label>
       <div class="col-sm-5">
-        <input type="text" [(ngModel)]="workItem.description" id="wi-detail-desc" placeholder="Description" class="form-control">
+        <input type="text" [(ngModel)]="workItem.fields['system.description']" id="wi-detail-desc" placeholder="Description" class="form-control">
       </div>
     </div>
     <br /><br />
@@ -29,17 +29,17 @@
         <input type="text" [(ngModel)]="workItem.type" id="wi-detail-type" placeholder="Type" class="form-control">
       </div>
     </div>
-    <div class="form-group">
-      <label class="col-sm-1 control-label" for="wi-detail-status">Status</label>
-      <div class="col-sm-5">
-        <input type="text" [(ngModel)]="workItem.status" id="wi-detail-status" placeholder="Status" class="form-control">
-      </div>
-    </div>
     <br /><br />
     <div class="form-group">
-      <label class="col-sm-1 control-label" for="wi-detail-owner">Owner</label>
+      <label class="col-sm-1 control-label" for="wi-detail-creator">Creator</label>
       <div class="col-sm-5">
-        <input type="text" [(ngModel)]="workItem.fields['system.owner']" id="wi-detail-owner" placeholder="Owner" class="form-control">
+        <input type="text" [(ngModel)]="workItem.fields['system.creator']" id="wi-detail-creator" placeholder="Creator" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-1 control-label" for="wi-detail-assignee">Assignee</label>
+      <div class="col-sm-5">
+        <input type="text" [(ngModel)]="workItem.fields['system.assignee']" id="wi-detail-assignee" placeholder="Assignee" class="form-control">
       </div>
     </div>
     <div class="form-group">

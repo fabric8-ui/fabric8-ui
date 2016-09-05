@@ -33,8 +33,8 @@ export class WorkItemDetailComponent implements OnInit {
       } else {
         // this.navigated = false;
         this.workItem = new WorkItem();
-        this.workItem.fields = {"system.owner": 'me', "system.state": 'new'};
-        this.workItem.type = '1';
+        this.workItem.fields = {"system.assignee": null, "system.state": 'new', "system.creator": "me", "system.title": null, "system.description": null};
+        this.workItem.type = 'system.userstory';
       }
     });
   }

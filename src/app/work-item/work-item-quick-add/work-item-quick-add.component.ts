@@ -34,8 +34,8 @@ export class WorkItemQuickAddComponent implements OnInit {
         this.validName = false;
         this.navigated = false;
         this.workItem = new WorkItem();
-        this.workItem.fields = {"system.owner": 'me', "system.state": 'new'};
-        this.workItem.type = '1';
+        this.workItem.fields = {"system.assignee": null, "system.state": 'new', "system.creator": "me", "system.title": null, "system.description": null};
+        this.workItem.type = 'system.userstory';
       }
     });
   }
@@ -59,8 +59,8 @@ export class WorkItemQuickAddComponent implements OnInit {
     this.ngOnInit();
   }
 
-  checkName(){
-    if(this.workItem.name){
+  checkTitle(){
+    if(this.workItem.fields['system.title']){
       this.validName = true;
     }else{
       this.validName = false;

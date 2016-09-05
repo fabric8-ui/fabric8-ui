@@ -5,14 +5,16 @@
 		(click)="onDrawerToggle()"
 		[ngClass]="{'label-warning': workItem.statusCode==0, 
 					'label-primary': workItem.statusCode==1, 
-					'label-success': workItem.statusCode==2 }">
+					'label-success': workItem.statusCode==2,
+					'label-info': workItem.statusCode==3 }">
 		
-		{{workItem.status ? workItem.status : "Status"}}
+		{{workItem.fields['system.state'] ? workItem.fields['system.state'] : "Status"}}
 	</span>
 	<ul *ngIf="show" class="drawer">
-		<li (click)="changeStatus(0,'To Do')">To Do</li>
-		<li (click)="changeStatus(1,'In Progress')">In Progress</li>
-		<li (click)="changeStatus(2,'Done')">Done</li>
+		<li (click)="changeStatus(0,'new')">New</li>
+		<li (click)="changeStatus(1,'in progress')">In Progress</li>
+		<li (click)="changeStatus(2,'resolved')">Resolved</li>
+		<li (click)="changeStatus(3,'closed')">Closed</li>
 	</ul>
 </div>
 

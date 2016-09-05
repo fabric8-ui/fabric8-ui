@@ -33,10 +33,10 @@
 	      <div class="list-view-pf-body">
 	        <div class="list-view-pf-description">
 	          <div class="list-group-item-heading">
-	             {{workItem.name}}
+	             {{workItem.fields['system.title']}}
 	          </div>
 						<div class="list-group-item-text">
-            	{{workItem.description ? workItem.description : "No description available for this work item."}}
+            	{{workItem.fields['system.description'] ? workItem.fields['system.description'] : "No description available for this work item."}}
           	</div>
 	        </div>
 	      </div>
