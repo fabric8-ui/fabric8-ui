@@ -27,7 +27,13 @@
 					</div>
 					<div class="list-view-pf-left type">
 						<!--<span class='fa' [ngClass]="{'fa-bookmark': workItem.workItemType=='story', 'fa-bug':workItem.workItemType=='bug'}"></span>-->
-						<span class='fa fa-bookmark'></span>
+						<span
+								class='fa'
+								[ngClass]="{'fa-wrench': workItem.type=='system.bug',
+											'fa-user': workItem.type=='system.userstory',
+											'fa-globe': workItem.type=='system.feature',
+											'fa-bookmark': workItem.type=='system.experience' }">
+						></span>
 							{{workItem.id}}
       		</div>
 	      <div class="list-view-pf-body">
