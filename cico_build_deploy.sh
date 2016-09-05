@@ -24,7 +24,7 @@ docker exec -u root almighty-ui-builder cp -r /home/almighty/dist /
 if [ $? -eq 0 ]; then
   echo 'CICO: app tests OK'
   docker build -t almighty-ui-deploy -f Dockerfile.deploy . && \
-  docker tag almighty-ui-deploy registry.ci.centos.org:5000/almighty/almighty-ui:latest && \ 
+  docker tag almighty-ui-deploy registry.ci.centos.org:5000/almighty/almighty-ui:latest && \
   docker push registry.ci.centos.org:5000/almighty/almighty-ui:latest
   if [ $? -eq 0 ]; then
     echo 'CICO: Image pushed, ready to update deployed app'
