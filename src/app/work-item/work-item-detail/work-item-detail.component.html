@@ -26,7 +26,9 @@
     <div class="form-group">
       <label class="col-sm-1 control-label" for="wi-detail-type">Type</label>
       <div class="col-sm-5">
-        <input type="text" [(ngModel)]="workItem.type" id="wi-detail-type" placeholder="Type" class="form-control">
+        <select [(ngModel)]="workItem.type" id="wi-detail-type" class="form-control">
+          <option *ngFor="let type of workItemTypes" [value]="type">{{type}}</option>
+        </select>
       </div>
     </div>
     <br /><br />
@@ -45,7 +47,9 @@
     <div class="form-group">
       <label class="col-sm-1 control-label" for="wi-detail-state">State</label>
       <div class="col-sm-5">
-        <input type="text" [(ngModel)]="workItem.fields['system.state']" id="wi-detail-state" placeholder="state" class="form-control">
+        <select [(ngModel)]="workItem.fields['system.state']" id="wi-detail-state" class="form-control">
+          <option *ngFor="let state of workItemStates" [value]="state">{{state}}</option>
+        </select>
       </div>
     </div>
     <br /><br />

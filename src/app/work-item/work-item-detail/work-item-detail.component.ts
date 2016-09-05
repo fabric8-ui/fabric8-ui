@@ -17,6 +17,11 @@ export class WorkItemDetailComponent implements OnInit {
   // error: any;
   // navigated = false; // true if navigated here
 
+  // TODO: These should be read from the WorkitemTypeService
+  workItemTypes = ['system.experience', 'system.feature', 'system.userstory', 'system.bug'];
+  // TODO: These should be read from the WorkitemType of the given Workitem
+  workItemStates = ['new', 'in progress', 'resolved', 'closed'];
+
   constructor(
     private workItemService: WorkItemService,
     private route: ActivatedRoute,
