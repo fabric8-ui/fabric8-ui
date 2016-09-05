@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 
 import { WorkItem } from './../work-item/work-item';
-
+import { WorkItemService } from '../work-item/work-item.service';
 
 @Component({
 	selector: 'status-drawer',
@@ -15,6 +15,10 @@ import { WorkItem } from './../work-item/work-item';
 export class StatusDrawerComponent implements OnInit{
 	@Input() workItem: WorkItem;
 	show: boolean = false;
+
+	constructor(
+		private workItemService: WorkItemService) {
+	}
 	
 	ngOnInit(): void {
 		if(!this.workItem.fields['system.state']){
@@ -48,6 +52,7 @@ export class StatusDrawerComponent implements OnInit{
 	changeStatus(code: number, status: string): void {
 		this.workItem.statusCode = code;
 		this.workItem.fields['system.state'] = status
+		this.workItemService.update(this.workItem)
 		this.onDrawerToggle();
 	}
 }
