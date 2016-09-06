@@ -66,4 +66,10 @@ export class WorkItemQuickAddComponent implements OnInit {
       this.validName = false;
     }
   }
+
+  eventHandler(event:any){
+    if(event.keyCode===13){
+      this.save();
+    }
+  }
 }
