@@ -1,3 +1,6 @@
 .screen-min-ht{
   min-height: 85%;
 }
+select{
+  text-transform:capitalize;
+}
