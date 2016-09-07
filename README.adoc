@@ -13,10 +13,10 @@ Start the app by executing the following.
 $ npm start
 ----
 
-If you wish to run the app with the in-memory dataset, you need to uncomment the lines as follows:
-
-- The URL and the `GetWorkItems()` in  `src/app/work-item/work-item.service.ts`.
-- The `providers` section in `src/app/app.module.ts`
+If you wish to run the app with the in-memory dataset, you need to set an environment 
+variable "ENV" to "inmemory" and do a rebuild. The setting is stored inside the build, 
+changing the value back to unset or "development" (default for npm start) needs a rebuild
+to take effect.
 
 == Production build
 

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from "@angular/http";
+import { Logger } from '../shared/logger.service';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -8,18 +9,19 @@ import { WorkItem } from './work-item';
 @Injectable()
 export class WorkItemService {
   private headers = new Headers({'Content-Type': 'application/json'});
-  // private workItemUrl = 'app/workItems';  // URL to web api
   private workItemUrl = process.env.API_URL+'workitems';  // URL to web api
-  // private workItemUrl = 'http://demo.almighty.io/api/workitems';  // URL to web api
 
-  constructor(private http: Http) { }
+  constructor(private http: Http,
+              private logger: Logger) { 
+    logger.log("WorkItemService running in " + process.env.ENV + " mode.");
+    logger.log("WorkItemService using url " + this.workItemUrl);
+  }
 
   getWorkItems(): Promise<WorkItem[]> {
     return this.http
       .get(this.workItemUrl)
       .toPromise()
-      // .then(response => response.json().data as WorkItem[])
-      .then(response => response.json() as WorkItem[])
+      .then(response => process.env.ENV!='inmemory'?response.json() as WorkItem[]:response.json().data as WorkItem[])
       .catch(this.handleError);
   }
 

@@ -43,24 +43,24 @@ module.exports = {
         loader: 'file?name=assets/[name].[hash].[ext]'
       },
       {
-	test: /\.css$/,
-	exclude: helpers.root('src', 'app'),
-	loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+        test: /\.css$/,
+        exclude: helpers.root('src', 'app'),
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
       },
       {
-	test: /\.css$/,
-	include: helpers.root('src', 'app'),
-	loader: 'raw!postcss'
+        test: /\.css$/,
+        include: helpers.root('src', 'app'),
+        loader: 'raw!postcss'
       },
       {
-	test: /\.scss$/,
-	exclude: helpers.root('src', 'app'),
-	loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!resolve-url!sass?sourceMap')
+        test: /\.scss$/,
+        exclude: helpers.root('src', 'app'),
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!resolve-url!sass?sourceMap')
       },
       { 
-	test: /\.scss$/,
-	include: helpers.root('src', 'app'),
-	loaders: ['exports-loader?module.exports.toString()', 'css', 'postcss', 'sass']
+        test: /\.scss$/,
+        include: helpers.root('src', 'app'),
+        loaders: ['exports-loader?module.exports.toString()', 'css', 'postcss', 'sass']
       }
     ]
   },
@@ -75,7 +75,7 @@ module.exports = {
     })
   ],
 
-    postcss: function () {
-        return [precss, autoprefixer({ browsers: ['last 2 versions'] })];
-    }
+  postcss: function () {
+      return [precss, autoprefixer({ browsers: ['last 2 versions'] })];
+  }
 };

@@ -6,11 +6,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { HttpModule }    from '@angular/http';
 
-
 // Imports for loading & configuring the in-memory web api
-// Uncomment the below to support running the in-memory dataset.
-// import { InMemoryWebApiModule } from 'angular2-in-memory-web-api';
-// import { InMemoryDataService } from './in-memory-data.service';
+// if not used will be removed for production by treeshaking
+import { InMemoryWebApiModule } from 'angular2-in-memory-web-api';
+import { InMemoryDataService } from './in-memory-data.service';
 
 import { AppComponent }  from './app.component';
 import { routing } from './app.routing';
@@ -28,14 +27,18 @@ import { WorkItemSearchComponent } from './work-item/work-item-search/work-item-
 import { WorkItemService } from './work-item/work-item.service';
 import { StatusDrawerComponent } from './shared-component/status-drawer.component';
 
+// conditionally import the inmemory resource module
+var moduleImports = [
+      BrowserModule,
+      FormsModule,
+      HttpModule,
+      routing
+    ];
+if (process.env.ENV=='inmemory')
+  moduleImports.push(InMemoryWebApiModule.forRoot(InMemoryDataService));
+
 @NgModule({
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    // InMemoryWebApiModule.forRoot(InMemoryDataService),
-    routing
-  ],
+  imports: moduleImports,
   declarations: [
     AppComponent,
     BoardComponent,
