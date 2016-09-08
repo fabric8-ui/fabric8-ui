@@ -10,7 +10,6 @@ export class LoginService {
   // private githubUrl = 'app/loginStatus';
   private githubUrl = process.env.API_URL+'login/authorize ';  // URL to web api
 
-
   constructor(private http: Http) { }
 
   gitHubSignIn(): Promise<any>  {

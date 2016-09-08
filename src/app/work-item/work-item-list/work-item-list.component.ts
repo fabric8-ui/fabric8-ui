@@ -8,7 +8,7 @@ import { WorkItemService } from '../work-item.service';
 @Component({
   selector: 'work-item-list',
   templateUrl: '/work-item-list.component.html',
-  styleUrls: ['/work-item-list.component.css'],
+  styleUrls: ['/work-item-list.component.scss'],
 })
 export class WorkItemListComponent implements OnInit {
   workItems: WorkItem[];

@@ -27,18 +27,22 @@ $dropdown-link-hover-border-color:                                  $color-pf-bl
 $dropdown-link-focus-color:                                         $color-pf-white !default;
 $flyout-transition-pf:                                              all .2s cubic-bezier(.35,0,.25,1) !default;
 $font-family-monospace:                                             Menlo, Monaco, Consolas, monospace !default;
-$font-path:                                                         if($patternfly-sass-asset-helper, "patternfly", "../fonts/patternfly") !default;
+$font-path:                                                         if($patternfly-sass-asset-helper, "patternfly", "/node_modules/patternfly/dist/fonts") !default;
+$fa-font-path:                                                      if($patternfly-sass-asset-helper, "patternfly", "/node_modules/patternfly/dist/fonts") !default;
+$fa-font-size-base:                                                 14px;
+$fa-line-height-base:                                               1;
+$fa-css-prefix:                                                     fa;
 $footer-pf-bg-color:                                                $color-pf-black !default;
 $footer-pf-padding-left:                                            25px !default;
 $footer-pf-padding-top:                                             10px !default;
 $footer-pf-height:                                                  37px !default;
 $gray-light-pf:                                                     $color-pf-black-400 !default;
 $gray-pf:                                                           $color-pf-black-700 !default;
-$icon-font-name-fa:                                                 "FontAwesome" !default;
+$icon-font-name-fa:                                                 "fontawesome-webfont" !default;
 $icon-font-name-pf:                                                 "PatternFlyIcons-webfont" !default;
 $icon-prefix:                                                       pficon !default;
 $img-bg-login:                                                      "bg-login.jpg" !default;
-$img-path:                                                          if($patternfly-sass-asset-helper, "patternfly", "../images/patternfly") !default;
+$img-path:                                                          if($patternfly-sass-asset-helper, "patternfly/", "../images/patternfly") !default;
 $img-spinner:                                                       "spinner.gif" !default;
 $img-spinner-inverse:                                               "spinner-inverse.gif" !default;
 $img-spinner-inverse-lg:                                            "spinner-inverse-lg.gif" !default;
@@ -55,6 +59,7 @@ $list-view-divider:                                                 $color-pf-bl
 $list-view-hover-bg:                                                $color-pf-black-200 !default;
 $list-group-top-border:                                             $color-pf-black-200 !default;
 $login-bg-color:                                                    $color-pf-black !default;
+$dropdown-bg:                                                       $color-pf-white !default;
 $login-container-bg-color-rgba:                                     rgba($color-pf-white, 0.055) !default;
 $modal-about-pf-bg-img:                                             "bg-modal-about-pf.png" !default;
 $modal-title-padding-horizontal:                                    18px !default;
@@ -148,6 +153,7 @@ $pficon-var-middleware:                                                 "\e917" 
 $pficon-var-blueprint:                                              "\e915" !default;
 $pficon-var-build:                                                  "\e902" !default;
 $pficon-var-builder-image:                                          "\e800" !default;
+$pficon-var-bundle:                                                 "\e918" !default;
 $pficon-var-close:                                                  "\e60b" !default;
 $pficon-var-cloud-security:                                         "\e903" !default;
 $pficon-var-cloud-tenant:                                           "\e904" !default;
@@ -204,6 +210,13 @@ $pficon-var-virtual-machine:                                        "\e90f" !def
 $pficon-var-volume:                                                 "\e910" !default;
 $pficon-var-warning-triangle-o:                                     "\e61c" !default;
 $pficon-var-zone:                                                   "\e911" !default;
+$pficon-var-user:                                                   "\e60e" !default;
+$fa-var-angle-down:                                                 "\f107" !default;
+$fa-var-angle-up:                                                   "\f106" !default;
+$fa-var-angle-right:                                                "\f105" !default;
+$fa-var-ellipsis-v:                                                 "\f142" !default;
+$fa-var-user:                                                       "\F007" !default;
+$fa-var-caret:                                                      "\F107" !default;
 $progress-description-label-width:                                  85px !default;
 $sidebar-pf-bg:                                                     $color-pf-black-100 !default;
 $sidebar-pf-border-color:                                           $color-pf-black-300 !default;
@@ -298,12 +311,18 @@ $brand-success:                                                     $color-pf-gr
 $brand-warning:                                                     $color-pf-orange !default;
 $breadcrumb-bg:                                                     transparent !default;
 $breadcrumb-separator:                                              "\f105" !default;
+$btn-danger-color:                                                #fff !default;
 $btn-danger-bg:                                                     $color-pf-red-200 !default;
 $btn-danger-border:                                                 $color-pf-red-300 !default;
 $btn-default-border:                                                $color-pf-black-400 !default;
 $btn-font-weight:                                                   600 !default;
+$btn-primary-color:                                               #fff !default;
 $btn-primary-bg:                                                    $color-pf-blue !default;
 $btn-primary-border:                                                $color-pf-blue-500 !default;
+// Allows for customizing button radius independently from global border radius
+$btn-border-radius-base:                                            $border-radius-base !default;
+$btn-border-radius-large:                                           $border-radius-base !default;
+$btn-border-radius-small:                                           $border-radius-base !default;
 $caret-width-base:                                                  0 !default;
 $code-bg:                                                           $color-pf-blue-50 !default;
 $dropdown-border:                                                   $color-pf-black-400 !default;
@@ -370,11 +389,30 @@ $breadcrumb-active-color:                                           $gray-pf !de
 $breadcrumb-color:                                                  $gray-pf !default;
 $btn-default-bg:                                                    $gray-lighter !default;
 $btn-default-color:                                                 $gray-pf !default;
+$btn-success-color:                                                 #fff !default;
+$btn-success-bg:                                                    $brand-success !default;
+$btn-success-border:                                                darken($btn-success-bg, 5%) !default;
+$btn-info-color:                                                    #fff !default;
+$btn-info-bg:                                                       $brand-info !default;
+$btn-info-border:                                                   darken($btn-info-bg, 5%) !default;
+$btn-warning-color:                                                 #fff !default;
+$btn-warning-bg:                                                    $brand-warning !default;
+$btn-warning-border:                                                darken($btn-warning-bg, 5%) !default;
+
+$btn-danger-color:                                                  #fff !default;
+$btn-danger-bg:                                                     $brand-danger !default;
+$btn-danger-border:                                                 darken($btn-danger-bg, 5%) !default;
+
+$btn-link-disabled-color:                                           $gray-light !default;
 $caret-width-large:                                                 $caret-width-base !default;
 $code-color:                                                        $color-pf-blue-600 !default;
 $dropdown-fallback-border:                                          $dropdown-border !default;
 $dropdown-link-active-bg:                                           $link-color !default;
+$dropdown-link-color:                                               $gray-dark !default;
 $dropdown-link-hover-color:                                         $gray-pf !default;
+$dropdown-link-disabled-color:                                      $gray-light !default;
+$dropdown-header-color:                                             $gray-light !default;
+$dropdown-caret-color:                                              #000 !default;
 $font-size-h1:                                                      ceil(($font-size-base * 2)) !default; // ~24px
 $font-size-h2:                                                      ceil(($font-size-base * 1.8333)) !default; // ~22px
 $font-size-h3:                                                      ceil(($font-size-base * 1.3333)) !default; // ~16px
@@ -413,6 +451,8 @@ $btn-primary-bg-img-start:                                          $brand-prima
 $btn-primary-bg-img-stop:                                           $btn-primary-bg !default;
 $dropdown-link-focus-bg:                                            $link-color !default;
 $line-height-computed:                                              floor(($font-size-base * $line-height-base)) !default;
+$line-height-large:                                                 1.3333333 !default; // extra decimals for Win 8.1 Chrome
+$line-height-small:                                                 1.5 !default;
 $notification-badge-color:                                          $brand-danger !default;
 $progress-sm:                                                       ($line-height-computed - 6) !default;
 $progress-xs:                                                       ($line-height-computed - 14) !default;
@@ -421,3 +461,172 @@ $syntax-2:                                                          $gray-dark !
 $syntax-3:                                                          $brand-success !default;
 $syntax-4:                                                          $brand-info !default;
 $tooltip-font-size:                                                 $font-size-base !default;
+$padding-base-vertical:                                             6px !default;
+$padding-base-horizontal:                                           12px !default;
+$padding-large-vertical:                                            10px !default;
+$padding-large-horizontal:                                          16px !default;
+
+$padding-small-vertical:                                            5px !default;
+$padding-small-horizontal:                                          10px !default;
+
+$padding-xs-vertical:                                               1px !default;
+$padding-xs-horizontal:                                             5px !default;
+
+//== Media queries breakpoints
+$screen-xs:                                                         480px !default;
+$screen-xs-min:                                                     $screen-xs !default;
+$screen-phone:                                                      $screen-xs-min !default;
+$screen-sm:                                                         768px !default;
+$screen-sm-min:                                                     $screen-sm !default;
+$screen-tablet:                                                     $screen-sm-min !default;
+$screen-md:                                                         992px !default;
+$screen-md-min:                                                     $screen-md !default;
+$screen-desktop:                                                    $screen-md-min !default;
+//** Deprecated `$screen-lg` as of v3.0.1
+$screen-lg:                                                         1200px !default;
+$screen-lg-min:                                                     $screen-lg !default;
+$screen-lg-desktop:                                                 $screen-lg-min !default;
+$screen-xs-max:                                                     ($screen-sm-min - 1) !default;
+$screen-sm-max:                                                     ($screen-md-min - 1) !default;
+$screen-md-max:                                                     ($screen-lg-min - 1) !default;
+//== Grid system
+$grid-columns:                                                      12 !default;
+$grid-gutter-width:                                                 30px !default;
+// Navbar collapse
+$grid-float-breakpoint:                                             $screen-sm-min !default;
+$grid-float-breakpoint-max:                                         ($grid-float-breakpoint - 1) !default;
+//=== Shared nav styles
+$nav-link-padding:                                                  10px 15px !default;
+$nav-link-hover-bg:                                                 $gray-lighter !default;
+$nav-disabled-link-color:                                           $gray-light !default;
+$nav-disabled-link-hover-color:                                     $gray-light !default;
+
+//== Tabs
+$nav-tabs-border-color:                                             #ddd !default;
+$nav-tabs-link-hover-border-color:                                  $gray-lighter !default;
+$nav-tabs-active-link-hover-bg:                                     $body-bg !default;
+$nav-tabs-active-link-hover-color:                                  $gray !default;
+$nav-tabs-active-link-hover-border-color:                           #ddd !default;
+$nav-tabs-justified-link-border-color:                              #ddd !default;
+$nav-tabs-justified-active-link-border-color:                       $body-bg !default;
+
+$cursor-disabled:                                                   not-allowed !default;
+$component-active-color:                                            #fff !default;
+$component-active-bg:                                               $brand-primary !default;
+//== Pills
+$nav-pills-border-radius:                                           $border-radius-base !default;
+$nav-pills-active-link-hover-bg:                                    $component-active-bg !default;
+$nav-pills-active-link-hover-color:                                 $component-active-color !default;
+//== Scaffolding
+
+//** Background color for `<body>`.
+$body-bg:                                                           #fff !default;
+$text-color:                                                        $gray-dark !default;
+$link-color:                                                        $brand-primary !default;
+$link-hover-color:                                                  darken($link-color, 15%) !default;
+$link-hover-decoration:                                             underline !default;
+//== Thumbnails
+$thumbnail-padding:                                                 4px !default;
+$thumbnail-bg:                                                      $body-bg !default;
+$thumbnail-border:                                                  #ddd !default;
+$thumbnail-border-radius:                                           $border-radius-base !default;
+$thumbnail-caption-color:                                           $text-color !default;
+$thumbnail-caption-padding:                                         9px !default;
+$hr-border:                                                         $gray-lighter !default;
+
+// Basics of a navbar
+$navbar-height:                                                     50px !default;
+$navbar-margin-bottom:                                              $line-height-computed !default;
+$navbar-border-radius:                                              $border-radius-base !default;
+$navbar-padding-horizontal:                                         floor(($grid-gutter-width / 2)) !default;
+$navbar-padding-vertical:                                           (($navbar-height - $line-height-computed) / 2) !default;
+$navbar-collapse-max-height:                                        340px !default;
+
+$navbar-default-color:                                              #777 !default;
+$navbar-default-bg:                                                 #f8f8f8 !default;
+$navbar-default-border:                                             darken($navbar-default-bg, 6.5%) !default;
+
+//== List group
+$list-group-bg:                                                     $color-pf-white !default;
+$list-group-border:                                                 #ddd !default;
+$list-group-border-radius:                                          $border-radius-base !default;
+$list-group-hover-bg:                                               $color-pf-black-150 !default;
+$list-group-active-color:                                           $component-active-color !default;
+$list-group-active-bg:                                              $component-active-bg !default;
+$list-group-active-border:                                          $list-group-active-bg !default;
+$list-group-active-text-color:                                      lighten($list-group-active-bg, 40%) !default;
+$list-group-disabled-color:                                         $gray-light !default;
+$list-group-disabled-bg:                                            $gray-lighter !default;
+$list-group-disabled-text-color:                                    $list-group-disabled-color !default;
+
+$list-group-link-color:                                             #555 !default;
+$list-group-link-hover-color:                                       $list-group-link-color !default;
+$list-group-link-heading-color:                                     #333 !default;
+//== Container sizes
+
+// Small screen / tablet
+$container-tablet:                                                  (720px + $grid-gutter-width) !default;
+$container-sm:                                                      $container-tablet !default;
+$container-desktop:                                                 (940px + $grid-gutter-width) !default;
+$container-md:                                                      $container-desktop !default;
+$container-large-desktop:                                           (1140px + $grid-gutter-width) !default;
+$container-lg:                                                      $container-large-desktop !default;
+
+//-- Z-index master list
+//
+// Warning: Avoid customizing these values. They're used for a bird's eye view
+// of components dependent on the z-axis and are designed to all work together.
+//
+// Note: These variables are not generated into the Customizer.
+
+$zindex-navbar:                                                     1000 !default;
+$zindex-dropdown:                                                   1000 !default;
+$zindex-popover:                                                    1060 !default;
+$zindex-tooltip:                                                    1070 !default;
+$zindex-navbar-fixed:                                               1030 !default;
+$zindex-modal-background:                                           1040 !default;
+$zindex-modal:                                                      1050 !default;
+
+//== Labels
+$label-default-bg:                                                  $gray-light !default;
+$label-primary-bg:                                                  $brand-primary !default;
+$label-success-bg:                                                  $brand-success !default;
+$label-info-bg:                                                     $brand-info !default;
+$label-warning-bg:                                                  $brand-warning !default;
+$label-danger-bg:                                                   $brand-danger !default;
+$label-color:                                                       #fff !default;
+$label-link-hover-color:                                            #fff !default;
+//== Forms
+$input-bg:                                                          #fff !default;
+$input-color:                                                       $gray !default;
+$input-border:                                                      #ccc !default;
+$input-border-radius:                                               $border-radius-base !default;
+$input-border-radius-large:                                         $border-radius-large !default;
+$input-border-radius-small:                                         $border-radius-small !default;
+$input-border-focus:                                                #66afe9 !default;
+$input-color-placeholder:                                           #999 !default;
+//** Default `.form-control` height
+$input-height-base:                                                 ($line-height-computed + ($padding-base-vertical * 2) + 2) !default;
+$input-height-large:                                                (ceil($font-size-large * $line-height-large) + ($padding-large-vertical * 2) + 2) !default;
+$input-height-small:                                                (floor($font-size-small * $line-height-small) + ($padding-small-vertical * 2) + 2) !default;
+
+$form-group-margin-bottom:                                          15px !default;
+$legend-color:                                                      $gray-dark !default;
+$legend-border-color:                                               #e5e5e5 !default;
+//== Form states and alerts
+
+$state-success-text:                                                #3c763d !default;
+$state-success-bg:                                                  #dff0d8 !default;
+$state-success-border:                                              darken(adjust-hue($state-success-bg, -10), 5%) !default;
+
+$state-info-text:                                                   #31708f !default;
+$state-info-bg:                                                     #d9edf7 !default;
+$state-info-border:                                                 darken(adjust-hue($state-info-bg, -10), 7%) !default;
+
+$state-warning-text:                                                #8a6d3b !default;
+$state-warning-bg:                                                  #fcf8e3 !default;
+$state-warning-border:                                              darken(adjust-hue($state-warning-bg, -10), 5%) !default;
+
+$state-danger-text:                                                 #a94442 !default;
+$state-danger-bg:                                                   #f2dede !default;
+$state-danger-border:                                               darken(adjust-hue($state-danger-bg, -10), 5%) !default;

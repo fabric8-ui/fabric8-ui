@@ -8,7 +8,7 @@ import { WorkItemService } from '../work-item.service';
 @Component({
   selector: 'work-item-detail',
   templateUrl: '/work-item-detail.component.html',
-  styleUrls: ['/work-item-detail.component.css']
+  styleUrls: ['/work-item-detail.component.scss']
 })
 export class WorkItemDetailComponent implements OnInit {
   // @Input()

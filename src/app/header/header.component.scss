@@ -1,0 +1,9 @@
+@import "../../assets/stylesheets/navbar";
+@import "../../assets/stylesheets/navs";
+@import "../../assets/stylesheets/icons";
+.navbar-pf {
+    .navbar-nav>li>a {
+    line-height: 1;
+    text-shadow:none;
+    }
+}

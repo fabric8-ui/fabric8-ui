@@ -8,7 +8,7 @@ import { WorkItemService } from '../work-item.service';
 @Component({
   selector: 'work-item-quick-add',
   templateUrl: '/work-item-quick-add.component.html',
-  styleUrls: ['/work-item-quick-add.component.css']
+  styleUrls: ['/work-item-quick-add.component.scss']
 })
 export class WorkItemQuickAddComponent implements OnInit {
   @Input() workItem: WorkItem;
@@ -42,14 +42,14 @@ export class WorkItemQuickAddComponent implements OnInit {
 
   save(): void {
     if(this.validName){
-      this.workItemService
-        .create(this.workItem)
-        .then(workItem => {
-          this.workItem = workItem; // saved workItem, w/ id if new
-          this.logger.log(`created and returned this workitem: ${workItem}`);
-          this.goBack(workItem);
-        })
-        .catch(error => this.error = error); // TODO: Display error message
+    this.workItemService
+      .create(this.workItem)
+      .then(workItem => {
+        this.workItem = workItem; // saved workItem, w/ id if new
+        this.logger.log(`created and returned this workitem: ${workItem}`);
+        this.goBack(workItem);
+      })
+      .catch(error => this.error = error); // TODO: Display error message
     }
   }
 

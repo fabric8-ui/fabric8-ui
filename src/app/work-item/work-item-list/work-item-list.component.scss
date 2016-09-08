@@ -1,0 +1,27 @@
+.screen-min-ht{
+  min-height: 85%;
+}
+.status{
+  width: 130px;
+  text-align: left;
+  >span.label{
+    padding: 5px 20px;
+    opacity: 0.7;
+  }
+}
+.type {
+  span{
+    font-size: 12px;
+    margin-right: 10px;
+    color: #8b8d8f;
+  }
+}
+.work-item-details{
+	padding: 1% 8%;
+}
+.error {color:red;}
+.supress-hover{
+  &:hover{
+    background-color: transparent;
+  }
+}

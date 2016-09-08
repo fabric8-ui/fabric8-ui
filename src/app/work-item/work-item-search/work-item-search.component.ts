@@ -10,7 +10,7 @@ import { WorkItem } from '../work-item';
 @Component({
     selector: 'work-item-search',
     templateUrl: '/work-item-search.component.html',
-    styleUrls:  ['/work-item-search.component.css'],
+    styleUrls:  ['/work-item-search.component.scss'],
     providers: [WorkItemSearchService]
 })
 export class WorkItemSearchComponent implements OnInit {
