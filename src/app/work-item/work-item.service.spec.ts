@@ -15,6 +15,7 @@ import { Logger } from '../shared/logger.service';
 
 import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
 
+import { AuthenticationService } from './../auth/authentication.service';
 import { WorkItem } from './work-item';
 import { WorkItemService } from './work-item.service';
 
@@ -23,8 +24,18 @@ describe('Work Item Service - ', () => {
 
   let apiService: WorkItemService;
   let mockService: MockBackend;
+  
+  let fakeAuthService: any;
 
   beforeEach(() => {
+    fakeAuthService = {
+      getToken: function () {
+        return '';
+      },
+      isLoggedIn: function() {
+        return true;
+      }
+    };
     TestBed.configureTestingModule({
       providers: [
         Logger,
@@ -35,6 +46,10 @@ describe('Work Item Service - ', () => {
           useFactory: (backend: MockBackend,
                        options: BaseRequestOptions) => new Http(backend, options),
           deps: [MockBackend, BaseRequestOptions]
+        },
+        {
+          provide: AuthenticationService,
+          useValue: fakeAuthService
         },
         WorkItemService
       ]

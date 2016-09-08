@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
 
+import { AuthenticationService } from './../../auth/authentication.service';
 import { Logger } from '../../shared/logger.service';
 
 import { WorkItem }                   from '../work-item';
@@ -18,8 +19,10 @@ export class WorkItemListComponent implements OnInit {
   selectedWorkItemEntryComponent: WorkItemListEntryComponent;
   addingWorkItem = false;
   showOverlay : Boolean ;
+  loggedIn: Boolean = false;
 
   constructor(
+    private auth: AuthenticationService,
     private router: Router,
     private workItemService: WorkItemService,
     private logger: Logger) {
@@ -27,6 +30,7 @@ export class WorkItemListComponent implements OnInit {
 
   ngOnInit(): void {
     this.reloadWorkItems();
+    this.loggedIn = this.auth.isLoggedIn();
   }
 
   // model handlers

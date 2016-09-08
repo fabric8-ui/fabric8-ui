@@ -64,6 +64,11 @@ export class InMemoryDataService implements InMemoryDbService {
       }
     ];
 
-    return {loginStatus, workitems, workitemtypes};
+    let user = {
+      'fullName': 'Sudipta Sen',
+      'imageURL': 'https://avatars.githubusercontent.com/u/2410474?v=3'
+    };
+
+    return {loginStatus, workitems, workitemtypes, user};
   }
 }

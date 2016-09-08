@@ -3,6 +3,7 @@ import { Component, OnInit }      from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
 import { AlmTrim } from '../../pipes/alm-trim';
+import { AuthenticationService } from './../../auth/authentication.service';
 
 import { Logger } from '../../shared/logger.service';
 
@@ -37,9 +38,10 @@ export class WorkItemDetailComponent implements OnInit {
   
   submitted = false;
   active = true;
-
+  loggedIn: Boolean = false;
   
   constructor(
+    private auth: AuthenticationService,
     private workItemService: WorkItemService,
     private route: ActivatedRoute,
     private location: Location,
@@ -58,6 +60,7 @@ export class WorkItemDetailComponent implements OnInit {
         this.workItem.type = 'system.userstory';
       }
     });
+    this.loggedIn = this.auth.isLoggedIn();
   }
 
   save(): void {

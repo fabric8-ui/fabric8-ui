@@ -22,7 +22,7 @@ export class LoginComponent {
   }
 
   gitSignin() {
-    this.loginService.gitHubSignIn().then(loginStatus => this.checkStatus(loginStatus));
+    this.loginService.gitHubSignIn();
   }
 
   checkStatus(loginStatus: any){

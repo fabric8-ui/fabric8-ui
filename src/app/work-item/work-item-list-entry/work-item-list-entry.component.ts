@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router }                                         from '@angular/router';
 
+import { AuthenticationService } from './../../auth/authentication.service';
 import { Logger } from '../../shared/logger.service';
 
 import { Dialog }            from '../../shared-component/dialog/dialog';
@@ -47,14 +48,17 @@ export class WorkItemListEntryComponent implements OnInit {
   actionDropdownOpen: boolean = false;
   dialog: Dialog;
   showDialog = false;
+  loggedIn: Boolean = false;
 
-  constructor(private router: Router,
+  constructor(private auth: AuthenticationService,
+              private router: Router,
               private workItemService: WorkItemService,
               private logger: Logger) {
   }
 
   ngOnInit(): void {
     this.getOptions();
+    this.loggedIn = this.auth.isLoggedIn();
   }
 
   getOptions(): void {

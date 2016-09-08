@@ -23,6 +23,9 @@ import { DialogComponent } from '../../shared-component/dialog/dialog.component'
 import { FooterComponent } from '../../footer/footer.component';
 import { HeaderComponent } from '../../header/header.component';
 
+import { AuthenticationService } from './../../auth/authentication.service';
+import { User } from './../../user/user';
+import { UserService } from './../../user/user.service';
 import { WorkItem } from '../work-item';
 import { WorkItemService } from '../work-item.service';
 
@@ -38,7 +41,10 @@ describe('Detailed view and edit a selected work item - ', () => {
   let dialog: Dialog;
 
   let fakeWorkItem: WorkItem;
-  let fakeService: any;
+  let fakeUser: User;
+  let fakeWorkItemService: any;
+  let fakeAuthService: any;
+  let fakeUserService: any;
 
   beforeEach(() => {
     dialog = {
@@ -62,7 +68,21 @@ describe('Detailed view and edit a selected work item - ', () => {
       'version': 0
     } as WorkItem;
 
-    fakeService = {
+    fakeUser = {
+      'fullName': 'Sudipta Sen',
+      'imageURL': 'https://avatars.githubusercontent.com/u/2410474?v=3'
+    } as User;
+
+    fakeAuthService = {
+      getToken: function () {
+        return '';
+      },
+      isLoggedIn: function() {
+        return true;
+      }
+    };
+
+    fakeWorkItemService = {
       create: function () {
         return new Promise((resolve, reject) => {
           resolve(fakeWorkItem);
@@ -75,6 +95,14 @@ describe('Detailed view and edit a selected work item - ', () => {
       }
     };
   });
+
+  fakeUserService = {
+    getUser: function () {
+      return new Promise((resolve, reject) => {
+        resolve(fakeUser);
+      });
+    },
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -93,11 +121,18 @@ describe('Detailed view and edit a selected work item - ', () => {
       ],
       providers: [
         Logger,
-        WorkItemService,
         Location,
         {
+          provide: AuthenticationService,
+          useValue: fakeAuthService
+        },
+        {
+          provide: UserService,
+          useValue: fakeUserService
+        },
+        {
           provide: WorkItemService,
-          useValue: fakeService
+          useValue: fakeWorkItemService
         }
       ]
     }).compileComponents()

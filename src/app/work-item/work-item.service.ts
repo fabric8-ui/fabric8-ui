@@ -3,10 +3,9 @@ import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Logger } from '../shared/logger.service';
-
-import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
-
+import { AuthenticationService } from './../auth/authentication.service';
+import { DropdownOption } from './../shared-component/dropdown/dropdown-option';
+import { Logger } from './../shared/logger.service';
 import { WorkItem } from './work-item';
 
 @Injectable()
@@ -16,14 +15,16 @@ export class WorkItemService {
   private availableStates: DropdownOption[] = [];
 
   constructor(private http: Http,
-              private logger: Logger) {
+              private logger: Logger,
+              private auth: AuthenticationService) {    
+    this.headers.append('Authorization', 'Bearer ' + this.auth.getToken());
     logger.log('WorkItemService running in ' + process.env.ENV + ' mode.');
     logger.log('WorkItemService using url ' + this.workItemUrl);
   }
 
   getWorkItems(): Promise<WorkItem[]> {
     return this.http
-      .get(this.workItemUrl)
+      .get(this.workItemUrl, {headers: this.headers})
       .toPromise()
       .then(response => process.env.ENV != 'inmemory' ? response.json() as WorkItem[] : response.json().data as WorkItem[])
       .catch(this.handleError);

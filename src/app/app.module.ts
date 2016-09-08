@@ -14,6 +14,8 @@ import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { AlmTrim } from './pipes/alm-trim';
 
 // Shared
+import { AuthenticationService } from './auth/authentication.service';
+import { UserService } from './user/user.service';
 import { Logger } from './shared/logger.service';
 
 // Shared components
@@ -76,7 +78,9 @@ if (process.env.ENV == 'inmemory') {
   ],
   providers: [
     Logger,
+    AuthenticationService,
     LoginService,
+    UserService,
     WorkItemService
   ],
   bootstrap: [ AppComponent ]

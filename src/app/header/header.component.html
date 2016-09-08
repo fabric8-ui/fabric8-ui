@@ -12,13 +12,19 @@
   </div>
   <div class="collapse navbar-collapse navbar-collapse-1">
 	  <ul id="header_rightDropdown" class="nav navbar-nav navbar-utility">
-      	<li class="dropdown">
+      	<li *ngIf="loggedIn" class="dropdown">
         	<a href="#" id="header_dropdownToggle" class="dropdown-toggle" data-toggle="dropdown">
           		<span class="pficon pficon-user"></span>
-          		<span class="fl">John</span>
-              <b class="caret"></b>
+							<div *ngIf="loggedInUser">
+								{{loggedInUser.fullName}}
+								<b class="caret"></b>
+							</div>
         	</a>
       </li>
+			<li>
+					<a *ngIf="loggedIn" (click)='logout();'>Logout</a>
+          <a *ngIf="!loggedIn" (click)='login();'>Login</a>
+			</li>
     </ul>
     <ul id="header_menuList" class="nav navbar-nav navbar-primary pull-left dn">
       <li>
