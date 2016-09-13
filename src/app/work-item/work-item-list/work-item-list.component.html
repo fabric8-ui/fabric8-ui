@@ -32,7 +32,10 @@
 						<span class='fa' [ngClass]="{'fa-wrench': workItem.type=='system.bug',
 											'fa-user': workItem.type=='system.userstory',
 											'fa-globe': workItem.type=='system.feature',
-											'fa-bookmark': workItem.type=='system.experience' }">
+											'fa-bookmark': workItem.type=='system.experience',
+											'fa-eye': workItem.type=='system.experience',
+											'fa-bank': workItem.type=='system.fundamental',
+											'fa-rocket': workItem.type=='system.valueproposition' }">
 						</span>
 							{{workItem.id}}
 					</div>
