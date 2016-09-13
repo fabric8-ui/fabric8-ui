@@ -19,55 +19,59 @@ import redhat.developer.selenide.examples.almighty.ui.support.selenide.pages.Mai
  */
 
 public class ToddTest {
-  @Test
-  public void findTodd() throws InterruptedException {
-     
-	/*
-	 * UI hangs unless Selenium WebDriver is defined - should not be needed - but it is
-	 * TODO - Find an answer to this  
+	@Test
+	public void findTodd() throws InterruptedException {
+
+		String testUrl = System.getProperty("test.url", "http://localhost:8088");
+		
+		/*
+		 * UI hangs unless Selenium WebDriver is defined - should not be needed - but it is
+		 * TODO - Find an answer to this  
+		 */
+		WebDriver driver = new FirefoxDriver();
+		WebDriverRunner.setWebDriver(driver);
+
+		MainPage<?> page = open(testUrl, MainPage.class); 
+		Thread.sleep(3000);
+
+		page.workitemTitle().setValue("Hello Todd");
+		page.workitemDescription().setValue("Hello Description");
+		Thread.sleep(3000);
+
+		page.saveButton().click();
+		Thread.sleep(3000);    
+
+		//ElementsCollection theCollection = page.workitemsOnPage();
+		//org.junit.Assert.assertTrue("We did not find Todd", findElement(theCollection,"Hello Todd"));
+		org.junit.Assert.assertTrue("We did not find Todd", page.textOnPage().getText().contains("Hello Todd") );
+
+		driver.close();
+
+	}
+
+	/**
+	 * 
+	 * Simple method to locate a string in an ElementsCollection
+	 * 
+	 * TODO Replace this with a better search of the elements as displayed in the UI
+	 * 
+	 * @param testCollection
+	 * @param testString
+	 * @return 
 	 */
-    WebDriver driver = new FirefoxDriver();
-    WebDriverRunner.setWebDriver(driver);
+	private Boolean findElement (ElementsCollection testCollection, String testString) {
+		Boolean found = false;
 
-    MainPage<?> page = open("http://localhost:8088", MainPage.class); 
-    Thread.sleep(3000);
-    
-    page.primaryButton().click();  
-    Thread.sleep(3000);
-    
-    page.primaryField().setValue("Hello Todd");
-    Thread.sleep(3000);
+		for (int i = 0; i < testCollection.size(); i++) {
 
-    page.saveButton().click();
-    Thread.sleep(3000);
+			System.out.println(i + " " + testCollection.get(i).getText());
 
-    ElementsCollection theCollection = page.workitemsOnPage();
-    org.junit.Assert.assertTrue("We did not find Todd", findElement(theCollection,"Hello Todd"));
-          
-    driver.close();
-    
-  }
-  
-  /**
-   * 
-   * Simple method to locate a string in an ElementsCollection
-   * 
-   * TODO Replace this with a better search of the elements as displayed in the UI
-   * 
-   * @param testCollection
-   * @param testString
-   * @return 
-   */
-  private Boolean findElement (ElementsCollection testCollection, String testString) {
-	  Boolean found = false;
-	    
-	    for (int i = 0; i < testCollection.size(); i++) {
-	    	if (testCollection.get(i).getText().equals(testString)) {
-	    		found = true;
-	    		break;
-	    	}
-	    }
-    	return found;
-  }
- 
+			if (testCollection.get(i).getText().equals(testString)) {
+				found = true;
+				break;
+			}
+		}
+		return found;
+	}
+
 }
