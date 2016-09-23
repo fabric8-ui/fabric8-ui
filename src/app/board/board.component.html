@@ -1,8 +1,8 @@
 <app-header></app-header>
-<div class="container-fluid container-cards-pf">
+<div id="board_topWorkItems" class="container-fluid container-cards-pf">
   <h3>Top WorkItems</h3>
   <div class="grid grid-pad">
-    <div *ngFor="let workItem of workItems" (click)="gotoDetail(workItem)" class="col-1-4">
+    <div *ngFor="let workItem of workItems; let count = index" (click)="gotoDetail(workItem)" class="col-1-4" id="{{'board_topWorkItemList_'+count}}">
       <div class="module workItem">
         <h4>{{workItem.fields['system.title']}}</h4>
       </div>
