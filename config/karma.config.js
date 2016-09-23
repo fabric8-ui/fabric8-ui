@@ -11,11 +11,19 @@ module.exports = function (config) {
     ],
 
     preprocessors: {
-      './config/karma-test-shim.js': ['webpack', 'sourcemap']
+      './config/karma-test-shim.js': ['coverage', 'webpack', 'sourcemap']
     },
 
     webpack: webpackConfig,
 
+    coverageReporter: {
+	      dir : 'coverage/',
+	      reporters: [
+		          { type: 'text-summary' },
+		          { type: 'json' },
+		          { type: 'html' }
+		        ]
+	  },
     webpackMiddleware: {
       stats: 'errors-only'
     },
@@ -23,13 +31,32 @@ module.exports = function (config) {
     webpackServer: {
       noInfo: true
     },
-
-    reporters: ['progress'],
+    
+    // Possible values - 'progress'
+    reporters: ['kjhtml', 'coverage', 'mocha'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: false,
-    browsers: ['PhantomJS'],
+    browsers: ['PhantomJS', 'PhantomJS_custom'],
+    customLaunchers: {
+      'PhantomJS_custom': {
+        base: 'PhantomJS',
+        options: {
+          windowName: 'alm-window',
+          settings: {
+            webSecurityEnabled: false
+          },
+        },
+        flags: ['--load-images=true'],
+        debug: true
+      }
+    },
+    phantomjsLauncher: {
+      // Have phantomjs exit if a ResourceError is encountered
+      // (useful if karma exits without killing phantom)
+      exitOnResourceError: true
+    },
     singleRun: true
   };
 
