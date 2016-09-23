@@ -1,6 +1,5 @@
 = ALMighty UI
 
-
 If this is the first time you are starting the UI you need to run
 
 ----
@@ -18,7 +17,24 @@ variable "ENV" to "inmemory" and do a rebuild. The setting is stored inside the 
 changing the value back to unset or "development" (default for npm start) needs a rebuild
 to take effect.
 
-== Production build
+== Functional Tests
+
+Functional (UI) tests are automatically executed on the PR check process (using 
+`cico_run_tests.sh`) or on the release process (using `cico_build_deploy.sh`) but
+can also executed from the development environment by invoking the following command:
+
+----
+./run_functional_tests.sh
+----
+
+External resources are mocked. A Java JRE, ncat and fuser have to be available on the
+system (see Dockerfile.builder for details on the required packages when building on
+Fedora/CentOS). PhantomJS will be used as the browser engine by default. This can be
+changed by adding/modifying browser capabilities in `protractor.config.js`.
+
+Test specs for functional tests are residing in `src/tests`.
+
+== Production Build
 
 To generate production build, set the API URL and run `npm` command as give below:
 

@@ -20,7 +20,7 @@ RUN set -ex \
 #ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_VERSION 6.5.0
 
-RUN yum install -y wget bzip2 git  \
+RUN yum install -y wget bzip2 git java-1.8.0-openjdk nmap-ncat psmisc \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
   && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
