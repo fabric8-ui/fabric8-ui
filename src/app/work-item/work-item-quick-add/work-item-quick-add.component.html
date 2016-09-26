@@ -5,17 +5,25 @@
     </div>
     <div id="workItemQuickAdd_title" class="list-group-item-text margin10">
       <div class="form-group">
-        <input [(ngModel)]="workItem.fields['system.title']" (keypress)="eventHandler($event)" (ngModelChange)="checkTitle()" class="form-control" placeholder="Title (mandatory field)" required />
+        <input type="text"
+          [(ngModel)]="workItem.fields['system.title']"
+          (keyup.enter)="save()"
+          class="form-control"
+          placeholder="Title (mandatory field)" required />
       </div>
     </div>
     <div id="workItemQuickAdd_desc" class="list-group-item-text margin10">
       <div class="form-group">
-        <input [(ngModel)]="workItem.fields['system.description']" class="form-control" placeholder="Description" />
+        <input
+          [(ngModel)]="workItem.fields['system.description']"          
+          (keyup.enter)="save()"
+          class="form-control"
+          placeholder="Description" />
       </div>
     </div>
     <div class="list-group-item-text margin10">
       <div class="form-group">
-        <a id="workItemQuickAdd_saveBtn" class='pficon-add-circle-o' [ngClass]="{'icon-btn': validName,'icon-btn-disabled':!validName}" (click)="save()"></a>&nbsp;&nbsp;
+        <a id="workItemQuickAdd_saveBtn" class='pficon-add-circle-o' [ngClass]="{'icon-btn': workItem.fields['system.title'],'icon-btn-disabled':!workItem.fields['system.title']}" (click)="save()"></a>&nbsp;&nbsp;
         <a id="workItemQuickAdd_goBackBtn" class='pficon-error-circle-o icon-btn' (click)="goBack()"></a>
       </div>
     </div>
