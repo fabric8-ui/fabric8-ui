@@ -6,7 +6,7 @@
 				<work-item-quick-add (close)="close($event)"></work-item-quick-add>
 			</div>
 		</div>
-		<div *ngFor="let workItem of workItems; let counter = index" id="{{'workItemList_OuterWrap_'+counter}}">
+		<div *ngFor="let workItem of workItems; let counter = index" id="{{'workItemList_OuterWrap_'+counter}}" class="work-item-list-entry">
 			<div class="list-group-item" (click)="onSelect(workItem)"
 					 [class.selected]="workItem === selectedWorkItem">
 				<div class="list-view-pf-actions">
