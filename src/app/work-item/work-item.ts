@@ -1,3 +1,5 @@
+import { DropdownOption } from './../shared-component/dropdown/dropdown-option';
+
 export class WorkItem {
   id: string;
   workItemType: string;// = 'Story';
@@ -12,5 +14,6 @@ export class WorkItem {
     "system.state": string,
     "system.title": string,
     "system.description": string
-  }
+  };
+  selectedState: DropdownOption;
 }

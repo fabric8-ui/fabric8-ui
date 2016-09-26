@@ -4,6 +4,8 @@ import { Router } from "@angular/router";
 import { Logger } from '../../shared/logger.service';
 import { WorkItem } from '../work-item';
 import { WorkItemService } from '../work-item.service';
+import { DropdownComponent } from './../../shared-component/dropdown/dropdown.component';
+import { DropdownOption } from './../../shared-component/dropdown/dropdown-option';
 
 @Component({
   selector: 'work-item-list',
@@ -15,11 +17,23 @@ export class WorkItemListComponent implements OnInit {
   selectedWorkItem: WorkItem;
   addingWorkItem = false;
 
+  stateDropdownOptions: DropdownOption[];
+
   constructor(
     private router: Router,
     private workItemService: WorkItemService,
-    private logger: Logger
-  ) {}
+    private logger: Logger) {
+
+  }
+
+  ngOnInit(): void {
+    this.getOptions();
+    this.getWorkItems();
+  }
+
+  getOptions(): void {
+    this.stateDropdownOptions = this.workItemService.getStatusOptions();
+  }
 
   getWorkItems(): void {
     this.workItemService
@@ -37,6 +51,19 @@ export class WorkItemListComponent implements OnInit {
     if (savedWorkItem) { this.getWorkItems(); }
   }
 
+  onStateUpdate(val: any) {
+    let index = this.workItems.findIndex((item) => {
+      return item.id == val.currentOption.extra_params.workItem_id;
+    });
+    this.workItems[index].fields["system.state"] = val.newOption.option;
+    this.workItems[index].statusCode = val.newOption.id;
+    this.workItemService
+      .update(this.workItems[index])
+      .then((updatedWorkItem) => {
+        this.workItems[index] = updatedWorkItem;
+      });
+  }
+
   deleteWorkItem(workItem: WorkItem): void {
     this.workItemService
       .delete(workItem)
@@ -44,10 +71,6 @@ export class WorkItemListComponent implements OnInit {
         this.workItems = this.workItems.filter(h => h !== workItem);
         if (this.selectedWorkItem === workItem) { this.selectedWorkItem = null; }
       });
-  }
-
-  ngOnInit(): void {
-    this.getWorkItems();
   }
 
   onSelect(workItem: WorkItem): void {

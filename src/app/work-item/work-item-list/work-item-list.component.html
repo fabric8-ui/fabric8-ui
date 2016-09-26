@@ -25,7 +25,11 @@
 				</div>
 				<div class="list-view-pf-main-info">
 					<div class="list-view-pf-left">
-						<status-drawer [workItem]="workItem"></status-drawer>						
+						<pf-dropdown
+						 (change)="onStateUpdate($event)" 
+						 [options]="stateDropdownOptions"
+						 [selected]="workItem.selectedState">
+						</pf-dropdown>				
 					</div>
 					<div class="list-view-pf-left type workItemList_workItemType">
 						<!--<span class='fa' [ngClass]="{'fa-bookmark': workItem.workItemType=='story', 'fa-bug':workItem.workItemType=='bug'}"></span>-->

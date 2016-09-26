@@ -11,6 +11,7 @@ import {
 } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 import { WorkItem } from "./work-item";
+import { DropdownOption } from "./../shared-component/dropdown/dropdown-option";
 import { Logger } from "../shared/logger.service";
 import { WorkItemService } from "./work-item.service";
 
@@ -56,7 +57,7 @@ describe("Work Item Service - ", () => {
               "id": "1",
               "type": "system.userstory",
               "version": 0
-            },
+          }
         ] as WorkItem[];
 
     it("Get work items", async(() => {
@@ -71,7 +72,14 @@ describe("Work Item Service - ", () => {
 
         apiService.getWorkItems()
         .then(data => {
-            expect(data).toEqual(response);
+            let wi = response.map((item) => {
+                item.selectedState = apiService.getSelectedState(item);
+                item.selectedState.extra_params = {
+                    workItem_id: item.id
+                };
+                return item;
+            });
+            expect(data).toEqual(wi);
         });
     }));
 
@@ -79,7 +87,7 @@ describe("Work Item Service - ", () => {
         mockService.connections.subscribe((connection: any) => {
             connection.mockRespond(new Response(
                 new ResponseOptions({
-                    body: JSON.stringify(response),
+                    body: JSON.stringify(response[0]),
                     status: 201
                 })
             ));
@@ -87,7 +95,12 @@ describe("Work Item Service - ", () => {
 
         apiService.create(response[0])
         .then(data => {
-            expect(data).toEqual(response);
+            let wi = response[0];
+            wi.selectedState = apiService.getSelectedState(response[0]);
+            wi.selectedState.extra_params = {
+                workItem_id: wi.id
+            };
+            expect(data).toEqual(wi);
         });
     }));
 
@@ -110,7 +123,7 @@ describe("Work Item Service - ", () => {
         mockService.connections.subscribe((connection: any) => {
             connection.mockRespond(new Response(
                 new ResponseOptions({
-                    body: JSON.stringify(response),
+                    body: JSON.stringify(response[0]),
                     status: 200
                 })
             ));
@@ -118,7 +131,12 @@ describe("Work Item Service - ", () => {
 
         apiService.update(response[0])
         .then(data => {
-            expect(data).toEqual(response[0]);
+            let wi = response[0];
+            wi.selectedState = apiService.getSelectedState(response[0]);
+            wi.selectedState.extra_params = {
+                workItem_id: wi.id
+            };
+            expect(data).toEqual(wi);
         });
     }));
 

@@ -10,7 +10,7 @@
   cursor: pointer;
 }
 
-.drawer {
+.pf-dropdown {
 	position: absolute;
 	z-index: 100;
 	margin-top: 10px;
@@ -22,14 +22,14 @@
 
 }
 
-.drawer li{
+.pf-dropdown li{
 	list-style: none;
 	font-size: 12px;
 	text-align: left;
 	cursor: pointer;
 }
 
-.drawer li:hover{
+.pf-dropdown li:hover{
 	font-weight: 600;
 }
 
