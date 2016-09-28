@@ -60,7 +60,20 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   firstWorkItem:  {   
 		get: function ()     
-			{ return element(by.id("workItemList_OuterWrap_0")); }
+			{ return element.all(by.css(".work-item-list-entry")).first(); }   
+	},
+
+  lastWorkItem:  {   
+		get: function ()     
+			{ return element.all(by.css(".work-item-list-entry")).last(); }   
+	},
+
+  workItemByNumber:  {   
+		value: function (itemNumber)     
+			{ 
+				var xPathString = "workItemList_OuterWrap_" + itemNumber;		
+				return element(by.id(xPathString)); 
+		}
 	},
 
   typeQuickAddWorkItemTitle:  { 
@@ -91,8 +104,19 @@ WorkItemListPage.prototype  = Object.create({}, {
   clickBoardButton:   {
 		value: function () 
 			{ return this.boardButton.click(); }
-	}
+	},
 
+  userToggle:  {   
+		get: function ()     
+			{ return element(by.id("header_dropdownToggle")); }
+	},
+
+  clickUserToggle:   {
+		value: function () 
+			{ return this.userToggle.click(); }
+	}
 });
 
 module.exports = WorkItemListPage;
+
+

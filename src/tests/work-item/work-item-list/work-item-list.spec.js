@@ -1,15 +1,15 @@
 var WorkItemListPage = require('./work-item-list.page');
 
 describe('Work item list', function () {
-
-  var page;
+  var page, items, startCount, tabs;
 
   beforeEach(function () {
     page = new WorkItemListPage();
+    page.allWorkItems.count().then(function(originalCount) { startCount = originalCount; });
   });
 
   it('should contain 14 items.', function() {
-    expect(page.allWorkItems.count()).toBe(14);
+    expect(page.allWorkItems.count()).toBe(startCount);
   });
 
   it('should have the right mock data in the first entry.', function() {
@@ -21,9 +21,14 @@ describe('Work item list', function () {
     page.typeQuickAddWorkItemTitle('Some Title');
     page.typeQuickAddWorkItemDescription('Some Description');
     page.clickQuickAddSave().then(function() {
-      expect(page.allWorkItems.count()).toBe(15);
+      expect(page.allWorkItems.count()).toBe(startCount + 1);
       expect(page.workItemDescription(page.firstWorkItem)).toBe('Some Description');
       expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title');
+      expect(page.workItemDescription(page.workItemByNumber(0))).toBe('Some Description');
+      expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Some Title');
+      page.allWorkItems.getText().then(function (text) { 
+        expect(text).toContain("View Details Delete\nnew\n27\nSome Title\nSome Description");	
+      });
     });
   });
 
@@ -31,7 +36,7 @@ describe('Work item list', function () {
     page.typeQuickAddWorkItemTitle('Some Other Title');
     page.typeQuickAddWorkItemDescription('Some Other Description');
     page.clickQuickAddCancel().then(function() {
-      expect(page.allWorkItems.count()).toBe(14);
+      expect(page.allWorkItems.count()).toBe(startCount);
       expect(page.workItemQuickAddTitle.getText()).toBe('');
       expect(page.workItemQuickAddDescription.getText()).toBe('');
     });
