@@ -15,6 +15,16 @@ mkdir -p dist && docker run --detach=true --name=almighty-ui-builder -e "API_URL
 # Build almigty-ui
 docker exec almighty-ui-builder npm install
 
+## Exec unit tests
+docker exec almighty-ui-builder ./run_unit_tests.sh
+
+if [ $? -eq 0 ]; then
+  echo 'CICO: unit tests OK'
+else
+  echo 'CICO: unit tests FAIL'
+  exit 1
+fi
+
 ## Exec functional tests
 docker exec almighty-ui-builder ./run_functional_tests.sh
 

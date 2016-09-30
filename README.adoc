@@ -17,6 +17,21 @@ variable "ENV" to "inmemory" and do a rebuild. The setting is stored inside the 
 changing the value back to unset or "development" (default for npm start) needs a rebuild
 to take effect.
 
+== Unit Tests
+
+Unit (UI) tests are automatically executed on the PR check process (using 
+`cico_run_tests.sh`) or on the release process (using `cico_build_deploy.sh`) but
+can also executed from the development environment by invoking the following command:
+
+----
+./run_unit_tests.sh
+----
+
+For unit testing, Jasmine, Karma, Webpack is used. There are unit tests available for 
+both services and UI compnents. There are `.spec.ts` files available in individual 
+component or service folder. Karma and Webpack config is written inside config directry 
+under root.
+
 == Functional Tests
 
 Functional (UI) tests are automatically executed on the PR check process (using 
