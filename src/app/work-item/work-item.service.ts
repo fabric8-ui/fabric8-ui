@@ -43,8 +43,7 @@ export class WorkItemService {
     return this.http
       .post(this.workItemUrl, JSON.stringify(workItem), {headers: this.headers})
       .toPromise()
-      // .then(res => res.json().data)
-      .then(res => res.json())
+      .then(response => process.env.ENV!='inmemory'?response.json() as WorkItem:response.json().data as WorkItem)
       .catch(this.handleError);
   }
 

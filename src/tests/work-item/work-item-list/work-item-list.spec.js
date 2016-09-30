@@ -13,8 +13,8 @@ describe('Work item list', function () {
   });
 
   it('should have the right mock data in the first entry.', function() {
-    expect(page.workItemDescription(page.firstWorkItem)).toBe('No description available for this work item.');
-    expect(page.workItemTitle(page.firstWorkItem)).toBe('');
+    expect(page.workItemDescription(page.firstWorkItem)).toBe('Some Description 14');
+    expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title 14');
   });
 
   it('should create a new workitem.', function () {
@@ -27,7 +27,7 @@ describe('Work item list', function () {
       expect(page.workItemDescription(page.workItemByNumber(0))).toBe('Some Description');
       expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Some Title');
       page.allWorkItems.getText().then(function (text) { 
-        expect(text).toContain("View Details Delete\nnew\n27\nSome Title\nSome Description");	
+        expect(text).toContain("View Details Delete\nnew\n1\nSome Title\nSome Description");	
       });
     });
   });
