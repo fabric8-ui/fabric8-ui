@@ -8,6 +8,7 @@
         <input type="text"
           [(ngModel)]="workItem.fields['system.title']"
           (keyup.enter)="save()"
+          (keyup)="checkTitle()"
           class="form-control"
           placeholder="Title (mandatory field)" required />
       </div>
@@ -23,7 +24,7 @@
     </div>
     <div class="list-group-item-text margin10">
       <div class="form-group">
-        <a id="workItemQuickAdd_saveBtn" class='pficon-add-circle-o' [ngClass]="{'icon-btn': workItem.fields['system.title'],'icon-btn-disabled':!workItem.fields['system.title']}" (click)="save()"></a>&nbsp;&nbsp;
+        <a id="workItemQuickAdd_saveBtn" class='pficon-add-circle-o' [ngClass]="{'icon-btn': validTitle,'icon-btn-disabled':!validTitle}" (click)="save()"></a>&nbsp;&nbsp;
         <a id="workItemQuickAdd_goBackBtn" class='pficon-error-circle-o icon-btn' (click)="goBack()"></a>
       </div>
     </div>
