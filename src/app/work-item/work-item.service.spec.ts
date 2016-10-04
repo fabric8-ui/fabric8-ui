@@ -72,14 +72,7 @@ describe("Work Item Service - ", () => {
 
         apiService.getWorkItems()
         .then(data => {
-            let wi = response.map((item) => {
-                item.selectedState = apiService.getSelectedState(item);
-                item.selectedState.extra_params = {
-                    workItem_id: item.id
-                };
-                return item;
-            });
-            expect(data).toEqual(wi);
+            expect(data).toEqual(response);
         });
     }));
 
@@ -95,12 +88,7 @@ describe("Work Item Service - ", () => {
 
         apiService.create(response[0])
         .then(data => {
-            let wi = response[0];
-            wi.selectedState = apiService.getSelectedState(response[0]);
-            wi.selectedState.extra_params = {
-                workItem_id: wi.id
-            };
-            expect(data).toEqual(wi);
+            expect(data).toEqual(response[0]);
         });
     }));
 
@@ -131,12 +119,7 @@ describe("Work Item Service - ", () => {
 
         apiService.update(response[0])
         .then(data => {
-            let wi = response[0];
-            wi.selectedState = apiService.getSelectedState(response[0]);
-            wi.selectedState.extra_params = {
-                workItem_id: wi.id
-            };
-            expect(data).toEqual(wi);
+            expect(data).toEqual(response[0]);
         });
     }));
 

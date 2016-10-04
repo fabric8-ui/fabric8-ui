@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 
+import { DropdownComponent } from './../../shared-component/dropdown/dropdown.component';
+import { DropdownOption } from './../../shared-component/dropdown/dropdown-option';
 import { Logger } from '../../shared/logger.service';
 import { WorkItem } from '../work-item';
 import { WorkItemService } from '../work-item.service';
-import { DropdownComponent } from './../../shared-component/dropdown/dropdown.component';
-import { DropdownOption } from './../../shared-component/dropdown/dropdown-option';
 
 @Component({
   selector: 'work-item-list',
@@ -32,13 +32,28 @@ export class WorkItemListComponent implements OnInit {
   }
 
   getOptions(): void {
-    this.stateDropdownOptions = this.workItemService.getStatusOptions();
+      this.workItemService.getStatusOptions()
+      .then((options) => {
+        this.stateDropdownOptions = options;
+      })
   }
 
   getWorkItems(): void {
     this.workItemService
       .getWorkItems()
-      .then(workItems => this.workItems = workItems.reverse());
+      .then((wItems) => {
+        return wItems.reverse();
+      })
+      .then((wItems) => {
+        this.workItemService
+        .getStatusOptions()
+        .then((options) => {
+          this.workItems = wItems.map((item) => {
+            item.selectedState = this.workItemService.getSelectedState(item, options);
+            return item;
+          });
+        });
+      });
   }
 
   addWorkItem(): void {
@@ -60,7 +75,12 @@ export class WorkItemListComponent implements OnInit {
     this.workItemService
       .update(this.workItems[index])
       .then((updatedWorkItem) => {
-        this.workItems[index] = updatedWorkItem;
+        this.workItemService
+        .getStatusOptions()
+        .then((options) => {
+          updatedWorkItem.selectedState = this.workItemService.getSelectedState(updatedWorkItem, options);
+          this.workItems[index] = updatedWorkItem;
+        });
       });
   }
 

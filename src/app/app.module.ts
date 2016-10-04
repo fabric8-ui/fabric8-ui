@@ -12,6 +12,7 @@ import { InMemoryDataService } from './in-memory-data.service';
 
 import { AppComponent }  from './app.component';
 import { BoardComponent} from './board/board.component';
+import { DropdownComponent } from './shared-component/dropdown/dropdown.component';
 import { FooterComponent} from './footer/footer.component';
 import { HeaderComponent} from './header/header.component';
 import { Logger } from './shared/logger.service';
@@ -23,7 +24,6 @@ import { WorkItemListComponent } from './work-item/work-item-list/work-item-list
 import { WorkItemQuickAddComponent } from './work-item/work-item-quick-add/work-item-quick-add.component';
 import { WorkItemSearchComponent } from './work-item/work-item-search/work-item-search.component';
 import { WorkItemService } from './work-item/work-item.service';
-import { DropdownComponent } from './shared-component/dropdown/dropdown.component';
 
 // conditionally import the inmemory resource module
 var moduleImports = [
