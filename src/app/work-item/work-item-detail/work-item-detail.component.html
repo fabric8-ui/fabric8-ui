@@ -10,10 +10,12 @@
         {{workItem.id}}
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" [ngClass]="{'has-error': !workItem.fields['system.title']}">
       <label class="col-sm-1 control-label" for="wi-detail-title">Title</label>
       <div class="col-sm-5">
         <input type="text" [(ngModel)]="workItem.fields['system.title']" id="wi-detail-title" placeholder="Title (mandatory)" required class="form-control">
+        <span *ngIf="!workItem.fields['system.title']" class="help-block">Title is mandatory.</span>
+
       </div>
     </div>
     <div class="form-group">
@@ -55,7 +57,12 @@
     <br /><br />
     <div class="form-group">
       <div class="col-sm-offset-1 col-sm-5">
-        <button type="submit" class="btn btn-primary" (click)="save()">Save</button>
+        <button
+          type="submit" class="btn"
+          [ngClass]="{'btn-primary': workItem.fields['system.title'],
+          'btn-primary-disabled':!workItem.fields['system.title']}"
+          (click)="save()"
+          [disabled]="!workItem.fields['system.title']">Save</button>
         <button type="submit" class="btn btn-default" (click)="goBack()">Back</button>
       </div>
     </div>
