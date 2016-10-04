@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Show command before executing
+set -x
+
 # We need to disable selinux for now, XXX
 /usr/sbin/setenforce 0
 
