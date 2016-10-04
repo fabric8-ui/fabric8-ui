@@ -7,8 +7,8 @@ import { WorkItemService } from '../work-item.service';
 
 @Component({
   selector: 'work-item-list',
-  templateUrl: '/work-item-list.component.html',
-  styleUrls: ['/work-item-list.component.scss'],
+  templateUrl: './work-item-list.component.html',
+  styleUrls: ['./work-item-list.component.scss'],
 })
 export class WorkItemListComponent implements OnInit {
   workItems: WorkItem[];
@@ -18,8 +18,8 @@ export class WorkItemListComponent implements OnInit {
   constructor(
     private router: Router,
     private workItemService: WorkItemService,
-    private logger: Logger) {
-  }
+    private logger: Logger
+  ) {}
 
   getWorkItems(): void {
     this.workItemService

@@ -6,11 +6,10 @@ import { LoginService } from './login.service';
 
 
 @Component({
-    selector: 'login-form',
-    templateUrl: '/login.component.html',
-    styleUrls: ['/login.component.scss'],
+  selector: 'login-form',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
-
 export class LoginComponent {
   loginItem: LoginItem;
   showError: boolean = false;

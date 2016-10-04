@@ -8,40 +8,43 @@ import { WorkItemSearchService } from './work-item-search.service';
 import { WorkItem } from '../work-item';
 
 @Component({
-    selector: 'work-item-search',
-    templateUrl: '/work-item-search.component.html',
-    styleUrls:  ['/work-item-search.component.scss'],
-    providers: [WorkItemSearchService]
+  selector: 'work-item-search',
+  templateUrl: './work-item-search.component.html',
+  styleUrls: ['./work-item-search.component.scss'],
+  providers: [WorkItemSearchService]
 })
 export class WorkItemSearchComponent implements OnInit {
-    workItems: Observable<WorkItem[]>;
-    private searchTerms = new Subject<string>();
+  workItems: Observable<WorkItem[]>;
+  private searchTerms = new Subject<string>();
 
-    constructor(
-        private workItemSearchService: WorkItemSearchService,
-        private router: Router) {}
+  constructor(
+    private workItemSearchService: WorkItemSearchService,
+    private router: Router
+  ) {}
 
-    // Push a search term into the observable stream.
-    search(term: string) { this.searchTerms.next(term); }
+  // Push a search term into the observable stream.
+  search(term: string) {
+    this.searchTerms.next(term);
+  }
 
-    ngOnInit() {
-        this.workItems = this.searchTerms
-            .debounceTime(300)        // wait for 300ms pause in events
-            .distinctUntilChanged()   // ignore if next search term is same as previous
-            .switchMap(term => term   // switch to new observable each time
-                // return the http search observable
-                ? this.workItemSearchService.search(term)
-                // or the observable of empty heroes if no search term
-                : Observable.of<WorkItem[]>([]))
-            .catch(error => {
-                // TODO: real error handling
-                console.log(error);
-                return Observable.of<WorkItem[]>([]);
-            });
-    }
+  ngOnInit() {
+    this.workItems = this.searchTerms
+      .debounceTime(300)    // wait for 300ms pause in events
+      .distinctUntilChanged()   // ignore if next search term is same as previous
+      .switchMap(term => term   // switch to new observable each time
+        // return the http search observable
+        ? this.workItemSearchService.search(term)
+        // or the observable of empty heroes if no search term
+        : Observable.of<WorkItem[]>([]))
+      .catch(error => {
+        // TODO: real error handling
+        console.log(error);
+        return Observable.of<WorkItem[]>([]);
+      });
+  }
 
-    gotoDetail(workItem: WorkItem) {
-        let link = ['/detail', workItem.id];
-        this.router.navigate(link);
-    }
+  gotoDetail(workItem: WorkItem) {
+    let link = ['/detail', workItem.id];
+    this.router.navigate(link);
+  }
 }

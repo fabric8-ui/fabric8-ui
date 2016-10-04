@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from "@angular/http";
-import { Logger } from '../shared/logger.service';
 
 import 'rxjs/add/operator/toPromise';
 
+import { Logger } from '../shared/logger.service';
 import { WorkItem } from './work-item';
 
 @Injectable()

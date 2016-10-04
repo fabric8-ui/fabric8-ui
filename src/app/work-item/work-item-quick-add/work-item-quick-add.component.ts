@@ -7,8 +7,8 @@ import { WorkItemService } from '../work-item.service';
 
 @Component({
   selector: 'work-item-quick-add',
-  templateUrl: '/work-item-quick-add.component.html',
-  styleUrls: ['/work-item-quick-add.component.scss']
+  templateUrl: './work-item-quick-add.component.html',
+  styleUrls: ['./work-item-quick-add.component.scss']
 })
 export class WorkItemQuickAddComponent implements OnInit {
   @Output() close = new EventEmitter();

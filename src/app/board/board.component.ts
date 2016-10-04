@@ -6,8 +6,8 @@ import { WorkItemService } from '../work-item/work-item.service';
 
 @Component({
   selector: 'my-board',
-  templateUrl: '/board.component.html',
-  styleUrls: ['/board.component.scss']
+  templateUrl: './board.component.html',
+  styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
   workItems: WorkItem[] = [];
@@ -19,7 +19,7 @@ export class BoardComponent implements OnInit {
 
   ngOnInit() {
     this.workItemService.getWorkItems()
-        .then(workItems => this.workItems = workItems);
+      .then(workItems => this.workItems = workItems);
   }
 
   gotoDetail(workItem: WorkItem) {
