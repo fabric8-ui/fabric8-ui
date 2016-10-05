@@ -10,6 +10,52 @@ export class InMemoryDataService implements InMemoryDbService {
       "responseText": "Good Job"
     };
 
-    return {loginStatus, workitems};
+    let workitemtypes = [
+      {
+        "fields": {
+          "system.assignee": {
+            "required": false,
+            "type": {
+              "kind": "user"
+            }
+          },
+          "system.creator": {
+            "required": true,
+            "type": {
+              "kind": "user"
+            }
+          },
+          "system.description": {
+            "required": false,
+            "type": {
+              "kind": "string"
+            }
+          },
+          "system.state": {
+            "required": true,
+            "type": {
+              "baseType": "string",
+              "kind": "enum",
+              "values": [
+                "new",
+                "in progress",
+                "resolved",
+                "closed"
+              ]
+            }
+          },
+          "system.title": {
+            "required": true,
+            "type": {
+              "kind": "string"
+            }
+          }
+        },
+        "name": "system.userstory",
+        "version": 0
+      }
+    ];
+
+    return {loginStatus, workitems, workitemtypes};
   }
 }
