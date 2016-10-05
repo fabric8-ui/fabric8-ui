@@ -41,8 +41,13 @@ export class WorkItemDetailComponent implements OnInit {
   }
 
   save(): void {
-    this.workItemService.update(this.workItem)
-      .then(() => this.goBack());
+    this.workItem.fields['system.title'] = this.workItem.fields['system.title'].trim()
+    if(this.workItem.fields['system.title']){
+      this.workItemService
+      .update(this.workItem)
+      .then(() => 
+        this.goBack());
+    }    
   }
 
   goBack(): void {
