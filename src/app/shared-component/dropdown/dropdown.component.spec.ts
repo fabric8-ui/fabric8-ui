@@ -75,7 +75,7 @@ describe("Dropdown component - ", () => {
         comp.options = options;
         comp.selected = slectedOption;
         fixture.detectChanges();
-        el = fixture.debugElement.query(By.css(".label"));
+        el = fixture.debugElement.query(By.css(".btn"));
         
         // First click - should show the list
         el.triggerEventHandler('click', {});
@@ -99,7 +99,7 @@ describe("Dropdown component - ", () => {
         comp.options = options;
         comp.selected = slectedOption;
         fixture.detectChanges();
-        el = fixture.debugElement.query(By.css(".label"));
+        el = fixture.debugElement.query(By.css(".btn"));
         
         // Click on the label to open the list
         el.triggerEventHandler('click', {});

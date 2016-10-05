@@ -64,10 +64,10 @@ export class WorkItemService {
       })
     } else {
       const active_class_map = {
-        'new': 'label-warning',
-        'in progress': 'label-primary',
-        'resolved': 'label-success',
-        'closed': 'label-info',
+        'new': 'btn-warning',
+        'in progress': 'btn-primary',
+        'resolved': 'btn-success',
+        'closed': 'btn-info',
       }
       const url = `${process.env.API_URL}workitemtypes`;
       return this.http

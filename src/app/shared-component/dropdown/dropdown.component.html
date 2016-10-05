@@ -1,18 +1,16 @@
-						
-<div *ngIf="selected" class="status">
-	<span 
-		class="label {{selected.active_class}}" 
-		(click)="toggle()"
-		>
-		
-		{{selected.option}}
-	</span>
-	<ul *ngIf="show" class="pf-dropdown">
-		<li 
-			*ngFor="let option of options;"
+<div *ngIf="selected" class="dropdown card-pf-time-frame-filter">
+	<button 
+		(click)="toggle()" 
+		type="button" 
+		class="btn dropdown-toggle {{selected.active_class ? selected.active_class : 'btn-default'}}" 
+		data-toggle="dropdown">
+		{{selected.option}} <span class="caret"></span>
+	</button>
+	<ul *ngIf="show" class="dropdown-menu dropdown-menu-left" style="display:block" role="menu">
+		<li *ngFor="let option of options;"
 			class="{{option.option_class}}" 
 			(click)="onChange(option)">
-			{{option.option}}
+			<a href="#">{{option.option}}</a>
 		</li>
 	</ul>
 </div>
