@@ -47,7 +47,7 @@ export class WorkItemQuickAddComponent implements OnInit {
         .create(this.workItem)
         .then(workItem => {
           this.workItem = workItem; // saved workItem, w/ id if new
-          this.logger.log(`created and returned this workitem: ${workItem}`);
+          this.logger.log(`created and returned this workitem:` + JSON.stringify(workItem));
           this.workItem.fields["system.description"] = '';
           this.workItem.fields["system.title"] = '';
           this.validTitle = false;
