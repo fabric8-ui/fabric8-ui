@@ -7,8 +7,13 @@ module.exports = function (config) {
     frameworks: ['jasmine'],
 
     files: [
-      {pattern: './config/karma-test-shim.js', watched: false}
+      {pattern: './src/assets/img/*', watched: false, included: false, served: true},
+      {pattern: './config/karma-test-shim.js', watched: false},
     ],
+
+    proxies: {
+      "/assets/img/": "/base/src/assets/img/"
+    },
 
     preprocessors: {
       './config/karma-test-shim.js': ['coverage', 'webpack', 'sourcemap']
