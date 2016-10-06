@@ -6,7 +6,7 @@
   <div class="form-horizontal">
     <div class="form-group">
       <label class="col-sm-1 control-label">ID</label>
-      <div class="col-sm-5">
+      <div class="col-sm-5" id="wi-detail-id">
         {{workItem.id}}
       </div>
     </div>
@@ -58,12 +58,12 @@
     <div class="form-group">
       <div class="col-sm-offset-1 col-sm-5">
         <button
-          type="submit" class="btn"
+          type="submit" class="btn" id="workItemDetail_btn_save"
           [ngClass]="{'btn-primary': workItem.fields['system.title'],
           'btn-primary-disabled':!workItem.fields['system.title']}"
           (click)="save()"
-          [disabled]="!workItem.fields['system.title']">Save</button>
-        <button type="submit" class="btn btn-default" (click)="goBack()">Back</button>
+          [disabled]="workItem.fields['system.title'] ? !(workItem.fields['system.title'].trim()) : !workItem.fields['system.title']">Save</button>
+        <button type="submit" id="workItemDetail_btn_back" class="btn btn-default" (click)="goBack()">Back</button>
       </div>
     </div>
   </div>
