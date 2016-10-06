@@ -1,70 +1,18 @@
-<div *ngIf="showDialog">	
-	<pf-dialog
-		(pfDialogClick)="onButtonClick($event)"
-		[dialog]='dialog'	
-	></pf-dialog>
-</div>
 <app-header></app-header>
 <div class="container-fluid screen-min-ht containerPaddT">
 	<div id="workItemList_quickAdd" class="width100 fl">
 		<div class="width100 fl supress-hover" (click)="addWorkItem()">
 			<work-item-quick-add (close)="close($event)"></work-item-quick-add>
 		</div>
-	</div>
-	<div class="list-group list-view-pf width100 fl">
-		<div *ngFor="let workItem of workItems; let counter = index" id="{{'workItemList_OuterWrap_'+counter}}" class="work-item-list-entry">
-			<div class="list-group-item" (click)="onSelect(workItem)"
-					 [class.selected]="workItem === selectedWorkItem">
-				<div class="list-view-pf-actions">
-					<button class="btn btn-default workItemList_ViewItemDetailBtn mobdn" (click)="gotoDetail(workItem)">View Details</button>
-					<button class="btn btn-default delete-button workItemList_deleteListItemBtn mobdn" (click)="deleteWorkItem(workItem); $event.stopPropagation()">Delete</button>
-					<div class="dropdown pull-right dropdown-kebab-pf">
-						<button class="btn btn-link dropdown-toggle workItemList_dropdownKebabBtn" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							<span class="fa fa-ellipsis-v"></span>
-						</button>
-						<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
-							<li><a href="#" class="workItemList_Delete">Delete</a></li>
-							<li><a href="#" class="workItemList_Backlog">Move to backlog</a></li>
-							<li><a href="#" class="workItemList_ChangeStatus">Change Status</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="list-view-pf-main-info">
-					<div class="list-view-pf-left mobdn">
-						<pf-dropdown
-						 (change)="onStateUpdate($event)" 
-						 [options]="stateDropdownOptions"
-						 [selected]="workItem.selectedState">
-						</pf-dropdown>	
-					</div>
-					<div class="list-view-pf-left type workItemList_workItemType">
-						<!--<span class='fa' [ngClass]="{'fa-bookmark': workItem.workItemType=='story', 'fa-bug':workItem.workItemType=='bug'}"></span>-->
-						<span class='fa' [ngClass]="{'fa-wrench': workItem.type=='system.bug',
-											'fa-user': workItem.type=='system.userstory',
-											'fa-globe': workItem.type=='system.feature',
-											'fa-bookmark': workItem.type=='system.experience',
-											'fa-eye': workItem.type=='system.experience',
-											'fa-bank': workItem.type=='system.fundamental',
-											'fa-rocket': workItem.type=='system.valueproposition' }">
-						</span>
-							{{workItem.id}}
-					</div>
-					<div class="list-view-pf-body">
-						<div class="list-view-pf-description">
-							<div class="list-group-item-heading workItemList_title width100 truncate">
-								{{workItem.fields['system.title']}}
-							</div>
-							<div class="list-group-item-text workItemList_description mobdn">
-								{{workItem.fields['system.description'] ? workItem.fields['system.description'] : "No description available for this work item."}}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!--<div *ngIf="workItem.isExpanded" class="work-item-details" >-->
-      			<!--{{workItem.name | uppercase}} - {{workItem.description}}-->
-				<!--<hr />-->
-      		<!--</div>-->
+		<div class="list-group list-view-pf width100 fl">
+			<work-item-list-entry *ngFor="let workItem of workItems; let counter = index" 
+				id="{{'workItemList_OuterWrap_'+counter}}"
+				class="work-item-list-entry"
+				[workItem]="workItem" 
+				(selectEvent)="onSelect($event)" 
+				(detailEvent)="onDetail($event)" 
+				(deleteEvent)="onDelete($event)">
+			</work-item-list-entry>
 		</div>
 	</div>
 </div>

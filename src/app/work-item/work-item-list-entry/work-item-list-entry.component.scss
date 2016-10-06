@@ -1,0 +1,22 @@
+@import "../../../assets/stylesheets/custom";
+
+.type span{
+  font-size: 12px;
+  margin-right: 10px;
+  color: #8b8d8f;
+}
+.work-item-details{
+	padding: 1% 8%;
+}
+.list-group-item {
+  cursor: pointer;
+}
+.selected {
+  background-color: #ededed;;
+}
+button:active:focus {
+  outline: none; 
+}
+button:active, span:focus {
+  outline: none; 
+}
