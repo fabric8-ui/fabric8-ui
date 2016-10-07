@@ -1,0 +1,71 @@
+@import "variables";
+//custom variables
+$width100: 100%;
+$fl: left;
+$fr: right;
+$margin20: 20px;
+$margin10: 10px;
+$margin5: 5px;
+$margin0: 0;
+$pad20: 20px;
+$pad10: 10px;
+$pad5: 5px;
+$pad0: 0;
+
+$textLeft: left;
+$textRight: right;
+$textCenter: center;
+
+//custom mixins
+@mixin truncate() {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;;
+}
+
+// custom classes
+.width100{ width: $width100; }
+.fl{ float: $fl; }
+.fr{ float: $fr; }
+.marginT20{ margin-top: $margin20; }
+.marginB20{ margin-bottom: $margin20; }
+.marginT5{ margin-top: $margin5; }
+.marginB5{ margin-bottom: $margin5; }
+.marginL5{ margin-left: $margin5; }
+.marginR5{ margin-right: $margin5; }
+.margin0{ margin: $margin0; }
+.paddingT20{ padding-top: $pad20; }
+.paddingB20{ padding-bottom: $pad20; }
+.paddingL20{ padding-left: $pad20; }
+.paddingR20{ padding-right: $pad20; }
+.paddingT5{ padding-top: $pad5; }
+.paddingB5{ padding-bottom: $pad5; }
+.paddingL5{ padding-left: $pad5; }
+.paddingR5{ padding-right: $pad5; }
+.padding0{ padding: $pad0; }
+.font16{ font-size: 16px; }
+.font18{ font-size:18px; }
+.vTop{ vertical-align: top; }
+.truncate{
+    @include truncate;
+}
+.dn{ display: none; }
+.dib{ display: inline-block; }
+
+@media (max-width: $grid-float-breakpoint){
+    $margin20: 1.667em;
+    $margin10: 0.833em;
+    $margin5: 0.417em;
+    $pad20: 1.667em;
+    $pad10: 0.833em;
+    $pad5: 0.417em;
+    #workItemQuickAdd_goBackBtn, #workItemQuickAdd_saveBtn{
+        margin: 0.2em 0;
+    }
+    .mobdn{ display: none; }
+    .list-view-pf {
+        .list-group-item-heading{
+            font-size: 1.083em;
+        }
+    }
+}

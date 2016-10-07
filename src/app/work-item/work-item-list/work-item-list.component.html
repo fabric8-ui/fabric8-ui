@@ -5,19 +5,19 @@
 	></pf-dialog>
 </div>
 <app-header></app-header>
-<div class="container-fluid screen-min-ht">
-	<div class="list-group list-view-pf list-view-pf-view">
-		 <div id="workItemList_quickAdd">
-			 <div class="list-group-item supress-hover" (click)="addWorkItem()">
-				<work-item-quick-add (close)="close($event)"></work-item-quick-add>
-			</div>
+<div class="container-fluid screen-min-ht containerPaddT">
+	<div id="workItemList_quickAdd" class="width100 fl">
+		<div class="width100 fl supress-hover" (click)="addWorkItem()">
+			<work-item-quick-add (close)="close($event)"></work-item-quick-add>
 		</div>
+	</div>
+	<div class="list-group list-view-pf width100 fl">
 		<div *ngFor="let workItem of workItems; let counter = index" id="{{'workItemList_OuterWrap_'+counter}}" class="work-item-list-entry">
 			<div class="list-group-item" (click)="onSelect(workItem)"
 					 [class.selected]="workItem === selectedWorkItem">
 				<div class="list-view-pf-actions">
-					<button class="btn btn-default workItemList_ViewItemDetailBtn" (click)="gotoDetail(workItem)">View Details</button>
-					<button class="btn btn-default delete-button workItemList_deleteListItemBtn" (click)="confirmDelete(workItem); $event.stopPropagation()">Delete</button>
+					<button class="btn btn-default workItemList_ViewItemDetailBtn mobdn" (click)="gotoDetail(workItem)">View Details</button>
+					<button class="btn btn-default delete-button workItemList_deleteListItemBtn mobdn" (click)="deleteWorkItem(workItem); $event.stopPropagation()">Delete</button>
 					<div class="dropdown pull-right dropdown-kebab-pf">
 						<button class="btn btn-link dropdown-toggle workItemList_dropdownKebabBtn" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 							<span class="fa fa-ellipsis-v"></span>
@@ -30,12 +30,12 @@
 					</div>
 				</div>
 				<div class="list-view-pf-main-info">
-					<div class="list-view-pf-left">
+					<div class="list-view-pf-left mobdn">
 						<pf-dropdown
 						 (change)="onStateUpdate($event)" 
 						 [options]="stateDropdownOptions"
 						 [selected]="workItem.selectedState">
-						</pf-dropdown>				
+						</pf-dropdown>	
 					</div>
 					<div class="list-view-pf-left type workItemList_workItemType">
 						<!--<span class='fa' [ngClass]="{'fa-bookmark': workItem.workItemType=='story', 'fa-bug':workItem.workItemType=='bug'}"></span>-->
@@ -51,10 +51,10 @@
 					</div>
 					<div class="list-view-pf-body">
 						<div class="list-view-pf-description">
-							<div class="list-group-item-heading workItemList_title">
+							<div class="list-group-item-heading workItemList_title width100 truncate">
 								{{workItem.fields['system.title']}}
 							</div>
-							<div class="list-group-item-text workItemList_description">
+							<div class="list-group-item-text workItemList_description mobdn">
 								{{workItem.fields['system.description'] ? workItem.fields['system.description'] : "No description available for this work item."}}
 							</div>
 						</div>
@@ -69,4 +69,9 @@
 	</div>
 </div>
 <div id="workItemList_Error" class="error" *ngIf="error">{{error}}</div>
-<app-footer></app-footer>
+<!--<div id="workItemList_quickAdd" class="width100 fl quickAdd">
+    <div class="width100 fl supress-hover" (click)="addWorkItem()">
+        <work-item-quick-add (close)="close($event)"></work-item-quick-add>
+    </div>
+</div>-->
+<app-footer class="width100 fl"></app-footer>

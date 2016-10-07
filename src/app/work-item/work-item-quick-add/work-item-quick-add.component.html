@@ -1,31 +1,41 @@
-<div class="list-view-pf-body">
-  <div id="workItemQuickAdd_container" class="list-view-pf-description">
-    <div class="list-group-item-heading">
-      <i>Quick Add a WorkItem</i>
+<div class="width100 fl marginT20">
+  <div id="workItemQuickAdd_container" class="width100 fl">
+    <div class="col-md-3 col-sm-12 col-xs-12 padB5">
+      <p class="width100 fl font16">Quick Add a WorkItem</p>
     </div>
-    <div id="workItemQuickAdd_title" class="list-group-item-text margin10">
-      <div class="form-group">
-        <input type="text"
-          [(ngModel)]="workItem.fields['system.title']"
-          (keyup.enter)="save()"
-          (keyup)="checkTitle()"
-          class="form-control"
-          placeholder="Title (mandatory field)" required />
+    <div class="col-md-7 col-sm-10 col-xs-10 padding0">
+      <div id="workItemQuickAdd_title" class="col-md-6 col-sm-6 col-xs-12 padB5">
+        <div class="form-group">
+          <input type="text"
+            [(ngModel)]="workItem.fields['system.title']"
+            (keyup.enter)="save()"
+            (keyup)="checkTitle()"
+            class="form-control"
+            placeholder="Title (mandatory field)" required />
+        </div>
+      </div>
+      <div id="workItemQuickAdd_desc" class="col-md-6 col-sm-6 col-xs-12 padB5">
+        <div class="form-group">
+          <input
+            [(ngModel)]="workItem.fields['system.description']"          
+            (keyup.enter)="save()"
+            class="form-control"
+            placeholder="Description" />
+        </div>
       </div>
     </div>
-    <div id="workItemQuickAdd_desc" class="list-group-item-text margin10">
-      <div class="form-group">
-        <input
-          [(ngModel)]="workItem.fields['system.description']"          
-          (keyup.enter)="save()"
-          class="form-control"
-          placeholder="Description" />
-      </div>
-    </div>
-    <div class="list-group-item-text margin10">
-      <div class="form-group">
-        <a id="workItemQuickAdd_saveBtn" class='pficon-add-circle-o' [ngClass]="{'icon-btn': validTitle,'icon-btn-disabled':!validTitle}" (click)="save()"></a>&nbsp;&nbsp;
-        <a id="workItemQuickAdd_goBackBtn" class='pficon-error-circle-o icon-btn' (click)="goBack()"></a>
+    <div class="col-md-2 col-sm-2 col-xs-2 padB5">
+      <div class="form-group fl">
+        <div class="col-md-6 col-sm-6 col-xs-12 padding0">
+          <a id="workItemQuickAdd_saveBtn" class="workItemQuickAdd_saveBtn fl marginL5 marginR5" [ngClass]="{'icon-btn': validTitle,'icon-btn-disabled':!validTitle}" (click)="save()">
+            <i class='pficon-add-circle-o fl'></i>
+          </a>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 padding0">
+          <a id="workItemQuickAdd_goBackBtn" class='icon-btn fl marginL5 marginR5' (click)="goBack()">
+            <i class="pficon-error-circle-o fl"></i>
+          </a>
+        </div>
       </div>
     </div>
   </div>
