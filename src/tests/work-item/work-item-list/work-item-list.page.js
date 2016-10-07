@@ -1,11 +1,16 @@
 /*
-* AlMighty page object example module for work item list page
-* See: http://martinfowler.com/bliki/PageObject.html
-* @author ldimaggi@redhat.com
-* TODO - Complete the page object mdel pending completion of UI at: http://demo.almighty.io/
-*/
+ * AlMighty page object example module for work item list page
+ * See: http://martinfowler.com/bliki/PageObject.html, 
+ * https://www.thoughtworks.com/insights/blog/using-page-objects-overcome-protractors-shortcomings
+ * @author ldimaggi@redhat.com
+ * TODO - Complete the page object model pending completion of UI at: http://demo.almighty.io/
+ */
 
 'use strict';
+
+/* 
+ * Work Item List Page Definition 
+ */
 
 var WorkItemListPage = function () {
   browser.get("http://localhost:8088/");
@@ -14,109 +19,401 @@ var WorkItemListPage = function () {
 WorkItemListPage.prototype  = Object.create({}, {
 
   workItemListButton:  {   
-		get: function ()     
-			{ return element(by.id("header_menuWorkItemList")); }
-	},
+    get: function ()     
+    { return element(by.id("header_menuWorkItemList")); }
+  },
 
   boardButton:  {   
-		get: function ()     
-			{ return element(by.id("header_menuBoard")); }
-	},
+    get: function ()     
+    { return element(by.id("header_menuBoard")); }
+  },
+  
+  clickBoardButton:   {
+    value: function () 
+    {
+      this.boardButton.click();
+      return new WorkItemBoardPage();
+    }
+  },
+  
+  clickWorkItemListButton:   {
+    value: function () 
+    { return this.workItemListButton.click(); }
+  },
 
   workItemTitle:  {   
-		value: function (workItemElement)
-			{ return workItemElement.element(by.css(".workItemList_title")).getText(); }
-	},
+    value: function (workItemElement)     
+    { return workItemElement.element(by.css(".workItemList_title")).getText(); }
+  },
 
   workItemDescription:  {   
-		value: function (workItemElement)     
-			{ return workItemElement.element(by.css(".workItemList_description")).getText(); }
-	},
+    value: function (workItemElement)     
+    { return workItemElement.element(by.css(".workItemList_description")).getText(); }
+  },
 
   workItemQuickAddTitle:  {   
-		get: function ()     
-			{ return element(by.css("#workItemQuickAdd_title input")); }
-	},
+    get: function ()     
+    { return element(by.css("#workItemQuickAdd_title input")); }
+  },
 
   workItemQuickAddDescription:  {   
-		get: function ()     
-			{ return element(by.css("#workItemQuickAdd_desc input")); }
-	},
+    get: function ()     
+    { return element(by.css("#workItemQuickAdd_desc input")); }
+  },
 
   saveButton:  {   
-		get: function ()     
-			{ return element(by.id("workItemQuickAdd_saveBtn")); }
-	},
+    get: function ()     
+    { return element(by.id("workItemQuickAdd_saveBtn")); }
+  },
 
   cancelButton:  {   
-		get: function ()     
-			{ return element(by.id("workItemQuickAdd_goBackBtn")); }
-	},
+    get: function ()     
+    { return element(by.id("workItemQuickAdd_goBackBtn")); }
+  },
 
   allWorkItems:  {   
-		get: function ()     
-			{ return element.all(by.css(".work-item-list-entry")); }
-	},
+    get: function ()     
+    { return element.all(by.css(".work-item-list-entry")); }
+  },
 
   firstWorkItem:  {   
-		get: function ()     
-			{ return element.all(by.css(".work-item-list-entry")).first(); }   
-	},
+    get: function ()     
+    { return element.all(by.css(".work-item-list-entry")).first(); }   
+  },
 
   lastWorkItem:  {   
-		get: function ()     
-			{ return element.all(by.css(".work-item-list-entry")).last(); }   
-	},
+    get: function ()     
+    { return element.all(by.css(".work-item-list-entry")).last(); }   
+  },
+
+  workItemByIndex:  {   
+    value: function (itemNumber)       
+    { return element.all(by.css(".work-item-list-entry")).get(itemNumber); }   
+  },
 
   workItemByNumber:  {   
-		value: function (itemNumber)     
-			{ 
-				var xPathString = "workItemList_OuterWrap_" + itemNumber;		
-				return element(by.id(xPathString)); 
-		}
-	},
+    value: function (itemNumber)     
+    { 
+      var xPathString = "workItemList_OuterWrap_" + itemNumber;    
+      return element(by.id(xPathString)); 
+    }
+  },
+
+  /*
+   * To access a work item's view/delete buttons and related fields - example code:
+   * 
+    var parentElement = page.firstWorkItem;
+    page.workItemViewButton(parentElement).getText().then(function (text) { 
+      console.log("text = " + text);
+    });
+    page.clickWorkItemViewButton(page.workItemViewButton(parentElement));
+   * 
+   */  
+
+  workItemViewButton:  {   
+    value: function (parentElement)         
+    { return parentElement.element(By.css( ".btn.btn-default.workItemList_ViewItemDetailBtn" )); }   
+  },
+
+  workItemViewId:  {   
+    value: function (parentElement)         
+    { return parentElement.element(By.css( ".list-view-pf-left.type.workItemList_workItemType" )); }   
+  },
+
+  workItemViewTitle:  {   
+    value: function (parentElement)         
+    { return parentElement.element(By.css( ".list-group-item-heading.workItemList_title" )); }   
+  },
+
+  workItemViewDescription:  {   
+    value: function (parentElement)         
+    { return parentElement.element(By.css( ".list-group-item-text.workItemList_description" )); }   
+  },
+
+  /*
+   * When the Work Item 'View Detail' page is opened, there can be a delay of a few seconds before
+   * the page contents are displayed - the browser.wait statement covers this wait for the title
+   * of the page - there is a further delay before the values of the elements on the page are displayed.  
+   */
+  clickWorkItemViewButton:   {
+    value: function (button, idValue) 
+    {
+      button.click();
+      var theDetailPage = new WorkItemDetailPage (idValue);
+      var until = protractor.ExpectedConditions;
+      browser.wait(until.presenceOf(theDetailPage.workItemDetailPageTitle), 30000, 'Detail page title taking too long to appear in the DOM');
+      browser.wait(waitForText(theDetailPage.workItemDetailTitle), 30000, "Title text is still not present");      
+      return theDetailPage;
+    }
+  },
+
+  workItemDeleteButton:  {   
+    value: function (parentElement)         
+    { return parentElement.element(By.css( ".btn.btn-default.delete-button.workItemList_deleteListItemBtn" )); }   
+  },
+
+  clickWorkItemDeleteButton:   {
+    value: function (button) 
+    { return button.click(); }
+  },
 
   typeQuickAddWorkItemTitle:  { 
-		value: function (keys) 
-			{ return this.workItemQuickAddTitle.sendKeys(keys); }
-	},
+    value: function (keys) 
+    { return this.workItemQuickAddTitle.sendKeys(keys); }
+  },
 
   typeQuickAddWorkItemDescription:  { 
-		value: function (keys) 
-			{ return this.workItemQuickAddDescription.sendKeys(keys); }
-	},
+    value: function (keys) 
+    { return this.workItemQuickAddDescription.sendKeys(keys); }
+  },
 
   clickQuickAddSave:   {
-		value: function () 
-			{ return this.saveButton.click(); }
-	},
+    value: function () 
+    { return this.saveButton.click(); }
+  },
 
   clickQuickAddCancel:   {
-		value: function () 
-			{ return this.cancelButton.click(); }
-	},
+    value: function () 
+    { return this.cancelButton.click(); }
+  },
 
   clickWorkItemListButton:   {
-		value: function () 
-			{ return this.workItemListButton.click(); }
-	},
+    value: function () 
+    { return this.workItemListButton.click(); }
+  },
 
   clickBoardButton:   {
-		value: function () 
-			{ return this.boardButton.click(); }
-	},
+    value: function () 
+    { 
+      var until = protractor.ExpectedConditions;
+      browser.wait(until.presenceOf(this.boardButton), 30000, 'Board button taking too long to appear in the DOM');    
+      this.boardButton.click(); 
+      return new WorkItemBoardPage();      
+    }
+  },
 
   userToggle:  {   
-		get: function ()     
-			{ return element(by.id("header_dropdownToggle")); }
-	},
+    get: function ()     
+    { return element(by.id("header_dropdownToggle")); }
+  },
 
   clickUserToggle:   {
-		value: function () 
-			{ return this.userToggle.click(); }
-	}
+    value: function () 
+    { return this.userToggle.click(); }
+  }
 });
 
+
+/* 
+ * Work Item Detail Page Definition 
+ */
+
+var WorkItemDetailPage = function (idValue) {
+  browser.get("http://localhost:8088/#/detail/" + idValue);
+};
+
+WorkItemDetailPage.prototype  = Object.create({}, {
+
+  workItemDetailPageTitle:  {   
+    get: function ()     
+    { return element(by.xpath(".//*[@id='workItemDetail_Wrapper']/h1")); }
+  },
+
+  workItemDetailTitle:  {   
+    get: function ()     
+    { return element(by.id("wi-detail-title")); }
+  },
+
+  setWorkItemDetailTitle:  {   
+    value: function (newTitleString, append)     
+    {   if (!append) {this.workItemDetailTitle.clear(newTitleString)};
+    return this.workItemDetailTitle.sendKeys(newTitleString); }
+  },  
+
+  workItemDetailDescription:  {   
+    get: function ()     
+    { return element(by.id("wi-detail-desc")); }
+  },
+
+  setWorkItemDetailDescription:  {   
+    value: function (newDescriptionString, append)     
+    {   if (!append) {this.workItemDetailDescription.clear(newDescriptionString)};
+    return this.workItemDetailDescription.sendKeys(newDescriptionString); }
+  },  
+
+  workItemDetailType:  {   
+    get: function ()     
+    { return element(by.id("wi-detail-type")); }
+  },
+
+  setWorkItemDetailType:  {   
+    value: function (newTypeString, append)     
+    {   return this.workItemDetailType.sendKeys(newTypeString); }
+  },  
+
+  workItemDetailCreator:  {   
+    get: function ()     
+    { return element(by.id("wi-detail-creator")); }
+  },
+
+  setWorkItemDetailCreator:  {   
+    value: function (newCreatorString, append)     
+    {   if (!append) {this.workItemDetailCreator.clear(newCreatorString)};
+    return this.workItemDetailCreator.sendKeys(newCreatorString); }
+  },  
+
+  workItemDetailAssignee:  {   
+    get: function ()     
+    { return element(by.id("wi-detail-assignee")); }
+  },
+
+  setWorkItemDetailAssignee:  {   
+    value: function (newAssigneeString, append)     
+    {   if (!append) {this.workItemDetailAssignee.clear(newAssigneeString)};
+    return this.workItemDetailAssignee.sendKeys(newAssigneeString); }
+  },
+
+  workItemDetailState:  {   
+    get: function ()     
+    { return element(by.id("wi-detail-state")); }
+  },
+
+  setWorkItemDetailState:  {   
+    value: function (newStateString, append)     
+    {   return this.workItemDetailState.sendKeys(newStateString); }
+  },
+
+  workItemDetailSaveButton:  {   
+    get: function ()     
+    { return element(by.css(".btn.btn-primary")); }
+  },
+
+  clickWorkItemDetailSaveButton:   {
+    value: function () 
+    { return this.workItemDetailSaveButton.click(); }
+  },
+
+  workItemDetailCancelButton:  {   
+    get: function ()     
+    { return element(by.css(".btn.btn-default")); }
+  },
+
+  clickWorkItemDetailCancelButton:   {
+    value: function () 
+    { return this.workItemDetailCancelButton.click(); }
+  }
+
+});
+
+/* 
+ * Work Item Board Page Definition 
+ */
+
+var WorkItemBoardPage = function () {
+  browser.get("http://localhost:8088/#/board");
+};
+
+WorkItemBoardPage.prototype  = Object.create({}, {
+  
+  workItemListButton:  {   
+    get: function ()     
+    { return element(by.id("header_menuWorkItemList")); }
+  },
+
+  boardButton:  {   
+    get: function ()     
+    { return element(by.id("header_menuBoard")); }
+  },
+  
+  clickBoardButton:   {
+    value: function () 
+    {
+      this.boardButton.click();
+      return new WorkItemBoardPage();
+    }
+  },
+  
+  clickWorkItemListButton:   {
+    value: function () 
+    { return this.workItemListButton.click(); }
+  },  
+  
+  workItemBoardSearchBox:  {   
+    get: function ()     
+    { return element(by.css("#search-box input")); }
+  },
+
+  typeworkItemBoardSearchBox:  { 
+    value: function (keys) 
+    { return this.workItemBoardSearchBox.sendKeys(keys); }
+  },
+  
+  allWorkItemCards:  {   
+    get: function ()     
+    { return element.all(by.css("#board_topWorkItems")); }
+  },
+
+  firstWorkItem:  {   
+    get: function ()     
+    { return element.all(by.css("#board_topWorkItems")).first(); }   
+  },
+
+  lastWorkItem:  {   
+    get: function ()     
+    { return element.all(by.css("#board_topWorkItems")).last(); }   
+  },
+
+  workItemByIndex:  {   
+    value: function (itemNumber)       
+      { return element.all(by.css("#board_topWorkItems")).get(itemNumber); }   
+    },
+  
+  workItemByNumber:  {   
+    value: function (itemNumber)     
+    { 
+      var xPathString = "board_topWorkItemList_" + itemNumber;    
+      return element(by.id(xPathString)); 
+    }
+  },
+  
+  /*
+   * When the Work Item 'View Detail' page is opened, there can be a delay of a few seconds before
+   * the page contents are displayed - the browser.wait statement covers this wait for the title
+   * of the page - there is a further delay before the values of the elements on the page are displayed.  
+   */
+  clickWorkItemViewButton:   {
+    value: function (button, idValue) 
+    {
+      button.click();
+      var theDetailPage = new WorkItemDetailPage (idValue);
+      var until = protractor.ExpectedConditions;
+      browser.wait(until.presenceOf(theDetailPage.workItemDetailPageTitle), 30000, 'Detail page title taking too long to appear in the DOM');
+      browser.wait(waitForText(theDetailPage.workItemDetailTitle), 30000, "Title text is still not present");      
+      return theDetailPage;
+    }
+  },
+
+  userToggle:  {   
+    get: function ()     
+    { return element(by.id("header_dropdownToggle")); }
+  },
+
+  clickUserToggle:   {
+    value: function () 
+    { return this.userToggle.click(); }
+  }
+});
+
+/*
+ * Custom wait function - determine if ANY text appears in a field's value
+ */
+function waitForText(elementFinder) {
+  return function () {
+    return elementFinder.getAttribute("value").then(function(text) {
+//      console.log("text = " + text);
+      return text !== "";  // could also be replaced with "return !!text;"
+    });
+  };
+};
+
 module.exports = WorkItemListPage;
-
-
