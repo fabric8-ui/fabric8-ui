@@ -24,6 +24,10 @@ const API_URL = process.env.API_URL || (ENV==='inmemory'?'app/':'http://localhos
  */
 module.exports = {
 
+  entry: {
+    'app': './src/main.ts'
+  },
+
   /**
    * Source map for Karma from the help of karma-sourcemap-loader &  karma-webpack
    *
@@ -119,7 +123,17 @@ module.exports = {
        *
        * See: https://github.com/webpack/raw-loader
        */
-      
+
+      {
+        test: /\.css$/,
+        exclude: helpers.root('src', 'app'),
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+      },
+      {
+        test: /\.css$/,
+        include: helpers.root('src', 'app'),
+        loader: 'raw!postcss'
+      },
       {
         test: /\.scss$/,
         exclude: helpers.root('src', 'app'),
@@ -204,7 +218,7 @@ module.exports = {
   tslint: {
     emitErrors: false,
     failOnHint: false,
-    resourcePath: 'src'
+    resourcePath: root
   },
 
   /**
