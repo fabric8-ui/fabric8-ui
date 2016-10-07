@@ -24,7 +24,7 @@ WorkItemListPage.prototype  = Object.create({}, {
 	},
 
   workItemTitle:  {   
-		value: function (workItemElement)     
+		value: function (workItemElement)
 			{ return workItemElement.element(by.css(".workItemList_title")).getText(); }
 	},
 
