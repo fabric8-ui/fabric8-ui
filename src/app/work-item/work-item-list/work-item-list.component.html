@@ -1,3 +1,9 @@
+<div *ngIf="showDialog">	
+	<pf-dialog
+		(pfDialogClick)="onButtonClick($event)"
+		[dialog]='dialog'	
+	></pf-dialog>
+</div>
 <app-header></app-header>
 <div class="container-fluid screen-min-ht">
 	<div class="list-group list-view-pf list-view-pf-view">
@@ -11,7 +17,7 @@
 					 [class.selected]="workItem === selectedWorkItem">
 				<div class="list-view-pf-actions">
 					<button class="btn btn-default workItemList_ViewItemDetailBtn" (click)="gotoDetail(workItem)">View Details</button>
-					<button class="btn btn-default delete-button workItemList_deleteListItemBtn" (click)="deleteWorkItem(workItem); $event.stopPropagation()">Delete</button>
+					<button class="btn btn-default delete-button workItemList_deleteListItemBtn" (click)="confirmDelete(workItem); $event.stopPropagation()">Delete</button>
 					<div class="dropdown pull-right dropdown-kebab-pf">
 						<button class="btn btn-link dropdown-toggle workItemList_dropdownKebabBtn" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 							<span class="fa fa-ellipsis-v"></span>

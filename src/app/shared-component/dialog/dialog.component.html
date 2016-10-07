@@ -1,0 +1,27 @@
+<div class="modal" id="alm-modal" tabindex="-1" role="dialog" 
+  [ngClass]="{'show': modalFadeIn,'hide':!modalFadeIn}"   
+  aria-labelledby="almModal" aria-hidden="false">
+  <div class="modal-dialog">
+    <div class="modal-content about-modal-pf">
+      <div class="modal-header">
+        <button type="button" class="close" 
+          (click)="closeModal()" data-dismiss="modal" aria-hidden="true">
+          <span class="pficon pficon-close"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h1 *ngIf='dialog.title'>{{ dialog.title ? dialog.title : '' }}</h1>
+        <div class="product-versions-pf">
+          <span *ngIf='dialog.message' id="pf-dialog-message">
+            {{ dialog.message ? dialog.message : '' }}
+          </span>
+        </div>
+      </div>
+      <div *ngIf='dialog.actionButtons' class="modal-footer">                    
+        <button *ngFor="let btn of dialog.actionButtons"      
+          type="submit" class="btn btn-primary alm-dialog-btn float-left" value="{{ btn.value}}" (click)="btnClick(btn.value)">{{ btn.title }}</button>  
+        
+      </div>
+    </div>
+  </div>
+</div>

@@ -19,6 +19,7 @@ import { Logger } from './shared/logger.service';
 import { LoginComponent} from './login/login.component';
 import { LoginService } from './login/login.service';
 import { routing } from './app.routing';
+import { DialogComponent} from './shared-component/dialog/dialog.component';
 import { WorkItemDetailComponent } from './work-item/work-item-detail/work-item-detail.component';
 import { WorkItemListComponent } from './work-item/work-item-list/work-item-list.component';
 import { WorkItemQuickAddComponent } from './work-item/work-item-quick-add/work-item-quick-add.component';
@@ -44,6 +45,7 @@ if (process.env.ENV=='inmemory')
     FooterComponent,
     HeaderComponent,
     LoginComponent,
+    DialogComponent,
     WorkItemDetailComponent,
     WorkItemQuickAddComponent,
     WorkItemListComponent,

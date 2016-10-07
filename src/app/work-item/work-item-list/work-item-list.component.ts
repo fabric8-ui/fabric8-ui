@@ -6,16 +6,20 @@ import { DropdownOption } from './../../shared-component/dropdown/dropdown-optio
 import { Logger } from '../../shared/logger.service';
 import { WorkItem } from '../work-item';
 import { WorkItemService } from '../work-item.service';
+import { Dialog } from '../../shared-component/dialog/dialog';
+import { DialogComponent } from '../../shared-component/dialog/dialog.component';
 
-@Component({
+@Component({  
   selector: 'work-item-list',
   templateUrl: './work-item-list.component.html',
   styleUrls: ['./work-item-list.component.scss'],
 })
 export class WorkItemListComponent implements OnInit {
   workItems: WorkItem[];
-  selectedWorkItem: WorkItem;
+  selectedWorkItem: WorkItem;  
   addingWorkItem = false;
+  dialog: Dialog;
+  showDialog = false;
 
   stateDropdownOptions: DropdownOption[];
 
@@ -84,6 +88,18 @@ export class WorkItemListComponent implements OnInit {
       });
   }
 
+  confirmDelete(workItem: WorkItem){
+    this.selectedWorkItem = workItem;
+    this.dialog = {
+      "title":"Confirm deletetion of Work Item",
+      "message":"Are you sure you want to delete Work Item - " + workItem.fields["system.title"] + " ?",
+      "actionButtons" : [
+        {'title':"Delete","value":1},
+        {'title':"Don't Delete","value":0}]
+    };
+    this.showDialog = true;    
+  }
+  
   deleteWorkItem(workItem: WorkItem): void {
     this.workItemService
       .delete(workItem)
@@ -100,5 +116,14 @@ export class WorkItemListComponent implements OnInit {
   gotoDetail(workItem: WorkItem): void {
     this.selectedWorkItem = workItem;
     this.router.navigate(['/detail', this.selectedWorkItem.id]);
+  }
+  
+  onButtonClick(val: number) {
+    console.log(val)    
+    if(val==1){
+      this.deleteWorkItem(this.selectedWorkItem);
+    }else{      
+    }
+    this.showDialog = false
   }
 }
