@@ -28,17 +28,12 @@ WorkItemListPage.prototype  = Object.create({}, {
     { return element(by.id("header_menuBoard")); }
   },
   
-  clickBoardButton:   {
+  clickboardButton:   {
     value: function () 
     {
       this.boardButton.click();
       return new WorkItemBoardPage();
     }
-  },
-  
-  clickWorkItemListButton:   {
-    value: function () 
-    { return this.workItemListButton.click(); }
   },
 
   workItemTitle:  {   
@@ -184,12 +179,7 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   clickBoardButton:   {
     value: function () 
-    { 
-      var until = protractor.ExpectedConditions;
-      browser.wait(until.presenceOf(this.boardButton), 30000, 'Board button taking too long to appear in the DOM');    
-      this.boardButton.click(); 
-      return new WorkItemBoardPage();      
-    }
+    { return this.boardButton.click(); }
   },
 
   userToggle:  {   
@@ -200,7 +190,106 @@ WorkItemListPage.prototype  = Object.create({}, {
   clickUserToggle:   {
     value: function () 
     { return this.userToggle.click(); }
-  }
+  },
+  
+  /*
+   * In order to locate a workitem by its ID in the UI, it is necessary to search
+   * for the ID after extracting the workitems out of the UI - and then access the
+   * correct workitem as displayed in the UI through the unique ID.
+   */ 
+  findWorkItemByIdDesktop:   {
+    value: function (page, targetWorkItemIndex) 
+    {
+      var returnWorkItem;
+      /* Retrieve the text of all the workitems from the Desktop UI */
+      page.allWorkItems.getText().then(function (text) { 
+
+      /* Add a space so that the text can be accessed as a string */
+      var str = text + ' ';
+
+      /* Split the string into an array */	
+      var res = str.split('View Details Delete\n'); 
+
+      /* And then convert that string array into an array of workitem objects, discard the
+      * first object as it only contains column titles */	    		
+      var workitems = [];
+      for (var i = 1; i < res.length; i++) {
+
+        /* Remove the new line chars from the workitem text 
+         * [ 'new', '13', 'Some Title 13', 'Some Description 13,' ] */
+        var temp = res[i].split('\n');
+
+        /* And create the workitem objects */
+        workitems[i-1] = {
+          workItemIndex:temp[1],
+          workItemTitle:temp[2],
+          workItemDescription:temp[3],
+          workItemState:temp[0]
+        };
+      }
+
+      /* Finally - find and return the workitem object that contains the intended index */
+      var returnWorkItem;
+        for (var i = 0; i < workitems.length; i++) {
+          if (workitems[i].workItemIndex == targetWorkItemIndex){ 
+            returnWorkItem = page.workItemByIndex(i);
+            break;
+          }
+        }
+      });
+      return returnWorkItem;
+    }
+  },
+  
+  /*
+   * In order to locate a workitem by its ID in the UI, it is necessary to search
+   * for the ID after extracting the workitems out of the UI - and then access the
+   * correct workitem as displayed in the UI through the unique ID.
+   */ 
+  findWorkItemByIdPhone:   {
+    value: function (page, targetWorkItemIndex) 
+    {
+      var returnWorkItem;
+      /* Retrieve the text of all the workitems from the Desktop UI */
+      page.allWorkItems.getText().then(function (text) { 
+
+        /* Add a space so that the text can be accessed as a string */
+        var str = text + ' ';
+
+        /* Split the string into an array */	
+        var res = str.split(','); 
+        for (var i = 0; i < res.length; i++) {
+          var tmp = res[i].replace("\n", ",");
+        }
+
+        /* And then convert that string array into an array of workitem objects */	    		
+        var workitems = [];
+        for (var i = 0; i < res.length; i++) {
+
+          /* Remove the new line chars from the workitem text 
+           * [ '13', 'Some Title 13' ] */
+          var temp = res[i].split('\n');
+
+          /* And create the workitem objects */
+          workitems[i] = {
+            workItemTitle:temp[1],
+            workItemIndex:temp[0]
+            };
+        }
+
+        /* Finally - find and return the workitem object that contains the intended index */
+        var returnWorkItem;
+        for (var i = 0; i < workitems.length; i++) {
+          if (workitems[i].workItemIndex == targetWorkItemIndex){ 
+            returnWorkItem = page.workItemByIndex(i);
+            break;
+          }
+        }
+      });
+      return returnWorkItem;
+    }
+  }  
+  
 });
 
 
@@ -324,19 +413,6 @@ WorkItemBoardPage.prototype  = Object.create({}, {
     get: function ()     
     { return element(by.id("header_menuBoard")); }
   },
-  
-  clickBoardButton:   {
-    value: function () 
-    {
-      this.boardButton.click();
-      return new WorkItemBoardPage();
-    }
-  },
-  
-  clickWorkItemListButton:   {
-    value: function () 
-    { return this.workItemListButton.click(); }
-  },  
   
   workItemBoardSearchBox:  {   
     get: function ()     
