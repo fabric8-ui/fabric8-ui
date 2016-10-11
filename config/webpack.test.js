@@ -218,7 +218,7 @@ module.exports = {
   tslint: {
     emitErrors: false,
     failOnHint: false,
-    resourcePath: root
+    resourcePath: 'src'
   },
 
   /**
