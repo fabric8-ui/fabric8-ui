@@ -27,7 +27,7 @@
     "no-access-missing-member": true,
     "invoke-injectable": true,
 
-    "ordered-imports": [true, {"import-sources-order": "case-insensitive", "named-imports-order": "case-insensitive"}],
+    "ordered-imports": false,
     "quotemark": [true, "single"],
     "class-name": true,
     "semicolon": [true, "always", "ignore-interfaces"],
