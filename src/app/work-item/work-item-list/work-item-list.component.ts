@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router }            from '@angular/router';
 
 import { Logger } from '../../shared/logger.service';
-import { WorkItem } from '../work-item';
-import { WorkItemService } from '../work-item.service';
+
+import { WorkItem }                   from '../work-item';
 import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-list-entry.component';
+import { WorkItemService }            from '../work-item.service';
 
 @Component({  
-  selector: 'work-item-list',
+  selector: 'alm-work-item-list',
   templateUrl: './work-item-list.component.html',
   styleUrls: ['./work-item-list.component.scss'],
 })
@@ -62,7 +63,7 @@ export class WorkItemListComponent implements OnInit {
   onSelect(entryComponent: WorkItemListEntryComponent): void {
     let workItem: WorkItem = entryComponent.getWorkItem();
     // de-select prior selected element (if any)
-    if (this.selectedWorkItemEntryComponent && this.selectedWorkItemEntryComponent!=entryComponent)
+    if (this.selectedWorkItemEntryComponent && this.selectedWorkItemEntryComponent != entryComponent)
       this.selectedWorkItemEntryComponent.deselect();
     // select new component
     entryComponent.select();

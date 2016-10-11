@@ -1,13 +1,14 @@
-import {Injectable}     from '@angular/core';
-import {Http, Response} from '@angular/http';
+import { Injectable }     from '@angular/core';
+import { Http, Response } from '@angular/http';
 
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {WorkItem}           from '../work-item';
+import { WorkItem } from '../work-item';
 
 @Injectable()
 export class WorkItemSearchService {
-  constructor(private http: Http) {}
+  constructor(private http: Http) {
+  }
 
   search(term: string): Observable<WorkItem[]> {
     return this.http

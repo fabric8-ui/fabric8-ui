@@ -1,28 +1,31 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from "@angular/http";
+import { Headers, Http } from '@angular/http';
+
 import 'rxjs/add/operator/toPromise';
 
-import { DropdownOption } from './../shared-component/dropdown/dropdown-option';
-import { Logger } from './../shared/logger.service';
+import { Logger } from '../shared/logger.service';
+
+import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
+
 import { WorkItem } from './work-item';
 
 @Injectable()
 export class WorkItemService {
   private headers = new Headers({'Content-Type': 'application/json'});
-  private workItemUrl = process.env.API_URL+'workitems';  // URL to web api
-  private availableStates: DropdownOption[] = []; 
+  private workItemUrl = process.env.API_URL + 'workitems';  // URL to web api
+  private availableStates: DropdownOption[] = [];
 
   constructor(private http: Http,
-              private logger: Logger) { 
-    logger.log("WorkItemService running in " + process.env.ENV + " mode.");
-    logger.log("WorkItemService using url " + this.workItemUrl);
+              private logger: Logger) {
+    logger.log('WorkItemService running in ' + process.env.ENV + ' mode.');
+    logger.log('WorkItemService using url ' + this.workItemUrl);
   }
 
   getWorkItems(): Promise<WorkItem[]> {
     return this.http
       .get(this.workItemUrl)
       .toPromise()
-      .then(response => process.env.ENV!='inmemory' ? response.json() as WorkItem[] : response.json().data as WorkItem[])
+      .then(response => process.env.ENV != 'inmemory' ? response.json() as WorkItem[] : response.json().data as WorkItem[])
       .catch(this.handleError);
   }
 
@@ -34,28 +37,28 @@ export class WorkItemService {
   delete(workItem: WorkItem): Promise<void> {
     const url = `${this.workItemUrl}/${workItem.id}`;
     return this.http
-      .delete(url, {headers: this.headers, body: ""})
+      .delete(url, {headers: this.headers, body: ''})
       .toPromise()
       .then(() => null)
       .catch(this.handleError);
   }
 
   create(workItem: WorkItem): Promise<WorkItem> {
-    if (process.env.ENV==='inmemory') {
+    if (process.env.ENV === 'inmemory') {
       // the inmemory db uses number id's by default. That clashes with the core api.
       // so we create a random id for new inmemory items and set them prior to storing,
       // so the inmemory db uses them as id. As the id is possibly displayed in the
       // ui, only 5 random characters are used to not break UI components. The entropy
       // is sufficient for tests and dev.  
-      workItem.id = "";
-      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      for(var i=0;i<5;i++)
+      workItem.id = '';
+      var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      for (var i = 0; i < 5; i++)
         workItem.id += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return this.http
       .post(this.workItemUrl, JSON.stringify(workItem), {headers: this.headers})
       .toPromise()
-      .then(response => process.env.ENV!='inmemory'?response.json() as WorkItem:response.json().data as WorkItem)
+      .then(response => process.env.ENV != 'inmemory' ? response.json() as WorkItem : response.json().data as WorkItem)
       .catch(this.handleError);
   }
 
@@ -64,7 +67,7 @@ export class WorkItemService {
     return this.http
       .put(url, JSON.stringify(workItem), {headers: this.headers})
       .toPromise()
-      .then(response => process.env.ENV!='inmemory'?response.json() as WorkItem : workItem)
+      .then(response => process.env.ENV != 'inmemory' ? response.json() as WorkItem : workItem)
       .catch(this.handleError);
   }
 
@@ -72,20 +75,20 @@ export class WorkItemService {
     if (this.availableStates.length) {
       return new Promise((resolve, reject) => {
         resolve(this.availableStates);
-      })
+      });
     } else {
       const active_class_map = {
         'new': 'btn-warning',
         'in progress': 'btn-primary',
         'resolved': 'btn-success',
         'closed': 'btn-info',
-      }
+      };
       const url = `${process.env.API_URL}workitemtypes`;
       return this.http
         .get(url)
         .toPromise()
         .then((response) => {
-          let states = process.env.ENV!='inmemory'?response.json() : response.json().data;
+          let states = process.env.ENV != 'inmemory' ? response.json() : response.json().data;
           this.availableStates = states[0].fields['system.state'].type.values.map((item: string, index: number) => {
             return {
               id: index,

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
 
-import { Observable }        from 'rxjs/Observable';
-import { Subject }           from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import { Subject }    from 'rxjs/Subject';
 
-import { WorkItemSearchService } from './work-item-search.service';
 import { WorkItem } from '../work-item';
+import { WorkItemSearchService } from './work-item-search.service';
 
 @Component({
-  selector: 'work-item-search',
+  selector: 'alm-work-item-search',
   templateUrl: './work-item-search.component.html',
   styleUrls: ['./work-item-search.component.scss'],
   providers: [WorkItemSearchService]

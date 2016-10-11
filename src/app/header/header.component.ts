@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-header',
+  selector: 'alm-app-header',
   templateUrl: './header.component.html'
 })
 

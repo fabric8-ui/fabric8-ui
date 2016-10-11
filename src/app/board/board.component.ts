@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router }            from '@angular/router';
 
 import { WorkItem } from '../work-item/work-item';
 import { WorkItemService } from '../work-item/work-item.service';
 
 @Component({
-  selector: 'my-board',
+  selector: 'alm-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss']
 })

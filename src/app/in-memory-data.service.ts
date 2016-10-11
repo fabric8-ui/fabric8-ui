@@ -1,58 +1,66 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
+
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
-    let workitems = [1,2,3,4,5,6,7,8,9,10,11,12,13,14].map((n) => {
-      return {"fields":{"system.assignee":"someUser"+n,"system.creator":"someOtherUser"+n,"system.description":"Some Description "+n,"system.state":"new","system.title":"Some Title "+n},"id":""+n,"type":"system.userstory","version":1};
+    let workitems = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((n) => {
+      return {'fields': {'system.assignee': 'someUser' + n,
+                         'system.creator': 'someOtherUser' + n,
+                         'system.description': 'Some Description ' + n,
+                         'system.state': 'new',
+                         'system.title': 'Some Title ' + n},
+              'id': '' + n,
+              'type': 'system.userstory',
+              'version': 1};
     });
 
     let loginStatus = {
-      "status": 200,
-      "responseText": "Good Job"
+      'status': 200,
+      'responseText': 'Good Job'
     };
 
     let workitemtypes = [
       {
-        "fields": {
-          "system.assignee": {
-            "required": false,
-            "type": {
-              "kind": "user"
+        'fields': {
+          'system.assignee': {
+            'required': false,
+            'type': {
+              'kind': 'user'
             }
           },
-          "system.creator": {
-            "required": true,
-            "type": {
-              "kind": "user"
+          'system.creator': {
+            'required': true,
+            'type': {
+              'kind': 'user'
             }
           },
-          "system.description": {
-            "required": false,
-            "type": {
-              "kind": "string"
+          'system.description': {
+            'required': false,
+            'type': {
+              'kind': 'string'
             }
           },
-          "system.state": {
-            "required": true,
-            "type": {
-              "baseType": "string",
-              "kind": "enum",
-              "values": [
-                "new",
-                "in progress",
-                "resolved",
-                "closed"
+          'system.state': {
+            'required': true,
+            'type': {
+              'baseType': 'string',
+              'kind': 'enum',
+              'values': [
+                'new',
+                'in progress',
+                'resolved',
+                'closed'
               ]
             }
           },
-          "system.title": {
-            "required": true,
-            "type": {
-              "kind": "string"
+          'system.title': {
+            'required': true,
+            'type': {
+              'kind': 'string'
             }
           }
         },
-        "name": "system.userstory",
-        "version": 0
+        'name': 'system.userstory',
+        'version': 0
       }
     ];
 

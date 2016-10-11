@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router }    from '@angular/router';
 
 import { LoginItem } from './login-item';
 import { LoginService } from './login.service';
 
 
 @Component({
-  selector: 'login-form',
+  selector: 'alm-login-form',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -25,11 +25,10 @@ export class LoginComponent {
     this.loginService.gitHubSignIn().then(loginStatus => this.checkStatus(loginStatus));
   }
 
-  checkStatus(loginStatus:any){
-    if(loginStatus.token)
-    {
-      this.router.navigate(['work-item-list'],{});
-    }else{
+  checkStatus(loginStatus: any){
+    if (loginStatus.token) {
+      this.router.navigate(['work-item-list'], {});
+    } else {
       this.statusCode = loginStatus.status;
       this.feedbackMessage = loginStatus.responseText;
       this.showError = true;

@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
+import { Component, OnInit }      from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 
 import { Logger } from '../../shared/logger.service';
+
 import { WorkItem } from '../work-item';
 import { WorkItemService } from '../work-item.service';
 
 @Component({
-  selector: 'work-item-detail',
+  selector: 'alm-work-item-detail',
   templateUrl: './work-item-detail.component.html',
   styleUrls: ['./work-item-detail.component.scss']
 })
@@ -34,15 +35,15 @@ export class WorkItemDetailComponent implements OnInit {
           .then(workItem => this.workItem = workItem);
       } else {
         this.workItem = new WorkItem();
-        this.workItem.fields = {"system.assignee": null, "system.state": 'new', "system.creator": "me", "system.title": null, "system.description": null};
+        this.workItem.fields = {'system.assignee': null, 'system.state': 'new', 'system.creator': 'me', 'system.title': null, 'system.description': null};
         this.workItem.type = 'system.userstory';
       }
     });
   }
 
   save(): void {
-    this.workItem.fields['system.title'] = this.workItem.fields['system.title'].trim()
-    if(this.workItem.fields['system.title']){
+    this.workItem.fields['system.title'] = this.workItem.fields['system.title'].trim();
+    if (this.workItem.fields['system.title']) {
       this.workItemService
       .update(this.workItem)
       .then(() => 

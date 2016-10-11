@@ -1,25 +1,25 @@
-<app-header></app-header>
+<alm-app-header></alm-app-header>
 <div class="container-fluid screen-min-ht containerPaddT">
 	<div id="workItemList_quickAdd" class="width100 fl">
 		<div class="width100 fl supress-hover" (click)="addWorkItem()">
-			<work-item-quick-add (close)="close($event)"></work-item-quick-add>
+			<alm-work-item-quick-add (close)="close($event)"></alm-work-item-quick-add>
 		</div>
 		<div class="list-group list-view-pf width100 fl">
-			<work-item-list-entry *ngFor="let workItem of workItems; let counter = index" 
+			<alm-work-item-list-entry *ngFor="let workItem of workItems; let counter = index"
 				id="{{'workItemList_OuterWrap_'+counter}}"
 				class="work-item-list-entry"
 				[workItem]="workItem" 
 				(selectEvent)="onSelect($event)" 
 				(detailEvent)="onDetail($event)" 
 				(deleteEvent)="onDelete($event)">
-			</work-item-list-entry>
+			</alm-work-item-list-entry>
 		</div>
 	</div>
 </div>
 <div id="workItemList_Error" class="error" *ngIf="error">{{error}}</div>
 <!--<div id="workItemList_quickAdd" class="width100 fl quickAdd">
     <div class="width100 fl supress-hover" (click)="addWorkItem()">
-        <work-item-quick-add (close)="close($event)"></work-item-quick-add>
+        <alm-work-item-quick-add (close)="close($event)"></alm-work-item-quick-add>
     </div>
 </div>-->
-<app-footer class="width100 fl"></app-footer>
+<alm-app-footer class="width100 fl"></alm-app-footer>

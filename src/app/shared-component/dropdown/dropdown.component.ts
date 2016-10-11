@@ -1,47 +1,49 @@
-import { 
-	Component, 
-	OnInit, 
-	Input,
-	Output,
-	EventEmitter
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
 } from '@angular/core';
 
 import { DropdownOption } from './dropdown-option';
 
 @Component({
-	selector: 'pf-dropdown',
-	templateUrl: './dropdown.component.html',
-	styleUrls: ['./dropdown.component.scss'],
+  selector: 'pf-dropdown',
+  templateUrl: './dropdown.component.html',
+  styleUrls: ['./dropdown.component.scss'],
 })
-export class DropdownComponent implements OnInit{
-	@Input() options: DropdownOption[];
-	@Input() selected: DropdownOption;
+export class DropdownComponent implements OnInit {
+  @Input() options: DropdownOption[];
+  @Input() selected: DropdownOption;
 
-	@Output('change') onUpdate = new EventEmitter();
+  @Output('change') onUpdate = new EventEmitter();
 
-	show: boolean = false;
+  show: boolean = false;
 
-	constructor() {}
-	
-	ngOnInit(): void {}
+  constructor() {
+  }
 
-	toggle(): void {
-		this.show = !this.show;
-	}
+  ngOnInit(): void {
+  }
 
-	open(): void {
-		this.show = true;
-	}
+  toggle(): void {
+    this.show = !this.show;
+  }
 
-	close(): void {
-		this.show = false;
-	}
+  open(): void {
+    this.show = true;
+  }
 
-	onChange(option: DropdownOption): void {
-		this.onUpdate.emit({
-			currentOption: this.selected,
-			newOption: option
-		});
-		this.toggle();
-	}
+  close(): void {
+    this.show = false;
+  }
+
+  onChange(option: DropdownOption): void {
+    this.onUpdate.emit({
+      currentOption: this.selected,
+      newOption: option
+    });
+    this.toggle();
+  }
 }

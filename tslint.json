@@ -27,8 +27,12 @@
     "no-access-missing-member": true,
     "invoke-injectable": true,
 
-    "ordered-imports": true,
+    "ordered-imports": [true, {"import-sources-order": "case-insensitive", "named-imports-order": "case-insensitive"}],
     "quotemark": [true, "single"],
-    "indent": 2
+    "class-name": true,
+    "semicolon": [true, "always", "ignore-interfaces"],
+    "indent": [true, "spaces"],
+    "jsdoc-format": true,
+    "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-type", "check-typecast"]
   }
 }
