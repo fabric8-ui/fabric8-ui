@@ -208,7 +208,7 @@ WorkItemListPage.prototype  = Object.create({}, {
       var str = text + ' ';
 
       /* Split the string into an array */	
-      var res = str.split('View Details Delete\n'); 
+      var res = str.split('new\n');
 
       /* And then convert that string array into an array of workitem objects, discard the
       * first object as it only contains column titles */	    		
