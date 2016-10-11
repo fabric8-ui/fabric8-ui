@@ -87,11 +87,11 @@ export class WorkItemListEntryComponent implements OnInit {
   confirmDelete(event: MouseEvent) {
     event.stopPropagation();
     this.dialog = {
-      'title': 'Confirm deletetion of Work Item',
+      'title': 'Confirm deletion of Work Item',
       'message': 'Are you sure you want to delete Work Item - ' + this.workItem.fields['system.title'] + ' ?',
       'actionButtons': [
-        {'title': 'Delete', 'value': 1},
-        {'title': 'Don\'t Delete', 'value': 0}]
+        {'title': 'Confirm', 'value': 1},
+        {'title': 'Cancel', 'value': 0}]
     };
     this.showDialog = true;
   }
