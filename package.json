@@ -36,15 +36,18 @@
     "prebuild": "npm run clean-and-copy",
     "prebuild:prod": "npm run clean-and-copy",
     "protractor": "sleep 15 && ./node_modules/protractor/bin/protractor protractor.config.js",
+    "reinstall": "rm -rf node_modules && npm cache clean && npm install",
     "setup": "npm install && npm run validate",
     "start": "webpack-dev-server --inline --progress --host 0.0.0.0 --port 8088",
-    "test": "karma start",
+    "test": "npm-run-all --serial validate test:func",
+    "test:func": "./run_functional_tests.sh",
+    "test:unit": "karma start",
     "testserver-start": "webpack-dev-server --inline --progress --host 0.0.0.0 --port 8088",
-    "validate": "npm-run-all --parallel validate-webpack:* test --serial check-coverage",
+    "validate": "npm-run-all --parallel validate-webpack:* test:unit --serial check-coverage",
     "validate-webpack:dev": "webpack-validator webpack.config.js --env.dev",
     "validate-webpack:prod": "webpack-validator webpack.config.js --env.prod",
     "webdriver-start": "./node_modules/protractor/bin/webdriver-manager update && ./node_modules/protractor/bin/webdriver-manager start",
-    "watch:test": "npm test -- --auto-watch --no-single-run"
+    "watch:test": "npm run test:unit -- --auto-watch --no-single-run"
   },
   "dependencies": {
     "@angular/common": "2.0.1",
