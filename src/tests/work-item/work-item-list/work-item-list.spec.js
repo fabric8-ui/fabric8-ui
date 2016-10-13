@@ -66,7 +66,7 @@ describe('Work item list', function () {
       expect(page.workItemDescription(page.workItemByNumber(0))).toBe('Some Description');
       expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Some Title');
       page.allWorkItems.getText().then(function (text) {
-        expect(text).toContain("new\n1\nSome Title 1\nSome Description 1\nView Details Delete");
+        expect(text).toContain("new\n1\nSome Title 1\nSome Description 1\nView Details");
       });
     });
   });
