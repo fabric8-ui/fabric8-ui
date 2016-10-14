@@ -147,6 +147,7 @@ export class WorkItemListEntryComponent implements OnInit {
           .getStatusOptions()
           .then((options) => {
             updatedWorkItem.selectedState = this.workItemService.getSelectedState(updatedWorkItem, options);
+            this.workItem = updatedWorkItem;
           });
       });
   }
