@@ -14,6 +14,7 @@ import { FormsModule }         from '@angular/forms';
 import { By }                  from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { AlmTrim } from '../../pipes/alm-trim';
 import { Logger } from '../../shared/logger.service';
 
 import { FooterComponent } from '../../footer/footer.component';
@@ -72,7 +73,8 @@ describe('Detailed view and edit a selected work item - ', () => {
       declarations: [
         WorkItemDetailComponent,
         HeaderComponent,
-        FooterComponent
+        FooterComponent,
+        AlmTrim
       ],
       providers: [
         Logger,
@@ -131,7 +133,7 @@ describe('Detailed view and edit a selected work item - ', () => {
       fixture.detectChanges();
       comp.save();
       tick();
-      expect(el.classes['btn-primary']).toBeTruthy();
+      expect(el.attributes['disabled']).toBeFalsy();
     }));
 
   it('Work item ID cannot be edited (change model) ',
@@ -238,7 +240,7 @@ describe('Detailed view and edit a selected work item - ', () => {
       fixture.detectChanges();
       comp.save();
       tick();
-      expect(el.properties['disabled']).toBeTruthy();
+      expect(el.attributes['disabled']).toBeFalsy();            
     }));
 
   it('Save should be disabled if the work item\'s title is blank',
@@ -263,13 +265,13 @@ describe('Detailed view and edit a selected work item - ', () => {
       expect(location.back).toHaveBeenCalled();
     })));
 
-  it('Navigate when click save and save resolves',
+  it('Navigate when work item form has been submitted and submit resolves',
     inject([Location], fakeAsync((location: Location) => {
       spyOn(location, 'back');
       fixture.detectChanges();
       comp.workItem = fakeWorkItem;
-      el = fixture.debugElement.query(By.css('#workItemDetail_btn_save'));
-      el.triggerEventHandler('click', null);
+      el = fixture.debugElement.query(By.css('#wi-detail-form'));
+      el.triggerEventHandler('submit', null);
       tick();
       expect(location.back).toHaveBeenCalled();
     })));

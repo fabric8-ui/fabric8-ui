@@ -2,6 +2,8 @@ import { Location }               from '@angular/common';
 import { Component, OnInit }      from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
+import { AlmTrim } from '../../pipes/alm-trim';
+
 import { Logger } from '../../shared/logger.service';
 
 import { WorkItem } from '../work-item';
@@ -12,7 +14,8 @@ import { WorkItemService } from '../work-item.service';
   templateUrl: './work-item-detail.component.html',
   styleUrls: ['./work-item-detail.component.scss']
 })
-export class WorkItemDetailComponent implements OnInit {
+
+export class WorkItemDetailComponent implements OnInit {  
   workItem: WorkItem;
 
   // TODO: These should be read from the WorkitemTypeService
@@ -20,6 +23,9 @@ export class WorkItemDetailComponent implements OnInit {
   // TODO: These should be read from the WorkitemType of the given Workitem
   workItemStates = ['new', 'in progress', 'resolved', 'closed'];
 
+  submitted = false;
+  active = true;
+  
   constructor(
     private workItemService: WorkItemService,
     private route: ActivatedRoute,
@@ -42,16 +48,19 @@ export class WorkItemDetailComponent implements OnInit {
   }
 
   save(): void {
-    this.workItem.fields['system.title'] = this.workItem.fields['system.title'].trim();
+    //this.workItem.fields['system.title'] = this.workItem.fields['system.title'].trim();
     if (this.workItem.fields['system.title']) {
       this.workItemService
       .update(this.workItem)
       .then(() => 
         this.goBack());
-    }    
+    } 
   }
 
   goBack(): void {
     this.location.back();
   }
 }
+
+
+

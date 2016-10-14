@@ -10,6 +10,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { InMemoryDataService } from './in-memory-data.service';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 
+//Pipes
+import { AlmTrim } from './pipes/alm-trim';
+
 // Shared
 import { Logger } from './shared/logger.service';
 
@@ -57,6 +60,7 @@ if (process.env.ENV == 'inmemory') {
 @NgModule({
   imports: moduleImports,
   declarations: [
+    AlmTrim,    
     AppComponent,
     BoardComponent,
     DialogComponent,

@@ -1,72 +1,87 @@
 <alm-app-header></alm-app-header>
 <div class="container-fluid screen-min-ht">
   <div *ngIf="workItem" id="workItemDetail_Wrapper">
-  <h1>{{workItem.fields['system.title']}} Details</h1>
-  <br />
-  <div class="form-horizontal">
-    <div class="form-group">
-      <label class="col-sm-1 control-label">ID</label>
-      <div class="col-sm-5" id="wi-detail-id">
-        {{workItem.id}}
-      </div>
-    </div>
-    <div class="form-group" [ngClass]="{'has-error': !workItem.fields['system.title']}">
-      <label class="col-sm-1 control-label" for="wi-detail-title">Title</label>
-      <div class="col-sm-5">
-        <input type="text" [(ngModel)]="workItem.fields['system.title']" id="wi-detail-title" placeholder="Title (mandatory)" required class="form-control">
-        <span *ngIf="!workItem.fields['system.title']" class="help-block">Title is mandatory.</span>
-
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="col-sm-1 control-label" for="wi-detail-desc">Description</label>
-      <div class="col-sm-5">
-        <textarea type="text" [(ngModel)]="workItem.fields['system.description']" id="wi-detail-desc" placeholder="Description" class="form-control"></textarea>
-      </div>
-    </div>
-    <br /><br />
-    <div class="form-group">
-      <label class="col-sm-1 control-label" for="wi-detail-type">Type</label>
-      <div class="col-sm-5">
-        <select [(ngModel)]="workItem.type" id="wi-detail-type" class="form-control">
-          <option *ngFor="let type of workItemTypes" [value]="type">{{type.substring(7,type.length)}}</option>
-        </select>
-      </div>
-    </div>
-    <br /><br />
-    <div class="form-group">
-      <label class="col-sm-1 control-label" for="wi-detail-creator">Creator</label>
-      <div class="col-sm-5">
-        <input type="text" [(ngModel)]="workItem.fields['system.creator']" id="wi-detail-creator" placeholder="Creator" class="form-control">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="col-sm-1 control-label" for="wi-detail-assignee">Assignee</label>
-      <div class="col-sm-5">
-        <input type="text" [(ngModel)]="workItem.fields['system.assignee']" id="wi-detail-assignee" placeholder="Assignee" class="form-control">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="col-sm-1 control-label" for="wi-detail-state">State</label>
-      <div class="col-sm-5">
-        <select [(ngModel)]="workItem.fields['system.state']" id="wi-detail-state" class="form-control">
-          <option *ngFor="let state of workItemStates" [value]="state">{{state}}</option>
-        </select>
-      </div>
-    </div>
-    <br /><br />
-    <div class="form-group">
-      <div class="col-sm-offset-1 col-sm-5">
-        <button
-          type="submit" class="btn" id="workItemDetail_btn_save"
-          [ngClass]="{'btn-primary': workItem.fields['system.title'],
-          'btn-primary-disabled':!workItem.fields['system.title']}"
-          (click)="save()"
-          [disabled]="workItem.fields['system.title'] ? !(workItem.fields['system.title'].trim()) : !workItem.fields['system.title']">Save</button>
-        <button type="submit" id="workItemDetail_btn_back" class="btn btn-default" (click)="goBack()">Back</button>
-      </div>
+    <h1>{{workItem.fields['system.title']}} Details</h1>
+    <br />
+    <div [hidden]="submitted">
+      <form *ngIf="active" (ngSubmit)="save()" #almWorkItemDetailForm="ngForm" id="wi-detail-form">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-1 control-label">ID</label>
+            <div class="col-sm-5" id="wi-detail-id">
+              {{workItem.id}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-1 control-label" for="wi-detail-title">Title</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="wi-detail-title"
+                [ngModel]="workItem.fields['system.title'] | almTrim "
+                (ngModelChange)="workItem.fields['system.title'] = $event"               
+                required name="title" #title="ngModel" />
+              <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
+                  Title is required
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-1 control-label" for="wi-detail-desc">Description</label>
+            <div class="col-sm-5">
+              <textarea id="wi-detail-desc" placeholder="Description" class="form-control"
+                [(ngModel)]="workItem.fields['system.description']"
+                name="description"
+              ></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-1 control-label" for="wi-detail-type">Type</label>
+            <div class="col-sm-5">
+              <select id="wi-detail-type" class="form-control" 
+                [(ngModel)]="workItem.type"
+                name="type" #type="ngModel">
+                <option *ngFor="let type of workItemTypes" [value]="type">{{type.substring(7,type.length)}}</option>
+              </select>          
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-1 control-label" for="wi-detail-creator">Creator</label>
+            <div class="col-sm-5">
+              <input type="text" id="wi-detail-creator" placeholder="Creator" class="form-control"
+                [(ngModel)]="workItem.fields['system.creator']"
+                name="creator" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-1 control-label" for="wi-detail-assignee">Assignee</label>
+            <div class="col-sm-5">
+              <input type="text" id="wi-detail-assignee" placeholder="Assignee" class="form-control"
+                [(ngModel)]="workItem.fields['system.assignee']" 
+                name="assignee" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-1 control-label" for="wi-detail-state">State</label>
+            <div class="col-sm-5">
+              <select id="wi-detail-state" class="form-control"
+                [(ngModel)]="workItem.fields['system.state']" 
+                name="states">
+                <option *ngFor="let state of workItemStates" [value]="state">{{state}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-5">
+              <button type="submit" class="btn btn-primary" id="workItemDetail_btn_save" 
+                [disabled]="!almWorkItemDetailForm.form.valid || !(workItem.fields['system.title'] | almTrim)">
+                Save
+              </button>
+              <button type="button" id="workItemDetail_btn_back" class="btn btn-default"        
+                (click)="goBack()">Back</button>
+            </div>
+          </div>
+        </div>    
+      </form>
     </div>
   </div>
-</div>
 </div>
 <alm-app-footer></alm-app-footer>
