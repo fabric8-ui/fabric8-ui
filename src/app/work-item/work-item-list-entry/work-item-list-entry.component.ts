@@ -69,7 +69,6 @@ export class WorkItemListEntryComponent implements OnInit {
   }
 
   select(): void {
-    event.stopPropagation();
     this.selected = true;
   }
 
