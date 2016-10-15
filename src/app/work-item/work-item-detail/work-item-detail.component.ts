@@ -6,6 +6,9 @@ import { AlmTrim } from '../../pipes/alm-trim';
 
 import { Logger } from '../../shared/logger.service';
 
+import { Dialog } from '../../shared-component/dialog/dialog';
+import { DialogComponent } from '../../shared-component/dialog/dialog.component';
+
 import { WorkItem } from '../work-item';
 import { WorkItemService } from '../work-item.service';
 
@@ -23,8 +26,18 @@ export class WorkItemDetailComponent implements OnInit {
   // TODO: These should be read from the WorkitemType of the given Workitem
   workItemStates = ['new', 'in progress', 'resolved', 'closed'];
 
+  dialog: Dialog = {
+    'title' : 'Changes have been made',
+    'message' : 'Do you want to discard your changes?',
+    'actionButtons': [
+        {'title': ' Discard', 'value': 1},
+        {'title': 'Cancel', 'value': 0}]
+  };
+  showDialog: boolean = false;
+  
   submitted = false;
   active = true;
+
   
   constructor(
     private workItemService: WorkItemService,
@@ -53,12 +66,24 @@ export class WorkItemDetailComponent implements OnInit {
       this.workItemService
       .update(this.workItem)
       .then(() => 
-        this.goBack());
+        this.goBack(false));
     } 
   }
 
-  goBack(): void {
-    this.location.back();
+  goBack(change: boolean): void {
+    if (change == true){
+      this.showDialog = true;
+    }else{
+      this.location.back();
+    }    
+  }
+
+  onButtonClick(val: number): void{
+    if (val == 1){
+      this.goBack(false);
+    }else{
+      this.showDialog = false;
+    }
   }
 }
 

@@ -17,6 +17,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AlmTrim } from '../../pipes/alm-trim';
 import { Logger } from '../../shared/logger.service';
 
+import { Dialog } from '../../shared-component/dialog/dialog';
+import { DialogComponent } from '../../shared-component/dialog/dialog.component';
+
 import { FooterComponent } from '../../footer/footer.component';
 import { HeaderComponent } from '../../header/header.component';
 
@@ -29,12 +32,23 @@ describe('Detailed view and edit a selected work item - ', () => {
   let comp: WorkItemDetailComponent;
   let fixture: ComponentFixture<WorkItemDetailComponent>;
   let el: DebugElement;
+  let el1: DebugElement;
   let logger: Logger;
+
+  let dialog: Dialog;
 
   let fakeWorkItem: WorkItem;
   let fakeService: any;
 
   beforeEach(() => {
+    dialog = {
+      'title' : 'Changes have been made',
+      'message' : 'Do you want to discard your changes?',
+      'actionButtons': [
+        {'title': ' Discard', 'value': 1},
+        {'title': 'Cancel', 'value': 0}]
+    } as Dialog;
+
     fakeWorkItem = {
       'fields': {
         'system.assignee': 'me',
@@ -74,7 +88,8 @@ describe('Detailed view and edit a selected work item - ', () => {
         WorkItemDetailComponent,
         HeaderComponent,
         FooterComponent,
-        AlmTrim
+        AlmTrim,        
+        DialogComponent
       ],
       providers: [
         Logger,
@@ -255,7 +270,7 @@ describe('Detailed view and edit a selected work item - ', () => {
       expect(el.classes['btn-primary']).toBeFalsy();
     }));
 
-  it('Navigate when Back is clicked',
+  it('Navigate when Back is clicked without making any changes',
     inject([Location], fakeAsync((location: Location) => {
       spyOn(location, 'back');
       fixture.detectChanges();
@@ -264,6 +279,20 @@ describe('Detailed view and edit a selected work item - ', () => {
       tick();
       expect(location.back).toHaveBeenCalled();
     })));
+
+  it('Display confrimation dialog when Back is clicked after making changes',
+    inject([Location], fakeAsync((location: Location) => {
+      spyOn(location, 'back');
+      fixture.detectChanges();
+      comp.workItem = fakeWorkItem;
+      el1 = fixture.debugElement.query(By.css('#wi-detail-title'));
+      el1.nativeElement.value = 'User entered work item title';      
+      fixture.detectChanges();
+      tick();
+      comp.goBack(true);
+      expect(location.back).not.toHaveBeenCalled();
+    })));
+
 
   it('Navigate when work item form has been submitted and submit resolves',
     inject([Location], fakeAsync((location: Location) => {

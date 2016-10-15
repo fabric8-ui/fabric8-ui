@@ -1,4 +1,10 @@
 <alm-app-header></alm-app-header>
+<div *ngIf="showDialog">	
+	<pf-dialog
+		(pfDialogClick)="onButtonClick($event)"
+		[dialog]='dialog'	
+	></pf-dialog>
+</div>
 <div class="container-fluid screen-min-ht">
   <div *ngIf="workItem" id="workItemDetail_Wrapper">
     <h1>{{workItem.fields['system.title']}} Details</h1>
@@ -76,7 +82,7 @@
                 Save
               </button>
               <button type="button" id="workItemDetail_btn_back" class="btn btn-default"        
-                (click)="goBack()">Back</button>
+                (click)="goBack(almWorkItemDetailForm.form.dirty)">Back</button>
             </div>
           </div>
         </div>    
