@@ -15,6 +15,7 @@ import { AlmTrim } from './pipes/alm-trim';
 
 // Shared
 import { AuthenticationService } from './auth/authentication.service';
+import { Broadcaster } from './shared/broadcaster.service';
 import { UserService } from './user/user.service';
 import { Logger } from './shared/logger.service';
 
@@ -79,6 +80,7 @@ if (process.env.ENV == 'inmemory') {
   providers: [
     Logger,
     AuthenticationService,
+    Broadcaster,
     LoginService,
     UserService,
     WorkItemService

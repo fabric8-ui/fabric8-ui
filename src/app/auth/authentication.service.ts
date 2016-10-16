@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Logger } from '../shared/logger.service';
+import { Broadcaster } from './../shared/broadcaster.service';
 
 @Injectable()
 export class AuthenticationService {
   private authToken: string = '';
 
-  constructor(private router: Router, private logger: Logger) {
+  constructor(private router: Router, 
+              private logger: Logger, 
+              private broadcaster: Broadcaster) {
     
   }
 
@@ -30,6 +33,7 @@ export class AuthenticationService {
     this.authToken = '';
     localStorage.removeItem('auth_token');
     //this.router.navigate(['login']);
+    this.broadcaster.broadcast('logout', 1);
     location.href = location.protocol + '//' + location.host + location.pathname + location.hash;
   }
 
