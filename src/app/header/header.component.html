@@ -12,13 +12,13 @@
   </div>
   <div class="collapse navbar-collapse navbar-collapse-1">
 	  <ul id="header_rightDropdown" class="nav navbar-nav navbar-utility">
-      	<li *ngIf="loggedIn" class="dropdown">
-        	<a href="#" id="header_dropdownToggle" class="dropdown-toggle" data-toggle="dropdown">
-          		<span class="pficon pficon-user"></span>
-							<div *ngIf="loggedInUser">
-								{{loggedInUser.fullName}}
-								<b class="caret"></b>
-							</div>
+      	<li *ngIf="loggedIn">
+        	<a *ngIf="loggedInUser" id="header_dropdownToggle">          								
+						<span *ngIf="!imgLoaded" class="pficon pficon-user"></span>							
+						<img (load)="onImgLoad()" src="{{ loggedInUser.imageURL }}" 
+							[ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}" 
+							class="pull-left" />													
+						{{loggedInUser.fullName}}
         	</a>
       </li>
 			<li>
