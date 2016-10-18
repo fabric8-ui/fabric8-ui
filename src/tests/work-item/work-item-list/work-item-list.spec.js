@@ -47,46 +47,23 @@ describe('Work item list', function () {
   });
 
   it('should create a new workitem - phone.', function () {
+    page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle('Some Title');
     page.clickQuickAddSave().then(function() {
       expect(page.allWorkItems.count()).toBe(startCount + 1);
       expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title');
       expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Some Title');
-    });
-  });
-
-  it('should create a new workitem - desktop.', function () {
-    setBrowserMode('desktop');	
-    page.typeQuickAddWorkItemTitle('Some Title');
-    page.typeQuickAddWorkItemDescription('Some Description');
-    page.clickQuickAddSave().then(function() {
-      expect(page.allWorkItems.count()).toBe(startCount + 1);
-      expect(page.workItemDescription(page.firstWorkItem)).toBe('Some Description');
-      expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title');
-      expect(page.workItemDescription(page.workItemByNumber(0))).toBe('Some Description');
-      expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Some Title');
-      page.allWorkItems.getText().then(function (text) {
-        expect(text).toContain("new\n1\nSome Title 1\nSome Description 1\nView Details");
-      });
-    });
-  });
-
-  it('should reset the quick add form when the reset button is clicked - phone.', function () {
-    page.typeQuickAddWorkItemTitle('Some Other Title');
-    page.typeQuickAddWorkItemDescription('Some Other Description');
-    page.clickQuickAddCancel().then(function() {
-      expect(page.allWorkItems.count()).toBe(startCount);
-      expect(page.workItemQuickAddTitle.getText()).toBe('');
     });
   });
  
-  it('should reset the quick add form when the reset button is clicked - desktop.', function () {
-    page.typeQuickAddWorkItemTitle('Some Other Title');
-    page.typeQuickAddWorkItemDescription('Some Other Description');
-    page.clickQuickAddCancel().then(function() {
-      expect(page.allWorkItems.count()).toBe(startCount);
-      expect(page.workItemQuickAddTitle.getText()).toBe('');
-      expect(page.workItemQuickAddDescription.getText()).toBe('');
+ it('should create a new workitem - desktop.', function () {
+    setBrowserMode('desktop');	
+    page.clickWorkItemQuickAdd();
+    page.typeQuickAddWorkItemTitle('Some Title');
+    page.clickQuickAddSave().then(function() {
+      expect(page.allWorkItems.count()).toBe(startCount + 1);
+      expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title');
+      expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Some Title');
     });
   });
 	 
@@ -121,5 +98,14 @@ describe('Work item list', function () {
     } 
   };
   
+  /* 
+  * Write screenshot to file 
+  */ 
+  function writeScreenShot(data, filename) {
+    var fs = require('fs');
+    var stream = fs.createWriteStream(filename);
+    stream.write(new Buffer(data, 'base64'));
+    stream.end();
+  }
+  
 });
-

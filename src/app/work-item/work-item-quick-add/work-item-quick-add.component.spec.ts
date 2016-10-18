@@ -73,7 +73,10 @@ describe('Quick add work item component - ', () => {
   }));
 
   it('Should keep the Add button disabled if title contain only white spaces', () => {
-    el = fixture.debugElement.query(By.css('.workItemQuickAdd_saveBtn'));
+    fixture.detectChanges();
+    comp.toggleQuickAdd();
+    fixture.detectChanges();
+    el = fixture.debugElement.query(By.css('.workItemQuickAdd_Add'));
     fixture.detectChanges();
     comp.workItem.fields['system.title'] = '  ';
     fixture.detectChanges();
@@ -81,7 +84,10 @@ describe('Quick add work item component - ', () => {
   });
 
   it('Should keep the Add button disabled if title contain empty string', () => {
-    el = fixture.debugElement.query(By.css('.workItemQuickAdd_saveBtn'));
+    fixture.detectChanges();
+    comp.toggleQuickAdd();
+    fixture.detectChanges();
+    el = fixture.debugElement.query(By.css('.workItemQuickAdd_Add'));
     fixture.detectChanges();
     comp.workItem.fields['system.title'] = '';
     fixture.detectChanges();

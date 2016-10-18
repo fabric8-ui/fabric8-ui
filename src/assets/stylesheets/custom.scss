@@ -16,11 +16,35 @@ $textLeft: left;
 $textRight: right;
 $textCenter: center;
 
+//fonts
+$font10: 10px;
+$font11: 11px;
+$font12: 12px;
+$font13: 13px;
+$font14: 14px;
+$font16: 16px;
+$font18: 18px;
+$font20: 20px;
+
 //custom mixins
 @mixin truncate() {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;;
+}
+@mixin transform($transform){
+	-webkit-transform: $transform;  
+	-moz-transform:    $transform;
+	-ms-transform:     $transform; 
+	-o-transform:      $transform; 
+	transform:         $transform;
+}
+@mixin transition($transition) {
+	-webkit-transition: $transition;  
+	-moz-transition:    $transition;
+	-ms-transition:     $transition; 
+	-o-transition:      $transition; 
+	transition:         $transition;
 }
 
 // custom classes
@@ -43,14 +67,15 @@ $textCenter: center;
 .paddingL5{ padding-left: $pad5; }
 .paddingR5{ padding-right: $pad5; }
 .padding0{ padding: $pad0; }
-.font16{ font-size: 16px; }
-.font18{ font-size:18px; }
+.font16{ font-size: $font16; }
+.font18{ font-size: $font18; }
 .vTop{ vertical-align: top; }
 .truncate{
     @include truncate;
 }
 .dn{ display: none; }
 .dib{ display: inline-block; }
+.db{ display: block; }
 
 @media (max-width: $grid-float-breakpoint){
     $margin20: 1.667em;
@@ -59,9 +84,15 @@ $textCenter: center;
     $pad20: 1.667em;
     $pad10: 0.833em;
     $pad5: 0.417em;
-    #workItemQuickAdd_goBackBtn, #workItemQuickAdd_saveBtn{
-        margin: 0.2em 0;
-    }
+    //fonts
+    $font10: 0.8333em;
+    $font11: 0.917em;
+    $font12: 1.000em;
+    $font13: 1.083em;
+    $font14: 1.167em;
+    $font16: 1.333em;
+    $font18: 1.500em;
+    $font20: 1.667em;
     .mobdn{ display: none; }
     .list-view-pf {
         .list-group-item-heading{

@@ -24,22 +24,83 @@
   bottom:0;
   background: #eaeaea;
   z-index: 9;
-  padding: $pad20;
-  color:#333;
+  border-top: 1px solid #cccccc;
   text-align: left;
-  i,h4{
-    display: inline-block;
+  cursor: pointer;
+  .addWorkItem{
+    padding:$pad20;
+    h4{
+      margin:3px 0;
+      padding: 0 $pad20;
+    }
+    .workItemQuickAdd_saveBtn{
+      vertical-align: top;
+      display: inline-block;
+      margin:0;
+      &:hover{
+        text-decoration: none;
+      }
+    }
+    i,h4{
+      display: inline-block;
+      color:#333;
+    }
   }
+  .addWorkItemBlk{
+    padding:$pad20;
+    background:#fff;
+    position: relative;
+    .workItemQuickAdd_IconType{
+      width:2em;
+      height: 2.1em;
+      float: left;
+      position: relative;
+      i{
+        position: absolute;
+        font-size:$font18;
+        top:50%;
+        @include transform(translateY(-50%));
+      }
+    }
+    .workItemQuickAdd_storyInput{
+      padding-left:4em;
+      padding-right: 7em;
+      input{
+      border:none;
+      box-shadow: none;
+      }
+    }
+    .workItemQuickAdd_Add{
+      width: 5em;
+      text-align: right; 
+      font-size: $font16;
+      padding-right: 2em;
+    }
+    .closeQuickAdd{
+      position: absolute;
+      top: 50%;
+      @include transform(translateY(-50%));
+      right: 0.833em;
+    }
+  }
+}
+.add{
+  background: #fff;
 }
 @media (max-width: $grid-float-breakpoint){
   .quickAdd_container{
     text-align: center;
-    padding: $pad10;
-    i,h4{
-      display: block;
+    .addWorkItem{
+      padding: $pad10;
+      i,h4{
+        display: block;
+      }
+      i{
+        margin-bottom: $margin5;
+      }
     }
-    i{
-      margin-bottom: $margin5;
+    .addWorkItemBlk{
+      padding:$pad10;
     }
   }
 }

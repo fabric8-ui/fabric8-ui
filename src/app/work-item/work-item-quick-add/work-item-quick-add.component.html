@@ -1,42 +1,21 @@
-<div class="width100 fl marginT20">
-  <div id="workItemQuickAdd_container" class="width100 fl">
-    <div class="col-md-3 col-sm-12 col-xs-12 padB5">
-      <p class="width100 fl font16">Quick Add a WorkItem</p>
+<div class="width100 fl quickAdd_container" id="workItemQuickAdd_container" >
+  <div class="width100 fl addWorkItem" (click)="toggleQuickAdd()" [ngClass]="{'db' : showQuickAddBtn, 'dn' : !showQuickAddBtn}">
+    <a class="workItemQuickAdd_saveBtn">
+      <i class='pficon-add-circle-o dib font18'></i>
+    </a>
+    <h4>Add a WorkItem</h4>
+  </div>
+  <div class="width100 fl addWorkItemBlk " *ngIf="showQuickAdd">
+    <div class="workItemQuickAdd_IconType">
+      <i class="fa fa-bookmark fl "></i>
     </div>
-    <div class="col-md-7 col-sm-10 col-xs-10 padding0">
-      <div id="workItemQuickAdd_title" class="col-md-6 col-sm-6 col-xs-12 padB5">
-        <div class="form-group">
-          <input type="text"
-            [(ngModel)]="workItem.fields['system.title']"
-            (keyup.enter)="save()"
-            (keyup)="checkTitle()"
-            class="form-control"
-            placeholder="Title (mandatory field)" required />
-        </div>
-      </div>
-      <div id="workItemQuickAdd_desc" class="col-md-6 col-sm-6 col-xs-12 padB5">
-        <div class="form-group">
-          <input
-            [(ngModel)]="workItem.fields['system.description']"          
-            (keyup.enter)="save()"
-            class="form-control"
-            placeholder="Description" />
-        </div>
-      </div>
+    <div class=" workItemQuickAdd_storyInput">
+      <input #quickAdd type="text" id="exampleInput" class="form-control width100 fl"  [(ngModel)]="workItem.fields['system.title']" 
+             (keyup.enter)="save()"
+            (keyup)="checkTitle()" placeholder="A New Story" required/>
     </div>
-    <div class="col-md-2 col-sm-2 col-xs-2 padB5">
-      <div class="form-group fl">
-        <div class="col-md-6 col-sm-6 col-xs-12 padding0">
-          <a id="workItemQuickAdd_saveBtn" class="workItemQuickAdd_saveBtn fl marginL5 marginR5" [ngClass]="{'icon-btn': validTitle,'icon-btn-disabled':!validTitle}" (click)="save()">
-            <i class='pficon-add-circle-o fl'></i>
-          </a>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-12 padding0">
-          <a id="workItemQuickAdd_goBackBtn" class='icon-btn fl marginL5 marginR5' (click)="goBack()">
-            <i class="pficon-error-circle-o fl"></i>
-          </a>
-        </div>
-      </div>
-    </div>
+    <span class="fr font16 workItemQuickAdd_Add" 
+      (click)="addWorkItemBtn()" [ngClass]="{'icon-btn': validTitle,'icon-btn-disabled':!validTitle}">Add</span>
+      <span (click)="toggleQuickAdd()" class="closeQuickAdd">X</span>
   </div>
 </div>

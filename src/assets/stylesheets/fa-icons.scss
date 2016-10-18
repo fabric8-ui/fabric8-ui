@@ -31,3 +31,6 @@ $patternfly-sass-asset-helper: false !default;
 .#{$fa-css-prefix}-user:before { 
     content: $fa-var-user;
 }
+.#{$fa-css-prefix}-bookmark:before {
+  content: $fa-var-bookmark;
+}

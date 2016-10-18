@@ -17,6 +17,7 @@ export class WorkItemListComponent implements OnInit {
   workItems: WorkItem[];
   selectedWorkItemEntryComponent: WorkItemListEntryComponent;
   addingWorkItem = false;
+  showOverlay : Boolean ;
 
   constructor(
     private router: Router,

@@ -48,23 +48,28 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   workItemQuickAddTitle:  {   
     get: function ()     
-    { return element(by.css("#workItemQuickAdd_title input")); }
+    { return element(by.css(".workItemQuickAdd_storyInput input")); }
   },
 
-  workItemQuickAddDescription:  {   
+  /*workItemQuickAddDescription:  {   
     get: function ()     
     { return element(by.css("#workItemQuickAdd_desc input")); }
+  },*/
+
+  openButton:  {   
+    get: function ()     
+    { return element(by.css(".workItemQuickAdd_saveBtn")); }
   },
 
-  saveButton:  {   
+ saveButton:  {   
     get: function ()     
-    { return element(by.id("workItemQuickAdd_saveBtn")); }
+    { return element(by.css(".workItemQuickAdd_Add")); }
   },
 
-  cancelButton:  {   
+  /*cancelButton:  {   
     get: function ()     
-    { return element(by.id("workItemQuickAdd_goBackBtn")); }
-  },
+    { return element(by.id(".workItemQuickAdd_goBackBtn")); }
+  },*/
 
   allWorkItems:  {   
     get: function ()     
@@ -160,6 +165,11 @@ WorkItemListPage.prototype  = Object.create({}, {
   typeQuickAddWorkItemDescription:  { 
     value: function (keys) 
     { return this.workItemQuickAddDescription.sendKeys(keys); }
+  },
+  
+  clickWorkItemQuickAdd:   {
+    value: function () 
+    { return this.openButton.click(); }
   },
 
   clickQuickAddSave:   {
