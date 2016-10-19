@@ -38,7 +38,7 @@ export class AuthenticationService {
   }
 
   getToken() {
-    if (this.authToken) return this.authToken;
+    if (this.isLoggedIn()) return this.authToken;
     //else this.router.navigate(['login']);
   }
 

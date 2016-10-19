@@ -33,6 +33,7 @@
     	<pf-dropdown
       	(change)="onChangeState($event)" 
         [options]="stateDropdownOptions"
+		[disabled]="!loggedIn"
         [selected]="workItem.selectedState">
       </pf-dropdown>				
     </div>
