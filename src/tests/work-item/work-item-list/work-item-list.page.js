@@ -18,9 +18,16 @@ var WorkItemListPage = function () {
 
 WorkItemListPage.prototype  = Object.create({}, {
 
+/* Page elements - top of the page */
+
   workItemListButton:  {   
     get: function ()     
     { return element(by.id("header_menuWorkItemList")); }
+  },
+
+  clickWorkItemListButton:   {
+    value: function () 
+    { return this.workItemListButton.click(); }
   },
 
   boardButton:  {   
@@ -28,7 +35,7 @@ WorkItemListPage.prototype  = Object.create({}, {
     { return element(by.id("header_menuBoard")); }
   },
   
-  clickboardButton:   {
+  clickBoardButton:   {
     value: function () 
     {
       this.boardButton.click();
@@ -36,19 +43,26 @@ WorkItemListPage.prototype  = Object.create({}, {
     }
   },
 
-  workItemTitle:  {   
-    value: function (workItemElement)     
-    { return workItemElement.element(by.css(".workItemList_title")).getText(); }
+  userToggle:  {   
+    get: function ()     
+    { return element(by.id("header_dropdownToggle")); }
   },
 
-  workItemDescription:  {   
-    value: function (workItemElement)     
-    { return workItemElement.element(by.css(".workItemList_description")).getText(); }
+  clickUserToggle:   {
+    value: function () 
+    { return this.userToggle.click(); }
   },
+
+/* Page elements - bottom of the page - work item quick add */
 
   workItemQuickAddTitle:  {   
     get: function ()     
     { return element(by.css(".workItemQuickAdd_storyInput input")); }
+  },
+
+  typeQuickAddWorkItemTitle:  { 
+    value: function (keys) 
+    { return this.workItemQuickAddTitle.sendKeys(keys); }
   },
 
   /*workItemQuickAddDescription:  {   
@@ -56,9 +70,19 @@ WorkItemListPage.prototype  = Object.create({}, {
     { return element(by.css("#workItemQuickAdd_desc input")); }
   },*/
 
+  typeQuickAddWorkItemDescription:  { 
+    value: function (keys) 
+    { return this.workItemQuickAddDescription.sendKeys(keys); }
+  },
+
   openButton:  {   
     get: function ()     
     { return element(by.css(".workItemQuickAdd_saveBtn")); }
+  },
+  
+  clickWorkItemQuickAdd:   {
+    value: function () 
+    { return this.openButton.click(); }
   },
 
  saveButton:  {   
@@ -66,10 +90,22 @@ WorkItemListPage.prototype  = Object.create({}, {
     { return element(by.css(".workItemQuickAdd_Add")); }
   },
 
-  /*cancelButton:  {   
+  clickQuickAddSave:   {
+    value: function () 
+    { return this.saveButton.click(); }
+  },
+
+  cancelButton:  {   
     get: function ()     
     { return element(by.id(".workItemQuickAdd_goBackBtn")); }
-  },*/
+  },
+
+  clickQuickAddCancel:   {
+    value: function () 
+    { return this.cancelButton.click(); }
+  },
+
+/* Page elements - work item list */
 
   allWorkItems:  {   
     get: function ()     
@@ -86,6 +122,18 @@ WorkItemListPage.prototype  = Object.create({}, {
     { return element.all(by.css(".work-item-list-entry")).last(); }   
   },
 
+  /* Title element relative to a workitem */
+   workItemTitle:  {   
+    value: function (workItemElement)     
+    { return workItemElement.element(by.css(".workItemList_title")).getText(); }
+  },
+
+  /* Description element relative to a workitem */
+  workItemDescription:  {   
+    value: function (workItemElement)     
+    { return workItemElement.element(by.css(".workItemList_description")).getText(); }
+  },
+
   workItemByIndex:  {   
     value: function (itemNumber)       
     { return element.all(by.css(".work-item-list-entry")).get(itemNumber); }   
@@ -98,7 +146,7 @@ WorkItemListPage.prototype  = Object.create({}, {
       return element(by.id(xPathString)); 
     }
   },
-
+  
   /*
    * To access a work item's view/delete buttons and related fields - example code:
    * 
@@ -155,51 +203,6 @@ WorkItemListPage.prototype  = Object.create({}, {
   clickWorkItemDeleteButton:   {
     value: function (button) 
     { return button.click(); }
-  },
-
-  typeQuickAddWorkItemTitle:  { 
-    value: function (keys) 
-    { return this.workItemQuickAddTitle.sendKeys(keys); }
-  },
-
-  typeQuickAddWorkItemDescription:  { 
-    value: function (keys) 
-    { return this.workItemQuickAddDescription.sendKeys(keys); }
-  },
-  
-  clickWorkItemQuickAdd:   {
-    value: function () 
-    { return this.openButton.click(); }
-  },
-
-  clickQuickAddSave:   {
-    value: function () 
-    { return this.saveButton.click(); }
-  },
-
-  clickQuickAddCancel:   {
-    value: function () 
-    { return this.cancelButton.click(); }
-  },
-
-  clickWorkItemListButton:   {
-    value: function () 
-    { return this.workItemListButton.click(); }
-  },
-
-  clickBoardButton:   {
-    value: function () 
-    { return this.boardButton.click(); }
-  },
-
-  userToggle:  {   
-    get: function ()     
-    { return element(by.id("header_dropdownToggle")); }
-  },
-
-  clickUserToggle:   {
-    value: function () 
-    { return this.userToggle.click(); }
   },
   
   /*
