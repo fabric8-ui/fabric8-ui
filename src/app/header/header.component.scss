@@ -1,9 +1,22 @@
 @import "../../assets/stylesheets/navbar";
 @import "../../assets/stylesheets/navs";
 @import "../../assets/stylesheets/icons";
+@import "../../assets/stylesheets/custom";
 .navbar-pf {
     .navbar-nav>li>a {
     line-height: 1;
     text-shadow:none;
+    }
+}
+@media (max-width: $grid-float-breakpoint){
+.navbar-fixed-top {
+        position: fixed;
+        top: auto;
+    }
+    .navbar-collapse {
+        max-height: none;
+    }
+    body {
+        margin: 0;
     }
 }
