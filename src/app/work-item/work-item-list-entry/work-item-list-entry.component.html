@@ -7,13 +7,6 @@
 <div class="list-group-item" (click)="onSelect($event)" [class.selected]="isSelected()">
 	<!-- info area -->
 	<div class="list-view-pf-main-info">
-		<div class="list-view-pf-left mobdn">
-    	<pf-dropdown
-      	(change)="onChangeState($event)" 
-        [options]="stateDropdownOptions"
-        [selected]="workItem.selectedState">
-      </pf-dropdown>				
-    </div>
 		<div class="list-view-pf-left type workItemList_workItemType">
 			<span class='fa' [ngClass]="{'fa-wrench': workItem.type=='system.bug',
       	'fa-user': workItem.type=='system.userstory',
@@ -36,6 +29,13 @@
 			</div>
 		</div>
 	</div>
+	<div class="list-view-pf-left mobdn paddingT20 paddingB20 pull-left">
+    	<pf-dropdown
+      	(change)="onChangeState($event)" 
+        [options]="stateDropdownOptions"
+        [selected]="workItem.selectedState">
+      </pf-dropdown>				
+    </div>
 	<!-- action area -->
 	<div class="list-view-pf-actions">
 		<button class="btn btn-default workItemList_ViewItemDetailBtn mobdn" (click)="onDetail($event)">View Details</button>
