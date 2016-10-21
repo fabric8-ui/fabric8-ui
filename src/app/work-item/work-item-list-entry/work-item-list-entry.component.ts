@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router }                                         from '@angular/router';
 
 import { AuthenticationService } from './../../auth/authentication.service';
+import { Broadcaster } from './../../shared/broadcaster.service';
 import { Logger } from '../../shared/logger.service';
 
 import { Dialog }            from '../../shared-component/dialog/dialog';
@@ -51,12 +52,13 @@ export class WorkItemListEntryComponent implements OnInit {
   loggedIn: Boolean = false;
 
   constructor(private auth: AuthenticationService,
+              private broadcaster: Broadcaster,
               private router: Router,
               private workItemService: WorkItemService,
-              private logger: Logger) {
-  }
+              private logger: Logger) {}
 
   ngOnInit(): void {
+    this.listenToEvents();
     this.getOptions();
     this.loggedIn = this.auth.isLoggedIn();
   }
@@ -153,5 +155,12 @@ export class WorkItemListEntryComponent implements OnInit {
             this.workItem = updatedWorkItem;
           });
       });
+  }
+
+  listenToEvents() {
+    this.broadcaster.on<string>('logout')
+      .subscribe(message => {
+        this.loggedIn = false;
+    });
   }
 }

@@ -4,6 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 
 import { AlmTrim } from '../../pipes/alm-trim';
 import { AuthenticationService } from './../../auth/authentication.service';
+import { Broadcaster } from './../../shared/broadcaster.service';
 
 import { Logger } from '../../shared/logger.service';
 
@@ -42,6 +43,7 @@ export class WorkItemDetailComponent implements OnInit {
   
   constructor(
     private auth: AuthenticationService,
+    private broadcaster: Broadcaster,
     private workItemService: WorkItemService,
     private route: ActivatedRoute,
     private location: Location,
@@ -49,6 +51,7 @@ export class WorkItemDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.listenToEvents();
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         let id = params['id'];
@@ -87,6 +90,13 @@ export class WorkItemDetailComponent implements OnInit {
     }else{
       this.showDialog = false;
     }
+  }
+
+  listenToEvents() {
+    this.broadcaster.on<string>('logout')
+      .subscribe(message => {
+        this.loggedIn = false;
+    });
   }
 }
 

@@ -23,6 +23,7 @@ export class AuthenticationService {
     if ('token' in params) {
       this.authToken = params['token'];
       localStorage.setItem('auth_token', this.authToken);
+      location.href = location.protocol + '//' + location.host;
       return true;
     }
     //this.router.navigate(['login']);
@@ -32,9 +33,9 @@ export class AuthenticationService {
   logout() {
     this.authToken = '';
     localStorage.removeItem('auth_token');
-    //this.router.navigate(['login']);
+    // this.router.navigate(['login']);
     this.broadcaster.broadcast('logout', 1);
-    location.href = location.protocol + '//' + location.host + location.pathname + location.hash;
+    // location.href = location.protocol + '//' + location.host + location.pathname + location.hash;
   }
 
   getToken() {

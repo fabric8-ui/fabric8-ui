@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
 
 import { AuthenticationService } from './../../auth/authentication.service';
+import { Broadcaster } from './../../shared/broadcaster.service';
 import { Logger } from '../../shared/logger.service';
 
 import { WorkItem }                   from '../work-item';
@@ -23,12 +24,14 @@ export class WorkItemListComponent implements OnInit {
 
   constructor(
     private auth: AuthenticationService,
+    private broadcaster: Broadcaster,
     private router: Router,
     private workItemService: WorkItemService,
     private logger: Logger) {
   }
 
   ngOnInit(): void {
+    this.listenToEvents();
     this.reloadWorkItems();
     this.loggedIn = this.auth.isLoggedIn();
   }
@@ -84,5 +87,12 @@ export class WorkItemListComponent implements OnInit {
 
   onDelete(entryComponent: WorkItemListEntryComponent): void {
     this.reloadWorkItems();
+  }
+
+  listenToEvents() {
+    this.broadcaster.on<string>('logout')
+      .subscribe(message => {
+        this.loggedIn = false;
+    });
   }
 }

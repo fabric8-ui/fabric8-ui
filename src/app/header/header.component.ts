@@ -5,6 +5,7 @@ import { Logger } from '../shared/logger.service';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { AuthenticationService } from '../auth/authentication.service';
+import { Broadcaster } from './../shared/broadcaster.service';
 
 @Component({
   selector: 'alm-app-header',
@@ -22,8 +23,8 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private logger: Logger,
-    private auth: AuthenticationService) {
-  }
+    private auth: AuthenticationService,
+    private broadcaster: Broadcaster) {}
 
   getLoggedUser(): void {
     if (this.auth.isLoggedIn()) {
@@ -42,12 +43,25 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {        
+    this.listenToEvents();
     this.getLoggedUser();
     this.loggedIn = this.auth.isLoggedIn();
   }
 
-  onImgLoad(){    
+  onImgLoad(){
     this.imgLoaded = true;
   }
 
+  resetData(): void {
+    this.loggedInUser = null as User;
+    this.loggedIn = false;
+    this.imgLoaded = false;
+  }
+  
+  listenToEvents() {
+    this.broadcaster.on<string>('logout')
+      .subscribe(message => {
+        this.resetData();
+    });
+  }
 }

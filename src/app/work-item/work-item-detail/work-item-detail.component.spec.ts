@@ -15,6 +15,7 @@ import { By }                  from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AlmTrim } from '../../pipes/alm-trim';
+import { Broadcaster } from './../../shared/broadcaster.service';
 import { Logger } from '../../shared/logger.service';
 
 import { Dialog } from '../../shared-component/dialog/dialog';
@@ -120,6 +121,7 @@ describe('Detailed view and edit a selected work item - ', () => {
         DialogComponent
       ],
       providers: [
+        Broadcaster,
         Logger,
         Location,
         {
