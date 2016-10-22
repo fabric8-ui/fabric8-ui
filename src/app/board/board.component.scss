@@ -1,62 +1,58 @@
 @import "../../assets/stylesheets/variables";
 
-[class*='col-'] {
-  float: left;
+.board {
+  margin: 20px auto;
+  padding-top: 50px;
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.2);
+  align-items: flex-start;
 }
-*, *:after, *:before {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+.lane {
+  flex: 1;
+	margin: 0 10px;
+	position: relative;
 }
-h3 {
-  text-align: center; margin-bottom: 0;
+
+.card {
+	margin: 10px;
+	height: 100px;
+	background: rgba(black, 0.4);
 }
-[class*='col-'] {
-  padding-right: 20px;
-  padding-bottom: 20px;
+
+/*
+ * note that styling gu-mirror directly is a bad practice because it's too generic.
+ * you're better off giving the draggable elements a unique class and styling that directly!
+ */
+.lane div,
+.gu-mirror {
+  margin: 10px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: opacity 0.4s ease-in-out;
 }
-[class*='col-']:last-of-type {
-  padding-right: 0;
+.lane div {
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
 }
-.grid {
-  margin: 0;
+.gu-mirror {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
 }
-.col-1-4 {
-  width: 25%;
+.lane .ex-moved {
+  background-color: #e74c3c;
 }
-.module {
-  padding: 20px;
-  text-align: center;
-  color: $gray-lighter;
-  max-height: 120px;
-  min-width: 120px;
-  background-color: #607D8B;
-  border-radius: 2px;
+.lane.ex-over {
+  background-color: rgba(255, 255, 255, 0.3);
 }
-h4 {
-  position: relative;
+.handle {
+  padding: 0 5px;
+  margin-right: 5px;
+  background-color: rgba(0, 0, 0, 0.4);
+  cursor: move;
 }
-.module:hover {
-  background-color: $gray-lighter;
-  cursor: pointer;
-  color: #607d8b;
-}
-.grid-pad {
-  padding: 10px 0;
-}
-.grid-pad > [class*='col-']:last-of-type {
-  padding-right: 20px;
-}
-@media (max-width: 600px) {
-  .module {
-    font-size: 10px;
-    max-height: 75px; }
-}
-@media (max-width: 1024px) {
-  .grid {
-    margin: 0;
-  }
-  .module {
-    min-width: 60px;
-  }
-}
+
+//Third party related styling --> Refactoring needed
+.gu-mirror{position:fixed!important;margin:0!important;z-index:9999!important;opacity:.8;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";filter:alpha(opacity=80)}.gu-hide{display:none!important}.gu-unselectable{-webkit-user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;user-select:none!important}.gu-transit{opacity:.2;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";filter:alpha(opacity=20)}
