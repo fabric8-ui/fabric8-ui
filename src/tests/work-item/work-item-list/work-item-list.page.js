@@ -16,6 +16,8 @@ var WorkItemListPage = function () {
   browser.get("http://localhost:8088/?token=justarandomtokenfortest");
 };
 
+var until = protractor.ExpectedConditions;
+
 WorkItemListPage.prototype  = Object.create({}, {
 
 /* Page elements - top of the page */
@@ -27,7 +29,9 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   clickWorkItemListButton:   {
     value: function ()
-    { return this.workItemListButton.click(); }
+    { 
+      browser.wait(until.presenceOf(this.workItemListButton), 30000, 'Failed to find workItemListButton');
+      return this.workItemListButton.click(); }
   },
 
   boardButton:  {
@@ -59,54 +63,95 @@ WorkItemListPage.prototype  = Object.create({}, {
     get: function ()
     { return element(by.css(".workItemQuickAdd_storyInput input")); }
   },
+
   typeQuickAddWorkItemTitle:  {
      value: function (keys)
-     { return this.workItemQuickAddTitle.sendKeys(keys); }
+     { 
+       browser.wait(until.presenceOf(this.workItemQuickAddTitle), 30000, 'Failed to find workItemQuickAddTitle');
+       return this.workItemQuickAddTitle.sendKeys(keys); }
    },
-  clickQuickAddWorkItemTitleButton:  {
-    value: function (keys)
-    { return element(by.css('.pficon-add-circle-o.dib.font18')).click(); }
-  },
-  typeQuickAddWorkItemTitleText:  {
-    value: function (keys)
-    { return element(by.id("exampleInput")).sendKeys(keys); }
+
+  quickAddWorkItemTitleButton:  {
+    get: function ()
+    { return element(by.css('.pficon-add-circle-o.dib.font18')); }
   },
 
-  ClickAddVisibleopenButton:  {
+  clickQuickAddWorkItemTitleButton:  {
+    value: function ()
+    { 
+      browser.wait(until.presenceOf(this.quickAddWorkItemTitleButton), 30000, 'Failed to find quickAddWorkItemTitleButton');
+      return this.quickAddWorkItemTitleButton.click(); }
+  },
+
+  quickAddWorkItemTitleText:  {
+    get: function ()
+    { return element(by.id("exampleInput")); }  
+  },
+
+  typeQuickAddWorkItemTitleText:  {
+    value: function (keys)
+    { 
+      browser.wait(until.presenceOf(this.quickAddWorkItemTitleText), 30000, 'Failed to find quickAddWorkItemTitleText');
+      return this.quickAddWorkItemTitleText.sendKeys(keys); }
+  },
+
+  addVisibleopenButton:  {
     get: function ()
     { return element(by.css(".fr.font16.workItemQuickAdd_Add.icon-btn")); }
   },
+
   clickWorkItemQuickAddButton:   {
     value: function ()
-    { return this.ClickAddVisibleopenButton.click(); }
+    { 
+      browser.wait(until.presenceOf(this.addVisibleopenButton), 30000, 'Failed to find addVisibleopenButton');
+      return this.addVisibleopenButton.click(); }
   },
 
-  clickWorkItemKebabButton:   {
-    value: function ()
-    { return element(by.id("dropdownKebabRight")).click(); }
+  /* Access the Kebab element relative to its parent workitem */
+   clickWorkItemKebabButton:  {
+    value: function (parentElement)
+    { 
+      browser.wait(until.presenceOf(parentElement.element(by.id("dropdownKebabRight"))), 30000, 'Failed to find clickWorkItemKebabButton');
+      return parentElement.element(by.id("dropdownKebabRight")).click(); }
   },
 
-  clickWorkItemKebabDeleteButton:   {
-    value: function ()
-    { return element(by.css('.workItemList_Delete')).click(); }
+ /* Access the Kebab element relative to its parent workitem */
+   clickWorkItemKebabDeleteButton:   {
+    value: function (parentElement)
+    { 
+      browser.wait(until.presenceOf(parentElement.element(by.css('.workItemList_Delete'))), 30000, 'Failed to find clickWorkItemKebabButton');
+      return parentElement.element(by.css('.workItemList_Delete')).click(); }
   },
+  
+  workItemPopUpDeleteConfirmButton:   {
+    get: function ()
+    { return element(by.buttonText('Confirm')); }
+  },
+
   clickWorkItemPopUpDeleteConfirmButton:   {
     value: function ()
-    { return element(by.css('.btn.btn-primary.alm-dialog-btn.float-left')).click(); }
-  },
-  clickWorkItemPopUpDeleteCancelConfirmButton:   {
-    value: function ()
-    { return element(by.buttonText('Cancel')).click(); }
+    { 
+      browser.wait(until.presenceOf(this.workItemPopUpDeleteConfirmButton), 30000, 'Failed to find workItemPopUpDeleteConfirmButton');
+      return this.workItemPopUpDeleteConfirmButton.click(); }
   },
 
-  /*workItemQuickAddDescription:  {
+  workItemPopUpDeleteCancelConfirmButton:   {
     get: function ()
-    { return element(by.css("#workItemQuickAdd_desc input")); }
-  },*/
+    { return element(by.buttonText('Cancel')); }
+  },
+
+  clickWorkItemPopUpDeleteCancelConfirmButton:   {
+    value: function ()
+    { 
+      browser.wait(until.presenceOf(this.workItemPopUpDeleteCancelConfirmButton), 30000, 'Failed to find clickWorkItemPopUpDeleteCancelConfirmButton');
+      return this.workItemPopUpDeleteCancelConfirmButton.click(); }
+  },
 
   typeQuickAddWorkItemDescription:  {
     value: function (keys)
-    { return this.workItemQuickAddDescription.sendKeys(keys); }
+    { 
+      browser.wait(until.presenceOf(this.workItemQuickAddDescription), 30000, 'Failed to find workItemQuickAddDescription');
+      return this.workItemQuickAddDescription.sendKeys(keys); }
   },
 
   openButton:  {
@@ -116,7 +161,9 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   clickWorkItemQuickAdd:   {
     value: function ()
-    { return this.openButton.click(); }
+    { 
+      browser.wait(until.presenceOf(this.openButton), 30000, 'Failed to find the open button');
+      return this.openButton.click(); }
   },
 
  saveButton:  {
@@ -126,7 +173,9 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   clickQuickAddSave:   {
     value: function ()
-    { return this.saveButton.click(); }
+    { 
+      browser.wait(until.presenceOf(this.saveButton), 30000, 'Failed to find the saveButton');
+      return this.saveButton.click(); }
   },
 
   cancelButton:  {
@@ -136,7 +185,9 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   clickQuickAddCancel:   {
     value: function ()
-    { return this.cancelButton.click(); }
+    { 
+      browser.wait(until.presenceOf(this.cancelButton), 30000, 'Failed to find the cancelButton');
+      return this.cancelButton.click(); }
   },
 
 /* Page elements - work item list */
@@ -244,106 +295,10 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   clickWorkItemDeleteButton:   {
     value: function (button)
-    { return button.click(); }
+    { 
+      browser.wait(until.presenceOf(button), 30000, 'Failed to find the button');
+      return button.click(); }
   },
-
-  /*
-   * In order to locate a workitem by its ID in the UI, it is necessary to search
-   * for the ID after extracting the workitems out of the UI - and then access the
-   * correct workitem as displayed in the UI through the unique ID.
-   */
-  findWorkItemByIdDesktop:   {
-    value: function (page, targetWorkItemIndex)
-    {
-      var returnWorkItem;
-      /* Retrieve the text of all the workitems from the Desktop UI */
-      page.allWorkItems.getText().then(function (text) {
-
-      /* Add a space so that the text can be accessed as a string */
-      var str = text + ' ';
-
-      /* Split the string into an array */
-      var res = str.split('new\n');
-
-      /* And then convert that string array into an array of workitem objects, discard the
-      * first object as it only contains column titles */
-      var workitems = [];
-      for (var i = 1; i < res.length; i++) {
-
-        /* Remove the new line chars from the workitem text
-         * [ 'new', '13', 'Some Title 13', 'Some Description 13,' ] */
-        var temp = res[i].split('\n');
-
-        /* And create the workitem objects */
-        workitems[i-1] = {
-          workItemIndex:temp[1],
-          workItemTitle:temp[2],
-          workItemDescription:temp[3],
-          workItemState:temp[0]
-        };
-      }
-
-      /* Finally - find and return the workitem object that contains the intended index */
-      var returnWorkItem;
-        for (var i = 0; i < workitems.length; i++) {
-          if (workitems[i].workItemIndex == targetWorkItemIndex){
-            returnWorkItem = page.workItemByIndex(i);
-            break;
-          }
-        }
-      });
-      return returnWorkItem;
-    }
-  },
-
-  /*
-   * In order to locate a workitem by its ID in the UI, it is necessary to search
-   * for the ID after extracting the workitems out of the UI - and then access the
-   * correct workitem as displayed in the UI through the unique ID.
-   */
-  findWorkItemByIdPhone:   {
-    value: function (page, targetWorkItemIndex)
-    {
-      var returnWorkItem;
-      /* Retrieve the text of all the workitems from the Desktop UI */
-      page.allWorkItems.getText().then(function (text) {
-
-        /* Add a space so that the text can be accessed as a string */
-        var str = text + ' ';
-
-        /* Split the string into an array */
-        var res = str.split(',');
-        for (var i = 0; i < res.length; i++) {
-          var tmp = res[i].replace("\n", ",");
-        }
-
-        /* And then convert that string array into an array of workitem objects */
-        var workitems = [];
-        for (var i = 0; i < res.length; i++) {
-
-          /* Remove the new line chars from the workitem text
-           * [ '13', 'Some Title 13' ] */
-          var temp = res[i].split('\n');
-
-          /* And create the workitem objects */
-          workitems[i] = {
-            workItemTitle:temp[1],
-            workItemIndex:temp[0]
-            };
-        }
-
-        /* Finally - find and return the workitem object that contains the intended index */
-        var returnWorkItem;
-        for (var i = 0; i < workitems.length; i++) {
-          if (workitems[i].workItemIndex == targetWorkItemIndex){
-            returnWorkItem = page.workItemByIndex(i);
-            break;
-          }
-        }
-      });
-      return returnWorkItem;
-    }
-  }
 
 });
 
@@ -434,7 +389,9 @@ WorkItemDetailPage.prototype  = Object.create({}, {
 
   clickWorkItemDetailSaveButton:   {
     value: function ()
-    { return this.workItemDetailSaveButton.click(); }
+    { 
+      browser.wait(until.presenceOf(this.workItemDetailSaveButton), 30000, 'Failed to find the workItemDetailSaveButton');
+      return this.workItemDetailSaveButton.click(); }
   },
 
   workItemDetailCancelButton:  {
@@ -444,7 +401,9 @@ WorkItemDetailPage.prototype  = Object.create({}, {
 
   clickWorkItemDetailCancelButton:   {
     value: function ()
-    { return this.workItemDetailCancelButton.click(); }
+    { 
+      browser.wait(until.presenceOf(this.workItemDetailCancelButton), 30000, 'Failed to find the workItemDetailCancelButton');
+      return this.workItemDetailCancelButton.click(); }
   }
 
 });
