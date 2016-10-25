@@ -1,4 +1,4 @@
-import { ModuleWithProviders }  from '@angular/core';
+import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
@@ -9,7 +9,12 @@ import { WorkItemDetailComponent } from './work-item/work-item-detail/work-item-
 import { WorkItemListComponent } from './work-item/work-item-list/work-item-list.component';
 import { WorkItemQuickAddComponent } from './work-item/work-item-quick-add/work-item-quick-add.component';
 
-const appRoutes: Routes = [
+const routes: Routes = [
+  {
+    path: '',
+    redirectTo: '/work-item-list',
+    pathMatch: 'full'
+  },
   {
     path: 'login',
     component: LoginComponent
@@ -23,11 +28,6 @@ const appRoutes: Routes = [
     component: BoardComponent
   },
   {
-    path: '',
-    redirectTo: '/work-item-list',
-    pathMatch: 'full'
-  },
-  {
     path: 'quick-add/:id',
     component: WorkItemQuickAddComponent
   },
@@ -38,4 +38,8 @@ const appRoutes: Routes = [
 
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes, { useHash: true });
+@NgModule({
+  imports: [ RouterModule.forRoot(routes) ],
+  exports: [ RouterModule ]
+})
+export class AppRoutingModule {}

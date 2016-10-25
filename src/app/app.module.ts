@@ -1,14 +1,14 @@
 import './rxjs-extensions';
 
-import { NgModule }      from '@angular/core';
+import { ModuleWithProviders, NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { HttpModule }    from '@angular/http';
-import { BrowserModule } from '@angular/platform-browser';
 
 // Imports for loading & configuring the in-memory web api
 // if not used will be removed for production by treeshaking
 import { InMemoryDataService } from './in-memory-data.service';
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api/in-memory-web-api.module';
 
 //Pipes
 import { AlmTrim } from './pipes/alm-trim';
@@ -25,7 +25,7 @@ import { DropdownComponent } from './shared-component/dropdown/dropdown.componen
 
 // App components
 import { AppComponent }  from './app.component';
-import { routing } from './app.routing';
+import { AppRoutingModule } from './app-routing.module';
 
 // Board
 import { BoardComponent } from './board/board.component';
@@ -49,19 +49,37 @@ import { WorkItemSearchComponent }    from './work-item/work-item-search/work-it
 import { WorkItemService }            from './work-item/work-item.service';
 
 // conditionally import the inmemory resource module
-var moduleImports = [
-      BrowserModule,
-      FormsModule,
-      HttpModule,
-      routing
-    ];
+var moduleImports: Array<any[] | any | ModuleWithProviders>;
 
+// The inmemory environment variable is checked and if present then the in-memory dataset is added.
 if (process.env.ENV == 'inmemory') {
-  moduleImports.push(InMemoryWebApiModule.forRoot(InMemoryDataService));
+  moduleImports = [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    InMemoryWebApiModule.forRoot(InMemoryDataService),
+    AppRoutingModule
+  ];
+} else {
+  moduleImports = [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    AppRoutingModule
+  ];
 }
 
 @NgModule({
   imports: moduleImports,
+  // imports: [
+  //   AppRoutingModule,
+  //   BrowserModule,
+  //   FormsModule,
+  //   HttpModule,
+  //   // InMemoryWebApiModule.forRoot(InMemoryDataService)
+  //   // The inmemory environment variable is checked and if present then the in-memory dataset is added.
+  //   // process.env.ENV == 'inmemory' ? InMemoryWebApiModule.forRoot(InMemoryDataService) : null
+  // ],
   declarations: [
     AlmTrim,    
     AppComponent,

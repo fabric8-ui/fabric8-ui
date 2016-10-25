@@ -1,6 +1,6 @@
-import { Location }               from '@angular/common';
 import { Component, OnInit }      from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Location }               from '@angular/common';
 
 import { AlmTrim } from '../../pipes/alm-trim';
 import { AuthenticationService } from './../../auth/authentication.service';

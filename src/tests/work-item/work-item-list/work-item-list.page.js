@@ -308,7 +308,7 @@ WorkItemListPage.prototype  = Object.create({}, {
  */
 
 var WorkItemDetailPage = function (idValue) {
-  browser.get("http://localhost:8088/#/detail/" + idValue);
+  browser.get("http://localhost:8088/detail/" + idValue + "?token=justarandomtokenfortest");
 };
 
 WorkItemDetailPage.prototype  = Object.create({}, {
