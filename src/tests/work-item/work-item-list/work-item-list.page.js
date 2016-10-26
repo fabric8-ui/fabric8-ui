@@ -13,7 +13,7 @@
  */
 
 var WorkItemListPage = function () {
-  browser.get("http://localhost:8088/");
+  browser.get("http://localhost:8088/?token=justarandomtokenfortest");
 };
 
 WorkItemListPage.prototype  = Object.create({}, {
