@@ -23,7 +23,7 @@ export class AuthenticationService {
     if ('token' in params) {
       this.authToken = params['token'];
       localStorage.setItem('auth_token', this.authToken);
-      location.href = location.protocol + '//' + location.host;
+      //location.href = location.protocol + '//' + location.host;
       return true;
     }
     //this.router.navigate(['login']);
