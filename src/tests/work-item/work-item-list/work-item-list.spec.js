@@ -18,7 +18,7 @@ describe('Work item list', function () {
 
   beforeEach(function () {
     setBrowserMode('phone');
-    page = new WorkItemListPage();
+    page = new WorkItemListPage();    
     page.allWorkItems.count().then(function(originalCount) { startCount = originalCount; });
     
     workItemMockData = {
