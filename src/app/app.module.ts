@@ -4,6 +4,7 @@ import { ModuleWithProviders, NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { HttpModule }    from '@angular/http';
+import { DropdownModule } from 'ng2-dropdown';
 
 // Imports for loading & configuring the in-memory web api
 // if not used will be removed for production by treeshaking
@@ -55,6 +56,7 @@ var moduleImports: Array<any[] | any | ModuleWithProviders>;
 if (process.env.ENV == 'inmemory') {
   moduleImports = [
     BrowserModule,
+    DropdownModule,
     FormsModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService),
@@ -63,6 +65,7 @@ if (process.env.ENV == 'inmemory') {
 } else {
   moduleImports = [
     BrowserModule,
+    DropdownModule,
     FormsModule,
     HttpModule,
     AppRoutingModule

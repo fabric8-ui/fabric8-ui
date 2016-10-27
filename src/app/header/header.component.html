@@ -1,11 +1,24 @@
 <nav id="header_wrapper" class="navbar navbar-default navbar-pf navbar-fixed-top" role="navigation">
 	<div id="header_nav" class="navbar-header">
-		<button type="button" id="header_navToggleBtn" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-1">
-			<span class="sr-only ">Toggle navigation</span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-    </button>
+    
+    <div class="dropdown nav navbar-nav navbar-right navbar-iconic navbar-toggle nav-item-iconic" dropdown >
+        <div dropdown-open>
+          <a class="nav-item-iconic dropdown-toggle no-link">
+            <span title="Username" class="fa pficon-user"></span>
+            <span class="caret"></span>
+          </a>
+        </div>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li *ngIf="loggedInUser">
+              <a> {{loggedInUser.fullName}} </a>
+            </li>
+            <li>
+              <a *ngIf="loggedIn" (click)='logout();'>Logout</a>
+              <a *ngIf="!loggedIn" (click)='login();'>Login</a>
+            </li>
+        </ul>
+    </div>
+
   	<a class="fl">
       <img id="header_ALMLogo" src="../../assets/img/brand.png" alt="Almighty" />
   	</a>
