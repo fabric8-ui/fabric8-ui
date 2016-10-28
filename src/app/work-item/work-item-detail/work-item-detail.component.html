@@ -10,72 +10,84 @@
     <h1>{{workItem.fields['system.title']}} Details</h1>
     <br />
     <div [hidden]="submitted">
-      <form *ngIf="active" (ngSubmit)="save()" #almWorkItemDetailForm="ngForm" id="wi-detail-form">
-            <div class="form-horizontal">
+      <form *ngIf="active" (ngSubmit)="save()" #almWorkItemDetailForm="ngForm"
+        id="wi-detail-form">
+        <div class="form-horizontal">
             <fieldset [attr.disabled]="!loggedIn ? true : null">
-            <div class="form-group">
-                <label class="col-sm-1 control-label">ID</label>
-                <div class="col-sm-5" id="wi-detail-id">
-                {{workItem.id}}
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">ID</label>
+                    <div class="col-sm-5" id="wi-detail-id">
+                        {{workItem.id}}
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-1 control-label" for="wi-detail-title">Title</label>
-                <div class="col-sm-5">
-                <input type="text" class="form-control" id="wi-detail-title"
-                    [ngModel]="workItem.fields['system.title'] | almTrim "
-                    (ngModelChange)="workItem.fields['system.title'] = $event"               
-                    required name="title" #title="ngModel" />
-                <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
-                    Title is required
+                <div class="form-group">
+                    <label class="col-sm-1 control-label" for="wi-detail-title">
+                        Title
+                    </label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="wi-detail-title"
+                            [ngModel]="workItem.fields['system.title'] | almTrim "
+                            (ngModelChange)="workItem.fields['system.title'] = $event"               
+                            required name="title" #title="ngModel" />
+                        <div [hidden]="title.valid || title.pristine" 
+                            class="alert alert-danger">
+                            Title is required
+                        </div>
+                    </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label" for="wi-detail-desc">
+                        Description
+                    </label>
+                    <div class="col-sm-5">
+                    <textarea id="wi-detail-desc" placeholder="Description" 
+                        class="form-control"
+                        [(ngModel)]="workItem.fields['system.description']"
+                        name="description"></textarea>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-1 control-label" for="wi-detail-desc">Description</label>
-                <div class="col-sm-5">
-                <textarea id="wi-detail-desc" placeholder="Description" class="form-control"
-                    [(ngModel)]="workItem.fields['system.description']"
-                    name="description"
-                ></textarea>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label" for="wi-detail-type">
+                        Type
+                    </label>
+                    <div class="col-sm-5">              
+                        <select id="wi-detail-type" class="form-control" 
+                            [(ngModel)]="workItem.type"
+                            name="type" #type="ngModel">
+                                <option *ngFor="let type of workItemTypes" 
+                                [value]="type.name"
+                                [selected]='type.name==workItem.type'>
+                                {{type.name.substring(7,type.length)}}                  
+                                </option>
+                        </select>      
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-1 control-label" for="wi-detail-type">Type</label>
-                <div class="col-sm-5">
-                <select id="wi-detail-type" class="form-control" 
-                    [(ngModel)]="workItem.type"
-                    name="type" #type="ngModel">
-                    <option *ngFor="let type of workItemTypes" [value]="type">{{type.substring(7,type.length)}}</option>
-                </select>          
+                <div class="form-group">
+                    <label class="col-sm-1 control-label" for="wi-detail-creator">Creator</label>
+                    <div class="col-sm-5">
+                    <input type="text" id="wi-detail-creator" placeholder="Creator" class="form-control"
+                        [(ngModel)]="workItem.fields['system.creator']"
+                        name="creator" />
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-1 control-label" for="wi-detail-creator">Creator</label>
-                <div class="col-sm-5">
-                <input type="text" id="wi-detail-creator" placeholder="Creator" class="form-control"
-                    [(ngModel)]="workItem.fields['system.creator']"
-                    name="creator" />
+                <div class="form-group">
+                    <label class="col-sm-1 control-label" for="wi-detail-assignee">Assignee</label>
+                    <div class="col-sm-5">
+                    <input type="text" id="wi-detail-assignee" placeholder="Assignee" class="form-control"
+                        [(ngModel)]="workItem.fields['system.assignee']" 
+                        name="assignee" />
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-1 control-label" for="wi-detail-assignee">Assignee</label>
-                <div class="col-sm-5">
-                <input type="text" id="wi-detail-assignee" placeholder="Assignee" class="form-control"
-                    [(ngModel)]="workItem.fields['system.assignee']" 
-                    name="assignee" />
+                <div class="form-group">
+                    <label class="col-sm-1 control-label" for="wi-detail-state">State</label>
+                    <div class="col-sm-5">
+                    <select id="wi-detail-state" class="form-control"
+                        [(ngModel)]="workItem.fields['system.state']" 
+                        name="states">
+                        <option *ngFor="let state of workItemStates" [value]="state">{{state}}</option>
+                    </select>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-1 control-label" for="wi-detail-state">State</label>
-                <div class="col-sm-5">
-                <select id="wi-detail-state" class="form-control"
-                    [(ngModel)]="workItem.fields['system.state']" 
-                    name="states">
-                    <option *ngFor="let state of workItemStates" [value]="state">{{state}}</option>
-                </select>
-                </div>
-            </div>
             </fieldset>
             <div class="form-group">
                 <div class="col-sm-offset-1 col-sm-5">

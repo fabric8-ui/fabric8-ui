@@ -9,7 +9,7 @@ import { WorkItem }                   from '../work-item';
 import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService }            from '../work-item.service';
 
-@Component({  
+@Component({
   selector: 'alm-work-item-list',
   templateUrl: './work-item-list.component.html',
   styleUrls: ['./work-item-list.component.scss'],

@@ -12,6 +12,7 @@ import { Dialog } from '../../shared-component/dialog/dialog';
 import { DialogComponent } from '../../shared-component/dialog/dialog.component';
 
 import { WorkItem } from '../work-item';
+import { WorkItemType } from '../work-item-type';
 import { WorkItemService } from '../work-item.service';
 
 @Component({
@@ -23,8 +24,7 @@ import { WorkItemService } from '../work-item.service';
 export class WorkItemDetailComponent implements OnInit {  
   workItem: WorkItem;
 
-  // TODO: These should be read from the WorkitemTypeService
-  workItemTypes = ['system.experience', 'system.feature', 'system.userstory', 'system.bug', 'system.fundamental', 'system.valueproposition'];
+  workItemTypes: WorkItemType[];
   // TODO: These should be read from the WorkitemType of the given Workitem
   workItemStates = ['new', 'in progress', 'resolved', 'closed'];
 
@@ -52,6 +52,7 @@ export class WorkItemDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.listenToEvents();
+    this.getWorkItemTypes();
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         let id = params['id'];
@@ -64,6 +65,12 @@ export class WorkItemDetailComponent implements OnInit {
       }
     });
     this.loggedIn = this.auth.isLoggedIn();
+  }
+
+  getWorkItemTypes(): void {
+    this.workItemService.getWorkItemTypes().then((types) => {
+      return this.workItemTypes = types;
+    });
   }
 
   save(): void {
@@ -99,6 +106,3 @@ export class WorkItemDetailComponent implements OnInit {
     });
   }
 }
-
-
-

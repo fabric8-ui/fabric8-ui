@@ -19,50 +19,308 @@ export class InMemoryDataService implements InMemoryDbService {
     };
 
     let workitemtypes = [
-      {
-        'fields': {
-          'system.assignee': {
-            'required': false,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.creator': {
-            'required': true,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.description': {
-            'required': false,
-            'type': {
-              'kind': 'string'
-            }
-          },
-          'system.state': {
-            'required': true,
-            'type': {
-              'baseType': 'string',
-              'kind': 'enum',
-              'values': [
-                'new',
-                'in progress',
-                'resolved',
-                'closed'
-              ]
-            }
-          },
-          'system.title': {
-            'required': true,
-            'type': {
-              'kind': 'string'
-            }
+    {
+      'fields': {
+        'system.assignee': {
+          'required': false,
+          'type': {
+            'kind': 'user'
           }
         },
-        'name': 'system.userstory',
-        'version': 0
-      }
-    ];
+        'system.creator': {
+          'required': true,
+          'type': {
+            'kind': 'user'
+          }
+        },
+        'system.description': {
+          'required': false,
+          'type': {
+            'kind': 'string'
+          }
+        },
+        'system.remote_item_id': {
+          'required': false,
+          'type': {
+            'kind': 'string'
+          }
+        },
+        'system.state': {
+          'required': true,
+          'type': {
+            'baseType': 'string',
+            'kind': 'enum',
+            'values': [
+              'new',
+              'open',
+              'in progress',
+              'resolved',
+              'closed'
+            ]
+          }
+        },
+        'system.title': {
+          'required': true,
+          'type': {
+            'kind': 'string'
+          }
+        }
+      },
+      'name': 'system.userstory',
+      'version': 0
+    },
+    {
+      'fields': {
+        'system.assignee': {
+          'required': false,
+          'type': {
+            'kind': 'user'
+          }
+        },
+        'system.creator': {
+          'required': true,
+          'type': {
+            'kind': 'user'
+          }
+        },
+        'system.description': {
+          'required': false,
+          'type': {
+            'kind': 'string'
+          }
+        },
+        'system.remote_item_id': {
+          'required': false,
+          'type': {
+            'kind': 'string'
+          }
+        },
+        'system.state': {
+          'required': true,
+          'type': {
+            'baseType': 'string',
+            'kind': 'enum',
+            'values': [
+              'new',
+              'open',
+              'in progress',
+              'resolved',
+              'closed'
+            ]
+          }
+        },
+        'system.title': {
+          'required': true,
+          'type': {
+            'kind': 'string'
+          }
+        }
+      },
+      'name': 'system.valueproposition',
+      'version': 0
+    },
+    {
+      'fields': {
+        'system.assignee': {
+          'required': false,
+          'type': {
+            'kind': 'user'
+          }
+        },
+        'system.creator': {
+          'required': true,
+          'type': {
+            'kind': 'user'
+          }
+        },
+        'system.description': {
+          'required': false,
+          'type': {
+            'kind': 'string'
+          }
+        },
+        'system.remote_item_id': {
+          'required': false,
+          'type': {
+            'kind': 'string'
+          }
+        },
+        'system.state': {
+          'required': true,
+          'type': {
+            'baseType': 'string',
+            'kind': 'enum',
+            'values': [
+              'new',
+              'open',
+              'in progress',
+              'resolved',
+              'closed'
+            ]
+          }
+        },
+        'system.title': {
+          'required': true,
+          'type': {
+            'kind': 'string'
+          }
+        }
+      },
+      'name': 'system.fundamental',
+      'version': 0
+    },
+    {
+      'fields': {
+        'system.assignee': {
+          'required': false,
+          'type': {
+            'kind': 'user'
+          }
+        },
+        'system.creator': {
+          'required': true,
+          'type': {
+            'kind': 'user'
+          }
+        },
+        'system.description': {
+          'required': false,
+          'type': {
+            'kind': 'string'
+          }
+        },
+        'system.remote_item_id': {
+          'required': false,
+          'type': {
+            'kind': 'string'
+          }
+        },
+        'system.state': {
+          'required': true,
+          'type': {
+            'baseType': 'string',
+            'kind': 'enum',
+            'values': [
+              'new',
+              'open',
+              'in progress',
+              'resolved',
+              'closed'
+            ]
+          }
+        },
+        'system.title': {
+          'required': true,
+          'type': {
+            'kind': 'string'
+          }
+        }
+      },
+      'name': 'system.experience',
+      'version': 0
+    },
+    {
+      'fields': {
+        'system.assignee': {
+          'required': false,
+          'type': {
+            'kind': 'user'
+          }
+        },
+        'system.creator': {
+          'required': true,
+          'type': {
+            'kind': 'user'
+          }
+        },
+        'system.description': {
+          'required': false,
+          'type': {
+            'kind': 'string'
+          }
+        },
+        'system.remote_item_id': {
+          'required': false,
+          'type': {
+            'kind': 'string'
+          }
+        },
+        'system.state': {
+          'required': true,
+          'type': {
+            'baseType': 'string',
+            'kind': 'enum',
+            'values': [
+              'new',
+              'open',
+              'in progress',
+              'resolved',
+              'closed'
+            ]
+          }
+        },
+        'system.title': {
+          'required': true,
+          'type': {
+            'kind': 'string'
+          }
+        }
+      },
+      'name': 'system.feature',
+      'version': 0
+    },
+    {
+      'fields': {
+        'system.assignee': {
+          'required': false,
+          'type': {
+            'kind': 'user'
+          }
+        },
+        'system.creator': {
+          'required': true,
+          'type': {
+            'kind': 'user'
+          }
+        },
+        'system.description': {
+          'required': false,
+          'type': {
+            'kind': 'string'
+          }
+        },
+        'system.remote_item_id': {
+          'required': false,
+          'type': {
+            'kind': 'string'
+          }
+        },
+        'system.state': {
+          'required': true,
+          'type': {
+            'baseType': 'string',
+            'kind': 'enum',
+            'values': [
+              'new',
+              'open',
+              'in progress',
+              'resolved',
+              'closed'
+            ]
+          }
+        },
+        'system.title': {
+          'required': true,
+          'type': {
+            'kind': 'string'
+          }
+        }
+      },
+      'name': 'system.bug',
+      'version': 0
+    }
+  ];
+
 
     let user = {
       'fullName': 'Sudipta Sen',

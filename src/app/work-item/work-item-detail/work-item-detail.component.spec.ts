@@ -28,6 +28,7 @@ import { AuthenticationService } from './../../auth/authentication.service';
 import { User } from './../../user/user';
 import { UserService } from './../../user/user.service';
 import { WorkItem } from '../work-item';
+import { WorkItemType } from '../work-item-type';
 import { WorkItemService } from '../work-item.service';
 
 import { WorkItemDetailComponent } from './work-item-detail.component';
@@ -46,6 +47,7 @@ describe('Detailed view and edit a selected work item - ', () => {
   let fakeWorkItemService: any;
   let fakeAuthService: any;
   let fakeUserService: any;
+  let fakeWorkItemTypes: WorkItemType[];
 
   beforeEach(() => {
     dialog = {
@@ -74,6 +76,16 @@ describe('Detailed view and edit a selected work item - ', () => {
       'imageURL': 'https://avatars.githubusercontent.com/u/2410474?v=3'
     } as User;
 
+    fakeWorkItemTypes = [
+      { name: 'system.userstory' },
+      { name: 'system.valueproposition' },
+      { name: 'system.fundamental' },
+      { name: 'system.experience' },
+      { name: 'system.feature' },
+      { name: 'system.bug' }
+    ] as WorkItemType[];
+
+
     fakeAuthService = {
       getToken: function () {
         return '';
@@ -92,6 +104,11 @@ describe('Detailed view and edit a selected work item - ', () => {
       update: function () {
         return new Promise((resolve, reject) => {
           resolve(fakeWorkItem);
+        });
+      },
+      getWorkItemTypes: function () {
+        return new Promise((resolve, reject) => {
+          resolve(fakeWorkItemTypes);
         });
       }
     };
