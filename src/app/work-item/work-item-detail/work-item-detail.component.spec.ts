@@ -20,6 +20,7 @@ import { Logger } from '../../shared/logger.service';
 
 import { Dialog } from '../../shared-component/dialog/dialog';
 import { DialogComponent } from '../../shared-component/dialog/dialog.component';
+import { DropdownOption }    from './../../shared-component/dropdown/dropdown-option';
 
 import { FooterComponent } from '../../footer/footer.component';
 import { HeaderComponent } from '../../header/header.component';
@@ -48,6 +49,7 @@ describe('Detailed view and edit a selected work item - ', () => {
   let fakeAuthService: any;
   let fakeUserService: any;
   let fakeWorkItemTypes: WorkItemType[];
+  let fakeWorkItemStates: DropdownOption[];
 
   beforeEach(() => {
     dialog = {
@@ -70,6 +72,14 @@ describe('Detailed view and edit a selected work item - ', () => {
       'type': 'system.userstory',
       'version': 0
     } as WorkItem;
+
+    fakeWorkItemStates = [
+      { option: 'new' },
+      { option: 'open' },
+      { option: 'in progress' },
+      { option: 'resolved' },
+      { option: 'closed' }
+    ] as DropdownOption[];
 
     fakeUser = {
       'fullName': 'Sudipta Sen',
@@ -109,6 +119,12 @@ describe('Detailed view and edit a selected work item - ', () => {
       getWorkItemTypes: function () {
         return new Promise((resolve, reject) => {
           resolve(fakeWorkItemTypes);
+        });
+      },
+
+      getStatusOptions: function () {
+        return new Promise((resolve, reject) => {
+          resolve(fakeWorkItemStates);
         });
       }
     };

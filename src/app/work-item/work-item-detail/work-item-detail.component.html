@@ -84,7 +84,9 @@
                     <select id="wi-detail-state" class="form-control"
                         [(ngModel)]="workItem.fields['system.state']" 
                         name="states">
-                        <option *ngFor="let state of workItemStates" [value]="state">{{state}}</option>
+                        <option *ngFor="let state of workItemStates" [value]="state.option">
+                          {{state.option}}
+                        </option>
                     </select>
                     </div>
                 </div>

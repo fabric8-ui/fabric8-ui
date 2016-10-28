@@ -10,6 +10,7 @@ import { Logger } from '../../shared/logger.service';
 
 import { Dialog } from '../../shared-component/dialog/dialog';
 import { DialogComponent } from '../../shared-component/dialog/dialog.component';
+import { DropdownOption }    from './../../shared-component/dropdown/dropdown-option';
 
 import { WorkItem } from '../work-item';
 import { WorkItemType } from '../work-item-type';
@@ -26,7 +27,7 @@ export class WorkItemDetailComponent implements OnInit {
 
   workItemTypes: WorkItemType[];
   // TODO: These should be read from the WorkitemType of the given Workitem
-  workItemStates = ['new', 'in progress', 'resolved', 'closed'];
+  workItemStates: DropdownOption[];
 
   dialog: Dialog = {
     'title' : 'Changes have been made',
@@ -53,6 +54,7 @@ export class WorkItemDetailComponent implements OnInit {
   ngOnInit(): void {
     this.listenToEvents();
     this.getWorkItemTypes();
+    this.getWorkItemStates();
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         let id = params['id'];
@@ -68,9 +70,17 @@ export class WorkItemDetailComponent implements OnInit {
   }
 
   getWorkItemTypes(): void {
-    this.workItemService.getWorkItemTypes().then((types) => {
-      return this.workItemTypes = types;
-    });
+    this.workItemService.getWorkItemTypes()
+      .then((types) => {
+        this.workItemTypes = types;
+      });
+  }
+
+  getWorkItemStates(): void {
+    this.workItemService.getStatusOptions()
+      .then((options) => {
+        this.workItemStates = options;
+      });
   }
 
   save(): void {
