@@ -9,15 +9,12 @@
   text-decoration: none;
 }
 .icon-btn{
-  color: #0088ce;
+  color: $color-pf-blue-400;
   cursor: pointer;
 }
 .icon-btn-disabled{
   color: #ebebeb;
   cursor: default;
-}
-.margin10{
-  margin-top: 10px;
 }
 .quickAdd_container{
   position: fixed;
@@ -25,7 +22,7 @@
   background: #eaeaea;
   z-index: 9;
   border-top: 1px solid #cccccc;
-  text-align: left;
+  text-align: $textLeft;
   cursor: pointer;
   .addWorkItem{
     padding:$pad20;
@@ -48,7 +45,7 @@
   }
   .addWorkItemBlk{
     padding:$pad20;
-    background:#fff;
+    background:$color-pf-white;
     position: relative;
     .workItemQuickAdd_IconType{
       width:2em;
@@ -72,7 +69,7 @@
     }
     .workItemQuickAdd_Add{
       width: 5em;
-      text-align: right; 
+      text-align: $textRight; 
       font-size: $font16;
       padding-right: 2em;
     }
@@ -85,7 +82,7 @@
   }
 }
 .add{
-  background: #fff;
+  background: $color-pf-white;
 }
 @media (max-width: $grid-float-breakpoint){
   .quickAdd_container{

@@ -1,7 +1,4 @@
-.screen-min-ht{
-  min-height: 85%;
-  margin-top: 4%;
-}
+@import "../../../assets/stylesheets/custom";
 .alert{
-  padding-left: 10px;
+  padding-left: $pad10;
 }

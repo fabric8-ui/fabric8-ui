@@ -1,8 +1,6 @@
 @import "variables";
 //custom variables
 $width100: 100%;
-$fl: left;
-$fr: right;
 $margin20: 20px;
 $margin10: 10px;
 $margin5: 5px;
@@ -46,17 +44,25 @@ $font20: 20px;
 	-o-transition:      $transition; 
 	transition:         $transition;
 }
+@mixin borderRadius($radius) {
+  border-radius: $radius;
+   -o-border-radius: $radius;
+   -moz-border-radius: $radius;
+   -webkit-border-radius: $radius;
+}
 
 // custom classes
 .width100{ width: $width100; }
-.fl{ float: $fl; }
-.fr{ float: $fr; }
 .marginT20{ margin-top: $margin20; }
 .marginB20{ margin-bottom: $margin20; }
 .marginT5{ margin-top: $margin5; }
 .marginB5{ margin-bottom: $margin5; }
 .marginL5{ margin-left: $margin5; }
 .marginR5{ margin-right: $margin5; }
+.marginT10{ margin-top: $margin10; }
+.marginB10{ margin-bottom: $margin10; }
+.marginL10{ margin-left: $margin10; }
+.marginR10{ margin-right: $margin10; }
 .margin0{ margin: $margin0; }
 .paddingT20{ padding-top: $pad20; }
 .paddingB20{ padding-bottom: $pad20; }

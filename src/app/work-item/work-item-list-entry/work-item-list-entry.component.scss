@@ -1,22 +1,26 @@
 @import "../../../assets/stylesheets/custom";
 
-.type span{
-  font-size: 12px;
-  margin-right: 10px;
-  color: #8b8d8f;
-}
-.work-item-details{
-	padding: 1% 8%;
-}
+
 .list-group-item {
   cursor: pointer;
+  .workItemList_workItemType {
+    span{
+      font-size: $font12;
+      margin-right: $margin10;
+      color: $color-pf-black-500;
+    }
+  }
 }
-.selected {
-  background-color: #ededed;;
+button{
+  &:active{ 
+    outline: none; 
+    &:focus {
+      outline: none; 
+    }
+  }
 }
-button:active:focus {
-  outline: none; 
-}
-button:active, span:focus {
-  outline: none; 
+span{
+  &:focus{
+    outline: none;
+  }
 }

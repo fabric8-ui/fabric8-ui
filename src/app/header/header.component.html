@@ -3,7 +3,7 @@
     
     <div class="dropdown nav navbar-nav navbar-right navbar-iconic navbar-toggle nav-item-iconic" dropdown >
         <div dropdown-open>
-          <a class="nav-item-iconic dropdown-toggle no-link">
+          <a class="nav-item-iconic dropdown-toggle no-link pull-left">
             <span title="Username" class="fa pficon-user"></span>
             <span class="caret"></span>
           </a>
@@ -30,7 +30,7 @@
 						<span *ngIf="!imgLoaded" class="pficon pficon-user"></span>							
 						<img (load)="onImgLoad()" src="{{ loggedInUser.imageURL }}" 
 							[ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}" 
-							class="pull-left" />													
+							class="pull-left marginR10" />													
 						{{loggedInUser.fullName}}
         	</a>
       </li>

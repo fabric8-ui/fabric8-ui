@@ -19,8 +19,7 @@
       </div>
       <div *ngIf='dialog.actionButtons' class="modal-footer">                    
         <button *ngFor="let btn of dialog.actionButtons"      
-          type="submit" class="btn btn-primary alm-dialog-btn float-left" value="{{ btn.value}}" (click)="btnClick(btn.value)">{{ btn.title }}</button>  
-        
+          type="submit" class="btn btn-primary marginR10 pull-left" value="{{ btn.value}}" (click)="btnClick(btn.value)">{{ btn.title }}</button>  
       </div>
     </div>
   </div>
