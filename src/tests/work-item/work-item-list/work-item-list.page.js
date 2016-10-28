@@ -198,6 +198,12 @@ WorkItemListPage.prototype  = Object.create({}, {
     { return element.all(by.css(".work-item-list-entry")); }
   },
 
+/* xpath = //alm-work-item-list-entry[.//text()[contains(.,'Some Title 6')]]   */
+workItemByTitle:  {
+    value: function (titleString)
+    { return element(by.xpath("//alm-work-item-list-entry[.//text()[contains(.,'" + titleString + "')]]")); }
+  },
+
   firstWorkItem:  {
     get: function ()
     { return element.all(by.css(".work-item-list-entry")).first(); }

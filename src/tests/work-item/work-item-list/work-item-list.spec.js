@@ -9,15 +9,17 @@
  * 
  * beforeEach will set the mode to phone. Any tests requiring a different resolution will must set explicitly. 
  * 
+ * @author ldimaggi
  */
 
-var WorkItemListPage = require('./work-item-list.page');
+var WorkItemListPage = require('./work-item-list.page'),
+  testSupport = require('./testSupport');
 
 describe('Work item list', function () {
   var page, items, startCount, browserMode;
 
   beforeEach(function () {
-    setBrowserMode('phone');
+    testSupport.setBrowserMode('phone');
     page = new WorkItemListPage();    
     page.allWorkItems.count().then(function(originalCount) { startCount = originalCount; });
     
@@ -41,7 +43,7 @@ describe('Work item list', function () {
   });
   
   it('should have the right mock data in the first entry - desktop.', function() {
-    setBrowserMode('desktop');		  
+    testSupport.setBrowserMode('desktop');		  
     expect(page.workItemDescription(page.firstWorkItem)).toBe('Some Description 14');
     expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title 14');
   });
@@ -57,7 +59,7 @@ describe('Work item list', function () {
   });
  
  it('should create a new workitem - desktop.', function () {
-    setBrowserMode('desktop');	
+    testSupport.setBrowserMode('desktop');	
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle('Some Title');
     page.clickQuickAddSave().then(function() {
@@ -68,7 +70,7 @@ describe('Work item list', function () {
   });
 	 
   it('should contain right mock data on detail page - desktop.', function() { 
-    setBrowserMode('desktop');	
+    testSupport.setBrowserMode('desktop');	
     page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
       detailPage = page.clickWorkItemViewButton(page.workItemViewButton(page.firstWorkItem), text);
       expect(detailPage.workItemDetailPageTitle.getText()).toBe(workItemMockData.pageTitle);
@@ -81,31 +83,5 @@ describe('Work item list', function () {
       detailPage.clickWorkItemDetailCancelButton();
     });
   });
-  
-  /*
-   * Set the screen resolution
-   */
-  function setBrowserMode(browserModeStr) {
-    switch (browserModeStr) {
-	  case 'phone':
-	    browser.driver.manage().window().setSize(375, 667);
-      break;
-	  case 'tablet':
-        browser.driver.manage().window().setSize(768, 1024);
-      break;
-      case 'desktop':
-        browser.driver.manage().window().setSize(1920, 1080);
-    } 
-  };
-  
-  /* 
-  * Write screenshot to file 
-  */ 
-  function writeScreenShot(data, filename) {
-    var fs = require('fs');
-    var stream = fs.createWriteStream(filename);
-    stream.write(new Buffer(data, 'base64'));
-    stream.end();
-  }
   
 });

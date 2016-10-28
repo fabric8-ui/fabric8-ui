@@ -9,20 +9,22 @@
  *
  * beforeEach will set the mode to phone. Any tests requiring a different resolution will must set explicitly.
  *
+ * @author nverma
  */
 
-var WorkItemListPage = require('./work-item-list.page');
+var WorkItemListPage = require('./work-item-list.page'),
+  testSupport = require('./testSupport');
 
 describe('Work item list', function () {
   var page, items, startCount, browserMode;
 
   beforeEach(function () {
-    setBrowserMode('phone');
+    testSupport.setBrowserMode('phone');
     page = new WorkItemListPage();
   });
 
   it('Creating a new quick add work item and delete - phone.', function () {
-    setBrowserMode('phone');
+    testSupport.setBrowserMode('phone');
     page.clickQuickAddWorkItemTitleButton();
     page.typeQuickAddWorkItemTitleText('Quick Add and Delete');
     page.clickWorkItemQuickAddButton().then(function() {
@@ -38,7 +40,7 @@ describe('Work item list', function () {
   });
 
   it('Creating a new quick add work item and Cancel delete - phone.', function () {
-    setBrowserMode('phone');
+    testSupport.setBrowserMode('phone');
     page.clickQuickAddWorkItemTitleButton();
     page.typeQuickAddWorkItemTitleText('Quick Add and Cancel Delete');
     page.clickWorkItemQuickAddButton().then(function() {
@@ -52,21 +54,5 @@ describe('Work item list', function () {
     });
     });
   });
-  
-  /*
-   * Set the screen resolution
-   */
-  function setBrowserMode(browserModeStr) {
-    switch (browserModeStr) {
-	  case 'phone':
-	    browser.driver.manage().window().setSize(375, 667);
-      break;
-	  case 'tablet':
-        browser.driver.manage().window().setSize(768, 1024);
-      break;
-      case 'desktop':
-        browser.driver.manage().window().setSize(1920, 1080);
-    } 
-  };
 
 });
