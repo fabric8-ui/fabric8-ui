@@ -9,13 +9,22 @@
     <div class="workItemQuickAdd_IconType">
       <i class="fa fa-bookmark fl "></i>
     </div>
-    <div class=" workItemQuickAdd_storyInput">
-      <input #quickAdd type="text" id="exampleInput" class="form-control width100 fl"  [(ngModel)]="workItem.fields['system.title']" 
-             (keyup.enter)="save()"
-            (keyup)="checkTitle()" placeholder="A New Story" required/>
+    <div class=" workItemQuickAdd_story">
+      <div class="col-md-6 col-sm-6 col-xs-12 workItemQuickAdd_storyInput">
+        <input #quickAdd type="text" id="exampleInput" class="form-control width100 pull-left"  [(ngModel)]="workItem.fields['system.title']" 
+              (keyup.enter)="save()"
+              (keyup)="checkTitle()" placeholder="A New Story" required/>
+      </div>
+      <div class="col-md-6 col-sm-6 mobdn">
+        <textarea type="text" rows="1" id="exampleDesc" class="form-control width100 pull-left"  [(ngModel)]="workItem.fields['system.description']" 
+               placeholder="Description">
+        </textarea>
+      </div>
     </div>
-    <span class="fr font16 workItemQuickAdd_Add" 
-      (click)="addWorkItemBtn()" [ngClass]="{'icon-btn': validTitle,'icon-btn-disabled':!validTitle}">Add</span>
-      <span (click)="toggleQuickAdd()" class="closeQuickAdd">X</span>
+    <div class="workItemQuickAdd_AddBlk">
+      <span class="pull-left font16 workItemQuickAdd_Add" 
+        (click)="addWorkItemBtn()" [ngClass]="{'icon-btn': validTitle,'icon-btn-disabled':!validTitle}"><i class="fa fa-check font14"></i></span>
+      <span (click)="toggleQuickAdd()" class="pull-right closeQuickAdd"><i class="pficon pficon-close font16"></i></span>
+    </div>
   </div>
 </div>

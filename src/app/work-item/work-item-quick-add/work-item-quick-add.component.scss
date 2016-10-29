@@ -59,25 +59,20 @@
         @include transform(translateY(-50%));
       }
     }
-    .workItemQuickAdd_storyInput{
-      padding-left:4em;
-      padding-right: 7em;
-      input{
-      border:none;
-      box-shadow: none;
-      }
+    .workItemQuickAdd_story{
+      padding-left:2em;
+      padding-right: 3em;
     }
-    .workItemQuickAdd_Add{
-      width: 5em;
-      text-align: $textRight; 
-      font-size: $font16;
-      padding-right: 2em;
-    }
-    .closeQuickAdd{
+    .workItemQuickAdd_AddBlk{
       position: absolute;
       top: 50%;
       @include transform(translateY(-50%));
       right: 0.833em;
+      width: 3em;
+      .workItemQuickAdd_Add{
+        text-align: right; 
+        font-size: $font16;
+      }
     }
   }
 }
