@@ -72,17 +72,17 @@ WorkItemListPage.prototype  = Object.create({}, {
        return this.workItemQuickAddTitle.sendKeys(keys); }
    },
 
-  quickAddWorkItemTitleButton:  {
-    get: function ()
-    { return element(by.css('.pficon-add-circle-o.dib.font18')); }
-  },
-
-  clickQuickAddWorkItemTitleButton:  {
-    value: function ()
-    { 
-      browser.wait(until.presenceOf(this.quickAddWorkItemTitleButton), waitTime, 'Failed to find quickAddWorkItemTitleButton');
-      return this.quickAddWorkItemTitleButton.click(); }
-  },
+//  quickAddWorkItemTitleButton:  {
+//    get: function ()
+//    { return element(by.css('.pficon-add-circle-o.dib.font18')); }
+//  },
+//
+//  clickQuickAddWorkItemTitleButton:  {
+//    value: function ()
+//    { 
+//      browser.wait(until.presenceOf(this.quickAddWorkItemTitleButton), waitTime, 'Failed to find quickAddWorkItemTitleButton');
+//      return this.quickAddWorkItemTitleButton.click(); }
+//  },
 
   quickAddWorkItemTitleText:  {
     get: function ()
@@ -96,17 +96,17 @@ WorkItemListPage.prototype  = Object.create({}, {
       return this.quickAddWorkItemTitleText.sendKeys(keys); }
   },
 
-  addVisibleopenButton:  {
-    get: function ()
-    { return element(by.css(".fr.font16.workItemQuickAdd_Add.icon-btn")); }
-  },
-
-  clickWorkItemQuickAddButton:   {
-    value: function ()
-    { 
-      browser.wait(until.presenceOf(this.addVisibleopenButton), waitTime, 'Failed to find addVisibleopenButton');
-      return this.addVisibleopenButton.click(); }
-  },
+//  addVisibleopenButton:  {
+//    get: function ()
+//    { return element(by.css(".fr.font16.workItemQuickAdd_Add.icon-btn")); }
+//  },
+//
+//  clickWorkItemQuickAddButton:   {
+//    value: function ()
+//    { 
+//      browser.wait(until.presenceOf(this.addVisibleopenButton), waitTime, 'Failed to find addVisibleopenButton');
+//      return this.addVisibleopenButton.click(); }
+//  },
 
   /* Access the Kebab element relative to its parent workitem */
    clickWorkItemKebabButton:  {

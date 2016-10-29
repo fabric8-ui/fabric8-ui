@@ -25,9 +25,12 @@ describe('Work item list', function () {
 
   it('Creating a new quick add work item and delete - phone.', function () {
     testSupport.setBrowserMode('phone');
-    page.clickQuickAddWorkItemTitleButton();
-    page.typeQuickAddWorkItemTitleText('Quick Add and Delete');
-    page.clickWorkItemQuickAddButton().then(function() {
+//    page.clickQuickAddWorkItemTitleButton();
+//    page.typeQuickAddWorkItemTitleText('Quick Add and Delete');
+//    page.clickWorkItemQuickAddButton().then(function() {    
+    page.clickWorkItemQuickAdd();
+    page.typeQuickAddWorkItemTitle('Quick Add and Delete');
+    page.clickQuickAddSave().then(function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe('Quick Add and Delete');
       expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Quick Add and Delete');
       page.clickWorkItemKebabButton(page.firstWorkItem);     
@@ -41,17 +44,20 @@ describe('Work item list', function () {
 
   it('Creating a new quick add work item and Cancel delete - phone.', function () {
     testSupport.setBrowserMode('phone');
-    page.clickQuickAddWorkItemTitleButton();
-    page.typeQuickAddWorkItemTitleText('Quick Add and Cancel Delete');
-    page.clickWorkItemQuickAddButton().then(function() {
-    expect(page.workItemTitle(page.firstWorkItem)).toBe('Quick Add and Cancel Delete');
-    expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Quick Add and Cancel Delete');
-    page.clickWorkItemKebabButton(page.firstWorkItem);     
-    page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
-    page.clickWorkItemPopUpDeleteCancelConfirmButton().then(function() {
+//    page.clickQuickAddWorkItemTitleButton();
+//    page.typeQuickAddWorkItemTitleText('Quick Add and Cancel Delete');
+//    page.clickWorkItemQuickAddButton().then(function() { 
+    page.clickWorkItemQuickAdd();
+    page.typeQuickAddWorkItemTitle('Quick Add and Cancel Delete');
+    page.clickQuickAddSave().then(function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe('Quick Add and Cancel Delete');
       expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Quick Add and Cancel Delete');
-    });
+      page.clickWorkItemKebabButton(page.firstWorkItem);     
+      page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
+      page.clickWorkItemPopUpDeleteCancelConfirmButton().then(function() {
+        expect(page.workItemTitle(page.firstWorkItem)).toBe('Quick Add and Cancel Delete');
+        expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Quick Add and Cancel Delete');
+      });
     });
   });
 
