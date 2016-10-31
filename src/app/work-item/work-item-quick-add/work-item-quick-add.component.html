@@ -1,13 +1,13 @@
-<div class="width100 fl quickAdd_container" id="workItemQuickAdd_container" >
-  <div class="width100 fl addWorkItem" (click)="toggleQuickAdd()" [ngClass]="{'db' : showQuickAddBtn, 'dn' : !showQuickAddBtn}">
+<div class="width100 pull-left quickAdd_container" id="workItemQuickAdd_container" >
+  <div class="width100 pull-left addWorkItem" (click)="toggleQuickAdd()" [ngClass]="{'db' : showQuickAddBtn, 'dn' : !showQuickAddBtn}">
     <a class="workItemQuickAdd_saveBtn">
       <i class='pficon-add-circle-o dib font18'></i>
     </a>
     <h4>Add Work Item</h4>
   </div>
-  <div class="width100 fl addWorkItemBlk " *ngIf="showQuickAdd">
+  <div class="width100 pull-left addWorkItemBlk " *ngIf="showQuickAdd">
     <div class="workItemQuickAdd_IconType">
-      <i class="fa fa-bookmark fl "></i>
+      <i class="fa fa-bookmark pull-left "></i>
     </div>
     <div class=" workItemQuickAdd_story">
       <div class="col-md-6 col-sm-6 col-xs-12 workItemQuickAdd_storyInput">
