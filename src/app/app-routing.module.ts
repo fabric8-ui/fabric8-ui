@@ -5,8 +5,8 @@ import { LoginComponent } from './login/login.component';
 
 import { BoardComponent } from './board/board.component';
 
-import { WorkItemDetailComponent } from './work-item/work-item-detail/work-item-detail.component';
-import { WorkItemListComponent } from './work-item/work-item-list/work-item-list.component';
+// import { WorkItemDetailComponent } from './work-item/work-item-detail/work-item-detail.component';
+// import { WorkItemListComponent } from './work-item/work-item-list/work-item-list.component';
 import { WorkItemQuickAddComponent } from './work-item/work-item-quick-add/work-item-quick-add.component';
 
 const routes: Routes = [
@@ -19,10 +19,7 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent
   },
-  {
-    path: 'work-item-list',
-    component: WorkItemListComponent
-  },
+  
   {
     path: 'board',
     component: BoardComponent
@@ -30,10 +27,6 @@ const routes: Routes = [
   {
     path: 'quick-add/:id',
     component: WorkItemQuickAddComponent
-  },
-  {
-    path: 'detail/:id',
-    component: WorkItemDetailComponent
   },
 
 ];

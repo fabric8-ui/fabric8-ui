@@ -2,14 +2,11 @@ import { Component, OnInit }      from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
 
-import { AlmTrim } from '../../pipes/alm-trim';
 import { AuthenticationService } from './../../auth/authentication.service';
 import { Broadcaster } from './../../shared/broadcaster.service';
-
 import { Logger } from '../../shared/logger.service';
 
 import { Dialog } from '../../shared-component/dialog/dialog';
-import { DialogComponent } from '../../shared-component/dialog/dialog.component';
 import { DropdownOption }    from './../../shared-component/dropdown/dropdown-option';
 
 import { WorkItem } from '../work-item';

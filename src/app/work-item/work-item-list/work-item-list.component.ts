@@ -6,7 +6,7 @@ import { Broadcaster } from './../../shared/broadcaster.service';
 import { Logger } from '../../shared/logger.service';
 
 import { WorkItem }                   from '../work-item';
-import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-list-entry.component';
+import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService }            from '../work-item.service';
 
 @Component({
