@@ -13,7 +13,6 @@
  */
 
 var WorkItemDetailPage = function (idValue) {
-//  browser.get("http://localhost:8088/detail/" + idValue + "?token=justarandomtokenfortest");
 };
 
 var until = protractor.ExpectedConditions;

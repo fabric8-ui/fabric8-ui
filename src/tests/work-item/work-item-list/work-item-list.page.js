@@ -66,7 +66,7 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   workItemQuickAddTitle:  {
     get: function ()
-    { return element(by.css(".workItemQuickAdd_storyInput input")); }
+    { return element(by.id("exampleInput")); }
   },
 
   typeQuickAddWorkItemTitle:  {
@@ -76,41 +76,17 @@ WorkItemListPage.prototype  = Object.create({}, {
        return this.workItemQuickAddTitle.sendKeys(keys); }
    },
 
-//  quickAddWorkItemTitleButton:  {
-//    get: function ()
-//    { return element(by.css('.pficon-add-circle-o.dib.font18')); }
-//  },
-//
-//  clickQuickAddWorkItemTitleButton:  {
-//    value: function ()
-//    { 
-//      browser.wait(until.presenceOf(this.quickAddWorkItemTitleButton), waitTime, 'Failed to find quickAddWorkItemTitleButton');
-//      return this.quickAddWorkItemTitleButton.click(); }
-//  },
-
-  quickAddWorkItemTitleText:  {
+  workItemQuickAddDesc:  {
     get: function ()
-    { return element(by.id("exampleInput")); }  
+    { return element(by.id("exampleDesc")); }
   },
 
-  typeQuickAddWorkItemTitleText:  {
-    value: function (keys)
-    { 
-      browser.wait(until.presenceOf(this.quickAddWorkItemTitleText), waitTime, 'Failed to find quickAddWorkItemTitleText');
-      return this.quickAddWorkItemTitleText.sendKeys(keys); }
-  },
-
-//  addVisibleopenButton:  {
-//    get: function ()
-//    { return element(by.css(".fr.font16.workItemQuickAdd_Add.icon-btn")); }
-//  },
-//
-//  clickWorkItemQuickAddButton:   {
-//    value: function ()
-//    { 
-//      browser.wait(until.presenceOf(this.addVisibleopenButton), waitTime, 'Failed to find addVisibleopenButton');
-//      return this.addVisibleopenButton.click(); }
-//  },
+  typeQuickAddWorkItemDesc:  {
+     value: function (keys)
+     { 
+       browser.wait(until.presenceOf(this.workItemQuickAddDesc), waitTime, 'Failed to find workItemQuickAddDesc');
+       return this.workItemQuickAddDesc.sendKeys(keys); }
+   },
 
   /* Access the Kebab element relative to its parent workitem */
    clickWorkItemKebabButton:  {

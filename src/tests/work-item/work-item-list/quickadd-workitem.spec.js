@@ -1,5 +1,7 @@
 /**
  * POC test for automated UI tests for ALMighty
+ *  Story: Display and Update Work Item Details
+ *  https://github.com/almighty/almighty-core/issues/296
  *
  * Note on screen resolutions - See: http://www.itunesextractor.com/iphone-ipad-resolution.html
  * Tests will be run on these resolutions:
@@ -25,9 +27,6 @@ describe('Work item list', function () {
 
   it('Creating a new quick add work item and delete - phone.', function () {
     testSupport.setBrowserMode('phone');
-//    page.clickQuickAddWorkItemTitleButton();
-//    page.typeQuickAddWorkItemTitleText('Quick Add and Delete');
-//    page.clickWorkItemQuickAddButton().then(function() {    
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle('Quick Add and Delete');
     page.clickQuickAddSave().then(function() {
@@ -44,9 +43,6 @@ describe('Work item list', function () {
 
   it('Creating a new quick add work item and Cancel delete - phone.', function () {
     testSupport.setBrowserMode('phone');
-//    page.clickQuickAddWorkItemTitleButton();
-//    page.typeQuickAddWorkItemTitleText('Quick Add and Cancel Delete');
-//    page.clickWorkItemQuickAddButton().then(function() { 
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle('Quick Add and Cancel Delete');
     page.clickQuickAddSave().then(function() {

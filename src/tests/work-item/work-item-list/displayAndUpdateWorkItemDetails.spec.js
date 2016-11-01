@@ -1,5 +1,7 @@
 /**
  * POC test for automated UI tests for ALMighty
+ *  Story: Display and Update Work Item Details 
+ *  https://github.com/almighty/almighty-core/issues/298
  *  
  * Note on screen resolutions - See: http://www.itunesextractor.com/iphone-ipad-resolution.html
  * Tests will be run on these resolutions:
@@ -28,34 +30,28 @@ var waitTime = 30000;
   });
 
 /* Create a new workitem, fill in the details, save, retrieve, update, save, verify updates are saved */
-  it('should find the workitem.', function() { 
+  it('should find and update the workitem.', function() { 
     testSupport.setBrowserMode('desktop');	
 
     /* Create a new workitem */
-    var workItemTitle = "298 - The test workitem title";
-    var workItemDescription = "298 - The test workitem description";
-    var workItemUpdatedDescription = "298 - The test workitem description - UPDATED";
+    var workItemTitle = "The test workitem title";
+    var workItemDescription = "The test workitem description";
+    var workItemUpdatedDescription = "The test workitem description - UPDATED";
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle(workItemTitle);
+    page.typeQuickAddWorkItemDesc(workItemDescription);
     page.clickQuickAddSave().then(function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
   
-      /* Fill in the new work item's details field */
+      /* Fill in/update the new work item's details field */
+      expect(page.workItemDescription(page.firstWorkItem)).toBe(workItemDescription);
+
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) { 
         detailPage = page.clickWorkItemViewButton(page.workItemViewButton(page.firstWorkItem), text);
-        detailPage.setWorkItemDetailDescription (workItemDescription, false);
+        detailPage.setWorkItemDetailDescription (workItemUpdatedDescription, false);
         detailPage.clickWorkItemDetailSaveButton();
         browser.wait(until.presenceOf(page.firstWorkItem), waitTime, 'Failed to find workItemList');
-        expect(page.workItemDescription(page.firstWorkItem)).toBe(workItemDescription);
-
-        page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) { 
-          detailPage = page.clickWorkItemViewButton(page.workItemViewButton(page.firstWorkItem), text);
-          detailPage.setWorkItemDetailDescription (workItemUpdatedDescription, false);
-          detailPage.clickWorkItemDetailSaveButton();
-          browser.wait(until.presenceOf(page.firstWorkItem), waitTime, 'Failed to find workItemList');
-          expect(page.workItemDescription(page.firstWorkItem)).toBe(workItemUpdatedDescription);
-        });
-
+        expect(page.workItemDescription(page.firstWorkItem)).toBe(workItemUpdatedDescription);
       });
 
     });
