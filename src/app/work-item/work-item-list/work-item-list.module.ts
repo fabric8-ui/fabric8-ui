@@ -1,5 +1,6 @@
 import { NgModule }           from '@angular/core';
 import { CommonModule }       from '@angular/common';
+import { DropdownModule as Ng2Dropdown } from 'ng2-dropdown';
 
 import { DropdownModule }   from './../../shared-component/dropdown/dropdown.module';
 import { DialogModule }   from './../../shared-component/dialog/dialog.module';
@@ -12,6 +13,7 @@ import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-lis
   imports:      [
     CommonModule, 
     WorkItemQuickAddModule,
+    Ng2Dropdown,
     DropdownModule,
     DialogModule
   ],

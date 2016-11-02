@@ -107,15 +107,11 @@ export class WorkItemListEntryComponent implements OnInit {
     this.showDialog = false;
   }
 
-  // event handlers
-
-  onToggleActionDropdown(event: MouseEvent): void {
-    event.stopPropagation();
-    this.actionDropdownOpen = !this.actionDropdownOpen;
-    // clicking on the action menu automatically selects the entry
+  selectEntry(): void {
     this.selectEvent.emit(this);
   }
 
+  // event handlers
   onDelete(event: MouseEvent): void {
     if (event)
       event.stopPropagation();
