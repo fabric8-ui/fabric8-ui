@@ -261,7 +261,7 @@ workItemByTitle:  {
 
   workItemViewButton:  {
     value: function (parentElement)
-    { return parentElement.element(By.css( ".btn.btn-default.workItemList_ViewItemDetailBtn" )); }
+    { return parentElement.element(By.css( ".list-view-pf-main-info" )); }
   },
 
   workItemViewId:  {

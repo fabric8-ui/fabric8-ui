@@ -6,7 +6,7 @@
 </div>
 <div class="list-group-item" (click)="onSelect($event)" [class.selected]="isSelected()">
 	<!-- info area -->
-	<div class="list-view-pf-main-info">
+	<div class="list-view-pf-main-info" (click)="onDetail($event)">
 		<div class="list-view-pf-left type workItemList_workItemType">
 			<span class='fa' [ngClass]="{'fa-wrench': workItem.type=='system.bug',
       	'fa-user': workItem.type=='system.userstory',
@@ -39,13 +39,13 @@
     </div>
 	<!-- action area -->
 	<div class="list-view-pf-actions">
-		<button class="btn btn-default workItemList_ViewItemDetailBtn mobdn" (click)="onDetail($event)">View Details</button>
 		<div *ngIf="loggedIn" class="dropdown pull-right dropdown-kebab-pf" dropdown (onOpen)="selectEntry()">
 			<button class="btn btn-link dropdown-toggle workItemList_dropdownKebabBtn" type="button" id="dropdownKebabRight" aria-haspopup="true" aria-expanded="true" dropdown-open>
 				<span class="fa fa-ellipsis-v"></span>
 			</button>
 			<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
 				<li><a class="workItemList_Delete" (click)="confirmDelete($event)">Delete</a></li>
+				<li><a class="workItemList_Open" (click)="onDetail($event)">Open</a></li>
 				<li><a class="workItemList_Backlog" (click)="onMoveToBacklog($event)">Move to Backlog</a></li>
 				<li><a class="workItemList_ChangeStatus" (click)="onChangeState($event)">Change State</a></li>
 			</ul>
