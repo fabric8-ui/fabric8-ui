@@ -34,7 +34,7 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   clickWorkItemListButton:   {
     value: function ()
-    { 
+    {
       browser.wait(until.presenceOf(this.workItemListButton), waitTime, 'Failed to find workItemListButton');
       return this.workItemListButton.click(); }
   },
@@ -71,7 +71,7 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   typeQuickAddWorkItemTitle:  {
      value: function (keys)
-     { 
+     {
        browser.wait(until.presenceOf(this.workItemQuickAddTitle), waitTime, 'Failed to find workItemQuickAddTitle');
        return this.workItemQuickAddTitle.sendKeys(keys); }
    },
@@ -83,7 +83,7 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   typeQuickAddWorkItemDesc:  {
      value: function (keys)
-     { 
+     {
        browser.wait(until.presenceOf(this.workItemQuickAddDesc), waitTime, 'Failed to find workItemQuickAddDesc');
        return this.workItemQuickAddDesc.sendKeys(keys); }
    },
@@ -91,19 +91,40 @@ WorkItemListPage.prototype  = Object.create({}, {
   /* Access the Kebab element relative to its parent workitem */
    clickWorkItemKebabButton:  {
     value: function (parentElement)
-    { 
+    {
       browser.wait(until.presenceOf(parentElement.element(by.id("dropdownKebabRight"))), waitTime, 'Failed to find clickWorkItemKebabButton');
       return parentElement.element(by.id("dropdownKebabRight")).click(); }
   },
+  /*
+  Login functions
+  */
+  clickLoginButton:  {
+      value: function ()
+      { return element(By.id('header_rightDropdown')).all(By.tagName('a')).get(0).click(); }
+    },
+  signInGithub: {
+    value: function (gitusername,gitpassword)
+    {
 
+       element(By.css('.fa.fa-github')).click();
+       browser.ignoreSynchronization = true;
+       var until = protractor.ExpectedConditions;
+       browser.wait(until.presenceOf(element(by.xpath('.//*[@id="login"]/form/div[3]/div/p'))), 80000, 'Sign into');
+
+       element(By.id('login_field')).sendKeys(gitusername);
+       element(By.id('password')).sendKeys(gitpassword);
+       return  element(By.css('.btn.btn-primary.btn-block')).click();
+
+     }
+  },
  /* Access the Kebab element relative to its parent workitem */
    clickWorkItemKebabDeleteButton:   {
     value: function (parentElement)
-    { 
+    {
       browser.wait(until.presenceOf(parentElement.element(by.css('.workItemList_Delete'))), waitTime, 'Failed to find clickWorkItemKebabButton');
       return parentElement.element(by.css('.workItemList_Delete')).click(); }
   },
-  
+
   workItemPopUpDeleteConfirmButton:   {
     get: function ()
     { return element(by.buttonText('Confirm')); }
@@ -111,7 +132,7 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   clickWorkItemPopUpDeleteConfirmButton:   {
     value: function ()
-    { 
+    {
       browser.wait(until.presenceOf(this.workItemPopUpDeleteConfirmButton), waitTime, 'Failed to find workItemPopUpDeleteConfirmButton');
       return this.workItemPopUpDeleteConfirmButton.click(); }
   },
@@ -123,14 +144,14 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   clickWorkItemPopUpDeleteCancelConfirmButton:   {
     value: function ()
-    { 
+    {
       browser.wait(until.presenceOf(this.workItemPopUpDeleteCancelConfirmButton), waitTime, 'Failed to find clickWorkItemPopUpDeleteCancelConfirmButton');
       return this.workItemPopUpDeleteCancelConfirmButton.click(); }
   },
 
   typeQuickAddWorkItemDescription:  {
     value: function (keys)
-    { 
+    {
       browser.wait(until.presenceOf(this.workItemQuickAddDescription), waitTime, 'Failed to find workItemQuickAddDescription');
       return this.workItemQuickAddDescription.sendKeys(keys); }
   },
@@ -142,7 +163,7 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   clickWorkItemQuickAdd:   {
     value: function ()
-    { 
+    {
       browser.wait(until.presenceOf(this.openButton), waitTime, 'Failed to find the open button');
       return this.openButton.click(); }
   },
@@ -154,7 +175,7 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   clickQuickAddSave:   {
     value: function ()
-    { 
+    {
       browser.wait(until.presenceOf(this.saveButton), waitTime, 'Failed to find the saveButton');
       return this.saveButton.click(); }
   },
@@ -166,7 +187,7 @@ WorkItemListPage.prototype  = Object.create({}, {
 
   clickQuickAddCancel:   {
     value: function ()
-    { 
+    {
       browser.wait(until.presenceOf(this.cancelButton), waitTime, 'Failed to find the cancelButton');
       return this.cancelButton.click(); }
   },
@@ -282,7 +303,7 @@ workItemByTitle:  {
 
   clickWorkItemDeleteButton:   {
     value: function (button)
-    { 
+    {
       browser.wait(until.presenceOf(button), waitTime, 'Failed to find the button');
       return button.click(); }
   },
