@@ -8,15 +8,9 @@
 	<!-- info area -->
 	<div class="list-view-pf-main-info" (click)="onDetail($event)">
 		<div class="list-view-pf-left type workItemList_workItemType">
-			<span class='fa' [ngClass]="{'fa-wrench': workItem.type=='system.bug',
-      	'fa-user': workItem.type=='system.userstory',
-        'fa-globe': workItem.type=='system.feature',
-        'fa-bookmark': workItem.type=='system.experience',
-        'fa-eye': workItem.type=='system.experience',
-        'fa-bank': workItem.type=='system.fundamental',
-        'fa-rocket': workItem.type=='system.valueproposition' }">
-			</span>
-			{{workItem.id}}
+			<span almIcon [iconType]="workItem.fields['system.state']" class="color-grey"></span>
+      		<span almIcon [iconType]="workItem.type" class="color-grey"></span>
+			<span> {{workItem.id}} </span>
 		</div>
 		<div class="list-view-pf-body">
 			<div class="list-view-pf-description">
@@ -29,14 +23,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="list-view-pf-left mobdn paddingT20 paddingB20 pull-left">
-    	<pf-dropdown
-      	(change)="onChangeState($event)" 
-        [options]="stateDropdownOptions"
-		[disabled]="!loggedIn"
-        [selected]="workItem.selectedState">
-      </pf-dropdown>				
-    </div>
+
 	<!-- action area -->
 	<div class="list-view-pf-actions">
 		<div *ngIf="loggedIn" class="dropdown pull-right dropdown-kebab-pf" dropdown (onOpen)="selectEntry()">
@@ -45,7 +32,7 @@
 			</button>
 			<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
 				<li><a class="workItemList_Delete" (click)="confirmDelete($event)">Delete</a></li>
-				<li><a class="workItemList_Open" (click)="onDetail($event)">Open</a></li>
+				<li><a [routerLink]="['/work-item-list/detail/' + workItem.id]" class="workItemList_Open">Open</a></li>
 				<li><a class="workItemList_Backlog" (click)="onMoveToBacklog($event)">Move to Backlog</a></li>
 				<li><a class="workItemList_ChangeStatus" (click)="onChangeState($event)">Change State</a></li>
 			</ul>

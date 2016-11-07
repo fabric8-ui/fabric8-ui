@@ -6,7 +6,6 @@ import { Broadcaster } from './../../../shared/broadcaster.service';
 import { Logger } from './../../../shared/logger.service';
 
 import { Dialog }            from './../../../shared-component/dialog/dialog';
-import { DropdownOption }    from './../../../shared-component/dropdown/dropdown-option';
 
 import { WorkItem }        from './../../../work-item/work-item';
 import { WorkItemService } from './../../../work-item/work-item.service';
@@ -42,9 +41,7 @@ export class WorkItemListEntryComponent implements OnInit {
   @Output() detailEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() deleteEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
 
-  stateDropdownOptions: DropdownOption[];
   selected: boolean = false;
-  actionDropdownOpen: boolean = false;
   dialog: Dialog;
   showDialog = false;
   loggedIn: Boolean = false;
@@ -57,15 +54,7 @@ export class WorkItemListEntryComponent implements OnInit {
 
   ngOnInit(): void {
     this.listenToEvents();
-    this.getOptions();
     this.loggedIn = this.auth.isLoggedIn();
-  }
-
-  getOptions(): void {
-    this.workItemService.getStatusOptions()
-      .then((options) => {
-        this.stateDropdownOptions = options;
-      });
   }
 
   getWorkItem(): WorkItem {
@@ -77,7 +66,6 @@ export class WorkItemListEntryComponent implements OnInit {
   }
 
   deselect(): void {
-    this.actionDropdownOpen = false;
     this.selected = false;
   }
 
@@ -130,25 +118,11 @@ export class WorkItemListEntryComponent implements OnInit {
   onDetail(event: MouseEvent): void {
     event.stopPropagation();
     this.detailEvent.emit(this);
+    this.router.navigate(['/work-item-list/detail/' + this.workItem.id]);
   }
 
   onMoveToBacklog(event: MouseEvent): void {
     alert('NOT IMPLEMENTED YET.');
-  }
-
-  onChangeState(val: any): void {
-    this.getWorkItem().fields['system.state'] = val.newOption.option;
-    this.getWorkItem().statusCode = val.newOption.id;
-    this.workItemService
-      .update(this.getWorkItem())
-      .then((updatedWorkItem) => {
-        this.workItemService
-          .getStatusOptions()
-          .then((options) => {
-            updatedWorkItem.selectedState = this.workItemService.getSelectedState(updatedWorkItem, options);
-            this.workItem = updatedWorkItem;
-          });
-      });
   }
 
   listenToEvents() {
