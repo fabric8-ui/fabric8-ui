@@ -156,5 +156,9 @@ export class WorkItemListEntryComponent implements OnInit {
       .subscribe(message => {
         this.loggedIn = false;
     });
+    this.broadcaster.on<string>('activeWorkItem')
+      .subscribe(wiId => {
+        this.selected = this.workItem.id == wiId;
+    });
   }
 }

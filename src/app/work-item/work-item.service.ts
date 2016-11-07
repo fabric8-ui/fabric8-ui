@@ -16,11 +16,11 @@ export class WorkItemService {
   private workItemTypeUrl = process.env.API_URL + 'workitemtypes';
   private availableStates: DropdownOption[] = [];
   public workItemTypes: WorkItemType[] = [];
-
+  
   constructor(private http: Http,
               private logger: Logger,
-              private auth: AuthenticationService) {    
-    if(this.auth.getToken() != null) {
+              private auth: AuthenticationService) {
+    if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
     }
     logger.log('WorkItemService running in ' + process.env.ENV + ' mode.');
@@ -35,7 +35,7 @@ export class WorkItemService {
       .catch(this.handleError);
   }
 
-  getWorkItemTypes(): Promise<WorkItemType[]> {    
+  getWorkItemTypes(): Promise<WorkItemType[]> { 
     if (this.workItemTypes.length) {
       return new Promise((resolve, reject) => {
         resolve(this.workItemTypes);
@@ -53,8 +53,11 @@ export class WorkItemService {
   }
 
   getWorkItem(id: string): Promise<WorkItem> {
-    return this.getWorkItems()
-      .then(workItems => workItems.find(workItem => workItem.id === id));
+    return this.http
+      .get(this.workItemUrl + '/' + id, {headers: this.headers})
+      .toPromise()
+      .then((response) => process.env.ENV != 'inmemory' ? response.json() as WorkItem : response.json().data as WorkItem) 
+      .catch(this.handleError);
   }
 
   delete(workItem: WorkItem): Promise<void> {
@@ -94,50 +97,28 @@ export class WorkItemService {
       .catch(this.handleError);
   }
 
-  getStatusOptions(): Promise<DropdownOption[]> {
+  getStatusOptions(): Promise<any[]> {
     if (this.availableStates.length) {
       return new Promise((resolve, reject) => {
         resolve(this.availableStates);
       });
     } else {
-      const active_class_map = {
-        'new': 'btn-warning',
-        'in progress': 'btn-primary',
-        'resolved': 'btn-success',
-        'closed': 'btn-info',
-      };
       const url = `${process.env.API_URL}workitemtypes`;
       return this.http
         .get(url, {headers: this.headers})
         .toPromise()
         .then((response) => {
           let states = process.env.ENV != 'inmemory' ? response.json() : response.json().data;
+          this.workItemTypes = states as WorkItemType[];
           this.availableStates = states[0].fields['system.state'].type.values.map((item: string, index: number) => {
             return {
-              id: index,
               option: item,
-              active_class: active_class_map[item],
-              option_class: ''
-            } as DropdownOption;
+            };
           });
           return this.availableStates;
         })
         .catch(this.handleError);
     }
-  }
-
-  getSelectedState(workItem: WorkItem, statusOptions: DropdownOption[]): DropdownOption {
-    let option: DropdownOption = statusOptions.find(item => workItem.fields['system.state'] == item.option);
-    let selectedState: DropdownOption = {
-      id: option.id,
-      option: option.option,
-      active_class: option.active_class,
-      option_class: option.option_class,
-      extra_params: {
-        workItem_id: workItem.id
-      }
-    } as DropdownOption;
-    return selectedState;
   }
 
   private handleError(error: any): Promise<any> {

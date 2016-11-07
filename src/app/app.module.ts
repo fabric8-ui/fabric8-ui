@@ -38,7 +38,7 @@ import { LoginService } from './login/login.service';
 // Work-Item
 import { WorkItemSearchComponent }    from './work-item/work-item-search/work-item-search.component';
 import { WorkItemService }            from './work-item/work-item.service';
-import { WorkItemModule }             from './work-item/work-item.module';
+import { WorkItemListModule }             from './work-item/work-item-list/work-item-list.module';
 
 // conditionally import the inmemory resource module
 var moduleImports: Array<any[] | any | ModuleWithProviders>;
@@ -49,7 +49,7 @@ if (process.env.ENV == 'inmemory') {
     BrowserModule,
     DropdownModule,
     FormsModule,
-    WorkItemModule,
+    WorkItemListModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService),
     AppRoutingModule
@@ -59,7 +59,7 @@ if (process.env.ENV == 'inmemory') {
     BrowserModule,
     DropdownModule,
     FormsModule,
-    WorkItemModule,
+    WorkItemListModule,
     HttpModule,
     AppRoutingModule
   ];

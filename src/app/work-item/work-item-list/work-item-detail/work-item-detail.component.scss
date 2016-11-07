@@ -1,0 +1,143 @@
+@import "./../../../../assets/stylesheets/custom";
+@import "./../../../../assets/stylesheets/mixins";
+@import "./../../../../assets/stylesheets/color-variables";
+.detail-container {
+  width: 100%;
+  float: left;
+  .note{
+    color: #cccccc;
+  }
+  .detail-type-dropdown {
+    position: relative;
+  }
+  .detail-id {
+    font-weight: 700;
+    margin:0;
+    padding-left: $pad20;
+    line-height: 1 !important;
+  }
+  .detail-close {
+    float: right;
+    cursor: pointer;
+    font-size: $font14;
+  }
+  .wi-detail-title-blk{
+    padding: $pad20 $pad20 $pad10;
+    .detail-title {
+      min-height: 30px;
+      float: left;
+      max-width: calc(100% - 25px);
+      margin:0;
+    }
+    .detail-title-edit-ico {
+      line-height: 2;
+      cursor: pointer;
+    }
+    .detail-title-edit {
+      border: none;
+      border-bottom: 1px solid $color-pf-black;
+      @include box-shadow(none);
+      font-size: 22px;
+      outline: 0px solid transparent;
+      line-height: 1.3;
+    }
+    .clearfloat{
+      clear: both;
+    }
+  }
+  .wi-state-btn{
+    max-width: 11em;
+    padding: $pad20 0;
+    margin-right: $margin20;
+    .detail-status-dropdown {
+      text-align: $textRight;
+      .dropdown-icon {
+        float: left;
+        margin-right: $margin5;
+        font-size: $font12;
+        margin-top: $margin5;
+      }
+      .dropdown-text {
+        float: left;
+        text-transform: capitalize;
+      }
+      .dropdown-ul {
+        min-width: 11em;
+        width: 11em;
+        .dropdown-li {
+          width: 100%;
+          float: left;
+          a{
+            width: 100%;
+            float: left;
+            padding: 2px $pad10;
+          }
+        }
+      }
+    }
+  }
+  .detail-assignee-avatar{
+     margin-left: 15px;
+    .pficon-user{
+      font-size: 28px;
+    }
+  }
+  .detail-description {
+    margin-top: $margin20;
+    .detail-desc-div-wrap {
+      background-color: $color-pf-black-150;
+      .detail-desc-div {
+        min-height: 50px;
+        border: 0.3px solid $color-pf-black-400;
+        background-clip: content-box;
+        background-color: $color-pf-white;
+        padding-right: 30px;
+        p {
+          padding: 5px;
+          outline: 0px solid transparent;
+        }
+      }
+      .edit-icon{
+        position: absolute;
+        right: 30px;
+        z-index: 10;
+        top: $pad10;
+        cursor: pointer;
+      }
+    }
+  }
+  .detail-desc-action {
+    margin-top: $margin10;
+  }
+  .detail-action-btn {
+    font-size: $font14;
+    cursor: pointer;
+    min-width:2em;
+    text-align: $textCenter;
+    padding: $pad5;
+    background-color: #ebebeb;
+    margin-left: $margin5;
+  }
+  .desc-active {
+    border: 0.6px solid $color-pf-blue-400 !important;
+  }
+}
+.wi-type-icon {
+  cursor: pointer;
+}
+@media (max-width: $grid-float-breakpoint){
+  /*Toggle the details panel's width and left margin*/
+  .detail-container {
+    .mobile-bar {  
+      background-color:$color-pf-black;
+      color: $color-pf-white;
+      padding: $pad10 $pad20;
+    }
+    .detail-type-dropdown {
+      position: relative;
+    }
+    .wi-state-btn{
+      padding-top: 0;
+    }
+  }
+}

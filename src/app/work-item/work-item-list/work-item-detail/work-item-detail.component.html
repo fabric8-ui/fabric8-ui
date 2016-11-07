@@ -1,0 +1,136 @@
+<div class="detail-container" *ngIf="workItem" id="workItemDetail_Wrapper">
+  <form *ngIf="active" 
+        (ngSubmit)="save()"          
+        #almWorkItemDetailForm="ngForm" 
+        id="wi-detail-form">
+    <fieldset [attr.disabled]="!loggedIn ? true : null">
+      <div class="width100 pull-left mobile-bar paddingL20 paddingR20">
+        <div class="pull-left dropdown-kebab-pf detail-type-dropdown" dropdown>
+          <span dropdown-open class="wi-type-icon" almIcon [iconType]="workItem.type"></span>
+          <ul class="dropdown-menu mobMarginL20" aria-labelledby="dropdownKebabRight">
+            <li *ngFor="let type of workItemTypes" (click)="onChangeType(type.name)">
+              <a>
+                <span class="wi-type-icon dropdown-icon" almIcon [iconType]="type.name"></span>
+                <span class="dropdown-text">
+                  {{type.name.substring(7,type.length)}}
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <h5 class="detail-id pull-left" id="wi-detail-id">{{workItem.id}}</h5>
+        <span class="pficon-close detail-close" (click)="closeDetails()"></span>
+      </div>
+
+      <div class="width100 pull-left">
+        <div class="col-md-8 col-sm-7 col-xs-12 marginB10 wi-detail-title-blk">
+          <div *ngIf="!headerEditable" (click)='toggleHeader()'>
+              <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate">{{ workItem.fields['system.title'] }}</h2>
+              <h2 *ngIf="loggedIn" id="wi-detail-title-click" class="detail-title truncate">{{ workItem.fields['system.title'] }}</h2>
+              <span *ngIf="loggedIn" 
+                class="pficon-edit marginL10 fl detail-title-edit-ico" 
+                id="workItemTitle_btn_edit"></span>
+          </div>
+          <div *ngIf="loggedIn && headerEditable" class="marginB10" id="wi-title-div"> 
+              <div almEditable 
+                  (onUpdate)="checkTitle($event)"
+                  (keyup.enter)="onUpdateTitle()"
+                  (keydown.enter)="preventDef($event)"
+                  id="wi-detail-title"
+                  class="detail-title-edit marginB10"         
+                  [innerHTML]="workItem.fields['system.title'] | almTrim"
+                  #title >
+              </div>
+              <aside class="width100 pull-left">
+                <!--Save icon-->                                       
+                <div id="workItemTitle_btn_save"
+                    class="pull-right btn-small detail-action-btn" 
+                    [ngClass]="{disabled : validTitle == false}"
+                    (click)="validTitle && onUpdateTitle()" >                                        
+                    <span class="fa fa-check"></span>
+                </div>            
+                <!--Cancel icon-->                        
+                <div id="workItemTitle_btn_cancel" 
+                    class="pull-right fl btn-small detail-action-btn" 
+                    (click)="toggleHeader()">
+                  <span class="fa fa-close"></span>
+                </div>   
+              </aside>                             
+              <!--Error message for title-->
+              <p [hidden]="validTitle" 
+                  class="clearfloat alert alert-danger">                                    
+                  Title is required
+              </p>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-5 col-xs-5 wi-state-btn pull-right padding0">
+          <div dropdown class="dropdown card-pf-time-frame-filter detail-status-dropdown">
+            <button dropdown-open 
+              id="wi-detail-state"
+              type="button" 
+              class="btn dropdown-toggle width100 btn-default">
+              <span class='dropdown-icon' almIcon [iconType]="workItem.fields['system.state']"></span>
+              <span class='dropdown-text'>
+                {{workItem.fields['system.state']}}
+              </span>
+              <span *ngIf="loggedIn" class="caret pull-right marginT5"></span>
+            </button>
+            <ul *ngIf="loggedIn" class="dropdown-menu dropdown-menu-right dropdown-ul" role="menu">
+              <li class="dropdown-li" *ngFor="let state of workItemStates;" (click)="onChangeState(state.option)">
+                <a> 
+                  <span class='dropdown-icon' almIcon [iconType]="state.option"></span>
+                  <span class='dropdown-text'>{{state.option}}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="width100 pull-left paddingL20 paddingR20">
+          <p class="pull-left margin0 paddingT5">
+              Assignee
+          </p>
+          <div class="pull-left detail-assignee-avatar">
+              <span class="pficon-user pull-left"></span>
+          </div>                
+      </div>
+      <div class="width100 pull-left">
+        <div class="col-md-12 col-sm-12 col-xw-12 detail-description" *ngIf="loggedIn">
+          <div class="detail-desc-div-wrap">
+            <div class="detail-desc-div" [class.desc-active]="descEditable">                            
+            <p almEditable [editable]="descEditable"
+              #desc 
+              (onUpdate)="descUpdate($event)"
+              (keyup.enter)="onUpdateDescription()"
+              (keydown.enter)="preventDef($event)"
+              id="wi-detail-desc" 
+              class="description"
+              [innerHTML]="workItem.fields['system.description']">
+            </p>
+            </div>
+            <div class="edit-icon">
+                <span id="workItemDesc_btn_edit" class="pficon-edit" 
+                  (click)='toggleDescription()'></span>
+            </div>
+          </div>
+        </div>
+        <div id="wi-detail-desc" class="col-md-12 description" *ngIf="!loggedIn">
+          {{workItem.fields['system.description']}}
+        </div>
+      </div>                    
+      <div *ngIf="loggedIn && descEditable" class="width100 pull-left detail-desc-action paddingL20 paddingR20">
+          <div id="workItemdesc_btn_save" 
+              class="fl btn-small pull-right detail-action-btn" 
+              (click)="onUpdateDescription()">
+              <span class="fa fa-check"></span>
+          </div>
+          <div id="workItemdesc_btn_cancel" 
+              class="fl btn-small pull-right detail-action-btn" 
+              (click)="toggleDescription()">
+              <span class="fa fa-close"></span>
+          </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

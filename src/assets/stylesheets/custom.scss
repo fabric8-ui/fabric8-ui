@@ -1,4 +1,5 @@
 @import "variables";
+@import "color-variables";
 //custom variables
 $width100: 100%;
 $margin20: 20px;
@@ -20,9 +21,12 @@ $font11: 11px;
 $font12: 12px;
 $font13: 13px;
 $font14: 14px;
+$font15: 15px;
 $font16: 16px;
 $font18: 18px;
 $font20: 20px;
+//colors
+.color-grey{ color: $color-pf-black-800 !important; }
 
 //custom mixins
 @mixin truncate() {
@@ -53,7 +57,9 @@ $font20: 20px;
 
 // custom classes
 .width100{ width: $width100; }
+.width50{ width: $width100/2; }
 .marginT20{ margin-top: $margin20; }
+.marginB10{ margin-bottom: $margin10; }
 .marginB20{ margin-bottom: $margin20; }
 .marginT5{ margin-top: $margin5; }
 .marginB5{ margin-bottom: $margin5; }
@@ -73,6 +79,7 @@ $font20: 20px;
 .paddingL5{ padding-left: $pad5; }
 .paddingR5{ padding-right: $pad5; }
 .padding0{ padding: $pad0; }
+.padding20{ padding: $pad20; }
 .font16{ font-size: $font16; }
 .font18{ font-size: $font18; }
 .vTop{ vertical-align: top; }
@@ -96,6 +103,7 @@ $font20: 20px;
     $font12: 1.000em;
     $font13: 1.083em;
     $font14: 1.167em;
+    $font15: 1.250em;
     $font16: 1.333em;
     $font18: 1.500em;
     $font20: 1.667em;

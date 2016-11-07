@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, trigger, state, style, transition, animate } from '@angular/core';
 import { Router }            from '@angular/router';
 
 import { AuthenticationService } from './../../auth/authentication.service';
@@ -13,14 +13,29 @@ import { WorkItemService }            from '../work-item.service';
   selector: 'alm-work-item-list',
   templateUrl: './work-item-list.component.html',
   styleUrls: ['./work-item-list.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translateX(0)'
+      })),
+      state('out', style({
+        transform: 'translateX(100%)'
+      })),
+      transition('in => out', animate('300ms ease-in-out')),
+      transition('out => in', animate('500ms ease-in-out'))
+    ]),
+  ]
 })
 export class WorkItemListComponent implements OnInit {
 
   workItems: WorkItem[];
   selectedWorkItemEntryComponent: WorkItemListEntryComponent;
+  workItemDetail: WorkItem;
   addingWorkItem = false;
   showOverlay : Boolean ;
   loggedIn: Boolean = false;
+  showWorkItemDetails: boolean = false;
+  panelState: String = 'out';
 
   constructor(
     private auth: AuthenticationService,
@@ -28,6 +43,7 @@ export class WorkItemListComponent implements OnInit {
     private router: Router,
     private workItemService: WorkItemService,
     private logger: Logger) {
+      this.subScribeDetailNavigation();
   }
 
   ngOnInit(): void {
@@ -45,15 +61,8 @@ export class WorkItemListComponent implements OnInit {
         return wItems.reverse();
       })
       .then((wItems) => {
-        this.workItemService
-        .getStatusOptions()
-        .then((options) => {
-          this.workItems = wItems.map((item) => {
-            item.selectedState = this.workItemService.getSelectedState(item, options);
-            return item;
-          });
-        });
-      });
+        this.workItems = wItems;
+      });      
   }
 
   addWorkItem(): void {
@@ -67,7 +76,7 @@ export class WorkItemListComponent implements OnInit {
   }
 
   // event handlers
-  
+
   onSelect(entryComponent: WorkItemListEntryComponent): void {
     let workItem: WorkItem = entryComponent.getWorkItem();
     // de-select prior selected element (if any)
@@ -75,24 +84,50 @@ export class WorkItemListComponent implements OnInit {
       this.selectedWorkItemEntryComponent.deselect();
     // select new component
     entryComponent.select();
-    this.selectedWorkItemEntryComponent = entryComponent;
+    this.selectedWorkItemEntryComponent = entryComponent;    
   }
 
-  onDetail(entryComponent: WorkItemListEntryComponent): void {
-    let workItem: WorkItem = entryComponent.getWorkItem();
-    // clicking on detail always also selects an entry
+  onDetail(entryComponent: WorkItemListEntryComponent): void {    
+    this.workItemDetail = entryComponent.getWorkItem();    
     this.onSelect(entryComponent);
-    this.router.navigate(['/detail', workItem.id]);
+    this.showWorkItemDetails = true; 
   }
 
   onDelete(entryComponent: WorkItemListEntryComponent): void {
     this.reloadWorkItems();
   }
 
+  // Event listener for URL change 
+  // On change to details page slide out the layover
+  // On change back to home slide in layover
+  subScribeDetailNavigation(): void {
+    this.router.events.subscribe((val: any) => {
+      if (val.id == 1 && val.url.indexOf('detail') > -1) {
+        this.panelState = 'in';
+      }
+      if (val.id > 1) {
+        if (val.url.indexOf('detail') > -1) {
+          this.panelState = 'in';
+        } else {
+          this.broadcaster.broadcast('activeWorkItem', 0);
+          this.panelState = 'out';
+        }
+      }
+    });
+  }
+
   listenToEvents() {
     this.broadcaster.on<string>('logout')
       .subscribe(message => {
         this.loggedIn = false;
+    });
+    this.broadcaster.on<string>('updateWorkItem')
+      .subscribe((data) => {
+        let wi: any = data as any;
+        let workItemIndex = this.workItems.findIndex(item => {
+          return item.id == wi.id;
+        });
+        this.workItems[workItemIndex] = wi as WorkItem;
     });
   }
 }

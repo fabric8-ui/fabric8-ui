@@ -47,11 +47,11 @@ var waitTime = 30000;
       expect(page.workItemDescription(page.firstWorkItem)).toBe(workItemDescription);
 
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) { 
-        detailPage = page.clickWorkItemViewButton(page.workItemViewButton(page.firstWorkItem), text);
-        detailPage.setWorkItemDetailDescription (workItemUpdatedDescription, false);
-        detailPage.clickWorkItemDetailSaveButton();
-        browser.wait(until.presenceOf(page.firstWorkItem), waitTime, 'Failed to find workItemList');
-        expect(page.workItemDescription(page.firstWorkItem)).toBe(workItemUpdatedDescription);
+        // detailPage = page.clickWorkItemViewButton(page.workItemViewButton(page.firstWorkItem), text);
+        // detailPage.setWorkItemDetailDescription (workItemUpdatedDescription, false);
+        // detailPage.clickWorkItemDetailSaveButton();
+        // browser.wait(until.presenceOf(page.firstWorkItem), waitTime, 'Failed to find workItemList');
+        // expect(page.workItemDescription(page.firstWorkItem)).toBe(workItemUpdatedDescription);
       });
 
     });

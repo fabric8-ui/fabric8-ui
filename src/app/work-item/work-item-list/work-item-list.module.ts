@@ -1,21 +1,26 @@
 import { NgModule }           from '@angular/core';
 import { CommonModule }       from '@angular/common';
-import { DropdownModule as Ng2Dropdown } from 'ng2-dropdown';
+import { DropdownModule } from 'ng2-dropdown';
 
-import { DropdownModule }   from './../../shared-component/dropdown/dropdown.module';
+import { AlmIconModule }      from './../../shared-component/icon/almicon.module';
 import { DialogModule }   from './../../shared-component/dialog/dialog.module';
 
 import { WorkItemListComponent } from './work-item-list.component';
+import { WorkItemDetailModule } from './work-item-detail/work-item-detail.module';
 import { WorkItemQuickAddModule } from './../work-item-quick-add/work-item-quick-add.module';
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 
+import { WorkItemListRoutingModule } from './work-item-list-routing.module';
+
 @NgModule({
   imports:      [
-    CommonModule, 
-    WorkItemQuickAddModule,
-    Ng2Dropdown,
+    AlmIconModule,
+    CommonModule,
+    DialogModule,
     DropdownModule,
-    DialogModule
+    WorkItemDetailModule,
+    WorkItemListRoutingModule,
+    WorkItemQuickAddModule,
   ],
   declarations: [
      WorkItemListComponent,

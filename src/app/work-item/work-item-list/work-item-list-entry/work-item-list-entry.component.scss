@@ -24,3 +24,10 @@ span{
     outline: none;
   }
 }
+
+.selected {
+  background-color: $color-pf-blue-100;
+  &:hover {
+    background-color: $color-pf-blue-100;
+  }
+}

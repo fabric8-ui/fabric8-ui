@@ -68,21 +68,21 @@ describe('Work item list', function () {
       expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title');
       expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Some Title');
     });
-  });
-	 
-  it('should contain right mock data on detail page - desktop.', function() { 
-    testSupport.setBrowserMode('desktop');	
-    page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
-      var detailPage = page.clickWorkItemViewButton(page.workItemViewButton(page.firstWorkItem), text);
-      expect(detailPage.workItemDetailPageTitle.getText()).toBe(workItemMockData.pageTitle);
-      expect(detailPage.workItemDetailTitle.getAttribute("value")).toBe(workItemMockData.workItemTitle);      
-      expect(detailPage.workItemDetailDescription.getAttribute("value")).toBe(workItemMockData.workItemDescription);
-      expect(detailPage.workItemDetailType.getAttribute("value")).toBe(workItemMockData.workItemType);
-      expect(detailPage.workItemDetailCreator.getAttribute("value")).toBe(workItemMockData.workItemCreator);
-      expect(detailPage.workItemDetailAssignee.getAttribute("value")).toBe(workItemMockData.workItemAssignee);
-      expect(detailPage.workItemDetailState.getAttribute("value")).toBe(workItemMockData.workItemState);
-      detailPage.clickWorkItemDetailCancelButton();
-    });
-  });
+  });	 
+
+  // it('should contain right mock data on detail page - desktop.', function() { 
+  //   testSupport.setBrowserMode('desktop');
+  //   page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
+  //     var detailPage = page.clickWorkItemViewButton(page.workItemViewButton(page.firstWorkItem), text);
+  //     expect(detailPage.workItemDetailPageTitle.getText()).toBe(workItemMockData.pageTitle);
+  //     expect(detailPage.workItemDetailTitle.getAttribute("value")).toBe(workItemMockData.workItemTitle);      
+  //     expect(detailPage.workItemDetailDescription.getAttribute("value")).toBe(workItemMockData.workItemDescription);
+  //     expect(detailPage.workItemDetailType.getAttribute("value")).toBe(workItemMockData.workItemType);
+  //     expect(detailPage.workItemDetailCreator.getAttribute("value")).toBe(workItemMockData.workItemCreator);
+  //     expect(detailPage.workItemDetailAssignee.getAttribute("value")).toBe(workItemMockData.workItemAssignee);
+  //     expect(detailPage.workItemDetailState.getAttribute("value")).toBe(workItemMockData.workItemState);
+  //     detailPage.clickWorkItemDetailCancelButton();
+  //   });
+  // });
   
 });

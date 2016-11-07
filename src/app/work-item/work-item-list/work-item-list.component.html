@@ -1,13 +1,14 @@
-<div class="container-fluid containerPadd">
+<div class="container-fluid containerPadd">	
+	
 	<div class="width100 fl">
 		<div class="list-group list-view-pf width100 fl">
 			<alm-work-item-list-entry *ngFor="let workItem of workItems; let counter = index"
 				id="{{'workItemList_OuterWrap_'+counter}}"
 				class="work-item-list-entry"
-				[workItem]="workItem" 
-				(selectEvent)="onSelect($event)" 
-				(detailEvent)="onDetail($event)" 
-				(deleteEvent)="onDelete($event)">
+        [workItem]="workItem"
+        (selectEvent)="onSelect($event)" 
+        (detailEvent)="onDetail($event)"
+        (deleteEvent)="onDelete($event)">
 			</alm-work-item-list-entry>
 		</div>
 	</div>
@@ -17,4 +18,8 @@
     <div *ngIf="loggedIn" class="width100 fl supress-hover" (click)="addWorkItem()">
         <alm-work-item-quick-add (close)="close($event)"></alm-work-item-quick-add>
     </div>
+</div>
+
+<div class="detail-panel" [@slideInOut]="panelState">
+  <router-outlet></router-outlet>
 </div>
