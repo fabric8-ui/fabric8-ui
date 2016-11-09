@@ -143,16 +143,19 @@ var waitTime = 30000;
   });
 
 /* Verify that edits made to a workitem in the detail page, if cancelled, are discarded */
- it('should cancel edits to the workitem through its detail page - phone.', function() {
 
+ it('should cancel edits to the workitem through its detail page - phone.', function() { 
     /* Create a new workitem */
     var workItemTitle = "The test workitem title";
     var workItemUpdatedTitle = "The test workitem title - UPDATED";
+
+    var workItemDescription = "The test workitem description";
+    var workItemUpdatedDescription = "The test workitem description - UPDATED";
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle(workItemTitle);
+    page.typeQuickAddWorkItemDesc(workItemDescription);
     page.clickQuickAddSave().then(function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-
       /* Fill in/update the new work item's title and details field */
       expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
@@ -162,10 +165,10 @@ var waitTime = 30000;
         //detailPage.clickWorkItemTitleEditIcon();
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleCancelIcon();
-
         detailPage.clickWorkItemDetailCloseButton();
         browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
         expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+        expect(page.workItemDescription(page.firstWorkItem)).toBe(workItemDescription);
       });
 
     });
@@ -264,6 +267,12 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       });
 
     });
+
+
+
+
+
+/* Verify that a workitem's description cannot be edited in the detail page until the edit icon is clicked */
 
 
 
