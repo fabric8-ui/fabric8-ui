@@ -14,9 +14,6 @@
 
   @media (min-width: $grid-float-breakpoint) {
     border-radius: $navbar-border-radius;
-    position: fixed;
-    z-index: 2;
-    width:100%;
   }
 }
 .navbar-pf {

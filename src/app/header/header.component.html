@@ -1,30 +1,25 @@
-<nav id="header_wrapper" class="navbar navbar-default navbar-pf navbar-fixed-top" role="navigation">
+<nav id="header_wrapper" class="navbar navbar-default navbar-pf" role="navigation">
 	<div id="header_nav" class="navbar-header">
     
-    <div class="dropdown nav navbar-nav navbar-right navbar-iconic navbar-toggle nav-item-iconic" dropdown >
-        <div dropdown-open>
-          <a class="nav-item-iconic dropdown-toggle no-link pull-left">
-            <span title="Username" class="fa pficon-user"></span>
-            <span class="caret"></span>
-          </a>
-        </div>
-        <ul class="dropdown-menu dropdown-menu-right">
-            <li *ngIf="loggedInUser">
-              <a> {{loggedInUser.fullName}} </a>
-            </li>
-            <li>
-              <a *ngIf="loggedIn" (click)='logout();'>Logout</a>
-              <a *ngIf="!loggedIn" (click)='login();'>Login</a>
-            </li>
-        </ul>
+    <div class="navbar-brand">
+      <a class="fl no-link">
+        <span class="pficon pficon-enterprise"></span>
+        &lt;Organization&gt;
+        <span class="caret"></span>
+      </a>
     </div>
-
-  	<a class="fl">
-      <img id="header_ALMLogo" src="../../assets/img/brand.png" alt="Almighty" />
-  	</a>
   </div>
   <div class="collapse navbar-collapse navbar-collapse-1">
 	  <ul id="header_rightDropdown" class="nav navbar-nav navbar-utility">
+        <li>
+          <a [routerLink]="['/settings']" id="header_menuSettings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
+        </li>
+        <li>
+          <a [routerLink]="['/chat']" id="header_menuChat" routerLinkActive="active"><span class="fa fa-comments"></span></a>
+        </li>
+        <li>
+          <a [routerLink]="['/notifications']" id="header_menuNotifications" routerLinkActive="active"><span class="fa fa-bell"></span></a>
+          </li>
       	<li *ngIf="loggedIn">
         	<a *ngIf="loggedInUser" id="header_dropdownToggle">          								
 						<span *ngIf="!imgLoaded" class="pficon pficon-user"></span>							
@@ -39,12 +34,24 @@
           <a *ngIf="!loggedIn" (click)='login();'>Login</a>
 			</li>
     </ul>
-    <ul id="header_menuList" class="nav navbar-nav navbar-primary pull-left dn">
+    <ul id="header_menuList" class="nav navbar-nav navbar-primary">
       <li>
-        <a [routerLink]="['/work-item-list']" id="header_menuWorkItemList" routerLinkActive="active">Work Item List</a>
+        <a [routerLink]="['/home']" id="header_menuHome" routerLinkActive="active">Home</a>
       </li>
       <li>
-        <a [routerLink]="['/board']" id="header_menuBoard" routerLinkActive="active">Board</a>
+        <a [routerLink]="['/work-item-list']" id="header_menuWork" routerLinkActive="active">Work</a>
+      </li>
+      <li>
+        <a [routerLink]="['/code']" id="header_menuCode" routerLinkActive="active">Code</a>
+      </li>
+      <li>
+        <a [routerLink]="['/test']" id="header_menuTest" routerLinkActive="active">Test</a>
+      </li>
+      <li>
+        <a [routerLink]="['/pipeline']" id="header_menuPipeline" routerLinkActive="active">Environments/Pipelines</a>
+      </li>
+      <li>
+        <a [routerLink]="['/hypothesis']" id="header_menuHypothesis" routerLinkActive="active">Hypothesis Engine <sup><span class="fa fa-trademark"></span></sup></a>
       </li>
     </ul>
   </div>

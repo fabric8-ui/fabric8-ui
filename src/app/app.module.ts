@@ -35,10 +35,18 @@ import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 
-// Work-Item
+// Work
 import { WorkItemSearchComponent }    from './work-item/work-item-search/work-item-search.component';
 import { WorkItemService }            from './work-item/work-item.service';
 import { WorkItemListModule }             from './work-item/work-item-list/work-item-list.module';
+
+// Main areas
+import { HomeComponent } from './home/home.component';
+import { CodeComponent } from './code/code.component';
+import { TestComponent } from './test/test.component';
+import { PipelineComponent } from './pipeline/pipeline.component';
+import { HypothesisComponent } from './hypothesis/hypothesis.component';
+import { SettingsComponent } from './settings/settings.component';
 
 // conditionally import the inmemory resource module
 var moduleImports: Array<any[] | any | ModuleWithProviders>;
@@ -82,7 +90,13 @@ if (process.env.ENV == 'inmemory') {
     FooterComponent,
     HeaderComponent,
     LoginComponent,
-    WorkItemSearchComponent
+    WorkItemSearchComponent,
+    HomeComponent,
+    CodeComponent,
+    TestComponent,
+    PipelineComponent,
+    HypothesisComponent,
+    SettingsComponent
   ],
   providers: [
     Logger,

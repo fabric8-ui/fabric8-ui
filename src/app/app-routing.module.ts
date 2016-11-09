@@ -2,8 +2,16 @@ import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
+import { SettingsComponent } from './settings/settings.component';
 
 import { BoardComponent } from './board/board.component';
+
+import { HomeComponent } from './home/home.component';
+import { CodeComponent } from './code/code.component';
+import { TestComponent } from './test/test.component';
+import { PipelineComponent } from './pipeline/pipeline.component';
+import { HypothesisComponent } from './hypothesis/hypothesis.component';
+
 
 // import { WorkItemDetailComponent } from './work-item/work-item-detail/work-item-detail.component';
 // import { WorkItemListComponent } from './work-item/work-item-list/work-item-list.component';
@@ -18,6 +26,9 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },{
+    path: 'settings',
+    component: SettingsComponent
   },
   
   {
@@ -28,6 +39,27 @@ const routes: Routes = [
     path: 'quick-add/:id',
     component: WorkItemQuickAddComponent
   },
+  {
+    path: 'home',
+    component: HomeComponent
+  },
+  {
+    path: 'code',
+    component: CodeComponent
+  },
+  {
+    path: 'test',
+    component: TestComponent
+  },
+  {
+    path: 'pipeline',
+    component: PipelineComponent
+  },
+  {
+    path: 'hypothesis',
+    component: HypothesisComponent
+  }
+  
 
 ];
 
