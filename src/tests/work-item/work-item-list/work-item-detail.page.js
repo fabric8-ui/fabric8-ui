@@ -195,6 +195,21 @@ WorkItemDetailPage.prototype  = Object.create({}, {
     {
       return this.workItemDescriptionCancelIcon.click(); }
   },
+  titleValidation:   {
+    value: function ()
+    { 
+      return element(by.css(".clearfloat.alert.alert-danger")); }
+  },
+  titleAlert:   {
+    value: function ()
+    { 
+      return element(by.xpath(".//[@id='wi-title-div'][.//[contains(@class, 'alert-danger')]]")); }
+  },
+  titleAlertValidation:   {
+    value: function ()
+    { 
+      return element(by.xpath(".//*[@id='wi-title-div']//p[.//text()[contains(.,'Title is required')]]")); }
+  },
   /*
     UI elements for workitem types detail page
   */
