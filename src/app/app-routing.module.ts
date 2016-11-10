@@ -26,11 +26,11 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
-  },{
+  },
+  {
     path: 'settings',
     component: SettingsComponent
   },
-  
   {
     path: 'board',
     component: BoardComponent

@@ -3,7 +3,7 @@ import { Router }            from '@angular/router';
 
 
 @Component({
-  selector: 'pipeline',
+  selector: 'alm-pipeline',
   templateUrl: './pipeline.component.html',
   styleUrls: ['./pipeline.component.scss']
 })

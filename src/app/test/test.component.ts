@@ -3,7 +3,7 @@ import { Router }            from '@angular/router';
 
 
 @Component({
-  selector: 'test',
+  selector: 'alm-test',
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.scss']
 })
