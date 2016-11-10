@@ -19,8 +19,8 @@ export class HeaderComponent implements OnInit {
   loggedInUser: User;
   loggedIn: Boolean = false;
   imgLoaded: Boolean = false;
-  // titleTemplate:
 
+/*
   public tabs: Array<any> = [
     {title: 'Home', content: 'Home content 1', active: true},
     {title: 'Work', content: 'Work content 2'},
@@ -40,9 +40,10 @@ export class HeaderComponent implements OnInit {
     this.tabs[index].active = true;
   };
 
-  public removeTabHandler(/*tab:any*/): void {
+  public removeTabHandler(/!*tab:any*!/): void {
     console.log('Remove Tab handler');
   };
+*/
 
   constructor(
     private router: Router,
