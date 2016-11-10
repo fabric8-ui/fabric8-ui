@@ -149,12 +149,12 @@ WorkItemListPage.prototype  = Object.create({}, {
       return this.workItemPopUpDeleteCancelConfirmButton.click(); }
   },
 
-  typeQuickAddWorkItemDescription:  {
-    value: function (keys)
-    {
-      browser.wait(until.presenceOf(this.workItemQuickAddDescription), waitTime, 'Failed to find workItemQuickAddDescription');
-      return this.workItemQuickAddDescription.sendKeys(keys); }
-  },
+//  typeQuickAddWorkItemDescription:  {
+//    value: function (keys)
+//    {
+//      browser.wait(until.presenceOf(this.workItemQuickAddDescription), waitTime, 'Failed to find workItemQuickAddDescription');
+//      return this.workItemQuickAddDescription.sendKeys(keys); }
+//  },
 
   openButton:  {
     get: function ()
@@ -219,6 +219,18 @@ workItemByTitle:  {
    workItemTitle:  {
     value: function (workItemElement)
     { return workItemElement.element(by.css(".workItemList_title")).getText(); }
+  },
+
+  clickWorkItemTitle:   {
+    value: function (workItemElement, idText)
+    {
+      workItemElement.element(by.css(".workItemList_title")).click();
+      var theDetailPage = new WorkItemDetailPage (idText);
+      var until = protractor.ExpectedConditions;
+      //browser.wait(until.presenceOf(theDetailPage.workItemDetailPageTitle), waitTime, 'Detail page title taking too long to appear in the DOM');
+      browser.wait(waitForText(theDetailPage.clickWorkItemDetailTitle), waitTime, "Title text is still not present");
+      return theDetailPage;
+    }
   },
 
   /* Description element relative to a workitem */

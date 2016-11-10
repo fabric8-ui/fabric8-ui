@@ -20,31 +20,32 @@ var waitTime = 30000;
 
 WorkItemDetailPage.prototype  = Object.create({}, {
 
-  workItemDetailPageTitle:  {
+//  workItemDetailPageTitle:  {
+//    get: function ()
+//    { return element(by.xpath(".//*[@id='workItemDetail_Wrapper']/h1")); }
+//  },
+
+/* Note - The order of UI element defintions in this page object are top-->bottom, left->right */
+
+  workItemDetailTypeIcon:  {
     get: function ()
-    { return element(by.xpath(".//*[@id='workItemDetail_Wrapper']/h1")); }
+    { return element(by.css(".wi-type-icon")); }
   },
 
-  workItemDetailTitle:  {
+  workItemDetailId:  {
     get: function ()
-    { return element(by.id("wi-detail-title")); }
+    { return element(by.id("wi-detail-id")); }
   },
 
-  setWorkItemDetailTitle:  {
-    value: function (newTitleString, append)
-    {   if (!append) {this.workItemDetailTitle.clear(newTitleString)};
-    return this.workItemDetailTitle.sendKeys(newTitleString); }
-  },
-
-  workItemDetailDescription:  {
+  workItemDetailCloseButton:  {
     get: function ()
-    { return element(by.id("wi-detail-desc")); }
+    { return element(by.css(".pficon-close.detail-close")); }
   },
 
-  setWorkItemDetailDescription:  {
-    value: function (newDescriptionString, append)
-    {   if (!append) {this.workItemDetailDescription.clear(newDescriptionString)};
-    return this.workItemDetailDescription.sendKeys(newDescriptionString); }
+  clickWorkItemDetailCloseButton:   {
+    value: function ()
+    { 
+      return this.workItemDetailCloseButton.click(); }
   },
 
   workItemDetailType:  {
@@ -57,6 +58,135 @@ WorkItemDetailPage.prototype  = Object.create({}, {
     {   return this.workItemDetailType.sendKeys(newTypeString); }
   },
 
+  clickWorkItemDetailTitle:  {
+    get: function ()
+    { return element(by.id("wi-detail-title-click")); }
+  },
+
+  clickWorkItemDetailTitleClick:  {
+    value: function ()
+    { return this.clickWorkItemDetailTitle.click(); }
+  },
+  
+  workItemDetailTitle:  {
+    get: function ()
+    { return element(by.id("wi-detail-title")); }
+  },
+
+  setWorkItemDetailTitle:  {
+    value: function (newTitleString, append)
+    {   if (!append) {this.workItemDetailTitle.clear(newTitleString)};
+    return this.workItemDetailTitle.sendKeys(newTitleString); }
+  },
+
+  /* Icon edit buttons */
+  workItemTitleEditIcon:  {
+    get: function ()
+    { return element(by.id("workItemTitle_btn_edit")); }
+  },
+
+  clickWorkItemTitleEditIcon:   {
+    value: function ()
+    { 
+      return this.workItemTitleEditIcon.click(); }
+  },
+
+  workItemTitleSaveIcon:  {
+    get: function ()
+    { return element(by.id("workItemTitle_btn_save")); }
+  },
+
+  clickWorkItemTitleSaveIcon:   {
+    value: function ()
+    { 
+      return this.workItemTitleSaveIcon.click(); }
+  },
+
+  workItemTitleCancelIcon:  {
+    get: function ()
+    { return element(by.id("workItemTitle_btn_cancel")); }
+  },
+
+  clickWorkItemTitleCancelIcon:   {
+    value: function ()
+    { 
+      return this.workItemTitleCancelIcon.click(); }
+  },
+
+  workItemDetailState:  {
+    get: function ()
+    { return element(by.id("wi-detail-state")); }
+  },
+
+  setWorkItemDetailState:  {
+    value: function (newStateString)
+    {   return this.workItemDetailState.sendKeys(newStateString); }
+  },
+
+  workItemDetailAssignee:  {
+    get: function ()
+    { return element(by.css(".pull-left.margin0.paddingT5")); }
+  },
+
+  workItemDetailAvatar:  {
+    get: function ()
+    { return element(by.css(".pull-left.detail-assignee-avatar")); }
+  },
+
+  workItemDetailDescription:  {
+    get: function ()
+    { return element(by.id("wi-detail-desc")); }
+  },
+
+  clickWorkItemDetailDescription:  {
+    value: function ()
+    { return this.workItemDetailDescription.click(); }
+  },
+
+  setWorkItemDetailDescription:  {
+    value: function (newDescriptionString, append)
+    {   if (!append) {this.workItemDetailDescription.clear(newDescriptionString)};
+    return this.workItemDetailDescription.sendKeys(newDescriptionString); }
+  },
+
+  workItemDescriptionEditIcon:  {
+    get: function ()
+    { return element(by.id("workItemDesc_btn_edit")); }
+  },
+
+  clickWorkItemDescriptionEditIcon:   {
+    value: function ()
+    { 
+      return this.workItemDescriptionEditIcon.click(); }
+  },
+
+  workItemDescriptionSaveIcon:  {
+    get: function ()
+    { return element(by.id("workItemdesc_btn_save")); }
+  },
+
+  clickWorkItemDescriptionSaveIcon:   {
+    value: function ()
+    { 
+      return this.workItemDescriptionSaveIcon.click(); }
+  },
+
+  workItemDescriptionCancelIcon:  {
+    get: function ()
+    { return element(by.id("workItemdesc_btn_cancel")); }
+  },
+
+  clickWorkItemDescriptionCancelIcon:   {
+    value: function ()
+    { 
+      return this.workItemDescriptionCancelIcon.click(); }
+  },
+
+/* The following UI elements were removed from the WorkItem Detail page on November 7, 2016. We
+   are not deleting these elements from the page object in the event that they are restored
+   to the page in the future */
+
+/*  
   workItemDetailCreator:  {
     get: function ()
     { return element(by.id("wi-detail-creator")); }
@@ -79,39 +209,7 @@ WorkItemDetailPage.prototype  = Object.create({}, {
     return this.workItemDetailAssignee.sendKeys(newAssigneeString); }
   },
 
-  workItemDetailState:  {
-    get: function ()
-    { return element(by.id("wi-detail-state")); }
-  },
-
-  setWorkItemDetailState:  {
-    value: function (newStateString, append)
-    {   return this.workItemDetailState.sendKeys(newStateString); }
-  },
-
-  workItemDetailSaveButton:  {
-    get: function ()
-    { return element(by.css(".btn.btn-primary")); }
-  },
-
-  clickWorkItemDetailSaveButton:   {
-    value: function ()
-    { 
-      browser.wait(until.presenceOf(this.workItemDetailSaveButton), waitTime, 'Failed to find the workItemDetailSaveButton');
-      return this.workItemDetailSaveButton.click(); }
-  },
-
-  workItemDetailCancelButton:  {
-    get: function ()
-    { return element(by.css(".btn.btn-default")); }
-  },
-
-  clickWorkItemDetailCancelButton:   {
-    value: function ()
-    { 
-      browser.wait(until.presenceOf(this.workItemDetailCancelButton), waitTime, 'Failed to find the workItemDetailCancelButton');
-      return this.workItemDetailCancelButton.click(); }
-  }
+*/
 
 });
 

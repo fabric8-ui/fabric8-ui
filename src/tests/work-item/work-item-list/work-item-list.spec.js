@@ -31,9 +31,10 @@ describe('Work item list', function () {
       workItemType:'system.userstory',
       workItemCreator:'someOtherUser14',
       workItemAssignee:'someUser14',
-      workItemState:'new'
+      workItemState:'New'
     }; 
   });
+
 
   it('should contain 14 items.', function() {
     expect(page.allWorkItems.count()).toBe(startCount);
@@ -70,19 +71,15 @@ describe('Work item list', function () {
     });
   });	 
 
-  // it('should contain right mock data on detail page - desktop.', function() { 
-  //   testSupport.setBrowserMode('desktop');
-  //   page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
-  //     var detailPage = page.clickWorkItemViewButton(page.workItemViewButton(page.firstWorkItem), text);
-  //     expect(detailPage.workItemDetailPageTitle.getText()).toBe(workItemMockData.pageTitle);
-  //     expect(detailPage.workItemDetailTitle.getAttribute("value")).toBe(workItemMockData.workItemTitle);      
-  //     expect(detailPage.workItemDetailDescription.getAttribute("value")).toBe(workItemMockData.workItemDescription);
-  //     expect(detailPage.workItemDetailType.getAttribute("value")).toBe(workItemMockData.workItemType);
-  //     expect(detailPage.workItemDetailCreator.getAttribute("value")).toBe(workItemMockData.workItemCreator);
-  //     expect(detailPage.workItemDetailAssignee.getAttribute("value")).toBe(workItemMockData.workItemAssignee);
-  //     expect(detailPage.workItemDetailState.getAttribute("value")).toBe(workItemMockData.workItemState);
-  //     detailPage.clickWorkItemDetailCancelButton();
-  //   });
-  // });
+  it('should contain right mock data on detail page - desktop.', function() { 
+    testSupport.setBrowserMode('desktop');
+    page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+      expect(detailPage.clickWorkItemDetailTitle.getText()).toBe(workItemMockData.workItemTitle);   
+      expect(detailPage.workItemDetailDescription.getText()).toContain(workItemMockData.workItemDescription);
+      expect(detailPage.workItemDetailState.getText()).toBe(workItemMockData.workItemState);
+      detailPage.clickWorkItemDetailCloseButton();
+     });
+   });
   
 });
