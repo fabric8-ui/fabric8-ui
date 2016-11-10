@@ -97,21 +97,21 @@
       </div>
       <div class="width100 pull-left">
         <div class="col-md-12 col-sm-12 col-xw-12 detail-description" *ngIf="loggedIn">
-          <div class="detail-desc-div-wrap">
-            <div class="detail-desc-div" [class.desc-active]="descEditable">                            
-            <p almEditable [editable]="descEditable"
-              #desc 
-              (onUpdate)="descUpdate($event)"
-              (keyup.enter)="onUpdateDescription()"
-              (keydown.enter)="preventDef($event)"
-              id="wi-detail-desc" 
-              class="description"
-              [innerHTML]="workItem.fields['system.description']">
-            </p>
-            </div>
-            <div class="edit-icon">
+          <div class="detail-desc-div-wrap" (click)="toggleDescription(false, true)">
+            <div class="detail-desc-div" [class.desc-editable]="descEditable">                            
+              <p almEditable [editable]="descEditable"
+                #desc 
+                (onUpdate)="descUpdate($event)"
+                (keydown.enter)="onUpdateDescription()"
+                (keyup.enter)="preventDef($event)"
+                id="wi-detail-desc" 
+                class="description"
+                [innerHTML]="workItem.fields['system.description']">
+              </p>
+              <div class="edit-icon">
                 <span id="workItemDesc_btn_edit" class="pficon-edit" 
                   (click)='toggleDescription()'></span>
+              </div>
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@
           </div>
           <div id="workItemdesc_btn_cancel" 
               class="fl btn-small pull-right detail-action-btn" 
-              (click)="toggleDescription()">
+              (click)="closeDescription()">
               <span class="fa fa-close"></span>
           </div>
       </div>

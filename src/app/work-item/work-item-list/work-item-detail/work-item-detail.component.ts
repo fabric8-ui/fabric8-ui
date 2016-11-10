@@ -98,13 +98,24 @@ export class WorkItemDetailComponent implements OnInit {
     }
   }
 
-  toggleDescription(internal: Boolean = false): void{
+  toggleDescription(internal: Boolean = false, 
+                    onlyOpen: Boolean = false): void{
     if (this.headerEditable && !internal) {
       this.onUpdateTitle();
     }
     if (this.loggedIn) {
-      this.descEditable = !this.descEditable;
+      if (onlyOpen) {
+        this.descEditable = true;  
+      } else {
+        this.descEditable = !this.descEditable;
+      }
     }
+  }
+
+  closeDescription(): void {
+    this.description.nativeElement.innerHTML = 
+    this.workItem.fields['system.description']; 
+    this.descEditable = false;
   }
 
   getWorkItemTypes(): void {
@@ -195,7 +206,13 @@ export class WorkItemDetailComponent implements OnInit {
       } catch (x){
         event.returnValue = false; //IE
       }
-      this.closeDetails();
+      if (this.descEditable) {
+        this.closeDescription();
+      } else if (this.headerEditable) {
+        this.headerEditable = false;
+      } else {
+        this.closeDetails();
+      }
     }
   }
 }

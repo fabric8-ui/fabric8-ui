@@ -88,21 +88,29 @@
       background-color: $color-pf-black-150;
       .detail-desc-div {
         min-height: 50px;
-        border: 0.3px solid $color-pf-black-400;
-        background-clip: content-box;
         background-color: $color-pf-white;
         padding-right: 30px;
+        border: 0.3px solid $color-pf-white;
         p {
-          padding: 5px;
+          padding: 5px 10px;
+          margin: 0px;
           outline: 0px solid transparent;
         }
-      }
-      .edit-icon{
-        position: absolute;
-        right: 30px;
-        z-index: 10;
-        top: $pad10;
-        cursor: pointer;
+        .edit-icon {
+          display: none;
+          position: absolute;
+          right: 30px;
+          z-index: 10;
+          top: $pad10;
+          cursor: pointer;
+        }
+        &:hover {
+          background-clip: content-box;
+          border-color: $color-pf-black-400;
+          .edit-icon {
+            display: block;
+          }
+        }
       }
     }
   }
@@ -118,8 +126,16 @@
     background-color: #ebebeb;
     margin-left: $margin5;
   }
-  .desc-active {
+  .desc-editable {
     border: 0.6px solid $color-pf-blue-400 !important;
+    padding-right: 30px !important;
+    background-clip: content-box !important;
+    .edit-icon {
+      display: block !important;
+    }
+    p {
+      padding: 5px 10px !important;
+    }
   }
 }
 .wi-type-icon {
