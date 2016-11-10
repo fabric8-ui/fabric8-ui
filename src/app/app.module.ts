@@ -42,12 +42,14 @@ import { WorkItemService }            from './work-item/work-item.service';
 import { WorkItemListModule }             from './work-item/work-item-list/work-item-list.module';
 
 // Main areas
-import { HomeComponent } from './home/home.component';
+import { ChatComponent } from './chat/chat.component';
 import { CodeComponent } from './code/code.component';
-import { TestComponent } from './test/test.component';
-import { PipelineComponent } from './pipeline/pipeline.component';
+import { HomeComponent } from './home/home.component';
 import { HypothesisComponent } from './hypothesis/hypothesis.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { PipelineComponent } from './pipeline/pipeline.component';
 import { SettingsComponent } from './settings/settings.component';
+import { TestComponent } from './test/test.component';
 
 // conditionally import the inmemory resource module
 var moduleImports: Array<any[] | any | ModuleWithProviders>;
@@ -91,16 +93,18 @@ if (process.env.ENV == 'inmemory') {
   declarations: [    
     AppComponent,
     BoardComponent,
+    ChatComponent,
+    CodeComponent,
     FooterComponent,
     HeaderComponent,
-    LoginComponent,
-    WorkItemSearchComponent,
     HomeComponent,
-    CodeComponent,
-    TestComponent,
-    PipelineComponent,
     HypothesisComponent,
-    SettingsComponent
+    LoginComponent,
+    NotificationsComponent,
+    PipelineComponent,
+    SettingsComponent,
+    TestComponent,
+    WorkItemSearchComponent
   ],
   providers: [
     Logger,

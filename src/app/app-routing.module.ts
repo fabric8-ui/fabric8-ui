@@ -1,16 +1,16 @@
 import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LoginComponent } from './login/login.component';
-import { SettingsComponent } from './settings/settings.component';
-
 import { BoardComponent } from './board/board.component';
-
-import { HomeComponent } from './home/home.component';
+import { ChatComponent } from './chat/chat.component';
 import { CodeComponent } from './code/code.component';
-import { TestComponent } from './test/test.component';
-import { PipelineComponent } from './pipeline/pipeline.component';
+import { HomeComponent } from './home/home.component';
 import { HypothesisComponent } from './hypothesis/hypothesis.component';
+import { LoginComponent } from './login/login.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { PipelineComponent } from './pipeline/pipeline.component';
+import { SettingsComponent } from './settings/settings.component';
+import { TestComponent } from './test/test.component';
 
 
 // import { WorkItemDetailComponent } from './work-item/work-item-detail/work-item-detail.component';
@@ -24,42 +24,50 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'settings',
-    component: SettingsComponent
-  },
-  {
     path: 'board',
     component: BoardComponent
   },
   {
-    path: 'quick-add/:id',
-    component: WorkItemQuickAddComponent
-  },
-  {
-    path: 'home',
-    component: HomeComponent
+    path: 'chat',
+    component: ChatComponent
   },
   {
     path: 'code',
     component: CodeComponent
   },
   {
-    path: 'test',
-    component: TestComponent
+    path: 'home',
+    component: HomeComponent
+  },
+  {
+    path: 'hypothesis',
+    component: HypothesisComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'notifications',
+    component: NotificationsComponent
   },
   {
     path: 'pipeline',
     component: PipelineComponent
   },
   {
-    path: 'hypothesis',
-    component: HypothesisComponent
+    path: 'quick-add/:id',
+    component: WorkItemQuickAddComponent
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent
+  },
+  {
+    path: 'test',
+    component: TestComponent
   }
-  
+
 
 ];
 
