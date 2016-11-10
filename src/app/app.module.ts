@@ -4,6 +4,7 @@ import { ModuleWithProviders, NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
 import { DropdownModule } from 'ng2-dropdown';
+import { TabsModule } from 'ng2-bootstrap/components/tabs';
 
 // Imports for loading & configuring the in-memory web api
 // if not used will be removed for production by treeshaking
@@ -57,6 +58,7 @@ if (process.env.ENV == 'inmemory') {
     BrowserModule,
     DropdownModule,
     FormsModule,
+    TabsModule,
     WorkItemListModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService),
@@ -67,6 +69,7 @@ if (process.env.ENV == 'inmemory') {
     BrowserModule,
     DropdownModule,
     FormsModule,
+    TabsModule,
     WorkItemListModule,
     HttpModule,
     AppRoutingModule
@@ -80,6 +83,7 @@ if (process.env.ENV == 'inmemory') {
   //   BrowserModule,
   //   FormsModule,
   //   HttpModule,
+  //   TabsModule,
   //   // InMemoryWebApiModule.forRoot(InMemoryDataService)
   //   // The inmemory environment variable is checked and if present then the in-memory dataset is added.
   //   // process.env.ENV == 'inmemory' ? InMemoryWebApiModule.forRoot(InMemoryDataService) : null
