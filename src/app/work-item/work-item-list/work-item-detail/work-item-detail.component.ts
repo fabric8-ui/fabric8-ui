@@ -59,6 +59,7 @@ export class WorkItemDetailComponent implements OnInit {
         let id = params['id'];
         this.workItemService.getWorkItem(id)
           .then(workItem => {
+            this.resetEditables();
             this.titleText = workItem.fields['system.title'];
             this.descText = workItem.fields['system.description'];
             this.workItem = workItem;
@@ -177,6 +178,11 @@ export class WorkItemDetailComponent implements OnInit {
 
   preventDef(event: any) {
     event.preventDefault();
+  }
+
+  resetEditables() {
+    this.headerEditable = false;
+    this.descEditable = false;
   }
 
   @HostListener('window:keydown', ['$event']) 
