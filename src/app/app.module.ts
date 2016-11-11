@@ -42,14 +42,14 @@ import { WorkItemService }            from './work-item/work-item.service';
 import { WorkItemListModule }             from './work-item/work-item-list/work-item-list.module';
 
 // Main areas
-import { ChatComponent } from './chat/chat.component';
-import { CodeComponent } from './code/code.component';
-import { HomeComponent } from './home/home.component';
-import { HypothesisComponent } from './hypothesis/hypothesis.component';
-import { NotificationsComponent } from './notifications/notifications.component';
-import { PipelineComponent } from './pipeline/pipeline.component';
+import { ChatModule } from './chat/chat.module';
+import { CodeModule } from './code/code.module';
+import { HomeModule } from './home/home.module';
+import { HypothesisModule } from './hypothesis/hypothesis.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { PipelineModule } from './pipeline/pipeline.module';
 import { SettingsComponent } from './settings/settings.component';
-import { TestComponent } from './test/test.component';
+import { TestModule } from './test/test.module';
 
 // conditionally import the inmemory resource module
 var moduleImports: Array<any[] | any | ModuleWithProviders>;
@@ -58,22 +58,36 @@ var moduleImports: Array<any[] | any | ModuleWithProviders>;
 if (process.env.ENV == 'inmemory') {
   moduleImports = [
     BrowserModule,
+    ChatModule,
+    CodeModule,
     DropdownModule,
     FormsModule,
-    TabsModule,
-    WorkItemListModule,
+    HomeModule,
+    HypothesisModule,
     HttpModule,
+    NotificationsModule,
+    PipelineModule,
+    TabsModule,
+    TestModule,
+    WorkItemListModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService),
     AppRoutingModule
   ];
 } else {
   moduleImports = [
     BrowserModule,
+    ChatModule,
+    CodeModule,
     DropdownModule,
     FormsModule,
-    TabsModule,
-    WorkItemListModule,
+    HomeModule,
+    HypothesisModule,
     HttpModule,
+    NotificationsModule,
+    PipelineModule,
+    TabsModule,
+    TestModule,
+    WorkItemListModule,
     AppRoutingModule
   ];
 }
@@ -83,9 +97,18 @@ if (process.env.ENV == 'inmemory') {
   // imports: [
   //   AppRoutingModule,
   //   BrowserModule,
+  //   ChatModule,
+  //   CodeModule,
+  //   DropdownModule,
   //   FormsModule,
+  //   HomeModule,
+  //   HypothesisModule,
   //   HttpModule,
+  //   NotificationsModule,
+  //   PipelineModule,
   //   TabsModule,
+  //   TestModule,
+  //   WorkItemListModule,
   //   // InMemoryWebApiModule.forRoot(InMemoryDataService)
   //   // The inmemory environment variable is checked and if present then the in-memory dataset is added.
   //   // process.env.ENV == 'inmemory' ? InMemoryWebApiModule.forRoot(InMemoryDataService) : null
@@ -93,17 +116,10 @@ if (process.env.ENV == 'inmemory') {
   declarations: [    
     AppComponent,
     BoardComponent,
-    ChatComponent,
-    CodeComponent,
     FooterComponent,
     HeaderComponent,
-    HomeComponent,
-    HypothesisComponent,
     LoginComponent,
-    NotificationsComponent,
-    PipelineComponent,
     SettingsComponent,
-    TestComponent,
     WorkItemSearchComponent
   ],
   providers: [
