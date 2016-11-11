@@ -54,3 +54,12 @@
     top:0;
   }
 }
+
+.detail-list-container {
+  height: 100%;
+  overflow: hidden;
+  .detail-list-wrap {
+    height: 100%;
+    overflow-y: scroll;
+  }
+}
