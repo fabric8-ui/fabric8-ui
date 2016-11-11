@@ -24,7 +24,7 @@ import { AppComponent }  from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 // Board
-import { BoardComponent } from './board/board.component';
+import { BoardModule} from './board/board.module';
 
 // Footer
 import { FooterComponent } from './footer/footer.component';
@@ -48,7 +48,7 @@ import { HomeModule } from './home/home.module';
 import { HypothesisModule } from './hypothesis/hypothesis.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { PipelineModule } from './pipeline/pipeline.module';
-import { SettingsComponent } from './settings/settings.component';
+import { SettingsModule } from './settings/settings.module';
 import { TestModule } from './test/test.module';
 
 // conditionally import the inmemory resource module
@@ -58,6 +58,7 @@ var moduleImports: Array<any[] | any | ModuleWithProviders>;
 if (process.env.ENV == 'inmemory') {
   moduleImports = [
     BrowserModule,
+    BoardModule,
     ChatModule,
     CodeModule,
     DropdownModule,
@@ -67,6 +68,7 @@ if (process.env.ENV == 'inmemory') {
     HttpModule,
     NotificationsModule,
     PipelineModule,
+    SettingsModule,
     TabsModule,
     TestModule,
     WorkItemListModule,
@@ -76,6 +78,7 @@ if (process.env.ENV == 'inmemory') {
 } else {
   moduleImports = [
     BrowserModule,
+    BoardModule,
     ChatModule,
     CodeModule,
     DropdownModule,
@@ -85,6 +88,7 @@ if (process.env.ENV == 'inmemory') {
     HttpModule,
     NotificationsModule,
     PipelineModule,
+    SettingsModule,
     TabsModule,
     TestModule,
     WorkItemListModule,
@@ -97,6 +101,7 @@ if (process.env.ENV == 'inmemory') {
   // imports: [
   //   AppRoutingModule,
   //   BrowserModule,
+  //   BoardModule,
   //   ChatModule,
   //   CodeModule,
   //   DropdownModule,
@@ -106,6 +111,7 @@ if (process.env.ENV == 'inmemory') {
   //   HttpModule,
   //   NotificationsModule,
   //   PipelineModule,
+  //   SettingsModule,
   //   TabsModule,
   //   TestModule,
   //   WorkItemListModule,
@@ -115,11 +121,9 @@ if (process.env.ENV == 'inmemory') {
   // ],
   declarations: [    
     AppComponent,
-    BoardComponent,
     FooterComponent,
     HeaderComponent,
     LoginComponent,
-    SettingsComponent,
     WorkItemSearchComponent
   ],
   providers: [
