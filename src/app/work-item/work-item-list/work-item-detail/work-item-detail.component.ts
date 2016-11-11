@@ -51,8 +51,7 @@ export class WorkItemDetailComponent implements OnInit {
 
   ngOnInit(): void{     
     this.listenToEvents();
-    this.getWorkItemTypes();
-    this.getWorkItemStates();    
+    this.getWorkItemTypesandStates();
     this.loggedIn = this.auth.isLoggedIn();
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
@@ -112,23 +111,22 @@ export class WorkItemDetailComponent implements OnInit {
     }
   }
 
-  closeDescription(): void {
+closeDescription(): void {
     this.description.nativeElement.innerHTML = 
     this.workItem.fields['system.description']; 
     this.descEditable = false;
   }
 
-  getWorkItemTypes(): void {
+  getWorkItemTypesandStates(): void {
     this.workItemService.getWorkItemTypes()
       .then((types) => {
         this.workItemTypes = types;
-      });
-  }
-
-  getWorkItemStates(): void {
-    this.workItemService.getStatusOptions()
-      .then((options) => {
-        this.workItemStates = options;
+      })
+      .then(() => {
+        this.workItemService.getStatusOptions()
+          .then((options) => {
+            this.workItemStates = options;
+        });
       });
   }
 

@@ -35,7 +35,7 @@ export class WorkItemService {
       .catch(this.handleError);
   }
 
-  getWorkItemTypes(): Promise<WorkItemType[]> { 
+  getWorkItemTypes(): Promise<any[]> { 
     if (this.workItemTypes.length) {
       return new Promise((resolve, reject) => {
         resolve(this.workItemTypes);
@@ -102,15 +102,10 @@ export class WorkItemService {
       return new Promise((resolve, reject) => {
         resolve(this.availableStates);
       });
-    } else {
-      const url = `${process.env.API_URL}workitemtypes`;
-      return this.http
-        .get(url, {headers: this.headers})
-        .toPromise()
+    } else {      
+      return this.getWorkItemTypes()
         .then((response) => {
-          let states = process.env.ENV != 'inmemory' ? response.json() : response.json().data;
-          this.workItemTypes = states as WorkItemType[];
-          this.availableStates = states[0].fields['system.state'].type.values.map((item: string, index: number) => {
+          this.availableStates = response[0].fields['system.state'].type.values.map((item: string, index: number) => {
             return {
               option: item,
             };
