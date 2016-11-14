@@ -98,7 +98,19 @@
       <div class="width100 pull-left">
         <div class="col-md-12 col-sm-12 col-xw-12 detail-description" *ngIf="loggedIn">
           <div class="detail-desc-div-wrap" (click)="toggleDescription(false, true)">
-            <div class="detail-desc-div" [class.desc-editable]="descEditable">                            
+            <div class="detail-desc-div"
+              [class.desc-editable]="descEditable"
+              [class.desc-not-found]="!descEditable && !workItem.fields['system.description']">
+              <!-- 
+                Following condition for innerHTML might look
+                little confusing. So, here is the explaination - 
+                If there is some description is hould show up
+                If there is none, then it should check if the description 
+                field is editable or not. If it's editable then it should
+                stay empty as in the default value of description.
+                If it's not editable and there is no description as well,
+                it should show up the message 'Work item Descriptionm.'
+              -->                        
               <p almEditable [editable]="descEditable"
                 #desc 
                 (onUpdate)="descUpdate($event)"
@@ -106,7 +118,12 @@
                 (keyup.enter)="preventDef($event)"
                 id="wi-detail-desc" 
                 class="description"
-                [innerHTML]="workItem.fields['system.description']">
+                [innerHTML]="
+                  workItem.fields['system.description'] ? 
+                    workItem.fields['system.description'] : 
+                    descEditable ? 
+                      workItem.fields['system.description'] : 
+                      'Work item Description.'">
               </p>
               <div class="edit-icon">
                 <span id="workItemDesc_btn_edit" class="pficon-edit" 

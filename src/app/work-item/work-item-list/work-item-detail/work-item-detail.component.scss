@@ -86,6 +86,12 @@
     margin-top: $margin20;
     .detail-desc-div-wrap {
       background-color: $color-pf-black-150;
+      .desc-not-found {
+        p {
+          font-style: italic;
+          color: $color-pf-black-400;
+        }
+      }
       .detail-desc-div {
         min-height: 50px;
         background-color: $color-pf-white;
