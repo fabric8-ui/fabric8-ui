@@ -143,7 +143,10 @@ module.exports = function (options) {
           test: /\.(jpg|png|gif)$/,
           loader: 'file'
         },
-
+        {
+          test: /\.scss$/,
+          loaders: ["css-to-string", "css", "sass"]
+        },
       ],
 
     },
