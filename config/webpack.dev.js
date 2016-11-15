@@ -3,6 +3,7 @@ var webpackMerge = require('webpack-merge');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var commonConfig = require('./webpack.common.js');
 var helpers = require('./helpers');
+var DashboardPlugin = require('webpack-dashboard/plugin');
 
 const ENV = process.env.ENV || process.env.NODE_ENV || 'development';
 // if env is 'inmemory', the inmemory debug resource is used
@@ -27,6 +28,7 @@ module.exports = webpackMerge(commonConfig, {
   },
 
   plugins: [
+    new DashboardPlugin(),
     new ExtractTextPlugin('[name].css'),
 
     /**
