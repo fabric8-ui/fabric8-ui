@@ -46,8 +46,9 @@ var waitTime = 30000;
       expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) { 
         var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
-
-        detailPage.clickWorkItemTitleEditIcon();
+        
+        detailPage.clickWorkItemTitleDiv();
+        //detailPage.clickWorkItemTitleEditIcon();
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleSaveIcon();        
         detailPage.clickWorkItemDetailCloseButton();
@@ -80,7 +81,8 @@ var waitTime = 30000;
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) { 
         var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-        detailPage.clickWorkItemTitleEditIcon();
+        detailPage.clickWorkItemTitleDiv();
+        //detailPage.clickWorkItemTitleEditIcon();
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleSaveIcon();
         
@@ -120,7 +122,8 @@ var waitTime = 30000;
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) { 
         var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-        detailPage.clickWorkItemTitleEditIcon();
+        detailPage.clickWorkItemTitleDiv();
+        //detailPage.clickWorkItemTitleEditIcon();
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleCancelIcon();
         
@@ -155,7 +158,8 @@ var waitTime = 30000;
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) { 
         var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-        detailPage.clickWorkItemTitleEditIcon();
+        detailPage.clickWorkItemTitleDiv();
+        //detailPage.clickWorkItemTitleEditIcon();
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleCancelIcon();
         

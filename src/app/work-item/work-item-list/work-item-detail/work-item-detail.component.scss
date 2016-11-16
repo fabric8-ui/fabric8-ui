@@ -20,7 +20,7 @@
     float: right;
     cursor: pointer;
     font-size: $font14;
-  }
+  }  
   .wi-detail-title-blk{
     padding: $pad20 $pad20 $pad10;
     .detail-title {
@@ -43,6 +43,21 @@
     }
     .clearfloat{
       clear: both;
+    }
+    .detail-title-edit-ico {
+      display: none;
+      position: absolute;
+      right: 30px;
+      z-index: 10;
+      top: $pad10;
+      cursor: pointer;
+    }
+    &:hover {
+      background-clip: content-box;
+      border-color: $color-pf-black-400;
+      .detail-title-edit-ico {
+        display: block;
+      }
     }
   }
   .wi-state-btn{

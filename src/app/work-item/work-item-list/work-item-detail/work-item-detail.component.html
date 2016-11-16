@@ -24,7 +24,8 @@
 
       <div class="width100 pull-left">
         <div class="col-md-8 col-sm-7 col-xs-12 marginB10 wi-detail-title-blk">
-          <div *ngIf="!headerEditable" (click)='toggleHeader()'>
+          <div *ngIf="!headerEditable" (click)='toggleHeader()' 
+            id="title-click-div">
               <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate">{{ workItem.fields['system.title'] }}</h2>
               <h2 *ngIf="loggedIn" id="wi-detail-title-click" class="detail-title truncate">{{ workItem.fields['system.title'] }}</h2>
               <span *ngIf="loggedIn" 

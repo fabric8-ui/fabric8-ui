@@ -80,9 +80,28 @@ WorkItemDetailPage.prototype  = Object.create({}, {
   },
 
   /* Icon edit buttons */
-  workItemTitleEditIcon:  {
-    get: function ()
-    { return element(by.id("workItemTitle_btn_edit")); }
+  workItemTitleClick: {
+    value: function(){
+      this.editHover().click();
+    }
+  },
+
+  workItemTitleDiv:  {    
+    get: function ()    
+    { 
+      return element(by.id("title-click-div")); }
+  },
+
+  clickWorkItemTitleDiv:   {
+    value: function ()
+    { 
+      return this.workItemTitleDiv.click(); }
+  },
+
+  workItemTitleEditIcon:  {    
+    get: function ()    
+    { 
+      return element(by.id("workItemTitle_btn_edit")); }
   },
 
   clickWorkItemTitleEditIcon:   {
