@@ -1,15 +1,15 @@
 {
-  "name": "angular2-webpack-starter",
-  "version": "5.1.1",
-  "description": "An Angular 2 Webpack Starter kit featuring Angular 2 (Router, Http, Forms, Services, Tests, E2E, Coverage), Karma, Protractor, Jasmine, Istanbul, TypeScript, and Webpack by AngularClass",
+  "name": "fabric8-ui",
+  "version": "0.0.1",
+  "description": "The Fabric8 UI console for the Red Hat Developer Experience project",
   "keywords": [
     "angular2",
     "webpack",
     "typescript"
   ],
   "author": "Patrick Stapleton <patrick@angularclass.com>",
-  "homepage": "https://github.com/angularclass/angular2-webpack-starter",
-  "license": "MIT",
+  "homepage": "https://github.com/fabric8io/fabric8-ui",
+  "license": "Apache-2.0",
   "scripts": {
     "perf:profile": "webpack --profile --json > stats.json",
     "perf": "webpack-dashboard -t fabric8 -- webpack --config config/webpack.perf.js --progress --profile",
