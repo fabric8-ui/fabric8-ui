@@ -7,7 +7,20 @@
     "webpack",
     "typescript"
   ],
-  "author": "Patrick Stapleton <patrick@angularclass.com>",
+  "contributors": [
+    {
+      "name": "Joshua Wilson",
+      "email": "josh@redhat.com"
+    },
+    {
+      "name": "Nimisha",
+      "email": "nmukherj@redhat.com"
+    },
+    {
+      "name": "Sudipta Sen",
+      "email": "sudsen@redhat.com"
+    }
+  ],
   "homepage": "https://github.com/fabric8io/fabric8-ui",
   "license": "Apache-2.0",
   "scripts": {
