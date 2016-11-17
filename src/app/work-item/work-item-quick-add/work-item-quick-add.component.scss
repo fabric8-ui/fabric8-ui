@@ -96,3 +96,10 @@
     }
   }
 }
+@-moz-document url-prefix() {
+  .workItemQuickAdd_story{
+    textarea.form-control {
+      max-height: 26px !important;
+    }
+  }
+}
