@@ -12,11 +12,13 @@ const commonConfig = require('./webpack.common.js'); // the settings that are co
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
+const DashboardPlugin = require('webpack-dashboard/plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 /**
  * Webpack Constants
  */
-const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
+const ENV = process.env.ENV = process.env.NODE_ENV = 'performance';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 3000;
 const HMR = helpers.hasProcessFlag('hot');
@@ -32,7 +34,7 @@ const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
  *
  * See: http://webpack.github.io/docs/configuration.html#cli
  */
-module.exports = function (options) {
+module.exports = function () {
   return webpackMerge(commonConfig({env: ENV}), {
 
     /**
@@ -85,6 +87,19 @@ module.exports = function (options) {
     },
 
     plugins: [
+
+      /**
+       * Webpack plugin and CLI utility that represents bundle content as convenient interactive zoomable treemap
+       */
+      new BundleAnalyzerPlugin({
+        generateStatsFile: true
+      }),
+
+      /**
+       * Displays an overview of what webpack bundled.
+       */
+      new DashboardPlugin(),
+
       /**
        * Plugin: DefinePlugin
        * Description: Define free variables.

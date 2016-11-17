@@ -11,6 +11,8 @@
   "homepage": "https://github.com/angularclass/angular2-webpack-starter",
   "license": "MIT",
   "scripts": {
+    "perf:profile": "webpack --profile --json > stats.json",
+    "perf": "webpack-dashboard -t fabric8 -- webpack --config config/webpack.perf.js --progress --profile",
     "build:dev": "webpack --config config/webpack.dev.js --progress --profile",
     "build:docker": "npm run build:prod && docker build -t angular2-webpack-start:latest .",
     "build:prod": "webpack --config config/webpack.prod.js  --progress --profile --bail",
@@ -38,7 +40,7 @@
     "protractor": "protractor",
     "rimraf": "rimraf",
     "server:dev:hmr": "npm run server:dev -- --inline --hot",
-    "server:dev": "webpack-dashboard -t fabric8 -- webpack-dev-server --config config/webpack.dev.js --progress --profile --watch --content-base src/",
+    "server:dev": "webpack-dev-server --config config/webpack.dev.js --progress --profile --watch --content-base src/",
     "server:prod": "http-server dist --cors",
     "server": "npm run server:dev",
     "start:hmr": "npm run server:dev:hmr",
