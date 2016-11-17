@@ -4,6 +4,8 @@
 .list-group-item {
   cursor: pointer;
   .workItemList_workItemType {
+    width: 10em;
+    float: left;
     span{
       font-size: $font12;
       margin-right: $margin10;
@@ -30,5 +32,10 @@ span{
   background-color: $color-pf-blue-100;
   &:hover {
     background-color: $color-pf-blue-100;
+  }
+}
+@media (max-width: $screen-md-min){
+  .workItemList_title{
+    padding: 0 !important;
   }
 }

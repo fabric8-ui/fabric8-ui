@@ -86,6 +86,11 @@ $font20: 20px;
 .truncate{
     @include truncate;
 }
+.truncate-ellipsis{
+    display: table;
+    table-layout: fixed;
+    white-space: nowrap;
+}
 .dn{ display: none; }
 .dib{ display: inline-block; }
 .db{ display: block; }
