@@ -97,6 +97,16 @@ export class WorkItemListComponent implements OnInit {
     this.reloadWorkItems();
   }
 
+  onMoveToTop(entryComponent: WorkItemListEntryComponent): void {    
+    this.workItemDetail = entryComponent.getWorkItem();
+    this.workItemService.moveItem(this.workItemDetail, 'top');  
+  }
+
+  onMoveToBottom(entryComponent: WorkItemListEntryComponent): void {    
+    this.workItemDetail = entryComponent.getWorkItem();
+    this.workItemService.moveItem(this.workItemDetail, 'bottom');  
+  }
+
   // Event listener for URL change 
   // On change to details page slide out the layover
   // On change back to home slide in layover

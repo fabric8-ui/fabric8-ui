@@ -40,6 +40,8 @@ export class WorkItemListEntryComponent implements OnInit {
   @Output() selectEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() detailEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() deleteEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
+  @Output() moveTopEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
+  @Output() moveBottomEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
 
   selected: boolean = false;
   dialog: Dialog;
@@ -119,6 +121,16 @@ export class WorkItemListEntryComponent implements OnInit {
     event.stopPropagation();
     this.detailEvent.emit(this);
     this.router.navigate(['/work-item-list/detail/' + this.workItem.id]);
+  }
+  
+  onMoveToTop(event: MouseEvent): void {
+    event.stopPropagation();    
+    this.moveTopEvent.emit(this);
+  }
+
+  onMoveToBottom(event: MouseEvent): void {
+    event.stopPropagation();    
+    this.moveBottomEvent.emit(this);
   }
 
   onMoveToBacklog(event: MouseEvent): void {
