@@ -26,7 +26,7 @@ export class AlmEditableDirective implements OnInit, OnChanges {
   private element: HTMLElement = this.elementRef.nativeElement;
 
   ngOnInit() {
-    this.element.style.whiteSpace = 'pre-line';
+    this.element.style.whiteSpace = 'pre-wrap';
     if (this.editable) {
       this.makeEditable();
     }
@@ -41,8 +41,6 @@ export class AlmEditableDirective implements OnInit, OnChanges {
   }
 
   onEdit() {
-    // alert(this.element.innerText);
-    // alert(this.element.textContent);
     let newContent = this.element.innerText;
     if (this.content != newContent) {
       this.content = newContent;
