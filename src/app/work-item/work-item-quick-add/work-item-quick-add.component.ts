@@ -23,7 +23,7 @@ export class WorkItemQuickAddComponent implements OnInit {
   showQuickAddBtn: Boolean;
   initialDescHeight: number = 0;
   initialDescHeightDiff: number = 0;
-  descHeight: any = 'inherit';
+  descHeight: any = '26px';
   descResize: any = 'none';
   
   constructor(
@@ -67,7 +67,7 @@ export class WorkItemQuickAddComponent implements OnInit {
           this.goBack(workItem);
           this.showQuickAddBtn = false;
           this.showQuickAdd = true;
-          this.descHeight = this.initialDescHeight ? this.initialDescHeight : 'inherit';
+          this.descHeight = this.initialDescHeight ? this.initialDescHeight : '26px';
           this.qaTitle.nativeElement.focus();
         })
         .catch(error => this.error = error); // TODO: Display error message
