@@ -32,7 +32,7 @@ describe('Work item list', function () {
     page.clickQuickAddSave().then(function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe('Quick Add and Delete');
       expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Quick Add and Delete');
-      page.clickWorkItemKebabButton(page.firstWorkItem);     
+      page.clickWorkItemKebabButton(page.firstWorkItem);
       page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
       page.clickWorkItemPopUpDeleteConfirmButton().then(function() {
         expect(page.workItemTitle(page.firstWorkItem)).not.toBe('Quick Add and Delete');
@@ -48,7 +48,7 @@ describe('Work item list', function () {
     page.clickQuickAddSave().then(function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe('Quick Add and Cancel Delete');
       expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Quick Add and Cancel Delete');
-      page.clickWorkItemKebabButton(page.firstWorkItem);     
+      page.clickWorkItemKebabButton(page.firstWorkItem);
       page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
       page.clickWorkItemPopUpDeleteCancelConfirmButton().then(function() {
         expect(page.workItemTitle(page.firstWorkItem)).toBe('Quick Add and Cancel Delete');

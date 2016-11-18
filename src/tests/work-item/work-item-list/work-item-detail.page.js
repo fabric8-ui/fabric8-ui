@@ -27,11 +27,6 @@ WorkItemDetailPage.prototype  = Object.create({}, {
 
 /* Note - The order of UI element defintions in this page object are top-->bottom, left->right */
 
-  workItemDetailTypeIcon:  {
-    get: function ()
-    { return element(by.css(".wi-type-icon")); }
-  },
-
   workItemDetailId:  {
     get: function ()
     { return element(by.id("wi-detail-id")); }
@@ -44,7 +39,7 @@ WorkItemDetailPage.prototype  = Object.create({}, {
 
   clickWorkItemDetailCloseButton:   {
     value: function ()
-    { 
+    {
       return this.workItemDetailCloseButton.click(); }
   },
 
@@ -67,7 +62,7 @@ WorkItemDetailPage.prototype  = Object.create({}, {
     value: function ()
     { return this.clickWorkItemDetailTitle.click(); }
   },
-  
+
   workItemDetailTitle:  {
     get: function ()
     { return element(by.id("wi-detail-title")); }
@@ -106,7 +101,7 @@ WorkItemDetailPage.prototype  = Object.create({}, {
 
   clickWorkItemTitleEditIcon:   {
     value: function ()
-    { 
+    {
       return this.workItemTitleEditIcon.click(); }
   },
 
@@ -117,7 +112,7 @@ WorkItemDetailPage.prototype  = Object.create({}, {
 
   clickWorkItemTitleSaveIcon:   {
     value: function ()
-    { 
+    {
       return this.workItemTitleSaveIcon.click(); }
   },
 
@@ -128,7 +123,7 @@ WorkItemDetailPage.prototype  = Object.create({}, {
 
   clickWorkItemTitleCancelIcon:   {
     value: function ()
-    { 
+    {
       return this.workItemTitleCancelIcon.click(); }
   },
 
@@ -175,7 +170,7 @@ WorkItemDetailPage.prototype  = Object.create({}, {
 
   clickWorkItemDescriptionEditIcon:   {
     value: function ()
-    { 
+    {
       return this.workItemDescriptionEditIcon.click(); }
   },
 
@@ -186,7 +181,7 @@ WorkItemDetailPage.prototype  = Object.create({}, {
 
   clickWorkItemDescriptionSaveIcon:   {
     value: function ()
-    { 
+    {
       return this.workItemDescriptionSaveIcon.click(); }
   },
 
@@ -197,15 +192,83 @@ WorkItemDetailPage.prototype  = Object.create({}, {
 
   clickWorkItemDescriptionCancelIcon:   {
     value: function ()
-    { 
+    {
       return this.workItemDescriptionCancelIcon.click(); }
   },
-
+  /*
+    UI elements for workitem types detail page
+  */
+  WorkItemTypeDropDownList:  {
+    value: function ()
+    { return element.all(by.css(".dropdown-menu.mobMarginL20 li a ")); }
+  },
+  clickWorkItemTypeDropDownList:   {
+    value: function (number)
+    {
+    //  return element(by.xpath('.//*[@id="wi-detail-form"]/fieldset/div[1]/div/ul/li['+number+']/a/span[2]'));}
+      return element.all(by.css(".dropdown-text")).get(number); }
+  },
+  WorkItemTypeDropDownListCount:   {
+    value: function ()
+    {
+      return element.all(by.css(".dropdown-menu.mobMarginL20 li a")).count(); }
+  },
+  clickWorkItemButton:   {
+    value: function ()
+    { return element(by.css(".wi-type-icon")).click();}
+      //return element(by.xpath('.//*[@id="workItemList_OuterWrap_0"]/div/div[2]/div/ul/li[2]/a')).click(); }
+  },
+clickworkItemDetailTypeIcon: {
+value: function ()
+{ return element(by.css(".pull-left.dropdown-kebab-pf.detail-type-dropdown")).click(); }
+},
+  userstroyIcon:   {
+    value: function ()
+    {
+    return element(by.xpath('//*[@id="workItemList_OuterWrap_0"]/div/div[1]/div[1]/span[2]'));}
+      //return element(by.css(".color-grey.fa.fa-bookmark")); }
+  },
+  valuepropositionIcon:   {
+    value: function ()
+    {
+      return element(by.css(".color-grey.fa.fa-gift")); }
+  },
+  fundamentalIcon:   {
+    value: function ()
+    {
+      return element(by.css(".color-grey.fa.fa-bank")); }
+  },
+  experienceIcon:   {
+    value: function ()
+    {
+      return element(by.css(".color-grey.fa.fa-map")); }
+  },
+  feautureIcon:   {
+    value: function ()
+    {
+      return element(by.css(".color-grey.fa.fa-mouse-pointer")); }
+  },
+  bugIcon:   {
+    value: function ()
+    {
+      return element(by.css(".color-grey.fa.fa-bug")); }
+  },
+  detailUserstroyIcon2:   {
+    value: function (classString)
+    {
+      return element(by.xpath("//*[@id='wi-detail-form'][.//*[contains(@class, '" + classString + "')]]")); }
+  },
+  workItemTypeDropDownListString:  {
+  value: function (typeString)
+  {
+    return element(by.xpath("//*[@id='wi-detail-form']//li[.//text()[contains(.,'" + typeString + "')]]"));
+  }
+},
 /* The following UI elements were removed from the WorkItem Detail page on November 7, 2016. We
    are not deleting these elements from the page object in the event that they are restored
    to the page in the future */
 
-/*  
+/*
   workItemDetailCreator:  {
     get: function ()
     { return element(by.id("wi-detail-creator")); }
