@@ -5,16 +5,18 @@ import { NoContentComponent } from './no-content';
 
 import { DataResolver } from './app.resolver';
 
+export function loadChildrenDetail() {
+  return System.import('./+detail').then((comp: any) => {
+    return comp.default;
+  })
+}
 
 export const ROUTES: Routes = [
   { path: '',      component: HomeComponent },
   { path: 'home',  component: HomeComponent },
   { path: 'about', component: AboutComponent },
   {
-    path: 'detail', loadChildren: () => System.import('./+detail').then((comp: any) => {
-      return comp.default;
-    })
-    ,
+    path: 'detail', loadChildren: loadChildrenDetail
   },
   { path: '**',    component: NoContentComponent },
 ];

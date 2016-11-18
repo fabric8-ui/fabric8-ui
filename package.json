@@ -24,6 +24,7 @@
   "homepage": "https://github.com/fabric8io/fabric8-ui",
   "license": "Apache-2.0",
   "scripts": {
+    "ngc": "ngc -p tsconfig-aot.json",
     "perf:profile": "webpack --profile --json > stats.json",
     "perf": "webpack-dashboard -t fabric8 -- webpack --config config/webpack.perf.js --progress --profile",
     "build:dev": "webpack --config config/webpack.dev.js --progress --profile",
@@ -76,6 +77,7 @@
   "dependencies": {
     "@angular/common": "2.1.1",
     "@angular/compiler": "2.1.1",
+    "@angular/compiler-cli": "2.1.1",
     "@angular/core": "2.1.1",
     "@angular/forms": "2.1.1",
     "@angular/http": "2.1.1",
@@ -83,9 +85,11 @@
     "@angular/platform-browser-dynamic": "2.1.1",
     "@angular/platform-server": "2.1.1",
     "@angular/router": "3.1.1",
+    "@angular/upgrade": "2.1.1",
     "@angularclass/conventions-loader": "1.0.2",
     "@angularclass/hmr": "1.2.0",
     "@angularclass/hmr-loader": "3.0.2",
+    "angular-in-memory-web-api": "0.1.13",
     "assets-webpack-plugin": "3.4.0",
     "core-js": "2.4.1",
     "http-server": "0.9.0",
