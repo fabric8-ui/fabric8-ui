@@ -63,7 +63,7 @@ describe('Work Item Service - ', () => {
       mockService = mock;
     }
   ));
-  let response: WorkItem[] = [
+  let resp: WorkItem[] = [
     {
       'fields': {
         'system.assignee': null,
@@ -77,6 +77,7 @@ describe('Work Item Service - ', () => {
       'version': 0
     }
   ] as WorkItem[];
+  let response = {data: resp};
 
   it('Get work items', async(() => {
     mockService.connections.subscribe((connection: any) => {
@@ -90,7 +91,7 @@ describe('Work Item Service - ', () => {
 
     apiService.getWorkItems()
       .then(data => {
-        expect(data).toEqual(response);
+        expect(data).toEqual(resp);
       });
   }));
 
@@ -98,15 +99,15 @@ describe('Work Item Service - ', () => {
     mockService.connections.subscribe((connection: any) => {
       connection.mockRespond(new Response(
         new ResponseOptions({
-          body: JSON.stringify(response[0]),
+          body: JSON.stringify(resp[0]),
           status: 201
         })
       ));
     });
 
-    apiService.create(response[0])
+    apiService.create(resp[0])
       .then(data => {
-        expect(data).toEqual(response[0]);
+        expect(data).toEqual(resp[0]);
       });
   }));
 
@@ -119,7 +120,7 @@ describe('Work Item Service - ', () => {
       ));
     });
 
-    apiService.delete(response[0])
+    apiService.delete(resp[0])
       .then(data => {
         expect(data).toBeNull();
       });
@@ -129,15 +130,15 @@ describe('Work Item Service - ', () => {
     mockService.connections.subscribe((connection: any) => {
       connection.mockRespond(new Response(
         new ResponseOptions({
-          body: JSON.stringify(response[0]),
+          body: JSON.stringify(resp[0]),
           status: 200
         })
       ));
     });
 
-    apiService.update(response[0])
+    apiService.update(resp[0])
       .then(data => {
-        expect(data).toEqual(response[0]);
+        expect(data).toEqual(resp[0]);
       });
   }));
 

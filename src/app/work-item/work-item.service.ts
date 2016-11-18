@@ -30,11 +30,12 @@ export class WorkItemService {
 
   getWorkItems(): Promise<WorkItem[]> {
     return this.http
-      .get(this.workItemUrl, {headers: this.headers})
+      .get(this.workItemUrl + '.2', {headers: this.headers})
       .toPromise()
-      .then((response) => {
-          this.workItems = process.env.ENV != 'inmemory' ? response.json() as WorkItem[] : response.json().data as WorkItem[] 
-          return this.workItems;
+      //.then(response => process.env.ENV != 'inmemory' ? response.json() as WorkItem[] : response.json().data as WorkItem[])
+      .then(response => {
+        this.workItems = response.json().data as WorkItem[];
+        return this.workItems;
       })
       .catch(this.handleError);
   }

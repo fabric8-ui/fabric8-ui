@@ -1,6 +1,5 @@
 <div class="detail-container" *ngIf="workItem" id="workItemDetail_Wrapper">
-  <form *ngIf="active" 
-        (ngSubmit)="save()"          
+  <form *ngIf="active"           
         #almWorkItemDetailForm="ngForm" 
         id="wi-detail-form">
     <fieldset [attr.disabled]="!loggedIn ? true : null">
@@ -24,7 +23,7 @@
 
       <div class="width100 pull-left truncate-ellipsis">
         <div class="col-md-8 col-sm-7 col-xs-12 marginB10 wi-detail-title-blk">
-          <div *ngIf="!headerEditable" (click)='toggleHeader()' 
+          <div *ngIf="!headerEditable" (click)='openHeader()'
             id="title-click-div">
               <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate">{{ workItem.fields['system.title'] }}</h2>
               <h2 *ngIf="loggedIn" id="wi-detail-title-click" class="detail-title truncate">{{ workItem.fields['system.title'] }}</h2>
@@ -53,7 +52,7 @@
                 <!--Cancel icon-->                        
                 <div id="workItemTitle_btn_cancel" 
                     class="pull-right fl btn-small detail-action-btn" 
-                    (click)="toggleHeader()">
+                    (click)="closeHeader()">
                   <span class="fa fa-close"></span>
                 </div>   
               </aside>                             
@@ -88,17 +87,78 @@
           </div>
         </div>
       </div>
-      <div class="width100 pull-left paddingL20 paddingR20">
-          <p class="pull-left margin0 paddingT5" id="wi-detail-assignee-title">
-              Assignee
-          </p>
-          <div class="pull-left detail-assignee-avatar">
-              <span class="pficon-user pull-left" id="wi-detail-assignee"></span>
-          </div>                
+      <div class="width100 pull-left paddingL20 paddingR20 detail-assignee-wrap">
+          <span
+            *ngIf="!assignedUser"
+            (click)="activeSearchAssignee()" 
+            class="pull-left fa fa-user-plus user-assign-icon">
+          </span>
+          <img 
+            *ngIf="assignedUser"
+            (click)="activeSearchAssignee()"
+            class="pull-left user-assign-avatar"
+            src="{{assignedUser.imageURL + '&s=20'}}" 
+            onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
+          
+          
+          <div class="pull-left detail-assignee-name">
+              <span 
+                *ngIf="!searchAssignee && !assignedUser" 
+                (click)="activeSearchAssignee()" 
+                class="placeholder clickable"> Unassigned </span>
+              
+              <span 
+                *ngIf="!searchAssignee && assignedUser" 
+                (click)="activeSearchAssignee()" 
+                class="clickable"> {{assignedUser.fullName}} </span>
+
+              <div *ngIf="searchAssignee" class="user-search" >
+                <div class="list-container">
+                  <span class="fa fa-search user-search-icon"> </span>                  
+                  <input #userSearch (keyup)="filterUser($event)" />
+                  <ul class="item-ul user-list" #userList>
+                    <li 
+                      class="item-li first-item"
+                      [class.first-item] = "filteredUsers"
+                      [class.only-first-item] = "!filteredUsers" 
+                      *ngIf="loggedInUser"
+                      [attr.data-value]="loggedInUser.id"
+                      (click)="assignUser(loggedInUser.id)">
+                        <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
+                        <img 
+                          class="pull-left user-assign-avatar" 
+                          src="{{loggedInUser.attributes.imageURL + '&s=20'}}" 
+                          onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
+                        <span [innerHTML]="loggedInUser.attributes.fullName + ' (me)'"></span>
+                    </li>
+                    <li 
+                      class="item-li" 
+                      *ngFor="let user of filteredUsers;" 
+                      [attr.data-value]="user.id"
+                      (click)="assignUser(user.id)">
+                        <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
+                        <img 
+                          class="pull-left user-assign-avatar" 
+                          src="{{user.attributes.imageURL + '&s=20'}}" 
+                          onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
+                        <span [innerHTML]="user.attributes.fullName | almSearchHighlight: userSearch.value"></span>
+                    </li>
+                  </ul>
+                  <ul class="item-ul">
+                    <li class="action-li">
+                        <span class="action-item" (click)="unassignUser()">Unassign</span>
+                        <span class="action-item" (click)="cancelAssignment()">Cancel</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+          </div>
       </div>
-      <div class="width100 pull-left">
+
+      <div class="width100 pull-left detail-description-wrap">
         <div class="col-md-12 col-sm-12 col-xw-12 detail-description" *ngIf="loggedIn">
-          <div class="detail-desc-div-wrap" (click)="toggleDescription(false, true)">
+          <div class="detail-desc-div-wrap" (click)="openDescription(false, true)">
             <div class="detail-desc-div"
               [class.desc-editable]="descEditable"
               [class.desc-not-found]="!descEditable && !workItem.fields['system.description']">
@@ -124,11 +184,11 @@
                     workItem.fields['system.description'] : 
                     descEditable ? 
                       workItem.fields['system.description'] : 
-                      'Work item Description.'">
+                      'Work item description.'">
               </p>
               <div class="edit-icon">
                 <span id="workItemDesc_btn_edit" class="pficon-edit" 
-                  (click)='toggleDescription()'></span>
+                  (click)='openDescription()'></span>
               </div>
             </div>
           </div>

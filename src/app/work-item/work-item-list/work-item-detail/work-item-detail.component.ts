@@ -6,6 +6,7 @@ import { Router }            from '@angular/router';
 import { AuthenticationService } from './../../../auth/authentication.service';
 import { Broadcaster } from './../../../shared/broadcaster.service';
 import { Logger } from './../../../shared/logger.service';
+import { UserService } from './../../../user/user.service';
 
 import { WorkItem } from './../../work-item';
 import { WorkItemType } from './../../work-item-type';
@@ -20,6 +21,8 @@ import { WorkItemService } from './../../work-item.service';
 export class WorkItemDetailComponent implements OnInit {
   @ViewChild('desc') description: any;
   @ViewChild('title') title: any;
+  @ViewChild('userSearch') userSearch: any;
+  @ViewChild('userList') userList: any;
 
   workItem: WorkItem;
   workItemTypes: WorkItemType[];
@@ -39,6 +42,14 @@ export class WorkItemDetailComponent implements OnInit {
   titleText: any = '';
   descText: any = '';
 
+  searchAssignee: Boolean = false;
+
+  users: any[];
+  filteredUsers: any[];
+
+  assignedUser: any;
+  loggedInUser: any;
+
   constructor(
     private auth: AuthenticationService,    
     private broadcaster: Broadcaster,    
@@ -46,7 +57,8 @@ export class WorkItemDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private logger: Logger,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void{     
@@ -58,15 +70,54 @@ export class WorkItemDetailComponent implements OnInit {
         let id = params['id'];
         this.workItemService.getWorkItem(id)
           .then(workItem => {
-            this.resetEditables();
+            this.closeRestFields();
             this.titleText = workItem.fields['system.title'];
             this.descText = workItem.fields['system.description'];
             this.workItem = workItem;
+            // fetch the list of user 
+            // after getting the Workitem
+            // to set assigned user 
+            // for this workitem from the list
+            this.getAllUsers();
             this.activeOnList(400);
           })
           .catch(err => this.closeDetails());
       }
     });
+  }
+
+  getAllUsers() {
+    this.userService.getAllUsers()
+      .then((users) => {
+        this.users = users;
+        this.filteredUsers = users;
+        // setting user details of loggedIn User
+        if (this.auth.isLoggedIn()) {
+          this.userService
+            .getUser()
+            .then(user => this.setLoggedInUser(user));
+        }
+        // setting assigned User
+        this.assignedUser = 
+          this.getAssignedUserDetails(
+            this.workItem.fields['system.assignee']
+          );
+      });
+  }
+
+  setLoggedInUser(authUser: any) {
+    for (let i = 0; i < this.users.length; i++) {
+      // This check needs to be updated by ID 
+      // once we have the new user format
+      // on geting loggedIn user i.e. /user endpoint
+      if (this.users[i].attributes.imageURL == authUser.imageURL) {
+        this.loggedInUser = this.users[i];
+
+        // removing logged in user from the list
+        this.users.splice(i, 1);
+        this.filteredUsers.splice(i, 1);
+      }
+    }
   }
 
   activeOnList(timeOut: number = 0) {
@@ -88,30 +139,31 @@ export class WorkItemDetailComponent implements OnInit {
     this.descText = event;
   }
 
-  toggleHeader(internal: Boolean = false): void{
-    if (this.descEditable && !internal) {
-      this.onUpdateDescription();
-    }
-    if (this.loggedIn) {
-      this.headerEditable = !this.headerEditable;
-    }
+  closeHeader(): void {
+    this.headerEditable = false;
   }
 
-  toggleDescription(internal: Boolean = false, 
-                    onlyOpen: Boolean = false): void{
-    if (this.headerEditable && !internal) {
-      this.onUpdateTitle();
-    }
+  openHeader(): void {
     if (this.loggedIn) {
-      if (onlyOpen) {
-        this.descEditable = true;  
-      } else {
-        this.descEditable = !this.descEditable;
+      if (this.descEditable) {
+        this.onUpdateDescription();
       }
+      this.closeRestFields();
+      this.headerEditable = true;
     }
   }
 
-closeDescription(): void {
+  openDescription(): void {
+    if (this.loggedIn) {
+      if (this.headerEditable) {
+        this.onUpdateTitle();
+      }
+      this.closeRestFields();
+      this.descEditable = true;
+    }
+  }
+
+  closeDescription(): void {
     this.description.nativeElement.innerHTML = 
     this.workItem.fields['system.description']; 
     this.descEditable = false;
@@ -143,7 +195,7 @@ closeDescription(): void {
   onUpdateDescription(): void {
     this.workItem.fields['system.description'] = this.descText.trim();
     this.save();
-    this.toggleDescription(true);
+    this.closeDescription();
   }
 
   onUpdateTitle(): void {
@@ -151,7 +203,7 @@ closeDescription(): void {
     if (this.validTitle) {
       this.workItem.fields['system.title'] = this.titleText;
       this.save();
-      this.toggleHeader(true);
+      this.closeHeader();
     }    
   }
 
@@ -174,25 +226,119 @@ closeDescription(): void {
     this.broadcaster.on<string>('logout')
       .subscribe(message => {
         this.loggedIn = false;
+        this.loggedInUser = null;
     });
-  }
-  
-  keyMaps(event: KeyboardEvent) {                
-    if (this.headerEditable || this.descEditable){           
-      this.save();
-      if (this.headerEditable) this.toggleHeader(); 
-      if (this.descEditable) this.toggleDescription();      
-    }
   }
 
   preventDef(event: any) {
     event.preventDefault();
   }
 
-  resetEditables() {
+  activeSearchAssignee() {
+    if (this.loggedIn) {
+      this.closeRestFields();
+      this.filteredUsers = this.users.length ? this.users : null;
+      this.searchAssignee = true;
+      // Takes a while to render the component
+      setTimeout(() => {
+        this.userSearch.nativeElement.focus();      
+      }, 50);
+    }
+  }
+
+  deactiveSearchAssignee() {
+    this.closeRestFields();
+  }
+
+  filterUser(event: any) {
+    // Down arrow or up arrow
+    if (event.keyCode == 40 || event.keyCode == 38) {
+      let lis = this.userList.nativeElement.children;
+      let i = 0;
+      for (; i < lis.length; i++) {
+        if (lis[i].classList.contains('selected')) {
+          break;
+        }
+      }
+      if (i == lis.length) { // No existing selected
+        if (event.keyCode == 40) { // Down arrow
+          lis[0].classList.add('selected');
+          lis[0].scrollIntoView(false);
+        } else { // Up arrow
+          lis[lis.length - 1].classList.add('selected');
+          lis[lis.length - 1].scrollIntoView(false);
+        }
+      } else { // Existing selected
+        lis[i].classList.remove('selected');
+        if (event.keyCode == 40) { // Down arrow
+          lis[(i + 1) % lis.length].classList.add('selected');
+          lis[(i + 1) % lis.length].scrollIntoView(false);
+        } else { // Down arrow
+          // In javascript mod gives exact mod for negative value 
+          // For example, -1 % 6 = -1 but I need, -1 % 6 = 5
+          // To get the round positive value I am adding the divisor
+          // witht he negative dividend
+          lis[(((i - 1) % lis.length) + lis.length) % lis.length].classList.add('selected');
+          lis[(((i - 1) % lis.length) + lis.length) % lis.length].scrollIntoView(false);
+        }
+      }
+    } else if (event.keyCode == 13) { // Enter key event
+      let lis = this.userList.nativeElement.children;
+      let i = 0;
+      for (; i < lis.length; i++) {
+        if (lis[i].classList.contains('selected')) {
+          break;
+        }
+      }
+      if (i < lis.length) {
+        let selectedId = lis[i].dataset.value;
+        this.assignUser(selectedId);
+      } 
+    } else {
+      let inp = this.userSearch.nativeElement.value.trim();
+      this.filteredUsers = this.users.filter((item) => {
+        return item.attributes.fullName.toLowerCase().indexOf(inp.toLowerCase()) > -1;
+      });
+    }
+  }
+
+  assignUser(userId: any): void {
+    /*
+      Need to call the service to update the asginee
+    */
+    this.workItem.fields['system.assignee'] = userId;
+    this.save();
+    this.assignedUser = this.getAssignedUserDetails(userId);
+    this.searchAssignee = false;
+  }
+
+  unassignUser(): void {
+    this.workItem.fields['system.assignee'] = null;
+    this.assignedUser = null;
+    this.save();
+    this.searchAssignee = false;
+  }
+
+  cancelAssignment(): void {
+    this.searchAssignee = false;
+  }
+
+  getAssignedUserDetails(userId: any): string {
+    let user: any = null;
+    if (this.loggedInUser && this.loggedInUser.id == userId) {
+      user = this.loggedInUser;
+    } else {
+      user = this.users.find((item) => item.id == userId);
+    }
+    return user ? user.attributes : null;
+  }
+
+  closeRestFields(): void {
+    this.searchAssignee = false;
     this.headerEditable = false;
     this.descEditable = false;
   }
+
 
   @HostListener('window:keydown', ['$event']) 
   onKeyEvent(event: any) {
@@ -207,7 +353,9 @@ closeDescription(): void {
       if (this.descEditable) {
         this.closeDescription();
       } else if (this.headerEditable) {
-        this.headerEditable = false;
+        this.closeHeader();
+      } else if (this.searchAssignee) {
+        this.searchAssignee = false;
       } else {
         this.closeDetails();
       }

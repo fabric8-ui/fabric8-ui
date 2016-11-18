@@ -9,6 +9,7 @@ import { WorkItemDetailComponent } from './work-item-detail.component';
 
 //Pipes
 import { AlmTrim } from './../../../pipes/alm-trim';
+import { AlmSearchHighlight } from './../../../pipes/alm-search-highlight.pipe';
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import { AlmTrim } from './../../../pipes/alm-trim';
      DropdownModule,
      FormsModule,
   ],
-  declarations: [ WorkItemDetailComponent, AlmTrim ],
+  declarations: [ WorkItemDetailComponent, AlmTrim, AlmSearchHighlight ],
   exports:      [ WorkItemDetailComponent ]
 })
 export class WorkItemDetailModule { }

@@ -17,6 +17,7 @@ import { CommonModule }       from '@angular/common';
 import { DropdownModule }     from 'ng2-dropdown';
 
 import { AlmTrim } from './../../../pipes/alm-trim';
+import { AlmSearchHighlight } from './../../../pipes/alm-search-highlight.pipe';
 import { Broadcaster } from './../../../shared/broadcaster.service';
 import { Logger } from './../../../shared/logger.service';
 
@@ -26,7 +27,7 @@ import { Dialog } from './../../../shared-component/dialog/dialog';
 import { AlmIconModule }      from './../../../shared-component/icon/almicon.module';
 import { AlmEditableModule }      from './../../../shared-component/editable/almeditable.module';
 import { AuthenticationService } from './../../../auth/authentication.service';
-import { User } from './../../../user/user';
+import { User, NewUser } from './../../../user/user';
 import { UserService } from './../../../user/user.service';
 import { WorkItem } from './../../work-item';
 import { WorkItemType } from './../../work-item-type';
@@ -42,6 +43,7 @@ describe('Detailed view and edit a selected work item - ', () => {
   let logger: Logger;
   let fakeWorkItem: WorkItem;
   let fakeUser: User;
+  let fakeUserList: NewUser[];
   let fakeWorkItemService: any;
   let fakeAuthService: any;
   let fakeUserService: any;
@@ -53,7 +55,7 @@ describe('Detailed view and edit a selected work item - ', () => {
 
     fakeWorkItem = {
       'fields': {
-        'system.assignee': 'me',
+        'system.assignee': '498c69a9-bb6f-464b-b89c-a1976ed46301',
         'system.creator': 'me',
         'system.description': 'description',
         'system.state': 'new',
@@ -76,6 +78,28 @@ describe('Detailed view and edit a selected work item - ', () => {
       'fullName': 'Sudipta Sen',
       'imageURL': 'https://avatars.githubusercontent.com/u/2410474?v=3'
     } as User;
+
+    fakeUserList = [
+        {
+          attributes: {
+            fullName: 'Nimisha Mukherjee',
+            imageURL: 'https://avatars.githubusercontent.com/u/1892722?v=3'
+          },
+          id: '779efdcc-ac87-4720-925e-949ff21dbf5d'
+        }, {
+          attributes: {
+            fullName: 'Baiju Muthukadan',
+            imageURL: 'https://avatars.githubusercontent.com/u/121129?v=3'
+          },
+          id: '39d44ed6-1246-48d6-9190-51ffab67c42e'
+        }, {
+          attributes: {
+            fullName: 'Sudipta Sen',
+            imageURL: 'https://avatars.githubusercontent.com/u/2410474?v=3'
+          },
+          id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
+        }
+      ] as NewUser[];
 
     fakeWorkItemTypes = [
       { name: 'system.userstory' },
@@ -130,11 +154,15 @@ describe('Detailed view and edit a selected work item - ', () => {
     };
 
     fakeUserService = {
-      getUser: function () 
-      {
-        return new Promise((resolve, reject) => 
-        {
+      getUser: function () {
+        return new Promise((resolve, reject) => {
           resolve(fakeUser);
+        });
+      },
+
+      getAllUsers: function () {
+        return new Promise((resolve, reject) => {
+          resolve(fakeUserList);
         });
       }
     };
@@ -158,7 +186,8 @@ describe('Detailed view and edit a selected work item - ', () => {
 
       declarations: [
         WorkItemDetailComponent,
-        AlmTrim
+        AlmTrim,
+        AlmSearchHighlight
       ],
       providers: [
         Broadcaster,
@@ -191,7 +220,6 @@ describe('Detailed view and edit a selected work item - ', () => {
       comp.loggedIn = fakeAuthService.isLoggedIn();
       fixture.detectChanges();
       el = fixture.debugElement.query(By.css('#wi-detail-id'));      
-      console.log(el.nativeElement.textContent);
       expect(el.nativeElement.textContent).toContain(fakeWorkItem.id);
   });
 
@@ -295,7 +323,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.workItem = fakeWorkItem;
     comp.loggedIn = fakeAuthService.isLoggedIn();           
     fixture.detectChanges();    
-    comp.toggleHeader();
+    comp.openHeader();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-title'));
     expect(el.nativeElement.innerText).toContain(fakeWorkItem.fields['system.title']);
@@ -307,7 +335,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.workItem = fakeWorkItem;
     comp.loggedIn = fakeAuthService.isLoggedIn();           
     fixture.detectChanges();    
-    comp.toggleHeader();
+    comp.openHeader();
     fixture.detectChanges();    
     el = fixture.debugElement.query(By.css('#wi-detail-title'));
     comp.workItem.fields['system.title'] = 'User entered valid work item title';      
@@ -322,7 +350,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.workItem = fakeWorkItem;
     comp.loggedIn = fakeAuthService.isLoggedIn();           
     fixture.detectChanges();    
-    comp.toggleHeader();
+    comp.openHeader();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#workItemTitle_btn_save'));
     comp.workItem.fields['system.title'] = 'Valid work item title';
@@ -337,7 +365,7 @@ describe('Detailed view and edit a selected work item - ', () => {
       comp.workItem = fakeWorkItem;
       comp.loggedIn = fakeAuthService.isLoggedIn();           
       fixture.detectChanges();    
-      comp.toggleHeader();
+      comp.openHeader();
       fixture.detectChanges();
       comp.titleText = '';
       comp.isValid(comp.titleText);
@@ -353,7 +381,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.workItem = fakeWorkItem;
     comp.loggedIn = fakeAuthService.isLoggedIn();           
     fixture.detectChanges();    
-    comp.toggleDescription();
+    comp.openDescription();
     fixture.detectChanges();    
     el = fixture.debugElement.query(By.css('#wi-detail-desc'));
     comp.workItem.fields['system.description'] = 'User entered work item description';      
