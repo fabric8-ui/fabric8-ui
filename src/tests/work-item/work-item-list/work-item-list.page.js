@@ -18,7 +18,8 @@ var WorkItemListPage = function () {
 
 var testSupport = require('./testSupport'),
   WorkItemDetailPage = require('./work-item-detail.page'),
-  WorkItemBoardPage = require('./work-item-board.page');
+  WorkItemBoardPage = require('./work-item-board.page'),
+  CommonPage = require('./common.page');
 
 var until = protractor.ExpectedConditions;
 var waitTime = 30000;
@@ -228,7 +229,7 @@ workItemByTitle:  {
       var theDetailPage = new WorkItemDetailPage (idText);
       var until = protractor.ExpectedConditions;
       //browser.wait(until.presenceOf(theDetailPage.workItemDetailPageTitle), waitTime, 'Detail page title taking too long to appear in the DOM');
-      browser.wait(waitForText(theDetailPage.clickWorkItemDetailTitle), waitTime, "Title text is still not present");
+      browser.wait(testSupport.waitForText(theDetailPage.clickWorkItemDetailTitle), waitTime, "Title text is still not present");
       return theDetailPage;
     }
   },
@@ -303,7 +304,7 @@ workItemByTitle:  {
       var theDetailPage = new WorkItemDetailPage (idValue);
       var until = protractor.ExpectedConditions;
       browser.wait(until.presenceOf(theDetailPage.workItemDetailPageTitle), waitTime, 'Detail page title taking too long to appear in the DOM');
-      browser.wait(waitForText(theDetailPage.workItemDetailTitle), waitTime, "Title text is still not present");
+      browser.wait(testSupport.waitForText(theDetailPage.workItemDetailTitle), waitTime, "Title text is still not present");
       return theDetailPage;
     }
   },
@@ -321,17 +322,5 @@ workItemByTitle:  {
   },
 
 });
-
-/*
- * Custom wait function - determine if ANY text appears in a field's value
- */
-function waitForText(elementFinder) {
-  return function () {
-    return elementFinder.getAttribute("value").then(function(text) {
-//      console.log("text = " + text);
-      return text !== "";  // could also be replaced with "return !!text;"
-    });
-  };
-};
 
 module.exports = WorkItemListPage;

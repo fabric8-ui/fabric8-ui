@@ -45,6 +45,16 @@ module.exports = {
     var stream = fs.createWriteStream(filename);
     stream.write(new Buffer(data, 'base64'));
     stream.end();
+  },
+
+/*
+ * Custom wait function - determine if ANY text appears in a field's value
+ */
+waitForText: function (elementFinder) {
+    return elementFinder.getAttribute("value").then(function(text) {
+//      console.log("text = " + text);
+      return text !== "";  // could also be replaced with "return !!text;"
+    });
   }
 
 };

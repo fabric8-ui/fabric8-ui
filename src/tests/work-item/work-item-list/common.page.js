@@ -162,16 +162,4 @@ CommonPage.prototype  = Object.create({}, {
 
 });
 
-/*
- * Custom wait function - determine if ANY text appears in a field's value
- */
-function waitForText(elementFinder) {
-  return function () {
-    return elementFinder.getAttribute("value").then(function(text) {
-//      console.log("text = " + text);
-      return text !== "";  // could also be replaced with "return !!text;"
-    });
-  };
-};
-
 module.exports = CommonPage;
