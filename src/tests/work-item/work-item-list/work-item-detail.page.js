@@ -307,8 +307,103 @@ value: function ()
     {   if (!append) {this.workItemDetailAssignee.clear(newAssigneeString)};
     return this.workItemDetailAssignee.sendKeys(newAssigneeString); }
   },
-
 */
+
+  /* The following UI elements support the assignment of a user to a work item */
+
+  /* Icon for the user assigned to the workitem */
+  workItemDetailAssigneeIcon:  {
+    get: function ()
+    { return element(by.css(".user-assign-icon")); }
+  },
+
+  clickworkItemDetailAssigneeIcon:   {
+    value: function ()
+    { return this.workItemDetailAssigneeIcon.click(); }
+  },
+
+  /* The user assigned to the workitem */
+  workItemDetailAssignee:  {
+    get: function ()
+    { return element(by.xpath(".//*[contains(@class,'detail-assignee-name')]")); }
+  },
+
+  clickWorkItemDetailAssignee:  {
+    get: function ()
+    { return this.workItemDetailAssignee.click(); }
+  },
+
+  /* Search string box for the user to assign to the workitem */
+  workItemDetailAssigneeSearch:  {
+    get: function ()
+    { return element(by.css(".list-container>input")); }
+  },
+
+  setWorkItemDetailAssigneeSearch: {
+    value: function (newSearchString, append)
+    {   
+      if (!append) { this.workItemDetailAssigneeSearch.clear(newSearchString) };
+      return this.workItemDetailAssigneeSearch.sendKeys(newSearchString); }
+  },
+
+  /* The list of users to whom work items can be assigned */
+  workItemDetailAssigneeList:  {
+    get: function ()
+    { return element(by.css(".user-list")); }
+  },
+
+  clickworkItemDetailAssigneeList:  {
+    get: function ()
+    { return this.workItemDetailAssigneeList.click(); }
+  },
+
+  /* The first username in the list of users */
+  workItemDetailFirstUser:  {
+    get: function ()
+    { return element(by.css(".item-li.first-item")); }
+  },
+
+  clickworkItemDetailFirstUser:  {
+    get: function ()
+    { return this.workItemDetailFirstUser.click(); }
+  },
+
+  /* Select the assigned user by name */
+  assignedUserDropDownList:  {
+    value: function (userName)
+    {
+      return element(by.xpath(".//*[@id='wi-detail-form']//li[.//text()[contains(.,'" + userName + "')]]"));
+    }
+  },
+
+  clickAssignedUserDropDownList:  {
+    value: function (userName)
+    {
+      return this.assignedUserDropDownList(userName).click();
+    }
+  },
+
+  /* The Unassign button */
+  workItemDetailUnassignButton:  {
+    get: function ()
+    { return element(by.xpath(".//*[contains(@class,'action-item') and contains(text(),'Unassign')]")); }
+  },
+
+  clickworkItemDetailUnassignButton:   {
+    value: function ()
+    { return this.workItemDetailUnassignButton.click(); }
+  },
+
+  /* The Cancel button */
+  workItemDetailCancelButton:  {
+    get: function ()
+    { return element(by.xpath(".//*[contains(@class,'action-item') and contains(text(),'Cancel')]")); }
+  },
+
+  clickworkItemDetailCancelButton:   {
+    value: function ()
+    { return this.workItemDetailCancelButton.click(); }
+  }
 
 });
 
