@@ -241,7 +241,9 @@ export class WorkItemDetailComponent implements OnInit {
       this.searchAssignee = true;
       // Takes a while to render the component
       setTimeout(() => {
-        this.userSearch.nativeElement.focus();      
+        if (this.userSearch) {
+          this.userSearch.nativeElement.focus();
+        }
       }, 50);
     }
   }

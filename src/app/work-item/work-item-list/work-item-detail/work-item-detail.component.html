@@ -110,7 +110,8 @@
               <span 
                 *ngIf="!searchAssignee && assignedUser" 
                 (click)="activeSearchAssignee()" 
-                class="clickable"> {{assignedUser.fullName}} </span>
+                class="clickable" 
+                id="WI_details_assigned_user"> {{assignedUser.fullName}} </span>
 
               <div *ngIf="searchAssignee" class="user-search" >
                 <div class="list-container">

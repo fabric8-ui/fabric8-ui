@@ -75,27 +75,27 @@ describe('Detailed view and edit a selected work item - ', () => {
     ];
 
     fakeUser = {
-      'fullName': 'Sudipta Sen',
-      'imageURL': 'https://avatars.githubusercontent.com/u/2410474?v=3'
+      'fullName': 'Draco Malfoy',
+      'imageURL': 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
     } as User;
 
     fakeUserList = [
         {
           attributes: {
-            fullName: 'Nimisha Mukherjee',
-            imageURL: 'https://avatars.githubusercontent.com/u/1892722?v=3'
+            fullName: 'Harry Potter',
+            imageURL: 'http://nerdist.com/wp-content/uploads/2016/02/20160210_nerdistnews_harrypottercursedchild_1x1.jpg'
           },
           id: '779efdcc-ac87-4720-925e-949ff21dbf5d'
         }, {
           attributes: {
-            fullName: 'Baiju Muthukadan',
-            imageURL: 'https://avatars.githubusercontent.com/u/121129?v=3'
+            fullName: 'Walter Mitty',
+            imageURL: 'http://bestwatchbrandshq.com/wp-content/uploads/2015/01/Ben-Stiller-Watch-In-The-Secret-Life-Of-Walter-Mitty-Movie-9.jpg'
           },
           id: '39d44ed6-1246-48d6-9190-51ffab67c42e'
         }, {
           attributes: {
-            fullName: 'Sudipta Sen',
-            imageURL: 'https://avatars.githubusercontent.com/u/2410474?v=3'
+            fullName: 'Draco Malfoy',
+            imageURL: 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
           },
           id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
         }
@@ -210,6 +210,7 @@ describe('Detailed view and edit a selected work item - ', () => {
       .then(() => {
         fixture = TestBed.createComponent(WorkItemDetailComponent);
         comp = fixture.componentInstance;
+        comp.users = fakeUserList;
       });
   }));
 
@@ -416,7 +417,7 @@ describe('Detailed view and edit a selected work item - ', () => {
 
   it('Work item state can be edited when logged in', () => {
     fakeAuthService.login();
-    fixture.detectChanges();         
+    fixture.detectChanges();      
     comp.workItem = fakeWorkItem;
     comp.loggedIn = fakeAuthService.isLoggedIn();           
     fixture.detectChanges(); 
@@ -425,5 +426,42 @@ describe('Detailed view and edit a selected work item - ', () => {
     fixture.detectChanges();
     expect(comp.workItem.fields['system.state']).toContain(el.nativeElement.value);
   }); 
+
+  it('should not open the user list if not logged in', () => {
+    comp.activeSearchAssignee();
+    fixture.detectChanges();
+    expect(comp.searchAssignee).toBeFalsy();
+  });
+
+  it('should open the user list if logged in', () => {
+    fakeAuthService.login();
+    fixture.detectChanges();
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
+    comp.activeSearchAssignee();
+    fixture.detectChanges();
+    expect(comp.searchAssignee).toBeTruthy();
+  });
+
+  it('should return correct user info from getAssignedUserDetails', () => {
+    let foundUser: any = comp.getAssignedUserDetails('39d44ed6-1246-48d6-9190-51ffab67c42e');
+    expect(foundUser.fullName).toBe('Walter Mitty');
+  });
+
+  it('should return null from getAssignedUserDetails in case not found', () => {
+    let foundUser: any = comp.getAssignedUserDetails('39d44ed6-1246-48d6-9190-51ffab6312-0391-012');
+    expect(foundUser).toBeNull();
+  });
+
+  it('Page should display correct assignee', () => {
+      fakeAuthService.login();
+      fixture.detectChanges();
+      comp.workItem = fakeWorkItem;
+      comp.loggedIn = fakeAuthService.isLoggedIn();
+      comp.assignedUser = comp.getAssignedUserDetails(comp.workItem.fields['system.assignee']);
+      fixture.detectChanges();
+      el = fixture.debugElement.query(By.css('#WI_details_assigned_user'));      
+      expect(el.nativeElement.textContent).toContain('Draco Malfoy');
+  });
 
 });
