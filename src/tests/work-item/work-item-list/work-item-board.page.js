@@ -18,10 +18,10 @@ var WorkItemBoardPage = function () {
 };
 
 var testSupport = require('./testSupport'),
-  commonPage = require('./common.page')
+  commonPage = require('./common.page'),
+  constants = require("./constants");
 
 var until = protractor.ExpectedConditions;
-var waitTime = 30000;
 
 WorkItemBoardPage.prototype  = Object.create({}, {
 
@@ -84,8 +84,8 @@ WorkItemBoardPage.prototype  = Object.create({}, {
       button.click();
       var theDetailPage = new WorkItemDetailPage (idValue);
       var until = protractor.ExpectedConditions;
-      browser.wait(until.presenceOf(theDetailPage.workItemDetailPageTitle), waitTime, 'Detail page title taking too long to appear in the DOM');
-      browser.wait(testSupport.waitForText(theDetailPage.workItemDetailTitle), waitTime, "Title text is still not present");
+      browser.wait(until.presenceOf(theDetailPage.workItemDetailPageTitle), constants.WAIT, 'Detail page title taking too long to appear in the DOM');
+      browser.wait(testSupport.waitForText(theDetailPage.workItemDetailTitle), constants.WAIT, "Title text is still not present");
       return theDetailPage;
     }
   },

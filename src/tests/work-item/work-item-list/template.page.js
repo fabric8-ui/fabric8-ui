@@ -18,10 +18,10 @@ var TemplatePage = function () {
 var testSupport = require('./testSupport'),
   WorkItemDetailPage = require('./work-item-detail.page'),
   WorkItemBoardPage = require('./work-item-board.page'),
-  CommonPage = require('./common.page');
+  CommonPage = require('./common.page'),
+  constants = require("./constants");
 
 var until = protractor.ExpectedConditions;
-var waitTime = 30000;
 
 TemplatePage.prototype  = Object.create({}, {
 
@@ -35,7 +35,7 @@ TemplatePage.prototype  = Object.create({}, {
   clickWorkItemListButton:   {
     value: function ()
     {
-      browser.wait(until.presenceOf(this.workItemListButton), waitTime, 'Failed to find workItemListButton');
+      browser.wait(until.presenceOf(this.workItemListButton), constants.WAIT, 'Failed to find workItemListButton');
       return this.workItemListButton.click(); }
   }
 

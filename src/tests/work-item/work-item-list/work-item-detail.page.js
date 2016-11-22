@@ -15,10 +15,10 @@
 var WorkItemDetailPage = function (idValue) {
 };
 
-var testSupport = require('./testSupport');
+var testSupport = require('./testSupport'),
+  constants = require("./constants");
 
 var until = protractor.ExpectedConditions;
-var waitTime = 30000;
 
 WorkItemDetailPage.prototype  = Object.create({}, {
 

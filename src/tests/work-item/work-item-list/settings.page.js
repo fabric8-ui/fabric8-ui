@@ -16,10 +16,10 @@ var SettingsPage = function () {
 };
 
 var testSupport = require('./testSupport'),
-  commonPage = require('./common.page')
+  commonPage = require('./common.page'),
+  constants = require("./constants");
 
 var until = protractor.ExpectedConditions;
-var waitTime = 30000;
 
 SettingsPage.prototype  = Object.create({}, {
 

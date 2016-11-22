@@ -19,10 +19,10 @@ var WorkItemListPage = function () {
 var testSupport = require('./testSupport'),
   WorkItemDetailPage = require('./work-item-detail.page'),
   WorkItemBoardPage = require('./work-item-board.page'),
-  CommonPage = require('./common.page');
+  CommonPage = require('./common.page'),
+  constants = require("./constants");
 
 var until = protractor.ExpectedConditions;
-var waitTime = 30000;
 
 WorkItemListPage.prototype  = Object.create({}, {
 
@@ -36,7 +36,7 @@ WorkItemListPage.prototype  = Object.create({}, {
   clickWorkItemListButton:   {
     value: function ()
     {
-      browser.wait(until.presenceOf(this.workItemListButton), waitTime, 'Failed to find workItemListButton');
+      browser.wait(until.presenceOf(this.workItemListButton), constants.WAIT, 'Failed to find workItemListButton');
       return this.workItemListButton.click(); }
   },
 
@@ -73,7 +73,7 @@ WorkItemListPage.prototype  = Object.create({}, {
   typeQuickAddWorkItemTitle:  {
      value: function (keys)
      {
-       browser.wait(until.presenceOf(this.workItemQuickAddTitle), waitTime, 'Failed to find workItemQuickAddTitle');
+       browser.wait(until.presenceOf(this.workItemQuickAddTitle), constants.WAIT, 'Failed to find workItemQuickAddTitle');
        return this.workItemQuickAddTitle.sendKeys(keys); }
    },
 
@@ -85,7 +85,7 @@ WorkItemListPage.prototype  = Object.create({}, {
   typeQuickAddWorkItemDesc:  {
      value: function (keys)
      {
-       browser.wait(until.presenceOf(this.workItemQuickAddDesc), waitTime, 'Failed to find workItemQuickAddDesc');
+       browser.wait(until.presenceOf(this.workItemQuickAddDesc), constants.WAIT, 'Failed to find workItemQuickAddDesc');
        return this.workItemQuickAddDesc.sendKeys(keys); }
    },
 
@@ -93,7 +93,7 @@ WorkItemListPage.prototype  = Object.create({}, {
    clickWorkItemKebabButton:  {
     value: function (parentElement)
     {
-      browser.wait(until.presenceOf(parentElement.element(by.id("dropdownKebabRight"))), waitTime, 'Failed to find clickWorkItemKebabButton');
+      browser.wait(until.presenceOf(parentElement.element(by.id("dropdownKebabRight"))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
       return parentElement.element(by.id("dropdownKebabRight")).click(); }
   },
   /*
@@ -122,7 +122,7 @@ WorkItemListPage.prototype  = Object.create({}, {
    clickWorkItemKebabDeleteButton:   {
     value: function (parentElement)
     {
-      browser.wait(until.presenceOf(parentElement.element(by.css('.workItemList_Delete'))), waitTime, 'Failed to find clickWorkItemKebabButton');
+      browser.wait(until.presenceOf(parentElement.element(by.css('.workItemList_Delete'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
       return parentElement.element(by.css('.workItemList_Delete')).click(); }
   },
 
@@ -134,7 +134,7 @@ WorkItemListPage.prototype  = Object.create({}, {
   clickWorkItemPopUpDeleteConfirmButton:   {
     value: function ()
     {
-      browser.wait(until.presenceOf(this.workItemPopUpDeleteConfirmButton), waitTime, 'Failed to find workItemPopUpDeleteConfirmButton');
+      browser.wait(until.presenceOf(this.workItemPopUpDeleteConfirmButton), constants.WAIT, 'Failed to find workItemPopUpDeleteConfirmButton');
       return this.workItemPopUpDeleteConfirmButton.click(); }
   },
 
@@ -146,14 +146,14 @@ WorkItemListPage.prototype  = Object.create({}, {
   clickWorkItemPopUpDeleteCancelConfirmButton:   {
     value: function ()
     {
-      browser.wait(until.presenceOf(this.workItemPopUpDeleteCancelConfirmButton), waitTime, 'Failed to find clickWorkItemPopUpDeleteCancelConfirmButton');
+      browser.wait(until.presenceOf(this.workItemPopUpDeleteCancelConfirmButton), constants.WAIT, 'Failed to find clickWorkItemPopUpDeleteCancelConfirmButton');
       return this.workItemPopUpDeleteCancelConfirmButton.click(); }
   },
 
 //  typeQuickAddWorkItemDescription:  {
 //    value: function (keys)
 //    {
-//      browser.wait(until.presenceOf(this.workItemQuickAddDescription), waitTime, 'Failed to find workItemQuickAddDescription');
+//      browser.wait(until.presenceOf(this.workItemQuickAddDescription), constants.WAIT, 'Failed to find workItemQuickAddDescription');
 //      return this.workItemQuickAddDescription.sendKeys(keys); }
 //  },
 
@@ -165,7 +165,7 @@ WorkItemListPage.prototype  = Object.create({}, {
   clickWorkItemQuickAdd:   {
     value: function ()
     {
-      browser.wait(until.presenceOf(this.openButton), waitTime, 'Failed to find the open button');
+      browser.wait(until.presenceOf(this.openButton), constants.WAIT, 'Failed to find the open button');
       return this.openButton.click(); }
   },
 
@@ -177,7 +177,7 @@ WorkItemListPage.prototype  = Object.create({}, {
   clickQuickAddSave:   {
     value: function ()
     {
-      browser.wait(until.presenceOf(this.saveButton), waitTime, 'Failed to find the saveButton');
+      browser.wait(until.presenceOf(this.saveButton), constants.WAIT, 'Failed to find the saveButton');
       return this.saveButton.click(); }
   },
 
@@ -189,7 +189,7 @@ WorkItemListPage.prototype  = Object.create({}, {
   clickQuickAddCancel:   {
     value: function ()
     {
-      browser.wait(until.presenceOf(this.cancelButton), waitTime, 'Failed to find the cancelButton');
+      browser.wait(until.presenceOf(this.cancelButton), constants.WAIT, 'Failed to find the cancelButton');
       return this.cancelButton.click(); }
   },
 
@@ -228,8 +228,8 @@ workItemByTitle:  {
       workItemElement.element(by.css(".workItemList_title")).click();
       var theDetailPage = new WorkItemDetailPage (idText);
       var until = protractor.ExpectedConditions;
-      //browser.wait(until.presenceOf(theDetailPage.workItemDetailPageTitle), waitTime, 'Detail page title taking too long to appear in the DOM');
-      browser.wait(testSupport.waitForText(theDetailPage.clickWorkItemDetailTitle), waitTime, "Title text is still not present");
+      //browser.wait(until.presenceOf(theDetailPage.workItemDetailPageTitle), constants.WAIT, 'Detail page title taking too long to appear in the DOM');
+      browser.wait(testSupport.waitForText(theDetailPage.clickWorkItemDetailTitle), constants.WAIT, "Title text is still not present");
       return theDetailPage;
     }
   },
@@ -303,8 +303,8 @@ workItemByTitle:  {
       button.click();
       var theDetailPage = new WorkItemDetailPage (idValue);
       var until = protractor.ExpectedConditions;
-      browser.wait(until.presenceOf(theDetailPage.workItemDetailPageTitle), waitTime, 'Detail page title taking too long to appear in the DOM');
-      browser.wait(testSupport.waitForText(theDetailPage.workItemDetailTitle), waitTime, "Title text is still not present");
+      browser.wait(until.presenceOf(theDetailPage.workItemDetailPageTitle), constants.WAIT, 'Detail page title taking too long to appear in the DOM');
+      browser.wait(testSupport.waitForText(theDetailPage.workItemDetailTitle), constants.WAIT, "Title text is still not present");
       return theDetailPage;
     }
   },
@@ -317,7 +317,7 @@ workItemByTitle:  {
   clickWorkItemDeleteButton:   {
     value: function (button)
     {
-      browser.wait(until.presenceOf(button), waitTime, 'Failed to find the button');
+      browser.wait(until.presenceOf(button), constants.WAIT, 'Failed to find the button');
       return button.click(); }
   },
 

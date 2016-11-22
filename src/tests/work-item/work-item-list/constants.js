@@ -9,20 +9,14 @@
 'use strict';
 
 /*
- * Chat Page Definition - placeholder
+ * Constants Definition
  */
 
-var ChatPage = function () {
-};
+function define(name, value) {
+    Object.defineProperty(exports, name, {
+        value:      value,
+        enumerable: true
+    });
+}
 
-var testSupport = require('./testSupport'),
-  commonPage = require('./common.page'),
-  constants = require("./constants");
-
-var until = protractor.ExpectedConditions;
-
-ChatPage.prototype  = Object.create({}, {
-
-});
-
-module.exports = ChatPage;
+define("WAIT", 30000);
