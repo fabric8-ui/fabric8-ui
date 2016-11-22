@@ -34,11 +34,10 @@
       cursor: pointer;
     }
     .detail-title-edit {
-      border: none;
-      border-bottom: 1px solid $color-pf-black;
-      @include box-shadow(none);
+      border-bottom: 1px solid $color-pf-blue-200;
+      @include box-shadow(0 4px 4px -4px rgba(0,136,206,.6));
       font-size: 22px;
-      outline: 0px solid transparent;
+      outline: 0;
       line-height: 1.3;
     }
     .clearfloat{
@@ -58,6 +57,9 @@
       .detail-title-edit-ico {
         display: block;
       }
+    }
+    &:focus{
+      border-color:$color-pf-blue;
     }
   }
   .wi-state-btn{
@@ -111,7 +113,7 @@
         min-height: 50px;
         background-color: $color-pf-white;
         padding-right: 30px;
-        border: 0.3px solid $color-pf-white;
+        border: 1px solid $color-pf-white;
         p {
           padding: 5px 10px;
           margin: 0px;
@@ -127,7 +129,7 @@
         }
         &:hover {
           background-clip: content-box;
-          border-color: $color-pf-black-400;
+          border-color: $color-pf-blue-200;
           .edit-icon {
             display: block;
           }
@@ -148,9 +150,11 @@
     margin-left: $margin5;
   }
   .desc-editable {
-    border: 0.6px solid $color-pf-blue-400 !important;
+    @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(0,136,206,.6));
+    @include transition(border-color ease-in-out .15s,box-shadow ease-in-out .15s);
     padding-right: 30px !important;
     background-clip: content-box !important;
+    
     .edit-icon {
       display: block !important;
     }
