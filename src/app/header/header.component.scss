@@ -2,6 +2,12 @@
 @import "../../assets/stylesheets/navs";
 @import "../../assets/stylesheets/icons";
 @import "../../assets/stylesheets/custom";
+@import "../../assets/stylesheets/color-variables";
+.header-navbar{
+    position: fixed;
+    @extend .width100;
+    float: left;
+}
 .navbar-pf {
     .navbar-nav li a {
         line-height: 1.3em;
@@ -28,13 +34,15 @@
     body {
         margin: 0;
     }
+    .nav-mob-scroll{
+        overflow-x: scroll !important;
+        .nav-list-mob-scroll{
+            width: 150%;
+        }
+    }
 }
 
 .no-link {
-  color: #ffffff;
+  color: $color-pf-white;
   text-decoration: none;
-}
-
-.navbar-left {
-    float: left;
 }

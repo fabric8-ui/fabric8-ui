@@ -1,4 +1,4 @@
-<nav id="header_wrapper" class="navbar navbar-default navbar-pf" role="navigation">
+<nav id="header_wrapper" class="navbar navbar-default navbar-pf header-navbar" role="navigation">
 	<div id="header_nav" class="navbar-header">
     
     <div class="navbar-brand">
@@ -9,7 +9,7 @@
       </a>
     </div>
   </div>
-  <div class="navbar-collapse navbar-collapse-1">
+  <div class="navbar-collapse navbar-collapse-1 nav-mob-scroll">
 	  <ul id="header_rightDropdown" class="nav navbar-nav navbar-utility">
         <li>
           <a [routerLink]="['/settings']" id="header_menuSettings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
@@ -50,7 +50,7 @@
       </tab>
     </tabset>
 -->
-    <ul id="header_menuList" class="nav navbar-nav navbar-primary">
+    <ul id="header_menuList" class="nav navbar-nav navbar-primary nav-list-mob-scroll">
       <li>
         <a [routerLink]="['/home']" id="header_menuHome" routerLinkActive="active">Home</a>
       </li>

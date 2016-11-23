@@ -1,4 +1,4 @@
-<div class="container-fluid containerPadd detail-list-container">		
+<div class="container-fluid containerPadd detail-list-container" [class.containerPadd-nologin] = "!loggedIn" >		
 	<div class="width100 fl detail-list-wrap list-group list-view-pf">
 
 			<alm-work-item-list-entry *ngFor="let workItem of workItems; let counter = index"
