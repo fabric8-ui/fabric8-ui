@@ -48,7 +48,6 @@ var waitTime = 30000;
         var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
         
         detailPage.clickWorkItemTitleDiv();
-        //detailPage.clickWorkItemTitleEditIcon();
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleSaveIcon();
         detailPage.clickWorkItemDetailCloseButton();
@@ -82,10 +81,8 @@ var waitTime = 30000;
         var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
         detailPage.clickWorkItemTitleDiv();
-        //detailPage.clickWorkItemTitleEditIcon();
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleSaveIcon();
-//        detailPage.clickWorkItemDescriptionEditIcon();
         detailPage.clickWorkItemDetailDescription()
         detailPage.setWorkItemDetailDescription (workItemUpdatedDescription, false);
         detailPage.clickWorkItemDescriptionSaveIcon();
@@ -122,11 +119,9 @@ var waitTime = 30000;
         var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
         detailPage.clickWorkItemTitleDiv();
-        //detailPage.clickWorkItemTitleEditIcon();
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleCancelIcon();
         detailPage.clickWorkItemDetailDescription()
-        //detailPage.clickWorkItemDescriptionEditIcon();
         detailPage.setWorkItemDetailDescription (workItemUpdatedTitle, false);
         detailPage.clickWorkItemDescriptionCancelIcon();
 
@@ -159,7 +154,6 @@ var waitTime = 30000;
         var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
         detailPage.clickWorkItemTitleDiv();
-        //detailPage.clickWorkItemTitleEditIcon();
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleCancelIcon();
         detailPage.clickWorkItemDetailCloseButton();
@@ -339,8 +333,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
                   detailPage.clickworkItemDetailTypeIcon();
                   var wi_types = ["userstory", "valueproposition", "fundamental","experience","feature","bug"];
                   for(var i=0;i<wi_types.length;i++){
-                 // expect(detailPage.WorkItemTypeDropDownList().get(i).getText()).toBe(wi_types[i]);
-                  expect(detailPage.workItemTypeDropDownListString(wi_types[i]).getAttribute('innerHTML')).toContain(wi_types[i]);
+                   expect(detailPage.workItemTypeDropDownListString(wi_types[i]).getAttribute('innerHTML')).toContain(wi_types[i]);
                   }
                   detailPage.clickWorkItemDetailCloseButton();
                 });
@@ -359,10 +352,6 @@ it('Verify how many work item type exists in drop down - desktop', function() {
           page.clickQuickAddSave().then(function() {
              page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
               var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
-      //        detailPage.clickworkItemDetailTypeIcon();
-      //        detailPage.clickWorkItemTypeDropDownList(0).click();
-      //        detailPage.clickWorkItemDetailCloseButton();
-      //        expect(detailPage.detailUserstroyIcon().isPresent()).toBeTruthy();
               expect(detailPage.detailUserstroyIcon2("fa-bookmark").isPresent()).toBeTruthy();
            });
           });
@@ -378,13 +367,127 @@ it('Verify how many work item type exists in drop down - desktop', function() {
          page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
           var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
           detailPage.clickworkItemDetailTypeIcon();
-        //  detailPage.clickWorkItemTypeDropDownList("2").click();
-        //  detailPage.clickWorkItemDetailCloseButton();
-       });
+        });
       });
 
     });
 
+    /*Verify how many state changes exists in drop down*/
+
+      it('Verify how many state changes exists in drop down-phone ', function() {
+        var workItemTitle = "The test workitem title";
+        var workItemUpdatedTitle = "The test workitem title - UPDATED";
+         page.clickWorkItemQuickAdd();
+         page.typeQuickAddWorkItemTitle(workItemTitle);
+
+         page.clickQuickAddSave().then(function() {
+           page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+             var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+             expect(detailPage.WorkItemStateDropDownListCount()).toBe(5);
+          });
+         });
+       });
+  /* Verify the name display of workitem States are correct  - phone*/
+  it('Verify the name display of workitem States are correct ', function() {
+      var workItemTitle = "The test workitem title";
+      var workItemUpdatedTitle = "The test workitem title - UPDATED";
+          page.clickWorkItemQuickAdd();
+          page.typeQuickAddWorkItemTitle(workItemTitle);
+          page.clickQuickAddSave().then(function() {
+          expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+          expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+          page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+          var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+          detailPage.clickWorkItemStateDropDownButton();
+          var wi_state = ["new", "open", "in progress","resolved","closed"];
+          var itr=1;
+          for(var i=0;i<wi_state.length;i++){
+          expect(detailPage.workItemTypeDropDownListString(wi_state[i]).getAttribute('innerHTML')).toContain(wi_state[i]);
+           }
+          detailPage.clickWorkItemDetailCloseButton();
+          });
+      });
+  });
+  /*Verfify on selecting workitem it should display in list and detail view both pages */
+  it('Verfify on selecting workitem state it should display in list and detail view both pages -phone ', function() {
+     var workItemTitle = "The test workitem title";
+     var workItemUpdatedTitle = "The test workitem title - UPDATED";
+         page.clickWorkItemQuickAdd();
+         page.typeQuickAddWorkItemTitle(workItemTitle);
+         page.clickQuickAddSave().then(function() {
+         page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+         var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+         detailPage.clickWorkItemStateDropDownButton();
+         detailPage.WorkItemStateDropDownList().get(0).click();
+         detailPage.clickWorkItemDetailCloseButton();
+         expect(detailPage.genericCssIcon("fa-arrow-down").isPresent()).toBeTruthy();
+         });
+        });
+      });
+  /*Verfify on selecting workitem it should display in list and detail view both pages */
+  it('Verfify on selecting workitem state it should display in list and detail view both pages Open state -phone ', function() {
+      var workItemTitle = "The test workitem title";
+      var workItemUpdatedTitle = "The test workitem title - UPDATED";
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle(workItemTitle);
+      page.clickQuickAddSave().then(function() {
+      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+      detailPage.clickWorkItemStateDropDownButton();
+      detailPage.WorkItemStateDropDownList().get(1).click();
+      detailPage.clickWorkItemDetailCloseButton();
+      expect(detailPage.genericCssIcon("fa-fire").isPresent()).toBeTruthy();
+         });
+    });
+  });
+  /*Verfify on selecting workitem inprogress it should display in list and detail view both pages */
+  it('Verfify on selecting workitem state it should display in list and detail view both pages inprogress state -phone ', function() {
+      var workItemTitle = "The test workitem title";
+      var workItemUpdatedTitle = "The test workitem title - UPDATED";
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle(workItemTitle);
+      page.clickQuickAddSave().then(function() {
+      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+      detailPage.clickWorkItemStateDropDownButton();
+      detailPage.WorkItemStateDropDownList().get(2).click();
+      detailPage.clickWorkItemDetailCloseButton();
+      expect(detailPage.genericCssIcon("pficon-resources-almost-full").isPresent()).toBeTruthy();
+      });
+    });
+  });
+  /*Verfify on selecting workitem it should display in list and detail view both pages */
+  it('Verfify on selecting workitem state it should display in list and detail view both pages resolved state -phone ', function() {
+      var workItemTitle = "The test workitem title";
+      var workItemUpdatedTitle = "The test workitem title - UPDATED";
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle(workItemTitle);
+      page.clickQuickAddSave().then(function() {
+      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+      detailPage.clickWorkItemStateDropDownButton();
+      detailPage.WorkItemStateDropDownList().get(3).click();
+      detailPage.clickWorkItemDetailCloseButton();
+      expect(detailPage.genericCssIcon("pficon-resources-full").isPresent()).toBeTruthy();
+      });
+    });
+  });
+  /*Verfify on selecting workitem it should display in list and detail view both pages */
+  it('Verfify on selecting workitem state it should display in list and detail view both pages closed state -phone ', function() {
+      var workItemTitle = "The test workitem title";
+      var workItemUpdatedTitle = "The test workitem title - UPDATED";
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle(workItemTitle);
+      page.clickQuickAddSave().then(function() {
+      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+      detailPage.clickWorkItemStateDropDownButton();
+      detailPage.WorkItemStateDropDownList().get(4).click();
+      detailPage.clickWorkItemDetailCloseButton();
+      expect(detailPage.genericCssIcon("fa-remove").isPresent()).toBeTruthy();
+      });
+    });
+  });
 
 
   /*Edit with blank description - desktop Should show "No description available for this work item.".*/

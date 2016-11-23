@@ -138,12 +138,6 @@ WorkItemDetailPage.prototype  = Object.create({}, {
     value: function (newStateString)
     {   return this.workItemDetailState.sendKeys(newStateString); }
   },
-
-  workItemDetailAssignee:  {
-    get: function ()
-    { return element(by.css(".pull-left.margin0.paddingT5")); }
-  },
-
   workItemDetailAvatar:  {
     get: function ()
     { return element(by.css(".pull-left.detail-assignee-avatar")); }
@@ -222,8 +216,7 @@ WorkItemDetailPage.prototype  = Object.create({}, {
   clickWorkItemTypeDropDownList:   {
     value: function (number)
     {
-    //  return element(by.xpath('.//*[@id="wi-detail-form"]/fieldset/div[1]/div/ul/li['+number+']/a/span[2]'));}
-      return element.all(by.css(".dropdown-text")).get(number); }
+       return element.all(by.css(".dropdown-text")).get(number); }
   },
   WorkItemTypeDropDownListCount:   {
     value: function ()
@@ -243,8 +236,7 @@ value: function ()
     value: function ()
     {
     return element(by.xpath('//*[@id="workItemList_OuterWrap_0"]/div/div[1]/div[1]/span[2]'));}
-      //return element(by.css(".color-grey.fa.fa-bookmark")); }
-  },
+   },
   valuepropositionIcon:   {
     value: function ()
     {
@@ -281,6 +273,57 @@ value: function ()
     return element(by.xpath("//*[@id='wi-detail-form']//li[.//text()[contains(.,'" + typeString + "')]]"));
   }
 },
+/*UI elements for State WorkItems*/
+  checkWorkItemStateDropDownList:  {
+  value: function (typeString)
+  {
+    return element(by.xpath('.//*[@id="wi-detail-form"]/fieldset/div[2]/div[2]/div/ul/li['+typeString+']/a/span[2]')).getText();
+  }
+},
+  clickWorkItemStateDropDownButton:   {
+    value: function ()
+    {
+      return element(by.id("wi-detail-state")).click(); }
+  },
+  WorkItemStateDropDownListCount:  {
+    value: function ()
+    { return element.all(by.css(".dropdown-menu.dropdown-menu-right.dropdown-ul li a")).count(); }
+  },
+  WorkItemStateDropDownList:  {
+    value: function (item)
+
+    {  return element.all(by.css(".dropdown-menu.dropdown-menu-right.dropdown-ul li a")); }
+  },
+  newStateIcon:   {
+  value: function ()
+  {
+    return element(by.css(".color-grey.fa.fa-arrow-down")); }
+  },
+  openStateIcon:   {
+  value: function ()
+  {
+    return element(by.css(".color-grey.fa.fa-fire")); }
+  },
+  inprogressStateIcon:   {
+  value: function ()
+  {
+    return element(by.css(".color-grey.pficon.pficon-resources-almost-full")); }
+  },
+  resolvedStateIcon:   {
+  value: function ()
+  {
+    return element(by.css(".color-grey.pficon.pficon-resources-full")); }
+  },
+  closedStateIcon:   {
+  value: function ()
+  {
+    return element(by.css(".color-grey.fa.fa-remove")); }
+  },
+  genericCssIcon:   {
+    value: function (classString)
+    {
+      return element(by.xpath("//*[@id='workItemList_OuterWrap_0'][.//*[contains(@class, '" + classString + "')]]")); }
+  },
 /* The following UI elements were removed from the WorkItem Detail page on November 7, 2016. We
    are not deleting these elements from the page object in the event that they are restored
    to the page in the future */
