@@ -6,7 +6,7 @@
       <div class="width100 pull-left mobile-bar paddingL20 paddingR20">
         <div class="pull-left dropdown-kebab-pf detail-type-dropdown" dropdown>
           <span dropdown-open class="wi-type-icon" almIcon [iconType]="workItem.type"></span>
-          <ul class="dropdown-menu mobMarginL20" aria-labelledby="dropdownKebabRight">
+          <ul *ngIf="loggedIn" id="wi-type-dropdown" class="dropdown-menu mobMarginL20" aria-labelledby="dropdownKebabRight">
             <li *ngFor="let type of workItemTypes" (click)="onChangeType(type.name)">
               <a>
                 <span class="wi-type-icon dropdown-icon" almIcon [iconType]="type.name"></span>
@@ -76,7 +76,7 @@
               </span>
               <span *ngIf="loggedIn" class="caret pull-right marginT5"></span>
             </button>
-            <ul *ngIf="loggedIn" class="dropdown-menu dropdown-menu-right dropdown-ul" role="menu">
+            <ul *ngIf="loggedIn" id="wi-status-dropdown" class="dropdown-menu dropdown-menu-right dropdown-ul" role="menu">
               <li class="dropdown-li" *ngFor="let state of workItemStates;" (click)="onChangeState(state.option)">
                 <a> 
                   <span class='dropdown-icon' almIcon [iconType]="state.option"></span>
