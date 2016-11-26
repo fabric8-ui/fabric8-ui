@@ -23,7 +23,7 @@ describe('Work item list', function () {
 
   beforeEach(function () {
     testSupport.setBrowserMode('phone');
-    page = new WorkItemListPage();    
+    page = new WorkItemListPage(true);    
     page.allWorkItems.count().then(function(originalCount) { startCount = originalCount; });
     
     workItemMockData = {

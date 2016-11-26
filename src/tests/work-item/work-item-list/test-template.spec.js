@@ -20,7 +20,7 @@ describe('Test name here...', function () {
 
   beforeEach(function () {
     testSupport.setBrowserMode('phone');
-    page = new WorkItemListPage();    
+    page = new WorkItemListPage(true);    
   });
 
   it('should testsomething here...', function() {

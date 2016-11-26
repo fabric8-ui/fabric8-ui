@@ -94,13 +94,22 @@ WorkItemDetailPage.prototype  = Object.create({}, {
     { 
       return this.workItemTitleDiv.click(); }
   },
-
+clickWorkItemTitleById:   {
+  value:  function()
+  {
+    return element(by.id("wi-detail-title-ne")); 
+  }
+},
   workItemTitleEditIcon:  {    
     get: function ()    
     { 
       return element(by.id("workItemTitle_btn_edit")); }
   },
-
+  workItemTitleEditIconById:  {    
+    value: function ()    
+    { 
+      return element(by.id("workItemTitle_btn_edit")); }
+  },
   clickWorkItemTitleEditIcon:   {
     value: function ()
     {
@@ -109,6 +118,10 @@ WorkItemDetailPage.prototype  = Object.create({}, {
 
   workItemTitleSaveIcon:  {
     get: function ()
+    { return element(by.id("workItemTitle_btn_save")); }
+  },
+  workItemTitleSaveIconById:  {
+    value: function ()
     { return element(by.id("workItemTitle_btn_save")); }
   },
 
@@ -147,7 +160,10 @@ WorkItemDetailPage.prototype  = Object.create({}, {
     get: function ()
     { return element(by.id("wi-detail-desc")); }
   },
-
+  workItemDetailDescriptionById:  {
+    value: function ()
+    { return element(by.id("wi-detail-desc")); }
+  },
   clickWorkItemDetailDescription:  {
     value: function ()
     { return this.workItemDetailDescription.click(); }
@@ -174,7 +190,10 @@ WorkItemDetailPage.prototype  = Object.create({}, {
     get: function ()
     { return element(by.id("workItemdesc_btn_save")); }
   },
-
+  workItemDescriptionSaveIconById:  {
+    value: function ()
+    { return element(by.id("workItemdesc_btn_save")); }
+  },
   clickWorkItemDescriptionSaveIcon:   {
     value: function ()
     {

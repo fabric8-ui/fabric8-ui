@@ -25,7 +25,7 @@ var waitTime = 30000;
 
   beforeEach(function () {
     testSupport.setBrowserMode('phone');
-    page = new WorkItemListPage();
+    page = new WorkItemListPage(true);
     page.allWorkItems.count().then(function(originalCount) { startCount = originalCount; });
   });
 
@@ -121,7 +121,7 @@ var waitTime = 30000;
         detailPage.clickWorkItemTitleDiv();
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleCancelIcon();
-        detailPage.clickWorkItemDetailDescription()
+        detailPage.clickWorkItemDetailDescription();
         detailPage.setWorkItemDetailDescription (workItemUpdatedTitle, false);
         detailPage.clickWorkItemDescriptionCancelIcon();
 
@@ -356,8 +356,8 @@ it('Verify how many work item type exists in drop down - desktop', function() {
            });
           });
           });
-  /*Verfify on selecting workitem it should display in list and detail view both pages - Desktop  */
-   it('Verfify on selecting workitem it should display in list and detail view both pages -Desktop ', function() {
+  /*Verfify on selecting workitem it should display in list and detail view both pages - phone''  */
+   it('Verfify on selecting workitem it should display in list and detail view both pages -phone ', function() {
       testSupport.setBrowserMode('phone');
       var workItemTitle = "The test workitem title";
       var workItemUpdatedTitle = "The test workitem title - UPDATED";

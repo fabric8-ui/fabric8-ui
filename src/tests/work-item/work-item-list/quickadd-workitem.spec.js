@@ -22,7 +22,7 @@ describe('Work item list', function () {
 
   beforeEach(function () {
     testSupport.setBrowserMode('phone');
-    page = new WorkItemListPage();
+    page = new WorkItemListPage(true);
   });
 
   it('Creating a new quick add work item and delete - phone.', function () {

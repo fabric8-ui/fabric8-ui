@@ -12,8 +12,12 @@
  * Work Item List Page Definition
  */
 
-var WorkItemListPage = function () {
-  browser.get("http://localhost:8088/?token=justarandomtokenfortest");
+var WorkItemListPage = function (login) {
+  if(login==true){
+  browser.get("http://localhost:8088/?token=justarandomtokenfortest");}
+  else{
+    browser.get("http://localhost:8088/");
+  }
 };
 
 var testSupport = require('./testSupport'),
@@ -96,6 +100,11 @@ WorkItemListPage.prototype  = Object.create({}, {
       browser.wait(until.presenceOf(parentElement.element(by.id("dropdownKebabRight"))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
       return parentElement.element(by.id("dropdownKebabRight")).click(); }
   },
+  KebabButtonById:  {
+    value: function ()
+    {
+       return element(by.id("dropdownKebabRight")); }
+  },
   /*
   Login functions
   */
@@ -103,6 +112,12 @@ WorkItemListPage.prototype  = Object.create({}, {
       value: function ()
       { return element(By.id('header_rightDropdown')).all(By.tagName('a')).get(0).click(); }
     },
+  clickLogoutButton:{
+    value: function()
+    {
+      return element(By.xpath('.//*[@id="header_rightDropdown"]/li[5]/a'));
+    }
+  },
   signInGithub: {
     value: function (gitusername,gitpassword)
     {
@@ -161,7 +176,12 @@ WorkItemListPage.prototype  = Object.create({}, {
     get: function ()
     { return element(by.css(".workItemQuickAdd_saveBtn")); }
   },
-
+  quickAddbuttonById:   {
+    value: function()
+    {
+      return element(by.id("workItemQuickAdd_container"));
+    }
+  },
   clickWorkItemQuickAdd:   {
     value: function ()
     {
