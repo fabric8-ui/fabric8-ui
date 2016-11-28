@@ -119,9 +119,9 @@
                   <input #userSearch (keyup)="filterUser($event)" />
                   <ul class="item-ul user-list" #userList>
                     <li 
-                      class="item-li first-item"
-                      [class.first-item] = "filteredUsers"
-                      [class.only-first-item] = "!filteredUsers" 
+                      class="item-li"
+                      [class.first-item] = "filteredUsers && filteredUsers.length"
+                      [class.only-first-item] = "!filteredUsers || !filteredUsers.length" 
                       *ngIf="loggedInUser"
                       [attr.data-value]="loggedInUser.id"
                       (click)="assignUser(loggedInUser.id)">
