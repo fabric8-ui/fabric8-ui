@@ -18,7 +18,7 @@
   border-top:   $caret-width-base solid \9; // IE8
   border-right: $caret-width-base solid transparent;
   border-left:  $caret-width-base solid transparent;
-  font-family: fontawesome-webfont;
+  font-family: $icon-font-name-fa;
   height: 9px; 
   position: relative;
   width: 12px; 
