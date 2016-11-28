@@ -73,8 +73,6 @@ var waitTime = 30000;
     page.typeQuickAddWorkItemDesc(workItemDescription);
     page.clickQuickAddSave().then(function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-      expect(page.workItemDescription(page.firstWorkItem)).toBe(workItemDescription);
-
       /* Fill in/update the new work item's title and details field */
       expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
@@ -90,8 +88,7 @@ var waitTime = 30000;
         detailPage.clickWorkItemDetailCloseButton();
         browser.wait(until.presenceOf(page.firstWorkItem), waitTime, 'Failed to find workItemList');
         expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemUpdatedTitle);
-        expect(page.workItemDescription(page.firstWorkItem)).toBe(workItemUpdatedDescription);
-      });
+        });
 
     });
 
@@ -111,8 +108,6 @@ var waitTime = 30000;
     page.typeQuickAddWorkItemDesc(workItemDescription);
     page.clickQuickAddSave().then(function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-      expect(page.workItemDescription(page.firstWorkItem)).toBe(workItemDescription);
-
       /* Fill in/update the new work item's title and details field */
       expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
@@ -128,8 +123,7 @@ var waitTime = 30000;
         detailPage.clickWorkItemDetailCloseButton();
         browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
         expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-        expect(page.workItemDescription(page.firstWorkItem)).toBe(workItemDescription);
-      });
+        });
 
     });
 
@@ -515,8 +509,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
             detailPage.workItemDetailTitle.sendKeys(protractor.Key.ENTER);
             detailPage.clickWorkItemDetailCloseButton();
             browser.wait(until.presenceOf(page.firstWorkItem), waitTime, 'Failed to find workItemList');
-            expect(page.workItemDescription(page.firstWorkItem)).toBe(nodescription);
-          });
+            });
 
         });
   });

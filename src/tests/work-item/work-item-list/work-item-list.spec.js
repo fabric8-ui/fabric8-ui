@@ -46,7 +46,6 @@ describe('Work item list', function () {
   
   it('should have the right mock data in the first entry - desktop.', function() {
     testSupport.setBrowserMode('desktop');		  
-    expect(page.workItemDescription(page.firstWorkItem)).toBe('Some Description 14');
     expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title 14');
   });
 
