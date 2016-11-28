@@ -38,7 +38,7 @@
                   (keydown.enter)="preventDef($event)"
                   id="wi-detail-title"
                   class="detail-title-edit marginB10"         
-                  [innerHTML]="workItem.fields['system.title'] | almTrim"
+                  [innerText]="workItem.fields['system.title'] | almTrim"
                   #title >
               </div>
               <aside class="width100 pull-left">
@@ -180,7 +180,7 @@
                 (keyup.enter)="preventDef($event)"
                 id="wi-detail-desc" 
                 class="description"
-                [innerHTML]="
+                [innerText]="
                   workItem.fields['system.description'] ? 
                     workItem.fields['system.description'] : 
                     descEditable ? 
