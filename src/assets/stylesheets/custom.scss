@@ -7,6 +7,7 @@ $margin10: 10px;
 $margin5: 5px;
 $margin0: 0;
 $pad20: 20px;
+$pad15: 15px; 
 $pad10: 10px;
 $pad5: 5px;
 $pad0: 0;
@@ -79,6 +80,7 @@ $font20: 20px;
 .paddingL5{ padding-left: $pad5; }
 .paddingR5{ padding-right: $pad5; }
 .padding0{ padding: $pad0; }
+.padding5{ padding: $pad5; }
 .padding20{ padding: $pad20; }
 .font16{ font-size: $font16; }
 .font18{ font-size: $font18; }
@@ -94,12 +96,13 @@ $font20: 20px;
 .dn{ display: none; }
 .dib{ display: inline-block; }
 .db{ display: block; }
-
+.textCenter{ text-align: $textCenter; }
 @media (max-width: $grid-float-breakpoint){
     $margin20: 1.667em;
     $margin10: 0.833em;
     $margin5: 0.417em;
     $pad20: 1.667em;
+    $pad15: 1.250em;
     $pad10: 0.833em;
     $pad5: 0.417em;
     //fonts

@@ -15,9 +15,11 @@ import { By }                  from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CommonModule }       from '@angular/common';
 import { DropdownModule }     from 'ng2-dropdown';
+import { Ng2CompleterModule } from 'ng2-completer';
 
 import { AlmTrim } from './../../../pipes/alm-trim';
 import { AlmSearchHighlight } from './../../../pipes/alm-search-highlight.pipe';
+import { AlmLinkTarget } from './../../../pipes/alm-link-target.pipe';
 import { Broadcaster } from './../../../shared/broadcaster.service';
 import { Logger } from './../../../shared/logger.service';
 
@@ -32,6 +34,8 @@ import { UserService } from './../../../user/user.service';
 import { WorkItem } from './../../work-item';
 import { WorkItemType } from './../../work-item-type';
 import { WorkItemService } from './../../work-item.service';
+import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
+import { WorkItemLinkService } from './work-item-link/work-item-link.service';
 
 import { WorkItemDetailComponent } from './work-item-detail.component';
 
@@ -42,6 +46,7 @@ describe('Detailed view and edit a selected work item - ', () => {
   let el1: DebugElement;
   let logger: Logger;
   let fakeWorkItem: WorkItem;
+  let fakeWorkItems: WorkItem[] = [];
   let fakeUser: User;
   let fakeUserList: NewUser[];
   let fakeWorkItemService: any;
@@ -65,6 +70,8 @@ describe('Detailed view and edit a selected work item - ', () => {
       'type': 'system.userstory',
       'version': 0
     } as WorkItem;
+
+    fakeWorkItems.push(fakeWorkItem);
 
     fakeWorkItemStates = [
       { option: 'new' },
@@ -150,6 +157,12 @@ describe('Detailed view and edit a selected work item - ', () => {
         return new Promise((resolve, reject) => {
           resolve(fakeWorkItemStates);
         });
+      },
+
+      getWorkItems: function() {
+        return new Promise((resolve, reject) => {
+          resolve(fakeWorkItems);
+        });
       }
     };
 
@@ -180,18 +193,22 @@ describe('Detailed view and edit a selected work item - ', () => {
         ]),
         CommonModule,
         DropdownModule,
+        Ng2CompleterModule,
         AlmIconModule,
         AlmEditableModule
       ],
 
       declarations: [
         WorkItemDetailComponent,
+        WorkItemLinkComponent,
         AlmTrim,
-        AlmSearchHighlight
+        AlmSearchHighlight,
+        AlmLinkTarget
       ],
       providers: [
         Broadcaster,
         Logger,
+        WorkItemLinkService,
         Location,
         {
           provide: AuthenticationService,
