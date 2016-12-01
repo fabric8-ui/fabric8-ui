@@ -2,6 +2,28 @@
 @import "../../../../../assets/stylesheets/mixins";
 @import "../../../../../assets/stylesheets/color-variables";
 
+// View Encapsulation https://angular.io/docs/ts/latest/guide/component-styles.html#!#view-encapsulation 
+:host /deep/ .completer-input {
+    width:100%;float:left;border: 1px solid #ccc;
+}
+:host /deep/ .completer-dropdown-holder {
+    width:100% !important;float:left;  position:relative; padding-top: 10px;
+}
+:host /deep/.completer-row {
+    width:100% !important;float:left;
+}
+:host /deep/.completer-dropdown {
+    width:100% !important;float:left;
+}
+:host /deep/ .completer-dropdown-holder {
+    width:100% !important;float:left;
+}
+
+:host /deep/ .completer-row-wrapper{
+    width:100% !important;float:left;
+}   
+
+
 .link-container {
    width: 100%;
    float: left;
