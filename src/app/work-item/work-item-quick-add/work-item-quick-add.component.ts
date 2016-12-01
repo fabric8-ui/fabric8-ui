@@ -1,4 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { 
+  AfterViewInit,
+  Component, 
+  EventEmitter,
+  ElementRef,
+  Input, 
+  OnInit, 
+  Output, 
+  ViewChild, 
+  ViewChildren,   
+  Renderer,
+  QueryList
+} from '@angular/core';
 
 import { Logger } from '../../shared/logger.service';
 
@@ -11,10 +23,11 @@ import { WorkItemService } from '../work-item.service';
   templateUrl: './work-item-quick-add.component.html',
   styleUrls: ['./work-item-quick-add.component.scss']
 })
-export class WorkItemQuickAddComponent implements OnInit {
+export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
   @Output() close = new EventEmitter();
   @ViewChild('quickAddTitle') qaTitle: any;
   @ViewChild('quickAddDesc') qaDesc: any;
+  @ViewChildren('quickAddTitle', {read: ElementRef}) qaTitleRef: QueryList<ElementRef>;
 
   error: any = false;
   workItem: WorkItem;
@@ -28,8 +41,8 @@ export class WorkItemQuickAddComponent implements OnInit {
   
   constructor(
     private workItemService: WorkItemService,
-    private logger: Logger) {
-  }
+    private logger: Logger,
+    private renderer: Renderer) {}
 
   ngOnInit(): void {
     this.workItem = {
@@ -46,6 +59,14 @@ export class WorkItemQuickAddComponent implements OnInit {
     this.showQuickAdd = false;
     this.showQuickAddBtn = true;
   }
+
+  ngAfterViewInit() {
+    this.qaTitleRef.changes.subscribe(item => {
+      if (item.length) {
+        this.renderer.invokeElementMethod(this.qaTitle.nativeElement, 'focus');
+      }
+    });
+  } 
 
   save(event: any = null): void {
     if (event) event.preventDefault();
