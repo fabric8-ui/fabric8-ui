@@ -88,6 +88,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
 
     onSelectRelation(relation: LinkType): void{
         this.selectedLinkType = relation;
+        this.searchWorkItem.searchType = relation.relationships.target_type.data.id;
     }
 
     createLink(event: any = null): void {
@@ -125,6 +126,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
         .then((lTypes) => {
             this.linkTypes = lTypes;
             this.selectedLinkType = lTypes[0];
+            this.searchWorkItem.searchType = lTypes[0].relationships.target_type.data.id;
         }).catch(() => {
             console.log('Error in loading Link Types');
         });
