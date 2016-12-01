@@ -64,13 +64,15 @@
                             <span *ngFor='let links of workitemLinks'>
                                 <!-- need to fina a way to store pipe result to a variable, isnstead of accessing pipe everytime -->
                                 <li *ngIf="links | almLinkTarget:workItem:linkType" class="link-list-group-list-item" [id]="links['id']">
-                                    <div (click)="onDetail(links, workItem)">
-                                        <span [id]="links['id'] + '-text'" class="col-md-8 col-sm-8 col-xs-8 truncate" >{{workItemsMap[links | almLinkTarget:workItem:linkType].id}} {{workItemsMap[links | almLinkTarget:workItem:linkType].fields['system.title']}}</span>
-                                        <span class="col-md-3 col-sm-3 col-xs-3">{{workItemsMap[links | almLinkTarget:workItem:linkType].fields['system.state']}}</span>
+                                    <div *ngIf="showWorkItem(links)">
+                                        <div (click)="onDetail(links, workItem)">
+                                            <span [id]="links['id'] + '-text'" class="col-md-8 col-sm-8 col-xs-8 truncate" >{{workItemsMap[links | almLinkTarget:workItem:linkType].id}} {{workItemsMap[links | almLinkTarget:workItem:linkType].fields['system.title']}}</span>
+                                            <span class="col-md-3 col-sm-3 col-xs-3">{{workItemsMap[links | almLinkTarget:workItem:linkType].fields['system.state']}}</span>
+                                        </div>
+                                        <a *ngIf="loggedIn" class="col-md-1 col-sm-1 col-xs-1" (click)="deleteLink(links)">
+                                            <i class="pull-right pficon pficon-close list-close-icon"></i>
+                                        </a>
                                     </div>
-                                    <a *ngIf="loggedIn" class="col-md-1 col-sm-1 col-xs-1" (click)="deleteLink(links)">
-                                        <i class="pull-right pficon pficon-close list-close-icon"></i>
-                                    </a>
                                 </li>
                             </span>
                         </ul>

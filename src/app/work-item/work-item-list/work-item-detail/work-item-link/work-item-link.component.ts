@@ -157,7 +157,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
             const sourceId = linkObj['relationships']['source']['data']['id'];
             const targetId = linkObj['relationships']['target']['data']['id'];
             const linkTypeId = linkObj['relationships']['link_type']['data']['id'];
-            if (this.workItem['id'] == sourceId || this.workItem['id'] == targetId) {
+            if (this.workItem['id'] == sourceId || this.workItem['id'] == targetId && (this.workItemsMap[sourceId] || this.workItemsMap[targetId])) {
                 this.totalLinks = this.totalLinks + 1;
                 if (!this.linksGroupCount.hasOwnProperty(linkTypeId)) {
                     this.linksGroupCount[linkTypeId] = 1;
@@ -186,6 +186,15 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
             workItemId = links['relationships']['source']['data']['id'];
         }
         this.router.navigate(['/work-item-list/detail/' + workItemId]);
+    }
+
+    showWorkItem(link: Link) {
+        const sourceId = link['relationships']['source']['data']['id'];
+        const targetId = link['relationships']['target']['data']['id'];
+        if (this.workItemsMap[sourceId] || this.workItemsMap[targetId]) {
+            return true;
+        }
+        return false;
     }
 
 }
