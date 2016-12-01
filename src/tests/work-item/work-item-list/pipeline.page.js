@@ -12,17 +12,16 @@
  * Pipeline Page Definition - placeholder
  */
 
-var PipelinePage = function () {
-};
+let testSupport = require('./testSupport');
+let CommonPage = require('./common.page');
+let constants = require("./constants");
+let until = protractor.ExpectedConditions;
 
-var testSupport = require('./testSupport'),
-  commonPage = require('./common.page'),
-  constants = require("./constants");
+class PipelinePage {
 
-var until = protractor.ExpectedConditions;
+ constructor(login) {
+ };
 
-PipelinePage.prototype  = Object.create({}, {
-
-});
+}
 
 module.exports = PipelinePage;

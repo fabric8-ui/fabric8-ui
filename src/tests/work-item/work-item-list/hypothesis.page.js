@@ -12,17 +12,16 @@
  * Hypothesis Page Definition - placeholder
  */
 
-var HypothesisPage = function () {
-};
+let testSupport = require('./testSupport');
+let CommonPage = require('./common.page');
+let constants = require("./constants");
+let until = protractor.ExpectedConditions;
 
-var testSupport = require('./testSupport'),
-  commonPage = require('./common.page'),
-  constants = require("./constants");
+class HypothesisPage {
 
-var until = protractor.ExpectedConditions;
+ constructor(login) {
+ };
 
-HypothesisPage.prototype  = Object.create({}, {
-
-});
+}
 
 module.exports = HypothesisPage;

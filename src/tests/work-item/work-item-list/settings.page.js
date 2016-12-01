@@ -12,17 +12,16 @@
  * Code Page Definition - placeholder
  */
 
-var SettingsPage = function () {
-};
+let testSupport = require('./testSupport');
+let CommonPage = require('./common.page');
+let constants = require("./constants");
+let until = protractor.ExpectedConditions;
 
-var testSupport = require('./testSupport'),
-  commonPage = require('./common.page'),
-  constants = require("./constants");
+class SettingsPage {
 
-var until = protractor.ExpectedConditions;
+ constructor(login) {
+ };
 
-SettingsPage.prototype  = Object.create({}, {
-
-});
+}
 
 module.exports = SettingsPage;

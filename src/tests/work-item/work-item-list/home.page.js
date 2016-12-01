@@ -12,17 +12,16 @@
  * Home Page Definition
  */
 
-var HomePage = function () {
-};
+let testSupport = require('./testSupport');
+let CommonPage = require('./common.page');
+let constants = require("./constants");
+let until = protractor.ExpectedConditions;
 
-var testSupport = require('./testSupport'),
-  commonPage = require('./common.page'),
-  constants = require("./constants");
+class HomePage {
 
-var until = protractor.ExpectedConditions;
+ constructor(login) {
+ };
 
-HomePage.prototype  = Object.create({}, {
-
-});
+}
 
 module.exports = HomePage;

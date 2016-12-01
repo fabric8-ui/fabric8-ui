@@ -12,33 +12,29 @@
  * Work Item List Page Definition - template
  */
 
-var TemplatePage = function () {
-};
+let testSupport = require('./testSupport');
+let WorkItemDetailPage = require('./work-item-detail.page');
+let WorkItemBoardPage = require('./work-item-board.page');
+let CommonPage = require('./common.page');
+let constants = require("./constants");
+let until = protractor.ExpectedConditions;
 
-var testSupport = require('./testSupport'),
-  WorkItemDetailPage = require('./work-item-detail.page'),
-  WorkItemBoardPage = require('./work-item-board.page'),
-  CommonPage = require('./common.page'),
-  constants = require("./constants");
+class TemplatePage {
 
-var until = protractor.ExpectedConditions;
-
-TemplatePage.prototype  = Object.create({}, {
+  constructor() {
+  }
 
 /* Example UI elements from workitempage - Page elements - top of the page */
 
-  workItemListButton:  {
-    get: function ()
-    { return element(by.id("header_menuWorkItemList")); }
-  },
-
-  clickWorkItemListButton:   {
-    value: function ()
-    {
-      browser.wait(until.presenceOf(this.workItemListButton), constants.WAIT, 'Failed to find workItemListButton');
-      return this.workItemListButton.click(); }
+  get workItemListButton () {
+    return element(by.id("header_menuWorkItemList"));
   }
 
-});
+  clickWorkItemListButton () {
+    browser.wait(until.presenceOf(this.workItemListButton), constants.WAIT, 'Failed to find workItemListButton');
+    return this.workItemListButton.click(); 
+  }
+
+}
 
 module.exports = TemplatePage;

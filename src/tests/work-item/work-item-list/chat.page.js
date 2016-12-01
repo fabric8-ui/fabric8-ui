@@ -12,17 +12,16 @@
  * Chat Page Definition - placeholder
  */
 
-var ChatPage = function () {
-};
+let testSupport = require('./testSupport');
+let CommonPage = require('./common.page');
+let constants = require("./constants");
+let until = protractor.ExpectedConditions;
 
-var testSupport = require('./testSupport'),
-  commonPage = require('./common.page'),
-  constants = require("./constants");
+class ChatPage {
 
-var until = protractor.ExpectedConditions;
+ constructor(login) {
+ };
 
-ChatPage.prototype  = Object.create({}, {
-
-});
+}
 
 module.exports = ChatPage;

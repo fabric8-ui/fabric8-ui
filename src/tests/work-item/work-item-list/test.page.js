@@ -12,17 +12,16 @@
  * Test Page Definition - placeholder
  */
 
-var TestPage = function () {
-};
+let testSupport = require('./testSupport');
+let CommonPage = require('./common.page');
+let constants = require("./constants");
+let until = protractor.ExpectedConditions;
 
-var testSupport = require('./testSupport'),
-  commonPage = require('./common.page'),
-  constants = require("./constants");
+class TestPage {
 
-var until = protractor.ExpectedConditions;
+ constructor(login) {
+ };
 
-TestPage.prototype  = Object.create({}, {
-
-});
+}
 
 module.exports = TestPage;
