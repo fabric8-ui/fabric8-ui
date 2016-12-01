@@ -1,5 +1,8 @@
 = ALMighty UI
 
+image:https://ci.centos.org/buildStatus/icon?job=devtools-almighty-ui-build-master[Jenkins,link="https://ci.centos.org/view/Devtools/job/devtools-almighty-ui-build-master/lastBuild/"]
+image:https://codecov.io/gh/almighty/almighty-ui/branch/master/graph/badge.svg[Codecov.io,link="https://codecov.io/gh/almighty/almighty-ui"]
+
 === ALMighty UI is a currently an application planner and issue tracker front-end.
 It uses https://github.com/almighty/almighty-core[ALMighty-core] as the back-end.
 
