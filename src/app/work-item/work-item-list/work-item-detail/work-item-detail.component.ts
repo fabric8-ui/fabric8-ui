@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewChild, HostListener }      from '@angular
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
 import { Router }            from '@angular/router';
+import { cloneDeep } from 'lodash';
 
 import { AuthenticationService } from './../../../auth/authentication.service';
 import { Broadcaster } from './../../../shared/broadcaster.service';
@@ -44,8 +45,8 @@ export class WorkItemDetailComponent implements OnInit {
 
   searchAssignee: Boolean = false;
 
-  users: any[];
-  filteredUsers: any[];
+  users: any[] = [];
+  filteredUsers: any[] = [];
 
   assignedUser: any;
   loggedInUser: any;
@@ -89,8 +90,8 @@ export class WorkItemDetailComponent implements OnInit {
   getAllUsers() {
     this.userService.getAllUsers()
       .then((users) => {
-        this.users = users;
-        this.filteredUsers = users;
+        this.users = cloneDeep(users);
+        this.filteredUsers = cloneDeep(users);
         // setting user details of loggedIn User
         if (this.auth.isLoggedIn()) {
           this.userService
