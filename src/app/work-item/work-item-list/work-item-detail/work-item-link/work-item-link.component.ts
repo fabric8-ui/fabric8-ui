@@ -188,13 +188,16 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
         this.router.navigate(['/work-item-list/detail/' + workItemId]);
     }
 
-    showWorkItem(link: Link) {
+    showWorkItem(link: Link, workItem: WorkItem) {
         const sourceId = link['relationships']['source']['data']['id'];
         const targetId = link['relationships']['target']['data']['id'];
-        if (this.workItemsMap[sourceId] || this.workItemsMap[targetId]) {
+        if (this.workItem['id'] == sourceId && this.workItemsMap[targetId]) {
             return true;
+        } else if (this.workItem['id'] == targetId && this.workItemsMap[sourceId]) {
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
 }

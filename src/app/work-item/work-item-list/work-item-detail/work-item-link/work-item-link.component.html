@@ -64,7 +64,7 @@
                             <span *ngFor='let links of workitemLinks'>
                                 <!-- need to fina a way to store pipe result to a variable, isnstead of accessing pipe everytime -->
                                 <li *ngIf="links | almLinkTarget:workItem:linkType" class="link-list-group-list-item" [id]="links['id']">
-                                    <div *ngIf="showWorkItem(links)">
+                                    <div *ngIf="showWorkItem(links, workItem)">
                                         <div (click)="onDetail(links, workItem)">
                                             <span [id]="links['id'] + '-text'" class="col-md-8 col-sm-8 col-xs-8 truncate" >{{workItemsMap[links | almLinkTarget:workItem:linkType].id}} {{workItemsMap[links | almLinkTarget:workItem:linkType].fields['system.title']}}</span>
                                             <span class="col-md-3 col-sm-3 col-xs-3">{{workItemsMap[links | almLinkTarget:workItem:linkType].fields['system.state']}}</span>
