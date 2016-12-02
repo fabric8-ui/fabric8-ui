@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 import { AppState } from '../app.service';
-import { Title } from './title';
-import { XLarge } from './x-large';
+import { Title } from './title/title.service';
+// import { XLarge } from './x-large/x-large.directive';
 
 @Component({
   // The selector is what angular internally uses
