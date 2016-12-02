@@ -513,9 +513,4 @@ it('Verify how many work item type exists in drop down - desktop', function() {
 
         });
   });
-
-/* Verify that a workitem's description cannot be edited in the detail page until the edit icon is clicked */
-
-
-
 });

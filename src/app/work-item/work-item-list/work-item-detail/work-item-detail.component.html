@@ -116,7 +116,7 @@
               <div *ngIf="searchAssignee" class="user-search" >
                 <div class="list-container">
                   <span class="fa fa-search user-search-icon"> </span>                  
-                  <input #userSearch (keyup)="filterUser($event)" />
+                  <input id="userAssigneeSearchInput" #userSearch (keyup)="filterUser($event)" />
                   <ul class="item-ul user-list" #userList>
                     <li 
                       class="item-li"

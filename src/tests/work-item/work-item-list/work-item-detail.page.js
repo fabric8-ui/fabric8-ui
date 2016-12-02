@@ -108,7 +108,9 @@ class WorkItemDetailPage {
   clickWorkItemTitleCancelIcon () {
     return this.workItemTitleCancelIcon.click();
   }
-
+  searchAssigneeInput (AssigneeSearchInput) {
+    return element(by.id("userAssigneeSearchInput")).sendKeys(AssigneeSearchInput);
+  }
   get workItemDetailState () {
     return element(by.id("wi-detail-state"));
   }
@@ -117,8 +119,8 @@ class WorkItemDetailPage {
     return this.workItemDetailState.sendKeys(newStateString);
   }
 
-  get workItemDetailAvatar () {
-    return element(by.css(".pull-left.detail-assignee-avatar"));
+  workItemDetailAvatar () {
+    return element(by.css(".pull-left.user-assign-avatar"));
   }
 
   get workItemDetailDescription () {
@@ -280,28 +282,40 @@ class WorkItemDetailPage {
   /* The following UI elements support the assignment of a user to a work item */
 
   /* Icon for the user assigned to the workitem */
-  get workItemDetailAssigneeIcon () {
+  workItemDetailAssigneeIcon () {
     return element(by.css(".user-assign-icon"));
   }
-
+  workItemDetailUnAssigneeIcon () {
+    return element(by.css(".pull-left.fa.fa-user-plus.user-assign-icon"));
+  }
   clickworkItemDetailAssigneeIcon () {
     return this.workItemDetailAssigneeIcon.click();
   }
 
   /* The user assigned to the workitem */
-  get workItemDetailAssignee () {
+  workItemDetailAssignee () {
     return element(by.xpath(".//*[contains(@class,'detail-assignee-name')]"));
   }
-
+  workItemDetailAssigneeName () {
+    return element(by.css(".pull-left.detail-assignee-name"));
+  }
+  workItemDetailAssigneeNameClickable () {
+    return element(by.css(".placeholder.clickable"));
+  }
+  details_assigned_user () {
+    return element(by.id("WI_details_assigned_user"));
+  }
   get clickWorkItemDetailAssignee () {
     return this.workItemDetailAssignee.click();
   }
 
   /* Search string box for the user to assign to the workitem */
   get workItemDetailAssigneeSearch () {
-    return element(by.css(".list-container>input"));
+    return element(by.id('userAssigneeSearchInput'));
   }
-
+  checkworkItemDetailAssigneeSearch () {
+    return element(by.id('userAssigneeSearchInput'));
+  }
   setWorkItemDetailAssigneeSearch (newSearchString, append) {
     if (!append) { this.workItemDetailAssigneeSearch.clear(newSearchString) };
     return this.workItemDetailAssigneeSearch.sendKeys(newSearchString);

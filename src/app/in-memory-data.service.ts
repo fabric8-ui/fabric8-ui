@@ -323,8 +323,8 @@ export class InMemoryDataService implements InMemoryDbService {
 
 
     let user = {
-      'fullName': 'Sudipta Sen',
-      'imageURL': 'https://avatars.githubusercontent.com/u/2410474?v=3'
+      fullName: 'Draco Malfoy',
+      imageURL: 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
     };
 
     let linkCategories = {
@@ -491,6 +491,28 @@ export class InMemoryDataService implements InMemoryDbService {
         }
     ];
 
-    return {loginStatus, workitems, workitemtypes, user, linkCategories, workitemlinktypes, workitemlinks};
+    let identities = [
+        {
+          attributes: {
+            fullName: 'Harry Potter',
+            imageURL: 'http://nerdist.com/wp-content/uploads/2016/02/20160210_nerdistnews_harrypottercursedchild_1x1.jpg'
+          },
+          id: '779efdcc-ac87-4720-925e-949ff21dbf5d'
+        }, {
+          attributes: {
+            fullName: 'Walter Mitty',
+            imageURL: 'http://bestwatchbrandshq.com/wp-content/uploads/2015/01/Ben-Stiller-Watch-In-The-Secret-Life-Of-Walter-Mitty-Movie-9.jpg'
+          },
+          id: '39d44ed6-1246-48d6-9190-51ffab67c42e'
+        }, {
+          attributes: {
+            fullName: 'Draco Malfoy',
+            imageURL: 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
+          },
+          id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
+        }
+      ];
+
+    return {loginStatus, workitems, workitemtypes, user, linkCategories, workitemlinktypes, workitemlinks, identities};
   }
 }
