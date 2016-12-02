@@ -2,32 +2,26 @@
 @import "color-variables";
 //custom variables
 $width100: 100%;
-$margin20: 20px;
-$margin10: 10px;
-$margin5: 5px;
-$margin0: 0;
-$pad20: 20px;
-$pad15: 15px; 
-$pad10: 10px;
-$pad5: 5px;
-$pad0: 0;
+$em-base-font-size: 12;
+$rem-base-font-size: 10; 
 
+// positions
 $textLeft: left;
 $textRight: right;
 $textCenter: center;
 
-//fonts
-$font10: 10px;
-$font11: 11px;
-$font12: 12px;
-$font13: 13px;
-$font14: 14px;
-$font15: 15px;
-$font16: 16px;
-$font18: 18px;
-$font20: 20px;
 //colors
 .color-grey{ color: $color-pf-black-800 !important; }
+
+// functions
+//convert px to em/rem
+@function em($px) {
+    @return ($px / $em-base-font-size) * 1em;
+}
+
+@function rem($px) {
+    @return ($px / $rem-base-font-size) * 1rem;
+}
 
 //custom mixins
 @mixin truncate() {
@@ -59,32 +53,32 @@ $font20: 20px;
 // custom classes
 .width100{ width: $width100; }
 .width50{ width: $width100/2; }
-.marginT20{ margin-top: $margin20; }
-.marginB10{ margin-bottom: $margin10; }
-.marginB20{ margin-bottom: $margin20; }
-.marginT5{ margin-top: $margin5; }
-.marginB5{ margin-bottom: $margin5; }
-.marginL5{ margin-left: $margin5; }
-.marginR5{ margin-right: $margin5; }
-.marginT10{ margin-top: $margin10; }
-.marginB10{ margin-bottom: $margin10; }
-.marginL10{ margin-left: $margin10; }
-.marginR10{ margin-right: $margin10; }
-.margin0{ margin: $margin0; }
-.paddingT20{ padding-top: $pad20; }
-.paddingB20{ padding-bottom: $pad20; }
-.paddingL20{ padding-left: $pad20; }
-.paddingR20{ padding-right: $pad20; }
-.paddingT5{ padding-top: $pad5; }
-.paddingB5{ padding-bottom: $pad5; }
-.paddingL5{ padding-left: $pad5; }
-.paddingR5{ padding-right: $pad5; }
-.padding0{ padding: $pad0; }
-.padding5{ padding: $pad5; }
-.padding20{ padding: $pad20; }
-.font16{ font-size: $font16; }
-.font18{ font-size: $font18; }
+.marginT20{ margin-top: em(20); }
+.marginB20{ margin-bottom: em(20); }
+.marginT10{ margin-top: em(10); }
+.marginL10{ margin-left: em(10); }
+.marginR10{ margin-right: em(10); }
+.marginB10{ margin-bottom: em(10); }
+.marginT5{ margin-top: em(5); }
+.marginB5{ margin-bottom: em(5); }
+.marginL5{ margin-left: em(5); }
+.marginR5{ margin-right: em(5); }
+.margin0{ margin: em(0); }
+.paddingT20{ padding-top: em(20); }
+.paddingB20{ padding-bottom: em(20); }
+.paddingL20{ padding-left: em(20); }
+.paddingR20{ padding-right: em(20); }
+.paddingT5{ padding-top: em(5); }
+.paddingB5{ padding-bottom: em(5); }
+.paddingL5{ padding-left: em(5); }
+.paddingR5{ padding-right: em(5); }
+.padding0{ padding: em(0); }
+.padding20{ padding: em(20); }
+.font16{ font-size: em(16); }
+.font18{ font-size: em(18); }
 .vTop{ vertical-align: top; }
+.containerPadd{ padding: em(96) 0 em(66) 0; }
+.containerPadd-nologin{ padding-bottom: 0; }
 .truncate{
     @include truncate;
 }
@@ -97,28 +91,16 @@ $font20: 20px;
 .dib{ display: inline-block; }
 .db{ display: block; }
 .textCenter{ text-align: $textCenter; }
+
 @media (max-width: $grid-float-breakpoint){
-    $margin20: 1.667em;
-    $margin10: 0.833em;
-    $margin5: 0.417em;
-    $pad20: 1.667em;
-    $pad15: 1.250em;
-    $pad10: 0.833em;
-    $pad5: 0.417em;
-    //fonts
-    $font10: 0.8333em;
-    $font11: 0.917em;
-    $font12: 1.000em;
-    $font13: 1.083em;
-    $font14: 1.167em;
-    $font15: 1.250em;
-    $font16: 1.333em;
-    $font18: 1.500em;
-    $font20: 1.667em;
     .mobdn{ display: none; }
     .list-view-pf {
         .list-group-item-heading{
-            font-size: 1.083em;
+            font-size: em(12);
         }
     }
+}
+@media (max-width: ($grid-float-breakpoint - 1)){
+  .containerPadd{ padding-top: em(11); }
+  .containerPadd-nologin{ padding-bottom: 0; }
 }

@@ -1,11 +1,10 @@
 @import "../../../assets/stylesheets/variables";
-@import "../../../assets/stylesheets/list-group";
-@import "../../../assets/stylesheets/list-view";
 @import "../../../assets/stylesheets/custom";
+@import "../../../assets/stylesheets/color-variables";
 
 .icon-btn,
 .icon-btn-disabled{
-  font-size: 2em;
+  font-size: em(24);
   text-decoration: none;
 }
 .icon-btn{
@@ -19,16 +18,17 @@
 .quickAdd_container{
   position: fixed;
   bottom:0;
-  background: #eaeaea;
+  background: $color-pf-black-200;
   z-index: 9;
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid darken($color-pf-white, 20%);
   text-align: $textLeft;
   cursor: pointer;
+  font-size: rem(12);
   .addWorkItem{
-    padding:$pad20;
+    padding:em(20);
     h4{
-      margin:3px 0;
-      padding: 0 $pad20;
+      margin:em(3) 0;
+      padding: 0 em(20);
     }
     .workItemQuickAdd_saveBtn{
       vertical-align: top;
@@ -40,38 +40,38 @@
     }
     i,h4{
       display: inline-block;
-      color:#333;
+      color:$color-pf-black-600;
     }
   }
   .addWorkItemBlk{
-    padding:$pad20;
+    padding: em(20);
     background:$color-pf-white;
     position: relative;
     .workItemQuickAdd_IconType{
-      width:2em;
-      height: 2.1em;
+      width:em(24);
+      height: em(25);
       float: left;
       position: relative;
       i{
         position: absolute;
-        font-size:$font18;
+        font-size:em(18);
         top:50%;
         @include transform(translateY(-50%));
       }
     }
     .workItemQuickAdd_story{
-      padding-left:2em;
-      padding-right: 3em;
+      padding-left:em(24);
+      padding-right: em(36);
     }
     .workItemQuickAdd_AddBlk{
       position: absolute;
       top: 50%;
       @include transform(translateY(-50%));
-      right: 0.833em;
-      width: 3em;
+      right: em(9);
+      width: em(36);
       .workItemQuickAdd_Add{
         text-align: right; 
-        font-size: $font16;
+        font-size: em(16);
       }
     }
   }
@@ -83,23 +83,23 @@
   .quickAdd_container{
     text-align: center;
     .addWorkItem{
-      padding: $pad10;
+      padding: em(10);
       i,h4{
         display: block;
       }
       i{
-        margin-bottom: $margin5;
+        margin-bottom: em(5);
       }
     }
     .addWorkItemBlk{
-      padding:$pad10;
+      padding:em(10);
     }
   }
 }
 @-moz-document url-prefix() {
   .workItemQuickAdd_story{
     textarea.form-control {
-      max-height: 26px !important;
+      max-height: em(26) !important;
     }
   }
 }

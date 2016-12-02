@@ -4,8 +4,8 @@
 .navbar-header {
     span{
 		color: $color-pf-white;
-		padding: $pad5 $pad10;
-		font-size: $font18;
+		padding: em(5) em(10);
+		font-size: em(18);
     }
 }
 .footer{

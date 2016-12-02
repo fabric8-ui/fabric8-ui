@@ -7,20 +7,22 @@
     position: fixed;
     @extend .width100;
     float: left;
+    z-index: 9;
+    font-size: rem(12);
 }
 .navbar-pf {
     .navbar-nav li a {
-        line-height: 1.3em;
+        line-height: em(20);
         text-shadow:none;
         cursor: pointer;
         .img-icon{
-            width: 25px;
-            height: 25px;
-            margin-top: -3px;
+            width: em(25);
+            height: em(25);
+            margin-top: em(-3);
         }
     }
     .navbar-collapse span.fa,span.pficon {
-        font-size:20px;
+        font-size:em(20);
     }
 }
 @media (max-width: $grid-float-breakpoint){
@@ -37,7 +39,7 @@
     .nav-mob-scroll{
         overflow-x: scroll !important;
         .nav-list-mob-scroll{
-            width: 150%;
+            width: 170%;
         }
     }
 }

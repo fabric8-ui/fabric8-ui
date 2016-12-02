@@ -3,14 +3,22 @@
 
 .list-group-item {
   cursor: pointer;
+  font-size: rem(12);
   .workItemList_workItemType {
-    width: 10em;
+    width: em(120);
     float: left;
     span{
-      font-size: $font12;
-      margin-right: $margin10;
+      font-size: em(12);
+      margin-right: em(10);
       color: $color-pf-black-900;
       font-weight: 200;
+      line-height: 1;
+    }
+  }
+  .workItemList_title{
+    line-height: 1.3;
+    p{
+      margin-bottom: 0 !important;
     }
   }
   .workItemList_title {
@@ -41,6 +49,7 @@ span{
 }
 @media (max-width: $screen-md-min){
   .workItemList_title{
+    font-size: rem(16);
     padding: 0 !important;
   }
 }

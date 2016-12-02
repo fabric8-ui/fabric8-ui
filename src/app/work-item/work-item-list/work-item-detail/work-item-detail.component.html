@@ -22,7 +22,7 @@
       </div>
 
       <div class="width100 pull-left truncate-ellipsis">
-        <div class="col-md-8 col-sm-7 col-xs-12 marginB10 wi-detail-title-blk">
+        <div class="col-md-8 col-sm-7 col-xs-12 wi-detail-title-blk">
           <div *ngIf="!headerEditable" (click)='openHeader()'
             id="title-click-div">
               <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate">{{ workItem.fields['system.title'] }}</h2>

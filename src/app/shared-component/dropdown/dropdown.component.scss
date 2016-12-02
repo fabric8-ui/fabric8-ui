@@ -1,3 +1,4 @@
+@import "../../../assets/stylesheets/custom";
 /*
 .status{
   width: 130px;
@@ -32,5 +33,5 @@
 }*/
 
 	.pf-dropdwon-btn{
-		min-width: 100px;
+		min-width: em(100);
 	}

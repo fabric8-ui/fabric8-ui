@@ -1,5 +1,5 @@
-<div id="board_topWorkItems" class="container-fluid container-cards-pf">
-  <div class='board'>
+<div id="board_topWorkItems" class="container-fluid width100 pull-left">
+  <div class='board container-cards-pf'>
       <div class='lane' *ngFor='let lane of lanes'>
           <div class="lane-header">{{lane.title}}</div>
           <div [dragula]="'nested-bag'">

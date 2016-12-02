@@ -2,10 +2,11 @@
 @import "./../../../../assets/stylesheets/mixins";
 @import "./../../../../assets/stylesheets/color-variables";
 .detail-container {
-  width: 100%;
+  @extend .width100;
+  font-size: rem(12);
   float: left;
   .note{
-    color: #cccccc;
+    color: $color-pf-black-500;
   }
   .detail-type-dropdown {
     position: relative;
@@ -13,18 +14,18 @@
   .detail-id {
     font-weight: 700;
     margin:0;
-    padding-left: $pad20;
+    padding-left: em(20);
     line-height: 1 !important;
   }
   .detail-close {
     float: right;
     cursor: pointer;
-    font-size: $font14;
+    font-size: em(14);
   }  
   .wi-detail-title-blk{
-    padding: $pad20 $pad20 $pad10;
+    padding: em(20) em(20) em(10);
     .detail-title {
-      min-height: 30px;
+      min-height: em(20);
       float: left;
       max-width: calc(100% - 25px);
       margin:0;
@@ -36,7 +37,7 @@
     .detail-title-edit {
       border-bottom: 1px solid $color-pf-blue-200;
       @include box-shadow(0 4px 4px -4px rgba(0,136,206,.6));
-      font-size: 22px;
+      font-size: em(22);
       outline: 0;
       line-height: 1.3;
     }
@@ -46,9 +47,9 @@
     .detail-title-edit-ico {
       display: none;
       position: absolute;
-      right: 30px;
+      right: em(30);
       z-index: 10;
-      top: $pad10;
+      top: em(10);
       cursor: pointer;
     }
     &:hover {
@@ -63,31 +64,31 @@
     }
   }
   .wi-state-btn{
-    max-width: 11em;
-    padding: $pad20 0;
-    margin-right: $margin20;
+    max-width: em(132);
+    padding: em(20) 0;
+    margin-right: em(20);
     .detail-status-dropdown {
       text-align: $textRight;
       .dropdown-icon {
         float: left;
-        margin-right: $margin5;
-        font-size: $font12;
-        margin-top: $margin5;
+        margin-right: em(5);
+        font-size: em(12);
+        margin-top: em(5);
       }
       .dropdown-text {
         float: left;
         text-transform: capitalize;
       }
       .dropdown-ul {
-        min-width: 11em;
-        width: 11em;
+        min-width: em(132);
+        width: em(132);
         .dropdown-li {
-          width: 100%;
+          @extend .width100;
           float: left;
           a{
-            width: 100%;
+            @extend .width100;
             float: left;
-            padding: 2px $pad10;
+            padding: em(2) em(10);
           }
         }
       }
@@ -96,27 +97,27 @@
 
   .detail-assignee-wrap {
     .user-assign-icon {
-      padding: 3px;
+      padding: em(3);
       color: $color-pf-black-500;
       border: 1px dashed $color-pf-black;
       cursor: pointer;
-      margin-right: 0.5em;
+      margin-right: em(6);
     }
     .user-assign-avatar {
       cursor: pointer;
-      margin-right: 0.5em;
-      height: 1.667em;
-      width: 1.667em;
+      margin-right: em(6);
+      height: em(20);
+      width: em(20);
     }
     .active {
       color: $color-pf-black;
-      padding: $pad5;
+      padding: em(5);
       border-style: solid;
     }
     .detail-assignee-name{
-      margin-left: $margin5;
+      margin-left: em(5);
       .pficon-user{
-        font-size: 28px;
+        font-size: em(28);
       }
       .placeholder {
         font-style: italic;
@@ -126,7 +127,7 @@
   }
 
   .detail-description-wrap {
-    margin-top: $margin10;
+    margin-top: em(10);
      .detail-description {
       .detail-desc-div-wrap {
         background-color: $color-pf-black-150;
@@ -137,21 +138,21 @@
           }
         }
         .detail-desc-div {
-          min-height: 50px;
+          min-height: em(50);
           background-color: $color-pf-white;
-          padding-right: 30px;
+          padding-right: em(30);
           border: 1px solid $color-pf-white;
           p {
-            padding: 5px 10px;
+            padding: em(5) em(10);
             margin: 0;
             outline: 0;
           }
           .edit-icon {
             display: none;
             position: absolute;
-            right: 30px;
+            right: em(30);
             z-index: 10;
-            top: $pad10;
+            top: em(10);
             cursor: pointer;
           }
           &:hover {
@@ -167,29 +168,29 @@
   }
  
   .detail-desc-action {
-    margin-top: $margin10;
+    margin-top: em(10);
   }
   .detail-action-btn {
-    font-size: $font14;
+    font-size: em(14);
     cursor: pointer;
-    min-width:2em;
+    min-width:em(2);
     text-align: $textCenter;
-    padding: $pad5;
+    padding: em(5);
     background-color: #ebebeb;
-    margin-left: $margin5;
+    margin-left: em(5);
   }
   .desc-editable {
     @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(0,136,206,.6));
     @include transition(border-color ease-in-out .15s,box-shadow ease-in-out .15s);
     border: 1px solid $color-pf-blue-400 !important;
-    padding-right: 30px !important;
+    padding-right: em(30) !important;
     background-clip: content-box !important;
     
     .edit-icon {
       display: block !important;
     }
     p {
-      padding: 5px 10px !important;
+      padding: em(5) em(10) !important;
     }
   }
 }
@@ -205,35 +206,35 @@
   position: relative;
   .list-container{
     position: absolute;
-    min-width: 200px;
+    min-width: em(200);
     z-index: 10;
     background-color: $color-pf-black-100;
     border: 1px solid $color-pf-black-500;
     .user-search-icon {
       position: absolute;
-      line-height: 30px;
-      padding-left: 5px;
+      line-height: em(30);
+      padding-left: em(5);
       height: inherit;
       color: $color-pf-black-500;
     }
 
     input {
       outline: none;
-      width: 100%;
-      height: 30px;
+      @extend .width100;
+      height: em(30);
       border: none;
       border-bottom: 1px solid $color-pf-black-500;
-      padding-left: $pad20;
+      padding-left: em(20);
     }
 
     .item-ul {
       background: $color-pf-white;
       list-style: none;
-      margin-bottom: 0px;
-      padding: 0px; 
+      margin-bottom: 0;
+      padding: 0; 
       .item-li {
         cursor: pointer;
-        padding: 5px;
+        padding: em(5);
         @extend .width100;
         float: left;
         &:hover {
@@ -257,7 +258,7 @@
       .action-li {
         display: flex;
         justify-content: space-between;
-        padding: 5px;
+        padding: em(5);
         .action-item {
           cursor: pointer;
           color: $color-pf-black-500;
@@ -265,7 +266,7 @@
       }
     }
     .user-list {
-      max-height: 150px;
+      max-height: em(150);
       overflow-y: scroll;
       border-bottom: 1px solid $color-pf-black-500;
     }
@@ -278,7 +279,7 @@
     .mobile-bar {  
       background-color:$color-pf-black;
       color: $color-pf-white;
-      padding: $pad10 $pad20;
+      padding: em(10) em(20);
     }
     .detail-type-dropdown {
       position: relative;
@@ -290,19 +291,19 @@
 
   .user-search {
     height: 100%;
-    width: 100%;
+    width: $width100;
     position: fixed;
     z-index: 9;
     top: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.6);
     .list-container {
-      top: 12em;
+      top: em(144);
       width: 80%;
       @include transform(translateX(-50%));
       left: 50%;
       .user-list {
-        max-height: 250px;
+        max-height: em(250);
       }
     }
   }

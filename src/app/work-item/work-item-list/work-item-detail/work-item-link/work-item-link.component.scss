@@ -12,13 +12,13 @@
         flex-wrap: nowrap;
         justify-content: space-between;
         align-items: center;
-        padding: $pad5;
+        padding: em(5);
         .content__title{
-            padding-left: $pad10;
+            padding-left: em(10);
         }
         .link-header-nav{
             flex: 1 0 auto;
-            padding: $pad5 $pad10;
+            padding: em(5) em(10);
             float: left;
             border-right: 1px solid $color-pf-black-400;
             text-align: center;
@@ -26,7 +26,7 @@
                 float: left;
             }
             .link-header-nav-text{
-                padding: $pad5;
+                padding: em(5);
             }
         }
     }
@@ -39,38 +39,38 @@
             text-align: $textCenter;
             .add-circle-icon{
                 color: $color-pf-black-400;
-                font-size: 4em;
+                font-size: em(48);
             }
             h2{
                 color: $color-pf-black-500;
                 font-weight: 500;
-                margin: $pad5 0;
+                margin: em(5) 0;
             }
             .create-link-btn{
-                padding-left: $pad10;
-                padding-right: $pad10;
+                padding-left: em(10);
+                padding-right: em(10);
             }
         }
         .link-item-hdr{
             background: $color-pf-black-100;
-            padding: $pad10 $pad20;
+            padding: em(10) em(20);
             p{
                 margin: 0;
-                padding: 0 $pad20;
+                padding: 0 em(20);
             }
         }
         .link-list-header{
             border-bottom: 1px solid $color-pf-black-200;
             width: 100%;
             float: left;
-            margin: 0 $margin20;
-            padding: $pad5 0;
+            margin: 0 em(20);
+            padding: em(5) 0;
         }
         .link-dropdown {
             min-width: 100%;
         }
         .link-list{
-            padding: 0 $pad20;
+            padding: 0 em(20);
             .link-list-group-list{
                 width:100%;
                 float: left;
@@ -83,16 +83,16 @@
                         padding: 0;
                         .list-close-icon{
                             color: $color-pf-white;
-                            padding-top: $pad5;
+                            padding-top: em(5);
                         } 
                     }
                     span:first-child{
-                        padding-right: $pad20;
+                        padding-right: em(20);
                     }
                     &:hover{
                         background: $color-pf-black-300;
                         span,a{
-                            padding: 0 $pad5;
+                            padding: 0 em(5);
                             .list-close-icon{
                                 color: $color-pf-black-600;
                             }
@@ -111,17 +111,17 @@
     .link-container {
         .link-header{
             .content__title{
-                padding-left: $pad5;
+                padding-left: em(5);
             }
             .link-header-nav{
-                 padding: $pad5;
+                 padding: em(5);
                 span{
                     float: none;
                     display: block;
                     line-height: 1.2;
                 }
                 .link-header-nav-text{
-                    padding: $pad0;
+                    padding: 0;
                 }
             }
         }
