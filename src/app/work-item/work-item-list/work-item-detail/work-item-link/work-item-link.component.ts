@@ -156,17 +156,19 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
         this.totalLinks = 0;
         for ( var i = 0; i < this.workitemLinks.length; i++ ) {
             const linkObj = this.workitemLinks[i];
-            const sourceId = linkObj['relationships']['source']['data']['id'];
-            const targetId = linkObj['relationships']['target']['data']['id'];
-            const linkTypeId = linkObj['relationships']['link_type']['data']['id'];
-            if (this.workItem['id'] == sourceId || this.workItem['id'] == targetId && (this.workItemsMap[sourceId] || this.workItemsMap[targetId])) {
-                this.totalLinks = this.totalLinks + 1;
-                if (!this.linksGroupCount.hasOwnProperty(linkTypeId)) {
-                    this.linksGroupCount[linkTypeId] = 1;
-                } else {
-                    this.linksGroupCount[linkTypeId] = this.linksGroupCount[linkTypeId] + 1;
-                }
+            if(this.showWorkItem(linkObj, this.workItem)){
+                this.updateCount(linkObj);
             }
+        }
+    }
+
+    updateCount(link: Link) {
+        const linkTypeId = link['relationships']['link_type']['data']['id'];
+        this.totalLinks = this.totalLinks + 1;
+        if (!this.linksGroupCount.hasOwnProperty(linkTypeId)) {
+            this.linksGroupCount[linkTypeId] = 1;
+        } else {
+            this.linksGroupCount[linkTypeId] = this.linksGroupCount[linkTypeId] + 1;
         }
     }
 
