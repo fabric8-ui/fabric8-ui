@@ -37,8 +37,6 @@
 				<li><a [routerLink]="['/work-item-list/detail/' + workItem.id]" class="workItemList_Open">Open</a></li>
 				<li><a class="workItemList_Delete" (click)="confirmDelete($event)">Delete</a></li>				
 				<li><a class="workItemList_Backlog" (click)="onMoveToBacklog($event)">Move to Backlog</a></li>
-				<li><a class="workItemList_ChangeStatus" (click)="onChangeState($event)">Change State</a></li>
-				
 			</ul>
 		</div>
 	</div>
