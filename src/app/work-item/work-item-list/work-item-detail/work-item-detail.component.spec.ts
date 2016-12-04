@@ -7,27 +7,28 @@ import {
   tick
 } from '@angular/core/testing';
 
-import { Location }            from '@angular/common';
-import { SpyLocation }         from '@angular/common/testing';
-import { DebugElement }        from '@angular/core';
-import { FormsModule }         from '@angular/forms';
-import { By }                  from '@angular/platform-browser';
+import { Location } from '@angular/common';
+import { SpyLocation } from '@angular/common/testing';
+import { DebugElement } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CommonModule }       from '@angular/common';
-import { DropdownModule }     from 'ng2-dropdown';
+import { CommonModule } from '@angular/common';
+import { DropdownModule } from 'ng2-dropdown';
 import { Ng2CompleterModule } from 'ng2-completer';
 
 import { AlmTrim } from './../../../pipes/alm-trim';
 import { AlmSearchHighlight } from './../../../pipes/alm-search-highlight.pipe';
 import { AlmLinkTarget } from './../../../pipes/alm-link-target.pipe';
+import { AlmAvatarSize } from './../../../pipes/alm-avatar-size.pipe';
 import { Broadcaster } from './../../../shared/broadcaster.service';
 import { Logger } from './../../../shared/logger.service';
 
 import { Dialog } from './../../../shared-component/dialog/dialog';
 
 
-import { AlmIconModule }      from './../../../shared-component/icon/almicon.module';
-import { AlmEditableModule }      from './../../../shared-component/editable/almeditable.module';
+import { AlmIconModule } from './../../../shared-component/icon/almicon.module';
+import { AlmEditableModule } from './../../../shared-component/editable/almeditable.module';
 import { AuthenticationService } from './../../../auth/authentication.service';
 import { User, NewUser } from './../../../user/user';
 import { UserService } from './../../../user/user.service';
@@ -36,6 +37,8 @@ import { WorkItemType } from './../../work-item-type';
 import { WorkItemService } from './../../work-item.service';
 import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
 import { WorkItemLinkService } from './work-item-link/work-item-link.service';
+import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.component';
+import { WorkItemCommentService } from './work-item-comment/work-item-comment.service';
 
 import { WorkItemDetailComponent } from './work-item-detail.component';
 
@@ -55,8 +58,7 @@ describe('Detailed view and edit a selected work item - ', () => {
   let fakeWorkItemTypes: WorkItemType[];
   let fakeWorkItemStates: Object[];
 
-  beforeEach(() => 
-{
+  beforeEach(() => {
 
     fakeWorkItem = {
       'fields': {
@@ -87,26 +89,26 @@ describe('Detailed view and edit a selected work item - ', () => {
     } as User;
 
     fakeUserList = [
-        {
-          attributes: {
-            fullName: 'Harry Potter',
-            imageURL: 'http://nerdist.com/wp-content/uploads/2016/02/20160210_nerdistnews_harrypottercursedchild_1x1.jpg'
-          },
-          id: '779efdcc-ac87-4720-925e-949ff21dbf5d'
-        }, {
-          attributes: {
-            fullName: 'Walter Mitty',
-            imageURL: 'http://bestwatchbrandshq.com/wp-content/uploads/2015/01/Ben-Stiller-Watch-In-The-Secret-Life-Of-Walter-Mitty-Movie-9.jpg'
-          },
-          id: '39d44ed6-1246-48d6-9190-51ffab67c42e'
-        }, {
-          attributes: {
-            fullName: 'Draco Malfoy',
-            imageURL: 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
-          },
-          id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
-        }
-      ] as NewUser[];
+      {
+        attributes: {
+          fullName: 'Harry Potter',
+          imageURL: 'http://nerdist.com/wp-content/uploads/2016/02/20160210_nerdistnews_harrypottercursedchild_1x1.jpg'
+        },
+        id: '779efdcc-ac87-4720-925e-949ff21dbf5d'
+      }, {
+        attributes: {
+          fullName: 'Walter Mitty',
+          imageURL: 'http://bestwatchbrandshq.com/wp-content/uploads/2015/01/Ben-Stiller-Watch-In-The-Secret-Life-Of-Walter-Mitty-Movie-9.jpg'
+        },
+        id: '39d44ed6-1246-48d6-9190-51ffab67c42e'
+      }, {
+        attributes: {
+          fullName: 'Draco Malfoy',
+          imageURL: 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
+        },
+        id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
+      }
+    ] as NewUser[];
 
     fakeWorkItemTypes = [
       { name: 'system.userstory' },
@@ -124,14 +126,14 @@ describe('Detailed view and edit a selected work item - ', () => {
       getToken: function () {
         return '';
       },
-      isLoggedIn: function() {
+      isLoggedIn: function () {
         return this.loggedIn;
       },
-      login: function() {
+      login: function () {
         this.loggedIn = true;
       },
 
-      logout: function() {
+      logout: function () {
         this.loggedIn = false;
       }
     };
@@ -159,7 +161,7 @@ describe('Detailed view and edit a selected work item - ', () => {
         });
       },
 
-      getWorkItems: function() {
+      getWorkItems: function () {
         return new Promise((resolve, reject) => {
           resolve(fakeWorkItems);
         });
@@ -179,17 +181,17 @@ describe('Detailed view and edit a selected work item - ', () => {
         });
       }
     };
-  
+
   });
 
-  
+
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
         RouterTestingModule.withRoutes([
-          {path: 'work-item-list/detail/1', component: WorkItemDetailComponent}
+          { path: 'work-item-list/detail/1', component: WorkItemDetailComponent }
         ]),
         CommonModule,
         DropdownModule,
@@ -201,14 +203,17 @@ describe('Detailed view and edit a selected work item - ', () => {
       declarations: [
         WorkItemDetailComponent,
         WorkItemLinkComponent,
+        WorkItemCommentComponent,
         AlmTrim,
         AlmSearchHighlight,
-        AlmLinkTarget
+        AlmLinkTarget,
+        AlmAvatarSize
       ],
       providers: [
         Broadcaster,
         Logger,
         WorkItemLinkService,
+        WorkItemCommentService,
         Location,
         {
           provide: AuthenticationService,
@@ -232,52 +237,52 @@ describe('Detailed view and edit a selected work item - ', () => {
   }));
 
   it('Page should display work item ID when logged in', () => {
-      fakeAuthService.login();
-      fixture.detectChanges();
-      comp.workItem = fakeWorkItem;
-      comp.loggedIn = fakeAuthService.isLoggedIn();
-      fixture.detectChanges();
-      el = fixture.debugElement.query(By.css('#wi-detail-id'));      
-      expect(el.nativeElement.textContent).toContain(fakeWorkItem.id);
+    fakeAuthService.login();
+    fixture.detectChanges();
+    comp.workItem = fakeWorkItem;
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
+    el = fixture.debugElement.query(By.css('#wi-detail-id'));
+    expect(el.nativeElement.textContent).toContain(fakeWorkItem.id);
   });
 
   it('Page should display work item ID when not logged in', () => {
-      fakeAuthService.logout();
-      fixture.detectChanges();
-      comp.workItem = fakeWorkItem;
-      comp.loggedIn = fakeAuthService.isLoggedIn();
-      fixture.detectChanges();
-      el = fixture.debugElement.query(By.css('#wi-detail-id'));
-      expect(el.nativeElement.textContent).toContain(fakeWorkItem.id);
+    fakeAuthService.logout();
+    fixture.detectChanges();
+    comp.workItem = fakeWorkItem;
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
+    el = fixture.debugElement.query(By.css('#wi-detail-id'));
+    expect(el.nativeElement.textContent).toContain(fakeWorkItem.id);
   });
 
   it('Work item ID cannot be edited (change model) ', () => {
-      fakeAuthService.login();
-      fixture.detectChanges();      
-      comp.workItem = fakeWorkItem;
-      comp.loggedIn = fakeAuthService.isLoggedIn();
-      fixture.detectChanges();
-      el = fixture.debugElement.query(By.css('#wi-detail-id'));
-      comp.workItem.id = 'New ID';      
-      comp.save();      
-      expect(el.nativeElement.textContent).not.toEqual(comp.workItem.id);
-  });
-
-  it('Work item ID cannot be edited (change html) ', () => {      
-      fakeAuthService.login();
-      fixture.detectChanges();      
-      comp.workItem = fakeWorkItem;
-      comp.loggedIn = fakeAuthService.isLoggedIn();
-      fixture.detectChanges();
-      el = fixture.debugElement.query(By.css('#wi-detail-id'));      
-      el.nativeElement.textContent = 'New ID';      
-      comp.save();      
-      expect(comp.workItem.id).not.toEqual(el.nativeElement.textContent);
-  });
-
-  it('Page should display page title when logged in', () => {      
     fakeAuthService.login();
-    fixture.detectChanges();      
+    fixture.detectChanges();
+    comp.workItem = fakeWorkItem;
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
+    el = fixture.debugElement.query(By.css('#wi-detail-id'));
+    comp.workItem.id = 'New ID';
+    comp.save();
+    expect(el.nativeElement.textContent).not.toEqual(comp.workItem.id);
+  });
+
+  it('Work item ID cannot be edited (change html) ', () => {
+    fakeAuthService.login();
+    fixture.detectChanges();
+    comp.workItem = fakeWorkItem;
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
+    el = fixture.debugElement.query(By.css('#wi-detail-id'));
+    el.nativeElement.textContent = 'New ID';
+    comp.save();
+    expect(comp.workItem.id).not.toEqual(el.nativeElement.textContent);
+  });
+
+  it('Page should display page title when logged in', () => {
+    fakeAuthService.login();
+    fixture.detectChanges();
     comp.workItem = fakeWorkItem;
     comp.loggedIn = fakeAuthService.isLoggedIn();
     fixture.detectChanges();
@@ -285,41 +290,41 @@ describe('Detailed view and edit a selected work item - ', () => {
     expect(el.nativeElement.textContent).toContain(fakeWorkItem.fields['system.title']);
   });
 
-  it('Page should display page title when not logged in', () => {      
+  it('Page should display page title when not logged in', () => {
     fakeAuthService.logout();
-    fixture.detectChanges();      
+    fixture.detectChanges();
     comp.workItem = fakeWorkItem;
     comp.loggedIn = fakeAuthService.isLoggedIn();
-    fixture.detectChanges();      
+    fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-title-ne'));
     expect(el.nativeElement.textContent).toContain(fakeWorkItem.fields['system.title']);
   });
 
-  it('Edit icon displayed when logged in', () => {      
+  it('Edit icon displayed when logged in', () => {
     fakeAuthService.login();
-    fixture.detectChanges();      
+    fixture.detectChanges();
     comp.workItem = fakeWorkItem;
     comp.loggedIn = fakeAuthService.isLoggedIn();
-    fixture.detectChanges();     
+    fixture.detectChanges();
     el = fixture.debugElement.query(By.css('.pficon-edit'));
     expect(el.attributes['id']).toBeDefined();
   });
 
   it('Edit icon to be undefined when not logged in', () => {
     fakeAuthService.logout();
-    fixture.detectChanges();      
+    fixture.detectChanges();
     comp.workItem = fakeWorkItem;
-    comp.loggedIn = fakeAuthService.isLoggedIn();    
-    fixture.detectChanges();      
-    el = fixture.debugElement.query(By.css('.pficon-edit'));   
-    expect(el).toBeNull();       
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
+    el = fixture.debugElement.query(By.css('.pficon-edit'));
+    expect(el).toBeNull();
   });
 
   it('Page should display non-editable work item title when not logged in', () => {
     fakeAuthService.logout();
-    fixture.detectChanges();      
+    fixture.detectChanges();
     comp.workItem = fakeWorkItem;
-    comp.loggedIn = fakeAuthService.isLoggedIn();           
+    comp.loggedIn = fakeAuthService.isLoggedIn();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-title-ne'));
     expect(el.nativeElement.textContent).toContain(fakeWorkItem.fields['system.title']);
@@ -327,20 +332,20 @@ describe('Detailed view and edit a selected work item - ', () => {
 
   it('Page should display clickable work item title when looged in', () => {
     fakeAuthService.login();
-    fixture.detectChanges();      
+    fixture.detectChanges();
     comp.workItem = fakeWorkItem;
-    comp.loggedIn = fakeAuthService.isLoggedIn();           
-    fixture.detectChanges();    
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-title-click'));
     expect(el.nativeElement.textContent).toContain(fakeWorkItem.fields['system.title']);
   });
 
   it('Page should display editable work item title when logged in', () => {
     fakeAuthService.login();
-    fixture.detectChanges();         
+    fixture.detectChanges();
     comp.workItem = fakeWorkItem;
-    comp.loggedIn = fakeAuthService.isLoggedIn();           
-    fixture.detectChanges();    
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
     comp.openHeader();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-title'));
@@ -349,14 +354,14 @@ describe('Detailed view and edit a selected work item - ', () => {
 
   it('Work item title can be edited when logged in', () => {
     fakeAuthService.login();
-    fixture.detectChanges();         
+    fixture.detectChanges();
     comp.workItem = fakeWorkItem;
-    comp.loggedIn = fakeAuthService.isLoggedIn();           
-    fixture.detectChanges();    
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
     comp.openHeader();
-    fixture.detectChanges();    
+    fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-title'));
-    comp.workItem.fields['system.title'] = 'User entered valid work item title';      
+    comp.workItem.fields['system.title'] = 'User entered valid work item title';
     fixture.detectChanges();
     comp.save();
     expect(comp.workItem.fields['system.title']).toContain(el.nativeElement.innerText);
@@ -364,45 +369,45 @@ describe('Detailed view and edit a selected work item - ', () => {
 
   it('Save should be enabled if a valid work item title has been entered', () => {
     fakeAuthService.login();
-    fixture.detectChanges();         
+    fixture.detectChanges();
     comp.workItem = fakeWorkItem;
-    comp.loggedIn = fakeAuthService.isLoggedIn();           
-    fixture.detectChanges();    
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
     comp.openHeader();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#workItemTitle_btn_save'));
     comp.workItem.fields['system.title'] = 'Valid work item title';
     fixture.detectChanges();
-    comp.save();      
+    comp.save();
     expect(el.classes['disabled']).toBeFalsy();
   });
 
   it('Save should be disabled if the work item title is blank', () => {
-      fakeAuthService.login();
-      fixture.detectChanges();         
-      comp.workItem = fakeWorkItem;
-      comp.loggedIn = fakeAuthService.isLoggedIn();           
-      fixture.detectChanges();    
-      comp.openHeader();
-      fixture.detectChanges();
-      comp.titleText = '';
-      comp.isValid(comp.titleText);
-      fixture.detectChanges();
-      el = fixture.debugElement.query(By.css('#workItemTitle_btn_save'));
-      fixture.detectChanges();      
-      expect(el.classes['disabled']).toBeTruthy();
+    fakeAuthService.login();
+    fixture.detectChanges();
+    comp.workItem = fakeWorkItem;
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
+    comp.openHeader();
+    fixture.detectChanges();
+    comp.titleText = '';
+    comp.isValid(comp.titleText);
+    fixture.detectChanges();
+    el = fixture.debugElement.query(By.css('#workItemTitle_btn_save'));
+    fixture.detectChanges();
+    expect(el.classes['disabled']).toBeTruthy();
   });
 
   it('Work item description can be edited when logged in', () => {
     fakeAuthService.login();
-    fixture.detectChanges();         
+    fixture.detectChanges();
     comp.workItem = fakeWorkItem;
-    comp.loggedIn = fakeAuthService.isLoggedIn();           
-    fixture.detectChanges();    
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
     comp.openDescription();
-    fixture.detectChanges();    
+    fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-desc'));
-    comp.workItem.fields['system.description'] = 'User entered work item description';      
+    comp.workItem.fields['system.description'] = 'User entered work item description';
     fixture.detectChanges();
     comp.save();
     expect(comp.workItem.fields['system.description']).toContain(el.nativeElement.innerHTML);
@@ -410,16 +415,16 @@ describe('Detailed view and edit a selected work item - ', () => {
 
   it('Work item description cannot be edited when logged out', () => {
     fakeAuthService.logout();
-    fixture.detectChanges();         
+    fixture.detectChanges();
     comp.workItem = fakeWorkItem;
-    comp.loggedIn = fakeAuthService.isLoggedIn();           
-    fixture.detectChanges();    
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-desc'));
     expect(el.attributes['disabled']);
   });
 
   // Commenting this out because no type text in the new design
-  
+
   // it('Work item type can be edited when logged in', () => {
   //   fakeAuthService.login();
   //   fixture.detectChanges();         
@@ -434,15 +439,15 @@ describe('Detailed view and edit a selected work item - ', () => {
 
   it('Work item state can be edited when logged in', () => {
     fakeAuthService.login();
-    fixture.detectChanges();      
+    fixture.detectChanges();
     comp.workItem = fakeWorkItem;
-    comp.loggedIn = fakeAuthService.isLoggedIn();           
-    fixture.detectChanges(); 
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-state'));
     comp.workItem.type = 'resolved';
     fixture.detectChanges();
     expect(comp.workItem.fields['system.state']).toContain(el.nativeElement.value);
-  }); 
+  });
 
   it('should not open the user list if not logged in', () => {
     comp.activeSearchAssignee();
@@ -471,14 +476,14 @@ describe('Detailed view and edit a selected work item - ', () => {
   });
 
   it('Page should display correct assignee', () => {
-      fakeAuthService.login();
-      fixture.detectChanges();
-      comp.workItem = fakeWorkItem;
-      comp.loggedIn = fakeAuthService.isLoggedIn();
-      comp.assignedUser = comp.getAssignedUserDetails(comp.workItem.fields['system.assignee']);
-      fixture.detectChanges();
-      el = fixture.debugElement.query(By.css('#WI_details_assigned_user'));      
-      expect(el.nativeElement.textContent).toContain('Draco Malfoy');
+    fakeAuthService.login();
+    fixture.detectChanges();
+    comp.workItem = fakeWorkItem;
+    comp.loggedIn = fakeAuthService.isLoggedIn();
+    comp.assignedUser = comp.getAssignedUserDetails(comp.workItem.fields['system.assignee']);
+    fixture.detectChanges();
+    el = fixture.debugElement.query(By.css('#WI_details_assigned_user'));
+    expect(el.nativeElement.textContent).toContain('Draco Malfoy');
   });
 
 });
