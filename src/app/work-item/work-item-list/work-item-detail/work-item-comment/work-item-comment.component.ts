@@ -44,6 +44,7 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
     };
 
     createComment(event: any = null): void {
+        this.preventDef(event);
         this.WorkItemCommentService
             .createComment(this.workItem['id'], this.comment)
             .then(response => {
