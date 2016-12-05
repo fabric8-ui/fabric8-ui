@@ -1,5 +1,9 @@
 <div class="container-fluid containerPadd detail-list-container" [class.containerPadd-nologin] = "!loggedIn" >		
-	<div class="width100 fl detail-list-wrap list-group list-view-pf">
+	<div class="width100 fl detail-list-wrap list-group list-view-pf" 
+       infiniteScroll
+       [eachElementHeightInPx]='contentItemHeight'
+       (initItems)='initWiItems($event)'
+       (fetchMore)='fetchMoreWiItems()'>
 
 			<alm-work-item-list-entry *ngFor="let workItem of workItems; let counter = index"
 				id="{{'workItemList_OuterWrap_'+counter}}"
@@ -7,7 +11,6 @@
         [workItem]="workItem"
         (selectEvent)="onSelect($event)" 
         (detailEvent)="onDetail($event)"
-        (deleteEvent)="onDelete($event)"
         (moveTopEvent)="onMoveToTop($event)"
         (moveBottomEvent)="onMoveToBottom($event)">
 			</alm-work-item-list-entry>
@@ -18,8 +21,8 @@
 <div id="workItemList_Error" class="error" *ngIf="error">{{error}}</div>
 
 <div id="workItemList_quickAdd" class="width100 fl">
-    <div *ngIf="loggedIn" class="width100 fl supress-hover" (click)="addWorkItem()">
-        <alm-work-item-quick-add (close)="close($event)"></alm-work-item-quick-add>
+    <div *ngIf="loggedIn" class="width100 fl supress-hover">
+        <alm-work-item-quick-add></alm-work-item-quick-add>
     </div>
 </div>
 

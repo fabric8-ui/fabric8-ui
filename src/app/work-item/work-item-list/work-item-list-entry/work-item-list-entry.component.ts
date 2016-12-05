@@ -39,7 +39,6 @@ export class WorkItemListEntryComponent implements OnInit {
   @Input() workItem: WorkItem;
   @Output() selectEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() detailEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
-  @Output() deleteEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() moveTopEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() moveBottomEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
 
@@ -107,9 +106,7 @@ export class WorkItemListEntryComponent implements OnInit {
       event.stopPropagation();
     this.workItemService
       .delete(this.workItem)
-      .then(() => {
-        this.deleteEvent.emit(this);
-      });
+      .then(() => {});
   }
 
   onSelect(event: MouseEvent): void {

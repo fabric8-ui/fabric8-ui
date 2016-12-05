@@ -213,7 +213,6 @@ export class WorkItemDetailComponent implements OnInit {
       .update(this.workItem)
       .then((workItem) => {
         this.workItem.version = workItem.version;
-        this.broadcaster.broadcast('updateWorkItem', workItem);
         this.activeOnList();          
     });
      

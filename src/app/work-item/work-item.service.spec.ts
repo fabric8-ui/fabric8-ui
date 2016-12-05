@@ -77,7 +77,7 @@ describe('Work Item Service - ', () => {
       'version': 0
     }
   ] as WorkItem[];
-  let response = {data: resp};
+  let response = {data: resp, links: {}};
 
   it('Get work items', async(() => {
     mockService.connections.subscribe((connection: any) => {
@@ -122,7 +122,7 @@ describe('Work Item Service - ', () => {
 
     apiService.delete(resp[0])
       .then(data => {
-        expect(data).toBeNull();
+        expect(data).toBeUndefined();
       });
   }));
 

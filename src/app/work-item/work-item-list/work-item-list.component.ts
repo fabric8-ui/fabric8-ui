@@ -1,5 +1,6 @@
 import { Component, OnInit, trigger, state, style, transition, animate } from '@angular/core';
 import { Router }            from '@angular/router';
+import { cloneDeep } from 'lodash';
 
 import { AuthenticationService } from './../../auth/authentication.service';
 import { Broadcaster } from './../../shared/broadcaster.service';
@@ -36,6 +37,7 @@ export class WorkItemListComponent implements OnInit {
   loggedIn: Boolean = false;
   showWorkItemDetails: boolean = false;
   panelState: String = 'out';
+  contentItemHeight: number = 65;
 
   constructor(
     private auth: AuthenticationService,
@@ -48,31 +50,41 @@ export class WorkItemListComponent implements OnInit {
 
   ngOnInit(): void {
     this.listenToEvents();
-    this.reloadWorkItems();
     this.loggedIn = this.auth.isLoggedIn();
   }
 
   // model handlers
 
-  reloadWorkItems(): void {
+  initWiItems(event: any): void {
+    this.loadWorkItems(event.pageSize);
+  }
+
+  loadWorkItems(pageSize: number = 20): void {
     this.workItemService
-      .getWorkItems()
-      .then((wItems) => {
-        return wItems.reverse();
-      })
+      .getWorkItems(pageSize)
       .then((wItems) => {
         this.workItems = wItems;
-      });      
+      });  
   }
 
-  addWorkItem(): void {
-    this.addingWorkItem = true;
-    this.selectedWorkItemEntryComponent = null;
-  }
-
-  close(savedWorkItem: WorkItem) {
-    this.addingWorkItem = false;
-    if (savedWorkItem) { this.reloadWorkItems(); }
+  fetchMoreWiItems(): void {
+    this.workItemService
+      .getMoreWorkItems()
+      .then((newWiItems) => {
+        let newItems = cloneDeep(newWiItems);
+        // Why on earth did I use splice instead simple concat?
+        // To keep the reference of the wotkitem list 
+        // Object intact. If we do simple concat it returns 
+        // an new value and the old reference is gone 
+        // Delete and quick add will not work anymore
+        // because now we are dependent on the reference
+        // and not using any callback or event listener to
+        // Update the list
+        newItems.forEach((item: any) => 
+          this.workItems.splice(this.workItems.length, this.workItems.length, item)
+        );
+      })
+      .catch((e) => console.log(e));
   }
 
   // event handlers
@@ -91,10 +103,6 @@ export class WorkItemListComponent implements OnInit {
     this.workItemDetail = entryComponent.getWorkItem();    
     this.onSelect(entryComponent);
     this.showWorkItemDetails = true; 
-  }
-
-  onDelete(entryComponent: WorkItemListEntryComponent): void {
-    this.reloadWorkItems();
   }
 
   onMoveToTop(entryComponent: WorkItemListEntryComponent): void {    
@@ -130,14 +138,6 @@ export class WorkItemListComponent implements OnInit {
     this.broadcaster.on<string>('logout')
       .subscribe(message => {
         this.loggedIn = false;
-    });
-    this.broadcaster.on<string>('updateWorkItem')
-      .subscribe((data) => {
-        let wi: any = data as any;
-        let workItemIndex = this.workItems.findIndex(item => {
-          return item.id == wi.id;
-        });
-        this.workItems[workItemIndex] = wi as WorkItem;
     });
   }
 }

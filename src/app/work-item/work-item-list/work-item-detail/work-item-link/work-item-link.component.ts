@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { cloneDeep } from 'lodash';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 import { LinkType } from '../../../../models/link-type';
@@ -141,10 +142,14 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
             console.log('Error in loading Links');
         });
 
+        // This is a fast fix
+        // This logic is going to be changed 
+        // once we have associated links as realation for a work item
         this.workItemService
-        .getWorkItems()
+        .getLocallySavedWorkItems()
         .then((wItems) => {
-            wItems.forEach((item) => {
+            let workItems = cloneDeep(wItems);
+            workItems.forEach((item: any) => {
                 this.workItemsMap[item.id] = item;
             });
             this.calculateTotal();
@@ -156,7 +161,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
         this.totalLinks = 0;
         for ( var i = 0; i < this.workitemLinks.length; i++ ) {
             const linkObj = this.workitemLinks[i];
-            if(this.showWorkItem(linkObj, this.workItem)){
+            if (this.showWorkItem(linkObj, this.workItem)){
                 this.updateCount(linkObj);
             }
         }
@@ -186,7 +191,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
 
     onDetail(links: Link, workItem: WorkItem): void {
         let workItemId = links['relationships']['target']['data']['id'];
-        if(links['relationships']['target']['data']['id'] == workItem['id']){
+        if (links['relationships']['target']['data']['id'] == workItem['id']){
             workItemId = links['relationships']['source']['data']['id'];
         }
         this.router.navigate(['/work-item-list/detail/' + workItemId]);

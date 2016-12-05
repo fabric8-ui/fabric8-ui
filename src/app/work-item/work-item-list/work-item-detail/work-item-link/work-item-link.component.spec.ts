@@ -307,7 +307,7 @@ describe('WorkItem Links CRD -', () => {
     };
 
     fakeWorkItemService = {
-      getWorkItems: function() {
+      getLocallySavedWorkItems: function() {
         return new Promise((resolve, reject) => {
           resolve(fakeWorkItems);
         });

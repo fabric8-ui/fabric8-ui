@@ -165,6 +165,12 @@ describe('Detailed view and edit a selected work item - ', () => {
         return new Promise((resolve, reject) => {
           resolve(fakeWorkItems);
         });
+      },
+
+      getLocallySavedWorkItems: function() {
+        return new Promise((resolve, reject) => {
+          resolve(fakeWorkItems);
+        });
       }
     };
 

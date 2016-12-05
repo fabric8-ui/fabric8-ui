@@ -24,7 +24,6 @@ import { WorkItemService } from '../work-item.service';
   styleUrls: ['./work-item-quick-add.component.scss']
 })
 export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
-  @Output() close = new EventEmitter();
   @ViewChild('quickAddTitle') qaTitle: any;
   @ViewChild('quickAddDesc') qaDesc: any;
   @ViewChildren('quickAddTitle', {read: ElementRef}) qaTitleRef: QueryList<ElementRef>;
@@ -85,7 +84,7 @@ export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
           this.workItem.fields['system.description'] = '';
           this.workItem.fields['system.title'] = '';
           this.validTitle = false;
-          this.goBack(workItem);
+          this.resetQuickAdd();
           this.showQuickAddBtn = false;
           this.showQuickAdd = true;
           this.descHeight = this.initialDescHeight ? this.initialDescHeight : '26px';
@@ -113,8 +112,7 @@ export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
     this.descHeight = this.qaDesc.nativeElement.scrollHeight + this.initialDescHeightDiff; 
   }
 
-  goBack(savedWorkItem: WorkItem = null): void {
-    this.close.emit(savedWorkItem);
+  resetQuickAdd(): void {
     this.ngOnInit();
   }
 

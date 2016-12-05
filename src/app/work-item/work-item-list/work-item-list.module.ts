@@ -4,6 +4,7 @@ import { DropdownModule } from 'ng2-dropdown';
 
 import { AlmIconModule }      from './../../shared-component/icon/almicon.module';
 import { DialogModule }   from './../../shared-component/dialog/dialog.module';
+import { InfiniteScrollModule }   from './../../shared-component/infinitescroll/infinitescroll.module';
 
 import { WorkItemListComponent } from './work-item-list.component';
 import { WorkItemDetailModule } from './work-item-detail/work-item-detail.module';
@@ -18,6 +19,7 @@ import { WorkItemListRoutingModule } from './work-item-list-routing.module';
     CommonModule,
     DialogModule,
     DropdownModule,
+    InfiniteScrollModule,    
     WorkItemDetailModule,
     WorkItemListRoutingModule,
     WorkItemQuickAddModule,

@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
@@ -16,7 +17,8 @@ export class WorkItemService {
   private workItemTypeUrl = process.env.API_URL + 'workitemtypes';
   private availableStates: DropdownOption[] = [];
   public workItemTypes: WorkItemType[] = [];
-  private workItems: WorkItem[];
+  private workItems: WorkItem[] = [];
+  private nextLink: string = null;
 
   constructor(private http: Http,
     private logger: Logger,
@@ -28,16 +30,55 @@ export class WorkItemService {
     logger.log('WorkItemService using url ' + this.workItemUrl);
   }
 
-  getWorkItems(): Promise<WorkItem[]> {
+  getWorkItems(pageSize: number = 20): Promise<WorkItem[]> {
+    let url = this.workItemUrl + '.2' + '?page[limit]=' + pageSize;
+    if (process.env.ENV == 'inmemory') {
+      url = this.workItemUrl;
+    }
     return this.http
-      .get(this.workItemUrl + '.2', { headers: this.headers })
+      .get(url, { headers: this.headers })
       .toPromise()
-      //.then(response => process.env.ENV != 'inmemory' ? response.json() as WorkItem[] : response.json().data as WorkItem[])
       .then(response => {
-        this.workItems = response.json().data as WorkItem[];
+        if (process.env.ENV == 'inmemory') {
+          // Exclusively for in memory testing
+          this.workItems = response.json().data as WorkItem[];
+          this.workItems = this.workItems.reverse();
+        } else {
+          let links = response.json().links;
+          if (links.hasOwnProperty('next')) {
+            this.nextLink = links.next;
+            console.log(this.nextLink);
+          }
+          this.workItems = response.json().data as WorkItem[];
+        }
         return this.workItems;
       })
       .catch(this.handleError);
+  }
+
+  getMoreWorkItems(): Promise<any> {
+    console.log(this.nextLink);
+    if (this.nextLink) {
+      return this.http
+      .get(this.nextLink, { headers: this.headers })
+      .toPromise()
+      .then(response => {
+        let links = response.json().links;
+        if (links.hasOwnProperty('next')) {
+          this.nextLink = links.next;
+        } else {
+          this.nextLink = null;
+        }
+        return response.json().data as WorkItem[];
+      })
+      .catch(this.handleError);
+    } else {
+      return Promise.reject('No more item found');
+    }
+  }
+
+  getLocallySavedWorkItems(): Promise<any> {
+    return Promise.resolve(this.workItems);
   }
 
   getWorkItemTypes(): Promise<any[]> {
@@ -83,7 +124,11 @@ export class WorkItemService {
     return this.http
       .delete(url, { headers: this.headers, body: '' })
       .toPromise()
-      .then(() => null)
+      .then(() => {
+        let deletedItemIndex = this.workItems.findIndex((item) => item.id == workItem.id);
+        // removing deleted item from the local list
+        this.workItems.splice(deletedItemIndex, 1);
+      })
       .catch(this.handleError);
   }
 
@@ -102,7 +147,11 @@ export class WorkItemService {
     return this.http
       .post(this.workItemUrl, JSON.stringify(workItem), { headers: this.headers })
       .toPromise()
-      .then(response => process.env.ENV != 'inmemory' ? response.json() as WorkItem : response.json().data as WorkItem)
+      .then(response => {
+        // Adding newly added work item on top of the local list
+        this.workItems.splice(0, 0, process.env.ENV != 'inmemory' ? response.json() as WorkItem : cloneDeep(workItem) as WorkItem);
+        return process.env.ENV != 'inmemory' ? response.json() as WorkItem : cloneDeep(workItem) as WorkItem;
+      })
       .catch(this.handleError);
   }
 
@@ -111,7 +160,12 @@ export class WorkItemService {
     return this.http
       .put(url, JSON.stringify(workItem), { headers: this.headers })
       .toPromise()
-      .then(response => process.env.ENV != 'inmemory' ? response.json() as WorkItem : workItem)
+      .then(response => {
+        let updatedWorkItem = process.env.ENV != 'inmemory' ? response.json() as WorkItem : workItem;
+        let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
+        this.workItems[updateIndex] = updatedWorkItem;
+        return updatedWorkItem;
+      })
       .catch(this.handleError);
   }
 
