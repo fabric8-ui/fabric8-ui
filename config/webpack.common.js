@@ -148,6 +148,10 @@ module.exports = function (options) {
           test: /\.scss$/,
           loaders: ["css-to-string", "css", "sass"]
         },
+        {
+          test: /manifest.json$/,
+          loader: 'file-loader?name=manifest.json!web-app-manifest-loader'
+        },
       ],
 
     },
