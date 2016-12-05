@@ -4,6 +4,7 @@
 
 const webpack = require('webpack');
 const helpers = require('./helpers');
+const ngtools = require('@ngtools/webpack');
 
 /*
  * Webpack Plugins
@@ -35,8 +36,15 @@ const METADATA = {
  * See: http://webpack.github.io/docs/configuration.html#cli
  */
 module.exports = function (options) {
-  isProd = options.env === 'production';
-  return {
+  const isProd = options.env === 'production';
+  const aotMode = false;//options && options.aot !== undefined;
+  console.log('The options from the webpack config: ' + JSON.stringify(options, null, 2));
+  // const entryFile = aotMode ? './src/main.browser.aot.ts' : './src/main.browser.ts';
+  // const outPath = aotMode ? 'dist' : 'aot';
+  // const devtool = aotMode ? 'source-map' : 'eval-source-map';
+  // const srcPath = path.join(__dirname, 'demo', 'src');
+  var config = {
+  // return {
 
     /*
      * Cache generated modules and chunks to improve performance for multiple incremental builds.
@@ -54,11 +62,10 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#entry
      */
     entry: {
-
       'polyfills': './src/polyfills.browser.ts',
       'vendor': './src/vendor.browser.ts',
+      // 'main': aotMode ? './src/main.browser.aot.ts' : './src/main.browser.ts'
       'main': './src/main.browser.ts'
-
     },
 
     /*
@@ -76,7 +83,7 @@ module.exports = function (options) {
       extensions: ['.ts', '.js', '.json'],
 
       // An array of directory names to be resolved to the current directory
-      modules: [helpers.root('src'), 'node_modules'],
+      modules: [helpers.root('src'), 'node_modules']
 
     },
 
@@ -98,12 +105,15 @@ module.exports = function (options) {
          */
         {
           test: /\.ts$/,
-          loaders: [
+          loaders: aotMode ? [
+            '@ngtools/webpack'
+          ] : [
             '@angularclass/hmr-loader?pretty=' + !isProd + '&prod=' + isProd,
             'awesome-typescript-loader',
             'angular2-template-loader',
             'angular2-router-loader'
           ],
+          // loaders: '@ngtools/webpack',
           exclude: [/\.(spec|e2e)\.ts$/]
         },
 
@@ -147,13 +157,11 @@ module.exports = function (options) {
         {
           test: /\.scss$/,
           loaders: ["css-to-string", "css", "sass"]
-        },
+        }
         {
           test: /manifest.json$/,
           loader: 'file-loader?name=manifest.json!web-app-manifest-loader'
         },
-      ],
-
     },
 
     /*
@@ -167,6 +175,16 @@ module.exports = function (options) {
         filename: 'webpack-assets.json',
         prettyPrint: true
       }),
+
+      /**
+       * Plugin: @ngtools/webpack
+       * Description: Set up AoT for webpack, including SASS precompile
+       */
+      // new ngtools.AotPlugin({
+      //   tsConfigPath: 'tsconfig-aot.json',
+      //   entryModule: 'src/app/app.module#AppModule',
+      //   genDir: 'aot'
+      // }),
 
       /*
        * Plugin: ForkCheckerPlugin
@@ -210,10 +228,10 @@ module.exports = function (options) {
        */
       new CopyWebpackPlugin([{
         from: 'src/assets',
-        to: 'assets',
+        to: 'assets'
       }, {
-        from: 'src/meta',
-      }, ]),
+        from: 'src/meta'
+      }]),
 
 
       /*
@@ -274,7 +292,7 @@ module.exports = function (options) {
        *
        * See: https://gist.github.com/sokra/27b24881210b56bbaff7
        */
-      new LoaderOptionsPlugin({}),
+      new LoaderOptionsPlugin({})
 
     ],
 
@@ -292,6 +310,16 @@ module.exports = function (options) {
       clearImmediate: false,
       setImmediate: false
     }
-
   };
-}
+
+  // if (aotMode) {
+  //   config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin(true));
+  //   config.plugins.push(new ngtools.AotPlugin({
+  //     tsConfigPath: './tsconfig-aot.json',
+  //     entryModule: './src/app/app.module#AppModule',
+  //     genDir: './src/aot'
+  //   }));
+  // }
+
+  return config;
+};

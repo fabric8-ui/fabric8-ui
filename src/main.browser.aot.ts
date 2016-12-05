@@ -1,23 +1,21 @@
 /*
  * Angular bootstraping
  */
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-// import { platformBrowser } from '@angular/platform-browser';
+import { platformBrowser } from '@angular/platform-browser';
 import { decorateModuleRef } from './app/environment';
 import { bootloader } from '@angularclass/hmr';
 /*
  * App Module
  * our top level module that holds all of our components
  */
-import { AppModule } from './app';
+import { AppModuleNgFactory } from '../aot/app/app.module.ngfactory';
 
 /*
  * Bootstrap our Angular app with a top level NgModule
  */
 export function main(): Promise<any> {
-  // return platformBrowser().bootstrapModuleFactory(AppModule)
-  return platformBrowserDynamic()
-    .bootstrapModule(AppModule)
+  return platformBrowser()
+    .bootstrapModuleFactory(AppModuleNgFactory)
     .then(decorateModuleRef)
     .catch(err => console.error(err));
 }

@@ -12,12 +12,13 @@
     "removeComments": false,
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
-    "baseUrl": "./src",
-    "paths": {
-    },
+    "baseUrl": "",
+    "mapRoot": "",
+    "rootDir": ".",
+    "outDir": "lib",
     "lib": [
       "dom",
-      "es6"
+      "es2015"
     ],
     "types": [
       "hammerjs",
@@ -30,12 +31,9 @@
       "webpack"
     ]
   },
-  "files": [
-    "src/app/app.module.ts",
-    "src/main.browser.aot.ts"
-  ],
   "angularCompilerOptions": {
-    "genDir": "aot",
+    "genDir": "src/app/generated",
+    "entryModule": "src/app/app.module#AppModule",
     "skipMetadataEmit" : true
   }
 }
