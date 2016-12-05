@@ -3,7 +3,7 @@
         #almWorkItemDetailForm="ngForm" 
         id="wi-detail-form">
     <fieldset [attr.disabled]="!loggedIn ? true : null">
-      <div class="width100 pull-left mobile-bar paddingL20 paddingR20">
+      <div class="col-md-12 col-sm-12 col-xs-12 mobile-bar ">
         <div class="pull-left dropdown-kebab-pf detail-type-dropdown" dropdown>
           <span dropdown-open class="wi-type-icon" almIcon [iconType]="workItem.type"></span>
           <ul *ngIf="loggedIn" id="wi-type-dropdown" class="dropdown-menu mobMarginL20" aria-labelledby="dropdownKebabRight">
@@ -21,7 +21,7 @@
         <span class="pficon-close detail-close" (click)="closeDetails()"></span>
       </div>
 
-      <div class="width100 pull-left truncate-ellipsis">
+      <div class="col-md-12 col-sm-12 col-xs-12 truncate-ellipsis">
         <div class="col-md-8 col-sm-7 col-xs-12 wi-detail-title-blk">
           <div *ngIf="!headerEditable" (click)='openHeader()'
             id="title-click-div">
@@ -41,7 +41,7 @@
                   [innerText]="workItem.fields['system.title'] | almTrim"
                   #title >
               </div>
-              <aside class="width100 pull-left">
+              <aside class="col-md-12 col-sm-12 col-xs-12 pull-left">
                 <!--Save icon-->                                       
                 <div id="workItemTitle_btn_save"
                     class="pull-right btn-small detail-action-btn" 

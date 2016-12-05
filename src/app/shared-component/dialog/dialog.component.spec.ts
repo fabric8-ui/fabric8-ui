@@ -45,7 +45,7 @@ describe('Dialog component - ', () => {
   it('Do not display dialog header if not provided', () => {
     comp.dialog = dialog;
     fixture.detectChanges();
-    el = fixture.debugElement.query(By.css('h1'));
+    el = fixture.debugElement.query(By.css('h4'));
     comp.dialog.title = '';
     fixture.detectChanges();
     expect(el.nativeElement.textContent).toContain(comp.dialog.title);
@@ -54,7 +54,7 @@ describe('Dialog component - ', () => {
   it('Display dialog header when provided', () => {
     comp.dialog = dialog;
     fixture.detectChanges();
-    el = fixture.debugElement.query(By.css('h1'));
+    el = fixture.debugElement.query(By.css('h4'));
     comp.dialog.title = 'This is a header';
     fixture.detectChanges();
     expect(el.nativeElement.textContent).toContain(comp.dialog.title);
@@ -100,7 +100,9 @@ describe('Dialog component - ', () => {
     comp.dialog = dialog;
     fixture.detectChanges();
     comp.btnClick(0);
-    expect(comp.modalFadeIn).toBeFalsy();
+    setTimeout(() => {
+      expect(comp.modalFadeIn).toBeFalsy();
+    }, 300); // 300ms takes to close the modal
   });
 
 });

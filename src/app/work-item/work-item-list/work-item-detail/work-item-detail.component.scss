@@ -23,7 +23,8 @@
     font-size: em(14);
   }  
   .wi-detail-title-blk{
-    padding: em(20) em(20) em(10);
+    padding: em(20) 0 em(10);
+    margin-bottom:em(10);
     .detail-title {
       min-height: em(20);
       float: left;
