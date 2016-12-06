@@ -19,6 +19,10 @@
     {
       "name": "Sudipta Sen",
       "email": "sudsen@redhat.com"
+    },
+    {
+      "name": "Vikram Raj",
+      "email": "viraj@redhat.com"
     }
   ],
   "license": "Apache-2.0",
