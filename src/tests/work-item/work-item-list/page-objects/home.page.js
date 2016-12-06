@@ -12,9 +12,9 @@
  * Home Page Definition
  */
 
-let testSupport = require('./testSupport');
+let testSupport = require('../testSupport');
 let CommonPage = require('./common.page');
-let constants = require("./constants");
+let constants = require("../constants");
 let until = protractor.ExpectedConditions;
 
 class HomePage {

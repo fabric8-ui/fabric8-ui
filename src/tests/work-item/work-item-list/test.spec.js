@@ -12,8 +12,8 @@
  * @author ldimaggi
  */
 
-var CommonPage = require('./common.page'),
-  TestPage = require('./test.page'),
+var CommonPage = require('./page-objects/common.page'),
+  TestPage = require('./page-objects/test.page'),
   testSupport = require('./testSupport');
 
 describe('Test page', function () {

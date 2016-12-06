@@ -12,7 +12,7 @@
  * @author 
  */
 
-var WorkItemListPage = require('./work-item-list.page'),
+var WorkItemListPage = require('./page-objects/work-item-list.page'),
   testSupport = require('./testSupport');
 
 describe('Test name here...', function () {

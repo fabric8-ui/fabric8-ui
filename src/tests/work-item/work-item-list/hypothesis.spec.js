@@ -12,8 +12,8 @@
  * @author ldimaggi
  */
 
-var CommonPage = require('./common.page'),
-  HypothesisPage = require('./hypothesis.page'),
+var CommonPage = require('./page-objects/common.page'),
+  HypothesisPage = require('./page-objects/hypothesis.page'),
   testSupport = require('./testSupport');
 
 describe('Hypothesis page', function () {

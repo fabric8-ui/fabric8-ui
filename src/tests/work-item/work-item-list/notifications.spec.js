@@ -12,8 +12,8 @@
  * @author ldimaggi
  */
 
-var CommonPage = require('./common.page'),
-  NotificationsPage = require('./notifications.page'),
+var CommonPage = require('./page-objects/common.page'),
+  NotificationsPage = require('./page-objects/notifications.page'),
   testSupport = require('./testSupport');
 
 describe('Notifications page', function () {

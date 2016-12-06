@@ -12,8 +12,8 @@
  * @author ldimaggi
  */
 
-var CommonPage = require('./common.page'),
-  PipelinePage = require('./pipeline.page'),
+var CommonPage = require('./page-objects/common.page'),
+  PipelinePage = require('./page-objects/pipeline.page'),
   testSupport = require('./testSupport');
 
 describe('Pipeline page', function () {

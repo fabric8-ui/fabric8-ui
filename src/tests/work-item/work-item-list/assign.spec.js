@@ -14,7 +14,7 @@
  * @author naina-verma
  */
 
-var WorkItemListPage = require('./work-item-list.page'),
+var WorkItemListPage = require('./page-objects/work-item-list.page'),
   testSupport = require('./testSupport');
 
 describe('Work item list', function () {

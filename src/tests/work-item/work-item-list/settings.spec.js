@@ -12,8 +12,8 @@
  * @author ldimaggi
  */
 
-var CommonPage = require('./common.page'),
-  SettingsPage = require('./settings.page'),
+var CommonPage = require('./page-objects/common.page'),
+  SettingsPage = require('./page-objects/settings.page'),
   testSupport = require('./testSupport');
 
 describe('Settings page', function () {

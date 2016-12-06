@@ -12,8 +12,8 @@
  * @author ldimaggi
  */
 
-var CommonPage = require('./common.page'),
-  ChatPage = require('./chat.page'),
+var CommonPage = require('./page-objects/common.page'),
+  ChatPage = require('./page-objects/chat.page'),
   testSupport = require('./testSupport');
 
 describe('Chat page', function () {

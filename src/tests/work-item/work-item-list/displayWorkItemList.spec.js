@@ -14,9 +14,9 @@
  * @author ldimaggi
  */
 
-var WorkItemListPage = require('./work-item-list.page'),
+var WorkItemListPage = require('./page-objects/work-item-list.page'),
   testSupport = require('./testSupport'),
-  WorkItemDetailPage = require('./work-item-detail.page');
+  WorkItemDetailPage = require('./page-objects/work-item-detail.page');
 
 describe('Work item list', function () {
   var page, items, startCount, browserMode;

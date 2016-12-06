@@ -9,19 +9,19 @@
 'use strict';
 
 /*
- * Test Page Definition - placeholder
+ * Chat Page Definition - placeholder
  */
 
-let testSupport = require('./testSupport');
+let testSupport = require('../testSupport');
 let CommonPage = require('./common.page');
-let constants = require("./constants");
+let constants = require("../constants");
 let until = protractor.ExpectedConditions;
 
-class TestPage {
+class ChatPage {
 
  constructor(login) {
  };
 
 }
 
-module.exports = TestPage;
+module.exports = ChatPage;

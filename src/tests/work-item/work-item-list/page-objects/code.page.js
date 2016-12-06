@@ -9,19 +9,20 @@
 'use strict';
 
 /*
- * Pipeline Page Definition - placeholder
+ * Code Page Definition - placeholder
  */
 
-let testSupport = require('./testSupport');
+let testSupport = require('../testSupport');
 let CommonPage = require('./common.page');
-let constants = require("./constants");
+let constants = require("../constants");
 let until = protractor.ExpectedConditions;
 
-class PipelinePage {
+class CodePage {
 
  constructor(login) {
  };
 
 }
 
-module.exports = PipelinePage;
+
+module.exports = CodePage;

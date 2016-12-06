@@ -12,8 +12,8 @@
  * @author ldimaggi
  */
 
-var CommonPage = require('./common.page'),
-  HomePage = require('./home.page'),
+var CommonPage = require('./page-objects/common.page'),
+  HomePage = require('./page-objects/home.page'),
   testSupport = require('./testSupport');
 
 describe('Home page', function () {

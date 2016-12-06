@@ -9,20 +9,19 @@
 'use strict';
 
 /*
- * Code Page Definition - placeholder
+ * Hypothesis Page Definition - placeholder
  */
 
-let testSupport = require('./testSupport');
+let testSupport = require('../testSupport');
 let CommonPage = require('./common.page');
-let constants = require("./constants");
+let constants = require("../constants");
 let until = protractor.ExpectedConditions;
 
-class CodePage {
+class HypothesisPage {
 
  constructor(login) {
  };
 
 }
 
-
-module.exports = CodePage;
+module.exports = HypothesisPage;

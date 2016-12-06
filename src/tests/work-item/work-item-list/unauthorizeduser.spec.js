@@ -18,8 +18,8 @@
  * @author nverma
  */
 
-var WorkItemListPage = require('./work-item-list.page'),
-    WorkItemDetailPage = require('./work-item-detail.page'),
+var WorkItemListPage = require('./page-objects/work-item-list.page'),
+    WorkItemDetailPage = require('./page-objects/work-item-detail.page'),
   testSupport = require('./testSupport');
 
 describe('Work item list', function () {

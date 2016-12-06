@@ -12,8 +12,8 @@
  * Common Page Definition - Elements common to all pages
  */
 
-let testSupport = require('./testSupport');
-let constants = require("./constants");
+let testSupport = require('../testSupport');
+let constants = require("../constants");
 let HomePage = require('./home.page');
 let CodePage = require('./code.page');
 let TestPage = require('./test.page');

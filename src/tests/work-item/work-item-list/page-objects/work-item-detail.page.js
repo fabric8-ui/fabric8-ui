@@ -12,8 +12,8 @@
  * Work Item Detail Page Definition
  */
 
-let testSupport = require('./testSupport');
-let constants = require("./constants");
+let testSupport = require('../testSupport');
+let constants = require("../constants");
 let until = protractor.ExpectedConditions;
 
 class WorkItemDetailPage {

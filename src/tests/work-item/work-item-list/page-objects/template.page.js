@@ -12,11 +12,11 @@
  * Work Item List Page Definition - template
  */
 
-let testSupport = require('./testSupport');
+let testSupport = require('../testSupport');
 let WorkItemDetailPage = require('./work-item-detail.page');
 let WorkItemBoardPage = require('./work-item-board.page');
 let CommonPage = require('./common.page');
-let constants = require("./constants");
+let constants = require("../constants");
 let until = protractor.ExpectedConditions;
 
 class TemplatePage {
