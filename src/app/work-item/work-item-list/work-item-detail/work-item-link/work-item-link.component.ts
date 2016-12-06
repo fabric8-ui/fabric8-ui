@@ -1,13 +1,16 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { cloneDeep } from 'lodash';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
-import { LinkType } from '../../../../models/link-type';
+import { cloneDeep } from 'lodash';
+
 import { Link } from '../../../../models/link';
-import { WorkItemLinkService } from './work-item-link.service';
+import { LinkType } from '../../../../models/link-type';
 import { WorkItem } from '../../../work-item';
 import { WorkItemService } from '../../../work-item.service';
+
 import { SearchData } from './search-data';
+import { WorkItemLinkService } from './work-item-link.service';
+
 @Component({
     selector: 'alm-work-item-link',
     templateUrl: './work-item-link.component.html',
@@ -144,7 +147,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
 
         // This is a fast fix
         // This logic is going to be changed 
-        // once we have associated links as realation for a work item
+        // once we have associated links as relation for a work item
         this.workItemService
         .getLocallySavedWorkItems()
         .then((wItems) => {
@@ -159,7 +162,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
     calculateTotal(): void{
         this.linksGroupCount = {};
         this.totalLinks = 0;
-        for ( var i = 0; i < this.workitemLinks.length; i++ ) {
+        for ( let i = 0; i < this.workitemLinks.length; i++ ) {
             const linkObj = this.workitemLinks[i];
             if (this.showWorkItem(linkObj, this.workItem)){
                 this.updateCount(linkObj);

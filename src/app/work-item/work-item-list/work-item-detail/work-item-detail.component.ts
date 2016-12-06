@@ -1,17 +1,17 @@
-import { Component, OnInit, Input, ViewChild, HostListener }      from '@angular/core';
+import { Component, OnInit, Input, ViewChild, HostListener } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
-import { Router }            from '@angular/router';
+import { Router }                 from '@angular/router';
 import { cloneDeep } from 'lodash';
 
-import { AuthenticationService } from './../../../auth/authentication.service';
-import { Broadcaster } from './../../../shared/broadcaster.service';
-import { Logger } from './../../../shared/logger.service';
-import { UserService } from './../../../user/user.service';
+import { AuthenticationService } from '../../../auth/authentication.service';
+import { Broadcaster } from '../../../shared/broadcaster.service';
+import { Logger } from '../../../shared/logger.service';
+import { UserService } from '../../../user/user.service';
 
-import { WorkItem } from './../../work-item';
-import { WorkItemType } from './../../work-item-type';
-import { WorkItemService } from './../../work-item.service';
+import { WorkItem } from '../../work-item';
+import { WorkItemService } from '../../work-item.service';
+import { WorkItemType } from '../../work-item-type';
 
 @Component({
   selector: 'alm-work-item-detail',
@@ -110,7 +110,7 @@ export class WorkItemDetailComponent implements OnInit {
     for (let i = 0; i < this.users.length; i++) {
       // This check needs to be updated by ID 
       // once we have the new user format
-      // on geting loggedIn user i.e. /user endpoint
+      // on getting loggedIn user i.e. /user endpoint
       if (this.users[i].attributes.imageURL == authUser.imageURL) {
         this.loggedInUser = this.users[i];
 
@@ -279,7 +279,7 @@ export class WorkItemDetailComponent implements OnInit {
           // In javascript mod gives exact mod for negative value 
           // For example, -1 % 6 = -1 but I need, -1 % 6 = 5
           // To get the round positive value I am adding the divisor
-          // witht he negative dividend
+          // with the negative dividend
           lis[(((i - 1) % lis.length) + lis.length) % lis.length].classList.add('selected');
           lis[(((i - 1) % lis.length) + lis.length) % lis.length].scrollIntoView(false);
         }

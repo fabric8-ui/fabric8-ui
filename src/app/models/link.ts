@@ -11,7 +11,7 @@ export class Link {
     'link_type': {
       'data': {
         'id': string,
-        'type':string
+        'type': string
       }
     },
     'source': {

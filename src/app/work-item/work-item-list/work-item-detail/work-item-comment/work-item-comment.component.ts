@@ -1,11 +1,13 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
+
 import { Comment, CommentAttributes } from '../../../../models/comment';
+import { NewUser } from '../../../../user/user';
+import { UserService } from '../../../../user/user.service';
 import { WorkItem } from '../../../work-item';
+
 import { WorkItemCommentService } from './work-item-comment.service';
-import { UserService } from './../../../../user/user.service';
-import { NewUser } from './../../../../user/user';
 
 @Component({
     selector: 'alm-work-item-comment',

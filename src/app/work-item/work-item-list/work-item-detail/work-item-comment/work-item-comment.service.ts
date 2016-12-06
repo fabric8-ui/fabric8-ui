@@ -31,7 +31,7 @@ export class WorkItemCommentService {
   }
 
   createComment(id: string, comment: Comment): Promise<Comment> {
-    var c = new CommentPost();
+    let c = new CommentPost();
     c.data = comment;
 
     return this.http

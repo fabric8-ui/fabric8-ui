@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router }                                         from '@angular/router';
 
-import { AuthenticationService } from './../../../auth/authentication.service';
-import { Broadcaster } from './../../../shared/broadcaster.service';
-import { Logger } from './../../../shared/logger.service';
+import { AuthenticationService } from '../../../auth/authentication.service';
+import { Broadcaster } from '../../../shared/broadcaster.service';
+import { Logger } from '../../../shared/logger.service';
 
-import { Dialog }            from './../../../shared-component/dialog/dialog';
+import { Dialog }            from '../../../shared-component/dialog/dialog';
 
-import { WorkItem }        from './../../../work-item/work-item';
-import { WorkItemService } from './../../../work-item/work-item.service';
+import { WorkItem }        from '../../work-item';
+import { WorkItemService } from '../../work-item.service';
 
 /**
  * Work Item List Entry Component - Displays a work item and action elements for it.

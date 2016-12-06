@@ -2,8 +2,8 @@ import { Component, OnInit, trigger, state, style, transition, animate } from '@
 import { Router }            from '@angular/router';
 import { cloneDeep } from 'lodash';
 
-import { AuthenticationService } from './../../auth/authentication.service';
-import { Broadcaster } from './../../shared/broadcaster.service';
+import { AuthenticationService } from '../../auth/authentication.service';
+import { Broadcaster } from '../../shared/broadcaster.service';
 import { Logger } from '../../shared/logger.service';
 
 import { WorkItem }                   from '../work-item';

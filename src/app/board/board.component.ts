@@ -13,7 +13,7 @@ import { WorkItemService } from '../work-item/work-item.service';
 export class BoardComponent implements OnInit {
   workItems: WorkItem[] = [];
   //Added mock data here
-  lanes:Array<any> = [];
+  lanes: Array<any> = [];
 
   constructor(
     private router: Router,
@@ -25,9 +25,9 @@ export class BoardComponent implements OnInit {
       .then(workItems => {
         this.workItems = workItems;
         //need push lane data here once the backend data is available
-        this.lanes.push({title:'Backlog', cards: workItems});
-        this.lanes.push({title: 'In-Progress',cards: [{'id': 211,fields:{'system.title': 'Item A'}}, {'id': 212,fields:{'system.title': 'Item B'}}, {'id': 213,fields:{'system.title':'Item C'}}, {'id': 214,fields:{'system.title': 'Item D'}}]});
-        this.lanes.push({title: 'Done',cards: [{'id': 311,fields:{'system.title': 'Item 1'}}, {'id': 312,fields:{'system.title':'Item 2'}}, {'id': 313,fields:{'system.title': 'Item 3'}}, {'id': 314,fields:{'system.title': 'Item 4'}}]});
+        this.lanes.push({title: 'Backlog', cards: workItems});
+        this.lanes.push({title: 'In-Progress', cards: [{'id': 211, fields: {'system.title': 'Item A'}}, {'id': 212, fields: {'system.title': 'Item B'}}, {'id': 213, fields: {'system.title': 'Item C'}}, {'id': 214, fields: {'system.title': 'Item D'}}]});
+        this.lanes.push({title: 'Done', cards: [{'id': 311, fields: {'system.title': 'Item 1'}}, {'id': 312, fields: {'system.title': 'Item 2'}}, {'id': 313, fields: {'system.title': 'Item 3'}}, {'id': 314, fields: {'system.title': 'Item 4'}}]});
       });
     
   }

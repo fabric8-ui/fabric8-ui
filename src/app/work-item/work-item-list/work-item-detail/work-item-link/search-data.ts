@@ -12,7 +12,7 @@ export class SearchData extends Subject<CompleterItem[]> implements CompleterDat
    }
    public search(term: string): void {
        let searchTerm = term;
-       if( this.searchType ){
+       if ( this.searchType ){
            searchTerm = term + '+type:' + this.searchType;
        }
        this.http.get(this.searchUrl + searchTerm)

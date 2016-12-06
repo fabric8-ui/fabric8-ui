@@ -11,11 +11,10 @@ import {
 } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
+import { AuthenticationService } from '../auth/authentication.service';
+import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
 import { Logger } from '../shared/logger.service';
 
-import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
-
-import { AuthenticationService } from './../auth/authentication.service';
 import { WorkItem } from './work-item';
 import { WorkItemService } from './work-item.service';
 

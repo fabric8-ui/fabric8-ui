@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { Logger } from '../shared/logger.service';
-import { Broadcaster } from './../shared/broadcaster.service';
+import { Broadcaster } from '../shared/broadcaster.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -44,10 +45,10 @@ export class AuthenticationService {
   }
 
   getUrlParams(): Object {
-    var query = window.location.search.substr(1);
-    var result = {};
+    let query = window.location.search.substr(1);
+    let result = {};
     query.split('&').forEach(function(part) {
-      var item = part.split('=');
+      let item = part.split('=');
       result[item[0]] = decodeURIComponent(item[1]);
     });
     return result;

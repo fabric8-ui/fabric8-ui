@@ -10,15 +10,15 @@ import {
 } from '@angular/core';
 
 @Directive({
-    selector: '[infiniteScroll]',
-    exportAs: 'infiniteScroll'
+    selector: '[almInfiniteScroll]',
+    exportAs: 'almInfiniteScroll'
 })
 export class InfiniteScrollDirective implements OnInit {
 
   @Output('initItems') initItems = new EventEmitter();
   @Output('fetchMore') fetchMore = new EventEmitter();
   @Input() eachElementHeightInPx: number = 20;
-  @Input() fetchThresold: number = 5;
+  @Input() fetchThreshold: number = 5;
   pageSize: number = 10;
   lastCheckedHeight = 0;
 
@@ -30,8 +30,8 @@ export class InfiniteScrollDirective implements OnInit {
   ngOnInit() {
     this.pageSize = Math.ceil(this.element.offsetHeight / this.eachElementHeightInPx);
     // Page should always have more elements than it can hold
-    // Normally twice than thresold value
-    this.pageSize += this.fetchThresold * 2;
+    // Normally twice than threshold value
+    this.pageSize += this.fetchThreshold * 2;
     this.initContentItems();
   }
 
@@ -46,7 +46,7 @@ export class InfiniteScrollDirective implements OnInit {
     if (this.element.scrollHeight > this.lastCheckedHeight) {
       let remainingHeight = this.element.scrollHeight - (this.element.offsetHeight + this.element.scrollTop);
       let remainingElement = Math.ceil(remainingHeight / this.eachElementHeightInPx);
-      if (remainingElement < this.fetchThresold) {
+      if (remainingElement < this.fetchThreshold) {
         this.lastCheckedHeight = this.element.scrollHeight;
         this.fetchMore.emit();
       }

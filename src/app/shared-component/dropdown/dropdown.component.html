@@ -2,7 +2,7 @@
 	<button 
 		(click)="toggle()" 
 		type="button" 
-		class="btn dropdown-toggle pf-dropdwon-btn {{selected.active_class ? selected.active_class : 'btn-default'}}" 
+		class="btn dropdown-toggle alm-dropdown-btn {{selected.active_class ? selected.active_class : 'btn-default'}}"
 		data-toggle="dropdown">
 		{{selected.option}} <span *ngIf="!disabled" class="caret"></span>
 	</button>

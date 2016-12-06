@@ -1,12 +1,13 @@
-import { cloneDeep } from 'lodash';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
+import { cloneDeep } from 'lodash';
 
 import 'rxjs/add/operator/toPromise';
 
-import { AuthenticationService } from './../auth/authentication.service';
-import { DropdownOption } from './../shared-component/dropdown/dropdown-option';
-import { Logger } from './../shared/logger.service';
+import { AuthenticationService } from '../auth/authentication.service';
+import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
+import { Logger } from '../shared/logger.service';
+
 import { WorkItem } from './work-item';
 import { WorkItemType } from './work-item-type';
 

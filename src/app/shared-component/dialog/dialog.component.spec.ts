@@ -11,7 +11,7 @@ import { DebugElement } from '@angular/core';
 import { FormsModule }  from '@angular/forms';
 import { By }           from '@angular/platform-browser';
 
-import { Logger } from './../../shared/logger.service';
+import { Logger } from '../../shared/logger.service';
 
 import { Dialog } from './dialog';
 import { DialogComponent } from './dialog.component';
@@ -63,7 +63,7 @@ describe('Dialog component - ', () => {
   it('Do not display dialog message if not provided', () => {
     comp.dialog = dialog;
     fixture.detectChanges();
-    el = fixture.debugElement.query(By.css('#pf-dialog-message'));
+    el = fixture.debugElement.query(By.css('#alm-dialog-message'));
     comp.dialog.message = '';
     fixture.detectChanges();
     expect(el.nativeElement.textContent).toContain(comp.dialog.message);
@@ -72,7 +72,7 @@ describe('Dialog component - ', () => {
   it('Display dialog message when provided', () => {
     comp.dialog = dialog;
     fixture.detectChanges();
-    el = fixture.debugElement.query(By.css('#pf-dialog-message'));
+    el = fixture.debugElement.query(By.css('#alm-dialog-message'));
     comp.dialog.message = 'Dialog Message Test';
     fixture.detectChanges();
     expect(el.nativeElement.textContent).toContain(comp.dialog.message);

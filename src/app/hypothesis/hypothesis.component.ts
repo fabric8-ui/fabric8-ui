@@ -3,7 +3,7 @@ import { Router }            from '@angular/router';
 
 
 @Component({
-  selector: 'hypothesis',
+  selector: 'alm-hypothesis',
   templateUrl: './hypothesis.component.html',
   styleUrls: ['./hypothesis.component.scss']
 })

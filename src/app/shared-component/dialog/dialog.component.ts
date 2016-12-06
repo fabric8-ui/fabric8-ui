@@ -16,7 +16,7 @@ import {
 import { Dialog } from './dialog';
 
 @Component({
-  selector: 'pf-dialog',
+  selector: 'alm-dialog',
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss'],
    animations: [

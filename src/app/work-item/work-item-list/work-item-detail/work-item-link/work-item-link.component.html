@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="link-content" id="wi-link-content" *ngIf="showLinkComponent">
-        <!-- Refactoring needed to toogle view -->
+        <!-- Refactoring needed to toggle view -->
         <div *ngIf="totalLinks == 0 && !showLinkView && loggedIn" class="width100 pull-left paddingT20 paddingB20 link-content-create-link">
             <i class="pficon pficon-add-circle-o add-circle-icon dib"></i>
             <h2 class="width100 dib">Work Item Links</h2>
@@ -62,7 +62,7 @@
                         <h5 class="width100 pull-left"><strong>{{linkType.attributes['name']}}</strong></h5>
                         <ul class="link-list-group-list">
                             <span *ngFor='let links of workitemLinks'>
-                                <!-- need to fina a way to store pipe result to a variable, isnstead of accessing pipe everytime -->
+                                <!-- need to fina a way to store pipe result to a variable, instead of accessing pipe every time -->
                                 <li *ngIf="links | almLinkTarget:workItem:linkType" class="link-list-group-list-item" [id]="links['id']">
                                     <div *ngIf="showWorkItem(links, workItem)">
                                         <div (click)="onDetail(links, workItem)">

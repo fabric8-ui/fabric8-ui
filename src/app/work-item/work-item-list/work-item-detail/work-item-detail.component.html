@@ -11,7 +11,7 @@
               <a>
                 <span class="wi-type-icon dropdown-icon" almIcon [iconType]="type.name"></span>
                 <span class="dropdown-text">
-                  {{type.name.substring(7,type.length)}}
+                  {{type.name.substring(7, type.length)}}
                 </span>
               </a>
             </li>
@@ -164,14 +164,14 @@
               [class.desc-editable]="descEditable"
               [class.desc-not-found]="!descEditable && !workItem.fields['system.description']">
               <!-- 
-                Following condition for innerHTML might look
-                little confusing. So, here is the explaination - 
-                If there is some description is hould show up
+                The following condition for innerHTML might look
+                little confusing. So, here is the explanation -
+                If there is some description it should show up
                 If there is none, then it should check if the description 
                 field is editable or not. If it's editable then it should
                 stay empty as in the default value of description.
                 If it's not editable and there is no description as well,
-                it should show up the message 'Work item Descriptionm.'
+                it should show up the message 'Work item Description.'
               -->                        
               <p almEditable [editable]="descEditable"
                 #desc 

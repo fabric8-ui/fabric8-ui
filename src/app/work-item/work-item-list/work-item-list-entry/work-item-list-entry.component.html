@@ -1,8 +1,8 @@
 <div *ngIf="showDialog">	
-	<pf-dialog
+	<alm-dialog
 		(pfDialogClick)="onButtonClick($event)"
 		[dialog]='dialog'	
-	></pf-dialog>
+	></alm-dialog>
 </div>
 <div class="list-group-item" (click)="onSelect($event)" [class.selected]="isSelected()">
 	<!-- info area -->

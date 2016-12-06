@@ -13,24 +13,24 @@ import { DebugElement }        from '@angular/core';
 import { FormsModule }         from '@angular/forms';
 import { By }                  from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CommonModule }       from '@angular/common';
+import { CommonModule }        from '@angular/common';
 import { DropdownModule }     from 'ng2-dropdown';
 import { Ng2CompleterModule } from 'ng2-completer';
 
-import { Logger } from './../../../../shared/logger.service';
-
-import { AuthenticationService } from './../../../../auth/authentication.service';
-import { User, NewUser } from './../../../../user/user';
-import { UserService } from './../../../../user/user.service';
-import { WorkItem } from './../../../work-item';
-import { WorkItemService } from './../../../work-item.service';
-import { AlmLinkTarget } from './../../../../pipes/alm-link-target.pipe';
+import { AuthenticationService } from '../../../../auth/authentication.service';
+import { AlmLinkTarget } from '../../../../pipes/alm-link-target.pipe';
+import { Link } from '../../../../models/link';
+import { LinkType } from '../../../../models/link-type';
+import { Logger } from '../../../../shared/logger.service';
+import { User, NewUser } from '../../../../user/user';
+import { UserService } from '../../../../user/user.service';
+import { WorkItem } from '../../../work-item';
+import { WorkItemService } from '../../../work-item.service';
 // import { WorkItemDetailComponent } from '../work-item-detail.component';
+
 import { WorkItemLinkComponent } from './work-item-link.component';
 import { WorkItemLinkService } from './work-item-link.service';
 
-import { LinkType } from '../../../../models/link-type';
-import { Link } from '../../../../models/link';
 
 describe('WorkItem Links CRD -', () => {
   let fixture: ComponentFixture<WorkItemLinkComponent>;

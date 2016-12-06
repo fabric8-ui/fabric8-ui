@@ -9,7 +9,7 @@ import {
 import { DropdownOption } from './dropdown-option';
 
 @Component({
-  selector: 'pf-dropdown',
+  selector: 'alm-dropdown',
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.scss'],
 })

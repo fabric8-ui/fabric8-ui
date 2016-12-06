@@ -17,29 +17,29 @@ import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'ng2-dropdown';
 import { Ng2CompleterModule } from 'ng2-completer';
 
-import { AlmTrim } from './../../../pipes/alm-trim';
-import { AlmSearchHighlight } from './../../../pipes/alm-search-highlight.pipe';
-import { AlmLinkTarget } from './../../../pipes/alm-link-target.pipe';
-import { AlmAvatarSize } from './../../../pipes/alm-avatar-size.pipe';
-import { Broadcaster } from './../../../shared/broadcaster.service';
-import { Logger } from './../../../shared/logger.service';
+import { AlmTrim } from '../../../pipes/alm-trim';
+import { AlmSearchHighlight } from '../../../pipes/alm-search-highlight.pipe';
+import { AlmLinkTarget } from '../../../pipes/alm-link-target.pipe';
+import { AlmAvatarSize } from '../../../pipes/alm-avatar-size.pipe';
+import { Broadcaster } from '../../../shared/broadcaster.service';
+import { Logger } from '../../../shared/logger.service';
 
-import { Dialog } from './../../../shared-component/dialog/dialog';
+import { Dialog } from '../../../shared-component/dialog/dialog';
 
 
-import { AlmIconModule } from './../../../shared-component/icon/almicon.module';
-import { AlmEditableModule } from './../../../shared-component/editable/almeditable.module';
-import { AuthenticationService } from './../../../auth/authentication.service';
-import { User, NewUser } from './../../../user/user';
-import { UserService } from './../../../user/user.service';
-import { WorkItem } from './../../work-item';
-import { WorkItemType } from './../../work-item-type';
-import { WorkItemService } from './../../work-item.service';
+import { AlmIconModule } from '../../../shared-component/icon/almicon.module';
+import { AlmEditableModule } from '../../../shared-component/editable/almeditable.module';
+import { AuthenticationService } from '../../../auth/authentication.service';
+import { User, NewUser } from '../../../user/user';
+import { UserService } from '../../../user/user.service';
+import { WorkItem } from '../../work-item';
+import { WorkItemType } from '../../work-item-type';
+import { WorkItemService } from '../../work-item.service';
+
 import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
 import { WorkItemLinkService } from './work-item-link/work-item-link.service';
 import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.component';
 import { WorkItemCommentService } from './work-item-comment/work-item-comment.service';
-
 import { WorkItemDetailComponent } from './work-item-detail.component';
 
 describe('Detailed view and edit a selected work item - ', () => {
