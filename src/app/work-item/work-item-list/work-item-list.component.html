@@ -1,6 +1,5 @@
-<div class="container-fluid containerPadd detail-list-container" [class.containerPadd-nologin] = "!loggedIn" >		
-	<div class="width100 fl detail-list-wrap list-group list-view-pf"
-       almInfiniteScroll
+<div class="container-fluid containerPadd detail-list-container" [class.containerPadd-nologin] = "!loggedIn" >
+	<div class="detail-list-wrap list-group list-view-pf" almInfiniteScroll
        [eachElementHeightInPx]='contentItemHeight'
        (initItems)='initWiItems($event)'
        (fetchMore)='fetchMoreWiItems()'>
@@ -20,9 +19,9 @@
 
 <div id="workItemList_Error" class="error" *ngIf="error">{{error}}</div>
 
-<div id="workItemList_quickAdd" class="width100 fl">
-    <div *ngIf="loggedIn" class="width100 fl suppress-hover">
-        <alm-work-item-quick-add></alm-work-item-quick-add>
+<div id="workItemList_quickAdd" class="pull-left">
+    <div *ngIf="loggedIn" class="pull-left supress-hover" (click)="addWorkItem()">
+        <alm-work-item-quick-add (close)="close($event)"></alm-work-item-quick-add>
     </div>
 </div>
 

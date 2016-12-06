@@ -5,65 +5,65 @@
             <i *ngIf="showLinkComponent" class="fa fa-angle-down"></i>
             <i *ngIf="!showLinkComponent" class="fa fa-angle-up"></i>
         </span>
-        <div class="link-header-nav"><span class="font18" id="wi-link-total">{{totalLinks}}</span><span class="link-header-nav-text">Total Links</span></div>
+        <div class="link-header-nav"><span id="wi-link-total">{{totalLinks}}</span><span class="link-header-nav-text">Total Links</span></div>
         <div class="link-header-nav" *ngFor="let linkType of linkTypes">
-            <span class="font18">{{ linksGroupCount[linkType['id']] > 0 ? linksGroupCount[linkType['id']] : 0 }}</span><span class="link-header-nav-text">{{linkType.attributes['name']}}</span>
+            <span>{{ linksGroupCount[linkType['id']] > 0 ? linksGroupCount[linkType['id']] : 0 }}</span><span class="link-header-nav-text">{{linkType.attributes['name']}}</span>
         </div>
     </div>
     <div class="link-content" id="wi-link-content" *ngIf="showLinkComponent">
-        <!-- Refactoring needed to toggle view -->
-        <div *ngIf="totalLinks == 0 && !showLinkView && loggedIn" class="width100 pull-left paddingT20 paddingB20 link-content-create-link">
+        <!-- Refactoring needed to toogle view -->
+        <div *ngIf="totalLinks == 0 && !showLinkView && loggedIn" class="link-content-create-link">
             <i class="pficon pficon-add-circle-o add-circle-icon dib"></i>
-            <h2 class="width100 dib">Work Item Links</h2>
-            <p class="width100 dib">There are no items linked to this issue</p>
+            <h2 class="col-md-12 col-sm-12 col-xs-12 dib">Work Item Links</h2>
+            <p class="col-md-12 col-sm-12 col-xs-12 dib">There are no items linked to this issue</p>
             <button class="btn btn-primary dib create-link-btn" (click)="toggleLinkView()">Create Link</button>
         </div>
         <!-- Refactoring needed to toogle view -->
-        <div *ngIf="totalLinks >0 || showLinkView" class="width100 pull-left">
+        <div *ngIf="totalLinks >0 || showLinkView" class="col-md-12 col-sm-12 col-xs-12">
             <div *ngIf="loggedIn">
-                <div class="width100 pull-left link-item-hdr" (click)="toggleLinkCreator()">
-                    <p class="pull-left">This item, {{ workItem.fields['system.title'] }}</p>
+                <div class="link-item-hdr" (click)="toggleLinkCreator()">
                     <i class="pficon pficon-close pull-right font16"></i>
+                    <p>This item, {{ workItem.fields['system.title'] }}</p>
                 </div>
-                <div  *ngIf="showLinkCreator" class="width100 pull-left padding20" id="wi-link-editor">
+                <div  *ngIf="showLinkCreator" class="link-editor" id="wi-link-editor">
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div dropdown class="dropdown detail-status-dropdown width50 pull-left">
+                        <div dropdown class="dropdown detail-status-dropdown col-md-6 col-sm-6 col-xs-6">
                             <button dropdown-open 
                             id="wi-link-type"
                             type="button" 
-                            class="btn dropdown-toggle width100 btn-default">
+                            class="btn dropdown-toggle col-md-12 col-sm-12 col-xs-12 btn-default">
                             <span class='dropdown-text'>
                                 {{selectedLinkType.attributes['forward_name']}}
                             </span>
                             <span *ngIf="loggedIn" class="caret pull-right marginT5"></span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-right dropdown-ul pull-left width100 padding5 link-dropdown" role="menu">
+                            <ul class="dropdown-menu dropdown-ul link-dropdown" role="menu">
                                 <li *ngFor="let linkType of linkTypes" (click)="onSelectRelation(linkType)">{{linkType.attributes['forward_name']}}</li>
                             </ul>
                         </div>
                         <span class="col-md-6 col-sm-6 col-xs-6"> to,item</span>
                     </div>
-                    <div class="width100 pull-left marginB20 marginT10">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="col-md-9 col-sm-9 col-xs-9">
                             <ng2-completer (selected)="onSelectItem($event)" [dataService]="searchWorkItem" [minSearchLength]="2" [placeholder]="'search for work items'"
                                 [textSearching]="'Please wait...'">
                             </ng2-completer> 
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                            <button type="button" value="Link" class="width100 pull-left btn btn-primary" (click)="createLink($event)">Link</button>
+                            <button type="button" value="Link" class="col-md-12 col-sm-12 col-xs-12 btn btn-primary" (click)="createLink($event)">Link</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="width100 pull-left paddingL20 paddingR20" *ngIf="totalLinks >0">
+            <div class="link-list-wrap" *ngIf="totalLinks >0">
                 <h4 class="link-list-header">Links</h4>
                 <div *ngFor='let linkType of linkTypes'>
-                    <div *ngIf="linksGroupCount[linkType['id']] > 0" class="width100 pull-left link-list">
-                        <h5 class="width100 pull-left"><strong>{{linkType.attributes['name']}}</strong></h5>
+                    <div *ngIf="linksGroupCount[linkType['id']] > 0" class="col-md-12 col-sm-12 col-xs-12 link-list">
+                        <h5 class="col-md-12 col-sm-12 col-xs-12"><strong>{{linkType.attributes['name']}}</strong></h5>
                         <ul class="link-list-group-list">
-                            <span *ngFor='let links of workitemLinks'>
-                                <!-- need to fina a way to store pipe result to a variable, instead of accessing pipe every time -->
-                                <li *ngIf="links | almLinkTarget:workItem:linkType" class="link-list-group-list-item" [id]="links['id']">
+                            <li *ngFor='let links of workitemLinks'>
+                                <!-- need to fina a way to store pipe result to a variable, isnstead of accessing pipe everytime -->
+                               <div *ngIf="links | almLinkTarget:workItem:linkType" class="link-list-group-list-item" [id]="links['id']">
                                     <div *ngIf="showWorkItem(links, workItem)">
                                         <div (click)="onDetail(links, workItem)">
                                             <span [id]="links['id'] + '-text'" class="col-md-8 col-sm-8 col-xs-8 truncate" >{{workItemsMap[links | almLinkTarget:workItem:linkType].id}} {{workItemsMap[links | almLinkTarget:workItem:linkType].fields['system.title']}}</span>
@@ -73,8 +73,8 @@
                                             <i class="pull-right pficon pficon-close list-close-icon"></i>
                                         </a>
                                     </div>
-                                </li>
-                            </span>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>

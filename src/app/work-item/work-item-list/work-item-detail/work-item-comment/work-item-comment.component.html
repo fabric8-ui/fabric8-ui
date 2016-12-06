@@ -1,33 +1,25 @@
-<div class="comment-container paddingT20" id="wi-comment" style="clear:both">
+<div class="col-md-12 col-sm-12 col-xs-12" id="wi-comment">
     <div class="comment-content" id="wi-comment-content">
         <!-- Refactoring needed to toogle view -->
-        <div *ngIf="true" class="width100">
-            <div class="width100  paddingL20 paddingR20" *ngIf="true">
-                <div *ngIf="loggedIn" class="paddingB20">
-                    <textarea rows="2" type="text" id="wi-comment-add-comment" class="form-control width100" [(ngModel)]="comment.attributes.body"
-                        [style.height]="descHeight" [style.resize]="descResize" (keydown.enter)="createComment($event)" (keyup.enter)="preventDef($event)"
-                        placeholder="Add a comment here...">
-                    </textarea>
-                </div>
-                <div *ngFor='let comment of comments'>
-                    <div class="paddingB20">
-                        <div class="pull-left" style="padding-bottom:10px; padding-right:10px;">
-                            <img class="user-assign-avatar" *ngIf="comment.relationships['created-by'].data.attributes?.imageURL" [src]="comment.relationships['created-by'].data.attributes?.imageURL | almAvatarSize:30"
-                            />
-                        </div>
-                        <div>
-                            <div>
-                                <h5 class="width100"><strong>{{comment.relationships['created-by'].data?.attributes?.fullName}}</strong>
-                                    <small class="pull-right">{{comment.attributes['created-at'] | date:'medium'}}</small>
-                                </h5>
-                            </div>
-                            <div style="clear:right">
-                                <h5 class="width100">{{comment.attributes.body}}</h5>
-                            </div>
-                        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12" *ngIf="true">
+            <div *ngIf="loggedIn" class="">
+                <textarea rows="2" type="text" id="wi-comment-add-comment" class="form-control width100" [(ngModel)]="comment.attributes.body"
+                    [style.height]="descHeight" [style.resize]="descResize" (keydown.enter)="createComment($event)" (keyup.enter)="preventDef($event)"
+                    placeholder="Add a comment here...">
+                </textarea>
+            </div>
+            <div *ngFor='let comment of comments' class="comments-wrap">  
+                <div>
+                    <img class="user-assign-avatar pull-left" *ngIf="comment.relationships['created-by'].data.attributes?.imageURL" [src]="comment.relationships['created-by'].data.attributes?.imageURL | almAvatarSize:30"
+                    />
+                    <small class="pull-right">{{comment.attributes['created-at'] | date:'medium'}}</small>
+                    <div class="comment-body">
+                        <h5 class="col-md-12 col-sm-12 col-xs-12"><strong>{{comment.relationships['created-by'].data?.attributes?.fullName}}</strong>
+                        </h5>
                     </div>
                 </div>
-            </div>
+                <p class="col-md-12 col-xs-12 col-sm-12">{{comment.attributes.body}}</p>
+            </div>     
         </div>
     </div>
 </div>

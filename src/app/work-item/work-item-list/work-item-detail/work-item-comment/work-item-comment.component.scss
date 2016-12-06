@@ -1,3 +1,32 @@
 @import "../../../../../assets/stylesheets/custom";
 @import "../../../../../assets/stylesheets/mixins";
 @import "../../../../../assets/stylesheets/color-variables";
+
+.comment-content{
+    width: $width100;
+    float: left;
+    padding: em(20) 0;
+    > div{
+        padding: 0;
+    }
+    .comments-wrap {
+        width: $width100;
+        float: left;
+        border-bottom: 1px solid $color-pf-black-200;
+        margin-top: em(15);
+            &:last-child{
+                 border-bottom: none;
+            }
+        > div{
+            width: $width100;
+            float: left;
+            .comment-body{
+                padding-left: em(35);
+                padding-right: em(130);
+            }
+        }
+    }
+    .comments-wrap > p{
+        padding: 0;
+    }
+}

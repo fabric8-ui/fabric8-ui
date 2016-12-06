@@ -2,7 +2,7 @@
 @import "./../../../../assets/stylesheets/mixins";
 @import "./../../../../assets/stylesheets/color-variables";
 .detail-container {
-  @extend .width100;
+  width: $width100;
   font-size: rem(12);
   float: left;
   .note{
@@ -23,8 +23,7 @@
     font-size: em(14);
   }  
   .wi-detail-title-blk{
-    padding: em(20) 0 em(10);
-    margin-bottom:em(10);
+    padding: em(20) em(0) em(10);
     .detail-title {
       min-height: em(20);
       float: left;
@@ -42,15 +41,18 @@
       outline: 0;
       line-height: 1.3;
     }
+    aside{
+      padding: 0;
+    }
     .clearfloat{
       clear: both;
     }
     .detail-title-edit-ico {
       display: none;
       position: absolute;
-      right: em(30);
+      right: em(9);
       z-index: 10;
-      top: em(10);
+      top: em(18);
       cursor: pointer;
     }
     &:hover {
@@ -67,7 +69,6 @@
   .wi-state-btn{
     max-width: em(132);
     padding: em(20) 0;
-    margin-right: em(20);
     .detail-status-dropdown {
       text-align: $textRight;
       .dropdown-icon {
@@ -79,15 +80,20 @@
       .dropdown-text {
         float: left;
         text-transform: capitalize;
+        text-align:left;
+      }
+      .caret{
+        margin-top: em(5);
       }
       .dropdown-ul {
         min-width: em(132);
         width: em(132);
+        top: em(25);
         .dropdown-li {
-          @extend .width100;
+          width: $width100;
           float: left;
           a{
-            @extend .width100;
+            width: $width100;
             float: left;
             padding: em(2) em(10);
           }
@@ -130,6 +136,7 @@
   .detail-description-wrap {
     margin-top: em(10);
      .detail-description {
+       padding: 0;
       .detail-desc-div-wrap {
         background-color: $color-pf-black-150;
         .desc-not-found {
@@ -151,7 +158,7 @@
           .edit-icon {
             display: none;
             position: absolute;
-            right: em(30);
+            right: em(9);
             z-index: 10;
             top: em(10);
             cursor: pointer;
@@ -174,14 +181,14 @@
   .detail-action-btn {
     font-size: em(14);
     cursor: pointer;
-    min-width:em(2);
+    width:em(24);
     text-align: $textCenter;
     padding: em(5);
-    background-color: #ebebeb;
+    background-color: $color-pf-black-200;
     margin-left: em(5);
   }
   .desc-editable {
-    @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(0,136,206,.6));
+    @include box-shadow(inset 0 1px 1px $color-pf-black-100,0 0 8px $color-pf-blue-300);
     @include transition(border-color ease-in-out .15s,box-shadow ease-in-out .15s);
     border: 1px solid $color-pf-blue-400 !important;
     padding-right: em(30) !important;
@@ -221,7 +228,7 @@
 
     input {
       outline: none;
-      @extend .width100;
+      width: $width100;
       height: em(30);
       border: none;
       border-bottom: 1px solid $color-pf-black-500;
@@ -236,7 +243,7 @@
       .item-li {
         cursor: pointer;
         padding: em(5);
-        @extend .width100;
+        width: $width100;
         float: left;
         &:hover {
           background-color: $color-pf-black-300;

@@ -7,6 +7,10 @@
     background-color: transparent;
   }
 }
+.detail-list-wrap{
+  width: $width100;
+  float: left;
+}
 .containerPadd{ padding: em(96) 0 em(66) 0; }
 .containerPadd-nologin{ padding-bottom: 0; }
 

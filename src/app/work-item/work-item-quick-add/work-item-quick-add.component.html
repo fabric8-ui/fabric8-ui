@@ -1,17 +1,17 @@
-<div class="width100 pull-left quickAdd_container" id="workItemQuickAdd_container" >
-  <div class="width100 pull-left addWorkItem" (click)="toggleQuickAdd()" [ngClass]="{'db' : showQuickAddBtn, 'dn' : !showQuickAddBtn}">
+<div class="quickAdd_container" id="workItemQuickAdd_container" >
+  <div class="col-md-12 col-sm-12 col-xs-12 addWorkItem" (click)="toggleQuickAdd()" [ngClass]="{'db' : showQuickAddBtn, 'dn' : !showQuickAddBtn}">
     <a class="workItemQuickAdd_saveBtn">
       <i class='pficon-add-circle-o dib font18'></i>
     </a>
     <h4>Add Work Item</h4>
   </div>
-  <div class="width100 pull-left addWorkItemBlk " *ngIf="showQuickAdd">
+  <div class="col-md-12 col-sm-12 col-xs-12 addWorkItemBlk " *ngIf="showQuickAdd">
     <div class="workItemQuickAdd_IconType">
       <i class="fa fa-bookmark pull-left "></i>
     </div>
     <div class=" workItemQuickAdd_story">
       <div class="col-md-6 col-sm-6 col-xs-12 workItemQuickAdd_storyInput">
-        <input #quickAddTitle type="text" id="exampleInput" class="form-control width100 pull-left"  [(ngModel)]="workItem.fields['system.title']" 
+        <input #quickAddTitle type="text" id="exampleInput" class="form-control col-md-12 col-sm-12 col-xs-12"  [(ngModel)]="workItem.fields['system.title']" 
               (keyup.enter)="save($event)"
               (keyup)="checkTitle()" placeholder="A New Story" required/>
       </div>
@@ -27,9 +27,9 @@
       </div>
     </div>
     <div class="workItemQuickAdd_AddBlk">
-      <span class="pull-left font16 workItemQuickAdd_Add" 
-        (click)="save($event)" [ngClass]="{'icon-btn': validTitle,'icon-btn-disabled':!validTitle}"><i class="fa fa-check font14"></i></span>
-      <span (click)="toggleQuickAdd()" class="pull-right closeQuickAdd"><i class="pficon pficon-close font16"></i></span>
+      <span class="pull-left workItemQuickAdd_Add" 
+        (click)="save($event)" [ngClass]="{'icon-btn': validTitle,'icon-btn-disabled':!validTitle}"><i class="fa fa-check"></i></span>
+      <span (click)="toggleQuickAdd()" class="pull-right closeQuickAdd"><i class="pficon pficon-close"></i></span>
     </div>
   </div>
 </div>

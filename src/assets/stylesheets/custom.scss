@@ -51,32 +51,6 @@ $textCenter: center;
 }
 
 // custom classes
-.width100{ width: $width100; }
-.width50{ width: $width100/2; }
-.marginT20{ margin-top: em(20); }
-.marginB20{ margin-bottom: em(20); }
-.marginT10{ margin-top: em(10); }
-.marginL10{ margin-left: em(10); }
-.marginR10{ margin-right: em(10); }
-.marginB10{ margin-bottom: em(10); }
-.marginT5{ margin-top: em(5); }
-.marginB5{ margin-bottom: em(5); }
-.marginL5{ margin-left: em(5); }
-.marginR5{ margin-right: em(5); }
-.margin0{ margin: em(0); }
-.paddingT20{ padding-top: em(20); }
-.paddingB20{ padding-bottom: em(20); }
-.paddingL20{ padding-left: em(20); }
-.paddingR20{ padding-right: em(20); }
-.paddingT5{ padding-top: em(5); }
-.paddingB5{ padding-bottom: em(5); }
-.paddingL5{ padding-left: em(5); }
-.paddingR5{ padding-right: em(5); }
-.padding0{ padding: em(0); }
-.padding20{ padding: em(20); }
-.font16{ font-size: em(16); }
-.font18{ font-size: em(18); }
-.vTop{ vertical-align: top; }
 .containerPadd{ padding: em(96) 0 em(66) 0; }
 .containerPadd-nologin{ padding-bottom: 0; }
 .truncate{

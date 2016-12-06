@@ -27,21 +27,19 @@
             id="title-click-div">
               <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate">{{ workItem.fields['system.title'] }}</h2>
               <h2 *ngIf="loggedIn" id="wi-detail-title-click" class="detail-title truncate">{{ workItem.fields['system.title'] }}</h2>
-              <span *ngIf="loggedIn" 
-                class="pficon-edit marginL10 fl detail-title-edit-ico" 
-                id="workItemTitle_btn_edit"></span>
+              <span *ngIf="loggedIn" class="pficon-edit pull-left detail-title-edit-ico" id="workItemTitle_btn_edit"></span>
           </div>
-          <div *ngIf="loggedIn && headerEditable" class="marginB10" id="wi-title-div"> 
+          <div *ngIf="loggedIn && headerEditable" class="" id="wi-title-div"> 
               <div almEditable 
                   (onUpdate)="checkTitle($event)"
                   (keyup.enter)="onUpdateTitle()"
                   (keydown.enter)="preventDef($event)"
                   id="wi-detail-title"
-                  class="detail-title-edit marginB10"         
+                  class="detail-title-edit"         
                   [innerText]="workItem.fields['system.title'] | almTrim"
                   #title >
               </div>
-              <aside class="col-md-12 col-sm-12 col-xs-12 pull-left">
+              <aside class="col-md-12 col-sm-12 col-xs-12">
                 <!--Save icon-->                                       
                 <div id="workItemTitle_btn_save"
                     class="pull-right btn-small detail-action-btn" 
@@ -51,7 +49,7 @@
                 </div>            
                 <!--Cancel icon-->                        
                 <div id="workItemTitle_btn_cancel" 
-                    class="pull-right fl btn-small detail-action-btn" 
+                    class="pull-right btn-small detail-action-btn" 
                     (click)="closeHeader()">
                   <span class="fa fa-close"></span>
                 </div>   
@@ -69,12 +67,12 @@
             <button dropdown-open 
               id="wi-detail-state"
               type="button" 
-              class="btn dropdown-toggle width100 btn-default">
+              class="btn dropdown-toggle col-md-12 col-sm-12 col-xs-12 btn-default">
               <span class='dropdown-icon' almIcon [iconType]="workItem.fields['system.state']"></span>
               <span class='dropdown-text'>
                 {{workItem.fields['system.state']}}
               </span>
-              <span *ngIf="loggedIn" class="caret pull-right marginT5"></span>
+              <span *ngIf="loggedIn" class="caret pull-right"></span>
             </button>
             <ul *ngIf="loggedIn" id="wi-status-dropdown" class="dropdown-menu dropdown-menu-right dropdown-ul" role="menu">
               <li class="dropdown-li" *ngFor="let state of workItemStates;" (click)="onChangeState(state.option)">
@@ -87,7 +85,7 @@
           </div>
         </div>
       </div>
-      <div class="width100 pull-left paddingL20 paddingR20 detail-assignee-wrap">
+      <div class="col-md-12 col-sm-12 col-xs-12 detail-assignee-wrap">
           <span
             *ngIf="!assignedUser"
             (click)="activeSearchAssignee()" 
@@ -102,17 +100,8 @@
           
           
           <div class="pull-left detail-assignee-name">
-              <span 
-                *ngIf="!searchAssignee && !assignedUser" 
-                (click)="activeSearchAssignee()" 
-                class="placeholder clickable"> Unassigned </span>
-              
-              <span 
-                *ngIf="!searchAssignee && assignedUser" 
-                (click)="activeSearchAssignee()" 
-                class="clickable" 
-                id="WI_details_assigned_user"> {{assignedUser.fullName}} </span>
-
+              <span *ngIf="!searchAssignee && !assignedUser" (click)="activeSearchAssignee()" class="placeholder clickable"> Unassigned </span>   
+              <span *ngIf="!searchAssignee && assignedUser" (click)="activeSearchAssignee()" class="clickable" id="WI_details_assigned_user"> {{assignedUser.fullName}} </span>
               <div *ngIf="searchAssignee" class="user-search" >
                 <div class="list-container">
                   <span class="fa fa-search user-search-icon"> </span>                  
@@ -153,12 +142,11 @@
                   </ul>
                 </div>
               </div>
-
           </div>
       </div>
 
-      <div class="width100 pull-left detail-description-wrap">
-        <div class="col-md-12 col-sm-12 col-xw-12 detail-description" *ngIf="loggedIn">
+      <div class="col-md-12 col-sm-12 col-xs-12 detail-description-wrap">
+        <div class="col-md-12 col-sm-12 col-xs-12 detail-description" *ngIf="loggedIn">
           <div class="detail-desc-div-wrap" (click)="openDescription(false, true)">
             <div class="detail-desc-div"
               [class.desc-editable]="descEditable"
@@ -198,7 +186,7 @@
           {{workItem.fields['system.description']}}
         </div>
       </div>                    
-      <div *ngIf="loggedIn && descEditable" class="width100 pull-left detail-desc-action paddingL20 paddingR20">
+      <div *ngIf="loggedIn && descEditable" class="col-md-12 col-sm-12 col-xs-12 detail-desc-action">
           <div id="workItemdesc_btn_save" 
               class="fl btn-small pull-right detail-action-btn" 
               (click)="onUpdateDescription()">

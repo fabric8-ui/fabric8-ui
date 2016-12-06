@@ -24,6 +24,8 @@
   text-align: $textLeft;
   cursor: pointer;
   font-size: rem(12);
+  width: $width100;
+  float: left;
   .addWorkItem{
     padding:em(20);
     h4{
@@ -36,6 +38,9 @@
       margin:0;
       &:hover{
         text-decoration: none;
+      }
+      i{
+        font-size: em(24);
       }
     }
     i,h4{
@@ -71,7 +76,15 @@
       width: em(36);
       .workItemQuickAdd_Add{
         text-align: right; 
-        font-size: em(16);
+        font-size: em(14);
+        i{
+          font-size: em(14);
+        }
+      }
+      .closeQuickAdd{
+        i{
+          font-size: em(16);
+        }
       }
     }
   }
