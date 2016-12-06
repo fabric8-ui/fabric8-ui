@@ -43,8 +43,14 @@
         }
     }
 }
-
+.navbar-pf {
+    .navbar-primary.persistent-secondary
+    >li.active {
+        margin-bottom: 0 ; 
+    }
+}
 .no-link {
   color: $color-pf-white;
   text-decoration: none;
 }
+

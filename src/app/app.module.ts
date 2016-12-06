@@ -51,6 +51,10 @@ import { PipelineModule } from './pipeline/pipeline.module';
 import { SettingsModule } from './settings/settings.module';
 import { TestModule } from './test/test.module';
 
+//SubMenu
+import { DashboardModule } from './dashboard/dashboard.module';
+import { LearnModule } from './learn/learn.module';
+
 // conditionally import the inmemory resource module
 let moduleImports: Array<any[] | any | ModuleWithProviders>;
 
@@ -61,11 +65,13 @@ if (process.env.ENV == 'inmemory') {
     BoardModule,
     ChatModule,
     CodeModule,
+    DashboardModule,
     DropdownModule,
     FormsModule,
     HomeModule,
     HypothesisModule,
     HttpModule,
+    LearnModule,
     NotificationsModule,
     PipelineModule,
     SettingsModule,
@@ -81,11 +87,13 @@ if (process.env.ENV == 'inmemory') {
     BoardModule,
     ChatModule,
     CodeModule,
+    DashboardModule,
     DropdownModule,
     FormsModule,
     HomeModule,
     HypothesisModule,
     HttpModule,
+    LearnModule,
     NotificationsModule,
     PipelineModule,
     SettingsModule,

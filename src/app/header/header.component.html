@@ -50,24 +50,32 @@
       </tab>
     </tabset>
 -->
-    <ul id="header_menuList" class="nav navbar-nav navbar-primary nav-list-mob-scroll">
-      <li>
-        <a [routerLink]="['/home']" id="header_menuHome" routerLinkActive="active">Home</a>
+    <ul id="header_menuList" class="nav navbar-nav navbar-primary nav-list-mob-scroll persistent-secondary">
+      <li routerLinkActive="active">
+        <a [routerLink]="['/home']" id="header_menuHome">Home</a>
+        <ul class="nav navbar-nav navbar-persistent">
+          <li routerLinkActive="active">
+            <a [routerLink]="['/dashboard']" id="header_submenuDashboard">Dashboard</a>
+          </li>
+          <li routerLinkActive="active">
+            <a [routerLink]="['/learn']" id="header_submenuLearn">Learn</a>
+          </li>
+        </ul>
       </li>
-      <li>
-        <a [routerLink]="['/work-item-list']" id="header_menuWork" routerLinkActive="active">Work</a>
+      <li routerLinkActive="active">
+        <a [routerLink]="['/work-item-list']" id="header_menuWork">Work</a>
       </li>
-      <li>
-        <a [routerLink]="['/code']" id="header_menuCode" routerLinkActive="active">Code</a>
+      <li routerLinkActive="active">
+        <a [routerLink]="['/code']" id="header_menuCode">Code</a>
       </li>
-      <li>
-        <a [routerLink]="['/test']" id="header_menuTest" routerLinkActive="active">Test</a>
+      <li routerLinkActive="active">
+        <a [routerLink]="['/test']" id="header_menuTest">Test</a>
       </li>
-      <li>
-        <a [routerLink]="['/pipeline']" id="header_menuPipeline" routerLinkActive="active">Environments/Pipelines</a>
+      <li routerLinkActive="active">
+        <a [routerLink]="['/pipeline']" id="header_menuPipeline">Environments/Pipelines</a>
       </li>
-      <li>
-        <a [routerLink]="['/hypothesis']" id="header_menuHypothesis" routerLinkActive="active">Hypothesis Engine <sup><span class="fa fa-trademark"></span></sup></a>
+      <li routerLinkActive="active">
+        <a [routerLink]="['/hypothesis']" id="header_menuHypothesis" >Hypothesis Engine <sup><span class="fa fa-trademark"></span></sup></a>
       </li>
     </ul>
   </div>
