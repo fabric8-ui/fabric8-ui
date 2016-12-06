@@ -26,7 +26,7 @@ describe('Dialog component - ', () => {
     dialog = {
       'title': 'Dialog Title',
       'message': 'Dialog Message',
-      'actionButtons': [{'title': 'Yes', 'value': 1}, {'title': 'No', 'value': 0}]
+      'actionButtons': [{'title': 'Yes', 'value': 1, 'default': false}, {'title': 'No', 'value': 0, 'default': true}]
     } as Dialog;
   });
 
@@ -91,7 +91,7 @@ describe('Dialog component - ', () => {
     comp.dialog = dialog;
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('.modal-footer'));
-    comp.dialog.actionButtons = [{'title': 'Test Button', 'value': 1}];
+    comp.dialog.actionButtons = [{'title': 'Test Button', 'value': 1, 'default': false}];
     fixture.detectChanges();
     expect(el.children.length).toBe(comp.dialog.actionButtons.length);
   });

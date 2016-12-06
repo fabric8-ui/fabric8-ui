@@ -2,6 +2,7 @@ import {
   animate,
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnInit,
   Output,
@@ -71,5 +72,23 @@ export class DialogComponent implements OnInit {
       this.onClick.emit(val);
       this.modalFadeIn = false;
     }, 300);
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  onActionKeyPress(event: any): void {
+    let currentDefaultIndex = this.dialog.actionButtons.findIndex(i => i.default);
+    this.dialog.actionButtons[currentDefaultIndex].default = false;
+    let len = this.dialog.actionButtons.length;
+    if (event.keyCode == 37) { // Left arrow
+      let newDefaultIndex = ((currentDefaultIndex - 1) + len) % len;
+      this.dialog.actionButtons[newDefaultIndex].default = true;
+    } else if (event.keyCode == 39) { // Right arrow
+      let newDefaultIndex = ((currentDefaultIndex - 1) + len) % len;
+      this.dialog.actionButtons[newDefaultIndex].default = true;
+    } else if (event.keyCode == 13) { // Enter
+      this.btnClick(this.dialog.actionButtons[currentDefaultIndex].value);
+    } else if (event.keyCode == 27) { // Esc key
+      this.btnClick(0);
+    }
   }
 }

@@ -82,9 +82,10 @@ export class WorkItemListEntryComponent implements OnInit {
       'title': 'Confirm deletion of Work Item',
       'message': 'Are you sure you want to delete Work Item - ' + this.workItem.fields['system.title'] + ' ?',
       'actionButtons': [
-        {'title': 'Confirm', 'value': 1},
-        {'title': 'Cancel', 'value': 0}]
-    };
+        {'title': 'Confirm', 'value': 1, 'default': false},
+        {'title': 'Cancel', 'value': 0, 'default': true}
+      ]
+    } as Dialog;
     this.showDialog = true;
   }
 
