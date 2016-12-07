@@ -50,6 +50,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { PipelineModule } from './pipeline/pipeline.module';
 import { SettingsModule } from './settings/settings.module';
 import { TestModule } from './test/test.module';
+import { ObsidianModule } from './obsidian/obsidian.module';
 
 //SubMenu
 import { DashboardModule } from './dashboard/dashboard.module';
@@ -99,6 +100,7 @@ if (process.env.ENV == 'inmemory') {
     SettingsModule,
     TabsModule,
     TestModule,
+    ObsidianModule,
     WorkItemListModule,
     AppRoutingModule
   ];

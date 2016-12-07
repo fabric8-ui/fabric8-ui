@@ -1,6 +1,6 @@
 <nav id="header_wrapper" class="navbar navbar-default navbar-pf header-navbar" role="navigation">
 	<div id="header_nav" class="navbar-header">
-    
+
     <div class="navbar-brand">
       <a class="fl no-link">
         <span class="pficon pficon-enterprise pull-left marginR5"></span>
@@ -21,11 +21,11 @@
           <a [routerLink]="['/notifications']" id="header_menuNotifications" routerLinkActive="active"><span class="fa fa-bell"></span></a>
           </li>
       	<li *ngIf="loggedIn">
-        	<a *ngIf="loggedInUser" id="header_dropdownToggle">          								
-						<span *ngIf="!imgLoaded" class="pficon pficon-user"></span>							
-						<img (load)="onImgLoad()" src="{{ loggedInUser.imageURL }}" 
-							[ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}" 
-							class="pull-left marginR10" />													
+        	<a *ngIf="loggedInUser" id="header_dropdownToggle">
+						<span *ngIf="!imgLoaded" class="pficon pficon-user"></span>
+						<img (load)="onImgLoad()" src="{{ loggedInUser.imageURL }}"
+							[ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
+							class="pull-left marginR10" />
 						{{loggedInUser.fullName}}
         	</a>
       </li>
@@ -76,6 +76,9 @@
       </li>
       <li routerLinkActive="active">
         <a [routerLink]="['/hypothesis']" id="header_menuHypothesis" >Hypothesis Engine <sup><span class="fa fa-trademark"></span></sup></a>
+      </li>
+      <li>
+        <a [routerLink]="['/intro']" id="header_menuWizard" routerLinkActive="active">Microserices quickstart</a>
       </li>
     </ul>
   </div>
