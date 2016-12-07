@@ -22,7 +22,7 @@ const APP_PROVIDERS = [
   AppState
 ];
 
-type StoreType = {
+export type StoreType = {
   state: InternalStateType,
   restoreInputValues: () => void,
   disposeOldHosts: () => void

@@ -37,7 +37,7 @@ const METADATA = {
  */
 module.exports = function (options) {
   const isProd = options.env === 'production';
-  const aotMode = false;//options && options.aot !== undefined;
+  const aotMode = true;//options && options.aot !== undefined;
   console.log('The options from the webpack config: ' + JSON.stringify(options, null, 2));
   // const entryFile = aotMode ? './src/main.browser.aot.ts' : './src/main.browser.ts';
   // const outPath = aotMode ? 'dist' : 'aot';
@@ -171,21 +171,20 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: [
+      /*
+       * Plugin: AssetsPlugin
+       * Description: Webpack plugin that emits a json file with assets paths.
+       * When working with Webpack you might want to generate your bundles with a generated hash in them (for cache busting).
+       * This plug-in outputs a json file with the paths of the generated assets so you can find them from somewhere else.
+       *
+       * See: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
+       * See: https://github.com/kossnocorp/assets-webpack-plugin
+       */
       new AssetsPlugin({
         path: helpers.root('dist'),
         filename: 'webpack-assets.json',
         prettyPrint: true
       }),
-
-      /**
-       * Plugin: @ngtools/webpack
-       * Description: Set up AoT for webpack, including SASS precompile
-       */
-      // new ngtools.AotPlugin({
-      //   tsConfigPath: 'tsconfig-aot.json',
-      //   entryModule: 'src/app/app.module#AppModule',
-      //   genDir: 'aot'
-      // }),
 
       /*
        * Plugin: ForkCheckerPlugin
@@ -194,6 +193,7 @@ module.exports = function (options) {
        * See: https://github.com/s-panferov/awesome-typescript-loader#forkchecker-boolean-defaultfalse
        */
       new ForkCheckerPlugin(),
+
       /*
        * Plugin: CommonsChunkPlugin
        * Description: Shares common code between the pages.
@@ -206,7 +206,7 @@ module.exports = function (options) {
         name: ['polyfills', 'vendor'].reverse()
       }),
 
-      /**
+      /*
        * Plugin: ContextReplacementPlugin
        * Description: Provides context to Angular's use of System.import
        *
@@ -288,7 +288,7 @@ module.exports = function (options) {
         headTags: require('./head-config.common')
       }),
 
-      /**
+      /*
        * Plugin LoaderOptionsPlugin (experimental)
        *
        * See: https://gist.github.com/sokra/27b24881210b56bbaff7
@@ -313,14 +313,13 @@ module.exports = function (options) {
     }
   };
 
-  // if (aotMode) {
-  //   config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin(true));
-  //   config.plugins.push(new ngtools.AotPlugin({
-  //     tsConfigPath: './tsconfig-aot.json',
-  //     entryModule: './src/app/app.module#AppModule',
-  //     genDir: './src/aot'
-  //   }));
-  // }
+  if (aotMode) {
+    config.plugins.push(new ngtools.AotPlugin({
+      tsConfigPath: 'tsconfig-aot.json',
+      // entryModule: './src/app/app.module#AppModule',
+      // genDir: './src/aot'
+    }));
+  }
 
   return config;
 };

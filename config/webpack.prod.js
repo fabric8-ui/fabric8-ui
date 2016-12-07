@@ -18,6 +18,7 @@ const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const ngtools = require('@ngtools/webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 /**
  * Webpack Constants
@@ -33,6 +34,7 @@ const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
 });
 
 module.exports = function (env) {
+  console.log('The env from the webpack.prod config: ' + JSON.stringify(env, null, 2));
   return webpackMerge(commonConfig({env: ENV}), {
 
     /**
@@ -93,6 +95,17 @@ module.exports = function (env) {
     plugins: [
 
       /**
+       * Plugin: @ngtools/webpack
+       * Description: Set up AoT for webpack, including SASS precompile
+       */
+ /*     new ngtools.AotPlugin({
+        tsConfigPath: 'tsconfig-aot.json',
+        // mainPath: "src/main.browser.ts"
+        // entryModule: 'src/app/app.module#AppModule',
+        // genDir: 'aot'
+      }),
+*/
+      /**
        * Plugin: WebpackMd5Hash
        * Description: Plugin to replace a standard webpack chunkhash with md5.
        *
@@ -101,14 +114,10 @@ module.exports = function (env) {
       new WebpackMd5Hash(),
 
       /**
-       * Plugin: @ngtools/webpack
-       * Description: Set up AoT for webpack, including SASS precompile
+       * Webpack plugin and CLI utility that represents bundle content as convenient interactive zoomable treemap
        */
-      new ngtools.AotPlugin({
-        tsConfigPath: 'tsconfig-aot.json',
-        mainPath: "src/main.browser.ts"
-        // entryModule: 'src/app/app.module#AppModule',
-        // genDir: 'aot'
+      new BundleAnalyzerPlugin({
+        generateStatsFile: true
       }),
 
       /**

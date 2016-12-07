@@ -1,4 +1,6 @@
+const path = require('path');
 const ngToolsWebpack = require('@ngtools/webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   resolve: {
@@ -6,15 +8,21 @@ module.exports = {
   },
   entry: './src/main.browser.ts',
   output: {
-    path: './dist',
+    path: path.join(process.cwd(), 'dist'),
     publicPath: 'dist/',
     filename: 'app.main.js'
   },
   plugins: [
     new ngToolsWebpack.AotPlugin({
       "tsConfigPath": "./tsconfig-aot.json",
-      "mainPath": "src/main.browser.ts"
-    })
+      // "mainPath": "src/main.browser.ts"
+    }),
+    /**
+     * Webpack plugin and CLI utility that represents bundle content as convenient interactive zoomable treemap
+     */
+    new BundleAnalyzerPlugin({
+      generateStatsFile: true
+    }),
   ],
   module: {
     loaders: [
