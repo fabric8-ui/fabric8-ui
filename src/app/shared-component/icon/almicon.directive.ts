@@ -21,26 +21,31 @@ export class AlmIconDirective implements OnInit, OnChanges {
   }
 
   addIcon() {
-    if (this.iconType in IconMap) {
-      const element: HTMLElement = this.elementRef.nativeElement;
-      let existingClassNames = element.className.split(' ');
-      let allClassesInMap: string[] = [];
-      for (var key in IconMap) {
-        if (IconMap.hasOwnProperty(key)) {
-          IconMap[key].forEach((item: string) => {
-            allClassesInMap.push(item);
-          });
-        }
+    const element: HTMLElement = this.elementRef.nativeElement;
+    let existingClassNames = element.className.split(' ');
+    let allClassesInMap: string[] = [];
+    for (var key in IconMap) {
+      if (IconMap.hasOwnProperty(key)) {
+        IconMap[key].forEach((item: string) => {
+          allClassesInMap.push(item);
+        });
       }
+    }
 
-      existingClassNames.forEach((item: any) => {
-        if (allClassesInMap.indexOf(item) > -1) {
-          element.classList.remove(item);             
-        }
-      });
+    existingClassNames.forEach((item: any) => {
+      if (allClassesInMap.indexOf(item) > -1) {
+        element.classList.remove(item);             
+      }
+    });
+
+    if (this.iconType in IconMap) {
       IconMap[this.iconType].forEach((item: any) => {
         element.classList.add(item);
       });       
+    } else {
+      IconMap['default'].forEach((item: any) => {
+        element.classList.add(item);
+      });
     }
   }
 }

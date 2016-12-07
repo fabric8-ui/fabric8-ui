@@ -9,5 +9,7 @@ export const IconMap = {
     'system.fundamental'       : ['fa', 'fa-bank'],
     'system.experience'        : ['fa', 'fa-map'],
     'system.feature'           : ['fa', 'fa-mouse-pointer'],
-    'system.bug'               : ['fa', 'fa-bug']
+    'system.bug'               : ['fa', 'fa-bug'],
+    'system.planneritem'       : ['fa', 'fa-paint-brush'],
+    'default'                  : ['fa', 'fa-crosshairs'] // Never remove this line
 };
