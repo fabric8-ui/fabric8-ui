@@ -14,3 +14,12 @@
 	border-top: 1px solid $color-pf-blue-300;
 	margin-top: 2%;
 }
+
+.app {
+	padding: em(96) 0 em(66) 0;
+	height: 100%;
+}
+
+@media (max-width: ($grid-float-breakpoint - 1)){
+	.app{ padding-top: em(132); }
+}

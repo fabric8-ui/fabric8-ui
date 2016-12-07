@@ -11,12 +11,10 @@
   width: $width100;
   float: left;
 }
-.containerPadd{ padding: em(96) 0 em(66) 0; }
 .containerPadd-nologin{ padding-bottom: 0; }
 
 
 @media (max-width: ($grid-float-breakpoint - 1)){
-  .containerPadd{ padding-top: em(132); }
   .containerPadd-nologin{ padding-bottom: 0; }
   .workItem_Overlay{
     background-color:$color-pf-black;
@@ -36,11 +34,11 @@
     @include transition(opacity .3s);
     opacity: .6;
     width: $width100;
-  }  
+  }
 }
 
 .detail-panel {
-  background: $color-pf-white;  
+  background: $color-pf-white;
   position: fixed;
   left: auto;
   top: em(34);
@@ -50,7 +48,7 @@
   min-width: em(250);
   z-index: 9999;
   padding: em(20) 0;
-  border-left: 1px solid darken($color-pf-white, 20%);  
+  border-left: 1px solid darken($color-pf-white, 20%);
   overflow-y: scroll;
 }
 @media (max-width: $grid-float-breakpoint){
