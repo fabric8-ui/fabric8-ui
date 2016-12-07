@@ -1,5 +1,61 @@
+@import "../../assets/stylesheets/variables";
+@import "../../assets/stylesheets/color-variables";
 @import "../../assets/stylesheets/custom";
 
 .dashboardWrapper{
-    padding-top: em(20);
+    padding-top: em(150);
+    background: $color-pf-black-150;
+    .dashboard-blocks-list{
+        width: $width100;
+        height: 100%;
+        float: left;
+        -webkit-display: -webkit-flex;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        flex-direction: column;
+        flex-flow: column wrap;
+        padding: 0;
+        height: em(600);
+        li{
+            list-style: none;
+            background: $color-pf-white;
+            margin: em(7) 0;
+            padding: em(10);
+            width: calc(37% - 1.5em);
+            > div{
+                width: $width100;
+                float:left;
+                h4{
+                    font-weight: 100;
+                    color: $color-pf-black-800;
+                }
+                p{
+                    color: $color-pf-black-600;
+                }
+                a{
+                    color: $color-pf-black-600;
+                    display: block;
+                    font-size: em(14);
+                    &:hover{
+                        color: $color-pf-black;
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+        .welcomeWrapper{
+            height: em(160);
+        }
+    }
+}
+@media (max-width: $grid-float-breakpoint){
+    .dashboardWrapper{
+        .dashboard-blocks-list{
+            height: auto;
+            li{
+                width: $width100;
+            }
+        }
+    }
 }
