@@ -3,7 +3,7 @@ import './rxjs-extensions';
 // Globals
 import Globals = require('./shared/globals');
 
-import { ModuleWithProviders, NgModule }      from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
 import { DropdownModule } from 'ng2-dropdown';

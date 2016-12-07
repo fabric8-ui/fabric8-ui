@@ -1,3 +1,4 @@
+<<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
 import { Logger } from './../shared/logger.service';
 
 import { Injectable } from '@angular/core';
@@ -113,13 +114,53 @@ export class MockDataService {
   }
 
   public getLoginStatus() {
+=======
+import { Injectable } from '@angular/core';
+import { WorkItem } from '../work-item/work-item';
+
+@Injectable()
+export class MockDataService {
+
+  getWorkItems() {
+    let workitems = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((n) => {
+    return {'fields': {'system.assignee': 'someUser' + n,
+                       'system.creator': 'someOtherUser' + n,
+                       'system.description': 'Some Description ' + n,
+                       'system.state': 'new',
+                       'system.title': 'Some Title ' + n},
+                       'id': '' + n,
+                       'type': 'system.userstory',
+                       'version': 1};
+    });
+    return workitems;
+  }
+
+  getWorkItem(id: string): any {
+    return { 'fields': {
+      'system.assignee': 'someUser' + id,
+      'system.creator': 'someOtherUser' + id,
+      'system.description': 'Some Description ' + id,
+      'system.state': 'new',
+      'system.title': 'Some Title ' + id},
+      'id': '' + id,
+      'type': 'system.userstory',
+      'version': 1
+      };
+  };
+
+  getLoginStatus() {
+>>>>>>> Initial version.
     return {
       'status': 200,
       'responseText': 'Good Job'
     };
   }
 
+<<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
   public getWorkItemTypes() {
+=======
+  getWorkItemTypes() {
+>>>>>>> Initial version.
     return [
       {
         'fields': {
@@ -424,14 +465,20 @@ export class MockDataService {
     ];
   }
 
+<<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
   public getUser(): any {
     return {
       'id': 'user1',
+=======
+  getUser() {
+    return {
+>>>>>>> Initial version.
       'fullName': 'Sudipta Sen',
       'imageURL': 'https://avatars.githubusercontent.com/u/2410474?v=3'
     };
   }
 
+<<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
   public getAllUsers(): any {
     return [
       {
@@ -462,6 +509,9 @@ export class MockDataService {
   }
 
   public getLinkCategories(): any {
+=======
+  getLinkCategories() {
+>>>>>>> Initial version.
     return {
       'data': {
         'attributes': {
@@ -475,7 +525,11 @@ export class MockDataService {
     };
   }
 
+<<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
   public getWorkItemLinkTypes(): any {
+=======
+  getWorkItemLinkTypes() {
+>>>>>>> Initial version.
     return [
         {
          'id': '4f8d8e8c-ab1c-4396-b725-105aa69a789c',
@@ -545,6 +599,7 @@ export class MockDataService {
     }];
   }
 
+<<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
   // initial data creators - might be loaded from fixtures in the future
 
   private createInitialWorkItems(): any {
@@ -562,6 +617,9 @@ export class MockDataService {
   }
 
   private createInitialWorkItemLinks(): any {
+=======
+  getWorkItemLinks() {
+>>>>>>> Initial version.
     return [
         {
             attributes: {

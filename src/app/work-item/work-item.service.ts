@@ -25,7 +25,6 @@ import Globals = require('./../shared/globals');
 
 @Injectable()
 export class WorkItemService {
-  
   private headers = new Headers({'Content-Type': 'application/json'});
   private workItemUrl = process.env.API_URL + 'workitems';  // URL to web api
   private workItemTypeUrl = process.env.API_URL + 'workitemtypes';
