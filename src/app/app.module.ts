@@ -1,6 +1,9 @@
 import './rxjs-extensions';
 
-import { ModuleWithProviders, NgModule } from '@angular/core';
+// Globals
+import Globals = require('./shared/globals');
+
+import { ModuleWithProviders, NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
 import { DropdownModule } from 'ng2-dropdown';
@@ -19,10 +22,10 @@ import { Broadcaster } from './shared/broadcaster.service';
 import { UserService } from './user/user.service';
 import { Logger } from './shared/logger.service';
 
-import { FormsModule }   from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 // App components
-import { AppComponent }  from './app.component';
+import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 // Board
@@ -39,9 +42,12 @@ import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 
 // Work
-import { WorkItemSearchComponent }    from './work-item/work-item-search/work-item-search.component';
-import { WorkItemService }            from './work-item/work-item.service';
-import { WorkItemListModule }             from './work-item/work-item-list/work-item-list.module';
+import { WorkItemSearchComponent } from './work-item/work-item-search/work-item-search.component';
+import { WorkItemService } from './work-item/work-item.service';
+import { WorkItemListModule } from './work-item/work-item-list/work-item-list.module';
+
+// Mock data
+import { MockDataService } from './shared/mock-data.service';
 
 // Main areas
 import { ChatModule } from './chat/chat.module';
@@ -59,82 +65,54 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { LearnModule } from './learn/learn.module';
 
 // conditionally import the inmemory resource module
-let moduleImports: Array<any[] | any | ModuleWithProviders>;
+var serviceImports: Array<any[] | any | ModuleWithProviders>;
 
 // The inmemory environment variable is checked and if present then the in-memory dataset is added.
 if (process.env.ENV == 'inmemory') {
-  moduleImports = [
-    BrowserModule,
-    BoardModule,
-    ChatModule,
-    CodeModule,
-    DashboardModule,
-    DropdownModule,
-    FormsModule,
-    HomeModule,
-    HypothesisModule,
-    HttpModule,
-    LearnModule,
-    ModalModule,
-    NotificationsModule,
-    PipelineModule,
-    SettingsModule,
-    TabsModule,
-    TestModule,
-    TooltipModule,
-    WorkItemListModule,
-    InMemoryWebApiModule.forRoot(InMemoryDataService),
-    AppRoutingModule
+  Globals.inTestMode = true;
+  serviceImports = [
+    Logger,
+    AuthenticationService,
+    Broadcaster,
+    LoginService,
+    UserService,
+    WorkItemService,
+    MockDataService
   ];
 } else {
-  moduleImports = [
-    BrowserModule,
-    BoardModule,
-    ChatModule,
-    CodeModule,
-    DashboardModule,
-    DropdownModule,
-    FormsModule,
-    HomeModule,
-    HypothesisModule,
-    HttpModule,
-    LearnModule,
-    ModalModule,
-    NotificationsModule,
-    PipelineModule,
-    SettingsModule,
-    TabsModule,
-    TestModule,
-    TooltipModule,
-    ObsidianModule,
-    WorkItemListModule,
-    AppRoutingModule
+  serviceImports = [
+    Logger,
+    AuthenticationService,
+    Broadcaster,
+    LoginService,
+    UserService,
+    WorkItemService
   ];
 }
 
 @NgModule({
-  imports: moduleImports,
-  // imports: [
-  //   AppRoutingModule,
-  //   BrowserModule,
-  //   BoardModule,
-  //   ChatModule,
-  //   CodeModule,
-  //   DropdownModule,
-  //   FormsModule,
-  //   HomeModule,
-  //   HypothesisModule,
-  //   HttpModule,
-  //   NotificationsModule,
-  //   PipelineModule,
-  //   SettingsModule,
-  //   TabsModule,
-  //   TestModule,
-  //   WorkItemListModule,
-  //   // InMemoryWebApiModule.forRoot(InMemoryDataService)
-  //   // The inmemory environment variable is checked and if present then the in-memory dataset is added.
-  //   // process.env.ENV == 'inmemory' ? InMemoryWebApiModule.forRoot(InMemoryDataService) : null
-  // ],
+  imports: [
+    BrowserModule,
+    BoardModule,
+    ChatModule,
+    CodeModule,
+    DashboardModule,
+    DropdownModule,
+    FormsModule,
+    HomeModule,
+    HypothesisModule,
+    HttpModule,
+    LearnModule,
+    ModalModule,
+    NotificationsModule,
+    PipelineModule,
+    SettingsModule,
+    TabsModule,
+    TestModule,
+    TooltipModule,
+    WorkItemListModule,
+    AppRoutingModule
+  ],
   declarations: [    
     AppComponent,
     FooterComponent,
@@ -142,14 +120,7 @@ if (process.env.ENV == 'inmemory') {
     LoginComponent,
     WorkItemSearchComponent
   ],
-  providers: [
-    Logger,
-    AuthenticationService,
-    Broadcaster,
-    LoginService,
-    UserService,
-    WorkItemService
-  ],
+  providers: serviceImports,
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

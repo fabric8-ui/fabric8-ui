@@ -72,5 +72,4 @@ describe('Work item list', function () {
       detailPage.clickWorkItemDetailCloseButton();
      });
    });
-  
 });
