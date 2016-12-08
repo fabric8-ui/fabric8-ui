@@ -4,7 +4,6 @@
 
 .board {
   margin: em(20) auto;
-  padding-top: em(96);
   display: flex;
   background-color: $color-pf-white;
   align-items: flex-start;
@@ -80,7 +79,4 @@
     opacity:.2;
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
     filter:alpha(opacity=20);
-  }
-  @media (max-width: ($grid-float-breakpoint - 1)){
-  .board{ padding-top: em(11); }
   }
