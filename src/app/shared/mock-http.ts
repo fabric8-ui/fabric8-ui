@@ -16,6 +16,8 @@ export class MockHttp extends Http {
 
     private UrlRegex = /app(\/.*)/g;
     private WorkItemRegex = /workitems\/(.*)/g;
+    private WorkItemSearchRegexp = /work-item-list\/\?name=(.*)/g;
+
     private mockDataService: MockDataService;
 
     constructor(private logger: Logger) {
@@ -36,7 +38,15 @@ export class MockHttp extends Http {
             this.logger.error('URL pattern is a work item reference but without id reference: ' + url);
             return null;
           } else {
-            return { path: '/workitems', refid: pathArr[1]}
+            return { path: '/workitems', refid: pathArr[1] };
+          }
+        } else if (resultArr[1].startsWith('/work-item-list')) {
+          var pathArr: string[] = new RegExp(this.WorkItemSearchRegexp).exec(resultArr[1]);
+          if (!pathArr || pathArr.length === 0) {
+            this.logger.error('URL pattern is a work item search but without search term: ' + url);
+            return null;
+          } else {
+            return { path: '/work-item-list', refid: pathArr[1] };
           }
         }
         return { path: resultArr[1], refid: null };
@@ -75,7 +85,7 @@ export class MockHttp extends Http {
       var path = this.getPathFromUrl(url);
       if (path == null) {
         this.logger.error('GET request failed with request url ' + url);
-        return this.createResponse(url.toString(), 500, 'Error', {});  
+        return this.createResponse(url.toString(), 500, 'error', {});  
       }
       this.logger.log('GET request at ' + path.path);
       // add new paths here
@@ -86,12 +96,19 @@ export class MockHttp extends Http {
           return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemTypes() );
         case '/workitems':
           if (path.refid) {
-            if (path.refid=='somethingillegal')
-              return this.createResponse(url.toString(), 501, 'error', {} );
-            else   
-              return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItem(path.refid) );
+            return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItem(path.refid) );
           } else {
             return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItemTypes() } );
+          }
+        case '/user':
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getUser() } );
+        case '/identities':
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getUser() } );          
+        case '/work-item-list':
+          if (path.refid) {
+            return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.searchWorkItem(path.refid) } );
+          } else {
+            return this.createResponse(url.toString(), 500, 'error: no search term given.', { } );
           }
       }
     };
@@ -100,51 +117,77 @@ export class MockHttp extends Http {
      */
     post(url: string, body: any, options?: RequestOptionsArgs): Observable<Response> {
       this.logger.log('POST request at ' + url);
-      console.log("HERE I AM.");
-      return null;
+      var path = this.getPathFromUrl(url);
+      if (path == null) {
+        this.logger.error('POST request failed with request url ' + url);
+        return this.createResponse(url.toString(), 500, 'error', {});  
+      }
+      if (path.path === '/workitems') {
+        return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.createWorkItem(body));
+      } else if (path.path === '/workitemlinks') {
+        return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.createWorkItemLink(body));        
+      } else 
+        return this.createResponse(url.toString(), 500, 'POST to unknown resource: ' + path.path, {});        
     };
     /**
      * Performs a request with `put` http method.
      */
     put(url: string, body: any, options?: RequestOptionsArgs): Observable<Response> {
       this.logger.log('PUT request at ' + url);
-      console.log("HERE I AM.");
-      return null;
+      var path = this.getPathFromUrl(url);
+      if (path == null) {
+        this.logger.error('PUT request failed with request url ' + url);
+        return this.createResponse(url.toString(), 500, 'error', {});  
+      }
+      if (path.path === '/workitems' && path.refid != null) {
+        if (this.mockDataService.updateWorkItem(body))
+          return this.createResponse(url.toString(), 200, 'ok', {});
+        else
+          return this.createResponse(url.toString(), 500, 'WorkItem does not exist: ' + path.refid, {});  
+      } else if (path.path === '/workitemlinks' && path.refid != null) {
+        if (this.mockDataService.updateWorkItemLink(body))
+          return this.createResponse(url.toString(), 200, 'ok', {});
+        else
+          return this.createResponse(url.toString(), 500, 'WorkItemLink does not exist: ' + path.refid, {});      
+      } else 
+        return this.createResponse(url.toString(), 500, 'PUT to unknown resource: ' + path.path, {});      
     };
     /**
      * Performs a request with `delete` http method.
      */
     delete(url: string, options?: RequestOptionsArgs): Observable<Response> {
       this.logger.log('DELETE request at ' + url);
-
-      console.log("HERE I AM.");
-      return null;
+      var path = this.getPathFromUrl(url);
+      if (path == null) {
+        this.logger.error('DELETE request failed with request url ' + url);
+        return this.createResponse(url.toString(), 500, 'error', {});  
+      }
+      if (path.path === '/workitems' && path.refid != null) {
+        if (this.mockDataService.deleteWorkItem(path.refid))
+          return this.createResponse(url.toString(), 200, 'ok', {});
+        else
+          return this.createResponse(url.toString(), 500, 'WorkItem does not exist: ' + path.refid, {});  
+      }
     };
     /**
      * Performs a request with `patch` http method.
      */
     patch(url: string, body: any, options?: RequestOptionsArgs): Observable<Response> {
       this.logger.log('PATCH request at ' + url);
-
-      console.log("HERE I AM.");
-      return null;
+      return this.createResponse(url.toString(), 500, 'PATCH method not implemented in mock-http.', {});
     };
     /**
      * Performs a request with `head` http method.
      */
     head(url: string, options?: RequestOptionsArgs): Observable<Response> {
       this.logger.log('HEAD request at ' + url);
-
-      console.log("HERE I AM.");
-      return null;
+      return this.createResponse(url.toString(), 500, 'PATCH method not implemented in mock-http.', {});
     };
     /**
      * Performs a request with `options` http method.
      */
     options(url: string, options?: RequestOptionsArgs): Observable<Response> {
       this.logger.log('OPTIONS request at ' + url);
-
-      console.log("HERE I AM.");
-      return null;
+      return this.createResponse(url.toString(), 500, 'PATCH method not implemented in mock-http.', {});
     };
 }

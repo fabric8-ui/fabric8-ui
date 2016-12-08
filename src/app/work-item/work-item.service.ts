@@ -471,10 +471,7 @@ export class WorkItemService {
       .post(url, payload, { headers: this.headers })
       .toPromise()
       .then(response => {
-        let newWorkItem: WorkItem = 
-          process.env.ENV != 'inmemory' ? 
-            response.json().data as WorkItem : 
-            cloneDeep(workItem) as WorkItem;
+        let newWorkItem: WorkItem = response.json().data as WorkItem;
         // Resolve the user for the new item
         this.resolveUsersForWorkItem(newWorkItem);
         // Add newly added item to the top of the list
@@ -494,43 +491,29 @@ export class WorkItemService {
    * @param: WorkItem - workItem (Item to be created)
    */
   update(workItem: WorkItem): Promise<WorkItem> {
-    if (process.env.ENV == 'inmemory') {
-      let url = `${this.workItemUrl}/${workItem.id}`;
-      return this.http
-        .post(url, JSON.stringify(workItem), { headers: this.headers })
-        .toPromise()
-        .then(response => {
-          let updatedWorkItem = cloneDeep(workItem) as WorkItem;
-          let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
-          this.workItems[updateIndex] = updatedWorkItem;
-          return updatedWorkItem;
-        })
-        .catch(this.handleError);
-    } else {
-      let url = `${this.workItemUrl}/${workItem.id}`;
-      return this.http
-        .patch(url, JSON.stringify({data: workItem}), { headers: this.headers })
-        .toPromise()
-        .then(response => {
-          let updatedWorkItem = response.json().data as WorkItem;
-          // Find the index in the big list
-          let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
-          if (updateIndex > -1) {
-            // Update work item attributes
-            this.workItems[updateIndex].attributes = updatedWorkItem.attributes;
-            this.workItems[updateIndex].relationships.baseType = updatedWorkItem.relationships.baseType;
-            // Resolve users for the updated item
-            this.resolveUsersForWorkItem(this.workItems[updateIndex]);
-          } else {
-            // This part is for mock service in unit test
-            // this.workItems stays in case of unit test
-            // Resolve users for the updated item
-            this.resolveUsersForWorkItem(updatedWorkItem);
-          }
-          return updatedWorkItem;
-        })
-        .catch(this.handleError);
-    }
+    let url = `${this.workItemUrl}/${workItem.id}`;
+    return this.http
+      .patch(url, JSON.stringify({data: workItem}), { headers: this.headers })
+      .toPromise()
+      .then(response => {
+        let updatedWorkItem = response.json().data as WorkItem;
+        // Find the index in the big list
+        let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
+        if (updateIndex > -1) {
+          // Update work item attributes
+          this.workItems[updateIndex].attributes = updatedWorkItem.attributes;
+          this.workItems[updateIndex].relationships.baseType = updatedWorkItem.relationships.baseType;
+          // Resolve users for the updated item
+          this.resolveUsersForWorkItem(this.workItems[updateIndex]);
+        } else {
+          // This part is for mock service in unit test
+          // this.workItems stays in case of unit test
+          // Resolve users for the updated item
+          this.resolveUsersForWorkItem(updatedWorkItem);
+        }
+        return updatedWorkItem;
+      })
+      .catch(this.handleError);
   }
 
   /**
