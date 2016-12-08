@@ -18,6 +18,7 @@
         padding: 0;
         height: em(600);
         li{
+            flex: 2 1 auto;
             list-style: none;
             background: $color-pf-white;
             margin: em(7) 0;
@@ -46,6 +47,26 @@
         }
         .welcomeWrapper{
             height: em(160);
+            max-height: em(160);
+        }
+        .recentChatsWrapper{
+            .joinChatBlock{
+                text-align: $textCenter;
+                .icon-chat-commenting{
+                    font-size: em(144);
+                    color: $color-pf-black-200;
+                    line-height: 1.2;
+                    @extend .dib;
+                }
+                span{
+                    color: $color-pf-black-400;
+                    width: $width100;
+                    float: left;
+                    text-align: $textCenter;
+                    padding: em(15) 0;
+                    font-size: em(16);
+                }
+            }
         }
     }
 }
