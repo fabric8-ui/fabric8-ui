@@ -3,7 +3,7 @@
 @import "../../assets/stylesheets/custom";
 
 .dashboardWrapper{
-    padding-top: em(150);
+    padding-top: em(50);
     background: $color-pf-black-150;
     .dashboard-blocks-list{
         width: $width100;
@@ -16,7 +16,7 @@
         flex-direction: column;
         flex-flow: column wrap;
         padding: 0;
-        height: em(600);
+        height: em(780);
         li{
             flex: 2 1 auto;
             list-style: none;
@@ -50,6 +50,7 @@
             max-height: em(160);
         }
         .recentChatsWrapper{
+            max-height: em(360);
             .joinChatBlock{
                 text-align: $textCenter;
                 .icon-chat-commenting{
@@ -65,6 +66,30 @@
                     text-align: $textCenter;
                     padding: em(15) 0;
                     font-size: em(16);
+                }
+            }
+        }
+        .recentProjectsWrapper{
+            h4{
+                width: $width100;
+                float: left;
+                i{
+                    color: $color-pf-black-400;
+                    font-weight: 100;
+                }
+            }
+            .projectsListBlock{
+                list-style: none;
+                display: flex;
+                flex-wrap: wrap;
+                padding:0;
+                width: $width100;
+                float:left;
+                margin-top:em(15);
+                li{
+                    padding: 0 em(10) 0 0;
+                    flex: 1 1 50%;
+                    @extend .truncate;
                 }
             }
         }
