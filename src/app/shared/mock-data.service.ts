@@ -1,3 +1,4 @@
+<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
 <<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
 import { Logger } from './../shared/logger.service';
 
@@ -115,52 +116,109 @@ export class MockDataService {
 
   public getLoginStatus() {
 =======
+=======
+import { Logger } from './../shared/logger.service';
+
+>>>>>>> Finished code. Now debugging.
 import { Injectable } from '@angular/core';
 import { WorkItem } from '../work-item/work-item';
 
 @Injectable()
 export class MockDataService {
 
-  getWorkItems() {
-    let workitems = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((n) => {
-    return {'fields': {'system.assignee': 'someUser' + n,
-                       'system.creator': 'someOtherUser' + n,
-                       'system.description': 'Some Description ' + n,
-                       'system.state': 'new',
-                       'system.title': 'Some Title ' + n},
-                       'id': '' + n,
-                       'type': 'system.userstory',
-                       'version': 1};
-    });
-    return workitems;
+  private workItems: any[];
+  private workItemLinks: any[];
+
+  constructor(private logger: Logger) {
+    this.workItems = this.createInitialWorkItems();
+    this.workItemLinks = this.createInitialWorkItemLinks();
   }
 
-  getWorkItem(id: string): any {
-    return { 'fields': {
-      'system.assignee': 'someUser' + id,
-      'system.creator': 'someOtherUser' + id,
-      'system.description': 'Some Description ' + id,
-      'system.state': 'new',
-      'system.title': 'Some Title ' + id},
-      'id': '' + id,
-      'type': 'system.userstory',
-      'version': 1
-      };
+  // data accessors
+
+  public getWorkItemLinks(): any {
+    return this.workItemLinks;
+  }
+
+  public getWorkItems(): any {
+    return this.workItems;
+  }
+
+  public createWorkItemLink(workItemLink: any): any {
+    this.workItemLinks.push(workItemLink);
+    return workItemLink;
+  }
+
+  public createWorkItem(workItem: any): any {
+    this.workItems.push(workItem);
+    return workItem;
+  }
+
+  public getWorkItem(id: string): any {
+    for (var i = 0; i < this.workItems.length; i++)
+      if (this.workItems[i].id === id)
+        return this.workItems[i];
   };
 
+<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
   getLoginStatus() {
 >>>>>>> Initial version.
+=======
+  public updateWorkItem(workItem: any) {
+    for (var i = 0; i < this.workItems.length; i++)
+      if (this.workItems[i].id === workItem.id)
+        this.workItems.splice(i, 1, workItem);
+  }
+
+  public updateWorkItemLink(workItemLink: any) {
+    for (var i = 0; i < this.workItems.length; i++)
+      if (this.workItemLinks[i].id === workItemLink.id)
+        this.workItemLinks.splice(i, 1, workItemLink);
+  }
+
+  public deleteWorkItem(id: string): boolean {
+    for (var i = 0; i < this.workItems.length; i++)
+      if (this.workItems[i].id === id) {
+        this.workItems.splice(i, 1);
+        return true;
+      }
+      return false;
+  }
+
+  public deleteWorkItemLink(id: string): boolean {
+    for (var i = 0; i < this.workItems.length; i++)
+      if (this.workItemLinks[i].id === id) {
+        this.workItemLinks.splice(i, 1);
+        return true;
+      }
+      return false;
+  }
+
+  public searchWorkItem(term: string): boolean {
+    for (var i = 0; i < this.workItems.length; i++)
+      if (this.workItems[i].fields['system.title'].indexOf(term) != -1) {
+        return this.workItems[i];
+      }
+      return false;
+  }
+
+  public getLoginStatus() {
+>>>>>>> Finished code. Now debugging.
     return {
       'status': 200,
       'responseText': 'Good Job'
     };
   }
 
+<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
 <<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
   public getWorkItemTypes() {
 =======
   getWorkItemTypes() {
 >>>>>>> Initial version.
+=======
+  public getWorkItemTypes() {
+>>>>>>> Finished code. Now debugging.
     return [
       {
         'fields': {
@@ -465,6 +523,7 @@ export class MockDataService {
     ];
   }
 
+<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
 <<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
   public getUser(): any {
     return {
@@ -473,12 +532,20 @@ export class MockDataService {
   getUser() {
     return {
 >>>>>>> Initial version.
+=======
+  public getUser(): any {
+    return {
+      'id': 'user1',
+>>>>>>> Finished code. Now debugging.
       'fullName': 'Sudipta Sen',
       'imageURL': 'https://avatars.githubusercontent.com/u/2410474?v=3'
     };
   }
 
+<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
 <<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
+=======
+>>>>>>> Finished code. Now debugging.
   public getAllUsers(): any {
     return [
       {
@@ -509,9 +576,12 @@ export class MockDataService {
   }
 
   public getLinkCategories(): any {
+<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
 =======
   getLinkCategories() {
 >>>>>>> Initial version.
+=======
+>>>>>>> Finished code. Now debugging.
     return {
       'data': {
         'attributes': {
@@ -525,11 +595,15 @@ export class MockDataService {
     };
   }
 
+<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
 <<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
   public getWorkItemLinkTypes(): any {
 =======
   getWorkItemLinkTypes() {
 >>>>>>> Initial version.
+=======
+  public getWorkItemLinkTypes(): any {
+>>>>>>> Finished code. Now debugging.
     return [
         {
          'id': '4f8d8e8c-ab1c-4396-b725-105aa69a789c',
@@ -599,7 +673,10 @@ export class MockDataService {
     }];
   }
 
+<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
 <<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
+=======
+>>>>>>> Finished code. Now debugging.
   // initial data creators - might be loaded from fixtures in the future
 
   private createInitialWorkItems(): any {
@@ -617,9 +694,12 @@ export class MockDataService {
   }
 
   private createInitialWorkItemLinks(): any {
+<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
 =======
   getWorkItemLinks() {
 >>>>>>> Initial version.
+=======
+>>>>>>> Finished code. Now debugging.
     return [
         {
             attributes: {
