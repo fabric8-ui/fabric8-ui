@@ -24,6 +24,9 @@
             margin: em(7) 0;
             padding: em(10);
             width: calc(37% - 1.5em);
+            &:last-child{
+                flex: 1 1 100%;
+            }
             > div{
                 width: $width100;
                 float:left;
@@ -93,6 +96,27 @@
                 }
             }
         }
+        .newsUpdateWrapper{
+            .newsUpdateBlock{
+                width: $width100;
+                float: left;
+                padding: 0;
+                li{
+                    width: $width100;
+                    float: left;
+                    margin: 0;
+                    .newsTitle, .newsText{
+                        width: $width100;
+                        float: left;
+                        margin:0;
+                        a{
+                            font-size: em(12);
+                            @extend .dib;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 @media (max-width: $grid-float-breakpoint){
@@ -101,6 +125,10 @@
             height: auto;
             li{
                 width: $width100;
+                &:last-child{
+                    width: $width100;
+                    flex-basis: auto;
+                }
             }
         }
     }
