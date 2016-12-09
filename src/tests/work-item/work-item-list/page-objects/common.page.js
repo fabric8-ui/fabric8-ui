@@ -22,6 +22,7 @@ let HypothesisPage = require('./hypothesis.page');
 let SettingsPage = require('./settings.page');
 let ChatPage = require('./chat.page');
 let NotificationsPage = require('./notifications.page');
+let MicroservicesPage = require('./microservices.page');
 let WorkItemListPage = require('./work-item-list.page');
 let until = protractor.ExpectedConditions;
 let waitTime = 30000;
@@ -130,6 +131,17 @@ class CommonPage {
     browser.wait(until.presenceOf(this.notificationsMenuTab), waitTime, 'Failed to find notificationsMenuTab');
     this.notificationsMenuTab.click(); 
     return new NotificationsPage();
+  }
+
+/* Microservices page */
+  get microservicesMenuTab () {
+    return element(by.id("header_menuWizard"));
+  }
+
+  clickMicroServicesMenuTab () {
+    browser.wait(until.presenceOf(this.microservicesMenuTab), waitTime, 'Failed to find microservicesMenuTab');
+    this.microservicesMenuTab.click(); 
+    return new MicroservicesPage();
   }
 
 }
