@@ -14,6 +14,7 @@ import { WorkItem } from '../work-item/work-item';
     change without this class noticing it! THIS HAPPENS. IT HAPPENED. IT SUCKS!
 */
 
+<<<<<<< 63f2feec4cbda89f0d1d83be2373e093b98d1a32
 @Injectable()
 export class MockDataService {
 
@@ -123,57 +124,88 @@ import { Logger } from './../shared/logger.service';
 import { Injectable } from '@angular/core';
 import { WorkItem } from '../work-item/work-item';
 
+=======
+>>>>>>> All tests green.
 @Injectable()
 export class MockDataService {
 
   private workItems: any[];
   private workItemLinks: any[];
 
-  constructor(private logger: Logger) {
+  constructor() {
     this.workItems = this.createInitialWorkItems();
     this.workItemLinks = this.createInitialWorkItemLinks();
+  }
+
+  private createId(): string {
+    var id = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (var i = 0; i < 5; i++)
+      id += possible.charAt(Math.floor(Math.random() * possible.length));
+    console.log('Created new id ' + id);
+    return id;
+  }
+
+  private makeCopy(input: any): any {
+    return JSON.parse(JSON.stringify(input));
   }
 
   // data accessors
 
   public getWorkItemLinks(): any {
-    return this.workItemLinks;
+    return this.makeCopy(this.workItemLinks);
   }
 
   public getWorkItems(): any {
-    return this.workItems;
+    return this.makeCopy(this.workItems);
   }
 
   public createWorkItemLink(workItemLink: any): any {
-    this.workItemLinks.push(workItemLink);
-    return workItemLink;
+    var localWorkItemLink = this.makeCopy(workItemLink);
+    localWorkItemLink.id = this.createId();
+    this.workItemLinks.push(localWorkItemLink);
+    return this.makeCopy(localWorkItemLink);
   }
 
   public createWorkItem(workItem: any): any {
-    this.workItems.push(workItem);
-    return workItem;
+    var localWorkItem = this.makeCopy(workItem);
+    localWorkItem.id = this.createId();
+    this.workItems.push(localWorkItem);
+    return this.makeCopy(localWorkItem);
   }
 
   public getWorkItem(id: string): any {
     for (var i = 0; i < this.workItems.length; i++)
       if (this.workItems[i].id === id)
-        return this.workItems[i];
+        return this.makeCopy(this.workItems[i]);
   };
 
+<<<<<<< 63f2feec4cbda89f0d1d83be2373e093b98d1a32
 <<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
   getLoginStatus() {
 >>>>>>> Initial version.
 =======
   public updateWorkItem(workItem: any) {
+=======
+  public updateWorkItem(workItem: any): any {
+    var localWorkItem = this.makeCopy(workItem);
+>>>>>>> All tests green.
     for (var i = 0; i < this.workItems.length; i++)
-      if (this.workItems[i].id === workItem.id)
-        this.workItems.splice(i, 1, workItem);
+      if (this.workItems[i].id === localWorkItem.id) {
+        this.workItems.splice(i, 1, localWorkItem);
+        return this.makeCopy(localWorkItem);
+      }
+    return null;
   }
 
-  public updateWorkItemLink(workItemLink: any) {
-    for (var i = 0; i < this.workItems.length; i++)
-      if (this.workItemLinks[i].id === workItemLink.id)
-        this.workItemLinks.splice(i, 1, workItemLink);
+  public updateWorkItemLink(workItemLink: any): any {
+    var localWorkItemLink = this.makeCopy(workItemLink);
+    for (var i = 0; i < this.workItemLinks.length; i++)
+      if (this.workItemLinks[i].id === localWorkItemLink.id) {
+        this.workItemLinks.splice(i, 1, localWorkItemLink);
+        return this.makeCopy(localWorkItemLink);
+      }
+    return null;
   }
 
   public deleteWorkItem(id: string): boolean {
@@ -186,7 +218,7 @@ export class MockDataService {
   }
 
   public deleteWorkItemLink(id: string): boolean {
-    for (var i = 0; i < this.workItems.length; i++)
+    for (var i = 0; i < this.workItemLinks.length; i++)
       if (this.workItemLinks[i].id === id) {
         this.workItemLinks.splice(i, 1);
         return true;
@@ -197,7 +229,7 @@ export class MockDataService {
   public searchWorkItem(term: string): boolean {
     for (var i = 0; i < this.workItems.length; i++)
       if (this.workItems[i].fields['system.title'].indexOf(term) != -1) {
-        return this.workItems[i];
+        return this.makeCopy(this.workItems[i]);
       }
       return false;
   }

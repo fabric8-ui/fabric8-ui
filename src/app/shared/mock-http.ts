@@ -77,11 +77,15 @@ export class MockHttp extends Http {
         url: url,
         status: status,
         statusText: statusText,
+<<<<<<< 63f2feec4cbda89f0d1d83be2373e093b98d1a32
 <<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
         body: body
 =======
         body: JSON.stringify(body)
 >>>>>>> Initial version.
+=======
+        body: body
+>>>>>>> All tests green.
       });
       var res = new Response(responseOptions);
       return Observable.of(res);
@@ -165,14 +169,23 @@ export class MockHttp extends Http {
         case '/user':
           return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getUser() );
         case '/identities':
-          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getUser() } );          
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getAllUsers() } );          
         case '/work-item-list':
           if (path.refid) {
             return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.searchWorkItem(path.refid) } );
           } else {
             return this.createResponse(url.toString(), 500, 'error: no search term given.', { } );
           }
+<<<<<<< 63f2feec4cbda89f0d1d83be2373e093b98d1a32
 >>>>>>> Finished code. Now debugging.
+=======
+        case '/workitemlinks':
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItemLinks() });
+        case '/workitemlinktypes':
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItemLinkTypes() });
+        case '/workitemlinkcategories':
+          return this.createResponse(url.toString(), 500, 'not supported yet.', { } );
+>>>>>>> All tests green.
       }
     };
     /**
@@ -190,6 +203,7 @@ export class MockHttp extends Http {
         return this.createResponse(url.toString(), 500, 'error', {});  
       }
       if (path.path === '/workitems') {
+<<<<<<< 63f2feec4cbda89f0d1d83be2373e093b98d1a32
 <<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
         return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.createWorkItem(JSON.parse(body)) });
       } else if (path.path === '/workitemlinks') {
@@ -202,8 +216,11 @@ export class MockHttp extends Http {
 >>>>>>> Initial version.
 =======
         return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.createWorkItem(body));
+=======
+        return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.createWorkItem(JSON.parse(body)));
+>>>>>>> All tests green.
       } else if (path.path === '/workitemlinks') {
-        return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.createWorkItemLink(body));        
+        return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.createWorkItemLink(JSON.parse(body)) });    
       } else 
         return this.createResponse(url.toString(), 500, 'POST to unknown resource: ' + path.path, {});        
 >>>>>>> Finished code. Now debugging.
@@ -223,6 +240,7 @@ export class MockHttp extends Http {
         return this.createResponse(url.toString(), 500, 'error', {});  
       }
       if (path.path === '/workitems' && path.refid != null) {
+<<<<<<< 63f2feec4cbda89f0d1d83be2373e093b98d1a32
 <<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
         var result = this.mockDataService.updateWorkItem(JSON.parse(body));
         if (result != null)
@@ -242,6 +260,17 @@ export class MockHttp extends Http {
         if (this.mockDataService.updateWorkItemLink(body))
           return this.createResponse(url.toString(), 200, 'ok', {});
 >>>>>>> Finished code. Now debugging.
+=======
+        var result = this.mockDataService.updateWorkItem(JSON.parse(body));
+        if (result != null)
+          return this.createResponse(url.toString(), 200, 'ok', result);
+        else
+          return this.createResponse(url.toString(), 500, 'WorkItem does not exist: ' + path.refid, {});  
+      } else if (path.path === '/workitemlinks' && path.refid != null) {
+        var result = this.mockDataService.updateWorkItemLink(JSON.parse(body));
+        if (result != null)
+          return this.createResponse(url.toString(), 200, 'ok', result);
+>>>>>>> All tests green.
         else
           return this.createResponse(url.toString(), 500, 'WorkItemLink does not exist: ' + path.refid, {});      
       } else 
@@ -273,12 +302,16 @@ export class MockHttp extends Http {
           return this.createResponse(url.toString(), 200, 'ok', {});
         else
           return this.createResponse(url.toString(), 500, 'WorkItem does not exist: ' + path.refid, {});  
+<<<<<<< 63f2feec4cbda89f0d1d83be2373e093b98d1a32
 <<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
+=======
+>>>>>>> All tests green.
       } else if (path.path === '/workitemlinks' && path.refid != null) {
         if (this.mockDataService.deleteWorkItemLink(path.refid))
           return this.createResponse(url.toString(), 200, 'ok', {});
         else
           return this.createResponse(url.toString(), 500, 'WorkItemLink does not exist: ' + path.refid, {});  
+<<<<<<< 63f2feec4cbda89f0d1d83be2373e093b98d1a32
       }
 =======
 
@@ -286,6 +319,8 @@ export class MockHttp extends Http {
       return null;
 >>>>>>> Initial version.
 =======
+=======
+>>>>>>> All tests green.
       }
 >>>>>>> Finished code. Now debugging.
     };

@@ -2,7 +2,7 @@ exports.config = {
     useAllAngular2AppRoots: true,
     getPageTimeout: 30000,
     seleniumAddress: 'http://localhost:4444/wd/hub',
-    specs: ['src/tests/**/work-item-list.spec.js'],
+    specs: ['src/tests/**/*.spec.js'],
     jasmineNodeOpts: {
         defaultTimeoutInterval: 30000
     },
