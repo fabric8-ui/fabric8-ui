@@ -5,7 +5,7 @@ import { cloneDeep } from 'lodash';
 
 import { Link } from '../../../../models/link';
 import { LinkType } from '../../../../models/link-type';
-import { WorkItem } from '../../../work-item';
+import { WorkItem } from '../../../../models/work-item';
 import { WorkItemService } from '../../../work-item.service';
 
 import { SearchData } from './search-data';

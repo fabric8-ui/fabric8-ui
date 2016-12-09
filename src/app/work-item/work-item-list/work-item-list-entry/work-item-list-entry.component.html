@@ -8,17 +8,17 @@
 	<!-- info area -->
 	<div class="list-view-pf-main-info" (click)="onDetail($event)">
 		<div class="list-view-pf-left type workItemList_workItemType">
-			<span almIcon [iconType]="workItem.fields['system.state']" class="color-grey pull-left"></span>
-      		<span almIcon [iconType]="workItem.type" class="color-grey pull-left"></span>
+			<span almIcon [iconType]="workItem.attributes['system.state']" class="color-grey pull-left"></span>
+      		<span almIcon [iconType]="workItem.relationships?.baseType?.data?.id" class="color-grey pull-left"></span>
 			<span class="pull-left"> {{workItem.id}} </span>
 		</div>
 		<div class="list-view-pf-body">
 			<div class="list-view-pf-description">
 				<div class="workItemList_title truncate-ellipsis col-xs-12 row">
-					<p class="col-md-12 col-sm-12 col-xs-12 pull-left truncate">{{workItem.fields['system.title']}}</p>
+					<p class="col-md-12 col-sm-12 col-xs-12 pull-left truncate">{{workItem.attributes['system.title']}}</p>
 				</div>
 				<div class="list-group-item-text workItemList_description dn">
-					{{workItem.fields['system.description'] ? workItem.fields['system.description'] : "No description available for this work item."}}
+					{{workItem.attributes['system.description'] ? workItem.attributes['system.description'] : "No description available for this work item."}}
 				</div>
 			</div>
 		</div>

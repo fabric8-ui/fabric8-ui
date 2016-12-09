@@ -24,7 +24,7 @@ import { LinkType } from '../../../../models/link-type';
 import { Logger } from '../../../../shared/logger.service';
 import { User, NewUser } from '../../../../user/user';
 import { UserService } from '../../../../user/user.service';
-import { WorkItem } from '../../../work-item';
+import { WorkItem } from '../../../../models/work-item';
 import { WorkItemService } from '../../../work-item.service';
 // import { WorkItemDetailComponent } from '../work-item-detail.component';
 
@@ -54,54 +54,113 @@ describe('WorkItem Links CRD -', () => {
 
   beforeEach(() => {
      workItem = {
-      'fields': {
-        'system.assignee': '498c69a9-bb6f-464b-b89c-a1976ed46301',
-        'system.creator': 'me',
-        'system.description': 'description',
+      'attributes': {
+        'system.creator': null,
+        'system.description': null,
+        'system.remote_item_id': null,
         'system.state': 'new',
-        'system.title': 'My work item'
-      },
-      'id': '3',
-      'type': 'system.userstory',
-      'version': 0
-    } as WorkItem;
-     fakeWorkItem1 = {
-      'fields': {
-        'system.assignee': '498c69a9-bb6f-464b-b89c-a1976ed46301',
-        'system.creator': 'me',
-        'system.description': 'description',
-        'system.state': 'new',
-        'system.title': 'My work item'
+        'system.title': 'My work item',
+        'version': 0
       },
       'id': '1',
-      'type': 'system.userstory',
-      'version': 0
+      'relationships': {
+        'assignee': {
+          'data': {
+            'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
+            'type': 'identities'
+          }
+        },
+        'baseType': {
+          'data': {
+            'id': 'system.userstory',
+            'type': 'workitemtypes'
+          }
+        }
+      },
+      'type': 'workitems'
+    } as WorkItem;
+
+     fakeWorkItem1 = {
+      'attributes': {
+        'system.creator': null,
+        'system.description': null,
+        'system.remote_item_id': null,
+        'system.state': 'new',
+        'system.title': 'My work item',
+        'version': 0
+      },
+      'id': '1',
+      'relationships': {
+        'assignee': {
+          'data': {
+            'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
+            'type': 'identities'
+          }
+        },
+        'baseType': {
+          'data': {
+            'id': 'system.userstory',
+            'type': 'workitemtypes'
+          }
+        }
+      },
+      'type': 'workitems'
     } as WorkItem;
     
     fakeWorkItem2 = {
-      'fields': {
-        'system.assignee': '498c69a9-bb6f-464b-b89c-a1976ed46301',
-        'system.creator': 'me',
-        'system.description': 'description',
+      'attributes': {
+        'system.creator': null,
+        'system.description': null,
+        'system.remote_item_id': null,
         'system.state': 'new',
-        'system.title': 'My work item'
+        'system.title': 'My work item',
+        'version': 0
       },
       'id': '4',
-      'type': 'system.userstory',
-      'version': 0
+      'relationships': {
+        'assignee': {
+          'data': {
+            'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
+            'type': 'identities'
+          }
+        },
+        'baseType': {
+          'data': {
+            'id': 'system.userstory',
+            'type': 'workitemtypes'
+          }
+        }
+      },
+      'type': 'workitems'
     } as WorkItem;
+
     toLinkWorkItem = {
-      'fields': {
-        'system.assignee': '498c69a9-bb6f-464b-b89c-a1976ed46301',
-        'system.creator': 'me',
-        'system.description': 'description',
+      'attributes': {
+        'system.creator': null,
+        'system.description': null,
+        'system.remote_item_id': null,
         'system.state': 'new',
-        'system.title': 'To be linked workItem'
+        'system.title': 'To be linked workItem',
+        'version': 0
       },
       'id': '6',
-      'type': 'system.userstory',
-      'version': 0
+      'relationships': {
+        'assignee': {
+          'data': {
+            'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
+            'type': 'identities'
+          }
+        },
+        'baseType': {
+          'data': {
+            'id': 'system.userstory',
+            'type': 'workitemtypes'
+          }
+        }
+      },
+      'type': 'workitems'
     } as WorkItem;
+    
     fakeWorkItemMap['1'] = fakeWorkItem1;
     fakeWorkItemMap['4'] = fakeWorkItem1;
     fakeWorkItemMap['6'] = toLinkWorkItem;

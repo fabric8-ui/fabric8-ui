@@ -7,7 +7,7 @@ import { Logger } from '../../../shared/logger.service';
 
 import { Dialog }            from '../../../shared-component/dialog/dialog';
 
-import { WorkItem }        from '../../work-item';
+import { WorkItem }        from '../../../models/work-item';
 import { WorkItemService } from '../../work-item.service';
 
 /**
@@ -80,7 +80,7 @@ export class WorkItemListEntryComponent implements OnInit {
     event.stopPropagation();
     this.dialog = {
       'title': 'Confirm deletion of Work Item',
-      'message': 'Are you sure you want to delete Work Item - ' + this.workItem.fields['system.title'] + ' ?',
+      'message': 'Are you sure you want to delete Work Item - ' + this.workItem.attributes['system.title'] + ' ?',
       'actionButtons': [
         {'title': 'Confirm', 'value': 1, 'default': false},
         {'title': 'Cancel', 'value': 0, 'default': true}

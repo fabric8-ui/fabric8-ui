@@ -15,7 +15,7 @@ import { AuthenticationService } from '../auth/authentication.service';
 import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
 import { Logger } from '../shared/logger.service';
 
-import { WorkItem } from './work-item';
+import { WorkItem } from '../models/work-item';
 import { WorkItemService } from './work-item.service';
 
 
@@ -64,16 +64,25 @@ describe('Work Item Service - ', () => {
   ));
   let resp: WorkItem[] = [
     {
-      'fields': {
-        'system.assignee': null,
-        'system.creator': 'me',
+      'attributes': {
+        'system.creator': null,
         'system.description': null,
+        'system.remote_item_id': null,
         'system.state': 'new',
-        'system.title': 'test1'
+        'system.title': 'test1',
+        'version': 0
       },
       'id': '1',
-      'type': 'system.userstory',
-      'version': 0
+      'relationships': {
+        'assignee': {},
+        'baseType': {
+          'data': {
+            'id': 'system.userstory',
+            'type': 'workitemtypes'
+          }
+        }
+      },
+      'type': 'workitems'
     }
   ] as WorkItem[];
   let response = {data: resp, links: {}};
@@ -98,7 +107,7 @@ describe('Work Item Service - ', () => {
     mockService.connections.subscribe((connection: any) => {
       connection.mockRespond(new Response(
         new ResponseOptions({
-          body: JSON.stringify(resp[0]),
+          body: JSON.stringify({data: resp[0]}),
           status: 201
         })
       ));
@@ -129,7 +138,7 @@ describe('Work Item Service - ', () => {
     mockService.connections.subscribe((connection: any) => {
       connection.mockRespond(new Response(
         new ResponseOptions({
-          body: JSON.stringify(resp[0]),
+          body: JSON.stringify({data: resp[0]}),
           status: 200
         })
       ));

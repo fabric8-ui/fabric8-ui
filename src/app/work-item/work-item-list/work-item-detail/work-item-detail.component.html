@@ -5,7 +5,7 @@
     <fieldset [attr.disabled]="!loggedIn ? true : null">
       <div class="col-md-12 col-sm-12 col-xs-12 mobile-bar ">
         <div class="pull-left dropdown-kebab-pf detail-type-dropdown" dropdown>
-          <span dropdown-open class="wi-type-icon" almIcon [iconType]="workItem.type"></span>
+          <span dropdown-open class="wi-type-icon" almIcon [iconType]="workItem.relationships.baseType.data.id"></span>
           <ul *ngIf="loggedIn" id="wi-type-dropdown" class="dropdown-menu mobMarginL20" aria-labelledby="dropdownKebabRight">
             <li *ngFor="let type of workItemTypes" (click)="onChangeType(type.name)">
               <a>
@@ -25,9 +25,11 @@
         <div class="col-md-8 col-sm-7 col-xs-12 wi-detail-title-blk">
           <div *ngIf="!headerEditable" (click)='openHeader()'
             id="title-click-div">
-              <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate">{{ workItem.fields['system.title'] }}</h2>
-              <h2 *ngIf="loggedIn" id="wi-detail-title-click" class="detail-title truncate">{{ workItem.fields['system.title'] }}</h2>
-              <span *ngIf="loggedIn" class="pficon-edit pull-left detail-title-edit-ico" id="workItemTitle_btn_edit"></span>
+              <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate">{{ workItem.attributes['system.title'] }}</h2>
+              <h2 *ngIf="loggedIn" id="wi-detail-title-click" class="detail-title truncate">{{ workItem.attributes['system.title'] }}</h2>
+              <span *ngIf="loggedIn" 
+                class="pficon-edit marginL10 fl detail-title-edit-ico" 
+                id="workItemTitle_btn_edit"></span>
           </div>
           <div *ngIf="loggedIn && headerEditable" class="" id="wi-title-div"> 
               <div almEditable 
@@ -36,7 +38,7 @@
                   (keydown.enter)="preventDef($event)"
                   id="wi-detail-title"
                   class="detail-title-edit"         
-                  [innerText]="workItem.fields['system.title'] | almTrim"
+                  [innerText]="workItem.attributes['system.title'] | almTrim"
                   #title >
               </div>
               <aside class="col-md-12 col-sm-12 col-xs-12">
@@ -68,9 +70,9 @@
               id="wi-detail-state"
               type="button" 
               class="btn dropdown-toggle col-md-12 col-sm-12 col-xs-12 btn-default">
-              <span class='dropdown-icon' almIcon [iconType]="workItem.fields['system.state']"></span>
+              <span class='dropdown-icon' almIcon [iconType]="workItem.attributes['system.state']"></span>
               <span class='dropdown-text'>
-                {{workItem.fields['system.state']}}
+                {{workItem.attributes['system.state']}}
               </span>
               <span *ngIf="loggedIn" class="caret pull-right"></span>
             </button>
@@ -150,7 +152,7 @@
           <div class="detail-desc-div-wrap" (click)="openDescription(false, true)">
             <div class="detail-desc-div"
               [class.desc-editable]="descEditable"
-              [class.desc-not-found]="!descEditable && !workItem.fields['system.description']">
+              [class.desc-not-found]="!descEditable && !workItem.attributes['system.description']">
               <!-- 
                 The following condition for innerHTML might look
                 little confusing. So, here is the explanation -
@@ -169,10 +171,10 @@
                 id="wi-detail-desc" 
                 class="description"
                 [innerText]="
-                  workItem.fields['system.description'] ? 
-                    workItem.fields['system.description'] : 
+                  workItem.attributes['system.description'] ? 
+                    workItem.attributes['system.description'] : 
                     descEditable ? 
-                      workItem.fields['system.description'] : 
+                      workItem.attributes['system.description'] : 
                       'Work item description.'">
               </p>
               <div class="edit-icon">
@@ -183,7 +185,7 @@
           </div>
         </div>
         <div id="wi-detail-desc" class="col-md-12 description" *ngIf="!loggedIn">
-          {{workItem.fields['system.description']}}
+          {{workItem.attributes['system.description']}}
         </div>
       </div>                    
       <div *ngIf="loggedIn && descEditable" class="col-md-12 col-sm-12 col-xs-12 detail-desc-action">

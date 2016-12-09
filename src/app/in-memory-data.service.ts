@@ -2,15 +2,50 @@ import { InMemoryDbService } from 'angular-in-memory-web-api';
 
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
+    let identities = [
+      {
+        attributes: {
+          fullName: 'Harry Potter',
+          imageURL: 'http://nerdist.com/wp-content/uploads/2016/02/20160210_nerdistnews_harrypottercursedchild_1x1.jpg'
+        },
+        id: '779efdcc-ac87-4720-925e-949ff21dbf5d'
+      }, {
+        attributes: {
+          fullName: 'Walter Mitty',
+          imageURL: 'http://bestwatchbrandshq.com/wp-content/uploads/2015/01/Ben-Stiller-Watch-In-The-Secret-Life-Of-Walter-Mitty-Movie-9.jpg'
+        },
+        id: '39d44ed6-1246-48d6-9190-51ffab67c42e'
+      }, {
+        attributes: {
+          fullName: 'Draco Malfoy',
+          imageURL: 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
+        },
+        id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
+      }
+    ];
+
     let workitems = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((n) => {
-      return {'fields': {'system.assignee': 'someUser' + n,
-                         'system.creator': 'someOtherUser' + n,
-                         'system.description': 'Some Description ' + n,
-                         'system.state': 'new',
-                         'system.title': 'Some Title ' + n},
-              'id': '' + n,
-              'type': 'system.userstory',
-              'version': 1};
+      return {
+        'attributes': {
+          'system.creator': identities[1].id,
+          'system.description': 'Some Description ' + n,
+          'system.remote_item_id': null,
+          'system.state': 'new',
+          'system.title': 'Some Title ' + n,
+          'version': 1
+        },
+        'id': '' + n,
+        'relationships': {
+          'assignee': {},
+          'baseType': {
+            'data': {
+              'id': 'system.userstory',
+              'type': 'workitemtypes'
+            }
+          }
+        },
+        'type': 'workitems'
+      };
     });
 
     let loginStatus = {
@@ -490,28 +525,6 @@ export class InMemoryDataService implements InMemoryDbService {
             type: 'workitemlinks'
         }
     ];
-
-    let identities = [
-        {
-          attributes: {
-            fullName: 'Harry Potter',
-            imageURL: 'http://nerdist.com/wp-content/uploads/2016/02/20160210_nerdistnews_harrypottercursedchild_1x1.jpg'
-          },
-          id: '779efdcc-ac87-4720-925e-949ff21dbf5d'
-        }, {
-          attributes: {
-            fullName: 'Walter Mitty',
-            imageURL: 'http://bestwatchbrandshq.com/wp-content/uploads/2015/01/Ben-Stiller-Watch-In-The-Secret-Life-Of-Walter-Mitty-Movie-9.jpg'
-          },
-          id: '39d44ed6-1246-48d6-9190-51ffab67c42e'
-        }, {
-          attributes: {
-            fullName: 'Draco Malfoy',
-            imageURL: 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
-          },
-          id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
-        }
-      ];
 
     return {loginStatus, workitems, workitemtypes, user, linkCategories, workitemlinktypes, workitemlinks, identities};
   }

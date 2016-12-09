@@ -8,8 +8,9 @@ import { AuthenticationService } from '../auth/authentication.service';
 import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
 import { Logger } from '../shared/logger.service';
 
-import { WorkItem } from './work-item';
+import { WorkItem } from '../models/work-item';
 import { WorkItemType } from './work-item-type';
+
 
 @Injectable()
 export class WorkItemService {
@@ -20,6 +21,7 @@ export class WorkItemService {
   public workItemTypes: WorkItemType[] = [];
   private workItems: WorkItem[] = [];
   private nextLink: string = null;
+  private initialWorkItemFetchDone = false;
 
   constructor(private http: Http,
     private logger: Logger,
@@ -32,7 +34,7 @@ export class WorkItemService {
   }
 
   getWorkItems(pageSize: number = 20): Promise<WorkItem[]> {
-    let url = this.workItemUrl + '.2' + '?page[limit]=' + pageSize;
+    let url = this.workItemUrl + '?page[limit]=' + pageSize;
     if (process.env.ENV == 'inmemory') {
       url = this.workItemUrl;
     }
@@ -54,7 +56,7 @@ export class WorkItemService {
         }
         return this.workItems;
       })
-      .catch(this.handleError);
+      .catch(this.handleError); 
   }
 
   getMoreWorkItems(): Promise<any> {
@@ -95,16 +97,17 @@ export class WorkItemService {
           this.workItemTypes = process.env.ENV != 'inmemory' ? response.json() as WorkItemType[] : response.json().data as WorkItemType[];
           return this.workItemTypes;
         })
-        .catch(this.handleError);
+        .catch (this.handleError);
     }
   }
 
   getWorkItem(id: string): Promise<WorkItem> {
+    let url = this.workItemUrl;
     return this.http
-      .get(this.workItemUrl + '/' + id, { headers: this.headers })
+      .get(url + '/' + id, { headers: this.headers })
       .toPromise()
-      .then((response) => process.env.ENV != 'inmemory' ? response.json() as WorkItem : response.json().data as WorkItem)
-      .catch(this.handleError);
+      .then((response) => response.json().data as WorkItem)
+      .catch (this.handleError);
   }
 
   moveItem(wi: WorkItem, dir: String) {
@@ -134,6 +137,8 @@ export class WorkItemService {
   }
 
   create(workItem: WorkItem): Promise<WorkItem> {
+    let url = this.workItemUrl;
+    let payload = JSON.stringify({data: workItem});
     if (process.env.ENV === 'inmemory') {
       // the inmemory db uses number id's by default. That clashes with the core api.
       // so we create a random id for new inmemory items and set them prior to storing,
@@ -144,30 +149,49 @@ export class WorkItemService {
       var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
       for (var i = 0; i < 5; i++)
         workItem.id += possible.charAt(Math.floor(Math.random() * possible.length));
+      payload = JSON.stringify(workItem);
     }
     return this.http
-      .post(this.workItemUrl, JSON.stringify(workItem), { headers: this.headers })
+      .post(url, payload, { headers: this.headers })
       .toPromise()
       .then(response => {
         // Adding newly added work item on top of the local list
-        this.workItems.splice(0, 0, process.env.ENV != 'inmemory' ? response.json() as WorkItem : cloneDeep(workItem) as WorkItem);
-        return process.env.ENV != 'inmemory' ? response.json() as WorkItem : cloneDeep(workItem) as WorkItem;
+        let updatedWorkItem: WorkItem = 
+          process.env.ENV != 'inmemory' ? 
+            response.json().data as WorkItem : 
+            cloneDeep(workItem) as WorkItem;
+        this.workItems.splice(0, 0, updatedWorkItem);
+        return updatedWorkItem;
       })
       .catch(this.handleError);
   }
 
   update(workItem: WorkItem): Promise<WorkItem> {
-    const url = `${this.workItemUrl}/${workItem.id}`;
-    return this.http
-      .put(url, JSON.stringify(workItem), { headers: this.headers })
-      .toPromise()
-      .then(response => {
-        let updatedWorkItem = process.env.ENV != 'inmemory' ? response.json() as WorkItem : workItem;
-        let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
-        this.workItems[updateIndex] = updatedWorkItem;
-        return updatedWorkItem;
-      })
-      .catch(this.handleError);
+    if (process.env.ENV == 'inmemory') {
+      let url = `${this.workItemUrl}/${workItem.id}`;
+      return this.http
+        .post(url, JSON.stringify(workItem), { headers: this.headers })
+        .toPromise()
+        .then(response => {
+          let updatedWorkItem = cloneDeep(workItem) as WorkItem;
+          let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
+          this.workItems[updateIndex] = updatedWorkItem;
+          return updatedWorkItem;
+        })
+        .catch(this.handleError);
+    } else {
+      let url = `${this.workItemUrl}/${workItem.id}`;
+      return this.http
+        .patch(url, JSON.stringify({data: workItem}), { headers: this.headers })
+        .toPromise()
+        .then(response => {
+          let updatedWorkItem = response.json().data as WorkItem;
+          let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
+          this.workItems[updateIndex] = updatedWorkItem;
+          return updatedWorkItem;
+        })
+        .catch(this.handleError);
+    }
   }
 
   getStatusOptions(): Promise<any[]> {

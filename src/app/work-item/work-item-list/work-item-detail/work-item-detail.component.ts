@@ -9,7 +9,7 @@ import { Broadcaster } from '../../../shared/broadcaster.service';
 import { Logger } from '../../../shared/logger.service';
 import { UserService } from '../../../user/user.service';
 
-import { WorkItem } from '../../work-item';
+import { WorkItem } from '../../../models/work-item';
 import { WorkItemService } from '../../work-item.service';
 import { WorkItemType } from '../../work-item-type';
 
@@ -72,8 +72,8 @@ export class WorkItemDetailComponent implements OnInit {
         this.workItemService.getWorkItem(id)
           .then(workItem => {
             this.closeRestFields();
-            this.titleText = workItem.fields['system.title'];
-            this.descText = workItem.fields['system.description'];
+            this.titleText = workItem.attributes['system.title'];
+            this.descText = workItem.attributes['system.description'];
             this.workItem = workItem;
             // fetch the list of user 
             // after getting the Workitem
@@ -99,10 +99,13 @@ export class WorkItemDetailComponent implements OnInit {
             .then(user => this.setLoggedInUser(user));
         }
         // setting assigned User
-        this.assignedUser = 
-          this.getAssignedUserDetails(
-            this.workItem.fields['system.assignee']
+        if (this.workItem.relationships.assignee.hasOwnProperty('data')) {
+          this.assignedUser = this.getAssignedUserDetails(
+            this.workItem.relationships.assignee.data.id
           );
+        } else {
+          this.assignedUser = null;
+        }
       });
   }
 
@@ -166,7 +169,7 @@ export class WorkItemDetailComponent implements OnInit {
 
   closeDescription(): void {
     this.description.nativeElement.innerHTML = 
-    this.workItem.fields['system.description']; 
+    this.workItem.attributes['system.description']; 
     this.descEditable = false;
   }
 
@@ -184,17 +187,22 @@ export class WorkItemDetailComponent implements OnInit {
   }
 
   onChangeState(option: any): void {
-    this.workItem.fields['system.state'] = option;
+    this.workItem.attributes['system.state'] = option;
     this.save();
   }
 
   onChangeType(type: any): void {
-    this.workItem.type = type;
+    this.workItem.relationships.baseType = {
+      data: {
+        id: type,
+        type: 'workitemtypes'
+      }
+    };
     this.save();
   }
 
   onUpdateDescription(): void {
-    this.workItem.fields['system.description'] = this.descText.trim();
+    this.workItem.attributes['system.description'] = this.descText.trim();
     this.save();
     this.closeDescription();
   }
@@ -202,7 +210,7 @@ export class WorkItemDetailComponent implements OnInit {
   onUpdateTitle(): void {
     this.isValid(this.titleText.trim());
     if (this.validTitle) {
-      this.workItem.fields['system.title'] = this.titleText;
+      this.workItem.attributes['system.title'] = this.titleText;
       this.save();
       this.closeHeader();
     }    
@@ -212,7 +220,7 @@ export class WorkItemDetailComponent implements OnInit {
     this.workItemService
       .update(this.workItem)
       .then((workItem) => {
-        this.workItem.version = workItem.version;
+        this.workItem.attributes['version'] = workItem.attributes['version'];
         this.activeOnList();          
     });
      
@@ -305,17 +313,21 @@ export class WorkItemDetailComponent implements OnInit {
   }
 
   assignUser(userId: any): void {
-    /*
-      Need to call the service to update the asginee
-    */
-    this.workItem.fields['system.assignee'] = userId;
+    this.workItem.relationships.assignee = {
+      data: {
+        id: userId,
+        type: 'identities'
+      }
+    };
     this.save();
     this.assignedUser = this.getAssignedUserDetails(userId);
     this.searchAssignee = false;
   }
 
   unassignUser(): void {
-    this.workItem.fields['system.assignee'] = null;
+    this.workItem.relationships.assignee = {
+      data: null
+    };
     this.assignedUser = null;
     this.save();
     this.searchAssignee = false;

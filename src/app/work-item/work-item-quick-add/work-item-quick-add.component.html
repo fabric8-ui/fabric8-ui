@@ -11,12 +11,12 @@
     </div>
     <div class=" workItemQuickAdd_story">
       <div class="col-md-6 col-sm-6 col-xs-12 workItemQuickAdd_storyInput">
-        <input #quickAddTitle type="text" id="exampleInput" class="form-control col-md-12 col-sm-12 col-xs-12"  [(ngModel)]="workItem.fields['system.title']" 
+        <input #quickAddTitle type="text" id="exampleInput" class="form-control col-md-12 col-sm-12 col-xs-12"  [(ngModel)]="workItem.attributes['system.title']" 
               (keyup.enter)="save($event)"
               (keyup)="checkTitle()" placeholder="A New Story" required/>
       </div>
       <div class="col-md-6 col-sm-6 mobdn">
-        <textarea #quickAddDesc rows="1" type="text" id="exampleDesc" class="form-control width100 pull-left"  [(ngModel)]="workItem.fields['system.description']" 
+        <textarea #quickAddDesc rows="1" type="text" id="exampleDesc" class="form-control width100 pull-left"  [(ngModel)]="workItem.attributes['system.description']" 
                 [style.height]="descHeight"
                 [style.resize]="descResize"
                 (keydown.enter)="save($event)"

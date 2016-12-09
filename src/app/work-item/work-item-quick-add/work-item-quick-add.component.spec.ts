@@ -13,7 +13,7 @@ import { By }           from '@angular/platform-browser';
 
 import { Logger } from '../../shared/logger.service';
 
-import { WorkItem } from '../work-item';
+import { WorkItem } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
 
 import { WorkItemQuickAddComponent } from './work-item-quick-add.component';
@@ -28,17 +28,26 @@ describe('Quick add work item component - ', () => {
   beforeEach(() => {
     fakeWorkItem = [
       {
-        'fields': {
-          'system.assignee': null,
-          'system.creator': 'me',
-          'system.description': null,
-          'system.state': 'new',
-          'system.title': 'test1'
-        },
-        'id': '1',
-        'type': 'system.userstory',
+      'attributes': {
+        'system.creator': null,
+        'system.description': null,
+        'system.remote_item_id': null,
+        'system.state': 'new',
+        'system.title': 'test1',
         'version': 0
       },
+      'id': '1',
+      'relationships': {
+        'assignee': {},
+        'baseType': {
+          'data': {
+            'id': 'system.userstory',
+            'type': 'workitemtypes'
+          }
+        }
+      },
+      'type': 'workitems'
+      }
     ] as WorkItem[];
 
     fakeService = {
@@ -78,7 +87,7 @@ describe('Quick add work item component - ', () => {
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('.workItemQuickAdd_Add'));
     fixture.detectChanges();
-    comp.workItem.fields['system.title'] = '  ';
+    comp.workItem.attributes['system.title'] = '  ';
     fixture.detectChanges();
     expect(el.classes['icon-btn-disabled']).toBeTruthy();
   });
@@ -89,7 +98,7 @@ describe('Quick add work item component - ', () => {
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('.workItemQuickAdd_Add'));
     fixture.detectChanges();
-    comp.workItem.fields['system.title'] = '';
+    comp.workItem.attributes['system.title'] = '';
     fixture.detectChanges();
     expect(el.classes['icon-btn-disabled']).toBeTruthy();
   });
@@ -97,7 +106,7 @@ describe('Quick add work item component - ', () => {
   it('Should raise an error on save if the title contain only white space', fakeAsync(() => {
     el = fixture.debugElement.query(By.css('.pficon-add-circle-o'));
     fixture.detectChanges();
-    comp.workItem.fields['system.title'] = '  ';
+    comp.workItem.attributes['system.title'] = '  ';
     fixture.detectChanges();
     comp.save();
     tick();

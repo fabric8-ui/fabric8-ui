@@ -6,7 +6,7 @@ import { AuthenticationService } from '../../auth/authentication.service';
 import { Broadcaster } from '../../shared/broadcaster.service';
 import { Logger } from '../../shared/logger.service';
 
-import { WorkItem }                   from '../work-item';
+import { WorkItem }                   from '../../models/work-item';
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService }            from '../work-item.service';
 
@@ -64,7 +64,7 @@ export class WorkItemListComponent implements OnInit {
       .getWorkItems(pageSize)
       .then((wItems) => {
         this.workItems = wItems;
-      });  
+      });
   }
 
   fetchMoreWiItems(): void {

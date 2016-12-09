@@ -32,7 +32,7 @@ import { AlmEditableModule } from '../../../shared-component/editable/almeditabl
 import { AuthenticationService } from '../../../auth/authentication.service';
 import { User, NewUser } from '../../../user/user';
 import { UserService } from '../../../user/user.service';
-import { WorkItem } from '../../work-item';
+import { WorkItem } from '../../../models/work-item';
 import { WorkItemType } from '../../work-item-type';
 import { WorkItemService } from '../../work-item.service';
 
@@ -61,16 +61,30 @@ describe('Detailed view and edit a selected work item - ', () => {
   beforeEach(() => {
 
     fakeWorkItem = {
-      'fields': {
-        'system.assignee': '498c69a9-bb6f-464b-b89c-a1976ed46301',
-        'system.creator': 'me',
-        'system.description': 'description',
+      'attributes': {
+        'system.creator': null,
+        'system.description': null,
+        'system.remote_item_id': null,
         'system.state': 'new',
-        'system.title': 'My work item'
+        'system.title': 'test1',
+        'version': 0
       },
       'id': '1',
-      'type': 'system.userstory',
-      'version': 0
+      'relationships': {
+        'assignee': {
+          'data': {
+            'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
+            'type': 'identities'
+          }
+        },
+        'baseType': {
+          'data': {
+            'id': 'system.userstory',
+            'type': 'workitemtypes'
+          }
+        }
+      },
+      'type': 'workitems'
     } as WorkItem;
 
     fakeWorkItems.push(fakeWorkItem);
@@ -293,7 +307,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.loggedIn = fakeAuthService.isLoggedIn();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-title-click'));
-    expect(el.nativeElement.textContent).toContain(fakeWorkItem.fields['system.title']);
+    expect(el.nativeElement.textContent).toContain(fakeWorkItem.attributes['system.title']);
   });
 
   it('Page should display page title when not logged in', () => {
@@ -303,7 +317,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.loggedIn = fakeAuthService.isLoggedIn();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-title-ne'));
-    expect(el.nativeElement.textContent).toContain(fakeWorkItem.fields['system.title']);
+    expect(el.nativeElement.textContent).toContain(fakeWorkItem.attributes['system.title']);
   });
 
   it('Edit icon displayed when logged in', () => {
@@ -333,7 +347,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.loggedIn = fakeAuthService.isLoggedIn();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-title-ne'));
-    expect(el.nativeElement.textContent).toContain(fakeWorkItem.fields['system.title']);
+    expect(el.nativeElement.textContent).toContain(fakeWorkItem.attributes['system.title']);
   });
 
   it('Page should display clickable work item title when looged in', () => {
@@ -343,7 +357,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.loggedIn = fakeAuthService.isLoggedIn();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-title-click'));
-    expect(el.nativeElement.textContent).toContain(fakeWorkItem.fields['system.title']);
+    expect(el.nativeElement.textContent).toContain(fakeWorkItem.attributes['system.title']);
   });
 
   it('Page should display editable work item title when logged in', () => {
@@ -355,7 +369,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.openHeader();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-title'));
-    expect(el.nativeElement.innerText).toContain(fakeWorkItem.fields['system.title']);
+    expect(el.nativeElement.innerText).toContain(fakeWorkItem.attributes['system.title']);
   });
 
   it('Work item title can be edited when logged in', () => {
@@ -367,10 +381,10 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.openHeader();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-title'));
-    comp.workItem.fields['system.title'] = 'User entered valid work item title';
+    comp.workItem.attributes['system.title'] = 'User entered valid work item title';
     fixture.detectChanges();
     comp.save();
-    expect(comp.workItem.fields['system.title']).toContain(el.nativeElement.innerText);
+    expect(comp.workItem.attributes['system.title']).toContain(el.nativeElement.innerText);
   });
 
   it('Save should be enabled if a valid work item title has been entered', () => {
@@ -382,7 +396,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.openHeader();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#workItemTitle_btn_save'));
-    comp.workItem.fields['system.title'] = 'Valid work item title';
+    comp.workItem.attributes['system.title'] = 'Valid work item title';
     fixture.detectChanges();
     comp.save();
     expect(el.classes['disabled']).toBeFalsy();
@@ -413,10 +427,10 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.openDescription();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-desc'));
-    comp.workItem.fields['system.description'] = 'User entered work item description';
+    comp.workItem.attributes['system.description'] = 'User entered work item description';
     fixture.detectChanges();
     comp.save();
-    expect(comp.workItem.fields['system.description']).toContain(el.nativeElement.innerHTML);
+    expect(comp.workItem.attributes['system.description']).toContain(el.nativeElement.innerHTML);
   });
 
   it('Work item description cannot be edited when logged out', () => {
@@ -452,7 +466,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     el = fixture.debugElement.query(By.css('#wi-detail-state'));
     comp.workItem.type = 'resolved';
     fixture.detectChanges();
-    expect(comp.workItem.fields['system.state']).toContain(el.nativeElement.value);
+    expect(comp.workItem.attributes['system.state']).toContain(el.nativeElement.value);
   });
 
   it('should not open the user list if not logged in', () => {
@@ -486,7 +500,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     fixture.detectChanges();
     comp.workItem = fakeWorkItem;
     comp.loggedIn = fakeAuthService.isLoggedIn();
-    comp.assignedUser = comp.getAssignedUserDetails(comp.workItem.fields['system.assignee']);
+    comp.assignedUser = comp.getAssignedUserDetails(comp.workItem.relationships.assignee.data.id);
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#WI_details_assigned_user'));
     expect(el.nativeElement.textContent).toContain('Draco Malfoy');

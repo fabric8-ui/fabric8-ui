@@ -14,7 +14,7 @@ import {
 
 import { Logger } from '../../shared/logger.service';
 
-import { WorkItem } from '../work-item';
+import { WorkItem, WorkItemAttributes, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
 
 
@@ -44,19 +44,29 @@ export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
     private renderer: Renderer) {}
 
   ngOnInit(): void {
-    this.workItem = {
-      'fields': {
-        'system.assignee': null,
-        'system.state': 'new',
-        'system.creator': 'me',
-        'system.title': null,
-        'system.description': null
-      },
-      'type': 'system.userstory',
-      'version': 0
-    } as WorkItem;
+    this.createWorkItemObj();
     this.showQuickAdd = false;
     this.showQuickAddBtn = true;
+  }
+
+  createWorkItemObj() {
+    this.workItem = new WorkItem();
+    this.workItem.attributes = new WorkItemAttributes();
+    this.workItem.relationships = new WorkItemRelations();
+    this.workItem.type = 'workitems';
+    this.workItem.id = '42';
+    this.workItem.relationships = {
+      baseType: {
+        data: {
+          id: 'system.userstory',
+          type: 'workitemtypes'
+        }
+      }
+    } as WorkItemRelations;
+
+    this.workItem.attributes = {
+      'system.state': 'new'
+    } as WorkItemAttributes;
   }
 
   ngAfterViewInit() {
@@ -69,26 +79,19 @@ export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
 
   save(event: any = null): void {
     if (event) event.preventDefault();
-    if (this.workItem.fields['system.title'] != null) {
-      this.workItem.fields['system.title'] = this.workItem.fields['system.title'].trim();
+    if (this.workItem.attributes['system.title'] != null) {
+      this.workItem.attributes['system.title'] = this.workItem.attributes['system.title'].trim();
     }
-    if (this.workItem.fields['system.description'] != null) {
-      this.workItem.fields['system.description'] = this.workItem.fields['system.description'].trim();
+    if (this.workItem.attributes['system.description'] != null) {
+      this.workItem.attributes['system.description'] = this.workItem.attributes['system.description'].trim();
     }
-    if (this.workItem.fields['system.title']) {
+    if (this.workItem.attributes['system.title']) {
       this.workItemService
         .create(this.workItem)
         .then(workItem => {
           this.workItem = workItem; // saved workItem, w/ id if new
           this.logger.log(`created and returned this workitem:` + JSON.stringify(workItem));
-          this.workItem.fields['system.description'] = '';
-          this.workItem.fields['system.title'] = '';
-          this.validTitle = false;
           this.resetQuickAdd();
-          this.showQuickAddBtn = false;
-          this.showQuickAdd = true;
-          this.descHeight = this.initialDescHeight ? this.initialDescHeight : '26px';
-          this.qaTitle.nativeElement.focus();
         })
         .catch(error => this.error = error); // TODO: Display error message
     } else {
@@ -97,7 +100,7 @@ export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
   }
 
   checkTitle(): void {
-    if (this.workItem.fields['system.title'] && this.workItem.fields['system.title'].trim()) {
+    if (this.workItem.attributes['system.title'] && this.workItem.attributes['system.title'].trim()) {
       this.validTitle = true;
     } else {
       this.validTitle = false;
@@ -113,15 +116,20 @@ export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
   }
 
   resetQuickAdd(): void {
+    this.validTitle = false;
     this.ngOnInit();
+    this.showQuickAddBtn = false;
+    this.showQuickAdd = true;
+    this.descHeight = this.initialDescHeight ? this.initialDescHeight : '26px';
+    this.qaTitle.nativeElement.focus();
   }
 
   toggleQuickAdd(): void {
     this.showQuickAdd = !this.showQuickAdd;
     this.showQuickAddBtn = !this.showQuickAddBtn;
     if (!this.showQuickAdd) {
-      this.workItem.fields['system.description'] = '';
-      this.workItem.fields['system.title'] = '';
+      this.workItem.attributes['system.description'] = '';
+      this.workItem.attributes['system.title'] = '';
       this.validTitle = false;
       this.descHeight = this.initialDescHeight ? this.initialDescHeight : 'inherit';
     }
