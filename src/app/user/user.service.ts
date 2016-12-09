@@ -1,3 +1,6 @@
+import { MockHttp } from './../shared/mock-http';
+import Globals = require('./../shared/globals');
+
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { Logger } from '../shared/logger.service';
@@ -21,10 +24,18 @@ export class UserService {
               private auth: AuthenticationService,
               private broadcaster: Broadcaster) {
 
-              this.broadcaster.on<string>('logout')
-                  .subscribe(message => {
-                    this.resetUser();
-              });
+    if (Globals.inTestMode) {
+      logger.log('UserService running in ' + process.env.ENV + ' mode.');
+      this.http = new MockHttp(logger);
+    } else {
+      logger.log('UserService running in production mode.');
+    }
+    logger.log('UserService using user url ' + this.userUrl + ' identity url ' + this.identitiesUrl);
+
+    this.broadcaster.on<string>('logout')
+        .subscribe(message => {
+          this.resetUser();
+    });
   }
 
   getSavedLoggedInUser(): User {

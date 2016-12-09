@@ -455,18 +455,6 @@ export class WorkItemService {
   create(workItem: WorkItem): Promise<WorkItem> {
     let url = this.workItemUrl;
     let payload = JSON.stringify({data: workItem});
-    if (process.env.ENV === 'inmemory') {
-      // the inmemory db uses number id's by default. That clashes with the core api.
-      // so we create a random id for new inmemory items and set them prior to storing,
-      // so the inmemory db uses them as id. As the id is possibly displayed in the
-      // ui, only 5 random characters are used to not break UI components. The entropy
-      // is sufficient for tests and dev.  
-      workItem.id = '';
-      var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      for (var i = 0; i < 5; i++)
-        workItem.id += possible.charAt(Math.floor(Math.random() * possible.length));
-      payload = JSON.stringify(workItem);
-    }
     return this.http
       .post(url, payload, { headers: this.headers })
       .toPromise()

@@ -59,7 +59,7 @@ export class MockHttp extends Http {
         url: url,
         status: status,
         statusText: statusText,
-        body: JSON.stringify(body)
+        body: body
       });
       var res = new Response(responseOptions);
       return Observable.of(res);
@@ -103,13 +103,19 @@ export class MockHttp extends Http {
         case '/user':
           return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getUser() } );
         case '/identities':
-          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getUser() } );          
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getAllUsers() } );          
         case '/work-item-list':
           if (path.refid) {
             return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.searchWorkItem(path.refid) } );
           } else {
             return this.createResponse(url.toString(), 500, 'error: no search term given.', { } );
           }
+        case '/workitemlinks':
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItemLinks() });
+        case '/workitemlinktypes':
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItemLinkTypes() });
+        case '/workitemlinkcategories':
+          return this.createResponse(url.toString(), 500, 'not supported yet.', { } );
       }
     };
     /**
@@ -123,9 +129,9 @@ export class MockHttp extends Http {
         return this.createResponse(url.toString(), 500, 'error', {});  
       }
       if (path.path === '/workitems') {
-        return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.createWorkItem(body));
+        return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.createWorkItem(JSON.parse(body)) });
       } else if (path.path === '/workitemlinks') {
-        return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.createWorkItemLink(body));        
+        return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.createWorkItemLink(JSON.parse(body)) });    
       } else 
         return this.createResponse(url.toString(), 500, 'POST to unknown resource: ' + path.path, {});        
     };
@@ -140,13 +146,15 @@ export class MockHttp extends Http {
         return this.createResponse(url.toString(), 500, 'error', {});  
       }
       if (path.path === '/workitems' && path.refid != null) {
-        if (this.mockDataService.updateWorkItem(body))
-          return this.createResponse(url.toString(), 200, 'ok', {});
+        var result = this.mockDataService.updateWorkItem(JSON.parse(body));
+        if (result != null)
+          return this.createResponse(url.toString(), 200, 'ok', result);
         else
           return this.createResponse(url.toString(), 500, 'WorkItem does not exist: ' + path.refid, {});  
       } else if (path.path === '/workitemlinks' && path.refid != null) {
-        if (this.mockDataService.updateWorkItemLink(body))
-          return this.createResponse(url.toString(), 200, 'ok', {});
+        var result = this.mockDataService.updateWorkItemLink(JSON.parse(body));
+        if (result != null)
+          return this.createResponse(url.toString(), 200, 'ok', result);
         else
           return this.createResponse(url.toString(), 500, 'WorkItemLink does not exist: ' + path.refid, {});      
       } else 
@@ -167,6 +175,11 @@ export class MockHttp extends Http {
           return this.createResponse(url.toString(), 200, 'ok', {});
         else
           return this.createResponse(url.toString(), 500, 'WorkItem does not exist: ' + path.refid, {});  
+      } else if (path.path === '/workitemlinks' && path.refid != null) {
+        if (this.mockDataService.deleteWorkItemLink(path.refid))
+          return this.createResponse(url.toString(), 200, 'ok', {});
+        else
+          return this.createResponse(url.toString(), 500, 'WorkItemLink does not exist: ' + path.refid, {});  
       }
     };
     /**
