@@ -1,6 +1,6 @@
 import { Http, Response } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
-import { WorkItem } from '../../../work-item';
+import { WorkItem } from '../../../../models/work-item';
 
 import { CompleterItem, CompleterData } from 'ng2-completer';
 
@@ -18,14 +18,14 @@ export class SearchData extends Subject<CompleterItem[]> implements CompleterDat
        this.http.get(this.searchUrl + searchTerm)
             .map((res: Response) => {
                 // Convert the result to CompleterItem[]
-                let responseData = res.json();
-                let workItems = responseData.data;
+                let workItems: WorkItem[] = res.json().data as WorkItem[];
                 let matches: CompleterItem[] = workItems.map((workItem: WorkItem) => {
                     return {
-                        title: workItem['fields']['system.title'],
-                        id: workItem.id
+                        title: workItem.attributes['system.title'],
+                        id: workItem.id,
+                        originalObject: workItem
                     };
-                });
+                }) as CompleterItem[];
                 this.next(matches);
            })
            .subscribe();
