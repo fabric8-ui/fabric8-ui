@@ -28,8 +28,8 @@ describe('Home page', function () {
 
   it('should contain correct page title.', function() {
       var theHomepage = page.clickHomeMenuTab();
-      expect(browser.getCurrentUrl()).toEqual('http://localhost:8088/home');
-      browser.wait(until.urlContains('home'), waitTime, 'Failed to open home page');
+      expect(browser.getCurrentUrl()).toEqual('http://localhost:8088/dashboard');
+      browser.wait(until.urlContains('dashboard'), waitTime, 'Failed to open dashboard page');
   });
 
 });
