@@ -1,12 +1,12 @@
-const path = require('path');
-var webpack = require("webpack");
-const ngToolsWebpack = require('@ngtools/webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-var webpackMerge = require('webpack-merge');
-var commonConfig = require('./webpack.common.js');
-var WebpackMd5Hash = require('webpack-md5-hash');
-var ChunkManifestPlugin = require('chunk-manifest-webpack2-plugin');
-var ManifestPlugin = require('webpack-manifest-plugin');
+const ChunkManifestPlugin = require('chunk-manifest-webpack2-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const ngToolsWebpack = require('@ngtools/webpack');
+const path = require('path');
+const webpack = require("webpack");
+const webpackMerge = require('webpack-merge');
+const WebpackMd5Hash = require('webpack-md5-hash');
+const commonConfig = require('./webpack.common.js');
 
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 
@@ -23,7 +23,7 @@ module.exports = {
   // },
   /* Comment below to use Chunks.*/
   entry: './src/main.browser.ts',
-  
+
   output: {
     path: path.join(process.cwd(), 'dist'),
     publicPath: 'dist/',
@@ -46,7 +46,7 @@ module.exports = {
     //   name: ['main', 'vendor', 'polyfills']
     // }),
 
-    /* The following works with Chunks and should be uncommented when Chunks are working, but needed for Chunks.*/
+    /* The following works with Chunks and should be uncommented when Chunks are working, but not needed for Chunks.*/
     // new webpack.NoErrorsPlugin(),
     // new webpack.optimize.DedupePlugin(),
     // new webpack.optimize.UglifyJsPlugin({
