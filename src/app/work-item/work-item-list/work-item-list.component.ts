@@ -1,5 +1,21 @@
-import { Component, OnInit, trigger, state, style, transition, animate } from '@angular/core';
-import { Router }            from '@angular/router';
+import { 
+  animate,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit, 
+  trigger, 
+  state, 
+  style, 
+  transition,
+  ViewChild, 
+  ViewChildren,
+  QueryList
+} from '@angular/core';
+import { 
+  Router, 
+  ActivatedRoute
+} from '@angular/router';
 import { cloneDeep } from 'lodash';
 
 import { AuthenticationService } from '../../auth/authentication.service';
@@ -9,6 +25,9 @@ import { Logger } from '../../shared/logger.service';
 import { WorkItem }                   from '../../models/work-item';
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService }            from '../work-item.service';
+import { UserService } from '../../user/user.service';
+import { User } from '../../models/user';
+
 
 @Component({
   selector: 'alm-work-item-list',
@@ -27,7 +46,11 @@ import { WorkItemService }            from '../work-item.service';
     ]),
   ]
 })
-export class WorkItemListComponent implements OnInit {
+export class WorkItemListComponent implements OnInit, AfterViewInit {
+
+  @ViewChildren('activeFilters', {read: ElementRef}) activeFiltersRef: QueryList<ElementRef>;
+  @ViewChild('activeFiltersDiv') activeFiltersDiv: any;
+  @ViewChild('listContainer') listContainer: any;
 
   workItems: WorkItem[];
   selectedWorkItemEntryComponent: WorkItemListEntryComponent;
@@ -38,30 +61,96 @@ export class WorkItemListComponent implements OnInit {
   showWorkItemDetails: boolean = false;
   panelState: String = 'out';
   contentItemHeight: number = 65;
+  pageSize: number = 20;
+  filters: any[] = [{
+    id:  1,
+    name: 'Assign to Me',
+    paramKey: 'filter[assginee]',
+    active: false,
+    value: null
+  }];
 
   constructor(
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     private router: Router,
     private workItemService: WorkItemService,
-    private logger: Logger) {
+    private logger: Logger,
+    private userService: UserService,
+    private route: ActivatedRoute) {
       this.subScribeDetailNavigation();
   }
 
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
+    this.setFilterValues();
+    // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
+    // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
+  }
+
+  ngAfterViewInit() {
+    let oldHeight = 0;
+    this.activeFiltersRef.changes.subscribe((item) => {
+      let newElHeight = this.activeFiltersDiv.nativeElement.offsetHeight;
+      let listCurrentHeight = this.listContainer.nativeElement.offsetHeight;
+      if (newElHeight) {
+        oldHeight = listCurrentHeight;
+        this.listContainer.nativeElement.style.height = 
+          listCurrentHeight - newElHeight;
+      } else {
+        this.listContainer.nativeElement.style.height = 
+          oldHeight;
+      }
+    });
+  }
+
+  setFilterValues() {
+    let loggedInUser = cloneDeep(this.route.snapshot.data['authuser']);
+    let allUsers = cloneDeep(this.route.snapshot.data['allusers']);
+    loggedInUser = allUsers.find((user: User) => user.attributes.imageURL == loggedInUser.imageURL);
+    if (loggedInUser) {
+      this.filters[0].value = loggedInUser.id;
+    }
+  }
+
+  activeFilter(filterId: number) {
+    let selectedIndex = this.filters.findIndex((f: any) => {
+      return f.id === filterId;
+    });
+    if (selectedIndex > -1) {
+      this.filters[selectedIndex].active = true;
+    }
+    this.loadWorkItems();
+  }
+
+  deactiveFilter(filterId: number) {
+    let selectedIndex = this.filters.findIndex((f: any) => {
+      return f.id == filterId;
+    });
+    if (selectedIndex > -1) {
+      this.filters[selectedIndex].active = false;
+    }
+    this.loadWorkItems();
+  }
+
+  deactiveAllFilters(filterId: number) {
+    this.filters.forEach((f: any) => {
+      f.active = false;
+    });
+    this.loadWorkItems();
   }
 
   // model handlers
 
   initWiItems(event: any): void {
-    this.loadWorkItems(event.pageSize);
+    this.pageSize = event.pageSize;
+    this.loadWorkItems();
   }
 
-  loadWorkItems(pageSize: number = 20): void {
+  loadWorkItems(): void {
     this.workItemService
-      .getWorkItems(pageSize)
+      .getWorkItems(this.pageSize, this.filters)
       .then((wItems) => {
         this.workItems = wItems;
       });

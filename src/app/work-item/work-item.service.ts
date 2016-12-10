@@ -33,8 +33,15 @@ export class WorkItemService {
     logger.log('WorkItemService using url ' + this.workItemUrl);
   }
 
-  getWorkItems(pageSize: number = 20): Promise<WorkItem[]> {
+  getWorkItems(pageSize: number = 20, filters: any[] = []): Promise<WorkItem[]> {
+    this.workItems = [];
+    this.nextLink = null;
     let url = this.workItemUrl + '?page[limit]=' + pageSize;
+    filters.forEach((item) => {
+      if (item.active) {
+        url += '&' + item.paramKey + '=' + item.value;
+      }
+    });
     if (process.env.ENV == 'inmemory') {
       url = this.workItemUrl;
     }
@@ -50,13 +57,12 @@ export class WorkItemService {
           let links = response.json().links;
           if (links.hasOwnProperty('next')) {
             this.nextLink = links.next;
-            console.log(this.nextLink);
           }
           this.workItems = response.json().data as WorkItem[];
         }
         return this.workItems;
       })
-      .catch(this.handleError); 
+      .catch (this.handleError); 
   }
 
   getMoreWorkItems(): Promise<any> {
@@ -103,6 +109,9 @@ export class WorkItemService {
 
   getWorkItem(id: string): Promise<WorkItem> {
     let url = this.workItemUrl;
+    if (process.env.ENV == 'inmemory') {
+      url = `${this.workItemUrl}`;
+    }
     return this.http
       .get(url + '/' + id, { headers: this.headers })
       .toPromise()
@@ -149,6 +158,7 @@ export class WorkItemService {
       var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
       for (var i = 0; i < 5; i++)
         workItem.id += possible.charAt(Math.floor(Math.random() * possible.length));
+      payload = JSON.stringify(workItem);
       payload = JSON.stringify(workItem);
     }
     return this.http

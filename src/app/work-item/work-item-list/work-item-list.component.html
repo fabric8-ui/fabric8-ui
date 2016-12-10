@@ -1,5 +1,36 @@
 <div class="detail-list-container" [class.containerPadd-nologin] = "!loggedIn" >
-	<div class="detail-list-wrap list-group list-view-pf" almInfiniteScroll
+  
+  <div class="list-action">
+    <h4 class="list-type">Backlog</h4>
+    <div class="dropdown filter-dropdown" dropdown>
+      <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
+        Filter Method
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="wi_filter_dropdown">
+        <li *ngFor="let filter of filters;" role="presentation" (click)="activeFilter(filter.id)">
+          <a role="menuitem" tabindex="-1">{{filter.name}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div #activeFiltersDiv>
+    <span #activeFilters class="selected-filters" 
+      *ngFor="let filter of filters | almArrayFilter:{active: true};">
+      {{filter.name}}
+      <i (click)="deactiveFilter(filter.id)" class="fa fa-close icon"></i>
+    </span>
+    <span class="close-filter"
+      (click)="deactiveAllFilters()"
+      *ngIf="(filters | almArrayFilter:{active: true}).length">
+      Clear All Filters
+    </span>
+  </div>
+	
+  <div #listContainer
+       almInfiniteScroll
+       class="detail-list-wrap list-group list-view-pf" 
        [eachElementHeightInPx]='contentItemHeight'
        (initItems)='initWiItems($event)'
        (fetchMore)='fetchMoreWiItems()'>

@@ -62,7 +62,7 @@ export class WorkItemDetailComponent implements OnInit {
     private userService: UserService
   ) {}
 
-  ngOnInit(): void{     
+  ngOnInit(): void{
     this.listenToEvents();
     this.getWorkItemTypesandStates();
     this.loggedIn = this.auth.isLoggedIn();
@@ -82,7 +82,7 @@ export class WorkItemDetailComponent implements OnInit {
             this.getAllUsers();
             this.activeOnList(400);
           })
-          .catch(err => this.closeDetails());
+          .catch (err => this.closeDetails());
       }
     });
   }

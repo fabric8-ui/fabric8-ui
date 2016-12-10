@@ -21,6 +21,7 @@ export class InfiniteScrollDirective implements OnInit {
   @Input() fetchThreshold: number = 5;
   pageSize: number = 10;
   lastCheckedHeight = 0;
+  previousScrollHeight = 0;
 
   constructor(private elementRef: ElementRef) {
   }
@@ -44,12 +45,17 @@ export class InfiniteScrollDirective implements OnInit {
   @HostListener('scroll', ['$event']) 
   onScrollContainer(event: any) {
     if (this.element.scrollHeight > this.lastCheckedHeight) {
+      this.previousScrollHeight = this.element.scrollHeight;
       let remainingHeight = this.element.scrollHeight - (this.element.offsetHeight + this.element.scrollTop);
       let remainingElement = Math.ceil(remainingHeight / this.eachElementHeightInPx);
       if (remainingElement < this.fetchThreshold) {
         this.lastCheckedHeight = this.element.scrollHeight;
         this.fetchMore.emit();
       }
+    } else if (this.element.scrollHeight < this.previousScrollHeight) { // To check if the list is reloaded
+      this.previousScrollHeight = this.element.scrollHeight;
+      this.lastCheckedHeight = 0;
+      this.element.scrollTop = 0; // Scroll the list to top
     }
   }
 }

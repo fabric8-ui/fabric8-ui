@@ -13,7 +13,7 @@ export class UserService {
   private headers = new Headers({'Content-Type': 'application/json'});
   private userUrl = process.env.API_URL + 'user';  // URL to web api
   private identitiesUrl = process.env.API_URL + 'identities';  // URL to web api
-  userData: User;
+  userData: User = {} as User;
   allUserData: NewUser[] = [];
 
   constructor(private http: Http,
@@ -27,8 +27,12 @@ export class UserService {
               });
   }
 
+  getSavedLoggedInUser(): User {
+    return this.userData;
+  }
+
   getUser(): Promise<User> {
-    if (this.userData) {
+    if (Object.keys(this.userData).length || !this.auth.isLoggedIn()) {
       return new Promise((resolve, reject) => {
         resolve(this.userData);
       });
@@ -38,10 +42,15 @@ export class UserService {
           .get(this.userUrl, {headers: this.headers})
           .toPromise()
           .then(response => {
-            this.userData = process.env.ENV != 'inmemory' ? response.json() as User : response.json().data as User;
+            let userData = process.env.ENV != 'inmemory' ? response.json() as User : response.json().data as User;
+            // The reference of this.userData is 
+            // being used in Header
+            // So updating the value like that
+            this.userData.fullName = userData.fullName;
+            this.userData.imageURL = userData.imageURL;
             return this.userData;
           })
-          .catch(this.handleError);
+          .catch (this.handleError);
     }
   }
 

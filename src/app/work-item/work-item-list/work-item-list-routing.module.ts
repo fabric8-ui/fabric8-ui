@@ -1,3 +1,4 @@
+import { UsersResolve, AuthUserResolve } from './../users.resolver';
 import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -8,13 +9,21 @@ const routes: Routes = [
   {
     path: 'work-item-list',
     component: WorkItemListComponent,
+    resolve: {
+      allusers: UsersResolve,
+      authuser: AuthUserResolve
+    },
     children: [
       {
         path: ''
       },
       {
         path: 'detail/:id',
-        component: WorkItemDetailComponent
+        component: WorkItemDetailComponent,
+        resolve: {
+          allusers: UsersResolve,
+          authuser: AuthUserResolve
+        },
       },
     ]
   },

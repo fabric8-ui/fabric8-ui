@@ -52,11 +52,7 @@ export class HeaderComponent implements OnInit {
     private broadcaster: Broadcaster) {}
 
   getLoggedUser(): void {
-    if (this.auth.isLoggedIn()) {
-      this.userService
-        .getUser()
-        .then(user => this.loggedInUser = user);
-    }
+    this.loggedInUser = this.userService.getSavedLoggedInUser();
   }
 
   logout(){
