@@ -3,7 +3,7 @@ import { Router }    from '@angular/router';
 
 import { LoginItem } from './login-item';
 import { LoginService } from './login.service';
-import { AuthenticationService } from './../auth/authentication.service';
+import { AuthenticationService } from '../auth/authentication.service';
 
 
 @Component({

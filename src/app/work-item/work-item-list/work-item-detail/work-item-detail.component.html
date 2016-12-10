@@ -89,21 +89,23 @@
       </div>
       <div class="col-md-12 col-sm-12 col-xs-12 detail-assignee-wrap">
           <span
-            *ngIf="!assignedUser"
+            *ngIf="!workItem.relationalData.assignee"
             (click)="activeSearchAssignee()" 
             class="pull-left fa fa-user-plus user-assign-icon">
           </span>
           <img 
-            *ngIf="assignedUser"
+            *ngIf="workItem.relationalData.assignee"
             (click)="activeSearchAssignee()"
             class="pull-left user-assign-avatar"
-            src="{{assignedUser.imageURL + '&s=20'}}" 
+            src="{{workItem.relationalData.assignee?.attributes.imageURL + '&s=20'}}" 
             onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
           
           
           <div class="pull-left detail-assignee-name">
-              <span *ngIf="!searchAssignee && !assignedUser" (click)="activeSearchAssignee()" class="placeholder clickable"> Unassigned </span>   
-              <span *ngIf="!searchAssignee && assignedUser" (click)="activeSearchAssignee()" class="clickable" id="WI_details_assigned_user"> {{assignedUser.fullName}} </span>
+              <span *ngIf="!searchAssignee && !workItem.relationalData.assignee" (click)="activeSearchAssignee()" class="placeholder clickable"> Unassigned </span>   
+              <span *ngIf="!searchAssignee && workItem.relationalData.assignee" (click)="activeSearchAssignee()" class="clickable" id="WI_details_assigned_user"> 
+                {{workItem.relationalData.assignee.attributes.fullName}} 
+              </span>
               <div *ngIf="searchAssignee" class="user-search" >
                 <div class="list-container">
                   <span class="fa fa-search user-search-icon"> </span>                  

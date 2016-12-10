@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { Logger } from '../shared/logger.service';
-import { Broadcaster } from './../shared/broadcaster.service';
+import { Broadcaster } from '../shared/broadcaster.service';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -29,6 +29,10 @@ export class UserService {
 
   getSavedLoggedInUser(): User {
     return this.userData;
+  }
+
+  getLocallySavedUsers(): NewUser[] {
+    return this.allUserData;
   }
 
   getUser(): Promise<User> {
@@ -72,7 +76,7 @@ export class UserService {
   }
 
   resetUser(): void {
-    this.userData = null as User;
+    this.userData = {} as User;
   }
 
   private handleError(error: any): Promise<any> {

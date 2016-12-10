@@ -60,6 +60,28 @@ describe('Detailed view and edit a selected work item - ', () => {
 
   beforeEach(() => {
 
+    fakeUserList = [
+      {
+        attributes: {
+          fullName: 'Harry Potter',
+          imageURL: 'http://nerdist.com/wp-content/uploads/2016/02/20160210_nerdistnews_harrypottercursedchild_1x1.jpg'
+        },
+        id: '779efdcc-ac87-4720-925e-949ff21dbf5d'
+      }, {
+        attributes: {
+          fullName: 'Walter Mitty',
+          imageURL: 'http://bestwatchbrandshq.com/wp-content/uploads/2015/01/Ben-Stiller-Watch-In-The-Secret-Life-Of-Walter-Mitty-Movie-9.jpg'
+        },
+        id: '39d44ed6-1246-48d6-9190-51ffab67c42e'
+      }, {
+        attributes: {
+          fullName: 'Draco Malfoy',
+          imageURL: 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
+        },
+        id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
+      }
+    ] as NewUser[];
+
     fakeWorkItem = {
       'attributes': {
         'system.creator': null,
@@ -84,7 +106,10 @@ describe('Detailed view and edit a selected work item - ', () => {
           }
         }
       },
-      'type': 'workitems'
+      'type': 'workitems',
+      'relationalData': {
+        'assignee': fakeUserList[2]
+      }
     } as WorkItem;
 
     fakeWorkItems.push(fakeWorkItem);
@@ -101,28 +126,6 @@ describe('Detailed view and edit a selected work item - ', () => {
       'fullName': 'Draco Malfoy',
       'imageURL': 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
     } as User;
-
-    fakeUserList = [
-      {
-        attributes: {
-          fullName: 'Harry Potter',
-          imageURL: 'http://nerdist.com/wp-content/uploads/2016/02/20160210_nerdistnews_harrypottercursedchild_1x1.jpg'
-        },
-        id: '779efdcc-ac87-4720-925e-949ff21dbf5d'
-      }, {
-        attributes: {
-          fullName: 'Walter Mitty',
-          imageURL: 'http://bestwatchbrandshq.com/wp-content/uploads/2015/01/Ben-Stiller-Watch-In-The-Secret-Life-Of-Walter-Mitty-Movie-9.jpg'
-        },
-        id: '39d44ed6-1246-48d6-9190-51ffab67c42e'
-      }, {
-        attributes: {
-          fullName: 'Draco Malfoy',
-          imageURL: 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
-        },
-        id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
-      }
-    ] as NewUser[];
 
     fakeWorkItemTypes = [
       { name: 'system.userstory' },
@@ -485,22 +488,11 @@ describe('Detailed view and edit a selected work item - ', () => {
     expect(comp.searchAssignee).toBeTruthy();
   });
 
-  it('should return correct user info from getAssignedUserDetails', () => {
-    let foundUser: any = comp.getAssignedUserDetails('39d44ed6-1246-48d6-9190-51ffab67c42e');
-    expect(foundUser.fullName).toBe('Walter Mitty');
-  });
-
-  it('should return null from getAssignedUserDetails in case not found', () => {
-    let foundUser: any = comp.getAssignedUserDetails('39d44ed6-1246-48d6-9190-51ffab6312-0391-012');
-    expect(foundUser).toBeNull();
-  });
-
   it('Page should display correct assignee', () => {
     fakeAuthService.login();
     fixture.detectChanges();
     comp.workItem = fakeWorkItem;
     comp.loggedIn = fakeAuthService.isLoggedIn();
-    comp.assignedUser = comp.getAssignedUserDetails(comp.workItem.relationships.assignee.data.id);
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#WI_details_assigned_user'));
     expect(el.nativeElement.textContent).toContain('Draco Malfoy');

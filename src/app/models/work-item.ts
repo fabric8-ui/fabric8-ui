@@ -5,6 +5,7 @@ export class WorkItem {
   id: string;
   relationships: WorkItemRelations;
   type: string;
+  relationalData?: RelationalData;
 }
 
 export class WorkItemAttributes {
@@ -29,4 +30,9 @@ export class WorkItemRelations {
       type: string;
     }
   };
+}
+
+export class RelationalData {
+  creator?: User;
+  assignee?: User;
 }

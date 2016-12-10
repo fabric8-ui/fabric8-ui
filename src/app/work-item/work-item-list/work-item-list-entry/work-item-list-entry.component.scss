@@ -4,6 +4,7 @@
 .list-group-item {
   cursor: pointer;
   font-size: rem(12);
+  align-items: center;
   .workItemList_workItemType {
     width: em(120);
     float: left;
@@ -47,6 +48,13 @@ span{
     background-color: $color-pf-blue-100;
   }
 }
+
+.not-assigned-user-icon {
+  font-size: 20px;
+  border: 1px solid;
+  padding: 0px 3px;
+}
+
 @media (max-width: $screen-md-min){
   .workItemList_title{
     font-size: rem(16);

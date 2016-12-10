@@ -13,6 +13,8 @@ import { WorkItem } from '../../../models/work-item';
 import { WorkItemService } from '../../work-item.service';
 import { WorkItemType } from '../../work-item-type';
 
+import { User } from '../../../models/user';
+
 @Component({
   selector: 'alm-work-item-detail',
   templateUrl: './work-item-detail.component.html',
@@ -45,10 +47,9 @@ export class WorkItemDetailComponent implements OnInit {
 
   searchAssignee: Boolean = false;
 
-  users: any[] = [];
-  filteredUsers: any[] = [];
+  users: User[] = [];
+  filteredUsers: User[] = [];
 
-  assignedUser: any;
   loggedInUser: any;
 
   constructor(
@@ -88,25 +89,10 @@ export class WorkItemDetailComponent implements OnInit {
   }
 
   getAllUsers() {
-    this.userService.getAllUsers()
-      .then((users) => {
-        this.users = cloneDeep(users);
-        this.filteredUsers = cloneDeep(users);
-        // setting user details of loggedIn User
-        if (this.auth.isLoggedIn()) {
-          this.userService
-            .getUser()
-            .then(user => this.setLoggedInUser(user));
-        }
-        // setting assigned User
-        if (this.workItem.relationships.assignee.hasOwnProperty('data')) {
-          this.assignedUser = this.getAssignedUserDetails(
-            this.workItem.relationships.assignee.data.id
-          );
-        } else {
-          this.assignedUser = null;
-        }
-      });
+    this.users = cloneDeep(this.route.snapshot.data['allusers']) as User[];
+    this.filteredUsers = cloneDeep(this.route.snapshot.data['allusers']) as User[];
+    let authUser = cloneDeep(this.route.snapshot.data['authuser']);
+    this.setLoggedInUser(authUser);
   }
 
   setLoggedInUser(authUser: any) {
@@ -319,8 +305,8 @@ export class WorkItemDetailComponent implements OnInit {
         type: 'identities'
       }
     };
+    this.workItemService.resolveUsersForWorkItem(this.workItem);
     this.save();
-    this.assignedUser = this.getAssignedUserDetails(userId);
     this.searchAssignee = false;
   }
 
@@ -328,23 +314,13 @@ export class WorkItemDetailComponent implements OnInit {
     this.workItem.relationships.assignee = {
       data: null
     };
-    this.assignedUser = null;
     this.save();
+    this.workItemService.resolveUsersForWorkItem(this.workItem);
     this.searchAssignee = false;
   }
 
   cancelAssignment(): void {
     this.searchAssignee = false;
-  }
-
-  getAssignedUserDetails(userId: any): string {
-    let user: any = null;
-    if (this.loggedInUser && this.loggedInUser.id == userId) {
-      user = this.loggedInUser;
-    } else {
-      user = this.users.find((item) => item.id == userId);
-    }
-    return user ? user.attributes : null;
   }
 
   closeRestFields(): void {

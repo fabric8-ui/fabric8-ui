@@ -10,6 +10,9 @@ import { Logger } from '../shared/logger.service';
 
 import { WorkItem } from '../models/work-item';
 import { WorkItemType } from './work-item-type';
+import { UserService } from '../user/user.service';
+import { User } from '.././models/user';
+
 
 
 @Injectable()
@@ -22,10 +25,12 @@ export class WorkItemService {
   private workItems: WorkItem[] = [];
   private nextLink: string = null;
   private initialWorkItemFetchDone = false;
+  private userIdMap = {};
 
   constructor(private http: Http,
     private logger: Logger,
-    private auth: AuthenticationService) {
+    private auth: AuthenticationService,
+    private userService: UserService) {
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
     }
@@ -49,6 +54,7 @@ export class WorkItemService {
       .get(url, { headers: this.headers })
       .toPromise()
       .then(response => {
+        this.buildUserIdMap();
         if (process.env.ENV == 'inmemory') {
           // Exclusively for in memory testing
           this.workItems = response.json().data as WorkItem[];
@@ -59,6 +65,9 @@ export class WorkItemService {
             this.nextLink = links.next;
           }
           this.workItems = response.json().data as WorkItem[];
+          this.workItems.forEach((item) => {
+            this.resolveUsersForWorkItem(item);
+          });
         }
         return this.workItems;
       })
@@ -72,17 +81,72 @@ export class WorkItemService {
       .get(this.nextLink, { headers: this.headers })
       .toPromise()
       .then(response => {
+        this.buildUserIdMap();
         let links = response.json().links;
         if (links.hasOwnProperty('next')) {
           this.nextLink = links.next;
         } else {
           this.nextLink = null;
         }
-        return response.json().data as WorkItem[];
+        let newWorkItems: WorkItem[] = response.json().data as WorkItem[];
+        newWorkItems.forEach((item) => {
+          this.resolveUsersForWorkItem(item);
+        });
+        return newWorkItems;
       })
-      .catch(this.handleError);
+      .catch (this.handleError);
     } else {
       return Promise.reject('No more item found');
+    }
+  }
+
+  resolveUsersForWorkItem(workItem: WorkItem): void {
+    workItem.relationalData = {};
+    this.resolveAssignee(workItem);
+    this.resolveCreator(workItem);
+  }
+
+  resolveAssignee(workItem: WorkItem): void {
+    if (!workItem.relationships.hasOwnProperty('assignee') || !workItem.relationships.assignee) {
+      workItem.relationalData.assignee = null;
+      return;
+    }
+    if (!workItem.relationships.assignee.hasOwnProperty('data')) {
+      workItem.relationalData.assignee = null;
+      return;
+    }
+    if (!workItem.relationships.assignee.data) {
+      workItem.relationalData.assignee = null;
+      return;
+    }
+    workItem.relationalData.assignee = this.getUserById(workItem.relationships.assignee.data.id);
+  }
+
+  resolveCreator(workItem: WorkItem): void {
+    if ('system.creator' in workItem.attributes) {
+      workItem.relationalData.creator = this.getUserById(workItem.attributes['system.creator']);
+    } else {
+      workItem.relationalData.creator = null;
+    }
+  }
+
+  getUserById(userId: string): User {
+    if (userId in this.userIdMap) {
+      return this.userIdMap[userId];
+    } else {
+      return null;
+    }
+  }
+
+  buildUserIdMap(): void {
+    // Fetch the current updated locally saved user list
+    let users: User[] = this.userService.getLocallySavedUsers() as User[];
+    // Check if the map is putdated or not and if yes then rebuild it
+    if (Object.keys(this.userIdMap).length < users.length) {
+      this.userIdMap = {};
+      users.forEach((user) => {
+        this.userIdMap[user.id] = user;
+      });
     }
   }
 
@@ -115,7 +179,11 @@ export class WorkItemService {
     return this.http
       .get(url + '/' + id, { headers: this.headers })
       .toPromise()
-      .then((response) => response.json().data as WorkItem)
+      .then((response) => {
+        let wItem: WorkItem = response.json().data as WorkItem;
+        this.resolveUsersForWorkItem(wItem);
+        return wItem;
+      })
       .catch (this.handleError);
   }
 
@@ -133,7 +201,7 @@ export class WorkItemService {
   }
 
   delete(workItem: WorkItem): Promise<void> {
-    const url = `${this.workItemUrl}/${workItem.id}`;
+    const url = `${this.workItemUrl}.2/${workItem.id}`;
     return this.http
       .delete(url, { headers: this.headers, body: '' })
       .toPromise()
@@ -159,7 +227,6 @@ export class WorkItemService {
       for (var i = 0; i < 5; i++)
         workItem.id += possible.charAt(Math.floor(Math.random() * possible.length));
       payload = JSON.stringify(workItem);
-      payload = JSON.stringify(workItem);
     }
     return this.http
       .post(url, payload, { headers: this.headers })
@@ -170,6 +237,7 @@ export class WorkItemService {
           process.env.ENV != 'inmemory' ? 
             response.json().data as WorkItem : 
             cloneDeep(workItem) as WorkItem;
+        this.resolveUsersForWorkItem(updatedWorkItem);
         this.workItems.splice(0, 0, updatedWorkItem);
         return updatedWorkItem;
       })
@@ -198,6 +266,7 @@ export class WorkItemService {
           let updatedWorkItem = response.json().data as WorkItem;
           let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
           this.workItems[updateIndex] = updatedWorkItem;
+          this.resolveUsersForWorkItem(updatedWorkItem);
           return updatedWorkItem;
         })
         .catch(this.handleError);

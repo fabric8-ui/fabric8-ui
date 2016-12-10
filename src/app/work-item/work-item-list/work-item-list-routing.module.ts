@@ -1,4 +1,4 @@
-import { UsersResolve, AuthUserResolve } from './../users.resolver';
+import { UsersResolve, AuthUserResolve } from '../users.resolver';
 import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 

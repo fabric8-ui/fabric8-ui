@@ -69,11 +69,13 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
     active: false,
     value: null
   }];
+  allUsers: User[] = [] as User[];
 
   constructor(
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     private router: Router,
+    private user: UserService,
     private workItemService: WorkItemService,
     private logger: Logger,
     private userService: UserService,
@@ -91,6 +93,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     let oldHeight = 0;
+    this.allUsers = cloneDeep(this.route.snapshot.data['allusers']) as User[];
     this.activeFiltersRef.changes.subscribe((item) => {
       let newElHeight = this.activeFiltersDiv.nativeElement.offsetHeight;
       let listCurrentHeight = this.listContainer.nativeElement.offsetHeight;
@@ -107,8 +110,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
 
   setFilterValues() {
     let loggedInUser = cloneDeep(this.route.snapshot.data['authuser']);
-    let allUsers = cloneDeep(this.route.snapshot.data['allusers']);
-    loggedInUser = allUsers.find((user: User) => user.attributes.imageURL == loggedInUser.imageURL);
+    loggedInUser = this.allUsers.find((user: User) => user.attributes.imageURL == loggedInUser.imageURL);
     if (loggedInUser) {
       this.filters[0].value = loggedInUser.id;
     }

@@ -1,3 +1,6 @@
+import { cloneDeep } from 'lodash';
+import { Broadcaster } from '../shared/broadcaster.service';
+import { UserService } from '../user/user.service';
 import {
   async,
   inject,
@@ -50,7 +53,9 @@ describe('Work Item Service - ', () => {
           provide: AuthenticationService,
           useValue: fakeAuthService
         },
-        WorkItemService
+        WorkItemService,
+        UserService,
+        Broadcaster
       ]
     });
   });
@@ -86,6 +91,8 @@ describe('Work Item Service - ', () => {
     }
   ] as WorkItem[];
   let response = {data: resp, links: {}};
+  let checkResp = cloneDeep(resp);
+  checkResp.forEach((item) => item['relationalData'] = Object({ assignee: null, creator: null }));
 
   it('Get work items', async(() => {
     mockService.connections.subscribe((connection: any) => {
@@ -99,7 +106,7 @@ describe('Work Item Service - ', () => {
 
     apiService.getWorkItems()
       .then(data => {
-        expect(data).toEqual(resp);
+        expect(data).toEqual(checkResp);
       });
   }));
 
@@ -115,7 +122,7 @@ describe('Work Item Service - ', () => {
 
     apiService.create(resp[0])
       .then(data => {
-        expect(data).toEqual(resp[0]);
+        expect(data).toEqual(checkResp[0]);
       });
   }));
 
@@ -146,7 +153,7 @@ describe('Work Item Service - ', () => {
 
     apiService.update(resp[0])
       .then(data => {
-        expect(data).toEqual(resp[0]);
+        expect(data).toEqual(checkResp[0]);
       });
   }));
 

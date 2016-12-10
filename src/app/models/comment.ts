@@ -1,4 +1,4 @@
-import { NewUser } from './../user/user';
+import { NewUser } from '../user/user';
 
 export class Comment {
     id: string;
