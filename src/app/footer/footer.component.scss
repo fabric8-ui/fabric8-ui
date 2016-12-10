@@ -1,0 +1,9 @@
+@import "../../assets/stylesheets/color-variables";
+@import "../../assets/stylesheets/variables";
+@import "../../assets/stylesheets/custom";
+.footer{
+	text-align: $textCenter;
+	font-size: $font-size-small;
+	border-top: 1px solid $color-pf-blue-300;
+	margin-top: 2%;
+}
