@@ -62,14 +62,9 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   panelState: String = 'out';
   contentItemHeight: number = 65;
   pageSize: number = 20;
-  filters: any[] = [{
-    id:  1,
-    name: 'Assign to Me',
-    paramKey: 'filter[assginee]',
-    active: false,
-    value: null
-  }];
+  filters: any[] = [];
   allUsers: User[] = [] as User[];
+  authUser: any = null;
 
   constructor(
     private auth: AuthenticationService,
@@ -86,7 +81,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.setFilterValues();
     // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
   }
@@ -94,6 +88,8 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     let oldHeight = 0;
     this.allUsers = cloneDeep(this.route.snapshot.data['allusers']) as User[];
+    this.authUser = cloneDeep(this.route.snapshot.data['authuser']);
+    this.setFilterValues();
     this.activeFiltersRef.changes.subscribe((item) => {
       let newElHeight = this.activeFiltersDiv.nativeElement.offsetHeight;
       let listCurrentHeight = this.listContainer.nativeElement.offsetHeight;
@@ -109,21 +105,31 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   }
 
   setFilterValues() {
-    let loggedInUser = cloneDeep(this.route.snapshot.data['authuser']);
-    loggedInUser = this.allUsers.find((user: User) => user.attributes.imageURL == loggedInUser.imageURL);
-    if (loggedInUser) {
-      this.filters[0].value = loggedInUser.id;
+    if (this.loggedIn) {
+      let loggedInUser = this.allUsers.find((user: User) => user.attributes.imageURL == this.authUser.imageURL);
+      this.filters.push({
+        id:  1,
+        name: 'Assign to Me',
+        paramKey: 'filter[assginee]',
+        active: false,
+        value: loggedInUser.id
+      });
+    } else {
+      let index = this.filters.findIndex(item => item.id === 1);
+      this.filters.splice(index, 1);
     }
   }
 
   activeFilter(filterId: number) {
-    let selectedIndex = this.filters.findIndex((f: any) => {
-      return f.id === filterId;
-    });
-    if (selectedIndex > -1) {
-      this.filters[selectedIndex].active = true;
+    if (this.loggedIn) {
+      let selectedIndex = this.filters.findIndex((f: any) => {
+        return f.id === filterId;
+      });
+      if (selectedIndex > -1) {
+        this.filters[selectedIndex].active = true;
+      }
+      this.loadWorkItems();
     }
-    this.loadWorkItems();
   }
 
   deactiveFilter(filterId: number) {
@@ -136,7 +142,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
     this.loadWorkItems();
   }
 
-  deactiveAllFilters(filterId: number) {
+  deactiveAllFilters() {
     this.filters.forEach((f: any) => {
       f.active = false;
     });
@@ -229,6 +235,9 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
     this.broadcaster.on<string>('logout')
       .subscribe(message => {
         this.loggedIn = false;
+        this.deactiveAllFilters();
+        this.authUser = null;
+        this.setFilterValues();
     });
   }
 }
