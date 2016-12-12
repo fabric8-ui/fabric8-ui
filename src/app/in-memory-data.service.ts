@@ -27,7 +27,7 @@ export class InMemoryDataService implements InMemoryDbService {
     let workitems = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((n) => {
       return {
         'attributes': {
-          'system.creator': identities[1].id,
+          'system.created_at': null,
           'system.description': 'Some Description ' + n,
           'system.remote_item_id': null,
           'system.state': 'new',
@@ -41,6 +41,17 @@ export class InMemoryDataService implements InMemoryDbService {
             'data': {
               'id': 'system.userstory',
               'type': 'workitemtypes'
+            }
+          },
+          'creator': {
+            'data': {
+              'id': identities[1].id,
+              'type': 'identities'
+            }
+          },
+          'comments': {
+            'links': {
+              'self': ''
             }
           }
         },

@@ -1,3 +1,4 @@
+import { Comments } from './comment';
 import { User } from './user';
 
 export class WorkItem {
@@ -9,7 +10,7 @@ export class WorkItem {
 }
 
 export class WorkItemAttributes {
-  'system.creator': string;
+  'system.created_at': string;
   'system.description': string;
   'system.remote_item_id': string;    
   'system.state': string;
@@ -30,9 +31,21 @@ export class WorkItemRelations {
       type: string;
     }
   };
+  comments?: {
+    links: {
+      self: string;
+    };
+  };
+  creator: {
+    data: {
+      id: string,
+      type: string
+    }
+  };
 }
 
 export class RelationalData {
   creator?: User;
   assignee?: User;
+  comments?: Comment[];
 }

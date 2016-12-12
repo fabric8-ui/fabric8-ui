@@ -70,7 +70,7 @@ describe('Work Item Service - ', () => {
   let resp: WorkItem[] = [
     {
       'attributes': {
-        'system.creator': null,
+        'system.created_at': null,
         'system.description': null,
         'system.remote_item_id': null,
         'system.state': 'new',
@@ -85,7 +85,8 @@ describe('Work Item Service - ', () => {
             'id': 'system.userstory',
             'type': 'workitemtypes'
           }
-        }
+        },
+        'creator': {}
       },
       'type': 'workitems'
     }

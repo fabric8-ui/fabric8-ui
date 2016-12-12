@@ -84,7 +84,7 @@ describe('Detailed view and edit a selected work item - ', () => {
 
     fakeWorkItem = {
       'attributes': {
-        'system.creator': null,
+        'system.created_at': null,
         'system.description': null,
         'system.remote_item_id': null,
         'system.state': 'new',
@@ -104,11 +104,23 @@ describe('Detailed view and edit a selected work item - ', () => {
             'id': 'system.userstory',
             'type': 'workitemtypes'
           }
+        },
+        'creator': {
+          'data': {
+            'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
+            'type': 'identities'
+          }
+        },
+        'comments': {
+          'links': {
+            'self': ''
+          }
         }
       },
       'type': 'workitems',
       'relationalData': {
-        'assignee': fakeUserList[2]
+        'assignee': fakeUserList[2],
+        'creator': fakeUserList[0]
       }
     } as WorkItem;
 

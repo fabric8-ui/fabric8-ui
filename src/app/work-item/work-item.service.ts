@@ -123,11 +123,24 @@ export class WorkItemService {
   }
 
   resolveCreator(workItem: WorkItem): void {
-    if ('system.creator' in workItem.attributes) {
-      workItem.relationalData.creator = this.getUserById(workItem.attributes['system.creator']);
-    } else {
+    if (!workItem.relationships.hasOwnProperty('creator') || !workItem.relationships.creator) {
       workItem.relationalData.creator = null;
+      return;
     }
+    if (!workItem.relationships.creator.hasOwnProperty('data')) {
+      workItem.relationalData.creator = null;
+      return;
+    }
+    if (!workItem.relationships.creator.data) {
+      workItem.relationalData.creator = null;
+      return;
+    }
+    // To handle some old items with no creator
+    if (workItem.relationships.creator.data.id === 'me') {
+      workItem.relationalData.creator = null;
+      return;
+    }
+    workItem.relationalData.creator = this.getUserById(workItem.relationships.creator.data.id);
   }
 
   getUserById(userId: string): User {
@@ -166,10 +179,10 @@ export class WorkItemService {
         .then((response) => {
           this.workItemTypes = process.env.ENV != 'inmemory' ? response.json() as WorkItemType[] : response.json().data as WorkItemType[];
           return this.workItemTypes;
-        })
-        .catch (this.handleError);
+      })
+      .catch (this.handleError);
     }
-  }
+  } 
 
   getWorkItem(id: string): Promise<WorkItem> {
     let url = this.workItemUrl;

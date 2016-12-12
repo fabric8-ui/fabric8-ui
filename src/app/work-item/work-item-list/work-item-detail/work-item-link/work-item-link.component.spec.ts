@@ -55,7 +55,7 @@ describe('WorkItem Links CRD -', () => {
   beforeEach(() => {
      workItem = {
       'attributes': {
-        'system.creator': null,
+        'system.created_at': null,
         'system.description': null,
         'system.remote_item_id': null,
         'system.state': 'new',
@@ -74,6 +74,12 @@ describe('WorkItem Links CRD -', () => {
           'data': {
             'id': 'system.userstory',
             'type': 'workitemtypes'
+          }
+        },
+        'creator': {
+          'data': {
+            'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
+            'type': 'identities'
           }
         }
       },
@@ -82,7 +88,7 @@ describe('WorkItem Links CRD -', () => {
 
      fakeWorkItem1 = {
       'attributes': {
-        'system.creator': null,
+        'system.created_at': null,
         'system.description': null,
         'system.remote_item_id': null,
         'system.state': 'new',
@@ -102,14 +108,15 @@ describe('WorkItem Links CRD -', () => {
             'id': 'system.userstory',
             'type': 'workitemtypes'
           }
-        }
+        },
+        'creator': {}
       },
       'type': 'workitems'
     } as WorkItem;
     
     fakeWorkItem2 = {
       'attributes': {
-        'system.creator': null,
+        'system.created_at': null,
         'system.description': null,
         'system.remote_item_id': null,
         'system.state': 'new',
@@ -129,14 +136,15 @@ describe('WorkItem Links CRD -', () => {
             'id': 'system.userstory',
             'type': 'workitemtypes'
           }
-        }
+        },
+        'creator': {}
       },
       'type': 'workitems'
     } as WorkItem;
 
     toLinkWorkItem = {
       'attributes': {
-        'system.creator': null,
+        'system.created_at': null,
         'system.description': null,
         'system.remote_item_id': null,
         'system.state': 'new',
@@ -156,7 +164,8 @@ describe('WorkItem Links CRD -', () => {
             'id': 'system.userstory',
             'type': 'workitemtypes'
           }
-        }
+        },
+        'creator': {}
       },
       'type': 'workitems'
     } as WorkItem;
