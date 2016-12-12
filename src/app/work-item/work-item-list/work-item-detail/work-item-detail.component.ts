@@ -299,11 +299,11 @@ export class WorkItemDetailComponent implements OnInit {
   }
 
   assignUser(userId: any): void {
-    this.workItem.relationships.assignee = {
-      data: {
+    this.workItem.relationships.assignees = {
+      data: [{
         id: userId,
         type: 'identities'
-      }
+      }]
     };
     this.workItemService.resolveUsersForWorkItem(this.workItem);
     this.save();
@@ -311,8 +311,8 @@ export class WorkItemDetailComponent implements OnInit {
   }
 
   unassignUser(): void {
-    this.workItem.relationships.assignee = {
-      data: null
+    this.workItem.relationships.assignees = {
+      data: []
     };
     this.save();
     this.workItemService.resolveUsersForWorkItem(this.workItem);

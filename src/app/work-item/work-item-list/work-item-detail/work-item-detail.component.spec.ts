@@ -93,11 +93,11 @@ describe('Detailed view and edit a selected work item - ', () => {
       },
       'id': '1',
       'relationships': {
-        'assignee': {
-          'data': {
+        'assignees': {
+          'data': [{
             'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
             'type': 'identities'
-          }
+          }]
         },
         'baseType': {
           'data': {
@@ -119,8 +119,8 @@ describe('Detailed view and edit a selected work item - ', () => {
       },
       'type': 'workitems',
       'relationalData': {
-        'assignee': fakeUserList[2],
-        'creator': fakeUserList[0]
+        'creator': fakeUserList[0],
+        'assignees': [fakeUserList[2]]
       }
     } as WorkItem;
 

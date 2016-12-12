@@ -64,11 +64,11 @@ describe('WorkItem Links CRD -', () => {
       },
       'id': '1',
       'relationships': {
-        'assignee': {
-          'data': {
+        'assignees': {
+          'data': [{
             'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
             'type': 'identities'
-          }
+          }]
         },
         'baseType': {
           'data': {
@@ -97,11 +97,11 @@ describe('WorkItem Links CRD -', () => {
       },
       'id': '1',
       'relationships': {
-        'assignee': {
-          'data': {
+        'assignees': {
+          'data': [{
             'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
             'type': 'identities'
-          }
+          }]
         },
         'baseType': {
           'data': {
@@ -125,11 +125,11 @@ describe('WorkItem Links CRD -', () => {
       },
       'id': '4',
       'relationships': {
-        'assignee': {
-          'data': {
+        'assignees': {
+          'data': [{
             'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
             'type': 'identities'
-          }
+          }]
         },
         'baseType': {
           'data': {
@@ -153,11 +153,11 @@ describe('WorkItem Links CRD -', () => {
       },
       'id': '6',
       'relationships': {
-        'assignee': {
-          'data': {
+        'assignees': {
+          'data': [{
             'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
             'type': 'identities'
-          }
+          }]
         },
         'baseType': {
           'data': {

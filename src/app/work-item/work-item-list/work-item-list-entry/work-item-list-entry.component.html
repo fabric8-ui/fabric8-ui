@@ -26,10 +26,10 @@
 
   <div>
       <img 
-        *ngIf="workItem.relationalData?.assignee"
-        src="{{workItem.relationalData?.assignee?.attributes.imageURL + '&s=23'}}"
+        *ngFor="let wItem of workItem.relationalData.assignees"
+        src="{{wItem.attributes.imageURL + '&s=23'}}"
         onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
-      <span *ngIf="!workItem.relationalData?.assignee" class="fa fa-user not-assigned-user-icon"></span>
+      <span *ngIf="!workItem.relationalData?.assignees?.length" class="fa fa-user not-assigned-user-icon"></span>
   </div>
 
 	<!-- action area -->

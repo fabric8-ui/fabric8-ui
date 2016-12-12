@@ -79,7 +79,9 @@ describe('Work Item Service - ', () => {
       },
       'id': '1',
       'relationships': {
-        'assignee': {},
+        'assignees': {
+          'data': []
+        },
         'baseType': {
           'data': {
             'id': 'system.userstory',
@@ -93,7 +95,7 @@ describe('Work Item Service - ', () => {
   ] as WorkItem[];
   let response = {data: resp, links: {}};
   let checkResp = cloneDeep(resp);
-  checkResp.forEach((item) => item['relationalData'] = Object({ assignee: null, creator: null }));
+  checkResp.forEach((item) => item['relationalData'] = Object({ assignees: [], creator: null }));
 
   it('Get work items', async(() => {
     mockService.connections.subscribe((connection: any) => {

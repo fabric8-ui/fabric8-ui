@@ -11,7 +11,7 @@ import { Logger } from '../shared/logger.service';
 import { WorkItem } from '../models/work-item';
 import { WorkItemType } from './work-item-type';
 import { UserService } from '../user/user.service';
-import { User } from '.././models/user';
+import { User } from '../models/user';
 
 
 
@@ -65,10 +65,10 @@ export class WorkItemService {
             this.nextLink = links.next;
           }
           this.workItems = response.json().data as WorkItem[];
-          this.workItems.forEach((item) => {
-            this.resolveUsersForWorkItem(item);
-          });
         }
+        this.workItems.forEach((item) => {
+          this.resolveUsersForWorkItem(item);
+        });
         return this.workItems;
       })
       .catch (this.handleError); 
@@ -107,19 +107,19 @@ export class WorkItemService {
   }
 
   resolveAssignee(workItem: WorkItem): void {
-    if (!workItem.relationships.hasOwnProperty('assignee') || !workItem.relationships.assignee) {
-      workItem.relationalData.assignee = null;
+    workItem.relationalData.assignees = [];
+    if (!workItem.relationships.hasOwnProperty('assignees') || !workItem.relationships.assignees) {
       return;
     }
-    if (!workItem.relationships.assignee.hasOwnProperty('data')) {
-      workItem.relationalData.assignee = null;
+    if (!workItem.relationships.assignees.hasOwnProperty('data')) {
       return;
     }
-    if (!workItem.relationships.assignee.data) {
-      workItem.relationalData.assignee = null;
+    if (!workItem.relationships.assignees.data || !workItem.relationships.assignees.data.length) {
       return;
     }
-    workItem.relationalData.assignee = this.getUserById(workItem.relationships.assignee.data.id);
+    workItem.relationships.assignees.data.forEach((assignee) => {
+      workItem.relationalData.assignees.push(this.getUserById(assignee.id));
+    });
   }
 
   resolveCreator(workItem: WorkItem): void {

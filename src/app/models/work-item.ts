@@ -19,11 +19,11 @@ export class WorkItemAttributes {
 }
 
 export class WorkItemRelations {
-  assignee: {
+  assignees: {
     data: {
       id: string,
       type: string
-    }
+    }[]
   };
   baseType: {
     data: {
@@ -46,6 +46,6 @@ export class WorkItemRelations {
 
 export class RelationalData {
   creator?: User;
-  assignee?: User;
-  comments?: Comment[];
+  comments?: Comments[];
+  assignees?: User[];
 }

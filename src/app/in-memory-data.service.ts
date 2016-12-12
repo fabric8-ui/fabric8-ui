@@ -36,7 +36,7 @@ export class InMemoryDataService implements InMemoryDbService {
         },
         'id': '' + n,
         'relationships': {
-          'assignee': {},
+          'assignees': {},
           'baseType': {
             'data': {
               'id': 'system.userstory',

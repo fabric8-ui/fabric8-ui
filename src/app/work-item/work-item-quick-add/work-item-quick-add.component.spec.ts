@@ -38,7 +38,9 @@ describe('Quick add work item component - ', () => {
       },
       'id': '1',
       'relationships': {
-        'assignee': {},
+        'assignees': {
+          'data': []
+        },
         'baseType': {
           'data': {
             'id': 'system.userstory',
