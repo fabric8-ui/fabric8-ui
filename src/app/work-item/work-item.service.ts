@@ -214,7 +214,7 @@ export class WorkItemService {
   }
 
   delete(workItem: WorkItem): Promise<void> {
-    const url = `${this.workItemUrl}.2/${workItem.id}`;
+    const url = `${this.workItemUrl}/${workItem.id}`;
     return this.http
       .delete(url, { headers: this.headers, body: '' })
       .toPromise()
