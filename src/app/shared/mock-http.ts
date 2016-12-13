@@ -130,6 +130,7 @@ export class MockHttp extends Http {
           return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemTypes() );
         case '/workitems':
           if (path.refid) {
+<<<<<<< 5aad6f4da15c2307284439bcefa3fb96db0cd63c
 <<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
 <<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
             return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItem(path.refid) );
@@ -163,6 +164,9 @@ export class MockHttp extends Http {
 >>>>>>> Initial version.
 =======
             return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItem(path.refid) );
+=======
+            return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItem(path.refid) } );
+>>>>>>> Merge Fixes.
           } else {
             return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItemTypes() } );
           }
@@ -203,6 +207,7 @@ export class MockHttp extends Http {
         return this.createResponse(url.toString(), 500, 'error', {});  
       }
       if (path.path === '/workitems') {
+<<<<<<< 5aad6f4da15c2307284439bcefa3fb96db0cd63c
 <<<<<<< 63f2feec4cbda89f0d1d83be2373e093b98d1a32
 <<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
         return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.createWorkItem(JSON.parse(body)) });
@@ -219,6 +224,9 @@ export class MockHttp extends Http {
 =======
         return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.createWorkItem(JSON.parse(body)));
 >>>>>>> All tests green.
+=======
+        return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.createWorkItem(JSON.parse(body)) });
+>>>>>>> Merge Fixes.
       } else if (path.path === '/workitemlinks') {
         return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.createWorkItemLink(JSON.parse(body)) });    
       } else 
@@ -244,7 +252,7 @@ export class MockHttp extends Http {
 <<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
         var result = this.mockDataService.updateWorkItem(JSON.parse(body));
         if (result != null)
-          return this.createResponse(url.toString(), 200, 'ok', result);
+          return this.createResponse(url.toString(), 200, 'ok', { data: result });
         else
           return this.createResponse(url.toString(), 500, 'WorkItem does not exist: ' + path.refid, {});  
       } else if (path.path === '/workitemlinks' && path.refid != null) {
