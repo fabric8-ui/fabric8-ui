@@ -1,12 +1,14 @@
-import { NgModule }           from '@angular/core';
-import { CommonModule }       from '@angular/common';
+import { NgModule }         from '@angular/core';
+import { CommonModule }     from '@angular/common';
+import { HttpModule, Http } from '@angular/http';
 
-import { DashboardComponent }   from './dashboard.component';
-import { DashboardRoutingModule }   from './dashboard-routing.module';
+import { DashboardComponent }     from './dashboard.component';
+import { DashboardRoutingModule } from './dashboard-routing.module';
 
 @NgModule({
-  imports:      [ CommonModule, DashboardRoutingModule ],
+  imports:      [ CommonModule, DashboardRoutingModule, HttpModule ],
   declarations: [ DashboardComponent ],
-  exports: [ DashboardComponent ]
 })
-export class DashboardModule { }
+export class DashboardModule {
+  constructor(http: Http) {}
+}

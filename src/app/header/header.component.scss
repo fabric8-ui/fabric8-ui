@@ -1,8 +1,7 @@
-@import "../../assets/stylesheets/navbar";
-@import "../../assets/stylesheets/navs";
-@import "../../assets/stylesheets/icons";
-@import "../../assets/stylesheets/custom";
-@import "../../assets/stylesheets/color-variables";
+@import "../../assets/stylesheets/_base";
+@import "../../assets/vendor/patternfly/stylesheets/patternfly/_navbar";
+@import "../../assets/vendor/patternfly/stylesheets/patternfly/_icons";
+@import "../../assets/stylesheets/_custom";
 .header-navbar{
     position: fixed;
     width: $width100;

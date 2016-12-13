@@ -1,12 +1,14 @@
-import { NgModule }           from '@angular/core';
-import { CommonModule }       from '@angular/common';
+import { NgModule }         from '@angular/core';
+import { CommonModule }     from '@angular/common';
+import { HttpModule, Http } from '@angular/http';
 
-import { LearnComponent }   from './learn.component';
-import { LearnRoutingModule }   from './learn-routing.module';
+import { LearnComponent }     from './learn.component';
+import { LearnRoutingModule } from './learn-routing.module';
 
 @NgModule({
-  imports:      [ CommonModule, LearnRoutingModule ],
+  imports:      [ CommonModule, LearnRoutingModule, HttpModule ],
   declarations: [ LearnComponent ],
-  exports: [ LearnComponent ]
 })
-export class LearnModule { }
+export class LearnModule {
+  constructor(http: Http) {}
+}

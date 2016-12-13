@@ -5,14 +5,14 @@ import { SettingsComponent } from './settings.component';
 
 const routes: Routes = [
   {
-    path: 'settings',
-    component: SettingsComponent,
-    children: [
-      {
-        path: ''
-      }
-    ]
+    path: '',
+    redirectTo: 'settings',
+    pathMatch: 'full'
   },
+  {
+    path: 'settings',
+    component: SettingsComponent
+  }
 
 ];
 

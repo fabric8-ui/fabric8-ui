@@ -5,14 +5,14 @@ import { LearnComponent } from './learn.component';
 
 const routes: Routes = [
   {
-    path: 'learn',
-    component: LearnComponent,
-    children: [
-      {
-        path: ''
-      }
-    ]
+    path: '',
+    redirectTo: 'learn',
+    pathMatch: 'full'
   },
+  {
+    path: 'learn',
+    component: LearnComponent
+  }
 
 ];
 

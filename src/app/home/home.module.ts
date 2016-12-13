@@ -1,13 +1,14 @@
 import { NgModule }           from '@angular/core';
 import { CommonModule }       from '@angular/common';
+import { HttpModule, Http } from '@angular/http';
 
 import { HomeComponent }   from './home.component';
 import { HomeRoutingModule }   from './home-routing.module';
-// import { Title } from './title/title.service';
-import { XLarge } from './x-large/x-large.directive';
 
 @NgModule({
-  imports:      [ CommonModule, HomeRoutingModule ],
-  declarations: [ HomeComponent, XLarge]
+  imports:      [ CommonModule, HomeRoutingModule, HttpModule ],
+  declarations: [ HomeComponent ]
 })
-export class HomeModule { }
+export class HomeModule {
+  constructor(http: Http) {}
+}

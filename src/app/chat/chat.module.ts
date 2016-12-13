@@ -1,12 +1,14 @@
-import { NgModule }           from '@angular/core';
-import { CommonModule }       from '@angular/common';
+import { NgModule }         from '@angular/core';
+import { CommonModule }     from '@angular/common';
+import { HttpModule, Http } from '@angular/http';
 
-import { ChatComponent }   from './chat.component';
-import { ChatRoutingModule }   from './chat-routing.module';
+import { ChatComponent }     from './chat.component';
+import { ChatRoutingModule } from './chat-routing.module';
 
 @NgModule({
-  imports:      [ CommonModule, ChatRoutingModule ],
+  imports:      [ CommonModule, ChatRoutingModule, HttpModule ],
   declarations: [ ChatComponent ],
-  exports: [ ChatComponent ]
 })
-export class ChatModule { }
+export class ChatModule {
+  constructor(http: Http) {}
+}

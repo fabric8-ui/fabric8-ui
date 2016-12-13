@@ -1,25 +1,9 @@
 import { NgModule }             from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-// import { DataResolver } from './app.resolver';
+import { LoginComponent } from './login/login.component';
 
-/*
-export function loadChildrenDetail() {
-  return System.import('./+detail').then((comp: any) => {
-    return comp.default;
-  });
-}
-export function loadChildrenAbout() {
-  return System.import('./about').then((comp: any) => {
-    return comp.default;
-  });
-}
-export function loadChildrenNoConent() {
-  return System.import('./no-content').then((comp: any) => {
-    return comp.default;
-  });
-}
-*/
+// import { DataResolver } from './app.resolver';
 
 export const routes: Routes = [
   {
@@ -28,22 +12,28 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'about',
-    // loadChildren: loadChildrenDetail
-    // loadChildren: '../../aot/app/about/about.module.ngfactory#AboutModuleNgFactory'
-    loadChildren: './about/about.module#AboutModule'
+    path: 'login',
+    component: LoginComponent
   },
   {
-    path: 'detail',
-    // loadChildren: loadChildrenAbout
-    // loadChildren: '../../aot/app/+detail/detail.module.ngfactory#DetailModuleNgFactory'
-    loadChildren: './+detail/detail.module#DetailModule'
+    path: 'chat',
+    loadChildren: './chat/chat.module#ChatModule'
   },
   {
-    path: '**',
-    // loadChildren: loadChildrenNoConent
-    // loadChildren: '../../aot/app/no-content/no-content.module.ngfactory#NoContentModuleNgFactory'
-    loadChildren: './no-content/no-content.module#NoContentModule'
+    path: 'dashboard',
+    loadChildren: './dashboard/dashboard.module#DashboardModule'
+  },
+  {
+    path: 'learn',
+    loadChildren: './learn/learn.module#LearnModule'
+  },
+  {
+    path: 'notifications',
+    loadChildren: './notifications/notifications.module#NotificationsModule'
+  },
+  {
+    path: 'settings',
+    loadChildren: './settings/settings.module#SettingsModule'
   },
 ];
 

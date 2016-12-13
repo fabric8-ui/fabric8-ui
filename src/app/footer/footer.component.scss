@@ -1,6 +1,5 @@
-@import "../../assets/stylesheets/color-variables";
-@import "../../assets/stylesheets/variables";
-@import "../../assets/stylesheets/custom";
+@import "../../assets/stylesheets/_base";
+@import "../../assets/stylesheets/_custom";
 .footer{
 	text-align: $textCenter;
 	font-size: $font-size-small;

@@ -14,6 +14,7 @@ const AssetsPlugin = require('assets-webpack-plugin');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const HtmlElementsPlugin = require('./html-elements-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -127,16 +128,6 @@ module.exports = function (options) {
           loader: 'json-loader'
         },
 
-        /*
-         * to string and css loader support for *.css files
-         * Returns file content as string
-         *
-         */
-        {
-          test: /\.css$/,
-          loaders: ['to-string-loader', 'css-loader']
-        },
-
         /* Raw loader support for *.html
          * Returns file content as string
          *
@@ -148,15 +139,51 @@ module.exports = function (options) {
           exclude: [helpers.root('src/index.html')]
         },
 
+        /*
+         * to string and css loader support for *.css files
+         * Returns file content as string
+         *
+         */
+        {
+          test: /\.css$/,
+          loaders: ['to-string-loader', 'css-loader']
+        },
+
+        {
+          test: /\.scss$/,
+          loaders: ["css-to-string", "css", "sass"]
+        },
+        // old way
+/*
+        {
+          test: /\.css$/,
+          exclude: helpers.root('src', 'app'),
+          loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+        },
+        {
+          test: /\.css$/,
+          include: helpers.root('src', 'app'),
+          loader: 'raw!postcss'
+        },
+        {
+          test: /\.scss$/,
+          exclude: helpers.root('src', 'app'),
+          loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!resolve-url!sass?sourceMap')
+        },
+        {
+          test: /\.scss$/,
+          include: helpers.root('src', 'app'),
+          loaders: ['exports-loader?module.exports.toString()', 'css', 'postcss', 'sass']
+        },
+*/
+
+
+
         /* File loader for supporting images, for example, in CSS files.
          */
         {
           test: /\.(jpg|png|gif)$/,
           loader: 'file'
-        },
-        {
-          test: /\.scss$/,
-          loaders: ["css-to-string", "css", "sass"]
         },
         {
           test: /manifest.json$/,

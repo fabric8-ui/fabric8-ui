@@ -1,8 +1,13 @@
+import './rxjs-extensions';
+
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
+
+// import { DropdownModule } from 'ng2-dropdown';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -13,6 +18,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
+
+// Footer
+import { FooterComponent } from './footer/footer.component';
+
+// Header
+import { HeaderComponent } from './header/header.component';
+
+// Shared
+import { AuthenticationService } from './auth/authentication.service';
+import { Broadcaster } from './shared/broadcaster.service';
+import { UserService } from './user/user.service';
+import { Logger } from './shared/logger.service';
+
+// Login
+import { LoginModule } from './login/login.module';
+import { LoginService } from './login/login.service';
 
 import { HomeModule } from './home/home.module';
 
@@ -37,14 +58,27 @@ export type StoreType = {
     FormsModule,
     HomeModule,
     HttpModule,
+    BrowserModule,
+    // DropdownModule,
+    FormsModule,
+    HomeModule,
+    HttpModule,
+    LoginModule,
     AppRoutingModule
   ],
   declarations: [
-    AppComponent
+    AppComponent,
+    FooterComponent,
+    HeaderComponent,
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
-    APP_PROVIDERS
+    APP_PROVIDERS,
+    Logger,
+    AuthenticationService,
+    Broadcaster,
+    LoginService,
+    UserService,
   ],
   bootstrap: [ AppComponent ]
 })
