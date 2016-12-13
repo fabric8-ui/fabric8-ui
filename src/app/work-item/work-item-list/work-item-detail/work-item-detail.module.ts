@@ -8,10 +8,11 @@ import { AlmIconModule } from '../../../shared-component/icon/almicon.module';
 import { AlmEditableModule } from '../../../shared-component/editable/almeditable.module';
 
 //Pipes
-import { AlmTrim } from '../../../pipes/alm-trim';
-import { AlmSearchHighlight } from '../../../pipes/alm-search-highlight.pipe';
-import { AlmLinkTarget } from '../../../pipes/alm-link-target.pipe';
 import { AlmAvatarSize } from '../../../pipes/alm-avatar-size.pipe';
+import { AlmLinkTarget } from '../../../pipes/alm-link-target.pipe';
+import { AlmMomentTime } from '../../../pipes/alm-moment-time.pipe';
+import { AlmSearchHighlight } from '../../../pipes/alm-search-highlight.pipe';
+import { AlmTrim } from '../../../pipes/alm-trim';
 
 import { WorkItemDetailComponent } from './work-item-detail.component';
 import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
@@ -28,7 +29,16 @@ import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.
     FormsModule,
     Ng2CompleterModule
   ],
-  declarations: [WorkItemDetailComponent, AlmTrim, AlmSearchHighlight, AlmLinkTarget, AlmAvatarSize, WorkItemLinkComponent, WorkItemCommentComponent],
+  declarations: [
+    AlmAvatarSize,
+    AlmLinkTarget,
+    AlmMomentTime,
+    AlmSearchHighlight,
+    AlmTrim,
+    WorkItemCommentComponent,
+    WorkItemDetailComponent,
+    WorkItemLinkComponent,
+  ],
   exports: [WorkItemDetailComponent],
   providers: [WorkItemLinkService]
 })

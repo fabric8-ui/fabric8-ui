@@ -147,6 +147,11 @@
                 </div>
               </div>
           </div>
+          <div class="pull-right">
+            <span title="{{workItem.attributes['system.created_at'] | date:'fullDate'}}">
+              Created at: {{workItem.attributes['system.created_at'] | almMomentTime}}
+            </span>
+          </div>
       </div>
 
       <div class="col-md-12 col-sm-12 col-xs-12 detail-description-wrap">

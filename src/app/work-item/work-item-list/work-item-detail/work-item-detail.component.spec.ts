@@ -17,10 +17,11 @@ import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'ng2-dropdown';
 import { Ng2CompleterModule } from 'ng2-completer';
 
-import { AlmTrim } from '../../../pipes/alm-trim';
-import { AlmSearchHighlight } from '../../../pipes/alm-search-highlight.pipe';
-import { AlmLinkTarget } from '../../../pipes/alm-link-target.pipe';
 import { AlmAvatarSize } from '../../../pipes/alm-avatar-size.pipe';
+import { AlmLinkTarget } from '../../../pipes/alm-link-target.pipe';
+import { AlmMomentTime } from '../../../pipes/alm-moment-time.pipe';
+import { AlmSearchHighlight } from '../../../pipes/alm-search-highlight.pipe';
+import { AlmTrim } from '../../../pipes/alm-trim';
 import { Broadcaster } from '../../../shared/broadcaster.service';
 import { Logger } from '../../../shared/logger.service';
 
@@ -236,13 +237,14 @@ describe('Detailed view and edit a selected work item - ', () => {
       ],
 
       declarations: [
+        AlmAvatarSize,
+        AlmLinkTarget,
+        AlmMomentTime,
+        AlmSearchHighlight,
+        AlmTrim,
+        WorkItemCommentComponent,
         WorkItemDetailComponent,
         WorkItemLinkComponent,
-        WorkItemCommentComponent,
-        AlmTrim,
-        AlmSearchHighlight,
-        AlmLinkTarget,
-        AlmAvatarSize
       ],
       providers: [
         Broadcaster,
