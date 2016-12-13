@@ -15,13 +15,13 @@ module.exports = {
     extensions: ['.ts', '.js']
   },
 
-  /* Uncomment below to use Chunks.*/
+   // Uncomment below to use Chunks.
   // entry: {
   //   'polyfills': './src/polyfills.browser.ts',
   //   'vendor': './src/vendor.browser.ts',
   //   'main': './src/main.browser.ts'
   // },
-  /* Comment below to use Chunks.*/
+  //  Comment below to use Chunks.
   entry: './src/main.browser.ts',
 
   output: {
@@ -31,9 +31,35 @@ module.exports = {
     chunkFilename: './aot/[id].[chunkhash].js'
   },
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      async: true, // Create shared async bundle between your async routes
+      children: true, // Keep vendorish stuff out of shared bundle and in shared async route for when needed
+      minChunks: 2 // If used in 2 or more async routes
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['polyfills', 'vendor'], // Run this against both of these entries
+      minChunks: function(module) { // Extract all modules from node_modules into vendor chunk
+        return /node_modules/.test(module.resource)
+      }
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['inline'], // Forces the runtime out of all entries into isolated one
+      minChunks: Infinity
+    }),
+    /* Uncomment below to use Chunks.*/
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor',
+    //   child: true,
+    //   children: true,
+    //   minChunks: 2
+    // }),
+
     new ngToolsWebpack.AotPlugin({
       "tsConfigPath": "./tsconfig-aot.json",
     }),
+
     /**
      * Webpack plugin and CLI utility that represents bundle content as convenient interactive zoomable treemap
      */
