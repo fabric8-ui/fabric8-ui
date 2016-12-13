@@ -23,7 +23,7 @@ var WorkItemListPage = require('./page-objects/work-item-list.page'),
   testSupport = require('./testSupport');
 
 describe('Work item list', function () {
-  var page, items, startCount, browserMode,detailPage;
+  var page, items, browserMode,detailPage;
 
   beforeEach(function () {
     testSupport.setBrowserMode('phone');

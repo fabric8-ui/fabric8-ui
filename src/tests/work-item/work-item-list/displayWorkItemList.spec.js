@@ -19,12 +19,11 @@ var WorkItemListPage = require('./page-objects/work-item-list.page'),
   WorkItemDetailPage = require('./page-objects/work-item-detail.page');
 
 describe('Work item list', function () {
-  var page, items, startCount, browserMode;
+  var page, items, browserMode;
 
   beforeEach(function () {
     testSupport.setBrowserMode('phone');
     page = new WorkItemListPage(true);    
-    page.allWorkItems.count().then(function(originalCount) { startCount = originalCount; });
     
     workItemMockData = {
       pageTitle:'Some Title 14 Details',
@@ -35,10 +34,6 @@ describe('Work item list', function () {
       workItemAssignee:'someUser14',
       workItemState:'new'
     }; 
-  });
-
-  it('should contain 14 items.', function() {
-    expect(page.allWorkItems.count()).toBe(startCount);
   });
 
   it('should have the right mock data in the first entry - phone.', function() {
@@ -54,7 +49,6 @@ describe('Work item list', function () {
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle('Some Title');
     page.clickQuickAddSave().then(function() {
-      expect(page.allWorkItems.count()).toBe(startCount + 1);
       expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title');
       expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Some Title');
     });
@@ -65,7 +59,6 @@ describe('Work item list', function () {
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle('Some Title');
     page.clickQuickAddSave().then(function() {
-      expect(page.allWorkItems.count()).toBe(startCount + 1);
       expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title');
       expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Some Title');
     });

@@ -18,7 +18,7 @@ var WorkItemListPage = require('./page-objects/work-item-list.page'),
   testSupport = require('./testSupport');
 
 describe('Work item list', function () {
-  var page, items, startCount, browserMode;
+  var page, items, browserMode;
 
 var until = protractor.ExpectedConditions;
 var waitTime = 30000;
@@ -26,7 +26,6 @@ var waitTime = 30000;
   beforeEach(function () {
     testSupport.setBrowserMode('phone');
     page = new WorkItemListPage(true);
-    page.allWorkItems.count().then(function(originalCount) { startCount = originalCount; });
   });
 /**Test searching user in the assignee drop down  */
   it('Test searching user in the assignee drop down -phone ', function() {
