@@ -26,23 +26,23 @@ describe('Work item list', function () {
     page = new WorkItemListPage(true);    
     
     workItemMockData = {
-      pageTitle:'Some Title 14 Details',
-      workItemTitle:'Some Title 14', 
-      workItemDescription:'Some Description 14',
+      pageTitle:'Title Text 0 Details',
+      workItemTitle:'Title Text 0', 
+      workItemDescription:'Description Text 0',
       workItemType:'system.userstory',
-      workItemCreator:'someOtherUser14',
-      workItemAssignee:'someUser14',
+      workItemCreator:'',
+      workItemAssignee:'',
       workItemState:'new'
     }; 
   });
 
   it('should have the right mock data in the first entry - phone.', function() {
-    expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title 14');
+    expect(page.workItemTitle(page.firstWorkItem)).toBe('Title Text 0');
   });
   
   it('should have the right mock data in the first entry - desktop.', function() {
     testSupport.setBrowserMode('desktop');		  
-    expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title 14');
+    expect(page.workItemTitle(page.firstWorkItem)).toBe('Title Text 0');
   });
 
   it('should create a new workitem - phone.', function () {

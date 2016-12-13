@@ -712,15 +712,43 @@ export class MockDataService {
   // initial data creators - might be loaded from fixtures in the future
 
   private createInitialWorkItems(): any {
-    let workitems = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((n) => {
-    return {'fields': {'system.assignee': 'someUser' + n,
-                       'system.creator': 'someOtherUser' + n,
-                       'system.description': 'Some Description ' + n,
-                       'system.state': 'new',
-                       'system.title': 'Some Title ' + n},
-                       'id': '' + n,
-                       'type': 'system.userstory',
-                       'version': 1};
+    let workitems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].map((n) => {
+      return {
+        'attributes': { 
+          'system.created_at': '0001-01-01T00:00:00Z', 
+          'system.description': 'Description Text ' + n, 
+          'system.remote_item_id': 'remote_id_' + n, 
+          'system.state': 'new', 
+          'system.title': 'Title Text ' + n, 
+          'version': 6 
+        }, 
+        'id': 'id' + n, 
+        'links': { 
+          'self': 'http://mock.service/api/workitems/id' + n 
+        }, 
+        'relationships': { 
+          'assignees': { }, 
+          'baseType': { 
+            'data': { 
+              'id': 'system.userstory', 
+              'type': 'workitemtypes' 
+            } 
+          }, 
+          'comments': { 
+            'links': { 
+              'related': 'http://mock.service/api/workitems/id' + n + '/comments', 
+              'self': 'http://mock.service/api/workitems/id' + n + '/relationships/comments' 
+            } 
+          }, 
+          'creator': { 
+            'data': { 
+              'id': 'some-creator-id', 
+              'type': 'identities' 
+            } 
+          } 
+        }, 
+        'type': 'workitems' 
+      }
     });
     return workitems;
   }

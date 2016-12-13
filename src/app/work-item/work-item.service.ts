@@ -445,6 +445,7 @@ export class WorkItemService {
   create(workItem: WorkItem): Promise<WorkItem> {
     let url = this.workItemUrl;
     let payload = JSON.stringify({data: workItem});
+    console.log(payload);
     return this.http
       .post(url, payload, { headers: this.headers })
       .toPromise()
