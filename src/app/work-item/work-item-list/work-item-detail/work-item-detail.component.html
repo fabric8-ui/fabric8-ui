@@ -104,7 +104,7 @@
           <div class="pull-left detail-assignee-name">
               <span *ngIf="!searchAssignee && !workItem.relationalData.assignees?.length" (click)="activeSearchAssignee()" class="placeholder clickable"> Unassigned </span>   
               <span *ngIf="!searchAssignee && workItem.relationalData.assignees?.length" (click)="activeSearchAssignee()" class="clickable" id="WI_details_assigned_user"> 
-                {{workItem.relationalData.assignees[0].attributes.fullName}} 
+                {{workItem.relationalData.assignees[0]?.attributes.fullName}} 
               </span>
               <div *ngIf="searchAssignee" class="user-search" >
                 <div class="list-container">

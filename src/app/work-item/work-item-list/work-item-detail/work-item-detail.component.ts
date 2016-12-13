@@ -64,13 +64,15 @@ export class WorkItemDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void{
+    // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
+    // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
     this.listenToEvents();
     this.getWorkItemTypesandStates();
     this.loggedIn = this.auth.isLoggedIn();
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         let id = params['id'];
-        this.workItemService.getWorkItem(id)
+        this.workItemService.getWorkItemById(id)
           .then(workItem => {
             this.closeRestFields();
             this.titleText = workItem.attributes['system.title'];

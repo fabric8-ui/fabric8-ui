@@ -1,4 +1,4 @@
-import { Comments } from './comment';
+import { Comments, Comment } from './comment';
 import { User } from './user';
 
 export class WorkItem {
@@ -34,6 +34,7 @@ export class WorkItemRelations {
   comments?: {
     links: {
       self: string;
+      related: string;
     };
   };
   creator: {
@@ -46,6 +47,6 @@ export class WorkItemRelations {
 
 export class RelationalData {
   creator?: User;
-  comments?: Comments[];
+  comments?: Comment[];
   assignees?: User[];
 }

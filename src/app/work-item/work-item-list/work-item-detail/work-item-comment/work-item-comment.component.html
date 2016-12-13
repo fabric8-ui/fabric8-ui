@@ -8,13 +8,16 @@
                     placeholder="Add a comment here...">
                 </textarea>
             </div>
-            <div *ngFor='let comment of comments' class="comments-wrap">  
+            <div *ngFor='let comment of workItem.relationalData.comments' class="comments-wrap">  
                 <div>
-                    <img class="user-assign-avatar pull-left" *ngIf="comment.relationships['created-by'].data.attributes?.imageURL" [src]="comment.relationships['created-by'].data.attributes?.imageURL | almAvatarSize:30"
+                    <img 
+                      class="user-assign-avatar pull-left" 
+                      *ngIf="comment.relationalData.creator?.attributes?.imageURL" 
+                      [src]="comment.relationalData.creator?.attributes?.imageURL | almAvatarSize:30"
                     />
                     <small class="pull-right">{{comment.attributes['created-at'] | date:'medium'}}</small>
                     <div class="comment-body">
-                        <h5 class="col-md-12 col-sm-12 col-xs-12"><strong>{{comment.relationships['created-by'].data?.attributes?.fullName}}</strong>
+                        <h5 class="col-md-12 col-sm-12 col-xs-12"><strong>{{comment.relationalData?.creator?.attributes?.fullName}}</strong>
                         </h5>
                     </div>
                 </div>

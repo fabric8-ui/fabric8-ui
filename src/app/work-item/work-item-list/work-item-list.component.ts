@@ -167,21 +167,8 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   fetchMoreWiItems(): void {
     this.workItemService
       .getMoreWorkItems()
-      .then((newWiItems) => {
-        let newItems = cloneDeep(newWiItems);
-        // Why on earth did I use splice instead simple concat?
-        // To keep the reference of the wotkitem list 
-        // Object intact. If we do simple concat it returns 
-        // an new value and the old reference is gone 
-        // Delete and quick add will not work anymore
-        // because now we are dependent on the reference
-        // and not using any callback or event listener to
-        // Update the list
-        newItems.forEach((item: any) => 
-          this.workItems.splice(this.workItems.length, this.workItems.length, item)
-        );
-      })
-      .catch((e) => console.log(e));
+      .then((newWiItems) => {})
+      .catch ((e) => console.log(e));
   }
 
   // event handlers

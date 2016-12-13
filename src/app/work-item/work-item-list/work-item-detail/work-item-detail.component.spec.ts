@@ -39,7 +39,6 @@ import { WorkItemService } from '../../work-item.service';
 import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
 import { WorkItemLinkService } from './work-item-link/work-item-link.service';
 import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.component';
-import { WorkItemCommentService } from './work-item-comment/work-item-comment.service';
 import { WorkItemDetailComponent } from './work-item-detail.component';
 
 describe('Detailed view and edit a selected work item - ', () => {
@@ -113,7 +112,8 @@ describe('Detailed view and edit a selected work item - ', () => {
         },
         'comments': {
           'links': {
-            'self': ''
+            'self': '',
+            'related': ''
           }
         }
       },
@@ -248,7 +248,6 @@ describe('Detailed view and edit a selected work item - ', () => {
         Broadcaster,
         Logger,
         WorkItemLinkService,
-        WorkItemCommentService,
         Location,
         {
           provide: AuthenticationService,

@@ -1,4 +1,4 @@
-import { NewUser } from '../user/user';
+import { User } from './user';
 
 export class Comment {
     id: string;
@@ -6,9 +6,13 @@ export class Comment {
     attributes: CommentAttributes;
     relationships: {
         'created-by': {
-            data: NewUser;
+            data: {
+              id: string;
+              type: string;
+            };
         }
     };
+    relationalData?: RelationalData;
 }
 
 export class CommentAttributes {
@@ -22,4 +26,8 @@ export class Comments {
 
 export class CommentPost {
     data: Comment;
+}
+
+export class RelationalData {
+  creator?: User;
 }

@@ -17,7 +17,6 @@ import { WorkItemDetailComponent } from './work-item-detail.component';
 import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
 import { WorkItemLinkService } from './work-item-link/work-item-link.service';
 import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.component';
-import { WorkItemCommentService } from './work-item-comment/work-item-comment.service';
 
 
 @NgModule({
@@ -31,6 +30,6 @@ import { WorkItemCommentService } from './work-item-comment/work-item-comment.se
   ],
   declarations: [WorkItemDetailComponent, AlmTrim, AlmSearchHighlight, AlmLinkTarget, AlmAvatarSize, WorkItemLinkComponent, WorkItemCommentComponent],
   exports: [WorkItemDetailComponent],
-  providers: [WorkItemLinkService, WorkItemCommentService]
+  providers: [WorkItemLinkService]
 })
 export class WorkItemDetailModule { }
