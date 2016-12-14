@@ -21,6 +21,7 @@ let PipelinePage = require('./pipeline.page');
 let HypothesisPage = require('./hypothesis.page');
 let SettingsPage = require('./settings.page');
 let ChatPage = require('./chat.page');
+let DashboardPage = require('./dashboard.page');
 let NotificationsPage = require('./notifications.page');
 let MicroservicesPage = require('./microservices.page');
 let WorkItemListPage = require('./work-item-list.page');
@@ -114,6 +115,15 @@ class CommonPage {
 /* Chat page */
   get chatMenuTab () {
     return element(by.id("header_menuChat"));
+  }
+  get dashboardMenuTab () {
+    return element(by.id("header_menuHome"));
+  }
+
+  clickHomeMenuTab () {
+    browser.wait(until.presenceOf(this.dashboardMenuTab), waitTime, 'Failed to find dashboardMenuTab');
+    this.dashboardMenuTab.click(); 
+    return new DashboardPage();
   }
 
   clickChatMenuTab () {
