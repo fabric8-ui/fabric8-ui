@@ -20,13 +20,31 @@
         > div{
             width: $width100;
             float: left;
+            .createTimeBlock{
+                width: em(144);
+            }
             .comment-body{
-                padding-left: em(35);
-                padding-right: em(130);
+                padding-left: em(36);
+                padding-right: em(150);
             }
         }
     }
     .comments-wrap > p{
         padding: 0;
+    }
+}
+@media (max-width: $screen-md-min){
+    .comment-content{
+        .comments-wrap{
+            > div{
+                .createTimeBlock{
+                    width: em(78);
+                }
+                .comment-body{
+                    padding-left: em(36);
+                    padding-right: em(84);
+                }
+            }
+        }
     }
 }

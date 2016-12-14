@@ -15,9 +15,9 @@
                       *ngIf="comment.relationalData.creator?.attributes?.imageURL" 
                       [src]="comment.relationalData.creator?.attributes?.imageURL | almAvatarSize:30"
                     />
-                    <small class="pull-right">{{comment.attributes['created-at'] | date:'medium'}}</small>
+                    <small class="pull-right createTimeBlock">{{comment.attributes['created-at'] | date:'medium'}}</small>
                     <div class="comment-body">
-                        <h5 class="col-md-12 col-sm-12 col-xs-12"><strong>{{comment.relationalData?.creator?.attributes?.fullName}}</strong>
+                        <h5 class="col-md-12 col-sm-12 col-xs-12 no-padding truncate"><strong>{{comment.relationalData?.creator?.attributes?.fullName}}</strong>
                         </h5>
                     </div>
                 </div>
