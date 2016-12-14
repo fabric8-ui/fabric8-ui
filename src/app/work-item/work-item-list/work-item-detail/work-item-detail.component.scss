@@ -25,7 +25,6 @@
   .wi-detail-title-blk{
     padding: em(20) em(0) em(10);
     .detail-title {
-      min-height: em(20);
       float: left;
       max-width: calc(100% - 25px);
       margin:0;
@@ -42,7 +41,7 @@
       line-height: 1.3;
     }
     aside{
-      padding: 0;
+      padding: em(5) 0 0;
     }
     .clearfloat{
       clear: both;
