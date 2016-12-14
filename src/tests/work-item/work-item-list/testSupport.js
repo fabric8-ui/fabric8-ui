@@ -13,7 +13,7 @@ module.exports = {
  * 
  * Note on screen resolutions - See: http://www.itunesextractor.com/iphone-ipad-resolution.html
  * Tests will be run on these resolutions:
- * - iPhone6s - 375x667
+ * - iPhone6s - 375x667 (note: tests on chrome+firefox fail unless width >= 400)
  * - iPad air - 768x1024
  * - Desktop -  1920x1080
  * 
@@ -21,7 +21,7 @@ module.exports = {
   setBrowserMode: function(browserModeStr) {
     switch (browserModeStr) {
 	  case 'phone':
-	    browser.driver.manage().window().setSize(375, 667);
+	    browser.driver.manage().window().setSize(400, 667);
       break;
 	  case 'tablet':
         browser.driver.manage().window().setSize(768, 1024);
