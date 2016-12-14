@@ -38,7 +38,7 @@ const METADATA = {
  */
 module.exports = function (options) {
   const isProd = options.env === 'production';
-  const aotMode = true;//options && options.aot !== undefined;
+  const aotMode = false;//options && options.aot !== undefined;
   console.log('The options from the webpack config: ' + JSON.stringify(options, null, 2));
   // const entryFile = aotMode ? './src/main.browser.aot.ts' : './src/main.browser.ts';
   // const outPath = aotMode ? 'dist' : 'aot';
