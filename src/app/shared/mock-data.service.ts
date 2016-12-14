@@ -559,6 +559,7 @@ export class MockDataService {
 <<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
   public getUser(): any {
     return {
+<<<<<<< aa7c58e708f80a64784dfff062fa3ec65db2ddbb
       'id': 'user1',
 =======
   getUser() {
@@ -570,6 +571,10 @@ export class MockDataService {
       'id': 'user1',
 >>>>>>> Finished code. Now debugging.
       'fullName': 'Sudipta Sen',
+=======
+      'id': 'user0',
+      'fullName': 'Example User 0',
+>>>>>>> Bug in assign.spec.js
       'imageURL': 'https://avatars.githubusercontent.com/u/2410474?v=3'
     };
   }
@@ -582,30 +587,25 @@ export class MockDataService {
     return [
       {
         attributes: {
-          fullName: 'Sudipta Sen',
-          imageURL: 'https://avatars.githubusercontent.com/u/2410474?v=3',
+          fullName: 'Example User 1',
+          imageURL: 'https://avatars.githubusercontent.com/u/2410474?v=3'
         },
-        id: 'user1',
-        type: 'identities'
-      },
-      {
+        id: 'user1'
+      }, {
         attributes: {
-          fullName: 'User Two',
-          imageURL: 'https://avatars.githubusercontent.com/u/2410474?v=3',
+          fullName: 'Example User 2',
+          imageURL: 'https://avatars.githubusercontent.com/u/2410474?v=3'
         },
-        id: 'user2',
-        type: 'identities'
-      },
-      {
+        id: 'user2'
+      }, {
         attributes: {
-          fullName: 'User Three',
-          imageURL: 'https://avatars.githubusercontent.com/u/2410474?v=3',
+          fullName: 'Example User 3',
+          imageURL: 'https://avatars.githubusercontent.com/u/2410474?v=3'
         },
-        id: 'user3',
-        type: 'identities'
+        id: 'user3'
       }
     ];
-  }
+ }
 
   public getLinkCategories(): any {
 <<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
