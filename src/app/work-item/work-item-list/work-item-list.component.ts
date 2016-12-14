@@ -110,7 +110,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
       this.filters.push({
         id:  1,
         name: 'Assign to Me',
-        paramKey: 'filter[assginee]',
+        paramKey: 'filter[assignee]',
         active: false,
         value: loggedInUser.id
       });

@@ -32,6 +32,7 @@ export class WorkItemService {
   private initialWorkItemFetchDone = false;
   private userIdMap = {};
   private workItemIdIndexMap = {};
+  private prevFilters: any = [];
 
   constructor(private http: Http,
     private logger: Logger,
@@ -63,6 +64,16 @@ export class WorkItemService {
         url += '&' + item.paramKey + '=' + item.value;
       }
     });
+  
+    // Reseting stored data 
+    // if filter value is changed
+    if (JSON.stringify(this.prevFilters) != JSON.stringify(filters)) {
+      this.workItems = [];
+      this.workItemIdIndexMap = {};
+    }
+    // Setting current filter as previous filter value
+    this.prevFilters = cloneDeep(filters);
+    
     if (process.env.ENV == 'inmemory') {
       url = this.workItemUrl;
     }
