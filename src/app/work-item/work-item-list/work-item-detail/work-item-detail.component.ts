@@ -126,6 +126,7 @@ export class WorkItemDetailComponent implements OnInit {
     this.filteredUsers = cloneDeep(this.route.snapshot.data['allusers']) as User[];
     let authUser = cloneDeep(this.route.snapshot.data['authuser']);
     this.setLoggedInUser(authUser);
+    console.log("this.users = " + JSON.stringify(this.users));
   }
 
   setLoggedInUser(authUser: any) {

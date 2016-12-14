@@ -1,5 +1,3 @@
-<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
-<<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
 import { Logger } from './../shared/logger.service';
 
 import { Injectable } from '@angular/core';
@@ -14,7 +12,6 @@ import { WorkItem } from '../work-item/work-item';
     change without this class noticing it! THIS HAPPENS. IT HAPPENED. IT SUCKS!
 */
 
-<<<<<<< 63f2feec4cbda89f0d1d83be2373e093b98d1a32
 @Injectable()
 export class MockDataService {
 
@@ -116,141 +113,13 @@ export class MockDataService {
   }
 
   public getLoginStatus() {
-=======
-=======
-import { Logger } from './../shared/logger.service';
-
->>>>>>> Finished code. Now debugging.
-import { Injectable } from '@angular/core';
-import { WorkItem } from '../work-item/work-item';
-
-=======
->>>>>>> All tests green.
-@Injectable()
-export class MockDataService {
-
-  private workItems: any[];
-  private workItemLinks: any[];
-
-  constructor() {
-    this.workItems = this.createInitialWorkItems();
-    this.workItemLinks = this.createInitialWorkItemLinks();
-  }
-
-  private createId(): string {
-    var id = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < 5; i++)
-      id += possible.charAt(Math.floor(Math.random() * possible.length));
-    console.log('Created new id ' + id);
-    return id;
-  }
-
-  private makeCopy(input: any): any {
-    return JSON.parse(JSON.stringify(input));
-  }
-
-  // data accessors
-
-  public getWorkItemLinks(): any {
-    return this.makeCopy(this.workItemLinks);
-  }
-
-  public getWorkItems(): any {
-    return this.makeCopy(this.workItems);
-  }
-
-  public createWorkItemLink(workItemLink: any): any {
-    var localWorkItemLink = this.makeCopy(workItemLink);
-    localWorkItemLink.id = this.createId();
-    this.workItemLinks.push(localWorkItemLink);
-    return this.makeCopy(localWorkItemLink);
-  }
-
-  public createWorkItem(workItem: any): any {
-    var localWorkItem = this.makeCopy(workItem);
-    localWorkItem.id = this.createId();
-    this.workItems.push(localWorkItem);
-    return this.makeCopy(localWorkItem);
-  }
-
-  public getWorkItem(id: string): any {
-    for (var i = 0; i < this.workItems.length; i++)
-      if (this.workItems[i].id === id)
-        return this.makeCopy(this.workItems[i]);
-  };
-
-<<<<<<< 63f2feec4cbda89f0d1d83be2373e093b98d1a32
-<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
-  getLoginStatus() {
->>>>>>> Initial version.
-=======
-  public updateWorkItem(workItem: any) {
-=======
-  public updateWorkItem(workItem: any): any {
-    var localWorkItem = this.makeCopy(workItem);
->>>>>>> All tests green.
-    for (var i = 0; i < this.workItems.length; i++)
-      if (this.workItems[i].id === localWorkItem.id) {
-        this.workItems.splice(i, 1, localWorkItem);
-        return this.makeCopy(localWorkItem);
-      }
-    return null;
-  }
-
-  public updateWorkItemLink(workItemLink: any): any {
-    var localWorkItemLink = this.makeCopy(workItemLink);
-    for (var i = 0; i < this.workItemLinks.length; i++)
-      if (this.workItemLinks[i].id === localWorkItemLink.id) {
-        this.workItemLinks.splice(i, 1, localWorkItemLink);
-        return this.makeCopy(localWorkItemLink);
-      }
-    return null;
-  }
-
-  public deleteWorkItem(id: string): boolean {
-    for (var i = 0; i < this.workItems.length; i++)
-      if (this.workItems[i].id === id) {
-        this.workItems.splice(i, 1);
-        return true;
-      }
-      return false;
-  }
-
-  public deleteWorkItemLink(id: string): boolean {
-    for (var i = 0; i < this.workItemLinks.length; i++)
-      if (this.workItemLinks[i].id === id) {
-        this.workItemLinks.splice(i, 1);
-        return true;
-      }
-      return false;
-  }
-
-  public searchWorkItem(term: string): boolean {
-    for (var i = 0; i < this.workItems.length; i++)
-      if (this.workItems[i].fields['system.title'].indexOf(term) != -1) {
-        return this.makeCopy(this.workItems[i]);
-      }
-      return false;
-  }
-
-  public getLoginStatus() {
->>>>>>> Finished code. Now debugging.
     return {
       'status': 200,
       'responseText': 'Good Job'
     };
   }
 
-<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
-<<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
   public getWorkItemTypes() {
-=======
-  getWorkItemTypes() {
->>>>>>> Initial version.
-=======
-  public getWorkItemTypes() {
->>>>>>> Finished code. Now debugging.
     return [
       {
         'fields': {
@@ -555,65 +424,49 @@ export class MockDataService {
     ];
   }
 
-<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
-<<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
   public getUser(): any {
     return {
-<<<<<<< aa7c58e708f80a64784dfff062fa3ec65db2ddbb
-      'id': 'user1',
-=======
-  getUser() {
-    return {
->>>>>>> Initial version.
-=======
-  public getUser(): any {
-    return {
-      'id': 'user1',
->>>>>>> Finished code. Now debugging.
-      'fullName': 'Sudipta Sen',
-=======
       'id': 'user0',
       'fullName': 'Example User 0',
->>>>>>> Bug in assign.spec.js
-      'imageURL': 'https://avatars.githubusercontent.com/u/2410474?v=3'
+      'imageURL': 'https://avatars.githubusercontent.com/u/2410471?v=3'
     };
   }
 
-<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
-<<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
-=======
->>>>>>> Finished code. Now debugging.
   public getAllUsers(): any {
     return [
       {
         attributes: {
-          fullName: 'Example User 1',
-          imageURL: 'https://avatars.githubusercontent.com/u/2410474?v=3'
+          fullName: 'Example User 0',
+          imageURL: 'https://avatars.githubusercontent.com/u/2410471?v=3'
         },
-        id: 'user1'
+        id: 'user0',
+        type: 'identities'
+      }, {
+        attributes: {
+          fullName: 'Example User 1',
+          imageURL: 'https://avatars.githubusercontent.com/u/2410472?v=3'
+        },
+        id: 'user1',
+        type: 'identities'
       }, {
         attributes: {
           fullName: 'Example User 2',
-          imageURL: 'https://avatars.githubusercontent.com/u/2410474?v=3'
+          imageURL: 'https://avatars.githubusercontent.com/u/2410473?v=3'
         },
-        id: 'user2'
+        id: 'user2',
+        type: 'identities'
       }, {
         attributes: {
           fullName: 'Example User 3',
           imageURL: 'https://avatars.githubusercontent.com/u/2410474?v=3'
         },
-        id: 'user3'
+        id: 'user3',
+        type: 'identities'
       }
     ];
  }
 
   public getLinkCategories(): any {
-<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
-=======
-  getLinkCategories() {
->>>>>>> Initial version.
-=======
->>>>>>> Finished code. Now debugging.
     return {
       'data': {
         'attributes': {
@@ -627,15 +480,7 @@ export class MockDataService {
     };
   }
 
-<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
-<<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
   public getWorkItemLinkTypes(): any {
-=======
-  getWorkItemLinkTypes() {
->>>>>>> Initial version.
-=======
-  public getWorkItemLinkTypes(): any {
->>>>>>> Finished code. Now debugging.
     return [
         {
          'id': '4f8d8e8c-ab1c-4396-b725-105aa69a789c',
@@ -705,10 +550,6 @@ export class MockDataService {
     }];
   }
 
-<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
-<<<<<<< 3f604288e67b74c6a21f2878619aacf1d3cf199c
-=======
->>>>>>> Finished code. Now debugging.
   // initial data creators - might be loaded from fixtures in the future
 
   private createInitialWorkItems(): any {
@@ -754,12 +595,6 @@ export class MockDataService {
   }
 
   private createInitialWorkItemLinks(): any {
-<<<<<<< 5528e24e429933bb4f18d451efffd0b6392ff1ea
-=======
-  getWorkItemLinks() {
->>>>>>> Initial version.
-=======
->>>>>>> Finished code. Now debugging.
     return [
         {
             attributes: {
