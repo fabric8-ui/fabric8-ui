@@ -147,9 +147,37 @@
               }
             }
         }
+        .workitem-link-search-box {
+            width: 100%
+        }
+        .search-result-container {
+            position: relative;
+            .weight-800{ font-weight: 800; }
+        }
+        .search-result {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            box-shadow: 0 1px 10px 0 rgba(192, 192, 192, 0.7);
+            max-height: em(200);
+            overflow-y: auto;
+            li{
+                background-color: $color-pf-white;
+                padding: em(5);
+                border-bottom: 1px solid $color-pf-black-300;
+                border-left: 1px solid $color-pf-black-300;
+                border-right: 1px solid $color-pf-black-300;
+                &:hover {
+                    background-color: $color-pf-black-500;
+                }
+                &.selected {
+                    background-color: $color-pf-black-200;
+                }
+            }
+        }
     }
 }
-
 // .link-header > div{
 //     margin: 15px;
 // }

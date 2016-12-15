@@ -68,6 +68,7 @@ $textCenter: center;
 .dib{ display: inline-block; }
 .db{ display: block; }
 .textCenter{ text-align: $textCenter; }
+.pointer{ cursor: pointer; }
 
 @media (max-width: $grid-float-breakpoint){
     .mobdn{ display: none; }

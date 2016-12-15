@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 import { cloneDeep } from 'lodash';
@@ -20,11 +20,17 @@ import { SearchData } from './search-data';
 export class WorkItemLinkComponent implements OnInit, OnChanges {
     @Input() workItem: WorkItem;
     @Input() loggedIn: Boolean;
+    @ViewChild('searchBox') searchBox: any;
+    @ViewChild('searchResultList') searchResultList: any; 
+
     linkTypes : LinkType[];
     link: Object;
     selectedWorkItem: Object = {};
     selectedLinkType: any = false;
     searchWorkItem : SearchData;
+    selectedWorkItemId: string;
+    selectedValue: string;
+    searchWorkItems: WorkItem[] = [];
     showLinkComponent: Boolean = false;
     showLinkView: Boolean = false;
     showLinkCreator: Boolean = true;
@@ -33,9 +39,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
         private workItemService: WorkItemService,
         private router: Router,
         http: Http
-    ){
-        this.searchWorkItem = new SearchData(http);
-    }
+    ){}
 
     ngOnInit() {
       this.loadLinkTypes();
@@ -149,5 +153,60 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
             workItemId = links['relationships']['source']['data']['id'];
         }
         this.router.navigate(['/work-item-list/detail/' + workItemId]);
+    }
+    
+    linkSearchWorkItem(term: any, event: any) {
+        if(term.length >= 3){
+            this.workItemService.searchLinkWorkItem(term)
+                .then((searchData: WorkItem[]) =>{
+                    this.searchWorkItems = searchData;
+                    //console.log(searchData);
+                });
+        }
+        else if(!term){
+            this.searchWorkItems = [];
+            this.selectedWorkItemId = '';
+        }
+        //console.log(this.searchResultList.nativeElement.children.length);
+        if(event.keyCode == 40 || event.keyCode == 38){
+            let lis = this.searchResultList.nativeElement.children;
+            let i = 0;
+            for (; i < lis.length; i++) {
+                if (lis[i].classList.contains('selected')) {
+                break;
+                }
+            }
+            console.log(i);
+            if (i == lis.length) { // No existing selected
+                if (event.keyCode == 40) { // Down arrow
+                    lis[0].classList.add('selected');
+                    lis[0].scrollIntoView(false);
+                } else { // Up arrow
+                    lis[lis.length - 1].classList.add('selected');
+                    lis[lis.length - 1].scrollIntoView(false);
+                }
+                console.log('in lis.length');
+            } else { // Existing selected
+                lis[i].classList.remove('selected');
+                if (event.keyCode == 40) { // Down arrow
+                    lis[(i + 1) % lis.length].classList.add('selected');
+                    lis[(i + 1) % lis.length].scrollIntoView(false);
+                } else { // Down arrow
+                    // In javascript mod gives exact mod for negative value 
+                    // For example, -1 % 6 = -1 but I need, -1 % 6 = 5
+                    // To get the round positive value I am adding the divisor
+                    // with the negative dividend
+                    lis[(((i - 1) % lis.length) + lis.length) % lis.length].classList.add('selected');
+                    lis[(((i - 1) % lis.length) + lis.length) % lis.length].scrollIntoView(false);
+                }
+                console.log('in else');
+            }
+        }
+    }
+
+    selectSearchResult(id: string, title: string){
+        this.selectedWorkItemId = id;
+        this.selectedValue = id+' - '+title;
+        this.searchWorkItems = [];
     }
 }
