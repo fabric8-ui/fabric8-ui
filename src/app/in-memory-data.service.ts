@@ -369,8 +369,11 @@ export class InMemoryDataService implements InMemoryDbService {
 
 
     let user = {
-      fullName: 'Draco Malfoy',
-      imageURL: 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
+      attributes: {
+          fullName: 'Draco Malfoy',
+          imageURL: 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
+        },
+        id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
     };
 
     let linkCategories = {

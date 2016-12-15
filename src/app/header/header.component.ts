@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Logger } from '../shared/logger.service';
-import { User } from '../user/user';
+import { User } from '../models/user';
 import { UserService } from '../user/user.service';
 import { AuthenticationService } from '../auth/authentication.service';
 import { Broadcaster } from '../shared/broadcaster.service';

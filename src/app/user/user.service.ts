@@ -6,7 +6,7 @@ import { Broadcaster } from '../shared/broadcaster.service';
 import 'rxjs/add/operator/toPromise';
 
 import { AuthenticationService } from '../auth/authentication.service';
-import { User, NewUser } from './user';
+import { User } from '../models/user';
 
 @Injectable()
 export class UserService {
@@ -14,7 +14,7 @@ export class UserService {
   private userUrl = process.env.API_URL + 'user';  // URL to web api
   private identitiesUrl = process.env.API_URL + 'identities';  // URL to web api
   userData: User = {} as User;
-  allUserData: NewUser[] = [];
+  allUserData: User[] = [];
 
   constructor(private http: Http,
               private logger: Logger,
@@ -31,7 +31,7 @@ export class UserService {
     return this.userData;
   }
 
-  getLocallySavedUsers(): NewUser[] {
+  getLocallySavedUsers(): User[] {
     return this.allUserData;
   }
 
@@ -46,19 +46,22 @@ export class UserService {
           .get(this.userUrl, {headers: this.headers})
           .toPromise()
           .then(response => {
-            let userData = process.env.ENV != 'inmemory' ? response.json() as User : response.json().data as User;
+            let userData = response.json().data as User;
             // The reference of this.userData is 
             // being used in Header
             // So updating the value like that
-            this.userData.fullName = userData.fullName;
-            this.userData.imageURL = userData.imageURL;
+            this.userData.attributes = {
+              fullName: userData.attributes.fullName,
+              imageURL: userData.attributes.imageURL
+            };
+            this.userData.id = userData.id;
             return this.userData;
           })
           .catch (this.handleError);
     }
   }
 
-  getAllUsers(): Promise<NewUser[]> {
+  getAllUsers(): Promise<User[]> {
     if (this.allUserData.length) {
       return new Promise((resolve, reject) => {
         resolve(this.allUserData);
@@ -68,7 +71,7 @@ export class UserService {
           .get(this.identitiesUrl, {headers: this.headers})
           .toPromise()
           .then(response => {
-            this.allUserData = response.json().data as NewUser[]; 
+            this.allUserData = response.json().data as User[]; 
             return this.allUserData;
           })
           .catch(this.handleError);

@@ -102,7 +102,7 @@ export class WorkItemDetailComponent implements OnInit {
       // This check needs to be updated by ID 
       // once we have the new user format
       // on getting loggedIn user i.e. /user endpoint
-      if (this.users[i].attributes.imageURL == authUser.imageURL) {
+      if (this.users[i].id === authUser.id) {
         this.loggedInUser = this.users[i];
 
         // removing logged in user from the list

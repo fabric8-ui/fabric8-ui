@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 
 import { Comment, CommentAttributes } from '../../../../models/comment';
-import { NewUser } from '../../../../user/user';
+import { User } from '../../../../models/user';
 import { UserService } from '../../../../user/user.service';
 import { WorkItem } from '../../../../models/work-item';
 import { WorkItemService } from '../../../work-item.service';
@@ -18,7 +18,7 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
     @Input() workItem: WorkItem;
     @Input() loggedIn: Boolean;
     comment: Comment;
-    users: NewUser[];
+    users: User[];
 
     constructor(
         private workItemService: WorkItemService,

@@ -22,7 +22,7 @@ import { AlmLinkTarget } from '../../../../pipes/alm-link-target.pipe';
 import { Link } from '../../../../models/link';
 import { LinkType } from '../../../../models/link-type';
 import { Logger } from '../../../../shared/logger.service';
-import { User, NewUser } from '../../../../user/user';
+import { User } from '../../../../models/user';
 import { UserService } from '../../../../user/user.service';
 import { WorkItem } from '../../../../models/work-item';
 import { WorkItemService } from '../../../work-item.service';

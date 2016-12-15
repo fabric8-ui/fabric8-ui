@@ -23,10 +23,10 @@
       	<li *ngIf="loggedIn">
         	<a *ngIf="loggedInUser" id="header_dropdownToggle">
 						<span *ngIf="!imgLoaded" class="pficon pficon-user"></span>
-						<img (load)="onImgLoad()" src="{{ loggedInUser.imageURL }}"
+						<img (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}"
 							[ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
 							class="pull-left marginR10" />
-						{{loggedInUser.fullName}}
+						{{loggedInUser.attributes?.fullName}}
         	</a>
       </li>
 			<li>

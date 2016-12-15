@@ -31,7 +31,7 @@ import { Dialog } from '../../../shared-component/dialog/dialog';
 import { AlmIconModule } from '../../../shared-component/icon/almicon.module';
 import { AlmEditableModule } from '../../../shared-component/editable/almeditable.module';
 import { AuthenticationService } from '../../../auth/authentication.service';
-import { User, NewUser } from '../../../user/user';
+import { User } from '../../../models/user';
 import { UserService } from '../../../user/user.service';
 import { WorkItem } from '../../../models/work-item';
 import { WorkItemType } from '../../work-item-type';
@@ -51,7 +51,7 @@ describe('Detailed view and edit a selected work item - ', () => {
   let fakeWorkItem: WorkItem;
   let fakeWorkItems: WorkItem[] = [];
   let fakeUser: User;
-  let fakeUserList: NewUser[];
+  let fakeUserList: User[];
   let fakeWorkItemService: any;
   let fakeAuthService: any;
   let fakeUserService: any;
@@ -80,7 +80,7 @@ describe('Detailed view and edit a selected work item - ', () => {
         },
         id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
       }
-    ] as NewUser[];
+    ] as User[];
 
     fakeWorkItem = {
       'attributes': {
@@ -136,8 +136,11 @@ describe('Detailed view and edit a selected work item - ', () => {
     ];
 
     fakeUser = {
-      'fullName': 'Draco Malfoy',
-      'imageURL': 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
+      attributes: {
+        'fullName': 'Draco Malfoy',
+        'imageURL': 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
+      },
+      id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
     } as User;
 
     fakeWorkItemTypes = [

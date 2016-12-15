@@ -106,13 +106,12 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
 
   setFilterValues() {
     if (this.loggedIn) {
-      let loggedInUser = this.allUsers.find((user: User) => user.attributes.imageURL == this.authUser.imageURL);
       this.filters.push({
         id:  1,
         name: 'Assign to Me',
         paramKey: 'filter[assignee]',
         active: false,
-        value: loggedInUser.id
+        value: this.authUser.id
       });
     } else {
       let index = this.filters.findIndex(item => item.id === 1);
