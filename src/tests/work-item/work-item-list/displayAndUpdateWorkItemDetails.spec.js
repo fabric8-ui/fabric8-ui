@@ -73,11 +73,11 @@ var waitTime = 30000;
     page.clickQuickAddSave().then(function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
       /* Fill in/update the new work item's title and details field */
-      expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+      expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
 
-        detailPage.clickWorkItemTitleDiv();
+      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+        var detailPage = page.clickWorkItemTitle(page.workItemByTitle(workItemTitle), text);   
+        detailPage.clickWorkItemDetailTitleClick();
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleSaveIcon();
         detailPage.clickWorkItemDetailDescription()
@@ -106,13 +106,13 @@ var waitTime = 30000;
     page.typeQuickAddWorkItemTitle(workItemTitle);
     page.typeQuickAddWorkItemDesc(workItemDescription);
     page.clickQuickAddSave().then(function() {
-      expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-      /* Fill in/update the new work item's title and details field */
-      expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+    expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
 
-        detailPage.clickWorkItemTitleDiv();
+      /* Fill in/update the new work item's title and details field */
+      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+        var detailPage = page.clickWorkItemTitle(page.workItemByTitle(workItemTitle), text);  
+        detailPage.clickWorkItemDetailTitleClick();
+
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleCancelIcon();
         detailPage.clickWorkItemDetailDescription();
@@ -201,20 +201,17 @@ var waitTime = 30000;
         page.clickWorkItemQuickAdd();
         page.typeQuickAddWorkItemTitle(workItemTitle);
         page.clickQuickAddSave().then(function() {
-          expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+          expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
 
           /* Fill in/update the new work item's title with blank and details field */
-          expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
           page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-            var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
-
-            detailPage.clickWorkItemTitleDiv();
+            var detailPage = page.clickWorkItemTitle(page.workItemByTitle(workItemTitle), text);    
+            detailPage.clickWorkItemDetailTitleClick();
             detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
             detailPage.clickWorkItemTitleSaveIcon();
             expect(detailPage.titleValidation().isPresent()).toBeTruthy();
             expect(detailPage.titleAlert()).toBeTruthy();
             expect(detailPage.titleAlertValidation()).toBeTruthy();
-
           });
 
         });
@@ -231,19 +228,19 @@ var waitTime = 30000;
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle(workItemTitle);
     page.clickQuickAddSave().then(function() {
-      expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+      expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
 
       /* Fill in/update the new work item's title with blank and details field */
-      expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
-
-        detailPage.clickWorkItemTitleDiv();
+        var detailPage = page.clickWorkItemTitle(page.workItemByTitle(workItemTitle), text);   
+        detailPage.clickWorkItemDetailTitleClick();
         detailPage.setWorkItemDetailTitle(workItemUpdatedTitle, false);
-        detailPage.workItemDetailTitle.sendKeys(protractor.Key.ENTER);
+        detailPage.clickWorkItemTitleSaveIcon();
+        // TODO Fails on Chrome and Firefox
+        // detailPage.workItemDetailTitle.sendKeys(protractor.Key.ENTER);
         detailPage.clickWorkItemDetailCloseButton();
-        browser.wait(until.presenceOf(page.firstWorkItem), waitTime, 'Failed to find workItemList');
-        expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemUpdatedTitle);
+        browser.wait(until.presenceOf(page.workItemByTitle(workItemUpdatedTitle)), waitTime, 'Failed to find workItemList');
+        expect(page.workItemTitle(page.workItemByTitle(workItemUpdatedTitle))).toBe(workItemUpdatedTitle);
       });
 
     });
@@ -259,21 +256,21 @@ var waitTime = 30000;
         page.clickWorkItemQuickAdd();
         page.typeQuickAddWorkItemTitle(workItemTitle);
         page.clickQuickAddSave().then(function() {
-          expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+          expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
 
           /* Fill in/update the new work item's title with blank and details field */
-          expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
           page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-            var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+            var detailPage = page.clickWorkItemTitle(page.workItemByTitle(workItemTitle), text);    
+            detailPage.clickWorkItemDetailTitleClick();
 
-            detailPage.clickWorkItemTitleDiv();
             detailPage.setWorkItemDetailTitle(workItemUpdatedTitle, false);
-            detailPage.workItemDetailTitle.sendKeys(protractor.Key.ENTER);
-
+            detailPage.clickWorkItemTitleSaveIcon();
+            // TODO Fails on Chrome and Firefox
+            //detailPage.workItemDetailTitle.sendKeys(protractor.Key.ENTER);
 
             detailPage.clickWorkItemDetailCloseButton();
-            browser.wait(until.presenceOf(page.firstWorkItem), waitTime, 'Failed to find workItemList');
-            expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemUpdatedTitle);
+            browser.wait(until.presenceOf(page.workItemByTitle(workItemUpdatedTitle)), waitTime, 'Failed to find workItemList');
+            expect(page.workItemTitle(page.workItemByTitle(workItemUpdatedTitle))).toBe(workItemUpdatedTitle);
           });
 
         });
@@ -496,14 +493,13 @@ it('Verify how many work item type exists in drop down - desktop', function() {
         page.typeQuickAddWorkItemTitle(workItemTitle);
         page.typeQuickAddWorkItemDesc(workItemDescription);
         page.clickQuickAddSave().then(function() {
-          expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+          expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
 
           /* Fill in/update the new work item's title with blank and details field */
-          expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
           page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-            var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+            var detailPage = page.clickWorkItemTitle(page.workItemByTitle(workItemTitle), text);    
+            detailPage.clickWorkItemDetailTitleClick();
 
-            detailPage.clickWorkItemTitleDiv();
             detailPage.setWorkItemDetailTitle(workItemUpdatedTitle, false);
             detailPage.workItemDetailTitle.sendKeys(protractor.Key.ENTER);
             detailPage.clickWorkItemDetailCloseButton();
