@@ -1,4 +1,5 @@
 import { Comments, Comment } from './comment';
+import { Link } from './link';
 import { User } from './user';
 
 export class WorkItem {
@@ -49,4 +50,12 @@ export class RelationalData {
   creator?: User;
   comments?: Comment[];
   assignees?: User[];
+  linkDicts?: LinkDict[];
+  totalLinkCount?: number;
+}
+
+export class LinkDict {
+  linkName: any;
+  links: Link[];
+  count: number;
 }

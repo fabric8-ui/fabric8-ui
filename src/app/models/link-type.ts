@@ -33,3 +33,9 @@ export class LinkType {
     }
   };
 }
+
+export class MinimizedLinkType {
+  name: string;
+  linkId: string;
+  linkType: string;
+}

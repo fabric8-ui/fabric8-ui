@@ -1,3 +1,4 @@
+import { Link } from '../models/link';
 import { Injectable, Component } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { cloneDeep } from 'lodash';
@@ -12,11 +13,11 @@ import {
 } from '../models/comment';
 import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
 import { Logger } from '../shared/logger.service';
-
-import { WorkItem } from '../models/work-item';
-import { WorkItemType } from './work-item-type';
+import { LinkType } from '../models/link-type';
 import { UserService } from '../user/user.service';
 import { User } from '../models/user';
+import { WorkItem, LinkDict } from '../models/work-item';
+import { WorkItemType } from './work-item-type';
 
 
 
@@ -25,6 +26,8 @@ export class WorkItemService {
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private workItemUrl = process.env.API_URL + 'workitems';  // URL to web api
   private workItemTypeUrl = process.env.API_URL + 'workitemtypes';
+  private linkTypesUrl = process.env.API_URL + 'workitemlinktypes';
+  private linksUrl = process.env.API_URL + 'workitemlinks';
   private availableStates: DropdownOption[] = [];
   public workItemTypes: WorkItemType[] = [];
   private workItems: WorkItem[] = [];
@@ -33,6 +36,7 @@ export class WorkItemService {
   private userIdMap = {};
   private workItemIdIndexMap = {};
   private prevFilters: any = [];
+  private linkTypes: LinkType[] = [];
 
   constructor(private http: Http,
     private logger: Logger,
@@ -145,7 +149,7 @@ export class WorkItemService {
    * else it fetches that item from the cloud and then resolves the comments 
    * then update the big list of work WorkItem
    * 
-   * @Input: number - id
+   * @param: number - id
    */
   getWorkItemById(id: string): Promise<WorkItem> {
     let url = this.workItemUrl;
@@ -153,6 +157,7 @@ export class WorkItemService {
       let wItem = this.workItems[this.workItemIdIndexMap[id]];
       if (process.env.ENV != 'inmemory') {
         this.resolveComments(wItem);
+        this.resolveLinks(wItem);
       }
       return Promise.resolve(wItem);
     } else {
@@ -167,6 +172,7 @@ export class WorkItemService {
           this.buildWorkItemIdIndexMap();
           if (process.env.ENV != 'inmemory') {
             this.resolveComments(this.workItems[this.workItemIdIndexMap[wItem.id]]);
+            this.resolveLinks(this.workItems[this.workItemIdIndexMap[wItem.id]]);
           }
           return this.workItems[this.workItemIdIndexMap[wItem.id]];
         })
@@ -207,7 +213,9 @@ export class WorkItemService {
    * For now it resolves assignne and creator 
    */
   resolveUsersForWorkItem(workItem: WorkItem): void {
-    workItem.relationalData = {};
+    if (!workItem.hasOwnProperty('relationalData')) {
+      workItem.relationalData = {};
+    }
     this.resolveAssignee(workItem);
     this.resolveCreator(workItem);
   }
@@ -298,7 +306,7 @@ export class WorkItemService {
    * This method is only called when a single item is fetched for the 
    * details page.
    * 
-   * @Input: WorkItem - wItem
+   * @param: WorkItem - wItem
    */
   resolveComments(wItem: WorkItem): void {
     this.http
@@ -315,6 +323,35 @@ export class WorkItemService {
       })
       .catch (this.handleError);
   }
+
+  /**
+   * Usage: This method is to resolve the linked items for a work item 
+   * This method is only called when a single item is fetched for the 
+   * details page.
+   * 
+   * @param: WorkItem - wItem
+   */
+  resolveLinks(wItem: WorkItem): void {
+    wItem.relationalData.linkDicts = null;
+    wItem.relationalData.totalLinkCount = 0;
+    this.http
+      .get(this.workItemUrl + '/' + wItem.id + '/relationships/links', { headers: this.headers })
+      .toPromise()
+      .then((response) => {
+        let links = response.json().data as Link[];
+        let includes = response.json().included;
+        let linkDicts: LinkDict[] = [];
+        // Prepare relational data for links
+        wItem.relationalData.linkDicts = [];
+        links.forEach((link) => {
+          this.addLinkToWorkItem(link, includes, wItem);
+        });
+      })
+      .catch ((e) => {
+        wItem.relationalData.linkDicts = [];
+        this.handleError(e);
+      });
+  }  
 
   /**
    * Usage: This method is to fetch the work item types
@@ -360,7 +397,7 @@ export class WorkItemService {
           });
           return this.availableStates;
         })
-        .catch(this.handleError);
+        .catch (this.handleError);
     }
   }
 
@@ -387,7 +424,7 @@ export class WorkItemService {
    * removes the delted item from the big list 
    * re build the ID-Index map
    * 
-   * @Input: WorkItem - workItem (Item to be delted)
+   * @param: WorkItem - workItem (Item to be delted)
    */
   delete(workItem: WorkItem): Promise<void> {
     const url = `${this.workItemUrl}/${workItem.id}`;
@@ -410,7 +447,7 @@ export class WorkItemService {
     * resolve the users for the item
     * re build the ID-Index map
     * 
-    * @Input: WorkItem - workItem (Item to be created)
+    * @param: WorkItem - workItem (Item to be created)
     */
   create(workItem: WorkItem): Promise<WorkItem> {
     let url = this.workItemUrl;
@@ -451,7 +488,7 @@ export class WorkItemService {
    * updates the item in the big list 
    * resolve the users for the item
    * 
-   * @Input: WorkItem - workItem (Item to be created)
+   * @param: WorkItem - workItem (Item to be created)
    */
   update(workItem: WorkItem): Promise<WorkItem> {
     if (process.env.ENV == 'inmemory') {
@@ -475,10 +512,18 @@ export class WorkItemService {
           let updatedWorkItem = response.json().data as WorkItem;
           // Find the index in the big list
           let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
-          // Assign the updated work item to the list
-          this.workItems[updateIndex] = updatedWorkItem;
-          // Resolve users for the updated item
-          this.resolveUsersForWorkItem(updatedWorkItem);
+          if (updateIndex > -1) {
+            // Update work item attributes
+            this.workItems[updateIndex].attributes = updatedWorkItem.attributes;
+            this.workItems[updateIndex].relationships.baseType = updatedWorkItem.relationships.baseType;
+            // Resolve users for the updated item
+            this.resolveUsersForWorkItem(this.workItems[updateIndex]);
+          } else {
+            // This part is for mock service in unit test
+            // this.workItems stays in case of unit test
+            // Resolve users for the updated item
+            this.resolveUsersForWorkItem(updatedWorkItem);
+          }
           return updatedWorkItem;
         })
         .catch(this.handleError);
@@ -488,8 +533,8 @@ export class WorkItemService {
   /**
    * Usage: This method create a comment for a workItem 
    * 
-   * @Input: string - id (Work Item ID)
-   * @Input: Comment 
+   * @param: string - id (Work Item ID)
+   * @param: Comment 
    */
   createComment(id: string, comment: Comment): Promise<Comment> {
     let c = new CommentPost();
@@ -513,6 +558,165 @@ export class WorkItemService {
         return comment;
       })
       .catch (this.handleError);
+  }
+
+  /**
+   * Usage: This function fetches all the work item link types
+   * Store it in an instance variable
+   * 
+   * @return Promise of LinkType[]
+   */
+  getLinkTypes(): Promise<LinkType[]> {
+    if (this.linkTypes.length){
+      return new Promise( (resolve, reject) => {
+        resolve(this.linkTypes);
+      });
+    } else {
+      return this.http
+        .get(this.linkTypesUrl, {headers: this.headers})
+        .toPromise()
+        .then(response => {
+          this.linkTypes = response.json().data as LinkType[];
+          return this.linkTypes;
+        }).catch(this.handleError);
+    } 
+  }
+
+  /**
+   * Usage: This function adds a link to a work item 
+   * Stroes the resolved link in relationalData
+   * Updates the reference of workItem so doesn't return anything
+   * 
+   * @param link: Link 
+   * @param includes: any - Data relavent to the link
+   * @param wItem: WorkItem
+   */
+  addLinkToWorkItem(link: Link, includes: any, wItem: WorkItem): void {
+    wItem.relationalData.totalLinkCount += 1;
+    // Get the link type of this link
+    let linkType_id = link.relationships.link_type.data.id;
+    let linkType = includes.find(
+      (i: any) => i.id == linkType_id && i.type == 'workitemlinktypes'
+    );
+    
+    // Resolve source
+    if (link.relationships.source.data.id == wItem.id) {
+      // Setting target info from the data in included
+      let targetWItem = includes.find(
+        (i: any) => i.type == 'workitems' && i.id == link.relationships.target.data.id
+      );
+
+      link.relationalData = {
+        source: {
+          title: wItem.attributes['system.title'],
+          id: wItem.id,
+          state: wItem.attributes['system.state']
+        },
+        target: {
+          title: targetWItem.attributes['system.title'],
+          id: targetWItem.id,
+          state: targetWItem.attributes['system.state']
+        },
+        linkType: linkType.attributes.forward_name
+      };
+    } else {
+      // Setting source info from the data in included
+      let sourceWItem = includes.find(
+        (i: any) => i.type == 'workitems' && i.id == link.relationships.source.data.id
+      );
+
+      link.relationalData = {
+        target: {
+          title: wItem.attributes['system.title'],
+          id: wItem.id,
+          state: wItem.attributes['system.state']                
+        },
+        source: {
+          title: sourceWItem.attributes['system.title'],
+          id: sourceWItem.id,
+          state: sourceWItem.attributes['system.state']                
+        },
+        linkType: linkType.attributes.reverse_name
+      };
+    }
+    let lTypeIndex = wItem.relationalData.linkDicts.findIndex(i => i.linkName == link.relationalData.linkType);
+    if ( lTypeIndex > -1) {
+      // Add this link
+      wItem.relationalData.linkDicts[lTypeIndex].count += 1;
+      wItem.relationalData.linkDicts[lTypeIndex].links.splice( wItem.relationalData.linkDicts[lTypeIndex].links.length, 0, link);
+    } else {
+      // Create a new LinkDict item
+      let newLinkDict = new LinkDict();
+      newLinkDict.linkName = link.relationalData.linkType;
+      newLinkDict.count = 1;
+      newLinkDict.links = [link];
+      wItem.relationalData.linkDicts.splice(0, 0, newLinkDict);
+    }
+  }
+
+
+  /**
+   * Usage: This function removes a link from a work item 
+   * Removes the link from relationalData
+   * Updates the reference of workItem so doesn't return anything
+   *
+   * @param link: Link 
+   * @param wItem: WorkItem
+   */
+  removeLinkFromWorkItem(deletedLink: Link, wiId: string) {
+    let wItem = this.workItems[this.workItemIdIndexMap[wiId]];
+    wItem.relationalData.totalLinkCount -= 1;
+    wItem.relationalData.linkDicts.every((item: LinkDict, index: number): boolean => {
+      let linkIndex = item.links.findIndex((link: Link) => link.id == deletedLink.id);
+      if (linkIndex > -1) {
+        item.links.splice(linkIndex, 1);
+        if (!item.links.length) {
+          wItem.relationalData.linkDicts.splice(index, 1);
+        }
+        return false;
+      }
+      return true;
+    })
+  }
+
+  /**
+   * Usage: Makes an API call to create a link
+   * Recieves the new link response
+   * Resolves and add the new link to the workItem
+   *
+   * @param link: Link - The new link object for request params
+   * @param currentWiId: string - The work item ID where the link is created
+   * @returns Promise<Link>
+   */
+  createLink(link: Object, currentWiId: string): Promise<Link> {
+    return this.http
+      .post(this.linksUrl, JSON.stringify(link), {headers: this.headers})
+      .toPromise()
+      .then(response => {
+        let newLink: Link = response.json().data as Link;
+        let includes = response.json().included as Link;
+        let wItem = this.workItems[this.workItemIdIndexMap[currentWiId]];
+        this.addLinkToWorkItem(newLink, includes, wItem);
+        return newLink;
+      })
+      .catch(this.handleError);
+  }
+
+  /**
+   * Usage: Makes an API call to delete a link
+   * Removes the new link to the workItem
+   *
+   * @param link: Link 
+   * @param currentWiId: string - The work item ID where the link is created
+   * @returns Promise<void>
+   */
+  deleteLink(link: any, currentWiId: string): Promise<void> {
+    const url = `${this.linksUrl}/${link.id}`;
+    return this.http
+      .delete(url, {headers: this.headers})
+      .toPromise()
+      .then(response => { this.removeLinkFromWorkItem(link, currentWiId) })
+      .catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {

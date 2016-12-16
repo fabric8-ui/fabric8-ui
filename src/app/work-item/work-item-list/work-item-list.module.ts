@@ -7,11 +7,11 @@ import { AlmArrayFilter } from '../../pipes/alm-array-filter.pipe';
 import { DialogModule }   from '../../shared-component/dialog/dialog.module';
 import { InfiniteScrollModule }   from '../../shared-component/infinitescroll/infinitescroll.module';
 
-import { WorkItemListComponent } from './work-item-list.component';
 import { WorkItemDetailModule } from './work-item-detail/work-item-detail.module';
-import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
+import { WorkItemListComponent } from './work-item-list.component';
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemListRoutingModule } from './work-item-list-routing.module';
+import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
 
 import { UserService } from '../../user/user.service';
 import { UsersResolve, AuthUserResolve } from '../users.resolver';
@@ -34,9 +34,9 @@ import { UsersResolve, AuthUserResolve } from '../users.resolver';
      WorkItemListEntryComponent 
   ],
   providers: [
+    AuthUserResolve,
     UserService,
-    UsersResolve,
-    AuthUserResolve
+    UsersResolve
   ],
   exports: [
      WorkItemListComponent

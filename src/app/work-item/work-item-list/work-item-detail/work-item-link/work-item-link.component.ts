@@ -4,12 +4,12 @@ import { Http } from '@angular/http';
 import { cloneDeep } from 'lodash';
 
 import { Link } from '../../../../models/link';
-import { LinkType } from '../../../../models/link-type';
+import { LinkDict } from '../../../../models/work-item';
+import { LinkType, MinimizedLinkType } from '../../../../models/link-type';
 import { WorkItem } from '../../../../models/work-item';
 import { WorkItemService } from '../../../work-item.service';
 
 import { SearchData } from './search-data';
-import { WorkItemLinkService } from './work-item-link.service';
 
 @Component({
     selector: 'alm-work-item-link',
@@ -22,20 +22,14 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
     @Input() loggedIn: Boolean;
     linkTypes : LinkType[];
     link: Object;
-    workitemLinks: Link[] = [];
-    workItemsMap: Object = {};
     selectedWorkItem: Object = {};
-    selectedLinkType: LinkType;
+    selectedLinkType: any = false;
     searchWorkItem : SearchData;
     showLinkComponent: Boolean = false;
     showLinkView: Boolean = false;
     showLinkCreator: Boolean = true;
-    //HACKS refactoring needed
-    totalLinks: number = 0;
-    linksGroupCount: Object = {};
     // showLinksList : Boolean = false;
     constructor (
-        private WorkItemLinkService: WorkItemLinkService,
         private workItemService: WorkItemService,
         private router: Router,
         http: Http
@@ -44,43 +38,44 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.loadLinkTypes();
-        this.loadAllLinks();
+      this.loadLinkTypes();
     }
 
     ngOnChanges(changes: SimpleChanges){
         this.loadLinkTypes();
-        this.loadAllLinks();
+        this.showLinkComponent = false;
+        this.showLinkView = false;
+        this.selectedLinkType = false;
     }
-    createLinkObject(sourceId: string, targetId: string, linkId: string) : void {
-        this.link = {
-            // id: '',
-            'type': 'workitemlinks',
-            'attributes': {
-                'version': 0
+
+    createLinkObject(workItemId: string, linkWorkItemId: string, linkId: string, linkType: string) : void {
+      this.link = {
+          // id: '',
+          'type': 'workitemlinks',
+          'attributes': {
+            'version': 0
+          },
+          'relationships': {
+            'link_type': {
+              'data': {
+                'id': linkId,
+                'type': 'workitemlinktypes'
+              }
             },
-            'relationships': {
-                'link_type': {
-                    'data': {
-                        'id': linkId,
-                        'type': 'workitemlinktypes'
-                    }
-                },
-                'source': {
-                    'data': {
-                        'id': sourceId,
-                        'type': 'workitems'
-                    }
-                },
-                'target': {
-                    'data': {
-                        'id': targetId,
-                        'type': 'workitems'
-                    }
-                }
+          'source': {
+            'data': {
+              'id': linkType == 'forward' ? workItemId : linkWorkItemId,
+              'type': 'workitems'
             }
-        };
-        // return link;
+          },
+          'target': {
+            'data': {
+              'id': linkType == 'reverse' ? workItemId : linkWorkItemId,
+              'type': 'workitems'
+            }
+          }
+        }
+      };
     }
 
     onSelectItem(item: Object): void{
@@ -90,98 +85,54 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
         
     }
 
-    onSelectRelation(relation: LinkType): void{
+    onSelectRelation(relation: MinimizedLinkType): void{
         this.selectedLinkType = relation;
-        this.searchWorkItem.searchType = relation.relationships.target_type.data.id;
+        // this.searchWorkItem.searchType = relation.relationships.target_type.data.id;
     }
 
-    createLink(event: any = null): void {
-         this.createLinkObject(this.workItem['id'], this.selectedWorkItem['id'], this.selectedLinkType['id']);
-         const tempValue = {'data': this.link};
-         this.WorkItemLinkService
-        .createLink(tempValue)
-        .then(response => {
-          this.workitemLinks.push(response);
-          this.calculateTotal();
-        }).catch((error) => {
-            console.log(error);
-        });
+    createLink(event: any | null = null): void {
+        this.createLinkObject(
+           this.workItem['id'], 
+           this.selectedWorkItem['id'], 
+           this.selectedLinkType.linkId, 
+           this.selectedLinkType.linkType
+          );
+        const params = {'data': this.link};
+        this.workItemService
+        .createLink(params, this.workItem['id'])
+        .then((response: any) => {
+          this.selectedLinkType = false;
+          this.selectedWorkItem = null;
+        })
+        .catch ((error: any) => console.log(error));
     }
 
     // deleteLink(link : Link){
-    deleteLink(link : any): void{
-         this.WorkItemLinkService
-        .deleteLink(link)
-        .then(response => {
-          this.workitemLinks.forEach((item, index) => {
-              if (item['id'] === link['id']) {
-                  this.workitemLinks.splice(index, 1);
-                  this.calculateTotal();
-              }
-          });
-        }).catch((error) => {
-            console.log(error);
-        });
+    deleteLink(event: any, link : any, currentWorkItem: WorkItem): void{
+      event.stopPropagation();
+      this.workItemService
+      .deleteLink(link, currentWorkItem.id)
+      .then((response: any) => {
+        if (!this.workItem.relationalData.totalLinkCount) {
+          this.showLinkView = false;
+        }
+      })
+      .catch ((error: any) => console.log(error));
     }
 
     loadLinkTypes(): void {
-        this.WorkItemLinkService
-        .getLinkTypes()
-        .then((lTypes) => {
-            this.linkTypes = lTypes;
-            this.selectedLinkType = lTypes[0];
-            this.searchWorkItem.searchType = lTypes[0].relationships.target_type.data.id;
-        }).catch(() => {
-            console.log('Error in loading Link Types');
-        });
-    }
-    
-    loadAllLinks(): void{
-        this.WorkItemLinkService
-        .getAllLinks()
-        .then((links) => {
-            this.workitemLinks = links;
-        }).catch(() => {
-            console.log('Error in loading Links');
-        });
-
-        // This is a fast fix
-        // This logic is going to be changed 
-        // once we have associated links as relation for a work item
         this.workItemService
-        .getLocallySavedWorkItems()
-        .then((wItems) => {
-            let workItems = cloneDeep(wItems);
-            workItems.forEach((item: any) => {
-                this.workItemsMap[item.id] = item;
-            });
-            this.calculateTotal();
-        });
-    }
-
-    calculateTotal(): void{
-        this.linksGroupCount = {};
-        this.totalLinks = 0;
-        for ( let i = 0; i < this.workitemLinks.length; i++ ) {
-            const linkObj = this.workitemLinks[i];
-            if (this.showWorkItem(linkObj, this.workItem)){
-                this.updateCount(linkObj);
-            }
-        }
-    }
-
-    updateCount(link: Link) {
-        const linkTypeId = link['relationships']['link_type']['data']['id'];
-        this.totalLinks = this.totalLinks + 1;
-        if (!this.linksGroupCount.hasOwnProperty(linkTypeId)) {
-            this.linksGroupCount[linkTypeId] = 1;
-        } else {
-            this.linksGroupCount[linkTypeId] = this.linksGroupCount[linkTypeId] + 1;
-        }
+        .getLinkTypes()
+        .then((linkTypes: LinkType[]) => {
+          this.linkTypes = cloneDeep(linkTypes)
+        })
+        .catch ((e) => console.log(e));
     }
 
     toggleLinkComponent(): void{
-        this.showLinkComponent = !this.showLinkComponent;
+      if (this.loggedIn) {
+        this.showLinkComponent = !this.showLinkComponent;        
+      }
     }
 
     toggleLinkView(): void{
@@ -199,17 +150,4 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
         }
         this.router.navigate(['/work-item-list/detail/' + workItemId]);
     }
-
-    showWorkItem(link: Link, workItem: WorkItem) {
-        const sourceId = link['relationships']['source']['data']['id'];
-        const targetId = link['relationships']['target']['data']['id'];
-        if (this.workItem['id'] == sourceId && this.workItemsMap[targetId]) {
-            return true;
-        } else if (this.workItem['id'] == targetId && this.workItemsMap[sourceId]) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
 }

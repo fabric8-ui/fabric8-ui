@@ -1,4 +1,4 @@
-// import { LinkType } from './link-type';
+import { LinkType } from './link-type';
 
 export class Link {
   id: string;
@@ -27,4 +27,20 @@ export class Link {
       }
     }
   };
+  relationalData?: RelationalData;
+}
+
+
+export class RelationalData {
+  source?: {
+    title: string;
+    id: string;
+    state: string;
+  };
+  target?: {
+    title: string;
+    id: string;
+    state: string;
+  };
+  linkType?: string;
 }

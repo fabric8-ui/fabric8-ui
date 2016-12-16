@@ -30,7 +30,9 @@ import { Dialog } from '../../../shared-component/dialog/dialog';
 
 import { AlmIconModule } from '../../../shared-component/icon/almicon.module';
 import { AlmEditableModule } from '../../../shared-component/editable/almeditable.module';
+import { AlmValidLinkTypes } from '../../../pipes/alm-valid-link-types.pipe';
 import { AuthenticationService } from '../../../auth/authentication.service';
+import { LinkType } from '../../../models/link-type';
 import { User } from '../../../models/user';
 import { UserService } from '../../../user/user.service';
 import { WorkItem } from '../../../models/work-item';
@@ -38,7 +40,6 @@ import { WorkItemType } from '../../work-item-type';
 import { WorkItemService } from '../../work-item.service';
 
 import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
-import { WorkItemLinkService } from './work-item-link/work-item-link.service';
 import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.component';
 import { WorkItemDetailComponent } from './work-item-detail.component';
 
@@ -57,6 +58,7 @@ describe('Detailed view and edit a selected work item - ', () => {
   let fakeUserService: any;
   let fakeWorkItemTypes: WorkItemType[];
   let fakeWorkItemStates: Object[];
+  let fakeWorkItemLinkTypes: LinkType[];
 
   beforeEach(() => {
 
@@ -152,6 +154,74 @@ describe('Detailed view and edit a selected work item - ', () => {
       { name: 'system.bug' }
     ] as WorkItemType[];
 
+    fakeWorkItemLinkTypes = [
+        {
+         'id': '4f8d8e8c-ab1c-4396-b725-105aa69a789c',
+         'type': 'workitemlinktypes',
+         'attributes': {
+          'description': 'A test work item can if a the code in a pull request passes the tests.',
+          'forward_name': 'story-story',
+          'name': 'story-story',
+          'reverse_name': 'story by',
+          'topology': 'network', 
+          'version': 0
+        },
+        // 'id': '40bbdd3d-8b5d-4fd6-ac90-7236b669af04',
+        'relationships': {
+          'link_category': {
+            'data': {
+              'id': 'c08d244f-ca36-4943-b12c-1cdab3525f12',
+              'type': 'workitemlinkcategories'
+            }
+          },
+          'source_type': {
+            'data': {
+              'id': 'system.userstory',
+              'type': 'workitemtypes'
+            }
+          },
+          'target_type': {
+            'data': {
+              'id': 'system.userstory',
+              'type': 'workitemtypes'
+            }
+          }
+      }
+    },
+      {
+         'id': '9cd02068-d76e-4733-9df8-f18bc39002ee',
+         'type': 'workitemlinktypes',
+         'attributes': {
+          'description': 'A test work item can if a the code in a pull request passes the tests.',
+          'forward_name': 'abc-abc',
+          'name': 'abc-abc',
+          'reverse_name': 'story by',
+          'topology': 'network', 
+          'version': 0
+        },
+        // 'id': '40bbdd3d-8b5d-4fd6-ac90-7236b669af04',
+        'relationships': {
+          'link_category': {
+            'data': {
+              'id': 'c08d244f-ca36-4943-b12c-1cdab3525f12',
+              'type': 'workitemlinkcategories'
+            }
+          },
+          'source_type': {
+            'data': {
+              'id': 'system.userstory',
+              'type': 'workitemtypes'
+            }
+          },
+          'target_type': {
+            'data': {
+              'id': 'system.userstory',
+              'type': 'workitemtypes'
+            }
+          }
+      }
+    }];
+
 
     fakeAuthService = {
       loggedIn: false,
@@ -204,6 +274,12 @@ describe('Detailed view and edit a selected work item - ', () => {
         return new Promise((resolve, reject) => {
           resolve(fakeWorkItems);
         });
+      },
+
+      getLinkTypes: function () {
+        return new Promise((resolve, reject) => {
+          resolve(fakeWorkItemLinkTypes);
+        });
       }
     };
 
@@ -245,6 +321,7 @@ describe('Detailed view and edit a selected work item - ', () => {
         AlmMomentTime,
         AlmSearchHighlight,
         AlmTrim,
+        AlmValidLinkTypes,
         WorkItemCommentComponent,
         WorkItemDetailComponent,
         WorkItemLinkComponent,
@@ -252,7 +329,6 @@ describe('Detailed view and edit a selected work item - ', () => {
       providers: [
         Broadcaster,
         Logger,
-        WorkItemLinkService,
         Location,
         {
           provide: AuthenticationService,
