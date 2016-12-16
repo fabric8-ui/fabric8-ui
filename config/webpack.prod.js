@@ -59,7 +59,7 @@ module.exports = function (env) {
        */
       path: helpers.root('dist'),
       // path: path.join(process.cwd(), 'dist'),
-      publicPath: 'dist/',
+      publicPath: '',
 
       /**
        * Specifies the name of each output file on disk.
