@@ -1,8 +1,4 @@
-@import '../assets/stylesheets/font-awesome';
-@import "../assets/vendor/patternfly/stylesheets/patternfly/_color-variables";
-@import "../assets/vendor/patternfly/stylesheets/patternfly/_variables";
-@import "../assets/stylesheets/_custom";
-@import "../assets/stylesheets/base";
+@import '../assets/stylesheets/all';
 //@import "../assets/vendor/patternfly/stylesheets/patternfly";
 //@import "../assets/vendor/patternfly/images/patternfly/bg-login.jpg";
 //@import "../assets/vendor/patternfly/images/patternfly/spinner.gif";
@@ -27,4 +23,15 @@
 
 @media (max-width: ($grid-float-breakpoint - 1)){
   .app{ padding-top: em(132); }
+}
+
+.dropdown {
+  a:hover {
+    text-decoration: none;
+  }
+
+  a { 
+    color: white;
+  }
+
 }

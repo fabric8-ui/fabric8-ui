@@ -1,1 +1,19 @@
 @import "../../assets/stylesheets/all";
+.dropdown {
+    a:hover {
+        text-decoration: none;
+    }
+    a {
+        color: white;
+        background-color: transparent !important;
+    }
+}
+
+.vertical-center {
+    min-height: 100%;
+    /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh;
+    /* These two lines are counted as one :-)       */
+    display: flex;
+    align-items: center;
+}

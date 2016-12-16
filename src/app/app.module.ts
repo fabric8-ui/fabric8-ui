@@ -7,8 +7,9 @@ import { HttpModule } from '@angular/http';
 
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
-import { DropdownModule } from 'ng2-dropdown';
 
+
+import { DropdownModule } from 'ng2-dropdown';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -36,6 +37,8 @@ import { LoginModule } from './login/login.module';
 import { LoginService } from './login/login.service';
 
 import { HomeModule } from './home/home.module';
+
+// Shared Component
 
 // Application wide providers
 const APP_PROVIDERS = [
