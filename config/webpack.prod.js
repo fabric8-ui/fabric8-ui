@@ -116,9 +116,11 @@ module.exports = function (env) {
       /**
        * Webpack plugin and CLI utility that represents bundle content as convenient interactive zoomable treemap
        */
+/*
       new BundleAnalyzerPlugin({
         generateStatsFile: true
       }),
+*/
 
       /**
        * Plugin: DedupePlugin
