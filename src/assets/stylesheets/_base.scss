@@ -1,5 +1,4 @@
-$font-path: '/assets/vendor/patternfly/fonts';
-$fa-font-path: '/assets/vendor/patternfly/fonts';
+@import 'variables';
 @import '../vendor/patternfly/stylesheets/patternfly-compass';
 @import '../vendor/patternfly/stylesheets/patternfly/fonts';
 @import "../vendor/patternfly/stylesheets/patternfly/variables";

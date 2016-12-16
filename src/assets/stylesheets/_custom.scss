@@ -1,6 +1,7 @@
-@import "../vendor/patternfly/stylesheets/patternfly/_variables";
+@import "../vendor/patternfly/stylesheets/patternfly/variables";
+@import "../vendor/patternfly/stylesheets/bootstrap/variables";
+
 //@import "../vendor/patternfly/stylesheets/patternfly/_color-variables";
-@import "_base.scss";
 
 /*
 // These variables were taken from the old variables.scss. Please figure out where they go.
@@ -34,7 +35,9 @@ $nav-disabled-link-color:                                           $gray-light 
 $nav-disabled-link-hover-color:                                     $gray-light !default;
 */
 
-
+body {
+    font-family: Open Sans;
+}
 
 
 
