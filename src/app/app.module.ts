@@ -7,7 +7,7 @@ import { HttpModule } from '@angular/http';
 
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
-// import { DropdownModule } from 'ng2-dropdown';
+import { DropdownModule } from 'ng2-dropdown';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -59,7 +59,7 @@ export type StoreType = {
     HomeModule,
     HttpModule,
     BrowserModule,
-    // DropdownModule,
+    DropdownModule,
     FormsModule,
     HomeModule,
     HttpModule,

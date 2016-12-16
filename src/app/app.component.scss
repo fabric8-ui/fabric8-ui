@@ -2,6 +2,10 @@
 @import "../assets/vendor/patternfly/stylesheets/patternfly/_color-variables";
 @import "../assets/vendor/patternfly/stylesheets/patternfly/_variables";
 @import "../assets/stylesheets/_custom";
+@import "../assets/stylesheets/base";
+@import "../assets/vendor/patternfly/stylesheets/patternfly";
+@import "../assets/vendor/patternfly/images/patternfly/bg-login.jpg";
+@import "../assets/vendor/patternfly/images/patternfly/spinner.gif";
 .navbar-header {
   span{
     color: $color-pf-white;

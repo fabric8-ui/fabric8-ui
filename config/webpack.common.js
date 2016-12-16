@@ -201,9 +201,9 @@ module.exports = function (options) {
         }
       ]
     },
-    sassLoader: {
-      includePaths: [ 'client/style' ]
-    },
+    // sassLoader: {
+    //   includePaths: [ 'client/style' ]
+    // },
 
     /*
      * Add additional plugins to the compiler.
