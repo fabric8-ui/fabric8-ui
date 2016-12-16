@@ -78,6 +78,7 @@
     "ng2-completer": "^0.3.1",
     "ng2-dragula": "^1.2.1",
     "ng2-dropdown": "0.0.15",
+    "ng2-modal": "0.0.22",
     "obsidian-generator-frontend": "0.0.7",
     "patternfly": "3.8.1",
     "reflect-metadata": "^0.1.8",

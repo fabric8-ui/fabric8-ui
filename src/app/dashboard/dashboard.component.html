@@ -5,7 +5,7 @@
             <div>
                 <h4>Welcome</h4>
                 <p>Set up your Dashboard and start creating your awesome products!</p>
-                <a href="#">Create a New Project</a>
+                <a (click)="createProjectDialog.open()">Create a New Project</a>
                 <a href="#">Join a Project</a>
             </div>
         </li>
@@ -102,3 +102,11 @@
         </li>
     </ul>
 </section>
+
+<!-- Create Project modal -->
+
+<modal #createProjectDialog title="Create New Project">
+    <modal-content>
+        <project-dialog></project-dialog>
+    </modal-content>
+</modal>
