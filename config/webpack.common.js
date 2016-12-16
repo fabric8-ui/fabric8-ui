@@ -20,6 +20,9 @@ const HtmlElementsPlugin = require('./html-elements-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+// const precss = require('precss');
+// const autoprefixer = require('autoprefixer')
+
 
 /*
  * Webpack Constants
@@ -44,6 +47,7 @@ module.exports = function (options) {
   // const outPath = aotMode ? 'dist' : 'aot';
   // const devtool = aotMode ? 'source-map' : 'eval-source-map';
   // const srcPath = path.join(__dirname, 'demo', 'src');
+
   var config = {
   // return {
 
@@ -144,6 +148,7 @@ module.exports = function (options) {
          * Returns file content as string
          *
          */
+/*
         {
           test: /\.css$/,
           loaders: ['to-string-loader', 'css-loader']
@@ -153,8 +158,8 @@ module.exports = function (options) {
           test: /\.scss$/,
           loaders: ["css-to-string", "css", "sass"]
         },
+*/
         // old way
-/*
         {
           test: /\.css$/,
           exclude: helpers.root('src', 'app'),
@@ -167,29 +172,37 @@ module.exports = function (options) {
         },
         {
           test: /\.scss$/,
-          exclude: helpers.root('src', 'app'),
+          exclude: [helpers.root('src', 'app')],
           loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!resolve-url!sass?sourceMap')
         },
         {
           test: /\.scss$/,
-          include: helpers.root('src', 'app'),
+          include: [helpers.root('src', 'app')],
           loaders: ['exports-loader?module.exports.toString()', 'css', 'postcss', 'sass']
         },
-*/
 
 
 
         /* File loader for supporting images, for example, in CSS files.
          */
+/*
         {
           test: /\.(jpg|png|gif)$/,
           loader: 'file'
+        },
+*/
+        {
+          test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
+          loader: 'file?name=assets/[name].[hash].[ext]'
         },
         {
           test: /manifest.json$/,
           loader: 'file-loader?name=manifest.json!web-app-manifest-loader'
         }
       ]
+    },
+    sassLoader: {
+      includePaths: [ 'client/style' ]
     },
 
     /*
