@@ -1,1 +1,11 @@
-@import "../../assets/stylesheets/_base";
+@import "../../assets/stylesheets/all";
+
+.x-small small {
+    font-size: 60%;
+}
+
+.pull-bottom {
+  display: table-cell;
+  vertical-align: bottom;
+  float: none;
+}

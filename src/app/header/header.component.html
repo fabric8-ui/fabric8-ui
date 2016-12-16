@@ -1,161 +1,63 @@
-<nav id="header_wrapper" class="navbar navbar-pf-vertical " role="navigation">
-	<div id="header_nav" class="navbar-header">
-
-    <div class="navbar-brand">
-      <a class="fl no-link">
-        <!--<span class="pficon pficon-enterprise pull-left marginR5"></span>-->
-        <button type="button" class="navbar-toggle">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        DevTools Org
-        <span class="caret"></span>
-      </a>
-    </div>
-  </div>
-  <nav class="collapse navbar-collapse">
-    <ul class="nav navbar-nav navbar-right navbar-iconic">
-      <li class="dropdown">
-        <a [routerLink]="['/notifications']" id="header_menuNotifications" routerLinkActive="active"
-           class="dropdown-toggle nav-item-iconic" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          <span title="Notifications" class="fa pficon-flag"></span>
-          <span class="badge">2</span>
-        </a>
-        <div class="dropdown-menu infotip bottom-right">
-          <div class="arrow"></div>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <span class="i pficon pficon-info"></span> Modified Datasources ExampleDS
-            </li>
-            <li class="list-group-item">
-              <span class="i pficon pficon-info"></span> Error: System Failure
-            </li>
-          </ul>
-          <div class="footer">
-            <a>Clear Messages</a>
-          </div>
-        </div>
+<nav class="navbar navbar-default navbar-pf" role="navigation">
+  <div class="collapse navbar-collapse navbar-collapse-1">
+    <ul class="nav navbar-nav navbar-primary">
+      <li>
+        <a href="#">cyril <b class="caret"></b></a>
+      </li>
+      <li class="active">
+        <a href="#">Home</a>
       </li>
       <li>
-        <a [routerLink]="['/chat']" id="header_menuChat" routerLinkActive="active"><span class="fa fa-comments"></span></a>
+        <a href="#">Profile</a>
       </li>
       <li>
-        <a [routerLink]="['/settings']" id="header_menuSettings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
+        <a href="#"><span class="pficon pficon-settings"></span></a>
       </li>
-      <li class="dropdown">
-        <a class="dropdown-toggle nav-item-iconic" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          <span title="Help" class="fa pficon-help"></span>
-          <span class="caret"></span>
+      <li class="pull-right">
+        <a href="#">
+          <img src="https://avatars2.githubusercontent.com/u/157761?v=3&s=460" width="16" height="16" /> cyril
+          <b class="caret"></b>
         </a>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-          <li><a href="#">Help</a></li>
-          <li><a href="#">About</a></li>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="#">Link</a>
+          </li>
+          <li>
+            <a href="#">Another link</a>
+          </li>
+          <li>
+            <a href="#">Something else here</a>
+          </li>
+          <li class="divider"></li>
+          <li class="dropdown-submenu">
+            <a tabindex="-1" href="#">More options</a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#">Link</a>
+              </li>
+              <li>
+                <a href="#">Another link</a>
+              </li>
+              <li>
+                <a href="#">Something else here</a>
+              </li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Nav header</li>
+              <li>
+                <a href="#">Separated link</a>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <a href="#">One more separated link</a>
+              </li>
+            </ul>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="#">One more separated link</a>
+          </li>
         </ul>
-      </li>
-      <li class="dropdown">
-        <a class="dropdown-toggle nav-item-iconic" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          <span title="Username" class="fa pficon-user"></span>
-          <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <li><a href="#">Preferences</a></li>
-          <li><a href="#">Logout</a></li>
-        </ul>
-      </li>
-      <li *ngIf="loggedIn">
-        <a *ngIf="loggedInUser" id="header_dropdownToggle">
-          <span *ngIf="!imgLoaded" class="pficon pficon-user"></span>
-          <img (load)="onImgLoad()" src="{{ loggedInUser.imageURL }}"
-               [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
-               class="pull-left marginR10" />
-          {{loggedInUser.fullName}}
-        </a>
-      </li>
-      <li>
-        <a *ngIf="loggedIn" (click)='logout();'>Logout</a>
-        <a *ngIf="!loggedIn" (click)='login();'>Login</a>
       </li>
     </ul>
-  </nav>
-</nav> <!--/.navbar-->
-
-<div class="nav-pf-vertical
-     nav-pf-vertical-with-sub-menus
-     nav-pf-persistent-secondary">
-  <ul class="list-group">
-    <li class="list-group-item">
-      <a [routerLink]="['/dashboard']" id="header_menuDashboard">
-        <span class="fa fa-dashboard" data-toggle="tooltip" title="Dashboard"></span>
-        <span class="list-group-item-value">Dashboard</span>
-      </a>
-    </li>
-    <li class="list-group-item">
-      <a [routerLink]="['/home']" id="header_menuHome">
-        <span class="fa fa-dashboard" data-toggle="tooltip" title="Home"></span>
-        <span class="list-group-item-value">Home</span>
-      </a>
-    </li>
-    <li class="list-group-item">
-      <a [routerLink]="['/apps']" id="header_menuApps">
-        <span class="fa fa-dashboard" data-toggle="tooltip" title="Apps"></span>
-        <span class="list-group-item-value">Apps</span>
-      </a>
-    </li>
-    <li class="list-group-item">
-      <a [routerLink]="['/work-item-list']" id="header_menuPlanner">
-        <span class="fa fa-dashboard" data-toggle="tooltip" title="Planner"></span>
-        <span class="list-group-item-value">Planner</span>
-      </a>
-    </li>
-    <li class="list-group-item">
-      <a [routerLink]="['/code']" id="header_menuCode">
-        <span class="fa fa-dashboard" data-toggle="tooltip" title="Code"></span>
-        <span class="list-group-item-value">Code</span>
-      </a>
-    </li>
-    <li class="list-group-item">
-      <a [routerLink]="['/test']" id="header_menuTest">
-        <span class="fa fa-dashboard" data-toggle="tooltip" title="Test"></span>
-        <span class="list-group-item-value">Test</span>
-      </a>
-    </li>
-    <li class="list-group-item">
-      <a [routerLink]="['/hypothesis']" id="header_menuHypothesis">
-        <span class="fa fa-dashboard" data-toggle="tooltip" title="Hypothesis Engine"></span>
-        <span class="list-group-item-value">Hypothesis Engine</span>
-      </a>
-    </li>
-    <li class="list-group-item">
-      <a [routerLink]="['/intro']" id="header_menuWizard">
-        <span class="fa fa-dashboard" data-toggle="tooltip" title="Wizard"></span>
-        <span class="list-group-item-value">Wizard</span>
-      </a>
-    </li>
-    <li class="list-group-item">
-      <a [routerLink]="['/pipeline']" id="header_menuPipeline">
-        <span class="fa fa-dashboard" data-toggle="tooltip" title="Pipeline"></span>
-        <span class="list-group-item-value">Pipeline</span>
-      </a>
-    </li>
-    <li class="list-group-item">
-      <a [routerLink]="['/builds']" id="header_menuBuilds">
-        <span class="fa fa-dashboard" data-toggle="tooltip" title="Builds"></span>
-        <span class="list-group-item-value">Builds</span>
-      </a>
-    </li>
-    <li class="list-group-item">
-      <a [routerLink]="['/environments']" id="header_menuEnvironments">
-        <span class="fa fa-dashboard" data-toggle="tooltip" title="Environments"></span>
-        <span class="list-group-item-value">Environments</span>
-      </a>
-    </li>
-    <li class="list-group-item">
-      <a [routerLink]="['/tools']" id="header_menuTools">
-        <span class="fa fa-dashboard" data-toggle="tooltip" title="Tools"></span>
-        <span class="list-group-item-value">Tools</span>
-      </a>
-    </li>
-  </ul>
-</div>
+  </div>
+</nav>
