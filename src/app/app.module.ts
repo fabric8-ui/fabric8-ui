@@ -34,6 +34,7 @@ import { Logger } from './shared/logger.service';
 
 // Login
 // import { LoginModule } from './login/login.module';
+import { SigninComponent } from './signin/signin.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 
@@ -74,7 +75,8 @@ export type StoreType = {
     AppComponent,
     FooterComponent,
     HeaderComponent,
-    LoginComponent
+    LoginComponent,
+    SigninComponent
 
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
