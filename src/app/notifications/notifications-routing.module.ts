@@ -6,12 +6,12 @@ import { NotificationsComponent } from './notifications.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'notifications',
-    pathMatch: 'full'
-  },
-  {
-    path: 'notifications',
-    component: NotificationsComponent
+    component: NotificationsComponent,
+    children: [
+      {
+        path: ''
+      }
+    ]
   }
 ];
 

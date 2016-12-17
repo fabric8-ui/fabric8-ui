@@ -6,14 +6,13 @@ import { HelpComponent } from './help.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'help',
-    pathMatch: 'full'
-  },
-  {
-    path: 'help',
     component: HelpComponent,
+    children: [
+      {
+        path: ''
+      }
+    ]
   }
-
 ];
 
 @NgModule({

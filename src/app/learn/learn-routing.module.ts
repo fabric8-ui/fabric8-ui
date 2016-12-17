@@ -6,14 +6,13 @@ import { LearnComponent } from './learn.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'learn',
-    pathMatch: 'full'
-  },
-  {
-    path: 'learn',
-    component: LearnComponent
+    component: LearnComponent,
+    children: [
+      {
+        path: ''
+      }
+    ]
   }
-
 ];
 
 @NgModule({

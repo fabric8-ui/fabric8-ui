@@ -6,14 +6,13 @@ import { ProfileComponent } from './profile.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'profile',
-    pathMatch: 'full'
-  },
-  {
-    path: 'profile',
     component: ProfileComponent,
+    children: [
+      {
+        path: ''
+      }
+    ]
   }
-
 ];
 
 @NgModule({

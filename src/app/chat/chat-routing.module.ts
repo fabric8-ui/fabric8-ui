@@ -6,14 +6,13 @@ import { ChatComponent } from './chat.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'chat',
-    pathMatch: 'full'
-  },
-  {
-    path: 'chat',
     component: ChatComponent,
+    children: [
+      {
+        path: ''
+      }
+    ]
   }
-
 ];
 
 @NgModule({
