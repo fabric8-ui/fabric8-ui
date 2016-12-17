@@ -1,0 +1,49 @@
+<div class="col-md-12 col-sm-12 col-xs-12 createProjectBlock">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <h4 class="projectname">Project Name</h4>
+        <div class="form-group has-error">
+            <div class="search-pf-input-group">
+                <input id="project-name" type="search" class="form-control" placeholder="Enter a unique name for your project">
+                <span class="help-block">This project name already exists. Please enter another name.</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <h4 class="projectname">Development Process</h4>
+        <form role="form" class="search-pf has-button devProcessForm">
+            <div class="form-group has-clear">
+                <div class="search-pf-input-group">
+                    <input id="project-dialog-dev-process" type="search" class="form-control" placeholder="Choose a Development process for this project">
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" type="button"><span class="caret pull-right icon-caret"></span></button>
+            </div>
+        </form>
+        <ul class="devProcessList hide">
+            <li>Agile</li>
+        </ul>
+        <p class="pull-left">Agile</p>
+    </div>
+
+    <div class="col-md-12 col-sm-12 col-xs-12 projectInputBlock">
+        <h4 class="projectname">What type of project would you like to create</h4>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <input type="radio" class="pull-left" id="publicProject" checked name="ProjectView"/>
+            <label class="pull-left" for="publicProject">
+                <span>Public</span>
+                <span>Anyone can access this code and participate in crafting the product</span>
+            </label>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <input type="radio" class="pull-left" id="privateProject" name="ProjectView"/>
+            <label class="pull-left" for="privateProject">
+                <span>Private</span>
+                <span>Only authorized people can access this code and participate in crafting the product</span>
+            </label>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <button class="btn marginR10 pull-right btn-primary" type="submit" value="0">Create Project </button>
+    </div>
+</div>
