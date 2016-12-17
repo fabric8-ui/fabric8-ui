@@ -1,13 +1,14 @@
 <nav class="navbar navbar-default navbar-pf" role="navigation">
   <div class="collapse navbar-collapse navbar-collapse-1">
-    <ul class="nav navbar-nav navbar-primary persistent-secondary">
-      <li [routerLinkActive]="['active']">
+    <ul class="nav navbar-nav navbar-primary persistent-secondary"  >
+      <!-- This part of the menu is dynamic based on context -->
+      <li [routerLinkActive]="['active']" *ngIf="!router.url.startsWith('/analyze')">
         <a>pmuir <b class="caret"></b></a>
       </li>
-      <li [routerLinkActive]="['active']">
+      <li [routerLinkActive]="['active']" *ngIf="!router.url.startsWith('/analyze')">
         <a [routerLink]="['/home']" id="header_menuHome">Home</a>
       </li>
-      <li [routerLinkActive]="['active']">
+      <li [routerLinkActive]="['active']" *ngIf="!router.url.startsWith('/analyze')">
         <a [routerLink]="['/profile']" >Profile</a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']">
@@ -21,6 +22,30 @@
           </li>
         </ul>
       </li>
+      <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
+        <a>BalloonPopGame <b class="caret"></b></a>
+      </li>
+      <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
+        <a [routerLink]="['/analyze']" id="header_menuHome">Analyze</a>
+        <ul class="nav navbar-nav navbar-persistent">
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/analyze']">Overview</a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/analyze/readme']">README</a>
+          </li>
+        </ul>
+      </li>
+      <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
+        <a [routerLink]="['/analyze/create']" >Create</a>
+      </li>
+      <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
+        <a [routerLink]="['/analyze/plan']" >Plan</a>
+      </li>
+      <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
+        <a [routerLink]="['/analyze/run']" >Run</a>
+      </li>
+      <!-- end dynamic section -->
       <li [routerLinkActive]="['active']">
         <a [routerLink]="['/settings']" id="header_menuSettings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
       </li>
