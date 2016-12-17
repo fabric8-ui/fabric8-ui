@@ -20,6 +20,10 @@ export const routes: Routes = [
     loadChildren: './chat/chat.module#ChatModule'
   },
   {
+    path: 'profile',
+    loadChildren: './profile/profile.module#ProfileModule'
+  },
+  {
     path: 'dashboard',
     loadChildren: './dashboard/dashboard.module#DashboardModule'
   },
