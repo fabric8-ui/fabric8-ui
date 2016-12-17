@@ -24,6 +24,10 @@ export const routes: Routes = [
     loadChildren: './chat/chat.module#ChatModule'
   },
   {
+    path: 'collaboration',
+    loadChildren: './collaboration/collaboration.module#CollaborationModule'
+  },
+  {
     path: 'dashboard',
     loadChildren: './dashboard/dashboard.module#DashboardModule'
   },
