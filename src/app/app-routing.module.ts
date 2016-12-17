@@ -36,6 +36,14 @@ export const routes: Routes = [
     loadChildren: './help/help.module#HelpModule'
   },
   {
+    path: 'learn',
+    loadChildren: './learn/learn.module#LearnModule'
+  },
+  {
+    path: 'notifications',
+    loadChildren: './notifications/notifications.module#NotificationsModule'
+  },
+  {
     path: 'overview',
     loadChildren: './overview/overview.module#OverviewModule'
   },
@@ -44,12 +52,8 @@ export const routes: Routes = [
     loadChildren: './profile/profile.module#ProfileModule'
   },
   {
-    path: 'learn',
-    loadChildren: './learn/learn.module#LearnModule'
-  },
-  {
-    path: 'notifications',
-    loadChildren: './notifications/notifications.module#NotificationsModule'
+    path: 'resources',
+    loadChildren: './resources/resources.module#ResourcesModule'
   },
   {
     path: 'settings',
