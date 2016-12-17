@@ -2,15 +2,21 @@ import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ProfileComponent } from './profile.component';
+import { OverviewComponent } from './overview/overview.component';
 
 const routes: Routes = [
   {
     path: '',
+    redirectTo: '/profile',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
     component: ProfileComponent,
     children: [
-      {
-        path: ''
-      }
+      { path: '',          component: OverviewComponent },
+      { path: 'spaces',    loadChildren: './collaboration/collaboration.module#CollaborationModule' },
+      { path: 'resources', loadChildren: './resources/resources.module#ResourcesModule' },
     ]
   }
 ];

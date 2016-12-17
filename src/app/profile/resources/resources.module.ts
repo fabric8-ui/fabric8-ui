@@ -8,7 +8,6 @@ import { ResourcesRoutingModule } from './resources-routing.module';
 @NgModule({
   imports:      [ CommonModule, ResourcesRoutingModule, HttpModule ],
   declarations: [ ResourcesComponent ],
+  exports: [ ResourcesComponent ]
 })
-export class ResourcesModule {
-  constructor(http: Http) {}
-}
+export class ResourcesModule {}
