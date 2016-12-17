@@ -8,6 +8,7 @@ import { CollaborationRoutingModule } from './collaboration-routing.module';
 @NgModule({
   imports:      [ CommonModule, CollaborationRoutingModule, HttpModule ],
   declarations: [ CollaborationComponent ],
-  exports: [ CollaborationComponent ]
 })
-export class CollaborationModule {}
+export class CollaborationModule {
+  constructor(http: Http) {}
+}

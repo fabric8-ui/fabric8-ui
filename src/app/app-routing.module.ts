@@ -28,10 +28,6 @@ export const routes: Routes = [
     path: 'chat',
     loadChildren: './chat/chat.module#ChatModule'
   },
-  // {
-  //   path: 'collaboration',
-  //   loadChildren: './collaboration/collaboration.module#CollaborationModule'
-  // },
   {
     path: 'dashboard',
     loadChildren: './dashboard/dashboard.module#DashboardModule'
@@ -48,18 +44,14 @@ export const routes: Routes = [
     path: 'notifications',
     loadChildren: './notifications/notifications.module#NotificationsModule'
   },
-  // {
-  //   path: 'overview',
-  //   loadChildren: './overview/overview.module#OverviewModule'
-  // },
+  {
+    path: 'analyze/plan',
+    loadChildren: './plan/plan.module#PlanModule'
+  },
   {
     path: 'profile',
     loadChildren: './profile/profile.module#ProfileModule'
   },
-  // {
-  //   path: 'resources',
-  //   loadChildren: './resources/resources.module#ResourcesModule'
-  // },
   {
     path: 'settings',
     loadChildren: './settings/settings.module#SettingsModule'

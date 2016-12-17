@@ -26,7 +26,7 @@
         <a>BalloonPopGame <b class="caret"></b></a>
       </li>
       <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
-        <a [routerLink]="['/analyze']" id="header_menuHome">Analyze</a>
+        <a [routerLink]="['/analyze']" id="header_menuAnalyze">Analyze</a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']">
             <a [routerLink]="['/analyze']">Overview</a>
@@ -41,6 +41,14 @@
       </li>
       <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
         <a [routerLink]="['/analyze/plan']" >Plan</a>
+        <ul class="nav navbar-nav navbar-persistent">
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/analyze/plan']">Backlog</a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/analyze/plan/board']">Board</a>
+          </li>
+        </ul>
       </li>
       <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
         <a [routerLink]="['/analyze/run']" >Run</a>
@@ -56,7 +64,7 @@
       <!-- temporary hack by pmuir to fix POC UX until we implement log in screens -->
       <li dropdown class="pull-right dropdown">
         <a dropdown-open>
-          <a id="header_dropdownToggle">
+          <a id="header_dropdownUtility">
             <span *ngIf="!imgLoaded" class="pficon pficon-user"></span>
             <img (load)="onImgLoad()" src="https://avatars2.githubusercontent.com/u/157761?v=3&s=460"
                  [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
