@@ -24,16 +24,20 @@ export const routes: Routes = [
     loadChildren: './chat/chat.module#ChatModule'
   },
   {
+    path: 'dashboard',
+    loadChildren: './dashboard/dashboard.module#DashboardModule'
+  },
+  {
     path: 'help',
     loadChildren: './help/help.module#HelpModule'
   },
   {
-    path: 'profile',
-    loadChildren: './profile/profile.module#ProfileModule'
+    path: 'overview',
+    loadChildren: './overview/overview.module#OverviewModule'
   },
   {
-    path: 'dashboard',
-    loadChildren: './dashboard/dashboard.module#DashboardModule'
+    path: 'profile',
+    loadChildren: './profile/profile.module#ProfileModule'
   },
   {
     path: 'learn',
