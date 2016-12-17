@@ -24,13 +24,21 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
  * Webpack Constants
  */
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
+const API_URL = process.env.API_URL || 'http://api.almighty.io/api/';
+const FORGE_URL = process.env.FORGE_URL;
+const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
+
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8080;
 const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   host: HOST,
   port: PORT,
   ENV: ENV,
-  HMR: false
+  HMR: false,
+  API_URL: API_URL,
+  FORGE_URL: FORGE_URL,
+  PUBLIC_PATH: PUBLIC_PATH
+
 });
 
 module.exports = function (env) {
@@ -59,7 +67,7 @@ module.exports = function (env) {
        */
       path: helpers.root('dist'),
       // path: path.join(process.cwd(), 'dist'),
-      publicPath: '',
+      publicPath: METADATA.PUBLIC_PATH,
 
       /**
        * Specifies the name of each output file on disk.
