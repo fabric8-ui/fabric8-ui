@@ -33,7 +33,8 @@ import { UserService } from './user/user.service';
 import { Logger } from './shared/logger.service';
 
 // Login
-import { LoginModule } from './login/login.module';
+// import { LoginModule } from './login/login.module';
+import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 
 import { HomeModule } from './home/home.module';
@@ -66,13 +67,15 @@ export type StoreType = {
     FormsModule,
     HomeModule,
     HttpModule,
-    LoginModule,
+    // LoginModule,
     AppRoutingModule
   ],
   declarations: [
     AppComponent,
     FooterComponent,
     HeaderComponent,
+    LoginComponent
+
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,

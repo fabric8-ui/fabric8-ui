@@ -8,6 +8,4 @@ import { LoginComponent }     from './login.component';
   imports:      [ CommonModule, HttpModule ],
   declarations: [ LoginComponent ],
 })
-export class LoginModule {
-  constructor(http: Http) {}
-}
+export class LoginModule {}

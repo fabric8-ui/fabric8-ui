@@ -156,7 +156,10 @@ module.exports = function (env) {
         'process.env': {
           'ENV': JSON.stringify(METADATA.ENV),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
-          'HMR': METADATA.HMR
+          'HMR': METADATA.HMR,
+          'API_URL' : JSON.stringify(METADATA.API_URL),
+          'FORGE_URL': JSON.stringify(METADATA.FORGE_URL),
+          'PUBLIC_PATH' : JSON.stringify(METADATA.PUBLIC_PATH)
         }
       }),
 

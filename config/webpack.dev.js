@@ -66,6 +66,7 @@ module.exports = function (options) {
        * See: http://webpack.github.io/docs/configuration.html#output-path
        */
       path: helpers.root('dist'),
+      publicPath: METADATA.PUBLIC_PATH,
 
       /**
        * Specifies the name of each output file on disk.
@@ -111,7 +112,10 @@ module.exports = function (options) {
         'process.env': {
           'ENV': JSON.stringify(METADATA.ENV),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
-          'HMR': METADATA.HMR
+          'HMR': METADATA.HMR,
+          'API_URL' : JSON.stringify(METADATA.API_URL),
+          'FORGE_URL' : JSON.stringify(METADATA.FORGE_URL),
+          'PUBLIC_PATH' : JSON.stringify(METADATA.PUBLIC_PATH)
         }
       }),
 

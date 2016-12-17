@@ -13,9 +13,22 @@
       <li>
         <a [routerLink]="['/settings']" d="header_menuSettings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
       </li>
-      <li dropdown class="pull-right dropdown">
+    </ul>
+  </div>
+  <div class="navbar-collapse navbar-collapse-1 nav-mob-scroll">
+    <ul id="header_rightDropdown" class="nav navbar-nav navbar-utility">
+      <li>
+        <a *ngIf="!loggedIn" (click)='login();'>Sign In</a>
+      </li>
+      <li *ngIf="loggedIn" dropdown class="pull-right dropdown">
         <a dropdown-open>
-          <img src="https://avatars2.githubusercontent.com/u/157761?v=3&s=460" width="16" height="16" /> cyril
+          <a *ngIf="loggedInUser" id="header_dropdownToggle">
+            <span *ngIf="!imgLoaded" class="pficon pficon-user"></span>
+            <img (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}"
+                 [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
+                 class="pull-left marginR10" />
+            {{loggedInUser.attributes?.fullName}}
+          </a>
           <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
@@ -30,7 +43,7 @@
             <a [routerLink]="['/settings']" >Settings</a>
           </li>
           <li>
-            <a href="#">Sign out</a>
+            <a *ngIf="loggedIn" (click)='logout();'>Sign out</a>
           </li>
         </ul>
       </li>

@@ -8,17 +8,17 @@ import { Broadcaster } from '../shared/broadcaster.service';
 export class AuthenticationService {
   private authToken: string = '';
 
-  constructor(private router: Router, 
-              private logger: Logger, 
+  constructor(private router: Router,
+              private logger: Logger,
               private broadcaster: Broadcaster) {
-    
+
   }
 
   isLoggedIn(): Boolean {
     let token = localStorage.getItem('auth_token');
     if (token){
       this.authToken = token;
-      return true;      
+      return true;
     }
     let params = this.getUrlParams();
     if ('token' in params) {
