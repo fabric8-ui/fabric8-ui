@@ -1,25 +1,62 @@
 <nav class="navbar navbar-default navbar-pf" role="navigation">
   <div class="collapse navbar-collapse navbar-collapse-1">
-    <ul class="nav navbar-nav navbar-primary">
-      <li>
-        <a [routerLink]="['/overview']">cyril <b class="caret"></b></a>
+    <ul class="nav navbar-nav navbar-primary persistent-secondary">
+      <li [routerLinkActive]="['active']">
+        <a>pmuir <b class="caret"></b></a>
       </li>
-      <li class="active">
+      <li [routerLinkActive]="['active']">
         <a [routerLink]="['/home']" id="header_menuHome">Home</a>
       </li>
-      <li>
+      <li [routerLinkActive]="['active']">
         <a [routerLink]="['/profile']" >Profile</a>
+        <ul class="nav navbar-nav navbar-persistent">
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/profile']">Profile</a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/profile/spaces']">Collaboration Spaces</a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/profile/resouces']" >Resources</a>
+          </li>
+        </ul>
       </li>
-      <li>
+      <li [routerLinkActive]="['active']">
         <a [routerLink]="['/settings']" id="header_menuSettings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
       </li>
     </ul>
   </div>
   <div class="navbar-collapse navbar-collapse-1 nav-mob-scroll">
     <ul id="header_rightDropdown" class="nav navbar-nav navbar-utility">
-      <li>
-        <a *ngIf="!loggedIn" (click)='login();'>Sign In</a>
+      <!-- temporary hack by pmuir to fix POC UX until we implement log in screens -->
+      <li dropdown class="pull-right dropdown">
+        <a dropdown-open>
+          <a id="header_dropdownToggle">
+            <span *ngIf="!imgLoaded" class="pficon pficon-user"></span>
+            <img (load)="onImgLoad()" src="https://avatars2.githubusercontent.com/u/157761?v=3&s=460"
+                 [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
+                 class="pull-left marginR10" />
+            pmuir
+          </a>
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a [routerLink]="['/profile']" >Profile</a>
+          </li>
+          <li>
+            <a [routerLink]="['/help']" >Help</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a [routerLink]="['/settings']" >Settings</a>
+          </li>
+          <li>
+            <a>Sign out</a>
+          </li>
+        </ul>
       </li>
+      <!-- End of pmuir's hack -->
       <li *ngIf="loggedIn" dropdown class="pull-right dropdown">
         <a dropdown-open>
           <a *ngIf="loggedInUser" id="header_dropdownToggle">
