@@ -16,6 +16,10 @@ export const routes: Routes = [
     component: LoginComponent
   },
   {
+    path: 'analyze',
+    loadChildren: './analyze/analyze.module#AnalyzeModule'
+  },
+  {
     path: 'chat',
     loadChildren: './chat/chat.module#ChatModule'
   },
