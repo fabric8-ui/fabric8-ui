@@ -5,13 +5,13 @@
         <a href="#">cyril <b class="caret"></b></a>
       </li>
       <li class="active">
-        <a href="#">Home</a>
+        <a [routerLink]="['/home']" id="header_menuHome">Home</a>
       </li>
       <li>
         <a href="#">Profile</a>
       </li>
       <li>
-        <a href="#"><span class="pficon pficon-settings"></span></a>
+        <a [routerLink]="['/settings']" d="header_menuSettings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
       </li>
       <li dropdown class="pull-right dropdown">
         <a dropdown-open>
@@ -27,7 +27,7 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a href="#">Settings</a>
+            <a [routerLink]="['/settings']" >Settings</a>
           </li>
           <li>
             <a href="#">Sign out</a>
