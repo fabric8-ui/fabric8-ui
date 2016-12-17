@@ -17,6 +17,7 @@ const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
  * Webpack Constants
  */
 const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
+const API_URL = process.env.API_URL || (ENV==='inmemory'?'app/':'http://localhost:8080/api/');
 
 /**
  * Webpack configuration
@@ -62,7 +63,7 @@ module.exports = function (options) {
      */
     module: {
 
-      rules: [
+      preLoaders: [
 
         /**
          * Tslint loader support for *.ts files
@@ -74,7 +75,19 @@ module.exports = function (options) {
           test: /\.ts$/,
           loader: 'tslint-loader',
           exclude: [helpers.root('node_modules')]
-        },
+        }
+
+      ],
+
+      /**
+       * An array of automatically applied loaders.
+       *
+       * IMPORTANT: The loaders here are resolved relative to the resource which they are applied to.
+       * This means they are not resolved relative to the configuration file.
+       *
+       * See: http://webpack.github.io/docs/configuration.html#module-loaders
+       */
+      loaders: [
 
         /**
          * Source map loader support for *.js files
@@ -193,6 +206,7 @@ module.exports = function (options) {
         'HMR': false,
         'process.env': {
           'ENV': JSON.stringify(ENV),
+          'API_URL': JSON.stringify(API_URL),
           'NODE_ENV': JSON.stringify(ENV),
           'HMR': false,
         }
@@ -253,4 +267,4 @@ module.exports = function (options) {
     }
 
   };
-}
+};
