@@ -60,6 +60,11 @@
       </li>
       <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
         <a [routerLink]="['/analyze/run']" >Run</a>
+        <ul class="nav navbar-nav navbar-persistent">
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/analyze/run']">Pipelines</a>
+          </li>
+        </ul>
       </li>
       <!-- end dynamic section -->
       <li [routerLinkActive]="['active']">
