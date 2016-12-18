@@ -3,26 +3,6 @@
 @import "../../../../../assets/stylesheets/color-variables";
 
 // View Encapsulation https://angular.io/docs/ts/latest/guide/component-styles.html#!#view-encapsulation 
-:host /deep/ .completer-input {
-    width:100%;float:left;border: 1px solid #ccc;
-}
-:host /deep/ .completer-dropdown-holder {
-    width:100% !important;float:left;  position:relative; padding-top: 10px;
-}
-:host /deep/.completer-row {
-    width:100% !important;float:left;
-}
-:host /deep/.completer-dropdown {
-    width:100% !important;float:left;
-}
-:host /deep/ .completer-dropdown-holder {
-    width:100% !important;float:left;
-}
-
-:host /deep/ .completer-row-wrapper{
-    width:100% !important;float:left;
-}   
-
 
 .link-container {
    width: $width100;
@@ -148,7 +128,9 @@
             }
         }
         .workitem-link-search-box {
-            width: 100%
+            width: $width100;
+            padding: em(2) em(5);
+            outline: none;
         }
         .search-result-container {
             position: relative;
@@ -157,7 +139,7 @@
         .search-result {
             position: absolute;
             top: 0;
-            width: 100%;
+            width: $width100;
             z-index: 10;
             box-shadow: 0 1px 10px 0 rgba(192, 192, 192, 0.7);
             max-height: em(200);

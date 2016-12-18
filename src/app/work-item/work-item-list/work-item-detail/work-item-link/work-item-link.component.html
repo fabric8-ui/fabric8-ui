@@ -66,20 +66,26 @@
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="col-md-9 col-sm-9 col-xs-9">
-                            <!--<ng2-completer (selected)="onSelectItem($event)" [dataService]="searchWorkItem" [minSearchLength]="2" [placeholder]="'search for work items'"
-                                [textSearching]="'Please wait...'">
-                            </ng2-completer> -->
-                            <input id="workitem-link-search" class="workitem-link-search-box" placeholder="Search for work items" #searchBox (keyup)="linkSearchWorkItem(searchBox.value, $event)" [value]="selectedValue"/>
+                            <input id="workitem-link-search" #searchBox
+                              class="workitem-link-search-box" 
+                              placeholder="Search for work items" 
+                              (keyup)="linkSearchWorkItem(searchBox.value, $event)" 
+                              [value]="selectedValue"
+                              [disabled]="!selectedLinkType"/>
                             <div class="search-result-container">
                                 <ul class="search-result list-unstyled" #searchResultList>
-                                    <li *ngFor="let workItem of searchWorkItems" class="pointer" (click)="selectSearchResult(workItem.id, workItem.attributes['system.title'])">
-                                        <span #searchresult><span class="weight-600">{{workItem.id}} - </span>{{workItem.attributes['system.title']}}</span>
+                                    <li *ngFor="let workItem of searchWorkItems" 
+                                        class="pointer" 
+                                        (click)="selectSearchResult(workItem.id, workItem.attributes['system.title'])"
+                                        [attr.data-wiid]="workItem.id"
+                                        [attr.data-wititle]="workItem.attributes['system.title']">
+                                        <span #searchresult><span class="weight-800">{{workItem.id}} - </span>{{workItem.attributes['system.title']}}</span>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
-                            <button [disabled]="!selectedLinkType ? true : false" 
+                            <button [disabled]="!selectedLinkType || !selectedWorkItemId ? true : false" 
                               type="button" 
                               value="Link" 
                               class="col-md-12 col-sm-12 col-xs-12 btn btn-primary" 
