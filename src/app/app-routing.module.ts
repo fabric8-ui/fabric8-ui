@@ -25,6 +25,18 @@ export const routes: Routes = [
     loadChildren: './analyze/analyze.module#AnalyzeModule'
   },
   {
+    path: 'analyze/plan',
+    loadChildren: './plan/plan.module#PlanModule'
+  },
+  {
+    path: 'analyze/create',
+    loadChildren: './create/create.module#CreateModule'
+  },
+  {
+    path: 'analyze/run',
+    loadChildren: './run/run.module#RunModule'
+  },
+  {
     path: 'chat',
     loadChildren: './chat/chat.module#ChatModule'
   },
@@ -43,18 +55,6 @@ export const routes: Routes = [
   {
     path: 'notifications',
     loadChildren: './notifications/notifications.module#NotificationsModule'
-  },
-  {
-    path: 'analyze/plan',
-    loadChildren: './plan/plan.module#PlanModule'
-  },
-  {
-    path: 'analyze/create',
-    loadChildren: './create/create.module#CreateModule'
-  },
-  {
-    path: 'analyze/run',
-    loadChildren: './run/run.module#RunModule'
   },
   {
     path: 'profile',

@@ -9,19 +9,12 @@ import { Router } from '@angular/router';
 })
 export class AnalyzeComponent implements OnInit {
 
-  imgLoaded: Boolean = false;
-
-
   constructor(
     private router: Router) {
   }
 
   ngOnInit() {
 
-  }
-
-  onImgLoad() {
-    this.imgLoaded = true;
   }
 
 }
