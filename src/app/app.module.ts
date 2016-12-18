@@ -26,11 +26,15 @@ import { FooterComponent } from './footer/footer.component';
 // Header
 import { HeaderComponent } from './header/header.component';
 
-// Shared
+// Shared Services
 import { AuthenticationService } from './auth/authentication.service';
 import { Broadcaster } from './shared/broadcaster.service';
 import { UserService } from './user/user.service';
 import { Logger } from './shared/logger.service';
+
+// Shared Components
+import { SpaceDialogModule } from './space-dialog/space-dialog.module';
+
 
 // Login
 // import { LoginModule } from './login/login.module';
@@ -69,7 +73,8 @@ export type StoreType = {
     HomeModule,
     HttpModule,
     // LoginModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SpaceDialogModule
   ],
   declarations: [
     AppComponent,
@@ -77,7 +82,6 @@ export type StoreType = {
     HeaderComponent,
     LoginComponent,
     SigninComponent
-
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
