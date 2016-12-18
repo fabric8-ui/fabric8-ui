@@ -1,1 +1,15 @@
 @import "../../../assets/stylesheets/_base";
+
+.grey {
+    color: grey;
+}
+
+.emails.row {
+    .row {
+        margin-bottom: 10px;
+    }
+}
+
+.btn.label:hover {
+    cursor: default;
+}
