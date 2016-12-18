@@ -6,7 +6,9 @@
             <button class="btn btn-default btn-block" type="button" [routerLink]="['/learn']" routerLinkActive="active">Learn</button>
         </div>
         <div class="col-md-2">
-            <button class="btn btn-default btn-block" type="button" (click)="createSpace.open()">Start Collaborating</button>
+            <button class="btn btn-default btn-block" type="button" (click)="createSpace.open()">
+                Start Collaborating
+            </button>
         </div>
         <div class="col-md-4"></div>
     </div>
@@ -89,11 +91,9 @@
     </div>
 </div>
 
-<!-- Create Project modal -->
-
+<!-- Create Space modal -->
 <modal #createSpace title="Create new collaboration space">
     <modal-content>
         <space-dialog></space-dialog>
     </modal-content>
 </modal>
-
