@@ -92,24 +92,41 @@
           </li>
         </ul>
       </li>
-      <!-- end dynamic section -->
-      <li [routerLinkActive]="['active']">
-        <a [routerLink]="['/settings']" id="header_menuSettings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
+      <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
+        <a [routerLink]="['/analyze/settings']" id="header_menuSettings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-            <a [routerLink]="['/settings']">Overview</a>
+            <a [routerLink]="['/analyze/settings']">Overview</a>
           </li>
           <li [routerLinkActive]="['active']">
-            <a [routerLink]="['/settings/work']">Work</a>
+            <a [routerLink]="['/analyze/settings/work']">Work</a>
           </li>
           <li [routerLinkActive]="['active']">
-            <a [routerLink]="['/settings/security']">Security</a>
+            <a [routerLink]="['/analyze/settings/security']">Security</a>
           </li>
           <li [routerLinkActive]="['active']">
-            <a [routerLink]="['/settings/alerts']">Alerts</a>
+            <a [routerLink]="['/analyze/settings/alerts']">Alerts</a>
           </li>
         </ul>
       </li>
+      <li [routerLinkActive]="['active']" *ngIf="!router.url.startsWith('/analyze')">
+        <a [routerLink]="['/settings']" id="header_menuSettings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
+        <ul class="nav navbar-nav navbar-persistent">
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+            <a [routerLink]="['/settings/profile']">Profile</a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/settings/account']">Account</a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/settings/email']">Emails</a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/settings/notifications']">Notifications</a>
+          </li>
+        </ul>
+      </li>
+      <!-- end dynamic section -->
     </ul>
   </div>
   <div class="navbar-collapse navbar-collapse-1 nav-mob-scroll">

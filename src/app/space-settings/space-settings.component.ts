@@ -4,10 +4,10 @@ import { Router }            from '@angular/router';
 
 @Component({
   selector: 'alm-code',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  templateUrl: './space-settings.component.html',
+  styleUrls: ['./space-settings.component.scss']
 })
-export class SettingsComponent implements OnInit {
+export class SpaceSettingsComponent implements OnInit {
 
   constructor(
     private router: Router) {

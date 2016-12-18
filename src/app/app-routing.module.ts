@@ -61,8 +61,8 @@ export const routes: Routes = [
     loadChildren: './profile/profile.module#ProfileModule'
   },
   {
-    path: 'settings',
-    loadChildren: './settings/settings.module#SettingsModule'
+    path: 'analyze/settings',
+    loadChildren: './space-settings/space-settings.module#SpaceSettingsModule'
   },
 ];
 

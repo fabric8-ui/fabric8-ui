@@ -1,18 +1,18 @@
 import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SettingsComponent } from './settings.component';
+import { SpaceSettingsComponent } from './space-settings.component';
 import { SettingsOverviewComponent } from './settings-overview/settings-overview.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/settings',
+    redirectTo: '/analyze/settings',
     pathMatch: 'full'
   },
   {
     path: '',
-    component: SettingsComponent,
+    component: SpaceSettingsComponent,
     children: [
       { path: '',      component: SettingsOverviewComponent },
       { path: 'alerts', loadChildren: './alerts/alerts.module#AlertsModule' },
@@ -26,4 +26,4 @@ const routes: Routes = [
   imports: [ RouterModule.forChild(routes) ],
   exports: [ RouterModule ]
 })
-export class SettingsRoutingModule {}
+export class SpaceSettingsRoutingModule {}
