@@ -64,6 +64,10 @@ export const routes: Routes = [
     path: 'analyze/settings',
     loadChildren: './space-settings/space-settings.module#SpaceSettingsModule'
   },
+  {
+    path: 'settings',
+    loadChildren: './settings/settings.module#SettingsModule'
+  }
 ];
 
 @NgModule({

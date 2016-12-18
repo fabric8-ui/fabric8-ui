@@ -17,6 +17,8 @@ const routes: Routes = [
       { path: '',          component: OverviewComponent },
       { path: 'spaces',    loadChildren: './spaces/spaces.module#SpacesModule' },
       { path: 'resources', loadChildren: './resources/resources.module#ResourcesModule' },
+      { path: '', loadChildren: './resources/resources.module#ResourcesModule' }
+
     ]
   }
 ];
