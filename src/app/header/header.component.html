@@ -1,15 +1,44 @@
 <nav class="navbar navbar-default navbar-pf" role="navigation">
   <div class="collapse navbar-collapse navbar-collapse-1">
-    <ul class="nav navbar-nav navbar-primary persistent-secondary"  >
+    <ul class="nav navbar-nav navbar-primary persistent-secondary">
       <!-- This part of the menu is dynamic based on context -->
-      <li [routerLinkActive]="['active']" *ngIf="!router.url.startsWith('/analyze')">
-        <a>pmuir <b class="caret"></b></a>
+      <li class="context dropdown" dropdown>
+        <a dropdown-open>
+          <span *ngIf="!router.url.startsWith('/analyze')">
+            pmuir
+          </span>
+          <span *ngIf="router.url.startsWith('/analyze')">
+            BalloonPopGame
+          </span>
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a [routerLink]="['/analyze']">BalloonPopGame</a>
+          </li>
+          <li>
+            <a>BalloonPopGame / UX Team</a>
+          </li>
+          <li>
+            <a>Red Hat Organization</a>
+          </li>
+          <li>
+            <a [routerLink]="['/profile/collaboration']">Browse all</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a [routerLink]="['/']">Account home</a>
+          </li>
+          <li>
+            <a>New space</a>
+          </li>
+        </ul>
       </li>
       <li [routerLinkActive]="['active']" *ngIf="!router.url.startsWith('/analyze')">
         <a [routerLink]="['/home']" id="header_menuHome">Home</a>
       </li>
       <li [routerLinkActive]="['active']" *ngIf="!router.url.startsWith('/analyze')">
-        <a [routerLink]="['/profile']" >Profile</a>
+        <a [routerLink]="['/profile']">Profile</a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
             <a [routerLink]="['/profile']">Profile</a>
@@ -18,12 +47,9 @@
             <a [routerLink]="['/profile/spaces']">Collaboration Spaces</a>
           </li>
           <li [routerLinkActive]="['active']">
-            <a [routerLink]="['/profile/resources']" >Resources</a>
+            <a [routerLink]="['/profile/resources']">Resources</a>
           </li>
         </ul>
-      </li>
-      <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
-        <a>BalloonPopGame <b class="caret"></b></a>
       </li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" *ngIf="router.url.startsWith('/analyze')">
         <a [routerLink]="['/analyze']" id="header_menuAnalyze">Analyze</a>
@@ -37,7 +63,7 @@
         </ul>
       </li>
       <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
-        <a [routerLink]="['/analyze/plan']" >Plan</a>
+        <a [routerLink]="['/analyze/plan']">Plan</a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
             <a [routerLink]="['/analyze/plan']">Backlog</a>
@@ -48,7 +74,7 @@
         </ul>
       </li>
       <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
-        <a [routerLink]="['/analyze/create']" >Create</a>
+        <a [routerLink]="['/analyze/create']">Create</a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
             <a [routerLink]="['/analyze/create']">Codebases</a>
@@ -59,7 +85,7 @@
         </ul>
       </li>
       <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
-        <a [routerLink]="['/analyze/run']" >Run</a>
+        <a [routerLink]="['/analyze/run']">Run</a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']">
             <a [routerLink]="['/analyze/run']">Pipelines</a>
@@ -93,23 +119,21 @@
         <a dropdown-open>
           <a id="header_dropdownUtility">
             <span *ngIf="!imgLoaded" class="pficon pficon-user"></span>
-            <img (load)="onImgLoad()" src="https://avatars2.githubusercontent.com/u/157761?v=3&s=460"
-                 [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
-                 class="pull-left marginR10" />
-            pmuir
+            <img (load)="onImgLoad()" src="https://avatars2.githubusercontent.com/u/157761?v=3&s=460" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
+              class="pull-left marginR10" /> pmuir
           </a>
           <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
           <li>
-            <a [routerLink]="['/profile']" >Profile</a>
+            <a [routerLink]="['/profile']">Profile</a>
           </li>
           <li>
-            <a [routerLink]="['/help']" >Help</a>
+            <a [routerLink]="['/help']">Help</a>
           </li>
           <li class="divider"></li>
           <li>
-            <a [routerLink]="['/settings']" >Settings</a>
+            <a [routerLink]="['/settings']">Settings</a>
           </li>
           <li>
             <a>Sign out</a>
@@ -121,23 +145,21 @@
         <a dropdown-open>
           <a *ngIf="loggedInUser" id="header_dropdownToggle">
             <span *ngIf="!imgLoaded" class="pficon pficon-user"></span>
-            <img (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}"
-                 [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
-                 class="pull-left marginR10" />
-            {{loggedInUser.attributes?.fullName}}
+            <img (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
+              class="pull-left marginR10" /> {{loggedInUser.attributes?.fullName}}
           </a>
           <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
           <li>
-            <a [routerLink]="['/profile']" >Profile</a>
+            <a [routerLink]="['/profile']">Profile</a>
           </li>
           <li>
-            <a [routerLink]="['/help']" >Help</a>
+            <a [routerLink]="['/help']">Help</a>
           </li>
           <li class="divider"></li>
           <li>
-            <a [routerLink]="['/settings']" >Settings</a>
+            <a [routerLink]="['/settings']">Settings</a>
           </li>
           <li>
             <a *ngIf="loggedIn" (click)='logout();'>Sign out</a>
