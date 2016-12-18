@@ -8,4 +8,17 @@ import { Router }            from '@angular/router';
   styleUrls: ['./delete-account-dialog.component.scss']
 })
 export class DeleteAccountDialogComponent {
+
+  constructor(
+    private router: Router) {
+  }
+
+  ngOnInit() {
+    
+  }
+
+  deleteAccount() {
+    
+  }
+
  }

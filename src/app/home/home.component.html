@@ -3,7 +3,7 @@
         <div class="col-md-4">
         </div>
         <div class="col-md-2">
-            <button class="btn btn-default btn-block" type="button" [routerLink]="['/learn']" routerLinkActive="active">Learn</button>
+            <a class="btn btn-default btn-block" type="button" href="https://fabric8.io/guide/getStarted/index.html">Learn</a>
         </div>
         <div class="col-md-2">
             <button class="btn btn-default btn-block" type="button" (click)="createSpace.open()">
@@ -16,7 +16,7 @@
         <div class="col-md-4">
             <h2>Recent Collaboration Spaces</h2>
             <div>
-                <a (click)="createSpace.open()">New</a> | <a href="#">Browse</a>
+                <a (click)="createSpace.open()">New</a> | <a [routerLink]="['/profile/spaces']">Browse</a>
             </div>
             <div class="container-fluid container-cards-pf">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -31,6 +31,7 @@
                                     <li>Bobo</li>
                                     <li>Hysterix</li>
                                     <li>fabric8io</li>
+                                    <li><a [routerLink]="['/analyze']">BalloonPopGame</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -69,7 +70,7 @@
         <div class="col-md-4">
             <div class="row x-small">
                 <div class="col-md-8">
-                    <h2>Resource Usage</h2>
+                    <h2><a [routerLink]="['/profile/resources']">Resource Usage</a></h2>
                 </div>
                 <div class="col-md-4">
                     <small> 1 – Sep 30</small>

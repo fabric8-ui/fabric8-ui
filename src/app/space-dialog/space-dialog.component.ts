@@ -8,4 +8,13 @@ import { Router }            from '@angular/router';
   styleUrls: ['./space-dialog.component.scss']
 })
 export class SpaceDialogComponent {
- }
+
+  constructor(
+    private router: Router) {
+  }
+
+  createSpace() {
+    this.router.navigate(['/analyze']);
+  }
+
+}
