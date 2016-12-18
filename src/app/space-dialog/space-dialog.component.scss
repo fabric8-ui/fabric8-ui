@@ -1,7 +1,7 @@
 @import "../../assets/stylesheets/_base";
 @import "../../assets/stylesheets/_custom";
 
-.createProjectBlock{
+.createSpaceBlock{
     font-size: rem(10);
     padding: 0;
     > div{
@@ -37,7 +37,7 @@
             cursor: pointer;
         }
     }
-    .projectInputBlock{
+    .spaceInputBlock{
         > div{
             padding: 0;
             label{

@@ -5,11 +5,11 @@ import { HttpModule, Http } from '@angular/http';
 
 import { HomeComponent }   from './home.component';
 import { HomeRoutingModule }   from './home-routing.module';
-import { ProjectDialogComponent }   from '../project-dialog/project-dialog.component';
+import { SpaceDialogComponent }   from '../space-dialog/space-dialog.component';
 
 @NgModule({
   imports:      [ CommonModule, HomeRoutingModule, HttpModule, ModalModule ],
-  declarations: [ HomeComponent, ProjectDialogComponent ]
+  declarations: [ HomeComponent, SpaceDialogComponent ]
 })
 export class HomeModule {
   constructor(http: Http) {}
