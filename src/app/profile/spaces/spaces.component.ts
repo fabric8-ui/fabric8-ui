@@ -3,11 +3,11 @@ import { Router }            from '@angular/router';
 
 
 @Component({
-  selector: 'alm-collaboration',
-  templateUrl: 'collaboration.component.html',
-  styleUrls: ['./collaboration.component.scss']
+  selector: 'alm-spaces',
+  templateUrl: 'spaces.component.html',
+  styleUrls: ['./spaces.component.scss']
 })
-export class CollaborationComponent implements OnInit {
+export class SpacesComponent implements OnInit {
 
   constructor(
     private router: Router) {

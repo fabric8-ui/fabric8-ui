@@ -1,0 +1,64 @@
+<div id="overview" class="container content">
+  <div class="row">
+    <div class="col-md-2">
+      <div class="row">
+        <img src="https://avatars2.githubusercontent.com/u/157761?v=3&s=460" width="150" height="250" />
+      </div>
+      <div class="row">
+        <h2>Pete Muir</h2>
+      </div>
+      <div class="row">
+        <p>
+          pmuir
+        </p>
+        <p>
+          I like writing clever one-line bios about myself. See? I just did.
+        </p>
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div class="row">
+      <div class="form-group">
+        <div class="col-md-10 col-sm-10 col-xs-10">
+          <div class="search-pf-input-group">
+            <input id="spacesSearch" type="search" class="form-control" placeholder="Search collaboration spaces...">
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-2 col-xs-2">
+          <button class="btn btn-default" (click)="createSpace.open()">New</button>
+        </div>
+      </div>
+      </div>
+      <div class="row">
+        <table class="spaces table">
+          <tr>
+            <td>
+              <h2>fabric8io</h2>
+              <p>fabric8 is an open source integrated development platform for Kubernetes</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h2><a [routerLink]="['/analyze']">BalloonPopGame</a></h2>
+              <p>Balloon popping fun for everyone!</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h2>Bobo</h2>
+              <p>Microservices architected search engine</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Create Space modal -->
+<modal #createSpace title="Create new collaboration space">
+    <modal-content>
+        <space-dialog></space-dialog>
+    </modal-content>
+</modal>

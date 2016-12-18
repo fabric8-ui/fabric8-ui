@@ -15,7 +15,7 @@ const routes: Routes = [
     component: ProfileComponent,
     children: [
       { path: '',          component: OverviewComponent },
-      { path: 'spaces',    loadChildren: './collaboration/collaboration.module#CollaborationModule' },
+      { path: 'spaces',    loadChildren: './spaces/spaces.module#SpacesModule' },
       { path: 'resources', loadChildren: './resources/resources.module#ResourcesModule' },
     ]
   }
