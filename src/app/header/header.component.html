@@ -38,6 +38,14 @@
       </li>
       <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
         <a [routerLink]="['/analyze/create']" >Create</a>
+        <ul class="nav navbar-nav navbar-persistent">
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/analyze/create']">Codebases</a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/analyze/create/workspaces']">Workspaces</a>
+          </li>
+        </ul>
       </li>
       <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
         <a [routerLink]="['/analyze/plan']" >Plan</a>

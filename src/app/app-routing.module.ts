@@ -49,6 +49,10 @@ export const routes: Routes = [
     loadChildren: './plan/plan.module#PlanModule'
   },
   {
+    path: 'analyze/create',
+    loadChildren: './create/create.module#CreateModule'
+  },
+  {
     path: 'profile',
     loadChildren: './profile/profile.module#ProfileModule'
   },
