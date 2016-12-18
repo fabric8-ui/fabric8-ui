@@ -13,6 +13,10 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'home',
+    loadChildren: './home/home.module#HomeModule'
+  },
+  {
     path: 'login',
     component: LoginComponent
   },

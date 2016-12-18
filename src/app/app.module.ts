@@ -43,7 +43,7 @@ import { SigninComponent } from './signin/signin.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 
-import { HomeModule } from './home/home.module';
+import { PublicModule } from './public/public.module';
 
 // Shared Component
 
@@ -66,12 +66,11 @@ export type StoreType = {
   imports: [ // import Angular's modules
     BrowserModule,
     FormsModule,
-    HomeModule,
     HttpModule,
     BrowserModule,
     DropdownModule,
     FormsModule,
-    HomeModule,
+    PublicModule,
     HttpModule,
     // LoginModule,
     AppRoutingModule,
