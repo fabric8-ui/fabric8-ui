@@ -62,7 +62,7 @@
                    class="pull-left marginR10" /> pmuir
             </li>
           </ul>
-          <button class="btn btn-primary bottom-right" type="button">Invite Someone</button>
+          <button class="btn btn-primary bottom-right" type="button" (click)="teamMembership.open()">Invite Someone</button>
         </div>
 
       </div>
@@ -111,8 +111,7 @@
           <h2 class="panel-title">Codebases</h2>
         </div>
         <div class="panel-body">
-
-          <p class="number">0</p>
+          <p class="number text-center">0</p>
         </div>
 
       </div>
@@ -144,3 +143,9 @@
     </div>
   </div>
 </div>
+
+<modal #teamMembership title="Manage membership of BalloonPopGame Team">
+    <modal-content>
+        <team-membership-dialog></team-membership-dialog>
+    </modal-content>
+</modal>

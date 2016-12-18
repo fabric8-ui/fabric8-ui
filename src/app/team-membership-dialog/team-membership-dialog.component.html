@@ -1,0 +1,57 @@
+<div class="col-md-12 col-sm-12 col-xs-12 createTeamMembershipBlock">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <h4 class="teamMembershipname">TeamMembership Name</h4>
+        <div class="form-group has-error">
+            <div class="search-pf-input-group">
+                <input id="teamMembership-name" type="search" class="form-control" placeholder="Enter a unique name for your teamMembership">
+                <span class="help-block">This teamMembership name already exists. Please enter another name.</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <h4 class="teamMembershipname">Development Process</h4>
+        <form role="form" class="search-pf has-button devProcessForm">
+            <div class="form-group has-clear">
+                <div class="search-pf-input-group">
+                    <!--<input id="teamMembership-dialog-dev-process" type="search" class="form-control" placeholder="Choose a Development process for this teamMembership">-->
+                    <select class="form-control" id="developmentProcess">
+                        <option>Agile</option>
+                        <option>Scrum</option>
+                        <option>Issue Tracking</option>
+                        <option selected>Scenario Driven Planning</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" type="button"><span class="caret pull-right icon-caret"></span></button>
+            </div>
+        </form>
+<!--
+        <ul class="devProcessList hide">
+            <li>Agile</li>
+        </ul>
+        <p class="pull-left">Agile</p>
+-->
+    </div>
+
+    <div class="col-md-12 col-sm-12 col-xs-12 teamMembershipInputBlock">
+        <h4 class="teamMembershipname">What type of teamMembership would you like to create</h4>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <input type="radio" class="pull-left" id="publicTeamMembership" checked name="TeamMembershipView"/>
+            <label class="pull-left" for="publicTeamMembership">
+                <span>Public</span>
+                <span>Anyone can access this teamMembership</span>
+            </label>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <input type="radio" class="pull-left" id="privateTeamMembership" name="TeamMembershipView"/>
+            <label class="pull-left" for="privateTeamMembership">
+                <span>Private</span>
+                <span>Only authorized people can access this teamMembership</span>
+            </label>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <button class="btn marginR10 pull-right btn-primary" type="submit" value="0">Create TeamMembership </button>
+    </div>
+</div>
