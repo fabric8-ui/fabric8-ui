@@ -11,7 +11,7 @@
       <li [routerLinkActive]="['active']" *ngIf="!router.url.startsWith('/analyze')">
         <a [routerLink]="['/profile']" >Profile</a>
         <ul class="nav navbar-nav navbar-persistent">
-          <li [routerLinkActive]="['active']">
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
             <a [routerLink]="['/profile']">Profile</a>
           </li>
           <li [routerLinkActive]="['active']">
@@ -25,10 +25,10 @@
       <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
         <a>BalloonPopGame <b class="caret"></b></a>
       </li>
-      <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
+      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" *ngIf="router.url.startsWith('/analyze')">
         <a [routerLink]="['/analyze']" id="header_menuAnalyze">Analyze</a>
         <ul class="nav navbar-nav navbar-persistent">
-          <li [routerLinkActive]="['active']">
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
             <a [routerLink]="['/analyze']">Overview</a>
           </li>
           <li [routerLinkActive]="['active']">
@@ -39,7 +39,7 @@
       <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
         <a [routerLink]="['/analyze/plan']" >Plan</a>
         <ul class="nav navbar-nav navbar-persistent">
-          <li [routerLinkActive]="['active']">
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
             <a [routerLink]="['/analyze/plan']">Backlog</a>
           </li>
           <li [routerLinkActive]="['active']">
@@ -50,7 +50,7 @@
       <li [routerLinkActive]="['active']" *ngIf="router.url.startsWith('/analyze')">
         <a [routerLink]="['/analyze/create']" >Create</a>
         <ul class="nav navbar-nav navbar-persistent">
-          <li [routerLinkActive]="['active']">
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
             <a [routerLink]="['/analyze/create']">Codebases</a>
           </li>
           <li [routerLinkActive]="['active']">
@@ -70,7 +70,7 @@
       <li [routerLinkActive]="['active']">
         <a [routerLink]="['/settings']" id="header_menuSettings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
         <ul class="nav navbar-nav navbar-persistent">
-          <li [routerLinkActive]="['active']">
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
             <a [routerLink]="['/settings']">Overview</a>
           </li>
           <li [routerLinkActive]="['active']">
