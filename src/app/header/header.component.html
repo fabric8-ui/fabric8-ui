@@ -56,6 +56,20 @@
       <!-- end dynamic section -->
       <li [routerLinkActive]="['active']">
         <a [routerLink]="['/settings']" id="header_menuSettings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
+        <ul class="nav navbar-nav navbar-persistent">
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/settings']">Overview</a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/settings/work']">Work</a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/settings/security']">Security</a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/settings/alerts']">Alerts</a>
+          </li>
+        </ul>
       </li>
     </ul>
   </div>
