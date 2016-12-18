@@ -34,6 +34,7 @@ import { Logger } from './shared/logger.service';
 
 // Shared Components
 import { SpaceDialogModule } from './space-dialog/space-dialog.module';
+import { DeleteAccountDialogModule} from './delete-account-dialog/delete-account-dialog.module';
 
 
 // Login
@@ -74,7 +75,8 @@ export type StoreType = {
     HttpModule,
     // LoginModule,
     AppRoutingModule,
-    SpaceDialogModule
+    SpaceDialogModule,
+    DeleteAccountDialogModule
   ],
   declarations: [
     AppComponent,

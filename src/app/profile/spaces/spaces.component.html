@@ -18,16 +18,16 @@
     </div>
     <div class="col-md-10">
       <div class="row">
-      <div class="form-group">
-        <div class="col-md-10 col-sm-10 col-xs-10">
-          <div class="search-pf-input-group">
-            <input id="spacesSearch" type="search" class="form-control" placeholder="Search collaboration spaces...">
+        <div class="form-group">
+          <div class="col-md-10 col-sm-10 col-xs-10">
+            <div class="search-pf-input-group">
+              <input id="spacesSearch" type="search" class="form-control" placeholder="Search collaboration spaces...">
+            </div>
+          </div>
+          <div class="col-md-2 col-sm-2 col-xs-2">
+            <button class="btn btn-default" (click)="createSpace.open()">New</button>
           </div>
         </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
-          <button class="btn btn-default" (click)="createSpace.open()">New</button>
-        </div>
-      </div>
       </div>
       <div class="row">
         <table class="spaces table">
@@ -58,7 +58,7 @@
 
 <!-- Create Space modal -->
 <modal #createSpace title="Create new collaboration space">
-    <modal-content>
-        <space-dialog></space-dialog>
-    </modal-content>
+  <modal-content>
+    <space-dialog></space-dialog>
+  </modal-content>
 </modal>
