@@ -7,7 +7,7 @@ import { CodebasesComponent } from './codebases/codebases.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'pmuir/BalloonPopGame/analyze/create',
+    redirectTo: 'pmuir/BalloonPopGame/create',
     pathMatch: 'full'
   },
   {

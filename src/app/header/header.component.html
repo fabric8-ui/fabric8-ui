@@ -4,17 +4,17 @@
       <!-- This part of the menu is dynamic based on context -->
       <li class="context dropdown" dropdown>
         <a dropdown-open>
-          <span *ngIf="!router.url.includes('analyze')">
+          <span *ngIf="!router.url.includes('BalloonPopGame')">
             pmuir
           </span>
-          <span *ngIf="router.url.includes('analyze')">
+          <span *ngIf="router.url.includes('BalloonPopGame')">
             BalloonPopGame
           </span>
           <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
           <li>
-            <a [routerLink]="['/pmuir/BalloonPopGame/analyze']">BalloonPopGame</a>
+            <a [routerLink]="['/pmuir/BalloonPopGame']">BalloonPopGame</a>
           </li>
           <li>
             <a>BalloonPopGame / UX Team</a>
@@ -23,7 +23,7 @@
             <a>Red Hat Organization</a>
           </li>
           <li>
-            <a [routerLink]="['/pmuir/profile/spaces']">Browse all</a>
+            <a [routerLink]="['/pmuir/spaces']">Browse all</a>
           </li>
           <li class="divider"></li>
           <li>
@@ -35,82 +35,82 @@
           </li>
         </ul>
       </li>
-      <li [routerLinkActive]="['active']" *ngIf="!router.url.includes('analyze')">
+      <li [routerLinkActive]="['active']" *ngIf="!router.url.includes('BalloonPopGame')">
         <a [routerLink]="['/home']" id="header_menuHome">Home</a>
       </li>
-      <li [routerLinkActive]="['active']" *ngIf="!router.url.includes('analyze')">
-        <a [routerLink]="['/pmuir/profile']">Profile</a>
+      <li [routerLinkActive]="['active']" *ngIf="!router.url.includes('BalloonPopGame')">
+        <a [routerLink]="['/pmuir']">Profile</a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-            <a [routerLink]="['/pmuir/profile']">Profile</a>
+            <a [routerLink]="['/pmuir']">Profile</a>
           </li>
           <li [routerLinkActive]="['active']">
-            <a [routerLink]="['/pmuir/profile/spaces']">Collaboration Spaces</a>
+            <a [routerLink]="['/pmuir/spaces']">Collaboration Spaces</a>
           </li>
           <li [routerLinkActive]="['active']">
-            <a [routerLink]="['/pmuir/profile/resources']">Resources</a>
+            <a [routerLink]="['/pmuir/resources']">Resources</a>
           </li>
         </ul>
       </li>
-      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" *ngIf="router.url.includes('analyze')">
-        <a [routerLink]="['/pmuir/BalloonPopGame/analyze']" id="header_menu-analyze">Analyze</a>
+      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" *ngIf="router.url.includes('BalloonPopGame')">
+        <a [routerLink]="['/pmuir/BalloonPopGame']" id="header_menu-analyze">Analyze</a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-            <a [routerLink]="['/pmuir/BalloonPopGame/analyze']">Overview</a>
+            <a [routerLink]="['/pmuir/BalloonPopGame']">Overview</a>
           </li>
           <li [routerLinkActive]="['active']">
-            <a [routerLink]="['/pmuir/BalloonPopGame/analyze/readme']">README</a>
+            <a [routerLink]="['/pmuir/BalloonPopGame/readme']">README</a>
           </li>
         </ul>
       </li>
-      <li [routerLinkActive]="['active']" *ngIf="router.url.includes('analyze')">
-        <a [routerLink]="['/pmuir/BalloonPopGame/analyze/plan']">Plan</a>
+      <li [routerLinkActive]="['active']" *ngIf="router.url.includes('BalloonPopGame')">
+        <a [routerLink]="['/pmuir/BalloonPopGame/plan']">Plan</a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-            <a [routerLink]="['/pmuir/BalloonPopGame/analyze/plan']">Backlog</a>
+            <a [routerLink]="['/pmuir/BalloonPopGame/plan']">Backlog</a>
           </li>
           <li [routerLinkActive]="['active']">
-            <a [routerLink]="['/pmuir/BalloonPopGame/analyze/plan/board']">Board</a>
+            <a [routerLink]="['/pmuir/BalloonPopGame/plan/board']">Board</a>
           </li>
         </ul>
       </li>
-      <li [routerLinkActive]="['active']" *ngIf="router.url.includes('analyze')">
-        <a [routerLink]="['/pmuir/BalloonPopGame/analyze/create']">Create</a>
+      <li [routerLinkActive]="['active']" *ngIf="router.url.includes('BalloonPopGame')">
+        <a [routerLink]="['/pmuir/BalloonPopGame/create']">Create</a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-            <a [routerLink]="['/pmuir/BalloonPopGame/analyze/create']">Codebases</a>
+            <a [routerLink]="['/pmuir/BalloonPopGame/create']">Codebases</a>
           </li>
           <li [routerLinkActive]="['active']">
-            <a [routerLink]="['/pmuir/BalloonPopGame/analyze/create/workspaces']">Workspaces</a>
+            <a [routerLink]="['/pmuir/BalloonPopGame/create/workspaces']">Workspaces</a>
           </li>
         </ul>
       </li>
-      <li [routerLinkActive]="['active']" *ngIf="router.url.includes('analyze')">
-        <a [routerLink]="['/pmuir/BalloonPopGame/analyze/run']">Run</a>
+      <li [routerLinkActive]="['active']" *ngIf="router.url.includes('BalloonPopGame')">
+        <a [routerLink]="['/pmuir/BalloonPopGame/run']">Run</a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']">
-            <a [routerLink]="['/pmuir/BalloonPopGame/analyze/run']">Pipelines</a>
+            <a [routerLink]="['/pmuir/BalloonPopGame/run']">Pipelines</a>
           </li>
         </ul>
       </li>
-      <li [routerLinkActive]="['active']" *ngIf="router.url.includes('analyze')">
-        <a [routerLink]="['/pmuir/BalloonPopGame/analyze/settings']" id="header_menu-analyze-settings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
+      <li [routerLinkActive]="['active']" *ngIf="router.url.includes('BalloonPopGame')">
+        <a [routerLink]="['/pmuir/BalloonPopGame/settings']" id="header_menu-analyze-settings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-            <a [routerLink]="['/pmuir/BalloonPopGame/analyze/settings']">Overview</a>
+            <a [routerLink]="['/pmuir/BalloonPopGame/settings']">Overview</a>
           </li>
           <li [routerLinkActive]="['active']">
-            <a [routerLink]="['/pmuir/BalloonPopGame/analyze/settings/work']">Work</a>
+            <a [routerLink]="['/pmuir/BalloonPopGame/settings/work']">Work</a>
           </li>
           <li [routerLinkActive]="['active']">
-            <a [routerLink]="['/pmuir/BalloonPopGame/analyze/settings/security']">Security</a>
+            <a [routerLink]="['/pmuir/BalloonPopGame/settings/security']">Security</a>
           </li>
           <li [routerLinkActive]="['active']">
-            <a [routerLink]="['/pmuir/BalloonPopGame/analyze/settings/alerts']">Alerts</a>
+            <a [routerLink]="['/pmuir/BalloonPopGame/settings/alerts']">Alerts</a>
           </li>
         </ul>
       </li>
-      <li [routerLinkActive]="['active']" *ngIf="!router.url.includes('analyze')">
+      <li [routerLinkActive]="['active']" *ngIf="!router.url.includes('BalloonPopGame')">
         <a [routerLink]="['/pmuir/settings']" id="header_menu-settings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
         <ul class="nav navbar-nav navbar-persistent">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
@@ -143,7 +143,7 @@
         </a>
         <ul class="dropdown-menu">
           <li>
-            <a [routerLink]="['/pmuir/profile']">Profile</a>
+            <a [routerLink]="['/pmuir']">Profile</a>
           </li>
           <li>
             <a href="https://fabric8.io/guide/getStarted/index.html">Help</a>

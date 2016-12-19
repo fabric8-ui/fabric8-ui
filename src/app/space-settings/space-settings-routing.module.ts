@@ -7,7 +7,7 @@ import { SettingsOverviewComponent } from './settings-overview/settings-overview
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'pmuir/BalloonPopGame/analyze/settings',
+    redirectTo: 'pmuir/BalloonPopGame/settings',
     pathMatch: 'full'
   },
   {
