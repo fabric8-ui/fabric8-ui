@@ -9,7 +9,7 @@ import { Broadcaster } from '../../../shared/broadcaster.service';
 import { Logger } from '../../../shared/logger.service';
 import { UserService } from '../../../user/user.service';
 
-import { WorkItem } from '../../../models/work-item';
+import { WorkItem, WorkItemAttributes, WorkItemRelations } from '../../../models/work-item';
 import { WorkItemService } from '../../work-item.service';
 import { WorkItemType } from '../../work-item-type';
 
@@ -52,6 +52,8 @@ export class WorkItemDetailComponent implements OnInit {
 
   loggedInUser: any;
 
+  addNewWI: Boolean = false;
+
   constructor(
     private auth: AuthenticationService,    
     private broadcaster: Broadcaster,    
@@ -72,22 +74,51 @@ export class WorkItemDetailComponent implements OnInit {
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         let id = params['id'];
-        this.workItemService.getWorkItemById(id)
-          .then(workItem => {
-            this.closeRestFields();
-            this.titleText = workItem.attributes['system.title'];
-            this.descText = workItem.attributes['system.description'];
-            this.workItem = workItem;
-            // fetch the list of user 
-            // after getting the Workitem
-            // to set assigned user 
-            // for this workitem from the list
-            this.getAllUsers();
-            this.activeOnList(400);
-          })
-          .catch (err => this.closeDetails());
+        if (id.indexOf('new') >= 0){
+          //Add a new work item          
+          this.addNewWI = true;
+          let type = id.substring((id.indexOf('?') + 1), id.length);
+          this.createWorkItemObj(type);
+          this.getAllUsers();          
+        }else{          
+          this.addNewWI = false;
+          this.workItemService.getWorkItemById(id)
+            .then(workItem => {
+              this.closeRestFields();
+              this.titleText = workItem.attributes['system.title'];
+              this.descText = workItem.attributes['system.description'];
+              this.workItem = workItem;
+              // fetch the list of user 
+              // after getting the Workitem
+              // to set assigned user 
+              // for this workitem from the list
+              this.getAllUsers();
+              this.activeOnList(400);
+            })
+            .catch (err => this.closeDetails());
+        }
       }
     });
+  }
+
+  createWorkItemObj(type: string) {
+    this.workItem = new WorkItem();
+    this.workItem.id = null;
+    this.workItem.attributes = new WorkItemAttributes();
+    this.workItem.relationships = new WorkItemRelations();
+    this.workItem.type = 'workitems';    
+    this.workItem.relationships = {
+      baseType: {
+        data: {
+          id: type,
+          type: 'workitemtypes'
+        }
+      }
+    } as WorkItemRelations;
+
+    this.workItem.attributes = {
+      'system.state': 'new'
+    } as WorkItemAttributes;
   }
 
   getAllUsers() {
@@ -204,14 +235,23 @@ export class WorkItemDetailComponent implements OnInit {
     }    
   }
 
-  save(): void {
-    this.workItemService
-      .update(this.workItem)
-      .then((workItem) => {
-        this.workItem.attributes['version'] = workItem.attributes['version'];
-        this.activeOnList();          
-    });
-     
+  save(): void {        
+    if (this.workItem.id){
+      this.workItemService
+        .update(this.workItem)
+        .then((workItem) => {
+          this.workItem.attributes['version'] = workItem.attributes['version'];
+          this.activeOnList();          
+      });
+    }else{
+      if (this.validTitle){
+        this.workItemService
+        .create(this.workItem)
+        .then((workItem) => {
+          this.router.navigate(['/work-item-list/detail/' + workItem.id]);
+        });
+      }      
+    }     
   }
 
   closeDetails(): void {

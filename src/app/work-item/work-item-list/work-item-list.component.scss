@@ -1,6 +1,59 @@
 @import "../../../assets/stylesheets/color-variables";
 @import "../../../assets/stylesheets/custom";
 
+.add-detailed-wi{
+  text-align: center;  
+  font-size: em(20);
+  position: absolute;
+  z-index: 10;
+  top: em(59);
+  right: em(100);
+  width: em(26);
+	height: em(26);
+	background: $color-pf-blue-400;
+  color: $color-pf-white;
+  cursor: pointer;
+	-moz-border-radius: em(13);
+	-webkit-border-radius: em(13);
+	border-radius: em(13); 
+  span{
+    position:absolute; 
+    top:50%; 
+    left: 50%; 
+    @include transform (translate(-50%,-50%));
+  } 
+}
+.types-modal{
+  background-color: $color-pf-white;
+  position: absolute;
+  top: em(95);  
+  height: 90%;
+  width: 100%;
+  z-index: 11;
+  .xl-font{
+    font-size: em(30);
+  }
+  h5{
+    padding-left: em(20);
+  }
+  ul{
+    list-style: none;    
+    li{      
+        float: left;
+        width: em(150);
+        height: em(180);
+        border: 1px solid $color-pf-black-200;
+        text-align: center;
+        margin: em(20) em(10);
+        padding-top: em(50);
+        color: $color-pf-black;
+        cursor: pointer;
+      }
+    li:hover {
+      color:  $color-pf-blue-400;
+    }    
+  }
+}
 .error {color:$color-pf-red-100;}
 .suppress-hover{
   &:hover{
@@ -68,7 +121,7 @@
   overflow-y: scroll;
 }
 
-@media (max-width: ($grid-float-breakpoint - 1)){
+@media (max-width: ($grid-float-breakpoint - 1)){  
   .containerPadd-nologin{ padding-bottom: 0; }
   .workItem_Overlay{
     background-color:$color-pf-black;

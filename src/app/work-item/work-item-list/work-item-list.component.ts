@@ -23,6 +23,7 @@ import { Broadcaster } from '../../shared/broadcaster.service';
 import { Logger } from '../../shared/logger.service';
 
 import { WorkItem }                   from '../../models/work-item';
+import { WorkItemType }               from '../work-item-type';
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService }            from '../work-item.service';
 import { UserService } from '../../user/user.service';
@@ -53,6 +54,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   @ViewChild('listContainer') listContainer: any;
 
   workItems: WorkItem[];
+  workItemTypes: WorkItemType[];
   selectedWorkItemEntryComponent: WorkItemListEntryComponent;
   workItemDetail: WorkItem;
   addingWorkItem = false;
@@ -65,6 +67,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   filters: any[] = [];
   allUsers: User[] = [] as User[];
   authUser: any = null;
+  showTypesOptions: Boolean = false;
 
   constructor(
     private auth: AuthenticationService,
@@ -83,6 +86,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
     this.loggedIn = this.auth.isLoggedIn();
     // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
+    this.getWorkItemTypes();
   }
 
   ngAfterViewInit() {
@@ -225,5 +229,23 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
         this.authUser = null;
         this.setFilterValues();
     });
+  }
+
+  //Detailed add functions
+  getWorkItemTypes(){
+    this.workItemService.getWorkItemTypes()
+      .then((types) => {
+        this.workItemTypes = types;
+      });
+  }
+  showTypes() {    
+    this.showTypesOptions = true; 
+  }
+  closePanel() {
+    this.showTypesOptions = false;
+  }
+  onChangeType(type: string) {
+    this.showTypesOptions = false;
+    this.router.navigate(['/work-item-list/detail/new?' + type]);
   }
 }

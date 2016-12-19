@@ -17,7 +17,7 @@
             </li>
           </ul>
         </div>
-        <h5 class="detail-id pull-left" id="wi-detail-id">{{workItem.id}}</h5>
+        <h5 *ngIf="workItem.id" class="detail-id pull-left" id="wi-detail-id">{{workItem.id}}</h5>
         <span class="pficon-close detail-close" (click)="closeDetails()"></span>
       </div>
 
@@ -31,7 +31,7 @@
                 class="pficon-edit marginL10 fl detail-title-edit-ico" 
                 id="workItemTitle_btn_edit"></span>
           </div>
-          <div *ngIf="loggedIn && headerEditable" class="" id="wi-title-div"> 
+          <div *ngIf="(loggedIn && headerEditable || !workItem.id)" id="wi-title-div"> 
               <div almEditable 
                   (onUpdate)="checkTitle($event)"
                   (keyup.enter)="onUpdateTitle()"
@@ -66,7 +66,7 @@
 
         <div class="col-md-4 col-sm-5 col-xs-5 wi-state-btn pull-right padding0">
           <div dropdown class="dropdown card-pf-time-frame-filter detail-status-dropdown">
-            <button dropdown-open 
+            <button dropdown-open
               id="wi-detail-state"
               type="button" 
               class="btn dropdown-toggle col-md-12 col-sm-12 col-xs-12 btn-default">
@@ -90,20 +90,20 @@
       <div class="separator col-md-12 col-sm-12 col-xs-12 detail-assignee-wrap">
           <span class="pull-left user-label">Assignee</span>
           <span
-            *ngIf="!workItem.relationalData.assignees?.length"
+            *ngIf="!workItem.relationalData?.assignees?.length"
             (click)="activeSearchAssignee()" 
             class="pull-left fa fa-user-plus user-assign-icon">
           </span>
           <img 
-            *ngIf="workItem.relationalData.assignees?.length"
+            *ngIf="workItem.relationalData?.assignees?.length"
             (click)="activeSearchAssignee()"
             class="pull-left user-assign-avatar"
             src="{{workItem.relationalData.assignees[0]?.attributes.imageURL + '&s=20'}}" 
             onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />          
           
           <div class="pull-left detail-assignee-name">
-              <span *ngIf="!searchAssignee && !workItem.relationalData.assignees?.length" (click)="activeSearchAssignee()" class="placeholder clickable"> Unassigned </span>   
-              <span *ngIf="!searchAssignee && workItem.relationalData.assignees?.length" (click)="activeSearchAssignee()" class="clickable" id="WI_details_assigned_user"> 
+              <span *ngIf="!searchAssignee && !workItem.relationalData?.assignees?.length" (click)="activeSearchAssignee()" class="placeholder clickable"> Unassigned </span>   
+              <span *ngIf="!searchAssignee && workItem.relationalData?.assignees?.length" (click)="activeSearchAssignee()" class="clickable" id="WI_details_assigned_user"> 
                 {{workItem.relationalData.assignees[0]?.attributes.fullName}} 
               </span>
               <div *ngIf="searchAssignee" class="user-search" >
@@ -149,24 +149,24 @@
           </div>
           <div class="pull-right col-md-6 col-sm-6 col-xs-12 no-padding">
             <span title="{{workItem.attributes['system.created_at'] | date:'fullDate'}}">
-              Created at: {{workItem.attributes['system.created_at'] | almMomentTime}}
-            </span>
+              Created at: {{ workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'}}
+            </span>            
           </div>
       </div>
       <!--Creator-->      
       <div 
         class="width100 pull-left paddingL20 paddingR20 common-wrap">        
         <span class="pull-left user-label">Creator</span>
-          <span *ngIf="!workItem.relationalData.creator"
+          <span *ngIf="!workItem.relationalData?.creator"
              class="pull-left fa pficon-user user-creator-icon">
           </span>
-          <img *ngIf="workItem.relationalData.creator"            
+          <img *ngIf="workItem.relationalData?.creator"            
             class="pull-left user-avatar"
             src="{{workItem.relationalData.creator.attributes.imageURL + '&s=20'}}"
             id="WI_details_reporter_img" />          
           <div class="pull-left marginR10">                          
               <span id="WI_details_reporter_user"> 
-                {{workItem.relationalData.creator?.attributes.fullName || 'No creator found'}} 
+                {{workItem.relationalData?.creator?.attributes.fullName || 'No creator found'}} 
               </span>
           </div>        
       </div>
@@ -226,6 +226,8 @@
       </div>
     </fieldset>
   </form>
-  <alm-work-item-link [workItem]="workItem" [loggedIn]="loggedIn"></alm-work-item-link>
-  <alm-work-item-comment [workItem]="workItem" [loggedIn]="loggedIn"></alm-work-item-comment>
+  <div *ngIf="workItem.id">
+    <alm-work-item-link [workItem]="workItem" [loggedIn]="loggedIn"></alm-work-item-link>
+    <alm-work-item-comment [workItem]="workItem" [loggedIn]="loggedIn"></alm-work-item-comment>
+  </div>
 </div>
