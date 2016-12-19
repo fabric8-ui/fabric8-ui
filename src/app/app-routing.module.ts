@@ -9,7 +9,7 @@ import { SigninComponent } from './signin/signin.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'public',
     pathMatch: 'full'
   },
   {
