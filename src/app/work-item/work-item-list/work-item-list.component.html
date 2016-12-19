@@ -22,7 +22,10 @@
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="wi_filter_dropdown">
-        <li *ngFor="let filter of filters;" role="presentation" (click)="activeFilter(filter.id)">
+        <li *ngIf="!filters.length">          
+          <span>No filters available</span>
+        </li>        
+        <li *ngFor="let filter of filters;" role="presentation" (click)="activeFilter(filter.id)">          
           <a role="menuitem" tabindex="-1">{{filter.name}}</a>
         </li>
       </ul>

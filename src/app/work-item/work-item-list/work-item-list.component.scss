@@ -63,7 +63,7 @@
 .detail-list-container{
     padding-bottom: em(65);
     height: 100%;
-    overflow: hidden;
+    overflow: hidden;    
   .list-action {
     height: em(50);
     display: flex;
@@ -73,6 +73,12 @@
     .list-type {
       font-weight: 700;
       margin-left: em(10);
+    }
+    span{
+      border-color: transparent;
+      border-style: solid;
+      border-width: 1px 0;
+      padding: 1px 10px;
     }
     .filter-dropdown {
       margin-right: em(10);
