@@ -21,41 +21,15 @@
         <h1>Pinned Collaboration Spaces</h1>
         <p>Customize</p>
       </div>
-      <div class="row">
+      <div *ngFor="let s of dummy.spaces; let i = index;" [ngClass]="{row: (i % 3 == 2) }">
         <div class="col-md-4">
           <div class="panel panel-default">
             <div class="panel-body">
               <p>
-                Bobo
+                <a [routerLink]="['/pmuir/' + s.path]">{{s.name}}</a>
               </p>
               <p>
-                Microservices architected search engine
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <p>
-                <a [routerLink]="['/pmuir/BalloonPopGame']">BalloonPopGame</a>
-              </p>
-              <p>
-                Balloon popping fun for everyone!
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <p>
-                fabric8io
-              </p>
-              <p>
-                Fabric8 is an open source integrated development platform for Kubernetes
+                {{s.description}}
               </p>
             </div>
           </div>

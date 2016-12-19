@@ -1,3 +1,4 @@
+import { DummyService } from './dummy/dummy.service';
 import './rxjs-extensions';
 
 import { NgModule, ApplicationRef } from '@angular/core';
@@ -92,6 +93,7 @@ export type StoreType = {
     Broadcaster,
     LoginService,
     UserService,
+    DummyService
   ],
   bootstrap: [ AppComponent ]
 })

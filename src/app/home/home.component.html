@@ -28,10 +28,7 @@
                             </h2>
                             <div class="card-pf-items">
                                 <ul class="list-unstyled">
-                                    <li>Bobo</li>
-                                    <li>Hysterix</li>
-                                    <li>fabric8io</li>
-                                    <li><a [routerLink]="['/pmuir/BalloonPopGame']">BalloonPopGame</a></li>
+                                    <li *ngFor="let s of dummy.spaces"><a [routerLink]="['/pmuir/' + s.path]">{{s.name}}</a></li>
                                 </ul>
                             </div>
                         </div>

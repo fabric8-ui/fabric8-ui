@@ -31,22 +31,10 @@
       </div>
       <div class="row">
         <table class="spaces table">
-          <tr>
+          <tr *ngFor="let s of dummy.spaces">
             <td>
-              <h2>fabric8io</h2>
-              <p>fabric8 is an open source integrated development platform for Kubernetes</p>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <h2><a [routerLink]="['/pmuir/BalloonPopGame']">BalloonPopGame</a></h2>
-              <p>Balloon popping fun for everyone!</p>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <h2>Bobo</h2>
-              <p>Microservices architected search engine</p>
+              <h2><a [routerLink]="['/pmuir/' + s.path]">{{s.name}}</a></h2>
+              <p>{{s.description}}</p>
             </td>
           </tr>
         </table>

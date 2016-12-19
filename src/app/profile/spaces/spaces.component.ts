@@ -1,3 +1,4 @@
+import { DummyService } from './../../dummy/dummy.service';
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
 
@@ -10,7 +11,7 @@ import { Router }            from '@angular/router';
 export class SpacesComponent implements OnInit {
 
   constructor(
-    private router: Router) {
+    private router: Router, public dummy: DummyService) {
   }
 
   ngOnInit() {
