@@ -17,6 +17,10 @@ export const routes: Routes = [
     loadChildren: './home/home.module#HomeModule'
   },
   {
+    path: 'signup',
+    loadChildren: './signup/signup.module#SignupModule'
+  },
+  {
     path: 'login',
     component: LoginComponent
   },
@@ -27,6 +31,10 @@ export const routes: Routes = [
   {
     path: 'analyze',
     loadChildren: './analyze/analyze.module#AnalyzeModule'
+  },
+  {
+    path: 'password_reset',
+    loadChildren: './forgot-password/forgot-password.module#ForgotPasswordModule'
   },
   {
     path: 'analyze/plan',

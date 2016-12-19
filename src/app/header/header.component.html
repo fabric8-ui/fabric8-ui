@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-pf" role="navigation">
+<nav class="navbar navbar-default navbar-pf" role="navigation" *ngIf="loggedIn">
   <div class="collapse navbar-collapse navbar-collapse-1">
     <ul class="nav navbar-nav navbar-primary persistent-secondary">
       <!-- This part of the menu is dynamic based on context -->
@@ -132,33 +132,6 @@
   </div>
   <div class="navbar-collapse navbar-collapse-1 nav-mob-scroll">
     <ul id="header_rightDropdown" class="nav navbar-nav navbar-utility">
-      <!-- temporary hack by pmuir to fix POC UX until we implement log in screens -->
-      <li dropdown class="pull-right dropdown">
-        <a dropdown-open>
-          <a id="header_dropdownUtility">
-            <span *ngIf="!imgLoaded" class="pficon pficon-user"></span>
-            <img (load)="onImgLoad()" src="https://avatars2.githubusercontent.com/u/157761?v=3&s=460" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
-              class="pull-left marginR10" /> pmuir
-          </a>
-          <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
-          <li>
-            <a [routerLink]="['/profile']">Profile</a>
-          </li>
-          <li>
-            <a href="https://fabric8.io/guide/getStarted/index.html">Help</a>
-          </li>
-          <li class="divider"></li>
-          <li>
-            <a [routerLink]="['/settings']">Settings</a>
-          </li>
-          <li>
-            <a>Sign out</a>
-          </li>
-        </ul>
-      </li>
-      <!-- End of pmuir's hack -->
       <li *ngIf="loggedIn" dropdown class="pull-right dropdown">
         <a dropdown-open>
           <a *ngIf="loggedInUser" id="header_dropdownToggle">
