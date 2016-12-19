@@ -14,7 +14,7 @@ export class SpaceDialogComponent {
   }
 
   createSpace() {
-    this.router.navigate(['/analyze']);
+    this.router.navigate(['/pmuir/BalloonPopGame/analyze']);
   }
 
 }

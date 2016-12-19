@@ -29,7 +29,7 @@ export const routes: Routes = [
     component: SigninComponent
   },
   {
-    path: 'analyze',
+    path: 'pmuir/BalloonPopGame/analyze',
     loadChildren: './analyze/analyze.module#AnalyzeModule'
   },
   {
@@ -37,16 +37,20 @@ export const routes: Routes = [
     loadChildren: './forgot-password/forgot-password.module#ForgotPasswordModule'
   },
   {
-    path: 'analyze/plan',
+    path: 'pmuir/BalloonPopGame/analyze/plan',
     loadChildren: './plan/plan.module#PlanModule'
   },
   {
-    path: 'analyze/create',
+    path: 'pmuir/BalloonPopGame/analyze/create',
     loadChildren: './create/create.module#CreateModule'
   },
   {
-    path: 'analyze/run',
+    path: 'pmuir/BalloonPopGame/analyze/run',
     loadChildren: './run/run.module#RunModule'
+  },
+  {
+    path: 'pmuir/BalloonPopGame/analyze/settings',
+    loadChildren: './space-settings/space-settings.module#SpaceSettingsModule'
   },
   {
     path: 'chat',
@@ -69,15 +73,11 @@ export const routes: Routes = [
     loadChildren: './notifications/notifications.module#NotificationsModule'
   },
   {
-    path: 'profile',
+    path: 'pmuir/profile',
     loadChildren: './profile/profile.module#ProfileModule'
   },
   {
-    path: 'analyze/settings',
-    loadChildren: './space-settings/space-settings.module#SpaceSettingsModule'
-  },
-  {
-    path: 'settings',
+    path: 'pmuir/settings',
     loadChildren: './settings/settings.module#SettingsModule'
   }
 ];

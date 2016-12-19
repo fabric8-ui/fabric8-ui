@@ -7,7 +7,7 @@ import { PipelinesComponent } from './pipelines/pipelines.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/analyze/run',
+    redirectTo: 'pmuir/BalloonPopGame/analyze/run',
     pathMatch: 'full'
   },
   {

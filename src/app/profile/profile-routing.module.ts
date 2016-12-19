@@ -7,7 +7,7 @@ import { OverviewComponent } from './overview/overview.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/profile',
+    redirectTo: 'pmuir/profile',
     pathMatch: 'full'
   },
   {

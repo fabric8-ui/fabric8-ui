@@ -7,7 +7,7 @@ import { BacklogComponent } from './backlog/backlog.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/analyze/plan',
+    redirectTo: 'pmuir/BalloonPopGame/analyze/plan',
     pathMatch: 'full'
   },
   {

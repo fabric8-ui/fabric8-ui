@@ -7,7 +7,7 @@ import { ProfileComponent } from './profile/profile.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/settings',
+    redirectTo: 'pmuir/settings',
     pathMatch: 'full'
   },
   {
