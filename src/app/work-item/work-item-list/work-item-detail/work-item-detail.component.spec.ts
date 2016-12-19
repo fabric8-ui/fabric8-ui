@@ -514,4 +514,14 @@ describe('Detailed view and edit a selected work item - ', () => {
     expect(el.nativeElement.textContent).toContain('Draco Malfoy');
   });
 
+   it('page should display correct reporter', () => {
+      fakeAuthService.login();
+      fixture.detectChanges();
+      comp.workItem = fakeWorkItem;
+      comp.loggedIn = fakeAuthService.isLoggedIn();             
+      fixture.detectChanges();
+      el = fixture.debugElement.query(By.css('#WI_details_reporter_user'));      
+      expect(el.nativeElement.textContent).toContain('Harry Potter');
+  });
+
 });

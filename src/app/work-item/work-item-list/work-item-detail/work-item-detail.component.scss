@@ -2,6 +2,29 @@
 @import "./../../../../assets/stylesheets/mixins";
 @import "./../../../../assets/stylesheets/color-variables";
 .detail-container {
+  .user-avatar {
+    cursor: pointer;
+    margin-right: em(6);
+    height: em(20);
+    width: em(20);
+  }
+  .common-wrap{
+    padding: em(20);
+    .user-label{
+      margin-right: em(20);
+    }    
+    .user-creator-icon {
+      padding: em(3);
+      color: $color-pf-black-500;
+      border: 1px dashed $color-pf-black;
+      cursor: pointer;
+      margin-right: em(6);
+    }
+  }  
+  .separator{
+    padding-top: em(10);
+    border-top: 1px solid #ededed;
+  }
   width: $width100;
   font-size: rem(12);
   float: left;
@@ -102,6 +125,9 @@
   }
 
   .detail-assignee-wrap {
+    .user-label{
+      margin-right: em(15);
+    }
     .user-assign-icon {
       padding: em(3);
       color: $color-pf-black-500;

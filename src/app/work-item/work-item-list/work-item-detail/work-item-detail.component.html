@@ -87,7 +87,8 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12 col-sm-12 col-xs-12 detail-assignee-wrap">
+      <div class="separator col-md-12 col-sm-12 col-xs-12 detail-assignee-wrap">
+          <span class="pull-left user-label">Assignee</span>
           <span
             *ngIf="!workItem.relationalData.assignees?.length"
             (click)="activeSearchAssignee()" 
@@ -98,8 +99,7 @@
             (click)="activeSearchAssignee()"
             class="pull-left user-assign-avatar"
             src="{{workItem.relationalData.assignees[0]?.attributes.imageURL + '&s=20'}}" 
-            onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
-          
+            onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />          
           
           <div class="pull-left detail-assignee-name">
               <span *ngIf="!searchAssignee && !workItem.relationalData.assignees?.length" (click)="activeSearchAssignee()" class="placeholder clickable"> Unassigned </span>   
@@ -153,8 +153,25 @@
             </span>
           </div>
       </div>
+      <!--Creator-->      
+      <div 
+        class="width100 pull-left paddingL20 paddingR20 common-wrap">        
+        <span class="pull-left user-label">Creator</span>
+          <span *ngIf="!workItem.relationalData.creator"
+             class="pull-left fa pficon-user user-creator-icon">
+          </span>
+          <img *ngIf="workItem.relationalData.creator"            
+            class="pull-left user-avatar"
+            src="{{workItem.relationalData.creator.attributes.imageURL + '&s=20'}}"
+            id="WI_details_reporter_img" />          
+          <div class="pull-left marginR10">                          
+              <span id="WI_details_reporter_user"> 
+                {{workItem.relationalData.creator?.attributes.fullName || 'No creator found'}} 
+              </span>
+          </div>        
+      </div>
 
-      <div class="col-md-12 col-sm-12 col-xs-12 detail-description-wrap">
+      <div class="separator col-md-12 col-sm-12 col-xs-12 detail-description-wrap">
         <div class="col-md-12 col-sm-12 col-xs-12 detail-description" *ngIf="loggedIn">
           <div class="detail-desc-div-wrap" (click)="openDescription(false, true)">
             <div class="detail-desc-div"
