@@ -13,7 +13,7 @@
   width: 300px;
   height: 200px;
   position: absolute;
-  top: 50px;
+  top: 40px;
   left: 550px;
   .panel {
     padding-bottom: 15px;
@@ -26,5 +26,15 @@
 
   small {
     font-size: xx-small;
+  }
+}
+
+.socialLogin {
+  .fa {
+    font-size: xx-large;
+    color: black;
+  }
+  .fa:hover {
+    cursor: pointer;
   }
 }
