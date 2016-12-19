@@ -302,19 +302,20 @@ export class WorkItemService {
    * @param: WorkItem - wItem
    */
   resolveComments(wItem: WorkItem): void {
-    this.http
-      .get(wItem.relationships.comments.links.related, { headers: this.headers })
-      .toPromise()
-      .then((response) => {
-        wItem.relationalData.comments = 
-          response.json().data as Comment[];
-        wItem.relationalData.comments.forEach((comment) => {
-          comment.relationalData = {
-            creator : this.getUserById(comment.relationships['created-by'].data.id)
-          };
-        });
-      })
-      .catch (this.handleError);
+    if (wItem.relationships.comments.links.related)
+      this.http
+        .get(wItem.relationships.comments.links.related, { headers: this.headers })
+        .toPromise()
+        .then((response) => {
+          wItem.relationalData.comments = 
+            response.json().data as Comment[];
+          wItem.relationalData.comments.forEach((comment) => {
+            comment.relationalData = {
+              creator : this.getUserById(comment.relationships['created-by'].data.id)
+            };
+          });
+        })
+        .catch (this.handleError);
   }
 
   /**

@@ -6,7 +6,7 @@ import { WorkItem } from '../work-item/work-item';
 /*
   NOTE: IMPORTANT:
     if returning data to the http service, ALWAYS return vanity copies of
-    objects, NOT THE LIVING REFERENCES TO STRUCTURES STORED HERE. As the "real"
+    objects, NOT THE LIVING REFERENCES TO STRUCTURES STORED HERE. As the 'real'
     networked service always returns detached object copies, this resembles the
     original behaviour. Also, the returnes references ARE RE-USED, so data could
     change without this class noticing it! THIS HAPPENS. IT HAPPENED. IT SUCKS!
@@ -17,10 +17,12 @@ export class MockDataService {
 
   private workItems: any[];
   private workItemLinks: any[];
+  private workItemComments: any;
 
   constructor() {
     this.workItems = this.createInitialWorkItems();
     this.workItemLinks = this.createInitialWorkItemLinks();
+    this.workItemComments = this.createInitialWorkItemComments();
   }
 
   private createId(): string {
@@ -53,17 +55,67 @@ export class MockDataService {
     return this.makeCopy(localWorkItemLink);
   }
 
-  public createWorkItem(workItem: any): any {
-    var localWorkItem = this.makeCopy(workItem);
+  public createWorkItemOrEntity(extraPath: string, entity: any): any {
+    if (extraPath && extraPath.indexOf('/') != -1) {
+      // request for subentities on a wi 
+      var parts = extraPath.split('/');
+      var wiId = parts[0];
+      var subselect = parts[1];
+      if (subselect === 'comments') {
+        console.log('Request create new comment for workitem ' + wiId);
+        var newId = this.createId();
+        var newComment = {
+              'attributes': {
+                'body': entity.data.attributes.body,
+                'created-at': '2000-01-01T09:00:00.000000Z'
+              },
+              'id': newId,
+              'links': {
+                'self': 'http://demo.api.almighty.io/api/comments/' + newId
+              },
+              'relationships': {
+                'created-by': {
+                  'data': {
+                    'id': 'user0',
+                    'type': 'identities'
+                  }
+                }
+              },
+              'type': 'comments'
+        };
+        if (this.workItemComments[wiId])
+          this.workItemComments[wiId].data.push(newComment);
+        else
+          this.workItemComments[wiId] = { data: [ newComment ] };
+        return { data: newComment };
+      }
+      return {};
+    }
+    var localWorkItem = this.makeCopy(entity.data);
     localWorkItem.id = this.createId();
     this.workItems.push(localWorkItem);
-    return this.makeCopy(localWorkItem);
+    return { data: this.makeCopy(localWorkItem) };
   }
 
-  public getWorkItem(id: string): any {
+  public getWorkItemOrEntity(extraPath: string): any {
+    if (extraPath && extraPath.indexOf('/') != -1) {
+      // request for subentities on a wi 
+      var parts = extraPath.split('/');
+      var wiId = parts[0];
+      var subselect = parts[1];
+      if (subselect === 'comments') {
+        console.log('Requested comments for workitem ' + wiId);
+        if (this.workItemComments[wiId])
+        return this.makeCopy(this.workItemComments[wiId]);
+        return { data: [] };
+      }
+      // should never happen
+      return {};
+    }
+    console.log('Requested workitem ' + extraPath);
     for (var i = 0; i < this.workItems.length; i++)
-      if (this.workItems[i].id === id)
-        return this.makeCopy(this.workItems[i]);
+      if (this.workItems[i].id === extraPath)
+        return { data: this.makeCopy(this.workItems[i]) };
   };
 
   public updateWorkItem(workItem: any): any {
@@ -426,9 +478,12 @@ export class MockDataService {
 
   public getUser(): any {
     return {
-      'id': 'user0',
-      'fullName': 'Example User 0',
-      'imageURL': 'https://avatars.githubusercontent.com/u/2410471?v=3'
+      attributes: {
+        fullName: 'Example User 0',
+        imageURL: 'https://avatars.githubusercontent.com/u/2410471?v=3'
+      },
+      id: 'user0',
+      type: 'identities'
     };
   }
 
@@ -468,86 +523,76 @@ export class MockDataService {
 
   public getLinkCategories(): any {
     return {
-      'data': {
-        'attributes': {
-          'description': 'A work item link category that is meant only for work item link types goverened by the system alone.',
-          'name': 'system',
-          'version': 0
-        },
-        'id': '6c5610be-30b2-4880-9fec-81e4f8e4fd76',
-        'type': 'workitemlinkcategories'
+      'data': this.getWorkItemLinkTypes().included,
+      'meta': {
+        'totalCount': this.getWorkItemLinkTypes().included.length
       }
     };
   }
 
   public getWorkItemLinkTypes(): any {
-    return [
+    return {
+      'data': [
         {
-         'id': '4f8d8e8c-ab1c-4396-b725-105aa69a789c',
-         'type': 'workitemlinktypes',
-         'attributes': {
-          'description': 'A test work item can if a the code in a pull request passes the tests.',
-          'forward_name': 'story-story',
-          'name': 'story-story',
-          'reverse_name': 'story by',
-          'topology': 'network', 
-          'version': 0
-        },
-        // 'id': '40bbdd3d-8b5d-4fd6-ac90-7236b669af04',
-        'relationships': {
-          'link_category': {
-            'data': {
-              'id': 'c08d244f-ca36-4943-b12c-1cdab3525f12',
-              'type': 'workitemlinkcategories'
+          'id': 'wilt-0',
+          'attributes': {
+            'description': 'A demo work item link type',
+            'forward_name': 'tests',
+            'name': 'demo-tested-by',
+            'reverse_name': 'tested by',
+            'topology': 'network',
+            'version': 0
+          },
+          'links': {
+            'self': 'http://mock.service/api/workitemlinkcategories/wil-0'
+          },
+          'relationships': {
+            'link_category': {
+              'data': {
+                'id': 'wilt-cat-0',
+                'type': 'workitemlinkcategories'
+              }
+            },
+            'source_type': {
+              'data': {
+                'id': 'system.planneritem',
+                'type': 'workitemtypes'
+              }
+            },
+            'target_type': {
+              'data': {
+                'id': 'system.planneritem',
+                'type': 'workitemtypes'
+              }
             }
           },
-          'source_type': {
-            'data': {
-              'id': 'system.userstory',
-              'type': 'workitemtypes'
-            }
-          },
-          'target_type': {
-            'data': {
-              'id': 'system.userstory',
-              'type': 'workitemtypes'
-            }
+          'type': 'workitemlinktypes'
           }
-      }
-    },
-    {
-        'id': '9cd02068-d76e-4733-9df8-f18bc39002ee',
-        'type': 'workitemlinktypes',
-        'attributes': {
-        'description': 'A test work item can if a the code in a pull request passes the tests.',
-        'forward_name': 'abc-abc',
-        'name': 'abc-abc',
-        'reverse_name': 'story by',
-        'topology': 'network', 
-        'version': 0
-      },
-      // 'id': '40bbdd3d-8b5d-4fd6-ac90-7236b669af04',
-      'relationships': {
-        'link_category': {
-          'data': {
-            'id': 'c08d244f-ca36-4943-b12c-1cdab3525f12',
-            'type': 'workitemlinkcategories'
+      ],
+      'included': [
+        {
+          'id': 'wilt-cat-0',
+          'type': 'workitemlinkcategories',
+          'attributes': {
+            'description': 'The system category is reserved for link types that are to be manipulated by the system only.',
+            'name': 'system',
+            'version': 38
           }
         },
-        'source_type': {
-          'data': {
-            'id': 'system.userstory',
-            'type': 'workitemtypes'
-          }
-        },
-        'target_type': {
-          'data': {
-            'id': 'system.userstory',
-            'type': 'workitemtypes'
+        {
+          'id': 'wilt-cat-1',
+          'type': 'workitemlinkcategories',
+          'attributes': {
+            'description': 'The user category is reserved for link types that can to be manipulated by the user.',
+            'name': 'user',
+            'version': 38
           }
         }
-    }
-    }];
+      ],
+      'meta': {
+        'totalCount': 1
+      }
+    };
   }
 
   // initial data creators - might be loaded from fixtures in the future
@@ -577,106 +622,95 @@ export class MockDataService {
           }, 
           'comments': { 
             'links': { 
-              'related': 'http://mock.service/api/workitems/id' + n + '/comments', 
+              'related': 'http://mock.service/api/workitems/id' + n + '/comments',
               'self': 'http://mock.service/api/workitems/id' + n + '/relationships/comments' 
             } 
           }, 
           'creator': { 
             'data': { 
               'id': 'some-creator-id', 
+              'links': {
+                'self': 'http://mock.service/api/users/some-creator-id'
+              },
               'type': 'identities' 
             } 
           } 
         }, 
+        'iteration': {},
         'type': 'workitems' 
-      }
+      };
     });
     return workitems;
   }
 
-  private createInitialWorkItemLinks(): any {
-    return [
+  private createInitialWorkItemComments(): any {
+    // map, key is work item id, value is comment structure
+    return {
+      'id0':
         {
-            attributes: {
-                version: 0
-            },
-            id: 'd66b0ad5-bca8-4642-a43c-80cc0c831b25',
-            relationships: {
-                link_type: {
-                data: {
-                    id: '4f8d8e8c-ab1c-4396-b725-105aa69a789c',
-                    type: 'workitemlinktypes'
+          'data': [
+            {
+              'attributes': {
+                'body': 'Some Comment 0',
+                'created-at': '2000-01-01T09:00:00.000000Z'
+              },
+              'id': 'comment-0',
+              'links': {
+                'self': 'http://demo.api.almighty.io/api/comments/comment-0'
+              },
+              'relationships': {
+                'created-by': {
+                  'data': {
+                    'id': 'user0',
+                    'type': 'identities'
+                  }
                 }
-                },
-                source: {
-                data: {
-                    id: '3',
-                    type: 'workitems'
-                }
-                },
-                target: {
-                data: {
-                    id: '4',
-                    type: 'workitems'
-                }
-                }
-            },
-            type: 'workitemlinks'
-        },
-        {
-            attributes: {
-                version: 0
-            },
-            id: 'c241e025-87a4-4c59-aed0-8333de346666',
-            relationships: {
-                link_type: {
-                data: {
-                    id: '9cd02068-d76e-4733-9df8-f18bc39002ee',
-                    type: 'workitemlinktypes'
-                }
-                },
-                source: {
-                data: {
-                    id: '3',
-                    type: 'workitems'
-                }
-                },
-                target: {
-                data: {
-                    id: '6',
-                    type: 'workitems'
-                }
-                }
-            },
-            type: 'workitemlinks'
-        },
-        {
-            attributes: {
-                version: 0
-            },
-            id: 'dcaff8b1-8d4d-40c9-9408-c0f4dc1961c7',
-            relationships: {
-                link_type: {
-                data: {
-                    id: '4f8d8e8c-ab1c-4396-b725-105aa69a789c',
-                    type: 'workitemlinktypes'
-                }
-                },
-                source: {
-                data: {
-                    id: '3',
-                    type: 'workitems'
-                }
-                },
-                target: {
-                data: {
-                    id: '1',
-                    type: 'workitems'
-                }
-                }
-            },
-            type: 'workitemlinks'
+              },
+              'type': 'comments'
+            }
+          ]
         }
-    ];
+    };
   }
+
+  private createInitialWorkItemLinks(): any {
+    return { 
+      data: [ 
+        {
+          id: 'wil-0',
+          type: 'workitemlinks',
+          attributes: {
+              version: 0
+          },
+          'links': {
+            'self': 'http://mock.service/api/workitemlinks/wil-0'
+          },
+          relationships: {
+            link_type: {
+              data: {
+                id: 'wilt-0',
+                type: 'workitemlinktypes'
+              }
+            },
+            source: {
+              data: {
+                  id: 'id0',
+                  type: 'workitems'
+              }
+            },
+            target: {
+              data: {
+                  id: 'id1',
+                  type: 'workitems'
+              }
+            }
+          }
+        }
+      ],
+      'meta': {
+        'totalCount': 1
+      }
+    };
+  }
+
 }

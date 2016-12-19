@@ -116,12 +116,12 @@ export class MockHttp extends Http {
           return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemTypes() );
         case '/workitems':
           if (path.extraPath) {
-            return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItem(path.extraPath) } );
+            return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemOrEntity(path.extraPath) );
           } else {
             return this.createResponse(url.toString(), 200, 'ok', this.createPage(this.mockDataService.getWorkItems(), path.params) );
           }
         case '/user':
-          return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getUser() );
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getUser() } );
         case '/identities':
           return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getAllUsers() } );          
         case '/work-item-list':
@@ -131,9 +131,9 @@ export class MockHttp extends Http {
             return this.createResponse(url.toString(), 500, 'error: no search term given.', { } );
           }
         case '/workitemlinks':
-          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItemLinks() });
+          return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemLinks() );
         case '/workitemlinktypes':
-          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItemLinkTypes() });
+          return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemLinkTypes() );
         case '/workitemlinkcategories':
           return this.createResponse(url.toString(), 500, 'not supported yet.', { } );
       }
@@ -149,7 +149,9 @@ export class MockHttp extends Http {
         return this.createResponse(url.toString(), 500, 'error', {});  
       }
       if (path.path === '/workitems') {
-        return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.createWorkItem(JSON.parse(body).data) });
+        if (typeof body == 'string')
+          body = JSON.parse(body);
+        return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.createWorkItemOrEntity(path.extraPath, body));
       } else if (path.path === '/workitemlinks') {
         return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.createWorkItemLink(JSON.parse(body).data) });    
       } else 
