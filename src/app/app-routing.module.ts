@@ -13,20 +13,20 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'home',
-    loadChildren: './home/home.module#HomeModule'
-  },
-  {
-    path: 'signup',
-    loadChildren: './signup/signup.module#SignupModule'
-  },
-  {
     path: 'login',
     component: LoginComponent
   },
   {
     path: 'signin',
     component: SigninComponent
+  },
+  {
+    path: 'home',
+    loadChildren: './home/home.module#HomeModule'
+  },
+  {
+    path: 'signup',
+    loadChildren: './signup/signup.module#SignupModule'
   },
   {
     path: 'pmuir/BalloonPopGame',

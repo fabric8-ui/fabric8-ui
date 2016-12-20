@@ -132,12 +132,17 @@
   </div>
   <div class="navbar-collapse navbar-collapse-1 nav-mob-scroll">
     <ul id="header_rightDropdown" class="nav navbar-nav navbar-utility">
+      <li>
+        <a *ngIf="!loggedIn" (click)='login();'>Sign In</a>
+      </li>
       <li *ngIf="loggedIn" dropdown class="pull-right dropdown">
         <a dropdown-open>
           <a *ngIf="loggedInUser" id="header_dropdownToggle">
             <span *ngIf="!imgLoaded" class="pficon pficon-user"></span>
-            <img (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
-              class="pull-left marginR10" /> {{loggedInUser.attributes?.fullName}}
+            <img (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}"
+                 [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
+                 class="pull-left marginR10" />
+            {{loggedInUser.attributes?.fullName}}
           </a>
           <b class="caret"></b>
         </a>

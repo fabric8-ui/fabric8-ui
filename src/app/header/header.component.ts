@@ -52,17 +52,6 @@ export class HeaderComponent implements OnInit {
     private broadcaster: Broadcaster) {}
 
   getLoggedUser(): void {
-    // TODO Dirty hack - remove this
-    if (localStorage.getItem('auth_token') === 'pmuir') {
-      this.userService.userData = new User();
-      this.userService.userData.attributes = {
-        fullName: 'Pete Muir',
-        imageURL: 'https://avatars2.githubusercontent.com/u/157761?v=3&s=460'
-      };
-      this.userService.userData.id = '-1';
-      this.userService.userData.type = 'identities';
-      
-    }
     this.loggedInUser = this.userService.getSavedLoggedInUser();
   }
 
