@@ -5,22 +5,22 @@
       <li class="context dropdown" dropdown>
         <a dropdown-open>
           <span *ngIf="!router.url.includes('BalloonPopGame')">
-            pmuir
+            <span class="fa fa-user"></span> pmuir
           </span>
           <span *ngIf="router.url.includes('BalloonPopGame')">
-            BalloonPopGame
+            <span class="fa fa-space-shuttle"></span> BalloonPopGame
           </span>
           <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
           <li>
-            <a [routerLink]="['/pmuir/BalloonPopGame']">BalloonPopGame</a>
+            <a [routerLink]="['/pmuir/BalloonPopGame']"><span class="fa fa-space-shuttle"> BalloonPopGame</span></a>
           </li>
           <li>
-            <a>BalloonPopGame / UX Team</a>
+            <a><span class="fa fa-group"></span> BalloonPopGame / UX Team</a>
           </li>
           <li>
-            <a>Red Hat Organization</a>
+            <a><span class="fa fa-cubes"></span>Red Hat Organization</a>
           </li>
           <li>
             <a [routerLink]="['/pmuir/spaces']">Browse all</a>
