@@ -19,6 +19,15 @@ let CommonPage = require('./common.page');
 let constants = require("../constants");
 let until = protractor.ExpectedConditions;
 
+/* Icons displayed after the detailed dialog button is clicked */
+let detailedWorkItemIcons = [];
+detailedWorkItemIcons["userstory"] = ".xl-font.fa.fa-bookmark";
+detailedWorkItemIcons["valueproposition"] = ".xl-font.fa.fa-gift";
+detailedWorkItemIcons["fundamental"] = ".xl-font.fa.fa-bank";
+detailedWorkItemIcons["experience"] = ".xl-font.fa.fa-map";
+detailedWorkItemIcons["feature"] = ".xl-font.fa.fa-mouse-pointer";
+detailedWorkItemIcons["bug"] = ".xl-font.fa.fa-bug ";
+
 class WorkItemListPage {
 
  constructor(login) {
@@ -199,6 +208,11 @@ class WorkItemListPage {
     return workItemElement.element(by.css(".workItemList_description")).getText(); 
   }
 
+  /* Icon element relative to a workitem */
+  workItemIcon (workItemElement) {
+    return workItemElement.element(by.css(".type.workItemList_workItemType")).getText(); 
+  }
+
   workItemByIndex (itemNumber) { 
     return element.all(by.css(".work-item-list-entry")).get(itemNumber); 
   }
@@ -251,6 +265,39 @@ class WorkItemListPage {
     browser.wait(until.presenceOf(button), constants.WAIT, 'Failed to find the button');
     return button.click(); 
   }
+
+  /* User assignment dropdown */
+  get filterDropdown () {
+    return  element(by.id("wi_filter_dropdown"));
+  } 
+
+  clickFilterDropdown () {
+    return this.filterDropdown.click(); 
+  }
+
+  /* Adding a new workitem through the dialog */
+  get detailedDialogButton () {
+    return  element(by.css(".add-detailed-wi"));
+  } 
+
+  clickDetailedDialogButton () {
+    return this.detailedDialogButton.click(); 
+  }
+
+  /* Adding a new user story workitem through the dialog */
+  detailedIcon (workItemIcon) {
+    /* Usage: detailedUserStoryIcon("userstory")  */
+    return  element(by.css(detailedWorkItemIcons[workItemIcon]));
+  } 
+
+  clickDetailedIcon (workItemIcon) {
+    /* Usage: clickDetailedUserStoryIcon("userstory")  */
+    this.detailedIcon(workItemIcon).click(); 
+    var theDetailPage = new WorkItemDetailPage ();
+    return theDetailPage;
+
+
+  }  
   
 }
 

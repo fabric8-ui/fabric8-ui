@@ -43,6 +43,7 @@ class WorkItemDetailPage {
     return this.workItemDetailType.sendKeys(newTypeString);
   }
 
+  /* This UI element is only displayed when the user accesses the detail page of an existing work item */
   get clickWorkItemDetailTitle () {
     return element(by.id("wi-detail-title-click"));
   }
