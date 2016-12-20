@@ -9,6 +9,16 @@
     float: left;
     z-index: 9;
     font-size: rem(12);
+    .header-nav-brand{
+        padding: em(4.5);
+        .pficon-enterprise{
+            font-size: em(18);
+            margin-right: em(5);
+        }
+        .caret{
+            margin: em(4.5);
+        }
+    }
 }
 .navbar-pf {
     .navbar-nav li a {
@@ -18,7 +28,8 @@
         .img-icon{
             width: em(25);
             height: em(25);
-            margin-top: em(-3);
+            margin-top: em(-2);
+            margin-right: em(5);
         }
     }
     .navbar-collapse span.fa,span.pficon {
