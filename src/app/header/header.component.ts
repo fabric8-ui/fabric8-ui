@@ -52,6 +52,9 @@ export class HeaderComponent implements OnInit {
     private broadcaster: Broadcaster) {}
 
   getLoggedUser(): void {
+    if (this.loggedIn) {
+      this.userService.getUser();
+    }
     this.loggedInUser = this.userService.getSavedLoggedInUser();
   }
 
@@ -65,9 +68,9 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loggedIn = this.auth.isLoggedIn();
     this.listenToEvents();
     this.getLoggedUser();
-    this.loggedIn = this.auth.isLoggedIn();
   }
 
   onImgLoad() {
