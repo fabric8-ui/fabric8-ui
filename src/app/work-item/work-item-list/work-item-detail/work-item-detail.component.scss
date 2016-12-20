@@ -44,7 +44,14 @@
     float: right;
     cursor: pointer;
     font-size: em(14);
-  }  
+  }
+  .created-wrap {
+    margin-right: em(20);
+    line-height: 1;
+    .created-label{
+      margin-right: em(10);
+    }
+  }
   .wi-detail-title-blk{
     padding: em(20) em(0) em(10);
     .detail-title {

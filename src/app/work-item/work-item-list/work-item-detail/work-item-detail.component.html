@@ -19,6 +19,9 @@
         </div>
         <h5 *ngIf="workItem.id" class="detail-id pull-left" id="wi-detail-id">{{workItem.id}}</h5>
         <span class="pficon-close detail-close" (click)="closeDetails()"></span>
+        <div class="pull-right created-wrap">
+            <span class="created-label">Created</span> <span [innerHTML]="workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'"></span>
+        </div>
       </div>
 
       <div class="col-md-12 col-sm-12 col-xs-12 truncate-ellipsis">
@@ -146,11 +149,6 @@
                   </ul>
                 </div>
               </div>
-          </div>
-          <div class="pull-right col-md-6 col-sm-6 col-xs-12 no-padding">
-            <span title="{{workItem.attributes['system.created_at'] | date:'fullDate'}}">
-              Created at: {{ workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'}}
-            </span>            
           </div>
       </div>
       <!--Creator-->      
