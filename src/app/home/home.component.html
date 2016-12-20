@@ -70,7 +70,7 @@
                     <h2><a [routerLink]="['/pmuir/resources']">Resource Usage</a></h2>
                 </div>
                 <div class="col-md-4">
-                    <small> 1 – Sep 30</small>
+                    <small>{{dummy.resources.startDate | date:'d'}} – {{dummy.resources.endDate | date:'d MMM'}}</small>
                 </div>
                 <div class="col-md-6">
                     <small>Pipeline</small>
