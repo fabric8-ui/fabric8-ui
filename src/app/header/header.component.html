@@ -4,23 +4,16 @@
       <!-- This part of the menu is dynamic based on context -->
       <li class="context dropdown" dropdown>
         <a dropdown-open>
-          <span *ngIf="!router.url.includes('BalloonPopGame')">
-            <span class="fa fa-user"></span> pmuir
-          </span>
-          <span *ngIf="router.url.includes('BalloonPopGame')">
-            <span class="fa fa-space-shuttle"></span> BalloonPopGame
+          <span *ngFor="let m of dummy.contextMenuItems">
+            <span *ngIf="router.url === m.path">
+              <span class="{{m.type.icon}}"></span> {{m.name}}
+            </span>
           </span>
           <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
-          <li>
-            <a [routerLink]="['/pmuir/BalloonPopGame']"><span class="fa fa-space-shuttle"> BalloonPopGame</span></a>
-          </li>
-          <li>
-            <a><span class="fa fa-group"></span> BalloonPopGame / UX Team</a>
-          </li>
-          <li>
-            <a><span class="fa fa-cubes"></span>Red Hat Organization</a>
+          <li *ngFor="let m of dummy.contextMenuItems">
+            <a [routerLink]="[m.path]" *ngIf="router.url.toString() !== m.path"><span class="{{m.type.icon}}"></span> {{m.name}}</a>
           </li>
           <li>
             <a [routerLink]="['/pmuir/spaces']">Browse all</a>

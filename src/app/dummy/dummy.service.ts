@@ -1,3 +1,4 @@
+import { ContextMenuItem } from './../models/context-menu-item';
 import { Space } from './../models/space';
 import { Resources } from './../models/resources';
 import { Injectable } from '@angular/core';
@@ -50,6 +51,38 @@ export class DummyService {
       max: 18000
     }
     ]};
+
+    contextMenuItems: ContextMenuItem[] = [
+      {
+        name: 'pmuir',
+        type: {
+          name: 'User',
+          icon: 'fa fa-user'
+        },
+        path: '/pmuir'
+      }, {
+        name: 'BalloonPopGame',
+        type: {
+          name: 'Space',
+          icon: 'fa fa-space-shuttle'
+        },
+        path: '/pmuir/BalloonPopGame'
+      }, {
+        name: 'BalloonPopGame / UX Team',
+        type: {
+          name: 'Team',
+          icon: 'fa fa-users'
+        },
+        path: '?'
+      }, {
+        name: 'Red Hat Organization',
+        type: {
+          name: 'Organization',
+          icon: 'fa fa-cubes'
+        },
+        path: '?'
+      }
+    ];
 
   constructor(private http: Http) { }
 

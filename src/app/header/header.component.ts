@@ -1,3 +1,4 @@
+import { DummyService } from './../dummy/dummy.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -45,11 +46,12 @@ export class HeaderComponent implements OnInit {
    */
 
   constructor(
-    private router: Router,
+    public router: Router,
     private userService: UserService,
     private logger: Logger,
     private auth: AuthenticationService,
-    private broadcaster: Broadcaster) {}
+    private broadcaster: Broadcaster,
+    public dummy: DummyService) {}
 
   getLoggedUser(): void {
     if (this.loggedIn) {
