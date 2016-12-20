@@ -1,4 +1,3 @@
-import { DummyService } from './dummy/dummy.service';
 import './rxjs-extensions';
 
 import { NgModule, ApplicationRef } from '@angular/core';
@@ -8,14 +7,14 @@ import { HttpModule } from '@angular/http';
 
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
-
-
 import { DropdownModule } from 'ng2-dropdown';
+
 /*
  * Platform and Environment providers/directives/pipes
  */
 import { ENV_PROVIDERS } from './environment';
 import { AppRoutingModule } from './app-routing.module';
+
 // App is our top level component
 import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
@@ -30,23 +29,21 @@ import { HeaderComponent } from './header/header.component';
 // Shared Services
 import { AuthenticationService } from './auth/authentication.service';
 import { Broadcaster } from './shared/broadcaster.service';
-import { UserService } from './user/user.service';
+import { DummyService } from './dummy/dummy.service';
 import { Logger } from './shared/logger.service';
+import { UserService } from './user/user.service';
+
+// Share Modules
+import { PublicModule } from './public/public.module';
 
 // Shared Components
 import { SpaceDialogModule } from './space-dialog/space-dialog.module';
 import { DeleteAccountDialogModule} from './delete-account-dialog/delete-account-dialog.module';
 
-
 // Login
-// import { LoginModule } from './login/login.module';
 import { SigninComponent } from './signin/signin.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
-
-import { PublicModule } from './public/public.module';
-
-// Shared Component
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -66,17 +63,13 @@ export type StoreType = {
 @NgModule({
   imports: [ // import Angular's modules
     BrowserModule,
-    FormsModule,
-    HttpModule,
-    BrowserModule,
+    DeleteAccountDialogModule,
     DropdownModule,
     FormsModule,
-    PublicModule,
     HttpModule,
-    // LoginModule,
-    AppRoutingModule,
+    PublicModule,
     SpaceDialogModule,
-    DeleteAccountDialogModule
+    AppRoutingModule
   ],
   declarations: [
     AppComponent,
@@ -88,12 +81,12 @@ export type StoreType = {
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
     APP_PROVIDERS,
-    Logger,
     AuthenticationService,
     Broadcaster,
+    DummyService,
+    Logger,
     LoginService,
-    UserService,
-    DummyService
+    UserService
   ],
   bootstrap: [ AppComponent ]
 })
