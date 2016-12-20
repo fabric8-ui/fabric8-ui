@@ -8,9 +8,14 @@ import { LoginItem } from './login-item';
 @Injectable()
 export class LoginService {
   // private githubUrl = 'app/loginStatus';
-  private githubUrl = process.env.API_URL + 'login/authorize ';  // URL to web api
+  private githubUrl: string;  // URL to web api
 
   constructor(private http: Http) {
+    this.githubUrl = process.env.API_URL;
+    if (this.githubUrl.substr(this.githubUrl.length - 1, 1) !== '/') {
+      this.githubUrl += '/';
+    }
+    this.githubUrl += 'login/authorize ';
   }
 
   gitHubSignIn(){
