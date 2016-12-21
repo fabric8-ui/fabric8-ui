@@ -53,7 +53,7 @@ module.exports = function (options) {
        *
        * See: http://webpack.github.io/docs/configuration.html#resolve-extensions
        */
-      extensions: ['.ts', '.js'],
+      extensions: ['', '.ts', '.js'],
 
       /**
        * Make sure root is src
@@ -83,7 +83,6 @@ module.exports = function (options) {
          * See: https://github.com/wbuchwalter/tslint-loader
          */
         {
-          enforce: 'pre',
           test: /\.ts$/,
           loader: 'tslint-loader',
           exclude: [helpers.root('node_modules')]
@@ -108,7 +107,6 @@ module.exports = function (options) {
          * See: https://github.com/webpack/source-map-loader
          */
         {
-          enforce: 'pre',
           test: /\.js$/,
           loader: 'source-map-loader',
           exclude: [
@@ -125,19 +123,10 @@ module.exports = function (options) {
          */
         {
           test: /\.ts$/,
-          loader: 'awesome-typescript-loader',
-          query: {
-            // use inline sourcemaps for "karma-remap-coverage" reporter
-            sourceMap: false,
-            inlineSourceMap: true,
-            compilerOptions: {
-
-              // Remove TypeScript helpers to be injected
-              // below by DefinePlugin
-              removeComments: true
-
-            }
-          },
+          loaders: [
+            'awesome-typescript-loader',
+            'angular2-template-loader'
+          ],
           exclude: [/\.e2e\.ts$/]
         },
 
@@ -160,8 +149,23 @@ module.exports = function (options) {
          */
         {
           test: /\.css$/,
-          loaders: ['to-string-loader', 'css-loader'],
-          exclude: [helpers.root('src/index.html')]
+          exclude: helpers.root('src', 'app'),
+          loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+        },
+        {
+          test: /\.css$/,
+          include: helpers.root('src', 'app'),
+          loader: 'raw!postcss'
+        },
+        {
+          test: /\.scss$/,
+          exclude: helpers.root('src', 'app'),
+          loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!resolve-url!sass?sourceMap')
+        },
+        { 
+          test: /\.scss$/,
+          include: helpers.root('src', 'app'),
+          loaders: ['exports-loader?module.exports.toString()', 'css', 'postcss', 'sass']
         },
 
         /**
