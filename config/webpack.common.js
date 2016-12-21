@@ -151,7 +151,7 @@ module.exports = function (options) {
 
         {
           test: /\.scss$/,
-          loaders: ["css-to-string", "css", "sass"]
+          loaders: ["css-to-string", "css-loader", "sass-loader"]
         },
         // old way
 /*
