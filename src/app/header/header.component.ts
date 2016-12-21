@@ -1,3 +1,4 @@
+import { ContextMenuItem } from './../models/context-menu-item';
 import { DummyService } from './../dummy/dummy.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -90,5 +91,23 @@ export class HeaderComponent implements OnInit {
       .subscribe(message => {
         this.resetData();
       });
+  }
+
+  context(): ContextMenuItem {
+    // Find the most specific context menu path and display it
+    // TODO This is brittle
+    let defaultItem;
+    let ret;
+    for (let m of this.dummy.contextMenuItems) {
+      if (this.router.url.startsWith(m.path)) {
+        if (ret == null || m.path.length > ret.path.length) {
+          ret = m;
+        }
+      }
+      if (m.default) {
+        defaultItem = m;
+      }
+    }
+    return ret || defaultItem;
   }
 }

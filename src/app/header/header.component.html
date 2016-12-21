@@ -4,16 +4,14 @@
       <!-- This part of the menu is dynamic based on context -->
       <li class="context dropdown" dropdown>
         <a dropdown-open>
-          <span *ngFor="let m of dummy.contextMenuItems">
-            <span *ngIf="router.url === m.path">
-              <span class="{{m.type.icon}}"></span> {{m.name}}
-            </span>
+          <span>
+            <span class="{{context().type.icon}}"></span> {{context().name}}
           </span>
           <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
           <li *ngFor="let m of dummy.contextMenuItems">
-            <a [routerLink]="[m.path]" *ngIf="router.url.toString() !== m.path"><span class="{{m.type.icon}}"></span> {{m.name}}</a>
+            <a [routerLink]="[m.path]" *ngIf="m != context()"><span class="{{m.type.icon}}"></span> {{m.name}}</a>
           </li>
           <li>
             <a [routerLink]="['/pmuir/spaces']">Browse all</a>

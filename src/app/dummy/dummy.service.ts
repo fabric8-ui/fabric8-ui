@@ -60,28 +60,32 @@ export class DummyService {
           name: 'User',
           icon: 'fa fa-user'
         },
-        path: '/pmuir'
+        path: '/pmuir',
+        default: true
       }, {
         name: 'BalloonPopGame',
         type: {
           name: 'Space',
           icon: 'fa fa-space-shuttle'
         },
-        path: '/pmuir/BalloonPopGame'
+        path: '/pmuir/BalloonPopGame',
+        default: false
       }, {
         name: 'BalloonPopGame / UX Team',
         type: {
           name: 'Team',
           icon: 'fa fa-users'
         },
-        path: '?'
+        path: '?',
+        default: false
       }, {
         name: 'Red Hat Organization',
         type: {
           name: 'Organization',
           icon: 'fa fa-cubes'
         },
-        path: '?'
+        path: '?',
+        default: false
       }
     ];
 
