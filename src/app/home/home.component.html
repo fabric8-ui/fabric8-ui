@@ -72,17 +72,13 @@
                 <div class="col-md-4">
                     <small>{{dummy.resources.startDate | date:'d'}} – {{dummy.resources.endDate | date:'d MMM'}}</small>
                 </div>
+            </div>
+            <div class="row x-small" *ngFor="let r of dummy.resources.list" >
                 <div class="col-md-6">
-                    <small>Pipeline</small>
+                    <small>{{r.type.name}}</small>
                 </div>
                 <div class="col-md-6">
-                    <small>124 of 200 <br /> minutes</small>
-                </div>
-                <div class="col-md-6">
-                    <small>Environments</small>
-                </div>
-                <div class="col-md-6">
-                    <small>7,184 of 18,000 <br />RAM-minutes</small>
+                    <small>{{r.value}} of {{r.max}} <br /> {{r.type.unit}}</small>
                 </div>
             </div>
         </div>
