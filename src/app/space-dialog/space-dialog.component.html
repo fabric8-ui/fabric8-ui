@@ -15,16 +15,13 @@
                 <div class="search-pf-input-group">
                     <!--<input id="space-dialog-dev-process" type="search" class="form-control" placeholder="Choose a Development process for this space">-->
                     <select class="form-control" id="developmentProcess">
-                        <option>Agile</option>
-                        <option>Scrum</option>
-                        <option>Issue Tracking</option>
-                        <option selected>Scenario Driven Planning</option>
+                        <option *ngFor="let p of dummy.processTemplates" >{{p.name}}</option>
                     </select>
                 </div>
             </div>
-            <div class="form-group">
+            <!--<div class="form-group">
                 <button class="btn btn-default" type="button"><span class="caret pull-right icon-caret"></span></button>
-            </div>
+            </div>-->
         </form>
 <!--
         <ul class="devProcessList hide">

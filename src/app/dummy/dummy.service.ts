@@ -1,6 +1,7 @@
 import { ContextMenuItem } from './../models/context-menu-item';
 import { Space } from './../models/space';
 import { Resources } from './../models/resources';
+import { ProcessTemplates } from './../models/process-templates';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
@@ -82,6 +83,13 @@ export class DummyService {
         },
         path: '?'
       }
+    ];
+
+    processTemplates: ProcessTemplates [] = [
+      { name: 'Agile' },
+      { name: 'Scrum' },
+      { name: 'Issue Tracking' },
+      { name: 'Scenario Driven Planning' }
     ];
 
   constructor(private http: Http) { }
