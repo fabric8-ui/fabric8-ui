@@ -366,7 +366,28 @@ class WorkItemDetailPage {
   clickworkItemDetailCancelButton () {
     return this.workItemDetailCancelButton.click();
   }
-
+/**UI elements for comments testSupport  */
+  clickCommentsDiv (){
+    return element(by.id("wi-comment-add-comment")).click();
+  }
+  commentDiv  (){
+    return element(by.id("wi-comment-add-comment"));
+  }
+  writeComment  (comment){
+    return element(by.id("wi-comment-add-comment")).sendKeys(comment);
+  }
+  commentsAvatar (index){
+    return element(by.id("comment_avatar_"+index));
+  }
+  getNumberofComments (){
+    return element(by.css('comments-wrap')).count();
+  }
+  getCommentTime  (index){
+    return element(by.id('comment_time_'+index)).getText();
+  }
+  getCommentBody  (index){
+    return element(by.id('comment_body_'+index)).getText();
+  }
 }
 
 module.exports = WorkItemDetailPage;
