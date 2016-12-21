@@ -99,8 +99,8 @@
             <div class="link-list-wrap" *ngIf="workItem.relationalData.linkDicts">
                 <h4 class="link-list-header">Links</h4>
                 <div *ngFor='let linkDict of workItem.relationalData.linkDicts'>
-                    <h5><strong>{{linkDict.linkName}}</strong></h5>
-                    <ul>
+                    <h5 class="col-md-12 col-sm-12 col-xs-12 no-padding">{{linkDict.linkName}}</h5>
+                    <ul class="col-md-12 col-sm-12 col-xs-12 no-padding">
                         <li *ngFor='let link of linkDict.links' 
                             (click)="onDetail(link, workItem)"
                             class="link-list">
