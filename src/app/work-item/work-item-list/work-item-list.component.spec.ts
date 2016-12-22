@@ -58,22 +58,22 @@ describe('Work item list view - ', () => {
     fakeUserList = [
       {
         attributes: {
-          fullName: 'Harry Potter',
-          imageURL: 'http://nerdist.com/wp-content/uploads/2016/02/20160210_nerdistnews_harrypottercursedchild_1x1.jpg'
+          fullName: 'WILCT Example User 0',
+          imageURL: 'https://avatars.githubusercontent.com/u/2410471?v=3'
         },
-        id: '779efdcc-ac87-4720-925e-949ff21dbf5d'
+        id: 'wilct-user0'
       }, {
         attributes: {
-          fullName: 'Walter Mitty',
-          imageURL: 'http://bestwatchbrandshq.com/wp-content/uploads/2015/01/Ben-Stiller-Watch-In-The-Secret-Life-Of-Walter-Mitty-Movie-9.jpg'
+          fullName: 'WILCT Example User 1',
+          imageURL: 'https://avatars.githubusercontent.com/u/2410472?v=3'
         },
-        id: '39d44ed6-1246-48d6-9190-51ffab67c42e'
+        id: 'wilct-user1'
       }, {
         attributes: {
-          fullName: 'Draco Malfoy',
-          imageURL: 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
+          fullName: 'WILCT Example User 2',
+          imageURL: 'https://avatars.githubusercontent.com/u/2410473?v=3'
         },
-        id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
+        id: 'wilct-user2'
       }
     ] as User[];
 
@@ -90,7 +90,7 @@ describe('Work item list view - ', () => {
       'relationships': {
         'assignees': {
           'data': [{
-            'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
+            'id': 'wilct-user2',
             'type': 'identities'
           }]
         },
@@ -102,7 +102,7 @@ describe('Work item list view - ', () => {
         },
         'creator': {
           'data': {
-            'id': '498c69a9-bb6f-464b-b89c-a1976ed46301',
+            'id': 'wilct-user2',
             'type': 'identities'
           }
         },
@@ -132,10 +132,10 @@ describe('Work item list view - ', () => {
 
     fakeUser = {
       attributes: {
-        'fullName': 'Draco Malfoy',
-        'imageURL': 'http://www.hercampus.com/sites/default/files/2016/01/05/tom-felton-as-draco-malfoy-from-harry-potter.jpg'
+        fullName: 'WILCT Example User 2',
+        imageURL: 'https://avatars.githubusercontent.com/u/2410473?v=3'
       },
-      id: '498c69a9-bb6f-464b-b89c-a1976ed46301'
+      id: 'wilct-user2'
     } as User;
 
     fakeWorkItemTypes = [

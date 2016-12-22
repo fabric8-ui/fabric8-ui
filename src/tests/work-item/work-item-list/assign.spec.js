@@ -114,7 +114,7 @@ var waitTime = 30000;
       expect(detailPage.details_assigned_user().getText()).toContain("Example User 1");
       detailPage.details_assigned_user().click();
       detailPage.clickworkItemDetailCancelButton();
-      expect(detailPage.details_assigned_user().getText()).toContain("Harry Potter");
+      expect(detailPage.details_assigned_user().getText()).toContain("Example User 1");
       // TODO Fails on Chrome
       // detailPage.clickWorkItemDetailCloseButton();
       // page.clickWorkItemTitle(page.firstWorkItem, text);

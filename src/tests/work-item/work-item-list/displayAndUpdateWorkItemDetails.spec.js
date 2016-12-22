@@ -24,6 +24,17 @@ var until = protractor.ExpectedConditions;
 var waitTime = 30000;
 
   beforeEach(function () {
+
+    /* Comment in to enable browser log dump to test console
+    browser.manage().logs()
+      .get('browser').then(function(browserLog) {
+        browserLog.forEach(function(entry) {
+          if (entry.level.name_!="DEBUG")
+            console.log(entry.level.name_ + " - " + entry.message);
+        });
+    });
+    */
+
     testSupport.setBrowserMode('phone');
     page = new WorkItemListPage(true);
   });

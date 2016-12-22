@@ -65,7 +65,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     fakeUserList = [
       {
         attributes: {
-          fullName: 'Harry Potter',
+          fullName: 'WIDCT Example User 0',
           imageURL: 'http://nerdist.com/wp-content/uploads/2016/02/20160210_nerdistnews_harrypottercursedchild_1x1.jpg'
         },
         id: '779efdcc-ac87-4720-925e-949ff21dbf5d'
@@ -597,7 +597,7 @@ describe('Detailed view and edit a selected work item - ', () => {
       comp.loggedIn = fakeAuthService.isLoggedIn();             
       fixture.detectChanges();
       el = fixture.debugElement.query(By.css('#WI_details_reporter_user'));      
-      expect(el.nativeElement.textContent).toContain('Harry Potter');
+      expect(el.nativeElement.textContent).toContain('Example User 0');
   });
 
 });

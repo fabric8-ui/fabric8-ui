@@ -93,6 +93,33 @@ export class MockDataService {
     }
     var localWorkItem = this.makeCopy(entity.data);
     localWorkItem.id = this.createId();
+    localWorkItem.links = { 
+          'self': 'http://mock.service/api/workitems/id' + localWorkItem.id
+        };
+    localWorkItem.relationships = { 
+          'assignees': { }, 
+          'baseType': { 
+            'data': { 
+              'id': 'system.userstory', 
+              'type': 'workitemtypes' 
+            } 
+          }, 
+          'comments': { 
+            'links': { 
+              'related': 'http://mock.service/api/workitems/id' + localWorkItem.id + '/comments',
+              'self': 'http://mock.service/api/workitems/id' + localWorkItem.id + '/relationships/comments' 
+            } 
+          }, 
+          'creator': { 
+            'data': { 
+              'id': 'some-creator-id', 
+              'links': {
+                'self': 'http://mock.service/api/users/some-creator-id'
+              },
+              'type': 'identities' 
+            } 
+          } 
+        };
     this.workItems.push(localWorkItem);
     return { data: this.makeCopy(localWorkItem) };
   }
