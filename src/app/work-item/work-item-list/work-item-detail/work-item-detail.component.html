@@ -150,6 +150,11 @@
                 </div>
               </div>
           </div>
+          <div class="pull-right col-md-6 col-sm-6 col-xs-12 no-padding">
+            <span id="created_at" title="{{workItem.attributes['system.created_at'] | date:'fullDate'}}">
+              Created at: {{ workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'}}
+            </span>            
+          </div>
       </div>
       <!--Creator-->      
       <div 

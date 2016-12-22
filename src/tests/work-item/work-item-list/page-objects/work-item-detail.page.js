@@ -388,6 +388,10 @@ class WorkItemDetailPage {
   getCommentBody  (index){
     return element(by.id('comment_body_'+index)).getText();
   }
+/**UI elements for created time WI */
+  getCreatedtime  (){
+    return element(by.id('created_at')).getText();
+  }
 }
 
 module.exports = WorkItemDetailPage;
