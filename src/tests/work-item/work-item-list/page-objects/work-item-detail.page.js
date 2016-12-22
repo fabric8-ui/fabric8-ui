@@ -392,6 +392,25 @@ class WorkItemDetailPage {
   getCreatedtime  (){
     return element(by.id('created_at')).getText();
   }
+  /**UI elements for creator*/
+  getCreatorLabel (){
+    return element(by.id('creator_label')).getText();
+  }
+  getCreatorDefaultIcon (){
+    return element(by.id('user_creator_icon'));
+  }
+  clickCreatorDefaultIcon (){
+    return element(by.id('user_creator_icon')).click();
+  }
+  getCreatorAvatar  (){
+    return element(by.id('WI_details_reporter_img'));
+  }
+  clickCreatorAvatar  (){
+    return element(by.id('WI_details_reporter_img')).click();
+  }
+  getCreatorUsername  (){
+    return element(by.id('WI_details_reporter_user')).getText();
+  }
 }
 
 module.exports = WorkItemDetailPage;

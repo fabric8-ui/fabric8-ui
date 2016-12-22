@@ -159,9 +159,9 @@
       <!--Creator-->      
       <div 
         class="width100 pull-left paddingL20 paddingR20 common-wrap">        
-        <span class="pull-left user-label">Creator</span>
+        <span class="pull-left user-label" id="creator_label">Creator</span>
           <span *ngIf="!workItem.relationalData?.creator"
-             class="pull-left fa pficon-user user-creator-icon">
+             class="pull-left fa pficon-user user-creator-icon" id="user_creator_icon">
           </span>
           <img *ngIf="workItem.relationalData?.creator"            
             class="pull-left user-avatar"
