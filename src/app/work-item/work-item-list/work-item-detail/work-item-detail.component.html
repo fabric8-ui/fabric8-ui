@@ -30,7 +30,7 @@
             id="title-click-div">
               <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate">{{ workItem.attributes['system.title'] }}</h2>
               <h2 *ngIf="loggedIn" id="wi-detail-title-click" class="detail-title truncate">{{ workItem.attributes['system.title'] }}</h2>
-              <span *ngIf="loggedIn" 
+              <span *ngIf="loggedIn && workItem.id" 
                 class="pficon-edit marginL10 fl detail-title-edit-ico" 
                 id="workItemTitle_btn_edit"></span>
           </div>
