@@ -9,10 +9,9 @@
   <span class="pficon-close detail-close" (click)="closePanel()"></span>
 </div>
 
-<div class="add-detailed-wi" (click)="showTypes()">
+<div class="add-detailed-wi" tooltipPlacement="bottom" tooltip="Add A Work Item" (click)="showTypes()">
   <span class="fa fa-plus icon"></span>
 </div>
-
 <div class="detail-list-container" [class.containerPadd-nologin] = "!loggedIn" >  
   <div class="list-action">
     <h4 class="list-type">Backlog</h4>

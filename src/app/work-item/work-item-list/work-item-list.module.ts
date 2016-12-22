@@ -1,6 +1,7 @@
 import { NgModule }           from '@angular/core';
 import { CommonModule }       from '@angular/common';
 import { DropdownModule } from 'ng2-dropdown';
+import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 
 import { AlmIconModule }      from '../../shared-component/icon/almicon.module';
 import { AlmArrayFilter } from '../../pipes/alm-array-filter.pipe';
@@ -23,7 +24,8 @@ import { UsersResolve, AuthUserResolve } from '../users.resolver';
     CommonModule,
     DialogModule,
     DropdownModule,
-    InfiniteScrollModule,    
+    InfiniteScrollModule,  
+    TooltipModule,  
     WorkItemDetailModule,
     WorkItemListRoutingModule,
     WorkItemQuickAddModule,
