@@ -70,9 +70,9 @@ var waitTime = 30000;
       page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
       detailPage.workItemDetailAssigneeIcon().click();
-      detailPage.setWorkItemDetailAssigneeSearch("Walter Mitty",false);
-      detailPage.clickAssignedUserDropDownList("Walter Mitty");
-      expect(detailPage.details_assigned_user().getText()).toContain("Walter Mitty");
+      detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
+      detailPage.clickAssignedUserDropDownList("Example User 1");
+      expect(detailPage.details_assigned_user().getText()).toContain("Example User 1");
       // TODO Fails on Chrome
       // detailPage.clickWorkItemDetailCloseButton();
       // page.clickWorkItemTitle(page.firstWorkItem, text);
@@ -147,6 +147,11 @@ var waitTime = 30000;
   });
   /**Test name and avatar are shown up in the drop down */ 
   it('Test name and avatar are shown up in the drop down -phone ', function() {
+    var workItemTitle = "The test workitem title";
+      var workItemUpdatedTitle = "The test workitem title - UPDATED";
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle(workItemTitle);
+      page.clickQuickAddSave();
       page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
       detailPage.workItemDetailAssigneeIcon().click();
