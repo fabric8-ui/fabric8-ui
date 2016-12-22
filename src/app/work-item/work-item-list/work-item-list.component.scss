@@ -1,5 +1,6 @@
 @import "../../../assets/stylesheets/color-variables";
 @import "../../../assets/stylesheets/custom";
+@import "../../../assets/stylesheets/mixins";
 
 .add-detailed-wi{
   text-align: center;  
@@ -26,28 +27,34 @@
 .types-modal{
   background-color: $color-pf-white;
   position: absolute;
-  top: em(95);  
-  height: 90%;
+  top: em(88);  
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   z-index: 11;
+  overflow-y: scroll;
   .xl-font{
     font-size: em(30);
   }
-  h5{
-    padding-left: em(20);
-  }
-  ul{
-    list-style: none;    
+  .wiTypeList{
+    list-style: none; 
     li{      
-        float: left;
-        width: em(150);
         height: em(180);
         border: 1px solid $color-pf-black-200;
-        text-align: center;
-        margin: em(20) em(10);
-        padding-top: em(50);
+        position: relative;
         color: $color-pf-black;
         cursor: pointer;
+        width: calc(25% - 1.667em);
+        margin: em(10);
+        float: left;
+        .wiTypeListBlk{
+          position: absolute;
+          top:50%;
+          left: 50%;
+          @include transform(translate(-50%, -50%));
+          text-align: $textCenter;
+        }
       }
     li:hover {
       color:  $color-pf-blue-400;
@@ -156,5 +163,12 @@
     width: $width100;
     padding: 0 ;
     top:0;
+  }
+  .types-modal{
+    .wiTypeList{
+    li{ 
+      width: calc(50% - 1.667em);
+      }
+    }
   }
 }
