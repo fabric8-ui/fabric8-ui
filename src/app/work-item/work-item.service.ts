@@ -154,6 +154,7 @@ export class WorkItemService {
     if (id in this.workItemIdIndexMap) {
       let wItem = this.workItems[this.workItemIdIndexMap[id]];
       this.resolveComments(wItem);
+      this.resolveLinks(wItem);
       return Promise.resolve(wItem);
     } else {
       this.buildUserIdMap();

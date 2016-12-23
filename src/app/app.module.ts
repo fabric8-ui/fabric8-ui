@@ -11,11 +11,6 @@ import { TabsModule } from 'ng2-bootstrap/components/tabs';
 import { ModalModule } from 'ng2-modal';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 
-// Imports for loading & configuring the in-memory web api
-// if not used will be removed for production by treeshaking
-import { InMemoryDataService } from './in-memory-data.service';
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api/in-memory-web-api.module';
-
 // Shared
 import { AuthenticationService } from './auth/authentication.service';
 import { Broadcaster } from './shared/broadcaster.service';
