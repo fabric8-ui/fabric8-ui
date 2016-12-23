@@ -79,12 +79,20 @@ export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
 
   save(event: any = null): void {
     if (event) event.preventDefault();
-    if (this.workItem.attributes['system.title'] != null) {
-      this.workItem.attributes['system.title'] = this.workItem.attributes['system.title'].trim();
-    }
-    if (this.workItem.attributes['system.description'] != null) {
-      this.workItem.attributes['system.description'] = this.workItem.attributes['system.description'].trim();
-    }
+
+    // Do we have a real title?
+    // If yes, trim; if not, reassign it as a (blank) string.
+    this.workItem.attributes['system.title'] =
+      (!!this.workItem.attributes['system.title']) ?
+        this.workItem.attributes['system.title'].trim() : "";
+
+    // Same treatment as title, but this is more important.
+    // As we're validating title in the next step
+    // But passing on description as is (causing data type issues)
+    this.workItem.attributes['system.description'] =
+      (!!this.workItem.attributes['system.description']) ?
+        this.workItem.attributes['system.description'].trim() : "";
+
     if (this.workItem.attributes['system.title']) {
       this.workItemService
         .create(this.workItem)

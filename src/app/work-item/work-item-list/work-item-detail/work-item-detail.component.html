@@ -193,11 +193,10 @@
                 id="wi-detail-desc" 
                 class="description"
                 [innerText]="
-                  workItem.attributes['system.description'] ? 
+                  !!workItem.attributes['system.description'] ?
                     workItem.attributes['system.description'] : 
                     descEditable ? 
-                      workItem.attributes['system.description'] : 
-                      'Work item description.'">
+                      '' : 'Work item description.'">
               </p>
               <div class="edit-icon">
                 <span id="workItemDesc_btn_edit" class="pficon-edit" 
