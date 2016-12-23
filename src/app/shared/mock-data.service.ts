@@ -3,7 +3,16 @@ import { Logger } from './../shared/logger.service';
 import { Injectable } from '@angular/core';
 import { WorkItem } from '../work-item/work-item';
 
+// mock data generators
+import { SchemaMockGenerator } from './mock-data/schema-mock-generator';
+import { WorkItemMockGenerator } from './mock-data/work-item-mock-generator';
+import { UserMockGenerator } from './mock-data/user-mock-generator';
+
 /*
+  This class provides a mock database store for entities. It provides
+  CRUD operations on entities as well as some auxiliary methods, like users
+  and identities.
+
   NOTE: IMPORTANT:
     if returning data to the http service, ALWAYS return vanity copies of
     objects, NOT THE LIVING REFERENCES TO STRUCTURES STORED HERE. As the 'real'
@@ -11,19 +20,27 @@ import { WorkItem } from '../work-item/work-item';
     original behaviour. Also, the returnes references ARE RE-USED, so data could
     change without this class noticing it! THIS HAPPENS. IT HAPPENED. IT SUCKS!
 */
-
 @Injectable()
 export class MockDataService {
 
+  // mock data generators
+  private schemaMockGenerator: SchemaMockGenerator = new SchemaMockGenerator();
+  private workItemMockGenerator: WorkItemMockGenerator = new WorkItemMockGenerator();
+  private userMockGenerator: UserMockGenerator = new UserMockGenerator();
+
+  // persistence store, the MockDataService is a singleton when injected as a service.
   private workItems: any[];
   private workItemLinks: any[];
   private workItemComments: any;
 
   constructor() {
-    this.workItems = this.createInitialWorkItems();
-    this.workItemLinks = this.createInitialWorkItemLinks();
-    this.workItemComments = this.createInitialWorkItemComments();
+    // create initial data store
+    this.workItems = this.workItemMockGenerator.createWorkItems();
+    this.workItemLinks = this.workItemMockGenerator.createWorkItemLinks();
+    this.workItemComments = this.workItemMockGenerator.createWorkItemComments();
   }
+
+  // utility methods
 
   private createId(): string {
     var id = '';
@@ -40,19 +57,10 @@ export class MockDataService {
 
   // data accessors
 
-  public getWorkItemLinks(): any {
-    return this.makeCopy(this.workItemLinks);
-  }
+  // work items and dependend entities (comments, ..)
 
   public getWorkItems(): any {
     return this.makeCopy(this.workItems);
-  }
-
-  public createWorkItemLink(workItemLink: any): any {
-    var localWorkItemLink = this.makeCopy(workItemLink);
-    localWorkItemLink.id = this.createId();
-    this.workItemLinks.push(localWorkItemLink);
-    return this.makeCopy(localWorkItemLink);
   }
 
   public createWorkItemOrEntity(extraPath: string, entity: any): any {
@@ -155,29 +163,10 @@ export class MockDataService {
     return null;
   }
 
-  public updateWorkItemLink(workItemLink: any): any {
-    var localWorkItemLink = this.makeCopy(workItemLink);
-    for (var i = 0; i < this.workItemLinks.length; i++)
-      if (this.workItemLinks[i].id === localWorkItemLink.id) {
-        this.workItemLinks.splice(i, 1, localWorkItemLink);
-        return this.makeCopy(localWorkItemLink);
-      }
-    return null;
-  }
-
   public deleteWorkItem(id: string): boolean {
     for (var i = 0; i < this.workItems.length; i++)
       if (this.workItems[i].id === id) {
         this.workItems.splice(i, 1);
-        return true;
-      }
-      return false;
-  }
-
-  public deleteWorkItemLink(id: string): boolean {
-    for (var i = 0; i < this.workItemLinks.length; i++)
-      if (this.workItemLinks[i].id === id) {
-        this.workItemLinks.splice(i, 1);
         return true;
       }
       return false;
@@ -191,6 +180,48 @@ export class MockDataService {
       return false;
   }
 
+  // work item links
+
+  public getWorkItemLinks(): any {
+    return this.makeCopy(this.workItemLinks);
+  }
+
+  public createWorkItemLink(workItemLink: any): any {
+    var localWorkItemLink = this.makeCopy(workItemLink);
+    localWorkItemLink.id = this.createId();
+    this.workItemLinks.push(localWorkItemLink);
+    return this.makeCopy(localWorkItemLink);
+  }
+
+  public updateWorkItemLink(workItemLink: any): any {
+    var localWorkItemLink = this.makeCopy(workItemLink);
+    for (var i = 0; i < this.workItemLinks.length; i++)
+      if (this.workItemLinks[i].id === localWorkItemLink.id) {
+        this.workItemLinks.splice(i, 1, localWorkItemLink);
+        return this.makeCopy(localWorkItemLink);
+      }
+    return null;
+  }
+
+  public deleteWorkItemLink(id: string): boolean {
+    for (var i = 0; i < this.workItemLinks.length; i++)
+      if (this.workItemLinks[i].id === id) {
+        this.workItemLinks.splice(i, 1);
+        return true;
+      }
+      return false;
+  }
+
+  // user and identities
+
+  public getUser(): any {
+    return this.userMockGenerator.getUser();
+  }
+
+  public getAllUsers(): any {
+    return this.userMockGenerator.getIdentities();
+  }
+
   public getLoginStatus() {
     return {
       'status': 200,
@@ -198,546 +229,13 @@ export class MockDataService {
     };
   }
 
-  public getWorkItemTypes() {
-    return [
-      {
-        'fields': {
-          'system.assignee': {
-            'required': false,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.creator': {
-            'required': true,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.description': {
-            'required': false,
-            'type': {
-              'kind': 'string'
-            }
-          },
-          'system.remote_item_id': {
-            'required': false,
-            'type': {
-              'kind': 'string'
-            }
-          },
-          'system.state': {
-            'required': true,
-            'type': {
-              'baseType': 'string',
-              'kind': 'enum',
-              'values': [
-                'new',
-                'open',
-                'in progress',
-                'resolved',
-                'closed'
-              ]
-            }
-          },
-          'system.title': {
-            'required': true,
-            'type': {
-              'kind': 'string'
-            }
-          }
-        },
-        'name': 'system.userstory',
-        'version': 0
-      },
-      {
-        'fields': {
-          'system.assignee': {
-            'required': false,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.creator': {
-            'required': true,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.description': {
-            'required': false,
-            'type': {
-              'kind': 'string'
-            }
-          },
-          'system.remote_item_id': {
-            'required': false,
-            'type': {
-              'kind': 'string'
-            }
-          },
-          'system.state': {
-            'required': true,
-            'type': {
-              'baseType': 'string',
-              'kind': 'enum',
-              'values': [
-                'new',
-                'open',
-                'in progress',
-                'resolved',
-                'closed'
-              ]
-            }
-          },
-          'system.title': {
-            'required': true,
-            'type': {
-              'kind': 'string'
-            }
-          }
-        },
-        'name': 'system.valueproposition',
-        'version': 0
-      },
-      {
-        'fields': {
-          'system.assignee': {
-            'required': false,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.creator': {
-            'required': true,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.description': {
-            'required': false,
-            'type': {
-              'kind': 'string'
-            }
-          },
-          'system.remote_item_id': {
-            'required': false,
-            'type': {
-              'kind': 'string'
-            }
-          },
-          'system.state': {
-            'required': true,
-            'type': {
-              'baseType': 'string',
-              'kind': 'enum',
-              'values': [
-                'new',
-                'open',
-                'in progress',
-                'resolved',
-                'closed'
-              ]
-            }
-          },
-          'system.title': {
-            'required': true,
-            'type': {
-              'kind': 'string'
-            }
-          }
-        },
-        'name': 'system.fundamental',
-        'version': 0
-      },
-      {
-        'fields': {
-          'system.assignee': {
-            'required': false,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.creator': {
-            'required': true,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.description': {
-            'required': false,
-            'type': {
-              'kind': 'string'
-            }
-          },
-          'system.remote_item_id': {
-            'required': false,
-            'type': {
-              'kind': 'string'
-            }
-          },
-          'system.state': {
-            'required': true,
-            'type': {
-              'baseType': 'string',
-              'kind': 'enum',
-              'values': [
-                'new',
-                'open',
-                'in progress',
-                'resolved',
-                'closed'
-              ]
-            }
-          },
-          'system.title': {
-            'required': true,
-            'type': {
-              'kind': 'string'
-            }
-          }
-        },
-        'name': 'system.experience',
-        'version': 0
-      },
-      {
-        'fields': {
-          'system.assignee': {
-            'required': false,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.creator': {
-            'required': true,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.description': {
-            'required': false,
-            'type': {
-              'kind': 'string'
-            }
-          },
-          'system.remote_item_id': {
-            'required': false,
-            'type': {
-              'kind': 'string'
-            }
-          },
-          'system.state': {
-            'required': true,
-            'type': {
-              'baseType': 'string',
-              'kind': 'enum',
-              'values': [
-                'new',
-                'open',
-                'in progress',
-                'resolved',
-                'closed'
-              ]
-            }
-          },
-          'system.title': {
-            'required': true,
-            'type': {
-              'kind': 'string'
-            }
-          }
-        },
-        'name': 'system.feature',
-        'version': 0
-      },
-      {
-        'fields': {
-          'system.assignee': {
-            'required': false,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.creator': {
-            'required': true,
-            'type': {
-              'kind': 'user'
-            }
-          },
-          'system.description': {
-            'required': false,
-            'type': {
-              'kind': 'string'
-            }
-          },
-          'system.remote_item_id': {
-            'required': false,
-            'type': {
-              'kind': 'string'
-            }
-          },
-          'system.state': {
-            'required': true,
-            'type': {
-              'baseType': 'string',
-              'kind': 'enum',
-              'values': [
-                'new',
-                'open',
-                'in progress',
-                'resolved',
-                'closed'
-              ]
-            }
-          },
-          'system.title': {
-            'required': true,
-            'type': {
-              'kind': 'string'
-            }
-          }
-        },
-        'name': 'system.bug',
-        'version': 0
-      }
-    ];
-  }
+  // schemas
 
-  public getUser(): any {
-    return {
-      attributes: {
-        fullName: 'Example User 0',
-        imageURL: 'https://avatars.githubusercontent.com/u/2410471?v=3'
-      },
-      id: 'user0',
-      type: 'identities'
-    };
-  }
-
-  public getAllUsers(): any {
-    return [
-      {
-        attributes: {
-          fullName: 'Example User 0',
-          imageURL: 'https://avatars.githubusercontent.com/u/2410471?v=3'
-        },
-        id: 'user0',
-        type: 'identities'
-      }, {
-        attributes: {
-          fullName: 'Example User 1',
-          imageURL: 'https://avatars.githubusercontent.com/u/2410472?v=3'
-        },
-        id: 'user1',
-        type: 'identities'
-      }, {
-        attributes: {
-          fullName: 'Example User 2',
-          imageURL: 'https://avatars.githubusercontent.com/u/2410473?v=3'
-        },
-        id: 'user2',
-        type: 'identities'
-      }, {
-        attributes: {
-          fullName: 'Example User 3',
-          imageURL: 'https://avatars.githubusercontent.com/u/2410474?v=3'
-        },
-        id: 'user3',
-        type: 'identities'
-      }
-    ];
- }
-
-  public getLinkCategories(): any {
-    return {
-      'data': this.getWorkItemLinkTypes().included,
-      'meta': {
-        'totalCount': this.getWorkItemLinkTypes().included.length
-      }
-    };
+  public getWorkItemTypes(): any {
+    return this.schemaMockGenerator.getWorkItemTypes();
   }
 
   public getWorkItemLinkTypes(): any {
-    return {
-      'data': [
-        {
-          'id': 'wilt-0',
-          'attributes': {
-            'description': 'A demo work item link type',
-            'forward_name': 'tests',
-            'name': 'demo-tested-by',
-            'reverse_name': 'tested by',
-            'topology': 'network',
-            'version': 0
-          },
-          'links': {
-            'self': 'http://mock.service/api/workitemlinkcategories/wil-0'
-          },
-          'relationships': {
-            'link_category': {
-              'data': {
-                'id': 'wilt-cat-0',
-                'type': 'workitemlinkcategories'
-              }
-            },
-            'source_type': {
-              'data': {
-                'id': 'system.planneritem',
-                'type': 'workitemtypes'
-              }
-            },
-            'target_type': {
-              'data': {
-                'id': 'system.planneritem',
-                'type': 'workitemtypes'
-              }
-            }
-          },
-          'type': 'workitemlinktypes'
-          }
-      ],
-      'included': [
-        {
-          'id': 'wilt-cat-0',
-          'type': 'workitemlinkcategories',
-          'attributes': {
-            'description': 'The system category is reserved for link types that are to be manipulated by the system only.',
-            'name': 'system',
-            'version': 38
-          }
-        },
-        {
-          'id': 'wilt-cat-1',
-          'type': 'workitemlinkcategories',
-          'attributes': {
-            'description': 'The user category is reserved for link types that can to be manipulated by the user.',
-            'name': 'user',
-            'version': 38
-          }
-        }
-      ],
-      'meta': {
-        'totalCount': 1
-      }
-    };
+    return this.schemaMockGenerator.getWorkItemLinkTypes();
   }
-
-  // initial data creators - might be loaded from fixtures in the future
-
-  private createInitialWorkItems(): any {
-    let workitems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].map((n) => {
-      return {
-        'attributes': { 
-          'system.created_at': '0001-01-01T00:00:00Z', 
-          'system.description': 'Description Text ' + n, 
-          'system.remote_item_id': 'remote_id_' + n, 
-          'system.state': 'new', 
-          'system.title': 'Title Text ' + n, 
-          'version': 6 
-        }, 
-        'id': 'id' + n, 
-        'links': { 
-          'self': 'http://mock.service/api/workitems/id' + n 
-        }, 
-        'relationships': { 
-          'assignees': { }, 
-          'baseType': { 
-            'data': { 
-              'id': 'system.userstory', 
-              'type': 'workitemtypes' 
-            } 
-          }, 
-          'comments': { 
-            'links': { 
-              'related': 'http://mock.service/api/workitems/id' + n + '/comments',
-              'self': 'http://mock.service/api/workitems/id' + n + '/relationships/comments' 
-            } 
-          }, 
-          'creator': { 
-            'data': { 
-              'id': 'some-creator-id', 
-              'links': {
-                'self': 'http://mock.service/api/users/some-creator-id'
-              },
-              'type': 'identities' 
-            } 
-          } 
-        }, 
-        'iteration': {},
-        'type': 'workitems' 
-      };
-    });
-    return workitems;
-  }
-
-  private createInitialWorkItemComments(): any {
-    // map, key is work item id, value is comment structure
-    return {
-      'id0':
-        {
-          'data': [
-            {
-              'attributes': {
-                'body': 'Some Comment 0',
-                'created-at': '2000-01-01T09:00:00.000000Z'
-              },
-              'id': 'comment-0',
-              'links': {
-                'self': 'http://demo.api.almighty.io/api/comments/comment-0'
-              },
-              'relationships': {
-                'created-by': {
-                  'data': {
-                    'id': 'user0',
-                    'type': 'identities'
-                  }
-                }
-              },
-              'type': 'comments'
-            }
-          ]
-        }
-    };
-  }
-
-  private createInitialWorkItemLinks(): any {
-    return { 
-      data: [ 
-        {
-          id: 'wil-0',
-          type: 'workitemlinks',
-          attributes: {
-              version: 0
-          },
-          'links': {
-            'self': 'http://mock.service/api/workitemlinks/wil-0'
-          },
-          relationships: {
-            link_type: {
-              data: {
-                id: 'wilt-0',
-                type: 'workitemlinktypes'
-              }
-            },
-            source: {
-              data: {
-                  id: 'id0',
-                  type: 'workitems'
-              }
-            },
-            target: {
-              data: {
-                  id: 'id1',
-                  type: 'workitems'
-              }
-            }
-          }
-        }
-      ],
-      'meta': {
-        'totalCount': 1
-      }
-    };
-  }
-
 }

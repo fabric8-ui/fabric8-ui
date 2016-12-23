@@ -67,6 +67,11 @@ var waitTime = 30000;
   }); 
   /**Test to update the assigned user */ 
   it('Test to update the assigned user  -phone ', function() {
+    var workItemTitle = "The test workitem title";
+      var workItemUpdatedTitle = "The test workitem title - UPDATED";
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle(workItemTitle);
+      page.clickQuickAddSave();
       page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
       detailPage.workItemDetailAssigneeIcon().click();

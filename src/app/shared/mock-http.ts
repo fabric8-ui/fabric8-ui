@@ -11,6 +11,21 @@ import { Response, ResponseOptions, ResponseOptionsArgs } from '@angular/http';
 import { Logger } from './../shared/logger.service';
 import { MockDataService } from './mock-data.service';
 
+/*
+ * This class provides a mock of the Angular 2 stock http service. It replaces
+ * the stock http service when the mock is used. Currently, the service is
+ * replaced 'manually'. When the Angular 2 API on the injectors are more stable,
+ * this class should be submitted to the Angular injector service to replace
+ * the http service on injection. Currently, this API is unstable and changes 
+ * frequently, so we did not use it. 
+ * 
+ * How to extend the mock: when extending the mock service, you need to modify
+ * this class and add new behaviour to the http method functions below. Then you
+ * may need to extend the MockDataService to handle new entities and their storage.
+ * Actual mock data is placed in the mock generator classes to keep mock data
+ * seperated from logic. Note that the generators should only deal with initial data
+ * generation, not with persistence or logic. 
+ */
 @Injectable()
 export class MockHttp extends Http {
 
@@ -26,7 +41,13 @@ export class MockHttp extends Http {
       this.mockDataService = injector.get(MockDataService);
     };
 
+    /*
+     * Parses the REST URL, returns a structure describing the base path, params
+     * and extra path values.
+     */
     parseURL(url: string): any {
+      // TODO: when the url patterns get more complex, we should consider re-using 
+      // some sort of REST URL parsing library to get a proper routing concept. 
       var a = document.createElement('a');
       a.href = url;
       var query = a.search.substr(1);
@@ -53,6 +74,12 @@ export class MockHttp extends Http {
       return result;
     }
 
+    /*
+     * Creates and returns a http response structure wrapped in an Observable
+     * compatible with the stock http service return values. All results of the
+     * service must be wrapped in this envelope to be compatible with the
+     * stock http service API.
+     */ 
     createResponse(url: string, status: number, statusText: string, body: any): Observable<Response> {
       // future extension if needed: may also include headers:Headers
       var responseOptions = new ResponseOptions({
@@ -65,6 +92,11 @@ export class MockHttp extends Http {
       return Observable.of(res);
     }
 
+    /*
+     * Creates (slices) the requested paging set of a request. Takes the
+     * page parameters (offset, size) from the params and slices the
+     * work item set accordingly.
+     */
     createPage(workItems: any[], params: any): any {
       var offset: number = 0;
       var limit: number = 20;
@@ -100,8 +132,9 @@ export class MockHttp extends Http {
         this.logger.error('HTTP Requests with Request object arguments are not supported yet.');
       return null;
     };
-    /**
-     * Performs a request with `get` http method.
+
+    /*
+     * Performs a request with 'get' http method.
      */
     get(url: string, options?: RequestOptionsArgs): Observable<Response> {
       var path = this.parseURL(url);
@@ -138,8 +171,9 @@ export class MockHttp extends Http {
           return this.createResponse(url.toString(), 500, 'not supported yet.', { } );
       }
     };
-    /**
-     * Performs a request with `post` http method.
+
+    /*
+     * Performs a request with 'post' http method.
      */
     post(url: string, body: any, options?: RequestOptionsArgs): Observable<Response> {
       this.logger.log('POST request at ' + url);
@@ -157,8 +191,9 @@ export class MockHttp extends Http {
       } else 
         return this.createResponse(url.toString(), 500, 'POST to unknown resource: ' + path.path, {});        
     };
-    /**
-     * Performs a request with `put` http method.
+
+    /*
+     * Performs a request with 'put' http method.
      */
     put(url: string, body: any, options?: RequestOptionsArgs): Observable<Response> {
       this.logger.log('PUT request at ' + url);
@@ -182,8 +217,9 @@ export class MockHttp extends Http {
       } else 
         return this.createResponse(url.toString(), 500, 'PUT to unknown resource: ' + path.extraPath, {});      
     };
-    /**
-     * Performs a request with `delete` http method.
+
+    /*
+     * Performs a request with 'delete' http method.
      */
     delete(url: string, options?: RequestOptionsArgs): Observable<Response> {
       this.logger.log('DELETE request at ' + url);
@@ -204,8 +240,9 @@ export class MockHttp extends Http {
           return this.createResponse(url.toString(), 500, 'WorkItemLink does not exist: ' + path.extraPath, {});  
       }
     };
-    /**
-     * Performs a request with `patch` http method.
+
+    /*
+     * Performs a request with 'patch' http method.
      */
     patch(url: string, body: any, options?: RequestOptionsArgs): Observable<Response> {
       // Note: this assumes the PATCH request contains the full entity in the body!
@@ -230,15 +267,17 @@ export class MockHttp extends Http {
       } else 
         return this.createResponse(url.toString(), 500, 'PATCH to unknown resource: ' + path.extraPath, {});    
     };
-    /**
-     * Performs a request with `head` http method.
+
+    /*
+     * Performs a request with 'head' http method.
      */
     head(url: string, options?: RequestOptionsArgs): Observable<Response> {
       this.logger.log('HEAD request at ' + url);
       return this.createResponse(url.toString(), 500, 'PATCH method not implemented in mock-http.', {});
     };
-    /**
-     * Performs a request with `options` http method.
+
+    /*
+     * Performs a request with 'options' http method.
      */
     options(url: string, options?: RequestOptionsArgs): Observable<Response> {
       this.logger.log('OPTIONS request at ' + url);
