@@ -51,6 +51,7 @@ export class AlmEditableDirective implements OnInit, OnChanges {
 
   makeEditable() {
     this.element.setAttribute('contenteditable', 'true');
+    this.element.focus();
   }
 
   makeNonEditable() {
@@ -62,5 +63,22 @@ export class AlmEditableDirective implements OnInit, OnChanges {
     if (this.editable) {
       this.onEdit();
     }
+  }
+
+  @HostListener('focus')
+  focusField() {
+    setTimeout(() => {
+      if (this.element.childNodes.length) {
+        let range = document.createRange();
+        let sel = window.getSelection();
+        range.setStart(
+          this.element.childNodes[this.element.childNodes.length - 1],
+          this.element.childNodes[this.element.childNodes.length - 1].nodeValue.length
+        );
+        range.collapse(true);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    });
   }
 }
