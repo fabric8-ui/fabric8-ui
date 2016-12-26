@@ -9,7 +9,6 @@ import {
   transition
 } from '@angular/core';
 import { Router }            from '@angular/router';
-import { DragulaService } from 'ng2-dragula/ng2-dragula';
 
 import { WorkItem } from './../../models/work-item';
 import { WorkItemService } from './../work-item.service';

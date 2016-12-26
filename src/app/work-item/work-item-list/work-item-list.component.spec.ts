@@ -15,6 +15,8 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CommonModule } from '@angular/common';
 
+import { DndModule } from 'ng2-dnd';
+
 import { Broadcaster } from '../../shared/broadcaster.service';
 import { Logger } from '../../shared/logger.service';
 import { Dialog } from '../../shared-component/dialog/dialog';
@@ -223,24 +225,25 @@ describe('Work item list view - ', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        FormsModule,  
-        RouterTestingModule,      
+        FormsModule,
+        RouterTestingModule,
         CommonModule,
+        DndModule.forRoot(),
         AlmIconModule,
         DialogModule,
         InfiniteScrollModule,
-        WorkItemQuickAddModule      
+        WorkItemQuickAddModule
       ],
 
       declarations: [
-        AlmArrayFilter,        
-        WorkItemListEntryComponent,       
-        WorkItemListComponent        
+        AlmArrayFilter,
+        WorkItemListEntryComponent,
+        WorkItemListComponent
       ],
       providers: [
         Broadcaster,
         Logger,
-        
+
         Location,
         {
           provide: AuthenticationService,
@@ -259,7 +262,7 @@ describe('Work item list view - ', () => {
       .then(() => {
         fixture = TestBed.createComponent(WorkItemListComponent);
         comp = fixture.componentInstance;
-        
+
       });
   }));
 
@@ -267,14 +270,14 @@ describe('Work item list view - ', () => {
     fakeAuthService.login();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('.add-detailed-wi'));
-    expect(el).toBeDefined();    
+    expect(el).toBeDefined();
   });
   it('clicking show types should display the list of types', () => {
     fakeAuthService.login();
     fixture.detectChanges();
-    comp.showTypes();    
+    comp.showTypes();
     el = fixture.debugElement.query(By.css('.types-modal'));
-    expect(el).toBeDefined();    
+    expect(el).toBeDefined();
   });
 
 });

@@ -5,17 +5,21 @@ import { cloneDeep } from 'lodash';
 import 'rxjs/add/operator/toPromise';
 
 import { AuthenticationService } from '../auth/authentication.service';
-import { 
+import {
   Comment,
-  Comments, 
-  CommentPost 
+  Comments,
+  CommentPost
 } from '../models/comment';
 import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
 import { Logger } from '../shared/logger.service';
 import { LinkType } from '../models/link-type';
 import { UserService } from '../user/user.service';
 import { User } from '../models/user';
-import { WorkItem, LinkDict } from '../models/work-item';
+import {
+  LinkDict,
+  WorkItem,
+  WorkItemAttributes
+} from '../models/work-item';
 import { WorkItemType } from './work-item-type';
 
 
@@ -57,10 +61,10 @@ export class WorkItemService {
   }
 
   /**
-   * We maintain a big list of work WorkItem 
-   * We also maintain a Map of the index and WorkItem.id in another object for easy access 
+   * We maintain a big list of work WorkItem
+   * We also maintain a Map of the index and WorkItem.id in another object for easy access
    */
-  
+
   /**
    * We call this function from the list page to get first initial set of data
    * Add the data to workItems array
@@ -75,8 +79,8 @@ export class WorkItemService {
         url += '&' + item.paramKey + '=' + item.value;
       }
     });
-  
-    // Reseting stored data 
+
+    // Reseting stored data
     // if filter value is changed
     if (JSON.stringify(this.prevFilters) != JSON.stringify(filters)) {
       this.workItems = [];
@@ -84,7 +88,7 @@ export class WorkItemService {
     }
     // Setting current filter as previous filter value
     this.prevFilters = cloneDeep(filters);
-    
+
     return this.http
       .get(url, { headers: this.headers })
       .toPromise()
@@ -105,7 +109,7 @@ export class WorkItemService {
         this.updateWorkItem(wItems);
         return this.workItems;
       })
-      .catch (this.handleError); 
+      .catch (this.handleError);
   }
 
   /**
@@ -142,11 +146,11 @@ export class WorkItemService {
   }
 
   /**
-   * Usage: This method gives a single work item by ID. 
+   * Usage: This method gives a single work item by ID.
    * If the item is locally available then it just resolves the comments
-   * else it fetches that item from the cloud and then resolves the comments 
+   * else it fetches that item from the cloud and then resolves the comments
    * then update the big list of work WorkItem
-   * 
+   *
    * @param: number - id
    */
   getWorkItemById(id: string): Promise<WorkItem> {
@@ -176,13 +180,13 @@ export class WorkItemService {
 
   /**
    * Usage: to update the big list of workItem with new data
-   * Existing item will be updated only with attributes 
+   * Existing item will be updated only with attributes
    * New item will be added to the list
    */
   updateWorkItem(wItems: WorkItem[]): void {
     wItems.forEach((wItem) => {
       if (wItem.id in this.workItemIdIndexMap) {
-        this.workItems[this.workItemIdIndexMap[wItem.id]].attributes = 
+        this.workItems[this.workItemIdIndexMap[wItem.id]].attributes =
           cloneDeep(wItem.attributes);
       } else {
         this.workItems
@@ -194,17 +198,17 @@ export class WorkItemService {
   }
 
   /**
-   * Usage: Build the workItem ID-Index map for the big list 
+   * Usage: Build the workItem ID-Index map for the big list
    */
   buildWorkItemIdIndexMap() {
-    this.workItems.forEach((wItem, index) => 
+    this.workItems.forEach((wItem, index) =>
       this.workItemIdIndexMap[wItem.id] = index);
   }
 
 
   /**
    * Usage: To resolve the users in eact WorkItem
-   * For now it resolves assignne and creator 
+   * For now it resolves assignne and creator
    */
   resolveUsersForWorkItem(workItem: WorkItem): void {
     if (!workItem.hasOwnProperty('relationalData')) {
@@ -288,7 +292,7 @@ export class WorkItemService {
 
   /**
    * This is to fetch locally fetched work items
-   * this will eventually be deprecated once work item 
+   * this will eventually be deprecated once work item
    * linking is re-worked
    */
   getLocallySavedWorkItems(): Promise<any> {
@@ -296,10 +300,10 @@ export class WorkItemService {
   }
 
   /**
-   * Usage: This method is to resolve the comments for a work item 
-   * This method is only called when a single item is fetched for the 
+   * Usage: This method is to resolve the comments for a work item
+   * This method is only called when a single item is fetched for the
    * details page.
-   * 
+   *
    * @param: WorkItem - wItem
    */
   resolveComments(wItem: WorkItem): void {
@@ -308,7 +312,7 @@ export class WorkItemService {
         .get(wItem.relationships.comments.links.related, { headers: this.headers })
         .toPromise()
         .then((response) => {
-          wItem.relationalData.comments = 
+          wItem.relationalData.comments =
             response.json().data as Comment[];
           wItem.relationalData.comments.forEach((comment) => {
             comment.relationalData = {
@@ -320,10 +324,10 @@ export class WorkItemService {
   }
 
   /**
-   * Usage: This method is to resolve the linked items for a work item 
-   * This method is only called when a single item is fetched for the 
+   * Usage: This method is to resolve the linked items for a work item
+   * This method is only called when a single item is fetched for the
    * details page.
-   * 
+   *
    * @param: WorkItem - wItem
    */
   resolveLinks(wItem: WorkItem): void {
@@ -346,12 +350,12 @@ export class WorkItemService {
         wItem.relationalData.linkDicts = [];
         this.handleError(e);
       });
-  }  
+  }
 
   /**
    * Usage: This method is to fetch the work item types
-   * This method will be deprecated and types will come from 
-   * router resolver 
+   * This method will be deprecated and types will come from
+   * router resolver
    * ToDo: Use router resolver to fetch types here
    */
   getWorkItemTypes(): Promise<any[]> {
@@ -373,8 +377,8 @@ export class WorkItemService {
 
   /**
    * Usage: This method is to fetch the work item states
-   * This method will be deprecated and states will come from 
-   * router resolver 
+   * This method will be deprecated and states will come from
+   * router resolver
    * ToDo: Use router resolver to fetch states here
    */
   getStatusOptions(): Promise<any[]> {
@@ -402,7 +406,7 @@ export class WorkItemService {
    * place should be implemented
    */
   moveItem(wi: WorkItem, dir: String) {
-    //We need to call an ordering API which will store 
+    //We need to call an ordering API which will store
     //the new location for the selected work item
     let index = this.workItems.findIndex(x => x.id == wi.id);
     let wiSplice = this.workItems.splice(index, 1);
@@ -415,10 +419,10 @@ export class WorkItemService {
   }
 
   /**
-   * Usage: This method deletes an item 
-   * removes the delted item from the big list 
+   * Usage: This method deletes an item
+   * removes the delted item from the big list
    * re build the ID-Index map
-   * 
+   *
    * @param: WorkItem - workItem (Item to be delted)
    */
   delete(workItem: WorkItem): Promise<void> {
@@ -437,11 +441,11 @@ export class WorkItemService {
   }
 
    /**
-    * Usage: This method create a new item 
-    * adds the new item to the big list 
+    * Usage: This method create a new item
+    * adds the new item to the big list
     * resolve the users for the item
     * re build the ID-Index map
-    * 
+    *
     * @param: WorkItem - workItem (Item to be created)
     */
   create(workItem: WorkItem): Promise<WorkItem> {
@@ -457,7 +461,7 @@ export class WorkItemService {
         this.resolveUsersForWorkItem(newWorkItem);
         // Add newly added item to the top of the list
         this.workItems.splice(0, 0, newWorkItem);
-        // Re-build the ID-index map 
+        // Re-build the ID-index map
         this.buildWorkItemIdIndexMap();
         return newWorkItem;
       })
@@ -465,10 +469,10 @@ export class WorkItemService {
   }
 
   /**
-   * Usage: This method update an existing item 
-   * updates the item in the big list 
+   * Usage: This method update an existing item
+   * updates the item in the big list
    * resolve the users for the item
-   * 
+   *
    * @param: WorkItem - workItem (Item to be created)
    */
   update(workItem: WorkItem): Promise<WorkItem> {
@@ -498,10 +502,10 @@ export class WorkItemService {
   }
 
   /**
-   * Usage: This method create a comment for a workItem 
-   * 
+   * Usage: This method create a comment for a workItem
+   *
    * @param: string - id (Work Item ID)
-   * @param: Comment 
+   * @param: Comment
    */
   createComment(id: string, comment: Comment): Promise<Comment> {
     let c = new CommentPost();
@@ -520,7 +524,7 @@ export class WorkItemService {
           .comments.splice(
             this.workItems[this.workItemIdIndexMap[id]]
               .relationalData.comments.length,
-            0, 
+            0,
             comment);
         return comment;
       })
@@ -530,7 +534,7 @@ export class WorkItemService {
   /**
    * Usage: This function fetches all the work item link types
    * Store it in an instance variable
-   * 
+   *
    * @return Promise of LinkType[]
    */
   getLinkTypes(): Promise<LinkType[]> {
@@ -546,15 +550,15 @@ export class WorkItemService {
           this.linkTypes = response.json().data as LinkType[];
           return this.linkTypes;
         }).catch(this.handleError);
-    } 
+    }
   }
 
   /**
-   * Usage: This function adds a link to a work item 
+   * Usage: This function adds a link to a work item
    * Stroes the resolved link in relationalData
    * Updates the reference of workItem so doesn't return anything
-   * 
-   * @param link: Link 
+   *
+   * @param link: Link
    * @param includes: any - Data relavent to the link
    * @param wItem: WorkItem
    */
@@ -565,7 +569,7 @@ export class WorkItemService {
     let linkType = includes.find(
       (i: any) => i.id == linkType_id && i.type == 'workitemlinktypes'
     );
-    
+
     // Resolve source
     if (link.relationships.source.data.id == wItem.id) {
       // Setting target info from the data in included
@@ -596,12 +600,12 @@ export class WorkItemService {
         target: {
           title: wItem.attributes['system.title'],
           id: wItem.id,
-          state: wItem.attributes['system.state']                
+          state: wItem.attributes['system.state']
         },
         source: {
           title: sourceWItem.attributes['system.title'],
           id: sourceWItem.id,
-          state: sourceWItem.attributes['system.state']                
+          state: sourceWItem.attributes['system.state']
         },
         linkType: linkType.attributes.reverse_name
       };
@@ -623,11 +627,11 @@ export class WorkItemService {
 
 
   /**
-   * Usage: This function removes a link from a work item 
+   * Usage: This function removes a link from a work item
    * Removes the link from relationalData
    * Updates the reference of workItem so doesn't return anything
    *
-   * @param link: Link 
+   * @param link: Link
    * @param wItem: WorkItem
    */
   removeLinkFromWorkItem(deletedLink: Link, wiId: string) {
@@ -673,7 +677,7 @@ export class WorkItemService {
    * Usage: Makes an API call to delete a link
    * Removes the new link to the workItem
    *
-   * @param link: Link 
+   * @param link: Link
    * @param currentWiId: string - The work item ID where the link is created
    * @returns Promise<void>
    */
@@ -685,7 +689,7 @@ export class WorkItemService {
       .then(response => { this.removeLinkFromWorkItem(link, currentWiId) })
       .catch(this.handleError);
   }
-  
+
   searchLinkWorkItem(term: string): Promise<WorkItem[]> {
      let searchUrl = process.env.API_URL + 'search?q=' + term;
      return this.http
@@ -693,6 +697,67 @@ export class WorkItemService {
         .toPromise()
         .then((response) => response.json().data as WorkItem[])
         .catch(this.handleError);
+  }
+
+  /**
+   * It return object of adjacent work item id
+   * {
+   *  prevItemId: previous work item id
+   *  nextItemId: next work item id
+   * }
+   *
+   * @param workItemId: string
+   */
+  getAdjacentWorkItemsIdById(workItemId: string): any {
+    let wiIndex = this.workItemIdIndexMap[workItemId];
+    let prevItemId = '';
+    let nextItemId = '';
+    if(wiIndex > 0){
+      prevItemId = this.workItems[wiIndex - 1].id;
+    }
+
+    if(wiIndex < this.workItems.length - 1) {
+      nextItemId = this.workItems[wiIndex + 1].id;
+    }
+
+    let adjacentWorkItem = {
+      prevItemId: prevItemId,
+      nextItemId: nextItemId
+    };
+    return adjacentWorkItem;
+  }
+
+  /**
+   * Usage: Make a API call to save
+   * the order of work item.
+   *
+   * @param workItemId: string
+   */
+  reOrderWorkItem(workItemId: string): Promise<void> {
+    let newWItem = new WorkItem();
+    let wiIndex = this.workItemIdIndexMap[workItemId];
+    let wItem = this.workItems[wiIndex];
+
+    // Get the adjacent work items
+    let adjacentWI = this.getAdjacentWorkItemsIdById(workItemId);
+
+    newWItem.id = workItemId.toString();
+    newWItem.attributes = {} as WorkItemAttributes;
+    newWItem.attributes.version = wItem.attributes.version;
+    newWItem.type = wItem.type;
+    newWItem.attributes.previousitem = parseInt(adjacentWI.prevItemId);
+    newWItem.attributes.nextitem = parseInt(adjacentWI.nextItemId);
+
+    let url = `${this.workItemUrl}/reorder`;
+    return this.http
+      .patch(url, JSON.stringify({data: newWItem}), { headers: this.headers })
+      .toPromise()
+      .then(response => {
+        let updatedWorkItem: WorkItem = response.json().data as WorkItem;
+        wItem.attributes['version'] = updatedWorkItem.attributes['version'];
+        wItem.attributes['order'] = updatedWorkItem.attributes['order'];
+      })
+      .catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {

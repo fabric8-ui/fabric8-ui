@@ -3,7 +3,7 @@
 @import "../../../assets/stylesheets/mixins";
 
 .add-detailed-wi{
-  text-align: center;  
+  text-align: center;
   font-size: em(20);
   position: absolute;
   z-index: 10;
@@ -16,18 +16,18 @@
   cursor: pointer;
 	-moz-border-radius: em(13);
 	-webkit-border-radius: em(13);
-	border-radius: em(13); 
+	border-radius: em(13);
   span{
-    position:absolute; 
-    top:50%; 
-    left: 50%; 
+    position:absolute;
+    top:50%;
+    left: 50%;
     @include transform (translate(-50%,-50%));
-  } 
+  }
 }
 .types-modal{
   background-color: $color-pf-white;
   position: absolute;
-  top: em(88);  
+  top: em(88);
   left: 0;
   right: 0;
   bottom: 0;
@@ -38,8 +38,8 @@
     font-size: em(30);
   }
   .wiTypeList{
-    list-style: none; 
-    li{      
+    list-style: none;
+    li{
         height: em(180);
         border: 1px solid $color-pf-black-200;
         position: relative;
@@ -58,7 +58,7 @@
       }
     li:hover {
       color:  $color-pf-blue-400;
-    }    
+    }
   }
 }
 .error {color:$color-pf-red-100;}
@@ -70,7 +70,7 @@
 .detail-list-container{
     padding-bottom: em(65);
     height: 100%;
-    overflow: hidden;    
+    overflow: hidden;
   .list-action {
     height: em(50);
     display: flex;
@@ -93,7 +93,7 @@
   }
 
   .selected-filters {
-    padding: 3px 10px; 
+    padding: 3px 10px;
     margin: 5px;
     color: $color-pf-white;
     background-color: $color-pf-black-600;
@@ -134,7 +134,19 @@
   overflow-y: scroll;
 }
 
-@media (max-width: ($grid-float-breakpoint - 1)){  
+.dnd-drag-start,
+.dnd-drag-over {
+  opacity:1;
+  border: 1px dashed $color-pf-black;
+}
+
+.dnd-drag-enter,
+.dnd-sortable-drag {
+  opacity:0.7;
+  border: 1px dashed $color-pf-black;
+}
+
+@media (max-width: ($grid-float-breakpoint - 1)){
   .containerPadd-nologin{ padding-bottom: 0; }
   .workItem_Overlay{
     background-color:$color-pf-black;
@@ -166,7 +178,7 @@
   }
   .types-modal{
     .wiTypeList{
-    li{ 
+    li{
       width: calc(50% - 1.667em);
       }
     }

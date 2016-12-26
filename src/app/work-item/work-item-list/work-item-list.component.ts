@@ -1,19 +1,19 @@
-import { 
+import {
   animate,
   AfterViewInit,
   Component,
   ElementRef,
-  OnInit, 
-  trigger, 
-  state, 
-  style, 
+  OnInit,
+  trigger,
+  state,
+  style,
   transition,
-  ViewChild, 
+  ViewChild,
   ViewChildren,
   QueryList
 } from '@angular/core';
-import { 
-  Router, 
+import {
+  Router,
   ActivatedRoute
 } from '@angular/router';
 import { cloneDeep } from 'lodash';
@@ -22,7 +22,7 @@ import { AuthenticationService } from '../../auth/authentication.service';
 import { Broadcaster } from '../../shared/broadcaster.service';
 import { Logger } from '../../shared/logger.service';
 
-import { WorkItem }                   from '../../models/work-item';
+import { WorkItem } from '../../models/work-item';
 import { WorkItemType }               from '../work-item-type';
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService }            from '../work-item.service';
@@ -99,10 +99,10 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
       let listCurrentHeight = this.listContainer.nativeElement.offsetHeight;
       if (newElHeight) {
         oldHeight = listCurrentHeight;
-        this.listContainer.nativeElement.style.height = 
+        this.listContainer.nativeElement.style.height =
           listCurrentHeight - newElHeight;
       } else {
-        this.listContainer.nativeElement.style.height = 
+        this.listContainer.nativeElement.style.height =
           oldHeight;
       }
     });
@@ -183,26 +183,26 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
       this.selectedWorkItemEntryComponent.deselect();
     // select new component
     entryComponent.select();
-    this.selectedWorkItemEntryComponent = entryComponent;    
+    this.selectedWorkItemEntryComponent = entryComponent;
   }
 
-  onDetail(entryComponent: WorkItemListEntryComponent): void {    
-    this.workItemDetail = entryComponent.getWorkItem();    
+  onDetail(entryComponent: WorkItemListEntryComponent): void {
+    this.workItemDetail = entryComponent.getWorkItem();
     this.onSelect(entryComponent);
-    this.showWorkItemDetails = true; 
+    this.showWorkItemDetails = true;
   }
 
-  onMoveToTop(entryComponent: WorkItemListEntryComponent): void {    
+  onMoveToTop(entryComponent: WorkItemListEntryComponent): void {
     this.workItemDetail = entryComponent.getWorkItem();
-    this.workItemService.moveItem(this.workItemDetail, 'top');  
+    this.workItemService.moveItem(this.workItemDetail, 'top');
   }
 
-  onMoveToBottom(entryComponent: WorkItemListEntryComponent): void {    
+  onMoveToBottom(entryComponent: WorkItemListEntryComponent): void {
     this.workItemDetail = entryComponent.getWorkItem();
-    this.workItemService.moveItem(this.workItemDetail, 'bottom');  
+    this.workItemService.moveItem(this.workItemDetail, 'bottom');
   }
 
-  // Event listener for URL change 
+  // Event listener for URL change
   // On change to details page slide out the layover
   // On change back to home slide in layover
   subScribeDetailNavigation(): void {
@@ -238,8 +238,8 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
         this.workItemTypes = types;
       });
   }
-  showTypes() {    
-    this.showTypesOptions = true; 
+  showTypes() {
+    this.showTypesOptions = true;
   }
   closePanel() {
     this.showTypesOptions = false;
@@ -247,5 +247,21 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   onChangeType(type: string) {
     this.showTypesOptions = false;
     this.router.navigate(['/work-item-list/detail/new?' + type]);
+  }
+
+  onDragStart() {
+    //console.log('on drag start');
+  }
+
+  // Event listener for WI drop.
+  onDragEnd(workItemId: string) {
+    // rearrange is happening inside ng2-dnd library
+
+    // Build the ID-index map after rearrange.
+    this.workItemService.buildWorkItemIdIndexMap();
+
+    // save the order of work item.
+    this.workItemService.reOrderWorkItem(workItemId)
+        .catch(e => console.log(e));
   }
 }
