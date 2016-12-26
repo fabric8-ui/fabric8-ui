@@ -13,9 +13,6 @@ $textCenter: center;
 //colors
 .color-grey{ color: $color-pf-black-800 !important; }
 
-.no-padding{
-    padding: 0;
-}
 // functions
 //convert px to em/rem
 @function em($px) {
@@ -52,6 +49,78 @@ $textCenter: center;
    -moz-border-radius: $radius;
    -webkit-border-radius: $radius;
 }
+@mixin Border($borderwidth, $borderStyle, $borderColor) {
+    border-width: $borderwidth;
+    border-color: $borderColor;
+    border-style: $borderStyle;
+    -o-border-width: $borderwidth;
+    -o-border-color: $borderColor;
+    -o-border-style: $borderStyle;
+    -webkit-border-width: $borderwidth;
+    -webkit-border-color: $borderColor;
+    -webkit-border-style: $borderStyle;
+    -moz-border-width: $borderwidth;
+    -moz-border-color: $borderColor;
+    -moz-border-style: $borderStyle;
+}
+//for padding
+@mixin no-padding($side) {
+    @if $side == 'all' {
+        .no-padding {
+            padding: 0 !important;
+        }
+    } @else {
+        .no-padding-#{$side} {
+            padding-#{$side}: 0 !important;
+        }
+    }
+}
+@include no-padding("left");
+@include no-padding("right");
+@include no-padding("top");
+@include no-padding("bottom");
+@include no-padding("all");
+
+//multiline truncate
+@mixin multiline-truncate($font-size: $blk-font-size, $line-height: $ttrunc-line-height, $lines-to-show: $trunc-lines, $trunc-bg: transparent) {
+  background: $trunc-bg;
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-height: $font-size*$line-height*$lines-to-show; /* Fallback for non-webkit */
+  font-size: $font-size;
+  line-height: $line-height;
+  -webkit-line-clamp: $lines-to-show;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  @-moz-document url-prefix() {
+    overflow: hidden;
+    position: relative;
+    &:before {
+      background: $trunc-bg;
+      bottom: 0;
+      position: absolute;
+      right: 0;
+      float: right;
+      content: '\2026';
+      margin-left: em(-36);
+      width: em(60);
+      padding-left: em(5);
+    }
+    &:after {
+      content: '';
+      background: $trunc-bg;
+      position: absolute;
+      height: em(50);
+      width: $width100;
+      z-index: 1;
+    }
+  }
+}
+
+
+
 
 // custom classes
 .containerPadd{ padding: em(96) 0 em(66) 0; }
@@ -69,6 +138,22 @@ $textCenter: center;
 .db{ display: block; }
 .textCenter{ text-align: $textCenter; }
 .pointer{ cursor: pointer; }
+
+//user -gravatar
+
+.user-avatar{
+    height: em(20);
+    width: em(20);
+    img{
+        width: $width100;
+        height: 100%;
+    }
+}
+.not-assigned-user-icon {
+  font-size: em(20);
+  border: 1px solid $color-pf-black-500;
+  padding: 0 em(1);
+}
 
 @media (max-width: $grid-float-breakpoint){
     .mobdn{ display: none; }
