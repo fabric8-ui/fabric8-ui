@@ -14,7 +14,7 @@
   
 </div>
 
-<div class="add-detailed-wi" tooltipPlacement="bottom" tooltip="Add A Work Item" (click)="showTypes()">
+<div *ngIf="loggedIn" class="add-detailed-wi" tooltipPlacement="bottom" tooltip="Add A Work Item" (click)="showTypes()">
   <span class="fa fa-plus icon"></span>
 </div>
 <div class="detail-list-container" [class.containerPadd-nologin] = "!loggedIn" >  
