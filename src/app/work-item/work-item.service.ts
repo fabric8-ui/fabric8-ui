@@ -167,13 +167,11 @@ export class WorkItemService {
         .then((response) => {
           let wItem: WorkItem = response.json().data as WorkItem;
           this.resolveUsersForWorkItem(wItem);
-          this.workItems.splice(this.workItems.length, 0, wItem);
-          this.buildWorkItemIdIndexMap();
-          if (process.env.ENV != 'inmemory') {
-            this.resolveComments(this.workItems[this.workItemIdIndexMap[wItem.id]]);
-            this.resolveLinks(this.workItems[this.workItemIdIndexMap[wItem.id]]);
+          if (!(wItem.id in this.workItemIdIndexMap)) {
+            this.workItems.splice(this.workItems.length, 0, wItem);
+            this.buildWorkItemIdIndexMap();
           }
-          return this.workItems[this.workItemIdIndexMap[wItem.id]];
+          return this.getWorkItemById(wItem.id);
         })
         .catch (this.handleError);
     }
