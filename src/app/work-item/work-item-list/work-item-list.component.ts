@@ -63,7 +63,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   loggedIn: Boolean = false;
   showWorkItemDetails: boolean = false;
   panelState: String = 'out';
-  contentItemHeight: number = 65;
+  contentItemHeight: number = 67;
   pageSize: number = 20;
   filters: any[] = [];
   allUsers: User[] = [] as User[];
@@ -209,12 +209,18 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
 
   onMoveToTop(entryComponent: WorkItemListEntryComponent): void {
     this.workItemDetail = entryComponent.getWorkItem();
-    this.workItemService.moveItem(this.workItemDetail, 'top');
+    this.workItemService.moveItem(this.workItemDetail, 'top')
+    .then(() => {
+      this.listContainer.nativeElement.scrollTop = 0;
+    });
   }
 
   onMoveToBottom(entryComponent: WorkItemListEntryComponent): void {
     this.workItemDetail = entryComponent.getWorkItem();
-    this.workItemService.moveItem(this.workItemDetail, 'bottom');
+    this.workItemService.moveItem(this.workItemDetail, 'bottom')
+    .then(() => {
+      this.listContainer.nativeElement.scrollTop = this.workItems.length * this.contentItemHeight;
+    });
   }
 
   onMoveUp(): void {

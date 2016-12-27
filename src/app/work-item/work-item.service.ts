@@ -435,16 +435,24 @@ export class WorkItemService {
    * ToDo: Integrate backend when available, also move by one
    * place should be implemented
    */
-  moveItem(wi: WorkItem, dir: String): void {
+  moveItem(wi: WorkItem, dir: String): Promise<any> {
     let index = this.workItems.findIndex(x => x.id == wi.id);
     wi.attributes.nextitem = '';
     wi.attributes.previousitem = '';
     switch (dir){
       case 'top':
-        //this.workItems.splice(0, 0, wi);
+        //move the item as the first item
+        this.workItems.splice(0, 0, wi);
+        //remove the duplicate element
+        this.workItems.splice( index + 1, 1);
+        wi.attributes.nextitem = parseInt(this.workItems[1].id);
         break;
       case 'bottom':
-        //this.workItems.splice(this.workItems.length, 0, wi);
+        //move the item as the last of the loaded list
+        this.workItems.splice((this.workItems.length), 0, wi);
+        //remove the duplicate element
+        this.workItems.splice( index, 1);
+        wi.attributes.previousitem = parseInt(this.workItems[this.workItems.length-2].id);
         break;
       case 'up':
         if (index > 0) { //no moving of element if it is the first element
@@ -480,6 +488,7 @@ export class WorkItemService {
     //console.log(wi.attributes.previousitem, ':' , wi.attributes.nextitem);
     //build the map to reset the indices
     this.buildWorkItemIdIndexMap();
+    return Promise.resolve();
     /*
     return this.http
       .patch(this.reorderUrl, JSON.stringify({data: wi}), { headers: this.headers })
