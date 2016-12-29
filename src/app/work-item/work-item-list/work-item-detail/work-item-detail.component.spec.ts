@@ -1,3 +1,4 @@
+import { AlmUserName } from './../../../pipes/alm-user-name.pipe';
 import {
   async,
   ComponentFixture,
@@ -164,7 +165,7 @@ describe('Detailed view and edit a selected work item - ', () => {
           'forward_name': 'story-story',
           'name': 'story-story',
           'reverse_name': 'story by',
-          'topology': 'network', 
+          'topology': 'network',
           'version': 0
         },
         // 'id': '40bbdd3d-8b5d-4fd6-ac90-7236b669af04',
@@ -197,7 +198,7 @@ describe('Detailed view and edit a selected work item - ', () => {
           'forward_name': 'abc-abc',
           'name': 'abc-abc',
           'reverse_name': 'story by',
-          'topology': 'network', 
+          'topology': 'network',
           'version': 0
         },
         // 'id': '40bbdd3d-8b5d-4fd6-ac90-7236b669af04',
@@ -323,6 +324,7 @@ describe('Detailed view and edit a selected work item - ', () => {
         AlmSearchHighlight,
         AlmTrim,
         AlmValidLinkTypes,
+        AlmUserName,
         WorkItemCommentComponent,
         WorkItemDetailComponent,
         WorkItemLinkComponent,
@@ -545,10 +547,10 @@ describe('Detailed view and edit a selected work item - ', () => {
 
   // it('Work item type can be edited when logged in', () => {
   //   fakeAuthService.login();
-  //   fixture.detectChanges();         
+  //   fixture.detectChanges();
   //   comp.workItem = fakeWorkItem;
-  //   comp.loggedIn = fakeAuthService.isLoggedIn();           
-  //   fixture.detectChanges(); 
+  //   comp.loggedIn = fakeAuthService.isLoggedIn();
+  //   fixture.detectChanges();
   //   el = fixture.debugElement.query(By.css('#wi-detail-type'));
   //   comp.workItem.type = 'system.experience';
   //   fixture.detectChanges();
@@ -597,9 +599,9 @@ describe('Detailed view and edit a selected work item - ', () => {
       fakeAuthService.login();
       fixture.detectChanges();
       comp.workItem = fakeWorkItem;
-      comp.loggedIn = fakeAuthService.isLoggedIn();             
+      comp.loggedIn = fakeAuthService.isLoggedIn();
       fixture.detectChanges();
-      el = fixture.debugElement.query(By.css('#WI_details_reporter_user'));      
+      el = fixture.debugElement.query(By.css('#WI_details_reporter_user'));
       expect(el.nativeElement.textContent).toContain('Example User 0');
   });
 

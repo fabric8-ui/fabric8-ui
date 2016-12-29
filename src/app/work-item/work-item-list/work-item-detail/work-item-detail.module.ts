@@ -1,3 +1,4 @@
+import { AlmUserName } from './../../../pipes/alm-user-name.pipe';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +18,7 @@ import { AlmTrim } from '../../../pipes/alm-trim';
 import { WorkItemDetailComponent } from './work-item-detail.component';
 import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
 import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.component';
-import { 
+import {
   WorkItemLinkFilterByTypeName,
   WorkItemLinkTypeFilterByTypeName,
   AlmValidLinkTypes
@@ -39,6 +40,7 @@ import {
     AlmMomentTime,
     AlmSearchHighlight,
     AlmTrim,
+    AlmUserName,
     AlmValidLinkTypes,
     WorkItemCommentComponent,
     WorkItemDetailComponent,
