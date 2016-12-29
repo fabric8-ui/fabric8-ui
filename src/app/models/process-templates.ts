@@ -1,3 +1,3 @@
-export class ProcessTemplates {
+export class ProcessTemplate {
     name: String;
 }

@@ -1,4 +1,5 @@
 import { ContextMenuItemType } from './context-menu-item-type';
+
 export class ContextMenuItem {
     name: string;
     type: ContextMenuItemType;

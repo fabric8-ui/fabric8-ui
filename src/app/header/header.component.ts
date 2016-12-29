@@ -26,6 +26,7 @@ export class HeaderComponent implements OnInit {
   togglePaths: Toggle[];
   urlFeatureToggle: string = '';
   selectedFeatureToggle: string = 'Production';
+  context: ContextMenuItem;
 
   constructor(
     public router: Router,
@@ -34,7 +35,11 @@ export class HeaderComponent implements OnInit {
     private toggleService: ToggleService,
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
-    public dummy: DummyService) {}
+    public dummy: DummyService) {
+    router.events.subscribe((val) => {
+      this.onNavigate();
+    });
+  }
 
   getLoggedUser(): void {
     if (this.loggedIn) {
@@ -65,10 +70,15 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loggedIn = this.auth.isLoggedIn();
     this.listenToEvents();
+    this.onNavigate();
+  }
+
+  onNavigate(): void {
+    this.loggedIn = this.auth.isLoggedIn();
     this.getLoggedUser();
     this.getTogglePath();
+    this.context = this.computeContext();
   }
 
   onImgLoad() {
@@ -88,7 +98,20 @@ export class HeaderComponent implements OnInit {
       });
   }
 
-  context(): ContextMenuItem {
+  buildPath(...args: string[]): string {
+    let res = '';
+    for (let p of args) {
+      if (p.startsWith('/')) {
+        res = p;
+      } else {
+        res = res + '/' + p;
+      }
+      res = res.replace(/\/*$/, '');
+    }
+    return res;
+  }
+
+  private computeContext(): ContextMenuItem {
     // Find the most specific context menu path and display it
     // TODO This is brittle
     let defaultItem;
@@ -103,6 +126,24 @@ export class HeaderComponent implements OnInit {
         defaultItem = m;
       }
     }
-    return ret || defaultItem;
+    ret = JSON.parse(JSON.stringify(ret || defaultItem));
+    if (ret.type.menus) {
+      for (let n of ret.type.menus) {
+        n.fullPath = this.buildPath(ret.path, n.path);
+        if (n.menus) {
+          for (let o of n.menus) {
+            o.fullPath = this.buildPath(ret.path, n.path, o.path);
+            if (o.fullPath === this.router.url) {
+              o.active = true;
+              n.active = true;
+            }
+          }
+        } else if (n.fullPath === this.router.url) {
+          n.active = true;
+        }
+      }
+    }
+    return ret;
   }
+
 }

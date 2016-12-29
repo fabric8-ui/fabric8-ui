@@ -1,7 +1,7 @@
 import { ContextMenuItem } from './../models/context-menu-item';
 import { Space } from './../models/space';
 import { Resources } from './../models/resources';
-import { ProcessTemplates } from './../models/process-templates';
+import { ProcessTemplate } from './../models/process-templates';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
@@ -12,7 +12,7 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class DummyService {
 
-  spaces: Space[] = [
+  readonly SPACES: Space[] = [
     {
       name: 'Bobo',
       path: 'BalloonPopGame',
@@ -32,7 +32,7 @@ export class DummyService {
     }
   ];
 
-  resources: Resources = {
+  readonly RESOURCES: Resources = {
     startDate: new Date(2016, 8, 1, 0, 0, 0, 0),
     endDate: new Date(2016, 8, 30, 23, 59, 59, 0),
     list: [
@@ -53,12 +53,52 @@ export class DummyService {
     }
     ]};
 
-    contextMenuItems: ContextMenuItem[] = [
+    readonly CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
       {
         name: 'pmuir',
         type: {
           name: 'User',
-          icon: 'fa fa-user'
+          icon: 'fa fa-user',
+          menus: [
+            {
+              name: 'Home',
+              path: '/home'
+            }, {
+              name: 'Profile',
+              path: '',
+              menus: [
+                {
+                  name: 'Profile',
+                  path: ''
+                }, {
+                  name: 'Collaboration Spaces',
+                  path: 'spaces'
+                }, {
+                  name: 'Resources',
+                  path: 'resources'
+                }
+              ]
+            },
+            {
+              path: 'settings',
+              icon: 'pficon pficon-settings',
+              menus: [
+                {
+                  name: 'Profile',
+                  path: ''
+                }, {
+                  name: 'Account',
+                  path: 'account'
+                }, {
+                  name: 'Emails',
+                  path: 'emails'
+                }, {
+                  name: 'Notifications',
+                  path: 'notifications'
+                }
+              ]
+            },
+          ]
         },
         path: '/pmuir',
         default: true
@@ -66,7 +106,76 @@ export class DummyService {
         name: 'BalloonPopGame',
         type: {
           name: 'Space',
-          icon: 'fa fa-space-shuttle'
+          icon: 'fa fa-space-shuttle',
+          menus: [
+            {
+              name: 'Analyze',
+              path: '',
+              menus: [
+                {
+                  name: 'Overview',
+                  path: ''
+                }, {
+                  name: 'README',
+                  path: 'readme'
+                }
+              ]
+            }, {
+              name: 'Plan',
+              path: 'plan',
+              menus: [
+                {
+                  name: 'Backlog',
+                  path: ''
+                }, {
+                  name: 'Board',
+                  path: 'board'
+                }
+              ]
+            }, {
+              name: 'Create',
+              path: 'create',
+              menus: [
+                {
+                  name: 'Codesbases',
+                  path: ''
+                }, {
+                  name: 'Workspaces',
+                  path: 'workspaces'
+                }
+              ]
+            }, {
+              name: 'Run',
+              path: 'run',
+              menus: [
+                {
+                  name: 'Pipelines',
+                  path: ''
+                }
+              ]
+            }, {
+              name: '',
+              path: 'settings',
+              icon: 'pficon pficon-settings',
+              menus: [
+                {
+                  name: 'Overview',
+                  path: '',
+                  icon: '',
+                  menus: []
+                }, {
+                  name: 'Work',
+                  path: 'work'
+                }, {
+                  name: 'Security',
+                  path: 'security'
+                }, {
+                  name: 'Alerts',
+                  path: 'alerts'
+                }
+              ]
+            },
+          ]
         },
         path: '/pmuir/BalloonPopGame',
         default: false
@@ -89,13 +198,37 @@ export class DummyService {
       }
     ];
 
-    processTemplates: ProcessTemplates [] = [
+    readonly PROCESS_TEMPLATES: ProcessTemplate [] = [
       { name: 'Agile' },
       { name: 'Scrum' },
       { name: 'Issue Tracking' },
       { name: 'Scenario Driven Planning' }
     ];
+  
+  private _spaces: Space[];
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) {
+    this._spaces = JSON.parse(JSON.stringify(this.SPACES));
+  }
+
+  get spaces(): Space[] {
+    return this._spaces;
+  }
+
+  set spaces(spaces: Space[]) {
+    this._spaces = spaces;
+  }
+
+  get resources(): Resources {
+    return this.RESOURCES;
+  }
+
+  get contextMenuItems(): ContextMenuItem[] {
+    return this.CONTEXT_MENU_ITEMS;
+  }
+
+  get processTemplates(): ProcessTemplate[] {
+    return this.PROCESS_TEMPLATES;
+  }
 
 }
