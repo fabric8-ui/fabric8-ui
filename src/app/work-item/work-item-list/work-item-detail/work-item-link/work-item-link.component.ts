@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, DoCheck, OnInit, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 import { cloneDeep } from 'lodash';
@@ -17,7 +17,7 @@ import { SearchData } from './search-data';
   styleUrls: ['./work-item-link.component.scss'],
   // styles:['.completer-input {width:100%;float:left;};.completer-dropdown-holder {width:100%;float:left;}']
 })
-export class WorkItemLinkComponent implements OnInit, OnChanges {
+export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
   @Input() workItem: WorkItem;
   @Input() loggedIn: Boolean;
   @ViewChild('searchBox') searchBox: any;
@@ -36,6 +36,8 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
   showLinkCreator: Boolean = true;
   searchAllowedType: string = '';
   searchNotAllowedIds: string[] = [];
+  prevWItem: WorkItem | null = null;
+  selectedTab: string | null = null;
   // showLinksList : Boolean = false;
   constructor (
     private workItemService: WorkItemService,
@@ -53,6 +55,18 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
     this.showLinkView = false;
     this.selectedLinkType = false;
     this.resetSearchData();
+  }
+
+  ngDoCheck() {
+    // To reset selected link type on change wi type
+    if (this.prevWItem && 
+        this.prevWItem.relationships.baseType.data.id 
+          !== this.workItem.relationships.baseType.data.id) {
+      // Change in work item type
+      // Reset selected link type
+      this.selectedLinkType = false;
+    }
+    this.prevWItem = cloneDeep(this.workItem);
   }
 
   createLinkObject(workItemId: string, linkWorkItemId: string, linkId: string, linkType: string) : void {
@@ -159,9 +173,13 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
       .catch ((e) => console.log(e));
   }
 
-  toggleLinkComponent(): void{
+  toggleLinkComponent(onlyOpen: Boolean = false): void{
     if (this.loggedIn) {
-      this.showLinkComponent = !this.showLinkComponent;    
+      if (onlyOpen) {
+        this.showLinkComponent = true;  
+      } else {
+        this.showLinkComponent = !this.showLinkComponent;
+      }
     }
   }
 
@@ -261,5 +279,11 @@ export class WorkItemLinkComponent implements OnInit, OnChanges {
     this.selectedWorkItemId = id;
     this.selectedValue = id+' - '+title;
     this.searchWorkItems = [];
+  }
+
+  selectTab(linkTypeName: string | null = null) {
+    this.selectedTab = linkTypeName;
+    this.resetSearchData();
+    this.toggleLinkComponent(true);
   }
 }

@@ -16,9 +16,14 @@
         align-items: center;
         padding: em(5);
         .content__title{
+            cursor: pointer;          
             padding-left: em(10);
         }
+        .selected-tab {
+          font-weight: 600;
+        }
         .link-header-nav{
+            cursor: pointer;
             flex: 1 0 auto;
             padding: em(5) em(10);
             float: left;
@@ -108,6 +113,10 @@
                 float: left;
                 margin: 0;
                 padding: em(5) 0;
+                font-weight: 800;
+            }
+            .link-list-type-header {
+              font-weight: 600;
             }
             .link-list{
               display: flex;

@@ -1,10 +1,13 @@
 <div class="link-container" id="wi-link">
-    <div class="link-header" (click)="toggleLinkComponent()">
-        <span class="content__title pull-left">
+    <div class="link-header">
+        <span class="content__title pull-left" 
+          (click)="toggleLinkComponent()">
             <i *ngIf="showLinkComponent" class="fa fa-angle-down"></i>
             <i *ngIf="!showLinkComponent" class="fa fa-angle-up"></i>
         </span>
-        <div class="link-header-nav">
+        <div class="link-header-nav" 
+          [class.selected-tab]="selectedTab === null" 
+          (click)="selectTab()">
           <span id="wi-link-total">
             {{workItem.relationalData.totalLinkCount}}
           </span>
@@ -12,7 +15,10 @@
             Total Links
           </span>
         </div>
-        <div class="link-header-nav" *ngFor="let linkType of workItem.relationalData.linkDicts">
+        <div class="link-header-nav" 
+            *ngFor="let linkType of workItem.relationalData.linkDicts"
+            [class.selected-tab]="selectedTab === linkType.linkName" 
+            (click)="selectTab(linkType.linkName)">
             <span>
               {{linkType.count}}
             </span>
@@ -57,7 +63,10 @@
                             </button>
                             <ul *ngIf="(workItem.relationships.baseType.data.id | almValidLinkTypes:linkTypes).length" 
                                 class="dropdown-menu dropdown-ul link-dropdown" role="menu">
-                                <li *ngFor="let linkType of workItem.relationships.baseType.data.id | almValidLinkTypes:linkTypes">
+                                <li *ngFor="let linkType of selectedTab | 
+                                  workItemLinkTypeFilterByTypeName:(
+                                    workItem.relationships.baseType.data.id |
+                                      almValidLinkTypes:linkTypes)">
                                     <a (click)="onSelectRelation(linkType)">{{linkType.name}}</a>
                                 </li>
                             </ul>
@@ -96,12 +105,13 @@
                     </div>
                 </div>
             </div>
-            <div class="link-list-wrap" *ngIf="workItem.relationalData.linkDicts">
+            <div class="link-list-wrap" *ngIf="workItem.relationalData.linkDicts.length">
                 <h4 class="link-list-header">Links</h4>
-                <div *ngFor='let linkDict of workItem.relationalData.linkDicts'>
-                    <h5 class="col-md-12 col-sm-12 col-xs-12 no-padding">{{linkDict.linkName}}</h5>
+                <div *ngFor='let linkDict of selectedTab |
+                   workItemLinkFilterByTypeName:workItem.relationalData.linkDicts'>
+                    <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding link-list-type-header">{{linkDict.linkName}}</h4>
                     <ul class="col-md-12 col-sm-12 col-xs-12 no-padding">
-                        <li *ngFor='let link of linkDict.links' 
+                        <li *ngFor='let link of linkDict.links'
                             (click)="onDetail(link, workItem)"
                             class="link-list">
                             <span class="link-title" [id]="link.id + '-text'">

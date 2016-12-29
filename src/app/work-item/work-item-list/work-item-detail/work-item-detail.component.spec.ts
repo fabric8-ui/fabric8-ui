@@ -42,6 +42,7 @@ import { WorkItemService } from '../../work-item.service';
 import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
 import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.component';
 import { WorkItemDetailComponent } from './work-item-detail.component';
+import { WorkItemLinkTypeFilterByTypeName, WorkItemLinkFilterByTypeName } from './work-item-detail-pipes/work-item-link-filters.pipe';
 
 describe('Detailed view and edit a selected work item - ', () => {
   let comp: WorkItemDetailComponent;
@@ -325,6 +326,8 @@ describe('Detailed view and edit a selected work item - ', () => {
         WorkItemCommentComponent,
         WorkItemDetailComponent,
         WorkItemLinkComponent,
+        WorkItemLinkTypeFilterByTypeName,
+        WorkItemLinkFilterByTypeName
       ],
       providers: [
         Broadcaster,

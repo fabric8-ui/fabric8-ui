@@ -1,4 +1,3 @@
-import { AlmValidLinkTypes } from '../../../pipes/alm-valid-link-types.pipe';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +17,11 @@ import { AlmTrim } from '../../../pipes/alm-trim';
 import { WorkItemDetailComponent } from './work-item-detail.component';
 import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
 import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.component';
+import { 
+  WorkItemLinkFilterByTypeName,
+  WorkItemLinkTypeFilterByTypeName,
+  AlmValidLinkTypes
+} from './work-item-detail-pipes/work-item-link-filters.pipe';
 
 
 @NgModule({
@@ -39,6 +43,8 @@ import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.
     WorkItemCommentComponent,
     WorkItemDetailComponent,
     WorkItemLinkComponent,
+    WorkItemLinkFilterByTypeName,
+    WorkItemLinkTypeFilterByTypeName
   ],
   exports: [WorkItemDetailComponent],
   providers: []
