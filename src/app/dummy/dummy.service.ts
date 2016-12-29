@@ -1,9 +1,10 @@
 import { ContextMenuItem } from './../models/context-menu-item';
 import { Space } from './../models/space';
 import { Resources } from './../models/resources';
-import { ProcessTemplate } from './../models/process-templates';
+import { ProcessTemplate } from './../models/process-template';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -15,19 +16,19 @@ export class DummyService {
   readonly SPACES: Space[] = [
     {
       name: 'Bobo',
-      path: 'BalloonPopGame',
+      path: '/pmuir/BalloonPopGame',
       description: 'Microservices architected search engine'
     }, {
       name: 'Hysterix',
-      path: 'BalloonPopGame',
+      path: '/pmuir/BalloonPopGame',
       description: 'Hystrix is a latency and fault tolerance library designed to isolate points of access to remote systems, services and 3rd party libraries, stop cascading failure and enable resilience in complex distributed systems where failure is inevitable.'
     }, {
       name: 'fabric8io',
-      path: 'BalloonPopGame',
+      path: '/pmuir/BalloonPopGame',
       description: 'Fabric8 is an open source integrated development platform for Kubernetes'
     }, {
       name: 'BalloonPopGame',
-      path: 'BalloonPopGame',
+      path: '/pmuir/BalloonPopGame',
       description: 'Balloon popping fun for everyone!'
     }
   ];
@@ -207,16 +208,17 @@ export class DummyService {
   
   private _spaces: Space[];
 
-  constructor(private http: Http) {
-    this._spaces = JSON.parse(JSON.stringify(this.SPACES));
+  constructor(private http: Http,
+    private localStorageService: LocalStorageService) {
+    if (this.localStorageService.get('spaces')) {
+      this._spaces = this.localStorageService.get<Space[]>('spaces');
+    } else {
+      this._spaces = JSON.parse(JSON.stringify(this.SPACES));
+    }
   }
 
   get spaces(): Space[] {
     return this._spaces;
-  }
-
-  set spaces(spaces: Space[]) {
-    this._spaces = spaces;
   }
 
   get resources(): Resources {
@@ -229,6 +231,10 @@ export class DummyService {
 
   get processTemplates(): ProcessTemplate[] {
     return this.PROCESS_TEMPLATES;
+  }
+
+  save(): void {
+    this.localStorageService.set('spaces', this._spaces);
   }
 
 }

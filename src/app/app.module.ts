@@ -8,6 +8,7 @@ import { HttpModule } from '@angular/http';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
 import { DropdownModule } from 'ng2-dropdown';
+import { LocalStorageModule } from 'angular-2-local-storage';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -39,7 +40,7 @@ import { PublicModule } from './public/public.module';
 
 // Shared Components
 import { SpaceDialogModule } from './space-dialog/space-dialog.module';
-import { DeleteAccountDialogModule} from './delete-account-dialog/delete-account-dialog.module';
+import { DeleteAccountDialogModule } from './delete-account-dialog/delete-account-dialog.module';
 
 // Login
 import { SigninComponent } from './signin/signin.component';
@@ -70,7 +71,11 @@ export type StoreType = {
     HttpModule,
     PublicModule,
     SpaceDialogModule,
-    AppRoutingModule
+    AppRoutingModule,
+    LocalStorageModule.withConfig({
+      prefix: 'fabric8',
+      storageType: 'localStorage'
+    })
   ],
   declarations: [ // declare which components, directives and pipes belong to the module
     AppComponent,
@@ -90,10 +95,10 @@ export type StoreType = {
     ToggleService,
     UserService
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(public appRef: ApplicationRef, public appState: AppState) {}
+  constructor(public appRef: ApplicationRef, public appState: AppState) { }
 
   hmrOnInit(store: StoreType) {
     if (!store || !store.state) return;
@@ -119,7 +124,7 @@ export class AppModule {
     // recreate root elements
     store.disposeOldHosts = createNewHosts(cmpLocation);
     // save input values
-    store.restoreInputValues  = createInputTransfer();
+    store.restoreInputValues = createInputTransfer();
     // remove styles
     removeNgStyles();
   }
