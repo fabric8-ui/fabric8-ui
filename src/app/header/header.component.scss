@@ -69,3 +69,38 @@
     text-decoration: none;
 }
 
+.toggle-btn{
+    max-width: em(132);
+    padding: em(20) 0;
+    .detail-status-dropdown {
+        text-align: $textRight;
+        .dropdown-icon {
+            float: left;
+            margin-right: em(5);
+            font-size: em(12);
+            margin-top: em(5);
+        }
+        .dropdown-text {
+            float: left;
+            text-transform: capitalize;
+            text-align:left;
+        }
+        .caret{
+            margin-top: em(5);
+        }
+        .dropdown-ul {
+            min-width: em(132);
+            width: em(132);
+            top: em(25);
+            .dropdown-li {
+                width: $width100;
+                float: left;
+                a{
+                    width: $width100;
+                    float: left;
+                    padding: em(2) em(10);
+                }
+            }
+        }
+    }
+}

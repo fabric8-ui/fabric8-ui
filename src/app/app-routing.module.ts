@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { SigninComponent } from './signin/signin.component';
 
+import { HeaderComponent } from './header/header.component'
+
 // import { DataResolver } from './app.resolver';
 
 export const routes: Routes = [

@@ -32,6 +32,7 @@ import { Broadcaster } from './shared/broadcaster.service';
 import { DummyService } from './dummy/dummy.service';
 import { Logger } from './shared/logger.service';
 import { UserService } from './user/user.service';
+import { ToggleService } from './toggle/toggle.service';
 
 // Share Modules
 import { PublicModule } from './public/public.module';
@@ -86,6 +87,7 @@ export type StoreType = {
     DummyService,
     Logger,
     LoginService,
+    ToggleService,
     UserService
   ],
   bootstrap: [ AppComponent ]
