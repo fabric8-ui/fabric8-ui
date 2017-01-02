@@ -62,7 +62,7 @@ export type StoreType = {
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
 @NgModule({
-  imports: [ // import Angular's modules
+  imports: [ // import other modules with the components, directives and pipes needed by the components in this module
     BrowserModule,
     DeleteAccountDialogModule,
     DropdownModule,
@@ -72,7 +72,7 @@ export type StoreType = {
     SpaceDialogModule,
     AppRoutingModule
   ],
-  declarations: [
+  declarations: [ // declare which components, directives and pipes belong to the module
     AppComponent,
     FooterComponent,
     HeaderComponent,

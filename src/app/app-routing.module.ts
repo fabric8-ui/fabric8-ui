@@ -4,9 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { SigninComponent } from './signin/signin.component';
 
-import { HeaderComponent } from './header/header.component'
+import { ToggleService } from './toggle/toggle.service';
 
-// import { DataResolver } from './app.resolver';
+let toggleURL: string = '';
 
 export const routes: Routes = [
   {
@@ -31,7 +31,7 @@ export const routes: Routes = [
     loadChildren: './signup/signup.module#SignupModule'
   },
   {
-    path: 'pmuir/BalloonPopGame',
+    path: toggleURL + 'pmuir/BalloonPopGame',
     loadChildren: './analyze/analyze.module#AnalyzeModule'
   },
   {
@@ -39,47 +39,47 @@ export const routes: Routes = [
     loadChildren: './forgot-password/forgot-password.module#ForgotPasswordModule'
   },
   {
-    path: 'pmuir/BalloonPopGame/plan',
+    path: toggleURL + 'pmuir/BalloonPopGame/plan',
     loadChildren: './plan/plan.module#PlanModule'
   },
   {
-    path: 'pmuir/BalloonPopGame/create',
+    path: toggleURL + 'pmuir/BalloonPopGame/create',
     loadChildren: './create/create.module#CreateModule'
   },
   {
-    path: 'pmuir/BalloonPopGame/run',
+    path: toggleURL + 'pmuir/BalloonPopGame/run',
     loadChildren: './run/run.module#RunModule'
   },
   {
-    path: 'pmuir/BalloonPopGame/settings',
+    path: toggleURL + 'pmuir/BalloonPopGame/settings',
     loadChildren: './space-settings/space-settings.module#SpaceSettingsModule'
   },
   {
-    path: 'chat',
+    path: toggleURL + 'chat',
     loadChildren: './chat/chat.module#ChatModule'
   },
   {
-    path: 'dashboard',
+    path: toggleURL + 'dashboard',
     loadChildren: './dashboard/dashboard.module#DashboardModule'
   },
   {
-    path: 'help',
+    path: toggleURL + 'help',
     loadChildren: './help/help.module#HelpModule'
   },
   {
-    path: 'learn',
+    path: toggleURL + 'learn',
     loadChildren: './learn/learn.module#LearnModule'
   },
   {
-    path: 'notifications',
+    path: toggleURL + 'notifications',
     loadChildren: './notifications/notifications.module#NotificationsModule'
   },
   {
-    path: 'pmuir',
+    path: toggleURL + 'pmuir',
     loadChildren: './profile/profile.module#ProfileModule'
   },
   {
-    path: 'pmuir/settings',
+    path: toggleURL + 'pmuir/settings',
     loadChildren: './settings/settings.module#SettingsModule'
   }
 ];
@@ -88,4 +88,8 @@ export const routes: Routes = [
   imports: [RouterModule.forRoot(routes, {enableTracing: true})],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+  constructor(private toggleService: ToggleService) {
+    toggleURL = toggleService.featureToggle.path;
+  }
+}
