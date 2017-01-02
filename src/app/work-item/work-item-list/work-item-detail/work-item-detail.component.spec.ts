@@ -587,7 +587,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.loggedIn = fakeAuthService.isLoggedIn();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#WI_details_assigned_user'));
-    expect(el.nativeElement.textContent).toContain('Draco Malfoy');
+    expect(el.nativeElement.textContent).toContain('WIDCT Example User 2');
   });
 
    it('page should display correct reporter', () => {
