@@ -34,6 +34,7 @@ export class WorkItemService {
   private workItemTypeUrl = process.env.API_URL + 'workitemtypes';
   private linkTypesUrl = process.env.API_URL + 'workitemlinktypes';
   private linksUrl = process.env.API_URL + 'workitemlinks';
+  private reorderUrl = process.env.API_URL + 'workitems/reorder';
   private availableStates: DropdownOption[] = [];
   public workItemTypes: WorkItemType[] = [];
   private workItems: WorkItem[] = [];
@@ -434,17 +435,75 @@ export class WorkItemService {
    * ToDo: Integrate backend when available, also move by one
    * place should be implemented
    */
-  moveItem(wi: WorkItem, dir: String) {
-    //We need to call an ordering API which will store
-    //the new location for the selected work item
+  moveItem(wi: WorkItem, dir: String): void {
     let index = this.workItems.findIndex(x => x.id == wi.id);
-    let wiSplice = this.workItems.splice(index, 1);
-    if (dir == 'top') {
-      this.workItems.splice(0, 0, wi);
-    } else {
-      this.workItems.splice(this.workItems.length, 0, wi);
+    wi.attributes.nextitem = '';
+    wi.attributes.previousitem = '';
+    switch (dir){
+      case 'top':
+        //this.workItems.splice(0, 0, wi);
+        break;
+      case 'bottom':
+        //this.workItems.splice(this.workItems.length, 0, wi);
+        break;
+      case 'up':
+        if (index > 0) { //no moving of element if it is the first element
+          //move the work item up by 1. Below statement will create two elements
+          this.workItems.splice( index - 1 , 0, wi);
+          //remove the duplicate element
+          this.workItems.splice( index + 1, 1);
+          //Set the previous and next WI ids
+          wi.attributes.nextitem = parseInt(this.workItems[index].id);
+          //If the element has been moved and becomes the first element
+          // it will not have a previous value
+          if (index !== 1) {
+            wi.attributes.previousitem = parseInt(this.workItems[index - 2].id);
+          }
+        }
+        break;
+      case 'down':
+        if ( index < (this.workItems.length - 1) ) { //no moving of elements if it is the last element
+          //move the work item down by 1. Below statement will create two elements
+          this.workItems.splice( index + 2 , 0, wi);
+          //remove the duplicate element
+          this.workItems.splice( index, 1);
+          //Set the previous and next WI ids
+          wi.attributes.previousitem = parseInt(this.workItems[index].id);
+          //If the element has been moved and becomes the last element
+          // it will not have a next value
+          if ((index + 2) !== this.workItems.length) {
+            wi.attributes.nextitem = parseInt(this.workItems[index + 2].id);
+          }
+        }
+        break;
     }
-    return this.workItems;
+    //console.log(wi.attributes.previousitem, ':' , wi.attributes.nextitem);
+    //build the map to reset the indices
+    this.buildWorkItemIdIndexMap();
+    /*
+    return this.http
+      .patch(this.reorderUrl, JSON.stringify({data: wi}), { headers: this.headers })
+      .toPromise()
+      .then(response => {
+        //Reusing the update code to update the element locally
+        let updatedWorkItem = response.json().data as WorkItem;
+        // Find the index in the big list
+        let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
+        if (updateIndex > -1) {
+          // Update work item attributes
+          this.workItems[updateIndex].attributes = updatedWorkItem.attributes;
+          this.workItems[updateIndex].relationships.baseType = updatedWorkItem.relationships.baseType;
+          // Resolve users for the updated item
+          this.resolveUsersForWorkItem(this.workItems[updateIndex]);
+        } else {
+          // This part is for mock service in unit test
+          // this.workItems stays in case of unit test
+          // Resolve users for the updated item
+          this.resolveUsersForWorkItem(updatedWorkItem);
+        }
+        return updatedWorkItem;
+      })
+      .catch (this.handleError);*/
   }
 
   /**

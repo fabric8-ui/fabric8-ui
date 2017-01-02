@@ -56,6 +56,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   workItems: WorkItem[];
   workItemTypes: WorkItemType[];
   selectedWorkItemEntryComponent: WorkItemListEntryComponent;
+  workItemToMove: WorkItemListEntryComponent;
   workItemDetail: WorkItem;
   addingWorkItem = false;
   showOverlay : Boolean ;
@@ -175,12 +176,26 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   }
 
   // event handlers
+  onToggle(entryComponent: WorkItemListEntryComponent): void {
+    // This condition is to select a single work item for movement
+    // deselect the previous checked work item
+    if (this.workItemToMove) {
+      this.workItemToMove.uncheck();
+    }
+    if (this.workItemToMove == entryComponent) {
+      this.workItemToMove = null;
+    } else {
+      entryComponent.check();
+      this.workItemToMove = entryComponent;
+    }
+  }
 
   onSelect(entryComponent: WorkItemListEntryComponent): void {
     let workItem: WorkItem = entryComponent.getWorkItem();
     // de-select prior selected element (if any)
-    if (this.selectedWorkItemEntryComponent && this.selectedWorkItemEntryComponent != entryComponent)
+    if (this.selectedWorkItemEntryComponent && this.selectedWorkItemEntryComponent != entryComponent) {
       this.selectedWorkItemEntryComponent.deselect();
+    }
     // select new component
     entryComponent.select();
     this.selectedWorkItemEntryComponent = entryComponent;
@@ -200,6 +215,16 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   onMoveToBottom(entryComponent: WorkItemListEntryComponent): void {
     this.workItemDetail = entryComponent.getWorkItem();
     this.workItemService.moveItem(this.workItemDetail, 'bottom');
+  }
+
+  onMoveUp(): void {
+    this.workItemDetail = this.workItemToMove.getWorkItem();
+    this.workItemService.moveItem(this.workItemDetail, 'up');
+  }
+
+  onMoveDown(): void {
+    this.workItemDetail = this.workItemToMove.getWorkItem();
+    this.workItemService.moveItem(this.workItemDetail, 'down');
   }
 
   // Event listener for URL change

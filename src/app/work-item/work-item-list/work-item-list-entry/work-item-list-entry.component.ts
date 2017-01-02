@@ -37,11 +37,13 @@ import { WorkItemService } from '../../work-item.service';
 export class WorkItemListEntryComponent implements OnInit {
 
   @Input() workItem: WorkItem;
+  @Output() toggleEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() selectEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() detailEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() moveTopEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() moveBottomEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
 
+  checkedWI: boolean = false;
   selected: boolean = false;
   dialog: Dialog;
   showDialog = false;
@@ -74,6 +76,18 @@ export class WorkItemListEntryComponent implements OnInit {
     return this.selected;
   }
 
+  isChecked(): boolean {
+    return this.checkedWI;
+  }
+
+  check(): void {
+    this.checkedWI = true;
+  }
+
+  uncheck(): void {
+    this.checkedWI = false;
+  }
+
   // helpers
 
   confirmDelete(event: MouseEvent) {
@@ -90,7 +104,7 @@ export class WorkItemListEntryComponent implements OnInit {
   }
 
   onButtonClick(val: number) {
-    // callback from the confirm delete dialog 
+    // callback from the confirm delete dialog
     if (val == 1) {
       this.onDelete(null);
     }
@@ -99,6 +113,11 @@ export class WorkItemListEntryComponent implements OnInit {
 
   selectEntry(): void {
     this.selectEvent.emit(this);
+  }
+
+  toggleEntry(event: MouseEvent): void {
+    event.stopPropagation();
+    this.toggleEvent.emit(this);
   }
 
   // event handlers
@@ -120,14 +139,14 @@ export class WorkItemListEntryComponent implements OnInit {
     this.detailEvent.emit(this);
     this.router.navigate(['/work-item-list/detail/' + this.workItem.id]);
   }
-  
+
   onMoveToTop(event: MouseEvent): void {
-    event.stopPropagation();    
+    event.stopPropagation();
     this.moveTopEvent.emit(this);
   }
 
   onMoveToBottom(event: MouseEvent): void {
-    event.stopPropagation();    
+    event.stopPropagation();
     this.moveBottomEvent.emit(this);
   }
 

@@ -87,6 +87,13 @@
       border-width: 1px 0;
       padding: 1px 10px;
     }
+    .move-dropdown {
+      position: absolute;
+      left: em(100);
+      a {
+        cursor: pointer;
+      }
+    }
     .filter-dropdown {
       margin-right: em(10);
     }

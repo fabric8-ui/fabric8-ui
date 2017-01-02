@@ -1,10 +1,14 @@
-<div *ngIf="showDialog">	
+<div *ngIf="showDialog">
 	<alm-dialog
 		(pfDialogClick)="onButtonClick($event)"
-		[dialog]='dialog'	
+		[dialog]='dialog'
 	></alm-dialog>
 </div>
 <div class="list-group-item" (click)="onSelect($event)" [class.selected]="isSelected()">
+	<!--checkbox to select a WI and move it-->
+	<div class="row-cbh" title="Select the checkbox to move the item.">
+		<input type="checkbox" [checked]="checkedWI" (click)="toggleEntry($event)" />
+	</div>
 	<!-- info area -->
 	<div class="list-view-pf-main-info" (click)="onDetail($event)">
 		<div class="list-view-pf-left type workItemList_workItemType">
@@ -25,7 +29,7 @@
 	</div>
 
   <div class="user-avatar">
-      <img  
+      <img
         *ngFor="let wItem of workItem.relationalData.assignees"
         tooltipPlacement="bottom"
         tooltip="{{wItem.attributes.fullName}}"
@@ -43,9 +47,9 @@
 			<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
 				<li><a class="workItemList_MoveTop" (click)="onMoveToTop($event)">Move to Top</a></li>
 				<li><a class="workItemList_MoveBottom" (click)="onMoveToBottom($event)">Move to Bottom</a></li>
-				<li role="presentation" class="divider"></li>				
+				<li role="presentation" class="divider"></li>
 				<li><a [routerLink]="['/work-item-list/detail/' + workItem.id]" class="workItemList_Open">Open</a></li>
-				<li><a class="workItemList_Delete" (click)="confirmDelete($event)">Delete</a></li>				
+				<li><a class="workItemList_Delete" (click)="confirmDelete($event)">Delete</a></li>
 				<li><a class="workItemList_Backlog" (click)="onMoveToBacklog($event)">Move to Backlog</a></li>
 			</ul>
 		</div>

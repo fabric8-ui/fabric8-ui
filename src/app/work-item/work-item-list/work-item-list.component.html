@@ -20,6 +20,29 @@
 <div class="detail-list-container" [class.containerPadd-nologin] = "!loggedIn" >
   <div class="list-action">
     <h4 class="list-type">Backlog</h4>
+    <!--Move a work item up / down -->
+    <div *ngIf="workItemToMove" class="dropdown move-dropdown" dropdown>
+      <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
+        Move
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="wi_filter_dropdown">
+        <li>
+          <a role="menuitem" tabindex="-1">Move to Top</a>
+        </li>
+        <li>
+          <a role="menuitem" tabindex="-1">Move to Bottom</a>
+        </li>
+        <li role="presentation" class="divider"></li>
+        <li>
+          <a role="menuitem" tabindex="-1" (click)='onMoveUp()'>Move Up</a>
+        </li>
+        <li>
+          <a role="menuitem" tabindex="-1" (click)='onMoveDown()'>Move Down</a>
+        </li>
+      </ul>
+    </div>
+    <!--Filter-->
     <div class="dropdown filter-dropdown" dropdown>
       <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
         Filter Method
@@ -69,6 +92,7 @@
           id="{{'workItemList_OuterWrap_'+counter}}"
           class="work-item-list-entry"
           [workItem]="workItem"
+          (toggleEvent)="onToggle($event)"
           (selectEvent)="onSelect($event)"
           (detailEvent)="onDetail($event)"
           (moveTopEvent)="onMoveToTop($event)"
