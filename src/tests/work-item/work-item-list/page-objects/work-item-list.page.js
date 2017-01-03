@@ -298,6 +298,48 @@ class WorkItemListPage {
 
 
   }  
+  userStoryIconWIT  (){
+    return element(by.css('.xl-font.fa.fa-bookmark'));
+  }
+  clickUserStoryWItype  ()  {
+    return this.userStoryIconWIT.click();
+  }
+  valuePropositonWItype  ()  {
+   return element(by.css('.xl-font.fa.fa-gift'));
+  }
+  clickValuePropositonWItype  ()  {
+    return this.valuePropositonWItype.click();
+  }
+  fundamentalWItype  ()  {
+   return element(by.css('.xl-font.fa.fa-bank'));
+  }
+  clickFundamentalWItype  ()  {
+    return this.fundamentalWItype.click();
+  }
+  plannerWItype(){
+    return element(by.css('.xl-font.fa.fa-paint-brush'));
+  }
+  clickPalnnerWItype  ()  {
+    return this.plannerWItype.click();
+  }
+  featureWItype() {
+    return element(by.css('.xl-font.fa.fa-mouse-pointer'));
+  }
+  clickFeatureWItype  ()  {
+    return this.featureWItype.click();
+  }
+  bugWItype(){
+    return element(by.css('.xl-font.fa.fa-bug'));
+  }
+  clickBugWItype  ()  {
+    return this.bugWItype.click();
+  }
+  experienceWIType(){
+    return element(by.css('.xl-font.fa.fa-map'));
+  }
+  clickExperienceWItype  ()  {
+    return this.experienceWIType.click();
+  }
   
 }
 

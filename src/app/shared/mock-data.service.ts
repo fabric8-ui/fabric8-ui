@@ -120,7 +120,7 @@ export class MockDataService {
           }, 
           'creator': { 
             'data': { 
-              'id': 'some-creator-id', 
+              'id': 'user0', 
               'links': {
                 'self': 'http://mock.service/api/users/some-creator-id'
               },

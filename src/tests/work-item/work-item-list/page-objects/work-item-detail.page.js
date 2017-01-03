@@ -411,6 +411,9 @@ class WorkItemDetailPage {
   getCreatorUsername  (){
     return element(by.id('WI_details_reporter_user')).getText();
   }
+  getImageURL (){
+    return element(by.id('WI_details_reporter_img')).getAttribute('src');
+  }
 }
 
 module.exports = WorkItemDetailPage;
