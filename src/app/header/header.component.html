@@ -71,7 +71,7 @@
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
             <a [routerLink]="[urlFeatureToggle + '/pmuir/BalloonPopGame/create']">Codebases</a>
           </li>
-          <li [routerLinkActive]="['active']">
+          <li [routerLinkActive]="['active']" *ngIf="selectedFeatureToggle === 'Beta' || selectedFeatureToggle === 'Alpha'">
             <a [routerLink]="[urlFeatureToggle + '/pmuir/BalloonPopGame/create/workspaces']">Workspaces</a>
           </li>
         </ul>
