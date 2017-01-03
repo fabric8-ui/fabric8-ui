@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { DummyService } from '../dummy/dummy.service';
 import { Space } from '../models/space';
 import { ProcessTemplate } from '../models/process-template';
+import { Broadcaster } from '../shared/broadcaster.service';
+
 
 
 @Component({
@@ -16,7 +18,8 @@ export class SpaceDialogComponent {
 
   constructor(
     private router: Router,
-    public dummy: DummyService) {
+    public dummy: DummyService,
+    private broadcaster: Broadcaster) {
       this.resetNewSpace();
   }
 
@@ -26,7 +29,7 @@ export class SpaceDialogComponent {
     this.newSpace.path = '/pmuir/BalloonPopGame';
     this.newSpace.description = this.newSpace.name;
     this.dummy.spaces.push(this.newSpace);
-    this.dummy.save();
+    this.broadcaster.broadcast('save', 1);
     this.router.navigate([this.newSpace.path]);
     this.resetNewSpace();
   }

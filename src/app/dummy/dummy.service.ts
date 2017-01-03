@@ -5,6 +5,7 @@ import { ProcessTemplate } from './../models/process-template';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { Broadcaster } from '../shared/broadcaster.service';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -205,16 +206,23 @@ export class DummyService {
       { name: 'Issue Tracking' },
       { name: 'Scenario Driven Planning' }
     ];
-  
+
   private _spaces: Space[];
 
-  constructor(private http: Http,
-    private localStorageService: LocalStorageService) {
+  constructor(
+    private http: Http,
+    private localStorageService: LocalStorageService,
+    private broadcaster: Broadcaster
+  ) {
     if (this.localStorageService.get('spaces')) {
       this._spaces = this.localStorageService.get<Space[]>('spaces');
     } else {
       this._spaces = JSON.parse(JSON.stringify(this.SPACES));
     }
+    this.broadcaster.on<string>('save')
+      .subscribe(message => {
+        this.save();
+      });
   }
 
   get spaces(): Space[] {
