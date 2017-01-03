@@ -19,16 +19,26 @@ export const routes: Routes = [
     component: SigninComponent
   },
   {
-    path: 'home',
-    loadChildren: './home/home.module#HomeModule'
-  },
-  {
     path: 'signup',
     loadChildren: './signup/signup.module#SignupModule'
   },
   {
     path: 'password_reset',
     loadChildren: './forgot-password/forgot-password.module#ForgotPasswordModule'
+  },
+
+  // Home
+  {
+    path: 'home',
+    loadChildren: './home/home.module#HomeModule'
+  },
+  {
+    path: 'beta/home',
+    loadChildren: './home/home.module#HomeModule'
+  },
+  {
+    path: 'alpha/home',
+    loadChildren: './home/home.module#HomeModule'
   },
 
   // Analyze
