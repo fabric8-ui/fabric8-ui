@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "declaration": true,
+    "declarationDir": "lib",
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
@@ -20,4 +22,5 @@
     "genDir": "./ngfactory"
   }
 }
+
 

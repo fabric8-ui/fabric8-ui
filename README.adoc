@@ -124,3 +124,12 @@ To create docker image, run this command immediately after the previous command:
 ----
 docker build -t almighty-ui-deploy -f Dockerfile.deploy .
 ----
+
+== Building the NPM Library
+
+To build the NPM library, use this command:
+
+---
+export API_URL="http://api.example.org/api/"
+npm run build:npm
+---
