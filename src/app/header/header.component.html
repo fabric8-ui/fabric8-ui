@@ -178,13 +178,13 @@
             <li class="context dropdown" dropdown>
                 <a dropdown-open>
                     <span>
-                        <span class="{{context.type.icon}}"></span> {{context.name}}
+                        <span class="{{context.current.type.icon}}"></span> {{context.current.name}}
                     </span>
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
                     <li *ngFor="let m of dummy.contextMenuItems">
-                        <a [routerLink]="[m.path]" *ngIf="m != context"><span class="{{m.type.icon}}"></span> {{m.name}}</a>
+                        <a [routerLink]="[m.path]" *ngIf="m != context.current"><span class="{{m.type.icon}}"></span> {{m.name}}</a>
                     </li>
                     <li>
                         <a [routerLink]="['/pmuir/spaces']">Browse all</a>
@@ -199,7 +199,7 @@
                     </li>
                 </ul>
             </li>
-            <li *ngFor="let m of context.type.menus" [class.active]="m.active">
+            <li *ngFor="let m of context.current.type.menus" [class.active]="m.active">
                 <a [routerLink]="[m.fullPath]">
                     <span *ngIf="m.icon" class="{{m.icon}}"></span>
                     <span *ngIf="m.name">{{m.name}}</span>
