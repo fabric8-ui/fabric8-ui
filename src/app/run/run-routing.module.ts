@@ -12,6 +12,16 @@ const routes: Routes = [
   },
   {
     path: '',
+    redirectTo: 'beta/pmuir/BalloonPopGame/run',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    redirectTo: 'alpha/pmuir/BalloonPopGame/run',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
     component: RunComponent,
     children: [
       { path: '', component: PipelinesComponent },

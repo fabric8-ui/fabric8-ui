@@ -4,10 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { SigninComponent } from './signin/signin.component';
 
-import { ToggleService } from './toggle/toggle.service';
-
-let toggleURL: string = '';
-
 export const routes: Routes = [
   {
     path: '',
@@ -31,65 +27,181 @@ export const routes: Routes = [
     loadChildren: './signup/signup.module#SignupModule'
   },
   {
-    path: toggleURL + 'pmuir/BalloonPopGame',
-    loadChildren: './analyze/analyze.module#AnalyzeModule'
-  },
-  {
     path: 'password_reset',
     loadChildren: './forgot-password/forgot-password.module#ForgotPasswordModule'
   },
+
+  // Analyze
   {
-    path: toggleURL + 'pmuir/BalloonPopGame/plan',
+    path: 'pmuir/BalloonPopGame',
+    loadChildren: './analyze/analyze.module#AnalyzeModule'
+  },
+  {
+    path: 'beta/pmuir/BalloonPopGame',
+    loadChildren: './analyze/analyze.module#AnalyzeModule'
+  },
+  {
+    path: 'alpha/pmuir/BalloonPopGame',
+    loadChildren: './analyze/analyze.module#AnalyzeModule'
+  },
+
+  // Plan
+  {
+    path: 'pmuir/BalloonPopGame/plan',
     loadChildren: './plan/plan.module#PlanModule'
   },
   {
-    path: toggleURL + 'pmuir/BalloonPopGame/create',
+    path: 'beta/pmuir/BalloonPopGame/plan',
+    loadChildren: './plan-alpha/plan.module#PlanModule'
+  },
+  {
+    path: 'alpha/pmuir/BalloonPopGame/plan',
+    loadChildren: './plan-alpha/plan.module#PlanModule'
+  },
+
+  // Create
+  {
+    path: 'pmuir/BalloonPopGame/create',
     loadChildren: './create/create.module#CreateModule'
   },
   {
-    path: toggleURL + 'pmuir/BalloonPopGame/run',
+    path: 'beta/pmuir/BalloonPopGame/create',
+    loadChildren: './create/create.module#CreateModule'
+  },
+  {
+    path: 'alpha/pmuir/BalloonPopGame/create',
+    loadChildren: './create/create.module#CreateModule'
+  },
+
+  // Run
+  {
+    path: 'pmuir/BalloonPopGame/run',
     loadChildren: './run/run.module#RunModule'
   },
   {
-    path: toggleURL + 'pmuir/BalloonPopGame/settings',
+    path: 'beta/pmuir/BalloonPopGame/run',
+    loadChildren: './run/run.module#RunModule'
+  },
+  {
+    path: 'alpha/pmuir/BalloonPopGame/run',
+    loadChildren: './run/run.module#RunModule'
+  },
+
+  // Space-settings
+  {
+    path: 'pmuir/BalloonPopGame/settings',
     loadChildren: './space-settings/space-settings.module#SpaceSettingsModule'
   },
   {
-    path: toggleURL + 'chat',
+    path: 'beta/pmuir/BalloonPopGame/settings',
+    loadChildren: './space-settings/space-settings.module#SpaceSettingsModule'
+  },
+  {
+    path: 'alpha/pmuir/BalloonPopGame/settings',
+    loadChildren: './space-settings/space-settings.module#SpaceSettingsModule'
+  },
+
+  // Chat
+  {
+    path: 'chat',
     loadChildren: './chat/chat.module#ChatModule'
   },
   {
-    path: toggleURL + 'dashboard',
+    path: 'beta/chat',
+    loadChildren: './chat/chat.module#ChatModule'
+  },
+  {
+    path: 'alpha/chat',
+    loadChildren: './chat/chat.module#ChatModule'
+  },
+
+  // Dashboard
+  {
+    path: 'dashboard',
     loadChildren: './dashboard/dashboard.module#DashboardModule'
   },
   {
-    path: toggleURL + 'help',
+    path: 'beta/dashboard',
+    loadChildren: './dashboard/dashboard.module#DashboardModule'
+  },
+  {
+    path: 'alpha/dashboard',
+    loadChildren: './dashboard/dashboard.module#DashboardModule'
+  },
+
+  // Help
+  {
+    path: 'help',
     loadChildren: './help/help.module#HelpModule'
   },
   {
-    path: toggleURL + 'learn',
+    path: 'beta/help',
+    loadChildren: './help/help.module#HelpModule'
+  },
+  {
+    path: 'alpha/help',
+    loadChildren: './help/help.module#HelpModule'
+  },
+
+  // Learn
+  {
+    path: 'learn',
     loadChildren: './learn/learn.module#LearnModule'
   },
   {
-    path: toggleURL + 'notifications',
+    path: 'beta/learn',
+    loadChildren: './learn/learn.module#LearnModule'
+  },
+  {
+    path: 'alpha/learn',
+    loadChildren: './learn/learn.module#LearnModule'
+  },
+
+  // Notifications
+  {
+    path: 'notifications',
     loadChildren: './notifications/notifications.module#NotificationsModule'
   },
   {
-    path: toggleURL + 'pmuir',
+    path: 'beta/notifications',
+    loadChildren: './notifications/notifications.module#NotificationsModule'
+  },
+  {
+    path: 'alpha/notifications',
+    loadChildren: './notifications/notifications.module#NotificationsModule'
+  },
+
+  // Profile
+  {
+    path: 'pmuir',
     loadChildren: './profile/profile.module#ProfileModule'
   },
   {
-    path: toggleURL + 'pmuir/settings',
+    path: 'beta/pmuir',
+    loadChildren: './profile/profile.module#ProfileModule'
+  },
+  {
+    path: 'alpha/pmuir',
+    loadChildren: './profile/profile.module#ProfileModule'
+  },
+
+  // Settings
+  {
+    path: 'pmuir/settings',
     loadChildren: './settings/settings.module#SettingsModule'
-  }
+  },
+  {
+    path: 'beta/pmuir/settings',
+    loadChildren: './settings/settings.module#SettingsModule'
+  },
+  {
+    path: 'alpha/pmuir/settings',
+    loadChildren: './settings/settings.module#SettingsModule'
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {enableTracing: true})],
   exports: [RouterModule]
 })
-export class AppRoutingModule {
-  constructor(private toggleService: ToggleService) {
-    toggleURL = toggleService.featureToggle.path;
-  }
-}
+export class AppRoutingModule {}

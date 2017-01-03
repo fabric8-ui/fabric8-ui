@@ -12,6 +12,16 @@ const routes: Routes = [
   },
   {
     path: '',
+    redirectTo: 'beta/pmuir/BalloonPopGame/settings',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    redirectTo: 'alpha/pmuir/BalloonPopGame/settings',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
     component: SpaceSettingsComponent,
     children: [
       { path: '',      component: SettingsOverviewComponent },

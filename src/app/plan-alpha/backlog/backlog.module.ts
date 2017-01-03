@@ -11,16 +11,15 @@ import { BacklogRoutingModule } from './backlog-routing.module';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    BacklogRoutingModule,
-    HttpModule,
-    LocalStorageModule.withConfig({
-      prefix: 'fabric8',
-      storageType: 'localStorage'
-    })
-  ],
-  declarations: [ BacklogComponent, /*CollapseDirective*/ ],
+  imports:      [ CommonModule, 
+                  BacklogRoutingModule, 
+                  HttpModule, 
+                  LocalStorageModule.withConfig({
+                    prefix: 'fabric8',
+                    storageType: 'localStorage'
+                  })
+                ],
+  declarations: [ BacklogComponent, CollapseDirective ],
 })
 export class BacklogModule {
   constructor(http: Http) {}

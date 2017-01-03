@@ -12,6 +12,16 @@ const routes: Routes = [
   },
   {
     path: '',
+    redirectTo: 'beta/pmuir/settings',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    redirectTo: 'alpha/pmuir/settings',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
     component: SettingsComponent,
     children: [
       { path: '',      component: ProfileComponent },
