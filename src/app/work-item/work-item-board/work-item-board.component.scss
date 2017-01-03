@@ -2,7 +2,7 @@
 @import "../../../assets/stylesheets/custom";
 @import "../../../assets/stylesheets/color-variables";
 
-.boardWrapper{
+.boardWrapper {
   position: relative;
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
@@ -14,18 +14,16 @@
   .board {
     user-select: none;
     white-space: nowrap;
-    margin-bottom: em(10);
     overflow-x: auto;
     overflow-y: hidden;
-    padding-bottom: em(10);
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-
+    padding-bottom: em(10);
     .board-lane {
-      width: em(270);
+      width: em(300);
       margin: 0 em(5);
       height: 100%;
       -moz-box-sizing: border-box;
@@ -33,17 +31,21 @@
       display: inline-block;
       vertical-align: top;
       white-space: normal;
-      overflow-y: scroll;
-      .board-lane-column{
+      .board-lane-column {
         background: $color-pf-black-200;
         @include Border(1px, solid ,$color-pf-black-300);
-        padding: em(20);
-        .lane-header{
+        padding: em(0);
+        height: 100%;
+        padding-bottom: 0;
+        .lane-header {
           text-align: $textCenter;
+          position: absolute;
           width: $width100;
           float: left;
-          padding-bottom: em(5);
-          .issueCount{
+          z-index: 11;
+          background: $color-pf-black-200;
+          padding: em(7) 0 em(3) 0;
+          .issueCount {
             background: $color-pf-white;
             padding: 0 em(8);
             margin-left: em(5);
@@ -51,90 +53,46 @@
             font-weight: 500;
           }
         }
-        .board-card{
+        .boardLaneWrapper {
           width: $width100;
           float: left;
-          @include Border(1px, solid , $color-pf-black-400);
-          background: $color-pf-white;
-          padding: em(15);
-          margin:em(5) 0;
-          > aside {
+          height: calc( 100% - 2.5em );
+          overflow-y: auto;
+          padding: em(0) em(15);
+          margin-top: 2.5em;
+          .boardQuickAddContainer {
             width: $width100;
             float: left;
-            .wi-type-icon{
-              padding: em(7) em(6);
-              font-size: em(10);
-            }
-            .multiline-truncation{
-              @include multiline-truncate($font-size: 1em, $line-height: 1.3, $lines-to-show: 3, $trunc-bg: $color-pf-white);
-
+          }
+          .board-card {
+            width: $width100;
+            float: left;
+            @include Border(1px, solid , $color-pf-black-400);
+            background: $color-pf-white;
+            padding: em(15);
+            margin: em(5) 0;
+            > aside {
+              width: $width100;
+              float: left;
+              margin-bottom: em(5);
+              p {
+                margin: 0;
+              }
+              .wi-type-icon {
+                padding: em(7) em(6);
+                font-size: em(10);
+                margin-right: em(2);
+              }
+              .multiline-truncation {
+                @include multiline-truncate($font-size: 1em, $line-height: 1.3, $lines-to-show: 3, $trunc-bg: $color-pf-white);
+              }
+              .user-avatar {
+                padding-right: em(5);
+              }
             }
           }
         }
       }
     }
   }
-}
-/*
- * note that styling gu-mirror directly is a bad practice because it's too generic.
- * you're better off giving the draggable elements a unique class and styling that directly!
- */
-
-.gu-mirror {
-  margin: em(10);
-  padding: em(10);
-  background-color: lighten($color-pf-black, 85);
-  transition: opacity 0.4s ease-in-out;
-}
-/*.board-lane{
-  div {
-    cursor: move;
-    cursor: grab;
-    cursor: -moz-grab;
-    cursor: -webkit-grab;
-  }
-}
-.gu-mirror {
-  cursor: grabbing;
-  cursor: -moz-grabbing;
-  cursor: -webkit-grabbing;
-}
-.board-lane{
-   .ex-moved {
-      background-color: lighten($color-pf-red-100, 0.4);
-   }
-}
-.board-lane.ex-over {
-  background-color: rgba($color-pf-white, 0.3);
-}
-.handle {
-  padding: 0 em(5);
-  margin-right: em(5);
-  background-color: rgba(0, 0, 0, 0.4);
-  cursor: move;
-}
-
-//Third party related styling --> Refactoring needed
-.gu-mirror{
-  position:fixed!important;
-  margin:0!important;
-  z-index:9999!important;
-  opacity:.8;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-  filter:alpha(opacity=80)}.gu-hide{display:none!important;
-}
-  .gu-unselectable{
-    -webkit-user-select:none!important;
-    -moz-user-select:none!important;
-    -ms-user-select:none!important;
-    user-select:none!important;
-  }
-  .gu-transit{
-    opacity:.2;
-    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-    filter:alpha(opacity=20);
-  }
-*/
-
-@media (max-width: $grid-float-breakpoint){
-  /*Toggle the details panel's width and left margin*/
 }

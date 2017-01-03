@@ -1,13 +1,13 @@
-import { 
+import {
   AfterViewInit,
-  Component, 
+  Component,
   EventEmitter,
   ElementRef,
-  Input, 
-  OnInit, 
-  Output, 
-  ViewChild, 
-  ViewChildren,   
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewChildren,
   Renderer,
   QueryList
 } from '@angular/core';
@@ -28,6 +28,7 @@ export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
   @ViewChild('quickAddDesc') qaDesc: any;
   @ViewChildren('quickAddTitle', {read: ElementRef}) qaTitleRef: QueryList<ElementRef>;
 
+  @Input() wilistview: string = 'wi-list-view';
   error: any = false;
   workItem: WorkItem;
   validTitle: Boolean;
@@ -37,7 +38,7 @@ export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
   initialDescHeightDiff: number = 0;
   descHeight: any = '26px';
   descResize: any = 'none';
-  
+
   constructor(
     private workItemService: WorkItemService,
     private logger: Logger,
@@ -75,7 +76,7 @@ export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
         this.renderer.invokeElementMethod(this.qaTitle.nativeElement, 'focus');
       }
     });
-  } 
+  }
 
   save(event: any = null): void {
     if (event) event.preventDefault();
@@ -118,9 +119,9 @@ export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
   checkDesc(): void {
     if (!this.initialDescHeight) {
       this.initialDescHeight = this.qaDesc.nativeElement.offsetHeight;
-      this.initialDescHeightDiff = this.initialDescHeight - this.qaDesc.nativeElement.scrollHeight; 
+      this.initialDescHeightDiff = this.initialDescHeight - this.qaDesc.nativeElement.scrollHeight;
     }
-    this.descHeight = this.qaDesc.nativeElement.scrollHeight + this.initialDescHeightDiff; 
+    this.descHeight = this.qaDesc.nativeElement.scrollHeight + this.initialDescHeightDiff;
   }
 
   resetQuickAdd(): void {

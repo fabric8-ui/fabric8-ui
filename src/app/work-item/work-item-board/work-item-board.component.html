@@ -8,38 +8,43 @@
             <span class="dib">{{lane.option}}</span>
             <span class="issueCount dib" >{{workItems | almFilterBoardList:lane.option | count}}</span>
           </div>
-          <div *ngFor='let item of workItems | almFilterBoardList:lane.option'>
-          <div class="board-card" (click)="gotoDetail(item)">
-            <aside>
-              <div class="pull-left">
-                <span class="wi-type-icon" almIcon [iconType]="item.relationships?.baseType?.data?.id"></span>
-              </div>
-              <span class="pull-left"> {{item.id}} </span>
-              <button class="pull-right btn btn-link dropdown-toggle color-grey" type="button">
-                <span class="fa fa-ellipsis-v"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li><a class="workItemList_MoveTop">Move to Top</a></li>
-                <li><a class="workItemList_MoveBottom">Move to Bottom</a></li>
-                <li class="divider" role="presentation"></li>
-                <li><a class="workItemList_Open" href="/work-item-list/detail/429">Open</a></li>
-                <li><a class="workItemList_Delete">Delete</a></li>
-                <li><a class="workItemList_Backlog">Move to Backlog</a></li>
-              </ul>
-            </aside>
-            <aside>
-              <div class="col-md-10 col-sm-10 col-xs-9">
-                <p class="multiline-truncation">{{ item.attributes['system.title'] }}</p>
-              </div>
-              <div class="col-md-2 col-sm-2 col-xs-3 no-padding user-avatar">
-                <img *ngIf="item.relationalData?.assignees?.length"
+
+          <div class="boardlaneWrapper">
+            <div *ngIf="lane.option == 'new'">
+                <div *ngIf="loggedIn" class="boardQuickAddContainer">
+                    <alm-work-item-quick-add [wilistview] = "'wi-card-view'" (close)="close($event)"></alm-work-item-quick-add>
+                </div>
+            </div>
+            <div class="board-card" *ngFor='let item of workItems | almFilterBoardList:lane.option' (click)="gotoDetail(item)">
+              <aside>
+                <div class="pull-left">
+                  <span class="wi-type-icon" almIcon [iconType]="item.relationships?.baseType?.data?.id"></span>
+                </div>
+                <span class="pull-left"> {{item.id}} </span>
+                <button class="pull-right btn btn-link dropdown-toggle color-grey" type="button">
+                  <span class="fa fa-ellipsis-v"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li><a class="workItemList_MoveTop">Move to Top</a></li>
+                  <li><a class="workItemList_MoveBottom">Move to Bottom</a></li>
+                  <li class="divider" role="presentation"></li>
+                  <li><a class="workItemList_Open" href="/work-item-list/detail/429">Open</a></li>
+                  <li><a class="workItemList_Delete">Delete</a></li>
+                  <li><a class="workItemList_Backlog">Move to Backlog</a></li>
+                </ul>
+              </aside>
+              <aside>
+                <div class="col-md-10 col-sm-10 col-xs-9">
+                  <p class="multiline-truncation">{{ item.attributes['system.title'] }}</p>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-3 user-avatar pull-right">
+                  <img *ngIf="item.relationalData?.assignees?.length"
                     src="{{item.relationalData.assignees[0]?.attributes.imageURL + '&s=20'}}"
                     onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
-                <span *ngIf="!item.relationalData?.assignees?.length" class="fa fa-user not-assigned-user-icon"></span>
-              </div>
-            </aside>
-
-           </div>
+                  <span *ngIf="!item.relationalData?.assignees?.length" class="fa fa-user not-assigned-user-icon pull-right"></span>
+                </div>
+              </aside>
+            </div>
           </div>
         </section>
       </div>

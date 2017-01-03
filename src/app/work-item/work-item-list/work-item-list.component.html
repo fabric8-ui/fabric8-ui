@@ -105,9 +105,9 @@
 
 <div id="workItemList_Error" class="error" *ngIf="error">{{error}}</div>
 
-<div id="workItemList_quickAdd" class="pull-left">
+<div id="workItemList_quickAdd" class="pull-left" >
     <div *ngIf="loggedIn" class="pull-left supress-hover">
-        <alm-work-item-quick-add (close)="close($event)"></alm-work-item-quick-add>
+        <alm-work-item-quick-add [wilistview]="'wi-list-view'" (close)="close($event)"></alm-work-item-quick-add>
     </div>
 </div>
 

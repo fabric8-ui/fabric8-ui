@@ -2,19 +2,6 @@
 @import "../../../assets/stylesheets/custom";
 @import "../../../assets/stylesheets/color-variables";
 
-.icon-btn,
-.icon-btn-disabled{
-  font-size: em(24);
-  text-decoration: none;
-}
-.icon-btn{
-  color: $color-pf-blue-400;
-  cursor: pointer;
-}
-.icon-btn-disabled{
-  color: #ebebeb;
-  cursor: default;
-}
 .quickAdd_container{
   position: fixed;
   bottom:0;
@@ -75,7 +62,7 @@
       right: em(9);
       width: em(36);
       .workItemQuickAdd_Add{
-        text-align: right; 
+        text-align: right;
         font-size: em(14);
         i{
           font-size: em(14);
@@ -86,6 +73,70 @@
           font-size: em(16);
         }
       }
+    }
+    .icon-btn, .icon-btn-disabled{
+      font-size: em(24);
+      text-decoration: none;
+    }
+    .icon-btn{
+      color: $color-pf-blue-400;
+      cursor: pointer;
+    }
+    .icon-btn-disabled{
+      color: $color-pf-black-300;
+      cursor: default;
+    }
+  }
+}
+
+.quickAdd_container2{
+  position: relative;
+  width: $width100;
+  float: left;
+  @include Border(0 , solid , transparent);
+  .addWorkItem{
+    background: $color-pf-white;
+    margin: em(5) 0;
+    @include Border(1px, solid ,$color-pf-black-400);
+    text-align: $textCenter;
+    padding: em(10) em(15);
+    .workItemQuickAdd_saveBtn{
+      i{
+        font-size: em(18);
+        color: $color-pf-blue-400;
+      }
+    }
+  }
+  .addWorkItemBlk{
+    margin: em(5) 0;
+    @include Border(1px, solid ,$color-pf-black-300);
+    .quickAdd_temp2-Story{
+      float: left;
+      padding: em(2);
+      @include Border(1px, solid ,$color-pf-black-700);
+      i{
+        margin: 0;
+        font-size: em(12);
+      }
+    }
+    .quickAdd_temp2-Title{
+      padding: 0 em(25);
+      input{
+        margin-bottom: em(7);
+      }
+    }
+    .workItemQuickAdd_Add{
+      font-size: em(12);
+      @include Border(1px, solid ,$color-pf-black-300);
+      margin-top: em(10);
+      padding: em(1);
+    }
+    .closeQuickAdd{
+      position: absolute;
+      top: em(10);
+    }
+    .icon-btn{
+      @include Border(1px, solid ,$color-pf-blue-400);
     }
   }
 }

@@ -12,4 +12,5 @@ export class AppComponent {
   constructor(auth: AuthenticationService){
     //auth.isLoggedIn();
   }
+  
 }

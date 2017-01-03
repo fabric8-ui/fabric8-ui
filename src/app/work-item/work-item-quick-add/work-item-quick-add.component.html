@@ -1,4 +1,4 @@
-<div class="quickAdd_container" id="workItemQuickAdd_container" >
+<div class="quickAdd_container" id="workItemQuickAdd_container" *ngIf="wilistview === 'wi-list-view'" >
   <div class="col-md-12 col-sm-12 col-xs-12 addWorkItem" (click)="toggleQuickAdd()" [ngClass]="{'db' : showQuickAddBtn, 'dn' : !showQuickAddBtn}">
     <a class="workItemQuickAdd_saveBtn">
       <i class='pficon-add-circle-o dib font18'></i>
@@ -27,6 +27,42 @@
       </div>
     </div>
     <div class="workItemQuickAdd_AddBlk">
+      <span class="pull-left workItemQuickAdd_Add" 
+        (click)="save($event)" [ngClass]="{'icon-btn': validTitle,'icon-btn-disabled':!validTitle}"><i class="fa fa-check"></i></span>
+      <span (click)="toggleQuickAdd()" class="pull-right closeQuickAdd"><i class="pficon pficon-close"></i></span>
+    </div>
+  </div>
+</div>
+
+<!-- Quick ADD Template for Board View -->
+<div class="quickAdd_container quickAdd_container2" id="workItemQuickAdd_container" *ngIf="wilistview === 'wi-card-view'" >
+  <div class="col-md-12 col-sm-12 col-xs-12 addWorkItem" (click)="toggleQuickAdd()">
+    <a class="workItemQuickAdd_saveBtn">
+      <i class='pficon-add-circle-o dib'></i>
+    </a>
+  </div>
+  <div class="col-md-12 col-sm-12 col-xs-12 addWorkItemBlk " *ngIf="showQuickAdd">
+    <div class="quickAdd_temp2-Story">
+      <i class="fa fa-bookmark pull-left "></i>
+    </div>
+    <div class="quickAdd_temp2-Title ">
+      <div class="col-md-12 col-sm-12 col-xs-12 no-padding ">
+        <input #quickAddTitle type="text" id="exampleInput" class="form-control col-md-12 col-sm-12 col-xs-12"  [(ngModel)]="workItem.attributes['system.title']" 
+              (keyup.enter)="save($event)"
+              (keyup)="checkTitle()" placeholder="A New Story" required/>
+      </div>
+      <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+        <textarea #quickAddDesc rows="1" type="text" id="exampleDesc" class="form-control width100 pull-left"  [(ngModel)]="workItem.attributes['system.description']" 
+                [style.height]="descHeight"
+                [style.resize]="descResize"
+                (keydown.enter)="save($event)"
+                (keyup.enter)="preventDef($event)"
+                (keyup)="checkDesc()"
+                placeholder="Description">
+        </textarea>
+      </div>
+    </div>
+    <div class="pull-right">
       <span class="pull-left workItemQuickAdd_Add" 
         (click)="save($event)" [ngClass]="{'icon-btn': validTitle,'icon-btn-disabled':!validTitle}"><i class="fa fa-check"></i></span>
       <span (click)="toggleQuickAdd()" class="pull-right closeQuickAdd"><i class="pficon pficon-close"></i></span>
