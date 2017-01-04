@@ -100,6 +100,7 @@ if (process.env.ENV == 'inmemory') {
     LearnModule,
     ModalModule,
     NotificationsModule,
+    ObsidianModule,
     PipelineModule,
     SettingsModule,
     TabsModule,
