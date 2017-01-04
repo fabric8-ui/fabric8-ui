@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ContextMenuItem } from './../models/context-menu-item';
+import { Context } from './../models/context';
 import { DummyService } from './../dummy/dummy.service';
 import { Router } from '@angular/router';
 import { Broadcaster } from '../shared/broadcaster.service';
@@ -11,10 +11,9 @@ import { Broadcaster } from '../shared/broadcaster.service';
  * 
  */
 @Injectable()
-export class Context {
+export class ContextService {
 
-    public current: ContextMenuItem;
-
+    public current: Context;
     constructor(
         private dummy: DummyService,
         private router: Router,
@@ -30,21 +29,15 @@ export class Context {
 
     private computeContext() {
         // Find the most specific context menu path and display it
-        // TODO This is brittle
-        let defaultItem;
         let c;
-        for (let m of this.dummy.contextMenuItems) {
+        for (let m of this.dummy.contexts) {
             if (this.router.url.startsWith(m.path)) {
                 if (c == null || m.path.length > c.path.length) {
                     c = m;
                 }
             }
-            if (m.default) {
-                defaultItem = m;
-            }
         }
-        // Always make a copy, as this value as we're going to insert items in to the source data
-        this.current = JSON.parse(JSON.stringify(c || defaultItem));
+        this.current = c || this.dummy.defaultContext;
         if (this.current.type.menus) {
             for (let n of this.current.type.menus) {
                 n.fullPath = this.buildPath(this.current.path, n.path);

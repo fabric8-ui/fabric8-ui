@@ -1,6 +1,6 @@
 import { ProcessTemplate } from './process-template';
 
-export class Space {
+export interface Space {
     name: String;
     path: String;
     description: String;

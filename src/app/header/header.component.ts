@@ -9,7 +9,7 @@ import { AuthenticationService } from '../auth/authentication.service';
 import { Broadcaster } from '../shared/broadcaster.service';
 import { ToggleService } from '../toggle/toggle.service';
 import { Toggle } from '../toggle/toggle';
-import { Context } from '../shared/context.service';
+import { ContextService } from '../shared/context.service';
 
 @Component({
   selector: 'alm-app-header',
@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit {
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     public dummy: DummyService,
-    public context: Context
+    public context: ContextService
   ) {
     router.events.subscribe((val) => {
       this.onNavigate();

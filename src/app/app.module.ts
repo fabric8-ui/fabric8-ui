@@ -34,7 +34,7 @@ import { DummyService } from './dummy/dummy.service';
 import { Logger } from './shared/logger.service';
 import { UserService } from './user/user.service';
 import { ToggleService } from './toggle/toggle.service';
-import { Context } from './shared/context.service';
+import { ContextService } from './shared/context.service';
 
 // Share Modules
 import { PublicModule } from './public/public.module';
@@ -94,7 +94,8 @@ export type StoreType = {
     Logger,
     LoginService,
     ToggleService,
-    Context
+    UserService,
+    ContextService
   ],
   bootstrap: [AppComponent]
 })
