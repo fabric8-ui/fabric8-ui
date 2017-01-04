@@ -168,14 +168,43 @@ export class WorkItemService {
         .then((response) => {
           let wItem: WorkItem = response.json().data as WorkItem;
           this.resolveUsersForWorkItem(wItem);
-          if (!(wItem.id in this.workItemIdIndexMap)) {
+          // If this work item matches with current filters
+          // it goes to the big list and then we call this function
+          // again to treat it as a locally saved item
+          if (!(wItem.id in this.workItemIdIndexMap) && this.doesMatchCurrentFilter(wItem)) {
             this.workItems.splice(this.workItems.length, 0, wItem);
             this.buildWorkItemIdIndexMap();
+            return this.getWorkItemById(wItem.id);
           }
-          return this.getWorkItemById(wItem.id);
+
+          // If this work item doesn't match with current filters
+          // it's not get added to the big list so not storing locally
+          // it just gets resolved with related data and returned
+          this.resolveComments(wItem);
+          this.resolveLinks(wItem);
+          return wItem;
         })
         .catch (this.handleError);
     }
+  }
+
+  /**
+   * Usage: to check if the workitem match with current filter or not.
+   * @param WorkItem - workItem
+   * @returns Boolean
+   */
+  doesMatchCurrentFilter(workItem: WorkItem): Boolean {
+    if (this.prevFilters.length) {
+      for (let i = 0; i < this.prevFilters.length; i++) {
+        // In case of assignee filter
+        if (this.prevFilters[i].id === 1 && this.prevFilters[i].active === true) {
+          if (workItem.relationalData.assignees.findIndex(item => item.id == this.prevFilters[i].value) === -1) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
 
   /**
