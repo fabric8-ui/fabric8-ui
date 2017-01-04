@@ -3,7 +3,7 @@
 //custom variables
 $width100: 100%;
 $em-base-font-size: 12;
-$rem-base-font-size: 10; 
+$rem-base-font-size: 10;
 
 // positions
 $textLeft: left;
@@ -30,17 +30,17 @@ $textCenter: center;
     text-overflow: ellipsis;;
 }
 @mixin transform($transform){
-	-webkit-transform: $transform;  
+	-webkit-transform: $transform;
 	-moz-transform:    $transform;
-	-ms-transform:     $transform; 
-	-o-transform:      $transform; 
+	-ms-transform:     $transform;
+	-o-transform:      $transform;
 	transform:         $transform;
 }
 @mixin transition($transition) {
-	-webkit-transition: $transition;  
+	-webkit-transition: $transition;
 	-moz-transition:    $transition;
-	-ms-transition:     $transition; 
-	-o-transition:      $transition; 
+	-ms-transition:     $transition;
+	-o-transition:      $transition;
 	transition:         $transition;
 }
 @mixin borderRadius($radius) {
@@ -141,19 +141,19 @@ $textCenter: center;
 
 //user -gravatar
 
-.user-avatar{
-    height: em(20);
-    width: em(20);
-    img{
-        width: $width100;
-        height: 100%;
-    }
-}
-.not-assigned-user-icon {
-  font-size: em(20);
-  border: 1px solid $color-pf-black-500;
-  padding: 0 em(1);
-}
+ .user-avatar{
+     height: em(25);
+     width: em(25);
+     img{
+         width: $width100;
+         height: 100%;
+     }
+ }
+ .not-assigned-user-icon {
+   font-size: em(20);
+   border: 1px solid $color-pf-black-600;
+   padding: em(1) em(3);
+ }
 
 @media (max-width: $grid-float-breakpoint){
     .mobdn{ display: none; }
