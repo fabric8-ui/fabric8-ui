@@ -306,7 +306,7 @@ export class DummyService {
         space: this.SPACES.get('balloonpopgame'),
         team: this.TEAMS.get('balloonpopgame_ux'),
         type: this.CONTEXT_TYPES.get('team'),
-        path: '?',
+        path: null,
         name: 'BalloonPopGame / UX Team'
       } as Context
     ], [
@@ -314,7 +314,7 @@ export class DummyService {
       {
         entity: this.ORGANIZATIONS.get('redhat'),
         type: this.CONTEXT_TYPES.get('organization'),
-        path: '?',
+        path: null,
         name: 'Red Hat Organization'
       } as Context
     ]
@@ -369,6 +369,15 @@ export class DummyService {
 
   get users(): User[] {
     return this._users;
+  }
+
+  addUser(add: User) {
+    for (let u of this._users) {
+      if (u.id === add.id) {
+        return;
+      }
+    }
+    this._users.push(add);
   }
 
   save(): void {

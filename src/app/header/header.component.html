@@ -11,7 +11,8 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li *ngFor="let m of dummy.contexts">
-                        <a [routerLink]="[urlFeatureToggle + m.path]" *ngIf="m != context.current"><span class="{{m.type.icon}}"></span> {{m.name}}</a>
+                        <a [routerLink]="[urlFeatureToggle + m.path]" *ngIf="m.path !== null && m != context.current"><span class="{{m.type.icon}}"></span> {{m.name}}</a>
+                        <span *ngIf="m.path === null"><span  class="{{m.type.icon}}"></span> {{m.name}}</span>
                     </li>
                     <li>
                         <a [routerLink]="[urlFeatureToggle + '/pmuir/spaces']">Browse all</a>
@@ -48,7 +49,8 @@
                 <a dropdown-open>
                     <a *ngIf="loggedInUser" id="header_dropdownToggle">
                         <span *ngIf="!imgLoaded" class="pficon pficon-user"></span>
-                        <img (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}" class="pull-left marginR10" /> {{loggedInUser.attributes?.fullName}}
+                        <img (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
+                            class="pull-left marginR10" /> {{loggedInUser.attributes?.fullName}}
                     </a>
                     <b class="caret"></b>
                 </a>
