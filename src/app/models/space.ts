@@ -6,7 +6,7 @@ export interface Space {
     path: String;
     description: String;
     process?: ProcessTemplate;
-    private?: boolean;
+    privateSpace?: boolean;
     teams: Team[];
     defaultTeam: Team;
 }

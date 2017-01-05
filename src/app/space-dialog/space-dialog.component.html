@@ -34,14 +34,14 @@
         <div class="col-md-12 col-sm-12 col-xs-12 spaceInputBlock">
             <h4 class="spacename">What type of space would you like to create</h4>
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <input type="radio" class="pull-left" id="publicSpace" name="SpaceView" [(ngModel)]="newSpace.private" [value]="false" />
+                <input type="radio" class="pull-left" id="publicSpace" name="SpaceView" [(ngModel)]="newSpace.privateSpace" [value]="false" />
                 <label class="pull-left" for="publicSpace">
                 <span>Public</span>
                 <span>Anyone can access this space</span>
             </label>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <input type="radio" class="pull-left" id="privateSpace" name="SpaceView" [(ngModel)]="newSpace.private" [value]="true" />
+                <input type="radio" class="pull-left" id="privateSpace" name="SpaceView" [(ngModel)]="newSpace.privateSpace" [value]="true" />
                 <label class="pull-left" for="privateSpace">
                 <span>Private</span>
                 <span>Only authorized people can access this space</span>

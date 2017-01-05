@@ -37,7 +37,7 @@ export class SpaceDialogComponent {
   private resetNewSpace(): void {
     this.newSpace = {} as Space;
     this.newSpace.process = this.dummy.processTemplates[0];
-    this.newSpace.private = false;
+    this.newSpace.privateSpace = false;
   }
 
 }
