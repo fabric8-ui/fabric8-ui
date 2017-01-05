@@ -1,3 +1,4 @@
+import { Team } from './team';
 import { ProcessTemplate } from './process-template';
 
 export interface Space {
@@ -6,4 +7,6 @@ export interface Space {
     description: String;
     process?: ProcessTemplate;
     private?: boolean;
+    teams: Team[];
+    defaultTeam: Team;
 }

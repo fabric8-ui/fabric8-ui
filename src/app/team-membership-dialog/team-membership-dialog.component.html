@@ -1,15 +1,17 @@
-<div class="col-md-12 col-sm-12 col-xs-12 createTeamMembershipBlock">
+<div class="col-md-12 col-sm-12 col-xs-12 createTeamMembershipBlock" *ngIf="context.current.space">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <h4 class="teamMembershipName">Manage membership of BalloonPopGame Team</h4>
         <div class="form-group">
-            <div class="col-md-10 col-sm-10 col-xs-10">
-                <div class="search-pf-input-group">
-                    <input id="teamMembership-name" type="search" class="form-control" placeholder="Search by username, group, gull name or email address...">
+            <form (ngSubmit)="add()" role="form">
+                <div class="col-md-10 col-sm-10 col-xs-10">
+                    <div class="search-pf-input-group">
+                        <input name="teamMembershipName" id="teamMembership-name" type="search" class="form-control" [(ngModel)]="searchString" placeholder="Enter username exactly [ 'pmuir', 'qodfathr'] (TODO: Search by username, group, full name or email address...)">
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-2 col-sm-2 col-xs-2">
-                <button class="btn btn-default">Add</button>
-            </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <button class="btn btn-default" type="submit" value="0">Add</button>
+                </div>
+            </form>
         </div>
     </div>
     <div class="col-md-7 col-sm-7 col-xs-7"></div>
@@ -31,29 +33,18 @@
                     <th>Name</th>
                 </tr>
             </thead>
-            <tr>
+            <tr *ngFor="let u of team.members">
                 <td>
-                    pmuir
+                    {{u.id}}
                 </td>
                 <td>
-                    Pete Muir (pmuir@redhat.com)
+                    {{u.attributes.fullName}} <span *ngIf="u.attributes.email">({{u.attributes.email}})</span>
                 </td>
                 <td>
-                    <button class="btn btn-default center-block">Remove</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    qodfathr
-                </td>
-                <td>
-                    Todd Mancini (tmancini@redhat.com)
-                </td>
-                <td>
-                    <button class="btn btn-default center-block">Remove</button>
+                    <button class="btn btn-default center-block" type="button" (click)="remove(u)">Remove</button>
                 </td>
             </tr>
         </table>
-        
+
     </div>
 </div>

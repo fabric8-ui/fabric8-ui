@@ -14,7 +14,7 @@ import { Broadcaster } from '../shared/broadcaster.service';
 @Injectable()
 export class ContextService {
 
-  public current: Context;
+  private _current: Context;
   constructor(
     private dummy: DummyService,
     private router: Router,
@@ -28,6 +28,10 @@ export class ContextService {
     this.computeContext();
   }
 
+  get current(): Context {
+    return this._current;
+  }
+
   private computeContext() {
     // Find the most specific context menu path and display it
     let c;
@@ -38,7 +42,7 @@ export class ContextService {
         }
       }
     }
-    this.current = c || this.dummy.defaultContext;
+    this._current = c || this.dummy.defaultContext;
     if (this.current.type.menus) {
       for (let n of this.current.type.menus) {
         n.fullPath = this.buildPath(this.current.path, n.path);

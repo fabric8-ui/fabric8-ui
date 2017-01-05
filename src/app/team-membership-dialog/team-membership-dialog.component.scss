@@ -1,52 +1,51 @@
 @import '../../assets/stylesheets/base';
-
-.createTeamMembershipBlock{
+.createTeamMembershipBlock {
     font-size: rem(10);
     padding: 0;
-    > div{
+    >div {
         margin-top: em(15);
-        label{
+        label {
             width: $width100;
             font-size: em(14);
         }
-        p{
+        p {
             font-size: em(14);
             font-weight: 500;
         }
-        .icon-caret{
+        .icon-caret {
             height: em(15);
             margin-top: em(5);
         }
     }
-    .devProcessForm{
+    .devProcessForm {
         position: relative;
         margin-bottom: 0;
     }
-    .devProcessList{
+    .devProcessList {
         width: calc(100% - 40px);
         position: absolute;
         list-style: none;
         padding: 0;
         border: 1px solid $color-pf-black-400;
         background: $color-pf-white;
-        li{
+        li {
             width: $width100;
             float: left;
             padding: em(2);
             cursor: pointer;
         }
     }
-    .teamMembershipInputBlock{
-        > div{
+    .teamMembershipInputBlock {
+        >div {
             padding: 0;
-            label{
+            label {
                 width: $width100 - 10%;
                 padding-left: em(20);
-                font-weight: 500; 
-                span{
+                font-weight: 500;
+                span {
                     width: $width100;
                     float: left;
-                    &:nth-child(2){
+                    &:nth-child(2) {
                         color: $color-pf-black-500;
                     }
                 }

@@ -18,38 +18,6 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class DummyService {
 
-  readonly SPACES: Map<string, Space> = new Map<string, Space>([
-    [
-      'bobo',
-      {
-        name: 'Bobo',
-        path: '/pmuir/BalloonPopGame',
-        description: 'Microservices architected search engine'
-      } as Space
-    ], [
-      'hysterix',
-      {
-        name: 'Hysterix',
-        path: '/pmuir/BalloonPopGame',
-        description: 'Hystrix is a latency and fault tolerance library designed to isolate points of access to remote systems, services and 3rd party libraries, stop cascading failure and enable resilience in complex distributed systems where failure is inevitable.'
-      } as Space
-    ], [
-      'fabric8',
-      {
-        name: 'fabric8io',
-        path: '/pmuir/BalloonPopGame',
-        description: 'Fabric8 is an open source integrated development platform for Kubernetes'
-      } as Space
-    ], [
-      'balloonpopgame',
-      {
-        name: 'BalloonPopGame',
-        path: '/pmuir/BalloonPopGame',
-        description: 'Balloon popping fun for everyone!'
-      } as Space
-    ]
-  ]);
-
   readonly RESOURCES: Resources = {
     startDate: new Date(2016, 8, 1, 0, 0, 0, 0),
     endDate: new Date(2016, 8, 30, 23, 59, 59, 0),
@@ -79,9 +47,21 @@ export class DummyService {
         {
           attributes: {
             fullName: 'Pete Muir',
-            imageURL: 'https://avatars2.githubusercontent.com/u/157761?v=3&s=460'
+            imageURL: 'https://avatars2.githubusercontent.com/u/157761?v=3&s=460',
+            email: 'pmuir@fabric8.io'
           },
           id: 'pmuir',
+          type: ''
+        } as User
+      ], [
+        'qodfathr',
+        {
+          attributes: {
+            fullName: 'Todd Manicini',
+            imageURL: 'https://avatars1.githubusercontent.com/u/16322190?v=3&s=460',
+            email: 'tmancini@fabric8.io'
+          },
+          id: 'qodfathr',
           type: ''
         } as User
       ]
@@ -241,8 +221,63 @@ export class DummyService {
     [
       'balloonpopgame_ux',
       {
-        name: ''
+        name: '',
+        members: [
+          this.USERS.get('qodfathr')
+        ]
+      } as Team,
+    ], [
+      'balloonpopgame',
+      {
+        name: '',
+        members: [
+          this.USERS.get('pmuir'),
+          this.USERS.get('qodfathr')
+        ]
       } as Team
+    ]
+  ]);
+
+    readonly SPACES: Map<string, Space> = new Map<string, Space>([
+    [
+      'bobo',
+      {
+        name: 'Bobo',
+        path: '/pmuir/BalloonPopGame',
+        description: 'Microservices architected search engine',
+        teams: [],
+        defaultTeam: null
+      } as Space
+    ], [
+      'hysterix',
+      {
+        name: 'Hysterix',
+        path: '/pmuir/BalloonPopGame',
+        description: 'Hystrix is a latency and fault tolerance library designed to isolate points of access to remote systems, services and 3rd party libraries, stop cascading failure and enable resilience in complex distributed systems where failure is inevitable.',
+        teams: [],
+        defaultTeam: null
+      } as Space
+    ], [
+      'fabric8',
+      {
+        name: 'fabric8io',
+        path: '/pmuir/BalloonPopGame',
+        description: 'Fabric8 is an open source integrated development platform for Kubernetes',
+        teams: [],
+        defaultTeam: null
+      } as Space
+    ], [
+      'balloonpopgame',
+      {
+        name: 'BalloonPopGame',
+        path: '/pmuir/BalloonPopGame',
+        description: 'Balloon popping fun for everyone!',
+        teams: [
+          this.TEAMS.get('balloonpopgame'),
+          this.TEAMS.get('balloonpopgame_ux')
+        ],
+        defaultTeam: this.TEAMS.get('balloonpopgame')
+      } as Space
     ]
   ]);
 
@@ -293,6 +328,7 @@ export class DummyService {
   ];
   private _spaces: Space[];
   private _contexts: Context[];
+  private _users: User[];
   private _defaultContext: Context;
 
   constructor(
@@ -302,6 +338,7 @@ export class DummyService {
   ) {
     this._spaces = this.initDummy('spaces', this.SPACES);
     this._contexts = this.initDummy('contexts', this.CONTEXTS);
+    this._users = this.initDummy('users', this.USERS);
     this._defaultContext = this._contexts[0];
     this.broadcaster.on<string>('save')
       .subscribe(message => {
@@ -311,7 +348,6 @@ export class DummyService {
   }
 
   get spaces(): Space[] {
-    console.log(this._spaces);
     return this._spaces;
   }
 
@@ -331,9 +367,14 @@ export class DummyService {
     return this._defaultContext;
   }
 
+  get users(): User[] {
+    return this._users;
+  }
+
   save(): void {
     this.localStorageService.set('spaces', this._spaces);
     this.localStorageService.set('contexts', this._contexts);
+    this.localStorageService.set('users', this._users);
   }
 
   private valuesAsArray<T>(m: Map<any, T>): T[] {
