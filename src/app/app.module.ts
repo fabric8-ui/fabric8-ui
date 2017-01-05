@@ -24,7 +24,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 // Board
-import { BoardModule } from './board/board.module';
+import { WorkItemBoardModule } from './work-item/work-item-board/work-item-board.module';
 
 // Footer
 import { FooterComponent } from './footer/footer.component';
@@ -87,8 +87,8 @@ if (process.env.ENV == 'inmemory') {
 
 @NgModule({
   imports: [
+    AppRoutingModule,
     BrowserModule,
-    BoardModule,
     ChatModule,
     CodeModule,
     DashboardModule,
@@ -106,10 +106,10 @@ if (process.env.ENV == 'inmemory') {
     TabsModule,
     TestModule,
     TooltipModule,
-    WorkItemListModule,
-    AppRoutingModule
+    WorkItemBoardModule,
+    WorkItemListModule
   ],
-  declarations: [    
+  declarations: [
     AppComponent,
     FooterComponent,
     HeaderComponent,

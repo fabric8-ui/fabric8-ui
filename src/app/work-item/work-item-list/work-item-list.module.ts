@@ -24,8 +24,8 @@ import { UsersResolve, AuthUserResolve } from '../users.resolver';
     CommonModule,
     DialogModule,
     DropdownModule,
-    InfiniteScrollModule,  
-    TooltipModule,  
+    InfiniteScrollModule,
+    TooltipModule,
     WorkItemDetailModule,
     WorkItemListRoutingModule,
     WorkItemQuickAddModule,
@@ -33,7 +33,7 @@ import { UsersResolve, AuthUserResolve } from '../users.resolver';
   declarations: [
      AlmArrayFilter,
      WorkItemListComponent,
-     WorkItemListEntryComponent 
+     WorkItemListEntryComponent
   ],
   providers: [
     AuthUserResolve,

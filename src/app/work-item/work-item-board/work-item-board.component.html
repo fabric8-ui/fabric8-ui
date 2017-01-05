@@ -2,14 +2,14 @@
   <div class="board container-cards-pf">
       <!-- board columns -->
       <div class="board-lane" *ngFor='let lane of lanes'>
-        
+
         <section class="col-md-12 col-sm-12 col-xs-12 board-lane-column">
           <div class="lane-header">
             <span class="dib">{{lane.option}}</span>
             <span class="issueCount dib" >{{workItems | almFilterBoardList:lane.option | count}}</span>
-          </div>   
+          </div>
           <div *ngFor='let item of workItems | almFilterBoardList:lane.option'>
-          <div class="board-card">
+          <div class="board-card" (click)="gotoDetail(item)">
             <aside>
               <div class="pull-left">
                 <span class="wi-type-icon" almIcon [iconType]="item.relationships?.baseType?.data?.id"></span>
@@ -21,9 +21,9 @@
               <ul class="dropdown-menu dropdown-menu-right">
                 <li><a class="workItemList_MoveTop">Move to Top</a></li>
                 <li><a class="workItemList_MoveBottom">Move to Bottom</a></li>
-                <li class="divider" role="presentation"></li>				
+                <li class="divider" role="presentation"></li>
                 <li><a class="workItemList_Open" href="/work-item-list/detail/429">Open</a></li>
-                <li><a class="workItemList_Delete">Delete</a></li>				
+                <li><a class="workItemList_Delete">Delete</a></li>
                 <li><a class="workItemList_Backlog">Move to Backlog</a></li>
               </ul>
             </aside>
@@ -33,9 +33,9 @@
               </div>
               <div class="col-md-2 col-sm-2 col-xs-3 no-padding user-avatar">
                 <img *ngIf="item.relationalData?.assignees?.length"
-            src="{{item.relationalData.assignees[0]?.attributes.imageURL + '&s=20'}}" 
-            onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
-            <span *ngIf="!item.relationalData?.assignees?.length" class="fa fa-user not-assigned-user-icon"></span>
+                    src="{{item.relationalData.assignees[0]?.attributes.imageURL + '&s=20'}}"
+                    onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
+                <span *ngIf="!item.relationalData?.assignees?.length" class="fa fa-user not-assigned-user-icon"></span>
               </div>
             </aside>
 
@@ -44,4 +44,7 @@
         </section>
       </div>
   </div>
+</div>
+<div class="detail-panel" [@slideInOut]="panelState">
+  <router-outlet></router-outlet>
 </div>

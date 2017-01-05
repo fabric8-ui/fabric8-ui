@@ -33,14 +33,14 @@ export class WorkItemDetailComponent implements OnInit {
   workItemStates: Object[];
 
   showDialog: boolean = false;
-  
+
   submitted = false;
   active = true;
   loggedIn: Boolean = false;
 
   headerEditable: Boolean = false;
   descEditable: Boolean = false;
-  
+
   validTitle: Boolean = true;
   titleText: any = '';
   descText: any = '';
@@ -55,8 +55,8 @@ export class WorkItemDetailComponent implements OnInit {
   addNewWI: Boolean = false;
 
   constructor(
-    private auth: AuthenticationService,    
-    private broadcaster: Broadcaster,    
+    private auth: AuthenticationService,
+    private broadcaster: Broadcaster,
     private workItemService: WorkItemService,
     private route: ActivatedRoute,
     private location: Location,
@@ -75,12 +75,12 @@ export class WorkItemDetailComponent implements OnInit {
       if (params['id'] !== undefined) {
         let id = params['id'];
         if (id.indexOf('new') >= 0){
-          //Add a new work item          
+          //Add a new work item
           this.addNewWI = true;
           let type = id.substring((id.indexOf('?') + 1), id.length);
           this.createWorkItemObj(type);
-          this.getAllUsers();          
-        }else{          
+          this.getAllUsers();
+        }else{
           this.addNewWI = false;
           this.workItemService.getWorkItemById(id)
             .then(workItem => {
@@ -88,9 +88,9 @@ export class WorkItemDetailComponent implements OnInit {
               this.titleText = workItem.attributes['system.title'];
               this.descText = workItem.attributes['system.description'];
               this.workItem = workItem;
-              // fetch the list of user 
+              // fetch the list of user
               // after getting the Workitem
-              // to set assigned user 
+              // to set assigned user
               // for this workitem from the list
               this.getAllUsers();
               this.activeOnList(400);
@@ -106,7 +106,7 @@ export class WorkItemDetailComponent implements OnInit {
     this.workItem.id = null;
     this.workItem.attributes = new WorkItemAttributes();
     this.workItem.relationships = new WorkItemRelations();
-    this.workItem.type = 'workitems';    
+    this.workItem.type = 'workitems';
     this.workItem.relationships = {
       baseType: {
         data: {
@@ -131,7 +131,7 @@ export class WorkItemDetailComponent implements OnInit {
 
   setLoggedInUser(authUser: any) {
     for (let i = 0; i < this.users.length; i++) {
-      // This check needs to be updated by ID 
+      // This check needs to be updated by ID
       // once we have the new user format
       // on getting loggedIn user i.e. /user endpoint
       if (this.users[i].id === authUser.id) {
@@ -146,7 +146,7 @@ export class WorkItemDetailComponent implements OnInit {
 
   activeOnList(timeOut: number = 0) {
     setTimeout(() => {
-      this.broadcaster.broadcast('activeWorkItem', this.workItem.id);      
+      this.broadcaster.broadcast('activeWorkItem', this.workItem.id);
     }, timeOut);
   }
 
@@ -188,8 +188,8 @@ export class WorkItemDetailComponent implements OnInit {
   }
 
   closeDescription(): void {
-    this.description.nativeElement.innerHTML = 
-    this.workItem.attributes['system.description']; 
+    this.description.nativeElement.innerHTML =
+    this.workItem.attributes['system.description'];
     this.descEditable = false;
   }
 
@@ -233,16 +233,16 @@ export class WorkItemDetailComponent implements OnInit {
       this.workItem.attributes['system.title'] = this.titleText;
       this.save();
       this.closeHeader();
-    }    
+    }
   }
 
-  save(): void {        
+  save(): void {
     if (this.workItem.id){
       this.workItemService
         .update(this.workItem)
         .then((workItem) => {
           this.workItem.attributes['version'] = workItem.attributes['version'];
-          this.activeOnList();          
+          this.activeOnList();
       });
     }else{
       if (this.validTitle){
@@ -251,12 +251,13 @@ export class WorkItemDetailComponent implements OnInit {
         .then((workItem) => {
           this.router.navigate(['/work-item-list/detail/' + workItem.id]);
         });
-      }      
-    }     
+      }
+    }
   }
 
   closeDetails(): void {
-    this.router.navigate(['/work-item-list']);
+    //console.log(this.router.url.split('/')[1]);
+    this.router.navigate(['/' + this.router.url.split('/')[1]]);
   }
 
   listenToEvents() {
@@ -313,7 +314,7 @@ export class WorkItemDetailComponent implements OnInit {
           lis[(i + 1) % lis.length].classList.add('selected');
           lis[(i + 1) % lis.length].scrollIntoView(false);
         } else { // Down arrow
-          // In javascript mod gives exact mod for negative value 
+          // In javascript mod gives exact mod for negative value
           // For example, -1 % 6 = -1 but I need, -1 % 6 = 5
           // To get the round positive value I am adding the divisor
           // with the negative dividend
@@ -332,7 +333,7 @@ export class WorkItemDetailComponent implements OnInit {
       if (i < lis.length) {
         let selectedId = lis[i].dataset.value;
         this.assignUser(selectedId);
-      } 
+      }
     } else {
       let inp = this.userSearch.nativeElement.value.trim();
       this.filteredUsers = this.users.filter((item) => {
@@ -373,12 +374,12 @@ export class WorkItemDetailComponent implements OnInit {
   }
 
 
-  @HostListener('window:keydown', ['$event']) 
+  @HostListener('window:keydown', ['$event'])
   onKeyEvent(event: any) {
     event = (event || window.event);
     // for ESC key handling
     if (event.keyCode == 27) {
-      try { 
+      try {
         event.preventDefault(); //Non-IE
       } catch (x){
         event.returnValue = false; //IE
