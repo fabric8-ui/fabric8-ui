@@ -9,7 +9,7 @@ import { Broadcaster } from '../shared/broadcaster.service';
 /*
  * A shared service that manages the users current context. The users context is defined as the
  * entity (user or org) and space that they are operating on.
- * 
+ *
  */
 @Injectable()
 export class ContextService {
@@ -45,10 +45,16 @@ export class ContextService {
     this._current = c || this.dummy.defaultContext;
     if (this.current.type.menus) {
       for (let n of this.current.type.menus) {
-        n.fullPath = this.buildPath(this.current.path, n.path);
+        // Build the fullPath if not already done
+        n.fullPath = n.fullPath || this.buildPath(this.current.path, n.path);
+        // Clear the menu's active state
+        n.active = false;
         if (n.menus) {
           for (let o of n.menus) {
-            o.fullPath = this.buildPath(this.current.path, n.path, o.path);
+            // Build the fullPath if not already done
+            o.fullPath = o.fullPath || this.buildPath(this.current.path, n.path, o.path);
+            // Clear the menu's active state
+            o.active = false;
             if (o.fullPath === this.router.url) {
               o.active = true;
               n.active = true;
