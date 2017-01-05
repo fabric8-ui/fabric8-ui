@@ -64,19 +64,20 @@ export type StoreType = {
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
 @NgModule({
-  imports: [ // import other modules with the components, directives and pipes needed by the components in this module
+  imports: [ // import (in alphabetical order) other modules with the components, directives and pipes needed by the components in this module
     BrowserModule,
     DeleteAccountDialogModule,
     DropdownModule,
     FormsModule,
     HttpModule,
-    PublicModule,
-    SpaceDialogModule,
-    AppRoutingModule,
     LocalStorageModule.withConfig({
       prefix: 'fabric8',
       storageType: 'localStorage'
-    })
+    }),
+    PublicModule,
+    SpaceDialogModule,
+    // AppRoutingModule must appear last
+    AppRoutingModule
   ],
   declarations: [ // declare which components, directives and pipes belong to the module
     AppComponent,
@@ -90,12 +91,12 @@ export type StoreType = {
     APP_PROVIDERS,
     AuthenticationService,
     Broadcaster,
+    ContextService,
     DummyService,
     Logger,
     LoginService,
     ToggleService,
-    UserService,
-    ContextService
+    UserService
   ],
   bootstrap: [AppComponent]
 })
