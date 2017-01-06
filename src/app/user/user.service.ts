@@ -39,8 +39,13 @@ export class UserService {
   }
 
   getUser(): Promise<User> {
+    // Check if there is already a user logged in
     if (Object.keys(this.userData).length || !this.auth.isLoggedIn()) {
       return new Promise((resolve, reject) => {
+        // console.log('beginning of getUser() = ' + Object.keys(this.userData));
+        // console.log('beginning of getUser() = ' + JSON.stringify(this.userData, null, 2));
+        // console.log('Object.keys(this.userData).length = ' + Object.keys(this.userData).length);
+        // console.log('this.auth.isLoggedIn() = ' + this.auth.isLoggedIn());
         resolve(this.userData);
       });
     } else {
@@ -59,10 +64,13 @@ export class UserService {
           };
           this.userData.id = userData.id;
           this.broadcaster.broadcast('currentUserInit', this.userData);
+          // console.log('beginning of getUser() = ' + Object.keys(this.userData));
+          // console.log('beginning of getUser() = ' + JSON.stringify(this.userData, null, 2));
           return this.userData;
         })
         .catch (this.handleError);
     }
+
   }
 
   getAllUsers(): Promise<User[]> {
