@@ -360,7 +360,7 @@ export class DummyService {
       message => {
         this._currentUser = null;
       }
-    )
+    );
     this.save();
   }
 
