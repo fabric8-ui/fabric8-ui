@@ -18,25 +18,27 @@ export class EmailsComponent {
     private router: Router, public profile: ProfileService) {
   }
 
-  del(del: Email): void {
+  del(del: string): void {
     this.profile.removeEmailFromCurrent(del);
     this.profile.save();
   }
 
   add() {
-    let add: Email = {
-      address: this.email,
-      keepPrivate: this.keepPrivate
-    } as Email;
+    let add: string = this.email
     this.profile.current.emails.push(add);
     this.profile.save();
   }
 
-  makePrimary(primary: Email): void {
+  makePrimary(primary: string): void {
     this.profile.current.primaryEmail = primary;
   }
 
   savePreferences(): void {
+    this.profile.save();
+  }
+
+  updatePrivateEmail(event): void {
+    this.profile.current.primaryEmailPrivate = event.target.checked;
     this.profile.save();
   }
 

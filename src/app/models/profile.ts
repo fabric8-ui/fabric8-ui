@@ -6,8 +6,11 @@ export class Profile {
     bio?: string;
     username?: string;
     url?: string;
-    emails?: Email[];
-    primaryEmail?: Email;
+    emails?: string[];
+    primaryEmail?: string;
+    notificationEmail?: string;
+    publicEmail?: string;
+    primaryEmailPrivate?: boolean;
     emailPreference?: string;
     notificationMethods?: string[];
 }

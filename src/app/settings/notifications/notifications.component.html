@@ -12,10 +12,10 @@
     </div>
     <div class="row">
       <h2>Notification email</h2>
-      <label for="primaryEmail" class="col-md-3">Primary email address</label>
+      <label for="primaryEmail" class="col-md-3">Notifications email address</label>
       <div class="col-md-4">
-        <select class="form-control" id="primaryEmail" name="primaryEmail" [(ngModel)]="profile.current.primaryEmail">
-          <option *ngFor="let e of profile.current.emails" [ngValue]="e">{{e.address}}</option>
+        <select class="form-control" id="notificationEmail" name="notificationEmail" [(ngModel)]="profile.current.notificationEmail">
+          <option *ngFor="let e of profile.current.emails" [ngValue]="e">{{e}}</option>
         </select>
       </div>
       <div class="col-md-2">

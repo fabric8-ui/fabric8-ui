@@ -11,8 +11,6 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
 
-  public publicEmail: string = '';
-
   constructor(
     private router: Router,
     public profile: ProfileService,
@@ -21,18 +19,9 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.profile.current.primaryEmail.keepPrivate) {
-      this.publicEmail = this.profile.current.primaryEmail.address;
-    }
   }
 
   save() {
-    if (this.publicEmail === '') {
-      this.profile.current.primaryEmail.keepPrivate = true;
-    } else {
-      this.profile.current.primaryEmail.keepPrivate = false;
-      this.profile.current.primaryEmail.address = this.publicEmail;
-    }
     this.profile.save();
   }
 

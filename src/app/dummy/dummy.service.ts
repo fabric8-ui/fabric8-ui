@@ -415,10 +415,7 @@ export class DummyService {
       || add.attributes.fullName.toLowerCase().replace(' ', '');
     add.attributes.bio = add.attributes.bio || this.makePseudoRandmonString(100);
     add.attributes.primaryEmail = add.attributes.primaryEmail
-      || {
-        address: this.makePseudoRandmonString(6) + '@' + this.makePseudoRandmonString(10) + '.com',
-        keepPrivate: false
-        } as Email;
+      || this.makePseudoRandmonString(6) + '@' + this.makePseudoRandmonString(10) + '.com';
     add.attributes.url = add.attributes.url
       || 'http://' + this.makePseudoRandmonString(10) + '.com/' + this.makePseudoRandmonString(15);
     // Brittle check for duplicate user

@@ -10,15 +10,15 @@
   <div class="emails row">
     <div class="row" *ngFor="let e of profile.current.emails">
       <div class="col-md-8">
-        <span class="grey">{{e.address}}</span> <span *ngIf="e.address === profile.current.primaryEmail.address" class="btn btn-success label">Primary</span>        <span *ngIf="e.keepPrivate" class="btn btn-primary label">Private</span>
+        <span class="grey">{{e}}</span> <span *ngIf="e === profile.current.primaryEmail" class="btn btn-success label">Primary</span>        <span *ngIf="e === profile.current.primaryEmail && profile.current.primaryEmailPrivate" class="btn btn-primary label">Private</span>
       </div>
       <div class="col-md-2">
-        <button type="button" (click)="makePrimary(e)" *ngIf="e.address !== profile.current.primaryEmail.address" class="btn btn-default">Set as primary</button>
+        <button type="button" (click)="makePrimary(e)" *ngIf="e !== profile.current.primaryEmail" class="btn btn-default">Set as primary</button>
       </div>
       <div class="col-md-2">
-        <button type="button" class="btn btn-link" (click)="del(e)">
-                  <span  class="pficon pficon-delete"></span>
-                </button>
+        <button type="button" class="btn btn-link" (click)="del(e)" *ngIf="e !== profile.current.primaryEmail">
+          <span  class="pficon pficon-delete"></span>
+        </button>
       </div>
     </div>
   </div>
@@ -37,16 +37,18 @@
           <button type="submit" class="btn btn-default">Add</button>
         </div>
       </div>
-      <div class="form-group">
-        <div class="col-md-1">
-          <input class="form-control" type="checkbox" id="private" name="private" [(ngModel)]="keepPrivate">
-        </div>
-        <div class="col-md--4">
-          <label for="private">Keep my email address private.</label>
-          <!--<span class="help-block">TODO: We will use <a href="mailto:pmuir@users.noreply.fabric8.io">pmuir@users.noreply.fabric8.io</a> when performing web-based Git operations and sending email on your behalf. If you want command-line Git operations to use your private email you must set your email in Git.</span>-->
-        </div>
-      </div>
     </form>
+    <div class="form-group">
+      <form name="privateEmail">
+        <div class="col-md-1">
+          <input class="form-control" type="checkbox" id="private" name="private" [checked]="profile.current.primaryEmailPrivate" (change)="updatePrivateEmail($event)">
+        </div>
+      </form>
+      <div class="col-md--4">
+        <label for="private">Keep my primary email address private.</label>
+        <span class="help-block">We will use <a href="mailto:{{profile.current.primaryEmail}}">{{profile.current.primaryEmail}}</a> when performing web-based Git operations and sending email on your behalf. If you want command-line Git operations to use your private email you must set your email in Git.</span>
+      </div>
+    </div>
   </div>
   <h2>Email preferences</h2>
   <div class="row">
