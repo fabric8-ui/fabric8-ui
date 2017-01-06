@@ -157,7 +157,7 @@ export class MockDataService {
             ]
           };
         }
-      }
+      } 
       // should never happen
       return {};
     }
