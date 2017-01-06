@@ -48,9 +48,11 @@ export class DummyService {
           attributes: {
             fullName: 'Pete Muir',
             imageURL: 'https://avatars2.githubusercontent.com/u/157761?v=3&s=460',
-            email: 'pmuir@fabric8.io'
+            email: 'pmuir@fabric8.io',
+            username: 'pmuir',
+            bio: 'I like writing clever one-line bios about myself. See? I just did.'
           },
-          id: 'pmuir',
+          id: '111',
           type: ''
         } as User
       ], [
@@ -59,9 +61,11 @@ export class DummyService {
           attributes: {
             fullName: 'Todd Manicini',
             imageURL: 'https://avatars1.githubusercontent.com/u/16322190?v=3&s=460',
-            email: 'tmancini@fabric8.io'
+            email: 'tmancini@fabric8.io',
+            bio: 'I like writing clever one-line bios about myself. But, I can\'t!',
+            username: 'qodfathr'
           },
-          id: 'qodfathr',
+          id: '222',
           type: ''
         } as User
       ]
@@ -110,10 +114,11 @@ export class DummyService {
               {
                 name: 'Profile',
                 path: ''
-              }, {
+              }/*, {
+                // Account is disabled as we don't yet support users creating accounts
                 name: 'Account',
                 path: 'account'
-              }, {
+              }*/, {
                 name: 'Emails',
                 path: 'emails'
               }, {
@@ -238,7 +243,7 @@ export class DummyService {
     ]
   ]);
 
-    readonly SPACES: Map<string, Space> = new Map<string, Space>([
+  readonly SPACES: Map<string, Space> = new Map<string, Space>([
     [
       'bobo',
       {
@@ -330,6 +335,7 @@ export class DummyService {
   private _contexts: Context[];
   private _users: User[];
   private _defaultContext: Context;
+  private _currentUser: User;
 
   constructor(
     private http: Http,
@@ -344,6 +350,17 @@ export class DummyService {
       .subscribe(message => {
         this.save();
       });
+    this.broadcaster.on<User>('currentUserInit').subscribe(
+      message => {
+        this.addUser(message);
+        this._currentUser = this.lookupUser(message.attributes.username);
+      }
+    );
+    this.broadcaster.on<string>('logout').subscribe(
+      message => {
+        this._currentUser = null;
+      }
+    )
     this.save();
   }
 
@@ -371,19 +388,51 @@ export class DummyService {
     return this._users;
   }
 
-  addUser(add: User) {
-    for (let u of this._users) {
-      if (u.id === add.id) {
-        return;
-      }
-    }
-    this._users.push(add);
+
+  get currentUser(): User {
+    return this._currentUser;
   }
 
   save(): void {
     this.localStorageService.set('spaces', this._spaces);
     this.localStorageService.set('contexts', this._contexts);
     this.localStorageService.set('users', this._users);
+  }
+
+  private lookupUser(lookup: string): User {
+    for (let u of this.users) {
+      if (u.attributes.username === lookup) {
+        return u;
+      }
+    }
+    return null;
+  }
+
+  private addUser(add: User) {
+    // Fill in dummy data
+    add.attributes.username = add.attributes.username
+      || add.attributes.fullName.toLowerCase().replace(' ', '');
+    add.attributes.bio = add.attributes.bio || this.makePseudoRandmonString(100);
+    add.attributes.email = add.attributes.email
+      || this.makePseudoRandmonString(6) + '@' + this.makePseudoRandmonString(10) + '.com';
+    add.attributes.url = add.attributes.url
+      || 'http://' + this.makePseudoRandmonString(10) + '.com/' + this.makePseudoRandmonString(15);
+    // Brittle check for duplicate user
+    if (this.lookupUser(add.attributes.username)) {
+      return;
+    }
+    this.users.push(add);
+    this.save();
+  }
+
+  private makePseudoRandmonString(len: number): string {
+    let text: string = '';
+    let possible: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i: number = 0; i < len; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
   }
 
   private valuesAsArray<T>(m: Map<any, T>): T[] {

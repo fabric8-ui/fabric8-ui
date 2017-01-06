@@ -10,11 +10,14 @@ import { User } from '../models/user';
 
 @Injectable()
 export class UserService {
+
+  userData: User = {} as User;
+  allUserData: User[] = [];
+
   private headers = new Headers({'Content-Type': 'application/json'});
   private userUrl = process.env.API_URL + 'user';  // URL to web api
   private identitiesUrl = process.env.API_URL + 'identities';  // URL to web api
-  userData: User = {} as User;
-  allUserData: User[] = [];
+
 
   constructor(private http: Http,
               private logger: Logger,
@@ -55,6 +58,7 @@ export class UserService {
             imageURL: userData.attributes.imageURL
           };
           this.userData.id = userData.id;
+          this.broadcaster.broadcast('currentUserInit', this.userData);
           return this.userData;
         })
         .catch (this.handleError);

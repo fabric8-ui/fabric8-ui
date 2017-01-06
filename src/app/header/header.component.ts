@@ -20,8 +20,6 @@ import { ContextService } from '../shared/context.service';
 
 export class HeaderComponent implements OnInit {
   title = 'Almighty';
-  loggedInUser: User;
-  loggedIn: Boolean = false;
   imgLoaded: Boolean = false;
   togglePaths: Toggle[];
   urlFeatureToggle: string = '';
@@ -42,11 +40,12 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  getLoggedUser(): void {
-    if (this.loggedIn) {
-      this.userService.getUser();
-    }
-    this.loggedInUser = this.userService.getSavedLoggedInUser();
+  get loggedInUser(): User {
+    return this.dummy.currentUser;
+  }
+
+  get loggedIn(): boolean {
+    return this.auth.isLoggedIn();
   }
 
   getTogglePath(): void {
@@ -76,7 +75,6 @@ export class HeaderComponent implements OnInit {
   }
 
   onNavigate(): void {
-    this.loggedIn = this.auth.isLoggedIn();
     this.getLoggedUser();
     this.getTogglePath();
     this.broadcaster.broadcast('refreshContext');
@@ -87,8 +85,6 @@ export class HeaderComponent implements OnInit {
   }
 
   resetData(): void {
-    this.loggedInUser = null as User;
-    this.loggedIn = false;
     this.imgLoaded = false;
   }
 
@@ -97,6 +93,12 @@ export class HeaderComponent implements OnInit {
       .subscribe(message => {
         this.resetData();
       });
+  }
+
+  private getLoggedUser(): void {
+    if (this.auth.isLoggedIn) {
+      this.userService.getUser();
+    }
   }
 
 }

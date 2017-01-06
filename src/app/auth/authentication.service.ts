@@ -14,7 +14,7 @@ export class AuthenticationService {
 
   }
 
-  isLoggedIn(): Boolean {
+  isLoggedIn(): boolean {
     let token = localStorage.getItem('auth_token');
     if (token){
       this.authToken = token;

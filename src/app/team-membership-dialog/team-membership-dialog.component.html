@@ -35,7 +35,7 @@
             </thead>
             <tr *ngFor="let u of team.members">
                 <td>
-                    {{u.id}}
+                    {{u.attributes.username}}
                 </td>
                 <td>
                     {{u.attributes.fullName}} <span *ngIf="u.attributes.email">({{u.attributes.email}})</span>

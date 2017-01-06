@@ -63,7 +63,7 @@
                     <ul class="list-unstyled">
                         <li *ngFor="let u of context.current.space.defaultTeam.members" class="member">
                             <span *ngIf="!imgLoaded" class="pficon pficon-user"></span>
-                            <img (load)="onImgLoad()" src="{{u.attributes.imageURL}}" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}" class="pull-left marginR10" />{{u.id}}
+                            <img (load)="onImgLoad()" src="{{u.attributes.imageURL}}" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}" class="pull-left marginR10" />{{u.attributes.username}}
                         </li>
                     </ul>
                     <button class="btn btn-primary bottom-right" type="button" (click)="teamMembership.open()">Invite Someone</button>

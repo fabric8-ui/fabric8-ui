@@ -5,6 +5,10 @@ export class User implements Entity {
     fullName: string;
     imageURL: string;
     email?: string;
+    bio?: string;
+    username?: string;
+    url?: string;
+    publicEmail?: boolean;
   };
   id: string;
   type: string;

@@ -38,7 +38,12 @@ export class TeamMembershipDialogComponent {
   }
 
   add() {
-    let add: User = this.dummy.USERS.get(this.searchString);
+    let add: User;
+    for (let u of this.dummy.users) {
+      if (u.attributes.username === this.searchString) {
+        add = u;
+      }
+    }
     if (add) {
       // TODO Hacky check to make sure we don't dupe members
       for (let u of this.team.members) {
