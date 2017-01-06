@@ -10,10 +10,10 @@ import {
 } from '@angular/core';
 import { Router }            from '@angular/router';
 
-import { WorkItem } from './../../models/work-item';
-import { WorkItemService } from './../work-item.service';
+import { WorkItem } from '../../models/work-item';
+import { WorkItemService } from '../work-item.service';
 
-import { AuthenticationService } from './../../auth/authentication.service';
+import { AuthenticationService } from '../../auth/authentication.service';
 
 @Component({
   selector: 'alm-board',
