@@ -133,3 +133,20 @@ To build the NPM library, use this command:
 export API_URL="http://api.example.org/api/"
 npm run build:npm
 ---
+
+== Library Build
+
+To build the Planner as a npm library, use gulp:
+
+---
+gulp build
+---
+
+The created library is located in `dist-library`. To publish it to npm:
+
+---
+cd dist-library
+npm publish
+---
+
+You may need to login first on the npmjs service.

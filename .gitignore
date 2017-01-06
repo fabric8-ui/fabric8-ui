@@ -5,6 +5,8 @@
 /app/*.js
 /app/*.js.map
 /tmp
+/dist-library
+/src/app/**/*.css
 
 # dependencies
 /node_modules

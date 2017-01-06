@@ -7,6 +7,8 @@
     "type": "git",
     "url": "https://github.com/fabric8io/fabric8-planner"
   },
+  "types": "components.d.ts",
+  "main": "components.js",
   "contributors": [
     {
       "name": "Joshua Wilson",
@@ -37,7 +39,7 @@
     "check-coverage": "istanbul check-coverage --statements 23 --branches 5 --functions 9 --lines 24",
     "clean-and-copy": "npm run clean-dist && npm run copy-files",
     "clean-dist": "rimraf dist",
-    "copy-files": "cpy src/index.html src/favicon.ico dist",
+    "copy-files": "cp src/index.html src/favicon.ico dist",
     "docker:run": "webpack-dev-server --inline --progress --port 8080",
     "functests": "npm-run-all -p webdriver-start testserver-start protractor",
     "lint": "find src -name '*.ts' | xargs tslint -c tslint.json --force",
@@ -105,6 +107,11 @@
     "extract-text-webpack-plugin": "2.0.0-beta.1",
     "file-loader": "^0.9.0",
     "ghooks": "1.2.4",
+    "del": "^2.1.0",
+    "gulp": "^3.9.1",
+    "gulp-typings": "^2.0.4",
+    "gulp-uglify": "^2.0.0",
+    "gulp-wait": "0.0.2",
     "gulp-inline-ng2-template": "^4.0.0",
     "gulp-install": "^0.6.0",
     "gulp-minify-css": "^1.2.4",
