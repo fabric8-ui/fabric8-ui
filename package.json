@@ -35,7 +35,6 @@
   "scripts": {
     "build": "webpack --config config/webpack.dev.js",
     "build:prod": "webpack --config config/webpack.prod.js -p",
-    "build:npm": "webpack --config config/webpack.npmlib.js -p",
     "check-coverage": "istanbul check-coverage --statements 23 --branches 5 --functions 9 --lines 24",
     "clean-and-copy": "npm run clean-dist && npm run copy-files",
     "clean-dist": "rimraf dist",
