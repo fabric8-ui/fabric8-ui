@@ -43,8 +43,7 @@ export class WorkItemMockGenerator {
    * Creates an initial work item links structure.
    */
   public createWorkItemLinks(): any {
-    return { 
-      data: [ 
+    return [ 
         {
           id: 'wil-0',
           type: 'workitemlinks',
@@ -75,11 +74,7 @@ export class WorkItemMockGenerator {
             }
           }
         }
-      ],
-      'meta': {
-        'totalCount': 1
-      }
-    };
+    ];
   }
   public dateTime(numberDate: any): any {
     // numberDate is mock work item id's

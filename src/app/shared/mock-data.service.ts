@@ -141,9 +141,15 @@ export class MockDataService {
       if (subselect === 'comments') {
         console.log('Requested comments for workitem ' + wiId);
         if (this.workItemComments[wiId])
-        return this.makeCopy(this.workItemComments[wiId]);
+          return this.makeCopy(this.workItemComments[wiId]);
         return { data: [] };
-      }
+      } else if (subselect === 'relationships') {
+        console.log('Request for relationships for workitem ' + wiId);
+        if (parts[2] === 'links') {
+          var links = this.getWorkItemLinksForWorkItem(wiId);
+          return { data: links, meta: { totalCount: links.length } };
+        }
+      } 
       // should never happen
       return {};
     }
@@ -184,6 +190,15 @@ export class MockDataService {
 
   public getWorkItemLinks(): any {
     return this.makeCopy(this.workItemLinks);
+  }
+
+  public getWorkItemLinksForWorkItem(workItemId: string): any {
+    var result: any = [];
+    for (var i = 0; i < this.workItemLinks.length; i++)
+      if (this.workItemLinks[i].relationships.source.data.id === workItemId) {
+        result.push(this.makeCopy(this.workItemLinks[i]));
+      }
+    return result;
   }
 
   public createWorkItemLink(workItemLink: any): any {

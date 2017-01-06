@@ -164,7 +164,8 @@ export class MockHttp extends Http {
             return this.createResponse(url.toString(), 500, 'error: no search term given.', { } );
           }
         case '/workitemlinks':
-          return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemLinks() );
+          var workItemLinks = this.mockDataService.getWorkItemLinks();
+          return this.createResponse(url.toString(), 200, 'ok', { data: workItemLinks, 'meta': { 'totalCount': workItemLinks.length} } );
         case '/workitemlinktypes':
           return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemLinkTypes() );
         case '/workitemlinkcategories':
