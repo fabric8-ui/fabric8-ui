@@ -6,6 +6,7 @@ import { ProcessTemplate } from './../models/process-template';
 import { User } from './../models/user';
 import { Team } from './../models/team';
 import { Entity } from './../models/entity';
+import { Email } from './../models/email';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { LocalStorageService } from 'angular-2-local-storage';
@@ -413,8 +414,11 @@ export class DummyService {
     add.attributes.username = add.attributes.username
       || add.attributes.fullName.toLowerCase().replace(' ', '');
     add.attributes.bio = add.attributes.bio || this.makePseudoRandmonString(100);
-    add.attributes.email = add.attributes.email
-      || this.makePseudoRandmonString(6) + '@' + this.makePseudoRandmonString(10) + '.com';
+    add.attributes.primaryEmail = add.attributes.primaryEmail
+      || {
+        address: this.makePseudoRandmonString(6) + '@' + this.makePseudoRandmonString(10) + '.com',
+        keepPrivate: false
+        } as Email;
     add.attributes.url = add.attributes.url
       || 'http://' + this.makePseudoRandmonString(10) + '.com/' + this.makePseudoRandmonString(15);
     // Brittle check for duplicate user

@@ -35,6 +35,7 @@ import { Logger } from './shared/logger.service';
 import { UserService } from './user/user.service';
 import { ToggleService } from './toggle/toggle.service';
 import { ContextService } from './shared/context.service';
+import { ProfileService } from './profile/profile.service';
 
 // Share Modules
 import { PublicModule } from './public/public.module';
@@ -95,6 +96,7 @@ export type StoreType = {
     DummyService,
     Logger,
     LoginService,
+    ProfileService,
     ToggleService,
     UserService
   ],

@@ -1,7 +1,7 @@
 import { Broadcaster } from './../../shared/broadcaster.service';
-import { DummyService } from './../../dummy/dummy.service';
+import { ProfileService } from './../../profile/profile.service';
 import { Component, OnInit } from '@angular/core';
-import { Router }            from '@angular/router';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,25 +15,25 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private router: Router,
-    public dummy: DummyService,
+    public profile: ProfileService,
     private broadcaster: Broadcaster
-    ) {
+  ) {
   }
 
   ngOnInit() {
-    if (this.dummy.currentUser.attributes.publicEmail) {
-      this.publicEmail = this.dummy.currentUser.attributes.email;
+    if (!this.profile.current.primaryEmail.keepPrivate) {
+      this.publicEmail = this.profile.current.primaryEmail.address;
     }
   }
 
   save() {
     if (this.publicEmail === '') {
-      this.dummy.currentUser.attributes.publicEmail = false;
+      this.profile.current.primaryEmail.keepPrivate = true;
     } else {
-      this.dummy.currentUser.attributes.publicEmail = true;
-      this.dummy.currentUser.attributes.email = this.publicEmail;
+      this.profile.current.primaryEmail.keepPrivate = false;
+      this.profile.current.primaryEmail.address = this.publicEmail;
     }
-    this.broadcaster.broadcast('save');
+    this.profile.save();
   }
 
 }
