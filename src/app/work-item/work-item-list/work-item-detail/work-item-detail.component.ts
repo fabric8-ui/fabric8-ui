@@ -77,6 +77,7 @@ export class WorkItemDetailComponent implements OnInit {
         if (id.indexOf('new') >= 0){
           //Add a new work item
           this.addNewWI = true;
+          this.headerEditable = true;
           let type = id.substring((id.indexOf('?') + 1), id.length);
           this.createWorkItemObj(type);
           this.getAllUsers();

@@ -34,7 +34,7 @@
                 class="pficon-edit marginL10 fl detail-title-edit-ico" 
                 id="workItemTitle_btn_edit"></span>
           </div>
-          <div *ngIf="(loggedIn && headerEditable || !workItem.id)" id="wi-title-div"> 
+          <div *ngIf="(loggedIn && headerEditable)" id="wi-title-div">
               <div almEditable 
                   (onUpdate)="checkTitle($event)"
                   (keyup.enter)="onUpdateTitle()"
