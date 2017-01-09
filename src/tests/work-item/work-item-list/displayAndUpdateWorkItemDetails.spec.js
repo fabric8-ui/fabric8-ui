@@ -298,7 +298,7 @@ var waitTime = 30000;
         expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
         page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
           var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
-          expect(detailPage.WorkItemTypeDropDownListCount()).toBe(6);
+          expect(detailPage.WorkItemTypeDropDownListCount()).toBe(7);
           detailPage.clickWorkItemDetailCloseButton();
         });
       });
@@ -315,7 +315,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
           expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
           page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
             var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
-            expect(detailPage.WorkItemTypeDropDownListCount()).toBe(6);
+            expect(detailPage.WorkItemTypeDropDownListCount()).toBe(7);
             detailPage.clickWorkItemDetailCloseButton();
           });
         });

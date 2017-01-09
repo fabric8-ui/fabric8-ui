@@ -38,7 +38,9 @@ class WorkItemListPage {
      browser.get("http://localhost:8088/");
    }
  };
-
+ workItemByURLId (workItemId) {
+   browser.get("http://localhost:8088/work-item-list/detail/"+ workItemId);
+ }
  get workItemListButton () {
      return element(by.id("header_menuWorkItemList"));
  }

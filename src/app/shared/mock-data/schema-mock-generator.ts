@@ -355,6 +355,56 @@ export class SchemaMockGenerator {
               }
             }
           },
+          'name': 'system.planneritem',
+          'version': 0
+        },
+        {
+          'fields': {
+            'system.assignee': {
+              'required': false,
+              'type': {
+                'kind': 'user'
+              }
+            },
+            'system.creator': {
+              'required': true,
+              'type': {
+                'kind': 'user'
+              }
+            },
+            'system.description': {
+              'required': false,
+              'type': {
+                'kind': 'string'
+              }
+            },
+            'system.remote_item_id': {
+              'required': false,
+              'type': {
+                'kind': 'string'
+              }
+            },
+            'system.state': {
+              'required': true,
+              'type': {
+                'baseType': 'string',
+                'kind': 'enum',
+                'values': [
+                  'new',
+                  'open',
+                  'in progress',
+                  'resolved',
+                  'closed'
+                ]
+              }
+            },
+            'system.title': {
+              'required': true,
+              'type': {
+                'kind': 'string'
+              }
+            }
+          },
           'name': 'system.feature',
           'version': 0
         },
