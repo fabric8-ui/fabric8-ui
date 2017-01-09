@@ -38,7 +38,7 @@
     "check-coverage": "istanbul check-coverage --statements 23 --branches 5 --functions 9 --lines 24",
     "clean-and-copy": "npm run clean-dist && npm run copy-files",
     "clean-dist": "rimraf dist",
-    "copy-files": "cp src/index.html src/favicon.ico dist",
+    "copy-files": "mkdir -p dist && cp src/index.html src/favicon.ico dist",
     "docker:run": "webpack-dev-server --inline --progress --port 8080",
     "functests": "npm-run-all -p webdriver-start testserver-start protractor",
     "lint": "find src -name '*.ts' | xargs tslint -c tslint.json --force",
