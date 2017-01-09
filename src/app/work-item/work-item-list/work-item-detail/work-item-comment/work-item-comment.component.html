@@ -13,6 +13,8 @@
                     <div class="user-avatar pull-left">
                         <img id="{{'comment_avatar_' + counter}}"
                         class="user-assign-avatar pull-left" 
+                        tooltipPlacement="right"
+                        tooltip="{{comment.relationalData.creator?.attributes?.fullName}}"
                         *ngIf="comment.relationalData.creator?.attributes?.imageURL" 
                         [src]="comment.relationalData.creator?.attributes?.imageURL | almAvatarSize:30"
                         />

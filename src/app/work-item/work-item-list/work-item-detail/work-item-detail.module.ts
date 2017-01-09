@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'ng2-dropdown';
 import { Ng2CompleterModule } from 'ng2-completer';
+import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 
 import { AlmIconModule } from '../../../shared-component/icon/almicon.module';
 import { AlmEditableModule } from '../../../shared-component/editable/almeditable.module';
@@ -32,6 +33,7 @@ import {
     CommonModule,
     DropdownModule,
     FormsModule,
+    TooltipModule,
     Ng2CompleterModule
   ],
   declarations: [

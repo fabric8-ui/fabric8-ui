@@ -17,6 +17,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'ng2-dropdown';
 import { Ng2CompleterModule } from 'ng2-completer';
+import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 
 import { AlmAvatarSize } from '../../../pipes/alm-avatar-size.pipe';
 import { AlmLinkTarget } from '../../../pipes/alm-link-target.pipe';
@@ -311,6 +312,7 @@ describe('Detailed view and edit a selected work item - ', () => {
           { path: 'work-item-list/detail/1', component: WorkItemDetailComponent }
         ]),
         CommonModule,
+        TooltipModule,
         DropdownModule,
         Ng2CompleterModule,
         AlmIconModule,
