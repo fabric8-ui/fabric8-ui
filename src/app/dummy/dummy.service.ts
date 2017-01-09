@@ -354,7 +354,6 @@ export class DummyService {
     this.broadcaster.on<User>('currentUserInit').subscribe(
       message => {
         this.addUser(message);
-        this._currentUser = this.lookupUser(message.attributes.username);
       }
     );
     this.broadcaster.on<string>('logout').subscribe(
@@ -394,15 +393,20 @@ export class DummyService {
     return this._currentUser;
   }
 
+  set currentUser(user: User) {
+    this._currentUser = user;
+  }
+
   save(): void {
     this.localStorageService.set('spaces', this._spaces);
     this.localStorageService.set('contexts', this._contexts);
     this.localStorageService.set('users', this._users);
   }
 
-  private lookupUser(lookup: string): User {
+  lookupUser(username: string, fullName: string): User {
     for (let u of this.users) {
-      if (u.attributes.username === lookup) {
+      // TODO Fullname is a hack until we get a bit more info back from github
+      if (u.attributes.username === username || u.attributes.fullName === fullName) {
         return u;
       }
     }
@@ -410,20 +414,14 @@ export class DummyService {
   }
 
   private addUser(add: User) {
-    // Fill in dummy data
-    add.attributes.username = add.attributes.username
-      || add.attributes.fullName.toLowerCase().replace(' ', '');
-    add.attributes.bio = add.attributes.bio || this.makePseudoRandmonString(100);
-    add.attributes.primaryEmail = add.attributes.primaryEmail
-      || this.makePseudoRandmonString(6) + '@' + this.makePseudoRandmonString(10) + '.com';
-    add.attributes.url = add.attributes.url
-      || 'http://' + this.makePseudoRandmonString(10) + '.com/' + this.makePseudoRandmonString(15);
-    // Brittle check for duplicate user
-    if (this.lookupUser(add.attributes.username)) {
-      return;
+    let existing: User = this.lookupUser(add.attributes.username, add.attributes.fullName);
+    if (existing) {
+      this.currentUser = existing;
+    } else {
+      this.currentUser = add;
+      this.users.push(add);
+      this.save();
     }
-    this.users.push(add);
-    this.save();
   }
 
   private makePseudoRandmonString(len: number): string {

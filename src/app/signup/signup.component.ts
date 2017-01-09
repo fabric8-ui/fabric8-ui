@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router }            from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../auth/authentication.service';
 import { UserService } from '../user/user.service';
 import { User } from '../models/user';
-
+import { ProfileService } from './../profile/profile.service';
 
 
 @Component({
@@ -14,14 +14,20 @@ import { User } from '../models/user';
 export class SignupComponent implements OnInit {
 
   constructor(
-      private router: Router, private auth: AuthenticationService, private userService: UserService
-    ) {}
+    private router: Router,
+    public profile: ProfileService
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // Skip this page if the profile is complete
+    if (this.profile.checkProfileSufficient()) {
+      this.router.navigate(['home']);
+    }
+  }
 
-  complete() {
-    // Fake a login
-    localStorage.setItem('auth_token', 'pmuir');
+  save() {
+    this.profile.initDefaults();
+    this.profile.save();
     this.router.navigate(['/home']);
   }
 

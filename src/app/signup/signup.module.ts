@@ -5,12 +5,13 @@
 import { NgModule }           from '@angular/core';
 import { CommonModule }       from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
+import { FormsModule } from '@angular/forms';
 
 import { SignupComponent }   from './signup.component';
 import { SignupRoutingModule }   from './signup-routing.module';
 
 @NgModule({
-  imports:      [ CommonModule, SignupRoutingModule, HttpModule ],
+  imports:      [ CommonModule, SignupRoutingModule, HttpModule, FormsModule ],
   declarations: [ SignupComponent ]
 })
 export class SignupModule {
