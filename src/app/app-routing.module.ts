@@ -22,6 +22,10 @@ export const routes: Routes = [
     path: 'signup',
     loadChildren: './signup/signup.module#SignupModule'
   },
+    {
+    path: '_control',
+    loadChildren: './control/control.module#ControlModule'
+  },
   {
     path: 'password_reset',
     loadChildren: './forgot-password/forgot-password.module#ForgotPasswordModule'
