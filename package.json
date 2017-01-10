@@ -1,6 +1,6 @@
 {
   "name": "fabric8-planner",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A planner front-end for Fabric8.",
   "homepage": "",
   "repository": {
