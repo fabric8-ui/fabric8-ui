@@ -38,7 +38,7 @@ gulp.task('compile-typings', function() {
     //loading typings file
     var tsProject = tsc.createProject('tsconfig.json');
 
-    return gulp.src('src/app/**/*.ts')
+    return gulp.src(['src/app/**/*.ts', '!src/app/**/*.spec.ts'])
         .pipe(embedTemplates({ 
             base:'/src/app',
             useRelativePaths: true 
