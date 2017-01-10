@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../auth/authentication.service';
 import { UserService } from '../user/user.service';
@@ -11,14 +11,14 @@ import { ProfileService } from './../profile/profile.service';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements AfterViewChecked {
 
   constructor(
     private router: Router,
     public profile: ProfileService
   ) { }
 
-  ngOnInit() {
+  ngAfterViewChecked() {
     // Skip this page if the profile is complete
     if (this.profile.checkProfileSufficient()) {
       this.router.navigate(['home']);

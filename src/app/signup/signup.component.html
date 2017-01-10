@@ -1,5 +1,5 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
-    <form role="form" #signupForm="ngForm" (ngSubmit)="save()">
+    <form role="form" #signupForm="ngForm" (ngSubmit)="save()" *ngIf="profile.current">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <label for="fullName"><h4>Full Name</h4></label>
             <div class="form-group">
@@ -60,5 +60,8 @@
             <button class="btn marginR10 pull-right btn-primary" [disabled]="!signupForm.form.valid" type="submit" value="0">Complete Registration</button>
         </div>
     </form>
+    <div *ngIf="!profile.current">
+        <h3>Please wait, loading user details from OAuth Provider...</h3>
+    </div>
 
 </div>
