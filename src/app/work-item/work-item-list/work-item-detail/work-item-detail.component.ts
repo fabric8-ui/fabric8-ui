@@ -1,4 +1,18 @@
-import { Component, OnInit, Input, ViewChild, HostListener } from '@angular/core';
+import {
+  animate,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  trigger,
+  state,
+  style,
+  transition,
+  ViewChild,
+  ViewChildren,
+  QueryList
+} from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
 import { Router }                 from '@angular/router';
@@ -19,9 +33,21 @@ import { User } from '../../../models/user';
   selector: 'alm-work-item-detail',
   templateUrl: './work-item-detail.component.html',
   styleUrls: ['./work-item-detail.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translateX(0)'
+      })),
+      state('out', style({
+        transform: 'translateX(100%)'
+      })),
+      transition('in => out', animate('300ms ease-in-out')),
+      transition('out => in', animate('500ms ease-in-out'))
+    ]),
+  ]
 })
 
-export class WorkItemDetailComponent implements OnInit {
+export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   @ViewChild('desc') description: any;
   @ViewChild('title') title: any;
   @ViewChild('userSearch') userSearch: any;
@@ -53,6 +79,8 @@ export class WorkItemDetailComponent implements OnInit {
   loggedInUser: any;
 
   addNewWI: Boolean = false;
+
+  panelState: string = 'out';
 
   constructor(
     private auth: AuthenticationService,
@@ -100,6 +128,20 @@ export class WorkItemDetailComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngAfterViewInit() {
+    // Open the panel
+
+    // Why use a setTimeOut -
+    // This is for unit testing.
+    // After every round of change detection,
+    // dev mode immediately performs a second round to verify
+    // that no bindings have changed since the end of the first,
+    // as this would indicate that changes are being caused by change detection itself.
+    // I had to triggers another round of change detection
+    // during that method - emit an event, whatever. Wrapping it in a timeout would do the job
+    setTimeout(() => this.panelState = 'in');
   }
 
   createWorkItemObj(type: string) {
@@ -258,7 +300,14 @@ export class WorkItemDetailComponent implements OnInit {
 
   closeDetails(): void {
     //console.log(this.router.url.split('/')[1]);
-    this.router.navigate(['/' + this.router.url.split('/')[1]]);
+    this.panelState = 'out';
+
+    // Wait for the animation to finish
+    // From in to out it takes 300 ms
+    // So wait for 400 ms
+    setTimeout(() => {
+      this.router.navigate(['/' + this.router.url.split('/')[1]]);
+    }, 400);
   }
 
   listenToEvents() {

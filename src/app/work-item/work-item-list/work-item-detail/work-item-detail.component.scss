@@ -12,7 +12,7 @@
     padding: em(20);
     .user-label{
       margin-right: em(20);
-    }    
+    }
     .user-creator-icon {
       padding: em(3);
       color: $color-pf-black-500;
@@ -20,7 +20,7 @@
       cursor: pointer;
       margin-right: em(6);
     }
-  }  
+  }
   .separator{
     padding-top: em(10);
     border-top: 1px solid #ededed;
@@ -208,7 +208,7 @@
       }
     }
   }
- 
+
   .detail-desc-action {
     margin-top: em(10);
   }
@@ -227,7 +227,7 @@
     border: 1px solid $color-pf-blue-400 !important;
     padding-right: em(30) !important;
     background-clip: content-box !important;
-    
+
     .edit-icon {
       display: block !important;
     }
@@ -236,6 +236,23 @@
     }
   }
 }
+
+//detail panel
+.detail-panel {
+  background: $color-pf-white;
+  position: fixed;
+  left: auto;
+  top: em(34);
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  min-width: em(250);
+  z-index: 9999;
+  padding: em(20) 0;
+  border-left: 1px solid darken($color-pf-white, 20%);
+  overflow-y: scroll;
+}
+
 .wi-type-icon {
   cursor: pointer;
 }
@@ -273,7 +290,6 @@
       background: $color-pf-white;
       list-style: none;
       margin-bottom: 0;
-      padding: 0; 
       .item-li {
         cursor: pointer;
         padding: em(5);
@@ -318,7 +334,7 @@
 @media (max-width: $grid-float-breakpoint){
   /*Toggle the details panel's width and left margin*/
   .detail-container {
-    .mobile-bar {  
+    .mobile-bar {
       background-color:$color-pf-black;
       color: $color-pf-white;
       padding: em(10) em(20);
@@ -329,6 +345,12 @@
     .wi-state-btn{
       padding-top: 0;
     }
+  }
+
+  .detail-panel {
+    width: $width100;
+    padding: 0;
+    top: 0;
   }
 
   .user-search {

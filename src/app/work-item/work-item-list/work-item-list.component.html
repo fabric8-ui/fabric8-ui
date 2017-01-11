@@ -28,10 +28,10 @@
       </button>
       <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="wi_filter_dropdown">
         <li>
-          <a role="menuitem" tabindex="-1" (click)='onMoveToTop(workItemToMove)' > Move to Top </a>
+          <a role="menuitem" tabindex="-1">Move to Top</a>
         </li>
         <li>
-          <a role="menuitem" tabindex="-1" (click)='onMoveToBottom(workItemToMove)' > Move to Bottom </a>
+          <a role="menuitem" tabindex="-1">Move to Bottom</a>
         </li>
         <li role="presentation" class="divider"></li>
         <li>
@@ -111,6 +111,4 @@
     </div>
 </div>
 
-<div class="detail-panel" [@slideInOut]="panelState">
-  <router-outlet></router-outlet>
-</div>
+<router-outlet></router-outlet>

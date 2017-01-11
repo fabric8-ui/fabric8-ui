@@ -1,13 +1,8 @@
 import {
-  animate,
   AfterViewInit,
   Component,
   ElementRef,
   OnInit,
-  trigger,
-  state,
-  style,
-  transition,
   ViewChild,
   ViewChildren,
   QueryList
@@ -33,19 +28,7 @@ import { User } from '../../models/user';
 @Component({
   selector: 'alm-work-item-list',
   templateUrl: './work-item-list.component.html',
-  styleUrls: ['./work-item-list.component.scss'],
-  animations: [
-    trigger('slideInOut', [
-      state('in', style({
-        transform: 'translateX(0)'
-      })),
-      state('out', style({
-        transform: 'translateX(100%)'
-      })),
-      transition('in => out', animate('300ms ease-in-out')),
-      transition('out => in', animate('500ms ease-in-out'))
-    ]),
-  ]
+  styleUrls: ['./work-item-list.component.scss']
 })
 export class WorkItemListComponent implements OnInit, AfterViewInit {
 
@@ -62,7 +45,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   showOverlay : Boolean ;
   loggedIn: Boolean = false;
   showWorkItemDetails: boolean = false;
-  panelState: String = 'out';
   contentItemHeight: number = 67;
   pageSize: number = 20;
   filters: any[] = [];
@@ -78,9 +60,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
     private workItemService: WorkItemService,
     private logger: Logger,
     private userService: UserService,
-    private route: ActivatedRoute) {
-      this.subScribeDetailNavigation();
-  }
+    private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.listenToEvents();
@@ -231,25 +211,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   onMoveDown(): void {
     this.workItemDetail = this.workItemToMove.getWorkItem();
     this.workItemService.moveItem(this.workItemDetail, 'down');
-  }
-
-  // Event listener for URL change
-  // On change to details page slide out the layover
-  // On change back to home slide in layover
-  subScribeDetailNavigation(): void {
-    this.router.events.subscribe((val: any) => {
-      if (val.id == 1 && val.url.indexOf('detail') > -1) {
-        this.panelState = 'in';
-      }
-      if (val.id > 1) {
-        if (val.url.indexOf('detail') > -1) {
-          this.panelState = 'in';
-        } else {
-          this.broadcaster.broadcast('activeWorkItem', 0);
-          this.panelState = 'out';
-        }
-      }
-    });
   }
 
   listenToEvents() {

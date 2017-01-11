@@ -1,12 +1,7 @@
 import { Response } from '@angular/http';
 import {
   Component,
-  OnInit,
-  animate,
-  trigger,
-  state,
-  style,
-  transition
+  OnInit
 } from '@angular/core';
 import { Router }            from '@angular/router';
 
@@ -18,33 +13,18 @@ import { AuthenticationService } from '../../auth/authentication.service';
 @Component({
   selector: 'alm-board',
   templateUrl: './work-item-board.component.html',
-  styleUrls: ['./work-item-board.component.scss'],
-  animations: [
-    trigger('slideInOut', [
-      state('in', style({
-        transform: 'translateX(0)'
-      })),
-      state('out', style({
-        transform: 'translateX(100%)'
-      })),
-      transition('in => out', animate('300ms ease-in-out')),
-      transition('out => in', animate('500ms ease-in-out'))
-    ]),
-  ]
+  styleUrls: ['./work-item-board.component.scss']
 })
 
 export class WorkItemBoardComponent implements OnInit {
   workItems: WorkItem[] = [];
   lanes: Array<any> = [];
   loggedIn: Boolean = false;
-  panelState: String = 'out';
 
   constructor(
     private auth: AuthenticationService,
     private router: Router,
-    private workItemService: WorkItemService) {
-      this.subScribeDetailNavigation();
-  }
+    private workItemService: WorkItemService) {}
 
   ngOnInit() {
     this.loggedIn = this.auth.isLoggedIn();
@@ -61,25 +41,6 @@ export class WorkItemBoardComponent implements OnInit {
       .then((response) => {
         this.lanes = response;
       });
-  }
-
-  // Event listener for URL change
-  // On change to details page slide out the layover
-  // On change back to home slide in layover
-  subScribeDetailNavigation(): void {
-    this.router.events.subscribe((val: any) => {
-      if (val.id == 1 && val.url.indexOf('detail') > -1) {
-        this.panelState = 'in';
-      }
-      if (val.id > 1) {
-        if (val.url.indexOf('detail') > -1) {
-          this.panelState = 'in';
-        } else {
-          // this.broadcaster.broadcast('activeWorkItem', 0);
-          this.panelState = 'out';
-        }
-      }
-    });
   }
 
   gotoDetail(workItem: WorkItem) {
