@@ -65,7 +65,7 @@ export class MockDataService {
 
   public createWorkItemOrEntity(extraPath: string, entity: any): any {
     if (extraPath && extraPath.indexOf('/') != -1) {
-      // request for subentities on a wi 
+      // request for subentities on a wi
       var parts = extraPath.split('/');
       var wiId = parts[0];
       var subselect = parts[1];
@@ -101,32 +101,32 @@ export class MockDataService {
     }
     var localWorkItem = this.makeCopy(entity.data);
     localWorkItem.id = this.createId();
-    localWorkItem.links = { 
+    localWorkItem.links = {
           'self': 'http://mock.service/api/workitems/id' + localWorkItem.id
         };
-    localWorkItem.relationships = { 
-          'assignees': { }, 
-          'baseType': { 
-            'data': { 
-              'id': 'system.userstory', 
-              'type': 'workitemtypes' 
-            } 
-          }, 
-          'comments': { 
-            'links': { 
+    localWorkItem.relationships = {
+          'assignees': { },
+          'baseType': {
+            'data': {
+              'id': 'system.userstory',
+              'type': 'workitemtypes'
+            }
+          },
+          'comments': {
+            'links': {
               'related': 'http://mock.service/api/workitems/id' + localWorkItem.id + '/comments',
-              'self': 'http://mock.service/api/workitems/id' + localWorkItem.id + '/relationships/comments' 
-            } 
-          }, 
-          'creator': { 
-            'data': { 
-              'id': 'user0', 
+              'self': 'http://mock.service/api/workitems/id' + localWorkItem.id + '/relationships/comments'
+            }
+          },
+          'creator': {
+            'data': {
+              'id': 'user0',
               'links': {
                 'self': 'http://mock.service/api/users/some-creator-id'
               },
-              'type': 'identities' 
-            } 
-          } 
+              'type': 'identities'
+            }
+          }
         };
     this.workItems.push(localWorkItem);
     return { data: this.makeCopy(localWorkItem) };
@@ -134,7 +134,7 @@ export class MockDataService {
 
   public getWorkItemOrEntity(extraPath: string): any {
     if (extraPath && extraPath.indexOf('/') != -1) {
-      // request for subentities on a wi 
+      // request for subentities on a wi
       var parts = extraPath.split('/');
       var wiId = parts[0];
       var subselect = parts[1];
@@ -147,9 +147,17 @@ export class MockDataService {
         console.log('Request for relationships for workitem ' + wiId);
         if (parts[2] === 'links') {
           var links = this.getWorkItemLinksForWorkItem(wiId);
-          return { data: links, meta: { totalCount: links.length } };
+          return {
+            data: links,
+            meta: { totalCount: links.length },
+            included: [
+              this.workItems[0],
+              this.workItems[1],
+              this.schemaMockGenerator.getWorkItemLinkTypes().data[0 ]
+            ]
+          };
         }
-      } 
+      }
       // should never happen
       return {};
     }
@@ -194,10 +202,12 @@ export class MockDataService {
 
   public getWorkItemLinksForWorkItem(workItemId: string): any {
     var result: any = [];
-    for (var i = 0; i < this.workItemLinks.length; i++)
-      if (this.workItemLinks[i].relationships.source.data.id === workItemId) {
+    for (var i = 0; i < this.workItemLinks.length; i++) {
+      if (this.workItemLinks[i].relationships.source.data.id === workItemId ||
+          this.workItemLinks[i].relationships.target.data.id === workItemId) {
         result.push(this.makeCopy(this.workItemLinks[i]));
       }
+    }
     return result;
   }
 
