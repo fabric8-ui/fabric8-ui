@@ -1,0 +1,89 @@
+<div class="work-item-page">
+
+  <div *ngIf="loggedIn && showTypesOptions" class="types-modal">
+    <h5 class="col-md-12 col-sm-12 col-xs-12">
+      <span class="pull-left">Click to select a type </span>
+      <span class="pficon-close detail-close pull-right" (click)="closePanel()"></span>
+    </h5>
+    <ul class="wiTypeList col-md-12 col-sm-12 col-xs-12 grid">
+      <li *ngFor="let type of workItemTypes" (click)="onChangeType(type.name)">
+        <div class="wiTypeListBlk">
+          <i almIcon [iconType]="type.name" class="xl-font"></i>
+          <p>{{type.name.substring(7, type.length)}}</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="work-item-action-bar">
+    <div class="list-action">
+
+      <!--Move a work item up / down -->
+      <div class="dropdown move-dropdown" dropdown>
+        <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
+          Move
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="wi_filter_dropdown">
+          <li>
+            <a role="menuitem" tabindex="-1" (click)="moveItem('top')">Move to Top</a>
+          </li>
+          <li>
+            <a role="menuitem" tabindex="-1" (click)="moveItem('bottom')">Move to Bottom</a>
+          </li>
+          <li role="presentation" class="divider"></li>
+          <li>
+            <a role="menuitem" tabindex="-1" (click)="moveItem('up')">Move Up</a>
+          </li>
+          <li>
+            <a role="menuitem" tabindex="-1" (click)="moveItem('down')">Move Down</a>
+          </li>
+        </ul>
+      </div>
+
+      <!--Filter-->
+      <div class="dropdown filter-dropdown" dropdown>
+        <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
+          Filter Method
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="wi_filter_dropdown">
+          <li *ngIf="!filters.length">
+            <span>No filters available</span>
+          </li>
+          <li *ngFor="let filter of filters;" role="presentation" (click)="activeFilter(filter.id)">
+            <a role="menuitem" tabindex="-1">{{filter.name}}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="loggedIn" class="add-detailed-wi"
+          tooltipPlacement="bottom" tooltip="Add A Work Item"
+          (click)="showTypes()">
+        <span class="fa fa-plus icon"></span>
+      </div>
+    </div>
+
+    <div #activeFiltersDiv>
+      <span #activeFilters class="selected-filters"
+        *ngFor="let filter of filters | almArrayFilter:{active: true};">
+        {{filter.name}}
+        <i (click)="deactiveFilter(filter.id)" class="fa fa-close icon"></i>
+      </span>
+      <span class="close-filter"
+        (click)="deactiveAllFilters()"
+        *ngIf="(filters | almArrayFilter:{active: true}).length">
+        Clear All Filters
+      </span>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <div class="side-bar">
+        Here goes the iteration panel
+    </div>
+    <div class="container-body">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

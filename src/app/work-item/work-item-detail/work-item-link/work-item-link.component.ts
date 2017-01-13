@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 import { cloneDeep } from 'lodash';
 
-import { Link } from '../../../../models/link';
-import { LinkDict } from '../../../../models/work-item';
-import { LinkType, MinimizedLinkType } from '../../../../models/link-type';
-import { WorkItem } from '../../../../models/work-item';
-import { WorkItemService } from '../../../work-item.service';
+import { Link } from './../../../models/link';
+import { LinkDict } from './../../../models/work-item';
+import { LinkType, MinimizedLinkType } from './../../../models/link-type';
+import { WorkItem } from './../../../models/work-item';
+import { WorkItemService } from './../../work-item.service';
 
 import { SearchData } from './search-data';
 
@@ -21,7 +21,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
   @Input() workItem: WorkItem;
   @Input() loggedIn: Boolean;
   @ViewChild('searchBox') searchBox: any;
-  @ViewChild('searchResultList') searchResultList: any; 
+  @ViewChild('searchResultList') searchResultList: any;
 
   linkTypes : LinkType[] = [];
   link: Object;
@@ -59,8 +59,8 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
 
   ngDoCheck() {
     // To reset selected link type on change wi type
-    if (this.prevWItem && 
-        this.prevWItem.relationships.baseType.data.id 
+    if (this.prevWItem &&
+        this.prevWItem.relationships.baseType.data.id
           !== this.workItem.relationships.baseType.data.id) {
       // Change in work item type
       // Reset selected link type
@@ -118,17 +118,17 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
   }
 
   setSearchNotAllowedIds(): void {
-    this.searchNotAllowedIds.push(this.workItem.id);    
+    this.searchNotAllowedIds.push(this.workItem.id);
     let relatedLinks = this.workItem.relationalData.linkDicts.find(
       (item) => item.linkName == this.selectedLinkType.name
     );
     if (typeof(relatedLinks) !== 'undefined') {
       relatedLinks.links.forEach((item: Link) => {
         if (this.searchNotAllowedIds.indexOf(item.relationalData.source.id) === -1) {
-          this.searchNotAllowedIds.push(item.relationalData.source.id); 
+          this.searchNotAllowedIds.push(item.relationalData.source.id);
         }
         if (this.searchNotAllowedIds.indexOf(item.relationalData.target.id) === -1) {
-          this.searchNotAllowedIds.push(item.relationalData.target.id); 
+          this.searchNotAllowedIds.push(item.relationalData.target.id);
         }
       });
     }
@@ -137,9 +137,9 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
 
   createLink(event: any = null): void {
     this.createLinkObject(
-       this.workItem.id, 
+       this.workItem.id,
        this.selectedWorkItemId,
-       this.selectedLinkType.linkId, 
+       this.selectedLinkType.linkId,
        this.selectedLinkType.linkType
       );
     const tempValue = {'data': this.link};
@@ -176,7 +176,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
   toggleLinkComponent(onlyOpen: Boolean = false): void{
     if (this.loggedIn) {
       if (onlyOpen) {
-        this.showLinkComponent = true;  
+        this.showLinkComponent = true;
       } else {
         this.showLinkComponent = !this.showLinkComponent;
       }
@@ -196,9 +196,9 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
     if (links['relationships']['target']['data']['id'] == workItem['id']){
       workItemId = links['relationships']['source']['data']['id'];
     }
-    this.router.navigate(['/work-item-list/detail/' + workItemId]);
+    this.router.navigate(['/work-item/list/detail/' + workItemId]);
   }
-  
+
   linkSearchWorkItem(term: any, event: any) {
     event.stopPropagation();
     //console.log(this.searchResultList.nativeElement.children.length);
@@ -224,7 +224,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
           lis[(i + 1) % lis.length].classList.add('selected');
           lis[(i + 1) % lis.length].scrollIntoView(false);
         } else { // Down arrow
-          // In javascript mod gives exact mod for negative value 
+          // In javascript mod gives exact mod for negative value
           // For example, -1 % 6 = -1 but I need, -1 % 6 = 5
           // To get the round positive value I am adding the divisor
           // with the negative dividend
@@ -244,7 +244,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
           let selectedId = lis[i].dataset.wiid;
           let selectedTitle = lis[i].dataset.wititle;
           this.selectSearchResult(selectedId, selectedTitle);
-        } 
+        }
     } else { // Normal case - search on type
       if (term.trim() != "") {
       // Search on atleast 3 char or numeric

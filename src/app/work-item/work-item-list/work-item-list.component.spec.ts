@@ -268,18 +268,21 @@ describe('Work item list view - ', () => {
       });
   }));
 
-  it('have a button for adding a new work item', () => {
-    fakeAuthService.login();
-    fixture.detectChanges();
-    el = fixture.debugElement.query(By.css('.add-detailed-wi'));
-    expect(el).toBeDefined();
-  });
-  it('clicking show types should display the list of types', () => {
-    fakeAuthService.login();
-    fixture.detectChanges();
-    comp.showTypes();
-    el = fixture.debugElement.query(By.css('.types-modal'));
-    expect(el).toBeDefined();
-  });
+  // Crrating new item is moved to parent component
+
+  // it('have a button for adding a new work item', () => {
+  //   fakeAuthService.login();
+  //   fixture.detectChanges();
+  //   el = fixture.debugElement.query(By.css('.add-detailed-wi'));
+  //   expect(el).toBeDefined();
+  // });
+
+  // it('clicking show types should display the list of types', () => {
+  //   fakeAuthService.login();
+  //   fixture.detectChanges();
+  //   comp.showTypes();
+  //   el = fixture.debugElement.query(By.css('.types-modal'));
+  //   expect(el).toBeDefined();
+  // });
 
 });

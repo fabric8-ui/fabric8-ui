@@ -2,11 +2,11 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 
-import { Comment, CommentAttributes } from '../../../../models/comment';
-import { User } from '../../../../models/user';
-import { UserService } from '../../../../user/user.service';
-import { WorkItem } from '../../../../models/work-item';
-import { WorkItemService } from '../../../work-item.service';
+import { Comment, CommentAttributes } from '../../../models/comment';
+import { User } from '../../../models/user';
+import { UserService } from '../../../user/user.service';
+import { WorkItem } from '../../../models/work-item';
+import { WorkItemService } from '../../work-item.service';
 
 
 @Component({
@@ -52,7 +52,7 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
                 console.log(error);
             });
     }
-    
+
     preventDef(event: any) {
         event.preventDefault();
     }

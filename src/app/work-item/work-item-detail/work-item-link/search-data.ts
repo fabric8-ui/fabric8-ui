@@ -1,6 +1,6 @@
 import { Http, Response } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
-import { WorkItem } from '../../../../models/work-item';
+import { WorkItem } from './../../../models/work-item';
 
 import { CompleterItem, CompleterData } from 'ng2-completer';
 

@@ -1,3 +1,4 @@
+import { WorkItemModule } from './work-item/work-item.module';
 import './rxjs-extensions';
 
 // Globals
@@ -23,9 +24,6 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-// Board
-import { WorkItemBoardModule } from './work-item/work-item-board/work-item-board.module';
-
 // Footer
 import { FooterComponent } from './footer/footer.component';
 
@@ -39,7 +37,6 @@ import { LoginService } from './login/login.service';
 // Work
 import { WorkItemSearchComponent } from './work-item/work-item-search/work-item-search.component';
 import { WorkItemService } from './work-item/work-item.service';
-import { WorkItemListModule } from './work-item/work-item-list/work-item-list.module';
 
 // Mock data
 import { MockDataService } from './shared/mock-data.service';
@@ -106,8 +103,7 @@ if (process.env.ENV == 'inmemory') {
     TabsModule,
     TestModule,
     TooltipModule,
-    WorkItemBoardModule,
-    WorkItemListModule
+    WorkItemModule
   ],
   declarations: [
     AppComponent,

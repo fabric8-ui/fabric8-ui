@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { WorkItem } from './../../../../models/work-item';
+import { WorkItem } from './../../../models/work-item';
 
 // tslint:disable-next-line:use-pipe-transform-interface
 @Pipe({ name: 'workItemLinkFilterByTypeName', pure: true })
@@ -37,7 +37,7 @@ export class AlmValidLinkTypes implements PipeTransform {
           linkId: item.id,
           linkType: 'forward'
         });
-      } 
+      }
       if (item.relationships.target_type.data.id == workItemType){
         opLinkTypes.push({
           name: item.attributes['reverse_name'],

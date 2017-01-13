@@ -50,7 +50,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   filters: any[] = [];
   allUsers: User[] = [] as User[];
   authUser: any = null;
-  showTypesOptions: Boolean = false;
 
   constructor(
     private auth: AuthenticationService,
@@ -67,70 +66,12 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
     this.loggedIn = this.auth.isLoggedIn();
     // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
-    this.getWorkItemTypes();
   }
 
   ngAfterViewInit() {
     let oldHeight = 0;
     this.allUsers = cloneDeep(this.route.snapshot.data['allusers']) as User[];
     this.authUser = cloneDeep(this.route.snapshot.data['authuser']);
-    this.setFilterValues();
-    this.activeFiltersRef.changes.subscribe((item) => {
-      let newElHeight = this.activeFiltersDiv.nativeElement.offsetHeight;
-      let listCurrentHeight = this.listContainer.nativeElement.offsetHeight;
-      if (newElHeight) {
-        oldHeight = listCurrentHeight;
-        this.listContainer.nativeElement.style.height =
-          listCurrentHeight - newElHeight;
-      } else {
-        this.listContainer.nativeElement.style.height =
-          oldHeight;
-      }
-    });
-  }
-
-  setFilterValues() {
-    if (this.loggedIn) {
-      this.filters.push({
-        id:  1,
-        name: 'Assigned to me',
-        paramKey: 'filter[assignee]',
-        active: false,
-        value: this.authUser.id
-      });
-    } else {
-      let index = this.filters.findIndex(item => item.id === 1);
-      this.filters.splice(index, 1);
-    }
-  }
-
-  activeFilter(filterId: number) {
-    if (this.loggedIn) {
-      let selectedIndex = this.filters.findIndex((f: any) => {
-        return f.id === filterId;
-      });
-      if (selectedIndex > -1) {
-        this.filters[selectedIndex].active = true;
-      }
-      this.loadWorkItems();
-    }
-  }
-
-  deactiveFilter(filterId: number) {
-    let selectedIndex = this.filters.findIndex((f: any) => {
-      return f.id == filterId;
-    });
-    if (selectedIndex > -1) {
-      this.filters[selectedIndex].active = false;
-    }
-    this.loadWorkItems();
-  }
-
-  deactiveAllFilters() {
-    this.filters.forEach((f: any) => {
-      f.active = false;
-    });
-    this.loadWorkItems();
   }
 
   // model handlers
@@ -217,28 +158,30 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
     this.broadcaster.on<string>('logout')
       .subscribe(message => {
         this.loggedIn = false;
-        this.deactiveAllFilters();
         this.authUser = null;
-        this.setFilterValues();
     });
-  }
-
-  //Detailed add functions
-  getWorkItemTypes(){
-    this.workItemService.getWorkItemTypes()
-      .then((types) => {
-        this.workItemTypes = types;
-      });
-  }
-  showTypes() {
-    this.showTypesOptions = true;
-  }
-  closePanel() {
-    this.showTypesOptions = false;
-  }
-  onChangeType(type: string) {
-    this.showTypesOptions = false;
-    this.router.navigate(['/work-item-list/detail/new?' + type]);
+    this.broadcaster.on<string>('item_filter')
+      .subscribe((filters: any) => {
+        this.filters = filters;
+        this.loadWorkItems();
+    });
+    this.broadcaster.on<string>('move_item')
+      .subscribe((moveto: string) => {
+        switch (moveto){
+          case 'up':
+            this.onMoveUp();
+            break;
+          case 'down':
+            this.onMoveDown();
+            break;
+          case 'top':
+            break;
+          case 'down':
+            break;
+          default:
+            break;
+        }
+    });
   }
 
   onDragStart() {
@@ -254,6 +197,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
 
     // save the order of work item.
     this.workItemService.reOrderWorkItem(workItemId)
-        .catch(e => console.log(e));
+        .catch (e => console.log(e));
   }
 }

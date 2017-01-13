@@ -18,16 +18,16 @@ import { Location }               from '@angular/common';
 import { Router }                 from '@angular/router';
 import { cloneDeep } from 'lodash';
 
-import { AuthenticationService } from '../../../auth/authentication.service';
-import { Broadcaster } from '../../../shared/broadcaster.service';
-import { Logger } from '../../../shared/logger.service';
-import { UserService } from '../../../user/user.service';
+import { AuthenticationService } from './../../auth/authentication.service';
+import { Broadcaster } from './../../shared/broadcaster.service';
+import { Logger } from './../../shared/logger.service';
+import { UserService } from './../../user/user.service';
 
-import { WorkItem, WorkItemAttributes, WorkItemRelations } from '../../../models/work-item';
-import { WorkItemService } from '../../work-item.service';
-import { WorkItemType } from '../../work-item-type';
+import { WorkItem, WorkItemAttributes, WorkItemRelations } from './../../models/work-item';
+import { WorkItemService } from './../work-item.service';
+import { WorkItemType } from './../work-item-type';
 
-import { User } from '../../../models/user';
+import { User } from './../../models/user';
 
 @Component({
   selector: 'alm-work-item-detail',
@@ -124,7 +124,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
               this.getAllUsers();
               this.activeOnList(400);
             })
-            .catch (err => this.closeDetails());
+            .catch (err => {
+              this.closeDetails()
+            });
         }
       }
     });
@@ -287,12 +289,12 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
           this.workItem.attributes['version'] = workItem.attributes['version'];
           this.activeOnList();
       });
-    }else{
+    } else {
       if (this.validTitle){
         this.workItemService
         .create(this.workItem)
         .then((workItem) => {
-          this.router.navigate(['/work-item-list/detail/' + workItem.id]);
+          this.router.navigate(['/work-item/list/detail/' + workItem.id]);
         });
       }
     }
@@ -306,7 +308,11 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     // From in to out it takes 300 ms
     // So wait for 400 ms
     setTimeout(() => {
-      this.router.navigate(['/' + this.router.url.split('/')[1]]);
+      this.router.navigate(['/' +
+        this.router.url.split('/')[1] +
+        '/' +
+        this.router.url.split('/')[2]]
+      );
     }, 400);
   }
 

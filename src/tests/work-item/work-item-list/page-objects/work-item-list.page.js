@@ -39,7 +39,7 @@ class WorkItemListPage {
    }
  };
  workItemByURLId (workItemId) {
-   browser.get("http://localhost:8088/work-item-list/detail/"+ workItemId);
+   browser.get("http://localhost:8088/work-item/list/detail/"+ workItemId);
  }
  get workItemListButton () {
      return element(by.id("header_menuWorkItemList"));
@@ -47,13 +47,13 @@ class WorkItemListPage {
 
  clickWorkItemListButton() {
    browser.wait(until.presenceOf(this.workItemListButton), constants.WAIT, 'Failed to find workItemListButton');
-   return this.workItemListButton.click(); 
+   return this.workItemListButton.click();
  }
 
  get boardButton () {
      return element(by.id("header_menuBoard"));
  }
- 
+
  get clickBoardButton () {
    this.boardButton.click();
    return new WorkItemBoardPage();
@@ -62,35 +62,35 @@ class WorkItemListPage {
  get userToggle () {
      return element(by.id("header_dropdownToggle"));
  }
- 
+
  clickUserToggle () {
-   return this.userToggle.click(); 
+   return this.userToggle.click();
  }
 
 /* Page elements - bottom of the page - work item quick add */
 
  get workItemQuickAddTitle () {
    return element(by.id("exampleInput"));
-  } 
+  }
 
  typeQuickAddWorkItemTitle (keys) {
    browser.wait(until.presenceOf(this.workItemQuickAddTitle), constants.WAIT, 'Failed to find workItemQuickAddTitle');
-   return this.workItemQuickAddTitle.sendKeys(keys); 
+   return this.workItemQuickAddTitle.sendKeys(keys);
  }
 
  get workItemQuickAddDesc () {
    return element(by.id("exampleDesc"));
  }
- 
+
  typeQuickAddWorkItemDesc (keys) {
    browser.wait(until.presenceOf(this.workItemQuickAddDesc), constants.WAIT, 'Failed to find workItemQuickAddDesc');
-   return this.workItemQuickAddDesc.sendKeys(keys); 
+   return this.workItemQuickAddDesc.sendKeys(keys);
  }
 
  /* Access the Kebab element relative to its parent workitem */
  clickWorkItemKebabButton (parentElement) {
    browser.wait(until.presenceOf(parentElement.element(by.id("dropdownKebabRight"))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
-   return parentElement.element(by.id("dropdownKebabRight")).click(); 
+   return parentElement.element(by.id("dropdownKebabRight")).click();
  }
 
  KebabButtonById () {
@@ -100,7 +100,7 @@ class WorkItemListPage {
  /* Login functions */
 
  clickLoginButton () {
-   return element(by.id('header_rightDropdown')).all(By.tagName('a')).get(0).click(); 
+   return element(by.id('header_rightDropdown')).all(By.tagName('a')).get(0).click();
  }
 
  clickLogoutButton () {
@@ -120,30 +120,30 @@ class WorkItemListPage {
   /* Access the Kebab element relative to its parent workitem */
   clickWorkItemKebabDeleteButton (parentElement) {
     browser.wait(until.presenceOf(parentElement.element(by.css('.workItemList_Delete'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
-    return parentElement.element(by.css('.workItemList_Delete')).click(); 
+    return parentElement.element(by.css('.workItemList_Delete')).click();
   }
 
   get workItemPopUpDeleteConfirmButton () {
     return element(by.buttonText('Confirm'));
-  } 
+  }
 
   clickWorkItemPopUpDeleteConfirmButton () {
     browser.wait(until.presenceOf(this.workItemPopUpDeleteConfirmButton), constants.WAIT, 'Failed to find workItemPopUpDeleteConfirmButton');
-    return this.workItemPopUpDeleteConfirmButton.click(); 
+    return this.workItemPopUpDeleteConfirmButton.click();
   }
 
   get workItemPopUpDeleteCancelConfirmButton () {
     return element(by.buttonText('Cancel'));
-  } 
+  }
 
   clickWorkItemPopUpDeleteCancelConfirmButton () {
     browser.wait(until.presenceOf(this.workItemPopUpDeleteCancelConfirmButton), constants.WAIT, 'Failed to find clickWorkItemPopUpDeleteCancelConfirmButton');
-    return this.workItemPopUpDeleteCancelConfirmButton.click(); 
+    return this.workItemPopUpDeleteCancelConfirmButton.click();
   }
 
   get openButton () {
     return element(by.css(".workItemQuickAdd_saveBtn"));
-  } 
+  }
 
   quickAddbuttonById () {
     return element(by.id("workItemQuickAdd_container"));
@@ -151,49 +151,49 @@ class WorkItemListPage {
 
   clickWorkItemQuickAdd () {
     browser.wait(until.presenceOf(this.openButton), constants.WAIT, 'Failed to find the open button');
-    return this.openButton.click();  
+    return this.openButton.click();
   }
 
   get saveButton () {
     return  element(by.css(".workItemQuickAdd_Add"));
-  } 
+  }
 
   clickQuickAddSave () {
     browser.wait(until.presenceOf(this.saveButton), constants.WAIT, 'Failed to find the saveButton');
-    return this.saveButton.click(); 
+    return this.saveButton.click();
   }
 
   get cancelButton () {
     return element(by.id(".workItemQuickAdd_goBackBtn"));
-  } 
+  }
 
   clickQuickAddCancel () {
     browser.wait(until.presenceOf(this.cancelButton), constants.WAIT, 'Failed to find the cancelButton');
-    return this.cancelButton.click(); 
+    return this.cancelButton.click();
   }
 
   /* Page elements - work item list */
 
   get allWorkItems () {
     return element.all(by.css(".work-item-list-entry"));
-  } 
+  }
 
   /* xpath = //alm-work-item-list-entry[.//text()[contains(.,'Some Title 6')]]   */
   workItemByTitle (titleString) {
-    return element(by.xpath("//alm-work-item-list-entry[.//text()[contains(.,'" + titleString + "')]]")); 
+    return element(by.xpath("//alm-work-item-list-entry[.//text()[contains(.,'" + titleString + "')]]"));
   }
 
   get firstWorkItem () {
     return element.all(by.css(".work-item-list-entry")).first();
-  } 
+  }
 
   get lastWorkItem () {
     return element.all(by.css(".work-item-list-entry")).last();
-  } 
+  }
 
   /* Title element relative to a workitem */
   workItemTitle (workItemElement) {
-    return workItemElement.element(by.css(".workItemList_title")).getText(); 
+    return workItemElement.element(by.css(".workItemList_title")).getText();
   }
 
   clickWorkItemTitle (workItemElement, idText) {
@@ -204,47 +204,47 @@ class WorkItemListPage {
     browser.wait(testSupport.waitForText(theDetailPage.clickWorkItemDetailTitle), constants.WAIT, "Title text is still not present");
     return theDetailPage;
   }
- 
+
   /* Description element relative to a workitem */
   workItemDescription (workItemElement) {
-    return workItemElement.element(by.css(".workItemList_description")).getText(); 
+    return workItemElement.element(by.css(".workItemList_description")).getText();
   }
 
   /* Icon element relative to a workitem */
   workItemIcon (workItemElement) {
-    return workItemElement.element(by.css(".type.workItemList_workItemType")).getText(); 
+    return workItemElement.element(by.css(".type.workItemList_workItemType")).getText();
   }
 
-  workItemByIndex (itemNumber) { 
-    return element.all(by.css(".work-item-list-entry")).get(itemNumber); 
+  workItemByIndex (itemNumber) {
+    return element.all(by.css(".work-item-list-entry")).get(itemNumber);
   }
 
   workItemByNumber (itemNumber) {
     var xPathString = "workItemList_OuterWrap_" + itemNumber;
     return element(by.id(xPathString));
   }
-  
+
   kebabByNumber (itemNumber) {
     var XPathString = "workItemList_OuterWrap_" + itemNumber +"/div/div[2]/div";
     return element(by.id(XPathString));
   }
 
-  workItemViewButton (parentElement) { 
-    return parentElement.element(By.css( ".list-view-pf-main-info" )); 
+  workItemViewButton (parentElement) {
+    return parentElement.element(By.css( ".list-view-pf-main-info" ));
   }
 
-  workItemViewId (parentElement) { 
-    return parentElement.element(By.css( ".list-view-pf-left.type.workItemList_workItemType" )); 
+  workItemViewId (parentElement) {
+    return parentElement.element(By.css( ".list-view-pf-left.type.workItemList_workItemType" ));
   }
 
-  workItemViewTitle (parentElement) { 
-    return parentElement.element(By.css( ".list-group-item-heading.workItemList_title" )); 
+  workItemViewTitle (parentElement) {
+    return parentElement.element(By.css( ".list-group-item-heading.workItemList_title" ));
   }
-  
-  workItemViewDescription (parentElement) { 
-    return parentElement.element(By.css( ".list-group-item-text.workItemList_description" )); 
+
+  workItemViewDescription (parentElement) {
+    return parentElement.element(By.css( ".list-group-item-text.workItemList_description" ));
   }
-  
+
   /*
    * When the Work Item 'View Detail' page is opened, there can be a delay of a few seconds before
    * the page contents are displayed - the browser.wait statement covers this wait for the title
@@ -258,48 +258,48 @@ class WorkItemListPage {
     browser.wait(testSupport.waitForText(theDetailPage.workItemDetailTitle), constants.WAIT, "Title text is still not present");
     return theDetailPage;
   }
-  
-  workItemDeleteButton (parentElement) { 
-    return parentElement.element(By.css( ".btn.btn-default.delete-button.workItemList_deleteListItemBtn" )); 
+
+  workItemDeleteButton (parentElement) {
+    return parentElement.element(By.css( ".btn.btn-default.delete-button.workItemList_deleteListItemBtn" ));
   }
-  
+
   clickWorkItemDeleteButton (button) {
     browser.wait(until.presenceOf(button), constants.WAIT, 'Failed to find the button');
-    return button.click(); 
+    return button.click();
   }
 
   /* User assignment dropdown */
   get filterDropdown () {
     return  element(by.id("wi_filter_dropdown"));
-  } 
+  }
 
   clickFilterDropdown () {
-    return this.filterDropdown.click(); 
+    return this.filterDropdown.click();
   }
 
   /* Adding a new workitem through the dialog */
   get detailedDialogButton () {
     return  element(by.css(".add-detailed-wi"));
-  } 
+  }
 
   clickDetailedDialogButton () {
-    return this.detailedDialogButton.click(); 
+    return this.detailedDialogButton.click();
   }
 
   /* Adding a new user story workitem through the dialog */
   detailedIcon (workItemIcon) {
     /* Usage: detailedUserStoryIcon("userstory")  */
     return  element(by.css(detailedWorkItemIcons[workItemIcon]));
-  } 
+  }
 
   clickDetailedIcon (workItemIcon) {
     /* Usage: clickDetailedUserStoryIcon("userstory")  */
-    this.detailedIcon(workItemIcon).click(); 
+    this.detailedIcon(workItemIcon).click();
     var theDetailPage = new WorkItemDetailPage ();
     return theDetailPage;
 
 
-  }  
+  }
   userStoryIconWIT  (){
     return element(by.css('.xl-font.fa.fa-bookmark'));
   }
@@ -342,7 +342,7 @@ class WorkItemListPage {
   clickExperienceWItype  ()  {
     return this.experienceWIType.click();
   }
-  
+
 }
 
 module.exports = WorkItemListPage;

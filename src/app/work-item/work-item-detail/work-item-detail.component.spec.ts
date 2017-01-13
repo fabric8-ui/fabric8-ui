@@ -1,4 +1,4 @@
-import { AlmUserName } from './../../../pipes/alm-user-name.pipe';
+import { AlmUserName } from './../../pipes/alm-user-name.pipe';
 import {
   async,
   ComponentFixture,
@@ -19,27 +19,27 @@ import { DropdownModule } from 'ng2-dropdown';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 
-import { AlmAvatarSize } from '../../../pipes/alm-avatar-size.pipe';
-import { AlmLinkTarget } from '../../../pipes/alm-link-target.pipe';
-import { AlmMomentTime } from '../../../pipes/alm-moment-time.pipe';
-import { AlmSearchHighlight } from '../../../pipes/alm-search-highlight.pipe';
-import { AlmTrim } from '../../../pipes/alm-trim';
-import { Broadcaster } from '../../../shared/broadcaster.service';
-import { Logger } from '../../../shared/logger.service';
+import { AlmAvatarSize } from './../../pipes/alm-avatar-size.pipe';
+import { AlmLinkTarget } from './../../pipes/alm-link-target.pipe';
+import { AlmMomentTime } from './../../pipes/alm-moment-time.pipe';
+import { AlmSearchHighlight } from './../../pipes/alm-search-highlight.pipe';
+import { AlmTrim } from './../../pipes/alm-trim';
+import { Broadcaster } from './../../shared/broadcaster.service';
+import { Logger } from './../../shared/logger.service';
 
-import { Dialog } from '../../../shared-component/dialog/dialog';
+import { Dialog } from './../../shared-component/dialog/dialog';
 
 
-import { AlmIconModule } from '../../../shared-component/icon/almicon.module';
-import { AlmEditableModule } from '../../../shared-component/editable/almeditable.module';
-import { AlmValidLinkTypes } from '../../../pipes/alm-valid-link-types.pipe';
-import { AuthenticationService } from '../../../auth/authentication.service';
-import { LinkType } from '../../../models/link-type';
-import { User } from '../../../models/user';
-import { UserService } from '../../../user/user.service';
-import { WorkItem } from '../../../models/work-item';
-import { WorkItemType } from '../../work-item-type';
-import { WorkItemService } from '../../work-item.service';
+import { AlmIconModule } from './../../shared-component/icon/almicon.module';
+import { AlmEditableModule } from './../../shared-component/editable/almeditable.module';
+import { AlmValidLinkTypes } from './../../pipes/alm-valid-link-types.pipe';
+import { AuthenticationService } from './../../auth/authentication.service';
+import { LinkType } from './../../models/link-type';
+import { User } from './../../models/user';
+import { UserService } from './../../user/user.service';
+import { WorkItem } from './../../models/work-item';
+import { WorkItemType } from './../work-item-type';
+import { WorkItemService } from './../work-item.service';
 
 import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
 import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.component';

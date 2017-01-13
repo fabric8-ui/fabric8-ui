@@ -2,17 +2,16 @@
 @import "../../../assets/stylesheets/custom";
 @import "../../../assets/stylesheets/color-variables";
 
-.quickAdd_container{
-  position: fixed;
-  bottom:0;
+.quickAdd_container {
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
   background: $color-pf-black-200;
-  z-index: 9;
   border-top: 1px solid darken($color-pf-white, 20%);
   text-align: $textLeft;
   cursor: pointer;
   font-size: rem(12);
-  width: $width100;
-  float: left;
+  height: 100%;
   .addWorkItem{
     padding:em(20);
     h4{
@@ -35,9 +34,8 @@
       color:$color-pf-black-600;
     }
   }
-  .addWorkItemBlk{
+  .addWorkItemBlk {
     padding: em(20);
-    background:$color-pf-white;
     position: relative;
     .workItemQuickAdd_IconType{
       width:em(24);
@@ -78,7 +76,7 @@
       font-size: em(24);
       text-decoration: none;
     }
-    .icon-btn{
+    .icon-btn {
       color: $color-pf-blue-400;
       cursor: pointer;
     }
@@ -89,7 +87,7 @@
   }
 }
 
-.quickAdd_container2{
+.quickAdd_container2 {
   position: relative;
   width: $width100;
   float: left;
@@ -107,10 +105,12 @@
       }
     }
   }
-  .addWorkItemBlk{
+  .addWorkItemBlk {
+    padding: em(20);
     margin: em(5) 0;
+    background:$color-pf-white;
     @include Border(1px, solid ,$color-pf-black-300);
-    .quickAdd_temp2-Story{
+    .quickAdd_temp2-Story {
       float: left;
       padding: em(2);
       @include Border(1px, solid ,$color-pf-black-700);
@@ -144,7 +144,7 @@
   background: $color-pf-white;
 }
 @media (max-width: $grid-float-breakpoint){
-  .quickAdd_container{
+  .quickAdd_container {
     text-align: center;
     .addWorkItem{
       padding: em(10);
@@ -155,7 +155,7 @@
         margin-bottom: em(5);
       }
     }
-    .addWorkItemBlk{
+    .addWorkItemBlk {
       padding:em(10);
     }
   }

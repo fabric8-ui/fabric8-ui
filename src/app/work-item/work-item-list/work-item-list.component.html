@@ -1,114 +1,41 @@
-<div *ngIf="loggedIn && showTypesOptions" class="types-modal">
-  <h5 class="col-md-12 col-sm-12 col-xs-12">
-    <span class="pull-left">Click to select a type </span>
-    <span class="pficon-close detail-close pull-right" (click)="closePanel()"></span>
-  </h5>
-  <ul class="wiTypeList col-md-12 col-sm-12 col-xs-12 grid">
-    <li *ngFor="let type of workItemTypes" (click)="onChangeType(type.name)">
-      <div class="wiTypeListBlk">
-        <i almIcon [iconType]="type.name" class="xl-font"></i>
-        <p>{{type.name.substring(7, type.length)}}</p>
-      </div>
-    </li>
-  </ul>
-
-</div>
-
-<div *ngIf="loggedIn" class="add-detailed-wi" tooltipPlacement="bottom" tooltip="Add A Work Item" (click)="showTypes()">
-  <span class="fa fa-plus icon"></span>
-</div>
-<div class="detail-list-container" [class.containerPadd-nologin] = "!loggedIn" >
-  <div class="list-action">
-    <h4 class="list-type">Backlog</h4>
-    <!--Move a work item up / down -->
-    <div *ngIf="workItemToMove" class="dropdown move-dropdown" dropdown>
-      <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
-        Move
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="wi_filter_dropdown">
-        <li>
-          <a role="menuitem" tabindex="-1">Move to Top</a>
-        </li>
-        <li>
-          <a role="menuitem" tabindex="-1">Move to Bottom</a>
-        </li>
-        <li role="presentation" class="divider"></li>
-        <li>
-          <a role="menuitem" tabindex="-1" (click)='onMoveUp()'>Move Up</a>
-        </li>
-        <li>
-          <a role="menuitem" tabindex="-1" (click)='onMoveDown()'>Move Down</a>
-        </li>
-      </ul>
-    </div>
-    <!--Filter-->
-    <div class="dropdown filter-dropdown" dropdown>
-      <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
-        Filter Method
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="wi_filter_dropdown">
-        <li *ngIf="!filters.length">
-          <span>No filters available</span>
-        </li>
-        <li *ngFor="let filter of filters;" role="presentation" (click)="activeFilter(filter.id)">
-          <a role="menuitem" tabindex="-1">{{filter.name}}</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <div #activeFiltersDiv>
-    <span #activeFilters class="selected-filters"
-      *ngFor="let filter of filters | almArrayFilter:{active: true};">
-      {{filter.name}}
-      <i (click)="deactiveFilter(filter.id)" class="fa fa-close icon"></i>
-    </span>
-    <span class="close-filter"
-      (click)="deactiveAllFilters()"
-      *ngIf="(filters | almArrayFilter:{active: true}).length">
-      Clear All Filters
-    </span>
-  </div>
-
-  <div #listContainer
-       almInfiniteScroll
-       class="detail-list-wrap list-group list-view-pf"
-       [eachElementHeightInPx]='contentItemHeight'
-       (initItems)='initWiItems($event)'
-       (fetchMore)='fetchMoreWiItems()'>
-    <div dnd-sortable-container
-         [sortableData]="workItems"
-         *ngIf="workItems">
-      <div *ngFor="let workItem of workItems; let counter = index"
-           dnd-sortable
-           [sortableIndex]="counter"
-           (onDragStart)="onDragStart()"
-           (onDragEnd)="onDragEnd(workItem.id)"
-           [attr.data-id]="workItem.id"
-           id="work-item-{{workItem.id}}">
-        <alm-work-item-list-entry
-          id="{{'workItemList_OuterWrap_'+counter}}"
-          class="work-item-list-entry"
-          [workItem]="workItem"
-          (toggleEvent)="onToggle($event)"
-          (selectEvent)="onSelect($event)"
-          (detailEvent)="onDetail($event)"
-          (moveTopEvent)="onMoveToTop($event)"
-          (moveBottomEvent)="onMoveToBottom($event)">
-        </alm-work-item-list-entry>
+<div class="work-item-list-page">
+  <div class="detail-list-container" [class.containerPadd-nologin] = "!loggedIn" >
+    <div #listContainer
+        almInfiniteScroll
+        class="detail-list-wrap list-group list-view-pf"
+        [eachElementHeightInPx]='contentItemHeight'
+        (initItems)='initWiItems($event)'
+        (fetchMore)='fetchMoreWiItems()'>
+      <div dnd-sortable-container
+          [sortableData]="workItems"
+          *ngIf="workItems">
+        <div *ngFor="let workItem of workItems; let counter = index"
+            dnd-sortable
+            [sortableIndex]="counter"
+            (onDragStart)="onDragStart()"
+            (onDragEnd)="onDragEnd(workItem.id)"
+            [attr.data-id]="workItem.id"
+            id="work-item-{{workItem.id}}">
+          <alm-work-item-list-entry
+            id="{{'workItemList_OuterWrap_'+counter}}"
+            class="work-item-list-entry"
+            [workItem]="workItem"
+            (toggleEvent)="onToggle($event)"
+            (selectEvent)="onSelect($event)"
+            (detailEvent)="onDetail($event)"
+            (moveTopEvent)="onMoveToTop($event)"
+            (moveBottomEvent)="onMoveToBottom($event)">
+          </alm-work-item-list-entry>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div id="workItemList_Error" class="error" *ngIf="error">{{error}}</div>
+  <div id="workItemList_Error" class="error" *ngIf="error">{{error}}</div>
 
-<div id="workItemList_quickAdd" class="pull-left" >
-    <div *ngIf="loggedIn" class="pull-left supress-hover">
-        <alm-work-item-quick-add [wilistview]="'wi-list-view'" (close)="close($event)"></alm-work-item-quick-add>
-    </div>
+  <div id="workItemList_quickAdd" class="work-item-list-quick-add" *ngIf="loggedIn">
+      <alm-work-item-quick-add [wilistview]="'wi-list-view'" (close)="close($event)"></alm-work-item-quick-add>
+  </div>
 </div>
 
 <router-outlet></router-outlet>
