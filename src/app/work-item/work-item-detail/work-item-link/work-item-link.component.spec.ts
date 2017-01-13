@@ -111,7 +111,7 @@
 //       },
 //       'type': 'workitems'
 //     } as WorkItem;
-    
+
 //     fakeWorkItem2 = {
 //       'attributes': {
 //         'system.created_at': null,
@@ -167,7 +167,7 @@
 //       },
 //       'type': 'workitems'
 //     } as WorkItem;
-    
+
 //     fakeWorkItemMap['1'] = fakeWorkItem1;
 //     fakeWorkItemMap['4'] = fakeWorkItem1;
 //     fakeWorkItemMap['6'] = toLinkWorkItem;
@@ -184,7 +184,7 @@
 //           'forward_name': 'story-story',
 //           'name': 'story-story',
 //           'reverse_name': 'story by',
-//           'topology': 'network', 
+//           'topology': 'network',
 //           'version': 0
 //         },
 //         // 'id': '40bbdd3d-8b5d-4fd6-ac90-7236b669af04',
@@ -217,7 +217,7 @@
 //           'forward_name': 'abc-abc',
 //           'name': 'abc-abc',
 //           'reverse_name': 'story by',
-//           'topology': 'network', 
+//           'topology': 'network',
 //           'version': 0
 //         },
 //         // 'id': '40bbdd3d-8b5d-4fd6-ac90-7236b669af04',
@@ -241,7 +241,7 @@
 //             }
 //           }
 //       }
-//     }];   
+//     }];
 
 //     fakeLink = {
 //             attributes: {
@@ -400,14 +400,14 @@
 //         });
 //       }
 //     };
-  
+
 //   });
 //   beforeEach(async(() => {
 //     TestBed.configureTestingModule({
 //       imports: [
 //         Ng2CompleterModule,
 //         RouterTestingModule.withRoutes([
-//           {path: 'work-item-list/detail/1', component: WorkItemLinkComponent}
+//           {path: 'work-item/list/detail/1', component: WorkItemLinkComponent}
 //         ]),
 //       ],
 
