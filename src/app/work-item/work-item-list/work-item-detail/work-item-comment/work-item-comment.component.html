@@ -8,20 +8,25 @@
                     placeholder="Add a comment here...">
                 </textarea>
             </div>
-            <div *ngFor='let comment of workItem.relationalData.comments; let counter = index' class="comments-wrap">  
+            <div *ngFor='let comment of workItem.relationalData?.comments?.slice().reverse()' class="comments-wrap">
                 <div>
                     <div class="user-avatar pull-left">
                         <img id="{{'comment_avatar_' + counter}}"
-                        class="user-assign-avatar pull-left" 
+                        class="user-assign-avatar pull-left"
                         tooltipPlacement="right"
                         tooltip="{{comment.relationalData.creator?.attributes?.fullName}}"
                         *ngIf="comment.relationalData.creator?.attributes?.imageURL" 
                         [src]="comment.relationalData.creator?.attributes?.imageURL | almAvatarSize:30"
                         />
                     </div>
-                    <small class="pull-right createTimeBlock" id="{{'comment_time_' + counter}}">{{comment.attributes['created-at'] | date:'medium'}}</small>
+                    <small class="pull-right createTimeBlock" id="{{'comment_time_' + counter}}">
+                        {{comment.attributes['created-at'] | date:'medium'}}
+                    </small>
                     <div class="comment-body">
-                        <h5  class="col-md-12 col-sm-12 col-xs-12 no-padding truncate"><strong  id="{{'comment_username_' + counter}}">{{comment.relationalData?.creator?.attributes?.fullName}}</strong>
+                        <h5 class="col-md-12 col-sm-12 col-xs-12 no-padding truncate">
+                            <strong id="{{'comment_username_' + counter}}">
+                                {{comment.relationalData?.creator?.attributes?.fullName}}
+                            </strong>
                         </h5>
                     </div>
                 </div>
