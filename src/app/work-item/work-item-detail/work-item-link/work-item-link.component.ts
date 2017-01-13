@@ -100,6 +100,10 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
   }
 
   onSelectRelation(relation: any): void{
+    //clear the search box and reset values related to search
+    this.searchBox.nativeElement.value = '';
+    this.searchWorkItems = [];
+    this.selectedWorkItemId = null;
     this.selectedLinkType = relation;
     this.setSearchAllowedType();
     this.setSearchNotAllowedIds();
