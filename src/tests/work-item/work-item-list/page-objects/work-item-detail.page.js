@@ -66,7 +66,7 @@ class WorkItemDetailPage {
     this.editHover().click();
   }
 
-  get workItemTitleDiv () {    
+  get workItemTitleDiv () {
     return element(by.id("title-click-div"));
   }
 
@@ -75,19 +75,19 @@ class WorkItemDetailPage {
   }
 
   clickWorkItemTitleById () {
-  return element(by.id("wi-detail-title-ne")); 
+  return element(by.id("wi-detail-title-ne"));
   }
 
-  get workItemTitleEditIcon () {    
-    return element(by.id("workItemTitle_btn_edit")); 
+  get workItemTitleEditIcon () {
+    return element(by.id("workItemTitle_btn_edit"));
   }
-  
-  workItemTitleEditIconById () {    
+
+  workItemTitleEditIconById () {
     return element(by.id("workItemTitle_btn_edit"));
   }
 
   clickWorkItemTitleEditIcon () {
-    return this.workItemTitleEditIcon.click(); 
+    return this.workItemTitleEditIcon.click();
   }
 
   get workItemTitleSaveIcon () {
@@ -138,7 +138,7 @@ class WorkItemDetailPage {
 
   setWorkItemDetailDescription (newDescriptionString, append) {
     if (!append) { this.workItemDetailDescription.clear(newDescriptionString) };
-    return this.workItemDetailDescription.sendKeys(newDescriptionString); 
+    return this.workItemDetailDescription.sendKeys(newDescriptionString);
   }
 
   get workItemDescriptionEditIcon () {
@@ -194,7 +194,7 @@ class WorkItemDetailPage {
   }
 
   WorkItemTypeDropDownListCount () {
-      return element.all(by.css(".dropdown-menu.mobMarginL20 li a")).count(); 
+      return element.all(by.css(".dropdown-menu.mobMarginL20 li a")).count();
   }
 
   clickWorkItemButton () {
@@ -203,7 +203,7 @@ class WorkItemDetailPage {
   }
 
   clickworkItemDetailTypeIcon () {
-    return element(by.css(".pull-left.dropdown-kebab-pf.detail-type-dropdown")).click(); 
+    return element(by.css(".pull-left.dropdown-kebab-pf.detail-type-dropdown")).click();
   }
 
   userstroyIcon () {
@@ -215,7 +215,7 @@ class WorkItemDetailPage {
   }
 
   fundamentalIcon () {
-    return element(by.css(".color-grey.fa.fa-bank")); 
+    return element(by.css(".color-grey.fa.fa-bank"));
   }
 
   experienceIcon () {
@@ -257,7 +257,7 @@ class WorkItemDetailPage {
   }
 
   newStateIcon () {
-    return element(by.css(".color-grey.fa.fa-arrow-down")); 
+    return element(by.css(".color-grey.fa.fa-arrow-down"));
   }
 
   openStateIcon () {
@@ -265,7 +265,7 @@ class WorkItemDetailPage {
   }
 
   inprogressStateIcon () {
-    return element(by.css(".color-grey.pficon.pficon-resources-almost-full")); 
+    return element(by.css(".color-grey.pficon.pficon-resources-almost-full"));
   }
 
   resolvedStateIcon () {
@@ -333,7 +333,7 @@ class WorkItemDetailPage {
 
   /* The first username in the list of users */
   get workItemDetailFirstUser () {
-    return element(by.css(".item-li.first-item")); 
+    return element(by.css(".item-li.first-item"));
   }
 
   get clickworkItemDetailFirstUser () {
@@ -351,7 +351,7 @@ class WorkItemDetailPage {
 
   /* The Unassign button */
   get workItemDetailUnassignButton () {
-    return element(by.xpath(".//*[contains(@class,'action-item') and contains(text(),'Unassign')]")); 
+    return element(by.xpath(".//*[contains(@class,'action-item') and contains(text(),'Unassign')]"));
   }
 
   clickworkItemDetailUnassignButton () {

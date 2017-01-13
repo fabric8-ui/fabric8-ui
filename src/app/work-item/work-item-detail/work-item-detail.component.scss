@@ -252,10 +252,10 @@
   border-left: 1px solid darken($color-pf-white, 20%);
   overflow-y: scroll;
 }
-
+/* Commenting type drop down related tests for issue 635
 .wi-type-icon {
   cursor: pointer;
-}
+}*/
 
 .clickable {
   cursor: pointer;

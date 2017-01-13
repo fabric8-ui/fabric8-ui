@@ -5,9 +5,13 @@
           id="wi-detail-form">
       <fieldset [attr.disabled]="!loggedIn ? true : null">
         <div class="col-md-12 col-sm-12 col-xs-12 mobile-bar ">
-          <div class="pull-left dropdown-kebab-pf detail-type-dropdown" dropdown>
-            <span dropdown-open class="wi-type-icon" almIcon [iconType]="workItem.relationships.baseType.data.id"></span>
-            <ul *ngIf="loggedIn" id="wi-type-dropdown" class="dropdown-menu mobMarginL20" aria-labelledby="dropdownKebabRight">
+          <div class="pull-left dropdown-kebab-pf detail-type-dropdown">
+            <span class="wi-type-icon" almIcon [iconType]="workItem.relationships.baseType.data.id"></span>
+          </div>
+            <!--Commenting type drop down related tests for issue 635
+            <div class="pull-left dropdown-kebab-pf detail-type-dropdown" dropdown>
+              <span dropdown-open class="wi-type-icon" almIcon [iconType]="workItem.relationships.baseType.data.id"></span>
+              <ul *ngIf="loggedIn" id="wi-type-dropdown" class="dropdown-menu mobMarginL20" aria-labelledby="dropdownKebabRight">
               <li *ngFor="let type of workItemTypes" (click)="onChangeType(type.name)">
                 <a>
                   <span class="wi-type-icon dropdown-icon" almIcon [iconType]="type.name"></span>
@@ -17,7 +21,7 @@
                 </a>
               </li>
             </ul>
-          </div>
+          </div>-->
           <h5 *ngIf="workItem.id" class="detail-id pull-left" id="wi-detail-id">{{workItem.id}}</h5>
           <span class="pficon-close detail-close" (click)="closeDetails()"></span>
           <div *ngIf="workItem.id" class="pull-right created-wrap">
