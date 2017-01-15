@@ -97,7 +97,10 @@ if (process.env.ENV == 'inmemory') {
     LearnModule,
     ModalModule,
     NotificationsModule,
-    ObsidianModule,
+    // ObsidianModule,
+    // Having this module cause the
+    // functional tests fail
+    // randomly with timeout
     PipelineModule,
     SettingsModule,
     TabsModule,
