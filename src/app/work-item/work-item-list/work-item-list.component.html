@@ -1,32 +1,31 @@
 <div class="work-item-list-page">
-  <div class="detail-list-container" [class.containerPadd-nologin] = "!loggedIn" >
-    <div #listContainer
-        almInfiniteScroll
-        class="detail-list-wrap list-group list-view-pf"
-        [eachElementHeightInPx]='contentItemHeight'
-        (initItems)='initWiItems($event)'
-        (fetchMore)='fetchMoreWiItems()'>
-      <div dnd-sortable-container
-          [sortableData]="workItems"
-          *ngIf="workItems">
-        <div *ngFor="let workItem of workItems; let counter = index"
-            dnd-sortable
-            [sortableIndex]="counter"
-            (onDragStart)="onDragStart()"
-            (onDragEnd)="onDragEnd(workItem.id)"
-            [attr.data-id]="workItem.id"
-            id="work-item-{{workItem.id}}">
-          <alm-work-item-list-entry
-            id="{{'workItemList_OuterWrap_'+counter}}"
-            class="work-item-list-entry"
-            [workItem]="workItem"
-            (toggleEvent)="onToggle($event)"
-            (selectEvent)="onSelect($event)"
-            (detailEvent)="onDetail($event)"
-            (moveTopEvent)="onMoveToTop($event)"
-            (moveBottomEvent)="onMoveToBottom($event)">
-          </alm-work-item-list-entry>
-        </div>
+
+  <div #listContainer
+      almInfiniteScroll
+      class="detail-list-wrap list-group list-view-pf"
+      [eachElementHeightInPx]='contentItemHeight'
+      (initItems)='initWiItems($event)'
+      (fetchMore)='fetchMoreWiItems()'>
+    <div dnd-sortable-container
+        [sortableData]="workItems"
+        *ngIf="workItems">
+      <div *ngFor="let workItem of workItems; let counter = index"
+          dnd-sortable
+          [sortableIndex]="counter"
+          (onDragStart)="onDragStart()"
+          (onDragEnd)="onDragEnd(workItem.id)"
+          [attr.data-id]="workItem.id"
+          id="work-item-{{workItem.id}}">
+        <alm-work-item-list-entry
+          id="{{'workItemList_OuterWrap_'+counter}}"
+          class="work-item-list-entry"
+          [workItem]="workItem"
+          (toggleEvent)="onToggle($event)"
+          (selectEvent)="onSelect($event)"
+          (detailEvent)="onDetail($event)"
+          (moveTopEvent)="onMoveToTop($event)"
+          (moveBottomEvent)="onMoveToBottom($event)">
+        </alm-work-item-list-entry>
       </div>
     </div>
   </div>

@@ -13,14 +13,11 @@
   display: flex;
   height: 100%;
   flex-direction: column;
-  .detail-list-container {
-    display: -webkit-flex;
-    display: flex;
-    flex: 1;
-    overflow: hidden;
     .list-action {
       height: em(50);
       display: flex;
+      display: -webkit-flex;
+      display: -ms-flex;
       align-items: center;
       background-color: $color-pf-black-300;
       justify-content: space-between;
@@ -65,13 +62,20 @@
       cursor: pointer;
     }
     .detail-list-wrap {
-      flex: 1;
+      flex: auto;
+      -webkit-flex: auto;
+      -ms-flex: auto;
       overflow-y: scroll;
       width: $width100;
       margin-bottom: 0;
+      flex-basis: 0;
+      -webkit-flex-basis: 0;
+      -ms-flex-basis: 0;
     }
-  }
   .work-item-list-quick-add {
+    flex: none;
+    -webkit-flex: none;
+    -ms-flex: none;
     height: em(66);
   }
 }
