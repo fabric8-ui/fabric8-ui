@@ -1,6 +1,5 @@
 @import "./../../../../assets/stylesheets/custom";
 
-
 .list-group-item {
   cursor: pointer;
   font-size: rem(12);
@@ -8,9 +7,25 @@
   .row-cbh {
     margin-right: em(10);
     margin-left: em(5);
-    padding-right: em(10);
-    border-right: 1px solid $color-pf-black-500;
+    padding:em(2) em(10) em(2) 0;
+    border-right: 1px solid $color-pf-white ;
+    input[type=checkbox] {
+      margin: 0;
+      visibility: hidden;
+    }
+    input[type=checkbox]:checked {
+      visibility: visible;
+    }
   }
+  &:hover {
+    .row-cbh {
+       border-right: 1px solid $color-pf-black-500 ;
+      input{
+        visibility: visible;
+      }
+    }
+  }
+
   .workItemList_workItemType {
     width: em(120);
     float: left;
@@ -54,7 +69,6 @@ span{
     background-color: $color-pf-blue-100;
   }
 }
-
 @media (max-width: $screen-md-min){
   .workItemList_title{
     font-size: rem(16);
