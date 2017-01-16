@@ -8,100 +8,79 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-
   .types-modal {
-      background-color: $color-pf-white;
-      position: absolute;
-      top: em(88);
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      z-index: 11;
-      overflow-y: scroll;
-      .xl-font{
-        font-size: em(30);
+    background-color: $color-pf-black-100;
+    position: absolute;
+    top: em(88);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: $width100;
+    z-index: 11;
+    overflow-y: scroll;
+    .container-cards-pf {
+      margin-top: 0;
+      .detail-close {
+        margin-top: em(10);
+        padding: em(11.2) em(12.9);
+        font-size: em(14);
       }
-      .wiTypeList{
-        list-style: none;
-        li{
-            height: em(180);
-            border: 1px solid $color-pf-black-200;
-            position: relative;
-            color: $color-pf-black;
-            cursor: pointer;
-            width: calc(25% - 1.667em);
-            margin: em(10);
-            float: left;
-            .wiTypeListBlk{
-              position: absolute;
-              top:50%;
-              left: 50%;
-              @include transform(translate(-50%, -50%));
-              text-align: $textCenter;
-            }
-          }
-        li:hover {
-          color:  $color-pf-blue-400;
-        }
+      .card-pf-title{
+        text-transform: capitalize;
+      }
+      .card-pf-info{
+        min-height: 4.5em;
+        @include multiline-truncate($font-size: em(14), $line-height: 1.5, $lines-to-show: 3, $trunc-bg: transparent) ;
       }
     }
-
-  .work-item-action-bar {
-    display: flex;
-    display: -webkit-flex;
-    flex-direction: inherit;
+  }
+  .wi-full-width {
+    width: $width100;
+  }
+  .toolbar-pf {
     .list-action {
-      height: em(50);
-      display: flex;
-      align-items: center;
-      background-color: $color-pf-black-200;
-      justify-content: flex-start;
-      border-bottom: 1px solid $color-pf-black-300;
       .list-type {
         font-weight: 700;
         margin-left: em(10);
       }
       span {
-        border-color: transparent;
-        border-style: solid;
-        border-width: 1px 0;
-        padding: 1px 10px;
+        @include Border(em(1), solid, transparent);
+        padding: em(1) em(10);
+      }
+      .form-group:first-child{
+        padding-left: 0;
       }
       .move-dropdown {
         a {
           cursor: pointer;
         }
-        margin-left: em(10);
-      }
-      .filter-dropdown {
-        margin-left: em(10);
-        margin-right: auto;
       }
 
       .add-detailed-wi {
-        font-size: em(20);
-        width: em(26);
-        height: em(26);
-        background: $color-pf-blue-400;
-        color: $color-pf-white;
+        width: em(14);
+        height: em(14);
+        color: $color-pf-blue-300;
+        background: $color-pf-white;
         cursor: pointer;
-        -moz-border-radius: em(13);
-        -webkit-border-radius: em(13);
-        border-radius: em(13);
-        display: flex;
-        justify-content: center;
-        align-items: center;
         float: right;
-        margin-right: 20px;
-        span {
-          position: relative;
+        position: relative;
+        margin: em(5);
+        @include Border(em(2) , solid , $color-pf-blue-300);
+        @include borderRadius(50%);
+        i {
+          font-size: em(10);
+          line-height: 1.5;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          padding: em(5);
+          @include transform(translate(-50%, -50%));
         }
       }
     }
     .selected-filters {
-      padding: 3px 10px;
-      margin: 5px;
+      padding: em(3) em(10);
+      margin: em(5);
       color: $color-pf-white;
       background-color: $color-pf-black-600;
       display: inline-block;
@@ -113,7 +92,7 @@
     .close-filter {
       display: inline-block;
       color: $color-pf-blue;
-      margin-left: 5px;
+      margin-left: em(5);
       cursor: pointer;
     }
   }
@@ -150,6 +129,16 @@
     .wiTypeList{
     li {
       width: calc(50% - 1.667em);
+      }
+    }
+  }
+  .work-item-page{
+    .toolbar-pf {
+      .form-group{
+        display: table-cell;
+        float: left;
+        padding-right: em(20);
+        margin-bottom: 0;
       }
     }
   }

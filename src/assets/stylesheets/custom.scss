@@ -1,5 +1,6 @@
 @import "variables";
 @import "color-variables";
+@import "mixins";
 //custom variables
 $width100: 100%;
 $em-base-font-size: 12;
@@ -119,9 +120,6 @@ $textCenter: center;
   }
 }
 
-
-
-
 // custom classes
 .containerPadd{ padding: em(96) 0 em(66) 0; }
 .containerPadd-nologin{ padding-bottom: 0; }
@@ -138,8 +136,39 @@ $textCenter: center;
 .db{ display: block; }
 .textCenter{ text-align: $textCenter; }
 .pointer{ cursor: pointer; }
+//patternfly-site.css
+h2{
+  font-size: em(18);
+  font-weight: 500;
+  line-height: 1.4;
+}
+//card-view
 
-//user -gravatar
+.card-pf-view {
+  .card-pf-top-element {
+    .card-pf-icon-circle {
+      @include Border(em(0.8), solid, $color-pf-blue-300); //#39a5dc;
+      @include borderRadius(50%);
+      @extend .db;
+      font-size: em(36);
+      height: em(34); //2.84em
+      width: em(34);
+      line-height: em(34);
+      margin: 0 auto;
+      text-align: $textCenter;
+    }
+  }
+}
+.card-pf-view-select {
+  cursor:pointer;
+  .active {
+    @include Border(em(2), solid, $color-pf-blue-300);
+  }
+  &:hover{
+    @include box-shadow( 0 1px 6px $color-pf-black-500);
+  }
+}
+    //user -gravatar
 
  .user-avatar{
      height: em(25);

@@ -21,12 +21,12 @@ let until = protractor.ExpectedConditions;
 
 /* Icons displayed after the detailed dialog button is clicked */
 let detailedWorkItemIcons = [];
-detailedWorkItemIcons["userstory"] = ".xl-font.fa.fa-bookmark";
-detailedWorkItemIcons["valueproposition"] = ".xl-font.fa.fa-gift";
-detailedWorkItemIcons["fundamental"] = ".xl-font.fa.fa-bank";
-detailedWorkItemIcons["experience"] = ".xl-font.fa.fa-map";
-detailedWorkItemIcons["feature"] = ".xl-font.fa.fa-mouse-pointer";
-detailedWorkItemIcons["bug"] = ".xl-font.fa.fa-bug ";
+detailedWorkItemIcons["userstory"] = ".card-pf-icon-circle.fa.fa-bookmark";
+detailedWorkItemIcons["valueproposition"] = ".card-pf-icon-circle.fa.fa-gift";
+detailedWorkItemIcons["fundamental"] = ".card-pf-icon-circle.fa.fa-bank";
+detailedWorkItemIcons["experience"] = ".card-pf-icon-circle.fa.fa-map";
+detailedWorkItemIcons["feature"] = ".card-pf-icon-circle.fa.fa-mouse-pointer";
+detailedWorkItemIcons["bug"] = ".card-pf-icon-circle.fa.fa-bug ";
 
 class WorkItemListPage {
 
@@ -332,43 +332,43 @@ class WorkItemListPage {
 
   }
   userStoryIconWIT  (){
-    return element(by.css('.xl-font.fa.fa-bookmark'));
+    return element(by.css('.card-pf-icon-circle.fa.fa-bookmark'));
   }
   clickUserStoryWItype  ()  {
     return this.userStoryIconWIT.click();
   }
   valuePropositonWItype  ()  {
-   return element(by.css('.xl-font.fa.fa-gift'));
+   return element(by.css('.card-pf-icon-circle.fa.fa-gift'));
   }
   clickValuePropositonWItype  ()  {
     return this.valuePropositonWItype.click();
   }
   fundamentalWItype  ()  {
-   return element(by.css('.xl-font.fa.fa-bank'));
+   return element(by.css('.card-pf-icon-circle.fa.fa-bank'));
   }
   clickFundamentalWItype  ()  {
     return this.fundamentalWItype.click();
   }
   plannerWItype(){
-    return element(by.css('.xl-font.fa.fa-paint-brush'));
+    return element(by.css('.card-pf-icon-circle.fa.fa-paint-brush'));
   }
   clickPalnnerWItype  ()  {
     return this.plannerWItype.click();
   }
   featureWItype() {
-    return element(by.css('.xl-font.fa.fa-mouse-pointer'));
+    return element(by.css('.card-pf-icon-circle.fa.fa-mouse-pointer'));
   }
   clickFeatureWItype  ()  {
     return this.featureWItype.click();
   }
   bugWItype(){
-    return element(by.css('.xl-font.fa.fa-bug'));
+    return element(by.css('.card-pf-icon-circle.fa.fa-bug'));
   }
   clickBugWItype  ()  {
     return this.bugWItype.click();
   }
   experienceWIType(){
-    return element(by.css('.xl-font.fa.fa-map'));
+    return element(by.css('.card-pf-icon-circle.fa.fa-map'));
   }
   clickExperienceWItype  ()  {
     return this.experienceWIType.click();
