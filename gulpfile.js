@@ -7,41 +7,54 @@ var gulp = require('gulp'),
     tsc = require('gulp-typescript'),
     embedTemplates = require('gulp-inline-ng2-template'),
     wait = require('gulp-wait'),
+    del = require('del'),
     exec = require('child_process').exec;
 
-var libraryDist = 'dist-library';
+var appSrc = 'src';
 var librarySrc = 'src-library';
+var libraryDist = 'dist-library';
 
-gulp.task('build', function (done) {
+var tsProject = tsc.createProject('tsconfig.json');
+
+gulp.task('build:library', function(done) {
   runSequence(
     'clean',
     'compile-sass',
     'compile-typings',
+    'assets',
     'copy-library-definitions',
     done
   );
 });
 
 gulp.task('clean', function (done) {
-  exec('rm -rf ' + libraryDist, function (err, stdOut, stdErr) {
-    if (err) {
-        done(err);
-    } else {
-        done();
-    }
-  });
+  return del([libraryDist], done);
+});
+
+gulp.task('assets', function(done) {
+    return gulp.src(['src/assets/*/**', 'src/*.*'])
+        .pipe(gulp.dest(libraryDist));
+});
+
+gulp.task('watch', function () {
+    gulp.watch([appSrc + '/app/**/*.ts', '!' + appSrc + '/app/**/*.spec.ts'], ['compile']).on('change', function (e) {
+        console.log('TypeScript file ' + e.path + ' has been changed. Compiling.');
+    });
+    gulp.watch([appSrc + '/app/**/*.ts', '!' + appSrc + '/app/**/*.spec.ts'], ['resources']).on('change', function (e) {
+        console.log('Resource file ' + e.path + ' has been changed. Updating.');
+    });
 });
 
 //typescript compilation including sourcemaps and template embedding
 gulp.task('compile-typings', function() {
 
     //loading typings file
-    var tsProject = tsc.createProject('tsconfig.json');
-
-    return gulp.src(['src/app/**/*.ts', '!src/app/**/*.spec.ts'])
+    return gulp.src([ appSrc + '/app/**/*.ts', '!' + appSrc + '/app/**/*.spec.ts'])
         .pipe(embedTemplates({ 
-            base:'/src/app',
-            useRelativePaths: true 
+            base: appSrc + '/app',
+            useRelativePaths: true,
+            supportNonExistentFiles: true,
+            target: 'es5'
         }))
         .pipe(tsProject())
         .pipe(sourcemaps.init())
@@ -51,7 +64,7 @@ gulp.task('compile-typings', function() {
 
 //Sass compilation and minifiction
 gulp.task('compile-sass', function () {
-  return gulp.src('src/app/**/*.scss')
+  return gulp.src(appSrc + '/app/**/*.scss')
     .pipe(sass().on('error', sass.logError)) // this will prevent our future watch-task from crashing on sass-errors
     .pipe(minifyCss({compatibility: 'ie8'})) // see the gulp-sass doc for more information on compatibilitymodes
         .pipe(gulp.dest(function(file) {
