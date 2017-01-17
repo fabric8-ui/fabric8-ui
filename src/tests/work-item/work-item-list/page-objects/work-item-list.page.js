@@ -343,6 +343,72 @@ class WorkItemListPage {
     return this.experienceWIType.click();
   }
 
+
+
+  /* Checkbox relative to a workitem */
+  workItemCheckbox (workItemElement) {
+    return workItemElement.element(by.css(".row-cbh>input")); 
+  }
+
+ /* Click checkbox relative to a workitem */
+  clickWorkItemCheckbox (workItemElement) {
+    return this.workItemCheckbox (workItemElement).click(); 
+  }
+
+ /* Is checkbox relative to a workitem selected? */
+  isWorkItemCheckboxSelected (workItemElement) {
+    return this.workItemCheckbox (workItemElement).isSelected(); 
+  }
+
+  /* Workitem move pulldown */
+  get workItemMovePulldown () {
+    return element(by.css(".dropdown.move-dropdown")); 
+  }
+
+  /* Workitem move pulldown */
+  clickWorkItemMovePulldown () {
+    return this.workItemMovePulldown.click();  
+  }
+
+  workItemMovePulldownTop (parentElement) {
+    return parentElement.element(by.xpath(".//*//li[.//text()[contains(.,'Move to Top')]]")); 
+  } 
+
+  clickWorkItemMovePulldownTop (parentElement) {
+    return this.workItemMovePulldownTop(parentElement).click(); 
+  }
+
+  workItemMovePulldownBottom (parentElement) {
+    return parentElement.element(by.xpath(".//*//li[.//text()[contains(.,'Move to Bottom')]]")); 
+  }
+
+  clickWorkItemMovePulldownBottom (parentElement) {
+    return this.workItemMovePulldownBottom(parentElement).click(); 
+  }
+
+  workItemMovePulldownUp (parentElement) {
+    return parentElement.element(by.xpath(".//*//li[.//text()[contains(.,'Move Up')]]")); 
+  }
+
+  clickWorkItemMovePulldownUp (parentElement) {
+    return this.workItemMovePulldownUp(parentElement).click(); 
+  }
+
+  workItemMovePulldownDown (parentElement) {
+    return parentElement.element(by.xpath(".//*//li[.//text()[contains(.,'Move Down')]]")); 
+  }
+
+  clickWorkItemMovePulldownDown (parentElement) {
+    return this.workItemMovePulldownDown(parentElement).click(); 
+  }
+
+  /* Workitem filter pulldown */
+  workItemFilterPulldown () {
+    return workItemElement.element(by.css(".dropdown.filter-dropdown")); 
+  }
+
+
+
 }
 
 module.exports = WorkItemListPage;
