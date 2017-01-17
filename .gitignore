@@ -6,10 +6,16 @@
 /app/*.js.map
 /tmp
 /dist-library
+/dist
 /src/app/**/*.css
+/build
+/runtime/dist
+/runtime/build
+/runtime/dll
 
 # dependencies
 /node_modules
+/runtime/node_modules
 /bower_components
 
 # IDEs and editors
