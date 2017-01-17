@@ -80,8 +80,197 @@
 
   <div class="main-container">
     <div class="side-bar">
-        Here goes the iteration panel
+        <!--Iteration Start-->
+        <div class="iteration-panel-header">
+          <div class="iteration-secondary-menu">
+              <h4><strong>Backlog</strong></h4>
+          </div>
+          <div class="badge-wrapper">
+            <span class="badge">95</span>
+          </div>
+        </div>
+        <div class="iterations-container">
+          <div class="iterations">
+            <div class="iteration-header pointer"
+                 (click)="isCollapsedCurrentIteration = !isCollapsedCurrentIteration">
+              <div class="iteration-secondary-menu">
+                <h4><i class="fa fa-icon"
+                   [ngClass]="{'fa-angle-right': isCollapsedCurrentIteration,
+                               'fa-angle-down': !isCollapsedCurrentIteration}"></i>
+                Current Iteration</h4>
+              </div>
+            </div>
+            <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
+              <li class="active">
+                <div class="iteration-subheader">
+                  <div>
+                    <strong>Iteration 1</strong>
+                  </div>
+                  <div class="dropdown dropdown-kebab-pf" dropdown>
+                    <button class="btn btn-link dropdown-toggle"
+                            type="button"
+                            aria-haspopup="true"
+                            aria-expanded="true"
+                            dropdown-open>
+                      <span class="fa fa-ellipsis-v"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li><a>Edit</a></li>
+                      <li><a>Start</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="iteration-status">
+                  <div>
+                    <span>7 Dec 2016 - 14 Dec 2016</span>
+                  </div>
+                  <div>
+                    <strong>71 of 74</strong><span> completed</span>
+                  </div>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar"
+                      role="progressbar"
+                      [attr.aria-valuenow]="barchatValue"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      [ngStyle]="{'width': barchatValue + '%'}"
+                      tooltipPlacement="top"
+                      tooltip="{{barchatValue + '%'}}">
+                  </div>
+                  <div class="progress-bar progress-bar-remaining"
+                      role="progressbar"
+                      [attr.aria-valuenow]="100 - barchatValue"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      [ngStyle]="{'width': 100 - barchatValue + '%'}"
+                      tooltipPlacement="top"
+                      tooltip="{{(100 - barchatValue) + '%'}}">
+                  </div>
+                </div>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+              </li>
+            </ul>
+          </div>
+          <div class="iterations">
+            <div class="iteration-header pointer"
+                 (click)="isCollapsedFutureIteration = !isCollapsedFutureIteration">
+              <div class="iteration-secondary-menu">
+                <h4><i class="fa fa-icon"
+                   [ngClass]="{'fa-angle-right': isCollapsedFutureIteration,
+                               'fa-angle-down': !isCollapsedFutureIteration}"></i>
+                Future Iteration</h4>
+              </div>
+            </div>
+            <ul class="not-current-iteration"
+                [collapse]="isCollapsedFutureIteration">
+              <li class="iteration-subheader">
+                <div>
+                  <strong>Iteration 2</strong>
+                </div>
+                <div>
+                  <span class="badge">90</span>
+                  <div class="dropdown dropdown-kebab-pf dib" dropdown>
+                    <button class="btn btn-link dropdown-toggle"
+                            type="button"
+                            aria-haspopup="true"
+                            aria-expanded="true"
+                            dropdown-open>
+                      <span class="fa fa-ellipsis-v"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li><a>Edit</a></li>
+                      <li><a>Start</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class="iteration-subheader">
+                <div>
+                  <strong>Iteration 4</strong>
+                </div>
+                <div>
+                  <span class="badge">90</span>
+                  <div class="dropdown dropdown-kebab-pf dib" dropdown>
+                    <button class="btn btn-link dropdown-toggle"
+                            type="button"
+                            aria-haspopup="true"
+                            aria-expanded="true"
+                            dropdown-open>
+                      <span class="fa fa-ellipsis-v"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li><a>Edit</a></li>
+                      <li><a>Start</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="iterations">
+            <div class="iteration-header pointer"
+                 (click)="isCollapsedPastIteration = !isCollapsedPastIteration">
+              <div class="iteration-secondary-menu">
+                <h4><i class="fa fa-icon"
+                   [ngClass]="{'fa-angle-right': isCollapsedPastIteration,
+                               'fa-angle-down': !isCollapsedPastIteration}"></i>
+                Past Iteration</h4>
+              </div>
+            </div>
+            <ul class="not-current-iteration"
+                [collapse]="isCollapsedPastIteration">
+              <li class="iteration-subheader">
+                <div>
+                  <strong>iteration 3</strong>
+                </div>
+                <div>
+                  <span class="badge">10</span>
+                  <div class="dropdown dropdown-kebab-pf dib" dropdown>
+                    <button class="btn btn-link dropdown-toggle"
+                            type="button"
+                            aria-haspopup="true"
+                            aria-expanded="true"
+                            dropdown-open>
+                      <span class="fa fa-ellipsis-v"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li><a>Edit</a></li>
+                      <li><a>Start</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class="iteration-subheader">
+                <div>
+                  <strong>iteration 5</strong>
+                </div>
+                <div>
+                  <span class="badge">10</span>
+                  <div class="dropdown dropdown-kebab-pf dib" dropdown>
+                    <button class="btn btn-link dropdown-toggle"
+                            type="button"
+                            aria-haspopup="true"
+                            aria-expanded="true"
+                            dropdown-open>
+                      <span class="fa fa-ellipsis-v"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li><a>Edit</a></li>
+                      <li><a>Start</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div *ngIf="loggedIn" class="create-iteration-bar pointer">
+          <span><i class="pficon-add-circle-o fa-icon"></i>
+          <span class="create-iteration-label">Create Iteration</span></span>
+        </div>
     </div>
+    <!-- Iteration End-->
     <div class="container-body">
       <router-outlet></router-outlet>
     </div>

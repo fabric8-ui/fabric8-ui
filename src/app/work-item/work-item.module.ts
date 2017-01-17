@@ -2,6 +2,7 @@ import { AlmArrayFilter } from './../pipes/alm-array-filter.pipe';
 import { AlmFilterBoardList } from './../pipes/alm-board-filter.pipe';
 import { AlmIconModule } from './../shared-component/icon/almicon.module';
 import { AuthUserResolve, UsersResolve } from './users.resolver';
+import { CollapseModule } from 'ng2-bootstrap';
 import { CommonModule } from '@angular/common';
 import { CountPipe } from 'ng2bln-count-pipe';
 import { DialogModule } from './../shared-component/dialog/dialog.module';
@@ -22,6 +23,7 @@ import { WorkItemRoutingModule } from './work-item-routing.module';
 @NgModule({
   imports: [
     AlmIconModule,
+    CollapseModule,
     CommonModule,
     DialogModule,
     DndModule.forRoot(),
