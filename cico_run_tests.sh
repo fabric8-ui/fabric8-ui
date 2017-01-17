@@ -3,6 +3,8 @@
 # Show command before executing
 set -x
 
+set -e
+
 # Source environment variables of the jenkins slave
 # that might interest this worker.
 if [ -e "jenkins-env" ]; then
@@ -34,25 +36,12 @@ docker exec almighty-ui-builder npm install
 ## Exec unit tests
 docker exec almighty-ui-builder ./run_unit_tests.sh
 
-if [ $? -eq 0 ]; then
-  echo 'CICO: unit tests OK'
-else
-  echo 'CICO: unit tests FAIL'
-  exit 1
-fi
 
 ## Exec functional tests
 docker exec almighty-ui-builder ./run_functional_tests.sh
 
 ## All ok, build prod version
-if [ $? -eq 0 ]; then
-  echo 'CICO: functional tests OK'
-  docker exec almighty-ui-builder ./upload_to_codecov.sh
-
-  docker exec almighty-ui-builder npm run build:prod
-  docker exec -u root almighty-ui-builder cp -r /home/almighty/dist /
-else
-  echo 'CICO: functional tests FAIL'
-  exit 1
-fi
+docker exec almighty-ui-builder ./upload_to_codecov.sh
+docker exec almighty-ui-builder npm run build:prod
+docker exec -u root almighty-ui-builder cp -r /home/almighty/dist /
 
