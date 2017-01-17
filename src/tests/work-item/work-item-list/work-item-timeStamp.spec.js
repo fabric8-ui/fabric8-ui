@@ -70,6 +70,8 @@ describe('Work item list', function () {
     detailPage.clickWorkItemDetailCloseButton();
     page.workItemByURLId("id7");
     expect(detailPage.getCreatedtime()).not.toBe('a year ago');
+    page.workItemByURLId("id8");
+    expect(detailPage.getCreatedtime()).toBe('in 12 years');
    });
   
 });

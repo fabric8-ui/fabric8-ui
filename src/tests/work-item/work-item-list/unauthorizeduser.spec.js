@@ -75,4 +75,15 @@ describe('Work item list', function () {
     expect(page.workItemTitle(page.firstWorkItem)).toBeTruthy();
     expect(page.workItemDescription(page.firstWorkItem).isPresent()).toBeTruthy();
    });
+   it('Test add comments should not be visible - phone.', function () {
+    testSupport.setBrowserMode('phone');
+    page.workItemByIndex(1).click();   
+    expect(detailPage.commentDiv().isPresent()).toBeFalsy();
+   });
+   it('Test Link Item container Div should not be visible - phone.', function () {
+    testSupport.setBrowserMode('desktop');
+    page.workItemByIndex(1).click();   
+    expect(detailPage.linkItemTotalCount().isPresent()).toBeFalsy();
+    expect(detailPage.commentDiv().isPresent()).toBeFalsy();
+   });
 });

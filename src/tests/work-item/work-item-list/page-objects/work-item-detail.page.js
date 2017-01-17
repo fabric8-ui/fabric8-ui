@@ -414,6 +414,25 @@ class WorkItemDetailPage {
   getImageURL (){
     return element(by.id('WI_details_reporter_img')).getAttribute('src');
   }
+  /**Link-Item UI elements  */
+  linkItemDiv (){
+    return element(by.id('.wi-link-content'));
+  }
+  linkItemHeader (){
+    return element(by.css('.link-header'));
+  }
+  linkItemContainer (){
+    return element(by.id('wi-link'));
+  }
+  linkItemHeaderCaret (){
+    return element(by.css('.fa.fa-angle-up'));
+  }
+  linkItemDetailedDiv (){
+    return element(by.css('.link-list-wrap'));
+  }
+  linkItemTotalCount  (){
+    return element(by.id('wi-link-total'));
+  }
 }
 
 module.exports = WorkItemDetailPage;

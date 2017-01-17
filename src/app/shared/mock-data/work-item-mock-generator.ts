@@ -108,6 +108,9 @@ export class WorkItemMockGenerator {
     }else if (numberDate == 7){
       d.setFullYear(d.getFullYear() - 12);
       // this gives date which is a year ago from current date
+    }else if (numberDate == 8){
+      d.setFullYear(d.getFullYear() + 12);
+      // this gives date which is a 12 years after from current date
     }
     return d;
   }

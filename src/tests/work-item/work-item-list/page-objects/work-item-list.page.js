@@ -276,6 +276,9 @@ class WorkItemListPage {
   get filterDropdown () {
     return  element(by.id("wi_filter_dropdown"));
   }
+  filterDropdownId () {
+    return  element(by.id("wi_filter_dropdown"));
+  }
 
   clickFilterDropdown () {
     return this.filterDropdown.click();

@@ -527,4 +527,67 @@ it('Verify how many work item type exists in drop down - desktop', function() {
 
         });
   });
+    it('Verify that the title field must not be unique -phone ', function() {
+      var workItemTitle = page.workItemTitle(page.firstWorkItem);
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle(workItemTitle);
+      page.clickQuickAddSave();   
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
+      detailPage.clickWorkItemDetailCloseButton();
+      expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+    });
+    it('Verify that the description field can have its contents deleted -dektop ', function() { 
+      testSupport.setBrowserMode("desktop");
+      var workItemTitle = "Title Text 0";
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle(workItemTitle);
+      page.typeQuickAddWorkItemDesc("describe");
+      page.clickQuickAddSave(); 
+      expect(page.workItemDescription(page.firstWorkItem)).toBe("");
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
+      detailPage.clickWorkItemDetailDescription();
+      detailPage.setWorkItemDetailDescription(" ",false);
+      detailPage.clickWorkItemDescriptionSaveIcon();
+      page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
+      expect(page.workItemDescription(page.firstWorkItem)).toBe("");
+    });
+    it('Check before while adding description the field should not display undefine/null', function () {
+        testSupport.setBrowserMode("desktop");
+        var workItemTitle = "The test workitem title";
+        page.clickDetailedDialogButton();
+        var detailPage = page.clickDetailedIcon("userstory");
+        detailPage.setWorkItemDetailTitle (workItemTitle, false);
+        detailPage.clickWorkItemTitleSaveIcon();
+        expect(detailPage.workItemDetailDescriptionById().getText()).not.toBe("undefined");
+     });
+     it('Test description/title can be in other languages also acceptable-dektop ', function() { 
+      testSupport.setBrowserMode("desktop");
+      var workItemTitle = "थिस इस tittle";
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle(workItemTitle);
+      page.typeQuickAddWorkItemDesc("describe");
+      page.clickQuickAddSave(); 
+      expect(page.workItemDescription(page.firstWorkItem)).toBe("");
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
+      detailPage.clickWorkItemDetailDescription();
+      detailPage.setWorkItemDetailDescription(" ",false);
+      detailPage.clickWorkItemDescriptionSaveIcon();
+      page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
+      expect(page.workItemDescription(page.firstWorkItem)).toBe("");
+    });
+    it('Verify the HTML tags should be treated as text while writing description/title.-dektop ', function() { 
+      testSupport.setBrowserMode("desktop");
+      var workItemTitle = "<title>Yes this is a title</title>";
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle(workItemTitle);
+      page.typeQuickAddWorkItemDesc("describe");
+      page.clickQuickAddSave(); 
+      expect(page.workItemDescription(page.firstWorkItem)).toBe("");
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
+      detailPage.clickWorkItemDetailDescription();
+      detailPage.setWorkItemDetailDescription(" ",false);
+      detailPage.clickWorkItemDescriptionSaveIcon();
+      page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
+      expect(page.workItemDescription(page.firstWorkItem)).toBe("");
+    });
 });

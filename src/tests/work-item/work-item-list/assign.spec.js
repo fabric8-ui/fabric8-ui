@@ -168,4 +168,17 @@ var waitTime = 30000;
       detailPage.clickWorkItemDetailCloseButton();
      });
   }); 
+  it('Verify that workitems cannot be assigned to non-existent users -phone ', function() {
+    var workItemTitle = "The test workitem title";
+      var workItemUpdatedTitle = "The test workitem title - UPDATED";
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle(workItemTitle);
+      page.clickQuickAddSave();
+      page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+      detailPage.workItemDetailAssigneeIcon().click();
+      detailPage.setWorkItemDetailAssigneeSearch("Some User 2",false);
+      expect(detailPage.assignedUserDropDownList("Some User 2").isPresent()).toBe(false);
+     });
+  }); 
 });
