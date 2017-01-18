@@ -118,9 +118,13 @@ class WorkItemListPage {
  }
 
   /* Access the Kebab element relative to its parent workitem */
-  clickWorkItemKebabDeleteButton (parentElement) {
+  workItemKebabDeleteButton (parentElement) {
     browser.wait(until.presenceOf(parentElement.element(by.css('.workItemList_Delete'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
-    return parentElement.element(by.css('.workItemList_Delete')).click();
+    return parentElement.element(by.css('.workItemList_Delete'));
+  }
+
+  clickWorkItemKebabDeleteButton (parentElement) {
+    return this.workItemKebabDeleteButton (parentElement).click();
   }
 
   get workItemPopUpDeleteConfirmButton () {
@@ -405,6 +409,24 @@ class WorkItemListPage {
   /* Workitem filter pulldown */
   workItemFilterPulldown () {
     return workItemElement.element(by.css(".dropdown.filter-dropdown")); 
+  }
+
+  /* Access the Kebab 'move to top' element relative to its parent workitem */
+  workItemKebabMoveToTopButton (parentElement) {
+    browser.wait(until.presenceOf(parentElement.element(by.css('.workItemList_MoveTop'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
+    return parentElement.element(by.css('.workItemList_MoveTop'));
+  }
+  clickWorkItemKebabMoveToTopButton (parentElement) {
+    return this.workItemKebabMoveToTopButton (parentElement).click();
+  }
+
+  /* Access the Kebab 'move to bottom' element relative to its parent workitem */
+  workItemKebabMoveToBottomButton (parentElement) {
+    browser.wait(until.presenceOf(parentElement.element(by.css('.workItemList_MoveBottom'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
+    return parentElement.element(by.css('.workItemList_MoveBottom'));
+  }
+  clickWorkItemKebabMoveToBottomButton (parentElement) {
+    return this.workItemKebabMoveToBottomButton (parentElement).click();
   }
 
 

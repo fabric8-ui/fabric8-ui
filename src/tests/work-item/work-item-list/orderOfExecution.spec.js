@@ -33,7 +33,8 @@ describe('Drag and drop Test', function () {
   var waitTime = 30000;
 
 /* For Chrome and Firefox */
-defaultWorkitems = [ 'id0\nTitle Text 0',
+defaultWorkitems = [ 
+  'id0\nTitle Text 0',
   'id1\nTitle Text 1',
   'id2\nTitle Text 2',
   'id3\nTitle Text 3',
@@ -56,7 +57,8 @@ defaultWorkitems = [ 'id0\nTitle Text 0',
   'id20\nTitle Text 20' ];
 
 /* For PhantomJS */
-defaultWorkitems24 = [ 'id0\nTitle Text 0',
+defaultWorkitemsPhantomJS = [ 
+  'id0\nTitle Text 0',
   'id1\nTitle Text 1',
   'id2\nTitle Text 2',
   'id3\nTitle Text 3',
@@ -66,23 +68,10 @@ defaultWorkitems24 = [ 'id0\nTitle Text 0',
   'id7\nTitle Text 7',
   'id8\nTitle Text 8',
   'id9\nTitle Text 9',
-  'id10\nTitle Text 10',
-  'id11\nTitle Text 11',
-  'id12\nTitle Text 12',
-  'id13\nTitle Text 13',
-  'id14\nTitle Text 14',
-  'id15\nTitle Text 15',
-  'id16\nTitle Text 16',
-  'id17\nTitle Text 17',
-  'id18\nTitle Text 18',
-  'id19\nTitle Text 19',
-  'id20\nTitle Text 20',
-  'id21\nTitle Text 21',
-  'id22\nTitle Text 22',
-  'id23\nTitle Text 23' ]
+  'id10\nTitle Text 10' ];
 
   beforeEach(function () {
-    testSupport.setBrowserMode('desktop');
+    testSupport.setBrowserMode('phone');
     page = new WorkItemListPage(true);   
   });
 
@@ -91,13 +80,13 @@ defaultWorkitems24 = [ 'id0\nTitle Text 0',
     page.allWorkItems.count().then(function (text) {
       var totalCount = text
 
-      /* First, verify that the workitems are displayed in the expected order */    
+     /* First, verify that the workitems are displayed in the expected order */    
       page.allWorkItems.getText().then(function (text) {
-        if (totalCount = "21") {
-          //expect(compareWorkitemArray (text, defaultWorkitems)).toBe(true);
+        if (totalCount = "11") {
+          expect(compareWorkitemArray (text, defaultWorkitemsPhantomJS)).toBe(true);
         }
         else {
-          //expect(compareWorkitemArray (text, defaultWorkitems24)).toBe(true);
+          expect(compareWorkitemArray (text, defaultWorkitems)).toBe(true);
         }
       });
 
@@ -116,6 +105,7 @@ defaultWorkitems24 = [ 'id0\nTitle Text 0',
 //               page.clickWorkItemMovePulldown().then(function() {
 //                 browser.wait(until.elementToBeClickable(page.workItemMovePulldownDown(page.workItemMovePulldown)), waitTime);
 //                 page.clickWorkItemMovePulldownDown(page.workItemMovePulldown);
+                 // commented out due to: https://github.com/fabric8io/fabric8-planner/issues/762
 //               });
              }
 
@@ -125,6 +115,7 @@ defaultWorkitems24 = [ 'id0\nTitle Text 0',
 //               page.clickWorkItemMovePulldown().then(function() {
 //                 browser.wait(until.elementToBeClickable(page.workItemMovePulldownUp(page.workItemMovePulldown)), waitTime);
 //                 page.clickWorkItemMovePulldownUp(page.workItemMovePulldown);
+                 // commented out due to: https://github.com/fabric8io/fabric8-planner/issues/762
 //               });
              }
            });
@@ -136,18 +127,18 @@ defaultWorkitems24 = [ 'id0\nTitle Text 0',
 
   }); /* 'it' test */
 
-  it('should top workitem to the bottom - phone.', function() {
+  it('should top workitem to the bottom and back up to the top - phone.', function() {
 
     page.allWorkItems.count().then(function (text) {
       var totalCount = text
 
       /* First, verify that the workitems are displayed in the expected order */    
       page.allWorkItems.getText().then(function (text) {
-        if (totalCount = "21") {
-          //expect(compareWorkitemArray (text, defaultWorkitems)).toBe(true);
+        if (totalCount = "11") {
+          expect(compareWorkitemArray (text, defaultWorkitemsPhantomJS)).toBe(true);
         }
         else {
-          //expect(compareWorkitemArray (text, defaultWorkitems24)).toBe(true);
+          expect(compareWorkitemArray (text, defaultWorkitems)).toBe(true);
         }
       });
 
@@ -181,9 +172,58 @@ defaultWorkitems24 = [ 'id0\nTitle Text 0',
 
     });
 
-  });
+  }); /* "it" test */
 
-});
+  it('should top workitem to the bottom and back to the top via the workitem kebab - phone.', function() {
+
+    page.allWorkItems.count().then(function (text) {
+      var totalCount = text
+
+      /* Verify that the first work item is in the correct position */
+      expect(page.workItemTitle(page.workItemByIndex(0))).toBe("Title Text 0");
+      compareWorkitems (page, 0, "Title Text 0");
+
+      /* Move the workitem to the bottom */
+      page.clickWorkItemKebabButton (page.workItemByTitle("Title Text 0")).then(function() {
+        page.clickWorkItemKebabMoveToBottomButton(page.workItemByTitle("Title Text 0"));
+        compareWorkitems (page, totalCount - 1, "Title Text 0");
+      });
+      /* And then move it back to the top */
+      page.clickWorkItemKebabButton (page.workItemByTitle("Title Text 0")).then(function() {
+        page.clickWorkItemKebabMoveToTopButton(page.workItemByTitle("Title Text 0"));
+        compareWorkitems (page, 0, "Title Text 0");
+      });
+
+    });
+
+  }); /* "it" test */
+
+  it('should top workitem to the bottom and back to the top via the workitem kebab - desktop.', function() {
+    testSupport.setBrowserMode('desktop');
+
+    page.allWorkItems.count().then(function (text) {
+      var totalCount = text
+
+      /* Verify that the first work item is in the correct position */
+      expect(page.workItemTitle(page.workItemByIndex(0))).toBe("Title Text 0");
+      compareWorkitems (page, 0, "Title Text 0");
+
+      /* Move the workitem to the bottom */
+      page.clickWorkItemKebabButton (page.workItemByTitle("Title Text 0")).then(function() {
+        page.clickWorkItemKebabMoveToBottomButton(page.workItemByTitle("Title Text 0"));
+        compareWorkitems (page, totalCount - 1, "Title Text 0");
+      });
+      /* And then move it back to the top */
+      page.clickWorkItemKebabButton (page.workItemByTitle("Title Text 0")).then(function() {
+        page.clickWorkItemKebabMoveToTopButton(page.workItemByTitle("Title Text 0"));
+        compareWorkitems (page, 0, "Title Text 0");
+      });
+
+    });
+
+  }); /* "it" test */
+
+}); 
 
 /* Compare an expected and actual work item - the offset values enable us to track
    workitems after they have been moved. */
