@@ -18,9 +18,6 @@ const routes: Routes = [
     },
     children: [
       {
-        path: ''
-      },
-      {
         path: 'list',
         component: WorkItemListComponent,
         resolve: {
@@ -30,16 +27,13 @@ const routes: Routes = [
         },
         children: [
           {
-            path: ''
-          },
-          {
             path: 'detail/:id',
             component: WorkItemDetailComponent,
             resolve: {
               allIterations: IterationsResolve,
               allusers: UsersResolve,
               authuser: AuthUserResolve
-            },
+            }
           }
         ]
       },
@@ -54,21 +48,17 @@ const routes: Routes = [
         },
         children: [
           {
-            path: ''
-          },
-          {
             path: 'detail/:id',
             component: WorkItemDetailComponent,
             resolve: {
               allIterations: IterationsResolve,
               allusers: UsersResolve,
               authuser: AuthUserResolve
-            },
+            }
           }
         ]
       }
     ]
-
   }
 ];
 
