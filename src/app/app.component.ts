@@ -10,6 +10,9 @@ import { AppState } from './app.service';
  * Top Level Component
  */
 @Component({
+  host:{
+    'class':'app app-component flex-container in-column-direction flex-grow-1'
+  },
   selector: 'f8-app',
   encapsulation: ViewEncapsulation.None,
   styleUrls: [ './app.component.scss' ],

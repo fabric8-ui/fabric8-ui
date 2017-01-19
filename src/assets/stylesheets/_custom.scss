@@ -46,7 +46,7 @@ body {
 //custom variables
 $width100: 100%;
 $em-base-font-size: 12;
-$rem-base-font-size: 10; 
+$rem-base-font-size: 10;
 
 // positions
 $textLeft: left;
@@ -73,17 +73,17 @@ $textCenter: center;
     text-overflow: ellipsis;;
 }
 @mixin transform($transform){
-	-webkit-transform: $transform;  
+	-webkit-transform: $transform;
 	-moz-transform:    $transform;
-	-ms-transform:     $transform; 
-	-o-transform:      $transform; 
+	-ms-transform:     $transform;
+	-o-transform:      $transform;
 	transform:         $transform;
 }
 @mixin transition($transition) {
-	-webkit-transition: $transition;  
+	-webkit-transition: $transition;
 	-moz-transition:    $transition;
-	-ms-transition:     $transition; 
-	-o-transition:      $transition; 
+	-ms-transition:     $transition;
+	-o-transition:      $transition;
 	transition:         $transition;
 }
 @mixin borderRadius($radius) {
@@ -121,3 +121,5 @@ $textCenter: center;
   .containerPadd{ padding-top: em(11); }
   .containerPadd-nologin{ padding-bottom: 0; }
 }
+
+@import "layout";

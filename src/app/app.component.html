@@ -1,7 +1,11 @@
-<alm-app-header></alm-app-header>
-
-<main class="app">
-  <router-outlet></router-outlet>
+<header class="padding-bottom-10" >
+  <alm-app-header></alm-app-header>
+</header>
+<main class="view-container flex-container in-column-direction">
+  <div class="view overflow-auto">
+    <router-outlet></router-outlet>
+  </div>
 </main>
-
-<alm-app-footer class="width100 pull-left"></alm-app-footer>
+<footer>
+  <alm-app-footer ></alm-app-footer>
+</footer>

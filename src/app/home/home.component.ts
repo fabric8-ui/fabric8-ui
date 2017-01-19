@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
 
 @Component({
+  host:{
+      'class':"app-component flex-container in-column-direction flex-grow-1"
+  },
   selector: 'alm-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']

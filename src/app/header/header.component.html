@@ -1,4 +1,5 @@
 <nav class="navbar navbar-default navbar-pf" role="navigation" *ngIf="loggedIn">
+    <div class="navbar-header"></div>
     <div class="collapse navbar-collapse navbar-collapse-1">
         <ul class="nav navbar-nav navbar-primary persistent-secondary">
             <!-- This part of the menu is dynamic based on context -->
@@ -27,13 +28,13 @@
                     </li>
                 </ul>
             </li>
-            <li *ngFor="let m of context.current.type.menus" [class.active]="m.active">
+            <li *ngFor="let m of context.current.type.menus" [class.active]="m.active" [class.with-no-children]="(m.menus||[]).length===0" >
                 <a [routerLink]="[urlFeatureToggle + m.fullPath]">
-                    <span *ngIf="m.icon" class="{{m.icon}}"></span>
+                    <span *ngIf="m.icon"  class="{{m.icon}}"></span>
                     <span *ngIf="m.name">{{m.name}}</span>
                 </a>
                 <ul class="nav navbar-nav navbar-persistent" *ngIf="m.menus">
-                    <li *ngFor="let n of m.menus" [class.active]="n.active">
+                    <li *ngFor="let n of m.menus"  [class.active]="n.active">
                         <a [routerLink]="[urlFeatureToggle + n.fullPath]">{{n.name}}</a>
                     </li>
                 </ul>
