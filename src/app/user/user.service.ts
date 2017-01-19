@@ -26,7 +26,7 @@ export class UserService {
               private auth: AuthenticationService,
               private broadcaster: Broadcaster) {
 
-    if (Globals.inTestMode) {
+    if (process.env.ENV === 'inmemory') {
       logger.log('UserService running in ' + process.env.ENV + ' mode.');
       this.http = new MockHttp(logger);
     } else {

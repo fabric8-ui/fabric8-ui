@@ -58,7 +58,7 @@ export class WorkItemService {
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
     }
-    if (Globals.inTestMode) {
+    if (process.env.ENV === 'inmemory') {
       logger.log('WorkItemService running in ' + process.env.ENV + ' mode.');
       this.http = new MockHttp(logger);
     } else {
@@ -476,6 +476,7 @@ export class WorkItemService {
         .toPromise()
         .then((response) => {
           this.workItemTypes = response.json() as WorkItemType[];
+          console.log(this.workItemTypes);
           return this.workItemTypes;
         })
       .catch ((e) => {
