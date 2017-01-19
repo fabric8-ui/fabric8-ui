@@ -18,7 +18,6 @@
     "clean:install": "npm set progress=false && npm install",
     "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist compiled dll",
     "lint": "npm run tslint \"src/**/*.ts\"",
-    "postinstall": "npm run webdriver:update",
     "postversion": "git push && git push --tags",
     "preclean:install": "npm run clean",
     "preversion": "npm test",
@@ -52,7 +51,7 @@
     "ie-shim": "^0.1.0",
     "reflect-metadata": "^0.1.9",
     "rxjs": "~5.0.2",
-    "zone.js": "~0.7.5",
+    "zone.js": "0.7.6",
 
     "@types/lodash": "4.14.41",
     "bootstrap": "^3.3.7",

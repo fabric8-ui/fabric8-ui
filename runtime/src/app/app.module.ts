@@ -22,6 +22,7 @@ import { Logger } from 'fabric8-planner';
 import { LoginService } from 'fabric8-planner';
 import { WorkItemService } from 'fabric8-planner';
 import { MockDataService } from 'fabric8-planner';
+import { Broadcaster } from 'fabric8-planner';
 
 // fabric8 components - components
 import { ChatModule } from 'fabric8-planner';
@@ -47,7 +48,7 @@ import { WorkItemModule } from 'fabric8-planner';
     TabsModule,
     TooltipModule,
     ChatModule,
-    //WorkItemModule
+    WorkItemModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     Logger,
@@ -55,7 +56,8 @@ import { WorkItemModule } from 'fabric8-planner';
     LoginService,
     UserService,
     WorkItemService,
-    MockDataService
+    MockDataService,
+    Broadcaster
   ]
 })
 export class AppModule {
