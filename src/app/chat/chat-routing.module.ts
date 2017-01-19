@@ -6,12 +6,14 @@ import { ChatComponent } from './chat.component';
 const routes: Routes = [
   {
     path: 'chat',
-    component: ChatComponent,
-    children: [
+    component: ChatComponent
+    /* Having children here breaks the import into runtime. Don't know why. Though, an empty child def like this does not makes sense
+    ,children: [
       {
         path: ''
       }
     ]
+    */
   },
 
 ];
