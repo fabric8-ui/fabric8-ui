@@ -18,10 +18,13 @@ const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 /**
  * Webpack Constants
  */
-const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
+const ENV = process.env.ENV = process.env.NODE_ENV;
+// if env is 'inmemory', the inmemory debug resource is used
+const API_URL = process.env.API_URL || (ENV==='inmemory'?'app/':'http://localhost:8080/api/');
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 3000;
 const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
+  API_URL: API_URL,
   host: HOST,
   port: PORT,
   ENV: ENV
@@ -133,7 +136,8 @@ module.exports = function (options) {
         'ENV': JSON.stringify(METADATA.ENV),
         'process.env': {
           'ENV': JSON.stringify(METADATA.ENV),
-          'NODE_ENV': JSON.stringify(METADATA.ENV)
+          'NODE_ENV': JSON.stringify(METADATA.ENV),
+          'API_URL' : JSON.stringify(METADATA.API_URL),
         }
       }),
 

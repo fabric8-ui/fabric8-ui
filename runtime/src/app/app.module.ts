@@ -1,3 +1,5 @@
+import Globals = require('globals');
+
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -27,6 +29,10 @@ import { Broadcaster } from 'fabric8-planner';
 // fabric8 components - components
 import { ChatModule } from 'fabric8-planner';
 import { WorkItemModule } from 'fabric8-planner';
+
+if (process.env.ENV == 'inmemory') {
+  Globals.inTestMode = true;
+}
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
