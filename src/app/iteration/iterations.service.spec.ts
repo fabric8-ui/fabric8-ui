@@ -105,7 +105,7 @@ describe ('Iteration service - ', () => {
         expect(data).toEqual([]);
       });
 
-    // Check if data from response is assigned to the public variable
+    // Check if data from response is assigned to the private variable
     apiService.getIterations(url1)
       .then (data => {
         expect(apiService.getIterationList()).toEqual(checkResp);
@@ -117,7 +117,104 @@ describe ('Iteration service - ', () => {
       });
   }));
 
-  it('Should check valid URL for GET iterations', () => {
+  // Test if the API returns error
+  it('Get iteration with error', async(() => {
+    let url1 = 'http://localhost:8080/api/spaces/d7d98b45-415a-4cfc-add2-ec7b7aee7dd5/iterations';
+
+    mockService.connections.subscribe((connection: any) => {
+      connection.mockRespond(new Response(
+        new ResponseOptions({
+          body: {},
+          status: 404
+        })
+      ));
+    });
+
+    // Error response
+    apiService.getIterations(url1)
+      .catch (data => {
+        expect(data).toEqual([]);
+      })
+      .then (() => {
+        expect(apiService.getIterationList().length).toEqual(0);
+      });
+  }));
+
+  // Test if everything is okay
+  it('Create iteration', async(() => {
+    let requestParams = resp[0];
+    let responseData = cloneDeep(requestParams);
+    let response = {data: responseData};
+    let url1 = 'http://localhost:8080/api/spaces/d7d98b45-415a-4cfc-add2-ec7b7aee7dd5/iterations';
+
+    mockService.connections.subscribe((connection: any) => {
+      connection.mockRespond(new Response(
+        new ResponseOptions({
+          body: JSON.stringify(response),
+          status: 200
+        })
+      ));
+    });
+
+    apiService.createIteration(url1, requestParams)
+      .then (data => {
+        expect(data).toEqual(responseData);
+      })
+      .then (() => {
+        expect(apiService.getIterationList().length).toEqual(1);
+      });
+  }));
+
+  // Test if the API url is invalid
+  it('Create iteration with invalid URL', async(() => {
+    let requestParams = resp[0];
+    let responseData = cloneDeep(requestParams);
+    let response = {data: responseData};
+
+    mockService.connections.subscribe((connection: any) => {
+      connection.mockRespond(new Response(
+        new ResponseOptions({
+          body: JSON.stringify(response),
+          status: 200
+        })
+      ));
+    });
+
+    apiService.createIteration('', requestParams)
+      .catch (data => {
+        expect(data).toEqual({});
+      })
+      .then (() => {
+        expect(apiService.getIterationList().length).toEqual(0);
+      });
+  }));
+
+
+  // Test if the API returns error
+  it('Create iteration with error', async(() => {
+    let requestParams = resp[0];
+    let url1 = 'http://localhost:8080/api/spaces/d7d98b45-415a-4cfc-add2-ec7b7aee7dd5/iterations';
+
+    mockService.connections.subscribe((connection: any) => {
+      connection.mockRespond(new Response(
+        new ResponseOptions({
+          body: {},
+          status: 404
+        })
+      ));
+    });
+
+    // Error response
+    apiService.createIteration(url1, requestParams)
+      .catch (data => {
+        expect(data).toEqual({});
+      })
+      .then (() => {
+        expect(apiService.getIterationList().length).toEqual(0);
+      });
+  }));
+
+  it('Should check valid URL for iterations', () => {
     let url1 = 'http://localhost:8080/api/spaces/d7d98b45-415a-4cfc-add2-ec7b7aee7dd5/iterations';
     expect(apiService.checkValidIterationUrl(url1)).toEqual(true);
     let url2 = 'http://localhost:8080/api/spaces/d7d98b45-415a-4cfc-add2-ec7b7aee7dd5/invalid';

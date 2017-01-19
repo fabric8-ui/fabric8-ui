@@ -24,18 +24,58 @@ export class IterationService {
       return this.http
         .get(iterationUrl, { headers: this.headers })
         .toPromise()
-        .then (response => response.json().data as IterationModel[])
-        .catch ((error: any) => {
-          console.log('Fetch iteration API returned some error - ', error);
-          return Promise.reject<IterationModel[]>([] as IterationModel[]);
+        .then (response => {
+          if (response.status != 200) {
+            throw new Error('API error occured');
+          }
+          return response.json().data as IterationModel[];
         })
         .then((data) => {
           this.iterations = data;
-          return data;
+          return this.iterations;
+        })
+        .catch ((error: Error | any) => {
+          console.log('Fetch iteration API returned some error - ', error.message);
+          return Promise.reject<IterationModel[]>([] as IterationModel[]);
         })
     } else {
       console.log('URL not matched');
       return Promise.reject<IterationModel[]>([] as IterationModel[]);
+    }
+  }
+
+  /**
+   * Create new iteration
+   * @param iterationUrl - POST url
+   * @param iteration - data to create a new iteration
+   * @return new item
+   */
+  createIteration(
+    iterationUrl: string = '',
+    iteration: IterationModel
+  ): Promise<IterationModel> {
+    if (this.checkValidIterationUrl(iterationUrl)) {
+      return this.http
+        .post(iterationUrl, { headers: this.headers })
+        .toPromise()
+        .then (response => {
+          if (response.status != 200) {
+            throw new Error('API error occured');
+          }
+          return response.json().data as IterationModel
+        })
+        .then (newData => {
+          // Add the newly added iteration on the top of the list
+          this.iterations.splice(0, 0, newData);
+          return newData;
+        })
+        .catch ((error: Error | any) => {
+          console.log('Post iteration API returned some error - ', error.message);
+          return Promise.reject<IterationModel>({} as IterationModel);
+        })
+    } else {
+      console.log('URL not matched');
+      return Promise.reject<IterationModel>( {} as IterationModel );
     }
   }
 
