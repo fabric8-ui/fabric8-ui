@@ -15,8 +15,7 @@ import {
 })
 export class HomeComponent implements OnInit {
   // TypeScript public modifiers
-  constructor(
-  ) {
+  constructor() {
   }
 
   public ngOnInit() {

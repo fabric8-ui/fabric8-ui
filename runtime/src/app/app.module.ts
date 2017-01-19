@@ -17,14 +17,17 @@ import { TabsModule } from 'ng2-bootstrap/components/tabs';
 import { ModalModule } from 'ng2-modal';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 
+// shared components
+import { Settings } from 'fabric8-shared-services';
+
 // fabric8 components - services
 import { AuthenticationService } from 'fabric8-planner';
 import { UserService } from 'fabric8-planner';
-import { Logger } from 'fabric8-planner';
 import { LoginService } from 'fabric8-planner';
 import { WorkItemService } from 'fabric8-planner';
 import { MockDataService } from 'fabric8-planner';
 import { Broadcaster } from 'fabric8-planner';
+import { Logger } from 'fabric8-planner';
 
 // fabric8 components - components
 import { ChatModule } from 'fabric8-planner';
@@ -63,6 +66,7 @@ if (process.env.ENV == 'inmemory') {
     UserService,
     WorkItemService,
     MockDataService,
+    Settings,
     Broadcaster
   ]
 })
@@ -70,9 +74,11 @@ export class AppModule {
 
   constructor(
     public appRef: ApplicationRef,
-    public mockDataService: MockDataService
+    public mockDataService: MockDataService,
+    public settingsService: Settings
   ) {
     console.log(mockDataService);
+    console.log(settingsService);
   }
 
 }
