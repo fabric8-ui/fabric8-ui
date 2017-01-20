@@ -108,12 +108,12 @@ describe ('Iteration service - ', () => {
     // Check if data from response is assigned to the private variable
     apiService.getIterations(url1)
       .then (data => {
-        expect(apiService.getIterationList()).toEqual(checkResp);
+        expect(apiService.iterations).toEqual(checkResp);
        });
 
     apiService.getIterations()
       .catch ((data) => {
-        expect(apiService.getIterationList()).toEqual([]);
+        expect(apiService.iterations).toEqual([]);
       });
   }));
 
@@ -136,7 +136,7 @@ describe ('Iteration service - ', () => {
         expect(data).toEqual([]);
       })
       .then (() => {
-        expect(apiService.getIterationList().length).toEqual(0);
+        expect(apiService.iterations.length).toEqual(0);
       });
   }));
 
@@ -161,7 +161,7 @@ describe ('Iteration service - ', () => {
         expect(data).toEqual(responseData);
       })
       .then (() => {
-        expect(apiService.getIterationList().length).toEqual(1);
+        expect(apiService.iterations.length).toEqual(1);
       });
   }));
 
@@ -185,7 +185,7 @@ describe ('Iteration service - ', () => {
         expect(data).toEqual({});
       })
       .then (() => {
-        expect(apiService.getIterationList().length).toEqual(0);
+        expect(apiService.iterations.length).toEqual(0);
       });
   }));
 
@@ -210,7 +210,7 @@ describe ('Iteration service - ', () => {
         expect(data).toEqual({});
       })
       .then (() => {
-        expect(apiService.getIterationList().length).toEqual(0);
+        expect(apiService.iterations.length).toEqual(0);
       });
   }));
 
@@ -222,5 +222,59 @@ describe ('Iteration service - ', () => {
     let url3 = 'http://localhost:8080/api/spaces/415a-4cfc-add2-ec7b7aee7dd5/invalid';
     expect(apiService.checkValidIterationUrl(url3)).toEqual(false);
   });
+
+  // Patch service test
+  it ('Update iteration', async(() => {
+    // Assign the existing iteration value
+    apiService.iterations = cloneDeep(resp);
+
+    // Set the request params with updated name
+    let requestParams = cloneDeep(resp[0]);
+    requestParams.attributes.name = 'New Name';
+
+    // Prepare the mock service and response
+    mockService.connections.subscribe((connection: any) => {
+      connection.mockRespond(new Response(
+        new ResponseOptions({
+          body: {data: requestParams},
+          status: 200
+        })
+      ));
+    });
+
+    apiService.updateIteration(requestParams)
+      .then (data => {
+        console.log(apiService.iterations);
+        expect(apiService.iterations[0].attributes.name).toEqual('New Name');
+      });
+  }));
+
+  // Patch service test with API error
+  it ('Update iteration with API error', async(() => {
+    // Assign the existing iteration value
+    apiService.iterations = cloneDeep(resp);
+
+    // Set the request params with updated name
+    let requestParams = cloneDeep(resp[0]);
+    requestParams.attributes.name = 'New Name';
+
+    // Prepare the mock service and response
+    mockService.connections.subscribe((connection: any) => {
+      connection.mockRespond(new Response(
+        new ResponseOptions({
+          body: {},
+          status: 404
+        })
+      ));
+    });
+
+    apiService.updateIteration(requestParams)
+      .catch (data => {
+        expect(data).toEqual({});
+      })
+      .then (() => {
+        expect(apiService.iterations[0].attributes.name).toEqual('Sprint #24');
+      });
+  }));
 
 });

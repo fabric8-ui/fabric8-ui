@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { Http, Headers } from '@angular/http';
 import { AuthenticationService } from './../auth/authentication.service';
 import { IterationModel } from './../models/iteration.model';
@@ -5,7 +6,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class IterationService {
-  private iterations: IterationModel[] = [];
+  public iterations: IterationModel[] = [];
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http, private auth: AuthenticationService) {
@@ -25,7 +26,7 @@ export class IterationService {
         .get(iterationUrl, { headers: this.headers })
         .toPromise()
         .then (response => {
-          if (response.status != 200) {
+          if (/^[5, 4][0-9]/.test(response.status.toString())) {
             throw new Error('API error occured');
           }
           return response.json().data as IterationModel[];
@@ -59,10 +60,10 @@ export class IterationService {
         .post(iterationUrl, { headers: this.headers })
         .toPromise()
         .then (response => {
-          if (response.status != 200) {
+          if (/^[5, 4][0-9]/.test(response.status.toString())) {
             throw new Error('API error occured');
           }
-          return response.json().data as IterationModel
+          return response.json().data as IterationModel;
         })
         .then (newData => {
           // Add the newly added iteration on the top of the list
@@ -80,10 +81,35 @@ export class IterationService {
   }
 
   /**
-   * Get locally saved iterations' reference
+   * Update an existing iteration
+   * @param iteration - Updated iteration
+   * @return updated iteration's reference from the list
    */
-  getIterationList() {
-    return this.iterations;
+  updateIteration(iteration: IterationModel): Promise<IterationModel> {
+    return this.http
+      .patch(iteration.links.self, { headers: this.headers })
+      .toPromise()
+      .then (response => {
+        if (/^[5, 4][0-9]/.test(response.status.toString())) {
+          throw new Error('API error occured');
+        }
+        return response.json().data as IterationModel;
+      })
+      .then (updatedData => {
+        // Update existing iteration data
+        let index = this.iterations.findIndex(item => item.id === updatedData.id);
+        if (index > -1) {
+          this.iterations[index] = cloneDeep(updatedData);
+          return this.iterations[index];
+        } else {
+          this.iterations.splice(0, 0, updatedData);
+          return this.iterations[0];
+        }
+      })
+      .catch ((error: Error | any) => {
+        console.log('Patch iteration API returned some error - ', error.message);
+        return Promise.reject<IterationModel>({} as IterationModel);
+      })
   }
 
   /**
