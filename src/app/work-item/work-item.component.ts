@@ -34,10 +34,6 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
   workItemDetail: WorkItem;
   workItemTypes: WorkItemType[];
   showTypesOptions: Boolean = false;
-  isCollapsedCurrentIteration: Boolean = false;
-  isCollapsedFutureIteration: Boolean = true;
-  isCollapsedPastIteration: Boolean = true;
-  barchatValue: number = 70;
 
   constructor(
     private auth: AuthenticationService,

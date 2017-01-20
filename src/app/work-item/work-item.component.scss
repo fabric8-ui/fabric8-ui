@@ -128,87 +128,14 @@
       height: 100%;
       flex: 2;
       min-width: em(360);
-      display: flex;
-      flex-direction: column;
-      flex-flow: column nowrap;
       background-color: $color-pf-black-200;
       border-right: 1px solid $color-pf-black-300;
-      //Iteration Style Start
-      .iteration-secondary-menu {
-        color: $color-pf-dark;
-        font-size: rem(14);
+      .fab-planner-iteration {
+        height: 100%;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        > h4 {
-          margin: 0;
-          font-size: rem(16);
-        }
+        -ms-flex-flow: column nowrap;
+        flex-flow: column nowrap;
       }
-      .fa-icon {
-        width: em(12);
-      }
-      .iterations-container {
-        flex: auto;
-        overflow: auto;
-      }
-      .badge-wrapper {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-      .iteration-panel-header {
-        display: flex;
-        justify-content: space-between;
-        padding: em(20);
-        border-bottom: 1px solid $color-pf-black-300;
-      }
-      .iteration-header {
-        padding: em(10) em(20);
-      }
-      .iteration-status {
-        display: flex;
-        justify-content: space-between;
-        padding: em(20) 0 em(15) 0;
-      }
-      .iteration-subheader {
-        display: flex;
-        justify-content: space-between;
-      }
-      .iteration-expanded-div {
-        padding-left: 0;
-        margin-bottom: 0;
-        > li {
-          background-color: $color-pf-white;
-          list-style: none;
-          padding: em(15);
-          &.active {
-            border-left: 3px solid $navbar-pf-border-color;
-          }
-        }
-      }
-      .not-current-iteration{
-        margin-bottom: 0;
-        padding-left: 0;
-        overflow: hidden;
-        transition: height .5s;
-        > li {
-          padding: em(15) em(15) em(15) em(20);
-        }
-        .badge {
-          margin-right: em(10);
-        }
-      }
-      .create-iteration-bar {
-        border-top: 1px solid $color-pf-black-300;
-        padding: em(18);
-        font-size: rem(14);
-        color: $navbar-pf-border-color;
-        .create-iteration-label {
-          padding-left: em(5);
-        }
-      }
-      //Iteration style end.
     }
     .container-body {
       height: 100%;
