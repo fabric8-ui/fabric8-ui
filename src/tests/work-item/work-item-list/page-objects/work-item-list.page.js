@@ -168,7 +168,7 @@ class WorkItemListPage {
   }
 
   get cancelButton () {
-    return element(by.id(".workItemQuickAdd_goBackBtn"));
+    return element(by.css(".closeQuickAdd"));
   }
 
   clickQuickAddCancel () {
@@ -276,12 +276,36 @@ class WorkItemListPage {
   get filterDropdown () {
     return  element(by.id("wi_filter_dropdown"));
   }
-  filterDropdownId () {
-    return  element(by.id("wi_filter_dropdown"));
-  }
-
   clickFilterDropdown () {
     return this.filterDropdown.click();
+  }
+ 
+  /* Close filters */
+  get closeFilters () {
+    return  element(by.css(".close-filter"));
+  }
+  clickCloseFilters () {
+    return this.closeFilters.click();
+  }
+
+  /* Workitem filter pulldown */
+  get workItemFilterPulldown () {
+    return element(by.css(".dropdown.filter-dropdown")); 
+  }
+  clickWorkItemFilterPulldown () {
+    return this.workItemFilterPulldown.click();
+  }
+  /* Access the user assignment filter dropdown - 'assign to me' filter*/
+  get filterAssignToMe () {
+    browser.wait(until.presenceOf(this.workItemFilterPulldown.element(by.xpath(".//*//li[.//text()[contains(.,'Assign to Me')]]"))), constants.WAIT, 'Failed to find assigment filter');
+    return this.workItemFilterPulldown.element(by.xpath(".//*//li[.//text()[contains(.,'Assign to Me')]]"));
+  }
+  clickFilterAssignToMe () {
+    this.filterAssignToMe.click();
+  }
+
+  filterDropdownId () {
+    return  element(by.id("wi_filter_dropdown"));
   }
 
   /* Adding a new workitem through the dialog */

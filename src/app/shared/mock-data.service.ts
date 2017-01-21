@@ -59,6 +59,25 @@ export class MockDataService {
 
   // work items and dependend entities (comments, ..)
 
+  /* Filter the workitems based on assignee */
+  public getWorkItemsFiltered(theAssignee: string): any {
+    console.log ("The assignee on which to filter is: " + theAssignee);
+    var filteredWorkitems = new Array (25);
+    var counter = 0;
+
+    for (var i = 0; i < this.workItems.length; i++) {
+       if (this.workItems[i].relationships.assignees.data) {
+         console.log ("The assignee on which to filter is is: " + this.workItems[i].relationships.assignees.data[0].id);
+         filteredWorkitems[counter++] = this.makeCopy(this.workItems[i]);
+      }
+    }
+    var returnArray = new Array (counter-1);
+    for (var i = 0; i < counter; i++) {
+      returnArray[i] = this.makeCopy(filteredWorkitems[i]);
+    }
+    return this.makeCopy(returnArray);
+  }
+
   public getWorkItems(): any {
     return this.makeCopy(this.workItems);
   }

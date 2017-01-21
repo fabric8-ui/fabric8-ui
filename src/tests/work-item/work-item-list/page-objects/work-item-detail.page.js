@@ -300,6 +300,10 @@ class WorkItemDetailPage {
   workItemDetailAssigneeName () {
     return element(by.css(".pull-left.detail-assignee-name"));
   }
+  clickworkItemDetailAssigneeName () {
+    return this.workItemDetailAssigneeName.click();
+  }
+
   workItemDetailAssigneeNameClickable () {
     return element(by.css(".placeholder.clickable"));
   }

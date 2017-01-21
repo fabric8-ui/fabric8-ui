@@ -55,6 +55,27 @@ waitForText: function (elementFinder) {
 //      console.log("text = " + text);
       return text !== "";  // could also be replaced with "return !!text;"
     });
+  },
+
+/*
+ * Create fixed length string - used to generate large strings
+ */
+generateString: function (size, newlines) {
+  var sourceString128 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()\|;:',./<>?`~Ω≈ç√∫˜µ≤≥÷åß∂ƒ©˙∆˚¬…æœ∑´®†¥¨ˆøπ¡™£¢∞§¶•ªº–≠";
+  var retString = "";
+  var counter = size / 128;
+  if (counter < 1) {
+    counter = 1;
+  } 
+  for (var i = 0; i < counter; i++) {
+    retString += sourceString128;
+    if (newlines) {
+      retString += "\n";
+    }
   }
+  // console.log ("return string ="  + retString);
+  return retString;
+}
+
 
 };
