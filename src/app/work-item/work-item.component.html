@@ -9,7 +9,7 @@
       <li *ngFor="let type of workItemTypes" (click)="onChangeType(type.name)">
         <div class="wiTypeListBlk">
           <i almIcon [iconType]="type.name" class="xl-font"></i>
-          <p>{{type.name.substring(7, type.length)}}</p>
+          <p>{{type.name}}</p>
         </div>
       </li>
     </ul>
