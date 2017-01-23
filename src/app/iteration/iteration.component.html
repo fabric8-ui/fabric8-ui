@@ -187,8 +187,30 @@
     </ul>
   </div>
 </div>
-<div *ngIf="loggedIn" class="create-iteration-bar pointer">
+<div *ngIf="loggedIn" class="create-iteration-bar pointer" (click)="createIterationDialog.open()">
   <span><i class="pficon-add-circle-o fa-icon"></i>
   <span class="create-iteration-label">Create Iteration</span></span>
 </div>
 <!-- Iteration End-->
+
+<modal #createIterationDialog title="Create Iteration">
+  <modal-content>
+    <div class="col-md-12 col-sm-12 col-xs-12 createProjectBlock">
+      <div class="form-group">
+        <div class="search-pf-input-group">
+          <label for="iteration-name">Name <span class="field-required-icon">*</span></label>
+          <input id="iteration-name" type="text" class="form-control" placeholder="Enter a unique iteration name">
+          <span class="help-block">Iteration names must be unique within a project</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="iteration-description">Description</label>
+        <textarea class="form-control" id="iteration-description" rows="3"></textarea>
+      </div>
+      <div class="text-right">
+        <button class="btn marginR10" type="submit" value="0" (click)="createIterationDialog.close()">Cancel</button>
+        <button class="btn btn-primary" type="submit" value="0">Create</button>
+      </div>
+    </div>
+  </modal-content>
+</modal>

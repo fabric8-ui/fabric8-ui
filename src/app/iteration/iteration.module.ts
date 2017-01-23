@@ -5,6 +5,7 @@ import { CollapseModule } from 'ng2-bootstrap';
 import { DropdownModule } from 'ng2-dropdown';
 
 import { IterationComponent } from './iteration.component';
+import { ModalModule } from 'ng2-modal';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 
 @NgModule({
@@ -12,6 +13,7 @@ import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
     DropdownModule,
     CollapseModule,
     CommonModule,
+    ModalModule,
     TooltipModule
   ],
   declarations: [IterationComponent],
