@@ -150,9 +150,10 @@ export class WorkItemMockGenerator {
           }, 
           'creator': { 
             'data': { 
-              'id': 'some-creator-id', 
+              'id': 'user0', 
+              imageURL: 'https://avatars.githubusercontent.com/u/2410471?v=3',
               'links': {
-                'self': 'http://mock.service/api/users/some-creator-id'
+                'self': 'user0'
               },
               'type': 'identities' 
             } 
