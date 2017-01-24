@@ -157,6 +157,7 @@ export class WorkItemService {
   getWorkItemById(id: string): Promise<WorkItem> {
     let url = this.workItemUrl;
     if (id in this.workItemIdIndexMap) {
+      console.log('Still found');
       let wItem = this.workItems[this.workItemIdIndexMap[id]];
       this.resolveComments(wItem);
       this.resolveLinks(wItem);
@@ -198,8 +199,11 @@ export class WorkItemService {
     if (this.prevFilters.length) {
       for (let i = 0; i < this.prevFilters.length; i++) {
         // In case of assignee filter
-        if (this.prevFilters[i].id === 1 && this.prevFilters[i].active === true) {
-          if (workItem.relationalData.assignees.findIndex(item => item.id == this.prevFilters[i].value) === -1) {
+        if (this.prevFilters[i].id === 1
+            && this.prevFilters[i].active === true) {
+          if (typeof(workItem.relationships.assignees.data) === 'undefined' // If un-assigned
+              || workItem.relationships.assignees.data.findIndex(item => item.id == this.prevFilters[i].value) === -1 // If assignee is not current
+          ) {
             return false;
           }
         }
@@ -231,6 +235,7 @@ export class WorkItemService {
    * Usage: Build the workItem ID-Index map for the big list
    */
   buildWorkItemIdIndexMap() {
+    this.workItemIdIndexMap = {};
     this.workItems.forEach((wItem, index) =>
       this.workItemIdIndexMap[wItem.id] = index);
   }
@@ -582,11 +587,19 @@ export class WorkItemService {
         // Find the index in the big list
         let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
         if (updateIndex > -1) {
-          // Update work item attributes
-          this.workItems[updateIndex].attributes = updatedWorkItem.attributes;
-          this.workItems[updateIndex].relationships.baseType = updatedWorkItem.relationships.baseType;
-          // Resolve users for the updated item
-          this.resolveUsersForWorkItem(this.workItems[updateIndex]);
+          if (this.doesMatchCurrentFilter(updatedWorkItem)) {
+            // Update work item attributes
+            this.workItems[updateIndex].attributes = updatedWorkItem.attributes;
+            this.workItems[updateIndex].relationships.assignees = updatedWorkItem.relationships.assignees;
+            this.workItems[updateIndex].relationships.creator = updatedWorkItem.relationships.creator;
+            this.workItems[updateIndex].relationships.baseType = updatedWorkItem.relationships.baseType;
+            // Resolve users for the updated item
+            this.resolveUsersForWorkItem(this.workItems[updateIndex]);
+          } else {
+            // Remove the item from the list
+            this.workItems.splice(updateIndex, 1);
+            this.buildWorkItemIdIndexMap();
+          }
         } else {
           // This part is for mock service in unit test
           // this.workItems stays in case of unit test
