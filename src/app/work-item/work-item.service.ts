@@ -586,6 +586,7 @@ export class WorkItemService {
         let updatedWorkItem = response.json().data as WorkItem;
         // Find the index in the big list
         let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
+        //Item is in the list
         if (updateIndex > -1) {
           if (this.doesMatchCurrentFilter(updatedWorkItem)) {
             // Update work item attributes
@@ -601,6 +602,9 @@ export class WorkItemService {
             this.buildWorkItemIdIndexMap();
           }
         } else {
+          //Item is not in the list
+          this.workItems.splice(0, 0, updatedWorkItem);
+          this.buildWorkItemIdIndexMap();
           // This part is for mock service in unit test
           // this.workItems stays in case of unit test
           // Resolve users for the updated item
