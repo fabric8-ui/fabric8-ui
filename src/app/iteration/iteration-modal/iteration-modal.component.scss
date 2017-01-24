@@ -1,0 +1,10 @@
+@import "../../../assets/stylesheets/color-variables";
+@import "../../../assets/stylesheets/custom";
+@import "../../../assets/stylesheets/mixins";
+
+.field-required-icon {
+  color: $color-pf-red-200;
+}
+.marginR10 {
+  margin-right: em(10);
+}
