@@ -9,14 +9,15 @@
 /dist
 /src/app/**/*.css
 /build
-/runtime/dist
-/runtime/build
 /runtime/dll
+/runtime/dist
+/services/dist
 
 # dependencies
 /node_modules
-/runtime/node_modules
 /bower_components
+/runtime/node_modules
+/services/node_modules
 
 # IDEs and editors
 /.idea
