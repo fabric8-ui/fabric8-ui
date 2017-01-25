@@ -1,8 +1,12 @@
 import { Broadcaster } from './../../shared/broadcaster.service';
 import { cloneDeep } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 import { IterationService } from './../iteration.service';
+import { SpaceService, Space } from './../../shared/mock-spaces.service';
 import { IterationModel } from './../../models/iteration.model';
-import { Component, ViewChild, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import { Component, ViewChild, OnInit, Output, EventEmitter, Input, OnChanges, OnDestroy } from '@angular/core';
 
 import * as moment from 'moment';
 
@@ -13,7 +17,10 @@ import { IMyOptions, IMyDateModel } from 'mydatepicker';
   templateUrl: './iteration-modal.component.html',
   styleUrls: ['./iteration-modal.component.scss']
 })
-export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
+export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnChanges {
+
+  private spaceSubscription: Subscription = null;
+
   @Output()
   public onSubmit = new EventEmitter();
 
@@ -49,7 +56,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
 
   constructor(
     private iterationService: IterationService,
-    private broadcaster: Broadcaster) {}
+    private broadcaster: Broadcaster,
+    private spaceService: SpaceService) {}
+
 
   ngOnInit() {
     this.resetValues();
@@ -83,6 +92,12 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     console.log(this.modalType);
+    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => console.log('[FabPlannerIterationModalComponent] New Space selected: ' + space.name));
+  }
+
+  ngOnDestroy() {
+    // prevent memory leak when component is destroyed
+    this.spaceSubscription.unsubscribe();
   }
 
   openCreateUpdateModal(
@@ -135,7 +150,6 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
     this.resetValues();
   }
 
-
   onStartDateChanged(event: IMyDateModel) {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
     // Format 2016-11-29T23:18:14Z
@@ -157,16 +171,15 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
     this.endDate = { date: event.date };
     this.iteration.attributes.endAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T00:00:00Z';
     // console.log(this.iteration.attributes.endAt);
-
   }
 
   actionOnSubmit() {
     this.iteration.attributes.name = this.iteration.attributes.name.trim();
-    if (this.iteration.attributes.name !== "") {
+    if (this.iteration.attributes.name !== '') {
       this.validationError = false;
-      this.iterationService.getSpaces()
+      this.spaceService.getCurrentSpace()
         .then((data) => {
-          let url = data.relationships.iterations.links.related;
+          let url = data.iterationsUrl;
           this.iteration.relationships.space.data.id = data.id;
           this.spaceName = data.attributes.name;
 
@@ -218,7 +231,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
           }
 
         })
-        .catch ((err) => {
+        .catch ((err: any) => {
           this.validationError = true;
           console.log('Spcae not found');
         });

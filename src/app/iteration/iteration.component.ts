@@ -1,7 +1,11 @@
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 import { Params, ActivatedRoute } from '@angular/router';
+import { SpaceService, Space } from './../shared/mock-spaces.service';
 import { IterationService } from './iteration.service';
 import { IterationModel } from './../models/iteration.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { AuthenticationService } from './../auth/authentication.service';
 import { Broadcaster } from './../shared/broadcaster.service';
@@ -11,7 +15,7 @@ import { Broadcaster } from './../shared/broadcaster.service';
   templateUrl: './iteration.component.html',
   styleUrls: ['./iteration.component.scss']
 })
-export class IterationComponent implements OnInit {
+export class IterationComponent implements OnInit, OnDestroy {
 
   authUser: any = null;
   loggedIn: Boolean = false;
@@ -24,10 +28,13 @@ export class IterationComponent implements OnInit {
   currentIterations: IterationModel[] = [];
   closedIterations: IterationModel[] = [];
 
+  private spaceSubscription: Subscription = null;
+
   constructor(
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     private iterationService: IterationService,
+    private spaceService: SpaceService,
     private route: ActivatedRoute
   ) {}
 
@@ -35,25 +42,32 @@ export class IterationComponent implements OnInit {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
     this.getAndfilterIterations();
+    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => console.log('[IterationComponent] New Space selected: ' + space.name));
+  }
+
+  ngOnDestroy() {
+    // prevent memory leak when component is destroyed
+    this.spaceSubscription.unsubscribe();
   }
 
   getAndfilterIterations() {
     // Fetching space data
     // This is temporary
-    this.iterationService.getSpaces()
-    .then((data) => {
-      this.iterationService.getIterations(data.relationships.iterations.links.related)
-      .then((iterations) => {
-        this.allIterations = iterations;
-        this.clusterIterations();
+    this.spaceService.getCurrentSpace()
+      .then((data) => {
+        this.iterationService.getIterations(data.iterationsUrl)
+        .then((iterations) => {
+          this.futureIterations = iterations.filter((iteration) => iteration.attributes.state === 'new');
+          this.currentIterations = iterations.filter((iteration) => iteration.attributes.state === 'start');
+          this.closedIterations = iterations.filter((iteration) => iteration.attributes.state === 'close');
+        })
+        .catch ((e) => {
+          console.log('Some error has occured', e);
+        });
       })
-      .catch ((e) => {
-        console.log('Some error has occured', e);
-      })
-    })
-    .catch ((err) => {
-      console.log('Space not found');
-    });
+      .catch ((err: any) => {
+        console.log('Spcae not found');
+      });
   }
 
   clusterIterations() {

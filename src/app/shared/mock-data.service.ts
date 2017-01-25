@@ -7,6 +7,7 @@ import { WorkItem } from '../work-item/work-item';
 import { SchemaMockGenerator } from './mock-data/schema-mock-generator';
 import { WorkItemMockGenerator } from './mock-data/work-item-mock-generator';
 import { UserMockGenerator } from './mock-data/user-mock-generator';
+import { SpaceMockGenerator } from './mock-data/space-mock-generator';
 
 /*
   This class provides a mock database store for entities. It provides
@@ -27,17 +28,20 @@ export class MockDataService {
   private schemaMockGenerator: SchemaMockGenerator = new SchemaMockGenerator();
   private workItemMockGenerator: WorkItemMockGenerator = new WorkItemMockGenerator();
   private userMockGenerator: UserMockGenerator = new UserMockGenerator();
+  private spaceMockGenerator: SpaceMockGenerator = new SpaceMockGenerator();
 
   // persistence store, the MockDataService is a singleton when injected as a service.
   private workItems: any[];
   private workItemLinks: any[];
   private workItemComments: any;
+  private spaces: any[];
 
   constructor() {
     // create initial data store
     this.workItems = this.workItemMockGenerator.createWorkItems();
     this.workItemLinks = this.workItemMockGenerator.createWorkItemLinks();
     this.workItemComments = this.workItemMockGenerator.createWorkItemComments();
+    this.spaces = this.spaceMockGenerator.createSpaces();
   }
 
   // utility methods
@@ -278,6 +282,12 @@ export class MockDataService {
       'status': 200,
       'responseText': 'Good Job'
     };
+  }
+
+  // spaces
+
+  public getAllSpaces(): any {
+    return this.spaces;
   }
 
   // schemas
