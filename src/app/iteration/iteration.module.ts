@@ -6,6 +6,7 @@ import { CollapseModule } from 'ng2-bootstrap';
 import { DropdownModule } from 'ng2-dropdown';
 
 import { FabPlannerIterationModalComponent } from './iteration-modal/iteration-modal.component';
+import { MyDatePickerModule } from 'mydatepicker';
 import { IterationComponent } from './iteration.component';
 import { IterationService } from './iteration.service';
 import { ModalModule } from 'ng2-modal';
@@ -17,6 +18,7 @@ import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
     CommonModule,
     DropdownModule,
     FormsModule,
+    MyDatePickerModule,
     ModalModule,
     TooltipModule
   ],

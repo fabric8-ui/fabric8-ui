@@ -8,3 +8,16 @@
 .marginR10 {
   margin-right: em(10);
 }
+.datepicker-container {
+  display: flex;
+  justify-content: space-between;
+}
+.start-date-container {
+  padding-right: em(5);
+}
+.end-date-container {
+  padding-left: em(5);
+}
+.iteration-modal-footer {
+  margin-top: em(20);
+}

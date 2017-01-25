@@ -35,8 +35,8 @@
               <span class="fa fa-ellipsis-v"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li><a>Edit</a></li>
-              <li><a>Start</a></li>
+              <li><a class="pointer">Edit</a></li>
+              <li><a class="pointer">Start</a></li>
             </ul>
           </div>
         </div>
@@ -102,8 +102,8 @@
               <span class="fa fa-ellipsis-v"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li><a>Edit</a></li>
-              <li><a>Start</a></li>
+              <li><a class="pointer">Edit</a></li>
+              <li><a class="pointer">Start</a></li>
             </ul>
           </div>
         </div>
@@ -138,8 +138,8 @@
               <span class="fa fa-ellipsis-v"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li><a>Edit</a></li>
-              <li><a>Start</a></li>
+              <li><a class="pointer">Edit</a></li>
+              <li><a class="pointer">Start</a></li>
             </ul>
           </div>
         </div>
@@ -147,7 +147,7 @@
     </ul>
   </div>
 </div>
-<div *ngIf="loggedIn" class="create-iteration-bar pointer" (click)="modal.openCreateUpdateModal()">
+<div *ngIf="loggedIn" class="create-iteration-bar pointer" (click)="modal.openCreateUpdateModal();">
   <span><i class="pficon-add-circle-o fa-icon"></i>
   <span class="create-iteration-label" id="add-iteration">Create Iteration</span></span>
 </div>

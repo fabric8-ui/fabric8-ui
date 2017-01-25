@@ -2,6 +2,7 @@ import { IterationService } from './../iteration.service';
 import { IterationModel } from './../../models/iteration.model';
 import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
 
+import {IMyOptions, IMyDateModel} from 'mydatepicker';
 
 @Component({
   selector: 'fab-planner-iteration-modal',
@@ -29,6 +30,14 @@ export class FabPlannerIterationModalComponent implements OnInit {
   } as IterationModel;
   private validationError = false;
 
+  private myDatePickerOptions: IMyOptions = {
+    dateFormat: 'dd mmm yyyy',
+    selectionTxtFontSize: '14px',
+    openSelectorOnInputClick: true,
+    editableDateField: false,
+    showClearDateBtn: false
+  };
+
   constructor(
     private iterationService: IterationService) {}
 
@@ -45,8 +54,19 @@ export class FabPlannerIterationModalComponent implements OnInit {
   }
 
   actionOnClose() {
-    // console.log('Close');
+    //console.log('Close');
     this.resetValues();
+  }
+
+
+  onStartDateChanged(event: IMyDateModel) {
+    // event properties are: event.date, event.jsdate, event.formatted and event.epoc
+    console.log(event);
+  }
+
+  onEndDateChanged(event: IMyDateModel) {
+    // event properties are: event.date, event.jsdate, event.formatted and event.epoc
+    console.log(event);
   }
 
   resetValues() {
