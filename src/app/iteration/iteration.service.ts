@@ -57,7 +57,11 @@ export class IterationService {
   ): Promise<IterationModel> {
     if (this.checkValidIterationUrl(iterationUrl)) {
       return this.http
-        .post(iterationUrl, { headers: this.headers })
+        .post(
+          iterationUrl,
+          {data: iteration},
+          { headers: this.headers }
+        )
         .toPromise()
         .then (response => {
           if (/^[5, 4][0-9]/.test(response.status.toString())) {

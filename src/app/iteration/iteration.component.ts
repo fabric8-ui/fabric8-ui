@@ -56,6 +56,12 @@ export class IterationComponent implements OnInit {
     });
   }
 
+  onCreateNewIteration(iteration: IterationModel) {
+    this.futureIterations.splice(
+      this.futureIterations.length, 0, iteration
+    );
+  }
+
   listenToEvents() {
     this.broadcaster.on<string>('logout')
       .subscribe(message => {

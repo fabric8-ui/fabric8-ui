@@ -7,10 +7,10 @@ export class IterationModel {
 }
 
 export class IterationAttributes {
-  endAt: string;
-  startAt: string;
+  endAt?: string;
+  startAt?: string;
   name: string;
-  state: string;
+  state?: string;
 }
 
 export class IterationLinks {

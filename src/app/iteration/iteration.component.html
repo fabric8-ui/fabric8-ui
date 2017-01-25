@@ -153,4 +153,7 @@
 </div>
 <!-- Iteration End-->
 
-<fab-planner-iteration-modal #modal ></fab-planner-iteration-modal>
+<fab-planner-iteration-modal
+  #modal
+  (onCreateSuccess)="onCreateNewIteration($event)" >
+</fab-planner-iteration-modal>
