@@ -11,6 +11,7 @@ export class IterationAttributes {
   startAt?: string;
   name: string;
   state?: string;
+  description?: string;
 }
 
 export class IterationLinks {

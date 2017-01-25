@@ -15,7 +15,8 @@ export class FabPlannerIterationModalComponent implements OnInit {
   @ViewChild('createUpdateIterationDialog') createUpdateIterationDialog: any;
   public iteration: IterationModel = {
     attributes: {
-      name: ""
+      name: "",
+      description: ""
     },
     relationships: {
       space: {
@@ -49,15 +50,15 @@ export class FabPlannerIterationModalComponent implements OnInit {
   }
 
   resetValues() {
-    this.iteration.attributes.endAt = "";
-    this.iteration.attributes.startAt = "";
     this.iteration.attributes.name = "";
+    this.iteration.attributes.description = "";
     this.iteration.relationships.space.data.id = "";
     this.validationError = false;
   }
 
   actionOnSubmit() {
-    if (this.iteration.attributes.name.trim() !== "") {
+    this.iteration.attributes.name = this.iteration.attributes.name.trim();
+    if (this.iteration.attributes.name !== "") {
       this.validationError = false;
       this.iterationService.getSpaces()
         .then((data) => {
@@ -69,14 +70,20 @@ export class FabPlannerIterationModalComponent implements OnInit {
             this.createUpdateIterationDialog.close();
           })
           .catch ((e) => {
+            this.validationError = true;
             console.log('Some error has occured', e);
           })
         })
         .catch ((err) => {
+          this.validationError = true;
           console.log('Spcae not found');
         });
       } else {
         this.validationError = true;
       }
+    }
+
+    removeError() {
+      this.validationError = false;
     }
 }

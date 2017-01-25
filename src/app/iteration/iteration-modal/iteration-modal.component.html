@@ -13,13 +13,20 @@
             id="iteration-name"
             type="text" class="form-control"
             placeholder="Enter iteration name"
-            [(ngModel)]="iteration.attributes.name">
+            [(ngModel)]="iteration.attributes.name"
+            (keyup)="removeError()">
           <span class="help-block">Iteration names must be unique within a project</span>
         </div>
       </div>
       <div class="form-group">
         <label for="iteration-description">Description</label>
-        <textarea #iterationDesc class="form-control" id="iteration-description" rows="3"></textarea>
+        <textarea
+          #iterationDesc
+          class="form-control"
+          id="iteration-description"
+          rows="3"
+          [(ngModel)]="iteration.attributes.description">
+        </textarea>
       </div>
       <div class="text-right">
         <button class="btn marginR10" type="submit" value="0" (click)="createUpdateIterationDialog.close()">Cancel</button>
