@@ -6,7 +6,7 @@
   (onSubmit)="actionOnSubmit()">
   <modal-content>
     <div class="col-md-12 col-sm-12 col-xs-12 createProjectBlock">
-      <div class="form-group">
+      <div class="form-group" [class.has-error]="validationError">
         <div class="search-pf-input-group">
           <label for="iteration-name">Name <span class="field-required-icon">*</span></label>
           <input

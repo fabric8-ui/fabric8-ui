@@ -26,6 +26,7 @@ export class FabPlannerIterationModalComponent implements OnInit {
     },
     type: "iterations"
   } as IterationModel;
+  private validationError = false;
 
   constructor(
     private iterationService: IterationService) {}
@@ -52,26 +53,30 @@ export class FabPlannerIterationModalComponent implements OnInit {
     this.iteration.attributes.startAt = "";
     this.iteration.attributes.name = "";
     this.iteration.relationships.space.data.id = "";
+    this.validationError = false;
   }
 
   actionOnSubmit() {
-    // console.log('Submit');
-    console.log(this.iteration);
-    this.iterationService.getSpaces()
-    .then((data) => {
-      let url = data.relationships.iterations.links.related;
-      this.iteration.relationships.space.data.id = data.id;
-      this.iterationService.createIteration(url, this.iteration)
-      .then((iteration) => {
-        this.onCreateSuccess.emit(iteration);
-        this.createUpdateIterationDialog.close();
-      })
-      .catch ((e) => {
-        console.log('Some error has occured', e);
-      })
-    })
-    .catch ((err) => {
-      console.log('Spcae not found');
-    });
-  }
+    if (this.iteration.attributes.name.trim() !== "") {
+      this.validationError = false;
+      this.iterationService.getSpaces()
+        .then((data) => {
+          let url = data.relationships.iterations.links.related;
+          this.iteration.relationships.space.data.id = data.id;
+          this.iterationService.createIteration(url, this.iteration)
+          .then((iteration) => {
+            this.onCreateSuccess.emit(iteration);
+            this.createUpdateIterationDialog.close();
+          })
+          .catch ((e) => {
+            console.log('Some error has occured', e);
+          })
+        })
+        .catch ((err) => {
+          console.log('Spcae not found');
+        });
+      } else {
+        this.validationError = true;
+      }
+    }
 }
