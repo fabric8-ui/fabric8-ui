@@ -157,7 +157,6 @@ export class WorkItemService {
   getWorkItemById(id: string): Promise<WorkItem> {
     let url = this.workItemUrl;
     if (id in this.workItemIdIndexMap) {
-      console.log('Still found');
       let wItem = this.workItems[this.workItemIdIndexMap[id]];
       this.resolveComments(wItem);
       this.resolveLinks(wItem);
@@ -199,9 +198,8 @@ export class WorkItemService {
     if (this.prevFilters.length) {
       for (let i = 0; i < this.prevFilters.length; i++) {
         // In case of assignee filter
-        if (this.prevFilters[i].id === 1
-            && this.prevFilters[i].active === true) {
-          if (typeof(workItem.relationships.assignees.data) === 'undefined' // If un-assigned
+        if (this.prevFilters[i].id === 1 && this.prevFilters[i].active) {
+          if (!workItem.relationships.assignees.data // If un-assigned
               || workItem.relationships.assignees.data.findIndex(item => item.id == this.prevFilters[i].value) === -1 // If assignee is not current
           ) {
             return false;
