@@ -21,10 +21,10 @@
       </div>
     </div>
     <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
-      <li class="active">
+      <li class="active" *ngFor="let iteration of currentIterations">
         <div class="iteration-subheader">
           <div>
-            <strong>Iteration 1</strong>
+            <strong>{{iteration.attributes.name}}</strong>
           </div>
           <div class="dropdown dropdown-kebab-pf" dropdown>
             <button class="btn btn-link dropdown-toggle"
@@ -42,7 +42,7 @@
         </div>
         <div class="iteration-status">
           <div>
-            <span>7 Dec 2016 - 14 Dec 2016</span>
+            <span>{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}</span>
           </div>
           <div>
             <strong>71 of 74</strong><span> completed</span>
@@ -68,7 +68,7 @@
                tooltip="{{(100 - barchatValue) + '%'}}">
           </div>
         </div>
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        <!-- Lorem Ipsum is simply dummy text of the printing and typesetting industry. -->
       </li>
     </ul>
   </div>
@@ -86,9 +86,10 @@
     </div>
     <ul class="not-current-iteration"
         [collapse]="isCollapsedFutureIteration">
-      <li class="iteration-subheader">
+
+      <li class="iteration-subheader" *ngFor="let iteration of futureIterations">
         <div>
-          <strong>Iteration 2</strong>
+          <strong>{{iteration.attributes.name}}</strong>
         </div>
         <div>
           <span class="badge">90</span>
@@ -107,27 +108,7 @@
           </div>
         </div>
       </li>
-      <li class="iteration-subheader">
-        <div>
-          <strong>Iteration 4</strong>
-        </div>
-        <div>
-          <span class="badge">90</span>
-          <div class="dropdown dropdown-kebab-pf dib" dropdown>
-            <button class="btn btn-link dropdown-toggle"
-                    type="button"
-                    aria-haspopup="true"
-                    aria-expanded="true"
-                    dropdown-open>
-              <span class="fa fa-ellipsis-v"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li><a>Edit</a></li>
-              <li><a>Start</a></li>
-            </ul>
-          </div>
-        </div>
-      </li>
+
     </ul>
   </div>
   <div class="iterations">
@@ -142,33 +123,12 @@
     </div>
     <ul class="not-current-iteration"
         [collapse]="isCollapsedPastIteration">
-      <li class="iteration-subheader">
+      <li class="iteration-subheader" *ngFor="let iteration of closedIterations">
         <div>
-          <strong>iteration 3</strong>
+          <strong>{{iteration.attributes.name}}</strong>
         </div>
         <div>
-          <span class="badge">10</span>
-          <div class="dropdown dropdown-kebab-pf dib" dropdown>
-            <button class="btn btn-link dropdown-toggle"
-                    type="button"
-                    aria-haspopup="true"
-                    aria-expanded="true"
-                    dropdown-open>
-              <span class="fa fa-ellipsis-v"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li><a>Edit</a></li>
-              <li><a>Start</a></li>
-            </ul>
-          </div>
-        </div>
-      </li>
-      <li class="iteration-subheader">
-        <div>
-          <strong>iteration 5</strong>
-        </div>
-        <div>
-          <span class="badge">10</span>
+          <span class="badge">90</span>
           <div class="dropdown dropdown-kebab-pf dib" dropdown>
             <button class="btn btn-link dropdown-toggle"
                     type="button"

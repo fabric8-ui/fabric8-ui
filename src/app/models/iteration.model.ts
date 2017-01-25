@@ -10,6 +10,7 @@ export class IterationAttributes {
   endAt: string;
   startAt: string;
   name: string;
+  state: string;
 }
 
 export class IterationLinks {

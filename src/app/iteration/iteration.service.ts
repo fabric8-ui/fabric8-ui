@@ -130,4 +130,21 @@ export class IterationService {
       urlArr[urlArr.length - 3] === 'spaces'
     );
   }
+
+  // Temporary space fetch
+  getSpaces() {
+    return this.http
+    .get(process.env.API_URL + 'spaces', { headers: this.headers })
+    .toPromise()
+    .then((response) => {
+      let spaces = response.json().data;
+      if (spaces.length) {
+        return spaces[0];
+      } else {
+        return null;
+      }
+    }).catch ((err) => {
+      return null;
+    })
+  }
 }
