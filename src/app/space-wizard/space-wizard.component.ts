@@ -15,9 +15,13 @@ import { Broadcaster } from '../shared/broadcaster.service';
   styleUrls: ['./space-wizard.component.scss']
 })
 export class SpaceWizardComponent implements OnInit {
-  configurator: SpaceConfigurator
+
+  configurator: SpaceConfigurator;
+  wizard: Wizard = new Wizard();
+  wizardSteps: IWizardSteps;
+
   ngOnInit() {
-    this.configurator = new SpaceConfigurator()
+    this.configurator = new SpaceConfigurator();
     this.configurator.initSpace((space: Space) => {
       space.process = this.dummy.processTemplates[0];
     });
@@ -30,9 +34,6 @@ export class SpaceWizardComponent implements OnInit {
     };
   }
 
-  wizard: Wizard = new Wizard();
-  wizardSteps: IWizardSteps;
-
   finish() {
     let configuredSpace = this.configurator.space;
     // this.dummy.spaces.push(configuredSpace);
@@ -40,7 +41,7 @@ export class SpaceWizardComponent implements OnInit {
     this.router.navigate([configuredSpace.path]);
   }
   cancel() {
-    this.router.navigate(["/home"]);
+    this.router.navigate(['/home']);
   }
 
   constructor(
