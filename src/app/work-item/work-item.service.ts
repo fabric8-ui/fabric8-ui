@@ -3,7 +3,9 @@ import { Injectable, Component } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { cloneDeep } from 'lodash';
 import 'rxjs/add/operator/toPromise';
+import { Subscription } from 'rxjs/Subscription';
 
+import { SpaceService, Space } from './../shared/mock-spaces.service';
 import { AuthenticationService } from '../auth/authentication.service';
 import {
   Comment,
@@ -25,20 +27,20 @@ import {
 } from '../models/work-item';
 import { WorkItemType } from './work-item-type';
 
-
-
 import { MockHttp } from './../shared/mock-http';
 import Globals = require('./../shared/globals');
 
 @Injectable()
 export class WorkItemService {
+
+  private workItemUrl: string = null;
+  private workItemTypeUrl: string = null;
+  private linkTypesUrl: string = null;
+  private linksUrl: string = null;
+  private reorderUrl: string = null;
+  private baseSearchUrl: string = null;
+
   private headers = new Headers({'Content-Type': 'application/json'});
-  private workItemUrl = process.env.API_URL + 'workitems';  // URL to web api
-  private workItemTypeUrl = process.env.API_URL + 'workitemtypes';
-  private linkTypesUrl = process.env.API_URL + 'workitemlinktypes';
-  private linksUrl = process.env.API_URL + 'workitemlinks';
-  private reorderUrl = process.env.API_URL + 'workitems/reorder';
-  private renderUrl = process.env.API_URL + 'render';
   private availableStates: DropdownOption[] = [];
   public workItemTypes: WorkItemType[] = [];
   private workItems: WorkItem[] = [];
@@ -50,9 +52,12 @@ export class WorkItemService {
   private linkTypes: LinkType[] = [];
   private iterations: IterationModel[] = [];
 
+  private spaceSubscription: Subscription = null;
+
   constructor(private http: Http,
     private broadcaster: Broadcaster,
     private logger: Logger,
+    private spaceService: SpaceService,
     private auth: AuthenticationService,
     private iterationService: IterationService,
     private userService: UserService) {
@@ -65,7 +70,20 @@ export class WorkItemService {
     } else {
       logger.log('WorkItemService running in production mode.');
     }
-    logger.log('WorkItemService using url ' + this.workItemUrl);
+    // set initial space and subscribe to the space service to recognize space switches
+    this.spaceService.getCurrentSpace().then(this.switchSpace);
+    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(this.switchSpace);
+  }
+
+  switchSpace(space: Space) {
+    this.logger.log('[WorkItemService] New Space selected: ' + space.name);
+    this.workItemUrl = space.spaceBaseUrl + 'workitems';
+    this.workItemTypeUrl = space.spaceBaseUrl + 'workitemtypes';
+    this.linkTypesUrl = space.spaceBaseUrl + 'workitemlinktypes';
+    this.linksUrl = space.spaceBaseUrl + 'workitemlinks';
+    this.reorderUrl = space.spaceBaseUrl + 'workitems/reorder';
+    this.baseSearchUrl = space.spaceBaseUrl + 'search?q=';
+    this.logger.log('WorkItemService using url ' + this.workItemUrl);
   }
 
   /**
@@ -931,18 +949,12 @@ export class WorkItemService {
   }
 
   searchLinkWorkItem(term: string): Promise<WorkItem[]> {
-     let searchUrl = process.env.API_URL + 'search?q=' + term;
-     return this.http
-        .get(searchUrl)
-        .toPromise()
-        .then((response) => response.json().data as WorkItem[])
-        .catch ((e) => {
-          if (e.status === 401) {
-            this.auth.logout(true);
-          } else {
-            this.handleError(e);
-          }
-        });
+    let searchUrl = this.baseSearchUrl + term;
+    return this.http
+      .get(searchUrl)
+      .toPromise()
+      .then((response) => response.json().data as WorkItem[])
+      .catch(this.handleError);
   }
 
   /**

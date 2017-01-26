@@ -66,7 +66,8 @@ export class SpaceService {
         id: thisElem.id,
         attributes: new SpaceAttributes(),
         type: thisElem.type,
-        iterationsUrl: thisElem.relationships.iterations.links.related;
+        iterationsUrl: thisElem.relationships.iterations.links.related,
+        spaceBaseUrl: process.env.API_URL
       } as Space;
       result.push(thisSpace);  
     }
@@ -93,6 +94,7 @@ export interface Space {
     attributes: SpaceAttributes;
     type: string;
     iterationsUrl: string
+    spaceBaseUrl: string
 }
 
 export class ProcessTemplate {

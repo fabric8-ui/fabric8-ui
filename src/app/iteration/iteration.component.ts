@@ -66,7 +66,7 @@ export class IterationComponent implements OnInit, OnDestroy {
         });
       })
       .catch ((err: any) => {
-        console.log('Spcae not found');
+        console.log('Space not found');
       });
   }
 
