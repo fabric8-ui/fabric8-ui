@@ -1,4 +1,3 @@
-import { module } from '@angular/upgrade/src/angular_js';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
