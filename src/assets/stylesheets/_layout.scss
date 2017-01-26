@@ -3,7 +3,7 @@
 ///////////////////////////
 
 
-@mixin padding-x($count:10) {
+@mixin padding-x($count:15) {
   @for $i from 0 through $count {
     .padding-#{$i} {
       padding: #{$i}px;
@@ -23,7 +23,7 @@
   }
 }
 
-@mixin margin-x($count:10) {
+@mixin margin-x($count:15) {
   @for $i from 0 through $count {
     .margin-#{$i} {
       margin: #{$i}px;
@@ -63,13 +63,13 @@
 .fill-container
 {
   position:absolute;
-  top:0px;
-  bottom:0px;
-  left:0px;
-  right:0px;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
   padding:0;
-  margin:0px;
-  border-width:0px;
+  margin:0;
+  border-width:0;
 }
 
 
@@ -90,8 +90,8 @@ body
   min-height:100vh;
   @include debug-stretch-to-fit-viewport;
   position:relative;
-  margin:0px;
-  padding:0px;
+  margin:0;
+  padding:0;
   display:flex;
 }
 
@@ -176,7 +176,7 @@ body
 
 };
 
-$content-padding:0px;
+$content-padding:0;
 
 header
 {
