@@ -27,11 +27,13 @@ export class SpaceService {
     // init mock data and broadcaster
     // TODO: evaluate if the local broadcaster or a global broadcaster (like in Broadcaster service class) makes sense.
     this.spaces = this.createSpacesFromServiceResponse(mockDataService.getAllSpaces());
+    this.currentSpace = this.spaces[0];
     this.currentSpaceSubjectSource = new BehaviorSubject<Space>(this.spaces[0]);
     this.currentSpaceBus = this.currentSpaceSubjectSource.asObservable();
   }
 
   private switchToSpace(newSpace: Space) {
+    this.currentSpace = newSpace;
     this.currentSpaceSubjectSource.next(newSpace);
   }
 

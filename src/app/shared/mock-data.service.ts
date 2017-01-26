@@ -8,6 +8,7 @@ import { SchemaMockGenerator } from './mock-data/schema-mock-generator';
 import { WorkItemMockGenerator } from './mock-data/work-item-mock-generator';
 import { UserMockGenerator } from './mock-data/user-mock-generator';
 import { SpaceMockGenerator } from './mock-data/space-mock-generator';
+import { IterationMockGenerator } from './mock-data/iteration-mock-generator';
 
 /*
   This class provides a mock database store for entities. It provides
@@ -29,12 +30,14 @@ export class MockDataService {
   private workItemMockGenerator: WorkItemMockGenerator = new WorkItemMockGenerator();
   private userMockGenerator: UserMockGenerator = new UserMockGenerator();
   private spaceMockGenerator: SpaceMockGenerator = new SpaceMockGenerator();
+  private iterationMockGenerator: IterationMockGenerator = new IterationMockGenerator();
 
   // persistence store, the MockDataService is a singleton when injected as a service.
   private workItems: any[];
   private workItemLinks: any[];
   private workItemComments: any;
   private spaces: any[];
+  private iterations: any[];
 
   constructor() {
     // create initial data store
@@ -42,6 +45,7 @@ export class MockDataService {
     this.workItemLinks = this.workItemMockGenerator.createWorkItemLinks();
     this.workItemComments = this.workItemMockGenerator.createWorkItemComments();
     this.spaces = this.spaceMockGenerator.createSpaces();
+    this.iterations = this.iterationMockGenerator.createIterations();
   }
 
   // utility methods
@@ -212,7 +216,7 @@ export class MockDataService {
       if (this.workItems[i].fields['system.title'].indexOf(term) != -1) {
         return this.makeCopy(this.workItems[i]);
       }
-      return false;
+    return false;
   }
 
   // work item links
@@ -264,7 +268,7 @@ export class MockDataService {
         this.workItemLinks.splice(i, 1);
         return true;
       }
-      return false;
+    return false;
   }
 
   // user and identities
@@ -288,6 +292,46 @@ export class MockDataService {
 
   public getAllSpaces(): any {
     return this.spaces;
+  }
+
+  // iterations
+
+  public getAllIterations(): any {
+    return this.iterations;
+  }
+
+  public getIteration(id: string): any {
+    for (var i = 0; i < this.iterations.length; i++)
+      if (this.iterations[i].id === id) {
+        return this.iterations[i];
+      }
+    return null;
+  }
+
+  public createIteration(iteration: any): any {
+    var localIteration = this.makeCopy(iteration);
+    localIteration.id = this.createId();
+    this.iterations.push(localIteration);
+    return this.makeCopy(localIteration);
+  }
+
+  public updateIteration(iteration: any): any {
+    var localIteration = this.makeCopy(iteration);
+    for (var i = 0; i < this.iterations.length; i++)
+      if (this.iterations[i].id === localIteration.id) {
+        this.iterations.splice(i, 1, localIteration);
+        return this.makeCopy(localIteration);
+      }
+    return null;
+  }
+
+  public deleteIteration(id: string): boolean {
+    for (var i = 0; i < this.iterations.length; i++)
+      if (this.iterations[i].id === id) {
+        this.iterations.splice(i, 1);
+        return true;
+      }
+    return false;
   }
 
   // schemas
