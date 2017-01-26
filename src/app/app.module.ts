@@ -16,6 +16,7 @@ import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 import { AuthenticationService } from './auth/authentication.service';
 import { Broadcaster } from './shared/broadcaster.service';
 import { UserService } from './user/user.service';
+import { SpaceService } from './shared/mock-spaces.service';
 import { Logger } from './shared/logger.service';
 
 import { FormsModule } from '@angular/forms';
@@ -71,7 +72,8 @@ if (process.env.ENV == 'inmemory') {
     LoginService,
     UserService,
     WorkItemService,
-    MockDataService
+    MockDataService,
+    SpaceService
   ];
 } else {
   serviceImports = [
@@ -80,7 +82,8 @@ if (process.env.ENV == 'inmemory') {
     Broadcaster,
     LoginService,
     UserService,
-    WorkItemService
+    WorkItemService,
+    SpaceService
   ];
 }
 

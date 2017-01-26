@@ -23,11 +23,11 @@
   "exclude": [
         "node_modules",
         "**/*.d.ts",
-        "src-library/*",
+        "src-library/**/*",
         "dist-library/**/*",
-        "**/*.spec.ts",
+        "runtime/**/*",
         "services/**/*",
-        "runtime/**/*"
+        "**/*.spec.ts"
     ]
 }
 
