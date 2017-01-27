@@ -94,7 +94,7 @@
             <!-- TODO: This should pop up the new space dialog -->
             <a>
               <span class="nav-item-icon"></span>
-              <span class="nav-item-text">
+              <span class="nav-item-text" (click)="spaceWizard.open()" >
                 New space
               </span>
             </a>
@@ -155,3 +155,8 @@
     </ul>
   </div>
 </nav>
+<modal #spaceWizard class="chromeless-modal"  >
+  <modal-content class="chromeless-modal-content" >
+      <space-wizard [host]="spaceWizard" ></space-wizard>
+  </modal-content>
+</modal>

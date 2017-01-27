@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { DummyService } from '../dummy/dummy.service';
 import { SpaceConfigurator, IWizardSteps, Wizard } from './wizard';
@@ -6,6 +6,16 @@ import { Space, SpaceAttributes } from '../models/space';
 import { ProcessTemplate } from '../models/process-template';
 import { Broadcaster } from '../shared/broadcaster.service';
 import { SpaceService } from "../profile/spaces/space.service";
+
+interface IModal
+{
+  open();
+  close();
+  onOpen();
+  onClose();
+  closeOnEscape:boolean
+  closeOnOutsideClick:boolean
+}
 
 @Component({
   host: {
@@ -22,6 +32,7 @@ export class SpaceWizardComponent implements OnInit {
   configurator: SpaceConfigurator;
   wizard: Wizard = new Wizard();
   wizardSteps: IWizardSteps;
+  @Input() host:IModal;
 
   constructor(
     private router: Router,
@@ -39,6 +50,8 @@ export class SpaceWizardComponent implements OnInit {
       stack: { index: 3 },
       pipeline: { index: 4 },
     };
+    this.host.closeOnEscape=true;
+    this.host.closeOnOutsideClick=false;
   }
 
   reset()
@@ -85,7 +98,10 @@ export class SpaceWizardComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/home']);
+    if(this.host)
+    {
+      this.host.close()
+    }
   }
 
 }

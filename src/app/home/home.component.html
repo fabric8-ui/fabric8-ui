@@ -62,8 +62,8 @@
   </div>
 </div>
 <!-- Create Space modal -->
-<modal #createSpace class="chromeless-modal"  >
+<modal #createSpace class="chromeless-modal" >
   <modal-content class="chromeless-modal-content" >
-      <space-wizard></space-wizard>
+      <space-wizard [host]="createSpace" ></space-wizard>
   </modal-content>
 </modal>
