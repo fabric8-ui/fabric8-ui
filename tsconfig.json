@@ -24,7 +24,10 @@
         "node_modules",
         "**/*.d.ts",
         "src-library/*",
-        "**/*.spec.ts"
+        "dist-library/**/*",
+        "**/*.spec.ts",
+        "services/**/*",
+        "runtime/**/*"
     ]
 }
 
