@@ -2,7 +2,7 @@
   <div class="navbar-header">
     <ul class="nav navbar-nav navbar-right hidden-sm hidden-md hidden-lg ">
       <li *ngIf="!loggedIn">
-        <a (click)='login();'>Sign In</a>
+        <a (click)="login();">Sign In</a>
       </li>
       <li *ngIf="loggedIn" dropdown class="pull-right dropdown">
         <a dropdown-open class="pull-right">
@@ -33,7 +33,7 @@
             </a>
           </li>
           <li>
-            <a *ngIf="loggedIn" (click)='logout();'>
+            <a *ngIf="loggedIn" (click)="logout();">
               <span class="nav-item-text">Sign out</span>
             </a>
           </li>
@@ -121,7 +121,7 @@
     </ul>
     <ul id="header_rightDropdown" class="nav navbar-nav navbar-right">
       <li>
-        <a *ngIf="!loggedIn" (click)='login();'>Sign In</a>
+        <a *ngIf="!loggedIn" (click)="login();">Sign In</a>
       </li>
       <li *ngIf="loggedIn" dropdown class="pull-right dropdown">
         <a dropdown-open>
@@ -148,7 +148,7 @@
             <a [routerLink]="['pmuir/settings']"><span class="nav-item-text">Settings</span></a>
           </li>
           <li>
-            <a *ngIf="loggedIn" (click)='logout();'><span class="nav-item-text">Sign out</span></a>
+            <a *ngIf="loggedIn" (click)="logout();"><span class="nav-item-text">Sign out</span></a>
           </li>
         </ul>
       </li>
