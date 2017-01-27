@@ -1,5 +1,5 @@
 // TODO: refactor and refine domain model for wizard and configurator
-import { Space } from './space'
+import { Space, SpaceAttributes } from '../models/space'
 
 export class Wizard {
 
@@ -225,17 +225,4 @@ export class SpaceConfigurator {
     this.space = {} as Space;
     this.project = new ProjectInfo();
   }
-  // initialiser with callback for external dependency initialisation
-  initSpace(init: Function = (space: Space) => { }): void {
-    this.space = {} as Space;
-    this.project = new ProjectInfo();
-    this.project.name = 'Project1';
-
-    this.space.name = 'BalloonPopGame';
-    this.space.path = `/pmuir/${this.space.name}`;
-    this.space.description = this.space.name;
-    this.space.privateSpace = false;
-    init(this.space);
-  }
-
 }
