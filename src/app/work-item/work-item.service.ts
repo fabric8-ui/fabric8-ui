@@ -618,11 +618,7 @@ export class WorkItemService {
         };
         this.workItems[this.workItemIdIndexMap[id]]
           .relationalData
-          .comments.splice(
-            this.workItems[this.workItemIdIndexMap[id]]
-              .relationalData.comments.length,
-            0,
-            comment);
+          .comments.unshift(comment);
         return comment;
       })
       .catch (this.handleError);

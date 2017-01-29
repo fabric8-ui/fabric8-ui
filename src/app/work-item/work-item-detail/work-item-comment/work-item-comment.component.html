@@ -8,7 +8,7 @@
                     placeholder="Add a comment here...">
                 </textarea>
             </div>
-            <div *ngFor='let comment of workItem.relationalData?.comments?.slice().reverse()' class="comments-wrap">
+            <div *ngFor='let comment of workItem.relationalData?.comments?.slice()' class="comments-wrap">
                 <div>
                     <div class="user-avatar pull-left">
                         <img id="{{'comment_avatar_' + counter}}"
