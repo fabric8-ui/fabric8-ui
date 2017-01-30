@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 export class IterationService {
   public iterations: IterationModel[] = [];
   private headers = new Headers({'Content-Type': 'application/json'});
+  private iterationUrl: string = '';
 
   constructor(private http: Http, private auth: AuthenticationService) {
       if (this.auth.getToken() != null) {
@@ -135,6 +136,37 @@ export class IterationService {
     );
   }
 
+  getIterationUrl(): string {
+    console.log('getIterationUrl ', this.iterationUrl);
+    if (this.iterationUrl){
+      return this.iterationUrl;
+    } else {
+      this.getSpaces()
+        .then((response: any) => {
+          this.iterationUrl = response.relationships.iterations.links.related;
+          return this.iterationUrl;
+        });
+    }
+  }
+
+  getAllIterations(): Promise<IterationModel[]> {
+    console.log('getAllIterations = ', this.iterations.length);
+    if (this.iterations.length) {
+      return new Promise((resolve, reject) => {
+        resolve(this.iterations);
+      });
+    } else {
+      this.getIterations(this.iterationUrl)
+        .then((response) => {
+          this.iterations = response;
+          return this.iterations;
+        })
+        .catch ((err) => {
+          return null;
+        });
+    }
+  }
+
   // Temporary space fetch
   getSpaces() {
     return this.http
@@ -143,12 +175,13 @@ export class IterationService {
     .then((response) => {
       let spaces = response.json().data;
       if (spaces.length) {
+        this.iterationUrl = spaces[0].relationships.iterations.links.related
         return spaces[0];
       } else {
         return null;
       }
     }).catch ((err) => {
       return null;
-    })
+    });
   }
 }

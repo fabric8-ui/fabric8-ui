@@ -11,6 +11,8 @@ import {
   CommentPost
 } from '../models/comment';
 import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
+import { IterationModel } from '../models/iteration.model';
+import { IterationService } from '../iteration/iteration.service';
 import { Logger } from '../shared/logger.service';
 import { LinkType } from '../models/link-type';
 import { UserService } from '../user/user.service';
@@ -44,10 +46,12 @@ export class WorkItemService {
   private workItemIdIndexMap = {};
   private prevFilters: any = [];
   private linkTypes: LinkType[] = [];
+  private iterations: IterationModel[] = [];
 
   constructor(private http: Http,
     private logger: Logger,
     private auth: AuthenticationService,
+    private iterationService: IterationService,
     private userService: UserService) {
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
@@ -80,7 +84,6 @@ export class WorkItemService {
         url += '&' + item.paramKey + '=' + item.value;
       }
     });
-
     // Reseting stored data
     // if filter value is changed
     if (JSON.stringify(this.prevFilters) != JSON.stringify(filters)) {
@@ -96,6 +99,7 @@ export class WorkItemService {
       .then(response => {
         // Build the user - id map
         this.buildUserIdMap();
+        this.buildIterationsList();
         let wItems: WorkItem[];
         let links = response.json().links;
         if (links.hasOwnProperty('next')) {
@@ -105,6 +109,7 @@ export class WorkItemService {
         wItems.forEach((item) => {
           // Resolve the assignee and creator
           this.resolveUsersForWorkItem(item);
+          this.resolveIterationForWorkItem(item);
         });
         // Update the existing workItem big list with new data
         this.updateWorkItem(wItems);
@@ -134,6 +139,7 @@ export class WorkItemService {
         newWorkItems.forEach((item) => {
           // Resolve the assignee and creator
           this.resolveUsersForWorkItem(item);
+          this.resolveIterationForWorkItem(item);
         });
         let newItems = cloneDeep(newWorkItems);
         // Update the existing workItem big list with new data
@@ -169,6 +175,7 @@ export class WorkItemService {
         .then((response) => {
           let wItem: WorkItem = response.json().data as WorkItem;
           this.resolveUsersForWorkItem(wItem);
+          this.resolveIterationForWorkItem(wItem);
           // If this work item matches with current filters
           // it goes to the big list and then we call this function
           // again to treat it as a locally saved item
@@ -295,6 +302,30 @@ export class WorkItemService {
   }
 
   /**
+   * Usage: To resolve the users in eact WorkItem
+   * For now it resolves assignne and creator
+   */
+  resolveIterationForWorkItem(workItem: WorkItem): void {
+    if (!workItem.hasOwnProperty('relationalData')) {
+      workItem.relationalData = {};
+    }
+    if (!workItem.relationships.hasOwnProperty('iteration') || !workItem.relationships.iteration) {
+      workItem.relationalData.iteration = null;
+      return;
+    }
+    if (!workItem.relationships.iteration.hasOwnProperty('data')) {
+      workItem.relationalData.iteration = null;
+      return;
+    }
+    if (!workItem.relationships.iteration.data) {
+      workItem.relationalData.iteration = null;
+      return;
+    }
+    workItem.relationalData.iteration = this.getIterationById(workItem.relationships.iteration.data.id);
+    console.log('resolve -', workItem.relationalData.iteration);
+  }
+
+  /**
    * Usage: Build a ID-User map to dynamically access list of users
    * This method takes the locally saved list of users from User Service
    * Before coming to this method we fetch the list of users using router resolver
@@ -312,6 +343,10 @@ export class WorkItemService {
     }
   }
 
+  buildIterationsList(): void {
+    this.iterationService.getAllIterations();
+  }
+
   /**
    * Usage: Fetch an use by it's ID from the User-ID map
    */
@@ -321,6 +356,13 @@ export class WorkItemService {
     } else {
       return null;
     }
+  }
+
+  /**
+   * Usage: Fetch an iteration by it's ID from the iterations list
+   */
+  getIterationById(iterationId: string): IterationModel {
+    return this.iterationService.iterations.filter(item => item.id == iterationId)[0];
   }
 
   /**
@@ -507,11 +549,13 @@ export class WorkItemService {
           this.workItems[updateIndex].relationships.baseType = updatedWorkItem.relationships.baseType;
           // Resolve users for the updated item
           this.resolveUsersForWorkItem(this.workItems[updateIndex]);
+          this.resolveIterationForWorkItem(this.workItems[updateIndex]);
         } else {
           // This part is for mock service in unit test
           // this.workItems stays in case of unit test
           // Resolve users for the updated item
           this.resolveUsersForWorkItem(updatedWorkItem);
+          this.resolveIterationForWorkItem(updatedWorkItem);
         }
         return updatedWorkItem;
       })
@@ -559,6 +603,7 @@ export class WorkItemService {
         let newWorkItem: WorkItem = response.json().data as WorkItem;
         // Resolve the user for the new item
         this.resolveUsersForWorkItem(newWorkItem);
+        this.resolveIterationForWorkItem(newWorkItem);
         // Add newly added item to the top of the list
         this.workItems.splice(0, 0, newWorkItem);
         // Re-build the ID-index map
@@ -592,8 +637,10 @@ export class WorkItemService {
             this.workItems[updateIndex].relationships.assignees = updatedWorkItem.relationships.assignees;
             this.workItems[updateIndex].relationships.creator = updatedWorkItem.relationships.creator;
             this.workItems[updateIndex].relationships.baseType = updatedWorkItem.relationships.baseType;
+            this.workItems[updateIndex].relationships.iteration = updatedWorkItem.relationships.iteration;
             // Resolve users for the updated item
             this.resolveUsersForWorkItem(this.workItems[updateIndex]);
+            this.resolveIterationForWorkItem(this.workItems[updateIndex]);
           } else {
             // Remove the item from the list
             this.workItems.splice(updateIndex, 1);
@@ -607,6 +654,7 @@ export class WorkItemService {
           // this.workItems stays in case of unit test
           // Resolve users for the updated item
           this.resolveUsersForWorkItem(updatedWorkItem);
+          this.resolveIterationForWorkItem(updatedWorkItem);
         }
         return updatedWorkItem;
       })

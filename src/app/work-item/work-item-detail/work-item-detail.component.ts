@@ -23,6 +23,9 @@ import { Broadcaster } from './../../shared/broadcaster.service';
 import { Logger } from './../../shared/logger.service';
 import { UserService } from './../../user/user.service';
 
+import { IterationModel } from './../../models/iteration.model';
+import { IterationService } from './../../iteration/iteration.service';
+
 import { WorkItem, WorkItemAttributes, WorkItemRelations } from './../../models/work-item';
 import { WorkItemService } from './../work-item.service';
 import { WorkItemType } from './../work-item-type';
@@ -52,6 +55,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   @ViewChild('title') title: any;
   @ViewChild('userSearch') userSearch: any;
   @ViewChild('userList') userList: any;
+  @ViewChild('iterationSearch') iterationSearch: any;
+  @ViewChild('iterationList') iterationList: any;
 
   workItem: WorkItem;
   workItemTypes: WorkItemType[];
@@ -85,6 +90,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   panelState: string = 'out';
 
+  iterations: IterationModel[] = [];
+
   constructor(
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
@@ -93,6 +100,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     private location: Location,
     private logger: Logger,
     private router: Router,
+    private iterationService: IterationService,
     private userService: UserService
   ) {}
 
@@ -101,6 +109,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
     this.listenToEvents();
     this.getWorkItemTypesandStates();
+    this.getIterations();
     this.loggedIn = this.auth.isLoggedIn();
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
@@ -120,6 +129,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
               this.titleText = workItem.attributes['system.title'];
               this.descText = workItem.attributes['system.description'];
               this.workItem = workItem;
+              console.log('workItem', workItem);
               // fetch the list of user
               // after getting the Workitem
               // to set assigned user
@@ -252,6 +262,27 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
             this.workItemStates = options;
         });
       });
+  }
+
+  getIterations() {
+    if (this.iterationService.iterations) {
+      this.iterations = this.iterationService.iterations;
+    } else {
+      this.iterationService.getSpaces()
+        .then((data) => {
+          this.iterationService.getIterations(data.relationships.iterations.links.related)
+            .then((iterations) => {
+              this.iterations = iterations;
+              console.log(iterations);
+            })
+            .catch ((e) => {
+              console.log('Some error has occured', e);
+            })
+        })
+        .catch ((err) => {
+          console.log('Spcae not found');
+        });
+    }
   }
 
   onChangeState(option: any): void {
@@ -432,10 +463,90 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   closeRestFields(): void {
     this.searchAssignee = false;
+    this.searchIteration = false;
     this.headerEditable = false;
     this.descEditable = false;
   }
 
+  assignIteration(iterationId: any): void {
+    this.workItem.relationships.iteration = {
+      data: {
+        id: iterationId,
+        type: 'iteration'
+      }
+    };
+    this.save();
+    this.searchIteration = false;
+  }
+
+  activeSearchIteration() {
+    if (this.loggedIn) {
+      this.closeRestFields();
+      this.searchIteration = true;
+      // Takes a while to render the component
+      setTimeout(() => {
+        if (this.iterationSearch) {
+          this.iterationSearch.nativeElement.focus();
+        }
+      }, 50);
+    }
+  }
+
+  deactiveSearchIteration() {
+    this.closeRestFields();
+  }
+
+  filterIteration(event: any) {
+    // Down arrow or up arrow
+    if (event.keyCode == 40 || event.keyCode == 38) {
+      let lis = this.iterationList.nativeElement.children;
+      let i = 0;
+      for (; i < lis.length; i++) {
+        if (lis[i].classList.contains('selected')) {
+          break;
+        }
+      }
+      if (i == lis.length) { // No existing selected
+        if (event.keyCode == 40) { // Down arrow
+          lis[0].classList.add('selected');
+          lis[0].scrollIntoView(false);
+        } else { // Up arrow
+          lis[lis.length - 1].classList.add('selected');
+          lis[lis.length - 1].scrollIntoView(false);
+        }
+      } else { // Existing selected
+        lis[i].classList.remove('selected');
+        if (event.keyCode == 40) { // Down arrow
+          lis[(i + 1) % lis.length].classList.add('selected');
+          lis[(i + 1) % lis.length].scrollIntoView(false);
+        } else { // Down arrow
+          // In javascript mod gives exact mod for negative value
+          // For example, -1 % 6 = -1 but I need, -1 % 6 = 5
+          // To get the round positive value I am adding the divisor
+          // with the negative dividend
+          lis[(((i - 1) % lis.length) + lis.length) % lis.length].classList.add('selected');
+          lis[(((i - 1) % lis.length) + lis.length) % lis.length].scrollIntoView(false);
+        }
+      }
+    } else if (event.keyCode == 13) { // Enter key event
+      let lis = this.iterationList.nativeElement.children;
+      let i = 0;
+      for (; i < lis.length; i++) {
+        if (lis[i].classList.contains('selected')) {
+          break;
+        }
+      }
+      if (i < lis.length) {
+        let selectedId = lis[i].dataset.value;
+        this.assignUser(selectedId);
+      }
+    } else {
+      let inp = this.userSearch.nativeElement.value.trim();
+      this.filteredUsers = this.users.filter((item) => {
+        return item.attributes.fullName.toLowerCase().indexOf(inp.toLowerCase()) > -1;
+      });
+    }
+  }
 
   @HostListener('window:keydown', ['$event'])
   onKeyEvent(event: any) {

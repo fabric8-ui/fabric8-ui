@@ -1,6 +1,7 @@
 import { Comments, Comment } from './comment';
 import { Link } from './link';
 import { User } from './user';
+import { IterationModel } from './iteration.model';
 
 export class WorkItem {
   attributes: WorkItemAttributes;
@@ -47,6 +48,12 @@ export class WorkItemRelations {
       type: string
     }
   };
+  iteration: {
+    data: {
+      id: string,
+      type: string
+    }
+  };
 }
 
 export class RelationalData {
@@ -54,6 +61,7 @@ export class RelationalData {
   comments?: Comment[];
   assignees?: User[];
   linkDicts?: LinkDict[];
+  iteration?: IterationModel;
   totalLinkCount?: number;
 }
 

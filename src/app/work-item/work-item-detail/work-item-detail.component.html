@@ -179,22 +179,28 @@
                 </span>
             </div>
         </div>
-
         <!--Iteration-->
         <div class="col-md-12 col-sm-12 col-xs-12 detail-iteration-wrap">
           <span class="pull-left iteration-label">Iteration</span>
           <div class="pull-left detail-iteration-name">
-
-            <span *ngIf="!hasIteration && !searchIteration" (click)="lookupIterations()" class="clickable">None</span>
-
-            <span *ngIf="!hasIteration && searchIteration" class="dropdown" id="WI_details_iteration" dropdown>
-              <button class="btn btn-default dropdown-toggle" type="button" id="WI_details_iteration_dropdown" data-toggle="dropdown" dropdown-open>
+            <span *ngIf="!workItem.relationalData?.iteration"
+              (click)="lookupIterations()" class="clickable">None</span>
+            <span *ngIf="workItem.relationalData?.iteration"
+              (click)="lookupIterations()" class="clickable">
+                {{workItem.relationalData.iteration.attributes.name}}
+            </span>
+            <span *ngIf="!hasIteration && searchIteration" class="dropdown"
+              id="WI_details_iteration" dropdown>
+              <button class="btn btn-default dropdown-toggle" type="button"
+                id="WI_details_iteration_dropdown" data-toggle="dropdown" dropdown-open>
                 None <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu" aria-labelledby="WI_details_iteration_dropdown">
-                <li role="presentation"><a role="menuitem" tabindex="-1">None</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1">Iteration 1</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1">Iteration 2</a></li>
+                <li *ngFor="let iteration of iterations;" role="presentation">
+                  <a role="menuitem" tabindex="-1" (click)="assignIteration(iteration.id)">
+                    {{ iteration.attributes.name }}
+                  </a>
+                </li>
               </ul>
               <button class="btn btn-lg btn-default" type="button">
                 <span class="fa fa-check"></span>
@@ -203,10 +209,8 @@
                 <span class="pficon pficon-close"></span>
               </button>
             </span>
-
           </div>
         </div>
-
         <!--Description-->
         <div class="separator col-md-12 col-sm-12 col-xs-12 detail-description-wrap">
           <div class="col-md-12 col-sm-12 col-xs-12 detail-description" *ngIf="loggedIn">
