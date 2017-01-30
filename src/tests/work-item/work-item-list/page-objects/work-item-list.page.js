@@ -433,12 +433,6 @@ class WorkItemListPage {
   clickWorkItemMovePulldownDown (parentElement) {
     return this.workItemMovePulldownDown(parentElement).click();
   }
-
-  /* Workitem filter pulldown */
-  workItemFilterPulldown () {
-    return workItemElement.element(by.css(".dropdown.filter-dropdown"));
-  }
-
   /* Access the Kebab 'move to top' element relative to its parent workitem */
   workItemKebabMoveToTopButton (parentElement) {
     browser.wait(until.presenceOf(parentElement.element(by.css('.workItemList_MoveTop'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
@@ -456,8 +450,48 @@ class WorkItemListPage {
   clickWorkItemKebabMoveToBottomButton (parentElement) {
     return this.workItemKebabMoveToBottomButton (parentElement).click();
   }
-
-
+  /**Iterations Page object model */
+  iterationAddButton  (){
+    return element(by.css('.pficon-add-circle-o.fa-icon'));
+  }
+  clickIterationCreateLabel  (){
+    return element(by.id("add-iteration")).click();
+  }
+  get iterationTitle  (){
+    return element(by.id("iteration-name")).click();
+  }
+  setIterationTitle  (newTitleString,append){
+    if (!append) { this.iterationTitle.clear(newTitleString) };
+    return this.iterationTitle.sendKeys(newTitleString);
+  }
+  get iterationDescription  (){
+    return element(by.id("iteration-description")).click();
+  }
+  setIterationDescription  (newString,append){
+     if (!append) { this.iterationDescription.clear(newString) };
+    return this.iterationDescription.sendKeys(newString);
+  }
+  get createItreationButton (){
+    return element(by.id('create-iteration-button'));
+  }
+  get cancelIterationButton  (){
+    return element(by.id('cancel-iteration-button'));
+  }
+  clickCreateIteration  (){
+    return this.createItreationButton.click();
+  }
+  clickCancelIteration  (){
+    return this.cancelIterationButton.click();
+  }
+  getIterationDialogTitle(){
+    return element(by.css('.modal-title')).getText();
+  }
+  getHelpBoxIteration (){
+    return element(by.css('.help-block')).getText();
+  }
+  closeIterationDialog(){
+    return element(by.css('.close')).click();
+  }
 
 }
 

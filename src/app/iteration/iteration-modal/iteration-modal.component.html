@@ -29,8 +29,8 @@
         </textarea>
       </div>
       <div class="text-right">
-        <button class="btn marginR10" type="submit" value="0" (click)="createUpdateIterationDialog.close()">Cancel</button>
-        <button class="btn btn-primary" type="submit" value="0" (click)="createUpdateIterationDialog.onSubmit.emit(undefined)">Create</button>
+        <button class="btn marginR10" type="submit" id="cancel-iteration-button" value="0" (click)="createUpdateIterationDialog.close()">Cancel</button>
+        <button class="btn btn-primary" type="submit" id="create-iteration-button" value="0" (click)="createUpdateIterationDialog.onSubmit.emit(undefined)">Create</button>
       </div>
     </div>
   </modal-content>
