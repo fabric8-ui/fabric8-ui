@@ -59,7 +59,7 @@ export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
     this.workItem.relationships = {
       baseType: {
         data: {
-          id: 'system.userstory',
+          id: 'userstory',
           type: 'workitemtypes'
         }
       }
