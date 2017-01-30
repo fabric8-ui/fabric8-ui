@@ -35,8 +35,16 @@
               <span class="fa fa-ellipsis-v"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li><a class="pointer">Edit</a></li>
-              <li><a class="pointer">Start</a></li>
+              <li>
+                <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
+                  Edit
+                </a>
+              </li>
+              <li>
+                <a class="pointer" (click)="modal.openCreateUpdateModal('close', iteration);">
+                  Close
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -68,7 +76,7 @@
                tooltip="{{(100 - barchatValue) + '%'}}">
           </div>
         </div>
-        {{iteration.attributes?.description}}
+        {{ iteration.attributes?.description }}
       </li>
     </ul>
   </div>
@@ -102,8 +110,16 @@
               <span class="fa fa-ellipsis-v"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li><a class="pointer">Edit</a></li>
-              <li><a class="pointer">Start</a></li>
+              <li>
+                <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
+                  Edit
+                </a>
+              </li>
+              <li>
+                <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration);">
+                  Start
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -138,8 +154,16 @@
               <span class="fa fa-ellipsis-v"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li><a class="pointer">Edit</a></li>
-              <li><a class="pointer">Start</a></li>
+              <li>
+                <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
+                  Edit
+                </a>
+              </li>
+              <li>
+                <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration);">
+                  Start
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -147,7 +171,9 @@
     </ul>
   </div>
 </div>
-<div *ngIf="loggedIn" class="create-iteration-bar pointer" (click)="modal.openCreateUpdateModal();">
+<div *ngIf="loggedIn"
+  class="create-iteration-bar pointer"
+  (click)="modal.openCreateUpdateModal('create');">
   <span><i class="pficon-add-circle-o fa-icon"></i>
   <span class="create-iteration-label" id="add-iteration">Create Iteration</span></span>
 </div>
@@ -155,5 +181,5 @@
 
 <fab-planner-iteration-modal
   #modal
-  (onCreateSuccess)="onCreateNewIteration($event)" >
+  (onSubmit)="onCreateOrupdateIteration($event)" >
 </fab-planner-iteration-modal>

@@ -1,12 +1,12 @@
 <modal
   #createUpdateIterationDialog
-  title="Create Iteration"
+  [title]="modalTitle"
   (onOpen)="actionOnOpen()"
   (onClose)="actionOnClose()"
   (onSubmit)="actionOnSubmit()">
   <modal-content>
     <div class="col-md-12 col-sm-12 col-xs-12">
-      <div>
+      <div *ngIf="modalType=='update' || modalType=='create'">
         <div class="form-group" [class.has-error]="validationError">
           <div class="search-pf-input-group">
             <label for="iteration-name">Name <span class="field-required-icon">*</span></label>
@@ -30,26 +30,37 @@
           </textarea>
         </div>
       </div>
-      <div class="form-group datepicker-container">
+
+      <div *ngIf="modalType=='update' || modalType=='start'"
+        class="form-group datepicker-container">
         <div class="start-date-container">
           <label>Start Date</label>
           <my-date-picker
                 [options]="myDatePickerOptions"
-                (dateChanged)="onStartDateChanged($event)"></my-date-picker>
+                (dateChanged)="onStartDateChanged($event)"
+                [(ngModel)]="startDate"></my-date-picker>
         </div>
         <div class="end-date-container">
           <label>End Date</label>
           <my-date-picker
                 [options]="myDatePickerOptions"
-                (dateChanged)="onEndDateChanged($event)"></my-date-picker>
+                (dateChanged)="onEndDateChanged($event)"
+                [(ngModel)]="endDate"></my-date-picker>
         </div>
+      </div>
+
+      <div *ngIf="modalType=='close'"
+        class="form-group datepicker-container">
+        Do you really want to close the iteration?
       </div>
     </div>
   </modal-content>
   <modal-footer>
     <div class="text-right col-md-12 col-sm-12 col-xs-12 iteration-modal-footer">
-      <button class="btn marginR10" type="submit" value="0" (click)="createUpdateIterationDialog.close()">Cancel</button>
-      <button class="btn btn-primary" type="submit" value="0" (click)="createUpdateIterationDialog.onSubmit.emit(undefined)">Create</button>
+      <button class="btn marginR10" id="cancel-iteration-button" type="submit" value="0" (click)="createUpdateIterationDialog.close()">Cancel</button>
+      <button class="btn btn-primary" id="create-iteration-button" type="submit" value="0" (click)="createUpdateIterationDialog.onSubmit.emit(undefined)">
+        {{submitBtnTxt}}
+      </button>
     </div>
   </modal-footer>
 </modal>

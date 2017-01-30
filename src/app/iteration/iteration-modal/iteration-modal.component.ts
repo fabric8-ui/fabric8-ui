@@ -1,34 +1,29 @@
+import { cloneDeep } from 'lodash';
 import { IterationService } from './../iteration.service';
 import { IterationModel } from './../../models/iteration.model';
-import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 
-import {IMyOptions, IMyDateModel} from 'mydatepicker';
+import * as moment from 'moment';
+
+import { IMyOptions, IMyDateModel } from 'mydatepicker';
 
 @Component({
   selector: 'fab-planner-iteration-modal',
   templateUrl: './iteration-modal.component.html',
   styleUrls: ['./iteration-modal.component.scss']
 })
-export class FabPlannerIterationModalComponent implements OnInit {
+export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
   @Output()
-  public onCreateSuccess = new EventEmitter();
+  public onSubmit = new EventEmitter();
 
   @ViewChild('createUpdateIterationDialog') createUpdateIterationDialog: any;
-  public iteration: IterationModel = {
-    attributes: {
-      name: "",
-      description: ""
-    },
-    relationships: {
-      space: {
-        data: {
-          id: "",
-        }
-      }
-    },
-    type: "iterations"
-  } as IterationModel;
+  public iteration: IterationModel;
   private validationError = false;
+  private modalType: string = 'create';
+  private submitBtnTxt: string = 'Create';
+  private modalTitle: string = 'Create Iteration';
+  private startDate: any;
+  private endDate: any;
 
   private myDatePickerOptions: IMyOptions = {
     dateFormat: 'dd mmm yyyy',
@@ -42,10 +37,68 @@ export class FabPlannerIterationModalComponent implements OnInit {
     private iterationService: IterationService) {}
 
   ngOnInit() {
-
+    this.resetValues();
   }
 
-  openCreateUpdateModal() {
+  resetValues() {
+    this.iteration  = {
+      attributes: {
+        name: "",
+        description: ""
+      },
+      relationships: {
+        space: {
+          data: {
+            id: "",
+          }
+        }
+      },
+      type: "iterations"
+    } as IterationModel;
+    let today = moment();
+    this.startDate = { date: { year: today.format('YYYY'), month: today.format('M'), day: today.format('DD') } };
+    let inaweek = moment().add(7, 'd');
+    this.endDate = { date: { year: inaweek.format('YYYY'), month: inaweek.format('M'), day: inaweek.format('DD') } };
+    this.validationError = false;
+  }
+
+  ngOnChanges() {
+    console.log(this.modalType);
+  }
+
+  openCreateUpdateModal(
+    type: string = 'create',
+    iteration: IterationModel | null = null
+  ) {
+    this.modalType = type;
+    if (this.modalType == 'create') {
+      this.submitBtnTxt = 'Create';
+      this.modalTitle = 'Create Iteration';
+    }
+    if (this.modalType == 'start') {
+      this.submitBtnTxt = 'Start';
+      this.modalTitle = 'Start Iteration';
+    }
+    if (this.modalType == 'update') {
+      this.submitBtnTxt = 'Update';
+      this.modalTitle = 'Update Iteration';
+    }
+    if (this.modalType == 'close') {
+      this.submitBtnTxt = 'Close';
+      this.modalTitle = 'Close Iteration';
+    }
+    if (iteration) {
+      this.iteration = cloneDeep(iteration);
+      if (this.iteration.attributes.startAt) {
+        let startDate = moment(this.iteration.attributes.startAt);
+        this.startDate = { date: { year: startDate.format('YYYY'), month: startDate.format('M'), day: startDate.format('DD') } };
+      }
+      if (this.iteration.attributes.endAt) {
+        let endDate = moment(this.iteration.attributes.endAt);
+        this.endDate = { date: { year: endDate.format('YYYY'), month: endDate.format('M'), day: endDate.format('DD') } };
+      }
+    }
+
     this.createUpdateIterationDialog.open();
   }
 
@@ -61,19 +114,22 @@ export class FabPlannerIterationModalComponent implements OnInit {
 
   onStartDateChanged(event: IMyDateModel) {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
-    console.log(event);
+    // Format 2016-11-29T23:18:14Z
+    this.startDate = { date: event.date };
+    this.iteration.attributes.startAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T00:00:00Z';
+    // console.log(this.iteration.attributes.startAt);
+
+    // Set default end date in a week
+    let inaweek = moment(event.jsdate).add(7, 'd');
+    this.endDate = { date: { year: inaweek.format('YYYY'), month: inaweek.format('M'), day: inaweek.format('DD') } };
   }
 
   onEndDateChanged(event: IMyDateModel) {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
-    console.log(event);
-  }
+    this.endDate = { date: event.date };
+    this.iteration.attributes.endAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T00:00:00Z';
+    // console.log(this.iteration.attributes.endAt);
 
-  resetValues() {
-    this.iteration.attributes.name = "";
-    this.iteration.attributes.description = "";
-    this.iteration.relationships.space.data.id = "";
-    this.validationError = false;
   }
 
   actionOnSubmit() {
@@ -84,15 +140,40 @@ export class FabPlannerIterationModalComponent implements OnInit {
         .then((data) => {
           let url = data.relationships.iterations.links.related;
           this.iteration.relationships.space.data.id = data.id;
-          this.iterationService.createIteration(url, this.iteration)
-          .then((iteration) => {
-            this.onCreateSuccess.emit(iteration);
-            this.createUpdateIterationDialog.close();
-          })
-          .catch ((e) => {
-            this.validationError = true;
-            console.log('Some error has occured', e);
-          })
+
+          if (this.modalType == 'create') {
+            this.iterationService.createIteration(url, this.iteration)
+            .then((iteration) => {
+              this.onSubmit.emit(iteration);
+              this.resetValues();
+              this.createUpdateIterationDialog.close();
+            })
+            .catch ((e) => {
+              this.validationError = true;
+              console.log('Some error has occured', e);
+            })
+          } else {
+            if (this.modalType == 'start') {
+              this.iteration.attributes.state = 'start';
+            } else if (this.modalType == 'close') {
+              this.iteration.attributes.state = 'close';
+            } else {
+              // Not include state if it's just an update
+              delete this.iteration.attributes.state;
+            }
+            this.iterationService.updateIteration(this.iteration)
+            .then((iteration) => {
+              this.onSubmit.emit(iteration);
+              this.resetValues();
+              this.createUpdateIterationDialog.close();
+            })
+            .catch ((e) => {
+              this.validationError = true;
+              // this.resetValues();
+              console.log('Some error has occured', e.toString());
+            })
+          }
+
         })
         .catch ((err) => {
           this.validationError = true;

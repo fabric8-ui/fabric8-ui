@@ -19,6 +19,7 @@ export class IterationComponent implements OnInit {
   isCollapsedFutureIteration: Boolean = true;
   isCollapsedPastIteration: Boolean = true;
   barchatValue: number = 70;
+  allIterations: IterationModel[] = [];
   futureIterations: IterationModel[] = [];
   currentIterations: IterationModel[] = [];
   closedIterations: IterationModel[] = [];
@@ -43,9 +44,8 @@ export class IterationComponent implements OnInit {
     .then((data) => {
       this.iterationService.getIterations(data.relationships.iterations.links.related)
       .then((iterations) => {
-        this.futureIterations = iterations.filter((iteration) => iteration.attributes.state === 'new');
-        this.currentIterations = iterations.filter((iteration) => iteration.attributes.state === 'start');
-        this.closedIterations = iterations.filter((iteration) => iteration.attributes.state === 'close');
+        this.allIterations = iterations;
+        this.clusterIterations();
       })
       .catch ((e) => {
         console.log('Some error has occured', e);
@@ -56,10 +56,20 @@ export class IterationComponent implements OnInit {
     });
   }
 
-  onCreateNewIteration(iteration: IterationModel) {
-    this.futureIterations.splice(
-      this.futureIterations.length, 0, iteration
-    );
+  clusterIterations() {
+    this.futureIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'new');
+    this.currentIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'start');
+    this.closedIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'close');
+  }
+
+  onCreateOrupdateIteration(iteration: IterationModel) {
+    let index = this.allIterations.findIndex((it) => it.id === iteration.id);
+    if (index >= 0) {
+      this.allIterations[index] = iteration;
+    } else {
+      this.allIterations.splice(this.allIterations.length, 0, iteration);
+    }
+    this.clusterIterations();
   }
 
   listenToEvents() {

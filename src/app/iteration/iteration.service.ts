@@ -91,7 +91,7 @@ export class IterationService {
    */
   updateIteration(iteration: IterationModel): Promise<IterationModel> {
     return this.http
-      .patch(iteration.links.self, { headers: this.headers })
+      .patch(iteration.links.self, { data: iteration }, { headers: this.headers })
       .toPromise()
       .then (response => {
         if (/^[5, 4][0-9]/.test(response.status.toString())) {
