@@ -43,6 +43,9 @@
 .iteration-subheader {
   display: flex;
   justify-content: space-between;
+  .iteration-name {
+    max-width: 80%;
+  }
 }
 .iteration-expanded-div {
   padding-left: 0;

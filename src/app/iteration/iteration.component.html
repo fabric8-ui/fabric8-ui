@@ -23,7 +23,7 @@
     <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
       <li class="active" *ngFor="let iteration of currentIterations">
         <div class="iteration-subheader">
-          <div>
+          <div class="iteration-name truncate">
             <strong>{{iteration.attributes.name}}</strong>
           </div>
           <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf" dropdown>
@@ -96,7 +96,7 @@
         [collapse]="isCollapsedFutureIteration">
 
       <li class="iteration-subheader" *ngFor="let iteration of futureIterations">
-        <div>
+        <div class="iteration-name truncate">
           <strong>{{iteration.attributes.name}}</strong>
         </div>
         <div>
@@ -140,7 +140,7 @@
     <ul class="not-current-iteration"
         [collapse]="isCollapsedPastIteration">
       <li class="iteration-subheader" *ngFor="let iteration of closedIterations">
-        <div>
+        <div class="iteration-name truncate">
           <strong>{{iteration.attributes.name}}</strong>
         </div>
         <div>
