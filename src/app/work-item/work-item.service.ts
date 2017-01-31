@@ -621,13 +621,16 @@ export class WorkItemService {
    */
   createComment(id: string, comment: Comment): Promise<Comment> {
     let c = new CommentPost();
+
     c.data = comment;
+
     return this.http
       .post(this.workItems[this.workItemIdIndexMap[id]]
               .relationships.comments.links.related, c, { headers: this.headers })
       .toPromise()
       .then(response => {
         let comment: Comment = response.json().data as Comment;
+
         comment.relationalData = {
           creator : this.getUserById(comment.relationships['created-by'].data.id)
         };

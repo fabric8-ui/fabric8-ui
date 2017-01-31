@@ -3,12 +3,12 @@
         <!-- Refactoring needed to toogle view -->
         <div class="col-md-12 col-sm-12 col-xs-12" *ngIf="true">
             <div *ngIf="loggedIn" class="">
-                <textarea rows="2" type="text" id="wi-comment-add-comment" class="form-control width100" [(ngModel)]="comment.attributes.body"
-                    [style.height]="descHeight" [style.resize]="descResize" (keydown.enter)="createComment($event)" (keyup.enter)="preventDef($event)"
-                    placeholder="Add a comment here...">
-                </textarea>
+                <p almEditable id="wi-comment-add-comment" class="form-control placeholder width100"
+                    (focus)="resetCommentDraft($event)" (blur)="resetCommentDraft($event)"
+                    (keydown.enter)="createComment($event)" (keyup.enter)="preventDef($event)"
+                    data-placeholder="Add a new comment..." #comment></p>
             </div>
-            <div *ngFor='let comment of workItem.relationalData?.comments?.slice()' class="comments-wrap">
+            <div *ngFor='let comment of workItem.relationalData?.comments?.slice(); let counter = index' class="comments-wrap">
                 <div>
                     <div class="user-avatar pull-left">
                         <img id="{{'comment_avatar_' + counter}}"

@@ -9,6 +9,19 @@
     > div{
         padding: 0;
     }
+    #wi-comment-add-comment {
+        /* Overrides pf's form-control style's height property */
+        /* The min-height is needed to avoid zero-height element */
+        /* The min-height is same as form-control's default height */
+        height: auto;
+        min-height: 26px;
+
+        /* Helper class, should be moved out when almEditable is extended to support placeholders */
+        &.placeholder {
+            color: $color-pf-black-400;
+            font-style: italic;
+        }
+    }
     .comments-wrap {
         width: $width100;
         float: left;

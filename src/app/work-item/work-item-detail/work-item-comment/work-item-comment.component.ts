@@ -33,6 +33,15 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
         this.createCommentObject();
     }
 
+    ngAfterViewInit() {
+        let commentbox = document.querySelector("#wi-comment-add-comment") as HTMLParagraphElement;
+
+        if (!!commentbox) {
+            commentbox.textContent = commentbox.dataset['placeholder'];
+            commentbox.blur();
+        }
+    }
+
     ngOnChanges(changes: SimpleChanges) {}
 
     createCommentObject(): void {
@@ -43,14 +52,29 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
 
     createComment(event: any = null): void {
         this.preventDef(event);
+        this.comment.attributes.body = event.target.textContent;
         this.workItemService
             .createComment(this.workItem['id'], this.comment)
             .then(response => {
-              this.createCommentObject();
+                event.target.textContent = "";
+                this.createCommentObject();
             })
             .catch ((error) => {
                 console.log(error);
             });
+    }
+
+    resetCommentDraft(event: any = null): void {
+        let commentbox  = event.target,
+            placeholder = event.target.dataset.placeholder;
+
+        if (event.type === 'focus' && commentbox.textContent === placeholder) {
+            commentbox.classList.remove("placeholder");
+            commentbox.textContent = '';
+        } else if (event.type === 'blur' && commentbox.textContent === '') {
+            commentbox.classList.add("placeholder");
+            commentbox.textContent = placeholder;
+        }
     }
 
     preventDef(event: any) {
