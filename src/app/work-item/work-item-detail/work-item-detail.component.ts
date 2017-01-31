@@ -73,6 +73,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   searchAssignee: Boolean = false;
 
+  hasIteration: Boolean = false;
+  searchIteration: Boolean = false;
+
   users: User[] = [];
   filteredUsers: User[] = [];
 
@@ -326,6 +329,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   preventDef(event: any) {
     event.preventDefault();
+  }
+
+  lookupIterations() {
+    this.searchIteration = !this.searchIteration;
   }
 
   activeSearchAssignee() {
