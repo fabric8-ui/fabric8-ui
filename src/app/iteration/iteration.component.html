@@ -26,7 +26,7 @@
           <div>
             <strong>{{iteration.attributes.name}}</strong>
           </div>
-          <div class="dropdown dropdown-kebab-pf" dropdown>
+          <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf" dropdown>
             <button class="btn btn-link dropdown-toggle"
                     type="button"
                     aria-haspopup="true"
@@ -101,7 +101,7 @@
         </div>
         <div>
           <span class="badge">90</span>
-          <div class="dropdown dropdown-kebab-pf dib" dropdown>
+          <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf dib" dropdown>
             <button class="btn btn-link dropdown-toggle"
                     type="button"
                     aria-haspopup="true"
@@ -145,7 +145,7 @@
         </div>
         <div>
           <span class="badge">90</span>
-          <div class="dropdown dropdown-kebab-pf dib" dropdown>
+          <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf dib" dropdown>
             <button class="btn btn-link dropdown-toggle"
                     type="button"
                     aria-haspopup="true"
