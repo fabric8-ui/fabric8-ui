@@ -56,9 +56,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
       type: "iterations"
     } as IterationModel;
     let today = moment();
-    this.startDate = { date: { year: today.format('YYYY'), month: today.format('M'), day: today.format('DD') } };
+    this.startDate = { date: { year: today.format('YYYY'), month: today.format('M'), day: today.format('D') } };
     let inaweek = moment().add(7, 'd');
-    this.endDate = { date: { year: inaweek.format('YYYY'), month: inaweek.format('M'), day: inaweek.format('DD') } };
+    this.endDate = { date: { year: inaweek.format('YYYY'), month: inaweek.format('M'), day: inaweek.format('D') } };
     this.validationError = false;
   }
 
@@ -91,11 +91,11 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
       this.iteration = cloneDeep(iteration);
       if (this.iteration.attributes.startAt) {
         let startDate = moment(this.iteration.attributes.startAt);
-        this.startDate = { date: { year: startDate.format('YYYY'), month: startDate.format('M'), day: startDate.format('DD') } };
+        this.startDate = { date: { year: startDate.format('YYYY'), month: startDate.format('M'), day: startDate.format('D') } };
       }
       if (this.iteration.attributes.endAt) {
         let endDate = moment(this.iteration.attributes.endAt);
-        this.endDate = { date: { year: endDate.format('YYYY'), month: endDate.format('M'), day: endDate.format('DD') } };
+        this.endDate = { date: { year: endDate.format('YYYY'), month: endDate.format('M'), day: endDate.format('D') } };
       }
     }
 
@@ -121,7 +121,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
 
     // Set default end date in a week
     let inaweek = moment(event.jsdate).add(7, 'd');
-    this.endDate = { date: { year: inaweek.format('YYYY'), month: inaweek.format('M'), day: inaweek.format('DD') } };
+    this.endDate = { date: { year: inaweek.format('YYYY'), month: inaweek.format('M'), day: inaweek.format('D') } };
   }
 
   onEndDateChanged(event: IMyDateModel) {
