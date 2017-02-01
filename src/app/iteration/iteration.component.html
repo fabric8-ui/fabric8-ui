@@ -23,8 +23,12 @@
     <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
       <li class="active" *ngFor="let iteration of currentIterations">
         <div class="iteration-subheader">
-          <div class="iteration-name truncate">
-            <strong>{{iteration.attributes.name}}</strong>
+          <div class="iteration-name-container">
+            <strong class="iteration-name truncate"
+              tooltip="{{iteration.attributes.name}}"
+              tooltipPlacement="top">
+              {{iteration.attributes.name}}
+            </strong>
           </div>
           <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf" dropdown>
             <button class="btn btn-link dropdown-toggle"
@@ -96,8 +100,12 @@
         [collapse]="isCollapsedFutureIteration">
 
       <li class="iteration-subheader" *ngFor="let iteration of futureIterations">
-        <div class="iteration-name truncate">
-          <strong>{{iteration.attributes.name}}</strong>
+        <div class="iteration-name-container">
+          <strong class="iteration-name truncate"
+            tooltip="{{iteration.attributes.name}}"
+            tooltipPlacement="top">
+            {{iteration.attributes.name}}
+          </strong>
         </div>
         <div>
           <span class="badge">90</span>
@@ -140,8 +148,12 @@
     <ul class="not-current-iteration"
         [collapse]="isCollapsedPastIteration">
       <li class="iteration-subheader" *ngFor="let iteration of closedIterations">
-        <div class="iteration-name truncate">
-          <strong>{{iteration.attributes.name}}</strong>
+        <div class="iteration-name-container">
+          <strong class="iteration-name truncate"
+            tooltip="{{iteration.attributes.name}}"
+            tooltipPlacement="top">
+            {{iteration.attributes.name}}
+          </strong>
         </div>
         <div>
           <span class="badge">90</span>
