@@ -57,24 +57,13 @@
       }
 
       .add-detailed-wi {
-        width: em(14);
-        height: em(14);
-        color: $color-pf-blue-300;
-        background: $color-pf-white;
         cursor: pointer;
         float: right;
         position: relative;
-        margin: em(5);
-        @include Border(em(2) , solid , $color-pf-blue-300);
-        @include borderRadius(50%);
         i {
-          font-size: em(10);
+          font-size: em(16);
           line-height: 1.5;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          padding: em(5);
-          @include transform(translate(-50%, -50%));
+          color: $color-pf-blue-400;
         }
       }
     }
