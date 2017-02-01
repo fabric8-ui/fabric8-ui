@@ -33,14 +33,14 @@
 
       <div *ngIf="modalType=='update' || modalType=='start'"
         class="form-group datepicker-container">
-        <div class="start-date-container">
+        <div class="start-date-container date-container">
           <label>Start Date</label>
           <my-date-picker
                 [options]="myDatePickerOptions"
                 (dateChanged)="onStartDateChanged($event)"
                 [(ngModel)]="startDate"></my-date-picker>
         </div>
-        <div class="end-date-container">
+        <div class="end-date-container date-container">
           <label>End Date</label>
           <my-date-picker
                 [options]="myDatePickerOptions"

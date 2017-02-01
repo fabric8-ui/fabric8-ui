@@ -11,6 +11,9 @@
 .datepicker-container {
   display: flex;
   justify-content: space-between;
+  .date-container {
+    width: 50%;
+  }
 }
 .start-date-container {
   padding-right: em(5);
