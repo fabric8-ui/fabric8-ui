@@ -53,6 +53,9 @@
         class="form-group datepicker-container">
         Do you really want to close the iteration?
       </div>
+      <div class="error-block" [class.space-error]="spaceError">
+        <span class="help-block">There is already a current iteration for {{spaceName}}. You must close the current iteration before starting this one.</span>
+      </div>
     </div>
   </modal-content>
   <modal-footer>

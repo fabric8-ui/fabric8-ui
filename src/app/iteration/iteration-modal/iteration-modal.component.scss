@@ -21,3 +21,12 @@
 .iteration-modal-footer {
   margin-top: em(20);
 }
+.error-block {
+  visibility: hidden;
+  .help-block {
+    color: $color-pf-red-200;
+  }
+}
+.space-error {
+  visibility: visible;
+}

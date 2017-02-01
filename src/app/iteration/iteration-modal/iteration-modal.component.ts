@@ -24,6 +24,8 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
   private modalTitle: string = 'Create Iteration';
   private startDate: any;
   private endDate: any;
+  private spaceError: Boolean = false;
+  private spaceName: string;
 
   private myDatePickerOptions: IMyOptions = {
     dateFormat: 'dd mmm yyyy',
@@ -60,6 +62,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
     let inaweek = moment().add(7, 'd');
     this.endDate = { date: { year: inaweek.format('YYYY'), month: inaweek.format('M'), day: inaweek.format('D') } };
     this.validationError = false;
+    this.spaceError = false;
   }
 
   ngOnChanges() {
@@ -140,6 +143,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
         .then((data) => {
           let url = data.relationships.iterations.links.related;
           this.iteration.relationships.space.data.id = data.id;
+          this.spaceName = data.attributes.name;
 
           if (this.modalType == 'create') {
             this.iterationService.createIteration(url, this.iteration)
@@ -168,9 +172,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
               this.createUpdateIterationDialog.close();
             })
             .catch ((e) => {
-              this.validationError = true;
+              this.spaceError = true;
               // this.resetValues();
-              console.log('Some error has occured', e.toString());
+              // console.log('Some error has occured', e.toString());
             })
           }
 
