@@ -12,11 +12,11 @@
  * @author ldimaggi
  */
 
-var CommonPage = require('./page-objects/common.page'),
-  HypothesisPage = require('./page-objects/hypothesis.page'),
-  testSupport = require('./testSupport');
+var CommonPage = require('../page-objects/common.page'),
+  SettingsPage = require('../page-objects/settings.page'),
+  testSupport = require('../testSupport');
 
-describe('Hypothesis page', function () {
+describe('Settings page', function () {
   var page, browserMode;
   var until = protractor.ExpectedConditions;
   var waitTime = 30000;
@@ -27,10 +27,9 @@ describe('Hypothesis page', function () {
   });
 
   it('should contain correct page title.', function() {
-      var theHypothesisPage = page.clickHypothesisMenuTab();
-      expect(browser.getCurrentUrl()).toEqual('http://localhost:8088/hypothesis');
-      browser.wait(until.urlContains('hypothesis'), waitTime, 'Failed to open hypothesis page');
+      var theSettingspage = page.clickSettingsMenuTab();
+      expect(browser.getCurrentUrl()).toEqual('http://localhost:8088/settings');
+      browser.wait(until.urlContains('settings'), waitTime, 'Failed to open settings page');
   });
 
 });
-

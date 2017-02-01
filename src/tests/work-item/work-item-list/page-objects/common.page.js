@@ -35,125 +35,31 @@ class CommonPage {
 
 /* Page elements - top of the page */
 
-/* Home page */
-  get homeMenuTab () {
-    return element(by.id("header_menuHome"));
-  }
-
-  clickHomeMenuTab () {
-    browser.wait(until.presenceOf(this.homeMenuTab), waitTime, 'Failed to find homeMenuTab');
-    this.homeMenuTab.click(); 
-    return new HomePage();
-  }
-
-/* Work (workitems) page */
-  get workMenuTab () {
-    return element(by.id("header_menuWork")); 
-  }
-
-  clickWorkMenuTab () {
-    browser.wait(until.presenceOf(this.workMenuTab), waitTime, 'Failed to find workMenuTab');
-    this.workMenuTab.click(); 
-    return new WorkItemListPage();
-  }
-
-/* Code page */
-  get codeMenuTab () {
-    return element(by.id("header_menuCode"));
-  }
-
-  clickCodeMenuTab () {
-    browser.wait(until.presenceOf(this.codeMenuTab), waitTime, 'Failed to find codeMenuTab');
-    this.codeMenuTab.click(); 
-    return new CodePage();
-  }
-
-/* Test page */
-  get testMenuTab () {
-    return element(by.id("header_menuTest")); 
-  }
-
-  clickTestMenuTab () {
-    browser.wait(until.presenceOf(this.testMenuTab), waitTime, 'Failed to find testMenuTab');
-    this.testMenuTab.click(); 
-    return new TestPage();
-  }
-
-/* Pipeline page */
-  get pipelineMenuTab () {
-    return element(by.id("header_menuPipeline"));
-  }
-
-  clickPipelineMenuTab () {
-    browser.wait(until.presenceOf(this.pipelineMenuTab), waitTime, 'Failed to find pipelineMenuTab');
-    this.pipelineMenuTab.click(); 
-    return new PipelinePage();
+  /* Work (workitems) page */
+ clickDashboardMenuTab () {
+    return element(by.id("header_menuHome")).click();
   }
 
 /* Hypothesis page */
-  get hypothesisMenuTab () {
-    return element(by.id("header_menuHypothesis"));
+ clickHypothesisMenuTab () {
+    return element(by.id("header_menuHypothesis")).click();
   }
-
-  clickHypothesisMenuTab () {
-    browser.wait(until.presenceOf(this.hypothesisMenuTab), waitTime, 'Failed to find hypothesisMenuTab');
-    this.hypothesisMenuTab.click(); 
-    return new HypothesisPage();
-  }
-
-/* Settings page */
-  get settingsMenuTab () {
-    return element(by.id("header_menuSettings"));
-  }
-
-  clickSettingsMenuTab () {
-    browser.wait(until.presenceOf(this.settingsMenuTab), waitTime, 'Failed to find settingsMenuTab');
-    this.settingsMenuTab.click(); 
-    return new SettingsPage();
-  }
-
-/* Chat page */
-  get chatMenuTab () {
-    return element(by.id("header_menuChat"));
-  }
-  get dashboardMenuTab () {
-    return element(by.id("header_menuHome"));
-  }
-
-  clickHomeMenuTab () {
-    browser.wait(until.presenceOf(this.dashboardMenuTab), waitTime, 'Failed to find dashboardMenuTab');
-    this.dashboardMenuTab.click(); 
-    return new DashboardPage();
-  }
-
-  clickChatMenuTab () {
-    browser.wait(until.presenceOf(this.chatMenuTab), waitTime, 'Failed to find chatMenuTab');
-    this.chatMenuTab.click(); 
-    return new ChatPage();
-  }
-
 /* Notifications page */
-  get notificationsMenuTab () {
-    return element(by.id("header_menuNotifications"));
+ clickNotificationsMenuTab () {
+    return element(by.id("header_menuNotifications")).click();
   }
-
-  clickNotificationsMenuTab () {
-    browser.wait(until.presenceOf(this.notificationsMenuTab), waitTime, 'Failed to find notificationsMenuTab');
-    this.notificationsMenuTab.click(); 
-    return new NotificationsPage();
+  /* Pipeline page */
+ clickPipelineMenuTab () {
+    return element(by.id("header_menuPipeline")).click();
   }
-
-/* Microservices page */
-  get microservicesMenuTab () {
-    return element(by.id("header_menuWizard"));
+/* Settings page */
+ clickSettingsMenuTab () {
+    return element(by.id("header_menuSettings")).click();
   }
-
-  clickMicroServicesMenuTab () {
-    browser.wait(until.presenceOf(this.microservicesMenuTab), waitTime, 'Failed to find microservicesMenuTab');
-    this.microservicesMenuTab.click(); 
-    return new MicroservicesPage();
+  /* Test page */
+ clickTestMenuTab () {
+    return element(by.id("header_menuTest")).click(); 
   }
-
 }
 
 module.exports = CommonPage;

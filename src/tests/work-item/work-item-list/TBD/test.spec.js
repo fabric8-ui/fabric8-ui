@@ -12,24 +12,24 @@
  * @author ldimaggi
  */
 
-var CommonPage = require('./page-objects/common.page'),
-  CodePage = require('./page-objects/code.page'),
-  testSupport = require('./testSupport');
+var CommonPage = require('../page-objects/common.page'),
+  TestPage = require('../page-objects/test.page'),
+  testSupport = require('../testSupport');
 
-describe('Code page', function () {
+describe('Test page', function () {
   var page, browserMode;
   var until = protractor.ExpectedConditions;
   var waitTime = 30000;
 
   beforeEach(function () {
-    testSupport.setBrowserMode('desktop');
+    testSupport.setBrowserMode('phone');
     page = new CommonPage();
   });
 
   it('should contain correct page title.', function() {
-      var theCodepage = page.clickCodeMenuTab();
-      expect(browser.getCurrentUrl()).toEqual('http://localhost:8088/code');
-      browser.wait(until.urlContains('code'), waitTime, 'Failed to open code page');
+      var theTestpage = page.clickTestMenuTab();
+      expect(browser.getCurrentUrl()).toEqual('http://localhost:8088/test');
+      browser.wait(until.urlContains('test'), waitTime, 'Failed to open test page');
   });
 
 });

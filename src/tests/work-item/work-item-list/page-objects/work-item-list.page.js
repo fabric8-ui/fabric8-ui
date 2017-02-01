@@ -41,6 +41,12 @@ class WorkItemListPage {
  workItemByURLId (workItemId) {
    browser.get("http://localhost:8088/work-item/list/detail/"+ workItemId);
  }
+ clickChatMenuTab () {
+    return element(by.id("header_menuChat")).click();
+  }
+ clickCodeMenuTab () {
+    return element(by.id("header_menuCode")).click();
+  }
  get workItemListButton () {
      return element(by.id("header_menuWorkItemList"));
  }

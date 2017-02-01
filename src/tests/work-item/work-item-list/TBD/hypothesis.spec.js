@@ -12,11 +12,11 @@
  * @author ldimaggi
  */
 
-var CommonPage = require('./page-objects/common.page'),
-  HomePage = require('./page-objects/home.page'),
-  testSupport = require('./testSupport');
+var CommonPage = require('../page-objects/common.page'),
+  HypothesisPage = require('../page-objects/hypothesis.page'),
+  testSupport = require('../testSupport');
 
-describe('Home page', function () {
+describe('Hypothesis page', function () {
   var page, browserMode;
   var until = protractor.ExpectedConditions;
   var waitTime = 30000;
@@ -27,9 +27,9 @@ describe('Home page', function () {
   });
 
   it('should contain correct page title.', function() {
-      var theHomepage = page.clickHomeMenuTab();
-      expect(browser.getCurrentUrl()).toEqual('http://localhost:8088/dashboard');
-      browser.wait(until.urlContains('dashboard'), waitTime, 'Failed to open dashboard page');
+      var theHypothesisPage = page.clickHypothesisMenuTab();
+      expect(browser.getCurrentUrl()).toEqual('http://localhost:8088/hypothesis');
+      browser.wait(until.urlContains('hypothesis'), waitTime, 'Failed to open hypothesis page');
   });
 
 });

@@ -12,24 +12,24 @@
  * @author ldimaggi
  */
 
-var CommonPage = require('./page-objects/common.page'),
-  ChatPage = require('./page-objects/chat.page'),
-  testSupport = require('./testSupport');
+var CommonPage = require('../page-objects/common.page'),
+  NotificationsPage = require('../page-objects/notifications.page'),
+  testSupport = require('../testSupport');
 
-describe('Chat page', function () {
+describe('Notifications page', function () {
   var page, browserMode;
   var until = protractor.ExpectedConditions;
   var waitTime = 30000;
 
   beforeEach(function () {
-    testSupport.setBrowserMode('desktop');
+    testSupport.setBrowserMode('phone');
     page = new CommonPage();
   });
 
   it('should contain correct page title.', function() {
-      var theChatpage = page.clickChatMenuTab();
-      expect(browser.getCurrentUrl()).toEqual('http://localhost:8088/chat');
-      browser.wait(until.urlContains('chat'), waitTime, 'Failed to open chat page');
+      var theNotificationsPage = page.clickNotificationsMenuTab();
+      expect(browser.getCurrentUrl()).toEqual('http://localhost:8088/notifications');
+      browser.wait(until.urlContains('notifications'), waitTime, 'Failed to open notifications page');
   });
 
 });

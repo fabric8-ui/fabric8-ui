@@ -9,14 +9,14 @@
  * 
  * beforeEach will set the mode to phone. Any tests requiring a different resolution will must set explicitly. 
  * 
- * @author naverma@redhat.com
+ * @author ldimaggi
  */
 
-var CommonPage = require('./page-objects/common.page'),
-  DashboardPage = require('./page-objects/dashboard.page'),
-  testSupport = require('./testSupport');
+var CommonPage = require('../page-objects/common.page'),
+  HomePage = require('../page-objects/home.page'),
+  testSupport = require('../testSupport');
 
-describe('Dashboard page', function () {
+describe('Home page', function () {
   var page, browserMode;
   var until = protractor.ExpectedConditions;
   var waitTime = 30000;
@@ -27,9 +27,10 @@ describe('Dashboard page', function () {
   });
 
   it('should contain correct page title.', function() {
-      var theDashboardPage = page.clickHomeMenuTab();
+      var theHomepage = page.clickDashboardMenuTab();
       expect(browser.getCurrentUrl()).toEqual('http://localhost:8088/dashboard');
-      browser.wait(until.urlContains('dashboard'), waitTime, 'Failed to open clickHomeMenuTab page');
+      browser.wait(until.urlContains('dashboard'), waitTime, 'Failed to open dashboard page');
   });
 
 });
+

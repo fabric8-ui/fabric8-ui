@@ -12,9 +12,9 @@
  * @author ldimaggi
  */
 
-var CommonPage = require('./page-objects/common.page'),
-  PipelinePage = require('./page-objects/pipeline.page'),
-  testSupport = require('./testSupport');
+var CommonPage = require('../page-objects/common.page'),
+  PipelinePage = require('../page-objects/pipeline.page'),
+  testSupport = require('../testSupport');
 
 describe('Pipeline page', function () {
   var page, browserMode;
