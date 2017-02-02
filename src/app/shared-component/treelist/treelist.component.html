@@ -1,0 +1,45 @@
+<Tree #tree
+      [nodes]="nodes"
+      [focused]="true"
+      [options]="customOptions">
+  <template #treeNodeTemplate let-node let-index="index">
+    <template [ngTemplateOutlet]="listTemplate" [ngOutletContext]="{ item: node, index: index }"></template>
+  </template>
+  <template #loadingTemplate>Loading, please hold....</template>
+  <template #treeNodeFullTemplate
+            let-node="node"
+            let-index="index"
+            let-templates="templates">
+    <div
+      *ngIf="!node.isHidden"
+      class="tree-node tree-node-level-{{ node.level }}"
+      [class]="node.getClass()"
+      [class.tree-node-expanded]="node.isExpanded && node.hasChildren"
+      [class.tree-node-collapsed]="node.isCollapsed && node.hasChildren"
+      [class.tree-node-leaf]="node.isLeaf"
+      [class.tree-node-active]="node.isActive"
+      [class.tree-node-focused]="node.isFocused">
+
+      <TreeNodeDropSlot *ngIf="index === 0" [dropIndex]="index" [node]="node.parent"></TreeNodeDropSlot>
+
+      <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
+        <TreeNodeExpander [node]="node" *ngIf="!hideExpander"></TreeNodeExpander>
+        <div class="node-content-wrapper"
+             (click)="node.mouseAction('click', $event)"
+             (dblclick)="node.mouseAction('dblClick', $event)"
+             (contextmenu)="node.mouseAction('contextMenu', $event)"
+             (treeDrop)="node.onDrop($event)"
+             [treeAllowDrop]="node.allowDrop.bind(node)"
+             [treeDrag]="node"
+             [treeDragEnabled]="node.allowDrag()">
+
+          <TreeNodeContent [node]="node" [index]="index" [template]="templates.treeNodeTemplate">
+          </TreeNodeContent>
+        </div>
+      </div>
+
+      <TreeNodeChildren [node]="node" [templates]="templates"></TreeNodeChildren>
+      <TreeNodeDropSlot [dropIndex]="index + 1" [node]="node.parent"></TreeNodeDropSlot>
+    </div>
+  </template>
+</Tree>
