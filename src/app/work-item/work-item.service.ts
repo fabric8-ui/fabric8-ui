@@ -106,10 +106,14 @@ export class WorkItemService {
           this.nextLink = links.next;
         }
         wItems = response.json().data as WorkItem[];
+        console.log('1');
         wItems.forEach((item) => {
           // Resolve the assignee and creator
+          console.log('2')
           this.resolveUsersForWorkItem(item);
+          console.log('3')
           this.resolveIterationForWorkItem(item);
+          console.log('4')
         });
         // Update the existing workItem big list with new data
         this.updateWorkItem(wItems);
@@ -362,7 +366,8 @@ export class WorkItemService {
    * Usage: Fetch an iteration by it's ID from the iterations list
    */
   getIterationById(iterationId: string): IterationModel {
-    return this.iterationService.iterations.filter(item => item.id == iterationId)[0];
+    let iterations: IterationModel[] = this.iterationService.iterations;
+    return iterations.filter(item => item.id == iterationId)[0];
   }
 
   /**

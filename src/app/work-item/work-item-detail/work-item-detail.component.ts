@@ -265,24 +265,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   }
 
   getIterations() {
-    if (this.iterationService.iterations) {
-      this.iterations = this.iterationService.iterations;
-    } else {
-      this.iterationService.getSpaces()
-        .then((data) => {
-          this.iterationService.getIterations(data.relationships.iterations.links.related)
-            .then((iterations) => {
-              this.iterations = iterations;
-              console.log(iterations);
-            })
-            .catch ((e) => {
-              console.log('Some error has occured', e);
-            })
-        })
-        .catch ((err) => {
-          console.log('Spcae not found');
-        });
-    }
+    this.iterations = this.iterationService.iterations;
   }
 
   onChangeState(option: any): void {

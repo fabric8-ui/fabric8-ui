@@ -34,6 +34,8 @@ import { AlmIconModule } from './../../shared-component/icon/almicon.module';
 import { AlmEditableModule } from './../../shared-component/editable/almeditable.module';
 import { AlmValidLinkTypes } from './../../pipes/alm-valid-link-types.pipe';
 import { AuthenticationService } from './../../auth/authentication.service';
+import { IterationModel } from './../../models/iteration.model';
+import { IterationService } from './../../iteration/iteration.service';
 import { LinkType } from './../../models/link-type';
 import { User } from './../../models/user';
 import { UserService } from './../../user/user.service';
@@ -54,6 +56,9 @@ describe('Detailed view and edit a selected work item - ', () => {
   let logger: Logger;
   let fakeWorkItem: WorkItem;
   let fakeWorkItems: WorkItem[] = [];
+  let fakeIteration: IterationModel;
+  let fakeIterationList: IterationModel[] = [];
+  let fakeIterationService: any;
   let fakeUser: User;
   let fakeUserList: User[];
   let fakeWorkItemService: any;
@@ -131,6 +136,16 @@ describe('Detailed view and edit a selected work item - ', () => {
     } as WorkItem;
 
     fakeWorkItems.push(fakeWorkItem);
+
+    fakeIteration = {
+      'attributes': {
+        'name': 'Iteration 1'
+      },
+      'type': 'iterations'
+
+    } as IterationModel;
+
+    fakeIterationList.push(fakeIteration);
 
     fakeWorkItemStates = [
       { option: 'new' },
@@ -244,6 +259,23 @@ describe('Detailed view and edit a selected work item - ', () => {
       }
     };
 
+    fakeIterationService = {
+      getIterations: function () {
+        return new Promise((resolve, reject) => {
+          resolve(fakeIterationList);
+        });
+      },
+      getSpaces: function () {
+        let spaces = [{
+          'attributes': {
+            'name': 'Project 1'
+          },
+          'type': 'spaces'
+        }];
+        return spaces;
+      }
+    };
+
     fakeWorkItemService = {
       create: function () {
         return new Promise((resolve, reject) => {
@@ -340,6 +372,10 @@ describe('Detailed view and edit a selected work item - ', () => {
         {
           provide: AuthenticationService,
           useValue: fakeAuthService
+        },
+        {
+          provide: IterationService,
+          useValue: fakeIterationService
         },
         {
           provide: UserService,
