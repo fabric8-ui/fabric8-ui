@@ -17,6 +17,11 @@
       visibility: visible;
     }
   }
+  &.selected{
+    .row-cbh{
+      border: none;
+    }
+  }
   &:hover {
     .row-cbh {
        border-right: 1px solid $color-pf-black-500;
