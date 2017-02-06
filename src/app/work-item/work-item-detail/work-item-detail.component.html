@@ -33,36 +33,36 @@
           <div class="col-md-8 col-sm-7 col-xs-12 wi-detail-title-blk">
             <div *ngIf="!headerEditable" (click)='openHeader()'
               id="title-click-div">
-                <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate">{{ workItem.attributes['system.title'] }}</h2>
-                <h2 *ngIf="loggedIn" id="wi-detail-title-click" class="detail-title truncate">{{ workItem.attributes['system.title'] }}</h2>
-                <span *ngIf="loggedIn && workItem.id"
-                  class="pficon-edit marginL10 fl detail-title-edit-ico"
-                  id="workItemTitle_btn_edit"></span>
+              <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate">{{ workItem.attributes['system.title'] }}</h2>
+              <h2 *ngIf="loggedIn" id="wi-detail-title-click" class="detail-title truncate">{{ workItem.attributes['system.title'] }}</h2>
+              <span *ngIf="loggedIn && workItem.id"
+                class="pficon-edit marginL10 fl detail-title-edit-ico"
+                id="workItemTitle_btn_edit"></span>
             </div>
             <div *ngIf="(loggedIn && headerEditable)" id="wi-title-div">
-                <div almEditable
+                <h2 almEditable
                     (onUpdate)="checkTitle($event)"
                     (keyup.enter)="onUpdateTitle()"
                     (keydown.enter)="preventDef($event)"
                     id="wi-detail-title"
-                    class="detail-title-edit"
+                    class="detail-title-edit form-control"
                     [innerText]="workItem.attributes['system.title'] | almTrim"
                     #title >
-                </div>
+                </h2>
                 <aside class="col-md-12 col-sm-12 col-xs-12">
+                  <!--Cancel icon-->
+                  <button id="workItemTitle_btn_cancel"
+                      class="pull-right btn btn-default detail-action-btn"
+                      (click)="closeHeader()">
+                    <span class="fa fa-close"></span>
+                  </button>
                   <!--Save icon-->
-                  <div id="workItemTitle_btn_save"
-                      class="pull-right btn-small detail-action-btn"
+                  <button id="workItemTitle_btn_save"
+                      class="pull-right btn btn-default detail-action-btn"
                       [ngClass]="{disabled : validTitle == false}"
                       (click)="validTitle && onUpdateTitle()" >
                       <span class="fa fa-check"></span>
-                  </div>
-                  <!--Cancel icon-->
-                  <div id="workItemTitle_btn_cancel"
-                      class="pull-right btn-small detail-action-btn"
-                      (click)="closeHeader()">
-                    <span class="fa fa-close"></span>
-                  </div>
+                  </button>
                 </aside>
                 <!--Error message for title-->
                 <p [hidden]="validTitle"

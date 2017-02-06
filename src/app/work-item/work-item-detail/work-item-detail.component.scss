@@ -65,12 +65,9 @@
       cursor: pointer;
     }
     .detail-title-edit {
-      border-bottom: 1px solid $color-pf-blue-200;
-      @include box-shadow(0 4px 4px -4px rgba(0,136,206,.6));
-      font-size: em(22);
-      outline: 0;
-      line-height: 1.3;
-      min-height: em(17);
+      min-height: em(25);
+      margin: 0;
+      line-height: 1.5;
     }
     aside{
       padding: em(5) 0 0;
@@ -221,10 +218,9 @@
   .detail-action-btn {
     font-size: em(14);
     cursor: pointer;
-    width:em(24);
+    width:em(42);
     text-align: $textCenter;
     padding: em(5);
-    background-color: $color-pf-black-200;
     margin-left: em(5);
   }
   .desc-editable {
