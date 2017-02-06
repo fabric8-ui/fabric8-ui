@@ -1,3 +1,4 @@
+import { Stack } from './stack';
 import { Team } from './team';
 import { ProcessTemplate } from './process-template';
 
@@ -12,6 +13,7 @@ export interface Space {
     id: string;
     attributes: SpaceAttributes;
     type: string;
+    stacks?: Stack[];
 }
 
 export class SpaceAttributes {

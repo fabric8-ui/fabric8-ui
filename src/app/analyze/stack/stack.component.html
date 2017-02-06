@@ -1,0 +1,35 @@
+<div id="stack" class="container content">
+  <h1>Stack Reports</h1>
+  <table class="table table-striped" *ngIf="context.current.space?.stacks">
+    <thead>
+      <tr>
+        <th>
+          Codebase
+        </th>
+        <th>
+          Pipeline
+        </th>
+        <th>
+          Build Number
+        </th>
+        <th>
+          Report
+        </th>
+      </tr>
+    </thead>
+    <tr *ngFor="let stack of context.current.space.stacks">
+      <td>
+        {{stack.codebase}}
+      </td>
+      <td>
+        {{stack.pipeline}}
+      </td>
+      <td>
+        {{stack.build}}
+      </td>
+      <td>
+        <a [routerLink]="['/pmuir/BalloonPopGame/stack/detail', { uuid: stack.uuid }]"><span class="fa fa-file-text-o"></span></a>
+      </td>
+    </tr>
+  </table>
+</div>

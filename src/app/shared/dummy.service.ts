@@ -149,6 +149,9 @@ export class DummyService {
               }, {
                 name: 'README',
                 path: 'readme'
+              }, {
+                name: 'Stack',
+                path: 'stack'
               }
             ]
           }, {
@@ -316,7 +319,25 @@ export class DummyService {
           'updated-at': '2017-01-02',
           version: 1
         },
-        type: 'spaces'
+        type: 'spaces',
+        stacks: [
+          {
+            codebase: 'https://github.com/BalloonPopGame/BalloonPopGame',
+            pipeline: 'Canary Release Stage and Approve',
+            build: 10,
+            uuid: 'foo'
+          }, {
+            codebase: 'https://github.com/BalloonPopGame/BalloonPopGame',
+            pipeline: 'Canary Release Stage and Approve',
+            build: 11,
+            uuid: 'foo'
+          }, {
+            codebase: 'https://github.com/BalloonPopGame/BalloonPopGame-UI',
+            pipeline: 'Canary Release Stage and Approve',
+            build: 25,
+            uuid: 'foo'
+          },
+        ]
       } as Space
     ]
   ]);
