@@ -99,7 +99,6 @@ export class WorkItemService {
       .then(response => {
         // Build the user - id map
         this.buildUserIdMap();
-        this.buildIterationsList();
         let wItems: WorkItem[];
         let links = response.json().links;
         if (links.hasOwnProperty('next')) {
@@ -345,10 +344,6 @@ export class WorkItemService {
         this.userIdMap[user.id] = user;
       });
     }
-  }
-
-  buildIterationsList(): void {
-    this.iterationService.getAllIterations();
   }
 
   /**

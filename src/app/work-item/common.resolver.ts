@@ -24,20 +24,21 @@ export class AuthUserResolve implements Resolve<any> {
 }
 
 @Injectable()
-export class IterationsUrlResolve implements Resolve<String[]> {
-  constructor(private iterationService: IterationService) {}
-  resolve() {
-    console.log('call iterations url');
-    return this.iterationService.getIterationUrl();
-  }
-}
-
-@Injectable()
 export class IterationsResolve implements Resolve<IterationModel[]> {
   constructor(private iterationService: IterationService) {}
   resolve() {
     console.log('call iterations');
-    return this.iterationService.getAllIterations();
+    return this.iterationService.getSpaces()
+      .then((data) => {
+        this.iterationService.getIterations(data.relationships.iterations.links.related)
+        .then(iterations =>  iterations)
+        .catch ((e) => {
+          console.log('Some error has occured', e);
+        })
+      })
+      .catch ((err) => {
+        console.log('Spcae not found');
+      });
   }
 }
 
