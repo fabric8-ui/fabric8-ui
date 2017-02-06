@@ -183,29 +183,26 @@
         <div class="col-md-12 col-sm-12 col-xs-12 detail-iteration-wrap">
           <span class="pull-left iteration-label">Iteration</span>
           <div class="pull-left detail-iteration-name">
-            <span *ngIf="!workItem.relationalData?.iteration"
-              (click)="lookupIterations()" class="clickable">None</span>
-            <span *ngIf="workItem.relationalData?.iteration"
-              (click)="lookupIterations()" class="clickable">
-                {{workItem.relationalData.iteration.attributes.name}}
+            <span *ngIf="!searchIteration" (click)="lookupIterations()" class="clickable">
+              {{ workItem.relationalData?.iteration?.attributes.name || "None" }}
             </span>
-            <span *ngIf="!hasIteration && searchIteration" class="dropdown"
+            <span *ngIf="searchIteration" class="dropdown"
               id="WI_details_iteration" dropdown>
-              <button class="btn btn-default dropdown-toggle" type="button"
+              <button class="btn btn-default dropdown-toggle" type="button" #dropdownButton
                 id="WI_details_iteration_dropdown" data-toggle="dropdown" dropdown-open>
-                None <span class="caret"></span>
+                {{ workItem.relationalData?.iteration?.attributes.name || "None" }} <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu" aria-labelledby="WI_details_iteration_dropdown">
                 <li *ngFor="let iteration of iterations;" role="presentation">
-                  <a role="menuitem" tabindex="-1" (click)="assignIteration(iteration.id)">
+                  <a role="menuitem" tabindex="-1" (click)="selectIteration(iteration)">
                     {{ iteration.attributes.name }}
                   </a>
                 </li>
               </ul>
-              <button class="btn btn-lg btn-default" type="button">
+              <button class="btn btn-lg btn-default" type="button" (click)=assignIteration()>
                 <span class="fa fa-check"></span>
               </button>
-              <button class="btn btn-lg btn-default" type="button">
+              <button class="btn btn-lg btn-default" type="button" (click)=closeRestFields()>
                 <span class="pficon pficon-close"></span>
               </button>
             </span>

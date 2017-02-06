@@ -55,6 +55,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   @ViewChild('title') title: any;
   @ViewChild('userSearch') userSearch: any;
   @ViewChild('userList') userList: any;
+  @ViewChild('dropdownButton') dropdownButton: any;
   @ViewChild('iterationSearch') iterationSearch: any;
   @ViewChild('iterationList') iterationList: any;
 
@@ -80,6 +81,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   hasIteration: Boolean = false;
   searchIteration: Boolean = false;
+  // TODO: should take current iteration as value after fetching
+  selectedIteration: any;
 
   users: User[] = [];
   filteredUsers: User[] = [];
@@ -451,10 +454,16 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     this.descEditable = false;
   }
 
-  assignIteration(iterationId: any): void {
+  selectIteration(iteration: any): void {
+    this.selectedIteration = iteration;
+    this.dropdownButton.nativeElement.innerHTML = this.selectedIteration.attributes.name +
+                                                  ' <span class="caret"></span>'
+  }
+
+  assignIteration(): void {
     this.workItem.relationships.iteration = {
       data: {
-        id: iterationId,
+        id: this.selectedIteration.id,
         type: 'iteration'
       }
     };
