@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 
 import { DummyService } from './../shared/dummy.service';
+import { ContextType } from './../models/context-type';
+import { Context } from './../models/context';
 import { Logger } from '../shared/logger.service';
 import { User } from '../models/user';
 import { UserService } from '../shared/user.service';
@@ -30,7 +32,9 @@ export class HeaderComponent implements OnInit {
     public context: ContextService
   ) {
     router.events.subscribe((val) => {
-      this.onNavigate();
+      if (val instanceof NavigationEnd) {
+        this.onNavigate();
+      }
     });
   }
 
@@ -53,12 +57,15 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.listenToEvents();
-    this.onNavigate();
+    //this.onNavigate();
   }
 
   onNavigate(): void {
     this.getLoggedUser();
-    this.broadcaster.broadcast('refreshContext');
+    this.broadcaster.broadcast('navigate');
+    if (this.context.current) {
+      this.setActiveMenus(this.context.current);
+    }
   }
 
   onImgLoad() {
@@ -79,6 +86,27 @@ export class HeaderComponent implements OnInit {
   private getLoggedUser(): void {
     if (this.auth.isLoggedIn) {
       this.userService.getUser();
+    }
+  }
+
+  private setActiveMenus(context: Context) {
+    if ((<ContextType>context.type).menus) {
+      for (let n of (<ContextType>context.type).menus) {
+        // Clear the menu's active state
+        n.active = false;
+        if (n.menus) {
+          for (let o of n.menus) {
+            // Clear the menu's active state
+            o.active = false;
+            if (o.fullPath === this.router.url) {
+              o.active = true;
+              n.active = true;
+            }
+          }
+        } else if (n.fullPath === this.router.url) {
+          n.active = true;
+        }
+      }
     }
   }
 

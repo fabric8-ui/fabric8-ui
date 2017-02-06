@@ -53,9 +53,8 @@ export class ProfileService {
       this.current.fullName &&
       this.current.primaryEmail &&
       this.current.username
-      /* TODO Add imageURL
-      this.current.imageURL
-      */
+      // TODO Add imageURL
+      //this.current.imageURL
       ) {
       return true;
     } else {

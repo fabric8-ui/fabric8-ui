@@ -21,6 +21,10 @@ import { Broadcaster } from '../shared/broadcaster.service';
 @Injectable()
 export class DummyService {
 
+  readonly RESERVED_WORDS: string[] = [
+    'home', 'spaces'
+  ];
+
   readonly RESOURCES: Resources = {
     startDate: new Date(2016, 8, 1, 0, 0, 0, 0),
     endDate: new Date(2016, 8, 30, 23, 59, 59, 0),
@@ -333,25 +337,8 @@ export class DummyService {
     ]
   ]);
 
-  readonly CONTEXTS: Map<string, Context> = new Map<string, Context>([
+  readonly DEFAULT_CONTEXTS: Map<string, Context> = new Map<string, Context>([
     [
-      'pmuir',
-      {
-        entity: this.USERS.get('pmuir'),
-        type: this.CONTEXT_TYPES.get('user'),
-        path: '/pmuir',
-        name: 'pmuir'
-      } as Context
-    ], [
-      'balloonpopgame',
-      {
-        entity: this.USERS.get('pmuir'),
-        space: this.SPACES.get('balloonpopgame'),
-        type: this.CONTEXT_TYPES.get('space'),
-        path: '/pmuir/BalloonPopGame',
-        name: 'BalloonPopGame'
-      } as Context
-    ], [
       'ux',
       {
         entity: this.USERS.get('pmuir'),
@@ -379,9 +366,8 @@ export class DummyService {
     { name: 'Scenario Driven Planning' }
   ];
   private _spaces: Space[];
-  private _contexts: Context[];
+  private _recentContexts: Context[];
   private _users: User[];
-  private _defaultContext: Context;
   private _currentUser: User;
 
   constructor(
@@ -390,9 +376,8 @@ export class DummyService {
     private broadcaster: Broadcaster
   ) {
     this._spaces = this.initDummy('spaces', this.SPACES);
-    this._contexts = this.initDummy('contexts', this.CONTEXTS);
+    this._recentContexts = this.initDummy('contexts', this.DEFAULT_CONTEXTS);
     this._users = this.initDummy('users', this.USERS);
-    this._defaultContext = this._contexts[0];
     this.broadcaster.on<string>('save')
       .subscribe(message => {
         this.save();
@@ -418,16 +403,12 @@ export class DummyService {
     return this.RESOURCES;
   }
 
-  get contexts(): Context[] {
-    return this._contexts;
+  get recent(): Context[] {
+    return this._recentContexts;
   }
 
   get processTemplates(): ProcessTemplate[] {
     return this.PROCESS_TEMPLATES;
-  }
-
-  get defaultContext(): Context {
-    return this._defaultContext;
   }
 
   get users(): User[] {
@@ -445,7 +426,7 @@ export class DummyService {
 
   save(): void {
     this.localStorageService.set('spaces', this._spaces);
-    this.localStorageService.set('contexts', this._contexts);
+    this.localStorageService.set('contexts', this._recentContexts);
     this.localStorageService.set('users', this._users);
   }
 
@@ -459,14 +440,29 @@ export class DummyService {
     return null;
   }
 
-  private addUser(add: User) {
-    let existing: User = this.lookupUser(add.attributes.username, add.attributes.fullName);
-    if (existing) {
-      this.currentUser = existing;
+  lookupEntity(entity: string): Entity {
+    return this.lookupUser(entity, null);
+  }
+
+  lookupSpace(space: string): Space {
+    if (space) {
+      return this.SPACES.get(space.toLowerCase());
     } else {
-      this.currentUser = add;
-      this.users.push(add);
-      this.save();
+      return null;
+    }
+  }
+
+  private addUser(add: User) {
+    if (add && add.attributes) {
+      let existing: User = this.lookupUser(add.attributes.username, add.attributes.fullName);
+      if (existing) {
+        this.currentUser = existing;
+      } else {
+        this.currentUser = add;
+        this.users.push(add);
+        this.save();
+      }
+      this.broadcaster.broadcast('currentUserChanged', this.currentUser);
     }
   }
 

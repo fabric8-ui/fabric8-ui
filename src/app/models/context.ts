@@ -1,3 +1,4 @@
+import { LinkType } from './link-type';
 import { ContextType } from './context-type';
 import { Entity } from './entity';
 import { Space } from './space';
@@ -8,7 +9,9 @@ export class Context {
     entity: Entity;
     space?: Space;
     team?: Team;
-    type: ContextType;
+    // This is a union type
+    // The UI will load this as a string, but will then convert it to a ContextType
+    type: string | ContextType;
     path: string;
     name: string;
 }

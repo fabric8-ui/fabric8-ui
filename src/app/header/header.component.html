@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-pf" role="navigation" *ngIf="loggedIn">
+<nav class="navbar navbar-inverse navbar-pf" role="navigation" *ngIf="loggedIn && context.current">
   <div class="navbar-header">
     <ul class="nav navbar-nav navbar-right hidden-sm hidden-md hidden-lg ">
       <li *ngIf="!loggedIn">
@@ -57,7 +57,7 @@
           </div>
         </a>
         <ul class="dropdown-menu">
-          <li *ngFor="let m of dummy.contexts">
+          <li *ngFor="let m of context.recent">
             <a [routerLink]="[m.path]" *ngIf="m.path !== null && m != context.current">
               <span class="nav-item-icon">
                 <span class="nav-icon {{m.type.icon}}"></span>
