@@ -132,7 +132,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
               this.titleText = workItem.attributes['system.title'];
               this.descText = workItem.attributes['system.description'];
               this.workItem = workItem;
-              console.log('workItem', workItem);
               // fetch the list of user
               // after getting the Workitem
               // to set assigned user
@@ -187,7 +186,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     this.filteredUsers = cloneDeep(this.route.snapshot.data['allusers']) as User[];
     let authUser = cloneDeep(this.route.snapshot.data['authuser']);
     this.setLoggedInUser(authUser);
-    console.log("this.users = " + JSON.stringify(this.users));
   }
 
   setLoggedInUser(authUser: any) {

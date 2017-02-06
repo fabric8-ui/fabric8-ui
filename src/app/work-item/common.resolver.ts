@@ -10,7 +10,6 @@ import { User } from '../models/user';
 export class UsersResolve implements Resolve<User[]> {
   constructor(private userService: UserService) {}
   resolve() {
-    console.log('call users');
     return this.userService.getAllUsers();
   }
 }
@@ -27,7 +26,6 @@ export class AuthUserResolve implements Resolve<any> {
 export class IterationsResolve implements Resolve<IterationModel[]> {
   constructor(private iterationService: IterationService) {}
   resolve() {
-    console.log('call iterations');
     return this.iterationService.getSpaces()
       .then((data) => {
         this.iterationService.getIterations(data.relationships.iterations.links.related)
@@ -41,9 +39,5 @@ export class IterationsResolve implements Resolve<IterationModel[]> {
       });
   }
 }
-
-
-
-
 
 

@@ -105,14 +105,10 @@ export class WorkItemService {
           this.nextLink = links.next;
         }
         wItems = response.json().data as WorkItem[];
-        console.log('1');
         wItems.forEach((item) => {
           // Resolve the assignee and creator
-          console.log('2')
           this.resolveUsersForWorkItem(item);
-          console.log('3')
           this.resolveIterationForWorkItem(item);
-          console.log('4')
         });
         // Update the existing workItem big list with new data
         this.updateWorkItem(wItems);
@@ -325,7 +321,6 @@ export class WorkItemService {
       return;
     }
     workItem.relationalData.iteration = this.getIterationById(workItem.relationships.iteration.data.id);
-    console.log('resolve -', workItem.relationalData.iteration);
   }
 
   /**
@@ -595,7 +590,6 @@ export class WorkItemService {
   create(workItem: WorkItem): Promise<WorkItem> {
     let url = this.workItemUrl;
     let payload = JSON.stringify({data: workItem});
-    console.log(payload);
     return this.http
       .post(url, payload, { headers: this.headers })
       .toPromise()
