@@ -11,3 +11,7 @@ To connect to the demo instance, add `export API_URL="http://demo.api.almighty.i
 ## VS Code
 
 * Run `ext install EditorConfig` to read the .editorconfig file
+
+## To start
+
+Run `npm start`. This will start the UI with livereload enabled. Then navigate to <http://localhost:3000>.
