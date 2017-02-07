@@ -39,8 +39,8 @@
   </div>
 
 	<!-- action area -->
-	<div class="list-view-pf-actions">
-		<div *ngIf="loggedIn" class="dropdown pull-right dropdown-kebab-pf" dropdown (onOpen)="selectEntry()">
+	<div class="list-view-pf-actions" (click)="kebabClick($event)">
+		<div *ngIf="loggedIn" class="dropdown pull-right dropdown-kebab-pf" dropdown>
 			<button class="btn btn-link dropdown-toggle workItemList_dropdownKebabBtn" type="button" id="dropdownKebabRight" aria-haspopup="true" aria-expanded="true" dropdown-open>
 				<span class="fa fa-ellipsis-v"></span>
 			</button>

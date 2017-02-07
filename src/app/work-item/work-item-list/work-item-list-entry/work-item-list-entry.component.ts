@@ -120,6 +120,10 @@ export class WorkItemListEntryComponent implements OnInit {
     this.toggleEvent.emit(this);
   }
 
+  kebabClick(event: MouseEvent): void {
+    event.stopPropagation();
+  }
+
   // event handlers
   onDelete(event: MouseEvent): void {
     if (event)
