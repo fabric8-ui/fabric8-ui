@@ -487,7 +487,7 @@ class WorkItemListPage {
     return element(by.css('.modal-title')).getText();
   }
   getHelpBoxIteration (){
-    return element(by.css('.help-block')).getText();
+    return element(by.id('iteration-help-label')).getText();
   }
   closeIterationDialog(){
     return element(by.css('.close')).click();

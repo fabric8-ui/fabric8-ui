@@ -16,7 +16,7 @@
               placeholder="Enter iteration name"
               [(ngModel)]="iteration.attributes.name"
               (keyup)="removeError()">
-            <span class="help-block">Iteration names must be unique within a project</span>
+            <span class="help-block" id="iteration-help-label">Iteration names must be unique within a project</span>
           </div>
         </div>
         <div class="form-group">
