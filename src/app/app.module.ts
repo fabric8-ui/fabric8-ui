@@ -1,3 +1,4 @@
+import { StackDetailsModule } from './analyze/stack/stack-details/stack-details.module';
 import './rxjs-extensions';
 
 import { NgModule, ApplicationRef } from '@angular/core';
@@ -38,7 +39,10 @@ import { ContextService } from './shared/context.service';
 // Shared Components
 import { SpaceDialogModule } from './space-dialog/space-dialog.module';
 import { SpaceWizardModule } from './space-wizard/space-wizard.module';
+<<<<<<< a899ae020653a6edc7ce5b606339b935cf5e7897
 import { PublicModule } from './public/public.module';
+=======
+>>>>>>> Wire in detail
 import { DeleteAccountDialogModule } from './delete-account-dialog/delete-account-dialog.module';
 
 // Component Services
@@ -75,6 +79,7 @@ export type StoreType = {
     PublicModule,
     SpaceDialogModule,
     SpaceWizardModule,
+    StackDetailsModule,
     // AppRoutingModule must appear last
     AppRoutingModule
   ],

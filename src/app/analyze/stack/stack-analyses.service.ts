@@ -7,18 +7,23 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class StackAnalysesService {
-  //let id = '888d1fa0d88e4fbeab7e0e20d21f6912';
-  private stackAnalysesUrl = 'http://ose-vm1.lab.eng.blr.redhat.com:32000/api/v1/stack-analyses/888d1fa0d88e4fbeab7e0e20d21f6912';
+
+  readonly STACK_ANALYSES_BASE_URL: string
+    = 'http://ose-vm1.lab.eng.blr.redhat.com:32000/api/v1/stack-analyses/';
 
   constructor(private http: Http) { }
 
-  getStackAnalyses(): Observable<any> {
-    return this.http.get(this.stackAnalysesUrl)
+  getStackAnalyses(id: string): Observable<any> {
+    return this.http.get(this.buildStackAnalysesUrl(id))
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+  private buildStackAnalysesUrl(id: string): string {
+    return this.STACK_ANALYSES_BASE_URL + id;
+  }
+
   private extractData(res: Response) {
-    debugger;
     let body = res.json();
     return body.result || {};
   }
@@ -36,7 +41,5 @@ export class StackAnalysesService {
     console.error(errMsg);
     return Observable.throw(errMsg);
   }
-
-
 
 }

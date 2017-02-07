@@ -1,14 +1,22 @@
-import { NgModule }         from '@angular/core';
-import { CommonModule }     from '@angular/common';
+import { StackDetailsModule } from './stack-details/stack-details.module';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
 
-import { StackComponent }     from './stack.component';
+import { StackComponent } from './stack.component';
 import { StackRoutingModule } from './stack-routing.module';
 
+import { StackOverviewModule } from './stack-overview/stack-overview.module';
+
 @NgModule({
-  imports:      [ CommonModule, StackRoutingModule, HttpModule ],
-  declarations: [ StackComponent ],
+  imports: [
+    StackOverviewModule,
+    CommonModule,
+    StackRoutingModule,
+    HttpModule
+  ],
+  declarations: [StackComponent],
 })
 export class StackModule {
-  constructor(http: Http) {}
+  constructor(http: Http) { }
 }

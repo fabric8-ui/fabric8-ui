@@ -1,10 +1,8 @@
-import { NgModule }  from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AnalyzeComponent } from './analyze.component';
 import { AnalyzeOverviewComponent } from './analyze-overview/analyze-overview.component'
-
-import {RenderStackDetailsComponent} from './stackreports/render-stack-details/render-stack-details.component';
 
 const routes: Routes = [
   {
@@ -26,7 +24,7 @@ const routes: Routes = [
     path: '',
     component: AnalyzeComponent,
     children: [
-      { path: '',     component: AnalyzeOverviewComponent },
+      { path: '', component: AnalyzeOverviewComponent },
       { path: 'readme', loadChildren: './readme/readme.module#ReadmeModule' },
       { path: 'stack', loadChildren: './stack/stack.module#StackModule' },
     ]
@@ -34,7 +32,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forChild(routes) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class AnalyzeRoutingModule {}
+export class AnalyzeRoutingModule { }

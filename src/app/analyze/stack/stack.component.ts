@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router }            from '@angular/router';
-
-import { ContextService } from './../../shared/context.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,8 +10,7 @@ import { ContextService } from './../../shared/context.service';
 export class StackComponent implements OnInit {
 
   constructor(
-    private router: Router,
-    public context: ContextService) {
+    private router: Router) {
   }
 
   ngOnInit() {

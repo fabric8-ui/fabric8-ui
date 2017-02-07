@@ -8,20 +8,19 @@ import 'rxjs/add/operator/map';
 import { StackAnalysesModel } from './stack-analyses.model';
 
 @Injectable()
-export class RenderComponentService {
+export class ComponentAnalysesService {
 
   private componentAnalysesUrl = 'http://ose-vm1.lab.eng.blr.redhat.com:32000/api/v1/analyses/';
 
   constructor(private http: Http, private stackAnalysesModel: StackAnalysesModel) { }
 
 
-  getComponentAnalyses(data:StackAnalysesModel): Observable<any> {
-    return this.http.get(this.componentAnalysesUrl+data.ecosystem+"/"+ data.package+"/"+data.version)
+  getComponentAnalyses(data: StackAnalysesModel): Observable<any> {
+    return this.http.get(this.componentAnalysesUrl + data.ecosystem + "/" + data.pkg + "/" + data.version)
       .map(this.extractData)
       .catch(this.handleError);
   }
   private extractData(res: Response) {
-    debugger;
     let body = res.json();
     return body || {};
   }

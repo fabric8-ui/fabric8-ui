@@ -323,19 +323,10 @@ export class DummyService {
         stacks: [
           {
             codebase: 'https://github.com/BalloonPopGame/BalloonPopGame',
-            pipeline: 'Canary Release Stage and Approve',
-            build: 10,
-            uuid: 'foo'
-          }, {
-            codebase: 'https://github.com/BalloonPopGame/BalloonPopGame',
-            pipeline: 'Canary Release Stage and Approve',
-            build: 11,
-            uuid: 'foo'
+            uuid: '888d1fa0d88e4fbeab7e0e20d21f6912'
           }, {
             codebase: 'https://github.com/BalloonPopGame/BalloonPopGame-UI',
-            pipeline: 'Canary Release Stage and Approve',
-            build: 25,
-            uuid: 'foo'
+            uuid: '888d1fa0d88e4fbeab7e0e20d21f6912'
           },
         ]
       } as Space
