@@ -1,3 +1,4 @@
+import { Logger } from './../shared/logger.service';
 import { cloneDeep } from 'lodash';
 import { IterationModel } from './../models/iteration.model';
 import { AuthenticationService } from './../auth/authentication.service';
@@ -33,6 +34,7 @@ describe ('Iteration service - ', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        Logger,
         BaseRequestOptions,
         MockBackend,
         {
