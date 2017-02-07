@@ -8,7 +8,6 @@ import { Injectable } from '@angular/core';
 export class IterationService {
   public iterations: IterationModel[] = [];
   private headers = new Headers({'Content-Type': 'application/json'});
-  private iterationUrl: string = '';
 
   constructor(private http: Http, private auth: AuthenticationService) {
       if (this.auth.getToken() != null) {
@@ -144,7 +143,6 @@ export class IterationService {
     .then((response) => {
       let spaces = response.json().data;
       if (spaces.length) {
-        this.iterationUrl = spaces[0].relationships.iterations.links.related
         return spaces[0];
       } else {
         return null;

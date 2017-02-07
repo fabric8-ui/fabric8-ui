@@ -52,7 +52,7 @@ export class IterationComponent implements OnInit {
       })
     })
     .catch ((err) => {
-      console.log('Spcae not found');
+      console.log('Space not found');
     });
   }
 

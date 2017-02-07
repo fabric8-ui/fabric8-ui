@@ -35,7 +35,7 @@ export class IterationsResolve implements Resolve<IterationModel[]> {
         })
       })
       .catch ((err) => {
-        console.log('Spcae not found');
+        console.log('Space not found');
       });
   }
 }
