@@ -1,3 +1,8 @@
+import { Injectable } from '@angular/core';
+import { Headers, Http } from '@angular/http';
+import { LocalStorageService } from 'angular-2-local-storage';
+import 'rxjs/add/operator/toPromise';
+
 import { Context } from './../models/context';
 import { ContextType } from './../models/context-type';
 import { Space } from './../models/space';
@@ -7,12 +12,9 @@ import { User } from './../models/user';
 import { Team } from './../models/team';
 import { Entity } from './../models/entity';
 import { Email } from './../models/email';
-import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
-import { LocalStorageService } from 'angular-2-local-storage';
+
 import { Broadcaster } from '../shared/broadcaster.service';
 
-import 'rxjs/add/operator/toPromise';
 
 // A service responsible for providing dummy data for the UI prototypes.
 

@@ -11,24 +11,12 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'signin',
-    component: SigninComponent
-  },
-  {
     path: 'signup',
     loadChildren: './signup/signup.module#SignupModule'
   },
     {
     path: '_control',
     loadChildren: './control/control.module#ControlModule'
-  },
-  {
-    path: 'password_reset',
-    loadChildren: './forgot-password/forgot-password.module#ForgotPasswordModule'
   },
 
   // Home
@@ -65,36 +53,6 @@ export const routes: Routes = [
   {
     path: 'pmuir/BalloonPopGame/settings',
     loadChildren: './space-settings/space-settings.module#SpaceSettingsModule'
-  },
-
-  // Chat
-  {
-    path: 'chat',
-    loadChildren: './chat/chat.module#ChatModule'
-  },
-
-  // Dashboard
-  {
-    path: 'dashboard',
-    loadChildren: './dashboard/dashboard.module#DashboardModule'
-  },
-
-  // Help
-  {
-    path: 'help',
-    loadChildren: './help/help.module#HelpModule'
-  },
-
-  // Learn
-  {
-    path: 'learn',
-    loadChildren: './learn/learn.module#LearnModule'
-  },
-
-  // Notifications
-  {
-    path: 'notifications',
-    loadChildren: './notifications/notifications.module#NotificationsModule'
   },
 
   // Profile

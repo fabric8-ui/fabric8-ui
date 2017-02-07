@@ -1,10 +1,10 @@
-import { DummyService } from './../../dummy/dummy.service';
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
 
-import { Logger } from "../../shared/logger.service";
+import { DummyService } from './../../shared/dummy.service';
+import { Logger } from '../../shared/logger.service';
 import { SpaceService } from './space.service';
-import { Space } from "../../models/space";
+import { Space } from '../../models/space';
 
 
 @Component({

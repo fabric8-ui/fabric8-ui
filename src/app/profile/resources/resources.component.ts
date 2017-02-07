@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
-import { DummyService } from '../../dummy/dummy.service';
+
+import { DummyService } from '../../shared/dummy.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class ResourcesComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
 }

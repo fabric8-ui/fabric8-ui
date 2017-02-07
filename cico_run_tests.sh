@@ -13,7 +13,7 @@ set -e
 yum -y install \
   docker \
   make \
-  git 
+  git
 service docker start
 
 # Build builder image

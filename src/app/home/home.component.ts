@@ -1,6 +1,7 @@
-import { DummyService } from './../dummy/dummy.service';
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
+
+import { DummyService } from './../shared/dummy.service';
 
 @Component({
   host:{

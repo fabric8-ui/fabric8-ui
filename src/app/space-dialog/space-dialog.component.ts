@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DummyService } from '../dummy/dummy.service';
+
+import { DummyService } from '../shared/dummy.service';
 import { Space, SpaceAttributes } from '../models/space';
 import { ProcessTemplate } from '../models/process-template';
 import { Broadcaster } from '../shared/broadcaster.service';
-import { SpaceService } from "../profile/spaces/space.service";
+import { SpaceService } from '../profile/spaces/space.service';
 
 
 

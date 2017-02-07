@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Context } from './../models/context';
-import { DummyService } from './../dummy/dummy.service';
+import { DummyService } from './../shared/dummy.service';
 import { Broadcaster } from '../shared/broadcaster.service';
 
 
