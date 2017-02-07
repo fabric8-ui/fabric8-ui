@@ -415,7 +415,6 @@ export class DummyService {
     return this._users;
   }
 
-
   get currentUser(): User {
     return this._currentUser;
   }
