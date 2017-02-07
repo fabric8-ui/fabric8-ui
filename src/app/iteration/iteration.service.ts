@@ -1,17 +1,27 @@
+import { Logger } from './../shared/logger.service';
 import { cloneDeep } from 'lodash';
 import { Http, Headers } from '@angular/http';
 import { AuthenticationService } from './../auth/authentication.service';
 import { IterationModel } from './../models/iteration.model';
 import { Injectable } from '@angular/core';
 
+import { MockHttp } from './../shared/mock-http';
+import Globals = require('./../shared/globals');
+
 @Injectable()
 export class IterationService {
   public iterations: IterationModel[] = [];
   private headers = new Headers({'Content-Type': 'application/json'});
 
-  constructor(private http: Http, private auth: AuthenticationService) {
+  constructor(private http: Http, private auth: AuthenticationService, private logger: Logger) {
       if (this.auth.getToken() != null) {
         this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
+      }
+      if (Globals.inTestMode) {
+        logger.log('Iteration service running in ' + process.env.ENV + ' mode.');
+        this.http = new MockHttp(logger);
+      } else {
+        logger.log('Iteration service running in production mode.');
       }
   }
 
