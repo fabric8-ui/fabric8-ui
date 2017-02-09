@@ -184,6 +184,8 @@ export class MockHttp extends Http {
           return this.createResponse(url.toString(), 500, 'not supported yet.', { } );
         case '/spaces':
           return this.createResponse(url.toString(), 500, 'not supported yet.', { } );
+        case '/search':
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItems() });
       }
     };
 
