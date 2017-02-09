@@ -166,14 +166,12 @@ export class MockDataService {
         console.log('Request for relationships for workitem ' + wiId);
         if (parts[2] === 'links') {
           var links = this.getWorkItemLinksForWorkItem(wiId);
+          let linkIncludes: any[] = [];
+          links.forEach((link: any) => linkIncludes = linkIncludes.concat(this.createWorkItemLinkIncludes(link)));
           return {
             data: links,
             meta: { totalCount: links.length },
-            included: [
-              this.workItems[0],
-              this.workItems[1],
-              this.schemaMockGenerator.getWorkItemLinkTypes().data[0 ]
-            ]
+            included: linkIncludes
           };
         }
       }
@@ -235,6 +233,15 @@ export class MockDataService {
     localWorkItemLink.id = this.createId();
     this.workItemLinks.push(localWorkItemLink);
     return this.makeCopy(localWorkItemLink);
+  }
+
+  public createWorkItemLinkIncludes(workItemLink: any): any {
+    let localWorkItemLink = this.makeCopy(workItemLink);
+    let workItems = this.getWorkItems();
+    let workItem_1 = workItems.find((i: any) => i.id == localWorkItemLink.relationships.source.data.id);
+    let workItem_2 = workItems.find((i: any) => i.id == localWorkItemLink.relationships.target.data.id);
+    let wiLinkType = this.getWorkItemLinkTypes().data.find((i: any) => i.id == localWorkItemLink.relationships.link_type.data.id);
+    return [this.makeCopy(workItem_1), this.makeCopy(workItem_2), this.makeCopy(wiLinkType)];
   }
 
   public updateWorkItemLink(workItemLink: any): any {
