@@ -1,5 +1,5 @@
 import { Comments, Comment } from './comment';
-import { User } from './user';
+import { User } from 'ng-login';
 
 export class WorkItem {
   attributes: WorkItemAttributes;

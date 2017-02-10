@@ -2,7 +2,7 @@ import { TeamMembershipDialogModule } from './../../team-membership-dialog/team-
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
-import { ModalModule } from 'ng2-modal';
+import { ModalModule } from 'ngx-modal';
 import { FormsModule } from '@angular/forms';
 
 

@@ -1,4 +1,4 @@
-import { User } from './user';
+import { User } from 'ng-login';
 
 export class Comment {
     id: string;

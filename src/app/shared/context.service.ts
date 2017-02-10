@@ -1,4 +1,3 @@
-import { User } from './../models/user';
 import { Space } from './../models/space';
 import { Entity } from './../models/entity';
 import { ContextType } from './../models/context-type';
@@ -7,7 +6,7 @@ import { Router } from '@angular/router';
 
 import { Context } from './../models/context';
 import { DummyService } from './../shared/dummy.service';
-import { Broadcaster } from '../shared/broadcaster.service';
+import { Broadcaster, User } from 'ng-login';
 
 /*
  * A shared service that manages the users current context. The users context is defined as the

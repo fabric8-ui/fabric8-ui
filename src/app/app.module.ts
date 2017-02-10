@@ -8,7 +8,7 @@ import { HttpModule } from '@angular/http';
 
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
-import { DropdownModule } from 'ng2-dropdown';
+import { DropdownModule } from 'ngx-dropdown';
 import { LocalStorageModule } from 'angular-2-local-storage';
 
 /*
@@ -27,12 +27,12 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 
 // Shared Services
-import { AuthenticationService } from './shared/authentication.service';
-import { Broadcaster } from './shared/broadcaster.service';
+// import { AuthenticationService } from 'ng-login/authentication.service';
+// import { Broadcaster } from 'ng-login/broadcaster.service';
 import { DummyService } from './shared/dummy.service';
-import { Logger } from './shared/logger.service';
+// import { Logger } from 'ng-login/logger.service';
 import { LoginService } from './shared/login.service';
-import { UserService } from './shared/user.service';
+// import { UserService } from './shared/user.service';
 import { ToggleService } from './toggle/toggle.service';
 import { ContextService } from './shared/context.service';
 
@@ -88,15 +88,15 @@ export type StoreType = {
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
     APP_PROVIDERS,
-    AuthenticationService,
-    Broadcaster,
+    // AuthenticationService,
+    // Broadcaster,
     ContextService,
     DummyService,
-    Logger,
+    // Logger,
     LoginService,
     ProfileService,
-    ToggleService,
-    UserService
+    ToggleService
+    // UserService
   ],
   bootstrap: [AppComponent]
 })

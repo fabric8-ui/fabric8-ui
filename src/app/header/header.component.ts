@@ -5,11 +5,9 @@ import { Router, NavigationEnd } from '@angular/router';
 import { DummyService } from './../shared/dummy.service';
 import { ContextType } from './../models/context-type';
 import { Context } from './../models/context';
-import { Logger } from '../shared/logger.service';
-import { User } from '../models/user';
-import { UserService } from '../shared/user.service';
-import { AuthenticationService } from '../shared/authentication.service';
-import { Broadcaster } from '../shared/broadcaster.service';
+
+import { AuthenticationService, Broadcaster, Logger, UserService, User } from 'ng-login';
+
 import { ContextService } from '../shared/context.service';
 
 @Component({

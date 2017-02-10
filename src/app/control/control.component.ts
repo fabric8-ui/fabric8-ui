@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../auth/authentication.service';
-import { UserService } from '../user/user.service';
-import { User } from '../models/user';
-import { ProfileService } from './../profile/profile.service';
+// import { AuthenticationService, User, UserService } from 'ng-login';
+
+// import { ProfileService } from './../profile/profile.service';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { FlashMessagesService } from 'angular2-flash-messages';
 

@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { DummyService } from './../shared/dummy.service';
-import { Broadcaster } from '../shared/broadcaster.service';
-import { Profile } from './../models/profile';
-import { User } from './../models/user';
+import { Broadcaster, Profile } from 'ng-login';
 
 
 /*

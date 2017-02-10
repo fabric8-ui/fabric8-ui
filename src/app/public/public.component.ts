@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { LoginItem } from '../models/login-item';
+
 import { LoginService } from '../shared/login.service';
-import { AuthenticationService } from '../shared/authentication.service';
+import { AuthenticationService, UserService } from 'ng-login';
+
 import { ProfileService } from './../profile/profile.service';
-import { UserService } from './../shared/user.service';
 
 
 

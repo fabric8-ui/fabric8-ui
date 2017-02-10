@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
 
 import { ContextService } from './../../shared/context.service';
-import { UserService } from './../../user/user.service';
+// import { UserService } from './../../user/user.service';
 import { DummyService } from './../../shared/dummy.service';
 
 @Component({

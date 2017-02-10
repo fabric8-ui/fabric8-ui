@@ -4,8 +4,8 @@ import { MockBackend } from '@angular/http/testing';
 
 import { cloneDeep } from 'lodash';
 
-import { AuthenticationService } from '../../shared/authentication.service';
-import { Logger } from '../../shared/logger.service';
+import { AuthenticationService, Logger} from 'ng-login';
+
 import { Space } from '../../models/space';
 import { SpaceService } from './space.service';
 

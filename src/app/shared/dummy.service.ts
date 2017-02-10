@@ -8,12 +8,11 @@ import { ContextType } from './../models/context-type';
 import { Space } from './../models/space';
 import { Resources } from './../models/resources';
 import { ProcessTemplate } from './../models/process-template';
-import { User } from './../models/user';
 import { Team } from './../models/team';
 import { Entity } from './../models/entity';
 import { Email } from './../models/email';
 
-import { Broadcaster } from '../shared/broadcaster.service';
+import { Broadcaster, User } from 'ng-login';
 
 
 // A service responsible for providing dummy data for the UI prototypes.

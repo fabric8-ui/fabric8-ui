@@ -1,8 +1,8 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../auth/authentication.service';
-import { UserService } from '../user/user.service';
-import { User } from '../models/user';
+// import { AuthenticationService } from '../auth/authentication.service';
+// import { UserService } from '../user/user.service';
+// import { User } from '../models/user';
 import { ProfileService } from './../profile/profile.service';
 
 

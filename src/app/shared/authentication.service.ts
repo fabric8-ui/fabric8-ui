@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Logger } from '../shared/logger.service';
-import { Broadcaster } from '../shared/broadcaster.service';
+import { Broadcaster, Logger } from 'ng-login';
 
 @Injectable()
 export class AuthenticationService {
