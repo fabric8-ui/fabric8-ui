@@ -36,14 +36,14 @@
         <div class="start-date-container date-container">
           <label>Start Date</label>
           <my-date-picker
-                [options]="myDatePickerOptions"
+                [options]="startDatePickerOptions"
                 (dateChanged)="onStartDateChanged($event)"
                 [(ngModel)]="startDate"></my-date-picker>
         </div>
         <div class="end-date-container date-container">
           <label>End Date</label>
           <my-date-picker
-                [options]="myDatePickerOptions"
+                [options]="endDatePickerOptions"
                 (dateChanged)="onEndDateChanged($event)"
                 [(ngModel)]="endDate"></my-date-picker>
         </div>

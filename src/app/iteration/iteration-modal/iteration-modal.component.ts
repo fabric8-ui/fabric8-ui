@@ -27,7 +27,15 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
   private spaceError: Boolean = false;
   private spaceName: string;
 
-  private myDatePickerOptions: IMyOptions = {
+  private startDatePickerOptions: IMyOptions = {
+    dateFormat: 'dd mmm yyyy',
+    selectionTxtFontSize: '14px',
+    openSelectorOnInputClick: true,
+    editableDateField: false,
+    showClearDateBtn: false
+  };
+
+  private endDatePickerOptions: IMyOptions = {
     dateFormat: 'dd mmm yyyy',
     selectionTxtFontSize: '14px',
     openSelectorOnInputClick: true,
@@ -121,6 +129,10 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
     this.startDate = { date: event.date };
     this.iteration.attributes.startAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T00:00:00Z';
     // console.log(this.iteration.attributes.startAt);
+
+    this.endDatePickerOptions = {
+      disableUntil: event.date
+    }
 
     // Set default end date in a week
     let inaweek = moment(event.jsdate).add(7, 'd');
