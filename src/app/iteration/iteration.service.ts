@@ -46,8 +46,12 @@ export class IterationService {
           return this.iterations;
         })
         .catch ((error: Error | any) => {
-          console.log('Fetch iteration API returned some error - ', error.message);
-          return Promise.reject<IterationModel[]>([] as IterationModel[]);
+          if (error.status === 401) {
+            this.auth.logout(true);
+          } else {
+            console.log('Fetch iteration API returned some error - ', error.message);
+            return Promise.reject<IterationModel[]>([] as IterationModel[]);
+          }
         })
     } else {
       console.log('URL not matched');
@@ -85,8 +89,12 @@ export class IterationService {
           return newData;
         })
         .catch ((error: Error | any) => {
-          console.log('Post iteration API returned some error - ', error.message);
-          return Promise.reject<IterationModel>({} as IterationModel);
+          if (error.status === 401) {
+            this.auth.logout(true);
+          } else {
+            console.log('Post iteration API returned some error - ', error.message);
+            return Promise.reject<IterationModel>({} as IterationModel);
+          }
         })
     } else {
       console.log('URL not matched');
@@ -121,8 +129,12 @@ export class IterationService {
         }
       })
       .catch ((error: Error | any) => {
-        console.log('Patch iteration API returned some error - ', error.message);
-        return Promise.reject<IterationModel>({} as IterationModel);
+        if (error.status === 401) {
+          this.auth.logout(true);
+        } else {
+          console.log('Patch iteration API returned some error - ', error.message);
+          return Promise.reject<IterationModel>({} as IterationModel);
+        }
       })
   }
 
@@ -158,7 +170,11 @@ export class IterationService {
         return null;
       }
     }).catch ((err) => {
-      return null;
+      if (err.status === 401) {
+        this.auth.logout(true);
+      } else {
+        return null;
+      }
     });
   }
 }

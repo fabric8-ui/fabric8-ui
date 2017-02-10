@@ -8,17 +8,17 @@ import { Broadcaster } from '../shared/broadcaster.service';
 export class AuthenticationService {
   private authToken: string = '';
 
-  constructor(private router: Router, 
-              private logger: Logger, 
+  constructor(private router: Router,
+              private logger: Logger,
               private broadcaster: Broadcaster) {
-    
+
   }
 
-  isLoggedIn(): Boolean {
+  isLoggedIn(): boolean {
     let token = localStorage.getItem('auth_token');
     if (token){
       this.authToken = token;
-      return true;      
+      return true;
     }
     let params = this.getUrlParams();
     if ('token' in params) {
@@ -31,11 +31,13 @@ export class AuthenticationService {
     return false;
   }
 
-  logout() {
+  logout(redirect: boolean = false) {
     this.authToken = '';
     localStorage.removeItem('auth_token');
-    // this.router.navigate(['login']);
     this.broadcaster.broadcast('logout', 1);
+    if (redirect) {
+      this.router.navigate(['login']);
+    }
     // location.href = location.protocol + '//' + location.host + location.pathname + location.hash;
   }
 

@@ -54,7 +54,7 @@ export class WorkItemService {
     private iterationService: IterationService,
     private userService: UserService) {
     if (this.auth.getToken() != null) {
-      this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
+      this.headers.set('Authorization', 'Bearer h' + this.auth.getToken());
     }
     if (Globals.inTestMode) {
       logger.log('WorkItemService running in ' + process.env.ENV + ' mode.');
@@ -114,7 +114,13 @@ export class WorkItemService {
         this.updateWorkItem(wItems);
         return this.workItems;
       })
-      .catch (this.handleError);
+      .catch ((e) => {
+        if (e.status === 401) {
+          this.auth.logout(true);
+        } else {
+          this.handleError(e);
+        }
+      });
   }
 
   /**
@@ -145,7 +151,13 @@ export class WorkItemService {
         this.updateWorkItem(newItems);
         return newWorkItems;
       })
-      .catch (this.handleError);
+      .catch ((e) => {
+        if (e.status === 401) {
+          this.auth.logout(true);
+        } else {
+          this.handleError(e);
+        }
+      });
     } else {
       return Promise.reject('No more item found');
     }
@@ -191,7 +203,13 @@ export class WorkItemService {
           this.resolveLinks(wItem);
           return wItem;
         })
-        .catch (this.handleError);
+        .catch ((e) => {
+          if (e.status === 401) {
+            this.auth.logout(true);
+          } else {
+            this.handleError(e);
+          }
+        });
     }
   }
 
@@ -390,7 +408,13 @@ export class WorkItemService {
             };
           });
         })
-        .catch (this.handleError);
+        .catch ((e) => {
+          if (e.status === 401) {
+            this.auth.logout(true);
+          } else {
+            this.handleError(e);
+          }
+        });
   }
 
   /**
@@ -417,8 +441,12 @@ export class WorkItemService {
         });
       })
       .catch ((e) => {
-        wItem.relationalData.linkDicts = [];
-        this.handleError(e);
+        if (e.status === 401) {
+          this.auth.logout(true);
+        } else {
+          wItem.relationalData.linkDicts = [];
+          this.handleError(e);
+        }
       });
   }
 
@@ -441,7 +469,13 @@ export class WorkItemService {
           this.workItemTypes = response.json() as WorkItemType[];
           return this.workItemTypes;
         })
-      .catch (this.handleError);
+      .catch ((e) => {
+        if (e.status === 401) {
+          this.auth.logout(true);
+        } else {
+          this.handleError(e);
+        }
+      });
     }
   }
 
@@ -466,7 +500,13 @@ export class WorkItemService {
           });
           return this.availableStates;
         })
-        .catch (this.handleError);
+        .catch ((e) => {
+          if (e.status === 401) {
+            this.auth.logout(true);
+          } else {
+            this.handleError(e);
+          }
+        });
     }
   }
 
@@ -576,7 +616,13 @@ export class WorkItemService {
         // Re build the workItem ID-Index map
         this.buildWorkItemIdIndexMap();
       })
-      .catch(this.handleError);
+      .catch ((e) => {
+        if (e.status === 401) {
+          this.auth.logout(true);
+        } else {
+          this.handleError(e);
+        }
+      });
   }
 
    /**
@@ -604,7 +650,13 @@ export class WorkItemService {
         this.buildWorkItemIdIndexMap();
         return newWorkItem;
       })
-      .catch(this.handleError);
+      .catch ((e) => {
+        if (e.status === 401) {
+          this.auth.logout(true);
+        } else {
+          this.handleError(e);
+        }
+      });
   }
 
   /**
@@ -652,7 +704,13 @@ export class WorkItemService {
         }
         return updatedWorkItem;
       })
-      .catch(this.handleError);
+      .catch ((e) => {
+        if (e.status === 401) {
+          this.auth.logout(true);
+        } else {
+          this.handleError(e);
+        }
+      });
   }
 
   /**
@@ -702,7 +760,13 @@ export class WorkItemService {
         .then(response => {
           this.linkTypes = response.json().data as LinkType[];
           return this.linkTypes;
-        }).catch(this.handleError);
+        }).catch ((e) => {
+          if (e.status === 401) {
+            this.auth.logout(true);
+          } else {
+            this.handleError(e);
+          }
+        });
     }
   }
 
@@ -823,7 +887,13 @@ export class WorkItemService {
         this.addLinkToWorkItem(newLink, includes, wItem);
         return newLink;
       })
-      .catch(this.handleError);
+      .catch ((e) => {
+        if (e.status === 401) {
+          this.auth.logout(true);
+        } else {
+          this.handleError(e);
+        }
+      });
   }
 
   /**
@@ -840,7 +910,13 @@ export class WorkItemService {
       .delete(url, {headers: this.headers})
       .toPromise()
       .then(response => { this.removeLinkFromWorkItem(link, currentWiId) })
-      .catch(this.handleError);
+      .catch ((e) => {
+        if (e.status === 401) {
+          this.auth.logout(true);
+        } else {
+          this.handleError(e);
+        }
+      });
   }
 
   searchLinkWorkItem(term: string): Promise<WorkItem[]> {
@@ -849,7 +925,13 @@ export class WorkItemService {
         .get(searchUrl)
         .toPromise()
         .then((response) => response.json().data as WorkItem[])
-        .catch(this.handleError);
+        .catch ((e) => {
+          if (e.status === 401) {
+            this.auth.logout(true);
+          } else {
+            this.handleError(e);
+          }
+        });
   }
 
   /**
@@ -910,7 +992,13 @@ export class WorkItemService {
         wItem.attributes['version'] = updatedWorkItem.attributes['version'];
         wItem.attributes['order'] = updatedWorkItem.attributes['order'];
       })
-      .catch(this.handleError);
+      .catch ((e) => {
+        if (e.status === 401) {
+          this.auth.logout(true);
+        } else {
+          this.handleError(e);
+        }
+      });
   }
 
   private handleError(error: any): Promise<any> {

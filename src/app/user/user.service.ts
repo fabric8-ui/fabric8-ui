@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { cloneDeep } from 'lodash';
 import { MockHttp } from './../shared/mock-http';
 import Globals = require('./../shared/globals');
@@ -66,7 +67,13 @@ export class UserService {
             this.userData.id = userData.id;
             return this.userData;
           })
-          .catch (this.handleError);
+          .catch ((e) => {
+            if (e.status === 401) {
+              this.auth.logout(true);
+            } else {
+              this.handleError(e);
+            }
+          });
     }
   }
 
