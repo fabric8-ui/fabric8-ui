@@ -2,8 +2,8 @@ exports.config = {
     useAllAngular2AppRoots: true,
     getPageTimeout: 30000,
     seleniumAddress: 'http://localhost:4444/wd/hub',
-    specs: ['src/tests/**/*.spec.js'],
-    exclude: ['src/tests/**/TBD/*.spec.js', 'src/tests/**/orderOfExecution.spec.js', 'src/tests/**/work-item-timeStamp.spec.js', 'src/tests/**/testHelpers*.spec.js'],
+    specs: ['src/tests/**/TBD/fab*.spec.js'],
+    exclude: ['src/tests/**/NOTTBD/*.spec.js', 'src/tests/**/orderOfExecution.spec.js', 'src/tests/**/work-item-timeStamp.spec.js', 'src/tests/**/testHelpers*.spec.js'],
     suites: {
     smokeTest: 'src/tests/**/smokeTest.spec.js'
     },
@@ -21,3 +21,4 @@ exports.config = {
 
     }
 };
+
