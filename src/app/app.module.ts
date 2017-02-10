@@ -13,6 +13,7 @@ import { LocalStorageModule } from 'angular-2-local-storage';
 
 import { AuthenticationService, Broadcaster, Logger, UserService} from 'ngx-login-client';
 
+import { ReactiveFormsModule } from '@angular/forms';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -27,6 +28,10 @@ import { AppState, InternalStateType } from './app.service';
 // Footer & Header
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
+
+//stackreports
+
+import {StackModule} from './analyze/stackreports/render-stack-details/module';
 
 // Shared Services
 import { DummyService } from './shared/dummy.service';
@@ -75,6 +80,7 @@ export type StoreType = {
     SpaceDialogModule,
     SpaceWizardModule,
     StackDetailsModule,
+    ReactiveFormsModule,
     // AppRoutingModule must appear last
     AppRoutingModule
   ],
@@ -96,6 +102,7 @@ export type StoreType = {
     ToggleService,
     UserService
   ],
+  schemas: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
@@ -137,4 +144,3 @@ export class AppModule {
   }
 
 }
-
