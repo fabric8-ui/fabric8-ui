@@ -167,7 +167,7 @@ export class MockHttp extends Http {
           }
         case '/user':
           return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getUser() } );
-        case '/identities':
+        case '/users':
           return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getAllUsers() } );
         case '/work-item-list':
           if (path.params['name']) {

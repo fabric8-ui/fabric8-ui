@@ -6,7 +6,7 @@ export class UserMockGenerator {
 
   // the user and identites are static data (for now), so we cache it here.
   private user: any;
-  private identities: any;
+  private allusers: any;
 
   /*
    * Creates the logged in user structure.
@@ -30,42 +30,29 @@ export class UserMockGenerator {
   /*
    * Creates the identities structure.
    */
-  public getIdentities(): any {
-    if (this.identities)
-      return this.identities;
+  public getAllUsers(): any {
+    if (this.allusers)
+      return this.allusers;
     else {
-      this.identities = [
-        {
+      this.allusers = [0, 1, 2, 3].map((i) => {
+        return {
           attributes: {
-            fullName: 'Example User 0',
-            imageURL: 'https://avatars.githubusercontent.com/u/2410471?v=3'
+            fullName: 'Example User ' + i,
+            imageURL: 'https://avatars.githubusercontent.com/u/241047' + (i + 1) + '?v=3',
+            email: 'example' + i + '@email.exmp',
+            bio: '',
+            provider: 'kc2',
+            url: '',
+            username: 'example' + i
           },
-          id: 'user0',
-          type: 'identities'
-        }, {
-          attributes: {
-            fullName: 'Example User 1',
-            imageURL: 'https://avatars.githubusercontent.com/u/2410472?v=3'
+          links: {
+            self: ''
           },
-          id: 'user1',
+          id: 'user' + i,
           type: 'identities'
-        }, {
-          attributes: {
-            fullName: 'Example User 2',
-            imageURL: 'https://avatars.githubusercontent.com/u/2410473?v=3'
-          },
-          id: 'user2',
-          type: 'identities'
-        }, {
-          attributes: {
-            fullName: 'Example User 3',
-            imageURL: 'https://avatars.githubusercontent.com/u/2410474?v=3'
-          },
-          id: 'user3',
-          type: 'identities'
-        }
-      ];
-      return this.identities;
+        };
+      });
+      return this.allusers;
     }
   }
 

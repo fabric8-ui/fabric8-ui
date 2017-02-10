@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { MockHttp } from './../shared/mock-http';
 import Globals = require('./../shared/globals');
 
@@ -61,10 +62,7 @@ export class UserService {
             // The reference of this.userData is
             // being used in Header
             // So updating the value like that
-            this.userData.attributes = {
-              fullName: userData.attributes.fullName,
-              imageURL: userData.attributes.imageURL
-            };
+            this.userData.attributes = cloneDeep(userData.attributes);
             this.userData.id = userData.id;
             return this.userData;
           })

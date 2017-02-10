@@ -176,7 +176,7 @@ export class MockDataService {
             ]
           };
         }
-      } 
+      }
       // should never happen
       return {};
     }
@@ -263,7 +263,7 @@ export class MockDataService {
   }
 
   public getAllUsers(): any {
-    return this.userMockGenerator.getIdentities();
+    return this.userMockGenerator.getAllUsers();
   }
 
   public getLoginStatus() {
