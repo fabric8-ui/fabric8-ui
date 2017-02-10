@@ -378,10 +378,13 @@ class WorkItemDetailPage {
     return element(by.id("wi-comment-add-comment"));
   }
   writeComment  (comment){
-    return element(by.id("wi-comment-add-comment")).sendKeys(comment);
+    return element(by.id("wi-comment-add-comment")).sendKeys(comment + protractor.Key.ENTER);
   }
   commentsAvatar (index){
     return element(by.id("comment_avatar_"+index));
+  }
+  commentsUsername  (index){
+    return element(by.id("comment_username_"+ index)).getText();
   }
   getNumberofComments (){
     return element(by.css('comments-wrap')).count();
