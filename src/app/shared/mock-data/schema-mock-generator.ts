@@ -58,13 +58,13 @@ export class SchemaMockGenerator {
               },
               'source_type': {
                 'data': {
-                  'id': 'system.planneritem',
+                  'id': 'planneritem',
                   'type': 'workitemtypes'
                 }
               },
               'target_type': {
                 'data': {
-                  'id': 'system.planneritem',
+                  'id': 'planneritem',
                   'type': 'workitemtypes'
                 }
               }
@@ -155,7 +155,7 @@ export class SchemaMockGenerator {
               }
             }
           },
-          'name': 'system.userstory',
+          'name': 'userstory',
           'version': 0
         },
         {
@@ -205,7 +205,7 @@ export class SchemaMockGenerator {
               }
             }
           },
-          'name': 'system.valueproposition',
+          'name': 'valueproposition',
           'version': 0
         },
         {
@@ -255,7 +255,7 @@ export class SchemaMockGenerator {
               }
             }
           },
-          'name': 'system.fundamental',
+          'name': 'fundamental',
           'version': 0
         },
         {
@@ -305,7 +305,7 @@ export class SchemaMockGenerator {
               }
             }
           },
-          'name': 'system.experience',
+          'name': 'experience',
           'version': 0
         },
         {
@@ -355,7 +355,7 @@ export class SchemaMockGenerator {
               }
             }
           },
-          'name': 'system.planneritem',
+          'name': 'planneritem',
           'version': 0
         },
         {
@@ -405,7 +405,7 @@ export class SchemaMockGenerator {
               }
             }
           },
-          'name': 'system.feature',
+          'name': 'feature',
           'version': 0
         },
         {
@@ -455,7 +455,7 @@ export class SchemaMockGenerator {
               }
             }
           },
-          'name': 'system.bug',
+          'name': 'bug',
           'version': 0
         },
         {
@@ -505,7 +505,7 @@ export class SchemaMockGenerator {
               }
             }
           },
-          'name': 'system.scenario',
+          'name': 'scenario',
           'version': 0
         }
       ];

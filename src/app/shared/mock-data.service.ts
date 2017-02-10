@@ -127,7 +127,7 @@ export class MockDataService {
           'assignees': { },
           'baseType': {
             'data': {
-              'id': 'system.userstory',
+              'id': 'userstory',
               'type': 'workitemtypes'
             }
           },
