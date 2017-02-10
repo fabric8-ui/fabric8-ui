@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
-import { AuthenticationService, Broadcaster, Logger, User } from 'ng-login';
+import { AuthenticationService, Broadcaster, Logger, User } from 'ngx-login-client';
 
 
 @Injectable()

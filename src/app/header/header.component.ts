@@ -2,13 +2,12 @@ import { ProfileService } from './../profile/profile.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
-import { DummyService } from './../shared/dummy.service';
+import { AuthenticationService, Broadcaster, Logger, UserService, User } from 'ngx-login-client';
+
 import { ContextType } from './../models/context-type';
 import { Context } from './../models/context';
-
-import { AuthenticationService, Broadcaster, Logger, UserService, User } from 'ng-login';
-
 import { ContextService } from '../shared/context.service';
+import { DummyService } from './../shared/dummy.service';
 
 @Component({
   selector: 'alm-app-header',

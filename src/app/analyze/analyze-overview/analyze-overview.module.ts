@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
 import { ModalModule } from 'ngx-modal';
 import { FormsModule } from '@angular/forms';
-
+// import { Broadcaster } from 'ngx-login-client';
 
 import { AnalyzeOverviewComponent } from './analyze-overview.component';
 import { AnalyzeOverviewRoutingModule } from './analyze-overview-routing.module';
@@ -20,6 +20,7 @@ import { AnalyzeOverviewRoutingModule } from './analyze-overview-routing.module'
     FormsModule,
     TeamMembershipDialogModule
   ],
+  // providers: [Broadcaster],
   declarations: [AnalyzeOverviewComponent],
 })
 export class AnalyzeOverviewModule {

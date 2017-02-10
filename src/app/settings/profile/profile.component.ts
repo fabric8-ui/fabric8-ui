@@ -1,8 +1,9 @@
-import { Broadcaster } from './../../shared/broadcaster.service';
-import { ProfileService } from './../../profile/profile.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Broadcaster } from 'ngx-login-client';
+
+import { ProfileService } from './../../profile/profile.service';
 
 @Component({
   selector: 'alm-profile',

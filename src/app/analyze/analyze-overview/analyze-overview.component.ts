@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { Broadcaster } from 'ngx-login-client';
+
 import { ContextService } from '../../shared/context.service';
-import { Broadcaster } from '../../shared/broadcaster.service';
 
 @Component({
   selector: 'alm-analyzeOverview',

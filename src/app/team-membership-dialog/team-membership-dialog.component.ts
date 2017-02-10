@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Broadcaster, User } from 'ngx-login-client';
+
 import { DummyService } from './../shared/dummy.service';
-import { Broadcaster, User } from 'ng-login';
 import { Team } from './../models/team';
 import { ContextService } from './../shared/context.service';
 

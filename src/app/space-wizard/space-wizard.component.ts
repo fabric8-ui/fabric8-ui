@@ -1,11 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Broadcaster } from 'ngx-login-client';
+
 import { DummyService } from '../shared/dummy.service';
 import { SpaceConfigurator, IWizardSteps, Wizard } from './wizard';
 import { Space, SpaceAttributes } from '../models/space';
 import { ProcessTemplate } from '../models/process-template';
-import { Broadcaster } from '../shared/broadcaster.service';
 import { SpaceService } from '../profile/spaces/space.service';
 
 interface IModal {

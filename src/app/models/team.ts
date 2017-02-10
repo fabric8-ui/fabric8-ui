@@ -1,4 +1,4 @@
-import { User } from 'ng-login';
+import { User } from 'ngx-login-client';
 
 export interface Team {
     name: string;

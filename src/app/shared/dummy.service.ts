@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { LocalStorageService } from 'angular-2-local-storage';
 import 'rxjs/add/operator/toPromise';
+import { Broadcaster, User } from 'ngx-login-client';
 
 import { Context } from './../models/context';
 import { ContextType } from './../models/context-type';
@@ -12,7 +13,6 @@ import { Team } from './../models/team';
 import { Entity } from './../models/entity';
 import { Email } from './../models/email';
 
-import { Broadcaster, User } from 'ng-login';
 
 
 // A service responsible for providing dummy data for the UI prototypes.
