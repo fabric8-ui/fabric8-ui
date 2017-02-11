@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Broadcaster, Profile } from 'ngx-login-client';
+import { Broadcaster, Profile, User } from 'ngx-login-client';
 
 import { DummyService } from './../shared/dummy.service';
 
