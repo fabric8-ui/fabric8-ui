@@ -1,3 +1,4 @@
+import { ProfileService } from './../profile/profile.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
@@ -29,7 +30,8 @@ export class HeaderComponent implements OnInit {
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     public dummy: DummyService,
-    public context: ContextService
+    public context: ContextService,
+    public profile: ProfileService
   ) {
     router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {

@@ -32,7 +32,7 @@ export class PublicComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.auth.isLoggedIn()) {
-      if (this.profile.checkProfileSufficient()) {
+      if (this.profile.sufficient) {
         this.router.navigate(['home']);
       } else {
         this.router.navigate(['signup']);

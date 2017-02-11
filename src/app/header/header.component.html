@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-pf" role="navigation" *ngIf="loggedIn && context.current">
+<nav class="navbar navbar-inverse navbar-pf" role="navigation" *ngIf="loggedIn && context.current && profile.sufficient">
   <div class="navbar-header">
     <ul class="nav navbar-nav navbar-right hidden-sm hidden-md hidden-lg ">
       <li *ngIf="!loggedIn">

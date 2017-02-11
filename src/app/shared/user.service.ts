@@ -1,3 +1,4 @@
+import { ProfileService } from './../profile/profile.service';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { Logger } from './logger.service';
@@ -22,7 +23,8 @@ export class UserService {
   constructor(private http: Http,
               private logger: Logger,
               private auth: AuthenticationService,
-              private broadcaster: Broadcaster) {
+              private broadcaster: Broadcaster,
+              private profile: ProfileService) {
 
     this.broadcaster.on<string>('logout')
       .subscribe(message => {
@@ -52,18 +54,20 @@ export class UserService {
         .get(this.userUrl, {headers: this.headers})
         .toPromise()
         .then(response => {
-          let userData = response.json().data as User;
+          let userData = response.json().data;
           // The reference of this.userData is
           // being used in Header
           // So updating the value like that
           this.userData.attributes = {
             fullName: userData.attributes.fullName,
-            imageURL: userData.attributes.imageURL
+            imageURL: userData.attributes.imageURL,
+            username: userData.attributes.username,
+            bio: userData.attributes.bio,
+            primaryEmail: userData.attributes.email
           };
           this.userData.id = userData.id;
+          this.profile.initDefaults(this.userData);
           this.broadcaster.broadcast('currentUserInit', this.userData);
-          // console.log('beginning of getUser() = ' + Object.keys(this.userData));
-          // console.log('beginning of getUser() = ' + JSON.stringify(this.userData, null, 2));
           return this.userData;
         })
         .catch (this.handleError);

@@ -29,7 +29,7 @@ export class ProfileService {
   }
 
   save() {
-    this.addPrimaryToEmails();
+    this.addPrimaryToEmails(this.current);
     // TODO Remove dummy
     this.broadcaster.broadcast('save');
   }
@@ -48,7 +48,7 @@ export class ProfileService {
     }
   }
 
-  checkProfileSufficient(): boolean {
+  get sufficient(): boolean {
     if (this.current &&
       this.current.fullName &&
       this.current.primaryEmail &&
@@ -62,24 +62,24 @@ export class ProfileService {
     }
   }
 
-  initDefaults() {
-    this.current.emails = this.current.emails || [] as string[];
-    this.current.primaryEmail = this.current.primaryEmail || '';
-    this.current.notificationEmail = this.current.notificationEmail || this.current.primaryEmail;
-    this.current.publicEmail = this.current.publicEmail || this.current.primaryEmail;
-    this.current.emailPreference = this.current.emailPreference || 'all';
-    this.current.notificationMethods = this.current.notificationMethods || [] as string[];
-    this.addPrimaryToEmails();
+  initDefaults(user: User) {
+    user.attributes.emails = user.attributes.emails || [] as string[];
+    user.attributes.primaryEmail = user.attributes.primaryEmail || '';
+    user.attributes.notificationEmail = user.attributes.notificationEmail || user.attributes.primaryEmail;
+    user.attributes.publicEmail = user.attributes.publicEmail || user.attributes.primaryEmail;
+    user.attributes.emailPreference = user.attributes.emailPreference || 'all';
+    user.attributes.notificationMethods = user.attributes.notificationMethods || [] as string[];
+    this.addPrimaryToEmails(user.attributes);
   }
 
-  private addPrimaryToEmails() {
-    if (this.current.primaryEmail && this.current.primaryEmail) {
-      for (let e of this.current.emails) {
-        if (e === this.current.primaryEmail) {
+  private addPrimaryToEmails(profile: Profile) {
+    if (profile.primaryEmail && profile.primaryEmail) {
+      for (let e of profile.emails) {
+        if (e === profile.primaryEmail) {
           return;
         }
       }
-      this.current.emails.unshift(this.current.primaryEmail);
+      profile.emails.unshift(profile.primaryEmail);
     }
   }
 

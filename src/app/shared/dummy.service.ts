@@ -339,6 +339,16 @@ export class DummyService {
 
   readonly DEFAULT_CONTEXTS: Map<string, Context> = new Map<string, Context>([
     [
+      'pmuir',
+      {
+        entity: this.USERS.get('pmuir'),
+        space: null,
+        team: null,
+        type: this.CONTEXT_TYPES.get('user'),
+        path: 'pmuir',
+        name: 'pmuir'
+      } as Context
+    ], [
       'ux',
       {
         entity: this.USERS.get('pmuir'),
@@ -429,10 +439,9 @@ export class DummyService {
     this.localStorageService.set('users', this._users);
   }
 
-  lookupUser(username: string, fullName: string): User {
+  lookupUser(username: string): User {
     for (let u of this.users) {
-      // TODO Fullname is a hack until we get a bit more info back from github
-      if (u.attributes.username === username || u.attributes.fullName === fullName) {
+      if (u.attributes.username === username) {
         return u;
       }
     }
@@ -440,7 +449,7 @@ export class DummyService {
   }
 
   lookupEntity(entity: string): Entity {
-    return this.lookupUser(entity, null);
+    return this.lookupUser(entity);
   }
 
   lookupSpace(space: string): Space {
@@ -453,7 +462,7 @@ export class DummyService {
 
   private addUser(add: User) {
     if (add && add.attributes) {
-      let existing: User = this.lookupUser(add.attributes.username, add.attributes.fullName);
+      let existing: User = this.lookupUser(add.attributes.username);
       if (existing) {
         this.currentUser = existing;
       } else {
@@ -461,8 +470,8 @@ export class DummyService {
         this.users.push(add);
         this.save();
       }
-      this.broadcaster.broadcast('currentUserChanged', this.currentUser);
     }
+    this.broadcaster.broadcast('currentUserChanged', this.currentUser);
   }
 
   private makePseudoRandmonString(len: number): string {

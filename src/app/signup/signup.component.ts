@@ -20,13 +20,12 @@ export class SignupComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     // Skip this page if the profile is complete
-    if (this.profile.checkProfileSufficient()) {
+    if (this.profile.sufficient) {
       this.router.navigate(['home']);
     }
   }
 
   save() {
-    this.profile.initDefaults();
     this.profile.save();
     this.router.navigate(['/home']);
   }
