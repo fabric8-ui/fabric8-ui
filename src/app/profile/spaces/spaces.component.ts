@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
 
+import { Logger } from 'ngx-login-client';
+
 import { DummyService } from './../../shared/dummy.service';
-import { Logger } from '../../shared/logger.service';
 import { SpaceService } from './space.service';
 import { Space } from '../../models/space';
 

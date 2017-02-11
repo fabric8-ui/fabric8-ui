@@ -11,7 +11,7 @@ import { DebugElement } from '@angular/core';
 import { FormsModule }  from '@angular/forms';
 import { By }           from '@angular/platform-browser';
 
-import { Logger } from '../../shared/logger.service';
+import { Logger } from 'ngx-login-client';
 
 import { DropdownOption } from './dropdown-option';
 import { DropdownComponent } from './dropdown.component';
