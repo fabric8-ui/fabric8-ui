@@ -11,8 +11,11 @@ import { StackDetailsModule } from './stack/stack-details/stack-details.module';
 
 
 @NgModule({
-  imports: [StackDetailsModule, AnalyzeOverviewModule,
-            CommonModule, AnalyzeRoutingModule, HttpModule],
+  imports: [AnalyzeOverviewModule,
+            AnalyzeRoutingModule,
+            CommonModule,
+            HttpModule,
+            StackDetailsModule],
   declarations: [AnalyzeComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
