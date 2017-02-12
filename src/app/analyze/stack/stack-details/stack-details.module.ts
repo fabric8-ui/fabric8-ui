@@ -1,16 +1,21 @@
-import { NgModule }         from '@angular/core';
-import { CommonModule }     from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
-import {DataTableModule} from "angular2-datatable";
+import { DataTableModule } from 'angular2-datatable';
 
-import { StackDetailsComponent }     from './stack-details.component';
+import { StackDetailsComponent } from './stack-details.component';
 import { ModalModule } from 'ng2-modal';
 
-import {StackRecoModule} from '../stack-recommendation/module';
-import {ContainerTogglerModule} from '../container-toggler/module';
+import { StackRecoModule } from '../stack-recommendation/module';
+import { ContainerTogglerModule } from '../container-toggler/module';
 
 @NgModule({
-  imports:      [StackRecoModule, ContainerTogglerModule, CommonModule, HttpModule,DataTableModule, ModalModule ],
+  imports: [CommonModule,
+            ContainerTogglerModule,
+            DataTableModule,
+            HttpModule,
+            ModalModule,
+            StackRecoModule],
   declarations: [ StackDetailsComponent ],
   exports: [ StackDetailsComponent ]
 })

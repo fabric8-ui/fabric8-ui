@@ -2,7 +2,7 @@ import { Stack } from './../../../models/stack';
 import { ComponentAnalysesService } from './../component-analyses.service';
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 
-import { Logger } from '../../../shared/logger.service';
+import { Logger } from 'ngx-login-client';
 import { StackAnalysesService } from '../stack-analyses.service';
 import { StackAnalysesModel } from '../stack-analyses.model';
 import { Router, ActivatedRoute, Params } from '@angular/router';
