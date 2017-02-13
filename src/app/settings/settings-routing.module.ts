@@ -25,7 +25,6 @@ const routes: Routes = [
     component: SettingsComponent,
     children: [
       { path: '',      component: ProfileComponent },
-      { path: 'account', loadChildren: './account/account.module#AccountModule' },
       { path: 'emails', loadChildren: './emails/emails.module#EmailsModule' },
       { path: 'notifications',
         loadChildren: './notifications/notifications.module#NotificationsModule'

@@ -11,10 +11,6 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'signup',
-    loadChildren: './signup/signup.module#SignupModule'
-  },
-    {
     path: '_control',
     loadChildren: './control/control.module#ControlModule'
   },

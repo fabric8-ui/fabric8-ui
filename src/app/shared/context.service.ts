@@ -112,20 +112,23 @@ export class ContextService {
     let spaceStr: string = this.extractSpace(this.router.url);
     // TODO Implement team URLs
     let teamStr: string = null;
-    // TODO This is horrible, make a switch?
+    // The 'ctxPath' is the raw path to the context only, with all extraneous info removed
+    let ctxPath = '';
+    if (entityStr) {
+      ctxPath = '/' + entityStr;
+    }
+    if (spaceStr) {
+      ctxPath = ctxPath + '/' + spaceStr;
+    }
+    if (!ctxPath) {
+      return null;
+    }
     for (let c of this.recent) {
-      if (entityStr && c.entity && !c.team && c.entity instanceof User) {
-        if (spaceStr && c.space) {
-          if (entityStr === (<User>c.entity).attributes.username && spaceStr === c.space.name) {
-            return c;
-          }
-        } else if (!spaceStr && !c.space) {
-          if (entityStr === (<User>c.entity).attributes.username) {
-            return c;
-          }
-        }
+      if (c.path === ctxPath) {
+        return c;
       }
     }
+
     // Otherwise, we have to build it
     return this.buildContext(this.router.url);
   }
@@ -141,11 +144,15 @@ export class ContextService {
     // TODO Support other types of entity
     if (c.entity && c.space) {
       c.type = 'space';
-      c.path = '/' + (<User>c.entity).attributes.username + '/' + c.space.attributes.name;
+      // TODO replace path with username / space name once parameterized routes are working
+      // c.path = '/' + (<User>c.entity).attributes.username + '/' + c.space.attributes.name;
+      c.path = '/pmuir/BalloonPopGame';
       c.name = c.space.attributes.name;
     } else if (c.entity) {
       c.type = 'user';
-      c.path = '/' + (<User>c.entity).attributes.username;
+      // TODO replace path with username once parameterized routes are working
+      // c.path = '/' + (<User>c.entity).attributes.username;
+      c.path = '/pmuir';
       c.name = (<User>c.entity).attributes.username;
     } // TODO add type detection for organization and team
     if (c.type != null) {
@@ -168,7 +175,7 @@ export class ContextService {
   }
 
   private extractSpace(path: string): string {
-    let s = this.removeLeadingChars(path, '/').split('/')[1];
+    let s = this.removeTrailingChars(this.removeLeadingChars(path, '/'), '?').split('/')[1];
     if (s && !this.checkForReservedWords(s)) {
       return s;
     }
@@ -181,6 +188,10 @@ export class ContextService {
 
   private removeLeadingChars(str: string, char: string): string {
     return str.startsWith(char) ? str.slice(1, str.length) : str;
+  }
+
+  private removeTrailingChars(str: string, char: string): string {
+    return str.split(char)[0];
   }
 
   private checkForReservedWords(arg: string): boolean {

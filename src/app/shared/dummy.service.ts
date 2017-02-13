@@ -21,7 +21,7 @@ import { Email } from './../models/email';
 export class DummyService {
 
   readonly RESERVED_WORDS: string[] = [
-    'home', 'spaces'
+    'home', 'public', 'settings', 'spaces', 'resources'
   ];
 
   readonly RESOURCES: Resources = {
@@ -338,16 +338,6 @@ export class DummyService {
 
   readonly DEFAULT_CONTEXTS: Map<string, Context> = new Map<string, Context>([
     [
-      'pmuir',
-      {
-        entity: this.USERS.get('pmuir'),
-        space: null,
-        team: null,
-        type: this.CONTEXT_TYPES.get('user'),
-        path: 'pmuir',
-        name: 'pmuir'
-      } as Context
-    ], [
       'ux',
       {
         entity: this.USERS.get('pmuir'),

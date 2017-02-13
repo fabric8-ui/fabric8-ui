@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { AuthenticationService, UserService } from 'ngx-login-client';
+import { FlashMessagesService } from 'angular2-flash-messages';
+import { AuthenticationService, Broadcaster, User } from 'ngx-login-client';
 
-import { LoginItem } from '../models/login-item';
 import { LoginService } from '../shared/login.service';
 import { ProfileService } from './../profile/profile.service';
 
@@ -16,45 +16,51 @@ import { ProfileService } from './../profile/profile.service';
 })
 export class PublicComponent implements OnInit {
 
-  loginItem: LoginItem;
-  showError: boolean = false;
-  feedbackMessage: string = '';
-  statusCode: number = 0;
+  loggedIn: boolean = false;
 
   constructor(
     private auth: AuthenticationService,
     private router: Router,
     private loginService: LoginService,
     private profile: ProfileService,
-    private userService: UserService
+    private broadcaster: Broadcaster,
+    private flashMessagesService: FlashMessagesService,
+    private activatedRoute: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
-    if (this.auth.isLoggedIn()) {
-      if (this.profile.sufficient) {
-        this.router.navigate(['home']);
-      } else {
-        this.router.navigate(['signup']);
-      }
+    let error = this.getUrlParameter('error');
+    if (error) {
+      this.loggedIn = false;
+      this.flashMessagesService.show(error, { cssClass: 'alert alert-danger' });
+    } else {
+      this.loggedIn = this.auth.isLoggedIn();
     }
+    this.broadcaster.on<User>('currentUserChanged').subscribe(val => {
+      if (this.auth.isLoggedIn()) {
+        this.profile.initDefaults(val);
+        if (this.profile.sufficient) {
+          this.router.navigate(['home']);
+        } else {
+          this.loggedIn = false;
+          this.flashMessagesService.show('You must <a href="https://developers.redhat.com/auth/realms/rhd/account/">complete your profile</a>. Ensure you have provided your full name and email address.', { cssClass: 'alert alert-danger' });
+        }
+      }
+    });
   }
 
   gitSignin() {
     this.loginService.gitHubSignIn();
   }
 
-  checkStatus(loginStatus: any) {
-    if (loginStatus.token) {
-      this.router.navigate(['home']);
-    } else {
-      this.statusCode = loginStatus.status;
-      this.feedbackMessage = loginStatus.responseText;
-      this.showError = true;
-    }
-  }
+  private getUrlParameter(name): string {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    let regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    let results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  };
 
-  closeAlert() {
-    this.showError = false;
-  }
 }
+
+

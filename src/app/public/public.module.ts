@@ -6,11 +6,13 @@ import { NgModule }           from '@angular/core';
 import { CommonModule }       from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
 
+import { FlashMessagesModule } from 'angular2-flash-messages';
+
 import { PublicComponent }   from './public.component';
 import { PublicRoutingModule }   from './public-routing.module';
 
 @NgModule({
-  imports:      [ CommonModule, PublicRoutingModule, HttpModule ],
+  imports:      [ CommonModule, PublicRoutingModule, HttpModule, FlashMessagesModule ],
   declarations: [ PublicComponent ]
 })
 export class PublicModule {

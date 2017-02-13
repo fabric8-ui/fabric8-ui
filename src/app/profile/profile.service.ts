@@ -54,7 +54,7 @@ export class ProfileService {
       this.current.username
       // TODO Add imageURL
       //this.current.imageURL
-      ) {
+    ) {
       return true;
     } else {
       return false;
@@ -68,7 +68,9 @@ export class ProfileService {
     user.attributes.publicEmail = user.attributes.publicEmail || user.attributes.primaryEmail;
     user.attributes.emailPreference = user.attributes.emailPreference || 'all';
     user.attributes.notificationMethods = user.attributes.notificationMethods || [] as string[];
+    user.attributes.username = user.attributes.username || user.attributes.email;
     this.addPrimaryToEmails(user.attributes);
+    this.broadcaster.broadcast('save');
   }
 
   private addPrimaryToEmails(profile: Profile) {
