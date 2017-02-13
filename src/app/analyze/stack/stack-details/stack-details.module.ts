@@ -4,7 +4,7 @@ import { HttpModule, Http } from '@angular/http';
 import { DataTableModule } from 'angular2-datatable';
 
 import { StackDetailsComponent } from './stack-details.component';
-import { ModalModule } from 'ng2-modal';
+import { ModalModule } from 'ngx-modal';
 
 import { StackRecoModule } from '../stack-recommendation/module';
 import
