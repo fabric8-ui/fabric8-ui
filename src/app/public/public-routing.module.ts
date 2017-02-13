@@ -11,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: 'public',
-    component: PublicComponent,
+    component: PublicComponent
   }
 
 ];

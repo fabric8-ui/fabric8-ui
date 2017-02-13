@@ -18,7 +18,7 @@ export class LoginService {
     this.githubUrl += 'login/authorize ';
   }
 
-  gitHubSignIn(){
+  gitHubSignIn() {
     window.location.href = this.githubUrl;
   }
 
