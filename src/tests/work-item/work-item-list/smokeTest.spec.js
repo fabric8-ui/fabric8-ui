@@ -36,7 +36,7 @@ describe('Work item list', function () {
   });
  
   /* User can read, update, remove assignee on a workitem  */
-  it('User can read, update, remove assignee', function() {
+  it('User can read, update, remove assignee and delete WI', function() {
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
     page.clickQuickAddSave().then(function() {
@@ -51,6 +51,13 @@ describe('Work item list', function () {
         detailPage.details_assigned_user().click();
         detailPage.clickworkItemDetailUnassignButton();
         expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
+        detailPage.clickWorkItemDetailCloseButton();
+        page.clickWorkItemKebabButton(page.firstWorkItem);
+        page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
+        page.clickWorkItemPopUpDeleteConfirmButton().then(function() {
+        expect(page.workItemTitle(page.firstWorkItem)).not.toBe(WORK_ITEM_TITLE);
+        expect(page.workItemTitle(page.workItemByNumber(0))).not.toBe(WORK_ITEM_TITLE);
+      });
       });
     });
   }); 
@@ -139,7 +146,15 @@ describe('Work item list', function () {
    });
  });
 
+ it('check date showing up correctly - Desktop', function () {
+    var detailPage =page.clickWorkItemTitle(page.firstWorkItem, "Title Text 0");
+    expect(detailPage.getCreatedtime()).toBe('a few seconds ago');
+    page.workItemByURLId("id1");
+    expect(detailPage.getCreatedtime()).toBe('17 minutes ago');
+   });
 });
+
+
 
 /* Compare an expected and actual work item - the offset values enable us to track
    workitems after they have been moved. */
