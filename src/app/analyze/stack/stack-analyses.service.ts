@@ -11,7 +11,8 @@ export class StackAnalysesService {
 
   private stackAnalysesUrl = process.env.STACK_API_URL;
 
-  constructor(private http: Http, private logger: Logger) { }
+  constructor(private http: Http,
+              private logger: Logger) { }
 
   getStackAnalyses(id: string): Observable<any> {
     return this.http.get(this.buildStackAnalysesUrl(id))
