@@ -5,10 +5,8 @@ import { Logger } from 'ngx-login-client';
 import { Observable } from 'rxjs/Observable';
 
 import { Stack } from './../../../models/stack';
-import { ComponentAnalysesService } from './../component-analyses.service';
 import { StackAnalysesService } from '../stack-analyses.service';
 import { StackAnalysesModel } from '../stack-analyses.model';
-import { RenderComponentService } from './render-component.service';
 import { RenderNextService } from './render-next-service';
 import { AddWorkFlowService } from './add-work-flow.service';
 
@@ -17,7 +15,7 @@ import { AddWorkFlowService } from './add-work-flow.service';
   templateUrl: './stack-details.component.html',
   styleUrls: ['./stack-details.component.scss'],
   providers: [AddWorkFlowService, RenderNextService, StackAnalysesService,
-    StackAnalysesModel, RenderComponentService, ComponentAnalysesService, Logger],
+    StackAnalysesModel, Logger],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -68,7 +66,6 @@ export class StackDetailsComponent implements OnInit {
     private renderNextService: RenderNextService,
     private stackAnalysesService: StackAnalysesService,
     private stackAnalysesModel: StackAnalysesModel,
-    private renderComponentService: ComponentAnalysesService,
     private logger: Logger
   ) { }
 
@@ -289,21 +286,6 @@ export class StackDetailsComponent implements OnInit {
 
   handlePrevious(value): void {
     --this.currentIndex;
-  }
-
-  getComponentAnalyses(item) {
-    this.renderComponentService.getComponentAnalyses(item)
-      .subscribe(
-      componentAnalysesData => {
-        this.componentAnalysesData = componentAnalysesData;
-      },
-      error => this.errorMessage = <any>error
-      );
-  }
-
-  tdClicked(item) {
-    alert('am in!!' + item);
-    this.getComponentAnalyses(item);
   }
 
   // process recomendation form //
