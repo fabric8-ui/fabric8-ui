@@ -1,16 +1,17 @@
-import { Stack } from './../../../models/stack';
-import { ComponentAnalysesService } from './../component-analyses.service';
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
 
 import { Logger } from 'ngx-login-client';
+import { Observable } from 'rxjs/Observable';
+
+import { Stack } from './../../../models/stack';
+import { ComponentAnalysesService } from './../component-analyses.service';
 import { StackAnalysesService } from '../stack-analyses.service';
 import { StackAnalysesModel } from '../stack-analyses.model';
-import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RenderComponentService } from './render-component.service';
 import { RenderNextService } from './render-next-service';
 import { AddWorkFlowService } from './add-work-flow.service';
-import { Observable } from 'rxjs/Observable';
-import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'stack-details',
