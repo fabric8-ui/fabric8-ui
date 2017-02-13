@@ -96,14 +96,13 @@
           </h2>
           <div class="card-pf-body">
             <div id="metadata">
-          <p> Components with tests: {{componentsWithTests}} </p>
-          <p> Components with dependency lock file: {{componentsWithDependencyLockFile}} </p>
-          <span *ngFor="let entry of required_enginesArr">
-          Required {{entry.key}} version : {{entry.value}}<br>
-        </span>
-        </div>
-            <p class="card-pf-view-notifications">
-            </p>
+              <p> Components with tests: {{componentsWithTests}} </p>
+              <p> Components with dependency lock file: {{componentsWithDependencyLockFile}} </p>
+              <span *ngFor="let entry of requiredEnginesArr">
+                Required {{entry.key}} version : {{entry.value}}<br>
+              </span>
+            </div>
+            <p class="card-pf-view-notifications"></p>
           </div>
         </div>
       </div>
@@ -192,6 +191,7 @@
     </div>
 
   </div>
+</div>
 
 
   <modal #similarStack title="Create work item form recomendation with button">
