@@ -60,7 +60,7 @@ export class StackDetailsComponent implements OnInit {
 
   similarStacks: Array<any> = [];
 
-  public recomendationForm = this.fb.group({
+  public recommendationForm = this.fb.group({
     row: ["[{name: 'Sample1', version: '0.1.1', custom: '{name: 'Add'}'}]"]
   });
   constructor(
@@ -312,7 +312,7 @@ export class StackDetailsComponent implements OnInit {
   // process recomendation form //
   processForm(row: any) {
     this.logger.log(event);
-    this.logger.log(this.recomendationForm.value);
+    this.logger.log(this.recommendationForm.value);
   }
 
 }

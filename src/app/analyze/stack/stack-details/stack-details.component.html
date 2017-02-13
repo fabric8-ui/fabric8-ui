@@ -42,7 +42,7 @@
             <div id="popularity">
               <p> Average Component GitHub Stars: {{averageStars}}</p>
               <p> Average Component GitHub Forks: {{averageForks}}</p>
-              <p> Components with Low Popularity: {{lowPopularityPomponents}}</p>
+              <p> Components with Low Popularity: {{lowPopularityComponents}}</p>
 
             </div>
             <p class="card-pf-view-notifications">
@@ -196,7 +196,7 @@
 
   <modal #similarStack title="Create work item form recomendation with button">
     <modal-content>
-      <form [name]="recomendationForm" (ngSubmit)="processForm()">
+      <form [name]="recommendationForm" (ngSubmit)="processForm()">
         <stack-recommendation [rows]="recoArray[currentIndex].rows" [headers]="recoArray[currentIndex].headers" [clickable]="false"
           id="rec_container"></stack-recommendation>
           <button type="submit" class="btn btn-primary">Create</button><button class="btn btn-danger" (click)="similarStack.close()">Close</button>
