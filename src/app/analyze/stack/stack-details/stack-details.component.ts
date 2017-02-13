@@ -198,36 +198,44 @@ export class StackDetailsComponent implements OnInit {
     const url: string = this.similarStacks[0].uri;
     this.recoArray[this.currentIndex]['rows'] = [];
     this.recoArray[this.currentIndex]['url'] = url;
-    for (let component of components) {
-      this.recoArray[this.currentIndex]['rows'].push({ name: components[component].name, version: components[component].version });
+    for (let component in components) {
+      if (components.hasOwnProperty(component)) {
+        this.recoArray[this.currentIndex]['rows'].push({ name: components[component].name, version: components[component].version });
+      }
     }
-    for (let i of missingPackages) {
-      this.recoArray[this.currentIndex]['rows'].push({
-        'name': missingPackages[i],
-        'version': '',
-        'custom': {
-          'name': 'Add',
-          'type': 'checkbox'
-        }
-      });
+    for (let i in missingPackages) {
+      if (missingPackages.hasOwnProperty(i)) {
+        this.recoArray[this.currentIndex]['rows'].push({
+          'name': missingPackages[i],
+          'version': '',
+          'custom': {
+            'name': 'Add',
+            'type': 'checkbox'
+          }
+        });
+      }
     }
-    for (let i of versionMismatch) {
-      this.recoArray[this.currentIndex]['rows'].push({
-        'name': versionMismatch[i],
-        'version': '',
-        'custom': {
-          'name': 'Update',
-          'type': 'checkbox'
-        }
-      });
+    for (let i in versionMismatch) {
+      if (versionMismatch.hasOwnProperty(i)) {
+        this.recoArray[this.currentIndex]['rows'].push({
+          'name': versionMismatch[i],
+          'version': '',
+          'custom': {
+            'name': 'Update',
+            'type': 'checkbox'
+          }
+        });
+      }
     }
   }
 
 
   getComponents(components): void {
     this.currentStackRows = [];
-    for (var component in components) {
-      this.currentStackRows.push({ name: components[component].name, version: components[component].version });
+    for (let component in components) {
+      if (components.hasOwnProperty(component)) {
+        this.currentStackRows.push({ name: components[component].name, version: components[component].version });
+      }
     }
   }
 
@@ -261,8 +269,10 @@ export class StackDetailsComponent implements OnInit {
         this.componentsWithTests = this.stackAnalysesData[0].metadata.components_with_tests;
         this.componentsWithDependencyLockFile = this.stackAnalysesData[0].metadata.components_with_dependency_lock_file;
         this.requiredEngines = this.stackAnalysesData[0].metadata.required_engines;
-        for (var key in this.requiredEngines) {
-          this.requiredEnginesArr.push({ key: key, value: this.requiredEngines[key] });
+        for (let key in this.requiredEngines) {
+          if (this.requiredEngines.hasOwnProperty(key)) {
+            this.requiredEnginesArr.push({ key: key, value: this.requiredEngines[key] });
+          }
         }
 
         for (let i = 0; i < this.stackAnalysesData[0].components.length; i++) {
