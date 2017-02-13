@@ -189,7 +189,7 @@ export class StackDetailsComponent implements OnInit {
   /* Adding Single Work item */
 
   /* Get Recommendation */
-  getRecommendations(components, recommendation: any): void {
+  getRecommendations(components: any, recommendation: any): void {
     this.similarStacks = recommendation.similar_stacks;
     const analysis: any = this.similarStacks[0].analysis;
     let missingPackages: Array<any> = analysis.missing_packages;
@@ -289,7 +289,7 @@ export class StackDetailsComponent implements OnInit {
       );
   }
 
-  handleNext(value): void {
+  handleNext(value: any): void {
     // ++ this.currentIndex;
     // Hit a new Ajax call and populate the Array
     let nextObservable: Observable<any> = this.renderNextService.getNextList(this.recoArray[this.currentIndex]['url']);
@@ -298,7 +298,7 @@ export class StackDetailsComponent implements OnInit {
     });
   }
 
-  handlePrevious(value): void {
+  handlePrevious(value: any): void {
     --this.currentIndex;
   }
 
