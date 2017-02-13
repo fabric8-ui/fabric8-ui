@@ -54,7 +54,7 @@ export class WorkItemService {
     private iterationService: IterationService,
     private userService: UserService) {
     if (this.auth.getToken() != null) {
-      this.headers.set('Authorization', 'Bearer h' + this.auth.getToken());
+      this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
     }
     if (Globals.inTestMode) {
       logger.log('WorkItemService running in ' + process.env.ENV + ' mode.');
