@@ -120,11 +120,7 @@ export class DummyService {
               {
                 name: 'Profile',
                 path: ''
-              }/*, {
-                // Account is disabled as we don't yet support users creating accounts
-                name: 'Account',
-                path: 'account'
-              }*/, {
+              }, {
                 name: 'Emails',
                 path: 'emails'
               }, {
@@ -132,7 +128,7 @@ export class DummyService {
                 path: 'notifications'
               }
             ]
-          },
+          }
         ]
       } as ContextType
     ],
@@ -211,7 +207,7 @@ export class DummyService {
                 path: 'alerts'
               }
             ]
-          },
+          }
         ]
       } as ContextType
     ],
@@ -239,7 +235,7 @@ export class DummyService {
         members: [
           this.USERS.get('qodfathr')
         ]
-      } as Team,
+      } as Team
     ], [
       'balloonpopgame',
       {
@@ -330,7 +326,7 @@ export class DummyService {
           }, {
             codebase: 'https://github.com/BalloonPopGame/BalloonPopGame-UI',
             uuid: '888d1fa0d88e4fbeab7e0e20d21f6912'
-          },
+          }
         ]
       } as Space
     ]
