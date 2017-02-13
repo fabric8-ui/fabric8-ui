@@ -6,7 +6,7 @@ import { DataTableModule } from 'angular2-datatable';
 import { StackDetailsComponent } from './stack-details.component';
 import { ModalModule } from 'ngx-modal';
 
-import { StackRecoModule } from '../stack-recommendation/module';
+import { StackRecommendationModule } from '../stack-recommendation/stack-recommendation.module';
 import
   { ContainerTogglerModule }
 from '../../../shared-component/container-toggler/container-toggler.module';
@@ -17,7 +17,7 @@ from '../../../shared-component/container-toggler/container-toggler.module';
             DataTableModule,
             HttpModule,
             ModalModule,
-            StackRecoModule],
+            StackRecommendationModule],
   declarations: [ StackDetailsComponent ],
   exports: [ StackDetailsComponent ]
 })
