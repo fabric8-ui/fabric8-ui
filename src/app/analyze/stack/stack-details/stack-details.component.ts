@@ -188,10 +188,10 @@ export class StackDetailsComponent implements OnInit {
     const url: string = this.similarStacks[0].uri;
     this.recoArray[this.currentIndex]['rows'] = [];
     this.recoArray[this.currentIndex]['url'] = url;
-    for (var component in components) {
+    for (let component of components) {
       this.recoArray[this.currentIndex]['rows'].push({ name: components[component].name, version: components[component].version });
     }
-    for (let i in missingPackages) {
+    for (let i of missingPackages) {
       this.recoArray[this.currentIndex]['rows'].push({
         'name': missingPackages[i],
         'version': '',
@@ -201,7 +201,7 @@ export class StackDetailsComponent implements OnInit {
         }
       });
     }
-    for (let i in versionMismatch) {
+    for (let i of versionMismatch) {
       this.recoArray[this.currentIndex]['rows'].push({
         'name': versionMismatch[i],
         'version': '',
@@ -254,8 +254,8 @@ export class StackDetailsComponent implements OnInit {
           this.requiredEnginesArr.push({ key: key, value: this.requiredEngines[key] });
         }
 
-        for (var i = 0; i < this.stackAnalysesData[0].components.length; i++) {
-          var myObj = Object.assign({}, this.stackAnalysesModel);
+        for (let i = 0; i < this.stackAnalysesData[0].components.length; i++) {
+          let myObj = Object.assign({}, this.stackAnalysesModel);
           myObj.ecosystem = this.stackAnalysesData[0].components[i].ecosystem;
           myObj.pkg = this.stackAnalysesData[0].components[i].name;
           myObj.version = this.stackAnalysesData[0].components[i].version;
