@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
 
@@ -16,8 +16,7 @@ import { StackDetailsModule } from './stack/stack-details/stack-details.module';
             CommonModule,
             HttpModule,
             StackDetailsModule],
-  declarations: [AnalyzeComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  declarations: [AnalyzeComponent]
 })
 export class AnalyzeModule {
   constructor(http: Http) { }
