@@ -166,7 +166,7 @@ export class StackDetailsComponent implements OnInit {
                             { 'id': 'userstory', 'type': 'workitemtypes' } } },
                             'type': 'workitems', 'id': '55' } };
 
-    workItemData.data.attributes["system.title"] = row.custom.name + ' ' + row.name + ' ' + row.version;
+    workItemData.data.attributes['system.title'] = row.custom.name + ' ' + row.name + ' ' + row.version;
     let workflow: Observable<any> = this.addWorkFlowService.addWorkFlow(workItemData);
     workflow.subscribe((data) => {
       let baseUrl: string = 'http://demo.almighty.io/work-item/list/detail/' + data.data.id;
