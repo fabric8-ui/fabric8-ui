@@ -7,7 +7,9 @@ import { StackDetailsComponent } from './stack-details.component';
 import { ModalModule } from 'ng2-modal';
 
 import { StackRecoModule } from '../stack-recommendation/module';
-import { ContainerTogglerModule } from '../container-toggler/module';
+import
+  { ContainerTogglerModule }
+from '../../../shared-component/container-toggler/container-toggler.module';
 
 @NgModule({
   imports: [CommonModule,

@@ -1,7 +1,14 @@
 import { Component, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 
+/**
+ * Container-toggler
+ * A generic component that helps use as a toggler for a container,
+ * Emits Next and Previous events, that can be caught and handled
+ *
+ */
+
 @Component({
-  selector: 'container-toggler',
+  selector: 'f8-container-toggler',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './container-toggler.html',
   styleUrls: ['container-toggler.scss']
@@ -11,7 +18,7 @@ export class ContainerTogglerComponent {
   @Output() nextBtn = new EventEmitter();
   @Output() prevBtn = new EventEmitter();
 
-  cosntructor() {
+  constructor() {
 
   }
 
