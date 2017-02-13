@@ -158,13 +158,23 @@ export class StackDetailsComponent implements OnInit {
 
   /* Adding Single Work item */
   addWorkItem(row: any): void {
-    let workItemData: any = { 'data': { 'attributes': { 'system.state': 'new',
-                              'system.title': 'Sample Test',
-                              'system.description': 'Sample Description to test' },
-                              'relationships':
-                            { 'baseType': { 'data':
-                            { 'id': 'userstory', 'type': 'workitemtypes' } } },
-                            'type': 'workitems', 'id': '55' } };
+    let workItemData: any = {
+      'data': {
+        'attributes': {
+          'system.state': 'new',
+          'system.title': '',
+          'system.description': 'Sample Description to test'
+        },
+        'relationships':
+        {
+          'baseType': {
+            'data':
+            { 'id': 'userstory', 'type': 'workitemtypes' }
+          }
+        },
+        'type': 'workitems', 'id': '55'
+      }
+    };
 
     workItemData.data.attributes['system.title'] = row.custom.name + ' ' + row.name + ' ' + row.version;
     let workflow: Observable<any> = this.addWorkFlowService.addWorkFlow(workItemData);
@@ -256,7 +266,7 @@ export class StackDetailsComponent implements OnInit {
         }
 
         for (let i = 0; i < this.stackAnalysesData[0].components.length; i++) {
-          let myObj = Object.assign({}, this.stackAnalysesModel);
+          let myObj: any = {};
           myObj.ecosystem = this.stackAnalysesData[0].components[i].ecosystem;
           myObj.pkg = this.stackAnalysesData[0].components[i].name;
           myObj.version = this.stackAnalysesData[0].components[i].version;
