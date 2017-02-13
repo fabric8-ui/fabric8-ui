@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 
 import { Logger } from 'ngx-login-client';
@@ -70,9 +69,7 @@ export class StackDetailsComponent implements OnInit {
     private stackAnalysesService: StackAnalysesService,
     private stackAnalysesModel: StackAnalysesModel,
     private renderComponentService: ComponentAnalysesService,
-    private logger: Logger,
-    private route: ActivatedRoute,
-    private router: Router
+    private logger: Logger
   ) { }
 
   ngOnInit() {
