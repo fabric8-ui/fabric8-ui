@@ -41,6 +41,9 @@ export class StackDetailsComponent implements OnInit {
   totalSecurityIssues = '';
   cvss = '';
 
+  packageName = '';
+  packageVersion = '';
+
   componentsWithTests = '';
   componentsWithDependencyLockFile = '';
   requiredEngines = {};
@@ -229,7 +232,8 @@ export class StackDetailsComponent implements OnInit {
         this.getRecommendations(this.stackAnalysesData[0].components, this.stackAnalysesData[0].recommendation.recommendations);
         this.getComponents(this.stackAnalysesData[0].components);
 
-
+        this.packageName = this.stackAnalysesData[0].package_name;
+        this.packageVersion = this.stackAnalysesData[0].version;
         this.averageUsage = this.stackAnalysesData[0].usage.average_usage;
         this.lowPublicUsageComponents = this.stackAnalysesData[0].usage.low_public_usage_components;
         this.redhatDistributedComponents = this.stackAnalysesData[0].usage.redhat_distributed_components;
