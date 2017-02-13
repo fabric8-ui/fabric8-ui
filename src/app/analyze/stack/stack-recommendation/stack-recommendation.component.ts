@@ -24,7 +24,7 @@ export class StackRecommendationComponent {
   }
 
   /* Add Workflow */
-  eventHandler(row): void {
+  eventHandler(row: any): void {
     this.customEvent.emit(row);
   }
 
