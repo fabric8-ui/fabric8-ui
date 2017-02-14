@@ -1,3 +1,4 @@
+import { SettingsAuthGuard } from './settings/settings-auth-guard.service';
 import { StackDetailsModule } from './analyze/stack/stack-details/stack-details.module';
 import './rxjs-extensions';
 
@@ -99,6 +100,7 @@ export type StoreType = {
     Logger,
     LoginService,
     ProfileService,
+    SettingsAuthGuard,
     ToggleService,
     UserService
   ],

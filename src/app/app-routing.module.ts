@@ -1,4 +1,4 @@
-import { NgModule }             from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
@@ -10,6 +10,15 @@ export const routes: Routes = [
     redirectTo: 'public',
     pathMatch: 'full'
   },
+
+  // Redirect login to public to cope with shared login module
+  {
+    path: 'login',
+    redirectTo: 'public',
+    pathMatch: 'full'
+  },
+
+  // Temporary page to control the app
   {
     path: '_control',
     loadChildren: './control/control.module#ControlModule'
@@ -65,7 +74,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {enableTracing: true})],
+  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

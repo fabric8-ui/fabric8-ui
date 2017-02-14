@@ -4,7 +4,7 @@ import { ContextType } from './../models/context-type';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Broadcaster, User } from 'ngx-login-client';
+import { Broadcaster, User, UserService } from 'ngx-login-client';
 
 import { Context } from './../models/context';
 import { DummyService } from './../shared/dummy.service';
@@ -25,7 +25,8 @@ export class ContextService {
   constructor(
     private dummy: DummyService,
     private router: Router,
-    private broadcaster: Broadcaster) {
+    private broadcaster: Broadcaster,
+    private user: UserService) {
     // Listen for any context refreshes requested by the app
     this.broadcaster.on<string>('navigate').subscribe(message => {
       this.current = this.computeContext();
@@ -71,6 +72,10 @@ export class ContextService {
       this._current = context;
       this.addRecentContext(context);
     }
+  }
+
+  get currentUser(): User {
+    return this.dummy.currentUser;
   }
 
   private addRecentContext(context: Context) {

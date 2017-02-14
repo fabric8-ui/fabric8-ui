@@ -1,3 +1,4 @@
+import { MenuItem } from './../models/menu-item';
 import { ProfileService } from './../profile/profile.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
@@ -9,16 +10,28 @@ import { Context } from './../models/context';
 import { ContextService } from '../shared/context.service';
 import { DummyService } from './../shared/dummy.service';
 
+
+interface MenuHiddenCallback {
+  (context: Context): boolean;
+}
+
 @Component({
   selector: 'alm-app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   providers: []
 })
-
 export class HeaderComponent implements OnInit {
   title = 'Almighty';
   imgLoaded: Boolean = false;
+
+  menuCallbacks = new Map<String, MenuHiddenCallback>([
+    [
+      'settings', function (context) {
+        return this.currentUser === context.entity;
+      }
+    ]
+  ]);
 
   constructor(
     public router: Router,
@@ -56,7 +69,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.listenToEvents();
-    //this.onNavigate();
   }
 
   onNavigate(): void {
@@ -64,6 +76,7 @@ export class HeaderComponent implements OnInit {
     this.broadcaster.broadcast('navigate');
     if (this.context.current) {
       this.setActiveMenus(this.context.current);
+      this.setHiddenMenus(this.context.current);
     }
   }
 
@@ -82,9 +95,30 @@ export class HeaderComponent implements OnInit {
       });
   }
 
+  private get currentUser(): User {
+    return this.dummy.currentUser;
+  }
+
   private getLoggedUser(): void {
     if (this.auth.isLoggedIn) {
       this.userService.getUser();
+    }
+  }
+
+  private setHiddenMenus(context: Context) {
+    if ((<ContextType>context.type).menus) {
+      for (let n of (<ContextType>context.type).menus) {
+        if (this.menuCallbacks.has(n.name) && this.menuCallbacks.get(n.name)(context)) {
+          n.hide = true;
+        }
+        if (n.menus) {
+          for (let o of n.menus) {
+            if (this.menuCallbacks.has(o.name) && this.menuCallbacks.get(o.name)(context)) {
+              o.hide = true;
+            }
+          }
+        }
+      }
     }
   }
 
