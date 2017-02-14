@@ -1,4 +1,4 @@
-# ngx--ui/ngx-widgets
+# ngx-widgets
 A collection of Angular components and other useful things to be shared.
 
 You can see how it is used in our application [here](https://github.com/fabric8io/fabric8-ui).
@@ -15,12 +15,12 @@ This library does not run on it's own. It must be imported.
 
 There are several services and a couple of models used by them available.
 
-    AuthenticationService    
-    BroadcasterService    
-    UserService    
-       User
-       Profile     
-    LoggerService
+    container-toggle
+    dialog
+    dropdown
+    editable
+    icon
+    infinitescroll
  
 
 ## Building it 
