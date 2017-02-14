@@ -61,6 +61,9 @@
     &.active {
       border-left: 3px solid $navbar-pf-border-color;
     }
+    .iteration-description{
+       @include multiline-truncate($line-height: 1.5em, $line-count: 2, $bg-color: $color-pf-white) ;
+    }
   }
 }
 .not-current-iteration{

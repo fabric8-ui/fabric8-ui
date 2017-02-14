@@ -83,40 +83,28 @@ $textCenter: center;
 @include no-padding("all");
 
 //multiline truncate
-@mixin multiline-truncate($font-size: $blk-font-size, $line-height: $ttrunc-line-height, $lines-to-show: $trunc-lines, $trunc-bg: transparent) {
-  background: $trunc-bg;
-  display: block; /* Fallback for non-webkit */
-  display: -webkit-box;
-  max-height: $font-size*$line-height*$lines-to-show; /* Fallback for non-webkit */
-  font-size: $font-size;
-  line-height: $line-height;
-  -webkit-line-clamp: $lines-to-show;
-  -webkit-box-orient: vertical;
+@mixin multiline-truncate($line-height, $line-count, $bg-color){
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: pre-wrap;
-  @-moz-document url-prefix() {
-    overflow: hidden;
-    position: relative;
-    &:before {
-      background: $trunc-bg;
-      bottom: 0;
-      position: absolute;
-      right: 0;
-      float: right;
-      content: '\2026';
-      margin-left: em(-36);
-      width: em(60);
-      padding-left: em(5);
-    }
-    &:after {
-      content: '';
-      background: $trunc-bg;
-      position: absolute;
-      height: em(50);
-      width: $width100;
-      z-index: 1;
-    }
+  position: relative;
+  line-height: $line-height;
+  max-height: $line-height * $line-count;
+  text-align: justify;
+  margin-right: -1em;
+  padding-right: 1em;
+  &:before {
+    content: '\2026';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 1em;
+    height: 3em;
+    margin-top: 1em;
+    background: $bg-color;
   }
 }
 

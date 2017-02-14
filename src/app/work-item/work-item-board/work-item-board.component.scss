@@ -84,7 +84,7 @@
                 margin-right: em(2);
               }
               .multiline-truncation {
-                @include multiline-truncate($font-size: 1em, $line-height: 1.3, $lines-to-show: 3, $trunc-bg: $color-pf-white);
+                @include multiline-truncate($line-height: 1.5em, $line-count: 3, $bg-color: $color-pf-white);
               }
               .user-avatar {
                 padding-right: em(5);
