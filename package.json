@@ -1,0 +1,103 @@
+{
+  "name": "ngx-widgets",
+  "version": "0.0.1",
+  "description": "A collection of Angular components and other useful things to be shared.",
+  "main": "bundles/widgets.umd.js",
+  "module": "index.js",
+  "typings": "index.d.ts",
+  "scripts": {
+    "build": "npm run remove-dist && npm run transpile && npm run bundle && npm run minify && npm run copy-files",
+    "bundle": "rollup -c",
+    "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist",
+    "cleanup": "rimraf dist/package.json dist/bundles dist/src dist/index.d.ts dist/index.metadata.json dist/index.js dist/index.js.map dist/LICENSE dist/README.md",
+    "copy-files": "copyfiles LICENSE README.md package.json dist",
+    "minify": "uglifyjs dist/bundles/widgets.umd.js --screw-ie8 --compress --mangle --comments --output dist/bundles/widgets.umd.min.js",
+    "reinstall": "npm run clean && npm install",
+    "remove-dist": "rimraf dist",
+    "rimraf": "rimraf",
+    "transpile": "./node_modules/.bin/ngc"
+  },
+  "license": "Apache-2.0",
+  "contributors": [
+    {
+      "name": "Joshua Wilson",
+      "email": "josh@redhat.com"
+    },
+    {
+      "name": "Nimisha",
+      "email": "nmukherj@redhat.com"
+    },
+    {
+      "name": "Sudipta Sen",
+      "email": "sudsen@redhat.com"
+    }
+  ],
+  "keywords": [
+    "angular",
+    "angular2",
+    "angular 2",
+    "angular4",
+    "angular 4",
+    "ng",
+    "ng2",
+    "ng4",
+    "login",
+    "ng-login",
+    "auth"
+  ],
+  "homepage": "https://github.com/fabric8-ui/ngx-widgets",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fabric8-ui/ngx-widgets.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fabric8-ui/ngx-widgets/issues"
+  },
+  "engines": {
+    "node": ">= 6.9.1",
+    "npm": ">= 3"
+  },
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "@angular/core": "^2.0.0",
+    "@angular/http": "^2.0.0"
+  },
+  "devDependencies": {
+    "@angular/core": "2.2.3",
+    "@angular/http": "2.2.3",
+    "@angular/router": "3.2.3",
+    "core-js": "^2.4.1",
+    "reflect-metadata": "0.1.8",
+    "rxjs": "5.0.0-beta.12",
+    "zone.js": "^0.6.26",
+    "@angular/common": "2.2.3",
+    "@angular/compiler": "2.2.3",
+    "@angular/compiler-cli": "2.2.3",
+    "angular2-template-loader": "^0.4.0",
+    "autoprefixer": "^6.3.7",
+    "awesome-typescript-loader": "^2.2.4",
+    "codelyzer": "1.0.0-beta.3",
+    "copyfiles": "^1.0.0",
+    "cpy-cli": "1.0.1",
+    "ghooks": "1.2.4",
+    "npm-run-all": "2.2.0",
+    "opt-cli": "1.4.2",
+    "rimraf": "2.5.4",
+    "rollup": "^0.37.0",
+    "ts-helpers": "1.1.1",
+    "ts-loader": "0.8.1",
+    "tslint": "^3.15.1",
+    "tslint-loader": "2.1.5",
+    "typedoc": "^0.5.1",
+    "typescript": "^2.0.3",
+    "webpack": "2.1.0-beta.22",
+    "webpack-dashboard": "^0.2.0",
+    "webpack-dev-middleware": "1.7.0",
+    "webpack-dev-server": "2.1.0-beta.0",
+    "webpack-md5-hash": "^0.0.5",
+    "webpack-merge": "^0.14.0",
+    "webpack-validator": "2.1.3",
+    "uglify-js": "^2.7.5"
+  }
+}
