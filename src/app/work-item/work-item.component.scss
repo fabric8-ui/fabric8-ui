@@ -39,9 +39,18 @@
   }
   .toolbar-pf {
     .list-action {
-      .list-type {
-        font-weight: 700;
-        margin-left: em(10);
+      .wi-input-filter-dropdown{
+        position: relative;
+        display: table-cell;
+        .wi-input-filter-dropdown-list{
+          width: 100%;
+        }
+        .caret{
+          position: absolute;
+          right: 0;
+          top: em(7);
+          z-index: 2;
+        }
       }
       span {
         @include Border(em(1), solid, transparent);
@@ -50,9 +59,12 @@
       .form-group:first-child{
         padding-left: 0;
       }
-      .move-dropdown {
-        a {
-          cursor: pointer;
+      .move-wi-no-border{
+        border: none;
+        .move-dropdown {
+          a {
+            cursor: pointer;
+          }
         }
       }
 

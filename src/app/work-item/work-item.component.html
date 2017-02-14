@@ -29,8 +29,42 @@
     <div class="row toolbar-pf">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="list-action toolbar-pf-actions">
+          <!--Filter-->
+          <div class="form-group toolbar-pf-filter">
+            <label class="sr-only" for="filterwitype">Filter</label>
+            <div class="input-group">
+              <div class="input-group-btn" dropdown>
+                <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
+                  User
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="wi_filter_dropdown">
+                  <li *ngIf="!filters.length">
+                    <span>No filters available</span>
+                  </li>
+                  <li *ngFor="let filter of filters;" role="presentation">
+                    <a role="menuitem" tabindex="-1" class="pointer">User</a> <!-- Manually put User as not sure about this list -->
+                  </li>
+                </ul>
+              </div>
+              <div dropdown class="wi-input-filter-dropdown">
+                <div data-toggle="dropdown" dropdown-open>
+                  <input type="text" class="form-control" id="filterwitype" placeholder="Filter By Assignee..." >
+                  <span class="caret"></span>
+                </div>
+                <ul class="dropdown-menu wi-input-filter-dropdown-list" role="menu" aria-labelledby="filterwitype">
+                  <li *ngIf="!filters.length">
+                    <span>No filters available</span>
+                  </li>
+                  <li *ngFor="let filter of filters;" role="presentation" (click)="activeFilter(filter.id)">
+                    <a role="menuitem" tabindex="-1" class="pointer">{{filter.name}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
           <!--Move a work item up / down -->
-          <div class="form-group">
+          <div class="form-group move-wi-no-border">
             <div class="dropdown move-dropdown" dropdown>
               <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
                 Move
@@ -49,23 +83,6 @@
                 </li>
                 <li>
                   <a role="menuitem" tabindex="-1" (click)="moveItem('down')">Move Down</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <!--Filter-->
-          <div class="form-group">
-            <div class="dropdown filter-dropdown" dropdown>
-              <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
-                Filter Method
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="wi_filter_dropdown">
-                <li *ngIf="!filters.length">
-                  <span>No filters available</span>
-                </li>
-                <li *ngFor="let filter of filters;" role="presentation" (click)="activeFilter(filter.id)">
-                  <a role="menuitem" tabindex="-1">{{filter.name}}</a>
                 </li>
               </ul>
             </div>
