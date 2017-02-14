@@ -643,4 +643,14 @@ describe('Detailed view and edit a selected work item - ', () => {
       expect(el.nativeElement.textContent).toContain('Example User 0');
   });
 
+   it('Should have a comment section', () => {
+      fakeAuthService.login();
+      fixture.detectChanges();
+      comp.workItem = fakeWorkItem;
+      comp.loggedIn = fakeAuthService.isLoggedIn();
+      fixture.detectChanges();
+      el = fixture.debugElement.query(By.css('#wi-comment'));
+      expect(el.nativeElement).toBeTruthy();
+  });
+
 });
