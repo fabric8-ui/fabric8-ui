@@ -6,12 +6,7 @@ import { WorkspacesComponent } from './workspaces.component';
 const routes: Routes = [
   {
     path: '',
-    component: WorkspacesComponent,
-    children: [
-      {
-        path: ''
-      }
-    ]
+    component: WorkspacesComponent
   }
 ];
 

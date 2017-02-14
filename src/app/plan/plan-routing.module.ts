@@ -1,4 +1,4 @@
-import { NgModule }  from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { PlanComponent } from './plan.component';
@@ -14,14 +14,14 @@ const routes: Routes = [
     path: '',
     component: PlanComponent,
     children: [
-      { path: '',      component: BacklogComponent },
+      { path: '', component: BacklogComponent },
       { path: 'board', loadChildren: './board/board.module#BoardModule' },
     ]
   }
 ];
 
 @NgModule({
-  imports: [ RouterModule.forChild(routes) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class PlanRoutingModule {}
+export class PlanRoutingModule { }

@@ -1,4 +1,4 @@
-import { NgModule }  from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ProfileComponent } from './profile.component';
@@ -12,27 +12,17 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'beta/pmuir',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
-    redirectTo: 'alpha/pmuir',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
     component: ProfileComponent,
     children: [
-      { path: '',          component: OverviewComponent },
-      { path: 'spaces',    loadChildren: './spaces/spaces.module#SpacesModule' },
+      { path: '', component: OverviewComponent },
+      { path: 'spaces', loadChildren: './spaces/spaces.module#SpacesModule' },
       { path: 'resources', loadChildren: './resources/resources.module#ResourcesModule' }
     ]
   }
 ];
 
 @NgModule({
-  imports: [ RouterModule.forChild(routes) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class ProfileRoutingModule {}
+export class ProfileRoutingModule { }

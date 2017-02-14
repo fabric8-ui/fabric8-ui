@@ -6,12 +6,7 @@ import { ResourcesComponent } from './resources.component';
 const routes: Routes = [
   {
     path: '',
-    component: ResourcesComponent,
-    children: [
-      {
-        path: ''
-      }
-    ]
+    component: ResourcesComponent
   }
 ];
 

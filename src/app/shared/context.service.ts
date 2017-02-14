@@ -1,10 +1,9 @@
 import { Space } from './../models/space';
-import { Entity } from './../models/entity';
 import { ContextType } from './../models/context-type';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Broadcaster, User, UserService } from 'ngx-login-client';
+import { Broadcaster, User, UserService, Entity } from 'ngx-login-client';
 
 import { Context } from './../models/context';
 import { DummyService } from './../shared/dummy.service';
@@ -40,13 +39,15 @@ export class ContextService {
         console.log(this._default);
         this.addRecentContext(this._default);
       }
+      // recompute the context if needed
       this.current = this.computeContext();
       // Initialize all recent contexts
       for (let c of this.recent) {
         this.buildContextMenus(c);
       }
     });
-
+    // Finally, compute the initial Context
+    this.computeContext();
   }
 
   get recent(): Context[] {
@@ -149,15 +150,12 @@ export class ContextService {
     // TODO Support other types of entity
     if (c.entity && c.space) {
       c.type = 'space';
-      // TODO replace path with username / space name once parameterized routes are working
-      // c.path = '/' + (<User>c.entity).attributes.username + '/' + c.space.attributes.name;
-      c.path = '/pmuir/BalloonPopGame';
+      c.path = '/' + (<User>c.entity).attributes.username + '/' + c.space.attributes.name;
       c.name = c.space.attributes.name;
     } else if (c.entity) {
       c.type = 'user';
       // TODO replace path with username once parameterized routes are working
-      // c.path = '/' + (<User>c.entity).attributes.username;
-      c.path = '/pmuir';
+      c.path = '/' + (<User>c.entity).attributes.username;
       c.name = (<User>c.entity).attributes.username;
     } // TODO add type detection for organization and team
     if (c.type != null) {

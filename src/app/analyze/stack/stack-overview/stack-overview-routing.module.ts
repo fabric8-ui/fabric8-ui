@@ -6,12 +6,7 @@ import { StackOverviewComponent } from './stack-overview.component';
 const routes: Routes = [
   {
     path: '',
-    component: StackOverviewComponent,
-    children: [
-      {
-        path: ''
-      }
-    ]
+    component: StackOverviewComponent
   }
 
 ];

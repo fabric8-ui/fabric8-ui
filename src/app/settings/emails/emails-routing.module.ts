@@ -6,12 +6,7 @@ import { EmailsComponent } from './emails.component';
 const routes: Routes = [
   {
     path: '',
-    component: EmailsComponent,
-    children: [
-      {
-        path: ''
-      }
-    ]
+    component: EmailsComponent
   }
 ];
 

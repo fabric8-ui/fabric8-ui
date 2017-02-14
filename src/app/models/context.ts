@@ -1,6 +1,6 @@
+import { Entity } from 'ngx-login-client';
 import { LinkType } from './link-type';
 import { ContextType } from './context-type';
-import { Entity } from './entity';
 import { Space } from './space';
 import { Team } from './team';
 

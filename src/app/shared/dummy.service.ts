@@ -1,8 +1,9 @@
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { LocalStorageService } from 'angular-2-local-storage';
 import 'rxjs/add/operator/toPromise';
-import { Broadcaster, User } from 'ngx-login-client';
+import { Broadcaster, User, Entity } from 'ngx-login-client';
 
 import { Context } from './../models/context';
 import { ContextType } from './../models/context-type';
@@ -10,7 +11,6 @@ import { Space } from './../models/space';
 import { Resources } from './../models/resources';
 import { ProcessTemplate } from './../models/process-template';
 import { Team } from './../models/team';
-import { Entity } from './../models/entity';
 import { Email } from './../models/email';
 
 
@@ -256,7 +256,7 @@ export class DummyService {
         path: '/pmuir/BalloonPopGame',
         description: 'Microservices architected search engine',
         teams: [],
-        defaultTeam: null,
+        defaultTeam: this.TEAMS.get('balloonpopgame'),
         id: '0',
         attributes: {
           name: 'Bobo',
@@ -270,10 +270,10 @@ export class DummyService {
       'hysterix',
       {
         name: 'Hysterix',
-        path: '/pmuir/BalloonPopGame',
+        path: '/pmuir/hysterix',
         description: 'Hystrix is a latency and fault tolerance library designed to isolate points of access to remote systems, services and 3rd party libraries, stop cascading failure and enable resilience in complex distributed systems where failure is inevitable.',
         teams: [],
-        defaultTeam: null,
+        defaultTeam: this.TEAMS.get('balloonpopgame'),
         id: '1',
         attributes: {
           name: 'Hysterix',
@@ -290,7 +290,7 @@ export class DummyService {
         path: '/pmuir/BalloonPopGame',
         description: 'Fabric8 is an open source integrated development platform for Kubernetes',
         teams: [],
-        defaultTeam: null,
+        defaultTeam: this.TEAMS.get('balloonpopgame'),
         id: '2',
         attributes: {
           name: 'fabric8io',

@@ -32,43 +32,43 @@ export const routes: Routes = [
 
   // Analyze
   {
-    path: 'pmuir/BalloonPopGame',
+    path: ':entity/:space',
     loadChildren: './analyze/analyze.module#AnalyzeModule'
   },
 
   // Plan
   {
-    path: 'pmuir/BalloonPopGame/plan',
+    path: ':entity/:space/plan',
     loadChildren: './plan/plan.module#PlanModule'
   },
 
   // Create
   {
-    path: 'pmuir/BalloonPopGame/create',
+    path: ':entity/:space/create',
     loadChildren: './create/create.module#CreateModule'
   },
 
   // Run
   {
-    path: 'pmuir/BalloonPopGame/run',
+    path: ':entity/:space/run',
     loadChildren: './run/run.module#RunModule'
   },
 
   // Space-settings
   {
-    path: 'pmuir/BalloonPopGame/settings',
+    path: ':entity/:space/settings',
     loadChildren: './space-settings/space-settings.module#SpaceSettingsModule'
   },
 
   // Profile
   {
-    path: 'pmuir',
+    path: ':entity',
     loadChildren: './profile/profile.module#ProfileModule'
   },
 
   // Settings
   {
-    path: 'pmuir/settings',
+    path: ':entity/settings',
     loadChildren: './settings/settings.module#SettingsModule'
   },
 ];

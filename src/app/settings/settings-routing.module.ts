@@ -13,26 +13,16 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'beta/pmuir/settings',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
-    redirectTo: 'alpha/pmuir/settings',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
     component: SettingsComponent,
-    canActivate: [ SettingsAuthGuard ],
-    canActivateChild: [ SettingsAuthGuard ],
+    canActivate: [SettingsAuthGuard],
+    canActivateChild: [SettingsAuthGuard],
     children: [
       { path: '', component: ProfileComponent },
       { path: 'emails', loadChildren: './emails/emails.module#EmailsModule' },
       {
         path: 'notifications',
         loadChildren: './notifications/notifications.module#NotificationsModule'
-      },
+      }
     ]
   }
 ];

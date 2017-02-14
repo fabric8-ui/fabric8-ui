@@ -102,7 +102,7 @@
         </ul>
       </li>
       <li *ngFor="let m of context.current.type.menus" [class.active]="m.active" [class.with-no-children]="(m.menus||[]).length===0">
-        <a [routerLink]="[m.fullPath]">
+        <a [routerLink]="[m.fullPath]" *ngIf="!m.hide">
           <span *ngIf="m.icon" class="nav-item-icon">
             <span  class="nav-icon {{m.icon}}"></span>
           </span>
@@ -110,7 +110,7 @@
         </a>
         <ul class="nav navbar-nav navbar-persistent" *ngIf="m.menus">
           <li *ngFor="let n of m.menus" [class.active]="n.active">
-            <a [routerLink]="[n.fullPath]">
+            <a [routerLink]="[n.fullPath]" *ngIf="!n.hide">
               <span class="nav-item-text">
                 {{n.name}}
               </span>

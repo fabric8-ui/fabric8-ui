@@ -12,7 +12,7 @@ import { DummyService } from './../shared/dummy.service';
 
 
 interface MenuHiddenCallback {
-  (context: Context): boolean;
+  (headerComponent: HeaderComponent, context: Context): boolean;
 }
 
 @Component({
@@ -27,8 +27,8 @@ export class HeaderComponent implements OnInit {
 
   menuCallbacks = new Map<String, MenuHiddenCallback>([
     [
-      'settings', function (context) {
-        return this.currentUser === context.entity;
+      'settings', function (headerComponent, context) {
+        return headerComponent.currentUser !== context.entity;
       }
     ]
   ]);
@@ -108,12 +108,12 @@ export class HeaderComponent implements OnInit {
   private setHiddenMenus(context: Context) {
     if ((<ContextType>context.type).menus) {
       for (let n of (<ContextType>context.type).menus) {
-        if (this.menuCallbacks.has(n.name) && this.menuCallbacks.get(n.name)(context)) {
+        if (this.menuCallbacks.has(n.path) && this.menuCallbacks.get(n.path)(this, context)) {
           n.hide = true;
         }
         if (n.menus) {
           for (let o of n.menus) {
-            if (this.menuCallbacks.has(o.name) && this.menuCallbacks.get(o.name)(context)) {
+            if (this.menuCallbacks.has(o.path) && this.menuCallbacks.get(o.path)(this, context)) {
               o.hide = true;
             }
           }

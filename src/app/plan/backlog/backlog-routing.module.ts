@@ -6,12 +6,7 @@ import { BacklogComponent } from './backlog.component';
 const routes: Routes = [
   {
     path: '',
-    component: BacklogComponent,
-    children: [
-      {
-        path: ''
-      }
-    ]
+    component: BacklogComponent
   }
 ];
 
