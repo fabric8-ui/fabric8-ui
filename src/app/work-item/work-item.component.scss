@@ -80,22 +80,10 @@
         }
       }
     }
-    .selected-filters {
-      padding: em(3) em(10);
-      margin: em(5);
-      color: $color-pf-white;
-      background-color: $color-pf-black-600;
-      display: inline-block;
-      .icon {
-        margin-left: em(3);
+    .toolbar-pf-results{
+      .label > i , p > a{
         cursor: pointer;
       }
-    }
-    .close-filter {
-      display: inline-block;
-      color: $color-pf-blue;
-      margin-left: em(5);
-      cursor: pointer;
     }
   }
 

@@ -97,17 +97,23 @@
           </div>
         </div>
 
-        <div #activeFiltersDiv>
-          <span #activeFilters class="selected-filters"
-            *ngFor="let filter of filters | almArrayFilter:{active: true};">
-            {{filter.name}}
-            <i (click)="deactiveFilter(filter.id)" class="fa fa-close icon"></i>
-          </span>
-          <span class="close-filter"
-            (click)="deactiveAllFilters()"
-            *ngIf="(filters | almArrayFilter:{active: true}).length">
-            Clear All Filters
-          </span>
+        <div class="row toolbar-pf-results" [ngClass]="{'show' : (filters | almArrayFilter:{active: true}).length , 'hide' : !(filters | almArrayFilter:{active: true}).length}">
+          <div class="col-sm-12" #activeFiltersDiv>
+            <ul class="list-inline">
+              <li #activeFilters
+                *ngFor="let filter of filters | almArrayFilter:{active: true};">
+                <span class="label label-info">{{filter.name}}
+                  <i (click)="deactiveFilter(filter.id)" class="pficon pficon-close"></i>
+                </span>
+              </li>
+            </ul>
+            <p>
+              <a (click)="deactiveAllFilters()"
+                *ngIf="(filters | almArrayFilter:{active: true}).length">
+                Clear All Filters
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
