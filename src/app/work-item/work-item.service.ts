@@ -10,6 +10,7 @@ import {
   Comments,
   CommentPost
 } from '../models/comment';
+import { Broadcaster } from './../shared/broadcaster.service';
 import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
 import { IterationModel } from '../models/iteration.model';
 import { IterationService } from '../iteration/iteration.service';
@@ -49,6 +50,7 @@ export class WorkItemService {
   private iterations: IterationModel[] = [];
 
   constructor(private http: Http,
+    private broadcaster: Broadcaster,
     private logger: Logger,
     private auth: AuthenticationService,
     private iterationService: IterationService,
@@ -111,7 +113,10 @@ export class WorkItemService {
           this.resolveIterationForWorkItem(item);
         });
         // Update the existing workItem big list with new data
-        this.updateWorkItem(wItems);
+        this.updateWorkItemBigList(wItems);
+
+        // Boradcast that the big list is prepared initially
+        this.broadcaster.broadcast('list_first_load_done');
         return this.workItems;
       })
       .catch ((e) => {
@@ -121,6 +126,10 @@ export class WorkItemService {
           this.handleError(e);
         }
       });
+  }
+
+  isListLoaded() {
+    return !!this.workItems.length;
   }
 
   /**
@@ -148,7 +157,7 @@ export class WorkItemService {
         });
         let newItems = cloneDeep(newWorkItems);
         // Update the existing workItem big list with new data
-        this.updateWorkItem(newItems);
+        this.updateWorkItemBigList(newItems);
         return newWorkItems;
       })
       .catch ((e) => {
@@ -239,7 +248,7 @@ export class WorkItemService {
    * Existing item will be updated only with attributes
    * New item will be added to the list
    */
-  updateWorkItem(wItems: WorkItem[]): void {
+  updateWorkItemBigList(wItems: WorkItem[]): void {
     wItems.forEach((wItem) => {
       if (wItem.id in this.workItemIdIndexMap) {
         this.workItems[this.workItemIdIndexMap[wItem.id]].attributes =

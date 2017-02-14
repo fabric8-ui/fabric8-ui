@@ -124,24 +124,16 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
           let type = id.substring((id.indexOf('?') + 1), id.length);
           this.createWorkItemObj(type);
           this.getAllUsers();
-        }else{
+        } else {
           this.addNewWI = false;
-          this.workItemService.getWorkItemById(id)
-            .then(workItem => {
-              this.closeRestFields();
-              this.titleText = workItem.attributes['system.title'];
-              this.descText = workItem.attributes['system.description'];
-              this.workItem = workItem;
-              // fetch the list of user
-              // after getting the Workitem
-              // to set assigned user
-              // for this workitem from the list
-              this.getAllUsers();
-              this.activeOnList(400);
-            })
-            .catch (err => {
-              this.closeDetails()
+          if (this.workItemService.isListLoaded()) {
+            this.loadWorkItem(id);
+          } else {
+            this.broadcaster.on<string>('list_first_load_done')
+              .subscribe(message => {
+                this.loadWorkItem(id);
             });
+          }
         }
       }
     });
@@ -159,6 +151,25 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     // I had to triggers another round of change detection
     // during that method - emit an event, whatever. Wrapping it in a timeout would do the job
     setTimeout(() => this.panelState = 'in');
+  }
+
+  loadWorkItem(id: string): void {
+    this.workItemService.getWorkItemById(id)
+      .then(workItem => {
+        this.closeRestFields();
+        this.titleText = workItem.attributes['system.title'];
+        this.descText = workItem.attributes['system.description'];
+        this.workItem = workItem;
+        // fetch the list of user
+        // after getting the Workitem
+        // to set assigned user
+        // for this workitem from the list
+        this.getAllUsers();
+        this.activeOnList(400);
+      })
+      .catch (err => {
+        this.closeDetails()
+      });
   }
 
   createWorkItemObj(type: string) {

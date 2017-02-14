@@ -133,7 +133,7 @@ export class WorkItemMockGenerator {
           'assignees': { },
           'baseType': {
             'data': {
-              'id': 'userstory',
+              'id': 'planneritem',
               'type': 'workitemtypes'
             }
           },

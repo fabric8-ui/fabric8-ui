@@ -70,6 +70,10 @@ export class MockHttp extends Http {
         result['extraPath'] = result.path.replace(/^\/workitems\//, '');
         result['path'] = '/workitems';
       }
+      if (result.path.indexOf('/workitemlinks/') == 0) {
+        result['extraPath'] = result.path.replace(/^\/workitemlinks\//, '');
+        result['path'] = '/workitemlinks';
+      }
       this.logger.log('Parsed request path: ' + JSON.stringify(result));
       return result;
     }
