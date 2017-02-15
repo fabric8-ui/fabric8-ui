@@ -19,8 +19,8 @@
     "outDir": "dist",
     "paths": {
       "@angular/core": ["node_modules/@angular/core"],
-      "@angular/http": ["node_modules/@angular/http"],
-      "@angular/router": ["node_modules/@angular/router"],
+      "@angular/common": ["node_modules/@angular/common"],
+      "@angular/forms": ["node_modules/@angular/forms"],
       "rxjs/*": ["node_modules/rxjs/*"],
       "moment": ["node_modules/moment"]
     },
