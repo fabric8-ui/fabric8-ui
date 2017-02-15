@@ -36,8 +36,7 @@ export { AlmTrim } from './src/app/pipes/alm-trim';
 
 @NgModule({
   imports: [
-    FormsModule,
-    Pipe
+    FormsModule
   ],
   declarations: [
 

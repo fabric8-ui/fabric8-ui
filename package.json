@@ -1,6 +1,6 @@
 {
   "name": "ngx-widgets",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A collection of Angular components and other useful things to be shared.",
   "main": "bundles/widgets.umd.js",
   "module": "index.js",
