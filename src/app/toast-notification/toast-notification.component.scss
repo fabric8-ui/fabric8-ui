@@ -1,0 +1,16 @@
+@import "./../../assets/stylesheets/color-variables";
+@import "./../../assets/stylesheets/variables";
+@import "./../../assets/stylesheets/custom";
+
+//Toast notification style
+.toast-notification-container {
+  position: fixed;
+  top: em(36);
+  right: em(50);
+  z-index: 10;
+  width: em(400);
+  .toast-notification-wrapper {
+    width: $width100;
+  }
+}
+

@@ -1,3 +1,4 @@
+import { Broadcaster } from './../../shared/broadcaster.service';
 import { cloneDeep } from 'lodash';
 import { IterationService } from './../iteration.service';
 import { IterationModel } from './../../models/iteration.model';
@@ -26,6 +27,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
   private endDate: any;
   private spaceError: Boolean = false;
   private spaceName: string;
+  private iterationName: string;
 
   private startDatePickerOptions: IMyOptions = {
     dateFormat: 'dd mmm yyyy',
@@ -46,7 +48,8 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
   };
 
   constructor(
-    private iterationService: IterationService) {}
+    private iterationService: IterationService,
+    private broadcaster: Broadcaster) {}
 
   ngOnInit() {
     this.resetValues();
@@ -98,7 +101,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
     if (this.modalType == 'update') {
       this.submitBtnTxt = 'Update';
       this.modalTitle = 'Update Iteration';
-      if(iteration.attributes.state === 'start') {
+      if (iteration.attributes.state === 'start') {
         let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
         startDatePickerComponentCopy.componentDisabled = true;
         this.startDatePickerOptions = startDatePickerComponentCopy;
@@ -190,6 +193,20 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
             this.iterationService.updateIteration(this.iteration)
             .then((iteration) => {
               this.onSubmit.emit(iteration);
+              if (this.modalType == 'start') {
+                let toastIterationName = this.iteration.attributes.name;
+                if (toastIterationName.length > 15) {
+                  toastIterationName = toastIterationName.slice(0, 15) + '...';
+                }
+                let notificationData = {
+                  'notificationText': `<strong>
+                                          ${toastIterationName}
+                                       </strong> &nbsp; has started.`,
+                  'notificationType': 'ok'
+                };
+                this.broadcaster.broadcast('toastNotification', notificationData);
+                this.iterationName = this.iteration.attributes.name;
+              }
               this.resetValues();
               this.createUpdateIterationDialog.close();
             })
