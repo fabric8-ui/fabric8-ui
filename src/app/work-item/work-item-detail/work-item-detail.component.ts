@@ -159,7 +159,12 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     // as this would indicate that changes are being caused by change detection itself.
     // I had to triggers another round of change detection
     // during that method - emit an event, whatever. Wrapping it in a timeout would do the job
-    setTimeout(() => this.panelState = 'in');
+    setTimeout(() => {
+      this.panelState = 'in';
+      if (this.headerEditable) {
+        this.title.nativeElement.focus();
+      }
+    });
   }
 
   loadWorkItem(id: string): void {
@@ -254,6 +259,11 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       }
       this.closeRestFields();
       this.headerEditable = true;
+      setTimeout(() => {
+        if (this.headerEditable) {
+          this.title.nativeElement.focus();
+        }
+      });
     }
   }
 
@@ -265,7 +275,11 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       this.closeRestFields();
       this.descEditable = true;
       this.descViewType = 'markdown';
-      setTimeout(() => this.description.nativeElement.focus());
+      setTimeout(() => {
+        if (this.descEditable) {
+          this.description.nativeElement.focus();
+        }
+      });
     }
   }
 

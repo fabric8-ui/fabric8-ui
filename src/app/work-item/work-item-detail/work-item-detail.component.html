@@ -213,7 +213,7 @@
           <div class="col-md-12 col-sm-12 col-xs-12 detail-description" *ngIf="loggedIn">
             <button class="view-switch-btn" *ngIf="descViewType=='markdown'" (click)="showHtml(desc.innerText)">View HTML</button>
             <button class="view-switch-btn" *ngIf="descViewType=='html'" (click)="descViewType='markdown'">View Markdown</button>
-            <div id="wi-detail-desc" class="detail-desc-div-wrap" (click)="openDescription(false, true)">
+            <div id="wi-detail-desc" class="detail-desc-div-wrap" (click)="openDescription()">
               <div class="detail-desc-div"
                 [class.desc-editable]="descEditable"
                 [class.desc-not-found]="!descEditable && !workItem.attributes['system.description']">

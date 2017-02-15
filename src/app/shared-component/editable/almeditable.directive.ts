@@ -51,11 +51,10 @@ export class AlmEditableDirective implements OnInit, OnChanges {
 
   makeEditable() {
     this.element.setAttribute('contenteditable', 'true');
-    this.element.focus();
   }
 
   makeNonEditable() {
-    this.element.setAttribute('contenteditable', 'null');
+    this.element.removeAttribute('contenteditable');
   }
 
   @HostListener('window:keyup', ['$event'])
