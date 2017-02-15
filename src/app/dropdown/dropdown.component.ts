@@ -69,7 +69,7 @@ import { DropdownOption } from './dropdown-option';
 //         min-width: em(100);
 //       }
 //   `]
-// })
+})
 export class DropdownComponent implements OnInit {
   @Input() options: DropdownOption[];
   @Input() selected: DropdownOption;

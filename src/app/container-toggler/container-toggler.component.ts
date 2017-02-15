@@ -20,8 +20,8 @@ import { Component, ViewEncapsulation, Output, EventEmitter } from '@angular/cor
   // `,
   styleUrls: ['container-toggler.scss']
   // styles: [`
-
-  `]
+  //
+  // `]
 })
 
 export class ContainerTogglerComponent {
