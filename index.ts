@@ -6,9 +6,9 @@ export { DropdownModule } from './src/app/dropdown/dropdown.module';
 export { AlmEditableModule } from './src/app/editable/almeditable.module';
 export { AlmIconModule } from './src/app/icon/almicon.module';
 export { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
-export { AlmEditableDirective } from './src/app/editable/almeditable.directive';
-export { AlmIconDirective } from './src/app/icon/almicon.directive';
-export { InfiniteScrollDirective } from './src/app/infinitescroll/infinitescroll.directive';
+// export { AlmEditableDirective } from './src/app/editable/almeditable.directive';
+// export { AlmIconDirective } from './src/app/icon/almicon.directive';
+// export { InfiniteScrollDirective } from './src/app/infinitescroll/infinitescroll.directive';
 
 
 export { AlmArrayFilter } from './src/app/pipes/alm-array-filter.pipe';

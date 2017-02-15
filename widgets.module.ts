@@ -9,11 +9,11 @@ import { ContainerTogglerModule } from './src/app/container-toggler/container-to
 import { DialogModule } from './src/app/dialog/dialog.module';
 import { DropdownModule } from './src/app/dropdown/dropdown.module';
 import { AlmEditableModule } from './src/app/editable/almeditable.module';
-import { AlmEditableDirective } from './src/app/editable/almeditable.directive';
 import { AlmIconModule } from './src/app/icon/almicon.module';
-import { AlmIconDirective } from './src/app/icon/almicon.directive';
 import { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
-import { InfiniteScrollDirective } from './src/app/infinitescroll/infinitescroll.directive';
+// import { AlmEditableDirective } from './src/app/editable/almeditable.directive';
+// import { AlmIconDirective } from './src/app/icon/almicon.directive';
+// import { InfiniteScrollDirective } from './src/app/infinitescroll/infinitescroll.directive';
 
 import { AlmArrayFilter } from './src/app/pipes/alm-array-filter.pipe';
 import { AlmAvatarSize } from './src/app/pipes/alm-avatar-size.pipe';
@@ -28,9 +28,9 @@ export { DropdownModule } from './src/app/dropdown/dropdown.module';
 export { AlmEditableModule } from './src/app/editable/almeditable.module';
 export { AlmIconModule } from './src/app/icon/almicon.module';
 export { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
-export { AlmEditableDirective } from './src/app/editable/almeditable.directive';
-export { AlmIconDirective } from './src/app/icon/almicon.directive';
-export { InfiniteScrollDirective } from './src/app/infinitescroll/infinitescroll.directive';
+// export { AlmEditableDirective } from './src/app/editable/almeditable.directive';
+// export { AlmIconDirective } from './src/app/icon/almicon.directive';
+// export { InfiniteScrollDirective } from './src/app/infinitescroll/infinitescroll.directive';
 
 export { AlmArrayFilter } from './src/app/pipes/alm-array-filter.pipe';
 export { AlmAvatarSize } from './src/app/pipes/alm-avatar-size.pipe';
