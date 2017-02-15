@@ -32,7 +32,8 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
     selectionTxtFontSize: '14px',
     openSelectorOnInputClick: true,
     editableDateField: false,
-    showClearDateBtn: false
+    showClearDateBtn: false,
+    componentDisabled: false
   };
 
   private endDatePickerOptions: IMyOptions = {
@@ -40,7 +41,8 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
     selectionTxtFontSize: '14px',
     openSelectorOnInputClick: true,
     editableDateField: false,
-    showClearDateBtn: false
+    showClearDateBtn: false,
+    componentDisabled: false
   };
 
   constructor(
@@ -71,6 +73,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
     this.endDate = { date: { year: inaweek.format('YYYY'), month: inaweek.format('M'), day: inaweek.format('D') } };
     this.validationError = false;
     this.spaceError = false;
+    let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
+    startDatePickerComponentCopy.componentDisabled = false;
+    this.startDatePickerOptions = startDatePickerComponentCopy;
   }
 
   ngOnChanges() {
@@ -93,6 +98,11 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
     if (this.modalType == 'update') {
       this.submitBtnTxt = 'Update';
       this.modalTitle = 'Update Iteration';
+      if(iteration.attributes.state === 'start') {
+        let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
+        startDatePickerComponentCopy.componentDisabled = true;
+        this.startDatePickerOptions = startDatePickerComponentCopy;
+      }
     }
     if (this.modalType == 'close') {
       this.submitBtnTxt = 'Close';
