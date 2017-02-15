@@ -34,9 +34,8 @@ export class ContextService {
     // Initialize the default context when the logged in user changes and add as a recent context
     this.broadcaster.on<User>('currentUserChanged').subscribe(message => {
       if (message.attributes.username) {
-        console.log('Initializing default context for ' + message.attributes.username);
         this._default = this.buildContext(message.attributes.username);
-        console.log(this._default);
+        console.log('Initializing default context for ' + message.attributes.username, this._default) + ';';
         this.addRecentContext(this._default);
       }
       // recompute the context if needed
