@@ -174,6 +174,9 @@
 
   .detail-description-wrap {
     margin-top: em(10);
+     .view-switch-btn {
+        margin-bottom: 10px;
+     }
      .detail-description {
        padding: 0;
       .detail-desc-div-wrap {
@@ -199,7 +202,7 @@
             position: absolute;
             right: em(9);
             z-index: 10;
-            top: em(10);
+            top: em(45);
             cursor: pointer;
           }
           &:hover {
@@ -224,6 +227,9 @@
     text-align: $textCenter;
     padding: em(5);
     margin-left: em(5);
+  }
+  .desc-html-view {
+    padding: em(5) em(10);
   }
   .desc-editable {
     @include box-shadow(inset 0 1px 1px $color-pf-black-100,0 0 8px $color-pf-blue-300);

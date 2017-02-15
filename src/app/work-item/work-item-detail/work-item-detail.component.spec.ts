@@ -564,7 +564,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     fixture.detectChanges();
     comp.openDescription();
     fixture.detectChanges();
-    el = fixture.debugElement.query(By.css('#wi-detail-desc'));
+    el = fixture.debugElement.query(By.css('#detail-desc-value'));
     comp.workItem.attributes['system.description'] = 'User entered work item description';
     fixture.detectChanges();
     comp.save();

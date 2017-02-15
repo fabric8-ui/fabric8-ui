@@ -128,6 +128,10 @@ class WorkItemDetailPage {
     return element(by.id("wi-detail-desc"));
   }
 
+  get workItemDetailDescriptionValue () {
+    return element(by.id("detail-desc-value"));
+  }
+
   workItemDetailDescriptionById () {
     return element(by.id("wi-detail-desc"))
   }
@@ -137,8 +141,8 @@ class WorkItemDetailPage {
   }
 
   setWorkItemDetailDescription (newDescriptionString, append) {
-    if (!append) { this.workItemDetailDescription.clear(newDescriptionString) };
-    return this.workItemDetailDescription.sendKeys(newDescriptionString);
+    if (!append) { this.workItemDetailDescriptionValue.clear(newDescriptionString) };
+    return this.workItemDetailDescriptionValue.sendKeys(newDescriptionString);
   }
 
   get workItemDescriptionEditIcon () {

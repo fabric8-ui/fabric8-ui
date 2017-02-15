@@ -34,7 +34,7 @@ describe('Work item list', function () {
     testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);
   });
- 
+
   /* User can read, update, remove assignee on a workitem  */
   it('User can read, update, remove assignee and delete WI', function() {
     page.clickWorkItemQuickAdd();
@@ -60,8 +60,8 @@ describe('Work item list', function () {
       });
       });
     });
-  }); 
-  
+  });
+
   /* Create a new workitem, fill in the details, save, retrieve, update, save, verify updates are saved */
   it('should find and update the workitem through its detail page - desktop.', function() {
 
@@ -114,15 +114,15 @@ describe('Work item list', function () {
 
     });
 
-  }); 
+  });
 
-  /* Test that the Quick add work item is visible */ 
-  it('Test Quick workitem visible without authorization - phone.', function () { 
+  /* Test that the Quick add work item is visible */
+  it('Test Quick workitem visible without authorization - phone.', function () {
     page.clickLogoutButton().click();
     expect(page.quickAddbuttonById().isPresent()).toBeFalsy();
   });
 
-  /* Create workitem - verify user and icon */  
+  /* Create workitem - verify user and icon */
   it('Edit and check WorkItem , creatorname and image is reflected', function () {
     page.clickDetailedDialogButton();
     var detailPage = page.clickDetailedIcon("userstory");
@@ -132,16 +132,16 @@ describe('Work item list', function () {
     detailPage.setWorkItemDetailDescription (WORK_ITEM_DESCRIPTION, true);
     detailPage.clickWorkItemDescriptionSaveIcon();
     expect(detailPage.getCreatorUsername()).toBe(EXAMPLE_USER_0);
-    expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);     
+    expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);
     detailPage.clickWorkItemDetailCloseButton();
 
     browser.wait(until.presenceOf(page.workItemByTitle(WORK_ITEM_TITLE)), constants.WAIT, 'Failed to find workItemList');
     expect(page.workItemTitle(page.workItemByTitle(WORK_ITEM_TITLE))).toBe(WORK_ITEM_TITLE);
-   
-    page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) { 
+
+    page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
       page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
       expect(detailPage.getCreatorUsername()).toBe(EXAMPLE_USER_0);
-      expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);  
+      expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);
       expect(detailPage.getImageURL()).toBe('https://avatars.githubusercontent.com/u/2410471?v=3&s=20');
    });
  });

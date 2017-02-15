@@ -38,6 +38,7 @@ export class WorkItemService {
   private linkTypesUrl = process.env.API_URL + 'workitemlinktypes';
   private linksUrl = process.env.API_URL + 'workitemlinks';
   private reorderUrl = process.env.API_URL + 'workitems/reorder';
+  private renderUrl = process.env.API_URL + 'render';
   private availableStates: DropdownOption[] = [];
   public workItemTypes: WorkItemType[] = [];
   private workItems: WorkItem[] = [];
@@ -1002,6 +1003,29 @@ export class WorkItemService {
         wItem.attributes['version'] = updatedWorkItem.attributes['version'];
         wItem.attributes['order'] = updatedWorkItem.attributes['order'];
       })
+      .catch ((e) => {
+        if (e.status === 401) {
+          this.auth.logout(true);
+        } else {
+          this.handleError(e);
+        }
+      });
+  }
+
+  renderMarkDown(markDownText: string): Promise<any> {
+    let params = {
+      data: {
+        attributes: {
+          content: markDownText,
+          markup: "Markdown"
+        },
+        type: "rendering"
+      }
+    }
+    return this.http
+      .post(this.renderUrl, JSON.stringify(params), { headers: this.headers })
+      .toPromise()
+      .then(response => response.json().data.attributes.renderedContent)
       .catch ((e) => {
         if (e.status === 401) {
           this.auth.logout(true);

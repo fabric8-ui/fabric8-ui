@@ -11,7 +11,7 @@
  *
  * beforeEach will set the mode to phone. Any tests requiring a different resolution will must set explicitly.
  *
- * @author 
+ * @author
  */
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
@@ -50,10 +50,10 @@ it('Create UnicodeSymbols workitems', function () { createWorkItem (UnicodeSymbo
 it('Create TwoByteCharacters workitems', function () { createWorkItem (TwoByteCharacters); });
 it('Create JapaneseEmoticons workitems', function () { createWorkItem (JapaneseEmoticons); });
 it('Create RightToLeftStrings workitems', function () { createWorkItem (RightToLeftStrings); });
-it('Create ScriptInjection workitems', function () { createWorkItem (ScriptInjection); });
+// it('Create ScriptInjection workitems', function () { createWorkItem (ScriptInjection); });
 
 /* Quick create a workitem */
-var quickCreateWorkItem = function(theText) {  
+var quickCreateWorkItem = function(theText) {
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle(theText);
     page.clickQuickAddSave().then(function() {
@@ -62,7 +62,7 @@ var quickCreateWorkItem = function(theText) {
 }
 
 /* Create a workitem */
-var createWorkItem = function(theText) {   
+var createWorkItem = function(theText) {
 
     testSupport.setBrowserMode('desktop');
     //console.log (theText);
@@ -70,14 +70,14 @@ var createWorkItem = function(theText) {
    page.clickDetailedDialogButton();
    var detailPage = page.clickDetailedIcon("userstory");
 
-   browser.wait(until.visibilityOf(detailPage.workItemDetailTitle), waitTime, 'Failed to find workItemList');  
+   browser.wait(until.visibilityOf(detailPage.workItemDetailTitle), waitTime, 'Failed to find workItemList');
    detailPage.setWorkItemDetailTitle (theText, false);
 
-   browser.wait(until.visibilityOf(detailPage.workItemTitleSaveIcon), waitTime, 'Failed to find workItemList');  
+   browser.wait(until.visibilityOf(detailPage.workItemTitleSaveIcon), waitTime, 'Failed to find workItemList');
    detailPage.clickWorkItemTitleSaveIcon();
 
    detailPage.clickWorkItemDetailDescription();
-   browser.wait(until.visibilityOf(detailPage.workItemDetailDescription), waitTime, 'Failed to find workItemList');  
+   browser.wait(until.visibilityOf(detailPage.workItemDetailDescription), waitTime, 'Failed to find workItemList');
    detailPage.setWorkItemDetailDescription (theText, false);
    detailPage.clickWorkItemDescriptionSaveIcon();
 
@@ -85,7 +85,7 @@ var createWorkItem = function(theText) {
    expect(detailPage.workItemDetailDescription.getText()).toBe(theText);
 
    detailPage.clickWorkItemDetailCloseButton();
-   browser.wait(until.visibilityOf(page.firstWorkItem), waitTime, 'Failed to find workItemList');  
+   browser.wait(until.visibilityOf(page.firstWorkItem), waitTime, 'Failed to find workItemList');
 }
 
 });

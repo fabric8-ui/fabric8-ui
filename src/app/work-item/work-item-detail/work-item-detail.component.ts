@@ -95,6 +95,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   iterations: IterationModel[] = [];
 
+  renderedDesc: any = '';
+  descViewType: any = 'html';
+
   constructor(
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
@@ -117,6 +120,12 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         let id = params['id'];
+
+        // On changing item's details page
+        // Reset the description value
+        this.renderedDesc = '';
+        this.descViewType = 'html';
+
         if (id.indexOf('new') >= 0){
           //Add a new work item
           this.addNewWI = true;
@@ -159,6 +168,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
         this.closeRestFields();
         this.titleText = workItem.attributes['system.title'];
         this.descText = workItem.attributes['system.description'];
+        this.showHtml(this.descText);
         this.workItem = workItem;
         // fetch the list of user
         // after getting the Workitem
@@ -254,12 +264,15 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       }
       this.closeRestFields();
       this.descEditable = true;
+      this.descViewType = 'markdown';
+      setTimeout(() => this.description.nativeElement.focus());
     }
   }
 
   closeDescription(): void {
     this.description.nativeElement.innerHTML =
     this.workItem.attributes['system.description'];
+    this.showHtml(this.workItem.attributes['system.description']);
     this.descEditable = false;
   }
 
@@ -297,6 +310,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   onUpdateDescription(): void {
     this.workItem.attributes['system.description'] = this.descText.trim();
+    this.showHtml(this.workItem.attributes['system.description']);
     this.save();
     this.closeDescription();
   }
@@ -547,6 +561,15 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
         return item.attributes.fullName.toLowerCase().indexOf(inp.toLowerCase()) > -1;
       });
     }
+  }
+
+  showHtml(innerText: string): void {
+    // console.log(innerText);
+    this.workItemService.renderMarkDown(innerText)
+      .then(renderedHtml => {
+        this.renderedDesc = renderedHtml;
+        this.descViewType = 'html';
+      });
   }
 
   @HostListener('window:keydown', ['$event'])

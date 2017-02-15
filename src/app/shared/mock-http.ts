@@ -212,8 +212,11 @@ export class MockHttp extends Http {
           data: this.mockDataService.createWorkItemLink(JSON.parse(body).data),
           included: this.mockDataService.createWorkItemLinkIncludes(JSON.parse(body).data)
         });
-      } else
+      } else if (path.path === '/render') {
+        return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getRedneredText(JSON.parse(body).data) });
+      } else {
         return this.createResponse(url.toString(), 500, 'POST to unknown resource: ' + path.path, {});
+      }
     };
 
     /*

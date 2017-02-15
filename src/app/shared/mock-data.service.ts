@@ -289,4 +289,8 @@ export class MockDataService {
   public getWorkItemLinkTypes(): any {
     return this.schemaMockGenerator.getWorkItemLinkTypes();
   }
+
+  public getRedneredText(data: any): any {
+    return this.schemaMockGenerator.renderText(data.attributes.content);
+  }
 }

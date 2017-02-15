@@ -513,5 +513,15 @@ export class SchemaMockGenerator {
     }
   }
 
+  public renderText(text: string) {
+    return {
+        attributes: {
+          renderedContent: text
+        },
+        id: 'd9da8f40-30cd-4fb3-afd0-ab3302fa694f',
+        type: 'rendering'
+    };
+  }
+
 }
 
