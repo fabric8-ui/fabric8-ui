@@ -83,6 +83,7 @@ if (process.env.ENV == 'inmemory') {
     LoginService,
     UserService,
     WorkItemService,
+    MockDataService,
     SpaceService
   ];
 }

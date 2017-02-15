@@ -1,3 +1,4 @@
+import { SpaceService, Space } from './../shared/mock-spaces.service';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { IterationService } from '../iteration/iteration.service';
@@ -24,11 +25,12 @@ export class AuthUserResolve implements Resolve<any> {
 
 @Injectable()
 export class IterationsResolve implements Resolve<IterationModel[]> {
-  constructor(private iterationService: IterationService) {}
+  constructor(private iterationService: IterationService,
+              private spaceService: SpaceService) {}
   resolve() {
-    return this.iterationService.getSpaces()
-      .then((data) => {
-        this.iterationService.getIterations(data.relationships.iterations.links.related)
+    return this.spaceService.getCurrentSpace()
+      .then((data: Space) => {
+        this.iterationService.getIterations(data.iterationsUrl)
         .then(iterations =>  iterations)
         .catch ((e) => {
           console.log('Some error has occured', e);

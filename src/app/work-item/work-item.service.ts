@@ -71,7 +71,7 @@ export class WorkItemService {
       logger.log('WorkItemService running in production mode.');
     }
     // set initial space and subscribe to the space service to recognize space switches
-    this.spaceService.getCurrentSpace().then(this.switchSpace);
+    // this.spaceService.getCurrentSpace().then(() => this.switchSpace());
     this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => this.switchSpace(space));
   }
 
