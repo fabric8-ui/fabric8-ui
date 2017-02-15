@@ -25,6 +25,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
  */
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 const API_URL = process.env.API_URL || 'http://api.almighty.io/api/';
+const STACK_API_URL = process.env.STACK_API_URL || 'http://api-bayesian.dev.rdu2c.fabric8.io/api/v1/';
 const FORGE_URL = process.env.FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
@@ -36,6 +37,7 @@ const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   ENV: ENV,
   HMR: false,
   API_URL: API_URL,
+  STACK_API_URL: STACK_API_URL,
   FORGE_URL: FORGE_URL,
   PUBLIC_PATH: PUBLIC_PATH
 
@@ -158,6 +160,7 @@ module.exports = function (env) {
           'NODE_ENV': JSON.stringify(METADATA.ENV),
           'HMR': METADATA.HMR,
           'API_URL' : JSON.stringify(METADATA.API_URL),
+          'STACK_API_URL' : JSON.stringify(METADATA.STACK_API_URL),
           'FORGE_URL': JSON.stringify(METADATA.FORGE_URL),
           'PUBLIC_PATH' : JSON.stringify(METADATA.PUBLIC_PATH)
         }
