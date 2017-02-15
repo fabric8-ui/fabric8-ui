@@ -11,7 +11,17 @@ import { Component, ViewEncapsulation, Output, EventEmitter } from '@angular/cor
   selector: 'f8-container-toggler',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './container-toggler.html',
+  // template: `
+  //   <div>
+  //       <span (click)="prev()" class="prev">Previous</span>
+  //       <span (click)="next()" class="next">Next</span>
+  //   </div>
+  //
+  // `,
   styleUrls: ['container-toggler.scss']
+  // styles: [`
+
+  `]
 })
 
 export class ContainerTogglerComponent {

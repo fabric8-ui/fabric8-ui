@@ -18,8 +18,55 @@ import { Dialog } from './dialog';
 @Component({
   selector: 'alm-dialog',
   templateUrl: './dialog.component.html',
+  // template: `
+  //   <div class="modal" id="alm-modal" tabindex="-1" role="dialog"
+  //     [ngClass]="{'show': modalFadeIn,'hide':!modalFadeIn}" [@modalOverlay]="modalState"
+  //     aria-labelledby="almModal" aria-hidden="false">
+  //     <div class="modal-dialog" [@modalState]="modalState">
+  //       <div class="modal-content">
+  //         <div class="modal-header">
+  //           <button type="button" class="close"
+  //             (click)="closeModal()" data-dismiss="modal" aria-hidden="true">
+  //             <span class="pficon pficon-close"></span>
+  //           </button>
+  //           <h4 *ngIf='dialog.title'>{{ dialog.title ? dialog.title : '' }}</h4>
+  //         </div>
+  //         <div class="modal-body">
+  //           <div class="product-versions-pf">
+  //             <span *ngIf='dialog.message' id="alm-dialog-message">
+  //               {{ dialog.message ? dialog.message : '' }}
+  //             </span>
+  //           </div>
+  //         </div>
+  //         <div *ngIf='dialog.actionButtons' class="modal-footer">
+  //           <button *ngFor="let btn of dialog.actionButtons"
+  //             type="submit" class="btn marginR10 pull-left"
+  //             [class.btn-primary]="btn.default"
+  //             value="{{ btn.value}}"
+  //             (click)="btnClick(btn.value)">
+  //                 {{ btn.title }}
+  //           </button>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // `,
   styleUrls: ['./dialog.component.scss'],
-   animations: [
+  // styles: [`
+  // @import "../../../assets/stylesheets/color-variables";
+  // @import "../../../assets/stylesheets/mixins";
+  // .modal-footer{
+  //     .btn{
+  //         &:hover{
+  //             background-color: $color-pf-light-blue-500;
+  //             @include gradient-vertical($color-pf-blue-300, $color-pf-blue-400);
+  //             border-color: $color-pf-blue-500;
+  //             color: $color-pf-white;
+  //         }
+  //     }
+  //   }
+  // `],
+  animations: [
     trigger('modalState', [
       state('inactive', style({
         opacity: '0',
