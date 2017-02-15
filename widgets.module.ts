@@ -1,8 +1,7 @@
-import './rxjs-extensions';
+// import './rxjs-extensions';
 
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Http, HttpModule } from "@angular/http";
+import { NgModule, Pipe } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 // import { DropdownModule } from 'ngx-dropdown';
 
@@ -15,38 +14,30 @@ import { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.mo
 
 import { AlmArrayFilter } from './src/app/pipes/alm-array-filter.pipe';
 import { AlmAvatarSize } from './src/app/pipes/alm-avatar-size.pipe';
-import { AlmFilterBoardList } from './src/app/pipes/alm-board-filter.pipe';
 import { AlmLinkTarget } from './src/app/pipes/alm-link-target.pipe';
-import { AlmMomentTime } from './src/app/pipes/alm-moment-time.pipe';
+// import { AlmMomentTime } from './src/app/pipes/alm-moment-time.pipe';
 import { AlmSearchHighlight } from './src/app/pipes/alm-search-highlight.pipe';
 import { AlmTrim } from './src/app/pipes/alm-trim';
-import { AlmUserName } from './src/app/pipes/alm-user-name.pipe';
-import { AlmValidLinkTypes } from './src/app/pipes/alm-valid-link-types.pipe';
 
-export * from './src/app/container-toggler/container-toggler.module';
-export * from './src/app/dialog/dialog.module';
-export * from './src/app/dropdown/dropdown.module';
-export * from './src/app/editable/almeditable.module';
-export * from './src/app/icon/almicon.module';
-export * from './src/app/infinitescroll/infinitescroll.module';
+export { ContainerTogglerModule } from './src/app/container-toggler/container-toggler.module';
+export { DialogModule } from './src/app/dialog/dialog.module';
+export { DropdownModule } from './src/app/dropdown/dropdown.module';
+export { AlmEditableModule } from './src/app/editable/almeditable.module';
+export { AlmIconModule } from './src/app/icon/almicon.module';
+export { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
 
 export { AlmArrayFilter } from './src/app/pipes/alm-array-filter.pipe';
 export { AlmAvatarSize } from './src/app/pipes/alm-avatar-size.pipe';
-export { AlmFilterBoardList } from './src/app/pipes/alm-board-filter.pipe';
 export { AlmLinkTarget } from './src/app/pipes/alm-link-target.pipe';
-export { AlmMomentTime } from './src/app/pipes/alm-moment-time.pipe';
+// export { AlmMomentTime } from './src/app/pipes/alm-moment-time.pipe';
 export { AlmSearchHighlight } from './src/app/pipes/alm-search-highlight.pipe';
 export { AlmTrim } from './src/app/pipes/alm-trim';
-export { AlmUserName } from './src/app/pipes/alm-user-name.pipe';
-export { AlmValidLinkTypes } from './src/app/pipes/alm-valid-link-types.pipe';
 
 
 @NgModule({
   imports: [
     FormsModule,
-    Http,
-    HttpModule,
-    ReactiveFormsModule
+    Pipe
   ],
   declarations: [
 
@@ -54,13 +45,10 @@ export { AlmValidLinkTypes } from './src/app/pipes/alm-valid-link-types.pipe';
   exports: [
     AlmArrayFilter,
     AlmAvatarSize,
-    AlmFilterBoardList,
     AlmLinkTarget,
-    AlmMomentTime,
+    // AlmMomentTime,
     AlmSearchHighlight,
     AlmTrim,
-    AlmUserName,
-    AlmValidLinkTypes,
 
     ContainerTogglerModule,
     DialogModule,

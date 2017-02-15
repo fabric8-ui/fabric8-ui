@@ -1,4 +1,4 @@
-export const IconMap = {
+export const IconMap: any = {
     'in progress'              : ['pficon', 'pficon-resources-almost-full'],
     'new'                      : ['fa', 'fa-arrow-down'],
     'resolved'                 : ['pficon', 'pficon-resources-full'],
