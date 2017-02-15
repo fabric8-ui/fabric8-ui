@@ -50,10 +50,10 @@ export { AlmTrim } from './src/app/pipes/alm-trim';
     AlmLinkTarget,
     // AlmMomentTime,
     AlmSearchHighlight,
-    AlmTrim,
-    AlmEditableDirective,
-    AlmIconDirective,
-    InfiniteScrollDirective
+    AlmTrim
+    // AlmEditableDirective,
+    // AlmIconDirective,
+    // InfiniteScrollDirective
   ],
   exports: [
     AlmArrayFilter,
@@ -62,9 +62,9 @@ export { AlmTrim } from './src/app/pipes/alm-trim';
     // AlmMomentTime,
     AlmSearchHighlight,
     AlmTrim,
-    AlmEditableDirective,
-    AlmIconDirective,
-    InfiniteScrollDirective,
+    // AlmEditableDirective,
+    // AlmIconDirective,
+    // InfiniteScrollDirective,
 
     ContainerTogglerModule,
     DialogModule,
