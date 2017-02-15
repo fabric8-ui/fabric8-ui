@@ -3,7 +3,7 @@ export default {
   dest: 'dist/bundles/widgets.umd.js',
   sourceMap: false,
   format: 'umd',
-  moduleName: 'ng.widgets',
+  moduleName: 'ngx.widgets',
   globals: {
     '@angular/core': 'ng.core',
     '@angular/common': 'ng.common',
