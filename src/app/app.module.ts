@@ -1,5 +1,5 @@
-import { SettingsAuthGuard } from './settings/settings-auth-guard.service';
-import { StackDetailsModule } from './analyze/stack/stack-details/stack-details.module';
+import { ContextCurrentUserAuthGuard } from './shared/context-current-user-auth-guard.service';
+import { AuthGuard } from './shared/auth-guard.service';
 import './rxjs-extensions';
 
 import { NgModule, ApplicationRef } from '@angular/core';
@@ -30,10 +30,6 @@ import { AppState, InternalStateType } from './app.service';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 
-//stackreports
-
-import {StackModule} from './analyze/stackreports/render-stack-details/module';
-
 // Shared Services
 import { DummyService } from './shared/dummy.service';
 import { LoginService } from './shared/login.service';
@@ -45,6 +41,7 @@ import { SpaceDialogModule } from './space-dialog/space-dialog.module';
 import { SpaceWizardModule } from './space-wizard/space-wizard.module';
 import { PublicModule } from './public/public.module';
 import { DeleteAccountDialogModule } from './delete-account-dialog/delete-account-dialog.module';
+import { StackDetailsModule } from './analyze/stack/stack-details/stack-details.module';
 
 // Component Services
 import { ProfileService } from './profile/profile.service';
@@ -94,13 +91,14 @@ export type StoreType = {
     ENV_PROVIDERS,
     APP_PROVIDERS,
     AuthenticationService,
+    AuthGuard,
     Broadcaster,
+    ContextCurrentUserAuthGuard,
     ContextService,
     DummyService,
     Logger,
     LoginService,
     ProfileService,
-    SettingsAuthGuard,
     ToggleService,
     UserService
   ],

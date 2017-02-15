@@ -1,9 +1,9 @@
+import { ContextCurrentUserAuthGuard } from './../shared/context-current-user-auth-guard.service';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { SettingsComponent } from './settings.component';
 import { ProfileComponent } from './profile/profile.component';
-import { SettingsAuthGuard } from './settings-auth-guard.service';
 
 const routes: Routes = [
   {
@@ -14,8 +14,8 @@ const routes: Routes = [
   {
     path: '',
     component: SettingsComponent,
-    canActivate: [SettingsAuthGuard],
-    canActivateChild: [SettingsAuthGuard],
+    canActivate: [ContextCurrentUserAuthGuard],
+    canActivateChild: [ContextCurrentUserAuthGuard],
     children: [
       { path: '', component: ProfileComponent },
       { path: 'emails', loadChildren: './emails/emails.module#EmailsModule' },

@@ -1,3 +1,4 @@
+import { LoginService } from './login.service';
 import { AuthenticationService, Logger } from 'ngx-login-client';
 import { ContextService } from './../shared/context.service';
 import { Injectable } from '@angular/core';
@@ -9,31 +10,32 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 
+// Basic guard that checks the user is logged in
+
 @Injectable()
-export class SettingsAuthGuard implements CanActivate, CanActivateChild {
+export class AuthGuard implements CanActivate, CanActivateChild {
 
   constructor(
-    private context: ContextService,
-    private auth: AuthenticationService,
-    private router: Router,
-    private logger: Logger
+    protected context: ContextService,
+    protected auth: AuthenticationService,
+    protected router: Router,
+    protected logger: Logger,
+    protected login: LoginService
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (!this.auth.isLoggedIn()) {
       this.logger.log('Please login to access ' + state.url);
+      this.login.redirectUrl = state.url;
+      this.logger.log('Setting redirect URL to ' + this.login.redirectUrl);
       this.router.navigate(['/public']);
-      return false;
-    } else if (this.context.current.entity !== this.context.currentUser) {
-      this.logger.log('You cannot access another users settings');
-      this.router.navigate(['/home']);
       return false;
     } else {
       return true;
     }
-}
+  }
 
-canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-  return this.canActivate(route, state);
-}
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    return this.canActivate(route, state);
+  }
 }

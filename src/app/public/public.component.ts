@@ -41,7 +41,7 @@ export class PublicComponent implements OnInit {
       if (this.auth.isLoggedIn()) {
         this.profile.initDefaults(val);
         if (this.profile.sufficient) {
-          this.router.navigate(['home']);
+          this.loginService.redirectAfterLogin();
         } else {
           this.loggedIn = false;
           this.flashMessagesService.show('You must <a href="https://developers.redhat.com/auth/realms/rhd/account/">complete your profile</a>. Ensure you have provided your full name and email address.', { cssClass: 'alert alert-danger' });
@@ -62,5 +62,3 @@ export class PublicComponent implements OnInit {
   };
 
 }
-
-

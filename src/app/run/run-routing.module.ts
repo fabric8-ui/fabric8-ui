@@ -1,3 +1,4 @@
+import { AuthGuard } from './../shared/auth-guard.service';
 import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -7,14 +8,9 @@ import { PipelinesComponent } from './pipelines/pipelines.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'pmuir/BalloonPopGame/run',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
     component: RunComponent,
     children: [
-      { path: '', component: PipelinesComponent },
+      { path: '', component: PipelinesComponent }
     ]
   }
 ];
