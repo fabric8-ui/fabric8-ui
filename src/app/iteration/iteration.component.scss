@@ -3,6 +3,9 @@
 @import "../../assets/stylesheets/mixins";
 
 //Iteration Style Start
+.backlog-bg{
+  background-color: white;
+}
 .iteration-secondary-menu {
   color: $color-pf-dark;
   font-size: rem(14);

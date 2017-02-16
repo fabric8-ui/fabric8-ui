@@ -27,6 +27,9 @@
           (moveBottomEvent)="onMoveToBottom($event)">
         </alm-work-item-list-entry>
       </div>
+      <div *ngIf="!workItems.length">
+        <h2 class="error no-wi">No workitems were found!</h2>
+      </div>
     </div>
   </div>
 

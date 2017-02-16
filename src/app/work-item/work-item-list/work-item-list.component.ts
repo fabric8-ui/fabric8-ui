@@ -160,8 +160,19 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
         this.loggedIn = false;
         this.authUser = null;
     });
+    //Filters like assign to me should stack with the current filters
     this.broadcaster.on<string>('item_filter')
       .subscribe((filters: any) => {
+        this.filters = this.filters.concat(filters);
+        this.loadWorkItems();
+    });
+    //Filters like iteration should clear the previous filter
+    //and then set the current selected value
+    this.broadcaster.on<string>('unique_filter')
+      .subscribe((filters: any) => {
+        //this.filters = this.filters.filter(item => item.paramKey !== filters[0].paramKey);
+        //this.filters = this.filters.concat(filters);
+        //clear top filters
         this.filters = filters;
         this.loadWorkItems();
     });

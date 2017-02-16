@@ -19,7 +19,8 @@ export class IterationComponent implements OnInit, OnDestroy {
 
   authUser: any = null;
   loggedIn: Boolean = false;
-  isCollapsedCurrentIteration: Boolean = false;
+  isBacklogSelected: Boolean = true;
+  isCollapsedCurrentIteration: Boolean = true;
   isCollapsedFutureIteration: Boolean = true;
   isCollapsedPastIteration: Boolean = true;
   barchatValue: number = 70;
@@ -85,6 +86,33 @@ export class IterationComponent implements OnInit, OnDestroy {
       this.allIterations.splice(this.allIterations.length, 0, iteration);
     }
     this.clusterIterations();
+  }
+
+  getWorkItemsByIteration(iteration: IterationModel) {
+    let filters: any = [];
+    if (iteration)
+    {
+      this.isBacklogSelected = false;
+      filters.push({
+        id:  iteration.id,
+        name: iteration.attributes.name,
+        paramKey: 'filter[iteration]',
+        active: true,
+        value: iteration.id
+      });
+    } else {
+      //This is to view the backlog
+      this.isBacklogSelected = true;
+      //Collapse the other iteration sets
+      this.isCollapsedCurrentIteration = true;
+      this.isCollapsedFutureIteration = true;
+      this.isCollapsedPastIteration = true;
+      filters.push({
+        paramKey: 'filter[iteration]',
+        active: false,
+      });
+    }
+    this.broadcaster.broadcast('unique_filter', filters);
   }
 
   listenToEvents() {

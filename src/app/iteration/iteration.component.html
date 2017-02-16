@@ -1,7 +1,7 @@
 <!--Iteration Start-->
-<div class="iteration-panel-header">
+<div class="iteration-panel-header" [class.backlog-bg]="isBacklogSelected">
   <div class="iteration-secondary-menu">
-      <h4><strong>Backlog</strong></h4>
+      <h4><strong (click)='getWorkItemsByIteration(null)'>Backlog</strong></h4>
   </div>
   <div class="badge-wrapper">
     <span class="badge">95</span>
@@ -26,7 +26,8 @@
           <div class="iteration-name-container">
             <strong class="iteration-name truncate"
               tooltip="{{iteration.attributes.name}}"
-              tooltipPlacement="top">
+              tooltipPlacement="top"
+              (click)='getWorkItemsByIteration(iteration)'>
               {{iteration.attributes.name}}
             </strong>
           </div>
@@ -103,7 +104,8 @@
         <div class="iteration-name-container">
           <strong class="iteration-name truncate"
             tooltip="{{iteration.attributes.name}}"
-            tooltipPlacement="top">
+            tooltipPlacement="top"
+            (click)='getWorkItemsByIteration(iteration)'>
             {{iteration.attributes.name}}
           </strong>
         </div>
@@ -151,7 +153,8 @@
         <div class="iteration-name-container">
           <strong class="iteration-name truncate"
             tooltip="{{iteration.attributes.name}}"
-            tooltipPlacement="top">
+            tooltipPlacement="top"
+            (click)='getWorkItemsByIteration(iteration)'>
             {{iteration.attributes.name}}
           </strong>
         </div>
