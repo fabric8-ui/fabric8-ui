@@ -13,6 +13,7 @@ import { DropdownModule } from 'ngx-dropdown';
 import { LocalStorageModule } from 'angular-2-local-storage';
 
 import { AuthenticationService, Broadcaster, Logger, UserService} from 'ngx-login-client';
+// import { WidgetsModule } from 'ngx-widgets';
 
 import { ReactiveFormsModule } from '@angular/forms';
 /*
@@ -79,6 +80,7 @@ export type StoreType = {
     SpaceWizardModule,
     StackDetailsModule,
     ReactiveFormsModule,
+    // WidgetsModule,
     // AppRoutingModule must appear last
     AppRoutingModule
   ],
