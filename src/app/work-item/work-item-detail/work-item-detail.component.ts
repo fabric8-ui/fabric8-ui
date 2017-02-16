@@ -172,7 +172,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       .then(workItem => {
         this.closeRestFields();
         this.titleText = workItem.attributes['system.title'];
-        this.descText = workItem.attributes['system.description'];
+        this.descText = workItem.attributes['system.description'] || '';
         this.showHtml(this.descText);
         this.workItem = workItem;
         // fetch the list of user
