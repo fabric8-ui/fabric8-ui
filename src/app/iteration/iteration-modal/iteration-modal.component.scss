@@ -24,6 +24,11 @@
 .iteration-modal-footer {
   margin-top: em(20);
 }
+.has-error {
+  .error-block {
+    visibility: visible;
+  }
+}
 .error-block {
   visibility: hidden;
   .help-block {

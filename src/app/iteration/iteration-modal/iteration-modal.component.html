@@ -13,10 +13,12 @@
             <input
               id="iteration-name"
               type="text" class="form-control"
-              placeholder="Enter iteration name"
+              placeholder="Iteration Name"
               [(ngModel)]="iteration.attributes.name"
               (keyup)="removeError()">
-            <span class="help-block" id="iteration-help-label">Iteration names must be unique within a project</span>
+            <span class="error-block">
+              <span class="help-block" id="iteration-help-label">Iteration names must be unique within a project</span>
+            </span>
           </div>
         </div>
         <div class="form-group">
@@ -24,6 +26,7 @@
           <textarea
             #iterationDesc
             class="form-control"
+            placeholder="Describe this iteration's goals and what it will include."
             id="iteration-description"
             rows="3"
             [(ngModel)]="iteration.attributes.description">
@@ -51,7 +54,7 @@
 
       <div *ngIf="modalType=='close'"
         class="form-group datepicker-container">
-        Do you really want to close the iteration?
+        Do you really want to close this iteration?
       </div>
       <div class="error-block" [class.space-error]="spaceError">
         <span class="help-block">There is already a current iteration for {{spaceName}}. You must close the current iteration before starting this one.</span>
@@ -60,7 +63,7 @@
   </modal-content>
   <modal-footer>
     <div class="text-right col-md-12 col-sm-12 col-xs-12 iteration-modal-footer">
-      <button class="btn marginR10" id="cancel-iteration-button" type="submit" value="0" (click)="createUpdateIterationDialog.close()">Cancel</button>
+      <button class="btn btn-default marginR10" id="cancel-iteration-button" type="submit" value="0" (click)="createUpdateIterationDialog.close()">Cancel</button>
       <button class="btn btn-primary" id="create-iteration-button" type="submit" value="0" (click)="createUpdateIterationDialog.onSubmit.emit(undefined)">
         {{submitBtnTxt}}
       </button>
