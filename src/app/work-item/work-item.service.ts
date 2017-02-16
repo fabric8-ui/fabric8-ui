@@ -39,6 +39,7 @@ export class WorkItemService {
   private linksUrl: string = null;
   private reorderUrl: string = null;
   private baseSearchUrl: string = null;
+  private renderUrl: string = null;
 
   private headers = new Headers({'Content-Type': 'application/json'});
   private availableStates: DropdownOption[] = [];
@@ -83,6 +84,7 @@ export class WorkItemService {
     this.linksUrl = space.spaceBaseUrl + 'workitemlinks';
     this.reorderUrl = space.spaceBaseUrl + 'workitems/reorder';
     this.baseSearchUrl = space.spaceBaseUrl + 'search?q=';
+    this.renderUrl = space.spaceBaseUrl + 'render';
     this.logger.log('WorkItemService using url ' + this.workItemUrl);
   }
 

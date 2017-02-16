@@ -1,3 +1,5 @@
+import { MockDataService } from './../shared/mock-data.service';
+import { SpaceService } from './../shared/mock-spaces.service';
 import { cloneDeep } from 'lodash';
 import { Broadcaster } from '../shared/broadcaster.service';
 import { UserService } from '../user/user.service';
@@ -21,6 +23,7 @@ import { IterationService } from '../iteration/iteration.service';
 import { WorkItem } from '../models/work-item';
 import { WorkItemService } from './work-item.service';
 
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 describe('Work Item Service - ', () => {
 
@@ -29,6 +32,52 @@ describe('Work Item Service - ', () => {
   let iterationService: IterationService;
 
   let fakeAuthService: any;
+  let fakeSpcaeService: any;
+
+  let spaces = [{
+        'name': 'Project 1',
+        'path': '',
+        'description': '',
+        'teams': [
+            {
+              'name': 'Team Project 1',
+              'members': [
+                  {
+                    'attributes': {
+                        'fullName': 'Example User 0',
+                        'imageURL': 'https://avatars.githubusercontent.com/u/2410471?v=3'
+                    },
+                    'id': 'user0',
+                    'type': 'identities'
+                  }
+              ]
+            }
+        ],
+        'defaultTeam': {
+            'name': 'Team Project 1',
+            'members': [
+              {
+                  'attributes': {
+                    'fullName': 'Example User 0',
+                    'imageURL': 'https://avatars.githubusercontent.com/u/2410471?v=3'
+                  },
+                  'id': 'user0',
+                  'type': 'identities'
+              }
+            ]
+        },
+        'process': {
+
+        },
+        'privateSpace': false,
+        'id': '1f669678-ca2c-4cbb-b46d-5b70a98dde3c',
+        'attributes': {
+
+        },
+        'type': 'spaces',
+        'iterationsUrl': 'http://localhost:8080/api/spaces/1f669678-ca2c-4cbb-b46d-5b70a98dde3c/iterations',
+        'spaceBaseUrl': 'http://localhost:8080/api/'
+      }];
 
   beforeEach(() => {
     fakeAuthService = {
@@ -39,6 +88,18 @@ describe('Work Item Service - ', () => {
         return true;
       }
     };
+
+    fakeSpcaeService = {
+      getCurrentSpaceBus: function() {
+        let currentSpaceSubjectSource = new BehaviorSubject<any>(spaces[0]);
+        return currentSpaceSubjectSource.asObservable();
+      },
+
+      getCurrentSpace: function() {
+        return Promise.resolve(spaces[0]);
+      }
+    };
+
     TestBed.configureTestingModule({
       providers: [
         Logger,
@@ -53,6 +114,12 @@ describe('Work Item Service - ', () => {
         {
           provide: AuthenticationService,
           useValue: fakeAuthService
+        },
+        // MockDataService should be removed at some point
+        MockDataService,
+        {
+          provide: SpaceService,
+          useValue: fakeSpcaeService
         },
         WorkItemService,
         UserService,
