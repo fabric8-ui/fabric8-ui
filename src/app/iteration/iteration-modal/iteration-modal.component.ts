@@ -62,6 +62,10 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
 
   ngOnInit() {
     this.resetValues();
+    this.spaceSubscription = this.spaceService.getCurrentSpaceBus()
+                                 .subscribe(
+                                    space => console.log('[FabPlannerIterationModalComponent] New Space selected: ' + space.name)
+                                  );
   }
 
   resetValues() {
@@ -92,7 +96,6 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
 
   ngOnChanges() {
     console.log(this.modalType);
-    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => console.log('[FabPlannerIterationModalComponent] New Space selected: ' + space.name));
   }
 
   ngOnDestroy() {

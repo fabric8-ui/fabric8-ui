@@ -1,3 +1,4 @@
+import { MockHttp } from './mock-http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -12,6 +13,8 @@ import { Logger } from './logger.service';
 import { MockDataService } from './mock-data.service';
 import { User } from '../models/user';
 
+import Globals = require('./../shared/globals');
+
 @Injectable()
 export class SpaceService {
 
@@ -22,19 +25,35 @@ export class SpaceService {
   private currentSpace: Space = null;
 
   constructor(private http: Http, private mockDataService: MockDataService, private logger: Logger) {
-    logger.log('Mock SpaceService running.');
-    
     // init mock data and broadcaster
     // TODO: evaluate if the local broadcaster or a global broadcaster (like in Broadcaster service class) makes sense.
-    this.spaces = this.createSpacesFromServiceResponse(mockDataService.getAllSpaces());
-    this.currentSpace = this.spaces[0];
-    this.currentSpaceSubjectSource = new BehaviorSubject<Space>(this.spaces[0]);
-    this.currentSpaceBus = this.currentSpaceSubjectSource.asObservable();
+    // FIXME: Need to find out a better way to write this service and event listener
+    if (Globals.inTestMode) {
+      this.logger.log('SpaceService running in ' + process.env.ENV + ' mode.');
+      this.spaces = this.createSpacesFromServiceResponse(mockDataService.getAllSpaces());
+      this.initSpaces();
+    } else {
+      this.logger.log('SpaceService running in production mode.');
+      // TODO:  this is the base URL slightly to be changed
+      let url = process.env.API_URL + 'spaces';
+      this.http.get(url)
+      .toPromise()
+      .then((spaces: any) => {
+        this.spaces = this.createSpacesFromServiceResponse(spaces.json().data);
+        this.initSpaces();
+      })
+    }
   }
 
   private switchToSpace(newSpace: Space) {
     this.currentSpace = newSpace;
     this.currentSpaceSubjectSource.next(newSpace);
+  }
+
+  private initSpaces() {
+    this.currentSpace = this.spaces[0];
+    this.currentSpaceSubjectSource = new BehaviorSubject<Space>(this.spaces[0]);
+    this.currentSpaceBus = this.currentSpaceSubjectSource.asObservable();
   }
 
   getCurrentSpaceBus(): Observable<Space> {
@@ -71,7 +90,7 @@ export class SpaceService {
         iterationsUrl: thisElem.relationships.iterations.links.related,
         spaceBaseUrl: process.env.API_URL
       } as Space;
-      result.push(thisSpace);  
+      result.push(thisSpace);
     }
     return result;
   }

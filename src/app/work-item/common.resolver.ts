@@ -23,6 +23,7 @@ export class AuthUserResolve implements Resolve<any> {
   }
 }
 
+// FIX ME : Need to remove this resolver
 @Injectable()
 export class IterationsResolve implements Resolve<IterationModel[]> {
   constructor(private iterationService: IterationService,
