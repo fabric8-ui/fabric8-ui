@@ -7,6 +7,7 @@ import { CountPipe } from 'ng2bln-count-pipe';
 import { DialogModule } from './../shared-component/dialog/dialog.module';
 import { DndModule } from 'ng2-dnd';
 import { DropdownModule } from 'ng2-dropdown';
+import { FabPlannerAssociateIterationModalComponent } from './work-item-iteration-association-modal/work-item-iteration-association-modal.component';
 import { InfiniteScrollModule } from './../shared-component/infinitescroll/infinitescroll.module';
 import { IterationModule } from './../iteration/iteration.module';
 import { ModalModule } from 'ng2-modal';
@@ -40,6 +41,7 @@ import { WorkItemRoutingModule } from './work-item-routing.module';
     AlmArrayFilter,
     AlmFilterBoardList,
     CountPipe,
+    FabPlannerAssociateIterationModalComponent,
     WorkItemComponent,
     WorkItemListComponent,
     WorkItemBoardComponent,

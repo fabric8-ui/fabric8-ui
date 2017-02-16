@@ -1,0 +1,49 @@
+<modal #iterationAssociationModal title="Associate with Iteration">
+  <modal-content>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+
+      <!-- UX feed for existing iteration association -->
+      <div *ngIf="!!workItem.relationalData.iteration">
+        <strong>{{ workItem.attributes['system.title'] }}</strong>
+        is currently associated with
+        <strong>{{ workItem.relationalData.iteration.attributes.name }}</strong>
+      </div>
+
+      <!-- Form input to change iteration -->
+      <div class="form-group" [class.has-error]="validationError">
+
+        <div class="search-pf-input-group">
+          <label>
+            {{ !(workItem.relationalData.iteration) ? "Associate" : "Reassociate" }}
+            <strong>{{ workItem.attributes['system.title'] }}</strong> with
+          </label>
+
+          <div class="dropdown dib" dropdown>
+
+              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" #dropdownButton dropdown-open>
+                  {{ workItem.relationalData.iteration?.attributes?.name || "Select iteration..." }} <span class="caret"></span>
+              </button>
+
+              <ul class="dropdown-menu" role="menu">
+                <li *ngFor="let iteration of iterations;" role="presentation">
+                  <a role="menuitem" tabindex="-1" (click)="onChangeIteration(iteration)">
+                    {{ iteration.attributes.name }}
+                  </a>
+                </li>
+              </ul>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Action buttons to commit/abort -->
+      <div class="text-right">
+        <button class="btn" type="submit" id="cancel-iteration-button" (click)="iterationAssociationModal.close()">Cancel</button>
+        <button class="btn btn-primary" type="submit" id="associate-iteration-button" disabled #commitAssociation (click)="assignIteration()">
+          {{ !!(workItem.relationalData.iteration) ? "Reassociate" : "Associate" }}
+        </button>
+      </div>
+
+    </div>
+  </modal-content>
+</modal>

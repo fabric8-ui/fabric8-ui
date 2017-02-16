@@ -154,10 +154,6 @@ export class WorkItemListEntryComponent implements OnInit {
     this.moveBottomEvent.emit(this);
   }
 
-  onChangeIteration(event: MouseEvent): void {
-    alert('NOT IMPLEMENTED YET.');
-  }
-
   onMoveToBacklog(event: MouseEvent): void {
     alert('NOT IMPLEMENTED YET.');
   }

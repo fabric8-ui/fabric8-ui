@@ -35,6 +35,8 @@ import { WorkItem } from '../../models/work-item';
 import { WorkItemType } from '../work-item-type';
 import { WorkItemService } from '../work-item.service';
 
+import { IterationModel } from '../../models/iteration.model';
+import { IterationService } from '../../iteration/iteration.service';
 
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemListComponent } from './work-item-list.component';
@@ -48,6 +50,9 @@ describe('Work item list view - ', () => {
   let logger: Logger;
   let fakeWorkItem: WorkItem;
   let fakeWorkItems: WorkItem[] = [];
+  let fakeIteration: IterationModel;
+  let fakeIterationList: IterationModel[] = [];
+  let fakeIterationService: any;
   let fakeUser: User;
   let fakeUserList: User[];
   let fakeWorkItemService: any;
@@ -133,6 +138,16 @@ describe('Work item list view - ', () => {
       { option: 'closed' }
     ];
 
+    fakeIteration = {
+      'attributes': {
+        'name': 'Iteration 1'
+      },
+      'type': 'iterations'
+
+    } as IterationModel;
+
+    fakeIterationList.push(fakeIteration);
+
     fakeUser = {
       attributes: {
         fullName: 'WILCT Example User 2',
@@ -205,6 +220,24 @@ describe('Work item list view - ', () => {
       }
     };
 
+    fakeIterationService = {
+      getIterations: function () {
+        return new Promise((resolve, reject) => {
+          resolve(fakeIterationList);
+        });
+      },
+      getSpaces: function () {
+        let spaces = [{
+          'attributes': {
+            'name': 'Project 1'
+          },
+          'type': 'spaces'
+        }];
+        return spaces;
+      }
+    };
+
+
     fakeUserService = {
       getUser: function () {
         return new Promise((resolve, reject) => {
@@ -250,6 +283,10 @@ describe('Work item list view - ', () => {
         {
           provide: AuthenticationService,
           useValue: fakeAuthService
+        },
+        {
+          provide: IterationService,
+          useValue: fakeIterationService
         },
         {
           provide: UserService,
