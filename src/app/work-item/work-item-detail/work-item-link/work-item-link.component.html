@@ -16,13 +16,13 @@
           Total Links
         </span>
       </li>
-      <li class="link-header-nav" *ngFor="let linkType of workItem.relationalData.linkDicts"
+      <li class="link-header-nav" *ngFor="let linkType of workItem.relationalData.linkDicts; let totalLink = index"
       [class.selected-tab]="selectedTab === linkType.linkName"
       (click)="selectTab(linkType.linkName)">
-        <span>
+        <span id="linktotal_{{totalLink}}">
           {{linkType.count}}
         </span>
-        <span class="link-header-nav-text">
+        <span  class="link-header-nav-text">
           {{linkType.linkName}}
         </span>
         </li>
@@ -34,14 +34,14 @@
       <i class="pficon pficon-add-circle-o add-circle-icon dib"></i>
       <h2 class="col-md-12 col-sm-12 col-xs-12 dib">Work Item Links</h2>
       <p class="col-md-12 col-sm-12 col-xs-12 dib">There are no items linked to this issue</p>
-      <button class="btn btn-primary dib create-link-btn" (click)="toggleLinkView()">Create Link</button>
+      <button class="btn btn-primary dib create-link-btn" (click)="toggleLinkView()" id="create-link-button">Create Link</button>
     </div>
 
     <div *ngIf="workItem.relationalData.totalLinkCount || showLinkView" class="col-md-12 col-sm-12 col-xs-12">
       <div *ngIf="loggedIn">
         <div class="link-item-hdr" (click)="toggleLinkCreator()">
           <i class="pficon pficon-close pull-right font16"></i>
-          <p *ngIf="workItem">This item, {{ workItem.attributes['system.title'] }}</p>
+          <p  *ngIf="workItem" id="link_item_title">This item, {{ workItem.attributes['system.title'] }}</p>
         </div>
         <div *ngIf="showLinkCreator" class="link-editor" id="wi-link-editor">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -98,7 +98,7 @@
                       type="button"
                       value="Link"
                       class="col-md-12 col-sm-12 col-xs-12 btn btn-primary"
-                      (click)="createLink($event)">
+                      (click)="createLink($event)" id="bind-link">
                       Link
                     </button>
                 </div>
@@ -108,7 +108,7 @@
       <div class="link-list-wrap" *ngIf="workItem.relationalData.linkDicts.length">
         <h4 class="link-list-header">Links</h4>
         <div *ngFor='let linkDict of selectedTab |
-            workItemLinkFilterByTypeName:workItem.relationalData.linkDicts'>
+            workItemLinkFilterByTypeName:workItem.relationalData.linkDicts;  let counterlink = index'>
           <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding link-list-type-header">{{linkDict.linkName}}</h4>
           <ul class="col-md-12 col-sm-12 col-xs-12 no-padding">
             <li *ngFor='let link of linkDict.links'
@@ -117,11 +117,11 @@
               <span class="link-title" [id]="link.id + '-text'">
                 {{link.relationalData.source.id == workItem.id ? link.relationalData.target.title : link.relationalData.source.title}}
               </span>
-              <span>
+              <span id="linkSWIstate_{{counterlink}}">
                 {{link.relationalData.source.id == workItem.id ? link.relationalData.target.state : link.relationalData.source.state}}
               </span>
               <a *ngIf="loggedIn" (click)="deleteLink($event, link, workItem)">
-                <i class="pull-right pficon pficon-close list-close-icon"></i>
+                <i id="closeLink_{{counterlink}}" class="pull-right pficon pficon-close list-close-icon"></i>
               </a>
             </li>
           </ul>

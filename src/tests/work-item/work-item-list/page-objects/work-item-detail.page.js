@@ -444,6 +444,52 @@ class WorkItemDetailPage {
   linkItemTotalCount  (){
     return element(by.id('wi-link-total'));
   }
+  get createLinkButton (){
+    return element(by.id("create-link-button"));
+  }
+  clickCreateLinkButton (){
+    return this.createLinkButton.click();
+  }
+  get checkLinkDropDown (){
+    return element(by.id("wi-link-type"));
+  }
+  clickLinkDropDown (){
+    return element(by.id("wi-link-type")).click();
+  }
+  linkTypeDropDownListString (typeString) {
+    return element(by.xpath("//*[@id='wi-link-editor']//li[.//text()[contains(.,'" + typeString + "')]]"));
+  }
+  linkSearchDropDownListString (typeString) {
+    return element(by.xpath("//*[@id='wi-link-editor']//li[.//text()[contains(.,'" + typeString + "')]]"));
+  }
+  clickSearchLinkItemTextBox  (){
+    return element(by.id("workitem-link-search")).click();
+  }
+  get searchLinkItemTextBox  (){
+    return element(by.id("workitem-link-search")).click();
+  }
+  setSearchLinkItem (searchValue){
+    this.searchLinkItemTextBox.sendKeys(searchValue);
+    return this.linkSearchDropDownListString(searchValue).click();
+  }
+  clickOnLinkBind (){
+    return element(by.id("bind-link")).click();
+  }
+  linkTitle (){
+    return element(by.css(".link-title")).getText();
+  }
+  linkState (index){
+    return element(by.id("linkSWIstate_" + index)).getText();
+  }
+  linkclose (index){
+    return element(by.id("closeLink_" + index));
+  }
+  linkTotalByTypes (index){
+    return element(by.id("linktotal_" + index)).getText();
+  }
+  linkItemTitle (){
+    return element(by.id("link_item_title")).getText();
+  }
 }
 
 module.exports = WorkItemDetailPage;
