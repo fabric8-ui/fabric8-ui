@@ -204,6 +204,10 @@ export class MockHttp extends Http {
         case '/iterations':
           var iterations = this.mockDataService.getAllIterations();
           return this.createResponse(url.toString(), 200, 'ok', { data: iterations, 'meta': { 'totalCount': iterations.length} } );
+        case '/source-link-types':
+          return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemLinkTypes() );
+        case '/target-link-types':
+          return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemLinkTypes() );
       }
     };
 

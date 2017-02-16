@@ -32,7 +32,6 @@ import { Dialog } from './../../../shared-component/dialog/dialog';
 
 import { AlmIconModule } from './../../../shared-component/icon/almicon.module';
 import { AlmEditableModule } from './../../../shared-component/editable/almeditable.module';
-import { AlmValidLinkTypes } from './../../../pipes/alm-valid-link-types.pipe';
 import { AuthenticationService } from './../../../auth/authentication.service';
 import { IterationModel } from './../../../models/iteration.model';
 import { IterationService } from './../../../iteration/iteration.service';
@@ -70,7 +69,7 @@ describe('Comment section for the work item detailed view - ', () => {
   let fakeUserService: any;
   let fakeWorkItemTypes: WorkItemType[];
   let fakeWorkItemStates: Object[];
-  let fakeWorkItemLinkTypes: LinkType[];
+  let fakeWorkItemLinkTypes: Object;
 
   beforeEach(() => {
 
@@ -195,7 +194,7 @@ describe('Comment section for the work item detailed view - ', () => {
       }
     ] as Comment[];
 
-    fakeWorkItemLinkTypes = [
+    fakeWorkItemLinkTypes = {'forwardLinks': [
         {
          'id': '4f8d8e8c-ab1c-4396-b725-105aa69a789c',
          'type': 'workitemlinktypes',
@@ -228,8 +227,8 @@ describe('Comment section for the work item detailed view - ', () => {
             }
           }
       }
-    },
-      {
+    }],
+    'backwardLinks': [{
          'id': '9cd02068-d76e-4733-9df8-f18bc39002ee',
          'type': 'workitemlinktypes',
          'attributes': {
@@ -261,7 +260,7 @@ describe('Comment section for the work item detailed view - ', () => {
             }
           }
       }
-    }];
+    }]};
 
 
     fakeAuthService = {
@@ -381,7 +380,6 @@ describe('Comment section for the work item detailed view - ', () => {
         AlmMomentTime,
         AlmSearchHighlight,
         AlmTrim,
-        AlmValidLinkTypes,
         AlmUserName,
         WorkItemCommentComponent,
         WorkItemDetailComponent,

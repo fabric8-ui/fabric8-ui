@@ -32,7 +32,6 @@ import { Dialog } from './../../shared-component/dialog/dialog';
 
 import { AlmIconModule } from './../../shared-component/icon/almicon.module';
 import { AlmEditableModule } from './../../shared-component/editable/almeditable.module';
-import { AlmValidLinkTypes } from './../../pipes/alm-valid-link-types.pipe';
 import { AuthenticationService } from './../../auth/authentication.service';
 import { IterationModel } from './../../models/iteration.model';
 import { IterationService } from './../../iteration/iteration.service';
@@ -67,7 +66,7 @@ describe('Detailed view and edit a selected work item - ', () => {
   let fakeUserService: any;
   let fakeWorkItemTypes: WorkItemType[];
   let fakeWorkItemStates: Object[];
-  let fakeWorkItemLinkTypes: LinkType[];
+  let fakeWorkItemLinkTypes: Object;
 
   beforeEach(() => {
 
@@ -173,7 +172,7 @@ describe('Detailed view and edit a selected work item - ', () => {
       { name: 'system.bug' }
     ] as WorkItemType[];
 
-    fakeWorkItemLinkTypes = [
+    fakeWorkItemLinkTypes = {'forwardLinks': [
         {
          'id': '4f8d8e8c-ab1c-4396-b725-105aa69a789c',
          'type': 'workitemlinktypes',
@@ -206,8 +205,8 @@ describe('Detailed view and edit a selected work item - ', () => {
             }
           }
       }
-    },
-      {
+    }],
+    'backwardLinks': [{
          'id': '9cd02068-d76e-4733-9df8-f18bc39002ee',
          'type': 'workitemlinktypes',
          'attributes': {
@@ -239,7 +238,7 @@ describe('Detailed view and edit a selected work item - ', () => {
             }
           }
       }
-    }];
+    }]};
 
 
     fakeAuthService = {
@@ -359,7 +358,6 @@ describe('Detailed view and edit a selected work item - ', () => {
         AlmMomentTime,
         AlmSearchHighlight,
         AlmTrim,
-        AlmValidLinkTypes,
         AlmUserName,
         WorkItemCommentComponent,
         WorkItemDetailComponent,

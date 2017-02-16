@@ -127,7 +127,9 @@ export class WorkItemMockGenerator {
         },
         'id': 'id' + n,
         'links': {
-          'self': 'http://mock.service/api/workitems/id' + n
+          'self': 'http://mock.service/api/workitems/id' + n,
+          'sourceLinkTypes': 'http://mock.service/api/source-link-types',
+          'targetLinkTypes': 'http://mock.service/api/target-link-types'
         },
         'relationships': {
           'assignees': { },
