@@ -13,25 +13,26 @@
   font-size: rem(12);
   height: 100%;
   .addWorkItem{
-    padding:em(20);
-    h4{
-      margin:em(3) 0;
-      padding: 0 em(20);
+    padding: em(18);
+    font-size: rem(14);
+    color: $navbar-pf-border-color;
+    .quick-add-label {
+      padding-left: em(5);
     }
     .workItemQuickAdd_saveBtn{
-      vertical-align: top;
       display: inline-block;
       margin:0;
       &:hover{
         text-decoration: none;
       }
-      i{
-        font-size: em(24);
-      }
+
     }
-    i,h4{
+    i {
+      color: $navbar-pf-border-color;
       display: inline-block;
-      color:$color-pf-black-600;
+      &:hover {
+        color: $navbar-pf-border-color;
+      }
     }
   }
   .addWorkItemBlk {
@@ -43,30 +44,32 @@
       float: left;
       position: relative;
       i{
-        position: absolute;
-        font-size:em(18);
-        top:50%;
-        @include transform(translateY(-50%));
+        font-size:em(14);
       }
     }
     .workItemQuickAdd_story{
       padding-left:em(24);
-      padding-right: em(36);
+      padding-right: em(48);
     }
     .workItemQuickAdd_AddBlk{
       position: absolute;
       top: 50%;
       @include transform(translateY(-50%));
       right: em(9);
-      width: em(36);
       .workItemQuickAdd_Add{
         text-align: right;
         font-size: em(14);
+        min-width: 30px;
+        height: 27px;
+        padding: 5px;
         i{
           font-size: em(14);
         }
       }
       .closeQuickAdd{
+        min-width: 30px;
+        margin-left: 5px;
+        padding: 5px;
         i{
           font-size: em(16);
         }
@@ -77,7 +80,7 @@
       text-decoration: none;
     }
     .icon-btn {
-      color: $color-pf-blue-400;
+      color: $color-pf-black-900;
       cursor: pointer;
     }
     .icon-btn-disabled{
