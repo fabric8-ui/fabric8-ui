@@ -143,9 +143,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnChanges {
     this.iteration.attributes.startAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T00:00:00Z';
     // console.log(this.iteration.attributes.startAt);
 
-    this.endDatePickerOptions = {
-      disableUntil: event.date
-    }
+    let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
+    endDatePickerComponentCopy['disableUntil'] = event.date;
+    this.endDatePickerOptions = endDatePickerComponentCopy;
 
     // Set default end date in a week
     let inaweek = moment(event.jsdate).add(7, 'd');
