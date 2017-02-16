@@ -5,14 +5,15 @@ import { DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, NgForm } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
-
-import { DataTableModule } from 'angular2-datatable';
 import { ModalModule } from 'ngx-modal';
+import { DataTableModule } from 'angular2-datatable';
 import { AuthenticationService } from 'ngx-login-client';
-import { ContainerTogglerModule } from 'ngx-widgets';
-
-import { Stack } from '../../../models/stack';
+import { Stack } from './../../../models/stack';
 import { StackRecommendationModule } from '../stack-recommendation/stack-recommendation.module';
+import
+  { ContainerTogglerModule }
+from '../../../shared-component/container-toggler/container-toggler.module';
+
 import { StackDetailsComponent } from './stack-details.component';
 
 describe('StackDetailsComponent', () => {
