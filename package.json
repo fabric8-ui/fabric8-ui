@@ -1,8 +1,8 @@
 {
   "name": "ngx-widgets",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A collection of Angular components and other useful things to be shared.",
-  "main": "bundles/widgets.umd.js",
+  "main": "bundles/ngx-widgets.umd.js",
   "module": "index.js",
   "typings": "index.d.ts",
   "scripts": {
@@ -12,7 +12,7 @@
     "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist",
     "cleanup": "rimraf dist/package.json dist/bundles dist/src dist/index.d.ts dist/index.metadata.json dist/index.js dist/index.js.map dist/LICENSE dist/README.md",
     "copy-files": "copyfiles LICENSE README.md package.json dist",
-    "minify": "uglifyjs dist/bundles/widgets.umd.js --screw-ie8 --compress --mangle --comments --output dist/bundles/widgets.umd.min.js",
+    "minify": "uglifyjs dist/bundles/ngx-widgets.umd.js --screw-ie8 --compress --mangle --comments --output dist/bundles/ngx-widgets.umd.min.js",
     "reinstall": "npm run clean && npm install",
     "remove-dist": "rimraf dist",
     "rimraf": "rimraf",

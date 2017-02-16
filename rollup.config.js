@@ -1,6 +1,6 @@
 export default {
   entry: 'dist/index.js',
-  dest: 'dist/bundles/widgets.umd.js',
+  dest: 'dist/bundles/ngx-widgets.umd.js',
   sourceMap: false,
   format: 'umd',
   moduleName: 'ngx.widgets',
