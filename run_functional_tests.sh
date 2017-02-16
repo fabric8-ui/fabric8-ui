@@ -32,6 +32,8 @@ echo done.
 # Finally run protractor
 echo Running tests...
 node_modules/protractor/bin/protractor protractor.config.js
+## Run functional tests on the bases of suite genere!  ##
+#node_modules/protractor/bin/protractor protractor.config.js --suite $1 //This line has been commented for now! 
 TEST_RESULT=$?
 
 # Cleanup webdriver-manager and web app processes
