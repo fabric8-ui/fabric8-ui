@@ -9,23 +9,34 @@ const helpers = require('./config/helpers'),
 /**
  * Webpack Plugins
  */
+const AssetsPlugin = require('assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
-// const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
+const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
+const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
+const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlElementsPlugin = require('./config/html-elements-plugin');
+const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
+// const ngcWebpack = require('ngc-webpack');
+const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
+const OptimizeJsPlugin = require('optimize-js-plugin');
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+
 
 module.exports = {
   devtool: 'inline-source-map',
 
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js', '.json']
   },
 
-  entry: helpers.root('dist/index.js'),
+  entry: helpers.root('index.ts'),
 
   output: {
     path: helpers.root('dist'),
@@ -43,63 +54,136 @@ module.exports = {
       {
         enforce: 'pre',
         test: /\.ts$/,
-        loader: 'tslint-loader',
+        use: 'tslint-loader',
         exclude: [helpers.root('node_modules')]
       },
       {
         test: /\.ts$/,
-        loader: 'awesome-typescript-loader',
-        options: {
-          declaration: false
-        },
+        use: [
+          {
+            loader: 'awesome-typescript-loader',
+            options: {
+              declaration: false
+            },
+          },
+          {
+            loader: 'angular2-template-loader'
+          }
+        ],
         exclude: [/\.spec\.ts$/]
       },
       // copy those assets to output
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'file-loader?name=fonts/[name].[hash].[ext]?'
+        use: 'file-loader?name=fonts/[name].[hash].[ext]?'
       },
 
       // Support for *.json files.
-      {test: /\.json$/, loader: 'json-loader'},
+      {
+        test: /\.json$/,
+        use: 'json-loader'
+      },
 
+      {
+        test: /\.css$/,
+        loaders: ['to-string-loader', 'css-loader']
+      },
+
+      {
+        test: /\.scss$/,
+        loaders: ["css-to-string-loader", "css-loader", "sass-loader"]
+      },
       // Support for CSS as raw text
       // use 'null' loader in test mode (https://github.com/webpack/null-loader)
       // all css in src/style will be bundled in an external css file
-      {
-        test: /\.css$/,
-        exclude: helpers.root('src', 'app'),
-        loader: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: ['css-loader', 'postcss-loader']})
-      },
-      // all css required in src/app files will be merged in js files
-      {test: /\.css$/, include: helpers.root('src', 'app'), loader: 'raw-loader!postcss-loader'},
-
-      // support for .scss files
-      // use 'null' loader in test mode (https://github.com/webpack/null-loader)
-      // all css in src/style will be bundled in an external css file
-      {
-        test: /\.(scss|sass)$/,
-        exclude: helpers.root('src', 'app'),
-        loader: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: ['css-loader', 'postcss-loader', 'sass-loader']})
-      },
-      // all css required in src/app files will be merged in js files
-      {test: /\.(scss|sass)$/, exclude: helpers.root('src', 'style'), loader: 'raw-loader!postcss-loader!sass-loader'},
+      // {
+      //   test: /\.css$/,
+      //   exclude: helpers.root('src', 'app'),
+      //   use: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: ['css-loader', 'postcss-loader']})
+      // },
+      // // all css required in src/app files will be merged in js files
+      // {test: /\.css$/, include: helpers.root('src', 'app'), loader: 'raw-loader!postcss-loader'},
+      //
+      // // support for .scss files
+      // // use 'null' loader in test mode (https://github.com/webpack/null-loader)
+      // // all css in src/style will be bundled in an external css file
+      // {
+      //   test: /\.(scss|sass)$/,
+      //   exclude: helpers.root('src', 'app'),
+      //   use: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: ['css-loader', 'postcss-loader', 'sass-loader']})
+      // },
+      // // all css required in src/app files will be merged in js files
+      // {
+      //   test: /\.(scss|sass)$/,
+      //   exclude: helpers.root('src', 'style'),
+      //   use: 'raw-loader!postcss-loader!sass-loader'
+      // },
 
       // support for .html as raw text
       // todo: change the loader to something that adds a hash to images
-      {test: /\.html$/, loader: 'raw-loader',  exclude: helpers.root('src', 'public')}
+      {
+        test: /\.html$/,
+        use: 'raw-loader'
+      }
     ]
   },
 
   plugins: [
-    // fix the warning in ./~/@angular/core/src/linker/system_js_ng_module_factory_loader.js
+    /**
+     * Plugin: ContextReplacementPlugin
+     * Description: Provides context to Angular's use of System.import
+     *
+     * See: https://webpack.github.io/docs/list-of-plugins.html#contextreplacementplugin
+     * See: https://github.com/angular/angular/issues/11580
+     */
     new webpack.ContextReplacementPlugin(
+      // The (\\|\/) piece accounts for path separators in *nix and Windows
       /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
       helpers.root('./src')
     ),
 
+    /**
+     * Webpack plugin to optimize a JavaScript file for faster initial load
+     * by wrapping eagerly-invoked functions.
+     *
+     * See: https://github.com/vigneshshanmugam/optimize-js-plugin
+     */
+
+    new OptimizeJsPlugin({
+      sourceMap: false
+    }),
+
+    new HtmlWebpackPlugin(),
+
+    /**
+     * Plugin: ExtractTextPlugin
+     * Description: Extracts imported CSS files into external stylesheet
+     *
+     * See: https://github.com/webpack/extract-text-webpack-plugin
+     */
+    // new ExtractTextPlugin('[name].[contenthash].css'),
+    new ExtractTextPlugin('[name].css'),
+
     new webpack.LoaderOptionsPlugin({
       options: {
+        /**
+         * Html loader advanced options
+         *
+         * See: https://github.com/webpack/html-loader#advanced-options
+         */
+        // TODO: Need to workaround Angular 2's html syntax => #id [bind] (event) *ngFor
+        htmlLoader: {
+          minimize: true,
+          removeAttributeQuotes: false,
+          caseSensitive: true,
+          customAttrSurround: [
+            [/#/, /(?:)/],
+            [/\*/, /(?:)/],
+            [/\[?\(?/, /(?:)/]
+          ],
+          customAttrAssign: [/\)?\]?=/]
+        },
+
         tslintLoader: {
           emitErrors: false,
           failOnHint: false
@@ -114,10 +198,9 @@ module.exports = {
         }
       }
     }),
-
     // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin
     // Only emit files when there are no errors
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
 
     // // Reference: http://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
     // // Dedupe modules in the output

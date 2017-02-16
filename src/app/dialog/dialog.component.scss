@@ -1,12 +1,12 @@
-@import "../../../assets/stylesheets/color-variables";
-@import "../../../assets/stylesheets/mixins";
+//@import "../../../assets/stylesheets/color-variables";
+//@import "../../../assets/stylesheets/mixins";
 .modal-footer{
     .btn{
         &:hover{
-            background-color: $color-pf-light-blue-500;
-            @include gradient-vertical($color-pf-blue-300, $color-pf-blue-400);
-            border-color: $color-pf-blue-500;
-            color: $color-pf-white;
+            background-color: lightblue;//$color-pf-light-blue-500;
+            //@include gradient-vertical($color-pf-blue-300, $color-pf-blue-400);
+            border-color: blue;//$color-pf-blue-500;
+            color: white;//$color-pf-white;
         }
     }
         
