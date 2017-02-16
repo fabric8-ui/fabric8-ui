@@ -50,7 +50,6 @@ export class WorkItemService {
   private userIdMap = {};
   private workItemIdIndexMap = {};
   private prevFilters: any = [];
-  private linkTypes: LinkType[] = [];
   private iterations: IterationModel[] = [];
 
   private spaceSubscription: Subscription = null;
@@ -779,18 +778,28 @@ export class WorkItemService {
    *
    * @return Promise of LinkType[]
    */
-  getLinkTypes(): Promise<LinkType[]> {
-    if (this.linkTypes.length){
-      return new Promise( (resolve, reject) => {
-        resolve(this.linkTypes);
-      });
-    } else {
-      return this.http
-        .get(this.linkTypesUrl, {headers: this.headers})
+  getLinkTypes(workItem: WorkItem): Promise<Object> {
+    console.log(workItem);
+    return new Promise((resolve) => {
+      let linkTypes: Object = {};
+      this.http
+        .get(workItem.links.sourceLinkTypes, {headers: this.headers})
         .toPromise()
         .then(response => {
-          this.linkTypes = response.json().data as LinkType[];
-          return this.linkTypes;
+          linkTypes['forwardLinks'] = response.json().data as LinkType[];
+          this.http
+            .get(workItem.links.targetLinkTypes, {headers: this.headers})
+            .toPromise()
+            .then(response => {
+              linkTypes['backwardLinks'] = response.json().data as LinkType[];
+              resolve(linkTypes);
+            }).catch ((e) => {
+              if (e.status === 401) {
+                this.auth.logout(true);
+              } else {
+                this.handleError(e);
+              }
+            });
         }).catch ((e) => {
           if (e.status === 401) {
             this.auth.logout(true);
@@ -798,7 +807,7 @@ export class WorkItemService {
             this.handleError(e);
           }
         });
-    }
+    });
   }
 
   /**
@@ -950,13 +959,19 @@ export class WorkItemService {
       });
   }
 
-  searchLinkWorkItem(term: string): Promise<WorkItem[]> {
-    let searchUrl = this.baseSearchUrl + term;
-    return this.http
-      .get(searchUrl)
-      .toPromise()
-      .then((response) => response.json().data as WorkItem[])
-      .catch(this.handleError);
+  searchLinkWorkItem(term: string, workItemType: string): Promise<WorkItem[]> {
+     let searchUrl = process.env.API_URL + 'search?q=' + term + ' type:' + workItemType;
+     return this.http
+        .get(searchUrl)
+        .toPromise()
+        .then((response) => response.json().data as WorkItem[])
+        .catch ((e) => {
+          if (e.status === 401) {
+            this.auth.logout(true);
+          } else {
+            this.handleError(e);
+          }
+        });
   }
 
   /**

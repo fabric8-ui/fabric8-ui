@@ -22,8 +22,7 @@ import { WorkItemLinkComponent } from './work-item-link/work-item-link.component
 import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.component';
 import {
   WorkItemLinkFilterByTypeName,
-  WorkItemLinkTypeFilterByTypeName,
-  AlmValidLinkTypes
+  WorkItemLinkTypeFilterByTypeName
 } from './work-item-detail-pipes/work-item-link-filters.pipe';
 
 
@@ -45,7 +44,6 @@ import {
     AlmSearchHighlight,
     AlmTrim,
     AlmUserName,
-    AlmValidLinkTypes,
     WorkItemCommentComponent,
     WorkItemDetailComponent,
     WorkItemLinkComponent,

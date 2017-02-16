@@ -50,10 +50,10 @@
                   id="wi-link-type"
                   type="button"
                   class="btn dropdown-toggle col-md-12 col-sm-12 col-xs-12 btn-default">
-                  <span *ngIf="!selectedLinkType && (workItem.relationships.baseType.data.id | almValidLinkTypes:linkTypes).length" class='dropdown-text'>
+                  <span *ngIf="!selectedLinkType && linkTypes.length" class='dropdown-text'>
                     Select a link type
                   </span>
-                  <span *ngIf="!(workItem.relationships.baseType.data.id | almValidLinkTypes:linkTypes).length" class='dropdown-text'>
+                  <span *ngIf="!linkTypes.length" class='dropdown-text'>
                     No link type available
                   </span>
                   <span *ngIf="selectedLinkType" class='dropdown-text'>
@@ -61,12 +61,10 @@
                   </span>
                   <span *ngIf="loggedIn" class="caret pull-right marginT5"></span>
                 </button>
-                <ul *ngIf="(workItem.relationships.baseType.data.id | almValidLinkTypes:linkTypes).length"
+                <ul *ngIf="linkTypes.length"
                   class="dropdown-menu dropdown-ul link-dropdown" role="menu">
                   <li *ngFor="let linkType of selectedTab |
-                    workItemLinkTypeFilterByTypeName:(
-                      workItem.relationships.baseType.data.id |
-                        almValidLinkTypes:linkTypes)">
+                    workItemLinkTypeFilterByTypeName:(linkTypes)">
                     <a (click)="onSelectRelation(linkType)">{{linkType.name}}</a>
                   </li>
                 </ul>

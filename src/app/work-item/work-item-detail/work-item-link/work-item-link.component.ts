@@ -23,7 +23,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
   @ViewChild('searchBox') searchBox: any;
   @ViewChild('searchResultList') searchResultList: any;
 
-  linkTypes : LinkType[] = [];
+  linkTypes : any[] = [];
   link: Object;
   selectedWorkItem: Object = {};
   selectedLinkType: any = false;
@@ -105,20 +105,8 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
     this.searchWorkItems = [];
     this.selectedWorkItemId = null;
     this.selectedLinkType = relation;
-    this.setSearchAllowedType();
+    this.searchAllowedType = relation.wiType;
     this.setSearchNotAllowedIds();
-  }
-
-  setSearchAllowedType(): void {
-    let selectedLinkType = this.linkTypes.find((item) => item.id == this.selectedLinkType.linkId);
-    if (selectedLinkType) {
-      if (this.selectedLinkType.linkType === 'forward') {
-        this.searchAllowedType = selectedLinkType.relationships.target_type.data.id;
-      } else {
-        this.searchAllowedType = selectedLinkType.relationships.source_type.data.id;
-      }
-      console.log('Your search results will only have ' + this.searchAllowedType);
-    }
   }
 
   setSearchNotAllowedIds(): void {
@@ -170,11 +158,32 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
 
   loadLinkTypes(): void {
     this.workItemService
-    .getLinkTypes()
-      .then((linkTypes: LinkType[]) => {
-        this.linkTypes = cloneDeep(linkTypes)
+    .getLinkTypes(this.workItem)
+      .then((linkTypes: Object) => {
+        this.formatLinkTypes(linkTypes);
+        // this.linkTypes = cloneDeep(linkTypes)
       })
       .catch ((e) => console.log(e));
+  }
+
+  formatLinkTypes(linkTypes: any): void {
+    this.linkTypes = [];
+    linkTypes.forwardLinks.forEach((linkType: LinkType) => {
+      this.linkTypes.push({
+          name: linkType.attributes['forward_name'],
+          linkId: linkType.id,
+          linkType: 'forward',
+          wiType: linkType.relationships.target_type.data.id
+        });
+    });
+    linkTypes.backwardLinks.forEach((linkType: LinkType) => {
+      this.linkTypes.push({
+          name: linkType.attributes['reverse_name'],
+          linkId: linkType.id,
+          linkType: 'reverse',
+          wiType: linkType.relationships.source_type.data.id
+        });
+    });
   }
 
   toggleLinkComponent(onlyOpen: Boolean = false): void{
@@ -253,11 +262,10 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
       if (term.trim() != "") {
       // Search on atleast 3 char or numeric
         if (term.length >= 3 || !isNaN(term)) {
-          this.workItemService.searchLinkWorkItem(term)
+          this.workItemService.searchLinkWorkItem(term, this.searchAllowedType)
             .then((searchData: WorkItem[]) =>{
               this.searchWorkItems = searchData.filter((item) => {
-                return item.relationships.baseType.data.id == this.searchAllowedType
-                  && this.searchNotAllowedIds.indexOf(item.id) == -1;
+                return this.searchNotAllowedIds.indexOf(item.id) == -1;
                 });
             });
         }

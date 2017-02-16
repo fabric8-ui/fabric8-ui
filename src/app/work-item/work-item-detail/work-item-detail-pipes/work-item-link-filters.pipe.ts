@@ -24,28 +24,3 @@ export class WorkItemLinkTypeFilterByTypeName implements PipeTransform {
     return arr;
   }
 }
-
-// tslint:disable-next-line:use-pipe-transform-interface
-@Pipe({ name: 'almValidLinkTypes', pure: true })
-export class AlmValidLinkTypes implements PipeTransform {
-  transform(workItemType: string, arr: any[]): any {
-    let opLinkTypes: any[] = [];
-    arr.forEach((item) => {
-      if (item.relationships.source_type.data.id == workItemType) {
-        opLinkTypes.push({
-          name: item.attributes['forward_name'],
-          linkId: item.id,
-          linkType: 'forward'
-        });
-      }
-      if (item.relationships.target_type.data.id == workItemType){
-        opLinkTypes.push({
-          name: item.attributes['reverse_name'],
-          linkId: item.id,
-          linkType: 'reverse'
-        });
-      }
-    });
-    return opLinkTypes;
-  }
-}

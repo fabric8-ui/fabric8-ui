@@ -9,6 +9,11 @@ export class WorkItem {
   relationships: WorkItemRelations;
   type: string;
   relationalData?: RelationalData;
+  links: {
+    self: string;
+    sourceLinkTypes: string;
+    targetLinkTypes: string;
+  };
 }
 
 export class WorkItemAttributes {
