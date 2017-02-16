@@ -49,6 +49,8 @@ import { WorkItemCommentComponent } from './../work-item-comment/work-item-comme
 import { WorkItemDetailComponent } from './../work-item-detail.component';
 import { WorkItemLinkTypeFilterByTypeName, WorkItemLinkFilterByTypeName } from './../work-item-detail-pipes/work-item-link-filters.pipe';
 
+import { CollapseModule } from 'ng2-bootstrap/components/collapse';
+
 describe('Comment section for the work item detailed view - ', () => {
   let comp: WorkItemDetailComponent;
   let fixture: ComponentFixture<WorkItemDetailComponent>;
@@ -364,6 +366,7 @@ describe('Comment section for the work item detailed view - ', () => {
         RouterTestingModule.withRoutes([
           { path: 'work-item/list/detail/1', component: WorkItemDetailComponent }
         ]),
+        CollapseModule,
         CommonModule,
         TooltipModule,
         DropdownModule,

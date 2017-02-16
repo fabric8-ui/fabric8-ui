@@ -2,65 +2,86 @@
 @import "../../../../assets/stylesheets/mixins";
 @import "../../../../assets/stylesheets/color-variables";
 
-.comment-content{
-    width: $width100;
-    float: left;
-    padding: em(20) 0;
-    > div{
-        padding: 0;
+.comment-content {
+  width: $width100;
+  float: left;
+  padding: em(20) 0;
+  > div{
+      padding: 0;
+  }
+  .wi-comment-panel {
+    border-left: none;
+    border-right: none;
+    .panel-heading{
+      border: none;
     }
-    #wi-comment-add-comment {
-        /* Overrides pf's form-control style's height property */
-        /* The min-height is needed to avoid zero-height element */
-        /* The min-height is same as form-control's default height */
+    .wi-comment-input{
+      padding: em(20);
+      border-top: em(1) solid $color-pf-black-300;
+      #wi-comment-add-comment {
+      /* Overrides pf's form-control style's height property */
+      /* The min-height is needed to avoid zero-height element */
+      /* The min-height is same as form-control's default height */
         height: auto;
-        min-height: 26px;
-
+        min-height: em(26);
+        margin-bottom: 0;
         /* Helper class, should be moved out when almEditable is extended to support placeholders */
         &.placeholder {
-            color: $color-pf-black-400;
+            color: $color-pf-black-300;
             font-style: italic;
         }
+      }
     }
-    .comments-wrap {
-        width: $width100;
-        float: left;
-        border-bottom: 1px solid $color-pf-black-200;
-        margin-top: em(15);
-            &:last-child{
-                 border-bottom: none;
-            }
-        > div{
-            width: $width100;
-            float: left;
-            .createTimeBlock{
-                width: em(144);
-            }
-            .comment-body{
-                padding-left: em(36);
-                padding-right: em(150);
-                h5{
-                    margin-top: em(5);
+    .panel-body {
+      padding: 0;
+    }
+  }
+
+  .comments-wrap {
+    width: $width100;
+    float: left;
+    border-top: 1px solid $color-pf-black-200;
+    padding: em(20);
+    .comment-body {
+      padding-left: em(36);
+      h5 {
+          margin-top: em(0);
+          margin-bottom: em(5);
+      }
+      .createTimeBlock {
+        line-height: 1;
+      }
+      p {
+        margin: 0;
+      }
+    }
+    > p {
+      padding: 0;
+    }
+  }
+}
+@media (max-width: $screen-md-min) {
+    .comment-content {
+        .comments-wrap {
+            > div {
+                .comment-body {
+                    padding-left: em(36);
                 }
             }
         }
-    }
-    .comments-wrap > p{
-        padding: 0;
     }
 }
-@media (max-width: $screen-md-min){
-    .comment-content{
-        .comments-wrap{
-            > div{
-                .createTimeBlock{
-                    width: em(78);
-                }
-                .comment-body{
-                    padding-left: em(36);
-                    padding-right: em(84);
-                }
-            }
+@media (max-width: $screen-sm-min) {
+  .comment-content {
+    .comments-wrap {
+      > div {
+        .comment-body {
+          .createTimeBlock {
+            width: 7em;
+            line-height: 1.5;
+          }
         }
+      }
     }
+  }
 }

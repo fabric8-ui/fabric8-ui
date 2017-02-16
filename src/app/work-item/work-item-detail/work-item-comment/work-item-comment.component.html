@@ -1,37 +1,57 @@
-<div *ngIf="workItem" class="col-md-12 col-sm-12 col-xs-12" id="wi-comment">
+<div *ngIf="workItem" class="col-md-12 col-sm-12 col-xs-12 no-padding" id="wi-comment">
     <div class="comment-content" id="wi-comment-content">
         <!-- Refactoring needed to toogle view -->
         <div class="col-md-12 col-sm-12 col-xs-12" *ngIf="true">
-            <div *ngIf="loggedIn" class="">
-                <p almEditable id="wi-comment-add-comment" class="form-control placeholder width100"
-                    (focus)="resetCommentDraft($event)" (blur)="resetCommentDraft($event)"
-                    (keydown.enter)="createComment($event)" (keyup.enter)="preventDef($event)"
-                    data-placeholder="Add a new comment..." #comment></p>
-            </div>
-            <div *ngFor='let comment of workItem.relationalData?.comments?.slice(); let counter = index' class="comments-wrap">
-                <div>
-                    <div class="user-avatar pull-left">
-                        <img id="{{'comment_avatar_' + counter}}"
-                        class="user-assign-avatar pull-left"
-                        tooltipPlacement="right"
-                        tooltip="{{comment.relationalData.creator?.attributes?.fullName}}"
-                        *ngIf="comment.relationalData.creator?.attributes?.imageURL" 
-                        [src]="comment.relationalData.creator?.attributes?.imageURL | almAvatarSize:30"
-                        />
-                    </div>
-                    <small class="pull-right createTimeBlock" id="{{'comment_time_' + counter}}">
-                        {{comment.attributes['created-at'] | date:'medium'}}
-                    </small>
-                    <div class="comment-body">
-                        <h5 class="col-md-12 col-sm-12 col-xs-12 no-padding truncate">
-                            <strong id="{{'comment_username_' + counter}}">
-                                {{comment.relationalData?.creator?.attributes?.fullName}}
-                            </strong>
-                        </h5>
-                    </div>
+          <div class="panel panel-default wi-comment-panel" >
+              <div class="panel-heading">
+                <h3 class="panel-title" (click)="isCollapsedComments = !isCollapsedComments">
+                  <i class="fa fa-icon"
+                    [ngClass]="{'fa-angle-right': isCollapsedComments,
+                        'fa-angle-down': !isCollapsedComments}"></i>
+                  Comments
+                </h3>
+              </div>
+              <div [collapse]="isCollapsedComments">
+                <div class="panel-body" >
+                  <div *ngIf="loggedIn" class="wi-comment-input">
+                      <p almEditable id="wi-comment-add-comment" class="form-control placeholder width100"
+                          (focus)="resetCommentDraft($event)" (blur)="resetCommentDraft($event)"
+                          (keydown.enter)="createComment($event)" (keyup.enter)="preventDef($event)"
+                          data-placeholder="Add a new comment..." #comment></p>
+                  </div>
+                  <div *ngFor='let comment of workItem.relationalData?.comments?.slice(); let counter = index' class="comments-wrap">
+                      <div>
+                          <div class="user-avatar pull-left">
+                              <img id="{{'comment_avatar_' + counter}}"
+                              class="user-assign-avatar pull-left"
+                              tooltipPlacement="right"
+                              tooltip="{{comment.relationalData.creator?.attributes?.fullName}}"
+                              *ngIf="comment.relationalData.creator?.attributes?.imageURL"
+                              [src]="comment.relationalData.creator?.attributes?.imageURL | almAvatarSize:30"
+                              />
+                          </div>
+                          <div class="comment-body">
+                            <small class="pull-right createTimeBlock" id="{{'comment_time_' + counter}}">
+                                {{comment.attributes['created-at'] | date:'medium'}}
+                            </small>
+                              <h5 class="col-md-6 col-sm-6 col-xs-8 no-padding truncate">
+                                  <strong id="{{'comment_username_' + counter}}">
+                                      {{comment.relationalData?.creator?.attributes?.fullName}}
+                                  </strong>
+                              </h5>
+                               <p class="col-md-12 col-xs-12 col-sm-12 no-padding" id="{{'comment_body_' + counter}}">{{comment.attributes.body}}</p>
+                          </div>
+                      </div>
+                      </div>
                 </div>
-                <p class="col-md-12 col-xs-12 col-sm-12" id="{{'comment_body_' + counter}}">{{comment.attributes.body}}</p>
-            </div>     
+                <div class="panel-footer">
+                  <span>View more comments</span>
+                  <p class="pull-right">
+                    <span>5 </span> of <span>20</span>
+                  </p>
+                </div>
+              </div>
+          </div>
         </div>
     </div>
 </div>

@@ -8,7 +8,6 @@ import { UserService } from '../../../user/user.service';
 import { WorkItem } from '../../../models/work-item';
 import { WorkItemService } from '../../work-item.service';
 
-
 @Component({
     selector: 'alm-work-item-comment',
     templateUrl: './work-item-comment.component.html',
@@ -19,6 +18,7 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
     @Input() loggedIn: Boolean;
     comment: Comment;
     users: User[];
+    isCollapsedComments: Boolean = false;
 
     constructor(
         private workItemService: WorkItemService,

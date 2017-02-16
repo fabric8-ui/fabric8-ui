@@ -1,6 +1,7 @@
 import { AlmUserName } from './../../pipes/alm-user-name.pipe';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CollapseModule } from 'ng2-bootstrap/components/collapse';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'ng2-dropdown';
 import { Ng2CompleterModule } from 'ng2-completer';
@@ -31,6 +32,7 @@ import {
     AlmIconModule,
     AlmEditableModule,
     CommonModule,
+    CollapseModule,
     DropdownModule,
     FormsModule,
     TooltipModule,

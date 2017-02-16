@@ -36,7 +36,7 @@ module.exports = function (config) {
     webpackServer: {
       noInfo: true
     },
-    
+
     // Possible values - 'progress'
     reporters: ['kjhtml', 'coverage', 'mocha'],
     port: 9876,
