@@ -28,4 +28,8 @@ export class StackRecommendationComponent {
     this.customEvent.emit(row);
   }
 
+  eventChangeHandler(row: any): void {
+    this.customEvent.emit(row);
+  }
+
 }

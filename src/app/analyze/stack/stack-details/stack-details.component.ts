@@ -42,6 +42,10 @@ export class StackDetailsComponent implements OnInit {
 
   similarStacks: Array<any> = [];
 
+  workItemData: any = {};
+  multilpeActionData: any = {};
+  multiRecommendMsg: string = '';
+
   public recommendationForm = this.fb.group({
     row: ["[{name: 'Sample1', version: '0.1.1', custom: '{name: 'Add'}'}]"]
   });
@@ -160,10 +164,9 @@ export class StackDetailsComponent implements OnInit {
   }
 
   /* Modal */
-
-  /* Adding Single Work item */
-  private addWorkItem(row: any): void {
-    let workItemData: any = {
+  
+  private getWorkItemData(): any {
+    this.workItemData = {
       'data': {
         'attributes': {
           'system.state': 'new',
@@ -180,6 +183,12 @@ export class StackDetailsComponent implements OnInit {
         'type': 'workitems', 'id': '55'
       }
     };
+    return this.workItemData;
+  }
+
+  /* Adding Single Work item */
+  private addWorkItem(row: any): void {
+    let workItemData: any = this.getWorkItemData();
 
     workItemData.data.attributes['system.title']
      = row.custom.name + ' ' + row.name + ' ' + row.version;
@@ -190,11 +199,24 @@ export class StackDetailsComponent implements OnInit {
       this.openModal({
         header: 'Response for Work item',
         subject: `Successfully created a work item. 
-                  You can see it here! <a target="_blank" href="' + baseUrl + '">Link</a>`
+                  You can see it here! <a target="_blank" href=" ${baseUrl} ">Link</a>`
       });
     });
   }
   /* Adding Single Work item */
+  private addSelectedItem(row: any): void {
+    if (row.name in this.multilpeActionData) {
+        delete this.multilpeActionData[row.name];
+    } else {
+      this.multilpeActionData[row.name] = row;
+    }
+  }
+
+  /* get selected item */
+
+
+
+  /* get selected item */
 
   /* Get Recommendation */
   private getRecommendations(components: any, recommendation: any): void {
@@ -372,10 +394,26 @@ export class StackDetailsComponent implements OnInit {
     --this.currentIndex;
   }
 
+  // make workitem api call with multiple recommendation //
+  private multipleRecoWorkItem(rows: any) {
+    let workItemData: any = this.getWorkItemData();
+
+    for(let row in rows) {
+     workItemData.data.attributes['system.title'] += rows[row].custom.name + ' '
+     + rows[row].name + ' ' + rows[row].version;
+    }
+    debugger;
+    let workflow: Observable<any> = this.addWorkFlowService.addWorkFlow(workItemData);
+    workflow.subscribe((data) => {
+      let baseUrl: string = 'http://demo.almighty.io/work-item/list/detail/' + data.data.id;
+      this.multiRecommendMsg = baseUrl;
+    });
+  }
+
   // process recomendation form //
-  private processForm(row: any) {
-    this.logger.log(event);
-    this.logger.log(this.recommendationForm.value);
+  private addMultipleWorkItem(event: any) {
+    event.preventDefault();
+    this.multipleRecoWorkItem(this.multilpeActionData);
   }
 
 }

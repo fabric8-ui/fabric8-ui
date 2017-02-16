@@ -196,9 +196,10 @@
 
   <modal #similarStack title="Create work item form recomendation with button">
     <modal-content>
-      <form [name]="recommendationForm" (ngSubmit)="processForm()">
+      <form [name]="recommendationForm" (submit)="addMultipleWorkItem($event)">
         <stack-recommendation [rows]="recoArray[currentIndex].rows" [headers]="recoArray[currentIndex].headers" [clickable]="false"
-          id="rec_container"></stack-recommendation>
+          (customEvent)="addSelectedItem($event)" id="rec_container"></stack-recommendation>
+          <div><span [hidden]="!multiRecommendMsg">Successfully created a work item. You can see it here! <a target="_blank" href={{multiRecommendMsg}}>Link</a></span></div>
           <button type="submit" class="btn btn-primary">Create</button><button class="btn btn-danger" (click)="similarStack.close()">Close</button>
       </form>
     </modal-content>
