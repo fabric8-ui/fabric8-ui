@@ -64,7 +64,8 @@ describe ('Iteration service - ', () => {
       attributes: {
         endAt: '2016-11-29T23:18:14Z',
         name: 'Sprint #24',
-        startAt: '2016-11-29T23:18:14Z'
+        startAt: '2016-11-29T23:18:14Z',
+        state: 'start'
       },
       id: 'd8535583-dfbd-4b62-be8d-44a7d4fa7048',
       links: {
