@@ -47,7 +47,7 @@ There are several services and a couple of models used by them available.
  
  - Start by running:
  
-   `npm link dist`
+   `npm link dist/`
  
  - Change this:
  
@@ -57,7 +57,11 @@ There are several services and a couple of models used by them available.
  
    `"ngx-widgets": "file:///[LOCATION-TO-NODE-MODULES]/.nvm/versions/node/v6.9.1/lib/node_modules/ngx-widgets"`
  
+ - then in the app that will use the lib:
  
+   `npm install ngx-widgets`
+   
+   
 #### To publish it to NPM:
  
  `npm publish dist/`  
