@@ -10,8 +10,8 @@ import { DropdownOption } from './dropdown-option';
 
 @Component({
   selector: 'alm-dropdown',
-  templateUrl: './dropdown.component.html',
-  styleUrls: ['./dropdown.component.scss'],
+  template: require('./dropdown.component.html'),
+  styles: [require('./dropdown.component.scss')],
   // template: `
   //   <div *ngIf="selected" class="dropdown card-pf-time-frame-filter">
   //     <button

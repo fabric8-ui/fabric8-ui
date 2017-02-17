@@ -10,8 +10,8 @@ import { Component, ViewEncapsulation, Output, EventEmitter } from '@angular/cor
 @Component({
   selector: 'f8-container-toggler',
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './container-toggler.html',
-  styleUrls: ['./container-toggler.scss']
+  template: require('./container-toggler.html'),
+  styles: [require('./container-toggler.scss')]
   // template: `
   //   <div>
   //       <span (click)="prev()" class="prev">Previous</span>

@@ -7,7 +7,7 @@
   "typings": "index.d.ts",
   "scripts": {
     "build-old": "npm run remove-dist && npm run bundle && npm run minify && npm run copy-dist-files",
-    "build": "npm run remove-dist && npm run transpile && npm run bundle && npm run minify && npm run copy-dist-files",
+    "build": "npm run remove-dist && npm run transpile && npm run bundle && npm run minify && npm run copy-files",
     "bundle-rollup": "rollup -c",
     "bundle": "webpack",
     "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist bundles",

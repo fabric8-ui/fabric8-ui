@@ -17,8 +17,8 @@ import { Dialog } from './dialog';
 
 @Component({
   selector: 'alm-dialog',
-  templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.scss'],
+  template: require('./dialog.component.html'),
+  styles: [require('./dialog.component.scss')],
   // template: `
   //   <div class="modal" id="alm-modal" tabindex="-1" role="dialog"
   //     [ngClass]="{'show': modalFadeIn,'hide':!modalFadeIn}" [@modalOverlay]="modalState"
