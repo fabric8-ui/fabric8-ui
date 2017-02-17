@@ -395,14 +395,13 @@ export class StackDetailsComponent implements OnInit {
   }
 
   // make workitem api call with multiple recommendation //
-  private multipleRecoWorkItem(rows: any) {
+  private multipleRecoWorkItem(rows: any): void {
     let workItemData: any = this.getWorkItemData();
 
     for(let row in rows) {
      workItemData.data.attributes['system.title'] += rows[row].custom.name + ' '
      + rows[row].name + ' ' + rows[row].version;
     }
-    debugger;
     let workflow: Observable<any> = this.addWorkFlowService.addWorkFlow(workItemData);
     workflow.subscribe((data) => {
       let baseUrl: string = 'http://demo.almighty.io/work-item/list/detail/' + data.data.id;
@@ -411,7 +410,7 @@ export class StackDetailsComponent implements OnInit {
   }
 
   // process recomendation form //
-  private addMultipleWorkItem(event: any) {
+  private addMultipleWorkItem(event: any): void {
     event.preventDefault();
     this.multipleRecoWorkItem(this.multilpeActionData);
   }
