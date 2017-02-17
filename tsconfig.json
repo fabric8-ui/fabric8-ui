@@ -39,7 +39,7 @@
   },
   "angularCompilerOptions": {
     "strictMetadataEmit": true,
-    "skipTemplateCodegen": true
+    "skipTemplateCodegen": false
   },
   "compileOnSave": false,
   "buildOnSave": false,

@@ -41,7 +41,7 @@ module.exports = {
   output: {
     path: helpers.root('dist'),
     publicPath: '/',
-    filename: 'ngx-widgets.js',
+    filename: 'bundles/ngx-widgets.js',
     library: 'ngx-widgets',
     libraryTarget: 'umd',
     umdNamedDefine: true

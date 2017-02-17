@@ -31,7 +31,13 @@ import { AlmTrim } from './src/app/pipes/alm-trim';
 // export { AlmEditableModule } from './src/app/editable/almeditable.module';
 // export { AlmIconModule } from './src/app/icon/almicon.module';
 // export { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
-//
+export { ContainerTogglerComponent } from './src/app/container-toggler/container-toggler.component';
+export { DialogComponent } from './src/app/dialog/dialog.component';
+export { DropdownComponent } from './src/app/dropdown/dropdown.component';
+export { AlmEditableDirective } from './src/app/editable/almeditable.directive';
+export { AlmIconDirective } from './src/app/icon/almicon.directive';
+export { InfiniteScrollDirective } from './src/app/infinitescroll/infinitescroll.directive';
+
 // export { AlmArrayFilter } from './src/app/pipes/alm-array-filter.pipe';
 // export { AlmAvatarSize } from './src/app/pipes/alm-avatar-size.pipe';
 // export { AlmLinkTarget } from './src/app/pipes/alm-link-target.pipe';

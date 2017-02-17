@@ -11,8 +11,6 @@ import { DebugElement } from '@angular/core';
 import { FormsModule }  from '@angular/forms';
 import { By }           from '@angular/platform-browser';
 
-import { Logger } from '../../shared/logger.service';
-
 import { Dialog } from './dialog';
 import { DialogComponent } from './dialog.component';
 
