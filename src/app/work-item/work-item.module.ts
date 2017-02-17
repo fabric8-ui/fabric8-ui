@@ -13,6 +13,7 @@ import { IterationModule } from './../iteration/iteration.module';
 import { ModalModule } from 'ng2-modal';
 import { NgModule } from '@angular/core';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
+import { SidepanelModule } from './../side-panel/side-panel.module';
 import { UserService } from './../user/user.service';
 import { WorkItemBoardComponent } from './work-item-board/work-item-board.component';
 import { WorkItemComponent } from './work-item.component';
@@ -32,6 +33,7 @@ import { WorkItemRoutingModule } from './work-item-routing.module';
     InfiniteScrollModule,
     IterationModule,
     ModalModule,
+    SidepanelModule,
     TooltipModule,
     WorkItemDetailModule,
     WorkItemRoutingModule,

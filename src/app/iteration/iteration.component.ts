@@ -20,7 +20,8 @@ export class IterationComponent implements OnInit, OnDestroy {
   authUser: any = null;
   loggedIn: Boolean = false;
   isBacklogSelected: Boolean = true;
-  isCollapsedCurrentIteration: Boolean = true;
+  isCollapsedIteration: Boolean = false;
+  isCollapsedCurrentIteration: Boolean = false;
   isCollapsedFutureIteration: Boolean = true;
   isCollapsedPastIteration: Boolean = true;
   barchatValue: number = 70;

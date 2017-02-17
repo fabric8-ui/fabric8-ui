@@ -3,83 +3,79 @@
 @import "../../assets/stylesheets/mixins";
 
 //Iteration Style Start
-.backlog-bg{
-  background-color: white;
-}
-.iteration-secondary-menu {
-  color: $color-pf-dark;
-  font-size: rem(14);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  > h4 {
-    margin: 0;
-    font-size: rem(16);
-  }
-}
-.fa-icon {
-  width: em(12);
-}
-.iterations-container {
-  flex: auto;
-  overflow: auto;
-}
-.badge-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
 .iteration-panel-header {
-  display: flex;
-  justify-content: space-between;
-  padding: em(20);
-  border-bottom: 1px solid $color-pf-black-300;
-}
-.iteration-header {
-  padding: em(10) em(20);
-}
-.iteration-status {
-  display: flex;
-  justify-content: space-between;
-  padding: em(20) 0 em(15) 0;
-}
-.iteration-subheader {
-  display: flex;
-  justify-content: space-between;
-  .iteration-name-container {
-    max-width: 80%;
-    .iteration-name {
-      width: 100%;
-      display: block;
+    padding: em(20);
+    border-bottom: 1px solid $color-pf-black-300;
+    h3{
+      margin: 0;
     }
   }
-}
-.iteration-expanded-div {
-  padding-left: 0;
-  margin-bottom: 0;
-  > li {
-    background-color: $color-pf-white;
-    list-style: none;
-    padding: em(15);
-    &.active {
-      border-left: 3px solid $navbar-pf-border-color;
+.iterations-container {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: calc(100% - 190px) !important; // height is given to scroll the content
+  overflow: scroll !important; // important is given to override collapse module styles
+  //** Iterations expaned div styling **/
+  .iteration-wrapper {
+    .iteration-header {
+      padding: em(10) em(20);
+      > h4 {
+        margin: 0;
+      }
+      .fa-icon {
+        width: 15px;
+      }
     }
-    .iteration-description{
-       @include multiline-truncate($line-height: 1.5em, $line-count: 2, $bg-color: $color-pf-white) ;
+    .iteration-expanded-div {
+      padding-left: 0;
+      margin-bottom: 0;
+      > li {
+        background-color: $color-pf-white;
+        list-style: none;
+        padding: em(15);
+        &.active {
+          border-left: 3px solid $navbar-pf-border-color;
+        }
+        .iteration-subheader {
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          .dropdown-kebab-pf{
+            margin-left: em(10);
+          }
+          .iteration-name{
+            line-height: 3rem;
+          }
+        }
+        .iteration-status {
+          padding: em(20) 0 em(15) 0;
+        }
+        .iteration-description {
+          @include multiline-truncate($line-height: 1.5em, $line-count: 2, $bg-color: $color-pf-white) ;
+        }
+      }
     }
-  }
-}
-.not-current-iteration{
-  margin-bottom: 0;
-  padding-left: 0;
-  > li {
-    padding: em(15) em(15) em(15) em(20);
-  }
-  .badge {
-    margin-right: em(10);
+    .not-current-iteration{
+      margin-bottom: 0;
+      padding-left: 0;
+      > li {
+        padding: em(5) em(15) em(5) em(40);
+        .iteration-name{
+            line-height: 2.5rem;
+          }
+      }
+      .badge {
+        margin-right: em(10);
+      }
+    }
   }
 }
 .create-iteration-bar {
+  position: absolute;
+  width: $width100;
+  bottom: 0;
+  background: $color-pf-white;
   border-top: 1px solid $color-pf-black-300;
   padding: em(18);
   font-size: rem(14);

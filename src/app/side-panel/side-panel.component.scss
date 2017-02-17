@@ -1,0 +1,16 @@
+@import "../../assets/stylesheets/color-variables";
+@import "../../assets/stylesheets/custom";
+@import "../../assets/stylesheets/mixins";
+
+.side-panel-header {
+  padding: em(20);
+  border-bottom: 1px solid $color-pf-black-400;
+  .side-panel-secondary-menu {
+    color: $color-pf-dark;
+    font-size: rem(14);
+    > h4 {
+      margin: 0;
+      font-size: em(16);
+    }
+  }
+}

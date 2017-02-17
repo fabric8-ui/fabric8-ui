@@ -91,24 +91,20 @@
     flex-basis: 0;
     flex: 1;
     height: 10px;
+    min-height: 0; //hack for scrolling sidebar in mozilla
     display: flex;
     align-items: flex-start;
     .side-bar {
       height: 100%;
-      flex: 2;
+      flex: 3;
       min-width: em(360);
       background-color: $color-pf-black-200;
       border-right: 1px solid $color-pf-black-300;
-      .fab-planner-iteration {
-        height: 100%;
-        display: flex;
-        -ms-flex-flow: column nowrap;
-        flex-flow: column nowrap;
-      }
+      position: relative;
     }
     .container-body {
       height: 100%;
-      flex: 6;
+      flex: 9;
     }
   }
 }

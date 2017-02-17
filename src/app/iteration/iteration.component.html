@@ -1,189 +1,182 @@
 <!--Iteration Start-->
-<div class="iteration-panel-header" [class.backlog-bg]="isBacklogSelected">
-  <div class="iteration-secondary-menu">
-      <h4><strong (click)='getWorkItemsByIteration(null)'>Backlog</strong></h4>
-  </div>
-  <div class="badge-wrapper">
-    <span class="badge">95</span>
-  </div>
+<div class="iteration-panel-header pointer display-flex" (click)="isCollapsedIteration = !isCollapsedIteration">
+  <h3 class="flex-1">Iterations</h3>
+  <a class="flex-1 text-right">
+    <i class="fa fa-plus"></i>
+  </a>
 </div>
-<div class="iterations-container">
-  <div class="iterations">
-    <div class="iteration-header pointer"
-         (click)="isCollapsedCurrentIteration = !isCollapsedCurrentIteration">
-      <div class="iteration-secondary-menu">
+<div class="iterations-container display-flex">
+  <div class="iteration-wrapper" [collapse]="isCollapsedIteration">
+    <div class="iterations">
+      <div class="iteration-header pointer"
+        (click)="isCollapsedCurrentIteration = !isCollapsedCurrentIteration">
         <h4>
           <i class="fa fa-icon"
-             [ngClass]="{'fa-angle-right': isCollapsedCurrentIteration,
+              [ngClass]="{'fa-angle-right': isCollapsedCurrentIteration,
                         'fa-angle-down': !isCollapsedCurrentIteration}"></i>
           Current Iteration
         </h4>
       </div>
+      <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
+        <li class="active" *ngFor="let iteration of currentIterations">
+          <div class="iteration-subheader display-flex">
+            <div class="flex-1 truncate">
+              <strong class="iteration-name "
+                tooltip="{{iteration.attributes.name}}"
+                tooltipPlacement="top"
+                (click)='getWorkItemsByIteration(iteration)'>
+                {{iteration.attributes.name}}
+              </strong>
+            </div>
+            <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf" dropdown>
+              <button class="btn btn-link dropdown-toggle"
+                      type="button"
+                      aria-haspopup="true"
+                      aria-expanded="true"
+                      dropdown-open>
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
+                    Edit
+                  </a>
+                </li>
+                <li>
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('close', iteration);">
+                    Close
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="iteration-status display-flex">
+            <span class="flex-1">{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}</span>
+            <div class="flex-1 text-right">
+              <strong>71 of 74</strong><span> completed</span>
+            </div>
+          </div>
+          <div class="progress">
+            <div class="progress-bar"
+                role="progressbar"
+                [attr.aria-valuenow]="barchatValue"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                [ngStyle]="{'width': barchatValue + '%'}"
+                tooltipPlacement="top"
+                tooltip="{{barchatValue + '%'}}">
+            </div>
+            <div class="progress-bar progress-bar-remaining"
+                role="progressbar"
+                [attr.aria-valuenow]="100 - barchatValue"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                [ngStyle]="{'width': 100 - barchatValue + '%'}"
+                tooltipPlacement="top"
+                tooltip="{{(100 - barchatValue) + '%'}}">
+            </div>
+          </div>
+          <p class="iteration-description">{{ iteration.attributes?.description }}</p>
+        </li>
+      </ul>
     </div>
-    <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
-      <li class="active" *ngFor="let iteration of currentIterations">
-        <div class="iteration-subheader">
-          <div class="iteration-name-container">
-            <strong class="iteration-name truncate"
+    <div class="iterations">
+      <div class="iteration-header pointer"
+        (click)="isCollapsedFutureIteration = !isCollapsedFutureIteration">
+        <h4>
+          <i class="fa fa-icon"
+              [ngClass]="{'fa-angle-right': isCollapsedFutureIteration,
+                        'fa-angle-down': !isCollapsedFutureIteration}"></i>
+          Future Iteration
+        </h4>
+      </div>
+      <ul class="not-current-iteration"
+          [collapse]="isCollapsedFutureIteration">
+
+        <li class="iteration-subheader display-flex" *ngFor="let iteration of futureIterations">
+          <div class="flex-1 truncate">
+            <strong class="iteration-name"
               tooltip="{{iteration.attributes.name}}"
               tooltipPlacement="top"
               (click)='getWorkItemsByIteration(iteration)'>
               {{iteration.attributes.name}}
             </strong>
           </div>
-          <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf" dropdown>
-            <button class="btn btn-link dropdown-toggle"
-                    type="button"
-                    aria-haspopup="true"
-                    aria-expanded="true"
-                    dropdown-open>
-              <span class="fa fa-ellipsis-v"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li>
-                <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
-                  Edit
-                </a>
-              </li>
-              <li>
-                <a class="pointer" (click)="modal.openCreateUpdateModal('close', iteration);">
-                  Close
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="iteration-status">
           <div>
-            <span>{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}</span>
+            <span class="badge">90</span>
+            <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf dib" dropdown>
+              <button class="btn btn-link dropdown-toggle"
+                      type="button"
+                      aria-haspopup="true"
+                      aria-expanded="true"
+                      dropdown-open>
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
+                    Edit
+                  </a>
+                </li>
+                <li>
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration);">
+                    Start
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div>
-            <strong>71 of 74</strong><span> completed</span>
-          </div>
-        </div>
-        <div class="progress">
-          <div class="progress-bar"
-               role="progressbar"
-               [attr.aria-valuenow]="barchatValue"
-               aria-valuemin="0"
-               aria-valuemax="100"
-               [ngStyle]="{'width': barchatValue + '%'}"
-               tooltipPlacement="top"
-               tooltip="{{barchatValue + '%'}}">
-          </div>
-          <div class="progress-bar progress-bar-remaining"
-               role="progressbar"
-               [attr.aria-valuenow]="100 - barchatValue"
-               aria-valuemin="0"
-               aria-valuemax="100"
-               [ngStyle]="{'width': 100 - barchatValue + '%'}"
-               tooltipPlacement="top"
-               tooltip="{{(100 - barchatValue) + '%'}}">
-          </div>
-        </div>
-        <p class="iteration-description">{{ iteration.attributes?.description }}</p>
-      </li>
-    </ul>
-  </div>
-  <div class="iterations">
-    <div class="iteration-header pointer"
-         (click)="isCollapsedFutureIteration = !isCollapsedFutureIteration">
-      <div class="iteration-secondary-menu">
+        </li>
+      </ul>
+    </div>
+    <div class="iterations">
+      <div class="iteration-header pointer"
+        (click)="isCollapsedPastIteration = !isCollapsedPastIteration">
         <h4>
           <i class="fa fa-icon"
-             [ngClass]="{'fa-angle-right': isCollapsedFutureIteration,
-                        'fa-angle-down': !isCollapsedFutureIteration}"></i>
-          Future Iteration
+              [ngClass]="{'fa-angle-right': isCollapsedPastIteration,
+                          'fa-angle-down': !isCollapsedPastIteration}"></i>
+          Past Iteration
         </h4>
       </div>
-    </div>
-    <ul class="not-current-iteration"
-        [collapse]="isCollapsedFutureIteration">
-
-      <li class="iteration-subheader" *ngFor="let iteration of futureIterations">
-        <div class="iteration-name-container">
-          <strong class="iteration-name truncate"
-            tooltip="{{iteration.attributes.name}}"
-            tooltipPlacement="top"
-            (click)='getWorkItemsByIteration(iteration)'>
-            {{iteration.attributes.name}}
-          </strong>
-        </div>
-        <div>
-          <span class="badge">90</span>
-          <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf dib" dropdown>
-            <button class="btn btn-link dropdown-toggle"
-                    type="button"
-                    aria-haspopup="true"
-                    aria-expanded="true"
-                    dropdown-open>
-              <span class="fa fa-ellipsis-v"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li>
-                <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
-                  Edit
-                </a>
-              </li>
-              <li>
-                <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration);">
-                  Start
-                </a>
-              </li>
-            </ul>
+      <ul class="not-current-iteration"
+          [collapse]="isCollapsedPastIteration">
+        <li class="iteration-subheader display-flex" *ngFor="let iteration of closedIterations">
+          <div class="truncate flex-1">
+            <strong class="iteration-name "
+              tooltip="{{iteration.attributes.name}}"
+              tooltipPlacement="top"
+              (click)='getWorkItemsByIteration(iteration)'>
+              {{iteration.attributes.name}}
+            </strong>
           </div>
-        </div>
-      </li>
-
-    </ul>
-  </div>
-  <div class="iterations">
-    <div class="iteration-header pointer"
-          (click)="isCollapsedPastIteration = !isCollapsedPastIteration">
-      <div class="iteration-secondary-menu">
-        <h4><i class="fa fa-icon"
-            [ngClass]="{'fa-angle-right': isCollapsedPastIteration,
-                        'fa-angle-down': !isCollapsedPastIteration}"></i>
-        Past Iteration</h4>
-      </div>
-    </div>
-    <ul class="not-current-iteration"
-        [collapse]="isCollapsedPastIteration">
-      <li class="iteration-subheader" *ngFor="let iteration of closedIterations">
-        <div class="iteration-name-container">
-          <strong class="iteration-name truncate"
-            tooltip="{{iteration.attributes.name}}"
-            tooltipPlacement="top"
-            (click)='getWorkItemsByIteration(iteration)'>
-            {{iteration.attributes.name}}
-          </strong>
-        </div>
-        <div>
-          <span class="badge">90</span>
-          <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf dib" dropdown>
-            <button class="btn btn-link dropdown-toggle"
-                    type="button"
-                    aria-haspopup="true"
-                    aria-expanded="true"
-                    dropdown-open>
-              <span class="fa fa-ellipsis-v"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li>
-                <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
-                  Edit
-                </a>
-              </li>
-              <li>
-                <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration);">
-                  Start
-                </a>
-              </li>
-            </ul>
+          <div>
+            <span class="badge">90</span>
+            <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf dib" dropdown>
+              <button class="btn btn-link dropdown-toggle"
+                      type="button"
+                      aria-haspopup="true"
+                      aria-expanded="true"
+                      dropdown-open>
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
+                    Edit
+                  </a>
+                </li>
+                <li>
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration);">
+                    Start
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 <div *ngIf="loggedIn"

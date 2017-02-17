@@ -171,6 +171,16 @@ h2{
    border: 1px solid $color-pf-black-600;
    padding: em(1) em(3);
  }
+//flex common classes
+.display-flex{
+  display: flex;
+  justify-content: space-between;
+  .flex-1{
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+  }
+}
 
 @media (max-width: $grid-float-breakpoint){
     .mobdn{ display: none; }
