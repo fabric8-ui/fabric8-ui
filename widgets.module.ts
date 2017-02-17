@@ -5,12 +5,18 @@ import { FormsModule } from '@angular/forms';
 
 // import { DropdownModule } from 'ngx-dropdown';
 
-import { ContainerTogglerModule } from './src/app/container-toggler/container-toggler.module';
-import { DialogModule } from './src/app/dialog/dialog.module';
-import { DropdownModule } from './src/app/dropdown/dropdown.module';
-import { AlmEditableModule } from './src/app/editable/almeditable.module';
-import { AlmIconModule } from './src/app/icon/almicon.module';
-import { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
+// import { ContainerTogglerModule } from './src/app/container-toggler/container-toggler.module';
+// import { DialogModule } from './src/app/dialog/dialog.module';
+// import { DropdownModule } from './src/app/dropdown/dropdown.module';
+// import { AlmEditableModule } from './src/app/editable/almeditable.module';
+// import { AlmIconModule } from './src/app/icon/almicon.module';
+// import { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
+import { ContainerTogglerComponent } from './src/app/container-toggler/container-toggler.component';
+import { DialogComponent } from './src/app/dialog/dialog.component';
+import { DropdownComponent } from './src/app/dropdown/dropdown.component';
+import { AlmEditableDirective } from './src/app/editable/almeditable.directive';
+import { AlmIconDirective } from './src/app/icon/almicon.directive';
+import { InfiniteScrollDirective } from './src/app/infinitescroll/infinitescroll.directive';
 
 import { AlmArrayFilter } from './src/app/pipes/alm-array-filter.pipe';
 import { AlmAvatarSize } from './src/app/pipes/alm-avatar-size.pipe';
@@ -42,7 +48,13 @@ import { AlmTrim } from './src/app/pipes/alm-trim';
     AlmAvatarSize,
     AlmLinkTarget,
     AlmSearchHighlight,
-    AlmTrim
+    AlmTrim,
+    ContainerTogglerComponent,
+    DialogComponent,
+    DropdownComponent,
+    AlmEditableDirective,
+    AlmIconDirective,
+    InfiniteScrollDirective
   ],
   exports: [
     AlmArrayFilter,
@@ -51,12 +63,12 @@ import { AlmTrim } from './src/app/pipes/alm-trim';
     AlmSearchHighlight,
     AlmTrim,
 
-    ContainerTogglerModule,
-    DialogModule,
-    DropdownModule,
-    AlmEditableModule,
-    AlmIconModule,
-    InfiniteScrollModule
+    ContainerTogglerComponent,
+    DialogComponent,
+    DropdownComponent,
+    AlmEditableDirective,
+    AlmIconDirective,
+    InfiniteScrollDirective
   ]
 })
 export class WidgetsModule {
