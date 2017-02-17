@@ -19,6 +19,7 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
     comment: Comment;
     users: User[];
     isCollapsedComments: Boolean = false;
+    currentUser: User;
 
     constructor(
         private workItemService: WorkItemService,
@@ -30,6 +31,7 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         this.UserService.getAllUsers().then((users) => this.users = users);
+        this.currentUser = this.UserService.getSavedLoggedInUser();
         this.createCommentObject();
     }
 
@@ -57,6 +59,22 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
             .createComment(this.workItem['id'], this.comment)
             .then(response => {
                 event.target.textContent = "";
+                this.createCommentObject();
+            })
+            .catch ((error) => {
+                console.log(error);
+            });
+    }
+
+    updateComment(event: any = null, comment: Comment): void {
+        this.preventDef(event);
+        this.comment.id = comment.id;
+        this.comment.attributes.body = event.target.textContent;
+
+        this.workItemService
+            .updateComment(this.comment)
+            .then(response => {
+                event.target.blur();
                 this.createCommentObject();
             })
             .catch ((error) => {

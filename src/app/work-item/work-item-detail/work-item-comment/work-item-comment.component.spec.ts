@@ -53,6 +53,7 @@ import { CollapseModule } from 'ng2-bootstrap/components/collapse';
 describe('Comment section for the work item detailed view - ', () => {
   let comp: WorkItemDetailComponent;
   let fixture: ComponentFixture<WorkItemDetailComponent>;
+  let currentUser: User;
   let el: DebugElement;
   let el1: DebugElement;
   let logger: Logger;
@@ -351,6 +352,12 @@ describe('Comment section for the work item detailed view - ', () => {
         return new Promise((resolve, reject) => {
           resolve(fakeUserList);
         });
+      },
+
+      getSavedLoggedInUser: function () {
+        return new Promise((resolve, reject) => {
+          resolve(fakeUser);
+        });
       }
     };
 
@@ -413,6 +420,7 @@ describe('Comment section for the work item detailed view - ', () => {
         fixture = TestBed.createComponent(WorkItemDetailComponent);
         comp = fixture.componentInstance;
         comp.users = fakeUserList;
+        currentUser = fakeUserService.getSavedLoggedInUser();
       });
   }));
 

@@ -51,6 +51,7 @@ import { CollapseModule } from 'ng2-bootstrap/components/collapse';
 describe('Detailed view and edit a selected work item - ', () => {
   let comp: WorkItemDetailComponent;
   let fixture: ComponentFixture<WorkItemDetailComponent>;
+  let currentUser: User;
   let el: DebugElement;
   let el1: DebugElement;
   let logger: Logger;
@@ -329,6 +330,12 @@ describe('Detailed view and edit a selected work item - ', () => {
         return new Promise((resolve, reject) => {
           resolve(fakeUserList);
         });
+      },
+
+      getSavedLoggedInUser: function () {
+        return new Promise((resolve, reject) => {
+          resolve(fakeUser);
+        });
       }
     };
 
@@ -391,6 +398,7 @@ describe('Detailed view and edit a selected work item - ', () => {
         fixture = TestBed.createComponent(WorkItemDetailComponent);
         comp = fixture.componentInstance;
         comp.users = fakeUserList;
+        currentUser = fakeUserService.getSavedLoggedInUser();
       });
   }));
 

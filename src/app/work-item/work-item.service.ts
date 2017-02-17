@@ -772,6 +772,23 @@ export class WorkItemService {
       .catch (this.handleError);
   }
 
+  updateComment(comment: Comment): Promise<Comment> {
+    let endpoint = process.env.API_URL + 'comments/' + comment.id;
+
+    return this.http
+      .patch(endpoint, { 'data': comment }, { headers: this.headers })
+      .toPromise()
+      .then(response => {
+        let comment: Comment = response.json().data as Comment;
+        let theUser: User = this.userService.getSavedLoggedInUser();
+
+        comment.relationalData = { "creator" : theUser };
+
+        return comment;
+      })
+      .catch (this.handleError);
+  }
+
   /**
    * Usage: This function fetches all the work item link types
    * Store it in an instance variable

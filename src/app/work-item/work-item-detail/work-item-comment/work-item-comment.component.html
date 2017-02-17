@@ -39,7 +39,19 @@
                                       {{comment.relationalData?.creator?.attributes?.fullName}}
                                   </strong>
                               </h5>
-                               <p class="col-md-12 col-xs-12 col-sm-12 no-padding" id="{{'comment_body_' + counter}}">{{comment.attributes.body}}</p>
+                              <p *ngIf="!loggedIn || (currentUser.id !== comment.relationalData.creator?.id)"
+                                  id="{{'comment_body_' + counter}}"
+                                  class="col-md-12 col-xs-12 col-sm-12 no-padding">
+                                {{ comment.attributes.body }}
+                              </p>
+                              <p  *ngIf="!!loggedIn && (currentUser.id === comment.relationalData.creator?.id)"
+                                  almEditable #commentBody
+                                  id="{{'comment_body_' + counter}}"
+                                  class="col-md-12 col-xs-12 col-sm-12 no-padding"
+                                  (keydown.enter)="updateComment($event, comment)"
+                                  (keyup.enter)="preventDef($event)"
+                                  [innerText]="comment.attributes.body | almTrim">
+                              </p>
                           </div>
                       </div>
                       </div>
