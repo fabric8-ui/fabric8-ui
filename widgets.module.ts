@@ -5,18 +5,12 @@ import { FormsModule } from '@angular/forms';
 
 // import { DropdownModule } from 'ngx-dropdown';
 
-// import { ContainerTogglerModule } from './src/app/container-toggler/container-toggler.module';
-// import { DialogModule } from './src/app/dialog/dialog.module';
-// import { DropdownModule } from './src/app/dropdown/dropdown.module';
-// import { AlmEditableModule } from './src/app/editable/almeditable.module';
-// import { AlmIconModule } from './src/app/icon/almicon.module';
-// import { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
-import { ContainerTogglerComponent } from './src/app/container-toggler/container-toggler.component';
-import { DialogComponent } from './src/app/dialog/dialog.component';
-import { DropdownComponent } from './src/app/dropdown/dropdown.component';
-import { AlmEditableDirective } from './src/app/editable/almeditable.directive';
-import { AlmIconDirective } from './src/app/icon/almicon.directive';
-import { InfiniteScrollDirective } from './src/app/infinitescroll/infinitescroll.directive';
+import { ContainerTogglerModule } from './src/app/container-toggler/container-toggler.module';
+import { DialogModule } from './src/app/dialog/dialog.module';
+import { DropdownModule } from './src/app/dropdown/dropdown.module';
+import { AlmEditableModule } from './src/app/editable/almeditable.module';
+import { AlmIconModule } from './src/app/icon/almicon.module';
+import { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
 
 import { AlmArrayFilter } from './src/app/pipes/alm-array-filter.pipe';
 import { AlmAvatarSize } from './src/app/pipes/alm-avatar-size.pipe';
@@ -31,12 +25,6 @@ import { AlmTrim } from './src/app/pipes/alm-trim';
 // export { AlmEditableModule } from './src/app/editable/almeditable.module';
 // export { AlmIconModule } from './src/app/icon/almicon.module';
 // export { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
-export { ContainerTogglerComponent } from './src/app/container-toggler/container-toggler.component';
-export { DialogComponent } from './src/app/dialog/dialog.component';
-export { DropdownComponent } from './src/app/dropdown/dropdown.component';
-export { AlmEditableDirective } from './src/app/editable/almeditable.directive';
-export { AlmIconDirective } from './src/app/icon/almicon.directive';
-export { InfiniteScrollDirective } from './src/app/infinitescroll/infinitescroll.directive';
 
 // export { AlmArrayFilter } from './src/app/pipes/alm-array-filter.pipe';
 // export { AlmAvatarSize } from './src/app/pipes/alm-avatar-size.pipe';
@@ -54,13 +42,7 @@ export { InfiniteScrollDirective } from './src/app/infinitescroll/infinitescroll
     AlmAvatarSize,
     AlmLinkTarget,
     AlmSearchHighlight,
-    AlmTrim,
-    ContainerTogglerComponent,
-    DialogComponent,
-    DropdownComponent,
-    AlmEditableDirective,
-    AlmIconDirective,
-    InfiniteScrollDirective
+    AlmTrim
   ],
   exports: [
     AlmArrayFilter,
@@ -68,13 +50,12 @@ export { InfiniteScrollDirective } from './src/app/infinitescroll/infinitescroll
     AlmLinkTarget,
     AlmSearchHighlight,
     AlmTrim,
-
-    ContainerTogglerComponent,
-    DialogComponent,
-    DropdownComponent,
-    AlmEditableDirective,
-    AlmIconDirective,
-    InfiniteScrollDirective
+    ContainerTogglerModule,
+    DialogModule,
+    DropdownModule,
+    AlmEditableModule,
+    AlmIconModule,
+    InfiniteScrollModule
   ]
 })
 export class WidgetsModule {
