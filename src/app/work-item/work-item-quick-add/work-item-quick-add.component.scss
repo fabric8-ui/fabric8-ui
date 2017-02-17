@@ -11,11 +11,11 @@
   text-align: $textLeft;
   cursor: pointer;
   font-size: rem(12);
-  height: 100%;
   .addWorkItem{
     padding: em(18);
     font-size: rem(14);
     color: $navbar-pf-border-color;
+    height: 67px; //height is given to avoid jumping between this block and addWorkItemBlk
     .quick-add-label {
       padding-left: em(5);
     }
@@ -49,19 +49,18 @@
     }
     .workItemQuickAdd_story{
       padding-left:em(24);
-      padding-right: em(48);
+      padding-right: em(72);
+      #exampleDesc{
+        max-height: 100px;
+      }
     }
     .workItemQuickAdd_AddBlk{
-      position: absolute;
-      top: 50%;
-      @include transform(translateY(-50%));
-      right: em(9);
       .workItemQuickAdd_Add{
         text-align: right;
         font-size: em(14);
         min-width: 30px;
         height: 27px;
-        padding: 5px;
+        padding: em(5);
         i{
           font-size: em(14);
         }
