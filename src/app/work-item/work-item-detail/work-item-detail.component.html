@@ -112,8 +112,8 @@
               onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
 
             <div class="pull-left detail-assignee-name">
-                <span *ngIf="!searchAssignee && !workItem.relationalData?.assignees?.length" (click)="activeSearchAssignee()" class="placeholder clickable"> Unassigned </span>
-                <span *ngIf="!searchAssignee && workItem.relationalData?.assignees?.length" (click)="activeSearchAssignee()" class="clickable" id="WI_details_assigned_user">
+                <span *ngIf="!searchAssignee && !workItem.relationalData?.assignees?.length" (click)="activeSearchAssignee()" class="placeholder pointer"> Unassigned </span>
+                <span *ngIf="!searchAssignee && workItem.relationalData?.assignees?.length" (click)="activeSearchAssignee()" class="pointer" id="WI_details_assigned_user">
                   {{workItem.relationalData?.assignees[0] | almUserName:'Assignee not found' }}
                 </span>
                 <div *ngIf="searchAssignee" class="user-search" >
@@ -183,7 +183,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12 detail-iteration-wrap">
           <span class="pull-left iteration-label">Iteration</span>
           <div class="pull-left detail-iteration-name">
-            <span *ngIf="!searchIteration" (click)="lookupIterations()" class="clickable">
+            <span *ngIf="!searchIteration" (click)="lookupIterations()" class="pointer">
               {{ workItem.relationalData?.iteration?.attributes.name || "None" }}
             </span>
             <span *ngIf="searchIteration" class="dropdown"
@@ -267,6 +267,9 @@
         </div>
       </fieldset>
     </form>
+    <p *ngIf="loggedIn && workItem.relationships?.codebase?.links?.meta?.edit" class="start-coding">
+      <a target="_blank" href="{{workItem.relationships?.codebase?.links?.meta?.edit}}">&#60;&#47;&#62; Start coding</a>
+    </p>
     <div *ngIf="workItem.id">
       <alm-work-item-link [workItem]="workItem" [loggedIn]="loggedIn"></alm-work-item-link>
       <alm-work-item-comment [workItem]="workItem" [loggedIn]="loggedIn"></alm-work-item-comment>

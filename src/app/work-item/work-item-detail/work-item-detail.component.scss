@@ -245,6 +245,15 @@
       padding: em(5) em(10) !important;
     }
   }
+
+  /**
+    This is for 'start coding' button
+  **/
+  .start-coding {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 20px;
+  }
 }
 
 //detail panel
@@ -266,10 +275,6 @@
 .wi-type-icon {
   cursor: pointer;
 }*/
-
-.clickable {
-  cursor: pointer;
-}
 
 .user-search {
   position: relative;

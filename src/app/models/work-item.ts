@@ -59,6 +59,13 @@ export class WorkItemRelations {
       type: string
     }
   };
+  codebase?: {
+    links: {
+      meta: {
+        edit: string;
+      }
+    }
+  };
 }
 
 export class RelationalData {

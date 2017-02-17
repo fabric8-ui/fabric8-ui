@@ -309,7 +309,7 @@ class WorkItemDetailPage {
   }
 
   workItemDetailAssigneeNameClickable () {
-    return element(by.css(".placeholder.clickable"));
+    return element(by.css(".placeholder.pointer"));
   }
   details_assigned_user () {
     return element(by.id("WI_details_assigned_user"));
