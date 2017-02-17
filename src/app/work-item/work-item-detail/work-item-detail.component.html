@@ -67,7 +67,7 @@
                 <!--Error message for title-->
                 <p [hidden]="validTitle"
                     class="clearfloat alert alert-danger">
-                    Title is required
+                    Title is a required field
                 </p>
             </div>
           </div>
@@ -77,7 +77,7 @@
               <button dropdown-open
                 id="wi-detail-state"
                 type="button"
-                class="btn dropdown-toggle col-md-12 col-sm-12 col-xs-12 btn-default">
+                class="btn btn-default dropdown-toggle col-md-12 col-sm-12 col-xs-12">
                 <span class='dropdown-icon' almIcon [iconType]="workItem.attributes['system.state']"></span>
                 <span class='dropdown-text'>
                   {{workItem.attributes['system.state']}}
@@ -211,8 +211,8 @@
         <!--Description-->
         <div class="separator col-md-12 col-sm-12 col-xs-12 detail-description-wrap">
           <div class="col-md-12 col-sm-12 col-xs-12 detail-description" *ngIf="loggedIn">
-            <button class="view-switch-btn" *ngIf="descViewType=='markdown'" (click)="showHtml(desc.innerText)">View HTML</button>
-            <button class="view-switch-btn" *ngIf="descViewType=='html'" (click)="descViewType='markdown'">View Markdown</button>
+            <button class="view-switch-btn btn btn-default" *ngIf="descViewType=='markdown'" (click)="showHtml(desc.innerText)">View HTML</button>
+            <button class="view-switch-btn btn btn-default" *ngIf="descViewType=='html'" (click)="descViewType='markdown'">View Markdown</button>
             <div id="wi-detail-desc" class="detail-desc-div-wrap" (click)="openDescription()">
               <div class="detail-desc-div"
                 [class.desc-editable]="descEditable"
@@ -241,7 +241,7 @@
                   [innerHTML]="renderedDesc"
                   [hidden]="descViewType!='html'">
                 </div>
-                <p *ngIf="!renderedDesc && !descEditable">Work item description.</p>
+                <p *ngIf="!renderedDesc && !descEditable">Work Item Description</p>
                 <div class="edit-icon">
                   <span id="workItemDesc_btn_edit" class="pficon-edit"
                     (click)='openDescription()'></span>
@@ -254,15 +254,15 @@
           </div>
         </div>
         <div *ngIf="loggedIn && descEditable" class="col-md-12 col-sm-12 col-xs-12 detail-desc-action">
-            <div id="workItemdesc_btn_save"
-                class="fl btn-small pull-right detail-action-btn"
-                (click)="onUpdateDescription()">
-                <span class="fa fa-check"></span>
-            </div>
             <div id="workItemdesc_btn_cancel"
-                class="fl btn-small pull-right detail-action-btn"
+                class="fl btn-small btn btn-default pull-right detail-action-btn"
                 (click)="closeDescription()">
                 <span class="fa fa-close"></span>
+            </div>
+            <div id="workItemdesc_btn_save"
+                class="fl btn-small btn btn-default pull-right detail-action-btn"
+                (click)="onUpdateDescription()">
+                <span class="fa fa-check"></span>
             </div>
         </div>
       </fieldset>
