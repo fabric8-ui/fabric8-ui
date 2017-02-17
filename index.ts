@@ -6,6 +6,7 @@ export { DropdownModule } from './src/app/dropdown/dropdown.module';
 export { AlmEditableModule } from './src/app/editable/almeditable.module';
 export { AlmIconModule } from './src/app/icon/almicon.module';
 export { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
+export { TreeListModule } from './src/app/treelist/treelist.module';
 
 // export { ContainerTogglerModule } from './src/app/container-toggler/container-toggler.module';
 // export { DialogModule } from './src/app/dialog/dialog.module';

@@ -1,0 +1,79 @@
+@import "../../assets/stylesheets/_custom";
+
+.tree-list {
+  .node-content-wrapper {
+    display: inherit;
+    padding: 0;
+    border-radius: inherit;
+    transition: none;
+  }
+
+  /*
+  // Todo: drop area
+  .node-drop-slot {
+    height: 2px;
+  }
+  .node-drop-slot.is-dragging-over {
+    height: 55px;
+  }
+  */
+
+  .toggle-children-wrapper {
+    padding: 0px;
+  }
+
+  // Toggle up
+  .toggle-children {
+    background-image: none;
+    background-position: inherit;
+    background-repeat: inherit;
+    display: block;
+    font-family: FontAwesome;
+    font-size: inherit;
+    height: inherit;
+    padding-right: 10px;
+    position: inherit;
+    top: inherit;
+    vertical-align: middle;
+    width: inherit;
+    &:before {
+      content: "\f105";
+    }
+  }
+
+  // Toggle up
+  .toggle-children-wrapper-collapsed .toggle-children {
+    transform: none;
+  }
+
+  // Toggle down
+  .toggle-children-wrapper-expanded .toggle-children {
+    transform: none;
+    &:before {
+      content: "\f107";
+    }
+  }
+
+  // Toggle indentation -- row highlighting should occupy entire width
+  .tree-children {
+    padding-left: 0;
+    .toggle-children {
+      padding-left: 20px;
+    }
+    .tree-children {
+      .toggle-children {
+        padding-left: 40px;
+      }
+      .tree-children {
+        .toggle-children {
+          padding-left: 60px;
+        }
+        .tree-children {
+          .toggle-children {
+            padding-left: 80px;
+          }
+        }
+      }
+    }
+  }
+}
