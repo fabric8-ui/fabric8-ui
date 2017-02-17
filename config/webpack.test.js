@@ -30,7 +30,7 @@ module.exports = function (options) {
   return {
 
     entry: {
-      'app': './src/main.browser.ts'
+      'app': './index.ts'
     },
 
     /**
@@ -53,14 +53,7 @@ module.exports = function (options) {
        *
        * See: http://webpack.github.io/docs/configuration.html#resolve-extensions
        */
-      extensions: ['', '.ts', '.js'],
-
-      /**
-       * Make sure root is src
-       */
-      //modules: [ path.resolve(__dirname, 'src'), 'node_modules' ]
-      root: helpers.root('src')
-
+      extensions: ['.ts', '.js']
     },
 
     /**
@@ -75,20 +68,6 @@ module.exports = function (options) {
      *
      * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
      */
-    preLoaders: [
-
-        /**
-         * Tslint loader support for *.ts files
-         *
-         * See: https://github.com/wbuchwalter/tslint-loader
-         */
-        {
-          test: /\.ts$/,
-          loader: 'tslint-loader',
-          exclude: [helpers.root('node_modules')]
-        }
-
-      ],
 
       /**
        * An array of automatically applied loaders.
@@ -149,25 +128,13 @@ module.exports = function (options) {
          */
         {
           test: /\.css$/,
-          exclude: helpers.root('src', 'app'),
-          loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
-        },
-        {
-          test: /\.css$/,
-          include: helpers.root('src', 'app'),
-          loader: 'raw!postcss'
-        },
-        {
-          test: /\.scss$/,
-          exclude: helpers.root('src', 'app'),
-          loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!resolve-url!sass?sourceMap')
-        },
-        { 
-          test: /\.scss$/,
-          include: helpers.root('src', 'app'),
-          loaders: ['exports-loader?module.exports.toString()', 'css', 'postcss', 'sass']
+          loaders: ['to-string-loader', 'css-loader']
         },
 
+        {
+          test: /\.scss$/,
+          loaders: ["css-to-string-loader", "css-loader", "sass-loader"]
+        },
         /**
          * Raw loader support for *.html
          * Returns file content as string
@@ -199,28 +166,6 @@ module.exports = function (options) {
 
       ]
     },
-
-    /**
-     * An array of applied pre and post loaders.
-     *
-     * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
-     */
-     postLoaders: [
-      /**
-       * Instruments JS files with Istanbul for subsequent code coverage reporting.
-       * Instrument only testing sources.
-       *
-       * See: https://github.com/deepsweet/istanbul-instrumenter-loader
-       */
-      {
-        test: /\.(js|ts)$/, loader: 'istanbul-instrumenter-loader',
-        include: helpers.root('src'),
-        exclude: [
-          /\.(e2e|spec)\.ts$/,
-          /node_modules/
-        ]
-      }
-    ],
 
     /**
      * Add additional plugins to the compiler.
