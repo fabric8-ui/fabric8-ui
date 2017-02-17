@@ -1,12 +1,13 @@
-//@import "../../assets/stylesheets/color-variables";
-//@import "../../assets/stylesheets/mixins";
+@import "../../assets/vendor/patternfly/stylesheets/patternfly/color-variables";
+@import "../../assets/vendor/patternfly/stylesheets/patternfly/mixins";
+@import "../../assets/vendor/patternfly/stylesheets/bootstrap/mixins";
 .modal-footer{
     .btn{
         &:hover{
-            background-color: lightblue;//$color-pf-light-blue-500;
-            //@include gradient-vertical($color-pf-blue-300, $color-pf-blue-400);
-            border-color: blue;//$color-pf-blue-500;
-            color: white;//$color-pf-white;
+            background-color: $color-pf-light-blue-500;
+            @include gradient-vertical($color-pf-blue-300, $color-pf-blue-400);
+            border-color: $color-pf-blue-500;
+            color: $color-pf-white;
         }
     }
         
