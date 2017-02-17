@@ -10,7 +10,7 @@ export class IterationAttributes {
   endAt?: string;
   startAt?: string;
   name: string;
-  state?: string;
+  state: string;
   description?: string;
 }
 

@@ -58,9 +58,8 @@ export class IterationComponent implements OnInit, OnDestroy {
       .then((data) => {
         this.iterationService.getIterations(data.iterationsUrl)
         .then((iterations) => {
-          this.futureIterations = iterations.filter((iteration) => iteration.attributes.state === 'new');
-          this.currentIterations = iterations.filter((iteration) => iteration.attributes.state === 'start');
-          this.closedIterations = iterations.filter((iteration) => iteration.attributes.state === 'close');
+          this.allIterations = iterations;
+          this.clusterIterations();
         })
         .catch ((e) => {
           console.log('Some error has occured', e);

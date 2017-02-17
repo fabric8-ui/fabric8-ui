@@ -236,7 +236,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
         })
         .catch ((err: any) => {
           this.validationError = true;
-          console.log('Spcae not found');
+          console.log('Space not found');
         });
       } else {
         this.validationError = true;

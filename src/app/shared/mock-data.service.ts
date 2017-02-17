@@ -309,14 +309,17 @@ export class MockDataService {
   }
 
   public createIteration(iteration: any): any {
-    var localIteration = this.makeCopy(iteration);
+    var localIteration = this.makeCopy(iteration.data);
     localIteration.id = this.createId();
+    if (!localIteration.attributes.hasOwnProperty('state') && !localIteration.attributes.state) {
+      localIteration.attributes['state'] = 'new';
+    }
     this.iterations.push(localIteration);
     return this.makeCopy(localIteration);
   }
 
   public updateIteration(iteration: any): any {
-    var localIteration = this.makeCopy(iteration);
+    var localIteration = this.makeCopy(iteration.data);
     for (var i = 0; i < this.iterations.length; i++)
       if (this.iterations[i].id === localIteration.id) {
         this.iterations.splice(i, 1, localIteration);

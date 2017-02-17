@@ -85,6 +85,10 @@ export class MockHttp extends Http {
         newResult.params['spaceId'] = spaceId;
         result = newResult;
       }
+      if (result.path.indexOf('/iterations/') == 0) {
+        result['extraPath'] = result.path.replace(/^\/iterations\//, '');
+        result['path'] = '/iterations';
+      }
       this.logger.log('Parsed request path: ' + JSON.stringify(result));
       return result;
     }
@@ -228,7 +232,7 @@ export class MockHttp extends Http {
       } else if (path.path === '/iterations') {
         if (typeof body == 'string')
           body = JSON.parse(body);
-        return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.createIteration(body));
+        return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.createIteration(body) });
       } else if (path.path === '/workitemlinks') {
         return this.createResponse(url.toString(), 200, 'ok', {
           data: this.mockDataService.createWorkItemLink(JSON.parse(body).data),
@@ -319,9 +323,9 @@ export class MockHttp extends Http {
         else
           return this.createResponse(url.toString(), 500, 'WorkItemLink does not exist: ' + path.extraPath, {});
       } else if (path.path === '/iterations' && path.extraPath != null) {
-        var result = this.mockDataService.updateIteration(JSON.parse(body));
+        var result = this.mockDataService.updateIteration(body);
         if (result != null)
-          return this.createResponse(url.toString(), 200, 'ok', result);
+          return this.createResponse(url.toString(), 200, 'ok', { data: result });
         else
           return this.createResponse(url.toString(), 500, 'Iteration does not exist: ' + path.extraPath, {});
       } else
