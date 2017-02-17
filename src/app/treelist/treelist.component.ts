@@ -4,8 +4,8 @@ import { TreeNode, TREE_ACTIONS, KEYS, IActionMapping, TreeComponent } from 'ang
 // See docs: https://angular2-tree.readme.io/docs
 @Component({
   selector: 'alm-tree-list',
-  templateUrl: './treelist.component.html',
-  styleUrls: ['./treelist.component.scss'],
+  template: require('./treelist.component.html'),
+  styles: [require('./treelist.component.scss')],
   encapsulation: ViewEncapsulation.None
 })
 
