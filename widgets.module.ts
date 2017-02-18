@@ -51,11 +51,11 @@ import { AlmTrim } from './src/app/pipes/alm-trim';
     AlmLinkTarget,
     AlmSearchHighlight,
     AlmTrim,
+    AlmEditableModule,
+    AlmIconModule,
     ContainerTogglerModule,
     DialogModule,
     DropdownModule,
-    AlmEditableModule,
-    AlmIconModule,
     InfiniteScrollModule,
     TreeListModule
   ]
