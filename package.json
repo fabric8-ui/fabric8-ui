@@ -1,6 +1,6 @@
 {
   "name": "ngx-widgets",
-  "version": "0.2.8",
+  "version": "0.2.10",
   "description": "A collection of Angular components and other useful things to be shared.",
   "main": "bundles/ngx-widgets.umd.js",
   "module": "index.js",
@@ -66,14 +66,16 @@
     "npm": ">= 3"
   },
   "dependencies": {},
-  "peerDependencies": {},
+  "peerDependencies": {
+    "angular2-tree-component": "^2.7.0"
+  },
   "devDependencies": {
     "@angular/common": "2.2.3",
     "@angular/compiler": "2.2.3",
     "@angular/compiler-cli": "2.2.3",
     "@angular/core": "2.2.3",
     "@angular/forms": "2.2.3",
-    "@angular/http": "2.1.1",
+    "@angular/http": "2.2.3",
     "@angular/platform-browser": "2.2.3",
     "@angular/platform-browser-dynamic": "2.2.3",
     "@types/jasmine": "2.5.41",
