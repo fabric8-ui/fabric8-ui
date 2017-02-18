@@ -12,16 +12,6 @@ import { Component, ViewEncapsulation, Output, EventEmitter } from '@angular/cor
   encapsulation: ViewEncapsulation.None,
   template: require('./container-toggler.html'),
   styles: [require('./container-toggler.scss')]
-  // template: `
-  //   <div>
-  //       <span (click)="prev()" class="prev">Previous</span>
-  //       <span (click)="next()" class="next">Next</span>
-  //   </div>
-  //
-  // `,
-  // styles: [`
-  //
-  // `]
 })
 
 export class ContainerTogglerComponent {
