@@ -15,4 +15,5 @@ export { DropdownOption } from './src/app/dropdown/dropdown-option';
 export { AlmEditableModule } from './src/app/editable/almeditable.module';
 export { AlmIconModule } from './src/app/icon/almicon.module';
 export { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
+export { TreeListComponent } from './src/app/treelist/treelist.module';
 export { TreeListModule } from './src/app/treelist/treelist.module';

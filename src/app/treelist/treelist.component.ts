@@ -1,11 +1,11 @@
 import { Component, Input, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { TreeNode, TREE_ACTIONS, KEYS, IActionMapping, TreeComponent } from 'angular2-tree-component';
+import { TreeNode, TREE_ACTIONS, IActionMapping, TreeComponent } from 'angular2-tree-component';
 
 // See docs: https://angular2-tree.readme.io/docs
 @Component({
   selector: 'alm-tree-list',
   template: require('./treelist.component.html'),
-  styles: [require('./treelist.component.css')],
+  styles: [require('./treelist.component.css').toString()],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -28,7 +28,7 @@ export class TreeListComponent {
         TREE_ACTIONS.TOGGLE_SELECTED(tree, node, $event)
       }
     }
-  };
+  }
 
   // Defaults
   defaultOptions = {
