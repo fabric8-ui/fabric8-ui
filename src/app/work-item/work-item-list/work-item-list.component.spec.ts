@@ -17,15 +17,16 @@ import { CommonModule } from '@angular/common';
 
 import { DndModule } from 'ng2-dnd';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
+import {
+  AlmArrayFilter,
+  AlmIconModule,
+  DialogModule,
+  InfiniteScrollModule
+} from 'ngx-widgets';
 
 import { Broadcaster } from '../../shared/broadcaster.service';
 import { Logger } from '../../shared/logger.service';
-import { Dialog } from '../../shared-component/dialog/dialog';
 
-import { AlmIconModule } from '../../shared-component/icon/almicon.module';
-import { AlmArrayFilter } from '../../pipes/alm-array-filter.pipe';
-import { DialogModule }   from '../../shared-component/dialog/dialog.module';
-import { InfiniteScrollModule }   from '../../shared-component/infinitescroll/infinitescroll.module';
 import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
 
 import { AuthenticationService } from '../../auth/authentication.service';

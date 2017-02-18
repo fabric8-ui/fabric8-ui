@@ -1,19 +1,21 @@
 import { Link } from '../models/link';
 import { Injectable, Component } from '@angular/core';
 import { Headers, Http } from '@angular/http';
-import { cloneDeep } from 'lodash';
+
 import 'rxjs/add/operator/toPromise';
 import { Subscription } from 'rxjs/Subscription';
 
-import { SpaceService, Space } from './../shared/mock-spaces.service';
+import { cloneDeep } from 'lodash';
+import { DropdownOption } from 'ngx-widgets';
+
+import { SpaceService, Space } from '../shared/mock-spaces.service';
 import { AuthenticationService } from '../auth/authentication.service';
 import {
-  Comment,
-  Comments,
-  CommentPost
+Comment,
+Comments,
+CommentPost
 } from '../models/comment';
-import { Broadcaster } from './../shared/broadcaster.service';
-import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
+import { Broadcaster } from '../shared/broadcaster.service';
 import { IterationModel } from '../models/iteration.model';
 import { IterationService } from '../iteration/iteration.service';
 import { Logger } from '../shared/logger.service';
@@ -27,7 +29,7 @@ import {
 } from '../models/work-item';
 import { WorkItemType } from './work-item-type';
 
-import { MockHttp } from './../shared/mock-http';
+import { MockHttp } from '../shared/mock-http';
 import Globals = require('./../shared/globals');
 
 @Injectable()

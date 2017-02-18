@@ -85,7 +85,7 @@
     "ng2-dnd": "2.0.1",
     "ng2-dropdown": "0.0.15",
     "ng2-modal": "0.0.22",
-    "ngx-widgets": "0.2.11",
+    "ngx-widgets": "file:///home/josh/.nvm/versions/node/v6.9.1/lib/node_modules/ngx-widgets",
     "ng2bln-count-pipe": "1.1.0",
     "obsidian-generator-frontend": "0.0.7",
     "patternfly": "3.8.1",

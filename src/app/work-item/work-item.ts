@@ -1,4 +1,4 @@
-import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
+import { DropdownOption } from 'ngx-widgets';
 
 export class WorkItem {
   id: string;

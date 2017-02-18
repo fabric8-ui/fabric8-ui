@@ -4,7 +4,7 @@ import { CommonModule }       from '@angular/common';
 
 import { DashboardComponent }   from './dashboard.component';
 import { DashboardRoutingModule }   from './dashboard-routing.module';
-import { ProjectDialogComponent } from './../project-dialog/project-dialog.component';
+import { ProjectDialogComponent } from '../project-dialog/project-dialog.component';
 
 @NgModule({
   imports:      [ CommonModule, DashboardRoutingModule, ModalModule ],
