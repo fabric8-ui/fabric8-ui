@@ -10,9 +10,10 @@
  */
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
-  testSupport = require('./testSupport');
+  testSupport = require('./testSupport'),
+  constants = require("./constants");
 
-describe('Iteration tests :: ', function () {
+describe('Iteration CRUD tests :: ', function () {
   var page, items, browserMode;
 
 var until = protractor.ExpectedConditions;
@@ -23,27 +24,48 @@ var waitTime = 30000;
     page = new WorkItemListPage(true);
     testSupport.setTestSpace(page);
   });
-  it('Verify Iteration add button and label are clickable + dialoge label is present -phone ', function() {
-      expect(page.iterationAddButton().isPresent()).toBe(true);
-      page.iterationAddButton().click();
+
+  it('Verify Iteration add button and label are clickable + dialoge label is present', function() {
+      expect(page.iterationAddButton.isPresent()).toBe(true);
+      page.clickIterationAddButton();
       expect(page.getIterationDialogTitle()).toBe('Create Iteration');
       page.clickCancelIteration();
   });
-  /*
-  it('Verify Iteration helpbox is showing -phone ', function() {
-      page.iterationAddButton().click();
-      expect(page.getIterationDialogTitle()).toBe('Create Iteration');
-      // TODO: This message only comes when there is an error
-      // expect(page.getHelpBoxIteration()).toBe('Iteration names must be unique within a project');
-  });
-  */
+
   it('Verify Iteration Set Iteration Title description -hit Create -phone ', function() {
       page.iterationAddButton().click();
       page.setIterationTitle('New Iteration',false);
       page.setIterationDescription('New Iteration',false);
       page.clickCreateIteration();
-      /**This test will be complete when iteration functionality Implemented  */
+      expect(page.getHelpBoxIteration()).toBe('Iteration names must be unique within a project');
   });
+
+  it('Verify Iteration Set Iteration Title description -hit Create ', function() {
+
+    /* Create a new iteration */ 
+    page.clickIterationAddButton();
+    page.setIterationTitle('New Iteration',false);
+    page.setIterationDescription('New Iteration',false);
+    page.clickCreateIteration();
+
+    /* Verify the new iteration is present */
+    page.expandFutureIterationIcon.click();
+    browser.wait(until.presenceOf(page.firstFutureIteration), constants.WAIT, 'Failed to find thefirstIteration');
+   
+    /* Verify that the new iteration was successfully added */ 
+    expect(page.firstFutureIteration.getText()).toContain('New Iteration');
+
+
+  }); 
+
+
+
+// Create new iteration 
+// Query/Edit iteration 
+// Delete iteration 
+// Start and then close iteration 
+// Associate work items with iteration 
+
 
 
 });

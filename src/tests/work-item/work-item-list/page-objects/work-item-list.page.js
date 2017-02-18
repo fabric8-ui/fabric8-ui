@@ -475,13 +475,69 @@ class WorkItemListPage {
   clickWorkItemKebabMoveToBottomButton (parentElement) {
     return this.workItemKebabMoveToBottomButton (parentElement).click();
   }
-  /**Iterations Page object model */
+  
   iterationAddButton  (){
     return element(by.id('add-iteration-icon'));
   }
+
+  /* Iterations Page object model */
+
+  get expandCurrentIterationIcon () {
+    return element(by.xpath ("//h4[.//text()[contains(.,'Current Iteration')]]"));
+  }
+
+  get clickExpandCurrentIterationIcon () {
+    return this.expandCurrentIterationIcon.click(); 
+  }
+
+  get expandFutureIterationIcon () {
+    return element(by.xpath ("//h4[.//text()[contains(.,'Future Iteration')]]"));
+  }
+
+  clickExpandFutureIterationIcon () {
+    return this.expandFutureIterationIcon.click(); 
+  }
+
+  expandPastIterationIcon () {
+    return element(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]"));
+  }
+
+  clickExpandPastIterationIcon () {
+    return this.expandPastIterationIcon.click(); 
+  }
+
+  get futureIterations () {
+    return element.all(by.xpath ("//h4[.//text()[contains(.,'Future Iteration')]]/../../../ul/li"));
+  }
+
+  get firstFutureIteration () {
+    return element.all(by.xpath ("//h4[.//text()[contains(.,'Future Iteration')]]/../../../ul/li")).first();
+  }
+
+  get lastFutureIteration () {
+    return element.all(by.xpath ("//h4[.//text()[contains(.,'Future Iteration')]]/../../../ul/li")).last();
+  }
+
+  get pastIterations () {
+    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]/../../../ul"));
+  }
+
+  get firstPastIteration () {
+    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]/../../../ul/li")).first();
+  }
+
+  get lastPastIteration () {
+    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]/../../../ul/li")).last();
+  }
+    
+  clickIterationAddButton () {
+    return this.iterationAddButton.click();
+  }
+
   clickIterationCreateLabel  (){
     return element(by.id("add-iteration")).click();
   }
+
   get iterationTitle  (){
     return element(by.id("iteration-name")).click();
   }
