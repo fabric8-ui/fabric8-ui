@@ -19,7 +19,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
  * Webpack Constants
  */
 const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
-const API_URL = process.env.API_URL || (ENV==='inmemory'?'app/':'http://localhost:8080/api/');
+const FABRIC8_WIT_API_URL = process.env.FABRIC8_WIT_API_URL;
 const extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
 const extractSASS = new ExtractTextPlugin('stylesheets/[name].scss');
 
@@ -257,7 +257,7 @@ module.exports = function (options) {
         'HMR': false,
         'process.env': {
           'ENV': JSON.stringify(ENV),
-          'API_URL': JSON.stringify(API_URL),
+          'FABRIC8_WIT_API_URL': JSON.stringify(FABRIC8_WIT_API_URL),
           'NODE_ENV': JSON.stringify(ENV),
           'HMR': false,
         }
