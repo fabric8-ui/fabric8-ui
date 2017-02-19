@@ -1,8 +1,3 @@
-import { MockDataService } from './../shared/mock-data.service';
-import { SpaceService } from './../shared/mock-spaces.service';
-import { cloneDeep } from 'lodash';
-import { Broadcaster } from '../shared/broadcaster.service';
-import { UserService } from '../user/user.service';
 import {
   async,
   inject,
@@ -16,14 +11,21 @@ import {
 } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { DropdownOption } from 'ngx-widgets';
+
 import { AuthenticationService } from '../auth/authentication.service';
-import { DropdownOption } from '../shared-component/dropdown/dropdown-option';
 import { Logger } from '../shared/logger.service';
+
 import { IterationService } from '../iteration/iteration.service';
 import { WorkItem } from '../models/work-item';
 import { WorkItemService } from './work-item.service';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { MockDataService } from '../shared/mock-data.service';
+import { SpaceService } from '../shared/mock-spaces.service';
+import { cloneDeep } from 'lodash';
+import { Broadcaster } from '../shared/broadcaster.service';
+import { UserService } from '../user/user.service';
 
 describe('Work Item Service - ', () => {
 
