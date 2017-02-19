@@ -131,12 +131,9 @@ module.exports = {
       { test: /\.css$/,
         exclude: [helpers.root('src', 'app')],
         use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
+          fallback: "to-string-loader",
           use: {
-            loader: "css-loader",
-            options: {
-              sourceMap: true
-            }
+            loader: "css-loader"
           },
           publicPath: "../"
         })
@@ -149,7 +146,7 @@ module.exports = {
       { test: /\.scss$/,
         exclude: [helpers.root('src', 'app')],
         use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
+          fallback: "to-string-loader",
           use: {
             loader: "sass-loader"
           },

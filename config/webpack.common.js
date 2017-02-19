@@ -14,7 +14,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.webpack.js', '.wep.js', '.js', '.ts']
+    extensions: ['.webpack.js', '.wep.js', '.js', '.ts']
   },
 
   stats: {
@@ -26,7 +26,10 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        loaders: ['ts', 'angular2-template-loader'],
+        loaders: [
+          'ts-loader',
+          'angular2-template-loader'
+        ],
         exclude: [/\.(spec|e2e)\.ts$/]
       },
       {
@@ -35,17 +38,14 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-        loader: 'file?name=assets/[name].[hash].[ext]'
+        loader: 'file-loader?name=assets/[name].[hash].[ext]'
       },
       { test: /\.css$/,
         exclude: helpers.root('src', 'app'),
         use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
+          fallback: "to-string-loader",
           use: {
-            loader: "css-loader",
-            options: {
-              sourceMap: true
-            }
+            loader: "css-loader"
           },
           publicPath: "../"
         })
@@ -53,17 +53,14 @@ module.exports = {
       {
         test: /\.css$/,
         include: helpers.root('src', 'app'),
-        loader: 'raw!postcss'
+        loader: 'raw-loader!postcss-loader'
       },
       { test: /\.scss$/,
         exclude: helpers.root('src', 'app'),
         use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
+          fallback: "to-string-loader",
           use: {
-            loader: "sass-loader",
-            options: {
-              sourceMap: true
-            }
+            loader: "sass-loader"
           },
           publicPath: "../"
         })
@@ -71,7 +68,7 @@ module.exports = {
       { 
         test: /\.scss$/,
         include: helpers.root('src', 'app'),
-        loaders: ['exports-loader?module.exports.toString()', 'css', 'postcss', 'sass']
+        loaders: ['raw-loader', 'css-loader', 'postcss-loader', 'sass-loader']
       }
     ]
   },
@@ -99,7 +96,7 @@ module.exports = {
     })
   ],
 
-  postcss: function () {
-      return [precss, autoprefixer({ browsers: ['last 2 versions'] })];
-  }
+  // postcss: function () {
+  //     return [precss, autoprefixer({ browsers: ['last 2 versions'] })];
+  // }
 };
