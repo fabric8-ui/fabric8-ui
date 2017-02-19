@@ -18,6 +18,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
  */
 const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
 const API_URL = process.env.API_URL || (ENV==='inmemory'?'app/':'http://localhost:8080/api/');
+const extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
+const extractSASS = new ExtractTextPlugin('stylesheets/[name].scss');
 
 /**
  * Webpack configuration
@@ -50,12 +52,12 @@ module.exports = {
      *
      * See: http://webpack.github.io/docs/configuration.html#resolve-extensions
      */
-    extensions: ['', '.ts', '.js'],
+    extensions: ['.ts', '.js'],
 
     /**
      * Make sure root is src
      */
-    root: helpers.root('src'),
+    // root: helpers.root('src'),
 
   },
 
@@ -71,22 +73,22 @@ module.exports = {
      *
      * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
      */
-    preLoaders: [
-
-      /**
-       * Tslint loader support for *.ts files
-       *
-       * See: https://github.com/wbuchwalter/tslint-loader
-       */
-      {
-        test: /\.ts$/,
-        loader: 'tslint-loader',
-        exclude: [helpers.root('node_modules')]
-      }
-
-
-
-    ],
+    // preLoaders: [
+    //
+    //   /**
+    //    * Tslint loader support for *.ts files
+    //    *
+    //    * See: https://github.com/wbuchwalter/tslint-loader
+    //    */
+    //   {
+    //     test: /\.ts$/,
+    //     loader: 'tslint-loader',
+    //     exclude: [helpers.root('node_modules')]
+    //   }
+    //
+    //
+    //
+    // ],
 
     /**
      * An array of automatically applied loaders.
@@ -96,7 +98,7 @@ module.exports = {
      *
      * See: http://webpack.github.io/docs/configuration.html#module-loaders
      */
-    loaders: [
+    rules: [
 
       /**
        * Typescript loader support for .ts and Angular 2 async routes via .async.ts
@@ -106,7 +108,7 @@ module.exports = {
       {
         test: /\.ts$/,
         loaders: [
-            'ts',
+            'ts-loader',
             'angular2-template-loader'
         ],
         exclude: [/\.e2e\.ts$/]
@@ -126,25 +128,38 @@ module.exports = {
        * See: https://github.com/webpack/raw-loader
        */
 
-      {
-        test: /\.css$/,
-        exclude: helpers.root('src', 'app'),
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+      { test: /\.css$/,
+        exclude: [helpers.root('src', 'app')],
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: {
+            loader: "css-loader",
+            options: {
+              sourceMap: true
+            }
+          },
+          publicPath: "../"
+        })
       },
       {
         test: /\.css$/,
         include: helpers.root('src', 'app'),
-        loader: 'raw!postcss'
+        loader: 'raw-loader!postcss-loader'
+      },
+      { test: /\.scss$/,
+        exclude: [helpers.root('src', 'app')],
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: {
+            loader: "sass-loader"
+          },
+          publicPath: "../"
+        })
       },
       {
         test: /\.scss$/,
-        exclude: helpers.root('src', 'app'),
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!resolve-url!sass?sourceMap')
-      },
-      { 
-        test: /\.scss$/,
         include: helpers.root('src', 'app'),
-        loaders: ['exports-loader?module.exports.toString()', 'css', 'postcss', 'sass']
+        loaders: ['exports-loader?module.exports.toString()', 'css-loader', 'postcss-loader', 'sass-loader']
       },
 
       /**
@@ -155,29 +170,29 @@ module.exports = {
        */
       { test: /\.html$/, loader: 'raw-loader', exclude: [helpers.root('src/index.html')] }
 
-    ],
+    ]
 
     /**
      * An array of applied pre and post loaders.
      *
      * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
      */
-    postLoaders: [
-      /**
-       * Instruments JS files with Istanbul for subsequent code coverage reporting.
-       * Instrument only testing sources.
-       *
-       * See: https://github.com/deepsweet/istanbul-instrumenter-loader
-       */
-      {
-        test: /\.(js|ts)$/, loader: 'istanbul-instrumenter-loader',
-        include: helpers.root('src'),
-        exclude: [
-          /\.(e2e|spec)\.ts$/,
-          /node_modules/
-        ]
-      }
-    ]
+    // postLoaders: [
+    //   /**
+    //    * Instruments JS files with Istanbul for subsequent code coverage reporting.
+    //    * Instrument only testing sources.
+    //    *
+    //    * See: https://github.com/deepsweet/istanbul-instrumenter-loader
+    //    */
+    //   {
+    //     test: /\.(js|ts)$/, loader: 'istanbul-instrumenter-loader',
+    //     include: helpers.root('src'),
+    //     exclude: [
+    //       /\.(e2e|spec)\.ts$/,
+    //       /node_modules/
+    //     ]
+    //   }
+    // ]
   },
 
   /**
@@ -186,6 +201,9 @@ module.exports = {
    * See: http://webpack.github.io/docs/configuration.html#plugins
    */
   plugins: [
+
+    extractCSS,
+    extractSASS,
 
     /**
      * Plugin: DefinePlugin
@@ -229,11 +247,11 @@ module.exports = {
    *
    * See: https://github.com/wbuchwalter/tslint-loader
    */
-  tslint: {
-    emitErrors: false,
-    failOnHint: false,
-    resourcePath: 'src'
-  },
+  // tslint: {
+  //   emitErrors: false,
+  //   failOnHint: false,
+  //   resourcePath: 'src'
+  // },
 
   /**
    * Include polyfills or mocks for various node stuff
@@ -242,7 +260,7 @@ module.exports = {
    * See: https://webpack.github.io/docs/configuration.html#node
    */
   node: {
-    global: 'window',
+    global: true,
     process: false,
     crypto: 'empty',
     module: false,

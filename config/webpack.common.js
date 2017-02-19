@@ -23,7 +23,7 @@ module.exports = {
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.ts$/,
         loaders: ['ts', 'angular2-template-loader'],
@@ -31,26 +31,42 @@ module.exports = {
       },
       {
         test: /\.html$/,
-        loader: 'html'
+        loader: 'html-loader'
       },
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
         loader: 'file?name=assets/[name].[hash].[ext]'
       },
-      {
-        test: /\.css$/,
+      { test: /\.css$/,
         exclude: helpers.root('src', 'app'),
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: {
+            loader: "css-loader",
+            options: {
+              sourceMap: true
+            }
+          },
+          publicPath: "../"
+        })
       },
       {
         test: /\.css$/,
         include: helpers.root('src', 'app'),
         loader: 'raw!postcss'
       },
-      {
-        test: /\.scss$/,
+      { test: /\.scss$/,
         exclude: helpers.root('src', 'app'),
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!resolve-url!sass?sourceMap')
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: {
+            loader: "sass-loader",
+            options: {
+              sourceMap: true
+            }
+          },
+          publicPath: "../"
+        })
       },
       { 
         test: /\.scss$/,

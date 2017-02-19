@@ -10,6 +10,9 @@ const ENV = process.env.ENV || process.env.NODE_ENV || 'development';
 const API_URL = process.env.API_URL || (ENV==='inmemory'?'app/':'http://localhost:8080/api/');
 const FORGE_URL = process.env.FORGE_URL || 'http://localhost:8080/forge';
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
+const extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
+const extractSASS = new ExtractTextPlugin('stylesheets/[name].scss');
+
 
 const METADATA = webpackMerge(commonConfig.metadata, {
   API_URL: API_URL,
@@ -31,7 +34,8 @@ module.exports = webpackMerge(commonConfig, {
 
   plugins: [
     new DashboardPlugin(),
-    new ExtractTextPlugin('[name].css'),
+    extractCSS,
+    extractSASS,
 
     /**
      * Plugin: DefinePlugin

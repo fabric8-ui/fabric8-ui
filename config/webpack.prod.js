@@ -8,6 +8,9 @@ const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 const API_URL = process.env.API_URL || 'http://api.almighty.io/api/';
 const FORGE_URL = process.env.FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
+const extractCSS = new ExtractTextPlugin('stylesheets/[name].[hash].css');
+const extractSASS = new ExtractTextPlugin('stylesheets/[name].[hash].scss');
+
 
 const METADATA = webpackMerge(commonConfig.metadata, {
   API_URL: API_URL,
@@ -36,7 +39,8 @@ module.exports = webpackMerge(commonConfig, {
     // new webpack.optimize.DedupePlugin(),
     // FIXME: webpack's --optimize-minimize option is not working
     //new webpack.optimize.UglifyJsPlugin(),
-    new ExtractTextPlugin('[name].[hash].css'),
+    extractCSS,
+    extractSASS,
     new webpack.DefinePlugin({
       'process.env': {
         'ENV': JSON.stringify(METADATA.ENV),
