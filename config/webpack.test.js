@@ -20,6 +20,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
  */
 const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
 const API_URL = process.env.API_URL || (ENV==='inmemory'?'app/':'http://localhost:8080/api/');
+const extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
+const extractSASS = new ExtractTextPlugin('stylesheets/[name].scss');
 
 /**
  * Webpack configuration
@@ -149,24 +151,33 @@ module.exports = function (options) {
          */
         {
           test: /\.css$/,
-          exclude: helpers.root('src', 'app'),
-          loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+          loaders: ['to-string-loader', 'css-loader']
         },
-        {
-          test: /\.css$/,
-          include: helpers.root('src', 'app'),
-          loader: 'raw!postcss'
-        },
+
         {
           test: /\.scss$/,
-          exclude: helpers.root('src', 'app'),
-          loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!resolve-url!sass?sourceMap')
+          loaders: ["css-to-string", "css-loader", "sass-loader"]
         },
-        { 
-          test: /\.scss$/,
-          include: helpers.root('src', 'app'),
-          loaders: ['exports-loader?module.exports.toString()', 'css', 'postcss', 'sass']
-        },
+        // {
+        //   test: /\.css$/,
+        //   exclude: helpers.root('src', 'app'),
+        //   loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+        // },
+        // {
+        //   test: /\.css$/,
+        //   include: helpers.root('src', 'app'),
+        //   loader: 'raw!postcss'
+        // },
+        // {
+        //   test: /\.scss$/,
+        //   exclude: helpers.root('src', 'app'),
+        //   loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!resolve-url!sass?sourceMap')
+        // },
+        // {
+        //   test: /\.scss$/,
+        //   include: helpers.root('src', 'app'),
+        //   loaders: ['exports-loader?module.exports.toString()', 'css', 'postcss', 'sass']
+        // },
 
         /**
          * Raw loader support for *.html
@@ -228,6 +239,8 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: [
+      extractCSS,
+      extractSASS,
 
       /**
        * Plugin: DefinePlugin
