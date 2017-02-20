@@ -1,5 +1,6 @@
 import { MockHttp } from './mock-http';
 import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { SpaceMockGenerator } from './mock-data/space-mock-generator';
@@ -25,35 +26,19 @@ export class SpaceService {
   private currentSpace: Space = null;
 
   constructor(private http: Http, private mockDataService: MockDataService, private logger: Logger) {
-    // init mock data and broadcaster
-    // TODO: evaluate if the local broadcaster or a global broadcaster (like in Broadcaster service class) makes sense.
-    // FIXME: Need to find out a better way to write this service and event listener
-    if (Globals.inTestMode) {
-      this.logger.log('SpaceService running in ' + process.env.ENV + ' mode.');
-      this.spaces = this.createSpacesFromServiceResponse(mockDataService.getAllSpaces());
-      this.initSpaces();
-    } else {
-      this.logger.log('SpaceService running in production mode.');
-      // TODO:  this is the base URL slightly to be changed
-      let url = process.env.API_URL + 'spaces';
-      this.http.get(url)
-      .toPromise()
-      .then((spaces: any) => {
-        this.spaces = this.createSpacesFromServiceResponse(spaces.json().data);
-        this.initSpaces();
-      })
-    }
   }
 
-  private switchToSpace(newSpace: Space) {
+  public switchToSpace(newSpace: Space) {
     this.currentSpace = newSpace;
     this.currentSpaceSubjectSource.next(newSpace);
   }
 
   private initSpaces() {
-    this.currentSpace = this.spaces[0];
-    this.currentSpaceSubjectSource = new BehaviorSubject<Space>(this.spaces[0]);
-    this.currentSpaceBus = this.currentSpaceSubjectSource.asObservable();
+    if (!this.currentSpace) {
+      this.currentSpace = this.spaces[0];
+      this.currentSpaceSubjectSource = new BehaviorSubject<Space>(this.spaces[0]);
+      this.currentSpaceBus = this.currentSpaceSubjectSource.asObservable();
+    }
   }
 
   getCurrentSpaceBus(): Observable<Space> {
@@ -61,11 +46,43 @@ export class SpaceService {
   }
 
   getCurrentSpace(): Promise<Space> {
-    return Observable.of(this.currentSpace).toPromise();
+    if (this.currentSpace) {
+      return Observable.of(this.currentSpace).toPromise();
+    } else {
+      let observable = Observable.create((observer: Observer<Space>) => {
+        this.getAllSpaces().then((spaces: Space[]) => {
+          observer.next(this.currentSpace);
+          observer.complete();
+        });
+      });
+      return observable.toPromise();
+    }
   }
 
   getAllSpaces(): Promise<Space[]> {
-    return Observable.of(this.spaces).toPromise();
+    if (Globals.inTestMode) {
+      this.logger.log('SpaceService running in ' + process.env.ENV + ' mode.');
+      this.spaces = this.createSpacesFromServiceResponse(this.mockDataService.getAllSpaces());
+      this.initSpaces();
+      this.logger.log('Initialized spaces from inmemory.');
+      return Observable.of(this.spaces).toPromise();
+    } else {
+      this.logger.log('SpaceService running in production mode.');
+      // TODO:  this is the base URL slightly to be changed
+      let url = process.env.API_URL + 'spaces';    
+      let observable = Observable.create((observer: Observer<Space[]>) => {
+        this.http.get(url)
+        .toPromise()
+        .then((spaces: any) => {
+          this.spaces = this.createSpacesFromServiceResponse(spaces.json().data);
+          this.initSpaces();
+          this.logger.log('Initialized spaces from server.');
+          observer.next(this.spaces);
+          observer.complete();
+        });
+      });
+      return observable.toPromise();
+    }
   }
 
   private createSpacesFromServiceResponse(response: any): Space[] {

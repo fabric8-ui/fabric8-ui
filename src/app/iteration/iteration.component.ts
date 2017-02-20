@@ -53,22 +53,13 @@ export class IterationComponent implements OnInit, OnDestroy {
   }
 
   getAndfilterIterations() {
-    // Fetching space data
-    // This is temporary
-    this.spaceService.getCurrentSpace()
-      .then((data) => {
-        this.iterationService.getIterations(data.iterationsUrl)
-        .then((iterations) => {
+      this.iterationService.getIterations()
+      .then((iterations) => {
           this.allIterations = iterations;
           this.clusterIterations();
-        })
-        .catch ((e) => {
-          console.log('Some error has occured', e);
-        });
       })
-      .catch ((err: any) => {
-        console.log('Space not found');
-        console.log(err);
+      .catch ((e) => {
+        console.log('Some error has occured', e);
       });
   }
 
@@ -80,11 +71,15 @@ export class IterationComponent implements OnInit, OnDestroy {
 
   onCreateOrupdateIteration(iteration: IterationModel) {
     let index = this.allIterations.findIndex((it) => it.id === iteration.id);
+    console.log("############1");
+    console.log(this.allIterations);
     if (index >= 0) {
       this.allIterations[index] = iteration;
     } else {
       this.allIterations.splice(this.allIterations.length, 0, iteration);
     }
+    console.log("############2");
+    console.log(this.allIterations);
     this.clusterIterations();
   }
 

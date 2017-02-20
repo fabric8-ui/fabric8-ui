@@ -80,6 +80,11 @@
       <li routerLinkActive="active">
         <a [routerLink]="['/hypothesis']" id="header_menuHypothesis" >Hypothesis Engine <sup><span class="fa fa-trademark"></span></sup></a>
       </li>
+      <li>
+        <select [ngModel]="selectedSpace" (ngModelChange)="onSpaceChange($event)">
+          <option *ngFor="let space of spaces" [ngValue]="space">{{space.name}}</option>
+        </select>
+      </li>
       <!-- <li> -->
         <!-- Removed obsidian module -->
         <!-- <a [routerLink]="['/intro']" id="header_menuWizard" routerLinkActive="active">Microservices quickstart</a> -->

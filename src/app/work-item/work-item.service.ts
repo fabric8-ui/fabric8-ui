@@ -44,6 +44,10 @@ export class WorkItemService {
   private headers = new Headers({'Content-Type': 'application/json'});
   private availableStates: DropdownOption[] = [];
   public workItemTypes: WorkItemType[] = [];
+
+  // FIXME: this is the live list of work items, held in this instance of 
+  // workItemService. This prevents us from displaying two different lists of WIs.
+  // This might have to change in the future.
   private workItems: WorkItem[] = [];
   private nextLink: string = null;
   private initialWorkItemFetchDone = false;
@@ -71,7 +75,6 @@ export class WorkItemService {
       logger.log('WorkItemService running in production mode.');
     }
     // set initial space and subscribe to the space service to recognize space switches
-    // this.spaceService.getCurrentSpace().then(() => this.switchSpace());
     this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => this.switchSpace(space));
   }
 

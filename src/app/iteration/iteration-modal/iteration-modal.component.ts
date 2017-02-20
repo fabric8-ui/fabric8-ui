@@ -33,7 +33,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   private startDate: any;
   private endDate: any;
   private spaceError: Boolean = false;
-  private spaceName: string;
+  private spaceName: string = 'FIXME';
   private iterationName: string;
 
   private startDatePickerOptions: IMyOptions = {
@@ -180,64 +180,50 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     this.iteration.attributes.name = this.iteration.attributes.name.trim();
     if (this.iteration.attributes.name !== '') {
       this.validationError = false;
-      this.spaceService.getCurrentSpace()
-        .then((data) => {
-          let url = data.iterationsUrl;
-          this.iteration.relationships.space.data.id = data.id;
-          this.spaceName = data.attributes.name;
-
-          if (this.modalType == 'create') {
-            this.iterationService.createIteration(url, this.iteration)
-            .then((iteration) => {
-              this.onSubmit.emit(iteration);
-              this.resetValues();
-              this.createUpdateIterationDialog.close();
-            })
-            .catch ((e) => {
-              this.validationError = true;
-              console.log('Some error has occured', e);
-            })
-          } else {
+      if (this.modalType == 'create') {
+        this.iterationService.createIteration(this.iteration)
+          .then((iteration) => {
+            this.onSubmit.emit(iteration);
+            this.resetValues();
+            this.createUpdateIterationDialog.close();
+          })
+          .catch ((e) => {
+            this.validationError = true;
+            console.log('Some error has occured', e);
+          });
+      } else {
+        if (this.modalType == 'start') {
+          this.iteration.attributes.state = 'start';
+        } else if (this.modalType == 'close') {
+          this.iteration.attributes.state = 'close';
+        } else {
+          // Not include state if it's just an update
+          delete this.iteration.attributes.state;
+        }
+        this.iterationService.updateIteration(this.iteration)
+          .then((iteration) => {
+            this.onSubmit.emit(iteration);
             if (this.modalType == 'start') {
-              this.iteration.attributes.state = 'start';
-            } else if (this.modalType == 'close') {
-              this.iteration.attributes.state = 'close';
-            } else {
-              // Not include state if it's just an update
-              delete this.iteration.attributes.state;
-            }
-            this.iterationService.updateIteration(this.iteration)
-            .then((iteration) => {
-              this.onSubmit.emit(iteration);
-              if (this.modalType == 'start') {
-                let toastIterationName = this.iteration.attributes.name;
-                if (toastIterationName.length > 15) {
-                  toastIterationName = toastIterationName.slice(0, 15) + '...';
-                }
-                let notificationData = {
-                  'notificationText': `<strong>
-                                          ${toastIterationName}
-                                       </strong> &nbsp; has started.`,
-                  'notificationType': 'ok'
-                };
-                this.broadcaster.broadcast('toastNotification', notificationData);
-                this.iterationName = this.iteration.attributes.name;
+              let toastIterationName = this.iteration.attributes.name;
+              if (toastIterationName.length > 15) {
+                toastIterationName = toastIterationName.slice(0, 15) + '...';
               }
-              this.resetValues();
-              this.createUpdateIterationDialog.close();
-            })
-            .catch ((e) => {
-              this.spaceError = true;
-              // this.resetValues();
-              // console.log('Some error has occured', e.toString());
-            })
-          }
-
-        })
-        .catch ((err: any) => {
-          this.validationError = true;
-          console.log('Space not found');
-        });
+              let notificationData = {
+                'notificationText': '<strong>${toastIterationName}</strong> &nbsp; has started.',
+                'notificationType': 'ok'
+              };
+              this.broadcaster.broadcast('toastNotification', notificationData);
+              this.iterationName = this.iteration.attributes.name;
+            }
+            this.resetValues();
+            this.createUpdateIterationDialog.close();
+          })
+          .catch ((e) => {
+            this.spaceError = true;
+            // this.resetValues();
+            // console.log('Some error has occured', e.toString());
+          });
+        }
       } else {
         this.validationError = true;
       }

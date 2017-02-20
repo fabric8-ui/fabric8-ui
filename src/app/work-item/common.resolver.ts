@@ -29,17 +29,11 @@ export class IterationsResolve implements Resolve<IterationModel[]> {
   constructor(private iterationService: IterationService,
               private spaceService: SpaceService) {}
   resolve() {
-    return this.spaceService.getCurrentSpace()
-      .then((data: Space) => {
-        this.iterationService.getIterations(data.iterationsUrl)
-        .then(iterations =>  iterations)
-        .catch ((e) => {
-          console.log('Some error has occured', e);
-        })
-      })
-      .catch ((err) => {
-        console.log('Space not found');
-      });
+    this.iterationService.getIterations()
+    .then(iterations => iterations)
+    .catch ((e) => {
+      console.log('Some error has occured', e);
+    });
   }
 }
 

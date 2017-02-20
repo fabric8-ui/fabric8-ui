@@ -5,6 +5,7 @@ import { Logger } from '../shared/logger.service';
 import { User } from '../models/user';
 import { UserService } from '../user/user.service';
 import { AuthenticationService } from '../auth/authentication.service';
+import { SpaceService, Space } from '../shared/mock-spaces.service';
 import { Broadcaster } from '../shared/broadcaster.service';
 
 @Component({
@@ -18,6 +19,9 @@ export class HeaderComponent implements OnInit {
   loggedInUser: User;
   loggedIn: Boolean = false;
   imgLoaded: Boolean = false;
+
+  spaces: Space[] = [];
+  selectedSpace: Space = null;
 
 /*
   public tabs: Array<any> = [
@@ -49,6 +53,7 @@ export class HeaderComponent implements OnInit {
     private userService: UserService,
     private logger: Logger,
     private auth: AuthenticationService,
+    private spaceService: SpaceService,
     private broadcaster: Broadcaster) {}
 
   getLoggedUser(): void {
@@ -67,6 +72,12 @@ export class HeaderComponent implements OnInit {
     this.listenToEvents();
     this.getLoggedUser();
     this.loggedIn = this.auth.isLoggedIn();
+    this.spaceService.getAllSpaces().then(loadedSpaces => { 
+      this.spaces = loadedSpaces;
+      this.spaceService.getCurrentSpace().then(currentSpace => {
+        this.selectedSpace = currentSpace;
+      })
+    });
   }
 
   onImgLoad(){
@@ -84,5 +95,10 @@ export class HeaderComponent implements OnInit {
       .subscribe(message => {
         this.resetData();
     });
+  }
+
+  onSpaceChange(newSpace: Space) {
+    this.logger.log('Selected new Space: ' + newSpace.id);
+    this.spaceService.switchToSpace(newSpace);
   }
 }
