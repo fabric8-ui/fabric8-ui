@@ -114,8 +114,7 @@ export class WorkItemService {
       // Reseting stored data
       // if filter value is changed
       if (JSON.stringify(this.prevFilters) != JSON.stringify(filters)) {
-        this.workItems = [];
-        this.workItemIdIndexMap = {};
+        this.resetWorkItemList();
       }
       // Setting current filter as previous filter value
       this.prevFilters = cloneDeep(filters);
@@ -152,6 +151,12 @@ export class WorkItemService {
           }
         });
     });
+  }
+
+  // Reset work item big list
+  resetWorkItemList() {
+    this.workItems = [];
+    this.workItemIdIndexMap = {};
   }
 
   isListLoaded() {

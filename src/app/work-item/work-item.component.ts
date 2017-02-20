@@ -1,3 +1,5 @@
+import { SpaceService } from './../shared/mock-spaces.service';
+import { Subscription } from 'rxjs/Subscription';
 import {
   AfterViewInit,
   Component,
@@ -34,6 +36,7 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
   workItemDetail: WorkItem;
   workItemTypes: WorkItemType[];
   showTypesOptions: Boolean = false;
+  private spaceSubscription: Subscription = null;
 
   constructor(
     private auth: AuthenticationService,
@@ -41,6 +44,7 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
     private broadcaster: Broadcaster,
     private workItemService: WorkItemService,
     private router: Router,
+    private spaceService: SpaceService
   ) {
 
   }
@@ -48,7 +52,10 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.getWorkItemTypes();
+    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => {
+      console.log('[WorkItemComponent] New Space selected: ' + space.name);
+      this.getWorkItemTypes();
+    });
   }
 
   ngAfterViewInit(): void {

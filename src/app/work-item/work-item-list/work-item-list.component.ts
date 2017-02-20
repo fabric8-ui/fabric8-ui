@@ -71,8 +71,9 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
     // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
     this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => {
-      console.log('[WorkItemComponent] New Space selected: ' + space.name);
+      console.log('[WorkItemListComponent] New Space selected: ' + space.name);
       this.loadWorkItems();
+      this.workItemService.resetWorkItemList();
     });
   }
 
