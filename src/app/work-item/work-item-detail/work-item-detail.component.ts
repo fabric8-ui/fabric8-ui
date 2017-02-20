@@ -304,7 +304,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   }
 
   getIterations() {
-    this.iterations = this.iterationService.iterations;
+    this.iterationService.getIterations()
+      .then((iteration: IterationModel[]) => {
+        this.iterations = iteration;
+      });
   }
 
   onChangeState(option: any): void {

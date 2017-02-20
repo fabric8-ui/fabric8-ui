@@ -45,7 +45,7 @@ export class WorkItemService {
   private availableStates: DropdownOption[] = [];
   public workItemTypes: WorkItemType[] = [];
 
-  // FIXME: this is the live list of work items, held in this instance of 
+  // FIXME: this is the live list of work items, held in this instance of
   // workItemService. This prevents us from displaying two different lists of WIs.
   // This might have to change in the future.
   private workItems: WorkItem[] = [];
@@ -75,20 +75,20 @@ export class WorkItemService {
       logger.log('WorkItemService running in production mode.');
     }
     // set initial space and subscribe to the space service to recognize space switches
-    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => this.switchSpace(space));
+    // this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => this.switchSpace(space));
   }
 
-  switchSpace(space: Space) {
-    this.logger.log('[WorkItemService] New Space selected: ' + space.name);
-    this.workItemUrl = space.spaceBaseUrl + 'workitems';
-    this.workItemTypeUrl = space.spaceBaseUrl + 'workitemtypes';
-    this.linkTypesUrl = space.spaceBaseUrl + 'workitemlinktypes';
-    this.linksUrl = space.spaceBaseUrl + 'workitemlinks';
-    this.reorderUrl = space.spaceBaseUrl + 'workitems/reorder';
-    this.baseSearchUrl = space.spaceBaseUrl + 'search?q=';
-    this.renderUrl = space.spaceBaseUrl + 'render';
-    this.logger.log('WorkItemService using url ' + this.workItemUrl);
-  }
+  // switchSpace(space: Space) {
+  //   this.logger.log('[WorkItemService] New Space selected: ' + space.name);
+  //   this.workItemUrl = space.spaceBaseUrl + 'workitems';
+  //   this.workItemTypeUrl = space.spaceBaseUrl + 'workitemtypes';
+  //   this.linkTypesUrl = space.spaceBaseUrl + 'workitemlinktypes';
+  //   this.linksUrl = space.spaceBaseUrl + 'workitemlinks';
+  //   this.reorderUrl = space.spaceBaseUrl + 'workitems/reorder';
+  //   this.baseSearchUrl = space.spaceBaseUrl + 'search?q=';
+  //   this.renderUrl = space.spaceBaseUrl + 'render';
+  //   this.logger.log('WorkItemService using url ' + this.workItemUrl);
+  // }
 
   /**
    * We maintain a big list of work WorkItem
@@ -102,53 +102,56 @@ export class WorkItemService {
    * and store them with the data in the array
    */
   getWorkItems(pageSize: number = 20, filters: any[] = []): Promise<WorkItem[]> {
-    this.nextLink = null;
-    let url = this.workItemUrl + '?page[limit]=' + pageSize;
-    filters.forEach((item) => {
-      if (item.active) {
-        url += '&' + item.paramKey + '=' + item.value;
-      }
-    });
-    // Reseting stored data
-    // if filter value is changed
-    if (JSON.stringify(this.prevFilters) != JSON.stringify(filters)) {
-      this.workItems = [];
-      this.workItemIdIndexMap = {};
-    }
-    // Setting current filter as previous filter value
-    this.prevFilters = cloneDeep(filters);
-
-    return this.http
-      .get(url, { headers: this.headers })
-      .toPromise()
-      .then(response => {
-        // Build the user - id map
-        this.buildUserIdMap();
-        let wItems: WorkItem[];
-        let links = response.json().links;
-        if (links.hasOwnProperty('next')) {
-          this.nextLink = links.next;
-        }
-        wItems = response.json().data as WorkItem[];
-        wItems.forEach((item) => {
-          // Resolve the assignee and creator
-          this.resolveUsersForWorkItem(item);
-          this.resolveIterationForWorkItem(item);
-        });
-        // Update the existing workItem big list with new data
-        this.updateWorkItemBigList(wItems);
-
-        // Boradcast that the big list is prepared initially
-        this.broadcaster.broadcast('list_first_load_done');
-        return this.workItems;
-      })
-      .catch ((e) => {
-        if (e.status === 401) {
-          this.auth.logout(true);
-        } else {
-          this.handleError(e);
+    return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
+      this.workItemUrl = currentSpace.spaceBaseUrl + 'workitems';
+      this.nextLink = null;
+      let url = this.workItemUrl + '?page[limit]=' + pageSize;
+      filters.forEach((item) => {
+        if (item.active) {
+          url += '&' + item.paramKey + '=' + item.value;
         }
       });
+      // Reseting stored data
+      // if filter value is changed
+      if (JSON.stringify(this.prevFilters) != JSON.stringify(filters)) {
+        this.workItems = [];
+        this.workItemIdIndexMap = {};
+      }
+      // Setting current filter as previous filter value
+      this.prevFilters = cloneDeep(filters);
+
+      return this.http
+        .get(url, { headers: this.headers })
+        .toPromise()
+        .then(response => {
+          // Build the user - id map
+          this.buildUserIdMap();
+          let wItems: WorkItem[];
+          let links = response.json().links;
+          if (links.hasOwnProperty('next')) {
+            this.nextLink = links.next;
+          }
+          wItems = response.json().data as WorkItem[];
+          wItems.forEach((item) => {
+            // Resolve the assignee and creator
+            this.resolveUsersForWorkItem(item);
+            this.resolveIterationForWorkItem(item);
+          });
+          // Update the existing workItem big list with new data
+          this.updateWorkItemBigList(wItems);
+
+          // Boradcast that the big list is prepared initially
+          this.broadcaster.broadcast('list_first_load_done');
+          return this.workItems;
+        })
+        .catch ((e) => {
+          if (e.status === 401) {
+            this.auth.logout(true);
+          } else {
+            this.handleError(e);
+          }
+        });
+    });
   }
 
   isListLoaded() {
@@ -204,7 +207,6 @@ export class WorkItemService {
    * @param: number - id
    */
   getWorkItemById(id: string): Promise<WorkItem> {
-    let url = this.workItemUrl;
     if (id in this.workItemIdIndexMap) {
       let wItem = this.workItems[this.workItemIdIndexMap[id]];
       this.resolveComments(wItem);
@@ -212,36 +214,39 @@ export class WorkItemService {
       return Promise.resolve(wItem);
     } else {
       this.buildUserIdMap();
-      return this.http
-        .get(url + '/' + id, { headers: this.headers })
-        .toPromise()
-        .then((response) => {
-          let wItem: WorkItem = response.json().data as WorkItem;
-          this.resolveUsersForWorkItem(wItem);
-          this.resolveIterationForWorkItem(wItem);
-          // If this work item matches with current filters
-          // it goes to the big list and then we call this function
-          // again to treat it as a locally saved item
-          if (!(wItem.id in this.workItemIdIndexMap) && this.doesMatchCurrentFilter(wItem)) {
-            this.workItems.splice(this.workItems.length, 0, wItem);
-            this.buildWorkItemIdIndexMap();
-            return this.getWorkItemById(wItem.id);
-          }
+      return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
+        this.workItemUrl = currentSpace.spaceBaseUrl + 'workitems';
+        return this.http
+          .get(this.workItemUrl + '/' + id, { headers: this.headers })
+          .toPromise()
+          .then((response) => {
+            let wItem: WorkItem = response.json().data as WorkItem;
+            this.resolveUsersForWorkItem(wItem);
+            this.resolveIterationForWorkItem(wItem);
+            // If this work item matches with current filters
+            // it goes to the big list and then we call this function
+            // again to treat it as a locally saved item
+            if (!(wItem.id in this.workItemIdIndexMap) && this.doesMatchCurrentFilter(wItem)) {
+              this.workItems.splice(this.workItems.length, 0, wItem);
+              this.buildWorkItemIdIndexMap();
+              return this.getWorkItemById(wItem.id);
+            }
 
-          // If this work item doesn't match with current filters
-          // it's not get added to the big list so not storing locally
-          // it just gets resolved with related data and returned
-          this.resolveComments(wItem);
-          this.resolveLinks(wItem);
-          return wItem;
-        })
-        .catch ((e) => {
-          if (e.status === 401) {
-            this.auth.logout(true);
-          } else {
-            this.handleError(e);
-          }
-        });
+            // If this work item doesn't match with current filters
+            // it's not get added to the big list so not storing locally
+            // it just gets resolved with related data and returned
+            this.resolveComments(wItem);
+            this.resolveLinks(wItem);
+            return wItem;
+          })
+          .catch ((e) => {
+            if (e.status === 401) {
+              this.auth.logout(true);
+            } else {
+              this.handleError(e);
+            }
+          });
+      });
     }
   }
 
@@ -460,7 +465,7 @@ export class WorkItemService {
     wItem.relationalData.linkDicts = null;
     wItem.relationalData.totalLinkCount = 0;
     this.http
-      .get(this.workItemUrl + '/' + wItem.id + '/relationships/links', { headers: this.headers })
+      .get(wItem.links.self + '/relationships/links', { headers: this.headers })
       .toPromise()
       .then((response) => {
         let links = response.json().data as Link[];
@@ -489,17 +494,13 @@ export class WorkItemService {
    * ToDo: Use router resolver to fetch types here
    */
   getWorkItemTypes(): Promise<any[]> {
-    if (this.workItemTypes.length) {
-      return new Promise((resolve, reject) => {
-        resolve(this.workItemTypes);
-      });
-    } else {
+    return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
+      this.workItemTypeUrl = currentSpace.spaceBaseUrl + 'workitemtypes';
       return this.http
         .get(this.workItemTypeUrl)
         .toPromise()
         .then((response) => {
           this.workItemTypes = response.json() as WorkItemType[];
-          console.log(this.workItemTypes);
           return this.workItemTypes;
         })
       .catch ((e) => {
@@ -509,7 +510,7 @@ export class WorkItemService {
           this.handleError(e);
         }
       });
-    }
+    });
   }
 
   /**
@@ -638,9 +639,8 @@ export class WorkItemService {
    * @param: WorkItem - workItem (Item to be delted)
    */
   delete(workItem: WorkItem): Promise<void> {
-    const url = `${this.workItemUrl}/${workItem.id}`;
     return this.http
-      .delete(url, { headers: this.headers, body: '' })
+      .delete(workItem.links.self, { headers: this.headers, body: '' })
       .toPromise()
       .then(() => {
         let deletedItemIndex = this.workItems.findIndex((item) => item.id == workItem.id);
@@ -667,29 +667,31 @@ export class WorkItemService {
     * @param: WorkItem - workItem (Item to be created)
     */
   create(workItem: WorkItem): Promise<WorkItem> {
-    let url = this.workItemUrl;
     let payload = JSON.stringify({data: workItem});
-    return this.http
-      .post(url, payload, { headers: this.headers })
-      .toPromise()
-      .then(response => {
-        let newWorkItem: WorkItem = response.json().data as WorkItem;
-        // Resolve the user for the new item
-        this.resolveUsersForWorkItem(newWorkItem);
-        this.resolveIterationForWorkItem(newWorkItem);
-        // Add newly added item to the top of the list
-        this.workItems.splice(0, 0, newWorkItem);
-        // Re-build the ID-index map
-        this.buildWorkItemIdIndexMap();
-        return newWorkItem;
-      })
-      .catch ((e) => {
-        if (e.status === 401) {
-          this.auth.logout(true);
-        } else {
-          this.handleError(e);
-        }
-      });
+    return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
+      this.workItemUrl = currentSpace.spaceBaseUrl + 'workitems';
+      return this.http
+        .post(this.workItemUrl, payload, { headers: this.headers })
+        .toPromise()
+        .then(response => {
+          let newWorkItem: WorkItem = response.json().data as WorkItem;
+          // Resolve the user for the new item
+          this.resolveUsersForWorkItem(newWorkItem);
+          this.resolveIterationForWorkItem(newWorkItem);
+          // Add newly added item to the top of the list
+          this.workItems.splice(0, 0, newWorkItem);
+          // Re-build the ID-index map
+          this.buildWorkItemIdIndexMap();
+          return newWorkItem;
+        })
+        .catch ((e) => {
+          if (e.status === 401) {
+            this.auth.logout(true);
+          } else {
+            this.handleError(e);
+          }
+        });
+    });
   }
 
   /**
@@ -700,9 +702,8 @@ export class WorkItemService {
    * @param: WorkItem - workItem (Item to be created)
    */
   update(workItem: WorkItem): Promise<WorkItem> {
-    let url = `${this.workItemUrl}/${workItem.id}`;
     return this.http
-      .patch(url, JSON.stringify({data: workItem}), { headers: this.headers })
+      .patch(workItem.links.self, JSON.stringify({data: workItem}), { headers: this.headers })
       .toPromise()
       .then(response => {
         let updatedWorkItem = response.json().data as WorkItem;
@@ -799,7 +800,6 @@ export class WorkItemService {
    * @return Promise of LinkType[]
    */
   getLinkTypes(workItem: WorkItem): Promise<Object> {
-    console.log(workItem);
     return new Promise((resolve) => {
       let linkTypes: Object = {};
       this.http
@@ -937,23 +937,26 @@ export class WorkItemService {
    * @returns Promise<Link>
    */
   createLink(link: Object, currentWiId: string): Promise<Link> {
-    return this.http
-      .post(this.linksUrl, JSON.stringify(link), {headers: this.headers})
-      .toPromise()
-      .then(response => {
-        let newLink: Link = response.json().data as Link;
-        let includes = response.json().included as Link;
-        let wItem = this.workItems[this.workItemIdIndexMap[currentWiId]];
-        this.addLinkToWorkItem(newLink, includes, wItem);
-        return newLink;
-      })
-      .catch ((e) => {
-        if (e.status === 401) {
-          this.auth.logout(true);
-        } else {
-          this.handleError(e);
-        }
-      });
+    return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
+      this.linksUrl = currentSpace.spaceBaseUrl + 'workitemlinks';
+      return this.http
+        .post(this.linksUrl, JSON.stringify(link), {headers: this.headers})
+        .toPromise()
+        .then(response => {
+          let newLink: Link = response.json().data as Link;
+          let includes = response.json().included as Link;
+          let wItem = this.workItems[this.workItemIdIndexMap[currentWiId]];
+          this.addLinkToWorkItem(newLink, includes, wItem);
+          return newLink;
+        })
+        .catch ((e) => {
+          if (e.status === 401) {
+            this.auth.logout(true);
+          } else {
+            this.handleError(e);
+          }
+        });
+    });
   }
 
   /**
@@ -965,26 +968,13 @@ export class WorkItemService {
    * @returns Promise<void>
    */
   deleteLink(link: any, currentWiId: string): Promise<void> {
-    const url = `${this.linksUrl}/${link.id}`;
-    return this.http
-      .delete(url, {headers: this.headers})
-      .toPromise()
-      .then(response => { this.removeLinkFromWorkItem(link, currentWiId) })
-      .catch ((e) => {
-        if (e.status === 401) {
-          this.auth.logout(true);
-        } else {
-          this.handleError(e);
-        }
-      });
-  }
-
-  searchLinkWorkItem(term: string, workItemType: string): Promise<WorkItem[]> {
-     let searchUrl = process.env.API_URL + 'search?q=' + term + ' type:' + workItemType;
-     return this.http
-        .get(searchUrl)
+    return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
+      this.linksUrl = currentSpace.spaceBaseUrl + 'workitemlinks';
+      const url = `${this.linksUrl}/${link.id}`;
+      return this.http
+        .delete(url, {headers: this.headers})
         .toPromise()
-        .then((response) => response.json().data as WorkItem[])
+        .then(response => { this.removeLinkFromWorkItem(link, currentWiId) })
         .catch ((e) => {
           if (e.status === 401) {
             this.auth.logout(true);
@@ -992,6 +982,24 @@ export class WorkItemService {
             this.handleError(e);
           }
         });
+    });
+  }
+
+  searchLinkWorkItem(term: string, workItemType: string): Promise<WorkItem[]> {
+    return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
+      let searchUrl = currentSpace.spaceBaseUrl + 'search?q=' + term + ' type:' + workItemType;
+      return this.http
+          .get(searchUrl)
+          .toPromise()
+          .then((response) => response.json().data as WorkItem[])
+          .catch ((e) => {
+            if (e.status === 401) {
+              this.auth.logout(true);
+            } else {
+              this.handleError(e);
+            }
+          });
+    });
   }
 
   /**
@@ -1043,22 +1051,25 @@ export class WorkItemService {
     newWItem.attributes.previousitem = parseInt(adjacentWI.prevItemId);
     newWItem.attributes.nextitem = parseInt(adjacentWI.nextItemId);
 
-    let url = `${this.workItemUrl}/reorder`;
-    return this.http
-      .patch(url, JSON.stringify({data: newWItem}), { headers: this.headers })
-      .toPromise()
-      .then(response => {
-        let updatedWorkItem: WorkItem = response.json().data as WorkItem;
-        wItem.attributes['version'] = updatedWorkItem.attributes['version'];
-        wItem.attributes['order'] = updatedWorkItem.attributes['order'];
-      })
-      .catch ((e) => {
-        if (e.status === 401) {
-          this.auth.logout(true);
-        } else {
-          this.handleError(e);
-        }
-      });
+    return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
+      this.workItemUrl = currentSpace.spaceBaseUrl + 'workitems';
+      let url = `${this.workItemUrl}/reorder`;
+      return this.http
+        .patch(url, JSON.stringify({data: newWItem}), { headers: this.headers })
+        .toPromise()
+        .then(response => {
+          let updatedWorkItem: WorkItem = response.json().data as WorkItem;
+          wItem.attributes['version'] = updatedWorkItem.attributes['version'];
+          wItem.attributes['order'] = updatedWorkItem.attributes['order'];
+        })
+        .catch ((e) => {
+          if (e.status === 401) {
+            this.auth.logout(true);
+          } else {
+            this.handleError(e);
+          }
+        });
+    });
   }
 
   renderMarkDown(markDownText: string): Promise<any> {
@@ -1071,17 +1082,20 @@ export class WorkItemService {
         type: "rendering"
       }
     }
-    return this.http
-      .post(this.renderUrl, JSON.stringify(params), { headers: this.headers })
-      .toPromise()
-      .then(response => response.json().data.attributes.renderedContent)
-      .catch ((e) => {
-        if (e.status === 401) {
-          this.auth.logout(true);
-        } else {
-          this.handleError(e);
-        }
-      });
+    return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
+      this.renderUrl = currentSpace.spaceBaseUrl + 'render';
+      return this.http
+        .post(this.renderUrl, JSON.stringify(params), { headers: this.headers })
+        .toPromise()
+        .then(response => response.json().data.attributes.renderedContent)
+        .catch ((e) => {
+          if (e.status === 401) {
+            this.auth.logout(true);
+          } else {
+            this.handleError(e);
+          }
+        });
+    });
   }
 
   private handleError(error: any): Promise<any> {
