@@ -84,6 +84,7 @@
     "ng2-dnd": "2.0.1",
     "ng2-dropdown": "0.0.15",
     "ng2-modal": "0.0.22",
+    "ngx-login-client": "0.1.4",
     "ngx-widgets": "0.2.18",
     "ng2bln-count-pipe": "1.1.0",
     "obsidian-generator-frontend": "0.0.7",
