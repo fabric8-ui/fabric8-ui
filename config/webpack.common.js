@@ -32,10 +32,10 @@ module.exports = {
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
       },
-      {
-        test: /\.html$/,
-        loader: 'html-loader'
-      },
+      // {
+      //   test: /\.html$/,
+      //   loader: 'html-loader'
+      // },
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
         loader: 'file-loader?name=assets/[name].[hash].[ext]'
@@ -66,47 +66,69 @@ module.exports = {
 
 
       {
-        test: /(\.css|\.scss)$/,
-        exclude: [helpers.root('src', 'app')],
-        use: ExtractTextPlugin
-          .extract({
-            // fallback: 'style-loader',
-            use: [
-              // { loader: 'to-string-loader'},
-              { loader: 'css-loader',
-                options: {
-                  modules: true,
-                  sourceMaps: true,
-                  importLoaders: true,
-                  // localIdentName: "[name]__[local]___[hash:base64:5]"
-                }
-              },
-              { loader: 'postcss-loader',
-                options: {
-                  plugins: function () {
-                    return [
-                      require("autoprefixer")
-                    ];
-                  }
-                }
-              },
-              { loader: 'sass-loader',
-                options: {
-                  sourceMaps: true
-                }
-              }
-            ]
-          })
+        test: /\.html$/,
+        loader: 'raw-loader',
+        exclude: [helpers.root('src/index.html')]
       },
+
+      /*
+       * to string and css loader support for *.css files
+       * Returns file content as string
+       *
+       */
       {
-        test: /(\.css|\.scss)$/,
-        include: [helpers.root('src', 'app')],
-        use: [
-          { loader: 'raw-loader' },
-          { loader: 'postcss-loader' },
-          { loader: 'sass-loader', options: { sourceMaps: true } }
-        ]
-      }
+        test: /\.css$/,
+        loaders: ['to-string-loader', 'css-loader']
+      },
+
+      {
+        test: /\.scss$/,
+        loaders: ["css-to-string-loader", "css-loader", "sass-loader"]
+      },
+      // {
+      //   test: /(\.css|\.scss)$/,
+      //   exclude: [helpers.root('src', 'app')],
+      //   use: ExtractTextPlugin
+      //     .extract({
+      //       // fallback: 'style-loader',
+      //       use: [
+      //         // { loader: 'to-string-loader'},
+      //         { loader: 'css-loader',
+      //           options: {
+      //             modules: true,
+      //             sourceMaps: true,
+      //             importLoaders: true,
+      //             // localIdentName: "[name]__[local]___[hash:base64:5]"
+      //           }
+      //         },
+      //         { loader: 'postcss-loader',
+      //           options: {
+      //             plugins: function () {
+      //               return [
+      //                 require("autoprefixer")
+      //               ];
+      //             }
+      //           }
+      //         },
+      //         { loader: 'sass-loader',
+      //           options: {
+      //             sourceMaps: true
+      //           }
+      //         }
+      //       ]
+      //     })
+      // },
+      // {
+      //   test: /(\.css|\.scss)$/,
+      //   include: [helpers.root('src', 'app')],
+      //   use: [
+      //     { loader: 'raw-loader' },
+      //     { loader: 'postcss-loader' },
+      //     { loader: 'sass-loader', options: { sourceMaps: true } }
+      //   ]
+      // }
+
+
       // {
       //   test: /\.css$/,
       //   include: helpers.root('src', 'app'),
