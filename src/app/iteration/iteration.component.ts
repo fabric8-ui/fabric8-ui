@@ -43,8 +43,10 @@ export class IterationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.getAndfilterIterations();
-    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => console.log('[IterationComponent] New Space selected: ' + space.name));
+    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => { 
+      console.log('[IterationComponent] New Space selected: ' + space.name); 
+      this.getAndfilterIterations();
+    });
   }
 
   ngOnDestroy() {
@@ -71,15 +73,11 @@ export class IterationComponent implements OnInit, OnDestroy {
 
   onCreateOrupdateIteration(iteration: IterationModel) {
     let index = this.allIterations.findIndex((it) => it.id === iteration.id);
-    console.log("############1");
-    console.log(this.allIterations);
     if (index >= 0) {
       this.allIterations[index] = iteration;
     } else {
       this.allIterations.splice(this.allIterations.length, 0, iteration);
     }
-    console.log("############2");
-    console.log(this.allIterations);
     this.clusterIterations();
   }
 
