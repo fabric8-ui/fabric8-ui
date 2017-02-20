@@ -1,8 +1,4 @@
-@import "./../../../../assets/stylesheets/custom";
-@import "./../../../../assets/stylesheets/mixins";
-@import "./../../../../assets/stylesheets/color-variables";
-
-// View Encapsulation https://angular.io/docs/ts/latest/guide/component-styles.html#!#view-encapsulation
+@import '../../../../assets/stylesheets/base';
 
 .link-container {
   width: $width100;

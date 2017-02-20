@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const helpers = require('./helpers');
 const precss = require('precss');
 const autoprefixer = require('autoprefixer')
@@ -37,86 +38,18 @@ module.exports = {
         loader: 'html-loader'
       },
       {
-        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-        loader: 'file-loader?name=assets/[name].[hash].[ext]'
-      },
-      // {
-      //   test: /\.(css|scss)$/,
-      //   loaders: ['to-string-loader', 'css-loader', 'sass-loader'],
-      //   include: helpers.root('src', 'app'),
-      // },
-      // { test: /\.css$/,
-      //   exclude: [helpers.root('src', 'app')],
-      //   use: ExtractTextPlugin.extract({
-      //     fallback: 'style-loader',
-      //     use: [
-      //       { loader: 'css-loader', query: { modules: true, sourceMaps: true } },
-      //       { loader: 'postcss-loader'  }
-      //     ]
-      //   })
-      // },
-      // {
-      //   test: /\.css$/,
-      //   include: [helpers.root('src', 'app')],
-      //   use: [
-      //     { loader: 'raw-loader' },
-      //     { loader: 'postcss-loader' }
-      //   ]
-      // },
-
-
-      {
-        test: /(\.css|\.scss)$/,
-        exclude: [helpers.root('src', 'app')],
-        use: ExtractTextPlugin
-          .extract({
-            // fallback: 'style-loader',
-            use: [
-              // { loader: 'to-string-loader'},
-              { loader: 'css-loader',
-                options: {
-                  modules: true,
-                  sourceMaps: true,
-                  importLoaders: true,
-                  // localIdentName: "[name]__[local]___[hash:base64:5]"
-                }
-              },
-              { loader: 'postcss-loader',
-                options: {
-                  plugins: function () {
-                    return [
-                      require("autoprefixer")
-                    ];
-                  }
-                }
-              },
-              { loader: 'sass-loader',
-                options: {
-                  sourceMaps: true
-                }
-              }
-            ]
-          })
+        test: /\.css$/,
+        loaders: ['to-string-loader', 'css-loader']
       },
       {
-        test: /(\.css|\.scss)$/,
-        include: [helpers.root('src', 'app')],
-        use: [
-          { loader: 'raw-loader' },
-          { loader: 'postcss-loader' },
-          { loader: 'sass-loader', options: { sourceMaps: true } }
-        ]
-      }
-      // {
-      //   test: /\.css$/,
-      //   include: helpers.root('src', 'app'),
-      //   loader: 'raw-loader!postcss-loader'
-      // },
-      // {
-      //   test: /\.scss$/,
-      //   include: helpers.root('src', 'app'),
-      //   loaders: ['raw-loader', 'css-loader', 'postcss-loader', 'sass-loader']
-      // }
+        test: /\.scss$/,
+        loaders: ["css-to-string-loader", "css-loader", "sass-loader"]
+      },
+      /* File loader for supporting images, for example, in CSS files. */
+      {
+        test: /\.(jpg|png|gif)$/,
+        loader: 'file-loader'
+      },
     ]
   },
 
@@ -143,7 +76,22 @@ module.exports = {
 
     new HtmlWebpackPlugin({
       template: 'src/index.html'
-    })
+    }),
+    /*
+      * Plugin: CopyWebpackPlugin
+      * Description: Copy files and directories in webpack.
+      *
+      * Copies project static assets.
+      *
+      * See: https://www.npmjs.com/package/copy-webpack-plugin
+      */
+    new CopyWebpackPlugin([{
+      from: 'src/assets',
+      to: 'assets'
+    }, {
+      from: 'src/meta'
+    }]),
+
   ],
 
   // postcss: function () {

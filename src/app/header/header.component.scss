@@ -1,43 +1,43 @@
-@import "../../assets/stylesheets/navbar";
-@import "../../assets/stylesheets/navs";
-@import "../../assets/stylesheets/icons";
-@import "../../assets/stylesheets/custom";
-@import "../../assets/stylesheets/color-variables";
-.header-navbar{
+@import '../../assets/stylesheets/base';
+
+.header-navbar {
     position: fixed;
     width: $width100;
     float: left;
     z-index: 9;
     font-size: rem(12);
-    .header-nav-brand{
+    .header-nav-brand {
         padding: em(4.5);
-        .pficon-enterprise{
+        .pficon-enterprise {
             font-size: em(18);
             margin-right: em(5);
         }
-        .caret{
+        .caret {
             margin: em(4.5);
         }
     }
 }
+
 .navbar-pf {
     .navbar-nav li a {
         line-height: em(20);
-        text-shadow:none;
+        text-shadow: none;
         cursor: pointer;
-        .img-icon{
+        .img-icon {
             width: em(25);
             height: em(25);
             margin-top: em(-2);
             margin-right: em(5);
         }
     }
-    .navbar-collapse span.fa,span.pficon {
-        font-size:em(20);
+    .navbar-collapse span.fa,
+    span.pficon {
+        font-size: em(20);
     }
 }
-@media (max-width: $grid-float-breakpoint){
-.navbar-fixed-top {
+
+@media (max-width: $grid-float-breakpoint) {
+    .navbar-fixed-top {
         position: fixed;
         top: auto;
     }
@@ -47,21 +47,21 @@
     body {
         margin: 0;
     }
-    .nav-mob-scroll{
+    .nav-mob-scroll {
         overflow-x: scroll !important;
-        .nav-list-mob-scroll{
+        .nav-list-mob-scroll {
             width: 170%;
         }
     }
 }
+
 .navbar-pf {
-    .navbar-primary.persistent-secondary
-    >li.active {
-        margin-bottom: 0 ; 
+    .navbar-primary.persistent-secondary>li.active {
+        margin-bottom: 0;
     }
 }
-.no-link {
-  color: $color-pf-white;
-  text-decoration: none;
-}
 
+.no-link {
+    color: $color-pf-white;
+    text-decoration: none;
+}

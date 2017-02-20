@@ -1,6 +1,4 @@
-@import "../../../assets/stylesheets/color-variables";
-@import "../../../assets/stylesheets/custom";
-@import "../../../assets/stylesheets/mixins";
+@import '../../../assets/stylesheets/base';
 
 .error {color:$color-pf-red-100;}
 .suppress-hover{

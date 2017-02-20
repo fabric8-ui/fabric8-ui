@@ -1,5 +1,5 @@
-@import "../../assets/stylesheets/color-variables";
-@import "../../assets/stylesheets/custom";
+@import '../../assets/stylesheets/base';
+
 .createProjectBlock{
     font-size: rem(10);
     padding: 0;
@@ -42,7 +42,7 @@
             label{
                 width: $width100 - 10%;
                 padding-left: em(20);
-                font-weight: 500; 
+                font-weight: 500;
                 span{
                     width: $width100;
                     float: left;
