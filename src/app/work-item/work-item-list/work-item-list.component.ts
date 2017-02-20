@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs/Subscription';
+import { SpaceService } from './../../shared/mock-spaces.service';
 import {
   AfterViewInit,
   Component,
@@ -50,6 +52,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   filters: any[] = [];
   allUsers: User[] = [] as User[];
   authUser: any = null;
+  private spaceSubscription: Subscription = null;
 
   constructor(
     private auth: AuthenticationService,
@@ -59,13 +62,18 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
     private workItemService: WorkItemService,
     private logger: Logger,
     private userService: UserService,
-    private route: ActivatedRoute) {}
+    private route: ActivatedRoute,
+    private spaceService: SpaceService) {}
 
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
     // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
+    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => {
+      console.log('[WorkItemComponent] New Space selected: ' + space.name);
+      this.loadWorkItems();
+    });
   }
 
   ngAfterViewInit() {
