@@ -11,7 +11,7 @@ import { Component, ViewEncapsulation, Output, EventEmitter } from '@angular/cor
   selector: 'f8-container-toggler',
   encapsulation: ViewEncapsulation.None,
   template: require('./container-toggler.html'),
-  styles: [require('./container-toggler.scss')]
+  styles: [require('./container-toggler.css')]
 })
 
 export class ContainerTogglerComponent {

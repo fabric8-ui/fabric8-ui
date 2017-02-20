@@ -7,9 +7,9 @@ import { FormsModule } from '@angular/forms';
 
 import { ContainerTogglerModule } from './src/app/container-toggler/container-toggler.module';
 import { DialogModule } from './src/app/dialog/dialog.module';
-import { Dialog } from './src/app/dialog/dialog';
+// import { Dialog } from './src/app/dialog/dialog';
 import { DropdownModule } from './src/app/dropdown/dropdown.module';
-import { DropdownOption } from './src/app/dropdown/dropdown-option';
+// import { DropdownOption } from './src/app/dropdown/dropdown-option';
 import { AlmEditableModule } from './src/app/editable/almeditable.module';
 import { AlmIconModule } from './src/app/icon/almicon.module';
 import { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
@@ -48,8 +48,8 @@ import { AlmTrim } from './src/app/pipes/alm-trim';
     AlmMomentTime,
     AlmSearchHighlight,
     AlmTrim,
-    Dialog,
-    DropdownOption
+    // Dialog,
+    // DropdownOption
   ],
   exports: [
     AlmArrayFilter,
@@ -62,9 +62,9 @@ import { AlmTrim } from './src/app/pipes/alm-trim';
     AlmIconModule,
     ContainerTogglerModule,
     DialogModule,
-    Dialog,
+    // Dialog,
     DropdownModule,
-    DropdownOption,
+    // DropdownOption,
     InfiniteScrollModule,
     TreeListModule
   ]

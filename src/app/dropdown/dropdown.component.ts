@@ -11,7 +11,7 @@ import { DropdownOption } from './dropdown-option';
 @Component({
   selector: 'alm-dropdown',
   template: require('./dropdown.component.html'),
-  styles: [require('./dropdown.component.scss')],
+  styles: [require('./dropdown.component.css')],
 })
 export class DropdownComponent implements OnInit {
   @Input() options: DropdownOption[];

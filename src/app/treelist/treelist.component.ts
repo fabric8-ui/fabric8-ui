@@ -5,7 +5,7 @@ import { TreeNode, TREE_ACTIONS, KEYS, IActionMapping, TreeComponent } from 'ang
 @Component({
   selector: 'alm-tree-list',
   template: require('./treelist.component.html'),
-  styles: [require('./treelist.component.scss')],
+  styles: [require('./treelist.component.css')],
   encapsulation: ViewEncapsulation.None
 })
 

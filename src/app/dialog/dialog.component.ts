@@ -18,7 +18,7 @@ import { Dialog } from './dialog';
 @Component({
   selector: 'alm-dialog',
   template: require('./dialog.component.html'),
-  styles: [require('./dialog.component.scss')],
+  styles: [require('./dialog.component.css')],
   animations: [
     trigger('modalState', [
       state('inactive', style({
