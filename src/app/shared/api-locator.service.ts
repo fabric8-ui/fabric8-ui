@@ -37,13 +37,11 @@ export class ApiLocatorService {
 
   private loadEnvVar(key: string): void {
     this.envVars.set(key, process.env[this.DEFAULT_API_ENV_VAR_NAMES.get(key)]);
-    console.log('loadEnvVar', key, ':', process.env[this.DEFAULT_API_ENV_VAR_NAMES.get(key)]);
   }
 
   private buildApiUrl(key: string): string {
     // Return any environment specified URLs for this API
     if (this.envVars.get(key)) {
-      console.log('envVar used:', key, ': ', this.envVars.get(key));
       return this.envVars.get(key);
     }
     // Simple check to trim www
