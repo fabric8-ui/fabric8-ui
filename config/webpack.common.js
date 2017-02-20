@@ -191,7 +191,7 @@ module.exports = function (options) {
         }
       ]
     },
-    
+
     /*
      * Add additional plugins to the compiler.
      *
