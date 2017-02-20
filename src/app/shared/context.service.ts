@@ -71,6 +71,10 @@ export class ContextService {
       // If the context changed
       this._current = context;
       this.addRecentContext(context);
+      this.broadcaster.broadcast('contextChanged', context);
+      if (context.space) {
+        this.broadcaster.broadcast('spaceChanged', context.space);
+      }
     }
   }
 
