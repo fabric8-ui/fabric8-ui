@@ -274,7 +274,7 @@ export class MockHttp extends Http {
           return this.createResponse(url.toString(), 200, 'ok', result);
         else
           return this.createResponse(url.toString(), 500, 'WorkItemLink does not exist: ' + path.extraPath, {});
-      } else
+      }else
         return this.createResponse(url.toString(), 500, 'PUT to unknown resource: ' + path.extraPath, {});
     };
 

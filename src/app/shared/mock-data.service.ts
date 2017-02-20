@@ -305,13 +305,13 @@ export class MockDataService {
   // iterations
 
   public getAllIterations(): any {
-    return this.iterations;
+    return this.makeCopy(this.iterations);
   }
 
   public getIteration(id: string): any {
     for (var i = 0; i < this.iterations.length; i++)
       if (this.iterations[i].id === id) {
-        return this.iterations[i];
+        return this.makeCopy(this.iterations[i]);
       }
     return null;
   }
@@ -325,10 +325,14 @@ export class MockDataService {
     return this.makeCopy(localIteration);
   }
 
-  public updateIteration(iteration: any): any {
+   public updateIteration(iteration: any): any {
     var localIteration = this.makeCopy(iteration.data);
     for (var i = 0; i < this.iterations.length; i++)
       if (this.iterations[i].id === localIteration.id) {
+        // TODO: we might have to do a proper merge of the values at some point.
+        if (!localIteration.attributes.hasOwnProperty('state') || !localIteration.attributes.state) {
+          localIteration.attributes['state'] = this.iterations[i].attributes['state'];
+        }
         this.iterations.splice(i, 1, localIteration);
         return this.makeCopy(localIteration);
       }
