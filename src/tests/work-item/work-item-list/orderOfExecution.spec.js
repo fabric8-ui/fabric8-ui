@@ -1,20 +1,20 @@
 /**
  * POC test for automated UI tests for ALMighty
- *  
+ *
  * Note on screen resolutions - See: http://www.itunesextractor.com/iphone-ipad-resolution.html
  * Tests will be run on these resolutions:
  * - iPhone6s - 375x667
  * - iPad air - 768x1024
  * - Desktop -  1920x1080
- * 
- * beforeEach will set the mode to phone. Any tests requiring a different resolution will must set explicitly. 
- * 
- * These tests are commented out as, while they run cleanly on firefox and chrome, phantomJS is unable to 
+ *
+ * beforeEach will set the mode to phone. Any tests requiring a different resolution will must set explicitly.
+ *
+ * These tests are commented out as, while they run cleanly on firefox and chrome, phantomJS is unable to
  * recognize when the "move" dropdown is active:
  * https://github.com/fabric8io/fabric8-planner/issues/319#issuecomment-272997188
- * We can uncomment the tests when we migrate the tetss to run on CI with firefox and chrome (or when 
+ * We can uncomment the tests when we migrate the tetss to run on CI with firefox and chrome (or when
  * we can find a bug fix for PhantomJS).
- * 
+ *
  * @author ldimaggi
  */
 
@@ -33,31 +33,13 @@ describe('Drag and drop Test', function () {
   var waitTime = 30000;
 
 /* For Chrome and Firefox */
-defaultWorkitems = [ 
-  'id0\nTitle Text 0',
-  'id1\nTitle Text 1',
-  'id2\nTitle Text 2',
-  'id3\nTitle Text 3',
-  'id4\nTitle Text 4',
-  'id5\nTitle Text 5',
-  'id6\nTitle Text 6',
-  'id7\nTitle Text 7',
-  'id8\nTitle Text 8',
-  'id9\nTitle Text 9',
-  'id10\nTitle Text 10',
-  'id11\nTitle Text 11',
-  'id12\nTitle Text 12',
-  'id13\nTitle Text 13',
-  'id14\nTitle Text 14',
-  'id15\nTitle Text 15',
-  'id16\nTitle Text 16',
-  'id17\nTitle Text 17',
-  'id18\nTitle Text 18',
-  'id19\nTitle Text 19',
-  'id20\nTitle Text 20' ];
+defaultWorkitems =
+  [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19].map((i) => {
+    return 'id' + i + '\nTitle Text ' + i;
+  });
 
 /* For PhantomJS */
-defaultWorkitemsPhantomJS = [ 
+defaultWorkitemsPhantomJS = [
   'id0\nTitle Text 0',
   'id1\nTitle Text 1',
   'id2\nTitle Text 2',
@@ -72,7 +54,7 @@ defaultWorkitemsPhantomJS = [
 
   beforeEach(function () {
     testSupport.setBrowserMode('phone');
-    page = new WorkItemListPage(true);   
+    page = new WorkItemListPage(true);
   });
 
   it('should move workitem down/up - phone.', function() {
@@ -80,10 +62,10 @@ defaultWorkitemsPhantomJS = [
     page.allWorkItems.count().then(function (text) {
       var totalCount = text
 
-     /* First, verify that the workitems are displayed in the expected order */    
+     /* First, verify that the workitems are displayed in the expected order */
       page.allWorkItems.getText().then(function (text) {
         if (totalCount = "11") {
-          expect(compareWorkitemArray (text, defaultWorkitemsPhantomJS)).toBe(true);
+          expect(compareWorkitemArray (text, defaultWorkitems)).toBe(true);
         }
         else {
           expect(compareWorkitemArray (text, defaultWorkitems)).toBe(true);
@@ -132,10 +114,10 @@ defaultWorkitemsPhantomJS = [
     page.allWorkItems.count().then(function (text) {
       var totalCount = text
 
-      /* First, verify that the workitems are displayed in the expected order */    
+      /* First, verify that the workitems are displayed in the expected order */
       page.allWorkItems.getText().then(function (text) {
         if (totalCount = "11") {
-          expect(compareWorkitemArray (text, defaultWorkitemsPhantomJS)).toBe(true);
+          expect(compareWorkitemArray (text, defaultWorkitems)).toBe(true);
         }
         else {
           expect(compareWorkitemArray (text, defaultWorkitems)).toBe(true);
@@ -223,7 +205,7 @@ defaultWorkitemsPhantomJS = [
 
   }); /* "it" test */
 
-}); 
+});
 
 /* Compare an expected and actual work item - the offset values enable us to track
    workitems after they have been moved. */
