@@ -146,7 +146,23 @@ class WorkItemListPage {
     browser.wait(until.presenceOf(parentElement.element(by.css('.workItemList_Delete'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
     return parentElement.element(by.css('.workItemList_Delete'));
   }
-
+  workItemKebabAssocateIterationButton (parentElement) {
+    browser.wait(until.presenceOf(parentElement.element(by.css('.workItemList_Iteration'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
+    return parentElement.element(by.css('.workItemList_Iteration'));
+  }
+  clickWorkItemKebabAssociateIterationButton (parentElement) {
+    return this.workItemKebabAssocateIterationButton (parentElement).click();
+  }
+  clickDropDownAssociateIteration (selectIteration){
+     element(by.xpath("(.//button[@type='button'])[11]")).click();
+     return element(by.linkText(selectIteration)).click();
+  }
+  clickAssociateSave  (){
+    return element(by.id("associate-iteration-button")).click();
+  }
+  clickAssociateCancel  (){
+    return element(by.id("cancel-iteration-button")).click();
+  }
   clickWorkItemKebabDeleteButton (parentElement) {
     return this.workItemKebabDeleteButton (parentElement).click();
   }
@@ -481,17 +497,28 @@ class WorkItemListPage {
   }
 
   /* Iterations Page object model */
-
+  clickIterationKebab (index){
+    return element(by.xpath ("(.//button[@type='button'])["+ index +"]")).click();
+  }
+  clickEditIterationKebab (){
+    return element(by.linkText ("Edit")).click();
+  }
+  clickStartIterationKebab (){
+    return element(by.linkText ("Start")).click();
+  }
+  clickCloseIterationKebab (){
+    return element(by.linkText ("Close")).click();
+  }
   get expandCurrentIterationIcon () {
-    return element(by.xpath ("//h4[.//text()[contains(.,'Current Iteration')]]"));
+    return element(by.xpath (".//text()[contains(.,'Current Iteration')]"));
   }
 
-  get clickExpandCurrentIterationIcon () {
+  clickExpandCurrentIterationIcon () {
     return this.expandCurrentIterationIcon.click(); 
   }
 
   get expandFutureIterationIcon () {
-    return element(by.xpath ("//h4[.//text()[contains(.,'Future Iteration')]]"));
+    return element(by.xpath (".//text()[contains(.,'Future Iteration')]/.."));
   }
 
   clickExpandFutureIterationIcon () {
@@ -499,7 +526,7 @@ class WorkItemListPage {
   }
 
   expandPastIterationIcon () {
-    return element(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]"));
+    return element(by.xpath (".//text()[contains(.,'Past Iteration')]"));
   }
 
   clickExpandPastIterationIcon () {
@@ -507,31 +534,35 @@ class WorkItemListPage {
   }
 
   get futureIterations () {
-    return element.all(by.xpath ("//h4[.//text()[contains(.,'Future Iteration')]]/../../../ul/li"));
+    return element.all(by.xpath (".//text()[contains(.,'Future Iteration')]/../../../ul/li"));
   }
 
   get firstFutureIteration () {
-    return element.all(by.xpath ("//h4[.//text()[contains(.,'Future Iteration')]]/../../../ul/li")).first();
+    return element.all(by.xpath (".//text()[contains(.,'Future Iteration')]/../../../ul/li")).first();
   }
 
   get lastFutureIteration () {
-    return element.all(by.xpath ("//h4[.//text()[contains(.,'Future Iteration')]]/../../../ul/li")).last();
+    return element.all(by.xpath (".//text()[contains(.,'Future Iteration')]/../../../ul/li")).last();
   }
 
   get pastIterations () {
-    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]/../../../ul"));
+    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]/../../ul"));
   }
 
   get firstPastIteration () {
-    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]/../../../ul/li")).first();
+    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]/../../ul/li")).first();
   }
 
   get lastPastIteration () {
-    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]/../../../ul/li")).last();
+    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]/../../ul/li")).last();
   }
-    
+  
+  firstCurrentIteration () {
+    return element.all(by.xpath (".//text()[contains(.,'Current Iteration')]/../../../ul/li")).first();
+  }
+
   clickIterationAddButton () {
-    return this.iterationAddButton.click();
+    return this.iterationAddButton().click();
   }
 
   clickIterationCreateLabel  (){
@@ -572,6 +603,9 @@ class WorkItemListPage {
   }
   closeIterationDialog(){
     return element(by.css('.close')).click();
+  }
+  toastNotification (){
+    return element(by.css('.toast-notification-container'));
   }
 
 }

@@ -112,7 +112,7 @@ export class SchemaMockGenerator {
          'id' : '86af5178-9b41-469b-9096-57e5155c3f31',
          'attributes' : {
             'name' : 'Planner Item',
-            'icon': 'fa-question',
+            'icon': 'fa-paint-brush',
             'fields' : {
                'system.created_at' : {
                   'type' : {
