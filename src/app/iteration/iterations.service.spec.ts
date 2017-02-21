@@ -1,3 +1,4 @@
+import { SpaceService } from './../shared/mock-spaces.service';
 import { Logger } from './../shared/logger.service';
 import { cloneDeep } from 'lodash';
 import { IterationModel } from './../models/iteration.model';
@@ -21,6 +22,7 @@ describe ('Iteration service - ', () => {
   let mockService: MockBackend;
 
   let fakeAuthService: any;
+  let fakeSpaceService: any;
 
   beforeEach(() => {
     fakeAuthService = {
@@ -29,6 +31,16 @@ describe ('Iteration service - ', () => {
       },
       isLoggedIn: function() {
         return true;
+      }
+    };
+
+    fakeSpaceService = {
+      getCurrentSpace: function() {
+        return Promise.resolve({
+          iterationsUrl: 'http://localhost:8080/api/spaces/1f669678-ca2c-4cbb-b46d-5b70a98dde3c/iterations',
+          name: 'Project 1',
+          spaceBaseUrl: 'http://localhost:8080/api/'
+        });
       }
     };
 
@@ -46,6 +58,10 @@ describe ('Iteration service - ', () => {
         {
           provide: AuthenticationService,
           useValue: fakeAuthService
+        },
+        {
+          provide: SpaceService,
+          useValue: fakeSpaceService
         },
         IterationService
       ]
@@ -96,8 +112,7 @@ describe ('Iteration service - ', () => {
         })
       ));
     });
-    let url1 = 'http://localhost:8080/api/spaces/d7d98b45-415a-4cfc-add2-ec7b7aee7dd5/iterations';
-    apiService.getIterations(url1)
+    apiService.getIterations()
       .then (data => {
         expect(data).toEqual(checkResp);
        });
@@ -109,7 +124,7 @@ describe ('Iteration service - ', () => {
       });
 
     // Check if data from response is assigned to the private variable
-    apiService.getIterations(url1)
+    apiService.getIterations()
       .then (data => {
         expect(apiService.iterations).toEqual(checkResp);
        });
@@ -134,7 +149,7 @@ describe ('Iteration service - ', () => {
     });
 
     // Error response
-    apiService.getIterations(url1)
+    apiService.getIterations()
       .catch (data => {
         expect(data).toEqual([]);
       })
@@ -148,7 +163,6 @@ describe ('Iteration service - ', () => {
     let requestParams = resp[0];
     let responseData = cloneDeep(requestParams);
     let response = {data: responseData};
-    let url1 = 'http://localhost:8080/api/spaces/d7d98b45-415a-4cfc-add2-ec7b7aee7dd5/iterations';
 
     mockService.connections.subscribe((connection: any) => {
       connection.mockRespond(new Response(
@@ -159,7 +173,7 @@ describe ('Iteration service - ', () => {
       ));
     });
 
-    apiService.createIteration(url1, requestParams)
+    apiService.createIteration(requestParams)
       .then (data => {
         expect(data).toEqual(responseData);
       })
@@ -167,31 +181,6 @@ describe ('Iteration service - ', () => {
         expect(apiService.iterations.length).toEqual(1);
       });
   }));
-
-  // Test if the API url is invalid
-  it('Create iteration with invalid URL', async(() => {
-    let requestParams = resp[0];
-    let responseData = cloneDeep(requestParams);
-    let response = {data: responseData};
-
-    mockService.connections.subscribe((connection: any) => {
-      connection.mockRespond(new Response(
-        new ResponseOptions({
-          body: JSON.stringify(response),
-          status: 200
-        })
-      ));
-    });
-
-    apiService.createIteration('', requestParams)
-      .catch (data => {
-        expect(data).toEqual({});
-      })
-      .then (() => {
-        expect(apiService.iterations.length).toEqual(0);
-      });
-  }));
-
 
   // Test if the API returns error
   it('Create iteration with error', async(() => {
@@ -208,7 +197,7 @@ describe ('Iteration service - ', () => {
     });
 
     // Error response
-    apiService.createIteration(url1, requestParams)
+    apiService.createIteration(requestParams)
       .catch (data => {
         expect(data).toEqual({});
       })
