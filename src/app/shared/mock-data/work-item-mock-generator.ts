@@ -10,6 +10,19 @@ export class WorkItemMockGenerator {
    * represents a map with the key being the work item id and the value the
    * comment structure.
    */
+  public createWorkItemChilds(): any {
+    let workItems = this.createWorkItems();
+    return {
+      'id0': [ workItems[5], workItems[6], workItems[7] ],
+      'id1': [ workItems[8], workItems[9], workItems[10] ]
+    };
+  }
+
+  /*
+   * Returns a map structure containing initial work item comments. The structure
+   * represents a map with the key being the work item id and the value the
+   * comment structure.
+   */
   public createWorkItemComments(): any {
     return {
       'id0':
@@ -117,7 +130,7 @@ export class WorkItemMockGenerator {
   public createWorkItems(): any {
     let workitems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].map((n) => {
       return {
-        'hasChildren': true,
+        'hasChildren': (n == 0 || n == 1) ? true : false, // the first two work items will have childs
         'attributes': {
           'system.created_at': this.dateTime(n),
           'system.description': 'Description Text ' + n,

@@ -90,12 +90,47 @@ export class WorkItemService {
   getChildren(parent: WorkItem): Promise<WorkItem[]> {
     this.logger.log('Requesting children for work item ' + parent.id);
     let url = parent.relationships.childs.links.related;
+/*
+    return this.http
+      .get(url, { headers: this.headers })
+      .toPromise()
+      .then(response => {
+        // Build the user - id map
+        this.buildUserIdMap();
+        let wItems: WorkItem[];
+        let links = response.json().links;
+        if (links.hasOwnProperty('next')) {
+          this.nextLink = links.next;
+        }
+        wItems = response.json().data as WorkItem[];
+        wItems.forEach((item) => {
+          // Resolve the assignee and creator
+          this.resolveUsersForWorkItem(item);
+          this.resolveIterationForWorkItem(item);
+        });
+        return this.workItems;
+      })
+      .catch ((e) => {
+        if (e.status === 401) {
+          this.auth.logout(true);
+        } else {
+          this.handleError(e);
+        }
+      });
+*/
+
+
     return this.http
       .get(url, { headers: this.headers })
       .toPromise()
       .then(response => {
         let wItems: WorkItem[];
         wItems = response.json().data as WorkItem[];
+        wItems.forEach((item) => {
+          // Resolve the assignee and creator
+          this.resolveUsersForWorkItem(item);
+          this.resolveIterationForWorkItem(item);
+        });
         return wItems;
       })
       .catch ((e) => {

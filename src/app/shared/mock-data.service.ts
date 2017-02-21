@@ -37,6 +37,7 @@ export class MockDataService {
   private workItems: any[];
   private workItemLinks: any[];
   private workItemComments: any;
+  private workItemChilds: any;
   private spaces: any[];
   private iterations: any[];
 
@@ -45,6 +46,7 @@ export class MockDataService {
     this.workItems = this.workItemMockGenerator.createWorkItems();
     this.workItemLinks = this.workItemMockGenerator.createWorkItemLinks();
     this.workItemComments = this.workItemMockGenerator.createWorkItemComments();
+    this.workItemChilds = this.workItemMockGenerator.createWorkItemChilds();
     this.spaces = this.spaceMockGenerator.createSpaces();
     this.iterations = this.iterationMockGenerator.createIterations();
   }
@@ -183,6 +185,11 @@ export class MockDataService {
             included: linkIncludes
           };
         }
+      } else if (subselect === 'childs') {
+        console.log('Request for childs for workitem ' + wiId);
+        return {
+            data: this.makeCopy(this.workItemChilds[wiId])
+          };
       }
       // should never happen
       return {};
