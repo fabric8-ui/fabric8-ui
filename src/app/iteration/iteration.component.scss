@@ -14,9 +14,7 @@
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  /* Commenting this for hard coding the types value
-  height: calc(100% - 190px) !important; // height is given to scroll the content
-  */
+  max-height: 50% !important; // height is given to scroll the content
   overflow: auto;
   //** Iterations expaned div styling **/
   .iteration-wrapper {
