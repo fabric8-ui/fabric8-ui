@@ -3,24 +3,24 @@
 @import "../../assets/stylesheets/mixins";
 
 //Iteration Style Start
-.iteration-panel-header {
+.type-panel-header {
     padding: em(20);
     border-bottom: 1px solid $color-pf-black-300;
     h3{
       margin: 0;
     }
   }
-.iterations-container {
+.types-container {
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  /* Commenting this for hard coding the types value
+  /*
   height: calc(100% - 190px) !important; // height is given to scroll the content
   */
-  overflow: auto;
-  //** Iterations expaned div styling **/
-  .iteration-wrapper {
-    .iteration-header {
+  overflow: auto; // important is given to override collapse module styles
+  //** types expaned div styling **/
+  .type-wrapper {
+    .type-header {
       padding: em(10) em(20);
       > h4 {
         margin: 0;
@@ -29,31 +29,30 @@
         width: 15px;
       }
     }
-    .iteration-expanded-div {
+    .type-expanded-div {
       padding-left: 0;
       margin-bottom: 0;
       > li {
-        background-color: $color-pf-white;
         list-style: none;
         padding: em(15);
         &.active {
           border-left: 3px solid $navbar-pf-border-color;
         }
-        .iteration-subheader {
+        .type-subheader {
           -webkit-box-align: center;
           -ms-flex-align: center;
           align-items: center;
           .dropdown-kebab-pf{
             margin-left: em(10);
           }
-          .iteration-name{
+          .type-name{
             line-height: 3rem;
           }
         }
-        .iteration-status {
+        .type-status {
           padding: em(20) 0 em(15) 0;
         }
-        .iteration-description {
+        .type-description {
           @include multiline-truncate($line-height: 1.5em, $line-count: 2, $bg-color: $color-pf-white) ;
         }
       }
@@ -63,7 +62,7 @@
       padding-left: 0;
       > li {
         padding: em(5) em(15) em(5) em(40);
-        .iteration-name{
+        .type-name{
             line-height: 2.5rem;
           }
       }
@@ -73,16 +72,16 @@
     }
   }
 }
-.create-iteration-bar {
+.create-type-bar {
   position: absolute;
   width: $width100;
   bottom: 0;
   background: $color-pf-white;
   border-top: 1px solid $color-pf-black-300;
-  padding: em(19);
+  padding: em(18);
   font-size: rem(14);
   color: $navbar-pf-border-color;
-  .create-iteration-label {
+  .create-type-label {
     padding-left: em(5);
   }
 }

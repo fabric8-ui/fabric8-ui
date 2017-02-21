@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { CollapseModule } from 'ng2-bootstrap';
 import { ModalModule } from 'ng2-modal';
 import { IterationModule } from './../iteration/iteration.module';
+import { TypeModule } from './../type/type.module';
 import { SidepanelComponent } from './side-panel.component';
 
 @NgModule({
@@ -12,6 +13,7 @@ import { SidepanelComponent } from './side-panel.component';
     CollapseModule,
     CommonModule,
     IterationModule,
+    TypeModule,
     ModalModule
   ],
   declarations: [

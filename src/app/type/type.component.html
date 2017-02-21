@@ -1,0 +1,33 @@
+<!--Type Start-->
+<div class="type-panel-header pointer display-flex">
+  <h3>Types</h3>
+</div>
+<div class="types-container display-flex">
+  <div class="type-wrapper">
+    <div class="types">
+      <ul class="not-current-type type-expanded-div">
+        <li class="type-subheader display-flex">
+          <div class="truncate">
+            <strong class="type-name "
+              tooltip="User Story"
+              tooltipPlacement="top"
+              (click)='getWorkItemsByType("userstory")'>
+              User Story
+            </strong>
+          </div>
+        </li>
+        <li class="type-subheader display-flex">
+          <div class="truncate">
+            <strong class="type-name "
+              tooltip="User Story"
+              tooltipPlacement="top"
+              (click)='getWorkItemsByType("bug")'>
+              Bug
+            </strong>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- type End-->
