@@ -87,6 +87,26 @@ export class WorkItemService {
   //   this.logger.log('WorkItemService using url ' + this.workItemUrl);
   // }
 
+  getChildren(parent: WorkItem): Promise<WorkItem[]> {
+    this.logger.log('Requesting children for work item ' + parent.id);
+    let url = parent.relationships.childs.links.related;
+    return this.http
+      .get(url, { headers: this.headers })
+      .toPromise()
+      .then(response => {
+        let wItems: WorkItem[];
+        wItems = response.json().data as WorkItem[];
+        return wItems;
+      })
+      .catch ((e) => {
+        if (e.status === 401) {
+          this.auth.logout(true);
+        } else {
+          this.handleError(e);
+        }
+      });
+  }
+
   /**
    * We maintain a big list of work WorkItem
    * We also maintain a Map of the index and WorkItem.id in another object for easy access

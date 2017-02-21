@@ -117,6 +117,7 @@ export class WorkItemMockGenerator {
   public createWorkItems(): any {
     let workitems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].map((n) => {
       return {
+        'hasChildren': true,
         'attributes': {
           'system.created_at': this.dateTime(n),
           'system.description': 'Description Text ' + n,
@@ -143,6 +144,12 @@ export class WorkItemMockGenerator {
             'links': {
               'related': 'http://mock.service/api/workitems/id' + n + '/comments',
               'self': 'http://mock.service/api/workitems/id' + n + '/relationships/comments'
+            }
+          },
+          'childs': {
+            'links': {
+              'related': 'http://mock.service/api/workitems/id' + n + '/childs',
+              'self': 'http://mock.service/api/workitems/id' + n + '/relationships/childs'
             }
           },
           'creator': {

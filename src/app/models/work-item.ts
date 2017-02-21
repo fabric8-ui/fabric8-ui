@@ -41,6 +41,12 @@ export class WorkItemRelations {
       type: string;
     }
   };
+  childs?: {
+    links: {
+      self: string;
+      related: string;
+    };
+  };
   comments?: {
     links: {
       self: string;

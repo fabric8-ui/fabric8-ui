@@ -65,7 +65,11 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
 
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
-    allowDrag: true
+    allowDrag: true,
+    getChildren: (node:TreeNode): any => {
+      this.workItemService.getChildren(node.data);
+      return [];
+    }
   }
 
   constructor(
