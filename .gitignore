@@ -1,5 +1,8 @@
 # @AngularClass
 
+# Build generated files
+src/app/**/*.css
+
 # Logs
 logs
 *.log
