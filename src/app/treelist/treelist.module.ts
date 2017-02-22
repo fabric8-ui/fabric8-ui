@@ -7,10 +7,6 @@ import { TreeModule } from 'angular2-tree-component';
 
 import { TreeListComponent } from './treelist.component';
 
-export {
-  TreeListComponent
-};
-
 @NgModule({
   declarations: [
     TreeListComponent

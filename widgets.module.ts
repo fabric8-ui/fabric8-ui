@@ -14,6 +14,7 @@ import { AlmEditableModule } from './src/app/editable/almeditable.module';
 import { AlmIconModule } from './src/app/icon/almicon.module';
 import { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
 import { TreeListModule } from './src/app/treelist/treelist.module';
+import { TreeListComponent } from './src/app/treelist/treelist.component';
 
 import { AlmArrayFilter } from './src/app/pipes/alm-array-filter.pipe';
 import { AlmAvatarSize } from './src/app/pipes/alm-avatar-size.pipe';
@@ -48,6 +49,7 @@ import { AlmTrim } from './src/app/pipes/alm-trim';
     AlmMomentTime,
     AlmSearchHighlight,
     AlmTrim,
+    TreeListComponent
     // Dialog,
     // DropdownOption
   ],
@@ -66,7 +68,8 @@ import { AlmTrim } from './src/app/pipes/alm-trim';
     DropdownModule,
     // DropdownOption,
     InfiniteScrollModule,
-    TreeListModule
+    TreeListModule,
+    TreeListComponent
   ]
 })
 export class WidgetsModule {
