@@ -37,6 +37,8 @@ import { WorkItemService } from '../../work-item.service';
 export class WorkItemListEntryComponent implements OnInit {
 
   @Input() workItem: WorkItem;
+  @Input() node: any;
+
   @Output() toggleEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() selectEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() detailEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();

@@ -1,35 +1,31 @@
 <div class="work-item-list-page">
-
   <div #listContainer
-      almInfiniteScroll
-      class="detail-list-wrap list-group list-view-pf"
-      [eachElementHeightInPx]='contentItemHeight'
-      (initItems)='initWiItems($event)'
-      (fetchMore)='fetchMoreWiItems()'>
-    <div dnd-sortable-container
-        [sortableData]="workItems"
-        *ngIf="workItems">
-      <div *ngFor="let workItem of workItems; let counter = index"
-          dnd-sortable
-          [sortableIndex]="counter"
-          (onDragStart)="onDragStart()"
-          (onDragEnd)="onDragEnd(workItem.id)"
-          [attr.data-id]="workItem.id"
-          id="work-item-{{workItem.id}}">
+       almInfiniteScroll
+       class="detail-list-wrap list-group list-view-pf"
+       [eachElementHeightInPx]='contentItemHeight'
+       (initItems)='initWiItems($event)'
+       (fetchMore)='fetchMoreWiItems()'>
+    <alm-tree-list #treeList
+        [nodes]="workItems"
+        [hideExpander]="true"
+        [listTemplate]="listItemTemplate"
+        [options]="treeListOptions">
+      <template #template let-item="item" let-index="index">
         <alm-work-item-list-entry
-          id="{{'workItemList_OuterWrap_'+counter}}"
+          id="{{'workItemList_OuterWrap_' + index}}"
           class="work-item-list-entry"
-          [workItem]="workItem"
+          [workItem]="item.data"
+          [node]="item"
           (toggleEvent)="onToggle($event)"
           (selectEvent)="onSelect($event)"
           (detailEvent)="onDetail($event)"
           (moveTopEvent)="onMoveToTop($event)"
           (moveBottomEvent)="onMoveToBottom($event)">
         </alm-work-item-list-entry>
-      </div>
-      <div *ngIf="!workItems.length">
-        <h2 class="error no-wi">No workitems were found!</h2>
-      </div>
+      </template>
+    </alm-tree-list>
+    <div *ngIf="!workItems || workItems.length === 0">
+      <h2 class="error no-wi">No workitems were found!</h2>
     </div>
   </div>
 

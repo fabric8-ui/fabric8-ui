@@ -7,7 +7,7 @@ import {
   OnInit,
   ViewChild,
   ViewChildren,
-  QueryList
+  QueryList, TemplateRef
 } from '@angular/core';
 import {
   Router,
@@ -26,6 +26,7 @@ import { WorkItemService }            from '../work-item.service';
 import { UserService } from '../../user/user.service';
 import { User } from '../../models/user';
 
+import { TreeListComponent } from 'ngx-widgets';
 
 @Component({
   selector: 'alm-work-item-list',
@@ -36,7 +37,10 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('activeFilters', {read: ElementRef}) activeFiltersRef: QueryList<ElementRef>;
   @ViewChild('activeFiltersDiv') activeFiltersDiv: any;
+
   @ViewChild('listContainer') listContainer: any;
+  @ViewChild('template') listItemTemplate: TemplateRef<any>;
+  @ViewChild('treeList') treeList: TreeListComponent;
 
   workItems: WorkItem[];
   workItemTypes: WorkItemType[];
@@ -53,6 +57,11 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   allUsers: User[] = [] as User[];
   authUser: any = null;
   private spaceSubscription: Subscription = null;
+
+  // See: https://angular2-tree.readme.io/docs/options
+  treeListOptions = {
+    allowDrag: true
+  }
 
   constructor(
     private auth: AuthenticationService,
@@ -101,7 +110,9 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   fetchMoreWiItems(): void {
     this.workItemService
       .getMoreWorkItems()
-      .then((newWiItems) => {})
+      .then((newWiItems) => {
+        this.treeList.updateTree();
+      })
       .catch ((e) => console.log(e));
   }
 
@@ -137,10 +148,27 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
     this.showWorkItemDetails = true;
   }
 
+  onMoveSelectedToTop(): void{
+    this.workItemDetail = this.workItemToMove.getWorkItem();
+    this.workItemService.moveItem(this.workItemDetail, 'top').then(() => {
+      this.treeList.updateTree();
+      this.listContainer.nativeElement.scrollTop = 0;
+    });
+  }
+
+  onMoveSelectedToBottom(): void{
+    this.workItemDetail = this.workItemToMove.getWorkItem();
+    this.workItemService.moveItem(this.workItemDetail, 'bottom').then(() => {
+      this.treeList.updateTree();
+      this.listContainer.nativeElement.scrollTop = this.workItems.length * this.contentItemHeight;
+    });
+  }
+
   onMoveToTop(entryComponent: WorkItemListEntryComponent): void {
     this.workItemDetail = entryComponent.getWorkItem();
     this.workItemService.moveItem(this.workItemDetail, 'top')
     .then(() => {
+      this.treeList.updateTree();
       this.listContainer.nativeElement.scrollTop = 0;
     });
   }
@@ -149,6 +177,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
     this.workItemDetail = entryComponent.getWorkItem();
     this.workItemService.moveItem(this.workItemDetail, 'bottom')
     .then(() => {
+      this.treeList.updateTree();
       this.listContainer.nativeElement.scrollTop = this.workItems.length * this.contentItemHeight;
     });
   }
@@ -156,11 +185,13 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
   onMoveUp(): void {
     this.workItemDetail = this.workItemToMove.getWorkItem();
     this.workItemService.moveItem(this.workItemDetail, 'up');
+    this.treeList.updateTree();
   }
 
   onMoveDown(): void {
     this.workItemDetail = this.workItemToMove.getWorkItem();
     this.workItemService.moveItem(this.workItemDetail, 'down');
+    this.treeList.updateTree();
   }
 
   listenToEvents() {
@@ -195,8 +226,10 @@ export class WorkItemListComponent implements OnInit, AfterViewInit {
             this.onMoveDown();
             break;
           case 'top':
+            this.onMoveSelectedToTop();
             break;
-          case 'down':
+          case 'bottom':
+            this.onMoveSelectedToBottom();
             break;
           default:
             break;

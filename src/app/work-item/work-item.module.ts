@@ -27,6 +27,8 @@ import { WorkItemQuickAddModule } from './work-item-quick-add/work-item-quick-ad
 import { AuthUserResolve, IterationsResolve, UsersResolve } from './common.resolver';
 import { WorkItemComponent } from './work-item.component';
 import { WorkItemRoutingModule } from './work-item-routing.module';
+import { TreeModule } from 'angular2-tree-component';
+import { TreeListModule, } from 'ngx-widgets';
 
 @NgModule({
   imports: [
@@ -42,7 +44,9 @@ import { WorkItemRoutingModule } from './work-item-routing.module';
     TooltipModule,
     WorkItemDetailModule,
     WorkItemRoutingModule,
-    WorkItemQuickAddModule
+    WorkItemQuickAddModule,
+    TreeModule,
+    TreeListModule
   ],
   declarations: [
     AlmArrayFilter,
