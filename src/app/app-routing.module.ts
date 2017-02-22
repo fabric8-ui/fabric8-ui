@@ -38,7 +38,7 @@ export const routes: Routes = [
 
   // Settings
   {
-    path: ':entity/settings',
+    path: ':entity/_settings',
     loadChildren: './settings/settings.module#SettingsModule'
   },
 
@@ -70,8 +70,7 @@ export const routes: Routes = [
   {
     path: ':entity/:space/settings',
     loadChildren: './space-settings/space-settings.module#SpaceSettingsModule'
-  },
-
+  }
 ];
 
 @NgModule({

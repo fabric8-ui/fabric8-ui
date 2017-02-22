@@ -21,7 +21,7 @@ import { Email } from './../models/email';
 export class DummyService {
 
   readonly RESERVED_WORDS: string[] = [
-    'home', 'public', 'settings', 'spaces', 'resources'
+    'home', 'public'
   ];
 
   readonly RESOURCES: Resources = {
@@ -106,15 +106,15 @@ export class DummyService {
                 path: ''
               }, {
                 name: 'Collaboration Spaces',
-                path: 'spaces'
+                path: '_spaces'
               }, {
                 name: 'Resources',
-                path: 'resources'
+                path: '_resources'
               }
             ]
           },
           {
-            path: 'settings',
+            path: '_settings',
             icon: 'pficon pficon-settings',
             menus: [
               {

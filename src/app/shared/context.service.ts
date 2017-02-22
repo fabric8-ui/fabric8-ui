@@ -127,6 +127,9 @@ export class ContextService {
     // First, check if there is a recent context
     let entityStr: string = this.extractEntity();
     let spaceStr: string = this.extractSpace();
+    if (this.checkForReservedWords(entityStr) || this.checkForReservedWords(spaceStr)) {
+      return null;
+    }
     // TODO Implement team URLs
     let teamStr: string = null;
     // The 'ctxPath' is the raw path to the context only, with all extraneous info removed
@@ -204,6 +207,21 @@ export class ContextService {
 
   private loadSpace(): Space {
     return this.dummy.lookupSpace(this.extractSpace());
+  }
+
+  private checkForReservedWords(arg: string): boolean {
+    if (arg) {
+      // All words starting with _ are reserved
+      if (arg.startsWith('_')) {
+        return true;
+      }
+      for (let r of this.dummy.RESERVED_WORDS) {
+        if (arg === r) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   private buildPath(...args: string[]): string {

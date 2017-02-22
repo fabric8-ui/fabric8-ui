@@ -7,16 +7,11 @@ import { OverviewComponent } from './overview/overview.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'pmuir',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
     component: ProfileComponent,
     children: [
       { path: '', component: OverviewComponent },
-      { path: 'spaces', loadChildren: './spaces/spaces.module#SpacesModule' },
-      { path: 'resources', loadChildren: './resources/resources.module#ResourcesModule' }
+      { path: '_spaces', loadChildren: './spaces/spaces.module#SpacesModule' },
+      { path: '_resources', loadChildren: './resources/resources.module#ResourcesModule' }
     ]
   }
 ];

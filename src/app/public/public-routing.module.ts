@@ -5,11 +5,6 @@ import { PublicComponent } from './public.component';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'public',
-    pathMatch: 'full'
-  },
-  {
     path: 'public',
     component: PublicComponent
   }

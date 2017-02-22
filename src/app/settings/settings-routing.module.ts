@@ -8,11 +8,6 @@ import { ProfileComponent } from './profile/profile.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'pmuir/settings',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
     component: SettingsComponent,
     canActivate: [ContextCurrentUserAuthGuard],
     canActivateChild: [ContextCurrentUserAuthGuard],
