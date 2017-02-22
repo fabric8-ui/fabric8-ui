@@ -35,7 +35,8 @@
   ],
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,
-    "useWebpackText": true
+    "useWebpackText": true,
+    "genDir": "compiled"
   },
   "angularCompilerOptions": {
     "strictMetadataEmit": true,
