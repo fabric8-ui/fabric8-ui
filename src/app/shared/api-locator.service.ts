@@ -49,12 +49,15 @@ export class ApiLocatorService {
     if (domainname.startsWith('www')) {
       domainname = window.location.hostname.slice(4);
     }
-    let url = domainname + ':' + window.location.port;
+    let url = domainname;
+    if (window.location.port) {
+      url += ':' + window.location.port;
+    }
     if (this.DEFAULT_API_PREFIXES.has(key)) {
       url = this.DEFAULT_API_PREFIXES.get(key) + '.' + url + '/';
     }
     if (this.DEFAULT_API_PATHS.has(key)) {
-      url = url + this.DEFAULT_API_PATHS.get(key);
+      url += this.DEFAULT_API_PATHS.get(key);
     }
     url = window.location.protocol + '//' + url;
     return url;
