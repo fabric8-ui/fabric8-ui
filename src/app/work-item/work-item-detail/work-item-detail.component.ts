@@ -16,21 +16,23 @@ import {
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
 import { Router }                 from '@angular/router';
+
 import { cloneDeep } from 'lodash';
+import {
+  AuthenticationService,
+  Broadcaster,
+  Logger,
+  User,
+  UserService
+} from 'ngx-login-client';
 
-import { AuthenticationService } from './../../auth/authentication.service';
-import { Broadcaster } from './../../shared/broadcaster.service';
-import { Logger } from './../../shared/logger.service';
-import { UserService } from './../../user/user.service';
 
-import { IterationModel } from './../../models/iteration.model';
-import { IterationService } from './../../iteration/iteration.service';
+import { IterationModel } from '../../models/iteration.model';
+import { IterationService } from '../../iteration/iteration.service';
 
-import { WorkItem, WorkItemAttributes, WorkItemRelations } from './../../models/work-item';
-import { WorkItemService } from './../work-item.service';
-import { WorkItemType } from './../work-item-type';
-
-import { User } from './../../models/user';
+import { WorkItem, WorkItemAttributes, WorkItemRelations } from '../../models/work-item';
+import { WorkItemService } from '../work-item.service';
+import { WorkItemType } from '../work-item-type';
 
 @Component({
   selector: 'alm-work-item-detail',

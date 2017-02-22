@@ -12,12 +12,12 @@ import {
   DialogModule,
   InfiniteScrollModule
 } from 'ngx-widgets';
+import { UserService } from 'ngx-login-client';
 
 import { AlmFilterBoardList } from '../pipes/alm-board-filter.pipe';
 import { FabPlannerAssociateIterationModalComponent } from './work-item-iteration-association-modal/work-item-iteration-association-modal.component';
 import { IterationModule } from '../iteration/iteration.module';
 import { SidepanelModule } from '../side-panel/side-panel.module';
-import { UserService } from '../user/user.service';
 import { WorkItemBoardComponent } from './work-item-board/work-item-board.component';
 import { WorkItemDetailModule } from './work-item-detail/work-item-detail.module';
 import { WorkItemListEntryComponent } from './work-item-list/work-item-list-entry/work-item-list-entry.component';

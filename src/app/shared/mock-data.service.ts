@@ -1,6 +1,7 @@
-import { Logger } from './../shared/logger.service';
-
 import { Injectable } from '@angular/core';
+
+import { Logger } from 'ngx-login-client';
+
 import { WorkItem } from '../work-item/work-item';
 
 // mock data generators

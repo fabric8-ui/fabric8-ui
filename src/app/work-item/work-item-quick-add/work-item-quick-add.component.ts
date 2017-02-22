@@ -12,7 +12,7 @@ import {
   QueryList
 } from '@angular/core';
 
-import { Logger } from '../../shared/logger.service';
+import { Logger } from 'ngx-login-client';
 
 import { WorkItem, WorkItemAttributes, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';

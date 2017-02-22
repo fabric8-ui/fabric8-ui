@@ -1,16 +1,17 @@
-import { Broadcaster } from './../../shared/broadcaster.service';
-import { cloneDeep } from 'lodash';
+import { Component, ViewChild, OnInit, Output, EventEmitter, Input, OnChanges, OnDestroy } from '@angular/core';
+
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { IterationService } from './../iteration.service';
-import { SpaceService, Space } from './../../shared/mock-spaces.service';
-import { IterationModel } from './../../models/iteration.model';
-import { Component, ViewChild, OnInit, Output, EventEmitter, Input, OnChanges, OnDestroy } from '@angular/core';
-
+import { cloneDeep } from 'lodash';
 import * as moment from 'moment';
-
 import { IMyOptions, IMyDateModel } from 'mydatepicker';
+import { Broadcaster } from 'ngx-login-client';
+
+import { IterationService } from '../iteration.service';
+import { SpaceService, Space } from '../../shared/mock-spaces.service';
+import { IterationModel } from '../../models/iteration.model';
+
 
 @Component({
   selector: 'fab-planner-iteration-modal',

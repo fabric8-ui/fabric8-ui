@@ -1,14 +1,12 @@
 import Globals = require('./globals');
 
-import { ReflectiveInjector } from '@angular/core';
-
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Injectable, ReflectiveInjector } from '@angular/core';
 import { Http } from '@angular/http';
 import { Request, RequestOptions, RequestOptionsArgs } from '@angular/http';
 import { Response, ResponseOptions, ResponseOptionsArgs } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
-import { Logger } from './../shared/logger.service';
+import { Logger } from 'ngx-login-client';
 import { MockDataService } from './mock-data.service';
 
 /*

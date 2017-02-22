@@ -1,10 +1,11 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { UsersResolve, AuthUserResolve, IterationsResolve } from './common.resolver';
+import { WorkItemComponent } from './work-item.component';
 import { WorkItemBoardComponent } from './work-item-board/work-item-board.component';
 import { WorkItemDetailComponent } from './work-item-detail/work-item-detail.component';
 import { WorkItemListComponent } from './work-item-list/work-item-list.component';
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { UsersResolve, AuthUserResolve, IterationsResolve } from './common.resolver';
-import { WorkItemComponent } from './work-item.component';
 
 const routes: Routes = [
   {

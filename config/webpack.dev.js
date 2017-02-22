@@ -9,6 +9,9 @@ const ENV = process.env.ENV || process.env.NODE_ENV || 'development';
 // if env is 'inmemory', the inmemory debug resource is used
 const API_URL = process.env.API_URL || (ENV==='inmemory'?'app/':'http://localhost:8080/api/');
 const FORGE_URL = process.env.FORGE_URL || 'http://localhost:8080/forge';
+const FABRIC8_WIT_API_URL = process.env.FABRIC8_WIT_API_URL || 'http://localhost:8080/api/';
+const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL;
+const FABRIC8_FORGE_URL = process.env.FABRIC8_FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
 const extractSASS = new ExtractTextPlugin('stylesheets/[name].scss');
@@ -18,6 +21,9 @@ const METADATA = webpackMerge(commonConfig.metadata, {
   API_URL: API_URL,
   ENV: ENV,
   FORGE_URL: FORGE_URL,
+  FABRIC8_WIT_API_URL: FABRIC8_WIT_API_URL,
+  FABRIC8_RECOMMENDER_API_URL: FABRIC8_RECOMMENDER_API_URL,
+  FABRIC8_FORGE_URL: FABRIC8_FORGE_URL,
   PUBLIC_PATH: PUBLIC_PATH
 });
 

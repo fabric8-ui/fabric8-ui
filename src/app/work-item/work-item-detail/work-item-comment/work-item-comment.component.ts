@@ -2,9 +2,12 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 
+import {
+    User,
+    UserService
+} from 'ngx-login-client';
+
 import { Comment, CommentAttributes } from '../../../models/comment';
-import { User } from '../../../models/user';
-import { UserService } from '../../../user/user.service';
 import { WorkItem } from '../../../models/work-item';
 import { WorkItemService } from '../../work-item.service';
 

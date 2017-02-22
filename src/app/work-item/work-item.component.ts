@@ -10,9 +10,13 @@ import {
   QueryList
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from './../auth/authentication.service';
-import { Broadcaster } from './../shared/broadcaster.service';
+
 import { cloneDeep } from 'lodash';
+import {
+  AuthenticationService,
+  Broadcaster
+} from 'ngx-login-client';
+
 import { WorkItem } from './work-item';
 import { WorkItemListEntryComponent } from './work-item-list/work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService } from './work-item.service';

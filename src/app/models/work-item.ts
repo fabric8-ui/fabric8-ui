@@ -1,6 +1,6 @@
 import { Comments, Comment } from './comment';
 import { Link } from './link';
-import { User } from './user';
+import { User } from 'ngx-login-client';
 import { IterationModel } from './iteration.model';
 
 export class WorkItem {

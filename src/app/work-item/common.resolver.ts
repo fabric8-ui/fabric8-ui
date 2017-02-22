@@ -1,10 +1,14 @@
-import { SpaceService, Space } from './../shared/mock-spaces.service';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
+
+import {
+  User,
+  UserService
+} from 'ngx-login-client';
+
 import { IterationService } from '../iteration/iteration.service';
+import { SpaceService, Space } from '../shared/mock-spaces.service';
 import { IterationModel } from '../models/iteration.model';
-import { UserService } from '../user/user.service';
-import { User } from '../models/user';
 
 
 @Injectable()

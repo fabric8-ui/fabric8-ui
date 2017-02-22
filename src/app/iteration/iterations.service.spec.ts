@@ -1,8 +1,4 @@
 import { SpaceService } from './../shared/mock-spaces.service';
-import { Logger } from './../shared/logger.service';
-import { cloneDeep } from 'lodash';
-import { IterationModel } from './../models/iteration.model';
-import { AuthenticationService } from './../auth/authentication.service';
 import {
   BaseRequestOptions,
   Http,
@@ -15,6 +11,14 @@ import {
   TestBed
 } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
+
+import { cloneDeep } from 'lodash';
+import {
+  AuthenticationService,
+  Logger
+} from 'ngx-login-client';
+
+import { IterationModel } from '../models/iteration.model';
 import { IterationService } from './iteration.service';
 
 describe ('Iteration service - ', () => {

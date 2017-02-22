@@ -2,13 +2,15 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Params, ActivatedRoute } from '@angular/router';
-import { SpaceService, Space } from './../shared/mock-spaces.service';
+import { SpaceService, Space } from '../shared/mock-spaces.service';
 import { IterationService } from './iteration.service';
-import { IterationModel } from './../models/iteration.model';
+import { IterationModel } from '../models/iteration.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { AuthenticationService } from './../auth/authentication.service';
-import { Broadcaster } from './../shared/broadcaster.service';
+import {
+  AuthenticationService,
+  Broadcaster
+} from 'ngx-login-client';
 
 @Component({
   selector: 'fab-planner-iteration',

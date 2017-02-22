@@ -17,6 +17,15 @@ import { CommonModule } from '@angular/common';
 
 import { DndModule } from 'ng2-dnd';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
+import { AlmUserName } from '../../pipes/alm-user-name.pipe';
+import {
+  // AlmUserName,
+  AuthenticationService,
+  Broadcaster,
+  Logger,
+  User,
+  UserService
+} from 'ngx-login-client';
 import {
   AlmArrayFilter,
   AlmIconModule,
@@ -24,14 +33,8 @@ import {
   InfiniteScrollModule
 } from 'ngx-widgets';
 
-import { Broadcaster } from '../../shared/broadcaster.service';
-import { Logger } from '../../shared/logger.service';
-
 import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
 
-import { AuthenticationService } from '../../auth/authentication.service';
-import { User } from '../../models/user';
-import { UserService } from '../../user/user.service';
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType } from '../work-item-type';
 import { WorkItemService } from '../work-item.service';

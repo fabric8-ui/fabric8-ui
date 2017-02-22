@@ -1,9 +1,9 @@
 exports.WorkItemModule = require('./lib/work-item/work-item.module').WorkItemModule;
 exports.MockDataService = require('./lib/shared/mock-data.service').MockDataService;
-exports.AuthenticationService = require('./lib/auth/authentication.service').AuthenticationService;
-exports.Broadcaster = require('./lib/shared/broadcaster.service').Broadcaster;
-exports.UserService = require('./lib/user/user.service').UserService;
-exports.Logger = require('./lib/shared/logger.service').Logger;
+exports.AuthenticationService = require('ngx-login-client').AuthenticationService;
+exports.Broadcaster = require('ngx-login-client').Broadcaster;
+exports.UserService = require('ngx-login-client').UserService;
+exports.Logger = require('ngx-login-client').Logger;
 exports.FooterComponent = require('./lib/footer/footer.component').FooterComponent;
 exports.HeaderComponent = require('./lib/header/header.component').HeaderComponent;
 exports.LoginComponent = require('./lib/login/login.component').LoginComponent;

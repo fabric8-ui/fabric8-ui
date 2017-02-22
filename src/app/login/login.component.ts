@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router }    from '@angular/router';
+import { Router } from '@angular/router';
+
+import { AuthenticationService } from 'ngx-login-client';
 
 import { LoginItem } from './login-item';
 import { LoginService } from './login.service';
-import { AuthenticationService } from '../auth/authentication.service';
 
 
 @Component({

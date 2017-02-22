@@ -1,4 +1,3 @@
-import { Link } from '../models/link';
 import { Injectable, Component } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
@@ -7,21 +6,24 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { cloneDeep } from 'lodash';
 import { DropdownOption } from 'ngx-widgets';
+import {
+  AuthenticationService,
+  Broadcaster,
+  Logger,
+  User,
+  UserService
+} from 'ngx-login-client';
 
 import { SpaceService, Space } from '../shared/mock-spaces.service';
-import { AuthenticationService } from '../auth/authentication.service';
 import {
-Comment,
-Comments,
-CommentPost
+  Comment,
+  Comments,
+  CommentPost
 } from '../models/comment';
-import { Broadcaster } from '../shared/broadcaster.service';
 import { IterationModel } from '../models/iteration.model';
 import { IterationService } from '../iteration/iteration.service';
-import { Logger } from '../shared/logger.service';
 import { LinkType } from '../models/link-type';
-import { UserService } from '../user/user.service';
-import { User } from '../models/user';
+import { Link } from '../models/link';
 import {
   LinkDict,
   WorkItem,

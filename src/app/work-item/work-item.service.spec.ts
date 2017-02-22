@@ -12,20 +12,21 @@ import {
 import { MockBackend } from '@angular/http/testing';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { cloneDeep } from 'lodash';
 import { DropdownOption } from 'ngx-widgets';
+import {
+  AuthenticationService,
+  Broadcaster,
+  Logger,
+  UserService
+} from 'ngx-login-client';
 
-import { AuthenticationService } from '../auth/authentication.service';
-import { Logger } from '../shared/logger.service';
-
+import { MockDataService } from '../shared/mock-data.service';
+import { SpaceService } from '../shared/mock-spaces.service';
 import { IterationService } from '../iteration/iteration.service';
 import { WorkItem } from '../models/work-item';
 import { WorkItemService } from './work-item.service';
 
-import { MockDataService } from '../shared/mock-data.service';
-import { SpaceService } from '../shared/mock-spaces.service';
-import { cloneDeep } from 'lodash';
-import { Broadcaster } from '../shared/broadcaster.service';
-import { UserService } from '../user/user.service';
 
 describe('Work Item Service - ', () => {
 

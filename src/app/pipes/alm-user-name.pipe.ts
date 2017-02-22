@@ -1,4 +1,4 @@
-import { User } from './../models/user';
+import { User } from 'ngx-login-client';
 import { Pipe, PipeTransform } from '@angular/core';
 
 // tslint:disable-next-line:use-pipe-transform-interface

@@ -1,14 +1,12 @@
+import { Component, OnInit } from '@angular/core';
 import { Response } from '@angular/http';
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-import { Router }            from '@angular/router';
+import { Router } from '@angular/router';
+
+import { AuthenticationService } from 'ngx-login-client';
 
 import { WorkItem } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
 
-import { AuthenticationService } from '../../auth/authentication.service';
 
 @Component({
   selector: 'alm-board',

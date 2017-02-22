@@ -1,4 +1,3 @@
-import { WorkItemModule } from './work-item/work-item.module';
 import './rxjs-extensions';
 
 // Globals
@@ -7,18 +6,20 @@ import Globals = require('./shared/globals');
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
+
 import { DropdownModule } from 'ng2-dropdown';
 import { TabsModule } from 'ng2-bootstrap/components/tabs';
 import { ModalModule } from 'ng2-modal';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
+import {
+  AuthenticationService,
+  Broadcaster,
+  Logger,
+  UserService
+} from 'ngx-login-client';
 
 // Shared
-import { AuthenticationService } from './auth/authentication.service';
-import { Broadcaster } from './shared/broadcaster.service';
-import { UserService } from './user/user.service';
 import { SpaceService } from './shared/mock-spaces.service';
-import { Logger } from './shared/logger.service';
-
 import { FormsModule } from '@angular/forms';
 
 // App components
@@ -38,6 +39,7 @@ import { LoginService } from './login/login.service';
 // Work
 import { WorkItemSearchComponent } from './work-item/work-item-search/work-item-search.component';
 import { WorkItemService } from './work-item/work-item.service';
+import { WorkItemModule } from './work-item/work-item.module';
 
 // Mock data
 import { MockDataService } from './shared/mock-data.service';

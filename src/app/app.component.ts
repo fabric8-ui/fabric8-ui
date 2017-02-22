@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { AuthenticationService } from './auth/authentication.service';
-import { Broadcaster } from './shared/broadcaster.service';
+import {
+  AuthenticationService,
+  Broadcaster
+} from 'ngx-login-client';
 
 @Component({
   selector: 'alm-app',

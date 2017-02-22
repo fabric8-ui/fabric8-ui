@@ -19,15 +19,17 @@ import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 
 // shared components
 import { Settings } from 'fabric8-shared-services';
+import {
+  AuthenticationService,
+  Broadcaster,
+  Logger,
+  UserService
+} from 'ngx-login-client';
 
 // fabric8 components - services
-import { AuthenticationService } from 'fabric8-planner';
-import { UserService } from 'fabric8-planner';
 import { LoginService } from 'fabric8-planner';
 import { WorkItemService } from 'fabric8-planner';
 import { MockDataService } from 'fabric8-planner';
-import { Broadcaster } from 'fabric8-planner';
-import { Logger } from 'fabric8-planner';
 
 // fabric8 components - components
 import { ChatModule } from 'fabric8-planner';

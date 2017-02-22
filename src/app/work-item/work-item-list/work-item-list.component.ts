@@ -13,18 +13,20 @@ import {
   Router,
   ActivatedRoute
 } from '@angular/router';
-import { cloneDeep } from 'lodash';
 
-import { AuthenticationService } from '../../auth/authentication.service';
-import { Broadcaster } from '../../shared/broadcaster.service';
-import { Logger } from '../../shared/logger.service';
+import { cloneDeep } from 'lodash';
+import {
+  AuthenticationService,
+  Broadcaster,
+  Logger,
+  User,
+  UserService
+} from 'ngx-login-client';
 
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType }               from '../work-item-type';
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService }            from '../work-item.service';
-import { UserService } from '../../user/user.service';
-import { User } from '../../models/user';
 
 import { TreeListComponent } from 'ngx-widgets';
 

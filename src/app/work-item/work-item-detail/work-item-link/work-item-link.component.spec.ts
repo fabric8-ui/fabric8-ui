@@ -17,13 +17,17 @@
 // import { DropdownModule }     from 'ng2-dropdown';
 // import { Ng2CompleterModule } from 'ng2-completer';
 
-// import { AuthenticationService } from '../../../../auth/authentication.service';
+// import {
+//   AuthenticationService,
+//   Broadcaster,
+//   Logger,
+//   User,
+//   UserService
+// } from 'ngx-login-client';
+//
 // import { AlmLinkTarget } from '../../../../pipes/alm-link-target.pipe';
 // import { Link } from '../../../../models/link';
 // import { LinkType } from '../../../../models/link-type';
-// import { Logger } from '../../../../shared/logger.service';
-// import { User } from '../../../../models/user';
-// import { UserService } from '../../../../user/user.service';
 // import { WorkItem } from '../../../../models/work-item';
 // import { WorkItemService } from '../../../work-item.service';
 // // import { WorkItemDetailComponent } from '../work-item-detail.component';

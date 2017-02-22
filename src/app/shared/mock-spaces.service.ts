@@ -1,19 +1,19 @@
-import { MockHttp } from './mock-http';
-import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
-import { SpaceMockGenerator } from './mock-data/space-mock-generator';
-
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { cloneDeep } from 'lodash';
+import {
+  Logger,
+  User
+} from 'ngx-login-client';
 
-import { Logger } from './logger.service';
 import { MockDataService } from './mock-data.service';
-import { User } from '../models/user';
-
+import { SpaceMockGenerator } from './mock-data/space-mock-generator';
+import { MockHttp } from './mock-http';
 import Globals = require('./../shared/globals');
 
 @Injectable()
