@@ -32,7 +32,7 @@ export class ApiLocatorService {
   }
 
   get recommenderApiUrl(): string {
-    return this.buildApiUrl('recommender')
+    return this.buildApiUrl('recommender');
   }
 
   private loadEnvVar(key: string): void {
@@ -54,7 +54,7 @@ export class ApiLocatorService {
       url = this.DEFAULT_API_PREFIXES.get(key) + '.' + url;
     }
     if (this.DEFAULT_API_PATHS.has(key)) {
-      url = url + this.DEFAULT_API_PATHS.get(key);
+      url = url + this.DEFAULT_API_PATHS.get(key) + '/';
     }
     url = window.location.protocol + '//' + url;
     return url;
