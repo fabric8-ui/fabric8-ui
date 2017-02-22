@@ -1,3 +1,4 @@
+import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
 import './rxjs-extensions';
 
 // Globals
@@ -75,7 +76,8 @@ if (process.env.ENV == 'inmemory') {
     UserService,
     WorkItemService,
     MockDataService,
-    SpaceService
+    SpaceService,
+    authApiUrlProvider
   ];
 } else {
   serviceImports = [
@@ -86,7 +88,8 @@ if (process.env.ENV == 'inmemory') {
     UserService,
     WorkItemService,
     MockDataService,
-    SpaceService
+    SpaceService,
+    authApiUrlProvider
   ];
 }
 
