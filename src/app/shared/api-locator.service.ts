@@ -16,7 +16,7 @@ export class ApiLocatorService {
   ]);
 
   readonly DEFAULT_API_PATHS = new Map<string, string>([
-    ['wit', '/api']
+    ['wit', 'api/']
   ]);
 
   private envVars = new Map<string, string>();
@@ -51,10 +51,10 @@ export class ApiLocatorService {
     }
     let url = domainname + ':' + window.location.port;
     if (this.DEFAULT_API_PREFIXES.has(key)) {
-      url = this.DEFAULT_API_PREFIXES.get(key) + '.' + url;
+      url = this.DEFAULT_API_PREFIXES.get(key) + '.' + url + '/';
     }
     if (this.DEFAULT_API_PATHS.has(key)) {
-      url = url + this.DEFAULT_API_PATHS.get(key) + '/';
+      url = url + this.DEFAULT_API_PATHS.get(key);
     }
     url = window.location.protocol + '//' + url;
     return url;
