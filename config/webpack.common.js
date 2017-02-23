@@ -45,6 +45,10 @@ module.exports = {
           {
             loader:'to-string-loader'
           },
+          // Commented out as causing CSS ot load twice
+          /*{
+            loader: 'style-loader'
+          },*/
           {
             loader:'css-loader'
           },
@@ -56,6 +60,10 @@ module.exports = {
           {
             loader:'css-to-string-loader'
           },
+          // Commented out as causing CSS ot load twice
+          /*{
+            loader: 'style-loader'
+          },*/
           {
             loader:'css-loader',
             options:{sourceMap:true}
