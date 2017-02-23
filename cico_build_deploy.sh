@@ -11,7 +11,6 @@ set -e
 
 # Get all the deps in
 yum -y install docker make git
-sed -i '/OPTIONS=.*/c\OPTIONS="--selinux-enabled --log-driver=journald --insecure-registry registry.ci.centos.org:5000"' /etc/sysconfig/docker
 service docker start
 
 # Build builder image
@@ -42,8 +41,8 @@ if [ $? -eq 0 ]; then
   if [ $? -eq 0 ]; then
     echo 'CICO: build OK'
     docker build -t fabric-ui-deploy -f Dockerfile.deploy . && \
-    docker tag fabric-ui-deploy registry.ci.centos.org:5000/fabric8io/fabric8-ui:latest && \
-    docker push registry.ci.centos.org:5000/fabric8io/fabric8-ui:latest
+    docker tag fabric-ui-deploy 8.43.84.245.xip.io/fabric8io/fabric8-ui:latest && \
+    docker push 8.43.84.245.xip.io/fabric8io/fabric8-ui:latest
     if [ $? -eq 0 ]; then
       echo 'CICO: image pushed, ready to update deployed app'
       exit 0
