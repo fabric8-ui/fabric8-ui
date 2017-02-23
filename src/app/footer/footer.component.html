@@ -1,1 +1,5 @@
-<div id="footer_container" class="footer">Copyright 2017 Red Hat</div>
+<div id="footer_container" class="footer">
+  Copyright 2017 Red Hat
+  <span *ngIf="buildNumber"> (Build: {{buildNumber}})</span>
+  <span *ngIf="!buildNumber"> (Development Build)</span>
+</div>

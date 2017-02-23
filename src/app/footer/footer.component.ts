@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 
 export class FooterComponent {
+
+  get buildNumber(): string {
+    return process.env.BUILD_NUMBER;
+  }
+
 }
