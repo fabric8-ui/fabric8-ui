@@ -1,16 +1,31 @@
-var webpack = require('webpack');
-var webpackMerge = require('webpack-merge');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var commonConfig = require('./webpack.common.js');
-var helpers = require('./helpers');
+const helpers = require('./helpers');
+const webpack = require('webpack');
+const commonConfig = require('./webpack.common.js');
 
+/**
+ * Webpack Plugins
+ */
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
+const DefinePlugin = require('webpack/lib/DefinePlugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const IgnorePlugin = require('webpack/lib/IgnorePlugin');
+const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
+const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
+const ProvidePlugin = require('webpack/lib/ProvidePlugin');
+const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+const WebpackMd5Hash = require('webpack-md5-hash');
+const webpackMerge = require('webpack-merge');
+
+/**
+ * Webpack Constants
+ */
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 const API_URL = process.env.API_URL || 'http://api.almighty.io/api/';
 const FORGE_URL = process.env.FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const extractCSS = new ExtractTextPlugin('stylesheets/[name].[hash].css');
 const extractSASS = new ExtractTextPlugin('stylesheets/[name].[hash].scss');
-
 
 const METADATA = webpackMerge(commonConfig.metadata, {
   API_URL: API_URL,
@@ -25,8 +40,10 @@ module.exports = webpackMerge(commonConfig, {
   output: {
     path: helpers.root('dist'),
     publicPath: METADATA.PUBLIC_PATH,
-    filename: '[name].[hash].js',
-    chunkFilename: '[id].[hash].chunk.js'
+    filename: 'bundles/ngx-widgets.js',
+    library: 'ngx-widgets',
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
 
   htmlLoader: {

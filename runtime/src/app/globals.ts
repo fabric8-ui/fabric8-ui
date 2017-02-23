@@ -1,2 +1,1 @@
-
-export var inTestMode = false;
+export let inTestMode: boolean = false;

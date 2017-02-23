@@ -32,7 +32,7 @@ import {
 import { WorkItemType } from './work-item-type';
 
 import { MockHttp } from '../shared/mock-http';
-import Globals = require('./../shared/globals');
+import { inTestMode } from '../shared/globals';
 
 @Injectable()
 export class WorkItemService {

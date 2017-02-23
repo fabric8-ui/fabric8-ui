@@ -1,4 +1,4 @@
-import Globals = require('globals');
+import * as myGlobals from './globals';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -36,7 +36,7 @@ import { ChatModule } from 'fabric8-planner';
 import { WorkItemModule } from 'fabric8-planner';
 
 if (process.env.ENV == 'inmemory') {
-  Globals.inTestMode = true;
+  myGlobals.inTestMode = true;
 }
 
 /**

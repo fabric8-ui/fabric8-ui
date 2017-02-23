@@ -1,24 +1,41 @@
 const webpack = require('webpack');
-const sassLintPlugin = require('sasslint-webpack-plugin');
+const helpers = require('./helpers');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const AssetsPlugin = require('assets-webpack-plugin');
+const autoprefixer = require('autoprefixer');
+const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
+const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const helpers = require('./helpers');
+const DefinePlugin = require('webpack/lib/DefinePlugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlElementsPlugin = require('./html-elements-plugin');
+const IgnorePlugin = require('webpack/lib/IgnorePlugin');
+const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
+// const ngcWebpack = require('ngc-webpack');
+const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
+const OptimizeJsPlugin = require('optimize-js-plugin');
+const ProvidePlugin = require('webpack/lib/ProvidePlugin');
+const sassLintPlugin = require('sasslint-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+
+
 const precss = require('precss');
-const autoprefixer = require('autoprefixer')
 
 module.exports = {
-  entry: {
-    'polyfills': './src/polyfills.ts',
-    'vendor': './src/vendor.ts',
-    'app': './src/main.ts'
-  },
+  devtool: 'inline-source-map',
 
   resolve: {
-    extensions: ['.webpack.js', '.wep.js', '.js', '.ts']
+    extensions: ['.ts', '.js', '.json']
   },
+
+  entry: helpers.root('index.ts'),
+
+  // require those dependencies but don't bundle them
+  externals: [/^\@angular\//, /^rxjs\//],
 
   stats: {
     colors: true,
@@ -28,17 +45,37 @@ module.exports = {
   module: {
     rules: [
       {
+        enforce: 'pre',
         test: /\.ts$/,
-        loaders: [
-          'ts-loader',
-          'angular2-template-loader'
+        use: 'tslint-loader',
+        exclude: [helpers.root('node_modules')]
+      },
+      {
+        test: /\.ts$/,
+        use: [
+          {
+            loader: 'awesome-typescript-loader',
+            options: {
+              declaration: false
+            },
+          },
+          {
+            loader: 'angular2-template-loader'
+          }
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
       },
       {
-        test: /\.html$/,
-        loader: 'html-loader'
+        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: 'file-loader?name=fonts/[name].[hash].[ext]?'
       },
+
+      // Support for *.json files.
+      {
+        test: /\.json$/,
+        use: 'json-loader'
+      },
+
       {
         test: /\.css$/,
         use:[
@@ -74,11 +111,10 @@ module.exports = {
           }
         ]
       },
-      /* File loader for supporting images, for example, in CSS files. */
       {
-        test: /\.(jpg|png|gif)$/,
-        loader: 'file-loader'
-      },
+        test: /\.html$/,
+        use: 'raw-loader'
+      }
     ]
   },
 
@@ -94,13 +130,6 @@ module.exports = {
     //   failOnError: false,
     //   testing: false
     // }),
-    // require('postcss-import')(),
-    // require('autoprefixer')(),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: ['app', 'vendor', 'polyfills']
-    }),
-
     /**
      * Plugin: ContextReplacementPlugin
      * Description: Provides context to Angular's use of System.import
@@ -114,9 +143,21 @@ module.exports = {
       helpers.root('src') // location of your src
     ),
 
+    /**
+     * Webpack plugin to optimize a JavaScript file for faster initial load
+     * by wrapping eagerly-invoked functions.
+     *
+     * See: https://github.com/vigneshshanmugam/optimize-js-plugin
+     */
+
+    new OptimizeJsPlugin({
+      sourceMap: false
+    }),
+
     new HtmlWebpackPlugin({
       template: 'src/index.html'
     }),
+
     /*
       * Plugin: CopyWebpackPlugin
       * Description: Copy files and directories in webpack.
@@ -128,13 +169,74 @@ module.exports = {
     new CopyWebpackPlugin([{
       from: 'src/assets',
       to: 'assets'
-    }, {
-      from: 'src/meta'
     }]),
+    /**
+     * Plugin: ExtractTextPlugin
+     * Description: Extracts imported CSS files into external stylesheet
+     *
+     * See: https://github.com/webpack/extract-text-webpack-plugin
+     */
+    // new ExtractTextPlugin('[name].[contenthash].css'),
+    new ExtractTextPlugin('[name].css'),
 
-  ],
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        /**
+         * Html loader advanced options
+         *
+         * See: https://github.com/webpack/html-loader#advanced-options
+         */
+        // TODO: Need to workaround Angular 2's html syntax => #id [bind] (event) *ngFor
+        htmlLoader: {
+          minimize: true,
+          removeAttributeQuotes: false,
+          caseSensitive: true,
+          customAttrSurround: [
+            [/#/, /(?:)/],
+            [/\*/, /(?:)/],
+            [/\[?\(?/, /(?:)/]
+          ],
+          customAttrAssign: [/\)?\]?=/]
+        },
 
-  // postcss: function () {
-  //     return [precss, autoprefixer({ browsers: ['last 2 versions'] })];
-  // }
+        tslintLoader: {
+          emitErrors: false,
+          failOnHint: false
+        },
+        /**
+         * Sass
+         * Reference: https://github.com/jtangelder/sass-loader
+         * Transforms .scss files to .css
+         */
+        sassLoader: {
+          //includePaths: [path.resolve(__dirname, "node_modules/foundation-sites/scss")]
+        }
+      }
+    }),
+    // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin
+    // Only emit files when there are no errors
+    new webpack.NoEmitOnErrorsPlugin(),
+
+    // // Reference: http://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
+    // // Dedupe modules in the output
+    // new webpack.optimize.DedupePlugin(),
+
+    // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
+    // Minify all javascript, switch loaders to minimizing mode
+    // new webpack.optimize.UglifyJsPlugin({sourceMap: true, mangle: { keep_fnames: true }}),
+
+    // Copy assets from the public folder
+    // Reference: https://github.com/kevlened/copy-webpack-plugin
+    // new CopyWebpackPlugin([{
+    //   from: helpers.root('src/public')
+    // }]),
+
+    // Reference: https://github.com/johnagan/clean-webpack-plugin
+    // Removes the bundle folder before the build
+    new CleanWebpackPlugin(['bundles'], {
+      root: helpers.root(),
+      verbose: false,
+      dry: false
+    })
+  ]
 };
