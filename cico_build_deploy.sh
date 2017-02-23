@@ -35,7 +35,7 @@ docker exec fabric8-ui-builder ./run_functional_tests.sh
 
 if [ $? -eq 0 ]; then
   echo 'CICO: functional tests OK'
-  docker exec fabric8-ui-builder npm run build:prod -e "BUILD_NUMBER=${BUILD_NUMBER}"
+  docker exec fabric8-ui-builder -e "BUILD_NUMBER=${BUILD_NUMBER}" npm run build:prod 
   docker exec -u root fabric8-ui-builder cp -r /home/fabric8/dist /
   ## All ok, deploy
   if [ $? -eq 0 ]; then
