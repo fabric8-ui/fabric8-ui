@@ -21,7 +21,6 @@ fi
 
 # Get all the deps in
 yum -y install docker make git
-sed -i '/OPTIONS=.*/c\OPTIONS="--selinux-enabled --log-driver=journald --insecure-registry registry.ci.centos.org:5000"' /etc/sysconfig/docker
 service docker start
 
 # Build builder image
@@ -46,6 +45,6 @@ docker exec -u root almighty-ui-builder cp -r /home/almighty/dist /
 
 ## All ok, deploy
 docker build -t almighty-ui-deploy -f Dockerfile.deploy .
-docker tag almighty-ui-deploy registry.ci.centos.org:5000/almighty/almighty-ui:latest
-docker push registry.ci.centos.org:5000/almighty/almighty-ui:latest
+docker tag almighty-ui-deploy 8.43.84.245.xip.io/almighty/almighty-ui:latest
+docker push 8.43.84.245.xip.io/almighty/almighty-ui:latest
 

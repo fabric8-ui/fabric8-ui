@@ -4,4 +4,4 @@ docker exec almighty-ui-builder npm install
 docker exec almighty-ui-builder ./run_unit_tests.sh
 docker exec -u root almighty-ui-builder cp -r /home/almighty/dist /
 docker build -t almighty-ui-deploy -f Dockerfile.deploy .
-docker tag almighty-ui-deploy registry.ci.centos.org:5000/almighty/almighty-ui:latest
+docker tag almighty-ui-deploy 8.43.84.245.xip.io/almighty/almighty-ui:latest
