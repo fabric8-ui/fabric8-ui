@@ -209,7 +209,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
                 toastIterationName = toastIterationName.slice(0, 15) + '...';
               }
               let notificationData = {
-                'notificationText': '<strong>${toastIterationName}</strong> &nbsp; has started.',
+                'notificationText': `<strong>${toastIterationName}</strong> &nbsp; has started.`,
                 'notificationType': 'ok'
               };
               this.broadcaster.broadcast('toastNotification', notificationData);
