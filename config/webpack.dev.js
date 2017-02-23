@@ -27,7 +27,7 @@ const FABRIC8_FORGE_URL = process.env.FABRIC8_FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
 
-const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
+const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
   host: HOST,
   port: PORT,
   ENV: ENV,
@@ -45,7 +45,7 @@ const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
  * See: http://webpack.github.io/docs/configuration.html#cli
  */
 module.exports = function (options) {
-  return webpackMerge(commonConfig({env: ENV}), {
+  return webpackMerge(commonConfig({ env: ENV }), {
 
     /**
      * Developer tool to enhance debugging
@@ -57,7 +57,7 @@ module.exports = function (options) {
 
     module: {
       'preLoaders': [
-        {test: /\.js$/, loader: 'source-map'}
+        { test: /\.js$/, loader: 'source-map' }
       ]
     },
     /**
@@ -120,10 +120,10 @@ module.exports = function (options) {
           'ENV': JSON.stringify(METADATA.ENV),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
           'HMR': METADATA.HMR,
-          'FABRIC8_WIT_API_URL' : JSON.stringify(METADATA.FABRIC8_WIT_API_URL),
-          'FABRIC8_RECOMMENDER_API_URL' : JSON.stringify(METADATA.FABRIC8_RECOMMENDER_API_URL),
-          'FABRIC8_FORGE_URL' : JSON.stringify(METADATA.FABRIC8_FORGE_URL),
-          'PUBLIC_PATH' : JSON.stringify(METADATA.PUBLIC_PATH)
+          'FABRIC8_WIT_API_URL': JSON.stringify(METADATA.FABRIC8_WIT_API_URL),
+          'FABRIC8_RECOMMENDER_API_URL': JSON.stringify(METADATA.FABRIC8_RECOMMENDER_API_URL),
+          'FABRIC8_FORGE_URL': JSON.stringify(METADATA.FABRIC8_FORGE_URL),
+          'PUBLIC_PATH': JSON.stringify(METADATA.PUBLIC_PATH)
         }
       }),
 

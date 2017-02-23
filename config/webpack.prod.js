@@ -31,7 +31,7 @@ const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8080;
-const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
+const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
   host: HOST,
   port: PORT,
   ENV: ENV,
@@ -45,7 +45,7 @@ const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
 
 module.exports = function (env) {
   console.log('The env from the webpack.prod config: ' + JSON.stringify(env, null, 2));
-  return webpackMerge(commonConfig({env: ENV}), {
+  return webpackMerge(commonConfig({ env: ENV }), {
 
     /**
      * Developer tool to enhance debugging
@@ -108,13 +108,13 @@ module.exports = function (env) {
        * Plugin: @ngtools/webpack
        * Description: Set up AoT for webpack, including SASS precompile
        */
- /*     new ngtools.AotPlugin({
-        tsConfigPath: 'tsconfig-aot.json',
-        // mainPath: "src/main.browser.ts"
-        // entryModule: 'src/app/app.module#AppModule',
-        // genDir: 'aot'
-      }),
-*/
+      /*     new ngtools.AotPlugin({
+             tsConfigPath: 'tsconfig-aot.json',
+             // mainPath: "src/main.browser.ts"
+             // entryModule: 'src/app/app.module#AppModule',
+             // genDir: 'aot'
+           }),
+     */
       /**
        * Plugin: WebpackMd5Hash
        * Description: Plugin to replace a standard webpack chunkhash with md5.
@@ -126,11 +126,11 @@ module.exports = function (env) {
       /**
        * Webpack plugin and CLI utility that represents bundle content as convenient interactive zoomable treemap
        */
-/*
-      new BundleAnalyzerPlugin({
-        generateStatsFile: true
-      }),
-*/
+      /*
+            new BundleAnalyzerPlugin({
+              generateStatsFile: true
+            }),
+      */
 
       /**
        * Plugin: DedupePlugin
@@ -159,10 +159,10 @@ module.exports = function (env) {
           'ENV': JSON.stringify(METADATA.ENV),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
           'HMR': METADATA.HMR,
-          'FABRIC8_WIT_API_URL' : JSON.stringify(METADATA.FABRIC8_WIT_API_URL),
-          'FABRIC8_RECOMMENDER_API_URL' : JSON.stringify(METADATA.FABRIC8_RECOMMENDER_API_URL),
+          'FABRIC8_WIT_API_URL': JSON.stringify(METADATA.FABRIC8_WIT_API_URL),
+          'FABRIC8_RECOMMENDER_API_URL': JSON.stringify(METADATA.FABRIC8_RECOMMENDER_API_URL),
           'FABRIC8_FORGE_URL': JSON.stringify(METADATA.FABRIC8_FORGE_URL),
-          'PUBLIC_PATH' : JSON.stringify(METADATA.PUBLIC_PATH)
+          'PUBLIC_PATH': JSON.stringify(METADATA.PUBLIC_PATH)
         }
       }),
 
