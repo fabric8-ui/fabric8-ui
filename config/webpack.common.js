@@ -57,9 +57,6 @@ module.exports = {
             loader:'css-to-string-loader'
           },
           {
-            loader:'style-loader'
-          },
-          {
             loader:'css-loader',
             options:{sourceMap:true}
           },

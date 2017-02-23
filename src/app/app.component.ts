@@ -6,13 +6,14 @@ import {
 } from 'ngx-login-client';
 
 @Component({
-  host:{
-    'class':'app app-component flex-container in-column-direction flex-grow-1'
+  host: {
+    'class': 'app app-component flex-container in-column-direction flex-grow-1'
   },
   selector: 'alm-app',
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
-  })
+})
 export class AppComponent implements OnInit {
 
   notifications: Object[] = [];
@@ -33,13 +34,13 @@ export class AppComponent implements OnInit {
 
   constructor(
     auth: AuthenticationService,
-    private broadcaster: Broadcaster){
+    private broadcaster: Broadcaster) {
     //auth.isLoggedIn();
   }
 
   ngOnInit() {
     this.broadcaster.on<any>('toastNotification')
-    .subscribe((notificationData: any) => {
+      .subscribe((notificationData: any) => {
         this.notifications.splice(0, 0, {
           text: notificationData.notificationText,
           alertClass: this.notificationType[notificationData.notificationType],
@@ -53,6 +54,6 @@ export class AppComponent implements OnInit {
             clearInterval(interval);
           }
         }, 10000);
-    });
+      });
   }
 }

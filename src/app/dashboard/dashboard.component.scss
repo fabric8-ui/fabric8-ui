@@ -1,9 +1,8 @@
 @import '../../assets/stylesheets/base';
-
-.dashboardWrapper{
+.dashboardWrapper {
     padding-top: em(50);
     background: $color-pf-black-150;
-    .dashboard-blocks-list{
+    .dashboard-blocks-list {
         width: $width100;
         height: 100%;
         float: left;
@@ -15,56 +14,56 @@
         flex-flow: column wrap;
         padding: 0;
         height: em(780);
-        li{
+        li {
             flex: 2 1 auto;
             list-style: none;
             background: $color-pf-white;
             margin: em(7) 0;
             padding: em(10);
             width: calc(37% - 1.5em);
-            &:last-child{
+            &:last-child {
                 flex: 1 1 100%;
                 width: calc(25% - 1.5em);
             }
-            &:nth-last-child(2){
+            &:nth-last-child(2) {
                 flex: 1 1 100%;
             }
-            > div{
+            >div {
                 width: $width100;
-                float:left;
-                h4{
+                float: left;
+                h4 {
                     font-weight: 100;
                     color: $color-pf-black-800;
                 }
-                p{
+                p {
                     color: $color-pf-black-600;
                 }
-                a{
+                a {
                     color: $color-pf-black-600;
                     display: block;
                     font-size: em(14);
-                    &:hover{
+                    &:hover {
                         color: $color-pf-black;
                         text-decoration: none;
                     }
                 }
             }
         }
-        .welcomeWrapper{
+        .welcomeWrapper {
             height: em(160);
             max-height: em(160);
         }
-        .recentChatsWrapper{
+        .recentChatsWrapper {
             max-height: em(360);
-            .joinChatBlock{
+            .joinChatBlock {
                 text-align: $textCenter;
-                .icon-chat-commenting{
+                .icon-chat-commenting {
                     font-size: em(144);
                     color: $color-pf-black-200;
                     line-height: 1.2;
-                    @extend .dib;
+                    @include dib;
                 }
-                span{
+                span {
                     color: $color-pf-black-400;
                     width: $width100;
                     float: left;
@@ -74,62 +73,63 @@
                 }
             }
         }
-        .recentProjectsWrapper{
-            h4{
+        .recentProjectsWrapper {
+            h4 {
                 width: $width100;
                 float: left;
-                i{
+                i {
                     color: $color-pf-black-400;
                     font-weight: 100;
                 }
             }
-            .projectsListBlock{
+            .projectsListBlock {
                 list-style: none;
                 display: flex;
                 flex-wrap: wrap;
-                padding:0;
+                padding: 0;
                 width: $width100;
-                float:left;
-                margin-top:em(15);
-                li{
+                float: left;
+                margin-top: em(15);
+                li {
                     padding: 0 em(10) 0 0;
                     flex: 1 1 50%;
-                    @extend .truncate;
+                    @include truncate;
                 }
             }
         }
-        .newsUpdateWrapper{
-            .newsUpdateBlock{
+        .newsUpdateWrapper {
+            .newsUpdateBlock {
                 width: $width100;
                 float: left;
                 padding: 0;
-                li{
+                li {
                     width: $width100;
                     float: left;
                     padding: 0;
                     font-size: em(14);
-                    .newsTitle, .newsText{
+                    .newsTitle,
+                    .newsText {
                         width: $width100;
                         float: left;
-                        margin:0;
-                        a{
+                        margin: 0;
+                        a {
                             font-size: em(12);
-                            @extend .dib;
+                            @include dib;
                         }
                     }
                 }
             }
         }
-        .resourceUsageWrapper{
-            .resourcesBlock{
+        .resourceUsageWrapper {
+            .resourcesBlock {
                 width: $width100;
                 float: left;
                 padding: 0;
-                li{
+                li {
                     width: $width100;
                     float: left;
                     padding: 0;
-                    h4{
+                    h4 {
                         font-weight: 500;
                     }
                 }
@@ -137,13 +137,15 @@
         }
     }
 }
-@media (max-width: $grid-float-breakpoint){
-    .dashboardWrapper{
-        .dashboard-blocks-list{
+
+@media (max-width: $grid-float-breakpoint) {
+    .dashboardWrapper {
+        .dashboard-blocks-list {
             height: auto;
-            li{
+            li {
                 width: $width100;
-                &:last-child, &:nth-last-child(2){
+                &:last-child,
+                &:nth-last-child(2) {
                     width: $width100;
                     flex-basis: auto;
                 }
