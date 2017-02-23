@@ -37,6 +37,11 @@ const METADATA = webpackMerge(commonConfig.metadata, {
 module.exports = webpackMerge(commonConfig, {
   devtool: 'source-map',
 
+  entry: helpers.root('index.ts'),
+
+  // require those dependencies but don't bundle them
+  externals: [/^\@angular\//, /^rxjs\//],
+
   output: {
     path: helpers.root('dist'),
     publicPath: METADATA.PUBLIC_PATH,

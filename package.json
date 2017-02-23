@@ -186,6 +186,7 @@
     "node-sass": "4.1.1",
     "npm-run-all": "2.2.0",
     "null-loader": "^0.1.1",
+    "obsidian-generator-frontend": "0.0.7",
     "opt-cli": "1.4.2",
     "optimize-js-plugin": "0.0.4",
     "parse5": "2.2.2",

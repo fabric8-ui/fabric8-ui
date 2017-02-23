@@ -22,20 +22,12 @@ const sassLintPlugin = require('sasslint-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 
-
 const precss = require('precss');
 
 module.exports = {
-  devtool: 'inline-source-map',
-
   resolve: {
     extensions: ['.ts', '.js', '.json']
   },
-
-  entry: helpers.root('index.ts'),
-
-  // require those dependencies but don't bundle them
-  externals: [/^\@angular\//, /^rxjs\//],
 
   stats: {
     colors: true,
@@ -67,7 +59,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: 'file-loader?name=fonts/[name].[hash].[ext]?'
+        use: 'file-loader'
       },
 
       // Support for *.json files.
@@ -180,6 +172,7 @@ module.exports = {
     new ExtractTextPlugin('[name].css'),
 
     new webpack.LoaderOptionsPlugin({
+      debug: true,
       options: {
         /**
          * Html loader advanced options
@@ -199,9 +192,14 @@ module.exports = {
           customAttrAssign: [/\)?\]?=/]
         },
 
+        context: helpers.root(),
+        // output: {
+        //   path: helpers.root('dist')
+        // },
         tslintLoader: {
           emitErrors: false,
-          failOnHint: false
+          failOnHint: false,
+          resourcePath: 'src'
         },
         /**
          * Sass
