@@ -5,6 +5,8 @@ import {
   Broadcaster
 } from 'ngx-login-client';
 
+import { GlobalSettings } from './shared/globals';
+
 @Component({
   host: {
     'class': 'app app-component flex-container in-column-direction flex-grow-1'
@@ -12,7 +14,8 @@ import {
   selector: 'alm-app',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [GlobalSettings]
 })
 export class AppComponent implements OnInit {
 
@@ -23,18 +26,20 @@ export class AppComponent implements OnInit {
     'info': 'alert-info',
     'warning': 'alert-warning',
     'error': 'alert-danger'
-  }
+  };
 
   notificationTypeIcon: Object = {
     'ok': 'pficon-ok',
     'info': 'pficon-info',
     'warning': 'pficon-warning-triangle-o',
     'error': 'pficon-error-circle-o'
-  }
+  };
 
   constructor(
     auth: AuthenticationService,
-    private broadcaster: Broadcaster) {
+    private broadcaster: Broadcaster,
+    private globalSettings: GlobalSettings
+  ) {
     //auth.isLoggedIn();
   }
 

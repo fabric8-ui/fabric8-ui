@@ -1,10 +1,9 @@
-import * as myGlobals from './globals';
-
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgModule, ApplicationRef } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+
 
 // App is our top level component
 import { AppRoutingModule } from './app.routing.module';
@@ -18,6 +17,7 @@ import { ModalModule } from 'ng2-modal';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 
 // shared components
+import { GlobalSettings } from './shared/globals';
 import { Settings } from 'fabric8-shared-services';
 import {
   AuthenticationService,
@@ -35,9 +35,6 @@ import { MockDataService } from 'fabric8-planner';
 import { ChatModule } from 'fabric8-planner';
 import { WorkItemModule } from 'fabric8-planner';
 
-if (process.env.ENV == 'inmemory') {
-  myGlobals.inTestMode = true;
-}
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
@@ -77,10 +74,12 @@ export class AppModule {
   constructor(
     public appRef: ApplicationRef,
     public mockDataService: MockDataService,
-    public settingsService: Settings
+    public settingsService: Settings,
+    private globalSettings: GlobalSettings
   ) {
     console.log(mockDataService);
     console.log(settingsService);
+    this.globalSettings.setTestMode(process.env.ENV == 'inmemory' ? true : false);
   }
 
 }

@@ -14,7 +14,7 @@ import {
 import { MockDataService } from './mock-data.service';
 import { SpaceMockGenerator } from './mock-data/space-mock-generator';
 import { MockHttp } from './mock-http';
-import { inTestMode } from './globals';
+import { GlobalSettings } from './globals';
 
 @Injectable()
 export class SpaceService {
@@ -25,7 +25,14 @@ export class SpaceService {
   private spaces: Space[] = [];
   private currentSpace: Space = null;
 
-  constructor(private http: Http, private mockDataService: MockDataService, private logger: Logger) {
+  constructor(
+    private http: Http,
+    private mockDataService: MockDataService,
+    private logger: Logger,
+    private globalSettings: GlobalSettings
+  ) {
+    this.globalSettings.inTestMode$.subscribe(mode => mode = testMode);
+    if (testMode) {
   }
 
   public switchToSpace(newSpace: Space) {

@@ -1,12 +1,12 @@
-import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
 import './rxjs-extensions';
 
 // Globals
-import Globals = require('./shared/globals');
+import { GlobalSettings } from './shared/globals';
 
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
+import { FormsModule } from '@angular/forms';
 
 import { DropdownModule } from 'ng2-dropdown';
 import { TabsModule } from 'ng2-bootstrap/components/tabs';
@@ -20,8 +20,8 @@ import {
 } from 'ngx-login-client';
 
 // Shared
+import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
 import { SpaceService } from './shared/mock-spaces.service';
-import { FormsModule } from '@angular/forms';
 
 // App components
 import { AppComponent } from './app.component';
@@ -63,11 +63,10 @@ import { LearnModule } from './learn/learn.module';
 import { ToastNotificationComponent } from './toast-notification/toast-notification.component';
 
 // conditionally import the inmemory resource module
-var serviceImports: Array<any[] | any | ModuleWithProviders>;
+let serviceImports: Array<any[] | any | ModuleWithProviders>;
 
 // The inmemory environment variable is checked and if present then the in-memory dataset is added.
 if (process.env.ENV == 'inmemory') {
-  Globals.inTestMode = true;
   serviceImports = [
     Logger,
     AuthenticationService,
@@ -130,4 +129,8 @@ if (process.env.ENV == 'inmemory') {
   providers: serviceImports,
   bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private globalSettings: GlobalSettings) {
+    this.globalSettings.setTestMode(process.env.ENV == 'inmemory' ? true : false);
+  }
+}

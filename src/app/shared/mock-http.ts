@@ -1,5 +1,3 @@
-import Globals = require('./globals');
-
 import { Injectable, ReflectiveInjector } from '@angular/core';
 import { Http } from '@angular/http';
 import { Request, RequestOptions, RequestOptionsArgs } from '@angular/http';
