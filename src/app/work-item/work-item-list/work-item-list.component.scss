@@ -9,10 +9,10 @@
 .work-item-list-page {
   display: -webkit-flex;
   display: flex;
-  height: 100%;
+  //height: 100%;
   flex-direction: column;
     .list-action {
-      height: em(50);
+      height: 2.0rem;// em(40);
       display: flex;
       display: -webkit-flex;
       display: -ms-flex;

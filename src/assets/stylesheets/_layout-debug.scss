@@ -1,7 +1,7 @@
 
-$debug-border:0;
-$debug-component-border:0;
-$debug-component-spacing:0;
+$debug-border:0px;
+$debug-component-border:0px;
+$debug-component-spacing:0px;
 
 $debug-root-component-border-color: navy;
 $debug-component-border-color: lighten( navy,20%);
@@ -102,8 +102,8 @@ $debug-bootstrap-column-color:lighten($debug-bootstrap-container-color,20%);
 
 //all app-component layout bedugging
 @mixin debug-app-component{
-    padding:$debug-component-spacing;
     margin:$debug-component-spacing;
+    padding:$debug-component-spacing;
     border-style: solid;
 };
 

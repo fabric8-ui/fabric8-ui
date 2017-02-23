@@ -13,6 +13,9 @@ import {
 } from 'ngx-login-client';
 
 @Component({
+  host:{
+      'class':"app-component flex-container in-column-direction flex-grow-1"
+  },
   selector: 'fab-planner-iteration',
   templateUrl: './iteration.component.html',
   styleUrls: ['./iteration.component.scss']

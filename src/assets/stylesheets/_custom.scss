@@ -36,9 +36,6 @@ $nav-disabled-link-color:                                           $gray-light 
 $nav-disabled-link-hover-color:                                     $gray-light !default;
 */
 
-.app {
-  font-family: Open Sans;
-}
 
 //custom variables
 $width100: 100%;
@@ -51,7 +48,7 @@ $textRight: right;
 $textCenter: center;
 
 //colors
-.color-grey{ color: $color-pf-black-800 !important; }
+.color-grey{ color: $color-pf-black-800; }
 
 // functions
 //convert px to em/rem
@@ -64,10 +61,10 @@ $textCenter: center;
 }
 
 //custom mixins
-@mixin truncate() {
+@mixin truncate {
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;;
+    text-overflow: ellipsis;
 }
 @mixin transform($transform){
 	-webkit-transform: $transform;
@@ -159,7 +156,9 @@ $textCenter: center;
   .containerPadd-nologin{ padding-bottom: 0; }
 }
 
-@import 'layout';
 
-$color-pf-white:                 #fff;
+$color-pf-white:                 #FFF;
 $color-pf-dark:                  #363636;
+
+
+@import 'layout';

@@ -31,6 +31,9 @@ import { WorkItemService }            from '../work-item.service';
 import { TreeListComponent } from 'ngx-widgets';
 
 @Component({
+   host:{
+      'class':"app-component flex-container in-column-direction flex-grow-1"
+    },
   selector: 'alm-work-item-list',
   templateUrl: './work-item-list.component.html',
   styleUrls: ['./work-item-list.component.scss']

@@ -1,14 +1,14 @@
 @import '../../assets/stylesheets/base';
 
 .side-panel-header {
-  padding: em(20);
+  border:solid 0 red;
+  padding: 0 $grid-gutter-width/2;
+  margin:0;
+  border-top:1px solid $color-pf-black-200;
   border-bottom: 1px solid $color-pf-black-400;
-  .side-panel-secondary-menu {
-    color: $color-pf-dark;
-    font-size: rem(14);
-    > h4 {
-      margin: 0;
-      font-size: em(16);
-    }
-  }
+  background-color: $color-pf-white;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+
 }

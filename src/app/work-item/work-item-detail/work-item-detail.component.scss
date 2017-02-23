@@ -231,8 +231,8 @@
     padding: em(5) em(10);
   }
   .desc-editable {
-    @include box-shadow(inset 0 1px 1px $color-pf-black-100,0 0 8px $color-pf-blue-300);
-    @include transition(border-color ease-in-out .15s,box-shadow ease-in-out .15s);
+    //@include box-shadow(inset 0 1px 1px $color-pf-black-100,0 0 8px $color-pf-blue-300);
+    //@include transition(border-color ease-in-out .15s,box-shadow ease-in-out .15s);
     border: 1px solid $color-pf-blue-400 !important;
     padding-right: em(30) !important;
     background-clip: content-box !important;

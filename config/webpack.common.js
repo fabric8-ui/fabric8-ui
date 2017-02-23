@@ -1,4 +1,6 @@
 const webpack = require('webpack');
+const sassLintPlugin = require('sasslint-webpack-plugin');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
@@ -39,11 +41,33 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loaders: ['to-string-loader', 'css-loader']
+        use:[
+          {
+            loader:'to-string-loader'
+          },
+          {
+            loader:'css-loader'
+          },
+        ]
       },
       {
         test: /\.scss$/,
-        loaders: ["css-to-string-loader", "css-loader", "sass-loader"]
+        use:[
+          {
+            loader:'css-to-string-loader'
+          },
+          {
+            loader:'style-loader'
+          },
+          {
+            loader:'css-loader',
+            options:{sourceMap:true}
+          },
+          {
+            loader:'sass-loader',
+            options:{sourceMap:true}
+          }
+        ]
       },
       /* File loader for supporting images, for example, in CSS files. */
       {
@@ -54,6 +78,17 @@ module.exports = {
   },
 
   plugins: [
+    // new sassLintPlugin({
+    //   configFile: '.sass-lint.yml',
+    //   context: ['inherits from webpack'],
+    //   ignoreFiles: [],
+    //   ignorePlugins: [],
+    //   glob: '**/*.s?(a|c)ss',
+    //   quiet: false,
+    //   failOnWarning: false,
+    //   failOnError: false,
+    //   testing: false
+    // }),
     // require('postcss-import')(),
     // require('autoprefixer')(),
 

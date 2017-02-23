@@ -68,12 +68,12 @@
 .fill-container
 {
   position:absolute;
+  margin:0;
+  padding:0;
   top:0;
   bottom:0;
   left:0;
   right:0;
-  padding:0;
-  margin:0;
   border-width:0;
 }
 
@@ -95,9 +95,10 @@ body
   min-height:100vh;
   @include debug-stretch-to-fit-viewport;
   position:relative;
-  margin:0;
+  margin:0 ;
   padding:0;
   display:flex;
+  border: solid 0 deeppink !important;
 }
 
 //////////////////////
@@ -163,9 +164,9 @@ body
     >footer{
       .footer
       {
-        text-align: $textCenter;
+        text-align: center;
         font-size: $font-size-small;
-        border-top: 1px solid $color-pf-blue-300;
+        border-top: solid 1px $color-pf-blue-300;
       }
 
     }
@@ -210,6 +211,7 @@ footer
   >.view
   {
     @extend .fill-container;
+
     &.with-rows
     {
       padding-left:$grid-gutter-width/2;
@@ -261,8 +263,8 @@ footer
       display:none;
     }
     .modal-body{
-      flex:1;
       display:flex;
+      flex:1;
       border:solid 0 orangered;
       padding:0;
       .chromeless-modal-content

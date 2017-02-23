@@ -4,6 +4,9 @@ import { Broadcaster }       from './../shared/broadcaster.service';
 
 
 @Component({
+  host:{
+      'class':"app-component flex-container in-column-direction flex-grow-1"
+  },
   selector: 'side-panel',
   templateUrl: './side-panel.component.html',
   styleUrls: ['./side-panel.component.scss']

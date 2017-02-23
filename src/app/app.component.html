@@ -1,7 +1,12 @@
-<alm-app-header></alm-app-header>
-<div class="app">
+<header>
+  <alm-app-header></alm-app-header>
+</header>
+<main class="view-container flex-container in-column-direction">
+  <div class="view flex-container overflow-auto">
     <router-outlet></router-outlet>
-    <alm-app-footer class="width100 pull-left"></alm-app-footer>
-</div>
-
+  </div>
+</main>
+<footer>
+    <alm-app-footer ></alm-app-footer>
+</footer>
 <fab-toast-notification [notifications]='notifications'></fab-toast-notification>

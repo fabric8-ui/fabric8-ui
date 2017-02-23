@@ -6,6 +6,9 @@ import {
 } from 'ngx-login-client';
 
 @Component({
+  host:{
+    'class':'app app-component flex-container in-column-direction flex-grow-1'
+  },
   selector: 'alm-app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']

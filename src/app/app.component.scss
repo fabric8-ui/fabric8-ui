@@ -1,24 +1,2 @@
 @import '../assets/stylesheets/base';
 
-.navbar-header {
-    span{
-		color: $color-pf-white;
-		padding: em(5) em(10);
-		font-size: em(18);
-    }
-}
-.footer{
-	text-align: $textCenter;
-	font-size: $font-size-small;
-	border-top: 1px solid $color-pf-blue-300;
-	margin-top: 2%;
-}
-
-.app {
-	padding: em(88) 0 0;
-	height: 100%;
-}
-
-@media (max-width: ($grid-float-breakpoint - 1)){
-	.app{ padding-top: em(120); }
-}

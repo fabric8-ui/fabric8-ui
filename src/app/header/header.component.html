@@ -1,94 +1,90 @@
-<nav id="header_wrapper" class="navbar navbar-default navbar-pf header-navbar" role="navigation">
-	<div id="header_nav" class="navbar-header">
-
-    <div class="navbar-brand header-nav-brand">
-      <a class="fl no-link">
-        <span class="pficon pficon-enterprise pull-left"></span>
-        <span class="pull-left brandText">&lt;Organization&gt;</span>
-        <span class="caret pull-left"></span>
+<nav id="header_wrapper" class="navbar navbar-inverse navbar-pf " role="navigation">
+  <div id="header_nav" class="navbar-header">
+    <div>
+      <a>
+        <span class="nav-item-icon">
+              <span class="nav-icon pficon pficon-enterprise"></span>
+        </span>
+        <span class="nav-item-text">&lt;Organization&gt;</span>
+        <span class="nav-item-icon">
+              <span class="nav-icon caret"></span>
+        </span>
       </a>
     </div>
   </div>
-  <div class="navbar-collapse navbar-collapse-1 nav-mob-scroll">
-	  <ul id="header_rightDropdown" class="nav navbar-nav navbar-utility">
-        <li>
-          <a [routerLink]="['/settings']" id="header_menuSettings" routerLinkActive="active"><span class="pficon pficon-settings"></span></a>
-        </li>
-        <li>
-          <a [routerLink]="['/chat']" id="header_menuChat" routerLinkActive="active"><span class="fa fa-comments"></span></a>
-        </li>
-        <li>
-          <a [routerLink]="['/notifications']" id="header_menuNotifications" routerLinkActive="active"><span class="fa fa-bell"></span></a>
-          </li>
-      	<li *ngIf="loggedIn">
-        	<a *ngIf="loggedInUser" id="header_dropdownToggle">
-						<span *ngIf="!imgLoaded" class="pficon pficon-user"></span>
-						<img (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}"
-							[ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
-							class="pull-left" />
-						{{loggedInUser.attributes?.fullName}}
-        	</a>
+  <div class="navbar-collapse navbar-collapse-1 ">
+    <ul id="header_rightDropdown" class="nav navbar-nav navbar-utility">
+      <li>
+        <a [routerLink]="['/settings']" id="header_menuSettings" routerLinkActive="active">
+          <span class="nav-item-icon">
+              <span class="nav-icon pficon pficon-settings"></span>
+          </span>
+        </a>
       </li>
-			<li>
-					<a *ngIf="loggedIn" (click)='logout();'>Logout</a>
-          <a *ngIf="!loggedIn" (click)='login();'>Login</a>
-			</li>
+      <li>
+        <a [routerLink]="['/chat']" id="header_menuChat" routerLinkActive="active">
+          <span class="nav-item-icon">
+            <span class="nav-icon fa fa-comments"></span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/notifications']" id="header_menuNotifications" routerLinkActive="active">
+          <span class="nav-item-icon">
+            <span class="nav-icon fa fa-bell"></span>
+          </span>
+
+        </a>
+      </li>
+      <li *ngIf="loggedIn">
+        <a *ngIf="loggedInUser" id="header_dropdownToggle">
+          <span *ngIf="!imgLoaded" class="nav-item-icon">
+              <span class="nav-icon pficon pficon-user"></span>
+          </span>
+          <img style="height:2.0rem;margin-top:3px;" (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
+            class="pull-left" /> {{loggedInUser.attributes?.fullName}}
+        </a>
+      </li>
+      <li>
+        <a *ngIf="loggedIn" (click)='logout();'><span class="nav-item-text">Logout</span></a>
+        <a *ngIf="!loggedIn" (click)='login();'><span class="nav-item-text">Login</span></a>
+      </li>
     </ul>
-<!--
-    <tabset class="nav navbar-nav navbar-primary">
-      <tab heading="Static title">Static content</tab>
-      <tab *ngFor="let tabz of tabs"
-           [heading]="tabz.title"
-           [active]="tabz.active"
-           (select)="tabz.active = true"
-           (deselect)="tabz.active = false"
-           [disabled]="tabz.disabled"
-           [removable]="tabz.removable"
-           (removed)="removeTabHandler(tabz)"
-           [customClass]="tabz.customClass">
-        {{tabz?.content}}
-      </tab>
-    </tabset>
--->
-    <ul id="header_menuList" class="nav navbar-nav navbar-primary nav-list-mob-scroll persistent-secondary">
+    <ul id="header_menuList" class="nav navbar-nav navbar-primary  persistent-secondary">
       <li routerLinkActive="active">
-        <a [routerLink]="['/dashboard']" id="header_menuHome">Home</a>
+        <a [routerLink]="['/dashboard']" id="header_menuHome"><span class="nav-item-text">Home</span></a>
         <ul class="nav navbar-nav navbar-persistent">
           <li routerLinkActive="active">
-            <a [routerLink]="['/dashboard']" id="header_submenuDashboard">Dashboard</a>
+            <a [routerLink]="['/dashboard']" id="header_submenuDashboard"><span class="nav-item-text">Dashboard</span></a>
           </li>
           <li routerLinkActive="active">
-            <a [routerLink]="['/learn']" id="header_submenuLearn">Learn</a>
+            <a [routerLink]="['/learn']" id="header_submenuLearn"><span class="nav-item-text">Learn</span></a>
           </li>
         </ul>
       </li>
-      <li routerLinkActive="active">
-        <a [routerLink]="['/work-item/list']" id="header_menuWork">WorkList</a>
+      <li routerLinkActive="active" class="with-no-children">
+        <a [routerLink]="['/work-item/list']" id="header_menuWork"><span class="nav-item-text">WorkList</span></a>
       </li>
-      <li routerLinkActive="active">
-        <a [routerLink]="['/work-item/board']" id="header_menuWork">WorkBoard</a>
+      <li routerLinkActive="active" class="with-no-children">
+        <a [routerLink]="['/work-item/board']" id="header_menuWork"><span class="nav-item-text">WorkBoard</span></a>
       </li>
-      <li routerLinkActive="active">
-        <a [routerLink]="['/code']" id="header_menuCode">Code</a>
+      <li routerLinkActive="active" class="with-no-children">
+        <a [routerLink]="['/code']" id="header_menuCode"><span class="nav-item-text">Code</span></a>
       </li>
-      <li routerLinkActive="active">
-        <a [routerLink]="['/test']" id="header_menuTest">Test</a>
+      <li routerLinkActive="active" class="with-no-children">
+        <a [routerLink]="['/test']" id="header_menuTest"><span class="nav-item-text">Test</span></a>
       </li>
-      <li routerLinkActive="active">
-        <a [routerLink]="['/pipeline']" id="header_menuPipeline">Environments/Pipelines</a>
+      <li routerLinkActive="active" class="with-no-children">
+        <a [routerLink]="['/pipeline']" id="header_menuPipeline"><span class="nav-item-text">Environments/Pipelines</span></a>
       </li>
-      <li routerLinkActive="active">
-        <a [routerLink]="['/hypothesis']" id="header_menuHypothesis" >Hypothesis Engine <sup><span class="fa fa-trademark"></span></sup></a>
+      <li routerLinkActive="active" class="with-no-children">
+        <a [routerLink]="['/hypothesis']" id="header_menuHypothesis"><span class="nav-item-text">Hypothesis Engine</span> <sup><span class="fa fa-trademark"></span></sup></a>
       </li>
       <li>
         <select [ngModel]="selectedSpace" (ngModelChange)="onSpaceChange($event)">
           <option *ngFor="let space of spaces" [ngValue]="space">{{space.name}}</option>
         </select>
       </li>
-      <!-- <li> -->
-        <!-- Removed obsidian module -->
-        <!-- <a [routerLink]="['/intro']" id="header_menuWizard" routerLinkActive="active">Microservices quickstart</a> -->
-      <!-- </li> -->
     </ul>
   </div>
 </nav>

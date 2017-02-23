@@ -1,10 +1,6 @@
-<div class="side-panel-header nav-pf-vertical-alt display-flex" [class.backlog-bg]="isBacklogSelected">
-  <div class="side-panel-secondary-menu flex-1">
-      <h4><strong (click)='getWorkItemsByIteration(null)'>Backlog</strong></h4>
-  </div>
-  <div class="text-right flex-1">
-    <span class="badge">95</span>
-  </div>
+<div class="side-panel-header" [class.backlog-bg]="isBacklogSelected">
+  <h3><strong (click)='getWorkItemsByIteration(null)'>Backlog</strong></h3>
+  <span class="badge">95</span>
 </div>
-<fab-planner-iteration class="fab-planner-iteration"></fab-planner-iteration>
+<fab-planner-iteration class="fab-planner-iteration flex-grow-1"></fab-planner-iteration>
 <fab-planner-type class="fab-planner-type"></fab-planner-type>

@@ -1,128 +1,144 @@
 @import '../../assets/stylesheets/base';
 
 .work-item-page {
-  height: 100%;
-  display: -webkit-flex;
   display: flex;
   flex: 1;
   flex-direction: column;
-  .types-modal {
+  position:relative;
+  .container-modal {
+    border:solid 0 red;
     background-color: $color-pf-black-100;
     position: absolute;
-    top: em(88);
+    padding:$grid-gutter-width/2;
+    margin:0;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    width: $width100;
     z-index: 11;
-    overflow-y: scroll;
-    .container-cards-pf {
-      margin-top: 0;
-      .detail-close {
-        margin-top: em(10);
-        padding: em(11.2) em(12.9);
-        font-size: em(14);
-      }
+    overflow-y: auto;
+    .container-modal-header
+    {
+        margin:0;
+        margin-bottom: $grid-gutter-width/2;
+        background-color: $color-pf-blue;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        >.header-text{
+          color:$color-pf-white;
+        }
+    }
+
+    &.container-cards-pf {
       .card-pf-title{
         text-transform: capitalize;
       }
       .card-pf-info{
         min-height: 4.5em;
-        font-size: em(14);
         @include multiline-truncate($line-height: 1.5em, $line-count: 3, $bg-color: $color-pf-white) ;
       }
     }
   }
-  .wi-full-width {
-    width: $width100;
-  }
-  .toolbar-pf {
-    .list-action {
-      .wi-input-filter-dropdown{
-        position: relative;
-        display: table-cell;
-        .wi-input-filter-dropdown-list{
-          width: 100%;
-        }
-        .caret{
-          position: absolute;
-          right: 0;
-          top: em(7);
-          z-index: 2;
-        }
-      }
-      span {
-        @include Border(em(1), solid, transparent);
-        padding: em(1) em(10);
-      }
-      .form-group:first-child{
-        padding-left: 0;
-      }
-      .move-wi-no-border{
-        border: none;
-        .move-dropdown {
-          a {
-            cursor: pointer;
+  >header
+  {
+    .toolbar-pf {
+      border-color: transparent;
+      .toolbar-pf-actions{
+        border-color: transparent;
+        .form-group
+        {
+          border-left:solid 1px $color-pf-black-300;
+          border-right:none;
+          &:first{
+            border-left:none;
           }
         }
       }
-
-      .add-detailed-wi {
-        cursor: pointer;
-        float: right;
+      // ensure icons dont fold around inputs
+      .wi-input-filter-dropdown{
         position: relative;
-        i {
-          font-size: em(16);
-          line-height: 1.5;
-          color: $color-pf-blue-400;
+        .wi-input-filter-dropdown-list{
+          width: 100%;
+          top:2.5rem;
+          padding:0.25rem;
+        }
+        >div
+        {
+          position:relative;
+          //HACK:prevents caret icon from folding to a new line
+          >input{
+            margin-right:-2.0rem;
+          }
+          //HACK:positions the caret in right margin are of input
+           >span.caret::before
+           {
+             z-index: 100;
+             display:inline-block;
+             height:1.5rem;
+             line-height: 1.5rem;
+             width:1.5rem;
+
+           }
         }
       }
-    }
-    .toolbar-pf-results{
-      .label > i , p > a{
-        cursor: pointer;
-      }
+
     }
   }
 
-  .main-container {
-    flex-basis: 0;
-    flex: 1;
-    height: 10px;
-    min-height: 0; //hack for scrolling sidebar in mozilla
+  .dropdown{
+    a {
+      cursor: pointer;
+    }
+  }
+
+  .with-cursor-pointer
+  {
+    cursor: pointer;
+  }
+
+  .with-color-blue
+  {
+      color: $color-pf-blue-400;
+  }
+
+  >main{
     display: flex;
-    align-items: flex-start;
-    .side-bar {
-      height: 100%;
+    flex-direction: row;
+    flex: 1;
+    align-items: stretch;
+
+    border-top:1px solid $color-pf-black-300;
+    >aside {
+
       flex: 3;
-      min-width: em(360);
+      display:flex;
+      flex-direction: column;
+
       background-color: $color-pf-black-200;
       border-right: 1px solid $color-pf-black-300;
       position: relative;
-    }
-    .container-body {
-      height: 100%;
-      flex: 9;
-    }
-  }
-}
-
-@media (max-width: $grid-float-breakpoint){
-  /*Toggle the details panel's width and left margin*/
-  .types-modal{
-    .wiTypeList{
-    li {
-      width: calc(50% - 1.667em);
+      .contents
+      {
+        @extend .fill-container;
+        display:flex;
+        overflow:auto;
+        align-items: stretch;
       }
     }
-  }
-  .work-item-page{
-    .toolbar-pf {
-      .form-group{
-        display: table-cell;
-        float: left;
-        padding-right: em(20);
-        margin-bottom: 0;
+    >section {
+
+      flex: 9;
+      display:flex;
+      flex-direction: column;
+      border:solid 0px red;
+      position: relative;
+      .contents
+      {
+        @extend .fill-container;
+        display:flex;
+        overflow:auto;
+        align-items: stretch;
       }
     }
   }

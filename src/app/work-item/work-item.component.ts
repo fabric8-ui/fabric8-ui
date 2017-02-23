@@ -24,6 +24,9 @@ import { WorkItemType } from './work-item-type';
 
 
 @Component({
+    host:{
+      'class':"app-component flex-container in-column-direction flex-grow-1"
+  },
   selector: 'work-item',
   templateUrl: './work-item.component.html',
   styleUrls: ['./work-item.component.scss']

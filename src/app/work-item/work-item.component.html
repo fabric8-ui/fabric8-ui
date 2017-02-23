@@ -1,14 +1,15 @@
-<div class="work-item-page">
+<div class="container-fluid work-item-page">
   <!-- select WI type page -->
-  <div *ngIf="loggedIn && showTypesOptions" class="types-modal">
-    <div class="container-fluid container-cards-pf">
-      <div class="row row-cards-pf">
-        <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
-          <h2 class="pull-left">Choose a new work item type </h2>
-          <i class="pficon-close detail-close pull-right" (click)="closePanel()"></i>
-        </div>
-        <div *ngFor="let type of workItemTypes" class="col-xs-12 col-sm-6 col-md-4 col-lg-3" (click)="onChangeType(type.name)">
-          <div class="card-pf card-pf-view card-pf-view-select">
+  <div *ngIf="loggedIn && showTypesOptions" class="row container-modal container-cards-pf">
+    <div class="row row-cards-pf">
+      <div class="col-xs-12 container-modal-header ">
+        <h2 class="header-text"><strong>Choose a new work item type</strong></h2>
+        <i class="header-text pficon pficon-close" (click)="closePanel()"></i>
+      </div>
+    </div>
+    <div class="row row-cards-pf">
+      <div *ngFor="let type of workItemTypes" class="col-xs-12 col-sm-6 col-md-4 col-lg-3" (click)="onChangeType(type.name)">
+        <div class="card-pf card-pf-view card-pf-view-select">
           <div class="card-pf-body">
             <div class="card-pf-top-element">
               <i almIcon [iconType]="type.name" class="card-pf-icon-circle"></i>
@@ -18,38 +19,38 @@
             </h2>
             <p class="card-pf-info">Definition goes here. Lorem Ipsum dolor sit amet, consectetur adpisicing</p>
           </div>
-          </div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- select WI type page ends -->
-  <div class="container-fluid wi-full-width">
-    <div class="row toolbar-pf">
-      <div class="col-md-12 col-sm-12 col-xs-12">
-        <div class="list-action toolbar-pf-actions">
+  <header class="row">
+    <div class="col-xs-12">
+      <div class="toolbar-pf">
+        <div class="toolbar-pf-actions">
           <!--Filter-->
           <div class="form-group toolbar-pf-filter">
             <label class="sr-only" for="filterwitype">Filter</label>
             <div class="input-group">
               <div class="input-group-btn" dropdown>
                 <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
-                  User
-                  <span class="caret"></span>
+                  <span>User</span>
+                  <span class="caret" ></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="wi_filter_dropdown">
                   <li *ngIf="!filters.length">
                     <span>No filters available</span>
                   </li>
                   <li *ngFor="let filter of filters;" role="presentation">
-                    <a role="menuitem" tabindex="-1" class="pointer">User</a> <!-- Manually put User as not sure about this list -->
+                    <a role="menuitem" tabindex="-1" class="pointer">User</a>
+                    <!-- Manually put User as not sure about this list -->
                   </li>
                 </ul>
               </div>
               <div dropdown class="wi-input-filter-dropdown">
                 <div data-toggle="dropdown" dropdown-open>
-                  <input type="text" class="form-control" id="filterwitype" placeholder="Filter By Assignee..." >
+                  <input type="text" class="form-control" id="filterwitype" placeholder="Filter By Assignee...">
                   <span class="caret"></span>
                 </div>
                 <ul class="dropdown-menu wi-input-filter-dropdown-list" role="menu" aria-labelledby="filterwitype">
@@ -64,7 +65,7 @@
             </div>
           </div>
           <!--Move a work item up / down -->
-          <div class="form-group move-wi-no-border">
+          <div class="form-group">
             <div class="dropdown move-dropdown" dropdown>
               <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
                 Move
@@ -89,27 +90,22 @@
           </div>
           <!-- ADD a Work Item FAB -->
           <div class="toolbar-pf-action-right">
-            <div *ngIf="loggedIn" class="add-detailed-wi"
-                tooltipPlacement="bottom" tooltip="Add A Work Item"
-                (click)="showTypes()">
-              <i class="pficon pficon-add-circle-o"></i>
+            <div *ngIf="loggedIn" class="with-cursor-pointer" tooltipPlacement="bottom" tooltip="Add A Work Item" (click)="showTypes()">
+              <i class="pficon pficon-add-circle-o with-color-blue"></i>
             </div>
           </div>
         </div>
-
         <div class="row toolbar-pf-results" [ngClass]="{'show' : (filters | almArrayFilter:{active: true}).length , 'hide' : !(filters | almArrayFilter:{active: true}).length}">
           <div class="col-sm-12" #activeFiltersDiv>
             <ul class="list-inline">
-              <li #activeFilters
-                *ngFor="let filter of filters | almArrayFilter:{active: true};">
+              <li #activeFilters *ngFor="let filter of filters | almArrayFilter:{active: true};">
                 <span class="label label-info">{{filter.name}}
-                  <i (click)="deactiveFilter(filter.id)" class="pficon pficon-close"></i>
+                  <i (click)="deactiveFilter(filter.id)" class="pficon pficon-close with-cursor-pointer"></i>
                 </span>
               </li>
             </ul>
             <p>
-              <a (click)="deactiveAllFilters()"
-                *ngIf="(filters | almArrayFilter:{active: true}).length">
+              <a class="with-cursor-pointer" (click)="deactiveAllFilters()" *ngIf="(filters | almArrayFilter:{active: true}).length">
                 Clear All Filters
               </a>
             </p>
@@ -117,13 +113,17 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="main-container">
-    <div class="side-bar">
-      <side-panel></side-panel>
-    </div>
-    <div class="container-body">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+  </header>
+  <main class="row">
+    <aside>
+      <div class="contents">
+        <side-panel></side-panel>
+      </div>
+    </aside>
+    <section>
+      <div class="contents">
+        <router-outlet></router-outlet>
+      </div>
+    </section>
+  </main>
 </div>

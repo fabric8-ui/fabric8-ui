@@ -12,8 +12,8 @@
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  max-height: 50% !important; // height is given to scroll the content
-  overflow: auto;
+  //height: calc(100% - 190px) !important; // height is given to scroll the content
+  overflow: auto;// scroll !important; // important is given to override collapse module styles
   //** Iterations expaned div styling **/
   .iteration-wrapper {
     .iteration-header {
