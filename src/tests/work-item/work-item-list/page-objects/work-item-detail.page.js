@@ -490,6 +490,16 @@ class WorkItemDetailPage {
   linkItemTitle (){
     return element(by.id("link_item_title")).getText();
   }
+  /** UI elements for Start Coding button */
+  get startCodingElement  (){
+    return element(by.id("start-coding-link"));
+  }
+  clickStartCoding  (){
+    return this.startCodingElement.click();
+  }
+  startCodingDiv (){
+    return element(by.css(".start-coding"));
+  }
 }
 
 module.exports = WorkItemDetailPage;

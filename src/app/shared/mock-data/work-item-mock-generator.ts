@@ -154,7 +154,14 @@ export class WorkItemMockGenerator {
               },
               'type': 'identities'
             }
-          }
+          },
+          'codebase': {
+            'links' : {
+              'meta' : {
+                'edit' : 'http://mock.service/codebase',
+                }
+              }
+            }
         },
         'iteration': {},
         'type': 'workitems'

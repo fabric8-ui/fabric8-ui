@@ -267,8 +267,8 @@
         </div>
       </fieldset>
     </form>
-    <p *ngIf="loggedIn && workItem.relationships?.codebase?.links?.meta?.edit" class="start-coding">
-      <a target="_blank" href="{{workItem.relationships?.codebase?.links?.meta?.edit}}">&#60;&#47;&#62; Start coding</a>
+    <p  id="start-coding-link" class="start-coding">
+      <a *ngIf="loggedIn && workItem.relationships?.codebase?.links?.meta?.edit"  target="_blank" href="{{workItem.relationships?.codebase?.links?.meta?.edit}}">&#60;&#47;&#62; Start coding</a>
     </p>
     <div *ngIf="workItem.id">
       <alm-work-item-link [workItem]="workItem" [loggedIn]="loggedIn"></alm-work-item-link>
