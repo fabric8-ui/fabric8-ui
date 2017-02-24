@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 import {
   User,
@@ -14,7 +15,10 @@ import { IterationModel } from '../models/iteration.model';
 @Injectable()
 export class UsersResolve implements Resolve<User[]> {
   constructor(private userService: UserService) {}
-  resolve() {
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<any>|Promise<any>|any {
     return this.userService.getAllUsers();
   }
 }
@@ -22,7 +26,10 @@ export class UsersResolve implements Resolve<User[]> {
 @Injectable()
 export class AuthUserResolve implements Resolve<any> {
   constructor(private userService: UserService) {}
-  resolve() {
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<any>|Promise<any>|any {
     return this.userService.getUser();
   }
 }
@@ -32,11 +39,18 @@ export class AuthUserResolve implements Resolve<any> {
 export class IterationsResolve implements Resolve<IterationModel[]> {
   constructor(private iterationService: IterationService,
               private spaceService: SpaceService) {}
-  resolve() {
-    this.iterationService.getIterations()
-    .then(iterations => iterations)
-    .catch ((e) => {
-      console.log('Some error has occured', e);
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<any>|Promise<any>|any {
+    return this.iterationService.getIterations()
+      .then(iterations =>  iterations)
+      .catch ((e) => {
+        console.log('Some error has occured', e);
+      });
+    })
+    .catch ((err) => {
+      console.log('Space not found');
     });
   }
 }
