@@ -6,7 +6,7 @@ $pf-custom-navbar-top-border-width:2px;
 $pf-custom-navbar-header-border-width:0;
 
 $pf-custom-navbar-item-height:$pf-cust-navbar-text-size*2;
-$pf-custom-navbar-persistent-nav-offset:2*$pf-custom-navbar-item-height+ $pf-custom-navbar-header-border-width;
+$pf-custom-navbar-persistent-nav-offset:3*$pf-custom-navbar-item-height+ $pf-custom-navbar-header-border-width;
 $pf-custom-navbar-font-size:$pf-cust-navbar-text-size;
 $pf-custom-navbar-icon-height:$pf-cust-navbar-text-size *1.5;
 $pf-custom-navbar-icon-min-width:$pf-cust-navbar-text-size*1.6;
@@ -18,7 +18,6 @@ $pf-custom-navbar-debug-border:0;
 .navbar-pf
 {
   border-top-width:$pf-custom-navbar-top-border-width;
-
   // Note: The socondary persistent nav uses bottom margin to regulat the height of the overall navbar
   // together with the height of the nav header and top colored border
   .navbar-primary.persistent-secondary{
@@ -32,7 +31,11 @@ $pf-custom-navbar-debug-border:0;
         }
         ul.navbar-persistent
         {
-          top:$pf-custom-navbar-persistent-nav-offset;
+          top:$pf-custom-navbar-persistent-nav-offset + 2;
+          li > a {
+            padding-top: 0;
+            padding-bottom: 0;
+          }
         }
       }
     }

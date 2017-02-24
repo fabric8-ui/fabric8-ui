@@ -13,6 +13,7 @@
         flex-direction: column;
         flex-flow: column wrap;
         padding: 0;
+        padding-left: em(20);
         height: em(780);
         li {
             flex: 2 1 auto;
@@ -49,12 +50,7 @@
                 }
             }
         }
-        .welcomeWrapper {
-            height: em(160);
-            max-height: em(160);
-        }
         .recentChatsWrapper {
-            max-height: em(360);
             .joinChatBlock {
                 text-align: $textCenter;
                 .icon-chat-commenting {
