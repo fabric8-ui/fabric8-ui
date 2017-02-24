@@ -48,8 +48,8 @@ export class IterationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => { 
-      console.log('[IterationComponent] New Space selected: ' + space.name); 
+    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => {
+      console.log('[IterationComponent] New Space selected: ' + space.name);
       this.getAndfilterIterations();
     });
   }
@@ -118,6 +118,26 @@ export class IterationComponent implements OnInit, OnDestroy {
       .subscribe(message => {
         this.loggedIn = false;
         this.authUser = null;
+    });
+    this.broadcaster.on<string>('wi_change_state')
+      .subscribe((actions: any) => {
+        actions.forEach((data: any) => {
+          let iteration: IterationModel = this.allIterations.find((it) => it.id == data.iterationId);
+          if (iteration) {
+            iteration.relationships.workitems.meta.closed += data.closedItem;
+          }
+        });
+    });
+    this.broadcaster.on<string>('associate_iteration')
+      .subscribe((data: any) => {
+        let currentIteration: IterationModel = this.allIterations.find((it) => it.id == data.currentIterationId);
+        if (currentIteration) {
+          currentIteration.relationships.workitems.meta.total -= 1;
+        }
+        let futureIteration: IterationModel = this.allIterations.find((it) => it.id == data.futureIterationId);
+        if (futureIteration) {
+          futureIteration.relationships.workitems.meta.total += 1;
+        }
     });
   }
  }

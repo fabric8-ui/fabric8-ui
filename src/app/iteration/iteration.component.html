@@ -50,23 +50,25 @@
               </ul>
             </div>
           </div>
-          <div class="iteration-status flex-container">
-            <span class="flex-grow-1">{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}</span>
-            <div class="flex-grow-1 text-right">
-              <strong>71 of 74</strong><span> completed</span>
+          <div class="iteration-status display-flex">
+            <span class="flex-1">{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}</span>
+            <div class="flex-1 text-right">
+              <strong>
+                {{iteration.relationships?.workitems?.meta?.closed}} of {{iteration.relationships?.workitems?.meta?.total}}
+              </strong><span> completed</span>
             </div>
           </div>
           <div class="progress">
             <div class="progress-bar"
                 role="progressbar"
-                [attr.aria-valuenow]="barchatValue"
+                [attr.aria-valuenow]="iteration.relationships?.workitems?.meta?.closed"
                 aria-valuemin="0"
-                aria-valuemax="100"
-                [ngStyle]="{'width': barchatValue + '%'}"
+                [attr.aria-valuemax]="iteration.relationships?.workitems?.meta?.total"
+                [ngStyle]="{'width': ((iteration.relationships?.workitems?.meta?.closed / iteration.relationships?.workitems?.meta?.total) * 100) + '%'}"
                 tooltipPlacement="top"
-                tooltip="{{barchatValue + '%'}}">
+                tooltip="{{((iteration.relationships?.workitems?.meta?.closed / iteration.relationships?.workitems?.meta?.total) * 100) + '%'}}">
             </div>
-            <div class="progress-bar progress-bar-remaining"
+            <!--<div class="progress-bar progress-bar-remaining"
                 role="progressbar"
                 [attr.aria-valuenow]="100 - barchatValue"
                 aria-valuemin="0"
@@ -74,7 +76,7 @@
                 [ngStyle]="{'width': 100 - barchatValue + '%'}"
                 tooltipPlacement="top"
                 tooltip="{{(100 - barchatValue) + '%'}}">
-            </div>
+            </div>-->
           </div>
           <p class="iteration-description">{{ iteration.attributes?.description }}</p>
         </li>
@@ -103,7 +105,7 @@
             </strong>
           </div>
           <div>
-            <span class="badge">90</span>
+            <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
             <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf dib" dropdown>
               <button class="btn btn-link dropdown-toggle"
                       type="button"
@@ -151,7 +153,7 @@
             </strong>
           </div>
           <div>
-            <span class="badge">90</span>
+            <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
             <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf dib" dropdown>
               <button class="btn btn-link dropdown-toggle"
                       type="button"

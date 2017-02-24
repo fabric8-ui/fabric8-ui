@@ -313,6 +313,22 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   }
 
   onChangeState(option: any): void {
+    if (this.workItem.relationships.iteration) {
+      // Item closed for an iteration
+      if (this.workItem.attributes['system.state'] !== option && option === 'closed') {
+        this.broadcaster.broadcast('wi_change_state', [{
+          iterationId: this.workItem.relationships.iteration.data.id,
+          closedItem: +1
+        }]);
+      }
+      // Item opened for an iteration
+      if (this.workItem.attributes['system.state'] == 'closed' && option != 'closes') {
+        this.broadcaster.broadcast('wi_change_state', [{
+          iterationId: this.workItem.relationships.iteration.data.id,
+          closedItem: -1
+        }]);
+      }
+    }
     this.workItem.attributes['system.state'] = option;
     this.save();
   }
@@ -503,6 +519,26 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   }
 
   assignIteration(): void {
+    // Send out an iteration change event
+    let currenIterationID = this.workItem.relationships.iteration.data ?
+      this.workItem.relationships.iteration.data.id : 0;
+    this.broadcaster.broadcast('associate_iteration', {
+      workItemId: this.workItem.id,
+      currentIterationId: currenIterationID,
+      futureIterationId: this.selectedIteration.id
+    });
+
+    // If already closed iteration
+    if (this.workItem.attributes['system.state'] === 'closed') {
+      this.broadcaster.broadcast('wi_change_state', [{
+        iterationId: currenIterationID,
+        closedItem: -1
+      }, {
+        iterationId: this.selectedIteration.id,
+        closedItem: +1
+      }]);
+    }
+
     this.workItem.relationships.iteration = {
       data: {
         id: this.selectedIteration.id,

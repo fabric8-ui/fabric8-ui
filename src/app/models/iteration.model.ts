@@ -23,9 +23,18 @@ export class IterationRelations {
     data: {
       id: string;
       type: string;
-    },
+    };
     links: {
       self: string;
-    }
+    };
+  };
+  workitems: {
+    links: {
+      related: string;
+    };
+    meta: {
+      closed: number;
+      total: number;
+    };
   };
 }
