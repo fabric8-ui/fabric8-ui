@@ -36,12 +36,12 @@ module.exports = {
 
   module: {
     rules: [
-      {
-        enforce: 'pre',
-        test: /\.ts$/,
-        use: 'tslint-loader',
-        exclude: [helpers.root('node_modules')]
-      },
+      // {
+      //   enforce: 'pre',
+      //   test: /\.ts$/,
+      //   use: 'tslint-loader',
+      //   exclude: [helpers.root('node_modules')]
+      // },
       {
         test: /\.ts$/,
         use: [
