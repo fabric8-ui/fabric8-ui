@@ -29,6 +29,7 @@ const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL || '
 const FABRIC8_FORGE_URL = process.env.FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const BUILD_NUMBER = process.env.BUILD_NUMBER;
+const BUILD_TIMESTAMP = process.env.BUILD_TIMESTAMP;
 
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8080;
@@ -41,7 +42,8 @@ const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
   FABRIC8_RECOMMENDER_API_URL: FABRIC8_RECOMMENDER_API_URL,
   FABRIC8_FORGE_URL: FABRIC8_FORGE_URL,
   PUBLIC_PATH: PUBLIC_PATH,
-  BUILD_NUMBER: BUILD_NUMBER
+  BUILD_NUMBER: BUILD_NUMBER,
+  BUILD_TIMESTAMP: BUILD_TIMESTAMP
 });
 
 module.exports = function (env) {
@@ -110,12 +112,12 @@ module.exports = function (env) {
        * Description: Set up AoT for webpack, including SASS precompile
        */
       /*     new ngtools.AotPlugin({
-             tsConfigPath: 'tsconfig-aot.json',
-             // mainPath: "src/main.browser.ts"
-             // entryModule: 'src/app/app.module#AppModule',
-             // genDir: 'aot'
-           }),
-     */
+       tsConfigPath: 'tsconfig-aot.json',
+       // mainPath: "src/main.browser.ts"
+       // entryModule: 'src/app/app.module#AppModule',
+       // genDir: 'aot'
+     }),
+*/
       /**
        * Plugin: WebpackMd5Hash
        * Description: Plugin to replace a standard webpack chunkhash with md5.
@@ -164,7 +166,8 @@ module.exports = function (env) {
           'FABRIC8_RECOMMENDER_API_URL': JSON.stringify(METADATA.FABRIC8_RECOMMENDER_API_URL),
           'FABRIC8_FORGE_URL': JSON.stringify(METADATA.FABRIC8_FORGE_URL),
           'PUBLIC_PATH': JSON.stringify(METADATA.PUBLIC_PATH),
-          'BUILD_NUMBER': JSON.stringify(METADATA.BUILD_NUMBER)
+          'BUILD_NUMBER': JSON.stringify(METADATA.BUILD_NUMBER),
+          'BUILD_TIMESTAMP': JSON.stringify(METADATA.BUILD_TIMESTAMP)
         }
       }),
 

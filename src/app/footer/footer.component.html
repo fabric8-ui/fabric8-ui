@@ -1,5 +1,5 @@
 <div id="footer_container" class="footer">
   Copyright 2017 Red Hat
-  <span *ngIf="buildNumber"> (Build: {{buildNumber}})</span>
-  <span *ngIf="!buildNumber"> (Development Build)</span>
+  <span *ngIf="about.buildNumber"> (Build: {{about.buildTimestamp}} #{{about.buildNumber}})</span>
+  <span *ngIf="!about.buildNumber"> (Development Build)</span>
 </div>

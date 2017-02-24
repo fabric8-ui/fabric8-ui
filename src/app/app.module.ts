@@ -40,6 +40,7 @@ import { DummyService } from './shared/dummy.service';
 import { LoginService } from './shared/login.service';
 import { ToggleService } from './toggle/toggle.service';
 import { ContextService } from './shared/context.service';
+import { AboutService } from './shared/about.service';
 
 // Shared Components
 import { SpaceWizardModule } from './space-wizard/space-wizard.module';
@@ -108,7 +109,8 @@ export type StoreType = {
     recommenderApiUrlProvider,
     ToggleService,
     UserService,
-    witApiUrlProvider
+    witApiUrlProvider,
+    AboutService
   ],
   schemas: [],
   bootstrap: [AppComponent]

@@ -3,7 +3,7 @@
  */
 import { Component, ViewEncapsulation } from '@angular/core';
 
-import { AppState } from './app.service';
+import { AboutService } from './shared/about.service';
 
 /*
  * App Component
@@ -23,12 +23,13 @@ export class AppComponent {
   name = 'Angular 2 Webpack Starter';
   url = 'https://twitter.com/AngularClass';
 
-  constructor(
-    public appState: AppState) {
+  constructor(private about: AboutService) {
 
   }
 
   ngOnInit() {
+    console.log('Welcome to Fabric8!');
+    console.log('This build is', '#' + this.about.buildNumber, 'and was built on', this.about.buildTimestamp);
   }
 
 }

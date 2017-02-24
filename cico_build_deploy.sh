@@ -10,6 +10,7 @@ set -e
 for var in BUILD_NUMBER BUILD_URL; do
   export $(grep ${var} jenkins-env | xargs)
 done
+export BUILD_TIMESTAMP=`date -u +%Y-%m-%dT%H:%M:%S`+00:00
 
 # We need to disable selinux for now, XXX
 /usr/sbin/setenforce 0
@@ -20,7 +21,7 @@ service docker start
 
 # Build builder image
 docker build -t fabric8-ui-builder -f Dockerfile.builder .
-mkdir -p dist && docker run --detach=true --name=fabric8-ui-builder -t -v $(pwd)/dist:/dist:Z -e BUILD_NUMBER -e BUILD_URL fabric8-ui-builder
+mkdir -p dist && docker run --detach=true --name=fabric8-ui-builder -t -v $(pwd)/dist:/dist:Z -e BUILD_NUMBER -e BUILD_URL -e BUILD_TIMESTAMP fabric8-ui-builder
 
 # Build almigty-ui
 docker exec fabric8-ui-builder npm install
@@ -40,7 +41,7 @@ docker exec fabric8-ui-builder ./run_functional_tests.sh
 
 if [ $? -eq 0 ]; then
   echo 'CICO: functional tests OK'
-  docker exec fabric8-ui-builder npm run build:prod 
+  docker exec fabric8-ui-builder npm run build:prod
   docker exec -u root fabric8-ui-builder cp -r /home/fabric8/dist /
   ## All ok, deploy
   if [ $? -eq 0 ]; then

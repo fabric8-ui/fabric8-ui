@@ -26,6 +26,7 @@ const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL || '
 const FABRIC8_FORGE_URL = process.env.FABRIC8_FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const BUILD_NUMBER = process.env.BUILD_NUMBER;
+const BUILD_TIMESTAMP = process.env.BUILD_TIMESTAMP;
 
 
 const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
@@ -37,7 +38,8 @@ const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
   FABRIC8_RECOMMENDER_API_URL: FABRIC8_RECOMMENDER_API_URL,
   FABRIC8_FORGE_URL: FABRIC8_FORGE_URL,
   PUBLIC_PATH: PUBLIC_PATH,
-  BUILD_NUMBER: BUILD_NUMBER
+  BUILD_NUMBER: BUILD_NUMBER,
+  BUILD_TIMESTAMP: BUILD_TIMESTAMP
 });
 
 /**
@@ -125,7 +127,8 @@ module.exports = function (options) {
           'FABRIC8_RECOMMENDER_API_URL': JSON.stringify(METADATA.FABRIC8_RECOMMENDER_API_URL),
           'FABRIC8_FORGE_URL': JSON.stringify(METADATA.FABRIC8_FORGE_URL),
           'PUBLIC_PATH': JSON.stringify(METADATA.PUBLIC_PATH),
-          'BUILD_NUMBER': JSON.stringify(BUILD_NUMBER)
+          'BUILD_NUMBER': JSON.stringify(BUILD_NUMBER),
+          'BUILD_TIMESTAMP': JSON.stringify(BUILD_TIMESTAMP)
         }
       }),
 
