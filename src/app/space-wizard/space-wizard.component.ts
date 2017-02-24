@@ -2,12 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Broadcaster } from 'ngx-login-client';
+import { Space, SpaceAttributes, SpaceService } from 'ngx-fabric8-wit';
 
 import { DummyService } from '../shared/dummy.service';
 import { SpaceConfigurator, IWizardSteps, Wizard } from './wizard';
-import { Space, SpaceAttributes } from '../models/space';
-import { ProcessTemplate } from '../models/process-template';
-import { SpaceService } from '../profile/spaces/space.service';
 
 interface IModal {
   closeOnEscape: boolean;

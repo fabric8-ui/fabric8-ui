@@ -1,11 +1,11 @@
-import { Space } from './../models/space';
-import { ContextType } from './../models/context-type';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Broadcaster, User, UserService, Entity } from 'ngx-login-client';
+import { Space } from 'ngx-fabric8-wit';
 
 import { Context } from './../models/context';
+import { ContextType } from './../models/context-type';
 import { DummyService } from './../shared/dummy.service';
 
 /*

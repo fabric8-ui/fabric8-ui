@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Stack } from './../../../models/stack';
+import { Stack } from 'ngx-fabric8-wit';
+
 import { ContextService } from './../../../shared/context.service';
 
 

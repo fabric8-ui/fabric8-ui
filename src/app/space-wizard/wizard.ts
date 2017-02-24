@@ -1,5 +1,5 @@
 // TODO: refactor and refine domain model for wizard and configurator
-import { Space, SpaceAttributes } from '../models/space'
+import { Space, SpaceAttributes } from 'ngx-fabric8-wit'
 
 export class Wizard {
 

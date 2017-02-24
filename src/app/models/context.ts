@@ -1,8 +1,7 @@
 import { Entity } from 'ngx-login-client';
+import { Space, Team } from 'ngx-fabric8-wit';
 import { LinkType } from './link-type';
 import { ContextType } from './context-type';
-import { Space } from './space';
-import { Team } from './team';
 
 export class Context {
     // The entity that this context is for

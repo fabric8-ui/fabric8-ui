@@ -4,13 +4,11 @@ import { Headers, Http } from '@angular/http';
 import { LocalStorageService } from 'angular-2-local-storage';
 import 'rxjs/add/operator/toPromise';
 import { Broadcaster, User, Entity } from 'ngx-login-client';
+import { Team, Space, ProcessTemplate } from 'ngx-fabric8-wit';
 
 import { Context } from './../models/context';
 import { ContextType } from './../models/context-type';
-import { Space } from './../models/space';
 import { Resources } from './../models/resources';
-import { ProcessTemplate } from './../models/process-template';
-import { Team } from './../models/team';
 import { Email } from './../models/email';
 
 

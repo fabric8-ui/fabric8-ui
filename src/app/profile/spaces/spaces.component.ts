@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
 
 import { Logger } from 'ngx-login-client';
+import { Space, SpaceService } from 'ngx-fabric8-wit';
 
 import { DummyService } from './../../shared/dummy.service';
-import { SpaceService } from './space.service';
-import { Space } from '../../models/space';
 
 
 @Component({

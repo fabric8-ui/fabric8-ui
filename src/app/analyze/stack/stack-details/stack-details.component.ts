@@ -3,8 +3,8 @@ import { FormBuilder } from '@angular/forms';
 
 import { Logger } from 'ngx-login-client';
 import { Observable } from 'rxjs/Observable';
+import { Stack } from 'ngx-fabric8-wit';
 
-import { Stack } from './../../../models/stack';
 import { StackAnalysesService } from '../stack-analyses.service';
 import { StackAnalysesModel } from '../stack-analyses.model';
 import { RenderNextService } from './render-next-service';
@@ -164,7 +164,7 @@ export class StackDetailsComponent implements OnInit {
   }
 
   /* Modal */
-  
+
   private getWorkItemData(): any {
     this.workItemData = {
       'data': {
@@ -383,7 +383,7 @@ export class StackDetailsComponent implements OnInit {
   private handleNext(value: any): void {
     // ++ this.currentIndex;
     // Hit a new Ajax call and populate the Array
-    let nextObservable: Observable<any> 
+    let nextObservable: Observable<any>
     = this.renderNextService.getNextList(this.recoArray[this.currentIndex]['url']);
     nextObservable.subscribe((data) => {
       this.logger.log(data);
