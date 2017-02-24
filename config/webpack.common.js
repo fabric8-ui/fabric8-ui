@@ -47,9 +47,6 @@ module.exports = {
         use: [
           {
             loader: 'awesome-typescript-loader',
-            options: {
-              declaration: false
-            },
           },
           {
             loader: 'angular2-template-loader'
