@@ -7,7 +7,7 @@ set -x
 set -e
 
 # Export needed vars
-for var in BUILD_NUMBER; do
+for var in BUILD_NUMBER BUILD_URL; do
   export $(grep ${var} jenkins-env | xargs)
 done
 
@@ -20,7 +20,7 @@ service docker start
 
 # Build builder image
 docker build -t fabric8-ui-builder -f Dockerfile.builder .
-mkdir -p dist && docker run --detach=true --name=fabric8-ui-builder -t -v $(pwd)/dist:/dist:Z --e BUILD_NUMBER fabric8-ui-builder
+mkdir -p dist && docker run --detach=true --name=fabric8-ui-builder -t -v $(pwd)/dist:/dist:Z -e BUILD_NUMBER -e BUILD_URL fabric8-ui-builder
 
 # Build almigty-ui
 docker exec fabric8-ui-builder npm install
