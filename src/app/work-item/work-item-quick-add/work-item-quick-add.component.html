@@ -5,11 +5,11 @@
     </a>
     <span class="quick-add-label">Create Work Item</span>
   </div>
-  <div class="col-md-12 col-sm-12 col-xs-12 addWorkItemBlk " *ngIf="showQuickAdd">
+  <div class="flex-container flex-grow-1 addWorkItemBlk " *ngIf="showQuickAdd">
     <div class="workItemQuickAdd_IconType btn btn-default">
       <i class="fa fa-bookmark pull-left "></i>
     </div>
-    <div class="workItemQuickAdd_story">
+    <div class="workItemQuickAdd_story flex-grow-9">
       <div class="col-md-6 col-sm-6 col-xs-12 workItemQuickAdd_storyInput">
         <input #quickAddTitle type="text" id="exampleInput" class="form-control col-md-12 col-sm-12 col-xs-12"  [(ngModel)]="workItem.attributes['system.title']"
               (keyup.enter)="save($event)"

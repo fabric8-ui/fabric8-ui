@@ -9,7 +9,7 @@
   text-align: $textLeft;
   cursor: pointer;
   font-size: rem(12);
-  .addWorkItem{
+  .addWorkItem {
     padding: em(18);
     font-size: rem(14);
     color: $navbar-pf-border-color;
@@ -17,7 +17,7 @@
     .quick-add-label {
       padding-left: em(5);
     }
-    .workItemQuickAdd_saveBtn{
+    .workItemQuickAdd_saveBtn {
       display: inline-block;
       margin:0;
       &:hover{
@@ -36,7 +36,7 @@
   .addWorkItemBlk {
     padding: em(20);
     position: relative;
-    .workItemQuickAdd_IconType{
+    .workItemQuickAdd_IconType {
       width:em(24);
       height: em(25);
       float: left;
@@ -45,29 +45,26 @@
         font-size:em(14);
       }
     }
-    .workItemQuickAdd_story{
-      padding-left:em(24);
-      padding-right: em(72);
+    .workItemQuickAdd_story {
       #exampleDesc{
         max-height: 100px;
       }
     }
-    .workItemQuickAdd_AddBlk{
-      .workItemQuickAdd_Add{
-        text-align: right;
+    .workItemQuickAdd_AddBlk {
+      .workItemQuickAdd_Add {
         font-size: em(14);
-        min-width: 30px;
+        min-width: em(30);
         height: 27px;
-        padding: em(5);
-        i{
+        i {
           font-size: em(14);
         }
       }
-      .closeQuickAdd{
-        min-width: 30px;
-        margin-left: 5px;
-        padding: 5px;
-        i{
+      .closeQuickAdd {
+        min-width: em(35);
+        margin-left: em(5);
+        height: 27px;
+        padding: em(5);
+        i {
           font-size: em(16);
         }
       }

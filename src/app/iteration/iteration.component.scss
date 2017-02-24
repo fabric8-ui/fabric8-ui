@@ -70,13 +70,12 @@
   }
 }
 .create-iteration-bar {
-  position: absolute;
-  width: $width100;
-  bottom: 0;
+  flex: none;
+  -webkit-box-flex: none;
   background: $color-pf-white;
   border-top: 1px solid $color-pf-black-300;
   padding: em(19);
-  font-size: rem(14);
+  font-size: rem(14.5);
   color: $navbar-pf-border-color;
   .create-iteration-label {
     padding-left: em(5);

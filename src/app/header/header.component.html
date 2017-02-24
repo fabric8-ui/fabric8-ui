@@ -41,7 +41,7 @@
           <span *ngIf="!imgLoaded" class="nav-item-icon">
               <span class="nav-icon pficon pficon-user"></span>
           </span>
-          <img style="height:2.0rem;margin-top:3px;" (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
+          <img (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}"
             class="pull-left" /> {{loggedInUser.attributes?.fullName}}
         </a>
       </li>

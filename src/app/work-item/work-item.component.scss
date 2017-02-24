@@ -14,18 +14,14 @@
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: 11;
+        z-index: 3;
         overflow-y: auto;
         .container-modal-header {
             margin: 0;
             margin-bottom: $grid-gutter-width/2;
-            background-color: $color-pf-blue;
             display: flex;
             align-items: baseline;
             justify-content: space-between;
-            >.header-text {
-                color: $color-pf-white;
-            }
         }
         &.container-cards-pf {
             .card-pf-title {
@@ -49,6 +45,12 @@
                         border-left: none;
                     }
                 }
+                .toolbar-pf-action-right {
+                  .pficon-add-circle-o{
+                    @extend .with-color-blue;
+                    font-size: ceil(($font-size-base * 1.2)) ;
+                  }
+                }
             }
             // ensure icons dont fold around inputs
             .wi-input-filter-dropdown {
@@ -66,7 +68,7 @@
                     }
                     //HACK:positions the caret in right margin are of input
                     >span.caret::before {
-                        z-index: 100;
+                        z-index: 2;
                         display: inline-block;
                         height: 1.5rem;
                         line-height: 1.5rem;

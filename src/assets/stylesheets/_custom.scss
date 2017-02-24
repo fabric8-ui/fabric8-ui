@@ -35,6 +35,22 @@
     text-align: $textCenter;
 }
 
+//user -gravatar
+
+ .user-avatar{
+     height: em(25);
+     width: em(25);
+     img{
+         width: $width100;
+         height: 100%;
+     }
+ }
+ .not-assigned-user-icon {
+   font-size: em(20);
+   border: 1px solid $color-pf-black-600;
+   padding: em(1) em(3);
+ }
+
 @media (max-width: $grid-float-breakpoint) {
     .mobdn {
         display: none;

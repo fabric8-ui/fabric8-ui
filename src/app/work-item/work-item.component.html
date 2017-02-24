@@ -3,7 +3,7 @@
   <div *ngIf="loggedIn && showTypesOptions" class="row container-modal container-cards-pf">
     <div class="row row-cards-pf">
       <div class="col-xs-12 container-modal-header ">
-        <h2 class="header-text"><strong>Choose a new work item type</strong></h2>
+        <h2 class="header-text margin-0">Choose a new work item type</h2>
         <i class="header-text pficon pficon-close" (click)="closePanel()"></i>
       </div>
     </div>
@@ -91,7 +91,7 @@
           <!-- ADD a Work Item FAB -->
           <div class="toolbar-pf-action-right">
             <div *ngIf="loggedIn" class="with-cursor-pointer" tooltipPlacement="bottom" tooltip="Add A Work Item" (click)="showTypes()">
-              <i class="pficon pficon-add-circle-o with-color-blue"></i>
+              <i class="pficon pficon-add-circle-o margin-top-4"></i>
             </div>
           </div>
         </div>

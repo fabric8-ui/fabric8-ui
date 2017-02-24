@@ -1,11 +1,11 @@
 <!--Iteration Start-->
-<div class="iteration-panel-header pointer display-flex" (click)="isCollapsedIteration = !isCollapsedIteration">
-  <h3 class="flex-1">Iterations</h3>
-  <a class="flex-1 text-right">
+<div class="iteration-panel-header pointer flex-container" (click)="isCollapsedIteration = !isCollapsedIteration">
+  <h3 class="flex-grow-1">Iterations</h3>
+  <a class="text-right">
     <i class="fa fa-plus"></i>
   </a>
 </div>
-<div class="iterations-container display-flex">
+<div class="iterations-container flex-container flex-grow-1">
   <div class="iteration-wrapper" [collapse]="isCollapsedIteration">
     <div class="iterations">
       <div class="iteration-header pointer"
@@ -19,8 +19,8 @@
       </div>
       <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
         <li class="active" *ngFor="let iteration of currentIterations">
-          <div class="iteration-subheader display-flex">
-            <div class="flex-1 truncate">
+          <div class="iteration-subheader flex-container">
+            <div class="flex-grow-1 truncate">
               <strong class="iteration-name "
                 tooltip="{{iteration.attributes.name}}"
                 tooltipPlacement="top"
@@ -50,9 +50,9 @@
               </ul>
             </div>
           </div>
-          <div class="iteration-status display-flex">
-            <span class="flex-1">{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}</span>
-            <div class="flex-1 text-right">
+          <div class="iteration-status flex-container">
+            <span class="flex-grow-1">{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}</span>
+            <div class="flex-grow-1 text-right">
               <strong>71 of 74</strong><span> completed</span>
             </div>
           </div>
@@ -93,8 +93,8 @@
       <ul class="not-current-iteration"
           [collapse]="isCollapsedFutureIteration">
 
-        <li class="iteration-subheader display-flex" *ngFor="let iteration of futureIterations">
-          <div class="flex-1 truncate">
+        <li class="iteration-subheader flex-container" *ngFor="let iteration of futureIterations">
+          <div class="flex-grow-1 truncate">
             <strong class="iteration-name"
               tooltip="{{iteration.attributes.name}}"
               tooltipPlacement="top"
@@ -141,8 +141,8 @@
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedPastIteration">
-        <li class="iteration-subheader display-flex" *ngFor="let iteration of closedIterations">
-          <div class="truncate flex-1">
+        <li class="iteration-subheader flex-container" *ngFor="let iteration of closedIterations">
+          <div class="truncate flex-grow-1">
             <strong class="iteration-name "
               tooltip="{{iteration.attributes.name}}"
               tooltipPlacement="top"

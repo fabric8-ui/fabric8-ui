@@ -10,5 +10,7 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-
+  h3 {
+    margin-bottom: em(15);
+  }
 }
