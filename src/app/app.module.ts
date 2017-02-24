@@ -1,8 +1,5 @@
 import './rxjs-extensions';
 
-// Globals
-import { GlobalSettings } from './shared/globals';
-
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
@@ -22,6 +19,7 @@ import {
 // Shared
 import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
 import { SpaceService } from './shared/mock-spaces.service';
+import { GlobalSettings } from './shared/globals';
 
 // App components
 import { AppComponent } from './app.component';
@@ -124,7 +122,7 @@ if (process.env.ENV == 'inmemory') {
     ToastNotificationComponent,
     WorkItemSearchComponent
   ],
-  providers: serviceImports,
+  providers: [ GlobalSettings, serviceImports ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {
