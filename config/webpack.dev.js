@@ -21,7 +21,7 @@ const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 3000;
 const HMR = helpers.hasProcessFlag('hot');
 // if env is 'inmemory', the inmemory debug resource is used
-const FABRIC8_WIT_API_URL = process.env.FABRIC8_WIT_API_URL || 'http://demo.api.almighty.io/api/';
+const FABRIC8_WIT_API_URL = process.env.FABRIC8_WIT_API_URL || 'http://api.prod-preview.openshift.io/api/';
 const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL || 'http://api-bayesian.dev.rdu2c.fabric8.io/api/v1/';
 const FABRIC8_FORGE_URL = process.env.FABRIC8_FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
