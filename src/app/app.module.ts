@@ -43,20 +43,6 @@ import { WorkItemModule } from './work-item/work-item.module';
 // Mock data
 import { MockDataService } from './shared/mock-data.service';
 
-// Main areas
-import { CodeModule } from './code/code.module';
-import { HomeModule } from './home/home.module';
-import { HypothesisModule } from './hypothesis/hypothesis.module';
-import { NotificationsModule } from './notifications/notifications.module';
-import { PipelineModule } from './pipeline/pipeline.module';
-import { SettingsModule } from './settings/settings.module';
-import { TestModule } from './test/test.module';
-import { ObsidianModule } from './obsidian/obsidian.module';
-
-//SubMenu
-import { DashboardModule } from './dashboard/dashboard.module';
-import { LearnModule } from './learn/learn.module';
-
 import { ToastNotificationComponent } from './toast-notification/toast-notification.component';
 
 // conditionally import the inmemory resource module
@@ -93,24 +79,11 @@ if (process.env.ENV == 'inmemory') {
   imports: [
     AppRoutingModule,
     BrowserModule,
-    CodeModule,
-    DashboardModule,
     DropdownModule,
     FormsModule,
-    HomeModule,
-    HypothesisModule,
     HttpModule,
-    LearnModule,
     ModalModule,
-    NotificationsModule,
-    // ObsidianModule,
-    // Having this module cause the
-    // functional tests fail
-    // randomly with timeout
-    PipelineModule,
-    SettingsModule,
     TabsModule,
-    TestModule,
     TooltipModule,
     WorkItemModule
   ],

@@ -18,8 +18,6 @@ const routes: Routes = [
     path: 'quick-add/:id',
     component: WorkItemQuickAddComponent
   }
-
-
 ];
 
 @NgModule({

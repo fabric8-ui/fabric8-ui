@@ -14,21 +14,6 @@
   </div>
   <div class="navbar-collapse navbar-collapse-1 ">
     <ul id="header_rightDropdown" class="nav navbar-nav navbar-utility">
-      <li>
-        <a [routerLink]="['/settings']" id="header_menuSettings" routerLinkActive="active">
-          <span class="nav-item-icon">
-              <span class="nav-icon pficon pficon-settings"></span>
-          </span>
-        </a>
-      </li>
-      <li>
-        <a [routerLink]="['/notifications']" id="header_menuNotifications" routerLinkActive="active">
-          <span class="nav-item-icon">
-            <span class="nav-icon fa fa-bell"></span>
-          </span>
-
-        </a>
-      </li>
       <li *ngIf="loggedIn">
         <a *ngIf="loggedInUser" id="header_dropdownToggle">
           <span *ngIf="!imgLoaded" class="nav-item-icon">
@@ -44,34 +29,11 @@
       </li>
     </ul>
     <ul id="header_menuList" class="nav navbar-nav navbar-primary  persistent-secondary">
-      <li routerLinkActive="active">
-        <a [routerLink]="['/dashboard']" id="header_menuHome"><span class="nav-item-text">Home</span></a>
-        <ul class="nav navbar-nav navbar-persistent">
-          <li routerLinkActive="active">
-            <a [routerLink]="['/dashboard']" id="header_submenuDashboard"><span class="nav-item-text">Dashboard</span></a>
-          </li>
-          <li routerLinkActive="active">
-            <a [routerLink]="['/learn']" id="header_submenuLearn"><span class="nav-item-text">Learn</span></a>
-          </li>
-        </ul>
-      </li>
       <li routerLinkActive="active" class="with-no-children">
         <a [routerLink]="['/work-item/list']" id="header_menuWork"><span class="nav-item-text">WorkList</span></a>
       </li>
       <li routerLinkActive="active" class="with-no-children">
         <a [routerLink]="['/work-item/board']" id="header_menuWork"><span class="nav-item-text">WorkBoard</span></a>
-      </li>
-      <li routerLinkActive="active" class="with-no-children">
-        <a [routerLink]="['/code']" id="header_menuCode"><span class="nav-item-text">Code</span></a>
-      </li>
-      <li routerLinkActive="active" class="with-no-children">
-        <a [routerLink]="['/test']" id="header_menuTest"><span class="nav-item-text">Test</span></a>
-      </li>
-      <li routerLinkActive="active" class="with-no-children">
-        <a [routerLink]="['/pipeline']" id="header_menuPipeline"><span class="nav-item-text">Environments/Pipelines</span></a>
-      </li>
-      <li routerLinkActive="active" class="with-no-children">
-        <a [routerLink]="['/hypothesis']" id="header_menuHypothesis"><span class="nav-item-text">Hypothesis Engine</span> <sup><span class="fa fa-trademark"></span></sup></a>
       </li>
       <li>
         <select [ngModel]="selectedSpace" (ngModelChange)="onSpaceChange($event)">
