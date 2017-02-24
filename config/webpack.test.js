@@ -3,11 +3,13 @@
  */
 
 const helpers = require('./helpers');
+const webpack = require('webpack');
+const webpackMerge = require('webpack-merge');
+const commonConfig = require('./webpack.common.js');
 
 /**
  * Webpack Plugins
  */
-const webpack = require('webpack');
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
@@ -26,7 +28,7 @@ const extractSASS = new ExtractTextPlugin('stylesheets/[name].scss');
  *
  * See: http://webpack.github.io/docs/configuration.html#cli
  */
-module.exports = {
+module.exports = webpackMerge(commonConfig, {
 
   entry: {
     'app': './src/main.ts'
@@ -66,131 +68,6 @@ module.exports = {
    *
    * See: http://webpack.github.io/docs/configuration.html#module
    */
-  module: {
-
-    /**
-     * An array of applied pre and post loaders.
-     *
-     * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
-     */
-    // preLoaders: [
-    //
-    //   /**
-    //    * Tslint loader support for *.ts files
-    //    *
-    //    * See: https://github.com/wbuchwalter/tslint-loader
-    //    */
-    //   {
-    //     test: /\.ts$/,
-    //     loader: 'tslint-loader',
-    //     exclude: [helpers.root('node_modules')]
-    //   }
-    //
-    //
-    //
-    // ],
-
-    /**
-     * An array of automatically applied loaders.
-     *
-     * IMPORTANT: The loaders here are resolved relative to the resource which they are applied to.
-     * This means they are not resolved relative to the configuration file.
-     *
-     * See: http://webpack.github.io/docs/configuration.html#module-loaders
-     */
-    rules: [
-
-      /**
-       * Typescript loader support for .ts and Angular 2 async routes via .async.ts
-       *
-       * See: https://github.com/s-panferov/awesome-typescript-loader
-       */
-      {
-        test: /\.ts$/,
-        loaders: [
-            'ts-loader',
-            'angular2-template-loader'
-        ],
-        exclude: [/\.e2e\.ts$/]
-      },
-
-      /**
-       * Json loader support for *.json files.
-       *
-       * See: https://github.com/webpack/json-loader
-       */
-      { test: /\.json$/, loader: 'json-loader', exclude: [helpers.root('src/index.html')] },
-
-      /**
-       * Raw loader support for *.css files
-       * Returns file content as string
-       *
-       * See: https://github.com/webpack/raw-loader
-       */
-
-      { test: /\.css$/,
-        exclude: [helpers.root('src', 'app')],
-        use: ExtractTextPlugin.extract({
-          fallback: "to-string-loader",
-          use: {
-            loader: "css-loader"
-          },
-          publicPath: "../"
-        })
-      },
-      {
-        test: /\.css$/,
-        include: helpers.root('src', 'app'),
-        loader: 'raw-loader!postcss-loader'
-      },
-      { test: /\.scss$/,
-        exclude: [helpers.root('src', 'app')],
-        use: ExtractTextPlugin.extract({
-          fallback: "to-string-loader",
-          use: {
-            loader: "sass-loader"
-          },
-          publicPath: "../"
-        })
-      },
-      {
-        test: /\.scss$/,
-        include: helpers.root('src', 'app'),
-        loaders: ['exports-loader?module.exports.toString()', 'css-loader', 'postcss-loader', 'sass-loader']
-      },
-
-      /**
-       * Raw loader support for *.html
-       * Returns file content as string
-       *
-       * See: https://github.com/webpack/raw-loader
-       */
-      { test: /\.html$/, loader: 'raw-loader', exclude: [helpers.root('src/index.html')] }
-
-    ]
-
-    /**
-     * An array of applied pre and post loaders.
-     *
-     * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
-     */
-    // postLoaders: [
-    //   /**
-    //    * Instruments JS files with Istanbul for subsequent code coverage reporting.
-    //    * Instrument only testing sources.
-    //    *
-    //    * See: https://github.com/deepsweet/istanbul-instrumenter-loader
-    //    */
-    //   {
-    //     test: /\.(js|ts)$/, loader: 'istanbul-instrumenter-loader',
-    //     include: helpers.root('src'),
-    //     exclude: [
-    //       /\.(e2e|spec)\.ts$/,
-    //       /node_modules/
-    //     ]
-    //   }
-    // ]
-  },
 
   /**
    * Add additional plugins to the compiler.
@@ -265,4 +142,4 @@ module.exports = {
     setImmediate: false
   }
 
-};
+});
