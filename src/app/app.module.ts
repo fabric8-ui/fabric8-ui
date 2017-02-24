@@ -46,7 +46,6 @@ import { WorkItemModule } from './work-item/work-item.module';
 import { MockDataService } from './shared/mock-data.service';
 
 // Main areas
-import { ChatModule } from './chat/chat.module';
 import { CodeModule } from './code/code.module';
 import { HomeModule } from './home/home.module';
 import { HypothesisModule } from './hypothesis/hypothesis.module';
@@ -96,7 +95,6 @@ if (process.env.ENV == 'inmemory') {
   imports: [
     AppRoutingModule,
     BrowserModule,
-    ChatModule,
     CodeModule,
     DashboardModule,
     DropdownModule,

@@ -24,9 +24,6 @@ class DashboardPage {
  welcomeWrapper () {
     return element(by.css("welcomeWrapper"));
   }
- recentChatsWrapper () {
-    return element(by.css("recentChatsWrapper"));
-  }
  recentProjectsWrapper () {
     return element(by.css("recentProjectsWrapper"));
   }

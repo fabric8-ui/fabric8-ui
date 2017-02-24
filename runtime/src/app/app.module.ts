@@ -32,7 +32,6 @@ import { WorkItemService } from 'fabric8-planner';
 import { MockDataService } from 'fabric8-planner';
 
 // fabric8 components - components
-import { ChatModule } from 'fabric8-planner';
 import { WorkItemModule } from 'fabric8-planner';
 
 
@@ -55,7 +54,6 @@ import { WorkItemModule } from 'fabric8-planner';
     ModalModule,
     TabsModule,
     TooltipModule,
-    ChatModule,
     WorkItemModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection

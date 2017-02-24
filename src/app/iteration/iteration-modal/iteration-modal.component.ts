@@ -70,6 +70,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   }
 
   resetValues() {
+
     this.iteration  = {
       id: '',
       attributes: {

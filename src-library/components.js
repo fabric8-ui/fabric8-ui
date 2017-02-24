@@ -10,7 +10,6 @@ exports.LoginComponent = require('./lib/login/login.component').LoginComponent;
 exports.LoginService = require('./lib/login/login.service').LoginService;
 exports.WorkItemSearchComponent = require('./lib/work-item/work-item-search/work-item-search.component').WorkItemSearchComponent;
 exports.WorkItemService = require('./lib/work-item/work-item.service').WorkItemService;
-exports.ChatModule = require('./lib/chat/chat.module').ChatModule;
 exports.CodeModule = require('./lib/code/code.module').CodeModule;
 exports.HomeModule = require('./lib/home/home.module').HomeModule;
 exports.HypothesisModule = require('./lib/hypothesis/hypothesis.module').HypothesisModule;

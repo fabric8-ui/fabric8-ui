@@ -11,7 +11,6 @@ export * from './lib/login/login.component';
 export * from './lib/login/login.service';
 export * from './lib/work-item/work-item-search/work-item-search.component';
 export * from './lib/work-item/work-item.service';
-export * from './lib/chat/chat.module';
 export * from './lib/code/code.module';
 export * from './lib/home/home.module';
 export * from './lib/hypothesis/hypothesis.module';

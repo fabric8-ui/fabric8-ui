@@ -20,7 +20,6 @@ let TestPage = require('./test.page');
 let PipelinePage = require('./pipeline.page');
 let HypothesisPage = require('./hypothesis.page');
 let SettingsPage = require('./settings.page');
-let ChatPage = require('./chat.page');
 let DashboardPage = require('./dashboard.page');
 let NotificationsPage = require('./notifications.page');
 let MicroservicesPage = require('./microservices.page');
