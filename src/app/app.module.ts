@@ -10,17 +10,21 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 // Main areas
+import { FilterExampleModule } from './filters/examples/filter-example.module';
 import { HomeModule } from './home/home.module';
-import { ToolbarModule } from './toolbar/toolbar.module';
+import { SortExampleModule } from './sort/examples/sort-example.module';
+import { ToolbarExampleModule } from './toolbar/examples/toolbar-example.module';
 
 @NgModule({
   imports: [
     AppRoutingModule,
     BrowserModule,
+    FilterExampleModule,
     FormsModule,
     HomeModule,
     HttpModule,
-    ToolbarModule
+    SortExampleModule,
+    ToolbarExampleModule
   ],
   declarations: [
     AppComponent

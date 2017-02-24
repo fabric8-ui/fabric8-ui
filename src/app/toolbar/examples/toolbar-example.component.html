@@ -1,0 +1,73 @@
+<div class="container-fluid padding-bottom-15">
+  <div class="row">
+    <div class="col-xs-12">
+      <div><a routerLink="/home" routerLinkActive="active">Home</a> &gt; Toolbar</div>
+    </div>
+  </div>
+</div>
+<alm-toolbar [config]="toolbarConfig"
+             [actionsTemplate]="actionsTemplate"
+             (onActionSelect)="performAction($event)"
+             (onFilterChange)="filterChange($event)"
+             (onSortChange)="sortChange($event)"
+             (onViewSelect)="viewSelected($event)">
+  <template #actions>
+    <span class="dropdown primary-action" dropdown>
+      <button class="btn btn-default dropdown-toggle" dropdownToggle type="button">
+        Menu Action
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" dropdownMenu>
+        <li>
+          <a class="secondary-action" role="menuitem" (click)="optionSelected(1)">Option 1</a>
+        </li>
+        <li>
+          <a class="secondary-action" role="menuitem" (click)="optionSelected(2)">Option 2</a>
+        </li>
+        <li>
+          <a class="secondary-action" role="menuitem" (click)="optionSelected(3)">Option 3</a>
+        </li>
+        <li>
+          <a class="secondary-action" role="menuitem" (click)="optionSelected(4)">Option 4</a>
+        </li>
+      </ul>
+    </span>
+    <button class="btn btn-default primary-action" type="button" (click)="doAdd()">
+      <span class="fa fa-plus"></span>
+      Add Action
+    </button>
+  </template>
+</alm-toolbar>
+<div class="col-md-12">
+  <label class="events-label">Valid Items: </label>
+</div>
+<div class="col-md-12" *ngIf="view.id == 'listView'">
+  <div *ngFor="let item of items" class="col-md-12 cfme-row-column">
+    <div class="row">
+      <div class="col-md-3">
+        <span>{{item.name}}</span>
+      </div>
+      <div class="col-md-7">
+        <span>{{item.address}}</span>
+      </div>
+      <div class="col-md-2">
+        <span>{{item.birthMonth}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-12" *ngIf="view.id == 'tableView'">
+  <span>Nothing to show</span>
+</div>
+<div class="col-md-12">
+  <label class="events-label">Current Filters: </label>
+</div>
+<div class="col-md-12">
+  <textarea rows="5" class="col-md-12">{{filtersText}}</textarea>
+</div>
+<div class="col-md-12">
+  <label class="actions-label">Actions: </label>
+</div>
+<div class="col-md-12">
+  <textarea rows="3" class="col-md-12">{{actionsText}}</textarea>
+</div>

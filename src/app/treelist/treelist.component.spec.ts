@@ -13,16 +13,14 @@ import { By }           from '@angular/platform-browser';
 
 import { TreeModule } from 'angular2-tree-component';
 import { TreeListComponent } from './treelist.component';
-import { User } from '../../models/user';
-import { WorkItem } from '../../models/work-item';
 
 describe('Treelist component - ', () => {
   let comp: TreeListComponent;
   let fixture: ComponentFixture<TreeListComponent>;
   let el: DebugElement;
-  let fakeUserList: User[];
-  let fakeWorkItem: WorkItem;
-  let fakeWorkItems: WorkItem[] = [];
+  let fakeUserList: any[];
+  let fakeWorkItem: any;
+  let fakeWorkItems: any[] = [];
   let fakeWorkItemsWithChild: any[] = [];
 
   let treeListOptions = {
@@ -50,7 +48,7 @@ describe('Treelist component - ', () => {
         },
         id: 'wilct-user2'
       }
-    ] as User[];
+    ];
 
     fakeWorkItem = {
       'attributes': {
@@ -93,7 +91,7 @@ describe('Treelist component - ', () => {
         'creator': fakeUserList[0],
         'assignees': [fakeUserList[2]]
       }
-    } as WorkItem;
+    };
 
     fakeWorkItems.push(Object.assign({}, fakeWorkItem));
     fakeWorkItemsWithChild.push(Object.assign({}, fakeWorkItem));

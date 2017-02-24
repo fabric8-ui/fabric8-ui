@@ -18,8 +18,6 @@ import { TreeListComponent } from './treelist.component';
     HttpModule,
     TreeModule
   ],
-  providers: [],
-  bootstrap: [ TreeListComponent ],
   exports: [ TreeListComponent ]
 })
 export class TreeListModule { }

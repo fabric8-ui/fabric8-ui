@@ -1,24 +1,143 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 
-import { DropdownOption } from "../dropdown/dropdown-option";
+import { Action } from './action';
+import { Filter } from '../filters/filter';
+import { FilterEvent } from '../filters/filter-event';
+import { SortEvent } from '../sort/sort-event';
+import { ToolbarConfig } from './toolbar-config';
+import { View } from './view';
 
+import * as _ from 'lodash';
+
+/**
+ * Standard toolbar component. Includes filtering and view selection capabilities
+ */
 @Component({
   encapsulation: ViewEncapsulation.None,
-  selector: 'demo-toolbar',
-  styles: [ require('./toolbar.component.css') ],
-  template: require('./toolbar.component.html')
+  selector: 'alm-toolbar',
+  styleUrls: ['./toolbar.component.scss'],
+  templateUrl: './toolbar.component.html'
 })
 export class ToolbarComponent implements OnInit {
+  @Input() config: ToolbarConfig;
+  @Input() actionsTemplate: TemplateRef<any>;
 
-  options: DropdownOption[];
+  @Output('onActionSelect') onActionSelect = new EventEmitter();
+  @Output('onFilterChange') onFilterChange = new EventEmitter();
+  @Output('onSortChange') onSortChange = new EventEmitter();
+  @Output('onViewSelect') onViewSelect = new EventEmitter();
 
-  constructor(private router: Router) {}
+  prevConfig: ToolbarConfig;
 
-  ngOnInit() {
-    this.options = [{
-      id: 1,
-      option: 'option 1'
-    }] as DropdownOption[];
+  constructor() {
+  }
+
+  // Initialization
+
+  ngOnInit(): void {
+    this.setupConfig();
+  }
+
+  ngDoCheck(): void {
+    // Do a deep compare on config
+    if (!_.isEqual(this.config, this.prevConfig)) {
+      this.setupConfig();
+    }
+  }
+
+  setupConfig(): void {
+    this.prevConfig = Object.assign({}, this.config);
+
+    if (this.config && this.config.filterConfig
+        && this.config.filterConfig.appliedFilters === undefined) {
+      this.config.filterConfig.appliedFilters = [];
+    }
+    if (this.config && this.config.sortConfig && this.config.sortConfig.fields === undefined) {
+      this.config.sortConfig.fields = [];
+    }
+    if (this.config.sortConfig !== undefined && this.config.sortConfig.show === undefined) {
+      this.config.sortConfig.show = true;
+    }
+    if (this.config && this.config.viewsConfig && this.config.viewsConfig.views === undefined) {
+      this.config.viewsConfig.views = [];
+    }
+    if (this.config && this.config.viewsConfig
+        && this.config.viewsConfig.currentView === undefined) {
+      this.config.viewsConfig.currentView = this.config.viewsConfig.views[0];
+    }
+  }
+
+  // Action functions
+
+  handleAction(action: Action): void {
+    if (action && action.isDisabled !== true) {
+      this.onActionSelect.emit(action);
+    }
+  }
+
+  // Filter functions
+
+  addFilter($event: FilterEvent): void {
+    let newFilter = {
+      id: $event.field.id,
+      title: $event.field.title,
+      type: $event.field.filterType,
+      value: $event.value
+    } as Filter;
+
+    if (!this.filterExists(newFilter)) {
+      if (newFilter.type === 'select') {
+        this.enforceSingleSelect(newFilter);
+      }
+      this.config.filterConfig.appliedFilters.push(newFilter);
+      $event.appliedFilters = this.config.filterConfig.appliedFilters;
+      this.onFilterChange.emit($event);
+    }
+  }
+
+  enforceSingleSelect(filter: Filter): void {
+    _.remove(this.config.filterConfig.appliedFilters, {title: filter.title});
+  }
+
+  filterExists(filter: Filter): boolean {
+    let foundFilter = _.find(this.config.filterConfig.appliedFilters, {
+      title: filter.title,
+      value: filter.value
+    });
+    return foundFilter !== undefined;
+  }
+
+  onClear($event: Filter[]): void {
+    this.config.filterConfig.appliedFilters = $event;
+    this.onFilterChange.emit({
+      appliedFilters: $event
+    } as FilterEvent);
+  }
+
+  // Sort functions
+
+  sortChange($event: SortEvent): void {
+    this.onSortChange.emit($event);
+  }
+
+  // View functions
+
+  isViewSelected(view: View): boolean {
+    return this.config.viewsConfig && (this.config.viewsConfig.currentView.id === view.id);
+  }
+
+  viewSelected (view: View): void {
+    this.config.viewsConfig.currentView = view;
+    if (!view.isDisabled) {
+      this.onViewSelect.emit(view);
+    }
   }
 }

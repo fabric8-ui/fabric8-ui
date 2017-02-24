@@ -1,8 +1,10 @@
 import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { FilterExampleComponent } from './filters/examples/filter-example.component';
 import { HomeComponent } from './home/home.component';
-import { ToolbarComponent } from './toolbar/toolbar.component';
+import { SortExampleComponent } from './sort/examples/sort-example.component';
+import { ToolbarExampleComponent } from './toolbar/examples/toolbar-example.component';
 
 const routes: Routes = [
   {
@@ -16,15 +18,15 @@ const routes: Routes = [
   },
   {
     path: 'filter',
-    component: HomeComponent
+    component: FilterExampleComponent
   },
   {
     path: 'sort',
-    component: HomeComponent
+    component: SortExampleComponent
   },
   {
     path: 'toolbar',
-    component: ToolbarComponent
+    component: ToolbarExampleComponent
   },
 ];
 

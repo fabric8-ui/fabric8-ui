@@ -1,13 +1,60 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-xs-12">
-      <div><a routerLink="/home" routerLinkActive="active">Home</a></div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-3">
-      <h1>Toolbar</h1>
-      <alm-dropdown [options]="options" [selected]="true"></alm-dropdown>
+  <div class="row toolbar-pf">
+    <div class="col-sm-12">
+      <form class="toolbar-pf-actions" ng-class="{'no-filter-results': !filterFields}">
+        <div class="form-group toolbar-apf-filter">
+          <alm-filter-fields [config]="config.filterConfig" *ngIf="config.filterConfig && config.filterConfig.fields"
+                             (onAdd)="addFilter($event)"></alm-filter-fields>
+        </div>
+        <div class="form-group">
+          <alm-sort [config]="config.sortConfig" *ngIf="config.sortConfig && config.sortConfig.fields && config.sortConfig.show"
+                    (onChange)="sortChange($event)"></alm-sort>
+        </div>
+        <div class="form-group toolbar-actions"
+             *ngIf="config.actionsConfig &&
+                   ((config.actionsConfig.primaryActions && config.actionsConfig.primaryActions.length > 0) ||
+                    (config.actionsConfig.moreActions && config.actionsConfig.moreActions.length > 0) ||
+                    config.actionsConfig.actionsInclude)">
+          <button class="btn btn-default primary-action" type="button"
+                  *ngFor="let action of config.actionsConfig.primaryActions"
+                  title="{{action.title}}"
+                  (click)="handleAction(action)"
+                  [disabled]="action.isDisabled === true">
+            {{action.name}}
+          </button>
+          <div *ngIf="config.actionsConfig.actionsInclude === true" class="toolbar-pf-include-actions">
+            <template [ngTemplateOutlet]="actionsTemplate" [ngOutletContext]="{}"></template>
+          </div>
+          <div dropdown class="dropdown-kebab-pf" *ngIf="config.actionsConfig && config.actionsConfig.moreActions && config.actionsConfig.moreActions.length > 0">
+            <button dropdownToggle class="btn btn-link" type="button">
+              <span class="fa fa-ellipsis-v"></span>
+            </button>
+            <ul dropdownMenu aria-labelledby="dropdownKebab">
+              <li *ngFor="let action of config.actionsConfig.moreActions"
+                  [attr.role]="action.isSeparator === true ? 'separator' : 'menuitem'"
+                  [ngClass]="{'divider': action.isSeparator === true, 'disabled': action.isDisabled === true}">
+                <a *ngIf="action.isSeparator !== true"
+                   class="secondary-action"
+                   title="{{action.title}}"
+                   (click)="handleAction(action)">
+                  {{action.name}}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="toolbar-pf-action-right">
+          <div class="form-group toolbar-pf-view-selector" *ngIf="config.viewsConfig && config.viewsConfig.views">
+            <button *ngFor="let view of config.viewsConfig.views" class="btn btn-link"
+                    [ngClass]="{'active': isViewSelected(view), 'disabled': view.isDisabled === true}"
+                    title={{view.title}}  (click)="viewSelected(view)">
+              <i class="{{view.iconClass}}"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+      <alm-filter-results [config]="config.filterConfig" *ngIf="config.filterConfig && config.filterConfig.fields"
+                          (onClear)="onClear($event)"></alm-filter-results>
     </div>
   </div>
 </div>
