@@ -70,3 +70,4 @@ npm-debug.log
 .vscode/
 
 *.ngsummary.json
+*.css
