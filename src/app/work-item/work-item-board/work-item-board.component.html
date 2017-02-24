@@ -1,22 +1,22 @@
-<div id="board_topWorkItems" class="container-fluid col-md-12 col-sm-12 col-xs-12 boardWrapper">
-  <div class="board container-cards-pf">
+<div id="board_topWorkItems" class="container-fluid flex-container flex-grow-1 in-column-direction boardWrapper">
+  <div class="board">
       <!-- board columns -->
       <div class="board-lane" *ngFor='let lane of lanes'>
 
-        <section class="col-md-12 col-sm-12 col-xs-12 board-lane-column">
-          <div class="lane-header">
+        <section class="flex-container in-column-direction board-lane-column">
+         <div class="lane-header">
             <span class="dib">{{lane.option}}</span>
             <span class="issueCount dib" >{{workItems | almFilterBoardList:lane.option | count}}</span>
           </div>
 
           <div class="boardlaneWrapper">
             <div *ngIf="lane.option == 'new'">
-                <div *ngIf="loggedIn" class="boardQuickAddContainer">
+                <div *ngIf="loggedIn" class="boardQuickAddContainer flex-container in-column-direction">
                     <alm-work-item-quick-add [wilistview] = "'wi-card-view'" (close)="close($event)"></alm-work-item-quick-add>
                 </div>
             </div>
-            <div class="board-card" *ngFor='let item of workItems | almFilterBoardList:lane.option' (click)="gotoDetail(item)">
-              <aside>
+            <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of workItems | almFilterBoardList:lane.option' (click)="gotoDetail(item)">
+              <div>
                 <div class="pull-left">
                   <span class="wi-type-icon" almIcon [iconType]="item.relationships?.baseType?.data?.id"></span>
                 </div>
@@ -32,8 +32,8 @@
                   <li><a class="workItemList_Delete">Delete</a></li>
                   <li><a class="workItemList_Backlog">Move to Backlog</a></li>
                 </ul>
-              </aside>
-              <aside>
+              </div>
+               <div>
                 <div class="col-md-10 col-sm-10 col-xs-9">
                   <p class="multiline-truncation">{{ item.attributes['system.title'] }}</p>
                 </div>
@@ -43,7 +43,7 @@
                     onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
                   <span *ngIf="!item.relationalData?.assignees?.length" class="fa fa-user not-assigned-user-icon pull-right"></span>
                 </div>
-              </aside>
+              </div>
             </div>
           </div>
         </section>

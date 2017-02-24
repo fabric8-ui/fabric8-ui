@@ -1,14 +1,6 @@
 @import '../../../assets/stylesheets/base';
 
 .boardWrapper {
-  position: relative;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  height: 100%;
   .board {
     user-select: none;
     white-space: nowrap;
@@ -24,8 +16,6 @@
       width: em(300);
       margin: 0 em(5);
       height: 100%;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
       display: inline-block;
       vertical-align: top;
       white-space: normal;
@@ -35,11 +25,38 @@
         padding: em(0);
         height: 100%;
         padding-bottom: 0;
-        .lane-header {
-          text-align: $textCenter;
-          position: absolute;
+        .boardlaneWrapper{
+          padding: em(0) em(15);
+          overflow: auto;
           width: $width100;
           float: left;
+          height: calc( 100% - 2.5em );
+          .board-card {
+            @include Border(1px, solid , $color-pf-black-400);
+            background: $color-pf-white;
+            padding: em(15);
+            margin: em(5) 0;
+            > div {
+              p {
+                margin: 0;
+              }
+              .wi-type-icon {
+                padding: em(0) em(6);
+                font-size: em(12);
+              }
+              .multiline-truncation {
+                @include multiline-truncate($line-height: 1.5em, $line-count: 3, $bg-color: $color-pf-white);
+              }
+              .user-avatar {
+                padding-right: em(5);
+              }
+            }//div ended
+          }//boardcard ended
+        }//boardlaneWrapper ended
+        .lane-header {
+          text-align: $textCenter;
+          flex: 0 0 auto;
+          width: $width100;
           z-index: 2;
           background: $color-pf-black-200;
           padding: em(7) 0 em(3) 0;
@@ -49,48 +66,10 @@
             margin-left: em(5);
             font-size: em(11);
             font-weight: 500;
-          }
-        }
-        .boardLaneWrapper {
-          width: $width100;
-          float: left;
-          height: calc( 100% - 2.5em );
-          overflow-y: auto;
-          padding: em(0) em(15);
-          margin-top: 2.5em;
-          .boardQuickAddContainer {
-            width: $width100;
-            float: left;
-          }
-          .board-card {
-            width: $width100;
-            float: left;
-            @include Border(1px, solid , $color-pf-black-400);
-            background: $color-pf-white;
-            padding: em(15);
-            margin: em(5) 0;
-            > aside {
-              width: $width100;
-              float: left;
-              margin-bottom: em(5);
-              p {
-                margin: 0;
-              }
-              .wi-type-icon {
-                padding: em(7) em(6);
-                font-size: em(10);
-                margin-right: em(2);
-              }
-              .multiline-truncation {
-                @include multiline-truncate($line-height: 1.5em, $line-count: 3, $bg-color: $color-pf-white);
-              }
-              .user-avatar {
-                padding-right: em(5);
-              }
-            }
-          }
-        }
-      }
+          }// issue-count ended
+        }// lane-header ended
+      }//boad-lane-column ended
+     }//board-lane ended
     }
   }
-}
+
