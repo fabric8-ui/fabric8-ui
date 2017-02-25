@@ -32,63 +32,58 @@ const METADATA = webpackMerge(commonConfig.metadata, {
   PUBLIC_PATH: PUBLIC_PATH
 });
 
-module.exports = function (env) {
-  return webpackMerge(commonConfig({
-    env: ENV
-  }), {
+module.exports = webpackMerge(commonConfig, {
+  devtool: 'source-map',
 
-    devtool: 'source-map',
+  entry: helpers.root('index.ts'),
 
-    entry: helpers.root('index.ts'),
+  // require those dependencies but don't bundle them
+  externals: [
+    /^\@angular\//,
+    /^rxjs\//
+  ],
 
-    // require those dependencies but don't bundle them
-    externals: [
-      /^\@angular\//,
-      /^rxjs\//
-    ],
+  output: {
+    path: helpers.root('dist'),
+    publicPath: METADATA.PUBLIC_PATH,
+    filename: 'bundles/ngx-widgets.js',
+    library: 'ngx-widgets',
+    libraryTarget: 'umd',
+    umdNamedDefine: true
+  },
 
-    output: {
-      path: helpers.root('dist'),
-      publicPath: METADATA.PUBLIC_PATH,
-      filename: 'bundles/ngx-widgets.js',
-      library: 'ngx-widgets',
-      libraryTarget: 'umd',
-      umdNamedDefine: true
-    },
+  // htmlLoader: {
+  //   minimize: false // workaround for ng2
+  // },
 
-    // htmlLoader: {
-    //   minimize: false // workaround for ng2
-    // },
+  plugins: [
+    new webpack.NoEmitOnErrorsPlugin(),
+    // FIXME: https://github.com/webpack/webpack/issues/2644
+    // new webpack.optimize.DedupePlugin(),
+    // FIXME: webpack's --optimize-minimize option is not working
+    //new webpack.optimize.UglifyJsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'ENV': JSON.stringify(METADATA.ENV),
+        'API_URL' : JSON.stringify(METADATA.API_URL),
+        'FORGE_URL': JSON.stringify(METADATA.FORGE_URL),
+        'PUBLIC_PATH' : JSON.stringify(METADATA.PUBLIC_PATH)
+      }
+    })
+  ],
+  /*
+   * Include polyfills or mocks for various node stuff
+   * Description: Node configuration
+   *
+   * See: https://webpack.github.io/docs/configuration.html#node
+   */
+  node: {
+    global: true,
+    crypto: 'empty',
+    process: false,
+    module: false,
+    clearImmediate: false,
+    setImmediate: false
+  }
 
-    plugins: [
-      new webpack.NoErrorsPlugin(),
-      // FIXME: https://github.com/webpack/webpack/issues/2644
-      // new webpack.optimize.DedupePlugin(),
-      // FIXME: webpack's --optimize-minimize option is not working
-      //new webpack.optimize.UglifyJsPlugin(),
-      new webpack.DefinePlugin({
-        'process.env': {
-          'ENV': JSON.stringify(METADATA.ENV),
-          'API_URL' : JSON.stringify(METADATA.API_URL),
-          'FORGE_URL': JSON.stringify(METADATA.FORGE_URL),
-          'PUBLIC_PATH' : JSON.stringify(METADATA.PUBLIC_PATH)
-        }
-      })
-    ],
-    /*
-     * Include polyfills or mocks for various node stuff
-     * Description: Node configuration
-     *
-     * See: https://webpack.github.io/docs/configuration.html#node
-     */
-    node: {
-      global: true,
-      crypto: 'empty',
-      process: false,
-      module: false,
-      clearImmediate: false,
-      setImmediate: false
-    }
-
-  });
-}
+});
