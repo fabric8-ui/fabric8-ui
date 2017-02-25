@@ -1,4 +1,7 @@
 # ngx-widgets
+
+[![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-ngx-widgets-npm-publish-build-master)](https://ci.centos.org/view/Devtools/job/devtools-ngx-widgets-npm-publish-build-master/)
+
 A collection of Angular components and other useful things to be shared.
 
 You can see how it is used in our application [here](https://github.com/fabric8io/fabric8-ui).
