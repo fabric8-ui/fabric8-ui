@@ -184,7 +184,7 @@
     "ng2-dropdown": "0.0.15",
     "ng2-modal": "0.0.22",
     "ngx-login-client": "0.1.6",
-    "ngx-widgets": "file:///home/josh/.nvm/versions/node/v6.9.1/lib/node_modules/ngx-widgets",
+    "ngx-widgets": "0.3.0",
     "node-sass": "4.5.0",
     "npm-run-all": "4.0.2",
     "null-loader": "0.1.1",

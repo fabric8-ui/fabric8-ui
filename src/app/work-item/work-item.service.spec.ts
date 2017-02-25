@@ -18,7 +18,8 @@ import {
   AuthenticationService,
   Broadcaster,
   Logger,
-  UserService
+  UserService,
+  AUTH_API_URL
 } from 'ngx-login-client';
 
 import { MockDataService } from '../shared/mock-data.service';
@@ -26,6 +27,7 @@ import { SpaceService } from '../shared/mock-spaces.service';
 import { IterationService } from '../iteration/iteration.service';
 import { WorkItem } from '../models/work-item';
 import { WorkItemService } from './work-item.service';
+import {GlobalSettings} from '../shared/globals';
 
 
 describe('Work Item Service - ', () => {
@@ -142,7 +144,12 @@ describe('Work Item Service - ', () => {
         WorkItemService,
         UserService,
         IterationService,
-        Broadcaster
+        Broadcaster,
+        GlobalSettings,
+        {
+          provide: AUTH_API_URL,
+          useValue: 'http://api.url.com'
+        }
       ]
     });
   });

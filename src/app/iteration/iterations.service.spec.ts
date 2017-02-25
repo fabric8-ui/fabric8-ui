@@ -20,6 +20,7 @@ import {
 
 import { IterationModel } from '../models/iteration.model';
 import { IterationService } from './iteration.service';
+import {GlobalSettings} from '../shared/globals';
 
 describe ('Iteration service - ', () => {
   let apiService: IterationService;
@@ -67,7 +68,8 @@ describe ('Iteration service - ', () => {
           provide: SpaceService,
           useValue: fakeSpaceService
         },
-        IterationService
+        IterationService,
+        GlobalSettings
       ]
     });
   });

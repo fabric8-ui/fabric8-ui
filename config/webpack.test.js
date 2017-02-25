@@ -4,16 +4,11 @@
 
 const helpers = require('./helpers');
 const webpack = require('webpack');
-// const webpackMerge = require('webpack-merge');
-// const commonConfig = require('./webpack.common.js');
 
 /**
  * Webpack Plugins
  */
-const ProvidePlugin = require('webpack/lib/ProvidePlugin');
-const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 
 /**
@@ -21,20 +16,13 @@ const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
  */
 const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
 const API_URL = process.env.API_URL || (ENV==='inmemory'?'app/':'http://localhost:8080/api/');
-// const extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
-// const extractSASS = new ExtractTextPlugin('stylesheets/[name].scss');
 
 /**
  * Webpack configuration
  *
  * See: http://webpack.github.io/docs/configuration.html#cli
  */
-module.exports = function (options) {
-  return {
-
-    // entry: {
-  //   'app': './src/main.ts'
-  // },
+module.exports = {
 
   /**
    * Source map for Karma from the help of karma-sourcemap-loader &  karma-webpack
@@ -61,38 +49,24 @@ module.exports = function (options) {
     /**
      * Make sure root is src
      */
-    modules: [helpers.root('src'), 'node_modules'],
-
+    modules: [helpers.root('src'), 'node_modules']
   },
 
   /**
    * Options affecting the normal modules.
    *
    * See: http://webpack.github.io/docs/configuration.html#module
-   *
-   * 'use:' revered back to 'loader:' as a temp. workaround for #1188
-   * See: https://github.com/AngularClass/angular2-webpack-starter/issues/1188#issuecomment-262872034
    */
   module: {
-
+    /**
+     * An array of automatically applied loaders.
+     *
+     * IMPORTANT: The loaders here are resolved relative to the resource which they are applied to.
+     * This means they are not resolved relative to the configuration file.
+     *
+     * See: http://webpack.github.io/docs/configuration.html#module-loaders
+     */
     rules: [
-
-      /**
-       * Source map loader support for *.js files
-       * Extracts SourceMaps for source files that as added as sourceMappingURL comment.
-       *
-       * See: https://github.com/webpack/source-map-loader
-       */
-      {
-        enforce: 'pre',
-        test: /\.js$/,
-        loader: 'source-map-loader',
-        exclude: [
-          // these packages have problems with their sourcemaps
-          helpers.root('node_modules/rxjs'),
-          helpers.root('node_modules/@angular')
-        ]
-      },
 
       /**
        * Typescript loader support for .ts and Angular 2 async routes via .async.ts
@@ -101,98 +75,63 @@ module.exports = function (options) {
        */
       {
         test: /\.ts$/,
-        use: [
-          {
-            loader: 'awesome-typescript-loader',
-            query: {
-              // use inline sourcemaps for "karma-remap-coverage" reporter
-              sourceMap: false,
-              inlineSourceMap: true,
-              compilerOptions: {
-
-                // Remove TypeScript helpers to be injected
-                // below by DefinePlugin
-                removeComments: true
-
-              }
-            },
-          },
+        loaders: [
+          'awesome-typescript-loader',
           'angular2-template-loader'
         ],
         exclude: [/\.e2e\.ts$/]
       },
 
-      /**
-       * Json loader support for *.json files.
-       *
-       * See: https://github.com/webpack/json-loader
-       */
+      {
+        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: 'file-loader'
+      },
+
+      // Support for *.json files.
       {
         test: /\.json$/,
-        loader: 'json-loader',
-        exclude: [helpers.root('src/index.html')]
+        use: 'json-loader'
       },
-
-      /**
-       * Raw loader support for *.css files
-       * Returns file content as string
-       *
-       * See: https://github.com/webpack/raw-loader
-       */
+      {
+        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
+        loader: 'null-loader'
+      },
       {
         test: /\.css$/,
-        loader: ['to-string-loader', 'css-loader'],
-        exclude: [helpers.root('src/index.html')]
+        loaders: ['to-string-loader', 'css-loader']
       },
 
-      /**
-       * Raw loader support for *.scss files
-       *
-       * See: https://github.com/webpack/raw-loader
-       */
       {
         test: /\.scss$/,
-        loader: ['raw-loader', 'sass-loader'],
-        exclude: [helpers.root('src/index.html')]
+        loaders: ["css-to-string-loader", "css-loader", "sass-loader"]
       },
-
-      /**
-       * Raw loader support for *.html
-       * Returns file content as string
-       *
-       * See: https://github.com/webpack/raw-loader
-       */
       {
         test: /\.html$/,
         loader: 'raw-loader',
         exclude: [helpers.root('src/index.html')]
       },
 
-      /**
-       * Instruments JS files with Istanbul for subsequent code coverage reporting.
-       * Instrument only testing sources.
-       *
-       * See: https://github.com/deepsweet/istanbul-instrumenter-loader
-       */
-      {
-        enforce: 'post',
-        test: /\.(js|ts)$/,
-        loader: 'istanbul-instrumenter-loader',
-        include: helpers.root('src'),
-        exclude: [
-          /\.(e2e|spec)\.ts$/,
-          /node_modules/
-        ]
-      }
-
+      // /**
+      //  * Instruments JS files with Istanbul for subsequent code coverage reporting.
+      //  * Instrument only testing sources.
+      //  *
+      //  * See: https://github.com/deepsweet/istanbul-instrumenter-loader
+      //  */
+      // {
+      //   enforce: 'post',
+      //   test: /\.(js|ts)$/,
+      //   loader: 'istanbul-instrumenter-loader',
+      //   query: {
+      //     esModules: true
+      //   },
+      //   include: helpers.root('src'),
+      //   exclude: [
+      //     /\.(e2e|spec)\.ts$/,
+      //     /node_modules/
+      //   ]
+      // }
     ]
   },
-
-  /**
-   * Options affecting the normal modules.
-   *
-   * See: http://webpack.github.io/docs/configuration.html#module
-   */
 
   /**
    * Add additional plugins to the compiler.
@@ -200,10 +139,6 @@ module.exports = function (options) {
    * See: http://webpack.github.io/docs/configuration.html#plugins
    */
   plugins: [
-
-    // extractCSS,
-    // extractSASS,
-
     /**
      * Plugin: DefinePlugin
      * Description: Define free variables.
@@ -249,29 +184,7 @@ module.exports = function (options) {
         // legacy options go here
       }
     }),
-
   ],
-
-  /**
-   * Static analysis linter for TypeScript advanced options configuration
-   * Description: An extensible linter for the TypeScript language.
-   *
-   * See: https://github.com/wbuchwalter/tslint-loader
-   */
-  // tslint: {
-  //   emitErrors: false,
-  //   failOnHint: false,
-  //   resourcePath: 'src'
-  // },
-
-  /**
-   * Disable performance hints
-   *
-   * See: https://github.com/a-tarasyuk/rr-boilerplate/blob/master/webpack/dev.config.babel.js#L41
-   */
-  performance: {
-    hints: false
-  },
 
   /**
    * Include polyfills or mocks for various node stuff
@@ -287,6 +200,5 @@ module.exports = function (options) {
     clearImmediate: false,
     setImmediate: false
   }
+};
 
-  };
-}
