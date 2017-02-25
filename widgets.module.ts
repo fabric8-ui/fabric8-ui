@@ -15,6 +15,7 @@ import { AlmLinkTarget } from './src/app/pipes/alm-link-target.pipe';
 import { AlmMomentTime } from './src/app/pipes/alm-moment-time.pipe';
 import { AlmSearchHighlight } from './src/app/pipes/alm-search-highlight.pipe';
 import { AlmTrim } from './src/app/pipes/alm-trim';
+import { ArrayCount } from './src/app/pipes/arrayCount.pipe';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { AlmTrim } from './src/app/pipes/alm-trim';
     AlmLinkTarget,
     AlmMomentTime,
     AlmSearchHighlight,
-    AlmTrim
+    AlmTrim,
+    ArrayCount
   ],
   exports: [
     AlmArrayFilter,
@@ -36,6 +38,8 @@ import { AlmTrim } from './src/app/pipes/alm-trim';
     AlmMomentTime,
     AlmSearchHighlight,
     AlmTrim,
+    ArrayCount,
+
     AlmEditableModule,
     AlmIconModule,
     ContainerTogglerModule,

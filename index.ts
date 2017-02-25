@@ -6,6 +6,7 @@ export { AlmLinkTarget } from './src/app/pipes/alm-link-target.pipe';
 export { AlmMomentTime } from './src/app/pipes/alm-moment-time.pipe';
 export { AlmSearchHighlight } from './src/app/pipes/alm-search-highlight.pipe';
 export { AlmTrim } from './src/app/pipes/alm-trim';
+export { ArrayCount } from './src/app/pipes/arrayCount.pipe';
 
 export { ContainerTogglerModule } from './src/app/container-toggler/container-toggler.module';
 export { DialogModule } from './src/app/dialog/dialog.module';
