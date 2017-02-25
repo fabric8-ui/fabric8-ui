@@ -6,7 +6,7 @@
   "module": "index.js",
   "typings": "index.d.ts",
   "scripts": {
-    "build": "npm-run-all remove-dist transpile bundle minify transpile-sass copy-files",
+    "build": "npm-run-all remove-dist transpile-sass transpile copy-files bundle",
     "build:prod": "webpack --config config/webpack.prod.js -p",
     "bundle": "webpack --config config/webpack.prod.js --progress --profile --bail",
     "check-coverage": "istanbul check-coverage --statements 23 --branches 5 --functions 9 --lines 24",
