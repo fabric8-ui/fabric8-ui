@@ -32,8 +32,8 @@ import { WorkItemService } from '../../work-item.service';
 
 @Component({
   selector: 'alm-work-item-list-entry',
-  templateUrl: '/work-item-list-entry.component.html',
-  styleUrls: ['/work-item-list-entry.component.scss'],
+  templateUrl: './work-item-list-entry.component.html',
+  styleUrls: ['./work-item-list-entry.component.scss'],
 })
 export class WorkItemListEntryComponent implements OnInit {
 
