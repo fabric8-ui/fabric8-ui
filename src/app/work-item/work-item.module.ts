@@ -2,7 +2,6 @@ import { NgModule }     from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TreeModule } from 'angular2-tree-component';
-import { CountPipe } from 'ng2bln-count-pipe';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 import { DndModule } from 'ng2-dnd';
 import { ModalModule } from 'ng2-modal';
@@ -10,6 +9,7 @@ import { DropdownModule } from 'ng2-dropdown';
 import {
   AlmArrayFilter,
   AlmIconModule,
+  ArrayCount,
   DialogModule,
   InfiniteScrollModule,
   TreeListModule
@@ -51,7 +51,7 @@ import { WorkItemRoutingModule }                      from './work-item-routing.
   declarations: [
     AlmArrayFilter,
     AlmFilterBoardList,
-    CountPipe,
+    ArrayCount,
     FabPlannerAssociateIterationModalComponent,
     WorkItemComponent,
     WorkItemListComponent,

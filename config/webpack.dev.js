@@ -27,55 +27,57 @@ const METADATA = webpackMerge(commonConfig.metadata, {
   PUBLIC_PATH: PUBLIC_PATH
 });
 
-module.exports = webpackMerge(commonConfig, {
-  devtool: 'source-map',
+module.exports = function (options) {
+  return webpackMerge(commonConfig, {
+    devtool: 'source-map',
 
-  entry: {
-    'polyfills': './src/polyfills.ts',
-    'vendor': './src/vendor.ts',
-    'app': './src/main.ts'
-  },
+    entry: {
+      'polyfills': './src/polyfills.ts',
+      'vendor': './src/vendor.ts',
+      'app': './src/main.ts'
+    },
 
-  output: {
-    path: helpers.root('dist'),
-    publicPath: METADATA.PUBLIC_PATH,
-    filename: '[name].js',
-    chunkFilename: '[id].chunk.js',
-    sourceMapFilename: '[name].map'
-  },
+    output: {
+      path: helpers.root('dist'),
+      publicPath: METADATA.PUBLIC_PATH,
+      filename: '[name].js',
+      chunkFilename: '[id].chunk.js',
+      sourceMapFilename: '[name].map'
+    },
 
-  plugins: [
-    new DashboardPlugin(),
-    extractCSS,
-    extractSASS,
+    plugins: [
+      new DashboardPlugin(),
+      extractCSS,
+      extractSASS,
 
-    new webpack.optimize.CommonsChunkPlugin({
-      name: ['app', 'vendor', 'polyfills']
-    }),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: ['app', 'vendor', 'polyfills']
+      }),
 
-    /**
-     * Plugin: DefinePlugin
-     * Description: Define free variables.
-     * Useful for having development builds with debug logging or adding global constants.
-     *
-     * Environment helpers
-     *
-     * See: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
-     */
-    // NOTE: when adding more properties, make sure you include them in custom-typings.d.ts
-    new webpack.DefinePlugin({
-      'process.env': {
-        'ENV': JSON.stringify(METADATA.ENV),
-        'API_URL' : JSON.stringify(METADATA.API_URL),
-        'FORGE_URL' : JSON.stringify(METADATA.FORGE_URL),
-        'PUBLIC_PATH' : JSON.stringify(METADATA.PUBLIC_PATH)
-      }
-    })
-  ],
+      /**
+       * Plugin: DefinePlugin
+       * Description: Define free variables.
+       * Useful for having development builds with debug logging or adding global constants.
+       *
+       * Environment helpers
+       *
+       * See: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
+       */
+      // NOTE: when adding more properties, make sure you include them in custom-typings.d.ts
+      new webpack.DefinePlugin({
+        'process.env': {
+          'ENV': JSON.stringify(METADATA.ENV),
+          'API_URL': JSON.stringify(METADATA.API_URL),
+          'FORGE_URL': JSON.stringify(METADATA.FORGE_URL),
+          'PUBLIC_PATH': JSON.stringify(METADATA.PUBLIC_PATH)
+        }
+      })
+    ],
 
-  devServer: {
-    historyApiFallback: true,
-    stats: 'minimal',
-    inline: true
-  }
-});
+    devServer: {
+      historyApiFallback: true,
+      stats: 'minimal',
+      inline: true
+    }
+  });
+}

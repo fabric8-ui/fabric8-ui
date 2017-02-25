@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { Request, RequestOptions, RequestOptionsArgs } from '@angular/http';
 import { Response, ResponseOptions, ResponseOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 import { Logger } from 'ngx-login-client';
 import { MockDataService } from './mock-data.service';
@@ -165,7 +166,7 @@ export class MockHttp extends Http {
       }
       this.logger.log('GET request at ' + path.path + ' url= ' + url.toString() + ' params=' + path.params.toString());
       if (path.extraPath) {
-        this.logger.log ('GET request with extraPath at ' + path.extraPath + ' url= '+ url.toString() + ' params=' + path.params.toString());
+        this.logger.log ('GET request with extraPath at ' + path.extraPath + ' url= ' + url.toString() + ' params=' + path.params.toString());
       }
       // add new paths here
       switch (path.path) {
