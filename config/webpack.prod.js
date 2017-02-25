@@ -46,8 +46,8 @@ module.exports = webpackMerge(commonConfig, {
   output: {
     path: helpers.root('dist'),
     publicPath: METADATA.PUBLIC_PATH,
-    filename: 'bundles/ngx-widgets.js',
-    library: 'ngx-widgets',
+    filename: 'bundles/fabric8-planner.js',
+    library: 'fabric8-planner',
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
