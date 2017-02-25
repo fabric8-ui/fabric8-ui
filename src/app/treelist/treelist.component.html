@@ -1,11 +1,13 @@
-<Tree #tree
+<Tree #tree class="tree-list"
       [nodes]="nodes"
       [focused]="true"
-      [options]="customOptions">
+      [options]="options">
   <template #treeNodeTemplate let-node let-index="index">
-    <template [ngTemplateOutlet]="listTemplate" [ngOutletContext]="{ item: node, index: index }"></template>
+    <template [ngTemplateOutlet]="listTemplate" [ngOutletContext]="{ node: node, index: index }"></template>
   </template>
-  <template #loadingTemplate>Loading, please hold....</template>
+  <template #loadingTemplate let-node let-index="index">
+    <template [ngTemplateOutlet]="loadTemplate" [ngOutletContext]="{ node: node, index: index }"></template>
+  </template>
   <template #treeNodeFullTemplate
             let-node="node"
             let-index="index"
@@ -23,7 +25,7 @@
       <TreeNodeDropSlot *ngIf="index === 0" [dropIndex]="index" [node]="node.parent"></TreeNodeDropSlot>
 
       <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
-        <TreeNodeExpander [node]="node" *ngIf="!hideExpander"></TreeNodeExpander>
+        <TreeNodeExpander [node]="node" *ngIf="showExpander"></TreeNodeExpander>
         <div class="node-content-wrapper"
              (click)="node.mouseAction('click', $event)"
              (dblclick)="node.mouseAction('dblClick', $event)"

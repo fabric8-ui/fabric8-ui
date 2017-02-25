@@ -1,15 +1,13 @@
 import {
   Component,
   Input,
+  OnInit,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 
 import {
-  TreeNode,
-  TREE_ACTIONS,
-  IActionMapping,
   TreeComponent
 } from 'angular2-tree-component';
 
@@ -21,41 +19,19 @@ import {
   template: require('./treelist.component.html')
 })
 
-export class TreeListComponent {
-  @Input() nodes: any[] = null;
-  @Input() hideExpander: boolean;
+export class TreeListComponent implements OnInit {
   @Input() listTemplate: TemplateRef<any>;
+  @Input() loadTemplate: TemplateRef<any>;
+  @Input() nodes: any[] = null;
   @Input() options: any;
+  @Input() showExpander: boolean = true;
 
   @ViewChild(TreeComponent) tree: TreeComponent;
-  @ViewChild('treeNodeTemplate') listItemTemplate: TemplateRef<any>;
-
-  // Default key actions
-  actionMapping: IActionMapping = {
-    mouse: {
-      dblClick: (tree, node, $event) => {
-        if (node.hasChildren) TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
-      },
-      click: (tree, node, $event) => {
-        TREE_ACTIONS.TOGGLE_SELECTED(tree, node, $event);
-      }
-    }
-  };
-
-  // Defaults
-  defaultOptions = {
-    actionMapping: this.actionMapping,
-    nodeClass: (node: TreeNode) => {
-      return 'tree-list';
-    }
-  };
-  customOptions = this.defaultOptions;
 
   constructor() {
-    // Override default options
-    setTimeout(() => {
-      Object.assign(this.customOptions, this.options);
-    }, 1);
+  }
+
+  ngOnInit(): void {
   }
 
   // Helper function to update tree when moving items

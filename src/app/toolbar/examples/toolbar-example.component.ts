@@ -2,8 +2,7 @@ import {
   Component,
   OnInit,
   TemplateRef,
-  ViewChild,
-  ViewEncapsulation
+  ViewChild
 } from '@angular/core';
 
 import { Router } from '@angular/router';
@@ -22,7 +21,6 @@ import { View } from "../view";
 import { ViewsConfig } from "../views-config";
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
   host: {
     'class':"app-component flex-container in-column-direction flex-grow-1"
   },

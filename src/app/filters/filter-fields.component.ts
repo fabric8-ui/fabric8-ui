@@ -19,7 +19,7 @@ import * as _ from 'lodash';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-filter-fields',
-  styles: [ require('./filter-fields.component.scss') ],
+  styles: [ require('./filter-fields.component.css').toString() ],
   template: require('./filter-fields.component.html')
 })
 export class FilterFieldsComponent implements OnInit {
@@ -75,7 +75,7 @@ export class FilterFieldsComponent implements OnInit {
 
   // Field functions
 
-  onValueKeyPress(keyEvent: any): void {
+  onValueKeyPress(keyEvent: KeyboardEvent): void {
     if (keyEvent.which === 13) {
       this.onAdd.emit({
         field: this.currentField,

@@ -18,7 +18,7 @@ import * as _ from 'lodash';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-filter-results',
-  styles: [ require('./filter-results.component.scss') ],
+  styles: [ require('./filter-results.component.css').toString() ],
   template: require('./filter-results.component.html')
 })
 export class FilterResultsComponent implements OnInit {

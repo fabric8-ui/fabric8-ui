@@ -35,6 +35,7 @@ export { SortModule } from './src/app/sort/sort.module';
 
 // TreeList
 export { TreeListComponent } from './src/app/treelist/treelist.component';
+export { TreeListItemComponent } from './src/app/treelist/treelist-item.component';
 export { TreeListModule } from './src/app/treelist/treelist.module';
 
 // Toolbar

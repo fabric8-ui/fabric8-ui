@@ -1,7 +1,6 @@
 import {
   Component,
-  OnInit,
-  ViewEncapsulation
+  OnInit
 } from '@angular/core';
 
 import { Router } from '@angular/router';
@@ -11,7 +10,6 @@ import { SortField } from "../sort-field";
 import { SortEvent } from "../sort-event";
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
   host: {
     'class':"app-component flex-container in-column-direction flex-grow-1"
   },

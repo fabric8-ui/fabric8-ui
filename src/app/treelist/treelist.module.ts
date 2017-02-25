@@ -6,10 +6,11 @@ import { HttpModule } from '@angular/http';
 import { TreeModule } from 'angular2-tree-component';
 
 import { TreeListComponent } from './treelist.component';
+import { TreeListItemComponent } from './treelist-item.component';
 
 @NgModule({
   declarations: [
-    TreeListComponent
+    TreeListComponent, TreeListItemComponent
   ],
   imports: [
     BrowserModule,
@@ -18,6 +19,6 @@ import { TreeListComponent } from './treelist.component';
     HttpModule,
     TreeModule
   ],
-  exports: [ TreeListComponent ]
+  exports: [ TreeListComponent, TreeListItemComponent ]
 })
 export class TreeListModule { }

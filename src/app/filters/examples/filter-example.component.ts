@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  ViewEncapsulation
 } from '@angular/core';
 
 import { Router } from '@angular/router';
@@ -12,7 +11,6 @@ import { FilterField } from "../filter-field";
 import { FilterEvent } from "../filter-event";
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
   host: {
     'class':"app-component flex-container in-column-direction flex-grow-1"
   },

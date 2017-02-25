@@ -1,22 +1,25 @@
-@import "../../assets/stylesheets/_custom";
+@import "../../assets/stylesheets/_base";
 
 .tree-list {
-  .node-content-wrapper {
-    display: inherit;
-    padding: 0;
-    border-radius: inherit;
-    transition: none;
-  }
-  
+/*
   .node-drop-slot {
     height: 4px;
   }
   .node-drop-slot.is-dragging-over {
     height: 60px;
   }
+*/
 
-  .toggle-children-wrapper {
-    padding: 0px;
+  .node-content-wrapper {
+    display: inherit;
+    padding: 0;
+    border-radius: inherit;
+    transition: none;
+  }
+
+  .node-wrapper {
+    display: block;
+    align-items: inherit;
   }
 
   // Toggle up
@@ -24,11 +27,9 @@
     background-image: none;
     background-position: inherit;
     background-repeat: inherit;
-    display: block;
     font-family: "FontAwesome";
     font-size: inherit;
     height: inherit;
-    padding-right: 10px;
     position: inherit;
     top: inherit;
     vertical-align: middle;
@@ -51,26 +52,12 @@
     }
   }
 
-  // Toggle indentation -- row highlighting should occupy entire width
-  .tree-children {
-    padding-left: 0;
-    .toggle-children {
-      padding-left: 20px;
-    }
-    .tree-children {
-      .toggle-children {
-        padding-left: 40px;
-      }
-      .tree-children {
-        .toggle-children {
-          padding-left: 60px;
-        }
-        .tree-children {
-          .toggle-children {
-            padding-left: 80px;
-          }
-        }
-      }
-    }
+  .tree {
+    display: block;
+  }
+
+  .tree-node-active > .node-wrapper > .node-content-wrapper,
+  .tree-node-focused > .node-content-wrapper, .node-content-wrapper:hover {
+    box-shadow: none;
   }
 }

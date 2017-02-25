@@ -5,6 +5,7 @@ import { FilterExampleComponent } from './filters/examples/filter-example.compon
 import { HomeComponent } from './home/home.component';
 import { SortExampleComponent } from './sort/examples/sort-example.component';
 import { ToolbarExampleComponent } from './toolbar/examples/toolbar-example.component';
+import { TreeListExampleComponent } from './treelist/examples/treelist-example.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
     path: 'toolbar',
     component: ToolbarExampleComponent
   },
+  {
+    path: 'treelist',
+    component: TreeListExampleComponent
+  }
 ];
 
 @NgModule({

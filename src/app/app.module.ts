@@ -14,6 +14,7 @@ import { FilterExampleModule } from './filters/examples/filter-example.module';
 import { HomeModule } from './home/home.module';
 import { SortExampleModule } from './sort/examples/sort-example.module';
 import { ToolbarExampleModule } from './toolbar/examples/toolbar-example.module';
+import { TreeListExampleModule } from './treelist/examples/treelist-example.module';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { ToolbarExampleModule } from './toolbar/examples/toolbar-example.module'
     HomeModule,
     HttpModule,
     SortExampleModule,
-    ToolbarExampleModule
+    ToolbarExampleModule,
+    TreeListExampleModule
   ],
   declarations: [
     AppComponent

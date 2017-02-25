@@ -10,8 +10,15 @@ import { ToolbarExampleComponent } from './toolbar-example.component';
 import { ToolbarExampleRoutingModule } from './toolbar-example-routing.module';
 
 @NgModule({
-  imports: [ CommonModule, DropdownModule, HttpModule, FiltersModule, ToolbarExampleRoutingModule, ToolbarModule ],
-  declarations: [ ToolbarExampleComponent ]
+  declarations: [ ToolbarExampleComponent ],
+  imports: [
+    CommonModule,
+    DropdownModule,
+    HttpModule,
+    FiltersModule,
+    ToolbarExampleRoutingModule,
+    ToolbarModule
+  ]
 })
 export class ToolbarExampleModule {
   constructor(http: Http) {}
