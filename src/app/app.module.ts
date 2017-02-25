@@ -5,9 +5,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
-import { DropdownModule } from 'ng2-dropdown';
+import { DropdownModule } from 'ngx-dropdown';
 import { TabsModule } from 'ng2-bootstrap/components/tabs';
-import { ModalModule } from 'ng2-modal';
+import { ModalModule } from 'ngx-modal';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 import {
   AuthenticationService,

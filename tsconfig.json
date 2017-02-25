@@ -18,11 +18,9 @@
     "rootDir": ".",
     "outDir": "dist",
     "paths": {
-      "@angular/core": ["node_modules/@angular/core"],
       "@angular/common": ["node_modules/@angular/common"],
       "@angular/forms": ["node_modules/@angular/forms"],
-      "rxjs/*": ["node_modules/rxjs/*"],
-      "moment": ["node_modules/moment"]
+      "rxjs/*": ["node_modules/rxjs/*"]
     },
     "lib": [
       "es2015",

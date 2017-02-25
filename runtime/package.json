@@ -60,8 +60,8 @@
     "ng2-bootstrap": "1.1.16",
     "ng2-completer": "0.3.1",
     "ng2-dnd": "2.0.1",
-    "ng2-dropdown": "0.0.15",
-    "ng2-modal": "0.0.22",
+    "ngx-dropdown": "0.0.22",
+    "ngx-modal": "0.0.29",
     "ng2bln-count-pipe": "1.1.0",
     "obsidian-generator-frontend": "0.0.7",
     "patternfly": "3.8.1"

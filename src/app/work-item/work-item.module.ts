@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { TreeModule } from 'angular2-tree-component';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 import { DndModule } from 'ng2-dnd';
-import { ModalModule } from 'ng2-modal';
-import { DropdownModule } from 'ng2-dropdown';
+import { ModalModule } from 'ngx-modal';
+import { DropdownModule } from 'ngx-dropdown';
 import {
   AlmArrayFilter,
   AlmIconModule,

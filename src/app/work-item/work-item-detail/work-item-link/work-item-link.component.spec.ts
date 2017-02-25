@@ -14,7 +14,7 @@
 // import { By }                  from '@angular/platform-browser';
 // import { RouterTestingModule } from '@angular/router/testing';
 // import { CommonModule }        from '@angular/common';
-// import { DropdownModule }     from 'ng2-dropdown';
+// import { DropdownModule }     from 'ngx-dropdown';
 // import { Ng2CompleterModule } from 'ng2-completer';
 
 // import {

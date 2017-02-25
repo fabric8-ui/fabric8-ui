@@ -11,9 +11,9 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home';
 
 // ng2 dependencies
-import { DropdownModule } from 'ng2-dropdown';
+import { DropdownModule } from 'ngx-dropdown';
 import { TabsModule } from 'ng2-bootstrap/components/tabs';
-import { ModalModule } from 'ng2-modal';
+import { ModalModule } from 'ngx-modal';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 
 // shared components
