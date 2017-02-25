@@ -42,7 +42,10 @@ module.exports = function (env) {
     entry: helpers.root('index.ts'),
 
     // require those dependencies but don't bundle them
-    externals: [/^\@angular\//, /^rxjs\//],
+    externals: [
+      /^\@angular\//,
+      /^rxjs\//
+    ],
 
     output: {
       path: helpers.root('dist'),
