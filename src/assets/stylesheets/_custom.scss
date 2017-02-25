@@ -1,7 +1,5 @@
-@import "../vendor/patternfly/stylesheets/patternfly/variables";
-@import "../vendor/patternfly/stylesheets/bootstrap/variables";
-@import "custom-variables";
-@import "custom-mixins";
+@import 'custom-variables';
+@import 'custom-mixins';
 
 body {
     font-family: Open Sans;
@@ -39,4 +37,4 @@ body {
   .containerPadd-nologin{ padding-bottom: 0; }
 }
 
-@import "layout";
+@import 'layout';

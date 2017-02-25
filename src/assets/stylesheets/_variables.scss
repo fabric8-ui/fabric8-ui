@@ -1,5 +1,4 @@
-$font-path: '/assets/vendor/patternfly/fonts/patternfly';
-$fa-font-path: $font-path + '/';
-$img-path: '/assets/vendor/patternfly/images/';
-$icon-font-path: $font-path;
-
+$font-path: '~patternfly-sass/assets/fonts/patternfly/';
+$img-path: '~patternfly-sass/assets/images/patternfly/';
+$fa-font-path: '~font-awesome/fonts/';
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';

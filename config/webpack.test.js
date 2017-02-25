@@ -21,8 +21,27 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
 const FABRIC8_WIT_API_URL = process.env.FABRIC8_WIT_API_URL;
 const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL || 'http://api-bayesian.dev.rdu2c.fabric8.io/api/v1/';
-const extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
-const extractSASS = new ExtractTextPlugin('stylesheets/[name].scss');
+
+const sassModules = [
+  {
+    name: 'bootstrap'
+  }, {
+    name: 'font-awesome',
+    module: 'font-awesome',
+    path: 'font-awesome',
+    sass: 'scss'
+  }, {
+    name: 'patternfly'
+  }
+];
+
+sassModules.forEach(val => {
+  val.module = val.module || val.name + '-sass';
+  val.path = val.path || path.join(val.module, 'assets');
+  val.modulePath = val.modulePath || path.join('node_modules', val.path);
+  val.sass = val.sass || path.join('stylesheets');
+  val.sassPath = path.join(helpers.root(), val.modulePath, val.sass);
+});
 
 /**
  * Webpack configuration
@@ -144,41 +163,67 @@ module.exports = function (options) {
           exclude: [helpers.root('src/index.html')]
         },
 
-        /**
-         * Raw loader support for *.css files
+        /*
+         * to string and css loader support for *.css files
          * Returns file content as string
          *
-         * See: https://github.com/webpack/raw-loader
          */
         {
           test: /\.css$/,
-          loaders: ['to-string-loader', 'css-loader']
+          loaders: [
+            { loader: "css-to-string-loader" },
+            {
+              loader: "style-loader"
+            },
+            {
+              loader: "css-loader"
+            },
+          ],
         },
 
         {
           test: /\.scss$/,
-          loaders: ["css-to-string", "css-loader", "sass-loader"]
+          loaders: [
+            {
+              loader: 'css-to-string'
+            }, {
+              loader: 'css-loader'
+            }, {
+              loader: 'sass-loader',
+              query: {
+                includePaths: sassModules.map(val => {
+                  return val.sassPath;
+                })
+              }
+            }
+          ]
         },
-        // {
-        //   test: /\.css$/,
-        //   exclude: helpers.root('src', 'app'),
-        //   loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
-        // },
-        // {
-        //   test: /\.css$/,
-        //   include: helpers.root('src', 'app'),
-        //   loader: 'raw!postcss'
-        // },
-        // {
-        //   test: /\.scss$/,
-        //   exclude: helpers.root('src', 'app'),
-        //   loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!resolve-url!sass?sourceMap')
-        // },
-        // {
-        //   test: /\.scss$/,
-        //   include: helpers.root('src', 'app'),
-        //   loaders: ['exports-loader?module.exports.toString()', 'css', 'postcss', 'sass']
-        // },
+
+        /* File loader for supporting fonts, for example, in CSS files.
+         */
+        {
+          test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
+          loaders: [
+            {
+              loader: "url-loader",
+              query: {
+                limit: 3000,
+                name: 'vendor/fonts/[name].[hash].[ext]'
+              }
+            }
+          ]
+        }, {
+          test: /\.jpg$|\.png$|\.gif$|\.jpeg$/,
+          loaders: [
+            {
+              loader: "url-loader",
+              query: {
+                limit: 3000,
+                name: 'vendor/images/[name].[hash].[ext]'
+              }
+            }
+          ]
+        },
 
         /**
          * Raw loader support for *.html
@@ -240,9 +285,6 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: [
-      extractCSS,
-      extractSASS,
-
       /**
        * Plugin: DefinePlugin
        * Description: Define free variables.

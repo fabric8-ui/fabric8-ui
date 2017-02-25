@@ -5,6 +5,7 @@
 const webpack = require('webpack');
 const helpers = require('./helpers');
 const ngtools = require('@ngtools/webpack');
+var path = require('path');
 
 /*
  * Webpack Plugins
@@ -20,6 +21,29 @@ const HtmlElementsPlugin = require('./html-elements-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+
+const sassModules = [
+  {
+    name: 'bootstrap'
+  }, {
+    name: 'font-awesome',
+    module: 'font-awesome',
+    path: 'font-awesome',
+    sass: 'scss'
+  }, {
+    name: 'patternfly'
+  }
+];
+
+sassModules.forEach(val => {
+  val.module = val.module || val.name + '-sass';
+  val.path = val.path || path.join(val.module, 'assets');
+  val.modulePath = val.modulePath || path.join('node_modules', val.path);
+  val.sass = val.sass || path.join('stylesheets');
+  val.sassPath = path.join(helpers.root(), val.modulePath, val.sass);
+});
+
+
 
 /*
  * Webpack Constants
@@ -45,7 +69,7 @@ module.exports = function (options) {
   // const devtool = aotMode ? 'source-map' : 'eval-source-map';
   // const srcPath = path.join(__dirname, 'demo', 'src');
   var config = {
-  // return {
+    // return {
 
     /*
      * Cache generated modules and chunks to improve performance for multiple incremental builds.
@@ -109,11 +133,11 @@ module.exports = function (options) {
           loaders: aotMode ? [
             '@ngtools/webpack'
           ] : [
-            '@angularclass/hmr-loader?pretty=' + !isProd + '&prod=' + isProd,
-            'awesome-typescript-loader',
-            'angular2-template-loader',
-            'angular2-router-loader'
-          ],
+              '@angularclass/hmr-loader?pretty=' + !isProd + '&prod=' + isProd,
+              'awesome-typescript-loader',
+              'angular2-template-loader',
+              'angular2-router-loader'
+            ],
           // loaders: '@ngtools/webpack',
           exclude: [/\.(spec|e2e)\.ts$/]
         },
@@ -146,44 +170,59 @@ module.exports = function (options) {
          */
         {
           test: /\.css$/,
-          loaders: ['to-string-loader', 'css-loader']
+          loaders: [
+            { loader: "css-to-string-loader" },
+            {
+              loader: "style-loader"
+            },
+            {
+              loader: "css-loader"
+            },
+          ],
         },
 
         {
           test: /\.scss$/,
-          loaders: ["css-to-string", "css-loader", "sass-loader"]
+          loaders: [
+            {
+              loader: 'css-to-string'
+            }, {
+              loader: 'css-loader'
+            }, {
+              loader: 'sass-loader',
+              query: {
+                includePaths: sassModules.map(val => {
+                  return val.sassPath;
+                })
+              }
+            }
+          ]
         },
-        // old way
-/*
-        {
-          test: /\.css$/,
-          exclude: helpers.root('src', 'app'),
-          loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
-        },
-        {
-          test: /\.css$/,
-          include: helpers.root('src', 'app'),
-          loader: 'raw!postcss'
-        },
-        {
-          test: /\.scss$/,
-          exclude: helpers.root('src', 'app'),
-          loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!resolve-url!sass?sourceMap')
-        },
-        {
-          test: /\.scss$/,
-          include: helpers.root('src', 'app'),
-          loaders: ['exports-loader?module.exports.toString()', 'css', 'postcss', 'sass']
-        },
-*/
 
-
-
-        /* File loader for supporting images, for example, in CSS files.
+        /* File loader for supporting fonts, for example, in CSS files.
          */
         {
-          test: /\.(jpg|png|gif)$/,
-          loader: 'file'
+          test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
+          loaders: [
+            {
+              loader: "url-loader",
+              query: {
+                limit: 3000,
+                name: 'vendor/fonts/[name].[hash].[ext]'
+              }
+            }
+          ]
+        }, {
+          test: /\.jpg$|\.png$|\.gif$|\.jpeg$/,
+          loaders: [
+            {
+              loader: "url-loader",
+              query: {
+                limit: 3000,
+                name: 'vendor/images/[name].[hash].[ext]'
+              }
+            }
+          ]
         },
         {
           test: /manifest.json$/,
