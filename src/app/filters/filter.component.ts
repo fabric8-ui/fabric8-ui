@@ -46,7 +46,7 @@ export class FilterComponent implements OnInit {
   }
 
   setupConfig(): void {
-    this.prevConfig = Object.assign({}, this.config);
+    this.prevConfig = _.cloneDeep(this.config);
 
     if (this.config && this.config.appliedFilters === undefined) {
       this.config.appliedFilters = [];

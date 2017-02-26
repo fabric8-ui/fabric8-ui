@@ -3,12 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { FilterExampleComponent } from './filter-example.component';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: FilterExampleComponent
-  }
-];
+const routes: Routes = [{
+  path: '',
+  component: FilterExampleComponent
+}];
 
 @NgModule({
   imports: [ RouterModule.forChild(routes) ],

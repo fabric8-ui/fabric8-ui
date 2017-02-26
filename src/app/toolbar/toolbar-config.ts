@@ -1,7 +1,7 @@
-import { ActionsConfig } from './actions-config';
+import { ActionsConfig } from '../config/actions-config';
 import { FilterConfig } from '../filters/filter-config';
 import { SortConfig } from '../sort/sort-config';
-import { ViewsConfig } from './views-config';
+import { ViewsConfig } from '../config/views-config';
 
 /*
  * A toolbar config containing:

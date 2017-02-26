@@ -2,13 +2,14 @@ import {
   Component,
   OnInit,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { Router } from '@angular/router';
 
-import { Action } from '../action';
-import { ActionsConfig } from '../actions-config';
+import { Action } from '../../config/action';
+import { ActionsConfig } from '../../config/actions-config';
 import { Filter } from '../../filters/filter';
 import { FilterConfig } from '../../filters/filter-config';
 import { FilterField } from '../../filters/filter-field';
@@ -17,15 +18,14 @@ import { SortConfig } from "../../sort/sort-config";
 import { SortField } from "../../sort/sort-field";
 import { SortEvent } from "../../sort/sort-event";
 import { ToolbarConfig } from "../toolbar-config";
-import { View } from "../view";
-import { ViewsConfig } from "../views-config";
+import { View } from '../../config/view';
+import { ViewsConfig } from '../../config/views-config';
 
 @Component({
-  host: {
-    'class':"app-component flex-container in-column-direction flex-grow-1"
-  },
+  encapsulation: ViewEncapsulation.None,
+  host: {'class': 'app app-component flex-container in-column-direction flex-grow-1'},
   selector: 'toolbar-example',
-  styles: [ require('./toolbar-example.component.scss') ],
+  styles: [ require('./toolbar-example.component.css') ],
   template: require('./toolbar-example.component.html')
 })
 export class ToolbarExampleComponent implements OnInit {
@@ -200,8 +200,7 @@ export class ToolbarExampleComponent implements OnInit {
           name: 'Grouped Action 2',
           title: 'Do something similar'
         }
-      ],
-      actionsInclude: true
+      ]
     } as ActionsConfig;
 
     this.viewsConfig = {

@@ -43,7 +43,7 @@ export class SortComponent implements OnInit {
   }
 
   setupConfig(): void {
-    this.prevConfig = Object.assign({}, this.config);
+    this.prevConfig = _.cloneDeep(this.config);
 
     if (this.config && this.config.fields === undefined) {
       this.config.fields = [];

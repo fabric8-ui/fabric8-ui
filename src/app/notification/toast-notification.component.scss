@@ -1,0 +1,11 @@
+@import '../../assets/stylesheets/_base';
+
+.toast-pf-action > a {
+  cursor: pointer;
+}
+
+.toast-pf {
+  .dropdown-menu > li > a {
+    cursor: pointer;
+  }
+}

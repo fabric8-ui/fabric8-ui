@@ -17,6 +17,12 @@ export { AlmEditableModule } from './src/app/editable/almeditable.module';
 export { AlmIconModule } from './src/app/icon/almicon.module';
 export { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
 
+// Config
+export { Action } from './src/app/config/action';
+export { ActionsConfig } from './src/app/config/actions-config';
+export { View } from './src/app/config/view';
+export { ViewsConfig } from './src/app/config/views-config';
+
 // Filter
 export { Filter } from './src/app/filters/filter';
 export { FilterComponent } from './src/app/filters/filter.component';
@@ -25,6 +31,9 @@ export { FilterEvent } from './src/app/filters/filter-event';
 export { FilterField } from './src/app/filters/filter-field';
 export { FilterFieldsComponent } from './src/app/filters/filter-fields.component';
 export { FilterResultsComponent } from './src/app/filters/filter-results.component';
+
+// Notification
+export { ToastNotificationComponent } from './src/app/notification/toast-notification.component';
 
 // Sort
 export { SortComponent } from './src/app/sort/sort.component';
@@ -39,9 +48,5 @@ export { TreeListItemComponent } from './src/app/treelist/treelist-item.componen
 export { TreeListModule } from './src/app/treelist/treelist.module';
 
 // Toolbar
-export { Action } from './src/app/toolbar/action';
-export { ActionsConfig } from './src/app/toolbar/actions-config';
 export { ToolbarComponent } from './src/app/toolbar/toolbar.component';
 export { ToolbarModule } from './src/app/toolbar/toolbar.module';
-export { View } from './src/app/toolbar/view';
-export { ViewsConfig } from './src/app/toolbar/views-config';

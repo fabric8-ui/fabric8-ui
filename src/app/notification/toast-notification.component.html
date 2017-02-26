@@ -1,0 +1,39 @@
+<div class="toast-pf alert alert-{{config.type}}" ng-class="{'alert-dismissable': config.showCloseButton}"
+     (mouseenter)="handleEnter($event)" (mouseleave)="handleLeave($event)">
+  <div dropdown class="pull-right dropdown-kebab-pf"
+       *ngIf="config.actionsConfig.moreActions && config.actionsConfig.moreActions.length > 0">
+    <button dropdownToggle class="btn btn-link" type="button" id="dropdownKebabRight">
+      <span class="fa fa-ellipsis-v"></span>
+    </button>
+    <ul dropdownMenu class="dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+      <li *ngFor="let action of config.actionsConfig.moreActions"
+          [attr.role]="action.isSeparator === true ? 'separator' : 'menuitem'"
+          [ngClass]="{'divider': action.isSeparator === true, 'disabled': action.isDisabled === true}">
+        <a ng-if="action.isSeparator !== true"
+           class="secondary-action"
+           title="{{action.title}}"
+           (click)="handleAction(action)">
+          {{action.name}}
+        </a>
+      </li>
+    </ul>
+  </div>
+  <button *ngIf="showCloseButton" type="button" class="close" aria-hidden="true" (click)="handleClose($event)">
+    <span class="pficon pficon-close"></span>
+  </button>
+  <div class="pull-right toast-pf-action"
+       [ngClass]="{'padding-right-15': showCloseButton == true}"
+       *ngIf="config.actionsConfig && config.actionsConfig.primaryActions">
+    <a (click)="handleAction(config.actionsConfig.primaryActions[0])">{{config.actionsConfig.primaryActions[0].title}}</a>
+  </div>
+  <span class="pficon pficon-ok" *ngIf="config.type === 'success'"></span>
+  <span class="pficon pficon-info" *ngIf="config.type === 'info'"></span>
+  <span class="pficon pficon-error-circle-o" *ngIf="config.type === 'danger'"></span>
+  <span class="pficon pficon-warning-triangle-o" *ngIf="config.type === 'warning'"></span>
+  <span *ngIf="config.header">
+    <strong>{{config.header}}</strong> {{config.message}}
+  </span>
+  <span *ngIf="!config.header">
+    {{config.message}}
+  </span>
+</div>

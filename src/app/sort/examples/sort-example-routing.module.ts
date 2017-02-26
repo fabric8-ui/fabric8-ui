@@ -3,12 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SortExampleComponent } from './sort-example.component';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: SortExampleComponent
-  }
-];
+const routes: Routes = [{
+  path: '',
+  component: SortExampleComponent
+}];
 
 @NgModule({
   imports: [ RouterModule.forChild(routes) ],

@@ -2,7 +2,8 @@ import {
   Component,
   OnInit,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 
 import {
@@ -29,12 +30,11 @@ const actionMapping: IActionMapping = {
 };
 
 @Component({
-  host: {
-    'class':"app-component flex-container in-column-direction flex-grow-1"
-  },
+  encapsulation: ViewEncapsulation.None,
+  host: {'class': 'app app-component flex-container in-column-direction flex-grow-1'},
   selector: 'treelist-example',
-  templateUrl: './treelist-example.component.html',
-  styleUrls: ['./treelist-example.component.scss']
+  styles: [ require('./treelist-example.component.css') ],
+  template: require('./treelist-example.component.html')
 })
 export class TreeListExampleComponent implements OnInit {
   @ViewChild('treeListItemTemplate') treeListItemTemplate: TemplateRef<any>;

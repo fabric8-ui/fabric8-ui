@@ -8,12 +8,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { Action } from './action';
+import { Action } from '../config/action';
 import { Filter } from '../filters/filter';
 import { FilterEvent } from '../filters/filter-event';
 import { SortEvent } from '../sort/sort-event';
 import { ToolbarConfig } from './toolbar-config';
-import { View } from './view';
+import { View } from '../config/view';
 
 import * as _ from 'lodash';
 
@@ -23,8 +23,8 @@ import * as _ from 'lodash';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-toolbar',
-  styleUrls: ['./toolbar.component.scss'],
-  templateUrl: './toolbar.component.html'
+  styles: [ require('./toolbar.component.css').toString() ],
+  template: require('./toolbar.component.html')
 })
 export class ToolbarComponent implements OnInit {
   @Input() config: ToolbarConfig;
@@ -54,7 +54,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   setupConfig(): void {
-    this.prevConfig = Object.assign({}, this.config);
+    this.prevConfig = _.cloneDeep(this.config);
 
     if (this.config && this.config.filterConfig
         && this.config.filterConfig.appliedFilters === undefined) {
@@ -132,6 +132,10 @@ export class ToolbarComponent implements OnInit {
 
   isViewSelected(view: View): boolean {
     return this.config.viewsConfig && (this.config.viewsConfig.currentView.id === view.id);
+  }
+
+  submit($event: any): void {
+    $event.preventDefault();
   }
 
   viewSelected (view: View): void {
