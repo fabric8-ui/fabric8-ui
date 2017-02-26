@@ -5,6 +5,11 @@ import 'reflect-metadata';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { decorateModuleRef } from './app/environment';
 import { bootloader } from '@angularclass/hmr';
+
+// Offline plugin
+
+import { install as offlinePluginInstall } from 'offline-plugin/runtime';
+
 /*
  * App Module
  * our top level module that holds all of our components
@@ -21,6 +26,9 @@ export function main(): Promise<any> {
     .catch(err => console.error(err));
 }
 
+offlinePluginInstall();
+
 // needed for hmr
 // in prod this is replace for document ready
 bootloader(main);
+
