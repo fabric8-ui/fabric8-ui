@@ -64,6 +64,7 @@ import { WorkItemRoutingModule }                      from './work-item-routing.
     UserService,
     UsersResolve
   ],
+  bootstrap: [ WorkItemComponent ],
   exports: [
     WorkItemComponent
   ]
