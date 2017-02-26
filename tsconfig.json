@@ -3,6 +3,7 @@
     "target": "es5",
     "module": "es2015",
     "moduleResolution": "node",
+    "declaration": true,
     "stripInternal": true,
     "skipLibCheck": true,
     "emitDecoratorMetadata": true,
@@ -39,15 +40,6 @@
     "skipTemplateCodegen": true,
     "genDir": "./ngfactory"
   },
-  "exclude": [
-      "node_modules",
-      "**/*.d.ts",
-      "src-library/**/*",
-      "dist-library/**/*",
-      "runtime/**/*",
-      "services/**/*",
-      "**/*.spec.ts"
-  ],
   "compileOnSave": false,
   "buildOnSave": false,
   "atom": { "rewriteTsconfig": false }
