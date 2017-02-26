@@ -6,17 +6,17 @@ import './rxjs-extensions';
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
-import { DropdownModule } from 'ngx-dropdown';
 import { LocalStorageModule } from 'angular-2-local-storage';
-
+import { PlannerModule } from 'fabric8-planner';
+import { DropdownModule } from 'ngx-dropdown';
 import { AuthenticationService, Broadcaster, Logger, UserService} from 'ngx-login-client';
 import { WidgetsModule } from 'ngx-widgets';
 
-import { ReactiveFormsModule } from '@angular/forms';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -84,6 +84,7 @@ export type StoreType = {
     StackDetailsModule,
     ReactiveFormsModule,
     WidgetsModule,
+    PlannerModule,
     // AppRoutingModule must appear last
     AppRoutingModule
   ],

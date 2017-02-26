@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { LocalStorageService } from 'angular-2-local-storage';
+import { WorkItemComponent } from 'fabric8-planner';
 
 @Component({
   selector: 'alm-backlog',
