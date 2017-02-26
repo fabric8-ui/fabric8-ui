@@ -203,7 +203,8 @@ module.exports = function (env) {
         compress: {
           screw_ie8: true
         }, //prod
-        comments: false //prod
+        comments: false, //prod
+        sourceMap: true
       }),
 
       /**
@@ -247,6 +248,7 @@ module.exports = function (env) {
        */
       new LoaderOptionsPlugin({
         debug: false,
+        minimize: true,
         options: {
 
           /**
