@@ -210,7 +210,7 @@ module.exports = function (options) {
               loader: "url-loader",
               query: {
                 limit: 3000,
-                name: 'assets/fonts/[name].[hash].[ext]'
+                name: 'assets/fonts/[name].' + (isProd ? '[hash]' : '') + '[ext]'
               }
             }
           ]
@@ -221,7 +221,7 @@ module.exports = function (options) {
               loader: "url-loader",
               query: {
                 limit: 3000,
-                name: 'assets/images/[name].[hash].[ext]'
+                name: 'assets/images/[name].' + (isProd ? '[hash]' : '') + '[ext]'
               }
             }
           ]
