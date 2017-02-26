@@ -12,7 +12,7 @@ import { HttpModule } from '@angular/http';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
 import { LocalStorageModule } from 'angular-2-local-storage';
-import { PlannerModule } from 'fabric8-planner';
+// import { PlannerModule } from 'fabric8-planner';
 import { DropdownModule } from 'ngx-dropdown';
 import { AuthenticationService, Broadcaster, Logger, UserService} from 'ngx-login-client';
 import { WidgetsModule } from 'ngx-widgets';
@@ -84,7 +84,7 @@ export type StoreType = {
     StackDetailsModule,
     ReactiveFormsModule,
     WidgetsModule,
-    PlannerModule,
+    // PlannerModule,
     // AppRoutingModule must appear last
     AppRoutingModule
   ],
