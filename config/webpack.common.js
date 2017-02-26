@@ -208,7 +208,7 @@ module.exports = function (options) {
               loader: "url-loader",
               query: {
                 limit: 3000,
-                name: 'vendor/fonts/[name].[hash].[ext]'
+                name: 'assets/fonts/[name].[hash].[ext]'
               }
             }
           ]
@@ -219,7 +219,7 @@ module.exports = function (options) {
               loader: "url-loader",
               query: {
                 limit: 3000,
-                name: 'vendor/images/[name].[hash].[ext]'
+                name: 'assets/images/[name].[hash].[ext]'
               }
             }
           ]
@@ -293,12 +293,11 @@ module.exports = function (options) {
        *
        * See: https://www.npmjs.com/package/copy-webpack-plugin
        */
-      new CopyWebpackPlugin([{
-        from: 'src/assets',
-        to: 'assets'
-      }, {
-        from: 'src/meta'
-      }]),
+      new CopyWebpackPlugin([
+        {
+          from: 'src/meta'
+        }
+      ]),
 
 
       /*
