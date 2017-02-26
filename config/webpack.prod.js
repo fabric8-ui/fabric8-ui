@@ -11,6 +11,7 @@ const commonConfig = require('./webpack.common.js'); // the settings that are co
  */
 const DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
@@ -169,6 +170,14 @@ module.exports = function (env) {
           'BUILD_NUMBER': JSON.stringify(METADATA.BUILD_NUMBER),
           'BUILD_TIMESTAMP': JSON.stringify(METADATA.BUILD_TIMESTAMP)
         }
+      }),
+
+      /*
+       * Generate FavIcons from the master svg in all formats
+       */
+      new FaviconsWebpackPlugin({
+        logo: './src/assets/icon/fabric8_icon.svg',
+        prefix: '/assets/icons-[hash]/'
       }),
 
       /**
