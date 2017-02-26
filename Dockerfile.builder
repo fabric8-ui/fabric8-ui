@@ -22,7 +22,7 @@ RUN set -ex \
 #ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_VERSION 6.9.2
 
-RUN yum install -y wget bzip2 git java-1.8.0-openjdk nmap-ncat psmisc \
+RUN yum install -y bzip2 git fontconfig \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
   && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
@@ -30,7 +30,6 @@ RUN yum install -y wget bzip2 git java-1.8.0-openjdk nmap-ncat psmisc \
   && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
   && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
-  && yum remove -y wget \
   && yum clean all
 
 ENV ALMIGHTY_USER_NAME=almighty
@@ -39,11 +38,14 @@ RUN useradd --user-group --create-home --shell /bin/false ${ALMIGHTY_USER_NAME}
 
 ENV HOME=/home/${ALMIGHTY_USER_NAME}
 
-COPY . $HOME
-RUN chown -R ${ALMIGHTY_USER_NAME}:${ALMIGHTY_USER_NAME} $HOME/*
+ENV WORKSPACE=$HOME/ngx-fabric8-wit
+RUN mkdir $WORKSPACE
 
-USER ${ALMIGHTY_USER_NAME}
-WORKDIR $HOME/
+COPY . $WORKSPACE
+RUN chown -R ${FABRIC8_USER_NAME}:${FABRIC8_USER_NAME} $HOME/*
+
+USER ${FABRIC8_USER_NAME}
+WORKDIR $WORKSPACE/
 
 VOLUME /dist
 

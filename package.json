@@ -1,6 +1,6 @@
 {
   "name": "fabric8-planner",
-  "version": "0.1.2",
+  "version": "0.0.0-development",
   "description": "A planner front-end for Fabric8.",
   "main": "bundles/fabric8-planner.umd.js",
   "module": "index.js",
@@ -14,6 +14,7 @@
     "clean-dist": "rimraf dist",
     "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist bundles",
     "cleanup": "rimraf dist/package.json dist/bundles dist/src dist/index.d.ts dist/index.metadata.json dist/index.js dist/index.js.map dist/LICENSE dist/README.md",
+    "commitmsg": "validate-commit-msg",
     "copy-files": "copyfiles LICENSE README.md package.json dist && copyfiles src/**/*.css dist && copyfiles src/**/*.html dist",
     "copy-dist-files": "copyfiles LICENSE README.md package.json index.js dist",
     "docker:run": "webpack-dev-server --inline --progress --port 8080",
@@ -29,6 +30,7 @@
     "rimraf": "rimraf",
     "setup": "npm install && npm run validate",
     "sass-lint": "sass-lint -c .sass-lint.yml 'src/**/*.scss' -v -q",
+    "semantic-release": "semantic-release pre && npm run build && cp -r .git dist && npm publish dist/ && semantic-release post",
     "start": "webpack-dev-server --inline --progress --host 0.0.0.0 --port 8088",
     "start-dev": "webpack-dashboard -t almighty -- webpack-dev-server --inline --progress --host 0.0.0.0 --port 8088",
     "stats": "webpack --profile --json > stats.json",
@@ -157,6 +159,7 @@
     "copyfiles": "1.2.0",
     "core-js": "2.4.1",
     "cpy-cli": "1.0.1",
+    "cz-conventional-changelog": "^2.0.0",
     "css-loader": "0.26.2",
     "css-to-string-loader": "0.1.2",
     "del": "2.2.2",
@@ -232,6 +235,7 @@
     "sass-loader": "4.1.1",
     "sasslint-webpack-plugin": "1.0.4",
     "script-ext-html-webpack-plugin": "1.7.1",
+    "semantic-release": "^6.3.2",
     "source-map-loader": "0.1.6",
     "string-replace-loader": "1.0.5",
     "style-loader": "0.13.2",
@@ -245,6 +249,7 @@
     "typescript": "2.1.6",
     "uglify-js": "2.7.5",
     "url-loader": "0.5.8",
+    "validate-commit-msg": "^2.11.1",
     "webpack": "2.2.1",
     "webpack-bundle-analyzer": "2.3.0",
     "webpack-dashboard": "0.3.0",
@@ -254,5 +259,16 @@
     "webpack-md5-hash": "0.0.5",
     "webpack-merge": "3.0.0",
     "webpack-validator": "2.3.0"
+  },
+  "release": {
+    "branch": "master",
+    "verifyConditions": {
+      "path": "./node_modules/@krux/condition-jenkins"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
