@@ -171,9 +171,8 @@ module.exports = function (options) {
         {
           test: /\.css$/,
           loaders: [
-            { loader: "css-to-string-loader" },
             {
-              loader: "style-loader"
+              loader: "css-to-string-loader"
             },
             {
               loader: "css-loader"
@@ -185,9 +184,12 @@ module.exports = function (options) {
           test: /\.scss$/,
           loaders: [
             {
-              loader: 'css-to-string'
+              loader: 'css-to-string-loader'
             }, {
-              loader: 'css-loader'
+              loader: 'css-loader',
+              query: {
+                minimize: isProd
+              }
             }, {
               loader: 'sass-loader',
               query: {
