@@ -18,7 +18,10 @@ module.exports = function (config) {
     frameworks: ['jasmine'],
 
     // list of files to exclude
-    exclude: [ ],
+    exclude: [],
+
+    // Don't fail on empty testsuite
+    failOnEmptyTestSuite: false,
 
     /*
      * list of files / patterns to load in the browser
