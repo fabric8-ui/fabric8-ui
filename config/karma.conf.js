@@ -2,8 +2,8 @@
  * @author: @AngularClass
  */
 
-module.exports = function(config) {
-  var testWebpackConfig = require('./webpack.test.js')({env: 'test'});
+module.exports = function (config) {
+  var testWebpackConfig = require('./webpack.test.js')({ env: 'test' });
 
   var configuration = {
 
@@ -50,7 +50,7 @@ module.exports = function(config) {
     },
 
     // Webpack please don't spam the console when running in karma!
-    webpackMiddleware: { stats: 'errors-only'},
+    webpackMiddleware: { stats: 'errors-only' },
 
     /*
      * test results reporter to use
@@ -58,7 +58,7 @@ module.exports = function(config) {
      * possible values: 'dots', 'progress'
      * available reporters: https://npmjs.org/browse/keyword/karma-reporter
      */
-    reporters: [ 'mocha', 'coverage', 'remap-coverage' ],
+    reporters: ['mocha', 'coverage', 'remap-coverage'],
 
     // web server port
     port: 9876,
@@ -79,18 +79,18 @@ module.exports = function(config) {
      * start these browsers
      * available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
      */
-/*
-    browsers: [
-      'Chrome'
-    ],
+    /*
+        browsers: [
+          'Chrome'
+        ],
 
-    customLaunchers: {
-      ChromeTravisCi: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    },
-*/
+        customLaunchers: {
+          ChromeTravisCi: {
+            base: 'Chrome',
+            flags: ['--no-sandbox']
+          }
+        },
+    */
     browsers: ['PhantomJS_custom'],
     customLaunchers: {
       'PhantomJS_custom': {
@@ -118,7 +118,7 @@ module.exports = function(config) {
     singleRun: true
   };
 
-  if (process.env.TRAVIS){
+  if (process.env.TRAVIS) {
     configuration.browsers = [
       'ChromeTravisCi'
     ];
