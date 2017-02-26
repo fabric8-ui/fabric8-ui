@@ -12,14 +12,27 @@ var path = require('path');
  */
 // problem with copy-webpack-plugin
 const AssetsPlugin = require('assets-webpack-plugin');
+const autoprefixer = require('autoprefixer');
+const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
-const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const DefinePlugin = require('webpack/lib/DefinePlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
+const ngcWebpack = require('ngc-webpack');
+const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
+const OptimizeJsPlugin = require('optimize-js-plugin');
+const ProvidePlugin = require('webpack/lib/ProvidePlugin');
+const sassLintPlugin = require('sasslint-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+
+const precss = require('precss');
+
 
 const sassModules = [
   {
@@ -48,6 +61,7 @@ sassModules.forEach(val => {
  * Webpack Constants
  */
 const HMR = helpers.hasProcessFlag('hot');
+const AOT = helpers.hasNpmFlag('aot');
 const METADATA = {
   title: 'Fabric8',
   baseUrl: '/',
@@ -118,7 +132,7 @@ module.exports = function (options) {
      */
     module: {
 
-      loaders: [
+      rules: [
 
         /*
          * Typescript loader support for .ts and Angular 2 async routes via .async.ts
@@ -175,8 +189,8 @@ module.exports = function (options) {
             },
             {
               loader: "css-loader"
-            },
-          ],
+            }
+          ]
         },
 
         {
@@ -259,7 +273,7 @@ module.exports = function (options) {
        *
        * See: https://github.com/s-panferov/awesome-typescript-loader#forkchecker-boolean-defaultfalse
        */
-      new ForkCheckerPlugin(),
+      new CheckerPlugin(),
 
       /*
        * Plugin: CommonsChunkPlugin
