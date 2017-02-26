@@ -3,6 +3,7 @@ import { Response } from '@angular/http';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from 'ngx-login-client';
+import { ArrayCount } from 'ngx-widgets';
 
 import { WorkItem } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';

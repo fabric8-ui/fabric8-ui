@@ -6,7 +6,7 @@
         <section class="flex-container in-column-direction board-lane-column">
          <div class="lane-header">
             <span class="dib">{{lane.option}}</span>
-            <span class="issueCount dib" >{{workItems | almFilterBoardList:lane.option | count}}</span>
+            <span class="issueCount dib" >{{workItems | almFilterBoardList:lane.option | arrayCount}}</span>
           </div>
 
           <div class="boardlaneWrapper">
