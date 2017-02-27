@@ -237,6 +237,8 @@ export class MockHttp extends Http {
         });
       } else if (path.path === '/render') {
         return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getRedneredText(JSON.parse(body).data) });
+      } else if (path.path === '/login/refresh') {
+        return this.createResponse(url.toString(), 200, 'ok', { token: { access_token: 'someaccesstoken', refresh_token: 'someaccesstoken' }} );
       } else {
         return this.createResponse(url.toString(), 500, 'POST to unknown resource: ' + path.path, {});
       }
