@@ -1,7 +1,7 @@
 = Fabric8 Planner
 
-[![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-planner-build-master)](https://ci.centos.org/view/Devtools/job/devtools-fabric8-planner-build-master/)
-[![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-planner-npm-publish-build-master)](https://ci.centos.org/view/Devtools/job/devtools-fabric8-planner-npm-publish-build-master/)
+image:https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-planner-build-master[Jenkins,link="https://ci.centos.org/view/Devtools/job/devtools-fabric8-planner-build-master/lastBuild/"]
+image:https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-planner-npm-publish-build-master[Jenkins,link="https://ci.centos.org/view/Devtools/job/devtools-fabric8-planner-npm-publish-build-master/lastBuild/"]
 image:https://codecov.io/gh/almighty/almighty-ui/branch/master/graph/badge.svg[Codecov.io,link="https://codecov.io/gh/almighty/almighty-ui"]
 
 === Fabric8 Planner is a currently an application planner and issue tracker front-end.
