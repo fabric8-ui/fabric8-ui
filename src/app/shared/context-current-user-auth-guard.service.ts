@@ -1,3 +1,5 @@
+import { DummyService } from './dummy.service';
+import { Context } from './../models/context';
 import { LoginService } from './login.service';
 import { AuthGuard } from './../shared/auth-guard.service';
 import { AuthenticationService, Logger } from 'ngx-login-client';
@@ -16,20 +18,25 @@ export class ContextCurrentUserAuthGuard
   extends AuthGuard
   implements CanActivate, CanActivateChild {
 
+    private _context: Context;
+
   constructor(
     context: ContextService,
     auth: AuthenticationService,
     router: Router,
     logger: Logger,
-    login: LoginService
+    login: LoginService,
+    private dummy: DummyService
   ) {
     super(context, auth, router, logger, login);
+    context.current.subscribe(val => this._context = val);
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (!super.canActivate(route, state)) {
       return false;
-    } else if (this.context.current.entity !== this.context.currentUser) {
+    // TODO Get the current user properly
+    } else if (this._context.entity !== this.dummy.currentUser) {
       this.logger.log('You cannot access another users settings');
       this.router.navigate(['/home']);
       return false;

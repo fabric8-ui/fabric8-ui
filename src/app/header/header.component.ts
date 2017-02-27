@@ -1,3 +1,4 @@
+import { Navigation } from './../models/navigation';
 import { MenuItem } from './../models/menu-item';
 import { ProfileService } from './../profile/profile.service';
 import { Component, OnInit } from '@angular/core';
@@ -33,6 +34,9 @@ export class HeaderComponent implements OnInit {
     ]
   ]);
 
+  context: Context;
+  recent: Context[];
+
   constructor(
     public router: Router,
     private userService: UserService,
@@ -40,7 +44,7 @@ export class HeaderComponent implements OnInit {
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     public dummy: DummyService,
-    public context: ContextService,
+    contextService: ContextService,
     public profile: ProfileService
   ) {
     router.events.subscribe((val) => {
@@ -48,6 +52,16 @@ export class HeaderComponent implements OnInit {
         this.onNavigate(val.url);
       }
     });
+    contextService.current.subscribe(val => {
+      this.context = val;
+      this.setActiveMenus(val);
+      this.setHiddenMenus(val);
+    });
+    contextService.recent.subscribe(val => this.recent = val);
+  }
+
+  ngOnInit(): void {
+    this.listenToEvents();
   }
 
   get loggedInUser(): User {
@@ -67,17 +81,9 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['login']);
   }
 
-  ngOnInit(): void {
-    this.listenToEvents();
-  }
-
   onNavigate(url: string): void {
     this.getLoggedUser();
-    this.broadcaster.broadcast('navigate', {url: url});
-    if (this.context.current) {
-      this.setActiveMenus(this.context.current);
-      this.setHiddenMenus(this.context.current);
-    }
+    this.broadcaster.broadcast('navigate', { url: url } as Navigation);
   }
 
   onImgLoad() {

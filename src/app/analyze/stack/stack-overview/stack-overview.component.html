@@ -1,6 +1,6 @@
-<div id="stack" class="container content">
+<div id="stack" class="container content" *ngIf="space">
   <h1>Stack Reports</h1>
-  <div class="row" *ngIf="context.current.space?.stacks">
+  <div class="row">
     <div class="row">
       <div>
         <div>
@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="panel-group">
-        <div class="panel" *ngFor="let stack of context.current.space.stacks">
+        <div class="panel" *ngFor="let stack of space?.stacks">
           <div class="row panel-heading" (click)="collapsed.set(stack, !collapsed.get(stack))">
             <div>
               <h4 class="col-sm-12 panel-title">

@@ -1,3 +1,4 @@
+import { Context } from './../../models/context';
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
 
@@ -12,8 +13,11 @@ import { DummyService } from './../../shared/dummy.service';
 })
 export class OverviewComponent implements OnInit {
 
+  context: Context;
+
   constructor(
-    private router: Router, public dummy: DummyService, public context: ContextService) {
+    private router: Router, public dummy: DummyService, contextService: ContextService) {
+      contextService.current.subscribe(val => this.context = val);
   }
 
   ngOnInit() {

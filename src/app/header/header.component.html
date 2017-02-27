@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-pf" role="navigation" *ngIf="loggedIn && context.current && profile.sufficient">
+<nav class="navbar navbar-inverse navbar-pf" role="navigation" *ngIf="loggedIn && profile.sufficient">
   <div class="navbar-header">
     <ul class="nav navbar-nav navbar-right hidden-sm hidden-md hidden-lg ">
       <li *ngIf="!loggedIn">
@@ -47,18 +47,18 @@
       <li class="context dropdown" dropdown>
         <a dropdown-open>
           <div *ngIf="loggedInUser" id="header_dropdownToggle">
-            <span *ngIf="context.current.type" class="nav-item-icon">
-              <span class="nav-icon {{context.current.type.icon}}"></span>
+            <span class="nav-item-icon">
+              <span class="nav-icon {{context?.type.icon}}"></span>
             </span>
-            <span class="nav-item-text">{{context.current.name}}</span>
+            <span class="nav-item-text">{{context.name}}</span>
             <span class="nav-item-icon">
               <span class="nav-icon caret"></span>
             </span>
           </div>
         </a>
         <ul class="dropdown-menu">
-          <li *ngFor="let m of context.recent">
-            <a [routerLink]="[m.path]" *ngIf="m.path !== null && m != context.current">
+          <li *ngFor="let m of recent">
+            <a [routerLink]="[m.path]" *ngIf="m.path !== null && m.path != context.path">
               <span class="nav-item-icon">
                 <span class="nav-icon {{m.type.icon}}"></span>
               </span>
@@ -101,7 +101,7 @@
           </li>
         </ul>
       </li>
-      <li *ngFor="let m of context.current.type.menus" [class.active]="m.active" [class.with-no-children]="(m.menus||[]).length===0">
+      <li *ngFor="let m of context?.type.menus" [class.active]="m.active" [class.with-no-children]="(m.menus||[]).length===0">
         <a [routerLink]="[m.fullPath]" *ngIf="!m.hide">
           <span *ngIf="m.icon" class="nav-item-icon">
             <span  class="nav-icon {{m.icon}}"></span>

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Space } from 'ngx-fabric8-wit';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Broadcaster } from 'ngx-login-client';
@@ -10,20 +11,18 @@ import { ContextService } from '../../shared/context.service';
   templateUrl: 'analyze-overview.component.html',
   styleUrls: ['./analyze-overview.component.scss']
 })
-export class AnalyzeOverviewComponent implements OnInit {
+export class AnalyzeOverviewComponent {
 
   imgLoaded: Boolean = false;
 
+  space: Space;
 
   constructor(
     private router: Router,
-    public context: ContextService,
+    context: ContextService,
     private broadcaster: Broadcaster
   ) {
-  }
-
-  ngOnInit() {
-
+    context.current.subscribe(val => this.space = val.space);
   }
 
   onImgLoad() {

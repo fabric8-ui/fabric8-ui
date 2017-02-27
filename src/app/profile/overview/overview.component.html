@@ -1,18 +1,18 @@
-<div id="overview" class="container content" *ngIf="context.current">
+<div id="overview" class="container content">
   <div class="row">
     <div class="col-md-2">
       <div class="row">
-        <img src="{{context.current.entity.attributes.imageURL}}" width="150" height="250" />
+        <img src="{{context?.entity?.attributes?.imageURL}}" width="150" height="250" />
       </div>
       <div class="row">
-        <h2>{{context.current.entity.attributes.fullName}}</h2>
+        <h2>{{context?.entity?.attributes?.fullName}}</h2>
       </div>
       <div class="row">
         <p>
-          {{context.current.entity.attributes.username}}
+          {{context?.entity?.attributes?.username}}
         </p>
         <p>
-          {{context.current.entity.attributes.bio}}
+          {{context?.entity?.attributes?.bio}}
         </p>
       </div>
     </div>

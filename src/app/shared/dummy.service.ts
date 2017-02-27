@@ -400,6 +400,10 @@ export class DummyService {
     return this._recentContexts;
   }
 
+  set recent(recent: Context[]) {
+    this._recentContexts = recent;
+  }
+
   get processTemplates(): ProcessTemplate[] {
     return this.PROCESS_TEMPLATES;
   }

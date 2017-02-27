@@ -198,7 +198,7 @@ export class StackDetailsComponent implements OnInit {
       let baseUrl: string = 'http://demo.almighty.io/work-item/list/detail/' + data.data.id;
       this.openModal({
         header: 'Response for Work item',
-        subject: `Successfully created a work item. 
+        subject: `Successfully created a work item.
                   You can see it here! <a target="_blank" href=" ${baseUrl} ">Link</a>`
       });
     });

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Broadcaster, User } from 'ngx-login-client';
-import { Team } from 'ngx-fabric8-wit';
+import { Team, Space } from 'ngx-fabric8-wit';
 
 import { DummyService } from './../shared/dummy.service';
 import { ContextService } from './../shared/context.service';
@@ -12,9 +12,10 @@ import { ContextService } from './../shared/context.service';
   templateUrl: './team-membership-dialog.component.html',
   styleUrls: ['./team-membership-dialog.component.scss']
 })
-export class TeamMembershipDialogComponent {
+export class TeamMembershipDialogComponent implements OnInit{
 
   public searchString: string;
+  public space: Space;
 
   constructor(
     public dummy: DummyService,
@@ -23,8 +24,12 @@ export class TeamMembershipDialogComponent {
 
   ) { }
 
+  ngOnInit() {
+    this.context.current.subscribe(val => this.space = val.space);
+  }
+
   get team(): Team {
-    return this.context.current.space.defaultTeam;
+    return this.space ? this.space.defaultTeam : null;
   }
 
   remove(remove: User) {
