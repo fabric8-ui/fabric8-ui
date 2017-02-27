@@ -11,7 +11,7 @@ import {
   Logger
 } from 'ngx-login-client';
 
-import { SpaceService, Space } from './../shared/mock-spaces.service';
+import { SpaceService, Space } from '../shared/mock-spaces.service';
 import { IterationModel } from '../models/iteration.model';
 import { MockHttp } from '../shared/mock-http';
 
@@ -25,7 +25,7 @@ export class IterationService {
       private logger: Logger,
       private http: Http,
       private auth: AuthenticationService,
-      private spaceService: SpaceService) {
+      private spaceService: SpaceService,
       private globalSettings: GlobalSettings
   ) {
     let testMode: boolean;
@@ -74,7 +74,7 @@ export class IterationService {
               console.log('Fetch iteration API returned some error - ', error.message);
               return Promise.reject<IterationModel[]>([] as IterationModel[]);
             }
-          })
+          });
       } else {
         this.logger.log('URL not matched');
         return Promise.reject<IterationModel[]>([] as IterationModel[]);
@@ -118,7 +118,7 @@ export class IterationService {
               console.log('Post iteration API returned some error - ', error.message);
               return Promise.reject<IterationModel>({} as IterationModel);
             }
-          })
+          });
       } else {
         this.logger.log('URL not matched');
         return Promise.reject<IterationModel>( {} as IterationModel );

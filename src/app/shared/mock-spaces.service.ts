@@ -31,8 +31,11 @@ export class SpaceService {
     private logger: Logger,
     private globalSettings: GlobalSettings
   ) {
+    let testMode: boolean;
     this.globalSettings.inTestMode$.subscribe(mode => mode = testMode);
     if (testMode) {
+      // Do Nothing now. IF this is no longer needed then please remove it.
+    }
   }
 
   public switchToSpace(newSpace: Space) {
@@ -67,7 +70,9 @@ export class SpaceService {
   }
 
   getAllSpaces(): Promise<Space[]> {
-    if (Globals.inTestMode) {
+    let testMode: boolean;
+    this.globalSettings.inTestMode$.subscribe(mode => mode = testMode);
+    if (testMode) {
       this.logger.log('SpaceService running in ' + process.env.ENV + ' mode.');
       this.spaces = this.createSpacesFromServiceResponse(this.mockDataService.getAllSpaces());
       this.initSpaces();
@@ -138,8 +143,8 @@ export interface Space {
     id: string;
     attributes: SpaceAttributes;
     type: string;
-    iterationsUrl: string
-    spaceBaseUrl: string
+    iterationsUrl: string;
+    spaceBaseUrl: string;
 }
 
 export class ProcessTemplate {

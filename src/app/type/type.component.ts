@@ -1,11 +1,12 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Params, ActivatedRoute } from '@angular/router';
+
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Params, ActivatedRoute } from '@angular/router';
-import { SpaceService, Space } from './../shared/mock-spaces.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Broadcaster } from 'ngx-login-client';
 
-import { Broadcaster } from './../shared/broadcaster.service';
+import { SpaceService, Space } from '../shared/mock-spaces.service';
 
 @Component({
   selector: 'fab-planner-type',
