@@ -1,5 +1,5 @@
 /*
- * An action to display on the toolbar containing:
+ * An action for a button, dropdown, etc:
  *
  * id - Optional unique Id for the filter field, useful for comparisons
  * isDisabled - set to true to disable the action

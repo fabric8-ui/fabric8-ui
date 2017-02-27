@@ -4,14 +4,12 @@ import {
   Input,
   OnInit,
   Output,
-  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
 import { Action } from '../config/action';
-import { NotificationConfig } from './notification-config';
-
-import * as _ from 'lodash';
+import { Notification } from './notification';
+import { NotificationEvent } from './notification-event';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -20,14 +18,18 @@ import * as _ from 'lodash';
   templateUrl: './toast-notification.component.html'
 })
 export class ToastNotificationComponent implements OnInit {
-  @Input() config: NotificationConfig;
+  @Input() data: Notification;
+  @Input() header: string;
+  @Input() message: string;
+  @Input() moreActions: Action[];
+  @Input() primaryAction: Action;
+  @Input() showClose: boolean;
+  @Input() type: string;
 
   @Output('onActionSelect') onActionSelect = new EventEmitter();
   @Output('onCloseSelect') onCloseSelect = new EventEmitter();
-  @Output('onMouseEnter') onMouseEnter = new EventEmitter();
-  @Output('onMouseLeave') onMouseLeave = new EventEmitter();
+  @Output('onViewingChange') onViewingChange = new EventEmitter();
 
-  prevConfig: NotificationConfig;
   showCloseButton: boolean = false;
 
   constructor() {
@@ -36,41 +38,40 @@ export class ToastNotificationComponent implements OnInit {
   // Initialization
 
   ngOnInit(): void {
-    this.setupConfig();
   }
 
   ngDoCheck(): void {
-    // Do a deep compare on config
-    if (!_.isEqual(this.config, this.prevConfig)) {
-      this.setupConfig();
-    }
-  }
-
-  setupConfig(): void {
-    this.prevConfig = _.cloneDeep(this.config);
-
-    this.showCloseButton = (this.config.showClose === true)
-      && (this.config.actionsConfig.moreActions === undefined
-        || this.config.actionsConfig.moreActions.length === 0);
+    this.showCloseButton = (this.showClose === true)
+        && (this.moreActions === undefined
+        || this.moreActions.length === 0);
   }
 
   // Action functions
 
   handleAction(action: Action): void {
     if (action && action.isDisabled !== true) {
-      this.onActionSelect.emit(action);
+      this.onActionSelect.emit({
+        action: action,
+        data: this.data
+      } as NotificationEvent);
     }
   }
 
   handleClose($event: MouseEvent): void {
-    this.onCloseSelect.emit($event);
+    this.onCloseSelect.emit({data: this.data} as NotificationEvent);
   }
 
   handleEnter($event: MouseEvent): void {
-    this.onMouseEnter.emit($event);
+    this.onViewingChange.emit({
+      data: this.data,
+      isViewing: true
+    } as NotificationEvent);
   }
 
   handleLeave($event: MouseEvent): void {
-    this.onMouseLeave.emit($event);
+    this.onViewingChange.emit({
+      data: this.data,
+      isViewing: false
+    } as NotificationEvent);
   }
 }

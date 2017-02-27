@@ -1,0 +1,16 @@
+<div class="toast-notifications-list-pf" *ngIf="notifications && notifications.length > 0">
+  <div *ngFor="let notification of notifications">
+    <alm-toast-notification
+        [data]="notification"
+        [header]="notification.header"
+        [message]="notification.message"
+        [moreActions]="notification.moreActions"
+        [primaryAction]="notification.primaryAction"
+        [showClose]="notification.showClose === true || notification.isPersistent === true"
+        [type]="notification.type"
+        (onActionSelect)="handleAction($event)"
+        (onCloseSelect)="handleClose($event)"
+        (onViewingChange)="handleViewingChange($event)">
+    </alm-toast-notification>
+  </div>
+</div>

@@ -7,7 +7,7 @@ import {
 import { Router } from '@angular/router';
 
 import { Action } from '../../config/action';
-import { NotificationConfig } from "../notification-config";
+import { NotificationEvent } from "../notification-event";
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -18,15 +18,30 @@ import { NotificationConfig } from "../notification-config";
 })
 export class ToastNotificationExampleComponent implements OnInit {
   actionText: string = '';
-  config: NotificationConfig;
+  header: string = 'Default Header.';
+  message: string = 'Default Message.';
   moreActions: Action[];
+  moreActionsDefault: Action[];
+  primaryAction: Action;
+  showClose: false;
   showMoreActions: boolean = false;
+  type: string;
   types: string[];
 
   constructor(private router: Router) {
-    this.types = ['success', 'info', 'danger', 'warning'];
+  }
 
-    this.moreActions = [{
+  ngOnInit(): void {
+    this.types = ['success', 'info', 'danger', 'warning'];
+    this.type = this.types[0];
+
+    this.primaryAction = {
+      id: "action1",
+      name: 'Primary Action',
+      title: ''
+    } as Action;
+
+    this.moreActionsDefault = [{
       id: 'moreActions1',
       name: 'Action',
       title: 'Perform an action'
@@ -55,44 +70,27 @@ export class ToastNotificationExampleComponent implements OnInit {
       name: 'Grouped Action 2',
       title: 'Do something similar'
     }] as Action[];
-
-    this.config = {
-      actionsConfig: {
-        primaryActions: [{
-          id: "action1",
-          name: 'Primary Action',
-          title: ''
-        }]
-      },
-      header: 'Default Header.',
-      message: 'Default Message.',
-      showClose: false,
-      type: 'success'
-    } as NotificationConfig;
-  }
-
-  ngOnInit(): void {
   }
 
   ngDoCheck(): void {
     if (this.showMoreActions === true) {
-      this.config.actionsConfig.moreActions = this.moreActions;
+      this.moreActions = this.moreActionsDefault;
     } else {
-      this.config.actionsConfig.moreActions = undefined;
+      this.moreActions = undefined;
     }
   }
 
   // Action functions
 
-  handleAction($event: Action): void {
-    this.actionText = $event.name + '\n' + this.actionText;
+  handleAction($event: NotificationEvent): void {
+    this.actionText = $event.action.name + '\n' + this.actionText;
   }
 
-  handleClose($event: Action): void {
+  handleClose($event: NotificationEvent): void {
     this.actionText = "Close" + '\n' + this.actionText;
   }
 
   handleType(item: string): void {
-    this.config.type = item;
+    this.type = item;
   }
 }
