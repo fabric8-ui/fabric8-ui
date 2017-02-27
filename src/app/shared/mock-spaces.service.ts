@@ -31,8 +31,7 @@ export class SpaceService {
     private logger: Logger,
     private globalSettings: GlobalSettings
   ) {
-    let testMode: boolean;
-    this.globalSettings.inTestMode$.subscribe(mode => mode = testMode);
+    let testMode: boolean = this.globalSettings.isTestmode();
     if (testMode) {
       // Do Nothing now. IF this is no longer needed then please remove it.
     }
@@ -70,8 +69,7 @@ export class SpaceService {
   }
 
   getAllSpaces(): Promise<Space[]> {
-    let testMode: boolean;
-    this.globalSettings.inTestMode$.subscribe(mode => mode = testMode);
+    let testMode: boolean = this.globalSettings.isTestmode();
     if (testMode) {
       this.logger.log('SpaceService running in ' + process.env.ENV + ' mode.');
       this.spaces = this.createSpacesFromServiceResponse(this.mockDataService.getAllSpaces());
@@ -81,7 +79,7 @@ export class SpaceService {
     } else {
       this.logger.log('SpaceService running in production mode.');
       // TODO:  this is the base URL slightly to be changed
-      let url = process.env.API_URL + 'spaces';    
+      let url = process.env.API_URL + 'spaces';
       let observable = Observable.create((observer: Observer<Space[]>) => {
         this.http.get(url)
         .toPromise()

@@ -2,17 +2,14 @@ import { Observable } from 'rxjs/Observable';
 
 export class GlobalSettings {
 
-  public inTestMode$: Observable<boolean>;
-  private observer: any;
+  private mode: boolean = true;
 
   constructor() {
-    this.inTestMode$ = new Observable<boolean>(observer => this.observer = observer);
+    this.mode = process.env.ENV == 'inmemory';
   }
 
-  public setTestMode(mode: boolean) {
-    if (this.observer) {
-      this.observer.next(mode);
-    }
+  public isTestmode() {
+    return this.mode;
   }
 
 }

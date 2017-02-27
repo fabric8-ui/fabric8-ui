@@ -28,18 +28,6 @@ export class IterationService {
       private spaceService: SpaceService,
       private globalSettings: GlobalSettings
   ) {
-    let testMode: boolean;
-    this.globalSettings.inTestMode$.subscribe(mode => mode = testMode);
-    if (testMode) {
-      this.logger.log('IterationService running in ' + process.env.ENV + ' mode.');
-      this.http = new MockHttp(logger);
-    } else {
-      this.logger.log('IterationService running in production mode.');
-    }
-    this.logger.log('GlobalSettings.inTestMode = ' + testMode);
-    if (this.auth.getToken() != null) {
-      this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
-    }
     // set initial space and subscribe to the space service to recognize space switches
     //this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => this.switchSpace(space));
   }

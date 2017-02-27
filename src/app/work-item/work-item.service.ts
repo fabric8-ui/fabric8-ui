@@ -71,12 +71,6 @@ export class WorkItemService {
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
     }
-    if (process.env.ENV === 'inmemory') {
-      logger.log('WorkItemService running in ' + process.env.ENV + ' mode.');
-      this.http = new MockHttp(logger);
-    } else {
-      logger.log('WorkItemService running in production mode.');
-    }
     // set initial space and subscribe to the space service to recognize space switches
     // this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => this.switchSpace(space));
   }

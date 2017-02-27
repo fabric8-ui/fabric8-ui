@@ -2,7 +2,7 @@ import './rxjs-extensions';
 
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule }    from '@angular/http';
+import { HttpModule, Http }    from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
 import { DropdownModule } from 'ngx-dropdown';
@@ -42,11 +42,16 @@ import { WorkItemModule } from './work-item/work-item.module';
 
 // Mock data
 import { MockDataService } from './shared/mock-data.service';
+import { MockHttp } from './shared/mock-http';
 
 import { ToastNotificationComponent } from './toast-notification/toast-notification.component';
 
 // conditionally import the inmemory resource module
 let serviceImports: Array<any[] | any | ModuleWithProviders>;
+let providers: any[] = [
+  GlobalSettings,
+  serviceImports
+];
 
 // The inmemory environment variable is checked and if present then the in-memory dataset is added.
 if (process.env.ENV == 'inmemory') {
@@ -61,6 +66,14 @@ if (process.env.ENV == 'inmemory') {
     SpaceService,
     authApiUrlProvider
   ];
+  providers = [
+    GlobalSettings,
+    serviceImports,
+    {
+      provide: Http,
+      useClass: MockHttp
+    }
+  ];
 } else {
   serviceImports = [
     Logger,
@@ -72,6 +85,10 @@ if (process.env.ENV == 'inmemory') {
     MockDataService,
     SpaceService,
     authApiUrlProvider
+  ];
+  providers = [
+    GlobalSettings,
+    serviceImports
   ];
 }
 
@@ -95,11 +112,9 @@ if (process.env.ENV == 'inmemory') {
     ToastNotificationComponent,
     WorkItemSearchComponent
   ],
-  providers: [ GlobalSettings, serviceImports ],
+  providers: providers,
   bootstrap: [ AppComponent ]
 })
 export class AppModule {
-  constructor(private globalSettings: GlobalSettings) {
-    this.globalSettings.setTestMode(process.env.ENV == 'inmemory' ? true : false);
-  }
+  constructor(private globalSettings: GlobalSettings) {}
 }
