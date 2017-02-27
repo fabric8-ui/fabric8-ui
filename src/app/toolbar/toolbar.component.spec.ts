@@ -12,8 +12,8 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { DropdownModule } from 'ng2-bootstrap';
 
-import { Action } from './action';
-import { ActionsConfig } from './actions-config';
+import { Action } from '../config/action';
+import { ActionsConfig } from '../config/actions-config';
 import { Filter } from '../filters/filter';
 import { FilterConfig } from '../filters/filter-config';
 import { FilterField } from '../filters/filter-field';
@@ -24,8 +24,8 @@ import { SortConfig } from '../sort/sort-config';
 import { SortEvent } from '../sort/sort-event';
 import { ToolbarComponent } from './toolbar.component';
 import { ToolbarConfig } from './toolbar-config';
-import { View } from './view';
-import { ViewsConfig } from './views-config';
+import { View } from '../config/view';
+import { ViewsConfig } from '../config/views-config';
 
 describe('Filter component - ', () => {
   let comp: ToolbarComponent;

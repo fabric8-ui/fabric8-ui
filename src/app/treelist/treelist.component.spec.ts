@@ -12,11 +12,11 @@ import { FormsModule }  from '@angular/forms';
 import { By }           from '@angular/platform-browser';
 
 import { TreeModule } from 'angular2-tree-component';
-import { TreeListItemComponent } from './treelist-item.component';
+import { TreeListComponent } from './treelist.component';
 
 describe('Treelist component - ', () => {
-  let comp: TreeListItemComponent;
-  let fixture: ComponentFixture<TreeListItemComponent>;
+  let comp: TreeListComponent;
+  let fixture: ComponentFixture<TreeListComponent>;
   let el: DebugElement;
   let fakeUserList: any[];
   let fakeWorkItem: any;
