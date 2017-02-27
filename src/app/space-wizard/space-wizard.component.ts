@@ -1,20 +1,16 @@
+import { Context } from './../models/context';
+import { WizardSteps } from './../shared-component/wizard/wizard-steps';
+import { Wizard } from './../shared-component/wizard/wizard';
+import { ContextService } from './../shared/context.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Broadcaster } from 'ngx-login-client';
-import { Space, SpaceAttributes, SpaceService } from 'ngx-fabric8-wit';
+import { SpaceService, Space, ProcessTemplate, SpaceAttributes } from 'ngx-fabric8-wit';
+import { Broadcaster, User } from 'ngx-login-client';
 
 import { DummyService } from '../shared/dummy.service';
-import { SpaceConfigurator, IWizardSteps, Wizard } from './wizard';
-
-interface IModal {
-  closeOnEscape: boolean;
-  closeOnOutsideClick: boolean;
-  open();
-  close();
-  onOpen();
-  onClose();
-}
+import { SpaceConfigurator } from './wizard';
+import { Modal } from '../shared-component/modal/modal';
 
 @Component({
   host: {
@@ -29,15 +25,19 @@ interface IModal {
 export class SpaceWizardComponent implements OnInit {
 
   configurator: SpaceConfigurator;
-  wizard: Wizard = new Wizard();
-  wizardSteps: IWizardSteps;
-  @Input() host: IModal;
+  wizard: Wizard;
+  wizardSteps: WizardSteps;
+  @Input() host: Modal;
+
+  private _context: Context;
 
   constructor(
     private router: Router,
     public dummy: DummyService,
     private broadcaster: Broadcaster,
-    private spaceService: SpaceService) {
+    private spaceService: SpaceService,
+    context: ContextService) {
+      context.current.subscribe(val => this._context = val);
   }
 
   ngOnInit() {
@@ -47,18 +47,21 @@ export class SpaceWizardComponent implements OnInit {
       forge: { index: 1 },
       quickStart: { index: 2 },
       stack: { index: 3 },
-      pipeline: { index: 4 },
-    };
+      pipeline: { index: 4 }
+    } as WizardSteps;
     this.host.closeOnEscape = true;
     this.host.closeOnOutsideClick = false;
+  }
+
+  next() {
   }
 
   reset() {
     let configurator = new SpaceConfigurator();
     let space = {} as Space;
-    space.name = 'BalloonPopGame';
-    // TODO: Once we have dynamic routing, fix this
-    space.path = '/pmuir/BalloonPopGame';
+    // TODO Move this to SpaceService
+    space.name = '';
+    space.path = '';
     space.attributes = new SpaceAttributes();
     space.attributes.name = space.name;
     space.type = 'spaces';
@@ -67,21 +70,30 @@ export class SpaceWizardComponent implements OnInit {
     space.process = this.dummy.processTemplates[0];
     configurator.space = space;
     this.configurator = configurator;
-
+    this.wizard = new Wizard();
   }
 
   finish() {
-
+    console.log('finish!', this._context);
     let space = this.configurator.space;
     space.description = space.name;
     space.attributes.name = space.name;
-
-    console.log(space);
+    console.log(this._context);
+    if (this._context && this._context.entity) {
+      // TODO Implement space name validation
+      // Support organisations as well
+      space.path =
+        (this._context.entity as User).attributes.username + '/' + this.convertNameToPath(space.name);
+    } else if (this._context) {
+      space.path = this.dummy.currentUser + '/' + this.convertNameToPath(space.name);
+    }
 
     this.spaceService.create(space).then((createdSpace => {
       this.dummy.spaces.push(space);
       this.broadcaster.broadcast('save', 1);
-      this.router.navigate([space.path]);
+      if (space.path) {
+        this.router.navigate([space.path]);
+      }
       this.reset();
     })).catch((err) => {
       // TODO:consistent error handling on failures
@@ -98,7 +110,13 @@ export class SpaceWizardComponent implements OnInit {
   cancel() {
     if (this.host) {
       this.host.close();
+      this.reset();
     }
+  }
+
+  private convertNameToPath(name: string) {
+    // convert to ASCII etc.
+    return name.replace(' ', '-').toLowerCase();
   }
 
 }

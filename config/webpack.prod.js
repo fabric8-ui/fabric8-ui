@@ -20,6 +20,8 @@ const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const ngtools = require('@ngtools/webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const OfflinePlugin = require('offline-plugin');
+
 
 /**
  * Webpack Constants
@@ -291,7 +293,10 @@ module.exports = function (env) {
             customAttrAssign: [/\)?\]?=/]
           }
         }
-      })
+      }),
+
+      // OfflinePlugin always goes last
+      new OfflinePlugin()
     ],
 
     /*
