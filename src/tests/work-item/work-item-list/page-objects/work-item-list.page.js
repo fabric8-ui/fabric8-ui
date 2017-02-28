@@ -32,8 +32,15 @@ class WorkItemListPage {
 
  constructor(login) {
    if(login==true) {
-     browser.get("http://localhost:8088/?token=justarandomtokenfortest");
-     }
+    let url = encodeURIComponent(JSON.stringify({
+      access_token: 'somerandomtoken',
+      expires_in: 1800,
+      refresh_expires_in: 1800,
+      refresh_token: 'somerandomtoken',
+      token_type: "bearer"
+    }));
+    browser.get("http://localhost:8088/?token_json="+url);
+  }
    else {
      browser.get("http://localhost:8088/");
    }
@@ -282,7 +289,7 @@ class WorkItemListPage {
   clickFilterDropdown () {
     return this.filterDropdown.click();
   }
- 
+
   /* Close filters */
   get closeFilters () {
     return  element(by.css(".close-filter"));
@@ -293,7 +300,7 @@ class WorkItemListPage {
 
   /* Workitem filter pulldown */
   get workItemFilterPulldown () {
-    return element(by.css(".dropdown.filter-dropdown")); 
+    return element(by.css(".dropdown.filter-dropdown"));
   }
   clickWorkItemFilterPulldown () {
     return this.workItemFilterPulldown.click();
