@@ -2,13 +2,13 @@
 var gulp = require('gulp'),
     sass = require('gulp-sass'),
     runSequence = require('run-sequence'),
-    minifyCss = require('gulp-minify-css'),
     sourcemaps = require('gulp-sourcemaps'),
     tsc = require('gulp-typescript'),
     embedTemplates = require('gulp-inline-ng2-template'),
     wait = require('gulp-wait'),
     del = require('del'),
     replace = require('gulp-string-replace'),
+    cleanCSS = require('gulp-clean-css'),
     exec = require('child_process').exec;
 
 var appSrc = 'src';
@@ -79,7 +79,7 @@ gulp.task('replace-scss', function() {
 gulp.task('compile-sass', function () {
   return gulp.src(appSrc + '/app/**/*.scss')
     .pipe(sass().on('error', sass.logError)) // this will prevent our future watch-task from crashing on sass-errors
-    .pipe(minifyCss({compatibility: 'ie8'})) // see the gulp-sass doc for more information on compatibility modes
+    .pipe(cleanCSS({compatibility: 'ie8'})) // see the gulp-sass doc for more information on compatibility modes
     .pipe(gulp.dest(function(file) {
       return file.base; // because of Angular 2's encapsulation, it's natural to save the css where the scss-file was
     }));
