@@ -322,7 +322,6 @@ export class MockDataService {
     if (!localIteration.attributes.hasOwnProperty('state') && !localIteration.attributes.state) {
       localIteration.attributes['state'] = 'new';
     }
-    this.iterations.push(localIteration);
     return this.makeCopy(localIteration);
   }
 
