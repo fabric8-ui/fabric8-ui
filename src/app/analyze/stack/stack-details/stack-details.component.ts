@@ -3,8 +3,8 @@ import { FormBuilder } from '@angular/forms';
 
 import { Logger } from 'ngx-login-client';
 import { Observable } from 'rxjs/Observable';
-import { Stack } from 'ngx-fabric8-wit';
 
+import { Stack } from './../../../models/stack';
 import { StackAnalysesService } from '../stack-analyses.service';
 import { StackAnalysesModel } from '../stack-analyses.model';
 import { RenderNextService } from './render-next-service';

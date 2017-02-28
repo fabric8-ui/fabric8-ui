@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Stack, Space } from 'ngx-fabric8-wit';
+import { Space } from 'ngx-fabric8-wit';
 
 import { ContextService } from './../../../shared/context.service';
-
+import { Stack } from './../../../models/stack';
 
 @Component({
   selector: 'alm-stack',
