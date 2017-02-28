@@ -125,7 +125,7 @@ module.exports = function (options) {
        *
        * See: https://webpack.js.org/configuration/resolve/#resolve-modules
        */
-      modules: [helpers.root('src'), 'node_modules']
+      // modules: [ path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')]
 
     },
 
@@ -136,7 +136,7 @@ module.exports = function (options) {
      */
     module: {
 
-      rules: [
+      loaders: [
 
         /*
          * Typescript loader support for .ts and Angular 2 async routes via .async.ts
@@ -177,7 +177,7 @@ module.exports = function (options) {
         {
           test: /\.html$/,
           loader: 'raw-loader',
-          exclude: [helpers.root('src/index.html')]
+          exclude: [path.resolve(__dirname, 'src/index.html')]
         },
 
         /*
@@ -202,12 +202,14 @@ module.exports = function (options) {
           loaders: [
             {
               loader: 'css-to-string-loader'
-            }, {
+            },
+            {
               loader: 'css-loader',
               query: {
                 minimize: isProd
               }
-            }, {
+            },
+            {
               loader: 'sass-loader',
               query: {
                 includePaths: sassModules.map(val => {
@@ -218,34 +220,43 @@ module.exports = function (options) {
           ]
         },
 
-        /* File loader for supporting fonts, for example, in CSS files.
+        /**
+         * Fil e loader for supporting fonts, for example, in CSS files.
          */
         {
           test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
           loaders: [
             {
-              loader: "url-loader",
+              loader: 'url-loader',
               query: {
                 limit: 3000,
-                name: 'assets/fonts/[name].' + (isProd ? '[hash]' : '') + '[ext]'
+                name: path.resolve(__dirname, 'assets/fonts/[name].') + (isProd ? '[hash]' : '') + '[ext]'
               }
             }
           ]
-        }, {
+        },
+        {
           test: /\.jpg$|\.png$|\.gif$|\.jpeg$/,
           loaders: [
             {
-              loader: "url-loader",
+              loader: 'url-loader',
               query: {
                 limit: 3000,
-                name: 'assets/images/[name].' + (isProd ? '[hash]' : '') + '[ext]'
+                name: path.resolve(__dirname, 'assets/images/[name].') + (isProd ? '[hash]' : '') + '[ext]'
               }
             }
           ]
         },
         {
           test: /manifest.json$/,
-          loader: 'file-loader?name=manifest.json!web-app-manifest-loader'
+          loaders: [
+            {
+              loader: 'file-loader'
+            },
+            {
+              loader: 'web-app-manifest-loader'
+            }
+          ]
         }
       ]
     },
@@ -266,7 +277,7 @@ module.exports = function (options) {
        * See: https://github.com/kossnocorp/assets-webpack-plugin
        */
       new AssetsPlugin({
-        path: helpers.root('dist'),
+        path: path.resolve(__dirname, 'dist'),
         filename: 'webpack-assets.json',
         prettyPrint: true
       }),
@@ -301,7 +312,7 @@ module.exports = function (options) {
       new ContextReplacementPlugin(
         // The (\\|\/) piece accounts for path separators in *nix and Windows
         /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
-        helpers.root('src') // location of your src
+        path.resolve(__dirname, 'src') // location of your src
       ),
 
       /*

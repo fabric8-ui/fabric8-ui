@@ -75,13 +75,12 @@ module.exports = function (options) {
        *
        * See: http://webpack.github.io/docs/configuration.html#resolve-extensions
        */
-      extensions: ['', '.ts', '.js'],
+      extensions: ['.ts', '.js'],
 
       /**
        * Make sure root is src
        */
-      //modules: [ path.resolve(__dirname, 'src'), 'node_modules' ]
-      root: helpers.root('src')
+      // modules: [ path.resolve(__dirname, 'src'), 'node_modules' ]
 
     },
 
@@ -92,25 +91,25 @@ module.exports = function (options) {
      */
     module: {
 
-    /**
-     * An array of applied pre and post loaders.
-     *
-     * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
-     */
-    preLoaders: [
-
-        /**
-         * Tslint loader support for *.ts files
-         *
-         * See: https://github.com/wbuchwalter/tslint-loader
-         */
-        {
-          test: /\.ts$/,
-          loader: 'tslint-loader',
-          exclude: [helpers.root('node_modules')]
-        }
-
-      ],
+      /**
+       * An array of applied pre and post loaders.
+       *
+       * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
+       */
+      // preLoaders: [
+      //
+      //   /**
+      //    * Tslint loader support for *.ts files
+      //    *
+      //    * See: https://github.com/wbuchwalter/tslint-loader
+      //    */
+      //   {
+      //     test: /\.ts$/,
+      //     loader: 'tslint-loader',
+      //     exclude: [path.resolve(__dirname, 'node_modules')]
+      //   }
+      //
+      // ],
 
       /**
        * An array of automatically applied loaders.
@@ -133,8 +132,8 @@ module.exports = function (options) {
           loader: 'source-map-loader',
           exclude: [
             // these packages have problems with their sourcemaps
-            helpers.root('node_modules/rxjs'),
-            helpers.root('node_modules/@angular')
+            path.resolve(__dirname, 'node_modules/rxjs'),
+            path.resolve(__dirname, 'node_modules/@angular')
           ]
         },
 
@@ -160,7 +159,7 @@ module.exports = function (options) {
         {
           test: /\.json$/,
           loader: 'json-loader',
-          exclude: [helpers.root('src/index.html')]
+          exclude: [ path.resolve(__dirname, 'src/index.html') ]
         },
 
         /*
@@ -171,24 +170,28 @@ module.exports = function (options) {
         {
           test: /\.css$/,
           loaders: [
-            { loader: "css-to-string-loader" },
+            {
+              loader: "css-to-string-loader"
+            },
             {
               loader: "style-loader"
             },
             {
               loader: "css-loader"
-            },
-          ],
+            }
+          ]
         },
 
         {
           test: /\.scss$/,
           loaders: [
             {
-              loader: 'css-to-string'
-            }, {
+              loader: 'css-to-string-loader'
+            },
+            {
               loader: 'css-loader'
-            }, {
+            },
+            {
               loader: 'sass-loader',
               query: {
                 includePaths: sassModules.map(val => {
@@ -234,7 +237,7 @@ module.exports = function (options) {
         {
           test: /\.html$/,
           loader: 'raw-loader',
-          exclude: [helpers.root('src/index.html')]
+          exclude: [ path.resolve(__dirname, 'src/index.html') ]
         },
 
         // /**
@@ -247,7 +250,7 @@ module.exports = function (options) {
         //   enforce: 'post',
         //   test: /\.(js|ts)$/,
         //   loader: 'istanbul-instrumenter-loader',
-        //   include: helpers.root('src'),
+        //   include: path.resolve(__dirname, 'src'),
         //   exclude: [
         //     /\.(e2e|spec)\.ts$/,
         //     /node_modules/
@@ -262,22 +265,22 @@ module.exports = function (options) {
      *
      * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
      */
-     postLoaders: [
-      /**
-       * Instruments JS files with Istanbul for subsequent code coverage reporting.
-       * Instrument only testing sources.
-       *
-       * See: https://github.com/deepsweet/istanbul-instrumenter-loader
-       */
-      {
-        test: /\.(js|ts)$/, loader: 'istanbul-instrumenter-loader',
-        include: helpers.root('src'),
-        exclude: [
-          /\.(e2e|spec)\.ts$/,
-          /node_modules/
-        ]
-      }
-    ],
+    //  postLoaders: [
+    //   /**
+    //    * Instruments JS files with Istanbul for subsequent code coverage reporting.
+    //    * Instrument only testing sources.
+    //    *
+    //    * See: https://github.com/deepsweet/istanbul-instrumenter-loader
+    //    */
+    //   {
+    //     test: /\.(js|ts)$/, loader: 'istanbul-instrumenter-loader',
+    //     include: path.resolve(__dirname, 'src'),
+    //     exclude: [
+    //       /\.(e2e|spec)\.ts$/,
+    //       /node_modules/
+    //     ]
+    //   }
+    // ],
 
     /**
      * Add additional plugins to the compiler.
@@ -317,7 +320,7 @@ module.exports = function (options) {
       new ContextReplacementPlugin(
         // The (\\|\/) piece accounts for path separators in *nix and Windows
         /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
-        helpers.root('src') // location of your src
+        path.resolve(__dirname, 'src') // location of your src
       ),
 
        /**
