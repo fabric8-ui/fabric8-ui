@@ -6,22 +6,33 @@
        (initItems)='initWiItems($event)'
        (fetchMore)='fetchMoreWiItems()'>
     <alm-tree-list #treeList
+        [listTemplate]="treeListTemplate"
+        [loadTemplate]="treeListLoadTemplate"
         [nodes]="workItems"
-        [hideExpander]="true"
-        [listTemplate]="listItemTemplate"
-        [options]="treeListOptions">
-      <template #template let-item="item" let-index="index">
-        <alm-work-item-list-entry
-          id="{{'workItemList_OuterWrap_' + index}}"
-          class="work-item-list-entry"
-          [workItem]="item.data"
-          [node]="item"
-          (toggleEvent)="onToggle($event)"
-          (selectEvent)="onSelect($event)"
-          (detailEvent)="onDetail($event)"
-          (moveTopEvent)="onMoveToTop($event)"
-          (moveBottomEvent)="onMoveToBottom($event)">
-        </alm-work-item-list-entry>
+        [options]="treeListOptions"
+        [showExpander]="false">
+      <template #treeListLoadTemplate let-node="node" let-index="index">
+        <span>Loading...</span>
+      </template>
+      <template #treeListTemplate let-node="node" let-index="index">
+        <alm-tree-list-item #treeListItem
+            [node]="node"
+            (onSelect)="onSelect($event)"
+            [template]="treeListItemTemplate">
+          <template #treeListItemTemplate>
+            <alm-work-item-list-entry
+                id="{{'workItemList_OuterWrap_' + index}}"
+                class="work-item-list-entry"
+                [listItem]="treeListItem"
+                [workItem]="node.data"
+                (selectEvent)="onSelect($event)"
+                (toggleEvent)="onToggle($event)"
+                (detailEvent)="onDetail($event)"
+                (moveTopEvent)="onMoveToTop($event)"
+                (moveBottomEvent)="onMoveToBottom($event)">
+            </alm-work-item-list-entry>
+          </template>
+        </alm-tree-list-item>
       </template>
     </alm-tree-list>
     <div *ngIf="!workItems || workItems.length === 0">

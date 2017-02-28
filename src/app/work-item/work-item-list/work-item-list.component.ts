@@ -4,6 +4,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Input,
   OnInit,
   ViewChild,
   ViewChildren,
@@ -48,8 +49,12 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
   @ViewChild('activeFiltersDiv') activeFiltersDiv: any;
 
   @ViewChild('listContainer') listContainer: any;
-  @ViewChild('template') listItemTemplate: TemplateRef<any>;
   @ViewChild('treeList') treeList: TreeListComponent;
+  @ViewChild('treeListItemTemplate') treeListItemTemplate: TemplateRef<any>;
+  @ViewChild('treeListLoadTemplate') treeListLoadTemplate: TemplateRef<any>;
+  @ViewChild('treeListTemplate') treeListTemplate: TemplateRef<any>;
+
+  @ViewChild('treeListItem') treeListItem: TreeListComponent;
 
   workItems: WorkItem[] = [];
   prevWorkItemLength: number = 0;

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router }                                         from '@angular/router';
 
 import {
@@ -10,6 +10,8 @@ import { Dialog } from 'ngx-widgets';
 
 import { WorkItem }        from '../../../models/work-item';
 import { WorkItemService } from '../../work-item.service';
+
+import { TreeListItemComponent } from 'ngx-widgets';
 
 /**
  * Work Item List Entry Component - Displays a work item and action elements for it.
@@ -31,14 +33,14 @@ import { WorkItemService } from '../../work-item.service';
  */
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   selector: 'alm-work-item-list-entry',
   templateUrl: './work-item-list-entry.component.html',
   styleUrls: ['./work-item-list-entry.component.scss'],
 })
 export class WorkItemListEntryComponent implements OnInit {
-
+  @Input() listItem: TreeListItemComponent;
   @Input() workItem: WorkItem;
-  @Input() node: any;
 
   @Output() toggleEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() selectEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
@@ -47,7 +49,6 @@ export class WorkItemListEntryComponent implements OnInit {
   @Output() moveBottomEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
 
   checkedWI: boolean = false;
-  selected: boolean = false;
   dialog: Dialog;
   showDialog = false;
   loggedIn: Boolean = false;
@@ -68,15 +69,15 @@ export class WorkItemListEntryComponent implements OnInit {
   }
 
   select(): void {
-    this.selected = true;
+    this.listItem.setSelected(true);
   }
 
   deselect(): void {
-    this.selected = false;
+    this.listItem.setSelected(false);
   }
 
   isSelected(): boolean {
-    return this.selected;
+    return this.listItem.isSelected();
   }
 
   isChecked(): boolean {
@@ -168,7 +169,7 @@ export class WorkItemListEntryComponent implements OnInit {
     });
     this.broadcaster.on<string>('activeWorkItem')
       .subscribe(wiId => {
-        this.selected = this.workItem.id == wiId;
+        (this.workItem.id == wiId) ? this.select() : this.deselect();
     });
   }
 }
