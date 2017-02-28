@@ -7,12 +7,11 @@ import { DndModule } from 'ng2-dnd';
 import { ModalModule } from 'ngx-modal';
 import { DropdownModule } from 'ngx-dropdown';
 import {
-  AlmArrayFilter,
   AlmIconModule,
-  ArrayCount,
   DialogModule,
   InfiniteScrollModule,
-  TreeListModule
+  TreeListModule,
+  WidgetsModule
 } from 'ngx-widgets';
 import { UserService } from 'ngx-login-client';
 
@@ -29,9 +28,13 @@ import { WorkItemListComponent }                      from './work-item-list/wor
 import { WorkItemQuickAddModule }                     from './work-item-quick-add/work-item-quick-add.module';
 import { WorkItemComponent }                          from './work-item.component';
 import { WorkItemRoutingModule }                      from './work-item-routing.module';
+import {SpaceService} from '../shared/mock-spaces.service';
+import {MockDataService} from '../shared/mock-data.service';
+import {GlobalSettings} from '../shared/globals';
 
 @NgModule({
   imports: [
+    WidgetsModule,
     AlmIconModule,
     CommonModule,
     DialogModule,
@@ -49,9 +52,7 @@ import { WorkItemRoutingModule }                      from './work-item-routing.
     TreeListModule
   ],
   declarations: [
-    AlmArrayFilter,
     AlmFilterBoardList,
-    ArrayCount,
     FabPlannerAssociateIterationModalComponent,
     WorkItemComponent,
     WorkItemListComponent,
@@ -62,7 +63,10 @@ import { WorkItemRoutingModule }                      from './work-item-routing.
     AuthUserResolve,
     IterationsResolve,
     UserService,
-    UsersResolve
+    UsersResolve,
+    SpaceService,
+    MockDataService,
+    GlobalSettings
   ],
   bootstrap: [ WorkItemComponent ],
   exports: [

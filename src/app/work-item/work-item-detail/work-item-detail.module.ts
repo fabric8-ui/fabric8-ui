@@ -10,13 +10,9 @@ import { DropdownModule } from 'ngx-dropdown';
 import { AlmUserName } from '../../pipes/alm-user-name.pipe';
 
 import {
-  AlmAvatarSize,
-  AlmLinkTarget,
-  AlmMomentTime,
-  AlmSearchHighlight,
-  AlmTrim,
   AlmEditableModule,
-  AlmIconModule
+  AlmIconModule,
+  WidgetsModule
 } from 'ngx-widgets';
 
 import { WorkItemDetailComponent } from './work-item-detail.component';
@@ -30,6 +26,7 @@ import {
 
 @NgModule({
   imports: [
+    WidgetsModule,
     AlmIconModule,
     AlmEditableModule,
     CommonModule,
@@ -40,11 +37,6 @@ import {
     Ng2CompleterModule
   ],
   declarations: [
-    AlmAvatarSize,
-    AlmLinkTarget,
-    AlmMomentTime,
-    AlmSearchHighlight,
-    AlmTrim,
     AlmUserName,
     WorkItemCommentComponent,
     WorkItemDetailComponent,
