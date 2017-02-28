@@ -38,7 +38,7 @@ docker exec almighty-ui-builder ./run_unit_tests.sh
 
 
 ## Exec functional tests
-docker exec almighty-ui-builder ./run_functional_tests.sh
+# docker exec almighty-ui-builder ./run_functional_tests.sh
 
 ## All ok, build prod version
 docker exec almighty-ui-builder ./upload_to_codecov.sh
