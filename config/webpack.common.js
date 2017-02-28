@@ -82,7 +82,6 @@ module.exports = function (options) {
   // const devtool = aotMode ? 'source-map' : 'eval-source-map';
   // const srcPath = path.join(__dirname, 'demo', 'src');
   var config = {
-    // return {
 
     /*
      * Cache generated modules and chunks to improve performance for multiple incremental builds.
@@ -97,7 +96,7 @@ module.exports = function (options) {
      * The entry point for the bundle
      * Our Angular.js app
      *
-     * See: http://webpack.github.io/docs/configuration.html#entry
+     * See: https://webpack.js.org/configuration/entry-context/#entry
      */
     entry: {
       'polyfills': './src/polyfills.browser.ts',
@@ -109,19 +108,24 @@ module.exports = function (options) {
     /*
      * Options affecting the resolving of modules.
      *
-     * See: http://webpack.github.io/docs/configuration.html#resolve
+     * See: https://webpack.js.org/configuration/resolve
      */
     resolve: {
 
-      /*
-       * An array of extensions that should be used to resolve modules.
+      /**
+       * An array that automatically resolve certain extensions.
+       * Which is what enables users to leave off the extension when importing.
        *
-       * See: http://webpack.github.io/docs/configuration.html#resolve-extensions
+       * See: https://webpack.js.org/configuration/resolve/#resolve-extensions
        */
       extensions: ['.ts', '.js', '.json'],
 
-      // An array of directory names to be resolved to the current directory
-      modulesDirectories: [helpers.root('src'), 'node_modules']
+      /**
+       * Tell webpack what directories should be searched when resolving modules.
+       *
+       * See: https://webpack.js.org/configuration/resolve/#resolve-modules
+       */
+      modules: [helpers.root('src'), 'node_modules']
 
     },
 
