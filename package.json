@@ -179,7 +179,7 @@
     "npm-run-all": "4.0.2",
     "opt-cli": "1.5.1",
     "parse5": "2.2.3",
-    "patternfly-sass": "3.21.0",
+    "patternfly-sass-with-css": "3.21.2",
     "phantomjs-prebuilt": "2.1.14",
     "protractor": "5.1.1",
     "raw-loader": "0.5.1",
