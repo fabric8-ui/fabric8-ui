@@ -20,7 +20,7 @@ import {
 
 import { IterationModel } from '../models/iteration.model';
 import { IterationService } from './iteration.service';
-import {GlobalSettings} from '../shared/globals';
+import { GlobalSettings } from '../shared/globals';
 
 describe ('Iteration service - ', () => {
   let apiService: IterationService;
@@ -101,6 +101,15 @@ describe ('Iteration service - ', () => {
           },
           links: {
             self: 'http://localhost:8080/api/spaces/d7d98b45-415a-4cfc-add2-ec7b7aee7dd5'
+          }
+        },
+        workitems: {
+          links: {
+            related: 'http://localhost:8080/api/spaces/d7d98b45-415a-4cfc-add2-ec7b7aee7dd5/workitems'
+          },
+          meta: {
+            closed: 0,
+            total: 0
           }
         }
       },
