@@ -32,13 +32,13 @@ RUN yum install -y bzip2 fontconfig java-1.8.0-openjdk nmap-ncat psmisc \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
   && yum clean all
 
-ENV ALMIGHTY_USER_NAME=almighty
+ENV FABRIC8_USER_NAME=fabric8
 
-RUN useradd --user-group --create-home --shell /bin/false ${ALMIGHTY_USER_NAME}
+RUN useradd --user-group --create-home --shell /bin/false ${FABRIC8_USER_NAME}
 
-ENV HOME=/home/${ALMIGHTY_USER_NAME}
+ENV HOME=/home/${FABRIC8_USER_NAME}
 
-ENV WORKSPACE=$HOME/ngx-fabric8-wit
+ENV WORKSPACE=$HOME/fabric8-planner
 RUN mkdir $WORKSPACE
 
 COPY . $WORKSPACE

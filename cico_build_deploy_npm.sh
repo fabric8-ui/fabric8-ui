@@ -21,7 +21,7 @@ sed -i '/OPTIONS=.*/c\OPTIONS="--selinux-enabled --log-driver=journald --insecur
 service docker start
 
 docker build -t fabric8-planner-builder -f Dockerfile.builder .
-mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder -e "FABRIC8_WIT_API_URL=http://api.openshift.io/api/" -e JENKINS_URL -e GIT_BRANCH -e "CI=true" -e GH_TOKEN -e NPM_TOKEN -t -v $(pwd)/dist:/dist:Z fabric8-planner-builder
+mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder -e "FABRIC8_WIT_API_URL=http://api.prod-preview.openshift.io/api/" -e JENKINS_URL -e GIT_BRANCH -e "CI=true" -e GH_TOKEN -e NPM_TOKEN -t -v $(pwd)/dist:/dist:Z fabric8-planner-builder
 
 # In order to run semantic-release we need a non detached HEAD, see https://github.com/semantic-release/semantic-release/issues/329
 docker exec fabric8-planner-builder git checkout master

@@ -27,21 +27,21 @@ service docker start
 
 # Build builder image
 cp /tmp/jenkins-env .
-docker build -t almighty-ui-builder -f Dockerfile.builder .
-mkdir -p dist && docker run --detach=true --name=almighty-ui-builder -e "API_URL=http://demo.api.almighty.io/api/" -t -v $(pwd)/dist:/dist:Z almighty-ui-builder
+docker build -t fabric8-planner-builder -f Dockerfile.builder .
+mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder -e "API_URL=http://api.prod-preview.openshift.io/api/" -t -v $(pwd)/dist:/dist:Z fabric8-planner-builder
 
-# Build almighty-ui
-docker exec almighty-ui-builder npm install
+# Build fabric8-planner
+docker exec fabric8-planner-builder npm install
 
 ## Exec unit tests
-docker exec almighty-ui-builder ./run_unit_tests.sh
+docker exec fabric8-planner-builder ./run_unit_tests.sh
 
 
 ## Exec functional tests
-# docker exec almighty-ui-builder ./run_functional_tests.sh
+# docker exec fabric8-planner-builder ./run_functional_tests.sh
 
 ## All ok, build prod version
-docker exec almighty-ui-builder ./upload_to_codecov.sh
-docker exec almighty-ui-builder npm run build:prod
-docker exec -u root almighty-ui-builder cp -r /home/almighty/dist /
+docker exec fabric8-planner-builder ./upload_to_codecov.sh
+docker exec fabric8-planner-builder npm run build:prod
+docker exec -u root fabric8-planner-builder cp -r /home/almighty/dist /
 
