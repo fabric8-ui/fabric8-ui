@@ -12,7 +12,12 @@ export class Comment {
             };
         }
     };
+    links: CommentLink;
     relationalData?: RelationalData;
+}
+
+export class CommentLink {
+    self: string;
 }
 
 export class CommentAttributes {

@@ -14,6 +14,7 @@ export class SpaceMockGenerator {
       return {
         'attributes': {
           'created-at': this.dateTime(n),
+          'description': 'Description ' + n,
           'name': 'Space ' + n,
           'updated-at': this.dateTime(n),
           'version': 0
@@ -26,6 +27,11 @@ export class SpaceMockGenerator {
           'iterations': {
             'links': {
               'related': 'http://mock.service/api/spaces/space-id' + n + '/iterations'
+            }
+          },
+          'areas': {
+            'links': {
+              'related': 'http://mock.service/api/spaces/space-id' + n + '/areas'
             }
           }
         },

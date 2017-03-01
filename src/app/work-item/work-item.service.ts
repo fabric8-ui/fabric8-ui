@@ -1,4 +1,4 @@
-import { Injectable, Component } from '@angular/core';
+import { Injectable, Component, Inject } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
@@ -15,6 +15,7 @@ import {
   UserService
 } from 'ngx-login-client';
 import { SpaceService, Space } from 'ngx-fabric8-wit';
+import { WIT_API_URL } from 'ngx-fabric8-wit';
 
 import {
   Comment,
@@ -68,7 +69,8 @@ export class WorkItemService {
     private spaceService: SpaceService,
     private auth: AuthenticationService,
     private iterationService: IterationService,
-    private userService: UserService) {
+    private userService: UserService,
+    @Inject(WIT_API_URL) private baseApiUrl: string) {
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
     }
@@ -131,7 +133,9 @@ export class WorkItemService {
    */
   getWorkItems(pageSize: number = 20, filters: any[] = []): Promise<WorkItem[]> {
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.workItemUrl = currentSpace.links.self + 'workitems';
+      // FIXME: make the URL great again (when we know the right API URL for this)!
+      this.workItemUrl = this.baseApiUrl + 'workitems';
+      //this.workItemUrl = currentSpace.links.self + '/workitems';
       this.nextLink = null;
       let url = this.workItemUrl + '?page[limit]=' + pageSize;
       filters.forEach((item) => {
@@ -248,7 +252,9 @@ export class WorkItemService {
     } else {
       this.buildUserIdMap();
       return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-        this.workItemUrl = currentSpace.links.self + 'workitems';
+        // FIXME: make the URL great again (when we know the right API URL for this)!
+        this.workItemUrl = this.baseApiUrl + 'workitems';
+        // this.workItemUrl = currentSpace.links.self + '/workitems';
         return this.http
           .get(this.workItemUrl + '/' + id, { headers: this.headers })
           .toPromise()
@@ -528,7 +534,9 @@ export class WorkItemService {
    */
   getWorkItemTypes(): Promise<any[]> {
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.workItemTypeUrl = currentSpace.links.self + 'workitemtypes';
+      // FIXME: make the URL great again (when we know the right API URL for this)!
+      this.workItemTypeUrl = this.baseApiUrl + 'workitemtypes';
+      //this.workItemTypeUrl = currentSpace.links.self + '/workitemtypes';
       return this.http
         .get(this.workItemTypeUrl)
         .toPromise()
@@ -702,7 +710,9 @@ export class WorkItemService {
   create(workItem: WorkItem): Promise<WorkItem> {
     let payload = JSON.stringify({data: workItem});
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.workItemUrl = currentSpace.links.self + 'workitems';
+      // FIXME: make the URL great again (when we know the right API URL for this)!
+      this.workItemUrl = this.baseApiUrl + 'workitems';
+      // this.workItemUrl = currentSpace.links.self + '/workitems';
       return this.http
         .post(this.workItemUrl, payload, { headers: this.headers })
         .toPromise()
@@ -788,16 +798,13 @@ export class WorkItemService {
    */
   createComment(id: string, comment: Comment): Promise<Comment> {
     let c = new CommentPost();
-
     c.data = comment;
-
     return this.http
       .post(this.workItems[this.workItemIdIndexMap[id]]
               .relationships.comments.links.related, c, { headers: this.headers })
       .toPromise()
       .then(response => {
         let comment: Comment = response.json().data as Comment;
-
         comment.relationalData = {
           creator : this.getUserById(comment.relationships['created-by'].data.id)
         };
@@ -810,17 +817,14 @@ export class WorkItemService {
   }
 
   updateComment(comment: Comment): Promise<Comment> {
-    let endpoint = process.env.API_URL + 'comments/' + comment.id;
-
+    let endpoint = comment.links.self;
     return this.http
       .patch(endpoint, { 'data': comment }, { headers: this.headers })
       .toPromise()
       .then(response => {
         let comment: Comment = response.json().data as Comment;
         let theUser: User = this.userService.getSavedLoggedInUser();
-
-        comment.relationalData = { "creator" : theUser };
-
+        comment.relationalData = { 'creator' : theUser };
         return comment;
       })
       .catch (this.handleError);
@@ -971,7 +975,9 @@ export class WorkItemService {
    */
   createLink(link: Object, currentWiId: string): Promise<Link> {
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.linksUrl = currentSpace.links.self + 'workitemlinks';
+      // FIXME: make the URL great again (when we know the right API URL for this)!
+      this.linksUrl = this.baseApiUrl + 'workitemlinks';
+      // this.linksUrl = currentSpace.links.self + '/workitemlinks';
       return this.http
         .post(this.linksUrl, JSON.stringify(link), {headers: this.headers})
         .toPromise()
@@ -1002,7 +1008,9 @@ export class WorkItemService {
    */
   deleteLink(link: any, currentWiId: string): Promise<void> {
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.linksUrl = currentSpace.links.self + 'workitemlinks';
+      // FIXME: make the URL great again (when we know the right API URL for this)!
+      this.linksUrl = this.baseApiUrl + 'workitemlinks';
+      // this.linksUrl = currentSpace.links.self + '/workitemlinks';
       const url = `${this.linksUrl}/${link.id}`;
       return this.http
         .delete(url, {headers: this.headers})
@@ -1020,7 +1028,9 @@ export class WorkItemService {
 
   searchLinkWorkItem(term: string, workItemType: string): Promise<WorkItem[]> {
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      let searchUrl = currentSpace.links.self + 'search?q=' + term + ' type:' + workItemType;
+      // FIXME: make the URL great again (when we know the right API URL for this)!
+      let searchUrl = this.baseApiUrl + 'search?q=' + term + ' type:' + workItemType;
+      //let searchUrl = currentSpace.links.self + 'search?q=' + term + ' type:' + workItemType;
       return this.http
           .get(searchUrl)
           .toPromise()
@@ -1085,7 +1095,9 @@ export class WorkItemService {
     newWItem.attributes.nextitem = parseInt(adjacentWI.nextItemId);
 
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.workItemUrl = currentSpace.links.self + 'workitems';
+      // FIXME: make the URL great again (when we know the right API URL for this)!
+      this.workItemUrl = this.baseApiUrl + 'workitems';
+      // this.workItemUrl = currentSpace.links.self + '/workitems';
       let url = `${this.workItemUrl}/reorder`;
       return this.http
         .patch(url, JSON.stringify({data: newWItem}), { headers: this.headers })
@@ -1116,7 +1128,9 @@ export class WorkItemService {
       }
     }
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.renderUrl = currentSpace.links.self + 'render';
+      // FIXME: make the URL great again (when we know the right API URL for this)!
+      this.renderUrl = this.baseApiUrl + 'render';
+      // this.renderUrl = currentSpace.links.self + '/render';
       return this.http
         .post(this.renderUrl, JSON.stringify(params), { headers: this.headers })
         .toPromise()

@@ -30,6 +30,9 @@ export class IterationService {
   ) {
     // set initial space and subscribe to the space service to recognize space switches
     //this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => this.switchSpace(space));
+    if (this.auth.getToken() != null) {
+      this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
+     }
   }
 
   /**

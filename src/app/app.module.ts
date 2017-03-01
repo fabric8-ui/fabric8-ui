@@ -20,6 +20,7 @@ import {
 import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
 import { SpaceService } from 'ngx-fabric8-wit';
 import { GlobalSettings } from './shared/globals';
+import { witApiUrlProvider } from './shared/wit-api.provider';
 
 // App components
 import { AppComponent } from './app.component';
@@ -68,6 +69,7 @@ if (process.env.ENV == 'inmemory') {
   ];
   providers = [
     GlobalSettings,
+    witApiUrlProvider,
     serviceImports,
     {
       provide: Http,
@@ -88,6 +90,7 @@ if (process.env.ENV == 'inmemory') {
   ];
   providers = [
     GlobalSettings,
+    witApiUrlProvider,
     serviceImports
   ];
 }

@@ -164,7 +164,7 @@ export class MockHttp extends Http {
         this.logger.error('GET request failed with request url ' + url);
         return this.createResponse(url.toString(), 500, 'error', {});
       }
-      this.logger.log('GET request at ' + path.path + ' url= ' + url.toString() + ' params=' + path.params.toString());
+      this.logger.log('GET request at ' + path.path + ' url=' + url.toString() + ' params=' + path.params.toString());
       if (path.extraPath) {
         this.logger.log ('GET request with extraPath at ' + path.extraPath + ' url= ' + url.toString() + ' params=' + path.params.toString());
       }
@@ -199,7 +199,7 @@ export class MockHttp extends Http {
         case '/workitemlinkcategories':
           return this.createResponse(url.toString(), 500, 'not supported yet.', { } );
         case '/spaces':
-          return this.createResponse(url.toString(), 500, 'not supported yet.', { } );
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getAllSpaces(), links: {} });
         case '/search':
           return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItems() });
         case '/iterations':
