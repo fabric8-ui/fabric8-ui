@@ -27,8 +27,8 @@ import { MockDataService } from '../shared/mock-data.service';
 import { IterationService } from '../iteration/iteration.service';
 import { WorkItem } from '../models/work-item';
 import { WorkItemService } from './work-item.service';
-import {GlobalSettings} from '../shared/globals';
-
+import { GlobalSettings } from '../shared/globals';
+import { witApiUrlProvider } from '../shared/wit-api.provider';
 
 describe('Work Item Service - ', () => {
 
@@ -175,7 +175,8 @@ describe('Work Item Service - ', () => {
         {
           provide: AUTH_API_URL,
           useValue: 'http://api.url.com'
-        }
+        },
+        witApiUrlProvider
       ]
     });
   });
