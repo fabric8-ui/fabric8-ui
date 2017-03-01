@@ -12,7 +12,7 @@ done
 export BUILD_TIMESTAMP=`date -u +%Y-%m-%dT%H:%M:%S`+00:00
 
 # We need to disable selinux for now, XXX
-/usr/sbin/setenforce 0
+#/usr/sbin/setenforce 0
 
 # Get all the deps in
 yum -y install docker
