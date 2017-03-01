@@ -54,5 +54,4 @@ if [ $? -eq 0 ]; then
   fi
 else
   echo 'CICO: functional tests FAIL'
-
-
+fi
