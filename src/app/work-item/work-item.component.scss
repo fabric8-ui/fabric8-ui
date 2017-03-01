@@ -1,4 +1,17 @@
 @import '../../assets/stylesheets/base';
+
+.fill-container
+{
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:0;
+  margin:0;
+  border-width:0;
+}
+
 .work-item-page {
     display: flex;
     flex: 1;
@@ -102,8 +115,10 @@
             background-color: $color-pf-black-200;
             border-right: 1px solid $color-pf-black-300;
             position: relative;
+            align-items: stretch;
             .contents {
-                @include fill-container;
+                //@extend .fill-container;
+                flex: 1;
                 display: flex;
                 overflow: auto;
                 align-items: stretch;
@@ -115,8 +130,10 @@
             flex-direction: column;
             border: solid 0px red;
             position: relative;
+            align-items: stretch;
             .contents {
-                @include fill-container;
+                //@extend .fill-container;
+                flex: 1;
                 display: flex;
                 overflow: auto;
                 align-items: stretch;

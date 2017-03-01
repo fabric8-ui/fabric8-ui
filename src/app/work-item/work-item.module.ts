@@ -13,14 +13,7 @@ import {
   TreeListModule,
   WidgetsModule
 } from 'ngx-widgets';
-import {
-  ProcessTemplate,
-  Space,
-  SpaceAttributes,
-  SpaceService,
-  Team,
-  WIT_API_URL
-} from 'ngx-fabric8-wit';
+
 import { UserService } from 'ngx-login-client';
 
 import { AlmFilterBoardList } from '../pipes/alm-board-filter.pipe';
@@ -72,7 +65,6 @@ import { WorkItemService } from './work-item.service';
     IterationsResolve,
     UserService,
     UsersResolve,
-    SpaceService,
     MockDataService,
     GlobalSettings,
     WorkItemService
