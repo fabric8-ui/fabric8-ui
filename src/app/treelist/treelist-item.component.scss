@@ -1,23 +1,21 @@
 @import "../../assets/stylesheets/_base";
 
-.tree-list-item {
-  align-items: center;
+.list-group-item {
+  border: none;
   cursor: pointer;
-  font-size: rem(12);
-  padding-bottom: 2px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 2px;
-}
-
-.tree-list-item-selected {
-  background-color: $color-pf-blue-100;
+  padding-left: 0;
   &:hover {
+    background-color: $color-pf-black-200;
+  }
+  &.selected {
     background-color: $color-pf-blue-100;
+    &:hover {
+      background-color: $color-pf-blue-100;
+    }
   }
 }
 
-// Toggle indentation -- row highlighting should occupy entire width
+// Indentation -- highlighting should occupy entire row
 .tree-children {
   padding-left: 0;
   .tree-list-item {
@@ -35,7 +33,25 @@
         .tree-list-item {
           padding-left: 80px;
         }
+        .tree-children {
+          .tree-list-item {
+            padding-left: 100px;
+          }
+        }
       }
     }
+  }
+}
+
+.tree-list-item {
+  padding-left: 10px;
+  .toggle-children-placeholder {
+    width: 15px;
+  }
+  .toggle-children-wrapper {
+    padding-right: 10px;
+  }
+  .toggle-children-wrapper-expanded {
+    padding-right: 7px;
   }
 }

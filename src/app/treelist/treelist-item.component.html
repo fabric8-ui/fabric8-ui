@@ -1,6 +1,6 @@
-<div class="tree-list-item"
-     (click)="select($event)"
-     [class.tree-list-item-selected]="isSelected()">
- <TreeNodeExpander [node]="node"></TreeNodeExpander>
- <template [ngTemplateOutlet]="template" [ngOutletContext]="{ node: node, index: index }"></template>
+<div class="list-group-item" [class.selected]="isSelected()" (click)="select($event)">
+  <div class="tree-list-item">
+    <TreeNodeExpander [node]="node"></TreeNodeExpander>
+    <template [ngTemplateOutlet]="template" [ngOutletContext]="{ node: node, index: index }"></template>
+  </div>
 </div>
