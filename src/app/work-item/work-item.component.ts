@@ -1,4 +1,3 @@
-import { SpaceService } from './../shared/mock-spaces.service';
 import { Subscription } from 'rxjs/Subscription';
 import {
   AfterViewInit,
@@ -16,6 +15,7 @@ import {
   AuthenticationService,
   Broadcaster
 } from 'ngx-login-client';
+import { SpaceService } from 'ngx-fabric8-wit';
 
 import { WorkItem } from './work-item';
 import { WorkItemListEntryComponent } from './work-item-list/work-item-list-entry/work-item-list-entry.component';

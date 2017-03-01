@@ -1,4 +1,3 @@
-import { SpaceService } from './../shared/mock-spaces.service';
 import {
   BaseRequestOptions,
   Http,
@@ -17,6 +16,7 @@ import {
   AuthenticationService,
   Logger
 } from 'ngx-login-client';
+import { SpaceService } from 'ngx-fabric8-wit';
 
 import { IterationModel } from '../models/iteration.model';
 import { IterationService } from './iteration.service';

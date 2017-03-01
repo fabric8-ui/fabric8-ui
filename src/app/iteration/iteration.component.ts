@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Params, ActivatedRoute } from '@angular/router';
-import { SpaceService, Space } from '../shared/mock-spaces.service';
+import { SpaceService, Space } from 'ngx-fabric8-wit';
 import { IterationService } from './iteration.service';
 import { IterationModel } from '../models/iteration.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';

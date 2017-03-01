@@ -9,7 +9,7 @@ import {
   UserService
 } from 'ngx-login-client';
 
-import { SpaceService, Space } from '../shared/mock-spaces.service';
+import { SpaceService, Space } from 'ngx-fabric8-wit';
 
 @Component({
   selector: 'alm-app-header',

@@ -14,8 +14,8 @@ import {
   User,
   UserService
 } from 'ngx-login-client';
+import { SpaceService, Space } from 'ngx-fabric8-wit';
 
-import { SpaceService, Space } from '../shared/mock-spaces.service';
 import {
   Comment,
   Comments,

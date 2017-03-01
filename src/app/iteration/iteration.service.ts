@@ -11,7 +11,7 @@ import {
   Logger
 } from 'ngx-login-client';
 
-import { SpaceService, Space } from '../shared/mock-spaces.service';
+import { SpaceService, Space } from 'ngx-fabric8-wit';
 import { IterationModel } from '../models/iteration.model';
 import { MockHttp } from '../shared/mock-http';
 

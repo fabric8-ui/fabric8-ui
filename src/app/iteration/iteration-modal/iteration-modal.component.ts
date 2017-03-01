@@ -7,9 +7,9 @@ import { cloneDeep } from 'lodash';
 import * as moment from 'moment';
 import { IMyOptions, IMyDateModel } from 'mydatepicker';
 import { Broadcaster } from 'ngx-login-client';
+import { SpaceService, Space } from 'ngx-fabric8-wit';
 
 import { IterationService } from '../iteration.service';
-import { SpaceService, Space } from '../../shared/mock-spaces.service';
 import { IterationModel } from '../../models/iteration.model';
 
 

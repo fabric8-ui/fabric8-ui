@@ -13,6 +13,14 @@ import {
   TreeListModule,
   WidgetsModule
 } from 'ngx-widgets';
+import {
+  ProcessTemplate,
+  Space,
+  SpaceAttributes,
+  SpaceService,
+  Team,
+  WIT_API_URL
+} from 'ngx-fabric8-wit';
 import { UserService } from 'ngx-login-client';
 
 import { AlmFilterBoardList } from '../pipes/alm-board-filter.pipe';
@@ -28,7 +36,6 @@ import { WorkItemListComponent }                      from './work-item-list/wor
 import { WorkItemQuickAddModule }                     from './work-item-quick-add/work-item-quick-add.module';
 import { WorkItemComponent }                          from './work-item.component';
 import { WorkItemRoutingModule }                      from './work-item-routing.module';
-import { SpaceService } from '../shared/mock-spaces.service';
 import { MockDataService } from '../shared/mock-data.service';
 import { GlobalSettings } from '../shared/globals';
 import { WorkItemService } from './work-item.service';

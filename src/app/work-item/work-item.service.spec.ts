@@ -21,9 +21,9 @@ import {
   UserService,
   AUTH_API_URL
 } from 'ngx-login-client';
+import { SpaceService } from 'ngx-fabric8-wit';
 
 import { MockDataService } from '../shared/mock-data.service';
-import { SpaceService } from '../shared/mock-spaces.service';
 import { IterationService } from '../iteration/iteration.service';
 import { WorkItem } from '../models/work-item';
 import { WorkItemService } from './work-item.service';

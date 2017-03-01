@@ -18,7 +18,7 @@ import {
 
 // Shared
 import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
-import { SpaceService } from './shared/mock-spaces.service';
+import { SpaceService } from 'ngx-fabric8-wit';
 import { GlobalSettings } from './shared/globals';
 
 // App components
