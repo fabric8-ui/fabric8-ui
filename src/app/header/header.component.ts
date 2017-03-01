@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit {
     this.listenToEvents();
     this.getLoggedUser();
     this.loggedIn = this.auth.isLoggedIn();
-    this.spaceService.getAllSpaces().then(loadedSpaces => { 
+    this.spaceService.getSpaces().then(loadedSpaces => {
       this.spaces = loadedSpaces;
       this.spaceService.getCurrentSpace().then(currentSpace => {
         this.selectedSpace = currentSpace;
