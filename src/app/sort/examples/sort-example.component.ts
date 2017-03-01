@@ -14,8 +14,8 @@ import { SortEvent } from "../sort-event";
   encapsulation: ViewEncapsulation.None,
   host: {'class': 'app app-component flex-container in-column-direction flex-grow-1'},
   selector: 'sort-example',
-  styles: [ require('./sort-example.component.css') ],
-  template: require('./sort-example.component.html')
+  styleUrls: ['./sort-example.component.scss'],
+  templateUrl: './sort-example.component.html'
 })
 export class SortExampleComponent implements OnInit {
 

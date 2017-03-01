@@ -16,8 +16,8 @@ import * as _ from 'lodash';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-sort',
-  styles: [ require('./sort.component.css').toString() ],
-  template: require('./sort.component.html')
+  styleUrls: ['./sort.component.scss'],
+  templateUrl: './sort.component.html'
 })
 export class SortComponent implements OnInit {
   @Input() config: SortConfig;

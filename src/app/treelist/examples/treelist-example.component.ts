@@ -33,8 +33,8 @@ const actionMapping: IActionMapping = {
   encapsulation: ViewEncapsulation.None,
   host: {'class': 'app app-component flex-container in-column-direction flex-grow-1'},
   selector: 'treelist-example',
-  styles: [ require('./treelist-example.component.css') ],
-  template: require('./treelist-example.component.html')
+  styleUrls: ['./treelist-example.component.scss'],
+  templateUrl: './treelist-example.component.html'
 })
 export class TreeListExampleComponent implements OnInit {
   @ViewChild('treeListItemTemplate') treeListItemTemplate: TemplateRef<any>;

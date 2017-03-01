@@ -14,8 +14,8 @@ import { TreeNode } from 'angular2-tree-component';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-tree-list-item',
-  styles: [ require('./treelist-item.component.css').toString() ],
-  template: require('./treelist-item.component.html')
+  styleUrls: ['./treelist-item.component.scss'],
+  templateUrl: './treelist-item.component.html'
 })
 
 export class TreeListItemComponent implements OnInit {

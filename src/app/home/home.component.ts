@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None,
   host: {'class': 'app app-component flex-container in-column-direction flex-grow-1'},
   selector: 'demo-home',
-  template: require('./home.component.html'),
-  styles: [ require('./home.component.css').toString() ]
+  styleUrls: ['./home.component.scss'],
+  templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
 

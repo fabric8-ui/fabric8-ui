@@ -25,8 +25,8 @@ import { ViewsConfig } from '../../config/views-config';
   encapsulation: ViewEncapsulation.None,
   host: {'class': 'app app-component flex-container in-column-direction flex-grow-1'},
   selector: 'toolbar-example',
-  styles: [ require('./toolbar-example.component.css') ],
-  template: require('./toolbar-example.component.html')
+  styleUrls: ['./toolbar-example.component.scss'],
+  templateUrl: './toolbar-example.component.html'
 })
 export class ToolbarExampleComponent implements OnInit {
   @ViewChild('actions') actionsTemplate: TemplateRef<any>;

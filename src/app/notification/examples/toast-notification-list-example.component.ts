@@ -13,8 +13,8 @@ import { NotificationConfig } from "../notification-config";
   encapsulation: ViewEncapsulation.None,
   host: {'class': 'app app-component flex-container in-column-direction flex-grow-1'},
   selector: 'toast-notification-list-example',
-  styles: [ require('./toast-notification-list-example.component.css') ],
-  template: require('./toast-notification-list-example.component.html')
+  styleUrls: ['./toast-notification-list-example.component.scss'],
+  templateUrl: './toast-notification-list-example.component.html'
 })
 export class ToastNotificationListExampleComponent implements OnInit {
 

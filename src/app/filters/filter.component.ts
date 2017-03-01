@@ -19,8 +19,8 @@ import * as _ from 'lodash';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-filter',
-  styles: [ require('./filter.component.css').toString() ],
-  template: require('./filter.component.html')
+  styleUrls: ['./filter.component.scss'],
+  templateUrl: './filter.component.html'
 })
 export class FilterComponent implements OnInit {
   @Input() config: FilterConfig;

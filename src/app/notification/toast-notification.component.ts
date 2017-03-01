@@ -16,8 +16,8 @@ import * as _ from 'lodash';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-toast-notification',
-  styles: [ require('./toast-notification.component.css').toString() ],
-  template: require('./toast-notification.component.html')
+  styleUrls: ['./toast-notification.component.scss'],
+  templateUrl: './toast-notification.component.html'
 })
 export class ToastNotificationComponent implements OnInit {
   @Input() config: NotificationConfig;

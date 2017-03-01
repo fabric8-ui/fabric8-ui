@@ -23,8 +23,8 @@ import * as _ from 'lodash';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-toolbar',
-  styles: [ require('./toolbar.component.css').toString() ],
-  template: require('./toolbar.component.html')
+  styleUrls: ['./toolbar.component.scss'],
+  templateUrl: './toolbar.component.html'
 })
 export class ToolbarComponent implements OnInit {
   @Input() config: ToolbarConfig;

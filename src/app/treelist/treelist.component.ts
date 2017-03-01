@@ -15,8 +15,8 @@ import {
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-tree-list',
-  styles: [ require('./treelist.component.css').toString() ],
-  template: require('./treelist.component.html')
+  styleUrls: ['./treelist.component.scss'],
+  templateUrl: './treelist.component.html'
 })
 
 export class TreeListComponent implements OnInit {

@@ -13,8 +13,8 @@ import { FilterEvent } from "../filter-event";
 @Component({
   host: {'class': 'app app-component flex-container in-column-direction flex-grow-1'},
   selector: 'filter-example',
-  styles: [ require('./filter-example.component.css') ],
-  template: require('./filter-example.component.html')
+  styleUrls: ['./filter-example.component.scss'],
+  templateUrl: './filter-example.component.html'
 })
 export class FilterExampleComponent implements OnInit {
   allItems: any[];

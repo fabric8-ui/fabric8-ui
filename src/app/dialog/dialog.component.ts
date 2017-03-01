@@ -16,9 +16,6 @@ import {
 import { Dialog } from './dialog';
 
 @Component({
-  selector: 'alm-dialog',
-  template: require('./dialog.component.html'),
-  styles: [require('./dialog.component.css')],
   animations: [
     trigger('modalState', [
       state('inactive', style({
@@ -40,7 +37,10 @@ import { Dialog } from './dialog';
       })),
       transition('inactive <=>active', animate('500ms ease all'))
     ]),
-  ]
+  ],
+  selector: 'alm-dialog',
+  styleUrls: ['./dialog.component.scss'],
+  templateUrl: './dialog.component.html'
 })
 
 export class DialogComponent implements OnInit {
