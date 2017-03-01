@@ -17,16 +17,18 @@ export BUILD_TIMESTAMP=`date -u +%Y-%m-%dT%H:%M:%S`+00:00
 # Get all the deps in
 yum -y install docker
 yum clean all
-sed -i '/OPTIONS=.*/c\OPTIONS="--selinux-enabled --log-driver=journald --insecure-registry registry.ci.centos.org:5000"' /etc/sysconfig/docker
 service docker start
 
 docker build -t fabric8-planner-builder -f Dockerfile.builder .
-mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder -e "FABRIC8_WIT_API_URL=http://api.prod-preview.openshift.io/api/" -e JENKINS_URL -e GIT_BRANCH -e "CI=true" -e GH_TOKEN -e NPM_TOKEN -t -v $(pwd)/dist:/dist:Z fabric8-planner-builder
+mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder -e "FABRIC8_WIT_API_URL=http://api.prod-preview.openshift.io/api/" -t -v $(pwd)/dist:/dist:Z fabric8-planner-builder
 
 # In order to run semantic-release we need a non detached HEAD, see https://github.com/semantic-release/semantic-release/issues/329
 docker exec fabric8-planner-builder git checkout master
 # Try to fix up the git repo so that npm publish can build the gitHead ref in to package.json
 docker exec fabric8-planner-builder ./fix-git-repo.sh
+
+# Build almigty-ui
+docker exec fabric8-planner-builder npm install
 
 ## Build prod
 docker exec fabric8-planner-builder npm run build:prod
@@ -36,9 +38,6 @@ docker exec fabric8-planner-builder ./run_unit_tests.sh
 
 ## Exec functional tests
 #docker exec fabric8-planner-builder ./run_functional_tests.sh
-
-# TODO This was in the old file...
-# docker exec fabric8-planner-builder ./upload_to_codecov.sh
 
 if [ $? -eq 0 ]; then
   echo 'CICO: functional tests OK'
