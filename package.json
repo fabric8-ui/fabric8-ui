@@ -1,6 +1,6 @@
 {
   "name": "fabric8-planner",
-  "version": "0.0.0-development",
+  "version": "0.2.1",
   "description": "A planner front-end for Fabric8.",
   "main": "bundles/fabric8-planner.umd.js",
   "module": "index.js",
@@ -120,7 +120,7 @@
     "ngx-dropdown": "0.0.22",
     "ngx-login-client": "0.1.7",
     "ngx-modal": "0.0.29",
-    "ngx-widgets": "0.3.0",
+    "ngx-widgets": "0.4.2",
     "reflect-metadata": "0.1.10",
     "rxjs": "5.0.1",
     "zone.js": "0.7.7"

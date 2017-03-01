@@ -28,9 +28,10 @@ import { WorkItemListComponent }                      from './work-item-list/wor
 import { WorkItemQuickAddModule }                     from './work-item-quick-add/work-item-quick-add.module';
 import { WorkItemComponent }                          from './work-item.component';
 import { WorkItemRoutingModule }                      from './work-item-routing.module';
-import {SpaceService} from '../shared/mock-spaces.service';
-import {MockDataService} from '../shared/mock-data.service';
-import {GlobalSettings} from '../shared/globals';
+import { SpaceService } from '../shared/mock-spaces.service';
+import { MockDataService } from '../shared/mock-data.service';
+import { GlobalSettings } from '../shared/globals';
+import { WorkItemService } from './work-item.service';
 
 @NgModule({
   imports: [
@@ -66,7 +67,8 @@ import {GlobalSettings} from '../shared/globals';
     UsersResolve,
     SpaceService,
     MockDataService,
-    GlobalSettings
+    GlobalSettings,
+    WorkItemService
   ],
   bootstrap: [ WorkItemComponent ],
   exports: [
