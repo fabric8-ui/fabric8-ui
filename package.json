@@ -1,6 +1,6 @@
 {
   "name": "fabric8-planner",
-  "version": "0.2.1",
+  "version": "0.0.0-development",
   "description": "A planner front-end for Fabric8.",
   "main": "bundles/fabric8-planner.umd.js",
   "module": "index.js",
