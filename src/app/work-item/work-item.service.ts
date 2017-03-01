@@ -131,7 +131,7 @@ export class WorkItemService {
    */
   getWorkItems(pageSize: number = 20, filters: any[] = []): Promise<WorkItem[]> {
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.workItemUrl = currentSpace.spaceBaseUrl + 'workitems';
+      this.workItemUrl = currentSpace.links.self + 'workitems';
       this.nextLink = null;
       let url = this.workItemUrl + '?page[limit]=' + pageSize;
       filters.forEach((item) => {
@@ -248,7 +248,7 @@ export class WorkItemService {
     } else {
       this.buildUserIdMap();
       return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-        this.workItemUrl = currentSpace.spaceBaseUrl + 'workitems';
+        this.workItemUrl = currentSpace.links.self + 'workitems';
         return this.http
           .get(this.workItemUrl + '/' + id, { headers: this.headers })
           .toPromise()
@@ -528,7 +528,7 @@ export class WorkItemService {
    */
   getWorkItemTypes(): Promise<any[]> {
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.workItemTypeUrl = currentSpace.spaceBaseUrl + 'workitemtypes';
+      this.workItemTypeUrl = currentSpace.links.self + 'workitemtypes';
       return this.http
         .get(this.workItemTypeUrl)
         .toPromise()
@@ -702,7 +702,7 @@ export class WorkItemService {
   create(workItem: WorkItem): Promise<WorkItem> {
     let payload = JSON.stringify({data: workItem});
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.workItemUrl = currentSpace.spaceBaseUrl + 'workitems';
+      this.workItemUrl = currentSpace.links.self + 'workitems';
       return this.http
         .post(this.workItemUrl, payload, { headers: this.headers })
         .toPromise()
@@ -971,7 +971,7 @@ export class WorkItemService {
    */
   createLink(link: Object, currentWiId: string): Promise<Link> {
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.linksUrl = currentSpace.spaceBaseUrl + 'workitemlinks';
+      this.linksUrl = currentSpace.links.self + 'workitemlinks';
       return this.http
         .post(this.linksUrl, JSON.stringify(link), {headers: this.headers})
         .toPromise()
@@ -1002,7 +1002,7 @@ export class WorkItemService {
    */
   deleteLink(link: any, currentWiId: string): Promise<void> {
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.linksUrl = currentSpace.spaceBaseUrl + 'workitemlinks';
+      this.linksUrl = currentSpace.links.self + 'workitemlinks';
       const url = `${this.linksUrl}/${link.id}`;
       return this.http
         .delete(url, {headers: this.headers})
@@ -1020,7 +1020,7 @@ export class WorkItemService {
 
   searchLinkWorkItem(term: string, workItemType: string): Promise<WorkItem[]> {
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      let searchUrl = currentSpace.spaceBaseUrl + 'search?q=' + term + ' type:' + workItemType;
+      let searchUrl = currentSpace.links.self + 'search?q=' + term + ' type:' + workItemType;
       return this.http
           .get(searchUrl)
           .toPromise()
@@ -1085,7 +1085,7 @@ export class WorkItemService {
     newWItem.attributes.nextitem = parseInt(adjacentWI.nextItemId);
 
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.workItemUrl = currentSpace.spaceBaseUrl + 'workitems';
+      this.workItemUrl = currentSpace.links.self + 'workitems';
       let url = `${this.workItemUrl}/reorder`;
       return this.http
         .patch(url, JSON.stringify({data: newWItem}), { headers: this.headers })
@@ -1116,7 +1116,7 @@ export class WorkItemService {
       }
     }
     return this.spaceService.getCurrentSpace().then((currentSpace: Space) => {
-      this.renderUrl = currentSpace.spaceBaseUrl + 'render';
+      this.renderUrl = currentSpace.links.self + 'render';
       return this.http
         .post(this.renderUrl, JSON.stringify(params), { headers: this.headers })
         .toPromise()

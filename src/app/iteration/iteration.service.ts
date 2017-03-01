@@ -40,7 +40,7 @@ export class IterationService {
   getIterations(): Promise<IterationModel[]> {
     // get the current iteration url from the space service
     return this.spaceService.getCurrentSpace().then(currentSpace => {
-      let iterationsUrl = currentSpace.iterationsUrl;
+      let iterationsUrl = currentSpace.relationships.iterations.links.related;
       if (this.checkValidIterationUrl(iterationsUrl)) {
         return this.http
           .get(iterationsUrl, { headers: this.headers })
@@ -78,7 +78,7 @@ export class IterationService {
    */
   createIteration(iteration: IterationModel): Promise<IterationModel> {
     return this.spaceService.getCurrentSpace().then(currentSpace => {
-      let iterationsUrl = currentSpace.iterationsUrl;
+      let iterationsUrl = currentSpace.relationships.iterations.links.related;
       if (this.checkValidIterationUrl(iterationsUrl)) {
         iteration.relationships.space.data.id = currentSpace.id;
         return this.http

@@ -114,8 +114,22 @@ export class SpaceService {
         id: thisElem.id,
         attributes: new SpaceAttributes(),
         type: thisElem.type,
-        iterationsUrl: thisElem.relationships.iterations.links.related,
-        spaceBaseUrl: process.env.API_URL
+        links: {
+          self: process.env.API_URL
+        },
+        // FIXME: refactor the mock data service to return the same model as on the live service, the refactor here
+        relationships: {
+          areas: {
+            links: {
+              related: process.env.API_URL + '/areas'
+            }
+          },
+          iterations: {
+            links: {
+              related: thisElem.relationships.iterations.links.related
+            }
+          }
+        }
       } as Space;
       result.push(thisSpace);
     }
@@ -141,8 +155,30 @@ export interface Space {
     id: string;
     attributes: SpaceAttributes;
     type: string;
-    iterationsUrl: string;
-    spaceBaseUrl: string;
+    links: SpaceLink;
+    relationships: SpaceRelationships;
+}
+
+export class SpaceLink {
+    self: string;
+}
+
+export class SpaceRelationships {
+    areas: SpaceRelatedLink;
+    iterations: SpaceRelatedLink;
+}
+
+export class SpaceRelatedLink {
+    links: {
+        related: string
+    };
+}
+
+export class SpaceAttributes {
+    name: string;
+    'updated-at': string;
+    'created-at': string;
+    version: number;
 }
 
 export class ProcessTemplate {
@@ -152,11 +188,4 @@ export class ProcessTemplate {
 export interface Team {
     name: string;
     members: User[];
-}
-
-export class SpaceAttributes {
-    name: string;
-    'updated-at': string;
-    'created-at': string;
-    version: number;
 }

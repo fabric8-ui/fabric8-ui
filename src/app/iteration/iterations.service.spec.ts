@@ -42,9 +42,22 @@ describe ('Iteration service - ', () => {
     fakeSpaceService = {
       getCurrentSpace: function() {
         return Promise.resolve({
-          iterationsUrl: 'http://localhost:8080/api/spaces/1f669678-ca2c-4cbb-b46d-5b70a98dde3c/iterations',
+          'links': {
+            'self': 'http://localhost:8080/api/'
+          },
+          'relationships': {
+            'areas': {
+              'links': {
+                'related': 'http://localhost:8080/api/spaces/1f669678-ca2c-4cbb-b46d-5b70a98dde3c/areas'
+              }
+            },
+            'iterations': {
+              'links': {
+                'related': 'http://localhost:8080/api/spaces/1f669678-ca2c-4cbb-b46d-5b70a98dde3c/iterations'
+              }
+            }
+          },
           name: 'Project 1',
-          spaceBaseUrl: 'http://localhost:8080/api/'
         });
       }
     };
