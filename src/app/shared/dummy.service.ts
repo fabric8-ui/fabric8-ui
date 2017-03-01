@@ -262,7 +262,12 @@ export class DummyService {
           'updated-at': '2017-01-02',
           version: 1
         },
-        type: 'spaces'
+        type: 'spaces',
+        links: {self:''},
+        relationships: {
+          areas: {links:{related:''}},
+          iterations: {links:{related:''}}
+        }
       } as Space
     ], [
       'hysterix',
@@ -279,7 +284,12 @@ export class DummyService {
           'updated-at': '2017-01-02',
           version: 1
         },
-        type: 'spaces'
+        type: 'spaces',
+        links: {self:''},
+        relationships: {
+          areas: {links:{related:''}},
+          iterations: {links:{related:''}}
+        }
       } as Space
     ], [
       'fabric8',
@@ -296,7 +306,12 @@ export class DummyService {
           'updated-at': '2017-01-02',
           version: 1
         },
-        type: 'spaces'
+        type: 'spaces',
+        links: {self:''},
+        relationships: {
+          areas: {links:{related:''}},
+          iterations: {links:{related:''}}
+        }
       } as Space
     ], [
       'balloonpopgame',
@@ -317,6 +332,11 @@ export class DummyService {
           version: 1
         },
         type: 'spaces',
+        links: {self:''},
+        relationships: {
+          areas: {links:{related:''}},
+          iterations: {links:{related:''}}
+        },
         stacks: [
           {
             codebase: 'https://github.com/BalloonPopGame/BalloonPopGame',
