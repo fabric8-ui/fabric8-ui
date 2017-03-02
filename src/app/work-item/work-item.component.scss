@@ -46,51 +46,7 @@
             }
         }
     }
-    >header {
-        .toolbar-pf {
-            border-color: transparent;
-            .toolbar-pf-actions {
-                border-color: transparent;
-                .form-group {
-                    border-left: solid 1px $color-pf-black-300;
-                    border-right: none;
-                    &:first {
-                        border-left: none;
-                    }
-                }
-                .toolbar-pf-action-right {
-                  .pficon-add-circle-o{
-                    @extend .with-color-blue;
-                    font-size: ceil(($font-size-base * 1.2)) ;
-                  }
-                }
-            }
-            // ensure icons dont fold around inputs
-            .wi-input-filter-dropdown {
-                position: relative;
-                .wi-input-filter-dropdown-list {
-                    width: 100%;
-                    top: 2.5rem;
-                    padding: 0.25rem;
-                }
-                >div {
-                    position: relative;
-                    //HACK:prevents caret icon from folding to a new line
-                    >input {
-                        margin-right: -2.0rem;
-                    }
-                    //HACK:positions the caret in right margin are of input
-                    >span.caret::before {
-                        z-index: 2;
-                        display: inline-block;
-                        height: 1.5rem;
-                        line-height: 1.5rem;
-                        width: 1.5rem;
-                    }
-                }
-            }
-        }
-    }
+
     .dropdown {
         a {
             cursor: pointer;
@@ -131,6 +87,51 @@
             border: solid 0px red;
             position: relative;
             align-items: stretch;
+            > header {
+              padding: 0 rem(20);
+              .toolbar-pf {
+                  border-color: transparent;
+                  .toolbar-pf-actions {
+                      border-color: transparent;
+                      .form-group {
+                          border-right: none;
+                          &:first {
+                              border-left: none;
+                          }
+                      }
+                      .toolbar-pf-action-right {
+                        .pficon-add-circle-o{
+                          @extend .with-color-blue;
+                          font-size: ceil(($font-size-base * 1.2)) ;
+                        }
+                      }
+                  }
+                  // ensure icons dont fold around inputs
+                  .wi-input-filter-dropdown {
+                      position: relative;
+                      .wi-input-filter-dropdown-list {
+                          width: 100%;
+                          top: 2.5rem;
+                          padding: 0.25rem;
+                      }
+                      >div {
+                          position: relative;
+                          //HACK:prevents caret icon from folding to a new line
+                          >input {
+                              margin-right: -2.0rem;
+                          }
+                          //HACK:positions the caret in right margin are of input
+                          >span.caret::before {
+                              z-index: 2;
+                              display: inline-block;
+                              height: 1.5rem;
+                              line-height: 1.5rem;
+                              width: 1.5rem;
+                          }
+                      }
+                  }
+              }
+            }
             .contents {
                 //@extend .fill-container;
                 flex: 1;
