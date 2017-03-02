@@ -7,7 +7,6 @@ const webpack = require('webpack');
 const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
@@ -15,6 +14,7 @@ const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+const TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin;
 
 const extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
 const extractSASS = new ExtractTextPlugin('stylesheets/[name].scss');
@@ -35,7 +35,13 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.webpack.js', '.wep.js', '.js', '.ts']
+    extensions: ['.webpack.js', '.wep.js', '.js', '.ts'],
+    plugins: [
+      // Todo: config is not loading.
+      new TsConfigPathsPlugin({
+        configFileName: helpers.root("tsconfig-demo.json")
+      })
+    ]
   },
 
   stats: {
@@ -48,9 +54,8 @@ module.exports = {
       {
         test: /\.ts$/,
         loaders: [
-          'awesome-typescript-loader?tsconfig=./tsconfig-demo.json',
-          'angular2-template-loader',
-          'angular2-router-loader'
+          'awesome-typescript-loader',
+          'angular2-template-loader'
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
       },
@@ -97,14 +102,6 @@ module.exports = {
     new CommonsChunkPlugin({
       name: ['app', 'vendor', 'polyfills']
     }),
-
-    /*
-     * Plugin: ForkCheckerPlugin
-     * Description: Do type checking in a separate process, so webpack don't need to wait.
-     *
-     * See: https://github.com/s-panferov/awesome-typescript-loader#forkchecker-boolean-defaultfalse
-     */
-    new ForkCheckerPlugin(),
 
     /*
      * Plugin: HtmlWebpackPlugin

@@ -11,7 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "inlineSources": true,
-    "noEmitHelpers": true,
+    "noEmitHelpers": false, // Planner and demo won't run when true
     "strictNullChecks": false,
     "noImplicitAny": true,
     "allowUnreachableCode": false,

@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DropdownModule } from 'ng2-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { TooltipModule } from 'ng2-bootstrap';
+import { DropdownModule, TooltipModule } from 'ng2-bootstrap';
 
 import { Filter } from './filter';
 import { FilterComponent } from './filter.component';

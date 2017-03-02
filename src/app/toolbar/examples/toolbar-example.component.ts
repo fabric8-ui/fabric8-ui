@@ -44,7 +44,7 @@ export class ToolbarExampleComponent implements OnInit {
   viewsConfig: ViewsConfig;
   view: View;
 
-  monthVals = {
+  monthVals: any = {
     'January': 1,
     'February': 2,
     'March': 3,
@@ -235,7 +235,7 @@ export class ToolbarExampleComponent implements OnInit {
     this.actionsText = "Add Action\n" + this.actionsText;
   }
 
-  optionSelected(option): void {
+  optionSelected(option: number): void {
     this.actionsText = "Option " + option + " selected\n" + this.actionsText;
   }
 

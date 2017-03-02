@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 
 import {
+  TreeComponent,
   TreeNode,
   TREE_ACTIONS,
   IActionMapping,
@@ -102,7 +103,7 @@ export class TreeListExampleComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addNode(tree) {
+  addNode(tree: TreeComponent) {
     this.nodes[0].children.push({
       name: 'a new child'
     });
@@ -113,7 +114,7 @@ export class TreeListExampleComponent implements OnInit {
     return node && node.children ? `(${node.children.length})` : '';
   }
 
-  getChildren(node:any) {
+  getChildren(node: TreeNode) {
     return new Promise((resolve, reject) => {
       setTimeout(() => resolve(this.asyncChildren.map((c) => {
         return Object.assign({}, c, {

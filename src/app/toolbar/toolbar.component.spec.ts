@@ -4,13 +4,9 @@ import {
   TestBed
 } from '@angular/core/testing';
 
-import {
-  TemplateRef
-} from '@angular/core';
-
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { DropdownModule } from 'ng2-bootstrap';
+import { DropdownConfig, DropdownModule } from 'ng2-bootstrap';
 
 import { Action } from '../config/action';
 import { ActionsConfig } from '../config/actions-config';
@@ -27,7 +23,7 @@ import { ToolbarConfig } from './toolbar-config';
 import { View } from '../config/view';
 import { ViewsConfig } from '../config/views-config';
 
-describe('Filter component - ', () => {
+describe('Toolbar component - ', () => {
   let comp: ToolbarComponent;
   let fixture: ComponentFixture<ToolbarComponent>;
   let config: ToolbarConfig;
@@ -166,7 +162,8 @@ describe('Filter component - ', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, DropdownModule],
-      declarations: [ToolbarComponent, FilterFieldsComponent, FilterResultsComponent, SortComponent]
+      declarations: [ToolbarComponent, FilterFieldsComponent, FilterResultsComponent, SortComponent],
+      providers: [DropdownConfig]
     })
         .compileComponents()
         .then(() => {

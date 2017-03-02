@@ -6,7 +6,7 @@ import {
 
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { DropdownModule } from 'ng2-bootstrap';
+import { DropdownConfig, DropdownModule } from 'ng2-bootstrap';
 
 import { SortComponent } from './sort.component';
 import { SortConfig } from './sort-config';
@@ -47,7 +47,8 @@ describe('Sort component - ', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, DropdownModule],
-      declarations: [SortComponent]
+      declarations: [SortComponent],
+      providers: [DropdownConfig]
     })
       .compileComponents()
       .then(() => {

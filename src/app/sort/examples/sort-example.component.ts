@@ -25,7 +25,7 @@ export class SortExampleComponent implements OnInit {
   sortConfig: SortConfig;
   currentSortField: SortField;
 
-  monthVals = {
+  monthVals: any = {
     'January': 1,
     'February': 2,
     'March': 3,
