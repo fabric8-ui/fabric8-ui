@@ -10,7 +10,6 @@ var path = require('path');
 /*
  * Webpack Plugins
  */
-const AssetsPlugin = require('assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
@@ -245,21 +244,6 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: [
-      /*
-       * Plugin: AssetsPlugin
-       * Description: Webpack plugin that emits a json file with assets paths.
-       * When working with Webpack you might want to generate your bundles with a generated hash in them (for cache busting).
-       * This plug-in outputs a json file with the paths of the generated assets so you can find them from somewhere else.
-       *
-       * See: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
-       * See: https://github.com/kossnocorp/assets-webpack-plugin
-       */
-      new AssetsPlugin({
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'webpack-assets.json',
-        prettyPrint: true
-      }),
-
       /*
        * Plugin: ForkCheckerPlugin
        * Description: Do type checking in a separate process, so webpack don't need to wait.
