@@ -15,6 +15,7 @@
  */
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
+  constants = require('./constants'),
   testSupport = require('./testSupport');
 
 describe('Work item list', function () {
@@ -24,32 +25,46 @@ var until = protractor.ExpectedConditions;
 var waitTime = 30000;
 
   beforeEach(function () {
-    testSupport.setBrowserMode('phone');
+    testSupport.setBrowserMode('desktop');
+//    browser.ignoreSynchronization = true;
     page = new WorkItemListPage(true);
   });
+  
 /**Test searching user in the assignee drop down  */
-  it('Test searching user in the assignee drop down -phone ', function() {
-      var workItemTitle = "The test workitem title";
-      var workItemUpdatedTitle = "The test workitem title - UPDATED";
-      page.clickWorkItemQuickAdd();
-      page.typeQuickAddWorkItemTitle(workItemTitle);
-      page.clickQuickAddSave().then(function() {
-      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+  it('Test searching user in the assignee drop down - desktop ', function() {
+    var workItemTitle = "The test workitem title";
+    var workItemUpdatedTitle = "The test workitem title - UPDATED";
+    page.clickWorkItemQuickAdd();
+    page.typeQuickAddWorkItemTitle(workItemTitle);
+    page.clickQuickAddSave(); 
+    page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+//        detailPage.workItemDetailAssigneeIcon().getLocation().then(function (navDivLocation) {
+//          initTop = navDivLocation.y;
+//          initLeft = navDivLocation.x;
+//          console.log ("x = " + navDivLocation.x + ", y = " + navDivLocation.y);
+//        });    
       detailPage.workItemDetailAssigneeIcon().click();
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeSearch), constants.WAIT, 'Failed to find Assignee Search');  
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
       expect(detailPage.details_assigned_user().getText()).toContain("Example User 1");
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailCloseButton), constants.WAIT, 'Failed to find Close Button');  
       detailPage.clickWorkItemDetailCloseButton();
+
       // TODO Fails on Chrome      
       // page.clickWorkItemTitle(page.firstWorkItem, text);
       // expect(detailPage.details_assigned_user().getText()).toContain("Harry Potter");
       // detailPage.clickWorkItemDetailCloseButton();
-      });
     });
   }); 
+  
   /**Test able to click assigne button Icon  */
-  it('Test able to click assigne button Icon -phone ', function() {
+  it('Test able to click assigne button Icon - desktop ', function() {
       var workItemTitle = "The test workitem title";
       var workItemUpdatedTitle = "The test workitem title - UPDATED";
       page.clickWorkItemQuickAdd();
@@ -57,6 +72,9 @@ var waitTime = 30000;
       page.clickQuickAddSave().then(function() {
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+
       expect(detailPage.workItemDetailAssigneeIcon().click()).toBe(null);
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
@@ -65,8 +83,9 @@ var waitTime = 30000;
       });
     });
   }); 
+  
   /**Test to update the assigned user */ 
-  it('Test to update the assigned user  -phone ', function() {
+  it('Test to update the assigned user - desktop ', function() {
     var workItemTitle = "The test workitem title";
       var workItemUpdatedTitle = "The test workitem title - UPDATED";
       page.clickWorkItemQuickAdd();
@@ -74,6 +93,9 @@ var waitTime = 30000;
       page.clickQuickAddSave();
       page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+
       detailPage.workItemDetailAssigneeIcon().click();
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
@@ -86,7 +108,7 @@ var waitTime = 30000;
   }); 
    
  /**User can read , update , remove assignee  */
-   it('User can read , update , remove assignee  -phone ', function() {
+   it('User can read , update , remove assignee - desktop ', function() {
       var workItemTitle = "The test workitem title";
       var workItemUpdatedTitle = "The test workitem title - UPDATED";
       page.clickWorkItemQuickAdd();
@@ -94,6 +116,9 @@ var waitTime = 30000;
       page.clickQuickAddSave().then(function() {
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+      
       detailPage.workItemDetailAssigneeIcon().click();
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
@@ -104,8 +129,9 @@ var waitTime = 30000;
       });
     });
   }); 
+
  /**User can Cancel assignee  */
-   it('User can Cancel assignee -phone ', function() {
+   it('User can Cancel assignee - desktop ', function() {
       var workItemTitle = "The test workitem title";
       var workItemUpdatedTitle = "The test workitem title - UPDATED";
       page.clickWorkItemQuickAdd();
@@ -113,6 +139,9 @@ var waitTime = 30000;
       page.clickQuickAddSave().then(function() {
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+
       detailPage.workItemDetailAssigneeIcon().click();
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
@@ -129,7 +158,7 @@ var waitTime = 30000;
   }); 
 
   /**User can read , update , remove assignee  */
-    it('User can read , update , remove assignee -phone ', function() {
+    it('User can read , update , remove assignee - desktop ', function() {
       var workItemTitle = "The test workitem title";
       var workItemUpdatedTitle = "The test workitem title - UPDATED";
       page.clickWorkItemQuickAdd();
@@ -137,6 +166,9 @@ var waitTime = 30000;
       page.clickQuickAddSave().then(function() {
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+
       detailPage.workItemDetailAssigneeIcon().click();
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
@@ -150,8 +182,9 @@ var waitTime = 30000;
       });
     });
   });
+
   /**Test name and avatar are shown up in the drop down */ 
-  it('Test name and avatar are shown up in the drop down -phone ', function() {
+  it('Test name and avatar are shown up in the drop down - desktop', function() {
     var workItemTitle = "The test workitem title";
       var workItemUpdatedTitle = "The test workitem title - UPDATED";
       page.clickWorkItemQuickAdd();
@@ -159,6 +192,9 @@ var waitTime = 30000;
       page.clickQuickAddSave();
       page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+
       detailPage.workItemDetailAssigneeIcon().click();
       detailPage.setWorkItemDetailAssigneeSearch("Example User 2",false);
       detailPage.clickAssignedUserDropDownList("Example User 2");
@@ -168,7 +204,8 @@ var waitTime = 30000;
       detailPage.clickWorkItemDetailCloseButton();
      });
   }); 
-  it('Verify that workitems cannot be assigned to non-existent users -phone ', function() {
+
+  it('Verify that workitems cannot be assigned to non-existent users - desktop ', function() {
     var workItemTitle = "The test workitem title";
       var workItemUpdatedTitle = "The test workitem title - UPDATED";
       page.clickWorkItemQuickAdd();
@@ -176,9 +213,13 @@ var waitTime = 30000;
       page.clickQuickAddSave();
       page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+
       detailPage.workItemDetailAssigneeIcon().click();
       detailPage.setWorkItemDetailAssigneeSearch("Some User 2",false);
       expect(detailPage.assignedUserDropDownList("Some User 2").isPresent()).toBe(false);
      });
   }); 
+
 });

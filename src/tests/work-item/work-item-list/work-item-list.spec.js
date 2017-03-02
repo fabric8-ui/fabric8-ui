@@ -21,6 +21,7 @@ describe('Work item list', function () {
 
   beforeEach(function () {
     testSupport.setBrowserMode('phone');
+    browser.ignoreSynchronization = true;
     page = new WorkItemListPage(true);    
     
     workItemMockData = {

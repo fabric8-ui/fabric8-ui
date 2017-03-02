@@ -293,7 +293,7 @@ class WorkItemDetailPage {
   workItemDetailUnAssigneeIcon () {
     return element(by.css(".pull-left.fa.fa-user-plus.user-assign-icon"));
   }
-  clickworkItemDetailAssigneeIcon () {
+  clickworkItemDetailAssigneeIcon () { 
     return this.workItemDetailAssigneeIcon.click();
   }
 
