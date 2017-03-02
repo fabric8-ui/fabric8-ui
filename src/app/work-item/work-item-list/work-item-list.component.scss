@@ -7,6 +7,11 @@
   }
 }
 .work-item-list-page {
+  >.list-group
+  {
+    border-top-width:0 !important;
+  }
+  flex:1;
   .detail-list-wrap {
     flex: auto;
     -webkit-flex: auto;
