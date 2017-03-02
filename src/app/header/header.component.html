@@ -35,6 +35,11 @@
       <li routerLinkActive="active" class="with-no-children">
         <a [routerLink]="['/work-item/board']" id="header_menuWork"><span class="nav-item-text">WorkBoard</span></a>
       </li>
+      <li>
+        <select [ngModel]="selectedSpace" (ngModelChange)="onSpaceChange($event)">
+          <option *ngFor="let space of spaces" [ngValue]="space">{{space.name}}</option>
+        </select>
+      </li>
     </ul>
   </div>
 </nav>

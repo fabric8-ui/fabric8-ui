@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Broadcaster } from 'ngx-login-client';
-import { Space } from 'ngx-fabric8-wit';
+import { SpaceService, Space } from 'ngx-fabric8-wit';
 
 @Component({
   selector: 'fab-planner-type',
@@ -20,11 +20,12 @@ export class TypeComponent implements OnInit, OnDestroy {
 
   constructor(
     private broadcaster: Broadcaster,
+    private spaceService: SpaceService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.spaceSubscription = this.broadcaster.on<Space>("spaceChanged").subscribe(space => console.log('[IterationComponent] New Space selected: ' + space.name));
+    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => console.log('[IterationComponent] New Space selected: ' + space.name));
   }
 
   ngOnDestroy() {

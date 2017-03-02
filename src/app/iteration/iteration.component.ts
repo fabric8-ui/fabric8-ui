@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Params, ActivatedRoute } from '@angular/router';
-import { Space } from 'ngx-fabric8-wit';
+import { SpaceService, Space } from 'ngx-fabric8-wit';
 import { IterationService } from './iteration.service';
 import { IterationModel } from '../models/iteration.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -41,13 +41,14 @@ export class IterationComponent implements OnInit, OnDestroy {
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     private iterationService: IterationService,
+    private spaceService: SpaceService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
+    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => {
       console.log('[IterationComponent] New Space selected: ' + space.name);
       this.getAndfilterIterations();
     });

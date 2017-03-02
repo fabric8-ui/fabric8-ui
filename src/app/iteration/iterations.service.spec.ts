@@ -14,7 +14,6 @@ import { MockBackend } from '@angular/http/testing';
 import { cloneDeep } from 'lodash';
 import {
   AuthenticationService,
-  Broadcaster,
   Logger
 } from 'ngx-login-client';
 import { SpaceService } from 'ngx-fabric8-wit';
@@ -67,7 +66,6 @@ describe ('Iteration service - ', () => {
       providers: [
         Logger,
         BaseRequestOptions,
-        Broadcaster,
         MockBackend,
         {
           provide: Http,

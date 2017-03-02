@@ -9,18 +9,21 @@ import {
   UserService
 } from 'ngx-login-client';
 
-import { Space } from 'ngx-fabric8-wit';
+import { SpaceService, Space } from 'ngx-fabric8-wit';
 
 @Component({
   selector: 'alm-app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
+
 export class HeaderComponent implements OnInit {
   title = 'Almighty';
   loggedInUser: User;
   loggedIn: Boolean = false;
   imgLoaded: Boolean = false;
+
+  spaces: Space[] = [];
   selectedSpace: Space = null;
 
 /*
@@ -53,6 +56,7 @@ export class HeaderComponent implements OnInit {
     private userService: UserService,
     private logger: Logger,
     private auth: AuthenticationService,
+    private spaceService: SpaceService,
     private broadcaster: Broadcaster) {}
 
   getLoggedUser(): void {
@@ -71,7 +75,12 @@ export class HeaderComponent implements OnInit {
     this.listenToEvents();
     this.getLoggedUser();
     this.loggedIn = this.auth.isLoggedIn();
-    this.broadcaster.on<Space>('spaceChanged').subscribe(currentSpace => this.selectedSpace = currentSpace );
+    this.spaceService.getSpaces().then(loadedSpaces => {
+      this.spaces = loadedSpaces;
+      this.spaceService.getCurrentSpace().then(currentSpace => {
+        this.selectedSpace = currentSpace;
+      })
+    });
   }
 
   onImgLoad(){
@@ -89,5 +98,10 @@ export class HeaderComponent implements OnInit {
       .subscribe(message => {
         this.resetData();
     });
+  }
+
+  onSpaceChange(newSpace: Space) {
+    this.logger.log('Selected new Space: ' + newSpace.id);
+    this.spaceService.switchToSpace(newSpace);
   }
 }

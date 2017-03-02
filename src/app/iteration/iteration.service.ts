@@ -8,10 +8,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { cloneDeep } from 'lodash';
 import {
   AuthenticationService,
-  Logger, Broadcaster
+  Logger
 } from 'ngx-login-client';
 
-import { Space } from 'ngx-fabric8-wit';
+import { SpaceService, Space } from 'ngx-fabric8-wit';
 import { IterationModel } from '../models/iteration.model';
 import { MockHttp } from '../shared/mock-http';
 
@@ -25,10 +25,12 @@ export class IterationService {
       private logger: Logger,
       private http: Http,
       private auth: AuthenticationService,
-      private globalSettings: GlobalSettings,
-      private broadcaster: Broadcaster
+      private spaceService: SpaceService,
+      private globalSettings: GlobalSettings
   ) {
-     if (this.auth.getToken() != null) {
+    // set initial space and subscribe to the space service to recognize space switches
+    //this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => this.switchSpace(space));
+    if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
      }
   }
@@ -40,7 +42,7 @@ export class IterationService {
    */
   getIterations(): Promise<IterationModel[]> {
     // get the current iteration url from the space service
-    return this.broadcaster.on<Space>("spaceChanged").toPromise().then(currentSpace => {
+    return this.spaceService.getCurrentSpace().then(currentSpace => {
       let iterationsUrl = currentSpace.relationships.iterations.links.related;
       if (this.checkValidIterationUrl(iterationsUrl)) {
         return this.http
@@ -78,7 +80,7 @@ export class IterationService {
    * @return new item
    */
   createIteration(iteration: IterationModel): Promise<IterationModel> {
-    return this.broadcaster.on<Space>("spaceChanged").toPromise().then(currentSpace => {
+    return this.spaceService.getCurrentSpace().then(currentSpace => {
       let iterationsUrl = currentSpace.relationships.iterations.links.related;
       if (this.checkValidIterationUrl(iterationsUrl)) {
         iteration.relationships.space.data.id = currentSpace.id;

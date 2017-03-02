@@ -15,7 +15,8 @@ import {
   AuthenticationService,
   Broadcaster
 } from 'ngx-login-client';
-import { Space } from 'ngx-fabric8-wit';
+import { SpaceService } from 'ngx-fabric8-wit';
+
 import { WorkItem } from './work-item';
 import { WorkItemListEntryComponent } from './work-item-list/work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService } from './work-item.service';
@@ -42,20 +43,23 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
   workItemDetail: WorkItem;
   workItemTypes: WorkItemType[];
   showTypesOptions: Boolean = false;
+  private spaceSubscription: Subscription = null;
 
   constructor(
     private auth: AuthenticationService,
     private route: ActivatedRoute,
     private broadcaster: Broadcaster,
     private workItemService: WorkItemService,
-    private router: Router) {
+    private router: Router,
+    private spaceService: SpaceService
+  ) {
 
   }
 
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.broadcaster.on<Space>("spaceChanged").subscribe(space => {
+    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => {
       console.log('[WorkItemComponent] New Space selected: ' + space.name);
       this.getWorkItemTypes();
     });
