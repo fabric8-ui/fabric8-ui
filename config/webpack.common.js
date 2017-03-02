@@ -72,7 +72,10 @@ module.exports = function (options) {
   console.log('The options from the webpack config: ' + JSON.stringify(options, null, 2));
 
   // ExtractTextPlugin
-  const extractCSS = new ExtractTextPlugin('[name].[id]' + ( isProd ? '.[contenthash]' : '' ) + '.css', { allChunks: true });
+  const extractCSS = new ExtractTextPlugin({
+    filename: '[name].[id]' + ( isProd ? '.[contenthash]' : '' ) + '.css',
+    allChunks: true }
+  );
 
   // const entryFile = aotMode ? './src/main.browser.aot.ts' : './src/main.browser.ts';
   // const outPath = aotMode ? 'dist' : 'aot';
@@ -184,7 +187,10 @@ module.exports = function (options) {
          */
         {
           test: /\.css$/,
-          loader: extractCSS.extract("style-loader", "css-loader?sourceMap&context=/")
+          loader: extractCSS.extract({
+            fallback: "style-loader",
+            use: "css-loader?sourceMap&context=/"
+          })
         },
 
         {
@@ -195,13 +201,13 @@ module.exports = function (options) {
             },
             {
               loader: 'css-loader',
-              query: {
+              options: {
                 minimize: isProd
               }
             },
             {
               loader: 'sass-loader',
-              query: {
+              options: {
                 includePaths: sassModules.map(val => val.sassPath)
               }
             }
