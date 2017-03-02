@@ -35,7 +35,10 @@ describe('Work item list', function () {
  it('Create WorkItem and creatorname and image is relecting', function () {
    page.clickDetailedDialogButton();
    var detailPage = page.clickDetailedIcon("userstory");
+
+   browser.wait(until.elementToBeClickable(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItemDetailTitle');   
    detailPage.setWorkItemDetailTitle (workItemTitle, false);
+
    detailPage.clickWorkItemTitleSaveIcon();
    detailPage.clickWorkItemDetailDescription()
    detailPage.setWorkItemDetailDescription (workItemDescription, true);
@@ -50,7 +53,10 @@ describe('Work item list', function () {
  it('Edit and check WorkItem , creatorname and image is relecting', function () {
    page.clickDetailedDialogButton();
    var detailPage = page.clickDetailedIcon("userstory");
+
+   browser.wait(until.elementToBeClickable(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItemDetailTitle'); 
    detailPage.setWorkItemDetailTitle (workItemTitle, false);
+
    detailPage.clickWorkItemTitleSaveIcon();
    detailPage.clickWorkItemDetailDescription()
    detailPage.setWorkItemDetailDescription (workItemDescription, true);
@@ -70,7 +76,7 @@ describe('Work item list', function () {
  it('check Creator is readonly - desktop', function () {
    page.clickDetailedDialogButton();
    var detailPage = page.clickDetailedIcon("userstory");
-   browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+   browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
    expect(detailPage.getCreatorDefaultIcon().isPresent()).toBe(true);
    expect(detailPage.getCreatorUsername()).toBe('Creator not found');
    });

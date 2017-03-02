@@ -27,8 +27,6 @@ var waitTime = 30000;
       page.iterationAddButton().click();
       expect(page.getIterationDialogTitle()).toBe('Create Iteration');
       page.clickCancelIteration();
-      page.clickIterationCreateLabel();
-      expect(page.getIterationDialogTitle()).toBe('Create Iteration');
   });
   /*
   it('Verify Iteration helpbox is showing -phone ', function() {

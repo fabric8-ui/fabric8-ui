@@ -20,9 +20,7 @@ var WorkItemListPage = require('./page-objects/work-item-list.page'),
 
 describe('Work item list', function () {
   var page, items, browserMode;
-
-var until = protractor.ExpectedConditions;
-var waitTime = 30000;
+  var until = protractor.ExpectedConditions;
 
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
@@ -40,13 +38,13 @@ var waitTime = 30000;
     page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
 //        detailPage.workItemDetailAssigneeIcon().getLocation().then(function (navDivLocation) {
 //          initTop = navDivLocation.y;
 //          initLeft = navDivLocation.x;
 //          console.log ("x = " + navDivLocation.x + ", y = " + navDivLocation.y);
 //        });    
-      detailPage.workItemDetailAssigneeIcon().click();
+      detailPage.clickworkItemDetailAssigneeIcon();
 
       browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeSearch), constants.WAIT, 'Failed to find Assignee Search');  
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
@@ -73,9 +71,8 @@ var waitTime = 30000;
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
-
-      expect(detailPage.workItemDetailAssigneeIcon().click()).toBe(null);
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
+      expect(detailPage.clickworkItemDetailAssigneeIcon()).toBe(null);
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
       expect(detailPage.details_assigned_user().getText()).toContain("Example User 1");
@@ -94,9 +91,9 @@ var waitTime = 30000;
       page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
+      detailPage.clickworkItemDetailAssigneeIcon();
 
-      detailPage.workItemDetailAssigneeIcon().click();
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
       expect(detailPage.details_assigned_user().getText()).toContain("Example User 1");
@@ -117,9 +114,9 @@ var waitTime = 30000;
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
-      
-      detailPage.workItemDetailAssigneeIcon().click();
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
+      detailPage.clickworkItemDetailAssigneeIcon();
+
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
       expect(detailPage.details_assigned_user().getText()).toContain("Example User 1");
@@ -140,9 +137,9 @@ var waitTime = 30000;
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
+      detailPage.clickworkItemDetailAssigneeIcon();
 
-      detailPage.workItemDetailAssigneeIcon().click();
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
       expect(detailPage.details_assigned_user().getText()).toContain("Example User 1");
@@ -167,9 +164,9 @@ var waitTime = 30000;
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
+      detailPage.clickworkItemDetailAssigneeIcon();
 
-      detailPage.workItemDetailAssigneeIcon().click();
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
       expect(detailPage.details_assigned_user().getText()).toContain("Example User 1");
@@ -193,14 +190,14 @@ var waitTime = 30000;
       page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
+      detailPage.clickworkItemDetailAssigneeIcon();
 
-      detailPage.workItemDetailAssigneeIcon().click();
       detailPage.setWorkItemDetailAssigneeSearch("Example User 2",false);
       detailPage.clickAssignedUserDropDownList("Example User 2");
       expect(detailPage.details_assigned_user().getText()).toContain("Example User 2");
       expect(detailPage.workItemDetailAvatar().isPresent()).toBe(true);
-      expect(detailPage.workItemDetailUnAssigneeIcon().isPresent()).toBe(false);
+      expect(detailPage.workItemDetailUnAssigneeIcon.isPresent()).toBe(false);
       detailPage.clickWorkItemDetailCloseButton();
      });
   }); 
@@ -214,9 +211,8 @@ var waitTime = 30000;
       page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
-
-      detailPage.workItemDetailAssigneeIcon().click();
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
+      detailPage.clickworkItemDetailAssigneeIcon();
       detailPage.setWorkItemDetailAssigneeSearch("Some User 2",false);
       expect(detailPage.assignedUserDropDownList("Some User 2").isPresent()).toBe(false);
      });

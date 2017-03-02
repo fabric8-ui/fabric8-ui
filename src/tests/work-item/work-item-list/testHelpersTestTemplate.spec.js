@@ -31,7 +31,7 @@ describe('Work item list', function () {
         var theWorkItem = testHelpers.quickCreateWorkItem (page, "testing123", "testing456");
         // Perform some tests on that workitem
         testHelpers.assignWorkItem (page, theWorkItem, "Example User 1");
-        testHelpers.verifyAssignee (page, theWorkItem, "Example User 1");
+//        testHelpers.verifyAssignee (page, theWorkItem, "Example User 1");
         testHelpers.setWorkItemDescription (page, "testing123", "newDescText", true);
         testHelpers.setWorkItemTitle (page, "testing123", "newTitleText", true);
         testHelpers.deleteWorkItem (page, theWorkItem, true);

@@ -47,6 +47,7 @@ class WorkItemListPage {
  };
  workItemByURLId (workItemId) {
    browser.get("http://localhost:8088/work-item/list/detail/"+ workItemId);
+    var theDetailPage = new WorkItemDetailPage (workItemId);
  }
  clickCodeMenuTab () {
     return element(by.id("header_menuCode")).click();
@@ -320,8 +321,9 @@ class WorkItemListPage {
 
   /* Adding a new workitem through the dialog */
   get detailedDialogButton () {
-    return  element(by.css(".with-cursor-pointer"));
-  }
+    /* Changed from element(by.css(".with-cursor-pointer")) - as there were multiple matches */
+    return  element(by.css(".toolbar-pf-action-right"));
+ }
 
   clickDetailedDialogButton () {
     return this.detailedDialogButton.click();

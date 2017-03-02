@@ -172,7 +172,7 @@ var waitTime = 30000;
   });
 
 
-  /*Edit with blank title - Mobile Should show validation message*/
+  /* Edit with blank title - Mobile Should show validation message */
     it('Edit with blank title - Mobile Should show validation message. -phone', function() {
 
       /* Create a new workitem */
@@ -202,7 +202,7 @@ var waitTime = 30000;
 
     });
 
-    /*Edit with blank title - Desktop Should show validation message*/
+    /* Edit with blank title - Desktop Should show validation message */
       it('Edit with blank title - Mobile Should show validation message. -Desktop', function() {
         testSupport.setBrowserMode('desktop');
         /* Create a new workitem */
@@ -229,9 +229,11 @@ var waitTime = 30000;
         });
 
       });
-  /*Edit title and description by hitting Enter key Mobile - phone.*/
+
+  /* Edit title and description by hitting Enter key Mobile - phone. */
   it('Edit title and description by hitting Enter key Mobile - phone.', function() {
     testSupport.setBrowserMode('phone');
+
     /* Create a new workitem */
     var workItemTitle = "The test workitem title";
     var workItemUpdatedTitle = "something";
@@ -257,9 +259,11 @@ var waitTime = 30000;
 
     });
   });
-  /*Edit title and description by hitting Enter key Mobile - desktop.*/
+
+  /* Edit title and description by hitting Enter key Mobile - desktop. */
       it('Edit title and description by hitting Enter key  - desktop.', function() {
         testSupport.setBrowserMode('desktop');
+
         /* Create a new workitem */
         var workItemTitle = "The test workitem title";
         var workItemUpdatedTitle = "something";
@@ -287,6 +291,7 @@ var waitTime = 30000;
 
         });
   });
+
   /* Verify how many work item type exists in drop down - phone*/
    /* Commenting type drop down related tests for issue 635
    it('Verify how many work item type exists in drop down - phone', function() {
@@ -306,6 +311,7 @@ var waitTime = 30000;
       });
     });
   */
+
 /* Verify how many work item type exists in drop down - desktop*/
 /* Commenting type drop down related tests for issue 635
 it('Verify how many work item type exists in drop down - desktop', function() {
@@ -325,6 +331,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
         });
       });
     */
+
       /* Verify the name display of workitem types are correct  - phone*/
            /* Commenting type drop down related tests for issue 635
            it('Verify the name display of workitem types are correct ', function() {
@@ -350,7 +357,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       });
       */
 
-/*Verfify on selecting workitem it should display in list and detail view both pages - Desktop  */
+  /* Verfify on selecting workitem it should display in list and detail view both pages - Desktop */
        it('Verfify on selecting workitem it should display in list and detail view both pages -Desktop ', function() {
           testSupport.setBrowserMode('desktop');
           var workItemTitle = "The test workitem title";
@@ -364,7 +371,8 @@ it('Verify how many work item type exists in drop down - desktop', function() {
            });
           });
           });
-  /*Verfify on selecting workitem it should display in list and detail view both pages - phone''  */
+
+  /* Verfify on selecting workitem it should display in list and detail view both pages - phone */
    it('Verfify on selecting workitem it should display in list and detail view both pages -phone ', function() {
       testSupport.setBrowserMode('phone');
       var workItemTitle = "The test workitem title";
@@ -383,7 +391,6 @@ it('Verify how many work item type exists in drop down - desktop', function() {
     });
 
     /*Verify how many state changes exists in drop down*/
-
       it('Verify how many state changes exists in drop down-phone ', function() {
         var workItemTitle = "The test workitem title";
         var workItemUpdatedTitle = "The test workitem title - UPDATED";
@@ -397,6 +404,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
           });
          });
        });
+
   /* Verify the name display of workitem States are correct  - phone*/
   it('Verify the name display of workitem States are correct ', function() {
       var workItemTitle = "The test workitem title";
@@ -418,6 +426,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
           });
       });
   });
+
   /*Verfify on selecting workitem it should display in list and detail view both pages */
   it('Verfify on selecting workitem state it should display in list and detail view both pages -phone ', function() {
      var workItemTitle = "The test workitem title";
@@ -434,6 +443,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
          });
         });
       });
+
   /*Verfify on selecting workitem it should display in list and detail view both pages */
   it('Verfify on selecting workitem state it should display in list and detail view both pages Open state -phone ', function() {
       var workItemTitle = "The test workitem title";
@@ -453,6 +463,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
          });
     });
   });
+
   /*Verfify on selecting workitem inprogress it should display in list and detail view both pages */
   it('Verfify on selecting workitem state it should display in list and detail view both pages inprogress state -phone ', function() {
       var workItemTitle = "The test workitem title";
@@ -469,6 +480,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       });
     });
   });
+
   /*Verfify on selecting workitem it should display in list and detail view both pages */
   it('Verfify on selecting workitem state it should display in list and detail view both pages resolved state -phone ', function() {
       var workItemTitle = "The test workitem title";
@@ -485,6 +497,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       });
     });
   });
+
   /*Verfify on selecting workitem it should display in list and detail view both pages */
   it('Verfify on selecting workitem state it should display in list and detail view both pages closed state -phone ', function() {
       var workItemTitle = "The test workitem title";
@@ -501,7 +514,6 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       });
     });
   });
-
 
   /*Edit with blank description - desktop Should show "No description available for this work item.".*/
       it('Edit title and description by hitting Enter key - desktop.', function() {
@@ -531,6 +543,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
 
         });
   });
+
     it('Verify that the title field must not be unique -phone ', function() {
       var workItemTitle = page.workItemTitle(page.firstWorkItem);
       page.clickWorkItemQuickAdd();
@@ -538,11 +551,12 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       page.clickQuickAddSave();   
       
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
-      browser.wait(until.elementToBeClickable(page.workItemTitle(page.firstWorkItem)), constants.WAIT, 'Failed to find Assignee Icon');   
+      browser.wait(until.elementToBeClickable(page.workItemTitle(page.firstWorkItem)), constants.WAIT, 'Failed to find first work item on page');   
 
       detailPage.clickWorkItemDetailCloseButton();
       expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
     });
+
     it('Verify that the description field can have its contents deleted -dektop ', function() { 
       testSupport.setBrowserMode("desktop");
       var workItemTitle = "Title Text WWIT";
@@ -552,7 +566,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       page.clickQuickAddSave(); 
       expect(page.workItemDescription(page.firstWorkItem)).toBe("");
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
-      browser.wait(until.elementToBeClickable(detailPage.clickWorkItemDetailDescription()), constants.WAIT, 'Failed to find Assignee Icon');   
+      browser.wait(until.elementToBeClickable(detailPage.clickWorkItemDetailDescription()), constants.WAIT, 'Failed to find Work Item Description');   
 
       detailPage.clickWorkItemDetailDescription();
       detailPage.setWorkItemDetailDescription(" ",false);
@@ -561,17 +575,22 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
       expect(page.workItemDescription(page.firstWorkItem)).toBe("");
     });
+
     it('Check before while adding description the field should not display undefine/null', function () {
         testSupport.setBrowserMode("desktop");
         var workItemTitle = "The test workitem title";
-        browser.wait(until.elementToBeClickable(page.detailedDialogButton), constants.WAIT, 'Failed to find Assignee Icon');   
+        browser.wait(until.elementToBeClickable(page.detailedDialogButton), constants.WAIT, 'Failed to find Detailed Dialog Button');   
         page.clickDetailedDialogButton();
         var detailPage = page.clickDetailedIcon("userstory");
+
+        browser.wait(until.elementToBeClickable(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItem Detail Title');   
         detailPage.setWorkItemDetailTitle (workItemTitle, false);
+
         detailPage.clickWorkItemTitleSaveIcon();
         expect(detailPage.workItemDetailDescriptionById().getText()).not.toBe("undefined");
      });
-     it('Test description/title can be in other languages also acceptable-dektop ', function() { 
+
+     it('Test description/title can be in other languages also acceptable - desktop ', function() { 
       testSupport.setBrowserMode("desktop");
       var workItemTitle = "थिस इस tittle";
       page.clickWorkItemQuickAdd();
@@ -587,7 +606,8 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
       expect(page.workItemDescription(page.firstWorkItem)).toBe("");
     });
-    it('Verify the HTML tags should be treated as text while writing description/title.-dektop ', function() { 
+
+    it('Verify the HTML tags should be treated as text while writing description/title. - desktop ', function() { 
       testSupport.setBrowserMode("desktop");
       var workItemTitle = "<title>Yes this is a title</title>";
       page.clickWorkItemQuickAdd();

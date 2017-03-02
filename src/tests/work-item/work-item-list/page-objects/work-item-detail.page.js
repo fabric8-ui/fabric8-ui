@@ -287,14 +287,17 @@ class WorkItemDetailPage {
   /* The following UI elements support the assignment of a user to a work item */
 
   /* Icon for the user assigned to the workitem */
-  workItemDetailAssigneeIcon () {
+  get workItemDetailAssigneeIcon () {
     return element(by.css(".user-assign-icon"));
-  }
-  workItemDetailUnAssigneeIcon () {
-    return element(by.css(".pull-left.fa.fa-user-plus.user-assign-icon"));
   }
   clickworkItemDetailAssigneeIcon () { 
     return this.workItemDetailAssigneeIcon.click();
+  }
+  get workItemDetailUnAssigneeIcon () {
+    return element(by.css(".pull-left.fa.fa-user-plus.user-assign-icon"));
+  }
+  clickWorkItemDetailUnAssigneeIcon () {
+    return this.workItemDetailUnAssigneeIcon.click();
   }
 
   /* The user assigned to the workitem */

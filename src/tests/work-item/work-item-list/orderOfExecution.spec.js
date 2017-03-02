@@ -82,14 +82,14 @@ defaultWorkitemsPhantomJS = [
            page.clickWorkItemCheckbox (page.workItemByIndex(0)).then(function() {
 
              /* Walk the workitem down the list */
-             for (i = 0; i < totalCount - 1; i++) {
+//             for (i = 0; i < totalCount - 1; i++) {
 //               compareWorkitems (page, i, "Title Text 0");
 //               page.clickWorkItemMovePulldown().then(function() {
 //                 browser.wait(until.elementToBeClickable(page.workItemMovePulldownDown(page.workItemMovePulldown)), waitTime);
 //                 page.clickWorkItemMovePulldownDown(page.workItemMovePulldown);
                  // commented out due to: https://github.com/fabric8io/fabric8-planner/issues/762
 //               });
-             }
+//             }
 
              /* And back up the list */
              for (i = totalCount - 1; i > 0; i--) {

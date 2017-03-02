@@ -83,8 +83,9 @@ module.exports = {
 
         /* Set the assignee */
         if (assigneeName != null) {
-            browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
-            detailPage.workItemDetailAssigneeIcon().click();
+            browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
+            detailPage.clickworkItemDetailAssigneeIcon();
+            browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeSearch), constants.WAIT, 'Failed to find Assignee Search');  
             detailPage.setWorkItemDetailAssigneeSearch(assigneeName, false);
             detailPage.clickAssignedUserDropDownList(assigneeName);
         }
@@ -118,9 +119,10 @@ module.exports = {
             var detailPage = page.clickWorkItemTitle(theWorkItem, text);
 
             /* Assign the workitem */
-            detailPage.workItemDetailAssigneeIcon().click();
+            browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
+            detailPage.clickworkItemDetailAssigneeIcon();
+            browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeSearch), constants.WAIT, 'Failed to find Assignee Search');  
             detailPage.setWorkItemDetailAssigneeSearch(assigneeName, false);
-            detailPage.clickAssignedUserDropDownList(assigneeName);
 
             /* Close the workitem add dialog */
             detailPage.clickWorkItemDetailCloseButton();
@@ -149,7 +151,8 @@ module.exports = {
 
             /* Access the workitem's detailpage */
             var detailPage = page.clickWorkItemTitle(theWorkItem, text);
-
+            browser.wait(until.elementToBeClickable(detailPage.details_assigned_user()), constants.WAIT, 'Failed to find Assignee Icon');   
+ 
             expect(detailPage.details_assigned_user().getText()).toContain(assigneeName);
 
             /* Close the workitem add dialog */
