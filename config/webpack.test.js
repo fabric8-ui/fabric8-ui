@@ -145,7 +145,7 @@ module.exports = function (options) {
           test: /\.html$/,
           loader: 'raw-loader',
           exclude: [helpers.root('src/index.html')]
-        },
+        }
 
         // /**
         //  * Instruments JS files with Istanbul for subsequent code coverage reporting.

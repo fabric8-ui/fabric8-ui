@@ -78,12 +78,12 @@ module.exports = {
 
       {
         test: /\.css$/,
-        loaders: ['to-string-loader', 'css-loader']
+        use: ['to-string-loader', 'css-loader']
       },
 
       {
         test: /\.scss$/,
-        loaders: ["css-to-string-loader", "css-loader", "sass-loader"]
+        use: ["css-to-string-loader", "css-loader", "sass-loader"]
       },
 
       // todo: change the loader to something that adds a hash to images
@@ -138,17 +138,17 @@ module.exports = {
          * See: https://github.com/webpack/html-loader#advanced-options
          */
         // TODO: Need to workaround Angular 2's html syntax => #id [bind] (event) *ngFor
-        htmlLoader: {
-          minimize: true,
-          removeAttributeQuotes: false,
-          caseSensitive: true,
-          customAttrSurround: [
-            [/#/, /(?:)/],
-            [/\*/, /(?:)/],
-            [/\[?\(?/, /(?:)/]
-          ],
-          customAttrAssign: [/\)?\]?=/]
-        },
+        // htmlLoader: {
+        //   minimize: true,
+        //   removeAttributeQuotes: false,
+        //   caseSensitive: true,
+        //   customAttrSurround: [
+        //     [/#/, /(?:)/],
+        //     [/\*/, /(?:)/],
+        //     [/\[?\(?/, /(?:)/]
+        //   ],
+        //   customAttrAssign: [/\)?\]?=/]
+        // },
 
         tslintLoader: {
           emitErrors: false,
