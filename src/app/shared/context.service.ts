@@ -55,6 +55,10 @@ export class ContextService {
           'path': '/' + val
         } as Context;
         return ctx;
+      })
+      // Ensure the menus are built
+      .do(val => {
+        this.buildContextMenus(val);
       });
     // Subscribe the the default context to the recent space collector
     this._default.subscribe(addRecent);
@@ -81,17 +85,17 @@ export class ContextService {
         if (val.space) {
           this.broadcaster.broadcast('spaceChanged', val.space);
         }
+      })
+      // Ensure the menus are built
+      .do(val => {
+        this.buildContextMenus(val);
       });
     // Subscribe the current context to the revent space collector
     this._current.subscribe(addRecent);
 
     // Create the recent space list
     this._recent = addRecent
-      // First, we need to ensure the menus are built
-      .do(val => {
-        this.buildContextMenus(val);
-      })
-      // Now, we need to map from the context being added to an array of recent contexts
+      // Map from the context being added to an array of recent contexts
       // The scan operator allows us to access the list of recent contexts and add ours
       .scan((recent, ctx) => {
         // First, check if this context is already in the list
