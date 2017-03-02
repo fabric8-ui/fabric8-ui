@@ -1,3 +1,4 @@
+import { AstronautService } from './shared/astronaut.service';
 import './rxjs-extensions';
 
 import { ModuleWithProviders, NgModule } from '@angular/core';
@@ -59,6 +60,7 @@ if (process.env.ENV == 'inmemory') {
   serviceImports = [
     Logger,
     AuthenticationService,
+    AstronautService,
     Broadcaster,
     LoginService,
     UserService,
@@ -80,6 +82,7 @@ if (process.env.ENV == 'inmemory') {
   serviceImports = [
     Logger,
     AuthenticationService,
+    AstronautService,
     Broadcaster,
     LoginService,
     UserService,

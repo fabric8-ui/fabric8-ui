@@ -1,3 +1,4 @@
+import { AstronautService } from './../shared/astronaut.service';
 import { GlobalSettings } from '../shared/globals';
 
 import { Injectable } from '@angular/core';
@@ -25,7 +26,7 @@ export class IterationService {
       private logger: Logger,
       private http: Http,
       private auth: AuthenticationService,
-      private spaceService: SpaceService,
+      private astronaut: AstronautService,
       private globalSettings: GlobalSettings
   ) {
     // set initial space and subscribe to the space service to recognize space switches
@@ -42,7 +43,7 @@ export class IterationService {
    */
   getIterations(): Promise<IterationModel[]> {
     // get the current iteration url from the space service
-    return this.spaceService.getCurrentSpace().then(currentSpace => {
+    return this.astronaut.getCurrentSpace().then(currentSpace => {
       let iterationsUrl = currentSpace.relationships.iterations.links.related;
       if (this.checkValidIterationUrl(iterationsUrl)) {
         return this.http
@@ -80,7 +81,7 @@ export class IterationService {
    * @return new item
    */
   createIteration(iteration: IterationModel): Promise<IterationModel> {
-    return this.spaceService.getCurrentSpace().then(currentSpace => {
+    return this.astronaut.getCurrentSpace().then(currentSpace => {
       let iterationsUrl = currentSpace.relationships.iterations.links.related;
       if (this.checkValidIterationUrl(iterationsUrl)) {
         iteration.relationships.space.data.id = currentSpace.id;

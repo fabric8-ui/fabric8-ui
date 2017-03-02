@@ -1,3 +1,4 @@
+import { AstronautService } from './../shared/astronaut.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
 
@@ -23,12 +24,12 @@ export class TypeComponent implements OnInit, OnDestroy {
 
   constructor(
     private broadcaster: Broadcaster,
-    private spaceService: SpaceService,
+    private astronaut: AstronautService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => console.log('[IterationComponent] New Space selected: ' + space.name));
+    this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space => console.log('[IterationComponent] New Space selected: ' + space.name));
   }
 
   ngOnDestroy() {

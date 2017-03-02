@@ -1,3 +1,4 @@
+import { AstronautService } from './../shared/astronaut.service';
 import { Subscription } from 'rxjs/Subscription';
 import {
   AfterViewInit,
@@ -51,7 +52,7 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
     private broadcaster: Broadcaster,
     private workItemService: WorkItemService,
     private router: Router,
-    private spaceService: SpaceService
+    private astronaut: AstronautService
   ) {
 
   }
@@ -59,7 +60,7 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => {
+    this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space => {
       console.log('[WorkItemComponent] New Space selected: ' + space.name);
       this.getWorkItemTypes();
     });

@@ -1,3 +1,4 @@
+import { AstronautService } from './../../shared/astronaut.service';
 import { Subscription } from 'rxjs/Subscription';
 import {
   AfterViewInit,
@@ -91,14 +92,14 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     private logger: Logger,
     private userService: UserService,
     private route: ActivatedRoute,
-    private spaceService: SpaceService) {}
+    private astronaut: AstronautService) {}
 
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
     // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
-    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => {
+    this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space => {
       console.log('[WorkItemListComponent] New Space selected: ' + space.name);
       this.loadWorkItems();
       this.workItemService.resetWorkItemList();

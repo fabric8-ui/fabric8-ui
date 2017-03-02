@@ -1,3 +1,4 @@
+import { AstronautService } from './../shared/astronaut.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -41,14 +42,14 @@ export class IterationComponent implements OnInit, OnDestroy {
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     private iterationService: IterationService,
-    private spaceService: SpaceService,
+    private astronaut: AstronautService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => {
+    this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space => {
       console.log('[IterationComponent] New Space selected: ' + space.name);
       this.getAndfilterIterations();
     });

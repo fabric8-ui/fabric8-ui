@@ -1,3 +1,4 @@
+import { AstronautService } from './../shared/astronaut.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -56,7 +57,7 @@ export class HeaderComponent implements OnInit {
     private userService: UserService,
     private logger: Logger,
     private auth: AuthenticationService,
-    private spaceService: SpaceService,
+    private astronaut: AstronautService,
     private broadcaster: Broadcaster) {}
 
   getLoggedUser(): void {
@@ -75,9 +76,9 @@ export class HeaderComponent implements OnInit {
     this.listenToEvents();
     this.getLoggedUser();
     this.loggedIn = this.auth.isLoggedIn();
-    this.spaceService.getSpaces().then(loadedSpaces => {
+    this.astronaut.getAllSpaces().then(loadedSpaces => {
       this.spaces = loadedSpaces;
-      this.spaceService.getCurrentSpace().then(currentSpace => {
+      this.astronaut.getCurrentSpace().then(currentSpace => {
         this.selectedSpace = currentSpace;
       })
     });
@@ -102,6 +103,6 @@ export class HeaderComponent implements OnInit {
 
   onSpaceChange(newSpace: Space) {
     this.logger.log('Selected new Space: ' + newSpace.id);
-    this.spaceService.switchToSpace(newSpace);
+    this.astronaut.switchToSpace(newSpace);
   }
 }

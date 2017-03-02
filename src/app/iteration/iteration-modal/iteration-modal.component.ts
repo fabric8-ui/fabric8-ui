@@ -1,3 +1,4 @@
+import { AstronautService } from './../../shared/astronaut.service';
 import { Component, ViewChild, OnInit, Output, EventEmitter, Input, OnChanges, OnDestroy } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
@@ -58,12 +59,12 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   constructor(
     private iterationService: IterationService,
     private broadcaster: Broadcaster,
-    private spaceService: SpaceService) {}
+    private astronaut: AstronautService) {}
 
 
   ngOnInit() {
     this.resetValues();
-    this.spaceSubscription = this.spaceService.getCurrentSpaceBus()
+    this.spaceSubscription = this.astronaut.getCurrentSpaceBus()
                                  .subscribe(
                                     space => console.log('[FabPlannerIterationModalComponent] New Space selected: ' + space.name)
                                   );
