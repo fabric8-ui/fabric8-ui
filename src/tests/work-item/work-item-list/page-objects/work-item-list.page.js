@@ -114,7 +114,7 @@ class WorkItemListPage {
  }
 
  clickLogoutButton () {
-   return element(by.xpath('.//*[@id="header_rightDropdown"]/li[5]/a'));
+   return element(by.linkText('Logout'));
  }
 
  signInGithub (gitusername,gitpassword) {
@@ -320,7 +320,7 @@ class WorkItemListPage {
 
   /* Adding a new workitem through the dialog */
   get detailedDialogButton () {
-    return  element(by.css(".add-detailed-wi"));
+    return  element(by.css(".with-cursor-pointer"));
   }
 
   clickDetailedDialogButton () {

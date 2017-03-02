@@ -83,6 +83,7 @@ module.exports = {
 
         /* Set the assignee */
         if (assigneeName != null) {
+            browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
             detailPage.workItemDetailAssigneeIcon().click();
             detailPage.setWorkItemDetailAssigneeSearch(assigneeName, false);
             detailPage.clickAssignedUserDropDownList(assigneeName);

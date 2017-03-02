@@ -14,6 +14,7 @@
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
   testSupport = require('./testSupport'),
+  constants = require('./constants'),
   WorkItemDetailPage = require('./page-objects/work-item-detail.page');
 
 var workItemTitle = "The test workitem title";
@@ -25,7 +26,7 @@ var waitTime = 30000;
 
 describe('Work item list', function () {
   var page, items, browserMode;
-
+  var until = protractor.ExpectedConditions;
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);   
@@ -69,7 +70,7 @@ describe('Work item list', function () {
  it('check Creator is readonly - desktop', function () {
    page.clickDetailedDialogButton();
    var detailPage = page.clickDetailedIcon("userstory");
-   detailPage.clickCreatorDefaultIcon();
+   browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
    expect(detailPage.getCreatorDefaultIcon().isPresent()).toBe(true);
    expect(detailPage.getCreatorUsername()).toBe('Creator not found');
    });

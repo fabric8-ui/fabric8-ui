@@ -10,6 +10,7 @@
  */
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
+  constants = require('./constants'),
   testSupport = require('./testSupport');
   WorkItemDetailPage = require('./page-objects/work-item-detail.page'),
 describe('Comments tests :: ', function () {

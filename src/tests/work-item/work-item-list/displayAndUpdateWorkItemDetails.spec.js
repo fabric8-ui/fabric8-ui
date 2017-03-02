@@ -15,6 +15,7 @@
  */
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
+  constants = require('./constants'),
   testSupport = require('./testSupport');
 
 describe('Work item list', function () {
@@ -440,6 +441,9 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       page.clickWorkItemQuickAdd();
       page.typeQuickAddWorkItemTitle(workItemTitle);
       page.clickQuickAddSave().then(function() {
+
+        browser.wait(until.elementToBeClickable(page.workItemTitle(page.firstWorkItem)), constants.WAIT, 'Failed to find Assignee Icon');   
+
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
       detailPage.clickWorkItemStateDropDownButton();
@@ -532,28 +536,35 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       page.clickWorkItemQuickAdd();
       page.typeQuickAddWorkItemTitle(workItemTitle);
       page.clickQuickAddSave();   
+      
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
+      browser.wait(until.elementToBeClickable(page.workItemTitle(page.firstWorkItem)), constants.WAIT, 'Failed to find Assignee Icon');   
+
       detailPage.clickWorkItemDetailCloseButton();
       expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
     });
     it('Verify that the description field can have its contents deleted -dektop ', function() { 
       testSupport.setBrowserMode("desktop");
-      var workItemTitle = "Title Text 0";
+      var workItemTitle = "Title Text WWIT";
       page.clickWorkItemQuickAdd();
       page.typeQuickAddWorkItemTitle(workItemTitle);
       page.typeQuickAddWorkItemDesc("describe");
       page.clickQuickAddSave(); 
       expect(page.workItemDescription(page.firstWorkItem)).toBe("");
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
+      browser.wait(until.elementToBeClickable(detailPage.clickWorkItemDetailDescription()), constants.WAIT, 'Failed to find Assignee Icon');   
+
       detailPage.clickWorkItemDetailDescription();
       detailPage.setWorkItemDetailDescription(" ",false);
       detailPage.clickWorkItemDescriptionSaveIcon();
+      detailPage.clickWorkItemDetailCloseButton();
       page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
       expect(page.workItemDescription(page.firstWorkItem)).toBe("");
     });
     it('Check before while adding description the field should not display undefine/null', function () {
         testSupport.setBrowserMode("desktop");
         var workItemTitle = "The test workitem title";
+        browser.wait(until.elementToBeClickable(page.detailedDialogButton), constants.WAIT, 'Failed to find Assignee Icon');   
         page.clickDetailedDialogButton();
         var detailPage = page.clickDetailedIcon("userstory");
         detailPage.setWorkItemDetailTitle (workItemTitle, false);
@@ -572,6 +583,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       detailPage.clickWorkItemDetailDescription();
       detailPage.setWorkItemDetailDescription(" ",false);
       detailPage.clickWorkItemDescriptionSaveIcon();
+      detailPage.clickWorkItemDetailCloseButton();
       page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
       expect(page.workItemDescription(page.firstWorkItem)).toBe("");
     });
@@ -587,6 +599,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       detailPage.clickWorkItemDetailDescription();
       detailPage.setWorkItemDetailDescription(" ",false);
       detailPage.clickWorkItemDescriptionSaveIcon();
+      detailPage.clickWorkItemDetailCloseButton();
       page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
       expect(page.workItemDescription(page.firstWorkItem)).toBe("");
     });

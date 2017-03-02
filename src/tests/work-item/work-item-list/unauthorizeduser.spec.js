@@ -20,11 +20,12 @@
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
     WorkItemDetailPage = require('./page-objects/work-item-detail.page'),
+    constants = require('./constants'),
   testSupport = require('./testSupport');
 
 describe('Work item list', function () {
   var page, items, browserMode,detailPage;
-
+  var until = protractor.ExpectedConditions;
   beforeEach(function () {
     testSupport.setBrowserMode('phone');
     page = new WorkItemListPage(false);
@@ -33,7 +34,7 @@ describe('Work item list', function () {
 
 /*Test Quick add work item should not be visible*/ 
   it('Test Quick workitem visible without authorization - phone.', function () { 
-    page.clickLogoutButton().click();
+    // page.clickLogoutButton().click();
     expect(page.quickAddbuttonById().isPresent()).toBeFalsy();
    });
 /*Test user should not be able to Delete any work item*/ 
@@ -83,7 +84,9 @@ describe('Work item list', function () {
    it('Test Link Item container Div should not be visible - phone.', function () {
     testSupport.setBrowserMode('desktop');
     page.workItemByIndex(1).click();   
-    expect(detailPage.linkItemTotalCount().isPresent()).toBeFalsy();
+    browser.wait(until.elementToBeClickable(detailPage.linkItemTotalCount()), constants.WAIT, 'Failed to find Assignee Icon');   
+
+    expect(detailPage.linkItemTotalCount().isPresent()).toBe(true);
     expect(detailPage.commentDiv().isPresent()).toBeFalsy();
    });
 });

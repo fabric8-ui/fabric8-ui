@@ -16,11 +16,12 @@
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
   testSupport = require('./testSupport'),
+   constants = require('./constants'),
   testHelpers = require('./testHelpers');
 
 describe('Work item list', function () {
     var page, items, browserMode;
-
+    var until = protractor.ExpectedConditions;
     beforeEach(function () {
         testSupport.setBrowserMode('desktop');
         page = new WorkItemListPage(true);
@@ -38,6 +39,8 @@ describe('Work item list', function () {
 
     it('Create workitem', function () { 
         var theWorkItem = testHelpers.createWorkItem (page, "testing123", "testing456", "userstory", "Example User 1"); 
+        browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');   
+ 
         // Perform some tests on that workitem
         testHelpers.deleteWorkItem (page, theWorkItem);
     });

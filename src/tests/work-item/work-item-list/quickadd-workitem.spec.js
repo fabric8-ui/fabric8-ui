@@ -15,6 +15,7 @@
  */
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
+  constants = require('./constants'),
   testSupport = require('./testSupport');
 
 describe('Work item list', function () {
@@ -22,12 +23,12 @@ describe('Work item list', function () {
   var char255 = '<div *ngFor=let comment of workItem.relationalData.comments; let counter = index" class="comments-wrap">   +            <div *ngFor="let comment of workItem.relationalData?.comments?.slice().reverse()" class="comments-wrap">                  <div>                      <div class="user-avatar pull-left">                          <img id="{{"comment_avatar_" + counter}}" -                        class="user-assign-avatar pull-left"  +                               />';
   var char255Expected = '<div *ngFor=let comment of workItem.relationalData.comments; let counter = index" class="comments-wrap"> + <div *ngFor="let comment of workItem.relationalData?.comments?.slice().reverse()" class="comments-wrap"> <div> <div class="user-avatar pull-left"> <img id="{{"comment_avatar_" + counter}}" - class="user-assign-avatar pull-left" + />';
   beforeEach(function () {
-    testSupport.setBrowserMode('phone');
+    testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);
   });
 
-  it('Creating a new quick add work item and delete - phone.', function () {
-    testSupport.setBrowserMode('phone');
+  it('Creating a new quick add work item and delete - desktop.', function () {
+    testSupport.setBrowserMode('desktop');
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle('Quick Add and Delete');
     page.clickQuickAddSave().then(function() {
@@ -42,21 +43,6 @@ describe('Work item list', function () {
     });
   });
 
-  it('Creating a new quick add work item and Cancel delete - phone.', function () {
-    testSupport.setBrowserMode('phone');
-    page.clickWorkItemQuickAdd();
-    page.typeQuickAddWorkItemTitle('Quick Add and Cancel Delete');
-    page.clickQuickAddSave().then(function() {
-      expect(page.workItemTitle(page.firstWorkItem)).toBe('Quick Add and Cancel Delete');
-      expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Quick Add and Cancel Delete');
-      page.clickWorkItemKebabButton(page.firstWorkItem);
-      page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
-      page.clickWorkItemPopUpDeleteCancelConfirmButton().then(function() {
-        expect(page.workItemTitle(page.firstWorkItem)).toBe('Quick Add and Cancel Delete');
-        expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Quick Add and Cancel Delete');
-      });
-    });
-  });
   it('Verify that data is persisted and is not truncated if text fields receive data with a length greater that 255 characters. - phone.', function () {
     testSupport.setBrowserMode('desktop');
     page.clickWorkItemQuickAdd();

@@ -14,11 +14,12 @@
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
   testSupport = require('./testSupport'),
+  constants = require('./constants'),
   WorkItemDetailPage = require('./page-objects/work-item-detail.page');
 
 describe('Work item list', function () {
   var page, items, browserMode;
-
+  var until = protractor.ExpectedConditions;
   beforeEach(function () {
     testSupport.setBrowserMode('phone');
     browser.ignoreSynchronization = true;
@@ -67,6 +68,7 @@ describe('Work item list', function () {
     testSupport.setBrowserMode('desktop');
     page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
       expect(detailPage.clickWorkItemDetailTitle.getText()).toBe(workItemMockData.workItemTitle);   
       expect(detailPage.workItemDetailDescription.getText()).toContain(workItemMockData.workItemDescription);
       expect(detailPage.workItemDetailState.getText()).toBe(workItemMockData.workItemState);

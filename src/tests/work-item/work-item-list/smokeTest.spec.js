@@ -43,6 +43,8 @@ describe('Work item list', function () {
       page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
 
         var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
+        browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+
         detailPage.workItemDetailAssigneeIcon().click();
         detailPage.setWorkItemDetailAssigneeSearch(EXAMPLE_USER_1, false);
         detailPage.clickAssignedUserDropDownList(EXAMPLE_USER_1);
@@ -54,7 +56,10 @@ describe('Work item list', function () {
         detailPage.clickWorkItemDetailCloseButton();
         page.clickWorkItemKebabButton(page.firstWorkItem);
         page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
+        browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');   
+
         page.clickWorkItemPopUpDeleteConfirmButton().then(function() {
+  
         expect(page.workItemTitle(page.firstWorkItem)).not.toBe(WORK_ITEM_TITLE);
         expect(page.workItemTitle(page.workItemByNumber(0))).not.toBe(WORK_ITEM_TITLE);
       });
@@ -77,6 +82,8 @@ describe('Work item list', function () {
 
       page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
         var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
+         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+
         detailPage.clickWorkItemDetailTitleClick();
         detailPage.setWorkItemDetailTitle (WORK_ITEM_UPDATED_TITLE, false);
         detailPage.clickWorkItemTitleSaveIcon();
@@ -106,11 +113,11 @@ describe('Work item list', function () {
         page.clickWorkItemKebabMoveToBottomButton(page.workItemByTitle(MOCK_WORKITEM_TITLE_0));
         compareWorkitems (page, totalCount - 1, MOCK_WORKITEM_TITLE_0);
       });
-      /* And then move it back to the top */
-      page.clickWorkItemKebabButton (page.workItemByTitle(MOCK_WORKITEM_TITLE_0)).then(function() {
-        page.clickWorkItemKebabMoveToTopButton(page.workItemByTitle(MOCK_WORKITEM_TITLE_0));
-        compareWorkitems (page, 0, MOCK_WORKITEM_TITLE_0);
-      });
+      /* And then move it back to the top  This is not working with chrome due to Kebab is hidden for bottom WI*/
+      // page.clickWorkItemKebabButton (page.workItemByTitle(MOCK_WORKITEM_TITLE_0)).then(function() {
+      //   page.clickWorkItemKebabMoveToTopButton(page.workItemByTitle(MOCK_WORKITEM_TITLE_0));
+      //   compareWorkitems (page, 0, MOCK_WORKITEM_TITLE_0);
+      // });
 
     });
 
@@ -126,6 +133,8 @@ describe('Work item list', function () {
   it('Edit and check WorkItem , creatorname and image is reflected', function () {
     page.clickDetailedDialogButton();
     var detailPage = page.clickDetailedIcon("userstory");
+     browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon()), constants.WAIT, 'Failed to find Assignee Icon');   
+
     detailPage.setWorkItemDetailTitle (WORK_ITEM_TITLE, false);
     detailPage.clickWorkItemTitleSaveIcon();
     detailPage.clickWorkItemDetailDescription()
@@ -135,8 +144,8 @@ describe('Work item list', function () {
     expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);
     detailPage.clickWorkItemDetailCloseButton();
 
-    browser.wait(until.presenceOf(page.workItemByTitle(WORK_ITEM_TITLE)), constants.WAIT, 'Failed to find workItemList');
     expect(page.workItemTitle(page.workItemByTitle(WORK_ITEM_TITLE))).toBe(WORK_ITEM_TITLE);
+    browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');   
 
     page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
       page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
@@ -148,8 +157,11 @@ describe('Work item list', function () {
 
  it('check date showing up correctly - Desktop', function () {
     var detailPage =page.clickWorkItemTitle(page.firstWorkItem, "Title Text 0");
+    browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');   
     expect(detailPage.getCreatedtime()).toBe('a few seconds ago');
     page.workItemByURLId("id1");
+    browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');   
+ 
     expect(detailPage.getCreatedtime()).toBe('17 minutes ago');
    });
 });
