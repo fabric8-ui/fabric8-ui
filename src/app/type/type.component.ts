@@ -8,6 +8,9 @@ import { Broadcaster } from 'ngx-login-client';
 import { SpaceService, Space } from 'ngx-fabric8-wit';
 
 @Component({
+  host:{
+      'class':"app-component"
+  },
   selector: 'fab-planner-type',
   templateUrl: './type.component.html',
   styleUrls: ['./type.component.scss']

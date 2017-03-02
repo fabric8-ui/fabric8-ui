@@ -9,12 +9,7 @@
     }
   }
 .iterations-container {
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  //height: calc(100% - 190px) !important; // height is given to scroll the content
-  overflow: auto;// scroll !important; // important is given to override collapse module styles
-  //** Iterations expaned div styling **/
+   //** Iterations expaned div styling **/
   .iteration-wrapper {
     .iteration-header {
       padding: em(10) em(20);
@@ -72,22 +67,9 @@
     }
   }
 }
-.create-iteration-bar {
-  flex: none;
-  -webkit-box-flex: none;
-  background: $color-pf-white;
-  border-top: 1px solid $color-pf-black-300;
-  padding: em(19);
-  font-size: rem(14.5);
-  color: $navbar-pf-border-color;
-  .create-iteration-label {
-    padding-left: em(5);
-  }
-}
 //Iteration style end.
 
 .types-container {
-  flex: auto;
   padding: em(20);
   h4 {
     cursor: pointer;

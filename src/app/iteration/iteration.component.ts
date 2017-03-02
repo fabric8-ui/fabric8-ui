@@ -14,7 +14,7 @@ import {
 
 @Component({
   host:{
-      'class':"app-component flex-container in-column-direction flex-grow-1"
+      'class':"app-component"
   },
   selector: 'fab-planner-iteration',
   templateUrl: './iteration.component.html',
