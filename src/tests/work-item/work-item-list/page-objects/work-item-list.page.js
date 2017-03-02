@@ -462,7 +462,7 @@ class WorkItemListPage {
   }
   /**Iterations Page object model */
   iterationAddButton  (){
-    return element(by.css('.pficon-add-circle-o.fa-icon'));
+    return element(by.id('add-iteration-icon'));
   }
   clickIterationCreateLabel  (){
     return element(by.id("add-iteration")).click();

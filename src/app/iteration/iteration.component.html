@@ -1,20 +1,13 @@
 <!--Iteration Start-->
-<div class="iteration-panel-header pointer flex-container" (click)="isCollapsedIteration = !isCollapsedIteration">
-  <h3 class="flex-grow-1">Iterations</h3>
-  <a class="text-right">
-    <i class="fa fa-plus"></i>
-  </a>
-</div>
 <div class="iterations-container flex-container flex-grow-1">
-  <div class="iteration-wrapper" [collapse]="isCollapsedIteration">
+  <div class="iteration-wrapper">
     <div class="iterations">
-      <div class="iteration-header pointer"
-        (click)="isCollapsedCurrentIteration = !isCollapsedCurrentIteration">
+      <div class="iteration-header pointer">
         <h4>
-          <i class="fa fa-icon"
-              [ngClass]="{'fa-angle-right': isCollapsedCurrentIteration,
-                        'fa-angle-down': !isCollapsedCurrentIteration}"></i>
-          Current Iteration
+          <span (click)="isCollapsedIteration = !isCollapsedIteration">
+            <i class="fa fa-icon"></i>
+            Current Iteration
+          </span>
         </h4>
       </div>
       <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
@@ -51,11 +44,14 @@
             </div>
           </div>
           <div class="iteration-status display-flex">
-            <span class="flex-1">{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}</span>
-            <div class="flex-1 text-right">
-              <strong>
-                {{iteration.relationships?.workitems?.meta?.closed}} of {{iteration.relationships?.workitems?.meta?.total}}
-              </strong><span> completed</span>
+            <div class="flex-1">
+              <span>{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}</span>
+              <span class="iteration-count">
+                <strong>
+                  {{iteration.relationships?.workitems?.meta?.closed}} of {{iteration.relationships?.workitems?.meta?.total}}
+                </strong>
+                <span> completed</span>
+              </span>
             </div>
           </div>
           <div class="progress">
@@ -83,13 +79,21 @@
       </ul>
     </div>
     <div class="iterations">
-      <div class="iteration-header pointer"
-        (click)="isCollapsedFutureIteration = !isCollapsedFutureIteration">
+      <div class="iteration-header pointer">
         <h4>
-          <i class="fa fa-icon"
-              [ngClass]="{'fa-angle-right': isCollapsedFutureIteration,
-                        'fa-angle-down': !isCollapsedFutureIteration}"></i>
-          Future Iterations
+          <span (click)="isCollapsedFutureIteration = !isCollapsedFutureIteration">
+            <i class="fa fa-icon"
+                [ngClass]="{'fa-angle-right': isCollapsedFutureIteration,
+                          'fa-angle-down': !isCollapsedFutureIteration}"></i>
+            Future Iterations
+          </span>
+          <small>
+            <a *ngIf="loggedIn"
+              class="text-right"
+              (click)="modal.openCreateUpdateModal('create');">
+              <i *ngIf="loggedIn" id="add-iteration-icon" class="fa fa-plus-circle fa-lg pull-right with-cursor-pointer" tooltipPlacement="bottom" tooltip="Add an Iteration"></i>
+            </a>
+          </small>
         </h4>
       </div>
       <ul class="not-current-iteration"
@@ -180,12 +184,6 @@
       </ul>
     </div>
   </div>
-</div>
-<div *ngIf="loggedIn"
-  class="create-iteration-bar pointer"
-  (click)="modal.openCreateUpdateModal('create');">
-  <span><i class="pficon-add-circle-o fa-icon"></i>
-  <span class="create-iteration-label" id="add-iteration">Create Iteration</span></span>
 </div>
 <!-- Iteration End-->
 

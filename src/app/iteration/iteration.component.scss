@@ -33,7 +33,7 @@
         list-style: none;
         padding: em(15);
         &.active {
-          border-left: 3px solid $navbar-pf-border-color;
+          border-left: 4px solid $navbar-pf-border-color;
         }
         .iteration-subheader {
           -webkit-box-align: center;
@@ -45,6 +45,9 @@
           .iteration-name{
             line-height: 3rem;
           }
+        }
+        .iteration-count {
+          float: right;
         }
         .iteration-status {
           padding: em(20) 0 em(15) 0;
