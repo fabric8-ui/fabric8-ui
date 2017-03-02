@@ -120,13 +120,6 @@ module.exports = function (options) {
        */
       extensions: ['.ts', '.js', '.json'],
 
-      /**
-       * Tell webpack what directories should be searched when resolving modules.
-       *
-       * See: https://webpack.js.org/configuration/resolve/#resolve-modules
-       */
-      // modules: [ path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')]
-
     },
 
     /*

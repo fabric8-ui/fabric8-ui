@@ -107,7 +107,18 @@ module.exports = function (options) {
       library: 'ac_[name]',
       libraryTarget: 'var'
     },
+    resolve: {
 
+      /**
+       * Tell webpack what directories should be searched when resolving modules.
+       *
+       * We enable this in dev as it allows npm link to work
+       *
+       * See: https://webpack.js.org/configuration/resolve/#resolve-modules
+       */
+      modules: [ helpers.root('src'), helpers.root('node_modules')]
+
+    },
     plugins: [
       /**
        * Plugin: DefinePlugin
