@@ -7,66 +7,14 @@
   }
 }
 .work-item-list-page {
-  display: -webkit-flex;
-  display: flex;
-  //height: 100%;
-  flex-direction: column;
-    .list-action {
-      height: 2.0rem;// em(40);
-      display: flex;
-      display: -webkit-flex;
-      display: -ms-flex;
-      align-items: center;
-      background-color: $color-pf-black-300;
-      justify-content: space-between;
-      .list-type {
-        font-weight: 700;
-        margin-left: em(10);
-      }
-      span{
-        border-color: transparent;
-        border-style: solid;
-        border-width: 1px 0;
-        padding: 1px 10px;
-      }
-      .move-dropdown {
-        position: absolute;
-        left: em(100);
-        a {
-          cursor: pointer;
-        }
-      }
-      .filter-dropdown {
-        margin-right: em(10);
-      }
-    }
-
-    .selected-filters {
-      padding: 3px 10px;
-      margin: 5px;
-      color: $color-pf-white;
-      background-color: $color-pf-black-600;
-      display: inline-block;
-      .icon {
-        margin-left: em(3);
-        cursor: pointer;
-      }
-    }
-
-    .close-filter {
-      display: inline-block;
-      color: $color-pf-blue;
-      margin-left: 5px;
-      cursor: pointer;
-    }
-    .detail-list-wrap {
-      flex: auto;
-      -webkit-flex: auto;
-      -ms-flex: auto;
-      overflow-y: scroll;
-      width: $width100;
-      margin-bottom: 0;
-    }
+  .detail-list-wrap {
+    flex: auto;
+    -webkit-flex: auto;
+    -ms-flex: auto;
+    overflow-y: scroll;
+    width: $width100;
+    margin-bottom: 0;
+  }
   .work-item-list-quick-add {
     flex: none;
     -webkit-flex: none;
@@ -77,8 +25,6 @@
   }
 }
 
-
-.containerPadd-nologin{ padding-bottom: 0; }
 
 .dnd-drag-start,
 .dnd-drag-over {
@@ -92,25 +38,3 @@
   border: 1px dashed $color-pf-black;
 }
 
-@media (max-width: ($grid-float-breakpoint - 1)){
-  .containerPadd-nologin{ padding-bottom: 0; }
-  .workItem_Overlay{
-    background-color:$color-pf-black;
-    left:0;
-    position: fixed;
-    top:0;
-    z-index:9;
-  }
-  .inactivOverlay{
-    height:0;
-    opacity: 0;
-    width:0;
-    @include transition(opacity .3s);
-  }
-  .activeOverlay {
-    height: 100%;
-    @include transition(opacity .3s);
-    opacity: .6;
-    width: $width100;
-  }
-}
