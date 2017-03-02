@@ -1,3 +1,4 @@
+import { Space } from 'ngx-fabric8-wit';
 import { Subscription } from 'rxjs/Subscription';
 import {
   AfterViewInit,
@@ -26,12 +27,12 @@ import {
   User,
   UserService
 } from 'ngx-login-client';
-import { SpaceService } from 'ngx-fabric8-wit';
 
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType }               from '../work-item-type';
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService }            from '../work-item.service';
+
 
 import { TreeListComponent } from 'ngx-widgets';
 
@@ -71,7 +72,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
   filters: any[] = [];
   allUsers: User[] = [] as User[];
   authUser: any = null;
-  private spaceSubscription: Subscription = null;
 
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
@@ -90,15 +90,14 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     private workItemService: WorkItemService,
     private logger: Logger,
     private userService: UserService,
-    private route: ActivatedRoute,
-    private spaceService: SpaceService) {}
+    private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
     // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
-    this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => {
+    this.broadcaster.on<Space>("spaceChanged").subscribe(space => {
       console.log('[WorkItemListComponent] New Space selected: ' + space.name);
       this.loadWorkItems();
       this.workItemService.resetWorkItemList();

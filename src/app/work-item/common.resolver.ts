@@ -6,7 +6,7 @@ import {
   User,
   UserService
 } from 'ngx-login-client';
-import { SpaceService, Space } from 'ngx-fabric8-wit';
+import { Space } from 'ngx-fabric8-wit';
 
 import { IterationService } from '../iteration/iteration.service';
 import { IterationModel } from '../models/iteration.model';
@@ -37,8 +37,9 @@ export class AuthUserResolve implements Resolve<any> {
 // FIX ME : Need to remove this resolver
 @Injectable()
 export class IterationsResolve implements Resolve<IterationModel[]> {
-  constructor(private iterationService: IterationService,
-              private spaceService: SpaceService) {}
+
+  constructor(private iterationService: IterationService) {}
+
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -53,5 +54,3 @@ export class IterationsResolve implements Resolve<IterationModel[]> {
       });
     }
 }
-
-
