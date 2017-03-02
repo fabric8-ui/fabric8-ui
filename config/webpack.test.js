@@ -31,7 +31,8 @@ const sassModules = [
     path: 'font-awesome',
     sass: 'scss'
   }, {
-    name: 'patternfly'
+    name: 'patternfly',
+    module: 'patternfly-sass-with-css'
   }
 ];
 
