@@ -16,7 +16,7 @@ import {
   AuthenticationService,
   Broadcaster
 } from 'ngx-login-client';
-import { SpaceService } from 'ngx-fabric8-wit';
+import { SpaceService, Space } from 'ngx-fabric8-wit';
 
 import { WorkItem } from './work-item';
 import { WorkItemListEntryComponent } from './work-item-list/work-item-list-entry/work-item-list-entry.component';
@@ -60,15 +60,15 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space => {
+    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
       if (space) {
         console.log('[WorkItemComponent] New Space selected: ' + space.name);
         this.editEnabled = true;
         this.getWorkItemTypes();
       } else {
-        console.log('[WorkItemComponent] Space deselected.');  
+        console.log('[WorkItemComponent] Space deselected.');
         this.editEnabled = false;
-        this.workItemTypes = [];      
+        this.workItemTypes = [];
       }
     });
   }

@@ -1,3 +1,4 @@
+import { Space } from 'ngx-fabric8-wit';
 import {
   AfterViewInit,
   Component,
@@ -14,7 +15,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Logger } from 'ngx-login-client';
+import { Logger, Broadcaster } from 'ngx-login-client';
 
 import { WorkItem, WorkItemAttributes, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
@@ -45,6 +46,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   constructor(
     private workItemService: WorkItemService,
     private astronaut: AstronautService,
+    private broadcaster: Broadcaster,
     private logger: Logger,
     private renderer: Renderer) {}
 
@@ -52,7 +54,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     this.createWorkItemObj();
     this.showQuickAdd = false;
     this.showQuickAddBtn = false;
-    this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space => {
+    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
       if (space) {
         console.log('[WorkItemQuickAddComponent] New Space selected: ' + space.name);
         this.showQuickAddBtn = true;

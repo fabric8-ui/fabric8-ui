@@ -64,11 +64,11 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
 
   ngOnInit() {
     this.resetValues();
-    this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space =>  {
+    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space =>  {
       if (space) {
         console.log('[FabPlannerIterationModalComponent] New Space selected: ' + space.name)
       } else {
-        console.log('[FabPlannerIterationModalComponent] Space deselected.')        
+        console.log('[FabPlannerIterationModalComponent] Space deselected.')
       }
     });
   }

@@ -8,7 +8,7 @@ import {
   OnInit,
   ViewChild,
   ViewChildren,
-  QueryList, 
+  QueryList,
   TemplateRef,
   DoCheck
 } from '@angular/core';
@@ -27,7 +27,7 @@ import {
   User,
   UserService
 } from 'ngx-login-client';
-import { SpaceService } from 'ngx-fabric8-wit';
+import { SpaceService, Space } from 'ngx-fabric8-wit';
 
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType }               from '../work-item-type';
@@ -99,7 +99,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     this.loggedIn = this.auth.isLoggedIn();
     // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
-    this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space => {
+    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
       if (space) {
         console.log('[WorkItemListComponent] New Space selected: ' + space.name);
         this.loadWorkItems();
@@ -107,7 +107,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
       } else {
         console.log('[WorkItemListComponent] Space deselected');
         this.workItems = [];
-        this.workItemService.resetWorkItemList();       
+        this.workItemService.resetWorkItemList();
       }
     });
   }

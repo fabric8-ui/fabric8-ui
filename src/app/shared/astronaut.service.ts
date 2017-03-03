@@ -41,10 +41,6 @@ export class AstronautService {
     this.broadcaster.broadcast('spaceChanged', newSpace);
   }
 
-  getCurrentSpaceBus(): Observable<Space> {
-    return this.currentSpaceBus;
-  }
-
   getCurrentSpace(): Space {
     return this.currentSpace;
   }

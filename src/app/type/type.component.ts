@@ -29,11 +29,11 @@ export class TypeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space =>  { 
+    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space =>  {
       if (space) {
         console.log('[IterationComponent] New Space selected: ' + space.name);
       } else {
-        console.log('[IterationComponent] Space deselected.');        
+        console.log('[IterationComponent] Space deselected.');
       }
     });
   }

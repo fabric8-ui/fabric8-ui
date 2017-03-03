@@ -50,7 +50,7 @@ export class IterationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space => {
+    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
       if (space) {
         console.log('[IterationComponent] New Space selected: ' + space.name);
         this.editEnabled = true;
