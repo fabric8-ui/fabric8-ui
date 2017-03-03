@@ -31,7 +31,7 @@ import {
   WorkItem,
   WorkItemAttributes
 } from '../models/work-item';
-import { WorkItemType } from './work-item-type';
+import { WorkItemType } from './../models/work-item-type';
 
 import { MockHttp } from '../shared/mock-http';
 

@@ -36,7 +36,7 @@ import {
 import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
 
 import { WorkItem } from '../../models/work-item';
-import { WorkItemType } from '../work-item-type';
+import { WorkItemType } from '../../models/work-item-type';
 import { WorkItemService } from '../work-item.service';
 
 import { IterationModel } from '../../models/iteration.model';

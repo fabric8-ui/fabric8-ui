@@ -41,7 +41,7 @@ import { IterationService } from '../../../iteration/iteration.service';
 import { LinkType } from '../../../models/link-type';
 import { Comment } from '../../../models/comment';
 import { WorkItem } from '../../../models/work-item';
-import { WorkItemType } from '../../work-item-type';
+import { WorkItemType } from '../../../models/work-item-type';
 import { WorkItemService } from '../../work-item.service';
 
 import { WorkItemLinkComponent } from '../work-item-link/work-item-link.component';

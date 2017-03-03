@@ -29,7 +29,7 @@ import {
 import { SpaceService, Space } from 'ngx-fabric8-wit';
 
 import { WorkItem } from '../../models/work-item';
-import { WorkItemType }               from '../work-item-type';
+import { WorkItemType }               from '../../models/work-item-type';
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService }            from '../work-item.service';
 

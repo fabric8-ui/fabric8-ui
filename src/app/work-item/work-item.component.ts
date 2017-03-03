@@ -20,7 +20,7 @@ import { SpaceService, Space } from 'ngx-fabric8-wit';
 import { WorkItem } from './work-item';
 import { WorkItemListEntryComponent } from './work-item-list/work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService } from './work-item.service';
-import { WorkItemType } from './work-item-type';
+import { WorkItemType } from './../models/work-item-type';
 
 
 @Component({

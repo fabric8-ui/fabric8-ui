@@ -32,7 +32,7 @@ import { IterationService } from '../../iteration/iteration.service';
 
 import { WorkItem, WorkItemAttributes, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
-import { WorkItemType } from '../work-item-type';
+import { WorkItemType } from '../../models/work-item-type';
 
 @Component({
   selector: 'alm-work-item-detail',

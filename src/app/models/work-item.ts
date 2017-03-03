@@ -1,3 +1,4 @@
+import { WorkItemType } from './work-item-type';
 import { Comments, Comment } from './comment';
 import { Link } from './link';
 import { User } from 'ngx-login-client';
@@ -81,6 +82,7 @@ export class RelationalData {
   linkDicts?: LinkDict[];
   iteration?: IterationModel;
   totalLinkCount?: number;
+  wiType?: WorkItemType;
 }
 
 export class LinkDict {
