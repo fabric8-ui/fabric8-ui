@@ -37,7 +37,7 @@ describe('Work Item Service - ', () => {
   let iterationService: IterationService;
 
   let fakeAuthService: any;
-  let fakeSpcaeService: any;
+  let fakeSpace: any;
 
   let spaces = [{
         'name': 'Project 1',
@@ -107,17 +107,6 @@ describe('Work Item Service - ', () => {
       }
     };
 
-    fakeSpcaeService = {
-      getCurrentSpaceBus: function() {
-        let currentSpaceSubjectSource = new BehaviorSubject<any>(spaces[0]);
-        return currentSpaceSubjectSource.asObservable();
-      },
-
-      getCurrentSpace: function() {
-        return spaces[0];
-      }
-    };
-
     TestBed.configureTestingModule({
       providers: [
         Logger,
@@ -139,10 +128,6 @@ describe('Work Item Service - ', () => {
         },
         // MockDataService should be removed at some point
         MockDataService,
-        {
-          provide: SpaceService,
-          useValue: fakeSpcaeService
-        },
         WorkItemService,
         UserService,
         IterationService,
@@ -163,6 +148,7 @@ describe('Work Item Service - ', () => {
       apiService = service;
       mockService = mock;
       iterationService = iService;
+      (apiService as any)._currentSpace = spaces[0];
     }
   ));
   let resp: WorkItem[] = [

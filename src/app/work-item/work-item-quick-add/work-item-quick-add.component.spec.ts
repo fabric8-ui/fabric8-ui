@@ -12,11 +12,10 @@ import { DebugElement } from '@angular/core';
 import { FormsModule }  from '@angular/forms';
 import { By }           from '@angular/platform-browser';
 
-import { Logger } from 'ngx-login-client';
+import { Logger, Broadcaster } from 'ngx-login-client';
 
 import { WorkItem } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
-import { AstronautService } from './../../shared/astronaut.service';
 
 import { WorkItemQuickAddComponent } from './work-item-quick-add.component';
 
@@ -141,14 +140,11 @@ describe('Quick add work item component - ', () => {
         WorkItemQuickAddComponent
       ],
       providers: [
+        Broadcaster,
         Logger,
         {
           provide: WorkItemService,
           useValue: fakeService
-        },
-        {
-          provide: AstronautService,
-          useValue: fakeSpcaeService
         }
       ]
     })
