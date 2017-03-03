@@ -52,7 +52,7 @@ export class IterationComponent implements OnInit, OnDestroy {
     this.loggedIn = this.auth.isLoggedIn();
     this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
       if (space) {
-        console.log('[IterationComponent] New Space selected: ' + space.name);
+        console.log('[IterationComponent] New Space selected: ' + space.attributes.name);
         this.editEnabled = true;
         this.getAndfilterIterations();
       } else {

@@ -56,7 +56,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     this.showQuickAddBtn = false;
     this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
       if (space) {
-        console.log('[WorkItemQuickAddComponent] New Space selected: ' + space.name);
+        console.log('[WorkItemQuickAddComponent] New Space selected: ' + space.attributes.name);
         this.showQuickAddBtn = true;
       } else {
         console.log('[WorkItemQuickAddComponent] Space deselected.');

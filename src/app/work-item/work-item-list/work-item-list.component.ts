@@ -101,7 +101,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
     this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
       if (space) {
-        console.log('[WorkItemListComponent] New Space selected: ' + space.name);
+        console.log('[WorkItemListComponent] New Space selected: ' + space.attributes.name);
         this.loadWorkItems();
         this.workItemService.resetWorkItemList();
       } else {

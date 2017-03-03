@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { AstronautService } from './../shared/astronaut.service';
+import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -58,7 +57,7 @@ export class HeaderComponent implements OnInit {
     private userService: UserService,
     private logger: Logger,
     private auth: AuthenticationService,
-    private astronaut: AstronautService,
+    private spaceService: SpaceService,
     private broadcaster: Broadcaster) { }
 
   getLoggedUser(): void {
@@ -77,16 +76,15 @@ export class HeaderComponent implements OnInit {
     this.listenToEvents();
     this.getLoggedUser();
     this.loggedIn = this.auth.isLoggedIn();
-    // First, populate the list with all spaces
-    let allSpaces = this.astronaut.getAllSpaces();
-    allSpaces.subscribe(val => {
-      this.spaces = val;
-      if (val && val.length > 0 && !this.selectedSpace) {
-        // Set an initial space
-        this.broadcaster.broadcast('spaceChanged', val[0]);
-        this.selectedSpace = val[0];
-      }
-    });
+    Observable
+      .fromPromise(this.spaceService.getSpaces(10))
+      // First, populate the list with all spaces
+      .do(val => this.spaces.push(...val))
+      .map(val => val[0])
+      // Then, change the space to the first one in the list
+      .subscribe(val => this.broadcaster.broadcast('spaceChanged', val));
+    // Update the selected space when the space changes
+    this.broadcaster.on<Space>('spaceChanged').subscribe(val => this.selectedSpace = val);
   }
 
   onImgLoad() {

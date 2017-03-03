@@ -66,9 +66,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     this.resetValues();
     this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space =>  {
       if (space) {
-        console.log('[FabPlannerIterationModalComponent] New Space selected: ' + space.name)
+        console.log('[FabPlannerIterationModalComponent] New Space selected: ' + space.attributes.name);
       } else {
-        console.log('[FabPlannerIterationModalComponent] Space deselected.')
+        console.log('[FabPlannerIterationModalComponent] Space deselected.');
       }
     });
   }

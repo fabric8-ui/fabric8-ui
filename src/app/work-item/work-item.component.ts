@@ -62,7 +62,7 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
     this.loggedIn = this.auth.isLoggedIn();
     this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
       if (space) {
-        console.log('[WorkItemComponent] New Space selected: ' + space.name);
+        console.log('[WorkItemComponent] New Space selected: ' + space.attributes.name);
         this.editEnabled = true;
         this.getWorkItemTypes();
       } else {
