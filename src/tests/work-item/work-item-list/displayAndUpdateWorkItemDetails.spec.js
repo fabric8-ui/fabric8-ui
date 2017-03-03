@@ -38,6 +38,7 @@ var waitTime = 30000;
 
     testSupport.setBrowserMode('phone');
     page = new WorkItemListPage(true);
+    testSupport.setTestSpace(page);
   });
 
 /* Create a new workitem, fill in the details, save, retrieve, update, save, verify updates are saved */
@@ -416,6 +417,8 @@ it('Verify how many work item type exists in drop down - desktop', function() {
           expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
           page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
           var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+          browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
           detailPage.clickWorkItemStateDropDownButton();
           var wi_state = ["new", "open", "in progress","resolved","closed"];
           var itr=1;
@@ -436,6 +439,8 @@ it('Verify how many work item type exists in drop down - desktop', function() {
          page.clickQuickAddSave().then(function() {
          page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
          var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+         browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
          detailPage.clickWorkItemStateDropDownButton();
          detailPage.WorkItemStateDropDownList().get(0).click();
          detailPage.clickWorkItemDetailCloseButton();
@@ -452,10 +457,12 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       page.typeQuickAddWorkItemTitle(workItemTitle);
       page.clickQuickAddSave().then(function() {
 
-        browser.wait(until.elementToBeClickable(page.workItemTitle(page.firstWorkItem)), constants.WAIT, 'Failed to find Assignee Icon');   
+      browser.wait(until.elementToBeClickable(page.workItemTitle(page.firstWorkItem)), constants.WAIT, 'Failed to find firstWorkItem');   
 
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
       detailPage.clickWorkItemStateDropDownButton();
       detailPage.WorkItemStateDropDownList().get(1).click();
       detailPage.clickWorkItemDetailCloseButton();
@@ -473,6 +480,8 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       page.clickQuickAddSave().then(function() {
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
       detailPage.clickWorkItemStateDropDownButton();
       detailPage.WorkItemStateDropDownList().get(2).click();
       detailPage.clickWorkItemDetailCloseButton();
@@ -490,6 +499,8 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       page.clickQuickAddSave().then(function() {
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
       detailPage.clickWorkItemStateDropDownButton();
       detailPage.WorkItemStateDropDownList().get(3).click();
       detailPage.clickWorkItemDetailCloseButton();
@@ -507,6 +518,8 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       page.clickQuickAddSave().then(function() {
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+
+      browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
       detailPage.clickWorkItemStateDropDownButton();
       detailPage.WorkItemStateDropDownList().get(4).click();
       detailPage.clickWorkItemDetailCloseButton();

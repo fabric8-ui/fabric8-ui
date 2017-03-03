@@ -45,6 +45,19 @@ class WorkItemListPage {
      browser.get("http://localhost:8088/");
    }
  };
+
+ /* Select the space in which the tests will be run */
+ get spaceDropdown (){
+   return element(by.css(".ng-valid"));
+ }
+ clickOnSpaceDropdown (){
+   return this.spaceDropdown.click();
+ }
+ selectSpaceDropDownValue  (index) {
+   index++;
+   return element(by.xpath("//select[contains(@class,'ng-valid')]/option[" + index + "]")).click();
+ }
+
  workItemByURLId (workItemId) {
    browser.get("http://localhost:8088/work-item/list/detail/"+ workItemId);
     var theDetailPage = new WorkItemDetailPage (workItemId);

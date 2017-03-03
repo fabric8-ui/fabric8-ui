@@ -21,6 +21,7 @@ var waitTime = 30000;
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);
+    testSupport.setTestSpace(page);
   });
   it('Verify Iteration add button and label are clickable + dialoge label is present -phone ', function() {
       expect(page.iterationAddButton().isPresent()).toBe(true);

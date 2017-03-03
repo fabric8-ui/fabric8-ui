@@ -24,8 +24,9 @@ describe('Work item list', function () {
 
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
-//    browser.ignoreSynchronization = true;
     page = new WorkItemListPage(true);
+    testSupport.setTestSpace(page);
+    browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find first work item');   
   });
   
 /**Test searching user in the assignee drop down  */
@@ -94,6 +95,7 @@ describe('Work item list', function () {
       browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
       detailPage.clickworkItemDetailAssigneeIcon();
 
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeSearch), constants.WAIT, 'Failed to find Assignee Icon');   
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
       expect(detailPage.details_assigned_user().getText()).toContain("Example User 1");
@@ -117,6 +119,7 @@ describe('Work item list', function () {
       browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
       detailPage.clickworkItemDetailAssigneeIcon();
 
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeSearch), constants.WAIT, 'Failed to find Assignee Icon');   
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
       expect(detailPage.details_assigned_user().getText()).toContain("Example User 1");
@@ -140,6 +143,7 @@ describe('Work item list', function () {
       browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
       detailPage.clickworkItemDetailAssigneeIcon();
 
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeSearch), constants.WAIT, 'Failed to find Assignee Icon');   
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
       expect(detailPage.details_assigned_user().getText()).toContain("Example User 1");
@@ -167,6 +171,7 @@ describe('Work item list', function () {
       browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
       detailPage.clickworkItemDetailAssigneeIcon();
 
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeSearch), constants.WAIT, 'Failed to find Assignee Icon');   
       detailPage.setWorkItemDetailAssigneeSearch("Example User 1",false);
       detailPage.clickAssignedUserDropDownList("Example User 1");
       expect(detailPage.details_assigned_user().getText()).toContain("Example User 1");
@@ -193,6 +198,7 @@ describe('Work item list', function () {
       browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
       detailPage.clickworkItemDetailAssigneeIcon();
 
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeSearch), constants.WAIT, 'Failed to find Assignee Icon');   
       detailPage.setWorkItemDetailAssigneeSearch("Example User 2",false);
       detailPage.clickAssignedUserDropDownList("Example User 2");
       expect(detailPage.details_assigned_user().getText()).toContain("Example User 2");

@@ -24,7 +24,8 @@ describe('Work item list', function () {
   detailPage = new WorkItemDetailPage();
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
-    page = new WorkItemListPage(true);   
+    page = new WorkItemListPage(true);  
+    testSupport.setTestSpace(page); 
     
   });
 

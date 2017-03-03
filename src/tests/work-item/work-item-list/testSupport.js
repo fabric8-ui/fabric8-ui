@@ -31,6 +31,14 @@ module.exports = {
     } 
   },
 
+/**
+ * Set the windows in which the tests will run 
+ */
+  setTestSpace: function (page) {
+    page.clickOnSpaceDropdown();
+    page.selectSpaceDropDownValue("1");
+  },
+
   /** 
   * Write screenshot to file 
   * Example usage:

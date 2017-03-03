@@ -33,6 +33,7 @@ describe('Work item list', function () {
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);
+    testSupport.setTestSpace(page);
   });
 
   /* User can read, update, remove assignee on a workitem  */
@@ -159,6 +160,7 @@ describe('Work item list', function () {
     var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "Title Text 0");
     browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find workItem');   
     expect(detailPage.getCreatedtime()).toBe('a few seconds ago');
+    browser.wait(until.elementToBeClickable(detailPage.workItemDetailCloseButton), constants.WAIT, 'Failed to find close workItem detail page');   
     detailPage.clickWorkItemDetailCloseButton();
     
 //    detailPage = page.workItemByURLId("id1");

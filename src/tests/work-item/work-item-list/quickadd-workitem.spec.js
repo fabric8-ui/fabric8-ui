@@ -22,9 +22,12 @@ describe('Work item list', function () {
   var page, items, browserMode;
   var char255 = '<div *ngFor=let comment of workItem.relationalData.comments; let counter = index" class="comments-wrap">   +            <div *ngFor="let comment of workItem.relationalData?.comments?.slice().reverse()" class="comments-wrap">                  <div>                      <div class="user-avatar pull-left">                          <img id="{{"comment_avatar_" + counter}}" -                        class="user-assign-avatar pull-left"  +                               />';
   var char255Expected = '<div *ngFor=let comment of workItem.relationalData.comments; let counter = index" class="comments-wrap"> + <div *ngFor="let comment of workItem.relationalData?.comments?.slice().reverse()" class="comments-wrap"> <div> <div class="user-avatar pull-left"> <img id="{{"comment_avatar_" + counter}}" - class="user-assign-avatar pull-left" + />';
+  var until = protractor.ExpectedConditions;
+
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);
+    testSupport.setTestSpace(page);
   });
 
   it('Creating a new quick add work item and delete - desktop.', function () {
@@ -37,6 +40,7 @@ describe('Work item list', function () {
       page.clickWorkItemKebabButton(page.firstWorkItem);
       page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
       page.clickWorkItemPopUpDeleteConfirmButton().then(function() {
+        browser.wait(until.textToBePresentInElement((page.firstWorkItem), "Title Text" ), 60000, 'Failed to find text in workitem');
         expect(page.workItemTitle(page.firstWorkItem)).not.toBe('Quick Add and Delete');
         expect(page.workItemTitle(page.workItemByNumber(0))).not.toBe('Quick Add and Delete');
       });
@@ -53,6 +57,7 @@ describe('Work item list', function () {
       page.clickWorkItemKebabButton(page.firstWorkItem);
       page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
       page.clickWorkItemPopUpDeleteCancelConfirmButton().then(function() {
+        browser.wait(until.textToBePresentInElement((page.firstWorkItem), char255Expected), constants.WAIT, 'Failed to text in workitem');
         expect(page.workItemTitle(page.firstWorkItem)).toBe(char255Expected);
         expect(page.workItemTitle(page.workItemByNumber(0))).toBe(char255Expected);
       });

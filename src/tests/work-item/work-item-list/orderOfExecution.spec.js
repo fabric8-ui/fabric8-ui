@@ -55,6 +55,7 @@ defaultWorkitemsPhantomJS = [
   beforeEach(function () {
     testSupport.setBrowserMode('phone');
     page = new WorkItemListPage(true);
+    testSupport.setTestSpace(page);
   });
 
   it('should move workitem down/up - phone.', function() {

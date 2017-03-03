@@ -248,6 +248,10 @@ class WorkItemDetailPage {
     return element(by.xpath('.//*[@id="wi-detail-form"]/fieldset/div[2]/div[2]/div/ul/li['+typeString+']/a/span[2]')).getText();
   }
 
+  get workItemStateDropDownButton () {
+    return element(by.id("wi-detail-state"));
+  }
+
   clickWorkItemStateDropDownButton () {
     return element(by.id("wi-detail-state")).click();
   }
@@ -501,7 +505,7 @@ class WorkItemDetailPage {
     return this.startCodingElement.click();
   }
   startCodingDiv (){
-    return element(by.css(".start-coding"));
+    return element(by.id("start-coding-link"));
   }
 }
 

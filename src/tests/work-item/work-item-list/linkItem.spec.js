@@ -16,21 +16,26 @@
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
   testSupport = require('./testSupport'),
+  constants = require('./constants'),
   WorkItemDetailPage = require('./page-objects/work-item-detail.page');
 
 describe('Link item ', function () {
   var page, items, browserMode;
+  var until = protractor.ExpectedConditions;
 
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);  
-    // detailPage = new WorkItemDetailPage();    
+    // detailPage = new WorkItemDetailPage();  
+    testSupport.setTestSpace(page);  
   });
 
  it('Create a link item planner to planner - Desktop', function () {
     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 3"), "id3");
     expect(detailPage.commentDiv().isPresent()).toBe(true);
     expect(detailPage.linkItemHeaderCaret().isPresent()).toBe(true);   
+
+    browser.wait(until.elementToBeClickable(detailPage.linkItemHeaderCaret()), constants.WAIT, 'Link icon is not clickable');   
     detailPage.linkItemHeaderCaret().click();
     detailPage.clickCreateLinkButton(); 
     detailPage.clickLinkDropDown();
@@ -49,6 +54,8 @@ describe('Link item ', function () {
     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
     expect(detailPage.commentDiv().isPresent()).toBe(true);
     expect(detailPage.linkItemHeaderCaret().isPresent()).toBe(true);   
+
+    browser.wait(until.elementToBeClickable(detailPage.linkItemHeaderCaret()), constants.WAIT, 'Link icon is not clickable');   
     detailPage.linkItemHeaderCaret().click();
      /**Below commented code  works fine with the Chrome not with PhantomJS
      * Issue : https://github.com/fabric8io/fabric8-planner/issues/319
@@ -61,7 +68,9 @@ describe('Link item ', function () {
    it('Delete link and check if it exists in list or not - Desktop', function () {
     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
     expect(detailPage.commentDiv().isPresent()).toBe(true);
-    expect(detailPage.linkItemHeaderCaret().isPresent()).toBe(true);   
+    expect(detailPage.linkItemHeaderCaret().isPresent()).toBe(true);
+
+    browser.wait(until.elementToBeClickable(detailPage.linkItemHeaderCaret()), constants.WAIT, 'Link icon is not clickable');   
     detailPage.linkItemHeaderCaret().click();
      /**Below commented code  works fine with the Chrome not with PhantomJS
      * Issue : https://github.com/fabric8io/fabric8-planner/issues/319
@@ -96,7 +105,9 @@ describe('Link item ', function () {
    it('Check the elements of link item div are visible - Desktop', function () {
     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
     expect(detailPage.commentDiv().isPresent()).toBe(true);
-    expect(detailPage.linkItemHeaderCaret().isPresent()).toBe(true);   
+    expect(detailPage.linkItemHeaderCaret().isPresent()).toBe(true);  
+
+    browser.wait(until.elementToBeClickable(detailPage.linkItemHeaderCaret()), constants.WAIT, 'Link icon is not clickable');   
     detailPage.linkItemHeaderCaret().click();
     // expect(detailPage.linkItemTitle()).toBe("This item, Title Text 0");
     // expect(detailPage.checkLinkDropDown.isPresent()).toBe(true);

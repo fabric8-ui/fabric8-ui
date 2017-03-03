@@ -30,6 +30,7 @@ describe('Work item list', function () {
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);   
+    testSupport.setTestSpace(page);
   });
 
  it('Create WorkItem and creatorname and image is relecting', function () {

@@ -23,7 +23,8 @@ describe('Work item list', function () {
 
   beforeEach(function () {
     testSupport.setBrowserMode('phone');
-    page = new WorkItemListPage(true);    
+    page = new WorkItemListPage(true);   
+    testSupport.setTestSpace(page); 
     
     workItemMockData = {
       pageTitle:'Title Text 0 Details',

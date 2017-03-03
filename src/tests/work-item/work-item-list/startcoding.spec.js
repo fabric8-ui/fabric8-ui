@@ -26,6 +26,7 @@ var waitTime = 30000;
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);
+    testSupport.setTestSpace(page);
   });
  it('Verify start coding is visible when code base is presrent - Desktop', function () {
     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
