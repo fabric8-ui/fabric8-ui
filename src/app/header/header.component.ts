@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { AstronautService } from './../shared/astronaut.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -27,30 +28,30 @@ export class HeaderComponent implements OnInit {
   spaces: Space[] = [];
   selectedSpace: Space = null;
 
-/*
-  public tabs: Array<any> = [
-    {title: 'Home', content: 'Home content 1', active: true},
-    {title: 'Work', content: 'Work content 2'},
-    {title: 'Code', content: 'Code content 2'},
-    {title: 'Test', content: 'Test content 3'},
-    {title: `Environments/Pipelines`, content: 'Environments/Pipelines content 4'},
-    {title: 'Hypothesis Engine <sup><span class="fa fa-trademark"></span></sup>', content: 'hypo content 4'}
-  ];
+  /*
+    public tabs: Array<any> = [
+      {title: 'Home', content: 'Home content 1', active: true},
+      {title: 'Work', content: 'Work content 2'},
+      {title: 'Code', content: 'Code content 2'},
+      {title: 'Test', content: 'Test content 3'},
+      {title: `Environments/Pipelines`, content: 'Environments/Pipelines content 4'},
+      {title: 'Hypothesis Engine <sup><span class="fa fa-trademark"></span></sup>', content: 'hypo content 4'}
+    ];
 
-  public alertMe(): void {
-    setTimeout(function (): void {
-      alert('You\'ve selected the alert tab!');
-    });
-  };
+    public alertMe(): void {
+      setTimeout(function (): void {
+        alert('You\'ve selected the alert tab!');
+      });
+    };
 
-  public setActiveTab(index: number): void {
-    this.tabs[index].active = true;
-  };
+    public setActiveTab(index: number): void {
+      this.tabs[index].active = true;
+    };
 
-  public removeTabHandler(/!*tab:any*!/): void {
-    console.log('Remove Tab handler');
-  };
-*/
+    public removeTabHandler(/!*tab:any*!/): void {
+      console.log('Remove Tab handler');
+    };
+  */
 
   constructor(
     private router: Router,
@@ -78,8 +79,14 @@ export class HeaderComponent implements OnInit {
     this.loggedIn = this.auth.isLoggedIn();
     // First, populate the list with all spaces
     let allSpaces = this.astronaut.getAllSpaces();
-    allSpaces.subscribe(val => this.spaces = val);
-
+    allSpaces.subscribe(val => {
+      this.spaces = val;
+      if (val && val.length > 0) {
+        // Set an initial space
+        this.broadcaster.broadcast('spaceChanged', val[0]);
+        this.selectedSpace = val[0];
+      }
+    });
   }
 
   onImgLoad() {
@@ -96,7 +103,7 @@ export class HeaderComponent implements OnInit {
     this.broadcaster.on<string>('logout')
       .subscribe(message => {
         this.resetData();
-    });
+      });
   }
 
   onSpaceChange(newSpace: Space) {
