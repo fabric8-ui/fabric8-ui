@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { UsersResolve, AuthUserResolve, IterationsResolve } from './common.resolver';
+import { UsersResolve, AuthUserResolve } from './common.resolver';
 import { WorkItemComponent } from './work-item.component';
 import { WorkItemBoardComponent } from './work-item-board/work-item-board.component';
 import { WorkItemDetailComponent } from './work-item-detail/work-item-detail.component';
@@ -12,17 +12,14 @@ const routes: Routes = [
     path: 'work-item',
     component: WorkItemComponent,
     resolve: {
-      allIterations: IterationsResolve,
       allusers: UsersResolve,
       authuser: AuthUserResolve
-
     },
     children: [
       {
         path: 'list',
         component: WorkItemListComponent,
         resolve: {
-          allIterations: IterationsResolve,
           allusers: UsersResolve,
           authuser: AuthUserResolve
         },
@@ -31,7 +28,6 @@ const routes: Routes = [
             path: 'detail/:id',
             component: WorkItemDetailComponent,
             resolve: {
-              allIterations: IterationsResolve,
               allusers: UsersResolve,
               authuser: AuthUserResolve
             }
@@ -42,7 +38,6 @@ const routes: Routes = [
         path: 'board',
         component: WorkItemBoardComponent,
         resolve: {
-          allIterations: IterationsResolve,
           allusers: UsersResolve,
           authuser: AuthUserResolve
         },
@@ -51,7 +46,6 @@ const routes: Routes = [
             path: 'detail/:id',
             component: WorkItemDetailComponent,
             resolve: {
-              allIterations: IterationsResolve,
               allusers: UsersResolve,
               authuser: AuthUserResolve
             }

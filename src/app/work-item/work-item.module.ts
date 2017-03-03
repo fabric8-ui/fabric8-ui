@@ -20,7 +20,7 @@ import { UserService } from 'ngx-login-client';
 import { AlmFilterBoardList } from '../pipes/alm-board-filter.pipe';
 import { IterationModule } from '../iteration/iteration.module';
 import { SidepanelModule } from '../side-panel/side-panel.module';
-import { AuthUserResolve, IterationsResolve, UsersResolve } from './common.resolver';
+import { AuthUserResolve, UsersResolve } from './common.resolver';
 
 import { WorkItemBoardComponent }                     from './work-item-board/work-item-board.component';
 import { WorkItemDetailModule }                       from './work-item-detail/work-item-detail.module';

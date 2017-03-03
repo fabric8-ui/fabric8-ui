@@ -50,37 +50,21 @@ export class AstronautService {
     this.currentSpaceSubjectSource.next(newSpace);
   }
 
-  private initSpaces() {
-    if (!this.currentSpace) {
-      this.currentSpace = this.spaces[0];
-      this.currentSpaceSubjectSource.next(this.currentSpace);
-    }
-  }
-
   getCurrentSpaceBus(): Observable<Space> {
     return this.currentSpaceBus;
   }
 
-  getCurrentSpace(): Promise<Space> {
-    if (this.currentSpace) {
-      return Observable.of(this.currentSpace).toPromise();
-    } else {
-      let observable = Observable.create((observer: Observer<Space>) => {
-        this.getAllSpaces().then((spaces: Space[]) => {
-          observer.next(this.currentSpace);
-          observer.complete();
-        });
-      });
-      return observable.toPromise();
-    }
+  getCurrentSpace(): Space {
+    return this.currentSpace;
   }
 
+  // We don't really need this in planner
+  // We are using it just to mock the header with list of spaces
   getAllSpaces(): Promise<Space[]> {
     let testMode: boolean = this.globalSettings.isTestmode();
     if (testMode) {
       this.logger.log('SpaceService running in ' + process.env.ENV + ' mode.');
       this.spaces = this.createSpacesFromServiceResponse(this.mockDataService.getAllSpaces());
-      this.initSpaces();
       this.logger.log('Initialized spaces from inmemory.');
       return Observable.of(this.spaces).toPromise();
     } else {
@@ -92,7 +76,6 @@ export class AstronautService {
         .toPromise()
         .then((spaces: any) => {
           this.spaces = this.createSpacesFromServiceResponse(spaces.json().data);
-          this.initSpaces();
           this.logger.log('Initialized spaces from server.');
           observer.next(this.spaces);
           observer.complete();

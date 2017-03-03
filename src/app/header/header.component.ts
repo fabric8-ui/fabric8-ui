@@ -72,15 +72,13 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['login']);
   }
 
-  ngOnInit(): void {        
+  ngOnInit(): void {
     this.listenToEvents();
     this.getLoggedUser();
     this.loggedIn = this.auth.isLoggedIn();
     this.astronaut.getAllSpaces().then(loadedSpaces => {
       this.spaces = loadedSpaces;
-      this.astronaut.getCurrentSpace().then(currentSpace => {
-        this.selectedSpace = currentSpace;
-      })
+      this.selectedSpace = this.astronaut.getCurrentSpace();
     });
   }
 
@@ -93,7 +91,7 @@ export class HeaderComponent implements OnInit {
     this.loggedIn = false;
     this.imgLoaded = false;
   }
-  
+
   listenToEvents() {
     this.broadcaster.on<string>('logout')
       .subscribe(message => {

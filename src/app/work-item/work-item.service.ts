@@ -117,7 +117,7 @@ export class WorkItemService {
         });
     } else {
       this.logger.log('Work item does not have child related link, skipping: ' + parent.id);
-      return Observable.of([]).toPromise();   
+      return Observable.of([]).toPromise();
     }
   }
 
@@ -133,7 +133,8 @@ export class WorkItemService {
    * and store them with the data in the array
    */
   getWorkItems(pageSize: number = 20, filters: any[] = []): Promise<WorkItem[]> {
-    return this.astronaut.getCurrentSpace().then((currentSpace: Space) => {
+    let currenSpace = this.astronaut.getCurrentSpace();
+    if (currenSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.workItemUrl = this.baseApiUrl + 'workitems';
       //this.workItemUrl = currentSpace.links.self + '/workitems';
@@ -183,7 +184,9 @@ export class WorkItemService {
             this.handleError(e);
           }
         });
-    });
+    } else {
+      return Promise.resolve<WorkItem[]>( [] as WorkItem[] );
+    }
   }
 
   // Reset work item big list
@@ -252,7 +255,8 @@ export class WorkItemService {
       return Promise.resolve(wItem);
     } else {
       this.buildUserIdMap();
-      return this.astronaut.getCurrentSpace().then((currentSpace: Space) => {
+      let currentSpace = this.astronaut.getCurrentSpace();
+      if (currentSpace) {
         // FIXME: make the URL great again (when we know the right API URL for this)!
         this.workItemUrl = this.baseApiUrl + 'workitems';
         // this.workItemUrl = currentSpace.links.self + '/workitems';
@@ -286,7 +290,9 @@ export class WorkItemService {
               this.handleError(e);
             }
           });
-      });
+      } else {
+        return Promise.resolve<WorkItem>( {} as WorkItem );
+      }
     }
   }
 
@@ -534,7 +540,8 @@ export class WorkItemService {
    * ToDo: Use router resolver to fetch types here
    */
   getWorkItemTypes(): Promise<any[]> {
-    return this.astronaut.getCurrentSpace().then((currentSpace: Space) => {
+    let currentSpace = this.astronaut.getCurrentSpace();
+    if (currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.workItemTypeUrl = this.baseApiUrl + 'workitemtypes';
       //this.workItemTypeUrl = currentSpace.links.self + '/workitemtypes';
@@ -552,7 +559,9 @@ export class WorkItemService {
           this.handleError(e);
         }
       });
-    });
+    } else {
+      return Promise.resolve<WorkItemType[]>( [] as WorkItemType[] );
+    }
   }
 
   /**
@@ -710,7 +719,8 @@ export class WorkItemService {
     */
   create(workItem: WorkItem): Promise<WorkItem> {
     let payload = JSON.stringify({data: workItem});
-    return this.astronaut.getCurrentSpace().then((currentSpace: Space) => {
+    let currentSpace = this.astronaut.getCurrentSpace();
+    if (currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.workItemUrl = this.baseApiUrl + 'workitems';
       // this.workItemUrl = currentSpace.links.self + '/workitems';
@@ -735,7 +745,9 @@ export class WorkItemService {
             this.handleError(e);
           }
         });
-    });
+    } else {
+      return Promise.resolve<WorkItem>( {} as WorkItem );
+    }
   }
 
   /**
@@ -975,7 +987,8 @@ export class WorkItemService {
    * @returns Promise<Link>
    */
   createLink(link: Object, currentWiId: string): Promise<Link> {
-    return this.astronaut.getCurrentSpace().then((currentSpace: Space) => {
+    let currentSpace = this.astronaut.getCurrentSpace();
+    if (currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.linksUrl = this.baseApiUrl + 'workitemlinks';
       // this.linksUrl = currentSpace.links.self + '/workitemlinks';
@@ -996,7 +1009,9 @@ export class WorkItemService {
             this.handleError(e);
           }
         });
-    });
+    } else {
+      return Promise.resolve<Link>( {} as Link );
+    }
   }
 
   /**
@@ -1008,7 +1023,8 @@ export class WorkItemService {
    * @returns Promise<void>
    */
   deleteLink(link: any, currentWiId: string): Promise<void> {
-    return this.astronaut.getCurrentSpace().then((currentSpace: Space) => {
+    let currentSpace = this.astronaut.getCurrentSpace();
+    if (currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.linksUrl = this.baseApiUrl + 'workitemlinks';
       // this.linksUrl = currentSpace.links.self + '/workitemlinks';
@@ -1024,11 +1040,12 @@ export class WorkItemService {
             this.handleError(e);
           }
         });
-    });
+    }
   }
 
   searchLinkWorkItem(term: string, workItemType: string): Promise<WorkItem[]> {
-    return this.astronaut.getCurrentSpace().then((currentSpace: Space) => {
+    let currentSpace = this.astronaut.getCurrentSpace();
+    if (currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       let searchUrl = this.baseApiUrl + 'search?q=' + term + ' type:' + workItemType;
       //let searchUrl = currentSpace.links.self + 'search?q=' + term + ' type:' + workItemType;
@@ -1043,7 +1060,9 @@ export class WorkItemService {
               this.handleError(e);
             }
           });
-    });
+    } else {
+      return Promise.resolve<WorkItem[]>( [] as WorkItem[] );
+    }
   }
 
   /**
@@ -1095,7 +1114,8 @@ export class WorkItemService {
     newWItem.attributes.previousitem = parseInt(adjacentWI.prevItemId);
     newWItem.attributes.nextitem = parseInt(adjacentWI.nextItemId);
 
-    return this.astronaut.getCurrentSpace().then((currentSpace: Space) => {
+    let currentSpace = this.astronaut.getCurrentSpace();
+    if (currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.workItemUrl = this.baseApiUrl + 'workitems';
       // this.workItemUrl = currentSpace.links.self + '/workitems';
@@ -1115,7 +1135,7 @@ export class WorkItemService {
             this.handleError(e);
           }
         });
-    });
+    }
   }
 
   renderMarkDown(markDownText: string): Promise<any> {
@@ -1123,12 +1143,14 @@ export class WorkItemService {
       data: {
         attributes: {
           content: markDownText,
-          markup: "Markdown"
+          markup: 'Markdown'
         },
-        type: "rendering"
+        type: 'rendering'
       }
-    }
-    return this.astronaut.getCurrentSpace().then((currentSpace: Space) => {
+    };
+
+    let currentSpace = this.astronaut.getCurrentSpace();
+    if (currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.renderUrl = this.baseApiUrl + 'render';
       // this.renderUrl = currentSpace.links.self + '/render';
@@ -1143,7 +1165,9 @@ export class WorkItemService {
             this.handleError(e);
           }
         });
-    });
+    } else {
+      return Promise.resolve<any>( {} as any );
+    }
   }
 
   private handleError(error: any): Promise<any> {

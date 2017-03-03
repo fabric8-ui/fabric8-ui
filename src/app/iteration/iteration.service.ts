@@ -43,7 +43,8 @@ export class IterationService {
    */
   getIterations(): Promise<IterationModel[]> {
     // get the current iteration url from the space service
-    return this.astronaut.getCurrentSpace().then(currentSpace => {
+    let currentSpace = this.astronaut.getCurrentSpace();
+    if (currentSpace) {
       let iterationsUrl = currentSpace.relationships.iterations.links.related;
       if (this.checkValidIterationUrl(iterationsUrl)) {
         return this.http
@@ -71,7 +72,9 @@ export class IterationService {
         this.logger.log('URL not matched');
         return Promise.reject<IterationModel[]>([] as IterationModel[]);
       }
-    });
+    } else {
+      return Promise.resolve<IterationModel[]>([] as IterationModel[]);
+    }
   }
 
   /**
@@ -81,7 +84,8 @@ export class IterationService {
    * @return new item
    */
   createIteration(iteration: IterationModel): Promise<IterationModel> {
-    return this.astronaut.getCurrentSpace().then(currentSpace => {
+    let currentSpace = this.astronaut.getCurrentSpace();
+    if (currentSpace) {
       let iterationsUrl = currentSpace.relationships.iterations.links.related;
       if (this.checkValidIterationUrl(iterationsUrl)) {
         iteration.relationships.space.data.id = currentSpace.id;
@@ -115,8 +119,9 @@ export class IterationService {
         this.logger.log('URL not matched');
         return Promise.reject<IterationModel>( {} as IterationModel );
       }
-    });
-
+    } else {
+      return Promise.resolve<IterationModel>( {} as IterationModel );
+    }
   }
 
   /**

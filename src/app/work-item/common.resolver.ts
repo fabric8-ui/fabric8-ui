@@ -33,25 +33,3 @@ export class AuthUserResolve implements Resolve<any> {
     return this.userService.getUser();
   }
 }
-
-// FIX ME : Need to remove this resolver
-@Injectable()
-export class IterationsResolve implements Resolve<IterationModel[]> {
-  constructor(private iterationService: IterationService,
-              private spaceService: SpaceService) {}
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<any>|Promise<any>|any {
-    return this.iterationService.getIterations()
-      .then(iterations =>  iterations)
-      .catch ((e) => {
-        console.log('Some error has occured', e);
-      })
-      .catch ((err) => {
-        console.log('Space not found');
-      });
-    }
-}
-
-
