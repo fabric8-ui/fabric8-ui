@@ -49,5 +49,6 @@ export { TreeListItemComponent } from './src/app/treelist/treelist-item.componen
 export { TreeListModule } from './src/app/treelist/treelist.module';
 
 // Toolbar
+export { ToolbarConfig } from './src/app/toolbar/toolbar-config';
 export { ToolbarComponent } from './src/app/toolbar/toolbar.component';
 export { ToolbarModule } from './src/app/toolbar/toolbar.module';
