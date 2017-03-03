@@ -88,7 +88,8 @@
             position: relative;
             align-items: stretch;
             > header {
-        border-bottom: 1px solid $color-pf-black-300 !important;
+              padding: 0 rem(20);
+              border-bottom: 1px solid $color-pf-black-300 !important;
               .toolbar-pf {
                   border-color: transparent;
                   .toolbar-pf-actions {
