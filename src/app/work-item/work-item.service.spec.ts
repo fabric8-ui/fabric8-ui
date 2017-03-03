@@ -1,3 +1,4 @@
+import { AstronautService } from './../shared/astronaut.service';
 import {
   async,
   inject,
@@ -164,7 +165,7 @@ describe('Work Item Service - ', () => {
         // MockDataService should be removed at some point
         MockDataService,
         {
-          provide: SpaceService,
+          provide: AstronautService,
           useValue: fakeSpcaeService
         },
         WorkItemService,
@@ -213,7 +214,7 @@ describe('Work Item Service - ', () => {
             'type': 'workitemtypes'
           }
         },
-        'creator': {}
+        'creator': {},
       },
       'type': 'workitems'
     }

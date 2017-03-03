@@ -1,3 +1,4 @@
+import { AstronautService } from './../shared/astronaut.service';
 import {
   BaseRequestOptions,
   Http,
@@ -78,7 +79,7 @@ describe ('Iteration service - ', () => {
           useValue: fakeAuthService
         },
         {
-          provide: SpaceService,
+          provide: AstronautService,
           useValue: fakeSpaceService
         },
         IterationService,
