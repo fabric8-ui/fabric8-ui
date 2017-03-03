@@ -109,6 +109,19 @@ changed by adding/modifying browser capabilities in `protractor.config.js`.
 
 Test specs for functional tests are residing in `src/tests`.
 
+== Inmemory Mode
+
+To Run project in Inmemory mode, use:
+
+----
+$ NODE_ENV=inmemory npm start
+----
+----
+Browse URL : http://localhost:8088/?token_json=%7B%22access_token%22%3A%22somerandomtoken%22%2C%22expires_in%22%3A1800%2C%22refresh_expires_in%22%3A1800%2C%22refresh_token%22%3A%22somerandomtoken%22%2C%22token_type%22%3A%22bearer%22%7D
+----
+
+In-memory mode allows fabric8-planner to run without needing federated authentication service and fills the app with mock data set. This mode is good for demo and testing purposes.
+
 == Production Build
 
 To generate production build, set the API URL and run `npm` command as give below:
