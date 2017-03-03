@@ -37,13 +37,13 @@ export class AstronautService {
     this.currentSpaceSubjectSource = new Subject<Space>();
     this.currentSpaceBus = this.currentSpaceSubjectSource.asObservable();
     this.broadcaster.on<Space>('spaceChanged').subscribe(val => {
-      this.switchToSpace(val);
+      this.currentSpace = val;
+      this.currentSpaceSubjectSource.next(val);
     });
   }
 
   public switchToSpace(newSpace: Space) {
-    this.currentSpace = newSpace;
-    this.currentSpaceSubjectSource.next(newSpace);
+    this.broadcaster.broadcast('spaceChanged', newSpace);
   }
 
   getCurrentSpaceBus(): Observable<Space> {
@@ -69,13 +69,13 @@ export class AstronautService {
       let url = process.env.API_URL + 'spaces';
       let observable = Observable.create((observer: Observer<Space[]>) => {
         this.http.get(url)
-        .toPromise()
-        .then((spaces: any) => {
-          this.spaces = this.createSpacesFromServiceResponse(spaces.json().data);
-          this.logger.log('Initialized spaces from server.');
-          observer.next(this.spaces);
-          observer.complete();
-        });
+          .toPromise()
+          .then((spaces: any) => {
+            this.spaces = this.createSpacesFromServiceResponse(spaces.json().data);
+            this.logger.log('Initialized spaces from server.');
+            observer.next(this.spaces);
+            observer.complete();
+          });
       });
       return observable.toPromise();
     }
@@ -87,13 +87,13 @@ export class AstronautService {
       let thisElem = response[i];
       let thisTeam: Team = {
         name: 'Team ' + thisElem.attributes.name,
-        members: [ this.mockDataService.getUser() ]
+        members: [this.mockDataService.getUser()]
       } as Team;
       let thisSpace: Space = {
         name: thisElem.attributes.name,
         path: '',
         description: '',
-        teams: [ thisTeam ],
+        teams: [thisTeam],
         defaultTeam: thisTeam,
         process: new ProcessTemplate(),
         privateSpace: false,
