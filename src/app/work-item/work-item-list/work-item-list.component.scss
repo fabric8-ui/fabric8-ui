@@ -20,8 +20,12 @@
     -webkit-flex: none;
     -ms-flex: none;
   }
+  .card-pf {
+    border: 0;
+    box-shadow: none;
+  }
   .no-wi{
-    padding: em(10) em(20);
+    font-size: $pf-icon-4x;
   }
 }
 

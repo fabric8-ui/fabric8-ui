@@ -35,8 +35,21 @@
         </alm-tree-list-item>
       </template>
     </alm-tree-list>
-    <div *ngIf="!workItems || workItems.length === 0">
-      <h2 class="error no-wi">No workitems were found!</h2>
+    <div *ngIf="!workItems || workItems.length === 0" class="container-fluid container-cards-pf">
+      <div class="row row-cards-pf">
+        <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
+          <div class="card-pf card-pf-aggregate-status">
+            <div class="card-pf-title">
+              <h2 class="pficon pficon-add-circle-o no-wi"></h2>
+              <h2>Create a Work Item</h2>
+            </div>
+            <div class="card-pf-body">
+              <h4>There are no Work Items for your selected criteria.</h4>
+              <p>If you'd like to add a Work Item, you can do so using the Quick Add or the <i class="pficon pficon-add-circle-o"></i> in the bar above.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
