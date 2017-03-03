@@ -1,4 +1,3 @@
-import { AstronautService } from './../shared/astronaut.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -28,6 +27,6 @@ import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
     IterationComponent
   ],
   exports: [IterationComponent],
-  providers: [AstronautService, IterationService]
+  providers: [IterationService]
 })
 export class IterationModule { }

@@ -1,4 +1,3 @@
-import { AstronautService } from './../shared/astronaut.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -43,7 +42,6 @@ export class IterationComponent implements OnInit, OnDestroy {
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     private iterationService: IterationService,
-    private astronaut: AstronautService,
     private route: ActivatedRoute
   ) {}
 

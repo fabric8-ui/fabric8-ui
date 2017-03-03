@@ -1,4 +1,3 @@
-import { AstronautService } from './../shared/astronaut.service';
 import { Injectable, Component, Inject } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
@@ -66,7 +65,6 @@ export class WorkItemService {
   constructor(private http: Http,
     private broadcaster: Broadcaster,
     private logger: Logger,
-    private astronaut: AstronautService,
     private auth: AuthenticationService,
     private iterationService: IterationService,
     private userService: UserService,

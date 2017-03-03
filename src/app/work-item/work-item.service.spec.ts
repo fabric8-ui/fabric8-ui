@@ -1,4 +1,3 @@
-import { AstronautService } from './../shared/astronaut.service';
 import {
   async,
   inject,
@@ -141,7 +140,7 @@ describe('Work Item Service - ', () => {
         // MockDataService should be removed at some point
         MockDataService,
         {
-          provide: AstronautService,
+          provide: SpaceService,
           useValue: fakeSpcaeService
         },
         WorkItemService,

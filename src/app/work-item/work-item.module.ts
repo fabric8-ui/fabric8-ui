@@ -1,4 +1,3 @@
-import { AstronautService } from './../shared/astronaut.service';
 import { NgModule }     from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -62,7 +61,6 @@ import { WorkItemService } from './work-item.service';
     WorkItemListEntryComponent
   ],
   providers: [
-    AstronautService,
     AuthUserResolve,
     UserService,
     UsersResolve,

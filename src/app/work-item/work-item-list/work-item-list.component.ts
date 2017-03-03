@@ -1,4 +1,3 @@
-import { AstronautService } from './../../shared/astronaut.service';
 import { Subscription } from 'rxjs/Subscription';
 import {
   AfterViewInit,
@@ -91,8 +90,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     private workItemService: WorkItemService,
     private logger: Logger,
     private userService: UserService,
-    private route: ActivatedRoute,
-    private astronaut: AstronautService) {}
+    private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.listenToEvents();

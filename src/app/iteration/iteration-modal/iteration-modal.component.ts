@@ -1,4 +1,3 @@
-import { AstronautService } from './../../shared/astronaut.service';
 import { Component, ViewChild, OnInit, Output, EventEmitter, Input, OnChanges, OnDestroy } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
@@ -58,8 +57,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
 
   constructor(
     private iterationService: IterationService,
-    private broadcaster: Broadcaster,
-    private astronaut: AstronautService) {}
+    private broadcaster: Broadcaster) {}
 
 
   ngOnInit() {

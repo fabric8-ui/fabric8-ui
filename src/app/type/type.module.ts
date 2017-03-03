@@ -1,4 +1,3 @@
-import { AstronautService } from './../shared/astronaut.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -23,6 +22,6 @@ import { TypeComponent } from './type.component';
     TypeComponent
   ],
   exports: [TypeComponent],
-  providers: [AstronautService]
+  providers: []
 })
 export class TypeModule { }

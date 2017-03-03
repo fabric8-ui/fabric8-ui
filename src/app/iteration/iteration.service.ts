@@ -1,4 +1,3 @@
-import { AstronautService } from './../shared/astronaut.service';
 import { GlobalSettings } from '../shared/globals';
 
 import { Injectable } from '@angular/core';
@@ -27,7 +26,6 @@ export class IterationService {
       private logger: Logger,
       private http: Http,
       private auth: AuthenticationService,
-      private astronaut: AstronautService,
       private globalSettings: GlobalSettings,
       private broadcaster: Broadcaster
   ) {

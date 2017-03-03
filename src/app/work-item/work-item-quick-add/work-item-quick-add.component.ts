@@ -19,7 +19,6 @@ import { Logger, Broadcaster } from 'ngx-login-client';
 
 import { WorkItem, WorkItemAttributes, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
-import { AstronautService } from './../../shared/astronaut.service';
 
 @Component({
   selector: 'alm-work-item-quick-add',
@@ -45,7 +44,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
 
   constructor(
     private workItemService: WorkItemService,
-    private astronaut: AstronautService,
     private broadcaster: Broadcaster,
     private logger: Logger,
     private renderer: Renderer) {}

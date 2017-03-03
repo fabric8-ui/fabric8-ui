@@ -1,4 +1,3 @@
-import { AstronautService } from './../shared/astronaut.service';
 import { Subscription } from 'rxjs/Subscription';
 import {
   AfterViewInit,
@@ -52,8 +51,7 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private broadcaster: Broadcaster,
     private workItemService: WorkItemService,
-    private router: Router,
-    private astronaut: AstronautService
+    private router: Router
   ) {
   }
 
