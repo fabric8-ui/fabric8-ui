@@ -5,6 +5,7 @@
 const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge'); // used to merge webpack configs
 const commonConfig = require('./webpack.common.js'); // the settings that are common to prod and dev
+const stringify = require('json-stringify');
 
 /**
  * Webpack Plugins
@@ -50,7 +51,7 @@ const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
 });
 
 module.exports = function (env) {
-  console.log('The env from the webpack.prod config: ' + JSON.stringify(env, null, 2));
+  console.log('The env from the webpack.prod config: ' + stringify(env, null, 2));
   return webpackMerge(commonConfig({ env: ENV }), {
 
     /**
@@ -159,18 +160,18 @@ module.exports = function (env) {
        */
       // NOTE: when adding more properties make sure you include them in custom-typings.d.ts
       new DefinePlugin({
-        'ENV': JSON.stringify(METADATA.ENV),
+        'ENV': stringify(METADATA.ENV),
         'HMR': METADATA.HMR,
         'process.env': {
-          'ENV': JSON.stringify(METADATA.ENV),
-          'NODE_ENV': JSON.stringify(METADATA.ENV),
+          'ENV': stringify(METADATA.ENV),
+          'NODE_ENV': stringify(METADATA.ENV),
           'HMR': METADATA.HMR,
-          'FABRIC8_WIT_API_URL': JSON.stringify(METADATA.FABRIC8_WIT_API_URL),
-          'FABRIC8_RECOMMENDER_API_URL': JSON.stringify(METADATA.FABRIC8_RECOMMENDER_API_URL),
-          'FABRIC8_FORGE_URL': JSON.stringify(METADATA.FABRIC8_FORGE_URL),
-          'PUBLIC_PATH': JSON.stringify(METADATA.PUBLIC_PATH),
-          'BUILD_NUMBER': JSON.stringify(METADATA.BUILD_NUMBER),
-          'BUILD_TIMESTAMP': JSON.stringify(METADATA.BUILD_TIMESTAMP)
+          'FABRIC8_WIT_API_URL': stringify(METADATA.FABRIC8_WIT_API_URL),
+          'FABRIC8_RECOMMENDER_API_URL': stringify(METADATA.FABRIC8_RECOMMENDER_API_URL),
+          'FABRIC8_FORGE_URL': stringify(METADATA.FABRIC8_FORGE_URL),
+          'PUBLIC_PATH': stringify(METADATA.PUBLIC_PATH),
+          'BUILD_NUMBER': stringify(METADATA.BUILD_NUMBER),
+          'BUILD_TIMESTAMP': stringify(METADATA.BUILD_TIMESTAMP)
         }
       }),
 

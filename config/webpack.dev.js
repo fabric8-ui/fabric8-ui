@@ -79,6 +79,7 @@ module.exports = function (options) {
        * See: http://webpack.github.io/docs/configuration.html#output-path
        */
       path: helpers.root('dist'),
+
       publicPath: METADATA.PUBLIC_PATH,
 
       /**
@@ -105,20 +106,10 @@ module.exports = function (options) {
       chunkFilename: '[id].chunk.js',
 
       library: 'ac_[name]',
+
       libraryTarget: 'var'
     },
-    resolve: {
 
-      /**
-       * Tell webpack what directories should be searched when resolving modules.
-       *
-       * We enable this in dev as it allows npm link to work
-       *
-       * See: https://webpack.js.org/configuration/resolve/#resolve-modules
-       */
-      modules: [ helpers.root('src'), helpers.root('node_modules')]
-
-    },
     plugins: [
       /**
        * Plugin: DefinePlugin

@@ -6,6 +6,7 @@ const webpack = require('webpack');
 const helpers = require('./helpers');
 const ngtools = require('@ngtools/webpack');
 var path = require('path');
+var stringify = require('json-stringify');
 
 /*
  * Webpack Plugins
@@ -20,11 +21,13 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
-const ngcWebpack = require('ngc-webpack');
+// const ngcWebpack = require('ngc-webpack');
 const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+
+
 
 const sassModules = [
   {
@@ -40,7 +43,7 @@ const sassModules = [
   }
 ];
 
-sassModules.forEach(val => {
+sassModules.forEach(function (val) {
   val.module = val.module || val.name + '-sass';
   val.path = val.path || path.join(val.module, 'assets');
   val.modulePath = val.modulePath || path.join('node_modules', val.path);
@@ -49,12 +52,11 @@ sassModules.forEach(val => {
 });
 
 
-
 /*
  * Webpack Constants
  */
-const HMR = helpers.hasProcessFlag('hot');
-const AOT = helpers.hasNpmFlag('aot');
+// const HMR = helpers.hasProcessFlag('hot');
+// const AOT = helpers.hasNpmFlag('aot');
 const METADATA = {
   title: 'Fabric8',
   baseUrl: '/',
@@ -69,7 +71,7 @@ const METADATA = {
 module.exports = function (options) {
   const isProd = options.env === 'production';
   const aotMode = false;//options && options.aot !== undefined;
-  console.log('The options from the webpack config: ' + JSON.stringify(options, null, 2));
+  console.log('The options from the webpack config: ' + stringify(options, null, 2));
 
   // ExtractTextPlugin
   const extractCSS = new ExtractTextPlugin({
@@ -120,6 +122,15 @@ module.exports = function (options) {
        */
       extensions: ['.ts', '.js', '.json'],
 
+      /**
+       * Tell webpack what directories should be searched when resolving modules.
+       *
+       * We enable this in dev as it allows npm link to work
+       *
+       * See: https://webpack.js.org/configuration/resolve/#resolve-modules
+       */
+      modules: [ helpers.root('src'), helpers.root('node_modules')]
+
     },
 
     /*
@@ -129,7 +140,7 @@ module.exports = function (options) {
      */
     module: {
 
-      loaders: [
+      rules: [
 
         /*
          * Typescript loader support for .ts and Angular 2 async routes via .async.ts
@@ -140,7 +151,7 @@ module.exports = function (options) {
          */
         {
           test: /\.ts$/,
-          loaders: aotMode ? [
+          use: aotMode ? [
             '@ngtools/webpack'
           ] : [
               '@angularclass/hmr-loader?pretty=' + !isProd + '&prod=' + isProd,
@@ -159,7 +170,7 @@ module.exports = function (options) {
          */
         {
           test: /\.json$/,
-          loader: 'json-loader'
+          use: ['json-loader']
         },
 
         /* Raw loader support for *.html
@@ -169,7 +180,7 @@ module.exports = function (options) {
          */
         {
           test: /\.html$/,
-          loader: 'raw-loader',
+          use: ['raw-loader'],
           exclude: [path.resolve(__dirname, 'src/index.html')]
         },
 
@@ -180,15 +191,15 @@ module.exports = function (options) {
          */
         {
           test: /\.css$/,
-          loader: extractCSS.extract({
+          use: extractCSS.extract({
             fallback: "style-loader",
-            use: "css-loader?sourceMap&context=/"
+            loader: "css-loader?sourceMap&context=/"
           })
         },
 
         {
           test: /\.scss$/,
-          loaders: [
+          use: [
             {
               loader: 'to-string-loader'
             },
@@ -201,7 +212,9 @@ module.exports = function (options) {
             {
               loader: 'sass-loader',
               options: {
-                includePaths: sassModules.map(val => val.sassPath)
+                includePaths: sassModules.map(function (val) {
+                  return val.sassPath;
+                })
               }
             }
           ]
@@ -212,7 +225,7 @@ module.exports = function (options) {
          */
         {
           test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
-          loaders: [
+          use: [
             {
               loader: 'url-loader',
               query: {
@@ -224,7 +237,7 @@ module.exports = function (options) {
         },
         {
           test: /\.jpg$|\.png$|\.gif$|\.jpeg$/,
-          loaders: [
+          use: [
             {
               loader: 'url-loader',
               query: {
@@ -322,7 +335,8 @@ module.exports = function (options) {
        * See: https://gist.github.com/sokra/27b24881210b56bbaff7
        */
       new LoaderOptionsPlugin({}),
-      extractCSS,
+
+      extractCSS
     ],
 
     /*
@@ -343,7 +357,7 @@ module.exports = function (options) {
 
   if (aotMode) {
     config.plugins.push(new ngtools.AotPlugin({
-      tsConfigPath: 'tsconfig-aot.json',
+      tsConfigPath: 'tsconfig-aot.json'
       // entryModule: './src/app/app.module#AppModule',
       // genDir: './src/aot'
     }));
