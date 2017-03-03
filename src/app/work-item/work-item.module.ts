@@ -64,7 +64,6 @@ import { WorkItemService } from './work-item.service';
   providers: [
     AstronautService,
     AuthUserResolve,
-    IterationsResolve,
     UserService,
     UsersResolve,
     MockDataService,
