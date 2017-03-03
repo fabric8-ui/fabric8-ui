@@ -51,7 +51,8 @@ const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
 });
 
 module.exports = function (env) {
-  console.log('The env from the webpack.prod config: ' + stringify(env, null, 2));
+  // stringify can't cope with undefined
+  console.log('The env from the webpack.prod config: ' + (env ? stringify(env , null, 2) : env));
   return webpackMerge(commonConfig({ env: ENV }), {
 
     /**
