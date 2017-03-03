@@ -21,7 +21,6 @@ import { GlobalSettings } from './globals';
 @Injectable()
 export class AstronautService {
 
-  private currentSpaceSubjectSource: Subject<Space>;
   private currentSpaceBus: Observable<Space>;
 
   private spaces: Space[] = [];
@@ -34,12 +33,8 @@ export class AstronautService {
     private globalSettings: GlobalSettings,
     private broadcaster: Broadcaster
   ) {
-    this.currentSpaceSubjectSource = new Subject<Space>();
-    this.currentSpaceBus = this.currentSpaceSubjectSource.asObservable();
-    this.broadcaster.on<Space>('spaceChanged').subscribe(val => {
-      this.currentSpace = val;
-      this.currentSpaceSubjectSource.next(val);
-    });
+    this.currentSpaceBus = this.broadcaster.on<Space>('spaceChanged');
+    this.currentSpaceBus.subscribe(val => this.currentSpace = val);
   }
 
   public switchToSpace(newSpace: Space) {
