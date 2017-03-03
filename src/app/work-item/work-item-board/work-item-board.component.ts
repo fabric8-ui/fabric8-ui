@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 
 import { AuthenticationService, Broadcaster } from 'ngx-login-client';
 import { ArrayCount } from 'ngx-widgets';
+import { DragulaService } from 'ng2-dragula';
 
 import { WorkItem } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
@@ -23,6 +24,7 @@ import { WorkItemService } from '../work-item.service';
 
 export class WorkItemBoardComponent implements OnInit {
   workItems: WorkItem[] = [];
+  workItem: WorkItem;
   lanes: Array<any> = [];
   loggedIn: Boolean = false;
   spaceSubscription: Subscription;
@@ -32,7 +34,24 @@ export class WorkItemBoardComponent implements OnInit {
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     private router: Router,
-    private workItemService: WorkItemService) {}
+    private workItemService: WorkItemService,
+    private dragulaService: DragulaService) {
+      this.dragulaService.drag.subscribe((value) => {
+        this.onDrag(value.slice(1));
+      });
+
+      this.dragulaService.drop.subscribe((value) => {
+        this.onDrop(value.slice(1));
+      });
+
+      this.dragulaService.over.subscribe((value) => {
+        this.onOver(value.slice(1));
+      });
+
+      this.dragulaService.out.subscribe((value) => {
+        this.onOut(value.slice(1));
+      });
+    }
 
   ngOnInit() {
     this.loggedIn = this.auth.isLoggedIn();
@@ -96,5 +115,60 @@ export class WorkItemBoardComponent implements OnInit {
   gotoDetail(workItem: WorkItem) {
     let link = [ this.router.url.split('detail')[0] + '/detail/' + workItem.id ];
     this.router.navigate(link);
+  }
+
+  onDrag(args: any) {
+    let [el, source] = args;
+  }
+
+  foo(workItem: WorkItem) {
+    console.log(workItem);
+    this.workItem = workItem;
+  }
+
+  onDrop(args) {
+    let [el, target, source, sibling] = args;
+    target.parentElement.parentElement.classList.remove('active-lane');
+    let state = target.parentElement.parentElement.getAttribute('data-state');
+    //this.workItem = this.workItems[el.getAttribute('data-item')];
+    //console.log(el.getAttribute('data-item'));
+    this.onChangeState(state);
+  }
+
+  onOver(args) {
+    let [el, container, source] = args;
+    let containerClassList = container.parentElement.parentElement.classList;
+    let laneSection = document.getElementsByClassName('board-lane-column');
+    for(let i=0; i<laneSection.length; i++){
+      laneSection[i].classList.remove('active-lane');
+    }
+    containerClassList.add('active-lane');
+  }
+
+  onOut(args) {
+    let [el, container, source] = args;
+    source.parentElement.parentElement.classList.remove('active-lane');
+  }
+
+  activeOnList(timeOut: number = 0) {
+    setTimeout(() => {
+      this.broadcaster.broadcast('activeWorkItem', this.workItem.id);
+    }, timeOut);
+  }
+
+  onChangeState(option: any): void {
+    this.workItem.attributes['system.state'] = option;
+    this.save();
+  }
+
+  save(): void {
+    if (this.workItem.id){
+      this.workItemService
+        .update(this.workItem)
+        .then((workItem) => {
+          this.workItem.attributes['version'] = workItem.attributes['version'];
+          this.activeOnList();
+      });
+    }
   }
 }

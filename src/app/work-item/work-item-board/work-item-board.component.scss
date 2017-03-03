@@ -1,4 +1,5 @@
 @import '../../../assets/stylesheets/base';
+@import '../../../assets/stylesheets/dragula';
 
 .boardWrapper {
   position: relative;
@@ -30,13 +31,12 @@
           padding: em(0) em(15);
           overflow: auto;
           width: $width100;
-          float: left;
           height: calc( 100% - 2.5em );
           .board-card {
             @include Border(1px, solid , $color-pf-black-400);
             background: $color-pf-white;
             padding: em(15);
-            margin: em(5) 0;
+            margin-bottom: em(5);
             > div {
               p {
                 margin: 0;
@@ -70,6 +70,9 @@
         }// lane-header ended
       }//boad-lane-column ended
      }//board-lane ended
+    }
+    .card-wrapper {
+      height: 100%;
     }
   }
 
@@ -203,6 +206,8 @@
       }
     }
   }
+.active-lane {
+  border: 2px solid $color-pf-blue-300!important;
 }
 
 .not-assigned-user-icon {

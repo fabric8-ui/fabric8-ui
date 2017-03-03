@@ -15,8 +15,8 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CommonModule } from '@angular/common';
 
-import { DndModule } from 'ng2-dnd';
 import { TooltipModule } from 'ng2-bootstrap';
+import { DragulaModule } from 'ng2-dragula';
 import { AlmUserName } from '../../pipes/alm-user-name.pipe';
 import {
   // AlmUserName,
@@ -267,7 +267,7 @@ describe('Work item list view - ', () => {
         RouterTestingModule,
         CommonModule,
         TooltipModule,
-        DndModule.forRoot(),
+        DragulaModule,
         AlmIconModule,
         DialogModule,
         InfiniteScrollModule,

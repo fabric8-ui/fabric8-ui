@@ -2,7 +2,7 @@ import { NgModule }     from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TooltipModule } from 'ng2-bootstrap';
-import { DndModule } from 'ng2-dnd';
+import { DragulaModule } from 'ng2-dragula';
 import { ModalModule } from 'ngx-modal';
 import { DropdownModule } from 'ng2-bootstrap';
 import {
@@ -31,7 +31,7 @@ import { WorkItemService } from './work-item.service';
     AlmIconModule,
     CommonModule,
     DialogModule,
-    DndModule.forRoot(),
+    DragulaModule,
     DropdownModule,
     IterationModule,
     ModalModule,
