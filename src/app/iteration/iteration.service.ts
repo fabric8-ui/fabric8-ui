@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { cloneDeep } from 'lodash';
 import {
   AuthenticationService,
+  Broadcaster,
   Logger
 } from 'ngx-login-client';
 
@@ -18,19 +19,19 @@ import { MockHttp } from '../shared/mock-http';
 
 @Injectable()
 export class IterationService {
-  private spaceSubscription: Subscription = null;
   public iterations: IterationModel[] = [];
   private headers = new Headers({'Content-Type': 'application/json'});
+  private _currentSpace;
 
   constructor(
       private logger: Logger,
       private http: Http,
       private auth: AuthenticationService,
       private astronaut: AstronautService,
-      private globalSettings: GlobalSettings
+      private globalSettings: GlobalSettings,
+      private broadcaster: Broadcaster
   ) {
-    // set initial space and subscribe to the space service to recognize space switches
-    //this.spaceSubscription = this.spaceService.getCurrentSpaceBus().subscribe(space => this.switchSpace(space));
+    this.broadcaster.on<Space>('spaceChanged').subscribe(val => this._currentSpace = val);
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
      }
@@ -43,9 +44,8 @@ export class IterationService {
    */
   getIterations(): Promise<IterationModel[]> {
     // get the current iteration url from the space service
-    let currentSpace = this.astronaut.getCurrentSpace();
-    if (currentSpace) {
-      let iterationsUrl = currentSpace.relationships.iterations.links.related;
+    if (this._currentSpace) {
+      let iterationsUrl = this._currentSpace.relationships.iterations.links.related;
       if (this.checkValidIterationUrl(iterationsUrl)) {
         return this.http
           .get(iterationsUrl, { headers: this.headers })
@@ -84,11 +84,10 @@ export class IterationService {
    * @return new item
    */
   createIteration(iteration: IterationModel): Promise<IterationModel> {
-    let currentSpace = this.astronaut.getCurrentSpace();
-    if (currentSpace) {
-      let iterationsUrl = currentSpace.relationships.iterations.links.related;
+    if (this._currentSpace) {
+      let iterationsUrl = this._currentSpace.relationships.iterations.links.related;
       if (this.checkValidIterationUrl(iterationsUrl)) {
-        iteration.relationships.space.data.id = currentSpace.id;
+        iteration.relationships.space.data.id = this._currentSpace.id;
         return this.http
           .post(
             iterationsUrl,

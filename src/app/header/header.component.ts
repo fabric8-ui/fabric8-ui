@@ -58,13 +58,13 @@ export class HeaderComponent implements OnInit {
     private logger: Logger,
     private auth: AuthenticationService,
     private astronaut: AstronautService,
-    private broadcaster: Broadcaster) {}
+    private broadcaster: Broadcaster) { }
 
   getLoggedUser(): void {
     this.loggedInUser = this.userService.getSavedLoggedInUser();
   }
 
-  logout(){
+  logout() {
     this.auth.logout();
   }
 
@@ -76,13 +76,13 @@ export class HeaderComponent implements OnInit {
     this.listenToEvents();
     this.getLoggedUser();
     this.loggedIn = this.auth.isLoggedIn();
-    this.astronaut.getAllSpaces().then(loadedSpaces => {
-      this.spaces = loadedSpaces;
-      this.selectedSpace = this.astronaut.getCurrentSpace();
-    });
+    // First, populate the list with all spaces
+    let allSpaces = this.astronaut.getAllSpaces();
+    allSpaces.subscribe(val => this.spaces = val);
+
   }
 
-  onImgLoad(){
+  onImgLoad() {
     this.imgLoaded = true;
   }
 
@@ -105,7 +105,7 @@ export class HeaderComponent implements OnInit {
       this.astronaut.switchToSpace(newSpace);
     } else {
       this.logger.log('Deselected Space.');
-      this.astronaut.switchToSpace(null);      
+      this.astronaut.switchToSpace(null);
     }
   }
 }

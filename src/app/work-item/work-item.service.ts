@@ -61,8 +61,7 @@ export class WorkItemService {
   private workItemIdIndexMap = {};
   private prevFilters: any = [];
   private iterations: IterationModel[] = [];
-
-  private spaceSubscription: Subscription = null;
+  private _currentSpace;
 
   constructor(private http: Http,
     private broadcaster: Broadcaster,
@@ -71,12 +70,12 @@ export class WorkItemService {
     private auth: AuthenticationService,
     private iterationService: IterationService,
     private userService: UserService,
-    @Inject(WIT_API_URL) private baseApiUrl: string) {
+    @Inject(WIT_API_URL) private baseApiUrl: string)
+  {
+    this.broadcaster.on<Space>('spaceChanged').subscribe(val => this._currentSpace = val);
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
     }
-    // set initial space and subscribe to the space service to recognize space switches
-    // this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space => this.switchSpace(space));
   }
 
   // switchSpace(space: Space) {
@@ -133,8 +132,7 @@ export class WorkItemService {
    * and store them with the data in the array
    */
   getWorkItems(pageSize: number = 20, filters: any[] = []): Promise<WorkItem[]> {
-    let currenSpace = this.astronaut.getCurrentSpace();
-    if (currenSpace) {
+    if (this._currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.workItemUrl = this.baseApiUrl + 'workitems';
       //this.workItemUrl = currentSpace.links.self + '/workitems';
@@ -255,8 +253,7 @@ export class WorkItemService {
       return Promise.resolve(wItem);
     } else {
       this.buildUserIdMap();
-      let currentSpace = this.astronaut.getCurrentSpace();
-      if (currentSpace) {
+      if (this._currentSpace) {
         // FIXME: make the URL great again (when we know the right API URL for this)!
         this.workItemUrl = this.baseApiUrl + 'workitems';
         // this.workItemUrl = currentSpace.links.self + '/workitems';
@@ -540,8 +537,7 @@ export class WorkItemService {
    * ToDo: Use router resolver to fetch types here
    */
   getWorkItemTypes(): Promise<any[]> {
-    let currentSpace = this.astronaut.getCurrentSpace();
-    if (currentSpace) {
+    if (this._currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.workItemTypeUrl = this.baseApiUrl + 'workitemtypes';
       //this.workItemTypeUrl = currentSpace.links.self + '/workitemtypes';
@@ -719,8 +715,7 @@ export class WorkItemService {
     */
   create(workItem: WorkItem): Promise<WorkItem> {
     let payload = JSON.stringify({data: workItem});
-    let currentSpace = this.astronaut.getCurrentSpace();
-    if (currentSpace) {
+    if (this._currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.workItemUrl = this.baseApiUrl + 'workitems';
       // this.workItemUrl = currentSpace.links.self + '/workitems';
@@ -987,8 +982,7 @@ export class WorkItemService {
    * @returns Promise<Link>
    */
   createLink(link: Object, currentWiId: string): Promise<Link> {
-    let currentSpace = this.astronaut.getCurrentSpace();
-    if (currentSpace) {
+    if (this._currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.linksUrl = this.baseApiUrl + 'workitemlinks';
       // this.linksUrl = currentSpace.links.self + '/workitemlinks';
@@ -1023,8 +1017,7 @@ export class WorkItemService {
    * @returns Promise<void>
    */
   deleteLink(link: any, currentWiId: string): Promise<void> {
-    let currentSpace = this.astronaut.getCurrentSpace();
-    if (currentSpace) {
+    if (this._currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.linksUrl = this.baseApiUrl + 'workitemlinks';
       // this.linksUrl = currentSpace.links.self + '/workitemlinks';
@@ -1044,8 +1037,7 @@ export class WorkItemService {
   }
 
   searchLinkWorkItem(term: string, workItemType: string): Promise<WorkItem[]> {
-    let currentSpace = this.astronaut.getCurrentSpace();
-    if (currentSpace) {
+    if (this._currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       let searchUrl = this.baseApiUrl + 'search?q=' + term + ' type:' + workItemType;
       //let searchUrl = currentSpace.links.self + 'search?q=' + term + ' type:' + workItemType;
@@ -1114,8 +1106,7 @@ export class WorkItemService {
     newWItem.attributes.previousitem = parseInt(adjacentWI.prevItemId);
     newWItem.attributes.nextitem = parseInt(adjacentWI.nextItemId);
 
-    let currentSpace = this.astronaut.getCurrentSpace();
-    if (currentSpace) {
+    if (this._currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.workItemUrl = this.baseApiUrl + 'workitems';
       // this.workItemUrl = currentSpace.links.self + '/workitems';
@@ -1149,8 +1140,7 @@ export class WorkItemService {
       }
     };
 
-    let currentSpace = this.astronaut.getCurrentSpace();
-    if (currentSpace) {
+    if (this._currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.renderUrl = this.baseApiUrl + 'render';
       // this.renderUrl = currentSpace.links.self + '/render';

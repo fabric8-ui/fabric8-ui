@@ -21,54 +21,38 @@ import { GlobalSettings } from './globals';
 @Injectable()
 export class AstronautService {
 
-  private currentSpaceBus: Observable<Space>;
-
-  private spaces: Space[] = [];
-  private currentSpace: Space;
-
   constructor(
     private http: Http,
     private mockDataService: MockDataService,
     private logger: Logger,
     private globalSettings: GlobalSettings,
     private broadcaster: Broadcaster
-  ) {
-    this.currentSpaceBus = this.broadcaster.on<Space>('spaceChanged');
-    this.currentSpaceBus.subscribe(val => this.currentSpace = val);
-  }
+  ) { }
 
   public switchToSpace(newSpace: Space) {
     this.broadcaster.broadcast('spaceChanged', newSpace);
   }
 
-  getCurrentSpace(): Space {
-    return this.currentSpace;
-  }
-
   // We don't really need this in planner
   // We are using it just to mock the header with list of spaces
-  getAllSpaces(): Promise<Space[]> {
-    let testMode: boolean = this.globalSettings.isTestmode();
-    if (testMode) {
+  getAllSpaces(): Observable<Space[]> {
+    if (this.globalSettings.isTestmode()) {
       this.logger.log('SpaceService running in ' + process.env.ENV + ' mode.');
-      this.spaces = this.createSpacesFromServiceResponse(this.mockDataService.getAllSpaces());
+      let spaces = this.createSpacesFromServiceResponse(this.mockDataService.getAllSpaces());
       this.logger.log('Initialized spaces from inmemory.');
-      return Observable.of(this.spaces).toPromise();
+      return Observable.of(spaces);
     } else {
       this.logger.log('SpaceService running in production mode.');
       // TODO:  this is the base URL slightly to be changed
       let url = process.env.API_URL + 'spaces';
-      let observable = Observable.create((observer: Observer<Space[]>) => {
-        this.http.get(url)
-          .toPromise()
-          .then((spaces: any) => {
-            this.spaces = this.createSpacesFromServiceResponse(spaces.json().data);
-            this.logger.log('Initialized spaces from server.');
-            observer.next(this.spaces);
-            observer.complete();
-          });
-      });
-      return observable.toPromise();
+      let observable = this.http
+        .get(url)
+        .map(resp => {
+          let spaces = this.createSpacesFromServiceResponse(resp.json().data);
+          this.logger.log('Initialized spaces from server.');
+          return spaces;
+        });
+      return observable;
     }
   }
 
