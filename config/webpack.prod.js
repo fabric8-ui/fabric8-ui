@@ -39,7 +39,7 @@ module.exports = webpackMerge(commonConfig, {
 
   // require those dependencies but don't bundle them
   externals: [
-    /^\@angular\//,
+    /^@angular\//,
     /^rxjs\//
   ],
 

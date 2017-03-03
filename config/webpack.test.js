@@ -75,7 +75,7 @@ module.exports = {
        */
       {
         test: /\.ts$/,
-        loaders: [
+        use: [
           'awesome-typescript-loader',
           'angular2-template-loader'
         ],
@@ -84,30 +84,30 @@ module.exports = {
 
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: 'file-loader'
+        use: ['file-loader']
       },
 
       // Support for *.json files.
       {
         test: /\.json$/,
-        use: 'json-loader'
+        use: ['json-loader']
       },
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-        loader: 'null-loader'
+        use: ['null-loader']
       },
       {
         test: /\.css$/,
-        loaders: ['to-string-loader', 'css-loader']
+        use: ['to-string-loader', 'css-loader']
       },
 
       {
         test: /\.scss$/,
-        loaders: ["css-to-string-loader", "css-loader", "sass-loader"]
+        use: ["css-to-string-loader", "css-loader", "sass-loader"]
       },
       {
         test: /\.html$/,
-        loader: 'raw-loader',
+        use: ['raw-loader'],
         exclude: [helpers.root('src/index.html')]
       },
 

@@ -71,13 +71,13 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: 'file-loader'
+        use: ['file-loader']
       },
 
       // Support for *.json files.
       {
         test: /\.json$/,
-        use: 'json-loader'
+        use: ['json-loader']
       },
 
       {
@@ -117,7 +117,7 @@ module.exports = {
       },
       {
         test: /\.html$/,
-        use: 'raw-loader'
+        use: ['raw-loader']
       }
     ]
   },
