@@ -29,10 +29,6 @@ export class AstronautService {
     private broadcaster: Broadcaster
   ) { }
 
-  public switchToSpace(newSpace: Space) {
-    this.broadcaster.broadcast('spaceChanged', newSpace);
-  }
-
   // We don't really need this in planner
   // We are using it just to mock the header with list of spaces
   getAllSpaces(): Observable<Space[]> {

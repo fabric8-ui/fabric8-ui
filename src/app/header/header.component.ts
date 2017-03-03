@@ -81,7 +81,7 @@ export class HeaderComponent implements OnInit {
     let allSpaces = this.astronaut.getAllSpaces();
     allSpaces.subscribe(val => {
       this.spaces = val;
-      if (val && val.length > 0) {
+      if (val && val.length > 0 && !this.selectedSpace) {
         // Set an initial space
         this.broadcaster.broadcast('spaceChanged', val[0]);
         this.selectedSpace = val[0];
@@ -109,10 +109,10 @@ export class HeaderComponent implements OnInit {
   onSpaceChange(newSpace: Space) {
     if (newSpace) {
       this.logger.log('Selected new Space: ' + newSpace.id);
-      this.astronaut.switchToSpace(newSpace);
+      this.broadcaster.broadcast('spaceChanged', newSpace);
     } else {
       this.logger.log('Deselected Space.');
-      this.astronaut.switchToSpace(null);
+      this.broadcaster.broadcast('spaceChanged', null);
     }
   }
 }
