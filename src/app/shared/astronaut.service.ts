@@ -21,11 +21,11 @@ import { GlobalSettings } from './globals';
 @Injectable()
 export class AstronautService {
 
-  private currentSpaceSubjectSource: Subject<Space> = null;
-  private currentSpaceBus: Observable<Space> = null;
+  private currentSpaceSubjectSource: Subject<Space>;
+  private currentSpaceBus: Observable<Space>;
 
   private spaces: Space[] = [];
-  private currentSpace: Space = null;
+  private currentSpace: Space;
 
   constructor(
     private http: Http,
@@ -34,13 +34,9 @@ export class AstronautService {
     private globalSettings: GlobalSettings,
     private broadcaster: Broadcaster
   ) {
-    let testMode: boolean = this.globalSettings.isTestmode();
-    if (testMode) {
-      // Do Nothing now. IF this is no longer needed then please remove it.
-    }
     this.currentSpaceSubjectSource = new Subject<Space>();
     this.currentSpaceBus = this.currentSpaceSubjectSource.asObservable();
-    let b = this.broadcaster.on<Space>('spaceChanged').subscribe(val => {
+    this.broadcaster.on<Space>('spaceChanged').subscribe(val => {
       this.switchToSpace(val);
     });
   }
