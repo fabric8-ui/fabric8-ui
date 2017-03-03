@@ -42,7 +42,7 @@ describe ('Iteration service - ', () => {
 
     fakeSpaceService = {
       getCurrentSpace: function() {
-        return Promise.resolve({
+        return {
           'links': {
             'self': 'http://localhost:8080/api/'
           },
@@ -59,7 +59,7 @@ describe ('Iteration service - ', () => {
             }
           },
           name: 'Project 1',
-        });
+        };
       }
     };
 

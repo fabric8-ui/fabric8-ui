@@ -39,7 +39,6 @@ describe('Work Item Service - ', () => {
 
   let fakeAuthService: any;
   let fakeSpcaeService: any;
-  let fakeSpaceService: any;
 
   let spaces = [{
         'name': 'Project 1',
@@ -116,30 +115,7 @@ describe('Work Item Service - ', () => {
       },
 
       getCurrentSpace: function() {
-        return Promise.resolve(spaces[0]);
-      }
-    };
-
-    fakeSpaceService = {
-      getCurrentSpace: function() {
-        return Promise.resolve({
-          'links': {
-            'self': 'http://localhost:8080/api/'
-          },
-          'relationships': {
-            'areas': {
-              'links': {
-                'related': 'http://localhost:8080/api/spaces/1f669678-ca2c-4cbb-b46d-5b70a98dde3c/areas'
-              }
-            },
-            'iterations': {
-              'links': {
-                'related': 'http://localhost:8080/api/spaces/1f669678-ca2c-4cbb-b46d-5b70a98dde3c/iterations'
-              }
-            }
-          },
-          name: 'Project 1'
-        });
+        return spaces[0];
       }
     };
 
