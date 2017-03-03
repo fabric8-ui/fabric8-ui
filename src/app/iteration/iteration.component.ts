@@ -14,7 +14,7 @@ import {
 } from 'ngx-login-client';
 
 @Component({
-  host:{
+  host: {
       'class':"app-component"
   },
   selector: 'fab-planner-iteration',
@@ -24,7 +24,8 @@ import {
 export class IterationComponent implements OnInit, OnDestroy {
 
   authUser: any = null;
-  loggedIn: Boolean = false;
+  loggedIn: Boolean = true;
+  editEnabled: Boolean = false;
   isBacklogSelected: Boolean = true;
   isCollapsedIteration: Boolean = false;
   isCollapsedCurrentIteration: Boolean = false;
@@ -50,8 +51,18 @@ export class IterationComponent implements OnInit, OnDestroy {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
     this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space => {
-      console.log('[IterationComponent] New Space selected: ' + space.name);
-      this.getAndfilterIterations();
+      if (space) {
+        console.log('[IterationComponent] New Space selected: ' + space.name);
+        this.editEnabled = true;
+        this.getAndfilterIterations();
+      } else {
+        console.log('[IterationComponent] Space deselected.');
+        this.editEnabled = false;
+        this.allIterations = [];
+        this.futureIterations = [];
+        this.currentIterations = [];
+        this.closedIterations = [];
+      }
     });
   }
 

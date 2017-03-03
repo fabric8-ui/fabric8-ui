@@ -100,7 +100,12 @@ export class HeaderComponent implements OnInit {
   }
 
   onSpaceChange(newSpace: Space) {
-    this.logger.log('Selected new Space: ' + newSpace.id);
-    this.astronaut.switchToSpace(newSpace);
+    if (newSpace) {
+      this.logger.log('Selected new Space: ' + newSpace.id);
+      this.astronaut.switchToSpace(newSpace);
+    } else {
+      this.logger.log('Deselected Space.');
+      this.astronaut.switchToSpace(null);      
+    }
   }
 }

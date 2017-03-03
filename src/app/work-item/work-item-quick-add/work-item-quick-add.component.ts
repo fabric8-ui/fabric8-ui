@@ -5,25 +5,27 @@ import {
   ElementRef,
   Input,
   OnInit,
+  OnDestroy,
   Output,
   ViewChild,
   ViewChildren,
   Renderer,
   QueryList
 } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 
 import { Logger } from 'ngx-login-client';
 
 import { WorkItem, WorkItemAttributes, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
-
+import { AstronautService } from './../../shared/astronaut.service';
 
 @Component({
   selector: 'alm-work-item-quick-add',
   templateUrl: './work-item-quick-add.component.html',
   styleUrls: ['./work-item-quick-add.component.scss']
 })
-export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
+export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('quickAddTitle') qaTitle: any;
   @ViewChild('quickAddDesc') qaDesc: any;
   @ViewChildren('quickAddTitle', {read: ElementRef}) qaTitleRef: QueryList<ElementRef>;
@@ -38,16 +40,32 @@ export class WorkItemQuickAddComponent implements OnInit, AfterViewInit {
   initialDescHeightDiff: number = 0;
   descHeight: any = '26px';
   descResize: any = 'none';
+  spaceSubscription: Subscription = null;
 
   constructor(
     private workItemService: WorkItemService,
+    private astronaut: AstronautService,
     private logger: Logger,
     private renderer: Renderer) {}
 
   ngOnInit(): void {
     this.createWorkItemObj();
     this.showQuickAdd = false;
-    this.showQuickAddBtn = true;
+    this.showQuickAddBtn = false;
+    this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space => {
+      if (space) {
+        console.log('[WorkItemQuickAddComponent] New Space selected: ' + space.name);
+        this.showQuickAddBtn = true;
+      } else {
+        console.log('[WorkItemQuickAddComponent] Space deselected.');
+        this.showQuickAddBtn = false;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    // prevent memory leak when component is destroyed
+    this.spaceSubscription.unsubscribe();
   }
 
   createWorkItemObj() {

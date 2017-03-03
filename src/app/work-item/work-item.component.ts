@@ -38,13 +38,14 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
   @ViewChild('activeFiltersDiv') activeFiltersDiv: any;
 
   loggedIn: Boolean = false;
+  editEnabled: Boolean = false;
   filters: any[] = [];
   authUser: any = null;
   workItemToMove: WorkItemListEntryComponent;
   workItemDetail: WorkItem;
   workItemTypes: WorkItemType[];
   showTypesOptions: Boolean = false;
-  private spaceSubscription: Subscription = null;
+  spaceSubscription: Subscription = null;
 
   constructor(
     private auth: AuthenticationService,
@@ -54,15 +55,21 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
     private router: Router,
     private astronaut: AstronautService
   ) {
-
   }
 
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
     this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space => {
-      console.log('[WorkItemComponent] New Space selected: ' + space.name);
-      this.getWorkItemTypes();
+      if (space) {
+        console.log('[WorkItemComponent] New Space selected: ' + space.name);
+        this.editEnabled = true;
+        this.getWorkItemTypes();
+      } else {
+        console.log('[WorkItemComponent] Space deselected.');  
+        this.editEnabled = false;
+        this.workItemTypes = [];      
+      }
     });
   }
 

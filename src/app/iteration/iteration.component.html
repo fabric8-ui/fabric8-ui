@@ -88,10 +88,10 @@
             Future Iterations
           </span>
           <small>
-            <a *ngIf="loggedIn"
+            <a *ngIf="loggedIn && editEnabled"
               class="text-right"
               (click)="modal.openCreateUpdateModal('create');">
-              <i *ngIf="loggedIn" id="add-iteration-icon" class="fa fa-plus-circle fa-lg pull-right with-cursor-pointer" tooltipPlacement="bottom" tooltip="Add an Iteration"></i>
+              <i *ngIf="loggedIn && editEnabled" id="add-iteration-icon" class="fa fa-plus-circle fa-lg pull-right with-cursor-pointer" tooltipPlacement="bottom" tooltip="Add an Iteration"></i>
             </a>
           </small>
         </h4>

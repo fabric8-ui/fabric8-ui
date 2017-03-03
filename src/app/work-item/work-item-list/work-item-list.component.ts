@@ -100,9 +100,15 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
     this.spaceSubscription = this.astronaut.getCurrentSpaceBus().subscribe(space => {
-      console.log('[WorkItemListComponent] New Space selected: ' + space.name);
-      this.loadWorkItems();
-      this.workItemService.resetWorkItemList();
+      if (space) {
+        console.log('[WorkItemListComponent] New Space selected: ' + space.name);
+        this.loadWorkItems();
+        this.workItemService.resetWorkItemList();
+      } else {
+        console.log('[WorkItemListComponent] Space deselected');
+        this.workItems = [];
+        this.workItemService.resetWorkItemList();       
+      }
     });
   }
 

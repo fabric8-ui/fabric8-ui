@@ -97,7 +97,7 @@
               </div>
               <!-- ADD a Work Item FAB -->
               <div class="toolbar-pf-action-right">
-                <div *ngIf="loggedIn" class="with-cursor-pointer" tooltipPlacement="bottom" tooltip="Add A Work Item" (click)="showTypes()">
+                <div *ngIf="loggedIn && editEnabled" class="with-cursor-pointer" tooltipPlacement="bottom" tooltip="Add A Work Item" (click)="showTypes()">
                   <i class="pficon pficon-add-circle-o margin-top-4"></i>
                 </div>
               </div>

@@ -37,6 +37,7 @@
       </li>
       <li>
         <select [ngModel]="selectedSpace" (ngModelChange)="onSpaceChange($event)">
+          <option [ngValue]></option>
           <option *ngFor="let space of spaces" [ngValue]="space">{{space.name}}</option>
         </select>
       </li>
