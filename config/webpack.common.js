@@ -5,27 +5,28 @@
 const helpers = require('./helpers'),
   webpack = require('webpack'),
   CleanWebpackPlugin = require('clean-webpack-plugin');
+// const stringify = require('json-stringify');
 
 /**
  * Webpack Plugins
  */
-const AssetsPlugin = require('assets-webpack-plugin');
-const autoprefixer = require('autoprefixer');
-const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
-const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
+// const AssetsPlugin = require('assets-webpack-plugin');
+// const autoprefixer = require('autoprefixer');
+// const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
+// const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+// const CopyWebpackPlugin = require('copy-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlElementsPlugin = require('./html-elements-plugin');
+// const HtmlElementsPlugin = require('./html-elements-plugin');
 const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 // const ngcWebpack = require('ngc-webpack');
 const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
 const OptimizeJsPlugin = require('optimize-js-plugin');
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+// const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 
 
@@ -39,7 +40,7 @@ module.exports = {
   entry: helpers.root('index.ts'),
 
   // require those dependencies but don't bundle them
-  externals: [/^\@angular\//, /^rxjs\//],
+  externals: [/^@angular\//, /^rxjs\//],
 
   module: {
     rules: [
@@ -56,7 +57,7 @@ module.exports = {
             loader: 'awesome-typescript-loader',
             options: {
               declaration: false
-            },
+            }
           },
           {
             loader: 'angular2-template-loader'
@@ -67,13 +68,13 @@ module.exports = {
       // copy those assets to output
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: 'file-loader?name=fonts/[name].[hash].[ext]?'
+        use: ['file-loader?name=fonts/[name].[hash].[ext]?']
       },
 
       // Support for *.json files.
       {
         test: /\.json$/,
-        use: 'json-loader'
+        use: ['json-loader']
       },
 
       {
@@ -89,7 +90,7 @@ module.exports = {
       // todo: change the loader to something that adds a hash to images
       {
         test: /\.html$/,
-        use: 'raw-loader'
+        use: ['raw-loader']
       }
     ]
   },
