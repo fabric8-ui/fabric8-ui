@@ -102,6 +102,7 @@ export class WorkItemService {
             // Resolve the assignee and creator
             this.resolveUsersForWorkItem(item);
             this.resolveIterationForWorkItem(item);
+            this.resolveType(item);
           });
           return wItems;
         })
@@ -165,6 +166,7 @@ export class WorkItemService {
             // Resolve the assignee and creator
             this.resolveUsersForWorkItem(item);
             this.resolveIterationForWorkItem(item);
+            this.resolveType(item);
           });
           // Update the existing workItem big list with new data
           this.updateWorkItemBigList(wItems);
@@ -217,6 +219,7 @@ export class WorkItemService {
           // Resolve the assignee and creator
           this.resolveUsersForWorkItem(item);
           this.resolveIterationForWorkItem(item);
+          this.resolveType(item);
         });
         let newItems = cloneDeep(newWorkItems);
         // Update the existing workItem big list with new data
@@ -262,6 +265,7 @@ export class WorkItemService {
             let wItem: WorkItem = response.json().data as WorkItem;
             this.resolveUsersForWorkItem(wItem);
             this.resolveIterationForWorkItem(wItem);
+            this.resolveType(wItem);
             // If this work item matches with current filters
             // it goes to the big list and then we call this function
             // again to treat it as a locally saved item
@@ -395,6 +399,29 @@ export class WorkItemService {
     }
     workItem.relationalData.creator = this.getUserById(workItem.relationships.creator.data.id);
   }
+
+  /**
+   * Usage: Resolve the wi type for a WorkItem
+   */
+  resolveType(workItem: WorkItem): void {
+    if (!workItem.relationships.hasOwnProperty('baseType') || !workItem.relationships.baseType) {
+      workItem.relationalData.wiType = null;
+      return;
+    }
+    if (!workItem.relationships.baseType.hasOwnProperty('data')) {
+      workItem.relationalData.wiType = null;
+      return;
+    }
+    if (!workItem.relationships.baseType.data) {
+      workItem.relationalData.wiType = null;
+      return;
+    }
+    this.getWorkItemTypesById(workItem.relationships.baseType.data.id)
+      .then((type: WorkItemType) => {
+        workItem.relationalData.wiType = type;
+    });
+  }
+
 
   /**
    * Usage: To resolve the users in eact WorkItem
@@ -555,6 +582,31 @@ export class WorkItemService {
       });
     } else {
       return Promise.resolve<WorkItemType[]>( [] as WorkItemType[] );
+    }
+  }
+
+  /**
+   * Usage: This method is to fetch the work item types by ID
+   */
+
+  getWorkItemTypesById(id: string): Promise<WorkItemType> {
+    if (this._currentSpace) {
+      let workItemType = this.workItemTypes.find((type) => type.id === id);
+      if (workItemType) {
+        return Promise.resolve(workItemType);
+      } else {
+        let workItemTypeUrl = this.baseApiUrl + 'workitemtypes/' + id;
+        this.http.get(workItemTypeUrl)
+          .toPromise()
+          .then((response) => {
+            workItemType = response.json().data as WorkItemType;
+            this.workItemTypes.push(workItemType);
+            return Promise.resolve(workItemType);
+          });
+      }
+      this.workItemTypeUrl = this.baseApiUrl + 'workitemtypes/' + id;
+    } else {
+      return Promise.resolve<WorkItemType>( {} as WorkItemType );
     }
   }
 
@@ -725,6 +777,7 @@ export class WorkItemService {
           // Resolve the user for the new item
           this.resolveUsersForWorkItem(newWorkItem);
           this.resolveIterationForWorkItem(newWorkItem);
+          this.resolveType(newWorkItem);
           // Add newly added item to the top of the list
           this.workItems.splice(0, 0, newWorkItem);
           // Re-build the ID-index map
@@ -770,6 +823,7 @@ export class WorkItemService {
             // Resolve users for the updated item
             this.resolveUsersForWorkItem(this.workItems[updateIndex]);
             this.resolveIterationForWorkItem(this.workItems[updateIndex]);
+            this.resolveType(this.workItems[updateIndex]);
           } else {
             // Remove the item from the list
             this.workItems.splice(updateIndex, 1);
@@ -784,6 +838,7 @@ export class WorkItemService {
           // Resolve users for the updated item
           this.resolveUsersForWorkItem(updatedWorkItem);
           this.resolveIterationForWorkItem(updatedWorkItem);
+          this.resolveType(updatedWorkItem);
         }
         return updatedWorkItem;
       })

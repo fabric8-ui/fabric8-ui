@@ -1,3 +1,4 @@
+import { WorkItemType } from './../../models/work-item-type';
 import { Space } from 'ngx-fabric8-wit';
 import {
   AfterViewInit,
@@ -74,14 +75,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     this.workItem.relationships = new WorkItemRelations();
     this.workItem.type = 'workitems';
     this.workItem.id = '42';
-    this.workItem.relationships = {
-      baseType: {
-        data: {
-          id: 'userstory',
-          type: 'workitemtypes'
-        }
-      }
-    } as WorkItemRelations;
 
     this.workItem.attributes = {
       'system.state': 'new'
@@ -99,18 +92,40 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   save(event: any = null): void {
     if (event) event.preventDefault();
 
+
+    // Set the default type
+    // FIXME: Not the proper way to get default wi type
+    // FIXME: Need to make a default workitem type subscriber
+    // when template is introduced
+    let defWit: WorkItemType = this.workItemService.workItemTypes.find((type: WorkItemType) => {
+      return type.attributes.name === 'userstory';
+    });
+    if (!defWit) {
+      defWit = this.workItemService.workItemTypes[0];
+    }
+    // Setting default type in relationship
+    this.workItem.relationships = {
+      baseType: {
+        data: {
+          id: defWit.id,
+          type: defWit.type
+        }
+      }
+    } as WorkItemRelations;
+
+
     // Do we have a real title?
     // If yes, trim; if not, reassign it as a (blank) string.
     this.workItem.attributes['system.title'] =
       (!!this.workItem.attributes['system.title']) ?
-        this.workItem.attributes['system.title'].trim() : "";
+        this.workItem.attributes['system.title'].trim() : '';
 
     // Same treatment as title, but this is more important.
     // As we're validating title in the next step
     // But passing on description as is (causing data type issues)
     this.workItem.attributes['system.description'] =
       (!!this.workItem.attributes['system.description']) ?
-        this.workItem.attributes['system.description'].trim() : "";
+        this.workItem.attributes['system.description'].trim() : '';
 
     if (this.workItem.attributes['system.title']) {
       this.workItemService

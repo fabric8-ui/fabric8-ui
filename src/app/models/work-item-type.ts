@@ -5,16 +5,17 @@ export class WorkItemType {
         name: string;
         version: number;
         description: string;
+        icon: string;
         fields:
         {
-            'system.area': {}, 
-            'system.created_at': {}, 
-            'system.assignee': {},        
+            'system.area': {},
+            'system.created_at': {},
+            'system.assignee': {},
             'system.creator': {},
-            'system.description': {},            
-            'system.iteration': {},            
-            'system.remote_item_id': {},            
-            'system.state': {},            
+            'system.description': {},
+            'system.iteration': {},
+            'system.remote_item_id': {},
+            'system.state': {},
             'system.title': {},
         };
     };

@@ -203,7 +203,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
         }
       }
     } as WorkItemRelations;
-
+    this.workItem.relationalData = {};
+    this.workItemService.resolveType(this.workItem);
     this.workItem.attributes = {
       'system.state': 'new'
     } as WorkItemAttributes;

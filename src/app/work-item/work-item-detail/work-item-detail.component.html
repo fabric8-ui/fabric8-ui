@@ -6,7 +6,7 @@
       <fieldset [attr.disabled]="!loggedIn ? true : null">
         <div class="col-md-12 col-sm-12 col-xs-12 mobile-bar ">
           <div class="pull-left dropdown-kebab-pf detail-type-dropdown">
-            <span class="wi-type-icon" almIcon [iconType]="workItem.relationships.baseType.data.id"></span>
+            <span class="wi-type-icon fa {{workItem.relationalData?.wiType?.attributes?.icon}}"></span>
           </div>
             <!--Commenting type drop down related tests for issue 635
             <div class="pull-left dropdown-kebab-pf detail-type-dropdown" dropdown>
