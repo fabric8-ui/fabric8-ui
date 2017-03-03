@@ -8,16 +8,16 @@
       </div>
     </div>
     <div class="row row-cards-pf">
-      <div *ngFor="let type of workItemTypes" class="col-xs-12 col-sm-6 col-md-4 col-lg-3" (click)="onChangeType(type.name)">
+      <div *ngFor="let type of workItemTypes" class="col-xs-12 col-sm-6 col-md-4 col-lg-3" (click)="onChangeType(type.attributes.name)">
         <div class="card-pf card-pf-view card-pf-view-select">
           <div class="card-pf-body">
             <div class="card-pf-top-element">
-              <i almIcon [iconType]="type.name" class="card-pf-icon-circle"></i>
+              <i almIcon [iconType]="type.attributes.name" class="card-pf-icon-circle"></i>
             </div>
             <h2 class="card-pf-title text-center">
-              {{type.name}}
+              {{type.attributes.name}}
             </h2>
-            <p class="card-pf-info">Definition goes here. Lorem Ipsum dolor sit amet, consectetur adpisicing</p>
+            <p class="card-pf-info">{{type.attributes.description}}</p>
           </div>
         </div>
       </div>

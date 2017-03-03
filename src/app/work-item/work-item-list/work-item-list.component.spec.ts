@@ -161,12 +161,12 @@ describe('Work item list view - ', () => {
     } as User;
 
     fakeWorkItemTypes = [
-      { name: 'system.userstory' },
-      { name: 'system.valueproposition' },
-      { name: 'system.fundamental' },
-      { name: 'system.experience' },
-      { name: 'system.feature' },
-      { name: 'system.bug' }
+      { attributes: { name: 'system.userstory' } },
+      { attributes: { name: 'system.valueproposition' } },
+      { attributes: { name: 'system.fundamental' } },
+      { attributes: { name: 'system.experience' } },
+      { attributes: { name: 'system.feature' } },
+      { attributes: { name: 'system.bug' } }
     ] as WorkItemType[];
 
 

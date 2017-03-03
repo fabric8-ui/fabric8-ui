@@ -171,7 +171,7 @@ export class MockHttp extends Http {
       // add new paths here
       switch (path.path) {
         case '/workitemtypes':
-          return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemTypes() );
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItemTypes() } );
         case '/workitems':
           if (path.extraPath) {
             return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemOrEntity(path.extraPath) );

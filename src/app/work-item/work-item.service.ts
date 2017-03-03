@@ -549,7 +549,7 @@ export class WorkItemService {
         .get(this.workItemTypeUrl)
         .toPromise()
         .then((response) => {
-          this.workItemTypes = response.json() as WorkItemType[];
+          this.workItemTypes = response.json().data as WorkItemType[];
           return this.workItemTypes;
         })
       .catch ((e) => {
@@ -578,7 +578,7 @@ export class WorkItemService {
     } else {
       return this.getWorkItemTypes()
         .then((response) => {
-          this.availableStates = response[0].fields['system.state'].type.values.map((item: string, index: number) => {
+          this.availableStates = response[0].attributes.fields['system.state'].type.values.map((item: string, index: number) => {
             return {
               option: item,
             };
