@@ -7,6 +7,7 @@
   "typings": "index.d.ts",
   "scripts": {
     "build": "npm-run-all --serial remove-dist bundle prebuild:add-require transpile-sass transpile copy-files copy-dist-files remove-css postbuild:remove-require",
+    "build:dev": "npm-run-all --serial prebuild:add-require transpile-sass transpile copy-files copy-dist-files remove-css postbuild:remove-require",
     "build:prod": "webpack --config config/webpack.prod.js -p",
     "bundle": "webpack --config config/webpack.prod.js --progress --profile --bail",
     "check-coverage": "istanbul check-coverage --statements 23 --branches 5 --functions 9 --lines 24",
@@ -230,7 +231,7 @@
     "typescript": "2.1.6",
     "uglify-js": "2.8.5",
     "url-loader": "0.5.8",
-    "validate-commit-msg": "^2.11.1",
+    "validate-commit-msg": "2.11.1",
     "webpack": "2.2.1",
     "webpack-bundle-analyzer": "2.3.0",
     "webpack-dashboard": "0.3.0",
