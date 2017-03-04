@@ -231,7 +231,6 @@
     "typescript": "2.1.6",
     "uglify-js": "2.8.5",
     "url-loader": "0.5.8",
-    "validate-commit-msg": "2.11.1",
     "webpack": "2.2.1",
     "webpack-bundle-analyzer": "2.3.0",
     "webpack-dashboard": "0.3.0",
