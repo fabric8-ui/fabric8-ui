@@ -31,6 +31,7 @@ export { FilterEvent } from './src/app/filters/filter-event';
 export { FilterField } from './src/app/filters/filter-field';
 export { FilterFieldsComponent } from './src/app/filters/filter-fields.component';
 export { FilterResultsComponent } from './src/app/filters/filter-results.component';
+export { FilterQuery } from './src/app/filters/filter-query';
 
 // Notification
 export { ToastNotificationComponent } from './src/app/notification/toast-notification.component';

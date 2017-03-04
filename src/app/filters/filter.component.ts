@@ -57,14 +57,13 @@ export class FilterComponent implements OnInit {
 
   addFilter($event: FilterEvent): void {
     let newFilter = {
-      id: $event.field.id,
-      title: $event.field.title,
-      type: $event.field.filterType,
+      field: $event.field,
+      query: $event.query,
       value: $event.value
     } as Filter;
 
     if (!this.filterExists(newFilter)) {
-      if (newFilter.type === 'select') {
+      if (newFilter.field.type === 'select') {
         this.enforceSingleSelect(newFilter);
       }
       this.config.appliedFilters.push(newFilter);
@@ -74,12 +73,11 @@ export class FilterComponent implements OnInit {
   }
 
   enforceSingleSelect(filter: Filter): void {
-    _.remove(this.config.appliedFilters, {title: filter.title});
+    _.remove(this.config.appliedFilters, {title: filter.field.title});
   }
 
   filterExists(filter: Filter): boolean {
     let foundFilter = _.find(this.config.appliedFilters, {
-      title: filter.title,
       value: filter.value
     });
     return foundFilter !== undefined;

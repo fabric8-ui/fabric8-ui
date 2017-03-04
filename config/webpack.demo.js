@@ -35,13 +35,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.webpack.js', '.wep.js', '.js', '.ts'],
-    plugins: [
-      // Todo: config is not loading.
-      new TsConfigPathsPlugin({
-        configFileName: helpers.root("tsconfig-demo.json")
-      })
-    ]
+    extensions: ['.webpack.js', '.wep.js', '.js', '.ts']
   },
 
   stats: {
@@ -123,6 +117,11 @@ module.exports = {
      * See: https://github.com/webpack/webpack/commit/a04ffb928365b19feb75087c63f13cadfc08e1eb
      */
     new NamedModulesPlugin(),
+
+    // Todo: config is not loading.
+    new TsConfigPathsPlugin({
+      configFileName: helpers.root("tsconfig-demo.json")
+    }),
 
     /**
      * Plugin: ContextReplacementPlugin

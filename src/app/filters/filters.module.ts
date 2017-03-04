@@ -10,12 +10,14 @@ import { FilterEvent } from './filter-event';
 import { FilterField } from './filter-field';
 import { FilterFieldsComponent } from './filter-fields.component';
 import { FilterResultsComponent } from './filter-results.component';
+import { FilterQuery } from './filter-query';
 
 export {
   Filter,
   FilterConfig,
   FilterEvent,
-  FilterField
+  FilterField,
+  FilterQuery
 }
 
 @NgModule({

@@ -6,19 +6,19 @@
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu" dropdownMenu>
-        <li *ngFor="let item of config.fields">
-          <a class="filter-field" role="menuitem" tabindex="-1" (click)="selectField(item)">
-            {{item.title}}
+        <li *ngFor="let field of config.fields">
+          <a class="filter-field" role="menuitem" tabindex="-1" (click)="selectField(field)">
+            {{field.title}}
           </a>
         </li>
       </ul>
     </div>
-    <div *ngIf="currentField.filterType !== 'select'">
-      <input class="form-control" type="{{currentField.filterType}}" [(ngModel)]="currentValue"
+    <div *ngIf="currentField.type !== 'select'">
+      <input class="form-control" type="{{currentField.type}}" [(ngModel)]="currentValue"
              placeholder="{{currentField.placeholder}}"
              (keypress)="onValueKeyPress($event)"/>
     </div>
-    <div *ngIf="currentField.filterType === 'select'">
+    <div *ngIf="currentField.type === 'select'">
       <div class="btn-group bootstrap-select form-control filter-select" dropdown >
         <button type="button" class="btn btn-default dropdown-toggle" dropdownToggle>
           <span class="filter-option pull-left">{{currentValue || currentField.placeholder}}</span>
@@ -30,9 +30,10 @@
               {{currentField.placeholder}}
             </a>
           </li>
-          <li *ngFor="let filterValue of currentField.filterValues" [ngClass]="{'selected': filterValue === currentValue}">
-            <a role="menuitem" tabindex="-1" (click)="selectValue(filterValue)">
-              {{filterValue}}
+          <li *ngFor="let query of currentField.queries"
+              [ngClass]="{'selected': query.value === currentValue}">
+            <a role="menuitem" tabindex="-1" (click)="selectValue(query)">
+              {{query.value}}
             </a>
           </li>
         </ul>

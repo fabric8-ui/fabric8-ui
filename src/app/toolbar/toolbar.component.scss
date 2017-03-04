@@ -6,6 +6,9 @@
   }
 }
 .toolbar-pf-actions {
+  .btn {
+    min-width: unset;
+  }
   .toolbar-pf-view-selector {
     a {
       cursor: pointer;
@@ -18,6 +21,9 @@
   }
   .dropdown-kebab-pf {
     float: right;
+  }
+  .toolbar-apf-filter {
+    padding-left: 0 !important;
   }
 }
 .toolbar-pf-include-actions {

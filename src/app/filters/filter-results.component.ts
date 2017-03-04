@@ -63,10 +63,10 @@ export class FilterResultsComponent implements OnInit {
 
   // Result functions
 
-  clearFilter(item: Filter): void {
+  clearFilter(filter: Filter): void {
     let newFilters: Filter[] = [];
     this.config.appliedFilters.forEach((filter) => {
-      if (item.title !== filter.title || item.value !== filter.value) {
+      if (filter.field.title !== filter.field.title || filter.value !== filter.value) {
         newFilters.push(filter);
       }
     });

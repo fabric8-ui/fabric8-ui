@@ -29,6 +29,7 @@ import * as _ from 'lodash';
 export class ToolbarComponent implements OnInit {
   @Input() config: ToolbarConfig;
   @Input() actionsTemplate: TemplateRef<any>;
+  @Input() viewsTemplate: TemplateRef<any>;
 
   @Output('onActionSelect') onActionSelect = new EventEmitter();
   @Output('onFilterChange') onFilterChange = new EventEmitter();
@@ -87,14 +88,13 @@ export class ToolbarComponent implements OnInit {
 
   addFilter($event: FilterEvent): void {
     let newFilter = {
-      id: $event.field.id,
-      title: $event.field.title,
-      type: $event.field.filterType,
+      field: $event.field,
+      query: $event.query,
       value: $event.value
     } as Filter;
 
     if (!this.filterExists(newFilter)) {
-      if (newFilter.type === 'select') {
+      if (newFilter.field.type === 'select') {
         this.enforceSingleSelect(newFilter);
       }
       this.config.filterConfig.appliedFilters.push(newFilter);
@@ -104,12 +104,13 @@ export class ToolbarComponent implements OnInit {
   }
 
   enforceSingleSelect(filter: Filter): void {
-    _.remove(this.config.filterConfig.appliedFilters, {title: filter.title});
+    _.remove(this.config.filterConfig.appliedFilters, {title: filter.field.title});
   }
 
   filterExists(filter: Filter): boolean {
     let foundFilter = _.find(this.config.filterConfig.appliedFilters, {
-      title: filter.title,
+      field: filter.field,
+      query: filter.query,
       value: filter.value
     });
     return foundFilter !== undefined;

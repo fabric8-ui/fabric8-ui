@@ -22,35 +22,66 @@ describe('Filter component - ', () => {
 
   beforeEach(() => {
     config = {
-      fields: [
-        {
-          id: 'name',
-          title:  'Name',
-          placeholder: 'Filter by Name...',
-          filterType: 'text'
-        },
-        {
-          id: 'age',
-          title:  'Age',
-          placeholder: 'Filter by Age...',
-          filterType: 'text'
-        },
-        {
-          id: 'address',
-          title:  'Address',
-          placeholder: 'Filter by Address...',
-          filterType: 'text'
-        },
-        {
-          id: 'birthMonth',
-          title:  'Birth Month',
-          placeholder: 'Filter by Birth Month...',
-          filterType: 'select',
-          filterValues: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-        }
-      ] as FilterField[],
-      resultsCount: 5,
-      appliedFilters: []
+      fields: [{
+        id: 'name',
+        title:  'Name',
+        placeholder: 'Filter by Name...',
+        type: 'text'
+      },{
+        id: 'age',
+        title:  'Age',
+        placeholder: 'Filter by Age...',
+        type: 'text'
+      },{
+        id: 'address',
+        title:  'Address',
+        placeholder: 'Filter by Address...',
+        type: 'text'
+      },{
+        id: 'birthMonth',
+        title:  'Birth Month',
+        placeholder: 'Filter by Birth Month...',
+        type: 'select',
+        queries: [{
+          id: 'month1',
+          value: 'January'
+        },{
+          id: 'month2',
+          value: 'February'
+        },{
+          id: 'month3',
+          value: 'March'
+        },{
+          id: 'month4',
+          value: 'April'
+        },{
+          id: 'month5',
+          value: 'May'
+        },{
+          id: 'month6',
+          value: 'June'
+        },{
+          id: 'month7',
+          value: 'July'
+        },{
+          id: 'month8',
+          value: 'August'
+        },{
+          id: 'month9',
+          value: 'September'
+        },{
+          id: 'month10',
+          value: 'October'
+        },{
+          id: 'month11',
+          value: 'November'
+        },{
+          id: 'month12',
+          value: 'December'
+        }]
+      }] as FilterField[],
+      appliedFilters: [],
+      resultsCount: 5
     } as FilterConfig;
   });
 
@@ -76,9 +107,15 @@ describe('Filter component - ', () => {
 
   it('should have correct number of results', function () {
     let results = fixture.debugElement.query(By.css('h5'));
-    expect(results).not.toBeNull();
-    expect(results.nativeElement.textContent.trim().slice(0, '5 Results'.length)).toBe('5 Results');
+    expect(results).toBeNull();
 
+    config.appliedFilters = [{
+      field: {
+        id: 'address',
+        title: 'Address'
+      },
+      value: 'New York'
+    }] as Filter[];
     config.resultsCount = 10;
     fixture.detectChanges();
 
@@ -93,13 +130,13 @@ describe('Filter component - ', () => {
     expect(activeFilters.length).toBe(0);
     expect(clearFilters).toBeNull();
 
-    config.appliedFilters = [
-      {
+    config.appliedFilters = [{
+      field: {
         id: 'address',
-        title: 'Address',
-        value: 'New York'
-      }
-    ] as Filter[];
+        title: 'Address'
+      },
+      value: 'New York'
+    }] as Filter[];
     fixture.detectChanges();
 
     activeFilters = fixture.debugElement.queryAll(By.css('.active-filter'));
@@ -120,20 +157,20 @@ describe('Filter component - ', () => {
     expect(filterSelect).not.toBeNull();
 
     let items = filterSelect.queryAll(By.css('li'));
-    expect(items.length).toBe(config.fields[3].filterValues.length + 1); // +1 for the null value
+    expect(items.length).toBe(config.fields[3].queries.length + 1); // +1 for the null value
   });
 
   it ('should clear a filter when the close button is clicked', function () {
     let closeButtons = fixture.debugElement.queryAll(By.css('.pficon-close'));
     expect(closeButtons.length).toBe(0);
 
-    config.appliedFilters = [
-      {
+    config.appliedFilters = [{
+      field: {
         id: 'address',
-        title: 'Address',
-        value: 'New York'
-      }
-    ] as Filter[];
+        title: 'Address'
+      },
+      value: 'New York'
+    }] as Filter[];
     fixture.detectChanges();
 
     closeButtons = fixture.debugElement.queryAll(By.css('.pficon-close'));
@@ -152,13 +189,13 @@ describe('Filter component - ', () => {
     expect(activeFilters.length).toBe(0);
     expect(clearButton).toBeNull();
 
-    config.appliedFilters = [
-      {
+    config.appliedFilters = [{
+      field: {
         id: 'address',
-        title: 'Address',
-        value: 'New York'
-      }
-    ] as Filter[];
+        title: 'Address'
+      },
+      value: 'New York'
+    }] as Filter[];
     fixture.detectChanges();
 
     activeFilters = fixture.debugElement.queryAll(By.css('.active-filter'));

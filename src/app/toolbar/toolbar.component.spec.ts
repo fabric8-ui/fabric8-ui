@@ -80,38 +80,68 @@ describe('Toolbar component - ', () => {
             name: 'Grouped Action 2',
             title: 'Do something similar'
           }
-        ],
-        actionsInclude: true
+        ]
       } as ActionsConfig,
 
       filterConfig: {
-        fields: [
-          {
-            id: 'name',
-            title: 'Name',
-            placeholder: 'Filter by Name...',
-            filterType: 'text'
-          },
-          {
-            id: 'age',
-            title: 'Age',
-            placeholder: 'Filter by Age...',
-            filterType: 'text'
-          },
-          {
-            id: 'address',
-            title: 'Address',
-            placeholder: 'Filter by Address...',
-            filterType: 'text'
-          },
-          {
-            id: 'birthMonth',
-            title: 'Birth Month',
-            placeholder: 'Filter by Birth Month...',
-            filterType: 'select',
-            filterValues: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-          }
-        ] as FilterField[],
+        fields: [{
+          id: 'name',
+          title:  'Name',
+          placeholder: 'Filter by Name...',
+          type: 'text'
+        },{
+          id: 'age',
+          title:  'Age',
+          placeholder: 'Filter by Age...',
+          type: 'text'
+        },{
+          id: 'address',
+          title:  'Address',
+          placeholder: 'Filter by Address...',
+          type: 'text'
+        },{
+          id: 'birthMonth',
+          title:  'Birth Month',
+          placeholder: 'Filter by Birth Month...',
+          type: 'select',
+          queries: [{
+            id: 'month1',
+            value: 'January'
+          },{
+            id: 'month2',
+            value: 'February'
+          },{
+            id: 'month3',
+            value: 'March'
+          },{
+            id: 'month4',
+            value: 'April'
+          },{
+            id: 'month5',
+            value: 'May'
+          },{
+            id: 'month6',
+            value: 'June'
+          },{
+            id: 'month7',
+            value: 'July'
+          },{
+            id: 'month8',
+            value: 'August'
+          },{
+            id: 'month9',
+            value: 'September'
+          },{
+            id: 'month10',
+            value: 'October'
+          },{
+            id: 'month11',
+            value: 'November'
+          },{
+            id: 'month12',
+            value: 'December'
+          }]
+        }] as FilterField[],
         resultsCount: 5,
         appliedFilters: []
       } as FilterConfig,
@@ -183,9 +213,15 @@ describe('Toolbar component - ', () => {
 
   it('should have correct number of results', function () {
     let results = fixture.debugElement.query(By.css('h5'));
-    expect(results).not.toBeNull();
-    expect(results.nativeElement.textContent.trim().slice(0, '5 Results'.length)).toBe('5 Results');
+    expect(results).toBeNull();
 
+    config.filterConfig.appliedFilters = [{
+      field: {
+        id: 'address',
+        title: 'Address'
+      },
+      value: 'New York'
+    }] as Filter[];
     config.filterConfig.resultsCount = 10;
     fixture.detectChanges();
 
@@ -206,20 +242,20 @@ describe('Toolbar component - ', () => {
     expect(filterSelect).not.toBeNull();
 
     let items = filterSelect.queryAll(By.css('li'));
-    expect(items.length).toBe(config.filterConfig.fields[3].filterValues.length + 1); // +1 for the null value
+    expect(items.length).toBe(config.filterConfig.fields[3].queries.length + 1); // +1 for the null value
   });
 
   it ('should clear a filter when the close button is clicked', function () {
     let closeButtons = fixture.debugElement.queryAll(By.css('.pficon-close'));
     expect(closeButtons.length).toBe(0);
 
-    config.filterConfig.appliedFilters = [
-      {
+    config.filterConfig.appliedFilters = [{
+      field: {
         id: 'address',
-        title: 'Address',
-        value: 'New York'
-      }
-    ] as Filter[];
+        title: 'Address'
+      },
+      value: 'New York'
+    }] as Filter[];
     fixture.detectChanges();
 
     closeButtons = fixture.debugElement.queryAll(By.css('.pficon-close'));
@@ -238,13 +274,13 @@ describe('Toolbar component - ', () => {
     expect(activeFilters.length).toBe(0);
     expect(clearButton).toBeNull();
 
-    config.filterConfig.appliedFilters = [
-      {
+    config.filterConfig.appliedFilters = [{
+      field: {
         id: 'address',
-        title: 'Address',
-        value: 'New York'
-      }
-    ] as Filter[];
+        title: 'Address'
+      },
+      value: 'New York'
+    }] as Filter[];
     fixture.detectChanges();
 
     activeFilters = fixture.debugElement.queryAll(By.css('.active-filter'));
@@ -263,25 +299,9 @@ describe('Toolbar component - ', () => {
 
   it ('should not show filters when a filter config is not supplied', function () {
     let filter = fixture.debugElement.queryAll(By.css('.filter-pf'));
-    expect(filter.length).toBe(2);
+    expect(filter.length).toBe(1);
 
-    config = {
-      viewsConfig: {
-        views: [
-          {
-            id: 'listView',
-            title: 'List View',
-            iconClass: 'fa fa-th-list'
-          },
-          {
-            id: 'tableView',
-            title: 'Table View',
-            iconClass: 'fa fa-table'
-          }
-        ],
-      } as ViewsConfig
-    } as ToolbarConfig;
-
+    config.filterConfig = undefined;
     comp.config = config;
     fixture.detectChanges();
 
@@ -386,27 +406,11 @@ describe('Toolbar component - ', () => {
     fixture.detectChanges();
   });
 
-  it ('should not show filters when a filter config is not supplied', function () {
+  it ('should not show sort when a sort config is not supplied', function () {
     let sort = fixture.debugElement.query(By.css('.sort-pf'));
     expect(sort).not.toBeNull();
 
-    config = {
-      viewsConfig: {
-        views: [
-          {
-            id: 'listView',
-            title: 'List View',
-            iconClass: 'fa fa-th-list'
-          },
-          {
-            id: 'tableView',
-            title: 'Table View',
-            iconClass: 'fa fa-table'
-          }
-        ],
-      } as ViewsConfig
-    } as ToolbarConfig;
-
+    config.sortConfig = undefined;
     comp.config = config;
     fixture.detectChanges();
 
@@ -562,32 +566,20 @@ describe('Toolbar component - ', () => {
     expect(action).toBeNull();
   });
 
-  it ('should not show action components when an action config is not supplied', function () {
-    let actionBar = fixture.debugElement.query(By.css('.toolbar-pf-actions .toolbar-actions'));
-    expect(actionBar).not.toBeNull();
+  it('should not show action components when an action config is not supplied', function () {
+    let primaryActions = fixture.debugElement.queryAll(By.css('.toolbar-pf-actions .primary-action'));
+    let moreActions = fixture.debugElement.queryAll(By.css('.toolbar-pf-actions .secondary-action'));
+    expect(primaryActions.length).toBe(2);
+    expect(moreActions.length).toBe(6);
 
-    config = {
-      viewsConfig: {
-        views: [
-          {
-            id: 'listView',
-            title: 'List View',
-            iconClass: 'fa fa-th-list'
-          },
-          {
-            id: 'tableView',
-            title: 'Table View',
-            iconClass: 'fa fa-table'
-          }
-        ],
-      } as ViewsConfig
-    } as ToolbarConfig;
-
+    config.actionsConfig = undefined;
     comp.config = config;
     fixture.detectChanges();
 
-    actionBar = fixture.debugElement.query(By.css('.toolbar-pf-actions .toolbar-actions'));
-    expect(actionBar).toBeNull();
+    primaryActions = fixture.debugElement.queryAll(By.css('.toolbar-pf-actions .primary-action'));
+    moreActions = fixture.debugElement.queryAll(By.css('.toolbar-pf-actions .secondary-action'));
+    expect(primaryActions.length).toBe(0);
+    expect(moreActions.length).toBe(0);
   });
 
   /* Todo

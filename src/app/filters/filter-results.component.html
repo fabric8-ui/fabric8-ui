@@ -1,12 +1,12 @@
-<div class="filter-pf">
+<div class="filter-pf" *ngIf="config && config.appliedFilters && config.appliedFilters.length > 0">
   <div class="row toolbar-pf-results">
     <div class="col-sm-12">
-      <h5>{{config.resultsCount}} Results</h5>
+      <h5 *ngIf="config.resultsCount >= -1">{{config.resultsCount}} Results</h5>
       <p *ngIf="config.appliedFilters.length > 0">Active filters:</p>
       <ul class="list-inline">
         <li *ngFor="let filter of config.appliedFilters">
           <span class="active-filter label label-info">
-            {{filter.title}}: {{filter.value}}
+            {{filter.field.title}}: {{filter.value}}
             <a><span class="pficon pficon-close" (click)="clearFilter(filter)"></span></a>
           </span>
         </li>

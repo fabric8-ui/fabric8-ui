@@ -5,26 +5,24 @@
         <alm-filter-fields [config]="config.filterConfig" *ngIf="config.filterConfig && config.filterConfig.fields"
                            (onAdd)="addFilter($event)"></alm-filter-fields>
       </div>
-      <div class="form-group">
-        <alm-sort [config]="config.sortConfig" *ngIf="config.sortConfig && config.sortConfig.fields && config.sortConfig.show"
-                  (onChange)="sortChange($event)"></alm-sort>
+      <div class="form-group" *ngIf="config.sortConfig && config.sortConfig.fields && config.sortConfig.show">
+        <alm-sort [config]="config.sortConfig" (onChange)="sortChange($event)"></alm-sort>
       </div>
-      <div class="form-group toolbar-actions"
-           *ngIf="config.actionsConfig &&
-                   ((config.actionsConfig.primaryActions && config.actionsConfig.primaryActions.length > 0) ||
-                    (config.actionsConfig.moreActions && config.actionsConfig.moreActions.length > 0) ||
-                    config.actionsConfig.actionsInclude)">
-        <button class="btn btn-default primary-action" type="button"
-                *ngFor="let action of config.actionsConfig.primaryActions"
-                title="{{action.title}}"
-                (click)="handleAction(action)"
-                [disabled]="action.isDisabled === true">
-          {{action.name}}
-        </button>
+      <div class="form-group toolbar-actions">
+        <span *ngIf="config.actionsConfig && config.actionsConfig.primaryActions && config.actionsConfig.primaryActions.length > 0">
+          <button class="btn btn-default primary-action" type="button"
+                  *ngFor="let action of config.actionsConfig.primaryActions"
+                  title="{{action.title}}"
+                  (click)="handleAction(action)"
+                  [disabled]="action.isDisabled === true">
+            {{action.name}}
+          </button>
+        </span>
         <div class="toolbar-pf-include-actions">
           <template [ngTemplateOutlet]="actionsTemplate" [ngOutletContext]="{}"></template>
         </div>
-        <div dropdown class="dropdown-kebab-pf" *ngIf="config.actionsConfig && config.actionsConfig.moreActions && config.actionsConfig.moreActions.length > 0">
+        <div dropdown class="dropdown-kebab-pf"
+             *ngIf="config.actionsConfig && config.actionsConfig.moreActions && config.actionsConfig.moreActions.length > 0">
           <button dropdownToggle class="btn btn-link" type="button">
             <span class="fa fa-ellipsis-v"></span>
           </button>
@@ -43,16 +41,19 @@
         </div>
       </div>
       <div class="toolbar-pf-action-right">
-        <div class="form-group toolbar-pf-view-selector" *ngIf="config.viewsConfig && config.viewsConfig.views">
-          <button *ngFor="let view of config.viewsConfig.views" class="btn btn-link"
-                  [ngClass]="{'active': isViewSelected(view), 'disabled': view.isDisabled === true}"
-                  title={{view.title}}  (click)="viewSelected(view)">
-            <i class="{{view.iconClass}}"></i>
-          </button>
+        <div class="form-group toolbar-pf-view-selector"
+             *ngIf="viewsTemplate !== undefined || (config.viewsConfig && config.viewsConfig.views)">
+          <template [ngTemplateOutlet]="viewsTemplate" [ngOutletContext]="{}"></template>
+          <span *ngIf="config.viewsConfig">
+            <button *ngFor="let view of config.viewsConfig.views" class="btn btn-link"
+                    [ngClass]="{'active': isViewSelected(view), 'disabled': view.isDisabled === true}"
+                    title={{view.title}}  (click)="viewSelected(view)">
+              <i class="{{view.iconClass}}"></i>
+            </button>
+          </span>
         </div>
       </div>
     </form>
-    <alm-filter-results [config]="config.filterConfig" *ngIf="config.filterConfig && config.filterConfig.fields"
-                        (onClear)="onClear($event)"></alm-filter-results>
+    <alm-filter-results [config]="config.filterConfig" (onClear)="onClear($event)"></alm-filter-results>
   </div>
 </div>

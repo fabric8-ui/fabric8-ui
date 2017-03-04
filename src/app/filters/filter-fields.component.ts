@@ -10,6 +10,7 @@ import {
 import { FilterConfig } from './filter-config';
 import { FilterEvent } from './filter-event';
 import { FilterField } from './filter-field';
+import { FilterQuery } from './filter-query';
 
 import * as _ from 'lodash';
 
@@ -85,16 +86,17 @@ export class FilterFieldsComponent implements OnInit {
     }
   }
 
-  selectField(item: FilterField): void {
-    this.currentField = item;
+  selectField(field: FilterField): void {
+    this.currentField = field;
     this.currentValue = null;
   }
 
-  selectValue(filterValue: string): void {
-    if (filterValue != null) {
+  selectValue(filterQuery: FilterQuery): void {
+    if (filterQuery != null) {
       this.onAdd.emit({
         field: this.currentField,
-        value: filterValue
+        query: filterQuery,
+        value: filterQuery.value
       } as FilterEvent);
       this.currentValue = null;
     }

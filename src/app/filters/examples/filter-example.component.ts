@@ -26,63 +26,92 @@ export class FilterExampleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.allItems = [
-      {
-        name: "Fred Flintstone",
-        address: "20 Dinosaur Way, Bedrock, Washingstone",
-        birthMonth: 'February'
-      },
-      {
-        name: "John Smith",
-        address: "415 East Main Street, Norfolk, Virginia",
-        birthMonth: 'October'
-      },
-      {
-        name: "Frank Livingston",
-        address: "234 Elm Street, Pittsburgh, Pennsylvania",
-        birthMonth: 'March'
-      },
-      {
-        name: "Judy Green",
-        address: "2 Apple Boulevard, Cincinatti, Ohio",
-        birthMonth: 'December'
-      },
-      {
-        name: "Pat Thomas",
-        address: "50 Second Street, New York, New York",
-        birthMonth: 'February'
-      }
-    ];
+    this.allItems = [{
+      name: "Fred Flintstone",
+      address: "20 Dinosaur Way, Bedrock, Washingstone",
+      birthMonth: 'February',
+      birthMonthId: 'month2'
+    },{
+      name: "John Smith", address: "415 East Main Street, Norfolk, Virginia",
+      birthMonth: 'October',
+      birthMonthId: '10'
+    },{
+      name: "Frank Livingston",
+      address: "234 Elm Street, Pittsburgh, Pennsylvania",
+      birthMonth: 'March',
+      birthMonthId: 'month3'
+    },{
+      name: "Judy Green",
+      address: "2 Apple Boulevard, Cincinatti, Ohio",
+      birthMonth: 'December',
+      birthMonthId: 'month12'
+    },{
+      name: "Pat Thomas",
+      address: "50 Second Street, New York, New York",
+      birthMonth: 'February',
+      birthMonthId: 'month2'
+    }];
     this.items = this.allItems;
 
     this.filterConfig = {
-      fields: [
-        {
-          id: 'name',
-          title:  'Name',
-          placeholder: 'Filter by Name...',
-          filterType: 'text'
-        },
-        {
-          id: 'age',
-          title:  'Age',
-          placeholder: 'Filter by Age...',
-          filterType: 'text'
-        },
-        {
-          id: 'address',
-          title:  'Address',
-          placeholder: 'Filter by Address...',
-          filterType: 'text'
-        },
-        {
-          id: 'birthMonth',
-          title:  'Birth Month',
-          placeholder: 'Filter by Birth Month...',
-          filterType: 'select',
-          filterValues: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-        }
-      ] as FilterField[],
+      fields: [{
+        id: 'name',
+        title:  'Name',
+        placeholder: 'Filter by Name...',
+        type: 'text'
+      },{
+        id: 'age',
+        title:  'Age',
+        placeholder: 'Filter by Age...',
+        type: 'text'
+      },{
+        id: 'address',
+        title:  'Address',
+        placeholder: 'Filter by Address...',
+        type: 'text'
+      },{
+        id: 'birthMonth',
+        title:  'Birth Month',
+        placeholder: 'Filter by Birth Month...',
+        type: 'select',
+        queries: [{
+          id: 'month1',
+          value: 'January'
+        },{
+          id: 'month2',
+          value: 'February'
+        },{
+          id: 'month3',
+          value: 'March'
+        },{
+          id: 'month4',
+          value: 'April'
+        },{
+          id: 'month5',
+          value: 'May'
+        },{
+          id: 'month6',
+          value: 'June'
+        },{
+          id: 'month7',
+          value: 'July'
+        },{
+          id: 'month8',
+          value: 'August'
+        },{
+          id: 'month9',
+          value: 'September'
+        },{
+          id: 'month10',
+          value: 'October'
+        },{
+          id: 'month11',
+          value: 'November'
+        },{
+          id: 'month12',
+          value: 'December'
+        }]
+      }] as FilterField[],
       resultsCount: this.items.length,
       appliedFilters: []
     } as FilterConfig;
@@ -107,7 +136,7 @@ export class FilterExampleComponent implements OnInit {
   filterChange($event: FilterEvent): void {
     this.filtersText = "";
     $event.appliedFilters.forEach((filter) => {
-      this.filtersText += filter.title + " : " + filter.value + "\n";
+      this.filtersText += filter.field.title + " : " + filter.value + "\n";
     });
     this.applyFilters($event.appliedFilters);
   }
@@ -115,11 +144,11 @@ export class FilterExampleComponent implements OnInit {
   matchesFilter(item: any, filter: Filter): boolean {
     let match = true;
 
-    if (filter.id === 'name') {
+    if (filter.field.id === 'name') {
       match = item.name.match(filter.value) !== null;
-    } else if (filter.id === 'address') {
+    } else if (filter.field.id === 'address') {
       match = item.address.match(filter.value) !== null;
-    } else if (filter.id === 'birthMonth') {
+    } else if (filter.field.id === 'birthMonth') {
       match = item.birthMonth === filter.value;
     }
     return match;
