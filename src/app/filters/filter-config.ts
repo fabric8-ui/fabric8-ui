@@ -16,4 +16,5 @@ export class FilterConfig {
   resultsCount: number;
   selectedCount: number;
   totalCount: number;
+  tooltipPlacement?: string;
 }

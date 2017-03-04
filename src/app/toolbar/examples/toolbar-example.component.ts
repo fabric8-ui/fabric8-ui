@@ -144,8 +144,9 @@ export class ToolbarExampleComponent implements OnInit {
           value: 'December'
         }]
       }] as FilterField[],
+      appliedFilters: [],
       resultsCount: this.items.length,
-      //appliedFilters: []
+      tooltipPlacement: "right"
     } as FilterConfig;
 
     this.sortConfig = {

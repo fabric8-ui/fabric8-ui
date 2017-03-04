@@ -55,6 +55,9 @@ export class FilterFieldsComponent implements OnInit {
     if (this.config && this.config.fields === undefined) {
       this.config.fields = [];
     }
+    if (this.config && this.config.tooltipPlacement === undefined) {
+      this.config.tooltipPlacement = "top";
+    }
 
     let fieldFound: boolean = false;
     if (this.currentField !== undefined) {
