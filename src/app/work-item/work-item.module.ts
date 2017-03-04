@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 import { DndModule } from 'ng2-dnd';
 import { ModalModule } from 'ngx-modal';
-import { DropdownModule } from 'ngx-dropdown';
+import { DropdownModule } from 'ng2-bootstrap';
 import {
   AlmIconModule,
   DialogModule,

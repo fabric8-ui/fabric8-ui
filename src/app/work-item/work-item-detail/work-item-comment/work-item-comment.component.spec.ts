@@ -14,7 +14,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CommonModule } from '@angular/common';
 
-import { DropdownModule } from 'ngx-dropdown';
+import { DropdownModule } from 'ng2-bootstrap';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 import { AlmUserName } from '../../../pipes/alm-user-name.pipe';

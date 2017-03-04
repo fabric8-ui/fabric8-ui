@@ -41,11 +41,11 @@
                 <label class="sr-only" for="filterwitype">Filter</label>
                 <div class="input-group">
                   <div class="input-group-btn" dropdown>
-                    <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
+                    <button class="btn btn-default" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdownToggle>
                       <span>User</span>
                       <span class="caret" ></span>
                     </button>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="wi_filter_dropdown">
+                    <ul role="menu" aria-labelledby="wi_filter_dropdown" dropdownMenu>
                       <li *ngIf="!filters.length">
                         <span>No filters available</span>
                       </li>
@@ -56,11 +56,11 @@
                     </ul>
                   </div>
                   <div dropdown class="wi-input-filter-dropdown">
-                    <div data-toggle="dropdown" dropdown-open>
+                    <div dropdownToggle>
                       <input type="text" class="form-control" id="filterwitype" placeholder="Filter By Assignee...">
                       <span class="caret"></span>
                     </div>
-                    <ul class="dropdown-menu wi-input-filter-dropdown-list" role="menu" aria-labelledby="filterwitype">
+                    <ul class="wi-input-filter-dropdown-list" role="menu" aria-labelledby="filterwitype" dropdownMenu>
                       <li *ngIf="!filters.length">
                         <span>No filters available</span>
                       </li>
@@ -74,11 +74,11 @@
               <!--Move a work item up / down -->
               <div class="form-group">
                 <div class="dropdown move-dropdown" dropdown>
-                  <button class="btn btn-default dropdown-toggle" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdown-open>
+                  <button class="btn btn-default" type="button" id="wi_filter_dropdown" data-toggle="dropdown" dropdownToggle>
                     Move
                     <span class="caret"></span>
                   </button>
-                  <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="wi_filter_dropdown">
+                  <ul class="dropdown-menu-left" role="menu" aria-labelledby="wi_filter_dropdown" dropdownMenu>
                     <li>
                       <a role="menuitem" tabindex="-1" (click)="moveItem('top')">Move to Top</a>
                     </li>

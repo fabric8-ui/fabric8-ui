@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { CollapseModule } from 'ng2-bootstrap';
-import { DropdownModule } from 'ngx-dropdown';
+import { DropdownModule } from 'ng2-bootstrap';
 
 import { FabPlannerIterationModalComponent } from './iteration-modal/iteration-modal.component';
 import { MyDatePickerModule } from 'mydatepicker';

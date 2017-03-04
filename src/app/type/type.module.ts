@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CollapseModule } from 'ng2-bootstrap';
-import { DropdownModule } from 'ngx-dropdown';
+import { DropdownModule } from 'ng2-bootstrap';
 import { ModalModule } from 'ngx-modal';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 

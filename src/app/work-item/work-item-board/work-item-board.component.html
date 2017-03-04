@@ -21,10 +21,11 @@
                   <span class="wi-type-icon" almIcon [iconType]="item.relationships?.baseType?.data?.id"></span>
                 </div>
                 <span class="pull-left"> {{item.id}} </span>
-                <button class="pull-right btn btn-link dropdown-toggle color-grey" type="button">
+                <span dropdown>
+                <button class="pull-right btn btn-link color-grey" type="button" dropdownToggle>
                   <span class="fa fa-ellipsis-v"></span>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-right">
+                <ul class="dropdown-menu-right" dropdownMenu>
                   <li><a class="workItemList_MoveTop">Move to Top</a></li>
                   <li><a class="workItemList_MoveBottom">Move to Bottom</a></li>
                   <li class="divider" role="presentation"></li>
@@ -32,6 +33,7 @@
                   <li><a class="workItemList_Delete">Delete</a></li>
                   <li><a class="workItemList_Backlog">Move to Backlog</a></li>
                 </ul>
+                </span>
               </div>
                <div>
                 <div class="col-md-10 col-sm-10 col-xs-9">

@@ -5,7 +5,7 @@ import { FormsModule }  from '@angular/forms';
 import { CollapseModule } from 'ng2-bootstrap/components/collapse';
 import { TooltipModule }  from 'ng2-bootstrap/components/tooltip';
 import { Ng2CompleterModule } from 'ng2-completer';
-import { DropdownModule } from 'ngx-dropdown';
+import { DropdownModule } from 'ng2-bootstrap';
 
 import { AlmUserName } from '../../pipes/alm-user-name.pipe';
 

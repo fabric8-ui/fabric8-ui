@@ -40,11 +40,11 @@
 
 	<!-- action area -->
 	<div class="list-view-pf-actions" (click)="kebabClick($event)">
-		<div *ngIf="loggedIn" class="dropdown pull-right dropdown-kebab-pf" dropdown>
-			<button class="btn btn-link dropdown-toggle workItemList_dropdownKebabBtn" type="button" id="dropdownKebabRight" aria-haspopup="true" aria-expanded="true" dropdown-open>
+		<div *ngIf="loggedIn" class="pull-right dropdown-kebab-pf" dropdown>
+			<button class="btn btn-link workItemList_dropdownKebabBtn" type="button" id="dropdownKebabRight" aria-haspopup="true" aria-expanded="true" dropdownToggle>
 				<span class="fa fa-ellipsis-v"></span>
 			</button>
-			<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+			<ul class="dropdown-menu-right" aria-labelledby="dropdownKebabRight" dropdownMenu>
 				<li><a class="workItemList_MoveTop" (click)="onMoveToTop($event)">Move to Top</a></li>
 				<li><a class="workItemList_MoveBottom" (click)="onMoveToBottom($event)">Move to Bottom</a></li>
 				<li role="presentation" class="divider"></li>

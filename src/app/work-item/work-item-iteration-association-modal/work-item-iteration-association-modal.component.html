@@ -18,20 +18,17 @@
             <strong>{{ workItem.attributes['system.title'] }}</strong> with
           </label>
 
-          <div class="dropdown dib" dropdown>
-
-              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" #dropdownButton dropdown-open>
+          <div class="dib" dropdown>
+              <button #dropdownButton class="btn btn-default" type="button" dropdownToggle>
                   {{ workItem.relationalData.iteration?.attributes?.name || "Select iteration..." }} <span class="caret"></span>
               </button>
-
-              <ul class="dropdown-menu" role="menu">
+              <ul class="test" role="menu" dropdownMenu>
                 <li *ngFor="let iteration of iterations;" role="presentation">
                   <a role="menuitem" tabindex="-1" (click)="onChangeIteration(iteration)">
                     {{ iteration.attributes.name }}
                   </a>
                 </li>
               </ul>
-
           </div>
         </div>
       </div>

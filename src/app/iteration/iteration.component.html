@@ -21,15 +21,15 @@
                 {{iteration.attributes.name}}
               </strong>
             </div>
-            <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf" dropdown>
-              <button class="btn btn-link dropdown-toggle"
+            <div *ngIf="loggedIn" class="dropdown-kebab-pf" dropdown>
+              <button class="btn btn-link"
                       type="button"
                       aria-haspopup="true"
                       aria-expanded="true"
-                      dropdown-open>
+                      dropdownToggle>
                 <span class="fa fa-ellipsis-v"></span>
               </button>
-              <ul class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-menu-right" dropdownMenu>
                 <li>
                   <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
                     Edit
@@ -110,15 +110,15 @@
           </div>
           <div>
             <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
-            <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf dib" dropdown>
-              <button class="btn btn-link dropdown-toggle"
+            <div *ngIf="loggedIn" class="dropdown-kebab-pf dib" dropdown>
+              <button class="btn btn-link"
                       type="button"
                       aria-haspopup="true"
                       aria-expanded="true"
-                      dropdown-open>
+                      dropdownToggle>
                 <span class="fa fa-ellipsis-v"></span>
               </button>
-              <ul class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-menu-right" dropdownMenu>
                 <li>
                   <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
                     Edit
@@ -158,15 +158,15 @@
           </div>
           <div>
             <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
-            <div *ngIf="loggedIn" class="dropdown dropdown-kebab-pf dib" dropdown>
-              <button class="btn btn-link dropdown-toggle"
+            <div *ngIf="loggedIn" class="dropdown-kebab-pf dib" dropdown>
+              <button class="btn btn-link"
                       type="button"
                       aria-haspopup="true"
                       aria-expanded="true"
-                      dropdown-open>
+                      dropdownToggle>
                 <span class="fa fa-ellipsis-v"></span>
               </button>
-              <ul class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-menu-right" dropdownMenu>
                 <li>
                   <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
                     Edit

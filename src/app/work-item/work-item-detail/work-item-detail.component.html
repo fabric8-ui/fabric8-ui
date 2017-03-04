@@ -73,18 +73,18 @@
           </div>
 
           <div class="col-md-4 col-sm-5 col-xs-5 wi-state-btn pull-right padding0">
-            <div dropdown class="dropdown card-pf-time-frame-filter detail-status-dropdown">
-              <button dropdown-open
+            <div dropdown class="card-pf-time-frame-filter detail-status-dropdown">
+              <button dropdownToggle
                 id="wi-detail-state"
                 type="button"
-                class="btn btn-default dropdown-toggle col-md-12 col-sm-12 col-xs-12">
+                class="btn btn-default col-md-12 col-sm-12 col-xs-12">
                 <span class='dropdown-icon' almIcon [iconType]="workItem.attributes['system.state']"></span>
                 <span class='dropdown-text'>
                   {{workItem.attributes['system.state']}}
                 </span>
                 <span *ngIf="loggedIn" class="caret pull-right"></span>
               </button>
-              <ul *ngIf="loggedIn" id="wi-status-dropdown" class="dropdown-menu dropdown-menu-right dropdown-ul" role="menu">
+              <ul *ngIf="loggedIn" id="wi-status-dropdown" class="dropdown-menu-right dropdown-ul" role="menu" dropdownMenu>
                 <li class="dropdown-li" *ngFor="let state of workItemStates;" (click)="onChangeState(state.option)">
                   <a>
                     <span class='dropdown-icon' almIcon [iconType]="state.option"></span>
@@ -186,13 +186,13 @@
             <span *ngIf="!searchIteration" (click)="lookupIterations()" class="pointer">
               {{ workItem.relationalData?.iteration?.attributes.name || "None" }}
             </span>
-            <span *ngIf="searchIteration" class="dropdown"
+            <span *ngIf="searchIteration"
               id="WI_details_iteration" dropdown>
-              <button class="btn btn-default dropdown-toggle" type="button" #dropdownButton
-                id="WI_details_iteration_dropdown" data-toggle="dropdown" dropdown-open>
+              <button class="btn btn-default" type="button" #dropdownButton
+                id="WI_details_iteration_dropdown" data-toggle="dropdown" dropdownToggle>
                 {{ workItem.relationalData?.iteration?.attributes.name || "None" }} <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="WI_details_iteration_dropdown">
+              <ul role="menu" aria-labelledby="WI_details_iteration_dropdown" dropdownMenu>
                 <li *ngFor="let iteration of iterations;" role="presentation">
                   <a role="menuitem" tabindex="-1" (click)="selectIteration(iteration)">
                     {{ iteration.attributes.name }}

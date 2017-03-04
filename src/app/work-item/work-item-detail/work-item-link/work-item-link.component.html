@@ -45,11 +45,11 @@
         </div>
         <div *ngIf="showLinkCreator" class="link-editor" id="wi-link-editor">
             <div class="col-md-12 col-sm-12 col-xs-12">
-              <div dropdown class="dropdown detail-status-dropdown col-md-6 col-sm-6 col-xs-6">
-                <button dropdown-open
+              <div dropdown class="detail-status-dropdown col-md-6 col-sm-6 col-xs-6">
+                <button dropdownToggle
                   id="wi-link-type"
                   type="button"
-                  class="btn dropdown-toggle col-md-12 col-sm-12 col-xs-12 btn-default">
+                  class="btn col-md-12 col-sm-12 col-xs-12 btn-default">
                   <span *ngIf="!selectedLinkType && linkTypes.length" class='dropdown-text'>
                     Select a link type
                   </span>
@@ -62,7 +62,7 @@
                   <span *ngIf="loggedIn" class="caret pull-right marginT5"></span>
                 </button>
                 <ul *ngIf="linkTypes.length"
-                  class="dropdown-menu dropdown-ul link-dropdown" role="menu">
+                  class="dropdown-ul link-dropdown" role="menu" dropdownMenu>
                   <li *ngFor="let linkType of selectedTab |
                     workItemLinkTypeFilterByTypeName:(linkTypes)">
                     <a (click)="onSelectRelation(linkType)">{{linkType.name}}</a>
