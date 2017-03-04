@@ -25,65 +25,84 @@ describe('Quick add work item component - ', () => {
   let el: DebugElement;
   let fakeWorkItem: WorkItem[];
   let fakeService: any;
-  let fakeSpcaeService: any;
 
-  let spaces = [{
-        'name': 'Project 1',
-        'path': '',
-        'description': '',
-        'teams': [
-            {
-              'name': 'Team Project 1',
-              'members': [
-                  {
-                    'attributes': {
-                        'fullName': 'Example User 0',
-                        'imageURL': 'https://avatars.githubusercontent.com/u/2410471?v=3'
-                    },
-                    'id': 'user0',
-                    'type': 'identities'
-                  }
-              ]
-            }
-        ],
-        'defaultTeam': {
-            'name': 'Team Project 1',
-            'members': [
-              {
-                  'attributes': {
-                    'fullName': 'Example User 0',
-                    'imageURL': 'https://avatars.githubusercontent.com/u/2410471?v=3'
+  let wiTypes = [
+      {
+         'id' : '86af5178-9b41-469b-9096-57e5155c3f31',
+         'attributes' : {
+            'name' : 'Planner Item',
+            'icon': 'fa-question',
+            'fields' : {
+               'system.created_at' : {
+                  'type' : {
+                     'kind' : 'instant'
                   },
-                  'id': 'user0',
-                  'type': 'identities'
-              }
-            ]
-        },
-        'process': {
-
-        },
-        'privateSpace': false,
-        'id': '1f669678-ca2c-4cbb-b46d-5b70a98dde3c',
-        'attributes': {
-
-        },
-        'type': 'spaces',
-        'links': {
-          'self': 'http://localhost:8080/api/'
-        },
-        'relationships': {
-          'areas': {
-            'links': {
-              'related': 'http://localhost:8080/api/spaces/1f669678-ca2c-4cbb-b46d-5b70a98dde3c/areas'
-            }
-          },
-          'iterations': {
-            'links': {
-              'related': 'http://localhost:8080/api/spaces/1f669678-ca2c-4cbb-b46d-5b70a98dde3c/iterations'
-            }
-          }
-        }
-      }];
+                  'required' : false
+               },
+               'system.remote_item_id' : {
+                  'required' : false,
+                  'type' : {
+                     'kind' : 'string'
+                  }
+               },
+               'system.area' : {
+                  'type' : {
+                     'kind' : 'area'
+                  },
+                  'required' : false
+               },
+               'system.title' : {
+                  'required' : true,
+                  'type' : {
+                     'kind' : 'string'
+                  }
+               },
+               'system.creator' : {
+                  'type' : {
+                     'kind' : 'user'
+                  },
+                  'required' : true
+               },
+               'system.assignees' : {
+                  'type' : {
+                     'kind' : 'list',
+                     'componentType' : 'user'
+                  },
+                  'required' : false
+               },
+               'system.state' : {
+                  'required' : true,
+                  'type' : {
+                     'kind' : 'enum',
+                     'values' : [
+                        'new',
+                        'open',
+                        'in progress',
+                        'resolved',
+                        'closed'
+                     ],
+                     'baseType' : 'string'
+                  }
+               },
+               'system.description' : {
+                  'required' : false,
+                  'type' : {
+                     'kind' : 'markup'
+                  }
+               },
+               'system.iteration' : {
+                  'type' : {
+                     'kind' : 'iteration'
+                  },
+                  'required' : false
+               }
+            },
+            'description' : 'Description for Planner Item',
+            'version' : 0
+         },
+         'type' : 'workitemtypes'
+      }
+  ];
 
   beforeEach(() => {
     fakeWorkItem = [
@@ -118,18 +137,8 @@ describe('Quick add work item component - ', () => {
           resolve(workItem);
           // reject('Title is empty');
         });
-      }
-    };
-
-    fakeSpcaeService = {
-      getCurrentSpaceBus: function() {
-        let currentSpaceSubjectSource = new BehaviorSubject<any>(spaces[0]);
-        return currentSpaceSubjectSource.asObservable();
       },
-
-      getCurrentSpace: function() {
-        return Promise.resolve(spaces[0]);
-      }
+      workItemTypes: wiTypes
     };
   });
 

@@ -60,7 +60,7 @@ export class WorkItemService {
   private workItemIdIndexMap = {};
   private prevFilters: any = [];
   private iterations: IterationModel[] = [];
-  private _currentSpace;
+  public _currentSpace;
 
   constructor(private http: Http,
     private broadcaster: Broadcaster,

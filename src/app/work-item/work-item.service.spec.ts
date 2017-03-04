@@ -97,6 +97,84 @@ describe('Work Item Service - ', () => {
         }
       }];
 
+  let wiTypes = [
+      {
+         'id' : '86af5178-9b41-469b-9096-57e5155c3f31',
+         'attributes' : {
+            'name' : 'Planner Item',
+            'icon': 'fa-question',
+            'fields' : {
+               'system.created_at' : {
+                  'type' : {
+                     'kind' : 'instant'
+                  },
+                  'required' : false
+               },
+               'system.remote_item_id' : {
+                  'required' : false,
+                  'type' : {
+                     'kind' : 'string'
+                  }
+               },
+               'system.area' : {
+                  'type' : {
+                     'kind' : 'area'
+                  },
+                  'required' : false
+               },
+               'system.title' : {
+                  'required' : true,
+                  'type' : {
+                     'kind' : 'string'
+                  }
+               },
+               'system.creator' : {
+                  'type' : {
+                     'kind' : 'user'
+                  },
+                  'required' : true
+               },
+               'system.assignees' : {
+                  'type' : {
+                     'kind' : 'list',
+                     'componentType' : 'user'
+                  },
+                  'required' : false
+               },
+               'system.state' : {
+                  'required' : true,
+                  'type' : {
+                     'kind' : 'enum',
+                     'values' : [
+                        'new',
+                        'open',
+                        'in progress',
+                        'resolved',
+                        'closed'
+                     ],
+                     'baseType' : 'string'
+                  }
+               },
+               'system.description' : {
+                  'required' : false,
+                  'type' : {
+                     'kind' : 'markup'
+                  }
+               },
+               'system.iteration' : {
+                  'type' : {
+                     'kind' : 'iteration'
+                  },
+                  'required' : false
+               }
+            },
+            'description' : 'Description for Planner Item',
+            'version' : 0
+         },
+         'type' : 'workitemtypes'
+      }
+  ];
+
   beforeEach(() => {
     fakeAuthService = {
       getToken: function () {
@@ -117,10 +195,6 @@ describe('Work Item Service - ', () => {
           useFactory: (backend: MockBackend,
                        options: BaseRequestOptions) => new Http(backend, options),
           deps: [MockBackend, BaseRequestOptions]
-        },
-        {
-          provide: AuthenticationService,
-          useValue: fakeAuthService
         },
         {
           provide: AuthenticationService,
@@ -149,6 +223,7 @@ describe('Work Item Service - ', () => {
       mockService = mock;
       iterationService = iService;
       (apiService as any)._currentSpace = spaces[0];
+      (apiService as any).workItemTypes = wiTypes;
     }
   ));
   let resp: WorkItem[] = [
@@ -171,7 +246,7 @@ describe('Work Item Service - ', () => {
         },
         'baseType': {
           'data': {
-            'id': 'system.userstory',
+            'id': '86af5178-9b41-469b-9096-57e5155c3f31',
             'type': 'workitemtypes'
           }
         },
@@ -183,7 +258,7 @@ describe('Work Item Service - ', () => {
   let response = {data: resp, links: {}};
   let checkResp = cloneDeep(resp);
   checkResp.forEach((item) => item['relationalData'] = Object(
-    { assignees: [], creator: null, iteration: null }));
+    { assignees: [], creator: null, iteration: null, wiType: wiTypes[0] }));
 
   it('Get work items', async(() => {
     mockService.connections.subscribe((connection: any) => {
