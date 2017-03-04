@@ -12,7 +12,7 @@ const routes: Routes = [
     resolve: {
       allusers: UsersResolve,
       authuser: AuthUserResolve
-    }
+    },
     children: [
       { path: 'detail/:id',
         component: WorkItemDetailComponent,
