@@ -30,7 +30,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { FooterComponent } from './footer/footer.component';
 
 // Header
-import { HeaderComponent } from './header/header.component';
+// import { HeaderComponent } from './header/header.component';
 
 // Login
 import { LoginComponent } from './login/login.component';
@@ -110,7 +110,7 @@ if (process.env.ENV == 'inmemory') {
   declarations: [
     AppComponent,
     FooterComponent,
-    HeaderComponent,
+    // HeaderComponent,
     LoginComponent,
     ToastNotificationComponent,
     WorkItemSearchComponent

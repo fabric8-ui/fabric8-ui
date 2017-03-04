@@ -76,14 +76,14 @@ export class HeaderComponent implements OnInit {
     this.listenToEvents();
     this.getLoggedUser();
     this.loggedIn = this.auth.isLoggedIn();
-    Observable
-      .fromPromise(this.spaceService.getSpaces(10))
-      // First, populate the list with all spaces
-      .do(val => this.spaces.push(...val))
-      .map(val => val[0])
-      // Then, change the space to the first one in the list
-      .subscribe(val => this.broadcaster.broadcast('spaceChanged', val));
-    // Update the selected space when the space changes
+    // Observable
+    //   .fromPromise(this.spaceService.getSpaces(10))
+    //   // First, populate the list with all spaces
+    //   .do(val => this.spaces.push(...val))
+    //   .map(val => val[0])
+    //   // Then, change the space to the first one in the list
+    //   .subscribe(val => this.broadcaster.broadcast('spaceChanged', val));
+    // // Update the selected space when the space changes
     this.broadcaster.on<Space>('spaceChanged').subscribe(val => this.selectedSpace = val);
   }
 
