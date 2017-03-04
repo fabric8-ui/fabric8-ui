@@ -39,7 +39,9 @@ import { LoginService } from './login/login.service';
 // Work
 import { WorkItemSearchComponent } from './work-item/work-item-search/work-item-search.component';
 import { WorkItemService } from './work-item/work-item.service';
-import { WorkItemModule } from './work-item/work-item.module';
+// import { WorkItemModule } from './work-item/work-item.module';
+import { PlannerBoardModule } from './work-item/work-item-board/planner-board.module';
+import { PlannerListModule } from './work-item/work-item-list/planner-list.module';
 
 // Mock data
 import { MockDataService } from './shared/mock-data.service';
@@ -65,6 +67,8 @@ if (process.env.ENV == 'inmemory') {
     WorkItemService,
     MockDataService,
     SpaceService,
+    PlannerBoardModule,
+    PlannerListModule,
     authApiUrlProvider
   ];
   providers = [
@@ -86,6 +90,8 @@ if (process.env.ENV == 'inmemory') {
     WorkItemService,
     MockDataService,
     SpaceService,
+    PlannerBoardModule,
+    PlannerListModule,
     authApiUrlProvider
   ];
   providers = [
@@ -105,7 +111,8 @@ if (process.env.ENV == 'inmemory') {
     ModalModule,
     TabsModule,
     TooltipModule,
-    WorkItemModule
+    PlannerBoardModule,
+    PlannerListModule
   ],
   declarations: [
     AppComponent,

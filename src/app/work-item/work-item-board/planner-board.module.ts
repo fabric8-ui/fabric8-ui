@@ -17,6 +17,7 @@ import {
 
 import { UserService } from 'ngx-login-client';
 
+import { GlobalSettings } from '../../shared/globals';
 import { AlmFilterBoardList } from '../../pipes/alm-board-filter.pipe';
 import { IterationModule } from '../../iteration/iteration.module';
 import { SidepanelModule } from '../../side-panel/side-panel.module';
@@ -26,6 +27,7 @@ import { WorkItemBoardComponent } from './work-item-board.component';
 import { PlannerBoardRoutingModule } from './planner-board-routing.module';
 
 import { WorkItemDetailModule } from '../work-item-detail/work-item-detail.module';
+import { WorkItemService } from '../work-item.service';
 
 
 @NgModule({
@@ -53,8 +55,10 @@ import { WorkItemDetailModule } from '../work-item-detail/work-item-detail.modul
   ],
   providers: [
     AuthUserResolve,
+    GlobalSettings,
     UserService,
-    UsersResolve
+    UsersResolve,
+    WorkItemService
   ],
   exports: [ WorkItemBoardComponent ]
 })

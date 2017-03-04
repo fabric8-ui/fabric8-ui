@@ -17,14 +17,17 @@ import {
 
 import { UserService } from 'ngx-login-client';
 
+import { GlobalSettings } from '../../shared/globals';
 import { IterationModule } from '../../iteration/iteration.module';
 import { SidepanelModule } from '../../side-panel/side-panel.module';
 import { AuthUserResolve, UsersResolve } from '../common.resolver';
-
+import { FabPlannerAssociateIterationModalComponent } from '../work-item-iteration-association-modal/work-item-iteration-association-modal.component';
+import { WorkItemQuickAddModule }                     from '../work-item-quick-add/work-item-quick-add.module';
 import { WorkItemListComponent } from './work-item-list.component';
 import { PlannerListRoutingModule } from './planner-list-routing.module';
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemDetailModule } from '../work-item-detail/work-item-detail.module';
+import { WorkItemService } from '../work-item.service';
 
 @NgModule({
   imports: [
@@ -51,8 +54,10 @@ import { WorkItemDetailModule } from '../work-item-detail/work-item-detail.modul
   ],
   providers: [
     AuthUserResolve,
+    GlobalSettings,
     UserService,
-    UsersResolve
+    UsersResolve,
+    WorkItemService
   ],
   exports: [ WorkItemListComponent ]
 })

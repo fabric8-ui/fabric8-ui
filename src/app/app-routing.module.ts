@@ -7,8 +7,8 @@ import { WorkItemQuickAddComponent } from './work-item/work-item-quick-add/work-
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/work-item/list',
-    pathMatch: 'full'
+    // redirectTo: '/work-item/list',
+    // pathMatch: 'full'
   },
   {
     path: 'login',
