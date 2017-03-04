@@ -3,17 +3,17 @@ import { CommonModule }     from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
 
 import { CollapseDirective } from 'ng2-bootstrap/ng2-bootstrap';
+import { PlannerListModule } from 'fabric8-planner';
 
 import { BacklogComponent }     from './backlog.component';
 import { BacklogRoutingModule } from './backlog-routing.module';
-import { WorkItemModule } from 'fabric8-planner';
 
 @NgModule({
   imports: [
     CommonModule,
     BacklogRoutingModule,
     HttpModule,
-    WorkItemModule
+    PlannerListModule
   ],
   declarations: [ BacklogComponent, /*CollapseDirective*/ ],
 })
