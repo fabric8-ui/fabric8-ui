@@ -596,15 +596,14 @@ export class WorkItemService {
         return Promise.resolve(workItemType);
       } else {
         let workItemTypeUrl = this.baseApiUrl + 'workitemtypes/' + id;
-        this.http.get(workItemTypeUrl)
-          .toPromise()
-          .then((response) => {
+        return this.http.get(workItemTypeUrl)
+          .map((response) => {
             workItemType = response.json().data as WorkItemType;
             this.workItemTypes.push(workItemType);
-            return Promise.resolve(workItemType);
-          });
+            return workItemType;
+          })
+          .toPromise();
       }
-      this.workItemTypeUrl = this.baseApiUrl + 'workitemtypes/' + id;
     } else {
       return Promise.resolve<WorkItemType>( {} as WorkItemType );
     }
