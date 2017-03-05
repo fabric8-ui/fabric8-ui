@@ -58,10 +58,6 @@ module.exports = function (options) {
      */
     devtool: 'inline-source-map',
 
-    watchOptions: {
-      aggregateTimeout: 3000
-    },
-
     // While this does provide debugging of the imported npm modules it also lists a whole stack of them that it can't find.
     //   This is a distraction while trying to debug actual issues. If you are trying to debug an imported issue then turn
     //   it on, but please don't commit it.
@@ -205,8 +201,7 @@ module.exports = function (options) {
       host: METADATA.host,
       historyApiFallback: true,
       watchOptions: {
-        aggregateTimeout: 300,
-        poll: 1000
+        aggregateTimeout: 2000
       }
       // outputPath: helpers.root('dist/')
     },
