@@ -139,31 +139,38 @@ To create docker image, run this command immediately after the previous command:
 docker build -t almighty-ui-deploy -f Dockerfile.deploy .
 ----
 
-== Building the NPM Library
-
-To build the NPM library, use this command:
-
-----
-export API_URL="http://api.example.org/api/"
-npm run build:npm
-----
-
 == Library Build
 
-To build the Planner as a npm library, use gulp:
+=== Production
+
+To build the Planner as a npm library, use:
 
 ----
-gulp build
+npm run build
 ----
 
-The created library is located in `dist-library`. To publish it to npm:
+Whilst the standalone build uses webpack the library build uses gulp.
 
-----
-cd dist-library
-npm publish
-----
+The created library is located in `dist`. You shouldn't ever publish the
+build manually, instead you should let the CD pipeline do a semantic release.
 
-You may need to login first on the npmjs service.
+=== Development
+
+To build  fabric8-planner as an npm library and embed it into a webapp such as
+fabric8-ui, you should:
+
+1. Run `npm run watch:library` in this directory. This will build fabric8-planner as
+a library and then set up a watch task to rebuild any ts, html and scss files you
+change.
+2. In the webapp into which you are embedding, run `npm link <path to fabric8-planner>/dist-watch`.
+This will create a symlink from `node_modules/fabric8-planner` to the `dist-watch` directory
+and install that symlinked node module into your webapp.
+3. Run your webapp in development mode, making sure you have a watch on `node_modules/fabric8-planner`
+enabled. You will have access to both JS sourcemaps and SASS sourcemaps if your webapp
+is properly setup.
+
+Note that `fabric8-ui` is setup to do reloading and sourcemaps automatically when you
+run `npm start`.
 
 [[continuous-delivery-semantic-relases]]
 Continuous Delivery & Semantic Relases

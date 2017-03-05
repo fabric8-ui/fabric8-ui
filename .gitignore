@@ -2,6 +2,7 @@
 
 # compiled output
 /dist
+/dist-watch
 /app/*.js
 /app/*.js.map
 /tmp
