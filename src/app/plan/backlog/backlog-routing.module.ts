@@ -8,7 +8,7 @@ import { AuthUserResolve } from '../../shared/common.resolver';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'list',
     component: BacklogComponent,
     resolve: {
       authuser: AuthUserResolve

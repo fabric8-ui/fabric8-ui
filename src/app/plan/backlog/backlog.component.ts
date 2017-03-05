@@ -7,7 +7,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
   host:{
     'class':"app-component view-content height-100 flex-container in-column-direction flex-grow-1"
   },
-  selector: 'alm-backlog',
+  selector: 'f8-backlog',
   templateUrl: 'backlog.component.html',
   styleUrls: ['./backlog.component.scss']
 })
