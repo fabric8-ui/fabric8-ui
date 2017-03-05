@@ -121,6 +121,7 @@
     "zone.js": "0.7.7"
   },
   "devDependencies": {
+    "@krux/condition-jenkins": "1.0.1",
     "@ngtools/webpack": "1.2.12",
     "@types/hammerjs": "2.0.34",
     "@types/jasmine": "2.5.43",
@@ -222,15 +223,15 @@
     "node": ">= 4.2.1",
     "npm": ">= 3"
   },
-    "release": {
-     "branch": "master",
-     "verifyConditions": {
-       "path": "./node_modules/@krux/condition-jenkins"
-     }
-   },
-   "config": {
-     "commitizen": {
-       "path": "./node_modules/cz-conventional-changelog"
-     }
-   }
+  "release": {
+    "branch": "master",
+    "verifyConditions": {
+      "path": "./node_modules/@krux/condition-jenkins"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
