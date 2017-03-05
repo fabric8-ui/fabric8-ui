@@ -36,6 +36,9 @@ export { FilterQuery } from './src/app/filters/filter-query';
 // Notification
 export { ToastNotificationComponent } from './src/app/notification/toast-notification.component';
 export { ToastNotificationListComponent } from './src/app/notification/toast-notification-list.component';
+export { Notification } from './src/app/notification/notification';
+export { NotificationEvent } from './src/app/notification/notification-event';
+export { NotificationModule } from './src/app/notification/notification.module';
 
 // Sort
 export { SortComponent } from './src/app/sort/sort.component';

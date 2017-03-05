@@ -6,6 +6,7 @@
  * isSeparator - set to true if this is a placehodler for a separator rather than an action
  * name - The name of the action, displayed on the button
  * title - Optional title, used for the tooltip
+ * callback - an optional callback that may be called when the action is invoked
  */
 export class Action {
   id?: string;
@@ -13,4 +14,6 @@ export class Action {
   isSeparator?: boolean = false;
   name: string;
   title?: string;
+  callback(): void {}
 }
+

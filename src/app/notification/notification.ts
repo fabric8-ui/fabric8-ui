@@ -11,6 +11,12 @@ import { Action } from '../config/action';
  * type - The type of the notification message; 'success','info','danger', 'warning'
  */
 export class Notification {
+
+  static readonly SUCCESS = 'success';
+  static readonly INFO = 'info';
+  static readonly DANGER = 'danger';
+  static readonly WARNING = 'warning';
+
   header?: string;
   isPersistent?: boolean;
   message: string;
