@@ -37,7 +37,7 @@ export class SpaceWizardComponent implements OnInit {
     private broadcaster: Broadcaster,
     private spaceService: SpaceService,
     context: ContextService) {
-      context.current.subscribe(val => this._context = val);
+    context.current.subscribe(val => this._context = val);
   }
 
   ngOnInit() {
@@ -88,24 +88,28 @@ export class SpaceWizardComponent implements OnInit {
 
     this.spaceService.create(space)
       .subscribe(
-        (createdSpace) => {
-          this.dummy.spaces.push(space);
-          this.broadcaster.broadcast('save', 1);
-          if (space.path) {
-            this.router.navigate([space.path]);
-          }
+      (createdSpace) => {
+        this.dummy.spaces.push(space);
+        this.broadcaster.broadcast('save', 1);
+        if (space.path) {
+          this.router.navigate([space.path]);
+        }
+        if (this.host) {
+          this.host.close();
           this.reset();
-        },
-        (err) => {
-          // TODO:consistent error handling on failures
-          let errMessage = `Failed to create the collaboration space:
+        }
+        this.reset();
+      },
+      (err) => {
+        // TODO:consistent error handling on failures
+        let errMessage = `Failed to create the collaboration space:
             space name :
             ${space.name}
             message:
             ${err.message}
             `;
-          alert(errMessage);
-        });
+        alert(errMessage);
+      });
   }
 
   cancel() {
