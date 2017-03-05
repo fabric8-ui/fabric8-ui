@@ -56,7 +56,11 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#devtool
      * See: https://github.com/webpack/docs/wiki/build-performance#sourcemaps
      */
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
+
+    watchOptions: {
+      aggregateTimeout: 3000
+    },
 
     // While this does provide debugging of the imported npm modules it also lists a whole stack of them that it can't find.
     //   This is a distraction while trying to debug actual issues. If you are trying to debug an imported issue then turn
@@ -108,6 +112,22 @@ module.exports = function (options) {
       library: 'ac_[name]',
 
       libraryTarget: 'var'
+    },
+
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          include: [
+            nodeModulePath("fabric8-planner"),
+            nodeModulePath("ngx-fabric8-wit"),
+            nodeModulePath("ngx-fabric8-login-client"),
+            nodeModulePath("ngx-widgets")
+          ],
+          use: ["source-map-loader"],
+          enforce: "pre"
+        }
+      ]
     },
 
     plugins: [
