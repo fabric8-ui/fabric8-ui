@@ -5,12 +5,13 @@ import { ModalModule } from 'ngx-modal';
 import { DropdownModule } from 'ng2-bootstrap';
 
 import { WorkItemService } from './../work-item/work-item.service';
-import { FilterPanelComponent } from './filter-panel.component';
+import { ToolbarPanelComponent } from './toolbar-panel.component';
 import { WorkItemDetailAddTypeSelectorModule } from './../work-item/work-item-detail-add-type-selector/work-item-detail-add-type-selector.module';
 
 import {
   AlmEditableModule,
   AlmIconModule,
+  ToolbarModule,
   WidgetsModule
 } from 'ngx-widgets';
 
@@ -20,15 +21,16 @@ import {
     AlmIconModule,
     CommonModule,
     DropdownModule,
+    ToolbarModule,
     WidgetsModule,
     WorkItemDetailAddTypeSelectorModule
   ],
   declarations: [
-    FilterPanelComponent
+    ToolbarPanelComponent
   ],
   providers: [
     WorkItemService
   ],
-  exports: [FilterPanelComponent]
+  exports: [ToolbarPanelComponent]
 })
-export class FilterPanelModule { }
+export class ToolbarPanelModule { }

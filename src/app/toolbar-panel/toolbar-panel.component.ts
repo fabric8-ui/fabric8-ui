@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { cloneDeep } from 'lodash';
@@ -12,15 +12,22 @@ import { WorkItemType } from './../models/work-item-type';
 import { WorkItem } from './../models/work-item';
 
 import {
-  AlmArrayFilter
+  AlmArrayFilter,
+  FilterConfig,
+  FilterEvent,
+  FilterField,
+  ToolbarConfig
 } from 'ngx-widgets';
 
 @Component({
-  selector: 'filter-panel',
-  templateUrl: './filter-panel.component.html',
-  styleUrls: ['./filter-panel.component.scss']
+  encapsulation: ViewEncapsulation.None,
+  selector: 'toolbar-panel',
+  templateUrl: './toolbar-panel.component.html',
+  styleUrls: ['./toolbar-panel.component.scss']
 })
-export class FilterPanelComponent implements OnInit, AfterViewInit {
+export class ToolbarPanelComponent implements OnInit, AfterViewInit {
+  @ViewChild('actions') actionsTemplate: TemplateRef<any>;
+  @ViewChild('add') addTemplate: TemplateRef<any>;
 
   filters: any[] = [];
   loggedIn: boolean = false;
@@ -31,6 +38,9 @@ export class FilterPanelComponent implements OnInit, AfterViewInit {
   workItemDetail: WorkItem;
   showTypesOptions: boolean = false;
   spaceSubscription: Subscription = null;
+
+  filterConfig: FilterConfig;
+  toolbarConfig: ToolbarConfig;
 
   constructor(
     private router: Router,
@@ -54,6 +64,29 @@ export class FilterPanelComponent implements OnInit, AfterViewInit {
         this.workItemTypes = [];
       }
     });
+
+    this.filterConfig = {
+      fields: [{
+        id: 'user',
+        title:  'User',
+        placeholder: 'Filter by Assignee...',
+        type: 'select',
+        queries: [{
+          id:  '1',
+          value: 'Assigned to Me'
+        }]
+      }] as FilterField[],
+      appliedFilters: [],
+      resultsCount: -1, // Hide
+      selectedCount: 0,
+      totalCount: 0,
+      tooltipPlacement: "right"
+    } as FilterConfig;
+
+    this.toolbarConfig = {
+      actionConfig: {},
+      filterConfig: this.filterConfig
+    } as ToolbarConfig;
   }
 
   ngAfterViewInit(): void {
@@ -61,10 +94,26 @@ export class FilterPanelComponent implements OnInit, AfterViewInit {
     this.setFilterValues();
   }
 
+  filterChange($event: FilterEvent): void {
+    let activeFilters = 0;
+    this.filters.forEach((f: any) => {
+      f.active = false;
+    });
+    $event.appliedFilters.forEach((filter) => {
+      let selectedIndex = this.filters.findIndex((f: any) => {
+        return f.id === filter.query.id;
+      });
+      if (selectedIndex > -1) {
+        this.filters[selectedIndex].active = true;
+      }
+    });
+    this.broadcaster.broadcast('item_filter', this.filters);
+  }
+
   setFilterValues() {
     if (this.loggedIn) {
       this.filters.push({
-        id:  1,
+        id:  "1",
         name: 'Assigned to Me',
         paramKey: 'filter[assignee]',
         active: false,
@@ -74,35 +123,6 @@ export class FilterPanelComponent implements OnInit, AfterViewInit {
       let index = this.filters.findIndex(item => item.id === 1);
       this.filters.splice(index, 1);
     }
-  }
-
-  deactiveAllFilters() {
-    this.filters.forEach((f: any) => {
-      f.active = false;
-    });
-    this.broadcaster.broadcast('item_filter', this.filters);
-  }
-
-  activeFilter(filterId: number) {
-    if (this.loggedIn) {
-      let selectedIndex = this.filters.findIndex((f: any) => {
-        return f.id === filterId;
-      });
-      if (selectedIndex > -1) {
-        this.filters[selectedIndex].active = true;
-      }
-      this.broadcaster.broadcast('item_filter', this.filters);
-    }
-  }
-
-  deactiveFilter(filterId: number) {
-    let selectedIndex = this.filters.findIndex((f: any) => {
-      return f.id == filterId;
-    });
-    if (selectedIndex > -1) {
-      this.filters[selectedIndex].active = false;
-    }
-    this.broadcaster.broadcast('item_filter', this.filters);
   }
 
   moveItem(moveto: string) {
@@ -146,7 +166,6 @@ export class FilterPanelComponent implements OnInit, AfterViewInit {
     this.broadcaster.on<string>('logout')
       .subscribe(message => {
         this.loggedIn = false;
-        this.deactiveAllFilters();
         this.authUser = null;
         this.setFilterValues();
     });

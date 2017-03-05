@@ -1,0 +1,12 @@
+@import '../../assets/stylesheets/base';
+
+.toolbar-header {
+  padding: 0 rem(20);
+}
+
+.toolbar-pf-action-right {
+  .pficon-add-circle-o{
+    color: $color-pf-blue-400;
+    font-size: ceil(($font-size-base * 1.2)) ;
+  }
+}

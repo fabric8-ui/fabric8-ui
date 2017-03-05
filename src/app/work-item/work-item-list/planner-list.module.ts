@@ -1,4 +1,4 @@
-import { FilterPanelModule } from './../../filter-panel/filter-panel.module';
+import { ToolbarPanelModule } from './../../toolbar-panel/toolbar-panel.module';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
@@ -43,13 +43,13 @@ import { WorkItemService } from '../work-item.service';
     ModalModule,
     PlannerListRoutingModule,
     SidepanelModule,
+    ToolbarPanelModule,
     TooltipModule,
     TreeModule,
     TreeListModule,
     WidgetsModule,
     WorkItemDetailModule,
-    WorkItemQuickAddModule,
-    FilterPanelModule
+    WorkItemQuickAddModule
   ],
   declarations: [
     WorkItemListComponent,

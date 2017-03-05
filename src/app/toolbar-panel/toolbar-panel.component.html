@@ -1,0 +1,39 @@
+<detail-add-type-selector #typeSelectPanel></detail-add-type-selector>
+<header class="toolbar-header">
+  <div class="flex-container flex-grow-1 in-column-direction">
+    <alm-toolbar
+        [config]="toolbarConfig"
+        [actionsTemplate]="actionsTemplate"
+        [viewsTemplate]="addTemplate"
+        (onFilterChange)="filterChange($event)">
+      <template #actions>
+        <span class="dropdown primary-action" dropdown>
+          <button class="btn btn-default" id="wi_filter_dropdown" type="button" dropdownToggle>
+            Move
+            <span class="caret"></span>
+          </button>
+          <ul role="menu" aria-labelledby="wi_filter_dropdown" dropdownMenu>
+            <li>
+              <a role="menuitem" tabindex="-1" (click)="moveItem('top')">Move to Top</a>
+            </li>
+            <li>
+              <a role="menuitem" tabindex="-1" (click)="moveItem('bottom')">Move to Bottom</a>
+            </li>
+            <li role="presentation" class="divider"></li>
+            <li>
+              <a role="menuitem" tabindex="-1" (click)="moveItem('up')">Move Up</a>
+            </li>
+            <li>
+              <a role="menuitem" tabindex="-1" (click)="moveItem('down')">Move Down</a>
+            </li>
+          </ul>
+        </span>
+      </template>
+      <template #add>
+        <div *ngIf="loggedIn && editEnabled" class="with-cursor-pointer" tooltipPlacement="bottom" tooltip="Add A Work Item" (click)="typeSelectPanel.openPanel()">
+          <i class="pficon pficon-add-circle-o margin-top-4"></i>
+        </div>
+      </template>
+    </alm-toolbar>
+  </div>
+</header>
