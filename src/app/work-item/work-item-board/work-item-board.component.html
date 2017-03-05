@@ -41,7 +41,7 @@
                 </div>
                 <div class="col-md-2 col-sm-2 col-xs-3 user-avatar pull-right">
                   <img *ngIf="item.relationalData?.assignees?.length"
-                    src="{{item.relationalData.assignees[0]?.attributes.imageURL + '&s=20'}}"
+                    src="{{item.relationalData?.assignees[0]?.attributes.imageURL + '&s=20'}}"
                     onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
                   <span *ngIf="!item.relationalData?.assignees?.length" class="fa fa-user not-assigned-user-icon pull-right"></span>
                 </div>

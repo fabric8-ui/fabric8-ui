@@ -1,8 +1,11 @@
+import { Space } from 'ngx-fabric8-wit';
+import { Subscription } from 'rxjs/Subscription';
+import { cloneDeep } from 'lodash';
 import { Component, OnInit } from '@angular/core';
 import { Response } from '@angular/http';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from 'ngx-login-client';
+import { AuthenticationService, Broadcaster } from 'ngx-login-client';
 import { ArrayCount } from 'ngx-widgets';
 
 import { WorkItem } from '../../models/work-item';
@@ -22,14 +25,31 @@ export class WorkItemBoardComponent implements OnInit {
   workItems: WorkItem[] = [];
   lanes: Array<any> = [];
   loggedIn: Boolean = false;
+  spaceSubscription: Subscription;
 
   constructor(
     private auth: AuthenticationService,
+    private broadcaster: Broadcaster,
     private router: Router,
     private workItemService: WorkItemService) {}
 
   ngOnInit() {
     this.loggedIn = this.auth.isLoggedIn();
+
+    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
+      if (space) {
+        console.log('[WorkItemListComponent] New Space selected: ' + space.attributes.name);
+        this.getSTates();
+      } else {
+        console.log('[WorkItemListComponent] Space deselected');
+        this.workItems = [];
+        this.lanes = [];
+        this.workItemService.resetWorkItemList();
+      }
+    });
+  }
+
+  getWorkItems() {
     this.workItemService.getWorkItems()
       .then(workItems => {
         this.workItems = workItems;
@@ -39,9 +59,13 @@ export class WorkItemBoardComponent implements OnInit {
         this.lanes.push({title: 'In-Progress', cards: [{'id': 211, fields: {'system.title': 'Item A'}}, {'id': 212, fields: {'system.title': 'Item B'}}, {'id': 213, fields: {'system.title': 'Item C'}}, {'id': 214, fields: {'system.title': 'Item D'}}]});
         this.lanes.push({title: 'Done', cards: [{'id': 311, fields: {'system.title': 'Item 1'}}, {'id': 312, fields: {'system.title': 'Item 2'}}, {'id': 313, fields: {'system.title': 'Item 3'}}, {'id': 314, fields: {'system.title': 'Item 4'}}]});*/
      });
-     this.workItemService.getStatusOptions()
+  }
+
+  getSTates() {
+    this.workItemService.getStatusOptions()
       .then((response) => {
         this.lanes = response;
+        this.getWorkItems();
       });
   }
 
