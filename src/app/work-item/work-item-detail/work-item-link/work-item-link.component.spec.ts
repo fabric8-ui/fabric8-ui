@@ -411,7 +411,8 @@
 //       imports: [
 //         Ng2CompleterModule,
 //         RouterTestingModule.withRoutes([
-//           {path: 'work-item/list/detail/1', component: WorkItemLinkComponent}
+//           // this needs to be a relative path but I don't know how to do that in a test
+//           {path: './detail/1', component: WorkItemLinkComponent}
 //         ]),
 //       ],
 

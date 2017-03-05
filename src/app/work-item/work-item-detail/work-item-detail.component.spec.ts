@@ -349,7 +349,8 @@ describe('Detailed view and edit a selected work item - ', () => {
       imports: [
         FormsModule,
         RouterTestingModule.withRoutes([
-          { path: 'work-item/list/detail/1', component: WorkItemDetailComponent }
+          // this needs to be a relative path but I don't know how to do that in a test
+          { path: './detail/1', component: WorkItemDetailComponent }
         ]),
         CollapseModule,
         CommonModule,

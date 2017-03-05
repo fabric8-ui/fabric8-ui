@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { Router }                                         from '@angular/router';
+import { Router, ActivatedRoute }                                            from '@angular/router';
 
 import {
   AuthenticationService,
@@ -55,6 +55,7 @@ export class WorkItemListEntryComponent implements OnInit {
 
   constructor(private auth: AuthenticationService,
               private broadcaster: Broadcaster,
+              private route: ActivatedRoute,
               private router: Router,
               private workItemService: WorkItemService,
               private logger: Logger) {}
@@ -145,7 +146,7 @@ export class WorkItemListEntryComponent implements OnInit {
   onDetail(event: MouseEvent): void {
     event.stopPropagation();
     this.detailEvent.emit(this);
-    this.router.navigate(['/work-item/list/detail/' + this.workItem.id]);
+    this.router.navigate(['./detail/' + this.workItem.id], { relativeTo: this.route });
   }
 
   onMoveToTop(event: MouseEvent): void {

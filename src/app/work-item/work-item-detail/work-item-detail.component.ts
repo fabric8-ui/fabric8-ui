@@ -373,7 +373,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
         this.workItemService
         .create(this.workItem)
         .then((workItem) => {
-          this.router.navigate(['/work-item/list/detail/' + workItem.id]);
+          this.router.navigate(['./detail/' + workItem.id], { relativeTo: this.route });
         });
       }
     }
