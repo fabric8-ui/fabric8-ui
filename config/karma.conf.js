@@ -58,12 +58,7 @@ module.exports = function(config) {
      * possible values: 'dots', 'progress'
      * available reporters: https://npmjs.org/browse/keyword/karma-reporter
      */
-    reporters: [ 'mocha', 'coverage', 'junit' ],
-
-    // the default configuration
-    junitReporter: {
-      outputDir: 'test-results', // results will be saved as $outputDir/$browserName.xml
-    },
+    reporters: [ 'mocha', 'coverage' ],
 
     // web server port
     port: 9876,
