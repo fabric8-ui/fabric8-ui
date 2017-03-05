@@ -42,6 +42,8 @@ const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
   BUILD_TIMESTAMP: BUILD_TIMESTAMP
 });
 
+console.log(helpers.nodeModulePath('fabric8-planner'));
+
 /**
  * Webpack configuration
  *
@@ -114,12 +116,10 @@ module.exports = function (options) {
       rules: [
         {
           test: /\.js$/,
-          // include: [
-          //   helpers.nodeModulePath("fabric8-planner"),
-          //   helpers.nodeModulePath("ngx-fabric8-wit"),
-          //   helpers.nodeModulePath("ngx-fabric8-login-client"),
-          //   helpers.nodeModulePath("ngx-widgets")
-          // ],
+          exclude: [
+            // Example helpers.nodeModulePath("fabric8-planner"),
+            // Exclude any problematic sourcemaps
+          ],
           use: ["source-map-loader"],
           enforce: "pre"
         }
