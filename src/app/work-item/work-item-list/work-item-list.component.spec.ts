@@ -27,7 +27,6 @@ import {
   UserService
 } from 'ngx-login-client';
 import {
-  AlmArrayFilter,
   AlmIconModule,
   DialogModule,
   InfiniteScrollModule
@@ -275,7 +274,6 @@ describe('Work item list view - ', () => {
       ],
 
       declarations: [
-        AlmArrayFilter,
         WorkItemListEntryComponent,
         WorkItemListComponent
       ],

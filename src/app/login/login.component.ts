@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.auth.isLoggedIn()) {
-      this.router.navigate(['work-item/list'], {});
+      this.router.navigate(['/'], {});
     }
   }
 
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
 
   checkStatus(loginStatus: any){
     if (loginStatus.token) {
-      this.router.navigate(['work-item/list'], {});
+      this.router.navigate(['/'], {});
     } else {
       this.statusCode = loginStatus.status;
       this.feedbackMessage = loginStatus.responseText;

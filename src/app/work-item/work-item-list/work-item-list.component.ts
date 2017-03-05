@@ -26,7 +26,7 @@ import {
   User,
   UserService
 } from 'ngx-login-client';
-import { SpaceService, Space } from 'ngx-fabric8-wit';
+import { Space } from 'ngx-fabric8-wit';
 
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType }               from '../../models/work-item-type';
@@ -36,9 +36,9 @@ import { WorkItemService }            from '../work-item.service';
 import { TreeListComponent } from 'ngx-widgets';
 
 @Component({
-   host:{
-      'class':"app-component flex-container in-column-direction flex-grow-1"
-    },
+  host:{
+    'class':"app-component flex-container in-column-direction flex-grow-1"
+  },
   selector: 'alm-work-item-list',
   templateUrl: './work-item-list.component.html',
   styleUrls: ['./work-item-list.component.scss']
@@ -80,7 +80,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
       return this.workItemService.getChildren(node.data);
     },
     levelPadding: 30
-  }
+  };
 
   constructor(
     private auth: AuthenticationService,

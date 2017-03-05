@@ -1,3 +1,5 @@
+import { WorkItemQuickAddModule } from './work-item/work-item-quick-add/work-item-quick-add.module';
+import { DummySpace } from './header/DummySpace.service';
 import './rxjs-extensions';
 
 import { ModuleWithProviders, NgModule } from '@angular/core';
@@ -18,7 +20,6 @@ import {
 
 // Shared
 import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
-import { SpaceService } from 'ngx-fabric8-wit';
 import { GlobalSettings } from './shared/globals';
 import { witApiUrlProvider } from './shared/wit-api.provider';
 
@@ -30,15 +31,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { FooterComponent } from './footer/footer.component';
 
 // Header
-// import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './header/header.component';
 
 // Login
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 
-// Work
-import { WorkItemSearchComponent } from './work-item/work-item-search/work-item-search.component';
-import { WorkItemService } from './work-item/work-item.service';
 // import { WorkItemModule } from './work-item/work-item.module';
 import { PlannerBoardModule } from './work-item/work-item-board/planner-board.module';
 import { PlannerListModule } from './work-item/work-item-list/planner-list.module';
@@ -64,17 +62,14 @@ if (process.env.ENV == 'inmemory') {
     Broadcaster,
     LoginService,
     UserService,
-    WorkItemService,
     MockDataService,
-    SpaceService,
-    PlannerBoardModule,
-    PlannerListModule,
     authApiUrlProvider
   ];
   providers = [
     GlobalSettings,
     witApiUrlProvider,
     serviceImports,
+    DummySpace,
     {
       provide: Http,
       useClass: MockHttp
@@ -87,17 +82,14 @@ if (process.env.ENV == 'inmemory') {
     Broadcaster,
     LoginService,
     UserService,
-    WorkItemService,
     MockDataService,
-    SpaceService,
-    PlannerBoardModule,
-    PlannerListModule,
     authApiUrlProvider
   ];
   providers = [
     GlobalSettings,
     witApiUrlProvider,
-    serviceImports
+    serviceImports,
+    DummySpace
   ];
 }
 
@@ -111,16 +103,15 @@ if (process.env.ENV == 'inmemory') {
     ModalModule,
     TabsModule,
     TooltipModule,
-    PlannerBoardModule,
-    PlannerListModule
+    PlannerListModule,
+    PlannerBoardModule
   ],
   declarations: [
     AppComponent,
     FooterComponent,
-    // HeaderComponent,
+    HeaderComponent,
     LoginComponent,
     ToastNotificationComponent,
-    WorkItemSearchComponent
   ],
   providers: providers,
   bootstrap: [ AppComponent ]

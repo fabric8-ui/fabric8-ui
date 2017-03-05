@@ -7,7 +7,7 @@ import { WorkItemBoardComponent } from './work-item-board.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'board',
     component: WorkItemBoardComponent,
     resolve: {
       allusers: UsersResolve,

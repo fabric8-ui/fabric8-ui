@@ -1,63 +1,76 @@
-<div class="work-item-list-page flex-container in-column-direction flex-grow-1">
-  <div #listContainer
-       almInfiniteScroll
-       class="detail-list-wrap list-group list-view-pf"
-       [eachElementHeightInPx]='contentItemHeight'
-       (initItems)='initWiItems($event)'
-       (fetchMore)='fetchMoreWiItems()'>
-    <alm-tree-list #treeList
-        [listTemplate]="treeListTemplate"
-        [loadTemplate]="treeListLoadTemplate"
-        [nodes]="workItems"
-        [options]="treeListOptions"
-        [showExpander]="false">
-      <template #treeListLoadTemplate let-node="node" let-index="index">
-        <span>Loading...</span>
-      </template>
-      <template #treeListTemplate let-node="node" let-index="index">
-        <alm-tree-list-item #treeListItem
-            [node]="node"
-            (onSelect)="onSelect($event)"
-            [template]="treeListItemTemplate">
-          <template #treeListItemTemplate>
-            <alm-work-item-list-entry
-                id="{{'workItemList_OuterWrap_' + index}}"
-                class="work-item-list-entry"
-                [listItem]="treeListItem"
-                [workItem]="node.data"
-                (selectEvent)="onSelect($event)"
-                (toggleEvent)="onToggle($event)"
-                (detailEvent)="onDetail($event)"
-                (moveTopEvent)="onMoveToTop($event)"
-                (moveBottomEvent)="onMoveToBottom($event)">
-            </alm-work-item-list-entry>
-          </template>
-        </alm-tree-list-item>
-      </template>
-    </alm-tree-list>
-    <div *ngIf="!workItems || workItems.length === 0" class="container-fluid container-cards-pf">
-      <div class="row row-cards-pf">
-        <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
-          <div class="card-pf card-pf-aggregate-status">
-            <div class="card-pf-title">
-              <h2 class="pficon pficon-add-circle-o no-wi"></h2>
-              <h2>Create a Work Item</h2>
+<div class="container-fluid work-item-page">
+  <main class="row">
+    <aside>
+      <div class="contents">
+        <side-panel></side-panel>
+      </div>
+    </aside>
+    <section>
+    <filter-panel></filter-panel>
+      <div class="contents">
+        <div class="work-item-list-page flex-container in-column-direction flex-grow-1">
+          <div #listContainer
+              almInfiniteScroll
+              class="detail-list-wrap list-group list-view-pf"
+              [eachElementHeightInPx]='contentItemHeight'
+              (initItems)='initWiItems($event)'
+              (fetchMore)='fetchMoreWiItems()'>
+            <alm-tree-list #treeList
+                [listTemplate]="treeListTemplate"
+                [loadTemplate]="treeListLoadTemplate"
+                [nodes]="workItems"
+                [options]="treeListOptions"
+                [showExpander]="false">
+              <template #treeListLoadTemplate let-node="node" let-index="index">
+                <span>Loading...</span>
+              </template>
+              <template #treeListTemplate let-node="node" let-index="index">
+                <alm-tree-list-item #treeListItem
+                    [node]="node"
+                    (onSelect)="onSelect($event)"
+                    [template]="treeListItemTemplate">
+                  <template #treeListItemTemplate>
+                    <alm-work-item-list-entry
+                        id="{{'workItemList_OuterWrap_' + index}}"
+                        class="work-item-list-entry"
+                        [listItem]="treeListItem"
+                        [workItem]="node.data"
+                        (selectEvent)="onSelect($event)"
+                        (toggleEvent)="onToggle($event)"
+                        (detailEvent)="onDetail($event)"
+                        (moveTopEvent)="onMoveToTop($event)"
+                        (moveBottomEvent)="onMoveToBottom($event)">
+                    </alm-work-item-list-entry>
+                  </template>
+                </alm-tree-list-item>
+              </template>
+            </alm-tree-list>
+            <div *ngIf="!workItems || workItems.length === 0" class="container-fluid container-cards-pf">
+              <div class="row row-cards-pf">
+                <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
+                  <div class="card-pf card-pf-aggregate-status">
+                    <div class="card-pf-title">
+                      <h2 class="pficon pficon-add-circle-o no-wi"></h2>
+                      <h2>Create a Work Item</h2>
+                    </div>
+                    <div class="card-pf-body">
+                      <h4>There are no Work Items for your selected criteria.</h4>
+                      <p>If you'd like to add a Work Item, you can do so using the Quick Add or the <i class="pficon pficon-add-circle-o"></i> in the bar above.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="card-pf-body">
-              <h4>There are no Work Items for your selected criteria.</h4>
-              <p>If you'd like to add a Work Item, you can do so using the Quick Add or the <i class="pficon pficon-add-circle-o"></i> in the bar above.</p>
-            </div>
+          </div>
+
+          <div id="workItemList_Error" class="error" *ngIf="error">{{error}}</div>
+
+          <div id="workItemList_quickAdd" class="work-item-list-quick-add" *ngIf="loggedIn">
+              <alm-work-item-quick-add [wilistview]="'wi-list-view'" (close)="close($event)"></alm-work-item-quick-add>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div id="workItemList_Error" class="error" *ngIf="error">{{error}}</div>
-
-  <!--<div id="workItemList_quickAdd" class="work-item-list-quick-add" *ngIf="loggedIn">-->
-      <!--<alm-work-item-quick-add [wilistview]="'wi-list-view'" (close)="close($event)"></alm-work-item-quick-add>-->
-  <!--</div>-->
+      <router-outlet></router-outlet>
+    </section>
+  </main>
 </div>
-
-<router-outlet></router-outlet>

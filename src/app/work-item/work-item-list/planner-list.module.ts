@@ -1,3 +1,4 @@
+import { FilterPanelModule } from './../../filter-panel/filter-panel.module';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
@@ -6,7 +7,7 @@ import { TreeModule } from 'angular2-tree-component';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 import { DndModule } from 'ng2-dnd';
 import { ModalModule } from 'ngx-modal';
-import { DropdownModule } from 'ngx-dropdown';
+import { DropdownModule } from 'ng2-bootstrap';
 import {
   AlmIconModule,
   DialogModule,
@@ -46,11 +47,14 @@ import { WorkItemService } from '../work-item.service';
     TreeModule,
     TreeListModule,
     WidgetsModule,
-    WorkItemDetailModule
+    WorkItemDetailModule,
+    WorkItemQuickAddModule,
+    FilterPanelModule
   ],
   declarations: [
     WorkItemListComponent,
-    WorkItemListEntryComponent
+    WorkItemListEntryComponent,
+    FabPlannerAssociateIterationModalComponent
   ],
   providers: [
     AuthUserResolve,

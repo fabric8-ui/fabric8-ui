@@ -6,7 +6,6 @@ import {
   User,
   UserService
 } from 'ngx-login-client';
-import { SpaceService, Space } from 'ngx-fabric8-wit';
 
 import { IterationService } from '../iteration/iteration.service';
 import { IterationModel } from '../models/iteration.model';

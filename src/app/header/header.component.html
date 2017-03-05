@@ -30,10 +30,10 @@
     </ul>
     <ul id="header_menuList" class="nav navbar-nav navbar-primary  persistent-secondary">
       <li routerLinkActive="active" class="with-no-children">
-        <a [routerLink]="['/work-item/list']" id="header_menuWork"><span class="nav-item-text">WorkList</span></a>
+        <a [routerLink]="['/']" id="header_menuWork"><span class="nav-item-text">WorkList</span></a>
       </li>
       <li routerLinkActive="active" class="with-no-children">
-        <a [routerLink]="['/work-item/board']" id="header_menuWork"><span class="nav-item-text">WorkBoard</span></a>
+        <a [routerLink]="['/board']" id="header_menuWork"><span class="nav-item-text">WorkBoard</span></a>
       </li>
       <li>
         <select [ngModel]="selectedSpace" (ngModelChange)="onSpaceChange($event)">

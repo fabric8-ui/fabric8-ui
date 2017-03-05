@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Broadcaster } from 'ngx-login-client';
-import { SpaceService, Space } from 'ngx-fabric8-wit';
+import { Space } from 'ngx-fabric8-wit';
 
 @Component({
   host:{

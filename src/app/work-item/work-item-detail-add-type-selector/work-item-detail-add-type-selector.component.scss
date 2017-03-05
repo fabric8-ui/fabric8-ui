@@ -1,0 +1,31 @@
+@import '../../../assets/stylesheets/base';
+
+.container-modal {
+    border: solid 0 red;
+    background-color: $color-pf-black-100;
+    position: absolute;
+    padding: $grid-gutter-width/2;
+    margin: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    overflow-y: auto;
+    .container-modal-header {
+        margin: 0;
+        margin-bottom: $grid-gutter-width/2;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+    }
+    &.container-cards-pf {
+        .card-pf-title {
+            text-transform: capitalize;
+        }
+        .card-pf-info {
+            min-height: 4.5em;
+            @include multiline-truncate($line-height: 1.5em, $line-count: 3, $bg-color: $color-pf-white);
+        }
+    }
+}
