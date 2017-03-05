@@ -1,7 +1,7 @@
 @import '../../../../assets/stylesheets/base';
 
-.list-group-item {
-  background-color: transparent;
+.workItemList_entry {
+  display: flex;
   cursor: pointer;
   font-size: rem(12);
   align-items: center;
@@ -20,7 +20,6 @@
   }
 
   &:hover {
-    background-color: transparent;
     .row-cbh {
       border-right: 1px solid $color-pf-black-500;
       input{
@@ -66,36 +65,9 @@ span{
   }
 }
 
-.selected {
-  background-color: $color-pf-blue-100;
-  &:hover {
-    background-color: $color-pf-blue-100;
-  }
-}
 @media (max-width: $screen-md-min){
   .workItemList_title{
     font-size: rem(16);
     padding: 0 !important;
-  }
-}
-
-// Tree list item
-.tree-list-item {
-  display: flex;
-  padding-right: 0;
-  &:hover {
-    background-color: $color-pf-black-200;
-  }
-  &.tree-list-item-selected:hover {
-    background-color: $color-pf-blue-100 !important;
-  }
-}
-
-.tree-list-item-selected {
-  .list-group-item {
-    border: none;
-    &:hover {
-      background-color: $color-pf-blue-100 !important;
-    }
   }
 }

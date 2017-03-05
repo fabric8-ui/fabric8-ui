@@ -11,7 +11,7 @@
         <div class="work-item-list-page flex-container in-column-direction flex-grow-1">
           <div #listContainer
               almInfiniteScroll
-              class="detail-list-wrap list-group list-view-pf"
+              class="detail-list-wrap"
               [eachElementHeightInPx]='contentItemHeight'
               (initItems)='initWiItems($event)'
               (fetchMore)='fetchMoreWiItems()'>
@@ -27,7 +27,6 @@
               <template #treeListTemplate let-node="node" let-index="index">
                 <alm-tree-list-item #treeListItem
                     [node]="node"
-                    (onSelect)="onSelect($event)"
                     [template]="treeListItemTemplate">
                   <template #treeListItemTemplate>
                     <alm-work-item-list-entry

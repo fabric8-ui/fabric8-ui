@@ -9,7 +9,8 @@ import {
   ViewChildren,
   QueryList,
   TemplateRef,
-  DoCheck
+  DoCheck,
+  ViewEncapsulation
 } from '@angular/core';
 import {
   Router,
@@ -36,6 +37,7 @@ import { WorkItemService }            from '../work-item.service';
 import { TreeListComponent } from 'ngx-widgets';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   host:{
     'class':"app-component flex-container in-column-direction flex-grow-1"
   },

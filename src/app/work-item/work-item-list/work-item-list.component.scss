@@ -6,6 +6,11 @@
     background-color: transparent;
   }
 }
+
+.tree-list-item {
+  display: flex;
+}
+
 .work-item-list-page {
   >.list-group
   {
