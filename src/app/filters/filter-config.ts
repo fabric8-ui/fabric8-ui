@@ -11,10 +11,10 @@ import { FilterField } from './filter-field';
  * totalCount - The total number of items before any filters have been applied.
  */
 export class FilterConfig {
-  appliedFilters: Filter[];
+  appliedFilters?: Filter[];
   fields: FilterField[];
-  resultsCount: number;
-  selectedCount: number;
-  totalCount: number;
+  resultsCount?: number;
+  selectedCount?: number;
+  totalCount?: number;
   tooltipPlacement?: string;
 }
