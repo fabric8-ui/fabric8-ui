@@ -19,7 +19,9 @@ var watchDist = 'dist-watch';
 
 function copyToDist(srcArr) {
   return gulp.src(srcArr)
-    .pipe(gulp.dest(libraryDist + '/src'));
+    .pipe(gulp.dest(function (file) {
+      return libraryDist + file.base.slice(__dirname.length); // save directly to dist
+    }));
 }
 
 function updateWatchDist() {
@@ -104,10 +106,12 @@ gulp.task('watch', ['build-library', 'copy-watch-all'], function () {
   });
   gulp.watch([appSrc + '/app/**/*.scss']).on('change', function (e) {
     console.log(e.path + ' has been changed. Updating.');
-    transpileSASS(e.path)
+    transpileSASS(e.path);
+    updateWatchDist();
   });
   gulp.watch([appSrc + '/app/**/*.html']).on('change', function (e) {
     console.log(e.path + ' has been changed. Updating.');
     copyToDist(e.path);
+    updateWatchDist();
   });
 });
