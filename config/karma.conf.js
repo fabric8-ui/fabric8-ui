@@ -64,7 +64,7 @@ module.exports = function(config) {
     port: 9876,
 
     // enable / disable colors in the output (reporters and logs)
-    colors: true,
+    colors: !process.env.CI,
 
     /*
      * level of logging
