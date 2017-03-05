@@ -1,8 +1,7 @@
 import {
   Component,
   OnInit,
-  ViewEncapsulation,
-  DoCheck
+  ViewEncapsulation
 } from '@angular/core';
 
 import { Router } from '@angular/router';
@@ -18,7 +17,7 @@ import { NotificationEvent } from "../notification-event";
   styleUrls: ['./toast-notification-list-example.component.scss'],
   templateUrl: './toast-notification-list-example.component.html'
 })
-export class ToastNotificationListExampleComponent implements OnInit, DoCheck {
+export class ToastNotificationListExampleComponent implements OnInit {
   actionText: string = '';
   header: string = 'Default Header.';
   isPersistent: boolean;
@@ -72,12 +71,6 @@ export class ToastNotificationListExampleComponent implements OnInit, DoCheck {
       id: 'moreActions7',
       name: 'Grouped Action 2',
       title: 'Do something similar'
-    },
-    {
-      id: 'moreActions8',
-      name: 'Action with callback',
-      title: 'Action with a callback that performs a console log',
-      callback: () => console.log('cheese!')
     }] as Action[];
   }
 
@@ -93,7 +86,6 @@ export class ToastNotificationListExampleComponent implements OnInit, DoCheck {
 
   handleAction($event: NotificationEvent): void {
     this.actionText = $event.action.name + '\n' + this.actionText;
-    if ($event.action && $event.action.callback) $event.action.callback();
   }
 
   handleClose($event: NotificationEvent): void {

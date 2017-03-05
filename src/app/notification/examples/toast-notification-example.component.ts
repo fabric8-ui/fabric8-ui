@@ -1,4 +1,3 @@
-import { Notification } from './../notification';
 import {
   Component,
   OnInit,
@@ -33,8 +32,8 @@ export class ToastNotificationExampleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.types = [ Notification.SUCCESS, Notification.INFO, Notification.DANGER, Notification.WARNING];
-    this.type = Notification.SUCCESS;
+    this.types = ['success', 'info', 'danger', 'warning'];
+    this.type = this.types[0];
 
     this.primaryAction = {
       id: "action1",

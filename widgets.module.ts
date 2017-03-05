@@ -8,7 +8,6 @@ import { AlmEditableModule } from './src/app/editable/almeditable.module';
 import { AlmIconModule } from './src/app/icon/almicon.module';
 import { FiltersModule } from './src/app/filters/filters.module';
 import { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
-import { NotificationModule } from './src/app/notification/notification.module';
 import { SortModule } from './src/app/sort/sort.module';
 import { TreeListModule } from './src/app/treelist/treelist.module';
 import { ToolbarModule } from './src/app/toolbar/toolbar.module';
@@ -51,7 +50,6 @@ import { ArrayCount } from './src/app/pipes/arrayCount.pipe';
     DropdownModule,
     FiltersModule,
     InfiniteScrollModule,
-    NotificationModule,
     SortModule,
     TreeListModule,
     ToolbarModule
