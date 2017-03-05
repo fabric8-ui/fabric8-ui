@@ -196,9 +196,9 @@ module.exports = function (options) {
             loader: "css-loader?sourceMap&context=/"
           })
         },
-
         {
           test: /\.scss$/,
+          fallback: 'style-loader',
           use: [
             {
               loader: 'to-string-loader'
@@ -206,7 +206,9 @@ module.exports = function (options) {
             {
               loader: 'css-loader',
               options: {
-                minimize: isProd
+                minimize: isProd,
+                sourceMap: true,
+                context: '/'
               }
             },
             {
@@ -214,10 +216,11 @@ module.exports = function (options) {
               options: {
                 includePaths: sassModules.map(function (val) {
                   return val.sassPath;
-                })
+                }),
+                sourceMap: true
               }
             }
-          ]
+          ],
         },
 
         /**
