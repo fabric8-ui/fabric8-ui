@@ -20,7 +20,7 @@ function isWebpackDevServer() {
 var root = path.join.bind(path, ROOT);
 
 function nodeModulePath(nodeModule) {
-  root().join("node_modules").join(nodeModule);
+  return path.join(ROOT, "node_modules", nodeModule);
 }
 
 exports.hasProcessFlag = hasProcessFlag;

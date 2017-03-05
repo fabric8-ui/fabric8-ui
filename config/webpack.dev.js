@@ -119,10 +119,10 @@ module.exports = function (options) {
         {
           test: /\.js$/,
           include: [
-            nodeModulePath("fabric8-planner"),
-            nodeModulePath("ngx-fabric8-wit"),
-            nodeModulePath("ngx-fabric8-login-client"),
-            nodeModulePath("ngx-widgets")
+            helpers.nodeModulePath("fabric8-planner"),
+            helpers.nodeModulePath("ngx-fabric8-wit"),
+            helpers.nodeModulePath("ngx-fabric8-login-client"),
+            helpers.nodeModulePath("ngx-widgets")
           ],
           use: ["source-map-loader"],
           enforce: "pre"

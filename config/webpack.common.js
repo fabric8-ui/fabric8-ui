@@ -198,7 +198,6 @@ module.exports = function (options) {
         },
         {
           test: /\.scss$/,
-          fallback: 'style-loader',
           use: [
             {
               loader: 'to-string-loader'
