@@ -34,6 +34,7 @@ export { FilterResultsComponent } from './src/app/filters/filter-results.compone
 export { FilterQuery } from './src/app/filters/filter-query';
 
 // Notification
+export { NotificationService } from './src/app/notification/notification.service';
 export { ToastNotificationComponent } from './src/app/notification/toast-notification.component';
 export { ToastNotificationListComponent } from './src/app/notification/toast-notification-list.component';
 

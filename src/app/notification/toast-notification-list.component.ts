@@ -18,6 +18,7 @@ import { NotificationEvent } from './notification-event';
 })
 export class ToastNotificationListComponent implements OnInit {
   @Input() notifications: Notification[];
+  @Input() showClose: boolean;
 
   @Output('onActionSelect') onActionSelect = new EventEmitter();
   @Output('onCloseSelect') onCloseSelect = new EventEmitter();

@@ -7,6 +7,7 @@ import {
 import { Router } from '@angular/router';
 
 import { Action } from '../../config/action';
+import { Notification } from "../notification";
 import { NotificationEvent } from "../notification-event";
 
 @Component({
@@ -32,7 +33,7 @@ export class ToastNotificationExampleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.types = ['success', 'info', 'danger', 'warning'];
+    this.types = [Notification.SUCCESS, Notification.INFO, Notification.DANGER, Notification.WARNING];
     this.type = this.types[0];
 
     this.primaryAction = {

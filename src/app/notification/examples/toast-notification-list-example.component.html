@@ -10,7 +10,8 @@
           [notifications]="notifications"
           (onActionSelect)="handleAction($event)"
           (onCloseSelect)="handleClose($event)"
-          (onViewingChange)="handleViewingChange($event)">
+          (onViewingChange)="handleViewingChange($event)"
+          [showClose]="showClose">
       </alm-toast-notification-list>
     </div>
   </div>

@@ -6,6 +6,7 @@ import { HttpModule, Http } from '@angular/http';
 
 import { NotificationModule } from '../notification.module';
 import { NotificationExampleRoutingModule } from './notification-example-routing.module';
+import { NotificationService } from '../notification.service';
 import { ToastNotificationExampleComponent } from './toast-notification-example.component';
 import { ToastNotificationListExampleComponent } from './toast-notification-list-example.component';
 
@@ -18,7 +19,8 @@ import { ToastNotificationListExampleComponent } from './toast-notification-list
     HttpModule,
     NotificationModule,
     NotificationExampleRoutingModule
-  ]
+  ],
+  providers: [ NotificationService ]
 })
 export class NotificationExampleModule {
   constructor(http: Http) {}

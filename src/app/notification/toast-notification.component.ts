@@ -18,10 +18,10 @@ import { NotificationEvent } from './notification-event';
   templateUrl: './toast-notification.component.html'
 })
 export class ToastNotificationComponent implements OnInit {
-  @Input() data: Notification;
   @Input() header: string;
   @Input() message: string;
   @Input() moreActions: Action[];
+  @Input() notification: Notification;
   @Input() primaryAction: Action;
   @Input() showClose: boolean;
   @Input() type: string;
@@ -52,25 +52,25 @@ export class ToastNotificationComponent implements OnInit {
     if (action && action.isDisabled !== true) {
       this.onActionSelect.emit({
         action: action,
-        data: this.data
+        notification: this.notification
       } as NotificationEvent);
     }
   }
 
   handleClose($event: MouseEvent): void {
-    this.onCloseSelect.emit({data: this.data} as NotificationEvent);
+    this.onCloseSelect.emit({notification: this.notification} as NotificationEvent);
   }
 
   handleEnter($event: MouseEvent): void {
     this.onViewingChange.emit({
-      data: this.data,
+      notification: this.notification,
       isViewing: true
     } as NotificationEvent);
   }
 
   handleLeave($event: MouseEvent): void {
     this.onViewingChange.emit({
-      data: this.data,
+      notification: this.notification,
       isViewing: false
     } as NotificationEvent);
   }

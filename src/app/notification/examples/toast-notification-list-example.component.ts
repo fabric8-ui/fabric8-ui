@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Action } from "../../config/action";
 import { Notification } from "../notification";
 import { NotificationEvent } from "../notification-event";
+import { NotificationService } from '../notification.service';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -20,21 +21,30 @@ import { NotificationEvent } from "../notification-event";
 export class ToastNotificationListExampleComponent implements OnInit {
   actionText: string = '';
   header: string = 'Default Header.';
-  isPersistent: boolean;
+  isPersistent: boolean = false;
   message: string = 'Default Message.';
   moreActions: Action[];
   moreActionsDefault: Action[];
   notifications: Notification[];
   primaryAction: Action;
-  showClose: false;
+  showClose: boolean = false;
   showMoreActions: boolean = false;
-  types: string[] = ['success', 'info', 'danger', 'warning'];
   type: string;
+  types: string[];
+  typeMap: any;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private notificationService: NotificationService) {
   }
 
   ngOnInit(): void {
+    this.notifications = this.notificationService.getNotifications();
+
+    this.typeMap = { 'info': Notification.INFO,
+      'success': Notification.SUCCESS,
+      'warning': Notification.WARNING,
+      'danger': Notification.DANGER
+    };
+    this.types = Object.keys(this.typeMap);
     this.type = this.types[0];
 
     this.primaryAction = {
@@ -85,12 +95,13 @@ export class ToastNotificationListExampleComponent implements OnInit {
   // Action functions
 
   handleAction($event: NotificationEvent): void {
+    // Get the Action we provided and output its name
     this.actionText = $event.action.name + '\n' + this.actionText;
   }
 
   handleClose($event: NotificationEvent): void {
     this.actionText = "Close" + '\n' + this.actionText;
-    this.notifications.pop();
+    this.notificationService.remove($event.notification);
   }
 
   handleType(item: string): void {
@@ -98,18 +109,16 @@ export class ToastNotificationListExampleComponent implements OnInit {
   }
 
   handleViewingChange($event: NotificationEvent):void {
-    //Notifications.setViewing(data, viewing);
+    this.notificationService.setViewing($event.notification, $event.isViewing);
   }
 
   notify():void {
-    this.notifications = [{
-      header: this.header,
-      isPersistent: this.isPersistent,
-      message: this.message,
-      moreActions: this.moreActions,
-      primaryAction: this.primaryAction,
-      showClose: this.showClose,
-      type: this.type
-    }] as Notification[];
+    this.notificationService.message(
+      this.typeMap[this.type],
+      this.header,
+      this.message,
+      this.isPersistent,
+      this.primaryAction,
+      this.moreActions);
   }
 }

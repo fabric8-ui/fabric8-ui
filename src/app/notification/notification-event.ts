@@ -5,9 +5,11 @@ import { Notification } from './notification';
  * A notification evet containing:
  *
  * action - Optional configuration settings for toolbar actions
- * data - A notification message
+ * notification - A notification message
+ * isViewing - Flag indicating user is actively viewing notification
  */
 export class NotificationEvent {
   action?: Action;
-  data: Notification;
+  notification: Notification;
+  isViewing?: boolean;
 }
