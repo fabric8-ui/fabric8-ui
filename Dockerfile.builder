@@ -1,5 +1,4 @@
 FROM centos:7
-MAINTAINER "Konrad Kleine <kkleine@redhat.com>"
 ENV LANG=en_US.utf8
 
 # gpg keys listed at https://github.com/nodejs/node
