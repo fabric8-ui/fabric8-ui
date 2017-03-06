@@ -14,7 +14,6 @@
     "clean-dist": "rimraf dist",
     "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist bundles",
     "cleanup": "rimraf dist/package.json dist/bundles dist/src dist/index.d.ts dist/index.metadata.json dist/index.js dist/index.js.map dist/LICENSE dist/README.md",
-    "commitmsg": "validate-commit-msg",
     "copy-files": "gulp copyfiles",
     "docker:run": "webpack-dev-server --inline --progress --port 8080",
     "functests": "npm-run-all -p webdriver-start testserver-start protractor",
