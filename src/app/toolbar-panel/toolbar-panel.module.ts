@@ -1,8 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { ModalModule } from 'ngx-modal';
-import { DropdownModule } from 'ng2-bootstrap';
+import {
+  ComponentLoaderFactory,
+  DropdownConfig,
+  DropdownModule,
+  PositioningService,
+  TooltipConfig
+} from 'ng2-bootstrap';
 
 import { FilterService } from '../shared/filter.service';
 import { WorkItemService } from './../work-item/work-item.service';
@@ -31,6 +36,10 @@ import {
   ],
   providers: [
     FilterService,
+    ComponentLoaderFactory,
+    DropdownConfig,
+    PositioningService,
+    TooltipConfig,
     WorkItemService
   ],
   exports: [ToolbarPanelComponent]

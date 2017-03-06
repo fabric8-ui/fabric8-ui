@@ -16,7 +16,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CommonModule } from '@angular/common';
 
 import { DndModule } from 'ng2-dnd';
-import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
+import { TooltipModule } from 'ng2-bootstrap';
 import { AlmUserName } from '../../pipes/alm-user-name.pipe';
 import {
   // AlmUserName,

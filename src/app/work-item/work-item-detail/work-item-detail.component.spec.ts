@@ -14,9 +14,15 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CommonModule } from '@angular/common';
 
-import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 import { Ng2CompleterModule } from 'ng2-completer';
-import { DropdownModule } from 'ng2-bootstrap';
+import {
+  ComponentLoaderFactory,
+  DropdownConfig,
+  DropdownModule,
+  PositioningService,
+  TooltipConfig,
+  TooltipModule
+} from 'ng2-bootstrap';
 import { AlmUserName } from '../../pipes/alm-user-name.pipe';
 import {
   // AlmUserName,
@@ -47,7 +53,7 @@ import { WorkItemLinkComponent } from './work-item-link/work-item-link.component
 import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.component';
 import { WorkItemDetailComponent } from './work-item-detail.component';
 import { WorkItemLinkTypeFilterByTypeName, WorkItemLinkFilterByTypeName } from './work-item-detail-pipes/work-item-link-filters.pipe';
-import { CollapseModule } from 'ng2-bootstrap/components/collapse';
+import { CollapseModule } from 'ng2-bootstrap';
 
 describe('Detailed view and edit a selected work item - ', () => {
   let comp: WorkItemDetailComponent;
@@ -376,6 +382,8 @@ describe('Detailed view and edit a selected work item - ', () => {
       ],
       providers: [
         Broadcaster,
+        ComponentLoaderFactory,
+        DropdownConfig,
         Logger,
         Location,
         {
@@ -393,7 +401,9 @@ describe('Detailed view and edit a selected work item - ', () => {
         {
           provide: WorkItemService,
           useValue: fakeWorkItemService
-        }
+        },
+        PositioningService,
+        TooltipConfig
       ]
     }).compileComponents()
       .then(() => {

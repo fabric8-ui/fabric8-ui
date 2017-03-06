@@ -16,7 +16,7 @@
             <div class="flex-grow-1 truncate">
               <strong class="iteration-name "
                 tooltip="{{iteration.attributes.name}}"
-                tooltipPlacement="top"
+                placement="top"
                 (click)='getWorkItemsByIteration(iteration)'>
                 {{iteration.attributes.name}}
               </strong>
@@ -61,7 +61,7 @@
                 aria-valuemin="0"
                 [attr.aria-valuemax]="iteration.relationships?.workitems?.meta?.total"
                 [ngStyle]="{'width': ((iteration.relationships?.workitems?.meta?.closed / iteration.relationships?.workitems?.meta?.total) * 100) + '%'}"
-                tooltipPlacement="top"
+                placement="top"
                 tooltip="{{((iteration.relationships?.workitems?.meta?.closed / iteration.relationships?.workitems?.meta?.total) * 100) + '%'}}">
             </div>
             <!--<div class="progress-bar progress-bar-remaining"
@@ -70,7 +70,7 @@
                 aria-valuemin="0"
                 aria-valuemax="100"
                 [ngStyle]="{'width': 100 - barchatValue + '%'}"
-                tooltipPlacement="top"
+                placement="top"
                 tooltip="{{(100 - barchatValue) + '%'}}">
             </div>-->
           </div>
@@ -91,7 +91,7 @@
             <a *ngIf="loggedIn && editEnabled"
               class="text-right"
               (click)="modal.openCreateUpdateModal('create');">
-              <i *ngIf="loggedIn && editEnabled" id="add-iteration-icon" class="fa fa-plus-circle fa-lg pull-right with-cursor-pointer" tooltipPlacement="bottom" tooltip="Add an Iteration"></i>
+              <i *ngIf="loggedIn && editEnabled" id="add-iteration-icon" class="fa fa-plus-circle fa-lg pull-right with-cursor-pointer" placement="bottom" tooltip="Add an Iteration"></i>
             </a>
           </small>
         </h4>
@@ -103,7 +103,7 @@
           <div class="flex-grow-1 truncate">
             <strong class="iteration-name"
               tooltip="{{iteration.attributes.name}}"
-              tooltipPlacement="top"
+              placement="top"
               (click)='getWorkItemsByIteration(iteration)'>
               {{iteration.attributes.name}}
             </strong>
@@ -151,7 +151,7 @@
           <div class="truncate flex-grow-1">
             <strong class="iteration-name "
               tooltip="{{iteration.attributes.name}}"
-              tooltipPlacement="top"
+              placement="top"
               (click)='getWorkItemsByIteration(iteration)'>
               {{iteration.attributes.name}}
             </strong>

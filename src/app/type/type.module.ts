@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CollapseModule } from 'ng2-bootstrap';
 import { DropdownModule } from 'ng2-bootstrap';
 import { ModalModule } from 'ngx-modal';
-import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
+import { TooltipModule } from 'ng2-bootstrap';
 
 import { TypeComponent } from './type.component';
 

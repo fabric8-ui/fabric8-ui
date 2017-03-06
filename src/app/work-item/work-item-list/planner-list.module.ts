@@ -3,10 +3,10 @@ import { CommonModule }     from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
 
 import { DndModule } from 'ng2-dnd';
-import { DropdownModule } from 'ng2-bootstrap';
+import { DropdownModule, TooltipModule } from 'ng2-bootstrap';
 import { ModalModule } from 'ngx-modal';
 import { TreeModule } from 'angular2-tree-component';
-import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
+
 import {
   AlmIconModule,
   DialogModule,

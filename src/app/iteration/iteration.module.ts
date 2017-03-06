@@ -10,7 +10,7 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { IterationComponent } from './iteration.component';
 import { IterationService } from './iteration.service';
 import { ModalModule } from 'ngx-modal';
-import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
+import { TooltipModule } from 'ng2-bootstrap';
 
 @NgModule({
   imports: [
