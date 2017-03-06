@@ -33,6 +33,15 @@ export class TreeListItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Return tree node. Useful to obtain the underlying objects (i.e., node.data) provided to tree list
+   *
+   * @returns {TreeNode}
+   */
+  getNode(): TreeNode {
+    return this.node;
+  }
+
   select(event: MouseEvent): void {
     event.stopPropagation();
     this.onSelect.emit(this);
