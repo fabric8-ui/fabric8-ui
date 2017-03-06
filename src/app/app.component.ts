@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import {
   AuthenticationService,
@@ -38,7 +39,9 @@ export class AppComponent implements OnInit {
   constructor(
     auth: AuthenticationService,
     private broadcaster: Broadcaster,
-    private globalSettings: GlobalSettings
+    private globalSettings: GlobalSettings,
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthenticationService
   ) {
     //auth.isLoggedIn();
   }
@@ -60,5 +63,17 @@ export class AppComponent implements OnInit {
           }
         }, 10000);
       });
+
+    this.activatedRoute.params.subscribe(() => {
+      let query = window.location.search.substr(1);
+      let result: any = {};
+      query.split('&').forEach(function (part) {
+        let item: any = part.split('=');
+        result[item[0]] = decodeURIComponent(item[1]);
+      });
+      if(result['token_json']) {
+        this.authService.logIn(result['token_json']);
+      }
+    });
   }
 }
