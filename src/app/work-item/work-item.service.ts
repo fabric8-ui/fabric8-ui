@@ -443,7 +443,8 @@ export class WorkItemService {
       workItem.relationalData.iteration = null;
       return;
     }
-    workItem.relationalData.iteration = this.getIterationById(workItem.relationships.iteration.data.id);
+    this.getIterationById(workItem.relationships.iteration.data.id)
+      .then((iteration) => workItem.relationalData.iteration = iteration);
   }
 
   /**
@@ -478,9 +479,10 @@ export class WorkItemService {
   /**
    * Usage: Fetch an iteration by it's ID from the iterations list
    */
-  getIterationById(iterationId: string): IterationModel {
-    let iterations: IterationModel[] = this.iterationService.iterations;
-    return iterations.filter(item => item.id == iterationId)[0];
+  getIterationById(iterationId: string): Promise<IterationModel> {
+    return this.iterationService.getIterations().then((iterations) => {
+      return iterations.find(item => item.id == iterationId);
+    });
   }
 
   /**
