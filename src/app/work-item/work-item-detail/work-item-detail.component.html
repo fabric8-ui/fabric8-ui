@@ -179,6 +179,31 @@
                 </span>
             </div>
         </div>
+        <!--Area-->
+        <div class="separator col-md-12 col-sm-12 col-xs-12 detail-area-wrap">
+          <span class="pull-left area-label">{{workItem.relationalData.wiType?.attributes?.fields['system.area']?.label}}</span>
+          <div class="pull-left detail-area-name">
+              <span (click)="activeSearchArea()"
+                class="pointer" id="WI_details_area">
+                {{ workItem.relationalData?.area?.attributes.name || "None" }}
+              </span>
+              <div *ngIf="searchArea" class="area-search" >
+                <div class="list-container">
+                  <span class="fa fa-search user-search-icon"> </span>
+                  <input id="areaSearchInput" #areaSearch (keyup)="filterArea($event)" />
+                  <ul class="item-ul no-padding user-list" #areaList>
+                    <li
+                      class="item-li"
+                      *ngFor="let area of areas;"
+                      [attr.data-value]="area.id"
+                      (click)="setArea(area.id)">
+                        <span [innerHTML]="area.attributes.name | almSearchHighlight: areaSearch.value"></span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+          </div>
+        </div>
         <!--Iteration-->
         <div class="col-md-12 col-sm-12 col-xs-12 detail-iteration-wrap">
           <span class="pull-left iteration-label">{{workItem.relationalData.wiType?.attributes?.fields['system.iteration']?.label}}</span>

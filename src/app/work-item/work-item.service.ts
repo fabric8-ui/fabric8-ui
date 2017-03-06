@@ -22,6 +22,8 @@ import {
   Comments,
   CommentPost
 } from '../models/comment';
+import { AreaModel } from '../models/area.model';
+import { AreaService } from '../area/area.service';
 import { IterationModel } from '../models/iteration.model';
 import { IterationService } from '../iteration/iteration.service';
 import { LinkType } from '../models/link-type';
@@ -65,6 +67,7 @@ export class WorkItemService {
   constructor(private http: Http,
     private broadcaster: Broadcaster,
     private logger: Logger,
+    private areaService: AreaService,
     private auth: AuthenticationService,
     private iterationService: IterationService,
     private userService: UserService,
@@ -103,6 +106,7 @@ export class WorkItemService {
             this.resolveUsersForWorkItem(item);
             this.resolveIterationForWorkItem(item);
             this.resolveType(item);
+            this.resolveAreaForWorkItem(item);
           });
           return wItems;
         })
@@ -167,6 +171,7 @@ export class WorkItemService {
             this.resolveUsersForWorkItem(item);
             this.resolveIterationForWorkItem(item);
             this.resolveType(item);
+            this.resolveAreaForWorkItem(item);
           });
           // Update the existing workItem big list with new data
           this.updateWorkItemBigList(wItems);
@@ -221,6 +226,7 @@ export class WorkItemService {
           this.resolveUsersForWorkItem(item);
           this.resolveIterationForWorkItem(item);
           this.resolveType(item);
+          this.resolveAreaForWorkItem(item);
         });
         let newItems = cloneDeep(newWorkItems);
         // Update the existing workItem big list with new data
@@ -275,6 +281,7 @@ export class WorkItemService {
             this.resolveUsersForWorkItem(wItem);
             this.resolveIterationForWorkItem(wItem);
             this.resolveType(wItem);
+            this.resolveAreaForWorkItem(wItem);
             // If this work item matches with current filters
             // it goes to the big list and then we call this function
             // again to treat it as a locally saved item
@@ -457,6 +464,29 @@ export class WorkItemService {
   }
 
   /**
+   * Usage: To resolve the areas in eact WorkItem
+   * For now it resolves assignne and creator
+   */
+  resolveAreaForWorkItem(workItem: WorkItem): void {
+    if (!workItem.hasOwnProperty('relationalData')) {
+      workItem.relationalData = {};
+    }
+    if (!workItem.relationships.hasOwnProperty('area') || !workItem.relationships.area) {
+      workItem.relationalData.area = null;
+      return;
+    }
+    if (!workItem.relationships.area.hasOwnProperty('data')) {
+      workItem.relationalData.area = null;
+      return;
+    }
+    if (!workItem.relationships.area.data) {
+      workItem.relationalData.area = null;
+      return;
+    }
+    workItem.relationalData.area = this.getAreaById(workItem.relationships.area.data.id);
+  }
+
+  /**
    * Usage: Build a ID-User map to dynamically access list of users
    * This method takes the locally saved list of users from User Service
    * Before coming to this method we fetch the list of users using router resolver
@@ -483,6 +513,14 @@ export class WorkItemService {
     } else {
       return null;
     }
+  }
+
+  /**
+   * Usage: Fetch an area by it's ID from the areas list
+   */
+  getAreaById(areaId: string): AreaModel {
+    let areas: AreaModel[] = this.areaService.areas;
+    return areas.filter(item => item.id == areaId)[0];
   }
 
   /**
@@ -803,6 +841,7 @@ export class WorkItemService {
           this.resolveUsersForWorkItem(newWorkItem);
           this.resolveIterationForWorkItem(newWorkItem);
           this.resolveType(newWorkItem);
+          this.resolveAreaForWorkItem(newWorkItem);
           // Add newly added item to the top of the list
           this.workItems.splice(0, 0, newWorkItem);
           // Re-build the ID-index map
@@ -849,6 +888,7 @@ export class WorkItemService {
             this.resolveUsersForWorkItem(this.workItems[updateIndex]);
             this.resolveIterationForWorkItem(this.workItems[updateIndex]);
             this.resolveType(this.workItems[updateIndex]);
+            this.resolveAreaForWorkItem(this.workItems[updateIndex]);
           } else {
             // Remove the item from the list
             this.workItems.splice(updateIndex, 1);

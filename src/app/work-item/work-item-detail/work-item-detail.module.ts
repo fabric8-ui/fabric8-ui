@@ -14,6 +14,7 @@ import {
   WidgetsModule
 } from 'ngx-widgets';
 
+import { AreaService } from '../../area/area.service';
 import { WorkItemDetailComponent } from './work-item-detail.component';
 import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
 import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.component';
@@ -44,6 +45,8 @@ import {
     WorkItemLinkTypeFilterByTypeName
   ],
   exports: [WorkItemDetailComponent],
-  providers: []
+  providers: [
+    AreaService
+  ]
 })
 export class WorkItemDetailModule { }

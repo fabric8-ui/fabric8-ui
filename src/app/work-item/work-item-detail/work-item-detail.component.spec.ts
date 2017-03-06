@@ -42,6 +42,8 @@ import {
   AlmIconModule
 } from 'ngx-widgets';
 
+import { AreaModel } from '../../models/area.model';
+import { AreaService } from '../../area/area.service';
 import { IterationModel } from '../../models/iteration.model';
 import { IterationService } from '../../iteration/iteration.service';
 import { LinkType } from '../../models/link-type';
@@ -381,6 +383,7 @@ describe('Detailed view and edit a selected work item - ', () => {
         DropdownConfig,
         Logger,
         Location,
+        AreaService,
         {
           provide: AuthenticationService,
           useValue: fakeAuthService

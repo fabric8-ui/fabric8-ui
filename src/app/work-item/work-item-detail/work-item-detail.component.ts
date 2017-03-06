@@ -16,8 +16,10 @@ import {
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
 import { Router }                 from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
 import { cloneDeep } from 'lodash';
+import { Space } from 'ngx-fabric8-wit';
 import {
   AuthenticationService,
   Broadcaster,
@@ -26,7 +28,8 @@ import {
   UserService
 } from 'ngx-login-client';
 
-
+import { AreaModel } from '../../models/area.model';
+import { AreaService } from '../../area/area.service';
 import { IterationModel } from '../../models/iteration.model';
 import { IterationService } from '../../iteration/iteration.service';
 
@@ -58,6 +61,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   @ViewChild('userSearch') userSearch: any;
   @ViewChild('userList') userList: any;
   @ViewChild('dropdownButton') dropdownButton: any;
+  @ViewChild('areaSearch') areaSearch: any;
+  @ViewChild('areaList') areaList: any;
   @ViewChild('iterationSearch') iterationSearch: any;
   @ViewChild('iterationList') iterationList: any;
 
@@ -77,6 +82,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   titleText: any = '';
   descText: any = '';
 
+  searchArea: Boolean = false;
   searchAssignee: Boolean = false;
 
   hasIteration: Boolean = false;
@@ -93,12 +99,16 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   panelState: string = 'out';
 
+  areas: AreaModel[] = [];
   iterations: IterationModel[] = [];
 
   renderedDesc: any = '';
   descViewType: any = 'html';
 
+  spaceSubscription: Subscription;
+
   constructor(
+    private areaService: AreaService,
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     private workItemService: WorkItemService,
@@ -114,6 +124,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
     this.listenToEvents();
+    this.getAreas();
     this.getIterations();
     this.loggedIn = this.auth.isLoggedIn();
     this.route.params.forEach((params: Params) => {
@@ -145,6 +156,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
         }
       }
     });
+    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
+      this.getAreas();
+      this.getIterations();
+    });
   }
 
   ngAfterViewInit() {
@@ -169,7 +184,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   loadWorkItem(id: string): void {
     this.workItemService.getWorkItemById(id)
       .then(workItem => {
-        this.closeRestFields();
+        this.closeUserRestFields();
         this.titleText = workItem.attributes['system.title'];
         this.descText = workItem.attributes['system.description'] || '';
         this.renderedDesc = workItem.attributes['system.description.rendered'];
@@ -257,7 +272,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       if (this.descEditable) {
         this.onUpdateDescription();
       }
-      this.closeRestFields();
+      this.closeUserRestFields();
       this.headerEditable = true;
       setTimeout(() => {
         if (this.headerEditable) {
@@ -272,7 +287,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       if (this.headerEditable) {
         this.onUpdateTitle();
       }
-      this.closeRestFields();
+      this.closeUserRestFields();
       this.descEditable = true;
       this.descViewType = 'markdown';
       setTimeout(() => {
@@ -287,6 +302,14 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     this.description.nativeElement.innerHTML = this.workItem.attributes['system.description.rendered'];
     this.showHtml(this.descText);
     this.descEditable = false;
+  }
+
+  getAreas() {
+    this.areaService.getAreas()
+      .then((response: AreaModel[]) => {
+        this.areas = response;
+        console.log(this.areas);
+      });
   }
 
   getIterations() {
@@ -395,7 +418,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   activeSearchAssignee() {
     if (this.loggedIn) {
-      this.closeRestFields();
+      this.closeUserRestFields();
       this.filteredUsers = this.users.length ? this.users : null;
       this.searchAssignee = true;
       // Takes a while to render the component
@@ -408,7 +431,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   }
 
   deactiveSearchAssignee() {
-    this.closeRestFields();
+    this.closeUserRestFields();
   }
 
   filterUser(event: any) {
@@ -488,7 +511,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     this.searchAssignee = false;
   }
 
-  closeRestFields(): void {
+  closeUserRestFields(): void {
     this.searchAssignee = false;
     this.searchIteration = false;
     this.headerEditable = false;
@@ -534,7 +557,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   activeSearchIteration() {
     if (this.loggedIn) {
-      this.closeRestFields();
+      this.closeUserRestFields();
       this.searchIteration = true;
       // Takes a while to render the component
       setTimeout(() => {
@@ -546,7 +569,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   }
 
   deactiveSearchIteration() {
-    this.closeRestFields();
+    this.closeUserRestFields();
   }
 
   filterIteration(event: any) {
@@ -601,6 +624,93 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     }
   }
 
+  //set an area
+  setArea(areaId: any): void {
+    this.workItem.relationships.area = {
+      data: {
+        id: areaId,
+        type: 'area'
+      }
+    };
+    this.workItemService.resolveAreaForWorkItem(this.workItem);
+    this.save();
+    this.searchArea = false;
+  }
+
+  activeSearchArea() {
+    //close the assignees
+    this.closeUserRestFields();
+    if (this.loggedIn) {
+      this.searchArea = true;
+      // Takes a while to render the component
+      setTimeout(() => {
+        if (this.areaSearch) {
+          this.areaSearch.nativeElement.focus();
+        }
+      }, 50);
+    }
+  }
+
+  deactiveSearchArea() {
+    this.closeAreaRestFields();
+  }
+
+  closeAreaRestFields(): void {
+    this.searchArea = false;
+  }
+
+  filterArea(event: any) {
+    // Down arrow or up arrow
+    if (event.keyCode == 40 || event.keyCode == 38) {
+      let lis = this.areaList.nativeElement.children;
+      let i = 0;
+      for (; i < lis.length; i++) {
+        if (lis[i].classList.contains('selected')) {
+          break;
+        }
+      }
+      if (i == lis.length) { // No existing selected
+        if (event.keyCode == 40) { // Down arrow
+          lis[0].classList.add('selected');
+          lis[0].scrollIntoView(false);
+        } else { // Up arrow
+          lis[lis.length - 1].classList.add('selected');
+          lis[lis.length - 1].scrollIntoView(false);
+        }
+      } else { // Existing selected
+        lis[i].classList.remove('selected');
+        if (event.keyCode == 40) { // Down arrow
+          lis[(i + 1) % lis.length].classList.add('selected');
+          lis[(i + 1) % lis.length].scrollIntoView(false);
+        } else { // Down arrow
+          // In javascript mod gives exact mod for negative value
+          // For example, -1 % 6 = -1 but I need, -1 % 6 = 5
+          // To get the round positive value I am adding the divisor
+          // with the negative dividend
+          lis[(((i - 1) % lis.length) + lis.length) % lis.length].classList.add('selected');
+          lis[(((i - 1) % lis.length) + lis.length) % lis.length].scrollIntoView(false);
+        }
+      }
+    } else if (event.keyCode == 13) { // Enter key event
+      let lis = this.areaList.nativeElement.children;
+      let i = 0;
+      for (; i < lis.length; i++) {
+        if (lis[i].classList.contains('selected')) {
+          break;
+        }
+      }
+      if (i < lis.length) {
+        let selectedId = lis[i].dataset.value;
+        this.setArea(selectedId);
+      }
+    } else {
+      let inp = this.areaSearch.nativeElement.value.trim();
+      // this.filteredUsers = this.users.filter((item) => {
+      //   return item.attributes.fullName.toLowerCase().indexOf(inp.toLowerCase()) > -1;
+      // });
+    }
+  }
+
   showHtml(innerText: string): void {
     this.workItemService.renderMarkDown(innerText)
       .then(renderedHtml => {
@@ -625,7 +735,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
         this.closeHeader();
       } else if (this.searchAssignee) {
         this.searchAssignee = false;
-      } else {
+      } else if (this.searchArea) {
+        this.closeAreaRestFields();
+    } else {
         this.closeDetails();
       }
     }
