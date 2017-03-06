@@ -110,7 +110,7 @@ body
   }
 }
 // create 12 flex grow partitions
-@include flex-grow-x;
+@include flex-grow-x(12);
 
 
 .flex-container
@@ -204,6 +204,9 @@ footer
 }
 
 // helps to ensure that scrolling does not cross app footer or header
+// the reason for not using flex is that view will not always be a flex-container
+// This plays out in scenarios where view requires animation like slide ins/slie outs
+// These are not good for flex
 .view-container
 {
   position:relative;
@@ -219,15 +222,13 @@ footer
       padding:$content-padding;
       overflow: auto;
     }
+    >.view-content
+    {
+      position:relative;
+      padding-top:$content-padding;
+    }
   }
 }
-
-// pf overrides
-// $color-pf-white;
-// $color-pf-blue-300
-// $font-size-small
-// font-size: em(18);
-
 
 .dropdown {
   a:hover {
@@ -328,6 +329,8 @@ $wizard-padding:$grid-gutter-width/2;
     }
   }
 }
+
+
 
 
 

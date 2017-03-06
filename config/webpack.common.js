@@ -1,8 +1,8 @@
 /**
  * Adapted from angular2-webpack-starter
  */
-
-const helpers = require('./helpers'),
+const path = require('path'),
+  helpers = require('./helpers'),
   webpack = require('webpack'),
   CleanWebpackPlugin = require('clean-webpack-plugin');
 // const stringify = require('json-stringify');
@@ -29,6 +29,33 @@ const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 // const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 
+const sassModules = [
+  {
+    name: 'bootstrap'
+  }, {
+    name: 'font-awesome',
+    module: 'font-awesome',
+    path: 'font-awesome',
+    sass: 'scss'
+  }, {
+    name: 'patternfly',
+    module: 'patternfly-sass-with-css'
+  }
+];
+
+sassModules.forEach(val => {
+  val.module = val.module || val.name + '-sass';
+  val.path = val.path || path.join(val.module, 'assets');
+  val.modulePath = val.modulePath || path.join('node_modules', val.path);
+  val.sass = val.sass || path.join('stylesheets');
+  val.sassPath = path.join(helpers.root(), val.modulePath, val.sass);
+});
+
+// ExtractTextPlugin
+const extractCSS = new ExtractTextPlugin({
+  filename: '[name].[id].css',
+  allChunks: true
+});
 
 module.exports = {
   devtool: 'inline-source-map',
@@ -64,27 +91,65 @@ module.exports = {
           }
         ],
         exclude: [/\.spec\.ts$/]
+      },{
+        test: /\.css$/,
+        loader: extractCSS.extract({
+          fallback: "style-loader",
+          use: "css-loader?sourceMap&context=/"
+        })
+      }, {
+        test: /\.scss$/,
+        loaders: [
+          {
+            loader: 'css-to-string-loader'
+          }, {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+              context: '/'
+            }
+          }, {
+            loader: 'sass-loader',
+            options: {
+              includePaths: sassModules.map(val => {
+                return val.sassPath;
+              }),
+              sourceMap: true
+            }
+          }
+        ]
       },
-      // copy those assets to output
+
+      /* File loader for supporting fonts, for example, in CSS files.
+       */
       {
-        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: ['file-loader?name=fonts/[name].[hash].[ext]?']
+        test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
+        loaders: [
+          {
+            loader: "url-loader",
+            query: {
+              limit: 3000,
+              name: 'assets/fonts/[name].[ext]'
+            }
+          }
+        ]
+      }, {
+        test: /\.jpg$|\.png$|\.gif$|\.jpeg$/,
+        loaders: [
+          {
+            loader: "url-loader",
+            query: {
+              limit: 3000,
+              name: 'assets/fonts/[name].[ext]'
+            }
+          }
+        ]
       },
 
       // Support for *.json files.
       {
         test: /\.json$/,
         use: ['json-loader']
-      },
-
-      {
-        test: /\.css$/,
-        use: ['to-string-loader', 'css-loader']
-      },
-
-      {
-        test: /\.scss$/,
-        use: ["css-to-string-loader", "css-loader", "sass-loader"]
       },
 
       // todo: change the loader to something that adds a hash to images
@@ -189,6 +254,7 @@ module.exports = {
       root: helpers.root(),
       verbose: false,
       dry: false
-    })
+    }),
+    extractCSS
   ]
 };

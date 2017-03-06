@@ -1,5 +1,6 @@
 const helpers = require('./helpers');
 const webpack = require('webpack');
+const path = require('path');
 
 /**
  * Webpack Plugins
@@ -16,8 +17,33 @@ const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin;
 
-const extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
-const extractSASS = new ExtractTextPlugin('stylesheets/[name].scss');
+const sassModules = [
+  {
+    name: 'bootstrap'
+  }, {
+    name: 'font-awesome',
+    module: 'font-awesome',
+    path: 'font-awesome',
+    sass: 'scss'
+  }, {
+    name: 'patternfly',
+    module: 'patternfly-sass-with-css'
+  }
+];
+
+sassModules.forEach(val => {
+  val.module = val.module || val.name + '-sass';
+  val.path = val.path || path.join(val.module, 'assets');
+  val.modulePath = val.modulePath || path.join('node_modules', val.path);
+  val.sass = val.sass || path.join('stylesheets');
+  val.sassPath = path.join(helpers.root(), val.modulePath, val.sass);
+});
+
+// ExtractTextPlugin
+const extractCSS = new ExtractTextPlugin({
+  filename: '[name].[id].css',
+  allChunks: true
+});
 
 module.exports = {
   devServer: {
@@ -56,19 +82,59 @@ module.exports = {
       {
         test: /\.html$/,
         loader: 'html-loader'
-      },
-      {
+      }, {
         test: /\.css$/,
-        loaders: ['to-string-loader', 'css-loader']
-      },
-      {
+        loader: extractCSS.extract({
+          fallback: "style-loader",
+          use: "css-loader?sourceMap&context=/"
+        })
+      }, {
         test: /\.scss$/,
-        loaders: ["css-to-string-loader", "css-loader", "sass-loader"]
+        loaders: [
+          {
+            loader: 'css-to-string-loader'
+          }, {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+              context: '/'
+            }
+          }, {
+            loader: 'sass-loader',
+            options: {
+              includePaths: sassModules.map(val => {
+                return val.sassPath;
+              }),
+              sourceMap: true
+            }
+          }
+        ]
       },
-      /* File loader for supporting images, for example, in CSS files. */
+
+      /* File loader for supporting fonts, for example, in CSS files.
+       */
       {
-        test: /\.(jpg|png|gif)$/,
-        loader: 'file-loader'
+        test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
+        loaders: [
+          {
+            loader: "url-loader",
+            query: {
+              limit: 3000,
+              name: 'assets/fonts/[name].[ext]'
+            }
+          }
+        ]
+      }, {
+        test: /\.jpg$|\.png$|\.gif$|\.jpeg$/,
+        loaders: [
+          {
+            loader: "url-loader",
+            query: {
+              limit: 3000,
+              name: 'assets/fonts/[name].[ext]'
+            }
+          }
+        ]
       },
     ]
   },
@@ -83,8 +149,6 @@ module.exports = {
 
   plugins: [
     extractCSS,
-    extractSASS,
-
     /*
      * Plugin: CommonsChunkPlugin
      * Description: Shares common code between the pages.

@@ -20,6 +20,30 @@ const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
  */
 const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
 const API_URL = process.env.API_URL || (ENV==='inmemory'?'app/':'http://localhost:8080/api/');
+const FABRIC8_WIT_API_URL = process.env.FABRIC8_WIT_API_URL;
+const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL || 'http://api-bayesian.dev.rdu2c.fabric8.io/api/v1/';
+
+const sassModules = [
+  {
+    name: 'bootstrap'
+  }, {
+    name: 'font-awesome',
+    module: 'font-awesome',
+    path: 'font-awesome',
+    sass: 'scss'
+  }, {
+    name: 'patternfly',
+    module: 'patternfly-sass-with-css'
+  }
+];
+
+sassModules.forEach(val => {
+  val.module = val.module || val.name + '-sass';
+  val.path = val.path || path.join(val.module, 'assets');
+  val.modulePath = val.modulePath || path.join('node_modules', val.path);
+  val.sass = val.sass || path.join('stylesheets');
+  val.sassPath = path.join(helpers.root(), val.modulePath, val.sass);
+});
 
 /**
  * Webpack configuration
@@ -120,20 +144,66 @@ module.exports = function (options) {
           exclude: [helpers.root('src/index.html')]
         },
 
-        /**
-         * Raw loader support for *.css files
+        /*
+         * to string and css loader support for *.css files
          * Returns file content as string
          *
-         * See: https://github.com/webpack/raw-loader
          */
         {
           test: /\.css$/,
-          use: ['to-string-loader', 'css-loader']
+          loaders: [
+            { loader: "css-to-string-loader" },
+            {
+              loader: "style-loader"
+            },
+            {
+              loader: "css-loader"
+            },
+          ],
         },
 
         {
           test: /\.scss$/,
-          use: ["css-to-string-loader", "css-loader", "sass-loader"]
+          loaders: [
+            {
+              loader: 'css-to-string'
+            }, {
+              loader: 'css-loader'
+            }, {
+              loader: 'sass-loader',
+              query: {
+                includePaths: sassModules.map(val => {
+                  return val.sassPath;
+                })
+              }
+            }
+          ]
+        },
+
+        /* File loader for supporting fonts, for example, in CSS files.
+         */
+        {
+          test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
+          loaders: [
+            {
+              loader: "url-loader",
+              query: {
+                limit: 3000,
+                name: 'vendor/fonts/[name].[hash].[ext]'
+              }
+            }
+          ]
+        }, {
+          test: /\.jpg$|\.png$|\.gif$|\.jpeg$/,
+          loaders: [
+            {
+              loader: "url-loader",
+              query: {
+                limit: 3000,
+                name: 'vendor/images/[name].[hash].[ext]'
+              }
+            }
+          ]
         },
         /**
          * Raw loader support for *.html
