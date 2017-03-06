@@ -7,7 +7,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     position: absolute;
-    top: 0;
+    top: em(53);
     right: 0;
     bottom: 0;
     left: 0;
@@ -57,7 +57,6 @@
           text-align: $textCenter;
           flex: 0 0 auto;
           width: $width100;
-          z-index: 2;
           background: $color-pf-black-200;
           padding: em(7) 0 em(3) 0;
           .issueCount {
