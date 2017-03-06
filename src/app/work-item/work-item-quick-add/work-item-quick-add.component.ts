@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Logger, Broadcaster } from 'ngx-login-client';
+import { Logger, Broadcaster, AuthenticationService } from 'ngx-login-client';
 
 import { WorkItem, WorkItemAttributes, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
@@ -47,12 +47,13 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     private workItemService: WorkItemService,
     private broadcaster: Broadcaster,
     private logger: Logger,
-    private renderer: Renderer) {}
+    private renderer: Renderer,
+    private auth: AuthenticationService) {}
 
   ngOnInit(): void {
     this.createWorkItemObj();
     this.showQuickAdd = false;
-    this.showQuickAddBtn = false;
+    this.showQuickAddBtn = this.auth.isLoggedIn();
     this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
       if (space) {
         console.log('[WorkItemQuickAddComponent] New Space selected: ' + space.attributes.name);

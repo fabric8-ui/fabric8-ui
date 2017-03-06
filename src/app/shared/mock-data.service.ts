@@ -350,6 +350,10 @@ export class MockDataService {
     return this.schemaMockGenerator.getWorkItemTypes();
   }
 
+  public getWorkItemTypeById(id: string): any {
+    return this.schemaMockGenerator.getWorkItemTypeById(id);
+  }
+
   public getWorkItemLinkTypes(): any {
     return this.schemaMockGenerator.getWorkItemLinkTypes();
   }

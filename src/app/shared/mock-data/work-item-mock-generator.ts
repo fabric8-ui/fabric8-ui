@@ -149,7 +149,7 @@ export class WorkItemMockGenerator {
           'assignees': { },
           'baseType': {
             'data': {
-              'id': 'planneritem',
+              'id': '86af5178-9b41-469b-9096-57e5155c3f31',
               'type': 'workitemtypes'
             }
           },

@@ -71,6 +71,10 @@ export class MockHttp extends Http {
         result['extraPath'] = result.path.replace(/^\/workitemlinks\//, '');
         result['path'] = '/workitemlinks';
       }
+      if (result.path.indexOf('/workitemtypes/') == 0) {
+        result['extraPath'] = result.path.replace(/^\/workitemtypes\//, '');
+        result['path'] = '/workitemtypes';
+      }
       // if request hat a /space prefix, note the space id, the re-parse the extra path
       if (result.path.indexOf('/spaces/') == 0) {
         console.log('Space prefix detected, reparsing url..');
@@ -171,7 +175,11 @@ export class MockHttp extends Http {
       // add new paths here
       switch (path.path) {
         case '/workitemtypes':
-          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItemTypes() } );
+          if (path.extraPath) {
+            return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItemTypeById(path.extraPath) } );
+          } else {
+            return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItemTypes() } );
+          }
         case '/workitems':
           if (path.extraPath) {
             return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemOrEntity(path.extraPath) );

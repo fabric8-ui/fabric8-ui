@@ -103,7 +103,7 @@ export class SchemaMockGenerator {
   /*
    * Creates the work item types structure.
    */
-  public getWorkItemTypes() {
+  public getWorkItemTypes(): any[] {
     if (this.workItemTypes)
       return this.workItemTypes;
     else {
@@ -704,6 +704,12 @@ export class SchemaMockGenerator {
       ];
       return this.workItemTypes;
     }
+  }
+
+  public getWorkItemTypeById(id) {
+    let allWorkItemTypes = this.getWorkItemTypes();
+    let item = allWorkItemTypes.find((item) => item.id === id);
+    return item ? item : allWorkItemTypes[0];
   }
 
   public renderText(text: string) {

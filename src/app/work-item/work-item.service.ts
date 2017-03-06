@@ -597,12 +597,20 @@ export class WorkItemService {
       } else {
         let workItemTypeUrl = this.baseApiUrl + 'workitemtypes/' + id;
         return this.http.get(workItemTypeUrl)
-          .map((response) => {
+          .toPromise()
+          .then((response) => {
             workItemType = response.json().data as WorkItemType;
             this.workItemTypes.push(workItemType);
             return workItemType;
-          })
-          .toPromise();
+          });
+        // FIXME: Use observavble instead promise
+        // Can't use observable now, because the mock will not support that
+        // .map((response) => {
+        //   workItemType = response.json().data as WorkItemType;
+        //   this.workItemTypes.push(workItemType);
+        //   return workItemType;
+        // })
+        // .toPromise();
       }
     } else {
       return Promise.resolve<WorkItemType>( {} as WorkItemType );
