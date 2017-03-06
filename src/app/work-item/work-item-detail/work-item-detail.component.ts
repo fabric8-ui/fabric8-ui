@@ -63,8 +63,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   workItem: WorkItem;
   workItemTypes: WorkItemType[];
-  // TODO: These should be read from the WorkitemType of the given Workitem
-  workItemStates: Object[];
 
   showDialog: boolean = false;
 
@@ -116,7 +114,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
     this.listenToEvents();
-    this.getWorkItemTypesandStates();
     this.getIterations();
     this.loggedIn = this.auth.isLoggedIn();
     this.route.params.forEach((params: Params) => {
@@ -291,19 +288,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     this.workItem.attributes['system.description'];
     this.showHtml(this.workItem.attributes['system.description']);
     this.descEditable = false;
-  }
-
-  getWorkItemTypesandStates(): void {
-    this.workItemService.getWorkItemTypes()
-      .then((types) => {
-        this.workItemTypes = types;
-      })
-      .then(() => {
-        this.workItemService.getStatusOptions()
-          .then((options) => {
-            this.workItemStates = options;
-        });
-      });
   }
 
   getIterations() {
