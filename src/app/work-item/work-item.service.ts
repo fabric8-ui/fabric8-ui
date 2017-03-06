@@ -591,7 +591,7 @@ export class WorkItemService {
 
   getWorkItemTypesById(id: string): Promise<WorkItemType> {
     if (this._currentSpace) {
-      let workItemType = this.workItemTypes.find((type) => type.id === id);
+      let workItemType = this.workItemTypes ? this.workItemTypes.find((type) => type.id === id) : null;
       if (workItemType) {
         return Promise.resolve(workItemType);
       } else {
@@ -600,7 +600,14 @@ export class WorkItemService {
           .toPromise()
           .then((response) => {
             workItemType = response.json().data as WorkItemType;
-            this.workItemTypes.push(workItemType);
+            if (this.workItemTypes) {
+              let existingType = this.workItemTypes.find((type) => type.id === workItemType.id);
+              if (existingType) {
+                existingType = workItemType;
+              } else {
+                this.workItemTypes.push(workItemType);
+              }
+            }
             return workItemType;
           });
         // FIXME: Use observavble instead promise
