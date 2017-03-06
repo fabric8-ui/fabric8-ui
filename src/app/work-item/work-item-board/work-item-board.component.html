@@ -13,7 +13,7 @@
             <!-- board columns -->
             <div class="board-lane" *ngFor='let lane of lanes'>
 
-              <section class="flex-container in-column-direction board-lane-column">
+              <section class="flex-container in-column-direction board-lane-column" [attr.data-state]="lane.option">
                 <div class="lane-header">
                   <span class="dib">{{lane.option}}</span>
                   <span class="issueCount dib" >{{workItems | almFilterBoardList:lane.option | arrayCount}}</span>
@@ -31,13 +31,13 @@
                   </div>
                   <div [dragula]='"first-bag"' class="card-wrapper">
                     <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of workItems | almFilterBoardList:lane.option' (click)="gotoDetail(item)" (mousedown)="foo(item)">
-                      <div>
-                        <div class="pull-left">
+                      <div class="row-wrapper">
+                        <div class="">
                           <span class="wi-type-icon" almIcon [iconType]="item.relationships?.baseType?.data?.id"></span>
                         </div>
-                        <span class="pull-left"> {{item.id}} </span>
+                        <span class=""> {{item.id}} </span>
                         <span dropdown>
-                        <button class="pull-right btn btn-link color-grey" type="button" dropdownToggle>
+                        <button class="btn btn-link color-grey" type="button" dropdownToggle>
                           <span class="fa fa-ellipsis-v"></span>
                         </button>
                         <ul class="dropdown-menu-right" dropdownMenu>
@@ -50,15 +50,15 @@
                         </ul>
                         </span>
                       </div>
-                      <div>
+                      <div class="row-wrapper">
                         <div class="col-md-10 col-sm-10 col-xs-9">
                           <p class="multiline-truncation">{{ item.attributes['system.title'] }}</p>
                         </div>
-                        <div class="col-md-2 col-sm-2 col-xs-3 user-avatar pull-right">
+                        <div class="col-md-2 col-sm-2 col-xs-3 user-avatar">
                           <img *ngIf="item.relationalData?.assignees?.length"
                             src="{{item.relationalData?.assignees[0]?.attributes.imageURL + '&s=20'}}"
                             onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
-                          <span *ngIf="!item.relationalData?.assignees?.length" class="fa fa-user not-assigned-user-icon pull-right"></span>
+                          <span *ngIf="!item.relationalData?.assignees?.length" class="fa fa-user not-assigned-user-icon"></span>
                         </div>
                       </div>
                     </div>

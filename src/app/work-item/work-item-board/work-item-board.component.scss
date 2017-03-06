@@ -206,6 +206,7 @@
       }
     }
   }
+}
 .active-lane {
   border: 2px solid $color-pf-blue-300!important;
 }
@@ -216,4 +217,8 @@
 
 .user-avatar {
   @include user-avatar;
+}
+
+.gu-mirror {
+  padding: em(15);
 }

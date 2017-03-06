@@ -21,6 +21,14 @@
     user-select: none!important;
 }
 .gu-transit {
-    opacity: .2;
-    background-color: $color-pf-black-400;
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: $color-pf-black-400;
+    }
 }

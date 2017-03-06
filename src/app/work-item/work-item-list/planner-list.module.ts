@@ -2,7 +2,7 @@ import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
 
-import { DndModule } from 'ng2-dnd';
+
 import { DropdownModule, TooltipModule } from 'ng2-bootstrap';
 import { ModalModule } from 'ngx-modal';
 import { TreeModule } from 'angular2-tree-component';
@@ -34,7 +34,6 @@ import { WorkItemService } from '../work-item.service';
     AlmIconModule,
     CommonModule,
     DialogModule,
-    DndModule.forRoot(),
     DropdownModule,
     HttpModule,
     InfiniteScrollModule,
