@@ -96,7 +96,7 @@
           </div>
         </div>
         <div class="separator col-md-12 col-sm-12 col-xs-12 detail-assignee-wrap">
-            <span class="pull-left user-label">Assignee</span>
+            <span class="pull-left user-label">{{workItem.relationalData.wiType?.attributes?.fields['system.assignees']?.label}}</span>
             <span
               *ngIf="!workItem.relationalData?.assignees?.length"
               (click)="activeSearchAssignee()"
@@ -163,7 +163,7 @@
         <!--Creator-->
         <div
           class="width100 pull-left paddingL20 paddingR20 common-wrap">
-          <span class="pull-left user-label" id="creator_label">Creator</span>
+          <span class="pull-left user-label" id="creator_label">{{workItem.relationalData.wiType?.attributes?.fields['system.creator']?.label}}</span>
             <span *ngIf="!workItem.relationalData?.creator"
               class="pull-left fa pficon-user user-creator-icon" id="user_creator_icon">
             </span>
@@ -181,7 +181,7 @@
         </div>
         <!--Iteration-->
         <div class="col-md-12 col-sm-12 col-xs-12 detail-iteration-wrap">
-          <span class="pull-left iteration-label">Iteration</span>
+          <span class="pull-left iteration-label">{{workItem.relationalData.wiType?.attributes?.fields['system.iteration']?.label}}</span>
           <div class="pull-left detail-iteration-name">
             <span *ngIf="!searchIteration" (click)="lookupIterations()" class="pointer">
               {{ workItem.relationalData?.iteration?.attributes.name || "None" }}
