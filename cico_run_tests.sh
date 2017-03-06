@@ -28,7 +28,7 @@ service docker start
 # Build builder image
 cp /tmp/jenkins-env .
 docker build -t fabric8-planner-builder -f Dockerfile.builder .
-mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder -e "API_URL=http://api.prod-preview.openshift.io/api/" -t -v $(pwd)/dist:/dist:Z fabric8-planner-builder
+mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder -e "API_URL=http://api.prod-preview.openshift.io/api/" -e "CI=true" -t -v $(pwd)/dist:/dist:Z fabric8-planner-builder
 
 # Build fabric8-planner
 docker exec fabric8-planner-builder npm install

@@ -40,7 +40,7 @@ module.exports = function (config) {
     // Possible values - 'progress'
     reporters: ['kjhtml', 'coverage', 'mocha'],
     port: 9876,
-    colors: true,
+    colors: !process.env.CI,
     logLevel: config.LOG_INFO,
     autoWatch: false,
     browsers: ['PhantomJS_custom'],
