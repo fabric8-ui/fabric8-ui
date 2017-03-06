@@ -1,13 +1,12 @@
-import { ToolbarPanelModule } from './../../toolbar-panel/toolbar-panel.module';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
 
+import { DndModule } from 'ng2-dnd';
+import { DropdownModule } from 'ng2-bootstrap';
+import { ModalModule } from 'ngx-modal';
 import { TreeModule } from 'angular2-tree-component';
 import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
-import { DndModule } from 'ng2-dnd';
-import { ModalModule } from 'ngx-modal';
-import { DropdownModule } from 'ng2-bootstrap';
 import {
   AlmIconModule,
   DialogModule,
@@ -15,19 +14,19 @@ import {
   TreeListModule,
   WidgetsModule
 } from 'ngx-widgets';
-
 import { UserService } from 'ngx-login-client';
 
-import { GlobalSettings } from '../../shared/globals';
-import { IterationModule } from '../../iteration/iteration.module';
-import { SidepanelModule } from '../../side-panel/side-panel.module';
 import { AuthUserResolve, UsersResolve } from '../common.resolver';
 import { FabPlannerAssociateIterationModalComponent } from '../work-item-iteration-association-modal/work-item-iteration-association-modal.component';
-import { WorkItemQuickAddModule }                     from '../work-item-quick-add/work-item-quick-add.module';
-import { WorkItemListComponent } from './work-item-list.component';
+import { GlobalSettings } from '../../shared/globals';
+import { IterationModule } from '../../iteration/iteration.module';
 import { PlannerListRoutingModule } from './planner-list-routing.module';
-import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
+import { SidepanelModule } from '../../side-panel/side-panel.module';
+import { ToolbarPanelModule } from '../../toolbar-panel/toolbar-panel.module';
 import { WorkItemDetailModule } from '../work-item-detail/work-item-detail.module';
+import { WorkItemListComponent } from './work-item-list.component';
+import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
+import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
 import { WorkItemService } from '../work-item.service';
 
 @NgModule({
@@ -52,9 +51,9 @@ import { WorkItemService } from '../work-item.service';
     WorkItemQuickAddModule
   ],
   declarations: [
+    FabPlannerAssociateIterationModalComponent,
     WorkItemListComponent,
-    WorkItemListEntryComponent,
-    FabPlannerAssociateIterationModalComponent
+    WorkItemListEntryComponent
   ],
   providers: [
     AuthUserResolve,

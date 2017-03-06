@@ -14,7 +14,7 @@ import { WorkItemService } from '../work-item.service';
 
 @Component({
   host: {
-     'class': 'flex-container in-column-direction flex-grow-1'
+     'class': 'app-component flex-container in-column-direction flex-grow-1'
   },
   selector: 'alm-board',
   templateUrl: './work-item-board.component.html',
