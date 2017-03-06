@@ -19,7 +19,8 @@ export class WorkItem {
 
 export class WorkItemAttributes {
   'system.created_at': string;
-  'system.description': string;
+  'system.description': any;
+  'system.description.rendered': string;
   'system.remote_item_id': string;
   'system.state': string;
   'system.title': string;

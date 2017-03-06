@@ -172,7 +172,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
         this.closeRestFields();
         this.titleText = workItem.attributes['system.title'];
         this.descText = workItem.attributes['system.description'] || '';
-        this.showHtml(this.descText);
+        this.renderedDesc = workItem.attributes['system.description.rendered'];
         this.workItem = workItem;
         // fetch the list of user
         // after getting the Workitem
@@ -284,9 +284,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   }
 
   closeDescription(): void {
-    this.description.nativeElement.innerHTML =
-    this.workItem.attributes['system.description'];
-    this.showHtml(this.workItem.attributes['system.description']);
+    this.description.nativeElement.innerHTML = this.workItem.attributes['system.description.rendered'];
+    this.showHtml(this.descText);
     this.descEditable = false;
   }
 
@@ -329,8 +328,11 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   }
 
   onUpdateDescription(): void {
-    this.workItem.attributes['system.description'] = this.descText.trim();
-    this.showHtml(this.workItem.attributes['system.description']);
+    this.workItem.attributes['system.description'] = {
+      markup: 'Markdown',
+      content: this.descText.trim()
+    };
+    this.showHtml(this.descText.trim());
     this.save();
     this.closeDescription();
   }
@@ -600,7 +602,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   }
 
   showHtml(innerText: string): void {
-    // console.log(innerText);
     this.workItemService.renderMarkDown(innerText)
       .then(renderedHtml => {
         this.renderedDesc = renderedHtml;

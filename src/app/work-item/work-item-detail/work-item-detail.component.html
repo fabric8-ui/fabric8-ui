@@ -249,8 +249,10 @@
               </div>
             </div>
           </div>
-          <div id="wi-detail-desc" class="col-md-12 description" *ngIf="!loggedIn">
-            {{workItem.attributes['system.description']}}
+          <div id="wi-detail-desc"
+            class="col-md-12 description"
+            *ngIf="!loggedIn"
+            [innerHTML]="renderedDesc">
           </div>
         </div>
         <div *ngIf="loggedIn && descEditable" class="col-md-12 col-sm-12 col-xs-12 detail-desc-action">
