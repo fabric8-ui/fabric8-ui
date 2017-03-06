@@ -6,7 +6,14 @@ import {
 
 import { FormsModule }  from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { DropdownConfig, DropdownModule } from 'ng2-bootstrap';
+import {
+  ComponentLoaderFactory,
+  DropdownConfig,
+  DropdownModule,
+  PositioningService,
+  TooltipConfig,
+  TooltipModule
+} from 'ng2-bootstrap';
 
 import { Filter } from './filter';
 import { FilterComponent } from './filter.component';
@@ -87,9 +94,9 @@ describe('Filter component - ', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, DropdownModule],
+      imports: [FormsModule, DropdownModule, TooltipModule],
       declarations: [FilterComponent, FilterFieldsComponent, FilterResultsComponent],
-      providers: [DropdownConfig]
+      providers: [ComponentLoaderFactory, DropdownConfig, PositioningService, TooltipConfig]
     })
       .compileComponents()
       .then(() => {

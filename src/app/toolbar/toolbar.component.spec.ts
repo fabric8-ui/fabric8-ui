@@ -6,7 +6,14 @@ import {
 
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { DropdownConfig, DropdownModule } from 'ng2-bootstrap';
+import {
+  ComponentLoaderFactory,
+  DropdownConfig,
+  DropdownModule,
+  PositioningService,
+  TooltipConfig,
+  TooltipModule
+} from 'ng2-bootstrap';
 
 import { Action } from '../config/action';
 import { ActionsConfig } from '../config/actions-config';
@@ -191,9 +198,9 @@ describe('Toolbar component - ', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, DropdownModule],
+      imports: [FormsModule, DropdownModule, TooltipModule],
       declarations: [ToolbarComponent, FilterFieldsComponent, FilterResultsComponent, SortComponent],
-      providers: [DropdownConfig]
+      providers: [ComponentLoaderFactory, DropdownConfig, PositioningService, TooltipConfig]
     })
         .compileComponents()
         .then(() => {
