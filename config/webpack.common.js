@@ -4,6 +4,7 @@
 const path = require('path'),
   helpers = require('./helpers'),
   webpack = require('webpack'),
+  sass = require('./sass'),
   CleanWebpackPlugin = require('clean-webpack-plugin');
 // const stringify = require('json-stringify');
 
@@ -28,28 +29,6 @@ const OptimizeJsPlugin = require('optimize-js-plugin');
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 // const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
-
-const sassModules = [
-  {
-    name: 'bootstrap'
-  }, {
-    name: 'font-awesome',
-    module: 'font-awesome',
-    path: 'font-awesome',
-    sass: 'scss'
-  }, {
-    name: 'patternfly',
-    module: 'patternfly-sass-with-css'
-  }
-];
-
-sassModules.forEach(val => {
-  val.module = val.module || val.name + '-sass';
-  val.path = val.path || path.join(val.module, 'assets');
-  val.modulePath = val.modulePath || path.join('node_modules', val.path);
-  val.sass = val.sass || path.join('stylesheets');
-  val.sassPath = path.join(helpers.root(), val.modulePath, val.sass);
-});
 
 // ExtractTextPlugin
 const extractCSS = new ExtractTextPlugin({
@@ -101,7 +80,7 @@ module.exports = {
         test: /\.scss$/,
         loaders: [
           {
-            loader: 'css-to-string-loader'
+            loader: 'to-string-loader'
           }, {
             loader: 'css-loader',
             options: {
@@ -111,7 +90,7 @@ module.exports = {
           }, {
             loader: 'sass-loader',
             options: {
-              includePaths: sassModules.map(val => {
+              includePaths: sass.modules.map(val => {
                 return val.sassPath;
               }),
               sourceMap: true

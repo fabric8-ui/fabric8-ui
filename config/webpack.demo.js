@@ -1,6 +1,7 @@
 const helpers = require('./helpers');
 const webpack = require('webpack');
 const path = require('path');
+const sass = require('./sass');
 
 /**
  * Webpack Plugins
@@ -16,28 +17,6 @@ const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplaceme
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin;
-
-const sassModules = [
-  {
-    name: 'bootstrap'
-  }, {
-    name: 'font-awesome',
-    module: 'font-awesome',
-    path: 'font-awesome',
-    sass: 'scss'
-  }, {
-    name: 'patternfly',
-    module: 'patternfly-sass-with-css'
-  }
-];
-
-sassModules.forEach(val => {
-  val.module = val.module || val.name + '-sass';
-  val.path = val.path || path.join(val.module, 'assets');
-  val.modulePath = val.modulePath || path.join('node_modules', val.path);
-  val.sass = val.sass || path.join('stylesheets');
-  val.sassPath = path.join(helpers.root(), val.modulePath, val.sass);
-});
 
 // ExtractTextPlugin
 const extractCSS = new ExtractTextPlugin({
@@ -102,7 +81,7 @@ module.exports = {
           }, {
             loader: 'sass-loader',
             options: {
-              includePaths: sassModules.map(val => {
+              includePaths: sass.modules.map(val => {
                 return val.sassPath;
               }),
               sourceMap: true

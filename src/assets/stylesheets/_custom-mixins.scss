@@ -1,3 +1,7 @@
+@import 'bootstrap/mixins';
+@import 'patternfly/mixins';
+@import 'patternfly/mixin_overrides';
+
 // functions
 //convert px to em/rem
 @function em($px) {

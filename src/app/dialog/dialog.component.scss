@@ -1,6 +1,5 @@
-@import "patternfly/color-variables";
-@import "patternfly/mixins";
-@import "bootstrap/mixins";
+@import "../../assets/stylesheets/base";
+
 .modal-footer{
     .btn{
         &:hover{

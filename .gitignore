@@ -1,5 +1,9 @@
 # @AngularClass
 
+# compiled output
+/dist
+/dist-watch
+
 # Build generated files
 src/app/**/*.css
 /compiled

@@ -5,6 +5,7 @@
 const helpers = require('./helpers');
 const path = require('path');
 const stringify = require('json-stringify');
+const sass = require('./sass');
 /**
  * Webpack Plugins
  */
@@ -22,28 +23,6 @@ const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
 const API_URL = process.env.API_URL || (ENV==='inmemory'?'app/':'http://localhost:8080/api/');
 const FABRIC8_WIT_API_URL = process.env.FABRIC8_WIT_API_URL;
 const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL || 'http://api-bayesian.dev.rdu2c.fabric8.io/api/v1/';
-
-const sassModules = [
-  {
-    name: 'bootstrap'
-  }, {
-    name: 'font-awesome',
-    module: 'font-awesome',
-    path: 'font-awesome',
-    sass: 'scss'
-  }, {
-    name: 'patternfly',
-    module: 'patternfly-sass-with-css'
-  }
-];
-
-sassModules.forEach(val => {
-  val.module = val.module || val.name + '-sass';
-  val.path = val.path || path.join(val.module, 'assets');
-  val.modulePath = val.modulePath || path.join('node_modules', val.path);
-  val.sass = val.sass || path.join('stylesheets');
-  val.sassPath = path.join(helpers.root(), val.modulePath, val.sass);
-});
 
 /**
  * Webpack configuration
@@ -152,7 +131,7 @@ module.exports = function (options) {
         {
           test: /\.css$/,
           loaders: [
-            { loader: "css-to-string-loader" },
+            { loader: "to-string-loader" },
             {
               loader: "style-loader"
             },
@@ -166,13 +145,13 @@ module.exports = function (options) {
           test: /\.scss$/,
           loaders: [
             {
-              loader: 'css-to-string'
+              loader: 'to-string-loader'
             }, {
               loader: 'css-loader'
             }, {
               loader: 'sass-loader',
               query: {
-                includePaths: sassModules.map(val => {
+                includePaths: sass.modules.map(val => {
                   return val.sassPath;
                 })
               }
