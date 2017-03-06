@@ -26,3 +26,5 @@ exports.hasProcessFlag = hasProcessFlag;
 exports.hasNpmFlag = hasNpmFlag;
 exports.isWebpackDevServer = isWebpackDevServer;
 exports.root = root;
+
+const isProd = !(process.env.ENV === 'development');

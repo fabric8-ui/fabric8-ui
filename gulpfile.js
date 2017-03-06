@@ -1,13 +1,14 @@
 
 var gulp = require('gulp'),
-  sass = require('gulp-sass'),
+  sassCompiler = require('gulp-sass'),
   runSequence = require('run-sequence'),
   del = require('del'),
   replace = require('gulp-string-replace'),
   sourcemaps = require('gulp-sourcemaps'),
   exec = require('child_process').exec,
   ngc = require('gulp-ngc'),
-  changed = require('gulp-changed');
+  changed = require('gulp-changed'),
+  sass = require('./config/sass');
 
 var appSrc = 'src';
 var libraryDist = 'dist';
@@ -34,9 +35,12 @@ function updateWatchDist() {
 function transpileSASS(src) {
   return gulp.src(src)
     .pipe(sourcemaps.init())
-    .pipe(sass({
+    .pipe(sassCompiler({
       outputStyle: 'compressed',
-    }).on('error', sass.logError)) // this will prevent our future watch-task from crashing on sass-errors
+      includePaths: sass.modules.map(val => {
+        return val.sassPath;
+      }),
+    }).on('error', sassCompiler.logError)) // this will prevent our future watch-task from crashing on sass-errors
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(function (file) {
       return libraryDist + file.base.slice(__dirname.length); // save directly to dist
@@ -92,11 +96,11 @@ gulp.task('copy-static-assets', function () {
     .pipe(gulp.dest(libraryDist));
 });
 
-gulp.task('copy-watch', ['post-transpile'], function() {
+gulp.task('copy-watch', ['post-transpile'], function () {
   return updateWatchDist();
 });
 
-gulp.task('copy-watch-all', ['build-library'], function() {
+gulp.task('copy-watch-all', ['build-library'], function () {
   return updateWatchDist();
 });
 

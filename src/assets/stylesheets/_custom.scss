@@ -1,5 +1,9 @@
 @import 'custom-variables';
 @import 'custom-mixins';
+
+body {
+    font-family: Open Sans;
+}
 // custom classes
 .containerPadd {
     padding: em(96) 0 em(66) 0;

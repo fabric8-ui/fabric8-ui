@@ -1,5 +1,7 @@
 const webpack = require('webpack');
 const helpers = require('./helpers');
+const path = require('path');
+const sass = require('./sass');
 
 const AssetsPlugin = require('assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
@@ -23,6 +25,14 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 
 const precss = require('precss');
+
+// ExtractTextPlugin
+const extractCSS = new ExtractTextPlugin({
+  filename: '[name].[id]' + (helpers.isProd ? '.[contenthash]' : '') + '.css',
+  allChunks: true
+}
+);
+
 
 /*
  * Webpack Constants
@@ -69,10 +79,6 @@ module.exports = {
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
       },
-      {
-        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: ['file-loader']
-      },
 
       // Support for *.json files.
       {
@@ -82,36 +88,59 @@ module.exports = {
 
       {
         test: /\.css$/,
-        use: [
-          {
-            loader: 'to-string-loader'
-          },
-          // Commented out as causing CSS ot load twice
-          /*{
-           loader: 'style-loader'
-           },*/
-          {
-            loader: 'css-loader'
-          },
-        ]
+        loader: extractCSS.extract({
+          fallback: "style-loader",
+          use: "css-loader?sourceMap&context=/"
+        })
       },
+
       {
         test: /\.scss$/,
-        use: [
+        loaders: [
           {
             loader: 'css-to-string-loader'
-          },
-          // Commented out as causing CSS ot load twice
-          /*{
-           loader: 'style-loader'
-           },*/
-          {
+          }, {
             loader: 'css-loader',
-            options: {sourceMap: true}
+            options: {
+              minimize: helpers.isProd,
+              sourceMap: true,
+              context: '/'
+            }
           },
           {
             loader: 'sass-loader',
-            options: {sourceMap: true}
+            options: {
+              includePaths: sass.modules.map(val => {
+                return val.sassPath;
+              }),
+              sourceMap: true
+            }
+          }
+        ]
+      },
+
+      /* File loader for supporting fonts, for example, in CSS files.
+       */
+      {
+        test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
+        loaders: [
+          {
+            loader: "url-loader",
+            query: {
+              limit: 3000,
+              name: 'assets/fonts/[name].' + (helpers.isProd ? '[hash]' : '') + '[ext]'
+            }
+          }
+        ]
+      }, {
+        test: /\.jpg$|\.png$|\.gif$|\.jpeg$/,
+        loaders: [
+          {
+            loader: "url-loader",
+            query: {
+              limit: 3000,
+              name: 'assets/fonts/[name].' + (helpers.isProd ? '[hash]' : '') + '[ext]'
+            }
           }
         ]
       },
@@ -329,6 +358,7 @@ module.exports = {
       /facade(\\|\/)math/,
       helpers.root('node_modules/@angular/core/src/facade/math.js')
     ),
+    extractCSS,
 
     // new ngcWebpack.NgcWebpackPlugin({
     //   disabled: !AOT,

@@ -1,7 +1,7 @@
 /**
  * @author: @AngularClass
  */
-
+const sass = require('./sass');
 const helpers = require('./helpers');
 const webpack = require('webpack');
 
@@ -15,7 +15,8 @@ const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
  * Webpack Constants
  */
 const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
-const API_URL = process.env.API_URL || (ENV==='inmemory'?'app/':'http://localhost:8080/api/');
+const API_URL = process.env.API_URL || (ENV === 'inmemory' ? 'app/' : 'http://localhost:8080/api/');
+const FABRIC8_WIT_API_URL = process.env.FABRIC8_WIT_API_URL;
 
 /**
  * Webpack configuration
@@ -92,24 +93,70 @@ module.exports = {
         test: /\.json$/,
         use: ['json-loader']
       },
-      {
-        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-        use: ['null-loader']
-      },
+      /*
+        * to string and css loader support for *.css files
+        * Returns file content as string
+        *
+        */
       {
         test: /\.css$/,
-        use: ['to-string-loader', 'css-loader']
+        loaders: [
+          { loader: "to-string-loader" },
+          {
+            loader: "style-loader"
+          },
+          {
+            loader: "css-loader"
+          },
+        ],
       },
 
       {
         test: /\.scss$/,
-        use: ["css-to-string-loader", "css-loader", "sass-loader"]
+        loaders: [
+          {
+            loader: 'to-string-loader'
+          }, {
+            loader: 'css-loader'
+          }, {
+            loader: 'sass-loader',
+            query: {
+              includePaths: sass.modules.map(val => {
+                return val.sassPath;
+              })
+            }
+          }
+        ]
       },
+
+      /* File loader for supporting fonts, for example, in CSS files.
+       */
       {
+        test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
+        loaders: [
+          {
+            loader: "url-loader",
+            query: {
+              limit: 3000,
+              name: 'vendor/fonts/[name].[hash].[ext]'
+            }
+          }
+        ]
+      }, {
+        test: /\.jpg$|\.png$|\.gif$|\.jpeg$/,
+        loaders: [
+          {
+            loader: "url-loader",
+            query: {
+              limit: 3000,
+              name: 'vendor/images/[name].[hash].[ext]'
+            }
+          }
+        ]
+      }, {
         test: /\.html$/,
-        use: ['raw-loader'],
-        exclude: [helpers.root('src/index.html')]
-      },
+        use: ['raw-loader']
+      }
 
       // /**
       //  * Instruments JS files with Istanbul for subsequent code coverage reporting.
