@@ -335,7 +335,7 @@ class WorkItemListPage {
   /* Adding a new workitem through the dialog */
   get detailedDialogButton () {
     /* Changed from element(by.css(".with-cursor-pointer")) - as there were multiple matches */
-    return  element(by.css(".toolbar-pf-action-right"));
+    return element(by.css(".pficon-add-circle-o.margin-top-4"));
  }
 
   clickDetailedDialogButton () {

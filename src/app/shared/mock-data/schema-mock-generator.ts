@@ -189,7 +189,7 @@ export class SchemaMockGenerator {
             'version' : 0,
             'description' : 'Desciption for User Story',
             'name' : 'User Story',
-            'icon': 'fa-question',
+            'icon': 'fa-bookmark',
             'fields' : {
                'system.description' : {
                   'type' : {
@@ -261,7 +261,7 @@ export class SchemaMockGenerator {
       {
          'attributes' : {
             'name' : 'Value Proposition',
-            'icon': 'fa-question',
+            'icon': 'fa-gift',
             'fields' : {
                'system.area' : {
                   'required' : false,
@@ -339,7 +339,7 @@ export class SchemaMockGenerator {
          'attributes' : {
             'version' : 0,
             'description' : 'Description for Fundamental',
-            'icon': 'fa-question',
+            'icon': 'fa-bank',
             'fields' : {
                'system.created_at' : {
                   'type' : {
@@ -414,7 +414,7 @@ export class SchemaMockGenerator {
          'attributes' : {
             'description' : 'Description for Experience',
             'name' : 'Experience',
-            'icon': 'fa-question',
+            'icon': 'fa-map',
             'fields' : {
                'system.assignees' : {
                   'required' : false,
@@ -628,7 +628,7 @@ export class SchemaMockGenerator {
             'name' : 'Feature',
             'description' : 'Description for Feature',
             'version' : 0,
-            'icon': 'fa-question',
+            'icon': 'fa-mouse-pointer',
          },
          'type' : 'workitemtypes',
          'id' : '0a24d3c2-e0a6-4686-8051-ec0ea1915a28'
@@ -640,7 +640,7 @@ export class SchemaMockGenerator {
             'version' : 0,
             'description' : 'Description for Bug',
             'name' : 'Bug',
-            'icon': 'fa-question',
+            'icon': 'fa-bug',
             'fields' : {
                'system.creator' : {
                   'required' : true,
