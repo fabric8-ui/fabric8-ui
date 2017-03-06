@@ -1,5 +1,4 @@
 FROM registry.centos.org/kbsingh/openshift-nginx:latest
-MAINTAINER "Konrad Kleine <kkleine@redhat.com>"
 
 ENV LANG=en_US.utf8
 
