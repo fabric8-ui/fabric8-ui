@@ -35,13 +35,13 @@ export class WorkItemBoardComponent implements OnInit {
 
   ngOnInit() {
     this.loggedIn = this.auth.isLoggedIn();
-
+    this.getSTates();
     this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
       if (space) {
-        console.log('[WorkItemListComponent] New Space selected: ' + space.attributes.name);
+        console.log('[WorkItemBoardComponent] New Space selected: ' + space.attributes.name);
         this.getSTates();
       } else {
-        console.log('[WorkItemListComponent] Space deselected');
+        console.log('[WorkItemBoardComponent] Space deselected');
         this.workItems = [];
         this.lanes = [];
         this.workItemService.resetWorkItemList();
