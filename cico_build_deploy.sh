@@ -7,7 +7,7 @@ set -x
 set -e
 
 # Export needed vars
-for var in BUILD_NUMBER BUILD_URL; do
+for var in BUILD_NUMBER BUILD_URL JENKINS_URL GIT_BRANCH GH_TOKEN NPM_TOKEN; do
   export $(grep ${var} jenkins-env | xargs)
 done
 export BUILD_TIMESTAMP=`date -u +%Y-%m-%dT%H:%M:%S`+00:00
@@ -30,8 +30,8 @@ docker exec fabric8-ui-builder npm install
 ## Exec unit tests
 docker exec fabric8-ui-builder ./run_unit_tests.sh
 
-if [ $? -eq 0 ]; then
-  echo 'CICO: unit tests OK'
+  if [ $? -eq 0 ]; then
+    echo 'CICO: unit tests OK'
 else
   echo 'CICO: unit tests FAIL'
   exit 1
