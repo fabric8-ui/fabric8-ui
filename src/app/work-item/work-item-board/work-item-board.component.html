@@ -20,11 +20,11 @@
                 </div>
 
                 <div class="boardlaneWrapper">
-                  <!--<div *ngIf="lane.option == 'new'">-->
-                      <!--<div *ngIf="loggedIn" class="boardQuickAddContainer flex-container in-column-direction">-->
-                          <!--<alm-work-item-quick-add [wilistview] = "'wi-card-view'" (close)="close($event)"></alm-work-item-quick-add>-->
-                      <!--</div>-->
-                  <!--</div>-->
+                  <div *ngIf="lane.option == 'new'">
+                      <div *ngIf="loggedIn" class="boardQuickAddContainer flex-container in-column-direction">
+                          <alm-work-item-quick-add [wilistview] = "'wi-card-view'" (close)="close($event)"></alm-work-item-quick-add>
+                      </div>
+                  </div>
                   <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of workItems | almFilterBoardList:lane.option' (click)="gotoDetail(item)">
                     <div>
                       <div class="pull-left">

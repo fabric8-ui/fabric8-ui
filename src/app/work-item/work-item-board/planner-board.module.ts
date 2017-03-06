@@ -26,6 +26,7 @@ import { SidepanelModule } from '../../side-panel/side-panel.module';
 import { ToolbarPanelModule } from '../../toolbar-panel/toolbar-panel.module';
 import { WorkItemBoardComponent } from './work-item-board.component';
 import { WorkItemDetailModule } from '../work-item-detail/work-item-detail.module';
+import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
 import { WorkItemService } from '../work-item.service';
 
 
@@ -47,7 +48,8 @@ import { WorkItemService } from '../work-item.service';
     TreeModule,
     TreeListModule,
     WidgetsModule,
-    WorkItemDetailModule
+    WorkItemDetailModule,
+    WorkItemQuickAddModule
   ],
   declarations: [
     AlmFilterBoardList,
