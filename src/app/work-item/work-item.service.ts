@@ -22,6 +22,7 @@ import {
   Comments,
   CommentPost
 } from '../models/comment';
+
 import { AreaModel } from '../models/area.model';
 import { AreaService } from '../area/area.service';
 import { IterationModel } from '../models/iteration.model';
@@ -904,6 +905,7 @@ export class WorkItemService {
           this.resolveUsersForWorkItem(updatedWorkItem);
           this.resolveIterationForWorkItem(updatedWorkItem);
           this.resolveType(updatedWorkItem);
+          this.resolveAreaForWorkItem(updatedWorkItem);
         }
         return updatedWorkItem;
       })

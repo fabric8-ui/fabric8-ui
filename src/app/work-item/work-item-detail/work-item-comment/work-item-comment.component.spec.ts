@@ -42,6 +42,8 @@ import {
   AlmIconModule
 } from 'ngx-widgets';
 
+import { AreaModel } from '../../../models/area.model';
+import { AreaService } from '../../../area/area.service';
 import { IterationModel } from '../../../models/iteration.model';
 import { IterationService } from '../../../iteration/iteration.service';
 import { LinkType } from '../../../models/link-type';
@@ -67,6 +69,9 @@ describe('Comment section for the work item detailed view - ', () => {
   let logger: Logger;
   let fakeWorkItem: WorkItem;
   let fakeWorkItems: WorkItem[] = [];
+  let fakeArea: AreaModel;
+  let fakeAreaList: AreaModel[] = [];
+  let fakeAreaService: any;
   let fakeIteration: IterationModel;
   let fakeIterationList: IterationModel[] = [];
   let fakeIterationService: any;
@@ -148,6 +153,16 @@ describe('Comment section for the work item detailed view - ', () => {
     } as WorkItem;
 
     fakeWorkItems.push(fakeWorkItem);
+
+    fakeArea = {
+      'attributes': {
+        'name': 'Area 1'
+      },
+      'type': 'areas'
+
+    } as AreaModel;
+
+    fakeAreaList.push(fakeArea);
 
     fakeIteration = {
       'attributes': {
@@ -290,6 +305,14 @@ describe('Comment section for the work item detailed view - ', () => {
       }
     };
 
+    fakeAreaService = {
+      getAreas: function () {
+        return new Promise((resolve, reject) => {
+          resolve(fakeAreaList);
+        });
+      }
+    };
+
     fakeIterationService = {
       getIterations: function () {
         return new Promise((resolve, reject) => {
@@ -408,6 +431,10 @@ describe('Comment section for the work item detailed view - ', () => {
           useValue: fakeAuthService
         },
         {
+          provide: AreaService,
+          useValue: fakeAreaService
+        },
+        {
           provide: IterationService,
           useValue: fakeIterationService
         },
@@ -441,7 +468,7 @@ describe('Comment section for the work item detailed view - ', () => {
       expect(el.nativeElement).toBeTruthy();
   });
 
-   it('Should have an input to create comments', () => {
+  it('Should have an input to create comments', () => {
       fakeAuthService.login();
       fixture.detectChanges();
       comp.workItem = fakeWorkItem;

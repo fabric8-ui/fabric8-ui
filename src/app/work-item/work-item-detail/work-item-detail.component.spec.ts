@@ -67,6 +67,9 @@ describe('Detailed view and edit a selected work item - ', () => {
   let logger: Logger;
   let fakeWorkItem: WorkItem;
   let fakeWorkItems: WorkItem[] = [];
+  let fakeArea: AreaModel;
+  let fakeAreaList: AreaModel[] = [];
+  let fakeAreaService: any;
   let fakeIteration: IterationModel;
   let fakeIterationList: IterationModel[] = [];
   let fakeIterationService: any;
@@ -147,6 +150,16 @@ describe('Detailed view and edit a selected work item - ', () => {
     } as WorkItem;
 
     fakeWorkItems.push(fakeWorkItem);
+
+    fakeArea = {
+      'attributes': {
+        'name': 'Area 1'
+      },
+      'type': 'areas'
+
+    } as AreaModel;
+
+    fakeAreaList.push(fakeArea);
 
     fakeIteration = {
       'attributes': {
@@ -270,6 +283,14 @@ describe('Detailed view and edit a selected work item - ', () => {
       }
     };
 
+    fakeAreaService = {
+      getAreas: function () {
+        return new Promise((resolve, reject) => {
+          resolve(fakeAreaList);
+        });
+      }
+    };
+
     fakeIterationService = {
       getIterations: function () {
         return new Promise((resolve, reject) => {
@@ -383,10 +404,13 @@ describe('Detailed view and edit a selected work item - ', () => {
         DropdownConfig,
         Logger,
         Location,
-        AreaService,
         {
           provide: AuthenticationService,
           useValue: fakeAuthService
+        },
+        {
+          provide: AreaService,
+          useValue: fakeAreaService
         },
         {
           provide: IterationService,

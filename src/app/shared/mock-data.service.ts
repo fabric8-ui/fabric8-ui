@@ -9,6 +9,7 @@ import { SchemaMockGenerator } from './mock-data/schema-mock-generator';
 import { WorkItemMockGenerator } from './mock-data/work-item-mock-generator';
 import { UserMockGenerator } from './mock-data/user-mock-generator';
 import { SpaceMockGenerator } from './mock-data/space-mock-generator';
+import { AreaMockGenerator } from './mock-data/area-mock-generator';
 import { IterationMockGenerator } from './mock-data/iteration-mock-generator';
 
 /*
@@ -32,6 +33,7 @@ export class MockDataService {
   private userMockGenerator: UserMockGenerator = new UserMockGenerator();
   private spaceMockGenerator: SpaceMockGenerator = new SpaceMockGenerator();
   private iterationMockGenerator: IterationMockGenerator = new IterationMockGenerator();
+  private areaMockGenerator: AreaMockGenerator = new AreaMockGenerator();
 
   // persistence store, the MockDataService is a singleton when injected as a service.
   private workItems: any[];
@@ -40,6 +42,7 @@ export class MockDataService {
   private workItemChilds: any;
   private spaces: any[];
   private iterations: any[];
+  private areas: any[];
 
   constructor() {
     // create initial data store
@@ -49,6 +52,7 @@ export class MockDataService {
     this.workItemChilds = this.workItemMockGenerator.createWorkItemChilds();
     this.spaces = this.spaceMockGenerator.createSpaces();
     this.iterations = this.iterationMockGenerator.createIterations();
+    this.areas = this.areaMockGenerator.createAreas();
   }
 
   // utility methods

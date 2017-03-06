@@ -23,6 +23,7 @@ import {
 } from 'ngx-login-client';
 
 import { MockDataService } from '../shared/mock-data.service';
+import { AreaService } from '../area/area.service';
 import { IterationService } from '../iteration/iteration.service';
 import { WorkItem } from '../models/work-item';
 import { WorkItemService } from './work-item.service';
@@ -34,6 +35,7 @@ describe('Work Item Service - ', () => {
   let apiService: WorkItemService;
   let mockService: MockBackend;
   let iterationService: IterationService;
+  let areaService: AreaService;
 
   let fakeAuthService: any;
   let fakeSpace: any;
@@ -201,6 +203,7 @@ describe('Work Item Service - ', () => {
         },
         // MockDataService should be removed at some point
         MockDataService,
+        AreaService,
         WorkItemService,
         UserService,
         IterationService,
@@ -216,11 +219,12 @@ describe('Work Item Service - ', () => {
   });
 
   beforeEach(inject(
-    [WorkItemService, MockBackend, IterationService],
-    (service: WorkItemService, mock: MockBackend, iService: IterationService) => {
+    [WorkItemService, MockBackend, IterationService, AreaService],
+    (service: WorkItemService, mock: MockBackend, iService: IterationService, aService: AreaService) => {
       apiService = service;
       mockService = mock;
       iterationService = iService;
+      areaService = aService;
       (apiService as any)._currentSpace = spaces[0];
       (apiService as any).workItemTypes = wiTypes;
     }
@@ -249,7 +253,7 @@ describe('Work Item Service - ', () => {
             'type': 'workitemtypes'
           }
         },
-        'creator': {},
+        'creator': {}
       },
       'type': 'workitems'
     }
@@ -257,7 +261,7 @@ describe('Work Item Service - ', () => {
   let response = {data: resp, links: {}};
   let checkResp = cloneDeep(resp);
   checkResp.forEach((item) => item['relationalData'] = Object(
-    { assignees: [], creator: null, iteration: null, wiType: wiTypes[0] }));
+    { assignees: [], creator: null, iteration: null, area: null, wiType: wiTypes[0] }));
 
   it('Get work items', async(() => {
     mockService.connections.subscribe((connection: any) => {

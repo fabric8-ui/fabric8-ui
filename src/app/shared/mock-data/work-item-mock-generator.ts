@@ -185,6 +185,7 @@ export class WorkItemMockGenerator {
             }
         },
         'iteration': {},
+        'area': {},
         'type': 'workitems'
       };
     });
