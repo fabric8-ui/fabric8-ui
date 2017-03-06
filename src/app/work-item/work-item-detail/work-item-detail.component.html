@@ -85,7 +85,7 @@
                 <span *ngIf="loggedIn" class="caret pull-right"></span>
               </button>
               <ul *ngIf="loggedIn" id="wi-status-dropdown" class="dropdown-menu-right dropdown-ul" role="menu" dropdownMenu>
-                <li class="dropdown-li" *ngFor="let state of workItem.relationalData.wiType.attributes.fields['system.state'].type.values;" (click)="onChangeState(state)">
+                <li class="dropdown-li" *ngFor="let state of workItem.relationalData.wiType?.attributes.fields['system.state'].type.values;" (click)="onChangeState(state)">
                   <a>
                     <span class='dropdown-icon' almIcon [iconType]="state"></span>
                     <span class='dropdown-text'>{{state}}</span>

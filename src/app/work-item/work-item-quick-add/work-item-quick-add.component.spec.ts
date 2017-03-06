@@ -12,7 +12,7 @@ import { DebugElement } from '@angular/core';
 import { FormsModule }  from '@angular/forms';
 import { By }           from '@angular/platform-browser';
 
-import { Logger, Broadcaster } from 'ngx-login-client';
+import { Logger, Broadcaster, AuthenticationService } from 'ngx-login-client';
 
 import { WorkItem } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
@@ -25,6 +25,7 @@ describe('Quick add work item component - ', () => {
   let el: DebugElement;
   let fakeWorkItem: WorkItem[];
   let fakeService: any;
+  let fakeAuthService: any;
 
   let wiTypes = [
       {
@@ -140,6 +141,13 @@ describe('Quick add work item component - ', () => {
       },
       workItemTypes: wiTypes
     };
+
+    fakeAuthService = {
+      isLoggedIn: function () {
+        return true;
+      },
+      workItemTypes: wiTypes
+    };
   });
 
   beforeEach(async(() => {
@@ -154,6 +162,10 @@ describe('Quick add work item component - ', () => {
         {
           provide: WorkItemService,
           useValue: fakeService
+        }, 
+        { 
+          provide: AuthenticationService,
+          useValue: fakeAuthService
         }
       ]
     })
