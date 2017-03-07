@@ -185,7 +185,7 @@ export class MockHttp extends Http {
             return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemOrEntity(path.extraPath) );
           }
           else if (path.params['filter[assignee]']) {
-                return this.createResponse(url.toString(), 200, 'ok', this.createPage(this.mockDataService.getWorkItemsFiltered(path.params['filter[assignee]']), path.params) );
+            return this.createResponse(url.toString(), 200, 'ok', this.createPage(this.mockDataService.getWorkItemsFiltered(path.params['filter[assignee]']), path.params) );
           } else {
             return this.createResponse(url.toString(), 200, 'ok', this.createPage(this.mockDataService.getWorkItems(), path.params) );
           }

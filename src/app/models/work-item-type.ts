@@ -8,15 +8,15 @@ export class WorkItemType {
         icon: string;
         fields:
         {
-            'system.area': {},
-            'system.created_at': {},
-            'system.assignee': {},
-            'system.creator': {},
-            'system.description': {},
-            'system.iteration': {},
-            'system.remote_item_id': {},
-            'system.state': {},
-            'system.title': {},
+            'system.area': any,
+            'system.created_at': any,
+            'system.assignee': any,
+            'system.creator': any,
+            'system.description': any,
+            'system.iteration': any,
+            'system.remote_item_id': any,
+            'system.state': any,
+            'system.title': any,
         };
     };
 }

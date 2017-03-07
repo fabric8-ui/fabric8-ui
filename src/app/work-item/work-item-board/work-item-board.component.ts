@@ -75,11 +75,11 @@ export class WorkItemBoardComponent implements OnInit {
   ngOnInit() {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.getStates();
+    this.getDefaultWorkItemTypeStates();
     this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
       if (space) {
         console.log('[WorkItemBoardComponent] New Space selected: ' + space.attributes.name);
-        this.getStates();
+        this.getDefaultWorkItemTypeStates();
       } else {
         console.log('[WorkItemBoardComponent] Space deselected');
         this.lanes = [];
@@ -106,18 +106,41 @@ export class WorkItemBoardComponent implements OnInit {
      });
   }
 
-  getStates() {
-    this.workItemService.getStatusOptions()
-      .then((response) => {
-        this.lanes = response;
-        this.lanes.forEach((value, index) => {
-          this.lanes[index] = {
-            option: value.option,
+  getDefaultWorkItemTypeStates(workItemTypeId?: string) {
+    this.lanes = [];
+    if (!workItemTypeId) {
+      // we don't have a type is, fetch the first type and the states of it.
+      this.workItemService.getWorkItemTypes().then((types: WorkItemType[]) => {
+        // the returned list may be empty because the space is not yet selected.
+        if (types.length > 0) {
+          let lanes = types[0].attributes.fields['system.state'].type.values;
+          lanes.forEach((value, index) => {
+            this.lanes.push({
+              option: value,
+              workItems: [] as WorkItem[],
+              nextLink: null
+            });
+          });
+          this.filters = [ {
+            active: true,
+            paramKey: 'filter[workitemtype]',
+            value: types[0].id
+          } ];
+        }
+      });      
+    } else {
+      // we have a type id, we just fetch the states from it.
+      this.workItemService.getWorkItemTypesById(workItemTypeId).then(workItemType => {
+        let lanes = workItemType.attributes.fields['system.state'].type.values;
+        lanes.forEach((value, index) => {
+          this.lanes.push({
+            option: value,
             workItems: [] as WorkItem[],
             nextLink: null
-          };
+          });
         });
       });
+    }
   }
 
   initWiItems($event, lane) {
@@ -201,9 +224,12 @@ export class WorkItemBoardComponent implements OnInit {
     // filters like assign to me should stack with the current filters
     this.broadcaster.on<string>('item_filter')
         .subscribe((filters: any) => {
-          this.filters = this.filters.concat(filters);
+          this.filters = filters;
           // this reloads the states for the lanes, and then the wis inside the lanes.
-          this.getStates();
+          filters.forEach((filter) => {
+            if (filter.paramKey === 'filter[workitemtype]')
+              this.getDefaultWorkItemTypeStates(filter.value);
+          });
     });    
 
   }

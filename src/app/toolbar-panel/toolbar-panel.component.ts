@@ -37,6 +37,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
   editEnabled: boolean = false;
   authUser: any = null;
   workItemTypes: WorkItemType[] = [];
+  currentBoardType: WorkItemType;
   workItemToMove: WorkItemListEntryComponent;
   workItemDetail: WorkItem;
   showTypesOptions: boolean = false;
@@ -107,7 +108,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
     this.setFilterValues();
   }
 
-//item.paramKey + '=' + item.value;
   filterChange($event: FilterEvent): void {
     let activeFilters = 0;
     this.filters.forEach((f: any) => {
@@ -120,8 +120,31 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
       if (selectedIndex > -1) {
         this.filters[selectedIndex].active = true;
       }
-    });    
+    });
+    // if we're in board view, add or update the
+    // work item type filter
+    if (this.context === 'boardview') {
+      this.updateOrAddTypeFilter();
+    }
     this.broadcaster.broadcast('item_filter', this.filters);
+  }
+
+  updateOrAddTypeFilter() {
+    let selectedIndex = -1;
+    selectedIndex = this.filters.findIndex((f: any) => {
+      return f.paramKey === 'filter[workitemtype]';
+    });
+    if (selectedIndex > -1) {
+      this.filters[selectedIndex].value = this.currentBoardType.id;
+    } else {
+      this.filters.push({
+        id:  '99',
+        name: 'Type',
+        paramKey: 'filter[workitemtype]',
+        active: true,
+        value: this.currentBoardType.id
+      });
+    };
   }
 
   setFilterValues() {
@@ -140,21 +163,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
   }
 
   onChangeBoardType(type: WorkItemType) {
-    let selectedIndex = -1;
-    selectedIndex = this.filters.findIndex((f: any) => {
-      return f.paramKey === 'filter[workitemtype]';
-    });
-    if (selectedIndex > -1) {
-      this.filters[selectedIndex].value = type.id;
-    } else {
-      this.filters.push({
-        id:  '99',
-        name: 'Type',
-        paramKey: 'filter[workitemtype]',
-        active: true,
-        value: type.id
-      })
-    };
+    this.currentBoardType = type;
+    this.updateOrAddTypeFilter();
     this.broadcaster.broadcast('item_filter', this.filters);
     this.broadcaster.broadcast('board_type_context', type);    
   }
@@ -168,6 +178,11 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
     this.workItemService.getWorkItemTypes()
       .then((types) => {
         this.workItemTypes = types;
+        // if the current board type is empty, this is the first time
+        // we retrieve the types, then the default type to display is the
+        // first type returned.
+        if (!this.currentBoardType)
+          this.currentBoardType = this.workItemTypes[0];
       });
   }
 
