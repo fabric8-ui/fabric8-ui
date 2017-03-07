@@ -19,13 +19,17 @@
                   <span class="issueCount dib" >{{workItems | almFilterBoardList:lane.option | arrayCount}}</span>
                 </div>
 
-                <div class="boardlaneWrapper">
+                <div class="boardlaneWrapper"
+                  almInfiniteScroll
+                  [eachElementHeightInPx]='contentItemHeight'
+                  (initItems)='initWiItems($event, lane)'
+                  (fetchMore)='fetchMoreWiItems(lane)' >
                   <div *ngIf="lane.option == 'new'">
                       <div *ngIf="loggedIn" class="boardQuickAddContainer flex-container in-column-direction">
                           <alm-work-item-quick-add [wilistview] = "'wi-card-view'" (close)="close($event)"></alm-work-item-quick-add>
                       </div>
                   </div>
-                  <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of workItems | almFilterBoardList:lane.option' (click)="gotoDetail(item)">
+                  <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of lane.workItems' (click)="gotoDetail(item)">
                     <div>
                       <div class="pull-left">
                         <span class="wi-type-icon" almIcon [iconType]="item.relationships?.baseType?.data?.id"></span>

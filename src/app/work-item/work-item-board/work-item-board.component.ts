@@ -26,6 +26,7 @@ export class WorkItemBoardComponent implements OnInit {
   lanes: Array<any> = [];
   loggedIn: Boolean = false;
   spaceSubscription: Subscription;
+  contentItemHeight: number = 85;
 
   constructor(
     private auth: AuthenticationService,
@@ -42,22 +43,21 @@ export class WorkItemBoardComponent implements OnInit {
         this.getSTates();
       } else {
         console.log('[WorkItemBoardComponent] Space deselected');
-        this.workItems = [];
         this.lanes = [];
         this.workItemService.resetWorkItemList();
       }
     });
   }
 
-  getWorkItems() {
-    this.workItemService.getWorkItems()
+  getWorkItems(pageSize, lane) {
+    this.workItemService.getWorkItems(pageSize, [{
+      active: true,
+      paramKey: 'filter[workitemstate]',
+      value: lane.option
+    }], true)
       .then(workItems => {
-        this.workItems = workItems;
-        // console.log(this.workItems);
-        // need push lane data here once the backend data is available
-        /*this.lanes.push({title: 'Backlog', cards: workItems});
-        this.lanes.push({title: 'In-Progress', cards: [{'id': 211, fields: {'system.title': 'Item A'}}, {'id': 212, fields: {'system.title': 'Item B'}}, {'id': 213, fields: {'system.title': 'Item C'}}, {'id': 214, fields: {'system.title': 'Item D'}}]});
-        this.lanes.push({title: 'Done', cards: [{'id': 311, fields: {'system.title': 'Item 1'}}, {'id': 312, fields: {'system.title': 'Item 2'}}, {'id': 313, fields: {'system.title': 'Item 3'}}, {'id': 314, fields: {'system.title': 'Item 4'}}]});*/
+        lane.workItems = workItems;
+        lane.nextLink = this.workItemService.getNextLink();
      });
   }
 
@@ -65,8 +65,32 @@ export class WorkItemBoardComponent implements OnInit {
     this.workItemService.getStatusOptions()
       .then((response) => {
         this.lanes = response;
-        this.getWorkItems();
+        this.lanes.forEach((value, index) => {
+          this.lanes[index] = {
+            option: value.option,
+            workItems: [] as WorkItem[],
+            nextLink: null
+          };
+        });
       });
+  }
+
+  initWiItems($event, lane) {
+    this.getWorkItems($event.pageSize, lane);
+  }
+
+  fetchMoreWiItems(lane) {
+    console.log('More for ' + lane.option);
+    if (lane.nextLink) {
+      this.workItemService.setNextLink(lane.nextLink);
+      this.workItemService.getMoreWorkItems()
+        .then((items) => {
+          lane.workItems = [...lane.workItems, ...items];
+          lane.nextLink = this.workItemService.getNextLink();
+        });
+    } else {
+      console.log('No More for ' + lane.option);
+    }
   }
 
   gotoDetail(workItem: WorkItem) {

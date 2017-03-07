@@ -130,7 +130,7 @@ export class WorkItemService {
    * Resolve the users for work item as in get the details of assignee and creator
    * and store them with the data in the array
    */
-  getWorkItems(pageSize: number = 20, filters: any[] = []): Promise<WorkItem[]> {
+  getWorkItems(pageSize: number = 20, filters: any[] = [], onlyResponse: boolean = false): Promise<WorkItem[]> {
     if (this._currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.workItemUrl = this.baseApiUrl + 'workitems';
@@ -173,7 +173,8 @@ export class WorkItemService {
 
           // Boradcast that the big list is prepared initially
           this.broadcaster.broadcast('list_first_load_done');
-          return this.workItems;
+
+          return onlyResponse ? wItems : this.workItems;
         })
         .catch ((e) => {
           if (e.status === 401) {
@@ -236,6 +237,14 @@ export class WorkItemService {
     } else {
       return Promise.reject('No more item found');
     }
+  }
+
+  getNextLink(): string {
+    return this.nextLink;
+  }
+
+  setNextLink(link: string): void {
+    this.nextLink = link;
   }
 
   /**
