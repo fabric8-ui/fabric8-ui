@@ -71,3 +71,11 @@ span{
     padding: 0 !important;
   }
 }
+
+.not-assigned-user-icon {
+  @include not-assigned-user-icon;
+}
+
+.user-avatar {
+  @include user-avatar;
+}

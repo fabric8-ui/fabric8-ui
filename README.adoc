@@ -160,6 +160,29 @@ have access to both JS and SASS sourcemaps if your webapp is properly setup.
 NOTE: `fabric8-ui` is setup to do reloading and sourcemaps automatically when you
 run `npm start`.
 
+== CSS and SASS
+
+fabric8-planner uses SASS for it's stylesheets. It also uses the Angular emulation
+of the shadow dom, so you will normally want to place your styles in the
+`.component.scss` file next to the html and the typescript.
+
+If you find yourself wanting to create a shared style that multiple components will
+use, then we recommend adding it as a mixin to
+`src/assets/stylesheets/_planner-mixins.scss`. The mixins are imported in to every
+`.component.scss` file. You can then create a real class by doing something like
+
+    .my-class {
+      @include my-class;
+    }
+
+We use mixins to avoid polluting components with uncessary style classes, and to avoid
+an explosion of shared files.
+
+The `src/assets/stylesheets/` directory includes a `shared` directory. These are
+shared global styles that we will refactor out in to a shared library at some point.
+Only update these styles if you are making a truly global style, and are going to
+synchronise your changes across all the various UI projects.
+
 == Contributing to the app
 
 The development guide is part of the link:./CONTRIBUTING.adoc[contributors'

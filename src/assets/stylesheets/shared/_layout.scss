@@ -1,9 +1,4 @@
 ///////////////////////////
-// icon styles
-///////////////////////////
-@import 'icons';
-
-///////////////////////////
 // Utility styles
 ///////////////////////////
 
@@ -239,9 +234,11 @@ footer
   }
 
 }
-.btn {
-  min-width: 0 !important; // temporary fix for btn class , once the style are loaded properly will remove it
+
+.btn{
+  min-width: 90px;
 }
+
 // chromeless dialog suppresses all chrome in the ng2-bootstrap modal component
 .chromeless-modal
 {
@@ -325,8 +322,3 @@ $wizard-padding:$grid-gutter-width/2;
     }
   }
 }
-
-
-
-
-

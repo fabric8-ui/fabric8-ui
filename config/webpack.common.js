@@ -85,7 +85,6 @@ module.exports = {
         test: /\.json$/,
         use: ['json-loader']
       },
-
       {
         test: /\.css$/,
         loader: extractCSS.extract({
@@ -93,12 +92,34 @@ module.exports = {
           use: "css-loader?sourceMap&context=/"
         })
       },
-
       {
-        test: /\.scss$/,
-        loaders: [
+        test: /^(?!.*component).*\.scss$/,
+        use: extractCSS.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                minimize: helpers.isProd,
+                sourceMap: true,
+                context: '/'
+              }
+            }, {
+              loader: 'sass-loader',
+              options: {
+                includePaths: sass.modules.map(function (val) {
+                  return val.sassPath;
+                }),
+                sourceMap: true
+              }
+            }
+          ],
+        })
+      }, {
+        test: /\.component\.scss$/,
+        use: [
           {
-            loader: 'css-to-string-loader'
+            loader: 'to-string-loader'
           }, {
             loader: 'css-loader',
             options: {
@@ -106,17 +127,16 @@ module.exports = {
               sourceMap: true,
               context: '/'
             }
-          },
-          {
+          }, {
             loader: 'sass-loader',
             options: {
-              includePaths: sass.modules.map(val => {
+              includePaths: sass.modules.map(function (val) {
                 return val.sassPath;
               }),
               sourceMap: true
             }
           }
-        ]
+        ],
       },
 
       /* File loader for supporting fonts, for example, in CSS files.

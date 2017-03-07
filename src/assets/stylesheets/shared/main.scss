@@ -1,9 +1,14 @@
 @import 'custom-variables';
 @import 'custom-mixins';
-
 body {
     font-family: Open Sans;
 }
+
+//colors
+.color-grey {
+    color: $color-pf-black-800 !important;
+}
+
 // custom classes
 .containerPadd {
     padding: em(96) 0 em(66) 0;
@@ -38,31 +43,6 @@ body {
 .textCenter {
     text-align: $textCenter;
 }
-// action buttons for editing title, description, comment
-.detail-action-btn {
-  font-size: em(14);
-  cursor: pointer;
-  width: em(42);
-  text-align: $textCenter;
-  padding: 0 !important;
-  margin-left: em(5);
-}
-
-//user -gravatar
-
- .user-avatar{
-     height: em(25);
-     width: em(25);
-     img{
-         width: $width100;
-         height: 100%;
-     }
- }
- .not-assigned-user-icon {
-   font-size: em(20);
-   border: 1px solid $color-pf-black-600;
-   padding: em(1) em(3);
- }
 
 @media (max-width: $grid-float-breakpoint) {
     .mobdn {

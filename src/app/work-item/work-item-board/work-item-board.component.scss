@@ -203,3 +203,11 @@
     }
   }
 }
+
+.not-assigned-user-icon {
+  @include not-assigned-user-icon;
+}
+
+.user-avatar {
+  @include user-avatar;
+}

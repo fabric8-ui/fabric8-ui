@@ -123,3 +123,11 @@
     }
   }
 }
+
+.user-avatar {
+  @include user-avatar;
+}
+
+.detail-action-btn {
+  @include detail-action-btn;
+}
