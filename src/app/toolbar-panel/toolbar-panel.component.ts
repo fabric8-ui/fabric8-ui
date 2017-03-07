@@ -58,6 +58,10 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
     console.log('[FilterPanelComponent] Running in context: ' + this.context);
     this.loggedIn = this.auth.isLoggedIn();
     this.listenToEvents();
+    // we need to get the wi types for the types dropdown on the board item
+    // even when there is no active space change (initial population).
+    if (this.context === 'boardview')
+      this.getWorkItemTypes();
     this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
       if (space) {
         console.log('[FilterPanelComponent] New Space selected: ' + space.attributes.name);
@@ -89,7 +93,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
       resultsCount: -1, // Hide
       selectedCount: 0,
       totalCount: 0,
-      tooltipPlacement: "right"
+      tooltipPlacement: 'right'
     } as FilterConfig;
 
     this.toolbarConfig = {
@@ -103,6 +107,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
     this.setFilterValues();
   }
 
+//item.paramKey + '=' + item.value;
   filterChange($event: FilterEvent): void {
     let activeFilters = 0;
     this.filters.forEach((f: any) => {
@@ -115,14 +120,14 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
       if (selectedIndex > -1) {
         this.filters[selectedIndex].active = true;
       }
-    });
+    });    
     this.broadcaster.broadcast('item_filter', this.filters);
   }
 
   setFilterValues() {
     if (this.loggedIn) {
       this.filters.push({
-        id:  "1",
+        id:  '1',
         name: 'Assigned to Me',
         paramKey: 'filter[assignee]',
         active: false,
@@ -132,6 +137,26 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
       let index = this.filters.findIndex(item => item.id === 1);
       this.filters.splice(index, 1);
     }
+  }
+
+  onChangeBoardType(type: WorkItemType) {
+    let selectedIndex = -1;
+    selectedIndex = this.filters.findIndex((f: any) => {
+      return f.paramKey === 'filter[workitemtype]';
+    });
+    if (selectedIndex > -1) {
+      this.filters[selectedIndex].value = type.id;
+    } else {
+      this.filters.push({
+        id:  '99',
+        name: 'Type',
+        paramKey: 'filter[workitemtype]',
+        active: true,
+        value: type.id
+      })
+    };
+    this.broadcaster.broadcast('item_filter', this.filters);
+    this.broadcaster.broadcast('board_type_context', type);    
   }
 
   moveItem(moveto: string) {
@@ -145,12 +170,15 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
         this.workItemTypes = types;
       });
   }
+
   showTypes() {
     this.showTypesOptions = true;
   }
+  
   closePanel() {
     this.showTypesOptions = false;
   }
+  
   onChangeType(type: string) {
     this.showTypesOptions = false;
     this.router.navigate(['/work-item/list/detail/new?' + type]);

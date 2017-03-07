@@ -1,17 +1,29 @@
-import { Space } from 'ngx-fabric8-wit';
 import { Subscription } from 'rxjs/Subscription';
-import { cloneDeep } from 'lodash';
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+  ViewChildren,
+  QueryList,
+  TemplateRef,
+  DoCheck,
+  ViewEncapsulation
+} from '@angular/core';
 import { Response } from '@angular/http';
 import { Router } from '@angular/router';
+import { cloneDeep } from 'lodash';
 
+import { Space } from 'ngx-fabric8-wit';
 import { AuthenticationService, Broadcaster } from 'ngx-login-client';
 import { ArrayCount } from 'ngx-widgets';
 import { DragulaService } from 'ng2-dragula';
 
 import { WorkItem } from '../../models/work-item';
+import { WorkItemType } from '../../models/work-item-type';
 import { WorkItemService } from '../work-item.service';
-
 
 @Component({
   host: {
@@ -23,12 +35,19 @@ import { WorkItemService } from '../work-item.service';
 })
 
 export class WorkItemBoardComponent implements OnInit {
+
+  @ViewChildren('activeFilters', {read: ElementRef}) activeFiltersRef: QueryList<ElementRef>;
+  @ViewChild('activeFiltersDiv') activeFiltersDiv: any;
+
   workItems: WorkItem[] = [];
   workItem: WorkItem;
+  filters: any[] = [];
   lanes: Array<any> = [];
+  pageSize: number = 20;
   loggedIn: Boolean = false;
   spaceSubscription: Subscription;
   contentItemHeight: number = 85;
+  boardContextSubscription: Subscription;
 
   constructor(
     private auth: AuthenticationService,
@@ -54,15 +73,22 @@ export class WorkItemBoardComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.getSTates();
+    this.getStates();
     this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
       if (space) {
         console.log('[WorkItemBoardComponent] New Space selected: ' + space.attributes.name);
-        this.getSTates();
+        this.getStates();
       } else {
         console.log('[WorkItemBoardComponent] Space deselected');
         this.lanes = [];
+        this.workItemService.resetWorkItemList();
+      }
+    });
+    this.boardContextSubscription = this.broadcaster.on<WorkItemType>('board_type_context').subscribe(workItemType => {
+      if (workItemType) {
+        console.log('[WorkItemBoardComponent] New type context selected: ' + workItemType.attributes.name);
         this.workItemService.resetWorkItemList();
       }
     });
@@ -73,14 +99,14 @@ export class WorkItemBoardComponent implements OnInit {
       active: true,
       paramKey: 'filter[workitemstate]',
       value: lane.option
-    }], true)
+    }, ...this.filters], true)
       .then(workItems => {
         lane.workItems = workItems;
         lane.nextLink = this.workItemService.getNextLink();
      });
   }
 
-  getSTates() {
+  getStates() {
     this.workItemService.getStatusOptions()
       .then((response) => {
         this.lanes = response;
@@ -170,5 +196,15 @@ export class WorkItemBoardComponent implements OnInit {
           this.activeOnList();
       });
     }
+
+  listenToEvents() {
+    // filters like assign to me should stack with the current filters
+    this.broadcaster.on<string>('item_filter')
+        .subscribe((filters: any) => {
+          this.filters = this.filters.concat(filters);
+          // this reloads the states for the lanes, and then the wis inside the lanes.
+          this.getStates();
+    });    
+
   }
 }
