@@ -368,7 +368,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
           page.clickQuickAddSave().then(function() {
              page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
               var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
-              expect(detailPage.detailUserstroyIcon2("fa-bookmark").isPresent()).toBeTruthy();
+              expect(detailPage.detailUserstroyIcon2("fa-paint-brush").isPresent()).toBeTruthy();
            });
           });
           });
