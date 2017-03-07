@@ -1,7 +1,7 @@
 # ngx-widgets
 
 [![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-ngx-widgets-npm-publish-build-master)](https://ci.centos.org/view/Devtools/job/devtools-ngx-widgets-npm-publish-build-master/) 
-[![npm](https://img.shields.io/npm/v/npm.svg)](https://www.npmjs.com/package/ngx-widgets)
+[![npm version](https://badge.fury.io/js/ngx-widgets.svg)](https://badge.fury.io/js/ngx-widgets) 
 
 A collection of Angular components and other useful things to be shared.
 
