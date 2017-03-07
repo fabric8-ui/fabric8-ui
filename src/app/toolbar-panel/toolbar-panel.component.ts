@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { cloneDeep } from 'lodash';
@@ -30,11 +30,13 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
   @ViewChild('actions') actionsTemplate: TemplateRef<any>;
   @ViewChild('add') addTemplate: TemplateRef<any>;
 
+  @Input() context: string;
+
   filters: any[] = [];
   loggedIn: boolean = false;
   editEnabled: boolean = false;
   authUser: any = null;
-  workItemTypes: WorkItemType[];
+  workItemTypes: WorkItemType[] = [];
   workItemToMove: WorkItemListEntryComponent;
   workItemDetail: WorkItem;
   showTypesOptions: boolean = false;
@@ -53,6 +55,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    console.log('[FilterPanelComponent] Running in context: ' + this.context);
     this.loggedIn = this.auth.isLoggedIn();
     this.listenToEvents();
     this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
