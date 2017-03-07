@@ -181,7 +181,7 @@ module.exports = function (env) {
        */
       new FaviconsWebpackPlugin({
         logo: './src/assets/icon/fabric8_icon.svg',
-        prefix: '/assets/icons-[hash]/'
+        prefix: 'assets/icons-[hash]/'
       }),
 
       /**
