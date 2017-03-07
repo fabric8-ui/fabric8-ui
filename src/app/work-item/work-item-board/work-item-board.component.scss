@@ -23,7 +23,7 @@
       white-space: normal;
       .board-lane-column {
         background: $color-pf-black-200;
-        @include Border(1px, solid ,$color-pf-black-300);
+        @include Border(1px, solid, $color-pf-black-300);
         padding: em(0);
         height: 100%;
         padding-bottom: 0;
@@ -36,8 +36,8 @@
             @include Border(1px, solid , $color-pf-black-400);
             background: $color-pf-white;
             padding: em(15);
-            margin-bottom: em(5);
-            > div {
+            margin: em(5) 0;
+            >div {
               p {
                 margin: 0;
               }
@@ -52,6 +52,10 @@
                 padding-right: em(5);
               }
             }//div ended
+            .row-wrapper {
+              display: flex;
+              justify-content: space-between;
+            }
           }//boardcard ended
         }//boardlaneWrapper ended
         .lane-header {
@@ -151,7 +155,7 @@
       border: solid 0px red;
       position: relative;
       align-items: stretch;
-      > header {
+      >header {
         padding: 0 rem(20);
         border-bottom: 1px solid $color-pf-black-300 !important;
         .toolbar-pf {
@@ -221,4 +225,8 @@
 
 .gu-mirror {
   padding: em(15);
+  .row-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
 }

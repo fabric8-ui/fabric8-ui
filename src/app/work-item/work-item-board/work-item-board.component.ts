@@ -121,7 +121,7 @@ export class WorkItemBoardComponent implements OnInit {
     let [el, source] = args;
   }
 
-  foo(workItem: WorkItem) {
+  getWI(workItem: WorkItem) {
     console.log(workItem);
     this.workItem = workItem;
   }
@@ -132,14 +132,14 @@ export class WorkItemBoardComponent implements OnInit {
     let state = target.parentElement.parentElement.getAttribute('data-state');
     //this.workItem = this.workItems[el.getAttribute('data-item')];
     //console.log(el.getAttribute('data-item'));
-    this.onChangeState(state);
+    this.changeState(state);
   }
 
   onOver(args) {
     let [el, container, source] = args;
     let containerClassList = container.parentElement.parentElement.classList;
     let laneSection = document.getElementsByClassName('board-lane-column');
-    for(let i=0; i<laneSection.length; i++){
+    for(let i=0; i<laneSection.length; i++) {
       laneSection[i].classList.remove('active-lane');
     }
     containerClassList.add('active-lane');
@@ -156,7 +156,7 @@ export class WorkItemBoardComponent implements OnInit {
     }, timeOut);
   }
 
-  onChangeState(option: any): void {
+  changeState(option: any): void {
     this.workItem.attributes['system.state'] = option;
     this.save();
   }

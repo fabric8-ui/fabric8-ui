@@ -12,7 +12,6 @@
           <div class="board">
             <!-- board columns -->
             <div class="board-lane" *ngFor='let lane of lanes'>
-
               <section class="flex-container in-column-direction board-lane-column" [attr.data-state]="lane.option">
                 <div class="lane-header">
                   <span class="dib">{{lane.option}}</span>
@@ -24,37 +23,38 @@
                   [eachElementHeightInPx]='contentItemHeight'
                   (initItems)='initWiItems($event, lane)'
                   (fetchMore)='fetchMoreWiItems(lane)' >
+
                   <div *ngIf="lane.option == 'new'">
                       <div *ngIf="loggedIn" class="boardQuickAddContainer flex-container in-column-direction">
                           <alm-work-item-quick-add [wilistview] = "'wi-card-view'" (close)="close($event)"></alm-work-item-quick-add>
                       </div>
                   </div>
                   <div [dragula]='"first-bag"' class="card-wrapper">
-                    <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of workItems | almFilterBoardList:lane.option' (click)="gotoDetail(item)" (mousedown)="foo(item)">
+                    <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of lane.workItems' (click)="gotoDetail(item)" (mousedown)="getWI(item)">
                       <div class="row-wrapper">
                         <div class="">
                           <span class="wi-type-icon" almIcon [iconType]="item.relationships?.baseType?.data?.id"></span>
+                          <span class=""> {{item.id}} </span>
                         </div>
-                        <span class=""> {{item.id}} </span>
                         <span dropdown>
-                        <button class="btn btn-link color-grey" type="button" dropdownToggle>
-                          <span class="fa fa-ellipsis-v"></span>
-                        </button>
-                        <ul class="dropdown-menu-right" dropdownMenu>
-                          <li><a class="workItemList_MoveTop">Move to Top</a></li>
-                          <li><a class="workItemList_MoveBottom">Move to Bottom</a></li>
-                          <li class="divider" role="presentation"></li>
-                          <li><a class="workItemList_Open" href="./detail/429">Open</a></li>
-                          <li><a class="workItemList_Delete">Delete</a></li>
-                          <li><a class="workItemList_Backlog">Move to Backlog</a></li>
-                        </ul>
+                          <button class="btn btn-link color-grey" type="button" dropdownToggle>
+                            <span class="fa fa-ellipsis-v"></span>
+                          </button>
+                          <ul class="dropdown-menu-right" dropdownMenu>
+                            <li><a class="workItemList_MoveTop">Move to Top</a></li>
+                            <li><a class="workItemList_MoveBottom">Move to Bottom</a></li>
+                            <li class="divider" role="presentation"></li>
+                            <li><a class="workItemList_Open" href="./detail/429">Open</a></li>
+                            <li><a class="workItemList_Delete">Delete</a></li>
+                            <li><a class="workItemList_Backlog">Move to Backlog</a></li>
+                          </ul>
                         </span>
                       </div>
                       <div class="row-wrapper">
-                        <div class="col-md-10 col-sm-10 col-xs-9">
+                        <div class="">
                           <p class="multiline-truncation">{{ item.attributes['system.title'] }}</p>
                         </div>
-                        <div class="col-md-2 col-sm-2 col-xs-3 user-avatar">
+                        <div class="user-avatar">
                           <img *ngIf="item.relationalData?.assignees?.length"
                             src="{{item.relationalData?.assignees[0]?.attributes.imageURL + '&s=20'}}"
                             onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
