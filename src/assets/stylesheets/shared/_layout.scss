@@ -1,12 +1,6 @@
 ///////////////////////////
-// icon styles
-///////////////////////////
-@import 'icons';
-
-///////////////////////////
 // Utility styles
 ///////////////////////////
-
 
 @mixin padding-x($count:15) {
   @for $i from 0 through $count {
@@ -236,15 +230,14 @@ footer
   }
 
   a {
-    color: white;
+    color: $color-pf-white;
   }
 
 }
 
-  .btn{
-    min-width: 90px;
-  }
-
+.btn{
+  min-width: 90px;
+}
 
 // chromeless dialog suppresses all chrome in the ng2-bootstrap modal component
 .chromeless-modal
@@ -329,8 +322,3 @@ $wizard-padding:$grid-gutter-width/2;
     }
   }
 }
-
-
-
-
-

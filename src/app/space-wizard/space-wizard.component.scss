@@ -1,4 +1,8 @@
 @import '../../assets/stylesheets/base';
+
+$icon-path: '../../assets/icon/';
+@import '../../assets/stylesheets/icons';
+
 $wizard-padding: $grid-gutter-width / 2;
 $wizard-spacing: 5px;
 // shado distance from element

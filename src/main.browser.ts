@@ -19,7 +19,7 @@ import {AppModule} from './app';
 /*
  * Import application wide styles
  */
-import './assets/stylesheets/custom.scss';
+import './assets/stylesheets/shared/main.scss';
 
 /*
  * Bootstrap our Angular app with a top level NgModule

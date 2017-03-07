@@ -1,3 +1,5 @@
-@import 'variables';
-@import 'custom-variables';
-@import 'custom-mixins';
+@import 'shared/variables';
+@import 'shared/custom-variables';
+@import 'shared/custom-mixins';
+@import 'fabric8-ui-mixins';
+@import 'fabric8-ui-variables';
