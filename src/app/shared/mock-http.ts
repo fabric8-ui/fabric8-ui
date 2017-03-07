@@ -137,7 +137,7 @@ export class MockHttp extends Http {
         },
         'meta': { 'totalCount': workItems.length }
         };
-      this.logger.log('Page result: ' + JSON.stringify(result));
+      //this.logger.log('Page result: ' + JSON.stringify(result));
       return result;
     }
 
