@@ -8,7 +8,8 @@ var gulp = require('gulp'),
   exec = require('child_process').exec,
   ngc = require('gulp-ngc'),
   changed = require('gulp-changed'),
-  sass = require('./config/sass');
+  sass = require('./config/sass'),
+  argv = require('yargs').argv;
 
 var appSrc = 'src';
 var libraryDist = 'dist';
@@ -32,15 +33,22 @@ function updateWatchDist() {
     .pipe(gulp.dest(watchDist));
 }
 
-function transpileSASS(src) {
+function transpileSASS(src, debug) {
+  let opts = {
+    outputStyle: 'compressed',
+    includePaths: sass.modules.map(val => {
+      return val.sassPath;
+    })
+  };
+
+  if (debug) {
+    opts.outputStyle = 'expanded';
+    opts.sourceComments = true;
+    console.log('Compiling', src,'in debug mode using SASS options:', opts );
+  }
   return gulp.src(src)
     .pipe(sourcemaps.init())
-    .pipe(sassCompiler({
-      outputStyle: 'compressed',
-      includePaths: sass.modules.map(val => {
-        return val.sassPath;
-      }),
-    }).on('error', sassCompiler.logError)) // this will prevent our future watch-task from crashing on sass-errors
+    .pipe(sassCompiler(opts).on('error', sassCompiler.logError)) // this will prevent our future watch-task from crashing on sass-errors
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(function (file) {
       return libraryDist + file.base.slice(__dirname.length); // save directly to dist
@@ -64,7 +72,11 @@ gulp.task('post-transpile', ['transpile'], function () {
 
 //Sass compilation and minifiction
 gulp.task('transpile-sass', function () {
-  return transpileSASS(appSrc + '/app/**/*.scss');
+  if (argv['sass-src']) {
+    return transpileSASS(argv['sass-src'], true);
+  } else {
+    return transpileSASS(appSrc + '/app/**/*.scss');
+  }
 });
 
 // Put the SASS files back to normal

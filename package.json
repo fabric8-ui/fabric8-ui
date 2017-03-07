@@ -199,8 +199,8 @@
     "rollup-plugin-angular-aot": "0.0.4",
     "run-sequence": "1.2.2",
     "sass-lint": "1.10.2",
-    "sasslint-webpack-plugin": "1.0.4",
     "sass-loader": "6.0.2",
+    "sasslint-webpack-plugin": "1.0.4",
     "script-ext-html-webpack-plugin": "1.7.1",
     "semantic-release": "^6.3.2",
     "source-map-loader": "0.1.6",
@@ -224,7 +224,8 @@
     "webpack-dll-bundles-plugin": "1.0.0-beta.5",
     "webpack-md5-hash": "0.0.5",
     "webpack-merge": "3.0.0",
-    "webpack-validator": "2.3.0"
+    "webpack-validator": "2.3.0",
+    "yargs": "^7.0.1"
   },
   "release": {
     "branch": "master",
