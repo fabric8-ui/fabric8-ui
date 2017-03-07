@@ -1,3 +1,4 @@
+import { CommentLink } from './../../../models/comment';
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
@@ -23,6 +24,8 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
     users: User[];
     isCollapsedComments: Boolean = false;
     currentUser: User;
+    commentEditable: Boolean = false;
+    selectedCommentId: String = '';
 
     constructor(
         private workItemService: WorkItemService,
@@ -53,36 +56,56 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
         this.comment = new Comment();
         this.comment.type = 'comments';
         this.comment.attributes = new CommentAttributes();
+        this.comment.links = new CommentLink();
     };
 
+    openComment(id): void {
+      if (this.loggedIn) {
+        this.selectedCommentId = id;
+        this.commentEditable = true;
+      }
+    }
     createComment(event: any = null): void {
-        this.preventDef(event);
-        this.comment.attributes.body = event.target.textContent;
-        this.workItemService
-            .createComment(this.workItem['id'], this.comment)
-            .then(response => {
-                event.target.textContent = "";
-                this.createCommentObject();
-            })
-            .catch ((error) => {
-                console.log(error);
-            });
+      this.preventDef(event);
+      this.comment.attributes.body = event.target.textContent;
+      this.workItemService
+        .createComment(this.workItem['id'], this.comment)
+        .then(response => {
+            event.target.textContent = '';
+            this.createCommentObject();
+        })
+        .catch ((error) => {
+            console.log(error);
+        });
     }
 
-    updateComment(event: any = null, comment: Comment): void {
-        this.preventDef(event);
-        this.comment.id = comment.id;
-        this.comment.attributes.body = event.target.textContent;
+    updateComment(val: string, comment: Comment): void {
+      let newCommentBody = document.getElementById(val).innerHTML;
+      comment.attributes.body = newCommentBody;
+      this.workItemService
+        .updateComment(comment)
+          .then(response => {
+            //event.target.blur();
+            this.selectedCommentId = '';
+            this.createCommentObject();
+          })
+        .catch ((error) => {
+          console.log(error);
+        });
+    }
 
-        this.workItemService
-            .updateComment(this.comment)
-            .then(response => {
-                event.target.blur();
-                this.createCommentObject();
-            })
-            .catch ((error) => {
-                console.log(error);
-            });
+    onCommentEdit($event, inpId, saveBtnId) {
+      this.preventDef($event);
+      // console.log(document.getElementById(saveBtnId).cla);
+      if (document.getElementById(inpId).innerHTML.trim() === '') {
+        document.getElementById(saveBtnId).classList.add('disabled');
+      } else {
+        document.getElementById(saveBtnId).classList.remove('disabled');
+      }
+    }
+
+    closeCommentEditing() {
+      this.selectedCommentId = '';
     }
 
     resetCommentDraft(event: any = null): void {

@@ -38,6 +38,15 @@ body {
 .textCenter {
     text-align: $textCenter;
 }
+// action buttons for editing title, description, comment
+.detail-action-btn {
+  font-size: em(14);
+  cursor: pointer;
+  width: em(42);
+  text-align: $textCenter;
+  padding: 0 !important;
+  margin-left: em(5);
+}
 
 //user -gravatar
 

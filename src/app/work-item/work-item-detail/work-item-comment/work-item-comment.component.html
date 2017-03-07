@@ -1,69 +1,96 @@
-<div *ngIf="workItem" class="col-md-12 col-sm-12 col-xs-12 padding-0" id="wi-comment">
-    <div class="comment-content" id="wi-comment-content">
+<div *ngIf="workItem" class="flex-container flex-grow-1 in-column-direction" id="wi-comment">
+    <ul class="comment-content nav nav-tabs nav-tabs-pf" id="wi-comment-content" *ngIf="true">
         <!-- Refactoring needed to toogle view -->
-        <div class="col-md-12 col-sm-12 col-xs-12" *ngIf="true">
-          <div class="panel panel-default wi-comment-panel" >
-              <div class="panel-heading">
-                <h3 class="panel-title" (click)="isCollapsedComments = !isCollapsedComments">
-                  <i class="fa fa-icon"
-                    [ngClass]="{'fa-angle-right': isCollapsedComments,
-                        'fa-angle-down': !isCollapsedComments}"></i>
-                  Comments
-                </h3>
+      <li class="toggle-icon" (click)="isCollapsedComments = !isCollapsedComments">
+        <i class="fa fa-icon" [ngClass]="{'fa-angle-right': isCollapsedComments,
+              'fa-angle-down': !isCollapsedComments}"></i>
+      </li>
+      <li class="active" (click)="isCollapsedComments = !isCollapsedComments">
+        <a>
+          <span>Comments</span>
+          <span class="badge">{{workItem.relationalData?.comments?.length}}</span>
+        </a>
+      </li>
+    </ul>
+    <div [collapse]="isCollapsedComments">
+      <div *ngIf="loggedIn" class="wi-comment-input">
+        <p almEditable id="wi-comment-add-comment" class="form-control placeholder"
+              (focus)="resetCommentDraft($event)" (blur)="resetCommentDraft($event)"
+              (keydown.enter)="createComment($event)" (keyup.enter)="preventDef($event)"
+              data-placeholder="Add a new comment..." #comment></p>
+      </div>
+      <div class="flex-container flex-grow-1 in-column-direction comments-outer-wrapper">
+        <div *ngFor='let comment of workItem.relationalData?.comments?.slice(); let counter = index' class="comments-wrap">
+          <div class="flex-container flex-grow-1">
+            <div class="user-avatar">
+                <img id="{{'comment_avatar_' + counter}}"
+                class="user-assign-avatar pull-left"
+                tooltipPlacement="right"
+                tooltip="{{comment.relationalData.creator?.attributes?.fullName}}"
+                *ngIf="comment.relationalData.creator?.attributes?.imageURL"
+                [src]="comment.relationalData.creator?.attributes?.imageURL | almAvatarSize:30"
+                />
+            </div>
+            <div class="comment-body flex-grow-1">
+              <div class="flex-container">
+                <h5 class="comment-authr-name">
+                    <strong id="{{'comment_username_' + counter}}" class="truncate">
+                        {{comment.relationalData?.creator?.attributes?.fullName}}
+                    </strong>
+                </h5>
+
+                <small class="createTimeBlock" id="{{'comment_time_' + counter}}">
+                    {{comment.attributes['created-at'] | date:'medium'}}
+
+                </small>
               </div>
-              <div [collapse]="isCollapsedComments">
-                <div class="panel-body" >
-                  <div *ngIf="loggedIn" class="wi-comment-input">
-                      <p almEditable id="wi-comment-add-comment" class="form-control placeholder width100"
-                          (focus)="resetCommentDraft($event)" (blur)="resetCommentDraft($event)"
-                          (keydown.enter)="createComment($event)" (keyup.enter)="preventDef($event)"
-                          data-placeholder="Add a new comment..." #comment></p>
-                  </div>
-                  <div *ngFor='let comment of workItem.relationalData?.comments?.slice(); let counter = index' class="comments-wrap">
-                      <div>
-                          <div class="user-avatar pull-left">
-                              <img id="{{'comment_avatar_' + counter}}"
-                              class="user-assign-avatar pull-left"
-                              tooltipPlacement="right"
-                              tooltip="{{comment.relationalData.creator?.attributes?.fullName}}"
-                              *ngIf="comment.relationalData.creator?.attributes?.imageURL"
-                              [src]="comment.relationalData.creator?.attributes?.imageURL | almAvatarSize:30"
-                              />
-                          </div>
-                          <div class="comment-body">
-                            <small class="pull-right createTimeBlock" id="{{'comment_time_' + counter}}">
-                                {{comment.attributes['created-at'] | date:'medium'}}
-                            </small>
-                              <h5 class="col-md-6 col-sm-6 col-xs-8 padding-0 truncate">
-                                  <strong id="{{'comment_username_' + counter}}">
-                                      {{comment.relationalData?.creator?.attributes?.fullName}}
-                                  </strong>
-                              </h5>
-                              <p *ngIf="!loggedIn || (currentUser.id !== comment.relationalData.creator?.id)"
-                                  id="{{'comment_body_' + counter}}"
-                                  class="col-md-12 col-xs-12 col-sm-12 padding-0">
-                                {{ comment.attributes.body }}
-                              </p>
-                              <p  *ngIf="!!loggedIn && (currentUser.id === comment.relationalData.creator?.id)"
-                                  almEditable #commentBody
-                                  id="{{'comment_body_' + counter}}"
-                                  class="col-md-12 col-xs-12 col-sm-12 padding-0"
-                                  (keydown.enter)="updateComment($event, comment)"
-                                  (keyup.enter)="preventDef($event)"
-                                  [innerText]="comment.attributes.body | almTrim">
-                              </p>
-                          </div>
-                      </div>
-                      </div>
-                </div>
-                <div class="panel-footer">
-                  <span>View more comments</span>
-                  <p class="pull-right">
-                    <span>5 </span> of <span>20</span>
-                  </p>
-                </div>
+              <!-- when comment is not editable -->
+              <div *ngIf="!loggedIn ||
+                (!commentEditable || (currentUser.id !== comment.relationalData.creator?.id))
+                || (selectedCommentId != comment.id)
+                "
+
+                (click)='openComment(comment.id)'>
+                <p id="{{'comment_body_' + counter}}" class="noneditableComment margin-top-10 form-control">
+                  {{ comment.attributes.body }}
+                </p>
               </div>
+              <!-- when comment is editable -->
+              <div *ngIf="loggedIn &&
+                  (selectedCommentId == comment.id) &&
+                  (commentEditable && (currentUser.id === comment.relationalData.creator?.id))" >
+                <p almEditable #commentBody
+                    (keyup)="onCommentEdit($event, 'comment_body_' + counter, 'comment_save_btn' + counter)"
+                    id="{{'comment_body_' + counter}}"
+                    class="margin-top-10 form-control editableComment"
+                    [innerText]="comment.attributes.body | almTrim">
+                </p>
+                <aside *ngIf="commentEditable">
+                  <!--Cancel icon-->
+                    <button
+                        (click)="closeCommentEditing()"
+                        class="pull-right btn btn-default detail-action-btn">
+                      <span class="fa fa-close"></span>
+                    </button>
+                  <!--Save icon-->
+                  <button
+                    class="pull-right btn btn-default detail-action-btn"
+                    id="{{'comment_save_btn' + counter}}"
+                    (click)="updateComment('comment_body_' + counter, comment)"
+                    >
+                    <span class="fa fa-check"></span>
+                  </button>
+                </aside>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+      <div class="comment-footr flex-container in-row-direction flex-grow-1">
+        <span>View more comments</span>
+        <p class="margin-0 padding-0">
+          <span>5 </span> of <span>{{workItem.relationalData?.comments?.length}}</span>
+        </p>
+      </div>
     </div>
 </div>
