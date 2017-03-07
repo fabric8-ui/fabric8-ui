@@ -1,7 +1,10 @@
 # ngx-widgets
 
-[![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-ngx-widgets-npm-publish-build-master)](https://ci.centos.org/view/Devtools/job/devtools-ngx-widgets-npm-publish-build-master/)
-[![npm][npm-badge]][https://www.npmjs.com/package/ngx-widgets]
+[![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-ngx-widgets-npm-publish-build-master)](https://ci.centos.org/view/Devtools/job/devtools-ngx-widgets-npm-publish-build-master/) 
+[![npm][npm-badge]][npm-badge-url] 
+
+[npm-badge]: https://img.shields.io/npm/v/@ultimate/aot-loader.svg
+[npm-badge-url]: https://www.npmjs.com/package/ngx-widgets
 
 A collection of Angular components and other useful things to be shared.
 
