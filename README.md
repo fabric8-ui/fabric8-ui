@@ -1,6 +1,6 @@
 # fabric8-ui
 
-[![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-ui-build-master)](https://ci.centos.org/job/devtools-fabric8-ui-build-master)
+[![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-ui-npm-publish-build-master)](https://ci.centos.org/job/devtools-fabric8-ui-npm-publish-build-master)
 
 ## Before you start
 
