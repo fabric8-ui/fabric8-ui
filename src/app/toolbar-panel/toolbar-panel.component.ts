@@ -6,6 +6,7 @@ import { Broadcaster, AuthenticationService } from 'ngx-login-client';
 import { Subscription } from 'rxjs/Subscription';
 import { Space } from 'ngx-fabric8-wit';
 
+import { FilterService } from '../shared/filter.service';
 import { WorkItemService } from './../work-item/work-item.service';
 import { WorkItemListEntryComponent } from './../work-item/work-item-list/work-item-list-entry/work-item-list-entry.component';
 import { WorkItemType } from './../models/work-item-type';
@@ -46,6 +47,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private broadcaster: Broadcaster,
+    private filterService: FilterService,
     private workItemService: WorkItemService,
     private auth: AuthenticationService) {
   }
@@ -64,6 +66,10 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
         this.workItemTypes = [];
       }
     });
+
+    this.filterService.getFilters().then(response => {
+      console.log(response);
+    })
 
     this.filterConfig = {
       fields: [{
