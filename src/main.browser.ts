@@ -17,6 +17,11 @@ import {install as offlinePluginInstall} from 'offline-plugin/runtime';
 import {AppModule} from './app';
 
 /*
+ * Import application wide styles
+ */
+import './assets/stylesheets/custom.scss';
+
+/*
  * Bootstrap our Angular app with a top level NgModule
  */
 export function main() : Promise < any > {

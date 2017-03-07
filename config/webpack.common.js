@@ -197,20 +197,41 @@ module.exports = function (options) {
           })
         },
         {
-          test: /\.scss$/,
+          test: /^(?!.*component).*\.scss$/,
+          use: extractCSS.extract({
+              fallback: 'style-loader',
+              use: [
+                {
+                  loader: 'css-loader',
+                  options: {
+                    minimize: isProd,
+                    sourceMap: true,
+                    context: '/'
+                  }
+                }, {
+                  loader: 'sass-loader',
+                  options: {
+                    includePaths: sassModules.map(function (val) {
+                      return val.sassPath;
+                    }),
+                    sourceMap: true
+                  }
+                }
+              ],
+          })
+        }, {
+          test: /\.component\.scss$/,
           use: [
             {
               loader: 'to-string-loader'
-            },
-            {
+            }, {
               loader: 'css-loader',
               options: {
                 minimize: isProd,
                 sourceMap: true,
                 context: '/'
               }
-            },
-            {
+            }, {
               loader: 'sass-loader',
               options: {
                 includePaths: sassModules.map(function (val) {

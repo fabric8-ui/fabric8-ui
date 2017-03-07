@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
   selector: 'stack-recommendation',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './stack-recommendation.html',
-  styleUrls: ['stack-recommendation.scss']
+  styleUrls: ['./stack-recommendation.component.scss']
 })
 
 export class StackRecommendationComponent {
