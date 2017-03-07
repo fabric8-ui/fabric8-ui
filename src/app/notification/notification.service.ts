@@ -30,7 +30,7 @@ export class NotificationService {
   modes: any = {};
   notifications: any = {};
   persist: any = {'error': true, 'httpError': true};
-  verbose: boolean = true;
+  verbose: boolean = false;
 
   constructor() {
     this.notifications.data = [] as Notification[];
@@ -54,6 +54,9 @@ export class NotificationService {
         persistent = this.persist[index];
       }
       this.notifications.message(this.modes[index].type, header, message, persistent, primaryAction, moreActions);
+      if (this.verbose) {
+        console.log(message);
+      }
     };
   }
 
