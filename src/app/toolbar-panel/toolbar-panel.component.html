@@ -16,17 +16,38 @@
             <span class='dropdown-text'>
               {{workItemTypes[0]?.attributes.name}}
             </span>
-            <span *ngIf="loggedIn" class="caret pull-right"></span>
+            <span class="caret"></span>
           </button>
           <ul *ngIf="loggedIn" id="wi-board-type-dropdown" class="dropdown-menu-right dropdown-ul" role="menu" dropdownMenu>
             <li class="dropdown-li" *ngFor="let type of workItemTypes;" (click)="onChangeBoardType(type)">
               <a>
-                <span class='dropdown-icon fa {{type.attributes.name}}'></span>
+                <span class='dropdown-icon fa {{type.attributes.icon}}'></span>
                 <span class='dropdown-text'>{{type.attributes.name}}</span>
               </a>
             </li>
           </ul>
         </div>
+        <span *ngIf="context==='listview'" class="dropdown primary-action" dropdown>
+          <button class="btn btn-default" id="wi_filter_dropdown" type="button" dropdownToggle>
+            Move
+            <span class="caret"></span>
+          </button>
+          <ul role="menu" aria-labelledby="wi_filter_dropdown" dropdownMenu>
+            <li>
+              <a role="menuitem" tabindex="-1" (click)="moveItem('top')">Move to Top</a>
+            </li>
+            <li>
+              <a role="menuitem" tabindex="-1" (click)="moveItem('bottom')">Move to Bottom</a>
+            </li>
+            <li role="presentation" class="divider"></li>
+            <li>
+              <a role="menuitem" tabindex="-1" (click)="moveItem('up')">Move Up</a>
+            </li>
+            <li>
+              <a role="menuitem" tabindex="-1" (click)="moveItem('down')">Move Down</a>
+            </li>
+          </ul>
+        </span>
       </template>
       <template #add>
         <div *ngIf="loggedIn && editEnabled" class="with-cursor-pointer" placement="bottom" tooltip="Add A Work Item" (click)="typeSelectPanel.openPanel()">
