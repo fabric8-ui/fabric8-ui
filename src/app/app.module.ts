@@ -14,7 +14,8 @@ import {
   AuthenticationService,
   Broadcaster,
   Logger,
-  UserService
+  UserService,
+  HttpService
 } from 'ngx-login-client';
 
 // Shared
@@ -88,7 +89,11 @@ if (process.env.ENV == 'inmemory') {
     GlobalSettings,
     witApiUrlProvider,
     serviceImports,
-    DummySpace
+    DummySpace,
+    {
+      provide: Http,
+      useClass: HttpService
+    }
   ];
 }
 

@@ -75,6 +75,12 @@ export class HeaderComponent implements OnInit {
       .subscribe(message => {
         this.resetData();
       });
+
+    this.broadcaster.on<any>('authenticationError')
+      .subscribe(() => {
+        this.logout();
+        this.router.navigate(['/login']);
+      });
   }
 
   onSpaceChange(newSpace: Space) {

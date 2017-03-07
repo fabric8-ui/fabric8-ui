@@ -36,7 +36,7 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.UserService.getAllUsers().then((users) => this.users = users);
+        this.UserService.getAllUsers().subscribe((users) => this.users = users);
         this.currentUser = this.UserService.getSavedLoggedInUser();
         this.createCommentObject();
     }

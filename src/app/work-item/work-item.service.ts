@@ -108,7 +108,7 @@ export class WorkItemService {
         })
         .catch ((e) => {
           if (e.status === 401) {
-            this.auth.logout(true);
+            this.auth.logout();
           } else {
             this.handleError(e);
           }
@@ -178,7 +178,7 @@ export class WorkItemService {
         })
         .catch ((e) => {
           if (e.status === 401) {
-            this.auth.logout(true);
+            this.auth.logout();
           } else {
             this.handleError(e);
           }
@@ -229,7 +229,7 @@ export class WorkItemService {
       })
       .catch ((e) => {
         if (e.status === 401) {
-          this.auth.logout(true);
+          this.auth.logout();
         } else {
           this.handleError(e);
         }
@@ -293,7 +293,7 @@ export class WorkItemService {
           })
           .catch ((e) => {
             if (e.status === 401) {
-              this.auth.logout(true);
+              this.auth.logout();
             } else {
               this.handleError(e);
             }
@@ -526,7 +526,7 @@ export class WorkItemService {
         })
         .catch ((e) => {
           if (e.status === 401) {
-            this.auth.logout(true);
+            this.auth.logout();
           } else {
             this.handleError(e);
           }
@@ -558,7 +558,7 @@ export class WorkItemService {
       })
       .catch ((e) => {
         if (e.status === 401) {
-          this.auth.logout(true);
+          this.auth.logout();
         } else {
           wItem.relationalData.linkDicts = [];
           this.handleError(e);
@@ -586,7 +586,7 @@ export class WorkItemService {
         })
       .catch ((e) => {
         if (e.status === 401) {
-          this.auth.logout(true);
+          this.auth.logout();
         } else {
           this.handleError(e);
         }
@@ -658,7 +658,7 @@ export class WorkItemService {
         })
         .catch ((e) => {
           if (e.status === 401) {
-            this.auth.logout(true);
+            this.auth.logout();
           } else {
             this.handleError(e);
           }
@@ -773,7 +773,7 @@ export class WorkItemService {
       })
       .catch ((e) => {
         if (e.status === 401) {
-          this.auth.logout(true);
+          this.auth.logout();
         } else {
           this.handleError(e);
         }
@@ -811,7 +811,7 @@ export class WorkItemService {
         })
         .catch ((e) => {
           if (e.status === 401) {
-            this.auth.logout(true);
+            this.auth.logout();
           } else {
             this.handleError(e);
           }
@@ -869,7 +869,7 @@ export class WorkItemService {
       })
       .catch ((e) => {
         if (e.status === 401) {
-          this.auth.logout(true);
+          this.auth.logout();
         } else {
           this.handleError(e);
         }
@@ -938,14 +938,14 @@ export class WorkItemService {
               resolve(linkTypes);
             }).catch ((e) => {
               if (e.status === 401) {
-                this.auth.logout(true);
+                this.auth.logout();
               } else {
                 this.handleError(e);
               }
             });
         }).catch ((e) => {
           if (e.status === 401) {
-            this.auth.logout(true);
+            this.auth.logout();
           } else {
             this.handleError(e);
           }
@@ -1076,7 +1076,7 @@ export class WorkItemService {
         })
         .catch ((e) => {
           if (e.status === 401) {
-            this.auth.logout(true);
+            this.auth.logout();
           } else {
             this.handleError(e);
           }
@@ -1106,7 +1106,7 @@ export class WorkItemService {
         .then(response => { this.removeLinkFromWorkItem(link, currentWiId) })
         .catch ((e) => {
           if (e.status === 401) {
-            this.auth.logout(true);
+            this.auth.logout();
           } else {
             this.handleError(e);
           }
@@ -1125,7 +1125,7 @@ export class WorkItemService {
           .then((response) => response.json().data as WorkItem[])
           .catch ((e) => {
             if (e.status === 401) {
-              this.auth.logout(true);
+              this.auth.logout();
             } else {
               this.handleError(e);
             }
@@ -1199,7 +1199,7 @@ export class WorkItemService {
         })
         .catch ((e) => {
           if (e.status === 401) {
-            this.auth.logout(true);
+            this.auth.logout();
           } else {
             this.handleError(e);
           }
@@ -1228,7 +1228,7 @@ export class WorkItemService {
         .then(response => response.json().data.attributes.renderedContent)
         .catch ((e) => {
           if (e.status === 401) {
-            this.auth.logout(true);
+            this.auth.logout();
           } else {
             this.handleError(e);
           }

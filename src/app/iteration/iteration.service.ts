@@ -60,7 +60,7 @@ export class IterationService {
           })
           .catch ((error: Error | any) => {
             if (error.status === 401) {
-              this.auth.logout(true);
+              this.auth.logout();
             } else {
               console.log('Fetch iteration API returned some error - ', error.message);
               return Promise.reject<IterationModel[]>([] as IterationModel[]);
@@ -106,7 +106,7 @@ export class IterationService {
           })
           .catch ((error: Error | any) => {
             if (error.status === 401) {
-              this.auth.logout(true);
+              this.auth.logout();
             } else {
               console.log('Post iteration API returned some error - ', error.message);
               return Promise.reject<IterationModel>({} as IterationModel);
@@ -149,7 +149,7 @@ export class IterationService {
       })
       .catch ((error: Error | any) => {
         if (error.status === 401) {
-          this.auth.logout(true);
+          this.auth.logout();
         } else {
           console.log('Patch iteration API returned some error - ', error.message);
           return Promise.reject<IterationModel>({} as IterationModel);
