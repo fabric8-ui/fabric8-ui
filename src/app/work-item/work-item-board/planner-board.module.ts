@@ -15,8 +15,6 @@ import {
   WidgetsModule
 } from 'ngx-widgets';
 
-import { UserService } from 'ngx-login-client';
-
 import { AlmFilterBoardList } from '../../pipes/alm-board-filter.pipe';
 import { AuthUserResolve, UsersResolve } from '../common.resolver';
 import { GlobalSettings } from '../../shared/globals';
@@ -58,7 +56,6 @@ import { WorkItemService } from '../work-item.service';
   providers: [
     AuthUserResolve,
     GlobalSettings,
-    UserService,
     UsersResolve,
     WorkItemService
   ],

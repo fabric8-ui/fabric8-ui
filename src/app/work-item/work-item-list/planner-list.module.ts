@@ -14,7 +14,6 @@ import {
   TreeListModule,
   WidgetsModule
 } from 'ngx-widgets';
-import { UserService } from 'ngx-login-client';
 
 import { AuthUserResolve, UsersResolve } from '../common.resolver';
 import { FabPlannerAssociateIterationModalComponent } from '../work-item-iteration-association-modal/work-item-iteration-association-modal.component';
@@ -57,7 +56,6 @@ import { WorkItemService } from '../work-item.service';
   providers: [
     AuthUserResolve,
     GlobalSettings,
-    UserService,
     UsersResolve,
     WorkItemService
   ],

@@ -11,8 +11,6 @@ import {
   WidgetsModule
 } from 'ngx-widgets';
 
-import { UserService } from 'ngx-login-client';
-
 import { IterationModule } from '../iteration/iteration.module';
 import { SidepanelModule } from '../side-panel/side-panel.module';
 import { AuthUserResolve, UsersResolve } from './common.resolver';
@@ -46,7 +44,6 @@ import { WorkItemService } from './work-item.service';
   ],
   providers: [
     AuthUserResolve,
-    UserService,
     UsersResolve,
     MockDataService,
     GlobalSettings,
