@@ -34,6 +34,7 @@ const FABRIC8_FORGE_URL = process.env.FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const BUILD_NUMBER = process.env.BUILD_NUMBER;
 const BUILD_TIMESTAMP = process.env.BUILD_TIMESTAMP;
+const BUILD_VERSION = process.env.BUILD_VERSION;
 
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8080;
@@ -47,7 +48,8 @@ const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
   FABRIC8_FORGE_URL: FABRIC8_FORGE_URL,
   PUBLIC_PATH: PUBLIC_PATH,
   BUILD_NUMBER: BUILD_NUMBER,
-  BUILD_TIMESTAMP: BUILD_TIMESTAMP
+  BUILD_TIMESTAMP: BUILD_TIMESTAMP,
+  BUILD_VERSION: BUILD_VERSION
 });
 
 module.exports = function (env) {
@@ -172,7 +174,8 @@ module.exports = function (env) {
           'FABRIC8_FORGE_URL': stringify(METADATA.FABRIC8_FORGE_URL),
           'PUBLIC_PATH': stringify(METADATA.PUBLIC_PATH),
           'BUILD_NUMBER': stringify(METADATA.BUILD_NUMBER),
-          'BUILD_TIMESTAMP': stringify(METADATA.BUILD_TIMESTAMP)
+          'BUILD_TIMESTAMP': stringify(METADATA.BUILD_TIMESTAMP),
+          'BUILD_VERSION': stringify(METADATA.BUILD_VERSION),
         }
       }),
 

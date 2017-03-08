@@ -29,7 +29,7 @@ export class AppComponent {
 
   ngOnInit() {
     console.log('Welcome to Fabric8!');
-    console.log('This build is', '#' + this.about.buildNumber, 'and was built on', this.about.buildTimestamp);
+    console.log('This is', this.about.buildVersion, '(Build', '#' + this.about.buildNumber, 'and was built on', this.about.buildTimestamp, ')');
     this.activatedRoute.params.subscribe(() => {
       let query = window.location.search.substr(1);
       let result: any = {};

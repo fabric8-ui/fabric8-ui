@@ -7,10 +7,12 @@ set -x
 set -e
 
 # Export needed vars
+set +x
 for var in BUILD_NUMBER BUILD_URL JENKINS_URL GIT_BRANCH GH_TOKEN NPM_TOKEN; do
   export $(grep ${var} jenkins-env | xargs)
 done
 export BUILD_TIMESTAMP=`date -u +%Y-%m-%dT%H:%M:%S`+00:00
+set -x
 
 # We need to disable selinux for now, XXX
 /usr/sbin/setenforce 0
@@ -43,9 +45,14 @@ fi
 ## Exec functional tests
 docker exec fabric8-ui-builder ./run_functional_tests.sh
 
+## Run the prod build
+docker exec fabric8-ui-builder npm run build:prod
+
+set +e
 if [ $? -eq 0 ]; then
   echo 'CICO: functional tests OK'
-  docker exec fabric8-ui-builder npm run build:prod
+  docker exec fabric8-ui-builder npm run semantic-release
+  docker exec fabric8-ui-builder export BUILD_VERSION=`./version_number.js`
   docker exec -u root fabric8-ui-builder cp -r /home/fabric8/fabric8-ui/dist /
   ## All ok, deploy
   if [ $? -eq 0 ]; then
@@ -54,8 +61,6 @@ if [ $? -eq 0 ]; then
     docker tag fabric-ui-deploy 8.43.84.245.xip.io/fabric8io/fabric8-ui:latest
     docker push 8.43.84.245.xip.io/fabric8io/fabric8-ui:latest
     if [ $? -eq 0 ]; then
-      set +e
-      docker exec fabric8-ui-builder npm run semantic-release
       echo 'CICO: image pushed, npmjs published, ready to update deployed app'
       exit 0
     else
