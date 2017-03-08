@@ -11,14 +11,14 @@
           <button dropdownToggle
               id="wi-board-type"
               type="button"
-              class="btn btn-default col-md-12 col-sm-12 col-xs-12">
-            <span class='dropdown-icon fa {{workItemTypes[0]?.attributes.icon}}'></span>
+              class="btn btn-default">
+            <span class='dropdown-icon fa {{currentBoardType?.attributes.icon}}'></span>
             <span class='dropdown-text'>
-              {{workItemTypes[0]?.attributes.name}}
+              {{currentBoardType?.attributes.name}}
             </span>
             <span class="caret"></span>
           </button>
-          <ul *ngIf="loggedIn" id="wi-board-type-dropdown" class="dropdown-menu-right dropdown-ul" role="menu" dropdownMenu>
+          <ul *ngIf="loggedIn" id="wi-board-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" dropdownMenu>
             <li class="dropdown-li" *ngFor="let type of workItemTypes;" (click)="onChangeBoardType(type)">
               <a>
                 <span class='dropdown-icon fa {{type.attributes.icon}}'></span>

@@ -136,7 +136,7 @@ export class WorkItemMockGenerator {
           'system.description': 'Description Text ' + n,
           'system.description.rendered': 'Description Text ' + n,
           'system.remote_item_id': 'remote_id_' + n,
-          'system.state': 'new',
+          'system.state': (n % 2) ? ((n % 3) ? 'new' : 'in progress') : ((n % 3) ? 'story-new' : 'story-in progress'), 
           'system.title': 'Title Text ' + n,
           'version': 6
         },
@@ -150,7 +150,7 @@ export class WorkItemMockGenerator {
           'assignees': { },
           'baseType': {
             'data': {
-              'id': '86af5178-9b41-469b-9096-57e5155c3f31',
+              'id': (n % 2) ? '86af5178-9b41-469b-9096-57e5155c3f31' : 'bbf35418-04b6-426c-a60b-7f80beb0b624',
               'type': 'workitemtypes'
             }
           },

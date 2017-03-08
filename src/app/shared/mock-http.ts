@@ -160,10 +160,6 @@ export class MockHttp extends Http {
      */
     get(url: string, options?: RequestOptionsArgs): Observable<Response> {
       var path = this.parseURL(url);
-
-      if (path.params['filter[assignee]'])
-        this.logger.log('The assignee is: ' + path.params['filter[assignee]']);
-
       if (path.path == null) {
         this.logger.error('GET request failed with request url ' + url);
         return this.createResponse(url.toString(), 500, 'error', {});
@@ -183,9 +179,9 @@ export class MockHttp extends Http {
         case '/workitems':
           if (path.extraPath) {
             return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemOrEntity(path.extraPath) );
-          }
-          else if (path.params['filter[assignee]']) {
-            return this.createResponse(url.toString(), 200, 'ok', this.createPage(this.mockDataService.getWorkItemsFiltered(path.params['filter[assignee]']), path.params) );
+          } else if (path.params['filter[assignee]'] || path.params['filter[workitemtype]'] || path.params['filter[workitemstate]']) {
+            this.logger.log('Request contains filter expressions: ' + JSON.stringify(path.params));
+            return this.createResponse(url.toString(), 200, 'ok', this.createPage(this.mockDataService.getWorkItemsFiltered(path.params), path.params) );
           } else {
             return this.createResponse(url.toString(), 200, 'ok', this.createPage(this.mockDataService.getWorkItems(), path.params) );
           }

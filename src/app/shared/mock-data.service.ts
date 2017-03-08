@@ -74,23 +74,31 @@ export class MockDataService {
 
   // work items and dependend entities (comments, ..)
 
-  /* Filter the workitems based on assignee */
-  public getWorkItemsFiltered(theAssignee: string): any {
-    console.log ("The assignee on which to filter is: " + theAssignee);
-    var filteredWorkitems = new Array (25);
+  /* Filter the workitems */
+  public getWorkItemsFiltered(pathParams: any): any {
+
+    let assigneeFilter = pathParams['filter[assignee]'];
+    let workItemTypeFilter = pathParams['filter[workitemtype]'];
+    let workItemStateFilter = pathParams['filter[workitemstate]'];
+
+    console.log('Filtering on: ' + (assigneeFilter ? 'assignee==' + assigneeFilter + ' ' : '') + (workItemTypeFilter ? 'workitemtype==' + workItemTypeFilter + ' ' : '') + (workItemStateFilter ? 'state==' + workItemStateFilter + ' ' : ''));
+
+    var filteredWorkitems = new Array();
     var counter = 0;
 
     for (var i = 0; i < this.workItems.length; i++) {
-       if (this.workItems[i].relationships.assignees.data) {
-         console.log ("The assignee on which to filter is is: " + this.workItems[i].relationships.assignees.data[0].id);
-         filteredWorkitems[counter++] = this.makeCopy(this.workItems[i]);
-      }
+      let filterMatches: boolean = true;
+      if (assigneeFilter)
+        filterMatches = filterMatches && (this.workItems[i].relationships.assignees.data && this.workItems[i].relationships.assignees.data[0].id === assigneeFilter);
+      if (workItemTypeFilter)
+        filterMatches = filterMatches && (this.workItems[i].relationships.baseType.data.id === workItemTypeFilter);
+      if (workItemStateFilter)
+        filterMatches = filterMatches && (this.workItems[i].attributes['system.state'] === workItemStateFilter);
+
+      if (filterMatches)
+        filteredWorkitems.push(this.makeCopy(this.workItems[i]));
     }
-    var returnArray = new Array (counter-1);
-    for (var i = 0; i < counter; i++) {
-      returnArray[i] = this.makeCopy(filteredWorkitems[i]);
-    }
-    return this.makeCopy(returnArray);
+    return filteredWorkitems;
   }
 
   public getWorkItems(): any {
