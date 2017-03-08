@@ -54,6 +54,7 @@ import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.
 import { WorkItemDetailComponent } from './work-item-detail.component';
 import { WorkItemLinkTypeFilterByTypeName, WorkItemLinkFilterByTypeName } from './work-item-detail-pipes/work-item-link-filters.pipe';
 import { CollapseModule } from 'ng2-bootstrap';
+import {Observable} from 'rxjs';
 
 describe('Detailed view and edit a selected work item - ', () => {
   let comp: WorkItemDetailComponent;
@@ -328,21 +329,15 @@ describe('Detailed view and edit a selected work item - ', () => {
 
     fakeUserService = {
       getUser: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeUser);
-        });
+        return Observable.of(fakeUser);
       },
 
       getAllUsers: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeUserList);
-        });
+        return Observable.of(fakeUserList);
       },
 
       getSavedLoggedInUser: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeUser);
-        });
+        return fakeUser;
       }
     };
 

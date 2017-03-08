@@ -43,6 +43,7 @@ import { IterationService } from '../../iteration/iteration.service';
 
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemListComponent } from './work-item-list.component';
+import { Observable } from 'rxjs';
 
 
 describe('Work item list view - ', () => {
@@ -243,15 +244,15 @@ describe('Work item list view - ', () => {
 
     fakeUserService = {
       getUser: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeUser);
-        });
+        return Observable.of(fakeUser);
       },
 
       getAllUsers: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeUserList);
-        });
+        return Observable.of(fakeUserList);
+      },
+
+      getSavedLoggedInUser: function () {
+        return fakeUser;
       }
     };
 
