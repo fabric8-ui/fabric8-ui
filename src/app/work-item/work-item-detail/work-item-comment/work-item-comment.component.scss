@@ -47,11 +47,11 @@
 }
 .comments-outer-wrapper {
   .comments-wrap {
-    border-top: 1px solid $color-pf-black-200;
+    border-bottom: 1px solid $color-pf-black-200;
     padding: em(20);
     .comment-body {
       min-width: 0; //fix for having full wrapper width and overflowen content
-      padding-left: em(20);
+      padding-left: em(10);
       h5.comment-authr-name {
         margin-top: em(0);
         margin-bottom: em(5);
@@ -63,6 +63,8 @@
         strong {
           display: inline-block;
           width: $width100;
+          padding-left: em(6);
+          padding-right: em(6);
         }
       }
       .createTimeBlock {
@@ -83,42 +85,6 @@
       }
       p.editableComment {
         height: auto;
-      }
-    }
-    &:first-child {
-      border-top-color: transparent;
-    }
-  }
-}
-.comment-footr{
-  background: $color-pf-black-100;
-  padding: rem(7) rem(20);
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid $color-pf-black-200;
-  border-bottom: 1px solid $color-pf-black-200;
-}
-@media (max-width: $screen-md-min) {
-    .comment-content {
-        .comments-wrap {
-            > div {
-                .comment-body {
-                    padding-left: em(36);
-                }
-            }
-        }
-    }
-}
-@media (max-width: $screen-sm-min) {
-  .comment-content {
-    .comments-wrap {
-      > div {
-        .comment-body {
-          .createTimeBlock {
-            width: 7em;
-            line-height: 1.5;
-          }
-        }
       }
     }
   }

@@ -47,11 +47,9 @@
               <!-- when comment is not editable -->
               <div *ngIf="!loggedIn ||
                 (!commentEditable || (currentUser.id !== comment.relationalData.creator?.id))
-                || (selectedCommentId != comment.id)
-                "
-
+                || (selectedCommentId != comment.id)"
                 (click)='openComment(comment.id)'>
-                <p id="{{'comment_body_' + counter}}" class="noneditableComment margin-top-10 form-control">
+                <p id="{{'comment_body_' + counter}}" class="noneditableComment margin-0 form-control">
                   {{ comment.attributes.body }}
                 </p>
               </div>
@@ -62,10 +60,10 @@
                 <p almEditable #commentBody
                     (keyup)="onCommentEdit($event, 'comment_body_' + counter, 'comment_save_btn' + counter)"
                     id="{{'comment_body_' + counter}}"
-                    class="margin-top-10 form-control editableComment"
+                    class="margin-0 form-control editableComment"
                     [innerText]="comment.attributes.body | almTrim">
                 </p>
-                <aside *ngIf="commentEditable">
+                <aside *ngIf="commentEditable" class="margin-top-10">
                   <!--Cancel icon-->
                     <button
                         (click)="closeCommentEditing()"
@@ -85,12 +83,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="comment-footr flex-container in-row-direction flex-grow-1">
-        <span>View more comments</span>
-        <p class="margin-0 padding-0">
-          <span>5 </span> of <span>{{workItem.relationalData?.comments?.length}}</span>
-        </p>
       </div>
     </div>
 </div>
