@@ -67,9 +67,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
       }
     });
 
-    this.filterService.getFilters().then(response => {
-      console.log(response);
-    })
+    // this.filterService.getFilters().then(response => {
+    //   console.log(response);
+    // });
 
     this.filterConfig = {
       fields: [{
