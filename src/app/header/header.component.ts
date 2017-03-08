@@ -1,3 +1,4 @@
+import { SpacesService } from './../shared/standalone/spaces.service';
 import { DummySpace } from './DummySpace.service';
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
@@ -11,7 +12,7 @@ import {
   UserService
 } from 'ngx-login-client';
 
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Spaces, SpaceService } from 'ngx-fabric8-wit';
 
 @Component({
   selector: 'alm-app-header',
@@ -34,7 +35,8 @@ export class HeaderComponent implements OnInit {
     private logger: Logger,
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
-    private spaceService: DummySpace) { }
+    private spaceService: DummySpace,
+    private spacesService: SpacesService) { }
 
   getLoggedUser(): void {
     this.loggedInUser = this.userService.getSavedLoggedInUser();
@@ -52,7 +54,7 @@ export class HeaderComponent implements OnInit {
     this.listenToEvents();
     this.getLoggedUser();
     this.loggedIn = this.auth.isLoggedIn();
-    this.broadcaster.on<Space>('spaceChanged').subscribe(val => this.selectedSpace = val);
+    this.spacesService.current.subscribe(val => this.selectedSpace = val);
     this.spaceService.getAllSpaces().then((spaces) => {
       this.spaces = spaces;
       this.selectedSpace = spaces[0];
@@ -86,10 +88,10 @@ export class HeaderComponent implements OnInit {
   onSpaceChange(newSpace: Space) {
     if (newSpace) {
       this.logger.log('Selected new Space: ' + newSpace.id);
-      this.broadcaster.broadcast('spaceChanged', newSpace);
+      this.spacesService.setCurrent(newSpace);
     } else {
       this.logger.log('Deselected Space.');
-      this.broadcaster.broadcast('spaceChanged', null);
+      this.spacesService.setCurrent(null);
     }
   }
 }

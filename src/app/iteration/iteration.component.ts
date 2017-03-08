@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Params, ActivatedRoute } from '@angular/router';
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Spaces } from 'ngx-fabric8-wit';
 import { IterationService } from './iteration.service';
 import { IterationModel } from '../models/iteration.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -42,7 +42,8 @@ export class IterationComponent implements OnInit, OnDestroy {
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     private iterationService: IterationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private spaces: Spaces
   ) {}
 
   ngOnInit(): void {
@@ -50,7 +51,7 @@ export class IterationComponent implements OnInit, OnDestroy {
     this.loggedIn = this.auth.isLoggedIn();
     this.getAndfilterIterations();
     this.editEnabled = true;
-    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
+    this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[IterationComponent] New Space selected: ' + space.attributes.name);
         console.log(space);

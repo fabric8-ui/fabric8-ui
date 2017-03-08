@@ -1,3 +1,5 @@
+import { SpacesService } from './../shared/standalone/spaces.service';
+import { Spaces } from 'ngx-fabric8-wit';
 import {
   BaseRequestOptions,
   Http,
@@ -75,7 +77,12 @@ describe('Iteration service - ', () => {
           useValue: fakeAuthService
         },
         IterationService,
-        GlobalSettings
+        GlobalSettings,
+        {
+          provide: Spaces,
+          useExisting: SpacesService
+        },
+        SpacesService
       ]
     });
   });

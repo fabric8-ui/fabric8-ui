@@ -14,7 +14,7 @@ import {
   User,
   UserService
 } from 'ngx-login-client';
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Spaces } from 'ngx-fabric8-wit';
 import { WIT_API_URL } from 'ngx-fabric8-wit';
 
 import {
@@ -72,9 +72,10 @@ export class WorkItemService {
     private auth: AuthenticationService,
     private iterationService: IterationService,
     private userService: UserService,
+    private spaces: Spaces,
     @Inject(WIT_API_URL) private baseApiUrl: string)
   {
-    this.broadcaster.on<Space>('spaceChanged').subscribe(val => this._currentSpace = val);
+    this.spaces.current.subscribe(val => this._currentSpace = val);
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
     }

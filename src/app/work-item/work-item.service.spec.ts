@@ -1,3 +1,5 @@
+import { SpacesService } from './../shared/standalone/spaces.service';
+import { Spaces } from 'ngx-fabric8-wit';
 import {
   async,
   inject,
@@ -213,7 +215,12 @@ describe('Work Item Service - ', () => {
           provide: AUTH_API_URL,
           useValue: 'http://api.url.com'
         },
-        witApiUrlProvider
+        witApiUrlProvider,
+        {
+          provide: Spaces,
+          useExisting: SpacesService
+        },
+        SpacesService
       ]
     });
   });

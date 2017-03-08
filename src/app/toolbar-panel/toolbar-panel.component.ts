@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { cloneDeep } from 'lodash';
 import { Broadcaster, AuthenticationService } from 'ngx-login-client';
 import { Subscription } from 'rxjs/Subscription';
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Spaces } from 'ngx-fabric8-wit';
 
 import { FilterService } from '../shared/filter.service';
 import { WorkItemService } from './../work-item/work-item.service';
@@ -52,7 +52,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
     private broadcaster: Broadcaster,
     private filterService: FilterService,
     private workItemService: WorkItemService,
-    private auth: AuthenticationService) {
+    private auth: AuthenticationService,
+    private spaces: Spaces) {
   }
 
   ngOnInit() {
@@ -63,7 +64,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
     // even when there is no active space change (initial population).
     if (this.context === 'boardview')
       this.getWorkItemTypes();
-    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
+    this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[FilterPanelComponent] New Space selected: ' + space.attributes.name);
         this.editEnabled = true;
@@ -166,7 +167,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
     this.currentBoardType = type;
     this.updateOrAddTypeFilter();
     this.broadcaster.broadcast('item_filter', this.filters);
-    this.broadcaster.broadcast('board_type_context', type);    
+    this.broadcaster.broadcast('board_type_context', type);
   }
 
   moveItem(moveto: string) {
@@ -189,11 +190,11 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
   showTypes() {
     this.showTypesOptions = true;
   }
-  
+
   closePanel() {
     this.showTypesOptions = false;
   }
-  
+
   onChangeType(type: string) {
     this.showTypesOptions = false;
     this.router.navigate(['/work-item/list/detail/new?' + type]);

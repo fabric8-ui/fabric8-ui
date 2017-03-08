@@ -1,5 +1,5 @@
 import { WorkItemType } from './../../models/work-item-type';
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Spaces } from 'ngx-fabric8-wit';
 import {
   AfterViewInit,
   Component,
@@ -48,13 +48,14 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     private broadcaster: Broadcaster,
     private logger: Logger,
     private renderer: Renderer,
-    private auth: AuthenticationService) {}
+    private auth: AuthenticationService,
+    private spaces: Spaces) {}
 
   ngOnInit(): void {
     this.createWorkItemObj();
     this.showQuickAdd = false;
     this.showQuickAddBtn = this.auth.isLoggedIn();
-    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
+    this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[WorkItemQuickAddComponent] New Space selected: ' + space.attributes.name);
         this.showQuickAddBtn = true;

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Broadcaster } from 'ngx-login-client';
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Spaces } from 'ngx-fabric8-wit';
 
 @Component({
   host:{
@@ -23,11 +23,12 @@ export class TypeComponent implements OnInit, OnDestroy {
 
   constructor(
     private broadcaster: Broadcaster,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private spaces: Spaces
   ) {}
 
   ngOnInit(): void {
-    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space =>  {
+    this.spaceSubscription = this.spaces.current.subscribe(space =>  {
       if (space) {
         console.log('[IterationComponent] New Space selected: ' + space.attributes.name);
       } else {

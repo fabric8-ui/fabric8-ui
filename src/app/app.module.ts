@@ -1,3 +1,5 @@
+import { Spaces } from 'ngx-fabric8-wit';
+import { SpacesService } from './shared/standalone/spaces.service';
 import { WorkItemQuickAddModule } from './work-item/work-item-quick-add/work-item-quick-add.module';
 import { DummySpace } from './header/DummySpace.service';
 import './rxjs-extensions';
@@ -63,7 +65,11 @@ if (process.env.ENV == 'inmemory') {
     LoginService,
     UserService,
     MockDataService,
-    authApiUrlProvider
+    authApiUrlProvider,
+    {
+      provide: Spaces,
+      useExisting: SpacesService
+    }
   ];
   providers = [
     GlobalSettings,
@@ -83,7 +89,12 @@ if (process.env.ENV == 'inmemory') {
     LoginService,
     UserService,
     MockDataService,
-    authApiUrlProvider
+    authApiUrlProvider,
+    {
+      provide: Spaces,
+      useExisting: SpacesService
+    },
+    SpacesService
   ];
   providers = [
     GlobalSettings,

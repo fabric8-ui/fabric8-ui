@@ -19,7 +19,7 @@ import { Router }                 from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { cloneDeep } from 'lodash';
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Spaces } from 'ngx-fabric8-wit';
 import {
   AuthenticationService,
   Broadcaster,
@@ -118,7 +118,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     private logger: Logger,
     private router: Router,
     private iterationService: IterationService,
-    private userService: UserService
+    private userService: UserService,
+    private spaces: Spaces
   ) {}
 
   ngOnInit(): void{
@@ -157,7 +158,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
         }
       }
     });
-    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
+    this.spaceSubscription = this.spaces.current.subscribe(space => {
       this.getAreas();
       this.getIterations();
     });

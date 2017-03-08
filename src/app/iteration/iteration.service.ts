@@ -12,7 +12,7 @@ import {
   Logger
 } from 'ngx-login-client';
 
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Spaces } from 'ngx-fabric8-wit';
 import { IterationModel } from '../models/iteration.model';
 import { MockHttp } from '../shared/mock-http';
 
@@ -27,9 +27,10 @@ export class IterationService {
       private http: Http,
       private auth: AuthenticationService,
       private globalSettings: GlobalSettings,
-      private broadcaster: Broadcaster
+      private broadcaster: Broadcaster,
+      private spaces: Spaces
   ) {
-    this.broadcaster.on<Space>('spaceChanged').subscribe(val => this._currentSpace = val);
+    this.spaces.current.subscribe(val => this._currentSpace = val);
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
      }

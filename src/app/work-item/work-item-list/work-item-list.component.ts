@@ -27,7 +27,7 @@ import {
   User,
   UserService
 } from 'ngx-login-client';
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Spaces } from 'ngx-fabric8-wit';
 
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType }               from '../../models/work-item-type';
@@ -92,14 +92,15 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     private workItemService: WorkItemService,
     private logger: Logger,
     private userService: UserService,
-    private route: ActivatedRoute) {}
+    private route: ActivatedRoute,
+    private spaces: Spaces) {}
 
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
     // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
-    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
+    this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[WorkItemListComponent] New Space selected: ' + space.attributes.name);
         this.loadWorkItems();

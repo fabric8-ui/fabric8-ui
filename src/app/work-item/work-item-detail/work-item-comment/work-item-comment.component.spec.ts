@@ -1,3 +1,5 @@
+import { SpacesService } from './../../../shared/standalone/spaces.service';
+import { Spaces } from 'ngx-fabric8-wit';
 import {
 async,
 ComponentFixture,
@@ -447,7 +449,12 @@ describe('Comment section for the work item detailed view - ', () => {
           useValue: fakeWorkItemService
         },
         PositioningService,
-        TooltipConfig
+        TooltipConfig,
+        {
+          provide: Spaces,
+          useExisting: SpacesService
+        },
+        SpacesService
       ]
     }).compileComponents()
       .then(() => {

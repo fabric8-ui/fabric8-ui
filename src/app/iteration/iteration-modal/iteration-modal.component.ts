@@ -7,7 +7,7 @@ import { cloneDeep } from 'lodash';
 import * as moment from 'moment';
 import { IMyOptions, IMyDateModel } from 'mydatepicker';
 import { Broadcaster } from 'ngx-login-client';
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Spaces } from 'ngx-fabric8-wit';
 
 import { IterationService } from '../iteration.service';
 import { IterationModel } from '../../models/iteration.model';
@@ -57,12 +57,13 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
 
   constructor(
     private iterationService: IterationService,
+    private spaces: Spaces,
     private broadcaster: Broadcaster) {}
 
 
   ngOnInit() {
     this.resetValues();
-    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space =>  {
+    this.spaceSubscription = this.spaces.current.subscribe(space =>  {
       if (space) {
         console.log('[FabPlannerIterationModalComponent] New Space selected: ' + space.attributes.name);
       } else {

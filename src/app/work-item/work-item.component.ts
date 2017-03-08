@@ -15,7 +15,7 @@ import {
   AuthenticationService,
   Broadcaster
 } from 'ngx-login-client';
-import { SpaceService, Space } from 'ngx-fabric8-wit';
+import { SpaceService, Space, Spaces } from 'ngx-fabric8-wit';
 
 import { WorkItem } from './work-item';
 import { WorkItemListEntryComponent } from './work-item-list/work-item-list-entry/work-item-list-entry.component';
@@ -51,14 +51,15 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private broadcaster: Broadcaster,
     private workItemService: WorkItemService,
-    private router: Router
+    private router: Router,
+    private spaces: Spaces
   ) {
   }
 
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
+    this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[WorkItemComponent] New Space selected: ' + space.attributes.name);
         this.editEnabled = true;

@@ -1,3 +1,5 @@
+import { SpacesService } from './../../shared/standalone/spaces.service';
+import { Spaces } from 'ngx-fabric8-wit';
 import {
   async,
   ComponentFixture,
@@ -9,8 +11,8 @@ import {
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DebugElement } from '@angular/core';
-import { FormsModule }  from '@angular/forms';
-import { By }           from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 
 import { Logger, Broadcaster, AuthenticationService } from 'ngx-login-client';
 
@@ -28,109 +30,109 @@ describe('Quick add work item component - ', () => {
   let fakeAuthService: any;
 
   let wiTypes = [
-      {
-         'id' : '86af5178-9b41-469b-9096-57e5155c3f31',
-         'attributes' : {
-            'name' : 'Planner Item',
-            'icon': 'fa-question',
-            'fields' : {
-               'system.created_at' : {
-                  'type' : {
-                     'kind' : 'instant'
-                  },
-                  'required' : false
-               },
-               'system.remote_item_id' : {
-                  'required' : false,
-                  'type' : {
-                     'kind' : 'string'
-                  }
-               },
-               'system.area' : {
-                  'type' : {
-                     'kind' : 'area'
-                  },
-                  'required' : false
-               },
-               'system.title' : {
-                  'required' : true,
-                  'type' : {
-                     'kind' : 'string'
-                  }
-               },
-               'system.creator' : {
-                  'type' : {
-                     'kind' : 'user'
-                  },
-                  'required' : true
-               },
-               'system.assignees' : {
-                  'type' : {
-                     'kind' : 'list',
-                     'componentType' : 'user'
-                  },
-                  'required' : false
-               },
-               'system.state' : {
-                  'required' : true,
-                  'type' : {
-                     'kind' : 'enum',
-                     'values' : [
-                        'new',
-                        'open',
-                        'in progress',
-                        'resolved',
-                        'closed'
-                     ],
-                     'baseType' : 'string'
-                  }
-               },
-               'system.description' : {
-                  'required' : false,
-                  'type' : {
-                     'kind' : 'markup'
-                  }
-               },
-               'system.iteration' : {
-                  'type' : {
-                     'kind' : 'iteration'
-                  },
-                  'required' : false
-               }
+    {
+      'id': '86af5178-9b41-469b-9096-57e5155c3f31',
+      'attributes': {
+        'name': 'Planner Item',
+        'icon': 'fa-question',
+        'fields': {
+          'system.created_at': {
+            'type': {
+              'kind': 'instant'
             },
-            'description' : 'Description for Planner Item',
-            'version' : 0
-         },
-         'type' : 'workitemtypes'
-      }
+            'required': false
+          },
+          'system.remote_item_id': {
+            'required': false,
+            'type': {
+              'kind': 'string'
+            }
+          },
+          'system.area': {
+            'type': {
+              'kind': 'area'
+            },
+            'required': false
+          },
+          'system.title': {
+            'required': true,
+            'type': {
+              'kind': 'string'
+            }
+          },
+          'system.creator': {
+            'type': {
+              'kind': 'user'
+            },
+            'required': true
+          },
+          'system.assignees': {
+            'type': {
+              'kind': 'list',
+              'componentType': 'user'
+            },
+            'required': false
+          },
+          'system.state': {
+            'required': true,
+            'type': {
+              'kind': 'enum',
+              'values': [
+                'new',
+                'open',
+                'in progress',
+                'resolved',
+                'closed'
+              ],
+              'baseType': 'string'
+            }
+          },
+          'system.description': {
+            'required': false,
+            'type': {
+              'kind': 'markup'
+            }
+          },
+          'system.iteration': {
+            'type': {
+              'kind': 'iteration'
+            },
+            'required': false
+          }
+        },
+        'description': 'Description for Planner Item',
+        'version': 0
+      },
+      'type': 'workitemtypes'
+    }
   ];
 
   beforeEach(() => {
     fakeWorkItem = [
       {
-      'attributes': {
-        'system.created_at': null,
-        'system.description': null,
-        'system.remote_item_id': null,
-        'system.state': 'new',
-        'system.title': 'test1',
-        'version': 0
-      },
-      'id': '1',
-      'relationships': {
-        'assignees': {
-          'data': []
+        'attributes': {
+          'system.created_at': null,
+          'system.description': null,
+          'system.remote_item_id': null,
+          'system.state': 'new',
+          'system.title': 'test1',
+          'version': 0
         },
-        'baseType': {
-          'data': {
-            'id': 'system.userstory',
-            'type': 'workitemtypes'
-          }
+        'id': '1',
+        'relationships': {
+          'assignees': {
+            'data': []
+          },
+          'baseType': {
+            'data': {
+              'id': 'system.userstory',
+              'type': 'workitemtypes'
+            }
+          },
+          'creator': {}
         },
-        'creator': {}
-      },
-      'type': 'workitems'
-    }] as WorkItem[];
+        'type': 'workitems'
+      }] as WorkItem[];
 
     fakeService = {
       create: function (workItem: WorkItem) {
@@ -162,11 +164,16 @@ describe('Quick add work item component - ', () => {
         {
           provide: WorkItemService,
           useValue: fakeService
-        }, 
-        { 
+        },
+        {
           provide: AuthenticationService,
           useValue: fakeAuthService
-        }
+        },
+        {
+          provide: Spaces,
+          useExisting: SpacesService
+        },
+        SpacesService
       ]
     })
       .compileComponents()

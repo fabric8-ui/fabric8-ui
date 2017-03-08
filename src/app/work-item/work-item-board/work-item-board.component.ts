@@ -16,7 +16,7 @@ import { Response } from '@angular/http';
 import { Router } from '@angular/router';
 import { cloneDeep } from 'lodash';
 
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Spaces } from 'ngx-fabric8-wit';
 import { AuthenticationService, Broadcaster } from 'ngx-login-client';
 import { ArrayCount } from 'ngx-widgets';
 import { DragulaService } from 'ng2-dragula';
@@ -54,7 +54,8 @@ export class WorkItemBoardComponent implements OnInit {
     private broadcaster: Broadcaster,
     private router: Router,
     private workItemService: WorkItemService,
-    private dragulaService: DragulaService) {
+    private dragulaService: DragulaService,
+    private spaces: Spaces) {
       this.dragulaService.drag.subscribe((value) => {
         this.onDrag(value.slice(1));
       });
@@ -76,7 +77,7 @@ export class WorkItemBoardComponent implements OnInit {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
     this.getDefaultWorkItemTypeStates();
-    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
+    this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[WorkItemBoardComponent] New Space selected: ' + space.attributes.name);
         this.getDefaultWorkItemTypeStates();
@@ -127,7 +128,7 @@ export class WorkItemBoardComponent implements OnInit {
             value: types[0].id
           } ];
         }
-      });      
+      });
     } else {
       // we have a type id, we just fetch the states from it.
       this.workItemService.getWorkItemTypesById(workItemTypeId).then(workItemType => {
@@ -231,7 +232,7 @@ export class WorkItemBoardComponent implements OnInit {
             if (filter.paramKey === 'filter[workitemtype]')
               this.getDefaultWorkItemTypeStates(filter.value);
           });
-    });    
+    });
   }
-  
+
 }

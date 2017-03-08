@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { cloneDeep } from 'lodash';
 import { Broadcaster, AuthenticationService } from 'ngx-login-client';
 import { Subscription } from 'rxjs/Subscription';
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Spaces } from 'ngx-fabric8-wit';
 
 import { WorkItemService } from './../work-item.service';
 import { WorkItemListEntryComponent } from './../work-item-list/work-item-list-entry/work-item-list-entry.component';
@@ -32,12 +32,13 @@ export class WorkItemDetailAddTypeSelectorComponent implements OnInit {
     private route: ActivatedRoute,
     private broadcaster: Broadcaster,
     private workItemService: WorkItemService,
-    private auth: AuthenticationService) {
+    private auth: AuthenticationService,
+    private spaces: Spaces) {
   }
 
   ngOnInit() {
     this.loggedIn = this.auth.isLoggedIn();
-    this.spaceSubscription = this.broadcaster.on<Space>('spaceChanged').subscribe(space => {
+    this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[WorkItemDetailAddTypeSelectorComponent] New Space selected: ' + space.attributes.name);
         this.getWorkItemTypes();
