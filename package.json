@@ -1,7 +1,7 @@
 {
   "name": "fabric8-ui",
   "version": "0.0.0-development",
-  "description": "The Fabric8 UI console for the Red Hat Developer Experience project",
+  "description": "the angular 2 console for fabric8 online",
   "keywords": [
     "angular2",
     "webpack",
