@@ -40,6 +40,7 @@
     "clean:install": "npm set progress=false && npm install",
     "clean:start": "npm start",
     "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist",
+    "postbuild:prod": "copyfiles package.json README.md LICENSE dist",
     "docker": "docker",
     "docker:run": "webpack-dev-server --inline --progress --port 8080",
     "docs": "npm run typedoc -- --options typedoc.json --exclude '**/*.spec.ts' ./src/",
