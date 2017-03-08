@@ -219,6 +219,7 @@ export class WorkItemBoardComponent implements OnInit {
           this.activeOnList();
       });
     }
+  }
 
   listenToEvents() {
     // filters like assign to me should stack with the current filters
@@ -231,6 +232,6 @@ export class WorkItemBoardComponent implements OnInit {
               this.getDefaultWorkItemTypeStates(filter.value);
           });
     });    
-
   }
+  
 }
