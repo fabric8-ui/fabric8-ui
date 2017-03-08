@@ -215,10 +215,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/angularclass/angular2-webpack-starter.git"
+    "url": "https://github.com/fabric8io/fabric8-ui.git"
   },
   "bugs": {
-    "url": "https://github.com/angularclass/angular2-webpack-starter/issues"
+    "url": "https://github.com/fabric8io/fabric8-ui/issues"
   },
   "engines": {
     "node": ">= 4.2.1",
