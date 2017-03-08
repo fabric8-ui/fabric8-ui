@@ -43,7 +43,7 @@ module.exports = function (config) {
     colors: !process.env.CI,
     logLevel: config.LOG_INFO,
     autoWatch: false,
-    browsers: ['Chrome','PhantomJS_custom'],
+    browsers: ['PhantomJS_custom'],
     customLaunchers: {
       'PhantomJS_custom': {
         base: 'PhantomJS',

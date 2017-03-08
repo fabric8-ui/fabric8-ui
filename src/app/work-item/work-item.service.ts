@@ -484,7 +484,8 @@ export class WorkItemService {
       workItem.relationalData.area = null;
       return;
     }
-    workItem.relationalData.area = this.getAreaById(workItem.relationships.area.data.id);
+    this.getAreaById(workItem.relationships.area.data.id)
+      .then((area) => workItem.relationalData.area = area);
   }
 
   /**
@@ -519,9 +520,10 @@ export class WorkItemService {
   /**
    * Usage: Fetch an area by it's ID from the areas list
    */
-  getAreaById(areaId: string): AreaModel {
-    let areas: AreaModel[] = this.areaService.areas;
-    return areas.filter(item => item.id == areaId)[0];
+  getAreaById(areaId: string): Promise<AreaModel> {
+    return this.areaService.getAreas().then((areas) => {
+      return areas.find(item => item.id == areaId);
+    });
   }
 
   /**

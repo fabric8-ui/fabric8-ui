@@ -65,7 +65,7 @@ export class AreaService {
           })
           .catch ((error: Error | any) => {
             if (error.status === 401) {
-              this.auth.logout(true);
+              //this.auth.logout(true);
             } else {
               console.log('Fetch area API returned some error - ', error.message);
               return Promise.reject<AreaModel[]>([] as AreaModel[]);

@@ -89,6 +89,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   searchIteration: Boolean = false;
   // TODO: should take current iteration as value after fetching
   selectedIteration: any;
+  selectedArea: AreaModel;
 
   users: User[] = [];
   filteredUsers: User[] = [];
@@ -624,16 +625,25 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     }
   }
 
+  //On clicking the area drop down option the selected value needs to get displayed in the input box
+  showAreaOnInput(area: AreaModel): void {
+    this.areaSearch.nativeElement.value = area.attributes.name;
+    this.selectedArea = area;
+  }
   //set an area
-  setArea(areaId: any): void {
+  setArea(): void {
     this.workItem.relationships.area = {
       data: {
-        id: areaId,
+        id: this.selectedArea.id,
         type: 'area'
       }
     };
     this.workItemService.resolveAreaForWorkItem(this.workItem);
     this.save();
+    this.searchArea = false;
+  }
+
+  closeAreaDropdown(): void {
     this.searchArea = false;
   }
 
@@ -701,7 +711,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       }
       if (i < lis.length) {
         let selectedId = lis[i].dataset.value;
-        this.setArea(selectedId);
+        this.selectedArea = lis[i];
+        this.setArea();
       }
     } else {
       let inp = this.areaSearch.nativeElement.value.trim();
