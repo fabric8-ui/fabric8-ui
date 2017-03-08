@@ -1,13 +1,14 @@
 @import '../../../assets/stylesheets/base';
 
 .boardWrapper {
+  position: relative;
   .board {
     user-select: none;
     white-space: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
     position: absolute;
-    top: em(53);
+    top: 0;
     right: 0;
     bottom: 0;
     left: 0;
