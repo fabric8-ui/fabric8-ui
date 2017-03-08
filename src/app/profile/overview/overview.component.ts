@@ -1,8 +1,7 @@
-import { Context } from './../../models/context';
+import { Context, Contexts } from 'ngx-fabric8-wit';
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
 
-import { ContextService } from './../../shared/context.service';
 // import { UserService } from './../../user/user.service';
 import { DummyService } from './../../shared/dummy.service';
 
@@ -16,8 +15,8 @@ export class OverviewComponent implements OnInit {
   context: Context;
 
   constructor(
-    private router: Router, public dummy: DummyService, contextService: ContextService) {
-      contextService.current.subscribe(val => this.context = val);
+    private router: Router, public dummy: DummyService, contexts: Contexts) {
+      contexts.current.subscribe(val => this.context = val);
   }
 
   ngOnInit() {

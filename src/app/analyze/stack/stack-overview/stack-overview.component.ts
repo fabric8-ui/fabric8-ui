@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Contexts } from 'ngx-fabric8-wit';
 
-import { ContextService } from './../../../shared/context.service';
 import { Stack } from './../../../models/stack';
 
 @Component({
@@ -19,7 +18,7 @@ export class StackOverviewComponent implements OnInit {
 
   constructor(
     private router: Router,
-    context: ContextService
+    context: Contexts
   ) {
     this.collapsed = new Map();
     context.current.subscribe(val => {

@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Broadcaster, User } from 'ngx-login-client';
-import { Team, Space } from 'ngx-fabric8-wit';
+import { Team, Space, Contexts } from 'ngx-fabric8-wit';
 
 import { DummyService } from './../shared/dummy.service';
-import { ContextService } from './../shared/context.service';
 
 @Component({
   selector: 'team-membership-dialog',
@@ -19,7 +18,7 @@ export class TeamMembershipDialogComponent implements OnInit{
 
   constructor(
     public dummy: DummyService,
-    private context: ContextService,
+    private context: Contexts,
     private broadcaster: Broadcaster
 
   ) { }

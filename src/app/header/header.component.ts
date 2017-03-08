@@ -1,3 +1,5 @@
+import { ContextService } from './../shared/context.service';
+import { MenuedContextType } from './menued-context-type';
 import { Navigation } from './../models/navigation';
 import { MenuItem } from './../models/menu-item';
 import { ProfileService } from './../profile/profile.service';
@@ -5,10 +7,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 import { AuthenticationService, Broadcaster, Logger, UserService, User } from 'ngx-login-client';
+import { ContextType, Context, Contexts } from 'ngx-fabric8-wit';
 
-import { ContextType } from './../models/context-type';
-import { Context } from './../models/context';
-import { ContextService } from '../shared/context.service';
 import { DummyService } from './../shared/dummy.service';
 
 
@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   menuCallbacks = new Map<String, MenuHiddenCallback>([
     [
       'settings', function (headerComponent, context) {
-        return headerComponent.currentUser !== context.entity;
+        return headerComponent.currentUser !== context.user;
       }
     ]
   ]);
@@ -44,20 +44,21 @@ export class HeaderComponent implements OnInit {
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     public dummy: DummyService,
-    contextService: ContextService,
+    contexts: Contexts,
     public profile: ProfileService
   ) {
     router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
-        this.onNavigate(val.url);
+        this.getLoggedUser();
+        this.broadcaster.broadcast('navigate', { url: val.url } as Navigation);
+        this.updateMenus();
       }
     });
-    contextService.current.subscribe(val => {
+    contexts.current.subscribe(val => {
       this.context = val;
-      this.setActiveMenus(val);
-      this.setHiddenMenus(val);
+      this.updateMenus();
     });
-    contextService.recent.subscribe(val => this.recent = val);
+    contexts.recent.subscribe(val => this.recent = val);
   }
 
   ngOnInit(): void {
@@ -87,10 +88,6 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['login']);
   }
 
-  onNavigate(url: string): void {
-    this.broadcaster.broadcast('navigate', { url: url } as Navigation);
-  }
-
   onImgLoad() {
     this.imgLoaded = true;
   }
@@ -115,28 +112,20 @@ export class HeaderComponent implements OnInit {
     return this.dummy.currentUser;
   }
 
-  private setHiddenMenus(context: Context) {
-    if ((<ContextType>context.type).menus) {
-      for (let n of (<ContextType>context.type).menus) {
-        if (this.menuCallbacks.has(n.path) && this.menuCallbacks.get(n.path)(this, context)) {
-          n.hide = true;
-        }
-        if (n.menus) {
-          for (let o of n.menus) {
-            if (this.menuCallbacks.has(o.path) && this.menuCallbacks.get(o.path)(this, context)) {
-              o.hide = true;
-            }
-          }
-        }
-      }
+  private getLoggedUser(): void {
+    if (this.auth.isLoggedIn) {
+      this.userService.getUser();
     }
   }
 
-  private setActiveMenus(context: Context) {
-    if ((<ContextType>context.type).menus) {
-      for (let n of (<ContextType>context.type).menus) {
+  private updateMenus() {
+    if (this.context && this.context.type && this.context.type.hasOwnProperty('menus')) {
+      for (let n of (this.context.type as MenuedContextType).menus) {
         // Clear the menu's active state
         n.active = false;
+        if (this.menuCallbacks.has(n.path) && this.menuCallbacks.get(n.path)(this, this.context)) {
+          n.hide = true;
+        }
         if (n.menus) {
           for (let o of n.menus) {
             // Clear the menu's active state
@@ -144,6 +133,9 @@ export class HeaderComponent implements OnInit {
             if (o.fullPath === this.router.url) {
               o.active = true;
               n.active = true;
+            }
+            if (this.menuCallbacks.has(o.path) && this.menuCallbacks.get(o.path)(this, this.context)) {
+              o.hide = true;
             }
           }
         } else if (n.fullPath === this.router.url) {

@@ -1,10 +1,8 @@
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Contexts } from 'ngx-fabric8-wit';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Broadcaster } from 'ngx-login-client';
-
-import { ContextService } from '../../shared/context.service';
 
 @Component({
   selector: 'alm-analyzeOverview',
@@ -19,7 +17,7 @@ export class AnalyzeOverviewComponent {
 
   constructor(
     private router: Router,
-    context: ContextService,
+    context: Contexts,
     private broadcaster: Broadcaster
   ) {
     context.current.subscribe(val => this.space = val.space);

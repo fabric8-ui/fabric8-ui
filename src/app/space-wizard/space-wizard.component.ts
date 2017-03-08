@@ -1,12 +1,10 @@
-import { Context } from './../models/context';
 import { WizardSteps } from './../shared-component/wizard/wizard-steps';
 import { Wizard } from './../shared-component/wizard/wizard';
-import { ContextService } from './../shared/context.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 
-import { SpaceService, Space, ProcessTemplate, SpaceAttributes } from 'ngx-fabric8-wit';
+import { SpaceService, Space, ProcessTemplate, SpaceAttributes, Context, Contexts } from 'ngx-fabric8-wit';
 import { Broadcaster, User, HttpService } from 'ngx-login-client';
 
 import { DummyService } from '../shared/dummy.service';
@@ -41,7 +39,7 @@ export class SpaceWizardComponent implements OnInit {
     public dummy: DummyService,
     private broadcaster: Broadcaster,
     private spaceService: SpaceService,
-    context: ContextService) {
+    context: Contexts) {
     context.current.subscribe(val => this._context = val);
   }
 
@@ -82,11 +80,11 @@ export class SpaceWizardComponent implements OnInit {
     let space = this.configurator.space;
     space.attributes.name = space.name;
     console.log(this._context);
-    if (this._context && this._context.entity) {
+    if (this._context && this._context.user) {
       // TODO Implement space name validation
       // Support organisations as well
       space.path =
-        (this._context.entity as User).attributes.username + '/' + this.convertNameToPath(space.name);
+        this._context.user.attributes.username + '/' + this.convertNameToPath(space.name);
     } else if (this._context) {
       space.path = this.dummy.currentUser + '/' + this.convertNameToPath(space.name);
     }

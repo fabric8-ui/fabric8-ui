@@ -1,15 +1,16 @@
+import { MenusService } from './../header/menus.service';
+import { MenuedContextType } from './../header/menued-context-type';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Broadcaster, User, UserService, Entity } from 'ngx-login-client';
-import { Space } from 'ngx-fabric8-wit';
+import { Space, Contexts, Context, ContextType, ContextTypes } from 'ngx-fabric8-wit';
 import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
-import { Observable } from 'rxjs/Observable';
+import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
+import { Observable } from 'rxjs';
 
-import { Context } from './../models/context';
-import { ContextType } from './../models/context-type';
 import { DummyService } from './../shared/dummy.service';
 import { Navigation } from './../models/navigation';
 
@@ -19,19 +20,20 @@ import { Navigation } from './../models/navigation';
  *
  */
 @Injectable()
-export class ContextService {
+export class ContextService implements Contexts {
 
   readonly RECENT_CONTEXT_LENGTH = 8;
 
-  private _current: Observable<Context>;
-  private _default: Observable<Context>;
-  private _recent: Observable<Context[]>;
+  private _current: ConnectableObservable<Context>;
+  private _default: ConnectableObservable<Context>;
+  private _recent: ConnectableObservable<Context[]>;
 
   constructor(
     private dummy: DummyService,
     private router: Router,
     private broadcaster: Broadcaster,
-    private user: UserService) {
+    private user: UserService,
+    private menus: MenusService) {
 
     let addRecent = new Subject<Context>();
     // Initialize the default context when the logged in user changes
@@ -45,21 +47,27 @@ export class ContextService {
           throw 'Unknown user';
         }
       })
+      .distinctUntilChanged()
       // Then, perform another map to create a context from the user
       .map(val => {
         let ctx = {
-          'entity': this.dummy.lookupEntity(val),
-          'space': null,
-          'type': 'user',
-          'name': val,
-          'path': '/' + val
+          user: this.dummy.lookupUser(val),
+          space: null,
+          type: ContextTypes.BUILTIN.get('user'),
+          name: val,
+          path: '/' + val
         } as Context;
         return ctx;
       })
       // Ensure the menus are built
       .do(val => {
-        this.buildContextMenus(val);
-      });
+        this.menus.attach(val);
+      })
+      .do(val => {
+        console.log('Default Context Changed to', val);
+        this.broadcaster.broadcast('defaultContextChanged', val);
+      })
+      .multicast(() => new ReplaySubject(1));
     // Subscribe the the default context to the recent space collector
     this._default.subscribe(addRecent);
 
@@ -70,9 +78,6 @@ export class ContextService {
       .combineLatest(
       // First, the navigation event
       this.broadcaster.on<Navigation>('navigate')
-        // Eliminate duplicate navigation events
-        // TODO this doesn't work quite perfectly
-        .distinctUntilKeyChanged('url')
         // Use a map to convert from a navigation url to a context
         .map(val => this.computeContext()),
       // Then, the default context
@@ -80,16 +85,23 @@ export class ContextService {
       // Finally, the projection, which allows us to select the default
       // if the comouted context is null
       (c, d) => c || d)
+      .distinctUntilKeyChanged('path')
       // Broadcast the spaceChanged event
+      // Ensure the menus are built
+      .do(val => {
+        this.menus.attach(val);
+      })
+      .do(val => {
+        console.log('Context Changed to', val);
+        this.broadcaster.broadcast('contextChanged', val);
+      })
       .do(val => {
         if (val.space) {
+          console.log('Space Changed to', val);
           this.broadcaster.broadcast('spaceChanged', val.space);
         }
       })
-      // Ensure the menus are built
-      .do(val => {
-        this.buildContextMenus(val);
-      });
+      .multicast(() => new ReplaySubject(1));
     // Subscribe the current context to the revent space collector
     this._current.subscribe(addRecent);
 
@@ -123,8 +135,12 @@ export class ContextService {
       .do(val => {
         this.dummy.recent = val;
         this.broadcaster.broadcast('save');
-      });
-
+      })
+      .multicast(() => new ReplaySubject(1));
+    // Finally, start broadcasting
+    this._current.connect();
+    this._default.connect();
+    this._recent.connect();
   }
 
   get recent(): Observable<Context[]> {
@@ -135,30 +151,12 @@ export class ContextService {
     return this._current;
   }
 
-  lookupContextType(type: string): ContextType {
-    let ct = this.dummy.CONTEXT_TYPES.get(type);
-    // Make a copy of the context type before returning
-    return ct ? JSON.parse(JSON.stringify(ct)) : null;
+  get default(): Observable<Context> {
+    return this._default;
   }
 
   get currentUser(): User {
     return this.dummy.currentUser;
-  }
-
-  private buildContextMenus(context: Context) {
-    if (typeof context.type === 'string') {
-      context.type = this.lookupContextType(context.type);
-    }
-    if (context.type.menus) {
-      for (let n of context.type.menus) {
-        n.fullPath = this.buildPath(context.path, n.path);
-        if (n.menus) {
-          for (let o of n.menus) {
-            o.fullPath = this.buildPath(context.path, n.path, o.path);
-          }
-        }
-      }
-    }
   }
 
   private computeContext(): Context {
@@ -188,25 +186,25 @@ export class ContextService {
 
   private buildContext() {
     let c: Context = {
-      'entity': this.loadEntity(),
-      'space': this.loadSpace(),
-      'type': null,
-      'name': null,
-      'path': null
+      user: this.loadUser(),
+      space: this.loadSpace(),
+      type: null,
+      name: null,
+      path: null
     } as Context;
     // TODO Support other types of entity
-    if (c.entity && c.space) {
-      c.type = 'space';
-      c.path = '/' + (<User>c.entity).attributes.username + '/' + c.space.attributes.name;
+    if (c.user && c.space) {
+      c.type = ContextTypes.BUILTIN.get('space');
+      c.path = '/' + c.user.attributes.username + '/' + c.space.attributes.name;
       c.name = c.space.attributes.name;
-    } else if (c.entity) {
-      c.type = 'user';
+    } else if (c.user) {
+      c.type = ContextTypes.BUILTIN.get('space');;
       // TODO replace path with username once parameterized routes are working
-      c.path = '/' + (<User>c.entity).attributes.username;
-      c.name = (<User>c.entity).attributes.username;
+      c.path = '/' + c.user.attributes.username;
+      c.name = c.user.attributes.username;
     } // TODO add type detection for organization and team
     if (c.type != null) {
-      this.buildContextMenus(c);
+      this.menus.attach(c);
       return c;
     }
   }
@@ -214,19 +212,19 @@ export class ContextService {
   private extractEntity(): string {
     let params = this.getRouteParams();
     if (params) {
-      return params["entity"];
+      return params['entity'];
     }
     return null;
   }
 
-  private loadEntity(): Entity {
-    return this.dummy.lookupEntity(this.extractEntity());
+  private loadUser(): User {
+    return this.dummy.lookupUser(this.extractEntity());
   }
 
   private extractSpace(): string {
     let params = this.getRouteParams();
     if (params) {
-      return params["space"];
+      return params['space'];
     }
     return null;
   }
@@ -255,19 +253,6 @@ export class ContextService {
       }
     }
     return false;
-  }
-
-  private buildPath(...args: string[]): string {
-    let res = '';
-    for (let p of args) {
-      if (p.startsWith('/')) {
-        res = p;
-      } else {
-        res = res + '/' + p;
-      }
-      res = res.replace(/\/*$/, '');
-    }
-    return res;
   }
 
 }

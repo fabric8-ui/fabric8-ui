@@ -1,3 +1,5 @@
+import { SpacesService } from './shared/spaces.service';
+import { MenusService } from './header/menus.service';
 import { recommenderApiUrlProvider } from './shared/recommender-api.provider';
 import { authApiUrlProvider } from './shared/auth-api.provider';
 import { witApiUrlProvider } from './shared/wit-api.provider';
@@ -50,7 +52,7 @@ import { StackDetailsModule } from './analyze/stack/stack-details/stack-details.
 
 // Component Services
 import { ProfileService } from './profile/profile.service';
-import { SpaceService } from 'ngx-fabric8-wit';
+import { SpaceService, Contexts, Spaces } from 'ngx-fabric8-wit';
 import {AuthUserResolve} from './shared/common.resolver';
 
 // Login
@@ -103,7 +105,14 @@ export type StoreType = {
     AuthGuard,
     Broadcaster,
     ContextCurrentUserAuthGuard,
-    ContextService,
+    {
+      provide: Contexts,
+      useClass: ContextService
+    },
+    {
+      provide: Spaces,
+      useClass: SpacesService
+    },
     DummyService,
     Logger,
     LoginService,
@@ -118,7 +127,8 @@ export type StoreType = {
     {
       provide: Http,
       useClass: HttpService
-    }
+    },
+    MenusService
   ],
   schemas: [],
   bootstrap: [AppComponent]

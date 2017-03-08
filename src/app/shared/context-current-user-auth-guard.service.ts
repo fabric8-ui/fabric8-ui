@@ -1,9 +1,8 @@
+import { Context, Contexts } from 'ngx-fabric8-wit';
 import { DummyService } from './dummy.service';
-import { Context } from './../models/context';
 import { LoginService } from './login.service';
 import { AuthGuard } from './../shared/auth-guard.service';
 import { AuthenticationService, Logger } from 'ngx-login-client';
-import { ContextService } from './../shared/context.service';
 import { Injectable } from '@angular/core';
 import {
   CanActivate,
@@ -21,7 +20,7 @@ export class ContextCurrentUserAuthGuard
     private _context: Context;
 
   constructor(
-    context: ContextService,
+    context: Contexts,
     auth: AuthenticationService,
     router: Router,
     logger: Logger,
@@ -36,7 +35,7 @@ export class ContextCurrentUserAuthGuard
     if (!super.canActivate(route, state)) {
       return false;
     // TODO Get the current user properly
-    } else if (this._context.entity !== this.dummy.currentUser) {
+    } else if (this._context.user !== this.dummy.currentUser) {
       this.logger.log('You cannot access another users settings');
       this.router.navigate(['/home']);
       return false;

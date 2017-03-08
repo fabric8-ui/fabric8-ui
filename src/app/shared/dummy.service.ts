@@ -4,10 +4,7 @@ import { Headers, Http } from '@angular/http';
 import { LocalStorageService } from 'angular-2-local-storage';
 import 'rxjs/add/operator/toPromise';
 import { Broadcaster, User, Entity } from 'ngx-login-client';
-import { Team, Space, ProcessTemplate } from 'ngx-fabric8-wit';
-
-import { Context } from './../models/context';
-import { ContextType } from './../models/context-type';
+import { Team, Space, ProcessTemplate, Context, ContextType, ContextTypes } from 'ngx-fabric8-wit';
 import { Resources } from './../models/resources';
 import { Email } from './../models/email';
 
@@ -82,146 +79,6 @@ export class DummyService {
       {
         id: 'redhat'
       } as Entity
-    ]
-  ]);
-
-  readonly CONTEXT_TYPES: Map<string, ContextType> = new Map<string, ContextType>([
-    [
-      'user',
-      {
-        name: 'User',
-        icon: 'fa fa-user',
-        menus: [
-          {
-            name: 'Home',
-            path: '/home'
-          }, {
-            name: 'Profile',
-            path: '',
-            menus: [
-              {
-                name: 'Profile',
-                path: ''
-              }, {
-                name: 'Collaboration Spaces',
-                path: '_spaces'
-              }, {
-                name: 'Resources',
-                path: '_resources'
-              }
-            ]
-          },
-          {
-            path: '_settings',
-            icon: 'pficon pficon-settings',
-            menus: [
-              {
-                name: 'Profile',
-                path: ''
-              }, {
-                name: 'Emails',
-                path: 'emails'
-              }, {
-                name: 'Notifications',
-                path: 'notifications'
-              }
-            ]
-          }
-        ]
-      } as ContextType
-    ],
-    [
-      'space',
-      {
-        name: 'Space',
-        icon: 'fa fa-space-shuttle',
-        menus: [
-          {
-            name: 'Analyze',
-            path: '',
-            menus: [
-              {
-                name: 'Overview',
-                path: ''
-              }, {
-                name: 'README',
-                path: 'readme'
-              }, {
-                name: 'Stack',
-                path: 'stack'
-              }
-            ]
-          }, {
-            name: 'Plan',
-            path: 'plan',
-            menus: [
-              {
-                name: 'Backlog',
-                path: ''
-              }, {
-                name: 'Board',
-                path: 'board'
-              }
-            ]
-          }, {
-            name: 'Create',
-            path: 'create',
-            menus: [
-              {
-                name: 'Codebases',
-                path: ''
-              }, {
-                name: 'Workspaces',
-                path: 'workspaces'
-              }
-            ]
-          }, {
-            name: 'Run',
-            path: 'run',
-            menus: [
-              {
-                name: 'Pipelines',
-                path: ''
-              }
-            ]
-          }, {
-            name: '',
-            path: 'settings',
-            icon: 'pficon pficon-settings',
-            menus: [
-              {
-                name: 'Overview',
-                path: '',
-                icon: '',
-                menus: []
-              }, {
-                name: 'Work',
-                path: 'work'
-              }, {
-                name: 'Security',
-                path: 'security'
-              }, {
-                name: 'Alerts',
-                path: 'alerts'
-              }
-            ]
-          }
-        ]
-      } as ContextType
-    ],
-    [
-      'team',
-      {
-        name: 'Team',
-        icon: 'fa fa-users'
-      } as ContextType
-    ],
-    [
-      'organization',
-      {
-        name: 'Organization',
-        icon: 'fa fa-cubes'
-      } as ContextType
     ]
   ]);
 
@@ -350,28 +207,6 @@ export class DummyService {
     ]
   ]);
 
-  readonly DEFAULT_CONTEXTS: Map<string, Context> = new Map<string, Context>([
-    [
-      'ux',
-      {
-        entity: this.USERS.get('pmuir'),
-        space: this.SPACES.get('balloonpopgame'),
-        team: this.TEAMS.get('balloonpopgame_ux'),
-        type: this.CONTEXT_TYPES.get('team'),
-        path: null,
-        name: 'BalloonPopGame / UX Team'
-      } as Context
-    ], [
-      'redhat',
-      {
-        entity: this.ORGANIZATIONS.get('redhat'),
-        type: this.CONTEXT_TYPES.get('organization'),
-        path: null,
-        name: 'Red Hat Organization'
-      } as Context
-    ]
-  ]);
-
   readonly PROCESS_TEMPLATES: ProcessTemplate[] = [
     { name: 'Agile' },
     { name: 'Scrum' },
@@ -389,7 +224,7 @@ export class DummyService {
     private broadcaster: Broadcaster
   ) {
     this._spaces = this.initDummy('spaces', this.SPACES);
-    this._recentContexts = this.initDummy('contexts', this.DEFAULT_CONTEXTS);
+    this._recentContexts = [];
     this._users = this.initDummy('users', this.USERS);
     this.broadcaster.on<string>('save')
       .subscribe(message => {
@@ -449,10 +284,6 @@ export class DummyService {
       }
     }
     return null;
-  }
-
-  lookupEntity(entity: string): Entity {
-    return this.lookupUser(entity);
   }
 
   lookupSpace(space: string): Space {

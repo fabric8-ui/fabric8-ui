@@ -1,6 +1,6 @@
+import { Contexts } from 'ngx-fabric8-wit';
 import { LoginService } from './login.service';
 import { AuthenticationService, Logger } from 'ngx-login-client';
-import { ContextService } from './../shared/context.service';
 import { Injectable } from '@angular/core';
 import {
   CanActivate,
@@ -16,7 +16,7 @@ import {
 export class AuthGuard implements CanActivate, CanActivateChild {
 
   constructor(
-    protected context: ContextService,
+    protected context: Contexts,
     protected auth: AuthenticationService,
     protected router: Router,
     protected logger: Logger,
