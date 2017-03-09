@@ -12,7 +12,7 @@ export class AboutService {
   }
 
   get buildVersion(): string {
-    return process.env.BUILD_VERSION;
+    return (process.env.BUILD_VERSION !== '0.0.0-development' ? process.env.BUILD_VERSION : null);
   }
 
 }
