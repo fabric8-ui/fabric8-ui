@@ -1,3 +1,4 @@
+import { NotificationModule } from './src/app/notification/notification.module';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -50,6 +51,7 @@ import { ArrayCount } from './src/app/pipes/arrayCount.pipe';
     DropdownModule,
     FiltersModule,
     InfiniteScrollModule,
+    NotificationModule,
     SortModule,
     TreeListModule,
     ToolbarModule
