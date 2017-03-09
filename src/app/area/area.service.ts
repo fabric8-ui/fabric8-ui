@@ -53,12 +53,15 @@ export class AreaService {
             return response.json().data as AreaModel[];
           })
           .then((data) => {
-            //If the area has a parent, append it to the area's name
-            data.forEach((area) => {
-              if (area.attributes.parent_path_resolved !== '/'){
-                area.attributes.name = (area.attributes.parent_path_resolved).substring(1) + '/' + area.attributes.name;
-              }
-            });
+            //Need to fix the Area data and service for inmemory mode
+            if (process.env.ENV != 'inmemory') {
+              //If the area has a parent, append it to the area's name
+              data.forEach((area) => {
+                if (area.attributes.parent_path_resolved !== '/'){
+                  area.attributes.name = (area.attributes.parent_path_resolved).substring(1) + '/' + area.attributes.name;
+                }
+              });
+            }
             this.areas = data;
             return this.areas;
           })

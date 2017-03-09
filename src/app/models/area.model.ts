@@ -31,9 +31,5 @@ export class AreaRelations {
     links: {
       related: string;
     };
-    meta: {
-      closed: number;
-      total: number;
-    };
   };
 }

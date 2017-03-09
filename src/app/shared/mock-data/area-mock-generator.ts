@@ -15,7 +15,8 @@ export class AreaMockGenerator {
         'attributes': {
           'description': 'Description for area ' + n,
           'name': 'Area ' + n,
-          'state': 'new'
+          'parent_path': '/',
+          'parent_path_resolved': '/'
         },
         'id': 'area-id' + n,
         'links': {

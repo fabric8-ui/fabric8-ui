@@ -314,6 +314,12 @@ export class MockDataService {
     return this.spaces;
   }
 
+  //areas
+  public getAllAreas(): any {
+    console.log('Area - ', this.areas);
+    return this.areas;
+  }
+
   // iterations
 
   public getAllIterations(): any {
