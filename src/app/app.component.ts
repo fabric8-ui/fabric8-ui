@@ -2,29 +2,38 @@
  * Angular 2 decorators and services
  */
 import { Component, ViewEncapsulation } from '@angular/core';
-
-import { AboutService } from './shared/about.service';
+import { cloneDeep } from 'lodash';
 import { ActivatedRoute } from '@angular/router';
-import { AuthenticationService } from 'ngx-login-client';
+import { AuthenticationService, Broadcaster } from 'ngx-login-client';
+import { Notification, Notifications } from 'ngx-fabric8-wit';
+import { NotificationService, Action } from 'ngx-widgets';
+
+import { ControlComponent } from './control/control.component';
+import { AboutService } from './shared/about.service';
+import { NotificationsService } from './shared/notifications.service';
 
 /*
  * App Component
  * Top Level Component
  */
 @Component({
-  host:{
-    'class':'app app-component flex-container in-column-direction flex-grow-1'
+  host: {
+    'class': 'app app-component flex-container in-column-direction flex-grow-1'
   },
   selector: 'f8-app',
-  styleUrls: [ './app.component.scss' ],
+  styleUrls: ['./app.component.scss'],
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  angularclassLogo = 'assets/img/angularclass-avatar.png';
-  name = 'Angular 2 Webpack Starter';
-  url = 'https://twitter.com/AngularClass';
 
-  constructor(private about: AboutService, private activatedRoute: ActivatedRoute, private authService: AuthenticationService) {
+
+  constructor(
+    private about: AboutService,
+    private broadcaster: Broadcaster,
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthenticationService,
+    public notifications: NotificationsService
+  ) {
   }
 
   ngOnInit() {
@@ -37,10 +46,14 @@ export class AppComponent {
         let item: any = part.split('=');
         result[item[0]] = decodeURIComponent(item[1]);
       });
-      if(result['token_json']) {
+      if (result['token_json']) {
         this.authService.logIn(result['token_json']);
       }
     });
+  }
+
+  handleAction($event: any): void {
+    this.notifications.actionSubject.next($event.notification.action);
   }
 
 }

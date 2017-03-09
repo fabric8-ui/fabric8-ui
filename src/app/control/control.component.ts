@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 
 // import { ProfileService } from './../profile/profile.service';
 import { LocalStorageService } from 'angular-2-local-storage';
-import { FlashMessagesService } from 'angular2-flash-messages';
+import { Notification, Notifications, NotificationType } from 'ngx-fabric8-wit';
+import { Broadcaster } from 'ngx-login-client';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class ControlComponent implements OnInit {
   constructor(
     private router: Router,
     private localStorageService: LocalStorageService,
-    private flashMessagesService: FlashMessagesService
+    private broadcaster: Broadcaster,
+    private notifications: Notifications
   ) { }
 
   ngOnInit() {
@@ -26,7 +28,7 @@ export class ControlComponent implements OnInit {
 
   clearLocalStorage() {
     this.localStorageService.clearAll();
-    this.flashMessagesService.show('Local storage successfully cleared', {cssClass: 'alert alert-success'});
+    this.notifications.message({ message: 'Local storage successfully cleared', type: NotificationType.SUCCESS} as Notification);
   }
 
 }

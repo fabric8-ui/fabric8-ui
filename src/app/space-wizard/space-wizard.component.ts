@@ -4,7 +4,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 
-import { SpaceService, Space, ProcessTemplate, SpaceAttributes, Context, Contexts } from 'ngx-fabric8-wit';
+import { SpaceService, Space, ProcessTemplate, SpaceAttributes, Context, Contexts, Notification, NotificationType, Notifications } from 'ngx-fabric8-wit';
 import { Broadcaster, User, HttpService } from 'ngx-login-client';
 
 import { DummyService } from '../shared/dummy.service';
@@ -39,6 +39,7 @@ export class SpaceWizardComponent implements OnInit {
     public dummy: DummyService,
     private broadcaster: Broadcaster,
     private spaceService: SpaceService,
+    private notifications: Notifications,
     context: Contexts) {
     context.current.subscribe(val => this._context = val);
   }
@@ -101,17 +102,16 @@ export class SpaceWizardComponent implements OnInit {
           this.host.close();
           this.reset();
         }
-        this.reset();
       },
       (err) => {
-        // TODO:consistent error handling on failures
-        let errMessage = `Failed to create the collaboration space:
-            space name :
-            ${space.name}
-            message:
-            ${err.message}
-            `;
-        alert(errMessage);
+        this.notifications.message({
+          message: `Failed to create the collaboration space "${space.name}" because ${err.message}`,
+          type: NotificationType.DANGER
+        } as Notification);
+        if (this.host) {
+          this.host.close();
+          this.reset();
+        }
       });
   }
 

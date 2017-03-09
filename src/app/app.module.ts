@@ -1,8 +1,5 @@
-import { SpacesService } from './shared/spaces.service';
-import { MenusService } from './header/menus.service';
-import { recommenderApiUrlProvider } from './shared/recommender-api.provider';
-import { authApiUrlProvider } from './shared/auth-api.provider';
-import { witApiUrlProvider } from './shared/wit-api.provider';
+import { NotificationsService } from './shared/notifications.service';
+import { NotificationsModule } from './settings/notifications/notifications.module';
 import './rxjs-extensions';
 
 import { NgModule, ApplicationRef } from '@angular/core';
@@ -18,6 +15,7 @@ import { PlannerModule } from 'fabric8-planner';
 import { DropdownModule } from 'ngx-dropdown';
 import { AuthenticationService, Broadcaster, Logger, UserService, HttpService } from 'ngx-login-client';
 import { WidgetsModule } from 'ngx-widgets';
+
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -43,16 +41,22 @@ import { LoginService } from './shared/login.service';
 import { ToggleService } from './toggle/toggle.service';
 import { ContextService } from './shared/context.service';
 import { AboutService } from './shared/about.service';
+import { SpacesService } from './shared/spaces.service';
+import { MenusService } from './header/menus.service';
 
 // Shared Components
 import { SpaceWizardModule } from './space-wizard/space-wizard.module';
 import { PublicModule } from './public/public.module';
 import { DeleteAccountDialogModule } from './delete-account-dialog/delete-account-dialog.module';
 import { StackDetailsModule } from './analyze/stack/stack-details/stack-details.module';
+import { recommenderApiUrlProvider } from './shared/recommender-api.provider';
+import { authApiUrlProvider } from './shared/auth-api.provider';
+import { witApiUrlProvider } from './shared/wit-api.provider';
+
 
 // Component Services
 import { ProfileService } from './profile/profile.service';
-import { SpaceService, Contexts, Spaces } from 'ngx-fabric8-wit';
+import { SpaceService, Contexts, Spaces, Notifications } from 'ngx-fabric8-wit';
 import {AuthUserResolve} from './shared/common.resolver';
 
 // Login
@@ -128,7 +132,12 @@ export type StoreType = {
       provide: Http,
       useClass: HttpService
     },
-    MenusService
+    MenusService,
+    NotificationsService,
+    {
+      provide: Notifications,
+      useExisting: NotificationsService
+    }
   ],
   schemas: [],
   bootstrap: [AppComponent]

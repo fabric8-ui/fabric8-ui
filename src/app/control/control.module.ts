@@ -9,11 +9,10 @@ import { FormsModule } from '@angular/forms';
 
 import { ControlComponent } from './control.component';
 import { ControlRoutingModule } from './control-routing.module';
-import { FlashMessagesModule } from 'angular2-flash-messages';
 
 
 @NgModule({
-  imports: [CommonModule, ControlRoutingModule, HttpModule, FormsModule, FlashMessagesModule],
+  imports: [CommonModule, ControlRoutingModule, HttpModule, FormsModule],
   declarations: [ControlComponent]
 })
 export class ControlModule {

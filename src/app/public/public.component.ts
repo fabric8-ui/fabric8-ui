@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { FlashMessagesService } from 'angular2-flash-messages';
 import { AuthenticationService, Broadcaster, User } from 'ngx-login-client';
+import { Notification, NotificationType, Notifications } from 'ngx-fabric8-wit';
 
 import { LoginService } from '../shared/login.service';
 import { ProfileService } from './../profile/profile.service';
@@ -24,7 +24,7 @@ export class PublicComponent implements OnInit {
     private loginService: LoginService,
     private profile: ProfileService,
     private broadcaster: Broadcaster,
-    private flashMessagesService: FlashMessagesService,
+    private notifications: Notifications,
     private activatedRoute: ActivatedRoute
   ) {
   }
@@ -33,7 +33,7 @@ export class PublicComponent implements OnInit {
     let error = this.getUrlParameter('error');
     if (error) {
       this.loggedIn = false;
-      this.flashMessagesService.show(error, { cssClass: 'alert alert-danger' });
+      this.notifications.message({ message: error, type: NotificationType.DANGER } as Notification);
     } else {
       this.loggedIn = this.auth.isLoggedIn();
     }
@@ -49,7 +49,11 @@ export class PublicComponent implements OnInit {
           this.loginService.redirectAfterLogin();
         } else {
           this.loggedIn = false;
-          this.flashMessagesService.show('You must <a href="https://developers.redhat.com/auth/realms/rhd/account/">complete your profile</a>. Ensure you have provided your full name and email address.', { cssClass: 'alert alert-danger' });
+          this.notifications.message({
+            message: 'You must <a href="https://developers.redhat.com/auth/realms/rhd/account/">' +
+            'complete your profile</a>. Ensure you have provided your full name and email address.',
+            type: NotificationType.DANGER
+          } as Notification);
         }
       }
     });

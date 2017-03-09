@@ -45,6 +45,28 @@ shared global styles that we will refactor out in to a shared library at some po
 Only update these styles if you are making a truly global style, and are going to
 synchronise your changes across all the various UI projects.
 
+## Integrations
+
+fabric8-ui uses rxjs to provide loose coupling between modules (both those in the code base and those integrated via NPM). 
+To do this, fabric8-ui makes extensive use of the [Broadcaster](https://github.com/fabric8-ui/ngx-login-client/blob/master/src/app/shared/broadcaster.service.ts).
+
+### Context
+
+#### Space changed
+
+When the current space the user is viewing changes, fabric8-ui broadcasts with the key `spaceChanged` and the  
+new [Space](https://github.com/fabric8-ui/ngx-fabric8-wit/blob/master/src/app/models/space.ts) as the payload.
+
+### UI integrations
+
+####  Notifications
+
+To send a notification to the user, the module should import [ngx-fabric8-wit](https://github.com/fabric8-ui/ngx-fabric8-wit)
+and inject the `[Notifications](https://github.com/fabric8-ui/ngx-fabric8-wit/blob/master/src/app/notifications/notifications.ts)`
+service, and call the `message()` method, passing in a [Notification](https://github.com/fabric8-ui/ngx-fabric8-wit/blob/master/src/app/notifications/notification.ts). You can subscribe to
+the result of `message()` to observe any [NotificationAction](https://github.com/fabric8-ui/ngx-fabric8-wit/blob/master/src/app/notifications/notification-action.ts)s that result
+from the notification.
+
 [[continuous-delivery-semantic-relases]]
 Continuous Delivery & Semantic Relases
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
