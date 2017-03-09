@@ -1214,20 +1214,18 @@ export class WorkItemService {
    *
    * @param workItemId: string
    */
-  reOrderWorkItem(workItemId: string): Promise<void> {
+  reOrderWorkItem(workItemId: string, prevWiId: string, direction: string): Promise<any> {
     let newWItem = new WorkItem();
     let wiIndex = this.workItemIdIndexMap[workItemId];
     let wItem = this.workItems[wiIndex];
-
-    // Get the adjacent work items
-    let adjacentWI = this.getAdjacentWorkItemsIdById(workItemId);
+    let arr = [];
 
     newWItem.id = workItemId.toString();
     newWItem.attributes = {} as WorkItemAttributes;
     newWItem.attributes.version = wItem.attributes.version;
     newWItem.type = wItem.type;
-    newWItem.attributes.previousitem = parseInt(adjacentWI.prevItemId);
-    newWItem.attributes.nextitem = parseInt(adjacentWI.nextItemId);
+
+    arr.push(newWItem);
 
     if (this._currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
@@ -1235,12 +1233,13 @@ export class WorkItemService {
       // this.workItemUrl = currentSpace.links.self + '/workitems';
       let url = `${this.workItemUrl}/reorder`;
       return this.http
-        .patch(url, JSON.stringify({data: newWItem}), { headers: this.headers })
+        .patch(url, JSON.stringify({data: arr, position: {direction: direction, id: prevWiId}}), { headers: this.headers })
         .toPromise()
         .then(response => {
-          let updatedWorkItem: WorkItem = response.json().data as WorkItem;
+          let updatedWorkItem: WorkItem = response.json().data[0] as WorkItem;
+          wItem.attributes['system.order'] = updatedWorkItem.attributes['system.order'];
           wItem.attributes['version'] = updatedWorkItem.attributes['version'];
-          wItem.attributes['order'] = updatedWorkItem.attributes['order'];
+          return updatedWorkItem;
         })
         .catch ((e) => {
           if (e.status === 401) {

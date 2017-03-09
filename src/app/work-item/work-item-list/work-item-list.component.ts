@@ -272,19 +272,19 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     });
   }
 
-  onDragStart() {
-    //console.log('on drag start');
-  }
+  // onDragStart() {
+  //   //console.log('on drag start');
+  // }
 
-  // Event listener for WI drop.
-  onDragEnd(workItemId: string) {
-    // rearrange is happening inside ng2-dnd library
+  // // Event listener for WI drop.
+  // onDragEnd(workItemId: string) {
+  //   // rearrange is happening inside ng2-dnd library
 
-    // Build the ID-index map after rearrange.
-    this.workItemService.buildWorkItemIdIndexMap();
+  //   // Build the ID-index map after rearrange.
+  //   this.workItemService.buildWorkItemIdIndexMap();
 
-    // save the order of work item.
-    this.workItemService.reOrderWorkItem(workItemId)
-        .catch (e => console.log(e));
-  }
+  //   // save the order of work item.
+  //   this.workItemService.reOrderWorkItem(workItemId)
+  //       .catch (e => console.log(e));
+  // }
 }

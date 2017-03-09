@@ -174,23 +174,35 @@ export class WorkItemBoardComponent implements OnInit {
   }
 
   getWI(workItem: WorkItem) {
-    console.log(workItem);
-    this.workItem = workItem;
+    let lane = this.lanes.find((lane) => lane.option === workItem.attributes['system.state']);
+    let _workItem = lane.workItems.find((item) => item.id === workItem.id);
+    this.workItem = _workItem;
   }
 
   onDrop(args) {
     let [el, target, source, sibling] = args;
     target.parentElement.parentElement.classList.remove('active-lane');
     let state = target.parentElement.parentElement.getAttribute('data-state');
-    //this.workItem = this.workItems[el.getAttribute('data-item')];
-    //console.log(el.getAttribute('data-item'));
-    let prevEl = '0';
+    let adjElm = null;
+
+    let prevElId = '0';
     try {
-      prevEl = el.previousElementSibling.getAttribute('data-id');
+      prevElId = el.previousElementSibling.getAttribute('data-id');
     } catch (e) {}
 
-    this.changeLane(this.workItem.attributes['system.state'], state, this.workItem, prevEl);
-    this.changeState(state);
+    this.changeLane(this.workItem.attributes['system.state'], state, this.workItem, prevElId);
+
+    if(el.previousElementSibling) {
+      adjElm = el.previousElementSibling;
+      this.changeState(state, el.getAttribute('data-id'), adjElm.getAttribute('data-id'), 'below');
+    }
+    else if(el.nextElementSibling) {
+      adjElm = el.nextElementSibling;
+      this.changeState(state, el.getAttribute('data-id'), adjElm.getAttribute('data-id'), 'above');
+    }
+    else {
+      this.changeState(state, el.getAttribute('data-id'), null, 'above');
+    }
   }
 
   onOver(args) {
@@ -214,18 +226,22 @@ export class WorkItemBoardComponent implements OnInit {
     }, timeOut);
   }
 
-  changeState(option: any): void {
+  changeState(option: any, elId: string, adjElmId: string | null = null, direction: string): void {
     this.workItem.attributes['system.state'] = option;
-    this.save();
-  }
-
-  save(): void {
-    if (this.workItem.id){
+    let lane = this.lanes.find((lane) => lane.option === this.workItem.attributes['system.state']);
+    if (this.workItem.id) {
       this.workItemService
         .update(this.workItem)
         .then((workItem) => {
-          this.workItem.attributes['version'] = workItem.attributes['version'];
+          lane.workItems.find((item) => item.id === workItem.id).attributes['version'] = workItem.attributes['version'];
           this.activeOnList();
+          if(adjElmId !== null) {
+            this.workItemService.reOrderWorkItem(elId, adjElmId, direction)
+                .then((workitem) => {
+                  lane.workItems.find((item) => item.id === workItem.id).attributes['version'] = workitem.attributes['version'];
+                  lane.workItems.find((item) => item.id === workItem.id).attributes['system.order'] = workitem.attributes['system.order'];
+                });
+          }
       });
     }
   }
