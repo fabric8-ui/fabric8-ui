@@ -70,11 +70,13 @@ if (process.env.ENV == 'inmemory') {
       provide: Spaces,
       useExisting: SpacesService
     }
+
   ];
   providers = [
     GlobalSettings,
     witApiUrlProvider,
     serviceImports,
+    SpacesService,
     DummySpace,
     {
       provide: Http,
