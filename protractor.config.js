@@ -14,8 +14,8 @@ exports.config = {
     capabilities: {
           'browserName': 'chrome',
 //         'browserName': 'phantomjs',
-          'maxInstances': 4,
-          'shardTestFiles': true
+        //   'maxInstances': 2,
+        //   'shardTestFiles': true
 //         'phantomjs.binary.path': require('phantomjs-prebuilt').path,
 //         'phantomjs.cli.args': ['--webdriver-loglevel=ERROR', '--local-storage-path=/tmp/phantom_' + Math.random()]
 
