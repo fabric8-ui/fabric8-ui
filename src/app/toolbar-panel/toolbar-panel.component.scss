@@ -2,12 +2,21 @@
 
 .toolbar-header {
   padding: 0 rem(20);
+// head
   border-bottom: 1px solid $color-pf-black-300;
+//
+  .btn-move {
+    margin-top: 6px;
+  }
 }
-
+.filter-select {
+    .btn-default {
+        font-size: $font-size-base;
+    }
+    border-bottom: 1px solid $color-pf-black-300;
+}
 .toolbar-pf-action-right {
   .pficon-add-circle-o{
     color: $color-pf-blue-400;
-    font-size: ceil(($font-size-base * 1.2)) ;
   }
 }

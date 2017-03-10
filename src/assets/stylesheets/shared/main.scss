@@ -2,6 +2,7 @@
 @import 'custom-mixins';
 body {
     font-family: Open Sans;
+    font-size: 14px;
 }
 
 //colors
@@ -54,7 +55,7 @@ body {
     }
     .list-view-pf {
         .list-group-item-heading {
-            font-size: em(12);
+            // font-size: em(12);
         }
     }
 }

@@ -3,7 +3,7 @@
     <span class="content__title pull-left"
       (click)="toggleLinkComponent()">
       <i *ngIf="showLinkComponent" class="fa fa-angle-down"></i>
-      <i *ngIf="!showLinkComponent" class="fa fa-angle-up"></i>
+      <i *ngIf="!showLinkComponent" class="fa fa-angle-right"></i>
     </span>
     <ul class="link-header-nav-list">
       <li class="link-header-nav"
@@ -13,7 +13,9 @@
           {{workItem.relationalData.totalLinkCount}}
         </span>
         <span class="link-header-nav-text">
-          Total Links
+          <a>
+            Total Links
+          </a>
         </span>
       </li>
       <li class="link-header-nav" *ngFor="let linkType of workItem.relationalData.linkDicts; let totalLink = index"

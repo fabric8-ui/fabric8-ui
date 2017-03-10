@@ -2,11 +2,13 @@
   <div class="detail-container" *ngIf="workItem" id="workItemDetail_Wrapper">
     <form *ngIf="active"
           #almWorkItemDetailForm="ngForm"
+          class="form-horizontal"
           id="wi-detail-form">
       <fieldset [attr.disabled]="!loggedIn ? true : null">
-        <div class="col-md-12 col-sm-12 col-xs-12 mobile-bar ">
-          <div class="pull-left dropdown-kebab-pf detail-type-dropdown">
-            <span class="wi-type-icon fa {{workItem.relationalData?.wiType?.attributes?.icon}}"></span>
+        <div class="form-group col-md-12 col-sm-12 col-xs-12 mobile-bar ">
+          <div class="dropdown-kebab-pf detail-type-dropdown col-sm-9">
+            <span class="wi-type-icon fa {{workItem.relationalData?.wiType?.attributes?.icon}} fa-2x"></span>
+            <span *ngIf="workItem.id" class="detail-id" id="wi-detail-id">{{workItem.id}}</span>
           </div>
             <!--Commenting type drop down related tests for issue 635
             <div class="pull-left dropdown-kebab-pf detail-type-dropdown" dropdown>
@@ -22,18 +24,19 @@
               </li>
             </ul>
           </div>-->
-          <h5 *ngIf="workItem.id" class="detail-id pull-left" id="wi-detail-id">{{workItem.id}}</h5>
-          <span class="pficon-close detail-close" (click)="closeDetails()"></span>
-          <div *ngIf="workItem.id" class="pull-right created-wrap">
-              <span class="created-label">Created</span> <span id="created_at" [innerHTML]="workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'"></span>
+          <div class="col-sm-3">
+            <span *ngIf="workItem.id" class="detail-created-date">
+                Created <span id="created_at" [innerHTML]="workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'"></span>
+            </span>
+            <span class="pficon-close detail-close" (click)="closeDetails()"></span>
           </div>
         </div>
 
-        <div class="col-md-12 col-sm-12 col-xs-12 truncate-ellipsis">
+        <div class="form-group col-md-12 col-sm-12 col-xs-12 truncate-ellipsis">
           <div class="col-md-8 col-sm-7 col-xs-12 wi-detail-title-blk">
             <div *ngIf="!headerEditable" (click)='openHeader()'
               id="title-click-div">
-              <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate">{{ workItem.attributes['system.title'] }}</h2>
+              <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate form-control-static">{{ workItem.attributes['system.title'] }}</h2>
               <h2 *ngIf="loggedIn" id="wi-detail-title-click" class="detail-title truncate">{{ workItem.attributes['system.title'] }}</h2>
               <span *ngIf="loggedIn && workItem.id"
                 class="pficon-edit marginL10 fl detail-title-edit-ico"
@@ -45,7 +48,7 @@
                     (keyup.enter)="onUpdateTitle()"
                     (keydown.enter)="preventDef($event)"
                     id="wi-detail-title"
-                    class="detail-title-edit form-control"
+                    class="detail-title-edit"
                     [innerText]="workItem.attributes['system.title'] | almTrim"
                     #title >
                 </h2>
@@ -95,97 +98,114 @@
             </div>
           </div>
         </div>
-        <div class="separator col-md-12 col-sm-12 col-xs-12 detail-assignee-wrap">
-            <span class="pull-left user-label">{{workItem.relationalData.wiType?.attributes?.fields['system.assignees']?.label}}</span>
-            <span
-              *ngIf="!workItem.relationalData?.assignees?.length"
-              (click)="activeSearchAssignee()"
-              class="pull-left fa fa-user-plus user-assign-icon">
-            </span>
-            <img
-              *ngIf="workItem.relationalData?.assignees?.length"
-              (click)="activeSearchAssignee()"
-              class="pull-left user-assign-avatar"
-              placement="bottom"
-              tooltip="{{workItem.relationalData.assignees[0]?.attributes.fullName}}"
-              src="{{workItem.relationalData.assignees[0]?.attributes.imageURL + '&s=20'}}"
-              onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
+        <!-- separator -->
+        <!--<div class="form-group col-sm-12 col-md-12">
+          <hr />
+        </div>-->
+        <!-- Assignee -->
+        <div class="form-group">
+          <div class="detail-assignee-wrap">
+              <!--<span class="pull-left user-label">{{workItem.relationalData.wiType?.attributes?.fields['system.assignees']?.label}}</span>-->
+              <label class="col-sm-2">
+                {{workItem.relationalData.wiType?.attributes?.fields['system.assignees']?.label}}
+              </label>
+              <span
+                *ngIf="!workItem.relationalData?.assignees?.length"
+                (click)="activeSearchAssignee()"
+                class="pull-left fa fa-user-plus user-assign-icon">
+              </span>
+              <img
+                *ngIf="workItem.relationalData?.assignees?.length"
+                (click)="activeSearchAssignee()"
+                class="pull-left user-assign-avatar"
+                placement="bottom"
+                tooltip="{{workItem.relationalData.assignees[0]?.attributes.fullName}}"
+                src="{{workItem.relationalData.assignees[0]?.attributes.imageURL + '&s=20'}}"
+                onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
 
-            <div class="pull-left detail-assignee-name">
-                <span *ngIf="!searchAssignee && !workItem.relationalData?.assignees?.length" (click)="activeSearchAssignee()" class="placeholder pointer"> Unassigned </span>
-                <span *ngIf="!searchAssignee && workItem.relationalData?.assignees?.length" (click)="activeSearchAssignee()" class="pointer" id="WI_details_assigned_user">
-                  {{workItem.relationalData?.assignees[0] | almUserName:'Assignee not found' }}
-                </span>
-                <div *ngIf="searchAssignee" class="user-search" >
-                  <div class="list-container">
-                    <span class="fa fa-search user-search-icon"> </span>
-                    <input id="userAssigneeSearchInput" #userSearch (keyup)="filterUser($event)"
-                      autocomplete="off" />
-                    <ul class="item-ul no-padding user-list" #userList>
-                      <li
-                        class="item-li"
-                        [class.first-item] = "filteredUsers && filteredUsers.length"
-                        [class.only-first-item] = "!filteredUsers || !filteredUsers.length"
-                        *ngIf="loggedInUser"
-                        [attr.data-value]="loggedInUser.id"
-                        (click)="assignUser(loggedInUser.id)">
-                          <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
-                          <img
-                            class="pull-left user-assign-avatar"
-                            src="{{loggedInUser.attributes.fullName}}"
-                            src="{{loggedInUser.attributes.imageURL + '&s=20'}}"
-                            onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
-                          <span [innerHTML]="loggedInUser.attributes.fullName + ' (me)'"></span>
-                      </li>
-                      <li
-                        class="item-li"
-                        *ngFor="let user of filteredUsers;"
-                        [attr.data-value]="user.id"
-                        (click)="assignUser(user.id)">
-                          <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
-                          <img
-                            class="pull-left user-assign-avatar"
-                            src="{{user.attributes.fullName}}"
-                            src="{{user.attributes.imageURL + '&s=20'}}"
-                            onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
-                          <span [innerHTML]="user.attributes.fullName | almSearchHighlight: userSearch.value"></span>
-                      </li>
-                    </ul>
-                    <ul class="item-ul no-padding">
-                      <li class="action-li">
-                          <span class="action-item" (click)="unassignUser()">Unassign</span>
-                          <span class="action-item" (click)="cancelAssignment()">Cancel</span>
-                      </li>
-                    </ul>
+              <div class="pull-left detail-assignee-name">
+                  <span *ngIf="!searchAssignee && !workItem.relationalData?.assignees?.length" (click)="activeSearchAssignee()" class="placeholder pointer"> Unassigned </span>
+                  <span *ngIf="!searchAssignee && workItem.relationalData?.assignees?.length" (click)="activeSearchAssignee()" class="pointer" id="WI_details_assigned_user">
+                    {{workItem.relationalData?.assignees[0] | almUserName:'Assignee not found' }}
+                  </span>
+                  <div *ngIf="searchAssignee" class="user-search" >
+                    <div class="list-container">
+                      <span class="fa fa-search user-search-icon"> </span>
+                      <input id="userAssigneeSearchInput" #userSearch (keyup)="filterUser($event)"
+                        autocomplete="off" />
+                      <ul class="item-ul no-padding user-list" #userList>
+                        <li
+                          class="item-li"
+                          [class.first-item] = "filteredUsers && filteredUsers.length"
+                          [class.only-first-item] = "!filteredUsers || !filteredUsers.length"
+                          *ngIf="loggedInUser"
+                          [attr.data-value]="loggedInUser.id"
+                          (click)="assignUser(loggedInUser.id)">
+                            <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
+                            <img
+                              class="pull-left user-assign-avatar"
+                              src="{{loggedInUser.attributes.fullName}}"
+                              src="{{loggedInUser.attributes.imageURL + '&s=20'}}"
+                              onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
+                            <span [innerHTML]="loggedInUser.attributes.fullName + ' (me)'"></span>
+                        </li>
+                        <li
+                          class="item-li"
+                          *ngFor="let user of filteredUsers;"
+                          [attr.data-value]="user.id"
+                          (click)="assignUser(user.id)">
+                            <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
+                            <img
+                              class="pull-left user-assign-avatar"
+                              src="{{user.attributes.fullName}}"
+                              src="{{user.attributes.imageURL + '&s=20'}}"
+                              onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
+                            <span [innerHTML]="user.attributes.fullName | almSearchHighlight: userSearch.value"></span>
+                        </li>
+                      </ul>
+                      <ul class="item-ul no-padding">
+                        <li class="action-li">
+                            <button class="btn btn-link action-item" (click)="unassignUser()">Unassign</button>
+                            <button class="btn btn-link action-item" (click)="cancelAssignment()">Cancel</button>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-            </div>
+              </div>
+          </div>
         </div>
         <!--Creator-->
-        <div
-          class="width100 pull-left paddingL20 paddingR20 common-wrap">
-          <span class="pull-left user-label" id="creator_label">{{workItem.relationalData.wiType?.attributes?.fields['system.creator']?.label}}</span>
-            <span *ngIf="!workItem.relationalData?.creator"
-              class="pull-left fa pficon-user user-creator-icon" id="user_creator_icon">
-            </span>
-            <img *ngIf="workItem.relationalData?.creator"
-              class="pull-left user-avatar"
-              placement="bottom"
-              tooltip="{{workItem.relationalData.creator.attributes.fullName}}"
-              src="{{workItem.relationalData.creator.attributes.imageURL + '&s=20'}}"
-              id="WI_details_reporter_img" />
-            <div class="pull-left marginR10">
-                <span id="WI_details_reporter_user">
-                  {{workItem.relationalData?.creator | almUserName:'Creator not found'}}
-                </span>
-            </div>
-        </div>
-        <!--Area-->
-        <div class="separator col-md-12 col-sm-12 col-xs-12 detail-area-wrap">
-          <span class="area-label" id="area_label">
-            {{workItem.relationalData.wiType?.attributes?.fields['system.area']?.label}}
+        <div class="form-group">
+          <!--<span class="pull-left user-label" id="creator_label">{{workItem.relationalData.wiType?.attributes?.fields['system.creator']?.label}}</span>-->
+          <label class="col-sm-2">{{workItem.relationalData.wiType?.attributes?.fields['system.creator']?.label}}</label>
+          <span *ngIf="!workItem.relationalData?.creator"
+            class="fa pficon-user user-creator-icon" id="user_creator_icon">
           </span>
-          <div class="detail-area-name">
+          <img *ngIf="workItem.relationalData?.creator"
+            class="user-avatar"
+            placement="bottom"
+            tooltip="{{workItem.relationalData.creator.attributes.fullName}}"
+            src="{{workItem.relationalData.creator.attributes.imageURL + '&s=20'}}"
+            id="WI_details_reporter_img" />
+          <div class="marginR10" style="display: inline-block;">
+              <span id="WI_details_reporter_user">
+                {{workItem.relationalData?.creator | almUserName:'Creator not found'}}
+              </span>
+          </div>
+        </div>
+        <!-- separator -->
+        <!--<div class="form-group col-sm-12 col-md-12">
+          <hr />
+        </div>-->
+        <!--Area-->
+        <div class="form-group detail-area-wrap">
+          <!--<span class="area-label">
+            {{workItem.relationalData.wiType?.attributes?.fields['system.area']?.label}}
+          </span>-->
+          <label class="col-sm-2">
+            {{workItem.relationalData.wiType?.attributes?.fields['system.area']?.label}}
+          </label>
+          <div class="col-sm-10 detail-area-name pull-left">
               <div *ngIf="!searchArea" (click)="activeSearchArea()"
                 class="pointer" id="WI_details_area">
                 {{ workItem.relationalData?.area?.attributes.name || "None" }}
@@ -219,8 +239,11 @@
           </div>
         </div>
         <!--Iteration-->
-        <div class="col-md-12 col-sm-12 col-xs-12 detail-iteration-wrap">
-          <span class="pull-left iteration-label">{{workItem.relationalData.wiType?.attributes?.fields['system.iteration']?.label}}</span>
+        <div class="form-group">
+          <!--<span class="pull-left iteration-label">{{workItem.relationalData.wiType?.attributes?.fields['system.iteration']?.label}}</span>-->
+          <label class="col-sm-2">
+            {{workItem.relationalData.wiType?.attributes?.fields['system.iteration']?.label}}
+          </label>
           <div class="pull-left detail-iteration-name">
             <span *ngIf="!searchIteration" (click)="lookupIterations()" class="pointer" id="iteration-assocaited">
               {{ workItem.relationalData?.iteration?.attributes.name || "None" }}
@@ -247,71 +270,79 @@
             </span>
           </div>
         </div>
+         <!--separator 
+        <div class="form-group col-sm-12 col-md-12">
+          <hr />
+        </div>-->
         <!--Description-->
-        <div class="separator col-md-12 col-sm-12 col-xs-12 detail-description-wrap">
-          <div class="col-md-12 col-sm-12 col-xs-12 detail-description" *ngIf="loggedIn">
-            <button class="view-switch-btn btn btn-default" *ngIf="descViewType=='markdown'" (click)="showHtml(desc.innerText)">View HTML</button>
-            <button class="view-switch-btn btn btn-default" *ngIf="descViewType=='html'" (click)="descViewType='markdown'">View Markdown</button>
-            <div id="wi-detail-desc" class="detail-desc-div-wrap" (click)="openDescription()">
-              <div class="detail-desc-div"
-                [class.desc-editable]="descEditable"
-                [class.desc-not-found]="!descEditable && !workItem.attributes['system.description']">
-                <!--
-                  The following condition for innerHTML might look
-                  little confusing. So, here is the explanation -
-                  If there is some description it should show up
-                  If there is none, then it should check if the description
-                  field is editable or not. If it's editable then it should
-                  stay empty as in the default value of description.
-                  If it's not editable and there is no description as well,
-                  it should show up the message 'Work item Description.'
-                -->
-                <p almEditable [editable]="descEditable"
-                  #desc
-                  (onUpdate)="descUpdate($event)"
-                  (keydown.enter)="onUpdateDescription()"
-                  (keyup.enter)="preventDef($event)"
-                  class="description"
-                  id="detail-desc-value"
-                  [hidden]="descViewType!='markdown'"
-                  [innerText]="workItem.attributes['system.description']">
-                </p>
-                <div class="desc-html-view"
-                  [innerHTML]="renderedDesc"
-                  [hidden]="descViewType!='html'">
-                </div>
-                <p *ngIf="!renderedDesc && !descEditable">Work Item Description</p>
-                <div class="edit-icon">
-                  <span id="workItemDesc_btn_edit" class="pficon-edit"
-                    (click)='openDescription()'></span>
+        <div class="form-group">
+          <div class="col-md-12 col-sm-12 col-xs-12 detail-description-wrap">
+            <div class="col-md-12 col-sm-12 col-xs-12 detail-description" *ngIf="loggedIn">
+              <button class="view-switch-btn btn btn-default" *ngIf="descViewType=='markdown'" (click)="showHtml(desc.innerText)">View HTML</button>
+              <button class="view-switch-btn btn btn-default" *ngIf="descViewType=='html'" (click)="descViewType='markdown'">View Markdown</button>
+              <div id="wi-detail-desc" class="detail-desc-div-wrap" (click)="openDescription()">
+                <div class="detail-desc-div"
+                  [class.desc-editable]="descEditable"
+                  [class.desc-not-found]="!descEditable && !workItem.attributes['system.description']">
+                  <!--
+                    The following condition for innerHTML might look
+                    little confusing. So, here is the explanation -
+                    If there is some description it should show up
+                    If there is none, then it should check if the description
+                    field is editable or not. If it's editable then it should
+                    stay empty as in the default value of description.
+                    If it's not editable and there is no description as well,
+                    it should show up the message 'Work item Description.'
+                  -->
+                  <p almEditable [editable]="descEditable"
+                    #desc
+                    (onUpdate)="descUpdate($event)"
+                    (keydown.enter)="onUpdateDescription()"
+                    (keyup.enter)="preventDef($event)"
+                    class="description"
+                    id="detail-desc-value"
+                    [hidden]="descViewType!='markdown'"
+                    [innerText]="workItem.attributes['system.description']">
+                  </p>
+                  <div class="desc-html-view"
+                    [innerHTML]="renderedDesc"
+                    [hidden]="descViewType!='html'">
+                  </div>
+                  <p *ngIf="!renderedDesc && !descEditable">Work Item Description</p>
+                  <div class="edit-icon">
+                    <span id="workItemDesc_btn_edit" class="pficon-edit"
+                      (click)='openDescription()'></span>
+                  </div>
                 </div>
               </div>
             </div>
+            <div id="wi-detail-desc"
+              class="col-md-12 description"
+              *ngIf="!loggedIn"
+              [innerHTML]="renderedDesc">
+            </div>
           </div>
-          <div id="wi-detail-desc"
-            class="col-md-12 description"
-            *ngIf="!loggedIn"
-            [innerHTML]="renderedDesc">
+          <div *ngIf="loggedIn && descEditable" class="col-md-12 col-sm-12 col-xs-12 detail-desc-action">
+              <div id="workItemdesc_btn_cancel"
+                  class="fl btn-small btn btn-default pull-right detail-action-btn"
+                  (click)="closeDescription()">
+                  <span class="fa fa-close"></span>
+              </div>
+              <div id="workItemdesc_btn_save"
+                  class="fl btn-small btn btn-default pull-right detail-action-btn"
+                  (click)="onUpdateDescription()">
+                  <span class="fa fa-check"></span>
+              </div>
           </div>
         </div>
-        <div *ngIf="loggedIn && descEditable" class="col-md-12 col-sm-12 col-xs-12 detail-desc-action">
-            <div id="workItemdesc_btn_cancel"
-                class="fl btn-small btn btn-default pull-right detail-action-btn"
-                (click)="closeDescription()">
-                <span class="fa fa-close"></span>
-            </div>
-            <div id="workItemdesc_btn_save"
-                class="fl btn-small btn btn-default pull-right detail-action-btn"
-                (click)="onUpdateDescription()">
-                <span class="fa fa-check"></span>
-            </div>
+        <div class="form-group">
+          <p id="start-coding-link" class="form-control-static start-coding">
+            <a *ngIf="loggedIn && workItem.relationships?.codebase?.links?.meta?.edit"  target="_blank" href="{{workItem.relationships?.codebase?.links?.meta?.edit}}">&#60;&#47;&#62; Start coding</a>
+          </p>
         </div>
       </fieldset>
     </form>
-    <p  id="start-coding-link" class="start-coding">
-      <a *ngIf="loggedIn && workItem.relationships?.codebase?.links?.meta?.edit"  target="_blank" href="{{workItem.relationships?.codebase?.links?.meta?.edit}}">&#60;&#47;&#62; Start coding</a>
-    </p>
-    <div *ngIf="workItem.id">
+    <div *ngIf="workItem.id" class="work-item-section">
       <alm-work-item-link [workItem]="workItem" [loggedIn]="loggedIn"></alm-work-item-link>
       <alm-work-item-comment [workItem]="workItem" [loggedIn]="loggedIn"></alm-work-item-comment>
     </div>

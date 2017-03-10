@@ -34,8 +34,10 @@
     border: 0;
     box-shadow: none;
   }
-  .no-wi{
-    font-size: $pf-icon-4x;
+  .card-pf-title {
+      .no-wi {
+        font-size: $pf-icon-4x;
+      }
   }
 }
 
@@ -144,7 +146,6 @@
                       .toolbar-pf-action-right {
                         .pficon-add-circle-o{
                           @extend .with-color-blue;
-                          font-size: ceil(($font-size-base * 1.2)) ;
                         }
                       }
                   }

@@ -29,7 +29,7 @@
   }
 }
 .wi-comment-input {
-    padding: rem(20);
+    padding: rem(20) rem(20) rem(20) rem(40);
     background: $color-pf-black-100;
     #wi-comment-add-comment {
     /* Overrides pf's form-control style's height property */
@@ -48,7 +48,7 @@
 .comments-outer-wrapper {
   .comments-wrap {
     border-bottom: 1px solid $color-pf-black-200;
-    padding: em(20);
+    padding: em(20) em(20) em(20) rem(40);
     .comment-body {
       min-width: 0; //fix for having full wrapper width and overflowen content
       padding-left: em(10);

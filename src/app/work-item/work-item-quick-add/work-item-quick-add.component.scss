@@ -8,10 +8,8 @@
   border-top: 1px solid darken($color-pf-white, 20%);
   text-align: $textLeft;
   cursor: pointer;
-  font-size: rem(12);
   .addWorkItem {
     padding: em(18);
-    font-size: rem(14);
     color: $navbar-pf-border-color;
     height: 67px; //height is given to avoid jumping between this block and addWorkItemBlk
     .quick-add-label {
@@ -52,7 +50,6 @@
     }
     .workItemQuickAdd_AddBlk {
       .workItemQuickAdd_Add {
-        font-size: em(14);
         min-width: em(30);
         height: 27px;
         i {
@@ -70,7 +67,7 @@
       }
     }
     .icon-btn, .icon-btn-disabled{
-      font-size: em(24);
+      // font-size: em(24);
       text-decoration: none;
     }
     .icon-btn {
@@ -123,7 +120,6 @@
       }
     }
     .workItemQuickAdd_Add{
-      font-size: em(12);
       @include Border(1px, solid ,$color-pf-black-300);
       margin-top: em(10);
       padding: em(1);

@@ -1,5 +1,8 @@
 @import 'patternfly/variables';
 //remove toolbar box shadow
+
+$font-size-base: 14px;
+
 .toolbar-pf
 {
   box-shadow: none !important;
@@ -7,4 +10,8 @@
 // add border top to filter results
 .toolbar-pf-results {
   border-top : 1px solid $color-pf-black-300;
+}
+//increase font size for these elements, overriding PatternFly
+.form-control, .btn, .dropdown-menu, .badge {
+  font-size: $font-size-base;
 }

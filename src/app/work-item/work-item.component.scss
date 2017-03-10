@@ -11,7 +11,6 @@
   margin:0;
   border-width:0;
 }
-
 .work-item-page {
     display: flex;
     flex: 1;
@@ -103,7 +102,6 @@
                       .toolbar-pf-action-right {
                         .pficon-add-circle-o{
                           @extend .with-color-blue;
-                          font-size: ceil(($font-size-base * 1.2)) ;
                         }
                       }
                   }

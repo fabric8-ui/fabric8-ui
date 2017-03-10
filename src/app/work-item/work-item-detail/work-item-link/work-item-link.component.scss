@@ -2,11 +2,13 @@
 .link-container {
     .link-header {
         display: flex;
-        background: $color-pf-black-200;
+        border-top: 1px solid $color-pf-black-200;
+        border-bottom: 1px solid $color-pf-black-200;
         align-items: center;
+        height: 43px;
         .content__title {
             cursor: pointer;
-            padding: em(15) em(5);
+            padding: em(15) em(17);
         }
         .selected-tab {
             font-weight: 600;
@@ -18,25 +20,23 @@
             white-space: nowrap;
             -webkit-overflow-scrolling: touch;
             overflow-x: auto;
-            padding: em(5);
-            margin: 0;
+            // padding: em(5);
+            margin: 2px 0 0 -3px;
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
             -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
             .link-header-nav {
-                padding: em(5) em(15);
+                // padding: em(5) em(3);
                 @include dib;
-                border-right: 1px solid $color-pf-black-400;
+                // border-right: 1px solid $color-pf-black-400;
                 text-align: $textCenter;
                 span {
                     float: none;
-                    font-size: em(18);
                 }
                 .link-header-nav-text {
                     padding: em(5);
-                    font-size: em(12);
                 }
             }
         }
@@ -174,9 +174,6 @@
     }
 }
 
-// .link-header > div{
-//     margin: 15px;
-// }
 @media (max-width: $screen-md-min) {
     .link-container {
         .link-header {

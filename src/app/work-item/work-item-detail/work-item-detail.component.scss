@@ -1,6 +1,78 @@
 @import '../../../assets/stylesheets/base';
+//detail panel
+.detail-panel {
+  background: $color-pf-white;
+  position: fixed;
+  left: auto;
+  top: em(34);
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  min-width: em(250);
+  z-index: 100;
+  padding: em(20) 0 em(20) em(40);
+  border-left: 1px solid darken($color-pf-white, 20%);
+  overflow-y: scroll;
+  label {
+    font-weight: 400;
+  }
+  .form-group {
+    margin-bottom: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
+
+//detail panel
+.detail-panel {
+  background: $color-pf-white;
+  position: fixed;
+  left: auto;
+  top: em(34);
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  min-width: em(250);
+  z-index: 100;
+  padding: em(20) 0 em(20) em(40);
+  border-left: 1px solid darken($color-pf-white, 20%);
+  overflow-y: scroll;
+  label {
+    font-weight: 400;
+  }
+  .form-group {
+    margin-bottom: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
+
+//detail panel
+.detail-panel {
+  background: $color-pf-white;
+  position: fixed;
+  left: auto;
+  top: em(34);
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  min-width: em(250);
+  z-index: 100;
+  padding: em(20) 0 em(20) em(40);
+  border-left: 1px solid darken($color-pf-white, 20%);
+  overflow-y: scroll;
+  label {
+    font-weight: 400;
+  }
+  .form-group {
+    margin-bottom: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
 
 .detail-container {
+  width: $width100;
   .user-avatar {
     cursor: pointer;
     margin-right: em(6);
@@ -20,56 +92,51 @@
       margin-right: em(6);
     }
   }
-  .separator{
-    padding-top: em(10);
-    border-top: 1px solid #ededed;
-    display: flex;
-  }
-  width: $width100;
-  font-size: rem(12);
-  float: left;
   .note{
     color: $color-pf-black-500;
   }
   .detail-type-dropdown {
     position: relative;
+    margin-left: -50px;
   }
   .detail-id {
     font-weight: 700;
     margin:0;
-    padding-left: em(20);
+    padding-left: .6em;
     line-height: 1 !important;
+    font-size: $pf-icon-2x;
+  }
+  .detail-created-date {
+    margin-left: em(8);
+    text-align: right;
   }
   .detail-close {
-    float: right;
+    position: fixed;
+    top: 25px;
+    right: 40px;
     cursor: pointer;
-    font-size: em(14);
-  }
-  .created-wrap {
-    margin-right: em(20);
-    line-height: 1;
-    .created-label{
-      margin-right: em(10);
-    }
+    font-size: em(18);
   }
   .wi-detail-title-blk{
-    padding: em(20) em(0) em(10);
+    padding: em(20) em(0) 0;
+    margin-left: -10px;
     .detail-title {
-      float: left;
       max-width: calc(100% - 25px);
       margin:0;
       line-height: 1.5;
-      padding: em(2) em(4.5);
+      padding-left: 7px;
+      border: 1px solid transparent;
+      margin-bottom: 31px;
     }
     .detail-title-edit-ico {
       line-height: 2;
       cursor: pointer;
     }
     .detail-title-edit {
-      min-height: em(25);
-      height: auto;
       margin: 0;
       line-height: 1.5;
+      padding-left: 7px;
+      border: 1px solid $color-pf-black-400;
     }
     aside{
       padding: em(5) 0 0;
@@ -156,9 +223,6 @@
     }
     .detail-assignee-name{
       margin-left: em(5);
-      .pficon-user{
-        font-size: em(28);
-      }
       .placeholder {
         font-style: italic;
         color: $color-pf-black-400;
@@ -173,7 +237,6 @@
   }
 
   .detail-description-wrap {
-    margin-top: em(10);
      .view-switch-btn {
         margin-bottom: 10px;
      }
@@ -192,6 +255,20 @@
           background-color: $color-pf-white;
           padding-right: em(30);
           border: 1px solid $color-pf-white;
+          max-height: 200px;
+          overflow-y: scroll;
+          &::-webkit-scrollbar {
+            -webkit-appearance: none;
+            width: 7px;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background-color: rgba(0,0,0,.5);
+            -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+          }
+          .see-more {
+            max-height: none;
+          }
           p {
             padding: em(5) em(10);
             margin: 0;
@@ -244,24 +321,11 @@
   .start-coding {
     display: flex;
     justify-content: flex-end;
-    padding: 0 rem(20);
+    padding: 0 30px;
   }
-}
-
-//detail panel
-.detail-panel {
-  background: $color-pf-white;
-  position: absolute;
-  left: auto;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 60%;
-  min-width: rem(300);
-  z-index: 100;
-  padding: rem(20) 0;
-  border-left: 1px solid darken($color-pf-white, 20%);
-  overflow-y: scroll;
+  .work-item-section {
+    margin-left: -47px;
+  }
 }
 /* Commenting type drop down related tests for issue 635
 .wi-type-icon {
@@ -338,13 +402,11 @@
   }
 }
 .detail-area-name {
-  width: $width100;
+  // width: $width100;
+  padding-left: 0;
 }
 .detail-area-wrap {
-  padding-bottom: em(15);
-  .area-label {
-    padding-right: em(37);
-  }
+  // padding-bottom: em(15);
   #WI_details_area {
     width: $width100;
   }
@@ -353,7 +415,7 @@
     width: 40%;
     height: 1px;
     .list-container {
-      position: absolute;
+      // position: absolute;
       min-width: em(200);
       z-index: 10;
       background-color: $color-pf-black-100;
