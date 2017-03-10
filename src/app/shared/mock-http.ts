@@ -210,7 +210,7 @@ export class MockHttp extends Http {
           var iterations = this.mockDataService.getAllIterations();
           return this.createResponse(url.toString(), 200, 'ok', { data: iterations, 'meta': { 'totalCount': iterations.length} } );
         case '/areas':
-          return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getAllAreas() );
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getAllAreas() });
         case '/source-link-types':
           return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemLinkTypes() );
         case '/target-link-types':
