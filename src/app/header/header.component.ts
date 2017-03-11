@@ -1,15 +1,19 @@
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+
+import { Subscription } from 'rxjs';
+
+import { AuthenticationService, Broadcaster, Logger, UserService, User } from 'ngx-login-client';
+import { ContextType, Context, Contexts } from 'ngx-fabric8-wit';
+
+
 import { ContextService } from './../shared/context.service';
 import { MenuedContextType } from './menued-context-type';
 import { Navigation } from './../models/navigation';
 import { MenuItem } from './../models/menu-item';
 import { ProfileService } from './../profile/profile.service';
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-
-import { AuthenticationService, Broadcaster, Logger, UserService, User } from 'ngx-login-client';
-import { ContextType, Context, Contexts } from 'ngx-fabric8-wit';
-
 import { DummyService } from './../shared/dummy.service';
+
 
 
 interface MenuHiddenCallback {
@@ -29,19 +33,21 @@ export class HeaderComponent implements OnInit {
   menuCallbacks = new Map<String, MenuHiddenCallback>([
     [
       'settings', function (headerComponent, context) {
-        return headerComponent.currentUser !== context.user;
+        return headerComponent.loggedInUser !== context.user;
       }
     ]
   ]);
 
   context: Context;
   recent: Context[];
+  loggedInUser: User;
+  private _loggedInUserSubscription: Subscription;
 
   constructor(
     public router: Router,
     private userService: UserService,
     private logger: Logger,
-    private auth: AuthenticationService,
+    public auth: AuthenticationService,
     private broadcaster: Broadcaster,
     public dummy: DummyService,
     contexts: Contexts,
@@ -49,7 +55,6 @@ export class HeaderComponent implements OnInit {
   ) {
     router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
-        this.getLoggedUser();
         this.broadcaster.broadcast('navigate', { url: val.url } as Navigation);
         this.updateMenus();
       }
@@ -59,33 +64,27 @@ export class HeaderComponent implements OnInit {
       this.updateMenus();
     });
     contexts.recent.subscribe(val => this.recent = val);
+
+    // Currently logged in user
+    this.userService.loggedInUser.subscribe(
+      val => {
+        if (val.id) {
+          this.loggedInUser = val;
+        } else {
+          this.resetData();
+          this.loggedInUser = null;
+          this.router.navigate(['/', 'public']);
+        }
+      }
+    );
   }
 
   ngOnInit(): void {
-    this.listenToEvents();
 
-    this.userService.getUser().subscribe((userData) => {
-      this.dummy.addUser(userData);
-    }, (error) => {
-      this.logger.log('Error retrieving user data: ' + error);
-    });
-  }
-
-  get loggedInUser(): User {
-    return this.dummy.currentUser;
-  }
-
-  get loggedIn(): boolean {
-    return this.auth.isLoggedIn();
-  }
-
-  logout() {
-    this.auth.logout();
-    this.router.navigate(['/public']);
   }
 
   login() {
-    this.router.navigate(['login']);
+    this.router.navigate(['/', 'public']);
   }
 
   onImgLoad() {
@@ -94,28 +93,6 @@ export class HeaderComponent implements OnInit {
 
   resetData(): void {
     this.imgLoaded = false;
-  }
-
-  listenToEvents() {
-    this.broadcaster.on<string>('logout')
-      .subscribe(message => {
-        this.resetData();
-      });
-
-    this.broadcaster.on<any>('authenticationError')
-      .subscribe(() => {
-        this.logout();
-      });
-  }
-
-  private get currentUser(): User {
-    return this.dummy.currentUser;
-  }
-
-  private getLoggedUser(): void {
-    if (this.auth.isLoggedIn) {
-      this.userService.getUser();
-    }
   }
 
   private updateMenus() {
@@ -131,7 +108,7 @@ export class HeaderComponent implements OnInit {
           for (let o of n.menus) {
             // Clear the menu's active state
             o.active = false;
-            if (o.fullPath === this.router.url) {
+            if (o.fullPath === decodeURIComponent(this.router.url)) {
               foundPath = true;
               o.active = true;
               n.active = true;
@@ -140,11 +117,11 @@ export class HeaderComponent implements OnInit {
               o.hide = true;
             }
           }
-          if(!foundPath) {
+          if (!foundPath) {
             // routes that can't be correctly matched based on the url should use the parent path
             for (let o of n.menus) {
               o.active = false;
-              let parentPath = '/' + this.router.routerState.snapshot.root.firstChild.url.join('/');
+              let parentPath = decodeURIComponent('/' + this.router.routerState.snapshot.root.firstChild.url.join('/'));
               if (o.fullPath === parentPath) {
                 foundPath = true;
                 o.active = true;

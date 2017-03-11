@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
-import { Subject } from "rxjs";
+import { Subject } from 'rxjs';
 
 import { Logger } from 'ngx-login-client';
-import { Space, SpaceService } from 'ngx-fabric8-wit';
+import { Space, SpaceService, Context, Contexts } from 'ngx-fabric8-wit';
 
-import { DummyService } from './../../shared/dummy.service';
 
 
 @Component({
@@ -19,9 +18,14 @@ export class SpacesComponent implements OnInit {
   _spaces: Space[];
   pageSize: number = 20;
   searchTermStream = new Subject<string>();
+  context: Context;
 
   constructor(
-    private router: Router, public dummy: DummyService, private spaceService: SpaceService, private logger: Logger) {
+    private router: Router,
+    private spaceService: SpaceService,
+    private logger: Logger,
+    private contexts: Contexts) {
+      this.contexts.current.subscribe(val => this.context = val);
   }
 
   ngOnInit() {

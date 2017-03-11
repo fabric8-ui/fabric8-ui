@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Broadcaster, User } from 'ngx-login-client';
+import { Broadcaster, User, UserService } from 'ngx-login-client';
 import { Team, Space, Contexts } from 'ngx-fabric8-wit';
 
 import { DummyService } from './../shared/dummy.service';
@@ -19,7 +19,8 @@ export class TeamMembershipDialogComponent implements OnInit{
   constructor(
     public dummy: DummyService,
     private context: Contexts,
-    private broadcaster: Broadcaster
+    private broadcaster: Broadcaster,
+    private userService: UserService
 
   ) { }
 
@@ -43,26 +44,20 @@ export class TeamMembershipDialogComponent implements OnInit{
   }
 
   add() {
-    let add: User;
-    for (let u of this.dummy.users) {
-      if (u.attributes.username === this.searchString) {
-        add = u;
-      }
-    }
-    if (add) {
+    this.userService
+    .getUserByUsername(this.searchString)
+    .subscribe(user => {
       // TODO Hacky check to make sure we don't dupe members
       for (let u of this.team.members) {
-        if (u === add) {
+        if (u === user) {
           // TODO make this a form error
           console.log(this.searchString + ' is already part of the team');
           return;
         }
       }
-      this.team.members.push(add);
+      this.team.members.push(user);
       this.broadcaster.broadcast('save', 1);
-    } else {
-      // TODO make this a form error
-      console.log(this.searchString + ' not found in user list');
-    }
+    });
+    // TODO Add user not found
   }
 }

@@ -1,4 +1,4 @@
-<div *ngIf="!loggedIn">
+<div *ngIf="!auth.isLoggedIn()">
   <div class="f8background"></div>
 
   <div class="navbar navbar-default">
@@ -24,6 +24,6 @@
   </div>
 </div>
 
-<div *ngIf="loggedIn">
+<div *ngIf="auth.isLoggedIn()">
   <div class="spinner spinner-lg"></div>
 </div>

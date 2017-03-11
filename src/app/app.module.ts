@@ -101,13 +101,14 @@ export type StoreType = {
     HeaderComponent
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
+    // Broadcaster must come first
+    Broadcaster,
     ENV_PROVIDERS,
     APP_PROVIDERS,
     ApiLocatorService,
     authApiUrlProvider,
     AuthenticationService,
     AuthGuard,
-    Broadcaster,
     ContextCurrentUserAuthGuard,
     {
       provide: Contexts,

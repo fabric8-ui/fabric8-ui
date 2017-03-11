@@ -40,7 +40,8 @@ export class SpaceWizardComponent implements OnInit {
     private broadcaster: Broadcaster,
     private spaceService: SpaceService,
     private notifications: Notifications,
-    context: Contexts) {
+    context: Contexts
+  ) {
     context.current.subscribe(val => this._context = val);
   }
 
@@ -86,8 +87,8 @@ export class SpaceWizardComponent implements OnInit {
       // Support organisations as well
       space.path =
         this._context.user.attributes.username + '/' + this.convertNameToPath(space.name);
-    } else if (this._context) {
-      space.path = this.dummy.currentUser + '/' + this.convertNameToPath(space.name);
+    } else {
+      throw new Error('Cannot find user');
     }
 
     this.spaceService.create(space)

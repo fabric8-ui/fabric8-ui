@@ -15,13 +15,13 @@ import { DummyService } from './../shared/dummy.service';
 import { Navigation } from './../models/navigation';
 
 interface RawContext {
-  entity: any;
+  user: any;
   space: any;
 }
 
 /*
  * A shared service that manages the users current context. The users context is defined as the
- * entity (user or org) and space that they are operating on.
+ * user (user or org) and space that they are operating on.
  *
  */
 @Injectable()
@@ -37,16 +37,18 @@ export class ContextService implements Contexts {
     private dummy: DummyService,
     private router: Router,
     private broadcaster: Broadcaster,
-    private user: UserService,
     private menus: MenusService,
-    private spaceService: SpaceService) {
+    private spaceService: SpaceService,
+    private userService: UserService) {
 
     let addRecent = new Subject<Context>();
     // Initialize the default context when the logged in user changes
-    this._default = this.broadcaster.on<User>('currentUserChanged')
+    this._default = this.userService.loggedInUser
       // First use map to convert the broadcast event to just a username
       .map(val => {
-        if (val.attributes.username) {
+        if (!val.id) {
+          // this is a logout event
+        } else if (val.attributes.username) {
           return val.attributes.username;
         } else {
           console.log('No username attached to user', val);
@@ -55,12 +57,13 @@ export class ContextService implements Contexts {
       })
       .distinctUntilChanged()
       // Then, perform another map to create a context from the user
+      .switchMap(val => this.userService.getUserByUsername(val))
       .map(val => {
         let ctx = {
-          user: this.dummy.lookupUser(val),
+          user: val,
           space: null,
           type: ContextTypes.BUILTIN.get('user'),
-          name: val,
+          name: val.attributes.username,
           path: '/' + val
         } as Context;
         return ctx;
@@ -87,23 +90,31 @@ export class ContextService implements Contexts {
         // Eliminate duplicate navigation events
         // TODO this doesn't work quite perfectly
         .distinctUntilKeyChanged('url')
-        // Extract the entity and space names from the URL
+        // Extract the user and space names from the URL
         .map(val => {
-          return { entity: this.extractEntity(), space: this.extractSpace() } as RawContext;
+          return { user: this.extractUser(), space: this.extractSpace() } as RawContext;
         })
         // Process the navigation only if it is safe
         .filter(val => {
-          return !(this.checkForReservedWords(val.entity) || this.checkForReservedWords(val.space));
+          return !(this.checkForReservedWords(val.user) || this.checkForReservedWords(val.space));
         })
         // Fetch the objects from the REST API
         .switchMap(val => {
-          return Observable.zip(
-            this.loadUser(val.entity),
-            this.loadSpace(val.entity, val.space),
-            (entity, space) => {
-              return { entity: entity, space: space } as RawContext;
-            }
-          );
+          if (val.space) {
+            // If it's a space that's been requested then load the space creator as the owner
+            return this
+              .loadSpace(val.user, val.space)
+              .map(space => {
+                return { user: space.relationalData.creator, space: space } as RawContext;
+              });
+          } else {
+            // Otherwise, load the user and use that as the owner
+            return this
+              .loadUser(val.user)
+              .map(user => {
+                return { user: user, space: null } as RawContext;
+              });
+          }
         })
         // Use a map to convert from a navigation url to a context
         .map(val => this.buildContext(val)),
@@ -182,27 +193,23 @@ export class ContextService implements Contexts {
     return this._default;
   }
 
-  get currentUser(): User {
-    return this.dummy.currentUser;
-  }
-
   private buildContext(val: RawContext) {
-    let ctxEntity: Entity = (val.entity && val.entity.id) ? val.entity : null;
+    let ctxEntity: Entity = (val.user && val.user.id) ? val.user : null;
     let ctxSpace: Space = (val.space && val.space.id) ? val.space : null;
     let c: Context = {
-      'entity': ctxEntity,
+      'user': ctxEntity,
       'space': ctxSpace,
       'type': null,
       'name': null,
       'path': null
     } as Context;
-    // TODO Support other types of entity
+    // TODO Support other types of user
     if (c.user && c.space) {
       c.type = ContextTypes.BUILTIN.get('space');
       c.path = '/' + c.user.attributes.username + '/' + c.space.attributes.name;
       c.name = c.space.attributes.name;
     } else if (c.user) {
-      c.type = ContextTypes.BUILTIN.get('space');;
+      c.type = ContextTypes.BUILTIN.get('user');
       // TODO replace path with username once parameterized routes are working
       c.path = '/' + c.user.attributes.username;
       c.name = c.user.attributes.username;
@@ -213,22 +220,22 @@ export class ContextService implements Contexts {
     }
   }
 
-  private extractEntity(): string {
+  private extractUser(): string {
     let params = this.getRouteParams();
-    if (params) {
-      return params['entity'];
+    if (params && params['entity']) {
+      return decodeURIComponent(params['entity']);
     }
     return null;
   }
 
-  private loadUser(entityName: string): Observable<Entity> {
-    return Observable.of(this.dummy.lookupUser(entityName));
+  private loadUser(userName: string): Observable<User> {
+    return this.userService.getUserByUsername(userName);
   }
 
   private extractSpace(): string {
     let params = this.getRouteParams();
-    if (params) {
-      return params['space'];
+    if (params && params['space']) {
+      return decodeURIComponent(params['space']);
     }
     return null;
   }
@@ -246,9 +253,9 @@ export class ContextService implements Contexts {
     return null;
   }
 
-  private loadSpace(entityName: string, spaceName: string): Observable<Space> {
-    if (entityName && spaceName) {
-      return this.spaceService.getSpaceByName(entityName, spaceName);
+  private loadSpace(userName: string, spaceName: string): Observable<Space> {
+    if (userName && spaceName) {
+      return this.spaceService.getSpaceByName(userName, spaceName);
     } else {
       return Observable.of({} as Space);
     }

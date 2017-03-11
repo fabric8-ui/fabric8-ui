@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Broadcaster, Profile, User } from 'ngx-login-client';
+import { Broadcaster, Profile, User, UserService } from 'ngx-login-client';
 
 import { DummyService } from './../shared/dummy.service';
 
@@ -13,24 +13,24 @@ import { DummyService } from './../shared/dummy.service';
 @Injectable()
 export class ProfileService {
 
+  private _loggedInUser: User;
+
   constructor(
     private dummy: DummyService,
     private router: Router,
-    private broadcaster: Broadcaster
+    private broadcaster: Broadcaster,
+    userService: UserService
   ) {
+    userService.loggedInUser.subscribe(val => this._loggedInUser = val);
   }
 
   get current(): Profile {
-    // TODO Remove dummy
-    if (this.dummy.currentUser) {
-      return this.dummy.currentUser.attributes;
-    }
+    return this._loggedInUser.attributes;
   }
 
   save() {
     this.addPrimaryToEmails(this.current);
-    // TODO Remove dummy
-    this.broadcaster.broadcast('save');
+    // TODO Save this!
   }
 
   removeEmailFromCurrent(del: string) {
@@ -63,7 +63,7 @@ export class ProfileService {
 
   initDefaults(user: User) {
     user.attributes.emails = user.attributes.emails || [] as string[];
-    user.attributes.primaryEmail = user.attributes.primaryEmail || '';
+    user.attributes.primaryEmail = user.attributes.primaryEmail || user.attributes.email;
     user.attributes.notificationEmail = user.attributes.notificationEmail || user.attributes.primaryEmail;
     user.attributes.publicEmail = user.attributes.publicEmail || user.attributes.primaryEmail;
     user.attributes.emailPreference = user.attributes.emailPreference || 'all';

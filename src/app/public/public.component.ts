@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Params } from '@angular/router';
 
-import { AuthenticationService, Broadcaster, User } from 'ngx-login-client';
+import { AuthenticationService, Broadcaster, User, UserService } from 'ngx-login-client';
 import { Notification, NotificationType, Notifications } from 'ngx-fabric8-wit';
 
 import { LoginService } from '../shared/login.service';
@@ -16,47 +16,36 @@ import { ProfileService } from './../profile/profile.service';
 })
 export class PublicComponent implements OnInit {
 
-  loggedIn: boolean = false;
-
   constructor(
-    private auth: AuthenticationService,
-    private router: Router,
+    public auth: AuthenticationService,
     private loginService: LoginService,
     private profile: ProfileService,
     private broadcaster: Broadcaster,
     private notifications: Notifications,
-    private activatedRoute: ActivatedRoute
+    private userService: UserService
   ) {
   }
 
   ngOnInit(): void {
     let error = this.getUrlParameter('error');
     if (error) {
-      this.loggedIn = false;
       this.notifications.message({ message: error, type: NotificationType.DANGER } as Notification);
     } else {
-      this.loggedIn = this.auth.isLoggedIn();
-    }
-
-    this.broadcaster.on('logout').subscribe(() => {
-      this.loggedIn = false;
-    });
-
-    this.broadcaster.on<User>('currentUserChanged').subscribe(val => {
-      if (this.auth.isLoggedIn()) {
-        this.profile.initDefaults(val);
-        if (this.profile.sufficient) {
-          this.loginService.redirectAfterLogin();
-        } else {
-          this.loggedIn = false;
-          this.notifications.message({
-            message: 'You must <a href="https://developers.redhat.com/auth/realms/rhd/account/">' +
-            'complete your profile</a>. Ensure you have provided your full name and email address.',
-            type: NotificationType.DANGER
-          } as Notification);
+      this.userService.loggedInUser.subscribe(val => {
+        if (val.id) {
+          this.profile.initDefaults(val);
+          if (this.profile.sufficient) {
+            this.loginService.redirectAfterLogin();
+          } else {
+            this.notifications.message({
+              message: 'You must <a href="https://developers.redhat.com/auth/realms/rhd/account/">' +
+              'complete your profile</a>. Ensure you have provided your full name and email address.',
+              type: NotificationType.DANGER
+            } as Notification);
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   gitSignin() {

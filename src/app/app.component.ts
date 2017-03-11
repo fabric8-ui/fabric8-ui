@@ -47,7 +47,11 @@ export class AppComponent {
         result[item[0]] = decodeURIComponent(item[1]);
       });
       if (result['token_json']) {
+        // Handle the case that this is a login
         this.authService.logIn(result['token_json']);
+      } else if (this.authService.isLoggedIn()) {
+        // Handle the case the user is already logged in
+        this.authService.onLogIn();
       }
     });
   }
