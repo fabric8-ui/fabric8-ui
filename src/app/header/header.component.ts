@@ -40,6 +40,11 @@ export class HeaderComponent implements OnInit {
       '_resources', function (headerComponent) {
         return headerComponent.checkContextUserEqualsLoggedInUser();
       }
+    ],
+    [
+      'settings', function (headerComponent) {
+        return headerComponent.checkContextUserEqualsLoggedInUser();
+      }
     ]
   ]);
 

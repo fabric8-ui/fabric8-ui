@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { SigninComponent } from './signin/signin.component';
 import { ContextResolver } from './shared/context-resolver.service';
+import { ContextCurrentUserAuthGuard } from './shared/context-current-user-auth-guard.service';
 
 
 export const routes: Routes = [
@@ -92,6 +93,8 @@ export const routes: Routes = [
     resolve: {
       context: ContextResolver
     },
+    canActivate: [ContextCurrentUserAuthGuard],
+    canActivateChild: [ContextCurrentUserAuthGuard],
     loadChildren: './space-settings/space-settings.module#SpaceSettingsModule'
   }
 ];
