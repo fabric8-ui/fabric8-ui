@@ -6,6 +6,8 @@ import { Broadcaster, AuthenticationService } from 'ngx-login-client';
 import { Subscription } from 'rxjs/Subscription';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
+import { AreaModel } from '../models/area.model';
+import { AreaService } from '../area/area.service';
 import { FilterService } from '../shared/filter.service';
 import { WorkItemService } from './../work-item/work-item.service';
 import { WorkItemListEntryComponent } from './../work-item/work-item-list/work-item-list-entry/work-item-list-entry.component';
@@ -32,6 +34,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
 
   @Input() context: string;
 
+  areas: any[] = [];
   filters: any[] = [];
   loggedIn: boolean = false;
   editEnabled: boolean = false;
@@ -50,6 +53,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private broadcaster: Broadcaster,
+    private areaService: AreaService,
     private filterService: FilterService,
     private workItemService: WorkItemService,
     private auth: AuthenticationService,
@@ -80,16 +84,35 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
     //   console.log(response);
     // });
 
+    this.areaService.getAreas().then(areas => {
+      /**
+       * Remapping the fetched areas to the 'queries' model
+       * of ngx-toolbar filters' dropdown.
+       */
+      for(let area of areas) {
+        this.areas.push({
+          id: area.id.toString(),
+          value: area.attributes.name
+        });
+      }
+    });
+
     this.filterConfig = {
       fields: [{
         id: 'user',
-        title:  'User',
+        title: 'User',
         placeholder: 'Filter by Assignee...',
         type: 'select',
         queries: [{
           id:  '1',
           value: 'Assigned to Me'
         }]
+      }, {
+        id: 'area',
+        title: 'Area',
+        placeholder: 'Filter by Areas...',
+        type: 'select',
+        queries: this.areas
       }] as FilterField[],
       appliedFilters: [],
       resultsCount: -1, // Hide
