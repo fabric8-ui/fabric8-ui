@@ -14,7 +14,7 @@
         </a>
         <ul class="dropdown-menu view-width-100">
           <li>
-            <a [routerLink]="['pmuir']">
+            <a [routerLink]="['/', loggedInUser.attributes.username]">
               <span class="nav-item-text">Profile</span>
             </a>
           </li>
@@ -25,7 +25,7 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a [routerLink]="['pmuir/_settings']">
+            <a [routerLink]="['/', loggedInUser.attributes.username, '_settings']">
               <span class="nav-item-text">Settings</span>
             </a>
           </li>

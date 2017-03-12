@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Broadcaster, User, UserService, Entity } from 'ngx-login-client';
 import {
@@ -38,9 +38,10 @@ export class ContextService implements Contexts {
 
   readonly RECENT_CONTEXT_LENGTH = 8;
 
-  private _current: ConnectableObservable<Context>;
+  private _current: Subject<Context> = new ReplaySubject<Context>(1);
   private _default: ConnectableObservable<Context>;
   private _recent: ConnectableObservable<Context[]>;
+  private _addRecent: Subject<Context>;
 
   constructor(
     private dummy: DummyService,
@@ -49,9 +50,10 @@ export class ContextService implements Contexts {
     private menus: MenusService,
     private spaceService: SpaceService,
     private userService: UserService,
-    private notifications: Notifications) {
+    private notifications: Notifications,
+    private route: ActivatedRoute) {
 
-    let addRecent = new Subject<Context>();
+    this._addRecent = new Subject<Context>();
     // Initialize the default context when the logged in user changes
     this._default = this.userService.loggedInUser
       // First use map to convert the broadcast event to just a username
@@ -92,97 +94,10 @@ export class ContextService implements Contexts {
       })
       .multicast(() => new ReplaySubject(1));
     // Subscribe the the default context to the recent space collector
-    this._default.subscribe(addRecent);
-
-    // Compute the current context
-    this._current = this.broadcaster.on<Navigation>('navigate')
-      // Eliminate duplicate navigation events
-      // TODO this doesn't work quite perfectly
-      .distinctUntilKeyChanged('url')
-      // Extract the user and space names from the URL
-      .map(val => {
-        return { user: this.extractUser(), space: this.extractSpace(), url: val.url } as RawContext;
-      })
-      // Process the navigation only if it is safe
-      .filter(val => {
-        if (this.checkForReservedWords(val.user)) {
-          this.notifications.message({
-            message: `${val.user} not found`,
-            type: NotificationType.WARNING
-          } as Notification);
-          console.log(`User name ${val.user} from path ${val.url} contains reserved characters.`);
-          return false;
-        } else if (this.checkForReservedWords(val.space)) {
-          this.notifications.message({
-            message: `${val.space} not found`,
-            type: NotificationType.WARNING
-          } as Notification);
-          console.log(`Space name ${val.space} from path ${val.url} contains reserved characters.`);
-          return false;
-        }
-        return true;
-      })
-      // Fetch the objects from the REST API
-      .switchMap(val => {
-        if (val.url.endsWith('/home')) {
-          // Handle the special URLs
-          return this._default;
-        }
-        if (val.space) {
-          // If it's a space that's been requested then load the space creator as the owner
-          return this
-            .loadSpace(val.user, val.space)
-            .map(space => {
-              return { user: space.relationalData.creator, space: space } as RawContext;
-            })
-            .catch((err, caught) => {
-              this.notifications.message({
-                message: `${val.url} not found`,
-                type: NotificationType.WARNING
-              } as Notification);
-              return Observable.throw(`Space with name ${val.space} and owner ${val.user}
-                from path ${val.url} was not found because of ${err}`);
-            });
-        } else {
-          // Otherwise, load the user and use that as the owner
-          return this
-            .loadUser(val.user)
-            .map(user => {
-              return { user: user, space: null } as RawContext;
-            })
-            .catch((err, caught) => {
-              this.notifications.message({
-                message: `${val.url} not found`,
-                type: NotificationType.WARNING
-              } as Notification);
-              return Observable.throw(`Owner ${val.user} from path ${val.url} was not found because of ${err}`);
-            });
-        }
-      })
-      // Use a map to convert from a navigation url to a context
-      .map(val => this.buildContext(val))
-      .distinctUntilKeyChanged('path')
-      // Broadcast the spaceChanged event
-      // Ensure the menus are built
-      .do(val => {
-        this.menus.attach(val);
-      })
-      .do(val => {
-        console.log('Context Changed to', val);
-        this.broadcaster.broadcast('contextChanged', val);
-      })
-      .do(val => {
-        if (val.space) {
-          console.log('Space Changed to', val);
-          this.broadcaster.broadcast('spaceChanged', val.space);
-        }
-      })
-      .multicast(() => new ReplaySubject(1));
-    // Subscribe the current context to the revent space collector
-    this._current.subscribe(addRecent);
+    this._default.subscribe(this._addRecent);
 
     // Create the recent space list
-    this._recent = addRecent
+    this._recent = this._addRecent
       // Map from the context being added to an array of recent contexts
       // The scan operator allows us to access the list of recent contexts and add ours
       .scan((recent, ctx) => {
@@ -214,7 +129,6 @@ export class ContextService implements Contexts {
       })
       .multicast(() => new ReplaySubject(1));
     // Finally, start broadcasting
-    this._current.connect();
     this._default.connect();
     this._recent.connect();
   }
@@ -231,12 +145,98 @@ export class ContextService implements Contexts {
     return this._default;
   }
 
+  changeContext(navigation: Observable<Navigation>): Observable<Context> {
+    let res = navigation
+      // Process the navigation only if it is safe
+      .filter(val => {
+        if (this.checkForReservedWords(val.user)) {
+          this.notifications.message({
+            message: `${val.user} not found`,
+            type: NotificationType.WARNING
+          } as Notification);
+          console.log(`User name ${val.user} from path ${val.url} contains reserved characters.`);
+          return false;
+        } else if (this.checkForReservedWords(val.space)) {
+          this.notifications.message({
+            message: `${val.space} not found`,
+            type: NotificationType.WARNING
+          } as Notification);
+          console.log(`Space name ${val.space} from path ${val.url} contains reserved characters.`);
+          return false;
+        }
+        return true;
+      })
+      // Fetch the objects from the REST API
+      .switchMap(val => {
+        if (val.space) {
+          // If it's a space that's been requested then load the space creator as the owner
+          return this
+            .loadSpace(val.user, val.space)
+            .map(space => {
+              return { user: space.relationalData.creator, space: space } as RawContext;
+            })
+            .catch((err, caught) => {
+              this.notifications.message({
+                message: `${val.url} not found`,
+                type: NotificationType.WARNING
+              } as Notification);
+              console.log(`Space with name ${val.space} and owner ${val.user}
+                from path ${val.url} was not found because of ${err}`);
+              return Observable.of({} as RawContext);
+            });
+        } else {
+          // Otherwise, load the user and use that as the owner
+          return this
+            .loadUser(val.user)
+            .map(user => {
+              return { user: user, space: null } as RawContext;
+            })
+            .catch((err, caught) => {
+              this.notifications.message({
+                message: `${val.url} not found`,
+                type: NotificationType.WARNING
+              } as Notification);
+              console.log(`Owner ${val.user} from path ${val.url} was not found because of ${err}`);
+              return Observable.of({} as RawContext);
+            });
+        }
+      })
+      // Use a map to convert from a navigation url to a context
+      .map(val => this.buildContext(val))
+      .distinctUntilKeyChanged('path')
+      // Broadcast the spaceChanged event
+      // Ensure the menus are built
+      .do(val => {
+        if (val) this.menus.attach(val);
+      })
+      .do(val => {
+        if (val) {
+          console.log('Context Changed to', val);
+          this.broadcaster.broadcast('contextChanged', val);
+        }
+      })
+      .do(val => {
+        if (val && val.space) {
+          console.log('Space Changed to', val);
+          this.broadcaster.broadcast('spaceChanged', val.space);
+        }
+      })
+      // Subscribe the current context to the revent space collector
+      .do(val => {
+        if (val) this._addRecent.next(val);
+      })
+      .do(val => {
+        this._current.next(val);
+      })
+      .multicast(() => new Subject());
+    res.connect();
+    return res;
+  }
+
   private buildContext(val: RawContext) {
-    let ctxEntity: Entity = (val.user && val.user.id) ? val.user : null;
-    let ctxSpace: Space = (val.space && val.space.id) ? val.space : null;
     let c: Context = {
-      'user': ctxEntity,
-      'space': ctxSpace,
+      'user': (val.user && val.user.id) ? val.user : null,
+      'space': (val.space && val.space.id) ? val.space : null,
       'type': null,
       'name': null,
       'path': null
