@@ -154,7 +154,7 @@ export class HeaderComponent implements OnInit {
 
   private checkContextUserEqualsLoggedInUser(): Observable<boolean> {
     return Observable.combineLatest(
-      this.contexts.current.map(val => val.user.id),
+      Observable.of(this.context).map(val => val.user.id),
       this.userService.loggedInUser.map(val => val.id),
       (a, b) => (a !== b)
     );

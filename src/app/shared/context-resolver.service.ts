@@ -38,8 +38,8 @@ export class ContextResolver implements Resolve<Context> {
         if (val) {
           return Observable.of(val);
         } else {
-          this.router.navigate([this._lastRoute]);
-          return null;
+          this.router.navigateByUrl(this._lastRoute);
+          return Observable.of({} as Context);
         }
       });
   }

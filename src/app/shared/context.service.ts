@@ -84,23 +84,23 @@ export class ContextService implements Contexts {
             path: '/' + val.attributes.username
           } as Context;
         } else {
-          return null;
+          return {} as Context;
         }
       })
       // Ensure the menus are built
       .do(val => {
-        if (val) {
+        if (val.type) {
           this.menus.attach(val);
         }
       })
       .do(val => {
-        if (val) {
+        if (val.type) {
           console.log('Default Context Changed to', val);
           this.broadcaster.broadcast('defaultContextChanged', val);
         }
       })
       .do(val => {
-        if (val) {
+        if (val.type) {
           // Add to the recent contexts
           this._addRecent.next(val);
         }
