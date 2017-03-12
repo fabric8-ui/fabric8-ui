@@ -58,7 +58,7 @@ export class ContextService implements Contexts {
     this._default = this.userService.loggedInUser
       // First use map to convert the broadcast event to just a username
       .map(val => {
-        if (!(val || val.id)) {
+        if (!(val && val.id)) {
           // this is a logout event
         } else if (val.attributes.username) {
           return val.attributes.username;
@@ -75,26 +75,37 @@ export class ContextService implements Contexts {
       // Then, perform another map to create a context from the user
       .switchMap(val => this.userService.getUserByUsername(val))
       .map(val => {
-        let ctx = {
-          user: val,
-          space: null,
-          type: ContextTypes.BUILTIN.get('user'),
-          name: val.attributes.username,
-          path: '/' + val.attributes.username
-        } as Context;
-        return ctx;
+        if (val && val.id) {
+          return {
+            user: val,
+            space: null,
+            type: ContextTypes.BUILTIN.get('user'),
+            name: val.attributes.username,
+            path: '/' + val.attributes.username
+          } as Context;
+        } else {
+          return null;
+        }
       })
       // Ensure the menus are built
       .do(val => {
-        this.menus.attach(val);
+        if (val) {
+          this.menus.attach(val);
+        }
       })
       .do(val => {
-        console.log('Default Context Changed to', val);
-        this.broadcaster.broadcast('defaultContextChanged', val);
+        if (val) {
+          console.log('Default Context Changed to', val);
+          this.broadcaster.broadcast('defaultContextChanged', val);
+        }
+      })
+      .do(val => {
+        if (val) {
+          // Add to the recent contexts
+          this._addRecent.next(val);
+        }
       })
       .multicast(() => new ReplaySubject(1));
-    // Subscribe the the default context to the recent space collector
-    this._default.subscribe(this._addRecent);
 
     // Create the recent space list
     this._recent = this._addRecent

@@ -6,9 +6,9 @@
           <div id="header_dropdownToggle_header">
             <span class="nav-item-icon">
               <span *ngIf="!imgLoaded" class="nav-icon pficon-user"></span>
-              <img (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}">
+              <img (load)="onImgLoad()" src="{{ loggedInUser.attributes.imageURL }}" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}">
             </span>
-            <span class="nav-item-text">{{loggedInUser.attributes?.fullName}}</span>
+            <span class="nav-item-text">{{loggedInUser.attributes.fullName}}</span>
             <span class="nav-icon caret"></span>
           </div>
         </a>
@@ -30,7 +30,7 @@
             </a>
           </li>
           <li>
-            <a (click)="auth.logout();">
+            <a (click)="loginService.logout();">
               <span class="nav-item-text">Sign out</span>
             </a>
           </li>
@@ -39,9 +39,9 @@
     </ul>
   </div>
   <div class="collapse navbar-collapse navbar-collapse-1">
-    <ul class="nav navbar-nav navbar-primary persistent-secondary navbar-left" *ngIf="loggedInUser">
+    <ul class="nav navbar-nav navbar-primary persistent-secondary navbar-left">
       <!-- This part of the menu is dynamic based on context -->
-      <li class="context dropdown" dropdown>
+      <li class="context dropdown" dropdown  *ngIf="loggedInUser">
         <a dropdown-open>
           <div id="header_dropdownToggle">
             <span class="nav-item-icon">
@@ -125,9 +125,9 @@
           <div *ngIf="loggedInUser" id="header_dropdownToggle2">
             <span class="nav-item-icon">
               <span *ngIf="!imgLoaded" class="nav-icon pficon-user"></span>
-              <img (load)="onImgLoad()" src="{{ loggedInUser.attributes?.imageURL }}" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}">
+              <img (load)="onImgLoad()" src="{{ loggedInUser.attributes.imageURL }}" [ngClass]="{'show' : imgLoaded,'img-icon' : imgLoaded, 'hide' : !imgLoaded}">
             </span>
-            <span class="nav-item-text">{{loggedInUser.attributes?.fullName}}</span>
+            <span class="nav-item-text">{{loggedInUser.attributes.fullName}}</span>
             <span class="nav-item-icon">
               <span class="nav-icon caret"></span>
             </span>
@@ -145,7 +145,7 @@
             <a [routerLink]="[loggedInUser.attributes.username,'_settings']"><span class="nav-item-text">Settings</span></a>
           </li>
           <li>
-            <a *ngIf="loggedInUser" (click)="auth.logout();"><span class="nav-item-text">Sign out</span></a>
+            <a *ngIf="loggedInUser" (click)="loginService.logout();"><span class="nav-item-text">Sign out</span></a>
           </li>
         </ul>
       </li>

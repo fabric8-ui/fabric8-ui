@@ -30,18 +30,26 @@ export class ContextCurrentUserAuthGuard
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return Observable.combineLatest(
-      this.context.current.map(val => val.user.id),
-      this.userService.loggedInUser.map(val => val.id),
-      (a, b) => (a === b)
-    )
-    .do(val => {
-      if (!val) {
-        this.notifications.message({
-          message: `You cannot access ${state.url}`,
-          type: NotificationType.WARNING
-        } as Notification);
-      }
-    });
+    return super
+      .canActivate(route, state)
+      .switchMap(auth => {
+        if (auth) {
+          return Observable.combineLatest(
+            this.context.current.map(val => val.user.id).do(val => console.log('context', val)),
+            this.userService.loggedInUser.map(val => val.id).do(val => console.log('user', val)),
+            (a, b) => (a === b)
+          )
+            .do(val => {
+              if (!val) {
+                this.notifications.message({
+                  message: `You cannot access ${state.url}`,
+                  type: NotificationType.WARNING
+                } as Notification);
+              }
+            });
+        } else {
+          return Observable.of(auth);
+        }
+      });
   }
 }

@@ -1,29 +1,42 @@
-import { WIT_API_URL } from 'ngx-fabric8-wit';
-
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { Injectable, Inject } from '@angular/core';
-import { Headers, Http } from '@angular/http';
 
-import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs';
 
-import { LoginItem } from './login-item';
+import { Broadcaster, AuthenticationService } from 'ngx-login-client';
+import { WIT_API_URL } from 'ngx-fabric8-wit';
+
+import { ContextService } from './context.service';
+import { Navigation } from './../models/navigation';
+
 
 @Injectable()
 export class LoginService {
 
-  private REDIRECT_URL_KEY = 'redirectUrl';
+  static readonly REDIRECT_URL_KEY = 'redirectUrl';
+  static readonly DEFAULT_URL = '/home';
+  static readonly LOGIN_URL = '/';
 
   private authUrl: string;  // URL to web api
 
   constructor(
-    private http: Http,
     private router: Router,
     private localStorage: LocalStorageService,
-    @Inject(WIT_API_URL) apiUrl: string
+    @Inject(WIT_API_URL) apiUrl: string,
+    private broadcaster: Broadcaster,
+    private authService: AuthenticationService,
+    private contextService: ContextService
   ) {
     this.authUrl = apiUrl + 'login/authorize';
-    console.log(this.authUrl);
+    this.broadcaster.on('authenticationError').subscribe(() => {
+      this.authService.logout();
+      this.redirectToLogin(this.router.url);
+    });
+    this.broadcaster.on('logout').subscribe(() => {
+      this.router.navigate([LoginService.LOGIN_URL]);
+      //this.contextService.changeContext(Observable.of({url: LoginService.LOGIN_URL} as Navigation));
+    });
   }
 
   gitHubSignIn() {
@@ -31,17 +44,46 @@ export class LoginService {
   }
 
   public redirectAfterLogin() {
-    let redirectUrl = this.localStorage.get<string>(this.REDIRECT_URL_KEY);
-    if (redirectUrl) {
-      this.router.navigate([redirectUrl]);
-      this.localStorage.remove(this.REDIRECT_URL_KEY);
-    } else {
-      this.router.navigate(['home']);
+    let url = this._redirectUrl || LoginService.DEFAULT_URL;
+    this.router.navigate([url]);
+  }
+
+  public redirectToLogin(currentUrl: string) {
+    console.log('Please login to access ' + currentUrl);
+    this.redirectUrl = currentUrl;
+    this.router.navigate([LoginService.LOGIN_URL]);
+  }
+
+  public logout() {
+    this.authService.logout();
+  }
+
+  public login() {
+    let query = window.location.search.substr(1);
+    let result: any = {};
+    query.split('&').forEach(function (part) {
+      let item: any = part.split('=');
+      result[item[0]] = decodeURIComponent(item[1]);
+    });
+    if (result['token_json']) {
+      // Handle the case that this is a login
+      this.authService.logIn(result['token_json']);
+    } else if (this.authService.isLoggedIn()) {
+      // Handle the case the user is already logged in
+      this.authService.onLogIn();
     }
   }
 
   public set redirectUrl(value: string) {
-    this.localStorage.set(this.REDIRECT_URL_KEY, value);
+    if (value) {
+      this.localStorage.set(LoginService.REDIRECT_URL_KEY, value);
+    }
+  }
+
+  private get _redirectUrl(): string {
+    let res = this.localStorage.get<string>(LoginService.REDIRECT_URL_KEY);
+    this.localStorage.remove(LoginService.REDIRECT_URL_KEY);
+    return res;
   }
 
 }

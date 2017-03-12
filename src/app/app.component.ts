@@ -2,15 +2,12 @@
  * Angular 2 decorators and services
  */
 import { Component, ViewEncapsulation } from '@angular/core';
-import { cloneDeep } from 'lodash';
 import { ActivatedRoute } from '@angular/router';
-import { AuthenticationService, Broadcaster } from 'ngx-login-client';
-import { Notification, Notifications } from 'ngx-fabric8-wit';
-import { NotificationService, Action } from 'ngx-widgets';
 
-import { ControlComponent } from './control/control.component';
 import { AboutService } from './shared/about.service';
 import { NotificationsService } from './shared/notifications.service';
+import { LoginService } from './shared/login.service';
+
 
 /*
  * App Component
@@ -29,30 +26,19 @@ export class AppComponent {
 
   constructor(
     private about: AboutService,
-    private broadcaster: Broadcaster,
     private activatedRoute: ActivatedRoute,
-    private authService: AuthenticationService,
-    public notifications: NotificationsService
+    public notifications: NotificationsService,
+    private loginService: LoginService
   ) {
+
   }
 
   ngOnInit() {
     console.log('Welcome to Fabric8!');
-    console.log('This is', this.about.buildVersion, '(Build', '#' + this.about.buildNumber, 'and was built on', this.about.buildTimestamp, ')');
+    console.log('This is', this.about.buildVersion,
+      '(Build', '#' + this.about.buildNumber, 'and was built on', this.about.buildTimestamp, ')');
     this.activatedRoute.params.subscribe(() => {
-      let query = window.location.search.substr(1);
-      let result: any = {};
-      query.split('&').forEach(function (part) {
-        let item: any = part.split('=');
-        result[item[0]] = decodeURIComponent(item[1]);
-      });
-      if (result['token_json']) {
-        // Handle the case that this is a login
-        this.authService.logIn(result['token_json']);
-      } else if (this.authService.isLoggedIn()) {
-        // Handle the case the user is already logged in
-        this.authService.onLogIn();
-      }
+      this.loginService.login();
     });
   }
 

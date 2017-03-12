@@ -3,10 +3,10 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { Subscription, Observable } from 'rxjs';
 
-import { AuthenticationService, Broadcaster, Logger, UserService, User } from 'ngx-login-client';
+import { Broadcaster, Logger, UserService, User } from 'ngx-login-client';
 import { ContextType, Context, Contexts } from 'ngx-fabric8-wit';
 
-
+import { LoginService } from './../shared/login.service';
 import { ContextService } from './../shared/context.service';
 import { MenuedContextType } from './menued-context-type';
 import { Navigation } from './../models/navigation';
@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
     public router: Router,
     private userService: UserService,
     private logger: Logger,
-    public auth: AuthenticationService,
+    public loginService: LoginService,
     private broadcaster: Broadcaster,
     public dummy: DummyService,
     private contexts: Contexts,

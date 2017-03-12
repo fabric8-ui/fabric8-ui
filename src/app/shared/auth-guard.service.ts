@@ -27,10 +27,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     if (!this.auth.isLoggedIn()) {
-      this.logger.log('Please login to access ' + state.url);
-      this.login.redirectUrl = state.url;
-      this.logger.log('Setting redirect URL to ' + this.login.redirectUrl);
-      this.router.navigate(['/public']);
+      this.login.redirectToLogin(state.url);
       return Observable.of(false);
     } else {
       return Observable.of(true);
