@@ -2,7 +2,16 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Broadcaster, User, UserService, Entity } from 'ngx-login-client';
-import { Space, Contexts, Context, ContextType, ContextTypes, SpaceService, Notifications, Notification, NotificationType } from 'ngx-fabric8-wit';
+import {
+  Space,
+  Context,
+  Contexts,
+  ContextTypes,
+  SpaceService,
+  Notifications,
+  Notification,
+  NotificationType
+} from 'ngx-fabric8-wit';
 import { Subject } from 'rxjs/Subject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
@@ -12,7 +21,6 @@ import { Observable } from 'rxjs';
 import { DummyService } from './../shared/dummy.service';
 import { Navigation } from './../models/navigation';
 import { MenusService } from './../header/menus.service';
-import { MenuedContextType } from './../header/menued-context-type';
 
 interface RawContext {
   user: any;

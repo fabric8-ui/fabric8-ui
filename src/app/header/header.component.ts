@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 import { AuthenticationService, Broadcaster, Logger, UserService, User } from 'ngx-login-client';
 import { ContextType, Context, Contexts } from 'ngx-fabric8-wit';
@@ -17,7 +17,7 @@ import { DummyService } from './../shared/dummy.service';
 
 
 interface MenuHiddenCallback {
-  (headerComponent: HeaderComponent, context: Context): boolean;
+  (headerComponent: HeaderComponent): Observable<boolean>;
 }
 
 @Component({
@@ -32,8 +32,13 @@ export class HeaderComponent implements OnInit {
 
   menuCallbacks = new Map<String, MenuHiddenCallback>([
     [
-      'settings', function (headerComponent, context) {
-        return headerComponent.loggedInUser !== context.user;
+      '_settings', function (headerComponent) {
+        return headerComponent.checkContextUserEqualsLoggedInUser();
+      }
+    ],
+    [
+      '_resources', function (headerComponent) {
+        return headerComponent.checkContextUserEqualsLoggedInUser();
       }
     ]
   ]);
@@ -50,7 +55,7 @@ export class HeaderComponent implements OnInit {
     public auth: AuthenticationService,
     private broadcaster: Broadcaster,
     public dummy: DummyService,
-    contexts: Contexts,
+    private contexts: Contexts,
     public profile: ProfileService
   ) {
     router.events.subscribe((val) => {
@@ -100,8 +105,8 @@ export class HeaderComponent implements OnInit {
       for (let n of (this.context.type as MenuedContextType).menus) {
         // Clear the menu's active state
         n.active = false;
-        if (this.menuCallbacks.has(n.path) && this.menuCallbacks.get(n.path)(this, this.context)) {
-          n.hide = true;
+        if (this.menuCallbacks.has(n.path)) {
+          this.menuCallbacks.get(n.path)(this).subscribe(val => n.hide = val);
         }
         if (n.menus) {
           let foundPath = false;
@@ -113,8 +118,8 @@ export class HeaderComponent implements OnInit {
               o.active = true;
               n.active = true;
             }
-            if (this.menuCallbacks.has(o.path) && this.menuCallbacks.get(o.path)(this, this.context)) {
-              o.hide = true;
+            if (this.menuCallbacks.has(o.path)) {
+              this.menuCallbacks.get(o.path)(this).subscribe(val => o.hide = val);
             }
           }
           if (!foundPath) {
@@ -127,8 +132,8 @@ export class HeaderComponent implements OnInit {
                 o.active = true;
                 n.active = true;
               }
-              if (this.menuCallbacks.has(o.path) && this.menuCallbacks.get(o.path)(this, this.context)) {
-                o.hide = true;
+              if (this.menuCallbacks.has(o.path)) {
+                this.menuCallbacks.get(o.path)(this).subscribe(val => o.hide = val);
               }
             }
           }
@@ -137,6 +142,14 @@ export class HeaderComponent implements OnInit {
         }
       }
     }
+  }
+
+  private checkContextUserEqualsLoggedInUser(): Observable<boolean> {
+    return Observable.combineLatest(
+      this.contexts.current.map(val => val.user.id),
+      this.userService.loggedInUser.map(val => val.id),
+      (a, b) => (a !== b)
+    );
   }
 
 }
