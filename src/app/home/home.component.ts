@@ -1,5 +1,7 @@
-import { UserService, User } from 'ngx-login-client';
 import { Component, OnInit } from '@angular/core';
+
+import { Spaces } from 'ngx-fabric8-wit';
+import { UserService, User } from 'ngx-login-client';
 
 import { DummyService } from './../shared/dummy.service';
 
@@ -17,7 +19,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     public dummy: DummyService,
-    userService: UserService
+    userService: UserService,
+    public spaces: Spaces
   ) {
     userService.loggedInUser.subscribe(val => this.loggedInUser = val);
   }

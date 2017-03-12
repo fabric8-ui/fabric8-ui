@@ -17,7 +17,7 @@
         <div class="card-pf-body">
           <div class="card-pf-items">
             <ul class="list-unstyled">
-              <li *ngFor="let s of dummy.spaces"><a [routerLink]="[ s.path]"><small>{{s.name}}</small></a></li>
+              <li *ngFor="let s of spaces.recent | async"><a [routerLink]="['/', s.relationalData.creator.attributes.username, s.attributes.name]"><small>{{s.attributes.name}}</small></a></li>
             </ul>
           </div>
         </div>
