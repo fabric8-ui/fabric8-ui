@@ -1,6 +1,7 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { Spaces } from 'ngx-fabric8-wit';
+import { Spaces, Context, Contexts } from 'ngx-fabric8-wit';
 import { UserService, User } from 'ngx-login-client';
 
 import { DummyService } from './../shared/dummy.service';
@@ -17,14 +18,33 @@ export class HomeComponent implements OnInit {
 
   loggedInUser: User;
 
+  private _context: Context;
+  private _defaultContext: Context;
+
   constructor(
     public dummy: DummyService,
     userService: UserService,
-    public spaces: Spaces
+    public spaces: Spaces,
+    private router: Router,
+    private contexts: Contexts
   ) {
     userService.loggedInUser.subscribe(val => this.loggedInUser = val);
+    contexts.current.subscribe(val => {
+      this._context = val;
+    });
+    contexts.default.subscribe(val => {
+      this._defaultContext = val;
+    });
   }
 
   ngOnInit() { }
+
+  get context(): Context {
+    if (this.router.url === '/home') {
+      return this._defaultContext;
+    } else {
+      return this._context;
+    }
+  }
 
 }

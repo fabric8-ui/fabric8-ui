@@ -105,7 +105,11 @@ export class HeaderComponent implements OnInit {
   }
 
   get context(): Context {
-    return this._context || this._defaultContext;
+    if (this.router.url === '/home') {
+      return this._defaultContext;
+    } else {
+      return this._context;
+    }
   }
 
   private updateMenus() {
