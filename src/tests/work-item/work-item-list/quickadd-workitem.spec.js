@@ -47,7 +47,7 @@ describe('Work item list', function () {
     });
   });
 
-  it('Verify that data is persisted and is not truncated if text fields receive data with a length greater that 255 characters. - phone.', function () {
+  it('Verify that data is persisted and is not truncated if text fields receive data with a length greater that 255 characters. - desktop.', function () {
     testSupport.setBrowserMode('desktop');
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle(char255);

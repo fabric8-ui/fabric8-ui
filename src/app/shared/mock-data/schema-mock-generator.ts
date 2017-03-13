@@ -126,12 +126,14 @@ export class SchemaMockGenerator {
                      'kind' : 'string'
                   }
                },
-               'system.area' : {
-                  'type' : {
-                     'kind' : 'area'
-                  },
-                  'required' : false
-               },
+               'system.area': {
+               'description': 'The area to which the work item belongs',
+               'label': 'Area',
+               'required': false,
+               'type': {
+               'kind': 'string'
+                }
+                },
                'system.title' : {
                   'required' : true,
                   'type' : {
@@ -236,12 +238,14 @@ export class SchemaMockGenerator {
                      'kind' : 'string'
                   }
                },
-               'system.area' : {
-                  'type' : {
-                     'kind' : 'area'
-                  },
-                  'required' : false
-               },
+               'system.area': {
+               'description': 'The area to which the work item belongs',
+               'label': 'Area',
+               'required': false,
+               'type': {
+               'kind': 'string'
+                }
+                },
                'system.remote_item_id' : {
                   'required' : false,
                   'type' : {
@@ -263,12 +267,14 @@ export class SchemaMockGenerator {
             'name' : 'Value Proposition',
             'icon': 'fa-gift',
             'fields' : {
-               'system.area' : {
-                  'required' : false,
-                  'type' : {
-                     'kind' : 'area'
-                  }
-               },
+               'system.area': {
+               'description': 'The area to which the work item belongs',
+               'label': 'Area',
+               'required': false,
+               'type': {
+               'kind': 'string'
+                }
+                },
                'system.title' : {
                   'type' : {
                      'kind' : 'string'
