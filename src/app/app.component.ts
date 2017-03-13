@@ -1,3 +1,4 @@
+import { Spaces } from 'ngx-fabric8-wit';
 /*
  * Angular 2 decorators and services
  */
@@ -28,7 +29,9 @@ export class AppComponent {
     private about: AboutService,
     private activatedRoute: ActivatedRoute,
     public notifications: NotificationsService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    // Inject spaces, to ensure it starts listening
+    private spaces: Spaces
   ) {
 
   }

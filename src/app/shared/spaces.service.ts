@@ -1,3 +1,4 @@
+import { Broadcaster } from 'ngx-login-client';
 import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Injectable } from '@angular/core';
@@ -6,16 +7,11 @@ import { LocalStorageService } from 'angular-2-local-storage';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Spaces, Contexts, Space, SpaceService } from 'ngx-fabric8-wit';
 
-interface RawSpace {
-  user: string;
-  space: string;
-}
-
 @Injectable()
 export class SpacesService implements Spaces {
 
   static readonly RECENT_SPACE_LENGTH = 8;
-  private static readonly RECENT_SPACE_KEY = 'recentSpaces';
+  private static readonly RECENT_SPACE_KEY = 'recentSpaceIds';
 
   private _current: Observable<Space>;
   private _recent: ConnectableObservable<Space[]>;
@@ -23,18 +19,17 @@ export class SpacesService implements Spaces {
   constructor(
     private contexts: Contexts,
     private localStorage: LocalStorageService,
-    private spaceService: SpaceService
+    private spaceService: SpaceService,
+    private broadcaster: Broadcaster
   ) {
     this._current = contexts.current
       .map(val => val.space);
     // Create the recent context list
-    let addRecent = new Subject<Space>();
-    contexts.current
-      // Skip any undefined spaces
-      .skipWhile(val => (!val.space))
-      .map(val => val.space)
-      .subscribe(val => addRecent.next(val));
-    this._recent = addRecent
+    let addRecent: Subject<Space> = new Subject<Space>();
+
+    this._recent = Observable.merge(
+      this.broadcaster.on<Space>('spaceChanged'),
+      addRecent)
       // Map from the context being added to an array of recent contexts
       // The scan operator allows us to access the list of recent contexts and add ours
       .scan((recent, s) => {
@@ -66,7 +61,7 @@ export class SpacesService implements Spaces {
       })
       .multicast(() => new ReplaySubject(1));
     this._recent.connect();
-    this.loadRecent(addRecent);
+    Observable.forkJoin(this.loadRecent()).subscribe(val => val.forEach(space => addRecent.next(space)));
   }
 
   get current(): Observable<Space> {
@@ -77,36 +72,23 @@ export class SpacesService implements Spaces {
     return this._recent;
   }
 
-  private loadRecent(addRecent: Subject<Space>): Space[] {
+  private loadRecent(): Observable<Space>[] {
     let res: Space[] = [];
     if (this.localStorage.get(SpacesService.RECENT_SPACE_KEY)) {
-      for (let raw of this.localStorage.get<RawSpace[]>(SpacesService.RECENT_SPACE_KEY)) {
-        if (raw.space) {
-          this.loadSpace(raw.user, raw.space)
-            .subscribe(val => addRecent.next(val));
-        }
-      }
+      return this.localStorage
+        .get<string[]>(SpacesService.RECENT_SPACE_KEY)
+        // We invert the order above when we add recent contexts
+        .reverse()
+        .map(id => {
+          return this.spaceService.getSpaceById(id);
+        });
+    } else {
+      return [];
     }
-    return res;
   }
 
   private saveRecent(recent: Space[]) {
-    let res: RawSpace[] = [];
-    for (let s of recent) {
-      res.push({
-        user: s.relationalData.creator.attributes.username,
-        space: (s.attributes.name)
-      } as RawSpace);
-    }
-    this.localStorage.set(SpacesService.RECENT_SPACE_KEY, res);
-  }
-
-  private loadSpace(userName: string, spaceName: string): Observable<Space> {
-    if (userName && spaceName) {
-      return this.spaceService.getSpaceByName(userName, spaceName);
-    } else {
-      return Observable.of({} as Space);
-    }
+    this.localStorage.set(SpacesService.RECENT_SPACE_KEY, recent.map(val => val.id));
   }
 
 }
