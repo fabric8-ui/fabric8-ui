@@ -233,6 +233,16 @@ export class WorkItemBoardComponent implements OnInit {
               this.getDefaultWorkItemTypeStates(filter.value);
           });
     });
+
+    this.broadcaster.on<string>('wi_change_state')
+        .subscribe((data: any) => {
+          let oldLane = this.lanes.find((lane) => lane.option === data[0].oldState);
+          let index = oldLane.workItems.findIndex((item) => item.id === data[0].workItem.id);
+          oldLane.workItems.splice(index, 1);
+
+          let newLane = this.lanes.find((lane) => lane.option === data[0].newState);
+          newLane.workItems.push(data[0].workItem);
+    });
   }
 
 }

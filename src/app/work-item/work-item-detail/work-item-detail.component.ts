@@ -323,16 +323,21 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   onChangeState(option: any): void {
     if (this.workItem.relationships.iteration) {
+      this.broadcaster.broadcast('wi_change_state', [{
+        workItem: this.workItem,
+        oldState: this.workItem.attributes['system.state'],
+        newState: option
+      }]);
       // Item closed for an iteration
       if (this.workItem.attributes['system.state'] !== option && option === 'closed') {
-        this.broadcaster.broadcast('wi_change_state', [{
+        this.broadcaster.broadcast('wi_change_state_it', [{
           iterationId: this.workItem.relationships.iteration.data.id,
           closedItem: +1
         }]);
       }
       // Item opened for an iteration
       if (this.workItem.attributes['system.state'] == 'closed' && option != 'closes') {
-        this.broadcaster.broadcast('wi_change_state', [{
+        this.broadcaster.broadcast('wi_change_state_it', [{
           iterationId: this.workItem.relationships.iteration.data.id,
           closedItem: -1
         }]);
@@ -538,7 +543,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
     // If already closed iteration
     if (this.workItem.attributes['system.state'] === 'closed') {
-      this.broadcaster.broadcast('wi_change_state', [{
+      this.broadcaster.broadcast('wi_change_state_it', [{
         iterationId: currenIterationID,
         closedItem: -1
       }, {

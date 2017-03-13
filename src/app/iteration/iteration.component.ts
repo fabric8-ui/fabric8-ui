@@ -133,7 +133,7 @@ export class IterationComponent implements OnInit, OnDestroy {
         this.loggedIn = false;
         this.authUser = null;
     });
-    this.broadcaster.on<string>('wi_change_state')
+    this.broadcaster.on<string>('wi_change_state_it')
       .subscribe((actions: any) => {
         actions.forEach((data: any) => {
           let iteration: IterationModel = this.allIterations.find((it) => it.id == data.iterationId);
