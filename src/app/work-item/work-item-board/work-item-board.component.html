@@ -15,7 +15,7 @@
               <section class="flex-container in-column-direction board-lane-column" [attr.data-state]="lane.option">
                 <div class="lane-header">
                   <span class="dib">{{lane.option}}</span>
-                  <span class="issueCount dib" >{{workItems | almFilterBoardList:lane.option | arrayCount}}</span>
+                  <span class="issueCount dib" >{{lane.workItems | arrayCount}}</span>
                 </div>
 
                 <div class="boardlaneWrapper"
