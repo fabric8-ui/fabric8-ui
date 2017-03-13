@@ -95,7 +95,7 @@ export class SpaceWizardComponent implements OnInit {
       .subscribe(
       (createdSpace) => {
         if (space.path) {
-          this.router.navigate([space.path]);
+          this.router.navigateByUrl(space.path.toString());
         }
         if (this.host) {
           this.host.close();

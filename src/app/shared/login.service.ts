@@ -34,7 +34,7 @@ export class LoginService {
       this.redirectToLogin(this.router.url);
     });
     this.broadcaster.on('logout').subscribe(() => {
-      this.router.navigate([LoginService.LOGIN_URL]);
+      this.router.navigateByUrl(LoginService.LOGIN_URL);
       //this.contextService.changeContext(Observable.of({url: LoginService.LOGIN_URL} as Navigation));
     });
   }
@@ -45,13 +45,14 @@ export class LoginService {
 
   public redirectAfterLogin() {
     let url = this._redirectUrl || LoginService.DEFAULT_URL;
-    this.router.navigate([url]);
+    console.log('Redirecting to', url);
+    this.router.navigateByUrl(url);
   }
 
   public redirectToLogin(currentUrl: string) {
     console.log('Please login to access ' + currentUrl);
     this.redirectUrl = currentUrl;
-    this.router.navigate([LoginService.LOGIN_URL]);
+    this.router.navigateByUrl(LoginService.LOGIN_URL);
   }
 
   public logout() {
