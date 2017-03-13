@@ -17,6 +17,8 @@ export class LoginService {
   static readonly REDIRECT_URL_KEY = 'redirectUrl';
   static readonly DEFAULT_URL = '/home';
   static readonly LOGIN_URL = '/';
+  // URLs that the redirect should ignore
+  static readonly BANNED_REDIRECT_URLS = [ '/', '/public'];
 
   private authUrl: string;  // URL to web api
 
@@ -44,8 +46,10 @@ export class LoginService {
   }
 
   public redirectAfterLogin() {
-    let url = this._redirectUrl || LoginService.DEFAULT_URL;
-    console.log('Redirecting to', url);
+    let url = this._redirectUrl;
+    if (!url || LoginService.BANNED_REDIRECT_URLS.indexOf(url) >= 0) {
+      url = LoginService.DEFAULT_URL;
+    }
     this.router.navigateByUrl(url);
   }
 
