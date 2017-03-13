@@ -9,7 +9,9 @@ var gulp = require('gulp'),
   ngc = require('gulp-ngc'),
   changed = require('gulp-changed'),
   sass = require('./config/sass'),
-  argv = require('yargs').argv;
+  argv = require('yargs').argv,
+  path = require('path'),
+  util = require('gulp-util');
 
 var appSrc = 'src';
 var libraryDist = 'dist';
@@ -118,16 +120,21 @@ gulp.task('copy-watch-all', ['build-library'], function () {
 
 gulp.task('watch', ['build-library', 'copy-watch-all'], function () {
   gulp.watch([appSrc + '/app/**/*.ts', '!' + appSrc + '/app/**/*.spec.ts'], ['transpile', 'post-transpile', 'copy-watch']).on('change', function (e) {
-    console.log('TypeScript file ' + e.path + ' has been changed. Compiling.');
+    util.log(util.colors.cyan(e.path) + ' has been changed. Compiling.');
   });
   gulp.watch([appSrc + '/app/**/*.scss']).on('change', function (e) {
-    console.log(e.path + ' has been changed. Updating.');
+    util.log(util.colors.cyan(e.path) + ' has been changed. Updating.');
     transpileSASS(e.path);
     updateWatchDist();
   });
   gulp.watch([appSrc + '/app/**/*.html']).on('change', function (e) {
-    console.log(e.path + ' has been changed. Updating.');
+    util.log(util.colors.cyan(e.path) + ' has been changed. Updating.');
     copyToDist(e.path);
     updateWatchDist();
   });
+  util.log('Now run');
+  util.log('');
+  util.log(util.colors.red('    npm link', path.resolve(watchDist)));
+  util.log('');
+  util.log('in the npm module you want to link this one to');
 });
