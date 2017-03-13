@@ -17,7 +17,7 @@ export class WorkItemLinkFilterByTypeName implements PipeTransform {
 @Pipe({ name: 'workItemLinkTypeFilterByTypeName', pure: true })
 export class WorkItemLinkTypeFilterByTypeName implements PipeTransform {
   transform(selectedLinkType: string, arr: any[]): any[] {
-    if (selectedLinkType !== null) {
+    if (selectedLinkType !== 'all') {
       let outputArr: any[] = arr.filter(item => item.name === selectedLinkType);
       return outputArr;
     }
