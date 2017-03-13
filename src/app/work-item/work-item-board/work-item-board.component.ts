@@ -182,6 +182,7 @@ export class WorkItemBoardComponent implements OnInit {
     let state = target.parentElement.parentElement.getAttribute('data-state');
     //this.workItem = this.workItems[el.getAttribute('data-item')];
     //console.log(el.getAttribute('data-item'));
+    this.changeLane(this.workItem.attributes['system.state'], state, this.workItem);
     this.changeState(state);
   }
 
@@ -222,6 +223,14 @@ export class WorkItemBoardComponent implements OnInit {
     }
   }
 
+  changeLane(oldState, newState, workItem) {
+    let oldLane = this.lanes.find((lane) => lane.option === oldState);
+    let newLane = this.lanes.find((lane) => lane.option === newState);
+    let index = oldLane.workItems.findIndex((item) => item.id === workItem.id);
+    oldLane.workItems.splice(index, 1);
+    newLane.workItems.push(workItem);
+  }
+
   listenToEvents() {
     // filters like assign to me should stack with the current filters
     this.broadcaster.on<string>('item_filter')
@@ -236,12 +245,7 @@ export class WorkItemBoardComponent implements OnInit {
 
     this.broadcaster.on<string>('wi_change_state')
         .subscribe((data: any) => {
-          let oldLane = this.lanes.find((lane) => lane.option === data[0].oldState);
-          let index = oldLane.workItems.findIndex((item) => item.id === data[0].workItem.id);
-          oldLane.workItems.splice(index, 1);
-
-          let newLane = this.lanes.find((lane) => lane.option === data[0].newState);
-          newLane.workItems.push(data[0].workItem);
+          this.changeLane(data[0].oldState, data[0].newState, data[0].workItem);
     });
   }
 
