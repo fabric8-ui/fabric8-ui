@@ -62,6 +62,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     console.log('[FilterPanelComponent] Running in context: ' + this.context);
+    this.authUser = cloneDeep(this.route.snapshot.data['authuser']);
     this.loggedIn = this.auth.isLoggedIn();
     this.listenToEvents();
     // we need to get the wi types for the types dropdown on the board item
@@ -89,7 +90,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
        * Remapping the fetched areas to the 'queries' model
        * of ngx-toolbar filters' dropdown.
        */
-      for(let area of areas) {
+      for (let area of areas) {
         this.areas.push({
           id: area.id.toString(),
           value: area.attributes.name
@@ -104,7 +105,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
         placeholder: 'Filter by Assignee...',
         type: 'select',
         queries: [{
-          id:  '1',
+          id:  this.authUser.id,
           value: 'Assigned to Me'
         }]
       }, {
@@ -128,7 +129,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.authUser = cloneDeep(this.route.snapshot.data['authuser']);
     this.setFilterValues();
   }
 
@@ -139,10 +139,11 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
     });
     $event.appliedFilters.forEach((filter) => {
       let selectedIndex = this.filters.findIndex((f: any) => {
-        return f.id === filter.query.id;
+        return f.id === filter.field.id;
       });
       if (selectedIndex > -1) {
         this.filters[selectedIndex].active = true;
+        this.filters[selectedIndex].value = filter.query.id;
       }
     });
     // if we're in board view, add or update the
@@ -174,11 +175,19 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
   setFilterValues() {
     if (this.loggedIn) {
       this.filters.push({
-        id:  '1',
+        id:  'user',
         name: 'Assigned to Me',
         paramKey: 'filter[assignee]',
         active: false,
-        value: this.authUser.id
+        value: null
+      });
+
+      this.filters.push({
+        id:  'area',
+        name: 'Filter by area',
+        paramKey: 'filter[area]',
+        active: false,
+        value: null
       });
     } else {
       let index = this.filters.findIndex(item => item.id === 1);
