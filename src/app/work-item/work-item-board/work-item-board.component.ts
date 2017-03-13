@@ -108,13 +108,13 @@ export class WorkItemBoardComponent implements OnInit {
   }
 
   getDefaultWorkItemTypeStates(workItemTypeId?: string) {
-    this.lanes = [];
     if (!workItemTypeId) {
       // we don't have a type is, fetch the first type and the states of it.
       this.workItemService.getWorkItemTypes().then((types: WorkItemType[]) => {
         // the returned list may be empty because the space is not yet selected.
         if (types.length > 0) {
           let lanes = types[0].attributes.fields['system.state'].type.values;
+          this.lanes = [];
           lanes.forEach((value, index) => {
             this.lanes.push({
               option: value,
