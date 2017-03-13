@@ -57,8 +57,8 @@ if [ $? -eq 0 ]; then
   if [ $? -eq 0 ]; then
     echo 'CICO: build OK'
     docker build -t fabric-ui-deploy -f Dockerfile.deploy . && \
-    docker tag fabric-ui-deploy 8.43.84.245.xip.io/fabric8io/fabric8-ui:latest
-    docker push 8.43.84.245.xip.io/fabric8io/fabric8-ui:latest
+    docker tag fabric-ui-deploy registry.devshift.net/fabric8io/fabric8-ui:latest
+    docker push registry.devshift.net/fabric8io/fabric8-ui:latest
     if [ $? -eq 0 ]; then
       echo 'CICO: image pushed, npmjs published, ready to update deployed app'
       exit 0
