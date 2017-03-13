@@ -172,6 +172,13 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
         this.showLinkComponent = !this.showLinkComponent;
       }
     }
+    if (!this.showLinkComponent) {
+      this.selectedTab = null;
+    } else {
+      if (!this.selectedTab) {
+        this.selectedTab = 'all';
+      }
+    }
   }
 
   toggleLinkView(): void{
@@ -267,7 +274,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
 
   selectSearchResult(id: string, title: string){
     this.selectedWorkItemId = id;
-    this.selectedValue = id+' - '+title;
+    this.selectedValue = id + ' - ' + title;
     this.searchWorkItems = [];
   }
 
