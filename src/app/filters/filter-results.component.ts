@@ -68,7 +68,7 @@ export class FilterResultsComponent implements OnInit {
     this.config.appliedFilters.forEach((appliedFilter) => {
       if (appliedFilter.field.title !== filter.field.title
           || appliedFilter.value !== filter.value) {
-        newFilters.push(filter);
+        newFilters.push(appliedFilter);
       }
     });
     this.config.appliedFilters = newFilters;
