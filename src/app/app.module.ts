@@ -120,8 +120,7 @@ if (process.env.ENV == 'inmemory') {
     ModalModule,
     TabsModule,
     TooltipModule,
-    PlannerListModule,
-    PlannerBoardModule
+    PlannerListModule
   ],
   declarations: [
     AppComponent,

@@ -11,6 +11,10 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'board',
+    loadChildren: 'app/work-item/work-item-board/planner-board.module#PlannerBoardModule'
+  },
+  {
     path: 'login',
     component: LoginComponent
   },
