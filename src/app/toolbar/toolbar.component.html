@@ -8,7 +8,8 @@
       <div class="form-group" *ngIf="config.sortConfig && config.sortConfig.fields && config.sortConfig.show">
         <alm-sort [config]="config.sortConfig" (onChange)="sortChange($event)"></alm-sort>
       </div>
-      <div class="form-group toolbar-actions">
+      <div class="form-group toolbar-actions"
+           *ngIf="config.actionsConfig !== undefined || actionsTemplate !== undefined">
         <span *ngIf="config.actionsConfig && config.actionsConfig.primaryActions && config.actionsConfig.primaryActions.length > 0">
           <button class="btn btn-default primary-action" type="button"
                   *ngFor="let action of config.actionsConfig.primaryActions"
