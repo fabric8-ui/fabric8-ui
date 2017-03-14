@@ -26,8 +26,9 @@ import { WorkItemType } from '../../models/work-item-type';
 import { WorkItemService } from '../work-item.service';
 
 @Component({
+  // tslint:disable-next-line:use-host-property-decorator
   host: {
-     'class': 'app-component flex-container in-column-direction flex-grow-1'
+     'class': 'app-component height-100 flex-container in-column-direction flex-grow-1'
   },
   selector: 'alm-board',
   templateUrl: './work-item-board.component.html',

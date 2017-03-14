@@ -38,8 +38,9 @@ import { TreeListComponent } from 'ngx-widgets';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
-  host:{
-    'class':"app-component flex-container in-column-direction flex-grow-1"
+  // tslint:disable-next-line:use-host-property-decorator
+  host: {
+    'class': 'app-component height-100 flex-container in-column-direction flex-grow-1'
   },
   selector: 'alm-work-item-list',
   templateUrl: './work-item-list.component.html',
