@@ -7,6 +7,6 @@ import { HttpModule, Http } from '@angular/http';
 @NgModule({
   imports:      [ CommonModule, HttpModule, PlannerBoardModule ]
 })
-export class PlanModule {
+export class BoardModule {
   constructor(http: Http) {}
 }

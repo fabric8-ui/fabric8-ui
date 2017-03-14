@@ -68,7 +68,7 @@ export const routes: Routes = [
     resolve: {
       context: ContextResolver
     },
-    loadChildren: './plan/board/board.module#PlanModule'
+    loadChildren: './plan/board/board.module#BoardModule'
   },
 
   // Create
