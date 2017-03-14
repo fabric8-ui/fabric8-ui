@@ -507,6 +507,32 @@ class WorkItemDetailPage {
   startCodingDiv (){
     return element(by.id("start-coding-link"));
   }
+/** UI elements for Areas */
+  areaLabel (){
+    return element(by.id('area_label'));
+  }
+  AreaSelect (){
+    return element(by.id('WI_details_area'));
+  }
+  clickAreaSelect (){
+    return this.AreaSelect().click();
+  }
+  searchAreaInput (AreaInput) {
+    return element(by.id("areaSearchInput")).sendKeys(AreaInput).click();
+  }
+  clickAreas  (areaid){
+    return element(by.id('area-'+ areaid)).click();
+  }
+  saveAreasButton (){
+    return element(by.id('save_area'));
+  }
+  SaveAreas  (areaid){
+    return this.saveAreasButton().click();
+  }
+  ClosekAreas  (areaid){
+    return element(by.id('close_area')).click();
+  }
+
 }
 
 module.exports = WorkItemDetailPage;
