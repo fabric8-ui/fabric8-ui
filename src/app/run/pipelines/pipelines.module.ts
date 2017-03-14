@@ -4,9 +4,10 @@ import { HttpModule, Http } from '@angular/http';
 
 import { PipelinesComponent }     from './pipelines.component';
 import { PipelinesRoutingModule } from './pipelines-routing.module';
+import { SpaceModule } from 'fabric8-runtime-console';
 
 @NgModule({
-  imports:      [ CommonModule, PipelinesRoutingModule, HttpModule ],
+  imports:      [ CommonModule, PipelinesRoutingModule, HttpModule, SpaceModule ],
   declarations: [ PipelinesComponent ],
 })
 export class PipelinesModule {
