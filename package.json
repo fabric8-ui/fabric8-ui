@@ -113,7 +113,7 @@
     "ngx-fabric8-wit": "6.7.3",
     "ngx-login-client": "0.4.4",
     "ngx-modal": "0.0.29",
-    "ngx-widgets": "0.9.4",
+    "ngx-widgets": "0.9.6",
     "reflect-metadata": "0.1.10",
     "rxjs": "5.0.1",
     "zone.js": "0.7.7"
