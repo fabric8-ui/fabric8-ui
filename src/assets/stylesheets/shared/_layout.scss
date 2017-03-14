@@ -208,6 +208,7 @@ footer
   >.view
   {
     @extend .fill-container;
+    height: 100%;
     &.with-rows
     {
       padding-left:$grid-gutter-width/2;
