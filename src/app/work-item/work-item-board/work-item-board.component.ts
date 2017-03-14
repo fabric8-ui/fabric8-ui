@@ -90,6 +90,7 @@ export class WorkItemBoardComponent implements OnInit {
     this.boardContextSubscription = this.broadcaster.on<WorkItemType>('board_type_context').subscribe(workItemType => {
       if (workItemType) {
         console.log('[WorkItemBoardComponent] New type context selected: ' + workItemType.attributes.name);
+        this.lanes = [];
         this.workItemService.resetWorkItemList();
       }
     });
