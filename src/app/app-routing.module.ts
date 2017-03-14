@@ -62,6 +62,15 @@ export const routes: Routes = [
     loadChildren: './plan/plan.module#PlanModule'
   },
 
+  // Plan board
+  {
+    path: ':entity/:space/plan/board',
+    resolve: {
+      context: ContextResolver
+    },
+    loadChildren: './plan/board/board.module#PlanModule'
+  },
+
   // Create
   {
     path: ':entity/:space/create',
