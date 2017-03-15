@@ -101,6 +101,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   panelState: string = 'out';
 
   areas: AreaModel[] = [];
+  filteredAreas: AreaModel[] = [];
+
   iterations: IterationModel[] = [];
 
   renderedDesc: any = '';
@@ -310,7 +312,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     this.areaService.getAreas()
       .then((response: AreaModel[]) => {
         this.areas = response;
-        console.log(this.areas);
+        this.filteredAreas = cloneDeep(response);
       });
   }
 
@@ -579,58 +581,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     this.closeUserRestFields();
   }
 
-  filterIteration(event: any) {
-    // Down arrow or up arrow
-    if (event.keyCode == 40 || event.keyCode == 38) {
-      let lis = this.iterationList.nativeElement.children;
-      let i = 0;
-      for (; i < lis.length; i++) {
-        if (lis[i].classList.contains('selected')) {
-          break;
-        }
-      }
-      if (i == lis.length) { // No existing selected
-        if (event.keyCode == 40) { // Down arrow
-          lis[0].classList.add('selected');
-          lis[0].scrollIntoView(false);
-        } else { // Up arrow
-          lis[lis.length - 1].classList.add('selected');
-          lis[lis.length - 1].scrollIntoView(false);
-        }
-      } else { // Existing selected
-        lis[i].classList.remove('selected');
-        if (event.keyCode == 40) { // Down arrow
-          lis[(i + 1) % lis.length].classList.add('selected');
-          lis[(i + 1) % lis.length].scrollIntoView(false);
-        } else { // Down arrow
-          // In javascript mod gives exact mod for negative value
-          // For example, -1 % 6 = -1 but I need, -1 % 6 = 5
-          // To get the round positive value I am adding the divisor
-          // with the negative dividend
-          lis[(((i - 1) % lis.length) + lis.length) % lis.length].classList.add('selected');
-          lis[(((i - 1) % lis.length) + lis.length) % lis.length].scrollIntoView(false);
-        }
-      }
-    } else if (event.keyCode == 13) { // Enter key event
-      let lis = this.iterationList.nativeElement.children;
-      let i = 0;
-      for (; i < lis.length; i++) {
-        if (lis[i].classList.contains('selected')) {
-          break;
-        }
-      }
-      if (i < lis.length) {
-        let selectedId = lis[i].dataset.value;
-        this.assignUser(selectedId);
-      }
-    } else {
-      let inp = this.userSearch.nativeElement.value.trim();
-      this.filteredUsers = this.users.filter((item) => {
-        return item.attributes.fullName.toLowerCase().indexOf(inp.toLowerCase()) > -1;
-      });
-    }
-  }
-
   //On clicking the area drop down option the selected value needs to get displayed in the input box
   showAreaOnInput(area: AreaModel): void {
     this.areaSearch.nativeElement.value = area.attributes.name;
@@ -722,9 +672,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       }
     } else {
       let inp = this.areaSearch.nativeElement.value.trim();
-      // this.filteredUsers = this.users.filter((item) => {
-      //   return item.attributes.fullName.toLowerCase().indexOf(inp.toLowerCase()) > -1;
-      // });
+      this.filteredAreas = this.areas.filter((item) => {
+         return item.attributes.name.toLowerCase().indexOf(inp.toLowerCase()) > -1;
+      });
     }
   }
 

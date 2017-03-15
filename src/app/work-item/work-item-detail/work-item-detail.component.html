@@ -197,9 +197,9 @@
                     <input id="areaSearchInput" #areaSearch (keyup)="filterArea($event)"
                       autocomplete="off" />
                     <ul class="item-ul area-list" #areaList>
-                      <li 
+                      <li
                         class="item-li"
-                        *ngFor="let area of areas;"
+                        *ngFor="let area of filteredAreas;"
                         [attr.data-value]="area.id"
                         (click)="showAreaOnInput(area)" [id]="area.id">
                           <span [innerHTML]="area.attributes.name | almSearchHighlight: areaSearch.value"></span>
