@@ -15,20 +15,23 @@
               <div class="form-group has-clear">
                 <label class="control-label col-xs-4">Name</label>
                 <div class="col-xs-8">
-                  <input id="name" name="name" type="text" class="form-control" maxlength="16" minlength="6" placeholder="Enter a unique name for your space"
-                    [(ngModel)]="configurator.space.name" #name="ngModel" required uniqueSpaceName="true" />
+                  <input id="name" name="name" type="text" class="form-control" placeholder="Enter a unique name for your space"
+                    [(ngModel)]="configurator.space.name" #name="ngModel" required uniqueSpaceName validSpaceName />
                   <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
                     <div [hidden]="!name.errors.required">
                       Name is required
                     </div>
-                    <div [hidden]="!name.errors.minlength">
-                      Name must be at least 6 characters long.
+                    <div [hidden]="!name.errors.minLength">
+                      Name must be at least {{name.errors.minLength?.min}} characters long.
                     </div>
-                    <div [hidden]="!name.errors.maxlength">
-                      Name cannot be more than 24 characters long.
+                    <div [hidden]="!name.errors.maxLength">
+                      Name cannot be more than {{name.errors.maxLength?.max}} characters long.
                     </div>
                     <div [hidden]="!name.errors.unique">
-                      {{name.errors.unique?.requestedName}} is already in use as {{name.errors.unique?.existingSpace.relationalData.creator.attributes.username}}/{{name.errors.unique?.existingSpace.attributes.name}}
+                      Name '{{name.errors.unique?.requestedName}}'' is already in use as {{name.errors.unique?.existingSpace.relationalData.creator.attributes.username}}/{{name.errors.unique?.existingSpace.attributes.name}}.
+                    </div>
+                    <div [hidden]="!name.errors.invalid">
+                      Name must contain only letters (upper case or lower case), numbers, underscores (_) or hyphens(-).
                     </div>
                   </div>
                 </div>
