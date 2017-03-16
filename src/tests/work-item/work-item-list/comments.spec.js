@@ -32,5 +32,33 @@ var waitTime = 30000;
       detailPage.writeComment("some comment");
       expect(detailPage.commentsAvatar('0').isPresent()).toBe(true);
      });
-/**More test will be adding here !! Waiting for Userstory to complete https://github.com/fabric8io/fabric8-planner/issues/653 */
+
+  it('Edit comment and remove previous value and save -desktop ', function() {
+      page.clickWorkItemTitle(page.firstWorkItem, "id0");
+      detailPage.commentBody("0").click();
+      detailPage.editComments("updated comment !",'0',false);
+      detailPage.clickSaveComment("0");
+      expect(detailPage.getCommentBody("0")).toBe('updated comment !');
+     });
+  it('Edit comment with previous value and save -desktop ', function() {
+      page.clickWorkItemTitle(page.firstWorkItem, "id0");
+      detailPage.commentBody("0").click();
+      detailPage.editComments(" updated comment !",'0',true);
+      detailPage.clickSaveComment("0");
+      expect(detailPage.getCommentBody("0")).toBe('Some Comment 0 updated comment !');
+     });
+  it('Edit comment and cancel -desktop ', function() {
+      page.clickWorkItemTitle(page.firstWorkItem, "id0");
+      detailPage.commentBody("0").click();
+      detailPage.editComments("updated comment !",'0',false);
+      detailPage.clickCloseComment("0");
+      expect(detailPage.getCommentBody("0")).toBe('Some Comment 0');
+     });
+  it('Get total number of comments -desktop ', function() {
+      page.clickWorkItemTitle(page.firstWorkItem, "id0");
+      detailPage.writeComment("some comment1");
+      detailPage.writeComment("some comment1");
+      expect(detailPage.getTotalNumberOfComments()).toBe('3');
+     });
+
 });

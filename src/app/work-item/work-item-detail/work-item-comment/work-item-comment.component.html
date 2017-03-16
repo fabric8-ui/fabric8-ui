@@ -8,7 +8,7 @@
       <li class="active" (click)="isCollapsedComments = !isCollapsedComments">
         <a>
           <span>Comments</span>
-          <span class="badge">{{workItem.relationalData?.comments?.length}}</span>
+          <span class="badge" id="total_comments" >{{workItem.relationalData?.comments?.length}}</span>
         </a>
       </li>
     </ul>
@@ -67,7 +67,8 @@
                   <!--Cancel icon-->
                     <button
                         (click)="closeCommentEditing()"
-                        class="pull-right btn btn-default detail-action-btn">
+                        class="pull-right btn btn-default detail-action-btn"
+                        id="{{'comment_close_btn' + counter}}" >
                       <span class="fa fa-close"></span>
                     </button>
                   <!--Save icon-->

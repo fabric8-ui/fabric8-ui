@@ -403,8 +403,24 @@ class WorkItemDetailPage {
   getCommentTime  (index){
     return element(by.id('comment_time_'+index)).getText();
   }
+  commentBody(index){
+    return element(by.id('comment_body_'+index));
+  }
   getCommentBody  (index){
-    return element(by.id('comment_body_'+index)).getText();
+    return this.commentBody(index).getText();
+  }
+  getTotalNumberOfComments  (){
+    return element(by.id('total_comments')).getText();
+  }
+  clickSaveComment(index){
+    return element(by.id('comment_save_btn'+index)).click();
+  }
+  clickCloseComment(index){
+    return element(by.id('comment_close_btn'+index)).click();
+  }
+  editComments(comment,index, append){
+    if (!append) { this.commentBody(index).clear(comment) };
+    return this.commentBody(index).sendKeys(comment);
   }
 /**UI elements for created time WI */
   getCreatedtime  (){
