@@ -27,6 +27,30 @@ import { WorkItemDetailModule } from '../work-item-detail/work-item-detail.modul
 import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
 import { WorkItemService } from '../work-item.service';
 
+import { MockHttp } from './../../shared/mock-http';
+
+let providers = [];
+
+if (process.env.ENV == 'inmemory') {
+  providers = [
+    AuthUserResolve,
+    GlobalSettings,
+    UsersResolve,
+    WorkItemService,
+    {
+      provide: Http,
+      useClass: MockHttp
+    }
+  ];
+} else {
+  providers = [
+    AuthUserResolve,
+    GlobalSettings,
+    UsersResolve,
+    WorkItemService
+  ];
+}
+
 
 @NgModule({
   imports: [
@@ -53,12 +77,7 @@ import { WorkItemService } from '../work-item.service';
     AlmFilterBoardList,
     WorkItemBoardComponent,
   ],
-  providers: [
-    AuthUserResolve,
-    GlobalSettings,
-    UsersResolve,
-    WorkItemService
-  ],
+  providers: providers,
   exports: [ WorkItemBoardComponent ]
 })
 export class PlannerBoardModule {
