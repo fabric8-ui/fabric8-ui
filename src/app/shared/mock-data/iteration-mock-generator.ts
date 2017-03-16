@@ -34,6 +34,10 @@ export class IterationMockGenerator {
           'workitems': {
             'links': {
               'related': 'http://mock.service/api/workitems?filter[iteration]=iteration-id' + n
+            },
+            'meta': {
+              'total' : 0,
+              'closed' : 0
             }
           }
         },
@@ -43,3 +47,4 @@ export class IterationMockGenerator {
     return iterations;
   }
 }
+

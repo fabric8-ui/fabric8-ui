@@ -172,13 +172,15 @@ export class SchemaMockGenerator {
                   'type' : {
                      'kind' : 'markup'
                   }
-               },
-               'system.iteration' : {
-                  'type' : {
-                     'kind' : 'iteration'
-                  },
-                  'required' : false
-               }
+               },               
+              'system.iteration' : {
+                'description' : 'The iteration to which the work item belongs',
+                'label' : 'Iteration',
+                'required' : false,
+                'type' : {
+                  'kind' : 'string'
+                }
+              }
             },
             'description' : 'Description for Planner Item',
             'version' : 0
@@ -199,13 +201,15 @@ export class SchemaMockGenerator {
                   },
                   'required' : false
                },
-               'system.iteration' : {
-                  'required' : false,
-                  'type' : {
-                     'kind' : 'iteration'
-                  }
-               },
-               'system.state' : {
+              'system.iteration' : {
+                'description' : 'The iteration to which the work item belongs',
+                'label' : 'Iteration',
+                'required' : false,
+                'type' : {
+                  'kind' : 'string'
+                }
+              },
+              'system.state' : {
                   'required' : true,
                   'type' : {
                      'values' : [
@@ -320,12 +324,14 @@ export class SchemaMockGenerator {
                   },
                   'required' : true
                },
-               'system.iteration' : {
-                  'type' : {
-                     'kind' : 'iteration'
-                  },
-                  'required' : false
-               },
+              'system.iteration' : {
+                'description' : 'The iteration to which the work item belongs',
+                'label' : 'Iteration',
+                'required' : false,
+                'type' : {
+                  'kind' : 'string'
+                }
+              },
                'system.description' : {
                   'required' : false,
                   'type' : {
