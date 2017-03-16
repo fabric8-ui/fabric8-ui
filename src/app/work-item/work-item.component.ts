@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { cloneDeep } from 'lodash';
+import { cloneDeep, trimEnd } from 'lodash';
 import {
   AuthenticationService,
   Broadcaster
@@ -150,7 +150,7 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
   }
   onChangeType(type: string) {
     this.showTypesOptions = false;
-    this.router.navigate(['/work-item/list/detail/new?' + type]);
+    this.router.navigateByUrl(trimEnd(this.router.url.split('detail')[0], '/') + '/detail/new?' + type);
   }
 
   // event handlers

@@ -18,7 +18,7 @@ import { Location }               from '@angular/common';
 import { Router }                 from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
-import { cloneDeep } from 'lodash';
+import { cloneDeep, trimEnd } from 'lodash';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import {
   AuthenticationService,
@@ -389,7 +389,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
         this.workItemService
         .create(this.workItem)
         .then((workItem) => {
-          this.router.navigate([this.router.url.split('detail')[0] + '/detail/' + workItem.id], { relativeTo: this.route });
+          this.router.navigateByUrl(trimEnd(this.router.url.split('detail')[0], '/') + '/detail/' + workItem.id, { relativeTo: this.route });
         });
       }
     }
@@ -403,7 +403,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     // From in to out it takes 300 ms
     // So wait for 400 ms
     setTimeout(() => {
-      this.router.navigate([this.router.url.split('detail')[0]]);
+      this.router.navigateByUrl(trimEnd(this.router.url.split('detail')[0], '/'));
     }, 400);
   }
 

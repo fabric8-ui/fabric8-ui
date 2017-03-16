@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { Response } from '@angular/http';
 import { Router } from '@angular/router';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, trimEnd } from 'lodash';
 
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { AuthenticationService, Broadcaster } from 'ngx-login-client';
@@ -165,8 +165,8 @@ export class WorkItemBoardComponent implements OnInit {
   }
 
   gotoDetail(workItem: WorkItem) {
-    let link = [ this.router.url.split('detail')[0] + '/detail/' + workItem.id ];
-    this.router.navigate(link);
+    let link = trimEnd(this.router.url.split('detail')[0], '/') + '/detail/' + workItem.id;
+    this.router.navigateByUrl(link);
   }
 
   onDrag(args: any) {
