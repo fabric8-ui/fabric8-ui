@@ -80,8 +80,14 @@ export class MockDataService {
     let assigneeFilter = pathParams['filter[assignee]'];
     let workItemTypeFilter = pathParams['filter[workitemtype]'];
     let workItemStateFilter = pathParams['filter[workitemstate]'];
+    let iterationFilter = pathParams['filter[iteration]'];
 
-    console.log('Filtering on: ' + (assigneeFilter ? 'assignee==' + assigneeFilter + ' ' : '') + (workItemTypeFilter ? 'workitemtype==' + workItemTypeFilter + ' ' : '') + (workItemStateFilter ? 'state==' + workItemStateFilter + ' ' : ''));
+    console.log('Filtering on: ' 
+      + (assigneeFilter ? 'assignee==' + assigneeFilter + ' ' : '') 
+      + (workItemTypeFilter ? 'workitemtype==' + workItemTypeFilter + ' ' : '') 
+      + (workItemStateFilter ? 'state==' + workItemStateFilter + ' ' : '')
+      + (iterationFilter ? 'iteration==' + iterationFilter + ' ' : '')
+    );
 
     var filteredWorkitems = new Array();
     var counter = 0;
@@ -94,6 +100,8 @@ export class MockDataService {
         filterMatches = filterMatches && (this.workItems[i].relationships.baseType.data.id === workItemTypeFilter);
       if (workItemStateFilter)
         filterMatches = filterMatches && (this.workItems[i].attributes['system.state'] === workItemStateFilter);
+      if (iterationFilter)
+        filterMatches = filterMatches && this.workItems[i].relationships.iteration.data && (this.workItems[i].relationships.iteration.data.id === iterationFilter);
 
       if (filterMatches)
         filteredWorkitems.push(this.makeCopy(this.workItems[i]));
