@@ -30,7 +30,7 @@
                       </div>
                   </div>
                   <div [dragula]='"first-bag"' class="card-wrapper">
-                    <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of lane.workItems' routerLink="./detail/{{item.id}}" (mousedown)="getWI(item)">
+                    <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of lane.workItems' routerLink="./detail/{{item.id}}" [attr.data-id]="item.id" (mousedown)="getWI(item)">
                       <div class="row-wrapper">
                         <div class="">
                           <span class="wi-type-icon" almIcon [iconType]="item.relationships?.baseType?.data?.id"></span>
