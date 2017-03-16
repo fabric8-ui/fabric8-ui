@@ -7,8 +7,8 @@
     </aside>
     <section>
       <toolbar-panel context="boardview"></toolbar-panel>
-      <div class="contents">
-        <div id="board_topWorkItems" class="container-fluid flex-container flex-grow-1 in-column-direction boardWrapper">
+      <div class="contents posRel">
+        <div id="board_topWorkItems" class="flex-container flex-grow-1 in-column-direction boardWrapper">
           <div class="board">
             <!-- board columns -->
             <div class="board-lane" *ngFor='let lane of lanes'>
@@ -68,8 +68,8 @@
             </div>
           </div>
         </div>
+        <router-outlet></router-outlet>
       </div>
-      <router-outlet></router-outlet>
     </section>
   </main>
 </div>

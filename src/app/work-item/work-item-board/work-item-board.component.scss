@@ -13,10 +13,10 @@
     right: 0;
     bottom: 0;
     left: 0;
-    padding-bottom: em(10);
+    padding: rem(10) 0;
     .board-lane {
-      width: em(300);
-      margin: 0 em(5);
+      width: rem(300);
+      margin: 0 rem(5);
       height: 100%;
       display: inline-block;
       vertical-align: top;
@@ -28,15 +28,15 @@
         height: 100%;
         padding-bottom: 0;
         .boardlaneWrapper{
-          padding: em(0) em(15);
+          padding: em(0) rem(15);
           overflow: auto;
           width: $width100;
-          height: calc( 100% - 2.5em );
+          height: calc( 100% - 2.5rem );
           .board-card {
             @include Border(1px, solid , $color-pf-black-400);
             background: $color-pf-white;
-            padding: em(15);
-            margin: em(5) 0;
+            padding: rem(15);
+            margin: rem(5) 0;
             >div {
               p {
                 margin: 0;

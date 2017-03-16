@@ -44,6 +44,10 @@ body {
     text-align: $textCenter;
 }
 
+.posRel {
+  position: relative;
+}
+
 @media (max-width: $grid-float-breakpoint) {
     .mobdn {
         display: none;
