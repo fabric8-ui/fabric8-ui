@@ -33,7 +33,7 @@ import { HeaderComponent } from './header/header.component';
 // Shared Services
 import { ApiLocatorService } from './shared/api-locator.service';
 import { AuthGuard } from './shared/auth-guard.service';
-import { ContextCurrentUserAuthGuard } from './shared/context-current-user-auth-guard.service';
+import { ContextCurrentUserGuard } from './shared/context-current-user-guard.service';
 import { ContextResolver } from './shared/context-resolver.service';
 import { DummyService } from './shared/dummy.service';
 import { LoginService } from './shared/login.service';
@@ -107,7 +107,7 @@ export type StoreType = {
     authApiUrlProvider,
     AuthenticationService,
     AuthGuard,
-    ContextCurrentUserAuthGuard,
+    ContextCurrentUserGuard,
     ContextService,
     {
       provide: Contexts,

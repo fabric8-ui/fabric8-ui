@@ -41,7 +41,7 @@ export class ContextResolver implements Resolve<Context> {
           this.router.navigateByUrl(this._lastRoute);
           return Observable.of({} as Context);
         }
-      });
+      }).first();
   }
 
 }

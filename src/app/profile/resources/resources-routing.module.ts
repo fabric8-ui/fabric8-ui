@@ -1,13 +1,17 @@
+import { AuthGuard } from './../../shared/auth-guard.service';
 import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ResourcesComponent } from './resources.component';
-import { ContextCurrentUserAuthGuard } from './../../shared/context-current-user-auth-guard.service';
+import { ContextCurrentUserGuard } from './../../shared/context-current-user-guard.service';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [ContextCurrentUserAuthGuard],
+    canActivate: [ AuthGuard ],
+    resolve: {
+      contextGuard: ContextCurrentUserGuard
+    },
     component: ResourcesComponent
   }
 ];
