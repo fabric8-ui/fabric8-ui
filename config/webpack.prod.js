@@ -10,6 +10,7 @@ const stringify = require('json-stringify');
 /**
  * Webpack Plugins
  */
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
@@ -113,6 +114,12 @@ module.exports = function (env) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: [
+      new CopyWebpackPlugin([
+        {
+          from: 'src/config',
+          to: 'config'
+        }
+      ]),
 
       /**
        * Plugin: @ngtools/webpack

@@ -12,6 +12,7 @@ const commonConfig = require('./webpack.common.js'); // the settings that are co
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 /**
  * Webpack Constants
@@ -127,6 +128,17 @@ module.exports = function (options) {
     },
 
     plugins: [
+      new CopyWebpackPlugin([
+        {
+          from: 'src/config',
+          to: '_config',
+          transform: function env(content, path) {
+            return content.toString('utf-8').replace(/{{ .Env.([a-zA-Z0-9_-]*) }}/g, function(match, p1, offset, string){
+              return process.env[p1];
+            });
+          }
+        }
+      ]),
       /**
        * Plugin: DefinePlugin
        * Description: Define free variables.

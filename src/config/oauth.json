@@ -1,0 +1,10 @@
+{
+  "api_server": "{{ .Env.K8S_API_SERVER }}",
+  "oauth": {
+    "oauth_authorize_uri": "{{ .Env.OAUTH_AUTHORIZE_URI }}",
+    "oauth_client_id": "{{ .Env.OAUTH_CLIENT_ID }}",
+    "oauth_issuer": "{{ .Env.OAUTH_ISSUER }}",
+    "oauth_scope": "{{ .Env.OAUTH_SCOPE }}",
+    "logout_uri": "{{ .Env.OAUTH_LOGOUT_URI }}"
+  }
+}
