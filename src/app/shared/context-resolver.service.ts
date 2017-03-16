@@ -17,7 +17,7 @@ export class ContextResolver implements Resolve<Context> {
 
   constructor(private contextService: ContextService, private router: Router) {
     // The default place to navigate to if the context cannot be resolved is /home
-    this._lastRoute = '/home';
+    this._lastRoute = '/_home';
     // Store the last visited URL so we can navigate back if the context
     // cannot be resolved
     this.router.events

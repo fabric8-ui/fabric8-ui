@@ -9,6 +9,12 @@ import { ContextCurrentUserAuthGuard } from './shared/context-current-user-auth-
 
 export const routes: Routes = [
 
+  // Only relevant locally, as the landing page sits on / in production
+  {
+    path: '',
+    redirectTo: '/rhn-support-pmuir',
+    pathMatch: 'full'
+  },
   // Temporary page to control the app
   {
     path: '_control',
@@ -17,7 +23,7 @@ export const routes: Routes = [
 
   // Home
   {
-    path: 'home',
+    path: '_home',
     loadChildren: './home/home.module#HomeModule'
   },
 

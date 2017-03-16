@@ -16,7 +16,7 @@ export class MenusService {
         [
           {
             name: 'Home',
-            path: '/home'
+            path: '/_home'
           }, {
             name: 'Profile',
             path: '',

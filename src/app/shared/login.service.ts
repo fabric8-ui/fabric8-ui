@@ -15,7 +15,7 @@ import { Navigation } from './../models/navigation';
 export class LoginService {
 
   static readonly REDIRECT_URL_KEY = 'redirectUrl';
-  static readonly DEFAULT_URL = '/home';
+  static readonly DEFAULT_URL = '/_home';
   // URLs that the redirect should ignore
   static readonly BANNED_REDIRECT_URLS = ['/'];
   static readonly LOGIN_URL = '/';

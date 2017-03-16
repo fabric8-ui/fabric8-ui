@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() { }
 
   get context(): Context {
-    if (this.router.url === '/home') {
+    if (this.router.url === '/_home') {
       return this._defaultContext;
     } else {
       return this._context;

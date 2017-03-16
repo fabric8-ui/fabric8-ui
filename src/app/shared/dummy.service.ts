@@ -16,7 +16,6 @@ import { Email } from './../models/email';
 export class DummyService {
 
   readonly RESERVED_WORDS: string[] = [
-    'home'
   ];
 
   readonly RESOURCES: Resources = {
