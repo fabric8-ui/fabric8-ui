@@ -33,7 +33,7 @@
                     <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of lane.workItems' routerLink="./detail/{{item.id}}" [attr.data-id]="item.id" (mousedown)="getWI(item)">
                       <div class="row-wrapper">
                         <div class="">
-                          <span class="wi-type-icon" almIcon [iconType]="item.relationships?.baseType?.data?.id"></span>
+                          <span class="wi-type-icon fa {{item.relationalData?.wiType?.attributes?.icon}}"></span>
                           <span class=""> {{item.id}} </span>
                         </div>
                         <span dropdown>
