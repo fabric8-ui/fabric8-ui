@@ -77,7 +77,9 @@ class WorkItemListPage {
  get boardButton () {
      return element(by.id("header_menuBoard"));
  }
-
+ boardButtonBytext  (){
+   return element(by.linkText("WorkBoard")).click();
+ }  
  get clickBoardButton () {
    this.boardButton.click();
    return new WorkItemBoardPage();
