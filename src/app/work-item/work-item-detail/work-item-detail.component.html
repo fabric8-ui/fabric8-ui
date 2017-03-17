@@ -39,12 +39,12 @@
             <div *ngIf="!headerEditable" (click)='openHeader()'
               id="title-click-div">
               <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate form-control-static">{{ workItem.attributes['system.title'] }}</h2>
-              <h2 *ngIf="loggedIn" id="wi-detail-title-click" class="detail-title truncate">{{ workItem.attributes['system.title'] }}</h2>
+              <h2 *ngIf="loggedIn && workItem.id" id="wi-detail-title-click" class="detail-title truncate">{{ workItem.attributes['system.title'] }}</h2>
               <span *ngIf="loggedIn && workItem.id"
                 class="pficon-edit marginL10 fl detail-title-edit-ico"
                 id="workItemTitle_btn_edit"></span>
             </div>
-            <div *ngIf="(loggedIn && headerEditable)" id="wi-title-div">
+            <div *ngIf="(loggedIn && headerEditable) || (loggedIn && !workItem.id)" id="wi-title-div">
                 <h2 almEditable
                     (onUpdate)="checkTitle($event)"
                     (keyup.enter)="onUpdateTitle()"
@@ -58,7 +58,8 @@
                   <!--Cancel icon-->
                   <button id="workItemTitle_btn_cancel"
                       class="pull-right btn btn-default detail-action-btn"
-                      (click)="closeHeader()">
+                      [ngClass]="{disabled : (!workItem.id)}"
+                      (click)="workItem.id && closeHeader()">
                     <span class="fa fa-close"></span>
                   </button>
                   <!--Save icon-->

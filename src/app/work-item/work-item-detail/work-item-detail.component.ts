@@ -549,7 +549,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   closeUserRestFields(): void {
     this.searchAssignee = false;
     this.searchIteration = false;
-    this.headerEditable = false;
+    if (this.workItem && this.workItem.id != null) {
+      this.headerEditable = false;
+    }
     this.descEditable = false;
   }
 
