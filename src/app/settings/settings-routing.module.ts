@@ -16,12 +16,7 @@ const routes: Routes = [
       contextGuard: ContextCurrentUserGuard
     },
     children: [
-      { path: '', component: ProfileComponent },
-      { path: 'emails', loadChildren: './emails/emails.module#EmailsModule' },
-      {
-        path: 'notifications',
-        loadChildren: './notifications/notifications.module#NotificationsModule'
-      }
+      { path: '', component: ProfileComponent }
     ]
   }
 ];

@@ -40,12 +40,6 @@ export class MenusService {
               {
                 name: 'Profile',
                 path: ''
-              }, {
-                name: 'Emails',
-                path: 'emails'
-              }, {
-                name: 'Notifications',
-                path: 'notifications'
               }
             ]
           }
