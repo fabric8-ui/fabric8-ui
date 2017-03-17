@@ -77,9 +77,7 @@ class WorkItemListPage {
  get boardButton () {
      return element(by.id("header_menuBoard"));
  }
- boardButtonBytext  (){
-   return element(by.linkText("WorkBoard")).click();
- }  
+
  get clickBoardButton () {
    this.boardButton.click();
    return new WorkItemBoardPage();
@@ -114,6 +112,10 @@ class WorkItemListPage {
  }
 
  /* Access the Kebab element relative to its parent workitem */
+ workItemKebabButton (parentElement) {
+   browser.wait(until.presenceOf(parentElement.element(by.id("dropdownKebabRight"))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
+   return parentElement.element(by.id("dropdownKebabRight"));
+ }
  clickWorkItemKebabButton (parentElement) {
    browser.wait(until.presenceOf(parentElement.element(by.id("dropdownKebabRight"))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
    return parentElement.element(by.id("dropdownKebabRight")).click();
@@ -177,7 +179,7 @@ class WorkItemListPage {
   }
 
   clickWorkItemPopUpDeleteConfirmButton () {
-    browser.wait(until.presenceOf(this.workItemPopUpDeleteConfirmButton), constants.WAIT, 'Failed to find workItemPopUpDeleteConfirmButton');
+    browser.wait(until.elementToBeClickable(this.workItemPopUpDeleteConfirmButton), constants.WAIT, 'Failed to find workItemPopUpDeleteConfirmButton');
     return this.workItemPopUpDeleteConfirmButton.click();
   }
 
@@ -523,7 +525,7 @@ class WorkItemListPage {
   }
 
   get expandFutureIterationIcon () {
-    return element(by.xpath (".//text()[contains(.,'Future Iteration')]/.."));
+    return element(by.xpath (".//text()[contains(.,'Future Iterations')]/.."));
   }
 
   clickExpandFutureIterationIcon () {
@@ -531,7 +533,7 @@ class WorkItemListPage {
   }
 
   expandPastIterationIcon () {
-    return element(by.xpath (".//text()[contains(.,'Past Iteration')]"));
+    return element(by.xpath (".//text()[contains(.,'Past Iterations')]"));
   }
 
   clickExpandPastIterationIcon () {
@@ -539,31 +541,40 @@ class WorkItemListPage {
   }
 
   get futureIterations () {
-    return element.all(by.xpath (".//text()[contains(.,'Future Iteration')]/../../../ul/li"));
+    return element.all(by.xpath (".//text()[contains(.,'Future Iterations')]/../../../../ul/li"));
   }
 
   get firstFutureIteration () {
-    return element.all(by.xpath (".//text()[contains(.,'Future Iteration')]/../../../ul/li")).first();
+    return element.all(by.xpath (".//text()[contains(.,'Future Iterations')]/../../../../ul/li")).first();
   }
 
+  getIterationCounter (parentElement) {
+    return parentElement.element(by.css(".badge"));
+  }
+
+  get iterationCount(){
+    return element(by.css('.iteration-count')).getText();
+  }
+
+
   get lastFutureIteration () {
-    return element.all(by.xpath (".//text()[contains(.,'Future Iteration')]/../../../ul/li")).last();
+    return element.all(by.xpath (".//text()[contains(.,'Future Iterations')]/../../../../ul/li")).last();
   }
 
   get pastIterations () {
-    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]/../../ul"));
+    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iterations')]]/../../../../ul"));
   }
 
   get firstPastIteration () {
-    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]/../../ul/li")).first();
+    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iterations')]]/../../../../ul/li")).first();
   }
 
   get lastPastIteration () {
-    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iteration')]]/../../ul/li")).last();
+    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iterations')]]/../../../../ul/li")).last();
   }
   
   firstCurrentIteration () {
-    return element.all(by.xpath (".//text()[contains(.,'Current Iteration')]/../../../ul/li")).first();
+    return element.all(by.xpath (".//text()[contains(.,'Current Iterations')]/../../../../../ul/li")).first();
   }
 
   clickIterationAddButton () {

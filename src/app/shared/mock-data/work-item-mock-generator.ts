@@ -136,7 +136,7 @@ export class WorkItemMockGenerator {
           'system.description': 'Description Text ' + n,
           'system.description.rendered': 'Description Text ' + n,
           'system.remote_item_id': 'remote_id_' + n,
-          'system.state': (n % 2) ? ((n % 3) ? 'new' : 'in progress') : ((n % 3) ? 'story-new' : 'story-in progress'), 
+          'system.state': (n % 2) ? ((n % 3) ? 'new' : 'in progress') : ((n % 3) ? 'new' : 'in progress'), 
           'system.title': 'Title Text ' + n,
           'version': 6
         },

@@ -174,6 +174,61 @@ it('Re-Associate WI with Iteration from Kebab menu', function() {
     //   detailPage.genericLinkseach("Iteration 0");
 
     // });
- 
+
+  /* Verify iteration displays the correct workitem totals as workitems transition new->closed */
+  it( 'Verify counters for workitems within iteration', function() {
+
+    /* Verify that the iteration has zero workitems associated */
+    page.clickExpandFutureIterationIcon();
+    expect(page.getIterationCounter(page.firstFutureIteration).getText()).toBe('0');
+
+    /* Associate workitems with an iteration */
+    associateWithIteration (page, "Title Text 3", "Iteration 0");
+    associateWithIteration (page, "Title Text 4", "Iteration 0");
+    associateWithIteration (page, "Title Text 5", "Iteration 0");
+    associateWithIteration (page, "Title Text 6", "Iteration 0");
+    associateWithIteration (page, "Title Text 7", "Iteration 0");
+    expect(page.getIterationCounter(page.firstFutureIteration).getText()).toBe('5');
+
+    /* Start the iteration */
+    page.clickIterationKebab("1");
+    page.clickStartIterationKebab();
+    page.clickCreateIteration();
+
+    browser.ignoreSynchronization = true;
+    expect(page.iterationCount.getText()).toBe('0 of 5 completed');
+    //browser.ignoreSynchronization = false;
+
+    page.workItemViewId(page.workItemByTitle("Title Text 3")).getText().then(function (text) {
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+      browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
+      detailPage.clickWorkItemStateDropDownButton();
+      browser.wait(until.elementToBeClickable(detailPage.WorkItemStateDropDownList().get(4)), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
+      detailPage.WorkItemStateDropDownList().get(4).click();
+      detailPage.clickWorkItemDetailCloseButton();
+    });
+
+    expect(page.iterationCount.getText()).toBe('0 of 5 completed');
+
+// Start the first iteration
+// Change the status of the 1st workitem from new to closed, verify that the total changes to 1/5
+// Change the status of the 2nd workitem from new to closed, verify that the total changes to 2/5
+// Change the status of the 3rd workitem from new to closed, verify that the total changes to 3/5
+// Change the status of the 4th workitem from new to closed, verify that the total changes to 4/5
+// Change the status of the 5th  workitem from new to closed, verify that the total changes to 5/5
+
+    });
 
 });
+
+
+  /* Associate a work item aith an iteration */
+  var associateWithIteration = function (thePage, theWorkItemTitle, theIterationTitle) {
+      var until = protractor.ExpectedConditions;
+      browser.wait(until.elementToBeClickable(thePage.workItemKebabButton(thePage.workItemByTitle(theWorkItemTitle))), constants.WAIT, 'Failed to find workItemKebabButton');
+      thePage.clickWorkItemKebabButton(thePage.workItemByTitle(theWorkItemTitle));
+      thePage.clickWorkItemKebabAssociateIterationButton(thePage.workItemByTitle(theWorkItemTitle));
+      thePage.clickDropDownAssociateIteration(theIterationTitle);
+      thePage.clickAssociateSave();
+  }
+

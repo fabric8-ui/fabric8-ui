@@ -18,7 +18,7 @@ var WorkItemListPage = require('./page-objects/work-item-list.page'),
   constants = require('./constants'),
   testSupport = require('./testSupport');
 
-describe('Work item list', function () {
+describe('Quickadd - Work item list', function () {
   var page, items, browserMode;
   var char255 = '<div *ngFor=let comment of workItem.relationalData.comments; let counter = index" class="comments-wrap">   +            <div *ngFor="let comment of workItem.relationalData?.comments?.slice().reverse()" class="comments-wrap">                  <div>                      <div class="user-avatar pull-left">                          <img id="{{"comment_avatar_" + counter}}" -                        class="user-assign-avatar pull-left"  +                               />';
   var char255Expected = '<div *ngFor=let comment of workItem.relationalData.comments; let counter = index" class="comments-wrap"> + <div *ngFor="let comment of workItem.relationalData?.comments?.slice().reverse()" class="comments-wrap"> <div> <div class="user-avatar pull-left"> <img id="{{"comment_avatar_" + counter}}" - class="user-assign-avatar pull-left" + />';
@@ -30,7 +30,7 @@ describe('Work item list', function () {
     testSupport.setTestSpace(page);
   });
 
-  it('Creating a new quick add work item and delete - desktop.', function () {
+  it('Quickadd - Creating a new quick add work item and delete - desktop.', function () {
     testSupport.setBrowserMode('desktop');
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle('Quick Add and Delete');
@@ -40,7 +40,7 @@ describe('Work item list', function () {
       page.clickWorkItemKebabButton(page.firstWorkItem);
       page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
       page.clickWorkItemPopUpDeleteConfirmButton().then(function() {
-        browser.wait(until.textToBePresentInElement((page.firstWorkItem), "Title Text" ), 60000, 'Failed to find text in workitem');
+        browser.wait(until.textToBePresentInElement((page.firstWorkItem), "Title Text" ), constants.WAIT, 'Failed to find text in workitem');
         expect(page.workItemTitle(page.firstWorkItem)).not.toBe('Quick Add and Delete');
         expect(page.workItemTitle(page.workItemByNumber(0))).not.toBe('Quick Add and Delete');
       });

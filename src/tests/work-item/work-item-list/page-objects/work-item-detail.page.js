@@ -550,6 +550,7 @@ class WorkItemDetailPage {
   }
 /**Iteration element */
   IterationOndetailPage(){
+    browser.wait(until.elementToBeClickable(element(by.id('iteration-assocaited'))), constants.WAIT, 'Failed to find IterationOndetailPage');
     return element(by.id('iteration-assocaited'));
   }
   getAssociatedIteration  (){
