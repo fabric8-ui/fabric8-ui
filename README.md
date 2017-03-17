@@ -26,6 +26,28 @@ Run `npm install`. This will download all the required dependencies to be able t
 
 Run `npm start`. This will start the UI with livereload enabled. Then navigate to <http://localhost:3000>.
 
+### Proxying
+
+We also have built in support for proxying your requests to the OpenShift cluster - this is particularly
+useful if your OpenShift cluster doesn't support CORS. By default the console will access the proxy on the
+same protocl, host and port as the app is running. You can adjust this using environment variables, and the
+sample environments provide good examples of doing this.
+
+#### Sample environments
+
+We provide various sample environments out of the box which make it easier to get started.
+The environments are provided as bash scripts in `environments`. To use them run:
+
+```bash
+source environments/<environment-name>.sh
+```
+
+For example, to connect to devshift:
+
+```bash
+source environments/devshift-cluster.sh
+```
+
 ## CSS and SASS
 
 fabric8-planner uses SASS for it's stylesheets. It also uses the Angular emulation

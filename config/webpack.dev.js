@@ -13,6 +13,7 @@ const DefinePlugin = require('webpack/lib/DefinePlugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const cloneDeep = require('lodash/cloneDeep');
 
 /**
  * Webpack Constants
@@ -30,6 +31,18 @@ const BUILD_NUMBER = process.env.BUILD_NUMBER;
 const BUILD_TIMESTAMP = process.env.BUILD_TIMESTAMP;
 const BUILD_VERSION = process.env.BUILD_VERSION;
 
+const OSO_CORS_PROXY = {
+  target: `https://${process.env.KUBERNETES_SERVICE_HOST}:${process.env.KUBERNETES_SERVICE_PORT}`,
+  // Remove our prefix from the forwarded path
+  pathRewrite: { '^/_p/oso': '' },
+  // Disable cert checks for dev only
+  secure: false,
+  //changeOrigin: true,
+  logLevel: "debug",
+    onProxyRes: function (proxyRes, req, res) {
+    proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+  },
+};
 
 const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
   host: HOST,
@@ -215,8 +228,13 @@ module.exports = function (options) {
       historyApiFallback: true,
       watchOptions: {
         aggregateTimeout: 2000
+      },
+      proxy: {
+        "/_p/oso/api/*": cloneDeep(OSO_CORS_PROXY),
+        "/_p/oso/apis/*": cloneDeep(OSO_CORS_PROXY),
+        "/_p/oso/oapi/*": cloneDeep(OSO_CORS_PROXY),
+        "/_p/oso/swaggerapi/*": cloneDeep(OSO_CORS_PROXY)
       }
-      // outputPath: helpers.root('dist/')
     },
 
     /*
