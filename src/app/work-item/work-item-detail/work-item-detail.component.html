@@ -207,12 +207,12 @@
                     </ul>
                   </div>
                 </div>
-                <div *ngIf="searchArea" class="btn-bar">
-                  <button class="btn btn-lg btn-default"  id="save_area" type="button" (click)=setArea()>
-                    <span class="fa fa-check"></span>
+                <div *ngIf="searchArea" class="btn-bar"  id="save_area">
+                  <button class="btn btn-lg btn-default"  type="button" (click)=setArea()>
+                    <span class="fa fa-check" ></span>
                   </button>
-                  <button class="btn btn-lg btn-default" id="close_area" type="button" (click)=closeAreaDropdown()>
-                    <span class="pficon pficon-close" ></span>
+                  <button class="btn btn-lg btn-default"  type="button" (click)=closeAreaDropdown()>
+                    <span class="pficon pficon-close" id="close_area" ></span>
                   </button>
                 </div>
               </div>
@@ -222,13 +222,13 @@
         <div class="col-md-12 col-sm-12 col-xs-12 detail-iteration-wrap">
           <span class="pull-left iteration-label">{{workItem.relationalData.wiType?.attributes?.fields['system.iteration']?.label}}</span>
           <div class="pull-left detail-iteration-name">
-            <span *ngIf="!searchIteration" (click)="lookupIterations()" class="pointer">
+            <span *ngIf="!searchIteration" (click)="lookupIterations()" class="pointer" id="iteration-assocaited">
               {{ workItem.relationalData?.iteration?.attributes.name || "None" }}
             </span>
             <span *ngIf="searchIteration"
               id="WI_details_iteration" dropdown>
               <button class="btn btn-default" type="button" #dropdownButton
-                id="WI_details_iteration_dropdown" data-toggle="dropdown" dropdownToggle>
+                id="WI_details_iteration_dropdownbtn" data-toggle="dropdown" dropdownToggle>
                 {{ workItem.relationalData?.iteration?.attributes.name || "None" }} <span class="caret"></span>
               </button>
               <ul role="menu" aria-labelledby="WI_details_iteration_dropdown" dropdownMenu>
@@ -238,10 +238,10 @@
                   </a>
                 </li>
               </ul>
-              <button class="btn btn-lg btn-default" type="button" (click)=assignIteration()>
+              <button class="btn btn-lg btn-default" type="button" (click)=assignIteration() id="assign-iteration-savebtn">
                 <span class="fa fa-check"></span>
               </button>
-              <button class="btn btn-lg btn-default" type="button" (click)=closeRestFields()>
+              <button class="btn btn-lg btn-default" type="button" (click)=closeRestFields() id="assign-iteration-closebtn">
                 <span class="pficon pficon-close"></span>
               </button>
             </span>
