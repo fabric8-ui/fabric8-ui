@@ -40,6 +40,10 @@ export class MenusService {
               {
                 name: 'Profile',
                 path: ''
+              },
+              {
+                name: 'Access Tokens',
+                path: 'tokens'
               }
             ]
           }

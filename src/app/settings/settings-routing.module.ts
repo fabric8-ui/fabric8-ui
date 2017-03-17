@@ -16,7 +16,8 @@ const routes: Routes = [
       contextGuard: ContextCurrentUserGuard
     },
     children: [
-      { path: '', component: ProfileComponent }
+      { path: '', component: ProfileComponent },
+      { path: 'tokens', loadChildren: './tokens/tokens.module#TokensModule' },
     ]
   }
 ];
