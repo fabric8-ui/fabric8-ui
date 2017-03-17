@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
   }
 
   save() {
-    this.profile.save();
+    this.profile.save().subscribe(val => console.log('Profile update'));
   }
 
 }
