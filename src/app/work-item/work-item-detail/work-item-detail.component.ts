@@ -109,6 +109,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   spaceSubscription: Subscription;
 
+  activeButton: boolean = true;
+
+  arrowUp: boolean = true;
+
   constructor(
     private areaService: AreaService,
     private auth: AuthenticationService,
@@ -163,6 +167,24 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       this.getAreas();
       this.getIterations();
     });
+  }
+
+  // toggles active state for Preview as HTML and Write in Markdown
+  toggleActive(newValue: boolean) {
+    if (this.activeButton === newValue) {
+      this.activeButton = true;
+    }
+    else {
+      this.activeButton = newValue;
+    }
+  }
+
+  arrowDescription(newValue: boolean) {
+    if (this.arrowUp === newValue) {
+      this.arrowUp = true;
+    } else {
+      this.arrowUp = newValue;
+    }
   }
 
   ngAfterViewInit() {
@@ -305,6 +327,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     this.description.nativeElement.innerHTML = this.workItem.attributes['system.description.rendered'];
     this.showHtml(this.descText);
     this.descEditable = false;
+  }
+
+  showDescription(): void {
+    this.description.toggle('show-more');
   }
 
   getAreas() {
