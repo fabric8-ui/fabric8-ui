@@ -14,8 +14,9 @@ export OAUTH_AUTHORIZE_URI="https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERV
 export OAUTH_LOGOUT_URI="https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}/connect/endsession?id_token={{id_token}}"
 # This is devshift
 export PROXIED_K8S_API_SERVER="${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}"
+
 # This is our proxy that we will connect to
-export K8S_API_SERVER="localhost:3000"
+#export K8S_API_SERVER="" # Intentionally left blank, we want to use the support for detecting the URL
 
 if [ -z "${OAUTH_ISSUER}" ]; then
   export OAUTH_ISSUER="https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}"
@@ -47,4 +48,9 @@ echo "OAUTH_CLIENT_ID:               ${OAUTH_CLIENT_ID}"
 echo "OAUTH_SCOPE:                   ${OAUTH_SCOPE}"
 echo "OAUTH_AUTHORIZE_URI            ${OAUTH_AUTHORIZE_URI}"
 echo "OAUTH_LOGOUT_URI               ${OAUTH_LOGOUT_URI}"
+echo ""
+
+echo "Now run:"
+echo ""
+echo "   docker run -e WS_K8S_API_SERVER -e K8S_API_SERVER_PROTOCOL -e K8S_API_SERVER_BASE_PATH -e OAUTH_ISSUER -e OAUTH_CLIENT_ID -e OAUTH_SCOPE -e OAUTH_AUTHORIZE_URI -e OAUTH_LOGOUT_URI -p 8080:8080 fabric8-ui-deploy1"
 echo ""

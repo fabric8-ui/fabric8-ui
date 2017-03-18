@@ -31,6 +31,7 @@ const OfflinePlugin = require('offline-plugin');
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 const FABRIC8_WIT_API_URL = process.env.FABRIC8_WIT_API_URL;
 const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL || 'http://api-bayesian.dev.rdu2c.fabric8.io/api/v1/';
+const FABRIC8_SSO_API_URL = process.env.FABRIC8_SSO_API_URL;
 const FABRIC8_FORGE_URL = process.env.FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const BUILD_NUMBER = process.env.BUILD_NUMBER;
@@ -45,6 +46,7 @@ const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
   ENV: ENV,
   HMR: false,
   FABRIC8_WIT_API_URL: FABRIC8_WIT_API_URL,
+  FABRIC8_SSO_API_URL: FABRIC8_SSO_API_URL,
   FABRIC8_RECOMMENDER_API_URL: FABRIC8_RECOMMENDER_API_URL,
   FABRIC8_FORGE_URL: FABRIC8_FORGE_URL,
   PUBLIC_PATH: PUBLIC_PATH,
@@ -64,7 +66,7 @@ module.exports = function (env) {
      * See: http://webpack.github.io/docs/configuration.html#devtool
      * See: https://github.com/webpack/docs/wiki/build-performance#sourcemaps
      */
-    devtool: 'cheap-module-source-map',
+    devtool: 'inline-source-map',
 
     /**
      * Options affecting the output of the compilation.
@@ -177,6 +179,7 @@ module.exports = function (env) {
           'NODE_ENV': stringify(METADATA.ENV),
           'HMR': METADATA.HMR,
           'FABRIC8_WIT_API_URL': stringify(METADATA.FABRIC8_WIT_API_URL),
+          'FABRIC8_SSO_API_URL': stringify(METADATA.FABRIC8_SSO_API_URL),
           'FABRIC8_RECOMMENDER_API_URL': stringify(METADATA.FABRIC8_RECOMMENDER_API_URL),
           'FABRIC8_FORGE_URL': stringify(METADATA.FABRIC8_FORGE_URL),
           'PUBLIC_PATH': stringify(METADATA.PUBLIC_PATH),

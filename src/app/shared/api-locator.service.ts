@@ -15,7 +15,7 @@ export class ApiLocatorService {
   readonly DEFAULT_API_PREFIXES = new Map<string, string>([
     ['wit', 'api'],
     ['recommender', 'recommender'],
-    ['sso', 'sso.api'],
+    ['sso', 'sso.api']
   ]);
 
   readonly DEFAULT_API_PATHS = new Map<string, string>([

@@ -56,8 +56,10 @@ if [ $? -eq 0 ]; then
   ## All ok, deploy
   if [ $? -eq 0 ]; then
     echo 'CICO: build OK'
-    docker build -t fabric-ui-deploy -f Dockerfile.deploy . && \
-    docker tag fabric-ui-deploy registry.devshift.net/fabric8io/fabric8-ui:latest
+    # TODO HACK this needs to not be hard coded
+    source environments/devshift-cluster.deploy.sh
+    docker build -t fabric8-ui-deploy -f Dockerfile.deploy . && \
+    docker tag fabric8-ui-deploy registry.devshift.net/fabric8io/fabric8-ui:latest
     docker push registry.devshift.net/fabric8io/fabric8-ui:latest
     if [ $? -eq 0 ]; then
       echo 'CICO: image pushed, npmjs published, ready to update deployed app'
