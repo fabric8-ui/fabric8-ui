@@ -6,13 +6,16 @@ export class ApiLocatorService {
   readonly DEFAULT_API_ENV_VAR_NAMES = new Map<string, string>(
     [
       ['wit', 'FABRIC8_WIT_API_URL'],
-      ['recommender', 'FABRIC8_RECOMMENDER_API_URL']
+      ['recommender', 'FABRIC8_RECOMMENDER_API_URL'],
+      ['sso', 'FABRIC8_SSO_API_URL']
+
     ]
   );
 
   readonly DEFAULT_API_PREFIXES = new Map<string, string>([
     ['wit', 'api'],
-    ['recommender', 'recommender']
+    ['recommender', 'recommender'],
+    ['sso', 'sso.api'],
   ]);
 
   readonly DEFAULT_API_PATHS = new Map<string, string>([
@@ -29,6 +32,10 @@ export class ApiLocatorService {
 
   get witApiUrl(): string {
     return this.buildApiUrl('wit');
+  }
+
+  get ssoApiUrl(): string {
+    return this.buildApiUrl('sso');
   }
 
   get recommenderApiUrl(): string {

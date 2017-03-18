@@ -51,7 +51,7 @@ import { StackDetailsModule } from 'fabric8-stack-analysis-ui';
 import { recommenderApiUrlProvider } from './shared/recommender-api.provider';
 import { authApiUrlProvider } from './shared/auth-api.provider';
 import { witApiUrlProvider } from './shared/wit-api.provider';
-
+import { ssoApiUrlProvider } from './shared/sso-api.provider';
 
 // Component Services
 import { ProfileService } from './profile/profile.service';
@@ -126,6 +126,7 @@ export type StoreType = {
     ToggleService,
     UserService,
     witApiUrlProvider,
+    ssoApiUrlProvider,
     AboutService,
     SpaceService,
     AuthUserResolve,

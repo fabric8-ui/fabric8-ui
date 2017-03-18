@@ -40,7 +40,6 @@ export class ProfileService {
   }
 
   save() {
-    this.addPrimaryToEmails(this.current);
     let profile = cloneDeep(this.current);
     delete profile.username;
     let payload = JSON.stringify({
@@ -68,24 +67,10 @@ export class ProfileService {
       });
   }
 
-  removeEmailFromCurrent(del: string) {
-    for (let i: number = this.current.emails.length - 1; i >= 0; i--) {
-      if (this.current.emails[i] === del) {
-        this.current.emails.splice(i, 1);
-      }
-    }
-    if (del === this.current.publicEmail) {
-      this.current.publicEmail = this.current.primaryEmail;
-    }
-    if (del === this.current.notificationEmail) {
-      this.current.notificationEmail = this.current.primaryEmail;
-    }
-  }
-
   get sufficient(): boolean {
     if (this.current &&
       this.current.fullName &&
-      this.current.primaryEmail &&
+      this.current.email &&
       this.current.username
       // TODO Add imageURL
       //this.current.imageURL
@@ -93,29 +78,6 @@ export class ProfileService {
       return true;
     } else {
       return false;
-    }
-  }
-
-  initDefaults(user: User) {
-    user.attributes.emails = user.attributes.emails || [] as string[];
-    user.attributes.primaryEmail = user.attributes.primaryEmail || user.attributes.email;
-    user.attributes.notificationEmail = user.attributes.notificationEmail || user.attributes.primaryEmail;
-    user.attributes.publicEmail = user.attributes.publicEmail || user.attributes.primaryEmail;
-    user.attributes.emailPreference = user.attributes.emailPreference || 'all';
-    user.attributes.notificationMethods = user.attributes.notificationMethods || [] as string[];
-    user.attributes.username = user.attributes.username || user.attributes.email;
-    this.addPrimaryToEmails(user.attributes);
-    this.broadcaster.broadcast('save');
-  }
-
-  private addPrimaryToEmails(profile: Profile) {
-    if (profile.primaryEmail && profile.primaryEmail) {
-      for (let e of profile.emails) {
-        if (e === profile.primaryEmail) {
-          return;
-        }
-      }
-      profile.emails.unshift(profile.primaryEmail);
     }
   }
 
