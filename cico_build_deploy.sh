@@ -56,9 +56,7 @@ if [ $? -eq 0 ]; then
   ## All ok, deploy
   if [ $? -eq 0 ]; then
     echo 'CICO: build OK'
-    # TODO HACK this needs to not be hard coded
-    source environments/devshift-cluster.deploy.sh
-    docker build -e WS_K8S_API_SERVER -e K8S_API_SERVER_PROTOCOL -e K8S_API_SERVER_BASE_PATH -e OAUTH_ISSUER -e OAUTH_CLIENT_ID -e OAUTH_SCOPE -e OAUTH_AUTHORIZE_URI -e OAUTH_LOGOUT_URI -t fabric8-ui-deploy -f Dockerfile.deploy . && \
+    docker build -t fabric8-ui-deploy -f Dockerfile.deploy . && \
     docker tag fabric8-ui-deploy registry.devshift.net/fabric8io/fabric8-ui:latest
     docker push registry.devshift.net/fabric8io/fabric8-ui:latest
     if [ $? -eq 0 ]; then
