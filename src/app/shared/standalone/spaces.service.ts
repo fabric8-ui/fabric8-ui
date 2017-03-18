@@ -11,6 +11,10 @@ export class SpacesService implements Spaces {
     return this._current.asObservable();
   }
 
+  get recent(): Observable<Space[]> {
+    throw new Error ('Not yet implemented');
+  }
+
   setCurrent(space: Space) {
     this._current.next(space);
   }

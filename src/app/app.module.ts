@@ -23,6 +23,7 @@ import {
 // Shared
 import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
 import { GlobalSettings } from './shared/globals';
+import { ssoApiUrlProvider } from './shared/standalone/sso-api.provider';
 import { witApiUrlProvider } from './shared/wit-api.provider';
 
 // App components
@@ -77,6 +78,7 @@ if (process.env.ENV == 'inmemory') {
     witApiUrlProvider,
     serviceImports,
     SpacesService,
+    ssoApiUrlProvider,
     DummySpace,
     {
       provide: Http,
@@ -96,7 +98,8 @@ if (process.env.ENV == 'inmemory') {
       provide: Spaces,
       useExisting: SpacesService
     },
-    SpacesService
+    SpacesService,
+    ssoApiUrlProvider,
   ];
   providers = [
     GlobalSettings,
