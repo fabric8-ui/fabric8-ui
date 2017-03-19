@@ -12,7 +12,9 @@
             [loadTemplate]="treeListLoadTemplate"
             [nodes]="nodes"
             [options]="options"
-            [showExpander]="false">
+            [showExpander]="false"
+            (onMoveNode)="handleMoveNode($event)"
+            (onToggle)="handleToggle($event)">
           <template #treeListLoadTemplate let-node="node" let-index="index">
             <span>Loading...</span>
           </template>
@@ -29,6 +31,16 @@
           </template>
         </alm-tree-list>
       </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <label class="actions-label">Actions: </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <textarea rows="3" class="col-md-12">{{actionsText}}</textarea>
     </div>
   </div>
 </div>

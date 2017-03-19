@@ -43,6 +43,7 @@ export class TreeListExampleComponent implements OnInit {
   @ViewChild('treeListTemplate') treeListTemplate: TemplateRef<any>;
   @ViewChild('treeList') treeList: TreeListComponent;
 
+  actionsText: string = "";
   nodes: any[];
   selectedTreeListItem: TreeListItemComponent;
 
@@ -131,5 +132,22 @@ export class TreeListExampleComponent implements OnInit {
     }
     treeListItem.setSelected(true);
     this.selectedTreeListItem = treeListItem;
+  }
+
+  // Events
+
+  handleMoveNode($event: any): void {
+   this.actionsText = "Event name: " + $event.eventName +
+     ", node: " + $event.node.name +
+     ", to index: " + $event.to.index + "\n" + this.actionsText;
+  }
+
+  handleToggle($event: any): void {
+    this.actionsText = "Event name: " + $event.eventName +
+      ", isExpanded: " + $event.isExpanded + "\n" + this.actionsText;
+  }
+
+  handleToggleExpanded($event: any): void {
+    this.actionsText = "Event name: " + $event.eventName + "\n" + this.actionsText;
   }
 }

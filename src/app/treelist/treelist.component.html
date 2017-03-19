@@ -2,7 +2,12 @@
   <Tree #tree class="tree-list"
         [nodes]="nodes"
         [focused]="true"
-        [options]="options">
+        [options]="options"
+        (onEvent)="handleEvent($event)"
+        (onInitialized)="handleInitialized($event)"
+        (onMoveNode)="handleMoveNode($event)"
+        (onToggle)="handleToggle($event)"
+        (onUpdateData)="handleUpdateData($event)">
     <template #treeNodeTemplate let-node let-index="index">
       <template [ngTemplateOutlet]="listTemplate" [ngOutletContext]="{ node: node, index: index }"></template>
     </template>
