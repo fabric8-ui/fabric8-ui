@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { GlobalSettings } from '../shared/globals';
 
 import { Injectable } from '@angular/core';
@@ -36,21 +37,20 @@ export class AreaService {
    * @param areaUrl - The url to get all the areas
    * @return Promise of AreaModel[] - Array of areas
    */
-  getAreas(): Promise<AreaModel[]> {
+  getAreas(): Observable<AreaModel[]> {
     // get the current iteration url from the space service
     if (this._currentSpace) {
       let areasUrl = this._currentSpace.relationships.areas.links.related;
       if (this.checkValidUrl(areasUrl)) {
         return this.http
           .get(areasUrl, { headers: this.headers })
-          .toPromise()
-          .then (response => {
+          .map (response => {
             if (/^[5, 4][0-9]/.test(response.status.toString())) {
               throw new Error('API error occured');
             }
             return response.json().data as AreaModel[];
           })
-          .then((data) => {
+          .map((data) => {
             //Need to fix the Area data and service for inmemory mode
             //If the area has a parent, append it to the area's name
             data.forEach((area) => {
@@ -72,10 +72,10 @@ export class AreaService {
           });
       } else {
         this.logger.log('URL not matched');
-        return Promise.reject<AreaModel[]>([] as AreaModel[]);
+        return Observable.of<AreaModel[]>([] as AreaModel[]);
       }
     } else {
-      return Promise.resolve<AreaModel[]>([] as AreaModel[]);
+      return Observable.of<AreaModel[]>([] as AreaModel[]);
     }
   }
 

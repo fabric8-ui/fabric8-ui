@@ -140,7 +140,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
   loadWorkItems(): void {
     this.workItemService
       .getWorkItems(this.pageSize, this.filters)
-      .then((wItems) => {
+      .subscribe((wItems) => {
         this.workItems = wItems;
       });
   }
@@ -148,10 +148,10 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
   fetchMoreWiItems(): void {
     this.workItemService
       .getMoreWorkItems()
-      .then((newWiItems) => {
+      .subscribe((newWiItems) => {
         this.treeList.updateTree();
-      })
-      .catch ((e) => console.log(e));
+      },
+      (e) => console.log(e));
   }
 
   // event handlers
