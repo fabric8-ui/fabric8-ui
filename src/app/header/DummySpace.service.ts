@@ -2,8 +2,6 @@ import { WIT_API_URL, Space } from 'ngx-fabric8-wit';
 import { Injectable, Component, Inject } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
-import 'rxjs/add/operator/toPromise';
-
 import { MockHttp } from '../shared/mock-http';
 
 @Injectable()

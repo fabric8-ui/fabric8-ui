@@ -461,7 +461,7 @@ export class WorkItemService {
       return;
     }
     this.getIterationById(workItem.relationships.iteration.data.id)
-      .then((iteration) => workItem.relationalData.iteration = iteration);
+      .subscribe((iteration) => workItem.relationalData.iteration = iteration);
   }
 
   /**
@@ -529,8 +529,8 @@ export class WorkItemService {
   /**
    * Usage: Fetch an iteration by it's ID from the iterations list
    */
-  getIterationById(iterationId: string): Promise<IterationModel> {
-    return this.iterationService.getIterations().then((iterations) => {
+  getIterationById(iterationId: string): Observable<IterationModel> {
+    return this.iterationService.getIterations().map((iterations) => {
       return iterations.find(item => item.id == iterationId);
     });
   }

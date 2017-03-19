@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 import { cloneDeep } from 'lodash';
 import { Broadcaster, Logger } from 'ngx-base';
@@ -38,21 +39,20 @@ export class IterationService {
    * @param iterationUrl - The url to get all the iteration
    * @return Promise of IterationModel[] - Array of iterations
    */
-  getIterations(): Promise<IterationModel[]> {
+  getIterations(): Observable<IterationModel[]> {
     // get the current iteration url from the space service
     if (this._currentSpace) {
       let iterationsUrl = this._currentSpace.relationships.iterations.links.related;
       if (this.checkValidIterationUrl(iterationsUrl)) {
         return this.http
           .get(iterationsUrl, { headers: this.headers })
-          .toPromise()
-          .then (response => {
+          .map (response => {
             if (/^[5, 4][0-9]/.test(response.status.toString())) {
               throw new Error('API error occured');
             }
             return response.json().data as IterationModel[];
           })
-          .then((data) => {
+          .map((data) => {
             this.iterations = data;
             return this.iterations;
           })
@@ -61,15 +61,15 @@ export class IterationService {
               this.auth.logout();
             } else {
               console.log('Fetch iteration API returned some error - ', error.message);
-              return Promise.reject<IterationModel[]>([] as IterationModel[]);
+              return Observable.throw<IterationModel[]> ([] as IterationModel[]);
             }
           });
       } else {
         this.logger.log('URL not matched');
-        return Promise.reject<IterationModel[]>([] as IterationModel[]);
+        return Observable.throw<IterationModel[]> ([] as IterationModel[]);
       }
     } else {
-      return Promise.resolve<IterationModel[]>([] as IterationModel[]);
+      return Observable.throw<IterationModel[]> ([] as IterationModel[]);
     }
   }
 
@@ -79,7 +79,7 @@ export class IterationService {
    * @param iteration - data to create a new iteration
    * @return new item
    */
-  createIteration(iteration: IterationModel): Promise<IterationModel> {
+  createIteration(iteration: IterationModel): Observable<IterationModel> {
     if (this._currentSpace) {
       let iterationsUrl = this._currentSpace.relationships.iterations.links.related;
       if (this.checkValidIterationUrl(iterationsUrl)) {
@@ -90,14 +90,13 @@ export class IterationService {
             { data: iteration },
             { headers: this.headers }
           )
-          .toPromise()
-          .then (response => {
+          .map (response => {
             if (/^[5, 4][0-9]/.test(response.status.toString())) {
               throw new Error('API error occured');
             }
             return response.json().data as IterationModel;
           })
-          .then (newData => {
+          .map (newData => {
             // Add the newly added iteration on the top of the list
             this.iterations.splice(0, 0, newData);
             return newData;
@@ -107,15 +106,15 @@ export class IterationService {
               this.auth.logout();
             } else {
               console.log('Post iteration API returned some error - ', error.message);
-              return Promise.reject<IterationModel>({} as IterationModel);
+              return Observable.throw<IterationModel>({} as IterationModel);
             }
           });
       } else {
         this.logger.log('URL not matched');
-        return Promise.reject<IterationModel>( {} as IterationModel );
+        return Observable.throw<IterationModel>( {} as IterationModel );
       }
     } else {
-      return Promise.resolve<IterationModel>( {} as IterationModel );
+      return Observable.throw<IterationModel>( {} as IterationModel );
     }
   }
 
@@ -124,17 +123,16 @@ export class IterationService {
    * @param iteration - Updated iteration
    * @return updated iteration's reference from the list
    */
-  updateIteration(iteration: IterationModel): Promise<IterationModel> {
+  updateIteration(iteration: IterationModel): Observable<IterationModel> {
     return this.http
       .patch(iteration.links.self, { data: iteration }, { headers: this.headers })
-      .toPromise()
-      .then (response => {
+      .map (response => {
         if (/^[5, 4][0-9]/.test(response.status.toString())) {
           throw new Error('API error occured');
         }
         return response.json().data as IterationModel;
       })
-      .then (updatedData => {
+      .map (updatedData => {
         // Update existing iteration data
         let index = this.iterations.findIndex(item => item.id === updatedData.id);
         if (index > -1) {
@@ -150,7 +148,7 @@ export class IterationService {
           this.auth.logout();
         } else {
           console.log('Patch iteration API returned some error - ', error.message);
-          return Promise.reject<IterationModel>({} as IterationModel);
+          return Observable.throw<IterationModel>({} as IterationModel);
         }
       });
   }

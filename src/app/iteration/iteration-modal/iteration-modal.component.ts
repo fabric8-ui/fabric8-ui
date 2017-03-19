@@ -194,12 +194,12 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.validationError = false;
       if (this.modalType == 'create') {
         this.iterationService.createIteration(this.iteration)
-          .then((iteration) => {
+          .subscribe((iteration) => {
             this.onSubmit.emit(iteration);
             this.resetValues();
             this.createUpdateIterationDialog.close();
-          })
-          .catch ((e) => {
+          },
+          (e) => {
             this.validationError = true;
             console.log('Some error has occured', e);
           });
@@ -213,7 +213,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
           delete this.iteration.attributes.state;
         }
         this.iterationService.updateIteration(this.iteration)
-          .then((iteration) => {
+          .subscribe((iteration) => {
             this.onSubmit.emit(iteration);
             if (this.modalType == 'start') {
               let toastIterationName = this.iteration.attributes.name;
@@ -229,8 +229,8 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
             }
             this.resetValues();
             this.createUpdateIterationDialog.close();
-          })
-          .catch ((e) => {
+          },
+          (e) => {
             this.spaceError = true;
             // this.resetValues();
             // console.log('Some error has occured', e.toString());
