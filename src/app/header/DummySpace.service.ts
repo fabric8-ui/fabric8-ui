@@ -13,9 +13,8 @@ export class DummySpace {
     @Inject(WIT_API_URL) private baseApiUrl: string)
   {}
 
-  getAllSpaces(): Promise<Space[]> {
+  getAllSpaces() {
     return this.http.get(this.baseApiUrl + 'spaces')
-      .toPromise()
-      .then((response) => response.json().data as Space[]);
+            .map(response => response.json().data);
   }
 }

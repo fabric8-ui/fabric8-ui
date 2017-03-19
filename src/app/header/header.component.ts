@@ -54,11 +54,11 @@ export class HeaderComponent implements OnInit {
     this.getLoggedUser();
     this.loggedIn = this.auth.isLoggedIn();
     this.spacesService.current.subscribe(val => this.selectedSpace = val);
-    this.spaceService.getAllSpaces().then((spaces) => {
-      this.spaces = spaces;
+    this.spaceService.getAllSpaces().subscribe((spaces) => {
+      this.spaces = spaces as Space[];
       this.selectedSpace = spaces[0];
       this.onSpaceChange(this.selectedSpace);
-    })
+    });
   }
 
   onImgLoad() {
