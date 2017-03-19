@@ -64,6 +64,10 @@ export class AppComponent implements OnInit {
         }, 10000);
       });
 
+    if (this.authService.isLoggedIn()) {
+      this.authService.onLogIn();
+    }
+
     this.activatedRoute.params.subscribe(() => {
       let query = window.location.search.substr(1);
       let result: any = {};
@@ -71,7 +75,7 @@ export class AppComponent implements OnInit {
         let item: any = part.split('=');
         result[item[0]] = decodeURIComponent(item[1]);
       });
-      if(result['token_json']) {
+      if (result['token_json']) {
         this.authService.logIn(result['token_json']);
       }
     });
