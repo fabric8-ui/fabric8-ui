@@ -180,7 +180,7 @@ module.exports = function (options) {
          */
         {
           test: /\.html$/,
-          use: ['raw-loader'],
+          use: ['html-loader'],
           exclude: [path.resolve(__dirname, 'src/index.html')]
         },
 
