@@ -1,3 +1,5 @@
+import { ConfigStore } from './base/config.store';
+import { fabric8UIConfigProvider } from './shared/config/fabric8-ui-config.service';
 import './rxjs-extensions';
 
 import { NgModule, ApplicationRef } from '@angular/core';
@@ -139,7 +141,9 @@ export type StoreType = {
     {
       provide: Notifications,
       useExisting: NotificationsService
-    }
+    },
+    fabric8UIConfigProvider,
+    ConfigStore
   ],
   schemas: [],
   bootstrap: [AppComponent]

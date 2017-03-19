@@ -71,15 +71,6 @@ export const routes: Routes = [
     loadChildren: './create/create.module#CreateModule'
   },
 
-  // Run
-  {
-    path: ':entity/:space/run',
-    resolve: {
-      context: ContextResolver
-    },
-    loadChildren: './run/run.module#RunModule'
-  },
-
   // Space-settings
   {
     path: ':entity/:space/settings',

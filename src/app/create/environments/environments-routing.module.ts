@@ -2,12 +2,12 @@ import { AuthGuard } from './../../shared/auth-guard.service';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { PipelinesComponent } from './pipelines.component';
+import { EnvironmentsComponent } from './environments.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: PipelinesComponent,
+    component: EnvironmentsComponent,
     canActivate: [AuthGuard]
   }
 ];
@@ -16,4 +16,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PipelinesRoutingModule { }
+export class EnvironmentsRoutingModule { }

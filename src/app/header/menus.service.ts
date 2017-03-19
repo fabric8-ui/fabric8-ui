@@ -86,18 +86,14 @@ export class MenusService {
               {
                 name: 'Codebases',
                 path: ''
-              }, {
-                name: 'Workspaces',
-                path: 'workspaces'
-              }
-            ]
-          }, {
-            name: 'Run',
-            path: 'run',
-            menus: [
+              },
               {
                 name: 'Pipelines',
-                path: ''
+                path: 'pipelines'
+              },
+              {
+                name: 'Environments',
+                path: 'environments'
               }
             ]
           }, {

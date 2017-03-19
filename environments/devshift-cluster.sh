@@ -35,6 +35,9 @@ fi
 if [ -z "${WS_K8S_API_SERVER}" ]; then
   export WS_K8S_API_SERVER=${PROXIED_K8S_API_SERVER}
 fi
+if [ -z "${FABRIC8_PIPELINES_NAMESPACE}" ]; then
+  export FABRIC8_PIPELINES_NAMESPACE="-dsaas-jenkins"
+fi
 
 echo "Configured to connect to kubernetes cluster at https://${PROXIED_K8S_API_SERVER}/"
 
@@ -47,4 +50,5 @@ echo "OAUTH_CLIENT_ID:               ${OAUTH_CLIENT_ID}"
 echo "OAUTH_SCOPE:                   ${OAUTH_SCOPE}"
 echo "OAUTH_AUTHORIZE_URI            ${OAUTH_AUTHORIZE_URI}"
 echo "OAUTH_LOGOUT_URI               ${OAUTH_LOGOUT_URI}"
+echo "FABRIC8_PIPELINES_NAMESPACE    ${FABRIC8_PIPELINES_NAMESPACE}"
 echo ""
