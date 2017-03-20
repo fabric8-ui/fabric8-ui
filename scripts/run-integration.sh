@@ -28,7 +28,7 @@ function reinstall {
 # links planner to platform
 function linkPlanner {
   echo "Linking Planner to Platform in $PLATFORM_HOME"
-  echo "cd $PLATFORM_HOME && npm link $PLANNER_HOME/dist-watch"
+  cd $PLATFORM_HOME && npm link $PLANNER_HOME/dist-watch
 } 
 
 # runs the platform
@@ -66,7 +66,6 @@ if [ $REINSTALL -eq 1 ]
   then
     reinstall
 fi
-
 runPlanner
 linkPlanner
 runPlatform
