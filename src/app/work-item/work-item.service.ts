@@ -430,7 +430,7 @@ export class WorkItemService {
       return;
     }
     this.getWorkItemTypesById(workItem.relationships.baseType.data.id)
-      .then((type: WorkItemType) => {
+      .subscribe((type: WorkItemType) => {
         workItem.relationalData.wiType = type;
     });
   }
@@ -481,7 +481,7 @@ export class WorkItemService {
       return;
     }
     this.getAreaById(workItem.relationships.area.data.id)
-      .then((area) => workItem.relationalData.area = area);
+      .subscribe((area) => workItem.relationalData.area = area);
   }
 
   /**

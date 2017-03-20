@@ -133,12 +133,12 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     if (this.workItem.attributes['system.title']) {
       this.workItemService
         .create(this.workItem)
-        .then(workItem => {
+        .subscribe(workItem => {
           this.workItem = workItem; // saved workItem, w/ id if new
           this.logger.log(`created and returned this workitem:` + JSON.stringify(workItem));
           this.resetQuickAdd();
-        })
-        .catch(error => this.error = error); // TODO: Display error message
+        },
+        error => this.error = error); // TODO: Display error message
     } else {
       this.error = 'Title can not be empty.';
     }

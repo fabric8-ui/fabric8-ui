@@ -53,7 +53,7 @@ export class WorkItemDetailAddTypeSelectorComponent implements OnInit {
   //Detailed add functions
   getWorkItemTypes(){
     this.workItemService.getWorkItemTypes()
-      .then((types) => {
+      .subscribe((types) => {
         this.workItemTypes = types;
       });
   }

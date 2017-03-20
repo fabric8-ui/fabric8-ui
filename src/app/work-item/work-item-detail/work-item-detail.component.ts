@@ -335,7 +335,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   getAreas() {
     this.areaService.getAreas()
-      .then((response: AreaModel[]) => {
+      .subscribe((response: AreaModel[]) => {
         this.areas = response;
         this.filteredAreas = cloneDeep(response);
       });
@@ -407,7 +407,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     if (this.workItem.id){
       this.workItemService
         .update(this.workItem)
-        .then((workItem) => {
+        .subscribe((workItem) => {
           this.workItem.attributes['version'] = workItem.attributes['version'];
           this.activeOnList();
       });
@@ -415,7 +415,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       if (this.validTitle){
         this.workItemService
         .create(this.workItem)
-        .then((workItem) => {
+        .subscribe((workItem) => {
           this.router.navigateByUrl(trimEnd(this.router.url.split('detail')[0], '/') + '/detail/' + workItem.id, { relativeTo: this.route });
         });
       }
@@ -705,7 +705,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   showHtml(innerText: string): void {
     this.workItemService.renderMarkDown(innerText)
-      .then(renderedHtml => {
+      .subscribe(renderedHtml => {
         this.renderedDesc = renderedHtml;
         this.descViewType = 'html';
       });

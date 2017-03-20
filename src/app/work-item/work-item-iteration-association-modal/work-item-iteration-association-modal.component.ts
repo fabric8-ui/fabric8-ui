@@ -94,7 +94,7 @@ export class FabPlannerAssociateIterationModalComponent implements OnInit, OnCha
   save(): void {
     this.workItemService
       .update(this.workItem)
-      .then((workItem) => {
+      .subscribe((workItem) => {
         this.selectedIteration = null;
       });
   }

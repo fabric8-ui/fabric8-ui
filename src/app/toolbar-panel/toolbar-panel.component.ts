@@ -86,7 +86,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
     //   console.log(response);
     // });
 
-    this.areaService.getAreas().then(areas => {
+    this.areaService.getAreas().subscribe(areas => {
       /**
        * Remapping the fetched areas to the 'queries' model
        * of ngx-toolbar filters' dropdown.
@@ -210,7 +210,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit {
   //Detailed add functions
   getWorkItemTypes(){
     this.workItemService.getWorkItemTypes()
-      .then((types) => {
+      .subscribe((types) => {
         this.workItemTypes = types;
         // if the current board type is empty, this is the first time
         // we retrieve the types, then the default type to display is the

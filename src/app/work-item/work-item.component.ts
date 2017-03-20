@@ -138,7 +138,7 @@ export class WorkItemComponent implements OnInit, AfterViewInit {
   //Detailed add functions
   getWorkItemTypes(){
     this.workItemService.getWorkItemTypes()
-      .then((types) => {
+      .subscribe((types) => {
         this.workItemTypes = types;
       });
   }

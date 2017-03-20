@@ -137,10 +137,10 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
     const tempValue = {'data': this.link};
     this.workItemService
       .createLink(tempValue, this.workItem['id'])
-      .then((response: any) => {
+      .subscribe((response: any) => {
         this.resetSearchData();
-      })
-      .catch ((error: any) => console.log(error));
+      },
+      (error: any) => console.log(error));
   }
 
   // deleteLink(link : Link){
@@ -148,22 +148,22 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
     event.stopPropagation();
     this.workItemService
       .deleteLink(link, currentWorkItem.id)
-      .then((response: any) => {
+      .subscribe((response: any) => {
         if (!this.workItem.relationalData.totalLinkCount) {
           this.showLinkView = false;
         }
-      })
-      .catch ((error: any) => console.log(error));
+      },
+      (error: any) => console.log(error));
   }
 
   loadLinkTypes(): void {
     this.workItemService
     .getLinkTypes(this.workItem)
-      .then((linkTypes: Object) => {
+      .subscribe((linkTypes: Object) => {
         this.formatLinkTypes(linkTypes);
         // this.linkTypes = cloneDeep(linkTypes)
-      })
-      .catch ((e) => console.log(e));
+      },
+      (e) => console.log(e));
   }
 
   formatLinkTypes(linkTypes: any): void {
@@ -263,7 +263,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
       // Search on atleast 3 char or numeric
         if (term.length >= 3 || !isNaN(term)) {
           this.workItemService.searchLinkWorkItem(term, this.searchAllowedType)
-            .then((searchData: WorkItem[]) =>{
+            .subscribe((searchData: WorkItem[]) =>{
               this.searchWorkItems = searchData.filter((item) => {
                 return this.searchNotAllowedIds.indexOf(item.id) == -1;
                 });

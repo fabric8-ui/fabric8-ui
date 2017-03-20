@@ -70,11 +70,11 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
       this.comment.attributes.body = event.target.textContent;
       this.workItemService
         .createComment(this.workItem['id'], this.comment)
-        .then(response => {
+        .subscribe(response => {
             event.target.textContent = '';
             this.createCommentObject();
-        })
-        .catch ((error) => {
+        },
+        (error) => {
             console.log(error);
         });
     }
@@ -84,14 +84,14 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
       comment.attributes.body = newCommentBody;
       this.workItemService
         .updateComment(comment)
-          .then(response => {
+          .subscribe(response => {
             //event.target.blur();
             this.selectedCommentId = '';
             this.createCommentObject();
-          })
-        .catch ((error) => {
-          console.log(error);
-        });
+          },
+          (error) => {
+            console.log(error);
+          });
     }
 
     onCommentEdit($event, inpId, saveBtnId) {
