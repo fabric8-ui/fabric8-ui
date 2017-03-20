@@ -141,12 +141,14 @@ export class SchemaMockGenerator {
                   }
                },
                'system.creator' : {
+                  'label': 'Creator',
                   'type' : {
                      'kind' : 'user'
                   },
                   'required' : true
                },
                'system.assignees' : {
+                 'label': 'Assignee',
                   'type' : {
                      'kind' : 'list',
                      'componentType' : 'user'
@@ -224,6 +226,7 @@ export class SchemaMockGenerator {
                   }
                },
                'system.assignees' : {
+                 'label': 'Assignee',
                   'type' : {
                      'componentType' : 'user',
                      'kind' : 'list'
@@ -231,6 +234,7 @@ export class SchemaMockGenerator {
                   'required' : false
                },
                'system.creator' : {
+                 'label': 'Creator',
                   'type' : {
                      'kind' : 'user'
                   },
@@ -286,6 +290,7 @@ export class SchemaMockGenerator {
                   'required' : true
                },
                'system.creator' : {
+                 'label': 'Creator',
                   'required' : true,
                   'type' : {
                      'kind' : 'user'
@@ -304,6 +309,7 @@ export class SchemaMockGenerator {
                   'required' : false
                },
                'system.assignees' : {
+                 'label': 'Assignee',
                   'required' : false,
                   'type' : {
                      'kind' : 'list',
@@ -378,12 +384,14 @@ export class SchemaMockGenerator {
                   }
                },
                'system.creator' : {
+                 'label': 'Creator',
                   'type' : {
                      'kind' : 'user'
                   },
                   'required' : true
                },
                'system.assignees' : {
+                 'label': 'Assignee',
                   'required' : false,
                   'type' : {
                      'kind' : 'list',
@@ -429,6 +437,7 @@ export class SchemaMockGenerator {
             'icon': 'fa-map',
             'fields' : {
                'system.assignees' : {
+                 'label': 'Assignee',
                   'required' : false,
                   'type' : {
                      'kind' : 'list',
@@ -448,6 +457,7 @@ export class SchemaMockGenerator {
                   'required' : false
                },
                'system.creator' : {
+                 'label': 'Creator',
                   'required' : true,
                   'type' : {
                      'kind' : 'user'
@@ -531,6 +541,7 @@ export class SchemaMockGenerator {
                   }
                },
                'system.assignees' : {
+                 'label': 'Assignee',
                   'required' : false,
                   'type' : {
                      'kind' : 'list',
@@ -562,6 +573,7 @@ export class SchemaMockGenerator {
                   }
                },
                'system.creator' : {
+                 'label': 'Creator',
                   'type' : {
                      'kind' : 'user'
                   },
@@ -586,6 +598,7 @@ export class SchemaMockGenerator {
                   'required' : false
                },
                'system.creator' : {
+                 'label': 'Creator',
                   'required' : true,
                   'type' : {
                      'kind' : 'user'
@@ -604,6 +617,7 @@ export class SchemaMockGenerator {
                   'required' : false
                },
                'system.assignees' : {
+                 'label': 'Assignee',
                   'required' : false,
                   'type' : {
                      'componentType' : 'user',
@@ -655,6 +669,7 @@ export class SchemaMockGenerator {
             'icon': 'fa-bug',
             'fields' : {
                'system.creator' : {
+                 'label': 'Creator',
                   'required' : true,
                   'type' : {
                      'kind' : 'user'
@@ -685,6 +700,7 @@ export class SchemaMockGenerator {
                   }
                },
                'system.assignees' : {
+                 'label': 'Assignee',
                   'type' : {
                      'componentType' : 'user',
                      'kind' : 'list'

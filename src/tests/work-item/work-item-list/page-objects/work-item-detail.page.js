@@ -542,10 +542,10 @@ class WorkItemDetailPage {
   saveAreasButton (){
     return element(by.id('save_area'));
   }
-  SaveAreas  (areaid){
+  SaveAreas  (){
     return this.saveAreasButton().click();
   }
-  ClosekAreas  (areaid){
+  ClosekAreas  (){
     return element(by.id('close_area')).click();
   }
 /**Iteration element */
