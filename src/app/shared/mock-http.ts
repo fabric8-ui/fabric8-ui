@@ -1,3 +1,4 @@
+import { HttpService } from './http-service';
 import { Injectable, ReflectiveInjector } from '@angular/core';
 import { Http } from '@angular/http';
 import { Request, RequestOptions, RequestOptionsArgs } from '@angular/http';
@@ -24,7 +25,7 @@ import { MockDataService } from './mock-data.service';
  * generation, not with persistence or logic.
  */
 @Injectable()
-export class MockHttp extends Http {
+export class MockHttp extends HttpService {
 
     private UrlRegex = /app(\/.*)/g;
     private WorkItemRegex = /workitems\/(.*)/g;
@@ -33,7 +34,7 @@ export class MockHttp extends Http {
     private mockDataService: MockDataService;
 
     constructor(private logger: Logger) {
-      super(null, null);
+      super(null, null, null);
       let injector = ReflectiveInjector.resolveAndCreate([MockDataService]);
       this.mockDataService = injector.get(MockDataService);
     };

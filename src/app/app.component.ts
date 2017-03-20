@@ -64,6 +64,8 @@ export class AppComponent implements OnInit {
 
     if (this.authService.isLoggedIn()) {
       this.authService.onLogIn();
+    } else {
+      this.authService.logout();
     }
 
     this.activatedRoute.params.subscribe(() => {

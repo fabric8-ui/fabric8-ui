@@ -1,3 +1,4 @@
+import { HttpService } from './../shared/http-service';
 import { Injectable, Component, Inject } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
@@ -35,8 +36,6 @@ import {
 } from '../models/work-item';
 import { WorkItemType } from './../models/work-item-type';
 
-import { MockHttp } from '../shared/mock-http';
-
 @Injectable()
 export class WorkItemService {
 
@@ -64,7 +63,7 @@ export class WorkItemService {
   private iterations: IterationModel[] = [];
   public _currentSpace;
 
-  constructor(private http: Http,
+  constructor(private http: HttpService,
     private broadcaster: Broadcaster,
     private logger: Logger,
     private areaService: AreaService,

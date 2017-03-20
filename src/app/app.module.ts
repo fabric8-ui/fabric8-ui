@@ -6,7 +6,7 @@ import './rxjs-extensions';
 
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule, Http }    from '@angular/http';
+import { HttpModule, Http, RequestOptions, XHRBackend }    from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
 import { DropdownModule } from 'ng2-bootstrap';
@@ -15,11 +15,11 @@ import { TabsModule, TooltipModule } from 'ng2-bootstrap';
 import { Broadcaster, Logger } from 'ngx-base';
 import {
   AuthenticationService,
-  UserService,
-  HttpService
+  UserService
 } from 'ngx-login-client';
 
 // Shared
+import { HttpService } from './shared/http-service';
 import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
 import { GlobalSettings } from './shared/globals';
 import { ssoApiUrlProvider } from './shared/standalone/sso-api.provider';
@@ -80,7 +80,7 @@ if (process.env.ENV == 'inmemory') {
     ssoApiUrlProvider,
     DummySpace,
     {
-      provide: Http,
+      provide: HttpService,
       useClass: MockHttp
     }
   ];
@@ -106,8 +106,11 @@ if (process.env.ENV == 'inmemory') {
     serviceImports,
     DummySpace,
     {
-      provide: Http,
-      useClass: HttpService
+      provide: HttpService,
+      useFactory: (backend: XHRBackend, options: RequestOptions, auth: AuthenticationService) => {
+        return new HttpService(backend, options, auth);
+      },
+      deps: [XHRBackend, RequestOptions]
     }
   ];
 }

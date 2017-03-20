@@ -1,3 +1,4 @@
+import { HttpService } from './../../shared/http-service';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
@@ -38,7 +39,7 @@ if (process.env.ENV == 'inmemory') {
     UsersResolve,
     WorkItemService,
     {
-      provide: Http,
+      provide: HttpService,
       useClass: MockHttp
     }
   ];
