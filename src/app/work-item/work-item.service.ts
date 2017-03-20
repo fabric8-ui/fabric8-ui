@@ -550,7 +550,7 @@ export class WorkItemService {
     if (wItem.relationships.comments.links.related)
       this.http
         .get(wItem.relationships.comments.links.related, { headers: this.headers })
-        .map((response) => {
+        .subscribe((response) => {
           wItem.relationalData.comments =
             response.json().data as Comment[];
           wItem.relationalData.comments.forEach((comment) => {
