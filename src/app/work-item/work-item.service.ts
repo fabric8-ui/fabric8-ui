@@ -975,14 +975,38 @@ export class WorkItemService {
     )
     .map(items => {
       let linkTypes: Object = {};
-      linkTypes['forwardLinks'] = items[0];
-      linkTypes['backwardLinks'] = items[1];
+      linkTypes['forwardLinks'] = items[0].json().data;
+      linkTypes['backwardLinks'] = items[1].json().data;
       return linkTypes;
+    })
+    .map((linkTypes: any) => {
+      return this.formatLinkTypes(linkTypes);
     })
     .catch((err) => {
       console.log(err);
       return Observable.of({});
     });
+  }
+
+  formatLinkTypes(linkTypes: any): any {
+    let opLinkTypes = [];
+    linkTypes.forwardLinks.forEach((linkType: LinkType) => {
+      opLinkTypes.push({
+        name: linkType.attributes['forward_name'],
+        linkId: linkType.id,
+        linkType: 'forward',
+        wiType: linkType.relationships.target_type.data.id
+      });
+    });
+    linkTypes.backwardLinks.forEach((linkType: LinkType) => {
+      opLinkTypes.push({
+        name: linkType.attributes['reverse_name'],
+        linkId: linkType.id,
+        linkType: 'reverse',
+        wiType: linkType.relationships.source_type.data.id
+      });
+    });
+    return opLinkTypes;
   }
 
   /**

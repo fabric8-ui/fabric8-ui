@@ -159,31 +159,10 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
   loadLinkTypes(): void {
     this.workItemService
     .getLinkTypes(this.workItem)
-      .subscribe((linkTypes: Object) => {
-        this.formatLinkTypes(linkTypes);
-        // this.linkTypes = cloneDeep(linkTypes)
+      .subscribe((linkTypes: any) => {
+        this.linkTypes = cloneDeep(linkTypes);
       },
       (e) => console.log(e));
-  }
-
-  formatLinkTypes(linkTypes: any): void {
-    this.linkTypes = [];
-    linkTypes.forwardLinks.forEach((linkType: LinkType) => {
-      this.linkTypes.push({
-          name: linkType.attributes['forward_name'],
-          linkId: linkType.id,
-          linkType: 'forward',
-          wiType: linkType.relationships.target_type.data.id
-        });
-    });
-    linkTypes.backwardLinks.forEach((linkType: LinkType) => {
-      this.linkTypes.push({
-          name: linkType.attributes['reverse_name'],
-          linkId: linkType.id,
-          linkType: 'reverse',
-          wiType: linkType.relationships.source_type.data.id
-        });
-    });
   }
 
   toggleLinkComponent(onlyOpen: Boolean = false): void{
