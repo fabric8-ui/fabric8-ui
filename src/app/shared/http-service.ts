@@ -1,3 +1,4 @@
+import { MockBackend } from '@angular/http/testing';
 import { AuthenticationService } from 'ngx-login-client';
 import {
   Injectable,
@@ -29,7 +30,7 @@ export class HttpService extends Http {
 
   private headers = new Headers({'Content-Type': 'application/json'});
   constructor (
-    backend: XHRBackend,
+    backend: XHRBackend | MockBackend,
     options: RequestOptions,
     auth: AuthenticationService
   ) {

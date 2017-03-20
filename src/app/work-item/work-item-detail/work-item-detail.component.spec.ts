@@ -286,9 +286,7 @@ describe('Detailed view and edit a selected work item - ', () => {
 
     fakeAreaService = {
       getAreas: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeAreaList);
-        });
+        return Observable.of(fakeAreaList);
       }
     };
 
@@ -309,43 +307,29 @@ describe('Detailed view and edit a selected work item - ', () => {
 
     fakeWorkItemService = {
       create: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeWorkItem);
-        });
+        return Observable.of(fakeWorkItem);
       },
       update: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeWorkItem);
-        });
+        return Observable.of(fakeWorkItem);
       },
       getWorkItemTypes: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeWorkItemTypes);
-        });
+        return Observable.of(fakeWorkItemTypes);
       },
 
       getStatusOptions: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeWorkItemStates);
-        });
+        return Observable.of(fakeWorkItemStates);
       },
 
       getWorkItems: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeWorkItems);
-        });
+        return Observable.of(fakeWorkItems);
       },
 
       getLocallySavedWorkItems: function() {
-        return new Promise((resolve, reject) => {
-          resolve(fakeWorkItems);
-        });
+        return Observable.of(fakeWorkItems);
       },
 
       getLinkTypes: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeWorkItemLinkTypes);
-        });
+        return Observable.of(fakeWorkItemLinkTypes);
       }
     };
 

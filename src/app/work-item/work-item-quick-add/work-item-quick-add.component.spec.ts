@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { SpacesService } from './../../shared/standalone/spaces.service';
 import { Spaces } from 'ngx-fabric8-wit';
 import {
@@ -137,10 +138,7 @@ describe('Quick add work item component - ', () => {
 
     fakeService = {
       create: function (workItem: WorkItem) {
-        return new Promise((resolve, reject) => {
-          resolve(workItem);
-          // reject('Title is empty');
-        });
+        return Observable.of(workItem);
       },
       workItemTypes: wiTypes
     };

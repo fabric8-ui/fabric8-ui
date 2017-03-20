@@ -1,6 +1,6 @@
 import { HttpService } from './../shared/http-service';
 import { Injectable, Component, Inject } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Headers } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import { Subscription } from 'rxjs/Subscription';

@@ -189,37 +189,25 @@ describe('Work item list view - ', () => {
 
     fakeWorkItemService = {
       create: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeWorkItem);
-        });
+        return Observable.of(fakeWorkItem);
       },
       update: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeWorkItem);
-        });
+        return Observable.of(fakeWorkItem);
       },
       getWorkItemTypes: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeWorkItemTypes);
-        });
+        return Observable.of(fakeWorkItemTypes);
       },
 
       getStatusOptions: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeWorkItemStates);
-        });
+        return Observable.of(fakeWorkItemStates);
       },
 
       getWorkItems: function () {
-        return new Promise((resolve, reject) => {
-          resolve(fakeWorkItems);
-        });
+        return Observable.of(fakeWorkItems);
       },
 
       getLocallySavedWorkItems: function() {
-        return new Promise((resolve, reject) => {
-          resolve(fakeWorkItems);
-        });
+        return Observable.of(fakeWorkItems);
       }
     };
 
