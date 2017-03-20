@@ -160,6 +160,11 @@ have access to both JS and SASS sourcemaps if your webapp is properly setup.
 NOTE: `fabric8-ui` is setup to do reloading and sourcemaps automatically when you
 run `npm start`.
 
+== Running with the launcher script
+
+The above integration can be run with the provided launcher script in scripts/. See
+the script for details on how to run it.
+
 == CSS and SASS
 
 fabric8-planner uses SASS for it's stylesheets. It also uses the Angular emulation

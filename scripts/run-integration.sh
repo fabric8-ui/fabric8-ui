@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# This script runs the Planner-Platform integration in one go.
+# It has the following commandline options:
+#
+#   -r   reinstalls both Planner and Platform before launching 
+#   -p <planner_home_dir> sets the Planner home, defaults to current directory
+#   -f <platform_home_dir> sets the Platform home, defaults to <current directory>/../fabric8-ui
+#
+# NOTE: this does not set any run mode or api url environment. If you need that, set it as usual 
+# before launching this script.
+
 # get the script's absolute path
 pushd `dirname $0` > /dev/null
 SCRIPTPATH=`pwd -P`
