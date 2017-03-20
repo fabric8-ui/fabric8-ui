@@ -270,9 +270,9 @@ export class WorkItemService {
         // FIXME: make the URL great again (when we know the right API URL for this)!
         this.workItemUrl = this.baseApiUrl + 'workitems';
         // this.workItemUrl = currentSpace.links.self + '/workitems';
-        return this.http
+        this.http
           .get(this.workItemUrl + '/' + id, { headers: this.headers })
-          .map((response) => {
+          .subscribe((response) => {
             let wItem: WorkItem = response.json().data as WorkItem;
             this.resolveUsersForWorkItem(wItem);
             this.resolveIterationForWorkItem(wItem);
@@ -292,7 +292,7 @@ export class WorkItemService {
             // it just gets resolved with related data and returned
             this.resolveComments(wItem);
             this.resolveLinks(wItem);
-            return wItem;
+            return Observable.of(wItem);
           })
           // .catch ((e) => {
           //   if (e.status === 401) {
@@ -580,7 +580,7 @@ export class WorkItemService {
     wItem.relationalData.totalLinkCount = 0;
     this.http
       .get(wItem.links.self + '/relationships/links', { headers: this.headers })
-      .map((response) => {
+      .subscribe((response) => {
         let links = response.json().data as Link[];
         let includes = response.json().included;
         let linkDicts: LinkDict[] = [];
@@ -589,7 +589,7 @@ export class WorkItemService {
         links.forEach((link) => {
           this.addLinkToWorkItem(link, includes, wItem);
         });
-      })
+      });
       // .catch ((e) => {
       //   if (e.status === 401) {
       //     this.auth.logout();
