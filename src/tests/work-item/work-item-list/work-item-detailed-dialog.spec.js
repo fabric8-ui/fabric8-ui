@@ -69,6 +69,7 @@ describe('Work item list', function () {
    expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
    page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
       page.clickWorkItemTitle(page.firstWorkItem, text);
+      browser.wait(until.textToBePresentInElement(detailPage.creatorUsername, 'Example User 0'), constants.WAIT, 'Failed to find creatorUsername');   
       expect(detailPage.getCreatorUsername()).toBe('Example User 0');
       expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);  
       expect(detailPage.getImageURL()).toBe('https://avatars.githubusercontent.com/u/2410471?v=3&s=20');

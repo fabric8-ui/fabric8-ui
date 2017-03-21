@@ -191,24 +191,28 @@ it('Re-Associate WI with Iteration from Kebab menu', function() {
     expect(page.getIterationCounter(page.firstFutureIteration).getText()).toBe('5');
 
     /* Start the iteration */
-    page.clickIterationKebab("1");
-    page.clickStartIterationKebab();
-    page.clickCreateIteration();
-
-    browser.ignoreSynchronization = true;
-    expect(page.iterationCount.getText()).toBe('0 of 5 completed');
-    //browser.ignoreSynchronization = false;
-
-    page.workItemViewId(page.workItemByTitle("Title Text 3")).getText().then(function (text) {
-      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
-      browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
-      detailPage.clickWorkItemStateDropDownButton();
-      browser.wait(until.elementToBeClickable(detailPage.WorkItemStateDropDownList().get(4)), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
-      detailPage.WorkItemStateDropDownList().get(4).click();
-      detailPage.clickWorkItemDetailCloseButton();
-    });
-
-    expect(page.iterationCount.getText()).toBe('0 of 5 completed');
+//    page.clickIterationKebab("1");
+//    page.clickStartIterationKebab();
+//    page.clickCreateIteration();
+//
+//    browser.ignoreSynchronization = true;
+//    expect(page.iterationCount.getText()).toBe('0 of 5 completed');
+//    //browser.ignoreSynchronization = false;
+//
+//    page.workItemViewId(page.workItemByTitle("Title Text 3")).getText().then(function (text) {
+//      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+//      browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
+//      detailPage.clickWorkItemStateDropDownButton();
+//      browser.wait(until.elementToBeClickable(detailPage.WorkItemStateDropDownList().get(4)), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
+//      detailPage.WorkItemStateDropDownList().get(4).click();
+//      detailPage.clickWorkItemDetailCloseButton();
+//    });
+//
+//    expect(page.iterationCount.getText()).toBe('0 of 5 completed');
+//
+//    page.clickIterationKebab("1");
+//    page.clickCloseIterationKebab();
+//    page.clickCreateIteration();
 
 // Start the first iteration
 // Change the status of the 1st workitem from new to closed, verify that the total changes to 1/5

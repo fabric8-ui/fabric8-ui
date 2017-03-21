@@ -1,5 +1,5 @@
 /**
- * POC test for automated UI tests for Fabric8
+ * POC test for automated UI tests for openshift.io
  *  
  * Note on screen resolutions - See: http://www.itunesextractor.com/iphone-ipad-resolution.html
  * Tests will be run on these resolutions:
@@ -12,11 +12,13 @@
  * @author ldimaggi, nverma
  */
 
-let until = protractor.ExpectedConditions;
+var until = protractor.ExpectedConditions;
 
 var OpenShiftIoStartPage = require('../page-objects/openshift-io-start.page'),
-  testSupport = require('../testSupport'),
-  constants = require("../constants");
+    OpenShiftIoRHDLoginPage = require('../page-objects/openshift-io-RHD-login.page'),
+    OpenShiftIoGithubLoginPage = require('../page-objects/openshift-io-github-login.page'),
+    testSupport = require('../testSupport'),
+    constants = require("../constants");
 
 describe('openshift.io End-to-End POC test - Scenario - New user registers', function () {
   var page, items, browserMode;
@@ -24,13 +26,14 @@ describe('openshift.io End-to-End POC test - Scenario - New user registers', fun
   var VOUCHER_CODE = "bad voucher code";
 
   beforeEach(function () {
-    testSupport.setBrowserMode('tablet');
+    testSupport.setBrowserMode('desktop');
     // Failed: Error while waiting for Protractor to sync with the page: "window.getAllAngularTestabilities is not a function"
     // http://stackoverflow.com/questions/38050626/angular-2-with-protractorjs-failed-error-while-waiting-for-protractor-to-sync-w 
     browser.ignoreSynchronization = true;
     page = new OpenShiftIoStartPage();  
   });
 
+  /* Simple test for new user */
   it('should enable a new user to register', function() {
 
     page.setEmail (EMAIL_ADDRESS);
@@ -44,11 +47,23 @@ describe('openshift.io End-to-End POC test - Scenario - New user registers', fun
     expect (page.registerButton.isEnabled()).toBe(false);
     expect (page.email.isEnabled()).toBe(false);
     expect (page.voucherCode.isEnabled()).toBe(false);
+  });
 
+  /* Simple test for registered user */
+  it('should enable a registered user to login', function() {
+    OpenShiftIoRHDLoginPage = page.clickSignIn();
+    OpenShiftIoGithubLoginPage = OpenShiftIoRHDLoginPage.clickGithubLoginButton();
 
+    browser.wait(until.presenceOf(OpenShiftIoGithubLoginPage.githubLoginField), constants.LONG_WAIT, 'Failed to find github loginbutton');
 
+    OpenShiftIoGithubLoginPage.clickGithubLoginField();
+    OpenShiftIoGithubLoginPage.typeGithubLoginField("almightytest");
 
+    OpenShiftIoGithubLoginPage.clickGithubPassword();
+    OpenShiftIoGithubLoginPage.typeGithubPassword("myalmighty@123");
 
   });
 
 });
+
+

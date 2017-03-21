@@ -1,5 +1,5 @@
 /**
- * AlMighty page object example module for Fabric8 start page
+ * AlMighty page object example module for openshift.io start page
  * See: http://martinfowler.com/bliki/PageObject.html,
  * https://www.thoughtworks.com/insights/blog/using-page-objects-overcome-protractors-shortcomings
  * @author ldimaggi@redhat.com
@@ -11,9 +11,11 @@
  * openshidt.io Start Page Object Model Definition
  */
 
-let testSupport = require('../testSupport');
-let constants = require("../constants");
-let until = protractor.ExpectedConditions;
+var OpenShiftIoRHDLoginPage = require('../page-objects/openshift-io-RHD-login.page'),
+    testSupport = require('../testSupport'),
+    constants = require("../constants");
+
+var until = protractor.ExpectedConditions;
 
 class OpenShiftIoStartPage {
 
@@ -47,12 +49,21 @@ class OpenShiftIoStartPage {
      return this.navBar.click();
   }
 
+  /* Navigation bar toggle (non-desktop mode only) */
+  get navBarToggle () {
+     return element(by.css(".navbar-toggle"));
+  }
+  clickNavBarToggle () {
+     return this.navBarToggle.click();
+  }
+
   /* Sign in button in nav bar */
   get signIn () {
-     return element(by.css("#login"));
+     return element(by.cssContainingText('.nav.navbar-nav.navbar-utility', 'Sign In'));
   }
   clickSignIn () {
-     return this.signIn.click();
+     this.signIn.click();
+     return new OpenShiftIoRHDLoginPage();
   }
 
   /* UI Element for new users to register */
@@ -110,6 +121,78 @@ class OpenShiftIoStartPage {
   clickToastMessageCloseIcon () {
      browser.wait(until.elementToBeClickable(this.toastMessageCloseIcon), constants.WAIT, 'Failed to find toastMessageCloseIcon');
      return this.toastMessageCloseIcon.click();
+  }
+
+  /* Login for already registered users */
+
+  /* Login button */
+  get loginButton () {
+     return element(by.css("#login"));
+  }
+  clickLoginButton () {
+     this.loginButton.click();
+     return new OpenShiftIoRHDLoginPage();
+  }
+
+  /* Analysis of Component/Bayesian UI elements */
+
+  /* Ecosystem */
+  get ecosystem  () {
+     return element(by.css("#ecosystem"));
+  }
+  clickEcosystem () {
+     return this.ecosystem.click();
+  }
+  setEcosystem (ecosystemString) {
+    return this.ecosystem.sendKeys(ecosystemString);
+  }
+
+  /* Component */
+  get component () {
+     return element(by.css("#component"));
+  }
+  clickComponent () {
+     return this.component.click();
+  }
+  setComponent (componentString) {
+    return this.component.sendKeys(componentString);
+  }
+
+  /* Version */
+  get version () {
+     return element(by.css("#version"));
+  }
+  clickVersion () {
+     return this.version.click();
+  }
+  setVersion (VersionString) {
+    return this.version.sendKeys(VersionString);
+  }
+
+  /* Submit button */
+  get submitButton () {
+     return element(by.css("#stackbtn"));
+  }
+  clickSubmitButton () {
+     return this.submitButton.click();
+  }
+
+  /* Manifest file to upload */
+
+  /* Browse button */
+  get browseButton () {
+     return element(by.css("#stackAnalysesFile"));
+  }
+  clickBrowseButton () {
+     return this.browseButton.click();
+  }
+
+  /* File upload button */
+  get uploadButton () {
+     return element(by.css("#stacAnalysesFileUpload"));
+  }
+  clickUploadButton () {
+     return this.uploadButton.click();
   }
 
 }

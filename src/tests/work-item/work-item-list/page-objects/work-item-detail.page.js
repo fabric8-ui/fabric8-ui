@@ -442,6 +442,9 @@ class WorkItemDetailPage {
   clickCreatorAvatar  (){
     return element(by.id('WI_details_reporter_img')).click();
   }
+  get creatorUsername  (){
+    return element(by.id('WI_details_reporter_user'));
+  }
   getCreatorUsername  (){
     return element(by.id('WI_details_reporter_user')).getText();
   }
