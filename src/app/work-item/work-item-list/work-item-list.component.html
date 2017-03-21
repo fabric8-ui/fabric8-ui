@@ -20,7 +20,8 @@
                 [loadTemplate]="treeListLoadTemplate"
                 [nodes]="workItems"
                 [options]="treeListOptions"
-                [showExpander]="false">
+                [showExpander]="false"
+                (onMoveNode)="onMoveNode($event)">
               <template #treeListLoadTemplate let-node="node" let-index="index">
                 <span>Loading...</span>
               </template>

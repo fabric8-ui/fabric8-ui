@@ -42,16 +42,8 @@
 }
 
 
-.dnd-drag-start,
-.dnd-drag-over {
-  opacity:1;
-  border: 1px dashed $color-pf-black;
-}
-
-.dnd-drag-enter,
-.dnd-sortable-drag {
-  opacity:0.7;
-  border: 1px dashed $color-pf-black;
+.node-drop-slot.is-dragging-over {
+  height: 66px!important;
 }
 
 

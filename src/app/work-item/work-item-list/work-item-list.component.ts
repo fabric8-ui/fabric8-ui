@@ -81,7 +81,11 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     getChildren: (node: TreeNode): any => {
       return this.workItemService.getChildren(node.data);
     },
-    levelPadding: 30
+    levelPadding: 30,
+    allowDrop: (element, to) => {
+      // return true / false based on element, to.parent, to.index. e.g.
+      return to.parent.hasChildren;
+    }
   };
 
   constructor(
@@ -271,19 +275,22 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     });
   }
 
-  // onDragStart() {
-  //   //console.log('on drag start');
-  // }
+  onMoveNode($event) {
+    let movedWI = $event.node;
+    let prevWI = $event.to.parent.children[$event.to.index - 1];
+    let nextWI = $event.to.parent.children[$event.to.index + 1];
 
-  // // Event listener for WI drop.
-  // onDragEnd(workItemId: string) {
-  //   // rearrange is happening inside ng2-dnd library
-
-  //   // Build the ID-index map after rearrange.
-  //   this.workItemService.buildWorkItemIdIndexMap();
-
-  //   // save the order of work item.
-  //   this.workItemService.reOrderWorkItem(workItemId)
-  //       .catch (e => console.log(e));
-  // }
+    if(typeof prevWI !== "undefined") {
+      this.workItemService.reOrderWorkItem(movedWI.id, prevWI.id, "below")
+          .then((workItem) => {
+            this.workItems.find((item) => item.id === movedWI.id).attributes['version'] = workItem.attributes['version'];
+          });
+    }
+    else {
+      this.workItemService.reOrderWorkItem(movedWI.id, nextWI.id, "above")
+          .then((workItem) => {
+            this.workItems.find((item) => item.id === movedWI.id).attributes['version'] = workItem.attributes['version'];
+          });
+    }
+  }
 }
