@@ -18,4 +18,6 @@ ENV OAUTH_SCOPE "user:full"
 ENV OAUTH_AUTHORIZE_URI "https://tsrv.devshift.net:8443/oauth/authorize"
 ENV AUTH_LOGOUT_URI "https://tsrv.devshift.net:8443/connect/endsession?id_token={{id_token}}"
 
+WORKDIR /
+
 ENTRYPOINT ["/bin/bash"]
