@@ -4,7 +4,7 @@ MAINTAINER "Pete Muir <pmuir@bleepbleep.org.uk>"
 USER root
 
 COPY dist /usr/share/nginx/html
-RUN chmod -R g+rw /usr/share/nginx/html
+RUN chmod -R +rw /usr/share/nginx/html
 
 USER ${FABRIC8_USER_NAME}
 
@@ -17,5 +17,3 @@ ENV OAUTH_CLIENT_ID "fabric8"
 ENV OAUTH_SCOPE "user:full"
 ENV OAUTH_AUTHORIZE_URI "https://tsrv.devshift.net:8443/oauth/authorize"
 ENV AUTH_LOGOUT_URI "https://tsrv.devshift.net:8443/connect/endsession?id_token={{id_token}}"
-
-ENTRYPOINT ["/bin/bash"]
