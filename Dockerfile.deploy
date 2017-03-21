@@ -3,10 +3,11 @@ MAINTAINER "Pete Muir <pmuir@bleepbleep.org.uk>"
 
 USER root
 
+RUN rm -rf /usr/share/nginx/html/
 COPY dist /usr/share/nginx/html
-RUN chmod -R +rw /usr/share/nginx/html
+RUN chmod -R 777 /usr/share/nginx/html/
 
-USER ${FABRIC8_USER_NAME}
+USER nginx
 
 # TODO This should be in the OpenShift template, not here
 ENV WS_K8S_API_SERVER "tsrv.devshift.net:8443"
