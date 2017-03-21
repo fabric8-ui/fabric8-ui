@@ -19,7 +19,7 @@ import { cloneDeep } from 'lodash';
 import { Broadcaster, Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 
-import { WorkItem, WorkItemAttributes, WorkItemRelations } from '../../models/work-item';
+import { WorkItem, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
 
 @Component({
@@ -76,14 +76,11 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
 
   createWorkItemObj() {
     this.workItem = new WorkItem();
-    this.workItem.attributes = new WorkItemAttributes();
+    this.workItem.attributes = new Map<string, string | number>();
     this.workItem.relationships = new WorkItemRelations();
     this.workItem.type = 'workitems';
     this.workItem.id = '42';
-
-    this.workItem.attributes = {
-      'system.state': 'new'
-    } as WorkItemAttributes;
+    this.workItem.attributes.set('system.state', 'new');
   }
 
   ngAfterViewInit() {

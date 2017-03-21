@@ -36,7 +36,7 @@ import { AreaService } from '../../area/area.service';
 import { IterationModel } from '../../models/iteration.model';
 import { IterationService } from '../../iteration/iteration.service';
 
-import { WorkItem, WorkItemAttributes, WorkItemRelations } from '../../models/work-item';
+import { WorkItem, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
 import { WorkItemType } from '../../models/work-item-type';
 
@@ -307,7 +307,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   createWorkItemObj(type: string) {
     this.workItem = new WorkItem();
     this.workItem.id = null;
-    this.workItem.attributes = new WorkItemAttributes();
+    this.workItem.attributes = new Map<string, string | number>();
     this.workItem.relationships = new WorkItemRelations();
     this.workItem.type = 'workitems';
     this.workItem.relationships = {
@@ -334,9 +334,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
     this.workItem.relationalData = {};
     this.workItemService.resolveType(this.workItem);
-    this.workItem.attributes = {
-      'system.state': 'new'
-    } as WorkItemAttributes;
+    this.workItem.attributes.set('system.state', 'new');
   }
 
   getAllUsers(): void {

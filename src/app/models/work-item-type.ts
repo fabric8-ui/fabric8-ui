@@ -6,17 +6,18 @@ export class WorkItemType {
         version: number;
         description: string;
         icon: string;
-        fields:
-        {
-            'system.area': any,
-            'system.created_at': any,
-            'system.assignee': any,
-            'system.creator': any,
-            'system.description': any,
-            'system.iteration': any,
-            'system.remote_item_id': any,
-            'system.state': any,
-            'system.title': any,
-        };
+        fields: Map<string, WorkItemTypeField>;
+    };
+}
+
+export class WorkItemTypeField {
+    description?: string;
+    label: string;
+    required: boolean;
+    type: {
+        componentType?: string,
+        baseType?: string,
+        kind: string,
+        values?: string[]
     };
 }

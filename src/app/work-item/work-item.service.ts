@@ -31,8 +31,7 @@ import { LinkType } from '../models/link-type';
 import { Link } from '../models/link';
 import {
   LinkDict,
-  WorkItem,
-  WorkItemAttributes
+  WorkItem
 } from '../models/work-item';
 import { WorkItemType } from './../models/work-item-type';
 
@@ -971,10 +970,9 @@ export class WorkItemService {
     let newWItem = new WorkItem();
     let arr = [];
     newWItem.id = workItem.id.toString();
-    newWItem.attributes = {} as WorkItemAttributes;
-    newWItem.attributes.version = workItem.attributes.version;
+    newWItem.attributes = new Map<string, string | number>();
+    newWItem.attributes.set('version', workItem.attributes.get('version'));
     newWItem.type = workItem.type;
-
     arr.push(newWItem);
 
     if (this._currentSpace) {
