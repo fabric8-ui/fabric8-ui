@@ -4,9 +4,9 @@ MAINTAINER "Pete Muir <pmuir@bleepbleep.org.uk>"
 USER root
 
 COPY dist /usr/share/nginx/html
-RUN chown -R nginx /usr/share/nginx/html
+RUN chown -R ${FABRIC8_USER_NAME} /usr/share/nginx/html
 
-USER nginx
+USER ${FABRIC8_USER_NAME}
 
 # TODO This should be in the OpenShift template, not here
 ENV WS_K8S_API_SERVER "tsrv.devshift.net:8443"
