@@ -4,7 +4,7 @@ MAINTAINER "Pete Muir <pmuir@bleepbleep.org.uk>"
 USER root
 
 COPY dist /usr/share/nginx/html
-RUN chmod -R +r /usr/share/nginx/html
+RUN chmod -R +rw /usr/share/nginx/html
 
 USER ${FABRIC8_USER_NAME}
 
