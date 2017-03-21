@@ -203,6 +203,14 @@ export class SchemaMockGenerator {
                   },
                   'required' : false
                },
+              'system.storypoints' : {
+                'description' : 'Storypoints for the story',
+                'label' : 'Story Points',
+                'required' : false,
+                'type' : {
+                  'kind' : 'number'
+                }
+              },
               'system.iteration' : {
                 'description' : 'The iteration to which the work item belongs',
                 'label' : 'Iteration',
