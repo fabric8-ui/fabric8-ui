@@ -5,16 +5,23 @@
   .node-drop-slot {
     height: 4px;
   }
+  */
   .node-drop-slot.is-dragging-over {
-    height: 60px;
+    background-color: $color-pf-black-400;
+    border: none;
+    //height: 66px;
   }
-*/
 
   .node-content-wrapper {
     display: inherit;
     padding: 0;
     border-radius: inherit;
     transition: none;
+    &.is-dragging-over {
+      background-color: $color-pf-black-400;
+      border: none;
+      box-shadow: none;
+    }
   }
 
   .node-wrapper {

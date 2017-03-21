@@ -36,6 +36,7 @@
                (click)="node.mouseAction('click', $event)"
                (dblclick)="node.mouseAction('dblClick', $event)"
                (contextmenu)="node.mouseAction('contextMenu', $event)"
+               (dragstart)="handleDragStart($event)"
                (treeDrop)="node.onDrop($event)"
                [treeAllowDrop]="node.allowDrop.bind(node)"
                [treeDrag]="node"

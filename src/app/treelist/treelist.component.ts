@@ -51,7 +51,12 @@ export class TreeListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // Events
+  // Drag effect: https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
+  handleDragStart($event: any) {
+    $event.dataTransfer.effectAllowed = "copyMove";
+  }
+
+  // Tree events
 
   handleEvent($event: any): void {
     this.onEvent.emit($event);

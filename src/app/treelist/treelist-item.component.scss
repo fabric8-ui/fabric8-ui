@@ -1,16 +1,32 @@
 @import "../../assets/stylesheets/_base";
 
-.list-group-item {
-  border: none;
-  cursor: pointer;
-  padding-left: 0;
-  &:hover {
-    background-color: $color-pf-black-200;
+.tree-list {
+  .list-group-item {
+    border: none;
+    &:first-child {
+      border: none;
+    }
   }
-  &.tree-item-selected {
-    background-color: $color-pf-blue-100;
+}
+
+.node-content-wrapper {
+  .list-group-item {
+    border: none;
+    cursor: pointer;
+    padding-left: 0;
     &:hover {
+      background-color: $color-pf-black-200;
+    }
+    &.tree-item-selected {
       background-color: $color-pf-blue-100;
+      &:hover {
+        background-color: $color-pf-blue-100;
+      }
+    }
+  }
+  &.is-dragging-over {
+    .list-group-item {
+      background-color: $color-pf-black-400;
     }
   }
 }
