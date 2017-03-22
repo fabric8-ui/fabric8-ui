@@ -11,15 +11,14 @@
       padding-top: 5px;
     }
   }
+}
 
-  .node-drop-slot {
-    height: 5px;
-  }
-
-  .node-drop-slot.is-dragging-over {
+.node-drop-slot {
+  height: 5px;
+  &.is-dragging-over {
     background-color: $color-pf-black-400;
     border: none;
-    height: 60px;
+    height: 30px;
   }
 }
 
@@ -38,11 +37,17 @@
       }
     }
   }
+  /* Todo: Highlight drop on nodes?
   &.is-dragging-over {
     .list-group-item {
       background-color: $color-pf-black-200;
     }
   }
+  */
+}
+
+.node-wrapper {
+  padding-left: 0 !important;
 }
 
 // Indentation -- highlighting should occupy entire row
