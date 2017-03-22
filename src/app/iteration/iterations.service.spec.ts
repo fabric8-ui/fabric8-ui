@@ -14,11 +14,8 @@ import {
 import { MockBackend } from '@angular/http/testing';
 
 import { cloneDeep } from 'lodash';
-import {
-  AuthenticationService,
-  Broadcaster,
-  Logger
-} from 'ngx-login-client';
+import { Broadcaster, Logger} from 'ngx-base';
+import { AuthenticationService } from 'ngx-login-client';
 
 import { IterationModel } from '../models/iteration.model';
 import { IterationService } from './iteration.service';

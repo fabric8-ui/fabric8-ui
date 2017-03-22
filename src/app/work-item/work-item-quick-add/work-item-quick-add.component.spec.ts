@@ -14,7 +14,8 @@ import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { Logger, Broadcaster, AuthenticationService } from 'ngx-login-client';
+import { Broadcaster, Logger } from 'ngx-base';
+import { AuthenticationService } from 'ngx-login-client';
 
 import { WorkItem } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';

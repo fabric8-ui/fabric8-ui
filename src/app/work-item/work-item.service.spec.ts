@@ -16,10 +16,9 @@ import { MockBackend } from '@angular/http/testing';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { cloneDeep } from 'lodash';
 import { DropdownOption } from 'ngx-widgets';
+import { Broadcaster, Logger } from 'ngx-base';
 import {
   AuthenticationService,
-  Broadcaster,
-  Logger,
   UserService,
   AUTH_API_URL
 } from 'ngx-login-client';

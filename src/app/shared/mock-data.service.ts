@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Logger } from 'ngx-login-client';
+import { Logger } from 'ngx-base';
 
 import { WorkItem } from '../work-item/work-item';
 
@@ -82,9 +82,9 @@ export class MockDataService {
     let workItemStateFilter = pathParams['filter[workitemstate]'];
     let iterationFilter = pathParams['filter[iteration]'];
 
-    console.log('Filtering on: ' 
-      + (assigneeFilter ? 'assignee==' + assigneeFilter + ' ' : '') 
-      + (workItemTypeFilter ? 'workitemtype==' + workItemTypeFilter + ' ' : '') 
+    console.log('Filtering on: '
+      + (assigneeFilter ? 'assignee==' + assigneeFilter + ' ' : '')
+      + (workItemTypeFilter ? 'workitemtype==' + workItemTypeFilter + ' ' : '')
       + (workItemStateFilter ? 'state==' + workItemStateFilter + ' ' : '')
       + (iterationFilter ? 'iteration==' + iterationFilter + ' ' : '')
     );

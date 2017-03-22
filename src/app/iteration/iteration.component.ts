@@ -7,10 +7,8 @@ import { IterationService } from './iteration.service';
 import { IterationModel } from '../models/iteration.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import {
-  AuthenticationService,
-  Broadcaster
-} from 'ngx-login-client';
+import { Broadcaster } from 'ngx-base';
+import { AuthenticationService } from 'ngx-login-client';
 
 @Component({
   host: {

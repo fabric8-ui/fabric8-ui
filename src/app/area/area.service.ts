@@ -6,10 +6,8 @@ import { Http, Headers } from '@angular/http';
 import { Subscription } from 'rxjs/Subscription';
 
 import { cloneDeep } from 'lodash';
-import {
-  AuthenticationService,
-  Logger
-} from 'ngx-login-client';
+import { Logger } from 'ngx-base';
+import { AuthenticationService } from 'ngx-login-client';
 
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { AreaModel } from '../models/area.model';

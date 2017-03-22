@@ -4,7 +4,7 @@ import { Params, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Broadcaster } from 'ngx-login-client';
+import { Broadcaster } from 'ngx-base';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
 @Component({

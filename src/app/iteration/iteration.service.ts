@@ -6,11 +6,8 @@ import { Http, Headers } from '@angular/http';
 import { Subscription } from 'rxjs/Subscription';
 
 import { cloneDeep } from 'lodash';
-import {
-  AuthenticationService,
-  Broadcaster,
-  Logger
-} from 'ngx-login-client';
+import { Broadcaster, Logger } from 'ngx-base';
+import { AuthenticationService } from 'ngx-login-client';
 
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { IterationModel } from '../models/iteration.model';

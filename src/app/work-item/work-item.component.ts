@@ -11,9 +11,9 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { cloneDeep, trimEnd } from 'lodash';
+import { Broadcaster } from 'ngx-base';
 import {
-  AuthenticationService,
-  Broadcaster
+  AuthenticationService
 } from 'ngx-login-client';
 import { SpaceService, Space, Spaces } from 'ngx-fabric8-wit';
 

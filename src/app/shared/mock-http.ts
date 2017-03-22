@@ -5,7 +5,7 @@ import { Response, ResponseOptions, ResponseOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
-import { Logger } from 'ngx-login-client';
+import { Logger } from 'ngx-base';
 import { MockDataService } from './mock-data.service';
 
 /*

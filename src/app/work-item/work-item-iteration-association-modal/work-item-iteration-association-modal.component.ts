@@ -1,9 +1,8 @@
 import { Component, ViewChild, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 
+import { Broadcaster, Logger } from 'ngx-base';
 import {
   AuthenticationService,
-  Broadcaster,
-  Logger
 } from 'ngx-login-client';
 
 import { WorkItem }          from '../../models/work-item';

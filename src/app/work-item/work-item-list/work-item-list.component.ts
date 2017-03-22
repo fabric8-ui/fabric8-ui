@@ -20,10 +20,9 @@ import {
 import { TreeNode } from 'angular2-tree-component';
 
 import { cloneDeep } from 'lodash';
+import { Broadcaster, Logger } from 'ngx-base';
 import {
   AuthenticationService,
-  Broadcaster,
-  Logger,
   User,
   UserService
 } from 'ngx-login-client';

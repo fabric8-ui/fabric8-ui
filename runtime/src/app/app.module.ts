@@ -19,10 +19,9 @@ import { TooltipModule } from 'ng2-bootstrap/components/tooltip';
 // shared components
 import { GlobalSettings } from './shared/globals';
 import { Settings } from 'fabric8-shared-services';
+import { Broadcaster, Logger } from 'ngx-base';
 import {
   AuthenticationService,
-  Broadcaster,
-  Logger,
   UserService
 } from 'ngx-login-client';
 

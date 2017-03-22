@@ -26,11 +26,10 @@ import {
   TooltipModule
 } from 'ng2-bootstrap';
 import { AlmUserName } from '../../pipes/alm-user-name.pipe';
+import { Broadcaster, Logger } from 'ngx-base';
 import {
   // AlmUserName,
   AuthenticationService,
-  Broadcaster,
-  Logger,
   User,
   UserService
 } from 'ngx-login-client';

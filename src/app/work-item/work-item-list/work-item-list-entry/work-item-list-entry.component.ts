@@ -1,11 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute }                                            from '@angular/router';
 
-import {
-  AuthenticationService,
-  Broadcaster,
-  Logger
-} from 'ngx-login-client';
+import { Broadcaster, Logger } from 'ngx-base';
+import { AuthenticationService } from 'ngx-login-client';
 import { Dialog } from 'ngx-widgets';
 
 import { WorkItem }        from '../../../models/work-item';

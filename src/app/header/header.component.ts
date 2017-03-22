@@ -4,10 +4,9 @@ import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Broadcaster, Logger } from 'ngx-base';
 import {
   AuthenticationService,
-  Broadcaster,
-  Logger,
   User,
   UserService
 } from 'ngx-login-client';

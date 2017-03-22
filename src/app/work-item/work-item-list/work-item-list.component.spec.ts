@@ -18,11 +18,10 @@ import { CommonModule } from '@angular/common';
 import { TooltipModule } from 'ng2-bootstrap';
 import { DragulaModule } from 'ng2-dragula';
 import { AlmUserName } from '../../pipes/alm-user-name.pipe';
+import { Broadcaster, Logger } from 'ngx-base';
 import {
   // AlmUserName,
   AuthenticationService,
-  Broadcaster,
-  Logger,
   User,
   UserService
 } from 'ngx-login-client';

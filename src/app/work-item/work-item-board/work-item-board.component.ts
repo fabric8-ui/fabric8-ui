@@ -16,8 +16,9 @@ import { Response } from '@angular/http';
 import { Router } from '@angular/router';
 import { cloneDeep, trimEnd } from 'lodash';
 
+import { Broadcaster } from 'ngx-base';
 import { Space, Spaces } from 'ngx-fabric8-wit';
-import { AuthenticationService, Broadcaster } from 'ngx-login-client';
+import { AuthenticationService } from 'ngx-login-client';
 import { ArrayCount } from 'ngx-widgets';
 import { DragulaService } from 'ng2-dragula';
 

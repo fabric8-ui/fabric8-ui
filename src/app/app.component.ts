@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import {
-  AuthenticationService,
-  Broadcaster
-} from 'ngx-login-client';
+import { Broadcaster } from 'ngx-base';
+import { AuthenticationService } from 'ngx-login-client';
 
 import { GlobalSettings } from './shared/globals';
 

@@ -20,10 +20,9 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { cloneDeep, trimEnd } from 'lodash';
 import { Space, Spaces } from 'ngx-fabric8-wit';
+import { Broadcaster, Logger } from 'ngx-base';
 import {
   AuthenticationService,
-  Broadcaster,
-  Logger,
   User,
   UserService
 } from 'ngx-login-client';

@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { cloneDeep } from 'lodash';
 import * as moment from 'moment';
 import { IMyOptions, IMyDateModel } from 'mydatepicker';
-import { Broadcaster } from 'ngx-login-client';
+import { Broadcaster } from 'ngx-base';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
 import { IterationService } from '../iteration.service';

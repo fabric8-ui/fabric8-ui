@@ -12,10 +12,9 @@ import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'ng2-bootstrap';
 import { ModalModule } from 'ngx-modal';
 import { TabsModule, TooltipModule } from 'ng2-bootstrap';
+import { Broadcaster, Logger } from 'ngx-base';
 import {
   AuthenticationService,
-  Broadcaster,
-  Logger,
   UserService,
   HttpService
 } from 'ngx-login-client';

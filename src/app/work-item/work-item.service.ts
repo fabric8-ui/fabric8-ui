@@ -7,10 +7,9 @@ import { Observable } from 'rxjs/Observable';
 
 import { cloneDeep } from 'lodash';
 import { DropdownOption } from 'ngx-widgets';
+import { Broadcaster, Logger } from 'ngx-base';
 import {
   AuthenticationService,
-  Broadcaster,
-  Logger,
   User,
   UserService
 } from 'ngx-login-client';

@@ -2,7 +2,8 @@ import { Component, Input, OnInit, AfterViewInit, TemplateRef, ViewChild, ViewEn
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { cloneDeep } from 'lodash';
-import { Broadcaster, AuthenticationService } from 'ngx-login-client';
+import { Broadcaster } from 'ngx-base';
+import { AuthenticationService } from 'ngx-login-client';
 import { Subscription } from 'rxjs/Subscription';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 

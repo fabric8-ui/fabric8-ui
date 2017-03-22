@@ -16,7 +16,8 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Logger, Broadcaster, AuthenticationService } from 'ngx-login-client';
+import { Broadcaster, Logger } from 'ngx-base';
+import { AuthenticationService } from 'ngx-login-client';
 
 import { WorkItem, WorkItemAttributes, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
