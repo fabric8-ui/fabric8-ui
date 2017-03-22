@@ -284,12 +284,14 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
       this.workItemService.reOrderWorkItem(movedWI.id, prevWI.id, "below")
           .then((workItem) => {
             this.workItems.find((item) => item.id === movedWI.id).attributes['version'] = workItem.attributes['version'];
+            this.workItemService.buildWorkItemIdIndexMap();
           });
     }
     else {
       this.workItemService.reOrderWorkItem(movedWI.id, nextWI.id, "above")
           .then((workItem) => {
             this.workItems.find((item) => item.id === movedWI.id).attributes['version'] = workItem.attributes['version'];
+            this.workItemService.buildWorkItemIdIndexMap();
           });
     }
   }
