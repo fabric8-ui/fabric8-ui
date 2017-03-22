@@ -135,9 +135,7 @@ export class WorkItemService {
    */
   getWorkItems(pageSize: number = 20, filters: any[] = [], onlyResponse: boolean = false): Observable<WorkItem[]> {
     if (this._currentSpace) {
-      // FIXME: make the URL great again (when we know the right API URL for this)!
-      this.workItemUrl = this.baseApiUrl + 'workitems';
-      //this.workItemUrl = currentSpace.links.self + '/workitems';
+      this.workItemUrl = this._currentSpace.links.self + '/workitems';
       this.nextLink = null;
       let url = this.workItemUrl + '?page[limit]=' + pageSize;
       filters.forEach((item) => {
@@ -608,9 +606,7 @@ export class WorkItemService {
    */
   getWorkItemTypes(): Observable<any[]> {
     if (this._currentSpace) {
-      // FIXME: make the URL great again (when we know the right API URL for this)!
-      this.workItemTypeUrl = this.baseApiUrl + 'workitemtypes';
-      //this.workItemTypeUrl = currentSpace.links.self + '/workitemtypes';
+      this.workItemTypeUrl = this._currentSpace.links.self + '/workitemtypes';
       return this.http
         .get(this.workItemTypeUrl)
         .map((response) => {
