@@ -21,14 +21,16 @@
                 [nodes]="workItems"
                 [options]="treeListOptions"
                 [showExpander]="false"
-                (onMoveNode)="onMoveNode($event)">
+                (onMoveNode)="onMoveNode($event)"
+                [showDropSlot]="true">
               <template #treeListLoadTemplate let-node="node" let-index="index">
                 <span>Loading...</span>
               </template>
               <template #treeListTemplate let-node="node" let-index="index">
                 <alm-tree-list-item #treeListItem
                     [node]="node"
-                    [template]="treeListItemTemplate">
+                    [template]="treeListItemTemplate"
+                    [index]="index">
                   <template #treeListItemTemplate>
                     <alm-work-item-list-entry
                         id="{{'workItemList_OuterWrap_' + index}}"
