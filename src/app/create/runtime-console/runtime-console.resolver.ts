@@ -1,3 +1,7 @@
+import { recommenderApiUrlProvider } from './../../shared/recommender-api.provider';
+import { witApiUrlProvider } from './../../shared/wit-api.provider';
+import { authApiUrlProvider } from './../../shared/auth-api.provider';
+import { ssoApiUrlProvider } from './../../shared/sso-api.provider';
 import { AuthenticationService } from 'ngx-login-client';
 import { Navigation } from './../models/navigation';
 import { ContextService } from './context.service';
@@ -53,5 +57,10 @@ export let runtimeConsoleLoginProviders = [
   LoginService,
   OnLogin,
   APIsStore,
-  OAuthConfigStore
+  OAuthConfigStore,
+  // Override any URL providers that Fabric8-runtime-console has incorrectly installed
+  ssoApiUrlProvider,
+  authApiUrlProvider,
+  witApiUrlProvider,
+  recommenderApiUrlProvider
 ];
