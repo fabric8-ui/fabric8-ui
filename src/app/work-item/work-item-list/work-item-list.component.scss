@@ -7,8 +7,15 @@
   }
 }
 
+.tree-list {
+  .node-drop-slot.is-dragging-over {
+    height: 70px;
+  }
+}
+
 .tree-list-item {
   display: flex;
+  align-items: inherit;
 }
 
 .work-item-list-page {
