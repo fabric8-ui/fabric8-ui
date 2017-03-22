@@ -714,22 +714,30 @@ export class WorkItemService {
    */
   moveItem(wi: WorkItem, dir: String): Promise<any> {
     let index = this.workItems.findIndex(x => x.id == wi.id);
-    wi.attributes.nextitem = '';
-    wi.attributes.previousitem = '';
     switch (dir){
       case 'top':
         //move the item as the first item
         this.workItems.splice(0, 0, wi);
         //remove the duplicate element
         this.workItems.splice( index + 1, 1);
-        wi.attributes.nextitem = parseInt(this.workItems[1].id);
+        this.buildWorkItemIdIndexMap();
+        this.reOrderWorkItem(wi.id, null, 'top')
+            .then((workitem) => {
+              let updateIndex = this.workItemIdIndexMap[wi.id];
+              this.workItems[updateIndex].attributes['version'] = workitem.attributes['version'];
+            });
         break;
       case 'bottom':
         //move the item as the last of the loaded list
         this.workItems.splice((this.workItems.length), 0, wi);
         //remove the duplicate element
         this.workItems.splice( index, 1);
-        wi.attributes.previousitem = parseInt(this.workItems[this.workItems.length-2].id);
+        this.buildWorkItemIdIndexMap();
+        this.reOrderWorkItem(wi.id, null, 'bottom')
+            .then((workitem) => {
+              let updateIndex = this.workItemIdIndexMap[wi.id];
+              this.workItems[updateIndex].attributes['version'] = workitem.attributes['version'];
+          });
         break;
       case 'up':
         if (index > 0) { //no moving of element if it is the first element
@@ -738,12 +746,13 @@ export class WorkItemService {
           //remove the duplicate element
           this.workItems.splice( index + 1, 1);
           //Set the previous and next WI ids
-          wi.attributes.nextitem = parseInt(this.workItems[index].id);
-          //If the element has been moved and becomes the first element
-          // it will not have a previous value
-          if (index !== 1) {
-            wi.attributes.previousitem = parseInt(this.workItems[index - 2].id);
-          }
+          // wi.attributes.nextitem = parseInt(this.workItems[index].id);
+          this.buildWorkItemIdIndexMap();
+          this.reOrderWorkItem(wi.id, this.workItems[index].id, 'above')
+              .then((workitem) => {
+                let updateIndex = this.workItemIdIndexMap[wi.id];
+                this.workItems[updateIndex].attributes['version'] = workitem.attributes['version'];
+          });
         }
         break;
       case 'down':
@@ -753,12 +762,13 @@ export class WorkItemService {
           //remove the duplicate element
           this.workItems.splice( index, 1);
           //Set the previous and next WI ids
-          wi.attributes.previousitem = parseInt(this.workItems[index].id);
-          //If the element has been moved and becomes the last element
-          // it will not have a next value
-          if ((index + 2) !== this.workItems.length) {
-            wi.attributes.nextitem = parseInt(this.workItems[index + 2].id);
-          }
+          // wi.attributes.previousitem = parseInt(this.workItems[index].id);
+          this.buildWorkItemIdIndexMap();
+          this.reOrderWorkItem(wi.id, this.workItems[index].id, 'below')
+              .then((workitem) => {
+                let updateIndex = this.workItemIdIndexMap[wi.id];
+                this.workItems[updateIndex].attributes['version'] = workitem.attributes['version'];
+          });
         }
         break;
     }
@@ -1213,7 +1223,7 @@ export class WorkItemService {
    *
    * @param workItemId: string
    */
-  reOrderWorkItem(workItemId: string, prevWiId: string, direction: string): Promise<any> {
+  reOrderWorkItem(workItemId: string, prevWiId: string | null = null, direction: string): Promise<any> {
     let newWItem = new WorkItem();
     let wiIndex = this.workItemIdIndexMap[workItemId];
     let wItem = this.workItems[wiIndex];
