@@ -30,7 +30,7 @@ export class HttpService extends Http {
 
   private headers = new Headers({'Content-Type': 'application/json'});
   constructor (
-    backend: XHRBackend | MockBackend,
+    backend: any,
     options: RequestOptions,
     auth: AuthenticationService
   ) {
