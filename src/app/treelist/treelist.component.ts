@@ -15,6 +15,13 @@ import {
 
 // See docs: https://angular2-tree.readme.io/docs
 //
+// listTemplate - Template to show for each tree list item
+// loadTemplate - Template to show when loading children
+// nodes - An array of tree list items
+// options - Underlying angular2-tree-component options
+// showDropSlot - Set to false with alm-tree-list-item (default is true)
+// showExpander - Set to false with alm-tree-list-item (default is true)
+//
 // Supported events:
 //
 // onEvent - Catch-all event that is triggered on every other event that is triggered
@@ -35,6 +42,7 @@ export class TreeListComponent implements OnInit {
   @Input() loadTemplate: TemplateRef<any>;
   @Input() nodes: any[] = null;
   @Input() options: any;
+  @Input() showDropSlot: boolean = true;
   @Input() showExpander: boolean = true;
 
   @Output('onEvent') onEvent = new EventEmitter();

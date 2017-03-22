@@ -19,6 +19,7 @@ import { TreeNode } from 'angular2-tree-component';
 })
 
 export class TreeListItemComponent implements OnInit {
+  @Input() index: number = -1;
   @Input() node: TreeNode = null;
   @Input() template: TemplateRef<any>;
 

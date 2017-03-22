@@ -12,6 +12,7 @@
             [loadTemplate]="treeListLoadTemplate"
             [nodes]="nodes"
             [options]="options"
+            [showDropSlot]="false"
             [showExpander]="false"
             (onMoveNode)="handleMoveNode($event)"
             (onToggle)="handleToggle($event)">
@@ -20,6 +21,7 @@
           </template>
           <template #treeListTemplate let-node="node" let-index="index">
             <alm-tree-list-item
+                [index]="index"
                 [node]="node"
                 (onSelect)="select($event)"
                 [template]="treeListItemTemplate">

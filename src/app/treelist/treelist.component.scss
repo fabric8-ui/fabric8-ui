@@ -1,15 +1,13 @@
 @import "../../assets/stylesheets/_base";
 
 .tree-list {
-/*
-  .node-drop-slot {
-    height: 4px;
+  &.list-group {
+    border-top: none;
   }
-  */
+
   .node-drop-slot.is-dragging-over {
     background-color: $color-pf-black-400;
     border: none;
-    //height: 66px;
   }
 
   .node-content-wrapper {

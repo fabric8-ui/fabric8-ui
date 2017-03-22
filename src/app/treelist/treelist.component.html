@@ -1,5 +1,5 @@
-<div class="list-group list-view-pf">
-  <Tree #tree class="tree-list"
+<div class="">
+  <Tree #tree class="tree-list list-group list-view-pf"
         [nodes]="nodes"
         [focused]="true"
         [options]="options"
@@ -18,17 +18,19 @@
               let-node="node"
               let-index="index"
               let-templates="templates">
-      <div
-          *ngIf="!node.isHidden"
+      <div *ngIf="!node.isHidden"
           class="tree-node tree-node-level-{{ node.level }}"
-          [class]="node.getClass()"
+          [ngClass]="node.getClass()"
           [class.tree-node-expanded]="node.isExpanded && node.hasChildren"
           [class.tree-node-collapsed]="node.isCollapsed && node.hasChildren"
           [class.tree-node-leaf]="node.isLeaf"
           [class.tree-node-active]="node.isActive"
           [class.tree-node-focused]="node.isFocused">
 
-        <TreeNodeDropSlot *ngIf="index === 0" [dropIndex]="index" [node]="node.parent"></TreeNodeDropSlot>
+        <TreeNodeDropSlot *ngIf="index === 0 && showDropSlot"
+          [dropIndex]="index"
+          [node]="node.parent">
+        </TreeNodeDropSlot>
 
         <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
           <TreeNodeExpander [node]="node" *ngIf="showExpander"></TreeNodeExpander>
@@ -48,7 +50,7 @@
         </div>
 
         <TreeNodeChildren [node]="node" [templates]="templates"></TreeNodeChildren>
-        <TreeNodeDropSlot [dropIndex]="index + 1" [node]="node.parent"></TreeNodeDropSlot>
+        <TreeNodeDropSlot [dropIndex]="index + 1" [node]="node.parent" *ngIf="showDropSlot"></TreeNodeDropSlot>
       </div>
     </template>
   </Tree>

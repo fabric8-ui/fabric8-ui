@@ -2,10 +2,24 @@
 
 .tree-list {
   .list-group-item {
+    display: block;
     border: none;
     &:first-child {
       border: none;
     }
+    &.tree-item-placeholder {
+      padding-top: 5px;
+    }
+  }
+
+  .node-drop-slot {
+    height: 5px;
+  }
+
+  .node-drop-slot.is-dragging-over {
+    background-color: $color-pf-black-400;
+    border: none;
+    height: 60px;
   }
 }
 
@@ -26,7 +40,7 @@
   }
   &.is-dragging-over {
     .list-group-item {
-      background-color: $color-pf-black-400;
+      background-color: $color-pf-black-200;
     }
   }
 }

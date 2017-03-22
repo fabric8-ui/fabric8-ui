@@ -1,6 +1,11 @@
-<div class="list-group-item" [class.tree-item-selected]="isSelected()" (click)="select($event)">
+<div class="list-group-item"
+     [class.tree-item-placeholder]="index !== 0"
+     [class.tree-item-selected]="isSelected()"
+     (click)="select($event)">
+  <TreeNodeDropSlot *ngIf="index === 0" [dropIndex]="index" [node]="node.parent"></TreeNodeDropSlot>
   <div class="tree-list-item">
     <TreeNodeExpander [node]="node"></TreeNodeExpander>
     <template [ngTemplateOutlet]="template" [ngOutletContext]="{ node: node, index: index }"></template>
   </div>
+  <TreeNodeDropSlot [dropIndex]="index + 1" [node]="node.parent"></TreeNodeDropSlot>
 </div>
