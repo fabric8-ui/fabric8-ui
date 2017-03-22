@@ -269,7 +269,7 @@ export class WorkItemService {
         this.workItemUrl = this.baseApiUrl + 'workitems';
         // this.workItemUrl = currentSpace.links.self + '/workitems';
         this.http
-          .get(this.workItemUrl + '/' + id, { headers: this.headers })
+          .get(this._currentSpace.links.self + '/workitems/' + id, { headers: this.headers })
           .subscribe((response) => {
             let wItem: WorkItem = response.json().data as WorkItem;
             this.resolveUsersForWorkItem(wItem);
