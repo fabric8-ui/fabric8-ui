@@ -826,9 +826,7 @@ export class WorkItemService {
   create(workItem: WorkItem): Observable<WorkItem> {
     let payload = JSON.stringify({data: workItem});
     if (this._currentSpace) {
-      // FIXME: make the URL great again (when we know the right API URL for this)!
-      this.workItemUrl = this.baseApiUrl + 'workitems';
-      // this.workItemUrl = currentSpace.links.self + '/workitems';
+      this.workItemUrl = this._currentSpace.links.self + '/workitems';
       return this.http
         .post(this.workItemUrl, payload, { headers: this.headers })
         .map(response => {
@@ -1196,7 +1194,7 @@ export class WorkItemService {
     let wiIndex = this.workItemIdIndexMap[workItemId];
     let prevItemId = '';
     let nextItemId = '';
-    if(wiIndex > 0){
+    if (wiIndex > 0){
       prevItemId = this.workItems[wiIndex - 1].id;
     }
 
