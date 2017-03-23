@@ -1,3 +1,4 @@
+import { AnalyticService } from './shared/analytics.service';
 import { ConfigStore } from './base/config.store';
 import { fabric8UIConfigProvider } from './shared/config/fabric8-ui-config.service';
 import './rxjs-extensions';
@@ -143,7 +144,8 @@ export type StoreType = {
       useExisting: NotificationsService
     },
     fabric8UIConfigProvider,
-    ConfigStore
+    ConfigStore,
+    AnalyticService
   ],
   schemas: [],
   bootstrap: [AppComponent]

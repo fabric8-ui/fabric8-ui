@@ -13,6 +13,8 @@ export class NotificationsService implements Notifications {
     .asObservable()
     .map(val => val as NotificationAction);
 
+  private _stream: Subject<Notification> = new Subject();
+
   constructor(private notificationService: NotificationService) {
   }
 
@@ -34,7 +36,12 @@ export class NotificationsService implements Notifications {
       notification.primaryAction,
       notification.moreActions
     );
+    this._stream.next(notification);
     return this._actionObserver;
+  }
+
+  get stream(): Observable<Notification> {
+    return this._stream.asObservable();
   }
 
   get current(): any[] {

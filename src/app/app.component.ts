@@ -1,3 +1,4 @@
+import { AnalyticService } from './shared/analytics.service';
 import { Spaces } from 'ngx-fabric8-wit';
 /*
  * Angular 2 decorators and services
@@ -30,8 +31,9 @@ export class AppComponent {
     private activatedRoute: ActivatedRoute,
     public notifications: NotificationsService,
     private loginService: LoginService,
-    // Inject spaces, to ensure it starts listening
-    private spaces: Spaces
+    // Inject services that need to start listening
+    private spaces: Spaces,
+    private analytics: AnalyticService
   ) {
 
   }
