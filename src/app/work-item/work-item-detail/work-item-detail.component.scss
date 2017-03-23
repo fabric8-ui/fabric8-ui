@@ -444,7 +444,6 @@ pre {
         border: none;
         border-bottom: 1px solid $color-pf-black-500;
         padding-left: em(20);
-        margin-right: em(20);
       }
 
       .item-ul {
@@ -492,6 +491,13 @@ pre {
       }
     }
   }
+  .btn-bar {
+    margin-left: 5px;
+    span {
+      z-index: 11;
+    }
+  }
+
 }
 
 @media (max-width: $grid-float-breakpoint){
