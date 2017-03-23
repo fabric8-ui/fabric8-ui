@@ -26,14 +26,14 @@ describe('Work board tests :: ', function () {
     boardPage = new WorkBoardPage(true);
   });
 
-  it('Verify Board elements are present -desktop ', function() {
+  it( 'Verify Board elements are present -desktop ', function() {
         var stateList = typesOfStatesList();
         var countstateList = totalCountOftypesOfStatesList();
         verifytypesOfStates(stateList,'false','false');
         verifytotalCountPertypesOfStates(countstateList,'false','false');
   });
 
-  it('Shuffle Board elements New to Open  -desktop ', function() {
+  it( 'Shuffle Board elements New to Open  -desktop ', function() {
         var stateList = typesOfStatesList();      
         boardPage.clickWithId("1");
         browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
@@ -49,7 +49,7 @@ describe('Work board tests :: ', function () {
 
   });
 
-  it('1.1 Shuffle Board elements Open to inProgress -desktop ', function() {
+  it( '1.1 Shuffle Board elements Open to inProgress -desktop ', function() {
         var stateList = typesOfStatesList();   
         boardPage.clickWithId("5");
         browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
@@ -65,7 +65,7 @@ describe('Work board tests :: ', function () {
 
   });
 
-  it('Shuffle Board elements inProgress- resolved  -desktop ', function() {
+  it( 'Shuffle Board elements inProgress- resolved  -desktop ', function() {
         var stateList = typesOfStatesList();  
         boardPage.clickWithIdAnyColumn("3","1");
         browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
@@ -81,7 +81,7 @@ describe('Work board tests :: ', function () {
 
   });
 
-  it('2.1 Shuffle Board elements inProgress- open -desktop ', function() {
+  it( '2.1 Shuffle Board elements inProgress- open -desktop ', function() {
         var stateList = typesOfStatesList();
         boardPage.clickWithIdAnyColumn("3","1");
         browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
@@ -96,6 +96,38 @@ describe('Work board tests :: ', function () {
         verifytotalCountPertypesOfStates(countstateList,'1','1');       
 
   });
+
+  it( 'Verify Board Filter elements are present -desktop ', function() {
+       expect(boardPage.getFilterWITButton().isPresent()).toBe(true);
+       expect(boardPage.getTextFilterWITButton()).toBe("Planner Item");
+       var list = ['User Story','Value Proposition','Fundamental','Experience','Scenario','Feature','Bug','Planner Item'];
+       for (var i=0;i<list.length;i++){
+            boardPage.clickFilterWITButton();
+            boardPage.clickWITFilterDropDownElements(list[i]);
+            expect(boardPage.getFilterWITButton().isPresent()).toBe(true);
+            expect(boardPage.getTextFilterWITButton()).toBe(list[i]);
+       }
+  });
+
+  it( 'Verify On change filters types represent correct data -desktop ', function() {
+        var list = ['Planner Item','User Story'];
+        //Few filters are pending due to : https://github.com/fabric8io/fabric8-planner/issues/1255
+      //  var list = ['User Story','Value Proposition','Fundamental','Experience','Scenario','Feature','Bug','Planner Item'];
+       for (var i=0;i<list.length;i++){
+            boardPage.clickFilterWITButton();
+            boardPage.clickWITFilterDropDownElements(list[i]);
+            expect(boardPage.getFilterWITButton().isPresent()).toBe(true);
+            expect(boardPage.getTextFilterWITButton()).toBe(list[i]);
+            countstateList = totalCountOftypesOfStatesList();
+            if(list[i]== 'Planner Item'){
+            verifytotalCountPertypesOfStates(countstateList,'false','false');
+            }
+            if(list[i]=='User Story'){
+              verifytotalCountPertypesOfStates(countstateList,'2','5'); 
+            }
+       }
+  });
+
   
 });
 

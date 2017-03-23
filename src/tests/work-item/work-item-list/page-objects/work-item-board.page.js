@@ -108,6 +108,18 @@ class WorkItemBoardPage {
     //For any Coulumn
     return element(by.xpath('.//*[@id="board_topWorkItems"]/div/div['+ column  +']/section/div[2]/div/div[' + index + ']/div[1]/div/span[2]')).click();
   }
+  getFilterWITButton (){
+    return element(by.id('wi-board-type'));
+  }
+  clickFilterWITButton (){
+    return this.getFilterWITButton().click();
+  }
+  getTextFilterWITButton  (){
+    return this.getFilterWITButton().getText();
+  }
+  clickWITFilterDropDownElements  (text){
+    return element(by.linkText(text)).click();
+  }
   
 }
 

@@ -215,11 +215,11 @@ export class SchemaMockGenerator {
                   'required' : true,
                   'type' : {
                      'values' : [
-                        'story-new',
-                        'story-open',
-                        'story-in progress',
-                        'story-resolved',
-                        'story-closed'
+                        'new',
+                        'open',
+                        'in progress',
+                        'resolved',
+                        'closed'
                      ],
                      'baseType' : 'string',
                      'kind' : 'enum'
