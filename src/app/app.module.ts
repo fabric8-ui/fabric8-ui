@@ -15,11 +15,12 @@ import { TabsModule, TooltipModule } from 'ng2-bootstrap';
 import { Broadcaster, Logger } from 'ngx-base';
 import {
   AuthenticationService,
-  UserService
+  UserService,
+  HttpService as HttpServiceLGC
 } from 'ngx-login-client';
 
 // Shared
-import { HttpService } from './shared/http-service';
+// import { HttpService } from './shared/http-service';
 import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
 import { GlobalSettings } from './shared/globals';
 import { ssoApiUrlProvider } from './shared/standalone/sso-api.provider';
@@ -106,11 +107,8 @@ if (process.env.ENV == 'inmemory') {
     serviceImports,
     DummySpace,
     {
-      provide: HttpService,
-      useFactory: (backend: XHRBackend, options: RequestOptions, auth: AuthenticationService) => {
-        return new HttpService(backend, options, auth);
-      },
-      deps: [XHRBackend, RequestOptions]
+      provide: Http,
+      useClass: HttpServiceLGC
     }
   ];
 }
