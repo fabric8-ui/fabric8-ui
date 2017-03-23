@@ -81,7 +81,7 @@ if (process.env.ENV == 'inmemory') {
     ssoApiUrlProvider,
     DummySpace,
     {
-      provide: HttpService,
+      provide: HttpServiceLGC,
       useClass: MockHttp
     }
   ];
