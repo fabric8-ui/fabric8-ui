@@ -59,12 +59,55 @@ class OpenShiftIoStartPage {
 
   /* Sign in button in nav bar */
   get signIn () {
-     return element(by.cssContainingText('.nav.navbar-nav.navbar-utility', 'Sign In'));
+     return element(by.cssContainingText('.nav.navbar-nav.navbar-utility', 'Log In'));
   }
   clickSignIn () {
      this.signIn.click();
      return new OpenShiftIoRHDLoginPage();
   }
+
+  /* Status icon */
+  get statusIcon () {
+     return element(by.cssContainingText('pficon.pficon-info', 'Status'));
+  }
+  clickStatusIcon () {
+     return this.statusIcon.click();
+  }
+
+  /* Platform status */
+  get platformStatus () {
+    return element(by.xpath("[.//text()[contains(.,'Platform')]]/.."));
+  }
+  clickPlatformStatus () {
+    return this.platformStatus.cliick();
+  }
+
+  /* Planner status */
+  get plannerStatus () {
+    return element(by.xpath("[.//text()[contains(.,'Planner')]]/.."));
+  }
+  clickPlannerStatus () {
+    return this.plannerStatus.cliick();
+  }
+
+  /* Che status */
+  get cheStatus () {
+    return element(by.xpath("[.//text()[contains(.,'Che')]]/.."));
+  }
+  clickCheStatus () {
+    return this.cheStatus.cliick();
+  }
+
+  /* Pipeline status */
+  get pipelineStatus () {
+    return element(by.xpath("[.//text()[contains(.,'Pipeline')]]/.."));
+  }
+  clickPipelineStatus () {
+    return this.pipelineStatus.cliick();
+  }
+
+
+
 
   /* UI Element for new users to register */
 
@@ -127,7 +170,7 @@ class OpenShiftIoStartPage {
 
   /* Login button */
   get loginButton () {
-     return element(by.css("#login"));
+     return element(by.cssContainingText('.btn.btn-default', 'LOG IN'));
   }
   clickLoginButton () {
      this.loginButton.click();
