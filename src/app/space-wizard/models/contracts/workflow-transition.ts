@@ -11,7 +11,7 @@ export interface IWorkflowTransition {
   /** The workflow step that is being transitioned to */
   to?: IWorkflowStep;
   /** Boolean indicating if the transition should continue or not */
-  continue: boolean;
+  canContinue: boolean;
   /** Misc contextual information */
   context?: IWorkflowTransitionContext;
   /** The workflow direction in which the transition is being made */

@@ -5,7 +5,7 @@ export interface IForgeInput {
   label: string;
   description?: string;
   note?:string;
-  class: string;
+  "class": string;
   value:any;// string|Array<string>;
   valueType?:string,
   valueChoices?: Array<IForgeValueChoice>;

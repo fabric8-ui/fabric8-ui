@@ -54,4 +54,4 @@ export class WorkflowStep implements IWorkflowStep {
   set workflow(value: IWorkflow) {
   }
 
-}
+};
