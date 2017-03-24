@@ -1,6 +1,3 @@
-import { AnalyticService } from './shared/analytics.service';
-import { ConfigStore } from './base/config.store';
-import { fabric8UIConfigProvider } from './shared/config/fabric8-ui-config.service';
 import './rxjs-extensions';
 
 import { NgModule, ApplicationRef } from '@angular/core';
@@ -57,11 +54,35 @@ import { authApiUrlProvider } from './shared/auth-api.provider';
 import { witApiUrlProvider } from './shared/wit-api.provider';
 import { ssoApiUrlProvider } from './shared/sso-api.provider';
 
+
 // Component Services
 import { ProfileService } from './profile/profile.service';
 import { Notifications } from 'ngx-base';
 import { SpaceService, Contexts, Spaces } from 'ngx-fabric8-wit';
 import { AuthUserResolve } from './shared/common.resolver';
+
+import { AnalyticService } from './shared/analytics.service';
+import { ConfigStore } from './base/config.store';
+import { fabric8UIConfigProvider } from './shared/config/fabric8-ui-config.service';
+import { Fabric8UIOnLogin } from './shared/runtime-console/fabric8-ui-onlogin.service';
+
+
+import {
+  // Base functionality for the runtime console
+  KubernetesStoreModule,
+  KubernetesRestangularModule,
+  PipelineModule,
+  OnLogin
+} from 'fabric8-runtime-console';
+import { RestangularModule } from 'ng2-restangular';
+
+import { Fabric8UIHttpService } from './shared/fabric8-ui-http.service';
+import { OAuthConfigStoreGuard } from './shared/runtime-console/oauth-config-store-guard.service';
+import { SpaceNamespaceScope } from './shared/runtime-console/space-namespace.scope';
+import { DevNamespaceScope } from 'fabric8-runtime-console/src/app/kubernetes/service/devnamespace.scope';
+import { SwitchableNamespaceScope } from './shared/runtime-console/switchable-namepsace.scope';
+import { NamespaceScope } from 'fabric8-runtime-console/src/app/kubernetes/service/namespace.scope';
+
 
 // Login
 
@@ -96,7 +117,10 @@ export type StoreType = {
     ReactiveFormsModule,
     WidgetsModule,
     // AppRoutingModule must appear last
-    AppRoutingModule
+    AppRoutingModule,
+    KubernetesStoreModule,
+    RestangularModule,
+    KubernetesRestangularModule
   ],
   declarations: [ // declare which components, directives and pipes belong to the module
     AppComponent,
@@ -135,9 +159,10 @@ export type StoreType = {
     AboutService,
     SpaceService,
     AuthUserResolve,
+    HttpService,
     {
       provide: Http,
-      useClass: HttpService
+      useClass: Fabric8UIHttpService
     },
     MenusService,
     NotificationsService,
@@ -147,7 +172,21 @@ export type StoreType = {
     },
     fabric8UIConfigProvider,
     ConfigStore,
-    AnalyticService
+    AnalyticService,
+    {
+      provide: OnLogin,
+      useClass: Fabric8UIOnLogin
+    },
+    {
+      provide: DevNamespaceScope,
+      useClass: SpaceNamespaceScope
+    },
+    SwitchableNamespaceScope,
+    {
+      provide: NamespaceScope,
+      useExisting: SwitchableNamespaceScope
+    },
+    OAuthConfigStoreGuard
   ],
   schemas: [],
   bootstrap: [AppComponent]

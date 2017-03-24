@@ -36,7 +36,7 @@ if [ -z "${WS_K8S_API_SERVER}" ]; then
   export WS_K8S_API_SERVER=${PROXIED_K8S_API_SERVER}
 fi
 if [ -z "${FABRIC8_PIPELINES_NAMESPACE}" ]; then
-  export FABRIC8_PIPELINES_NAMESPACE="-dsaas-jenkins"
+  export FABRIC8_PIPELINES_NAMESPACE="-development"
 fi
 
 echo "Configured to connect to kubernetes cluster at https://${PROXIED_K8S_API_SERVER}/"

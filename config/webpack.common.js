@@ -323,6 +323,10 @@ module.exports = function (options) {
       new CopyWebpackPlugin([
         {
           from: 'src/meta'
+        },
+        {
+          from: 'node_modules/fabric8-runtime-console/src/img',
+          to: 'img'
         }
       ]),
 

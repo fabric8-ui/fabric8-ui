@@ -31,7 +31,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       this.login.redirectToLogin(state.url);
       return Observable.of(false);
     } else {
-      return Observable.of(true);
+      return this.auth
+        .getOpenShiftToken()
+        .do(token => this.login.openShiftToken = token)
+        .map(() => true);
     }
   }
 

@@ -1,3 +1,4 @@
+import { runtimeConsoleImports } from './../shared/runtime-console/runtime-console';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,9 +8,20 @@ import { UniqueSpaceNameValidatorDirective, ValidSpaceNameValidatorDirective } f
 import { SpaceWizardComponent } from './space-wizard.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule],
-  declarations: [SpaceWizardComponent, UniqueSpaceNameValidatorDirective, ValidSpaceNameValidatorDirective],
-  exports: [SpaceWizardComponent, UniqueSpaceNameValidatorDirective]
+  imports: [
+    CommonModule,
+    FormsModule,
+    //runtimeConsoleImports
+  ],
+  declarations: [
+    SpaceWizardComponent,
+    UniqueSpaceNameValidatorDirective,
+    ValidSpaceNameValidatorDirective
+  ],
+  exports: [
+    SpaceWizardComponent,
+    UniqueSpaceNameValidatorDirective
+  ]
 })
 export class SpaceWizardModule {
 

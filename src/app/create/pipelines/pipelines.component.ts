@@ -1,12 +1,13 @@
-import { BuildConfigService } from 'fabric8-runtime-console/src/app/kubernetes/service/buildconfig.service';
-import { SwitchableNamespaceScope } from './switchable-namepsace.scope';
-import { Space, SpaceService } from 'ngx-fabric8-wit';
-import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService, UserService } from 'ngx-login-client';
 
+import { Observable } from 'rxjs';
+
+import { AuthenticationService, UserService } from 'ngx-login-client';
 import { ToolbarConfig, FilterConfig, FilterQuery, FilterEvent, Filter, SortEvent, SortField } from 'ngx-widgets';
+
+
+import { SwitchableNamespaceScope } from './switchable-namepsace.scope';
 
 import {
   BuildConfig,
@@ -25,11 +26,11 @@ import {
 export class PipelinesComponent implements OnInit {
 
   toolbarConfig: ToolbarConfig;
-
   private _apps: FilterQuery[] = [];
   private _codebases: FilterQuery[] = [];
   private _filteredPipelines: BuildConfig[] = [];
   private _allPipelines: BuildConfig[] = [];
+
   private _appliedFilters: Filter[] = [];
   private _ascending: boolean;
   private _currentSortField: SortField = {
@@ -42,10 +43,6 @@ export class PipelinesComponent implements OnInit {
     private router: Router,
     private authService: AuthenticationService,
     private userService: UserService,
-
-    // TODO HACK - Dummy Data loading
-
-    // TODO HACK - Fabric8 Runtime Console modularity
     private pipelinesStore: BuildConfigStore,
     private buildStore: BuildStore
   ) {
@@ -147,8 +144,14 @@ export class PipelinesComponent implements OnInit {
 
 
   ngOnInit() {
-    this.pipelinesStore.loadAll()
-      .combineLatest(this.buildStore.loadAll(), combineBuildConfigAndBuilds)
+    Observable.combineLatest(
+      this.pipelinesStore
+        .loadAll()
+        .distinctUntilChanged(),
+      this.buildStore
+        .loadAll()
+        .distinctUntilChanged(),
+      combineBuildConfigAndBuilds)
       .map(filterPipelines)
       .do(val => {
         (val as BuildConfig[])

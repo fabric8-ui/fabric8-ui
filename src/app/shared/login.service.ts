@@ -24,6 +24,8 @@ export class LoginService {
 
   private authUrl: string;  // URL to web api
 
+  public openShiftToken: string;
+
   constructor(
     private router: Router,
     private localStorage: LocalStorageService,
@@ -74,9 +76,11 @@ export class LoginService {
     } else if (result['token_json']) {
       // Handle the case that this is a login
       this.authService.logIn(result['token_json']);
+      this.authService.getOpenShiftToken().subscribe(token => this.openShiftToken);
     } else if (this.authService.isLoggedIn()) {
       // Handle the case the user is already logged in
       this.authService.onLogIn();
+      this.authService.getOpenShiftToken().subscribe(token => this.openShiftToken);
     }
   }
 
