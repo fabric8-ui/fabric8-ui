@@ -147,8 +147,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
           //Add a new work item
           this.addNewWI = true;
           this.headerEditable = true;
-          let type = id.substring((id.indexOf('?') + 1), id.length);
-          this.createWorkItemObj(type);
+          let type = this.route.queryParams.forEach(params => {
+            this.createWorkItemObj(params['type']);
+          });
           this.getAllUsers();
         } else {
           this.addNewWI = false;

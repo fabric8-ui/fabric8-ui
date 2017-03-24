@@ -71,6 +71,6 @@ export class WorkItemDetailAddTypeSelectorComponent implements OnInit {
 
   onChangeType(type: string) {
     this.showTypesOptions = false;
-    this.router.navigateByUrl(this.router.url + '/detail/new?' + type);
+    this.router.navigateByUrl(this.router.url + '/detail/new?type=' + type);
   }
 }
