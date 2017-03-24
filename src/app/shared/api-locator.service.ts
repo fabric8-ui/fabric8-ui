@@ -7,7 +7,8 @@ export class ApiLocatorService {
     [
       ['wit', 'FABRIC8_WIT_API_URL'],
       ['recommender', 'FABRIC8_RECOMMENDER_API_URL'],
-      ['sso', 'FABRIC8_SSO_API_URL']
+      ['sso', 'FABRIC8_SSO_API_URL'],
+      ['forge', 'FABRIC8_FORGE_API_URL']
 
     ]
   );
@@ -15,7 +16,8 @@ export class ApiLocatorService {
   readonly DEFAULT_API_PREFIXES = new Map<string, string>([
     ['wit', 'api'],
     ['recommender', 'recommender'],
-    ['sso', 'sso']
+    ['sso', 'sso'],
+    ['forge', 'forge']
   ]);
 
   readonly DEFAULT_API_PATHS = new Map<string, string>([
@@ -32,6 +34,11 @@ export class ApiLocatorService {
 
   get witApiUrl(): string {
     return this.buildApiUrl('wit');
+  }
+  
+  get forgeApiUrl(): string {
+    let tmp=this.buildApiUrl('forge');
+    return tmp
   }
 
   get ssoApiUrl(): string {

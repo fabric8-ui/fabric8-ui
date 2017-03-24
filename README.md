@@ -11,8 +11,14 @@ Make sure you set the URL to the services. For UI development, we recommend conn
 To connect to the dev enviornment instances: 
 * `export FABRIC8_WIT_API_URL="http://api.prod-preview.openshift.io/api/"`
 * `export FABRIC8_RECOMMENDER_API_URL="http://api-bayesian.dev.rdu2c.fabric8.io/api/v1/"`
+* `export FABRIC8_FORGE_API_URL="https://forge.api.prod-preview.openshift.io"`
+
 
 to your `.bash_profile` and reload the shell.
+
+#### Note: When adding new environment variables for new api's that are needed in the code:
+You will need to update  /config/webpack.[dev|prod|...].js in order for the correct values to be picked up in the webpack build process.
+ 
 
 ## VS Code
 

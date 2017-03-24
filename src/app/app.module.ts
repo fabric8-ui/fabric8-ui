@@ -53,6 +53,7 @@ import { recommenderApiUrlProvider } from './shared/recommender-api.provider';
 import { authApiUrlProvider } from './shared/auth-api.provider';
 import { witApiUrlProvider } from './shared/wit-api.provider';
 import { ssoApiUrlProvider } from './shared/sso-api.provider';
+import { forgeApiUrlProvider } from './shared/forge-api.provider';
 
 
 // Component Services
@@ -148,6 +149,7 @@ export type StoreType = {
     },
     ContextResolver,
     DummyService,
+    forgeApiUrlProvider,
     Logger,
     LoginService,
     ProfileService,
