@@ -17,7 +17,7 @@ export class ApiLocatorService {
     ['wit', 'api'],
     ['recommender', 'recommender'],
     ['sso', 'sso'],
-    ['forge', 'forge']
+    ['forge', 'forge.api']
   ]);
 
   readonly DEFAULT_API_PATHS = new Map<string, string>([
@@ -35,7 +35,7 @@ export class ApiLocatorService {
   get witApiUrl(): string {
     return this.buildApiUrl('wit');
   }
-  
+
   get forgeApiUrl(): string {
     let tmp=this.buildApiUrl('forge');
     return tmp
