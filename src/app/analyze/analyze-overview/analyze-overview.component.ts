@@ -1,8 +1,11 @@
-import { Space, Contexts, SpaceService } from 'ngx-fabric8-wit';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Observable } from 'rxjs/Observable';
+import { Space, Contexts, SpaceService, Spaces } from 'ngx-fabric8-wit';
 import { Broadcaster } from 'ngx-base';
+
+import { SpaceNamespaceService } from './../../shared/runtime-console/space-namespace.service';
 
 @Component({
   selector: 'alm-analyzeOverview',
@@ -19,7 +22,8 @@ export class AnalyzeOverviewComponent {
     private router: Router,
     context: Contexts,
     private spaceService: SpaceService,
-    private broadcaster: Broadcaster
+    private broadcaster: Broadcaster,
+    private spaceNamespaceService: SpaceNamespaceService,
   ) {
     context.current.subscribe(val => this.space = val.space);
   }
@@ -30,6 +34,7 @@ export class AnalyzeOverviewComponent {
 
   saveDescription() {
     this.spaceService.update(this.space);
+    this.spaceNamespaceService.updateConfigMap(Observable.of(this.space)).subscribe();
   }
 
 }

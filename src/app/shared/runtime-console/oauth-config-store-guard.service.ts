@@ -1,4 +1,3 @@
-import { OAuthConfigStore } from 'fabric8-runtime-console/src/app/kubernetes/store/oauth-config-store';
 import { Injectable } from '@angular/core';
 import {
   CanActivate,
@@ -9,6 +8,8 @@ import {
 
 import { Observable } from 'rxjs';
 
+import { Fabric8RuntimeConsoleService } from './fabric8-runtime-console.service';
+
 
 // Basic guard that checks the user is logged in
 
@@ -16,17 +17,11 @@ import { Observable } from 'rxjs';
 export class OAuthConfigStoreGuard implements CanActivate, CanActivateChild {
 
   constructor(
-    private store: OAuthConfigStore
+    private fabric8RuntimeConsole: Fabric8RuntimeConsoleService
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.store.loading
-      // Wait until loaded
-      .skipWhile(loading => loading)
-      // Take the first false as done
-      .first()
-      // Invert, as we can now activate
-      .map(loading => !loading);
+    return this.fabric8RuntimeConsole.loadingOAuthConfigStore();
   }
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {

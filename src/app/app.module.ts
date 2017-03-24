@@ -73,16 +73,18 @@ import {
   KubernetesStoreModule,
   KubernetesRestangularModule,
   PipelineModule,
-  OnLogin
+  OnLogin,
+  DevNamespaceScope,
+  NamespaceScope
 } from 'fabric8-runtime-console';
 import { RestangularModule } from 'ng2-restangular';
 
 import { Fabric8UIHttpService } from './shared/fabric8-ui-http.service';
 import { OAuthConfigStoreGuard } from './shared/runtime-console/oauth-config-store-guard.service';
 import { SpaceNamespaceScope } from './shared/runtime-console/space-namespace.scope';
-import { DevNamespaceScope } from 'fabric8-runtime-console/src/app/kubernetes/service/devnamespace.scope';
 import { SwitchableNamespaceScope } from './shared/runtime-console/switchable-namepsace.scope';
-import { NamespaceScope } from 'fabric8-runtime-console/src/app/kubernetes/service/namespace.scope';
+import { Fabric8RuntimeConsoleService } from './shared/runtime-console/fabric8-runtime-console.service';
+import { SpaceNamespaceService } from './shared/runtime-console/space-namespace.service';
 
 
 // Login
@@ -188,7 +190,9 @@ export type StoreType = {
       provide: NamespaceScope,
       useExisting: SwitchableNamespaceScope
     },
-    OAuthConfigStoreGuard
+    OAuthConfigStoreGuard,
+    SpaceNamespaceService,
+    Fabric8RuntimeConsoleService
   ],
   schemas: [],
   bootstrap: [AppComponent]

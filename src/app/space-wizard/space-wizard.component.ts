@@ -15,6 +15,7 @@ import {
 } from 'ngx-fabric8-wit';
 import { User, HttpService, UserService } from 'ngx-login-client';
 
+import { SpaceNamespaceService } from './../shared/runtime-console/space-namespace.service';
 import { DummyService } from '../shared/dummy.service';
 import { Modal } from '../shared-component/modal/modal';
 
@@ -74,7 +75,9 @@ export class SpaceWizardComponent implements OnInit {
     private userService: UserService,
     context: Contexts,
     private workflowFactory: WorkflowFactory,
-    loggerFactory: LoggerFactory) {
+    loggerFactory: LoggerFactory,
+    private spaceNamespaceService: SpaceNamespaceService
+    ) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, SpaceWizardComponent.instanceCount++);
     if (logger) {
       this.log = logger;
@@ -197,7 +200,12 @@ export class SpaceWizardComponent implements OnInit {
     space.attributes.name = space.name;
     this.userService.getUser().switchMap(user => {
       space.relationships['owned-by'].data.id = user.id;
-      return this.spaceService.create(space);
+      return this.spaceService.create(space)
+    })
+    .switchMap(createdSpace => {
+      return this.spaceNamespaceService
+        .updateConfigMap(Observable.of(createdSpace))
+        .map(() => createdSpace)
     })
       .subscribe(createdSpace => {
         this.configurator.space = createdSpace;
