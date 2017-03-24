@@ -274,7 +274,7 @@ export class Workflow implements IWorkflow {
     this.workflowTransitionSubject.next(transition);
     this.log(`workflowTransitionShouldContinue = ${transition.canContinue}`);
     if (transition.canContinue === false) {
-      this.log({ message: `Note: workflow will not proceed from '${transition.from ? transition.from.name : "null"}' to '${transition.to ? transition.to.name : "null"}' because transition.continue=${transition.canContinue}`, warning: true });
+      this.log({ message: `Note: workflow will not proceed from '${transition.from ? transition.from.name : "null"}' to '${transition.to ? transition.to.name : "null"}' because transition.canContinue=${transition.canContinue}`, warning: true });
 
     }
     return transition;

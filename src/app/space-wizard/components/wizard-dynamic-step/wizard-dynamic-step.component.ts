@@ -217,7 +217,7 @@ export class WizardDynamicStepComponent implements OnInit, OnDestroy, OnChanges 
                     this.fieldSet = response.payload;
                   })
                 }
-                // transition.continue = false to prevent transitions;
+                // transition.canContinue = false to prevent transitions;
                 break;
               }
           }
