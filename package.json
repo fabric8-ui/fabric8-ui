@@ -190,6 +190,7 @@
   },
   "release": {
     "branch": "master",
+    "debug": false,
     "verifyConditions": {
       "path": "./node_modules/@krux/condition-jenkins"
     }
