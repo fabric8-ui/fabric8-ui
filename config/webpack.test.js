@@ -32,17 +32,13 @@ const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL || '
 module.exports = function (options) {
   return {
 
-    entry: {
-      'app': './index.ts'
-    },
-
     /**
      * Source map for Karma from the help of karma-sourcemap-loader &  karma-webpack
      *
      * Do not change, leave as is or it wont work.
      * See: https://github.com/webpack/karma-webpack#source-maps
      */
-    devtool: 'inline-source-map',
+    //devtool: 'inline-source-map',
 
     /**
      * Options affecting the resolving of modules.
@@ -88,15 +84,15 @@ module.exports = function (options) {
          *
          * See: https://github.com/webpack/source-map-loader
          */
-        {
-          test: /\.js$/,
-          use: ['source-map-loader'],
-          exclude: [
-            // these packages have problems with their sourcemaps
-            helpers.root('node_modules/rxjs'),
-            helpers.root('node_modules/@angular')
-          ]
-        },
+        // {
+        //   test: /\.js$/,
+        //   use: ['source-map-loader'],
+        //   exclude: [
+        //     // these packages have problems with their sourcemaps
+        //     helpers.root('node_modules/rxjs'),
+        //     helpers.root('node_modules/@angular')
+        //   ]
+        // },
 
         /**
          * Typescript loader support for .ts and Angular 2 async routes via .async.ts
@@ -106,8 +102,15 @@ module.exports = function (options) {
         {
           test: /\.ts$/,
           use: [
-            'awesome-typescript-loader',
-            'angular2-template-loader'
+            {
+              loader: "awesome-typescript-loader",
+              options: {
+                configFileName: 'tsconfig-test.json'
+              }
+            },
+            {
+              loader: "angular2-template-loader"
+            }
           ],
           exclude: [/\.e2e\.ts$/]
         },
