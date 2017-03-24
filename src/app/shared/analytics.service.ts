@@ -54,13 +54,17 @@ export class AnalyticService {
       .subscribe(user => {
         if (user) {
           this.identifyUser(user);
-          this.analytics.track('log in', {
+          this.analytics.track('logged in', {
             url: this.router.url
           });
         } else {
-          this.analytics.track('log out');
+          this.analytics.track('logged out');
         }
       });
+
+    this.broadcaster.on('login').subscribe(() =>
+      this.analytics.track('login')
+    );
 
     // Context change
     this.contexts.current.subscribe(context => {
