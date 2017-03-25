@@ -33,6 +33,7 @@ const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const BUILD_NUMBER = process.env.BUILD_NUMBER;
 const BUILD_TIMESTAMP = process.env.BUILD_TIMESTAMP;
 const BUILD_VERSION = process.env.BUILD_VERSION;
+const FABRIC8_BRANDING = process.env.FABRIC8_BRANDING || 'fabric8';
 
 const OSO_CORS_PROXY = {
   target: `https://${process.env.KUBERNETES_SERVICE_HOST}:${process.env.KUBERNETES_SERVICE_PORT}`,
@@ -62,6 +63,7 @@ const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
   BUILD_NUMBER: BUILD_NUMBER,
   BUILD_TIMESTAMP: BUILD_TIMESTAMP,
   BUILD_VERSION: BUILD_VERSION,
+  FABRIC8_BRANDING: FABRIC8_BRANDING
 });
 
 console.log(helpers.nodeModulePath('fabric8-planner'));
@@ -185,7 +187,8 @@ module.exports = function (options) {
           'PUBLIC_PATH': JSON.stringify(METADATA.PUBLIC_PATH),
           'BUILD_NUMBER': JSON.stringify(BUILD_NUMBER),
           'BUILD_TIMESTAMP': JSON.stringify(BUILD_TIMESTAMP),
-          'BUILD_VERSION': JSON.stringify(BUILD_VERSION)
+          'BUILD_VERSION': JSON.stringify(BUILD_VERSION),
+          'FABRIC8_BRANDING': JSON.stringify(FABRIC8_BRANDING)
         }
       }),
 

@@ -3,6 +3,7 @@
  */
 
 const helpers = require('./helpers');
+const branding = require('./branding');
 const webpackMerge = require('webpack-merge'); // used to merge webpack configs
 const commonConfig = require('./webpack.common.js'); // the settings that are common to prod and dev
 const stringify = require('json-stringify');
@@ -14,6 +15,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
@@ -39,6 +41,7 @@ const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const BUILD_NUMBER = process.env.BUILD_NUMBER;
 const BUILD_TIMESTAMP = process.env.BUILD_TIMESTAMP;
 const BUILD_VERSION = process.env.BUILD_VERSION;
+const FABRIC8_BRANDING = process.env.FABRIC8_BRANDING || 'fabric8';
 
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8080;
@@ -56,12 +59,13 @@ const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
   PUBLIC_PATH: PUBLIC_PATH,
   BUILD_NUMBER: BUILD_NUMBER,
   BUILD_TIMESTAMP: BUILD_TIMESTAMP,
-  BUILD_VERSION: BUILD_VERSION
+  BUILD_VERSION: BUILD_VERSION,
+  FABRIC8_BRANDING: FABRIC8_BRANDING
 });
 
 module.exports = function (env) {
   // stringify can't cope with undefined
-  console.log('The env from the webpack.prod config: ' + (env ? stringify(env , null, 2) : env));
+  console.log('The env from the webpack.prod config: ' + (env ? stringify(env, null, 2) : env));
   return webpackMerge(commonConfig({ env: ENV }), {
 
     /**
@@ -197,6 +201,7 @@ module.exports = function (env) {
           'BUILD_NUMBER': stringify(METADATA.BUILD_NUMBER),
           'BUILD_TIMESTAMP': stringify(METADATA.BUILD_TIMESTAMP),
           'BUILD_VERSION': stringify(METADATA.BUILD_VERSION),
+          'FABRIC8_BRANDING': stringify(METADATA.FABRIC8_BRANDING)
         }
       }),
 
@@ -204,8 +209,12 @@ module.exports = function (env) {
        * Generate FavIcons from the master svg in all formats
        */
       new FaviconsWebpackPlugin({
-        logo: './src/assets/icon/fabric8_icon.svg',
+        logo: branding.assets[METADATA.FABRIC8_BRANDING].favicon.path,
         prefix: 'assets/icons-[hash]/'
+      }),
+
+      new HtmlWebpackPlugin({
+        title: branding.assets[METADATA.FABRIC8_BRANDING].title.prefix,
       }),
 
       /**

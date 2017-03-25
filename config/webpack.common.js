@@ -5,6 +5,7 @@
 const webpack = require('webpack');
 const helpers = require('./helpers');
 const ngtools = require('@ngtools/webpack');
+const branding = require('./branding');
 var path = require('path');
 var stringify = require('json-stringify');
 
