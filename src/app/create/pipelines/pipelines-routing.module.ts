@@ -9,11 +9,7 @@ import { PipelinesComponent } from './pipelines.component';
 const routes: Routes = [
   {
     path: '',
-    component: PipelinesComponent,
-    canActivate: [
-      AuthGuard,
-      OAuthConfigStoreGuard
-    ]
+    component: PipelinesComponent
   }
 ];
 

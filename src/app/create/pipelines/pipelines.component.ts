@@ -1,3 +1,4 @@
+import { Fabric8RuntimeConsoleService } from './../../shared/runtime-console/fabric8-runtime-console.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -44,7 +45,8 @@ export class PipelinesComponent implements OnInit {
     private authService: AuthenticationService,
     private userService: UserService,
     private pipelinesStore: BuildConfigStore,
-    private buildStore: BuildStore
+    private buildStore: BuildStore,
+    private fabric8RuntimeConsoleService: Fabric8RuntimeConsoleService
   ) {
 
     this.toolbarConfig = {
@@ -144,14 +146,17 @@ export class PipelinesComponent implements OnInit {
 
 
   ngOnInit() {
-    Observable.combineLatest(
-      this.pipelinesStore
-        .loadAll()
-        .distinctUntilChanged(),
-      this.buildStore
-        .loadAll()
-        .distinctUntilChanged(),
-      combineBuildConfigAndBuilds)
+    this.fabric8RuntimeConsoleService
+      .loading()
+      .switchMap(() =>
+        Observable.combineLatest(
+          this.pipelinesStore
+            .loadAll()
+            .distinctUntilChanged(),
+          this.buildStore
+            .loadAll()
+            .distinctUntilChanged(),
+          combineBuildConfigAndBuilds))
       .map(filterPipelines)
       .do(val => {
         (val as BuildConfig[])
