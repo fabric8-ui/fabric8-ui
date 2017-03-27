@@ -31,6 +31,7 @@ var waitTime = 30000;
  it('Verify start coding is visible when code base is presrent - Desktop', function () {
     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
     expect(detailPage.startCodingElement.isPresent()).toBe(true);
+    browser.wait(until.textToBePresentInElement((detailPage.startCodingDiv()), 'Start coding'), waitTime);
     expect(detailPage.startCodingDiv().getText()).toBe('</> Start coding');
    }); 
  it('Verify start coding is disable when creating new item  - Desktop', function () {

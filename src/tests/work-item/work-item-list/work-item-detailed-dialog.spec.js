@@ -33,48 +33,48 @@ describe('Work item list', function () {
     testSupport.setTestSpace(page);
   });
 
- it('Create WorkItem and creatorname and image is relecting', function () {
-   page.clickDetailedDialogButton();
-   var detailPage = page.clickDetailedIcon("userstory");
+// it('Create WorkItem and creatorname and image is relecting', function () {
+//   page.clickDetailedDialogButton();
+//   var detailPage = page.clickDetailedIcon("userstory");
+//
+//   browser.wait(until.elementToBeClickable(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItemDetailTitle');   
+//   detailPage.setWorkItemDetailTitle (workItemTitle, false);
+//
+//   detailPage.clickWorkItemTitleSaveIcon();
+//   detailPage.clickWorkItemDetailDescription()
+//   detailPage.setWorkItemDetailDescription (workItemDescription, true);
+//   detailPage.clickWorkItemDescriptionSaveIcon();
+//   expect(detailPage.getCreatorUsername()).toBe('Example User 0');
+//   expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);     
+//   detailPage.clickWorkItemDetailCloseButton();
+//   browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
+//   expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
+// });
 
-   browser.wait(until.elementToBeClickable(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItemDetailTitle');   
-   detailPage.setWorkItemDetailTitle (workItemTitle, false);
-
-   detailPage.clickWorkItemTitleSaveIcon();
-   detailPage.clickWorkItemDetailDescription()
-   detailPage.setWorkItemDetailDescription (workItemDescription, true);
-   detailPage.clickWorkItemDescriptionSaveIcon();
-   expect(detailPage.getCreatorUsername()).toBe('Example User 0');
-   expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);     
-   detailPage.clickWorkItemDetailCloseButton();
-   browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
-   expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
- });
-
- it('Edit and check WorkItem , creatorname and image is relecting', function () {
-   page.clickDetailedDialogButton();
-   var detailPage = page.clickDetailedIcon("userstory");
-
-   browser.wait(until.elementToBeClickable(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItemDetailTitle'); 
-   detailPage.setWorkItemDetailTitle (workItemTitle, false);
-
-   detailPage.clickWorkItemTitleSaveIcon();
-   detailPage.clickWorkItemDetailDescription()
-   detailPage.setWorkItemDetailDescription (workItemDescription, true);
-   detailPage.clickWorkItemDescriptionSaveIcon();
-   expect(detailPage.getCreatorUsername()).toBe('Example User 0');
-   expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);     
-   detailPage.clickWorkItemDetailCloseButton();
-   browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
-   expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
-   page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
-      page.clickWorkItemTitle(page.firstWorkItem, text);
-      browser.wait(until.textToBePresentInElement(detailPage.creatorUsername, 'Example User 0'), constants.WAIT, 'Failed to find creatorUsername');   
-      expect(detailPage.getCreatorUsername()).toBe('Example User 0');
-      expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);  
-      expect(detailPage.getImageURL()).toBe('https://avatars.githubusercontent.com/u/2410471?v=3&s=20');
-   });
- });
+// it('Edit and check WorkItem , creatorname and image is relecting', function () {
+//   page.clickDetailedDialogButton();
+//   var detailPage = page.clickDetailedIcon("userstory");
+//
+//   browser.wait(until.elementToBeClickable(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItemDetailTitle'); 
+//   detailPage.setWorkItemDetailTitle (workItemTitle, false);
+//
+//   detailPage.clickWorkItemTitleSaveIcon();
+//   detailPage.clickWorkItemDetailDescription()
+//   detailPage.setWorkItemDetailDescription (workItemDescription, true);
+//   detailPage.clickWorkItemDescriptionSaveIcon();
+//   expect(detailPage.getCreatorUsername()).toBe('Example User 0');
+//   expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);     
+//   detailPage.clickWorkItemDetailCloseButton();
+//   browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
+//   expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
+//   page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
+//      page.clickWorkItemTitle(page.firstWorkItem, text);
+//      browser.wait(until.textToBePresentInElement(detailPage.creatorUsername, 'Example User 0'), constants.WAIT, 'Failed to find creatorUsername');   
+//      expect(detailPage.getCreatorUsername()).toBe('Example User 0');
+//      expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);  
+//      expect(detailPage.getImageURL()).toBe('https://avatars.githubusercontent.com/u/2410471?v=3&s=20');
+//   });
+// });
  it('check Creator is readonly - desktop', function () {
    page.clickDetailedDialogButton();
    var detailPage = page.clickDetailedIcon("userstory");

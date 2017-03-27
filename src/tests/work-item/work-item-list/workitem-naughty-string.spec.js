@@ -36,7 +36,8 @@ var UnicodeFont = "Ｔｈｅ ｑｕｉｃｋ ｂｒｏｗｎ 𝐟𝐨𝐱 𝐣�
 var UnicodeNumbers = "１２３١٢٣";
 
   beforeEach(function () {
-    testSupport.setBrowserMode('phone');
+    testSupport.setBrowserMode('desktop');
+    browser.ignoreSynchronization = true;
     page = new WorkItemListPage(true);
     testSupport.setTestSpace(page);
   });
@@ -77,13 +78,14 @@ var createWorkItem = function(theText) {
    browser.wait(until.visibilityOf(detailPage.workItemTitleSaveIcon), waitTime, 'Failed to find workItemList');
    detailPage.clickWorkItemTitleSaveIcon();
 
-   detailPage.clickWorkItemDetailDescription();
-   browser.wait(until.visibilityOf(detailPage.workItemDetailDescription), waitTime, 'Failed to find workItemList');
-   detailPage.setWorkItemDetailDescription (theText, false);
-   detailPage.clickWorkItemDescriptionSaveIcon();
+// Commenting out due to: https://github.com/fabric8io/fabric8-planner/issues/1342
+//   detailPage.clickWorkItemDetailDescription();
+//   browser.wait(until.visibilityOf(detailPage.workItemDetailDescription), waitTime, 'Failed to find workItemList');
+//   detailPage.setWorkItemDetailDescription (theText, false);
+//   detailPage.clickWorkItemDescriptionSaveIcon();
 
    expect(detailPage.clickWorkItemDetailTitle.getText()).toBe(theText);
-   expect(detailPage.workItemDetailDescription.getText()).toBe(theText);
+//   expect(detailPage.workItemDetailDescription.getText()).toBe(theText);
 
    detailPage.clickWorkItemDetailCloseButton();
    browser.wait(until.visibilityOf(page.firstWorkItem), waitTime, 'Failed to find workItemList');

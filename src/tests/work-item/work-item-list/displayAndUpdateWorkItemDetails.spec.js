@@ -599,7 +599,8 @@ it('Verify how many work item type exists in drop down - desktop', function() {
         browser.wait(until.elementToBeClickable(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItem Detail Title');   
         detailPage.setWorkItemDetailTitle (workItemTitle, false);
 
-        detailPage.clickWorkItemTitleSaveIcon();
+//        detailPage.clickWorkItemTitleSaveIcon();
+expect(detailPage.workItemTitleSaveIconById().isPresent()).toBe(true);
         expect(detailPage.workItemDetailDescriptionById().getText()).not.toBe("undefined");
      });
 
