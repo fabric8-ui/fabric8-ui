@@ -1,5 +1,6 @@
 import {
   Component,
+  ContentChild,
   OnInit,
   TemplateRef,
   ViewChild,
@@ -38,9 +39,9 @@ const actionMapping: IActionMapping = {
   templateUrl: './treelist-example.component.html'
 })
 export class TreeListExampleComponent implements OnInit {
-  @ViewChild('treeListItemTemplate') treeListItemTemplate: TemplateRef<any>;
-  @ViewChild('treeListLoadTemplate') treeListLoadTemplate: TemplateRef<any>;
-  @ViewChild('treeListTemplate') treeListTemplate: TemplateRef<any>;
+  @ContentChild('treeListItemTemplate') treeListItemTemplate: TemplateRef<any>;
+  @ContentChild('treeListLoadTemplate') treeListLoadTemplate: TemplateRef<any>;
+  @ContentChild('treeListTemplate') treeListTemplate: TemplateRef<any>;
   @ViewChild('treeList') treeList: TreeListComponent;
 
   actionsText: string = "";

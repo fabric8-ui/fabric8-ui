@@ -200,10 +200,10 @@ export class ToolbarExampleComponent implements OnInit {
           title: 'Do something else'
         },
         {
+          disabled: true,
           id: 'moreActions3',
           name: 'Disabled Action',
           title: 'Unavailable action',
-          isDisabled: true
         },
         {
           id: 'moreActions4',
@@ -213,7 +213,7 @@ export class ToolbarExampleComponent implements OnInit {
         {
           id: 'moreActions5',
           name: '',
-          isSeparator: true
+          separator: true
         },
         {
           id: 'moreActions6',

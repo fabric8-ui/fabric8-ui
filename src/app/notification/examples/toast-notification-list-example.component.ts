@@ -62,8 +62,8 @@ export class ToastNotificationListExampleComponent implements OnInit {
       name: 'Another Action',
       title: 'Do something else'
     },{
+      disabled: true,
       id: 'moreActions3',
-      isDisabled: true,
       name: 'Disabled Action',
       title: 'Unavailable action'
     },{
@@ -72,7 +72,7 @@ export class ToastNotificationListExampleComponent implements OnInit {
       title: ''
     },{
       id: 'moreActions5',
-      isSeparator: true
+      separator: true
     },{
       id: 'moreActions6',
       name: 'Grouped Action 1',

@@ -49,7 +49,7 @@ export class ToastNotificationComponent implements OnInit {
   // Action functions
 
   handleAction(action: Action): void {
-    if (action && action.isDisabled !== true) {
+    if (action && action.disabled !== true) {
       this.onActionSelect.emit({
         action: action,
         notification: this.notification

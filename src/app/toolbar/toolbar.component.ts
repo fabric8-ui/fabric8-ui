@@ -79,7 +79,7 @@ export class ToolbarComponent implements OnInit {
   // Action functions
 
   handleAction(action: Action): void {
-    if (action && action.isDisabled !== true) {
+    if (action && action.disabled !== true) {
       this.onActionSelect.emit(action);
     }
   }
@@ -141,7 +141,7 @@ export class ToolbarComponent implements OnInit {
 
   viewSelected (view: View): void {
     this.config.viewsConfig.currentView = view;
-    if (!view.isDisabled) {
+    if (!view.disabled) {
       this.onViewSelect.emit(view);
     }
   }

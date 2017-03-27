@@ -20,7 +20,7 @@
              (keypress)="onValueKeyPress($event)"/>
     </div>
     <div *ngIf="currentField.type === 'select'">
-      <div class="btn-group bootstrap-select form-control filter-select" dropdown >
+      <div class="btn-group bootstrap-select form-control filter-select" dropdown>
         <button type="button" class="btn btn-default" dropdownToggle>
           <span class="filter-option pull-left">{{currentValue || currentField.placeholder}}</span>
           <span class="caret"></span>

@@ -62,10 +62,10 @@ describe('Toolbar component - ', () => {
             title: 'Do something else'
           },
           {
+            disabled: true,
             id: 'moreActions3',
             name: 'Disabled Action',
             title: 'Unavailable action',
-            isDisabled: true
           },
           {
             id: 'moreActions4',
@@ -75,7 +75,7 @@ describe('Toolbar component - ', () => {
           {
             id: 'moreActions5',
             name: '',
-            isSeparator: true
+            separator: true
           },
           {
             id: 'moreActions6',
@@ -564,7 +564,7 @@ describe('Toolbar component - ', () => {
     fixture.detectChanges();
     expect(action).toBe(config.actionsConfig.primaryActions[1]);
 
-    config.actionsConfig.primaryActions[1].isDisabled = true;
+    config.actionsConfig.primaryActions[1].disabled = true;
     fixture.detectChanges();
     action = null;
 

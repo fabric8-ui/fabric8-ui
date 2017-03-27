@@ -15,7 +15,7 @@
                   *ngFor="let action of config.actionsConfig.primaryActions"
                   title="{{action.title}}"
                   (click)="handleAction(action)"
-                  [disabled]="action.isDisabled === true">
+                  [disabled]="action.disabled === true">
             {{action.name}}
           </button>
         </span>
@@ -29,9 +29,9 @@
           </button>
           <ul dropdownMenu aria-labelledby="dropdownKebab">
             <li *ngFor="let action of config.actionsConfig.moreActions"
-                [attr.role]="action.isSeparator === true ? 'separator' : 'menuitem'"
-                [ngClass]="{'divider': action.isSeparator === true, 'disabled': action.isDisabled === true}">
-              <a *ngIf="action.isSeparator !== true"
+                [attr.role]="action.separator === true ? 'separator' : 'menuitem'"
+                [ngClass]="{'divider': action.separator === true, 'disabled': action.disabled === true}">
+              <a *ngIf="action.separator !== true"
                  class="secondary-action"
                  title="{{action.title}}"
                  (click)="handleAction(action)">
@@ -47,7 +47,7 @@
           <template [ngTemplateOutlet]="viewsTemplate" [ngOutletContext]="{}"></template>
           <span *ngIf="config.viewsConfig">
             <button *ngFor="let view of config.viewsConfig.views" class="btn btn-link"
-                    [ngClass]="{'active': isViewSelected(view), 'disabled': view.isDisabled === true}"
+                    [ngClass]="{'active': isViewSelected(view), 'disabled': view.disabled === true}"
                     title={{view.title}}  (click)="viewSelected(view)">
               <i class="{{view.iconClass}}"></i>
             </button>
