@@ -44,7 +44,7 @@ export class WorkItemTypeControlService {
         this.log.log('Skipping form control for ' + key);      
       } else {
         this.log.log('Generating form control for ' + key);
-        group[key] = fields[key].required ? new FormControl('', Validators.required) : new FormControl('');
+        group[key] = fields[key].required ? new FormControl(workItem.attributes[key] || '', Validators.required) : new FormControl(workItem.attributes[key] || '');
       }
     }
 
@@ -62,7 +62,6 @@ export class WorkItemTypeControlService {
         resultArray.push(thisElement);
       }
     }
-    console.log(resultArray);
     return resultArray;
   }
 }

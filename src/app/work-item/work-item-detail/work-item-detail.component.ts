@@ -125,6 +125,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   eventListeners: any[] = [];
 
   dynamicFormGroup: FormGroup;
+  dynamicFormDataArray: any;
 
   constructor(
     private areaService: AreaService,
@@ -141,7 +142,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     private spaces: Spaces
   ) {}
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
     this.listenToEvents();
@@ -303,6 +304,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
         // init dynamic form
         this.dynamicFormGroup = this.workItemTypeControlService.toFormGroup(this.workItem);
+        this.dynamicFormDataArray = this.workItemTypeControlService.toAttributeArray(this.workItem.relationalData.wiType.attributes.fields); 
 
         // fetch the list of user
         // after getting the Workitem

@@ -260,8 +260,8 @@
           </div>
         </div>
         <!-- Extra fields Start -->
-        <div *ngFor="let attributeDesc of workItemTypeControlService.toAttributeArray(workItem.relationalData?.wiType?.attributes.fields)" class="form-group">
-          <alm-dynamic-field [attributeDesc]="attributeDesc" [form]="dynamicFormGroup"></alm-dynamic-field>            
+        <div *ngFor="let attributeDesc of dynamicFormDataArray" class="form-group">
+          <alm-dynamic-field [workItem]="workItem" [attributeDesc]="attributeDesc" [form]="dynamicFormGroup"></alm-dynamic-field>
         </div>
         <!-- Extra fields End -->
         <!--Description-->
