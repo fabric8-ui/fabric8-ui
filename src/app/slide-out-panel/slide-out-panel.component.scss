@@ -1,0 +1,44 @@
+@import '../../assets/stylesheets/_base';
+
+//detail panel
+.detail-panel {
+  background: $color-pf-white;
+  position: fixed;
+  left: auto;
+  top: em(34);
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  min-width: em(250);
+  z-index: 100;
+  padding: em(20) 0 em(20) em(10);
+  border-left: 1px solid darken($color-pf-white, 20%);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  box-shadow: -4px 0px 2px -2px $color-pf-black-300;
+  -webkit-box-shadow: -4px 0px 2px -2px $color-pf-black-300;
+  -moz-box-shadow: -4px 0px 2px -2px $color-pf-black-300;
+  label {
+    font-weight: 400;
+  }
+  .form-group {
+    margin-bottom: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  .clear-float {
+    clear: both;
+  }
+  .detail-close {
+    cursor: pointer;
+    font-size: em(18);
+  }
+
+  .detail-id {
+    font-weight: 700;
+    margin:0;
+    padding-left: .6em;
+    line-height: 1 !important;
+    font-size: $pf-icon-2x;
+  }
+}
