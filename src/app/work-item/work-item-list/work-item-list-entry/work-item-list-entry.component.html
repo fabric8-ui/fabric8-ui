@@ -6,7 +6,7 @@
 </div>
 <div class="workItemList_entry" (click)="onSelect($event)">
 	<!--checkbox to select a WI and move it-->
-	<div class="row-cbh" title="Select the checkbox to move the item.">
+	<div class="row-cbh" title="Select the checkbox to move the item." *ngIf="loggedIn">
 		<input type="checkbox" [checked]="checkedWI" (click)="toggleEntry($event)" />
 	</div>
 	<!-- info area -->
