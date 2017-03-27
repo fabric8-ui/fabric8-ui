@@ -59,9 +59,9 @@ sassModules.forEach(function (val) {
 // const HMR = helpers.hasProcessFlag('hot');
 // const AOT = helpers.hasNpmFlag('aot');
 const METADATA = {
-  title: 'Fabric8',
   baseUrl: '/',
-  isDevServer: helpers.isWebpackDevServer()
+  isDevServer: helpers.isWebpackDevServer(),
+  FABRIC8_BRANDING: process.env.FABRIC8_BRANDING || 'fabric8'
 };
 
 /*
@@ -181,8 +181,7 @@ module.exports = function (options) {
          */
         {
           test: /\.html$/,
-          use: ['html-loader'],
-          exclude: [path.resolve(__dirname, 'src/index.html')]
+          use: ['html-loader']
         },
 
         /*
@@ -340,8 +339,8 @@ module.exports = function (options) {
        * See: https://github.com/ampedandwired/html-webpack-plugin
        */
       new HtmlWebpackPlugin({
-        template: 'src/index.html',
-        title: METADATA.title,
+        template: 'src/index.ejs',
+        title: branding.assets[METADATA.FABRIC8_BRANDING].title.prefix,
         chunksSortMode: 'dependency',
         metadata: METADATA
       }),

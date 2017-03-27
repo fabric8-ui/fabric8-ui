@@ -41,7 +41,7 @@ const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const BUILD_NUMBER = process.env.BUILD_NUMBER;
 const BUILD_TIMESTAMP = process.env.BUILD_TIMESTAMP;
 const BUILD_VERSION = process.env.BUILD_VERSION;
-const FABRIC8_BRANDING = process.env.FABRIC8_BRANDING || 'fabric8';
+const FABRIC8_BRANDING = process.env.FABRIC8_BRANDING || 'fabric8'
 
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8080;
@@ -66,6 +66,7 @@ const METADATA = webpackMerge(commonConfig({ env: ENV }).metadata, {
 module.exports = function (env) {
   // stringify can't cope with undefined
   console.log('The env from the webpack.prod config: ' + (env ? stringify(env, null, 2) : env));
+  console.log('The merged metadata:', METADATA);
   return webpackMerge(commonConfig({ env: ENV }), {
 
     /**
@@ -211,10 +212,6 @@ module.exports = function (env) {
       new FaviconsWebpackPlugin({
         logo: branding.assets[METADATA.FABRIC8_BRANDING].favicon.path,
         prefix: 'assets/icons-[hash]/'
-      }),
-
-      new HtmlWebpackPlugin({
-        title: branding.assets[METADATA.FABRIC8_BRANDING].title.prefix,
       }),
 
       /**

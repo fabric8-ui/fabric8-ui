@@ -31,7 +31,7 @@
           </li>
           <li>
             <a (click)="loginService.logout();">
-              <span class="nav-item-text">Sign out</span>
+              <span class="nav-item-text">Log Out</span>
             </a>
           </li>
         </ul>
@@ -118,7 +118,7 @@
     </ul>
     <ul id="header_rightDropdown" class="nav navbar-nav navbar-right">
       <li>
-        <a *ngIf="!loggedInUser" (click)="login();">Sign In</a>
+        <a *ngIf="!loggedInUser" (click)="login();">Log In</a>
       </li>
       <li *ngIf="loggedInUser" dropdown class="pull-right dropdown">
         <a dropdown-open>
@@ -145,7 +145,7 @@
             <a [routerLink]="[loggedInUser.attributes.username,'_settings']"><span class="nav-item-text">Settings</span></a>
           </li>
           <li>
-            <a *ngIf="loggedInUser" (click)="loginService.logout();"><span class="nav-item-text">Sign out</span></a>
+            <a *ngIf="loggedInUser" (click)="loginService.logout();"><span class="nav-item-text">Log Out</span></a>
           </li>
         </ul>
       </li>
