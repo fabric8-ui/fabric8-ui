@@ -52,6 +52,10 @@ export { SortEvent } from './src/app/sort/sort-event';
 export { SortField } from './src/app/sort/sort-field';
 export { SortModule } from './src/app/sort/sort.module';
 
+// Slide-out panel
+export { SlideOutPanelComponent } from './src/app/slide-out-panel/slide-out-panel.component';
+export { SlideOutPanelModule } from './src/app/slide-out-panel/slide-out-panel.module';
+
 // TreeList
 export { TreeListComponent } from './src/app/treelist/treelist.component';
 export { TreeListItemComponent } from './src/app/treelist/treelist-item.component';
