@@ -7,7 +7,6 @@ import { CollapseModule, TooltipModule } from 'ng2-bootstrap';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { DropdownModule } from 'ng2-bootstrap';
 import { MockHttp } from './../../shared/mock-http';
-import { FormGroupsPipe } from './../../pipes/alm-form-groups.pipe';
 
 import { AlmUserName } from '../../pipes/alm-user-name.pipe';
 
@@ -28,13 +27,14 @@ import {
   WorkItemLinkFilterByTypeName,
   WorkItemLinkTypeFilterByTypeName
 } from './work-item-detail-pipes/work-item-link-filters.pipe';
+import { WorkItemTypeControlService } from '../work-item-type-control.service';
 
 let providers = [];
 
 if (process.env.ENV == 'inmemory') {
-  providers = [ AreaService, { provide: Http, useClass: MockHttp } ];
+  providers = [ AreaService, WorkItemTypeControlService, { provide: Http, useClass: MockHttp } ];
 } else {
-  providers = [ AreaService ];
+  providers = [ AreaService, WorkItemTypeControlService ];
 }
 
 @NgModule({
@@ -58,8 +58,7 @@ if (process.env.ENV == 'inmemory') {
     DynamicFieldComponent,
     WorkItemLinkComponent,
     WorkItemLinkFilterByTypeName,
-    WorkItemLinkTypeFilterByTypeName,
-    FormGroupsPipe
+    WorkItemLinkTypeFilterByTypeName
   ],
   exports: [WorkItemDetailComponent, AlmUserName],
   providers: providers

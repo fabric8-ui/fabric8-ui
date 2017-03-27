@@ -1,10 +1,10 @@
-<div [formGroup]="form">
-  <label [attr.for]="formDesc.key">{{formDesc.label}}</label>
-  <div [ngSwitch]="formDesc.controlType">
-    <input *ngSwitchCase="'textbox'" [formControlName]="formDesc.key" [id]="formDesc.key" [type]="question.type">
-    <select [id]="formDesc.key" *ngSwitchCase="'dropdown'" [formControlName]="formDesc.key">
-      <option *ngFor="let opt of formDesc.options" [value]="opt.key">{{opt.value}}</option>
+<div [formGroup]="formGroup">
+  <label [attr.for]="attributeDesc.key">{{formDesc.label}}</label>
+  <div [ngSwitch]="attributeDesc.controlType">
+    <input *ngSwitchCase="'textbox'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" [type]="question.type">
+    <select [id]="attributeDesc.key" *ngSwitchCase="'dropdown'" [formControlName]="attributeDesc.key">
+      <option *ngFor="let opt of attributeDesc.options" [value]="opt.key">{{opt.value}}</option>
     </select>
   </div> 
-  <div class="errorMessage" *ngIf="!isValid">{{formDesc.label}} is required</div>
+  <div class="errorMessage" *ngIf="!isValid">{{attributeDesc.label}} is required</div>
 </div>

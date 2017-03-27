@@ -20,6 +20,7 @@ import {
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
 import { Router }                 from '@angular/router';
+import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
 import { cloneDeep, trimEnd } from 'lodash';
@@ -35,6 +36,7 @@ import { AreaModel } from '../../models/area.model';
 import { AreaService } from '../../area/area.service';
 import { IterationModel } from '../../models/iteration.model';
 import { IterationService } from '../../iteration/iteration.service';
+import { WorkItemTypeControlService } from '../work-item-type-control.service';
 
 import { WorkItem, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
@@ -122,6 +124,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
   eventListeners: any[] = [];
 
+  dynamicFormGroup: FormGroup;
+
   constructor(
     private areaService: AreaService,
     private auth: AuthenticationService,
@@ -133,6 +137,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     private router: Router,
     private iterationService: IterationService,
     private userService: UserService,
+    private workItemTypeControlService: WorkItemTypeControlService,
     private spaces: Spaces
   ) {}
 
@@ -278,16 +283,15 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.descText = workItem.attributes['system.description'] || '';
         this.renderedDesc = workItem.attributes['system.description.rendered'];
         this.workItem = workItem;
-        this.workItemPayload = {
-          id: this.workItem.id,
-          attributes: {
-            version: this.workItem.attributes['version']
-          },
-          links: {
+
+        this.workItemPayload = new WorkItem();
+        this.workItemPayload.id = this.workItem.id;
+        this.workItemPayload.attributes = new Map<string, number | string>();
+        this.workItemPayload.attributes.set('version', this.workItem.attributes.get('version'));
+        this.workItemPayload.links = {
             self: this.workItem.links.self
-          },
-          type: this.workItem.type
-        };
+          };
+        this.workItemPayload.type = this.workItem.type;
 
         // Open the panel once all the data is ready
         if (this.panelState === 'out') {
@@ -296,6 +300,15 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
             this.title.nativeElement.focus();
           }
         }
+
+        // init dynamic form
+        this.dynamicFormGroup = this.workItemTypeControlService.toFormGroup(this.workItem);
+
+        // fetch the list of user
+        // after getting the Workitem
+        // to set assigned user
+        // for this workitem from the list
+        this.getAllUsers();
 
         this.activeOnList(400);
       },

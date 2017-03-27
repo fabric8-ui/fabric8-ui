@@ -7,7 +7,7 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./dynamic-field.component.scss']
 })
 export class DynamicFieldComponent {
-  @Input() formDesc: any;
-  @Input() form: FormGroup;
-  get isValid() { return this.form.controls[this.formDesc.key].valid; }
+  @Input() attributeDesc: any;
+  @Input() formGroup: FormGroup;
+  get isValid() { return this.formGroup.controls[this.attributeDesc.key].valid; }
 }

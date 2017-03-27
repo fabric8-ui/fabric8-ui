@@ -268,8 +268,8 @@
 
         <div>
           DYN START
-          <div *ngFor="let attributeDesc of workItem.relationalData?.wiType?.attributes.fields | almFormGroups" class="form-row">
-            <alm-dynamic-field [formDesc]="attributeDesc" [form]="form"></alm-dynamic-field>            
+          <div *ngFor="let attributeDesc of workItem.relationalData?.wiType?.attributes.fields" class="form-row">
+            <alm-dynamic-field [attributeDesc]="attributeDesc" [formGroup]="dynamicFormGroup"></alm-dynamic-field>            
           </div>
           <!--
             <label class="col-sm-2">{{attributeDesc.value.label}} (type {{attributeDesc.value.type.kind}})</label>
