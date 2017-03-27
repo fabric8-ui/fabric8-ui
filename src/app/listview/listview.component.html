@@ -1,0 +1,54 @@
+<span>
+  <div class="list-group list-view-pf"
+       dnd-list="items"
+       [ngClass]="{'list-view-pf-dnd': config.dragEnabled === true}"
+       *ngIf="items !== undefined && items.length > 0">
+    <div class='dndPlaceholder'></div>
+    <div class="list-group-item {{item.rowClass}}"
+         *ngFor="let item of items; trackBy: index"
+         dnd-draggable="item"
+         dnd-effect-allowed="move"
+         dnd-disable-if="config.dragEnabled !== true"
+         dnd-dragstart="dragStart(item)"
+         dnd-moved="dragMoved(item)"
+         dnd-dragend="dragEnd(item)"
+         [ngClass]="{'drag-original': isDragOriginal(item) === true,
+                     'pf-selectable': selectItems,
+                     'active': isSelected(item) === true,
+                     'disabled': item.disabled === true,
+                     'list-view-pf-expand-active': item.expanded}">
+      <div class="list-group-item-header">
+        <div class="list-view-pf-dnd-drag-items" *ngIf="config.dragEnabled === true">
+          <div pf-transclude="parent" class="list-view-pf-main-info"></div>
+        </div>
+        <div [ngClass]="{'list-view-pf-dnd-original-items': config.dragEnabled === true}">
+          <div class="list-view-pf-expand" *ngIf="config.useExpandingRows">
+            <span class="fa fa-angle-right"
+                  *ngIf="item.rowExpansionDisabled !== true"
+                  (click)="toggleItemExpansion(item)"
+                  [ngClass]="{'fa-angle-down': item.expanded}"></span>
+            <span class="pf-expand-placeholder" *ngIf="item.rowExpansionDisabled === true"></span>
+          </div>
+          <div class="list-view-pf-checkbox" *ngIf="config.showSelectBox" >
+            <input type="checkbox" value="item.selected"
+                   [(ngModel)]="item.selected"
+                   [disabled]="item.disabled === true"
+                   (ngModelChange)="checkBoxChange(item)">
+          </div>
+          <div class="list-view-pf-main-info"
+               (click)="itemClick($event, item)"
+               (dblclick)="dblClick($event, item)">
+            <template [ngTemplateOutlet]="itemTemplate" [ngOutletContext]="{ item: item, index: index }"></template>
+          </div>
+        </div>
+        <div class="list-group-item-container container-fluid"
+             *ngIf="config.useExpandingRows && item.expanded">
+          <template [ngTemplateOutlet]="itemExpandedTemplate" [ngOutletContext]="{ item: item, index: index }"></template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Todo:
+  <pf-empty-state *ngIf="config.itemsAvailable === false" config="emptyStateConfig"></pf-empty-state>
+  -->
+</span>

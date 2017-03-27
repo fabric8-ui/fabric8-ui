@@ -33,6 +33,12 @@ export { FilterFieldsComponent } from './src/app/filters/filter-fields.component
 export { FilterResultsComponent } from './src/app/filters/filter-results.component';
 export { FilterQuery } from './src/app/filters/filter-query';
 
+// ListView
+export { ListViewConfig } from './src/app/listview/listview-config';
+export { ListViewComponent } from './src/app/listview/listview.component';
+export { ListViewEvent } from './src/app/listview/listview-event';
+export { ListViewModule } from './src/app/listview/listview.module';
+
 // Notification
 export { NotificationService } from './src/app/notification/notification.service';
 export { ToastNotificationComponent } from './src/app/notification/toast-notification.component';

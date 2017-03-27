@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { FilterExampleComponent } from './filters/examples/filter-example.component';
 import { HomeComponent } from './home/home.component';
+import { ListViewExampleComponent } from './listview/examples/listview-example.component';
 import { SortExampleComponent } from './sort/examples/sort-example.component';
 import { ToastNotificationExampleComponent } from './notification/examples/toast-notification-example.component';
 import { ToastNotificationListExampleComponent } from './notification/examples/toast-notification-list-example.component';
@@ -19,6 +20,9 @@ const routes: Routes = [{
   },{
     path: 'filter',
     component: FilterExampleComponent
+  },{
+    path: 'listview',
+    component: ListViewExampleComponent
   },{
     path: 'sort',
     component: SortExampleComponent
