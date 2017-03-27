@@ -200,12 +200,14 @@ export class SpaceWizardComponent implements OnInit {
     space.attributes.name = space.name;
     this.userService.getUser().switchMap(user => {
       space.relationships['owned-by'].data.id = user.id;
-      return this.spaceService.create(space)
+      return this.spaceService.create(space);
     })
     .switchMap(createdSpace => {
       return this.spaceNamespaceService
         .updateConfigMap(Observable.of(createdSpace))
         .map(() => createdSpace)
+        // Ignore any errors coming out here, we've logged and notified them earlier
+        .catch(err => Observable.of(createdSpace));
     })
       .subscribe(createdSpace => {
         this.configurator.space = createdSpace;
@@ -254,7 +256,6 @@ export class SpaceWizardComponent implements OnInit {
 
 
   finish() {
-    this.log(`finish ...`);
     this.router.navigate([
       this.configurator.space.relationalData.creator.attributes.username,
       this.configurator.space.attributes.name

@@ -90,7 +90,7 @@
     <footer>
       <!--<a class="btn btn-default margin-right-5" (click)="workflow.cancel()">Cancel</a>
       <a class="btn btn-default margin-right-5" (click)="workflow.gotoPreviousStep()">Back</a>-->
-      <a class="btn btn-default" (click)="workflow.finish()">No thanks, just take me to {{configurator.space.attributes.name}}</a>
+      <a class="btn btn-default" (click)="finish()">No thanks, just take me to {{configurator.space.attributes.name}}</a>
     </footer>
   </div>
   <div class="wizard-step" [class.active]="workflow.isStepActive({name:steps.quickStart})">

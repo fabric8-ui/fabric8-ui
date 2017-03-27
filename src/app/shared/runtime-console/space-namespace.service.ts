@@ -51,7 +51,7 @@ export class SpaceNamespaceService {
             }
             console.log('Namespace does not exist or is not accessible and OpenShift gave a 403.', errDetail || err.text());
             this.notifications.message({
-              message: `Something went wrong configuring your space on OpenShift as the ${namespace} is accessible to your user or does not exist.`,
+              message: `Something went wrong configuring your pipelines and environments as the OpenShift Project '${namespace}' is not accessible to you or does not exist.`,
               type: NotificationType.WARNING
             });
           }
