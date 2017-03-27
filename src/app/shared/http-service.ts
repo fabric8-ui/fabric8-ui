@@ -63,7 +63,7 @@ export class HttpService extends Http {
     console.log('Body - ', body);
     console.log('Options - ', options);
 
-    return super.post(url, body, options);
+    return super.put(url, body, options);
   }
 
   patch(url: string, body: any, options?: RequestOptionsArgs) {
@@ -72,7 +72,7 @@ export class HttpService extends Http {
     console.log('Body - ', body);
     console.log('Options - ', options);
 
-    return super.post(url, body, options);
+    return super.patch(url, body, options);
   }
 
 }
