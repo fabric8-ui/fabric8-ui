@@ -11,7 +11,7 @@ export const routes: Routes = [
   // Only relevant locally, as the landing page sits on / in production
   {
     path: '',
-    redirectTo: '/rhn-support-pmuir',
+    loadChildren: './landing-page/landing-page.module#LandingPageModule',
     pathMatch: 'full'
   },
   // Temporary page to control the app
