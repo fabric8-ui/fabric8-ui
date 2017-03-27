@@ -102,6 +102,11 @@ export class HeaderComponent implements OnInit {
     this.loginService.redirectToAuth();
   }
 
+  logout() {
+    this.loginService.logout();
+    window.location.href = '/';
+  }
+
   onImgLoad() {
     this.imgLoaded = true;
   }

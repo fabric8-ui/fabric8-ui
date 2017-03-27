@@ -30,7 +30,7 @@
             </a>
           </li>
           <li>
-            <a (click)="loginService.logout();">
+            <a (click)="logout();">
               <span class="nav-item-text">Log Out</span>
             </a>
           </li>
@@ -145,7 +145,7 @@
             <a [routerLink]="[loggedInUser.attributes.username,'_settings']"><span class="nav-item-text">Settings</span></a>
           </li>
           <li>
-            <a *ngIf="loggedInUser" (click)="loginService.logout();"><span class="nav-item-text">Log Out</span></a>
+            <a *ngIf="loggedInUser" (click)="logout();"><span class="nav-item-text">Log Out</span></a>
           </li>
         </ul>
       </li>
