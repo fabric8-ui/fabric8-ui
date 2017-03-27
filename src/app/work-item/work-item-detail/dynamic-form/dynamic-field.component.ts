@@ -8,6 +8,8 @@ import { FormGroup } from '@angular/forms';
 })
 export class DynamicFieldComponent {
   @Input() attributeDesc: any;
-  @Input() formGroup: FormGroup;
-  get isValid() { return this.formGroup.controls[this.attributeDesc.key].valid; }
+  @Input() form: FormGroup;
+  isValid() { 
+    return this.form.controls[this.attributeDesc.key].valid; 
+  }
 }

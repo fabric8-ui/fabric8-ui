@@ -208,7 +208,7 @@ export class SchemaMockGenerator {
                 'label' : 'Story Points',
                 'required' : false,
                 'type' : {
-                  'kind' : 'number'
+                  'kind' : 'integer'
                 }
               },
               'system.iteration' : {

@@ -3,14 +3,8 @@
     <form *ngIf="active"
           #almWorkItemDetailForm="ngForm"
           class="form-horizontal"
-<<<<<<< 452a452f703302b7a0a632cd5ff0ce609f91dc37
           id="wi-detail-form">
       <fieldset>
-=======
-          id="wi-detail-form"
-          [formGroup]="form">
-      <fieldset [attr.disabled]="!loggedIn ? true : null">
->>>>>>> fix(workitems): rebuilt dynamic forms using Angular approach.
         <div class="form-group col-md-12 col-sm-12 col-xs-12 mobile-bar ">
           <div class="dropdown-kebab-pf detail-type-dropdown col-sm-8">
             <span class="wi-type-icon fa {{workItem.relationships?.baseType?.data?.attributes?.icon}} fa-2x"></span>
@@ -265,17 +259,9 @@
             </span>
           </div>
         </div>
-
-        <div>
-          DYN START
-          <div *ngFor="let attributeDesc of workItem.relationalData?.wiType?.attributes.fields" class="form-row">
-            <alm-dynamic-field [attributeDesc]="attributeDesc" [formGroup]="dynamicFormGroup"></alm-dynamic-field>            
-          </div>
-          <!--
-            <label class="col-sm-2">{{attributeDesc.value.label}} (type {{attributeDesc.value.type.kind}})</label>
-            <input type="text" [(ngModel)]="workItem.attributes[attributeDesc.key]"> 
-          -->
-          DYN END
+        <!-- Extra fields Start -->
+        <div *ngFor="let attributeDesc of workItemTypeControlService.toAttributeArray(workItem.relationalData?.wiType?.attributes.fields)" class="form-group">
+          <alm-dynamic-field [attributeDesc]="attributeDesc" [form]="dynamicFormGroup"></alm-dynamic-field>            
         </div>
         <!-- Extra fields End -->
         <!--Description-->

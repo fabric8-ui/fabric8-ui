@@ -50,4 +50,19 @@ export class WorkItemTypeControlService {
 
     return new FormGroup(group);
   }
+
+  toAttributeArray(fields: any) {
+    let resultArray: any[] = [];
+    for (var key in fields) {
+      if (this.FIXED_PROPERTIES.indexOf(key) != -1) {
+        this.log.log('Skipping creating array entry form control for ' + key);      
+      } else {
+        let thisElement = JSON.parse(JSON.stringify(fields[key]));
+        thisElement.key = key;
+        resultArray.push(thisElement);
+      }
+    }
+    console.log(resultArray);
+    return resultArray;
+  }
 }

@@ -1,6 +1,6 @@
 import { NgModule }     from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule }  from '@angular/forms';
+import { FormsModule, ReactiveFormsModule }  from '@angular/forms';
 import { HttpModule, Http }    from '@angular/http';
 
 import { CollapseModule, TooltipModule } from 'ng2-bootstrap';
@@ -49,7 +49,8 @@ if (process.env.ENV == 'inmemory') {
     DropdownModule,
     FormsModule,
     TooltipModule,
-    Ng2CompleterModule
+    Ng2CompleterModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AlmUserName,

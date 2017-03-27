@@ -1,10 +1,33 @@
-<div [formGroup]="formGroup">
-  <label [attr.for]="attributeDesc.key">{{formDesc.label}}</label>
-  <div [ngSwitch]="attributeDesc.controlType">
-    <input *ngSwitchCase="'textbox'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" [type]="question.type">
-    <select [id]="attributeDesc.key" *ngSwitchCase="'dropdown'" [formControlName]="attributeDesc.key">
+<div [formGroup]="form">
+  <label [attr.for]="attributeDesc.key" class="col-sm-2">{{attributeDesc.label}}</label>
+  <div [ngSwitch]="attributeDesc.type.kind" class="pull-left">
+
+    <!-- workitemtype field type: string -->
+    <input *ngSwitchCase="'string'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" [type]="text">
+
+    <!-- workitemtype field type: integer -->
+    <input *ngSwitchCase="'integer'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" [type]="text">
+
+    <!-- workitemtype field type: float -->
+    <input *ngSwitchCase="'float'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" [type]="text">
+
+    <!-- workitemtype field type: dropdown -->
+    <select *ngSwitchCase="'enum'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key">
       <option *ngFor="let opt of attributeDesc.options" [value]="opt.key">{{opt.value}}</option>
     </select>
+
+    <!-- TODO: -->
+    <!-- workitemtype field type: instant -->
+    <!-- workitemtype field type: duration -->
+    <!-- workitemtype field type: url -->
+    <!-- workitemtype field type: iteration -->
+    <!-- workitemtype field type: workitem -->
+    <!-- workitemtype field type: user -->
+    <!-- workitemtype field type: list -->
+    <!-- workitemtype field type: markup -->
+    <!-- workitemtype field type: area -->
+    <!-- workitemtype field type: codebase -->
+
   </div> 
-  <div class="errorMessage" *ngIf="!isValid">{{attributeDesc.label}} is required</div>
+  <div class="errorMessage" *ngIf="!isValid()">{{attributeDesc.label}} is required</div>
 </div>
