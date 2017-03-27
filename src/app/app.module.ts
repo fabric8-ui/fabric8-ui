@@ -17,6 +17,7 @@ import { SortExampleModule } from './sort/examples/sort-example.module';
 import { NotificationExampleModule } from './notification/examples/notification-example.module';
 import { ToolbarExampleModule } from './toolbar/examples/toolbar-example.module';
 import { TreeListExampleModule } from './treelist/examples/treelist-example.module';
+import { SlideOutExampleModule } from './slide-out-panel/examples/slide-out-example.module';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { TreeListExampleModule } from './treelist/examples/treelist-example.modu
     ListViewExampleModule,
     NotificationExampleModule,
     SortExampleModule,
+    SlideOutExampleModule,
     ToolbarExampleModule,
     TreeListExampleModule
   ],

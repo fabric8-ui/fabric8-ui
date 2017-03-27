@@ -9,6 +9,7 @@ import { ToastNotificationExampleComponent } from './notification/examples/toast
 import { ToastNotificationListExampleComponent } from './notification/examples/toast-notification-list-example.component';
 import { ToolbarExampleComponent } from './toolbar/examples/toolbar-example.component';
 import { TreeListExampleComponent } from './treelist/examples/treelist-example.component';
+import { SlideOutExampleComponent } from './slide-out-panel/examples/slide-out-example.component';
 
 const routes: Routes = [{
     path: '',
@@ -26,6 +27,9 @@ const routes: Routes = [{
   },{
     path: 'sort',
     component: SortExampleComponent
+  },{
+    path: 'slideoutpanel',
+    component: SlideOutExampleComponent
   },{
     path: 'toolbar',
     component: ToolbarExampleComponent
