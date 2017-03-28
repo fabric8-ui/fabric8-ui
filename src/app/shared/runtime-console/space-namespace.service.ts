@@ -103,10 +103,10 @@ export class SpaceNamespaceService {
           cm = new ConfigMap();
           cm.data = new Map();
           cm.labels = new Map();
-          cm.labels.set('kind', 'spaces');
-          cm.labels.set('provider', 'fabric8');
+          cm.labels['kind'] = 'spaces';
+          cm.labels['provider'] = 'fabric8';
           cm.annotations = new Map();
-          cm.annotations.set('description', 'Defines the spaces within this namespace');
+          cm.description = 'Defines the spaces within this namespace';
           cm.name = 'fabric8-spaces';
           cm.namespace = val.namespace;
         }
