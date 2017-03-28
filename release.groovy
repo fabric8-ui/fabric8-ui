@@ -45,7 +45,7 @@ def updateDownstreamProjects(v){
                 'fabric8-ui/fabric8-npm-dependencies'
         ]
         version = v
-        container = 'ui'
+        containerName = 'ui'
     }
 }
 return this
