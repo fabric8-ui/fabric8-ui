@@ -9,7 +9,7 @@ exports.assets = {
   },
   openshiftio: {
     favicon: {
-      path: './src/assets/icon/openshift_icon.png'
+      path: './src/assets/icon/openshift_icon.svg'
     },
     title: {
       prefix: 'OpenShift.io'
