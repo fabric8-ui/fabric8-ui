@@ -131,6 +131,11 @@ export class SpaceNamespaceService {
       this.userService
         .loggedInUser
         .map(user => user.attributes.username)
+        // TODO Quick hack around the username problems
+        .map(username => {
+          let s = username.split(/@/gi);
+          return s ? s[0].replace('.', '-') : username;
+        })
         .first(),
       this.fabric8UIConfig
         .map(config => config.pipelinesNamespace)
