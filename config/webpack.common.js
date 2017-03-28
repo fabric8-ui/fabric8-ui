@@ -11,23 +11,15 @@ const path = require('path'),
 /**
  * Webpack Plugins
  */
-// const AssetsPlugin = require('assets-webpack-plugin');
-// const autoprefixer = require('autoprefixer');
-// const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
-// const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const HtmlElementsPlugin = require('./html-elements-plugin');
 const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
-// const ngcWebpack = require('ngc-webpack');
 const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
 const OptimizeJsPlugin = require('optimize-js-plugin');
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
-// const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 
 // ExtractTextPlugin

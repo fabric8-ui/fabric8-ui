@@ -7,11 +7,11 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import * as _ from 'lodash';
+
 import { SortConfig } from './sort-config';
 import { SortField } from './sort-field';
 import { SortEvent } from './sort-event';
-
-import * as _ from 'lodash';
 
 @Component({
   encapsulation: ViewEncapsulation.None,

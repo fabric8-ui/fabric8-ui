@@ -8,14 +8,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import * as _ from 'lodash';
+
 import { Action } from '../config/action';
 import { Filter } from '../filters/filter';
 import { FilterEvent } from '../filters/filter-event';
 import { SortEvent } from '../sort/sort-event';
 import { ToolbarConfig } from './toolbar-config';
 import { View } from '../config/view';
-
-import * as _ from 'lodash';
 
 /**
  * Standard toolbar component. Includes filtering and view selection capabilities
