@@ -46,6 +46,12 @@ export class DynamicFieldComponent {
           throw('invalid data for field - not a float');
         else
           this.workItem.attributes[this.attributeDesc.key] = number;
+      } else if (this.attributeDesc.type.kind === 'enum') {
+        let value = this.form.value[this.attributeDesc.key];
+        if (this.attributeDesc.type.values.indexOf(value) == -1)
+          throw('invalid data for field - not in valid values');
+        else
+          this.workItem.attributes[this.attributeDesc.key] = value;
       } else {
         // default: treat value as string
         this.workItem.attributes[this.attributeDesc.key] = this.form.value[this.attributeDesc.key];        

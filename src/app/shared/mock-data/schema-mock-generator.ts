@@ -211,6 +211,21 @@ export class SchemaMockGenerator {
                   'kind' : 'integer'
                 }
               },
+              'system.severity' : {
+                'description' : 'Severity for the story',
+                'label' : 'Severity',
+                'required' : false,
+                'type' : {
+                    'values' : [
+                      'low',
+                      'mid',
+                      'high',
+                      'blocker'
+                    ],
+                    'baseType' : 'string',
+                    'kind' : 'enum'
+                }
+              },
               'system.iteration' : {
                 'description' : 'The iteration to which the work item belongs',
                 'label' : 'Iteration',
