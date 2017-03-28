@@ -39,7 +39,6 @@ export class SlideOutPanelComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    this.panelState = "in";
   }
 
   ngAfterViewInit() {
