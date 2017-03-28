@@ -1,0 +1,25 @@
+
+.dynamic-control {
+
+  label {
+    font-weight: 400;
+  }
+
+  .no-left-padding {
+    padding-left: 0;
+  }
+
+  input[type=text] {
+    cursor: pointer;
+    border: none;
+  }
+
+  .dynamic-control-edit-ico {
+    margin-left: -2em;
+    pointer-events: none;
+  }
+
+  .dynamic-control-dropdown {
+    width: 30%;
+  }
+}

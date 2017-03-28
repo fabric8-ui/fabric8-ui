@@ -1,48 +1,71 @@
-<div [formGroup]="form">
+<div [formGroup]="form" class="dynamic-control">
   <label [attr.for]="attributeDesc.key" class="col-sm-2">{{attributeDesc.label}}</label>
-  <div [ngSwitch]="attributeDesc.type.kind" class="pull-left">
+  <div class="col-sm-10 no-left-padding">
+    <div [ngSwitch]="attributeDesc.type.kind">
 
-    <!-- workitemtype field type: string -->
-    <input *ngSwitchCase="'string'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" [type]="text">
+      <!-- workitemtype field type: string -->
+      <input *ngSwitchCase="'string'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" type="text" (focus)="focusIn()" (focusout)="focusOut()">
 
-    <!-- workitemtype field type: integer -->
-    <input *ngSwitchCase="'integer'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" [type]="text">
+      <!-- workitemtype field type: integer -->
+      <input *ngSwitchCase="'integer'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" type="text" (focus)="focusIn()" (focusout)="focusOut()">
 
-    <!-- workitemtype field type: float -->
-    <input *ngSwitchCase="'float'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" [type]="text">
+      <!-- workitemtype field type: float -->
+      <input *ngSwitchCase="'float'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" type="text" (focus)="focusIn()" (focusout)="focusOut()">
 
-    <!-- workitemtype field type: dropdown -->
-    <select *ngSwitchCase="'enum'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key">
-      <option *ngIf="!attributeDesc.required" [value]=""></option>      
-      <option *ngFor="let opt of attributeDesc.type.values" [value]="opt">{{opt}}</option>
-    </select>
+      <!-- workitemtype field type: dropdown -->
+      <div *ngSwitchCase="'enum'" dropdown class="card-pf-time-frame-filter dynamic-control-dropdown">
+        <button dropdownToggle type="button" class="btn btn-default col-md-12 col-sm-12 col-xs-12">
+          <span class='dropdown-text'>{{workItem.attributes[attributeDesc.key] || '&nbsp;'}}</span>
+          <span class="caret pull-right"></span>
+        </button>
+        <ul class="dropdown-menu-right dropdown-ul" role="menu" dropdownMenu>
+          <li *ngIf="!attributeDesc.required" class="dropdown-li" (click)="onChangeDropdown(opt)">
+            <a><span class='dropdown-text'>&nbsp;</span></a>
+          </li>
+          <li class="dropdown-li" *ngFor="let opt of attributeDesc.type.values" (click)="onChangeDropdown(opt)">
+            <a><span class='dropdown-text'>{{opt}}</span></a>
+          </li>
+        </ul>
+      </div>
 
-    <!-- TODO: -->
-    <!-- workitemtype field type: instant -->
-    <!-- workitemtype field type: duration -->
-    <!-- workitemtype field type: url -->
-    <!-- workitemtype field type: iteration -->
-    <!-- workitemtype field type: workitem -->
-    <!-- workitemtype field type: user -->
-    <!-- workitemtype field type: list -->
-    <!-- workitemtype field type: markup -->
-    <!-- workitemtype field type: area -->
-    <!-- workitemtype field type: codebase -->
+      <!--
+      <select *ngSwitchCase="'enum'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" (focus)="focusIn()" (focusout)="focusOut()">
+        <option *ngIf="!attributeDesc.required" [value]=""></option>      
+        <option *ngFor="let opt of attributeDesc.type.values" [value]="opt">{{opt}}</option>
+      </select>
+      -->
 
-    <!-- Todd: -->
-    <!-- markdown (needs core change, needs rendering field) -->
-    <!-- DateTime (needs core change, not in core data types) -->
-    <!-- 'History' of WI (needs core change, not in core data types) -->
-    <!-- TreePath (e.g. Areas and Iterations) (already in fixed fields) -->
-    <!-- Boolean (needs core change, not in core data types) -->
+      <!-- TODO: -->
+      <!-- workitemtype field type: instant (datetime) -->
+      <!-- workitemtype field type: duration -->
+      <!-- workitemtype field type: url -->
+      <!-- workitemtype field type: iteration -->
+      <!-- workitemtype field type: workitem -->
+      <!-- workitemtype field type: user -->
+      <!-- workitemtype field type: list -->
+      <!-- workitemtype field type: markup -->
+      <!-- workitemtype field type: area -->
+      <!-- workitemtype field type: codebase -->
 
-  </div> 
-  <button class="btn btn-lg btn-default" type="button" (click)="save()">
-    <span class="fa fa-check"></span>
-  </button>
-  <button class="btn btn-lg btn-default" type="button" (click)="cancel()">
-    <span class="pficon pficon-close"></span>
-  </button>
+      <!-- Todd: -->
+      <!-- markdown (needs core change, needs rendering field) -->
+      <!-- 'History' of WI (needs core change, not in core data types) -->
+      <!-- TreePath (e.g. Areas and Iterations) (already in fixed fields) -->
+      <!-- Boolean (needs core change, not in core data types) -->
+
+      <!-- the edit icon that appears on text/textfield input types -->
+      <span *ngIf="!isButtonsVisible() && (attributeDesc.type.kind=='integer' || attributeDesc.type.kind=='float' || attributeDesc.type.kind=='string')"
+            class="pficon-edit marginL10 fl dynamic-control-edit-ico">
+      </span>
+
+      <button *ngIf="isButtonsVisible()" class="btn btn-lg btn-default detail-action-btn" type="button" (click)="save()">
+        <span class="fa fa-check"></span>
+      </button>
+      <button *ngIf="isButtonsVisible()" class="btn btn-lg btn-default detail-action-btn" type="button" (click)="cancel()">
+        <span class="pficon pficon-close"></span>
+      </button>
+    </div> 
+  </div>
   <div class="errorMessage" *ngIf="!isValid()">{{attributeDesc.label}} is not given or not in the right format.</div>
   <div class="errorMessage" *ngIf="error">Error on {{attributeDesc.label}}: {{error}}.</div>
 </div>

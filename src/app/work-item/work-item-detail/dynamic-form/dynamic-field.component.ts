@@ -26,9 +26,30 @@ export class DynamicFieldComponent {
   @Input() workItem: WorkItem;
 
   error: string;
+  buttonsVisible: boolean = false;
 
   isValid() { 
     return this.form.controls[this.attributeDesc.key].valid; 
+  }
+
+  isButtonsVisible() { 
+    return this.buttonsVisible; 
+  }
+
+  focusIn() {
+    this.buttonsVisible = true;
+  }
+  
+  focusOut() {
+    this.buttonsVisible = false;
+  }
+
+  onChangeDropdown(newOption: string) {
+    if (newOption == '&nbsp;')
+      this.form.value[this.attributeDesc.key] = '';
+    else
+      this.form.value[this.attributeDesc.key] = newOption;
+    this.save();
   }
 
   save() {
@@ -63,7 +84,6 @@ export class DynamicFieldComponent {
   }
 
   cancel() {
-    console.log('Cancelling edit of ' + this.attributeDesc.key);
     // setting the form value to the (old) data value and mark it as pristine
     this.form.controls[this.attributeDesc.key].setValue(this.workItem.attributes[this.attributeDesc.key]);
     this.form.controls[this.attributeDesc.key].markAsPristine();
