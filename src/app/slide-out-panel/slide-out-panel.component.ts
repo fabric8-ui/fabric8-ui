@@ -13,7 +13,6 @@ import {
 
 @Component({
   selector: 'alm-slide-out-panel',
-  templateUrl: './slide-out-panel.component.html',
   styleUrls: ['./slide-out-panel.component.scss'],
   animations: [
     trigger('slideInOut', [
@@ -26,7 +25,8 @@ import {
       transition('in => out', animate('300ms ease-in-out')),
       transition('out => in', animate('500ms ease-in-out'))
     ]),
-  ]
+  ],
+  templateUrl: './slide-out-panel.component.html'
 })
 
 export class SlideOutPanelComponent implements OnInit, AfterViewInit {
@@ -36,9 +36,9 @@ export class SlideOutPanelComponent implements OnInit, AfterViewInit {
   @Output() panelStateChange = new EventEmitter<string>();
 
   constructor(
-  ) {}
+  ) { }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.panelState = "in";
   }
 
