@@ -3,7 +3,7 @@ import {
   CanActivate,
   CanActivateChild,
   ActivatedRouteSnapshot,
-  RouterStateSnapshot
+  RouterStateSnapshot, Resolve
 } from '@angular/router';
 
 import { Observable } from 'rxjs';
@@ -14,17 +14,14 @@ import { Fabric8RuntimeConsoleService } from './fabric8-runtime-console.service'
 // Basic guard that checks the user is logged in
 
 @Injectable()
-export class OAuthConfigStoreGuard implements CanActivate, CanActivateChild {
+export class Fabric8RuntimeConsoleResolver implements Resolve<boolean> {
 
   constructor(
     private fabric8RuntimeConsole: Fabric8RuntimeConsoleService
   ) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.fabric8RuntimeConsole.loading();
   }
 
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.canActivate(route, state);
-  }
 }

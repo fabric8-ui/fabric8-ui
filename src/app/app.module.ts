@@ -1,3 +1,4 @@
+import { Fabric8RuntimeConsoleResolver } from './shared/runtime-console/oauth-config-store-guard.resolver';
 import './rxjs-extensions';
 
 import { NgModule, ApplicationRef } from '@angular/core';
@@ -178,10 +179,6 @@ export type StoreType = {
     ConfigStore,
     AnalyticService,
     {
-      provide: OnLogin,
-      useClass: Fabric8UIOnLogin
-    },
-    {
       provide: DevNamespaceScope,
       useClass: SpaceNamespaceScope
     },
@@ -191,8 +188,13 @@ export type StoreType = {
       useExisting: SwitchableNamespaceScope
     },
     OAuthConfigStoreGuard,
+    Fabric8RuntimeConsoleResolver,
     SpaceNamespaceService,
-    Fabric8RuntimeConsoleService
+    Fabric8RuntimeConsoleService,
+    {
+      provide: OnLogin,
+      useClass: Fabric8UIOnLogin
+    }
   ],
   schemas: [],
   bootstrap: [AppComponent]

@@ -1,3 +1,5 @@
+import { AuthenticationService } from 'ngx-login-client';
+import { OnLogin } from 'fabric8-runtime-console';
 import { AnalyticService } from './shared/analytics.service';
 import { Spaces } from 'ngx-fabric8-wit';
 /*
@@ -33,9 +35,10 @@ export class AppComponent {
     private loginService: LoginService,
     // Inject services that need to start listening
     private spaces: Spaces,
-    private analytics: AnalyticService
+    private analytics: AnalyticService,
+    private onLogin: OnLogin,
+    private authService: AuthenticationService
   ) {
-
   }
 
   ngOnInit() {

@@ -1,3 +1,4 @@
+import { OAuthConfigStoreGuard } from './../shared/runtime-console/oauth-config-store-guard.service';
 import { RuntimeConsoleResolver } from './runtime-console.resolver';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -12,7 +13,7 @@ const routes: Routes = [
     children: [
       { path: '', component: CodebasesComponent },
       { path: 'pipelines', loadChildren: './pipelines/pipelines.module#PipelinesModule' },
-      { path: 'environments', loadChildren: './environments/environments.module#EnvironmentsModule' },
+      { path: 'environments', loadChildren: './environments/create-environments.module#CreateEnvironmentsModule' },
     ]
   }
 ];

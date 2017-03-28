@@ -20,6 +20,7 @@ interface ConfigMapWrapper {
   namespace?: string;
 }
 
+// TODO Rename this so it doesn't clash with fabric8-ui-space-namespace.service
 @Injectable()
 export class SpaceNamespaceService {
 
