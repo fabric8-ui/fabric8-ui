@@ -351,7 +351,15 @@ class WorkItemListPage {
   clickFilterAssignToMe () {
     this.filterAssignToMe.click();
   }
-
+  get activeFilters () {
+    return element(by.xpath(".//*//text()[contains(.,'Active filters:')]"));
+  }
+  get currentActiveFilter () {
+    return element(by.css(".active-filter.label.label-info"));
+  }
+  get closeCurrentActiveFilter () {
+    return element(by.css(".pficon.pficon-close"));
+  }
   filterDropdownId () {
     return  element(by.id("wi_filter_dropdown"));
   }

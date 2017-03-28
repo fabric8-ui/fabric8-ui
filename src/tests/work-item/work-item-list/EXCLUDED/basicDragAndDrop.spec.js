@@ -51,6 +51,9 @@ Drag and drop testing is blocked. The behavior seen is:
 
   Ref: Selenium Action methods:
      http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/actions_exports_ActionSequence.html
+
+  March 28, 2017 - This test is excluded from the functional tests. 
+
 */
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),

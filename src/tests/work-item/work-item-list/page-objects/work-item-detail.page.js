@@ -526,8 +526,9 @@ class WorkItemDetailPage {
   startCodingDiv (){
     return element(by.id("start-coding-link"));
   }
-/** UI elements for Areas */
-  areaLabel (){
+
+  /** UI elements for Areas */
+  get areaLabel (){
     return element(by.id('area_label'));
   }
   AreaSelect (){
