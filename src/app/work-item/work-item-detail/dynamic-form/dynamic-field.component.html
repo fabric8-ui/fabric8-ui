@@ -50,8 +50,16 @@
       <!-- workitemtype field type: markup -->
       <markdown-control *ngSwitchCase="'markup'" [markdownValue]="workItem.attributes[attributeDesc.key]" (onUpdate)="onChangeMarkup($event)"></markdown-control>
 
-      <!-- TODO: -->
       <!-- workitemtype field type: instant (datetime) -->
+      <div *ngSwitchCase="'instant'" class="dynamic-control-datepicker">
+      <my-date-picker
+                [options]="datePickerOptions"
+                [selDate]="workItem.attributes[attributeDesc.key]"
+                (dateChanged)="onDateChanged($event)"
+                placeholder="Set Date"></my-date-picker>
+      </div>
+
+      <!-- TODO: -->
       <!-- workitemtype field type: duration -->
       <!-- workitemtype field type: url -->
       <!-- workitemtype field type: iteration -->
@@ -64,10 +72,9 @@
       <!-- Todd: -->
       <!-- 'History' of WI (needs core change, not in core data types) -->
       <!-- TreePath (e.g. Areas and Iterations) (already in fixed fields) -->
-      <!-- Boolean (needs core change, not in core data types) -->
 
       <!-- the edit icon that appears on text/textfield input types -->
-      <span *ngIf="!isButtonsVisible() && (attributeDesc.type.kind=='integer' || attributeDesc.type.kind=='float' || attributeDesc.type.kind=='string')"
+      <span *ngIf="!isButtonsVisible() && (attributeDesc.type.kind=='integer' || attributeDesc.type.kind=='float' || attributeDesc.type.kind=='string' )"
             class="pficon-edit marginL10 fl dynamic-control-edit-ico">
       </span>
 

@@ -1,6 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
+import * as moment from 'moment';
+import { IMyOptions, IMyDateModel } from 'mydatepicker';
+
 import { WorkItem } from '../../../models/work-item';
 
 /*
@@ -27,6 +30,15 @@ export class DynamicFieldComponent {
 
   error: string;
   buttonsVisible: boolean = false;
+
+  datePickerOptions: IMyOptions = {
+    dateFormat: 'dd mmm yyyy',
+    selectionTxtFontSize: '14px',
+    openSelectorOnInputClick: true,
+    editableDateField: false,
+    showClearDateBtn: false,
+    componentDisabled: false
+  };
 
   isValid() { 
     return this.form.controls[this.attributeDesc.key].valid; 
@@ -73,6 +85,21 @@ export class DynamicFieldComponent {
     if (newMarkupValue)
       this.form.value[this.attributeDesc.key] = newMarkupValue;
     this.save();
+  }
+
+  onDateChanged(newDate: IMyDateModel) {
+    let date = moment(newDate.jsdate).format('YYYY-MM-DD') + 'T00:00:00Z';
+    this.form.value[this.attributeDesc.key] = date;
+    this.save();
+  }
+
+  toDateModel(dateValue: string): IMyDateModel {
+    let date = moment();
+    if (dateValue) {
+      date = moment(dateValue);
+    }
+    let convertedDate = { date: { year: parseInt(date.format('YYYY')), month: parseInt(date.format('M')), day: parseInt(date.format('D')) } } as IMyDateModel;
+    return convertedDate;
   }
 
   save() {

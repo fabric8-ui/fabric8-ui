@@ -227,6 +227,14 @@ export class SchemaMockGenerator {
                   'kind' : 'boolean'
                 }
               },
+              'system.duedate' : {
+                'description' : 'Due date',
+                'label' : 'Due Date',
+                'required' : false,
+                'type' : {
+                  'kind' : 'instant'
+                }
+              },
               'system.severity' : {
                 'description' : 'Severity for the story',
                 'label' : 'Severity',

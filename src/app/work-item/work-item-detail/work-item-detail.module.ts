@@ -6,6 +6,8 @@ import { HttpModule, Http }    from '@angular/http';
 import { CollapseModule, TooltipModule } from 'ng2-bootstrap';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { DropdownModule } from 'ng2-bootstrap';
+import { MyDatePickerModule } from 'mydatepicker';
+
 import { MockHttp } from './../../shared/mock-http';
 
 import { AlmUserName } from '../../pipes/alm-user-name.pipe';
@@ -51,7 +53,8 @@ if (process.env.ENV == 'inmemory') {
     FormsModule,
     TooltipModule,
     Ng2CompleterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MyDatePickerModule
   ],
   declarations: [
     AlmUserName,
