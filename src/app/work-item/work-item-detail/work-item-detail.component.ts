@@ -6,6 +6,7 @@ import {
   ElementRef,
   HostListener,
   OnInit,
+  OnDestroy,
   trigger,
   state,
   style,
@@ -55,7 +56,7 @@ import { WorkItemType } from '../../models/work-item-type';
   ]
 })
 
-export class WorkItemDetailComponent implements OnInit, AfterViewInit {
+export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('desc') description: any;
   @ViewChild('title') title: any;
   @ViewChild('userSearch') userSearch: any;
@@ -117,6 +118,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   workItemPayload: WorkItem;
 
+  eventListeners: any[] = [];
+
   constructor(
     private areaService: AreaService,
     private auth: AuthenticationService,
@@ -171,6 +174,11 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       this.getAreas();
       this.getIterations();
     });
+  }
+
+  ngOnDestroy() {
+    console.log('Destroying all the listeners in detail component');
+    this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
   // toggles active state for Preview as HTML and Write in Markdown
@@ -622,11 +630,13 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   }
 
   listenToEvents() {
-    this.broadcaster.on<string>('logout')
-      .subscribe(message => {
-        this.loggedIn = false;
-        this.loggedInUser = null;
-    });
+    this.eventListeners.push(
+      this.broadcaster.on<string>('logout')
+        .subscribe(message => {
+          this.loggedIn = false;
+          this.loggedInUser = null;
+      })
+    );
   }
 
   preventDef(event: any) {

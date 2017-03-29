@@ -4,6 +4,7 @@ import {
   ElementRef,
   Input,
   OnInit,
+  OnDestroy,
   ViewChild,
   ViewChildren,
   QueryList,
@@ -40,7 +41,7 @@ import { WorkItemService } from '../work-item.service';
   styleUrls: ['./work-item-board.component.scss']
 })
 
-export class WorkItemBoardComponent implements OnInit {
+export class WorkItemBoardComponent implements OnInit, OnDestroy {
 
   @ViewChildren('activeFilters', {read: ElementRef}) activeFiltersRef: QueryList<ElementRef>;
   @ViewChild('activeFiltersDiv') activeFiltersDiv: any;
@@ -57,6 +58,7 @@ export class WorkItemBoardComponent implements OnInit {
   private iterations: IterationModel[] = [];
   private workItemTypes: WorkItemType[] = [];
   private readyToInit = false;
+  eventListeners: any[] = [];
 
   constructor(
     private auth: AuthenticationService,
@@ -105,6 +107,11 @@ export class WorkItemBoardComponent implements OnInit {
       }
     });
     this.initStuff();
+  }
+
+  ngOnDestroy() {
+    console.log('Destroying all the listeners in board component');
+    this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
   initStuff() {
@@ -308,7 +315,8 @@ export class WorkItemBoardComponent implements OnInit {
 
   listenToEvents() {
     // filters like assign to me should stack with the current filters
-    this.broadcaster.on<string>('item_filter')
+    this.eventListeners.push(
+      this.broadcaster.on<string>('item_filter')
         .subscribe((filters: any) => {
           this.filters = filters;
           // this reloads the states for the lanes, and then the wis inside the lanes.
@@ -316,12 +324,15 @@ export class WorkItemBoardComponent implements OnInit {
             if (filter.paramKey === 'filter[workitemtype]')
               this.getDefaultWorkItemTypeStates(filter.value);
           });
-    });
+      })
+    );
 
-    this.broadcaster.on<string>('wi_change_state')
-        .subscribe((data: any) => {
-          this.changeLane(data[0].oldState, data[0].newState, data[0].workItem);
-    });
+    this.eventListeners.push(
+      this.broadcaster.on<string>('wi_change_state')
+          .subscribe((data: any) => {
+            this.changeLane(data[0].oldState, data[0].newState, data[0].workItem);
+      })
+    );
   }
 
 }

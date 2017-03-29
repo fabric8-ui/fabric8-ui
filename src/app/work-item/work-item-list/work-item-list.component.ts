@@ -13,6 +13,7 @@ import {
   QueryList,
   TemplateRef,
   DoCheck,
+  OnDestroy,
   ViewEncapsulation
 } from '@angular/core';
 import {
@@ -48,7 +49,7 @@ import { TreeListComponent } from 'ngx-widgets';
   templateUrl: './work-item-list.component.html',
   styleUrls: ['./work-item-list.component.scss']
 })
-export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
+export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, OnDestroy {
 
   @ViewChildren('activeFilters', {read: ElementRef}) activeFiltersRef: QueryList<ElementRef>;
   @ViewChild('activeFiltersDiv') activeFiltersDiv: any;
@@ -76,6 +77,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
   filters: any[] = [];
   allUsers: User[] = [] as User[];
   authUser: any = null;
+  eventListeners: any[] = [];
   private spaceSubscription: Subscription = null;
   private iterations: IterationModel[] = [];
   private nextLink: string = '';
@@ -135,6 +137,11 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
       this.treeList.updateTree();
       this.prevWorkItemLength = this.workItems.length;
     }
+  }
+
+  ngOnDestroy() {
+    console.log('Destroying all the listeners in list component');
+    this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
   // model handlers
@@ -279,64 +286,77 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
   }
 
   listenToEvents() {
-    this.broadcaster.on<string>('logout')
-      .subscribe(message => {
-        this.loggedIn = false;
-        this.authUser = null;
-        this.treeListOptions['allowDrag'] = false;
-    });
+    this.eventListeners.push(
+      this.broadcaster.on<string>('logout')
+        .subscribe(message => {
+          this.loggedIn = false;
+          this.authUser = null;
+          this.treeListOptions['allowDrag'] = false;
+      })
+    );
     //Filters like assign to me should stack with the current filters
-    this.broadcaster.on<string>('item_filter')
-      .subscribe((filters: any) => {
-        this.filters = this.filters.concat(filters);
-        this.loadWorkItems();
-    });
+    this.eventListeners.push(
+      this.broadcaster.on<string>('item_filter')
+        .subscribe((filters: any) => {
+          this.filters = this.filters.concat(filters);
+          this.loadWorkItems();
+      })
+    );
     //Filters like iteration should clear the previous filter
     //and then set the current selected value
-    this.broadcaster.on<string>('unique_filter')
-      .subscribe((filters: any) => {
-        //this.filters = this.filters.filter(item => item.paramKey !== filters[0].paramKey);
-        //this.filters = this.filters.concat(filters);
-        //clear top filters
-        this.filters = filters;
-        this.loadWorkItems();
-    });
-    this.broadcaster.on<string>('move_item')
-      .subscribe((moveto: string) => {
-        switch (moveto){
-          case 'up':
-            this.onMoveUp();
-            break;
-          case 'down':
-            this.onMoveDown();
-            break;
-          case 'top':
-            this.onMoveSelectedToTop();
-            break;
-          case 'bottom':
-            this.onMoveSelectedToBottom();
-            break;
-          default:
-            break;
-        }
-    });
+    this.eventListeners.push(
+      this.broadcaster.on<string>('unique_filter')
+        .subscribe((filters: any) => {
+          //this.filters = this.filters.filter(item => item.paramKey !== filters[0].paramKey);
+          //this.filters = this.filters.concat(filters);
+          //clear top filters
+          this.filters = filters;
+          this.loadWorkItems();
+      })
+    );
 
-    this.broadcaster.on<string>('updateWorkItem')
-      .subscribe((workItem: string) => {
-        let updatedItem = JSON.parse(workItem) as WorkItem;
-        let index = this.workItems.findIndex((item) => item.id === updatedItem.id);
-        if (index > -1) {
-          this.workItems[index] = updatedItem;
+    this.eventListeners.push(
+      this.broadcaster.on<string>('move_item')
+        .subscribe((moveto: string) => {
+          switch (moveto){
+            case 'up':
+              this.onMoveUp();
+              break;
+            case 'down':
+              this.onMoveDown();
+              break;
+            case 'top':
+              this.onMoveSelectedToTop();
+              break;
+            case 'bottom':
+              this.onMoveSelectedToBottom();
+              break;
+            default:
+              break;
+          }
+      })
+    );
+
+    this.eventListeners.push(
+      this.broadcaster.on<string>('updateWorkItem')
+        .subscribe((workItem: string) => {
+          let updatedItem = JSON.parse(workItem) as WorkItem;
+          let index = this.workItems.findIndex((item) => item.id === updatedItem.id);
+          if (index > -1) {
+            this.workItems[index] = updatedItem;
+            this.treeList.updateTree();
+          }
+        })
+    );
+
+    this.eventListeners.push(
+      this.broadcaster.on<string>('addWorkItem')
+        .subscribe((workItem: string) => {
+          let newItem = JSON.parse(workItem) as WorkItem;
+          this.workItems.splice(0, 0, newItem);
           this.treeList.updateTree();
-        }
-      });
-
-    this.broadcaster.on<string>('addWorkItem')
-      .subscribe((workItem: string) => {
-        let newItem = JSON.parse(workItem) as WorkItem;
-        this.workItems.splice(0, 0, newItem);
-        this.treeList.updateTree();
-      });
+        })
+      );
   }
 
   onDragStart() {
