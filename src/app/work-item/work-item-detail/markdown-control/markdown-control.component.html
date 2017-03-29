@@ -39,7 +39,7 @@
             [innerHTML]="renderedText"
             [hidden]="textViewType!='preview'">
           </div>
-          <p *ngIf="!renderedText && !tabBarVisible">Work Item text</p>
+          <p *ngIf="!renderedText && !tabBarVisible">Edit Text</p>
           <div class="edit-icon">
             <span id="workItemtext_btn_edit" class="pficon-edit"
               (click)='onClickEditIcon()'></span>

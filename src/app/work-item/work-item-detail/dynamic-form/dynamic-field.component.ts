@@ -52,6 +52,29 @@ export class DynamicFieldComponent {
     this.save();
   }
 
+  getBooleanText(booleanValue: boolean): string {
+    if (typeof booleanValue == 'undefined')
+      return '&nbsp;';
+    else if (booleanValue)
+      return 'Yes';
+    else
+      return 'No';
+  }
+
+  onChangeBoolean(newOption: boolean) {
+    if (newOption == null)
+      this.form.value[this.attributeDesc.key] = undefined;
+    else
+      this.form.value[this.attributeDesc.key] = newOption;
+    this.save();
+  }
+
+  onChangeMarkup(newMarkupValue: string) {
+    if (newMarkupValue)
+      this.form.value[this.attributeDesc.key] = newMarkupValue;
+    this.save();
+  }
+
   save() {
     try {
       // based on the data type, we're converting the data before storing it.

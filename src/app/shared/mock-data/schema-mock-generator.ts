@@ -198,17 +198,33 @@ export class SchemaMockGenerator {
             'icon': 'fa-bookmark',
             'fields' : {
                'system.description' : {
-                  'type' : {
-                     'kind' : 'markup'
-                  },
-                  'required' : false
+                'type' : {
+                    'kind' : 'markup'
+                },
+                'required' : false
                },
+              'system.reproduction' : {
+                'description' : 'Reproducing Steps',
+                'label' : 'Steps to Reproduce',
+                'required' : false,
+                'type' : {
+                  'kind' : 'markup'
+                }
+              },
               'system.storypoints' : {
                 'description' : 'Storypoints for the story',
                 'label' : 'Story Points',
                 'required' : false,
                 'type' : {
                   'kind' : 'integer'
+                }
+              },
+              'system.important' : {
+                'description' : 'Important or not',
+                'label' : 'Important',
+                'required' : false,
+                'type' : {
+                  'kind' : 'boolean'
                 }
               },
               'system.severity' : {

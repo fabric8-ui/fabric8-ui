@@ -28,6 +28,28 @@
         </ul>
       </div>
 
+      <!-- workitemtype field type: boolean -->
+      <div *ngSwitchCase="'boolean'" dropdown class="card-pf-time-frame-filter dynamic-control-dropdown">
+        <button dropdownToggle type="button" class="btn btn-default col-md-12 col-sm-12 col-xs-12">
+          <span class='dropdown-text' [innerHTML]="getBooleanText(workItem.attributes[attributeDesc.key])"></span>
+          <span class="caret pull-right"></span>
+        </button>
+        <ul class="dropdown-menu-right dropdown-ul" role="menu" dropdownMenu>
+          <li *ngIf="!attributeDesc.required" class="dropdown-li" (click)="onChangeBoolean(null)">
+            <a><span class='dropdown-text'>&nbsp;</span></a>
+          </li>
+          <li class="dropdown-li" (click)="onChangeBoolean(true)">
+            <a><span class='dropdown-text'>Yes</span></a>
+          </li>
+          <li class="dropdown-li" (click)="onChangeBoolean(false)">
+            <a><span class='dropdown-text'>No</span></a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- workitemtype field type: markup -->
+      <markdown-control *ngSwitchCase="'markup'" [markdownValue]="workItem.attributes[attributeDesc.key]" (onUpdate)="onChangeMarkup($event)"></markdown-control>
+
       <!-- TODO: -->
       <!-- workitemtype field type: instant (datetime) -->
       <!-- workitemtype field type: duration -->
@@ -36,12 +58,10 @@
       <!-- workitemtype field type: workitem -->
       <!-- workitemtype field type: user -->
       <!-- workitemtype field type: list -->
-      <!-- workitemtype field type: markup -->
       <!-- workitemtype field type: area -->
       <!-- workitemtype field type: codebase -->
 
       <!-- Todd: -->
-      <!-- markdown (needs core change, needs rendering field) -->
       <!-- 'History' of WI (needs core change, not in core data types) -->
       <!-- TreePath (e.g. Areas and Iterations) (already in fixed fields) -->
       <!-- Boolean (needs core change, not in core data types) -->
