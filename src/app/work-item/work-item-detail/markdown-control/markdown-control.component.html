@@ -1,0 +1,76 @@
+<div class="form-group">
+  <div class="col-md-12 col-sm-12 col-xs-12 detail-text-wrap" [class.show-less]="!markdownViewExpanded">
+    <div class="col-md-12 col-sm-12 col-xs-12 detail-text" *ngIf="loggedIn">
+      <div class="text-switcher">
+        <ul class="nav nav-tabs">
+          <li *ngIf="loggedIn && tabBarVisible" (click)="onClickMarkdownTab()" [ngClass]="{'active': textViewType === 'markdown'}">
+            <a class="view-switch-btn">Markdown</a>
+          </li>
+          <li *ngIf="loggedIn && tabBarVisible" (click)="onClickPreviewTab()" [ngClass]="{'active': textViewType === 'preview'}">
+            <a class="view-switch-btn">Preview</a>
+          </li>
+        </ul>
+      </div>
+      <div id="wi-detail-text" class="detail-text-div-wrap" (click)="onClickMarkdownField()">
+        <div class="detail-text-div"
+          [class.text-editable]="tabBarVisible"
+          [class.text-not-found]="!textEditable && !markdownText">
+          <!--
+            The following condition for innerHTML might look
+            little confusing. So, here is the explanation -
+            If there is some text it should show up
+            If there is none, then it should check if the text
+            field is editable or not. If it's editable then it should
+            stay empty as in the default value of text.
+            If it's not editable and there is no text as well,
+            it should show up the message 'Work item text.'
+          -->
+          <p almEditable [editable]="textEditable"
+            #editTextPara
+            (onUpdate)="onTextUpdate($event)"
+            (keydown.enter)="onKeyEnter()"
+            (keyup.enter)="$event.preventDefault()"
+            class="text"
+            id="detail-text-value"
+            [hidden]="textViewType!='markdown'"
+            [innerText]="markdownText">
+          </p>
+          <div class="text-html-view"
+            [innerHTML]="renderedText"
+            [hidden]="textViewType!='preview'">
+          </div>
+          <p *ngIf="!renderedText && !tabBarVisible">Work Item text</p>
+          <div class="edit-icon">
+            <span id="workItemtext_btn_edit" class="pficon-edit"
+              (click)='onClickEditIcon()'></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="wi-detail-text"
+      class="col-md-12 text"
+      *ngIf="!loggedIn"
+      [innerHTML]="renderedText">
+    </div>
+  </div>
+  <div class="col-md-12 col-sm-12 col-xs-12 detail-text-action">
+      <span class="col-md-4">
+        <small *ngIf="loggedIn && tabBarVisible">
+          <b>Markdown Supported</b>
+        </small>
+      </span>
+      <span (click)="toggleMarkdownViewExpanded()" [ngClass]="{'arrow-down': markdownViewExpanded === true, 'arrow-up': markdownViewExpanded === false}" class="btn btn-link show-more-state col-md-4"></span>
+      <span class="col-md-4">
+        <div *ngIf="loggedIn && tabBarVisible" id="workItemtext_btn_cancel"
+            class="fl btn btn-default btn-cancel pull-right detail-action-btn "
+            (click)="onClickCancelIcon()">
+            <span class="fa fa-close"></span>
+        </div>
+        <div *ngIf="loggedIn && tabBarVisible" id="workItemtext_btn_save"
+            class="fl btn btn-default pull-right detail-action-btn"
+            (click)="onClickSaveIcon()">
+            <span class="fa fa-check"></span>
+        </div>
+      </span>
+  </div>
+</div>

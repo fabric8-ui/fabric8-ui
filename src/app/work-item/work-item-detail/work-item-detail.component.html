@@ -264,86 +264,11 @@
           <alm-dynamic-field [workItem]="workItem" [attributeDesc]="attributeDesc" [form]="dynamicFormGroup"></alm-dynamic-field>
         </div>
         <!-- Extra fields End -->
-        <!--Description-->
-        <div class="form-group">
-          <!--<label class="col-sm-5">
-            <span (click)="isClassVisible = !isClassVisible; arrowDescription(false)" [ngClass]="{'arrow-down': arrowUp === true, 'arrow-up': arrowUp === false}" class="btn btn-link show-more-state"></span>
-          </label>-->
-          <div class="col-md-12 col-sm-12 col-xs-12 detail-description-wrap" [class.show-less]="!isClassVisible">
-            <div class="col-md-12 col-sm-12 col-xs-12 detail-description" *ngIf="loggedIn">
-              <div class="text-switcher">
-                <ul class="nav nav-tabs">
-                  <li *ngIf="loggedIn && descEditable" (click)="descViewType='markdown'; toggleActive(true)" [ngClass]="{'active': activeButton === true}">
-                    <a class="view-switch-btn">Markdown</a>
-                  </li>
-                  <li *ngIf="loggedIn && descEditable" (click)="showHtml(desc.innerText); toggleActive(false)" [ngClass]="{'active': activeButton === false}">
-                    <a class="view-switch-btn">Preview</a>
-                  </li>
-                </ul>
-              </div>
-              <div id="wi-detail-desc" class="detail-desc-div-wrap" (click)="openDescription()">
-                <div class="detail-desc-div"
-                  [class.desc-editable]="descEditable"
-                  [class.desc-not-found]="!descEditable && !workItem.attributes['system.description']">
-                  <!--
-                    The following condition for innerHTML might look
-                    little confusing. So, here is the explanation -
-                    If there is some description it should show up
-                    If there is none, then it should check if the description
-                    field is editable or not. If it's editable then it should
-                    stay empty as in the default value of description.
-                    If it's not editable and there is no description as well,
-                    it should show up the message 'Work item Description.'
-                  -->
-                  <p almEditable [editable]="descEditable"
-                    #desc
-                    (onUpdate)="descUpdate($event)"
-                    (keydown.enter)="onUpdateDescription()"
-                    (keyup.enter)="preventDef($event)"
-                    class="description"
-                    id="detail-desc-value"
-                    [hidden]="descViewType!='markdown'"
-                    [innerText]="workItem.attributes['system.description']">
-                  </p>
-                  <div class="desc-html-view"
-                    [innerHTML]="renderedDesc"
-                    [hidden]="descViewType!='html'">
-                  </div>
-                  <p *ngIf="!renderedDesc && !descEditable">Work Item Description</p>
-                  <div class="edit-icon">
-                    <span id="workItemDesc_btn_edit" class="pficon-edit"
-                      (click)='openDescription()'></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div id="wi-detail-desc"
-              class="col-md-12 description"
-              *ngIf="!loggedIn"
-              [innerHTML]="renderedDesc">
-            </div>
-          </div>
-          <div class="col-md-12 col-sm-12 col-xs-12 detail-desc-action">
-              <span class="col-md-4">
-                <small *ngIf="loggedIn && descEditable">
-                  <b>Markdown Supported</b>
-                </small>
-              </span>
-              <span (click)="isClassVisible = !isClassVisible; arrowDescription(false)" [ngClass]="{'arrow-down': arrowUp === true, 'arrow-up': arrowUp === false}" class="btn btn-link show-more-state col-md-4"></span>
-              <span class="col-md-4">
-                <div *ngIf="loggedIn && descEditable" id="workItemdesc_btn_cancel"
-                    class="fl btn btn-default btn-cancel pull-right detail-action-btn "
-                    (click)="closeDescription()">
-                    <span class="fa fa-close"></span>
-                </div>
-                <div *ngIf="loggedIn && descEditable" id="workItemdesc_btn_save"
-                    class="fl btn btn-default pull-right detail-action-btn"
-                    (click)="onUpdateDescription()">
-                    <span class="fa fa-check"></span>
-                </div>
-              </span>
-          </div>
-        </div>
+
+        <!-- Description Start -->
+        <markdown-control [markdownValue]="descText" (onUpdate)="descUpdate($event)" (onOpen)="descOpen()"></markdown-control>
+        <!-- Description End -->
+
         <div class="form-group">
           <p id="start-coding-link" class="form-control-static start-coding">
             <a *ngIf="loggedIn && workItem.relationships?.codebase?.links?.meta?.edit"  target="_blank" href="{{workItem.relationships?.codebase?.links?.meta?.edit}}">&#60;&#47;&#62; Start coding</a>
