@@ -47,7 +47,7 @@ import { WorkItemType } from '../../models/work-item-type';
         transform: 'translateX(0)'
       })),
       state('out', style({
-        transform: 'translateX(100%)'
+        transform: 'translateX(102%)'
       })),
       transition('in => out', animate('300ms ease-in-out')),
       transition('out => in', animate('500ms ease-in-out'))
@@ -154,7 +154,14 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
           let type = this.route.queryParams.forEach(params => {
             this.createWorkItemObj(params['type']);
           });
-          this.getAllUsers();
+
+          // Open the panel
+          if (this.panelState === 'out') {
+            this.panelState = 'in';
+            if (this.headerEditable) {
+              this.title.nativeElement.focus();
+            }
+          }
         } else {
           this.loadWorkItem(id);
         }
@@ -195,12 +202,12 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     // as this would indicate that changes are being caused by change detection itself.
     // I had to triggers another round of change detection
     // during that method - emit an event, whatever. Wrapping it in a timeout would do the job
-    setTimeout(() => {
-      this.panelState = 'in';
-      if (this.headerEditable) {
-        this.title.nativeElement.focus();
-      }
-    });
+    // setTimeout(() => {
+    //   this.panelState = 'in';
+    //   if (this.headerEditable) {
+    //     this.title.nativeElement.focus();
+    //   }
+    // });
   }
 
   loadWorkItem(id: string): void {
@@ -271,11 +278,15 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
           },
           type: this.workItem.type
         };
-        // fetch the list of user
-        // after getting the Workitem
-        // to set assigned user
-        // for this workitem from the list
-        this.getAllUsers();
+
+        // Open the panel once all the data is ready
+        if (this.panelState === 'out') {
+          this.panelState = 'in';
+          if (this.headerEditable) {
+            this.title.nativeElement.focus();
+          }
+        }
+
         this.activeOnList(400);
       },
       err => {
