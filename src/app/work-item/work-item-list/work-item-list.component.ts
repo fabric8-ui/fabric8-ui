@@ -1,3 +1,6 @@
+import { Observable } from 'rxjs/Observable';
+import { IterationService } from './../../iteration/iteration.service';
+import { IterationModel } from './../../models/iteration.model';
 import { Subscription } from 'rxjs/Subscription';
 import {
   AfterViewInit,
@@ -60,7 +63,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
 
   workItems: WorkItem[] = [];
   prevWorkItemLength: number = 0;
-  workItemTypes: WorkItemType[];
+  workItemTypes: WorkItemType[] = [];
   selectedWorkItemEntryComponent: WorkItemListEntryComponent;
   workItemToMove: WorkItemListEntryComponent;
   workItemDetail: WorkItem;
@@ -74,6 +77,8 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
   allUsers: User[] = [] as User[];
   authUser: any = null;
   private spaceSubscription: Subscription = null;
+  private iterations: IterationModel[] = [];
+  private nextLink: string = '';
 
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
@@ -97,14 +102,14 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     private logger: Logger,
     private userService: UserService,
     private route: ActivatedRoute,
-    private spaces: Spaces) {}
+    private spaces: Spaces,
+    private iterationService: IterationService) {}
 
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    // console.log('ALL USER DATA', this.route.snapshot.data['allusers']);
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
-    if(this.loggedIn) {
+    if (this.loggedIn) {
       this.treeListOptions['allowDrag'] = true;
     }
     this.spaceSubscription = this.spaces.current.subscribe(space => {
@@ -122,12 +127,11 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
 
   ngAfterViewInit() {
     let oldHeight = 0;
-    this.allUsers = cloneDeep(this.route.snapshot.data['allusers']) as User[];
     this.authUser = cloneDeep(this.route.snapshot.data['authuser']);
   }
 
   ngDoCheck() {
-    if (this.workItems.length!=this.prevWorkItemLength) {
+    if (this.workItems.length != this.prevWorkItemLength) {
       this.treeList.updateTree();
       this.prevWorkItemLength = this.workItems.length;
     }
@@ -140,18 +144,47 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     this.loadWorkItems();
   }
 
+
   loadWorkItems(): void {
-    this.workItemService
-      .getWorkItems(this.pageSize, this.filters)
-      .subscribe((wItems) => {
-        this.workItems = wItems;
-      });
+    Observable.combineLatest(
+      this.iterationService.getIterations(),
+      this.userService.getAllUsers(),
+      this.workItemService.getWorkItemTypes(),
+      this.workItemService.getWorkItems(this.pageSize, this.filters)
+    ).map((items) => {
+      return items;
+    })
+    .subscribe(([iterations, users, wiTypes, workItemResp]) => {
+      this.allUsers = users;
+      this.iterations = iterations;
+      this.workItemTypes = wiTypes;
+      const workItems = workItemResp.workItems;
+      this.nextLink = workItemResp.nextLink;
+      this.workItems = this.workItemService.resolveWorkItems(
+        workItems,
+        this.iterations,
+        this.allUsers,
+        this.workItemTypes
+      );
+    });
   }
 
   fetchMoreWiItems(): void {
     this.workItemService
-      .getMoreWorkItems()
-      .subscribe((newWiItems) => {
+      .getMoreWorkItems(this.nextLink)
+      .subscribe((newWiItemResp) => {
+        const workItems = newWiItemResp.workItems;
+        this.nextLink = newWiItemResp.nextLink;
+        this.workItems = [
+          ...this.workItems,
+          // Returns an array of resolved work items
+          ...this.workItemService.resolveWorkItems(
+            workItems,
+            this.iterations,
+            this.allUsers,
+            this.workItemTypes
+          )
+        ];
         this.treeList.updateTree();
       },
       (e) => console.log(e));
@@ -187,6 +220,16 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     this.workItemDetail = entryComponent.getWorkItem();
     this.onSelect(entryComponent);
     this.showWorkItemDetails = true;
+  }
+
+  onCreateWorkItem(workItem) {
+    let resolveItem = this.workItemService.resolveWorkItems(
+      [workItem],
+      this.iterations,
+      this.allUsers,
+      this.workItemTypes
+    );
+    this.workItems = [...resolveItem, ...this.workItems];
   }
 
   onMoveSelectedToTop(): void{
@@ -277,6 +320,38 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
             break;
         }
     });
+
+    this.broadcaster.on<string>('updateWorkItem')
+      .subscribe((workItem: string) => {
+        let updatedItem = JSON.parse(workItem) as WorkItem;
+        let index = this.workItems.findIndex((item) => item.id === updatedItem.id);
+        if (index > -1) {
+          this.workItems[index] = updatedItem;
+          this.treeList.updateTree();
+        }
+      });
+
+    this.broadcaster.on<string>('addWorkItem')
+      .subscribe((workItem: string) => {
+        let newItem = JSON.parse(workItem) as WorkItem;
+        this.workItems.splice(0, 0, newItem);
+        this.treeList.updateTree();
+      });
+  }
+
+  onDragStart() {
+    //console.log('on drag start');
+  }
+
+  // Event listener for WI drop.
+  onDragEnd(workItemId: string) {
+    // rearrange is happening inside ng2-dnd library
+
+    // Build the ID-index map after rearrange.
+    this.workItemService.buildWorkItemIdIndexMap();
+
+    // save the order of work item.
+    // this.workItemService.reOrderWorkItem(workItemId);
   }
 
   onMoveNode($event) {
@@ -284,15 +359,15 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck {
     let prevWI = $event.to.parent.children[$event.to.index - 1];
     let nextWI = $event.to.parent.children[$event.to.index + 1];
 
-    if(typeof prevWI !== "undefined") {
-      this.workItemService.reOrderWorkItem(movedWI.id, prevWI.id, "below")
+    if (typeof prevWI !== 'undefined') {
+      this.workItemService.reOrderWorkItem(movedWI.id, prevWI.id, 'below')
           .then((workItem) => {
             this.workItems.find((item) => item.id === movedWI.id).attributes['version'] = workItem.attributes['version'];
             this.workItemService.buildWorkItemIdIndexMap();
           });
     }
     else {
-      this.workItemService.reOrderWorkItem(movedWI.id, nextWI.id, "above")
+      this.workItemService.reOrderWorkItem(movedWI.id, nextWI.id, 'above')
           .then((workItem) => {
             this.workItems.find((item) => item.id === movedWI.id).attributes['version'] = workItem.attributes['version'];
             this.workItemService.buildWorkItemIdIndexMap();

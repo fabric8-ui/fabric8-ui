@@ -1,9 +1,10 @@
-import { MockBackend } from '@angular/http/testing';
-import { AuthenticationService } from 'ngx-login-client';
 import {
+  Inject,
   Injectable,
-  ReflectiveInjector
+  ReflectiveInjector,
+  forwardRef
 } from '@angular/core';
+
 import {
   Http,
   XHRBackend,
@@ -14,6 +15,7 @@ import {
   Headers
 } from '@angular/http';
 
+import { AuthenticationService } from 'ngx-login-client';
 import { Observable } from 'rxjs/Observable';
 
 /**
@@ -36,43 +38,40 @@ export class HttpService extends Http {
   ) {
     super(backend, options);
     if (auth && auth.getToken() != null) {
-      options.headers.set('Authorization', `Bearer ${auth.getToken()}`);
+      this.headers.set('Authorization', `Bearer ${auth.getToken()}`);
     }
   }
 
-  get(url: string, options?: RequestOptionsArgs) {
+  get(url: string, options = {}) {
     console.log('GET request initiated');
     console.log('URL - ', url);
     console.log('Options - ', options);
-
-    return super.get(url, options);
+    return super.get(url, { headers: this.headers });
   }
 
-  post(url: string, body: any, options?: RequestOptionsArgs) {
+  post(url: string, body: any, options: RequestOptionsArgs = {}) {
+    options = Object.assign(options, this.options);
     console.log('POST request initiated');
     console.log('URL - ', url);
     console.log('Body - ', body);
     console.log('Options - ', options);
-
-    return super.post(url, body, options);
+    return super.post(url, body, { headers: this.headers });
   }
 
-  put(url: string, body: any, options?: RequestOptionsArgs) {
+  put(url: string, body: any, options: RequestOptionsArgs = {}) {
     console.log('PUT request initiated');
     console.log('URL - ', url);
     console.log('Body - ', body);
     console.log('Options - ', options);
-
-    return super.put(url, body, options);
+    return super.put(url, body, { headers: this.headers });
   }
 
-  patch(url: string, body: any, options?: RequestOptionsArgs) {
+  patch(url: string, body: any, options: RequestOptionsArgs = {}) {
     console.log('PATCH request initiated');
     console.log('URL - ', url);
     console.log('Body - ', body);
     console.log('Options - ', options);
-
-    return super.patch(url, body, options);
+    return super.patch(url, body, { headers: this.headers });
   }
 
 }

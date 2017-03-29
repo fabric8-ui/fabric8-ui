@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { IterationModel } from './../models/iteration.model';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router }            from '@angular/router';
 
 import { Broadcaster } from 'ngx-base';
@@ -14,6 +15,7 @@ import { Broadcaster } from 'ngx-base';
 })
 export class SidepanelComponent implements OnInit {
 
+  @Input() iterations: IterationModel[] = [];
 
   constructor(
     private router: Router,

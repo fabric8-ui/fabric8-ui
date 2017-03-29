@@ -137,7 +137,8 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
     const tempValue = {'data': this.link};
     this.workItemService
       .createLink(tempValue, this.workItem['id'])
-      .subscribe((response: any) => {
+      .subscribe(([link, includes]) => {
+        this.workItemService.addLinkToWorkItem(link, includes, this.workItem);
         this.resetSearchData();
       },
       (error: any) => console.log(error));
@@ -148,10 +149,8 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
     event.stopPropagation();
     this.workItemService
       .deleteLink(link, currentWorkItem.id)
-      .subscribe((response: any) => {
-        if (!this.workItem.relationalData.totalLinkCount) {
-          this.showLinkView = false;
-        }
+      .subscribe(() => {
+        this.workItemService.removeLinkFromWorkItem(link, currentWorkItem);
       },
       (error: any) => console.log(error));
   }

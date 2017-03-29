@@ -1,8 +1,8 @@
 export class AreaModel {
-  attributes: AreaAttributes;
+  attributes?: AreaAttributes;
   id: string;
   links?: AreaLinks;
-  relationships: AreaRelations;
+  relationships?: AreaRelations;
   type: string;
 }
 

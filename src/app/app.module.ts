@@ -19,8 +19,6 @@ import {
   HttpService as HttpServiceLGC
 } from 'ngx-login-client';
 
-// Shared
-// import { HttpService } from './shared/http-service';
 import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
 import { GlobalSettings } from './shared/globals';
 import { ssoApiUrlProvider } from './shared/standalone/sso-api.provider';

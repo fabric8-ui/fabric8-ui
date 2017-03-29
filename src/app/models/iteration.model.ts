@@ -1,8 +1,8 @@
 export class IterationModel {
-  attributes: IterationAttributes;
+  attributes?: IterationAttributes;
   id: string;
   links?: IterationLinks;
-  relationships: IterationRelations;
+  relationships?: IterationRelations;
   type: string;
 }
 

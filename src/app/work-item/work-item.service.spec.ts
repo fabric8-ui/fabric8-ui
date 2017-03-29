@@ -273,8 +273,6 @@ describe('Work Item Service - ', () => {
   ] as WorkItem[];
   let response = {data: resp, links: {}};
   let checkResp = cloneDeep(resp);
-  checkResp.forEach((item) => item['relationalData'] = Object(
-    { assignees: [], creator: null, iteration: null, area: null, wiType: wiTypes[0] }));
 
   it('Get work items', async(() => {
     mockService.connections.subscribe((connection: any) => {
@@ -288,7 +286,7 @@ describe('Work Item Service - ', () => {
 
     apiService.getWorkItems()
       .subscribe(data => {
-        expect(data).toEqual(checkResp);
+        expect(data.workItems).toEqual(checkResp);
       });
   }));
 

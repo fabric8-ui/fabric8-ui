@@ -1,4 +1,8 @@
-<detail-add-type-selector #typeSelectPanel></detail-add-type-selector>
+<detail-add-type-selector
+  #typeSelectPanel
+  [takeFromInput]="true"
+  [wiTypes]="wiTypes">
+</detail-add-type-selector>
 <header class="toolbar-header">
   <div class="flex-container flex-grow-1 in-column-direction">
     <alm-toolbar
@@ -7,7 +11,7 @@
         [viewsTemplate]="addTemplate"
         (onFilterChange)="filterChange($event)">
       <template #actions>
-        <div *ngIf="context==='boardview' && (workItemTypes.length!=0)" dropdown class="card-pf-time-frame-filter board-type-dropdown">
+        <div *ngIf="context==='boardview' && (wiTypes.length!=0)" dropdown class="card-pf-time-frame-filter board-type-dropdown">
           <button dropdownToggle
               id="wi-board-type"
               type="button"
@@ -19,7 +23,7 @@
             <span class="caret"></span>
           </button>
           <ul *ngIf="loggedIn" id="wi-board-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" dropdownMenu>
-            <li class="dropdown-li" *ngFor="let type of workItemTypes;" (click)="onChangeBoardType(type)">
+            <li class="dropdown-li" *ngFor="let type of wiTypes;" (click)="onChangeBoardType(type)">
               <a>
                 <span class='dropdown-icon fa {{type.attributes.icon}}'></span>
                 <span class='dropdown-text'>{{type.attributes.name}}</span>
@@ -50,7 +54,9 @@
         </span>
       </template>
       <template #add>
-        <div *ngIf="loggedIn && editEnabled" class="with-cursor-pointer" placement="bottom" tooltip="Add A Work Item" (click)="typeSelectPanel.openPanel()">
+        <div *ngIf="loggedIn && editEnabled && wiTypes.length"
+          class="with-cursor-pointer" placement="bottom"
+          tooltip="Add A Work Item" (click)="typeSelectPanel.openPanel()">
           <i class="pficon pficon-add-circle-o margin-top-4"></i>
         </div>
       </template>

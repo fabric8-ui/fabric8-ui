@@ -153,6 +153,16 @@ export class IterationService {
       });
   }
 
+  getIteration(iteration: any): Observable<IterationModel> {
+    if (Object.keys(iteration).length) {
+      let iterationLink = iteration.data.links.self;
+      return this.http.get(iterationLink)
+        .map(iterationresp => iterationresp.json().data);
+    } else {
+      return Observable.of(iteration);
+    }
+  }
+
   /**
    * checkValidIterationUrl checks if the API url for
    * iterations is valid or not

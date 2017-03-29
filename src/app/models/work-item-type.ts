@@ -1,7 +1,7 @@
 export class WorkItemType {
     id: string;
     type: string;
-    attributes: {
+    attributes?: {
         name: string;
         version: number;
         description: string;

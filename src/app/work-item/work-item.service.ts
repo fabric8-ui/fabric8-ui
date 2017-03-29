@@ -108,7 +108,7 @@ export class WorkItemService {
             this.resolveAreaForWorkItem(item);
           });
           return wItems;
-        })
+        });
         // .catch ((e) => {
         //   if (e.status === 401) {
         //     this.auth.logout();
@@ -122,72 +122,74 @@ export class WorkItemService {
     }
   }
 
-  /**
-   * We maintain a big list of work WorkItem
-   * We also maintain a Map of the index and WorkItem.id in another object for easy access
-   */
-
-  /**
-   * We call this function from the list page to get first initial set of data
-   * Add the data to workItems array
-   * Resolve the users for work item as in get the details of assignee and creator
-   * and store them with the data in the array
-   */
-  getWorkItems(pageSize: number = 20, filters: any[] = [], onlyResponse: boolean = false): Observable<WorkItem[]> {
+  getWorkItems(pageSize: number = 20, filters: any[] = []): Observable<{workItems: WorkItem[], nextLink: string | null}> {
     if (this._currentSpace) {
       this.workItemUrl = this._currentSpace.links.self + '/workitems';
-      this.nextLink = null;
       let url = this.workItemUrl + '?page[limit]=' + pageSize;
       filters.forEach((item) => {
         if (item.active) {
           url += '&' + item.paramKey + '=' + item.value;
         }
       });
-      // Reseting stored data
-      // if filter value is changed
-      if (JSON.stringify(this.prevFilters) != JSON.stringify(filters)) {
-        this.resetWorkItemList();
-      }
-      // Setting current filter as previous filter value
-      this.prevFilters = cloneDeep(filters);
-
-      return this.http
-        .get(url, { headers: this.headers })
-        .map(response => {
-          // Build the user - id map
-          this.buildUserIdMap();
-          let wItems: WorkItem[];
-          let links = response.json().links;
-          if (links.hasOwnProperty('next')) {
-            this.nextLink = links.next;
-          }
-          wItems = response.json().data as WorkItem[];
-          wItems.forEach((item) => {
-            // Resolve the assignee and creator
-            this.resolveUsersForWorkItem(item);
-            this.resolveIterationForWorkItem(item);
-            this.resolveType(item);
-            this.resolveAreaForWorkItem(item);
-          });
-          // Update the existing workItem big list with new data
-          this.updateWorkItemBigList(wItems);
-
-          // Boradcast that the big list is prepared initially
-          this.broadcaster.broadcast('list_first_load_done');
-
-          return onlyResponse ? wItems : this.workItems;
-        })
-        // .catch ((e) => {
-        //   if (e.status === 401) {
-        //     this.auth.logout();
-        //   } else {
-        //     this.handleError(e);
-        //   }
-        // });
+      return this.http.get(url)
+        .map((resp) => {
+          return {
+            workItems: resp.json().data as WorkItem[],
+            nextLink: resp.json().links.next
+          };
+        });
     } else {
-      return Observable.of<WorkItem[]>( [] as WorkItem[] );
+      return Observable.of<{workItems: WorkItem[], nextLink: string | null}>( {workItems: [] as WorkItem[], nextLink: null} );
     }
   }
+
+  /**
+   * This function is called from next page onwards in the scroll
+   * It does pretty much same as the getWorkItems function
+   */
+  getMoreWorkItems(url): Observable<{workItems: WorkItem[], nextLink: string | null}> {
+    if (url) {
+      return this.http.get(url)
+        .map((resp) => {
+          return {
+            workItems: resp.json().data as WorkItem[],
+            nextLink: resp.json().links.next
+          };
+        });
+    } else {
+      return Observable.throw('No more item found');
+    }
+  }
+
+
+  resolveWorkItems(workItems, iterations, users, wiTypes): WorkItem[] {
+    let resolvedWorkItems = workItems.map((item) => {
+      // Resolve assignnees
+      let assignees = item.relationships.assignees.data ? cloneDeep(item.relationships.assignees.data) : [];
+      item.relationships.assignees.data = assignees.map((assignee) => {
+        return users.find((user) => user.id === assignee.id) || assignee;
+      });
+
+      // Resolve creator
+      let creator = cloneDeep(item.relationships.creator.data);
+      item.relationships.creator.data = users.find((user) => user.id === creator.id) || creator;
+
+      // Resolve iteration
+      let iteration = cloneDeep(item.relationships.iteration.data);
+      if (iteration) {
+        item.relationships.iteration.data = iterations.find((it) => it.id === iteration.id) || iteration;
+      }
+
+      // Resolve work item types
+      let wiType = cloneDeep(item.relationships.baseType.data);
+      if (wiType) {
+        item.relationships.baseType.data = wiTypes.find((type) => type.id === wiType.id) || wiType;
+      }
+      return item;
+    });
+    return resolvedWorkItems;
+  }
+
 
   // Reset work item big list
   resetWorkItemList() {
@@ -197,47 +199,6 @@ export class WorkItemService {
 
   isListLoaded() {
     return !!this.workItems.length;
-  }
-
-  /**
-   * This function is called from next page onwards in the scroll
-   * It does pretty much same as the getWorkItems function
-   */
-  getMoreWorkItems(): Observable<any> {
-    if (this.nextLink) {
-      return this.http
-      .get(this.nextLink, { headers: this.headers })
-      .map(response => {
-        this.buildUserIdMap();
-        let links = response.json().links;
-        if (links.hasOwnProperty('next')) {
-          this.nextLink = links.next;
-        } else {
-          this.nextLink = null;
-        }
-        let newWorkItems: WorkItem[] = response.json().data as WorkItem[];
-        newWorkItems.forEach((item) => {
-          // Resolve the assignee and creator
-          this.resolveUsersForWorkItem(item);
-          this.resolveIterationForWorkItem(item);
-          this.resolveType(item);
-          this.resolveAreaForWorkItem(item);
-        });
-        let newItems = cloneDeep(newWorkItems);
-        // Update the existing workItem big list with new data
-        this.updateWorkItemBigList(newItems);
-        return newWorkItems;
-      })
-      // .catch ((e) => {
-      //   if (e.status === 401) {
-      //     this.auth.logout();
-      //   } else {
-      //     this.handleError(e);
-      //   }
-      // });
-    } else {
-      return Observable.of('No more item found');
-    }
   }
 
   getNextLink(): string {
@@ -257,51 +218,11 @@ export class WorkItemService {
    * @param: number - id
    */
   getWorkItemById(id: string): Observable<WorkItem> {
-    if (id in this.workItemIdIndexMap) {
-      let wItem = this.workItems[this.workItemIdIndexMap[id]];
-      this.resolveComments(wItem);
-      this.resolveLinks(wItem);
-      return Observable.of(wItem);
+    if (this._currentSpace) {
+      return this.http.get(this._currentSpace.links.self + '/workitems/' + id)
+        .map(item => item.json().data);
     } else {
-      this.buildUserIdMap();
-      if (this._currentSpace) {
-        // FIXME: make the URL great again (when we know the right API URL for this)!
-        this.workItemUrl = this.baseApiUrl + 'workitems';
-        // this.workItemUrl = currentSpace.links.self + '/workitems';
-        this.http
-          .get(this._currentSpace.links.self + '/workitems/' + id, { headers: this.headers })
-          .subscribe((response) => {
-            let wItem: WorkItem = response.json().data as WorkItem;
-            this.resolveUsersForWorkItem(wItem);
-            this.resolveIterationForWorkItem(wItem);
-            this.resolveType(wItem);
-            this.resolveAreaForWorkItem(wItem);
-            // If this work item matches with current filters
-            // it goes to the big list and then we call this function
-            // again to treat it as a locally saved item
-            if (!(wItem.id in this.workItemIdIndexMap) && this.doesMatchCurrentFilter(wItem)) {
-              this.workItems.splice(this.workItems.length, 0, wItem);
-              this.buildWorkItemIdIndexMap();
-              return this.getWorkItemById(wItem.id);
-            }
-
-            // If this work item doesn't match with current filters
-            // it's not get added to the big list so not storing locally
-            // it just gets resolved with related data and returned
-            this.resolveComments(wItem);
-            this.resolveLinks(wItem);
-            return Observable.of(wItem);
-          })
-          // .catch ((e) => {
-          //   if (e.status === 401) {
-          //     this.auth.logout();
-          //   } else {
-          //     this.handleError(e);
-          //   }
-          // });
-      } else {
-        return Observable.of<WorkItem>( {} as WorkItem );
-      }
+      return Observable.of<WorkItem>( {} as WorkItem );
     }
   }
 
@@ -386,6 +307,28 @@ export class WorkItemService {
     });
   }
 
+  resolveAssignees(assignees: any): Observable<User[]> {
+    if (Object.keys(assignees).length) {
+      let observableBatch = assignees.data.map((assignee) => {
+        return this.http.get(assignee.links.self)
+                .map((res) => res.json().data);
+      });
+      return Observable.forkJoin(observableBatch);
+    } else {
+      return Observable.of([]);
+    }
+  }
+
+  resolveCreator2(creator): Observable<User>{
+    if (Object.keys(creator).length) {
+      let creatorLink = creator.data.links.self;
+      return this.http.get(creatorLink)
+        .map(creator => creator.json().data);
+    } else {
+      return Observable.of(creator);
+    }
+  }
+
   /**
    * Usage: Resolve the creator for a WorkItem
    */
@@ -414,21 +357,9 @@ export class WorkItemService {
    * Usage: Resolve the wi type for a WorkItem
    */
   resolveType(workItem: WorkItem): void {
-    if (!workItem.relationships.hasOwnProperty('baseType') || !workItem.relationships.baseType) {
-      workItem.relationalData.wiType = null;
-      return;
-    }
-    if (!workItem.relationships.baseType.hasOwnProperty('data')) {
-      workItem.relationalData.wiType = null;
-      return;
-    }
-    if (!workItem.relationships.baseType.data) {
-      workItem.relationalData.wiType = null;
-      return;
-    }
     this.getWorkItemTypesById(workItem.relationships.baseType.data.id)
       .subscribe((type: WorkItemType) => {
-        workItem.relationalData.wiType = type;
+        workItem.relationships.baseType.data = type;
     });
   }
 
@@ -544,19 +475,12 @@ export class WorkItemService {
    *
    * @param: WorkItem - wItem
    */
-  resolveComments(wItem: WorkItem): void {
-    if (wItem.relationships.comments.links.related)
-      this.http
-        .get(wItem.relationships.comments.links.related, { headers: this.headers })
-        .subscribe((response) => {
-          wItem.relationalData.comments =
-            response.json().data as Comment[];
-          wItem.relationalData.comments.forEach((comment) => {
-            comment.relationalData = {
-              creator : this.getUserById(comment.relationships['created-by'].data.id)
-            };
-          });
-        })
+  resolveComments(url: string): Observable<any> {
+      return this.http
+        .get(url, { headers: this.headers })
+        .map(response => {
+          return { data: response.json().data };
+        });
         // .catch ((e) => {
         //   if (e.status === 401) {
         //     this.auth.logout();
@@ -573,21 +497,10 @@ export class WorkItemService {
    *
    * @param: WorkItem - wItem
    */
-  resolveLinks(wItem: WorkItem): void {
-    wItem.relationalData.linkDicts = null;
-    wItem.relationalData.totalLinkCount = 0;
-    this.http
-      .get(wItem.links.self + '/relationships/links', { headers: this.headers })
-      .subscribe((response) => {
-        let links = response.json().data as Link[];
-        let includes = response.json().included;
-        let linkDicts: LinkDict[] = [];
-        // Prepare relational data for links
-        wItem.relationalData.linkDicts = [];
-        links.forEach((link) => {
-          this.addLinkToWorkItem(link, includes, wItem);
-        });
-      });
+  resolveLinks(url: string): Observable<any> {
+    return this.http
+      .get(url, { headers: this.headers })
+      .map(response => [response.json().data as Link[], response.json().included]);
       // .catch ((e) => {
       //   if (e.status === 401) {
       //     this.auth.logout();
@@ -630,12 +543,12 @@ export class WorkItemService {
    */
 
   getWorkItemTypesById(id: string): Observable<WorkItemType> {
-    if (this._currentSpace) {
+    if (this._currentSpace && typeof(id) !== 'undefined') {
       let workItemType = this.workItemTypes ? this.workItemTypes.find((type) => type.id === id) : null;
       if (workItemType) {
         return Observable.of(workItemType);
       } else {
-        let workItemTypeUrl = this.baseApiUrl + 'workitemtypes/' + id;
+        let workItemTypeUrl = this._currentSpace.links.self + '/workitemtypes/' + id;
         return this.http.get(workItemTypeUrl)
           .map((response) => {
             workItemType = response.json().data as WorkItemType;
@@ -649,14 +562,6 @@ export class WorkItemService {
             }
             return workItemType;
           });
-        // FIXME: Use observavble instead promise
-        // Can't use observable now, because the mock will not support that
-        // .map((response) => {
-        //   workItemType = response.json().data as WorkItemType;
-        //   this.workItemTypes.push(workItemType);
-        //   return workItemType;
-        // })
-        // .toPromise();
       }
     } else {
       return Observable.of<WorkItemType>( {} as WorkItemType );
@@ -830,18 +735,8 @@ export class WorkItemService {
       return this.http
         .post(this.workItemUrl, payload, { headers: this.headers })
         .map(response => {
-          let newWorkItem: WorkItem = response.json().data as WorkItem;
-          // Resolve the user for the new item
-          this.resolveUsersForWorkItem(newWorkItem);
-          this.resolveIterationForWorkItem(newWorkItem);
-          this.resolveType(newWorkItem);
-          this.resolveAreaForWorkItem(newWorkItem);
-          // Add newly added item to the top of the list
-          this.workItems.splice(0, 0, newWorkItem);
-          // Re-build the ID-index map
-          this.buildWorkItemIdIndexMap();
-          return newWorkItem;
-        })
+          return response.json().data as WorkItem;
+        });
         // .catch ((e) => {
         //   if (e.status === 401) {
         //     this.auth.logout();
@@ -865,42 +760,8 @@ export class WorkItemService {
     return this.http
       .patch(workItem.links.self, JSON.stringify({data: workItem}), { headers: this.headers })
       .map(response => {
-        let updatedWorkItem = response.json().data as WorkItem;
-        // Find the index in the big list
-        let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
-        //Item is in the list
-        if (updateIndex > -1) {
-          if (this.doesMatchCurrentFilter(updatedWorkItem)) {
-            // Update work item attributes
-            this.workItems[updateIndex].attributes = updatedWorkItem.attributes;
-            this.workItems[updateIndex].relationships.assignees = updatedWorkItem.relationships.assignees;
-            this.workItems[updateIndex].relationships.creator = updatedWorkItem.relationships.creator;
-            this.workItems[updateIndex].relationships.baseType = updatedWorkItem.relationships.baseType;
-            this.workItems[updateIndex].relationships.iteration = updatedWorkItem.relationships.iteration;
-            // Resolve users for the updated item
-            this.resolveUsersForWorkItem(this.workItems[updateIndex]);
-            this.resolveIterationForWorkItem(this.workItems[updateIndex]);
-            this.resolveType(this.workItems[updateIndex]);
-            this.resolveAreaForWorkItem(this.workItems[updateIndex]);
-          } else {
-            // Remove the item from the list
-            this.workItems.splice(updateIndex, 1);
-            this.buildWorkItemIdIndexMap();
-          }
-        } else {
-          //Item is not in the list
-          this.workItems.splice(0, 0, updatedWorkItem);
-          this.buildWorkItemIdIndexMap();
-          // This part is for mock service in unit test
-          // this.workItems stays in case of unit test
-          // Resolve users for the updated item
-          this.resolveUsersForWorkItem(updatedWorkItem);
-          this.resolveIterationForWorkItem(updatedWorkItem);
-          this.resolveType(updatedWorkItem);
-          this.resolveAreaForWorkItem(updatedWorkItem);
-        }
-        return updatedWorkItem;
-      })
+        return response.json().data as WorkItem;
+      });
       // .catch ((e) => {
       //   if (e.status === 401) {
       //     this.auth.logout();
@@ -916,21 +777,13 @@ export class WorkItemService {
    * @param: string - id (Work Item ID)
    * @param: Comment
    */
-  createComment(id: string, comment: Comment): Observable<Comment> {
+  createComment(url: string, comment: Comment): Observable<Comment> {
     let c = new CommentPost();
     c.data = comment;
     return this.http
-      .post(this.workItems[this.workItemIdIndexMap[id]]
-              .relationships.comments.links.related, c, { headers: this.headers })
+      .post(url, c, { headers: this.headers })
       .map(response => {
-        let comment: Comment = response.json().data as Comment;
-        comment.relationalData = {
-          creator : this.getUserById(comment.relationships['created-by'].data.id)
-        };
-        this.workItems[this.workItemIdIndexMap[id]]
-          .relationalData
-          .comments.unshift(comment);
-        return comment;
+        return response.json().data as Comment;
       })
       .catch (this.handleError);
   }
@@ -1083,8 +936,7 @@ export class WorkItemService {
    * @param link: Link
    * @param wItem: WorkItem
    */
-  removeLinkFromWorkItem(deletedLink: Link, wiId: string) {
-    let wItem = this.workItems[this.workItemIdIndexMap[wiId]];
+  removeLinkFromWorkItem(deletedLink: Link, wItem: WorkItem) {
     wItem.relationalData.totalLinkCount -= 1;
     wItem.relationalData.linkDicts.every((item: LinkDict, index: number): boolean => {
       let linkIndex = item.links.findIndex((link: Link) => link.id == deletedLink.id);
@@ -1096,7 +948,7 @@ export class WorkItemService {
         return false;
       }
       return true;
-    })
+    });
   }
 
   /**
@@ -1108,20 +960,14 @@ export class WorkItemService {
    * @param currentWiId: string - The work item ID where the link is created
    * @returns Promise<Link>
    */
-  createLink(link: Object, currentWiId: string): Observable<Link> {
+  createLink(link: Object, currentWiId: string): Observable<any> {
     if (this._currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.linksUrl = this.baseApiUrl + 'workitemlinks';
       // this.linksUrl = currentSpace.links.self + '/workitemlinks';
       return this.http
         .post(this.linksUrl, JSON.stringify(link), {headers: this.headers})
-        .map(response => {
-          let newLink: Link = response.json().data as Link;
-          let includes = response.json().included as Link;
-          let wItem = this.workItems[this.workItemIdIndexMap[currentWiId]];
-          this.addLinkToWorkItem(newLink, includes, wItem);
-          return newLink;
-        })
+        .map(response => [response.json().data as Link, response.json().included]);
         // .catch ((e) => {
         //   if (e.status === 401) {
         //     this.auth.logout();
@@ -1150,7 +996,7 @@ export class WorkItemService {
       const url = `${this.linksUrl}/${link.id}`;
       return this.http
         .delete(url, {headers: this.headers})
-        .map(response => { this.removeLinkFromWorkItem(link, currentWiId) })
+        .map(response => {} );
         // .catch ((e) => {
         //   if (e.status === 401) {
         //     this.auth.logout();

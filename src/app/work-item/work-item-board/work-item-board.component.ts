@@ -1,4 +1,3 @@
-import { Subscription } from 'rxjs/Subscription';
 import {
   AfterViewInit,
   Component,
@@ -16,12 +15,17 @@ import { Response } from '@angular/http';
 import { Router } from '@angular/router';
 import { cloneDeep, trimEnd } from 'lodash';
 
+import { IterationService } from './../../iteration/iteration.service';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 import { Broadcaster } from 'ngx-base';
 import { Space, Spaces } from 'ngx-fabric8-wit';
-import { AuthenticationService } from 'ngx-login-client';
+import { AuthenticationService, User, UserService } from 'ngx-login-client';
 import { ArrayCount } from 'ngx-widgets';
 import { DragulaService } from 'ng2-dragula';
 
+import { IterationModel } from './../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType } from '../../models/work-item-type';
 import { WorkItemService } from '../work-item.service';
@@ -41,7 +45,6 @@ export class WorkItemBoardComponent implements OnInit {
   @ViewChildren('activeFilters', {read: ElementRef}) activeFiltersRef: QueryList<ElementRef>;
   @ViewChild('activeFiltersDiv') activeFiltersDiv: any;
 
-  workItems: WorkItem[] = [];
   workItem: WorkItem;
   filters: any[] = [];
   lanes: Array<any> = [];
@@ -50,6 +53,10 @@ export class WorkItemBoardComponent implements OnInit {
   spaceSubscription: Subscription;
   contentItemHeight: number = 85;
   boardContextSubscription: Subscription;
+  private allUsers: User[] = [];
+  private iterations: IterationModel[] = [];
+  private workItemTypes: WorkItemType[] = [];
+  private readyToInit = false;
 
   constructor(
     private auth: AuthenticationService,
@@ -57,6 +64,8 @@ export class WorkItemBoardComponent implements OnInit {
     private router: Router,
     private workItemService: WorkItemService,
     private dragulaService: DragulaService,
+    private iterationService: IterationService,
+    private userService: UserService,
     private spaces: Spaces) {
       this.dragulaService.drag.subscribe((value) => {
         this.onDrag(value.slice(1));
@@ -78,7 +87,6 @@ export class WorkItemBoardComponent implements OnInit {
   ngOnInit() {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.getDefaultWorkItemTypeStates();
     this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[WorkItemBoardComponent] New Space selected: ' + space.attributes.name);
@@ -86,38 +94,61 @@ export class WorkItemBoardComponent implements OnInit {
       } else {
         console.log('[WorkItemBoardComponent] Space deselected');
         this.lanes = [];
-        this.workItemService.resetWorkItemList();
+        this.workItemTypes = [];
       }
     });
     this.boardContextSubscription = this.broadcaster.on<WorkItemType>('board_type_context').subscribe(workItemType => {
       if (workItemType) {
         console.log('[WorkItemBoardComponent] New type context selected: ' + workItemType.attributes.name);
         this.lanes = [];
-        this.workItemService.resetWorkItemList();
+        this.getDefaultWorkItemTypeStates(workItemType.id);
       }
+    });
+    this.initStuff();
+  }
+
+  initStuff() {
+    Observable.combineLatest(
+      this.iterationService.getIterations(),
+      this.userService.getAllUsers(),
+      this.workItemService.getWorkItemTypes()
+    ).map((items) => {
+      return items;
+    })
+    .subscribe(([iterations, users, wiTypes]) => {
+      this.allUsers = users;
+      this.iterations = iterations;
+      this.workItemTypes = wiTypes;
+      this.readyToInit = true;
+
+      // Set lanes
+      this.getDefaultWorkItemTypeStates();
     });
   }
 
   getWorkItems(pageSize, lane) {
     this.workItemService.getWorkItems(pageSize, [{
-      active: true,
-      paramKey: 'filter[workitemstate]',
-      value: lane.option
-    }, ...this.filters], true)
-      .subscribe(workItems => {
-        lane.workItems = workItems;
-        lane.nextLink = this.workItemService.getNextLink();
-     });
+        active: true,
+        paramKey: 'filter[workitemstate]',
+        value: lane.option
+      }, ...this.filters])
+    .subscribe(workItemResp => {
+      const workItems = workItemResp.workItems;
+      lane.workItems = this.workItemService.resolveWorkItems(
+        workItems,
+        this.iterations,
+        this.allUsers,
+        this.workItemTypes
+      );
+      lane.nextLink = workItemResp.nextLink;
+    });
   }
 
   getDefaultWorkItemTypeStates(workItemTypeId?: string) {
+    this.lanes = [];
     if (!workItemTypeId) {
-      // we don't have a type is, fetch the first type and the states of it.
-      this.workItemService.getWorkItemTypes().subscribe((types: WorkItemType[]) => {
-        // the returned list may be empty because the space is not yet selected.
-        if (types.length > 0) {
-          let lanes = types[0].attributes.fields['system.state'].type.values;
-          this.lanes = [];
+        if (this.workItemTypes.length) {
+          let lanes = this.workItemTypes[0].attributes.fields['system.state'].type.values;
           lanes.forEach((value, index) => {
             this.lanes.push({
               option: value,
@@ -128,14 +159,14 @@ export class WorkItemBoardComponent implements OnInit {
           this.filters = [ {
             active: true,
             paramKey: 'filter[workitemtype]',
-            value: types[0].id
+            value: this.workItemTypes[0].id
           } ];
         }
-      });
     } else {
       // we have a type id, we just fetch the states from it.
-      this.workItemService.getWorkItemTypesById(workItemTypeId).subscribe(workItemType => {
-        let lanes = workItemType.attributes.fields['system.state'].type.values;
+      let witype = this.workItemTypes.find(type => type.id === workItemTypeId);
+      if (witype) {
+        let lanes = witype.attributes.fields['system.state'].type.values;
         lanes.forEach((value, index) => {
           this.lanes.push({
             option: value,
@@ -143,7 +174,9 @@ export class WorkItemBoardComponent implements OnInit {
             nextLink: null
           });
         });
-      });
+      } else {
+        this.getDefaultWorkItemTypeStates();
+      }
     }
   }
 
@@ -154,11 +187,17 @@ export class WorkItemBoardComponent implements OnInit {
   fetchMoreWiItems(lane) {
     console.log('More for ' + lane.option);
     if (lane.nextLink) {
-      this.workItemService.setNextLink(lane.nextLink);
-      this.workItemService.getMoreWorkItems()
-        .subscribe((items) => {
-          lane.workItems = [...lane.workItems, ...items];
-          lane.nextLink = this.workItemService.getNextLink();
+      this.workItemService.getMoreWorkItems(lane.nextLink)
+        .subscribe((workItemResp) => {
+          lane.workItems = [
+            ...lane.workItems,
+            ...this.workItemService.resolveWorkItems(
+              workItemResp.workItems,
+              this.iterations,
+              this.allUsers,
+              this.workItemTypes
+          )];
+          lane.nextLink = workItemResp.nextLink;
         });
     } else {
       console.log('No More for ' + lane.option);

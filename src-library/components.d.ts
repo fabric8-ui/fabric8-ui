@@ -1,4 +1,5 @@
 declare module 'fabric8-planner';
+export * from './lib/shared/http-service.service';
 export * from './lib/work-item/work-item.module'
 export * from './lib/shared/mock-data.service';
 export * from './lib/auth/authentication.service';

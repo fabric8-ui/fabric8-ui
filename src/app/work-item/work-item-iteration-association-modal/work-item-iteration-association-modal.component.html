@@ -3,10 +3,10 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
 
       <!-- UX feed for existing iteration association -->
-      <div *ngIf="!!workItem.relationalData.iteration" id="reassociate-msg">
+      <div *ngIf="!!workItem.relationships.iteration" id="reassociate-msg">
         <strong>{{ workItem.attributes['system.title'] }}</strong>
         is currently associated with
-        <strong>{{ workItem.relationalData.iteration.attributes.name }}</strong>
+        <strong>{{ workItem.relationships.iteration.attributes?.name }}</strong>
       </div>
 
       <!-- Form input to change iteration -->
@@ -14,13 +14,13 @@
 
         <div class="search-pf-input-group">
           <label>
-            {{ !(workItem.relationalData.iteration) ? "Associate" : "Reassociate" }}
+            {{ !(workItem.relationships.iteration) ? "Associate" : "Reassociate" }}
             <strong>{{ workItem.attributes['system.title'] }}</strong> with
           </label>
 
           <div class="dib" dropdown id="iteration-select-dropdown">
               <button #dropdownButton class="btn btn-default" type="button" dropdownToggle>
-                  {{ workItem.relationalData.iteration?.attributes?.name || "Select iteration..." }} <span class="caret"></span>
+                  {{ workItem.relationships.iteration?.attributes?.name || "Select iteration..." }} <span class="caret"></span>
               </button>
               <ul class="test" role="menu" dropdownMenu>
                 <li *ngFor="let iteration of iterations;" role="presentation">
@@ -37,7 +37,7 @@
       <div class="text-right">
         <button class="btn" type="submit" id="cancel-iteration-button" (click)="iterationAssociationModal.close()">Cancel</button>
         <button class="btn btn-primary" type="submit" id="associate-iteration-button" disabled #commitAssociation (click)="assignIteration()">
-          {{ !!(workItem.relationalData.iteration) ? "Reassociate" : "Associate" }}
+          {{ !!(workItem.relationships.iteration) ? "Reassociate" : "Associate" }}
         </button>
       </div>
 

@@ -119,10 +119,15 @@ describe('Detailed view and edit a selected work item - ', () => {
       'id': '1',
       'relationships': {
         'assignees': {
-          'data': [{
-            'id': 'widct-user2',
-            'type': 'identities'
-          }]
+          'data': [
+            {
+              'attributes': {
+                'fullName': 'WIDCT Example User 2',
+                'imageURL': 'https://avatars.githubusercontent.com/u/002?v=3'
+              },
+            'id': 'widct-user2'
+          }
+          ]
         },
         'baseType': {
           'data': {
@@ -132,11 +137,15 @@ describe('Detailed view and edit a selected work item - ', () => {
         },
         'creator': {
           'data': {
-            'id': 'widct-user2',
-            'type': 'identities'
+            'attributes': {
+              'fullName': 'WIDCT Example User 0',
+              'imageURL': 'https://avatars.githubusercontent.com/u/000?v=3'
+            },
+            'id': 'widct-user0'
           }
         },
         'comments': {
+          'data': [],
           'links': {
             'self': '',
             'related': ''
@@ -144,6 +153,9 @@ describe('Detailed view and edit a selected work item - ', () => {
         }
       },
       'type': 'workitems',
+      'links': {
+        'self': ''
+      },
       'relationalData': {
         'creator': fakeUserList[0],
         'assignees': [fakeUserList[2]]
@@ -287,6 +299,9 @@ describe('Detailed view and edit a selected work item - ', () => {
     fakeAreaService = {
       getAreas: function () {
         return Observable.of(fakeAreaList);
+      },
+      getArea: function (area) {
+        return Observable.of(fakeAreaList[0]);
       }
     };
 
@@ -294,6 +309,11 @@ describe('Detailed view and edit a selected work item - ', () => {
       getIterations: function () {
         return Observable.of(fakeIterationList);
       },
+
+      getIteration: function (it) {
+        return Observable.of(fakeIterationList[0]);
+      },
+
       getSpaces: function () {
         let spaces = [{
           'attributes': {
@@ -309,7 +329,7 @@ describe('Detailed view and edit a selected work item - ', () => {
       create: function () {
         return Observable.of(fakeWorkItem);
       },
-      update: function () {
+      update: function (payload) {
         return Observable.of(fakeWorkItem);
       },
       getWorkItemTypes: function () {
@@ -330,6 +350,22 @@ describe('Detailed view and edit a selected work item - ', () => {
 
       getLinkTypes: function () {
         return Observable.of(fakeWorkItemLinkTypes);
+      },
+
+      resolveAssignees: function(assignees) {
+        return Observable.of(fakeUserList[2]);
+      },
+
+      resolveCreator2: function(creator) {
+        return Observable.of(fakeUserList[0]);
+      },
+
+      resolveLinks: function(url) {
+        return Observable.of([[], []]);
+      },
+
+      resolveComments: function() {
+        return Observable.of([ [], {data: []} ]);
       }
     };
 
@@ -451,8 +487,9 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.loggedIn = fakeAuthService.isLoggedIn();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-id'));
+    comp.workItemPayload = comp.workItem;
     comp.workItem.id = 'New ID';
-    comp.save();
+    comp.save(comp.workItem);
     expect(el.nativeElement.textContent).not.toEqual(comp.workItem.id);
   });
 
@@ -463,6 +500,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.loggedIn = fakeAuthService.isLoggedIn();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-id'));
+    comp.workItemPayload = comp.workItem;
     el.nativeElement.textContent = 'New ID';
     comp.save();
     expect(comp.workItem.id).not.toEqual(el.nativeElement.textContent);
@@ -549,6 +587,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.openHeader();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#wi-detail-title'));
+    comp.workItemPayload = comp.workItem;
     comp.workItem.attributes['system.title'] = 'User entered valid work item title';
     fixture.detectChanges();
     comp.save();
@@ -564,6 +603,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.openHeader();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#workItemTitle_btn_save'));
+    comp.workItemPayload = comp.workItem;
     comp.workItem.attributes['system.title'] = 'Valid work item title';
     fixture.detectChanges();
     comp.save();
@@ -595,6 +635,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.openDescription();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#detail-desc-value'));
+    comp.workItemPayload = comp.workItem;
     comp.workItem.attributes['system.description'] = 'User entered work item description';
     fixture.detectChanges();
     comp.save();
@@ -610,20 +651,6 @@ describe('Detailed view and edit a selected work item - ', () => {
     el = fixture.debugElement.query(By.css('#wi-detail-desc'));
     expect(el.attributes['disabled']);
   });
-
-  // Commenting this out because no type text in the new design
-
-  // it('Work item type can be edited when logged in', () => {
-  //   fakeAuthService.login();
-  //   fixture.detectChanges();
-  //   comp.workItem = fakeWorkItem;
-  //   comp.loggedIn = fakeAuthService.isLoggedIn();
-  //   fixture.detectChanges();
-  //   el = fixture.debugElement.query(By.css('#wi-detail-type'));
-  //   comp.workItem.type = 'system.experience';
-  //   fixture.detectChanges();
-  //   expect(comp.workItem.type).toContain(el.nativeElement.value);
-  // });
 
   it('Work item state can be edited when logged in', () => {
     fakeAuthService.login();
@@ -656,7 +683,9 @@ describe('Detailed view and edit a selected work item - ', () => {
   it('Page should display correct assignee', () => {
     fakeAuthService.login();
     fixture.detectChanges();
+    comp.workItemPayload = comp.workItem;
     comp.workItem = fakeWorkItem;
+    comp.workItemPayload = comp.workItem;
     comp.loggedIn = fakeAuthService.isLoggedIn();
     fixture.detectChanges();
     el = fixture.debugElement.query(By.css('#WI_details_assigned_user'));

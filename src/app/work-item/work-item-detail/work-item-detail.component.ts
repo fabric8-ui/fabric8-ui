@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import {
   animate,
   AfterViewInit,
@@ -86,6 +87,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   hasIteration: Boolean = false;
   searchIteration: Boolean = false;
+
   // TODO: should take current iteration as value after fetching
   selectedIteration: any;
   selectedArea: AreaModel;
@@ -112,6 +114,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   activeButton: boolean = true;
 
   arrowUp: boolean = true;
+
+  workItemPayload: WorkItem;
 
   constructor(
     private areaService: AreaService,
@@ -152,15 +156,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
           });
           this.getAllUsers();
         } else {
-          this.addNewWI = false;
-          if (this.workItemService.isListLoaded()) {
-            this.loadWorkItem(id);
-          } else {
-            this.broadcaster.on<string>('list_first_load_done')
-              .subscribe(message => {
-                this.loadWorkItem(id);
-            });
-          }
+          this.loadWorkItem(id);
         }
       }
     });
@@ -209,12 +205,72 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
 
   loadWorkItem(id: string): void {
     this.workItemService.getWorkItemById(id)
-      .subscribe(workItem => {
+      .switchMap(workItem => {
+        return Observable.forkJoin(
+          Observable.of(workItem),
+          this.workItemService.getWorkItemTypes(),
+          this.areaService.getArea(workItem.relationships.area),
+          this.iterationService.getIteration(workItem.relationships.iteration),
+          this.workItemService.resolveAssignees(workItem.relationships.assignees),
+          this.workItemService.resolveCreator2(workItem.relationships.creator),
+          this.workItemService.resolveLinks(workItem.links.self + '/relationships/links')
+        );
+      })
+      .subscribe(([workItem, workItemTypes, area, iteration, assignees, creator, [links, includes]]) => {
+        // Resolve area
+        workItem.relationships.area = {
+          data: area
+        };
+
+        // Resolve iteration
+        workItem.relationships.iteration = {
+          data: iteration
+        };
+
+        // Resolve work item type
+        workItem.relationships.baseType.data =
+          workItemTypes.find(type => type.id === workItem.relationships.baseType.data.id) ||
+          workItem.relationships.baseType.data;
+
+        // Resolve assignees
+        workItem.relationships.assignees = {
+          data: assignees
+        };
+
+        // Resolve creator
+        workItem.relationships.creator = {
+          data: creator
+        };
+
+        // Resolve links
+        workItem = Object.assign(
+          workItem,
+          {
+            relationalData: {
+              linkDicts: [],
+              totalLinkCount: 0
+            }
+          }
+        );
+        links.forEach((link) => {
+          this.workItemService.addLinkToWorkItem(link, includes, workItem);
+        });
+
         this.closeUserRestFields();
         this.titleText = workItem.attributes['system.title'];
         this.descText = workItem.attributes['system.description'] || '';
         this.renderedDesc = workItem.attributes['system.description.rendered'];
         this.workItem = workItem;
+        this.workItemPayload = {
+          id: this.workItem.id,
+          attributes: {
+            version: this.workItem.attributes['version']
+          },
+          links: {
+            self: this.workItem.links.self
+          },
+          type: this.workItem.type
+        };
         // fetch the list of user
         // after getting the Workitem
         // to set assigned user
@@ -241,6 +297,20 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
         }
       }
     } as WorkItemRelations;
+
+    // Add creator
+    this.userService.getUser()
+      .subscribe(user => {
+        this.workItem.relationships = Object.assign(
+          this.workItem.relationships,
+          {
+            creator: {
+              data: user
+            }
+          }
+        );
+      });
+
     this.workItem.relationalData = {};
     this.workItemService.resolveType(this.workItem);
     this.workItem.attributes = {
@@ -274,6 +344,14 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.broadcaster.broadcast('activeWorkItem', this.workItem.id);
     }, timeOut);
+  }
+
+  updateOnList() {
+    this.broadcaster.broadcast('updateWorkItem', JSON.stringify(this.workItem));
+  }
+
+  addNewItem(workItem: WorkItem) {
+    this.broadcaster.broadcast('addWorkItem', JSON.stringify(workItem));
   }
 
   checkTitle(event: any): void {
@@ -372,18 +450,27 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       }
     }
     this.workItem.attributes['system.state'] = option;
-    this.save();
+    let payload = cloneDeep(this.workItemPayload);
+    payload.attributes['system.state'] = option;
+    this.save(payload);
   }
 
-  onChangeType(type: any): void {
-    this.workItem.relationships.baseType = {
-      data: {
-        id: type,
-        type: 'workitemtypes'
-      }
-    };
-    this.save();
-  }
+  // onChangeType(type: any): void {
+  //   this.workItem.relationships.baseType = {
+  //     data: {
+  //       id: type,
+  //       type: 'workitemtypes'
+  //     }
+  //   };
+  //   let payload = cloneDeep(this.workItemPayload);
+  //   payload['relationships']['baseType'] = {
+  //     data: {
+  //       id: type,
+  //       type: 'workitemtypes'
+  //     }
+  //   };
+  //   this.save(payload);
+  // }
 
   onUpdateDescription(): void {
     this.workItem.attributes['system.description'] = {
@@ -391,7 +478,13 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       content: this.descText.trim()
     };
     this.showHtml(this.descText.trim());
-    this.save();
+
+    let payload = cloneDeep(this.workItemPayload);
+    payload.attributes['system.description'] = {
+      markup: 'Markdown',
+      content: this.descText.trim()
+    };
+    this.save(payload);
     this.closeDescription();
   }
 
@@ -399,24 +492,106 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
     this.isValid(this.titleText.trim());
     if (this.validTitle) {
       this.workItem.attributes['system.title'] = this.titleText;
-      this.save();
+      if (this.workItem.id) {
+        let payload = cloneDeep(this.workItemPayload);
+        payload.attributes['system.title'] = this.titleText;
+        this.save(payload);
+      } else {
+        this.save();
+      }
       this.closeHeader();
     }
   }
 
-  save(): void {
+  save(payload?: WorkItem): void {
     if (this.workItem.id){
       this.workItemService
-        .update(this.workItem)
-        .subscribe((workItem) => {
-          this.workItem.attributes['version'] = workItem.attributes['version'];
-          this.activeOnList();
+        .update(payload)
+        .switchMap(workItem => {
+        return Observable.forkJoin(
+          Observable.of(workItem),
+          this.workItemService.getWorkItemTypes(),
+          this.areaService.getArea(workItem.relationships.area),
+          this.iterationService.getIteration(workItem.relationships.iteration),
+          this.workItemService.resolveAssignees(workItem.relationships.assignees),
+          this.workItemService.resolveCreator2(workItem.relationships.creator),
+          this.workItemService.resolveLinks(workItem.links.self + '/relationships/links')
+        );
+      })
+      .subscribe(([workItem, workItemTypes, area, iteration, assignees, creator, [links, includes]]) => {
+        // Resolve area
+        workItem.relationships.area = {
+          data: area
+        };
+
+        // Resolve iteration
+        workItem.relationships.iteration = {
+          data: iteration
+        };
+
+        // Resolve work item type
+        workItem.relationships.baseType.data =
+          workItemTypes.find(type => type.id === workItem.relationships.baseType.data.id) ||
+          workItem.relationships.baseType.data;
+
+        // Resolve assignees
+        workItem.relationships.assignees = {
+          data: assignees
+        };
+
+        // Resolve creator
+        workItem.relationships.creator = {
+          data: creator
+        };
+
+        // Resolve links
+        workItem = Object.assign(
+          workItem,
+          {
+            relationalData: {
+              linkDicts: [],
+              totalLinkCount: 0
+            }
+          }
+        );
+        links.forEach((link) => {
+          this.workItemService.addLinkToWorkItem(link, includes, workItem);
+        });
+
+        this.workItem = workItem;
+        this.workItemPayload.attributes['version'] = workItem.attributes['version'];
+        this.updateOnList();
+        this.activeOnList();
       });
     } else {
       if (this.validTitle){
         this.workItemService
         .create(this.workItem)
-        .subscribe((workItem) => {
+        .switchMap(workItem => {
+          return Observable.forkJoin(
+            Observable.of(workItem),
+            this.workItemService.getWorkItemTypes(),
+            this.workItemService.resolveAssignees(workItem.relationships.assignees),
+            this.workItemService.resolveCreator2(workItem.relationships.creator)
+          );
+        })
+        .subscribe(([workItem, workItemTypes, assignees, creator]) => {
+          // Resolve work item type
+          workItem.relationships.baseType.data =
+            workItemTypes.find(type => type.id === workItem.relationships.baseType.data.id) ||
+            workItem.relationships.baseType.data;
+
+          // Resolve assignees
+          workItem.relationships.assignees = {
+            data: assignees
+          };
+
+          // Resolve creator
+          workItem.relationships.creator = {
+            data: creator
+          };
+
+          this.addNewItem(workItem);
           this.router.navigateByUrl(trimEnd(this.router.url.split('detail')[0], '/') + '/detail/' + workItem.id, { relativeTo: this.route });
         });
       }
@@ -522,23 +697,31 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   }
 
   assignUser(userId: any): void {
-    this.workItem.relationships.assignees = {
-      data: [{
-        id: userId,
-        type: 'identities'
-      }]
-    };
-    this.workItemService.resolveUsersForWorkItem(this.workItem);
-    this.save();
+    let payload = cloneDeep(this.workItemPayload);
+    payload = Object.assign(payload, {
+      relationships : {
+        assignees: {
+          data: [{
+            id: userId,
+            type: 'identities'
+          }]
+        }
+      }
+    });
+    this.save(payload);
     this.searchAssignee = false;
   }
 
   unassignUser(): void {
-    this.workItem.relationships.assignees = {
-      data: []
-    };
-    this.save();
-    this.workItemService.resolveUsersForWorkItem(this.workItem);
+    let payload = cloneDeep(this.workItemPayload);
+    payload = Object.assign(payload, {
+      relationships : {
+        assignees: {
+          data: []
+        }
+      }
+    });
+    this.save(payload);
     this.searchAssignee = false;
   }
 
@@ -558,7 +741,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   selectIteration(iteration: any): void {
     this.selectedIteration = iteration;
     this.dropdownButton.nativeElement.innerHTML = this.selectedIteration.attributes.name +
-                                                  ' <span class="caret"></span>'
+                                                  ' <span class="caret"></span>';
   }
 
   assignIteration(): void {
@@ -582,13 +765,18 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
       }]);
     }
 
-    this.workItem.relationships.iteration = {
-      data: {
-        id: this.selectedIteration.id,
-        type: 'iteration'
+    let payload = cloneDeep(this.workItemPayload);
+    payload = Object.assign(payload, {
+      relationships : {
+        iteration: {
+          data: {
+            id: this.selectedIteration.id,
+            type: 'iteration'
+          }
+        }
       }
-    };
-    this.save();
+    });
+    this.save(payload);
     this.searchIteration = false;
   }
 
@@ -620,14 +808,18 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit {
   }
   //set an area
   setArea(): void {
-    this.workItem.relationships.area = {
-      data: {
-        id: this.selectedArea.id,
-        type: 'area'
+    let payload = cloneDeep(this.workItemPayload);
+    payload = Object.assign(payload, {
+      relationships : {
+        area: {
+          data: {
+            id: this.selectedArea.id,
+            type: 'area'
+          }
+        }
       }
-    };
-    this.workItemService.resolveAreaForWorkItem(this.workItem);
-    this.save();
+    });
+    this.save(payload);
     this.searchArea = false;
   }
 

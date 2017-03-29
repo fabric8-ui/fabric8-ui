@@ -1,7 +1,6 @@
-import { MockHttp } from './../../shared/mock-http';
-import { HttpService } from './../../shared/http-service';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
+
 import {
   HttpModule,
   Http,
@@ -34,6 +33,10 @@ import { WorkItemListComponent } from './work-item-list.component';
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
 import { WorkItemService } from '../work-item.service';
+import { MockHttp } from './../../shared/mock-http';
+import { HttpService } from './../../shared/http-service';
+
+
 
 let providers = [];
 
@@ -63,7 +66,7 @@ if (process.env.ENV == 'inmemory') {
       useFactory: (backend: XHRBackend, options: RequestOptions, auth: AuthenticationService) => {
         return new HttpService(backend, options, auth);
       },
-      deps: [XHRBackend, RequestOptions]
+      deps: [XHRBackend, RequestOptions, AuthenticationService]
     }
   ];
 }

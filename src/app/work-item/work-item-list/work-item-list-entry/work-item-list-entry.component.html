@@ -13,7 +13,7 @@
 	<div class="list-view-pf-main-info" (click)="onDetail($event)">
 		<div class="list-view-pf-left type workItemList_workItemType">
 			<span almIcon [iconType]="workItem.attributes['system.state']" class="color-grey pull-left"></span>
-      <span class="color-grey pull-left fa {{workItem.relationalData?.wiType?.attributes?.icon}}"></span>
+      <span class="color-grey pull-left fa {{workItem.relationships?.baseType?.data?.attributes?.icon}}"></span>
 			<span class="pull-left"> {{workItem.id}} </span>
 		</div>
 		<div class="list-view-pf-body">
@@ -30,12 +30,12 @@
 
   <div class="user-avatar">
       <img
-        *ngFor="let wItem of workItem.relationalData.assignees"
+        *ngFor="let wItem of workItem.relationships.assignees.data"
         placement="bottom"
         tooltip="{{wItem?.attributes?.fullName}}"
         src="{{wItem?.attributes?.imageURL + '&s=23'}}"
         onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
-      <span *ngIf="!workItem.relationalData?.assignees?.length" class="pficon-user not-assigned-user-icon"></span>
+      <span *ngIf="!workItem.relationships?.assignees?.data?.length" class="pficon-user not-assigned-user-icon"></span>
   </div>
 
 	<!-- action area -->
@@ -60,5 +60,6 @@
 
 <fab-planner-associate-iteration-modal
   [workItem]="workItem"
+  [iterations]="iterations"
   #associateIterationModal>
 </fab-planner-associate-iteration-modal>

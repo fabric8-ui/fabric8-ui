@@ -15,7 +15,7 @@ import {
   QueryList
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-
+import { cloneDeep } from 'lodash';
 import { Broadcaster, Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 
@@ -33,6 +33,8 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   @ViewChildren('quickAddTitle', {read: ElementRef}) qaTitleRef: QueryList<ElementRef>;
 
   @Input() wilistview: string = 'wi-list-view';
+  @Output('workItemCreate') workItemCreate = new EventEmitter();
+
   error: any = false;
   workItem: WorkItem;
   validTitle: Boolean;
@@ -136,9 +138,11 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
         .subscribe(workItem => {
           this.workItem = workItem; // saved workItem, w/ id if new
           this.logger.log(`created and returned this workitem:` + JSON.stringify(workItem));
+          this.workItemCreate.emit(cloneDeep(this.workItem));
           this.resetQuickAdd();
         },
         error => this.error = error); // TODO: Display error message
+
     } else {
       this.error = 'Title can not be empty.';
     }

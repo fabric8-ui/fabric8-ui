@@ -23,6 +23,7 @@ import {
 import { AuthenticationService } from 'ngx-login-client';
 
 import { HttpService } from './../../shared/http-service';
+
 import { AlmFilterBoardList } from '../../pipes/alm-board-filter.pipe';
 import { AuthUserResolve, UsersResolve } from '../common.resolver';
 import { GlobalSettings } from '../../shared/globals';
@@ -65,7 +66,7 @@ if (process.env.ENV == 'inmemory') {
       useFactory: (backend: XHRBackend, options: RequestOptions, auth: AuthenticationService) => {
         return new HttpService(backend, options, auth);
       },
-      deps: [XHRBackend, RequestOptions]
+      deps: [XHRBackend, RequestOptions, AuthenticationService]
     }
   ];
 }

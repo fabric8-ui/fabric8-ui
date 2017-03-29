@@ -79,6 +79,16 @@ export class AreaService {
     }
   }
 
+  getArea(area: any): Observable<AreaModel> {
+    if (Object.keys(area).length) {
+      let areaLink = area.data.links.self;
+      return this.http.get(areaLink)
+        .map(arearesp => arearesp.json().data);
+    } else {
+      return Observable.of(area);
+    }
+  }
+
   /**
    * checkValidUrl checks if the API url for
    * iterations is valid or not

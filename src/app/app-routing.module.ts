@@ -11,6 +11,10 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'list',
+    loadChildren: 'app/work-item/work-item-list/planner-list.module#PlannerListModule'
+  },
+  {
     path: 'board',
     loadChildren: 'app/work-item/work-item-board/planner-board.module#PlannerBoardModule'
   },

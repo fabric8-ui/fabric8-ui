@@ -122,10 +122,15 @@ describe('Comment section for the work item detailed view - ', () => {
       'id': '1',
       'relationships': {
         'assignees': {
-          'data': [{
-            'id': 'widct-user2',
-            'type': 'identities'
-          }]
+          'data': [
+            {
+              'attributes': {
+                'fullName': 'WIDCT Example User 2',
+                'imageURL': 'https://avatars.githubusercontent.com/u/002?v=3'
+              },
+            'id': 'widct-user2'
+          }
+          ]
         },
         'baseType': {
           'data': {
@@ -135,11 +140,15 @@ describe('Comment section for the work item detailed view - ', () => {
         },
         'creator': {
           'data': {
-            'id': 'widct-user2',
-            'type': 'identities'
+            'attributes': {
+              'fullName': 'WIDCT Example User 0',
+              'imageURL': 'https://avatars.githubusercontent.com/u/000?v=3'
+            },
+            'id': 'widct-user0'
           }
         },
         'comments': {
+          'data': [],
           'links': {
             'self': '',
             'related': ''
@@ -147,6 +156,9 @@ describe('Comment section for the work item detailed view - ', () => {
         }
       },
       'type': 'workitems',
+      'links': {
+        'self': ''
+      },
       'relationalData': {
         'creator': fakeUserList[0],
         'assignees': [fakeUserList[2]]
@@ -309,12 +321,18 @@ describe('Comment section for the work item detailed view - ', () => {
     fakeAreaService = {
       getAreas: function () {
         return Observable.of(fakeAreaList);
+      },
+      getArea: function (area) {
+        return Observable.of(fakeAreaList[0]);
       }
     };
 
     fakeIterationService = {
       getIterations: function () {
         return Observable.of(fakeIterationList);
+      },
+      getIteration: function (it) {
+        return Observable.of(fakeIterationList[0]);
       },
       getSpaces: function () {
         let spaces = [{
@@ -352,6 +370,22 @@ describe('Comment section for the work item detailed view - ', () => {
 
       getLinkTypes: function () {
         return Observable.of(fakeWorkItemLinkTypes);
+      },
+
+      resolveAssignees: function(assignees) {
+        return Observable.of(fakeUserList[2]);
+      },
+
+      resolveCreator2: function(creator) {
+        return Observable.of(fakeUserList[0]);
+      },
+
+      resolveLinks: function(url) {
+        return Observable.of([[], []]);
+      },
+
+      resolveComments: function() {
+        return Observable.of([ [], {data: []} ]);
       }
     };
 

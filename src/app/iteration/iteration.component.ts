@@ -4,21 +4,24 @@ import { Subscription } from 'rxjs/Subscription';
 import { Params, ActivatedRoute } from '@angular/router';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { IterationService } from './iteration.service';
-import { IterationModel } from '../models/iteration.model';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { IterationModel } from './../models/iteration.model';
+import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 
 import { Broadcaster } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 
 @Component({
   host: {
-      'class':"app-component"
+    'class':"app-component"
   },
   selector: 'fab-planner-iteration',
   templateUrl: './iteration.component.html',
   styleUrls: ['./iteration.component.scss']
 })
-export class IterationComponent implements OnInit, OnDestroy {
+export class IterationComponent implements OnInit, OnDestroy, OnChanges {
+
+  @Input() takeFromInput: boolean = false;
+  @Input() iterations: IterationModel[] = [];
 
   authUser: any = null;
   loggedIn: Boolean = true;
@@ -66,12 +69,23 @@ export class IterationComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnChanges() {
+    if (this.takeFromInput) {
+      this.allIterations = this.iterations;
+      this.clusterIterations();
+    }
+  }
+
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
     this.spaceSubscription.unsubscribe();
   }
 
   getAndfilterIterations() {
+    if (this.takeFromInput) {
+      this.allIterations = this.iterations;
+      this.clusterIterations();
+    } else {
       this.iterationService.getIterations()
       .subscribe((iterations) => {
           this.allIterations = iterations;
@@ -80,6 +94,7 @@ export class IterationComponent implements OnInit, OnDestroy {
       (e) => {
         console.log('Some error has occured', e);
       });
+    }
   }
 
   clusterIterations() {

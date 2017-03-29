@@ -1,3 +1,4 @@
+import { IterationModel } from './../../../models/iteration.model';
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute }                                            from '@angular/router';
 
@@ -38,6 +39,7 @@ import { TreeListItemComponent } from 'ngx-widgets';
 export class WorkItemListEntryComponent implements OnInit {
   @Input() listItem: TreeListItemComponent;
   @Input() workItem: WorkItem;
+  @Input() iterations: IterationModel[];
 
   @Output() toggleEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() selectEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();

@@ -19,11 +19,11 @@ import { IterationService }  from '../../iteration/iteration.service';
 export class FabPlannerAssociateIterationModalComponent implements OnInit, OnChanges {
 
   @Input() workItem: WorkItem;
+  @Input() iterations: IterationModel[];
   @ViewChild('dropdownButton') dropdownButton: any;
   @ViewChild('commitAssociation') commitAssociation: any;
   @ViewChild('iterationAssociationModal') iterationAssociationModal: any;
 
-  iterations: IterationModel[];
   selectedIteration: IterationModel;
 
   constructor(
@@ -35,7 +35,6 @@ export class FabPlannerAssociateIterationModalComponent implements OnInit, OnCha
   ) {}
 
   ngOnInit() {
-    this.iterations = this.iterationService.iterations;
   }
 
   ngOnChanges() {

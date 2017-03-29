@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { cloneDeep } from 'lodash';
@@ -21,10 +21,13 @@ import {
   templateUrl: './work-item-detail-add-type-selector.component.html',
   styleUrls: ['./work-item-detail-add-type-selector.component.scss']
 })
-export class WorkItemDetailAddTypeSelectorComponent implements OnInit {
+export class WorkItemDetailAddTypeSelectorComponent implements OnInit, OnChanges {
+
+  @Input() wiTypes: WorkItemType[] = [];
+  @Input() takeFromInput: boolean = false;
 
   loggedIn: boolean = false;
-  workItemTypes: WorkItemType[];
+  workItemTypes: WorkItemType[] = [];
   showTypesOptions: boolean = false;
   spaceSubscription: Subscription = null;
 
@@ -50,12 +53,22 @@ export class WorkItemDetailAddTypeSelectorComponent implements OnInit {
     });
   }
 
+  ngOnChanges() {
+    if (this.takeFromInput) {
+      this.workItemTypes = this.wiTypes;
+    }
+  }
+
   //Detailed add functions
   getWorkItemTypes(){
-    this.workItemService.getWorkItemTypes()
+    if (this.takeFromInput) {
+      this.workItemTypes = this.wiTypes;
+    } else {
+      this.workItemService.getWorkItemTypes()
       .subscribe((types) => {
         this.workItemTypes = types;
       });
+    }
   }
   showTypes() {
     this.showTypesOptions = true;
