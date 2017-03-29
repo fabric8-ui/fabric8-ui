@@ -26,6 +26,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   public onSubmit = new EventEmitter();
 
   @ViewChild('createUpdateIterationDialog') createUpdateIterationDialog: any;
+  @ViewChild('iterationSearch') iterationSearch: any;
+  @ViewChild('iterationList') iterationList: any;
+
   public iteration: IterationModel;
   private validationError = false;
   private modalType: string = 'create';
@@ -36,6 +39,10 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   private spaceError: Boolean = false;
   private spaceName: string = 'FIXME';
   private iterationName: string;
+  iterations: IterationModel[] = [];
+  filteredIterations: IterationModel[] = [];
+  selectedParentIteration: IterationModel;
+  selectedParentIterationName:string = '';
 
   private startDatePickerOptions: IMyOptions = {
     dateFormat: 'dd mmm yyyy',
@@ -104,6 +111,8 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
     startDatePickerComponentCopy.componentDisabled = false;
     this.startDatePickerOptions = startDatePickerComponentCopy;
+    this.selectedParentIterationName = '';
+    this.filteredIterations = [];
   }
 
   ngOnChanges() {
@@ -121,6 +130,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   ) {
     this.modalType = type;
     if (this.modalType == 'create') {
+      this.getIterations();
       this.submitBtnTxt = 'Create';
       this.modalTitle = 'Create Iteration';
     }
@@ -129,6 +139,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.modalTitle = 'Start Iteration';
     }
     if (this.modalType == 'update') {
+      this.getIterations();
       this.submitBtnTxt = 'Update';
       this.modalTitle = 'Update Iteration';
       if (iteration.attributes.state === 'start') {
@@ -186,6 +197,79 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     this.endDate = { date: event.date };
     this.iteration.attributes.endAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T00:00:00Z';
     // console.log(this.iteration.attributes.endAt);
+  }
+
+  getIterations() {
+    this.iterationService.getIterations()
+      .subscribe((iteration: IterationModel[]) => {
+        this.iterations = iteration;
+      });
+  }
+
+  setParentIteration(id: string) {
+    this.selectedParentIteration =  this.filteredIterations.find((iteration) => iteration.id === id);
+    console.log(this.selectedParentIteration);
+    this.selectedParentIterationName = this.selectedParentIteration.attributes['name'];
+    this.iterationSearch.nativeElement.focus();
+    this.filteredIterations = [];
+  }
+
+  filterIteration(event:any) {
+    event.stopPropagation();
+    // Down arrow or up arrow
+    if (event.keyCode == 40 || event.keyCode == 38) {
+      let lis = this.iterationList.nativeElement.children;
+      let i = 0;
+      for (; i < lis.length; i++) {
+        if (lis[i].classList.contains('selected')) {
+          break;
+        }
+      }
+      if (i == lis.length) { // No existing selected
+        if (event.keyCode == 40) { // Down arrow
+          lis[0].classList.add('selected');
+          // this.setParentIteration(lis[0].getAttribute('data-id'));
+          lis[0].scrollIntoView(false);
+        } else { // Up arrow
+          lis[lis.length - 1].classList.add('selected');
+          // this.setParentIteration(lis[lis.length - 1].getAttribute('data-id'));
+          lis[lis.length - 1].scrollIntoView(false);
+        }
+      } else { // Existing selected
+        lis[i].classList.remove('selected');
+        if (event.keyCode == 40) { // Down arrow
+          lis[(i + 1) % lis.length].classList.add('selected');
+          // this.setParentIteration(lis[(i + 1) % lis.length].getAttribute('data-id'));
+          lis[(i + 1) % lis.length].scrollIntoView(false);
+        } else { // Down arrow
+          // In javascript mod gives exact mod for negative value
+          // For example, -1 % 6 = -1 but I need, -1 % 6 = 5
+          // To get the round positive value I am adding the divisor
+          // with the negative dividend
+          lis[(((i - 1) % lis.length) + lis.length) % lis.length].classList.add('selected');
+          // this.setParentIteration(lis[(((i - 1) % lis.length) + lis.length) % lis.length].getAttribute('data-id'));
+          lis[(((i - 1) % lis.length) + lis.length) % lis.length].scrollIntoView(false);
+        }
+      }
+    } else if (event.keyCode == 13) { // Enter key event
+      let lis = this.iterationList.nativeElement.children;
+      let i = 0;
+      for (; i < lis.length; i++) {
+        if (lis[i].classList.contains('selected')) {
+          break;
+        }
+      }
+      if (i < lis.length) {
+        let selectedId = lis[i].dataset.value;
+        this.selectedParentIteration = lis[i];
+        this.setParentIteration(selectedId);
+      }
+    } else {
+      let inp = this.iterationSearch.nativeElement.value.trim();
+      this.filteredIterations = this.iterations.filter((item) => {
+         return item.attributes.name.toLowerCase().indexOf(inp.toLowerCase()) > -1;
+      });
+    }
   }
 
   actionOnSubmit() {

@@ -22,6 +22,18 @@
           </div>
         </div>
         <div class="form-group">
+          <label for="parent-iteration">Parent Iteration</label>
+          <div class="parent-iteration-container">
+            <input id="parent-iteration" class="form-control" type="text" #iterationSearch (keyup)="filterIteration($event)"
+            autocomplete="off" [value]="selectedParentIterationName">
+            <ul class="iteration-list" #iterationList>
+              <li *ngFor="let iteration of filteredIterations;" [attr.data-id]="iteration.id" (click)="setParentIteration(iteration.id);">
+                <span [innerHTML]="iteration.attributes.name | almSearchHighlight: iterationSearch.value"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-group">
           <label for="iteration-description">Description</label>
           <textarea
             #iterationDesc
