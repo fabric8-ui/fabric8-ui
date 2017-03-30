@@ -111,7 +111,7 @@ They're generally not meant to be run manually.
 To generate production build, set API URL and run build script as follows:
 
 ----
-$ export API_URL="http://api.example.org/api/"
+$ export API_URL="https://api.example.org/api/"
 $ npm run build:prod
 ----
 

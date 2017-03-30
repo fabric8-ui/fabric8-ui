@@ -27,7 +27,7 @@ service docker start
 cp /tmp/jenkins-env .
 docker build -t fabric8-planner-builder -f Dockerfile.builder .
 # User root is required to run webdriver-manager update. This shouldn't be a problem for CI containers
-mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder --user=root --cap-add=SYS_ADMIN -e "API_URL=http://api.prod-preview.openshift.io/api/" -t -v $(pwd)/dist:/dist:Z fabric8-planner-builder
+mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder --user=root --cap-add=SYS_ADMIN -e "API_URL=https://api.prod-preview.openshift.io/api/" -t -v $(pwd)/dist:/dist:Z fabric8-planner-builder
 
 
 # Build almigty-ui

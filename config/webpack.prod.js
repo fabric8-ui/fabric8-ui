@@ -21,7 +21,7 @@ const webpackMerge = require('webpack-merge');
  * Webpack Constants
  */
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
-const API_URL = process.env.API_URL || 'http://api.almighty.io/api/';
+const API_URL = process.env.API_URL || 'https://api.almighty.io/api/';
 const FORGE_URL = process.env.FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 

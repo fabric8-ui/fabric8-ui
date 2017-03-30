@@ -219,7 +219,7 @@ describe('Work Item Service - ', () => {
         GlobalSettings,
         {
           provide: AUTH_API_URL,
-          useValue: 'http://api.url.com'
+          useValue: 'https://api.url.com'
         },
         witApiUrlProvider,
         {
