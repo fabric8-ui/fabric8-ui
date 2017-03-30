@@ -199,6 +199,10 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     // console.log(this.iteration.attributes.endAt);
   }
 
+  iterationSearchFocus() {
+    this.filteredIterations = this.iterations;
+  }
+
   getIterations() {
     this.iterationService.getIterations()
       .subscribe((iteration: IterationModel[]) => {
@@ -260,9 +264,8 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
         }
       }
       if (i < lis.length) {
-        let selectedId = lis[i].dataset.value;
         this.selectedParentIteration = lis[i];
-        this.setParentIteration(selectedId);
+        this.setParentIteration(lis[i].getAttribute('data-id'));
       }
     } else {
       let inp = this.iterationSearch.nativeElement.value.trim();
