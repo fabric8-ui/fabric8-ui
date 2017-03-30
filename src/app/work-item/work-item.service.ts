@@ -598,103 +598,6 @@ export class WorkItemService {
   }
 
   /**
-   * Usage: This method is to move an item over the list
-   * ToDo: Integrate backend when available, also move by one
-   * place should be implemented
-   */
-  moveItem(wi: WorkItem, dir: String): Promise<any> {
-    let index = this.workItems.findIndex(x => x.id == wi.id);
-    switch (dir){
-      case 'top':
-        //move the item as the first item
-        this.workItems.splice(0, 0, wi);
-        //remove the duplicate element
-        this.workItems.splice( index + 1, 1);
-        this.buildWorkItemIdIndexMap();
-        this.reOrderWorkItem(wi.id, null, 'top')
-            .then((workitem) => {
-              let updateIndex = this.workItemIdIndexMap[wi.id];
-              this.workItems[updateIndex].attributes['version'] = workitem.attributes['version'];
-            });
-        break;
-      case 'bottom':
-        //move the item as the last of the loaded list
-        this.workItems.splice((this.workItems.length), 0, wi);
-        //remove the duplicate element
-        this.workItems.splice( index, 1);
-        this.buildWorkItemIdIndexMap();
-        this.reOrderWorkItem(wi.id, null, 'bottom')
-            .then((workitem) => {
-              let updateIndex = this.workItemIdIndexMap[wi.id];
-              this.workItems[updateIndex].attributes['version'] = workitem.attributes['version'];
-          });
-        break;
-      case 'up':
-        if (index > 0) { //no moving of element if it is the first element
-          //move the work item up by 1. Below statement will create two elements
-          this.workItems.splice( index - 1 , 0, wi);
-          //remove the duplicate element
-          this.workItems.splice( index + 1, 1);
-          //Set the previous and next WI ids
-          // wi.attributes.nextitem = parseInt(this.workItems[index].id);
-          this.buildWorkItemIdIndexMap();
-          this.reOrderWorkItem(wi.id, this.workItems[index].id, 'above')
-              .then((workitem) => {
-                let updateIndex = this.workItemIdIndexMap[wi.id];
-                this.workItems[updateIndex].attributes['version'] = workitem.attributes['version'];
-          });
-        }
-        break;
-      case 'down':
-        if ( index < (this.workItems.length - 1) ) { //no moving of elements if it is the last element
-          //move the work item down by 1. Below statement will create two elements
-          this.workItems.splice( index + 2 , 0, wi);
-          //remove the duplicate element
-          this.workItems.splice( index, 1);
-          //Set the previous and next WI ids
-          // wi.attributes.previousitem = parseInt(this.workItems[index].id);
-          this.buildWorkItemIdIndexMap();
-          this.reOrderWorkItem(wi.id, this.workItems[index].id, 'below')
-              .then((workitem) => {
-                let updateIndex = this.workItemIdIndexMap[wi.id];
-                this.workItems[updateIndex].attributes['version'] = workitem.attributes['version'];
-          });
-        }
-        break;
-    }
-    //console.log(wi.attributes.previousitem, ':' , wi.attributes.nextitem);
-    //build the map to reset the indices
-    this.buildWorkItemIdIndexMap();
-    return Promise.resolve();
-    /*
-    return this.http
-      .patch(this.reorderUrl, JSON.stringify({data: wi}), { headers: this.headers })
-      .toPromise()
-      .then(response => {
-        //Reusing the update code to update the element locally
-        let updatedWorkItem = response.json().data as WorkItem;
-        // Find the index in the big list
-        let updateIndex = this.workItems.findIndex(item => item.id == updatedWorkItem.id);
-        if (updateIndex > -1) {
-          // Update work item attributes
-          this.workItems[updateIndex].attributes = updatedWorkItem.attributes;
-          this.workItems[updateIndex].relationships.baseType = updatedWorkItem.relationships.baseType;
-          // Resolve users for the updated item
-          this.resolveUsersForWorkItem(this.workItems[updateIndex]);
-          this.resolveIterationForWorkItem(this.workItems[updateIndex]);
-        } else {
-          // This part is for mock service in unit test
-          // this.workItems stays in case of unit test
-          // Resolve users for the updated item
-          this.resolveUsersForWorkItem(updatedWorkItem);
-          this.resolveIterationForWorkItem(updatedWorkItem);
-        }
-        return updatedWorkItem;
-      })
-      .catch (this.handleError);*/
-  }
-
-  /**
    * Usage: This method deletes an item
    * removes the delted item from the big list
    * re build the ID-Index map
@@ -1061,31 +964,22 @@ export class WorkItemService {
    *
    * @param workItemId: string
    */
-  reOrderWorkItem(workItemId: string, prevWiId: string | null = null, direction: string): Promise<any> {
+  reOrderWorkItem(workItem: WorkItem, prevWiId: string | null = null, direction: string): Observable<any> {
     let newWItem = new WorkItem();
-    let wiIndex = this.workItemIdIndexMap[workItemId];
-    let wItem = this.workItems[wiIndex];
     let arr = [];
-
-    newWItem.id = workItemId.toString();
+    newWItem.id = workItem.id.toString();
     newWItem.attributes = {} as WorkItemAttributes;
-    newWItem.attributes.version = wItem.attributes.version;
-    newWItem.type = wItem.type;
+    newWItem.attributes.version = workItem.attributes.version;
+    newWItem.type = workItem.type;
 
     arr.push(newWItem);
 
     if (this._currentSpace) {
-      // FIXME: make the URL great again (when we know the right API URL for this)!
-      this.workItemUrl = this.baseApiUrl + 'workitems';
-      // this.workItemUrl = currentSpace.links.self + '/workitems';
-      let url = `${this.workItemUrl}/reorder`;
+      let url = `${this._currentSpace.links.self}/workitems/reorder`;
       return this.http
         .patch(url, JSON.stringify({data: arr, position: {direction: direction, id: prevWiId}}), { headers: this.headers })
-        .toPromise()
-        .then(response => {
+        .map(response => {
           let updatedWorkItem: WorkItem = response.json().data[0] as WorkItem;
-          wItem.attributes['system.order'] = updatedWorkItem.attributes['system.order'];
-          wItem.attributes['version'] = updatedWorkItem.attributes['version'];
           return updatedWorkItem;
         });
         // .catch ((e) => {
@@ -1095,6 +989,8 @@ export class WorkItemService {
         //     this.handleError(e);
         //   }
         // });
+    } else {
+      Observable.throw('No space selected');
     }
   }
 

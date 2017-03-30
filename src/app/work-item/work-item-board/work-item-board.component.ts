@@ -239,7 +239,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
 
     this.changeLane(this.workItem.attributes['system.state'], state, this.workItem, prevElId);
 
-    if(el.previousElementSibling) {
+    if (el.previousElementSibling) {
       adjElm = el.previousElementSibling;
       this.changeState(state, el.getAttribute('data-id'), adjElm.getAttribute('data-id'), 'below');
     }
@@ -280,11 +280,12 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
       this.workItemService
         .update(this.workItem)
         .subscribe((workItem) => {
-          lane.workItems.find((item) => item.id === workItem.id).attributes['version'] = workItem.attributes['version'];
+          let wItem = lane.workItems.find((item) => item.id === workItem.id);
+          wItem.attributes['version'] = workItem.attributes['version'];
           this.activeOnList();
           if (adjElmId !== null) {
-            this.workItemService.reOrderWorkItem(elId, adjElmId, direction)
-                .then((workitem) => {
+            this.workItemService.reOrderWorkItem(wItem, adjElmId, direction)
+                .subscribe((workitem) => {
                   lane.workItems.find((item) => item.id === workItem.id).attributes['version'] = workitem.attributes['version'];
                   lane.workItems.find((item) => item.id === workItem.id).attributes['system.order'] = workitem.attributes['system.order'];
                 });

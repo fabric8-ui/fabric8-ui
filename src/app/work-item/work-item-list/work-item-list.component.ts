@@ -240,34 +240,37 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
   }
 
   onMoveSelectedToTop(): void{
-    this.workItemDetail = this.workItemToMove.getWorkItem();
-    this.workItemService.moveItem(this.workItemDetail, 'top').then(() => {
-      this.treeList.updateTree();
-      this.listContainer.nativeElement.scrollTop = 0;
-    });
+    this.onMoveToTop(this.workItemToMove);
   }
 
   onMoveSelectedToBottom(): void{
-    this.workItemDetail = this.workItemToMove.getWorkItem();
-    this.workItemService.moveItem(this.workItemDetail, 'bottom').then(() => {
-      this.treeList.updateTree();
-      this.listContainer.nativeElement.scrollTop = this.workItems.length * this.contentItemHeight;
-    });
+    this.onMoveToBottom(this.workItemToMove);
   }
 
   onMoveToTop(entryComponent: WorkItemListEntryComponent): void {
     this.workItemDetail = entryComponent.getWorkItem();
-    this.workItemService.moveItem(this.workItemDetail, 'top')
-    .then(() => {
+    this.workItemService.reOrderWorkItem(this.workItemDetail, null, 'top')
+    .subscribe((updatedWorkItem) => {
+      let currentIndex = this.workItems.findIndex((item) => item.id === updatedWorkItem.id);
+      // Putting on top of the list
+      this.workItems.splice(0, 0, this.workItems[currentIndex]);
+      // Removing duplicate old item
+      this.workItems.splice( currentIndex + 1, 1);
+      this.workItems[0].attributes['version'] = updatedWorkItem.attributes['version'];
       this.treeList.updateTree();
-      this.listContainer.nativeElement.scrollTop = 0;
     });
   }
 
   onMoveToBottom(entryComponent: WorkItemListEntryComponent): void {
     this.workItemDetail = entryComponent.getWorkItem();
-    this.workItemService.moveItem(this.workItemDetail, 'bottom')
-    .then(() => {
+    this.workItemService.reOrderWorkItem(this.workItemDetail, null, 'bottom')
+    .subscribe((updatedWorkItem) => {
+      let currentIndex = this.workItems.findIndex((item) => item.id === updatedWorkItem.id);
+      //move the item as the last of the loaded list
+      this.workItems.splice((this.workItems.length), 0, this.workItems[currentIndex]);
+      //remove the duplicate element
+      this.workItems.splice( currentIndex, 1);
+      this.workItems[this.workItems.length - 1].attributes['version'] = updatedWorkItem.attributes['version'];
       this.treeList.updateTree();
       this.listContainer.nativeElement.scrollTop = this.workItems.length * this.contentItemHeight;
     });
@@ -275,14 +278,40 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
 
   onMoveUp(): void {
     this.workItemDetail = this.workItemToMove.getWorkItem();
-    this.workItemService.moveItem(this.workItemDetail, 'up');
-    this.treeList.updateTree();
+    let currentIndex = this.workItems.findIndex((item) => item.id === this.workItemDetail.id);
+    if (currentIndex > 0) {
+      this.workItemService.reOrderWorkItem(
+        this.workItemDetail,
+        this.workItems[currentIndex - 1].id,
+        'above'
+      ).subscribe((updatedWorkItem) => {
+        this.workItems[currentIndex].attributes['version'] = updatedWorkItem.attributes['version'];
+        // move the work item up by 1. Below statement will create two elements
+        this.workItems.splice( currentIndex - 1 , 0, this.workItemDetail);
+        // remove the duplicate element
+        this.workItems.splice( currentIndex + 1, 1 );
+        this.treeList.updateTree();
+      });
+    }
   }
 
   onMoveDown(): void {
     this.workItemDetail = this.workItemToMove.getWorkItem();
-    this.workItemService.moveItem(this.workItemDetail, 'down');
-    this.treeList.updateTree();
+    let currentIndex = this.workItems.findIndex((item) => item.id === this.workItemDetail.id);
+    if ( currentIndex < (this.workItems.length - 1) ) {
+      this.workItemService.reOrderWorkItem(
+        this.workItemDetail,
+        this.workItems[currentIndex + 1].id,
+        'below'
+      ).subscribe((updatedWorkItem) => {
+        this.workItems[currentIndex].attributes['version'] = updatedWorkItem.attributes['version'];
+        // move the work item up by 1. Below statement will create two elements
+        this.workItems.splice( currentIndex + 2 , 0, this.workItemDetail);
+        // remove the duplicate element
+        this.workItems.splice( currentIndex, 1 );
+        this.treeList.updateTree();
+      });
+    }
   }
 
   listenToEvents() {
@@ -380,17 +409,15 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
     let nextWI = $event.to.parent.children[$event.to.index + 1];
 
     if (typeof prevWI !== 'undefined') {
-      this.workItemService.reOrderWorkItem(movedWI.id, prevWI.id, 'below')
-          .then((workItem) => {
-            this.workItems.find((item) => item.id === movedWI.id).attributes['version'] = workItem.attributes['version'];
-            this.workItemService.buildWorkItemIdIndexMap();
+      this.workItemService.reOrderWorkItem(movedWI, prevWI.id, 'below')
+          .subscribe((workItem) => {
+            this.workItems.find((item) => item.id === workItem.id).attributes['version'] = workItem.attributes['version'];
           });
     }
     else {
-      this.workItemService.reOrderWorkItem(movedWI.id, nextWI.id, 'above')
-          .then((workItem) => {
-            this.workItems.find((item) => item.id === movedWI.id).attributes['version'] = workItem.attributes['version'];
-            this.workItemService.buildWorkItemIdIndexMap();
+      this.workItemService.reOrderWorkItem(movedWI, nextWI.id, 'above')
+          .subscribe((workItem) => {
+            this.workItems.find((item) => item.id === workItem.id).attributes['version'] = workItem.attributes['version'];
           });
     }
   }
