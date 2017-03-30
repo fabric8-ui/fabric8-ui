@@ -76,9 +76,8 @@ module.exports = function (options) {
 
   // ExtractTextPlugin
   const extractCSS = new ExtractTextPlugin({
-    filename: '[name].[id]' + ( isProd ? '.[contenthash]' : '' ) + '.css',
-    allChunks: true }
-  );
+    filename: '[name].[id]' + (isProd ? '.[contenthash]' : '') + '.css'
+  });
 
   // const entryFile = aotMode ? './src/main.browser.aot.ts' : './src/main.browser.ts';
   // const outPath = aotMode ? 'dist' : 'aot';
@@ -130,7 +129,7 @@ module.exports = function (options) {
        *
        * See: https://webpack.js.org/configuration/resolve/#resolve-modules
        */
-      modules: [ helpers.root('src'), helpers.root('node_modules')]
+      modules: [helpers.root('src'), helpers.root('node_modules')]
 
     },
 
@@ -190,34 +189,57 @@ module.exports = function (options) {
          *
          */
         {
-          test: /\.css$/,
+          test: /^(?!.*component).*\.css$/,
           use: extractCSS.extract({
             fallback: "style-loader",
-            loader: "css-loader?sourceMap&context=/"
+            use: [
+              {
+                loader: 'css-loader',
+                options: {
+                  sourceMap: true,
+                  context: '/'
+                },
+              },
+            ]
           })
+        },
+        {
+          test: /\.component\.css$/,
+          use: [
+            {
+              loader: 'to-string-loader'
+            }, {
+              loader: 'css-loader',
+              options: {
+                minimize: isProd,
+                sourceMap: true,
+                context: '/'
+              }
+            }
+          ],
         },
         {
           test: /^(?!.*component).*\.scss$/,
           use: extractCSS.extract({
-              fallback: 'style-loader',
-              use: [
-                {
-                  loader: 'css-loader',
-                  options: {
-                    minimize: isProd,
-                    sourceMap: true,
-                    context: '/'
-                  }
-                }, {
-                  loader: 'sass-loader',
-                  options: {
-                    includePaths: sassModules.map(function (val) {
-                      return val.sassPath;
-                    }),
-                    sourceMap: true
-                  }
+            fallback: 'style-loader',
+            use: [
+              {
+                loader: 'css-loader',
+                options: {
+                  minimize: isProd,
+                  sourceMap: true,
+                  context: '/'
                 }
-              ],
+              }, {
+                loader: 'sass-loader',
+                options: {
+                  includePaths: sassModules.map(function (val) {
+                    return val.sassPath;
+                  }),
+                  sourceMap: true
+                }
+              }
+            ],
           })
         }, {
           test: /\.component\.scss$/,
