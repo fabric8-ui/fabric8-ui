@@ -132,7 +132,10 @@ export class WorkItemListEntryComponent implements OnInit {
   onDelete(event: MouseEvent): void {
     if (event)
       event.stopPropagation();
-    this.workItemService.delete(this.workItem);
+    this.workItemService.delete(this.workItem)
+    .subscribe(() => {
+      console.log('Deleted');
+    });
   }
 
   onSelect(event: MouseEvent): void {

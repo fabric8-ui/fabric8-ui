@@ -607,13 +607,7 @@ export class WorkItemService {
   delete(workItem: WorkItem): Observable<void> {
     return this.http
       .delete(workItem.links.self, { headers: this.headers, body: '' })
-      .map(() => {
-        let deletedItemIndex = this.workItems.findIndex((item) => item.id == workItem.id);
-        // removing deleted item from the local list
-        this.workItems.splice(deletedItemIndex, 1);
-        // Re build the workItem ID-Index map
-        this.buildWorkItemIdIndexMap();
-      })
+      .map(() => {});
       // .catch ((e) => {
       //   if (e.status === 401) {
       //     this.auth.logout();

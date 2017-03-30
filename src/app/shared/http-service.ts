@@ -74,4 +74,11 @@ export class HttpService extends Http {
     return super.patch(url, body, { headers: this.headers });
   }
 
+  delete(url: string, options: RequestOptionsArgs = {}) {
+    console.log('DELETE request initiated');
+    console.log('URL - ', url);
+    console.log('Options - ', options);
+    return super.delete(url, { headers: this.headers });
+  }
+
 }
