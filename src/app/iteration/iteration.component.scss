@@ -38,7 +38,7 @@
             margin-left: em(10);
           }
           .iteration-name{
-            line-height: 3rem;
+            line-height: 1.5rem;
           }
         }
         .iteration-count {
@@ -58,12 +58,16 @@
       > li {
         padding: em(5) em(15) em(5) em(40);
         .iteration-name{
-            line-height: 2.5rem;
+            line-height: 1.5rem;
           }
       }
       .badge {
         margin-right: em(10);
       }
+    }
+    .parent-iteration {
+      font-size: rem(12);
+      font-style: italic;
     }
   }
 }

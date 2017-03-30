@@ -20,6 +20,7 @@
                 (click)='getWorkItemsByIteration(iteration)'>
                 {{iteration.attributes.name}}
               </strong>
+              <div class="parent-iteration">{{iteration.attributes.resolved_parent_path}}</div>
             </div>
             <div *ngIf="loggedIn" class="dropdown-kebab-pf" dropdown>
               <button class="btn btn-link"
@@ -112,6 +113,7 @@
               (click)='getWorkItemsByIteration(iteration)'>
               {{iteration.attributes.name}}
             </strong>
+            <div class="parent-iteration">{{iteration.attributes.resolved_parent_path}}</div>
           </div>
           <div>
             <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
@@ -165,6 +167,7 @@
               (click)='getWorkItemsByIteration(iteration)'>
               {{iteration.attributes.name}}
             </strong>
+            <div class="parent-iteration">{{iteration.attributes.resolved_parent_path}}</div>
           </div>
           <div>
             <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
