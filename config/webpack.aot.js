@@ -370,7 +370,7 @@ module.exports = function (env) {
        */
       new CopyWebpackPlugin([{
         from: 'src/assets',
-        to: 'assets'
+        to: '_assets'
       }, {
         from: 'src/meta'
       } ]),

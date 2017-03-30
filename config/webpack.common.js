@@ -76,7 +76,7 @@ module.exports = function (options) {
 
   // ExtractTextPlugin
   const extractCSS = new ExtractTextPlugin({
-    filename: '[name].[id]' + (isProd ? '.[contenthash]' : '') + '.css'
+    filename: '_assets/stylesheets/[name].[id]' + ( isProd ? '.[contenthash]' : '' ) + '.css'
   });
 
   // const entryFile = aotMode ? './src/main.browser.aot.ts' : './src/main.browser.ts';
@@ -275,7 +275,7 @@ module.exports = function (options) {
               loader: 'url-loader',
               query: {
                 limit: 3000,
-                name: 'assets/fonts/[name].' + (isProd ? '[hash]' : '') + '[ext]'
+                name: '_assets/fonts/[name].' + (isProd ? '[hash]' : '') + '[ext]'
               }
             }
           ]
@@ -287,7 +287,7 @@ module.exports = function (options) {
               loader: 'url-loader',
               query: {
                 limit: 3000,
-                name: 'assets/images/[name].' + (isProd ? '[hash]' : '') + '[ext]'
+                name: '_assets/images/[name].' + (isProd ? '[hash]' : '') + '[ext]'
               }
             }
           ]

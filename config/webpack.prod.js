@@ -104,7 +104,7 @@ module.exports = function (env) {
        *
        * See: http://webpack.github.io/docs/configuration.html#output-filename
        */
-      filename: '[name].[chunkhash].bundle.js',
+      filename: '_assets/lib/[name].[chunkhash].bundle.js',
 
       /**
        * The filename of the SourceMaps for the JavaScript files.
@@ -112,7 +112,7 @@ module.exports = function (env) {
        *
        * See: http://webpack.github.io/docs/configuration.html#output-sourcemapfilename
        */
-      sourceMapFilename: '[name].[chunkhash].bundle.map',
+      sourceMapFilename: '_assets/lib/[name].[chunkhash].bundle.map',
 
       /**
        * The filename of non-entry chunks as relative path
@@ -120,7 +120,7 @@ module.exports = function (env) {
        *
        * See: http://webpack.github.io/docs/configuration.html#output-chunkfilename
        */
-      chunkFilename: '[id].[chunkhash].chunk.js'
+      chunkFilename: '_assets/lib/[id].[chunkhash].chunk.js'
 
     },
 
@@ -211,7 +211,7 @@ module.exports = function (env) {
        */
       new FaviconsWebpackPlugin({
         logo: branding.assets[METADATA.FABRIC8_BRANDING].favicon.path,
-        prefix: 'assets/icons-[hash]/'
+        prefix: '_assets/icons-[hash]/'
       }),
 
       /**
