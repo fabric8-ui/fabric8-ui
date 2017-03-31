@@ -8,13 +8,13 @@
         (onMoveNode)="handleMoveNode($event)"
         (onToggle)="handleToggle($event)"
         (onUpdateData)="handleUpdateData($event)">
-    <template #treeNodeTemplate let-node let-index="index">
-      <template [ngTemplateOutlet]="listTemplate" [ngOutletContext]="{ node: node, index: index }"></template>
-    </template>
-    <template #loadingTemplate let-node let-index="index">
-      <template [ngTemplateOutlet]="loadTemplate" [ngOutletContext]="{ node: node, index: index }"></template>
-    </template>
-    <template #treeNodeFullTemplate
+    <ng-template #treeNodeTemplate let-node let-index="index">
+      <ng-template [ngTemplateOutlet]="listTemplate" [ngOutletContext]="{ node: node, index: index }"></ng-template>
+    </ng-template>
+    <ng-template #loadingTemplate let-node let-index="index">
+      <ng-template [ngTemplateOutlet]="loadTemplate" [ngOutletContext]="{ node: node, index: index }"></ng-template>
+    </ng-template>
+    <ng-template #treeNodeFullTemplate
               let-node="node"
               let-index="index"
               let-templates="templates">
@@ -52,6 +52,6 @@
         <TreeNodeChildren [node]="node" [templates]="templates"></TreeNodeChildren>
         <TreeNodeDropSlot [dropIndex]="index + 1" [node]="node.parent" *ngIf="showDropSlot"></TreeNodeDropSlot>
       </div>
-    </template>
+    </ng-template>
   </Tree>
 </div>

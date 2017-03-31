@@ -3,6 +3,7 @@ import {
   ComponentFixture,
   TestBed
 } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -198,7 +199,7 @@ describe('Toolbar component - ', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, BsDropdownModule, TooltipModule],
+      imports: [BrowserAnimationsModule, FormsModule, BsDropdownModule, TooltipModule],
       declarations: [ToolbarComponent, FilterFieldsComponent, FilterResultsComponent, SortComponent],
       providers: [ComponentLoaderFactory, BsDropdownConfig, PositioningService, TooltipConfig]
     })

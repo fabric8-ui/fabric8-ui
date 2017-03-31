@@ -5,7 +5,7 @@
   <TreeNodeDropSlot *ngIf="index === 0" [dropIndex]="index" [node]="node.parent"></TreeNodeDropSlot>
   <div class="tree-list-item">
     <TreeNodeExpander [node]="node"></TreeNodeExpander>
-    <template [ngTemplateOutlet]="template" [ngOutletContext]="{ node: node, index: index }"></template>
+    <ng-template [ngTemplateOutlet]="template" [ngOutletContext]="{ node: node, index: index }"></ng-template>
   </div>
   <TreeNodeDropSlot [dropIndex]="index + 1" [node]="node.parent"></TreeNodeDropSlot>
 </div>

@@ -10,7 +10,7 @@
                (onFilterChange)="filterChange($event)"
                (onSortChange)="sortChange($event)"
                (onViewSelect)="viewSelected($event)">
-    <template #actions>
+    <ng-template #actions>
     <span class="dropdown primary-action" dropdown>
       <button class="btn btn-default dropdown-toggle" dropdownToggle type="button">
         Menu Action
@@ -35,7 +35,7 @@
         <span class="fa fa-plus"></span>
         Add Action
       </button>
-    </template>
+    </ng-template>
   </alm-toolbar>
   <div class="row">
     <div class="col-md-12">

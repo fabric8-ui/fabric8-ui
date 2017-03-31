@@ -3,6 +3,7 @@ import {
   ComponentFixture,
   TestBed
 } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -46,7 +47,7 @@ describe('Sort component - ', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, BsDropdownModule],
+      imports: [BrowserAnimationsModule, FormsModule, BsDropdownModule],
       declarations: [SortComponent],
       providers: [BsDropdownConfig]
     })

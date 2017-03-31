@@ -20,7 +20,7 @@
           </button>
         </span>
         <div class="toolbar-pf-include-actions">
-          <template [ngTemplateOutlet]="actionsTemplate" [ngOutletContext]="{}"></template>
+          <ng-template [ngTemplateOutlet]="actionsTemplate" [ngOutletContext]="{}"></ng-template>
         </div>
         <div dropdown class="dropdown-kebab-pf"
              *ngIf="config.actionsConfig && config.actionsConfig.moreActions && config.actionsConfig.moreActions.length > 0">
@@ -44,7 +44,7 @@
       <div class="toolbar-pf-action-right">
         <div class="form-group toolbar-pf-view-selector"
              *ngIf="viewsTemplate !== undefined || (config.viewsConfig && config.viewsConfig.views)">
-          <template [ngTemplateOutlet]="viewsTemplate" [ngOutletContext]="{}"></template>
+          <ng-template [ngTemplateOutlet]="viewsTemplate" [ngOutletContext]="{}"></ng-template>
           <span *ngIf="config.viewsConfig">
             <button *ngFor="let view of config.viewsConfig.views" class="btn btn-link"
                     [ngClass]="{'active': isViewSelected(view), 'disabled': view.disabled === true}"

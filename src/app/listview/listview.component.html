@@ -38,12 +38,12 @@
           <div class="list-view-pf-main-info"
                (click)="itemClick($event, item)"
                (dblclick)="dblClick($event, item)">
-            <template [ngTemplateOutlet]="itemTemplate" [ngOutletContext]="{ item: item, index: index }"></template>
+            <ng-template [ngTemplateOutlet]="itemTemplate" [ngOutletContext]="{ item: item, index: index }"></ng-template>
           </div>
         </div>
         <div class="list-group-item-container container-fluid"
              *ngIf="config.useExpandingRows && item.expanded">
-          <template [ngTemplateOutlet]="itemExpandedTemplate" [ngOutletContext]="{ item: item, index: index }"></template>
+          <ng-template [ngTemplateOutlet]="itemExpandedTemplate" [ngOutletContext]="{ item: item, index: index }"></ng-template>
         </div>
       </div>
     </div>

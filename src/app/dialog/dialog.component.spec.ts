@@ -6,6 +6,7 @@ import {
   TestBed,
   tick
 } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { DebugElement } from '@angular/core';
 import { FormsModule }  from '@angular/forms';
@@ -30,7 +31,7 @@ describe('Dialog component - ', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [BrowserAnimationsModule, FormsModule],
       declarations: [DialogComponent]
     })
       .compileComponents()
