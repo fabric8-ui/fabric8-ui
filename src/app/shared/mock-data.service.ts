@@ -153,10 +153,14 @@ export class MockDataService {
     var localWorkItem = this.makeCopy(entity.data);
     localWorkItem.id = this.createId();
     localWorkItem.links = {
-          'self': 'http://mock.service/api/workitems/id' + localWorkItem.id
+          'self': 'http://mock.service/api/workitems/id' + localWorkItem.id,
+          'sourceLinkTypes': 'http://mock.service/api/source-link-types',
+          'targetLinkTypes': 'http://mock.service/api/target-link-types'
         };
     localWorkItem.relationships = {
           'assignees': { },
+          'iteration': { },
+          'area': { },
           'baseType': {
             'data': {
               'id': 'userstory',
@@ -172,12 +176,13 @@ export class MockDataService {
           'creator': {
             'data': {
               'id': 'user0',
+              'imageURL': 'https://avatars.githubusercontent.com/u/2410471?v=3',
               'links': {
-                'self': 'http://mock.service/api/users/some-creator-id'
+                'self': 'http://mock.service/api/user'
               },
               'type': 'identities'
             }
-          }
+          },
         };
     this.workItems.push(localWorkItem);
     return { data: this.makeCopy(localWorkItem) };
