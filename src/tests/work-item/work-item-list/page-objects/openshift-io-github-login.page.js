@@ -12,7 +12,8 @@
  */
 
 var testSupport = require('../testSupport'),
-    constants = require("../constants");
+    constants = require("../constants"),
+    OpenShiftIoDashboardPage = require('../page-objects/openshift-io-dashboard.page');
 
 let until = protractor.ExpectedConditions;
 //let CompleteRegistrationPage = require ("./complete-registration.page");
@@ -53,7 +54,8 @@ class OpenShiftIoGithubLoginPage {
 
   clickGithubLoginButton () {
     browser.wait(until.presenceOf(this.githubLoginButton), constants.WAIT, 'Failed to find github login');
-    return this.githubLoginButton.click();
+    this.githubLoginButton.click();
+    return new OpenShiftIoDashboardPage();
 //    return new CompleteRegistrationPage();
 //    return new Fabric8MainPage();
   }

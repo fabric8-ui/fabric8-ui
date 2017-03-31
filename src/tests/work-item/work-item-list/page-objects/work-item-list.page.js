@@ -541,8 +541,8 @@ class WorkItemListPage {
     return this.expandFutureIterationIcon.click(); 
   }
 
-  expandPastIterationIcon () {
-    return element(by.xpath (".//text()[contains(.,'Past Iterations')]"));
+  get expandPastIterationIcon () {
+    return element(by.xpath (".//text()[contains(.,'Past Iterations')]/.."));
   }
 
   clickExpandPastIterationIcon () {
@@ -571,15 +571,15 @@ class WorkItemListPage {
   }
 
   get pastIterations () {
-    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iterations')]]/../../../../ul"));
+    return element.all(by.xpath (".//text()[contains(.,'Past Iterations')]/../../../ul"));
   }
 
   get firstPastIteration () {
-    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iterations')]]/../../../../ul/li")).first();
+    return element.all(by.xpath (".//text()[contains(.,'Past Iterations')]/../../../ul/li")).first();
   }
 
   get lastPastIteration () {
-    return element.all(by.xpath ("//h4[.//text()[contains(.,'Past Iterations')]]/../../../../ul/li")).last();
+    return element.all(by.xpath (".//text()[contains(.,'Past Iterations')]/../../../ul/li")).last();
   }
   
   firstCurrentIteration () {

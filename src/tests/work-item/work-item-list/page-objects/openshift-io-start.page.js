@@ -170,7 +170,7 @@ class OpenShiftIoStartPage {
 
   /* Login button */
   get loginButton () {
-     return element(by.cssContainingText('.btn.btn-default', 'LOG IN'));
+     return element(by.cssContainingText('.btn.btn-link', 'Log In'));
   }
   clickLoginButton () {
      this.loginButton.click();
