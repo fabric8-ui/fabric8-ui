@@ -216,6 +216,10 @@ export class MockHttp extends HttpService {
           return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemLinkTypes() );
         case '/target-link-types':
           return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemLinkTypes() );
+        default:
+          console.log('######## Not found ########');
+          console.log(url.toString());
+          return this.createResponse(url.toString(), 404, 'npt found', {} );
       }
     };
 

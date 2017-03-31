@@ -136,7 +136,7 @@ export class WorkItemMockGenerator {
           'system.description': 'Description Text ' + n,
           'system.description.rendered': 'Description Text ' + n,
           'system.remote_item_id': 'remote_id_' + n,
-          'system.state': (n % 2) ? ((n % 3) ? 'new' : 'in progress') : ((n % 3) ? 'new' : 'in progress'), 
+          'system.state': (n % 2) ? ((n % 3) ? 'new' : 'in progress') : ((n % 3) ? 'new' : 'in progress'),
           'system.title': 'Title Text ' + n,
           'version': 6
         },
@@ -148,7 +148,8 @@ export class WorkItemMockGenerator {
         },
         'relationships': {
           'assignees': { },
-          'iteration': { },  
+          'iteration': { },
+          'area': { },
           'baseType': {
             'data': {
               'id': (n % 2) ? '86af5178-9b41-469b-9096-57e5155c3f31' : 'bbf35418-04b6-426c-a60b-7f80beb0b624',
@@ -170,9 +171,9 @@ export class WorkItemMockGenerator {
           'creator': {
             'data': {
               'id': 'user0',
-              imageURL: 'https://avatars.githubusercontent.com/u/2410471?v=3',
+              'imageURL': 'https://avatars.githubusercontent.com/u/2410471?v=3',
               'links': {
-                'self': 'user0'
+                'self': 'http://mock.service/api/user'
               },
               'type': 'identities'
             }
@@ -185,7 +186,6 @@ export class WorkItemMockGenerator {
               }
             }
         },
-        'area': {},
         'type': 'workitems'
       };
     });
