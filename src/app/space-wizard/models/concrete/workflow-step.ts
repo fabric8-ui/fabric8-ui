@@ -1,15 +1,14 @@
-import { IWorkflowStep } from '../contracts/workflow-step';
+import { IWorkflow } from '../contracts/workflow';
 import { IWorkflowLocator } from '../contracts/workflow-locator';
+import { IWorkflowStep } from '../contracts/workflow-step';
 import { IWorkflowTransitionContext } from '../contracts/workflow-transition-context';
 import { WorkflowTransitionDirection } from '../contracts/workflow-transition-direction';
-import { IWorkflow } from '../contracts/workflow';
 
 /** implementation of the IWorkflowstep */
 export class WorkflowStep implements IWorkflowStep {
 
-
   index: number = 0;
-  name: string = "";
+  name: string = '';
   nextIndex: number;
 
   constructor(options: Partial<IWorkflowStep>, private workflowLocator: IWorkflowLocator) {
@@ -17,7 +16,8 @@ export class WorkflowStep implements IWorkflowStep {
   }
 
   gotoNextStep(step?: number | string | Partial<IWorkflowStep>) {
-    return this.workflowLocator().gotoNextStep(step);
+    return this.workflowLocator()
+    .gotoNextStep(step);
   }
 
   gotoPreviousStep() {
@@ -25,25 +25,31 @@ export class WorkflowStep implements IWorkflowStep {
   }
 
   isActive() {
-    return this.workflowLocator().isStepActive(this);
+    return this.workflowLocator()
+    .isStepActive(this);
   }
 
   activate() {
-    this.workflowLocator().gotoStep(this);
+    this.workflowLocator()
+    .gotoStep(this);
     return this;
   }
 
-  gotoStep(destination: number | string | IWorkflowStep, context: IWorkflowTransitionContext = { direction: WorkflowTransitionDirection.GO }) {
+  gotoStep(destination: number
+      | string
+      | IWorkflowStep, context: IWorkflowTransitionContext = { direction: WorkflowTransitionDirection.GO }) {
     let step: IWorkflowStep = null;
-    if (this.isActive) {
-      //you can only goto a step if 'this' is the active step
-      step = this.workflowLocator().gotoStep(destination, context);
+    if ( this.isActive ) {
+      // you can only goto a step if 'this' is the active step
+      step = this.workflowLocator()
+      .gotoStep(destination, context);
     }
     return step;
   }
 
   getNextStep() {
-    let step = this.workflowLocator().findStep(this.nextIndex);
+    let step = this.workflowLocator()
+    .findStep(this.nextIndex);
     return step;
   }
 
@@ -54,4 +60,5 @@ export class WorkflowStep implements IWorkflowStep {
   set workflow(value: IWorkflow) {
   }
 
-};
+}
+

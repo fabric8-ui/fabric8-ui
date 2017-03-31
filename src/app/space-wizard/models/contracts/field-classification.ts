@@ -1,7 +1,10 @@
-export type FieldWidgetClassification = "singleSelection" | "multipleSelection" | "singleInput";
+export type FieldWidgetClassification = 'singleSelection' | 'multipleSelection' | 'singleInput';
 
 export class FieldWidgetClassificationOptions {
-  static SingleSelection: FieldWidgetClassification = "singleSelection";
-  static MultipleSelection: FieldWidgetClassification = "multipleSelection";
-  static SingleInput: FieldWidgetClassification = "singleInput";
+  //noinspection TsLint
+  static SingleSelection: FieldWidgetClassification = 'singleSelection';
+  //noinspection TsLint
+  static MultipleSelection: FieldWidgetClassification = 'multipleSelection';
+  //noinspection TsLint
+  static SingleInput: FieldWidgetClassification = 'singleInput';
 }

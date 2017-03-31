@@ -3,7 +3,8 @@ import { Space } from 'ngx-fabric8-wit';
 export class CodebaseType {
   description: string;
 
-  constructor() { }
+  constructor() {
+  }
 
 }
 
@@ -16,7 +17,8 @@ export class CodebaseInfo {
   stack: StackInfo;
   pipeline: PipelineInfo;
 
-  constructor() { }
+  constructor() {
+  }
 
 }
 
@@ -72,7 +74,7 @@ export class SpaceConfigurator {
     { name: 'Spring Boot', icon: 'icon-stack-spring' },
     { name: 'Swift', icon: 'icon-stack-swift' },
     { name: 'Vert.x', icon: 'icon-stack-vertx' },
-    { name: 'Wildfly Swarm', icon: 'icon-stack-wildfly' },
+    { name: 'Wildfly Swarm', icon: 'icon-stack-wildfly' }
   ];
   // TODO:dynamic observable list
   availablePipelines: Array<PipelineInfo> = [
@@ -87,8 +89,7 @@ export class SpaceConfigurator {
           ]
         }
       ],
-      environments: [
-      ]
+      environments: []
     },
     {
       name: 'Canary Release And Stage',

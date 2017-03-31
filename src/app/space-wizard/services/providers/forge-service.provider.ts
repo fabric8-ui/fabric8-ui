@@ -1,15 +1,13 @@
-import { FactoryProvider, ClassProvider,OpaqueToken } from '@angular/core';
-import { Http  } from '@angular/http';
+import { ClassProvider, FactoryProvider, OpaqueToken } from '@angular/core';
+import { Http } from '@angular/http';
 
-import {IForgeService,IForgeServiceToken,ForgeService} from '../contracts/forge-service'
+import { ApiLocatorService } from '../../../shared/api-locator.service';
+import { LoggerFactory } from '../../common/logger';
 
-import {Fabric8ForgeService} from '../concrete/fabric8-forge.service'
-import {MockForgeService} from '../mocks/mock-forge.service'
-import {LoggerFactory} from '../../common/logger'
+import { Fabric8ForgeService } from '../concrete/fabric8-forge.service';
 
-
-import {ApiLocatorService} from '../../../shared/api-locator.service'
-
+import { ForgeService, IForgeServiceToken } from '../contracts/forge-service';
+import { MockForgeService } from '../mocks/mock-forge.service';
 
 /**
  * When using this provider and you take a dependency on the interface type
@@ -23,22 +21,24 @@ export class IForgeServiceProvider {
   static get FactoryProvider(): FactoryProvider {
     return {
       provide: IForgeServiceToken,
-      useFactory:(loggerFactory,http,apiLocator)=>{
-        return new Fabric8ForgeService(http,loggerFactory,apiLocator);
+      useFactory: (loggerFactory, http, apiLocator) => {
+        return new Fabric8ForgeService(http, loggerFactory, apiLocator);
       },
-      deps:[LoggerFactory,Http,ApiLocatorService]
-    }
+      deps: [ LoggerFactory, Http, ApiLocatorService ]
+    };
   }
+
   static get MockFactoryProvider(): FactoryProvider {
     return {
       provide: IForgeServiceToken,
-      useFactory:(loggerFactory)=>{
+      useFactory: (loggerFactory) => {
         return new MockForgeService(loggerFactory);
       },
-      deps:[LoggerFactory],
-      
-    }
+      deps: [ LoggerFactory ]
+
+    };
   }
+
   static get InjectToken(): OpaqueToken {
     return IForgeServiceToken;
   }
@@ -57,34 +57,36 @@ export class ForgeServiceProvider {
     return {
       provide: ForgeService,
       useClass: Fabric8ForgeService
-    }
+    };
   }
+
   static get MockClassProvider(): ClassProvider {
     return {
       provide: ForgeService,
       useClass: MockForgeService
-    }
+    };
   }
 
   static get FactoryProvider(): FactoryProvider {
     return {
       provide: ForgeService,
-      useFactory:(loggerFactory,http,apiLocator)=>{
-        return new Fabric8ForgeService(http,loggerFactory,apiLocator);
+      useFactory: (loggerFactory, http, apiLocator) => {
+        return new Fabric8ForgeService(http, loggerFactory, apiLocator);
       },
-      deps:[LoggerFactory,Http,ApiLocatorService],
+      deps: [ LoggerFactory, Http, ApiLocatorService ],
       multi: false
-    }
+    };
   }
+
   static get MockFactoryProvider(): FactoryProvider {
     return {
       provide: ForgeService,
-      useFactory: (loggerFactory)=>{
+      useFactory: (loggerFactory) => {
         return new MockForgeService(loggerFactory);
       },
-      deps:[LoggerFactory],
+      deps: [ LoggerFactory ],
       multi: false
-    }
+    };
   }
 }
 
