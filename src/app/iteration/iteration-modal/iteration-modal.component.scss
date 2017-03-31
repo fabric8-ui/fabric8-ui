@@ -8,6 +8,15 @@
 }
 .parent-iteration-container {
   position: relative;
+  .down-angle-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: $color-pf-black-400;
+    padding: em(5);
+    font-weight: 700;
+    cursor: pointer;
+  }
   .iteration-list {
     position: absolute;
     background-color: $color-pf-white;

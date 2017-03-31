@@ -26,6 +26,7 @@
           <div class="parent-iteration-container">
             <input id="parent-iteration" class="form-control" type="text" #iterationSearch (keyup)="filterIteration($event)"
             autocomplete="off" [value]="selectedParentIterationName" (focus)="iterationSearchFocus();">
+            <i class="fa fa-angle-down down-angle-icon" (click)="iterationSearchFocus();"></i>
             <ul class="iteration-list" #iterationList>
               <li *ngFor="let iteration of filteredIterations;" [attr.data-id]="iteration.id" (click)="setParentIteration(iteration.id);">
                 <span [innerHTML]="iteration.attributes.name | almSearchHighlight: iterationSearch.value"></span>
