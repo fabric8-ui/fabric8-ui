@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
 
-import { ForgeService, IForgeRequest, IForgeResponse } from '../contracts/forge-service';
+import {
+  ForgeService,
+  IForgeCommandData,
+  IForgeCommandRequest,
+  IForgeCommandResponse
+} from '../contracts/forge-service';
 
 @Injectable()
 export class MockForgeService extends ForgeService {
@@ -17,8 +22,14 @@ export class MockForgeService extends ForgeService {
     this.log(`New instance...`);
   }
 
-  ExecuteCommand(options: IForgeRequest = { command: { name: 'empty' } }): Observable<IForgeResponse> {
-    switch ( options.command.name ) {
+  executeCommand(options: IForgeCommandRequest = {
+      payload: {
+        command: {
+          name: 'empty'
+        }
+      }
+    }): Observable<IForgeCommandResponse> {
+    switch ( options.payload.command.name ) {
       case 'forge-new-project': {
         // base url: /forge/commands/
         // obsidian-new-project/validate/
@@ -34,7 +45,7 @@ export class MockForgeService extends ForgeService {
         return getForgeNewQuickStart();
       }
       default: {
-        return getEmptyResponse();
+        return Observable.empty();
       }
     }
   }
@@ -42,23 +53,22 @@ export class MockForgeService extends ForgeService {
   private log: ILoggerDelegate = () => {};
 
 }
-function getEmptyResponse(): Observable<IForgeResponse> {
-  return Observable.create((observer: Observer<IForgeResponse>) => {
-    observer.next({ payload: {} });
-  });
+function getEmptyResponse(): Observable<IForgeCommandResponse> {
+  return Observable.empty();
 }
 
-function getForgeNewQuickStart(): Observable<IForgeResponse> {
-  return Observable.create((observer: Observer<IForgeResponse>) => {
+function getForgeNewQuickStart(): Observable<IForgeCommandResponse> {
+  return Observable.create((observer: Observer<IForgeCommandResponse>) => {
     //noinspection TsLint,TsLint,TsLint,TsLint,TsLint,TsLint,TsLint,TsLint,TsLint
-    let payload = {
+    let data: IForgeCommandData = {
       metadata: {
-        'deprecated': false,
-        'category': 'Obsidian',
-        'name': 'Obsidian: New Quickstart',
-        'description': 'Generate your project from a quickstart'
+        deprecated: false,
+        category: 'Obsidian',
+        name: 'Obsidian: New Quickstart',
+        description: 'Generate your project from a quickstart'
       },
       state: { 'valid': true, 'canExecute': true, 'wizard': false },
+      messages: [],
       inputs: [
         {
           'name': 'type',
@@ -203,104 +213,105 @@ function getForgeNewQuickStart(): Observable<IForgeResponse> {
           'value': '1.0.0-SNAPSHOT'
         } ]
     };
-    observer.next({
-                    payload: payload
-                  });
+
+    observer.next({ payload: { data: data } });
   });
 }
 
-function getForgeNewProject(): Observable<IForgeResponse> {
-  return Observable.create((observer: Observer<IForgeResponse>) => {
+function getForgeNewProject(): Observable<IForgeCommandResponse> {
+  return Observable.create((observer: Observer<IForgeCommandResponse>) => {
     //noinspection TsLint,TsLint
     observer.next({
                     payload: {
-                      'metadata': {
-                        'deprecated': false,
-                        'category': 'Obsidian',
-                        'name': 'Obsidian: New Project',
-                        'description': 'Generate your project'
-                      },
-                      'state': {
-                        'valid': true,
-                        'canExecute': false,
-                        'wizard': true,
-                        'canMoveToNextStep': true,
-                        'canMoveToPreviousStep': false
-                      },
-                      'inputs': [
-                        {
-                          'name': 'type',
-                          'shortName': ' ',
-                          'valueType': 'org.jboss.forge.addon.projects.ProjectType',
-                          'inputType': 'org.jboss.forge.inputType.DEFAULT',
-                          'enabled': true,
-                          'required': true,
-                          'deprecated': false,
-                          'label': 'Project type',
-                          'description': '',
-                          'valueChoices': [
-                            {
-                              'id': 'Spring Boot',
-                              'requiredFacets': '[interface org.jboss.forge.addon.projects.facets.MetadataFacet, interface org.jboss.forge.addon.projects.facets.PackagingFacet, interface org.jboss.forge.addon.projects.facets.DependencyFacet, interface org.jboss.forge.addon.projects.facets.ResourcesFacet, interface org.jboss.forge.addon.projects.facets.WebResourcesFacet, interface org.jboss.forge.addon.parser.java.facets.JavaSourceFacet, interface org.jboss.forge.addon.parser.java.facets.JavaCompilerFacet]',
-                              'setupFlow': 'class io.fabric8.forge.devops.springboot.SpringBootSetupFlow',
-                              'type': 'Spring Boot'
-                            },
-                            {
-                              'id': 'WildFly Swarm',
-                              'requiredFacets': '[interface org.jboss.forge.addon.projects.facets.MetadataFacet, interface org.jboss.forge.addon.projects.facets.PackagingFacet, interface org.jboss.forge.addon.projects.facets.DependencyFacet, interface org.jboss.forge.addon.projects.facets.ResourcesFacet, interface org.jboss.forge.addon.projects.facets.WebResourcesFacet, interface org.jboss.forge.addon.parser.java.facets.JavaSourceFacet, interface org.jboss.forge.addon.parser.java.facets.JavaCompilerFacet]',
-                              'setupFlow': 'class org.jboss.forge.addon.swarm.project.WildFlySwarmSetupFlow',
-                              'type': 'WildFly Swarm'
-                            },
-                            {
-                              'id': 'Vert.x',
-                              'requiredFacets': '[class io.vertx.forge.VertxMavenFacet]',
-                              'type': 'Vert.x'
-                            }
-                          ],
-                          'class': 'UISelectOne',
-                          'value': 'Spring Boot'
+                      data: {
+                        metadata: {
+                          deprecated: false,
+                          category: 'Obsidian',
+                          name: 'Obsidian: New Project',
+                          description: 'Generate your project'
                         },
-                        {
-                          'name': 'named',
-                          'shortName': ' ',
-                          'valueType': 'java.lang.String',
-                          'inputType': 'org.jboss.forge.inputType.DEFAULT',
-                          'enabled': true,
-                          'required': true,
-                          'deprecated': false,
-                          'label': 'Project name',
-                          'description': '',
-                          'class': 'UIInput',
-                          'value': 'demo'
+                        state: {
+                          valid: true,
+                          canExecute: false,
+                          wizard: true,
+                          canMoveToNextStep: true,
+                          canMoveToPreviousStep: false
                         },
-                        {
-                          'name': 'topLevelPackage',
-                          'shortName': ' ',
-                          'valueType': 'java.lang.String',
-                          'inputType': 'org.jboss.forge.inputType.DEFAULT',
-                          'enabled': true,
-                          'required': false,
-                          'deprecated': false,
-                          'label': 'Top level package',
-                          'description': '',
-                          'class': 'UIInput',
-                          'value': 'com.example'
-                        },
-                        {
-                          'name': 'version',
-                          'shortName': ' ',
-                          'valueType': 'java.lang.String',
-                          'inputType': 'org.jboss.forge.inputType.DEFAULT',
-                          'enabled': true,
-                          'required': true,
-                          'deprecated': false,
-                          'label': 'Project version',
-                          'description': '',
-                          'class': 'UIInput',
-                          'value': '1.0.0-SNAPSHOT'
-                        }
-                      ]
+                        inputs: [
+                          {
+                            'name': 'type',
+                            'shortName': ' ',
+                            'valueType': 'org.jboss.forge.addon.projects.ProjectType',
+                            'inputType': 'org.jboss.forge.inputType.DEFAULT',
+                            'enabled': true,
+                            'required': true,
+                            'deprecated': false,
+                            'label': 'Project type',
+                            'description': '',
+                            'valueChoices': [
+                              {
+                                'id': 'Spring Boot',
+                                'requiredFacets': '[interface org.jboss.forge.addon.projects.facets.MetadataFacet, interface org.jboss.forge.addon.projects.facets.PackagingFacet, interface org.jboss.forge.addon.projects.facets.DependencyFacet, interface org.jboss.forge.addon.projects.facets.ResourcesFacet, interface org.jboss.forge.addon.projects.facets.WebResourcesFacet, interface org.jboss.forge.addon.parser.java.facets.JavaSourceFacet, interface org.jboss.forge.addon.parser.java.facets.JavaCompilerFacet]',
+                                'setupFlow': 'class io.fabric8.forge.devops.springboot.SpringBootSetupFlow',
+                                'type': 'Spring Boot'
+                              },
+                              {
+                                'id': 'WildFly Swarm',
+                                'requiredFacets': '[interface org.jboss.forge.addon.projects.facets.MetadataFacet, interface org.jboss.forge.addon.projects.facets.PackagingFacet, interface org.jboss.forge.addon.projects.facets.DependencyFacet, interface org.jboss.forge.addon.projects.facets.ResourcesFacet, interface org.jboss.forge.addon.projects.facets.WebResourcesFacet, interface org.jboss.forge.addon.parser.java.facets.JavaSourceFacet, interface org.jboss.forge.addon.parser.java.facets.JavaCompilerFacet]',
+                                'setupFlow': 'class org.jboss.forge.addon.swarm.project.WildFlySwarmSetupFlow',
+                                'type': 'WildFly Swarm'
+                              },
+                              {
+                                'id': 'Vert.x',
+                                'requiredFacets': '[class io.vertx.forge.VertxMavenFacet]',
+                                'type': 'Vert.x'
+                              }
+                            ],
+                            'class': 'UISelectOne',
+                            'value': 'Spring Boot'
+                          },
+                          {
+                            'name': 'named',
+                            'shortName': ' ',
+                            'valueType': 'java.lang.String',
+                            'inputType': 'org.jboss.forge.inputType.DEFAULT',
+                            'enabled': true,
+                            'required': true,
+                            'deprecated': false,
+                            'label': 'Project name',
+                            'description': '',
+                            'class': 'UIInput',
+                            'value': 'demo'
+                          },
+                          {
+                            'name': 'topLevelPackage',
+                            'shortName': ' ',
+                            'valueType': 'java.lang.String',
+                            'inputType': 'org.jboss.forge.inputType.DEFAULT',
+                            'enabled': true,
+                            'required': false,
+                            'deprecated': false,
+                            'label': 'Top level package',
+                            'description': '',
+                            'class': 'UIInput',
+                            'value': 'com.example'
+                          },
+                          {
+                            'name': 'version',
+                            'shortName': ' ',
+                            'valueType': 'java.lang.String',
+                            'inputType': 'org.jboss.forge.inputType.DEFAULT',
+                            'enabled': true,
+                            'required': true,
+                            'deprecated': false,
+                            'label': 'Project version',
+                            'description': '',
+                            'class': 'UIInput',
+                            'value': '1.0.0-SNAPSHOT'
+                          }
+                        ]
 
+                      }
                     }
                   });
     observer.complete();

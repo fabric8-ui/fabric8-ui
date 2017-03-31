@@ -2,7 +2,7 @@ import { WorkflowDirection } from './workflow-direction';
 import { IWorkflowStep } from './workflow-step';
 import { IWorkflowTransitionContext } from './workflow-transition-context';
 /**
- * When workflows transition from one step to the next, it is possible to subscribe to these transitions.
+ * When workflow's transition from one step to the next, it is possible to subscribe to these transitions.
  * This contract defines the shape of that transition
  */
 export interface IWorkflowTransition {

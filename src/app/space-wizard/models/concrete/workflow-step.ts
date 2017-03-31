@@ -4,7 +4,7 @@ import { IWorkflowStep } from '../contracts/workflow-step';
 import { IWorkflowTransitionContext } from '../contracts/workflow-transition-context';
 import { WorkflowTransitionDirection } from '../contracts/workflow-transition-direction';
 
-/** implementation of the IWorkflowstep */
+/** implementation of the IWorkflowStep */
 export class WorkflowStep implements IWorkflowStep {
 
   index: number = 0;
@@ -16,8 +16,7 @@ export class WorkflowStep implements IWorkflowStep {
   }
 
   gotoNextStep(step?: number | string | Partial<IWorkflowStep>) {
-    return this.workflowLocator()
-    .gotoNextStep(step);
+    return this.workflow.gotoNextStep(step);
   }
 
   gotoPreviousStep() {
@@ -25,13 +24,11 @@ export class WorkflowStep implements IWorkflowStep {
   }
 
   isActive() {
-    return this.workflowLocator()
-    .isStepActive(this);
+    return this.workflow.isStepActive(this);
   }
 
   activate() {
-    this.workflowLocator()
-    .gotoStep(this);
+    this.workflow.gotoStep(this);
     return this;
   }
 
@@ -41,16 +38,13 @@ export class WorkflowStep implements IWorkflowStep {
     let step: IWorkflowStep = null;
     if ( this.isActive ) {
       // you can only goto a step if 'this' is the active step
-      step = this.workflowLocator()
-      .gotoStep(destination, context);
+      step = this.workflow.gotoStep(destination, context);
     }
     return step;
   }
 
   getNextStep() {
-    let step = this.workflowLocator()
-    .findStep(this.nextIndex);
-    return step;
+    return this.workflow.findStep(this.nextIndex);
   }
 
   get workflow() {
@@ -58,6 +52,7 @@ export class WorkflowStep implements IWorkflowStep {
   }
 
   set workflow(value: IWorkflow) {
+    // no op is intentional here
   }
 
 }

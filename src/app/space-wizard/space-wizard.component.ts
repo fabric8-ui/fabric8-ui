@@ -17,34 +17,33 @@ import { IWorkflow, WorkflowFactory } from './models/workflow';
 import { ForgeCommands } from './services/forge.service';
 
 @Component({
-             host: {
-               'class': 'wizard-container'
-             },
-             selector: 'space-wizard',
-             templateUrl: './space-wizard.component.html',
-             styleUrls: [ './space-wizard.component.scss' ],
-             providers: [ SpaceService ]
-
-           })
+  host: {
+    'class': 'wizard-container'
+  },
+  selector: 'space-wizard',
+  templateUrl: './space-wizard.component.html',
+  styleUrls: [ './space-wizard.component.scss' ],
+  providers: [ SpaceService ]
+})
 export class SpaceWizardComponent implements OnInit {
 
   static instanceCount: number = 1;
+
   /**
-   * Helps to specify wizard step names to counteract magic string sickness
+   * Helps to specify wizard step names to prevent typos
    */
   steps = {
     space: 'space-step',
     forge: 'forge-step',
     forgeQuickStart: 'forge-quick-start-step',
     forgeStarter: 'forge-starter-step',
-    quickStart: 'proto-quickStart-step',
-    stack: 'proto-stack-step',
-    pipeline: 'pipeline-step'
-
+    forgeImportGit: 'forge-import-git-step'
   };
+
   commands = {
     forgeQuickStart: ForgeCommands.forgeQuickStart,
-    forgeStarter: ForgeCommands.forgeStarter
+    forgeStarter: ForgeCommands.forgeStarter,
+    forgeImportGit: ForgeCommands.forgeImportGit
   };
 
   @Input() host: IModalHost;
@@ -57,7 +56,6 @@ export class SpaceWizardComponent implements OnInit {
   configurator: SpaceConfigurator;
 
   private _workflow: IWorkflow = null;
-
   @Input()
   get workflow(): IWorkflow {
     if ( !this._workflow ) {
@@ -97,39 +95,36 @@ export class SpaceWizardComponent implements OnInit {
    */
   createAndInitializeWorkflow(): IWorkflow {
     let component = this;
-    let workflow = this.workflowFactory.create({
-                                                 steps: () => {
-                                                   return [
-                                                     { name: this.steps.space, index: 0, nextIndex: 1 },
-                                                     { name: this.steps.forge, index: 1, nextIndex: 1 },
-                                                     { name: this.steps.quickStart, index: 2, nextIndex: 3 },
-                                                     { name: this.steps.stack, index: 3, nextIndex: 4 },
-                                                     { name: this.steps.pipeline, index: 4, nextIndex: 4 },
-                                                     { name: this.steps.forgeQuickStart, index: 5, nextIndex: 1 },
-                                                     { name: this.steps.forgeStarter, index: 6, nextIndex: 1 }
-                                                   ];
-                                                 },
-                                                 firstStep: () => {
-                                                   return {
-                                                     index: 0
-                                                   };
-                                                 },
-                                                 cancel: (... args) => {
-                                                   /**
-                                                    * Ensure 'finish' has the correct 'this'.
-                                                    * That is why apply is being used.
-                                                    */
-                                                   component.cancel.apply(component, args);
-                                                 },
-                                                 finish: (... args) => {
-                                                   /**
-                                                    * Ensure 'finish' has the correct 'this'.
-                                                    * That is why apply is being used.
-                                                    */
-                                                   component.finish.apply(component, args);
-                                                 }
-                                               });
-    return workflow;
+    return this.workflowFactory.create({
+                                         steps: () => {
+                                           return [
+                                             { name: this.steps.space, index: 0, nextIndex: 1 },
+                                             { name: this.steps.forge, index: 1, nextIndex: 1 },
+                                             { name: this.steps.forgeQuickStart, index: 5, nextIndex: 1 },
+                                             { name: this.steps.forgeStarter, index: 6, nextIndex: 1 },
+                                             { name: this.steps.forgeImportGit, index: 7, nextIndex: 1 }
+                                           ];
+                                         },
+                                         firstStep: () => {
+                                           return {
+                                             index: 0
+                                           };
+                                         },
+                                         cancel: (... args) => {
+                                           /**
+                                            * Ensure 'finish' has the correct 'this'.
+                                            * That is why apply is being used.
+                                            */
+                                           component.cancel.apply(component, args);
+                                         },
+                                         finish: (... args) => {
+                                           /**
+                                            * Ensure 'finish' has the correct 'this'.
+                                            * That is why apply is being used.
+                                            */
+                                           component.finish.apply(component, args);
+                                         }
+                                       });
   }
 
   /**
@@ -196,25 +191,22 @@ export class SpaceWizardComponent implements OnInit {
       // Ignore any errors coming out here, we've logged and notified them earlier
       .catch(err => Observable.of(createdSpace));
     })
-    .subscribe(
-      createdSpace => {
-        this.configurator.space = createdSpace;
-        let actionObservable = this.notifications.message({
-                                                            message: `Your new space is created!`,
-                                                            type: NotificationType.SUCCESS,
-                                                            primaryAction: {
-                                                              name: `Open Space`,
-                                                              title: `Open ${createdSpace.attributes.name}`,
-                                                              id: 'openSpace'
-                                                            } as NotificationAction
-                                                          } as Notification);
-        actionObservable
+    .subscribe(createdSpace => {
+      this.configurator.space = createdSpace;
+      let actionObservable = this.notifications.message({
+        message: `Your new space is created!`,
+        type: NotificationType.SUCCESS,
+        primaryAction: {
+          name: `Open Space`,
+          title: `Open ${createdSpace.attributes.name}`,
+          id: 'openSpace'
+        } as NotificationAction
+      } as Notification);
+      actionObservable
         .filter(action => action.id === 'openSpace')
         .subscribe(action => {
-          this.router
-          .navigate([
-                      createdSpace.relationalData.creator.attributes.username,
-                      createdSpace.attributes.name ]);
+          this.router.navigate([ createdSpace.relationalData.creator.attributes.username,
+                                 createdSpace.attributes.name ]);
           if ( this.host ) {
             this.host.close();
             this.reset();
@@ -224,16 +216,14 @@ export class SpaceWizardComponent implements OnInit {
       },
       err => {
         this.notifications.message({
-                                     message: `Failed to create "${space.name}"`,
-                                     type: NotificationType.DANGER
-
-                                   } as Notification);
+          message: `Failed to create "${space.name}"`,
+          type: NotificationType.DANGER
+        } as Notification);
         if ( this.host ) {
           this.host.close();
           this.reset();
         }
-      }
-    );
+      });
   }
 
   /**
@@ -247,6 +237,7 @@ export class SpaceWizardComponent implements OnInit {
   }
 
   finish() {
+    this.log(`finish ...`);
     this.router.navigate([
                            this.configurator.space.relationalData.creator.attributes.username,
                            this.configurator.space.attributes.name

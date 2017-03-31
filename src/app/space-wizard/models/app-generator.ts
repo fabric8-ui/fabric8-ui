@@ -8,3 +8,5 @@ export { FieldWidgetClassification, FieldWidgetClassificationOptions } from './c
 export { IAppGeneratorRequest } from './contracts/app-generator-request';
 export { IAppGeneratorResponse } from './contracts/app-generator-response';
 export { IAppGeneratorCommand } from './contracts/app-generator-command';
+export { IAppGeneratorForgeCommand } from './contracts/app-generator-forge-command';
+export { IAppGeneratorForgeCommandParameters } from './contracts/app-generator-forge-command-parameters';

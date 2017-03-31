@@ -42,7 +42,7 @@ export class IAppGeneratorServiceProvider {
 }
 /**
  * These providers uses the abstract base class as a contract as opposed to
- * an interface. The benefits are that it is simpler because it does not require
+ * an interface. The benefits are that it is simpler because does not require
  * using the @inject annotation to resolved the contract when  a class that
  * takes the service as a dependency. As typescript adds interface reflective
  * capabilities the interface based approach will probably be the preferred

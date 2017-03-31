@@ -40,22 +40,22 @@ export class Workflow implements IWorkflow {
   }
 
   /** default cancel handler */
-  cancel(options: any): any {
+  cancel(options?: any): any {
     return null;
   }
 
   /** default finish handler */
-  finish(options: any): any {
+  finish(options?: any): any {
     return null;
   }
 
   /** default reset handler */
-  reset(options: any): any {
+  reset(options?: any): any {
     return null;
   }
 
   firstStep(): IWorkflowStep {
-    // The default first step handler is null ... it gets overriden during intialization.
+    // The default first step handler is null ... it gets overridden during initialization.
     return null;
   }
 
@@ -65,7 +65,7 @@ export class Workflow implements IWorkflow {
 
   set activeStep(value: IWorkflowStep) {
     this.log(`Setting the active workflow step from 
-              '${this._activeStep ? this._activeStep.name : 'null'}' to '${value ? value.name : 'null'}' `);
+    '${this._activeStep ? this._activeStep.name : 'null'}' to '${value ? value.name : 'null'}' `);
     this._activeStep = value;
   }
 
@@ -248,7 +248,7 @@ export class Workflow implements IWorkflow {
       }
       this.log(`gotoNextStep ... no next step for the current step = ${currentStep} ...`);
     }
-    // setup the previous step handler and transition to nextstep if the step is valid
+    // setup the previous step handler and transition to next step if the step is valid
     if ( nextStep ) {
       let priorHandler = nextStep.gotoPreviousStep;
       // by dynamically adding the gotoNextStep function using a closure to retrieve previous step
@@ -276,10 +276,31 @@ export class Workflow implements IWorkflow {
     return previousStep;
   }
 
+  get workflowTransitionSubject(): Subject<IWorkflowTransition> {
+    this._workflowTransitionSubject = this._workflowTransitionSubject || new Subject<IWorkflowTransition>();
+    return this._workflowTransitionSubject;
+  }
+
+  set workflowTransitionSubject(value: Subject<IWorkflowTransition>) {
+    this._workflowTransitionSubject = value;
+  }
+
+  // Note: every subscriber gets an observable instance
+  get transitions(): Observable<IWorkflowTransition> {
+    let me = this;
+    return Observable.create((observer: Observer<IWorkflowTransition>) => {
+      me.workflowTransitionSubject.subscribe(observer);
+      this.log('Observer is now subscribed to workflow transitions ...');
+
+    });
+  }
+
   // TODO needs to return a promise to cater for async step continuation
   private workflowTransitionShouldContinue(options: Partial<IWorkflowTransition> = {
       canContinue: false,
-      context: { direction: WorkflowTransitionDirection.GO }
+      context: {
+        direction: WorkflowTransitionDirection.GO
+      }
     }): IWorkflowTransition {
     let transition = new WorkflowTransition(options);
     this.log(`Notify workflow transition subscribers of an upcoming '${transition.direction}' transition 
@@ -297,26 +318,6 @@ export class Workflow implements IWorkflow {
 
     }
     return transition;
-  }
-
-  get workflowTransitionSubject(): Subject<IWorkflowTransition> {
-    this._workflowTransitionSubject = this._workflowTransitionSubject || new Subject<IWorkflowTransition>();
-    return this._workflowTransitionSubject;
-  }
-
-  set workflowTransitionSubject(value: Subject<IWorkflowTransition>) {
-    this._workflowTransitionSubject = value;
-  }
-
-  // Note: every subscriber gets an observable instance
-  get transitions(): Observable<IWorkflowTransition> {
-    let me = this;
-    let transitions: Observable<IWorkflowTransition> = Observable.create((observer: Observer<IWorkflowTransition>) => {
-      me.workflowTransitionSubject.subscribe(observer);
-      this.log('Observer is now subscribed to workflow transitions ...');
-
-    });
-    return transitions;
   }
 
   private log: ILoggerDelegate = () => {};

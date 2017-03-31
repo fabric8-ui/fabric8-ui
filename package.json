@@ -100,7 +100,6 @@
     "@angular/upgrade": "2.4.9",
     "@angularclass/hmr": "1.2.2",
     "@angularclass/hmr-loader": "3.0.2",
-    "angular-2-dropdown-multiselect": "1.0.5",
     "angular-in-memory-web-api": "0.3.0",
     "angular2-oauth2": "1.3.10",
     "chunk-manifest-webpack2-plugin": "1.0.1",

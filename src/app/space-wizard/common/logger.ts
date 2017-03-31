@@ -10,7 +10,7 @@ export interface ILogEntry {
 export interface ILoggerDelegate {
   (options: string | ILogEntry): void;
 }
-/**
+/*
  * This is just a quick and dirty functional style logger allowing for unique logger 'instances'
  * for each class
  */
@@ -20,31 +20,29 @@ export class LoggerFactory {
 
   private styles = {
     origin: `
-    background:linear-gradient(#444, #333);
-    border-radius:15px;
-    padding:4px;
-    color:lime;
-    font-style:italic;
-    border-left:solid 0px orangered;
-    padding:3px;
-    padding-left:10px;
-    padding-right:10px`,
+      background:linear-gradient(#444, #333);
+      border-radius:15px;
+      color:lime;
+      font-style:italic;
+      border-left:solid 0px orangered;
+      padding:3px;
+      padding-left:10px;
+      padding-right:10px`,
     instance: `
-    background:linear-gradient(#444, #333);
-    color:orangered; 
-    border-radius:10px;
-    padding:3px;
-    margin:3px 0;`,
+      background:linear-gradient(#444, #333);
+      color:orangered; 
+      border-radius:10px;
+      padding:3px;
+      margin:3px 0;`,
     message: `
-    background:linear-gradient(#444, #333);
-    color:white;
-    border-radius:10px;
-    padding:3px 10px;`
-
+      background:linear-gradient(#444, #333);
+      color:white; 
+      border-radius:10px;
+      padding:3px 10px;`
   };
 
   constructor() {
-    console.log('%cLoggerFactory: %cNew instace.', this.styles.origin, this.styles.message);
+    console.log('%cLoggerFactory: %cNew instance.', this.styles.origin, this.styles.message);
   }
 
   createLoggerDelegate(origin: string, instance: number = 0): ILoggerDelegate {
@@ -61,11 +59,12 @@ export class LoggerFactory {
       if ( entry.info === true ) {
         method = 'info';
       }
-      console[ method ].apply(null,
-                              [ `%c${origin}%c ${instance} %c${entry.message || ''}`,
-                                me.styles.origin,
-                                me.styles.instance,
-                                me.styles.message ]
+      console[ method ].apply(
+        null,
+        [ `%c${origin}%c ${instance} %c${entry.message || ''}`,
+          me.styles.origin,
+          me.styles.instance,
+          me.styles.message ]
       );
     }
 

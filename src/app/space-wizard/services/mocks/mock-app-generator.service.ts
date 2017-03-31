@@ -44,7 +44,7 @@ export class MockAppGeneratorService extends AppGeneratorService {
 }
 
 function getFirstFieldSet(): Observable<IAppGeneratorResponse> {
-  let tmp: Observable<IAppGeneratorResponse> = Observable.create((observer: Observer<IAppGeneratorResponse>) => {
+  return Observable.create((observer: Observer<IAppGeneratorResponse>) => {
     let items: IFieldInfo[] =
       [
         {
@@ -77,60 +77,60 @@ function getFirstFieldSet(): Observable<IAppGeneratorResponse> {
         }
       ];
     let set = new FieldSet(... items);
-    observer.next({ payload: set });
+    observer.next({ payload: { data: set } });
     observer.complete();
   });
-  return tmp;
 }
 function getSecondFieldSet(): Observable<IAppGeneratorResponse> {
   return Observable.create((observer: Observer<IAppGeneratorResponse>) => {
     observer.next({
-                    payload: [
-                      {
-                        name: 'mock-f3',
-                        value: 'f3-value',
-                        display: {
-                          options: [],
-                          hasOptions: false,
-                          inputType: FieldWidgetClassificationOptions.SingleInput,
-                          label: 'label-f3',
-                          enabled: true,
-                          required: true,
-                          visible: true,
-                          index: 0
+                    payload: {
+                      data: [
+                        {
+                          name: 'mock-f3',
+                          value: 'f3-value',
+                          display: {
+                            options: [],
+                            hasOptions: false,
+                            inputType: FieldWidgetClassificationOptions.SingleInput,
+                            label: 'label-f3',
+                            enabled: true,
+                            required: true,
+                            visible: true,
+                            index: 0
+                          }
+                        },
+                        {
+                          name: 'mock-f4',
+                          value: 'f4-value',
+                          display: {
+                            options: [],
+                            hasOptions: false,
+                            inputType: FieldWidgetClassificationOptions.SingleInput,
+                            label: 'label-f4',
+                            enabled: true,
+                            required: true,
+                            visible: true,
+                            index: 0
+                          }
+                        },
+                        {
+                          name: 'mock-f5',
+                          value: 'f5-value',
+                          display: {
+                            options: [],
+                            hasOptions: false,
+                            inputType: FieldWidgetClassificationOptions.SingleInput,
+                            label: 'label-f5',
+                            enabled: true,
+                            required: true,
+                            visible: true,
+                            index: 0
+                          }
                         }
-                      },
-                      {
-                        name: 'mock-f4',
-                        value: 'f4-value',
-                        display: {
-                          options: [],
-                          hasOptions: false,
-                          inputType: FieldWidgetClassificationOptions.SingleInput,
-                          label: 'label-f4',
-                          enabled: true,
-                          required: true,
-                          visible: true,
-                          index: 0
-                        }
-                      },
-                      {
-                        name: 'mock-f5',
-                        value: 'f5-value',
-                        display: {
-                          options: [],
-                          hasOptions: false,
-                          inputType: FieldWidgetClassificationOptions.SingleInput,
-                          label: 'label-f5',
-                          enabled: true,
-                          required: true,
-                          visible: true,
-                          index: 0
-                        }
-                      }
-                    ]
+                      ]
+                    }
                   });
     observer.complete();
   });
-
 }

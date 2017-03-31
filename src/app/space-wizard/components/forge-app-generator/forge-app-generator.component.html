@@ -1,0 +1,106 @@
+<header class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 wizard-step-title">
+      <span></span>
+      <h2>{{title}}</h2>
+      <span (click)="workflow.cancel()" class="glyphicon glyphicon-remove"></span>
+    </div>
+  </div>
+</header>
+<section class="container-fluid padding-top-standard-offset">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="form-horizontal">
+        <div class="form-group" *ngFor="let field of forge.fieldSet">
+          <label class="control-label col-xs-4">{{field.display.label}}</label>
+          <div class="col-xs-8" [ngSwitch]="field.display.inputType">
+            <div *ngSwitchCase="'singleInput'" [ngSwitch]="field.valueType">
+              <input *ngSwitchCase="'string'" name="{{field.name}}" [(ngModel)]="field.value" type="text"
+                     class="form-control" placeholder="{{field.description}}"
+                     [required]="field.display.required" [disabled]="!field.display.enabled"/>
+              <input *ngSwitchCase="'boolean'" type="checkbox" name="{{field.name}}" [(ngModel)]="field.value"
+                     class="form-control" [required]="field.display.required"
+                     [disabled]="!field.display.enabled">
+              <input *ngSwitchCase="'number'" type="number" name="{{field.name}}" [(ngModel)]="field.value"
+                     class="form-control" [required]="field.display.required"
+                     [disabled]="!field.display.enabled">
+            </div>
+            <div *ngSwitchCase="'singleSelection'">
+              <select class="form-control" [(ngModel)]="field.value" name="{{field.name}}"
+                      *ngIf="field.valueType != 'projectType'">
+                <option value="{{option.id}}" *ngFor="let option of field.display.options">
+                  {{option.id}}
+                </option>
+              </select>
+            </div>
+            <div *ngSwitchCase="'multipleSelection'"
+                 style="border:solid 1px #bbb; overflow:hidden;  ; border-radius:4px;">
+              <!--input-->
+              <div class="input-group">
+
+                <div class="input-group-btn">
+                  <div (click)="toggleSelectAll(field)" class="btn btn-default btn-left-multi-select-button">
+
+                    <!--<span [ngClass]="{'glyphicon-check' : field.display.allOptionsSelected,'glyphicon-unchecked' : !field.display.allOptionsSelected}"  class="glyphicon"></span>-->
+                    <span
+                      [ngClass]="{'glyphicon-check' : allOptionsSelected(field),'glyphicon-unchecked' : !allOptionsSelected(field)}"
+                      class="glyphicon"></span>
+                  </div>
+                </div>
+
+                <input class="form-control form-control-filter-input"
+                       (keyup)="filterUnselectedList(field,optionFilter.value)" #optionFilter>
+
+              </div>
+              <!--included list-->
+              <div class="included-list">
+                <div [class.hidden]="!fieldOption.selected" [class.selected]="fieldOption.selected"
+                     *ngFor="let fieldOption of field.display.options">
+                  <label (click)="deselectOption(field,fieldOption)" class="selectedOption">
+                    <span style="padding-left:5px;padding-right:5px;" class="glyphicon"
+                          [class.glyphicon-check]="fieldOption.selected"
+                          [class.glyphicon-unchecked]="!fieldOption.selected"></span>
+                    {{fieldOption.id}}
+                  </label>
+                  <!--<input [disabled]="fieldOption.selected" style="background-color:transparent; width:3.0rem;margin-left:5px;margin-right:5px; text-align: center; vertical-align: center; display:inline-box; "  type="checkbox" name="{{fieldOption.id}}" [(ngModel)]="fieldOption.selected" class="form-control-" >{{fieldOption.id}}</label>-->
+                </div>
+              </div>
+
+              <!--excluded list-->
+              <div class="excluded-list">
+                <div [class.hidden]="fieldOption.selected||!fieldOption.visible" [class.selected]="fieldOption.selected"
+                     *ngFor="let fieldOption of field.display.options">
+                  <label (click)="selectOption(field,fieldOption)" class="unselectedOption">
+                    <span style="padding-left:5px;padding-right:5px;" class="glyphicon"
+                          [class.glyphicon-check]="fieldOption.selected"
+                          [class.glyphicon-unchecked]="!fieldOption.selected"></span>
+                    {{fieldOption.id}}
+                  </label>
+                  <!--<input [disabled]="fieldOption.selected" style="background-color:transparent; width:3.0rem;margin-left:5px;margin-right:5px; text-align: center; vertical-align: center; display:inline-box; "  type="checkbox" name="{{fieldOption.id}}" [(ngModel)]="fieldOption.selected" class="form-control-" >{{fieldOption.id}}</label>-->
+                </div>
+              </div>
+              <!--<input [disabled]="fieldOption.selected" style="background-color:transparent; width:3.0rem;margin-left:5px;margin-right:5px; text-align: center; vertical-align: center; display:inline-box; "  type="checkbox" name="{{fieldOption.id}}" [(ngModel)]="fieldOption.selected" class="form-control-" >{{fieldOption.id}}</label>-->
+            </div>
+            <div class="errorLabel help-block">
+              <span *ngIf="field.display.message">{{field.display.message.description}}</span>
+              <span
+                *ngIf="!field.display.message && field.display.required">{{field.display.label}} is a required field</span>
+            </div>
+            <span *ngIf="field.display.note"><span
+              class="fa fa-info-circle"></span> <i>{{field.display.note}}</i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 wizard-step-tool-bar with-items-at-end">
+      <a class="btn btn-default margin-right-5" (click)="forge.cancel()">Cancel</a>
+      <a class="btn btn-default margin-right-5" (click)="forge.gotoPreviousStep()">Back</a>
+      <a class="btn btn-default margin-right-5 " (click)="forge.gotoNextStep()">Next</a>
+      <a class="btn btn-default" (click)="forge.finish()">Finish</a>
+    </div>
+  </div>
+</footer>

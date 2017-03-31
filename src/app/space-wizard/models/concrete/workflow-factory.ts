@@ -19,7 +19,7 @@ export class WorkflowFactory {
 
   create(options?: IWorkflowOptions): IWorkflow {
     this.log('Creating a new workflow...');
-    // Instead of using the built in injector that will create a signleton
+    // Instead of using the built in injector that will create a singleton
     // create a factory and use that to resolve resulting in non singleton semantics
     // that would happen from just using this._injector.get(Workflow);
     // let tmp:IWorkflow= this._injector.get(Workflow);

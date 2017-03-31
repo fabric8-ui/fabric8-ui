@@ -54,7 +54,7 @@ export class SpaceConfigurator {
 
   // TODO:dynamic observable list
   availableProjectTypes: Array<CodebaseType> = [
-    { description: 'Creates a new Obsidian :: QuickStart :: Spring Boot Tomcate - Rest' }
+    { description: 'Creates a new Obsidian :: QuickStart :: Spring Boot Tomcat - Rest' }
   ];
   // TODO:dynamic observable list
   availableStacks: Array<StackInfo> = [

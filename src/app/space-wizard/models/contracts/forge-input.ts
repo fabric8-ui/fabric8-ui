@@ -13,6 +13,6 @@ export interface IForgeInput {
   required: boolean;
   deprecated: boolean;
   version?: string;
-  // other properties
+  // other dynamic properties
   [key: string]: any;
 }

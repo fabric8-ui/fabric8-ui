@@ -2,25 +2,29 @@
 
 $icon-path: '../../assets/icon/';
 @import '../../assets/stylesheets/icons';
+@import '../../assets/stylesheets/shared/_layout';
 
+//noinspection SassScssResolvedByNameOnly
 $wizard-padding: $grid-gutter-width / 2;
 $wizard-spacing: 5px;
-// shado distance from element
+// shadow distance from element
 $wizard-shadow-offset: 1px;
 // makes shadow bigger
 $wizard-shadow-spread-radius: 1px;
 // makes shadows edge blury
 $wizard-shadow-blur-radius: 5px;
+//noinspection SassScssResolvedByNameOnly
 $wizard-section-column-background-color: $btn-primary-bg;
 $wizard-layout-block-background-color: #fff;
+//noinspection SassScssResolvedByNameOnly
 $wizard-layout-block-header-border-color: $color-pf-blue-300;
+//noinspection SassScssUnresolvedVariable,SassScssUnresolvedVariable
 $wizard-layout-block-shadow-color: darken($navbar-default-bg, 10%);
+//noinspection SassScssUnresolvedVariable,SassScssUnresolvedVariable
 $wizard-block-header-color: $navbar-default-bg;
 
 .wizard-step {
-  min-height: 50vh;
   section {
-    padding: 0 $wizard-padding;
     &.layout-block-container {
       margin: 0;
       padding-top: $wizard-spacing;
@@ -112,7 +116,7 @@ $wizard-block-header-color: $navbar-default-bg;
       display: flex;
       flex-grow: 1;
       flex-direction: column;
-      padding: $wizard-spacing;
+      padding: 5px;
       margin: 0;
       margin-right: $wizard-padding;
       &:last-of-type {
@@ -138,3 +142,4 @@ $wizard-block-header-color: $navbar-default-bg;
     }
   }
 }
+

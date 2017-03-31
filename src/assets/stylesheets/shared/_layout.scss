@@ -22,6 +22,46 @@
   }
 }
 
+@mixin create-padding-x-standard-offset() {
+
+    .padding-standard-offset {
+      padding: $grid-gutter-width/2 !important;
+    }
+
+    .padding-top-standard-offset {
+      padding-top: $grid-gutter-width/2 !important;
+    }
+    .padding-left-standard-offset {
+      padding-left: $grid-gutter-width/2 !important;
+    }
+    .padding-right-standard-offset {
+      padding-right: $grid-gutter-width/2 !important;
+    }
+    .padding-bottom-standard-offset {
+      padding-bottom: $grid-gutter-width/2 !important;
+    }
+}
+
+@mixin create-margin-x-standard-offset() {
+    .margin-standard-spacing {
+      margin: $grid-gutter-width/2 !important;
+    }
+
+    .margin-top-standard-offset {
+      margin-top: $grid-gutter-width/2 !important;
+    }
+    .margin-left-standard-offset {
+      margin-left: $grid-gutter-width/2 !important;
+    }
+    .margin-right-standard-offset {
+      margin-right: $grid-gutter-width/2 !important;
+    }
+    .margin-bottom-standard-offset {
+      margin-bottom: $grid-gutter-width/2 !important;
+    }
+}
+
+
 @mixin margin-x($count:15) {
   @for $i from 0 through $count {
     .margin-#{$i} {
@@ -44,6 +84,71 @@
 
 @include padding-x;
 @include margin-x;
+@include create-margin-x-standard-offset();
+@include create-padding-x-standard-offset();
+
+.margin-none
+{
+  margin: 0 !important;
+}
+.margin-top-none
+{
+  margin-top: 0 !important;
+}
+.margin-bottom-none
+{
+  margin-bottom: 0 !important;
+}
+.margin-left-none
+{
+  margin-left: 0 !important;
+}
+.margin-right-none
+{
+  margin-right: 0 !important;
+}
+.padding-none
+{
+  padding: 0 !important;
+}
+.padding-top-none
+{
+  padding-top: 0 !important;
+}
+.padding-bottom-none
+{
+  padding-bottom: 0 !important;
+}
+.padding-left-none
+{
+  padding-left: 0 !important;
+}
+.padding-right-none
+{
+  padding-right: 0 !important;
+}
+
+.border-none
+{
+  border-width: 0 !important;
+}
+.border-top-none
+{
+  border-top-width: 0 !important;
+}
+.border-bottom-none
+{
+  border-bottom-width: 0 !important;
+}
+.border-left-none
+{
+  border-left-width: 0 !important;
+}
+.border-right-none
+{
+  border-right-width: 0 !important;
+}
+
 
 .width-100
 {
@@ -78,7 +183,7 @@
 // Styles relating to general html document
 ///////////////////////
 
-*{
+*, *:before, *:after {
   box-sizing: border-box;
 }
 
@@ -94,49 +199,6 @@ body
   display:flex;
   font-size:$font-size-base;
 }
-
-//////////////////////
-// flex utility styles
-//////////////////////
-
-@mixin flex-grow-x($count:12) {
-  @for $i from 1 through $count {
-  .flex-grow-#{$i} { flex: $i; }
-  }
-}
-// create 12 flex grow partitions
-@include flex-grow-x(12);
-
-
-.flex-container
-{
-    display:flex;
-    &.in-column-direction
-    {
-      flex-direction: column;
-    }
-    &.in-row-direction
-    {
-      flex-direction: row;
-    }
-    &.with-wrap
-    {
-      flex-wrap: wrap;
-    }
-    // Make sure the main,section,aside parts fill the screen and collapse header and footer if not there
-    >main,section,aside
-    {
-      @extend .flex-grow-1;
-    }
-    >.container-fluid
-    {
-      position:relative;
-      width:100%;
-      flex-grow:1;
-    }
-
-}
-
 
 .app{
   @extend .flex-grow-1;
@@ -190,12 +252,12 @@ $content-padding:0;
 
 header
 {
-  padding:$content-padding;
+  //padding:$content-padding;
 }
 
 footer
 {
-  padding:$content-padding;
+  //padding:$content-padding;
 }
 
 // helps to ensure that scrolling does not cross app footer or header
@@ -208,7 +270,6 @@ footer
   >.view
   {
     @extend .fill-container;
-    height: 100%;
     &.with-rows
     {
       padding-left:$grid-gutter-width/2;
@@ -237,9 +298,6 @@ footer
 
 }
 
-.btn{
-  min-width: 0px !important; //Don't overwrite this css
-}
 
 // chromeless dialog suppresses all chrome in the ng2-bootstrap modal component
 .chromeless-modal
@@ -275,52 +333,255 @@ footer
 }
 
 // wizard
-$wizard-padding:$grid-gutter-width/2;
+$wizard-spacing:$grid-gutter-width/2;
+$wizard-header-color: $color-pf-black-200; //$navbar-default-bg;
+$wizard-footer-color: $color-pf-black-200;
+
+@mixin wizard-step-elements{
+  // position buttons
+
+  >header{
+    position:relative;
+    background-color: $wizard-header-color;
+    &.container-fluid
+    {
+        padding-left:$wizard-spacing + $debug-border ;
+        padding-right:$wizard-spacing + $debug-border ;
+        margin-left:0px;
+        margin-right:0px;
+        >.row{
+          margin-left:-($wizard-spacing + $debug-border) ;
+          margin-right:-($wizard-spacing + $debug-border);
+        }
+    }
+    &.container
+    {
+        width:100%;
+    }
+  }
+  >section
+  {
+    flex:1;
+    //when using flex here it is important to stretch the content:
+    //and choose the direction as column
+    // display:flex;
+    // flex-direction: column;
+    // align-content: stretch;
+    position:relative;
+    margin:0px;
+    padding:0px;
+    width:auto;
+    &.container-fluid
+    {
+        // Bug: there is an issue with this element, if the border/padding sum
+        // is less than 5px, content overflows and horizontal scroll bars kick
+        // in and it overflows the container.
+        .form-horizontal
+        {
+          padding-right:5px;
+        }
+        padding-left:$wizard-spacing  + $debug-border;
+        padding-right:$wizard-spacing + $debug-border;
+        position:relative;
+        >.row{
+          margin-left:-($wizard-spacing + $debug-border) ;
+          margin-right:-($wizard-spacing + $debug-border);
+          padding:0;
+          width:auto;
+          position:relative;
+        }
+    }
+    &.container
+    {
+        padding-left:$wizard-spacing + $debug-border;
+        padding-right:$wizard-spacing + $debug-border;
+        width:100%;
+        margin-left:0px;
+        margin-right:0px;
+    }
+  }
+  >footer{
+    position:relative;
+    background-color: $wizard-header-color;
+    &.container-fluid
+    {
+        padding-left:$wizard-spacing + $debug-border ;
+        padding-right:$wizard-spacing + $debug-border ;
+        margin-left:0px;
+        margin-right:0px;
+        >.row{
+          margin-left:-($wizard-spacing + $debug-border) ;
+          margin-right:-($wizard-spacing + $debug-border);
+
+        }
+    }
+    &.container
+    {
+        width:100%;
+    }
+  }
+};
+
 
 .wizard-container{
+
   flex:1;
   display:flex;
-  border:solid 0 orange;
+  //align-content: stretch;
   position:relative;
+
   .wizard{
+
     flex:1;
     display:flex;
-    border:solid 0 darkorange;
+    //align-content: stretch;
     position:relative;
-    padding:0;
-    padding-bottom:$wizard-padding;
+
+
+    // only applies to rows in the wizard
+    .row{
+      padding-top:0px;
+    }
+    // only applies to buttons in the wizard
+    .btn{
+      min-width: 90px;
+    }
 
     .wizard-step{
-
-      display:none;
       // at least 50% of view height
-      min-height: 50vh;
+      //min-height: 50vh;
+      flex:1;
+      // by default the step is not visible but becomes
+      // visible when the active class is applied.
+      display:none;
       &.active{
         display:flex;
         flex-direction: column;
+        align-content: stretch;
+        //align-content: stretch;
       }
-      flex:1;
-      border:solid 0 olivedrab;
-      >header{
-        display:flex;
-        position:relative;
-        justify-content: center;
-        padding:$wizard-padding;
-        background-color: $navbar-default-bg;
-      }
-      >section
-      {
+      position:relative;
+      @include wizard-step-elements;
+      // for cases where the step has a form element
+      >form{
+
         flex:1;
         display:flex;
+        flex-direction: column;
+        //align-content: stretch;
         position:relative;
+        @include wizard-step-elements;
+
       }
-      >footer{
-        display:flex;
+
+      .wizard-step-title
+      {
         position:relative;
-        justify-content:flex-end;
-        padding:$wizard-padding;
-        padding-bottom:0;
+        display:flex;
+        //main axis
+        justify-content: space-between;
+        //cross axis
+        align-items: center;
+        //main axis direction
+        flex-direction: row;
+      }
+
+
+      .wizard-step-tool-bar
+      {
+        position:relative;
+        display:flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        padding-top:$wizard-spacing;
+        padding-bottom:$wizard-spacing;
+        &.with-items-at-end{
+          justify-content: flex-end;
+        }
+        &.with-items-at-start{
+          justify-content: flex-start;
+        }
+        &.with-items-in-center{
+          justify-content:center;
+        }
+        &.with-items-space-between{
+          justify-content:space-between;
+        }
+        &.with-items-space-around{
+          justify-content:space-around;
+        }
+        //will stretch auto sized items
+        &.with-items-stretch{
+          justify-content:stretch;
+        }
       }
     }
   }
 }
+
+
+//////////////////////
+// flex utility styles
+//////////////////////
+
+@mixin flex-grow-x($count:12) {
+  @for $i from 1 through $count {
+  .flex-grow-#{$i} { flex: $i; }
+  }
+}
+// create 12 flex grow partitions
+@include flex-grow-x(12);
+
+
+.flex-container
+{
+    display:flex;
+    &.in-column-direction
+    {
+      flex-direction: column;
+    }
+    &.in-row-direction
+    {
+      flex-direction: row;
+    }
+    &.with-wrap
+    {
+      flex-wrap: wrap;
+    }
+    &.with-content-stretch
+    {
+      align-content: stretch;
+    }
+    &.with-align-start
+    {
+      align-items:start;
+    }
+    &.with-align-end
+    {
+      align-items:end;
+    }
+    &.with-align-center
+    {
+      align-items:center;
+    }
+    &.with-align-stretch
+    {
+      align-items:stretch;
+    }
+
+    // Make sure the main,section,aside parts fill the screen and collapse header and footer if not there
+    >main,section,aside
+    {
+      @extend .flex-grow-1;
+    }
+    >.container-fluid
+    {
+      position:relative;
+      //width:100%;
+      flex-grow:1;
+      margin-left:0px;
+      margin-right:0px;
+    }
+
+}
+

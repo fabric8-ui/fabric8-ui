@@ -1,5 +1,5 @@
 import { OpaqueToken } from '@angular/core';
-import { Observable, Observer } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 import {
   IAppGeneratorCommand,
   IAppGeneratorRequest,
@@ -15,6 +15,8 @@ export {
   IAppGeneratorRequest,
   IAppGeneratorResponse,
   IAppGeneratorCommand,
+  IAppGeneratorForgeCommand,
+  IAppGeneratorForgeCommandParameters,
   FieldWidgetClassificationOptions,
   FieldWidgetClassification,
   IFieldValueOption
@@ -31,11 +33,8 @@ export interface IAppGeneratorService {
 export abstract class AppGeneratorService implements IAppGeneratorService {
   abstract getFieldSet(options?: IAppGeneratorRequest): Observable<IAppGeneratorResponse>;
 
-  protected createEmptyResponse(): Observable<IAppGeneratorResponse> {
-    return Observable.create((observer: Observer<IAppGeneratorResponse>) => {
-      observer.next({ payload: [], context: {} });
-      observer.complete();
-    });
+  createEmptyResponse(): Observable<IAppGeneratorResponse> {
+    return Observable.empty();
   }
 
 }

@@ -1,3 +1,5 @@
+// layout bebuggind just adds a colored border to the specified elements
+// in order to help with diagnosing layout issues
 
 $debug-border: 0;
 $debug-component-border: 0;
@@ -100,7 +102,7 @@ $debug-bootstrap-column-color:lighten($debug-bootstrap-container-color,20%);
 }
 
 
-//all app-component layout bedugging
+//all app-component layout debugging
 @mixin debug-app-component{
     margin:$debug-component-spacing;
     padding:$debug-component-spacing;
@@ -109,6 +111,12 @@ $debug-bootstrap-column-color:lighten($debug-bootstrap-container-color,20%);
 
 //bootstrap layout debugging
 .container-fluid
+{
+    @include debug-border($debug-bootstrap-container-color);
+
+}
+
+.container
 {
     @include debug-border($debug-bootstrap-container-color);
 }
@@ -121,9 +129,4 @@ $debug-bootstrap-column-color:lighten($debug-bootstrap-container-color,20%);
 //startswith or contains
 div[class^="col-"], div[class*=" col-"] {
      @include debug-border($debug-bootstrap-column-color);
-    //  >.app-component
-    //  {
-    //    margin-left:-15px;
-    //    margin-right:-15px;
-    //  }
 }

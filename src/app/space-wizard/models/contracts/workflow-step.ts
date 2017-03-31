@@ -19,8 +19,7 @@ export interface IWorkflowStep {
   activate(): IWorkflowStep;
   /** Activates the parametrically specified step, and DOES NOT record the current step as the previous step. */
   gotoStep(step: number | string | Partial<IWorkflowStep>, context?: IWorkflowTransitionContext): IWorkflowStep;
-  /**
-   * Activates the default next step, as defined by nextIndex,
+  /** Activates the default next step, as defined by nextIndex,
    * or as parametrically specified in the optional argument,
    * It DOES record the current step as the previous step (in contrast to gotoStep which DOES NOT)
    */
