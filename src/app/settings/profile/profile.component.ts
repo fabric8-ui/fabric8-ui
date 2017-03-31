@@ -1,3 +1,4 @@
+import { Profile } from 'ngx-login-client';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -12,18 +13,25 @@ import { ProfileService } from './../../profile/profile.service';
 })
 export class ProfileComponent implements OnInit {
 
+  private _profile: Profile;
+
   constructor(
     private router: Router,
-    public profile: ProfileService,
+    public profileService: ProfileService,
     private broadcaster: Broadcaster
   ) {
   }
 
   ngOnInit() {
+    this.profileService.current.subscribe(profile => this._profile = profile);
   }
 
   save() {
-    this.profile.save().subscribe(val => console.log('Profile update'));
+    this.profileService.save(this._profile).subscribe(val => console.log('Profile update'));
+  }
+
+  get profile(): Profile {
+    return this._profile;
   }
 
 }

@@ -1,3 +1,4 @@
+import { ExtProfile, ProfileService } from './../profile/profile.service';
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -53,7 +54,7 @@ export class ContextService implements Contexts {
     private userService: UserService,
     private notifications: Notifications,
     private route: ActivatedRoute,
-    private localStorage: LocalStorageService) {
+    private profileService: ProfileService) {
 
     this._addRecent = new Subject<Context>();
     // Initialize the default context when the logged in user changes
@@ -125,7 +126,7 @@ export class ContextService implements Contexts {
         recent.unshift(ctx);
         return recent;
         // The final value to scan is the initial value, used when the app starts
-      }, this.loadRecent())
+      }, [])
       // Finally save the list of recent contexts
       .do(val => {
         // Truncate the number of recent contexts to the correct length
@@ -143,6 +144,7 @@ export class ContextService implements Contexts {
     // Finally, start broadcasting
     this._default.connect();
     this._recent.connect();
+    this.loadRecent().subscribe(val => val.forEach(space => this._addRecent.next(space)));
   }
 
   get recent(): Observable<Context[]> {
@@ -286,6 +288,7 @@ export class ContextService implements Contexts {
     return null;
   }
 
+
   private loadUser(userName: string): Observable<User> {
     return this.userService
       .getUserByUsername(userName)
@@ -342,33 +345,40 @@ export class ContextService implements Contexts {
     return false;
   }
 
-  private loadRecent(): Context[] {
-    let res: Context[] = [];
-    if (this.localStorage.get('recentContexts')) {
-      for (let raw of this.localStorage.get<RawContext[]>('recentContexts')) {
-        if (raw.space) {
-          this.loadSpace(raw.user, raw.space)
-            .subscribe(val => res.push(this
-              .buildContext({ space: val } as RawContext)));
-        } else {
-          this.loadUser(raw.user)
-            .subscribe(val => res.push(this
-              .buildContext({ user: val } as RawContext)));
-        }
+  private loadRecent(): Observable<Context[]> {
+    return this.profileService.current.switchMap(profile => {
+      if (profile.store.recentContexts) {
+        return Observable.forkJoin((profile.store.recentContexts as RawContext[])
+          // We invert the order above when we add recent contexts
+          .reverse()
+          .map(raw => {
+            if (raw.space) {
+              return this.spaceService.getSpaceById(raw.space)
+                .map(val => this
+                  .buildContext({ space: val } as RawContext));
+            } else {
+              return this.userService.getUserByUserId(raw.user)
+                .map(val => this
+                  .buildContext({ user: val } as RawContext));
+            }
+          }));
+      } else {
+        return Observable.of([]);
       }
-    }
-    return res;
+    });
   }
 
   private saveRecent(recent: Context[]) {
-    let res: RawContext[] = [];
-    for (let ctx of recent) {
-      res.push({
-        user: ctx.user.attributes.username,
-        space: (ctx.space ? ctx.space.attributes.name : null)
-      } as RawContext);
-    }
-    this.localStorage.set('recentContexts', res);
+    let patch = {
+      store: {
+        recentContexts: recent.map(ctx => ({
+          user: ctx.user.id,
+          space: (ctx.space ? ctx.space.id : null)
+        } as RawContext))
+      }
+    } as ExtProfile;
+    return this.profileService.silentSave(patch)
+      .subscribe(profile => { }, err => console.log('Error saving recent spaces:', err));
   }
 
 }

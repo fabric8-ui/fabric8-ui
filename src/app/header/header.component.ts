@@ -12,7 +12,6 @@ import { ContextService } from './../shared/context.service';
 import { MenuedContextType } from './menued-context-type';
 import { Navigation } from './../models/navigation';
 import { MenuItem } from './../models/menu-item';
-import { ProfileService } from './../profile/profile.service';
 import { DummyService } from './../shared/dummy.service';
 
 
@@ -62,8 +61,7 @@ export class HeaderComponent implements OnInit {
     public loginService: LoginService,
     private broadcaster: Broadcaster,
     public dummy: DummyService,
-    private contexts: Contexts,
-    public profile: ProfileService
+    private contexts: Contexts
   ) {
     router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {

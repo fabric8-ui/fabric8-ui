@@ -2,15 +2,22 @@ import { Http, Headers } from '@angular/http';
 import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs';
+import { Observable, ConnectableObservable } from 'rxjs';
 import { cloneDeep } from 'lodash';
 
 import { Broadcaster, Notifications, Notification, NotificationType } from 'ngx-base';
-import { WIT_API_URL  } from 'ngx-fabric8-wit';
+import { WIT_API_URL } from 'ngx-fabric8-wit';
 import { Profile, User, UserService } from 'ngx-login-client';
 
 import { DummyService } from './../shared/dummy.service';
 
+export class ExtUser extends User {
+  attributes: ExtProfile;
+}
+
+export class ExtProfile extends Profile {
+  store: any;
+}
 
 /*
  * A service that manages the users profile
@@ -21,7 +28,7 @@ export class ProfileService {
 
   private static readonly HEADERS: Headers = new Headers({ 'Content-Type': 'application/json' });
   private profileUrl: string;
-  private _loggedInUser: User;
+  private _profile: ConnectableObservable<ExtProfile>;
 
   constructor(
     private dummy: DummyService,
@@ -33,31 +40,24 @@ export class ProfileService {
     private notifications: Notifications
   ) {
     this.profileUrl = apiUrl + 'users';
-    userService.loggedInUser.subscribe(val => this._loggedInUser = val);
+    this._profile = userService.loggedInUser
+      .skipWhile(user => !user)
+      .map(user => cloneDeep(user) as ExtUser)
+      .do(user => user.attributes.store = (user as any).attributes.contextInformation || {})
+      .map(user => user.attributes)
+      .publishReplay(1);
+    this._profile.connect();
   }
 
-  get current(): Profile {
-    return this._loggedInUser.attributes;
+  get current(): Observable<ExtProfile> {
+    return this._profile;
   }
 
-  save() {
-    let profile = cloneDeep(this.current);
-    delete profile.username;
-    let payload = JSON.stringify({
-      data: {
-        attributes: profile,
-        type: 'identities'
-      }
-    });
-    return this.http
-      .patch(this.profileUrl, payload, { headers: ProfileService.HEADERS })
-      .map((response) => {
-        return response.json().data as User;
-      })
-      .do(val => this.notifications.message({
-        message: 'User profile updated',
-        type: NotificationType.SUCCESS
-      } as Notification))
+  save(profile: Profile) {
+    return this.silentSave(profile).do(val => this.notifications.message({
+      message: 'User profile updated',
+      type: NotificationType.SUCCESS
+    } as Notification))
       .catch(error => {
         this.notifications.message({
           message: 'Ooops, something went wrong, your profile was not updated',
@@ -68,18 +68,39 @@ export class ProfileService {
       });
   }
 
-  get sufficient(): boolean {
-    if (this.current &&
-      this.current.fullName &&
-      this.current.email &&
-      this.current.username
-      // TODO Add imageURL
-      //this.current.imageURL
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+  silentSave(profile: Profile) {
+    let clone = cloneDeep(profile) as any;
+    delete clone.username;
+    // Handle the odd naming of the field on the API
+    clone.contextInformation = clone.store;
+    delete clone.store;
+    let payload = JSON.stringify({
+      data: {
+        attributes: clone,
+        type: 'identities'
+      }
+    });
+    return this.http
+      .patch(this.profileUrl, payload, { headers: ProfileService.HEADERS })
+      .map((response) => {
+        return response.json().data as User;
+      });
+  }
+
+  get sufficient(): Observable<boolean> {
+    return this.current.map(current => {
+      if (current &&
+        current.fullName &&
+        current.email &&
+        current.username
+        // TODO Add imageURL
+        //this.current.imageURL
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
   }
 
 }
