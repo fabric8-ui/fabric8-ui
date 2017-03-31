@@ -163,7 +163,7 @@ export class MockDataService {
           'area': { },
           'baseType': {
             'data': {
-              'id': 'userstory',
+              'id': '86af5178-9b41-469b-9096-57e5155c3f31',
               'type': 'workitemtypes'
             }
           },
