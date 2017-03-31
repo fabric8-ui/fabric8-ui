@@ -77,7 +77,7 @@ export class ProfileService {
     let payload = JSON.stringify({
       data: {
         attributes: clone,
-        type: 'identities'
+        type: 'users'
       }
     });
     return this.http
