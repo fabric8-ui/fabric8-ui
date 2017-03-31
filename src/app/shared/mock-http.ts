@@ -76,6 +76,22 @@ export class MockHttp extends HttpService {
         result['extraPath'] = result.path.replace(/^\/workitemtypes\//, '');
         result['path'] = '/workitemtypes';
       }
+
+      if (result.path.indexOf('/user/') == 0) {
+        result['extraPath'] = result.path.replace(/^\/user\//, '');
+        result['path'] = '/user';
+      }
+
+      if (result.path.indexOf('/iterations/') == 0) {
+        result['extraPath'] = result.path.replace(/^\/iterations\//, '');
+        result['path'] = '/iterations';
+      }
+
+      if (result.path.indexOf('/areas/') == 0) {
+        result['extraPath'] = result.path.replace(/^\/areas\//, '');
+        result['path'] = '/areas';
+      }
+
       // if request hat a /space prefix, note the space id, the re-parse the extra path
       if (result.path.indexOf('/spaces/') == 0) {
         console.log('Space prefix detected, reparsing url..');
@@ -187,7 +203,11 @@ export class MockHttp extends HttpService {
             return this.createResponse(url.toString(), 200, 'ok', this.createPage(this.mockDataService.getWorkItems(), path.params) );
           }
         case '/user':
-          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getUser() } );
+          if (path.extraPath) {
+            return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getUserById(path.extraPath) } );
+          } else {
+            return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getUser() } );
+          }
         case '/users':
           return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getAllUsers() } );
         case '/work-item-list':
@@ -208,16 +228,24 @@ export class MockHttp extends HttpService {
         case '/search':
           return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getWorkItems() });
         case '/iterations':
-          var iterations = this.mockDataService.getAllIterations();
-          return this.createResponse(url.toString(), 200, 'ok', { data: iterations, 'meta': { 'totalCount': iterations.length} } );
+          if (path.extraPath) {
+            return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getIteration(path.extraPath) } );
+          } else {
+            var iterations = this.mockDataService.getAllIterations();
+            return this.createResponse(url.toString(), 200, 'ok', { data: iterations, 'meta': { 'totalCount': iterations.length} } );
+          }
         case '/areas':
-          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getAllAreas() });
+          if (path.extraPath) {
+            return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getArea(path.extraPath) } );
+          } else {
+            return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getAllAreas() });
+          }
         case '/source-link-types':
           return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemLinkTypes() );
         case '/target-link-types':
           return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemLinkTypes() );
         default:
-          console.log('######## Not found ########');
+          console.log('######## URL Not found ########');
           console.log(url.toString());
           return this.createResponse(url.toString(), 404, 'npt found', {} );
       }

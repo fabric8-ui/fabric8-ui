@@ -46,7 +46,7 @@ export class UserMockGenerator {
             username: 'example' + i
           },
           links: {
-            self: ''
+            self: 'http://mock.service/api/user/user' + i
           },
           id: 'user' + i,
           type: 'identities'

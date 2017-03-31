@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Logger } from 'ngx-base';
 
+import { cloneDeep } from 'lodash';
 import { WorkItem } from '../work-item/work-item';
 
 // mock data generators
@@ -221,12 +222,36 @@ export class MockDataService {
   };
 
   public updateWorkItem(workItem: any): any {
-    var localWorkItem = this.makeCopy(workItem);
-    for (var i = 0; i < this.workItems.length; i++)
+    var localWorkItem = cloneDeep(workItem);
+    for (var i = 0; i < this.workItems.length; i++) {
       if (this.workItems[i].id === localWorkItem.id) {
-        this.workItems.splice(i, 1, localWorkItem);
-        return this.makeCopy(localWorkItem);
+        // Some relationship update
+        if (typeof(workItem.relationships) !== 'undefined') {
+          // Iteration update
+          if (typeof(workItem.relationships.iteration) !== 'undefined') {
+            this.workItems[i].relationships.iteration.data
+              = this.getIteration(workItem.relationships.iteration.data.id);
+          }
+          // Area update
+          else if (typeof(workItem.relationships.area) !== 'undefined') {
+            this.workItems[i].relationships.area.data
+              = this.getArea(workItem.relationships.area.data.id);
+          }
+          // Assignee update
+          else if (typeof(workItem.relationships.assignees) !== 'undefined') {
+            this.workItems[i].relationships.assignees.data
+              = workItem.relationships.assignees.data.map((assignee) => {
+                return this.getUserById(assignee.id);
+              });
+          }
+        }
+        // Iteration update
+        else {
+          Object.assign(this.workItems[i].attributes, localWorkItem.attributes);
+        }
+        return cloneDeep(this.workItems[i]);
       }
+    }
     return null;
   }
 
@@ -305,6 +330,10 @@ export class MockDataService {
     return this.userMockGenerator.getUser();
   }
 
+  public getUserById(id: string): any {
+    return this.userMockGenerator.getAllUsers().find(u => u.id === id);
+  }
+
   public getAllUsers(): any {
     return this.userMockGenerator.getAllUsers();
   }
@@ -326,6 +355,10 @@ export class MockDataService {
   public getAllAreas(): any {
     console.log('Area - ', this.areas);
     return this.areas;
+  }
+
+  public getArea(id: string): any {
+    return this.areas.find(a => a.id === id);
   }
 
   // iterations
