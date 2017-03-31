@@ -1,7 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import * as moment from 'moment';
 import { IMyOptions, IMyDateModel } from 'mydatepicker';
 
 import { WorkItem } from '../../../models/work-item';
@@ -17,7 +16,7 @@ import { WorkItem } from '../../../models/work-item';
   templateUrl: './dynamic-field.component.html',
   styleUrls: ['./dynamic-field.component.scss']
 })
-export class DynamicFieldComponent {
+export class DynamicFieldComponent implements OnInit {
 
   // this is the type schema taken from the work item type.
   @Input() attributeDesc: any;
@@ -30,6 +29,7 @@ export class DynamicFieldComponent {
 
   error: string;
   buttonsVisible: boolean = false;
+  dateValue: IMyDateModel;
 
   datePickerOptions: IMyOptions = {
     dateFormat: 'dd mmm yyyy',
@@ -39,6 +39,18 @@ export class DynamicFieldComponent {
     showClearDateBtn: false,
     componentDisabled: false
   };
+
+  ngOnInit(): void {
+    console.log(this.workItem);
+    if (this.attributeDesc.type.kind === 'instant') {
+      // the datepicker we use does not support calling functions from the model attribute.
+      this.dateValue = this.toDateModel(this.workItem.attributes[this.attributeDesc.key]);
+    }
+    // we don't need to listen for @Input changes to the work item, because the form will
+    // be re-created from the schema on every load of a work item in the parent.
+    // BUT: if we want to use this component on other dialogs that may not be re-created,
+    // we might need to listen to changes using OnChanges().
+  }
 
   isValid() { 
     return this.form.controls[this.attributeDesc.key].valid; 
@@ -88,18 +100,19 @@ export class DynamicFieldComponent {
   }
 
   onDateChanged(newDate: IMyDateModel) {
-    let date = moment(newDate.jsdate).format('YYYY-MM-DD') + 'T00:00:00Z';
+    let date = newDate.jsdate.toISOString();
     this.form.value[this.attributeDesc.key] = date;
     this.save();
   }
 
-  toDateModel(dateValue: string): IMyDateModel {
-    let date = moment();
-    if (dateValue) {
-      date = moment(dateValue);
+  toDateModel(dateValue: string): any {
+    if (!dateValue)
+      return undefined;
+    else {
+      let date: Date = new Date(dateValue);
+      let convertedDate = { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate() } ;
+      return convertedDate;      
     }
-    let convertedDate = { date: { year: parseInt(date.format('YYYY')), month: parseInt(date.format('M')), day: parseInt(date.format('D')) } } as IMyDateModel;
-    return convertedDate;
   }
 
   save() {

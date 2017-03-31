@@ -54,7 +54,7 @@
       <div *ngSwitchCase="'instant'" class="dynamic-control-datepicker">
       <my-date-picker
                 [options]="datePickerOptions"
-                [selDate]="workItem.attributes[attributeDesc.key]"
+                [selDate]="dateValue"
                 (dateChanged)="onDateChanged($event)"
                 placeholder="Set Date"></my-date-picker>
       </div>
