@@ -42,12 +42,12 @@
         <div class="form-group">
           <label class="col-sm-2 control-label" for="type">Type:</label>
           <div class="col-sm-10">
-            <div class="btn-group dropdown" dropdown>
-              <button id="type" type="button" class="btn btn-default" dropdownToggle>
+            <div class="btn-group dropdown" bsDropdown>
+              <button id="type" type="button" class="btn btn-default" bsDropdownToggle>
                 {{type}}
                 <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu" dropdownMenu role="menu">
+              <ul class="dropdown-menu" bsDropdownMenu role="menu">
                 <li role="menuitem" *ngFor="let item of types" [ngClass]="{'selected': item === type}">
                   <a href="javascript:void(0);" tabindex="-1" (click)="handleType(item)">
                     {{item}}

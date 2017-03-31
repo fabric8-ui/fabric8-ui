@@ -1,12 +1,12 @@
 <div class="filter-pf filter-fields">
   <div class="input-group form-group">
-    <div class="input-group-btn" dropdown>
-      <button type="button" class="btn btn-default filter-fields" dropdownToggle
+    <div class="input-group-btn" bsDropdown>
+      <button type="button" class="btn btn-default filter-fields" bsDropdownToggle
               tooltip="Filter by" placement="{{config.tooltipPlacement}}">
         {{currentField.title}}
         <span class="caret"></span>
       </button>
-      <ul role="menu" dropdownMenu>
+      <ul role="menu" bsDropdownMenu>
         <li *ngFor="let field of config.fields">
           <a class="filter-field" role="menuitem" tabindex="-1" (click)="selectField(field)">
             {{field.title}}
@@ -20,12 +20,12 @@
              (keypress)="onValueKeyPress($event)"/>
     </div>
     <div *ngIf="currentField.type === 'select'">
-      <div class="btn-group bootstrap-select form-control filter-select" dropdown>
-        <button type="button" class="btn btn-default" dropdownToggle>
+      <div class="btn-group bootstrap-select form-control filter-select" bsDropdown>
+        <button type="button" class="btn btn-default" bsDropdownToggle>
           <span class="filter-option pull-left">{{currentValue || currentField.placeholder}}</span>
           <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu-right" role="menu" dropdownMenu>
+        <ul class="dropdown-menu-right" role="menu" bsDropdownMenu>
           <li *ngIf="currentField.placeholder">
             <a role="menuitem" tabindex="-1" (click)="selectValue()">
               {{currentField.placeholder}}
