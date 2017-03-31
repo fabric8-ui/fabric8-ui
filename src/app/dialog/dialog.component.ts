@@ -1,17 +1,18 @@
 import {
-  animate,
   Component,
   EventEmitter,
   HostListener,
   Input,
   OnInit,
-  Output,
+  Output
+} from '@angular/core';
+import {
+  animate,
   state,
   style,
   transition,
   trigger
-  
-} from '@angular/core';
+} from '@angular/animations';
 
 import { Dialog } from './dialog';
 

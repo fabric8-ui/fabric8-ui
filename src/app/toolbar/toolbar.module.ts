@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DropdownModule } from 'ng2-bootstrap';
+import { BsDropdownModule } from 'ng2-bootstrap';
 
 import { FiltersModule } from '../filters/filters.module';
 import { SortModule } from '../sort/sort.module';
@@ -12,7 +12,7 @@ export {
 }
 
 @NgModule({
-  imports: [ CommonModule, DropdownModule, FiltersModule, SortModule ],
+  imports: [ CommonModule, BsDropdownModule, FiltersModule, SortModule ],
   declarations: [ ToolbarComponent ],
   exports: [ ToolbarComponent ]
 })

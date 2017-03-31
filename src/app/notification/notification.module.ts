@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DropdownModule } from 'ng2-bootstrap';
+import { BsDropdownModule } from 'ng2-bootstrap';
 
 import { NotificationEvent } from './notification-event';
 import { NotificationService } from './notification.service';
@@ -12,7 +12,7 @@ export {
 }
 
 @NgModule({
-  imports: [ CommonModule, DropdownModule ],
+  imports: [ CommonModule, BsDropdownModule ],
   declarations: [ ToastNotificationComponent, ToastNotificationListComponent ],
   exports: [ ToastNotificationComponent, ToastNotificationListComponent ],
   providers: [ NotificationService ]

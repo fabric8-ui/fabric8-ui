@@ -2,7 +2,7 @@ import { NgModule }  from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpModule, Http } from '@angular/http';
 
-import { DropdownModule } from 'ng2-bootstrap';
+import { BsDropdownModule } from 'ng2-bootstrap';
 import { TreeListModule } from '../treelist.module';
 import { TreeModule } from 'angular2-tree-component';
 
@@ -13,7 +13,7 @@ import { TreeListExampleRoutingModule } from './treelist-example-routing.module'
   declarations: [ TreeListExampleComponent ],
   imports: [
     CommonModule,
-    DropdownModule,
+    BsDropdownModule,
     HttpModule,
     TreeListExampleRoutingModule,
     TreeListModule,

@@ -1,14 +1,18 @@
 import {
-  animate,
   AfterViewInit,
   Component,
+  EventEmitter,
+  Input,
   OnInit,
-  trigger,
+  Output
+} from '@angular/core';
+import {
+  animate,
   state,
   style,
   transition,
-  Input, Output, EventEmitter
-} from '@angular/core';
+  trigger
+} from '@angular/animations';
 
 
 @Component({

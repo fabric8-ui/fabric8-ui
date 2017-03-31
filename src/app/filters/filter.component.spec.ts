@@ -8,8 +8,8 @@ import { FormsModule }  from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
   ComponentLoaderFactory,
-  DropdownConfig,
-  DropdownModule,
+  BsDropdownConfig,
+  BsDropdownModule,
   PositioningService,
   TooltipConfig,
   TooltipModule
@@ -94,9 +94,9 @@ describe('Filter component - ', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, DropdownModule, TooltipModule],
+      imports: [FormsModule, BsDropdownModule, TooltipModule],
       declarations: [FilterComponent, FilterFieldsComponent, FilterResultsComponent],
-      providers: [ComponentLoaderFactory, DropdownConfig, PositioningService, TooltipConfig]
+      providers: [ComponentLoaderFactory, BsDropdownConfig, PositioningService, TooltipConfig]
     })
       .compileComponents()
       .then(() => {

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DropdownModule } from 'ng2-bootstrap';
+import { BsDropdownModule } from 'ng2-bootstrap';
 import { FormsModule } from '@angular/forms';
 
 import { EmptyStateConfig } from './emptystate-config';
@@ -15,7 +15,7 @@ export {
 }
 
 @NgModule({
-  imports: [ CommonModule, DropdownModule, FormsModule ],
+  imports: [ CommonModule, BsDropdownModule, FormsModule ],
   declarations: [ ListViewComponent ],
   exports: [ ListViewComponent ]
 })
