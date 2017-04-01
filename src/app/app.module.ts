@@ -6,6 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { BsDropdownModule } from 'ng2-bootstrap/dropdown';
+
 // App components
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -25,6 +27,7 @@ import { SlideOutExampleModule } from './slide-out-panel/examples/slide-out-exam
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    BsDropdownModule,
     FilterExampleModule,
     FormsModule,
     HomeModule,

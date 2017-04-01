@@ -1,10 +1,10 @@
 <div class="sort-pf">
-  <div class="btn-group dropdown" bsDropdown>
-    <button type="button" class="btn btn-default" bsDropdownToggle>
+  <div class="btn-group dropdown" dropdown>
+    <button type="button" class="btn btn-default" dropdownToggle>
       {{currentField.title}}
       <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu" bsDropdownMenu role="menu">
+    <ul class="dropdown-menu" *dropdownMenu role="menu">
       <li role="menuitem" *ngFor="let item of config.fields" [ngClass]="{'selected': item === currentField}">
         <a href="javascript:void(0);" class="sort-field" tabindex="-1" (click)="selectField(item)">
           {{item.title}}

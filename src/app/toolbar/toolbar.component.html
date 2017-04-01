@@ -22,12 +22,12 @@
         <div class="toolbar-pf-include-actions">
           <ng-template [ngTemplateOutlet]="actionsTemplate" [ngOutletContext]="{}"></ng-template>
         </div>
-        <div bsDropdown class="dropdown-kebab-pf"
+        <div dropdown class="dropdown-kebab-pf"
              *ngIf="config.actionsConfig && config.actionsConfig.moreActions && config.actionsConfig.moreActions.length > 0">
-          <button bsDropdownToggle class="btn btn-link" type="button">
+          <button dropdownToggle class="btn btn-link" type="button">
             <span class="fa fa-ellipsis-v"></span>
           </button>
-          <ul bsDropdownMenu aria-labelledby="dropdownKebab">
+          <ul *dropdownMenu aria-labelledby="dropdownKebab">
             <li *ngFor="let action of config.actionsConfig.moreActions"
                 [attr.role]="action.separator === true ? 'separator' : 'menuitem'"
                 [ngClass]="{'divider': action.separator === true, 'disabled': action.disabled === true}">

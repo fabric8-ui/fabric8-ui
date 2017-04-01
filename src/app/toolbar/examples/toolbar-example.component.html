@@ -12,11 +12,11 @@
                (onViewSelect)="viewSelected($event)">
     <ng-template #actions>
     <span class="dropdown primary-action" dropdown>
-      <button class="btn btn-default bsDropdown-toggle" bsDropdownToggle type="button">
+      <button class="btn btn-default dropdown-toggle" dropdownToggle type="button">
         Menu Action
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu" role="menu" bsDropdownMenu>
+      <ul class="dropdown-menu" role="menu" *dropdownMenu>
         <li>
           <a class="secondary-action" role="menuitem" (click)="optionSelected(1)">Option 1</a>
         </li>

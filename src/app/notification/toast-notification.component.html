@@ -1,11 +1,11 @@
 <div class="toast-pf alert alert-{{type}}" ng-class="{'alert-dismissable': showCloseButton}"
      (mouseenter)="handleEnter($event)" (mouseleave)="handleLeave($event)">
-  <div bsDropdown class="pull-right dropdown-kebab-pf"
+  <div dropdown class="pull-right dropdown-kebab-pf"
        *ngIf="moreActions && moreActions.length > 0">
-    <button bsDropdownToggle class="btn btn-link" type="button" id="dropdownKebabRight">
+    <button dropdownToggle class="btn btn-link" type="button" id="dropdownKebabRight">
       <span class="fa fa-ellipsis-v"></span>
     </button>
-    <ul bsDropdownMenu class="dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+    <ul *dropdownMenu class="dropdown-menu-right" aria-labelledby="dropdownKebabRight">
       <li *ngFor="let action of moreActions"
           [attr.role]="action.separator === true ? 'separator' : 'menuitem'"
           [ngClass]="{'divider': action.separator === true, 'disabled': action.disabled === true}">

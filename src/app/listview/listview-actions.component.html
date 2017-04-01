@@ -12,14 +12,14 @@
   <div class="{{dropdownClass}} pull-right dropdown-kebab-pf
                         {{getMenuClassForItem(item)}} {{hideMenuForItem(item) ? 'invisible' : ''}}"
        id="kebab_{{index}}"
-       *ngIf="menuActions && menuActions.length > 0" bsDropdown>
+       *ngIf="menuActions && menuActions.length > 0" dropdown>
     <button class="btn btn-link" type="button"
             id="dropdownKebabRight_{{index}}"
             [ngClass]="{'disabled': checkDisabled(item)}"
-            (click)="setupActions(item, $event)" bsDropdownToggle>
+            (click)="setupActions(item, $event)" dropdownToggle>
       <span class="fa fa-ellipsis-v"></span>
     </button>
-    <ul class="dropdown-menu-right {{index}}" aria-labelledby="dropdownKebabRight_{{index}}" bsDropdownMenu>
+    <ul class="dropdown-menu-right {{index}}" aria-labelledby="dropdownKebabRight_{{index}}" *dropdownMenu>
       <li ngFor="let menuAction of menuActions"
           *ngIf="menuAction.visible !== false"
           role="{{menuAction.separator === true ? 'separator' : 'menuitem'}}"
