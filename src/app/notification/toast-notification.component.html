@@ -1,15 +1,15 @@
-<div class="toast-pf alert alert-{{type}}" ng-class="{'alert-dismissable': showCloseButton}"
+<div class="toast-pf alert alert-{{type}}" [ngClass]="{'alert-dismissable': showCloseButton}"
      (mouseenter)="handleEnter($event)" (mouseleave)="handleLeave($event)">
-  <div dropdown class="pull-right dropdown-kebab-pf"
-       *ngIf="moreActions && moreActions.length > 0">
-    <button dropdownToggle class="btn btn-link" type="button" id="dropdownKebabRight">
+  <div class="pull-right dropdown-kebab-pf"
+       *ngIf="moreActions && moreActions.length > 0" dropdown>
+    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight" dropdownToggle>
       <span class="fa fa-ellipsis-v"></span>
     </button>
-    <ul *dropdownMenu class="dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight" *dropdownMenu>
       <li *ngFor="let action of moreActions"
           [attr.role]="action.separator === true ? 'separator' : 'menuitem'"
           [ngClass]="{'divider': action.separator === true, 'disabled': action.disabled === true}">
-        <a ng-if="action.separator !== true"
+        <a *ngIf="action.separator !== true"
            class="secondary-action"
            title="{{action.title}}"
            (click)="handleAction(action)">

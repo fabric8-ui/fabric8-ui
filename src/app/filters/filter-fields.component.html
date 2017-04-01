@@ -1,14 +1,14 @@
 <div class="filter-pf filter-fields">
   <div class="input-group form-group">
     <div class="input-group-btn" dropdown>
-      <button type="button" class="btn btn-default filter-fields" dropdownToggle
+      <button type="button" class="btn btn-default filter-fields dropdown-toggle" dropdownToggle
               tooltip="Filter by" placement="{{config.tooltipPlacement}}">
         {{currentField.title}}
         <span class="caret"></span>
       </button>
-      <ul role="menu" *dropdownMenu>
+      <ul class="dropdown-menu" role="menu" *dropdownMenu>
         <li *ngFor="let field of config.fields">
-          <a class="filter-field" role="menuitem" tabindex="-1" (click)="selectField(field)">
+          <a class="filter-field dropdown-item" role="menuitem" tabindex="-1" (click)="selectField(field)">
             {{field.title}}
           </a>
         </li>
@@ -21,11 +21,11 @@
     </div>
     <div *ngIf="currentField.type === 'select'">
       <div class="btn-group bootstrap-select form-control filter-select" dropdown>
-        <button type="button" class="btn btn-default" dropdownToggle>
+        <button type="button" class="btn btn-default dropdown-toggle" dropdownToggle>
           <span class="filter-option pull-left">{{currentValue || currentField.placeholder}}</span>
           <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu-right" role="menu" *dropdownMenu>
+        <ul class="dropdown-menu" role="menu" *dropdownMenu>
           <li *ngIf="currentField.placeholder">
             <a role="menuitem" tabindex="-1" (click)="selectValue()">
               {{currentField.placeholder}}

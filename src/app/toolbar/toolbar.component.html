@@ -1,6 +1,6 @@
 <div class="row toolbar-pf">
   <div class="col-sm-12">
-    <form class="toolbar-pf-actions" ng-class="{'no-filter-results': !filterFields}" (submit)="submit($event)">
+    <form class="toolbar-pf-actions" [ngClass]="{'no-filter-results': !filterFields}" (submit)="submit($event)">
       <div class="form-group toolbar-apf-filter">
         <alm-filter-fields [config]="config.filterConfig" *ngIf="config.filterConfig && config.filterConfig.fields"
                            (onAdd)="addFilter($event)"></alm-filter-fields>
@@ -22,12 +22,12 @@
         <div class="toolbar-pf-include-actions">
           <ng-template [ngTemplateOutlet]="actionsTemplate" [ngOutletContext]="{}"></ng-template>
         </div>
-        <div dropdown class="dropdown-kebab-pf"
+        <div class="dropdown dropdown-kebab-pf" dropdown
              *ngIf="config.actionsConfig && config.actionsConfig.moreActions && config.actionsConfig.moreActions.length > 0">
-          <button dropdownToggle class="btn btn-link" type="button">
+          <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
             <span class="fa fa-ellipsis-v"></span>
           </button>
-          <ul *dropdownMenu aria-labelledby="dropdownKebab">
+          <ul class="dropdown-menu" aria-labelledby="dropdownKebab" *dropdownMenu>
             <li *ngFor="let action of config.actionsConfig.moreActions"
                 [attr.role]="action.separator === true ? 'separator' : 'menuitem'"
                 [ngClass]="{'divider': action.separator === true, 'disabled': action.disabled === true}">
