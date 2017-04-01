@@ -71,18 +71,15 @@ describe('openshift.io End-to-End POC test - Scenario - New user registers', fun
 
     OpenShiftIoDashboardPage.typeDevProcess("Scenario Driven Planning");
     OpenShiftIoDashboardPage.clickCreateSpaceButton();
-    OpenShiftIoDashboardPage.clickCreateSpaceButton();
-    
-//    browser.wait(until.elementToBeClickable(OpenShiftIoDashboardPage.noThanksButton), constants.WAIT, 'Failed to find active filter');  
-//    OpenShiftIoDashboardPage.clickNoThanksButton();
-    
-    browser.wait(until.elementToBeClickable(OpenShiftIoDashboardPage.wizardButton), constants.WAIT, 'Failed to find active filter');  
-    OpenShiftIoDashboardPage.clickWizardButton();
+     
+    browser.wait(until.elementToBeClickable(OpenShiftIoDashboardPage.noThanksButton), constants.WAIT, 'Failed to find active filter');  
+    OpenShiftIoDashboardPage.clickNoThanksButton();
 
-    browser.wait(until.presenceOf(element(by.id("this-is-not-here"))), constants.WAIT, 'Failed to find active filter');  
-
+    browser.wait(until.presenceOf(element(by.linkText("Overview"))), constants.WAIT, 'Failed to find active filter');  
+    expect(browser.getCurrentUrl()).toEqual('http://prod-preview.openshift.io/almusertest1/'+spaceTime);
 
   });
+
 
 });
 

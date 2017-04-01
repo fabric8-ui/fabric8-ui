@@ -61,6 +61,8 @@ class OpenShiftIoDashboardPage {
     return element(by.buttonText('Create Space'));
   }
   clickCreateSpaceButton () {
+
+    browser.wait(until.elementToBeClickable(this.createSpaceButton), constants.WAIT, 'Failed to find element');
     return this.createSpaceButton.click();
   }
 
@@ -89,6 +91,9 @@ class OpenShiftIoDashboardPage {
    return element.all(by.css(".developmentProcess.option"));
  }
 
+searchByLinkText(text){
+  return element(by.linkText(text));
+}
 
 }
 
