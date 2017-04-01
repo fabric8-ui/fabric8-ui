@@ -1,3 +1,4 @@
+import { EditSpaceDescriptionWidgetModule } from './../../dashboard-widgets/edit-space-description-widget/edit-space-description-widget.module';
 import { TeamMembershipDialogModule } from './../../team-membership-dialog/team-membership-dialog.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -18,7 +19,8 @@ import { AnalyzeOverviewRoutingModule } from './analyze-overview-routing.module'
     HttpModule,
     ModalModule,
     FormsModule,
-    TeamMembershipDialogModule
+    TeamMembershipDialogModule,
+    EditSpaceDescriptionWidgetModule
   ],
   // providers: [Broadcaster],
   declarations: [AnalyzeOverviewComponent],
