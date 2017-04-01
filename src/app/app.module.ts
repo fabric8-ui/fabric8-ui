@@ -1,26 +1,26 @@
-import { Spaces } from 'ngx-fabric8-wit';
-import { SpacesService } from './shared/standalone/spaces.service';
-import { WorkItemQuickAddModule } from './work-item/work-item-quick-add/work-item-quick-add.module';
-import { DummySpace } from './header/DummySpace.service';
 import './rxjs-extensions';
 
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule, Http, RequestOptions, XHRBackend }    from '@angular/http';
 import { FormsModule } from '@angular/forms';
+import { HttpModule, Http, RequestOptions, XHRBackend } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { DropdownModule } from 'ng2-bootstrap';
-import { ModalModule } from 'ngx-modal';
 import { TabsModule, TooltipModule } from 'ng2-bootstrap';
 import { Broadcaster, Logger } from 'ngx-base';
+import { Spaces } from 'ngx-fabric8-wit';
+import { ModalModule } from 'ngx-modal';
 import {
   AuthenticationService,
   UserService,
   HttpService as HttpServiceLGC
 } from 'ngx-login-client';
 
-import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
+// Shared
 import { GlobalSettings } from './shared/globals';
+import { SpacesService } from './shared/standalone/spaces.service';
+import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
 import { ssoApiUrlProvider } from './shared/standalone/sso-api.provider';
 import { witApiUrlProvider } from './shared/wit-api.provider';
 
@@ -33,6 +33,7 @@ import { FooterComponent } from './footer/footer.component';
 
 // Header
 import { HeaderComponent } from './header/header.component';
+import { DummySpace } from './header/DummySpace.service';
 
 // Login
 import { LoginComponent } from './login/login.component';
@@ -41,6 +42,7 @@ import { LoginService } from './login/login.service';
 // import { WorkItemModule } from './work-item/work-item.module';
 import { PlannerBoardModule } from './work-item/work-item-board/planner-board.module';
 import { PlannerListModule } from './work-item/work-item-list/planner-list.module';
+import { WorkItemQuickAddModule } from './work-item/work-item-quick-add/work-item-quick-add.module';
 
 // Mock data
 import { MockDataService } from './shared/mock-data.service';
@@ -114,6 +116,7 @@ if (process.env.ENV == 'inmemory') {
 @NgModule({
   imports: [
     AppRoutingModule,
+    BrowserAnimationsModule,
     BrowserModule,
     DropdownModule,
     FormsModule,
