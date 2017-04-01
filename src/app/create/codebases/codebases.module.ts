@@ -19,9 +19,9 @@ import { ToolbarPanelModule } from '../../toolbar/toolbar-panel.module';
     CodebasesRoutingModule,
     CodebasesCreateModule
   ],
-  declarations: [ CodebasesComponent ],
-  exports: [ CodebasesComponent ]
+  declarations: [CodebasesComponent],
+  exports: [CodebasesComponent]
 })
 export class CodebasesModule {
-  constructor(http: Http) {}
+  constructor(http: Http) { }
 }

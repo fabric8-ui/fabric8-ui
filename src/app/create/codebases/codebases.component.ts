@@ -11,9 +11,7 @@ import { Context, Contexts } from 'ngx-fabric8-wit';
   encapsulation: ViewEncapsulation.None,
   selector: 'codebases',
   templateUrl: './codebases.component.html',
-  styleUrls: ['./codebases.component.scss'],
-  providers: [CodebasesService]
-})
+  styleUrls: ['./codebases.component.scss']})
 export class CodebasesComponent implements OnInit {
   codebases: Codebase[];
   context: Context;
@@ -28,6 +26,7 @@ export class CodebasesComponent implements OnInit {
   }
 
   ngOnInit() {
+    // TODO Refresh codebase list on add
     if (this.context && this.context.space) {
       this.codebasesService.getCodebases(this.context.space.id).subscribe(codebases => {
         this.codebases = codebases;
@@ -65,22 +64,6 @@ export class CodebasesComponent implements OnInit {
       },
       type: 'codebases'
     } as Codebase;
-  }
-
-  getName(codebase: Codebase): string {
-    if (codebase.attributes.type === 'git') {
-      return codebase.attributes.url.replace('.git', '').replace('git@github.com:', '');
-    } else {
-      codebase.attributes.url;
-    }
-  }
-
-  getUrl(codebase: Codebase): string {
-    if (codebase.attributes.type === 'git') {
-      return codebase.attributes.url.replace('.git', '').replace(':', '/').replace('git@', 'https://');
-    } else {
-      codebase.attributes.url;
-    }
   }
 
 }

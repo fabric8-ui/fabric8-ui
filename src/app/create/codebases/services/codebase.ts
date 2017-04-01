@@ -4,6 +4,8 @@ export class Codebase {
     links?: CodebaseLinks;
     relationships?: CodebaseRelations;
     type: string;
+    name?: string;
+    url?: string;
 }
 
 export class CodebaseAttributes {

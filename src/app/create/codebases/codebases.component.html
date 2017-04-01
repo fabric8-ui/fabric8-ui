@@ -25,7 +25,7 @@
           <span class="avatar fa" [ngClass]="{'fa-github': codebase.attributes.type === 'git'}"></span>
           <div class="list-view-pf-description">
             <div class="list-group-item-heading">
-              <a href="{{getUrl(codebase)}}" target="_blank">{{getName(codebase)}}</a>
+              <a href="{{codebase.url}}" target="_blank">{{codebase.name}}</a>
             </div>
             <div class="list-group-item-text">
               {{codebase.attributes.createdAt | date:'medium'}}
@@ -49,7 +49,7 @@
             <div class="col-md-9">
               <dl class="dl-horizontal">
                 <dt>Git URL</dt>
-                <dd><a href="{{getUrl(codebase)}}" target="_blank">{{getUrl(codebase)}}</a></dd>
+                <dd><a href="{{getUrl(codebase)}}" target="_blank">{{codebase.url}}</a></dd>
                 <dt>Latest Commit SHA1</dt>
                 <dd>9bc99eb964c57200ff163619326b9cfaa82aee8b</dd>
                 <dt>Status</dt>

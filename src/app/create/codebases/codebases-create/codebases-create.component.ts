@@ -1,11 +1,14 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, EventEmitter, OnInit, Output, ViewEncapsulation, AfterViewInit } from '@angular/core';
 
+import { Logger, Broadcaster } from 'ngx-base';
+import { Context, Contexts, Spaces } from 'ngx-fabric8-wit';
+import { trimEnd } from 'lodash';
+import { Observable } from 'rxjs';
+
 import { Codebase } from '../services/codebase';
 import { CodebasesService } from '../services/codebases.service';
-import { Logger, Broadcaster } from 'ngx-base';
-import { Context, Contexts } from 'ngx-fabric8-wit';
-import { trimEnd } from 'lodash'; 
+
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -54,10 +57,15 @@ export class CodebasesCreateComponent implements OnInit, AfterViewInit {
       return;
     }
     let codebase = this.createTransientCodebase();
-    this.codebasesService.create(this.context.space.id, codebase).subscribe(codebase => {
-      this.onCreate.emit(codebase);
-      this.close();
-    });
+    this.codebasesService.create(this.context.space.id, codebase)
+      .do(() => this.panelState = 'out')
+      .do(createdCodebase => this.broadcaster.broadcast('codebaseAdded', createdCodebase))
+      .switchMap(createdCodebase => {
+        // On a successful creation, always navigate to the spaces create screen
+        return this.contexts.current.map(context => `${context.path}/create`);
+      })
+      .do(url => this.close(url))
+      .subscribe();
   }
 
   createTransientCodebase(): Codebase {
@@ -72,18 +80,22 @@ export class CodebasesCreateComponent implements OnInit, AfterViewInit {
 
   togglePanelState($event: any): void {
     if ($event === 'out') {
-      this.close();
+      this.close(this.removeAction(this.router.url));
     }
   }
 
-  close() {
+  close(routeTo: string) {
     // Wait for the animation to finish
     // From in to out it takes 300 ms
     // So wait for 400 ms
     setTimeout(() => {
-      // TODO HACK setting the outlets: { overlay: null } as documented won't work for me so manually change the URL
-      this.router.navigateByUrl(trimEnd(this.router.url.replace(/\(overlay:[a-z-]*\)/, ''), '/'));
+      this.router.navigateByUrl(routeTo);
     }, 400);
+  }
+
+  // TODO HACK setting the outlets: { overlay: null } as documented won't work for me so manually change the URL
+  private removeAction(url: string) {
+    return trimEnd(url.replace(/\(action:[a-z-]*\)/, ''), '/');
   }
 
 }

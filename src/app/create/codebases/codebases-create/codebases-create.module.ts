@@ -1,3 +1,4 @@
+import { CodebasesService } from './../services/codebases.service';
 import { CodebasesCreateRoutingModule } from './codebases-create-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -15,9 +16,10 @@ import { CodebasesCreateComponent } from './codebases-create.component';
     SlideOutPanelModule,
     CodebasesCreateRoutingModule
   ],
-  declarations: [ CodebasesCreateComponent ],
-  exports: [ CodebasesCreateComponent ]
+  declarations: [CodebasesCreateComponent],
+  exports: [CodebasesCreateComponent],
+  providers: [CodebasesService]
 })
 export class CodebasesCreateModule {
-  constructor(http: Http) {}
+  constructor(http: Http) { }
 }

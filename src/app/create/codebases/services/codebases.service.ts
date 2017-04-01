@@ -19,21 +19,22 @@ export class CodebasesService {
     private auth: AuthenticationService,
     private userService: UserService,
     @Inject(WIT_API_URL) apiUrl: string) {
-    if (this.auth.getToken() != null) {
-      this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
-    }
     this.spacesUrl = apiUrl + 'spaces';
   }
 
   getCodebases(spaceId: string): Observable<Codebase[]> {
     let url = `${this.spacesUrl}/${spaceId}/codebases`;
     return this.http.get(url, { headers: this.headers })
-        .map((response) => {
-          return response.json().data as Codebase;
-        })
-        .catch((error) => {
-          return this.handleError(error);
-        });
+      .map((response) => {
+        return response.json().data as Codebase[];
+      })
+      .do(codebases => codebases.forEach(codebase => {
+        codebase.name = this.getName(codebase);
+        codebase.url = this.getUrl(codebase);
+      }))
+      .catch((error) => {
+        return this.handleError(error);
+      });
   }
 
   getCodebasesPaged(spaceId: string, pageSize: number = 20): Observable<Codebase[]> {
@@ -58,6 +59,10 @@ export class CodebasesService {
         let newCodebases: Codebase[] = response.json().data as Codebase[];
         return newCodebases;
       })
+      .do(codebases => codebases.forEach(codebase => {
+        codebase.name = this.getName(codebase);
+        codebase.url = this.getUrl(codebase);
+      }))
       .catch((error) => {
         return this.handleError(error);
       });
@@ -75,30 +80,48 @@ export class CodebasesService {
     let url = `${this.spacesUrl}/${spaceId}/codebases`;
     let payload = JSON.stringify({ data: codebase });
     return this.http
-        .post(url, payload, { headers: this.headers })
-        .map(response => {
-          return response.json().data as Codebase;
-        })
-        .catch((error) => {
-          return this.handleError(error);
-        });
+      .post(url, payload, { headers: this.headers })
+      .map(response => {
+        return response.json().data as Codebase;
+      })
+      .catch((error) => {
+        return this.handleError(error);
+      });
   }
 
   update(codebase: Codebase): Observable<Codebase> {
     let url = `${this.spacesUrl}/${codebase.id}`;
     let payload = JSON.stringify({ data: codebase });
     return this.http
-        .patch(url, payload, { headers: this.headers })
-        .map(response => {
-          return response.json().data as Codebase;
-        })
-        .catch((error) => {
-          return this.handleError(error);
-        });
+      .patch(url, payload, { headers: this.headers })
+      .map(response => {
+        return response.json().data as Codebase;
+      })
+      .catch((error) => {
+        return this.handleError(error);
+      });
   }
 
   private handleError(error: any) {
     this.logger.error(error);
     return Observable.throw(error.message || error);
   }
+
+
+  private getName(codebase: Codebase): string {
+    if (codebase.attributes.type === 'git') {
+      return codebase.attributes.url.replace('.git', '').replace('git@github.com:', '');
+    } else {
+      codebase.attributes.url;
+    }
+  }
+
+  private getUrl(codebase: Codebase): string {
+    if (codebase.attributes.type === 'git') {
+      return codebase.attributes.url.replace('.git', '').replace(':', '/').replace('git@', 'https://');
+    } else {
+      codebase.attributes.url;
+    }
+  }
+
 }

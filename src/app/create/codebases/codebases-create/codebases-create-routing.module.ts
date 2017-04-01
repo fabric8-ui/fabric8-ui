@@ -6,7 +6,7 @@ export const codebasesCreateRoutes: Routes = [
   {
     path: 'add-codebase',
     component: CodebasesCreateComponent,
-    outlet: 'overlay'
+    outlet: 'action'
   }
 ];
 
