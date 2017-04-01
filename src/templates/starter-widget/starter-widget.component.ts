@@ -7,7 +7,7 @@ import { Contexts } from 'ngx-fabric8-wit';
 import { DummyService } from './../shared/dummy.service';
 
 @Component({
-  selector: 'starter-widget',
+  selector: 'fabric8-starter-widget',
   templateUrl: './starter-widget.component.html',
   styleUrls: ['./starter-widget.component.scss']
 })

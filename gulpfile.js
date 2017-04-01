@@ -34,5 +34,5 @@ gulp.task('create', function () {
     }))
     .pipe(replace(new RegExp(origHeaderCase, "g"), headerCase))
     .pipe(replace(new RegExp(origPascalCase, "g"), pascalCase))
-    .pipe(gulp.dest(dest));
+    .pipe(gulp.dest(`${dest}/${headerCase}`));
 });
