@@ -22,8 +22,10 @@ export class SpacesService implements Spaces {
     private spaceService: SpaceService,
     private broadcaster: Broadcaster
   ) {
-    this._current = contexts.current
-      .map(val => val.space);
+    this._current = Observable.merge(
+      contexts.current
+        .map(val => val.space),
+      this.broadcaster.on<Space>('spaceUpdated'));
     // Create the recent context list
     let addRecent: Subject<Space> = new Subject<Space>();
 
