@@ -4,43 +4,7 @@
       <fabric8-edit-space-description-widget></fabric8-edit-space-description-widget>
     </div>
     <div class="col-md-8">
-      <div class="card-pf card-pf-utilization">
-        <div class="card-pf-heading">
-          <h2 class="card-pf-title">Analytical Report</h2>
-        </div>
-        <div class="card-pf-body">
-          <form>
-            <div class="form-group">
-              <div class="combobox-container">
-                <input type="hidden" name="" value="">
-                <div class="input-group col-sm-7">
-                  <input type="text" autocomplete="false" placeholder="Select your build/pipeline" class="combobox form-control">
-                  <span class="input-group-addon dropdown-toggle" data-dropdown="dropdown">
-                    <span class="caret"></span> <span class="glyphicon glyphicon-remove"></span>
-                  </span>
-                </div>
-              </div>
-              <select class="combobox form-control hide">
-                <option value="" selected="selected">Select your build/pipeline</option>
-                <option value="AL">Pipeline 1</option>
-                <option value="AK">Pipeline 2</option>
-                <option value="AZ">Pipeline 3</option>
-                <option value="AR">Pipeline 4</option>
-                <option value="CA">Pipeline 5</option>
-                <option value="CO">Pipeline 6</option>
-                <option value="CT">Pipeline 7</option>
-                <option value="DE">Pipeline 8</option>
-              </select>
-            </div>
-          </form>
-          <div>
-            <a>Build #102</a>: you have used <a>Java JDK 2.0.3</a>. A better way to run/deploy would be to use <a>Java JDK 2.0.8</a>.
-          </div>
-          <div>
-            <a>Build #102</a>: we recommend that you can use <a>Java JDK 2.0.8</a>.
-          </div>
-        </div>
-      </div>
+      <fabric8-analytical-report-widget></fabric8-analytical-report-widget>
     </div>
   </section>
   <section class="row row-cards-pf">

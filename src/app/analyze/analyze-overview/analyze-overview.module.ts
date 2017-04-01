@@ -1,3 +1,4 @@
+import { AnalyticalReportWidgetModule } from './../../dashboard-widgets/analytical-report-widget/analytical-report-widget.module';
 import { EditSpaceDescriptionWidgetModule } from './../../dashboard-widgets/edit-space-description-widget/edit-space-description-widget.module';
 import { TeamMembershipDialogModule } from './../../team-membership-dialog/team-membership-dialog.module';
 import { NgModule } from '@angular/core';
@@ -20,7 +21,8 @@ import { AnalyzeOverviewRoutingModule } from './analyze-overview-routing.module'
     ModalModule,
     FormsModule,
     TeamMembershipDialogModule,
-    EditSpaceDescriptionWidgetModule
+    EditSpaceDescriptionWidgetModule,
+    AnalyticalReportWidgetModule
   ],
   // providers: [Broadcaster],
   declarations: [AnalyzeOverviewComponent],
