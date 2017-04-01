@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 
 import { cloneDeep } from 'lodash';
 import { Broadcaster } from 'ngx-base';
@@ -60,14 +60,14 @@ export class WorkItemDetailAddTypeSelectorComponent implements OnInit, OnChanges
   }
 
   //Detailed add functions
-  getWorkItemTypes(){
+  getWorkItemTypes() {
     if (this.takeFromInput) {
       this.workItemTypes = this.wiTypes;
     } else {
       this.workItemService.getWorkItemTypes()
-      .subscribe((types) => {
-        this.workItemTypes = types;
-      });
+        .subscribe((types) => {
+          this.workItemTypes = types;
+        });
     }
   }
   showTypes() {
@@ -84,6 +84,6 @@ export class WorkItemDetailAddTypeSelectorComponent implements OnInit, OnChanges
 
   onChangeType(type: string) {
     this.showTypesOptions = false;
-    this.router.navigateByUrl(this.router.url + '/detail/new?type=' + type);
+    this.router.navigate(['detail', 'new'], { queryParams: { type: type } } as NavigationExtras);
   }
 }
