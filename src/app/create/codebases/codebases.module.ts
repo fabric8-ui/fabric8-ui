@@ -12,12 +12,12 @@ import { ToolbarPanelModule } from '../../toolbar/toolbar-panel.module';
 @NgModule({
   imports: [
     CommonModule,
-    CodebasesCreateModule,
-    CodebasesRoutingModule,
     FormsModule,
     HttpModule,
     ListViewModule,
-    ToolbarPanelModule
+    ToolbarPanelModule,
+    CodebasesRoutingModule,
+    CodebasesCreateModule
   ],
   declarations: [ CodebasesComponent ],
   exports: [ CodebasesComponent ]

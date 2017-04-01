@@ -1,3 +1,4 @@
+import { codebasesCreateRoutes } from './codebases-create/codebases-create-routing.module';
 import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -6,7 +7,8 @@ import { CodebasesComponent } from './codebases.component';
 const routes: Routes = [
   {
     path: '',
-    component: CodebasesComponent
+    component: CodebasesComponent,
+    children: codebasesCreateRoutes
   }
 ];
 

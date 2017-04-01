@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ToolbarPanelComponent } from './toolbar-panel.component';
@@ -14,6 +15,7 @@ import { ToolbarModule } from 'ngx-widgets';
 
 @NgModule({
   imports: [
+    RouterModule,
     CommonModule,
     DropdownModule,
     ToolbarModule

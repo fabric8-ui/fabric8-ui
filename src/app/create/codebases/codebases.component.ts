@@ -83,13 +83,4 @@ export class CodebasesComponent implements OnInit {
     }
   }
 
-  // Slide-out Panel
-
-  // Todo: Move to own component
-  addCodebase($event: Codebase): void {
-    if (this.codebases === undefined) {
-      this.codebases = [];
-    }
-    this.codebases.push($event);
-  }
 }

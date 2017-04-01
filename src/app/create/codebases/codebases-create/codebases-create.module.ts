@@ -1,3 +1,4 @@
+import { CodebasesCreateRoutingModule } from './codebases-create-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +12,8 @@ import { CodebasesCreateComponent } from './codebases-create.component';
     CommonModule,
     FormsModule,
     HttpModule,
-    SlideOutPanelModule
+    SlideOutPanelModule,
+    CodebasesCreateRoutingModule
   ],
   declarations: [ CodebasesCreateComponent ],
   exports: [ CodebasesCreateComponent ]
