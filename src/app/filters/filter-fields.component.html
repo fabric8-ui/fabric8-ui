@@ -6,7 +6,7 @@
         {{currentField.title}}
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu" role="menu" *dropdownMenu>
+      <ul class="dropdown-menu" role="menu" dropdownMenu>
         <li *ngFor="let field of config.fields">
           <a class="filter-field dropdown-item" role="menuitem" tabindex="-1" (click)="selectField(field)">
             {{field.title}}
@@ -25,7 +25,7 @@
           <span class="filter-option pull-left">{{currentValue || currentField.placeholder}}</span>
           <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" role="menu" *dropdownMenu>
+        <ul class="dropdown-menu" role="menu" dropdownMenu>
           <li *ngIf="currentField.placeholder">
             <a role="menuitem" tabindex="-1" (click)="selectValue()">
               {{currentField.placeholder}}

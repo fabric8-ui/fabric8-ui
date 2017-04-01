@@ -5,8 +5,8 @@ import { HttpModule, Http } from '@angular/http';
 
 import {
   ComponentLoaderFactory,
-  BsDropdownConfig,
-  BsDropdownModule,
+  DropdownConfig,
+  DropdownModule,
   PositioningService,
   TooltipConfig
 } from 'ng2-bootstrap';
@@ -19,13 +19,13 @@ import { ToolbarExampleRoutingModule } from './toolbar-example-routing.module';
   declarations: [ ToolbarExampleComponent ],
   imports: [
     CommonModule,
-    BsDropdownModule,
+    DropdownModule,
     HttpModule,
     FiltersModule,
     ToolbarExampleRoutingModule,
     ToolbarModule
   ],
-  providers: [ComponentLoaderFactory, BsDropdownConfig, PositioningService, TooltipConfig]
+  providers: [ComponentLoaderFactory, DropdownConfig, PositioningService, TooltipConfig]
 })
 export class ToolbarExampleModule {
   constructor(http: Http) {}

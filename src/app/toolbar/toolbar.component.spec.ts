@@ -9,8 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
   ComponentLoaderFactory,
-  BsDropdownConfig,
-  BsDropdownModule,
+  DropdownConfig,
+  DropdownModule,
   PositioningService,
   TooltipConfig,
   TooltipModule
@@ -199,9 +199,9 @@ describe('Toolbar component - ', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, FormsModule, BsDropdownModule, TooltipModule],
+      imports: [BrowserAnimationsModule, FormsModule, DropdownModule, TooltipModule],
       declarations: [ToolbarComponent, FilterFieldsComponent, FilterResultsComponent, SortComponent],
-      providers: [ComponentLoaderFactory, BsDropdownConfig, PositioningService, TooltipConfig]
+      providers: [ComponentLoaderFactory, DropdownConfig, PositioningService, TooltipConfig]
     })
         .compileComponents()
         .then(() => {

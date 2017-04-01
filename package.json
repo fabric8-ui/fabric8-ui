@@ -76,7 +76,7 @@
     "@types/core-js": "0.9.41",
     "angular2-tree-component": "2.7.0",
     "moment": "2.18.1",
-    "ng2-bootstrap": "1.6.1"
+    "ng2-bootstrap": "1.3.3"
   },
   "peerDependencies": {
   },
@@ -143,7 +143,6 @@
     "mocha": "3.2.0",
     "patternfly-sass": "^3.21.0",
     "ng-router-loader": "2.1.0",
-    "ng2-dropdown": "0.0.21",
     "node-sass": "4.5.2",
     "npm-run-all": "4.0.2",
     "null-loader": "0.1.1",

@@ -7,8 +7,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
-  BsDropdownConfig,
-  BsDropdownModule,
+  DropdownConfig,
+  DropdownModule,
 } from 'ng2-bootstrap';
 
 import { Action } from '../config/action';
@@ -82,9 +82,9 @@ describe('Toolbar component - ', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, BsDropdownModule],
+      imports: [FormsModule, DropdownModule],
       declarations: [ListViewComponent],
-      providers: [BsDropdownConfig]
+      providers: [DropdownConfig]
     })
         .compileComponents()
         .then(() => {

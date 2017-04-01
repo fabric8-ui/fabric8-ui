@@ -4,7 +4,7 @@
       {{currentField.title}}
       <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu" *dropdownMenu role="menu">
+    <ul class="dropdown-menu" role="menu" dropdownMenu>
       <li role="menuitem" *ngFor="let item of config.fields" [ngClass]="{'selected': item === currentField}">
         <a href="javascript:void(0);" class="sort-field" tabindex="-1" (click)="selectField(item)">
           {{item.title}}

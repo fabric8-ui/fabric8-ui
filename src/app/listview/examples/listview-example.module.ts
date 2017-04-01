@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
 
 import {
-  BsDropdownConfig,
-  BsDropdownModule
+  DropdownConfig,
+  DropdownModule
 } from 'ng2-bootstrap';
 
 import { ListViewModule } from '../listview.module';
@@ -16,13 +16,13 @@ import { ListViewExampleRoutingModule } from './listview-example-routing.module'
   declarations: [ ListViewExampleComponent ],
   imports: [
     CommonModule,
-    BsDropdownModule,
+    DropdownModule,
     FormsModule,
     HttpModule,
     ListViewExampleRoutingModule,
     ListViewModule
   ],
-  providers: [BsDropdownConfig]
+  providers: [DropdownConfig]
 })
 export class ListViewExampleModule {
   constructor(http: Http) {}

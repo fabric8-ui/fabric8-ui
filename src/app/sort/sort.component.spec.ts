@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { BsDropdownConfig, BsDropdownModule } from 'ng2-bootstrap';
+import { DropdownConfig, DropdownModule } from 'ng2-bootstrap';
 
 import { SortComponent } from './sort.component';
 import { SortConfig } from './sort-config';
@@ -47,9 +47,9 @@ describe('Sort component - ', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, FormsModule, BsDropdownModule],
+      imports: [BrowserAnimationsModule, FormsModule, DropdownModule],
       declarations: [SortComponent],
-      providers: [BsDropdownConfig]
+      providers: [DropdownConfig]
     })
       .compileComponents()
       .then(() => {

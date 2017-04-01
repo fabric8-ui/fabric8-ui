@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BsDropdownModule, TooltipModule } from 'ng2-bootstrap';
+import { DropdownModule, DropdownConfig, TooltipModule } from 'ng2-bootstrap';
 
 import { Filter } from './filter';
 import { FilterComponent } from './filter.component';
@@ -21,8 +21,9 @@ export {
 }
 
 @NgModule({
-  imports: [ CommonModule, BsDropdownModule, FormsModule, TooltipModule ],
+  imports: [ CommonModule, DropdownModule, FormsModule, TooltipModule ],
   declarations: [ FilterComponent, FilterFieldsComponent, FilterResultsComponent ],
-  exports: [ FilterComponent, FilterFieldsComponent, FilterResultsComponent ]
+  exports: [ FilterComponent, FilterFieldsComponent, FilterResultsComponent ],
+  providers: [ DropdownConfig ]
 })
 export class FiltersModule { }

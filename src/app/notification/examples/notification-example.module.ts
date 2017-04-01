@@ -1,6 +1,6 @@
 import { NgModule }  from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BsDropdownModule } from 'ng2-bootstrap';
+import { DropdownModule } from 'ng2-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
 
@@ -15,7 +15,7 @@ import { ToastNotificationListExampleComponent } from './toast-notification-list
   declarations: [ ToastNotificationExampleComponent, ToastNotificationListExampleComponent ],
   imports: [
     CommonModule,
-    BsDropdownModule,
+    DropdownModule,
     FormsModule,
     HttpModule,
     NotificationModule,
