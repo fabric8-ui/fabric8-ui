@@ -214,17 +214,6 @@ module.exports = {
       helpers.root('src') // location of your src
     ),
 
-    /**
-     * Webpack plugin to optimize a JavaScript file for faster initial load
-     * by wrapping eagerly-invoked functions.
-     *
-     * See: https://github.com/vigneshshanmugam/optimize-js-plugin
-     */
-
-    new OptimizeJsPlugin({
-      sourceMap: false
-    }),
-
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       title: METADATA.title,

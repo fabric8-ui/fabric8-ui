@@ -29,7 +29,7 @@ const METADATA = webpackMerge(commonConfig.metadata, {
 
 module.exports = function (options) {
   return webpackMerge(commonConfig, {
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
 
     entry: {
       'polyfills': './src/polyfills.ts',
