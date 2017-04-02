@@ -1,0 +1,23 @@
+<div *ngIf="panelState === 'in'" class="row container-modal container-cards-pf">
+  <div class="row row-cards-pf">
+    <div class="col-xs-12 container-modal-header ">
+      <h2 class="header-text margin-0">Choose a new work item type</h2>
+      <i class="header-text pficon pficon-close" (click)="close()"></i>
+    </div>
+  </div>
+  <div class="row row-cards-pf">
+    <div *ngFor="let type of workItemTypes" class="col-xs-12 col-sm-6 col-md-4 col-lg-3" (click)="select(type)">
+      <div class="card-pf card-pf-view card-pf-view-select">
+        <div class="card-pf-body">
+          <div class="card-pf-top-element">
+            <i class="card-pf-icon-circle fa {{type.attributes.icon}}"></i>
+          </div>
+          <h2 class="card-pf-title text-center">
+            {{type.attributes.name}}
+          </h2>
+          <p class="card-pf-info">{{type.attributes.description}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
