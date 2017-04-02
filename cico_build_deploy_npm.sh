@@ -37,7 +37,7 @@ docker exec fabric8-planner-builder npm run build:prod
 docker exec fabric8-planner-builder ./run_unit_tests.sh
 
 ## Exec functional tests
-#docker exec fabric8-planner-builder ./run_functional_tests.sh
+docker exec fabric8-planner-builder ./run_functional_tests.sh
 
 if [ $? -eq 0 ]; then
   echo 'CICO: functional tests OK'

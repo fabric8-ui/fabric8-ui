@@ -40,7 +40,7 @@ docker exec fabric8-planner-builder ./run_unit_tests.sh
 
 
 ## Exec functional tests
-#docker exec fabric8-planner-builder ./run_functional_tests.sh
+docker exec fabric8-planner-builder ./run_functional_tests.sh
 
 ## All ok, build prod version
 docker exec fabric8-planner-builder ./upload_to_codecov.sh
