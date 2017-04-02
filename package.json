@@ -126,7 +126,7 @@
   "devDependencies": {
     "@angular/compiler": "2.4.9",
     "@angular/compiler-cli": "2.4.9",
-    "@krux/condition-jenkins": "^1.0.1",
+    "@krux/condition-jenkins": "1.0.1",
     "@types/jasmine": "2.5.43",
     "@types/lodash": "4.14.54",
     "@types/node": "6.0.45",
@@ -191,7 +191,7 @@
     "sass-loader": "6.0.3",
     "sasslint-webpack-plugin": "1.0.4",
     "script-ext-html-webpack-plugin": "1.7.1",
-    "semantic-release": "^6.3.2",
+    "semantic-release": "6.3.2",
     "style-loader": "0.13.2",
     "to-string-loader": "1.1.5",
     "ts-helpers": "1.1.2",
@@ -208,7 +208,7 @@
     "webpack-dll-bundles-plugin": "1.0.0-beta.5",
     "webpack-md5-hash": "0.0.5",
     "webpack-merge": "3.0.0",
-    "yargs": "^7.0.1"
+    "yargs": "7.0.1"
   },
   "release": {
     "branch": "master",
