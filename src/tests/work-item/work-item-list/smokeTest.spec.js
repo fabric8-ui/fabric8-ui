@@ -53,7 +53,7 @@ describe('Work item list', function () {
 
         detailPage.details_assigned_user().click();
         detailPage.clickworkItemDetailUnassignButton();
-        // expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned'); //Commented due to https://github.com/fabric8io/fabric8-planner/issues/1412
+        expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
         detailPage.clickWorkItemDetailCloseButton();
         page.clickWorkItemKebabButton(page.firstWorkItem);
         page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
@@ -99,31 +99,30 @@ describe('Work item list', function () {
     });
   });
 
-  /* Vary the order of execution of the workitems *///Commented due to https://github.com/fabric8io/fabric8-planner/issues/1412 
-        
-  // it('should top workitem to the bottom and back to the top via the workitem kebab - phone.', function() {
+  /* Vary the order of execution of the workitems */
+  it('should top workitem to the bottom and back to the top via the workitem kebab - phone.', function() {
 
-  //   page.allWorkItems.count().then(function (text) {
-  //     var totalCount = text
+    page.allWorkItems.count().then(function (text) {
+      var totalCount = text
 
-  //     /* Verify that the first work item is in the correct position */
-  //     expect(page.workItemTitle(page.workItemByIndex(0))).toBe(MOCK_WORKITEM_TITLE_0);
-  //     compareWorkitems (page, 0, MOCK_WORKITEM_TITLE_0);
+      /* Verify that the first work item is in the correct position */
+      expect(page.workItemTitle(page.workItemByIndex(0))).toBe(MOCK_WORKITEM_TITLE_0);
+      compareWorkitems (page, 0, MOCK_WORKITEM_TITLE_0);
 
-  //     /* Move the workitem to the bottom */
-  //     page.clickWorkItemKebabButton (page.workItemByTitle(MOCK_WORKITEM_TITLE_0)).then(function() {
-  //       page.clickWorkItemKebabMoveToBottomButton(page.workItemByTitle(MOCK_WORKITEM_TITLE_0));
-  //       compareWorkitems (page, totalCount - 1, MOCK_WORKITEM_TITLE_0);
-  //     });
-  //     /* And then move it back to the top  This is not working with chrome due to Kebab is hidden for bottom WI*/
-  //     // page.clickWorkItemKebabButton (page.workItemByTitle(MOCK_WORKITEM_TITLE_0)).then(function() {
-  //     //   page.clickWorkItemKebabMoveToTopButton(page.workItemByTitle(MOCK_WORKITEM_TITLE_0));
-  //     //   compareWorkitems (page, 0, MOCK_WORKITEM_TITLE_0);
-  //     // });
+      /* Move the workitem to the bottom */
+      page.clickWorkItemKebabButton (page.workItemByTitle(MOCK_WORKITEM_TITLE_0)).then(function() {
+        page.clickWorkItemKebabMoveToBottomButton(page.workItemByTitle(MOCK_WORKITEM_TITLE_0));
+        compareWorkitems (page, totalCount - 1, MOCK_WORKITEM_TITLE_0);
+      });
+      /* And then move it back to the top  This is not working with chrome due to Kebab is hidden for bottom WI*/
+      // page.clickWorkItemKebabButton (page.workItemByTitle(MOCK_WORKITEM_TITLE_0)).then(function() {
+      //   page.clickWorkItemKebabMoveToTopButton(page.workItemByTitle(MOCK_WORKITEM_TITLE_0));
+      //   compareWorkitems (page, 0, MOCK_WORKITEM_TITLE_0);
+      // });
 
-  //   });
+    });
 
-  // });
+  });
 
   /* Test that the Quick add work item is visible */
   it('Test Quick workitem visible without authorization - phone.', function () {
