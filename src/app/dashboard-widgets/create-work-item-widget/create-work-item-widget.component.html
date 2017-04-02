@@ -2,7 +2,7 @@
   <div class="flex-container in-column-direction">
     <h2 class="card-pf-title card-pf-utilization-details">
       <span>My Work Items</span>
-      <span class="badge">20</span>
+      <span class="badge">{{myWorkItems | async | arrayCount}}</span>
     </h2>
   </div>
   <div class="card-pf-body">
@@ -21,7 +21,7 @@
     <div class="analyze-overview-items-detail">
       <div class="card-pf-body">
         <p>
-          Work Items <a>#201</a> assigned to you by <a>@magranfie</a> under wireframe label
+          Work Item <a>#201</a> assigned to you by <a>@magranfie</a> under wireframe label
         </p>
         <p>
           Work Items <a>#201</a> assigned to you by <a>@magranfie</a> under wireframe label
