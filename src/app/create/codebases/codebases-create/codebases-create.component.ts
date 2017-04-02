@@ -3,8 +3,9 @@ import { Component, EventEmitter, OnInit, Output, ViewEncapsulation, AfterViewIn
 
 import { Logger, Broadcaster } from 'ngx-base';
 import { Context, Contexts, Spaces } from 'ngx-fabric8-wit';
-import { trimEnd } from 'lodash';
 import { Observable } from 'rxjs';
+
+import { removeAction } from '../../../app-routing.module';
 
 import { Codebase } from '../services/codebase';
 import { CodebasesService } from '../services/codebases.service';
@@ -80,7 +81,7 @@ export class CodebasesCreateComponent implements OnInit, AfterViewInit {
 
   togglePanelState($event: any): void {
     if ($event === 'out') {
-      this.close(this.removeAction(this.router.url));
+      this.close(removeAction(this.router.url));
     }
   }
 
@@ -91,11 +92,6 @@ export class CodebasesCreateComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.router.navigateByUrl(routeTo);
     }, 400);
-  }
-
-  // TODO HACK setting the outlets: { overlay: null } as documented won't work for me so manually change the URL
-  private removeAction(url: string) {
-    return trimEnd(url.replace(/\(action:[a-z-]*\)/, ''), '/');
   }
 
 }

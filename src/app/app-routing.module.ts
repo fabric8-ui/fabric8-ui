@@ -1,10 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { trimEnd } from 'lodash';
+
 import { LoginComponent } from './login/login.component';
 import { SigninComponent } from './signin/signin.component';
 import { ContextResolver } from './shared/context-resolver.service';
 
+
+export function removeAction(url: string) {
+  return trimEnd(url.replace(/\(action:[a-z-]*\)/, ''), '/');
+}
 
 export const routes: Routes = [
 
