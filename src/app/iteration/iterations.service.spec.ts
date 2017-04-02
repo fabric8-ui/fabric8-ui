@@ -1,3 +1,5 @@
+import { SpacesService } from './../shared/standalone/spaces.service';
+import { Spaces } from 'ngx-fabric8-wit';
 import {
   BaseRequestOptions,
   Http,
@@ -10,14 +12,11 @@ import {
   TestBed
 } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { cloneDeep } from 'lodash';
 import { Broadcaster, Logger} from 'ngx-base';
-import { Spaces } from 'ngx-fabric8-wit';
 import { AuthenticationService } from 'ngx-login-client';
 
-import { SpacesService } from '../shared/standalone/spaces.service';
 import { IterationModel } from '../models/iteration.model';
 import { IterationService } from './iteration.service';
 import { GlobalSettings } from '../shared/globals';
@@ -59,9 +58,6 @@ describe('Iteration service - ', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule
-      ],
       providers: [
         Broadcaster,
         Logger,
@@ -170,7 +166,6 @@ describe('Iteration service - ', () => {
   }));
 
   // Test if the API returns error
-/*
   it('Get iteration with error', async(() => {
     let url1 = 'http://localhost:8080/api/spaces/d7d98b45-415a-4cfc-add2-ec7b7aee7dd5/iterations';
 
@@ -192,7 +187,6 @@ describe('Iteration service - ', () => {
         expect(err).toEqual([]);
       });
   }));
-*/
 
   // Test if everything is okay
   it('Create iteration', async(() => {
@@ -219,7 +213,6 @@ describe('Iteration service - ', () => {
   }));
 
   // Test if the API returns error
-/*
   it('Create iteration with error', async(() => {
     let requestParams = resp[0];
     let url1 = 'http://localhost:8080/api/spaces/d7d98b45-415a-4cfc-add2-ec7b7aee7dd5/iterations';
@@ -241,7 +234,6 @@ describe('Iteration service - ', () => {
         expect(apiService.iterations.length).toEqual(0);
       });
   }));
-*/
 
   it('Should check valid URL for iterations', () => {
     let url1 = 'http://localhost:8080/api/spaces/d7d98b45-415a-4cfc-add2-ec7b7aee7dd5/iterations';
@@ -279,7 +271,6 @@ describe('Iteration service - ', () => {
   }));
 
   // Patch service test with API error
-/*
   it('Update iteration with API error', async(() => {
     // Assign the existing iteration value
     apiService.iterations = cloneDeep(resp);
@@ -305,6 +296,5 @@ describe('Iteration service - ', () => {
         expect(apiService.iterations[0].attributes.name).toEqual('Sprint #24');
       });
   }));
-*/
 
 });

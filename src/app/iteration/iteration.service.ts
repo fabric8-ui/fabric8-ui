@@ -61,18 +61,15 @@ export class IterationService {
               this.auth.logout();
             } else {
               console.log('Fetch iteration API returned some error - ', error.message);
-              return Observable.throw(new Error(error.message));
-              // return Observable.throw<IterationModel[]> ([] as IterationModel[]);
+              return Observable.throw<IterationModel[]> ([] as IterationModel[]);
             }
           });
       } else {
         this.logger.log('URL not matched');
-        return Observable.throw(new Error('URL not matched!'));
-        // return Observable.throw<IterationModel[]> ([] as IterationModel[]);
+        return Observable.throw<IterationModel[]> ([] as IterationModel[]);
       }
     } else {
-      return Observable.throw(new Error('error'));
-      // return Observable.throw<IterationModel[]> ([] as IterationModel[]);
+      return Observable.throw<IterationModel[]> ([] as IterationModel[]);
     }
   }
 
@@ -109,18 +106,15 @@ export class IterationService {
               this.auth.logout();
             } else {
               console.log('Post iteration API returned some error - ', error.message);
-              return Observable.throw(new Error(error.message));
-              // return Observable.throw<IterationModel>({} as IterationModel);
+              return Observable.throw<IterationModel>({} as IterationModel);
             }
           });
       } else {
         this.logger.log('URL not matched');
-        return Observable.throw(new Error('URL not matched'));
-        // return Observable.throw<IterationModel>( {} as IterationModel );
+        return Observable.throw<IterationModel>( {} as IterationModel );
       }
     } else {
-      return Observable.throw(new Error('error'));
-      // return Observable.throw<IterationModel>( {} as IterationModel );
+      return Observable.throw<IterationModel>( {} as IterationModel );
     }
   }
 
@@ -154,8 +148,7 @@ export class IterationService {
           this.auth.logout();
         } else {
           console.log('Patch iteration API returned some error - ', error.message);
-          return Observable.throw(new Error(error.message));
-          // return Observable.throw<IterationModel>({} as IterationModel);
+          return Observable.throw<IterationModel>({} as IterationModel);
         }
       });
   }
