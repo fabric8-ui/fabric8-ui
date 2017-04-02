@@ -2,7 +2,7 @@ import { UserService } from 'ngx-login-client';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs';
+import { Observable, ConnectableObservable } from 'rxjs';
 
 
 import { Broadcaster } from 'ngx-base';
@@ -31,23 +31,45 @@ class WorkItemFilter {
 })
 export class CreateWorkItemWidgetComponent implements OnInit {
 
-  myWorkItems: Observable<WorkItem[]>;
+  private _myWorkItems: ConnectableObservable<WorkItem[]>;
+  myWorkItemsCount: Observable<number>;
+  contextPath: Observable<string>;
 
   constructor(
     private context: Contexts,
     private broadcaster: Broadcaster,
     private workItemService: WorkItemService,
-    private userService: UserService
+    private userService: UserService,
+    private contexts: Contexts
   ) { }
 
   ngOnInit() {
-    this.myWorkItems = this.userService.loggedInUser
+    this.contextPath = this.contexts.current.map(context => context.path);
+    this._myWorkItems = this.userService
+      .getAllUsers()
+      .do(() => this.workItemService.buildUserIdMap())
+      .switchMap(() => this.userService.loggedInUser)
       .map(user => [{
-      paramKey: 'filter[assignee]',
-      value: user.id,
-      active: true
-    }])
-    .switchMap(filters => this.workItemService.getWorkItems(100000, filters)).map(val => val.workItems);
+        paramKey: 'filter[assignee]',
+        value: user.id,
+        active: true
+      }])
+      .switchMap(filters => this.workItemService
+        .getWorkItems(100000, filters))
+      .map(val => val.workItems)
+      // Resolve the work item type, creator and area
+      .do(workItems => workItems.forEach(workItem => this.workItemService.resolveType(workItem)))
+      .do(workItems => workItems.forEach(workItem => this.workItemService.resolveAreaForWorkItem(workItem)))
+      // MUST DO creator after area due to bug in planner
+      .do(workItems => workItems.forEach(workItem => this.workItemService.resolveCreator(workItem)))
+      .do(val => console.log(val))
+      .publishReplay(1);
+    this._myWorkItems.connect();
+    this.myWorkItemsCount = this._myWorkItems.map(workItems => workItems.length);
+  }
+
+  get myWorkItems(): Observable<WorkItem[]> {
+    return this._myWorkItems;
   }
 
 }

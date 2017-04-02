@@ -2,47 +2,37 @@
   <div class="flex-container in-column-direction">
     <h2 class="card-pf-title card-pf-utilization-details">
       <span>My Work Items</span>
-      <span class="badge">{{myWorkItems | async | arrayCount}}</span>
+      <span class="badge">{{myWorkItemsCount | async}}</span>
     </h2>
   </div>
   <div class="card-pf-body">
-    <div class="blank-slate-pf">
+    <div class="blank-slate-pf" *ngIf="(myWorkItemsCount | async) === 0">
       <div class="blank-slate-pf-icon">
         <span class="pficon pficon pficon-add-circle-o"></span>
       </div>
       <h1>Create a Work Item</h1>
       <p>
-        Planner will help you to create different types of work items and assign team members to items.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tristique a sapien eu dapibus. Pellentesque euismod interdum
+        volutpat. Vestibulum a.
       </p>
       <div class="blank-slate-pf-main-action">
         <button class="btn btn-primary btn-lg">Create a Work Item</button>
       </div>
     </div>
-    <div class="analyze-overview-items-detail">
+    <div class="analyze-overview-items-detail" *ngIf="(myWorkItemsCount | async) > 0">
       <div class="card-pf-body">
-        <p>
-          Work Item <a>#201</a> assigned to you by <a>@magranfie</a> under wireframe label
-        </p>
-        <p>
-          Work Items <a>#201</a> assigned to you by <a>@magranfie</a> under wireframe label
-        </p>
-        <p>
-          Work Items <a>#201</a> assigned to you by <a>@magranfie</a> under wireframe label
-        </p>
-        <p>
-          Work Items <a>#201</a> assigned to you by <a>@magranfie</a> under wireframe label
-        </p>
-        <p>
-          Work Items <a>#201</a> assigned to you by <a>@magranfie</a> under wireframe label
-        </p>
-        <p>
-          Work Items <a>#201</a> assigned to you by <a>@magranfie</a> under wireframe label
-        </p>
-        <p>
-          Work Items <a>#201</a> assigned to you by <a>@magranfie</a> under wireframe label
-        </p>
-        <p>
-          Work Items <a>#201</a> assigned to you by <a>@magranfie</a> under wireframe label
+        <p *ngFor="let workItem of myWorkItems | async | take: 10">
+          <span class="color-grey pull-left fa {{workItem.relationships?.baseType?.data?.attributes?.icon}}"></span>
+          <a [routerLink]="[contextPath | async, 'plan', 'detail', workItem.id]">#{{workItem.id}}</a>
+          <span *ngIf="workItem.attributes['system.created_at']">
+            created <span id="created_at" [innerHTML]="workItem.attributes['system.created_at'] | almMomentTime"></span>
+          </span>
+          <span *ngIf="workItem.relationalData?.area?.attributes?.name">
+            in {{workItem.relationalData?.area?.attributes?.name}}
+          </span>
+          <span *ngIf="workItem.relationalData?.creator?.attributes">
+            by {{workItem.relationalData?.creator | almUserName:'unknown'}}
+          </span>
         </p>
       </div>
     </div>
