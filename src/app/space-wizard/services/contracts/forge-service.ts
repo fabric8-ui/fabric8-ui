@@ -4,14 +4,14 @@ import { Observable } from 'rxjs/Rx';
 import { IForgeCommandRequest, IForgeCommandResponse } from '../../models/forge';
 
 export {
-  IForgeRequest,
-  IForgeCommandRequest,
-  IForgeCommandPipeline,
-  IForgeResponse,
-  IForgeCommandResponse,
   IForgeCommand,
+  IForgeCommandResponse,
   IForgeCommandParameters,
   IForgeCommandData,
+  IForgeCommandRequest,
+  IForgeCommandPipeline,
+  IForgeRequest,
+  IForgeResponse,
   IForgeValueChoice,
   IForgeInput
 } from '../../models/forge';

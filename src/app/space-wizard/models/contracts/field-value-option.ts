@@ -1,4 +1,4 @@
-export interface IFieldValueOption {
+export interface IFieldChoice {
   id: string;
   description?: string;
   selected: boolean;

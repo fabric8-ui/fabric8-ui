@@ -1,7 +1,8 @@
-import { IAppGeneratorForgeCommand } from './app-generator-forge-command';
+import { IAppGeneratorCommand } from './app-generator-command';
 
 export interface IAppGeneratorRequest {
-  command: IAppGeneratorForgeCommand | any;
-  /** other dynamic fields */
+  /** The application command information to be executed  */
+  command: IAppGeneratorCommand ;
+  /** Other dynamic fields */
   [key: string]: any;
 }

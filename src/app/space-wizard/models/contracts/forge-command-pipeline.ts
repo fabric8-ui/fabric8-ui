@@ -1,5 +1,5 @@
 export interface IForgeCommandPipeline {
-  stage: {
+  step: {
     name: string;
     index?: number;
   };

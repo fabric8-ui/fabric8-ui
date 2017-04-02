@@ -1,43 +1,38 @@
 import { OpaqueToken } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import {
-  IAppGeneratorCommand,
   IAppGeneratorRequest,
   IAppGeneratorResponse,
-  IFieldInfo,
-  IFieldSet
+  IField,
+  IFieldCollection
 } from '../../models/app-generator';
 
 export {
-  IFieldSet,
-  FieldSet,
-  IFieldInfo,
+  IFieldCollection,
+  FieldCollection,
+  IField,
   IAppGeneratorRequest,
   IAppGeneratorResponse,
   IAppGeneratorCommand,
-  IAppGeneratorForgeCommand,
-  IAppGeneratorForgeCommandParameters,
+  IAppGeneratorResponseContext,
+  IAppGeneratorCommandParameters,
   FieldWidgetClassificationOptions,
   FieldWidgetClassification,
-  IFieldValueOption
+  IFieldChoice
 } from '../../models/app-generator';
 
 /** AppGenerator contract */
 
 export interface IAppGeneratorService {
-  getFieldSet(options?: IAppGeneratorRequest): Observable<IAppGeneratorResponse>;
+  getFields(request?: IAppGeneratorRequest): Observable<IAppGeneratorResponse>;
 }
 
 /** AppGeneratorService contract using abstract base class */
 
 export abstract class AppGeneratorService implements IAppGeneratorService {
-  abstract getFieldSet(options?: IAppGeneratorRequest): Observable<IAppGeneratorResponse>;
-
-  createEmptyResponse(): Observable<IAppGeneratorResponse> {
-    return Observable.empty();
-  }
-
+  abstract getFields(request?: IAppGeneratorRequest): Observable<IAppGeneratorResponse>;
 }
+
 
 //noinspection TsLint
 /**

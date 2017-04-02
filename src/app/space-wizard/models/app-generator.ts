@@ -1,12 +1,12 @@
-export { FieldSet } from './concrete/field-set';
+export { FieldCollection } from './concrete/field-set';
 
-export { IFieldInfo } from './contracts/field-info';
-export { IFieldSet } from './contracts/field-set';
-export { IFieldValueOption } from './contracts/field-value-option';
+export { IField } from './contracts/field-info';
+export { IFieldCollection } from './contracts/field-set';
+export { IFieldChoice } from './contracts/field-value-option';
 export { FieldWidgetClassification, FieldWidgetClassificationOptions } from './contracts/field-classification';
 
+export { IAppGeneratorCommand } from './contracts/app-generator-command';
+export { IAppGeneratorCommandParameters } from './contracts/app-generator-command-parameters';
 export { IAppGeneratorRequest } from './contracts/app-generator-request';
 export { IAppGeneratorResponse } from './contracts/app-generator-response';
-export { IAppGeneratorCommand } from './contracts/app-generator-command';
-export { IAppGeneratorForgeCommand } from './contracts/app-generator-forge-command';
-export { IAppGeneratorForgeCommandParameters } from './contracts/app-generator-forge-command-parameters';
+export { IAppGeneratorResponseContext } from './contracts/app-generator-response-context';

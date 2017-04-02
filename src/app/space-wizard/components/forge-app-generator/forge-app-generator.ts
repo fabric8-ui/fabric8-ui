@@ -1,14 +1,16 @@
 //
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
-import { IForgeCommand, IForgeCommandData, IForgeState } from '../../models/forge';
-
+import { IForgeCommandData, IForgeState } from '../../models/forge';
 import { IWorkflow } from '../../models/workflow';
 
 import {
+  IAppGeneratorCommand,
   IAppGeneratorRequest,
   IAppGeneratorResponse,
+  IAppGeneratorResponseContext,
   IAppGeneratorService,
-  IFieldSet
+  IField,
+  IFieldCollection
 } from '../../services/app-generator.service';
 
 export class ForgeAppGenerator {
@@ -18,7 +20,7 @@ export class ForgeAppGenerator {
   name: string;
   state: IForgeState;
 
-  private _fieldSet: IFieldSet;
+  private _fieldSet: IFieldCollection;
   private _responseHistory: Array<IAppGeneratorResponse>;
   private currentResponse: IAppGeneratorResponse;
 
@@ -35,59 +37,68 @@ export class ForgeAppGenerator {
     this._responseHistory = value;
   };
 
-  get fieldSet(): IFieldSet {
+  get fields(): IFieldCollection {
     this._fieldSet = this._fieldSet || [];
     return this._fieldSet;
   }
 
-  set fieldSet(value: IFieldSet) {
+  set fields(value: IFieldCollection) {
     this._fieldSet = value;
   }
 
   begin() {
+    this.responseHistory=[];
     let request: IAppGeneratorRequest = {
       command: {
         name: `${this.name}`
       }
     };
     this.log('command being sent to the app generator service:');
-    return this._appGeneratorService.getFieldSet(request)
+    return this._appGeneratorService.getFields(request)
     .subscribe(response => {
-      this.update(request, response);
+      this.applyCurrentResponse(request, response);
     });
   }
 
-  update(request: IAppGeneratorRequest, response: IAppGeneratorResponse) {
+  applyCurrentResponse(request: IAppGeneratorRequest, 
+                response: IAppGeneratorResponse) {
     this.log({ message: `received a response for command = ${request.command.name}`, info: true });
     console.dir(response);
-    let nextCommand: IForgeCommand = response.context.nextCommand;
-    let forgeCommandData: IForgeCommandData = nextCommand.parameters.data;
-    this.state = forgeCommandData.state;
-    if ( this.responseHistory.length > 0 ) {
-      let prevResponse = this.currentResponse;
-      this.responseHistory.push(prevResponse);
-      this.log(`Stored fieldset[${prevResponse.payload.data.length}] into fieldset history
-      ... there are ${this.responseHistory.length} items in history ...`);
+    let cmd: IAppGeneratorCommand = response.context.nextCommand;//.currentCommand;
+    let currentCommandForgeData: IForgeCommandData = cmd.parameters.data;
+    this.state = currentCommandForgeData.state;
+    if(this.state.valid)
+    {
+      let previousResponse = this.currentResponse;
+      if( previousResponse )
+      {
+        this.responseHistory.push(previousResponse);
+        this.log(`Stored fieldset[${previousResponse.payload.fields.length}] into fieldset history
+                  ... there are ${this.responseHistory.length} responses in history ...`);
+
+      }
     }
     this.currentResponse = response;
-    this.fieldSet = response.payload.data;
+    this.fields = response.payload.fields;
   }
 
   gotoNextStep() {
-    let prevResponse = this.currentResponse;
-    this.responseHistory.push(prevResponse);
-    this.log(`stored fieldset[${prevResponse.payload.data.length}] into history
-    ... there are ${this.responseHistory.length} items in history ...`);
-    let command = this.currentResponse.context.nextCommand;
-    command.parameters.inputs = this.fieldSet;
+    // before going tonext step , preserv the current response
+    // let previousResponse = this.currentResponse;
+    // this.responseHistory.push(previousResponse);
+    // this.log(`stored fields with ${previousResponse.payload.fields.length} items into history
+    //           ... there are ${this.responseHistory.length} responses in history ...`);
+    let command:IAppGeneratorCommand = this.currentResponse.context.nextCommand;
+    //set the fields property
+    command.parameters.fields = this.fields;
     this.log('command being sent to the app generator service:');
     console.dir(command);
     let request: IAppGeneratorRequest = {
       command: command
     };
-    this._appGeneratorService.getFieldSet(request)
+    this._appGeneratorService.getFields(request)
     .subscribe((response) => {
-      this.update(request, response);
+      this.applyCurrentResponse(request, response);
     });
     // TODO: need a way to be aware that the app generator pipeline is complete
     // if(this.workflow)
@@ -98,25 +109,22 @@ export class ForgeAppGenerator {
   }
 
   gotoPreviousStep() {
-
     let response = this.responseHistory.pop();
-    this.fieldSet = response.payload.data;
-    this.log(`Restored fieldset[${response.payload.data.length}] from fieldset history
-    ... there are ${this.responseHistory.length} items in history ...`);
+    this.fields = response.payload.fields;
+    this.log(`Restored fieldset[${response.payload.fields.length}] from fieldset history
+              ... there are ${this.responseHistory.length} items in history ...`);
   }
 
   execute() {
-
     if ( this.state && this.state.canExecute ) {
 
     }
-
   }
 
   reset() {
     this.responseHistory = [];
     this.currentResponse = null;
-    this.fieldSet = [];
+    this.fields = [];
   }
 
   finish() {

@@ -11,7 +11,7 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="form-horizontal">
-        <div class="form-group" *ngFor="let field of forge.fieldSet">
+        <div class="form-group" *ngFor="let field of forge.fields">
           <label class="control-label col-xs-4">{{field.display.label}}</label>
           <div class="col-xs-8" [ngSwitch]="field.display.inputType">
             <div *ngSwitchCase="'singleInput'" [ngSwitch]="field.valueType">
@@ -28,8 +28,8 @@
             <div *ngSwitchCase="'singleSelection'">
               <select class="form-control" [(ngModel)]="field.value" name="{{field.name}}"
                       *ngIf="field.valueType != 'projectType'">
-                <option value="{{option.id}}" *ngFor="let option of field.display.options">
-                  {{option.id}}
+                <option value="{{choice.id}}" *ngFor="let choice of field.display.choices">
+                  {{choice.id}}
                 </option>
               </select>
             </div>
@@ -54,13 +54,13 @@
               </div>
               <!--included list-->
               <div class="included-list">
-                <div [class.hidden]="!fieldOption.selected" [class.selected]="fieldOption.selected"
-                     *ngFor="let fieldOption of field.display.options">
-                  <label (click)="deselectOption(field,fieldOption)" class="selectedOption">
+                <div [class.hidden]="!choice.selected" [class.selected]="choice.selected"
+                     *ngFor="let choice of field.display.choices">
+                  <label (click)="deselectOption(field,choice)" class="selectedOption">
                     <span style="padding-left:5px;padding-right:5px;" class="glyphicon"
-                          [class.glyphicon-check]="fieldOption.selected"
-                          [class.glyphicon-unchecked]="!fieldOption.selected"></span>
-                    {{fieldOption.id}}
+                          [class.glyphicon-check]="choice.selected"
+                          [class.glyphicon-unchecked]="!choice.selected"></span>
+                    {{choice.id}}
                   </label>
                   <!--<input [disabled]="fieldOption.selected" style="background-color:transparent; width:3.0rem;margin-left:5px;margin-right:5px; text-align: center; vertical-align: center; display:inline-box; "  type="checkbox" name="{{fieldOption.id}}" [(ngModel)]="fieldOption.selected" class="form-control-" >{{fieldOption.id}}</label>-->
                 </div>
@@ -68,13 +68,13 @@
 
               <!--excluded list-->
               <div class="excluded-list">
-                <div [class.hidden]="fieldOption.selected||!fieldOption.visible" [class.selected]="fieldOption.selected"
-                     *ngFor="let fieldOption of field.display.options">
-                  <label (click)="selectOption(field,fieldOption)" class="unselectedOption">
+                <div [class.hidden]="choice.selected||!choice.visible" [class.selected]="choice.selected"
+                     *ngFor="let choice of field.display.choices">
+                  <label (click)="selectOption(field,choice)" class="unselectedOption">
                     <span style="padding-left:5px;padding-right:5px;" class="glyphicon"
-                          [class.glyphicon-check]="fieldOption.selected"
-                          [class.glyphicon-unchecked]="!fieldOption.selected"></span>
-                    {{fieldOption.id}}
+                          [class.glyphicon-check]="choice.selected"
+                          [class.glyphicon-unchecked]="!choice.selected"></span>
+                    {{choice.id}}
                   </label>
                   <!--<input [disabled]="fieldOption.selected" style="background-color:transparent; width:3.0rem;margin-left:5px;margin-right:5px; text-align: center; vertical-align: center; display:inline-box; "  type="checkbox" name="{{fieldOption.id}}" [(ngModel)]="fieldOption.selected" class="form-control-" >{{fieldOption.id}}</label>-->
                 </div>

@@ -2,7 +2,6 @@ export {
   IForgeService,
   ForgeService,
   IForgeRequest,
-  IForgeCommand,
   IForgeCommandParameters,
   IForgeCommandRequest,
   IForgeCommandPipeline,

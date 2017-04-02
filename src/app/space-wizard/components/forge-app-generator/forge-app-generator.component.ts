@@ -8,8 +8,8 @@ import { IWorkflow, IWorkflowTransition, WorkflowTransitionDirection } from '../
 import {
   IAppGeneratorService,
   IAppGeneratorServiceProvider,
-  IFieldInfo,
-  IFieldValueOption
+  IField,
+  IFieldChoice
 } from '../../services/app-generator.service';
 
 import { ForgeAppGenerator } from './forge-app-generator';
@@ -31,8 +31,8 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
 
   public forge: ForgeAppGenerator = null;
   @Input() title: string = 'Forge Command Wizard';
-  @Input() stepName: string = '';
-  @Input() commandName: string = '';
+  @Input() stepName: string = 'begin';
+  @Input() commandName: string = 'none';
 
   private _workflow: IWorkflow;
 
@@ -74,7 +74,7 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
   ngOnChanges(changes: SimpleChanges) {
     for ( let propName in changes ) {
       if ( changes.hasOwnProperty(propName) ) {
-        this.log(`ngOnChanges ...${propName}`);
+        this.log(`ngOnChanges ... ${propName}`);
         switch ( propName.toLowerCase() ) {
           case 'workflow': {
             let change: INotifyPropertyChanged<IWorkflow> = <any>changes[ propName ];
@@ -89,48 +89,56 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     }
   }
 
-  allOptionsSelected(field: IFieldInfo): boolean {
-    return !field.display.options.find((i) => i.selected === false);
+  allOptionsSelected(field: IField): boolean {
+    return !field.display.choices.find((i) => i.selected === false);
   }
 
-  selectOption(field: IFieldInfo, option: IFieldValueOption) {
-    option.selected = true;
+  selectOption(field: IField, choice: IFieldChoice) {
+    choice.selected = true;
     this.updateFieldValue(field);
   }
 
-  deselectOption(field: IFieldInfo, option: IFieldValueOption) {
-    option.selected = false;
+  deselectOption(field: IField, choice: IFieldChoice) {
+    choice.selected = false;
     this.updateFieldValue(field);
   }
 
-  updateFieldValue(field: IFieldInfo): IFieldInfo {
+  updateFieldValue(field: IField): IField {
     if ( !field ) {
       return null;
     }
-    if ( field.display.hasOptions ) {
-      field.value = field.display.options
-      .filter((o) => o.selected)
-      .map((o) => o.id);
-    }
-    if ( field.display.inputType === FieldWidgetClassificationOptions.SingleSelection) {
-      if ( field.value.length > 0 ) {
-        field.value = field.value[ 0 ];
-      } else {
-        field.value = '';
+    switch(field.display.inputType)
+    {
+      case FieldWidgetClassificationOptions.MultipleSelection:
+      {
+        if ( field.display.hasChoices ) {
+          field.value = field.display.choices
+          .filter((o) => o.selected)
+          .map((o) => o.id);
+        }
+        else
+        {
+          field.value=[];
+        }
+        break;
       }
+      default:{
+        break;
+      }
+
     }
     return field;
   }
 
-  deselectAllOptions(field: IFieldInfo) {
-    field.display.options.forEach((o) => {
+  deselectAllOptions(field: IField) {
+    field.display.choices.forEach((o) => {
       o.selected = false;
     });
   }
 
-  filterUnselectedList(field: IFieldInfo, filter: string) {
+  filterUnselectedList(field: IField, filter: string) {
     let r = new RegExp(filter || '', 'ig');
-    field.display.options.filter((o) => {
+    field.display.choices.filter((o) => {
       o.visible = false;
       return ((o.id.match(r)) || []).length > 0;
     })
@@ -140,24 +148,24 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
 
   }
 
-  selectAllOptions(field: IFieldInfo) {
-    field.display.options.forEach((o) => {
+  selectAllOptions(field: IField) {
+    field.display.choices.forEach((o) => {
       o.selected = true;
     });
   }
 
-  toggleSelectAll(field: IFieldInfo) {
+  toggleSelectAll(field: IField) {
     if ( !field ) {
       return;
     }
     // at least one not selected, then select all , else deselect all
-    let item = field.display.options.find((i) => i.selected === false);
+    let item = field.display.choices.find((i) => i.selected === false);
     if ( item ) {
-      for ( let o of field.display.options ) {
+      for ( let o of field.display.choices ) {
         o.selected = true;
       }
     } else {
-      for ( let o of field.display.options ) {
+      for ( let o of field.display.choices ) {
         o.selected = false;
       }
     }
@@ -167,7 +175,8 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
   private onWorkflowPropertyChanged(change?: INotifyPropertyChanged<IWorkflow>) {
     if ( change ) {
       if ( change.currentValue !== change.previousValue ) {
-        this.log(`The workflow property changed value ...`);
+        this.log(`
+          The workflow property changed value ...`);
         let current: IWorkflow = change.currentValue;
         this.forge.workflow = current;
         this.subscribeToWorkflowTransitions(current);
@@ -187,12 +196,14 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     if ( !workflow ) {
       return;
     }
-    this.log(`Subscribing to workflow transitions ...`);
+    this.log(`
+      Subscribing to workflow transitions ...`);
     workflow.transitions.subscribe((transition) => {
       this.log({
-                 message: `Subscriber responding to an observed '${transition.direction}' workflow transition:
-      from ${transition.from ? transition.from.name : 'null'} to ${transition.to ? transition.to.name : 'null'}.`
-               });
+        message: `
+        Subscriber responding to an observed '${transition.direction}' workflow transition:
+        from ${transition.from ? transition.from.name : 'null'} 
+        to ${transition.to ? transition.to.name : 'null'}.`});
       if ( this.isTransitioningToThisStep(transition) ) {
         this.forge.begin();
       }

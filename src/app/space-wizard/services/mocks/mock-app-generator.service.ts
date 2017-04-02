@@ -3,11 +3,11 @@ import { Observable, Observer } from 'rxjs/Rx';
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
 import {
   AppGeneratorService,
-  FieldSet,
+  FieldCollection,
   FieldWidgetClassificationOptions,
   IAppGeneratorRequest,
   IAppGeneratorResponse,
-  IFieldInfo
+  IField
 } from '../contracts/app-generator-service';
 
 /** mock app generator service */
@@ -25,8 +25,8 @@ export class MockAppGeneratorService extends AppGeneratorService {
     this.log(`New instance...`);
   }
 
-  getFieldSet(options: IAppGeneratorRequest): Observable<IAppGeneratorResponse> {
-    switch ( options.command ) {
+  getFields(options: IAppGeneratorRequest): Observable<IAppGeneratorResponse> {
+    switch ( options.command.name ) {
       case 'first': {
         return getFirstFieldSet();
       }
@@ -34,7 +34,7 @@ export class MockAppGeneratorService extends AppGeneratorService {
         return getSecondFieldSet();
       }
       default: {
-        return this.createEmptyResponse();
+        return Observable.empty();
       }
     }
   }
@@ -45,14 +45,15 @@ export class MockAppGeneratorService extends AppGeneratorService {
 
 function getFirstFieldSet(): Observable<IAppGeneratorResponse> {
   return Observable.create((observer: Observer<IAppGeneratorResponse>) => {
-    let items: IFieldInfo[] =
+    let items: IField[] =
       [
         {
           name: 'mock-f1',
           value: 'f1-value',
           display: {
-            options: [],
-            hasOptions: false,
+            choices: [],
+            description: 'f1-description',
+            hasChoices: false,
             inputType: FieldWidgetClassificationOptions.SingleInput,
             label: 'label-f1',
             enabled: true,
@@ -65,8 +66,9 @@ function getFirstFieldSet(): Observable<IAppGeneratorResponse> {
           name: 'mock-f2',
           value: 'f2-value',
           display: {
-            options: [],
-            hasOptions: false,
+            choices: [],
+            description: 'f2-description',
+            hasChoices: false,
             inputType: FieldWidgetClassificationOptions.SingleInput,
             label: 'label-f2',
             enabled: true,
@@ -76,8 +78,8 @@ function getFirstFieldSet(): Observable<IAppGeneratorResponse> {
           }
         }
       ];
-    let set = new FieldSet(... items);
-    observer.next({ payload: { data: set } });
+    let set = new FieldCollection(... items);
+    observer.next({ payload: { fields: set } });
     observer.complete();
   });
 }
@@ -85,13 +87,14 @@ function getSecondFieldSet(): Observable<IAppGeneratorResponse> {
   return Observable.create((observer: Observer<IAppGeneratorResponse>) => {
     observer.next({
                     payload: {
-                      data: [
+                      fields: [
                         {
                           name: 'mock-f3',
                           value: 'f3-value',
                           display: {
-                            options: [],
-                            hasOptions: false,
+                            choices: [],
+                            description: 'f3-description',
+                            hasChoices: false,
                             inputType: FieldWidgetClassificationOptions.SingleInput,
                             label: 'label-f3',
                             enabled: true,
@@ -104,8 +107,9 @@ function getSecondFieldSet(): Observable<IAppGeneratorResponse> {
                           name: 'mock-f4',
                           value: 'f4-value',
                           display: {
-                            options: [],
-                            hasOptions: false,
+                            choices: [],
+                            description: 'f4-description',
+                            hasChoices: false,
                             inputType: FieldWidgetClassificationOptions.SingleInput,
                             label: 'label-f4',
                             enabled: true,
@@ -118,8 +122,9 @@ function getSecondFieldSet(): Observable<IAppGeneratorResponse> {
                           name: 'mock-f5',
                           value: 'f5-value',
                           display: {
-                            options: [],
-                            hasOptions: false,
+                            choices: [],
+                            description: 'f5-description',
+                            hasChoices: false,
                             inputType: FieldWidgetClassificationOptions.SingleInput,
                             label: 'label-f5',
                             enabled: true,

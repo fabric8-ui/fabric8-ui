@@ -1,16 +1,17 @@
 import { FieldWidgetClassification } from './field-classification';
+import { IFieldChoice } from './field-value-option';
 import { IFieldMessage } from './field-message';
-import { IFieldValueOption } from './field-value-option';
 
-export interface IFieldInfo {
+export interface IField {
   name: string;
   value: string | Array<string>;
   valueType?: string;
   display: {
-    options?: Array<IFieldValueOption>;
-    hasOptions: boolean;
+    choices?: Array<IFieldChoice>;
+    hasChoices: boolean;
     inputType: FieldWidgetClassification;
     label: string;
+    description: string;
     enabled: boolean;
     required: boolean;
     visible: boolean;

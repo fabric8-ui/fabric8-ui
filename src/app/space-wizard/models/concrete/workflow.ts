@@ -28,7 +28,7 @@ export class Workflow implements IWorkflow {
       this.log = logger;
     }
 
-    this.log(`New instance...`);
+    this.log(`New instance ...`);
   }
 
   get steps(): Array<IWorkflowStep> {
@@ -65,7 +65,7 @@ export class Workflow implements IWorkflow {
 
   set activeStep(value: IWorkflowStep) {
     this.log(`Setting the active workflow step from 
-    '${this._activeStep ? this._activeStep.name : 'null'}' to '${value ? value.name : 'null'}' `);
+                '${this._activeStep ? this._activeStep.name : 'null'}' to '${value ? value.name : 'null'}' `);
     this._activeStep = value;
   }
 
@@ -200,7 +200,7 @@ export class Workflow implements IWorkflow {
         if ( transition.to && destinationStep !== transition.to ) {
           let newDestinationStep = transition.to;
           this.log(`transition: 
-                    destination step = '${destinationStep.name}' modified to be '${newDestinationStep.name}'`);
+                      destination step = '${destinationStep.name}' modified to be '${newDestinationStep.name}'`);
           // modify prev step handler if target step changed
           let priorHandler = newDestinationStep.gotoPreviousStep;
           // by dynamically adding the gotoNextStep function using a closure to retrieve previous step
@@ -290,7 +290,7 @@ export class Workflow implements IWorkflow {
     let me = this;
     return Observable.create((observer: Observer<IWorkflowTransition>) => {
       me.workflowTransitionSubject.subscribe(observer);
-      this.log('Observer is now subscribed to workflow transitions ...');
+      this.log('A new subscriber to workflow transitions has been added ...');
 
     });
   }
@@ -304,15 +304,15 @@ export class Workflow implements IWorkflow {
     }): IWorkflowTransition {
     let transition = new WorkflowTransition(options);
     this.log(`Notify workflow transition subscribers of an upcoming '${transition.direction}' transition 
-              from '${transition.from ? transition.from.name : 'null'}' 
-              to '${transition.to ? transition.to.name : 'null'}' `);
+                from '${transition.from ? transition.from.name : 'null'}' 
+                to '${transition.to ? transition.to.name : 'null'}' `);
     this.workflowTransitionSubject.next(transition);
     this.log(`workflowTransitionShouldContinue = ${transition.canContinue}`);
     if ( transition.canContinue === false ) {
       this.log({
                  message: `Note: workflow will not proceed from '${transition.from ? transition.from.name : 'null'}'
-                           to '${transition.to ? transition.to.name : 'null'}' 
-                           because transition.canContinue=${transition.canContinue}`,
+                             to '${transition.to ? transition.to.name : 'null'}' 
+                             because transition.canContinue=${transition.canContinue}`,
                  warning: true
                });
 

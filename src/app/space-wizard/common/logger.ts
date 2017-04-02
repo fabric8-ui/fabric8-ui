@@ -42,7 +42,7 @@ export class LoggerFactory {
   };
 
   constructor() {
-    console.log('%cLoggerFactory: %cNew instance.', this.styles.origin, this.styles.message);
+    console.log(`%c${this.constructor.name} %cNew instance ...`, this.styles.origin, this.styles.message);
   }
 
   createLoggerDelegate(origin: string, instance: number = 0): ILoggerDelegate {
