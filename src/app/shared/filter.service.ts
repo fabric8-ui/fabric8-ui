@@ -1,7 +1,8 @@
 import { GlobalSettings } from '../shared/globals';
 
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Http, Headers } from '@angular/http';
+import { WIT_API_URL } from 'ngx-fabric8-wit';
 
 import { FilterModel } from '../models/filter.model';
 
@@ -12,7 +13,8 @@ export class FilterService {
 
   constructor(
     private http: Http,
-    private globalSettings: GlobalSettings
+    private globalSettings: GlobalSettings,
+    @Inject(WIT_API_URL) private baseApiUrl: string
   ) {}
 
   /**
@@ -21,7 +23,7 @@ export class FilterService {
    * @return Promise of FilterModel[] - Array of filters
    */
   getFilters(): Promise<FilterModel[]> {
-    let apiUrl = [process.env.API_URL, "filters"].join("");
+    let apiUrl = [this.baseApiUrl, 'filters'].join('');
 
     return this.http
     .get(apiUrl)

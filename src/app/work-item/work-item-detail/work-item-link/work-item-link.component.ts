@@ -9,8 +9,6 @@ import { LinkType, MinimizedLinkType } from './../../../models/link-type';
 import { WorkItem } from './../../../models/work-item';
 import { WorkItemService } from './../../work-item.service';
 
-import { SearchData } from './search-data';
-
 @Component({
   selector: 'alm-work-item-link',
   templateUrl: './work-item-link.component.html',
@@ -27,7 +25,6 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
   link: Object;
   selectedWorkItem: Object = {};
   selectedLinkType: any = false;
-  searchWorkItem : SearchData;
   selectedWorkItemId: string;
   selectedValue: string = '';
   searchWorkItems: WorkItem[] = [];
