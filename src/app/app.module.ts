@@ -1,4 +1,3 @@
-import { Fabric8RuntimeConsoleResolver } from './shared/runtime-console/oauth-config-store-guard.resolver';
 import './rxjs-extensions';
 
 import { NgModule, ApplicationRef } from '@angular/core';
@@ -15,6 +14,7 @@ import { Broadcaster, Logger } from 'ngx-base';
 import { DropdownModule } from 'ngx-dropdown';
 import { AuthenticationService, UserService, HttpService } from 'ngx-login-client';
 import { WidgetsModule } from 'ngx-widgets';
+import { MomentModule } from 'angular2-moment';
 
 
 /*
@@ -55,6 +55,8 @@ import { authApiUrlProvider } from './shared/auth-api.provider';
 import { witApiUrlProvider } from './shared/wit-api.provider';
 import { ssoApiUrlProvider } from './shared/sso-api.provider';
 import { forgeApiUrlProvider } from './shared/forge-api.provider';
+import { PipelinesService } from './shared/runtime-console/pipelines.service';
+import { Fabric8RuntimeConsoleResolver } from './shared/runtime-console/oauth-config-store-guard.resolver';
 
 
 // Component Services
@@ -67,6 +69,7 @@ import { AnalyticService } from './shared/analytics.service';
 import { ConfigStore } from './base/config.store';
 import { fabric8UIConfigProvider } from './shared/config/fabric8-ui-config.service';
 import { Fabric8UIOnLogin } from './shared/runtime-console/fabric8-ui-onlogin.service';
+
 
 
 import {
@@ -123,7 +126,8 @@ export type StoreType = {
     AppRoutingModule,
     KubernetesStoreModule,
     RestangularModule,
-    KubernetesRestangularModule
+    KubernetesRestangularModule,
+    MomentModule
   ],
   declarations: [ // declare which components, directives and pipes belong to the module
     AppComponent,
@@ -188,7 +192,8 @@ export type StoreType = {
     {
       provide: OnLogin,
       useClass: Fabric8UIOnLogin
-    }
+    },
+    PipelinesService
   ],
   schemas: [],
   bootstrap: [AppComponent]

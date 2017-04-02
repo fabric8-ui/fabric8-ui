@@ -2,33 +2,32 @@
   <div class="flex-container in-column-direction">
     <h2 class="card-pf-title card-pf-utilization-details">
       <span>Pipelines</span>
-      <span class="badge">0</span>
+      <span class="badge">{{buildConfigsCount | async}}</span>
     </h2>
     <div class="card-pf-body">
-      <div class="blank-slate-pf">
+      <div class="blank-slate-pf" *ngIf="(buildConfigsCount | async) === 0">
         <div class="blank-slate-pf-icon">
           <span class="fa fa-code-fork"></span>
         </div>
-        <h1>There are no pipelines executing</h1>
+        <h1>There are no pipelines.</h1>
         <p>
-          This will update once you commit and build your codebase. Click the 'Refresh' button to see the latest updates.
+          Pipelines will appear when you commit your code.
         </p>
-        <div class="blank-slate-pf-main-action">
-          <button class="btn btn-primary btn-lg">Refresh</button>
-        </div>
       </div>
-      <div class="analyze-overview-items-detail">
-        <div class="card-pf-body">
-          <p>
-            <i>Pipeline execution updates are provided here.</i>
+      <div class='list-view-pf-main-info' *ngIf="(buildConfigsCount | async) > 0">
+        <div class='list-view-pf-left'>
+          <p *ngFor="let buildconfig of buildConfigs | async">
+            <span class="{{buildconfig.iconStyle}}" title="{{buildconfig.statusPhase}}"></span> Last builld for <em>{{ buildconfig.name
+            }}</em> was <em>#{{buildconfig.lastVersion}}</em>, ran
+            <em><span [innerHTML]="buildconfig.lastBuild.creationTimestamp | amTimeAgo"></span></em> and took {{buildconfig.lastBuild.duration | amDuration: 'ms'}}.
           </p>
         </div>
       </div>
-    </div>
-    <div class="card-pf-footer">
-      <a class="margin-bottom-10">
+      <div class="card-pf-footer">
+        <a class="margin-bottom-10">
               &nbsp;&nbsp;&nbsp;
             </a>
+      </div>
     </div>
   </div>
 </div>
