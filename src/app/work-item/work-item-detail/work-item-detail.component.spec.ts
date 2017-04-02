@@ -1,3 +1,5 @@
+import { SpacesService } from './../../shared/standalone/spaces.service';
+import { Spaces } from 'ngx-fabric8-wit';
 import {
   async,
   ComponentFixture,
@@ -11,7 +13,6 @@ import { SpyLocation } from '@angular/common/testing';
 import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CommonModule } from '@angular/common';
 
@@ -26,7 +27,6 @@ import {
 } from 'ng2-bootstrap';
 import { AlmUserName } from '../../pipes/alm-user-name.pipe';
 import { Broadcaster, Logger } from 'ngx-base';
-import { Spaces } from 'ngx-fabric8-wit';
 import {
   // AlmUserName,
   AuthenticationService,
@@ -42,8 +42,6 @@ import {
   AlmEditableModule,
   AlmIconModule
 } from 'ngx-widgets';
-
-import { SpacesService } from '../../shared/standalone/spaces.service';
 
 import { AreaModel } from '../../models/area.model';
 import { AreaService } from '../../area/area.service';
@@ -392,19 +390,18 @@ describe('Detailed view and edit a selected work item - ', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        AlmIconModule,
-        AlmEditableModule,
-        BrowserAnimationsModule,
-        CollapseModule,
-        CommonModule,
-        DropdownModule,
         FormsModule,
         RouterTestingModule.withRoutes([
           // this needs to be a relative path but I don't know how to do that in a test
           { path: './detail/1', component: WorkItemDetailComponent }
         ]),
+        CollapseModule,
+        CommonModule,
         TooltipModule,
-        Ng2CompleterModule
+        DropdownModule,
+        Ng2CompleterModule,
+        AlmIconModule,
+        AlmEditableModule
       ],
 
       declarations: [

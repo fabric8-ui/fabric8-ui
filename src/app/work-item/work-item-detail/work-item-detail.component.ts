@@ -1,22 +1,20 @@
 import { Observable } from 'rxjs/Observable';
 import {
+  animate,
   AfterViewInit,
   Component,
   ElementRef,
   HostListener,
   OnInit,
   OnDestroy,
+  trigger,
+  state,
+  style,
+  transition,
   ViewChild,
   ViewChildren,
   QueryList
 } from '@angular/core';
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
 import { Router }                 from '@angular/router';
