@@ -1,21 +1,23 @@
-import { SpacesService } from './../../../shared/standalone/spaces.service';
-import { Spaces } from 'ngx-fabric8-wit';
 import {
-async,
-ComponentFixture,
-fakeAsync,
-inject,
-TestBed,
-tick
+  async,
+  ComponentFixture,
+  fakeAsync,
+  inject,
+  TestBed,
+  tick
 } from '@angular/core/testing';
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { SpyLocation } from '@angular/common/testing';
 import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CommonModule } from '@angular/common';
+
+import { Observable } from 'rxjs';
+
 import {
+  CollapseModule,
   ComponentLoaderFactory,
   DropdownConfig,
   DropdownModule,
@@ -24,8 +26,7 @@ import {
   TooltipModule
 } from 'ng2-bootstrap';
 import { Ng2CompleterModule } from 'ng2-completer';
-import {  } from 'ng2-bootstrap';
-import { AlmUserName } from '../../../pipes/alm-user-name.pipe';
+import { Spaces } from 'ngx-fabric8-wit';
 import { Broadcaster, Logger } from 'ngx-base';
 import {
   // AlmUserName,
@@ -51,15 +52,13 @@ import { LinkType } from '../../../models/link-type';
 import { Comment } from '../../../models/comment';
 import { WorkItem } from '../../../models/work-item';
 import { WorkItemType } from '../../../models/work-item-type';
+import { AlmUserName } from '../../../pipes/alm-user-name.pipe';
+import { SpacesService } from '../../../shared/standalone/spaces.service';
 import { WorkItemService } from '../../work-item.service';
-
 import { WorkItemLinkComponent } from '../work-item-link/work-item-link.component';
 import { WorkItemCommentComponent } from './work-item-comment.component';
 import { WorkItemDetailComponent } from '../work-item-detail.component';
 import { WorkItemLinkTypeFilterByTypeName, WorkItemLinkFilterByTypeName } from '../work-item-detail-pipes/work-item-link-filters.pipe';
-
-import { CollapseModule } from 'ng2-bootstrap';
-import { Observable } from 'rxjs';
 
 describe('Comment section for the work item detailed view - ', () => {
   let comp: WorkItemDetailComponent;
@@ -415,6 +414,7 @@ describe('Comment section for the work item detailed view - ', () => {
           // this needs to be a relative path but I don't know how to do that in a test
           { path: './detail/1', component: WorkItemDetailComponent }
         ]),
+        BrowserAnimationsModule,
         CollapseModule,
         CommonModule,
         TooltipModule,
