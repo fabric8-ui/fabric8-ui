@@ -17,9 +17,10 @@
       <div class='list-view-pf-main-info' *ngIf="(buildConfigsCount | async) > 0">
         <div class='list-view-pf-left'>
           <p *ngFor="let buildconfig of buildConfigs | async">
-            <span class="{{buildconfig.iconStyle}}" title="{{buildconfig.statusPhase}}"></span> Last builld for <em>{{ buildconfig.name
-            }}</em> was <em>#{{buildconfig.lastVersion}}</em>, ran
-            <em><span [innerHTML]="buildconfig.lastBuild.creationTimestamp | amTimeAgo"></span></em> and took {{buildconfig.lastBuild.duration | amDuration: 'ms'}}.
+            <span class="{{buildconfig.iconStyle}}" title="{{buildconfig.statusPhase}}"></span>
+            Last build for {{buildconfig.name}} was #{{buildconfig.lastVersion}}, ran
+            <span [innerHTML]="buildconfig.lastBuild.creationTimestamp | amTimeAgo"></span>
+            and took {{buildconfig.lastBuild.duration | amDuration: 'ms'}}.
           </p>
         </div>
       </div>
