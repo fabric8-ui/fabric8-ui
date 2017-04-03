@@ -60,7 +60,8 @@ export class IterationService {
             this.auth.logout();
           } else {
             console.log('Fetch iteration API returned some error - ', error.message);
-            return Observable.throw<IterationModel[]> ([] as IterationModel[]);
+            return Observable.throw(new Error(error.message));
+            // return Observable.throw<IterationModel[]> ([] as IterationModel[]);
           }
         });
     } else {
@@ -108,7 +109,8 @@ export class IterationService {
             this.auth.logout();
           } else {
             console.log('Post iteration API returned some error - ', error.message);
-            return Observable.throw<IterationModel>({} as IterationModel);
+            return Observable.throw(new Error(error.message));
+            // return Observable.throw<IterationModel>({} as IterationModel);
           }
         });
     } else {

@@ -234,9 +234,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
 
   setParentIteration(id: string) {
     this.selectedParentIteration =  this.filteredIterations.find((iteration) => iteration.id === id);
-    this.selectedParentIterationName = this.selectedParentIteration.attributes['name'];
+    this.selectedParentIterationName = this.selectedParentIteration.attributes['resolved_parent_path'] + '/' + this.selectedParentIteration.attributes['name'];
     this.iterationSearch.nativeElement.focus();
-    this.iteration.relationships.parent.data.id = this.selectedParentIteration.id;
+    // this.iteration.relationships.parent.data.id = this.selectedParentIteration.id;
     this.filteredIterations = [];
   }
 
