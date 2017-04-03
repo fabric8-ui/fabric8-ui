@@ -374,6 +374,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
   descUpdate(event: any): void {
     this.descText = event;
+    this.workItem.attributes['system.description'] = {
+      markup: 'Markdown',
+      content: this.descText.trim()
+    };
     if (this.workItem.id) {
       let payload = cloneDeep(this.workItemPayload);
       payload.attributes['system.description'] = {
