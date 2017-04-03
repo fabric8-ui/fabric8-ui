@@ -5,6 +5,7 @@ export {
   IAppGeneratorRequest,
   IAppGeneratorCommand,
   IAppGeneratorResponseContext,
+  IAppGeneratorState,
   IAppGeneratorCommandParameters,
   IFieldCollection,
   IField,

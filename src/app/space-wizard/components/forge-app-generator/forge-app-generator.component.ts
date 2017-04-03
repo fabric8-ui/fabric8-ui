@@ -45,6 +45,7 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     }
     this.log(`New instance ...`);
     this.forge = new ForgeAppGenerator(this._appGeneratorService, loggerFactory);
+    
   }
 
   @Input()
@@ -170,6 +171,10 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
       }
     }
     this.updateFieldValue(field);
+  }
+
+  trackByFn(index: any, item: any) {
+   return index;
   }
 
   private onWorkflowPropertyChanged(change?: INotifyPropertyChanged<IWorkflow>) {

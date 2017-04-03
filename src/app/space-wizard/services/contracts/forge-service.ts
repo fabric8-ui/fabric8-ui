@@ -13,7 +13,9 @@ export {
   IForgeRequest,
   IForgeResponse,
   IForgeValueChoice,
-  IForgeInput
+  IForgeInput,
+  IForgeMetadata,
+  IForgeState
 } from '../../models/forge';
 
 //noinspection TsLint

@@ -15,6 +15,7 @@ export {
   IAppGeneratorResponse,
   IAppGeneratorCommand,
   IAppGeneratorResponseContext,
+  IAppGeneratorState,
   IAppGeneratorCommandParameters,
   FieldWidgetClassificationOptions,
   FieldWidgetClassification,

@@ -10,6 +10,8 @@ export {
   IForgeInput,
   IForgeValueChoice,
   IForgeCommandData,
-  ForgeCommands
+  ForgeCommands,
+  IForgeMetadata,
+  IForgeState
 } from './contracts/forge-service';
 export { IForgeServiceProvider, ForgeServiceProvider } from './providers/forge-service.provider';

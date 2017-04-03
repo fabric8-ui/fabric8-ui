@@ -8,7 +8,7 @@ export interface ILogEntry {
   inner?: any;
 }
 export interface ILoggerDelegate {
-  (options: string | ILogEntry): void;
+  (options: string | ILogEntry,...args): void;
 }
 /*
  * This is just a quick and dirty functional style logger allowing for unique logger 'instances'
@@ -30,13 +30,13 @@ export class LoggerFactory {
       padding-right:10px`,
     instance: `
       background:linear-gradient(#444, #333);
-      color:orangered; 
+      color:orangered;
       border-radius:10px;
       padding:3px;
       margin:3px 0;`,
     message: `
       background:linear-gradient(#444, #333);
-      color:white; 
+      color:white;
       border-radius:10px;
       padding:3px 10px;`
   };
@@ -48,7 +48,7 @@ export class LoggerFactory {
   createLoggerDelegate(origin: string, instance: number = 0): ILoggerDelegate {
     let me = this;
 
-    function addLogEntry(entry: ILogEntry) {
+    function addLogEntry(entry: ILogEntry,...args) {
       let method = 'log';
       if ( entry.error === true ) {
         method = 'error';
@@ -59,6 +59,7 @@ export class LoggerFactory {
       if ( entry.info === true ) {
         method = 'info';
       }
+      let msg = `${origin} ${instance} ${entry.message || ''}` 
       console[ method ].apply(
         null,
         [ `%c${origin}%c ${instance} %c${entry.message || ''}`,
@@ -66,16 +67,36 @@ export class LoggerFactory {
           me.styles.instance,
           me.styles.message ]
       );
+
+      if ( args && args.length === 1 ) {
+          if (typeof(args[0]) === 'function') {
+            args[0](msg);
+          }
+          else {
+            console.dir(args[0]);
+          }
+      }
+      if ( args && args.length > 1 ) {
+          if (typeof(args[0]) === 'function') {
+            args[0](msg);
+          }
+          else {
+            console.dir(args[0]);
+            if (typeof(args[1]) === 'function') {
+              args[1](msg);
+            }
+          }
+      }
     }
 
-    function loggerDelegate(options: string | ILogEntry) {
+    function loggerDelegate(options: string | ILogEntry,...args) {
       let entry = { message: '' };
       if ( typeof options === 'string' ) {
         entry.message = options || '';
       } else {
-        Object.assign(entry, options);
+        Object.assign(entry,options);
       }
-      addLogEntry(entry);
+      addLogEntry(entry,...args);
     }
 
     return loggerDelegate;

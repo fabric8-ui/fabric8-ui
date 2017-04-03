@@ -8,6 +8,8 @@ export interface IAppGeneratorResponseContext
   nextCommand: IAppGeneratorCommand;
   /** The next validation command to be executed */
   validationCommand: IAppGeneratorCommand;
+  /** The execute command to be executed */
+  executeCommand: IAppGeneratorCommand;
   /** Other dynamic fields */
   [key: string]: any;
   

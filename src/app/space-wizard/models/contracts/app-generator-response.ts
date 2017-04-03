@@ -1,5 +1,6 @@
 import { IFieldCollection } from './field-set';
 import { IAppGeneratorResponseContext } from './app-generator-response-context';
+import { IAppGeneratorState } from './app-generator-state';
 
 export interface IAppGeneratorResponse {
   payload: {
@@ -7,6 +8,8 @@ export interface IAppGeneratorResponse {
      * to generate an application
      */
     fields: IFieldCollection;
+    /** the state that the app generator is currently in */
+    state: IAppGeneratorState;
   };
   /** Any contextual information relevant to the response. */
   context?: IAppGeneratorResponseContext;

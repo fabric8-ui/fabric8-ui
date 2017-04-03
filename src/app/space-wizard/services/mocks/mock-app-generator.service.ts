@@ -7,6 +7,7 @@ import {
   FieldWidgetClassificationOptions,
   IAppGeneratorRequest,
   IAppGeneratorResponse,
+  IAppGeneratorState,
   IField
 } from '../contracts/app-generator-service';
 
@@ -79,7 +80,7 @@ function getFirstFieldSet(): Observable<IAppGeneratorResponse> {
         }
       ];
     let set = new FieldCollection(... items);
-    observer.next({ payload: { fields: set } });
+    observer.next({ payload: { state:{} as IAppGeneratorState, fields: set }  } as IAppGeneratorResponse);
     observer.complete();
   });
 }
@@ -87,6 +88,7 @@ function getSecondFieldSet(): Observable<IAppGeneratorResponse> {
   return Observable.create((observer: Observer<IAppGeneratorResponse>) => {
     observer.next({
                     payload: {
+                      state:{} as IAppGeneratorState,
                       fields: [
                         {
                           name: 'mock-f3',
@@ -135,7 +137,7 @@ function getSecondFieldSet(): Observable<IAppGeneratorResponse> {
                         }
                       ]
                     }
-                  });
+                  } as IAppGeneratorResponse);
     observer.complete();
   });
 }

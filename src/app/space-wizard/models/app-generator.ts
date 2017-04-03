@@ -10,3 +10,4 @@ export { IAppGeneratorCommandParameters } from './contracts/app-generator-comman
 export { IAppGeneratorRequest } from './contracts/app-generator-request';
 export { IAppGeneratorResponse } from './contracts/app-generator-response';
 export { IAppGeneratorResponseContext } from './contracts/app-generator-response-context';
+export { IAppGeneratorState } from './contracts/app-generator-state';

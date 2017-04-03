@@ -3,9 +3,9 @@ import { IForgeCommandPipeline } from './forge-command-pipeline';
 import { IFieldCollection } from './field-set';
 
 export interface IForgeCommandParameters {
-  commandName: string;
   data?: IForgeCommandData;
   pipeline?: IForgeCommandPipeline;
+  validatedData?:IForgeCommandData;
   // Other dynamic fields
   [propertyName: string]: any;
 }
