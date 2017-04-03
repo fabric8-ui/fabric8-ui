@@ -11,10 +11,6 @@
         <span class="pficon pficon pficon-add-circle-o"></span>
       </div>
       <h1>Create a Work Item</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tristique a sapien eu dapibus. Pellentesque euismod interdum
-        volutpat. Vestibulum a.
-      </p>
       <div class="blank-slate-pf-main-action">
         <button class="btn btn-primary btn-lg" [routerLink]="[{ outlets: { action: 'add-work-item' } }]">Create a Work Item</button>
       </div>
@@ -38,7 +34,7 @@
     </div>
   </div>
   <div class="card-pf-footer">
-    <a class="margin-bottom-10" [routerLink]="[{ outlets: { action: 'add-work-item' } }]">
+    <a class="btn btn-link" [routerLink]="[{ outlets: { action: 'add-work-item' } }]">
       <i class="pficon pficon-add-circle-o"></i>
       <span>Create a Work item</span>
     </a>

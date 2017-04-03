@@ -7,11 +7,11 @@
     <div class="card-pf-body">
       <div class="blank-slate-pf" *ngIf="(buildConfigsCount | async) === 0">
         <div class="blank-slate-pf-icon">
-          <span class="fa fa-code-fork"></span>
+          <span class="pficon pficon pficon-service"></span>
         </div>
-        <h1>There are no pipelines.</h1>
+        <h1>No Pipelines</h1>
         <p>
-          Pipelines will appear when you commit your code.
+          Commit code to show a pipeline.
         </p>
       </div>
       <div class='list-view-pf-main-info' *ngIf="(buildConfigsCount | async) > 0">
@@ -23,11 +23,6 @@
             and took {{buildconfig.lastBuild.duration | amDuration: 'ms'}}.
           </p>
         </div>
-      </div>
-      <div class="card-pf-footer">
-        <a class="margin-bottom-10">
-              &nbsp;&nbsp;&nbsp;
-            </a>
       </div>
     </div>
   </div>

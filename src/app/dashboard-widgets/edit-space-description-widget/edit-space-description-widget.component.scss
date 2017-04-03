@@ -1,1 +1,26 @@
 @import '../../../assets/stylesheets/base';
+
+.edit-space-description-widget {
+    max-height: 245px;
+    .space-description {
+        overflow-y: scroll;
+        max-height: 122px;
+        border: 1px solid transparent;
+    }
+    p[contenteditable="true"] {
+        &:hover {
+            &:after {
+                content: '\f040'; //pencil icon
+                font-family: FontAwesome;
+                position: absolute;
+                right: 13px;
+                top: 105px;
+            }
+        }
+        &:focus {
+            border: 1px solid $color-pf-blue;
+            box-shadow: 0 0 2px $color-pf-blue-300;
+            outline: none;
+        }
+    }
+}

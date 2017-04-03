@@ -7,14 +7,11 @@
     <div class="card-pf-body">
       <div class="blank-slate-pf" *ngIf="(codebaseCount | async) === 0">
         <div class="blank-slate-pf-icon">
-          <span class="pficon pficon pficon-add-circle-o"></span>
+          <span class="pficon pficon pficon-import"></span>
         </div>
-        <h1>Add a Codebase</h1>
-        <p>
-          Import an existing codebase.
-        </p>
+        <h1>Import a Codebase</h1>
         <div class="blank-slate-pf-main-action">
-          <button class="btn btn-primary btn-lg" [routerLink]="[{ outlets: { action: 'add-codebase' } }]">Add a Codebase</button>
+          <button class="btn btn-primary btn-lg" [routerLink]="[{ outlets: { action: 'add-codebase' } }]">Import a Codebase</button>
         </div>
       </div>
       <div class="analyze-overview-items-detail" *ngIf="(codebaseCount | async) > 0">
@@ -27,9 +24,9 @@
       </div>
     </div>
     <div class="card-pf-footer">
-      <a class="margin-bottom-10" [routerLink]="[{ outlets: { action: 'add-codebase' } }]">
-        <i class="pficon pficon-add-circle-o"></i>
-        <span>Add a Codebase</span>
+      <a class="btn btn-link" [routerLink]="[{ outlets: { action: 'add-codebase' } }]">
+        <i class="pficon pficon-import"></i>
+        <span>Import a Codebase</span>
       </a>
     </div>
   </div>
