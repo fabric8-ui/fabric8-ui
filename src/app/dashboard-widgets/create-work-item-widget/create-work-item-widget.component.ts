@@ -4,17 +4,11 @@ import { Router } from '@angular/router';
 
 import { Observable, ConnectableObservable } from 'rxjs';
 
-
 import { Broadcaster } from 'ngx-base';
 import { Contexts } from 'ngx-fabric8-wit';
+import { WorkItemService, WorkItem } from 'fabric8-planner';
 
 import { DummyService } from './../shared/dummy.service';
-
-
-// TODO HACKED IMPORTS
-import { WorkItemService } from 'fabric8-planner/src/app/work-item/work-item.service';
-import { WorkItem } from 'fabric8-planner/src/app/models/work-item';
-
 
 class WorkItemFilter {
 
