@@ -62,7 +62,7 @@
                   <span class="input-group-addon" dropdownToggle> <span class="caret"></span> </span>
                 </div>
               </div>
-              <span class="flex-grow-1 padding-left-15 padding-top-3"> to,item</span>
+              <span class="flex-grow-1 padding-left-15"> to,item</span>
             </div>
             <div class="flex-container padding-bottom-5 margin-top-15 margin-bottom-15">
               <div class="combobox-container flex-grow-1  margin-right-15 padding-right-15">
@@ -82,7 +82,7 @@
                         (click)="selectSearchResult(workItem.id, workItem.attributes['system.title'])"
                         [attr.data-wiid]="workItem.id"
                         [attr.data-wititle]="workItem.attributes['system.title']">
-                        <span #searchresult><span class="weight-800">{{workItem.id}} - </span>{{workItem.attributes['system.title']}}</span>
+                        <a #searchresult><span class="weight-800">{{workItem.id}} - </span>{{workItem.attributes['system.title']}}</a>
                     </li>
                   </ul>
                    <span class="input-group-addon"> <span class="caret"></span> </span>
