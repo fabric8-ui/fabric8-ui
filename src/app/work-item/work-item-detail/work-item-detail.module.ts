@@ -54,7 +54,7 @@ if (process.env.ENV == 'inmemory') {
     WorkItemLinkFilterByTypeName,
     WorkItemLinkTypeFilterByTypeName
   ],
-  exports: [WorkItemDetailComponent],
+  exports: [WorkItemDetailComponent, AlmUserName],
   providers: providers
 })
 export class WorkItemDetailModule { }

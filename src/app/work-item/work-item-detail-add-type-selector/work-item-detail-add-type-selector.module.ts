@@ -26,6 +26,6 @@ import {
   providers: [
     WorkItemService
   ],
-  exports: [WorkItemDetailAddTypeSelectorComponent]
+  exports: [WorkItemDetailAddTypeSelectorComponent, WorkItemDetailAddTypeSelectorWidgetComponent]
 })
 export class WorkItemDetailAddTypeSelectorModule { }
