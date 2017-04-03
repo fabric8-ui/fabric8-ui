@@ -8,6 +8,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { Action } from '../config/action';
 import { ListViewConfig } from './listview-config';
 import { ListViewEvent } from './listview-event';
 
@@ -23,11 +24,13 @@ import * as _ from 'lodash';
   templateUrl: './listview.component.html'
 })
 export class ListViewComponent implements OnInit {
+  @Input() actionTemplate: TemplateRef<any>;
   @Input() config: ListViewConfig;
   @Input() itemExpandedTemplate: TemplateRef<any>;
   @Input() items: any[];
   @Input() itemTemplate: TemplateRef<any>;
 
+  @Output('onActionSelect') onActionSelect = new EventEmitter();
   @Output('onCheckBoxChange') onCheckBoxChange = new EventEmitter();
   @Output('onClick') onClick = new EventEmitter();
   @Output('onDblClick') onDblClick = new EventEmitter();
@@ -38,6 +41,7 @@ export class ListViewComponent implements OnInit {
   @Output('onSelectionChange') onSelectionChange = new EventEmitter();
 
   dragItem: any;
+  itemsEmpty: boolean = true;
   prevConfig: ListViewConfig;
 
   defaultConfig = {
@@ -66,6 +70,7 @@ export class ListViewComponent implements OnInit {
     if (!_.isEqual(this.config, this.prevConfig)) {
       this.setupConfig();
     }
+    this.itemsEmpty = !(this.items !== undefined && this.items.length > 0);
   }
 
   setupConfig(): void {
@@ -85,6 +90,14 @@ export class ListViewComponent implements OnInit {
     this.prevConfig = _.cloneDeep(this.config);
   }
 
+  // Actions
+
+  handleAction(action: Action): void {
+    if (action && action.disabled !== true) {
+      this.onActionSelect.emit(action);
+    }
+  }
+
   // Checkbox
 
   checkBoxChange(item: any): void {
@@ -96,15 +109,13 @@ export class ListViewComponent implements OnInit {
   isSelected(item: any): boolean {
     let matchProp = this.config.selectionMatchProp;
     let selected = false;
-    let i;
 
     if (this.config.showSelectBox) {
       selected = item.selected;
-    } else if (this.config.selectItems && this.config.selectedItems.length) {
+    } else if (this.config.selectItems !== undefined) {
       this.config.selectedItems.forEach((itemObj) => {
         if (itemObj[matchProp] === item[matchProp]) {
           selected = true;
-          return;
         }
       });
     }

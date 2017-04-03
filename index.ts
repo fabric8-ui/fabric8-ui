@@ -23,6 +23,10 @@ export { ActionsConfig } from './src/app/config/actions-config';
 export { View } from './src/app/config/view';
 export { ViewsConfig } from './src/app/config/views-config';
 
+// EmptyState
+export { EmptyStateComponent } from './src/app/emptystate/emptystate.component';
+export { EmptyStateConfig } from './src/app/emptystate/emptystate-config';
+
 // Filter
 export { Filter } from './src/app/filters/filter';
 export { FilterComponent } from './src/app/filters/filter.component';

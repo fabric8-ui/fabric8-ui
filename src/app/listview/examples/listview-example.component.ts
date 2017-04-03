@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 
 import { Action } from '../../config/action';
 import { ActionsConfig } from '../../config/actions-config';
-import { EmptyStateConfig } from '../emptystate-config';
+import { EmptyStateConfig } from '../../emptystate/emptystate-config';
 import { ListViewConfig } from "../listview-config";
 import { ListViewEvent } from '../listview-event';
 
@@ -22,6 +22,7 @@ import { ListViewEvent } from '../listview-event';
   templateUrl: './listview-example.component.html'
 })
 export class ListViewExampleComponent implements OnInit {
+  @ContentChild('actionTemplate') actionTemplate: TemplateRef<any>;
   @ContentChild('itemTemplate') itemTemplate: TemplateRef<any>;
   @ContentChild('itemExpandedTemplate') itemExpandedTemplate: TemplateRef<any>;
 
@@ -142,13 +143,33 @@ export class ListViewExampleComponent implements OnInit {
     } as ActionsConfig;
 
     this.emptyStateConfig = {
+      actions: [{
+        id: 'action1',
+        name: 'Main Action',
+        title: 'Start the server',
+        type: 'main'
+      },{
+        id: 'action2',
+        name: 'Secondary Action 1',
+        title: 'Do the first thing'
+      },{
+        id: 'action3',
+        name: 'Secondary Action 2',
+        title: 'Do something else'
+      },{
+        id: 'action4',
+        name: 'Secondary Action 3',
+        title: 'Do something special'
+      }],
       icon: 'pficon-warning-triangle-o',
       title: 'No Items Available',
-      info: "This is the Empty State component. The goal of a empty state pattern is to provide a good first impression that helps users to achieve their goals. It should be used when a view is empty because no objects exists and you want to guide the user to perform specific actions.",
+      info: "This is the Empty State component. The goal of a empty state pattern is to provide a good first " +
+      "impression that helps users to achieve their goals. It should be used when a view is empty because no " +
+      "objects exists and you want to guide the user to perform specific actions.",
       helpLink: {
-        label: 'For more information please see',
-        urlLabel: 'pfExample',
-        url: '#/api/patternfly.views.component:pfEmptyState'
+        label: 'For more information please see the',
+        urlLabel: 'EmptyState example',
+        url: '/emptystate'
       }
     } as EmptyStateConfig;
 
@@ -168,6 +189,14 @@ export class ListViewExampleComponent implements OnInit {
   }
 
   // Actions
+
+  handleAction($event: Action): void {
+    this.actionsText = $event.name + ' selected\r\n' + this.actionsText;
+  }
+
+  handleInlineAction($event: MouseEvent, value: string): void {
+    this.actionsText = value + ' selected\r\n' + this.actionsText;
+  }
 
   handleSelect($event: ListViewEvent): void {
     this.actionsText = $event.item.name + ' selected\r\n' + this.actionsText;

@@ -1,4 +1,4 @@
-import { EmptyStateConfig } from './emptystate-config';
+import { EmptyStateConfig } from '../emptystate/emptystate-config';
 
 /*
  * A list view config containing:

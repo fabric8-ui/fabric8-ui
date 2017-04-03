@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 // Main areas
+import { EmptyStateExampleModule } from './emptystate/examples/emptystate-example.module';
 import { FilterExampleModule } from './filters/examples/filter-example.module';
 import { HomeModule } from './home/home.module';
 import { ListViewExampleModule } from './listview/examples/listview-example.module';
@@ -28,6 +29,7 @@ import { SlideOutExampleModule } from './slide-out-panel/examples/slide-out-exam
     BrowserAnimationsModule,
     BrowserModule,
     DropdownModule,
+    EmptyStateExampleModule,
     FilterExampleModule,
     FormsModule,
     HomeModule,

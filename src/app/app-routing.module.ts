@@ -1,6 +1,7 @@
 import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { EmptyStateExampleComponent } from './emptystate/examples/emptystate-example.component';
 import { FilterExampleComponent } from './filters/examples/filter-example.component';
 import { HomeComponent } from './home/home.component';
 import { ListViewExampleComponent } from './listview/examples/listview-example.component';
@@ -18,6 +19,9 @@ const routes: Routes = [{
   },{
     path: 'home',
     component: HomeComponent
+  },{
+    path: 'emptystate',
+    component: EmptyStateExampleComponent
   },{
     path: 'filter',
     component: FilterExampleComponent
