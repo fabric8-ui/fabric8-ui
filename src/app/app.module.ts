@@ -50,7 +50,6 @@ import { NotificationsService } from './shared/notifications.service';
 import { SpaceWizardModule } from './space-wizard/space-wizard.module';
 import { DeleteAccountDialogModule } from './delete-account-dialog/delete-account-dialog.module';
 import { StackDetailsModule } from 'fabric8-stack-analysis-ui';
-import { recommenderApiUrlProvider } from './shared/recommender-api.provider';
 import { authApiUrlProvider } from './shared/auth-api.provider';
 import { witApiUrlProvider } from './shared/wit-api.provider';
 import { ssoApiUrlProvider } from './shared/sso-api.provider';
@@ -159,7 +158,6 @@ export type StoreType = {
     Logger,
     LoginService,
     ProfileService,
-    recommenderApiUrlProvider,
     ToggleService,
     UserService,
     witApiUrlProvider,
