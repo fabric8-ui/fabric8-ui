@@ -8,11 +8,6 @@ const routes: Routes = [
   {
     path: '',
     component: AnalyzeComponent,
-    children: [
-      { path: '', component: AnalyzeOverviewComponent },
-      { path: 'readme', loadChildren: './readme/readme.module#ReadmeModule' },
-      { path: 'stack', loadChildren: './stack/stack.module#StackModule' },
-    ]
   }
 ];
 

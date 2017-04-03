@@ -54,19 +54,7 @@ export class MenusService {
         [
           {
             name: 'Analyze',
-            path: '',
-            menus: [
-              {
-                name: 'Overview',
-                path: ''
-              }, {
-                name: 'README',
-                path: 'readme'
-              }, {
-                name: 'Stack',
-                path: 'stack'
-              }
-            ]
+            path: ''
           }, {
             name: 'Plan',
             path: 'plan',

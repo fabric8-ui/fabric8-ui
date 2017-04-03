@@ -13,6 +13,11 @@ import { DummyService } from './../shared/dummy.service';
 })
 export class AnalyticalReportWidgetComponent implements OnInit {
 
+  public codebases: Array<any> = [{
+    name: 'Pllm',
+    uuid: 'ff59ea91cf264003bc6dc12621c91205'
+  }];
+
   constructor(
     private context: Contexts,
     private broadcaster: Broadcaster,
