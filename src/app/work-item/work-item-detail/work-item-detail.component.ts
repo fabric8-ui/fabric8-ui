@@ -374,16 +374,20 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
   descUpdate(event: any): void {
     this.descText = event;
-    this.workItem.attributes['system.description'] = {
-      markup: 'Markdown',
-      content: this.descText.trim()
-    };
-    this.save();
+    if (this.workItem.id) {
+      let payload = cloneDeep(this.workItemPayload);
+      payload.attributes['system.description'] = {
+        markup: 'Markdown',
+        content: this.descText.trim()
+      };
+      this.save(payload);
+    } else {
+      this.save();
+    }
   }
 
   // called when a dynamic field is updated.
   dynamicFieldUpdated(event: any) {
-    console.log(event);
     this.workItem.attributes[event.formControlName] = event.newValue;
     if (this.workItem.id) {
       let payload = cloneDeep(this.workItemPayload);
