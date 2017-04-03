@@ -80,7 +80,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     this.workItem.relationships = new WorkItemRelations();
     this.workItem.type = 'workitems';
     this.workItem.id = '42';
-    this.workItem.attributes.set('system.state', 'new');
+    this.workItem.attributes['system.state'] = 'new';
   }
 
   ngAfterViewInit() {
