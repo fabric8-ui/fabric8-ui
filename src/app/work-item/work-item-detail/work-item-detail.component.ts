@@ -211,6 +211,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         );
       })
       .subscribe(([workItem, workItemTypes, area, iteration, assignees, creator, [links, includes]]) => {
+
         // Resolve area
         workItem.relationships.area = {
           data: area
@@ -251,8 +252,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         });
 
         this.closeUserRestFields();
-        this.titleText = workItem.attributes['system.title'];
-        this.descText = workItem.attributes['system.description'] || '';
+        this.titleText = workItem.attributes.get('system.title');
+        this.descText = workItem.attributes.get('system.description') || '';
         this.workItem = workItem;
 
         this.workItemPayload = new WorkItem();
@@ -274,7 +275,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
         // init dynamic form
         this.dynamicFormGroup = this.workItemTypeControlService.toFormGroup(this.workItem);
-        this.dynamicFormDataArray = this.workItemTypeControlService.toAttributeArray(this.workItem.relationalData.wiType.attributes.fields); 
+        this.dynamicFormDataArray = this.workItemTypeControlService.toAttributeArray(this.workItem.relationships.baseType.data.attributes.fields); 
 
         // fetch the list of user
         // after getting the Workitem
@@ -371,17 +372,23 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
   descUpdate(event: any): void {
     this.descText = event;
-    this.workItem.attributes['system.description'] = {
+    this.workItem.attributes.set('system.description', {
       markup: 'Markdown',
       content: this.descText.trim()
-    };
+    });
     this.save();
   }
 
   // called when a dynamic field is updated.
   dynamicFieldUpdated(event: any) {
-    this.workItem.attributes[event.formControlName] = event.newValue;
-    this.save();
+    this.workItem.attributes.set(event.formControlName, event.newValue);
+    if (this.workItem.id) {
+      let payload = cloneDeep(this.workItemPayload);
+      payload.attributes.set(event.formControlName, event.newValue);
+      this.save(payload);
+    } else {
+      this.save();
+    }
   }
 
   closeHeader(): void {
@@ -424,27 +431,27 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.workItem.relationships.iteration) {
       this.broadcaster.broadcast('wi_change_state', [{
         workItem: this.workItem,
-        oldState: this.workItem.attributes['system.state'],
+        oldState: this.workItem.attributes.get('system.state'),
         newState: option
       }]);
       // Item closed for an iteration
-      if (this.workItem.attributes['system.state'] !== option && option === 'closed') {
+      if (this.workItem.attributes.get('system.state') !== option && option === 'closed') {
         this.broadcaster.broadcast('wi_change_state_it', [{
           iterationId: this.workItem.relationships.iteration.data.id,
           closedItem: +1
         }]);
       }
       // Item opened for an iteration
-      if (this.workItem.attributes['system.state'] == 'closed' && option != 'closes') {
+      if (this.workItem.attributes.get('system.state') == 'closed' && option != 'closes') {
         this.broadcaster.broadcast('wi_change_state_it', [{
           iterationId: this.workItem.relationships.iteration.data.id,
           closedItem: -1
         }]);
       }
     }
-    this.workItem.attributes['system.state'] = option;
+    this.workItem.attributes.set('system.state', option);
     let payload = cloneDeep(this.workItemPayload);
-    payload.attributes['system.state'] = option;
+    payload.attributes.set('system.state', option);
     this.save(payload);
   }
 
@@ -468,10 +475,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   onUpdateTitle(): void {
     this.isValid(this.titleText.trim());
     if (this.validTitle) {
-      this.workItem.attributes['system.title'] = this.titleText;
+      this.workItem.attributes.set('system.title', this.titleText);
       if (this.workItem.id) {
         let payload = cloneDeep(this.workItemPayload);
-        payload.attributes['system.title'] = this.titleText;
+        payload.attributes.set('system.title', this.titleText);
         this.save(payload);
       } else {
         this.save();
@@ -481,7 +488,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   save(payload?: WorkItem): void {
-    if (this.workItem.id){
+    if (this.workItem.id) {
+    console.log('########### SAVE PAYLOAD');
+    console.log(payload);
       this.workItemService
         .update(payload)
         .switchMap(workItem => {
@@ -536,7 +545,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         });
 
         this.workItem = workItem;
-        this.workItemPayload.attributes['version'] = workItem.attributes['version'];
+        console.log(workItem.attributes);
+        this.workItemPayload.attributes.set('version', workItem.attributes.get('version'));
         this.updateOnList();
         this.activeOnList();
       });
@@ -734,7 +744,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     });
 
     // If already closed iteration
-    if (this.workItem.attributes['system.state'] === 'closed') {
+    if (this.workItem.attributes.set('system.state', 'closed')) {
       this.broadcaster.broadcast('wi_change_state_it', [{
         iterationId: currenIterationID,
         closedItem: -1

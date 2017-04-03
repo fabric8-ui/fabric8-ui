@@ -208,6 +208,18 @@ export class WorkItemService {
     this.nextLink = link;
   }
 
+  // converts a any object to a WorkItem (creating the attribute Map)
+  toWorkItem(input: any): WorkItem {
+    let newWorkItem = cloneDeep(input) as WorkItem;
+    newWorkItem.attributes = new Map<string, string | number>();    
+    for (var property in input.attributes) {
+      if (input.attributes.hasOwnProperty(property)) {
+        newWorkItem.attributes.set(property, input.attributes[property]);
+      }
+    }
+    return newWorkItem;
+  }
+
   /**
    * Usage: This method gives a single work item by ID.
    * If the item is locally available then it just resolves the comments
@@ -219,9 +231,9 @@ export class WorkItemService {
   getWorkItemById(id: string): Observable<WorkItem> {
     if (this._currentSpace) {
       return this.http.get(this._currentSpace.links.self + '/workitems/' + id)
-        .map(item => item.json().data);
+        .map(item => this.toWorkItem(item.json().data ));
     } else {
-      return Observable.of<WorkItem>( {} as WorkItem );
+      return Observable.of<WorkItem>( new WorkItem() );
     }
   }
 
@@ -631,7 +643,7 @@ export class WorkItemService {
       return this.http
         .post(this.workItemUrl, payload, { headers: this.headers })
         .map(response => {
-          return response.json().data as WorkItem;
+          return this.toWorkItem(response.json().data);
         });
         // .catch ((e) => {
         //   if (e.status === 401) {
@@ -641,7 +653,7 @@ export class WorkItemService {
         //   }
         // });
     } else {
-      return Observable.of<WorkItem>( {} as WorkItem );
+      return Observable.of<WorkItem>( new WorkItem() );
     }
   }
 
@@ -656,7 +668,7 @@ export class WorkItemService {
     return this.http
       .patch(workItem.links.self, JSON.stringify({data: workItem}), { headers: this.headers })
       .map(response => {
-        return response.json().data as WorkItem;
+        return this.toWorkItem(response.json().data);
       });
       // .catch ((e) => {
       //   if (e.status === 401) {

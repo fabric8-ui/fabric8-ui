@@ -59,11 +59,11 @@ export class WorkItemTypeControlService {
   toFormGroup(workItem: WorkItem) {
     let group: any = {};
     // if there is no type information attached, just return an empty group
-    if (!workItem.relationalData || !workItem.relationalData.wiType) {
+    if (!workItem.relationalData || !workItem.relationships.baseType.data) {
       this.log.warn('The work item ' + workItem.id + ' contains no normalized type information, no controls for form group can be created!');
       return group;
     }
-    let fields = workItem.relationalData.wiType.attributes.fields;
+    let fields = workItem.relationships.baseType.data.attributes.fields;
     for (var key in fields) {
       if (this.FIXED_PROPERTIES.indexOf(key) != -1) {
         this.log.log('Skipping form control for ' + key);      

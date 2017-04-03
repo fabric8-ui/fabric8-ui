@@ -6,7 +6,7 @@ import { User } from 'ngx-login-client';
 import { IterationModel } from './iteration.model';
 
 export class WorkItem {
-  attributes: Map<string, number | string>;
+  attributes: Map<string, number | any | string> = new Map<string, number | any | string>();
   id: string;
   relationships?: WorkItemRelations;
   type: string;
