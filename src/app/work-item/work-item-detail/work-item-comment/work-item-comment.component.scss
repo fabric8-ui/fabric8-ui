@@ -79,6 +79,7 @@
         -moz-box-shadow: none;
         box-shadow: none;
         height: auto;
+        word-break: break-word;
         &:hover {
           border-color: $color-pf-blue-200;
         }
