@@ -43,33 +43,26 @@ export class IterationService {
     // get the current iteration url from the space service
     if (this._currentSpace) {
       let iterationsUrl = this._currentSpace.relationships.iterations.links.related;
-      if (this.checkValidIterationUrl(iterationsUrl)) {
-        return this.http
-          .get(iterationsUrl, { headers: this.headers })
-          .map (response => {
-            if (/^[5, 4][0-9]/.test(response.status.toString())) {
-              throw new Error('API error occured');
-            }
-            return response.json().data as IterationModel[];
-          })
-          .map((data) => {
-            this.iterations = data;
-            return this.iterations;
-          })
-          .catch ((error: Error | any) => {
-            if (error.status === 401) {
-              this.auth.logout();
-            } else {
-              console.log('Fetch iteration API returned some error - ', error.message);
-              return Observable.throw(new Error(error.message));
-              // return Observable.throw<IterationModel[]> ([] as IterationModel[]);
-            }
-          });
-      } else {
-        this.logger.log('URL not matched');
-        return Observable.throw(new Error('URL not matched!'));
-        // return Observable.throw<IterationModel[]> ([] as IterationModel[]);
-      }
+      return this.http
+        .get(iterationsUrl, { headers: this.headers })
+        .map (response => {
+          if (/^[5, 4][0-9]/.test(response.status.toString())) {
+            throw new Error('API error occured');
+          }
+          return response.json().data as IterationModel[];
+        })
+        .map((data) => {
+          this.iterations = data;
+          return this.iterations;
+        })
+        .catch ((error: Error | any) => {
+          if (error.status === 401) {
+            this.auth.logout();
+          } else {
+            console.log('Fetch iteration API returned some error - ', error.message);
+            return Observable.throw<IterationModel[]> ([] as IterationModel[]);
+          }
+        });
     } else {
       return Observable.throw(new Error('error'));
       // return Observable.throw<IterationModel[]> ([] as IterationModel[]);
@@ -82,42 +75,42 @@ export class IterationService {
    * @param iteration - data to create a new iteration
    * @return new item
    */
-  createIteration(iteration: IterationModel): Observable<IterationModel> {
+  createIteration(iteration: IterationModel, parentIteration: IterationModel): Observable<IterationModel> {
+    console.log('create iteration service');
+    let iterationsUrl;
+    if (parentIteration) {
+      iterationsUrl = parentIteration.links.self;
+    }
+    else {
+      iterationsUrl = this._currentSpace.relationships.iterations.links.related;
+    }
     if (this._currentSpace) {
-      let iterationsUrl = this._currentSpace.relationships.iterations.links.related;
-      if (this.checkValidIterationUrl(iterationsUrl)) {
-        iteration.relationships.space.data.id = this._currentSpace.id;
-        return this.http
-          .post(
-            iterationsUrl,
-            { data: iteration },
-            { headers: this.headers }
-          )
-          .map (response => {
-            if (/^[5, 4][0-9]/.test(response.status.toString())) {
-              throw new Error('API error occured');
-            }
-            return response.json().data as IterationModel;
-          })
-          .map (newData => {
-            // Add the newly added iteration on the top of the list
-            this.iterations.splice(0, 0, newData);
-            return newData;
-          })
-          .catch ((error: Error | any) => {
-            if (error.status === 401) {
-              this.auth.logout();
-            } else {
-              console.log('Post iteration API returned some error - ', error.message);
-              return Observable.throw(new Error(error.message));
-              // return Observable.throw<IterationModel>({} as IterationModel);
-            }
-          });
-      } else {
-        this.logger.log('URL not matched');
-        return Observable.throw(new Error('URL not matched'));
-        // return Observable.throw<IterationModel>( {} as IterationModel );
-      }
+      iteration.relationships.space.data.id = this._currentSpace.id;
+      return this.http
+        .post(
+          iterationsUrl,
+          { data: iteration },
+          { headers: this.headers }
+        )
+        .map (response => {
+          if (/^[5, 4][0-9]/.test(response.status.toString())) {
+            throw new Error('API error occured');
+          }
+          return response.json().data as IterationModel;
+        })
+        .map (newData => {
+          // Add the newly added iteration on the top of the list
+          this.iterations.splice(0, 0, newData);
+          return newData;
+        })
+        .catch ((error: Error | any) => {
+          if (error.status === 401) {
+            this.auth.logout();
+          } else {
+            console.log('Post iteration API returned some error - ', error.message);
+            return Observable.throw<IterationModel>({} as IterationModel);
+          }
+        });
     } else {
       return Observable.throw(new Error('error'));
       // return Observable.throw<IterationModel>( {} as IterationModel );
@@ -130,6 +123,7 @@ export class IterationService {
    * @return updated iteration's reference from the list
    */
   updateIteration(iteration: IterationModel): Observable<IterationModel> {
+    console.log('update iteration service');
     return this.http
       .patch(iteration.links.self, { data: iteration }, { headers: this.headers })
       .map (response => {
@@ -179,14 +173,14 @@ export class IterationService {
    * @param URL
    * @return Boolean
    */
-  checkValidIterationUrl(url: string): Boolean {
-    let urlArr: string[] = url.split('/');
-    let uuidRegExpPattern = new RegExp('[^/]+');
-    return (
-      urlArr[urlArr.length - 1] === 'iterations' &&
-      uuidRegExpPattern.test(urlArr[urlArr.length - 2]) &&
-      urlArr[urlArr.length - 3] === 'spaces'
-    );
-  }
+  // checkValidIterationUrl(url: string): Boolean {
+  //   let urlArr: string[] = url.split('/');
+  //   let uuidRegExpPattern = new RegExp('[^/]+');
+  //   return (
+  //     urlArr[urlArr.length - 1] === 'iterations' &&
+  //     uuidRegExpPattern.test(urlArr[urlArr.length - 2]) &&
+  //     urlArr[urlArr.length - 3] === 'spaces'
+  //   );
+  // }
 
 }

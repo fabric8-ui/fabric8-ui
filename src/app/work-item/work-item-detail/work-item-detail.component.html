@@ -235,18 +235,18 @@
           </label>
           <div class="pull-left detail-iteration-name">
             <span *ngIf="!searchIteration" (click)="lookupIterations()" class="pointer" id="iteration-assocaited">
-              {{ workItem.relationships?.iteration?.data?.attributes?.name || "None" }}
+              {{ workItem.relationalData?.iteration?.attributes.resolved_parent_path + '/' + workItem.relationalData?.iteration?.attributes.name || "None" }}
             </span>
             <span *ngIf="searchIteration"
               id="WI_details_iteration" dropdown>
               <button class="btn btn-default" type="button" #dropdownButton
                 id="WI_details_iteration_dropdownbtn" data-toggle="dropdown" dropdownToggle>
-                {{ workItem.relationships?.iteration?.data?.attributes?.name || "None" }} <span class="caret"></span>
+                {{ workItem.relationalData?.iteration?.attributes.resolved_parent_path + '/' + workItem.relationalData?.iteration?.attributes.name|| "None" }} <span class="caret"></span>
               </button>
               <ul role="menu" aria-labelledby="WI_details_iteration_dropdown" dropdownMenu>
                 <li *ngFor="let iteration of iterations;" role="presentation">
                   <a role="menuitem" tabindex="-1" (click)="selectIteration(iteration)">
-                    {{ iteration.attributes?.name }}
+                    {{ iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}
                   </a>
                 </li>
               </ul>

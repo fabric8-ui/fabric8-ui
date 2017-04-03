@@ -756,8 +756,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
   selectIteration(iteration: any): void {
     this.selectedIteration = iteration;
-    this.dropdownButton.nativeElement.innerHTML = this.selectedIteration.attributes.name +
-                                                  ' <span class="caret"></span>';
+    this.dropdownButton.nativeElement.innerHTML = this.selectedIteration.attributes.resolved_parent_path + '/' + this.selectedIteration.attributes.name +
+                                                  ' <span class="caret"></span>'
   }
 
   assignIteration(): void {

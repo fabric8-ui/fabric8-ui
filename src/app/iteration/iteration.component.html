@@ -20,7 +20,9 @@
                 (click)='getWorkItemsByIteration(iteration)'>
                 {{iteration.attributes.name}}
               </strong>
-              <div class="parent-iteration">{{iteration.attributes.resolved_parent_path}}</div>
+              <div class="parent-iteration">
+                {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}
+              </div>
             </div>
             <div *ngIf="loggedIn" class="dropdown-kebab-pf" dropdown>
               <button class="btn btn-link"
@@ -42,7 +44,7 @@
                   </a>
                 </li>
                 <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('createChild');">
                     Create child
                   </a>
                 </li>
@@ -113,7 +115,9 @@
               (click)='getWorkItemsByIteration(iteration)'>
               {{iteration.attributes.name}}
             </strong>
-            <div class="parent-iteration">{{iteration.attributes.resolved_parent_path}}</div>
+            <div class="parent-iteration">
+              <span>{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}</span>
+            </div>
           </div>
           <div>
             <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
@@ -137,7 +141,7 @@
                   </a>
                 </li>
                 <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('createChild');">
                     Create child
                   </a>
                 </li>
@@ -167,7 +171,7 @@
               (click)='getWorkItemsByIteration(iteration)'>
               {{iteration.attributes.name}}
             </strong>
-            <div class="parent-iteration">{{iteration.attributes.resolved_parent_path}}</div>
+            <div class="parent-iteration">{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}</div>
           </div>
           <div>
             <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
@@ -191,7 +195,7 @@
                   </a>
                 </li>
                 <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('createChild');">
                     Create child
                   </a>
                 </li>

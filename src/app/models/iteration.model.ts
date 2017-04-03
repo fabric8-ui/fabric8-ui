@@ -12,6 +12,8 @@ export class IterationAttributes {
   name: string;
   state: string;
   description?: string;
+  parent_path: string;
+  resolved_parent_path?: string;
 }
 
 export class IterationLinks {
@@ -19,6 +21,15 @@ export class IterationLinks {
 }
 
 export class IterationRelations {
+  parent: {
+    data: {
+      id: string,
+      type: string
+    },
+    links: {
+      self: string
+    }
+  };
   space: {
     data: {
       id: string;

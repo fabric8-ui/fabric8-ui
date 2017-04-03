@@ -43,6 +43,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   filteredIterations: IterationModel[] = [];
   selectedParentIteration: IterationModel;
   selectedParentIterationName:string = '';
+  iterationSearchDisable: Boolean = false;
 
   private startDatePickerOptions: IMyOptions = {
     dateFormat: 'dd mmm yyyy',
@@ -86,9 +87,20 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       attributes: {
         name: '',
         description: '',
-        state: 'new'
+        state: 'new',
+        parent_path: '',
+        resolved_parent_path: ''
       },
       relationships: {
+        parent: {
+          data: {
+            id: "",
+            type: "iterations"
+          },
+          links: {
+            self: ""
+          }
+        },
         space: {
           data: {
             id: '',
@@ -113,6 +125,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     this.startDatePickerOptions = startDatePickerComponentCopy;
     this.selectedParentIterationName = '';
     this.filteredIterations = [];
+    this.selectedParentIteration = null;
   }
 
   ngOnChanges() {
@@ -133,6 +146,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.getIterations();
       this.submitBtnTxt = 'Create';
       this.modalTitle = 'Create Iteration';
+      this.selectedParentIterationName = 'null';
     }
     if (this.modalType == 'start') {
       this.submitBtnTxt = 'Start';
@@ -142,11 +156,19 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.getIterations();
       this.submitBtnTxt = 'Update';
       this.modalTitle = 'Update Iteration';
+      this.iterationSearchDisable = true;
+      this.selectedParentIterationName = iteration.attributes.resolved_parent_path;
       if (iteration.attributes.state === 'start') {
         let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
         startDatePickerComponentCopy.componentDisabled = true;
         this.startDatePickerOptions = startDatePickerComponentCopy;
       }
+    }
+    if (this.modalType == 'createChild') {
+      this.getIterations();
+      this.submitBtnTxt = 'Create';
+      this.modalTitle = 'Create Iteration';
+
     }
     if (this.modalType == 'close') {
       this.submitBtnTxt = 'Close';
@@ -212,9 +234,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
 
   setParentIteration(id: string) {
     this.selectedParentIteration =  this.filteredIterations.find((iteration) => iteration.id === id);
-    console.log(this.selectedParentIteration);
     this.selectedParentIterationName = this.selectedParentIteration.attributes['name'];
     this.iterationSearch.nativeElement.focus();
+    this.iteration.relationships.parent.data.id = this.selectedParentIteration.id;
     this.filteredIterations = [];
   }
 
@@ -272,6 +294,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.filteredIterations = this.iterations.filter((item) => {
          return item.attributes.name.toLowerCase().indexOf(inp.toLowerCase()) > -1;
       });
+      if (this.filteredIterations.length == 0) {
+        this.selectedParentIteration = null;
+      }
     }
   }
 
@@ -280,7 +305,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     if (this.iteration.attributes.name !== '') {
       this.validationError = false;
       if (this.modalType == 'create') {
-        this.iterationService.createIteration(this.iteration)
+        this.iterationService.createIteration(this.iteration, this.selectedParentIteration)
           .subscribe((iteration) => {
             this.onSubmit.emit(iteration);
             this.resetValues();

@@ -6,7 +6,7 @@
   (onSubmit)="actionOnSubmit()">
   <modal-content>
     <div class="col-md-12 col-sm-12 col-xs-12">
-      <div *ngIf="modalType=='update' || modalType=='create'">
+      <div *ngIf="modalType=='update' || modalType=='create' || modalType=='createChild'">
         <div class="form-group" [class.has-error]="validationError">
           <div class="search-pf-input-group">
             <label for="iteration-name">Name <span class="field-required-icon">*</span></label>
@@ -25,11 +25,11 @@
           <label for="parent-iteration">Parent Iteration</label>
           <div class="parent-iteration-container">
             <input id="parent-iteration" class="form-control" type="text" #iterationSearch (keyup)="filterIteration($event)"
-            autocomplete="off" [value]="selectedParentIterationName" (focus)="iterationSearchFocus();">
+            autocomplete="off" [value]="selectedParentIterationName" (focus)="iterationSearchFocus();" [disabled]="iterationSearchDisable">
             <i class="fa fa-angle-down down-angle-icon" (click)="iterationSearchFocus();"></i>
             <ul class="iteration-list" #iterationList>
               <li *ngFor="let iteration of filteredIterations;" [attr.data-id]="iteration.id" (click)="setParentIteration(iteration.id);">
-                <span [innerHTML]="iteration.attributes.name | almSearchHighlight: iterationSearch.value"></span>
+                <span [innerHTML]="iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | almSearchHighlight: iterationSearch.value"></span>
               </li>
             </ul>
           </div>
@@ -47,7 +47,7 @@
         </div>
       </div>
 
-      <div *ngIf="modalType=='update' || modalType=='start'"
+      <div *ngIf="modalType=='update' || modalType=='start' || modalType=='createChild'"
         class="form-group datepicker-container">
         <div class="start-date-container date-container">
           <label>Start Date</label>
