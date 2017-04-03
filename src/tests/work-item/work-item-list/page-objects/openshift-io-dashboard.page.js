@@ -61,8 +61,7 @@ class OpenShiftIoDashboardPage {
     return element(by.buttonText('Create Space'));
   }
   clickCreateSpaceButton () {
-
-    browser.wait(until.elementToBeClickable(this.createSpaceButton), constants.WAIT, 'Failed to find element');
+    browser.wait(until.elementToBeClickable(this.createSpaceButton), constants.WAIT, 'Failed to find element createSpaceButton');
     return this.createSpaceButton.click();
   }
 
@@ -84,16 +83,34 @@ class OpenShiftIoDashboardPage {
     return element(by.xpath(".//a[contains(text(),'Wizard')]"));
   }
   clickWizardButton () {
+    browser.wait(until.elementToBeClickable(this.wizardButton), constants.WAIT, 'Failed to find element wizardButton');
     return this.wizardButton.click();
   }
 
- get devProcessPulldownElements () {
-   return element.all(by.css(".developmentProcess.option"));
- }
+  get newSpaceCancelButton () {
+     return element(by.xpath(".//a[contains(text(),'Cancel')]"));
+//     return element(by.xpath(".//*[contains(@class,'btn.btn-default.margin-right-5') and contains(text(),'Cancel')]"));
+  }
+  clickNewSpaceCancelButton () {
+    browser.wait(until.elementToBeClickable(this.newSpaceCancelButton), constants.WAIT, 'Failed to find element newSpaceCancelButton');
+    return this.newSpaceCancelButton.click();
+  }
 
-searchByLinkText(text){
-  return element(by.linkText(text));
-}
+  get browseSpaces () {
+    return element(by.xpath(".//a[contains(text(),'Browse')]"));
+  }
+  clickBrowseSpaces () {
+    browser.wait(until.elementToBeClickable(this.browseSpaces), constants.WAIT, 'Failed to find element browseSpaces');
+    return this.browseSpaces.click();
+  }
+  
+  selectSpace (spaceName) {
+    return element(by.xpath(".//a[contains(text(),'" + spaceName + "')]"));
+  }
+  clickSelectSpace (spaceName) {
+    browser.wait(until.elementToBeClickable(this.selectSpace(spaceName)), constants.WAIT, 'Failed to find element selected space ' + spaceName);
+    return this.selectSpace(spaceName).click();
+  }
 
 }
 
