@@ -304,7 +304,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     this.iteration.attributes.name = this.iteration.attributes.name.trim();
     if (this.iteration.attributes.name !== '') {
       this.validationError = false;
-      if (this.modalType == 'create') {
+      if (this.modalType == 'create' || this.modalType == "createChild") {
         this.iterationService.createIteration(this.iteration, this.selectedParentIteration)
           .subscribe((iteration) => {
             this.onSubmit.emit(iteration);
