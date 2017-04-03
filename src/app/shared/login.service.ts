@@ -36,7 +36,7 @@ export class LoginService {
     private notifications: Notifications,
     private userService: UserService
   ) {
-    this.authUrl = apiUrl + 'login/authorize';
+    this.authUrl = apiUrl + 'login/authorize?link=true';
     this.broadcaster.on('authenticationError').subscribe(() => {
       this.authService.logout();
     });
