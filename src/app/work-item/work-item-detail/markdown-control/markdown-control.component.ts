@@ -119,7 +119,6 @@ constructor(
 
   // disables editing, switches to preview and saves value to parent.
   closeText(): void {
-    console.log(this.originalMarkdownText + ' ##1## ' + this.markdownText);
     if (this.textEditable && this.textEditableParaElement) {
       // if we're already in the preview, do not save the innerHTML
       this.markdownText = this.textEditableParaElement.nativeElement.innerText;
@@ -130,7 +129,6 @@ constructor(
     this.tabBarVisible = false;
     this.textEditable = false;
     this.showPreview();
-    console.log(this.originalMarkdownText + ' ##2## ' + this.markdownText);
     // emit save event
     this.onUpdate.emit(this.markdownText.trim());
   }

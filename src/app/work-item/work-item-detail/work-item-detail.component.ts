@@ -252,18 +252,20 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         });
 
         this.closeUserRestFields();
-        this.titleText = workItem.attributes.get('system.title');
-        this.descText = workItem.attributes.get('system.description') || '';
+        this.titleText = workItem.attributes['system.title'];
+        this.descText = workItem.attributes['system.description'] || '';
         this.workItem = workItem;
 
-        this.workItemPayload = new WorkItem();
-        this.workItemPayload.id = this.workItem.id;
-        this.workItemPayload.attributes = new Map<string, number | string>();
-        this.workItemPayload.attributes.set('version', this.workItem.attributes.get('version'));
-        this.workItemPayload.links = {
+        this.workItemPayload = {
+          id: this.workItem.id,
+          attributes: {
+            version: this.workItem.attributes['version']
+          },
+          links: {
             self: this.workItem.links.self
-          };
-        this.workItemPayload.type = this.workItem.type;
+          },
+          type: this.workItem.type
+        };
 
         // Open the panel once all the data is ready
         if (this.panelState === 'out') {
@@ -320,7 +322,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
     this.workItem.relationalData = {};
     this.workItemService.resolveType(this.workItem);
-    this.workItem.attributes.set('system.state', 'new');
+    this.workItem.attributes['system.state'] = 'new';
   }
 
   getAllUsers(): void {
@@ -372,19 +374,20 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
   descUpdate(event: any): void {
     this.descText = event;
-    this.workItem.attributes.set('system.description', {
+    this.workItem.attributes['system.description'] = {
       markup: 'Markdown',
       content: this.descText.trim()
-    });
+    };
     this.save();
   }
 
   // called when a dynamic field is updated.
   dynamicFieldUpdated(event: any) {
-    this.workItem.attributes.set(event.formControlName, event.newValue);
+    console.log(event);
+    this.workItem.attributes[event.formControlName] = event.newValue;
     if (this.workItem.id) {
       let payload = cloneDeep(this.workItemPayload);
-      payload.attributes.set(event.formControlName, event.newValue);
+      payload.attributes[event.formControlName] = event.newValue;
       this.save(payload);
     } else {
       this.save();
@@ -431,27 +434,27 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.workItem.relationships.iteration) {
       this.broadcaster.broadcast('wi_change_state', [{
         workItem: this.workItem,
-        oldState: this.workItem.attributes.get('system.state'),
+        oldState: this.workItem.attributes['system.state'],
         newState: option
       }]);
       // Item closed for an iteration
-      if (this.workItem.attributes.get('system.state') !== option && option === 'closed') {
+      if (this.workItem.attributes['system.state'] !== option && option === 'closed') {
         this.broadcaster.broadcast('wi_change_state_it', [{
           iterationId: this.workItem.relationships.iteration.data.id,
           closedItem: +1
         }]);
       }
       // Item opened for an iteration
-      if (this.workItem.attributes.get('system.state') == 'closed' && option != 'closes') {
+      if (this.workItem.attributes['system.state'] == 'closed' && option != 'closes') {
         this.broadcaster.broadcast('wi_change_state_it', [{
           iterationId: this.workItem.relationships.iteration.data.id,
           closedItem: -1
         }]);
       }
     }
-    this.workItem.attributes.set('system.state', option);
+    this.workItem.attributes['system.state'] = option;
     let payload = cloneDeep(this.workItemPayload);
-    payload.attributes.set('system.state', option);
+    payload.attributes['system.state'] = option;
     this.save(payload);
   }
 
@@ -475,10 +478,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   onUpdateTitle(): void {
     this.isValid(this.titleText.trim());
     if (this.validTitle) {
-      this.workItem.attributes.set('system.title', this.titleText);
+      this.workItem.attributes['system.title'] = this.titleText;
       if (this.workItem.id) {
         let payload = cloneDeep(this.workItemPayload);
-        payload.attributes.set('system.title', this.titleText);
+        payload.attributes['system.title'] = this.titleText;
         this.save(payload);
       } else {
         this.save();
@@ -489,8 +492,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
   save(payload?: WorkItem): void {
     if (this.workItem.id) {
-    console.log('########### SAVE PAYLOAD');
-    console.log(payload);
       this.workItemService
         .update(payload)
         .switchMap(workItem => {
@@ -545,8 +546,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         });
 
         this.workItem = workItem;
-        console.log(workItem.attributes);
-        this.workItemPayload.attributes.set('version', workItem.attributes.get('version'));
+        this.workItemPayload.attributes['version'] = workItem.attributes['version'];
         this.updateOnList();
         this.activeOnList();
       });
@@ -744,7 +744,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     });
 
     // If already closed iteration
-    if (this.workItem.attributes.set('system.state', 'closed')) {
+    if (this.workItem.attributes['system.state'] == 'closed') {
       this.broadcaster.broadcast('wi_change_state_it', [{
         iterationId: currenIterationID,
         closedItem: -1

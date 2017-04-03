@@ -208,6 +208,7 @@ export class WorkItemService {
     this.nextLink = link;
   }
 
+  /*
   // converts a any object to a WorkItem (creating the attribute Map)
   toWorkItem(input: any): WorkItem {
     let newWorkItem = cloneDeep(input) as WorkItem;
@@ -219,6 +220,7 @@ export class WorkItemService {
     }
     return newWorkItem;
   }
+  */
 
   /**
    * Usage: This method gives a single work item by ID.
@@ -231,7 +233,7 @@ export class WorkItemService {
   getWorkItemById(id: string): Observable<WorkItem> {
     if (this._currentSpace) {
       return this.http.get(this._currentSpace.links.self + '/workitems/' + id)
-        .map(item => this.toWorkItem(item.json().data ));
+        .map(item => item.json().data );
     } else {
       return Observable.of<WorkItem>( new WorkItem() );
     }
@@ -643,7 +645,7 @@ export class WorkItemService {
       return this.http
         .post(this.workItemUrl, payload, { headers: this.headers })
         .map(response => {
-          return this.toWorkItem(response.json().data);
+          return response.json().data;
         });
         // .catch ((e) => {
         //   if (e.status === 401) {
@@ -668,7 +670,7 @@ export class WorkItemService {
     return this.http
       .patch(workItem.links.self, JSON.stringify({data: workItem}), { headers: this.headers })
       .map(response => {
-        return this.toWorkItem(response.json().data);
+        return response.json().data;
       });
       // .catch ((e) => {
       //   if (e.status === 401) {
@@ -983,7 +985,7 @@ export class WorkItemService {
     let arr = [];
     newWItem.id = workItem.id.toString();
     newWItem.attributes = new Map<string, string | number>();
-    newWItem.attributes.set('version', workItem.attributes.get('version'));
+    newWItem.attributes['version'] = workItem.attributes['version'];
     newWItem.type = workItem.type;
     arr.push(newWItem);
 

@@ -48,7 +48,7 @@
       </div>
 
       <!-- workitemtype field type: markup -->
-      <markdown-control *ngSwitchCase="'markup'" [markdownValue]="value" (onUpdate)="onChangeMarkup($event)"></markdown-control>
+      <markdown-control *ngSwitchCase="'markup'" [markdownValue]="form.value[this.attributeKey].content" (onUpdate)="onChangeMarkup($event)"></markdown-control>
 
       <!-- workitemtype field type: instant (datetime) -->
       <div *ngSwitchCase="'instant'" class="dynamic-control-datepicker">
