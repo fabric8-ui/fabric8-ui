@@ -248,10 +248,11 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
       // Search on atleast 3 char or numeric
         if (term.length >= 3 || !isNaN(term)) {
           this.workItemService.searchLinkWorkItem(term, this.searchAllowedType)
-            .subscribe((searchData: WorkItem[]) =>{
+            .subscribe((searchData: WorkItem[]) => {
               this.searchWorkItems = searchData.filter((item) => {
                 return this.searchNotAllowedIds.indexOf(item.id) == -1;
-                });
+              });
+              console.log(this.searchWorkItems);
             });
         }
       }
