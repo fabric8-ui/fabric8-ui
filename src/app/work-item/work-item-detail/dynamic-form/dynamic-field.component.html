@@ -4,18 +4,18 @@
     <div [ngSwitch]="attributeDesc.type.kind">
 
       <!-- workitemtype field type: string -->
-      <input *ngSwitchCase="'string'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" type="text" (focus)="focusIn()" (focusout)="focusOut()">
+      <input *ngSwitchCase="'string'" [formControlName]="attributeDesc.key" type="text" (focus)="focusIn()">
 
       <!-- workitemtype field type: integer -->
-      <input *ngSwitchCase="'integer'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" type="text" (focus)="focusIn()" (focusout)="focusOut()">
+      <input *ngSwitchCase="'integer'" [value]="form.value[this.attributeKey]" (change)="baseChangeBaseType($event.target.value)" type="text" (focus)="focusIn()">
 
       <!-- workitemtype field type: float -->
-      <input *ngSwitchCase="'float'" [formControlName]="attributeDesc.key" [id]="attributeDesc.key" type="text" (focus)="focusIn()" (focusout)="focusOut()">
+      <input *ngSwitchCase="'float'" [formControlName]="attributeDesc.key" type="text" (focus)="focusIn()">
 
       <!-- workitemtype field type: dropdown -->
       <div *ngSwitchCase="'enum'" dropdown class="card-pf-time-frame-filter dynamic-control-dropdown">
         <button dropdownToggle type="button" class="btn btn-default col-md-12 col-sm-12 col-xs-12">
-          <span class='dropdown-text'>{{workItem.attributes[attributeDesc.key] || '&nbsp;'}}</span>
+          <span class='dropdown-text'>{{form.value[this.attributeKey] || '&nbsp;'}}</span>
           <span class="caret pull-right"></span>
         </button>
         <ul class="dropdown-menu-right dropdown-ul" role="menu" dropdownMenu>
@@ -31,7 +31,7 @@
       <!-- workitemtype field type: boolean -->
       <div *ngSwitchCase="'boolean'" dropdown class="card-pf-time-frame-filter dynamic-control-dropdown">
         <button dropdownToggle type="button" class="btn btn-default col-md-12 col-sm-12 col-xs-12">
-          <span class='dropdown-text' [innerHTML]="getBooleanText(workItem.attributes[attributeDesc.key])"></span>
+          <span class='dropdown-text' [innerHTML]="getBooleanText(form.value[this.attributeKey])"></span>
           <span class="caret pull-right"></span>
         </button>
         <ul class="dropdown-menu-right dropdown-ul" role="menu" dropdownMenu>
@@ -48,7 +48,7 @@
       </div>
 
       <!-- workitemtype field type: markup -->
-      <markdown-control *ngSwitchCase="'markup'" [markdownValue]="workItem.attributes[attributeDesc.key]" (onUpdate)="onChangeMarkup($event)"></markdown-control>
+      <markdown-control *ngSwitchCase="'markup'" [markdownValue]="value" (onUpdate)="onChangeMarkup($event)"></markdown-control>
 
       <!-- workitemtype field type: instant (datetime) -->
       <div *ngSwitchCase="'instant'" class="dynamic-control-datepicker">

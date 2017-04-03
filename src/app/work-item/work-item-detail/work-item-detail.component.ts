@@ -378,6 +378,12 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     this.save();
   }
 
+  // called when a dynamic field is updated.
+  dynamicFieldUpdated(event: any) {
+    this.workItem.attributes[event.formControlName] = event.newValue;
+    this.save();
+  }
+
   closeHeader(): void {
     this.headerEditable = false;
   }

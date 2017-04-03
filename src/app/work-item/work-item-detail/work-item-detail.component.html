@@ -259,9 +259,10 @@
             </span>
           </div>
         </div>
+        
         <!-- Extra fields Start -->
         <div *ngFor="let attributeDesc of dynamicFormDataArray" class="form-group">
-          <alm-dynamic-field [workItem]="workItem" [attributeDesc]="attributeDesc" [form]="dynamicFormGroup"></alm-dynamic-field>
+          <alm-dynamic-field [attributeDesc]="attributeDesc" [form]="dynamicFormGroup" (onUpdate)="dynamicFieldUpdated($event)"></alm-dynamic-field>
         </div>
         <!-- Extra fields End -->
 

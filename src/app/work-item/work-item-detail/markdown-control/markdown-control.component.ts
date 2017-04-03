@@ -87,9 +87,11 @@ constructor(
 
   // switches to the preview tab and shows the rendered preview.
   showPreview(): void {
-    if (this.textEditableParaElement)
+    if (this.textEditable && this.textEditableParaElement) {
+      // if we're already in the preview, do not save the innerHTML
       this.markdownText = this.textEditableParaElement.nativeElement.innerText;
-    this.textEditable = false;
+      this.textEditable = false;
+    }
     this.workItemService.renderMarkDown(this.markdownText)
       .subscribe(renderedHtml => {
         this.renderedText = renderedHtml;
@@ -117,14 +119,18 @@ constructor(
 
   // disables editing, switches to preview and saves value to parent.
   closeText(): void {
-    // commit the edited text, becoming the new original value
-    if (this.textEditableParaElement)
+    console.log(this.originalMarkdownText + ' ##1## ' + this.markdownText);
+    if (this.textEditable && this.textEditableParaElement) {
+      // if we're already in the preview, do not save the innerHTML
       this.markdownText = this.textEditableParaElement.nativeElement.innerText;
+    }
+    // commit the edited text, becoming the new original value
     this.originalMarkdownText = this.markdownText;
     // set the field to the rendered text
     this.tabBarVisible = false;
     this.textEditable = false;
     this.showPreview();
+    console.log(this.originalMarkdownText + ' ##2## ' + this.markdownText);
     // emit save event
     this.onUpdate.emit(this.markdownText.trim());
   }
