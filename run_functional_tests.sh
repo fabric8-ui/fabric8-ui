@@ -28,7 +28,7 @@ echo done.
 
 # Finally run protractor
 echo Running tests...
-protractor protractor.config.js
+node_modules/protractor/bin/protractor protractor.config.js --suite $1
 ## Run functional tests on the bases of suite genere!  ##
 #node_modules/protractor/bin/protractor protractor.config.js --suite $1 //This line has been commented for now!
 TEST_RESULT=$?
