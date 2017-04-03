@@ -10,7 +10,7 @@
 @mixin not-assigned-user-icon {
     font-size: em(20);
     border: 1px solid $color-pf-black-600;
-    padding: em(1) em(3);
+    padding: em(1);
 }
 
 // action buttons for editing title, description, comment

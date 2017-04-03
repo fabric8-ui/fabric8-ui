@@ -62,7 +62,7 @@
                           <img *ngIf="item.relationalData?.assignees?.length"
                             src="{{item.relationalData?.assignees[0]?.attributes.imageURL + '&s=20'}}"
                             onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
-                          <span *ngIf="!item.relationalData?.assignees?.length" class="fa fa-user not-assigned-user-icon"></span>
+                          <span *ngIf="!item.relationalData?.assignees?.length" class="pficon pficon-user not-assigned-user-icon"></span>
                         </div>
                       </div>
                     </div>
