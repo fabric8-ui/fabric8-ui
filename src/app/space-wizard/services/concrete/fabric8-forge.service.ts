@@ -72,7 +72,6 @@ export class Fabric8ForgeService extends ForgeService {
     }
     this.log(`New instance...`);
     this._apiUrl = apiLocator.forgeApiUrl;
-    // this.log({ message: `The forge api is ${this.apiUrl}`, warning: true });
     if ( this._authService == null ) {
       this.log({ message: `Injected AuthenticationService is null`, warning: true });
     }
@@ -169,129 +168,106 @@ export class Fabric8ForgeService extends ForgeService {
       case CommandPipelineStep.begin: {
         let url = `${api}/forge/commands/${currentForgeCommandName}`;
         currentPipeline.step.index = 0;
-        return this.GetCommand(url)
-        .do((commandBeginResponse: IForgeCommandResponse) => {
+        return this.GetCommand( url )
+        .do( (commandBeginResponse: IForgeCommandResponse ) => {
           // Configure and set the next command pipeline stage to be submitted
-          this.updateResponseContext(commandRequest, commandBeginResponse);
+          this.updateForgeHttpCommandResponseContext( commandRequest, commandBeginResponse );
         });
       }
-      case CommandPipelineStep.next: {
-        let url = `${api}/forge/commands/${currentForgeCommandName}/next`;
-        // Every 'next' command must first be validated ... so set the current step to validate first
-        currentPipeline.step.name = CommandPipelineStep.validate;
-        return this.forgeHttpCommandRequest(commandRequest)
-          .switchMap((commandValidationResponse: IForgeCommandResponse) => {
-            // restore the original step name
-            currentPipeline.step.name=CommandPipelineStep.next;
-
-            let forgeData = commandValidationResponse.payload.data;
-            if ( forgeData.state.valid ) {
-              // The submitted forge inputs were valid. Now execute the 'next' command pipeline stage.
-              let body = currentParameters.data; //TODO : use validation response ???
-              body[ 'stepIndex' ] = currentPipeline.step.index;
-              // Validation is good, now run the 'next' step
-              return this.PostCommand(url, body)
-                .do((commandResponse: IForgeCommandResponse) => {
-                  // Update the context with  the next step to be submitted.
-                  this.updateResponseContext(commandRequest, commandResponse);
-                });
-            } else {
-              // Validation is bad...Update the context with the next step (i.e current step) to be submitted.
-              this.updateResponseContext(commandRequest, commandValidationResponse);
-              // Return the observable response
-              return Observable.from([ commandValidationResponse ]);
-            }
+      case CommandPipelineStep.validate: 
+      case CommandPipelineStep.next:
+      case CommandPipelineStep.execute: { 
+        let url = `${api}/forge/commands/${currentForgeCommandName}/${currentPipeline.step.name}`;
+        let body:IForgeCommandData = currentParameters.data ;
+        if(body.state.wizard) {
+          body[ 'stepIndex' ] = currentPipeline.step.index;
+        }
+        return this.PostCommand( url, body ).do( (response) => {
+            this.updateForgeHttpCommandResponseContext(commandRequest, response);
         });
-      }
-      case CommandPipelineStep.validate: {
-        let url = `${api}/forge/commands/${currentForgeCommandName}/validate`;
-        let body = currentParameters.data || {};
-        return this.PostCommand(url, body);
-      }
-      case CommandPipelineStep.execute: {
-        let url = `${api}/forge/commands/${currentForgeCommandName}/execute`;
-        let body = currentParameters.data;
-        return this.PostCommand(url, body);
       }
       default: {
         this.log({
-                   message: `Invalid forge command:${currentCommand.name}
-                   step:${currentParameters.pipeline.step.name}`,
-                   error: true
-                 });
+          message: `Invalid forge command step for command:${currentCommand.name}.
+          step:${currentParameters.pipeline.step.name}`,
+          error: true
+        });
         return Observable.empty();
       }
+
     }
   }
-
   /**
-   * Forge commands are broken up into several http requests or stages. This function appends
-   * the next command pipeline stage to the response payload context property.
-   * @param request : forge request submitted.
-   * @param response : forge response received as a result of the submitted request.
+   * Clone the object 
+   * @param value 
    */
-  private updateResponseContext(request: IForgeCommandRequest, response: IForgeCommandResponse) {
+  private clone<T>(value:any):T
+  {
+    let clone=<T>JSON.parse(JSON.stringify( value || {} ));
+    return clone;
+  }
+  /** 
+   * Update the context with the validate, next and current commands
+   */
+  private updateForgeHttpCommandResponseContext(request: IForgeCommandRequest, response: IForgeCommandResponse){
+    
     let currentCommand = request.payload.command;
     let currentParameters = currentCommand.parameters;
     let currentPipeline: IForgeCommandPipeline = currentParameters.pipeline;
-    let currentResponseState = response.payload.data.state;
 
-    let nextPipeline: IForgeCommandPipeline = { step: { name: currentPipeline.step.name, index:0 } };
-    let nextParameters: IForgeCommandParameters = {
-      commandName: currentParameters.commandName,
-      pipeline: nextPipeline
-    };
-    let nextCommand: IForgeCommand = { 
-      name: currentCommand.name, 
-      parameters: nextParameters 
-    };
-    let commandInfo=`${currentParameters.commandName}`;
+    let currentResponseData = response.payload.data;
+    let state = currentResponseData.state;
+
+    let nextCommand = this.clone<IForgeCommand>(currentCommand);
+    nextCommand.parameters.data = this.clone<IForgeCommandData>(response.payload.data);
     
-    if ( currentResponseState.valid ) {
-      if ( currentResponseState.wizard === true ) {
-        nextPipeline.step.name = CommandPipelineStep.next;
-        // handle next step index. Note : the index is 1-based not zero-based
-        if(currentResponseState.canMoveToNextStep === true)
-        {
-            if ( currentPipeline.step.name === CommandPipelineStep.next ) {
-              nextPipeline.step.index = currentPipeline.step.index + 1;
-            } else {
-              nextPipeline.step.index = 1;
+    let validationCommand = this.clone<IForgeCommand>(nextCommand);
+    validationCommand.parameters.pipeline.step.name = CommandPipelineStep.validate;
+
+    let nextPipeline = <IForgeCommandPipeline>nextCommand.parameters.pipeline;
+    let validationPipeline = <IForgeCommandPipeline>validationCommand.parameters.pipeline;
+
+    if ( state.wizard === true ) {
+      nextPipeline.step.name = CommandPipelineStep.next;
+      validationPipeline.step.name = CommandPipelineStep.validate;
+      if ( state.valid === true ) {
+        if ( state.canMoveToNextStep === true ) {
+          // can move only affects the step index
+          switch( currentPipeline.step.name ) {
+            case CommandPipelineStep.begin: {
+              validationPipeline.step.index = 1;  
+              nextPipeline.step.index =  1;
+              break;
             }
-            commandInfo=`${currentParameters.commandName} step ${currentPipeline.step.index} ${currentPipeline.step.name}`;
-        } else {
-          nextPipeline.step.index = currentPipeline.step.index;
+            case CommandPipelineStep.validate : {
+              // only increment the validation step for a validation scenario 
+              // validationPipeline.step.index = validationPipeline.step.index + 1;  
+              break;
+            }
+            case CommandPipelineStep.next : { 
+              // increment both as the data reflects the next step 
+              nextPipeline.step.index = nextPipeline.step.index + 1;
+              validationPipeline.step.index = validationPipeline.step.index + 1;  
+              break;
+            }
+            default :{
+              break;
+            }
+          }
         }
-        // Note: these next values will be updated where changes are made on the client.
-        // This just serves as a reference point to allow for detecting changes.
-        nextParameters.data = response.payload.data;
       }
-      // handle the canExecute  
-      if ( currentResponseState.canExecute ) {
-        nextPipeline.step.name = CommandPipelineStep.execute;
-        nextPipeline.step.index = currentPipeline.step.index;
-      }
-      this.log( { message:`The forge response indicates that all supplied inputs for ${commandInfo} were valid.`, info:true } );
-    } else {
-      //response is not valid
-      nextParameters.data = response.payload.data;
-      //this is where the app fields wil go
-      nextParameters.pipeline.step.name = CommandPipelineStep.next;
-      nextParameters.pipeline.step.index = currentPipeline.step.index;
-      nextCommand = { 
-        name: currentCommand.name, 
-        parameters: nextParameters 
-      };
-      commandInfo=`${currentParameters.commandName} step ${currentPipeline.step.index} ${currentPipeline.step.name}`;
-      this.log( { message:`The forge response indicates that one or more supplied inputs for ${commandInfo} were NOT valid.`,warning:true } );
     }
-    // console.dir(nextCommand);
+    
+    if( state.canExecute ) {
+      nextPipeline.step.name = CommandPipelineStep.execute;  
+    }
+
     response.context = response.context || {};
-    // Clone the command that resulted in the current payload
-    response.context.currentCommand=JSON.parse(JSON.stringify(currentCommand));
-    // Add the next command that must be executed to proceed to the next step
     response.context.nextCommand = nextCommand;
-  }
+    response.context.validationCommand = validationCommand;
+    response.context.currentCommand = this.clone(currentCommand);
+
+  };
 
   private log: ILoggerDelegate = () => {};
 

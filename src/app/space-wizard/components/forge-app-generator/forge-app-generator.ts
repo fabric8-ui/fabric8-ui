@@ -56,12 +56,13 @@ export class ForgeAppGenerator {
     this.log('command being sent to the app generator service:');
     return this._appGeneratorService.getFields(request)
     .subscribe(response => {
-      this.applyCurrentResponse(request, response);
+      this.applyServiceResponse(request, response);
     });
   }
 
-  applyCurrentResponse(request: IAppGeneratorRequest, 
+  applyServiceResponse(request: IAppGeneratorRequest, 
                 response: IAppGeneratorResponse) {
+    
     this.log({ message: `received a response for command = ${request.command.name}`, info: true });
     console.dir(response);
     let cmd: IAppGeneratorCommand = response.context.nextCommand;//.currentCommand;
@@ -82,24 +83,54 @@ export class ForgeAppGenerator {
     this.fields = response.payload.fields;
   }
 
-  gotoNextStep() {
-    // before going tonext step , preserv the current response
-    // let previousResponse = this.currentResponse;
-    // this.responseHistory.push(previousResponse);
-    // this.log(`stored fields with ${previousResponse.payload.fields.length} items into history
-    //           ... there are ${this.responseHistory.length} responses in history ...`);
-    let command:IAppGeneratorCommand = this.currentResponse.context.nextCommand;
-    //set the fields property
-    command.parameters.fields = this.fields;
-    this.log('command being sent to the app generator service:');
-    console.dir(command);
-    let request: IAppGeneratorRequest = {
-      command: command
+  validate(){
+
+    let validationCommand: IAppGeneratorCommand = this.currentResponse.context.validationCommand;
+    //set command fields parameter
+    validationCommand.parameters.fields = this.fields;
+    this.log('validation command being sent to the app generator service:');
+    console.dir( validationCommand );
+
+    let validationRequest: IAppGeneratorRequest = {
+      command: validationCommand
     };
-    this._appGeneratorService.getFields(request)
-    .subscribe((response) => {
-      this.applyCurrentResponse(request, response);
-    });
+
+    this._appGeneratorService.getFields( validationRequest )
+      .subscribe( (validationResponse) => {
+        this.applyServiceResponse( validationRequest, validationResponse );
+      });
+    
+  }
+
+  gotoNextStep() {
+    
+    let validationCommand: IAppGeneratorCommand = this.currentResponse.context.validationCommand;
+    //set command fields parameter
+    validationCommand.parameters.fields = this.fields;
+    this.log('validation command being sent to the app generator service:');
+    console.dir( validationCommand );
+
+    let validationRequest: IAppGeneratorRequest = {
+      command: validationCommand
+    };
+
+    this._appGeneratorService.getFields( validationRequest )
+      .subscribe( (validationResponse) => {
+        this.applyServiceResponse( validationRequest, validationResponse );
+        if( this.state.valid === true ) {
+          let command: IAppGeneratorCommand = this.currentResponse.context.nextCommand;
+          command.parameters.fields = this.fields;
+          let request: IAppGeneratorRequest = {
+            command: command
+          };
+          this.log( 'command being sent to the app generator service:' );
+          console.dir( command );
+          this._appGeneratorService.getFields( request )
+            .subscribe( (response) => {
+              this.applyServiceResponse( request, response );
+            });
+        }
+      });
     // TODO: need a way to be aware that the app generator pipeline is complete
     // if(this.workflow)
     // {
