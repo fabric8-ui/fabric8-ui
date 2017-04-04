@@ -162,10 +162,9 @@ export class WorkItemMockGenerator {
               'self': 'http://mock.service/api/workitems/id' + n + '/relationships/comments'
             }
           },
-          'childs': {
+          'children': {
             'links': {
-              'related': 'http://mock.service/api/workitems/id' + n + '/childs',
-              'self': 'http://mock.service/api/workitems/id' + n + '/relationships/childs'
+              'related': 'http://mock.service/api/workitems/id' + n + '/childs'
             }
           },
           'creator': {

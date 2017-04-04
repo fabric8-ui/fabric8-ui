@@ -28,9 +28,8 @@ export class WorkItemRelations {
   baseType: {
     data: WorkItemType;
   };
-  childs?: {
+  children?: {
     links: {
-      self: string;
       related: string;
     };
   };

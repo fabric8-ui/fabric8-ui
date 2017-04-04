@@ -91,9 +91,10 @@ export class WorkItemService {
   // }
 
   getChildren(parent: WorkItem): Observable<WorkItem[]> {
-    if (parent.relationships.childs) {
+    console.log('############# GET CHILDREN');
+    if (parent.relationships.children) {
       this.logger.log('Requesting children for work item ' + parent.id);
-      let url = parent.relationships.childs.links.related;
+      let url = parent.relationships.children.links.related;
       return this.http
         .get(url, { headers: this.headers })
         .map(response => {
@@ -106,15 +107,10 @@ export class WorkItemService {
             this.resolveType(item);
             this.resolveAreaForWorkItem(item);
           });
+          console.log('############# RETURN CHILDREN');
+          console.log(wItems);
           return wItems;
         });
-        // .catch ((e) => {
-        //   if (e.status === 401) {
-        //     this.auth.logout();
-        //   } else {
-        //     this.handleError(e);
-        //   }
-        // });
     } else {
       this.logger.log('Work item does not have child related link, skipping: ' + parent.id);
       return Observable.of([]);
