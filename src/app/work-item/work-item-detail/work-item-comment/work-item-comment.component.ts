@@ -1,8 +1,10 @@
 import { Observable } from 'rxjs';
 import { CommentLink } from './../../../models/comment';
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
+
+import { remove } from 'lodash';
 
 import {
     User,
@@ -21,13 +23,14 @@ import { WorkItemService } from '../../work-item.service';
 export class WorkItemCommentComponent implements OnInit, OnChanges {
     @Input() workItem: WorkItem;
     @Input() loggedIn: Boolean;
-
+    @ViewChild('deleteCommentModal') deleteCommentModal: any;
     comment: Comment;
     users: User[];
     isCollapsedComments: Boolean = false;
     currentUser: User;
     commentEditable: Boolean = false;
     selectedCommentId: String = '';
+    convictedComment: Comment;
 
     constructor(
         private workItemService: WorkItemService,
@@ -125,6 +128,28 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
           (error) => {
             console.log(error);
           });
+    }
+
+    confirmCommentDelete(comment: Comment): void {
+        this.deleteCommentModal.open();
+        this.convictedComment = comment;
+    }
+
+    deleteComment(): void {
+        this.workItemService
+            .deleteComment(this.convictedComment)
+            .subscribe(response => {
+                if (response.status === 200) {
+                    remove(this.workItem.relationships.comments.data, comment => {
+                        if (!!this.convictedComment) {
+                            return comment.id == this.convictedComment.id;
+                        }
+                    });
+                }
+            }, err => console.log(err));
+
+        this.deleteCommentModal.close();
+        this.createCommentObject();
     }
 
     onCommentEdit($event, inpId, saveBtnId) {

@@ -16,6 +16,8 @@ import {
   WidgetsModule
 } from 'ngx-widgets';
 
+import { ModalModule } from 'ngx-modal';
+
 import { AreaService } from '../../area/area.service';
 import { WorkItemDetailComponent } from './work-item-detail.component';
 import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
@@ -39,6 +41,7 @@ if (process.env.ENV == 'inmemory') {
     WidgetsModule,
     AlmIconModule,
     AlmEditableModule,
+    ModalModule,
     CommonModule,
     CollapseModule,
     DropdownModule,

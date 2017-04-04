@@ -697,6 +697,15 @@ export class WorkItemService {
       });
   }
 
+  deleteComment(comment: Comment): Observable<any> {
+    let endpoint = comment.links.self;
+
+    return this
+          .http
+          .delete(endpoint, { headers: this.headers })
+          .catch (this.handleError);
+  }
+
   getForwardLinkTypes(workItem: WorkItem): Observable<any> {
     return this.http.get(workItem.links.targetLinkTypes, {headers: this.headers});
   }

@@ -10,7 +10,7 @@
   bottom: 0;
   width: 50%;
   min-width: em(250);
-  z-index: 100;
+  z-index: 1050; /* any lower value will clash with ngx-modal */
   padding: em(20) 0 em(20) em(40);
   border-left: 1px solid darken($color-pf-white, 20%);
   overflow-y: scroll;

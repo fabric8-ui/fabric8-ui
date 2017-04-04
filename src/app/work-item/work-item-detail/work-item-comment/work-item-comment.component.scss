@@ -88,6 +88,13 @@
         height: auto;
       }
     }
+    .dropdown {
+      min-width: em(10);
+      text-align: right;
+    }
+    .dropdown-menu {
+      margin-top: -11px;
+    }
   }
 }
 

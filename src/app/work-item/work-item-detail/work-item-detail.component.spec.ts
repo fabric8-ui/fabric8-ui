@@ -43,6 +43,7 @@ import {
   AlmIconModule
 } from 'ngx-widgets';
 
+import { ModalModule } from 'ngx-modal';
 import { SpacesService } from '../../shared/standalone/spaces.service';
 
 import { AreaModel } from '../../models/area.model';
@@ -399,6 +400,7 @@ describe('Detailed view and edit a selected work item - ', () => {
         CommonModule,
         DropdownModule,
         FormsModule,
+        ModalModule,
         RouterTestingModule.withRoutes([
           // this needs to be a relative path but I don't know how to do that in a test
           { path: './detail/1', component: WorkItemDetailComponent }
