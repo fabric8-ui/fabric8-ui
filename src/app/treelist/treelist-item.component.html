@@ -2,10 +2,10 @@
      [class.tree-item-placeholder]="index !== 0"
      [class.tree-item-selected]="isSelected()"
      (click)="select($event)">
-  <TreeNodeDropSlot *ngIf="index === 0" [dropIndex]="index" [node]="node.parent"></TreeNodeDropSlot>
+  <tree-node-drop-slot *ngIf="index === 0" [dropIndex]="node.index" [node]="node.parent"></tree-node-drop-slot>
   <div class="tree-list-item">
-    <TreeNodeExpander [node]="node"></TreeNodeExpander>
+    <tree-node-expander [node]="node"></tree-node-expander>
     <ng-template [ngTemplateOutlet]="template" [ngOutletContext]="{ node: node, index: index }"></ng-template>
   </div>
-  <TreeNodeDropSlot [dropIndex]="index + 1" [node]="node.parent"></TreeNodeDropSlot>
+  <tree-node-drop-slot [dropIndex]="node.index + 1" [node]="node.parent"></tree-node-drop-slot>
 </div>

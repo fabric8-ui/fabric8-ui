@@ -8,7 +8,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { TreeNode } from 'angular2-tree-component';
+import { TreeNode } from 'angular-tree-component';
 
 // See docs: https://angular2-tree.readme.io/docs
 @Component({

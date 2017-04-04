@@ -1,13 +1,13 @@
-<div class="">
-  <Tree #tree class="tree-list list-group list-view-pf"
-        [nodes]="nodes"
-        [focused]="true"
-        [options]="options"
-        (onEvent)="handleEvent($event)"
-        (onInitialized)="handleInitialized($event)"
-        (onMoveNode)="handleMoveNode($event)"
-        (onToggle)="handleToggle($event)"
-        (onUpdateData)="handleUpdateData($event)">
+<div>
+  <tree-root class="tree-list list-group list-view-pf" #tree
+      [nodes]="nodes"
+      [focused]="true"
+      [options]="options"
+      (onEvent)="handleEvent($event)"
+      (onInitialized)="handleInitialized($event)"
+      (onMoveNode)="handleMoveNode($event)"
+      (onToggle)="handleToggle($event)"
+      (onUpdateData)="handleUpdateData($event)">
     <ng-template #treeNodeTemplate let-node let-index="index">
       <ng-template [ngTemplateOutlet]="listTemplate" [ngOutletContext]="{ node: node, index: index }"></ng-template>
     </ng-template>
@@ -15,11 +15,10 @@
       <ng-template [ngTemplateOutlet]="loadTemplate" [ngOutletContext]="{ node: node, index: index }"></ng-template>
     </ng-template>
     <ng-template #treeNodeFullTemplate
-              let-node="node"
-              let-index="index"
-              let-templates="templates">
-      <div *ngIf="!node.isHidden"
-          class="tree-node tree-node-level-{{ node.level }}"
+        let-node="node"
+        let-index="index"
+        let-templates="templates">
+      <div class="tree-node tree-node-level-{{ node.level }}"
           [ngClass]="node.getClass()"
           [class.tree-node-expanded]="node.isExpanded && node.hasChildren"
           [class.tree-node-collapsed]="node.isCollapsed && node.hasChildren"
@@ -27,31 +26,35 @@
           [class.tree-node-active]="node.isActive"
           [class.tree-node-focused]="node.isFocused">
 
-        <TreeNodeDropSlot *ngIf="index === 0 && showDropSlot"
-          [dropIndex]="index"
+        <tree-node-drop-slot *ngIf="index === 0 && showDropSlot === true"
+          [dropIndex]="node.index"
           [node]="node.parent">
-        </TreeNodeDropSlot>
+        </tree-node-drop-slot>
 
         <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
-          <TreeNodeExpander [node]="node" *ngIf="showExpander"></TreeNodeExpander>
+          <tree-node-expander [node]="node" *ngIf="showExpander === true"></tree-node-expander>
           <div class="node-content-wrapper"
                (click)="node.mouseAction('click', $event)"
                (dblclick)="node.mouseAction('dblClick', $event)"
                (contextmenu)="node.mouseAction('contextMenu', $event)"
                (dragstart)="handleDragStart($event)"
                (treeDrop)="node.onDrop($event)"
-               [treeAllowDrop]="node.allowDrop.bind(node)"
+               [treeAllowDrop]="node.allowDrop"
                [treeDrag]="node"
                [treeDragEnabled]="node.allowDrag()">
 
-            <TreeNodeContent [node]="node" [index]="index" [template]="templates.treeNodeTemplate">
-            </TreeNodeContent>
+            <tree-node-content [node]="node" [index]="index" [template]="templates.treeNodeTemplate">
+            </tree-node-content>
           </div>
         </div>
 
-        <TreeNodeChildren [node]="node" [templates]="templates"></TreeNodeChildren>
-        <TreeNodeDropSlot [dropIndex]="index + 1" [node]="node.parent" *ngIf="showDropSlot"></TreeNodeDropSlot>
+        <tree-node-children [node]="node" [templates]="templates"></tree-node-children>
+        <tree-node-drop-slot
+          [dropIndex]="node.index + 1"
+          [node]="node.parent"
+          *ngIf="showDropSlot === true">
+        </tree-node-drop-slot>
       </div>
     </ng-template>
-  </Tree>
+  </tree-root>
 </div>

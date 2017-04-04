@@ -4,7 +4,7 @@ import { HttpModule, Http } from '@angular/http';
 
 import { DropdownModule } from 'ng2-bootstrap';
 import { TreeListModule } from '../treelist.module';
-import { TreeModule } from 'angular2-tree-component';
+import { TreeModule } from 'angular-tree-component';
 
 import { TreeListExampleComponent } from './treelist-example.component';
 import { TreeListExampleRoutingModule } from './treelist-example-routing.module';
