@@ -110,31 +110,63 @@ describe('Quick add work item component - ', () => {
   ];
 
   beforeEach(() => {
-    fakeWorkItem = [
-      {
-        'attributes': {
-          'system.created_at': null,
-          'system.description': null,
-          'system.remote_item_id': null,
-          'system.state': 'new',
-          'system.title': 'test1',
-          'version': 0
+    fakeWorkItem = [{
+      'attributes': {
+        'system.created_at': null,
+        'system.description': null,
+        'system.remote_item_id': null,
+        'system.state': 'new',
+        'system.title': 'test1',
+        'version': 0
+      },
+      'id': '1',
+      'relationships': {
+        'area': { },
+        'iteration': { },
+        'assignees': {
+          'data': [
+            {
+              'attributes': {
+                'username': 'username2',
+                'fullName': 'WIDCT Example User 2',
+                'imageURL': 'https://avatars.githubusercontent.com/u/002?v=3'
+            },
+            'type': 'identities',
+            'id': 'widct-user2'
+          }
+          ]
         },
-        'id': '1',
-        'relationships': {
-          'assignees': {
-            'data': []
-          },
-          'baseType': {
-            'data': {
-              'id': 'system.userstory',
-              'type': 'workitemtypes'
-            }
-          },
-          'creator': {}
+        'baseType': {
+          'data': {
+            'id': 'system.userstory',
+            'type': 'workitemtypes'
+          }
         },
-        'type': 'workitems'
-      }] as WorkItem[];
+        'creator': {
+          'data': {
+            'attributes': {
+              'username': 'username0',
+              'fullName': 'WIDCT Example User 0',
+              'imageURL': 'https://avatars.githubusercontent.com/u/000?v=3'
+            },
+            'type': 'identities',
+            'id': 'widct-user0'
+          }
+        },
+        'comments': {
+          'data': [],
+          'links': {
+            'self': '',
+            'related': ''
+          }
+        }
+      },
+      'type': 'workitems',
+      'links': {
+        'self': ''
+      },
+      'relationalData': { }
+    }] as WorkItem[];
 
     fakeService = {
       create: function (workItem: WorkItem) {

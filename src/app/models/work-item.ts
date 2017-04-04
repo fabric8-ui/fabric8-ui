@@ -20,10 +20,10 @@ export class WorkItem {
 
 export class WorkItemRelations {
   area: {
-    data: AreaModel
+    data?: AreaModel
   };
   assignees: {
-    data: User[]
+    data?: User[]
   };
   baseType: {
     data: WorkItemType;
@@ -48,7 +48,7 @@ export class WorkItemRelations {
     data: User;
   };
   iteration: {
-    data: {
+    data?: {
       id: string,
       type: string
     }

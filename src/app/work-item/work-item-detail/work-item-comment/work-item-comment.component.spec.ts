@@ -9,10 +9,11 @@ import {
 import { CommonModule, Location } from '@angular/common';
 import { SpyLocation } from '@angular/common/testing';
 import { DebugElement } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MyDatePickerModule } from 'mydatepicker';
 
 import { Observable } from 'rxjs';
 
@@ -48,8 +49,10 @@ import { ModalModule } from 'ngx-modal';
 
 import { AreaModel } from '../../../models/area.model';
 import { AreaService } from '../../../area/area.service';
+import { DynamicFieldComponent } from './../dynamic-form/dynamic-field.component';
 import { IterationModel } from '../../../models/iteration.model';
 import { IterationService } from '../../../iteration/iteration.service';
+import { MarkdownControlComponent } from './../markdown-control/markdown-control.component';
 import { LinkType } from '../../../models/link-type';
 import { Comment } from '../../../models/comment';
 import { WorkItem } from '../../../models/work-item';
@@ -61,6 +64,7 @@ import { WorkItemLinkComponent } from '../work-item-link/work-item-link.componen
 import { WorkItemCommentComponent } from './work-item-comment.component';
 import { WorkItemDetailComponent } from '../work-item-detail.component';
 import { WorkItemLinkTypeFilterByTypeName, WorkItemLinkFilterByTypeName } from '../work-item-detail-pipes/work-item-link-filters.pipe';
+import { WorkItemTypeControlService } from './../../work-item-type-control.service';
 
 describe('Comment section for the work item detailed view - ', () => {
   let comp: WorkItemDetailComponent;
@@ -122,13 +126,17 @@ describe('Comment section for the work item detailed view - ', () => {
       },
       'id': '1',
       'relationships': {
+        'area': { },
+        'iteration': { },
         'assignees': {
           'data': [
             {
               'attributes': {
+                'username': 'username2',
                 'fullName': 'WIDCT Example User 2',
                 'imageURL': 'https://avatars.githubusercontent.com/u/002?v=3'
-              },
+            },
+            'type': 'identities',
             'id': 'widct-user2'
           }
           ]
@@ -142,9 +150,11 @@ describe('Comment section for the work item detailed view - ', () => {
         'creator': {
           'data': {
             'attributes': {
+              'username': 'username0',
               'fullName': 'WIDCT Example User 0',
               'imageURL': 'https://avatars.githubusercontent.com/u/000?v=3'
             },
+            'type': 'identities',
             'id': 'widct-user0'
           }
         },
@@ -424,7 +434,9 @@ describe('Comment section for the work item detailed view - ', () => {
         DropdownModule,
         Ng2CompleterModule,
         AlmIconModule,
-        AlmEditableModule
+        AlmEditableModule,
+        ReactiveFormsModule,
+        MyDatePickerModule
       ],
 
       declarations: [
@@ -434,6 +446,8 @@ describe('Comment section for the work item detailed view - ', () => {
         AlmSearchHighlight,
         AlmTrim,
         AlmUserName,
+        DynamicFieldComponent,
+        MarkdownControlComponent,
         WorkItemCommentComponent,
         WorkItemDetailComponent,
         WorkItemLinkComponent,
@@ -446,6 +460,7 @@ describe('Comment section for the work item detailed view - ', () => {
         DropdownConfig,
         Logger,
         Location,
+        WorkItemTypeControlService,
         {
           provide: AuthenticationService,
           useValue: fakeAuthService

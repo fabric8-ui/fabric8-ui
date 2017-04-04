@@ -99,11 +99,20 @@ describe('Work item list view - ', () => {
       },
       'id': '1',
       'relationships': {
+        'area': { },
+        'iteration': { },
         'assignees': {
-          'data': [{
-            'id': 'wilct-user2',
-            'type': 'identities'
-          }]
+          'data': [
+            {
+              'attributes': {
+                'username': 'username2',
+                'fullName': 'WIDCT Example User 2',
+                'imageURL': 'https://avatars.githubusercontent.com/u/002?v=3'
+            },
+            'type': 'identities',
+            'id': 'widct-user2'
+          }
+          ]
         },
         'baseType': {
           'data': {
@@ -113,11 +122,17 @@ describe('Work item list view - ', () => {
         },
         'creator': {
           'data': {
-            'id': 'wilct-user2',
-            'type': 'identities'
+            'attributes': {
+              'username': 'username0',
+              'fullName': 'WIDCT Example User 0',
+              'imageURL': 'https://avatars.githubusercontent.com/u/000?v=3'
+            },
+            'type': 'identities',
+            'id': 'widct-user0'
           }
         },
         'comments': {
+          'data': [],
           'links': {
             'self': '',
             'related': ''
@@ -125,6 +140,9 @@ describe('Work item list view - ', () => {
         }
       },
       'type': 'workitems',
+      'links': {
+        'self': ''
+      },
       'relationalData': {
         'creator': fakeUserList[0],
         'assignees': [fakeUserList[2]]

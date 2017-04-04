@@ -242,8 +242,7 @@ describe('Work Item Service - ', () => {
       (apiService as any).workItemTypes = wiTypes;
     }
   ));
-  let resp: WorkItem[] = [
-    {
+  let resp: WorkItem[] = [{
       'attributes': {
         'system.created_at': null,
         'system.description': null,
@@ -252,25 +251,54 @@ describe('Work Item Service - ', () => {
         'system.title': 'test1',
         'version': 0
       },
-      'links': {
-        'self': ''
-      },
       'id': '1',
       'relationships': {
+        'area': { },
+        'iteration': { },
         'assignees': {
-          'data': []
+          'data': [
+            {
+              'attributes': {
+                'username': 'username2',
+                'fullName': 'WIDCT Example User 2',
+                'imageURL': 'https://avatars.githubusercontent.com/u/002?v=3'
+            },
+            'type': 'identities',
+            'id': 'widct-user2'
+          }
+          ]
         },
         'baseType': {
           'data': {
-            'id': '86af5178-9b41-469b-9096-57e5155c3f31',
+            'id': 'system.userstory',
             'type': 'workitemtypes'
           }
         },
-        'creator': {}
+        'creator': {
+          'data': {
+            'attributes': {
+              'username': 'username0',
+              'fullName': 'WIDCT Example User 0',
+              'imageURL': 'https://avatars.githubusercontent.com/u/000?v=3'
+            },
+            'type': 'identities',
+            'id': 'widct-user0'
+          }
+        },
+        'comments': {
+          'data': [],
+          'links': {
+            'self': '',
+            'related': ''
+          }
+        }
       },
-      'type': 'workitems'
-    }
-  ] as WorkItem[];
+      'type': 'workitems',
+      'links': {
+        'self': ''
+      },
+      'relationalData': { }
+    }] as WorkItem[];
   let response = {data: resp, links: {}};
   let checkResp = cloneDeep(resp);
 
