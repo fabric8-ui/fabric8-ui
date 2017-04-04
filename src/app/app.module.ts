@@ -1,10 +1,10 @@
 import './rxjs-extensions';
 
 import { NgModule, ApplicationRef } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
@@ -108,6 +108,7 @@ export type StoreType = {
  */
 @NgModule({
   imports: [ // import (in alphabetical order) other modules with the components, directives and pipes needed by the components in this module
+    BrowserAnimationsModule,
     BrowserModule,
     DeleteAccountDialogModule,
     DropdownModule,
