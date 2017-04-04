@@ -639,7 +639,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     fixture.detectChanges();
     comp.openDescription();
     fixture.detectChanges();
-    el = fixture.debugElement.query(By.css('#detail-desc-value'));
+    el = fixture.debugElement.query(By.css('#wi-detail-desc .markdown-test-text'));
     comp.workItemPayload = comp.workItem;
     comp.workItem.attributes['system.description'] = 'User entered work item description';
     fixture.detectChanges();
@@ -653,7 +653,7 @@ describe('Detailed view and edit a selected work item - ', () => {
     comp.workItem = fakeWorkItem;
     comp.loggedIn = fakeAuthService.isLoggedIn();
     fixture.detectChanges();
-    el = fixture.debugElement.query(By.css('#wi-detail-desc'));
+    el = fixture.debugElement.query(By.css('#wi-detail-desc .markdown-test-element')); 
     expect(el.attributes['disabled']);
   });
 

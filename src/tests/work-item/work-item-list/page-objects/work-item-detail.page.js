@@ -129,7 +129,7 @@ class WorkItemDetailPage {
   }
 
   get workItemDetailDescriptionValue () {
-    return element(by.id("detail-desc-value"));
+    return element(by.css("#wi-detail-desc .markdown-test-text"));
   }
 
   workItemDetailDescriptionById () {
@@ -146,7 +146,7 @@ class WorkItemDetailPage {
   }
 
   get workItemDescriptionEditIcon () {
-    return element(by.id("workItemDesc_btn_edit"));
+    return element(by.css("#wi-detail-desc .markdown-test-btn-edit"));
   }
 
   clickWorkItemDescriptionEditIcon () {
@@ -154,11 +154,11 @@ class WorkItemDetailPage {
   }
 
   get workItemDescriptionSaveIcon () {
-    return element(by.id("workItemdesc_btn_save"));
+    return element(by.css("#wi-detail-desc .markdown-test-btn-save"));
   }
 
   workItemDescriptionSaveIconById () {
-    return element(by.id("workItemdesc_btn_save"));
+    return element(by.css("#wi-detail-desc .markdown-test-btn-save"));
   }
 
   clickWorkItemDescriptionSaveIcon () {
@@ -166,7 +166,7 @@ class WorkItemDetailPage {
   }
 
   get workItemDescriptionCancelIcon () {
-    return element(by.id("workItemdesc_btn_cancel"));
+    return element(by.css("#wi-detail-desc .markdown-test-btn-cancel"));
   }
 
   clickWorkItemDescriptionCancelIcon () {

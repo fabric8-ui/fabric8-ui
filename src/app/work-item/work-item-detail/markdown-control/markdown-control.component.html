@@ -11,7 +11,7 @@
           </li>
         </ul>
       </div>
-      <div id="wi-detail-text" class="detail-text-div-wrap" (click)="onClickMarkdownField()">
+      <div class="markdown-test-element detail-text-div-wrap" (click)="onClickMarkdownField()">
         <div class="detail-text-div"
           [class.text-editable]="tabBarVisible"
           [class.text-not-found]="!textEditable && !markdownText">
@@ -30,8 +30,7 @@
             (onUpdate)="onTextUpdate($event)"
             (keydown.enter)="onKeyEnter()"
             (keyup.enter)="$event.preventDefault()"
-            class="text"
-            id="detail-text-value"
+            class="text markdown-test-text"
             [hidden]="textViewType!='markdown'"
             [innerText]="markdownText">
           </p>
@@ -41,14 +40,13 @@
           </div>
           <p *ngIf="!renderedText && !tabBarVisible">Edit Text</p>
           <div class="edit-icon">
-            <span id="workItemtext_btn_edit" class="pficon-edit"
+            <span class="pficon-edit markdown-test-btn-edit"
               (click)='onClickEditIcon()'></span>
           </div>
         </div>
       </div>
     </div>
-    <div id="wi-detail-text"
-      class="col-md-12 text"
+    <div class="col-md-12 text"
       *ngIf="!loggedIn"
       [innerHTML]="renderedText">
     </div>
@@ -61,13 +59,13 @@
       </span>
       <span (click)="toggleMarkdownViewExpanded()" [ngClass]="{'arrow-down': markdownViewExpanded === true, 'arrow-up': markdownViewExpanded === false}" class="btn btn-link show-more-state col-md-4"></span>
       <span class="col-md-4">
-        <div *ngIf="loggedIn && tabBarVisible" id="workItemtext_btn_cancel"
-            class="fl btn btn-default btn-cancel pull-right detail-action-btn "
+        <div *ngIf="loggedIn && tabBarVisible"
+            class="fl btn btn-default btn-cancel pull-right detail-action-btn markdown-test-btn-save"
             (click)="onClickCancelIcon()">
             <span class="fa fa-close"></span>
         </div>
-        <div *ngIf="loggedIn && tabBarVisible" id="workItemtext_btn_save"
-            class="fl btn btn-default pull-right detail-action-btn"
+        <div *ngIf="loggedIn && tabBarVisible"
+            class="fl btn btn-default pull-right detail-action-btn markdown-test-btn-cancel"
             (click)="onClickSaveIcon()">
             <span class="fa fa-check"></span>
         </div>
