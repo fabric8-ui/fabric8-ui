@@ -126,6 +126,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     this.selectedParentIterationName = '';
     this.filteredIterations = [];
     this.selectedParentIteration = null;
+    this.iterationSearchDisable = false;
   }
 
   ngOnChanges() {
