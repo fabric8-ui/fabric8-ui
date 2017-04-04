@@ -90,8 +90,7 @@ export class WorkItemService {
   //   this.logger.log('WorkItemService using url ' + this.workItemUrl);
   // }
 
-  getChildren(parent: WorkItem): Observable<WorkItem[]> {
-    console.log('############# GET CHILDREN');
+  getChildren(parent: WorkItem): Promise<WorkItem[]> {
     if (parent.relationships.children) {
       this.logger.log('Requesting children for work item ' + parent.id);
       let url = parent.relationships.children.links.related;
@@ -107,13 +106,11 @@ export class WorkItemService {
             this.resolveType(item);
             this.resolveAreaForWorkItem(item);
           });
-          console.log('############# RETURN CHILDREN');
-          console.log(wItems);
           return wItems;
-        });
+        }).toPromise();
     } else {
       this.logger.log('Work item does not have child related link, skipping: ' + parent.id);
-      return Observable.of([]);
+      return Observable.of([]).toPromise();
     }
   }
 
