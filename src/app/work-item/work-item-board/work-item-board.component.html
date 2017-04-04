@@ -37,7 +37,7 @@
                     <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of lane.workItems' routerLink="./detail/{{item.id}}" [attr.data-id]="item.id" (mousedown)="getWI(item)">
                       <div class="row-wrapper">
                         <div class="">
-                          <span class="wi-type-icon fa {{item.relationalData?.wiType?.attributes?.icon}}"></span>
+                          <span class="wi-type-icon fa {{item.relationships?.baseType?.data?.attributes?.icon}}"></span>
                           <span class=""> {{item.id}} </span>
                         </div>
                         <span dropdown>
@@ -59,10 +59,13 @@
                           <p class="multiline-truncation">{{ item.attributes['system.title'] }}</p>
                         </div>
                         <div class="user-avatar">
-                          <img *ngIf="item.relationalData?.assignees?.length"
-                            src="{{item.relationalData?.assignees[0]?.attributes.imageURL + '&s=20'}}"
+                          <img
+                            *ngFor="let wItem of item.relationships.assignees.data"
+                            placement="bottom"
+                            tooltip="{{wItem?.attributes?.fullName}}"
+                            src="{{wItem?.attributes?.imageURL + '&s=20'}}"
                             onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
-                          <span *ngIf="!item.relationalData?.assignees?.length" class="pficon pficon-user not-assigned-user-icon"></span>
+                          <span *ngIf="!item.relationships?.assignees?.data?.length" class="pficon-user not-assigned-user-icon"></span>
                         </div>
                       </div>
                     </div>
