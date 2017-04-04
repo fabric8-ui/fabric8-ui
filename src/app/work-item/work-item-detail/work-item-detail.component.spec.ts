@@ -646,34 +646,6 @@ describe('Detailed view and edit a selected work item - ', () => {
     expect(el.classes['disabled']).toBeTruthy();
   });
 
-<<<<<<< HEAD
-  it('Work item description can be edited when logged in', () => {
-    fakeAuthService.login();
-    fixture.detectChanges();
-    comp.workItem = fakeWorkItem;
-    comp.loggedIn = fakeAuthService.isLoggedIn();
-    fixture.detectChanges();
-    comp.openDescription();
-    fixture.detectChanges();
-    el = fixture.debugElement.query(By.css('#wi-detail-desc .markdown-test-text'));
-    comp.workItemPayload = comp.workItem;
-    comp.workItem.attributes['system.description'] = 'User entered work item description';
-    fixture.detectChanges();
-    comp.save();
-    expect(comp.workItem.attributes['system.description']).toContain(el.nativeElement.innerHTML);
-  });
-
-  it('Work item description cannot be edited when logged out', () => {
-    fakeAuthService.logout();
-    fixture.detectChanges();
-    comp.workItem = fakeWorkItem;
-    comp.loggedIn = fakeAuthService.isLoggedIn();
-    fixture.detectChanges();
-    el = fixture.debugElement.query(By.css('#wi-detail-desc .markdown-test-element'));
-    expect(el.attributes['disabled']);
-  });
-=======
-
   // These tests doesn't belong to here anymore
   // There should be respective unit tests in markdown-control
 
@@ -702,7 +674,6 @@ describe('Detailed view and edit a selected work item - ', () => {
   //   el = fixture.debugElement.query(By.css('#wi-detail-desc'));
   //   expect(el.attributes['disabled']);
   // });
->>>>>>> 37ce461... fix(test): Unit tests fixed after dynamic form feature added
 
   it('Work item state can be edited when logged in', () => {
     fakeAuthService.login();
