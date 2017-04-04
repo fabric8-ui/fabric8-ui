@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: f8ui
+  creationTimestamp: null
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    creationTimestamp: null
+    generation: 1
+    labels:
+      service: f8ui
+    name: f8ui
+  spec:
+    replicas: 1
+    selector:
+      service: f8ui
+    strategy:
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          service: f8ui
+      spec:
+        containers:
+        - image: registry.devshift.net/fabric8io/fabric8-ui:${IMAGE_TAG}
+          imagePullPolicy: Always
+          name: f8ui
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+  status: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: null
+    labels:
+      service: f8ui
+    name: f8ui
+  spec:
+    ports:
+    - name: "8080"
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      service: f8ui
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Route
+  metadata:
+    creationTimestamp: null
+    labels:
+      service: f8ui
+    name: f8ui-pp
+  spec:
+    host: ''
+    port:
+      targetPort: "8080"
+    to:
+      kind: Service
+      name: f8ui
+      weight: 100
+    wildcardPolicy: None
+  status: {}
+parameters:
+- name: IMAGE_TAG
+  value: latest
