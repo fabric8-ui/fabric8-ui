@@ -169,8 +169,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       }
     });
     this.spaceSubscription = this.spaces.current.subscribe(space => {
-      this.getAreas();
-      this.getIterations();
+      if (space) {
+        this.getAreas();
+        this.getIterations();
+      }
     });
   }
 
