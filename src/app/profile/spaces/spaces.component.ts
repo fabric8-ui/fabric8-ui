@@ -25,7 +25,8 @@ export class SpacesComponent implements OnInit {
     private router: Router,
     private spaceService: SpaceService,
     private logger: Logger,
-    private contexts: Contexts) {
+    private contexts: Contexts
+  ) {
     this.contexts.current.subscribe(val => this.context = val);
   }
 
