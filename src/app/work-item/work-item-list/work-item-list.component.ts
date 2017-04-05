@@ -173,6 +173,9 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
         this.allUsers,
         this.workItemTypes
       );
+    },
+    (err) => {
+      console.log('Error in Work Item list',err);
     });
   }
 
