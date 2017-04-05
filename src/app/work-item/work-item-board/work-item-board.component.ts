@@ -216,6 +216,10 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl(link);
   }
 
+  onTouchstart(event: any) {
+    event.preventDefault();
+  }
+
   onDrag(args: any) {
     let [el, source] = args;
   }

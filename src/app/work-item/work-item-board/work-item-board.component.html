@@ -13,7 +13,7 @@
         [wiTypes]="workItemTypes"></toolbar-panel>
       <div class="contents posRel">
         <div id="board_topWorkItems" class="flex-container flex-grow-1 in-column-direction boardWrapper">
-          <div class="board" *ngIf="readyToInit">
+          <div class="board" *ngIf="readyToInit" (touchmove)="onTouchstart($event);">
             <!-- board columns -->
             <div class="board-lane" *ngFor='let lane of lanes'>
               <section class="flex-container in-column-direction board-lane-column" [attr.data-state]="lane.option">
@@ -34,7 +34,8 @@
                       </div>
                   </div>
                   <div [dragula]='"first-bag"' class="card-wrapper">
-                    <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of lane.workItems' routerLink="./detail/{{item.id}}" [attr.data-id]="item.id" (mousedown)="getWI(item)">
+                    <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of lane.workItems' routerLink="./detail/{{item.id}}" [attr.data-id]="item.id"
+                         (mousedown)="getWI(item)" (touchstart)="getWI(item)">
                       <div class="row-wrapper">
                         <div class="">
                           <span class="wi-type-icon fa {{item.relationships?.baseType?.data?.attributes?.icon}}"></span>
