@@ -6,15 +6,10 @@ exports.config = {
     jasmineNodeOpts: {
         defaultTimeoutInterval: 60000
     },
-
     capabilities: {
-          'browserName': 'chrome',
-        //   'browserName': 'phantomjs',
-        //   'maxInstances': 2,
-        //   'shardTestFiles': true
-        //   'phantomjs.binary.path': require('phantomjs-prebuilt').path,
-        //   'phantomjs.cli.args': ['--webdriver-loglevel=ERROR', '--local-storage-path=/tmp/phantom_' + Math.random()]
-
+      'browserName': 'chrome',
+      'chromeOptions': {
+        'args': [ '--no-sandbox']
+      }
     }
 };
-

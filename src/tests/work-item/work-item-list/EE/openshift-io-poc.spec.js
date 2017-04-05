@@ -52,16 +52,17 @@ describe('openshift.io End-to-End POC test - Scenario - New user registers', fun
 
   /* Simple test for registered user */
   it('should enable a registered user to login', function() {
+    
     OpenShiftIoRHDLoginPage = page.clickLoginButton();
     OpenShiftIoGithubLoginPage = OpenShiftIoRHDLoginPage.clickGithubLoginButton();
 
     browser.wait(until.presenceOf(OpenShiftIoGithubLoginPage.githubLoginField), constants.LONG_WAIT, 'Failed to find github loginbutton');
 
     OpenShiftIoGithubLoginPage.clickGithubLoginField();
-    OpenShiftIoGithubLoginPage.typeGithubLoginField("almightytest");
+    OpenShiftIoGithubLoginPage.typeGithubLoginField(browser.params.login.user); 
 
     OpenShiftIoGithubLoginPage.clickGithubPassword();
-    OpenShiftIoGithubLoginPage.typeGithubPassword("myalmighty@123");
+    OpenShiftIoGithubLoginPage.typeGithubPassword(browser.params.login.password);   
 
     OpenShiftIoDashboardPage = OpenShiftIoGithubLoginPage.clickGithubLoginButton();
     OpenShiftIoDashboardPage.clickNewSpaceButton();
@@ -76,7 +77,6 @@ describe('openshift.io End-to-End POC test - Scenario - New user registers', fun
 
     OpenShiftIoDashboardPage.clickBrowseSpaces();
     OpenShiftIoDashboardPage.clickSelectSpace(spaceTime);
-    
     browser.wait(until.urlContains('http://prod-preview.openshift.io/almusertest1/'+ spaceTime), constants.WAIT);
     browser.wait(until.urlIs('http://prod-preview.openshift.io/almusertest1/'+ spaceTime), constants.WAIT); 
     expect(browser.getCurrentUrl()).toEqual('http://prod-preview.openshift.io/almusertest1/'+ spaceTime);

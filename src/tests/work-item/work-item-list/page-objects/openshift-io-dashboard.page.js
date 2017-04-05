@@ -87,14 +87,19 @@ class OpenShiftIoDashboardPage {
     return this.wizardButton.click();
   }
 
+  get spaceWizard () {
+    return element(by.css(".wizard-container"));
+  }
   get newSpaceCancelButton () {
-     return element(by.xpath(".//a[contains(text(),'Cancel')]"));
-//     return element(by.xpath(".//*[contains(@class,'btn.btn-default.margin-right-5') and contains(text(),'Cancel')]"));
+     return this.spaceWizard.element(by.xpath(".//a[contains(text(),'Cancel')]"));
   }
   clickNewSpaceCancelButton () {
     browser.wait(until.elementToBeClickable(this.newSpaceCancelButton), constants.WAIT, 'Failed to find element newSpaceCancelButton');
     return this.newSpaceCancelButton.click();
   }
+
+// .glyphicon-remove
+
 
   get browseSpaces () {
     return element(by.xpath(".//a[contains(text(),'Browse')]"));
