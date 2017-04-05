@@ -76,13 +76,25 @@ export class LoginService {
     } else if (result['token_json']) {
       // Handle the case that this is a login
       this.authService.logIn(result['token_json']);
-      this.authService.getOpenShiftToken().subscribe(token => this.openShiftToken = token);
+      this.authService
+        .getOpenShiftToken()
+        .catch(err => {
+          console.log('Unable to get OpenShift token', err);
+          return Observable.of(null);
+        })
+        .subscribe(token => this.openShiftToken = token);
       // Navigate back to the current URL to clear up the query string
       this.router.navigateByUrl(this.router.url);
     } else if (this.authService.isLoggedIn()) {
       // Handle the case the user is already logged in
       this.authService.onLogIn();
-      this.authService.getOpenShiftToken().subscribe(token => this.openShiftToken = token);
+      this.authService
+        .getOpenShiftToken()
+        .catch(err => {
+          console.log('Unable to get OpenShift token', err);
+          return Observable.of(null);
+        })
+        .subscribe(token => this.openShiftToken = token);
     }
   }
 

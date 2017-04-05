@@ -358,8 +358,13 @@ export class ContextService implements Contexts {
                   .buildContext({ space: val } as RawContext));
             } else {
               return this.userService.getUserByUserId(raw.user)
-                .map(val => this
-                  .buildContext({ user: val } as RawContext));
+                .catch(err => {
+                  console.log('Unable to restore recent context', err);
+                  return Observable.empty<Context>();
+                })
+                .map(val => {
+                  return this.buildContext({ user: val } as RawContext)
+                });
             }
           }));
       } else {
