@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router }            from '@angular/router';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 import { Logger } from 'ngx-base';
@@ -26,7 +26,7 @@ export class SpacesComponent implements OnInit {
     private spaceService: SpaceService,
     private logger: Logger,
     private contexts: Contexts) {
-      this.contexts.current.subscribe(val => this.context = val);
+    this.contexts.current.subscribe(val => this.context = val);
   }
 
   ngOnInit() {
@@ -44,7 +44,8 @@ export class SpacesComponent implements OnInit {
   initSpaces(event: any): void {
     this.pageSize = event.pageSize;
     if (this.context && this.context.user) {
-      this.spaceService.getSpacesByUser(this.context.user.attributes.username, this.pageSize)
+      this.spaceService
+        .getSpacesByUser(this.context.user.attributes.username, this.pageSize)
         .subscribe(spaces => {
           this._spaces = spaces;
         });
@@ -57,11 +58,11 @@ export class SpacesComponent implements OnInit {
     if (this.context && this.context.user) {
       this.spaceService.getMoreSpacesByUser()
         .subscribe(spaces => {
-            this._spaces = this._spaces.concat(spaces);
-          },
-          err => {
-            this.logger.error(err);
-          });
+          this._spaces = this._spaces.concat(spaces);
+        },
+        err => {
+          this.logger.error(err);
+        });
     } else {
       this.logger.error("Failed to retrieve list of spaces owned by user");
     }
