@@ -104,7 +104,7 @@
         <button type="button" class="btn btn-default margin-right-5" *ngIf="!forge.hasError" [disabled]="(!forge.state.canMoveToNextStep)||(forge.processing === true)"
           (click)="forge.gotoNextStep()">Next</button>
         <button type="button" class="btn btn-default" *ngIf="!forge.hasError" [class.margin-right-5]="forge.hasError" [disabled]="(!forge.state.canExecute)||(forge.processing === true)" (click)="forge.finish()">Finish</button>
-        <button type="button" class="btn btn-default" *ngIf="forge.hasError" (click)="forge.clearError()">OK</button>
+        <button type="button" class="btn btn-default" *ngIf="forge.hasError" (click)="forge.clearErrors()">OK</button>
       </div>
     </div>
   </footer>
