@@ -349,7 +349,12 @@ export class MockHttp extends HttpService {
         return this.createResponse(url.toString(), 500, 'error', {});
       }
       if (path.path === '/workitems' && path.extraPath) {
-        var result = this.mockDataService.updateWorkItem(JSON.parse(body).data);
+        console.log('############## - 0');
+        if (path.extraPath === 'reorder') {
+          var result = JSON.parse(body).data;
+        } else {
+          var result = this.mockDataService.updateWorkItem(JSON.parse(body).data);
+        }
         if (result != null)
           return this.createResponse(url.toString(), 200, 'ok', { data: result });
         else

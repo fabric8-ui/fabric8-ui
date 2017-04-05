@@ -244,10 +244,14 @@ export class MockDataService {
           }
           // Assignee update
           else if (typeof(workItem.relationships.assignees) !== 'undefined') {
-            this.workItems[i].relationships.assignees.data
-              = workItem.relationships.assignees.data.map((assignee) => {
-                return this.getUserById(assignee.id);
-              });
+            if (workItem.relationships.assignees.data.length) {
+              this.workItems[i].relationships.assignees.data
+                = workItem.relationships.assignees.data.map((assignee) => {
+                    return this.getUserById(assignee.id);
+                  });
+            } else {
+              this.workItems[i].relationships.assignees = {};
+            }
           }
         }
         // Iteration update
