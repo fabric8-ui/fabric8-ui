@@ -128,7 +128,7 @@ export class WorkItemService {
           return {
             workItems: resp.json().data as WorkItem[],
             nextLink: resp.json().links.next,
-            totalCount: resp.json().meta.totalCount 
+            totalCount: resp.json().meta ? resp.json().meta.totalCount : 0
           };
         });
     } else {
