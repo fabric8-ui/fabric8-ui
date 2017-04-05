@@ -5,6 +5,7 @@
   cursor: pointer;
   align-items: center;
   .row-cbh {
+    display: none; /* checkboxes are disabled for now */
     margin-right: em(10);
     margin-left: em(5);
     padding:em(2) em(10) em(2) 0;
