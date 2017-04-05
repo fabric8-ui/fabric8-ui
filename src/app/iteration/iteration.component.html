@@ -11,13 +11,12 @@
         </h4>
       </div>
       <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
-        <li class="active" *ngFor="let iteration of currentIterations">
+        <li class="active" *ngFor="let iteration of currentIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}">
           <div class="iteration-subheader flex-container">
             <div class="flex-grow-1 truncate">
               <strong class="iteration-name "
                 tooltip="{{iteration.attributes.name}}"
-                placement="top"
-                (click)='getWorkItemsByIteration(iteration)'>
+                placement="top">
                 {{iteration.attributes.name}}
               </strong>
               <div class="parent-iteration">
@@ -72,15 +71,6 @@
                 placement="top"
                 tooltip="{{((iteration.relationships?.workitems?.meta?.closed / iteration.relationships?.workitems?.meta?.total) * 100) + '%'}}">
             </div>
-            <!--<div class="progress-bar progress-bar-remaining"
-                role="progressbar"
-                [attr.aria-valuenow]="100 - barchatValue"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                [ngStyle]="{'width': 100 - barchatValue + '%'}"
-                placement="top"
-                tooltip="{{(100 - barchatValue) + '%'}}">
-            </div>-->
           </div>
           <p class="iteration-description">{{ iteration.attributes?.description }}</p>
         </li>
@@ -107,12 +97,11 @@
       <ul class="not-current-iteration"
           [collapse]="isCollapsedFutureIteration">
 
-        <li class="iteration-subheader flex-container" *ngFor="let iteration of futureIterations">
+        <li class="iteration-subheader flex-container" *ngFor="let iteration of futureIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}">
           <div class="flex-grow-1 truncate">
             <strong class="iteration-name"
               tooltip="{{iteration.attributes.name}}"
-              placement="top"
-              (click)='getWorkItemsByIteration(iteration)'>
+              placement="top">
               {{iteration.attributes.name}}
             </strong>
             <div class="parent-iteration">
@@ -163,12 +152,11 @@
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedPastIteration">
-        <li class="iteration-subheader flex-container" *ngFor="let iteration of closedIterations">
+        <li class="iteration-subheader flex-container" *ngFor="let iteration of closedIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}">
           <div class="truncate flex-grow-1">
             <strong class="iteration-name "
               tooltip="{{iteration.attributes.name}}"
-              placement="top"
-              (click)='getWorkItemsByIteration(iteration)'>
+              placement="top">
               {{iteration.attributes.name}}
             </strong>
             <div class="parent-iteration">{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}</div>

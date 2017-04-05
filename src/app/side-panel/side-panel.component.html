@@ -1,11 +1,7 @@
-<div class="side-panel-header" [class.backlog-bg]="isBacklogSelected">
-  <h3 (click)='getWorkItemsByIteration(null)'>Backlog</h3>
-  <span class="badge">95</span>
+<div class="side-panel-header" [class.backlog-selected]="backlogSelected" (click)='selectBacklog()'>
+  <h3>Backlog</h3>
+  <span class="badge">{{numberOfItemsInBacklog}}</span>
 </div>
 <div class="flex-container flex-grow-1 in-column-direction">
-  <fab-planner-iteration
-    [takeFromInput]="true"
-    [iterations]="iterations"
-    class="fab-planner-iteration"></fab-planner-iteration>
- <!-- <fab-planner-type class="fab-planner-type"></fab-planner-type>-->
+  <fab-planner-iteration [takeFromInput]="true" [iterations]="iterations" class="fab-planner-iteration"></fab-planner-iteration>
 </div>

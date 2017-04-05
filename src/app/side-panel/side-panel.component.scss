@@ -1,16 +1,22 @@
 @import '../../assets/stylesheets/base';
 
 .side-panel-header {
-  border:solid 0 red;
+  cursor: pointer;
+  border: none;
   padding: 0 $grid-gutter-width/2;
-  margin:0;
-  border-top:1px solid $color-pf-black-200;
+  margin: 0;
+  border-top: 1px solid $color-pf-black-200;
   border-bottom: 1px solid $color-pf-black-400;
   background-color: $color-pf-black-200;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+
   h3 {
     margin-bottom: em(15);
+  }
+
+  &.backlog-selected {
+    background: #bee1f4 !important;
   }
 }

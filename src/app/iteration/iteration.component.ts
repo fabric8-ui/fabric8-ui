@@ -2,13 +2,15 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Params, ActivatedRoute } from '@angular/router';
-import { Space, Spaces } from 'ngx-fabric8-wit';
-import { IterationService } from './iteration.service';
-import { IterationModel } from './../models/iteration.model';
 import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 
 import { Broadcaster } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
+import { Space, Spaces } from 'ngx-fabric8-wit';
+
+import { IterationService } from './iteration.service';
+import { IterationModel } from './../models/iteration.model';
+import { WorkItem } from './../models/work-item';
 
 @Component({
   host: {
@@ -32,6 +34,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   isCollapsedFutureIteration: Boolean = true;
   isCollapsedPastIteration: Boolean = true;
   barchatValue: number = 70;
+  selectedIteration: IterationModel;
   allIterations: IterationModel[] = [];
   futureIterations: IterationModel[] = [];
   currentIterations: IterationModel[] = [];
@@ -115,8 +118,8 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   getWorkItemsByIteration(iteration: IterationModel) {
     let filters: any = [];
-    if (iteration)
-    {
+    if (iteration) {
+      this.selectedIteration = iteration;
       this.isBacklogSelected = false;
       filters.push({
         id:  iteration.id,
@@ -125,8 +128,11 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         active: true,
         value: iteration.id
       });
+      // emit event 
+      this.broadcaster.broadcast('iteration_selected', iteration);
     } else {
       //This is to view the backlog
+      this.selectedIteration = null;
       this.isBacklogSelected = true;
       //Collapse the other iteration sets
       this.isCollapsedCurrentIteration = true;
@@ -140,7 +146,15 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.broadcaster.broadcast('unique_filter', filters);
   }
 
+  updateItemCounts(data: any) {
+  }
+
   listenToEvents() {
+    this.broadcaster.on<string>('backlog_selected')
+      .subscribe(message => {
+        this.selectedIteration = null;
+        this.isBacklogSelected = true;
+    });
     this.broadcaster.on<string>('logout')
       .subscribe(message => {
         this.loggedIn = false;
@@ -164,6 +178,16 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         let futureIteration: IterationModel = this.allIterations.find((it) => it.id == data.futureIterationId);
         if (futureIteration) {
           futureIteration.relationships.workitems.meta.total += 1;
+        }
+    });
+    this.broadcaster.on<WorkItem>('delete_workitem')
+      .subscribe((data: WorkItem) => {
+        // if the workitem was associated with an iteration, deduct one from that iterations count
+        if (data.relationships.iteration.data) {
+          let currentIteration: IterationModel = this.allIterations.find((it) => it.id == data.relationships.iteration.data.id);
+          if (currentIteration) {
+            currentIteration.relationships.workitems.meta.total -= 1;
+          }
         }
     });
   }

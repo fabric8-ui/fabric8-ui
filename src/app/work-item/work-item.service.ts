@@ -114,7 +114,7 @@ export class WorkItemService {
     }
   }
 
-  getWorkItems(pageSize: number = 20, filters: any[] = []): Observable<{workItems: WorkItem[], nextLink: string | null}> {
+  getWorkItems(pageSize: number = 20, filters: any[] = []): Observable<{workItems: WorkItem[], nextLink: string, totalCount: number | null}> {
     if (this._currentSpace) {
       this.workItemUrl = this._currentSpace.links.self + '/workitems';
       let url = this.workItemUrl + '?page[limit]=' + pageSize;
@@ -127,7 +127,8 @@ export class WorkItemService {
         .map((resp) => {
           return {
             workItems: resp.json().data as WorkItem[],
-            nextLink: resp.json().links.next
+            nextLink: resp.json().links.next,
+            totalCount: resp.json().meta.totalCount 
           };
         });
     } else {
@@ -613,7 +614,9 @@ export class WorkItemService {
   delete(workItem: WorkItem): Observable<void> {
     return this.http
       .delete(workItem.links.self, { headers: this.headers, body: '' })
-      .map(() => {});
+      .map(() => {
+        this.broadcaster.broadcast('delete_workitem', workItem);
+      });
       // .catch ((e) => {
       //   if (e.status === 401) {
       //     this.auth.logout();
@@ -638,7 +641,8 @@ export class WorkItemService {
       return this.http
         .post(this.workItemUrl, payload, { headers: this.headers })
         .map(response => {
-          return response.json().data;
+          this.broadcaster.broadcast('create_workitem', response.json().data as WorkItem);          
+          return response.json().data as WorkItem;
         });
         // .catch ((e) => {
         //   if (e.status === 401) {
