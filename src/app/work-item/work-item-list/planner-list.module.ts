@@ -10,7 +10,7 @@ import {
 
 import { DropdownModule, TooltipModule } from 'ng2-bootstrap';
 import { ModalModule } from 'ngx-modal';
-import { TreeModule } from 'angular2-tree-component';
+import { TreeModule } from 'angular-tree-component';
 import {
   AlmIconModule,
   DialogModule,

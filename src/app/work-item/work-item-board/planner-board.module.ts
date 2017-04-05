@@ -10,7 +10,7 @@ import {
 import { ModalModule } from 'ngx-modal';
 import { DragulaModule } from 'ng2-dragula';
 import { DropdownModule } from 'ng2-bootstrap';
-import { TreeModule } from 'angular2-tree-component';
+import { TreeModule } from 'angular-tree-component';
 import { TooltipModule } from 'ng2-bootstrap';
 import { Broadcaster, Logger } from 'ngx-base';
 import {
