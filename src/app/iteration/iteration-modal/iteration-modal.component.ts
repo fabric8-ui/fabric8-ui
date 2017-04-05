@@ -159,6 +159,19 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.modalTitle = 'Update Iteration';
       this.iterationSearchDisable = true;
       this.selectedParentIterationName = iteration.attributes.resolved_parent_path;
+
+      if (typeof iteration.attributes.startAt !== 'undefined') {
+        let startAt = moment(iteration.attributes.startAt);
+        let date = { year: startAt.format('YYYY'), month: startAt.format('M'), day: startAt.format('D') } as any;
+        let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
+        endDatePickerComponentCopy['disableUntil'] = date;
+        this.endDatePickerOptions = endDatePickerComponentCopy;
+      }
+      else {
+        let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
+        endDatePickerComponentCopy['disableUntil'] = this.startDate.date;
+        this.endDatePickerOptions = endDatePickerComponentCopy;
+      }
       if (iteration.attributes.state === 'start') {
         let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
         startDatePickerComponentCopy.componentDisabled = true;
