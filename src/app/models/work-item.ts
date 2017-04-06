@@ -32,6 +32,9 @@ export class WorkItemRelations {
     links: {
       related: string;
     };
+    meta: {
+      hasChildren: boolean;
+    };
   };
   comments?: {
     data?: Comment[];
