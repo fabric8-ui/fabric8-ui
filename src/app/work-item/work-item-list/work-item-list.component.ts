@@ -372,8 +372,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
     this.eventListeners.push(
       this.broadcaster.on<void>('update_work_item_hierarchy')
         .subscribe(() => {
-                  console.log('################ CHANGE RELA3');
-
           // hierarchy has potentially changed, reload all data
           this.loadWorkItems();
           this.workItemService.resetWorkItemList();

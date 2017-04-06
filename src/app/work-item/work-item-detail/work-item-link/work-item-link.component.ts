@@ -141,7 +141,6 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
         this.workItemService.addLinkToWorkItem(link, includes, this.workItem);
         this.resetSearchData();
         // the hierarchy of work items has potentially changed (parent-child relationships may have changed)
-        console.log('################ CHANGE RELA1');
         this.broadcaster.broadcast('update_work_item_hierarchy');
       },
       (error: any) => console.log(error));
@@ -155,7 +154,6 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
       .subscribe(() => {
         this.workItemService.removeLinkFromWorkItem(link, currentWorkItem);
         // the hierarchy of work items has potentially changed (parent-child relationships may have changed)
-        console.log('################ CHANGE RELA2');
         this.broadcaster.broadcast('update_work_item_hierarchy');
       },
       (error: any) => console.log(error));
