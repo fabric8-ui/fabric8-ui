@@ -151,6 +151,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.submitBtnTxt = 'Create';
       this.modalTitle = 'Create Iteration';
       this.iterationSearch.nativeElement.setAttribute('placeholder', 'None');
+      let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
+      endDatePickerComponentCopy['disableUntil'] = this.startDate.date;
+      this.endDatePickerOptions = endDatePickerComponentCopy;
     }
     if (this.modalType == 'start') {
       this.submitBtnTxt = 'Start';
