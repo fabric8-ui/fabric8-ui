@@ -422,6 +422,46 @@ class WorkItemDetailPage {
     if (!append) { this.commentBody(index).clear(comment) };
     return this.commentBody(index).sendKeys(comment);
   }
+  commentsKebab (){
+    return element(by.id('commentActionsKebab'));
+   }
+  clickCommentsKebab (){
+    return this.commentsKebab().click();
+   }
+  clickEditComment(){
+    return element(by.linkText('Edit...')).click();
+  }
+  clickDeleteComment(){
+    return element(by.linkText('Delete')).click();
+  }
+  searchLinkByText(text){
+    return element(by.linkText(text));
+  }
+  deleteCommentDialogeClose(){
+    return element(by.linkText("×"));
+  }
+  clickDeleteCommentDialogeClose(){
+    return this.deleteCommentDialogeClose().click();
+  }
+  deleteCommentDialogeCancel(){
+    return element(by.id('comment-delete-cancel'));
+  }
+  clickDeleteCommentDialogeCancel(){
+    return this.deleteCommentDialogeCancel().click();
+  }
+  deleteCommentDialogeDeletebtn(){
+    return element(by.id('comment-delete-confirm'));
+  }
+  clickDeleteCommentDialogeDeletebtn(){
+    return this.deleteCommentDialogeDeletebtn().click();
+  }
+  deleteCommentDialogeModalTitle(){
+    return element(by.css('.modal-title'));
+  }
+  getDeleteCommentDialogeModalTitle(){
+    return  this.deleteCommentDialogeModalTitle().getText();
+  }
+
 /**UI elements for created time WI */
   getCreatedtime  (){
     return element(by.id('created_at')).getText();

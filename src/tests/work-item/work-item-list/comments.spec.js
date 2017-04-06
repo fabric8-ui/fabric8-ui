@@ -60,5 +60,23 @@ var waitTime = 30000;
       detailPage.writeComment("some comment1");
       expect(detailPage.getTotalNumberOfComments()).toBe('3');
      });
-
+  it('CRUD Comment -desktop ', function() {
+      page.clickWorkItemTitle(page.workItemByTitle("Title Text 3"), "id3");
+      detailPage.writeComment("some comment");
+      expect(detailPage.commentsAvatar('0').isPresent()).toBe(true);
+      browser.wait(until.elementToBeClickable(detailPage.commentsKebab()), constants.WAIT, 'Failed to find element');   
+      detailPage.clickCommentsKebab();
+      expect(detailPage.commentsKebab().isPresent()).toBe(true);
+      detailPage.clickEditComment();
+      detailPage.editComments("updated comment !",'0',false);
+      detailPage.clickCloseComment("0");
+      expect(detailPage.getCommentBody("0")).toBe('some comment');
+      //Delete 
+      detailPage.clickCommentsKebab();
+      expect(detailPage.commentsKebab().isPresent()).toBe(true);
+      detailPage.clickDeleteComment();
+      expect(detailPage.deleteCommentDialogeCancel().isPresent()).toBe(true);
+      expect(detailPage.deleteCommentDialogeDeletebtn().isPresent()).toBe(true);
+      expect(detailPage.getDeleteCommentDialogeModalTitle()).toBe("Delete Comment");
+     });
 });
