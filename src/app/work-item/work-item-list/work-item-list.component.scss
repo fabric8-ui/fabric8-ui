@@ -17,7 +17,9 @@
   display: flex;
   align-items: inherit;
 }
-
+.side-panel-container {
+    background-color: $color-pf-black-900;
+}
 .work-item-list-page {
   >.list-group
   {
@@ -59,6 +61,9 @@
     flex: 1;
     flex-direction: column;
     position: relative;
+    > main {
+        border-top: 0 solid !important;
+    }
     .container-modal {
         border: solid 0 red;
         background-color: $color-pf-black-100;

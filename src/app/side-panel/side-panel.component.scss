@@ -4,10 +4,10 @@
   cursor: pointer;
   border: none;
   padding: 0 $grid-gutter-width/2;
-  margin: 0;
-  border-top: 1px solid $color-pf-black-200;
-  border-bottom: 1px solid $color-pf-black-400;
-  background-color: $color-pf-black-200;
+  background-color: $color-pf-black-900;
+  border-bottom: 1px solid $color-pf-black-700;
+  border-left: 4px solid transparent;
+  color: $color-pf-white;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -17,6 +17,12 @@
   }
 
   &.backlog-selected {
-    background: #bee1f4 !important;
+    background-color: $color-pf-black-700;
+    color: $color-pf-white;
+    border-left: 4px solid $color-pf-blue;
+  }
+  
+  .badge {
+    background-color: $color-pf-black;
   }
 }

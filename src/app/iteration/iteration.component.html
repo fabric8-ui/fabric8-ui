@@ -3,12 +3,12 @@
   <div class="iteration-wrapper">
     <div class="iterations">
       <div class="iteration-header pointer">
-        <h4>
+        <h3>
           <span (click)="isCollapsedIteration = !isCollapsedIteration">
             <i class="fa fa-icon"></i>
             Current Iteration
           </span>
-        </h4>
+        </h3>
       </div>
       <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
         <li class="active" *ngFor="let iteration of currentIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}">
@@ -20,7 +20,9 @@
                 {{iteration.attributes.name}}
               </strong>
               <div class="parent-iteration">
-                {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}
+                <span>
+                  {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}
+                </span>
               </div>
             </div>
             <div *ngIf="loggedIn" class="dropdown-kebab-pf" dropdown>
@@ -29,7 +31,7 @@
                       aria-haspopup="true"
                       aria-expanded="true"
                       dropdownToggle>
-                <span class="fa fa-ellipsis-v"></span>
+                <i class="fa fa-ellipsis-v"></i>
               </button>
               <ul class="dropdown-menu-right" dropdownMenu>
                 <li>
@@ -78,7 +80,7 @@
     </div>
     <div class="iterations">
       <div class="iteration-header pointer">
-        <h4>
+        <h3>
           <span (click)="isCollapsedFutureIteration = !isCollapsedFutureIteration">
             <i class="fa fa-icon"
                 [ngClass]="{'fa-angle-right': isCollapsedFutureIteration,
@@ -89,10 +91,10 @@
             <a *ngIf="loggedIn && editEnabled"
               class="text-right"
               (click)="modal.openCreateUpdateModal('create');">
-              <i *ngIf="loggedIn && editEnabled" id="add-iteration-icon" class="pficon-add-circle-o fa-lg pull-right with-cursor-pointer" placement="bottom" tooltip="Add an Iteration"></i>
+              <i *ngIf="loggedIn && editEnabled" id="add-iteration-icon" class="pficon-add-circle-o fa-lg pull-right with-cursor-pointer add-btn" placement="bottom" tooltip="Add an Iteration"></i>
             </a>
           </small>
-        </h4>
+        </h3>
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedFutureIteration">
@@ -116,7 +118,7 @@
                       aria-haspopup="true"
                       aria-expanded="true"
                       dropdownToggle>
-                <span class="fa fa-ellipsis-v"></span>
+                <i class="fa fa-ellipsis-v"></i>
               </button>
               <ul class="dropdown-menu-right" dropdownMenu>
                 <li>
@@ -143,12 +145,12 @@
     <div class="iterations">
       <div class="iteration-header pointer"
         (click)="isCollapsedPastIteration = !isCollapsedPastIteration">
-        <h4>
+        <h3>
           <i class="fa fa-icon"
               [ngClass]="{'fa-angle-right': isCollapsedPastIteration,
                           'fa-angle-down': !isCollapsedPastIteration}"></i>
           Past Iterations
-        </h4>
+        </h3>
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedPastIteration">
@@ -159,7 +161,11 @@
               placement="top">
               {{iteration.attributes.name}}
             </strong>
-            <div class="parent-iteration">{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}</div>
+            <div class="parent-iteration">
+              <span>
+                {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}
+              </span>
+            </div>
           </div>
           <div>
             <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
@@ -169,7 +175,7 @@
                       aria-haspopup="true"
                       aria-expanded="true"
                       dropdownToggle>
-                <span class="fa fa-ellipsis-v"></span>
+                <i class="fa fa-ellipsis-v"></i>
               </button>
               <ul class="dropdown-menu-right" dropdownMenu>
                 <li>
