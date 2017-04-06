@@ -41,67 +41,67 @@ describe('Work item list', function () {
   });
 
   /* User can read, update, remove assignee on a workitem  */
-  it('User can read, update, remove assignee and delete WI', function() {
-    page.clickWorkItemQuickAdd();
-    page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
-    page.clickQuickAddSave().then(function() {
-      page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
+//   it('User can read, update, remove assignee and delete WI', function() {
+//     page.clickWorkItemQuickAdd();
+//     page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
+//     page.clickQuickAddSave().then(function() {
+//       page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
 
-        var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
-        browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
-        
-        detailPage.clickworkItemDetailAssigneeIcon();
-        detailPage.setWorkItemDetailAssigneeSearch(EXAMPLE_USER_1, false);
-        detailPage.clickAssignedUserDropDownList(EXAMPLE_USER_1);
-        expect(detailPage.details_assigned_user().getText()).toContain(EXAMPLE_USER_1);
+//         var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
+//         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');
 
-        detailPage.details_assigned_user().click();
-        detailPage.clickworkItemDetailUnassignButton();
-        // expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
-        detailPage.clickWorkItemDetailCloseButton();
-        page.clickWorkItemKebabButton(page.firstWorkItem);
-        page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
-        browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');   
+//         detailPage.clickworkItemDetailAssigneeIcon();
+//         detailPage.setWorkItemDetailAssigneeSearch(EXAMPLE_USER_1, false);
+//         detailPage.clickAssignedUserDropDownList(EXAMPLE_USER_1);
+//         expect(detailPage.details_assigned_user().getText()).toContain(EXAMPLE_USER_1);
 
-        page.clickWorkItemPopUpDeleteConfirmButton().then(function() {
-  
-//        expect(page.workItemTitle(page.firstWorkItem)).not.toBe(WORK_ITEM_TITLE);
-//        expect(page.workItemTitle(page.workItemByNumber(0))).not.toBe(WORK_ITEM_TITLE);
-      });
-      });
-    });
-  });
+//         detailPage.details_assigned_user().click();
+//         detailPage.clickworkItemDetailUnassignButton();
+//         // expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
+//         detailPage.clickWorkItemDetailCloseButton();
+//         page.clickWorkItemKebabButton(page.firstWorkItem);
+//         page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
+//         browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');
+
+//         page.clickWorkItemPopUpDeleteConfirmButton().then(function() {
+
+// //        expect(page.workItemTitle(page.firstWorkItem)).not.toBe(WORK_ITEM_TITLE);
+// //        expect(page.workItemTitle(page.workItemByNumber(0))).not.toBe(WORK_ITEM_TITLE);
+//       });
+//       });
+//     });
+//   });
 
   /* Create a new workitem, fill in the details, save, retrieve, update, save, verify updates are saved */
-  it('should find and update the workitem through its detail page - desktop.', function() {
+  // it('should find and update the workitem through its detail page - desktop.', function() {
 
-    /* Create a new workitem */
-    page.clickWorkItemQuickAdd();
-    page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
-    page.typeQuickAddWorkItemDesc(WORK_ITEM_DESCRIPTION);
-    page.clickQuickAddSave().then(function() {
-      expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_TITLE);
+  //   /* Create a new workitem */
+  //   page.clickWorkItemQuickAdd();
+  //   page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
+  //   page.typeQuickAddWorkItemDesc(WORK_ITEM_DESCRIPTION);
+  //   page.clickQuickAddSave().then(function() {
+  //     expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_TITLE);
 
-      /* Fill in/update the new work item's title and details field */
-      expect(page.workItemTitle(page.workItemByTitle(WORK_ITEM_TITLE))).toBe(WORK_ITEM_TITLE);
+  //     /* Fill in/update the new work item's title and details field */
+  //     expect(page.workItemTitle(page.workItemByTitle(WORK_ITEM_TITLE))).toBe(WORK_ITEM_TITLE);
 
-      page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
-        var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
-        browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
+  //     page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
+  //       var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
+  //       browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');
 
-        detailPage.clickWorkItemDetailTitleClick();
-        detailPage.setWorkItemDetailTitle (WORK_ITEM_UPDATED_TITLE, false);
-        detailPage.clickWorkItemTitleSaveIcon();
-        detailPage.clickWorkItemDetailDescription()
-        detailPage.setWorkItemDetailDescription (WORK_ITEM_UPDATED_DESCRIPTION, false);
-        detailPage.clickWorkItemDescriptionSaveIcon();
+  //       detailPage.clickWorkItemDetailTitleClick();
+  //       detailPage.setWorkItemDetailTitle (WORK_ITEM_UPDATED_TITLE, false);
+  //       detailPage.clickWorkItemTitleSaveIcon();
+  //       detailPage.clickWorkItemDetailDescription()
+  //       detailPage.setWorkItemDetailDescription (WORK_ITEM_UPDATED_DESCRIPTION, false);
+  //       detailPage.clickWorkItemDescriptionSaveIcon();
 
-        detailPage.clickWorkItemDetailCloseButton();
-        browser.wait(until.presenceOf(page.firstWorkItem), constants.WAIT, 'Failed to find workItemList');
-        expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_UPDATED_TITLE);
-      });
-    });
-  });
+  //       detailPage.clickWorkItemDetailCloseButton();
+  //       browser.wait(until.presenceOf(page.firstWorkItem), constants.WAIT, 'Failed to find workItemList');
+  //       expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_UPDATED_TITLE);
+  //     });
+  //   });
+  // });
 
   // /* Vary the order of execution of the workitems */
   // it('should top workitem to the bottom and back to the top via the workitem kebab - phone.', function() {
@@ -138,7 +138,7 @@ describe('Work item list', function () {
 //  it('Edit and check WorkItem , creatorname and image is reflected', function () {
 //    page.clickDetailedDialogButton();
 //    var detailPage = page.clickDetailedIcon("userstory");
-//    browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find workItem');   
+//    browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find workItem');
 //
 //    detailPage.setWorkItemDetailTitle (WORK_ITEM_TITLE, false);
 //    detailPage.clickWorkItemTitleSaveIcon();
@@ -150,7 +150,7 @@ describe('Work item list', function () {
 //    detailPage.clickWorkItemDetailCloseButton();
 //
 //    expect(page.workItemTitle(page.workItemByTitle(WORK_ITEM_TITLE))).toBe(WORK_ITEM_TITLE);
-//    browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find First Work Item');   
+//    browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find First Work Item');
 //
 //    page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
 //      page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
@@ -162,34 +162,34 @@ describe('Work item list', function () {
 
  it('check date showing up correctly - Desktop', function () {
     var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "Title Text 0");
-    browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find workItem');   
+    browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find workItem');
     expect(detailPage.getCreatedtime()).toBe('a few seconds ago');
-    browser.wait(until.elementToBeClickable(detailPage.workItemDetailCloseButton), constants.WAIT, 'Failed to find close workItem detail page');   
+    browser.wait(until.elementToBeClickable(detailPage.workItemDetailCloseButton), constants.WAIT, 'Failed to find close workItem detail page');
     detailPage.clickWorkItemDetailCloseButton();
-    
+
 //    detailPage = page.workItemByURLId("id1");
 //    expect(detailPage.workItemDetailTitle.getText()).toBe('17 minutes ago');
    });
    it('Updating area to a WI -desktop ', function() {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, WORKITEM_0_ID);
-      browser.wait(until.elementToBeClickable(detailPage.areaLabel), constants.WAIT, 'Failed to find areaLabel');   
+      browser.wait(until.elementToBeClickable(detailPage.areaLabel), constants.WAIT, 'Failed to find areaLabel');
       detailPage.clickAreaSelect();
       detailPage.clickAreas(WORKITEM_0_ID);
       expect(detailPage.saveAreasButton().isPresent()).toBe(true);
       detailPage.SaveAreas();
 
-      browser.wait(until.elementToBeClickable(detailPage.AreaSelect()), constants.WAIT, 'Failed to find area');   
+      browser.wait(until.elementToBeClickable(detailPage.AreaSelect()), constants.WAIT, 'Failed to find area');
       expect(detailPage.AreaSelect().getText()).toBe(AREA_0_TITLE);
       detailPage.clickAreaSelect();
       detailPage.clickAreas(WORKITEM_1_ID);
-     
+
       detailPage.SaveAreas();
-      browser.wait(until.elementToBeClickable(detailPage.AreaSelect()), constants.WAIT, 'Failed to find area');   
+      browser.wait(until.elementToBeClickable(detailPage.AreaSelect()), constants.WAIT, 'Failed to find area');
       expect(detailPage.AreaSelect().getText()).toBe(AREA_1_TITLE);
      });
 
    it('Re-Associate Workitem from detail page', function() {
-      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0"); 
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0");
       detailPage.IterationOndetailPage().click();
       detailPage.clickAssignIteration();
       detailPage.associateIteration("Iteration 1");
