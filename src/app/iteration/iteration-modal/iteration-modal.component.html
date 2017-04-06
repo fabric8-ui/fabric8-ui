@@ -28,7 +28,7 @@
             autocomplete="off" [value]="selectedParentIterationName" (focus)="iterationSearchFocus();" [disabled]="iterationSearchDisable">
             <ul class="iteration-list dropdown-menu dropdown-ul" *ngIf="filteredIterations.length" #iterationList>
               <li *ngFor="let iteration of filteredIterations;" [attr.data-id]="iteration.id" (click)="setParentIteration(iteration.id);">
-                <span [innerHTML]="iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | almSearchHighlight: iterationSearch.value"></span>
+                <span [innerHTML]="(iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/') | almSearchHighlight: iterationSearch.value"></span>
               </li>
             </ul>
             <span class="input-group-addon pointer" (click)="iterationSearchFocus();"> <span class="caret"></span> </span>

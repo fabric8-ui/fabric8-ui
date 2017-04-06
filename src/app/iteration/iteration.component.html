@@ -105,7 +105,7 @@
               {{iteration.attributes.name}}
             </strong>
             <div class="parent-iteration">
-              <span>{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}</span>
+              <span>{{(iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/')}}</span>
             </div>
           </div>
           <div>
