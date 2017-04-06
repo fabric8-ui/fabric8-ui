@@ -621,6 +621,75 @@ class WorkItemDetailPage {
   genericLinkseach(text){
     return element(by.linkText(text)).click();
   }
+
+
+  /* Dynamic fields - limited at present (April 2017) to workitems of type user story */
+
+  get dynamicFormGroup () {
+    return element(By.css('.form-group>alm-dynamic-field'));
+  }
+
+  /* Steps to reproduce */
+
+  get stepsToReproduceLabelParent () {
+    return element(By.xpath('.//label[contains(text(),"Steps to Reproduce")]/..'));
+  }
+
+  get stepsToReproduceEditIcon () {
+    return element(by.css('.pficon-edit.markdown-test-btn-edit'));
+  }
+
+  clickStepsToReproduceEditIcon () {
+    this.stepsToReproduceEditIcon.click();
+  }
+
+  get stepsToReproduceText () {
+    return element(By.xpath('.//p[contains(text(),"Edit Text")]'));
+  }
+
+  clickStepsToReproduceText () {
+    browser.wait(until.visibilityOf(this.stepsToReproduceText, constants.WAIT));
+    return this.stepsToReproduceText.click();
+  }
+
+  get editableTextForStepsToReproduce () {
+    return this.stepsToReproduceLabelParent.element(by.css('.text.markdown-test-text'));
+  }
+
+  setstepsToReproduceText (newString) {     
+    browser.wait(until.visibilityOf(this.editableTextForStepsToReproduce, constants.WAIT));
+    return this.editableTextForStepsToReproduce.sendKeys(newString);
+  }
+
+  /* Story points */
+
+  get storyPointsLabelParent () {
+    return element(By.xpath('.//label[contains(text(),"Story Points")]/..'));
+  }
+
+
+  /* Important */
+
+  get importantLabelParent () {
+    return element(By.xpath('.//label[contains(text(),"Important")]/..'));
+  }
+
+
+  /* Due Date */
+
+  get dueDate () {
+    return element(By.xpath('.//label[contains(text(),"Due Date")]/..'));
+  }
+
+
+  /* Severity */
+
+  get severityLabelParent () {
+    return element(By.xpath('.//label[contains(text(),"Severity")]/..'));
+  }
+
+
+
 }
 
 module.exports = WorkItemDetailPage;
