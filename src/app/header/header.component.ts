@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit {
     private spacesService: SpacesService) { }
 
   getLoggedUser(): void {
-    this.loggedInUser = this.userService.getSavedLoggedInUser();
+    this.userService.getUser().subscribe(user => this.loggedInUser = user);
   }
 
   logout() {

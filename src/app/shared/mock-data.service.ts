@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Logger } from 'ngx-base';
 
 import { cloneDeep } from 'lodash';
-import { WorkItem } from '../work-item/work-item';
+import { WorkItem } from '../models/work-item';
 
 // mock data generators
 import { SchemaMockGenerator } from './mock-data/schema-mock-generator';

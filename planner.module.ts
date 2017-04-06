@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { WorkItemModule } from './src/app/work-item/work-item.module';
 import { PlannerBoardModule } from './src/app/work-item/work-item-board/planner-board.module';
 import { PlannerListModule } from './src/app/work-item/work-item-list/planner-list.module';
 
@@ -12,8 +11,7 @@ import { PlannerListModule } from './src/app/work-item/work-item-list/planner-li
   ],
   exports: [
     PlannerBoardModule,
-    PlannerListModule,
-    WorkItemModule
+    PlannerListModule
   ]
 })
 export class PlannerModule {
