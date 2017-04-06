@@ -137,8 +137,8 @@ export class ForgeAppGenerator {
           let validationState = response.payload.state;
           this.log({
             message: `Validation response for command ${commandInfo}.`,
-            info: validationState.valid?true:false,
-            warning:!validationState.valid?true:false
+            info: validationState.valid,
+            warning:!validationState.valid
           },response,console.groupEnd);
 
           // only assign these state fields ... not the entire state
@@ -271,7 +271,7 @@ export class ForgeAppGenerator {
   }
 
   finish() {
-    this.execute() 
+    this.execute()
     //this.workflow.finish();
     //this.reset();
   }

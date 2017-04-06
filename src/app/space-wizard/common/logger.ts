@@ -59,7 +59,7 @@ export class LoggerFactory {
       if ( entry.info === true ) {
         method = 'info';
       }
-      let msg = `${origin} ${instance} ${entry.message || ''}` 
+      let msg = `${origin} ${instance} ${entry.message || ''}`;
       console[ method ].apply(
         null,
         [ `%c${origin}%c ${instance} %c${entry.message || ''}`,
