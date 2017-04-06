@@ -6,6 +6,7 @@ import { Broadcaster, Logger } from 'ngx-base';
 
 import { WorkItem } from '../models/work-item';
 import { WorkItemService } from '../work-item/work-item.service';
+import { IterationService } from '../iteration/iteration.service';
 
 @Component({
   host:{
@@ -19,22 +20,31 @@ export class SidepanelComponent implements OnInit {
 
   @Input() iterations: IterationModel[] = [];
 
+  rootIteration: IterationModel = null;
   backlogSelected: boolean = true;
   numberOfItemsInBacklog: number = 0;
 
   constructor(
     private log: Logger,
     private workItemService: WorkItemService,
+    private iterationService: IterationService,
     private router: Router,
     private broadcaster: Broadcaster) {
   }
 
   ngOnInit() {
-    this.listenToEvents();
-    this.refreshBacklogSize();
+    // retrieve the root iteration
+    this.iterationService.getRootIteration().first().subscribe((resultIteration:IterationModel) => {
+      this.log.log('Got root iteration: ' + resultIteration.id);
+      this.rootIteration = resultIteration;
+      // after getting the root iteration, complete the initialization
+      this.refreshBacklogSize();
+      this.listenToEvents();
+    });
   }
 
   selectBacklog() {
+    this.log.log('Root iteration selected.');
     this.backlogSelected = true;
     let filters: any = [];
     filters.push({
@@ -46,18 +56,11 @@ export class SidepanelComponent implements OnInit {
   }
 
   refreshBacklogSize() {
-    let filters: any = [{
-      paramKey: 'filter[iteration]',
-      active: false,
-    }];
-    // get the work item list with the "no iteration" filter, retrieve 
-    // a pagesize of 1 (we are only interested in the meta fields) and
-    // look only on the first result, then unsubscribe.
-    this.workItemService.getWorkItems(1, filters).first()
-      .subscribe((value:{workItems: WorkItem[], nextLink: string, totalCount: number | null}) => {
-        this.log.log('Got backlog size of ' + value.totalCount);
-        this.numberOfItemsInBacklog = value.totalCount;
-      });
+    // refreshing the root iteration size from service
+    this.iterationService.getWorkItemCountInIteration(this.rootIteration).first().subscribe((count:number) => {
+      this.log.log('Got root iteration size of ' + count);
+      this.numberOfItemsInBacklog = count;
+    })
   }
 
   listenToEvents() {
@@ -67,19 +70,15 @@ export class SidepanelComponent implements OnInit {
     });
     this.broadcaster.on<any>('associate_iteration')
       .subscribe(message => {
-        if (!message.currentIterationId && message.futureIterationId)
-          this.numberOfItemsInBacklog--;
-        else if (message.currentIterationId && !message.futureIterationId)
-          this.numberOfItemsInBacklog++;
+        this.refreshBacklogSize();
     });
     this.broadcaster.on<WorkItem>('delete_workitem')
       .subscribe(message => {
-        if (!message.relationships.iteration.data)
-          this.numberOfItemsInBacklog--;      
+        this.refreshBacklogSize();
     });
     this.broadcaster.on<string>('create_workitem')
       .subscribe(message => {
-        // if iteration is backlog
+        this.refreshBacklogSize();
     });
   };
 }

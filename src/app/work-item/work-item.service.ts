@@ -672,9 +672,26 @@ export class WorkItemService {
    * @param: WorkItem - workItem (Item to be created)
    */
   update(workItem: WorkItem): Observable<WorkItem> {
+    console.log('UPDATEääääääää');
+    console.log(workItem);
+    let oldIterationId: string;
+    if (workItem.relationships && workItem.relationships.iteration &&  workItem.relationships.iteration.data)
+      oldIterationId = workItem.relationships.iteration.data.id;
+    console.log('UPDATEääääääää2');
     return this.http
       .patch(workItem.links.self, JSON.stringify({data: workItem}), { headers: this.headers })
       .map(response => {
+    console.log('UPDATEääääääää3');
+        if (oldIterationId && response.json().relationships.iteration.data && oldIterationId!=response.json().relationships.iteration.data.id) {
+          this.logger.log('################## Iteration has been updated, reloading counts on iteration panel.');
+          this.broadcaster.broadcast('associate_iteration', {
+            workItemId: response.json().id,
+            currentIterationId: oldIterationId,
+            futureIterationId: response.json().relationships.iteration.data.id
+          });
+        }
+            console.log('UPDATEääääääää4');
+
         return response.json().data;
       });
       // .catch ((e) => {

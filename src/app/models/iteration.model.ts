@@ -21,7 +21,7 @@ export class IterationLinks {
 }
 
 export class IterationRelations {
-  parent: {
+  parent?: {
     data: {
       id: string,
       type: string

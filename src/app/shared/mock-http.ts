@@ -349,7 +349,6 @@ export class MockHttp extends HttpService {
         return this.createResponse(url.toString(), 500, 'error', {});
       }
       if (path.path === '/workitems' && path.extraPath) {
-        console.log('############## - 0');
         if (path.extraPath === 'reorder') {
           var result = JSON.parse(body).data;
         } else {

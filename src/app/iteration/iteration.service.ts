@@ -156,6 +156,15 @@ export class IterationService {
       });
   }
 
+  getRootIteration(): Observable<IterationModel> {
+    return this.getIterations().first().map((resultIterations:IterationModel[]) => {
+      for (let i=0; i<resultIterations.length; i++) {
+        if (resultIterations[i].attributes.parent_path==='/')
+          return resultIterations[i];
+      }
+    });
+  }
+
   getIteration(iteration: any): Observable<IterationModel> {
     if (Object.keys(iteration).length) {
       let iterationLink = iteration.data.links.self;
@@ -164,6 +173,13 @@ export class IterationService {
     } else {
       return Observable.of(iteration);
     }
+  }
+
+  getWorkItemCountInIteration(iteration: any): Observable<number> {
+    return this.getIteration({ data: iteration }).first().map((resultIteration:IterationModel) => {
+      console.log(resultIteration);
+      return resultIteration.relationships.workitems.meta.total;
+    });
   }
 
   /**

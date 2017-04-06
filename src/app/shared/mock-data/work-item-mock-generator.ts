@@ -147,7 +147,7 @@ export class WorkItemMockGenerator {
         },
         'relationships': {
           'assignees': { },
-          'iteration': { },
+          'iteration': (n % 2)? { } : { 'data': { 'id': 'iteration-id0', 'links': { 'self': 'http://mock.service/api/iterations/iteration-id0' }, 'type': 'iterations' } },
           'area': { },
           'baseType': {
             'data': {

@@ -231,31 +231,39 @@ export class MockDataService {
     for (var i = 0; i < this.workItems.length; i++) {
       if (this.workItems[i].id === localWorkItem.id) {
         // Some relationship update
-        if (typeof(workItem.relationships) !== 'undefined') {
+        if (workItem.relationships) {
           // Iteration update
-          if (typeof(workItem.relationships.iteration) !== 'undefined') {
-            this.workItems[i].relationships.iteration.data
-              = this.getIteration(workItem.relationships.iteration.data.id);
+          if (workItem.relationships.iteration.data) {
+            let iteration = this.getIteration
+            this.workItems[i].relationships.iteration = { data: {
+              id: workItem.relationships.iteration.data.id,
+              links: { self: 'http://mock.service/api/iterations/' + workItem.relationships.iteration.data.id },
+              type: 'iterations'
+            }};
+          } else {
+            this.workItems[i].relationships.iteration = { };
           }
           // Area update
-          else if (typeof(workItem.relationships.area) !== 'undefined') {
-            this.workItems[i].relationships.area.data
-              = this.getArea(workItem.relationships.area.data.id);
+          if (workItem.relationships.area && workItem.relationships.area.data) {
+            this.workItems[i].relationships.area = { data: {
+              id: workItem.relationships.area.data.id,
+              links: { self: 'http://mock.service/api/areas/' + workItem.relationships.area.data.id },
+              type: 'areas'
+            }};
+          } else {
+            this.workItems[i].relationships.area = { };
           }
           // Assignee update
-          else if (typeof(workItem.relationships.assignees) !== 'undefined') {
+          if (workItem.relationships.assignees && workItem.relationships.assignees.data) {
             if (workItem.relationships.assignees.data.length) {
-              this.workItems[i].relationships.assignees.data
-                = workItem.relationships.assignees.data.map((assignee) => {
-                    return this.getUserById(assignee.id);
-                  });
+              this.workItems[i].relationships.assignees.data = workItem.relationships.assignees.data.map((assignee) => {
+                return this.getUserById(assignee.id);
+              });
             } else {
               this.workItems[i].relationships.assignees = {};
             }
           }
-        }
-        // Iteration update
-        else {
+        } else {
           Object.assign(this.workItems[i].attributes, localWorkItem.attributes);
         }
         return cloneDeep(this.workItems[i]);
@@ -372,11 +380,39 @@ export class MockDataService {
 
   // iterations
 
+  private updateWorkItemCountsOnIteration() {
+    for (var i = 0; i < this.iterations.length; i++) {
+      let thisIteration = this.iterations[i];
+      thisIteration.relationships.workitems.meta.total = 0;
+      thisIteration.relationships.workitems.meta.closed = 0;
+      // get correct work item count for iteration
+      if (thisIteration.attributes.parent_path === '/') {
+        // root iteration, meta count will be all of workitems
+        thisIteration.relationships.workitems.meta.total = this.workItems.length;
+        for (var j = 0; j < this.workItems.length; j++) {
+          if (this.workItems[j].attributes['system.state']==='closed')
+            thisIteration.relationships.workitems.meta.closed++;
+        }          
+      } else {
+        // standard iteration
+        for (var j = 0; j < this.workItems.length; j++) {
+          if (this.workItems[j].relationships.iteration.data && this.workItems[j].relationships.iteration.data.id === thisIteration.id) {
+            thisIteration.relationships.workitems.meta.total++;
+            if (this.workItems[j].attributes['system.state']==='closed')
+              thisIteration.relationships.workitems.meta.closed++;
+          }
+        }
+      }
+    }
+  }
+
   public getAllIterations(): any {
+    this.updateWorkItemCountsOnIteration();
     return this.makeCopy(this.iterations);
   }
 
   public getIteration(id: string): any {
+    this.updateWorkItemCountsOnIteration();
     for (var i = 0; i < this.iterations.length; i++)
       if (this.iterations[i].id === id) {
         return this.makeCopy(this.iterations[i]);
