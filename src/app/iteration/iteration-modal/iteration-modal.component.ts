@@ -147,7 +147,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.getIterations();
       this.submitBtnTxt = 'Create';
       this.modalTitle = 'Create Iteration';
-      this.selectedParentIterationName = 'none';
+      this.iterationSearch.nativeElement.setAttribute('placeholder', 'None');
     }
     if (this.modalType == 'start') {
       this.submitBtnTxt = 'Start';
