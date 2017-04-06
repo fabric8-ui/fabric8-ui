@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 import { cloneDeep, trimEnd } from 'lodash';
 
+import { Broadcaster } from 'ngx-base';
+
 import { Link } from './../../../models/link';
 import { LinkDict } from './../../../models/work-item';
 import { LinkType, MinimizedLinkType } from './../../../models/link-type';
@@ -39,6 +41,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
   constructor (
     private workItemService: WorkItemService,
     private router: Router,
+    private broadcaster: Broadcaster,
     http: Http
   ){}
 
@@ -137,7 +140,9 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
       .subscribe(([link, includes]) => {
         this.workItemService.addLinkToWorkItem(link, includes, this.workItem);
         this.resetSearchData();
-        // FIXME: RELOAD WORK ITEM LIST VIEW HERE ##################
+        // the hierarchy of work items has potentially changed (parent-child relationships may have changed)
+        console.log('################ CHANGE RELA1');
+        this.broadcaster.broadcast('update_work_item_hierarchy');
       },
       (error: any) => console.log(error));
   }
@@ -149,7 +154,9 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
       .deleteLink(link, currentWorkItem.id)
       .subscribe(() => {
         this.workItemService.removeLinkFromWorkItem(link, currentWorkItem);
-        // FIXME: RELOAD WORK ITEM LIST VIEW HERE ###################
+        // the hierarchy of work items has potentially changed (parent-child relationships may have changed)
+        console.log('################ CHANGE RELA2');
+        this.broadcaster.broadcast('update_work_item_hierarchy');
       },
       (error: any) => console.log(error));
   }
