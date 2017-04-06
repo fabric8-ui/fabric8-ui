@@ -147,7 +147,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.getIterations();
       this.submitBtnTxt = 'Create';
       this.modalTitle = 'Create Iteration';
-      this.selectedParentIterationName = 'null';
+      this.selectedParentIterationName = 'none';
     }
     if (this.modalType == 'start') {
       this.submitBtnTxt = 'Start';
@@ -182,7 +182,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.getIterations();
       this.submitBtnTxt = 'Create';
       this.modalTitle = 'Create Iteration';
-
+      this.selectedParentIterationName = iteration.attributes.resolved_parent_path+'/'+iteration.attributes.name;
+      this.selectedParentIteration = iteration;
+      iteration.attributes.name = '';
     }
     if (this.modalType == 'close') {
       this.submitBtnTxt = 'Close';
@@ -236,7 +238,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   }
 
   iterationSearchFocus() {
-    this.filteredIterations = this.iterations;
+    if (!this.iterationSearchDisable) {
+      this.filteredIterations = this.iterations;
+    }
   }
 
   getIterations() {
