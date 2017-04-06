@@ -91,6 +91,7 @@ export class WorkItemService {
   // }
 
   getChildren(parent: WorkItem): Promise<WorkItem[]> {
+    // TODO: it looks like the children are not retrieved with paging. This may cause problems in the future.
     if (parent.relationships.children) {
       this.logger.log('Requesting children for work item ' + parent.id);
       let url = parent.relationships.children.links.related;
@@ -100,6 +101,9 @@ export class WorkItemService {
           let wItems: WorkItem[];
           wItems = response.json().data as WorkItem[];
           wItems.forEach((item) => {
+            // put the hasChildren on the root level for the tree
+            if (item.relationships.children.meta)
+              item.hasChildren = item.relationships.children.meta.hasChildren;
             // Resolve the assignee and creator
             this.resolveUsersForWorkItem(item);
             this.resolveIterationForWorkItem(item);

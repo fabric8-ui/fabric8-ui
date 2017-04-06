@@ -6,6 +6,7 @@ import { User } from 'ngx-login-client';
 import { IterationModel } from './iteration.model';
 
 export class WorkItem {
+  hasChildren?: boolean;
   attributes: object = {};
   id: string;
   relationships?: WorkItemRelations;

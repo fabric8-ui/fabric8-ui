@@ -370,6 +370,13 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
     );
 
     this.eventListeners.push(
+      this.broadcaster.on<void>('update_work_item_hierarchy')
+        .subscribe(() => {
+          // TODO: REFRESH ALL DATA FROM CORE HERE ###############################
+        })
+    );
+
+    this.eventListeners.push(
       this.broadcaster.on<string>('updateWorkItem')
         .subscribe((workItem: string) => {
           let updatedItem = JSON.parse(workItem) as WorkItem;

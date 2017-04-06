@@ -137,6 +137,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
       .subscribe(([link, includes]) => {
         this.workItemService.addLinkToWorkItem(link, includes, this.workItem);
         this.resetSearchData();
+        // FIXME: RELOAD WORK ITEM LIST VIEW HERE ##################
       },
       (error: any) => console.log(error));
   }
@@ -148,6 +149,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
       .deleteLink(link, currentWorkItem.id)
       .subscribe(() => {
         this.workItemService.removeLinkFromWorkItem(link, currentWorkItem);
+        // FIXME: RELOAD WORK ITEM LIST VIEW HERE ###################
       },
       (error: any) => console.log(error));
   }
