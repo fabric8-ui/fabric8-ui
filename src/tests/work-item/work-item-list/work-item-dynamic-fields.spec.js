@@ -24,6 +24,7 @@ var workItemUpdatedDescription = "The test workitem description - UPDATED";
 var until = protractor.ExpectedConditions;
 var waitTime = 30000;
 
+
 describe('Work item list', function () {
   var page, items, browserMode;
   var until = protractor.ExpectedConditions;
@@ -33,12 +34,30 @@ describe('Work item list', function () {
     testSupport.setTestSpace(page);
   });
 
+  /* Basic test - sets all the dynamic field values */
   it('Verify new dynamic fields in a workitem', function () {
 
     page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
-      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);      
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);   
+
       detailPage.clickStepsToReproduceText();
       detailPage.setstepsToReproduceText('THIS IS A TEST');
+
+      detailPage.setStoryPointsText('12');
+      detailPage.clickSaveStoryPointsButton();
+
+      detailPage.clickImportantDropdown();
+      detailPage.clickImportantDropdownYes();
+      
+      detailPage.clickSeverityDropdown();
+      detailPage.clickSeverityDropdownBlocker();
+
+      detailPage.clickDueDateCalendarButton();
+      detailPage.clickCurrentDate ();
+
+      detailPage.clickDueDateSelection();
+
+      detailPage.clickWorkItemDetailCloseButton();      
 
     });
 
@@ -46,3 +65,42 @@ describe('Work item list', function () {
   });
 
 });
+
+
+
+  /* Get current month */
+  var currentMonth = function () {
+    var d = new Date();
+    var month = new Array();
+    month[0] = "Jan";
+    month[1] = "Feb";
+    month[2] = "Mar";
+    month[3] = "Apr";
+    month[4] = "May";
+    month[5] = "Jun";
+    month[6] = "Jul";
+    month[7] = "Aug";
+    month[8] = "Sep";
+    month[9] = "Oct";
+    month[10] = "Nov";
+    month[11] = "Dec";
+    var monthStr = month[d.getMonth()]; 
+    return monthStr;
+  }
+
+  /* Get current year */
+  var currentYear = function () {
+    var d = new Date();
+    var yearStr = d.getFullYear().toString();
+    return yearStr;
+  }
+
+  /* Get current day of month */
+  var currentDay = function () {
+    var d = new Date();
+    var dayStr = d.getDate().toString();
+    return dayStr;
+  }
+
+
+

@@ -27,7 +27,6 @@ curl http://localhost:8088/ -o /dev/null -s
 echo done.
 
 # Finally run protractor
-# Finally run protractor
 echo Running tests...
 if [ -z "$1" ]
   then
