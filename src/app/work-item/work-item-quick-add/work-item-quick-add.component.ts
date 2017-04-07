@@ -11,7 +11,6 @@ import {
   Output,
   ViewChild,
   ViewChildren,
-  Renderer,
   QueryList
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
@@ -50,7 +49,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     private workItemService: WorkItemService,
     private broadcaster: Broadcaster,
     private logger: Logger,
-    private renderer: Renderer,
     private auth: AuthenticationService,
     private spaces: Spaces) {}
 
@@ -86,7 +84,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   ngAfterViewInit() {
     this.qaTitleRef.changes.subscribe(item => {
       if (item.length) {
-        this.renderer.invokeElementMethod(this.qaTitle.nativeElement, 'focus');
+        this.qaTitle.nativeElement.focus();
       }
     });
   }
