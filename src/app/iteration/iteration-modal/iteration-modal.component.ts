@@ -152,8 +152,15 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.modalTitle = 'Create Iteration';
       this.iterationSearch.nativeElement.setAttribute('placeholder', 'None');
       let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
+      let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
+      let aDayBefore = moment().subtract(1, 'days');
+      this.startDate = { date: { year: aDayBefore.format('YYYY'), month: aDayBefore.format('M'), day: aDayBefore.format('D') } };
+      startDatePickerComponentCopy['disableUntil'] = this.startDate.date;
       endDatePickerComponentCopy['disableUntil'] = this.startDate.date;
+      this.startDatePickerOptions = startDatePickerComponentCopy;
       this.endDatePickerOptions = endDatePickerComponentCopy;
+      this.startDate = '';
+      this.endDate = '';
     }
     if (this.modalType == 'start') {
       this.submitBtnTxt = 'Start';
