@@ -29,9 +29,9 @@
                   (fetchMore)='fetchMoreWiItems(lane)' >
 
                   <div *ngIf="lane.option == 'new'">
-                      <div *ngIf="loggedIn" class="boardQuickAddContainer flex-container in-column-direction">
-                          <alm-work-item-quick-add [wilistview] = "'wi-card-view'" (close)="close($event)"></alm-work-item-quick-add>
-                      </div>
+                    <div *ngIf="loggedIn" class="boardQuickAddContainer flex-container in-column-direction">
+                      <alm-work-item-quick-add [wilistview] = "'wi-card-view'" (close)="close($event)" (workItemCreate)="onCreateWorkItem($event)"></alm-work-item-quick-add>
+                    </div>
                   </div>
                   <div [dragula]='"first-bag"' class="card-wrapper">
                     <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of lane.workItems' routerLink="./detail/{{item.id}}" [attr.data-id]="item.id"

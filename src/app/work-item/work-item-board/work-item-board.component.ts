@@ -211,6 +211,18 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     }
   }
 
+  onCreateWorkItem(workItem) {
+    let resolveItem = this.workItemService.resolveWorkItems(
+      [workItem],
+      this.iterations,
+      this.allUsers,
+      this.workItemTypes
+    );
+
+    let lane = this.lanes.find((lane) => lane.option === 'new');
+    lane.workItems = [...resolveItem, ...lane.workItems];
+  }
+
   gotoDetail(workItem: WorkItem) {
     let link = trimEnd(this.router.url.split('detail')[0], '/') + '/detail/' + workItem.id;
     this.router.navigateByUrl(link);
@@ -319,6 +331,19 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   }
 
   listenToEvents() {
+
+    this.eventListeners.push(
+      this.broadcaster.on<string>('updateWorkItem')
+        .subscribe((workItem: string) => {
+          let updatedItem = JSON.parse(workItem) as WorkItem;
+          let lane = this.lanes.find((lane) => lane.option === updatedItem.attributes['system.state']);
+          let index = lane.workItems.findIndex((item) => item.id === updatedItem.id);
+          if (index > -1) {
+            lane.workItems[index] = updatedItem;
+          }
+        })
+    );
+
     // filters like assign to me should stack with the current filters
     this.eventListeners.push(
       this.broadcaster.on<string>('item_filter')
