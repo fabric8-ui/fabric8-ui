@@ -35,6 +35,9 @@
       color: $color-pf-blue;
     }
     .iteration-header {
+      .pointer {
+        cursor: pointer;
+      }
       padding: em(10) em(20);
       > h4 {
         margin: 0;
