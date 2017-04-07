@@ -26,7 +26,7 @@
           <div class="parent-iteration-container input-group dropdown open active">
             <input id="parent-iteration" class="form-control " type="text" #iterationSearch (keyup)="filterIteration($event)"
             autocomplete="off" [value]="selectedParentIterationName" (focus)="iterationSearchFocus();" [disabled]="iterationSearchDisable">
-            <ul class="iteration-list dropdown-menu dropdown-ul" *ngIf="filteredIterations.length" #iterationList>
+            <ul class="iteration-list dropdown-menu dropdown-ul" *ngIf="filteredIterations.length && showIterationDropdown" #iterationList>
               <li *ngFor="let iteration of filteredIterations;" [attr.data-id]="iteration.id" (click)="setParentIteration(iteration.id);">
                 <span [innerHTML]="(iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/') | almSearchHighlight: iterationSearch.value"></span>
               </li>

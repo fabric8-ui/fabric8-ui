@@ -44,6 +44,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   selectedParentIteration: IterationModel;
   selectedParentIterationName:string = '';
   iterationSearchDisable: Boolean = false;
+  showIterationDropdown: Boolean = false;
 
   private startDatePickerOptions: IMyOptions = {
     dateFormat: 'dd mmm yyyy',
@@ -127,6 +128,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     this.filteredIterations = [];
     this.selectedParentIteration = null;
     this.iterationSearchDisable = false;
+    this.showIterationDropdown = false;
   }
 
   ngOnChanges() {
@@ -142,6 +144,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     type: string = 'create',
     iteration: IterationModel | null = null
   ) {
+    event.stopPropagation();
     this.modalType = type;
     if (this.modalType == 'create') {
       this.getIterations();
@@ -239,7 +242,12 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
 
   iterationSearchFocus() {
     if (!this.iterationSearchDisable) {
-      this.filteredIterations = this.iterations;
+      if (this.showIterationDropdown) {
+        this.showIterationDropdown = false;
+      } else {
+        this.filteredIterations = this.iterations;
+        this.showIterationDropdown = true;
+      }
     }
   }
 
