@@ -11,14 +11,16 @@
         </h3>
       </div>
       <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
-        <li class="active" *ngFor="let iteration of currentIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}">
+        <li class="active" *ngFor="let iteration of currentIterations" [routerLinkActive]="'selected-iteration'">
           <div class="iteration-subheader flex-container">
             <div class="flex-grow-1 truncate">
-              <strong class="iteration-name truncate"
-                tooltip="{{iteration.attributes.name}}"
-                placement="top">
-                {{iteration.attributes.name}}
-              </strong>
+              <a [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.name}" >
+                <strong class="iteration-name truncate"
+                  tooltip="{{iteration.attributes.name}}"
+                  placement="top">
+                  {{iteration.attributes.name}}
+                </strong>
+              </a>
               <div class="parent-iteration">
                 <span>
                   {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}
@@ -156,11 +158,13 @@
           [collapse]="isCollapsedPastIteration">
         <li class="iteration-subheader flex-container" *ngFor="let iteration of closedIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}">
           <div class="truncate flex-grow-1">
-            <strong class="iteration-name truncate"
-              tooltip="{{iteration.attributes.name}}"
-              placement="top">
-              {{iteration.attributes.name}}
-            </strong>
+            <a [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.name}" >
+              <strong class="iteration-name truncate"
+                tooltip="{{iteration.attributes.name}}"
+                placement="top">
+                {{iteration.attributes.name}}
+              </strong>
+            </a>
             <div class="parent-iteration">
               <span>
                 {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}
