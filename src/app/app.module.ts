@@ -113,20 +113,20 @@ export type StoreType = {
     DropdownModule,
     FormsModule,
     HttpModule,
+    KubernetesRestangularModule,
+    KubernetesStoreModule,
     LocalStorageModule.withConfig({
       prefix: 'fabric8',
       storageType: 'localStorage'
     }),
+    MomentModule,
+    ReactiveFormsModule,
+    RestangularModule,
     SpaceWizardModule,
     StackDetailsModule,
-    ReactiveFormsModule,
     WidgetsModule,
     // AppRoutingModule must appear last
     AppRoutingModule,
-    KubernetesStoreModule,
-    RestangularModule,
-    KubernetesRestangularModule,
-    MomentModule
   ],
   declarations: [ // declare which components, directives and pipes belong to the module
     AppComponent,
