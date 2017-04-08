@@ -49,7 +49,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   showTypesOptions: boolean = false;
   spaceSubscription: Subscription = null;
   eventListeners: any[] = [];
-  existingFiltersFromUrl: Object = {};
+  existingQueryParams: Object = {};
   filterConfig: FilterConfig;
   toolbarConfig: ToolbarConfig = {};
   allowedFilterKeys: string[] = [
@@ -134,7 +134,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       ([areas, user]) => {
         this.setAreaFilter(areas);
         this.setUserFIlter(user);
-        if (Object.keys(this.existingFiltersFromUrl).length) {
+        if (Object.keys(this.existingQueryParams).length) {
           this.setAppliedFilterFromUrl();
           this.filterService.applyFilter();
         }
@@ -180,15 +180,15 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   }
 
   setAppliedFilterFromUrl() {
-    Object.keys(this.existingFiltersFromUrl).forEach(key => {
+    Object.keys(this.existingQueryParams).forEach(key => {
       if (this.allowedFilterKeys.indexOf(key) > -1) {
         const field = this.toolbarConfig.filterConfig.fields.find(field => field.id === key);
-          const selectedQuery = field.queries.find(item => item.value === this.existingFiltersFromUrl[key]);
+          const selectedQuery = field.queries.find(item => item.value === this.existingQueryParams[key]);
           if (selectedQuery) {
             this.toolbarConfig.filterConfig.appliedFilters.push({
               field: field,
               query: selectedQuery,
-              value: this.existingFiltersFromUrl[key]
+              value: this.existingQueryParams[key]
             });
             this.filterService.setFilterValues(key, selectedQuery.id);
           }
@@ -219,8 +219,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   // }
 
   filterChange($event: FilterEvent): void {
-    // Initiate URL query params
-    let params = {};
+    // Initiate next query params from current query params
+    let params = cloneDeep(this.existingQueryParams);
+    this.allowedFilterKeys.forEach((key) => delete params[key]);
 
     // Prepare query params
     $event.appliedFilters.map((filter) => {
@@ -318,9 +319,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
           // Apply all cleaned up filters
           this.filterService.applyFilter();
         } else {
-          this.existingFiltersFromUrl = params;
+          this.existingQueryParams = params;
           if (this.toolbarConfig.filterConfig.fields.length
-            && Object.keys(this.existingFiltersFromUrl).length) {
+            && Object.keys(this.existingQueryParams).length) {
             this.toolbarConfig.filterConfig.appliedFilters = [];
             this.filterService.clearFilters(this.allowedFilterKeys);
             this.setAppliedFilterFromUrl();
