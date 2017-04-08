@@ -41,7 +41,7 @@ const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const BUILD_NUMBER = process.env.BUILD_NUMBER;
 const BUILD_TIMESTAMP = process.env.BUILD_TIMESTAMP;
 const BUILD_VERSION = process.env.BUILD_VERSION;
-const FABRIC8_BRANDING = process.env.FABRIC8_BRANDING || 'fabric8'
+const FABRIC8_BRANDING = process.env.FABRIC8_BRANDING || 'fabric8';
 
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8080;
