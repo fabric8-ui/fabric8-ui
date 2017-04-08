@@ -19,8 +19,8 @@
           <p *ngFor="let buildconfig of buildConfigs | async">
             <span class="{{buildconfig.iconStyle}}" title="{{buildconfig.statusPhase}}"></span>
             Last build for {{buildconfig.name}} was #{{buildconfig.lastVersion}}, ran
-            <span [innerHTML]="buildconfig.lastBuild.creationTimestamp | amTimeAgo"></span>
-            and took {{buildconfig.lastBuild.duration | amDuration: 'ms'}}.
+            <span [innerHTML]="buildconfig.lastBuild?.creationTimestamp | amTimeAgo"></span>
+            and took {{buildconfig.lastBuild?.duration | amDuration: 'ms'}}.
           </p>
         </div>
       </div>
