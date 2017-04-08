@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -25,7 +26,8 @@ import { TooltipModule } from 'ng2-bootstrap';
     MyDatePickerModule,
     ModalModule,
     TooltipModule,
-    WidgetsModule
+    WidgetsModule,
+    RouterModule
   ],
   declarations: [
     FabPlannerIterationModalComponent,

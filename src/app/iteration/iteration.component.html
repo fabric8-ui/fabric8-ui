@@ -98,47 +98,47 @@
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedFutureIteration">
-
         <li class="iteration-subheader flex-container" *ngFor="let iteration of futureIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}">
           <div class="flex-grow-1 truncate">
-            <strong class="iteration-name truncate"
-              tooltip="{{iteration.attributes.name}}"
-              placement="top">
-              {{iteration.attributes.name}}
-            </strong>
+            <a [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.name}" >
+              <strong class="iteration-name truncate"
+                tooltip="{{iteration.attributes.name}}"
+                placement="top">
+                {{iteration.attributes.name}}
+              </strong>
+            </a>
             <div class="parent-iteration">
               <span>{{(iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/')}}</span>
             </div>
-          </div>
-          <div>
-            <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
-            <div *ngIf="loggedIn" class="dropdown-kebab-pf dib" dropdown>
-              <button class="btn btn-link"
-                      type="button"
-                      aria-haspopup="true"
-                      aria-expanded="true"
-                      dropdownToggle>
-                <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu-right" dropdownMenu>
-                <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration, $event);">
-                    Edit
-                  </a>
-                </li>
-                <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration, $event);">
-                    Start
-                  </a>
-                </li>
-                <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('createChild', iteration, $event);">
-                    Create child
-                  </a>
-                </li>
-              </ul>
+            <div>
+              <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
+              <div *ngIf="loggedIn" class="dropdown-kebab-pf dib" dropdown>
+                <button class="btn btn-link"
+                        type="button"
+                        aria-haspopup="true"
+                        aria-expanded="true"
+                        dropdownToggle>
+                  <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu-right" dropdownMenu>
+                  <li>
+                    <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration, $event);">
+                      Edit
+                    </a>
+                  </li>
+                  <li>
+                    <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration, $event);">
+                      Start
+                    </a>
+                  </li>
+                  <li>
+                    <a class="pointer" (click)="modal.openCreateUpdateModal('createChild', iteration, $event);">
+                      Create child
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
         </li>
       </ul>
     </div>
