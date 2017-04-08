@@ -49,9 +49,13 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   showTypesOptions: boolean = false;
   spaceSubscription: Subscription = null;
   eventListeners: any[] = [];
-  existingFiltersFromUrl: Object;
+  existingFiltersFromUrl: Object = {};
   filterConfig: FilterConfig;
-  toolbarConfig: ToolbarConfig;
+  toolbarConfig: ToolbarConfig = {};
+  allowedFilterKeys: string[] = [
+    'assignee',
+    'area'
+  ];
 
   constructor(
     private router: Router,
@@ -68,7 +72,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   ngOnInit() {
     console.log('[FilterPanelComponent] Running in context: ' + this.context);
     this.loggedIn = this.auth.isLoggedIn();
-    this.listenToEvents();
     // we need to get the wi types for the types dropdown on the board item
     // even when there is no active space change (initial population).
     this.spaceSubscription = this.spaces.current.subscribe(space => {
@@ -99,11 +102,12 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       actionConfig: {},
       filterConfig: this.filterConfig
     } as ToolbarConfig;
-
     this.setFilterConfiguration();
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    this.listenToEvents();
+  }
 
   ngOnChanges() {
     if (this.wiTypes.length) {
@@ -115,6 +119,27 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
 
   ngOnDestroy() {
     this.eventListeners.map((e) => e.unsubscribe());
+  }
+
+  setFilterConfiguration() {
+    this.toolbarConfig.filterConfig.fields = [];
+    this.toolbarConfig.filterConfig.appliedFilters = [];
+    this.areas = [];
+    this.filterService.clearFilters();
+    Observable.combineLatest(
+      this.areaService.getAreas(),
+      this.userService.getUser()
+    )
+    .subscribe(
+      ([areas, user]) => {
+        this.setAreaFilter(areas);
+        this.setUserFIlter(user);
+        if (Object.keys(this.existingFiltersFromUrl).length) {
+          this.setAppliedFilterFromUrl();
+          this.filterService.applyFilter();
+        }
+      },
+      err => console.log(err));
   }
 
   setAreaFilter(areas) {
@@ -135,19 +160,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       type: 'select',
       queries: this.areas
     };
-
     this.toolbarConfig.filterConfig.fields.push(areaField);
-    if (this.existingFiltersFromUrl.hasOwnProperty('area')) {
-      let selectedArea = this.areas.find(area => area.value === this.existingFiltersFromUrl['area']);
-      if (selectedArea) {
-        this.toolbarConfig.filterConfig.appliedFilters.push({
-          field: areaField,
-          query: selectedArea,
-          value: this.existingFiltersFromUrl['area']
-        });
-        this.filterService.setFilterValues('area', selectedArea.id);
-      }
-    }
   }
 
   setUserFIlter(user) {
@@ -163,38 +176,24 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
         }]
       };
       this.toolbarConfig.filterConfig.fields.push(userField);
-      if (this.existingFiltersFromUrl.hasOwnProperty('assignee')) {
-        let selectedUser = userField.queries.find(user => user.value === this.existingFiltersFromUrl['assignee']);
-        if (selectedUser) {
-          this.toolbarConfig.filterConfig.appliedFilters.push({
-            field: userField,
-            query: selectedUser,
-            value: this.existingFiltersFromUrl['assignee']
-          });
-          this.filterService.setFilterValues('assignee', selectedUser.id);
-        }
-      }
     }
   }
 
-  setFilterConfiguration() {
-    this.toolbarConfig.filterConfig.fields = [];
-    this.toolbarConfig.filterConfig.appliedFilters = [];
-    this.areas = [];
-    this.filterService.clearFilters();
-    Observable.combineLatest(
-      this.areaService.getAreas(),
-      this.userService.getUser()
-    )
-    .subscribe(
-      ([areas, user]) => {
-        this.setAreaFilter(areas);
-        this.setUserFIlter(user);
-        if (Object.keys(this.existingFiltersFromUrl).length) {
-          this.filterService.applyFilter();
+  setAppliedFilterFromUrl() {
+    Object.keys(this.existingFiltersFromUrl).forEach(key => {
+      if (this.allowedFilterKeys.indexOf(key) > -1) {
+        const field = this.toolbarConfig.filterConfig.fields.find(field => field.id === key);
+          const selectedQuery = field.queries.find(item => item.value === this.existingFiltersFromUrl[key]);
+          if (selectedQuery) {
+            this.toolbarConfig.filterConfig.appliedFilters.push({
+              field: field,
+              query: selectedQuery,
+              value: this.existingFiltersFromUrl[key]
+            });
+            this.filterService.setFilterValues(key, selectedQuery.id);
+          }
         }
-      },
-      err => console.log(err));
+    });
   }
 
   // filterChange($event: FilterEvent): void {
@@ -252,29 +251,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     };
   }
 
-  // setFilterValues() {
-  //   if (this.loggedIn) {
-  //     this.filters.push({
-  //       id:  'user',
-  //       name: 'Assigned to Me',
-  //       paramKey: 'filter[assignee]',
-  //       active: false,
-  //       value: null
-  //     });
-
-  //     this.filters.push({
-  //       id:  'area',
-  //       name: 'Filter by area',
-  //       paramKey: 'filter[area]',
-  //       active: false,
-  //       value: null
-  //     });
-  //   } else {
-  //     let index = this.filters.findIndex(item => item.id === 1);
-  //     this.filters.splice(index, 1);
-  //   }
-  // }
-
   onChangeBoardType(type: WorkItemType) {
     this.currentBoardType = type;
     this.updateOrAddTypeFilter();
@@ -329,7 +305,24 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
 
     this.eventListeners.push(
       this.route.queryParams.subscribe((params) => {
-        this.existingFiltersFromUrl = params;
+        // on no params
+        if (!Object.keys(params).length) {
+          // Cleaning up applied filters
+          this.toolbarConfig.filterConfig.appliedFilters = [];
+          // Cleaning up filters from filter service
+          this.filterService.clearFilters();
+          // Apply all cleaned up filters
+          this.filterService.applyFilter();
+        } else {
+          this.existingFiltersFromUrl = params;
+          if (this.toolbarConfig.filterConfig.fields.length
+            && Object.keys(this.existingFiltersFromUrl).length) {
+            this.toolbarConfig.filterConfig.appliedFilters = [];
+            this.filterService.clearFilters(this.allowedFilterKeys);
+            this.setAppliedFilterFromUrl();
+            this.filterService.applyFilter();
+          }
+        }
       })
     );
   }

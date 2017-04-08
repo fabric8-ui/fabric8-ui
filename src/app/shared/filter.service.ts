@@ -23,6 +23,7 @@ export class FilterService {
 
   setFilterValues(id, value): void {
     this.activeFilters.push({
+        id: id,
         paramKey: 'filter[' + id + ']',
         value: value
     });
@@ -37,8 +38,12 @@ export class FilterService {
     return this.activeFilters;
   }
 
-  clearFilters(): void {
-    this.activeFilters = [];
+  clearFilters(keys: string[] = []): void {
+    if (keys.length) {
+      this.activeFilters = this.activeFilters.filter(f => keys.indexOf(f.id) === -1)
+    } else {
+      this.activeFilters = [];
+    }
   }
 
 

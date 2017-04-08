@@ -1,7 +1,9 @@
-<div class="side-panel-header" [class.backlog-selected]="backlogSelected" (click)='selectBacklog()'>
-  <h3>Backlog</h3>
-  <span class="badge">{{numberOfItemsInBacklog}}</span>
-</div>
+<a [routerLink]="[]" [queryParams]="{}">
+  <div class="side-panel-header" [class.backlog-selected]="backlogSelected">
+    <h3>Backlog</h3>
+    <span class="badge">{{numberOfItemsInBacklog}}</span>
+  </div>
+</a>
 <div class="flex-container flex-grow-1 in-column-direction">
   <fab-planner-iteration [takeFromInput]="true" [iterations]="iterations" class="fab-planner-iteration"></fab-planner-iteration>
 </div>
