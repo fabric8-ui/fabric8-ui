@@ -219,17 +219,21 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   // }
 
   filterChange($event: FilterEvent): void {
+    // Initiate URL query params
     let params = {};
-    this.filterService.clearFilters();
+
+    // Prepare query params
     $event.appliedFilters.map((filter) => {
-      this.filterService.setFilterValues(filter.field.id, filter.query.id);
       params[filter.field.id] = filter.field.queries[0].value;
     });
+
+    // Prepare navigation extra with query params
     let navigationExtras: NavigationExtras = {
       queryParams: params,
       relativeTo: this.route
     };
-    this.filterService.applyFilter();
+
+    // Navigated to filtered view
     this.router.navigate([], navigationExtras);
   }
 
