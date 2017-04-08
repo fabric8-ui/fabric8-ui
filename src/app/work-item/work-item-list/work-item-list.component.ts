@@ -1,3 +1,4 @@
+import { FilterService } from './../../shared/filter.service';
 import { Observable } from 'rxjs/Observable';
 import { IterationService } from './../../iteration/iteration.service';
 import { IterationModel } from './../../models/iteration.model';
@@ -80,6 +81,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
   private spaceSubscription: Subscription = null;
   private iterations: IterationModel[] = [];
   private nextLink: string = '';
+  private wiSubscriber: any = null;
 
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
@@ -104,7 +106,8 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
     private userService: UserService,
     private route: ActivatedRoute,
     private spaces: Spaces,
-    private iterationService: IterationService) {}
+    private iterationService: IterationService,
+    private filterService: FilterService) {}
 
   ngOnInit(): void {
     this.listenToEvents();
@@ -152,11 +155,17 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
 
 
   loadWorkItems(): void {
-    Observable.combineLatest(
+    if (this.wiSubscriber) {
+      this.wiSubscriber.unsubscribe();
+    }
+    this.wiSubscriber = Observable.combineLatest(
       this.iterationService.getIterations(),
       this.userService.getAllUsers(),
       this.workItemService.getWorkItemTypes(),
-      this.workItemService.getWorkItems(this.pageSize, this.filters)
+      this.workItemService.getWorkItems(
+        this.pageSize,
+        this.filterService.getAppliedFilters()
+      )
     ).map((items) => {
       return items;
     })
@@ -327,9 +336,8 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
     );
     //Filters like assign to me should stack with the current filters
     this.eventListeners.push(
-      this.broadcaster.on<string>('item_filter')
+      this.broadcaster.on<string>('wi_item_filter')
         .subscribe((filters: any) => {
-          this.filters = this.filters.concat(filters);
           this.loadWorkItems();
       })
     );
@@ -338,10 +346,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
     this.eventListeners.push(
       this.broadcaster.on<string>('unique_filter')
         .subscribe((filters: any) => {
-          //this.filters = this.filters.filter(item => item.paramKey !== filters[0].paramKey);
-          //this.filters = this.filters.concat(filters);
-          //clear top filters
-          this.filters = filters;
           this.loadWorkItems();
       })
     );

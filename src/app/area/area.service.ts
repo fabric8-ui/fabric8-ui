@@ -75,7 +75,7 @@ export class AreaService {
         return Observable.of<AreaModel[]>([] as AreaModel[]);
       }
     } else {
-      return Observable.of<AreaModel[]>([] as AreaModel[]);
+      return Observable.throw('nospace');
     }
   }
 

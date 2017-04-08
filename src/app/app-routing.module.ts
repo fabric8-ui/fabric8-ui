@@ -7,15 +7,15 @@ import { WorkItemQuickAddComponent } from './work-item/work-item-quick-add/work-
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/',
+    redirectTo: 'plan/list',
     pathMatch: 'full'
   },
   {
-    path: 'list',
+    path: 'plan/list',
     loadChildren: 'app/work-item/work-item-list/planner-list.module#PlannerListModule'
   },
   {
-    path: 'board',
+    path: 'plan/board',
     loadChildren: 'app/work-item/work-item-board/planner-board.module#PlannerBoardModule'
   },
   {

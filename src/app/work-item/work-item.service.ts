@@ -136,9 +136,7 @@ export class WorkItemService {
       this.workItemUrl = this._currentSpace.links.self + '/workitems';
       let url = this.workItemUrl + '?page[limit]=' + pageSize;
       filters.forEach((item) => {
-        if (item.active) {
-          url += '&' + item.paramKey + '=' + item.value;
-        }
+        url += '&' + item.paramKey + '=' + item.value;
       });
       return this.http.get(url)
         .map((resp) => {
