@@ -11,6 +11,8 @@ import { WorkflowFactory } from './models/workflow';
 
 import { IForgeServiceProvider } from './services/forge.service';
 import { SpaceWizardComponent } from './space-wizard.component';
+import { SelectedItemsPipe } from './pipes/selected-items.pipe';
+import { VisibleItemsPipe } from './pipes/visible-items.pipe';
 
 @NgModule({
   imports: [
@@ -21,7 +23,9 @@ import { SpaceWizardComponent } from './space-wizard.component';
     SpaceWizardComponent,
     ForgeAppGeneratorComponent,
     UniqueSpaceNameValidatorDirective,
-    ValidSpaceNameValidatorDirective
+    ValidSpaceNameValidatorDirective,
+    SelectedItemsPipe,
+    VisibleItemsPipe,
   ],
   exports: [
     SpaceWizardComponent,

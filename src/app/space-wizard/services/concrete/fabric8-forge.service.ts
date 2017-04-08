@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { Headers, Http, RequestOptions, RequestOptionsArgs, Response ,ResponseType } from '@angular/http';
+import { Headers, Http, RequestOptions, RequestOptionsArgs, Response } from '@angular/http';
 import { AuthenticationService } from 'ngx-login-client';
 
 import { Observable, Observer } from 'rxjs/Rx';
@@ -8,21 +8,22 @@ import { Observable, Observer } from 'rxjs/Rx';
 import { ApiLocatorService } from '../../../shared/api-locator.service';
 
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
+import { formatJson, clone } from '../../common/utilities';
+
 
 import {
   ForgeCommands,
   ForgeService,
   IForgeCommand,
   IForgeCommandData,
-  IForgeCommandParameters,
   IForgeCommandPipeline,
   IForgeCommandRequest,
   IForgeCommandResponse,
   IForgeInput,
+  IForgeState
 } from '../contracts/forge-service';
 
-class CommandPipelineStep
-{
+class CommandPipelineStep {
   public static begin = 'begin';
   public static next = 'next';
   public static validate = 'validate';
@@ -78,18 +79,115 @@ export class Fabric8ForgeService extends ForgeService {
     }
   }
 
-  private handleError(error:any): Observable<any> {
+  private expandJson(source: any, indent: number= 0): string {
+    return formatJson(source, indent);
+  }
 
+  private formatError(err: Error): string {
+    let message =
+`
+===============================================================================
+Error
+===============================================================================
+Error Name : ${err.name}
+Error Message :
+${err.message}
+===============================================================================
+Error Stack:
+${err.stack || 'no stack provided'}
+===============================================================================
+`;
+    return message;
+  }
+
+  private formatObjectError(err): string {
+    err = err || '';
+    let message =
+`
+===============================================================================
+Error
+===============================================================================
+${this.expandJson(err)}
+===============================================================================
+`;
+    return message;
+  }
+
+  private formatHttpError(error: Response, errorBody: string): string {
+    let message =
+`
+===============================================================================
+Http Error
+Http Status Code : ${error.status || ''}
+Http Status : ${error.statusText || ''}
+===============================================================================
+Http Error Body:
+${errorBody}
+===============================================================================
+`;
+    // remove leading spaces from lines
+    // message=(message||'').replace(/^\s*/gm, '')
+    // replace lines containing only  digits and spaces with a new line
+    // message=(message||'').replace(/[\n][\d]+[\s]*[\d]*[\s]*[\n]/gi,'\n')
+    // replace status success with new line
+    // collapse new lines
+    // message=(message||'').replace(/[\n]+/gi,'\n',)
+    // remove duplicate lines
+    // var re = /^(.*)(\r?\n\1)+$/gm;
+    // message=message.replace(re, "$1");
+    return message;
+  }
+
+  private buildErrorMessageFromResults(results): string {
+    let message = '';
+    if (Array.isArray(results)) {
+      for (let result of results )
+      {
+          if (result.message) {
+            result.message = result.message.replace(/Exception:/gi, 'Exception:\n');
+            result.message = result.message.replace(/\[\{/gi, '\n[{\n');
+            result.message = result.message.replace(/\}\]/gi, '\n]}\n');
+            result.message = result.message.replace(/\"\,/gi, '",\n');
+            result.message = result.message.replace(/\{\"/gi, '{\n"');
+            result.message = result.message.replace(/\"\}/gi, '"\n}');
+            let status: string = (result.status || '').toLowerCase();
+            message = `${message}\n<span  class='wizard-status-${status}'>[${result.status}]</span>: ${result.message}`;
+          }
+      }
+    }
+    return message;
+  }
+
+  private handleError(error: any): Observable<any> {
     let errMsg: string;
     if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+      try {
+        const body = error.json() || '';
+        if (body.results) {
+          errMsg = this.buildErrorMessageFromResults(body.results);
+          errMsg = this.formatHttpError(error, errMsg);
+        } else {
+          errMsg = this.expandJson(body);
+          errMsg = this.formatHttpError(error, errMsg);
+        }
+      } catch (ex) {
+        errMsg = this.formatError(ex);
+      }
+    } else if (error instanceof Error) {
+        errMsg = this.formatError(error);
     } else {
-      errMsg = error.message ? error.message : error.toString();
+        errMsg = this.expandJson(error);
+        errMsg = this.formatObjectError(errMsg);
     }
-    this.log({message:errMsg,error:true});
-    return Observable.throw({origin:this.constructor.name,name:'ForgeError', message:errMsg, inner:error});
+    this.log({
+      message: errMsg,
+      error: true
+    }, error);
+    return Observable.throw({ origin: this.constructor.name,
+        name: 'AppGenerator Api Error',
+        message: errMsg,
+        inner: error
+      });
 
   }
 
@@ -106,7 +204,6 @@ export class Fabric8ForgeService extends ForgeService {
   private GetCommand(url: string): Observable<IForgeCommandResponse> {
     return Observable.create((observer: Observer<IForgeCommandResponse>) => {
       let headers = new Headers();
-      // this.log(`retrieving authorization token...`);
       this.addAuthorizationHeaders(headers)
       .subscribe(() => {
         let options = new RequestOptions(<RequestOptionsArgs>{ headers: headers });
@@ -118,14 +215,14 @@ export class Fabric8ForgeService extends ForgeService {
               data: response.json()
             }
           };
-          this.log(`Forge GET response : ${url}`,forgeResponse.payload.data);
+          this.log(`Forge GET response : ${url}`, forgeResponse.payload.data);
           return forgeResponse;
         })
         .catch((err) => this.handleError(err))
         .subscribe((response: IForgeCommandResponse) => {
           observer.next(response);
           observer.complete();
-        },(err)=>{
+        }, (err) => {
           return observer.error(err);
         });
       });
@@ -134,7 +231,7 @@ export class Fabric8ForgeService extends ForgeService {
 
   private PostCommand(url: string, body: any): Observable<IForgeCommandResponse> {
     return Observable.create((observer: Observer<IForgeCommandResponse>) => {
-      this.log(`Forge POST request  : ${url}`,body);
+      this.log(`Forge POST request  : ${url}`, body);
       let headers = new Headers({ 'Content-Type': 'application/json' });
        // this.log(`retrieving authorization token...`);
       this.addAuthorizationHeaders(headers)
@@ -142,19 +239,44 @@ export class Fabric8ForgeService extends ForgeService {
         let options = new RequestOptions(<RequestOptionsArgs>{ headers: headers });
         this._http.post(url, body, options)
         .map((response: Response) => {
-          let forgeResponse: IForgeCommandResponse = {
-            payload: {
-              data: <IForgeCommandData>response.json()
-            }
-          };
-          this.log(`Forge POST response : ${url}`,forgeResponse.payload.data);
-          return forgeResponse;
+          if (body.isExecute === true) {
+            let forgeResponse: IForgeCommandResponse = {
+              payload: {
+                data: {
+                  results: response.json(),
+                  inputs: this.clone<IForgeInput[]>(body.inputs),
+                  state: {
+                    valid: true ,
+                    isExecute: true,
+                    canExecute: true,
+                    wizard: true,
+                    canMoveToNextStep: false,
+                    canMoveToPreviousStep: false
+                  }
+                }
+              }
+            };
+            this.log(`Forge POST response : ${url}`, forgeResponse.payload);
+            return forgeResponse;
+          } else {
+            let forgeResponse: IForgeCommandResponse = {
+              payload: {
+                data: <IForgeCommandData>response.json()
+              }
+            };
+            forgeResponse.payload.data.results = [];
+            forgeResponse.payload.data.state = forgeResponse.payload.data.state || { } as IForgeState;
+            forgeResponse.payload.data.state.isExecute = false;
+
+            this.log(`Forge POST response : ${url}`, forgeResponse.payload);
+            return forgeResponse;
+          }
         })
         .catch((err) => this.handleError(err))
         .subscribe((response: IForgeCommandResponse) => {
           observer.next(response);
           observer.complete();
-        },(err=>{
+        }, (err => {
           observer.error(err);
         }));
       });
@@ -182,9 +304,12 @@ export class Fabric8ForgeService extends ForgeService {
       case CommandPipelineStep.next:
       case CommandPipelineStep.execute: {
         let url = `${api}/forge/commands/${currentForgePipelineName}/${currentPipeline.step.name}`;
-        let body:IForgeCommandData = currentParameters.data ;
-        if(body.state.wizard) {
-            body[ 'stepIndex' ] = currentPipeline.step.index;
+        let body: IForgeCommandData = currentParameters.data ;
+        if (body.state.wizard) {
+          body[ 'stepIndex' ] = currentPipeline.step.index;
+        }
+        if (currentPipeline.step.name === CommandPipelineStep.execute) {
+          body[ 'isExecute' ] = true;
         }
         return this.PostCommand( url, body ).do( (response) => {
           this.updateForgeHttpCommandResponseContext(commandRequest, response);
@@ -204,17 +329,15 @@ export class Fabric8ForgeService extends ForgeService {
    * Clone the object.
    * @param value
    */
-  private clone<T>(value:any):T
-  {
-    let clone=<T>JSON.parse(JSON.stringify( value || {} ));
-    return clone;
+  private clone<T>(value: any): T {
+    return clone<T>(value);
   }
   /**
    * Update the context with the validate, next and current commands.
    */
-  private updateForgeHttpCommandResponseContext(request: IForgeCommandRequest, response: IForgeCommandResponse){
+  private updateForgeHttpCommandResponseContext(request: IForgeCommandRequest, response: IForgeCommandResponse) {
 
-    response.context=response.context||{};
+    response.context = response.context || {};
 
     let currentCommand = request.payload.command;
     let currentParameters = currentCommand.parameters;
@@ -223,18 +346,9 @@ export class Fabric8ForgeService extends ForgeService {
     let currentResponseForgeData = response.payload.data;
     let state = currentResponseForgeData.state;
 
-    let nextCommand = this.clone<IForgeCommand>(currentCommand);
-    nextCommand.parameters.data = this.clone<IForgeCommandData>(currentResponseForgeData);
-
-    let validationCommand = this.clone<IForgeCommand>(nextCommand);
-    validationCommand.parameters.pipeline.step.name = CommandPipelineStep.validate;
-
-    let nextPipeline = <IForgeCommandPipeline>nextCommand.parameters.pipeline;
-    let validationPipeline = <IForgeCommandPipeline>validationCommand.parameters.pipeline;
-
-    switch( currentPipeline.step.name ) {
+    switch ( currentPipeline.step.name ) {
       // update context for completed begin step
-      case CommandPipelineStep.begin:{
+      case CommandPipelineStep.begin: {
         // begin stage completed ... now need to validate the current step
         // and move to the next step
         let nextCommand = this.clone<IForgeCommand>(currentCommand);
@@ -247,7 +361,7 @@ export class Fabric8ForgeService extends ForgeService {
         let validationPipeline = <IForgeCommandPipeline>validationCommand.parameters.pipeline;
 
         if ( state.wizard === true ) {
-          if ( state.canMoveToNextStep === true ){
+          if ( state.canMoveToNextStep === true ) {
             // next command will submit and move to the next step
             nextCommandPipeline.step.name = CommandPipelineStep.next;
             nextCommandPipeline.step.index =  1;
@@ -255,12 +369,11 @@ export class Fabric8ForgeService extends ForgeService {
           // validation command will validate the 'current' step
           validationPipeline.step.index = 0;
         }
-        if(state.canExecute)
-        {
+        if (state.canExecute) {
             let executeCommand = this.clone<IForgeCommand>(currentCommand);
             executeCommand.parameters.pipeline.step.name = CommandPipelineStep.execute;
             executeCommand.parameters.pipeline.step.index = executeCommand.parameters.pipeline.step.index + 1;
-            executeCommand.parameters.data=this.clone<IForgeCommandData>(currentResponseForgeData);
+            executeCommand.parameters.data = this.clone<IForgeCommandData>(currentResponseForgeData);
             response.context.executeCommand = executeCommand;
         }
         // update context
@@ -270,46 +383,46 @@ export class Fabric8ForgeService extends ForgeService {
       }
 
       // update context for completed validate step
-      case CommandPipelineStep.validate:{
+      case CommandPipelineStep.validate: {
 
         response.context = response.context || {};
         // validation does not provide a next command
-        // becaus it only validates the current command
-        response.context.nextCommand = null; // = this.clone(currentCommand);
-        //validation command does not provide a validation
-        // command becaus the current command is the validation command
+        // because it only validates the current command
+        response.context.nextCommand = null;
+        // validation command does not provide a validation
+        // command because the current command is the validation command
         response.context.validationCommand = null;
 
-        if( response.payload.data.state.valid ){
+        if ( response.payload.data.state.valid ) {
             // Note for the next command this becomes a property of
-            currentCommand.parameters.validatedData = this.clone<IForgeCommandData>(currentCommand.parameters.data||{ inputs:[]});
+            currentCommand.parameters.validatedData = this.clone<IForgeCommandData>(currentCommand.parameters.data
+                                                                                    || { inputs: []});
         }
-        if(state.canExecute)
-        {
+        if (state.canExecute) {
             let executeCommand = this.clone<IForgeCommand>(currentCommand);
             executeCommand.parameters.pipeline.step.name = CommandPipelineStep.execute;
             executeCommand.parameters.pipeline.step.index = executeCommand.parameters.pipeline.step.index + 1;
-            executeCommand.parameters.data=this.clone<IForgeCommandData>(currentResponseForgeData);
+            executeCommand.parameters.data = this.clone<IForgeCommandData>(currentResponseForgeData);
             response.context.executeCommand = executeCommand;
         }
 
         break;
       }
-      case CommandPipelineStep.next:{
+      case CommandPipelineStep.next: {
 
-        //merge the arrays checking for duplicates
-        currentCommand.parameters.validatedData=currentCommand.parameters.validatedData||{ inputs:[]};
-        let inputs =this.clone<IForgeInput[]>(currentCommand.parameters.validatedData.inputs);
-        if( inputs.length ===0 ){
+        // merge the arrays checking for duplicates
+        currentCommand.parameters.validatedData = currentCommand.parameters.validatedData || { inputs: []};
+        let inputs = this.clone<IForgeInput[]>(currentCommand.parameters.validatedData.inputs);
+        if ( inputs.length === 0 ) {
           inputs = currentCommand.parameters.data.inputs;
         }
         let notInResponse: IForgeInput[] = [];
 
         let inResponse: IForgeInput[] = this.clone<IForgeInput[]>(response.payload.data.inputs);
-        for( let requestInput of inputs ) {
+        for ( let requestInput of inputs ) {
           let foundInput = inResponse.find( (i) => i.name === requestInput.name );
           if ( !foundInput ) {
-            notInResponse.push(requestInput)
+            notInResponse.push(requestInput);
           }
         }
         let merged = [ ...notInResponse, ...inResponse];
@@ -325,14 +438,12 @@ export class Fabric8ForgeService extends ForgeService {
         validationCommand.parameters.data = this.clone<IForgeCommandData>(response.payload.data);
         // insert the merged input data
         validationCommand.parameters.data.inputs = this.clone<IForgeInput[]>(merged);
-        //validationCommand.parameters.pipeline = nextCommand.parameters.pipeline;
         validationCommand.parameters.pipeline.step.name = CommandPipelineStep.validate;
 
-        //advance the indexes: note validate pipeline index always same the current command step index
-        nextCommandPipeline.step.index = nextCommandPipeline.step.index+1;
+        // advance the indexes: note validate pipeline index always same the current command step index
+        nextCommandPipeline.step.index = nextCommandPipeline.step.index + 1;
 
-        if(state.canExecute)
-        {
+        if (state.canExecute) {
             let executeCommand = this.clone<IForgeCommand>(currentCommand);
             executeCommand.parameters.pipeline.step.name = CommandPipelineStep.validate;
             executeCommand.parameters.pipeline.step.index = executeCommand.parameters.pipeline.step.index + 1;
@@ -344,14 +455,17 @@ export class Fabric8ForgeService extends ForgeService {
 
         break;
       }
-      case CommandPipelineStep.execute:{
+      case CommandPipelineStep.execute: {
+        response.context.executeCommand = this.clone(currentCommand);
+        break;
+      }
+      default : {
         break;
       }
     }
-
     response.context.currentCommand = this.clone(currentCommand);
 
-  };
+  }
 
   private log: ILoggerDelegate = () => {};
 

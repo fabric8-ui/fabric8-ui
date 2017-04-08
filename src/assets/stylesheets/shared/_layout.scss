@@ -585,3 +585,35 @@ $wizard-footer-color: $color-pf-black-200;
 
 }
 
+span,div
+{
+  &.wizard-status-success{
+    color:lime;
+  }
+  &.wizard-status-failed{
+    color:red;
+  }
+  &.wizard-status-warning
+  {
+    color:orange;
+  }
+  &.wizard-result-property-name
+  {
+    display:inline-block;
+    min-width:150px;
+    text-align: left;
+
+  }
+
+  &.wizard-result-property-value
+  {
+  }
+
+  &.wizard-result-property-value-link
+  {
+  }
+
+}
+
+
+

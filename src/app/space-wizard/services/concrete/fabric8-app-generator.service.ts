@@ -63,7 +63,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
     if ( command.parameters && command.parameters.fields ) {
       for ( let field of <IFieldCollection>command.parameters.fields ) {
         let inputs: Array<IForgeInput> = command.parameters.data.inputs;
-        let input:IForgeInput = inputs.find( i => i.name === field.name );
+        let input: IForgeInput = inputs.find( i => i.name === field.name );
         if ( input ) {
           input.value = field.value;
         }
@@ -72,9 +72,8 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
     return command;
   }
   /** Initializes the command with default values */
-  private initializeComand( command: Partial<IAppGeneratorCommand> ):IAppGeneratorCommand
-  {
-    let emptyComand:IAppGeneratorCommand = {
+  private initializeCommand( command: Partial<IAppGeneratorCommand> ): IAppGeneratorCommand {
+    let emptyCommand: IAppGeneratorCommand = {
       name: '',
       parameters: {
         pipeline: {
@@ -94,16 +93,16 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
       }
     };
     command = command || { name: '' };
-    command.parameters = command.parameters || emptyComand.parameters;
+    command.parameters = command.parameters || emptyCommand.parameters;
     // fields
     command.parameters.fields = command.parameters.fields || [];
     // data
     command.parameters.data = command.parameters.data || { inputs: [] };
     command.parameters.validatedData = command.parameters.validatedData || { inputs: [] };
     // pipeline
-    command.parameters.pipeline = command.parameters.pipeline || emptyComand.parameters.pipeline;
-    command.parameters.pipeline.name = command.parameters.pipeline.name || emptyComand.parameters.pipeline.name;
-    command.parameters.pipeline.step = command.parameters.pipeline.step || emptyComand.parameters.pipeline.step;
+    command.parameters.pipeline = command.parameters.pipeline || emptyCommand.parameters.pipeline;
+    command.parameters.pipeline.name = command.parameters.pipeline.name || emptyCommand.parameters.pipeline.name;
+    command.parameters.pipeline.step = command.parameters.pipeline.step || emptyCommand.parameters.pipeline.step;
     command.parameters.pipeline.step.name = command.parameters.pipeline.step.name || 'begin';
     command.parameters.pipeline.step.index = command.parameters.pipeline.step.index || 0;
 
@@ -117,10 +116,9 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
    * the original forge fields in response context.
    */
   private executeForgeCommand( request: IAppGeneratorRequest ): Observable<IAppGeneratorResponse> {
-    let command:IAppGeneratorCommand = this.initializeComand(request.command);
-    command = this.updateForgeInputsWithFieldValues(request.command);
-    let commandDescription = `${command.name}:${command.parameters.pipeline.step.name}:${command.parameters.pipeline.step.index}`;
-    this.log(`AppGenerator executing the '${commandDescription}' command ...`,command);
+    let cmd = this.updateForgeInputsWithFieldValues(this.initializeCommand(request.command));
+    let cmdDescription = `${cmd.name} :: ${cmd.parameters.pipeline.step.name} :: ${cmd.parameters.pipeline.step.index}`;
+    this.log(`AppGenerator executing the '${cmdDescription}' command ...`, cmd);
     return Observable.create( (observer: Observer<IAppGeneratorResponse>) => {
 
       let commandRequest: IForgeCommandRequest = {
@@ -129,29 +127,31 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
         }
       };
       this.forgeService.executeCommand( commandRequest )
-      .map( (forgeResponse) => this.transformForgeResponseToAppGeneratorResponse(request,forgeResponse) )
+      .map( (forgeResponse) => this.transformForgeResponseToAppGeneratorResponse(request, forgeResponse) )
       .subscribe( (response: IAppGeneratorResponse) => {
-        this.log(`AppGenerator '${commandDescription}' command completed`,response);
+        this.log(`AppGenerator '${cmdDescription}' command completed`, response);
         observer.next(response);
         observer.complete();
-      },(err:Error|any)=>{
+      }, (err: Error|any) => {
          let error = {
            name: 'ExecuteForgeCommand' ,
-           message: `An unexpected error occurred while attempting to execute the ${commandDescription} command.`,
-           inner:{
-             name:err.name,
-             message:err.message,
-             stack:err.stack
+           message: `The [ ${cmdDescription} ] command failed or only partially succeeded ...`,
+           inner: {
+             name: err.name,
+             message: err.message
             }
          };
-         this.log({ message: error.message ,error: true },err);
+         if (err.stack) {
+           (<any>error).inner.stack = err.stack || '';
+         }
+         this.log({ message: error.message , error: true }, err);
          return observer.error(error);
       });
     });
   }
-  private transformForgeDataToFields( source: IForgeCommandData   ): IFieldCollection{
+  private transformForgeDataToFields( source: IForgeCommandData   ): IFieldCollection {
     let fields = new FieldCollection();
-    source.inputs = source.inputs||[];
+    source.inputs = source.inputs || [];
     for ( let sourceInput of <IForgeInput[]>source.inputs ) {
       let targetField: IField = {
         name: sourceInput.name,
@@ -160,7 +160,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
         display: {
           choices: this.mapValueChoices(sourceInput),
           hasChoices: this.mapValueHasOptions(sourceInput),
-          description:sourceInput.description,
+          description: sourceInput.description,
           inputType: this.mapWidgetClassification(sourceInput),
           label: sourceInput.label,
           required: sourceInput.required,
@@ -189,35 +189,37 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
     }
     return fields;
   }
-  private transformDataToFieldsFields( command: IAppGeneratorCommand )
-  {
-    if(command && command.parameters ){
-      command.parameters.fields = this.transformForgeDataToFields( command.parameters.data || { inputs:[]} as IForgeCommandData );
+  private transformDataToFieldsFields( command: IAppGeneratorCommand ) {
+    if (command && command.parameters ) {
+      command.parameters.fields = this.transformForgeDataToFields(
+        command.parameters.data || { inputs: []} as IForgeCommandData);
     }
   }
-  private transformForgeResponseToAppGeneratorResponse( request:IAppGeneratorRequest, source: IForgeCommandResponse ): IAppGeneratorResponse {
-
+  private transformForgeResponseToAppGeneratorResponse( request: IAppGeneratorRequest, source: IForgeCommandResponse ) {
     let forgeData: IForgeCommandData = source.payload.data;
-    forgeData.metadata = forgeData.metadata||{} as IForgeMetadata
+    forgeData.metadata = forgeData.metadata || {} as IForgeMetadata;
     let fields = this.transformForgeDataToFields( forgeData );
 
     let commandResponse = {
       payload: {
         fields: fields,
-        state:{
+        results: forgeData.results || [],
+        state: {
           valid: forgeData.state.valid || false,
+          isExecute: forgeData.state.isExecute,
           canMoveToNextStep: forgeData.state.canMoveToNextStep || false,
           canMovePreviousStep: forgeData.state.canMoveToPreviousStep || false,
           canExecute: forgeData.state.canExecute || false,
           steps: forgeData.state.steps || [],
-          currentStep: request.command.parameters.pipeline.step.index||0,
+          currentStep: request.command.parameters.pipeline.step.index || 0,
           title: forgeData.metadata.name || '',
-          description:forgeData.metadata.name || '',
+          description: forgeData.metadata.name || ''
         } as IAppGeneratorState
       },
-      context:source.context || {}
+      context: source.context || {}
     } as IAppGeneratorResponse;
     // now update commands with field data from forge data
+
     this.transformDataToFieldsFields( commandResponse.context.validationCommand );
     this.transformDataToFieldsFields( commandResponse.context.nextCommand );
     return commandResponse;
@@ -234,14 +236,27 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
   private mapValueChoices( source: IForgeInput ): Array<IFieldChoice> {
     let items: Array<IFieldChoice> = [];
     if ( source.valueChoices ) {
+      //
+      let selection:string[]=[];
+      if(!Array.isArray(source.value)) {
+        selection.push(source.value  as string);
+      } else {
+        selection=source.value||[];
+      }
+      let hash:any={};
+      for(let item of selection)
+      {
+        hash[item]=true
+      }
       for ( let choice of source.valueChoices ) {
+
         if ( source.description ) {
           items.push({
             id: choice.id,
             name: choice.description,
             description: choice.description,
             visible: true,
-            selected: false
+            selected: hash[choice.id]===true
           });
         } else {
           items.push({
@@ -249,7 +264,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
             name: choice.id,
             description: choice.id,
             visible: true,
-            selected: false
+            selected: hash[choice.id]===true
           });
 
         }

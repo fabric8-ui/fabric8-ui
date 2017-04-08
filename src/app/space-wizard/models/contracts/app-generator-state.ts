@@ -1,6 +1,8 @@
 export interface IAppGeneratorState{
   valid: boolean;
   canExecute: boolean;
+  /** is this state part of an execute command */
+  isExecute: boolean;
   canMoveToNextStep: boolean;
   canMovePreviousStep: boolean;
   steps: Array<String>;
@@ -10,4 +12,4 @@ export interface IAppGeneratorState{
   /** Other dynamic fields */
   [key: string]: any;
 
-} 
+}

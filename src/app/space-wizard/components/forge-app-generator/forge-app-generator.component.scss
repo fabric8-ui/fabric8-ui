@@ -20,14 +20,14 @@
 }
 
 .btn-left-multi-select-button {
-  min-width: unset;
+  //min-width: unset;
   border-left-style: none;
   border-top-style: none;
   border-bottom: solid 2px #efefef;
 }
 
 .btn-right-multi-select-button {
-  min-width: unset;
+  //min-width: unset;
   border-right-style: none;
   border-top-style: none;
   border-bottom: solid 1px #ddd;
@@ -46,6 +46,7 @@
 .included-list {
   overflow: auto;
   max-height: 30vh;
+  border-top: solid 1px #ddd;
   border-bottom: solid 1px #ddd;
 }
 
@@ -83,3 +84,46 @@ form
 header{
   min-height:60px;
 }
+
+.message-console
+{
+
+  .message-console-title
+  {
+    .title-text{
+      padding-left:5px;
+      .pficon{
+        margin-right:5px;
+      }
+    }
+    margin-bottom:15px;
+  }
+  .message-console-message
+  {
+    border-style: none;
+    max-width:860px;
+    min-height:50vh;
+    max-height:70vh;
+    overflow: auto;
+    width:100%;
+    padding:0px;
+    position:relative;
+    background-color:#444;
+    .message-text
+    {
+      min-height:100%;
+      min-width:100%;
+      line-height:3.0rem;
+      vertical-align: top;
+      margin:0;
+      border:none;
+      color:#EFEFEF;
+      font-size: 1.0 rem;
+      padding:15px;
+      white-space: pre;
+
+    }
+
+  }
+}
+

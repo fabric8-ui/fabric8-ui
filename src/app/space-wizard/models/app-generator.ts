@@ -11,3 +11,6 @@ export { IAppGeneratorRequest } from './contracts/app-generator-request';
 export { IAppGeneratorResponse } from './contracts/app-generator-response';
 export { IAppGeneratorResponseContext } from './contracts/app-generator-response-context';
 export { IAppGeneratorState } from './contracts/app-generator-state';
+export { IAppGeneratorPair } from './contracts/app-generator-pair';
+export { IAppGeneratorResult } from './contracts/app-generator-result';
+export { IAppGeneratorError } from './contracts/app-generator-error';

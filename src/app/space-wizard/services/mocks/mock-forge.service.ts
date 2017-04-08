@@ -67,7 +67,7 @@ function getForgeNewQuickStart(): Observable<IForgeCommandResponse> {
         name: 'Obsidian: New Quickstart',
         description: 'Generate your project from a quickstart'
       },
-      state: { 'valid': true, 'canExecute': true, 'wizard': false },
+      state: { 'valid': true, 'canExecute': true, 'wizard': false , isExecute: false },
       messages: [],
       inputs: [
         {
@@ -232,6 +232,7 @@ function getForgeNewProject(): Observable<IForgeCommandResponse> {
                         },
                         state: {
                           valid: true,
+                          isExecute: false,
                           canExecute: false,
                           wizard: true,
                           canMoveToNextStep: true,

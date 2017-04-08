@@ -15,10 +15,12 @@ import {
 import { ForgeAppGenerator } from './forge-app-generator';
 import { FieldWidgetClassificationOptions } from '../../models/contracts/field-classification';
 
+
 @Component({
   host: {
    'class': 'wizard-step'
   },
+
   selector: 'forge-app-generator',
   templateUrl: './forge-app-generator.component.html',
   styleUrls: [ './forge-app-generator.component.scss' ],
@@ -45,7 +47,6 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     }
     this.log(`New instance ...`);
     this.forge = new ForgeAppGenerator(this._appGeneratorService, loggerFactory);
-    
   }
 
   @Input()
@@ -55,7 +56,7 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
 
   set workflow(value: IWorkflow) {
     this._workflow = value;
-  };
+  }
 
   /**
    * All inputs are bound and values assigned, but the 'workflow' get a new instance every time the parents host dialog
@@ -98,6 +99,10 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     choice.selected = true;
     this.updateFieldValue(field);
   }
+  toggleOption(field: IField, choice: IFieldChoice) {
+    choice.selected = !choice.selected;
+    this.updateFieldValue(field);
+  }
 
   deselectOption(field: IField, choice: IFieldChoice) {
     choice.selected = false;
@@ -108,25 +113,22 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     if ( !field ) {
       return null;
     }
-    switch(field.display.inputType)
-    {
+    switch (field.display.inputType) {
       case FieldWidgetClassificationOptions.MultipleSelection:
       {
         if ( field.display.hasChoices ) {
           field.value = field.display.choices
           .filter((o) => o.selected)
           .map((o) => o.id);
+        } else {
+          field.value = [];
         }
-        else
-        {
-          field.value=[];
-        }
+        this.forge.validate()
         break;
       }
-      default:{
+      default: {
         break;
       }
-
     }
     return field;
   }
@@ -137,10 +139,19 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     });
   }
 
-  filterUnselectedList(field: IField, filter: string) {
+  filterList(field: IField, filter: string) {
+    // TODO: better validation of bad chars
+    filter=filter.replace('*','');
+    filter=filter.replace('?','');
+    filter=filter.replace('/','');
     let r = new RegExp(filter || '', 'ig');
     field.display.choices.filter((o) => {
+      // set everything to not visible, except for selected
       o.visible = false;
+      if(o.selected==true) {
+        o.visible = true;
+      }
+      // then match the input string
       return ((o.id.match(r)) || []).length > 0;
     })
     .forEach(o => {
@@ -187,15 +198,15 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
         this.subscribeToWorkflowTransitions(current);
       }
     }
-  };
+  }
 
   private isTransitioningToThisStep(transition: IWorkflowTransition): boolean {
     return transition.to && transition.to.name.toLowerCase() === this.stepName.toLowerCase();
-  };
+  }
 
   private isTransitioningFromThisStep(transition: IWorkflowTransition): boolean {
     return transition.from && transition.from.name.toLowerCase() === this.stepName.toLowerCase();
-  };
+  }
 
   private subscribeToWorkflowTransitions(workflow: IWorkflow) {
     if ( !workflow ) {
@@ -207,7 +218,7 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
       this.log({
         message: `
         Subscriber responding to an observed '${transition.direction}' workflow transition:
-        from ${transition.from ? transition.from.name : 'null'} 
+        from ${transition.from ? transition.from.name : 'null'}
         to ${transition.to ? transition.to.name : 'null'}.`});
       if ( this.isTransitioningToThisStep(transition) ) {
         this.forge.begin();

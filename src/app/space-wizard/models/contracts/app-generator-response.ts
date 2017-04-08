@@ -8,6 +8,10 @@ export interface IAppGeneratorResponse {
      * to generate an application
      */
     fields: IFieldCollection;
+    /**
+     * The results of a multi step command
+     */
+    results: [any]
     /** the state that the app generator is currently in */
     state: IAppGeneratorState;
   };
