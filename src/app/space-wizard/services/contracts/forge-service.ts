@@ -41,7 +41,7 @@ export interface IForgeService {
  * ForgeService contract using abstract base class.
  */
 export abstract class ForgeService implements IForgeService {
-  abstract executeCommand(options: IForgeCommandRequest): Observable<IForgeCommandResponse>
+  abstract executeCommand(options: IForgeCommandRequest): Observable<IForgeCommandResponse>;
 }
 
 //noinspection TsLint

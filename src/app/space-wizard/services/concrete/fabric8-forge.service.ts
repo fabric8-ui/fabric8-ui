@@ -432,7 +432,7 @@ ${errorBody}
         let nextCommandPipeline = <IForgeCommandPipeline>nextCommand.parameters.pipeline;
         nextCommandPipeline.step.name = CommandPipelineStep.next;
 
-        // the validate command is a validation of all the inputs from previos steps
+        // the validate command is a validation of all the inputs from previous steps
         // and the current one
         let validationCommand = this.clone<IForgeCommand>(currentCommand);
         validationCommand.parameters.data = this.clone<IForgeCommandData>(response.payload.data);

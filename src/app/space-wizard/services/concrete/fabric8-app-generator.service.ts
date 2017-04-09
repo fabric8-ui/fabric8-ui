@@ -237,16 +237,16 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
     let items: Array<IFieldChoice> = [];
     if ( source.valueChoices ) {
       //
-      let selection:string[]=[];
-      if(!Array.isArray(source.value)) {
+      let selection: string[] = [];
+      if (!Array.isArray(source.value)) {
         selection.push(source.value  as string);
       } else {
-        selection=source.value||[];
+        selection = source.value || [];
       }
-      let hash:any={};
-      for(let item of selection)
+      let hash: any = {};
+      for (let item of selection)
       {
-        hash[item]=true
+        hash[item] = true;
       }
       for ( let choice of source.valueChoices ) {
 
@@ -256,7 +256,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
             name: choice.description,
             description: choice.description,
             visible: true,
-            selected: hash[choice.id]===true
+            selected: hash[choice.id] === true
           });
         } else {
           items.push({
@@ -264,7 +264,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
             name: choice.id,
             description: choice.id,
             visible: true,
-            selected: hash[choice.id]===true
+            selected: hash[choice.id] === true
           });
 
         }

@@ -5,7 +5,7 @@ import { IFieldCollection } from './field-set';
 export interface IForgeCommandParameters {
   data?: IForgeCommandData;
   pipeline?: IForgeCommandPipeline;
-  validatedData?:IForgeCommandData;
+  validatedData?: IForgeCommandData;
   // Other dynamic fields
   [propertyName: string]: any;
 }

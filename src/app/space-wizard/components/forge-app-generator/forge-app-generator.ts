@@ -39,7 +39,7 @@ export class ForgeAppGenerator {
     this.log = loggerFactory.createLoggerDelegate(this.constructor.name, ForgeAppGenerator.instanceCount++);
     this.state = {
       canExecute: false,
-      isExecute:false,
+      isExecute: false,
       canMovePreviousStep : false ,
       canMoveToNextStep : false,
       currentStep: 0,
@@ -335,8 +335,7 @@ public execute() {
 
   private formatConsoleText(...lines: string[]) {
     lines = lines || [];
-    let line = lines.join('\n');
-    return line;
+    return lines.join('\n');
   }
 
   private formatJson(source: any, indent: number= 0): string {

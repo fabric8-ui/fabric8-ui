@@ -106,7 +106,7 @@ header{
     max-height:70vh;
     overflow: auto;
     width:100%;
-    padding:0px;
+    padding:0;
     position:relative;
     background-color:#444;
     .message-text
@@ -118,7 +118,7 @@ header{
       margin:0;
       border:none;
       color:#EFEFEF;
-      font-size: 1.0 rem;
+      font-size: 1.5rem;
       padding:15px;
       white-space: pre;
 

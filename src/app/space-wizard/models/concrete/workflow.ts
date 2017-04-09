@@ -33,7 +33,7 @@ export class Workflow implements IWorkflow {
 
   get steps(): Array<IWorkflowStep> {
     return this._steps;
-  };
+  }
 
   set steps(value: Array<IWorkflowStep>) {
     this.initialize({ steps: () => value });
@@ -61,10 +61,10 @@ export class Workflow implements IWorkflow {
 
   get activeStep(): IWorkflowStep {
     return this._activeStep;
-  };
+  }
 
   set activeStep(value: IWorkflowStep) {
-    this.log(`Setting the active workflow step from 
+    this.log(`Setting the active workflow step from
                 '${this._activeStep ? this._activeStep.name : 'null'}' to '${value ? value.name : 'null'}' `);
     this._activeStep = value;
   }
@@ -199,7 +199,7 @@ export class Workflow implements IWorkflow {
         // preserve previous step order
         if ( transition.to && destinationStep !== transition.to ) {
           let newDestinationStep = transition.to;
-          this.log(`transition: 
+          this.log(`transition:
                       destination step = '${destinationStep.name}' modified to be '${newDestinationStep.name}'`);
           // modify prev step handler if target step changed
           let priorHandler = newDestinationStep.gotoPreviousStep;
@@ -303,15 +303,15 @@ export class Workflow implements IWorkflow {
       }
     }): IWorkflowTransition {
     let transition = new WorkflowTransition(options);
-    this.log(`Notify workflow transition subscribers of an upcoming '${transition.direction}' transition 
-                from '${transition.from ? transition.from.name : 'null'}' 
+    this.log(`Notify workflow transition subscribers of an upcoming '${transition.direction}' transition
+                from '${transition.from ? transition.from.name : 'null'}'
                 to '${transition.to ? transition.to.name : 'null'}' `);
     this.workflowTransitionSubject.next(transition);
     this.log(`workflowTransitionShouldContinue = ${transition.canContinue}`);
     if ( transition.canContinue === false ) {
       this.log({
                  message: `Note: workflow will not proceed from '${transition.from ? transition.from.name : 'null'}'
-                             to '${transition.to ? transition.to.name : 'null'}' 
+                             to '${transition.to ? transition.to.name : 'null'}'
                              because transition.canContinue=${transition.canContinue}`,
                  warning: true
                });

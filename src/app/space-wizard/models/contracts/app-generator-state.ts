@@ -1,4 +1,4 @@
-export interface IAppGeneratorState{
+export interface IAppGeneratorState {
   valid: boolean;
   canExecute: boolean;
   /** is this state part of an execute command */
@@ -6,10 +6,9 @@ export interface IAppGeneratorState{
   canMoveToNextStep: boolean;
   canMovePreviousStep: boolean;
   steps: Array<String>;
-  currentStep:number;
+  currentStep: number;
   title: string;
   description: string;
   /** Other dynamic fields */
   [key: string]: any;
-
 }

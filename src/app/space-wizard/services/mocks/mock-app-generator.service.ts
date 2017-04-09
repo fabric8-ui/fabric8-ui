@@ -80,7 +80,7 @@ function getFirstFieldSet(): Observable<IAppGeneratorResponse> {
         }
       ];
     let set = new FieldCollection(... items);
-    observer.next({ payload: { state:{} as IAppGeneratorState, fields: set }  } as IAppGeneratorResponse);
+    observer.next({ payload: { state: {} as IAppGeneratorState, fields: set }  } as IAppGeneratorResponse);
     observer.complete();
   });
 }
@@ -88,7 +88,7 @@ function getSecondFieldSet(): Observable<IAppGeneratorResponse> {
   return Observable.create((observer: Observer<IAppGeneratorResponse>) => {
     observer.next({
                     payload: {
-                      state:{} as IAppGeneratorState,
+                      state: {} as IAppGeneratorState,
                       fields: [
                         {
                           name: 'mock-f3',

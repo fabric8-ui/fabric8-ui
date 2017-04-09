@@ -10,7 +10,7 @@ export interface IForgeCommandData {
   /**
    * The final result of a sequence of steps to constitute a command
    */
-  results?:any,
+  results?: any;
   /**
    * Information describing the current step and related meta data
    */

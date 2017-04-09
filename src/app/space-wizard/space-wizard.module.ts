@@ -25,7 +25,7 @@ import { VisibleItemsPipe } from './pipes/visible-items.pipe';
     UniqueSpaceNameValidatorDirective,
     ValidSpaceNameValidatorDirective,
     SelectedItemsPipe,
-    VisibleItemsPipe,
+    VisibleItemsPipe
   ],
   exports: [
     SpaceWizardComponent,

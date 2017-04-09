@@ -1,42 +1,39 @@
-  export function formatJson(source: any, indent: number= 0): string {
-    let tmp = '';
-    let offset: string = ' ';
-    let array = {
+  export function formatJson(obj: any, indent: number= 0): string {
+    let t = '';
+    let s: string = ' ';
+    let ar = {
       start: '[',
       end: ']'
     };
-    let operator = {assign: ` => `};
+    let op = {assign: ` => `};
 
-    offset = offset.repeat(indent);
+    s = s.repeat(indent);
     {
-      if ( Array.isArray(source)) {
+      if ( Array.isArray(obj)) {
         let count = 0;
-        for ( let item of source) {
+        for ( let item of obj) {
           count++;
-          tmp = `${tmp}${offset}\n${array.start}${formatJson(item, indent + 1)}\n${offset}${array.end}${count < source.length ? ',' : ''}`;
+          t = `${t}${s}\n${ar.start}${formatJson(item, indent + 1)}\n${s}${ar.end}${count < obj.length ? ',' : ''}`;
         }
-      }
-      else{
-        for (let propertyName in source) {
-          if (source.hasOwnProperty(propertyName)) {
-            if (Array.isArray(source[propertyName])) {
-              tmp = `${tmp}\n${offset}${propertyName}${operator.assign}${array.start}${formatJson(source[propertyName], indent + 1)}${array.end}`;
-            } else if (typeof(source[propertyName]) !== 'function') {
-              if (typeof(source[propertyName]) === 'object') {
-                tmp = `${tmp}\n${offset}${propertyName}${operator.assign}${formatJson(source[propertyName], indent + 1)}`;
+      } else {
+        for (let p in obj) {
+          if (obj.hasOwnProperty(p)) {
+            if (Array.isArray(obj[p])) {
+              t = `${t}\n${s}${p}${op.assign}${ar.start}${formatJson(obj[p], indent + 1)}${ar.end}`;
+            } else if (typeof(obj[p]) !== 'function') {
+              if (typeof(obj[p]) === 'object') {
+                t = `${t}\n${s}${p}${op.assign}${formatJson(obj[p], indent + 1)}`;
               } else {
-                tmp = `${tmp}\n${offset}${propertyName}${operator.assign}${source[propertyName]}`;
+                t = `${t}\n${s}${p}${op.assign}${obj[p]}`;
               }
             }
           }
         }
       }
     }
-    let result = `${tmp}`;
-    return result;
+    return `${t}`;
   }
 
   export function clone<T>(value: any): T {
-    let clone = <T>JSON.parse(JSON.stringify( value || {} ));
-    return clone;
+    return  <T>JSON.parse(JSON.stringify( value || {} ));
   }

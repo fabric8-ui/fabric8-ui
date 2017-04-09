@@ -4,7 +4,7 @@ import { IAppGeneratorState } from './app-generator-state';
 
 export interface IAppGeneratorResponse {
   payload: {
-    /** the collection of fields representing required information needed from the appgenerator
+    /** the collection of fields representing required information needed from the app generator
      * to generate an application
      */
     fields: IFieldCollection;

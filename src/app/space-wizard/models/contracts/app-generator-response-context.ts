@@ -1,7 +1,6 @@
 import { IAppGeneratorCommand } from './app-generator-command';
 
-export interface IAppGeneratorResponseContext
-{
+export interface IAppGeneratorResponseContext {
   /** The command used to generated the current response */
   currentCommand: IAppGeneratorCommand;
   /** The next command to be executed */
@@ -12,5 +11,4 @@ export interface IAppGeneratorResponseContext
   executeCommand: IAppGeneratorCommand;
   /** Other dynamic fields */
   [key: string]: any;
-  
-} 
+}

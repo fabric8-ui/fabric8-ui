@@ -62,7 +62,7 @@ export class SpaceWizardComponent implements OnInit {
       this._workflow = this.workflowFactory.create();
     }
     return this._workflow;
-  };
+  }
 
   set workflow(value: IWorkflow) {
     this._workflow = value;

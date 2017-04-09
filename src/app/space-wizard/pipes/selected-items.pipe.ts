@@ -1,8 +1,8 @@
-import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, Injectable, Pipe , PipeTransform } from '@angular/core';
+import { Pipe , PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'selectedItems',
-    pure:false
+    pure: false
 })
 export class SelectedItemsPipe implements PipeTransform {
   transform(items: any[], args: any[]): any {
