@@ -144,11 +144,12 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     filter=filter.replace('*','');
     filter=filter.replace('?','');
     filter=filter.replace('/','');
+    filter=filter.replace('\\','');
     let r = new RegExp(filter || '', 'ig');
     field.display.choices.filter((o) => {
       // set everything to not visible, except for selected
       o.visible = false;
-      if(o.selected==true) {
+      if(o.selected === true) {
         o.visible = true;
       }
       // then match the input string
