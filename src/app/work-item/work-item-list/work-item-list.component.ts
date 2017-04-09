@@ -1,3 +1,5 @@
+import { AreaModel } from './../../models/area.model';
+import { AreaService } from './../../area/area.service';
 import { FilterService } from './../../shared/filter.service';
 import { Observable } from 'rxjs/Observable';
 import { IterationService } from './../../iteration/iteration.service';
@@ -80,10 +82,12 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
   eventListeners: any[] = [];
   private spaceSubscription: Subscription = null;
   private iterations: IterationModel[] = [];
+  private areas: AreaModel[] = [];
   private nextLink: string = '';
   private wiSubscriber: any = null;
   private allowedFilterParams: string[] = ['iteration'];
   private existingQueryParams: Object = {};
+  private loggedInUser: User | Object = {};
 
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
@@ -109,7 +113,8 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
     private route: ActivatedRoute,
     private spaces: Spaces,
     private iterationService: IterationService,
-    private filterService: FilterService) {}
+    private filterService: FilterService,
+    private areaService: AreaService) {}
 
   ngOnInit(): void {
     this.listenToEvents();
@@ -164,8 +169,15 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
       this.iterationService.getIterations(),
       this.userService.getAllUsers(),
       this.workItemService.getWorkItemTypes(),
+      this.areaService.getAreas(),
+      this.userService.getUser().catch(err => Observable.of({})),
     ).do((items) => {
       const iterations = items[0];
+      this.allUsers = items[1];
+      this.iterations = items[0];
+      this.workItemTypes = items[2];
+      this.areas = items[3];
+      this.loggedInUser = items[4];
       if (Object.keys(this.existingQueryParams).indexOf('iteration') > -1) {
         const iteration = iterations.find(it => {
           return it.attributes.resolved_parent_path + '/' + it.attributes.name
@@ -188,9 +200,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
       )
     })
     .subscribe(([iterations, users, wiTypes, workItemResp]) => {
-      this.allUsers = users;
-      this.iterations = iterations;
-      this.workItemTypes = wiTypes;
       const workItems = workItemResp.workItems;
       this.nextLink = workItemResp.nextLink;
       this.workItems = this.workItemService.resolveWorkItems(

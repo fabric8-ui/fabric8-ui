@@ -1,10 +1,10 @@
-import { Component, Input, OnInit, AfterViewInit, TemplateRef, ViewChild, ViewEncapsulation, OnChanges, Output, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, TemplateRef, ViewChild, ViewEncapsulation, OnChanges, Output, OnDestroy, EventEmitter, SimpleChanges } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 import { cloneDeep } from 'lodash';
 import { Broadcaster } from 'ngx-base';
-import { AuthenticationService, UserService } from 'ngx-login-client';
+import { AuthenticationService, UserService, User } from 'ngx-login-client';
 import { Subscription } from 'rxjs/Subscription';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
@@ -36,10 +36,11 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
 
   @Input() context: string;
   @Input() wiTypes: WorkItemType[] = [];
+  @Input() areas: AreaModel[] = [];
+  @Input() loggedInUser: User | Object = {};
 
   @Output() showDetailEvent: EventEmitter<any | null> = new EventEmitter();
 
-  areas: any[] = [];
   filters: any[] = [];
   loggedIn: boolean = false;
   editEnabled: boolean = false;
@@ -50,13 +51,22 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   spaceSubscription: Subscription = null;
   eventListeners: any[] = [];
   existingQueryParams: Object = {};
-  filterConfig: FilterConfig;
-  toolbarConfig: ToolbarConfig = {};
+  filterConfig: FilterConfig = {
+      fields: [],
+      appliedFilters: [],
+      resultsCount: -1, // Hide
+      selectedCount: 0,
+      totalCount: 0,
+      tooltipPlacement: 'right'
+    } as FilterConfig;
+  toolbarConfig: ToolbarConfig = {
+      actionConfig: {},
+      filterConfig: this.filterConfig
+    } as ToolbarConfig;
   allowedFilterKeys: string[] = [
     'assignee',
     'area'
   ];
-  filterSubscriber = null;
 
   constructor(
     private router: Router,
@@ -76,28 +86,14 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     // this.filterService.getFilters().then(response => {
     //   console.log(response);
     // });
-    this.filterConfig = {
-      fields: [],
-      appliedFilters: [],
-      resultsCount: -1, // Hide
-      selectedCount: 0,
-      totalCount: 0,
-      tooltipPlacement: 'right'
-    } as FilterConfig;
-
-    this.toolbarConfig = {
-      actionConfig: {},
-      filterConfig: this.filterConfig
-    } as ToolbarConfig;
-
-    this.setFilterConfiguration();
+    // this.setFilterConfiguration();
 
     // we need to get the wi types for the types dropdown on the board item
     // even when there is no active space change (initial population).
     this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[FilterPanelComponent] New Space selected: ' + space.attributes.name);
-        this.setFilterConfiguration();
+        // this.setFilterConfiguration();
         this.editEnabled = true;
       } else {
         console.log('[FilterPanelComponent] Space deselected.');
@@ -110,7 +106,14 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     this.listenToEvents();
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    if ((changes.hasOwnProperty('loggedInUser') && JSON.stringify(changes.loggedInUser.previousValue) !== JSON.stringify(changes.loggedInUser.currentValue)) ||
+        (changes.hasOwnProperty('areas') && JSON.stringify(changes.areas.previousValue) !== JSON.stringify(changes.areas.currentValue))) {
+      if (this.areas.length && Object.keys(this.loggedInUser).length) {
+        this.setFilterConfiguration();
+      }
+    }
+
     if (this.wiTypes.length) {
       this.currentBoardType = this.wiTypes[0];
     } else {
@@ -124,26 +127,14 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
 
   setFilterConfiguration() {
     this.toolbarConfig.filterConfig.appliedFilters = [];
-    this.areas = [];
     this.filterService.clearFilters();
-    if (this.filterSubscriber) {
-      this.filterSubscriber.unsubscribe();
+    this.toolbarConfig.filterConfig.fields = [];
+    this.setAreaFilter(this.areas);
+    this.setUserFilter(this.loggedInUser);
+    if (Object.keys(this.existingQueryParams).length) {
+      this.setAppliedFilterFromUrl();
+      this.filterService.applyFilter();
     }
-    this.filterSubscriber = Observable.combineLatest(
-      this.areaService.getAreas(),
-      this.userService.getUser()
-    )
-    .subscribe(
-      ([areas, user]) => {
-        this.toolbarConfig.filterConfig.fields = [];
-        this.setAreaFilter(areas);
-        this.setUserFilter(user);
-        if (Object.keys(this.existingQueryParams).length) {
-          this.setAppliedFilterFromUrl();
-          this.filterService.applyFilter();
-        }
-      },
-      err => console.log(err));
   }
 
   setAreaFilter(areas) {
@@ -151,7 +142,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
      * Remapping the fetched areas to the 'queries' model
      * of ngx-toolbar filters' dropdown.
      */
-    this.areas = areas.map(area => {
+    const filterAreas = areas.map(area => {
       return {
         id: area.id.toString(),
         value: area.attributes.name
@@ -162,7 +153,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       title: 'Area',
       placeholder: 'Filter by area...',
       type: 'select',
-      queries: this.areas
+      queries: filterAreas
     };
     this.toolbarConfig.filterConfig.fields.push(areaField);
   }
