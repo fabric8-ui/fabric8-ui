@@ -56,6 +56,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     'assignee',
     'area'
   ];
+  filterSubscriber = null;
 
   constructor(
     private router: Router,
@@ -72,23 +73,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   ngOnInit() {
     console.log('[FilterPanelComponent] Running in context: ' + this.context);
     this.loggedIn = this.auth.isLoggedIn();
-    // we need to get the wi types for the types dropdown on the board item
-    // even when there is no active space change (initial population).
-    this.spaceSubscription = this.spaces.current.subscribe(space => {
-      if (space) {
-        console.log('[FilterPanelComponent] New Space selected: ' + space.attributes.name);
-        this.setFilterConfiguration();
-        this.editEnabled = true;
-      } else {
-        console.log('[FilterPanelComponent] Space deselected.');
-        this.editEnabled = false;
-      }
-    });
-
     // this.filterService.getFilters().then(response => {
     //   console.log(response);
     // });
-
     this.filterConfig = {
       fields: [],
       appliedFilters: [],
@@ -102,7 +89,21 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       actionConfig: {},
       filterConfig: this.filterConfig
     } as ToolbarConfig;
+
     this.setFilterConfiguration();
+
+    // we need to get the wi types for the types dropdown on the board item
+    // even when there is no active space change (initial population).
+    this.spaceSubscription = this.spaces.current.subscribe(space => {
+      if (space) {
+        console.log('[FilterPanelComponent] New Space selected: ' + space.attributes.name);
+        this.setFilterConfiguration();
+        this.editEnabled = true;
+      } else {
+        console.log('[FilterPanelComponent] Space deselected.');
+        this.editEnabled = false;
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -122,18 +123,22 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   }
 
   setFilterConfiguration() {
-    this.toolbarConfig.filterConfig.fields = [];
     this.toolbarConfig.filterConfig.appliedFilters = [];
     this.areas = [];
     this.filterService.clearFilters();
-    Observable.combineLatest(
+    if (this.filterSubscriber) {
+      this.filterSubscriber.unsubscribe();
+    }
+    this.filterSubscriber = Observable.combineLatest(
       this.areaService.getAreas(),
       this.userService.getUser()
     )
     .subscribe(
       ([areas, user]) => {
+        console.log('######## - 1');
+        this.toolbarConfig.filterConfig.fields = [];
         this.setAreaFilter(areas);
-        this.setUserFIlter(user);
+        this.setUserFilter(user);
         if (Object.keys(this.existingQueryParams).length) {
           this.setAppliedFilterFromUrl();
           this.filterService.applyFilter();
@@ -163,7 +168,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     this.toolbarConfig.filterConfig.fields.push(areaField);
   }
 
-  setUserFIlter(user) {
+  setUserFilter(user) {
     if (user) {
       let userField = {
         id: 'assignee',
