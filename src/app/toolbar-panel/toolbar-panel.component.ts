@@ -135,7 +135,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     )
     .subscribe(
       ([areas, user]) => {
-        console.log('######## - 1');
         this.toolbarConfig.filterConfig.fields = [];
         this.setAreaFilter(areas);
         this.setUserFilter(user);

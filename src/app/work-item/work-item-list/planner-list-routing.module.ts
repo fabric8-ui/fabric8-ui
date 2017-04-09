@@ -9,17 +9,9 @@ const routes: Routes = [
   {
     path: '',
     component: WorkItemListComponent,
-    resolve: {
-      allusers: UsersResolve,
-      authuser: AuthUserResolve
-    },
     children: [
       { path: 'detail/:id',
         component: WorkItemDetailComponent,
-        resolve: {
-          allusers: UsersResolve,
-          authuser: AuthUserResolve
-        }
       }
     ]
   }
