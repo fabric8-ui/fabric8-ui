@@ -127,7 +127,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
 
   setFilterConfiguration() {
     this.toolbarConfig.filterConfig.appliedFilters = [];
-    this.filterService.clearFilters();
+    this.filterService.clearFilters(this.allowedFilterKeys);
     this.toolbarConfig.filterConfig.fields = [];
     this.setAreaFilter(this.areas);
     this.setUserFilter(this.loggedInUser);

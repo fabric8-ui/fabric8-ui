@@ -1,3 +1,6 @@
+import { FilterService } from './../../shared/filter.service';
+import { AreaModel } from './../../models/area.model';
+import { AreaService } from './../../area/area.service';
 import {
   AfterViewInit,
   Component,
@@ -13,7 +16,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Response } from '@angular/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { cloneDeep, trimEnd } from 'lodash';
 
 import { IterationService } from './../../iteration/iteration.service';
@@ -59,10 +62,14 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   private iterations: IterationModel[] = [];
   private workItemTypes: WorkItemType[] = [];
   private readyToInit = false;
+  private areas: AreaModel[] = [];
+  private loggedInUser: User;
   eventListeners: any[] = [];
   dialog: Dialog;
   showDialog = false;
   dragulaEventListeners: any[] = [];
+  private allowedFilterParams: string[] = ['iteration'];
+  private existingQueryParams: Object = {};
 
   constructor(
     private auth: AuthenticationService,
@@ -72,7 +79,21 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     private dragulaService: DragulaService,
     private iterationService: IterationService,
     private userService: UserService,
-    private spaces: Spaces) {
+    private spaces: Spaces,
+    private areaService: AreaService,
+    private filterService: FilterService,
+    private route: ActivatedRoute) {
+      this.dragulaService.drag.subscribe((value) => {
+        this.onDrag(value.slice(1));
+      });
+
+      this.dragulaService.drop.subscribe((value) => {
+        this.onDrop(value.slice(1));
+      });
+
+      this.dragulaService.over.subscribe((value) => {
+        this.onOver(value.slice(1));
+      });
 
       this.dragulaEventListeners.push(
         this.dragulaService.drag.subscribe((value) => {
@@ -96,7 +117,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[WorkItemBoardComponent] New Space selected: ' + space.attributes.name);
-        this.getDefaultWorkItemTypeStates();
+        this.initStuff();
       } else {
         console.log('[WorkItemBoardComponent] Space deselected');
         this.lanes = [];
@@ -123,15 +144,30 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     Observable.combineLatest(
       this.iterationService.getIterations(),
       this.userService.getAllUsers(),
-      this.workItemService.getWorkItemTypes()
-    ).map((items) => {
-      return items;
-    })
-    .subscribe(([iterations, users, wiTypes]) => {
+      this.workItemService.getWorkItemTypes(),
+      this.areaService.getAreas(),
+      this.userService.getUser(),
+    )
+    .subscribe(([iterations, users, wiTypes, areas, loggedInUser]) => {
       this.allUsers = users;
       this.iterations = iterations;
       this.workItemTypes = wiTypes;
       this.readyToInit = true;
+      this.areas = areas;
+      this.loggedInUser = loggedInUser;
+
+      // Resolve iteration filter on the first load of board view
+      // If there is an existing iteration query params already
+      // Set the filter service with iteration filter
+      if (Object.keys(this.existingQueryParams).indexOf('iteration') > -1) {
+        const filterIteration = this.iterations.find(it => {
+          return it.attributes.resolved_parent_path + '/' + it.attributes.name ===
+            this.existingQueryParams['iteration'];
+        })
+        if (filterIteration) {
+           this.filterService.setFilterValues('iteration', filterIteration.id)
+        }
+      }
 
       // Set lanes
       this.getDefaultWorkItemTypeStates();
@@ -139,11 +175,12 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   }
 
   getWorkItems(pageSize, lane) {
+    this.pageSize = pageSize;
     this.workItemService.getWorkItems(pageSize, [{
         active: true,
         paramKey: 'filter[workitemstate]',
         value: lane.option
-      }, ...this.filters])
+      }, ...this.filters, ...this.filterService.getAppliedFilters()])
     .subscribe(workItemResp => {
       const workItems = workItemResp.workItems;
       lane.workItems = this.workItemService.resolveWorkItems(
@@ -418,8 +455,48 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
 
     this.eventListeners.push(
       this.broadcaster.on<string>('detail_close')
-      .subscribe(()=>{
-        this.workItem = <WorkItem>{};
+        .subscribe(()=>{
+          this.workItem = <WorkItem>{};
+        })
+    );
+
+    this.eventListeners.push(
+      this.broadcaster.on<string>('wi_item_filter')
+        .subscribe((filters: any) => {
+          this.lanes.forEach(lane => this.getWorkItems(this.pageSize, lane));
+      })
+    );
+
+    this.eventListeners.push(
+      this.route.queryParams.subscribe((params) => {
+        this.existingQueryParams = params;
+        // on no params and not the first ever call
+        if (!Object.keys(params).length && this.lanes.length) {
+          // Cleaning up filters from filter service
+          this.filterService.clearFilters();
+          // Apply all cleaned up filters
+          this.filterService.applyFilter();
+        } else if(Object.keys(params).length &&
+          Object.keys(params).indexOf('iteration') > -1) {
+
+          if (Object.keys(params).length === 1) {
+            this.filterService.clearFilters();
+          } else {
+            this.filterService.clearFilters(this.allowedFilterParams);
+          }
+
+          // Resolve filter iteration once the board view is loaded
+          if (this.lanes.length) {
+            const filterIteration = this.iterations.find(it => {
+              return it.attributes.resolved_parent_path + '/' + it.attributes.name ===
+                this.existingQueryParams['iteration'];
+            })
+            if (filterIteration) {
+              this.filterService.setFilterValues('iteration', filterIteration.id)
+            }
+          }
+          this.filterService.applyFilter();
+        }
       })
     );
   }
