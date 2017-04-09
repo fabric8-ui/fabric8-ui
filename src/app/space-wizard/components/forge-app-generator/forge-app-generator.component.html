@@ -10,22 +10,22 @@
       </div>
     </div>
   </header>
-  <section [hidden]="!forge.hasError" class="message-console container-fluid padding-top-standard-offset" >
-    <div class="message-console-title" >
-      <h3 class="title-text" ><span class="pficon pficon-error-circle-o" ></span>{{forge.error.message||''}}</h3>
+  <section [hidden]="!forge.hasError" class="message-console container-fluid padding-top-standard-offset">
+    <div class="message-console-title">
+      <h3 class="title-text"><span class="pficon pficon-error-circle-o"></span>{{forge.error.message||''}}</h3>
     </div>
-    <div class="message-console-message" >
-      <div [innerHTML]="forge.error.details"  class="message-text" >
+    <div class="message-console-message">
+      <div [innerHTML]="forge.error.details" class="message-text">
 
       </div>
     </div>
   </section>
-  <section [hidden]="!forge.hasResult" class="message-console container-fluid padding-top-standard-offset" >
-    <div class="message-console-title" >
-      <h3 class="title-text" ><span class="pficon pficon-ok" ></span>{{forge.result.title||''}}</h3>
+  <section [hidden]="!forge.hasResult" class="message-console container-fluid padding-top-standard-offset">
+    <div class="message-console-title">
+      <h3 class="title-text"><span class="pficon pficon-ok"></span>{{forge.result.title||''}}</h3>
     </div>
-    <div class="message-console-message" >
-      <div [innerHTML]="forge.result.message"  class="message-text" >
+    <div class="message-console-message">
+      <div [innerHTML]="forge.result.message" class="message-text">
       </div>
     </div>
   </section>
@@ -56,40 +56,37 @@
               <div *ngSwitchCase="'multipleSelection'" style="border:solid 1px #bbb; overflow:hidden;  ; border-radius:4px;">
                 <!--input-->
                 <div class="input-group">
-
                   <div class="input-group-btn">
                     <div (click)="toggleSelectAll(field)" class="btn btn-default btn-sm btn-left-multi-select-button">
-
-                      <!--<span [ngClass]="{'glyphicon-check' : field.display.allOptionsSelected,'glyphicon-unchecked' : !field.display.allOptionsSelected}"  class="glyphicon"></span>-->
                       <span [ngClass]="{'fa-check-square-o' : allOptionsSelected(forge.fields[i]),'fa-square-o' : !allOptionsSelected(forge.fields[i])}"
                         class="fa"></span>
                     </div>
                   </div>
-
-                  <input class="form-control form-control-filter-input" (keyup)="filterList(forge.fields[i],optionFilter.value)"
-                    #optionFilter>
-
+                  <input #optionFilter class="form-control form-control-filter-input" (keyup)="filterList(forge.fields[i],optionFilter.value)"
+                  />
+                  <div class="input-group-btn">
+                    <div class="btn btn-default btn-sm btn-right-multi-select-button">
+                      <span class="fa fa-search"></span>
+                    </div>
+                  </div>
                 </div>
                 <!--included list-->
                 <div style="display:flex;flex-direction:row;flex-wrap:wrap; justify-content:start;" class="included-list">
-                  <span class="btn btn-primary btn-sm" (click)="deselectOption(forge.fields[i],choice)"   *ngFor="let choice of forge.fields[i].display.choices|selectedItems">
+                  <span class="btn btn-primary btn-sm" (click)="deselectOption(forge.fields[i],choice)" *ngFor="let choice of forge.fields[i].display.choices|selectedItems">
                     <span class="pficon pficon-close"  ></span> {{choice.id}}
                   </span>
                 </div>
-
                 <!--filtered list-->
-                <div  class="excluded-list">
-                  <div  [class.selected]="choice.selected" *ngFor="let choice of forge.fields[i].display.choices|visibleItems">
+                <div class="excluded-list">
+                  <div [class.selected]="choice.selected" *ngFor="let choice of forge.fields[i].display.choices|visibleItems">
                     <label (click)="toggleOption(forge.fields[i],choice)" class="unselectedOption">
                     <span style="padding-left:5px;padding-right:5px;" class="fa"
                           [class.fa-check-square-o]="choice.selected"
                           [class.fa-square-o]="!choice.selected"></span>
                     {{choice.id}}
                   </label>
-                    <!--<input [disabled]="fieldOption.selected" style="background-color:transparent; width:3.0rem;margin-left:5px;margin-right:5px; text-align: center; vertical-align: center; display:inline-box; "  type="checkbox" name="{{fieldOption.id}}" [(ngModel)]="fieldOption.selected" class="form-control-" >{{fieldOption.id}}</label>-->
                   </div>
                 </div>
-                <!--<input [disabled]="fieldOption.selected" style="background-color:transparent; width:3.0rem;margin-left:5px;margin-right:5px; text-align: center; vertical-align: center; display:inline-box; "  type="checkbox" name="{{fieldOption.id}}" [(ngModel)]="fieldOption.selected" class="form-control-" >{{fieldOption.id}}</label>-->
               </div>
               <div class="errorLabel help-block">
                 <span *ngIf="forge.fields[i].display.message">{{forge.fields[i].display.message.description}}</span>
@@ -111,9 +108,10 @@
           (click)="forge.gotoPreviousStep()">Back</button>
         <button type="button" class="btn btn-default margin-right-5" *ngIf="!forge.hasError && !forge.hasResult" [disabled]="(!forge.state.canMoveToNextStep)||(forge.processing === true)"
           (click)="forge.gotoNextStep()">Next</button>
-        <button type="button" class="btn btn-default" *ngIf="!forge.hasError && !forge.hasResult"  [disabled]="(!forge.state.canExecute)||(forge.processing === true)" (click)="forge.finish()">Finish</button>
+        <button type="button" class="btn btn-default" *ngIf="!forge.hasError && !forge.hasResult" [disabled]="(!forge.state.canExecute)||(forge.processing === true)"
+          (click)="forge.finish()">Finish</button>
         <button type="button" class="btn btn-default" *ngIf="forge.hasError" (click)="forge.clearErrors()">OK</button>
-        <button class='btn btn-primary margin-right-5' *ngIf="forge.hasResult" (click)="forge.addResultToSpace()" ><span class="pficon pficon-add-circle-o" ></span> Add this code base to my space</button>
+        <button class='btn btn-primary margin-right-5' *ngIf="forge.hasResult" (click)="forge.addResultToSpace()"><span class="pficon pficon-add-circle-o" ></span> Add this code base to my space</button>
         <button type="button" class="btn btn-default" *ngIf="forge.hasResult" (click)="forge.acknowledgeStarterApp()">OK</button>
       </div>
     </div>
