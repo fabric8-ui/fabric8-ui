@@ -120,6 +120,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
   dynamicFormGroup: FormGroup;
   dynamicFormDataArray: any;
+  usersLoaded: Boolean = false;
 
   constructor(
     private areaService: AreaService,
@@ -138,9 +139,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
   ngOnInit(): void {
     this.listenToEvents();
-    this.getAreas();
-    this.getAllUsers();
-    this.getIterations();
+    // this.getAreas();
+    // this.getAllUsers();
+    // this.getIterations();
     this.loggedIn = this.auth.isLoggedIn();
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
@@ -168,8 +169,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     });
     this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
-        this.getAreas();
-        this.getIterations();
+        // this.getAreas();
+        // this.getIterations();
       }
     });
   }
@@ -283,7 +284,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         // after getting the Workitem
         // to set assigned user
         // for this workitem from the list
-        this.getAllUsers();
+        // this.getAllUsers();
 
         this.activeOnList(400);
       },
@@ -325,19 +326,11 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     this.workItem.attributes['system.state'] = 'new';
   }
 
-  getAllUsers(): void {
-    Observable.combineLatest(
+  getAllUsers(): Observable<any> {
+    return Observable.combineLatest(
       this.userService.getUser(),
       this.userService.getAllUsers()
     )
-    .subscribe(([authUser, allUsers]) => {
-      this.users = allUsers;
-      this.loggedInUser = authUser;
-      this.users = this.users.filter(user => {
-        return user.id !== authUser.id;
-      });
-      this.filteredUsers = this.users;
-    });
   }
 
   activeOnList(timeOut: number = 0) {
@@ -620,13 +613,23 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   lookupIterations() {
+    this.getIterations();
     this.searchIteration = !this.searchIteration;
   }
 
   activeSearchAssignee() {
     if (this.loggedIn) {
+      this.getAllUsers()
+      .subscribe(([authUser, allUsers]) => {
+        this.users = allUsers;
+        this.loggedInUser = authUser;
+        this.users = this.users.filter(user => {
+          return user.id !== authUser.id;
+        });
+        this.filteredUsers = this.users;
+        this.usersLoaded = true;
+      });
       this.closeUserRestFields();
-      this.filteredUsers = this.users.length ? this.users : null;
       this.searchAssignee = true;
       // Takes a while to render the component
       setTimeout(() => {
@@ -744,7 +747,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   assignIteration(): void {
     // Send out an iteration change event
     let newIteration = this.selectedIteration?this.selectedIteration.id:undefined;
-    let currenIterationID = this.workItem.relationships.iteration.data ? this.workItem.relationships.iteration.data.id : 0; 
+    let currenIterationID = this.workItem.relationships.iteration.data ? this.workItem.relationships.iteration.data.id : 0;
     this.broadcaster.broadcast('associate_iteration', {
       workItemId: this.workItem.id,
       currentIterationId: currenIterationID,
@@ -778,7 +781,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       payload = Object.assign(payload, {
         relationships : {
           iteration: { }
-        }      
+        }
       });
     }
     this.save(payload);
@@ -835,6 +838,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   activeSearchArea() {
     //close the assignees
     this.closeUserRestFields();
+    this.getAreas();
     if (this.loggedIn) {
       this.searchArea = true;
       // Takes a while to render the component

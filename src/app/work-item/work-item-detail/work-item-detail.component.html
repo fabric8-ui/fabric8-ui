@@ -132,6 +132,7 @@
                       <input id="userAssigneeSearchInput" #userSearch (keyup)="filterUser($event)"
                         autocomplete="off" />
                       <ul class="item-ul no-padding user-list" #userList>
+                        <li *ngIf="!usersLoaded" class="textCenter"><i class="fa fa-spinner fa-pulse"></i></li>
                         <li
                           class="item-li"
                           [class.first-item] = "filteredUsers && filteredUsers.length"
@@ -207,6 +208,7 @@
                     <input id="areaSearchInput" #areaSearch (keyup)="filterArea($event)"
                       autocomplete="off" />
                     <ul class="item-ul area-list" #areaList>
+                      <li *ngIf="!areas.length" class="textCenter"><i class="fa fa-spinner fa-pulse"></i></li>
                       <li
                         class="item-li"
                         *ngFor="let area of filteredAreas;"
@@ -244,6 +246,7 @@
                 {{ workItem.relationalData?.iteration?.attributes.name|| "None" }} <span class="caret"></span>
               </button>
               <ul role="menu" aria-labelledby="WI_details_iteration_dropdown" dropdownMenu>
+                <li *ngIf="!iterations.length" class="textCenter"><i class="fa fa-spinner fa-pulse"></i></li>
                 <li *ngFor="let iteration of iterations;" role="presentation">
                   <a role="menuitem" tabindex="-1" (click)="selectIteration(iteration)">
                     {{ iteration.attributes.name }}
@@ -259,7 +262,7 @@
             </span>
           </div>
         </div>
-        
+
         <!-- Extra fields Start -->
         <div *ngFor="let attributeDesc of dynamicFormDataArray" class="form-group">
           <alm-dynamic-field [attributeDesc]="attributeDesc" [form]="dynamicFormGroup" (onUpdate)="dynamicFieldUpdated($event)"></alm-dynamic-field>
