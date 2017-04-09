@@ -82,6 +82,8 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
   private iterations: IterationModel[] = [];
   private nextLink: string = '';
   private wiSubscriber: any = null;
+  private allowedFilterParams: string[] = ['iteration'];
+  private existingQueryParams: Object = {};
 
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
@@ -162,12 +164,28 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
       this.iterationService.getIterations(),
       this.userService.getAllUsers(),
       this.workItemService.getWorkItemTypes(),
-      this.workItemService.getWorkItems(
-        this.pageSize,
-        this.filterService.getAppliedFilters()
+    ).do((items) => {
+      const iterations = items[0];
+      if (Object.keys(this.existingQueryParams).indexOf('iteration') > -1) {
+        const iteration = iterations.find(it => {
+          return it.attributes.resolved_parent_path + '/' + it.attributes.name
+            === this.existingQueryParams['iteration'];
+        })
+        if (iteration) {
+          this.filterService.setFilterValues('iteration', iteration.id);
+        }
+      }
+    })
+    .switchMap((items) => {
+      return Observable.forkJoin(
+        Observable.of(items[0]),
+        Observable.of(items[1]),
+        Observable.of(items[2]),
+        this.workItemService.getWorkItems(
+          this.pageSize,
+          this.filterService.getAppliedFilters()
+        )
       )
-    ).map((items) => {
-      return items;
     })
     .subscribe(([iterations, users, wiTypes, workItemResp]) => {
       this.allUsers = users;
@@ -401,11 +419,32 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
           this.treeList.updateTree();
         })
       );
-    
+
     this.eventListeners.push(
       this.broadcaster.on<string>('detail_close')
       .subscribe(()=>{
         this.selectedWorkItemEntryComponent.deselect();
+      })
+    );
+
+    this.eventListeners.push(
+      this.route.queryParams.subscribe((params) => {
+        this.existingQueryParams = params;
+        // on no params
+        if (!Object.keys(params).length) {
+          // Cleaning up filters from filter service
+          this.filterService.clearFilters();
+          // Apply all cleaned up filters
+          this.filterService.applyFilter();
+        } else if(Object.keys(params).length &&
+          Object.keys(params).indexOf('iteration') > -1) {
+          if (Object.keys(params).length === 1) {
+            this.filterService.clearFilters();
+          } else {
+            this.filterService.clearFilters(this.allowedFilterParams);
+          }
+          this.loadWorkItems();
+        }
       })
     );
   }

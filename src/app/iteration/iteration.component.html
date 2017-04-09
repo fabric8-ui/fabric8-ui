@@ -14,7 +14,8 @@
         <li class="active" *ngFor="let iteration of currentIterations" [routerLinkActive]="'selected-iteration'">
           <div class="iteration-subheader flex-container">
             <div class="flex-grow-1 truncate">
-              <a [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.name}" >
+              <a [routerLink]="[]"
+                [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" >
                 <strong class="iteration-name truncate"
                   tooltip="{{iteration.attributes.name}}"
                   placement="top">
@@ -100,17 +101,19 @@
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedFutureIteration">
-        <li class="iteration-subheader flex-container" *ngFor="let iteration of futureIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}">
-          <div class="flex-grow-1 truncate">
-            <a [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.name}" >
-              <strong class="iteration-name truncate"
-                tooltip="{{iteration.attributes.name}}"
-                placement="top">
-                {{iteration.attributes.name}}
-              </strong>
-            </a>
-            <div class="parent-iteration">
-              <span>{{(iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/')}}</span>
+        <li class="iteration-subheader flex-container" *ngFor="let iteration of futureIterations" [routerLinkActive]="'selected-iteration'">
+            <div class="flex-grow-1 truncate">
+              <a [routerLink]="[]"
+                [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" >
+                <strong class="iteration-name truncate"
+                  tooltip="{{iteration.attributes.name}}"
+                  placement="top">
+                  {{iteration.attributes.name}}
+                </strong>
+              </a>
+              <div class="parent-iteration">
+                <span>{{(iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/')}}</span>
+              </div>
             </div>
             <div>
               <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
@@ -158,7 +161,8 @@
           [collapse]="isCollapsedPastIteration">
         <li class="iteration-subheader flex-container" *ngFor="let iteration of closedIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}">
           <div class="truncate flex-grow-1">
-            <a [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.name}" >
+            <a [routerLink]="[]"
+              [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" >
               <strong class="iteration-name truncate"
                 tooltip="{{iteration.attributes.name}}"
                 placement="top">

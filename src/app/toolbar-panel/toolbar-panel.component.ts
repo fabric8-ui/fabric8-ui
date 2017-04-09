@@ -310,18 +310,17 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
 
     this.eventListeners.push(
       this.route.queryParams.subscribe((params) => {
+        this.existingQueryParams = params;
         // on no params
-        if (!Object.keys(params).length) {
+        if (!Object.keys(params).length ||
+          (Object.keys(this.existingQueryParams).length === 1
+            && Object.keys(this.existingQueryParams).indexOf('iteration') > -1)) {
           // Cleaning up applied filters
           this.toolbarConfig.filterConfig.appliedFilters = [];
-          // Cleaning up filters from filter service
-          this.filterService.clearFilters();
-          // Apply all cleaned up filters
-          this.filterService.applyFilter();
         } else {
-          this.existingQueryParams = params;
           if (this.toolbarConfig.filterConfig.fields.length
-            && Object.keys(this.existingQueryParams).length) {
+            && Object.keys(this.existingQueryParams).length
+            && Object.keys(this.existingQueryParams).some(i => this.allowedFilterKeys.indexOf(i) > -1)) {
             this.toolbarConfig.filterConfig.appliedFilters = [];
             this.filterService.clearFilters(this.allowedFilterKeys);
             this.setAppliedFilterFromUrl();
