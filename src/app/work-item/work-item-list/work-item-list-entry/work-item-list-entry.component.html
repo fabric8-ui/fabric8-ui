@@ -10,24 +10,25 @@
 		<input type="checkbox" [checked]="checkedWI" (click)="toggleEntry($event)" />
 	</div>
 	<!-- info area -->
-	<div class="list-view-pf-main-info" (click)="onDetail($event)">
-		<div class="list-view-pf-left type workItemList_workItemType">
-			<span almIcon [iconType]="workItem.attributes['system.state']" class="color-grey pull-left"></span>
+  <div class="list-view-pf-main-info">
+    <div class="list-view-pf-left type workItemList_workItemType">
+      <span almIcon [iconType]="workItem.attributes['system.state']" class="color-grey pull-left"></span>
       <span class="color-grey pull-left fa {{workItem.relationships?.baseType?.data?.attributes?.icon}}"></span>
-			<span class="pull-left"> {{workItem.id}} </span>
-		</div>
-		<div class="list-view-pf-body">
-			<div class="list-view-pf-description">
-				<div class="workItemList_title truncate-ellipsis col-xs-12 row">
-					<p class="col-md-12 col-sm-12 col-xs-12 pull-left truncate">{{workItem.attributes['system.title']}}</p>
-				</div>
-				<div class="list-group-item-text workItemList_description dn">
-					{{workItem.attributes['system.description'] ? workItem.attributes['system.description'] : "No description available for this work item."}}
-				</div>
-			</div>
-		</div>
-	</div>
-
+      <span class="pull-left"> {{workItem.id}} </span>
+    </div>
+    <div class="list-view-pf-body">
+      <div class="list-view-pf-description">
+        <div class="workItemList_title truncate-ellipsis col-xs-12 row">
+          <a [routerLink]="['./detail/' + workItem.id]" [queryParams]="queryParams" >
+            <p class="col-md-12 col-sm-12 col-xs-12 pull-left truncate">{{workItem.attributes['system.title']}}</p>
+          </a>
+        </div>
+        <div class="list-group-item-text workItemList_description dn">
+          {{workItem.attributes['system.description'] ? workItem.attributes['system.description'] : "No description available for this work item."}}
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="user-avatar">
       <img
         *ngFor="let wItem of workItem.relationships.assignees.data"
@@ -50,7 +51,7 @@
 				<li role="presentation" class="divider"></li>
 				<li><a class="workItemList_Iteration" (click)="associateIterationModal.open($event)">Associate with Iteration...</a></li>
 				<li role="presentation" class="divider"></li>
-				<li><a [routerLink]="['./detail/' + workItem.id]" class="workItemList_Open">Open</a></li>
+				<li><a [routerLink]="['./detail/' + workItem.id]" [queryParams]="queryParams" class="workItemList_Open">Open</a></li>
 				<li><a class="workItemList_Delete" (click)="confirmDelete($event)">Delete</a></li>
 				<li><a class="workItemList_Backlog" (click)="onMoveToBacklog($event)">Move to Backlog</a></li>
 			</ul>

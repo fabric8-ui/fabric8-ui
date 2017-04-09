@@ -63,18 +63,21 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
         this.userService.getAllUsers(),
         this.workItemService.resolveComments(this.workItem.relationships.comments.links.related)
       )
-      .subscribe(([users, comments]) => {
-        this.workItem.relationships.comments = Object.assign(
-          this.workItem.relationships.comments,
-          comments
-        );
-        this.workItem.relationships.comments.data =
-          this.workItem.relationships.comments.data.map((comment) => {
-            comment.relationships['created-by'].data =
-              users.find(user => user.id === comment.relationships['created-by'].data.id);
-            return comment;
-          });
-      });
+      .subscribe(
+        ([users, comments]) => {
+          this.workItem.relationships.comments = Object.assign(
+            this.workItem.relationships.comments,
+            comments
+          );
+          this.workItem.relationships.comments.data =
+            this.workItem.relationships.comments.data.map((comment) => {
+              comment.relationships['created-by'].data =
+                users.find(user => user.id === comment.relationships['created-by'].data.id);
+              return comment;
+            });
+        },
+        (err) => console.log(err)
+      );
     }
 
     createCommentObject(): void {

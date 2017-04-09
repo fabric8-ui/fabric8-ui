@@ -51,6 +51,7 @@ export class WorkItemListEntryComponent implements OnInit {
   dialog: Dialog;
   showDialog = false;
   loggedIn: Boolean = false;
+  queryParams: Object = {};
 
   constructor(private auth: AuthenticationService,
               private broadcaster: Broadcaster,
@@ -172,5 +173,8 @@ export class WorkItemListEntryComponent implements OnInit {
       .subscribe(wiId => {
         (this.workItem.id == wiId) ? this.select() : this.deselect();
     });
+    this.route.queryParams.subscribe((params) => {
+      this.queryParams = params;
+    })
   }
 }

@@ -113,6 +113,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   usersLoaded: Boolean = false;
 
   saving: Boolean = false;
+  queryParams: Object = {};
 
   constructor(
     private areaService: AreaService,
@@ -136,9 +137,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     // this.getAllUsers();
     this.getIterations();
     this.loggedIn = this.auth.isLoggedIn();
+    let id = null;
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
-        let id = params['id'];
+        id = params['id'];
 
         if (id.indexOf('new') >= 0){
           //Add a new work item
@@ -162,8 +164,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     });
     this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
-        this.getAreas();
-        this.getIterations();
+        // this.getAreas();
+        // this.getIterations();
+        this.loadWorkItem(id);
       }
     });
   }
@@ -282,7 +285,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.activeOnList(400);
       },
       err => {
-        this.closeDetails();
+        console.log(err);
+        // this.closeDetails();
       });
   }
 
@@ -303,16 +307,19 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
     // Add creator
     this.userService.getUser()
-      .subscribe(user => {
-        this.workItem.relationships = Object.assign(
-          this.workItem.relationships,
-          {
-            creator: {
-              data: user
+      .subscribe(
+        user => {
+          this.workItem.relationships = Object.assign(
+            this.workItem.relationships,
+            {
+              creator: {
+                data: user
+              }
             }
-          }
-        );
-      });
+          );
+        },
+        err => console.log(err)
+      );
 
     this.workItem.relationalData = {};
     this.workItemService.resolveType(this.workItem);
@@ -414,14 +421,15 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     this.areaService.getAreas()
       .subscribe((response: AreaModel[]) => {
         this.areas = response;
-      });
+        // this.filteredAreas = cloneDeep(response);
+      }, err => console.log(err));
   }
 
   getIterations() {
     this.iterationService.getIterations()
       .subscribe((iteration: IterationModel[]) => {
         this.iterations = iteration;
-      });
+      }, err => console.log(err));
   }
 
   onChangeState(option: any): void {
@@ -516,7 +524,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         } else {
           workItem.relationships.iteration = { };
         }
-
         // Resolve work item type
         workItem.relationships.baseType.data =
           workItemTypes.find(type => type.id === workItem.relationships.baseType.data.id) ||
@@ -551,7 +558,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.updateOnList();
         this.activeOnList();
         return workItem;
-      });
+      },
+        (err) => console.log(err)
+      );
     } else {
       if (this.validTitle) {
         this.saving = true;
@@ -604,8 +613,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     // From in to out it takes 300 ms
     // So wait for 400 ms
     setTimeout(() => {
-      this.router.navigateByUrl(trimEnd(this.router.url.split('detail')[0], '/'));
-      this.broadcaster.broadcast('detail_close', {});
+      this.router.navigate([trimEnd(this.router.url.split('detail')[0], '/')], {queryParams: this.queryParams});
     }, 400);
   }
 
@@ -617,6 +625,11 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
           this.loggedInUser = null;
       })
     );
+    this.eventListeners.push(
+      this.route.queryParams.subscribe((params) => {
+        this.queryParams = params;
+      })
+    )
   }
 
   preventDef(event: any) {
@@ -807,7 +820,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       //creating a new work item - save the user input
       let iteration = { };
       if (iterationId) {
-        iteration = { 
+        iteration = {
           data: {
             attributes: {
               name: this.findIterationById(iterationId).attributes.name
@@ -827,7 +840,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     let selectedAreaId: string;
     if (this.workItem.relationships.area && this.workItem.relationships.area.data && this.workItem.relationships.area.data.id) {
       selectedAreaId = this.workItem.relationships.area.data.id;
-    } 
+    }
     for (let i=0; i<areas.length; i++) {
       result.push({
         key: areas[i].id,
@@ -861,7 +874,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     let selectedIterationId;
     if (this.workItem.relationships.iteration && this.workItem.relationships.iteration.data && this.workItem.relationships.iteration.data.id) {
       selectedIterationId = this.workItem.relationships.iteration.data.id;
-    } 
+    }
     for (let i=0; i<iterations.length; i++) {
       if (!this.iterationService.isRootIteration(iterations[i])) {
         result.push({
@@ -919,13 +932,13 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       let area = { };
       if (areaId) {
         // area was set to a value.
-        let area = { 
+        let area = {
           data: {
             attributes: {
               name: this.findAreaById(areaId).attributes.name,
             },
             id: areaId,
-            type: 'area' 
+            type: 'area'
           }
         };
       };

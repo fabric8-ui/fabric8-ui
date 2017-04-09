@@ -257,7 +257,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
                 return this.searchNotAllowedIds.indexOf(item.id) == -1;
               });
               console.log(this.searchWorkItems);
-            });
+            }, err => console.log(err));
         }
       }
       else {
