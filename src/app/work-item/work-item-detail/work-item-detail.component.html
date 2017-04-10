@@ -209,6 +209,7 @@
                       autocomplete="off" />
                     <ul class="item-ul area-list" #areaList>
                       <li *ngIf="!areas.length" class="textCenter"><i class="fa fa-spinner fa-pulse"></i></li>
+                      <li *ngIf="!filteredAreas.length">No matches found.</li>
                       <li
                         class="item-li"
                         *ngFor="let area of filteredAreas;"
@@ -220,7 +221,8 @@
                   </div>
                 </div>
                 <div *ngIf="searchArea" class="btn-bar"  >
-                  <button class="btn btn-lg btn-default"  type="button" (click)=setArea() id="save_area">
+                  <button class="btn btn-lg btn-default" type="button" (click)=setArea()
+                    id="save_area" [disabled]="!filteredAreas.length || !selectedArea">
                     <span class="fa fa-check" ></span>
                   </button>
                   <button class="btn btn-lg btn-default"  type="button" (click)=closeAreaDropdown()>
@@ -253,7 +255,8 @@
                   </a>
                 </li>
               </ul>
-              <button class="btn btn-lg btn-default" type="button" (click)=assignIteration() id="assign-iteration-savebtn">
+              <button class="btn btn-lg btn-default" type="button" (click)=assignIteration()
+                [disabled]="!selectedIteration" id="assign-iteration-savebtn">
                 <span class="fa fa-check"></span>
               </button>
               <button class="btn btn-lg btn-default" type="button" (click)=closeIteration() id="assign-iteration-closebtn">
