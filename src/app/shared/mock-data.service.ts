@@ -241,13 +241,14 @@ export class MockDataService {
   };
 
   public updateWorkItem(workItem: any): any {
+    console.log(workItem);
     var localWorkItem = cloneDeep(workItem);
     for (var i = 0; i < this.workItems.length; i++) {
       if (this.workItems[i].id === localWorkItem.id) {
         // Some relationship update
         if (workItem.relationships) {
           // Iteration update
-          if (workItem.relationships.iteration.data) {
+          if (workItem.relationships.iteration && workItem.relationships.iteration.data) {
             console.log('WorkItem has updated iteration field: ' + this.workItems[i].id + ' old: ' + JSON.stringify(workItem.relationships.iteration.data) + ' new: ' + JSON.stringify(workItem.relationships.iteration.data));
             this.workItems[i].relationships.iteration = { data: {
               id: workItem.relationships.iteration.data.id,
