@@ -14,15 +14,15 @@ export class IterationMockGenerator {
     let iterations: any[] = [];
     iterations.push({
         'attributes': {
-          'description': 'Parent Iteration Description',
-          'name': 'Parent Iteration',
+          'description': 'Root Iteration Description',
+          'name': 'Root Iteration',
           'state': 'new',
           'parent_path': '/',
           'resolved_parent_path': '/'
         },
-        'id': 'parent-id',
+        'id': 'root-iteration-id',
         'links': {
-          'self': 'http://mock.service/api/iterations/parent-id'
+          'self': 'http://mock.service/api/iterations/root-iteration-id'
         },
         'relationships': {
           'space': {
@@ -52,8 +52,8 @@ export class IterationMockGenerator {
           'description': 'Description for iteration ' + n,
           'name': 'Iteration ' + n,
           'state': 'new',
-          'parent_path': '/parent-id',
-          'resolved_parent_path': '/Parent Iteration'
+          'parent_path': '/root-iteration-id',
+          'resolved_parent_path': '/Root Iteration'
         },
         'id': 'iteration-id' + n,
         'links': {

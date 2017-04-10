@@ -106,7 +106,7 @@
     "@angular/platform-browser-dynamic": "4.0.1",
     "@angular/platform-server": "4.0.1",
     "@angular/router": "4.0.1",
-    "angular-tree-component": "3.2.4",
+    "angular-tree-component": "3.2.3",
     "core-js": "2.4.1",
     "lodash": "4.17.4",
     "moment": "2.18.1",

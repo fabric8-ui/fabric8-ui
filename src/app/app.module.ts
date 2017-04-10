@@ -79,10 +79,11 @@ if (process.env.ENV == 'inmemory') {
     serviceImports,
     SpacesService,
     ssoApiUrlProvider,
+    MockHttp,
     DummySpace,
     {
       provide: HttpServiceLGC,
-      useClass: MockHttp
+      useExisting: MockHttp
     }
   ];
 } else {

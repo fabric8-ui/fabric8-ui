@@ -35,7 +35,7 @@ import { WorkItemTypeControlService } from '../work-item-type-control.service';
 let providers = [];
 
 if (process.env.ENV == 'inmemory') {
-  providers = [ AreaService, WorkItemTypeControlService, { provide: Http, useClass: MockHttp } ];
+  providers = [ AreaService, WorkItemTypeControlService, { provide: Http, useExisting: MockHttp } ];
 } else {
   providers = [ AreaService, WorkItemTypeControlService ];
 }

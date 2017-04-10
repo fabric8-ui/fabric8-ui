@@ -62,6 +62,8 @@ export class WorkItemService {
   private iterations: IterationModel[] = [];
   public _currentSpace;
 
+  private selfId;
+
   constructor(private http: HttpService,
     private broadcaster: Broadcaster,
     private logger: Logger,
@@ -76,6 +78,17 @@ export class WorkItemService {
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
     }
+    this.selfId = this.createId();
+    this.logger.log('Launching WorkItemService instance id ' + this.selfId);
+  }
+
+  createId(): string {
+    let id = '';
+    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 5; i++)
+      id += possible.charAt(Math.floor(Math.random() * possible.length));
+    console.log('Created new id ' + id);
+    return id;
   }
 
   // switchSpace(space: Space) {
@@ -672,26 +685,9 @@ export class WorkItemService {
    * @param: WorkItem - workItem (Item to be created)
    */
   update(workItem: WorkItem): Observable<WorkItem> {
-    console.log('UPDATEääääääää');
-    console.log(workItem);
-    let oldIterationId: string;
-    if (workItem.relationships && workItem.relationships.iteration &&  workItem.relationships.iteration.data)
-      oldIterationId = workItem.relationships.iteration.data.id;
-    console.log('UPDATEääääääää2');
     return this.http
       .patch(workItem.links.self, JSON.stringify({data: workItem}), { headers: this.headers })
       .map(response => {
-    console.log('UPDATEääääääää3');
-        if (oldIterationId && response.json().relationships.iteration.data && oldIterationId!=response.json().relationships.iteration.data.id) {
-          this.logger.log('################## Iteration has been updated, reloading counts on iteration panel.');
-          this.broadcaster.broadcast('associate_iteration', {
-            workItemId: response.json().id,
-            currentIterationId: oldIterationId,
-            futureIterationId: response.json().relationships.iteration.data.id
-          });
-        }
-            console.log('UPDATEääääääää4');
-
         return response.json().data;
       });
       // .catch ((e) => {

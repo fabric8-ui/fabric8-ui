@@ -31,12 +31,15 @@ export class MockHttp extends HttpService {
     private WorkItemRegex = /workitems\/(.*)/g;
     private WorkItemSearchRegexp = /work-item-list\/\?name=(.*)/g;
 
+    private selfId;
     private mockDataService: MockDataService;
 
     constructor(private logger: Logger) {
       super(null, null, null);
       let injector = ReflectiveInjector.resolveAndCreate([MockDataService]);
       this.mockDataService = injector.get(MockDataService);
+      this.selfId = this.mockDataService.createId();
+      this.logger.log('Started MockHttp service instance ' + this.selfId);
     };
 
     /*

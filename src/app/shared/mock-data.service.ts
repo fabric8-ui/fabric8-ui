@@ -24,6 +24,13 @@ import { IterationMockGenerator } from './mock-data/iteration-mock-generator';
     networked service always returns detached object copies, this resembles the
     original behaviour. Also, the returnes references ARE RE-USED, so data could
     change without this class noticing it! THIS HAPPENS. IT HAPPENED. IT SUCKS!
+
+  ANOTHER NOTE, ALSO IMPORTANT: 
+    This is some sort of inmemory database. The whole thing relies on being a 
+    singleton for the whole application. If you use this class, make sure there
+    is only one instance in existence! If you have more than one instance of this,
+    you will get weird errors, data values jumping around and you will have a fun
+    time finding that problem. I did have a fun time finding that issue.
 */
 @Injectable()
 export class MockDataService {
@@ -45,7 +52,10 @@ export class MockDataService {
   private iterations: any[];
   private areas: any[];
 
+  private selfId;
+
   constructor() {
+    this.selfId = this.createId();
     // create initial data store
     this.workItems = this.workItemMockGenerator.createWorkItems();
     this.workItemLinks = this.workItemMockGenerator.createWorkItemLinks();
@@ -54,11 +64,14 @@ export class MockDataService {
     this.spaces = this.spaceMockGenerator.createSpaces();
     this.iterations = this.iterationMockGenerator.createIterations();
     this.areas = this.areaMockGenerator.createAreas();
+
+    this.selfId = this.createId();
+    console.log('Started MockDataService service instance ' + this.selfId);
   }
 
   // utility methods
 
-  private createId(): string {
+  createId(): string {
     let id = '';
     let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < 5; i++)
@@ -222,8 +235,9 @@ export class MockDataService {
     }
     console.log('Requested workitem ' + extraPath);
     for (var i = 0; i < this.workItems.length; i++)
-      if (this.workItems[i].id === extraPath)
+      if (this.workItems[i].id === extraPath) {
         return { data: this.makeCopy(this.workItems[i]) };
+      }
   };
 
   public updateWorkItem(workItem: any): any {
@@ -234,7 +248,7 @@ export class MockDataService {
         if (workItem.relationships) {
           // Iteration update
           if (workItem.relationships.iteration.data) {
-            let iteration = this.getIteration
+            console.log('WorkItem has updated iteration field: ' + this.workItems[i].id + ' old: ' + JSON.stringify(workItem.relationships.iteration.data) + ' new: ' + JSON.stringify(workItem.relationships.iteration.data));
             this.workItems[i].relationships.iteration = { data: {
               id: workItem.relationships.iteration.data.id,
               links: { self: 'http://mock.service/api/iterations/' + workItem.relationships.iteration.data.id },
@@ -363,7 +377,6 @@ export class MockDataService {
   }
 
   // spaces
-
   public getAllSpaces(): any {
     return this.spaces;
   }
@@ -379,8 +392,8 @@ export class MockDataService {
   }
 
   // iterations
-
   private updateWorkItemCountsOnIteration() {
+    console.log('Updating work item counts on service side.');
     for (var i = 0; i < this.iterations.length; i++) {
       let thisIteration = this.iterations[i];
       thisIteration.relationships.workitems.meta.total = 0;
@@ -393,6 +406,7 @@ export class MockDataService {
           if (this.workItems[j].attributes['system.state']==='closed')
             thisIteration.relationships.workitems.meta.closed++;
         }          
+        console.log('Got count for root iteration: ' + thisIteration.relationships.workitems.meta.total);
       } else {
         // standard iteration
         for (var j = 0; j < this.workItems.length; j++) {
@@ -402,6 +416,7 @@ export class MockDataService {
               thisIteration.relationships.workitems.meta.closed++;
           }
         }
+        console.log('Got count for standard iteration: ' + thisIteration.relationships.workitems.meta.total + ' iteration id ' + thisIteration.id);
       }
     }
   }

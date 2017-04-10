@@ -87,13 +87,24 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   getAndfilterIterations() {
     if (this.takeFromInput) {
-      this.allIterations = this.iterations;
+      // do not display the root iteration on the iteration panel.
+      for (let i=0; i<this.iterations.length; i++) {
+        if (!this.iterationService.isRootIteration(this.iterations[i])) {
+          this.allIterations.push(this.iterations[i]);
+        }
+      }
       this.clusterIterations();
     } else {
       this.iterationService.getIterations()
       .subscribe((iterations) => {
-          this.allIterations = iterations;
-          this.clusterIterations();
+        this.allIterations = [];
+        // do not display the root iteration on the iteration panel.
+        for (let i=0; i<iterations.length; i++) {
+          if (!this.iterationService.isRootIteration(iterations[i])) {
+            this.allIterations.push(iterations[i]);
+          }
+        }
+        this.clusterIterations();
       },
       (e) => {
         console.log('Some error has occured', e);
@@ -152,6 +163,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.iterationService.getIterations().first().subscribe((updatedIterations:IterationModel[]) => {
       // updating the counts from the response. May not the best solution on performance right now.
       updatedIterations.forEach((thisIteration:IterationModel) => {
+        console.log(thisIteration);
         for (let i=0; i<this.iterations.length; i++) {
           if (this.iterations[i].id === thisIteration.id) {
             this.iterations[i].relationships.workitems.meta.total = thisIteration.relationships.workitems.meta.total;

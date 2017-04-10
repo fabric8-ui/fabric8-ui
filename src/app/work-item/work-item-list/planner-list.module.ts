@@ -50,7 +50,7 @@ if (process.env.ENV == 'inmemory') {
     Logger,
     {
       provide: HttpService,
-      useClass: MockHttp
+      useExisting: MockHttp
     }
   ];
 } else {

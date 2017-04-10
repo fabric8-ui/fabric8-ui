@@ -1,16 +1,16 @@
 import { GlobalSettings } from '../shared/globals';
 
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-
+import { Headers } from '@angular/http';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 
 import { cloneDeep } from 'lodash';
 import { Broadcaster, Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
-
 import { Space, Spaces } from 'ngx-fabric8-wit';
+
+import { HttpService } from './../shared/http-service';
 import { IterationModel } from '../models/iteration.model';
 import { MockHttp } from '../shared/mock-http';
 
@@ -20,9 +20,11 @@ export class IterationService {
   private headers = new Headers({'Content-Type': 'application/json'});
   private _currentSpace;
 
+  private selfId;
+
   constructor(
       private logger: Logger,
-      private http: Http,
+      private http: HttpService,
       private auth: AuthenticationService,
       private globalSettings: GlobalSettings,
       private broadcaster: Broadcaster,
@@ -32,12 +34,23 @@ export class IterationService {
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
      }
+    this.selfId = this.createId();
+    this.logger.log('Launching IterationService instance id ' + this.selfId);
+  }
+
+  createId(): string {
+    let id = '';
+    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 5; i++)
+      id += possible.charAt(Math.floor(Math.random() * possible.length));
+    console.log('Created new id ' + id);
+    return id;
   }
 
   /**
    * getIteration - We call this service method to fetch
    * @param iterationUrl - The url to get all the iteration
-   * @return Promise of IterationModel[] - Array of iterations
+   * @return Promise of IterationModel[] - Array of iterations.
    */
   getIterations(): Observable<IterationModel[]> {
     // get the current iteration url from the space service
@@ -77,7 +90,7 @@ export class IterationService {
    * @return new item
    */
   createIteration(iteration: IterationModel, parentIteration: IterationModel): Observable<IterationModel> {
-    console.log('create iteration service');
+    console.log('Create on iteration service.');
     let iterationsUrl;
     if (parentIteration) {
       iterationsUrl = parentIteration.links.self;
@@ -125,7 +138,7 @@ export class IterationService {
    * @return updated iteration's reference from the list
    */
   updateIteration(iteration: IterationModel): Observable<IterationModel> {
-    console.log('update iteration service');
+    console.log('Update on iteration service.');
     return this.http
       .patch(iteration.links.self, { data: iteration }, { headers: this.headers })
       .map (response => {
@@ -156,10 +169,17 @@ export class IterationService {
       });
   }
 
+  isRootIteration(iteration: IterationModel): boolean {
+    if (iteration.attributes.parent_path==='/')
+      return true;
+    else
+      return false;
+  }
+
   getRootIteration(): Observable<IterationModel> {
     return this.getIterations().first().map((resultIterations:IterationModel[]) => {
       for (let i=0; i<resultIterations.length; i++) {
-        if (resultIterations[i].attributes.parent_path==='/')
+        if (this.isRootIteration(resultIterations[i]))
           return resultIterations[i];
       }
     });
@@ -171,13 +191,12 @@ export class IterationService {
       return this.http.get(iterationLink)
         .map(iterationresp => iterationresp.json().data);
     } else {
-      return Observable.of(iteration);
+      return Observable.of(undefined);
     }
   }
 
   getWorkItemCountInIteration(iteration: any): Observable<number> {
     return this.getIteration({ data: iteration }).first().map((resultIteration:IterationModel) => {
-      console.log(resultIteration);
       return resultIteration.relationships.workitems.meta.total;
     });
   }
