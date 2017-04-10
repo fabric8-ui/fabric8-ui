@@ -105,11 +105,13 @@
           <p class="link-list-type-header">{{linkDict.linkName}}</p>
           <ul class="padding-left-0">
             <li *ngFor='let link of linkDict.links'
-              (click)="onDetail(link, workItem)"
               class="link-list">
-              <span class="link-title" [id]="link.id + '-text'">
-                {{link.relationalData.source.id == workItem.id ? link.relationalData.target.title : link.relationalData.source.title}}
-              </span>
+              <a [routerLink]="['..', getLinkId(link, workItem.id)]"
+                 [queryParams]="existingQueryParams" >
+                <span class="link-title" [id]="link.id + '-text'">
+                  {{link.relationalData.source.id == workItem.id ? link.relationalData.target.title : link.relationalData.source.title}}
+                </span>
+              </a>
               <!--<span id="linkSWIstate_{{counterlink}}">
                 {{link.relationalData.source.id == workItem.id ? link.relationalData.target.state : link.relationalData.source.state}}
               </span>-->

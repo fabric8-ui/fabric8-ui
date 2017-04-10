@@ -1,5 +1,5 @@
-import { Component, DoCheck, OnInit, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, DoCheck, OnInit, Input, OnChanges, SimpleChanges, ViewChild, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Http } from '@angular/http';
 import { cloneDeep, trimEnd } from 'lodash';
 
@@ -17,7 +17,7 @@ import { WorkItemService } from './../../work-item.service';
   styleUrls: ['./work-item-link.component.scss'],
   // styles:['.completer-input {width:100%;float:left;};.completer-dropdown-holder {width:100%;float:left;}']
 })
-export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
+export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck, OnDestroy {
   @Input() workItem: WorkItem;
   @Input() loggedIn: Boolean;
   @ViewChild('searchBox') searchBox: any;
@@ -37,16 +37,22 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
   searchNotAllowedIds: string[] = [];
   prevWItem: WorkItem | null = null;
   selectedTab: string | null = null;
+
+  private eventListeners: any[] = [];
+  private existingQueryParams: Object = {};
+
   // showLinksList : Boolean = false;
   constructor (
     private workItemService: WorkItemService,
     private router: Router,
+    private route: ActivatedRoute,
     private broadcaster: Broadcaster,
     http: Http
   ){}
 
   ngOnInit() {
     this.loadLinkTypes();
+    this.listenToEvents();
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -67,6 +73,11 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
       this.selectedLinkType = false;
     }
     this.prevWItem = cloneDeep(this.workItem);
+  }
+
+  ngOnDestroy() {
+    console.log('Destroying all the listeners in wi link component');
+    this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
   createLinkObject(workItemId: string, linkWorkItemId: string, linkId: string, linkType: string) : void {
@@ -193,12 +204,17 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
     this.showLinkCreator = !this.showLinkCreator;
   }
 
-  onDetail(links: Link, workItem: WorkItem): void {
+  onDetailUrl(links: Link, workItem: WorkItem): void {
     let workItemId = links['relationships']['target']['data']['id'];
     if (links['relationships']['target']['data']['id'] == workItem['id']){
       workItemId = links['relationships']['source']['data']['id'];
     }
     this.router.navigateByUrl(trimEnd(this.router.url.split('detail')[0], '/') + '/detail/' + workItemId);
+  }
+
+  getLinkId(link, wiId) {
+    return link.relationalData.source.id == wiId ?
+      link.relationalData.target.id : link.relationalData.source.id;
   }
 
   linkSearchWorkItem(term: any, event: any) {
@@ -287,5 +303,13 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck {
     this.selectedTab = linkTypeName;
     this.resetSearchData();
     this.toggleLinkComponent(true);
+  }
+
+  listenToEvents() {
+    this.eventListeners.push(
+      this.route.queryParams.subscribe((params) => {
+        this.existingQueryParams = params;
+      })
+    );
   }
 }
