@@ -37,7 +37,7 @@
                     </div>
                   </div>
                   <div [dragula]='"first-bag"' class="card-wrapper">
-                    <div class="board-card card-pf card-pf-view card-pf-view-select card-pf-view-single-select" [class.active]="isSelected(item)" *ngFor='let item of lane.workItems' routerLink="./detail/{{item.id}}" [attr.data-id]="item.id"
+                    <div class="board-card flex-container in-column-direction flex-grow-1" *ngFor='let item of lane.workItems' [attr.data-id]="item.id"
                          (mousedown)="getWI(item)" (touchstart)="getWI(item)">
                       <div class="row-wrapper">
                         <div class="">
@@ -51,7 +51,7 @@
                           <ul class="dropdown-menu-right" aria-labelledby="dropdownKebabRight" dropdownMenu>
                             <li><a class="workItemList_Iteration" (click)="associateIterationModal.open($event)">Associate with Iteration...</a></li>
                             <li role="presentation" class="divider"></li>
-                            <li><a [routerLink]="['./detail/' + item.id]" class="workItemList_Open" (click)="openDetail($event)">Open</a></li>
+                            <li><a class="workItemList_Open" [routerLink]="['./detail/' + item.id]" [queryParams]="existingQueryParams">Open</a></li>
                             <li><a class="workItemList_Delete" (click)="confirmDelete($event)">Delete</a></li>
                             <li><a class="workItemList_Backlog" (click)="onMoveToBacklog($event)">Move to Backlog</a></li>
                           </ul>
@@ -59,7 +59,9 @@
                       </div>
                       <div class="row-wrapper">
                         <div class="">
-                          <p class="multiline-truncation">{{ item.attributes['system.title'] }}</p>
+                          <a [routerLink]="['./detail/' + item.id]" [queryParams]="existingQueryParams" >
+                            <p class="multiline-truncation">{{ item.attributes['system.title'] }}</p>
+                          </a>
                         </div>
                         <div class="user-avatar">
                           <img
