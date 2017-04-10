@@ -54,7 +54,7 @@
           </div>
           <div class="iteration-status display-flex">
             <div class="flex-1">
-              <span>{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}</span>
+              <span><span *ngIf="iteration.attributes.startAt">{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}</span>&nbsp;</span>
               <span class="iteration-count">
                 <strong>
                   {{iteration.relationships?.workitems?.meta?.closed}} of {{iteration.relationships?.workitems?.meta?.total}}

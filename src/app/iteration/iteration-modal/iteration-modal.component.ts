@@ -361,6 +361,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       } else {
         this.validationError = true;
       }
+      console.log(this.iteration);
     }
 
     removeError() {
