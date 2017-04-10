@@ -59,7 +59,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[IterationComponent] New Space selected: ' + space.attributes.name);
-        console.log(space);
         this.editEnabled = true;
         this.getAndfilterIterations();
       } else {
@@ -75,7 +74,13 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges() {
     if (this.takeFromInput) {
-      this.allIterations = this.iterations;
+      // do not display the root iteration on the iteration panel.
+      this.allIterations = [];
+      for (let i=0; i<this.iterations.length; i++) {
+        if (!this.iterationService.isRootIteration(this.iterations[i])) {
+          this.allIterations.push(this.iterations[i]);
+        }
+      }
       this.clusterIterations();
     }
   }
@@ -88,6 +93,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   getAndfilterIterations() {
     if (this.takeFromInput) {
       // do not display the root iteration on the iteration panel.
+      this.allIterations = [];
       for (let i=0; i<this.iterations.length; i++) {
         if (!this.iterationService.isRootIteration(this.iterations[i])) {
           this.allIterations.push(this.iterations[i]);
@@ -96,19 +102,19 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       this.clusterIterations();
     } else {
       this.iterationService.getIterations()
-      .subscribe((iterations) => {
-        this.allIterations = [];
-        // do not display the root iteration on the iteration panel.
-        for (let i=0; i<iterations.length; i++) {
-          if (!this.iterationService.isRootIteration(iterations[i])) {
-            this.allIterations.push(iterations[i]);
+        .subscribe((iterations) => {
+          // do not display the root iteration on the iteration panel.
+          this.allIterations = [];
+          for (let i=0; i<iterations.length; i++) {
+            if (!this.iterationService.isRootIteration(iterations[i])) {
+              this.allIterations.push(iterations[i]);
+            }
           }
-        }
-        this.clusterIterations();
-      },
-      (e) => {
-        console.log('Some error has occured', e);
-      });
+          this.clusterIterations();
+        },
+        (e) => {
+          console.log('Some error has occured', e);
+        });
     }
   }
 

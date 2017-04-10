@@ -383,7 +383,6 @@ export class MockDataService {
 
   //areas
   public getAllAreas(): any {
-    console.log('Area - ', this.areas);
     return this.areas;
   }
 

@@ -59,13 +59,14 @@ export class MockHttp extends HttpService {
           params[item[0]] = decodeURIComponent(item[1]);
         }
       });
-      // cut off first path element
+      // cut off first path element      
       var result = {
         path: a['pathname'].replace(/^\/[^\/]+\//, '/'),
         host: a['host'],
         port: a['port'],
         params: params
       };
+        
       // parse extra paths based on resource
       if (result.path.indexOf('/workitems/') == 0) {
         result['extraPath'] = result.path.replace(/^\/workitems\//, '');
@@ -79,27 +80,24 @@ export class MockHttp extends HttpService {
         result['extraPath'] = result.path.replace(/^\/workitemtypes\//, '');
         result['path'] = '/workitemtypes';
       }
-
       if (result.path.indexOf('/user/') == 0) {
         result['extraPath'] = result.path.replace(/^\/user\//, '');
         result['path'] = '/user';
       }
-
       if (result.path.indexOf('/iterations/') == 0) {
         result['extraPath'] = result.path.replace(/^\/iterations\//, '');
         result['path'] = '/iterations';
       }
-
       if (result.path.indexOf('/areas/') == 0) {
         result['extraPath'] = result.path.replace(/^\/areas\//, '');
         result['path'] = '/areas';
       }
-
       // if request hat a /space prefix, note the space id, the re-parse the extra path
+      console.log(result.path);
       if (result.path.indexOf('/spaces/') == 0) {
         console.log('Space prefix detected, reparsing url..');
         var spaceId = result.path.split('/')[2];
-        var newUrlBase = 'http://mock.service/api/' + result.path.replace(/^\/spaces\/[^\/]+\//, '');
+        var newUrlBase = url.replace(/\/spaces\/[^\/]+\//, '/');
         console.log('Reparsing with url ' + newUrlBase);
         // Recurse to parse sub-path
         var newResult = this.parseURL(newUrlBase);
@@ -184,7 +182,7 @@ export class MockHttp extends HttpService {
         this.logger.error('GET request failed with request url ' + url);
         return this.createResponse(url.toString(), 500, 'error', {});
       }
-      this.logger.log('GET request at ' + path.path + ' url=' + url.toString() + ' params=' + path.params.toString());
+      this.logger.log('GET request at ' + path.path + ' url=' + url.toString() + ' params=' + JSON.stringify(path.params));
       if (path.extraPath) {
         this.logger.log ('GET request with extraPath at ' + path.extraPath + ' url= ' + url.toString() + ' params=' + path.params.toString());
       }
