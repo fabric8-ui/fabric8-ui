@@ -115,15 +115,17 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       type: 'iterations'
     } as IterationModel;
 
-    let today = moment();
-    this.startDate = { date: { year: today.format('YYYY'), month: today.format('M'), day: today.format('D') } };
-    let inaweek = moment().add(7, 'd');
-    this.endDate = { date: { year: inaweek.format('YYYY'), month: inaweek.format('M'), day: inaweek.format('D') } };
+    let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
+    let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
+    let aDayBefore = moment().subtract(1, 'days');
+    let aDayBeforeDate = { date: { year: aDayBefore.format('YYYY'), month: aDayBefore.format('M'), day: aDayBefore.format('D') }} as any;
+    startDatePickerComponentCopy['disableUntil'] = aDayBeforeDate.date;
+    endDatePickerComponentCopy['disableUntil'] = aDayBeforeDate.date;
+    startDatePickerComponentCopy['componentDisabled'] = false;
+    this.startDatePickerOptions = startDatePickerComponentCopy;
+    this.endDatePickerOptions = endDatePickerComponentCopy;
     this.validationError = false;
     this.spaceError = false;
-    let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
-    startDatePickerComponentCopy.componentDisabled = false;
-    this.startDatePickerOptions = startDatePickerComponentCopy;
     this.selectedParentIterationName = '';
     this.filteredIterations = [];
     this.selectedParentIteration = null;
@@ -151,16 +153,6 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.submitBtnTxt = 'Create';
       this.modalTitle = 'Create Iteration';
       this.iterationSearch.nativeElement.setAttribute('placeholder', 'None');
-      let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
-      let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
-      let aDayBefore = moment().subtract(1, 'days');
-      this.startDate = { date: { year: aDayBefore.format('YYYY'), month: aDayBefore.format('M'), day: aDayBefore.format('D') } };
-      startDatePickerComponentCopy['disableUntil'] = this.startDate.date;
-      endDatePickerComponentCopy['disableUntil'] = this.startDate.date;
-      this.startDatePickerOptions = startDatePickerComponentCopy;
-      this.endDatePickerOptions = endDatePickerComponentCopy;
-      this.startDate = '';
-      this.endDate = '';
     }
     if (this.modalType == 'start') {
       this.submitBtnTxt = 'Start';
@@ -173,21 +165,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.iterationSearchDisable = true;
       this.selectedParentIterationName = iteration.attributes.resolved_parent_path;
 
-      if (typeof iteration.attributes.startAt !== 'undefined') {
-        let startAt = moment(iteration.attributes.startAt);
-        let date = { year: startAt.format('YYYY'), month: startAt.format('M'), day: startAt.format('D') } as any;
-        let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
-        endDatePickerComponentCopy['disableUntil'] = date;
-        this.endDatePickerOptions = endDatePickerComponentCopy;
-      }
-      else {
-        let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
-        endDatePickerComponentCopy['disableUntil'] = this.startDate.date;
-        this.endDatePickerOptions = endDatePickerComponentCopy;
-      }
       if (iteration.attributes.state === 'start') {
         let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
-        startDatePickerComponentCopy.componentDisabled = true;
+        startDatePickerComponentCopy['componentDisabled'] = true;
         this.startDatePickerOptions = startDatePickerComponentCopy;
       }
     }
@@ -232,22 +212,16 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     // Format 2016-11-29T23:18:14Z
     this.startDate = { date: event.date };
     this.iteration.attributes.startAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T00:00:00Z';
-    // console.log(this.iteration.attributes.startAt);
 
     let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
     endDatePickerComponentCopy['disableUntil'] = event.date;
     this.endDatePickerOptions = endDatePickerComponentCopy;
-
-    // Set default end date in a week
-    let inaweek = moment(event.jsdate).add(7, 'd');
-    this.endDate = { date: { year: inaweek.format('YYYY'), month: inaweek.format('M'), day: inaweek.format('D') } };
   }
 
   onEndDateChanged(event: IMyDateModel) {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
     this.endDate = { date: event.date };
     this.iteration.attributes.endAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T00:00:00Z';
-    // console.log(this.iteration.attributes.endAt);
   }
 
   iterationSearchFocus() {
