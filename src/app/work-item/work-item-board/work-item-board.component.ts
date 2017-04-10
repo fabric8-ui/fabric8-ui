@@ -242,6 +242,10 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     this.workItem = _workItem;
   }
 
+  isSelected(wi: WorkItem){
+    return this.workItem == wi;
+  }
+
   onDrop(args) {
     let [el, target, source, sibling] = args;
     target.parentElement.parentElement.classList.remove('active-lane');

@@ -1,4 +1,5 @@
 @import '../../../assets/stylesheets/base';
+@import '../../../assets/stylesheets/shared/layout';
 @import '../../../assets/stylesheets/dragula';
 
 .boardWrapper {
@@ -37,6 +38,13 @@
             background: $color-pf-white;
             padding: rem(15);
             margin: rem(5) 0;
+            @extend .flex-container;
+            @extend .in-column-direction;
+            @extend .flex-grow-1;
+            &.active {
+              border: 2px solid $color-pf-blue-300;
+              box-shadow: none;
+            }
             >div {
               p {
                 margin: 0;
