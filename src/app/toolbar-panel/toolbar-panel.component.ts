@@ -52,7 +52,12 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   eventListeners: any[] = [];
   existingQueryParams: Object = {};
   filterConfig: FilterConfig = {
-      fields: [],
+      fields: [{
+        id: '',
+        title:  '',
+        placeholder: '',
+        type: ''
+      }],
       appliedFilters: [],
       resultsCount: -1, // Hide
       selectedCount: 0,
