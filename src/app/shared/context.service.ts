@@ -10,6 +10,7 @@ import {
   Contexts,
   ContextTypes,
   SpaceService,
+  SpaceNamePipe
 } from 'ngx-fabric8-wit';
 import { Subject } from 'rxjs/Subject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -54,7 +55,8 @@ export class ContextService implements Contexts {
     private userService: UserService,
     private notifications: Notifications,
     private route: ActivatedRoute,
-    private profileService: ProfileService) {
+    private profileService: ProfileService,
+    private spaceNamePipe: SpaceNamePipe) {
 
     this._addRecent = new Subject<Context>();
     // Initialize the default context when the logged in user changes
@@ -260,7 +262,7 @@ export class ContextService implements Contexts {
       } as Context;
       c.type = ContextTypes.BUILTIN.get('space');
       c.path = '/' + c.user.attributes.username + '/' + c.space.attributes.name;
-      c.name = c.space.attributes.name;
+      c.name = this.spaceNamePipe.transform(c.space.attributes.name);
     } else if (val.user) {
       c = {
         'user': val.user,

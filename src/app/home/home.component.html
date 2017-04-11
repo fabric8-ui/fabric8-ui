@@ -20,7 +20,7 @@
               <li *ngFor="let s of spaces.recent | async">
                 <a [routerLink]="['/', s.relationalData.creator.attributes.username, s.attributes.name]">
                   <small>
-                    <span *ngIf="s.relationalData.creator.id !== loggedInUser.id">{{s.relationalData.creator.attributes.username}}/</span><span>{{s.attributes.name}}</span>
+                    <span *ngIf="s.relationalData.creator.id !== loggedInUser.id">{{s.relationalData.creator.attributes.username}}/</span><span>{{s.attributes.name | spaceName}}</span>
                   </small>
                 </a>
               </li>

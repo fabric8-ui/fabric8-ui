@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-xs-12 wizard-step-title">
             <div></div>
-            <h2>Create a new collaboration space</h2>
+            <h2>Create a new space</h2>
             <span (click)="workflow-cancel()" class="glyphicon glyphicon-remove"></span>
           </div>
         </div>
@@ -33,7 +33,7 @@
                       Name '{{name.errors.unique?.requestedName}}'' is already in use as {{name.errors.unique?.existingSpace.relationalData.creator.attributes.username}}/{{name.errors.unique?.existingSpace.attributes.name}}.
                     </div>
                     <div [hidden]="!name.errors.invalid">
-                      Name must contain only letters (upper case or lower case), numbers, underscores (_) or hyphens(-).
+                      Name must contain only letters (upper case or lower case), numbers, spaces, underscores (_) or hyphens(-). It cannot start or end with a space, an underscore or a hyphen.
                     </div>
                   </div>
                 </div>
@@ -76,7 +76,7 @@
       <div class="row">
         <div class="col-xs-12 wizard-step-title">
           <div></div>
-          <h2>Your <strong>{{configurator.space.attributes.name}}</strong> Space is ready! What would you like to do ?
+          <h2>Your <strong>{{configurator.space.attributes.name | spaceName}}</strong> Space is ready! What would you like to do ?
           </h2>
           <span (click)="workflow-cancel()" class="glyphicon glyphicon-remove"></span>
         </div>
@@ -139,7 +139,7 @@
       <div class="row">
         <div class="col-xs-12 wizard-step-tool-bar with-items-in-center">
           <a class="btn btn-default" (click)="workflow.finish()">Take me to the
-            {{configurator.space.attributes.name}} space</a>
+            {{configurator.space.attributes.name | spaceName}} space</a>
         </div>
       </div>
     </footer>

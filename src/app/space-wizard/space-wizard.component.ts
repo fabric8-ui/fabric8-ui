@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Notification, NotificationAction, Notifications, NotificationType } from 'ngx-base';
-import { Space, SpaceAttributes, SpaceService } from 'ngx-fabric8-wit';
+import { Space, SpaceAttributes, SpaceService, SpaceNamePipe } from 'ngx-fabric8-wit';
 import { UserService } from 'ngx-login-client';
 
 import { Observable } from 'rxjs';
@@ -76,7 +76,8 @@ export class SpaceWizardComponent implements OnInit {
     private userService: UserService,
     private workflowFactory: WorkflowFactory,
     loggerFactory: LoggerFactory,
-    private spaceNamespaceService: SpaceNamespaceService) {
+    private spaceNamespaceService: SpaceNamespaceService,
+    private spaceNamePipe: SpaceNamePipe) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, SpaceWizardComponent.instanceCount++);
     if ( logger ) {
       this.log = logger;
@@ -178,7 +179,7 @@ export class SpaceWizardComponent implements OnInit {
     this.log(`createSpace ...`);
     let space = this.configurator.space;
     console.log('Creating space', space);
-    space.attributes.name = space.name;
+    space.attributes.name = space.name.replace(' ', '_');
     this.userService.getUser()
     .switchMap(user => {
       space.relationships[ 'owned-by' ].data.id = user.id;
@@ -198,7 +199,7 @@ export class SpaceWizardComponent implements OnInit {
         type: NotificationType.SUCCESS,
         primaryAction: {
           name: `Open Space`,
-          title: `Open ${createdSpace.attributes.name}`,
+          title: `Open ${this.spaceNamePipe.transform(createdSpace.attributes.name)}`,
           id: 'openSpace'
         } as NotificationAction
       } as Notification);
