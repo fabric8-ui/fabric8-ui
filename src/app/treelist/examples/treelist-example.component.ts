@@ -12,7 +12,7 @@ import {
   TreeNode,
   TREE_ACTIONS,
   IActionMapping,
-} from 'angular-tree-component';
+} from 'angular2-tree-component';
 
 import { Router } from '@angular/router';
 

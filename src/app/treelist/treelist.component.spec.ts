@@ -11,113 +11,140 @@ import { DebugElement } from '@angular/core';
 import { FormsModule }  from '@angular/forms';
 import { By }           from '@angular/platform-browser';
 
-import {
-  TreeModel,
-  TreeModule,
-  TreeVirtualScroll,
-} from 'angular-tree-component';
-
+import { TreeModule } from 'angular2-tree-component';
 import { TreeListComponent } from './treelist.component';
 
-describe('Tree List component - ', () => {
+describe('Treelist component - ', () => {
   let comp: TreeListComponent;
   let fixture: ComponentFixture<TreeListComponent>;
+  let el: DebugElement;
+  let fakeUserList: any[];
+  let fakeWorkItem: any;
+  let fakeWorkItems: any[] = [];
+  let fakeWorkItemsWithChild: any[] = [];
 
-  let nodes: any[];
-  let options = {
-    isExpandedField: 'expanded'
-  };
+  let treeListOptions = {
+    allowDrag: true
+  }
 
   beforeEach(() => {
-    nodes = [{
-      expanded: true,
-      name: 'root expanded',
-      subTitle: 'the root',
-      children: [{
-        name: 'child1',
-        subTitle: 'a good child',
-        hasChildren: false
-      },{
-        name: 'child2',
-        subTitle: 'a bad child',
-        hasChildren: false
-      }]
-    },{
-      name: 'root2',
-      subTitle: 'the second root',
-      children: [{
-        name: 'child2.1',
-        subTitle: 'new and improved',
-        hasChildren: false
-      },{
-        name: 'child2.2',
-        subTitle: 'new and improved2',
-        children: [{
-          name: 'subsub',
-          subTitle: 'subsub',
-          hasChildren: false
-        }]
-      }]
-    }];
+    fakeUserList = [
+      {
+        attributes: {
+          fullName: 'WILCT Example User 0',
+          imageURL: 'https://avatars.githubusercontent.com/u/2410471?v=3'
+        },
+        id: 'wilct-user0'
+      }, {
+        attributes: {
+          fullName: 'WILCT Example User 1',
+          imageURL: 'https://avatars.githubusercontent.com/u/2410472?v=3'
+        },
+        id: 'wilct-user1'
+      }, {
+        attributes: {
+          fullName: 'WILCT Example User 2',
+          imageURL: 'https://avatars.githubusercontent.com/u/2410473?v=3'
+        },
+        id: 'wilct-user2'
+      }
+    ];
+
+    fakeWorkItem = {
+      'attributes': {
+        'system.created_at': null,
+        'system.description': null,
+        'system.remote_item_id': null,
+        'system.state': 'new',
+        'system.title': 'test1',
+        'version': 0
+      },
+      'id': '1',
+      'relationships': {
+        'assignees': {
+          'data': [{
+            'id': 'wilct-user2',
+            'type': 'identities'
+          }]
+        },
+        'baseType': {
+          'data': {
+            'id': 'system.userstory',
+            'type': 'workitemtypes'
+          }
+        },
+        'creator': {
+          'data': {
+            'id': 'wilct-user2',
+            'type': 'identities'
+          }
+        },
+        'comments': {
+          'links': {
+            'self': '',
+            'related': ''
+          }
+        }
+      },
+      'type': 'workitems',
+      'relationalData': {
+        'creator': fakeUserList[0],
+        'assignees': [fakeUserList[2]]
+      }
+    };
+
+    fakeWorkItems.push(Object.assign({}, fakeWorkItem));
+    fakeWorkItemsWithChild.push(Object.assign({}, fakeWorkItem));
+    fakeWorkItemsWithChild[0].children = [ Object.assign({}, fakeWorkItem, { id: '2'}) ];
   });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, TreeModule],
-      declarations: [TreeListComponent],
-      providers: [TreeVirtualScroll, TreeModel]
+      declarations: [TreeListComponent]
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(TreeListComponent);
         comp = fixture.componentInstance;
-        comp.options = options;
-        comp.nodes = nodes;
-        fixture.detectChanges();
       });
   }));
 
-/*
- * Temporarily disabling tests.
- *
- * After upgrading from 2.7.0 to 3.2.4, all tests generate the following exception.
- *
- * ERROR: '[mobx] Encountered an uncaught exception that was thrown by a reaction or observer
- * component, in: 'Reaction[Autorun@175]'
- *
- * This appears related to:
- * https://angular2-tree.readme.io/v2.2.0/discuss/58b936ad759c201900abfdb5
- *
- * Also see:
- * https://github.com/mobxjs/mobx/issues/462
- */
-
-/*
-  it('Should have at least one node', function () {
-    let elements = fixture.debugElement.queryAll(By.css('.tree-node'));
-    expect(elements.length).toBe(2);
+  it('Should have at least one node', () => {
+    comp.nodes = fakeWorkItems;
+    comp.options = treeListOptions;
+    fixture.detectChanges();
+    el = fixture.debugElement.query(By.css('.tree-list'));
+    expect(el).toBeDefined();
   });
 
-  it('Should have collapsed toggle', function () {
-    let elements = fixture.debugElement.queryAll(By.css('.tree-node-collapsed'));
-    expect(elements.length).toBe(2);
+  it('Should not have toggle to expand tree', () => {
+    comp.nodes = fakeWorkItems;
+    comp.options = treeListOptions;
+    fixture.detectChanges();
+    el = fixture.debugElement.query(By.css('.tree-list.tree-node-collapsed'));
+    expect(el).toBeNull();
   });
 
-  it('Should have expanded toggle', function () {
-    let elements = fixture.debugElement.queryAll(By.css('.tree-node-expanded'));
-    expect(elements.length).toBe(2);
+  it('Should have toggle to expand tree', () => {
+    comp.nodes = fakeWorkItemsWithChild;
+    comp.options = treeListOptions;
+    fixture.detectChanges();
+    el = fixture.debugElement.query(By.css('.tree-list.tree-node-collapsed'));
+    expect(el).toBeDefined();
   });
 
-  it('Should expand tree node on click', function () {
-    let elements = fixture.debugElement.queryAll(By.css('.toggle-children-wrapper-collapsed'));
-    expect(elements.length).toBe(2);
+  it('Should expand tree node on click', () => {
+    comp.nodes = fakeWorkItemsWithChild;
+    comp.options = treeListOptions;
+    fixture.detectChanges();
+    el = fixture.debugElement.query(By.css('.tree-list .toggle-children-wrapper-collapsed'));
+    expect(el).toBeDefined();
 
     // Click on the label to open the list
-    elements[0].triggerEventHandler('click', {});
+    el.triggerEventHandler('click', {});
     fixture.detectChanges();
-
-    elements = fixture.debugElement.queryAll(By.css('.toggle-children-wrapper-expanded'));
-    expect(elements.length).toBe(2);
+    el = fixture.debugElement.query(By.css('.tree-list .toggle-children-wrapper-expanded'));
+    expect(el).toBeDefined();
   });
-*/
 });
