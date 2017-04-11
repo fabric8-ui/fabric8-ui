@@ -21,7 +21,7 @@ import {
   ActivatedRoute
 } from '@angular/router';
 
-import { TreeNode } from 'angular-tree-component';
+import { TreeNode } from 'angular2-tree-component';
 
 import { cloneDeep } from 'lodash';
 import { Broadcaster, Logger } from 'ngx-base';
