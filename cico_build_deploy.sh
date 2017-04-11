@@ -8,7 +8,7 @@ set -e
 
 # Export needed vars
 set +x
-for var in BUILD_NUMBER BUILD_URL JENKINS_URL GIT_BRANCH GH_TOKEN NPM_TOKEN; do
+for var in BUILD_NUMBER BUILD_URL JENKINS_URL GIT_BRANCH GH_TOKEN NPM_TOKEN GIT_COMMIT; do
   export $(grep ${var} jenkins-env | xargs)
 done
 export BUILD_TIMESTAMP=`date -u +%Y-%m-%dT%H:%M:%S`+00:00
@@ -56,8 +56,13 @@ if [ $? -eq 0 ]; then
   ## All ok, deploy
   if [ $? -eq 0 ]; then
     echo 'CICO: build OK'
+
+    TAG=$(echo $GIT_COMMIT | cut -c1-6)
+
     docker build -t fabric8-ui-deploy -f Dockerfile.deploy . && \
-    docker tag fabric8-ui-deploy registry.devshift.net/fabric8io/fabric8-ui:latest
+    docker tag fabric8-ui-deploy registry.devshift.net/fabric8io/fabric8-ui:$TAG && \
+    docker push registry.devshift.net/fabric8io/fabric8-ui:$TAG && \
+    docker tag fabric8-ui-deploy registry.devshift.net/fabric8io/fabric8-ui:latest && \
     docker push registry.devshift.net/fabric8io/fabric8-ui:latest
     if [ $? -eq 0 ]; then
       echo 'CICO: image pushed, npmjs published, ready to update deployed app'
