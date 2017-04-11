@@ -13,6 +13,7 @@ import { Space, Spaces } from 'ngx-fabric8-wit';
 import { HttpService } from './../shared/http-service';
 import { IterationModel } from '../models/iteration.model';
 import { MockHttp } from '../shared/mock-http';
+import { HttpService } from './../shared/http-service';
 
 @Injectable()
 export class IterationService {
