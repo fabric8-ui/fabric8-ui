@@ -27,6 +27,7 @@ export class FilterFieldsComponent implements OnInit {
   @Input() config: FilterConfig;
 
   @Output('onAdd') onAdd = new EventEmitter();
+  @Output('onSelectType') onSelecttype = new EventEmitter();
 
   currentField: FilterField;
   currentValue: string;
@@ -92,6 +93,7 @@ export class FilterFieldsComponent implements OnInit {
   selectField(field: FilterField): void {
     this.currentField = field;
     this.currentValue = null;
+    this.onSelecttype.emit(this.currentField);
   }
 
   selectValue(filterQuery: FilterQuery): void {
