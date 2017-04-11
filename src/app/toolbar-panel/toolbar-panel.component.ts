@@ -10,6 +10,7 @@ import { Space, Spaces } from 'ngx-fabric8-wit';
 
 import { AreaModel } from '../models/area.model';
 import { AreaService } from '../area/area.service';
+import { FilterModel } from './../models/filter.model';
 import { FilterService } from '../shared/filter.service';
 import { WorkItemService } from './../work-item/work-item.service';
 import { WorkItemListEntryComponent } from './../work-item/work-item-list/work-item-list-entry/work-item-list-entry.component';
@@ -91,20 +92,22 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     // this.filterService.getFilters().then(response => {
     //   console.log(response);
     // });
-    // this.setFilterConfiguration();
 
     // we need to get the wi types for the types dropdown on the board item
     // even when there is no active space change (initial population).
     this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[FilterPanelComponent] New Space selected: ' + space.attributes.name);
-        // this.setFilterConfiguration();
         this.editEnabled = true;
       } else {
         console.log('[FilterPanelComponent] Space deselected.');
         this.editEnabled = false;
       }
     });
+    this.eventListeners.push(
+      this.filterService.getFilters()
+        .subscribe(filters => this.setFilterTypes(filters))
+    );
   }
 
   ngAfterViewInit(): void {
@@ -112,13 +115,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if ((changes.hasOwnProperty('loggedInUser') && JSON.stringify(changes.loggedInUser.previousValue) !== JSON.stringify(changes.loggedInUser.currentValue)) ||
-        (changes.hasOwnProperty('areas') && JSON.stringify(changes.areas.previousValue) !== JSON.stringify(changes.areas.currentValue))) {
-      if (this.areas.length && Object.keys(this.loggedInUser).length) {
-        this.setFilterConfiguration();
-      }
-    }
-
     if (this.wiTypes.length) {
       this.currentBoardType = this.wiTypes[0];
     } else {
@@ -129,6 +125,18 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   ngOnDestroy() {
     this.eventListeners.map((e) => e.unsubscribe());
   }
+
+  setFilterTypes(filters: FilterModel[]) {
+    this.filterConfig.fields = filters.map(filter => {
+      return {
+        id: filter.attributes.type,
+        title: filter.attributes.title,
+        placeholder: filter.attributes.description,
+        type: 'select',
+        queries: []
+      };
+    });
+  };
 
   setFilterConfiguration() {
     this.toolbarConfig.filterConfig.appliedFilters = [];
@@ -300,7 +308,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     this.showDetailEvent.emit();
   }
   selectFilterType(data) {
-    console.log(data);
+    console.log(data.id);
   }
 
   listenToEvents() {
