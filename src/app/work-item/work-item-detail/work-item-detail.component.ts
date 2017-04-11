@@ -454,9 +454,11 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       }
     }
     this.workItem.attributes['system.state'] = option;
-    let payload = cloneDeep(this.workItemPayload);
-    payload.attributes['system.state'] = option;
-    this.save(payload);
+    if(this.workItem.id) {
+      let payload = cloneDeep(this.workItemPayload);
+      payload.attributes['system.state'] = option;
+      this.save(payload);
+    }
   }
 
   // onChangeType(type: any): void {
@@ -696,19 +698,32 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  assignUser(userId: any): void {
-    let payload = cloneDeep(this.workItemPayload);
-    payload = Object.assign(payload, {
-      relationships : {
-        assignees: {
-          data: [{
-            id: userId,
-            type: 'identities'
-          }]
+  assignUser(user: User): void {
+    if(this.workItem.id) {
+      let payload = cloneDeep(this.workItemPayload);
+      payload = Object.assign(payload, {
+        relationships : {
+          assignees: {
+            data: [{
+              id: user.id,
+              type: 'identities'
+            }]
+          }
         }
-      }
-    });
-    this.save(payload);
+      });
+      this.save(payload);
+    } else {
+      let assignee = [{
+        attributes: {
+          fullName: user.attributes.fullName
+        },
+        id: user.id,
+        type: 'identities'
+      } as User];
+      this.workItem.relationships.assignees = {
+        data : assignee
+      };
+    }
     this.searchAssignee = false;
   }
 
@@ -745,46 +760,62 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   assignIteration(): void {
-    // Send out an iteration change event
-    let newIteration = this.selectedIteration?this.selectedIteration.id:undefined;
-    let currenIterationID = this.workItem.relationships.iteration.data ? this.workItem.relationships.iteration.data.id : 0;
-    this.broadcaster.broadcast('associate_iteration', {
-      workItemId: this.workItem.id,
-      currentIterationId: currenIterationID,
-      futureIterationId: newIteration
-    });
+    if(this.workItem.id) {
+      // Send out an iteration change event
+      let newIteration = this.selectedIteration?this.selectedIteration.id:undefined;
+      let currenIterationID = this.workItem.relationships.iteration.data ? this.workItem.relationships.iteration.data.id : 0;
+      this.broadcaster.broadcast('associate_iteration', {
+        workItemId: this.workItem.id,
+        currentIterationId: currenIterationID,
+        futureIterationId: newIteration
+      });
 
-    // If already closed iteration
-    if (this.workItem.attributes['system.state'] == 'closed') {
-      this.broadcaster.broadcast('wi_change_state_it', [{
-        iterationId: currenIterationID,
-        closedItem: -1
-      }, {
-        iterationId: newIteration,
-        closedItem: +1
-      }]);
-    }
+      // If already closed iteration
+      if (this.workItem.attributes['system.state'] == 'closed') {
+        this.broadcaster.broadcast('wi_change_state_it', [{
+          iterationId: currenIterationID,
+          closedItem: -1
+        }, {
+          iterationId: newIteration,
+          closedItem: +1
+        }]);
+      }
 
-    let payload = cloneDeep(this.workItemPayload);
-    if (newIteration) {
-      payload = Object.assign(payload, {
-        relationships : {
-          iteration: {
-            data: {
-              id: this.selectedIteration.id,
-              type: 'iteration'
+      let payload = cloneDeep(this.workItemPayload);
+      if (newIteration) {
+        payload = Object.assign(payload, {
+          relationships : {
+            iteration: {
+              data: {
+                id: this.selectedIteration.id,
+                type: 'iteration'
+              }
             }
           }
-        }
-      });
+        });
+      } else {
+        payload = Object.assign(payload, {
+          relationships : {
+            iteration: { }
+          }
+        });
+      }
+      this.save(payload);
     } else {
-      payload = Object.assign(payload, {
-        relationships : {
-          iteration: { }
-        }
-      });
+      //creating a new work item - save the user input
+      let iteration = {
+        attributes: {
+          name: this.selectedIteration.attributes.name
+        },
+        id: this.selectedIteration.id,
+        type: 'iteration'
+      } as IterationModel;
+
+      this.workItem.relationships.iteration = {
+        data: iteration
+      };
     }
-    this.save(payload);
+
     this.searchIteration = false;
   }
 
@@ -816,18 +847,33 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
   //set an area
   setArea(): void {
-    let payload = cloneDeep(this.workItemPayload);
-    payload = Object.assign(payload, {
-      relationships : {
-        area: {
-          data: {
-            id: this.selectedArea.id,
-            type: 'area'
+    if(this.workItem.id) {
+      let payload = cloneDeep(this.workItemPayload);
+      payload = Object.assign(payload, {
+        relationships : {
+          area: {
+            data: {
+              id: this.selectedArea.id,
+              type: 'area'
+            }
           }
         }
-      }
-    });
-    this.save(payload);
+      });
+      this.save(payload);
+    } else {
+      let area = {
+        attributes: {
+          name: this.selectedArea.attributes.name,
+        },
+        id: this.selectedArea.id,
+        type: 'area'
+      } as AreaModel;
+
+      this.workItem.relationships.area = {
+        data : area
+      };
+    }
+
     this.searchArea = false;
   }
 
