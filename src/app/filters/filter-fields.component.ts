@@ -93,7 +93,12 @@ export class FilterFieldsComponent implements OnInit {
   selectField(field: FilterField): void {
     this.currentField = field;
     this.currentValue = null;
-    this.onSelecttype.emit(this.currentField);
+  }
+
+  emitSelectedField() {
+    if (this.currentField) {
+      this.onSelecttype.emit(this.currentField);
+    }
   }
 
   selectValue(filterQuery: FilterQuery): void {
