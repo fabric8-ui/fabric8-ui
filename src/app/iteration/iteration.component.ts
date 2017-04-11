@@ -169,7 +169,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.iterationService.getIterations().first().subscribe((updatedIterations:IterationModel[]) => {
       // updating the counts from the response. May not the best solution on performance right now.
       updatedIterations.forEach((thisIteration:IterationModel) => {
-        console.log(thisIteration);
         for (let i=0; i<this.iterations.length; i++) {
           if (this.iterations[i].id === thisIteration.id) {
             this.iterations[i].relationships.workitems.meta.total = thisIteration.relationships.workitems.meta.total;
