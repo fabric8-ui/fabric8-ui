@@ -1,14 +1,31 @@
 #!/usr/bin/groovy
 def ci (){
-    stage('build'){
+    stage('build planner npm'){
         sh 'npm install'
+        sh 'npm run build'
     }
+
     stage('unit test'){
         sh './run_unit_tests.sh'
     }
-    // stage('functional test'){
-    //     sh './run_functional_tests.sh'
-    // }
+}
+
+def ciBuildDownstreamProject(project){
+    stage('build fabric8-ui npm'){
+        return buildSnapshotFabric8UI{
+            pullRequestProject = project
+        }
+    }
+}
+
+def buildImage(imageName){
+    stage('build snapshot image'){
+        sh "cd fabric8-ui && docker build -t ${imageName} -f Dockerfile.deploy ."
+    }
+
+    stage('push snapshot image'){
+        sh "cd fabric8-ui && docker push ${imageName}"
+    }
 }
 
 def cd (b){
@@ -24,10 +41,6 @@ def cd (b){
     stage('unit test'){
         sh './run_unit_tests.sh'
     }
-
-    // stage('functional test'){
-    //     sh './run_functional_tests.sh'
-    // }
 
     stage('release'){
         def published = npmRelease{
