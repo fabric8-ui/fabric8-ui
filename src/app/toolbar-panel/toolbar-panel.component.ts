@@ -299,6 +299,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     event.stopPropagation();
     this.showDetailEvent.emit();
   }
+  selectFilterType(data) {
+    console.log(data);
+  }
 
   listenToEvents() {
     this.eventListeners.push(

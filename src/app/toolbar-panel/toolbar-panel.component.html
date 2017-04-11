@@ -4,7 +4,8 @@
         [config]="toolbarConfig"
         [actionsTemplate]="actionsTemplate"
         [viewsTemplate]="addTemplate"
-        (onFilterChange)="filterChange($event)">
+        (onFilterChange)="filterChange($event)"
+        (onFilterTypeChange)="selectFilterType($event)">
       <template #actions>
         <div *ngIf="context==='boardview' && (wiTypes.length!=0)" dropdown class="card-pf-time-frame-filter board-type-dropdown">
           <span class="currently-showing">Currently showing:</span>
