@@ -18,8 +18,7 @@
         let-node="node"
         let-index="index"
         let-templates="templates">
-      <div *ngIf="node.isHidden !== true"
-          class="tree-node tree-node-level-{{ node.level }}"
+      <div class="tree-node tree-node-level-{{ node.level }}"
           [ngClass]="node.getClass()"
           [class.tree-node-expanded]="node.isExpanded && node.hasChildren"
           [class.tree-node-collapsed]="node.isCollapsed && node.hasChildren"
