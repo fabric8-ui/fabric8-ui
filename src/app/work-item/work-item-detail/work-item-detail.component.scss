@@ -5,12 +5,12 @@
   background: $color-pf-white;
   position: fixed;
   left: auto;
-  top: em(34);
+  top: 80px;
   right: 0;
   bottom: 0;
   width: 50%;
   min-width: em(250);
-  z-index: 1050; /* any lower value will clash with ngx-modal */
+  // z-index: 0;
   padding: em(20) 0 em(20) em(40);
   border-left: 1px solid darken($color-pf-white, 20%);
   overflow-y: scroll;
