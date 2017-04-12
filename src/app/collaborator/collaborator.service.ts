@@ -1,9 +1,9 @@
-import { User, UserService } from 'ngx-login-client';
-import { Spaces } from 'ngx-fabric8-wit';
-import { HttpService } from './../shared/http-service';
-import { Logger } from 'ngx-base';
 import { Injectable, Component, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { User, UserService } from 'ngx-login-client';
+import { Spaces } from 'ngx-fabric8-wit';
+import { Logger } from 'ngx-base';
+import { HttpService } from './../shared/http-service';
 
 
 @Injectable()
