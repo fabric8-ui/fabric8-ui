@@ -11,6 +11,7 @@ import { Space, Spaces } from 'ngx-fabric8-wit';
 import { AreaModel } from '../models/area.model';
 import { AreaService } from '../area/area.service';
 import { FilterModel } from './../models/filter.model';
+import { CollaboratorService } from './../collaborator/collaborator.service';
 import { FilterService } from '../shared/filter.service';
 import { WorkItemService } from './../work-item/work-item.service';
 import { WorkItemListEntryComponent } from './../work-item/work-item-list/work-item-list-entry/work-item-list-entry.component';
@@ -79,6 +80,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     private route: ActivatedRoute,
     private broadcaster: Broadcaster,
     private areaService: AreaService,
+    private collaboratorService: CollaboratorService,
     private filterService: FilterService,
     private workItemService: WorkItemService,
     private auth: AuthenticationService,
@@ -129,7 +131,10 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   setFilterTypes(filters: FilterModel[]) {
     this.filterConfig.fields = filters.map(filter => {
       return {
-        id: filter.attributes.type,
+        id: filter.attributes.query.substring(
+          filter.attributes.query.lastIndexOf("[")+1,
+          filter.attributes.query.lastIndexOf("]")
+        ),
         title: filter.attributes.title,
         placeholder: filter.attributes.description,
         type: 'select',
@@ -307,8 +312,34 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     event.stopPropagation();
     this.showDetailEvent.emit();
   }
+
+  getFilterMap() {
+    return {
+      area: {
+        datasource: this.areaService.getAreas(),
+        datamap: (areas) => areas.map(area => {return {id: area.id, value: area.attributes.name}})
+      },
+      assignee: {
+        datasource: this.collaboratorService.getCollaborators(),
+        datamap: (users) => users.map(user => {return {id: user.id, value: user.attributes.username, imageUrl: user.attributes.imageURL}})
+      },
+      workitemtype: {
+        datasource: this.workItemService.getWorkItemTypes(),
+        datamap: (witypes) => witypes.map(witype => {return {id: witype.id, value: witype.attributes.name, iconClass: witype.attributes.icon}})
+      }
+    }
+  }
+
   selectFilterType(data) {
-    console.log(data.id);
+    const filterMap = this.getFilterMap();
+    if (Object.keys(filterMap).indexOf(data.id) > -1) {
+      const index = this.filterConfig.fields.findIndex(i => i.id === data.id);
+      if (this.filterConfig.fields[index].queries.length === 0) {
+        filterMap[data.id].datasource.subscribe(resp => {
+          this.filterConfig.fields[index].queries = filterMap[data.id].datamap(resp);
+        })
+      }
+    }
   }
 
   listenToEvents() {
