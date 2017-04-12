@@ -1,3 +1,4 @@
+import { AlmSearchHighlightModule } from './src/app/pipes/alm-search-highlight.module';
 import { NotificationModule } from './src/app/notification/notification.module';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -24,14 +25,14 @@ import { ArrayCount } from './src/app/pipes/arrayCount.pipe';
 
 @NgModule({
   imports: [
-    FormsModule
+    FormsModule,
+    AlmSearchHighlightModule
   ],
   declarations: [
     AlmArrayFilter,
     AlmAvatarSize,
     AlmLinkTarget,
     AlmMomentTime,
-    AlmSearchHighlight,
     AlmTrim,
     ArrayCount
   ],
