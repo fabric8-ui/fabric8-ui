@@ -367,6 +367,13 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
             this.changeLane(data[0].oldState, data[0].newState, data[0].workItem);
       })
     );
+
+    this.eventListeners.push(
+      this.broadcaster.on<string>('detail_close')
+      .subscribe(()=>{
+        this.workItem = <WorkItem>{};
+      })
+    );
   }
 
 }

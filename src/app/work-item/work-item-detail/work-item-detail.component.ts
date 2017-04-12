@@ -613,6 +613,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     // So wait for 400 ms
     setTimeout(() => {
       this.router.navigateByUrl(trimEnd(this.router.url.split('detail')[0], '/'));
+      this.broadcaster.broadcast('detail_close', {});
     }, 400);
   }
 
