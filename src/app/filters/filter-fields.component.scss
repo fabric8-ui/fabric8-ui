@@ -10,6 +10,19 @@
     padding-left: 0;
     width: 275px;
   }
+  .btn-default {
+    font-size: 12px;
+  }
+  .typeahead-input-container {
+    position: relative;
+    padding-right: 0px;
+    .caret {
+      position: absolute;
+      z-index: 2;
+      top: 10px;
+      right: 5px;
+    }
+  }
 }
 .filter-select {
   .btn-default {

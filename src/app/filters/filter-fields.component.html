@@ -14,7 +14,7 @@
         </li>
       </ul>
     </div>
-    <div *ngIf="currentField.type === 'text' || currentField === 'default'">
+    <div *ngIf="!currentField?.type || currentField.type === 'text' || currentField === 'default'">
       <input class="form-control" type="{{currentField.type}}" [(ngModel)]="currentValue"
              placeholder="{{currentField.placeholder}}"
              (keypress)="onValueKeyPress($event)"/>
@@ -25,7 +25,6 @@
           class="btn btn-default dropdown-toggle"
           (click)="emitSelectedField()" dropdownToggle>
           <span class="filter-option pull-left">{{currentValue || currentField.placeholder}}</span>
-          <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu" dropdownMenu>
           <li *ngIf="currentField.placeholder">
@@ -46,13 +45,10 @@
     </div>
     <div *ngIf="currentField.type === 'typeahead'">
       <div class="btn-group bootstrap-select form-control filter-select" dropdown>
-        <div class="pull-left">
+        <div class="pull-left typeahead-input-container" (click)="emitSelectedField()" dropdownToggle>
           <input class="form-control" type="{{currentField.type}}" [(ngModel)]="currentValue"
             placeholder="{{currentField.placeholder}}" (keypress)="onValueKeyPress($event)"
-            (keyup)="filterList($event)"
-            (click)="emitSelectedField()" #searchField dropdownToggle>
-        </div>
-        <div class="pull-right">
+            (keyup)="filterList($event)" #searchField>
           <span class="caret"></span>
         </div>
           <ul class="dropdown-menu" role="menu" #listData dropdownMenu>
