@@ -146,7 +146,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         active: true,
         value: iteration.id
       });
-      // emit event 
+      // emit event
       this.broadcaster.broadcast('iteration_selected', iteration);
     } else {
       //This is to view the backlog
@@ -176,7 +176,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
           }
         }
       });
-    });
+    }, err => console.log(err));
   }
 
   listenToEvents() {

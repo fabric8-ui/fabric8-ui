@@ -10,7 +10,6 @@ import { Broadcaster, Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
-import { HttpService } from './../shared/http-service';
 import { IterationModel } from '../models/iteration.model';
 import { MockHttp } from '../shared/mock-http';
 import { HttpService } from './../shared/http-service';
@@ -55,8 +54,8 @@ export class IterationService {
    */
   getIterations(): Observable<IterationModel[]> {
     // get the current iteration url from the space service
-    if (this._currentSpace) {
-      let iterationsUrl = this._currentSpace.relationships.iterations.links.related;
+    return this.spaces.current.take(1).switchMap(space => {
+      let iterationsUrl = space.relationships.iterations.links.related;
       return this.http
         .get(iterationsUrl, { headers: this.headers })
         .map (response => {
@@ -78,10 +77,7 @@ export class IterationService {
             // return Observable.throw<IterationModel[]> ([] as IterationModel[]);
           }
         });
-    } else {
-      return Observable.throw(new Error('Error getting list of iterations'));
-      // return Observable.throw<IterationModel[]> ([] as IterationModel[]);
-    }
+    });
   }
 
   /**
