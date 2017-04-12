@@ -7,4 +7,6 @@
 export class FilterQuery {
   id?: string;
   value: string;
+  imageUrl?: string;
+  iconClass?: string;
 }

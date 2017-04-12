@@ -36,6 +36,8 @@
           <li *ngFor="let query of currentField.queries"
               [ngClass]="{'selected': query.value === currentValue}">
             <a role="menuitem" tabindex="-1" (click)="selectValue(query)">
+              <span *ngIf="query?.iconClass" class="fa {{query?.iconClass}}"></span>
+              <img class="avatar" *ngIf="query?.imageUrl" [attr.src]="query?.imageUrl" />
               {{query.value}}
             </a>
           </li>
