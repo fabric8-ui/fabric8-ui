@@ -74,6 +74,12 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     'assignee',
     'area'
   ];
+  private queryParamSubscriber = null;
+
+  // This flag tells if an update for filter is coming from
+  // tool bar internaly or not
+  private internalFilterChange = false;
+
 
   constructor(
     private router: Router,
@@ -98,6 +104,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     // we need to get the wi types for the types dropdown on the board item
     // even when there is no active space change (initial population).
     this.spaceSubscription = this.spaces.current.subscribe(space => {
+      console.log(this.eventListeners);
       if (space) {
         console.log('[FilterPanelComponent] New Space selected: ' + space.attributes.name);
         this.editEnabled = true;
@@ -106,14 +113,14 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
         this.editEnabled = false;
       }
     });
-    this.eventListeners.push(
-      this.filterService.getFilters()
-        .subscribe(filters => this.setFilterTypes(filters))
-    );
   }
 
   ngAfterViewInit(): void {
     this.listenToEvents();
+    this.eventListeners.push(
+      this.filterService.getFilters()
+        .subscribe(filters => this.setFilterTypes(filters))
+    );
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -125,11 +132,12 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   }
 
   ngOnDestroy() {
+    this.queryParamSubscriber.unsubscribe();
     this.eventListeners.map((e) => e.unsubscribe());
   }
 
   setFilterTypes(filters: FilterModel[]) {
-    this.filterConfig.fields = filters.map(filter => {
+    this.toolbarConfig.filterConfig.fields = filters.map(filter => {
       return {
         id: filter.attributes.query.substring(
           filter.attributes.query.lastIndexOf("[")+1,
@@ -141,71 +149,32 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
         queries: []
       };
     });
-  };
-
-  setFilterConfiguration() {
-    this.toolbarConfig.filterConfig.appliedFilters = [];
-    this.filterService.clearFilters(this.allowedFilterKeys);
-    this.toolbarConfig.filterConfig.fields = [];
-    this.setAreaFilter(this.areas);
-    this.setUserFilter(this.loggedInUser);
-    if (Object.keys(this.existingQueryParams).length) {
-      this.setAppliedFilterFromUrl();
-      this.filterService.applyFilter();
-    }
-  }
-
-  setAreaFilter(areas) {
-    /**
-     * Remapping the fetched areas to the 'queries' model
-     * of ngx-toolbar filters' dropdown.
-     */
-    const filterAreas = areas.map(area => {
-      return {
-        id: area.id.toString(),
-        value: area.attributes.name
-      }
-    });
-    let areaField = {
-      id: 'area',
-      title: 'Area',
-      placeholder: 'Filter by area...',
-      type: 'select',
-      queries: filterAreas
-    };
-    this.toolbarConfig.filterConfig.fields.push(areaField);
-  }
-
-  setUserFilter(user) {
-    if (user) {
-      let userField = {
-        id: 'assignee',
-        title: 'User',
-        placeholder: 'Filter by Assignee...',
-        type: 'select',
-        queries: [{
-          id:  user.id,
-          value: 'Assigned to Me'
-        }]
-      };
-      this.toolbarConfig.filterConfig.fields.push(userField);
-    }
+    this.listenToQueryParams();
   }
 
   setAppliedFilterFromUrl() {
-    Object.keys(this.existingQueryParams).forEach(key => {
+    const filterMap = this.getFilterMap();
+    Object.keys(this.existingQueryParams).forEach((key, index) => {
       if (this.allowedFilterKeys.indexOf(key) > -1) {
-        const field = this.toolbarConfig.filterConfig.fields.find(field => field.id === key);
-          const selectedQuery = field.queries.find(item => item.value === this.existingQueryParams[key]);
+        filterMap[key].datasource.take(1).subscribe(data => {
+          const index = this.toolbarConfig.filterConfig.fields.findIndex(field => field.id === key);
+          this.toolbarConfig.filterConfig.fields[index].queries = filterMap[key].datamap(data);
+          const selectedQuery = this.toolbarConfig.filterConfig.fields[index].queries.find(
+            item => item.value === this.existingQueryParams[key]
+          );
           if (selectedQuery) {
             this.toolbarConfig.filterConfig.appliedFilters.push({
-              field: field,
+              field: this.toolbarConfig.filterConfig.fields[index],
               query: selectedQuery,
               value: this.existingQueryParams[key]
             });
             this.filterService.setFilterValues(key, selectedQuery.id);
+            if (Object.keys(this.existingQueryParams).length - 1 == index) {
+              this.filterService.applyFilter();
+            }
           }
-        }
+        });
+      }
     });
   }
 
@@ -236,10 +205,19 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     let params = cloneDeep(this.existingQueryParams);
     this.allowedFilterKeys.forEach((key) => delete params[key]);
 
+    // Clean allowed filter keys
+    this.filterService.clearFilters(this.allowedFilterKeys);
+
     // Prepare query params
-    $event.appliedFilters.map((filter) => {
+    $event.appliedFilters.forEach((filter) => {
       params[filter.field.id] = filter.field.queries[0].value;
+      // Set this filter in filter service
+      this.filterService.setFilterValues(filter.field.id, filter.field.queries[0].id);
     });
+
+    // Set the internal change flag to true
+    // So that the URL subscriber does not take any action
+    this.internalFilterChange = true;
 
     // Prepare navigation extra with query params
     let navigationExtras: NavigationExtras = {
@@ -317,15 +295,18 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     return {
       area: {
         datasource: this.areaService.getAreas(),
-        datamap: (areas) => areas.map(area => {return {id: area.id, value: area.attributes.name}})
+        datamap: (areas) => areas.map(area => {return {id: area.id, value: area.attributes.name}}),
+        getvalue: (area) => area.attributes.name
       },
       assignee: {
         datasource: this.collaboratorService.getCollaborators(),
-        datamap: (users) => users.map(user => {return {id: user.id, value: user.attributes.username, imageUrl: user.attributes.imageURL}})
+        datamap: (users) => users.map(user => {return {id: user.id, value: user.attributes.username, imageUrl: user.attributes.imageURL}}),
+        getvalue: (user) => user.attributes.username
       },
       workitemtype: {
         datasource: this.workItemService.getWorkItemTypes(),
-        datamap: (witypes) => witypes.map(witype => {return {id: witype.id, value: witype.attributes.name, iconClass: witype.attributes.icon}})
+        datamap: (witypes) => witypes.map(witype => {return {id: witype.id, value: witype.attributes.name, iconClass: witype.attributes.icon}}),
+        getvalue: (type) => type.attributes.name
       }
     }
   }
@@ -349,27 +330,33 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
           this.loggedIn = false;
       })
     );
+  }
 
-    this.eventListeners.push(
-      this.route.queryParams.subscribe((params) => {
-        this.existingQueryParams = params;
-        // on no params
-        if (!Object.keys(params).length ||
-          (Object.keys(this.existingQueryParams).length === 1
-            && Object.keys(this.existingQueryParams).indexOf('iteration') > -1)) {
-          // Cleaning up applied filters
-          this.toolbarConfig.filterConfig.appliedFilters = [];
-        } else {
-          if (this.toolbarConfig.filterConfig.fields.length
-            && Object.keys(this.existingQueryParams).length
-            && Object.keys(this.existingQueryParams).some(i => this.allowedFilterKeys.indexOf(i) > -1)) {
+  listenToQueryParams() {
+    if (this.queryParamSubscriber === null)  {
+      this.queryParamSubscriber =
+        this.route.queryParams.subscribe((params) => {
+          this.existingQueryParams = params;
+          // on no params
+          if (!Object.keys(params).length ||
+            (Object.keys(this.existingQueryParams).length === 1
+              && Object.keys(this.existingQueryParams).indexOf('iteration') > -1)) {
+            // Cleaning up applied filters
             this.toolbarConfig.filterConfig.appliedFilters = [];
-            this.filterService.clearFilters(this.allowedFilterKeys);
-            this.setAppliedFilterFromUrl();
-            this.filterService.applyFilter();
+          } else {
+            if (Object.keys(this.existingQueryParams).length
+              && Object.keys(this.existingQueryParams).some(i => this.allowedFilterKeys.indexOf(i) > -1)) {
+              if (this.internalFilterChange) {
+                this.filterService.applyFilter();
+                this.internalFilterChange = false;
+              } else {
+                this.toolbarConfig.filterConfig.appliedFilters = [];
+                this.filterService.clearFilters(this.allowedFilterKeys);
+                this.setAppliedFilterFromUrl();
+              }
+            }
           }
-        }
-      })
-    );
+        })
+    }
   }
 }
