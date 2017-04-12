@@ -23,6 +23,7 @@ import { ModalModule } from 'ngx-modal';
 import { AreaService } from '../../area/area.service';
 import { WorkItemDetailComponent } from './work-item-detail.component';
 import { DynamicFieldComponent } from './dynamic-form/dynamic-field.component';
+import { TypeaheadDropdown } from './typeahead-dropdown/typeahead-dropdown.component';
 import { MarkdownControlComponent } from './markdown-control/markdown-control.component';
 import { WorkItemLinkComponent } from './work-item-link/work-item-link.component';
 import { WorkItemCommentComponent } from './work-item-comment/work-item-comment.component';
@@ -61,6 +62,7 @@ if (process.env.ENV == 'inmemory') {
     WorkItemCommentComponent,
     WorkItemDetailComponent,
     DynamicFieldComponent,
+    TypeaheadDropdown,
     MarkdownControlComponent,
     WorkItemLinkComponent,
     WorkItemLinkFilterByTypeName,
