@@ -47,5 +47,11 @@ docker exec -u root fabric8-planner-builder cp -r /home/fabric8/fabric8-planner/
 
 ## All ok, deploy
 docker build -t almighty-ui-deploy -f Dockerfile.deploy .
+
+TAG=$(echo $GIT_COMMIT | cut -c1-6)
+
+docker tag almighty-ui-deploy registry.devshift.net/almighty/almighty-ui:$TAG
+docker push registry.devshift.net/almighty/almighty-ui:$TAG
+
 docker tag almighty-ui-deploy registry.devshift.net/almighty/almighty-ui:latest
 docker push registry.devshift.net/almighty/almighty-ui:latest
