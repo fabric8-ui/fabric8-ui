@@ -138,14 +138,15 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
 
   setFilterTypes(filters: FilterModel[]) {
     this.toolbarConfig.filterConfig.fields = filters.map(filter => {
-      return {
-        id: filter.attributes.query.substring(
+      const type = filter.attributes.query.substring(
           filter.attributes.query.lastIndexOf("[")+1,
           filter.attributes.query.lastIndexOf("]")
-        ),
+        );
+      return {
+        id: type,
         title: filter.attributes.title,
         placeholder: filter.attributes.description,
-        type: 'select',
+        type: type === 'assignee' ? 'typeahead' : 'select',
         queries: []
       };
     });
