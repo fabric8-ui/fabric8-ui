@@ -70,6 +70,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   dragulaEventListeners: any[] = [];
   private allowedFilterParams: string[] = ['iteration'];
   private existingQueryParams: Object = {};
+  private urlListener = null;
 
   constructor(
     private auth: AuthenticationService,
@@ -131,13 +132,16 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
         this.getDefaultWorkItemTypeStates(workItemType.id);
       }
     });
-    this.initStuff();
   }
 
   ngOnDestroy() {
     console.log('Destroying all the listeners in board component');
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
     this.dragulaEventListeners.forEach(subscriber => subscriber.unsubscribe());
+    if (this.urlListener) {
+      this.urlListener.unsubscribe();
+      this.urlListener = null;
+    }
   }
 
   initStuff() {
@@ -148,6 +152,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
       this.areaService.getAreas(),
       this.userService.getUser(),
     )
+    // .take(1)
     .subscribe(([iterations, users, wiTypes, areas, loggedInUser]) => {
       this.allUsers = users;
       this.iterations = iterations;
@@ -175,7 +180,6 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   }
 
   getWorkItems(pageSize, lane) {
-    this.pageSize = pageSize;
     this.workItemService.getWorkItems(pageSize, [{
         active: true,
         paramKey: 'filter[workitemstate]',
@@ -229,8 +233,28 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Called from each lane
+   * @param event
+   * @param lane
+   */
+
   initWiItems($event, lane) {
-    this.getWorkItems($event.pageSize, lane);
+    this.pageSize = $event.pageSize;
+
+    // Subscribe only once
+    // When the first lane is ready
+    // we have the page size
+    if (this.urlListener === null) {
+      this.listenToUrlParams();
+    }
+
+    // If there are no filter param then load all the lanes
+    // Else let the param subscriber handle the loading of the
+    // Work items which happens in wi_item_filter listener
+    if (!Object.keys(this.existingQueryParams)) {
+      this.getWorkItems($event.pageSize, lane);
+    }
   }
 
   fetchMoreWiItems(lane) {
@@ -433,18 +457,18 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
         })
     );
 
-    // filters like assign to me should stack with the current filters
-    this.eventListeners.push(
-      this.broadcaster.on<string>('item_filter')
-        .subscribe((filters: any) => {
-          this.filters = filters;
-          // this reloads the states for the lanes, and then the wis inside the lanes.
-          filters.forEach((filter) => {
-            if (filter.paramKey === 'filter[workitemtype]')
-              this.getDefaultWorkItemTypeStates(filter.value);
-          });
-      })
-    );
+    // // filters like assign to me should stack with the current filters
+    // this.eventListeners.push(
+    //   this.broadcaster.on<string>('item_filter')
+    //     .subscribe((filters: any) => {
+    //       this.filters = filters;
+    //       // this reloads the states for the lanes, and then the wis inside the lanes.
+    //       filters.forEach((filter) => {
+    //         if (filter.paramKey === 'filter[workitemtype]')
+    //           this.getDefaultWorkItemTypeStates(filter.value);
+    //       });
+    //   })
+    // );
 
     this.eventListeners.push(
       this.broadcaster.on<string>('wi_change_state')
@@ -463,11 +487,15 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     this.eventListeners.push(
       this.broadcaster.on<string>('wi_item_filter')
         .subscribe((filters: any) => {
-          this.lanes.forEach(lane => this.getWorkItems(this.pageSize, lane));
+          this.lanes.forEach(lane => {
+            this.getWorkItems(this.pageSize, lane)
+          });
       })
     );
+  }
 
-    this.eventListeners.push(
+  listenToUrlParams() {
+    this.urlListener =
       this.route.queryParams.subscribe((params) => {
         this.existingQueryParams = params;
         // on no params and not the first ever call
@@ -478,7 +506,6 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
           this.filterService.applyFilter();
         } else if(Object.keys(params).length &&
           Object.keys(params).indexOf('iteration') > -1) {
-
           if (Object.keys(params).length === 1) {
             this.filterService.clearFilters();
           } else {
@@ -497,8 +524,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
           }
           this.filterService.applyFilter();
         }
-      })
-    );
+      });
   }
 
 }
