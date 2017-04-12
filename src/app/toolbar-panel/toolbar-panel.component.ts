@@ -55,10 +55,10 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   existingQueryParams: Object = {};
   filterConfig: FilterConfig = {
       fields: [{
-        id: '',
-        title:  '',
-        placeholder: '',
-        type: ''
+        id: 'type',
+        title:  'Select',
+        placeholder: 'Select a filter type',
+        type: 'text'
       }],
       appliedFilters: [],
       resultsCount: -1, // Hide
@@ -137,7 +137,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   }
 
   setFilterTypes(filters: FilterModel[]) {
-    this.toolbarConfig.filterConfig.fields = filters.map(filter => {
+    this.toolbarConfig.filterConfig.fields = [
+      ...this.toolbarConfig.filterConfig.fields,
+      ...filters.map(filter => {
       const type = filter.attributes.query.substring(
           filter.attributes.query.lastIndexOf("[")+1,
           filter.attributes.query.lastIndexOf("]")
@@ -149,7 +151,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
         type: type === 'assignee' ? 'typeahead' : 'select',
         queries: []
       };
-    });
+    })
+    ];
     this.listenToQueryParams();
   }
 
