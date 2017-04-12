@@ -73,7 +73,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     } as ToolbarConfig;
   allowedFilterKeys: string[] = [
     'assignee',
-    'area'
+    'area',
+    'workitemtype'
   ];
 
   private queryParamSubscriber = null;
@@ -378,6 +379,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
             if (Object.keys(this.existingQueryParams).length
               && Object.keys(this.existingQueryParams).some(i => this.allowedFilterKeys.indexOf(i) > -1)) {
               if (this.internalFilterChange) {
+                console.log('#######');
                 this.filterService.applyFilter();
                 this.internalFilterChange = false;
               } else {

@@ -152,7 +152,6 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
       this.areaService.getAreas(),
       this.userService.getUser(),
     )
-    // .take(1)
     .subscribe(([iterations, users, wiTypes, areas, loggedInUser]) => {
       this.allUsers = users;
       this.iterations = iterations;
