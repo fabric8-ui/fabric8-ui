@@ -19,6 +19,7 @@
 }
 .side-panel-container {
     background-color: $color-pf-black-900;
+    overflow-x: hidden;
 }
 .work-item-list-page {
   >.list-group
