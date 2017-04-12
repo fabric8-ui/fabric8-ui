@@ -53,12 +53,13 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   spaceSubscription: Subscription = null;
   eventListeners: any[] = [];
   existingQueryParams: Object = {};
+  existingAllowedQueryParams: Object = {};
   filterConfig: FilterConfig = {
       fields: [{
         id: 'type',
         title:  'Select',
         placeholder: 'Select a filter type',
-        type: 'text'
+        type: 'select'
       }],
       appliedFilters: [],
       resultsCount: -1, // Hide
@@ -74,6 +75,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     'assignee',
     'area'
   ];
+
   private queryParamSubscriber = null;
 
   // This flag tells if an update for filter is coming from
@@ -138,42 +140,55 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
 
   setFilterTypes(filters: FilterModel[]) {
     this.toolbarConfig.filterConfig.fields = [
-      ...this.toolbarConfig.filterConfig.fields,
+      this.toolbarConfig.filterConfig.fields[0],
       ...filters.map(filter => {
-      const type = filter.attributes.query.substring(
-          filter.attributes.query.lastIndexOf("[")+1,
-          filter.attributes.query.lastIndexOf("]")
-        );
-      return {
-        id: type,
-        title: filter.attributes.title,
-        placeholder: filter.attributes.description,
-        type: type === 'assignee' ? 'typeahead' : 'select',
-        queries: []
-      };
-    })
+        const type = filter.attributes.query.substring(
+            filter.attributes.query.lastIndexOf("[")+1,
+            filter.attributes.query.lastIndexOf("]")
+          );
+        return {
+          id: type,
+          title: filter.attributes.title,
+          placeholder: filter.attributes.description,
+          type: type === 'assignee' ? 'typeahead' : 'select',
+          queries: []
+        };
+      })
     ];
     this.listenToQueryParams();
   }
 
   setAppliedFilterFromUrl() {
     const filterMap = this.getFilterMap();
-    Object.keys(this.existingQueryParams).forEach((key, index) => {
+    // Take all the existing params
+    let params = cloneDeep(this.existingQueryParams);
+    let keys = Object.keys(params);
+
+    // Delete all the not-allowed params for this tool bar
+    keys.forEach(key => {
+      if(this.allowedFilterKeys.indexOf(key) === -1) {
+        delete params[key]
+      }
+    });
+
+    // Apply each param from URL that is allowed here
+    // to the filter
+    Object.keys(params).forEach((key, i) => {
       if (this.allowedFilterKeys.indexOf(key) > -1) {
         filterMap[key].datasource.take(1).subscribe(data => {
           const index = this.toolbarConfig.filterConfig.fields.findIndex(field => field.id === key);
           this.toolbarConfig.filterConfig.fields[index].queries = filterMap[key].datamap(data);
           const selectedQuery = this.toolbarConfig.filterConfig.fields[index].queries.find(
-            item => item.value === this.existingQueryParams[key]
+            item => item.value === params[key]
           );
           if (selectedQuery) {
             this.toolbarConfig.filterConfig.appliedFilters.push({
               field: this.toolbarConfig.filterConfig.fields[index],
               query: selectedQuery,
-              value: this.existingQueryParams[key]
+              value: params[key]
             });
             this.filterService.setFilterValues(key, selectedQuery.id);
-            if (Object.keys(this.existingQueryParams).length - 1 == index) {
+            if (Object.keys(params).length - 1 == i) {
               this.filterService.applyFilter();
             }
           }
@@ -205,6 +220,17 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   // }
 
   filterChange($event: FilterEvent): void {
+
+    // We don't support multiple filter for same type
+    // i.e. no two filter by two different users as assignees
+    // Unifying the filters with recent filter value
+    let recentAppliedFilters = {};
+    $event.appliedFilters.forEach((filter) => recentAppliedFilters[filter.field.id] = filter);
+    this.toolbarConfig.filterConfig.appliedFilters = [];
+    Object.keys(recentAppliedFilters).forEach((filterId) => {
+      this.toolbarConfig.filterConfig.appliedFilters.push(recentAppliedFilters[filterId]);
+    });
+
     // Initiate next query params from current query params
     let params = cloneDeep(this.existingQueryParams);
     this.allowedFilterKeys.forEach((key) => delete params[key]);
@@ -213,10 +239,10 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     this.filterService.clearFilters(this.allowedFilterKeys);
 
     // Prepare query params
-    $event.appliedFilters.forEach((filter) => {
-      params[filter.field.id] = filter.field.queries[0].value;
+    this.toolbarConfig.filterConfig.appliedFilters.forEach((filter) => {
+      params[filter.field.id] = filter.query.value;
       // Set this filter in filter service
-      this.filterService.setFilterValues(filter.field.id, filter.field.queries[0].id);
+      this.filterService.setFilterValues(filter.field.id, filter.query.id);
     });
 
     // Set the internal change flag to true
@@ -341,6 +367,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       this.queryParamSubscriber =
         this.route.queryParams.subscribe((params) => {
           this.existingQueryParams = params;
+
           // on no params
           if (!Object.keys(params).length ||
             (Object.keys(this.existingQueryParams).length === 1
