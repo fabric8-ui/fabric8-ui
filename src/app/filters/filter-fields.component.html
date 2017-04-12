@@ -14,7 +14,7 @@
         </li>
       </ul>
     </div>
-    <div *ngIf="currentField.type !== 'select'">
+    <div *ngIf="currentField.type === 'text' || currentField === 'default'">
       <input class="form-control" type="{{currentField.type}}" [(ngModel)]="currentValue"
              placeholder="{{currentField.placeholder}}"
              (keypress)="onValueKeyPress($event)"/>
@@ -42,6 +42,34 @@
             </a>
           </li>
         </ul>
+      </div>
+    </div>
+    <div *ngIf="currentField.type === 'typeahead'">
+      <div class="btn-group bootstrap-select form-control filter-select" dropdown>
+        <div class="pull-left">
+          <input class="form-control" type="{{currentField.type}}" [(ngModel)]="currentValue"
+            placeholder="{{currentField.placeholder}}" (keypress)="onValueKeyPress($event)"
+            (keyup)="filterList($event)"
+            (click)="emitSelectedField()" #searchField dropdownToggle>
+        </div>
+        <div class="pull-right">
+          <span class="caret"></span>
+        </div>
+          <ul class="dropdown-menu" role="menu" #listData dropdownMenu>
+            <li *ngIf="currentField.placeholder">
+              <a role="menuitem" tabindex="-1" (click)="selectValue()">
+                {{currentField.placeholder}}
+              </a>
+            </li>
+            <li *ngFor="let query of filteredList"
+              [ngClass]="{'selected': query.value === currentValue}">
+              <a role="menuitem" tabindex="-1" (click)="selectValue(query)">
+                <span *ngIf="query?.iconClass" class="fa {{query?.iconClass}}"></span>
+                <img class="avatar" *ngIf="query?.imageUrl" [attr.src]="query?.imageUrl" />
+                  <span [innerHTML]="query.value | almSearchHighlight: searchField.value"></span>
+              </a>
+            </li>
+          </ul>
       </div>
     </div>
   </div>

@@ -30,26 +30,36 @@ export class FilterExampleComponent implements OnInit {
       name: "Fred Flintstone",
       address: "20 Dinosaur Way, Bedrock, Washingstone",
       birthMonth: 'February',
-      birthMonthId: 'month2'
+      birthMonthId: 'month2',
+      weekDay: 'Sunday',
+      weekdayId: 'day1'
     },{
       name: "John Smith", address: "415 East Main Street, Norfolk, Virginia",
       birthMonth: 'October',
-      birthMonthId: '10'
+      birthMonthId: '10',
+      weekDay: 'Monday',
+      weekdayId: 'day2'
     },{
       name: "Frank Livingston",
       address: "234 Elm Street, Pittsburgh, Pennsylvania",
       birthMonth: 'March',
-      birthMonthId: 'month3'
+      birthMonthId: 'month3',
+      weekDay: 'Tuesday',
+      weekdayId: 'day3'
     },{
       name: "Judy Green",
       address: "2 Apple Boulevard, Cincinatti, Ohio",
       birthMonth: 'December',
-      birthMonthId: 'month12'
+      birthMonthId: 'month12',
+      weekDay: 'Wednesday',
+      weekdayId: 'day4'
     },{
       name: "Pat Thomas",
       address: "50 Second Street, New York, New York",
       birthMonth: 'February',
-      birthMonthId: 'month2'
+      birthMonthId: 'month2',
+      weekDay: 'Thursday',
+      weekdayId: 'day5'
     }];
     this.items = this.allItems;
 
@@ -111,6 +121,34 @@ export class FilterExampleComponent implements OnInit {
           id: 'month12',
           value: 'December'
         }]
+      },
+      {
+        id: 'weekDay',
+        title:  'Week Day',
+        placeholder: 'Filter by Week Day...',
+        type: 'typeahead',
+        queries: [{
+          id: 'day1',
+          value: 'Sunday'
+        },{
+          id: 'day2',
+          value: 'Monday'
+        },{
+          id: 'day3',
+          value: 'Tuesday'
+        },{
+          id: 'day4',
+          value: 'Wednesday'
+        },{
+          id: 'day5',
+          value: 'Thursday'
+        },{
+          id: 'day6',
+          value: 'Friday'
+        },{
+          id: 'day7',
+          value: 'Saturday'
+        }]
       }] as FilterField[],
       resultsCount: this.items.length,
       appliedFilters: []
@@ -150,6 +188,8 @@ export class FilterExampleComponent implements OnInit {
       match = item.address.match(filter.value) !== null;
     } else if (filter.field.id === 'birthMonth') {
       match = item.birthMonth === filter.value;
+    } else if (filter.field.id === 'weekDay') {
+      match = item.weekDay === filter.value;
     }
     return match;
   }

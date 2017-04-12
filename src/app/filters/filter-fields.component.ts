@@ -4,8 +4,11 @@ import {
   Input,
   OnInit,
   Output,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+
+import { AlmSearchHighlight } from '../pipes/alm-search-highlight.pipe'
 
 import { FilterConfig } from './filter-config';
 import { FilterEvent } from './filter-event';
@@ -29,10 +32,14 @@ export class FilterFieldsComponent implements OnInit {
   @Output('onAdd') onAdd = new EventEmitter();
   @Output('onSelectType') onSelecttype = new EventEmitter();
 
+  @ViewChild('searchField') searchField: any;
+  @ViewChild('listData') listData: any;
+
   currentField: FilterField;
   currentValue: string;
   prevConfig: FilterConfig;
   show: boolean = false;
+  filteredList:any;
 
   constructor() {
   }
@@ -92,6 +99,9 @@ export class FilterFieldsComponent implements OnInit {
 
   selectField(field: FilterField): void {
     this.currentField = field;
+    if(field.type ==='typeahead') {
+      this.filteredList = this.currentField.queries;
+    };
     this.currentValue = null;
   }
 
@@ -109,6 +119,58 @@ export class FilterFieldsComponent implements OnInit {
         value: filterQuery.value
       } as FilterEvent);
       this.currentValue = null;
+    }
+  }
+
+   filterList(event: any) {
+    // Down arrow or up arrow
+    if (event.keyCode == 40 || event.keyCode == 38) {
+      let lis = this.listData.nativeElement.children;
+      let i = 0;
+      for (; i < lis.length; i++) {
+        if (lis[i].classList.contains('selected')) {
+          break;
+        }
+      }
+      if (i == lis.length) { // No existing selected
+        if (event.keyCode == 40) { // Down arrow
+          lis[0].classList.add('selected');
+          lis[0].scrollIntoView(false);
+        } else { // Up arrow
+          lis[lis.length - 1].classList.add('selected');
+          lis[lis.length - 1].scrollIntoView(false);
+        }
+      } else { // Existing selected
+        lis[i].classList.remove('selected');
+        if (event.keyCode == 40) { // Down arrow
+          lis[(i + 1) % lis.length].classList.add('selected');
+          lis[(i + 1) % lis.length].scrollIntoView(false);
+        } else { // Down arrow
+          // In javascript mod gives exact mod for negative value
+          // For example, -1 % 6 = -1 but I need, -1 % 6 = 5
+          // To get the round positive value I am adding the divisor
+          // with the negative dividend
+          lis[(((i - 1) % lis.length) + lis.length) % lis.length].classList.add('selected');
+          lis[(((i - 1) % lis.length) + lis.length) % lis.length].scrollIntoView(false);
+        }
+      }
+    } else if (event.keyCode == 13) { // Enter key event
+      let lis = this.listData.nativeElement.children;
+      let i = 0;
+      for (; i < lis.length; i++) {
+        if (lis[i].classList.contains('selected')) {
+          break;
+        }
+      }
+      if (i < lis.length) {
+        let selectedId = lis[i].dataset.value;
+
+      }
+    } else {
+      let inp = this.searchField.nativeElement.value.trim();
+      this.filteredList = this.currentField.queries.filter((item) => {
+         return item.value.toLowerCase().indexOf(inp.toLowerCase()) > -1;
+      });
     }
   }
 }

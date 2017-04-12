@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule, DropdownConfig, TooltipModule } from 'ng2-bootstrap';
+import { AlmSearchHighlight } from '../pipes/alm-search-highlight.pipe'
 
 import { Filter } from './filter';
 import { FilterComponent } from './filter.component';
@@ -22,7 +23,7 @@ export {
 
 @NgModule({
   imports: [ CommonModule, DropdownModule, FormsModule, TooltipModule ],
-  declarations: [ FilterComponent, FilterFieldsComponent, FilterResultsComponent ],
+  declarations: [ AlmSearchHighlight, FilterComponent, FilterFieldsComponent, FilterResultsComponent ],
   exports: [ FilterComponent, FilterFieldsComponent, FilterResultsComponent ],
   providers: [ DropdownConfig ]
 })

@@ -87,6 +87,34 @@ describe('Filter component - ', () => {
           id: 'month12',
           value: 'December'
         }]
+      },
+      {
+        id: 'weekDay',
+        title:  'Week Day',
+        placeholder: 'Filter by Week Day...',
+        type: 'typeahead',
+        queries: [{
+          id: 'day1',
+          value: 'Sunday'
+        },{
+          id: 'day2',
+          value: 'Monday'
+        },{
+          id: 'day3',
+          value: 'Tuesday'
+        },{
+          id: 'day4',
+          value: 'Wednesday'
+        },{
+          id: 'day5',
+          value: 'Thursday'
+        },{
+          id: 'day6',
+          value: 'Friday'
+        },{
+          id: 'day7',
+          value: 'Saturday'
+        }]
       }] as FilterField[],
       appliedFilters: [],
       resultsCount: 5
