@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: f8ui
+type: Opaque
+data:
+  analytics.write.key: ""
+  k8s.api.server.protocol: https
+  k8s.api.server.base.path: ""
+  oauth.client.id: fabric8
+  oauth.scope: user:full
+  fabric8.pipelines.namespace: ""
+  ws.k8s.api.server: ""
+  proxy.pass.url: ""
+  openshift.console.url: ""
+  oauth.issuer: ""
+  oauth.authorize.uri: ""
+  oauth.logout.uri: ""
