@@ -354,6 +354,12 @@ describe('Comment section for the work item detailed view - ', () => {
           'type': 'spaces'
         }];
         return spaces;
+      },
+      isRootIteration: function(iteration: IterationModel): boolean {
+        if (iteration.attributes.parent_path==='/')
+          return true;
+        else
+          return false;
       }
     };
 

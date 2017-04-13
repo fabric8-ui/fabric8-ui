@@ -241,6 +241,12 @@ describe('Work item list view - ', () => {
           'type': 'spaces'
         }];
         return spaces;
+      },
+      isRootIteration: function(iteration: IterationModel): boolean {
+        if (iteration.attributes.parent_path==='/')
+          return true;
+        else
+          return false;
       }
     };
 
