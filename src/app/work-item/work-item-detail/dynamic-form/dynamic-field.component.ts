@@ -5,7 +5,8 @@ import { Logger } from 'ngx-base';
 
 import { IMyOptions, IMyDateModel } from 'mydatepicker';
 
-import { WorkItem } from '../../../models/work-item';
+import { TypeaheadDropdown, TypeaheadDropdownValue } from '../typeahead-dropdown/typeahead-dropdown.component';
+
 
 export class DynamicUpdateEvent {
   form: FormGroup;
@@ -96,29 +97,64 @@ export class DynamicFieldComponent implements OnInit {
   focusIn() {
     this.buttonsVisible = true;
   }
-  
+
+  extractEnumKeyValues(): TypeaheadDropdownValue[] {
+    let result: TypeaheadDropdownValue[] = [];
+    let selectedFound: boolean = false;
+    for (let i=0; i<this.attributeDesc.type.values.length; i++) {
+      result.push({
+        key: this.attributeDesc.type.values[i],
+        value: this.attributeDesc.type.values[i],
+        selected: this.attributeDesc.type.values[i]===this.form.value[this.attributeKey]?true:false,
+        cssLabelClass: undefined
+      });
+      if (this.attributeDesc.type.values[i]===this.form.value[this.attributeKey])
+        selectedFound = true;
+    };
+    // insert neutral element on index 0, setting it selected when no other selected entry was found.
+    result.splice(0, 0, {
+      key: undefined,
+      value: 'None',
+      selected: selectedFound?false:true,
+      cssLabelClass: 'neutral-entry'
+    });
+    return result;
+  }
+
+  extractBooleanKeyValues(): TypeaheadDropdownValue[] {
+    let values = [ {  
+      key: undefined,
+      value: 'None',
+      selected: typeof this.form.value[this.attributeKey]!='boolean' && (typeof this.form.value[this.attributeKey]=='undefined'||this.form.value[this.attributeKey]=='')?true:false,
+      cssLabelClass: 'neutral-entry'
+    }, {  
+      key: 'true',
+      value: 'Yes',
+      selected: this.form.value[this.attributeKey]==true?true:false
+    }, {  
+      key: 'false',
+      value: 'No',
+      selected: typeof this.form.value[this.attributeKey]=='boolean'&&!this.form.value[this.attributeKey]?true:false
+    }] as TypeaheadDropdownValue[];
+    return values;
+  }
+
   onChangeDropdown(newOption: string) {
-    if (newOption == '&nbsp;')
+    // key == value in this setup!
+    if (!newOption)
       this.form.patchValue(this.toUpdateObject(this.attributeKey, ''));
     else
       this.form.patchValue(this.toUpdateObject(this.attributeKey, newOption));
     this.save();
   }
 
-  getBooleanText(booleanValue: boolean): string {
-    if (typeof booleanValue != 'boolean')
-      return '&nbsp;';
-    else if (booleanValue)
-      return 'Yes';
-    else
-      return 'No';
-  }
-
-  onChangeBoolean(newOption: boolean) {
-    if (newOption == null)
+  onChangeBoolean(newOption: string) {
+    if (typeof newOption == 'undefined')
       this.form.patchValue(this.toUpdateObject(this.attributeKey, undefined));
-    else
-      this.form.patchValue(this.toUpdateObject(this.attributeKey, newOption));
+    else if (newOption == 'true')
+      this.form.patchValue(this.toUpdateObject(this.attributeKey, true));
+    else 
+      this.form.patchValue(this.toUpdateObject(this.attributeKey, false));
     this.save();
   }
 
@@ -172,7 +208,7 @@ export class DynamicFieldComponent implements OnInit {
           this.form.patchValue(this.toUpdateObject(this.attributeKey, number));
       } else if (this.attributeDesc.type.kind === 'enum') {
         let value = this.form.value[this.attributeKey];
-        if (this.attributeDesc.type.values.indexOf(value) == -1)
+        if (this.attributeDesc.type.values.indexOf(value) == -1 && value!='')
           throw('invalid data for field - not in valid values');
         else
           this.form.patchValue(this.toUpdateObject(this.attributeKey, value));

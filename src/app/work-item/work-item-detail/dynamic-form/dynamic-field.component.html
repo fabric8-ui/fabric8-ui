@@ -13,39 +13,10 @@
       <input *ngSwitchCase="'float'" [formControlName]="attributeDesc.key" type="text" (focus)="focusIn()">
 
       <!-- workitemtype field type: dropdown -->
-      <div *ngSwitchCase="'enum'" dropdown class="card-pf-time-frame-filter dynamic-control-dropdown">
-        <button dropdownToggle type="button" class="btn btn-default col-md-12 col-sm-12 col-xs-12">
-          <span class='dropdown-text'>{{form.value[this.attributeKey] || '&nbsp;'}}</span>
-          <span class="caret pull-right"></span>
-        </button>
-        <ul class="dropdown-menu-right dropdown-ul" role="menu" dropdownMenu>
-          <li *ngIf="!attributeDesc.required" class="dropdown-li" (click)="onChangeDropdown(opt)">
-            <a><span class='dropdown-text'>&nbsp;</span></a>
-          </li>
-          <li class="dropdown-li" *ngFor="let opt of attributeDesc.type.values" (click)="onChangeDropdown(opt)">
-            <a><span class='dropdown-text'>{{opt}}</span></a>
-          </li>
-        </ul>
-      </div>
+      <typeahead-dropdown *ngSwitchCase="'enum'" class="dynamic-control-dropdown" [values]="extractEnumKeyValues()" (onUpdate)="onChangeDropdown($event)"></typeahead-dropdown>
 
       <!-- workitemtype field type: boolean -->
-      <div *ngSwitchCase="'boolean'" dropdown class="card-pf-time-frame-filter dynamic-control-dropdown">
-        <button dropdownToggle type="button" class="btn btn-default col-md-12 col-sm-12 col-xs-12">
-          <span class='dropdown-text' [innerHTML]="getBooleanText(form.value[this.attributeKey])"></span>
-          <span class="caret pull-right"></span>
-        </button>
-        <ul class="dropdown-menu-right dropdown-ul" role="menu" dropdownMenu>
-          <li *ngIf="!attributeDesc.required" class="dropdown-li" (click)="onChangeBoolean(null)">
-            <a><span class='dropdown-text'>&nbsp;</span></a>
-          </li>
-          <li class="dropdown-li" (click)="onChangeBoolean(true)">
-            <a><span class='dropdown-text'>Yes</span></a>
-          </li>
-          <li class="dropdown-li" (click)="onChangeBoolean(false)">
-            <a><span class='dropdown-text'>No</span></a>
-          </li>
-        </ul>
-      </div>
+      <typeahead-dropdown *ngSwitchCase="'boolean'" class="dynamic-control-dropdown" [values]="extractBooleanKeyValues()" (onUpdate)="onChangeBoolean($event)"></typeahead-dropdown>
 
       <!-- workitemtype field type: markup -->
       <markdown-control *ngSwitchCase="'markup'" [markdownValue]="form.value[this.attributeKey].content" (onUpdate)="onChangeMarkup($event)"></markdown-control>

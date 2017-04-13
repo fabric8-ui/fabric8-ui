@@ -9,7 +9,7 @@
     }
 
     .details-dropdown {
-      width: 100%;
+      /* width: 100%; */
     }
 
     .btn-bar {
@@ -21,7 +21,7 @@
 
     .dropdown-search {
       position: relative;
-      width: 40%;
+      /* width: 40%; */
       height: 1px;
       z-index: 10000;
 
@@ -63,7 +63,7 @@
           .item-li {
             cursor: pointer;
             padding: em(5);
-            width: $width100;
+            width: 100%;
             float: left;
             &:hover {
               background-color: $color-pf-black-300;
