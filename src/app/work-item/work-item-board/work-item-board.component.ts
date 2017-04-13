@@ -500,6 +500,8 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
           this.filterService.clearFilters();
           // Setting the default work item type
           this.filterService.setFilterValues('workitemtype', this.workItemTypes[0].id)
+          // Set current board type to default one
+          this.currentBoardType = this.workItemTypes[0];
           // Apply all cleaned up filters
           this.filterService.applyFilter();
         }
