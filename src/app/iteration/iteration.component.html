@@ -35,17 +35,17 @@
               </button>
               <ul class="dropdown-menu-right" dropdownMenu>
                 <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration, $event);">
                     Edit
                   </a>
                 </li>
                 <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('close', iteration);">
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('close', iteration, $event);">
                     Close
                   </a>
                 </li>
                 <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('createChild', iteration);">
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('createChild', iteration, $event);">
                     Create child
                   </a>
                 </li>
@@ -90,7 +90,7 @@
           <small>
             <a *ngIf="loggedIn && editEnabled"
               class="text-right"
-              (click)="modal.openCreateUpdateModal('create');">
+              (click)="modal.openCreateUpdateModal('create', null, $event);">
               <i *ngIf="loggedIn && editEnabled" id="add-iteration-icon" class="pficon-add-circle-o fa-lg pull-right with-cursor-pointer add-btn" placement="bottom" tooltip="Add an Iteration"></i>
             </a>
           </small>
@@ -122,17 +122,17 @@
               </button>
               <ul class="dropdown-menu-right" dropdownMenu>
                 <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration, $event);">
                     Edit
                   </a>
                 </li>
                 <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration);">
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration, $event);">
                     Start
                   </a>
                 </li>
                 <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('createChild', iteration);">
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('createChild', iteration, $event);">
                     Create child
                   </a>
                 </li>
@@ -179,17 +179,17 @@
               </button>
               <ul class="dropdown-menu-right" dropdownMenu>
                 <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration);">
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration, $event);">
                     Edit
                   </a>
                 </li>
                 <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration);">
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration, $event);">
                     Start
                   </a>
                 </li>
                 <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('createChild', iteration);">
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('createChild', iteration, $event);">
                     Create child
                   </a>
                 </li>
