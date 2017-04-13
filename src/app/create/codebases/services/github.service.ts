@@ -1,8 +1,10 @@
+import { LoginService } from './../../../shared/login.service';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { AuthenticationService, UserService } from 'ngx-login-client';
 import { Logger } from 'ngx-base';
 import { Observable } from 'rxjs';
+import { cloneDeep } from 'lodash';
 
 import { Context, Contexts } from 'ngx-fabric8-wit';
 import {
@@ -13,8 +15,6 @@ import {
   GitHubRepoLicense
 } from './github';
 
-import * as _ from 'lodash';
-
 /**
  * Service to pull details from GitHub
  *
@@ -22,28 +22,26 @@ import * as _ from 'lodash';
  */
 @Injectable()
 export class GitHubService {
-  private cache: Map<string, Observable<any>>;
-  private context: Context;
-  private gitHubUrl: string;
-  private headers = new Headers({
+
+  private static readonly HEADERS = new Headers({
     'Content-Type': 'application/json',
     'Accept': 'application/vnd.github.v3+json'
   });
 
+  private cache: Map<string, Observable<any>>;
+  private context: Context;
+  private gitHubUrl: string;
+
+
   constructor(
-      private contexts: Contexts,
-      private http: Http,
-      private logger: Logger,
-      private auth: AuthenticationService,
-      private userService: UserService) {
+    private contexts: Contexts,
+    private http: Http,
+    private logger: Logger,
+    private authService: AuthenticationService,
+    private userService: UserService) {
     this.contexts.current.subscribe(val => this.context = val);
     this.gitHubUrl = 'https://api.github.com';
     this.cache = new Map();
-
-    // Todo: Use GitHub token?
-    //if (this.auth.getToken() != null) {
-    //  this.gitHubUrl += '/?access_token=' + this.auth.getToken();
-    //}
   }
 
   /**
@@ -69,9 +67,9 @@ export class GitHubService {
     if (this.cache.has(url)) {
       return this.cache.get(url);
     } else {
-      let newHeaders = this.getHeaders(this.getUserName(fullName));
-      let res = this.http
-        .get(url, { headers: newHeaders })
+      let res = this.getHeaders(this.getUserName(fullName))
+        .switchMap(newHeaders => this.http
+          .get(url, { headers: newHeaders }))
         .map(response => {
           return response.json() as GitHubRepoCommit;
         })
@@ -96,9 +94,9 @@ export class GitHubService {
     if (this.cache.has(url)) {
       return this.cache.get(url);
     } else {
-      let newHeaders = this.getHeaders(this.getUserName(fullName));
-      let res = this.http
-        .get(url, { headers: newHeaders })
+      let res = this.getHeaders(this.getUserName(fullName))
+        .switchMap(newHeaders => this.http
+          .get(url, { headers: newHeaders }))
         .map(response => {
           return response.json() as GitHubRepoDetails;
         })
@@ -135,9 +133,9 @@ export class GitHubService {
     if (this.cache.has(url)) {
       return this.cache.get(url);
     } else {
-      let newHeaders = this.getHeaders(this.getUserName(fullName));
-      let res = this.http
-        .get(url, { headers: newHeaders })
+      let res = this.getHeaders(this.getUserName(fullName))
+        .switchMap(newHeaders => this.http
+          .get(url, { headers: newHeaders }))
         .map(response => {
           return response.json() as GitHubRepoLastCommit;
         })
@@ -162,9 +160,9 @@ export class GitHubService {
     if (this.cache.has(url)) {
       return this.cache.get(url);
     } else {
-      let newHeaders = this.getHeaders(this.getUserName(fullName));
-      let res = this.http
-        .get(url, { headers: newHeaders })
+      let res = this.getHeaders(this.getUserName(fullName))
+        .switchMap(newHeaders => this.http
+          .get(url, { headers: newHeaders }))
         .map(response => {
           return response.json() as GitHubRepoLicense;
         })
@@ -200,9 +198,9 @@ export class GitHubService {
     if (this.cache.has(url)) {
       return this.cache.get(url);
     } else {
-      let newHeaders = this.getHeaders(userName);
-      let res = this.http
-        .get(url, { headers: newHeaders })
+      let res = this.getHeaders(userName)
+        .switchMap(newHeaders => this.http
+          .get(url, { headers: newHeaders }))
         .map(response => {
           return response.json() as GitHubRepo[]
         })
@@ -224,10 +222,12 @@ export class GitHubService {
    * @param userName
    * @returns {Headers}
    */
-  private getHeaders(userName: string) {
-    let newHeaders = _.cloneDeep(this.headers);
-    newHeaders['User-Agent'] = userName;
-    return newHeaders;
+  private getHeaders(userName: string): Observable<Headers> {
+    return this.authService.gitHubToken.map(token => {
+      let newHeaders = cloneDeep(GitHubService.HEADERS);
+      newHeaders.set('Authorization', `token ${token}`);
+      return newHeaders;
+    });
   }
 
   /**
@@ -258,4 +258,5 @@ export class GitHubService {
     this.logger.error(error);
     return Observable.throw(error.message || error);
   }
+
 }
