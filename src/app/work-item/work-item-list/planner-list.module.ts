@@ -29,14 +29,13 @@ import { PlannerListRoutingModule } from './planner-list-routing.module';
 import { SidepanelModule } from '../../side-panel/side-panel.module';
 import { ToolbarPanelModule } from '../../toolbar-panel/toolbar-panel.module';
 import { WorkItemDetailModule } from '../work-item-detail/work-item-detail.module';
+import { WorkItemDetailAddTypeSelectorModule } from '../work-item-detail-add-type-selector/work-item-detail-add-type-selector.module';
 import { WorkItemListComponent } from './work-item-list.component';
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
 import { WorkItemService } from '../work-item.service';
 import { MockHttp } from './../../shared/mock-http';
 import { HttpService } from './../../shared/http-service';
-
-
 
 let providers = [];
 
@@ -89,7 +88,8 @@ if (process.env.ENV == 'inmemory') {
     TreeListModule,
     WidgetsModule,
     WorkItemDetailModule,
-    WorkItemQuickAddModule
+    WorkItemQuickAddModule,
+    WorkItemDetailAddTypeSelectorModule
   ],
   declarations: [
     FabPlannerAssociateIterationModalComponent,

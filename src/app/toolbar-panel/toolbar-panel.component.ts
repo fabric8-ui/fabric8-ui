@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, AfterViewInit, TemplateRef, ViewChild, ViewEncapsulation, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, TemplateRef, ViewChild, ViewEncapsulation, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { cloneDeep } from 'lodash';
@@ -35,6 +35,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() context: string;
   @Input() wiTypes: WorkItemType[] = [];
+
+  @Output() showDetailEvent: EventEmitter<any | null> = new EventEmitter();
 
   areas: any[] = [];
   filters: any[] = [];
@@ -237,6 +239,11 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges {
       entryComponent.check();
       this.workItemToMove = entryComponent;
     }
+  }
+
+  showDetailType(event: MouseEvent): void {
+    event.stopPropagation();
+    this.showDetailEvent.emit();
   }
 
   listenToEvents() {

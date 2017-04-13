@@ -32,6 +32,7 @@ import { PlannerBoardRoutingModule } from './planner-board-routing.module';
 import { SidepanelModule } from '../../side-panel/side-panel.module';
 import { ToolbarPanelModule } from '../../toolbar-panel/toolbar-panel.module';
 import { WorkItemBoardComponent } from './work-item-board.component';
+import { WorkItemDetailAddTypeSelectorModule } from '../work-item-detail-add-type-selector/work-item-detail-add-type-selector.module';
 import { WorkItemDetailModule } from '../work-item-detail/work-item-detail.module';
 import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
 import { WorkItemService } from '../work-item.service';
@@ -91,6 +92,7 @@ if (process.env.ENV == 'inmemory') {
     TreeListModule,
     WidgetsModule,
     WorkItemDetailModule,
+    WorkItemDetailAddTypeSelectorModule,
     WorkItemQuickAddModule
   ],
   declarations: [

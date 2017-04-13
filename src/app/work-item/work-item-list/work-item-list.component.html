@@ -10,7 +10,8 @@
     <section>
       <toolbar-panel
         context="listview"
-        [wiTypes]="workItemTypes"></toolbar-panel>
+        [wiTypes]="workItemTypes"
+        (showDetailEvent)="typeSelectPanel.openPanel()"></toolbar-panel>
       <div class="contents posRel">
         <div class="work-item-list-page flex-container in-column-direction flex-grow-1">
           <div #listContainer
@@ -84,3 +85,8 @@
     </section>
   </main>
 </div>
+<detail-add-type-selector
+  #typeSelectPanel
+  [takeFromInput]="true"
+  [wiTypes]="workItemTypes">
+</detail-add-type-selector>
