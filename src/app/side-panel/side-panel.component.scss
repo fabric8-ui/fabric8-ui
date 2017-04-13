@@ -11,6 +11,9 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  &:hover {
+    background-color: $color-pf-black-700;
+  }
 
   h3 {
     margin-bottom: em(15);
@@ -21,7 +24,7 @@
     color: $color-pf-white;
     border-left: 4px solid $color-pf-blue;
   }
-  
+
   .badge {
     background-color: $color-pf-black;
   }

@@ -54,7 +54,9 @@
       > li {
         list-style: none;
         padding: em(15);
-
+        &:hover {
+          background-color: $color-pf-black-700;
+        }
         &.active {
           border-left: 4px solid transparent;
           &.selected-iteration {
@@ -107,6 +109,9 @@
 
       > li {
         padding: em(5) em(15) em(5) em(40);
+        &:hover {
+          background-color: $color-pf-black-700;
+        }
         .iteration-name{
             line-height: 1.5rem;
             width: 100%;
