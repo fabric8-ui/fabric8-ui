@@ -1,5 +1,5 @@
 <div class="col-sm-10 typeahead-dropdown pull-left">
-    <div *ngIf="!searchValue" (click)="open()" class="pointer details-dropdown">{{ initialValue }}</div>
+    <div *ngIf="!searchValue" (click)="open()" class="pointer details-dropdown" [ngClass]="getInitialValue().cssLabelClass?getInitialValue().cssLabelClass:''">{{ getInitialValue().value }}</div>
     <div style="display: flex;">
       <div *ngIf="searchValue" class="dropdown-search">
         <div class="list-container">
@@ -9,7 +9,7 @@
             <li *ngIf="!values.length" class="textCenter"><i class="fa fa-spinner fa-pulse"></i></li>
             <li *ngIf="!filteredValues.length">No matches found.</li>
             <li class="item-li" *ngFor="let item of filteredValues;" [attr.data-value]="item.key" (click)="showValueOnInput(item)">
-                <span [innerHTML]="item.value | almSearchHighlight: valueSearch.value"></span>
+                <span [ngClass]="item.cssLabelClass?item.cssLabelClass:''" [innerHTML]="item.value | almSearchHighlight: valueSearch.value"></span>
             </li>
           </ul>
         </div>

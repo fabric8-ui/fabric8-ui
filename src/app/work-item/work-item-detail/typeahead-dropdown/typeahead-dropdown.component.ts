@@ -6,15 +6,18 @@ import { cloneDeep } from 'lodash';
 import { Logger } from 'ngx-base';
 
 export class TypeaheadDropdownValue {
-  key: string;
-  value: string;
+  key: string; // key, will be returned by the event on selection.
+  value: string; // value used as label in the dropdown.
+  selected: boolean; // marks the selected entry, must be exactly once available.
+  cssLabelClass?: string; // optional, will be set on the label in the dropdown.
 }
 
 /*
- * This component provides a typeahead dropdown. It accepts an initial label value string
- * and a list of possible values. The values must be provided using an array of 
- * TypeaheadDropdownValue instances containing key and value of the option. The onUpdate
- * event provides a key to enclosing components when an option is selected.
+ * This component provides a typeahead dropdown. It accepts a list of possible values. 
+ * The values must be provided using an array of TypeaheadDropdownValue instances 
+ * containing key and value of the option. Exactly one of the values needs to have 
+ * selected==true. The onUpdate event provides a key to enclosing components when 
+ * an option is selected.
  */
 @Component({
   selector: 'typeahead-dropdown',
@@ -23,8 +26,6 @@ export class TypeaheadDropdownValue {
 })
 export class TypeaheadDropdown implements OnInit {
 
-  // initial value shown on the control
-  @Input() protected initialValue: string;
   // array of possible values
   @Input() protected values: TypeaheadDropdownValue[];
 
@@ -61,6 +62,13 @@ export class TypeaheadDropdown implements OnInit {
 
   public close(): void {
     this.searchValue = false;
+  }
+
+  protected getInitialValue() {
+    for (let i=0; i<this.values.length; i++)
+      if (this.values[i].selected)
+        return this.values[i];
+    return null;
   }
 
   // on clicking the area drop down option, the selected 

@@ -2,6 +2,11 @@
 
 .typeahead-dropdown {
   padding-left: 0;
+    
+    .neutral-entry {
+      font-style: italic !important;
+      opacity: 0.5 !important;
+    }
 
     .details-dropdown {
       width: $width100;

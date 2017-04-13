@@ -248,25 +248,18 @@ export class MockDataService {
         // Some relationship update
         if (workItem.relationships) {
           // Iteration update
-          if (workItem.relationships.iteration && workItem.relationships.iteration.data) {
-            console.log('WorkItem has updated iteration field: ' + this.workItems[i].id + ' old: ' + JSON.stringify(workItem.relationships.iteration.data) + ' new: ' + JSON.stringify(workItem.relationships.iteration.data));
-            this.workItems[i].relationships.iteration = { data: {
-              id: workItem.relationships.iteration.data.id,
-              links: { self: 'http://mock.service/api/iterations/' + workItem.relationships.iteration.data.id },
-              type: 'iterations'
-            }};
-          } else {
-            this.workItems[i].relationships.iteration = { };
+          if (typeof(workItem.relationships.iteration) !== 'undefined') {
+            if (workItem.relationships.iteration.data)
+              this.workItems[i].relationships.iteration.data = this.getIteration(workItem.relationships.iteration.data.id);
+            else 
+              this.workItems[i].relationships.iteration = {};
           }
           // Area update
-          if (workItem.relationships.area && workItem.relationships.area.data) {
-            this.workItems[i].relationships.area = { data: {
-              id: workItem.relationships.area.data.id,
-              links: { self: 'http://mock.service/api/areas/' + workItem.relationships.area.data.id },
-              type: 'areas'
-            }};
-          } else {
-            this.workItems[i].relationships.area = { };
+          else if (typeof(workItem.relationships.area) !== 'undefined') {
+            if (workItem.relationships.area.data)
+              this.workItems[i].relationships.area.data = this.getArea(workItem.relationships.area.data.id);
+            else 
+              this.workItems[i].relationships.area = {};
           }
           // Assignee update
           if (workItem.relationships.assignees && workItem.relationships.assignees.data) {

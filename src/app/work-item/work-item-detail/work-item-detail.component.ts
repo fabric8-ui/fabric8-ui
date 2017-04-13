@@ -762,11 +762,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   iterationUpdated(iterationId: string): void {
-    if(this.workItem.id) {
+    if (this.workItem.id) {
       // Send out an iteration change event
       let newIteration = iterationId;
       let currenIterationID = this.workItem.relationships.iteration.data ? this.workItem.relationships.iteration.data.id : 0;
-
       // If already closed iteration
       if (this.workItem.attributes['system.state'] == 'closed') {
         this.broadcaster.broadcast('wi_change_state_it', [{
@@ -805,29 +804,47 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         });
       });
     } else {
-      // creating a new work item - save the user input
-      let iteration = {
-        attributes: {
-          name: this.findIterationById(iterationId).attributes.name
-        },
-        id: iterationId,
-        type: 'iteration'
-      } as IterationModel;
-
-      this.workItem.relationships.iteration = {
-        data: iteration
-      };
+      //creating a new work item - save the user input
+      let iteration = { };
+      if (iterationId) {
+        iteration = { 
+          data: {
+            attributes: {
+              name: this.findIterationById(iterationId).attributes.name
+            },
+            id: iterationId,
+            type: 'iteration'
+          }
+        }
+      }
+      this.workItem.relationships.iteration = iteration;
     }
   }
 
   extractAreaKeyValue(areas: AreaModel[]): TypeaheadDropdownValue[] {
-    let result = [];
+    let result: TypeaheadDropdownValue[] = [];
+    let selectedFound: boolean = false;
+    let selectedAreaId: string;
+    if (this.workItem.relationships.area && this.workItem.relationships.area.data && this.workItem.relationships.area.data.id) {
+      selectedAreaId = this.workItem.relationships.area.data.id;
+    } 
     for (let i=0; i<areas.length; i++) {
       result.push({
         key: areas[i].id,
-        value: areas[i].attributes.name
-      })
-    }
+        value: areas[i].attributes.name,
+        selected: selectedAreaId===areas[i].id?true:false,
+        cssLabelClass: undefined
+      });
+      if (selectedAreaId===areas[i].id)
+        selectedFound = true;
+    };
+    // insert neutral element on index 0, setting it selected when no other selected entry was found.
+    result.splice(0, 0, {
+      key: undefined,
+      value: 'None',
+      selected: selectedFound?false:true,
+      cssLabelClass: 'neutral-entry'
+    });
     return result;
   }
 
@@ -839,13 +856,29 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   extractIterationKeyValue(iterations: IterationModel[]): TypeaheadDropdownValue[] {
-    let result = [];
+    let result: TypeaheadDropdownValue[] = [];
+    let selectedFound: boolean = false;
+    let selectedIterationId;
+    if (this.workItem.relationships.iteration && this.workItem.relationships.iteration.data && this.workItem.relationships.iteration.data.id) {
+      selectedIterationId = this.workItem.relationships.iteration.data.id;
+    } 
     for (let i=0; i<iterations.length; i++) {
       result.push({
         key: iterations[i].id,
-        value: iterations[i].attributes.resolved_parent_path + '/' + iterations[i].attributes.name
-      })
-    }
+        value: iterations[i].attributes.resolved_parent_path + '/' + iterations[i].attributes.name,
+        selected: selectedIterationId===iterations[i].id?true:false,
+        cssLabelClass: undefined
+      });
+      if (selectedIterationId===iterations[i].id)
+        selectedFound = true;
+    };
+    // insert neutral element on index 0, setting it selected when no other selected entry was found.
+    result.splice(0, 0, {
+      key: undefined,
+      value: 'None',
+      selected: selectedFound?false:true,
+      cssLabelClass: 'neutral-entry'
+    });
     return result;
   }
 
@@ -857,30 +890,44 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   areaUpdated(areaId: string) {
-    if(this.workItem.id) {
+    if (this.workItem.id) {
       let payload = cloneDeep(this.workItemPayload);
-      payload = Object.assign(payload, {
-        relationships : {
-          area: {
-            data: {
-              id: areaId,
-              type: 'area'
+      if (areaId) {
+        // area was set to a value.
+        payload = Object.assign(payload, {
+          relationships : {
+            area: {
+              data: {
+                id: areaId,
+                type: 'area'
+              }
             }
           }
-        }
-      });
+        });
+      } else {
+        // area was unset.
+        payload = Object.assign(payload, {
+          relationships : {
+            area: { }
+          }
+        });
+      }
       this.save(payload);
     } else {
-      let area = {
-        attributes: {
-          name: this.findAreaById(areaId).attributes.name,
-        },
-        id: areaId,
-        type: 'area'
-      } as AreaModel;
-      this.workItem.relationships.area = {
-        data: area
+      let area = { };
+      if (areaId) {
+        // area was set to a value.
+        let area = { 
+          data: {
+            attributes: {
+              name: this.findAreaById(areaId).attributes.name,
+            },
+            id: areaId,
+            type: 'area' 
+          }
+        };
       };
+      this.workItem.relationships.area = area;
     }
   }
 

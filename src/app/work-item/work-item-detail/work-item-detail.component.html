@@ -202,14 +202,14 @@
           <label class="col-sm-2" id="area_label">
             {{workItem.relationships?.baseType?.data?.attributes?.fields['system.area']?.label || 'Label'}}
           </label>
-          <typeahead-dropdown class="area-dropdown" #areaSelectbox [initialValue]="workItem.relationships?.area?.data?.attributes?.name || 'None'" [values]="extractAreaKeyValue(areas)" (onUpdate)="areaUpdated($event)"></typeahead-dropdown>
+          <typeahead-dropdown class="area-dropdown" #areaSelectbox [values]="extractAreaKeyValue(areas)" (onUpdate)="areaUpdated($event)"></typeahead-dropdown>
         </div>
         <!--Iteration-->
         <div class="form-group">
           <label class="col-sm-2">
             {{workItem.relationships?.baseType?.data?.attributes?.fields['system.iteration']?.label || 'Label'}}
           </label>
-          <typeahead-dropdown class="iteration-dropdown" #iterationSelectbox [initialValue]="workItem.relationships?.iteration?.data?.attributes?.name || 'None'" [values]="extractIterationKeyValue(iterations)" (onUpdate)="iterationUpdated($event)"></typeahead-dropdown>
+          <typeahead-dropdown class="iteration-dropdown" #iterationSelectbox [values]="extractIterationKeyValue(iterations)" (onUpdate)="iterationUpdated($event)"></typeahead-dropdown>
         </div>
 
         <!-- Extra fields Start -->
