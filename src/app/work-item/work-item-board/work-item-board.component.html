@@ -12,6 +12,7 @@
         context="boardview"
         [wiTypes]="workItemTypes"
         (showDetailEvent)="typeSelectPanel.openPanel()"
+        [currentBoardType]="currentBoardType"
         [areas]="areas"
         [loggedInUser]="loggedInUser"></toolbar-panel>
       <div class="contents posRel">

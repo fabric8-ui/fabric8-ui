@@ -31,6 +31,11 @@ export class FilterService {
     });
   }
 
+  getFilterValue(id): any {
+    const filter = this.activeFilters.find(f => f.id === id);
+    return filter ? filter.value : null;
+  }
+
   applyFilter() {
     console.log('[FilterService::applyFilter] - Applying filters', this.activeFilters);
     this.broadcaster.broadcast('wi_item_filter', this.filters);

@@ -13,16 +13,16 @@
               id="wi-board-type"
               type="button"
               class="btn btn-default">
-            <span class='dropdown-icon fa {{currentBoardType?.attributes.icon}}'></span>
+            <span class='dropdown-icon fa {{currentBoardType?.attributes?.icon}}'></span>
             <span class='dropdown-text'>
-              {{currentBoardType?.attributes.name}}
+              {{currentBoardType?.attributes?.name}}
             </span>
             <span class="caret"></span>
           </button>
           <ul *ngIf="loggedIn" id="wi-board-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" dropdownMenu>
             <li class="dropdown-li" *ngFor="let type of wiTypes;" (click)="onChangeBoardType(type)">
               <a>
-                <span class='dropdown-icon fa {{type.attributes.icon}}'></span>
+                <span class='dropdown-icon fa {{type?.attributes?.icon}}'></span>
                 <span class='dropdown-text'>{{type.attributes.name}}</span>
               </a>
             </li>

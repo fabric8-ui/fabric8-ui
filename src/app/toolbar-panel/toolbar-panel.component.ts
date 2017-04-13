@@ -40,13 +40,13 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   @Input() wiTypes: WorkItemType[] = [];
   @Input() areas: AreaModel[] = [];
   @Input() loggedInUser: User | Object = {};
+  @Input() currentBoardType: WorkItemType | Object = {};
 
   @Output() showDetailEvent: EventEmitter<any | null> = new EventEmitter();
 
   filters: any[] = [];
   loggedIn: boolean = false;
   editEnabled: boolean = false;
-  currentBoardType: WorkItemType;
   workItemToMove: WorkItemListEntryComponent;
   workItemDetail: WorkItem;
   showTypesOptions: boolean = false;
@@ -73,8 +73,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     } as ToolbarConfig;
   allowedFilterKeys: string[] = [
     'assignee',
-    'area',
-    'workitemtype'
+    'area'
   ];
 
   private queryParamSubscriber = null;
@@ -100,6 +99,13 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   ngOnInit() {
     console.log('[FilterPanelComponent] Running in context: ' + this.context);
     this.loggedIn = this.auth.isLoggedIn();
+
+    if (this.context === 'listview') {
+      this.allowedFilterKeys.push('workitemtype');
+    } else {
+      // this.allowedFilterKeys.push('workitemtype');
+    }
+
     // this.filterService.getFilters().then(response => {
     //   console.log(response);
     // });
@@ -127,11 +133,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.wiTypes.length) {
-      this.currentBoardType = this.wiTypes[0];
-    } else {
-      this.currentBoardType = null;
-    }
   }
 
   ngOnDestroy() {
@@ -140,6 +141,12 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   }
 
   setFilterTypes(filters: FilterModel[]) {
+    filters = filters.filter(f => this.allowedFilterKeys.indexOf(
+      f.attributes.query.substring(
+            f.attributes.query.lastIndexOf("[")+1,
+            f.attributes.query.lastIndexOf("]")
+      )) > -1);
+
     this.toolbarConfig.filterConfig.fields = [
       this.toolbarConfig.filterConfig.fields[0],
       ...filters.map(filter => {
@@ -198,28 +205,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     });
   }
 
-  // filterChange($event: FilterEvent): void {
-  //   let activeFilters = 0;
-  //   this.filters.forEach((f: any) => {
-  //     f.active = false;
-  //   });
-  //   $event.appliedFilters.forEach((filter) => {
-  //     let selectedIndex = this.filters.findIndex((f: any) => {
-  //       return f.id === filter.field.id;
-  //     });
-  //     if (selectedIndex > -1) {
-  //       this.filters[selectedIndex].active = true;
-  //       this.filters[selectedIndex].value = filter.query.id;
-  //     }
-  //   });
-  //   // if we're in board view, add or update the
-  //   // work item type filter
-  //   if (this.context === 'boardview') {
-  //     this.updateOrAddTypeFilter();
-  //   }
-  //   this.broadcaster.broadcast('item_filter', this.filters);
-  // }
-
   filterChange($event: FilterEvent): void {
 
     // We don't support multiple filter for same type
@@ -260,29 +245,29 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     this.router.navigate([], navigationExtras);
   }
 
-  updateOrAddTypeFilter() {
-    let selectedIndex = -1;
-    selectedIndex = this.filters.findIndex((f: any) => {
-      return f.paramKey === 'filter[workitemtype]';
-    });
-    if (selectedIndex > -1) {
-      this.filters[selectedIndex].value = this.currentBoardType.id;
-    } else {
-      this.filters.push({
-        id:  '99',
-        name: 'Type',
-        paramKey: 'filter[workitemtype]',
-        active: true,
-        value: this.currentBoardType.id
-      });
-    };
-  }
 
   onChangeBoardType(type: WorkItemType) {
     this.currentBoardType = type;
-    this.updateOrAddTypeFilter();
-    this.broadcaster.broadcast('item_filter', this.filters);
-    this.broadcaster.broadcast('board_type_context', type);
+
+    let params = cloneDeep(this.existingQueryParams);
+    params['workitemtype'] = type.attributes.name;
+
+    // Clean up other filters on type selection
+    this.allowedFilterKeys.forEach((key) => delete params[key]);
+
+    // Set this filter in filter service
+    this.toolbarConfig.filterConfig.appliedFilters = [];
+    this.filterService.clearFilters(['workitemtype', ...this.allowedFilterKeys]);
+    this.filterService.setFilterValues('workitemtype', type.id);
+
+    // Prepare navigation extra with query params
+    let navigationExtras: NavigationExtras = {
+      queryParams: params,
+      relativeTo: this.route
+    };
+
+    // Navigated to filtered view
+    this.router.navigate([], navigationExtras);
   }
 
   moveItem(moveto: string) {
@@ -379,7 +364,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
             if (Object.keys(this.existingQueryParams).length
               && Object.keys(this.existingQueryParams).some(i => this.allowedFilterKeys.indexOf(i) > -1)) {
               if (this.internalFilterChange) {
-                console.log('#######');
                 this.filterService.applyFilter();
                 this.internalFilterChange = false;
               } else {
