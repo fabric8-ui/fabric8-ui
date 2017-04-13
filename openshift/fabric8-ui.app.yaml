@@ -83,7 +83,7 @@ objects:
               valueFrom:
                 configMapKeyRef:
                   name: f8ui
-                  key: auth.logout.uri
+                  key: oauth.logout.uri
             - name: FABRIC8_PIPELINES_NAMESPACE
               valueFrom:
                 configMapKeyRef:
