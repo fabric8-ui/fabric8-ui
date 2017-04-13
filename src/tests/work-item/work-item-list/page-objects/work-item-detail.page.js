@@ -572,7 +572,7 @@ class WorkItemDetailPage {
     return element(by.id('area_label'));
   }
   AreaSelect (){
-    return element(by.id('WI_details_area'));
+    return element(by.css('#area-dropdown .details-dropdown'));
   }
   clickAreaSelect (){
     return this.AreaSelect().click();
@@ -584,18 +584,18 @@ class WorkItemDetailPage {
     return element(by.id('area-'+ areaid)).click();
   }
   saveAreasButton (){
-    return element(by.id('save_area'));
+    return element(by.css('#area-dropdown .save-button'));
   }
   SaveAreas  (){
     return this.saveAreasButton().click();
   }
   ClosekAreas  (){
-    return element(by.id('close_area')).click();
+    return element(by.id('#area-dropdown .cancel-button')).click();
   }
 /**Iteration element */
   IterationOndetailPage(){
-    browser.wait(until.elementToBeClickable(element(by.id('iteration-assocaited'))), constants.WAIT, 'Failed to find IterationOndetailPage');
-    return element(by.id('iteration-assocaited'));
+    browser.wait(until.elementToBeClickable(element(by.css('#iteration-dropdown .details-dropdown'))), constants.WAIT, 'Failed to find iteration on detail page');
+    return element(by.css('#iteration-dropdown .details-dropdown'));
   }
   getAssociatedIteration  (){
     return this.IterationOndetailPage().getText();
@@ -604,13 +604,14 @@ class WorkItemDetailPage {
     return element(by.id('reassociate-msg')).getText();
   }
   saveIteration(){
-    return element(by.id('assign-iteration-savebtn')).click();
+    return element(by.css('#iteration-dropdown .save-button')).click();
   }
   cancleIterationBtn(){
-    return element(by.id('assign-iteration-closebtn')).click();
+    return element(by.css('#iteration-dropdown .cancel-button')).click();
   }
   iterationDropdown(){
-    return element(by.id('WI_details_iteration_dropdownbtn'));
+    browser.wait(until.elementToBeClickable(element(by.css('#iteration-dropdown .details-dropdown'))), constants.WAIT, 'Failed to find iteration on detail page');
+    return element(by.css('#iteration-dropdown .details-dropdown'));
   }
   iterationCaretdropdown (){
     return element(by.id('iteration-caret'));
@@ -620,6 +621,9 @@ class WorkItemDetailPage {
   }
   associateIteration (text){
     return element(by.linkText(text)).click();
+  }
+  associateIterationById(iterationid){
+    return element(by.id('iteration-'+ iterationid)).click();
   }
   genericLinkseach(text){
     return element(by.linkText(text)).click();

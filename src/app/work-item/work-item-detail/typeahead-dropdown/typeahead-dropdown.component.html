@@ -8,7 +8,7 @@
           <ul class="item-ul dropdown-list" #valueList>
             <li *ngIf="!values.length" class="textCenter"><i class="fa fa-spinner fa-pulse"></i></li>
             <li *ngIf="!filteredValues.length">No matches found.</li>
-            <li class="item-li" *ngFor="let item of filteredValues;" [attr.data-value]="item.key" (click)="showValueOnInput(item)">
+            <li class="item-li" *ngFor="let item of filteredValues;" [attr.data-value]="item.key" (click)="showValueOnInput(item)" [id]="item.key">
                 <span [ngClass]="item.cssLabelClass?item.cssLabelClass:''" [innerHTML]="item.value | almSearchHighlight: valueSearch.value"></span>
             </li>
           </ul>

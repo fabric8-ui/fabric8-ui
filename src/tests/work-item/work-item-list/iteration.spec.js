@@ -141,28 +141,25 @@ it('Re-Associate WI with Iteration from Kebab menu', function() {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0"); 
       browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
       detailPage.IterationOndetailPage().click();
-      detailPage.clickAssignIteration();
-      detailPage.associateIteration("Iteration 1");
+      detailPage.associateIterationById("id1");
       detailPage.saveIteration();
-      expect(detailPage.getAssociatedIteration()).toBe("Iteration 1");
+      expect(detailPage.getAssociatedIteration()).toBe("/Iteration 1");
       detailPage.clickWorkItemDetailCloseButton();
     });
 
    it('Re-Associate Workitem from detail page', function() {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0"); 
       detailPage.IterationOndetailPage().click();
-      detailPage.clickAssignIteration();
-      detailPage.associateIteration("Iteration 1");
+      detailPage.associateIterationById("id1");
       detailPage.saveIteration();
-      expect(detailPage.getAssociatedIteration()).toBe("Iteration 1");
+      expect(detailPage.getAssociatedIteration()).toBe("/Iteration 1");
       detailPage.clickWorkItemDetailCloseButton();
       // Re - assocaite
       page.clickWorkItemTitle(page.firstWorkItem, "id0");
       detailPage.IterationOndetailPage().click();
-      detailPage.clickAssignIteration();
-      detailPage.associateIteration("Iteration 0");
+      detailPage.associateIterationById("id0");
       detailPage.saveIteration();
-      expect(detailPage.getAssociatedIteration()).toBe("Iteration 0");
+      expect(detailPage.getAssociatedIteration()).toBe("/Iteration 0");
       detailPage.clickWorkItemDetailCloseButton();
     });
  
@@ -170,10 +167,9 @@ it('Re-Associate WI with Iteration from Kebab menu', function() {
     it('Filter Associate Workitem from detail page', function() {
        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0"); 
        detailPage.IterationOndetailPage().click();
-       detailPage.clickAssignIteration();
-       detailPage.associateIteration("Iteration 0");
+       detailPage.associateIterationById("id0");
        detailPage.saveIteration();
-       expect(detailPage.getAssociatedIteration()).toBe("Iteration 0");
+       expect(detailPage.getAssociatedIteration()).toBe("/Iteration 0");
        detailPage.clickWorkItemDetailCloseButton();
        page.clickExpandFutureIterationIcon();
        // expect(page.firstFutureIteration.getText()).toBe('somethi');

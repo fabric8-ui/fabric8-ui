@@ -41,70 +41,95 @@ describe('Work item list', function () {
   });
 
   /* User can read, update, remove assignee on a workitem  */
-//   it('User can read, update, remove assignee and delete WI', function() {
-//     page.clickWorkItemQuickAdd();
-//     page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
-//     page.clickQuickAddSave().then(function() {
-//       page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
+  it('User can read, update, remove assignee and delete WI', function() {
+    page.clickWorkItemQuickAdd();
+    page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
+    page.clickQuickAddSave().then(function() {
+      page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
 
-//         var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
-//         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');
+        var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
+        browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');
 
-//         detailPage.clickworkItemDetailAssigneeIcon();
-//         detailPage.setWorkItemDetailAssigneeSearch(EXAMPLE_USER_1, false);
-//         detailPage.clickAssignedUserDropDownList(EXAMPLE_USER_1);
-//         expect(detailPage.details_assigned_user().getText()).toContain(EXAMPLE_USER_1);
+        detailPage.clickworkItemDetailAssigneeIcon();
+        detailPage.setWorkItemDetailAssigneeSearch(EXAMPLE_USER_1, false);
+        detailPage.clickAssignedUserDropDownList(EXAMPLE_USER_1);
+        expect(detailPage.details_assigned_user().getText()).toContain(EXAMPLE_USER_1);
 
-//         detailPage.details_assigned_user().click();
-//         detailPage.clickworkItemDetailUnassignButton();
-//         // expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
-//         detailPage.clickWorkItemDetailCloseButton();
-//         page.clickWorkItemKebabButton(page.firstWorkItem);
-//         page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
-//         browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');
+        detailPage.details_assigned_user().click();
+        detailPage.clickworkItemDetailUnassignButton();
+        // expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
+        detailPage.clickWorkItemDetailCloseButton();
+        page.clickWorkItemKebabButton(page.firstWorkItem);
+        page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
+        browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');
 
-//         page.clickWorkItemPopUpDeleteConfirmButton().then(function() {
+        page.clickWorkItemPopUpDeleteConfirmButton().then(function() {
 
-// //        expect(page.workItemTitle(page.firstWorkItem)).not.toBe(WORK_ITEM_TITLE);
-// //        expect(page.workItemTitle(page.workItemByNumber(0))).not.toBe(WORK_ITEM_TITLE);
-//       });
-//       });
-//     });
-//   });
-
-  /* Create a new workitem, fill in the details, save, retrieve, update, save, verify updates are saved */
-  // it('should find and update the workitem through its detail page - desktop.', function() {
-
-  //   /* Create a new workitem */
-  //   page.clickWorkItemQuickAdd();
-  //   page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
-  //   page.typeQuickAddWorkItemDesc(WORK_ITEM_DESCRIPTION);
-  //   page.clickQuickAddSave().then(function() {
-  //     expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_TITLE);
-
-  //     /* Fill in/update the new work item's title and details field */
-  //     expect(page.workItemTitle(page.workItemByTitle(WORK_ITEM_TITLE))).toBe(WORK_ITEM_TITLE);
-
-  //     page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
-  //       var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
-  //       browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');
-
-  //       detailPage.clickWorkItemDetailTitleClick();
-  //       detailPage.setWorkItemDetailTitle (WORK_ITEM_UPDATED_TITLE, false);
-  //       detailPage.clickWorkItemTitleSaveIcon();
-  //       detailPage.clickWorkItemDetailDescription()
-  //       detailPage.setWorkItemDetailDescription (WORK_ITEM_UPDATED_DESCRIPTION, false);
-  //       detailPage.clickWorkItemDescriptionSaveIcon();
-
-  //       detailPage.clickWorkItemDetailCloseButton();
-  //       browser.wait(until.presenceOf(page.firstWorkItem), constants.WAIT, 'Failed to find workItemList');
-  //       expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_UPDATED_TITLE);
-  //     });
-  //   });
-  // });
+//        expect(page.workItemTitle(page.firstWorkItem)).not.toBe(WORK_ITEM_TITLE);
+//        expect(page.workItemTitle(page.workItemByNumber(0))).not.toBe(WORK_ITEM_TITLE);
+      });
+      });
+    });
+  });
 
   /* Create a new workitem, fill in the details, save, retrieve, update, save, verify updates are saved */
- it('Test Quick workitem visible without authorization - phone.', function () {
+  it('should find and update the workitem through its detail page - desktop.', function() {
+
+    /* Create a new workitem */
+    page.clickWorkItemQuickAdd();
+    page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
+    page.typeQuickAddWorkItemDesc(WORK_ITEM_DESCRIPTION);
+    page.clickQuickAddSave().then(function() {
+      expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_TITLE);
+
+      /* Fill in/update the new work item's title and details field */
+      expect(page.workItemTitle(page.workItemByTitle(WORK_ITEM_TITLE))).toBe(WORK_ITEM_TITLE);
+
+      page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
+        var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
+        browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');
+
+        detailPage.clickWorkItemDetailTitleClick();
+        detailPage.setWorkItemDetailTitle (WORK_ITEM_UPDATED_TITLE, false);
+        detailPage.clickWorkItemTitleSaveIcon();
+        detailPage.clickWorkItemDetailDescription()
+        detailPage.setWorkItemDetailDescription (WORK_ITEM_UPDATED_DESCRIPTION, false);
+        detailPage.clickWorkItemDescriptionSaveIcon();
+
+        detailPage.clickWorkItemDetailCloseButton();
+        browser.wait(until.presenceOf(page.firstWorkItem), constants.WAIT, 'Failed to find workItemList');
+        expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_UPDATED_TITLE);
+      });
+    });
+  });
+
+  /* Vary the order of execution of the workitems */
+  it('should top workitem to the bottom and back to the top via the workitem kebab - phone.', function() {
+
+    page.allWorkItems.count().then(function (text) {
+      var totalCount = text
+
+      /* Verify that the first work item is in the correct position */
+      expect(page.workItemTitle(page.workItemByIndex(0))).toBe(MOCK_WORKITEM_TITLE_0);
+      compareWorkitems (page, 0, MOCK_WORKITEM_TITLE_0);
+
+      /* Move the workitem to the bottom */
+      page.clickWorkItemKebabButton (page.workItemByTitle(MOCK_WORKITEM_TITLE_0)).then(function() {
+        page.clickWorkItemKebabMoveToBottomButton(page.workItemByTitle(MOCK_WORKITEM_TITLE_0));
+        compareWorkitems (page, totalCount - 1, MOCK_WORKITEM_TITLE_0);
+      });
+      /* And then move it back to the top  This is not working with chrome due to Kebab is hidden for bottom WI*/
+      // page.clickWorkItemKebabButton (page.workItemByTitle(MOCK_WORKITEM_TITLE_0)).then(function() {
+      //   page.clickWorkItemKebabMoveToTopButton(page.workItemByTitle(MOCK_WORKITEM_TITLE_0));
+      //   compareWorkitems (page, 0, MOCK_WORKITEM_TITLE_0);
+      // });
+
+    });
+
+  });
+
+  /* Test that the Quick add work item is visible */
+  it('Test Quick workitem visible without authorization - phone.', function () {
     page.clickLogoutButton().click();
     expect(page.quickAddbuttonById().isPresent()).toBeFalsy();
   });
@@ -166,20 +191,16 @@ it('check date showing up correctly - Desktop', function () {
    it('Re-Associate Workitem from detail page', function() {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0");
       detailPage.IterationOndetailPage().click();
-      detailPage.clickAssignIteration();
-      detailPage.iterationCaretdropdown().click();
-      detailPage.associateIteration("Iteration 1");
+      detailPage.associateIterationById("id1");
       detailPage.saveIteration();
-      expect(detailPage.getAssociatedIteration()).toBe("Iteration 1");
+      expect(detailPage.getAssociatedIteration()).toBe("/Iteration 1");
       detailPage.clickWorkItemDetailCloseButton();
       // Re - assocaite
       page.clickWorkItemTitle(page.firstWorkItem, "id0");
       detailPage.IterationOndetailPage().click();
-      detailPage.clickAssignIteration();
-      detailPage.iterationCaretdropdown().click();
-      detailPage.associateIteration("Iteration 0");
+      detailPage.associateIterationById("id0");
       detailPage.saveIteration();
-      expect(detailPage.getAssociatedIteration()).toBe("Iteration 0");
+      expect(detailPage.getAssociatedIteration()).toBe("/Iteration 0");
       detailPage.clickWorkItemDetailCloseButton();
     });
 
