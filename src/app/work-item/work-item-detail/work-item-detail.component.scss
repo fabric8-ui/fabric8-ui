@@ -54,6 +54,11 @@
   .detail-type-dropdown {
     position: relative;
     margin-left: -50px;
+    .saving-title {
+      padding-left: 0.6em;
+      font-size: 16px;
+      vertical-align: bottom;
+    }
   }
   .detail-id {
     font-weight: 700;

@@ -9,6 +9,10 @@
           <div class="dropdown-kebab-pf detail-type-dropdown col-sm-8">
             <span class="wi-type-icon fa {{workItem.relationships?.baseType?.data?.attributes?.icon}} fa-2x"></span>
             <span *ngIf="workItem.id" class="detail-id" id="wi-detail-id">{{workItem.id}}</span>
+            <span *ngIf="saving" class="saving-title">
+              <span class="spinner spinner-sm spinner-inline"></span>
+              Saving Work Item...
+            </span>
           </div>
             <!--Commenting type drop down related tests for issue 635
             <div class="pull-left dropdown-kebab-pf detail-type-dropdown" dropdown>
@@ -107,7 +111,7 @@
         <div class="form-group">
           <div class="detail-assignee-wrap">
               <label class="col-sm-2">
-                {{workItem.relationships?.baseType?.data?.attributes?.fields['system.assignees']?.label}}
+                {{workItem.relationships?.baseType?.data?.attributes?.fields['system.assignees']?.label || 'Label'}}
               </label>
               <span
                 *ngIf="!workItem.relationships?.assignees?.data?.length"
@@ -177,7 +181,7 @@
         </div>
         <!--Creator-->
         <div class="form-group">
-          <label class="col-sm-2">{{workItem.relationships?.baseType?.data?.attributes?.fields['system.creator']?.label}}</label>
+          <label class="col-sm-2">{{workItem.relationships?.baseType?.data?.attributes?.fields['system.creator']?.label || 'Label'}}</label>
           <span *ngIf="!workItem.relationships?.creator?.data"
             class="fa pficon-user user-creator-icon" id="user_creator_icon">
           </span>
@@ -196,7 +200,7 @@
         <!-- Areas -->
         <div class="form-group detail-area-wrap">
           <label class="col-sm-2" id="area_label">
-            {{workItem.relationships?.baseType?.data?.attributes?.fields['system.area']?.label}}
+            {{workItem.relationships?.baseType?.data?.attributes?.fields['system.area']?.label || 'Label'}}
           </label>
           <div class="col-sm-10 detail-area-name pull-left">
               <div *ngIf="!searchArea" (click)="activeSearchArea()"
@@ -237,7 +241,7 @@
         <!--Iteration-->
         <div class="form-group">
           <label class="col-sm-2">
-            {{workItem.relationships?.baseType?.data?.attributes?.fields['system.iteration']?.label}}
+            {{workItem.relationships?.baseType?.data?.attributes?.fields['system.iteration']?.label || 'Label'}}
           </label>
           <div class="pull-left detail-iteration-name">
             <span *ngIf="!searchIteration" (click)="lookupIterations()" class="pointer" id="iteration-assocaited">
