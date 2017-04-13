@@ -197,6 +197,7 @@
               </span>
           </div>
         </div>
+
         <!-- Areas -->        
         <div class="form-group detail-area-wrap">
           <label class="col-sm-2" id="area_label">
@@ -204,6 +205,7 @@
           </label>
           <typeahead-dropdown class="area-dropdown" #areaSelectbox [values]="extractAreaKeyValue(areas)" (onUpdate)="areaUpdated($event)"></typeahead-dropdown>
         </div>
+        
         <!--Iteration-->
         <div class="form-group">
           <label class="col-sm-2">
