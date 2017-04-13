@@ -202,10 +202,11 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
           this.iterationService.getIteration(workItem.relationships.iteration),
           this.workItemService.resolveAssignees(workItem.relationships.assignees),
           this.workItemService.resolveCreator2(workItem.relationships.creator),
+          this.workItemService.resolveComments(workItem.relationships.comments.links.related),
           this.workItemService.resolveLinks(workItem.links.self + '/relationships/links')
         );
       })
-      .subscribe(([workItem, workItemTypes, area, iteration, assignees, creator, [links, includes]]) => {
+      .subscribe(([workItem, workItemTypes, area, iteration, assignees, creator, comments, [links, includes]]) => {
 
         // Resolve area
         workItem.relationships.area = {
@@ -231,6 +232,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         workItem.relationships.creator = {
           data: creator
         };
+
+        // Resolve comments
+        workItem.relationships.comments = comments;
 
         // Resolve links
         workItem = Object.assign(
@@ -498,17 +502,18 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       retObservable = this.workItemService
         .update(payload)
         .switchMap(workItem => {
-          return Observable.forkJoin(
-            Observable.of(workItem),
-            this.workItemService.getWorkItemTypes(),
-            this.areaService.getArea(workItem.relationships.area),
-            this.iterationService.getIteration(workItem.relationships.iteration),
-            this.workItemService.resolveAssignees(workItem.relationships.assignees),
-            this.workItemService.resolveCreator2(workItem.relationships.creator),
-            this.workItemService.resolveLinks(workItem.links.self + '/relationships/links')
+        return Observable.forkJoin(
+          Observable.of(workItem),
+          this.workItemService.getWorkItemTypes(),
+          this.areaService.getArea(workItem.relationships.area),
+          this.iterationService.getIteration(workItem.relationships.iteration),
+          this.workItemService.resolveAssignees(workItem.relationships.assignees),
+          this.workItemService.resolveCreator2(workItem.relationships.creator),
+          this.workItemService.resolveComments(workItem.relationships.comments.links.related),
+          this.workItemService.resolveLinks(workItem.links.self + '/relationships/links')
         );
       })
-      .map(([workItem, workItemTypes, area, iteration, assignees, creator, [links, includes]]) => {
+      .map(([workItem, workItemTypes, area, iteration, assignees, creator, comments, [links, includes]]) => {
         // Resolve area
         workItem.relationships.area = {
           data: area
@@ -536,6 +541,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         workItem.relationships.creator = {
           data: creator
         };
+
+        // Resolve comments
+        workItem.relationships.comments = comments;
 
         // Resolve links
         workItem = Object.assign(
