@@ -63,7 +63,7 @@
               // &:after {
                 @include multiline-truncate($line-height: 1.5em, $line-count: 2, $bg-color: $color-pf-white);
               // }
-            }          
+            }
           }
         }
 
@@ -78,6 +78,8 @@
 
           .iteration-name{
             line-height: 1.5rem;
+            width: 100%;
+            display: inline-block;
           }
         }
 
@@ -107,6 +109,8 @@
         padding: em(5) em(15) em(5) em(40);
         .iteration-name{
             line-height: 1.5rem;
+            width: 100%;
+            display: inline-block;
           }
       }
 
