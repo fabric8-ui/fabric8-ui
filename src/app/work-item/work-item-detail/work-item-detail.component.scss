@@ -417,3 +417,6 @@
 .detail-action-btn {
   @include detail-action-btn;
 }
+.none-assigned {
+  color: $color-pf-blue;
+}

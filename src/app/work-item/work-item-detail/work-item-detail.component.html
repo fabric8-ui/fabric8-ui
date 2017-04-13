@@ -202,40 +202,47 @@
           <label class="col-sm-2" id="area_label">
             {{workItem.relationships?.baseType?.data?.attributes?.fields['system.area']?.label || 'Label'}}
           </label>
-          <div class="col-sm-10 detail-area-name pull-left">
-              <div *ngIf="!searchArea" (click)="activeSearchArea()"
-                class="pointer" id="WI_details_area">
-                {{ workItem.relationships?.area?.data?.attributes?.name || "None" }}
-              </div>
-              <div style="display: flex;">
-                <div *ngIf="searchArea" class="area-search">
-                  <div class="list-container">
-                    <span class="fa fa-search area-search-icon"> </span>
-                    <input id="areaSearchInput" #areaSearch (keyup)="filterArea($event)"
-                      autocomplete="off" />
-                    <ul class="item-ul area-list" #areaList>
-                      <li *ngIf="!areas.length" class="textCenter"><i class="fa fa-spinner fa-pulse"></i></li>
-                      <li *ngIf="!filteredAreas.length">No matches found.</li>
-                      <li
-                        class="item-li"
-                        *ngFor="let area of filteredAreas;"
-                        [attr.data-value]="area.id"
-                        (click)="showAreaOnInput(area)" [id]="area.id">
-                          <span [innerHTML]="area.attributes?.name | almSearchHighlight: areaSearch.value"></span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div *ngIf="searchArea" class="btn-bar"  >
-                  <button class="btn btn-lg btn-default" type="button" (click)=setArea()
-                    id="save_area" [disabled]="!filteredAreas.length || !selectedArea">
-                    <span class="fa fa-check" ></span>
-                  </button>
-                  <button class="btn btn-lg btn-default"  type="button" (click)=closeAreaDropdown()>
-                    <span class="pficon pficon-close" id="close_area" ></span>
-                  </button>
+          <div class="combobox-container col-sm-6 padding-0 detail-area-name">
+            <input type="hidden" name="" value="">
+            <span *ngIf="!searchArea" (click)="activeSearchArea()"
+               [class.none-assigned]="!workItem.relationships?.area?.data?.attributes?.name" class="pointer" id="WI_details_area">
+               {{ workItem.relationships?.area?.data?.attributes?.name || "None" }}
+            </span>
+            <div class="flex-container">
+              <div *ngIf="searchArea" class=" col-sm-6 padding-0">
+                <div class="input-group " dropdown>
+                  <input id="areaSearchInput" #areaSearch (keyup)="filterArea($event)" placeholder="Select Area"
+                    autocomplete="off"
+                    class="combobox form-control"/>
+                  <ul class="dropdown-menu typeahead typeahead-long" #areaList dropdownMenu>
+                    <li *ngIf="!areas.length" class="textCenter"><i class="fa fa-spinner fa-pulse"></i></li>
+                    <li *ngIf="!filteredAreas.length">No matches found.</li>
+                    <li
+                      class="item-li"
+                      *ngFor="let area of filteredAreas;"
+                      [attr.data-value]="area.id"
+                      (click)="showAreaOnInput(area)" [id]="area.id">
+                      <a class="truncate left-truncate">
+                        <span [innerHTML]="area.attributes?.name | almSearchHighlight: areaSearch.value">
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                  <span class="input-group-addon dropdown-toggle" dropdownToggle data-dropdown="dropdown" #areaClick>
+                    <span class="fa fa-search"></span>
+                    <span class="glyphicon glyphicon-remove"></span>
+                  </span>
                 </div>
               </div>
+              <div *ngIf="searchArea" class="col-sm-6">
+                <button class="btn btn-default detail-action-btn"  type="button" (click)=setArea() id="save_area">
+                  <span class="fa fa-check" ></span>
+                </button>
+                 <button class="btn btn-default detail-action-btn"  type="button" (click)=closeAreaDropdown()>
+                  <span class="pficon pficon-close" id="close_area" ></span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <!--Iteration-->
@@ -243,32 +250,40 @@
           <label class="col-sm-2">
             {{workItem.relationships?.baseType?.data?.attributes?.fields['system.iteration']?.label || 'Label'}}
           </label>
-          <div class="pull-left detail-iteration-name">
-            <span *ngIf="!searchIteration" (click)="lookupIterations()" class="pointer" id="iteration-assocaited">
-               {{ workItem.relationships?.iteration?.data?.attributes?.name || "None" }}
+          <div class="combobox-container detail-iteration-name col-sm-6 padding-0">
+            <input type="hidden" name="" value="">
+            <span *ngIf="!searchIteration" (click)="lookupIterations()" class="pointer"
+            [class.none-assigned]="!workItem.relationships?.iteration?.data?.attributes?.name"
+             id="iteration-assocaited">
+              {{ workItem.relationships?.iteration?.data?.attributes?.name || "None" }}
             </span>
-            <span *ngIf="searchIteration"
-              id="WI_details_iteration" dropdown>
-              <button class="btn btn-default" type="button" #dropdownButton
-                id="WI_details_iteration_dropdownbtn" data-toggle="dropdown" dropdownToggle>
-                {{ workItem.relationalData?.iteration?.attributes.name|| "None" }} <span class="caret"></span>
-              </button>
-              <ul role="menu" aria-labelledby="WI_details_iteration_dropdown" dropdownMenu>
-                <li *ngIf="!iterations.length" class="textCenter"><i class="fa fa-spinner fa-pulse"></i></li>
-                <li *ngFor="let iteration of iterations;" role="presentation">
-                  <a role="menuitem" tabindex="-1" (click)="selectIteration(iteration)">
-                    {{ iteration.attributes.name }}
-                  </a>
-                </li>
-              </ul>
-              <button class="btn btn-lg btn-default" type="button" (click)=assignIteration()
-                [disabled]="!selectedIteration" id="assign-iteration-savebtn">
-                <span class="fa fa-check"></span>
-              </button>
-              <button class="btn btn-lg btn-default" type="button" (click)=closeIteration() id="assign-iteration-closebtn">
-                <span class="pficon pficon-close"></span>
-              </button>
-            </span>
+            <div *ngIf="searchIteration" id="WI_details_iteration">
+              <div class="col-sm-6 padding-0">
+                <div class="input-group" dropdown>
+                  <input type="text" autocomplete="false" id="WI_details_iteration_dropdownbtn"
+                  placeholder="Select Iteration"
+                  value="{{ selectedIteration?.attributes?.name }}"
+                  class="combobox form-control">
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="WI_details_iteration_dropdown" dropdownMenu>
+                    <li *ngIf="!iterations.length" class="textCenter"><i class="fa fa-spinner fa-pulse"></i></li>
+                    <li *ngFor="let iteration of iterations;" role="presentation">
+                      <a role="menuitem" tabindex="-1" (click)="selectIteration(iteration)" class="truncate left-truncate">
+                        <span>{{ iteration.attributes?.name }}</span>
+                      </a>
+                    </li>
+                  </ul>
+                  <span class="input-group-addon dropdown-toggle" dropdownToggle data-dropdown="dropdown"> <span class="caret" id="iteration-caret"></span> <span class="glyphicon glyphicon-remove"></span> </span>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <button class="btn btn-default detail-action-btn" type="button" (click)=assignIteration() id="assign-iteration-savebtn">
+                  <span class="fa fa-check"></span>
+                </button>
+                <button class="btn btn-default detail-action-btn" type="button" (click)=closeIteration() id="assign-iteration-closebtn">
+                  <span class="pficon pficon-close"></span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
