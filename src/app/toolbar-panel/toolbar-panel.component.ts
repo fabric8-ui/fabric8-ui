@@ -252,12 +252,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     let params = cloneDeep(this.existingQueryParams);
     params['workitemtype'] = type.attributes.name;
 
-    // Clean up other filters on type selection
-    this.allowedFilterKeys.forEach((key) => delete params[key]);
-
     // Set this filter in filter service
     this.toolbarConfig.filterConfig.appliedFilters = [];
-    this.filterService.clearFilters(['workitemtype', ...this.allowedFilterKeys]);
+    this.filterService.clearFilters(['workitemtype']);
     this.filterService.setFilterValues('workitemtype', type.id);
 
     // Prepare navigation extra with query params
