@@ -143,7 +143,7 @@ it('Re-Associate WI with Iteration from Kebab menu', function() {
       detailPage.IterationOndetailPage().click();
       detailPage.associateIterationById("id1");
       detailPage.saveIteration();
-      expect(detailPage.getAssociatedIteration()).toBe("/Iteration 1");
+      expect(detailPage.getAssociatedIteration()).toBe("/Root Iteration/Iteration 1");
       detailPage.clickWorkItemDetailCloseButton();
     });
 
@@ -152,14 +152,14 @@ it('Re-Associate WI with Iteration from Kebab menu', function() {
       detailPage.IterationOndetailPage().click();
       detailPage.associateIterationById("id1");
       detailPage.saveIteration();
-      expect(detailPage.getAssociatedIteration()).toBe("/Iteration 1");
+      expect(detailPage.getAssociatedIteration()).toBe("/Root Iteration/Iteration 1");
       detailPage.clickWorkItemDetailCloseButton();
       // Re - assocaite
       page.clickWorkItemTitle(page.firstWorkItem, "id0");
       detailPage.IterationOndetailPage().click();
       detailPage.associateIterationById("id0");
       detailPage.saveIteration();
-      expect(detailPage.getAssociatedIteration()).toBe("/Iteration 0");
+      expect(detailPage.getAssociatedIteration()).toBe("/Root Iteration/Iteration 0");
       detailPage.clickWorkItemDetailCloseButton();
     });
  
@@ -169,7 +169,7 @@ it('Re-Associate WI with Iteration from Kebab menu', function() {
        detailPage.IterationOndetailPage().click();
        detailPage.associateIterationById("id0");
        detailPage.saveIteration();
-       expect(detailPage.getAssociatedIteration()).toBe("/Iteration 0");
+       expect(detailPage.getAssociatedIteration()).toBe("/Root Iteration/Iteration 0");
        detailPage.clickWorkItemDetailCloseButton();
        page.clickExpandFutureIterationIcon();
        // expect(page.firstFutureIteration.getText()).toBe('somethi');

@@ -9,7 +9,7 @@
     }
 
     .details-dropdown {
-      width: $width100;
+      width: 100%;
     }
 
     .btn-bar {
@@ -41,7 +41,7 @@
 
         input {
           outline: none;
-          width: $width100;
+          width: 100%;
           height: em(30);
           border: none;
           border-bottom: 1px solid $color-pf-black-500;

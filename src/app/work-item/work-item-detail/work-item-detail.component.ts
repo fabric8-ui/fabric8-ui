@@ -863,14 +863,16 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       selectedIterationId = this.workItem.relationships.iteration.data.id;
     } 
     for (let i=0; i<iterations.length; i++) {
-      result.push({
-        key: iterations[i].id,
-        value: iterations[i].attributes.resolved_parent_path + '/' + iterations[i].attributes.name,
-        selected: selectedIterationId===iterations[i].id?true:false,
-        cssLabelClass: undefined
-      });
-      if (selectedIterationId===iterations[i].id)
-        selectedFound = true;
+      if (!this.iterationService.isRootIteration(iterations[i])) {
+        result.push({
+          key: iterations[i].id,
+          value: iterations[i].attributes.resolved_parent_path + '/' + iterations[i].attributes.name,
+          selected: selectedIterationId===iterations[i].id?true:false,
+          cssLabelClass: undefined
+        });
+        if (selectedIterationId===iterations[i].id)
+          selectedFound = true;
+      }
     };
     // insert neutral element on index 0, setting it selected when no other selected entry was found.
     result.splice(0, 0, {
