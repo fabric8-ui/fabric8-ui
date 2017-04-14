@@ -25,6 +25,7 @@
           class="btn btn-default dropdown-toggle"
           (click)="emitSelectedField()" dropdownToggle>
           <span class="filter-option pull-left">{{currentValue || currentField.placeholder}}</span>
+          <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu" dropdownMenu>
           <li *ngIf="currentField.placeholder">
