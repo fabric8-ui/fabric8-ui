@@ -39,7 +39,7 @@ export class FilterFieldsComponent implements OnInit {
   currentValue: string;
   prevConfig: FilterConfig;
   show: boolean = false;
-  filteredList:any;
+  filteredList: any;
 
   constructor() {
   }
@@ -64,7 +64,7 @@ export class FilterFieldsComponent implements OnInit {
       this.config.fields = [];
     }
     if (this.config && this.config.tooltipPlacement === undefined) {
-      this.config.tooltipPlacement = "top";
+      this.config.tooltipPlacement = 'top';
     }
 
     let fieldFound: boolean = false;
@@ -79,6 +79,14 @@ export class FilterFieldsComponent implements OnInit {
     if (!fieldFound) {
       this.currentField = this.config.fields[0];
       this.currentValue = null;
+    } else {
+      // If current field is selected
+      // and current field is typeahead type
+      // assign queries value to filteredList
+      // Because filteredList is getting rendered for typeahead
+      if (this.currentField.type === 'typeahead') {
+        this.filteredList = _.cloneDeep(this.currentField.queries);
+      }
     }
     if (this.currentValue === undefined) {
       this.currentValue = null;
@@ -99,9 +107,9 @@ export class FilterFieldsComponent implements OnInit {
 
   selectField(field: FilterField): void {
     this.currentField = field;
-    if(field.type ==='typeahead') {
-      this.filteredList = this.currentField.queries;
-    };
+    if (field.type === 'typeahead') {
+      this.filteredList = _.cloneDeep(this.currentField.queries);
+    }
     this.currentValue = null;
   }
 
