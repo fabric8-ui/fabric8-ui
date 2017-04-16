@@ -185,7 +185,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       if (this.allowedFilterKeys.indexOf(key) > -1) {
         filterMap[key].datasource.take(1).subscribe(data => {
           const index = this.toolbarConfig.filterConfig.fields.findIndex(field => field.id === key);
-          this.toolbarConfig.filterConfig.fields[index].queries = filterMap[key].datamap(data);
+          this.toolbarConfig.filterConfig.fields[index].queries = filterMap[key].datamap(data).queries;
+          this.toolbarConfig.filterConfig.fields[index].primaryQueries = filterMap[key].datamap(data).primaryQueries;
           const selectedQuery = this.toolbarConfig.filterConfig.fields[index].queries.find(
             item => item.value === params[key]
           );
@@ -308,17 +309,34 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     return {
       area: {
         datasource: this.areaService.getAreas(),
-        datamap: (areas) => areas.map(area => {return {id: area.id, value: area.attributes.name}}),
+        datamap: (areas) => {
+          return {
+            queries: areas.map(area => {return {id: area.id, value: area.attributes.name}}),
+            primaryQueries: []
+          }
+        },
         getvalue: (area) => area.attributes.name
       },
       assignee: {
-        datasource: this.collaboratorService.getCollaborators(),
-        datamap: (users) => users.map(user => {return {id: user.id, value: user.attributes.username, imageUrl: user.attributes.imageURL}}),
+        datasource: Observable.combineLatest(this.collaboratorService.getCollaborators(), this.userService.getUser()).do(item => console.log(item)),
+        datamap: ([users, authUser]) => {
+          return {
+            queries: users.map(user => {return {id: user.id, value: user.attributes.username, imageUrl: user.attributes.imageURL}}),
+            primaryQueries: Object.keys(authUser).length ?
+              [{id: authUser.id, value: authUser.attributes.username, imageUrl: authUser.attributes.imageURL}, {id: 'none', value: 'Unassigned'}] :
+              [{id: 'none', value: 'Unassigned'}]
+          }
+        },
         getvalue: (user) => user.attributes.username
       },
       workitemtype: {
         datasource: this.workItemService.getWorkItemTypes(),
-        datamap: (witypes) => witypes.map(witype => {return {id: witype.id, value: witype.attributes.name, iconClass: witype.attributes.icon}}),
+        datamap: (witypes) => {
+          return {
+            queries: witypes.map(witype => {return {id: witype.id, value: witype.attributes.name, iconClass: witype.attributes.icon}}),
+            primaryQueries: []
+          }
+        },
         getvalue: (type) => type.attributes.name
       }
     }
@@ -330,7 +348,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       const index = this.filterConfig.fields.findIndex(i => i.id === data.id);
       if (this.filterConfig.fields[index].queries.length === 0) {
         filterMap[data.id].datasource.subscribe(resp => {
-          this.filterConfig.fields[index].queries = filterMap[data.id].datamap(resp);
+          this.filterConfig.fields[index].queries = filterMap[data.id].datamap(resp).queries;
+          this.filterConfig.fields[index].primaryQueries = filterMap[data.id].datamap(resp).primaryQueries;
         })
       }
     }
