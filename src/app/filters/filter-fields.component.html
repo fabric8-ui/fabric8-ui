@@ -49,7 +49,7 @@
         <div class="pull-left typeahead-input-container" (click)="emitSelectedField()" dropdownToggle>
           <input #searchField class="form-control" type="text" placeholder="{{currentField.placeholder}}"
           [(ngModel)]="currentValue" (ngModelChange)="filterList($event)">
-          <span (click)="input.focus()" class="caret"></span>
+          <span (click)="searchField.focus()" class="caret"></span>
         </div>
           <ul class="dropdown-menu" role="menu" dropdownMenu>
             <li *ngIf="currentField.placeholder">
@@ -57,6 +57,15 @@
                 {{currentField.placeholder}}
               </a>
             </li>
+            <li *ngFor="let query of currentField.primaryQueries"
+              [ngClass]="{'selected': query.value === currentValue}">
+              <a role="menuitem" tabindex="-1" (click)="selectValue(query)">
+                <span *ngIf="query?.iconClass" class="fa {{query?.iconClass}}"></span>
+                <img class="avatar" *ngIf="query?.imageUrl" [attr.src]="query?.imageUrl" />
+                  <span [innerHTML]="query.value"></span>
+              </a>
+            </li>
+            <li *ngIf="currentField?.primaryQueries?.length" class="divider dropdown-divider"></li>
             <li *ngFor="let query of filteredList"
               [ngClass]="{'selected': query.value === currentValue}">
               <a role="menuitem" tabindex="-1" (click)="selectValue(query)">
