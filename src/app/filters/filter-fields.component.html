@@ -47,12 +47,11 @@
     <div *ngIf="currentField.type === 'typeahead'">
       <div class="btn-group bootstrap-select form-control filter-select" dropdown>
         <div class="pull-left typeahead-input-container" (click)="emitSelectedField()" dropdownToggle>
-          <input #input class="form-control" type="{{currentField.type}}" [(ngModel)]="currentValue"
-            placeholder="{{currentField.placeholder}}" (keypress)="onValueKeyPress($event)"
-            (keyup)="filterList($event)" #searchField>
+          <input #searchField class="form-control" type="text" placeholder="{{currentField.placeholder}}"
+          [(ngModel)]="currentValue" (ngModelChange)="filterList($event)">
           <span (click)="input.focus()" class="caret"></span>
         </div>
-          <ul class="dropdown-menu" role="menu" #listData dropdownMenu>
+          <ul class="dropdown-menu" role="menu" dropdownMenu>
             <li *ngIf="currentField.placeholder">
               <a role="menuitem" tabindex="-1" (click)="selectValue()">
                 {{currentField.placeholder}}
