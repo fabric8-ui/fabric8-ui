@@ -16,6 +16,7 @@ import {
   TooltipModule
 } from 'ng2-bootstrap';
 
+import { AlmSearchHighlightModule } from './../pipes/alm-search-highlight.module';
 import { Filter } from './filter';
 import { FilterComponent } from './filter.component';
 import { FilterConfig } from './filter-config';
@@ -123,7 +124,10 @@ describe('Filter component - ', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, FormsModule, DropdownModule, TooltipModule],
+      imports: [
+        BrowserAnimationsModule, FormsModule, DropdownModule,
+        TooltipModule, AlmSearchHighlightModule
+      ],
       declarations: [FilterComponent, FilterFieldsComponent, FilterResultsComponent],
       providers: [ComponentLoaderFactory, DropdownConfig, PositioningService, TooltipConfig]
     })
@@ -138,7 +142,7 @@ describe('Filter component - ', () => {
 
   it('should have correct number of filter fields', function () {
     let fields = fixture.debugElement.queryAll(By.css('.filter-field'));
-    expect(fields.length).toBe(4);
+    expect(fields.length).toBe(5);
   });
 
   it('should have correct number of results', function () {
@@ -157,7 +161,9 @@ describe('Filter component - ', () => {
 
     results = fixture.debugElement.query(By.css('h5'));
     expect(results).not.toBeNull();
-    expect(results.nativeElement.textContent.trim().slice(0, '10 Results'.length)).toBe('10 Results');
+    expect(
+      results.nativeElement.textContent.trim().slice(0, '10 Results'.length)
+    ).toBe('10 Results');
   });
 
   it('should show active filters and clear filters button when there are filters', function () {

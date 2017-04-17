@@ -18,6 +18,7 @@ import {
 
 import { Action } from '../config/action';
 import { ActionsConfig } from '../config/actions-config';
+import { AlmSearchHighlightModule } from './../pipes/alm-search-highlight.module';
 import { Filter } from '../filters/filter';
 import { FilterConfig } from '../filters/filter-config';
 import { FilterField } from '../filters/filter-field';
@@ -199,8 +200,14 @@ describe('Toolbar component - ', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, FormsModule, DropdownModule, TooltipModule],
-      declarations: [ToolbarComponent, FilterFieldsComponent, FilterResultsComponent, SortComponent],
+      imports: [
+        BrowserAnimationsModule, FormsModule,
+        DropdownModule, TooltipModule, AlmSearchHighlightModule
+      ],
+      declarations: [
+        ToolbarComponent, FilterFieldsComponent,
+        FilterResultsComponent, SortComponent
+      ],
       providers: [ComponentLoaderFactory, DropdownConfig, PositioningService, TooltipConfig]
     })
         .compileComponents()
