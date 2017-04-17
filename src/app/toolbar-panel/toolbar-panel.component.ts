@@ -178,7 +178,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
         delete params[key]
       }
     });
-
     // Apply each param from URL that is allowed here
     // to the filter
     Object.keys(params).forEach((key, i) => {
@@ -187,7 +186,10 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
           const index = this.toolbarConfig.filterConfig.fields.findIndex(field => field.id === key);
           this.toolbarConfig.filterConfig.fields[index].queries = filterMap[key].datamap(data).queries;
           this.toolbarConfig.filterConfig.fields[index].primaryQueries = filterMap[key].datamap(data).primaryQueries;
-          const selectedQuery = this.toolbarConfig.filterConfig.fields[index].queries.find(
+          const selectedQuery = [
+            ...this.toolbarConfig.filterConfig.fields[index].queries,
+            ...this.toolbarConfig.filterConfig.fields[index].primaryQueries,
+          ].find(
             item => item.value === params[key]
           );
           if (selectedQuery) {
@@ -197,6 +199,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
               value: params[key]
             });
             this.filterService.setFilterValues(key, selectedQuery.id);
+            // When all the params are resolved
+            // Apply the filter
             if (Object.keys(params).length - 1 == i) {
               this.filterService.applyFilter();
             }
@@ -372,27 +376,28 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       this.queryParamSubscriber =
         this.route.queryParams.subscribe((params) => {
           this.existingQueryParams = params;
-
-          // on no params
-          if (!Object.keys(params).length ||
-            (Object.keys(this.existingQueryParams).length === 1
-              && Object.keys(this.existingQueryParams).indexOf('iteration') > -1)) {
-            // Cleaning up applied filters
-            this.toolbarConfig.filterConfig.appliedFilters = [];
-          } else {
-            if (Object.keys(this.existingQueryParams).length
-              && Object.keys(this.existingQueryParams).some(i => this.allowedFilterKeys.indexOf(i) > -1)) {
-              if (this.internalFilterChange) {
-                this.filterService.applyFilter();
-                this.internalFilterChange = false;
-              } else {
-                this.toolbarConfig.filterConfig.appliedFilters = [];
-                this.filterService.clearFilters(this.allowedFilterKeys);
-                this.setAppliedFilterFromUrl();
-              }
+          // If any of the allowed key present in the URL
+          if (Object.keys(this.existingQueryParams).some(i => this.allowedFilterKeys.indexOf(i) > -1)) {
+            // Changing filter internally
+            if (this.internalFilterChange) {
+              this.filterService.applyFilter();
+              this.internalFilterChange = false;
+            }
+            // Applying filters on page reload or first load
+            else {
+              // Cleaning up because it will reset in setAppliedFilterFromUrl
+              this.toolbarConfig.filterConfig.appliedFilters = [];
+              // Cleaning filters in service as it will reset in setAppliedFilterFromUrl
+              this.filterService.clearFilters(this.allowedFilterKeys);
+              this.setAppliedFilterFromUrl();
             }
           }
-        })
+          // Else clear the applied filter section
+          else {
+            this.filterService.clearFilters(this.allowedFilterKeys);
+            this.toolbarConfig.filterConfig.appliedFilters = [];
+          }
+      });
     }
   }
 }

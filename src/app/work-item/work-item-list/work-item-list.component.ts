@@ -86,8 +86,9 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
   private nextLink: string = '';
   private wiSubscriber: any = null;
   private allowedFilterParams: string[] = ['iteration'];
-  private existingQueryParams: Object = {};
+  private urlListener: any = null;
   private loggedInUser: User | Object = {};
+  private appliedIterationFilter: string = '';
 
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
@@ -123,17 +124,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
     if (this.loggedIn) {
       this.treeListOptions['allowDrag'] = true;
     }
-    this.spaceSubscription = this.spaces.current.subscribe(space => {
-      if (space) {
-        console.log('[WorkItemListComponent] New Space selected: ' + space.attributes.name);
-        this.workItemService.resetWorkItemList();
-        this.loadWorkItems();
-      } else {
-        console.log('[WorkItemListComponent] Space deselected');
-        this.workItems = [];
-        this.workItemService.resetWorkItemList();
-      }
-    });
   }
 
   ngAfterViewInit() {
@@ -151,13 +141,26 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
   ngOnDestroy() {
     console.log('Destroying all the listeners in list component');
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
+    this.spaceSubscription.unsubscribe();
+    this.urlListener.unsubscribe();
+    this.urlListener = null;
   }
 
   // model handlers
 
   initWiItems(event: any): void {
     this.pageSize = event.pageSize;
-    this.loadWorkItems();
+    this.spaceSubscription = this.spaces.current.subscribe(space => {
+      if (space) {
+        console.log('[WorkItemListComponent] New Space selected: ' + space.attributes.name);
+        this.workItemService.resetWorkItemList();
+        this.loadWorkItems();
+      } else {
+        console.log('[WorkItemListComponent] Space deselected');
+        this.workItems = [];
+        this.workItemService.resetWorkItemList();
+      }
+    });
   }
 
 
@@ -178,14 +181,20 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
       this.workItemTypes = items[2];
       this.areas = items[3];
       this.loggedInUser = items[4];
-      if (Object.keys(this.existingQueryParams).indexOf('iteration') > -1) {
+
+      // If there is an iteration filter on the URL
+      const queryParams = this.route.snapshot.queryParams;
+      if (Object.keys(queryParams).indexOf('iteration') > -1) {
         const iteration = iterations.find(it => {
           return it.attributes.resolved_parent_path + '/' + it.attributes.name
-            === this.existingQueryParams['iteration'];
+            === queryParams['iteration'];
         })
+        this.appliedIterationFilter = queryParams['iteration'];
         if (iteration) {
           this.filterService.setFilterValues('iteration', iteration.id);
         }
+      } else {
+        this.appliedIterationFilter = '';
       }
     })
     .switchMap((items) => {
@@ -200,6 +209,13 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
       )
     })
     .subscribe(([iterations, users, wiTypes, workItemResp]) => {
+      // If this is the first time
+      // and we are not listening to the URL
+      // start listening to the URLs now on
+      if (this.urlListener === null) {
+        this.listenToUrls()
+      }
+
       const workItems = workItemResp.workItems;
       this.nextLink = workItemResp.nextLink;
       this.workItems = this.workItemService.resolveWorkItems(
@@ -370,12 +386,12 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
     );
     //Filters like iteration should clear the previous filter
     //and then set the current selected value
-    this.eventListeners.push(
-      this.broadcaster.on<string>('unique_filter')
-        .subscribe((filters: any) => {
-          this.loadWorkItems();
-      })
-    );
+    // this.eventListeners.push(
+    //   this.broadcaster.on<string>('unique_filter')
+    //     .subscribe((filters: any) => {
+    //       this.loadWorkItems();
+    //   })
+    // );
 
     this.eventListeners.push(
       this.broadcaster.on<string>('move_item')
@@ -435,27 +451,28 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
         this.selectedWorkItemEntryComponent.deselect();
       })
     );
+  }
 
-    this.eventListeners.push(
+  // Only start listening to the URL once the first call is done
+  listenToUrls() {
+    this.urlListener =
       this.route.queryParams.subscribe((params) => {
-        this.existingQueryParams = params;
         // on no params
         if (!Object.keys(params).length) {
           // Cleaning up filters from filter service
           this.filterService.clearFilters();
           // Apply all cleaned up filters
           this.filterService.applyFilter();
-        } else if(Object.keys(params).length &&
-          Object.keys(params).indexOf('iteration') > -1) {
-          if (Object.keys(params).length === 1) {
-            this.filterService.clearFilters();
+        } else if(Object.keys(params).indexOf('iteration') > -1) {
+          // If already applied iteration is not equal to currently
+          // applied iteration in the URL then reload work items
+          if (this.appliedIterationFilter !== params['iteration']) {
+            this.loadWorkItems();
           } else {
             this.filterService.clearFilters(this.allowedFilterParams);
           }
-          this.loadWorkItems();
         }
-      })
-    );
+      });
   }
 
   onDragStart() {
