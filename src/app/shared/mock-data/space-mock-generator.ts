@@ -3,12 +3,12 @@
  * This class contains mock generator code for spaces.
  */
 export class SpaceMockGenerator {
-  
+
   /*
    * Creates an array of 25 mock spaces with IDs 'space-id0' to 'space-id25'.
-   * Other data structures in the mock generator rely on the id naming, 
+   * Other data structures in the mock generator rely on the id naming,
    * creating a consistent mock data. Keep in mind when changing this code.
-   */ 
+   */
   public createSpaces(): any {
     let spaces = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].map((n) => {
       return {
@@ -21,7 +21,8 @@ export class SpaceMockGenerator {
         },
         'id': 'space-id' + n,
         'links': {
-          'self': 'http://mock.service/api/spaces/space-id' + n
+          'self': 'http://mock.service/api/spaces/space-id' + n,
+          'filters': 'http://mock.service/api/spaces/space-id' + n + '/filters',
         },
         'relationships': {
           'iterations': {
@@ -32,6 +33,21 @@ export class SpaceMockGenerator {
           'areas': {
             'links': {
               'related': 'http://mock.service/api/spaces/space-id' + n + '/areas'
+            }
+          },
+          'codebases': {
+            'links': {
+              'related': 'http://mock.service/api/spaces/space-id' + n + '/codebases'
+            }
+          },
+          'collaborators': {
+            'links': {
+              'related': 'http://mock.service/api/spaces/space-id' + n + '/collaborators'
+            }
+          },
+          'workitems': {
+            'links': {
+              'related': 'http://mock.service/api/spaces/space-id' + n + '/workitems'
             }
           }
         },
@@ -46,7 +62,7 @@ export class SpaceMockGenerator {
     var d = new Date();
     if (numberDate == 0) {
       //return current date/time
-       return d; 
+       return d;
     }else if (numberDate == 1){
       d.setMinutes(d.getMinutes() - 17);
       // this gives date which is 17 minutes ago from current date

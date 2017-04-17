@@ -9,6 +9,7 @@ import { WorkItem } from '../models/work-item';
 import { SchemaMockGenerator } from './mock-data/schema-mock-generator';
 import { WorkItemMockGenerator } from './mock-data/work-item-mock-generator';
 import { UserMockGenerator } from './mock-data/user-mock-generator';
+import { FilterMockGenerator } from './mock-data/filter-mock-generator';
 import { SpaceMockGenerator } from './mock-data/space-mock-generator';
 import { AreaMockGenerator } from './mock-data/area-mock-generator';
 import { IterationMockGenerator } from './mock-data/iteration-mock-generator';
@@ -25,8 +26,8 @@ import { IterationMockGenerator } from './mock-data/iteration-mock-generator';
     original behaviour. Also, the returnes references ARE RE-USED, so data could
     change without this class noticing it! THIS HAPPENS. IT HAPPENED. IT SUCKS!
 
-  ANOTHER NOTE, ALSO IMPORTANT: 
-    This is some sort of inmemory database. The whole thing relies on being a 
+  ANOTHER NOTE, ALSO IMPORTANT:
+    This is some sort of inmemory database. The whole thing relies on being a
     singleton for the whole application. If you use this class, make sure there
     is only one instance in existence! If you have more than one instance of this,
     you will get weird errors, data values jumping around and you will have a fun
@@ -39,6 +40,7 @@ export class MockDataService {
   private schemaMockGenerator: SchemaMockGenerator = new SchemaMockGenerator();
   private workItemMockGenerator: WorkItemMockGenerator = new WorkItemMockGenerator();
   private userMockGenerator: UserMockGenerator = new UserMockGenerator();
+  private filterMockGenerator: FilterMockGenerator = new FilterMockGenerator();
   private spaceMockGenerator: SpaceMockGenerator = new SpaceMockGenerator();
   private iterationMockGenerator: IterationMockGenerator = new IterationMockGenerator();
   private areaMockGenerator: AreaMockGenerator = new AreaMockGenerator();
@@ -251,14 +253,14 @@ export class MockDataService {
           if (typeof(workItem.relationships.iteration) !== 'undefined') {
             if (workItem.relationships.iteration.data)
               this.workItems[i].relationships.iteration.data = this.getIteration(workItem.relationships.iteration.data.id);
-            else 
+            else
               this.workItems[i].relationships.iteration = {};
           }
           // Area update
           else if (typeof(workItem.relationships.area) !== 'undefined') {
             if (workItem.relationships.area.data)
               this.workItems[i].relationships.area.data = this.getArea(workItem.relationships.area.data.id);
-            else 
+            else
               this.workItems[i].relationships.area = {};
           }
           // Assignee update
@@ -370,6 +372,10 @@ export class MockDataService {
     };
   }
 
+  public getFilters() {
+    return this.filterMockGenerator.getFilters();
+  }
+
   // spaces
   public getAllSpaces(): any {
     return this.spaces;
@@ -398,7 +404,7 @@ export class MockDataService {
         for (var j = 0; j < this.workItems.length; j++) {
           if (this.workItems[j].attributes['system.state']==='closed')
             thisIteration.relationships.workitems.meta.closed++;
-        }          
+        }
         console.log('Got count for root iteration: ' + thisIteration.relationships.workitems.meta.total);
       } else {
         // standard iteration

@@ -59,14 +59,14 @@ export class MockHttp extends HttpService {
           params[item[0]] = decodeURIComponent(item[1]);
         }
       });
-      // cut off first path element      
+      // cut off first path element
       var result = {
         path: a['pathname'].replace(/^\/[^\/]+\//, '/'),
         host: a['host'],
         port: a['port'],
         params: params
       };
-        
+
       // parse extra paths based on resource
       if (result.path.indexOf('/workitems/') == 0) {
         result['extraPath'] = result.path.replace(/^\/workitems\//, '');
@@ -211,6 +211,12 @@ export class MockHttp extends HttpService {
           }
         case '/users':
           return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getAllUsers() } );
+
+        case '/collaborators':
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getAllUsers() } );
+
+        case '/filters':
+          return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.getFilters() } );
         case '/work-item-list':
           if (path.params['name']) {
             return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.searchWorkItem(path.params['name']) } );

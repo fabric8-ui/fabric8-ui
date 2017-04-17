@@ -143,7 +143,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
     this.spaceSubscription.unsubscribe();
     this.urlListener.unsubscribe();
-    this.urlListener = null;
   }
 
   // model handlers
@@ -461,8 +460,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
         if (!Object.keys(params).length) {
           // Cleaning up filters from filter service
           this.filterService.clearFilters();
-          // Apply all cleaned up filters
-          this.filterService.applyFilter();
         } else if(Object.keys(params).indexOf('iteration') > -1) {
           // If already applied iteration is not equal to currently
           // applied iteration in the URL then reload work items

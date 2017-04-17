@@ -18,7 +18,8 @@ export class UserMockGenerator {
       this.user = {
         attributes: {
           fullName: 'Example User 0',
-          imageURL: 'https://avatars.githubusercontent.com/u/2410471?v=3'
+          imageURL: 'https://avatars.githubusercontent.com/u/2410471?v=3',
+          username: 'example 0'
         },
         id: 'user0',
         type: 'identities'
