@@ -22,8 +22,10 @@ import { Broadcaster, Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 
 import { AuthUserResolve, UsersResolve } from '../common.resolver';
-import { FabPlannerAssociateIterationModalComponent } from '../work-item-iteration-association-modal/work-item-iteration-association-modal.component';
 import { GlobalSettings } from '../../shared/globals';
+import {
+  FabPlannerAssociateIterationModalModule
+} from '../work-item-iteration-association-modal/work-item-iteration-association-modal.module';
 import { IterationModule } from '../../iteration/iteration.module';
 import { PlannerListRoutingModule } from './planner-list-routing.module';
 import { SidepanelModule } from '../../side-panel/side-panel.module';
@@ -76,6 +78,7 @@ if (process.env.ENV == 'inmemory') {
     CommonModule,
     DialogModule,
     DropdownModule,
+    FabPlannerAssociateIterationModalModule,
     HttpModule,
     InfiniteScrollModule,
     IterationModule,
@@ -92,7 +95,6 @@ if (process.env.ENV == 'inmemory') {
     WorkItemDetailAddTypeSelectorModule
   ],
   declarations: [
-    FabPlannerAssociateIterationModalComponent,
     WorkItemListComponent,
     WorkItemListEntryComponent
   ],

@@ -26,6 +26,9 @@ import { HttpService } from './../../shared/http-service';
 
 import { AlmFilterBoardList } from '../../pipes/alm-board-filter.pipe';
 import { AuthUserResolve, UsersResolve } from '../common.resolver';
+import {
+  FabPlannerAssociateIterationModalModule
+} from '../work-item-iteration-association-modal/work-item-iteration-association-modal.module';
 import { GlobalSettings } from '../../shared/globals';
 import { IterationModule } from '../../iteration/iteration.module';
 import { PlannerBoardRoutingModule } from './planner-board-routing.module';
@@ -80,6 +83,7 @@ if (process.env.ENV == 'inmemory') {
     DialogModule,
     DragulaModule,
     DropdownModule,
+    FabPlannerAssociateIterationModalModule,
     HttpModule,
     InfiniteScrollModule,
     IterationModule,

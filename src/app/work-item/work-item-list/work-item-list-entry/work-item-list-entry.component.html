@@ -48,7 +48,7 @@
 				<li><a class="workItemList_MoveTop" (click)="onMoveToTop($event)">Move to Top</a></li>
 				<li><a class="workItemList_MoveBottom" (click)="onMoveToBottom($event)">Move to Bottom</a></li>
 				<li role="presentation" class="divider"></li>
-				<li><a class="workItemList_Iteration" (click)="associateIterationModal.open()">Associate with Iteration...</a></li>
+				<li><a class="workItemList_Iteration" (click)="associateIterationModal.open($event)">Associate with Iteration...</a></li>
 				<li role="presentation" class="divider"></li>
 				<li><a [routerLink]="['./detail/' + workItem.id]" class="workItemList_Open">Open</a></li>
 				<li><a class="workItemList_Delete" (click)="confirmDelete($event)">Delete</a></li>

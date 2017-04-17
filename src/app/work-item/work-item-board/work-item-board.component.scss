@@ -87,7 +87,7 @@
     }
   }
 .side-panel-container {
-    background-color: $color-pf-black-900;
+  background-color: $color-pf-black-900;
 }
 .work-item-page {
   display: flex;
@@ -130,6 +130,7 @@
   .dropdown {
     a {
       cursor: pointer;
+      color: $color-pf-dark;
     }
   }
   .with-cursor-pointer {

@@ -25,6 +25,7 @@ import { Space, Spaces } from 'ngx-fabric8-wit';
 import { AuthenticationService, User, UserService } from 'ngx-login-client';
 import { ArrayCount } from 'ngx-widgets';
 import { DragulaService } from 'ng2-dragula';
+import { Dialog } from 'ngx-widgets';
 
 import { IterationModel } from './../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
@@ -59,6 +60,8 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   private workItemTypes: WorkItemType[] = [];
   private readyToInit = false;
   eventListeners: any[] = [];
+  dialog: Dialog;
+  showDialog = false;
 
   constructor(
     private auth: AuthenticationService,
@@ -226,6 +229,49 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   gotoDetail(workItem: WorkItem) {
     let link = trimEnd(this.router.url.split('detail')[0], '/') + '/detail/' + workItem.id;
     this.router.navigateByUrl(link);
+  }
+
+  kebabClick(event: any): void {
+    event.stopPropagation();
+  }
+
+  openDetail(event: any): void {
+    event.stopPropagation();
+  }
+
+  confirmDelete(event: MouseEvent) {
+    event.stopPropagation();
+    this.dialog = {
+      'title': 'Confirm deletion of Work Item',
+      'message': 'Are you sure you want to delete Work Item - ' + this.workItem.attributes['system.title'] + ' ?',
+      'actionButtons': [
+        {'title': 'Confirm', 'value': 1, 'default': false},
+        {'title': 'Cancel', 'value': 0, 'default': true}
+      ]
+    } as Dialog;
+    this.showDialog = true;
+  }
+
+  onButtonClick(val: number) {
+    // callback from the confirm delete dialog
+    if (val == 1) {
+      this.onDelete(null);
+    }
+    this.showDialog = false;
+  }
+
+  onMoveToBacklog(event: any): void {
+    alert('Not Implemented yet');
+    event.stopPropagation();
+  }
+
+  onDelete(event: MouseEvent): void {
+    if (event)
+      event.stopPropagation();
+    this.workItemService.delete(this.workItem)
+    .subscribe(() => {
+      console.log('Deleted');
+    });
   }
 
   onTouchstart(event: any) {

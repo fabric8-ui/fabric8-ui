@@ -1,4 +1,11 @@
-import { Component, ViewChild, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  OnChanges } from '@angular/core';
 
 import { Broadcaster, Logger } from 'ngx-base';
 import {
@@ -97,7 +104,8 @@ export class FabPlannerAssociateIterationModalComponent implements OnInit, OnCha
       });
   }
 
-  open() {
+  open(event: any) {
+    event.stopPropagation();
     this.iterationAssociationModal.open();
   }
 }

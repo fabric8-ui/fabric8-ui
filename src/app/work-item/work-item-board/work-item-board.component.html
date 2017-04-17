@@ -42,17 +42,16 @@
                           <span class="wi-type-icon fa {{item.relationships?.baseType?.data?.attributes?.icon}}"></span>
                           <span class=""> {{item.id}} </span>
                         </div>
-                        <span dropdown>
-                          <button class="btn btn-link color-grey" type="button" dropdownToggle>
+                        <span class="dropdown-kebab-pf" dropdown>
+                          <button class="btn btn-link color-grey" type="button" aria-haspopup="true" aria-expanded="true" (click)="kebabClick($event)" dropdownToggle>
                             <span class="fa fa-ellipsis-v"></span>
                           </button>
-                          <ul class="dropdown-menu-right" dropdownMenu>
-                            <li><a class="workItemList_MoveTop">Move to Top</a></li>
-                            <li><a class="workItemList_MoveBottom">Move to Bottom</a></li>
-                            <li class="divider" role="presentation"></li>
-                            <li><a class="workItemList_Open" routerLink="./detail/{{item.id}}">Open</a></li>
-                            <li><a class="workItemList_Delete">Delete</a></li>
-                            <li><a class="workItemList_Backlog">Move to Backlog</a></li>
+                          <ul class="dropdown-menu-right" aria-labelledby="dropdownKebabRight" dropdownMenu>
+                            <li><a class="workItemList_Iteration" (click)="associateIterationModal.open($event)">Associate with Iteration...</a></li>
+                            <li role="presentation" class="divider"></li>
+                            <li><a [routerLink]="['./detail/' + item.id]" class="workItemList_Open" (click)="openDetail($event)">Open</a></li>
+                            <li><a class="workItemList_Delete" (click)="confirmDelete($event)">Delete</a></li>
+                            <li><a class="workItemList_Backlog" (click)="onMoveToBacklog($event)">Move to Backlog</a></li>
                           </ul>
                         </span>
                       </div>
@@ -70,6 +69,11 @@
                           <span *ngIf="!item.relationships?.assignees?.data?.length" class="pficon-user not-assigned-user-icon"></span>
                         </div>
                       </div>
+                      <fab-planner-associate-iteration-modal
+                        [workItem]="item"
+                        [iterations]="iterations"
+                        #associateIterationModal>
+                      </fab-planner-associate-iteration-modal>
                     </div>
                   </div>
                 </div>
@@ -87,3 +91,10 @@
   [takeFromInput]="true"
   [wiTypes]="workItemTypes">
 </detail-add-type-selector>
+
+<div *ngIf="showDialog">
+	<alm-dialog
+		(pfDialogClick)="onButtonClick($event)"
+		[dialog]='dialog'
+  ></alm-dialog>
+</div>
