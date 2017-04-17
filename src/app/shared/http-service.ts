@@ -46,7 +46,7 @@ export class HttpService extends Http {
     console.log('GET request initiated');
     console.log('URL - ', url);
     console.log('Options - ', options);
-    return super.get(url, { headers: this.headers });
+    return super.get(url, { headers: this.headers, search:options });
   }
 
   post(url: string, body: any, options: RequestOptionsArgs = {}) {
