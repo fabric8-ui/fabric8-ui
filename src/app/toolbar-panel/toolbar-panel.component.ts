@@ -396,6 +396,11 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
           else {
             this.filterService.clearFilters(this.allowedFilterKeys);
             this.toolbarConfig.filterConfig.appliedFilters = [];
+            // If filter change caused an empty param set
+            // then filter should be applied
+            if (this.internalFilterChange) {
+              this.filterService.applyFilter();
+            }
           }
       });
     }
