@@ -318,8 +318,11 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
         getvalue: (area) => area.attributes.name
       },
       assignee: {
-        datasource: Observable.combineLatest(this.collaboratorService.getCollaborators(), this.userService.getUser()).do(item => console.log(item)),
+        datasource: Observable.combineLatest(this.collaboratorService.getCollaborators(), this.userService.getUser()),
         datamap: ([users, authUser]) => {
+          if (Object.keys(authUser).length > 0) {
+            users = users.filter(u => u.id !== authUser.id);
+          }
           return {
             queries: users.map(user => {return {id: user.id, value: user.attributes.username, imageUrl: user.attributes.imageURL}}),
             primaryQueries: Object.keys(authUser).length ?
