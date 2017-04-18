@@ -23,7 +23,7 @@ import { Router }                 from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
-import { cloneDeep, trimEnd } from 'lodash';
+import { cloneDeep, trimEnd, remove } from 'lodash';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { Broadcaster, Logger } from 'ngx-base';
 import {
@@ -139,6 +139,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     // this.getAllUsers();
     this.getIterations();
     this.loggedIn = this.auth.isLoggedIn();
+<<<<<<< c57ca42fbe4004689e22cc8d74a86852210c34c2
     let id = null;
 
     this.eventListeners.push(
@@ -160,6 +161,32 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
                 if (this.headerEditable && typeof(this.title) !== 'undefined') {
                 this.title.nativeElement.focus();
               }});
+=======
+    if (this.loggedIn) {
+      this.getAllUsers()
+      .subscribe(([authUser, allUsers]) => {
+        this.users = allUsers;
+        this.loggedInUser = authUser;
+      });
+    }
+    this.route.params.forEach((params: Params) => {
+      if (params['id'] !== undefined) {
+        let id = params['id'];
+
+        if (id.indexOf('new') >= 0){
+          //Add a new work item
+          this.addNewWI = true;
+          this.headerEditable = true;
+          let type = this.route.queryParams.forEach(params => {
+            this.createWorkItemObj(params['type']);
+          });
+
+          // Open the panel
+          if (this.panelState === 'out') {
+            this.panelState = 'in';
+            if (this.headerEditable && typeof(this.title) !== 'undefined') {
+              this.title.nativeElement.focus();
+>>>>>>> refactor(comments): abstracting outbound API calls from comment component itself
             }
           } else {
             this.loadWorkItem(id);
@@ -234,7 +261,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         };
 
         // Resolve comments
-        workItem.relationships.comments = comments;
+        workItem.relationships.comments.data = comments.data;
 
         // Resolve links
         workItem = Object.assign(
@@ -619,6 +646,44 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     } else {
       retObservable.subscribe();
     }
+  }
+
+  createComment(comment) {
+    this.workItemService
+        .createComment(this.workItem.relationships.comments.links.related, comment)
+        .subscribe((comment) => {
+          console.log(this.loggedInUser);
+            comment.relationships['created-by'].data = this.loggedInUser;
+            this.workItem.relationships.comments.data.splice(0, 0, comment);
+            this.workItem.relationships.comments.meta.totalCount += 1;
+        },
+        (error) => {
+            console.log(error);
+        });
+  }
+
+  updateComment(comment) {
+    this.workItemService
+        .updateComment(comment)
+        .subscribe(response => {
+        },
+        (error) => {
+          console.log(error);
+        });
+  }
+
+  deleteComment(comment) {
+    this.workItemService
+        .deleteComment(comment)
+        .subscribe(response => {
+            if (response.status === 200) {
+                remove(this.workItem.relationships.comments.data, cursor => {
+                    if (!!comment) {
+                        return cursor.id == comment.id;
+                    }
+                });
+            }
+        }, err => console.log(err));
   }
 
   closeDetails(): void {

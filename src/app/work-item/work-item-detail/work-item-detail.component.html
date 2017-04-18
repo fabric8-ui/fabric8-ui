@@ -237,7 +237,14 @@
     </form>
     <div *ngIf="workItem.id" class="work-item-section">
       <alm-work-item-link [workItem]="workItem" [loggedIn]="loggedIn"></alm-work-item-link>
-      <alm-work-item-comment [workItem]="workItem" [loggedIn]="loggedIn"></alm-work-item-comment>
+      <alm-work-item-comment
+        [workItem]="workItem"
+        [loggedIn]="loggedIn"
+        (create)="createComment($event)"
+        (update)="updateComment($event)"
+        (delete)="deleteComment($event)"
+      >
+      </alm-work-item-comment>
     </div>
   </div>
 </div>

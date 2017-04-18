@@ -1,10 +1,15 @@
 import { Observable } from 'rxjs';
 import { CommentLink } from './../../../models/comment';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+
+import {
+    SimpleChanges,
+    OnInit, OnChanges,
+    Component, ViewChild,
+    EventEmitter, Input, Output
+} from '@angular/core';
+
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
-
-import { remove } from 'lodash';
 
 import {
     User,
@@ -13,8 +18,11 @@ import {
 
 import { Comment, CommentAttributes } from '../../../models/comment';
 import { WorkItem } from '../../../models/work-item';
+<<<<<<< c57ca42fbe4004689e22cc8d74a86852210c34c2
 import { WorkItemService } from '../../work-item.service';
 import { CollaboratorService } from './../../../collaborator/collaborator.service';
+=======
+>>>>>>> refactor(comments): abstracting outbound API calls from comment component itself
 
 @Component({
     selector: 'alm-work-item-comment',
@@ -24,6 +32,9 @@ import { CollaboratorService } from './../../../collaborator/collaborator.servic
 export class WorkItemCommentComponent implements OnInit, OnChanges {
     @Input() workItem: WorkItem;
     @Input() loggedIn: Boolean;
+    @Output() create = new EventEmitter<Comment>();
+    @Output() update = new EventEmitter<Comment>();
+    @Output() delete = new EventEmitter<Comment>();
     @ViewChild('deleteCommentModal') deleteCommentModal: any;
     comment: Comment;
     users: User[];
@@ -34,7 +45,6 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
     convictedComment: Comment;
 
     constructor(
-        private workItemService: WorkItemService,
         private router: Router,
         private userService: UserService,
         private collaboratorService: CollaboratorService,
@@ -84,6 +94,7 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
     createComment(event: any = null): void {
       this.preventDef(event);
       this.comment.attributes.body = event.target.textContent;
+<<<<<<< c57ca42fbe4004689e22cc8d74a86852210c34c2
       this.workItemService
         .createComment(this.workItem.relationships.comments.links.related, this.comment)
         .switchMap((comment: Comment) => {
@@ -109,21 +120,20 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
         (error) => {
             console.log(error);
         });
+=======
+      this.create.emit(this.comment);
+      event.target.textContent = '';
+      this.createCommentObject();
+>>>>>>> refactor(comments): abstracting outbound API calls from comment component itself
     }
 
     updateComment(val: string, comment: Comment): void {
       let newCommentBody = document.getElementById(val).innerHTML;
       comment.attributes.body = newCommentBody;
-      this.workItemService
-        .updateComment(comment)
-          .subscribe(response => {
-            //event.target.blur();
-            this.selectedCommentId = '';
-            this.createCommentObject();
-          },
-          (error) => {
-            console.log(error);
-          });
+
+      this.update.emit(comment);
+      this.selectedCommentId = '';
+      this.createCommentObject();
     }
 
     confirmCommentDelete(comment: Comment): void {
@@ -132,18 +142,7 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
     }
 
     deleteComment(): void {
-        this.workItemService
-            .deleteComment(this.convictedComment)
-            .subscribe(response => {
-                if (response.status === 200) {
-                    remove(this.workItem.relationships.comments.data, comment => {
-                        if (!!this.convictedComment) {
-                            return comment.id == this.convictedComment.id;
-                        }
-                    });
-                }
-            }, err => console.log(err));
-
+        this.delete.emit(this.convictedComment);
         this.deleteCommentModal.close();
         this.createCommentObject();
     }
