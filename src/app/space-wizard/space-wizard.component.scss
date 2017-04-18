@@ -21,7 +21,7 @@ $wizard-layout-block-header-border-color: $color-pf-blue-300;
 //noinspection SassScssUnresolvedVariable,SassScssUnresolvedVariable
 $wizard-layout-block-shadow-color: darken($navbar-default-bg, 10%);
 //noinspection SassScssUnresolvedVariable,SassScssUnresolvedVariable
-$wizard-block-header-color: white;// $navbar-default-bg;
+$wizard-block-header-color: $color-pf-white;
 
 .wizard-step {
   section {
