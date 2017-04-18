@@ -161,7 +161,20 @@ export class WorkItemListEntryComponent implements OnInit {
   }
 
   onMoveToBacklog(event: MouseEvent): void {
-    alert('NOT IMPLEMENTED YET.');
+    event.stopPropagation();
+    //set this work item's iteration to None
+    //send a patch request
+    this.workItem.relationships.iteration = {}
+    this.workItemService
+      .update(this.workItem)
+      .subscribe(workItem => {
+        this.workItem = workItem;
+        let notificationData = {
+          'notificationText': `This work item has been moved to the backlog.`,
+          'notificationType': 'ok'
+        };
+        this.broadcaster.broadcast('toastNotification', notificationData);
+    });
   }
 
   listenToEvents() {

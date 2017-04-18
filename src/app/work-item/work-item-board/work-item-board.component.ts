@@ -342,8 +342,15 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   }
 
   onMoveToBacklog(event: any): void {
-    alert('Not Implemented yet');
     event.stopPropagation();
+    //set this work item's iteration to None
+    //send a patch request
+    this.workItem.relationships.iteration = {}
+    this.workItemService
+      .update(this.workItem)
+      .subscribe(workItem => {
+        console.log('iteration updated');
+    });
   }
 
   onDelete(event: MouseEvent): void {
