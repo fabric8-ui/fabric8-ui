@@ -5,7 +5,7 @@
         <i class="fa fa-icon" [ngClass]="{'fa-angle-right': isCollapsedComments,
               'fa-angle-down': !isCollapsedComments}"></i>
       </li>
-      <li class="active" (click)="isCollapsedComments = !isCollapsedComments">
+      <li [class.active]="!isCollapsedComments" (click)="isCollapsedComments = !isCollapsedComments">
         <a>
           <span>Comments</span>
           <span class="badge" id="total_comments" >{{workItem.relationships?.comments?.data?.length}}</span>
