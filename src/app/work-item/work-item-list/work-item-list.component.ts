@@ -463,13 +463,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
           // Apply cleared filters
           this.filterService.applyFilter();
         } else if(Object.keys(params).indexOf('iteration') > -1) {
-          // If already applied iteration is not equal to currently
-          // applied iteration in the URL then reload work items
-          if (this.appliedIterationFilter !== params['iteration']) {
-            this.loadWorkItems();
-          } else {
-            this.filterService.clearFilters(this.allowedFilterParams);
-          }
+          this.loadWorkItems();
         }
       });
   }
