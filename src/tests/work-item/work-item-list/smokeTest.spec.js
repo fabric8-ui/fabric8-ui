@@ -134,10 +134,10 @@ describe('Work item list', function () {
   });
 
   /* Test that the Quick add work item is visible */
-  it('Test Quick workitem visible without authorization - phone.', function () {
-    page.clickLogoutButton().click();
-    expect(page.quickAddbuttonById().isPresent()).toBeFalsy();
-  });
+  // it('Test Quick workitem visible without authorization - phone.', function () {
+  //   page.clickLogoutButton().click();
+  //   expect(page.quickAddbuttonById().isPresent()).toBeFalsy();
+  // });
 
   /* Create workitem - verify user and icon */
  it('Edit and check WorkItem , creatorname and image is reflected', function () {
