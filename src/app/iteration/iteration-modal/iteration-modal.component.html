@@ -26,9 +26,10 @@
           <div class="parent-iteration-container input-group dropdown open active">
             <input id="parent-iteration" class="form-control " type="text" #iterationSearch (keyup)="filterIteration($event)"
             autocomplete="off" [value]="selectedParentIterationName" (focus)="iterationSearchFocus();" [disabled]="iterationSearchDisable">
-            <ul class="iteration-list dropdown-menu dropdown-ul" *ngIf="filteredIterations.length && showIterationDropdown" #iterationList>
-              <li *ngFor="let iteration of filteredIterations;" [attr.data-id]="iteration.id" (click)="setParentIteration(iteration.id);">
-                <span [innerHTML]="(iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/') | almSearchHighlight: iterationSearch.value"></span>
+            <ul class="iteration-list dropdown-menu dropdown-ul" *ngIf="showIterationDropdown" #iterationList>
+              <li *ngIf="!filteredIterations.length">No matches found.</li>
+              <li *ngFor="let iteration of filteredIterations;" [attr.data-id]="iteration.key" (click)="setParentIteration(iteration);">
+                <span [innerHTML]="(iteration.value) | almSearchHighlight: iterationSearch.value"></span>
               </li>
             </ul>
             <span class="input-group-addon pointer" (click)="iterationSearchFocus();"> <span class="caret"></span> </span>
