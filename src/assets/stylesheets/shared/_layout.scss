@@ -334,8 +334,9 @@ footer
 
 // wizard
 $wizard-spacing:$grid-gutter-width/2;
-$wizard-header-color: $color-pf-black-200; //$navbar-default-bg;
-$wizard-footer-color: $color-pf-black-200;
+$wizard-header-color:$color-pf-white;
+$wizard-footer-color: $color-pf-white;// $color-pf-black-200;
+$wizard-footer-divider-color: $color-pf-black-300;// $color-pf-black-200;
 
 @mixin wizard-step-elements{
   // position buttons
@@ -402,7 +403,8 @@ $wizard-footer-color: $color-pf-black-200;
   }
   >footer{
     position:relative;
-    background-color: $wizard-header-color;
+    border-top:solid 1px $wizard-footer-divider-color;
+    background-color: $wizard-footer-color;
     &.container-fluid
     {
         padding-left:$wizard-spacing + $debug-border ;
