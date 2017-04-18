@@ -38,7 +38,7 @@
             [innerHTML]="renderedText"
             [hidden]="textViewType!='preview'">
           </div>
-          <p *ngIf="!renderedText && !tabBarVisible">Edit Text</p>
+          <p *ngIf="!renderedText && !tabBarVisible && !markdownText">Add a Description</p>
           <div class="edit-icon">
             <span class="pficon-edit markdown-test-btn-edit"
               (click)='onClickEditIcon()'></span>

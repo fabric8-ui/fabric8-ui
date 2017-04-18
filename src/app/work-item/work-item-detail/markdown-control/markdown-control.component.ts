@@ -1,13 +1,13 @@
-import { 
-  Component, 
-  Input, 
-  Output, 
-  EventEmitter, 
-  OnInit, 
-  OnChanges, 
-  SimpleChanges, 
-  SimpleChange, 
-  HostListener, 
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+  SimpleChange,
+  HostListener,
   ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
@@ -17,7 +17,7 @@ import { Broadcaster, Logger } from 'ngx-base';
 import { WorkItemService } from '../../work-item.service';
 
 /*
- * A markdown field control with preview and user defined 
+ * A markdown field control with preview and user defined
  * window size.
  */
 @Component({
@@ -30,7 +30,7 @@ export class MarkdownControlComponent implements OnInit, OnChanges {
   // the work item we're dealing with.
   @Input() markdownValue: string;
 
-  // event when the markdown value is updated, emits 
+  // event when the markdown value is updated, emits
   // the new text value as the event.
   @Output() onUpdate = new EventEmitter();
 
@@ -41,13 +41,13 @@ export class MarkdownControlComponent implements OnInit, OnChanges {
   protected textEditable: Boolean = false;
   protected textViewType: any = 'preview';
   protected renderedText: any = '';
-  protected originalMarkdownText: string = '';    
+  protected originalMarkdownText: string = '';
   protected markdownText: string = '';
   protected markdownViewExpanded: boolean = false;
   protected tabBarVisible: boolean = false;
 
 constructor(
-  protected authService: AuthenticationService, 
+  protected authService: AuthenticationService,
   protected logger: Logger,
   protected broadcaster: Broadcaster,
   private workItemService: WorkItemService,
@@ -100,7 +100,7 @@ constructor(
           this.textEditableParaElement.nativeElement.innerHTML = this.renderedText;
       });
   }
-  
+
   // opens the text field and enables editing on markdown tab.
   openText(): void {
     if (this.loggedIn) {
@@ -148,7 +148,7 @@ constructor(
   onClickPreviewTab() {
     this.showPreview();
   }
-  
+
   // called on every edit action on the field.
   onTextUpdate(newValue: string) {
     // NOP
