@@ -47,7 +47,7 @@ describe('Iteration CRUD tests :: ', function () {
     expect(page.getHelpBoxIteration()).toBe('Iteration names must be unique within a project');
   });
 
-  /* Verify setting the fields */
+  /* Verify setting the fields in a new iteration*/
   it('Verify setting the Iteration title and description fields', function() {
 
     /* Create a new iteration */ 
@@ -58,83 +58,22 @@ describe('Iteration CRUD tests :: ', function () {
 
     /* Verify the new iteration is present */
     page.clickExpandFutureIterationIcon();
-    browser.wait(until.presenceOf(page.firstFutureIteration), constants.WAIT, 'Failed to find thefirstIteration');
+    browser.wait(until.presenceOf(page.lastFutureIteration), constants.WAIT, 'Failed to find theLastIteration');
    
     /* Verify that the new iteration was successfully added */ 
-    expect(page.firstFutureIteration.getText()).toContain('Newest Iteration');
+    expect(page.lastFutureIteration.getText()).toContain('Newest Iteration');
   }); 
 
   /* Query and edit an interation */
  it('Query/Edit iteration', function() {
       page.clickExpandFutureIterationIcon();
-      page.clickIterationKebab("3");
+      page.clickIterationKebab("1");
       page.clickEditIterationKebab();
-
-      /* This is working with chrome not with phantom JS
       page.setIterationTitle('Update Iteration',false);
       page.setIterationDescription('Update Iteration',false);
       page.clickCreateIteration();
       browser.wait(until.presenceOf(page.firstFutureIteration), constants.WAIT, 'Failed to find thefirstIteration');
       expect(page.firstFutureIteration.getText()).toContain('Update Iteration');
-      */
-  });
-
-  /* Start and Close an iteration */
- it('Start iteration', function() {
-      page.clickExpandFutureIterationIcon();
-      page.clickIterationKebab("3");
-      page.clickStartIterationKebab();
-      page.clickCreateIteration();
-      expect(page.toastNotification().isPresent()).toBe(true);
-      expect(page.firstCurrentIteration()).toBe("Iteration 0");workitemStatus
-      page.clickIterationKebab("3");
-      page.clickCloseIterationKebab();
-      page.clickCreateIteration();
-  });
-  
- it('Associate WI with Iteration from Kebab menu', function() {
-      page.clickWorkItemKebabButton(page.firstWorkItem);
-      page.clickWorkItemKebabAssociateIterationButton(page.firstWorkItem);
-      page.clickDropDownAssociateIteration("Iteration 0");
-      page.clickAssociateSave();
-      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0");
-      expect(detailPage.getAssociatedIteration()).toBe('Iteration 0');
-  });
-
-it('Re-Associate WI with Iteration from Kebab menu', function() {
-      page.clickWorkItemKebabButton(page.firstWorkItem);
-      page.clickWorkItemKebabAssociateIterationButton(page.firstWorkItem);
-      page.clickDropDownAssociateIteration("Iteration 0");
-      page.clickAssociateSave();
-      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0");
-      expect(detailPage.getAssociatedIteration()).toBe('Iteration 0');
-      detailPage.clickWorkItemDetailCloseButton();
-      // Re-Associate 
-      page.clickWorkItemKebabButton(page.firstWorkItem);
-      page.clickWorkItemKebabAssociateIterationButton(page.firstWorkItem);
-      expect(detailPage.getReassociateText()).toContain('Iteration 0'); //is currently associated with
-      page.clickDropDownAssociateIteration("Iteration 1");
-      page.clickAssociateSave();
-      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0");
-      expect(detailPage.getAssociatedIteration()).toBe('Iteration 1');
-  });
-
-  it('Create new iteration and Associate item', function() {
-    page.clickIterationAddButton();
-    page.setIterationTitle('Newest Iteration',false);
-    page.setIterationDescription('Newest Iteration',false);
-    page.clickCreateIteration();
-    page.clickWorkItemKebabButton(page.firstWorkItem);
-    page.clickWorkItemKebabAssociateIterationButton(page.firstWorkItem);
-    page.clickDropDownAssociateIteration("Newest Iteration");
-
-//Below code has some issue while associating WI with new Itetation Works fine manually 
-    // page.clickAssociateSave();
-    // browser.wait(until.elementToBeClickable(page.clickWorkItemTitle(page.firstWorkItem, "id0")), constants.WAIT, 'Failed ');
-    // var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0");
-    // expect(detailPage.getAssociatedIteration()).toBe('Newest Iteration');
-    // detailPage.clickWorkItemDetailCloseButton();
-
   });
 
   it('Associate Workitem from detail page', function() {
@@ -147,7 +86,7 @@ it('Re-Associate WI with Iteration from Kebab menu', function() {
       detailPage.clickWorkItemDetailCloseButton();
     });
 
-   it('Re-Associate Workitem from detail page', function() {
+  it('Re-Associate Workitem from detail page', function() {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0"); 
       detailPage.IterationOndetailPage().click();
       detailPage.associateIterationById("id1");
@@ -163,8 +102,7 @@ it('Re-Associate WI with Iteration from Kebab menu', function() {
       detailPage.clickWorkItemDetailCloseButton();
     });
  
- //Problem clicking on Iteration from Left penel
-    it('Filter Associate Workitem from detail page', function() {
+  it('Filter Associate Workitem from detail page', function() {
        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0"); 
        detailPage.IterationOndetailPage().click();
        detailPage.associateIterationById("id0");
@@ -172,31 +110,36 @@ it('Re-Associate WI with Iteration from Kebab menu', function() {
        expect(detailPage.getAssociatedIteration()).toBe("/Root Iteration/Iteration 0");
        detailPage.clickWorkItemDetailCloseButton();
        page.clickExpandFutureIterationIcon();
-       // expect(page.firstFutureIteration.getText()).toBe('somethi');
-       detailPage.genericLinkseach("Iteration 0");
-
-     });
+   });
 
   /* Verify iteration displays the correct workitem totals as workitems transition new->closed */
   it( 'Verify counters for workitems within iteration', function() {
 
+    /* TODO - Resolve Protractor issue with Angular auto-refresh/synch */
+    browser.ignoreSynchronization = true;
+
     /* Verify that the iteration has zero workitems associated */
     page.clickExpandFutureIterationIcon();
-    expect(page.getIterationCounter(page.firstFutureIteration).getText()).toBe('0');
+    expect(page.getIterationCounter(page.lastFutureIteration).getText()).toBe('0');
 
     /* Associate workitems with an iteration */
-    associateWithIteration (page, "Title Text 3", "Iteration 0");
-    expect(page.getIterationCounter(page.firstFutureIteration).getText()).toBe('1');
+    associateWithIteration (page, "Title Text 3", "Iteration 4");
+
+    /* It was necessary to add this statement as Protractor is not able to
+       reliably handle screen element refreshing */
+    page.lastFutureIteration.click();
+
+    expect(page.getIterationCounter(page.lastFutureIteration).getText()).toBe('1');
 
     /* Start the iteration */
-    page.clickIterationKebab("1");
+    page.clickIterationKebab("5");
     page.clickStartIterationKebab();
     page.clickCreateIteration();
-
-    browser.ignoreSynchronization = true;
+    
     expect(page.iterationCount.getText()).toBe('0 of 1 completed');
     
     setWorkItemStatus (page, "Title Text 3", workitemStatus.Closed);
+    page.lastFutureIteration.click();
     expect(page.iterationCount.getText()).toBe('1 of 1 completed');
 
     /* Start the iteration */
@@ -206,10 +149,16 @@ it('Re-Associate WI with Iteration from Kebab menu', function() {
 
     /* Verify that the iteration is now considered past */
     page.clickExpandPastIterationIcon();
-    expect(page.firstPastIteration.getText()).toContain("Iteration 0");
-    expect(page.getIterationCounter(page.firstPastIteration).getText()).toBe('1');   
-    
+    expect(page.firstPastIteration.getText()).toContain("Iteration 4");
+    expect(page.getIterationCounter(page.lastPastIteration).getText()).toBe('1');   
 
+  });
+
+  it('Re-Associate WI with Iteration from Kebab menu', function() {
+    associateWithIteration (page, "Title Text 3", "Iteration 0");
+    associateWithIteration (page, "Title Text 3", "Iteration 1");
+    var detailPage = page.clickWorkItemTitle(page.workItemByTitle('Title Text 3'), 'id2');
+    expect(detailPage.getAssociatedIteration()).toContain('Iteration 1');
   });
 
 });
