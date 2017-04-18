@@ -1,4 +1,10 @@
 @import 'patternfly/variables';
+
+// overwrite PatternFly header highlight
+.navbar-pf {
+  border-color: #cc0000;
+}
+
 //remove toolbar box shadow
 
 $font-size-base: 14px;
@@ -34,4 +40,4 @@ h4 {
 h5 {
   font-size: 1.1em;
   line-height: 1.3em;
-} 
+}
