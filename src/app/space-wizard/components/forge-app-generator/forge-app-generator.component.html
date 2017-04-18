@@ -6,7 +6,7 @@
           <span *ngIf="!forge.hasError && forge.processing===true" class="fa fa-refresh" ></span>
         </span>
         <h2>{{forge.state.description}}</h2>
-        <span (click)="close()" class="pficon pficon-close"></span>
+        <span (click)="forge.close()" class="pficon pficon-close"></span>
       </div>
     </div>
   </header>
