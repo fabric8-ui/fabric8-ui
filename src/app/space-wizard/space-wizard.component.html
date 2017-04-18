@@ -116,14 +116,14 @@
           </div>
           <div class="section-column">
             <header>
-              <h3>I'd like to use a Quick Start.</h3>
+              <h3>I'd like to use a Quickstart.</h3>
             </header>
             <section><span><br></span></section>
             <footer class="container-fluid">
               <div class="row">
                 <div class="col-xs-12">
                   <div class="button-bar pull-right">
-                    <a class="margin-top-5 btn btn-default" (click)="workflow.gotoNextStep({name:steps.forgeQuickStart})">Quick Start</a>
+                    <a class="margin-top-5 btn btn-default" (click)="workflow.gotoNextStep({name:steps.forgeQuickStart})">Quickstart</a>
                   </div>
                 </div>
               </div>
@@ -136,7 +136,7 @@
     <footer class="container-fluid">
       <div class="row">
         <div class="col-xs-12 wizard-step-tool-bar with-items-in-center">
-          <a class="btn btn-primary" (click)="workflow.finish()">Take me to the
+          <a class="btn btn-primary" (click)="finish()">Take me to the
             {{configurator.space.attributes.name | spaceName}} space</a>
         </div>
       </div>
