@@ -15,7 +15,7 @@
         </div>
       </div>
       <div *ngIf="searchValue" class="btn-bar">
-        <button class="btn btn-lg btn-default save-button" type="button" (click)="setValue()" [disabled]="!filteredValues.length || !selectedValue">
+        <button class="btn btn-lg btn-primary save-button" type="button" (click)="setValue()" [disabled]="!filteredValues.length || !selectedValue">
           <span class="fa fa-check" ></span>
         </button>
         <button class="btn btn-lg btn-default cancel-button"  type="button" (click)="close()">

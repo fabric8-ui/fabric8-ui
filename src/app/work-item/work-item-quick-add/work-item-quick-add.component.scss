@@ -66,17 +66,12 @@
         }
       }
     }
-    .icon-btn, .icon-btn-disabled{
+    .icon-btn {
       // font-size: em(24);
       text-decoration: none;
     }
     .icon-btn {
-      color: $color-pf-black-900;
       cursor: pointer;
-    }
-    .icon-btn-disabled{
-      color: $color-pf-black-300;
-      cursor: default;
     }
   }
 }

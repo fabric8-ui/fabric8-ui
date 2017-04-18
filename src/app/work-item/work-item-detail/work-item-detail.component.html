@@ -68,7 +68,7 @@
                   </button>
                   <!--Save icon-->
                   <button id="workItemTitle_btn_save"
-                      class="pull-right btn btn-default detail-action-btn"
+                      class="pull-right btn btn-primary detail-action-btn"
                       [ngClass]="{disabled : validTitle == false}"
                       (click)="validTitle && onUpdateTitle()" >
                       <span class="fa fa-check"></span>
@@ -183,7 +183,7 @@
         <div class="form-group">
           <label class="col-sm-2">{{workItem.relationships?.baseType?.data?.attributes?.fields['system.creator']?.label || 'Label'}}</label>
           <span *ngIf="!workItem.relationships?.creator?.data"
-            class="fa pficon-user user-creator-icon" id="user_creator_icon">
+            class="pficon pficon-user user-creator-icon" id="user_creator_icon">
           </span>
           <img *ngIf="workItem.relationships?.creator?.data"
             class="user-avatar"
@@ -198,14 +198,14 @@
           </div>
         </div>
 
-        <!-- Areas -->        
+        <!-- Areas -->
         <div class="form-group detail-area-wrap">
           <label class="col-sm-2" id="area_label">
             {{workItem.relationships?.baseType?.data?.attributes?.fields['system.area']?.label || 'Label'}}
           </label>
           <typeahead-dropdown id="area-dropdown" class="area-dropdown" #areaSelectbox [values]="extractAreaKeyValue(areas)" (onUpdate)="areaUpdated($event)"></typeahead-dropdown>
         </div>
-        
+
         <!--Iteration-->
         <div class="form-group">
           <label class="col-sm-2" id="iteration_label">

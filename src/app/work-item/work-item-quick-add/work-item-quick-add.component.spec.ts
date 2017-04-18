@@ -222,7 +222,7 @@ describe('Quick add work item component - ', () => {
     fixture.detectChanges();
     comp.workItem.attributes['system.title'] = '  ';
     fixture.detectChanges();
-    expect(el.classes['icon-btn-disabled']).toBeTruthy();
+    expect(el.classes['disabled']).toBeTruthy();
   });
 
   it('Should keep the Add button disabled if title contain empty string', () => {
@@ -233,7 +233,7 @@ describe('Quick add work item component - ', () => {
     fixture.detectChanges();
     comp.workItem.attributes['system.title'] = '';
     fixture.detectChanges();
-    expect(el.classes['icon-btn-disabled']).toBeTruthy();
+    expect(el.classes['disabled']).toBeTruthy();
   });
 
   it('Should raise an error on save if the title contain only white space', fakeAsync(() => {

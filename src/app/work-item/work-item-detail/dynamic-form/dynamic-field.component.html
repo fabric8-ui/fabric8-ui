@@ -49,13 +49,13 @@
             class="pficon-edit marginL10 fl dynamic-control-edit-ico">
       </span>
 
-      <button *ngIf="isButtonsVisible()" class="btn btn-lg btn-default detail-action-btn" type="button" (click)="save()">
+      <button *ngIf="isButtonsVisible()" class="btn btn-lg btn-primary detail-action-btn" type="button" (click)="save()">
         <span class="fa fa-check"></span>
       </button>
       <button *ngIf="isButtonsVisible()" class="btn btn-lg btn-default detail-action-btn" type="button" (click)="cancel()">
         <span class="pficon pficon-close"></span>
       </button>
-    </div> 
+    </div>
   </div>
   <div class="errorMessage" *ngIf="!isValid()">{{attributeDesc.label}} is not given or not in the right format.</div>
   <div class="errorMessage" *ngIf="error">Error on {{attributeDesc.label}}: {{error}}.</div>
