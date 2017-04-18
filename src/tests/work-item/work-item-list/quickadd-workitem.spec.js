@@ -41,9 +41,9 @@ describe('Quickadd - Work item list', function () {
       page.clickWorkItemKebabButton(page.firstWorkItem);
       page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
       page.clickWorkItemPopUpDeleteConfirmButton().then(function() {
-        browser.wait(until.textToBePresentInElement((page.firstWorkItem), "Title Text" ), constants.WAIT, 'Failed to find text in workitem');
-        expect(page.workItemTitle(page.firstWorkItem)).not.toBe('Quick Add and Delete');
-        expect(page.workItemTitle(page.workItemByNumber(0))).not.toBe('Quick Add and Delete');
+        browser.wait(until.textToBePresentInElement((page.firstWorkItem), "Quick Add and Delete" ), constants.WAIT, 'Failed to find text in workitem');
+        expect(page.workItemTitle(page.firstWorkItem)).toBe('Quick Add and Delete');
+        expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Quick Add and Delete');
       });
     });
   });

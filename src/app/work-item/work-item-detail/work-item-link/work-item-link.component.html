@@ -1,7 +1,7 @@
 <div class="link-container flex-container flex-grow-1 in-column-direction margin-top-10" id="wi-link">
   <ul class="link-header-nav-list nav nav-tabs nav-tabs-pf">
     <li class="toggle-icon" (click)="toggleLinkComponent()">
-      <i class="fa fa-icon" [ngClass]="{'fa-angle-down': showLinkComponent,
+      <i id="caret-right" class="fa fa-icon" [ngClass]="{'fa-angle-down': showLinkComponent,
             'fa-angle-right': !showLinkComponent}"></i>
     </li>
     <li
@@ -42,7 +42,7 @@
       <div *ngIf="loggedIn" class="flex-container flex-grow-1 in-column-direction">
         <div class="link-item-hdr" (click)="toggleLinkCreator()">
           <p *ngIf="workItem" id="link_item_title" class="margin-0 flex-grow-1">This item, {{ workItem.attributes['system.title'] }}</p>
-          <i class="fa fa-icon" [ngClass]="{'fa-angle-down': showLinkCreator,
+          <i id="caret-right" class="fa fa-icon" [ngClass]="{'fa-angle-down': showLinkCreator,
             'fa-angle-right': !showLinkCreator}"></i>
         </div>
         <div *ngIf="showLinkCreator" class="link-editor" id="wi-link-editor">

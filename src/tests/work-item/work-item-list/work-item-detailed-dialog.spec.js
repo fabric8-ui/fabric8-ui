@@ -33,76 +33,74 @@ describe('Work item list', function () {
     testSupport.setTestSpace(page);
   });
 
-// it('Create WorkItem and creatorname and image is relecting', function () {
-//   page.clickDetailedDialogButton();
-//   var detailPage = page.clickDetailedIcon("userstory");
-//
-//   browser.wait(until.elementToBeClickable(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItemDetailTitle');   
-//   detailPage.setWorkItemDetailTitle (workItemTitle, false);
-//
-//   detailPage.clickWorkItemTitleSaveIcon();
-//   detailPage.clickWorkItemDetailDescription()
-//   detailPage.setWorkItemDetailDescription (workItemDescription, true);
-//   detailPage.clickWorkItemDescriptionSaveIcon();
-//   expect(detailPage.getCreatorUsername()).toBe('Example User 0');
-//   expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);     
-//   detailPage.clickWorkItemDetailCloseButton();
-//   browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
-//   expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
-// });
+it('Create WorkItem and creatorname and image is relecting', function () {
+  page.clickDetailedDialogButton();
+  var detailPage = page.clickDetailedIcon("userstory");
 
-// it('Edit and check WorkItem , creatorname and image is relecting', function () {
-//   page.clickDetailedDialogButton();
-//   var detailPage = page.clickDetailedIcon("userstory");
-//
-//   browser.wait(until.elementToBeClickable(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItemDetailTitle'); 
-//   detailPage.setWorkItemDetailTitle (workItemTitle, false);
-//
-//   detailPage.clickWorkItemTitleSaveIcon();
-//   detailPage.clickWorkItemDetailDescription()
-//   detailPage.setWorkItemDetailDescription (workItemDescription, true);
-//   detailPage.clickWorkItemDescriptionSaveIcon();
-//   expect(detailPage.getCreatorUsername()).toBe('Example User 0');
-//   expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);     
-//   detailPage.clickWorkItemDetailCloseButton();
-//   browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
-//   expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
-//   page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
-//      page.clickWorkItemTitle(page.firstWorkItem, text);
-//      browser.wait(until.textToBePresentInElement(detailPage.creatorUsername, 'Example User 0'), constants.WAIT, 'Failed to find creatorUsername');   
-//      expect(detailPage.getCreatorUsername()).toBe('Example User 0');
-//      expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);  
-//      expect(detailPage.getImageURL()).toBe('https://avatars.githubusercontent.com/u/2410471?v=3&s=20');
-//   });
-// });
+  browser.wait(until.elementToBeClickable(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItemDetailTitle');   
+  detailPage.setWorkItemDetailTitle (workItemTitle, false);
+
+  detailPage.clickWorkItemTitleSaveIcon();
+  detailPage.clickWorkItemDetailDescription()
+  detailPage.setWorkItemDetailDescription (workItemDescription, true);
+  detailPage.clickWorkItemDescriptionSaveIcon();
+  expect(detailPage.getCreatorUsername()).toBe('Example User 0');
+  expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);     
+  detailPage.clickWorkItemDetailCloseButton();
+  browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
+  expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
+});
+
+it('Edit and check WorkItem , creatorname and image is relecting', function () {
+  page.clickDetailedDialogButton();
+  var detailPage = page.clickDetailedIcon("userstory");
+
+  browser.wait(until.elementToBeClickable(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItemDetailTitle'); 
+  detailPage.setWorkItemDetailTitle (workItemTitle, false);
+
+  detailPage.clickWorkItemTitleSaveIcon();
+  detailPage.clickWorkItemDetailDescription()
+  detailPage.setWorkItemDetailDescription (workItemDescription, true);
+  detailPage.clickWorkItemDescriptionSaveIcon();
+  expect(detailPage.getCreatorUsername()).toBe('Example User 0');
+  expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);     
+  detailPage.clickWorkItemDetailCloseButton();
+  browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
+  expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
+  page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
+     page.clickWorkItemTitle(page.firstWorkItem, text);
+     browser.wait(until.textToBePresentInElement(detailPage.creatorUsername, 'Example User 0'), constants.WAIT, 'Failed to find creatorUsername');   
+     expect(detailPage.getCreatorUsername()).toBe('Example User 0');
+     expect(detailPage.getCreatorAvatar().isPresent()).toBe(true);  
+     expect(detailPage.getImageURL()).toBe('https://avatars.githubusercontent.com/u/2410471?v=3&s=20');
+  });
+});
  it('check Creator is readonly - desktop', function () {
    page.clickDetailedDialogButton();
    var detailPage = page.clickDetailedIcon("userstory");
    browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
-   expect(detailPage.getCreatorDefaultIcon().isPresent()).toBe(true);
-   expect(detailPage.getCreatorUsername()).toBe('Creator not found');
+   expect(detailPage.getCreatorUsername()).toBe('Example User 0');
    });
- /*  This test is blocked by : https://github.com/almighty/almighty-ui/issues/605
+ /*  This test is blocked by : https://github.com/almighty/almighty-ui/issues/605 */
  it('check Creator is shown as loggedIn user - desktop', function () {
    page.clickDetailedDialogButton();
    var detailPage = page.clickDetailedIcon("userstory");
-   detailPage.clickCreatorDefaultIcon();
    expect(detailPage.getCreatorAvatar().isPresent()).toBe(true); 
    expect(detailPage.getCreatorUsername()).toBe('Example User 0');
    });
- */
+ 
 /* Test commented out pending resolution of issue: https://github.com/almighty/almighty-ui/issues/538  */
-//  it('should create a new workitem through the detail dialog - phone.', function () {
-//    page.clickDetailedDialogButton();
-//    var detailPage = page.clickDetailedIcon("userstory");
-//    detailPage.setWorkItemDetailTitle (workItemTitle, false);
-//    detailPage.clickWorkItemTitleSaveIcon();
-//    detailPage.clickWorkItemDetailDescription()
-//    detailPage.setWorkItemDetailDescription (workItemDescription, true);
-//    detailPage.clickWorkItemDescriptionSaveIcon();
-//    detailPage.clickWorkItemDetailCloseButton();
-//    browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
-//    expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
-//  });
+ it('should create a new workitem through the detail dialog - phone.', function () {
+   page.clickDetailedDialogButton();
+   var detailPage = page.clickDetailedIcon("userstory");
+   detailPage.setWorkItemDetailTitle (workItemTitle, false);
+   detailPage.clickWorkItemTitleSaveIcon();
+   detailPage.clickWorkItemDetailDescription()
+   detailPage.setWorkItemDetailDescription (workItemDescription, true);
+   detailPage.clickWorkItemDescriptionSaveIcon();
+   detailPage.clickWorkItemDetailCloseButton();
+   browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
+   expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
+ });
   
 });

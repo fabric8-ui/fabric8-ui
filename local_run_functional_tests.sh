@@ -49,6 +49,7 @@ if [ -z "$1" ]
 else
     node_modules/protractor/bin/protractor protractor.config.js --suite $1
 fi
+
 TEST_RESULT=$?
 
 # Cleanup webdriver-manager and web app processes

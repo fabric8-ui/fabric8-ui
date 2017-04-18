@@ -29,27 +29,27 @@ describe('Link item ', function () {
     // detailPage = new WorkItemDetailPage();  
     testSupport.setTestSpace(page);  
   });
-
- it('Create a link item planner to planner - Desktop', function () {
-    var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 3"), "id3");
-    expect(detailPage.commentDiv().isPresent()).toBe(true);
-    expect(detailPage.linkItemHeaderCaret().isPresent()).toBe(true);   
-
-    browser.wait(until.elementToBeClickable(detailPage.linkItemHeaderCaret()), constants.WAIT, 'Link icon is not clickable');   
-    detailPage.linkItemHeaderCaret().click();
-    detailPage.clickCreateLinkButton(); 
-    detailPage.clickLinkDropDown();
-    detailPage.linkTypeDropDownListString("tests").click();
-    /**Below commented code  works fine with the Chrome not with PhantomJS
+ /**Below commented code  works fine with the Chrome not with PhantomJS
      * Issue : https://github.com/fabric8io/fabric8-planner/issues/319
      */
-    // detailPage.setSearchLinkItem("id0");
-    // detailPage.clickOnLinkBind();
-    // expect(detailPage.linkTitle()).toBe('Title Text 0');
-    // expect(detailPage.linkState("0")).toBe('new');
-    // expect(detailPage.linkclose("0").isPresent()).toBe(true);
-    // expect(detailPage.linkTotalByTypes("0")).toBe("1");
-   });
+//  it('Create a link item planner to planner - Desktop', function () {
+//     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
+//     expect(detailPage.commentDiv().isPresent()).toBe(true);
+//     expect(detailPage.linkItemHeaderCaret().isPresent()).toBe(true);   
+
+//     browser.wait(until.elementToBeClickable(detailPage.linkItemHeaderCaret()), constants.WAIT, 'Link icon is not clickable');   
+//     detailPage.linkItemHeaderCaret().click();
+//     detailPage.clickCreateLinkButton(); 
+//     detailPage.clickLinkDropDown();
+//     detailPage.linkTypeDropDownListString("tests").click();
+   
+  //   detailPage.setSearchLinkItem("id0");
+  //   detailPage.clickOnLinkBind();
+  //   expect(detailPage.linkTitle()).toBe('Title Text 0');
+  //   expect(detailPage.linkState("0")).toBe('new');
+  //   expect(detailPage.linkclose("0").isPresent()).toBe(true);
+  //   expect(detailPage.linkTotalByTypes("0")).toBe("1");
+  //  });
    it('Read a link item - Desktop', function () {
     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
     expect(detailPage.commentDiv().isPresent()).toBe(true);
