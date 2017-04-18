@@ -2,7 +2,7 @@
 
 image:https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-planner-build-master[Jenkins, link="https://ci.centos.org/view/Devtools/job/devtools-fabric8-planner-build-master/lastBuild/"]
 image:https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-planner-npm-publish-build-master[Jenkins, link="https://ci.centos.org/view/Devtools/job/devtools-fabric8-planner-npm-publish-build-master/lastBuild/"]
-image:https://codecov.io/gh/almighty/almighty-ui/branch/master/graph/badge.svg[Codecov.io, link="https://codecov.io/gh/almighty/almighty-ui"]
+image:https://codecov.io/gh/fabric8io/fabric8-planner/branch/master/graph/badge.svg[Codecov.io, link="https://codecov.io/gh/fabric8io/fabric8-planner"]
 image:https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic%20release-b4d455.svg[Semantic Release, link="https://github.com/semantic-release/semantic-release"]
 
 **Fabric8 Planner is a task planner and issue tracker front-end.**
