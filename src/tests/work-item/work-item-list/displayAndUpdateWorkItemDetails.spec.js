@@ -509,25 +509,6 @@ it('Verify how many work item type exists in drop down - desktop', function() {
     });
   });
 
-  /*Verfify on selecting workitem it should display in list and detail view both pages */
-  it('Verfify on selecting workitem state it should display in list and detail view both pages closed state -phone ', function() {
-      var workItemTitle = "The test workitem title";
-      var workItemUpdatedTitle = "The test workitem title - UPDATED";
-      page.clickWorkItemQuickAdd();
-      page.typeQuickAddWorkItemTitle(workItemTitle);
-      page.clickQuickAddSave().then(function() {
-      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
-
-      browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
-      detailPage.clickWorkItemStateDropDownButton();
-      detailPage.WorkItemStateDropDownList().get(4).click();
-      detailPage.clickWorkItemDetailCloseButton();
-      expect(detailPage.genericCssIcon("fa-remove").isPresent()).toBeTruthy();
-      });
-    });
-  });
-
   /*Edit with blank description - desktop Should show "No description available for this work item.".*/
       it('Edit title and description by hitting Enter key - desktop.', function() {
         testSupport.setBrowserMode('desktop');

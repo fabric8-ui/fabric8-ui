@@ -48,13 +48,14 @@ describe('Work item list', function () {
 
       detailPage.clickImportantDropdown();
       detailPage.clickImportantDropdownYes();
+      detailPage.clickImportantDropdownConfirmButton();
       
       detailPage.clickSeverityDropdown();
       detailPage.clickSeverityDropdownBlocker();
+      detailPage.clickSeverityDropdownConfirmButton();
 
       detailPage.clickDueDateCalendarButton();
       detailPage.clickCurrentDate ();
-
       detailPage.clickDueDateSelection();
 
       detailPage.clickWorkItemDetailCloseButton();      

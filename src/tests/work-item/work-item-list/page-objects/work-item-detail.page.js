@@ -590,7 +590,7 @@ class WorkItemDetailPage {
     return this.saveAreasButton().click();
   }
   ClosekAreas  (){
-    return element(by.id('#area-dropdown .cancel-button')).click();
+    return element(by.css('#area-dropdown .cancel-button')).click();
   }
 /**Iteration element */
   IterationOndetailPage(){
@@ -706,15 +706,17 @@ class WorkItemDetailPage {
   }
 
   get importantDropdown () {
-    return this.importantLabelParent.element(by.css('.dropdown-toggle'));
+//    return this.importantLabelParent.element(by.css('.dropdown-toggle'));
+    return this.importantLabelParent.element(by.css('.pointer.details-dropdown.neutral-entry'));
   }
-
+  
   clickImportantDropdown () {
     return this.importantDropdown.click();
   }
 
   get importantDropdownYes () {
-    return this.importantLabelParent.element(by.xpath(".//*[contains(@class,'dropdown-text') and contains(text(),'Yes')]"));
+//    return this.importantLabelParent.element(by.xpath(".//*[contains(@class,'dropdown-text') and contains(text(),'Yes')]"));
+    return this.importantLabelParent.element(by.id("true"));
   }
 
   clickImportantDropdownYes () {
@@ -722,13 +724,29 @@ class WorkItemDetailPage {
   }
 
   get importantDropdownNo () {
-    return this.importantLabelParent.element(by.xpath(".//*[contains(@class,'dropdown-text') and contains(text(),'No')]"));
+    //return this.importantLabelParent.element(by.xpath(".//*[contains(@class,'dropdown-text') and contains(text(),'No')]"));
+    return this.importantLabelParent.element(by.id("false"));
   }
 
   clickImportantDropdownNo () {
     return this.importantDropdownNo.click();
   }
 
+  get importantDropdownConfirmButton () {
+    return this.importantLabelParent.element(by.css('.save-button'));
+  }
+
+  clickImportantDropdownConfirmButton () {
+    return this.importantDropdownConfirmButton.click(); 
+  }
+
+  get importantDropdownCancelButton () {
+    return this.importantLabelParent.element(by.css('.cancel-button'));
+  }
+
+  clickImportantDropdownCancelButton () {
+    return this.importantDropdownCancelButton.click(); 
+  }
 
   /* Dynamic field: Due Date */
 
@@ -835,7 +853,7 @@ class WorkItemDetailPage {
   }
 
   get severityDropdown () {
-    return this.severityLabelParent.element(by.css('.dropdown-toggle'));
+    return this.severityLabelParent.element(by.css('.pointer.details-dropdown.neutral-entry'));
   }
 
   clickSeverityDropdown () {
@@ -844,7 +862,7 @@ class WorkItemDetailPage {
   }
 
   get severityDropdownLow () {
-    return this.severityLabelParent.element(by.xpath(".//*[contains(@class,'dropdown-text') and contains(text(),'low')]"));
+    return this.severityLabelParent.element(by.id("low"));
   }
 
   clickSeverityDropdownLow () {
@@ -852,7 +870,7 @@ class WorkItemDetailPage {
   }
 
   get severityDropdownMid () {
-    return this.severityLabelParent.element(by.xpath(".//*[contains(@class,'dropdown-text') and contains(text(),'mid')]"));
+    return this.severityLabelParent.element(by.id("mid"));
   }
 
   clickSeverityDropdownMid () {
@@ -860,7 +878,7 @@ class WorkItemDetailPage {
   }
 
   get severityDropdownHigh () {
-    return this.severityLabelParent.element(by.xpath(".//*[contains(@class,'dropdown-text') and contains(text(),'high')]"));
+    return this.severityLabelParent.element(by.id("high"));
   }
 
   clickSeverityDropdownHigh () {
@@ -868,13 +886,28 @@ class WorkItemDetailPage {
   }
 
   get severityDropdownBlocker () {
-    return this.severityLabelParent.element(by.xpath(".//*[contains(@class,'dropdown-text') and contains(text(),'blocker')]"));
+    return this.severityLabelParent.element(by.id("blocker"));
   }
 
   clickSeverityDropdownBlocker () {
     return this.severityDropdownBlocker.click();
   }
 
+  get severityDropdownConfirmButton () {
+    return this.severityLabelParent.element(by.css('.save-button'));
+  }
+
+  clickSeverityDropdownConfirmButton () {
+    return this.severityDropdownConfirmButton.click(); 
+  }
+
+  get severityDropdownCancelButton () {
+    return this.severityLabelParent.element(by.css('.cancel-button'));
+  }
+
+  clickSeverityDropdownCancelButton () {
+    return this.importantDropdownCancelButton.click(); 
+  }
 
 }
 
