@@ -11,10 +11,7 @@ import {
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 
-import {
-    User,
-    UserService
-} from 'ngx-login-client';
+import { User } from 'ngx-login-client';
 
 import { Comment, CommentAttributes } from '../../../models/comment';
 import { WorkItem } from '../../../models/work-item';
@@ -28,28 +25,24 @@ import { CollaboratorService } from './../../../collaborator/collaborator.servic
 export class WorkItemCommentComponent implements OnInit, OnChanges {
     @Input() comments: Comment[];
     @Input() loggedIn: Boolean;
+    @Input() loggedInUser: User;
     @Output() create = new EventEmitter<Comment>();
     @Output() update = new EventEmitter<Comment>();
     @Output() delete = new EventEmitter<Comment>();
     @ViewChild('deleteCommentModal') deleteCommentModal: any;
     comment: Comment;
-    users: User[];
     isCollapsedComments: Boolean = false;
-    currentUser: User;
     commentEditable: Boolean = false;
     selectedCommentId: String = '';
     convictedComment: Comment;
 
     constructor(
         private router: Router,
-        private userService: UserService,
-        private collaboratorService: CollaboratorService,
         http: Http
     ) {
     }
 
     ngOnInit() {
-        this.currentUser = this.userService.getSavedLoggedInUser();
         this.createCommentObject();
     }
 
