@@ -84,6 +84,12 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   private internalFilterChange = false;
   private firstVisit = true;
 
+  private separator = {
+          id: 'separator',
+          value: null,
+          separator: true
+      };
+
 
   constructor(
     private router: Router,
@@ -186,12 +192,16 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       if (this.allowedFilterKeys.indexOf(key) > -1) {
         filterMap[key].datasource.take(1).subscribe(data => {
           const index = this.toolbarConfig.filterConfig.fields.findIndex(field => field.id === key);
-          this.toolbarConfig.filterConfig.fields[index].queries = filterMap[key].datamap(data).queries;
-          this.toolbarConfig.filterConfig.fields[index].primaryQueries = filterMap[key].datamap(data).primaryQueries;
-          const selectedQuery = [
-            ...this.toolbarConfig.filterConfig.fields[index].queries,
-            ...this.toolbarConfig.filterConfig.fields[index].primaryQueries,
-          ].find(
+          if (filterMap[key].datamap(data).primaryQueries.length) {
+            this.toolbarConfig.filterConfig.fields[index].queries = [
+              ...filterMap[key].datamap(data).primaryQueries,
+              this.separator,
+              ...filterMap[key].datamap(data).queries
+            ];
+          } else {
+            this.toolbarConfig.filterConfig.fields[index].queries = filterMap[key].datamap(data).queries;
+          }
+          const selectedQuery = this.toolbarConfig.filterConfig.fields[index].queries.find(
             item => item.value === params[key]
           );
           if (selectedQuery) {
@@ -352,9 +362,18 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       const index = this.filterConfig.fields.findIndex(i => i.id === data.id);
       if (this.filterConfig.fields[index].queries.length === 0) {
         filterMap[data.id].datasource.subscribe(resp => {
-          this.filterConfig.fields[index].queries = filterMap[data.id].datamap(resp).queries;
-          this.savedFIlterFieldQueries[this.filterConfig.fields[index].id] = this.filterConfig.fields[index].queries;
-          this.filterConfig.fields[index].primaryQueries = filterMap[data.id].datamap(resp).primaryQueries;
+          if (filterMap[data.id].datamap(resp).primaryQueries.length) {
+            this.toolbarConfig.filterConfig.fields[index].queries = [
+              ...filterMap[data.id].datamap(resp).primaryQueries,
+              this.separator,
+              ...filterMap[data.id].datamap(resp).queries
+            ];
+          } else {
+            this.toolbarConfig.filterConfig.fields[index].queries = filterMap[data.id].datamap(resp).queries;
+          }
+          this.savedFIlterFieldQueries[this.filterConfig.fields[index].id] = {};
+          this.savedFIlterFieldQueries[this.filterConfig.fields[index].id]['fixed'] = filterMap[data.id].datamap(resp).primaryQueries;
+          this.savedFIlterFieldQueries[this.filterConfig.fields[index].id]['filterable'] = filterMap[data.id].datamap(resp).queries;
         })
       }
     }
@@ -365,12 +384,22 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     let inp = event.text.trim();
 
     if (inp) {
-      this.filterConfig.fields[index].queries = this.savedFIlterFieldQueries[event.field.id].filter((item) => {
-       return item.value.toLowerCase().indexOf(inp.toLowerCase()) > -1;
-      });
+      this.filterConfig.fields[index].queries = [
+        ...this.savedFIlterFieldQueries[event.field.id]['fixed'],
+        this.separator,
+        ...this.savedFIlterFieldQueries[event.field.id]['filterable'].filter((item) => {
+          return item.value.toLowerCase().indexOf(inp.toLowerCase()) > -1;
+        })
+      ];
     }
-    if (!this.filterConfig.fields[index].queries.length && inp === '') {
-      this.filterConfig.fields[index].queries = this.savedFIlterFieldQueries[event.field.id];
+    if (this.filterConfig.fields[index].queries.length ===
+        this.savedFIlterFieldQueries[event.field.id]['fixed'].length + 1 &&
+        inp === '') {
+      this.filterConfig.fields[index].queries = [
+        ...this.savedFIlterFieldQueries[event.field.id]['fixed'],
+        this.separator,
+        ...this.savedFIlterFieldQueries[event.field.id]['filterable']
+      ]
     }
   }
 
