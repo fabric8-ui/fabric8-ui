@@ -36,6 +36,7 @@ export class ToolbarComponent implements OnInit {
   @Output('onSortChange') onSortChange = new EventEmitter();
   @Output('onViewSelect') onViewSelect = new EventEmitter();
   @Output('onFilterTypeChange') onFilterTypeSelect = new EventEmitter();
+  @Output('onFilterQueries') onFilterQueries = new EventEmitter();
 
   prevConfig: ToolbarConfig;
 
@@ -149,5 +150,9 @@ export class ToolbarComponent implements OnInit {
 
   filterTypeSelect(type: string): void {
     this.onFilterTypeSelect.emit(type);
+  }
+
+  filterQueries(event: any) {
+    this.onFilterQueries.emit(event);
   }
 }

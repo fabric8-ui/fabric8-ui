@@ -31,12 +31,12 @@ export class FilterFieldsComponent implements OnInit {
 
   @Output('onAdd') onAdd = new EventEmitter();
   @Output('onSelectType') onSelecttype = new EventEmitter();
+  @Output('onFilterQueries') onFilterQueries = new EventEmitter();
 
   currentField: FilterField;
   currentValue: string;
   prevConfig: FilterConfig;
   show: boolean = false;
-  filteredList: any;
   isTypeAheadDropdownOpen: boolean = false;
 
   constructor() {
@@ -77,15 +77,8 @@ export class FilterFieldsComponent implements OnInit {
     if (!fieldFound) {
       this.currentField = this.config.fields[0];
       this.currentValue = null;
-    } else {
-      // If current field is selected
-      // and current field is typeahead type
-      // assign queries value to filteredList
-      // Because filteredList is getting rendered for typeahead
-      if (this.currentField.type === 'typeahead') {
-        this.filteredList = _.cloneDeep(this.currentField.queries);
-      }
     }
+
     if (this.currentValue === undefined) {
       this.currentValue = null;
     }
@@ -105,9 +98,6 @@ export class FilterFieldsComponent implements OnInit {
 
   selectField(field: FilterField): void {
     this.currentField = field;
-    if (field.type === 'typeahead') {
-      this.filteredList = _.cloneDeep(this.currentField.queries);
-    }
     this.currentValue = null;
   }
 
@@ -129,9 +119,6 @@ export class FilterFieldsComponent implements OnInit {
   }
 
    filterList(event: any) {
-      let inp = event.trim();
-      this.filteredList = this.currentField.queries.filter((item) => {
-         return item.value.toLowerCase().indexOf(inp.toLowerCase()) > -1;
-      });
+      this.onFilterQueries.emit({field: this.currentField, text: event});
     }
 }
