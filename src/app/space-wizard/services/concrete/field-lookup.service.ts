@@ -52,6 +52,18 @@ export class FieldLookupService {
   public UpdateFields(context: string, appGeneratorResponse: IAppGeneratorResponse) : IAppGeneratorResponse {
     for( let field of appGeneratorResponse.payload.fields ) {
         switch(field.name.toLowerCase()){
+          case 'gitrepository' : {
+            if( this.configurator
+              && this.configurator.space
+              && this.configurator.space.attributes
+              && (this.configurator.space.attributes.name || '' ).length > 0 ) {
+              let spaceName = this.configurator.space.attributes.name;
+              field.value = spaceName ;
+              this.log(`Updating ${field.name} field to space name = '${spaceName}'  ...`);
+            }
+            field.display.label = 'Github repository name';
+            break;
+          }
           case 'version' : {
               field.display.label='Version';
             break;
@@ -64,7 +76,7 @@ export class FieldLookupService {
             if( this.configurator
               && this.configurator.space
               && this.configurator.space.attributes
-              && (this.configurator.space.attributes.name||'').length > 0 ) {
+              && (this.configurator.space.attributes.name || '' ).length > 0 ) {
               let spaceName = this.configurator.space.attributes.name;
               field.value = spaceName ;
               this.log(`Updating ${field.name} field to space name = '${spaceName}'  ...`);
