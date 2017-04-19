@@ -52,7 +52,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   showTypesOptions: boolean = false;
   spaceSubscription: Subscription = null;
   eventListeners: any[] = [];
-  existingQueryParams: Object = {};
+  currentQueryParams: Object = {};
   existingAllowedQueryParams: Object = {};
   filterConfig: FilterConfig = {
       fields: [{
@@ -81,6 +81,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   // This flag tells if an update for filter is coming from
   // tool bar internaly or not
   private internalFilterChange = false;
+  private firstVisit = true;
 
 
   constructor(
@@ -99,7 +100,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   ngOnInit() {
     console.log('[FilterPanelComponent] Running in context: ' + this.context);
     this.loggedIn = this.auth.isLoggedIn();
-
+    this.firstVisit = true;
     if (this.context === 'listview') {
       this.allowedFilterKeys.push('workitemtype');
     } else {
@@ -169,7 +170,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   setAppliedFilterFromUrl() {
     const filterMap = this.getFilterMap();
     // Take all the existing params
-    let params = cloneDeep(this.existingQueryParams);
+    let params = cloneDeep(this.currentQueryParams);
     let keys = Object.keys(params);
 
     // Delete all the not-allowed params for this tool bar
@@ -223,7 +224,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     });
 
     // Initiate next query params from current query params
-    let params = cloneDeep(this.existingQueryParams);
+    let params = cloneDeep(this.currentQueryParams);
     this.allowedFilterKeys.forEach((key) => delete params[key]);
 
     // Clean allowed filter keys
@@ -254,13 +255,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   onChangeBoardType(type: WorkItemType) {
     this.currentBoardType = type;
 
-    let params = cloneDeep(this.existingQueryParams);
+    let params = cloneDeep(this.currentQueryParams);
     params['workitemtype'] = type.attributes.name;
-
-    // Set this filter in filter service
-    this.toolbarConfig.filterConfig.appliedFilters = [];
-    this.filterService.clearFilters(['workitemtype']);
-    this.filterService.setFilterValues('workitemtype', type.id);
 
     // Prepare navigation extra with query params
     let navigationExtras: NavigationExtras = {
@@ -375,31 +371,38 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     if (this.queryParamSubscriber === null)  {
       this.queryParamSubscriber =
         this.route.queryParams.subscribe((params) => {
-          this.existingQueryParams = params;
+          this.currentQueryParams = params;
           // If any of the allowed key present in the URL
-          if (Object.keys(this.existingQueryParams).some(i => this.allowedFilterKeys.indexOf(i) > -1)) {
+          if (Object.keys(this.currentQueryParams).some(i => this.allowedFilterKeys.indexOf(i) > -1)) {
             // Changing filter internally
             if (this.internalFilterChange) {
               this.filterService.applyFilter();
               this.internalFilterChange = false;
             }
             // Applying filters on page reload or first load
+            // Or navigated by the browser's arrow
             else {
-              // Cleaning up because it will reset in setAppliedFilterFromUrl
-              this.toolbarConfig.filterConfig.appliedFilters = [];
               // Cleaning filters in service as it will reset in setAppliedFilterFromUrl
+              this.toolbarConfig.filterConfig.appliedFilters = [];
               this.filterService.clearFilters(this.allowedFilterKeys);
               this.setAppliedFilterFromUrl();
             }
           }
           // Else clear the applied filter section
           else {
-            this.filterService.clearFilters(this.allowedFilterKeys);
-            this.toolbarConfig.filterConfig.appliedFilters = [];
-            // If filter change caused an empty param set
-            // then filter should be applied
-            if (this.internalFilterChange) {
+            // If filter value changed internally
+            // Or with arrorw key navigated to a page with no allowed
+            // filter params, then appliedFilters remains with values
+            if (this.internalFilterChange || this.toolbarConfig.filterConfig.appliedFilters.length) {
+              this.internalFilterChange = false;
+              this.toolbarConfig.filterConfig.appliedFilters = [];
+              this.filterService.clearFilters(this.allowedFilterKeys);
               this.filterService.applyFilter();
+            } else {
+              if (this.firstVisit) {
+                this.firstVisit = false;
+                this.filterService.applyFilter();
+              }
             }
           }
       });

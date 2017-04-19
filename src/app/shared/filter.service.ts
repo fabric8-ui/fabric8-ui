@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Broadcaster } from 'ngx-base';
 import { GlobalSettings } from '../shared/globals';
 
@@ -13,6 +14,7 @@ import { FilterModel } from '../models/filter.model';
 export class FilterService {
   public filters: FilterModel[] = [];
   public activeFilters = [];
+  public filterChange = new Subject();
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(
@@ -24,11 +26,17 @@ export class FilterService {
   ) {}
 
   setFilterValues(id, value): void {
-    this.activeFilters.push({
+    let index = this.activeFilters.findIndex(f => f.id === id);
+    if (index > -1) {
+      this.activeFilters[index].paramKey = 'filter[' + id + ']';
+      this.activeFilters[index].value = value;
+    } else {
+      this.activeFilters.push({
         id: id,
         paramKey: 'filter[' + id + ']',
         value: value
-    });
+      });
+    }
   }
 
   getFilterValue(id): any {
@@ -38,7 +46,8 @@ export class FilterService {
 
   applyFilter() {
     console.log('[FilterService::applyFilter] - Applying filters', this.activeFilters);
-    this.broadcaster.broadcast('wi_item_filter', this.filters);
+    // this.broadcaster.broadcast('wi_item_filter', this.filters);
+    this.filterChange.next(this.applyFilter);
   }
 
   getAppliedFilters(): any {

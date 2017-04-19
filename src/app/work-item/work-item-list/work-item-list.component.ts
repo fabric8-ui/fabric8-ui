@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { IterationService } from './../../iteration/iteration.service';
 import { IterationModel } from './../../models/iteration.model';
 import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import {
   AfterViewInit,
   Component,
@@ -86,9 +87,8 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
   private nextLink: string = '';
   private wiSubscriber: any = null;
   private allowedFilterParams: string[] = ['iteration'];
-  private urlListener: any = null;
+  private currentIteration: BehaviorSubject<string | null>;
   private loggedInUser: User | Object = {};
-  private appliedIterationFilter: string = '';
 
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
@@ -118,6 +118,17 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
     private areaService: AreaService) {}
 
   ngOnInit(): void {
+    // If there is an iteration on the URL
+    // Setting the value to currentIteration
+    // BehaviorSubject so that we can compare
+    // on update the value on URL
+    const queryParams = this.route.snapshot.queryParams;
+    if (Object.keys(queryParams).indexOf('iteration') > -1) {
+      this.currentIteration = new BehaviorSubject(queryParams['iteration']);
+    } else {
+      this.currentIteration = new BehaviorSubject(null);
+    }
+
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
     // console.log('AUTH USER DATA', this.route.snapshot.data['authuser']);
@@ -142,24 +153,26 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
     console.log('Destroying all the listeners in list component');
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
     this.spaceSubscription.unsubscribe();
-    this.urlListener.unsubscribe();
   }
 
   // model handlers
 
   initWiItems(event: any): void {
     this.pageSize = event.pageSize;
-    this.spaceSubscription = this.spaces.current.subscribe(space => {
-      if (space) {
-        console.log('[WorkItemListComponent] New Space selected: ' + space.attributes.name);
-        this.workItemService.resetWorkItemList();
-        this.loadWorkItems();
-      } else {
-        console.log('[WorkItemListComponent] Space deselected');
-        this.workItems = [];
-        this.workItemService.resetWorkItemList();
-      }
-    });
+    this.spaceSubscription =
+      Observable.combineLatest(
+        this.spaces.current, this.filterService.filterChange, this.currentIteration)
+        .subscribe(([space, activeFilter, iteration]) => {
+          if (space) {
+            console.log('[WorkItemListComponent] New Space selected: ' + space.attributes.name);
+            this.workItemService.resetWorkItemList();
+            this.loadWorkItems();
+          } else {
+            console.log('[WorkItemListComponent] Space deselected');
+            this.workItems = [];
+            this.workItemService.resetWorkItemList();
+          }
+        });
   }
 
 
@@ -188,12 +201,11 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
           return it.attributes.resolved_parent_path + '/' + it.attributes.name
             === queryParams['iteration'];
         })
-        this.appliedIterationFilter = queryParams['iteration'];
         if (iteration) {
           this.filterService.setFilterValues('iteration', iteration.id);
         }
       } else {
-        this.appliedIterationFilter = '';
+        this.filterService.clearFilters(['iteration']);
       }
     })
     .switchMap((items) => {
@@ -208,13 +220,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
       )
     })
     .subscribe(([iterations, users, wiTypes, workItemResp]) => {
-      // If this is the first time
-      // and we are not listening to the URL
-      // start listening to the URLs now on
-      if (this.urlListener === null) {
-        this.listenToUrls()
-      }
-
       const workItems = workItemResp.workItems;
       this.nextLink = workItemResp.nextLink;
       this.workItems = this.workItemService.resolveWorkItems(
@@ -376,21 +381,6 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
           this.treeListOptions['allowDrag'] = false;
       })
     );
-    //Filters like assign to me should stack with the current filters
-    this.eventListeners.push(
-      this.broadcaster.on<string>('wi_item_filter')
-        .subscribe((filters: any) => {
-          this.loadWorkItems();
-      })
-    );
-    //Filters like iteration should clear the previous filter
-    //and then set the current selected value
-    // this.eventListeners.push(
-    //   this.broadcaster.on<string>('unique_filter')
-    //     .subscribe((filters: any) => {
-    //       this.loadWorkItems();
-    //   })
-    // );
 
     this.eventListeners.push(
       this.broadcaster.on<string>('move_item')
@@ -450,22 +440,22 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
         this.selectedWorkItemEntryComponent.deselect();
       })
     );
-  }
 
-  // Only start listening to the URL once the first call is done
-  listenToUrls() {
-    this.urlListener =
+    this.eventListeners.push(
       this.route.queryParams.subscribe((params) => {
-        // on no params
-        if (!Object.keys(params).length) {
-          // Cleaning up filters from filter service
-          this.filterService.clearFilters();
-          // Apply cleared filters
-          this.filterService.applyFilter();
-        } else if(Object.keys(params).indexOf('iteration') > -1) {
-          this.loadWorkItems();
+        if (Object.keys(params).indexOf('iteration') > -1) {
+          if (params['iteration'] !== this.currentIteration.getValue()) {
+            this.currentIteration.next(params['iteration']);
+          }
         }
-      });
+        // If no iteration in the URL
+        // and curent iteration value is not null
+        // this means iteration has just got removed
+        else if (this.currentIteration.getValue() !== null) {
+          this.currentIteration.next(null);
+        }
+      })
+    );
   }
 
   onDragStart() {

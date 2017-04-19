@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 import { Response } from '@angular/http';
 import { Router, ActivatedRoute } from '@angular/router';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { cloneDeep, trimEnd } from 'lodash';
 
 import { IterationService } from './../../iteration/iteration.service';
@@ -70,9 +71,10 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   showDialog = false;
   dragulaEventListeners: any[] = [];
   private allowedFilterParams: string[] = ['iteration'];
-  private existingQueryParams: Object = {};
   private urlListener = null;
   private currentBoardType: WorkItemType | Object = {};
+  private currentIteration: BehaviorSubject<string | null>;
+  private currentWIType: BehaviorSubject<string | null>;
 
   constructor(
     private auth: AuthenticationService,
@@ -116,6 +118,22 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
+    // If there is an iteration on the URL
+    // Setting the value to currentIteration
+    // BehaviorSubject so that we can compare
+    // on update the value on URL
+    const queryParams = this.route.snapshot.queryParams;
+    if (Object.keys(queryParams).indexOf('iteration') > -1) {
+      this.currentIteration = new BehaviorSubject(queryParams['iteration']);
+    } else {
+      this.currentIteration = new BehaviorSubject(null);
+    }
+    if (Object.keys(queryParams).indexOf('workitemtype') > -1) {
+      this.currentWIType = new BehaviorSubject(queryParams['workitemtype']);
+    } else {
+      this.currentWIType = new BehaviorSubject(null);
+    }
+
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
     this.spaceSubscription = this.spaces.current.subscribe(space => {
@@ -147,31 +165,34 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
       this.workItemService.getWorkItemTypes(),
       this.areaService.getAreas(),
       this.userService.getUser(),
+      this.currentIteration,
+      this.currentWIType
     )
-    .subscribe(([iterations, users, wiTypes, areas, loggedInUser]) => {
+    .subscribe(([iterations, users, wiTypes, areas, loggedInUser, currentIteration, currentWIType]) => {
       this.allUsers = users;
       this.iterations = iterations;
       this.workItemTypes = wiTypes;
       this.readyToInit = true;
       this.areas = areas;
       this.loggedInUser = loggedInUser;
-
       // Resolve iteration filter on the first load of board view
       // If there is an existing iteration query params already
       // Set the filter service with iteration filter
-      if (Object.keys(this.existingQueryParams).indexOf('iteration') > -1) {
+      if (currentIteration !== null) {
         const filterIteration = this.iterations.find(it => {
           return it.attributes.resolved_parent_path + '/' + it.attributes.name ===
-            this.existingQueryParams['iteration'];
+            currentIteration;
         })
         if (filterIteration) {
            this.filterService.setFilterValues('iteration', filterIteration.id)
         }
+      } else {
+        this.filterService.clearFilters(['iteration']);
       }
 
       // Set lanes
       // If wi type is there in the URL queryPrams
-      if (Object.keys(this.route.snapshot.queryParams).indexOf('workitemtype') > -1) {
+      if (currentWIType !== null) {
         const type = this.workItemTypes.find(
           t => t.attributes['name'] === this.route.snapshot.queryParams['workitemtype']
         );
@@ -251,18 +272,16 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
 
   initWiItems($event, lane) {
     this.pageSize = $event.pageSize;
-
     // Subscribe only once
     // When the first lane is ready
     // we have the page size
     if (this.urlListener === null) {
       this.listenToUrlParams();
     }
-    // If there are no filter param then load all the lanes
-    // Else let the param subscriber handle the loading of the
-    // Work items which happens in wi_item_filter listener
-    if (!Object.keys(this.existingQueryParams)) {
-      this.getWorkItems($event.pageSize, lane);
+
+    // Once all the lanes inititated, apply the filters to load work items
+    if (lane.option === this.lanes[this.lanes.length - 1].option) {
+      this.filterService.applyFilter();
     }
   }
 
@@ -481,11 +500,10 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     );
 
     this.eventListeners.push(
-      this.broadcaster.on<string>('wi_item_filter')
-        .subscribe((filters: any) => {
-          this.lanes.forEach(lane => {
-            this.getWorkItems(this.pageSize, lane)
-          });
+      this.filterService.filterChange.subscribe(filters => {
+        this.lanes.forEach(lane => {
+          this.getWorkItems(this.pageSize, lane);
+        })
       })
     );
   }
@@ -493,46 +511,22 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   listenToUrlParams() {
     this.urlListener =
       this.route.queryParams.subscribe((params) => {
-        this.existingQueryParams = params;
-        // on no params and not the first ever call
-        if (!Object.keys(params).length && this.lanes.length) {
-          // Cleaning up filters from filter service
-          this.filterService.clearFilters();
-          // Setting the default work item type
-          this.filterService.setFilterValues('workitemtype', this.workItemTypes[0].id)
-          // Set current board type to default one
-          this.currentBoardType = this.workItemTypes[0];
-          // Apply all cleaned up filters
-          this.filterService.applyFilter();
-        }
 
-        // Checking for iteration
-        else if(Object.keys(params).length &&
-          Object.keys(params).indexOf('iteration') > -1) {
-          if (Object.keys(params).length === 1) {
-            this.filterService.clearFilters();
-          } else {
-            this.filterService.clearFilters(this.allowedFilterParams);
+        if (Object.keys(params).indexOf('iteration') > -1) {
+          if (params['iteration'] !== this.currentIteration.getValue()) {
+            this.currentIteration.next(params['iteration']);
           }
-
-          // Resolve filter iteration once the board view is loaded
-          if (this.lanes.length) {
-            const filterIteration = this.iterations.find(it => {
-              return it.attributes.resolved_parent_path + '/' + it.attributes.name ===
-                this.existingQueryParams['iteration'];
-            })
-            if (filterIteration) {
-              this.filterService.setFilterValues('iteration', filterIteration.id)
-            }
-          }
-          this.getDefaultWorkItemTypeStates();
-          this.filterService.applyFilter();
+        } else if (this.currentIteration.getValue() !== null) {
+          this.currentIteration.next(null);
         }
 
         if (Object.keys(params).indexOf('workitemtype') > -1) {
-          console.log('[WorkItemBoardComponent] New type context selected: ' + params['workitemtype']);
-          this.getDefaultWorkItemTypeStates(this.filterService.getFilterValue('workitemtype'));
-          this.filterService.applyFilter();
+          if (params['workitemtype'] !== this.currentWIType.getValue()) {
+            console.log('[WorkItemBoardComponent] New type context selected: ' + params['workitemtype']);
+            this.currentWIType.next(params['workitemtype']);
+          }
+        } else if (this.currentWIType.getValue() !== null) {
+          this.currentWIType.next(null);
         }
       });
   }
