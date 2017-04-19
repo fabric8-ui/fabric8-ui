@@ -75,6 +75,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   private currentBoardType: WorkItemType | Object = {};
   private currentIteration: BehaviorSubject<string | null>;
   private currentWIType: BehaviorSubject<string | null>;
+  private existingQueryParams: Object = {};
 
   constructor(
     private auth: AuthenticationService,
@@ -511,6 +512,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   listenToUrlParams() {
     this.urlListener =
       this.route.queryParams.subscribe((params) => {
+        this.existingQueryParams = params;
 
         if (Object.keys(params).indexOf('iteration') > -1) {
           if (params['iteration'] !== this.currentIteration.getValue()) {
