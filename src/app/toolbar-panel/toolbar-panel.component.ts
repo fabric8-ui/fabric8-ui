@@ -77,6 +77,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   ];
 
   private queryParamSubscriber = null;
+  private savedFIlterFieldQueries = {};
 
   // This flag tells if an update for filter is coming from
   // tool bar internaly or not
@@ -352,9 +353,24 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       if (this.filterConfig.fields[index].queries.length === 0) {
         filterMap[data.id].datasource.subscribe(resp => {
           this.filterConfig.fields[index].queries = filterMap[data.id].datamap(resp).queries;
+          this.savedFIlterFieldQueries[this.filterConfig.fields[index].id] = this.filterConfig.fields[index].queries;
           this.filterConfig.fields[index].primaryQueries = filterMap[data.id].datamap(resp).primaryQueries;
         })
       }
+    }
+  }
+
+  filterQueries(event) {
+    const index = this.filterConfig.fields.findIndex(i => i.id === event.field.id);
+    let inp = event.text.trim();
+
+    if (inp) {
+      this.filterConfig.fields[index].queries = this.savedFIlterFieldQueries[event.field.id].filter((item) => {
+       return item.value.toLowerCase().indexOf(inp.toLowerCase()) > -1;
+      });
+    }
+    if (!this.filterConfig.fields[index].queries.length && inp === '') {
+      this.filterConfig.fields[index].queries = this.savedFIlterFieldQueries[event.field.id];
     }
   }
 
