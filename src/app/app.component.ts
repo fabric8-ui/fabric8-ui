@@ -47,7 +47,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.broadcaster.on<any>('toastNotification')
       .subscribe((notificationData: any) => {
-        console.log('toast notification called');
         this.notifications.splice(0, 0, {
           text: notificationData.notificationText,
           alertClass: this.notificationType[notificationData.notificationType],

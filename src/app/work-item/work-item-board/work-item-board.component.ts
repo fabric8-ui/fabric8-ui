@@ -24,7 +24,7 @@ import { IterationService } from './../../iteration/iteration.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Broadcaster } from 'ngx-base';
+import { Broadcaster, Notification, NotificationType, Notifications } from 'ngx-base';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { AuthenticationService, User, UserService } from 'ngx-login-client';
 import { ArrayCount } from 'ngx-widgets';
@@ -81,6 +81,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     private collaboratorService: CollaboratorService,
+    private notifications: Notifications,
     private router: Router,
     private workItemService: WorkItemService,
     private dragulaService: DragulaService,
@@ -349,7 +350,17 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     this.workItemService
       .update(this.workItem)
       .subscribe(workItem => {
-        console.log('iteration updated');
+        this.workItem = workItem;
+        this.notifications.message({
+          message: workItem.attributes['system.title'] + ' has been moved to the Backlog.',
+          type: NotificationType.SUCCESS
+        } as Notification);
+    },
+    (err) => {
+      this.notifications.message({
+          message: this.workItem.attributes['system.title'] + ' could not be moved to the Backlog.',
+          type: NotificationType.DANGER
+        } as Notification);
     });
   }
 
