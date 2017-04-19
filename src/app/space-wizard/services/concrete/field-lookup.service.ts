@@ -65,7 +65,7 @@ export class FieldLookupService {
             break;
           }
           case 'version' : {
-              field.display.label='Version';
+            field.display.label='Version';
             break;
           }
           case 'type' : {
@@ -82,7 +82,7 @@ export class FieldLookupService {
               this.log(`Updating ${field.name} field to space name = '${spaceName}'  ...`);
             }
             field.display.label = 'Github repository name';
-            if(field.display.note){
+            if( field.display.note ){
               field.display.note=field.display.note.replace(/Downloadable project zip and/ig,'');
               field.display.note=field.display.note.replace(/project name/ig,'repository name');
               field.display.note=field.display.note.replace(/are based/ig,'is based');
@@ -90,6 +90,9 @@ export class FieldLookupService {
 
             }
 
+            break;
+          }
+          default:{
             break;
           }
         }
