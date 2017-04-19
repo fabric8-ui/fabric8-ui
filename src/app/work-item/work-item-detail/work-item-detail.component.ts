@@ -246,14 +246,12 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         };
 
         // Resolve comments
-        if (comments.data) {
-          comments.data = comments.data.map((comment) => {
-            comment.relationships['created-by'].data =
-              users.find(user => user.id === comment.relationships['created-by'].data.id);
-            return comment;
-          });
-          workItem.relationships.comments.data = this.comments = comments.data;
-        } else workItem.relationships.comments.data = this.comments = [];
+        comments.data = comments.data.map((comment) => {
+          comment.relationships['created-by'].data =
+            users.find(user => user.id === comment.relationships['created-by'].data.id);
+          return comment;
+        });
+        workItem.relationships.comments.data = this.comments = comments.data;
 
         // Resolve links
         workItem = Object.assign(
@@ -563,14 +561,12 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         };
 
         // Resolve comments
-        if (comments.data) {
-          comments.data = comments.data.map((comment) => {
-            comment.relationships['created-by'].data =
-              users.find(user => user.id === comment.relationships['created-by'].data.id);
-            return comment;
-          });
-          workItem.relationships.comments.data = this.comments = comments.data;
-        } else workItem.relationships.comments.data = this.comments = [];
+        comments.data = comments.data.map((comment) => {
+          comment.relationships['created-by'].data =
+            users.find(user => user.id === comment.relationships['created-by'].data.id);
+          return comment;
+        });
+        workItem.relationships.comments.data = this.comments = comments.data;
 
         // Resolve links
         workItem = Object.assign(
