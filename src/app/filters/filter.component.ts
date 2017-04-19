@@ -26,6 +26,7 @@ export class FilterComponent implements OnInit {
   @Input() config: FilterConfig;
 
   @Output('onChange') onChange = new EventEmitter();
+  @Output('typeAhedFilterQueries') typeAhedFilterQueries = new EventEmitter();
 
   prevConfig: FilterConfig;
 
@@ -88,5 +89,9 @@ export class FilterComponent implements OnInit {
     this.onChange.emit({
       appliedFilters: $event
     } as FilterEvent);
+  }
+
+  onFilterQueries(event: any) {
+    this.typeAhedFilterQueries.emit(event);
   }
 }

@@ -21,6 +21,7 @@ export class FilterExampleComponent implements OnInit {
   items: any[];
   filterConfig: FilterConfig;
   filtersText: string = "";
+  savedFIlterFieldQueries: any = {};
 
   constructor(private router: Router) {
   }
@@ -154,7 +155,16 @@ export class FilterExampleComponent implements OnInit {
         id: 'withimage',
         title: 'With Image',
         placeholder: 'Filter by Items...',
-        type: 'select',
+        type: 'typeahead',
+        primaryQueries: [{
+          id: 'item10',
+          value: 'Item 10',
+          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
+        },{
+          id: 'item20',
+          value: 'Item 20',
+          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
+        }],
         queries: [{
           id: 'item1',
           value: 'Item 1',
@@ -191,6 +201,9 @@ export class FilterExampleComponent implements OnInit {
       resultsCount: this.items.length,
       appliedFilters: []
     } as FilterConfig;
+
+    this.filterConfig.fields
+      .forEach((field) => this.savedFIlterFieldQueries[field.id] = field.queries);
   }
 
   // Filter functions
@@ -242,5 +255,20 @@ export class FilterExampleComponent implements OnInit {
       }
     });
     return matches;
+  }
+
+  filterQueries(event: any) {
+    const index = this.filterConfig.fields.findIndex(i => i.id === event.field.id);
+    let inp = event.text.trim();
+
+    if (inp) {
+      this.filterConfig.fields[index].queries =
+      this.savedFIlterFieldQueries[event.field.id].filter((item: any) => {
+       return item.value.toLowerCase().indexOf(inp.toLowerCase()) > -1;
+      });
+    }
+    if (!this.filterConfig.fields[index].queries.length && inp === '') {
+      this.filterConfig.fields[index].queries = this.savedFIlterFieldQueries[event.field.id];
+    }
   }
 }
