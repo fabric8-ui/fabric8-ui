@@ -6,7 +6,7 @@
           <div class="col-xs-12 wizard-step-title">
             <h3><strong> Create Space </strong></h3>
             <div></div>
-            <span (click)="workflow.cancel()" class="pficon pficon-close"></span>
+            <span (click)="workflow.cancel()" class="cursor-pointer pficon pficon-close"></span>
           </div>
         </div>
       </header>
@@ -74,57 +74,52 @@
     <header class="container-fluid">
       <div class="row">
         <div class="col-xs-12 wizard-step-title">
+          <h4 class="text" >Welcome to your {{configurator.space.attributes.name | spaceName}} space.</h4>
           <div></div>
-          <h2>Your <strong>{{configurator.space.attributes.name | spaceName}}</strong> Space is ready! What would you like to do ?
-          </h2>
-          <span (click)="workflow-cancel()" class="pficon pficon-close"></span>
+          <span (click)="workflow-cancel()" class="pficon pficon-close cursor-pointer"></span>
+        </div>
+      </div>
+      <div class="row" >
+        <div class="col-xs-12 wizard-step-sub-title">
+          <h2 class="text" >How would you like to get started?</h2>
         </div>
       </div>
     </header>
     <section class="container-fluid flex-container in-column-direction with-content-stretch padding-standard-offset ">
       <div class="row flex-grow-1 flex-container">
         <div class="col-xs-12 flex-grow-1 flex-container in-row-direction with-content-stretch">
-          <div class="section-column">
+          <div class="section-column cursor-pointer user-select-none">
             <header>
-              <h3>I'd like to start by Planning my work.</h3>
+              <h3><strong>Plan</strong> out my space</h3>
             </header>
             <section><span><br></span></section>
-            <footer><a class="btn btn-default">Planning</a></footer>
+            <footer><span class="fa fa-3x fa-list" ></span></footer>
           </div>
-          <div class="section-column">
+          <div class="section-column cursor-pointer user-select-none">
             <header>
-              <h3>I'd like to start by Coding from scratch.</h3>
+              <h3>Create <strong>new code</strong> from <strong>scratch</strong></h3>
             </header>
             <section><span><br></span></section>
-            <footer><a class="btn btn-default">New Code</a></footer>
+            <footer><span class="fa fa-3x fa-code" ></span></footer>
           </div>
-          <div class="section-column">
+          <div class="section-column cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:steps.forgeImportGit})" >
             <header>
-              <h3>I'd like to start by Importing existing code.</h3>
+              <h3>Import existing <strong>code</strong></h3>
             </header>
             <section><span><br></span></section>
-            <footer class="container-fluid">
-              <div class="row">
-                <div class="col-xs-12">
-                  <div class="button-bar pull-right">
-                    <a class="btn btn-default" (click)="workflow.gotoNextStep({name:steps.forgeImportGit})">Import
-                      Code</a>
-                  </div>
-                </div>
-              </div>
+            <footer >
+              <span class="pficon fa-3x pficon-import" ></span>
             </footer>
           </div>
-          <div class="section-column">
+          <div class="section-column cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:steps.forgeQuickStart})" >
             <header>
-              <h3>I'd like to use a Quickstart.</h3>
+              <h3>Select <strong>technology stack</strong> and <strong>pipeline</strong></h3>
             </header>
             <section><span><br></span></section>
             <footer class="container-fluid">
               <div class="row">
                 <div class="col-xs-12">
-                  <div class="button-bar pull-right">
-                    <a class="margin-top-5 btn btn-default" (click)="workflow.gotoNextStep({name:steps.forgeQuickStart})">Quickstart</a>
-                  </div>
+                  <span class="pficon fa-3x pficon-screen" ></span>
                 </div>
               </div>
             </footer>
@@ -136,8 +131,8 @@
     <footer class="container-fluid">
       <div class="row">
         <div class="col-xs-12 wizard-step-tool-bar with-items-in-center">
-          <a class="btn btn-primary" (click)="finish()">Take me to the
-            {{configurator.space.attributes.name | spaceName}} space</a>
+          <a class="btn btn-primary" (click)="finish()"> No thanks, take me to the
+            {{configurator.space.attributes.name | spaceName}} dashboard</a>
         </div>
       </div>
     </footer>

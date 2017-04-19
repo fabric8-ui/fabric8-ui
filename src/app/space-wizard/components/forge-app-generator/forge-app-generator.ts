@@ -97,6 +97,7 @@ export class ForgeAppGenerator {
 
   public finish() {
     this.execute().then(execution => {
+      this.workflow.finish();
     });
   }
 

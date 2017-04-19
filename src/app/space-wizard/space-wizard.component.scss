@@ -8,16 +8,16 @@ $icon-path: '../../assets/icon/';
 $wizard-padding: $grid-gutter-width / 2;
 $wizard-spacing: 5px;
 // shadow distance from element
-$wizard-shadow-offset: 1px;
+$wizard-shadow-offset: 0px;
 // makes shadow bigger
 $wizard-shadow-spread-radius: 1px;
 // makes shadows edge blury
-$wizard-shadow-blur-radius: 5px;
+$wizard-shadow-blur-radius: 1px;
 //noinspection SassScssResolvedByNameOnly
-$wizard-section-column-background-color: $btn-primary-bg;
-$wizard-layout-block-background-color: #fff;
+$wizard-section-column-background-color: $color-pf-white;// $btn-primary-bg;
+$wizard-layout-block-background-color: $color-pf-white;
 //noinspection SassScssResolvedByNameOnly
-$wizard-layout-block-header-border-color: $color-pf-blue-300;
+$wizard-layout-block-header-border-color: $color-pf-black-100;// $color-pf-blue-300;
 //noinspection SassScssUnresolvedVariable,SassScssUnresolvedVariable
 $wizard-layout-block-shadow-color: darken($navbar-default-bg, 10%);
 //noinspection SassScssUnresolvedVariable,SassScssUnresolvedVariable
@@ -113,12 +113,32 @@ $wizard-block-header-color: $color-pf-white;
       }
     }
     .section-column {
+
+
+
       display: flex;
       flex-grow: 1;
+      width:22%;
       flex-direction: column;
-      padding: 5px;
+      padding: $wizard-spacing;
       margin: 0;
       margin-right: $wizard-padding;
+      border:solid 2px transparent;
+      box-shadow: $wizard-shadow-offset  $wizard-shadow-blur-radius $wizard-shadow-spread-radius $wizard-layout-block-shadow-color;
+      &:hover {
+
+        border: solid 2px $color-pf-blue-300;
+        box-shadow: $wizard-shadow-offset  $wizard-shadow-blur-radius $wizard-shadow-spread-radius darken($wizard-layout-block-shadow-color, 10%);
+      }
+      &:active {
+
+        padding-top: $wizard-spacing + 1px;
+        padding-left: $wizard-spacing - 1px;
+
+        border: solid 2px $color-pf-blue-400;
+        box-shadow: $wizard-shadow-offset  $wizard-shadow-blur-radius $wizard-shadow-spread-radius darken($wizard-layout-block-shadow-color, 20%);
+      }
+
       &:last-of-type {
         margin-right: 0;
       }
@@ -126,7 +146,7 @@ $wizard-block-header-color: $color-pf-white;
       > header {
         padding-top: $wizard-padding;
         text-align: center;
-        color: white;
+        color: $color-pf-black;
         font-weight: normal;
       }
       > div {

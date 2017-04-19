@@ -334,7 +334,7 @@ footer
 
 // wizard
 $wizard-spacing:$grid-gutter-width/2;
-$wizard-header-color:$color-pf-white;
+$wizard-header-color:$color-pf-black-100;
 $wizard-footer-color: $color-pf-white;// $color-pf-black-200;
 $wizard-footer-divider-color: $color-pf-black-300;// $color-pf-black-200;
 
@@ -486,6 +486,20 @@ $wizard-footer-divider-color: $color-pf-black-300;// $color-pf-black-200;
         align-items: center;
         //main axis direction
         flex-direction: row;
+        .text{
+          font-weight: 600;
+        }
+      }
+
+      .wizard-step-sub-title
+      {
+          background-color:$color-pf-white;
+          display:flex;
+          justify-content: center;
+          .text{
+              font-weight: 600;
+
+          }
       }
 
 
@@ -617,5 +631,18 @@ span,div
 
 }
 
+.cursor-pointer
+{
+  cursor: pointer;
+}
 
-
+.user-select-none
+{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
