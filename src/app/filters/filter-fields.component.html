@@ -57,21 +57,12 @@
                 {{currentField.placeholder}}
               </a>
             </li>
-            <li *ngFor="let query of currentField.primaryQueries"
-              [ngClass]="{'selected': query.value === currentValue}">
-              <a role="menuitem" tabindex="-1" (click)="selectValue(query)">
-                <span *ngIf="query?.iconClass" class="fa {{query?.iconClass}}"></span>
-                <img class="avatar" *ngIf="query?.imageUrl" [attr.src]="query?.imageUrl" />
-                  <span [innerHTML]="query.value"></span>
-              </a>
-            </li>
-            <li *ngIf="currentField?.primaryQueries?.length" class="divider dropdown-divider"></li>
             <li *ngFor="let query of currentField.queries"
-              [ngClass]="{'selected': query.value === currentValue}">
-              <a role="menuitem" tabindex="-1" (click)="selectValue(query)">
+              [ngClass]="{'selected': query.value === currentValue, 'divider dropdown-divider': query?.separator}">
+              <a *ngIf="!query?.separator" role="menuitem" tabindex="-1" (click)="selectValue(query)">
                 <span *ngIf="query?.iconClass" class="fa {{query?.iconClass}}"></span>
                 <img class="avatar" *ngIf="query?.imageUrl" [attr.src]="query?.imageUrl" />
-                  <span [innerHTML]="query.value | almSearchHighlight: searchField.value"></span>
+                <span [innerHTML]="query.value | almSearchHighlight: searchField.value"></span>
               </a>
             </li>
           </ul>

@@ -9,4 +9,5 @@ export class FilterQuery {
   value: string;
   imageUrl?: string;
   iconClass?: string;
+  separator?: boolean;
 }

@@ -12,7 +12,6 @@ import { FilterQuery } from './filter-query';
 export class FilterField {
   id?: string;
   placeholder?: string;
-  primaryQueries?: FilterQuery[];
   queries?: FilterQuery[];
   title: string;
   type: string;

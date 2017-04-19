@@ -22,6 +22,9 @@ export class FilterExampleComponent implements OnInit {
   filterConfig: FilterConfig;
   filtersText: string = "";
   savedFIlterFieldQueries: any = {};
+  typeAheadFixed: any[];
+  separator: Object;
+  typeahedFilterableQueries: any[];
 
   constructor(private router: Router) {
   }
@@ -63,6 +66,36 @@ export class FilterExampleComponent implements OnInit {
       weekdayId: 'day5'
     }];
     this.items = this.allItems;
+
+    this.typeAheadFixed = [{
+          id: 'item10',
+          value: 'Item 10',
+          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
+        },{
+          id: 'item20',
+          value: 'Item 20',
+          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
+      }];
+
+      this.separator = {
+          id: 'separator',
+          value: null,
+          separator: true
+      };
+
+      this.typeahedFilterableQueries = [{
+          id: 'item1',
+          value: 'Item 1',
+          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
+        },{
+          id: 'item2',
+          value: 'Item 2',
+          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
+        },{
+          id: 'item3',
+          value: 'Item 3',
+          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
+    }];
 
     this.filterConfig = {
       fields: [{
@@ -156,28 +189,11 @@ export class FilterExampleComponent implements OnInit {
         title: 'With Image',
         placeholder: 'Filter by Items...',
         type: 'typeahead',
-        primaryQueries: [{
-          id: 'item10',
-          value: 'Item 10',
-          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
-        },{
-          id: 'item20',
-          value: 'Item 20',
-          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
-        }],
-        queries: [{
-          id: 'item1',
-          value: 'Item 1',
-          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
-        },{
-          id: 'item2',
-          value: 'Item 2',
-          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
-        },{
-          id: 'item3',
-          value: 'Item 3',
-          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
-        }]
+        queries: [
+          ...this.typeAheadFixed,
+          this.separator,
+          ...this.typeahedFilterableQueries
+        ]
       },
       {
         id: 'withicon',
@@ -203,7 +219,12 @@ export class FilterExampleComponent implements OnInit {
     } as FilterConfig;
 
     this.filterConfig.fields
-      .forEach((field) => this.savedFIlterFieldQueries[field.id] = field.queries);
+      .forEach((field) => {
+        this.savedFIlterFieldQueries[field.id] = {};
+        this.savedFIlterFieldQueries[field.id]['filterable'] = this.typeahedFilterableQueries;
+        this.savedFIlterFieldQueries[field.id]['fixed'] = this.typeAheadFixed;
+        this.savedFIlterFieldQueries[field.id]['separator'] = [this.separator];
+      });
   }
 
   // Filter functions
@@ -262,13 +283,24 @@ export class FilterExampleComponent implements OnInit {
     let inp = event.text.trim();
 
     if (inp) {
-      this.filterConfig.fields[index].queries =
-      this.savedFIlterFieldQueries[event.field.id].filter((item: any) => {
-       return item.value.toLowerCase().indexOf(inp.toLowerCase()) > -1;
-      });
+      this.filterConfig.fields[index].queries = [
+        ...this.savedFIlterFieldQueries[event.field.id]['fixed'],
+        ...this.savedFIlterFieldQueries[event.field.id]['separator'],
+        ...this.savedFIlterFieldQueries[event.field.id]['filterable'].filter((item: any) => {
+          if (item.value) {
+            return item.value.toLowerCase().indexOf(inp.toLowerCase()) > -1;
+          } else {
+            return true;
+          }
+        })
+      ];
     }
     if (!this.filterConfig.fields[index].queries.length && inp === '') {
-      this.filterConfig.fields[index].queries = this.savedFIlterFieldQueries[event.field.id];
+      this.filterConfig.fields[index].queries = [
+        ...this.savedFIlterFieldQueries[event.field.id]['fixed'],
+        ...this.savedFIlterFieldQueries[event.field.id]['separator'],
+        ...this.savedFIlterFieldQueries[event.field.id]['filterable']
+      ];
     }
   }
 }
