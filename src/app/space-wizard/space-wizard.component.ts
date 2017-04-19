@@ -79,7 +79,7 @@ export class SpaceWizardComponent implements OnInit {
     loggerFactory: LoggerFactory,
     private spaceNamespaceService: SpaceNamespaceService,
     private spaceNamePipe: SpaceNamePipe,
-    private _fieldLookupService:FieldLookupService) {
+    private _fieldLookupService: FieldLookupService) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, SpaceWizardComponent.instanceCount++);
     if ( logger ) {
       this.log = logger;
@@ -91,6 +91,7 @@ export class SpaceWizardComponent implements OnInit {
     this.log(`ngInit ...`);
     this.configureComponentHost();
     this.configurator = this.createSpaceConfigurator();
+    this._fieldLookupService.configurator=this.configurator;
   }
 
   /**
@@ -196,6 +197,7 @@ export class SpaceWizardComponent implements OnInit {
     })
     .subscribe(createdSpace => {
       this.configurator.space = createdSpace;
+      this._fieldLookupService.configurator = this.configurator;
       let actionObservable = this.notifications.message({
         message: `Your new space is created!`,
         type: NotificationType.SUCCESS,

@@ -45,7 +45,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
   constructor(
     @Inject(IForgeServiceProvider.InjectToken) private forgeService: IForgeService,
     loggerFactory: LoggerFactory,
-    private fieldLookupService: FieldLookupService) {
+    private _fieldLookupService: FieldLookupService) {
     super();
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, Fabric8AppGeneratorService.instanceCount++);
     if ( logger ) {
@@ -133,6 +133,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
       };
       this.forgeService.executeCommand( commandRequest )
       .map( (forgeResponse) => this.transformForgeResponseToAppGeneratorResponse(request, forgeResponse) )
+      .map( (forgeResponse) => this._fieldLookupService.UpdateFields('',forgeResponse) )
       .subscribe( (response: IAppGeneratorResponse) => {
         this.log(`AppGenerator '${cmdDescription}' command completed`, response);
         observer.next(response);
