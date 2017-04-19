@@ -62,6 +62,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   eventListeners: any[] = [];
   dialog: Dialog;
   showDialog = false;
+  dragulaEventListeners: any[] = [];
 
   constructor(
     private auth: AuthenticationService,
@@ -72,21 +73,21 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     private iterationService: IterationService,
     private userService: UserService,
     private spaces: Spaces) {
-      this.dragulaService.drag.subscribe((value) => {
-        this.onDrag(value.slice(1));
-      });
 
-      this.dragulaService.drop.subscribe((value) => {
-        this.onDrop(value.slice(1));
-      });
-
-      this.dragulaService.over.subscribe((value) => {
-        this.onOver(value.slice(1));
-      });
-
-      this.dragulaService.out.subscribe((value) => {
-        this.onOut(value.slice(1));
-      });
+      this.dragulaEventListeners.push(
+        this.dragulaService.drag.subscribe((value) => {
+          this.onDrag(value.slice(1));
+        }),
+        this.dragulaService.drop.subscribe((value) => {
+          this.onDrop(value.slice(1));
+        }),
+        this.dragulaService.over.subscribe((value) => {
+          this.onOver(value.slice(1));
+        }),
+         this.dragulaService.out.subscribe((value) => {
+          this.onOut(value.slice(1));
+        })
+      );
     }
 
   ngOnInit() {
@@ -115,6 +116,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     console.log('Destroying all the listeners in board component');
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
+    this.dragulaEventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
   initStuff() {

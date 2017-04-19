@@ -227,7 +227,7 @@ export class WorkItemService {
   // converts a any object to a WorkItem (creating the attribute Map)
   toWorkItem(input: any): WorkItem {
     let newWorkItem = cloneDeep(input) as WorkItem;
-    newWorkItem.attributes = new Map<string, string | number>();    
+    newWorkItem.attributes = new Map<string, string | number>();
     for (var property in input.attributes) {
       if (input.attributes.hasOwnProperty(property)) {
         newWorkItem.attributes.set(property, input.attributes[property]);
@@ -662,7 +662,7 @@ export class WorkItemService {
       return this.http
         .post(this.workItemUrl, payload, { headers: this.headers })
         .map(response => {
-          this.broadcaster.broadcast('create_workitem', response.json().data as WorkItem);          
+          this.broadcaster.broadcast('create_workitem', response.json().data as WorkItem);
           return response.json().data as WorkItem;
         });
         // .catch ((e) => {
