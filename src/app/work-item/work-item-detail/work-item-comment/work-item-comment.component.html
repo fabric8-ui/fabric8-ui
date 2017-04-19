@@ -1,4 +1,4 @@
-<div *ngIf="workItem" class="flex-container flex-grow-1 in-column-direction" id="wi-comment">
+<div class="flex-container flex-grow-1 in-column-direction" id="wi-comment">
     <ul class="comment-content nav nav-tabs nav-tabs-pf" id="wi-comment-content" *ngIf="true">
         <!-- Refactoring needed to toogle view -->
       <li class="toggle-icon" (click)="isCollapsedComments = !isCollapsedComments">
@@ -8,7 +8,7 @@
       <li [class.active]="!isCollapsedComments" (click)="isCollapsedComments = !isCollapsedComments">
         <a>
           <span>Comments</span>
-          <span class="badge" id="total_comments" >{{workItem.relationships?.comments?.data?.length}}</span>
+          <span class="badge" id="total_comments" >{{comments.length}}</span>
         </a>
       </li>
     </ul>
@@ -20,7 +20,7 @@
               data-placeholder="Add a new comment..." #comment></p>
       </div>
       <div class="flex-container flex-grow-1 in-column-direction comments-outer-wrapper">
-        <div *ngFor='let comment of workItem.relationships?.comments?.data?.slice(); let counter = index' class="comments-wrap">
+        <div *ngFor='let comment of comments.slice(); let counter = index' class="comments-wrap">
           <div class="flex-container flex-grow-1">
             <div class="user-avatar">
                 <img id="{{'comment_avatar_' + counter}}"

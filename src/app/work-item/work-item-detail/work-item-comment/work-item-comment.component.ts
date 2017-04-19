@@ -18,11 +18,7 @@ import {
 
 import { Comment, CommentAttributes } from '../../../models/comment';
 import { WorkItem } from '../../../models/work-item';
-<<<<<<< c57ca42fbe4004689e22cc8d74a86852210c34c2
-import { WorkItemService } from '../../work-item.service';
 import { CollaboratorService } from './../../../collaborator/collaborator.service';
-=======
->>>>>>> refactor(comments): abstracting outbound API calls from comment component itself
 
 @Component({
     selector: 'alm-work-item-comment',
@@ -30,7 +26,7 @@ import { CollaboratorService } from './../../../collaborator/collaborator.servic
     styleUrls: ['./work-item-comment.component.scss'],
 })
 export class WorkItemCommentComponent implements OnInit, OnChanges {
-    @Input() workItem: WorkItem;
+    @Input() comments: Comment[];
     @Input() loggedIn: Boolean;
     @Output() create = new EventEmitter<Comment>();
     @Output() update = new EventEmitter<Comment>();
@@ -66,15 +62,6 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-      this.collaboratorService.getCollaborators()
-      .subscribe((users) => {
-        this.workItem.relationships.comments.data =
-          this.workItem.relationships.comments.data.map((comment) => {
-            comment.relationships['created-by'].data =
-              users.find(user => user.id === comment.relationships['created-by'].data.id);
-            return comment;
-          });
-      });
     }
 
     createCommentObject(): void {
@@ -94,37 +81,9 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
     createComment(event: any = null): void {
       this.preventDef(event);
       this.comment.attributes.body = event.target.textContent;
-<<<<<<< c57ca42fbe4004689e22cc8d74a86852210c34c2
-      this.workItemService
-        .createComment(this.workItem.relationships.comments.links.related, this.comment)
-        .switchMap((comment: Comment) => {
-          return this.collaboratorService.getCollaborators()
-            .map((users) => {
-              comment.relationships['created-by'].data =
-                users.find(user => user.id === comment.relationships['created-by'].data.id);
-              return comment;
-            });
-        })
-        .subscribe((comment: Comment) => {
-            if (typeof(this.workItem.relationships.comments.data) === 'undefined') {
-              this.workItem.relationships.comments = Object.assign(
-                this.workItem.relationships.comments,
-                { data: [] }
-              );
-            }
-            this.workItem.relationships.comments.data.splice(0, 0, comment);
-            this.workItem.relationships.comments.meta.totalCount += 1;
-            event.target.textContent = '';
-            this.createCommentObject();
-        },
-        (error) => {
-            console.log(error);
-        });
-=======
       this.create.emit(this.comment);
       event.target.textContent = '';
       this.createCommentObject();
->>>>>>> refactor(comments): abstracting outbound API calls from comment component itself
     }
 
     updateComment(val: string, comment: Comment): void {
