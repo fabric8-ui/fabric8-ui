@@ -1,6 +1,7 @@
 import { ClassProvider, FactoryProvider, OpaqueToken } from '@angular/core';
 import { LoggerFactory } from '../../common/logger';
 import { Fabric8AppGeneratorService } from '../concrete/fabric8-app-generator.service';
+import { FieldLookupService } from '../concrete/field-lookup.service';
 
 import { AppGeneratorService, IAppGeneratorServiceToken } from '../contracts/app-generator-service';
 
@@ -18,10 +19,10 @@ export class IAppGeneratorServiceProvider {
   static get FactoryProvider(): FactoryProvider {
     return {
       provide: IAppGeneratorServiceToken,
-      useFactory: (forge: IForgeService, loggerFactory) => {
-        return new Fabric8AppGeneratorService(forge, loggerFactory);
+      useFactory: (forge: IForgeService, loggerFactory, fieldLookupService) => {
+        return new Fabric8AppGeneratorService(forge, loggerFactory, fieldLookupService);
       },
-      deps: [ IForgeServiceProvider.InjectToken, LoggerFactory ]
+      deps: [ IForgeServiceProvider.InjectToken, LoggerFactory, FieldLookupService ]
     };
   }
 
@@ -67,10 +68,10 @@ export class FieldSetServiceProvider {
   static get FactoryProvider(): FactoryProvider {
     return {
       provide: AppGeneratorService,
-      useFactory: (forge: IForgeService, loggerFactory) => {
-        return new Fabric8AppGeneratorService(forge, loggerFactory);
+      useFactory: (forge: IForgeService, loggerFactory, fieldLookupService) => {
+        return new Fabric8AppGeneratorService(forge, loggerFactory, fieldLookupService);
       },
-      deps: [ IForgeServiceProvider.InjectToken, LoggerFactory ],
+      deps: [ IForgeServiceProvider.InjectToken, LoggerFactory, FieldLookupService ],
       multi: false
     };
   }

@@ -264,9 +264,8 @@ public execute() {
   private applyTheNextCommandResponse( next: IAppGeneratorPair ) {
 
     let cmd: IAppGeneratorCommand = next.response.context.currentCommand;
-    // let currentCommandForgeData: IForgeCommandData = cmd.parameters.data;
 
-    this.state = next.response.payload.state; // currentCommandForgeData.state;
+    this.state = next.response.payload.state;
     let previousResponse = this._currentResponse;
     if ( previousResponse ) {
         this.responseHistory.push(previousResponse);

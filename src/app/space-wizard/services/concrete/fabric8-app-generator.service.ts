@@ -30,6 +30,10 @@ import {
   IForgeMetadata
 } from '../forge.service';
 
+import {
+ FieldLookupService
+} from './field-lookup.service'
+
 @Injectable()
 export class Fabric8AppGeneratorService extends AppGeneratorService {
   static instanceCount: number = 1;
@@ -40,7 +44,8 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
 
   constructor(
     @Inject(IForgeServiceProvider.InjectToken) private forgeService: IForgeService,
-    loggerFactory: LoggerFactory) {
+    loggerFactory: LoggerFactory,
+    private fieldLookupService: FieldLookupService) {
     super();
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, Fabric8AppGeneratorService.instanceCount++);
     if ( logger ) {

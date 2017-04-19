@@ -10,6 +10,7 @@ import { ForgeAppGeneratorComponent } from './components/forge-app-generator/for
 import { WorkflowFactory } from './models/workflow';
 
 import { IForgeServiceProvider } from './services/forge.service';
+import { FieldLookupService } from './services/app-generator.service';
 import { SpaceWizardComponent } from './space-wizard.component';
 import { SelectedItemsPipe } from './pipes/selected-items.pipe';
 import { VisibleItemsPipe } from './pipes/visible-items.pipe';
@@ -36,7 +37,8 @@ import { VisibleItemsPipe } from './pipes/visible-items.pipe';
     IForgeServiceProvider.FactoryProvider,
     LoggerFactory,
     WorkflowFactory,
-    AuthenticationService
+    AuthenticationService,
+    FieldLookupService
   ]
 })
 

@@ -15,6 +15,7 @@ import { SpaceConfigurator } from './models/codebase';
 import { IModalHost } from './models/modal-host';
 import { IWorkflow, WorkflowFactory } from './models/workflow';
 import { ForgeCommands } from './services/forge.service';
+import { FieldLookupService } from './services/app-generator.service';
 
 @Component({
   host: {
@@ -77,7 +78,8 @@ export class SpaceWizardComponent implements OnInit {
     private workflowFactory: WorkflowFactory,
     loggerFactory: LoggerFactory,
     private spaceNamespaceService: SpaceNamespaceService,
-    private spaceNamePipe: SpaceNamePipe) {
+    private spaceNamePipe: SpaceNamePipe,
+    private _fieldLookupService:FieldLookupService) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, SpaceWizardComponent.instanceCount++);
     if ( logger ) {
       this.log = logger;

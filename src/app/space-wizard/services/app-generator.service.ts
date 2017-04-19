@@ -16,7 +16,7 @@ export {
 } from './contracts/app-generator-service';
 
 export { IAppGeneratorServiceProvider, FieldSetServiceProvider } from './providers/app-generator-service.provider';
-
+export { FieldLookupService } from './concrete/field-lookup.service';
 
 
 
