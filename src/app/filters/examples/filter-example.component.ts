@@ -149,6 +149,44 @@ export class FilterExampleComponent implements OnInit {
           id: 'day7',
           value: 'Saturday'
         }]
+      },
+      {
+        id: 'withimage',
+        title: 'With Image',
+        placeholder: 'Filter by Items...',
+        type: 'select',
+        queries: [{
+          id: 'item1',
+          value: 'Item 1',
+          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
+        },{
+          id: 'item2',
+          value: 'Item 2',
+          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
+        },{
+          id: 'item3',
+          value: 'Item 3',
+          imageUrl: 'https://www.gravatar.com/avatar/2a997434d1fae552db7e114c4adb2479.jpg'
+        }]
+      },
+      {
+        id: 'withicon',
+        title: 'With Icon',
+        placeholder: 'Filter by Icons...',
+        type: 'select',
+        queries: [{
+          id: 'bookmark',
+          value: 'Bookmark',
+          iconClass: 'fa-bookmark'
+        },{
+          id: 'map',
+          value: 'Map',
+          iconClass: 'fa-map-marker'
+        },{
+          id: 'gift',
+          value: 'Gift',
+          iconClass: 'fa-gift'
+        }]
       }] as FilterField[],
       resultsCount: this.items.length,
       appliedFilters: []
