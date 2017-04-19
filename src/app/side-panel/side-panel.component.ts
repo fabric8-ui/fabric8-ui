@@ -34,13 +34,17 @@ export class SidepanelComponent implements OnInit {
 
   ngOnInit() {
     // retrieve the root iteration
-    this.iterationService.getRootIteration().first().subscribe((resultIteration:IterationModel) => {
+    this.iterationService.getRootIteration()
+    .subscribe((resultIteration:IterationModel) => {
       this.log.log('Got root iteration: ' + resultIteration.id);
       this.rootIteration = resultIteration;
       // after getting the root iteration, complete the initialization
       this.refreshBacklogSize();
       this.listenToEvents();
-    });
+    }),
+    (err) => {
+      console.log('Error getting root iteration in the side panel');
+    };
   }
 
   selectBacklog() {

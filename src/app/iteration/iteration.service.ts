@@ -78,7 +78,7 @@ export class IterationService {
           }
         });
     } else {
-      return Observable.throw(new Error('error'));
+      return Observable.throw(new Error('Error getting list of iterations'));
       // return Observable.throw<IterationModel[]> ([] as IterationModel[]);
     }
   }
@@ -177,11 +177,15 @@ export class IterationService {
   }
 
   getRootIteration(): Observable<IterationModel> {
-    return this.getIterations().first().map((resultIterations:IterationModel[]) => {
+    return this.getIterations().first()
+    .map((resultIterations) => {
       for (let i=0; i<resultIterations.length; i++) {
         if (this.isRootIteration(resultIterations[i]))
           return resultIterations[i];
-      }
+        }
+    })
+    .catch( err => {
+      return Observable.empty();
     });
   }
 
