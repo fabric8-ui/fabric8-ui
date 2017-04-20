@@ -99,7 +99,13 @@ objects:
                 configMapKeyRef:
                   name: f8ui
                   key: openshift.console.url
-          resources: {}
+          resources:
+            requests:
+              cpu: 20m
+              memory: 50Mi
+            limits:
+              cpu: 500m
+                memory: 500Mi
           terminationMessagePath: /dev/termination-log
         dnsPolicy: ClusterFirst
         restartPolicy: Always
