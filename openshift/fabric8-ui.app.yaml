@@ -101,6 +101,16 @@ objects:
                   key: openshift.console.url
           resources: {}
           terminationMessagePath: /dev/termination-log
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 20
+            timeoutSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 10
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
