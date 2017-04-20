@@ -18,7 +18,9 @@ import {
   TemplateRef,
   DoCheck,
   OnDestroy,
-  ViewEncapsulation
+  ViewEncapsulation,
+  Output, 
+  EventEmitter
 } from '@angular/core';
 import {
   Router,

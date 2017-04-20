@@ -135,6 +135,19 @@
             border: solid 0px red;
             position: relative;
             align-items: stretch;
+
+            .alm-blank-slate {
+                width: 90%;
+                display: block;
+                color: #363636;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            .alm-blank-slate:hover {
+                box-shadow: 0 1px 6px rgba(3,3,3,.175);
+            }
+
             > header {
               padding: 0 rem(20);
               border-bottom: 1px solid $color-pf-black-300 !important;

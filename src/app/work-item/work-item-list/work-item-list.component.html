@@ -56,10 +56,10 @@
                 </alm-tree-list-item>
               </template>
             </alm-tree-list>
-            <div *ngIf="!workItems || workItems.length === 0" class="container-fluid container-cards-pf">
+            <a *ngIf="!workItems || workItems.length === 0" class="container-fluid container-cards-pf alm-blank-slate">
               <div class="row row-cards-pf">
                 <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
-                  <div class="card-pf card-pf-aggregate-status">
+                  <div class="card-pf card-pf-aggregate-status" (click)="typeSelectPanel.openPanel()">
                     <div class="card-pf-title">
                       <h2 class="pficon pficon-add-circle-o no-wi"></h2>
                       <h2>Create a Work Item</h2>
@@ -71,7 +71,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
 
           <div id="workItemList_Error" class="error" *ngIf="error">{{error}}</div>
