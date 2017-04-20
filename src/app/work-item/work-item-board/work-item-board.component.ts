@@ -90,17 +90,6 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     private areaService: AreaService,
     private filterService: FilterService,
     private route: ActivatedRoute) {
-      this.dragulaService.drag.subscribe((value) => {
-        this.onDrag(value.slice(1));
-      });
-
-      this.dragulaService.drop.subscribe((value) => {
-        this.onDrop(value.slice(1));
-      });
-
-      this.dragulaService.over.subscribe((value) => {
-        this.onOver(value.slice(1));
-      });
 
       this.dragulaEventListeners.push(
         this.dragulaService.drag.subscribe((value) => {
