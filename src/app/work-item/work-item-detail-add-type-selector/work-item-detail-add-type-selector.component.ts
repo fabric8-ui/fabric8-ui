@@ -87,6 +87,15 @@ export class WorkItemDetailAddTypeSelectorComponent implements OnInit, OnChanges
 
   onChangeType(type: WorkItemType) {
     this.workItemDetailAddTypeSelectorWidget.close();
-    this.router.navigate(['detail', 'new'], { queryParams: { type: type.id }, relativeTo: this.route } as NavigationExtras);
+    const queryParams = this.route.snapshot.queryParams;
+    let newQueryParams = {type: type.id};
+    Object.assign(newQueryParams, queryParams);
+    this.router.navigate(
+      ['detail', 'new'],
+      {
+        queryParams: newQueryParams,
+        relativeTo: this.route
+      } as NavigationExtras
+    );
   }
 }

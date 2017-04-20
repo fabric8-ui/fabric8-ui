@@ -17,7 +17,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, NavigationExtras } from '@angular/router';
 import { Location }               from '@angular/common';
 import { Router }                 from '@angular/router';
 import { FormGroup } from '@angular/forms';
@@ -591,7 +591,16 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
           };
 
           this.addNewItem(workItem);
-          this.router.navigateByUrl(trimEnd(this.router.url.split('detail')[0], '/') + '/detail/' + workItem.id, { relativeTo: this.route });
+
+          let queryParams = cloneDeep(this.queryParams);
+          if (Object.keys(queryParams).indexOf('type') > -1) {
+            delete queryParams['type'];
+          }
+
+          this.router.navigate(
+            [this.router.url.split('/detail/')[0] + '/detail/' + workItem.id],
+            { queryParams: queryParams } as NavigationExtras
+          );
           return workItem;
         });
       } else {
@@ -609,11 +618,20 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     //console.log(this.router.url.split('/')[1]);
     this.panelState = 'out';
 
+    // In case detaile wi add, on close type id query param should be removed
+    let queryParams = cloneDeep(this.queryParams);
+    if (Object.keys(queryParams).indexOf('type') > -1) {
+      delete queryParams['type'];
+    }
+
     // Wait for the animation to finish
     // From in to out it takes 300 ms
     // So wait for 400 ms
     setTimeout(() => {
-      this.router.navigate([trimEnd(this.router.url.split('detail')[0], '/')], {queryParams: this.queryParams});
+      this.router.navigate(
+        [this.router.url.split('/detail/')[0]],
+        {queryParams: queryParams}
+      );
     }, 400);
   }
 
