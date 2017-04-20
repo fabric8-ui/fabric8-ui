@@ -46,6 +46,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   selectedParentIterationName:string = '';
   iterationSearchDisable: Boolean = false;
   showIterationDropdown: Boolean = false;
+  validationString: string = 'Something went wrong.'
 
   private startDatePickerOptions: IMyOptions = {
     dateFormat: 'dd mmm yyyy',
@@ -333,58 +334,65 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   actionOnSubmit() {
     this.iteration.attributes.name = this.iteration.attributes.name.trim();
     if (this.iteration.attributes.name !== '') {
-      this.validationError = false;
-      if (this.modalType == 'create' || this.modalType == "createChild") {
-        this.iterationService.createIteration(this.iteration, this.selectedParentIteration)
-          .subscribe((iteration) => {
-            this.onSubmit.emit(iteration);
-            this.resetValues();
-            this.createUpdateIterationDialog.close();
+      if (this.iteration.attributes.name.indexOf('/') === -1 &&
+          this.iteration.attributes.name.indexOf('\\') === -1 ) {
+        this.validationError = false;
+        if (this.modalType == 'create' || this.modalType == "createChild") {
+          this.iterationService.createIteration(this.iteration, this.selectedParentIteration)
+              .subscribe((iteration) => {
+                this.onSubmit.emit(iteration);
+                this.resetValues();
+                this.createUpdateIterationDialog.close();
           },
           (e) => {
             this.validationError = true;
             console.log('Some error has occured', e);
           });
-      } else {
-        if (this.modalType == 'start') {
-          this.iteration.attributes.state = 'start';
-        } else if (this.modalType == 'close') {
-          this.iteration.attributes.state = 'close';
         } else {
-          // Not include state if it's just an update
-          delete this.iteration.attributes.state;
-        }
-        this.iterationService.updateIteration(this.iteration)
-          .subscribe((iteration) => {
-            this.onSubmit.emit(iteration);
-            if (this.modalType == 'start') {
-              let toastIterationName = this.iteration.attributes.name;
-              if (toastIterationName.length > 15) {
-                toastIterationName = toastIterationName.slice(0, 15) + '...';
+          if (this.modalType == 'start') {
+            this.iteration.attributes.state = 'start';
+          } else if (this.modalType == 'close') {
+            this.iteration.attributes.state = 'close';
+          } else {
+            // Not include state if it's just an update
+            delete this.iteration.attributes.state;
+          }
+          this.iterationService.updateIteration(this.iteration)
+            .subscribe((iteration) => {
+              this.onSubmit.emit(iteration);
+              if (this.modalType == 'start') {
+                let toastIterationName = this.iteration.attributes.name;
+                if (toastIterationName.length > 15) {
+                  toastIterationName = toastIterationName.slice(0, 15) + '...';
+                }
+                let notificationData = {
+                  'notificationText': `<strong>${toastIterationName}</strong> &nbsp; has started.`,
+                  'notificationType': 'ok'
+                };
+                this.broadcaster.broadcast('toastNotification', notificationData);
+                this.iterationName = this.iteration.attributes.name;
               }
-              let notificationData = {
-                'notificationText': `<strong>${toastIterationName}</strong> &nbsp; has started.`,
-                'notificationType': 'ok'
-              };
-              this.broadcaster.broadcast('toastNotification', notificationData);
-              this.iterationName = this.iteration.attributes.name;
-            }
-            this.resetValues();
-            this.createUpdateIterationDialog.close();
-          },
-          (e) => {
-            this.spaceError = true;
-            // this.resetValues();
-            // console.log('Some error has occured', e.toString());
-          });
+              this.resetValues();
+              this.createUpdateIterationDialog.close();
+            },
+            (e) => {
+              this.spaceError = true;
+              // this.resetValues();
+              // console.log('Some error has occured', e.toString());
+            });
         }
       } else {
         this.validationError = true;
+        this.validationString = '/ or \\ are not allowed in iteration name.';
       }
-      console.log(this.iteration);
-    }
+      } else {
+        this.validationError = true;
+        this.validationString = 'This field is required.';
+      }
+     console.log(this.iteration);
+  }
 
-    removeError() {
-      this.validationError = false;
-    }
+  removeError() {
+    this.validationError = false;
+  }
 }

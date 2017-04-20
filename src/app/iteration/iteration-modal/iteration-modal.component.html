@@ -17,7 +17,7 @@
               [(ngModel)]="iteration.attributes.name"
               (keyup)="removeError()">
             <span class="error-block">
-              <span class="help-block" id="iteration-help-label">Iteration names must be unique within a project</span>
+              <span class="help-block" id="iteration-help-label">{{validationString}}</span>
             </span>
           </div>
         </div>
