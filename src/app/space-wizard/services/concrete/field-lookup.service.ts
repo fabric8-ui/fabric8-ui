@@ -108,6 +108,7 @@ export class AppGeneratorConfigurationService {
               if( namedField &&  (namedField.value||'').toString() !== spaceName ) {
                   field.value= namedField.value
               }
+            }
             field.display.label = 'Repository name';
             break;
           }
