@@ -16,7 +16,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Response } from '@angular/http';
-import { Router, ActivatedRoute } from '@angular/router';
+import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { cloneDeep, trimEnd } from 'lodash';
 
@@ -92,6 +92,11 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     private areaService: AreaService,
     private filterService: FilterService,
     private route: ActivatedRoute) {
+      router.events.subscribe(event => {
+        if(event instanceof NavigationEnd) {
+          this.initStuff();
+        }
+      });
 
       this.dragulaEventListeners.push(
         this.dragulaService.drag.subscribe((value) => {
