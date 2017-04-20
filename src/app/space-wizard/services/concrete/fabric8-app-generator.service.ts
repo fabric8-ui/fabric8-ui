@@ -32,7 +32,7 @@ import {
 
 import {
  AppGeneratorConfigurationService
-} from './field-lookup.service'
+} from './app-generator-configuration.service'
 
 @Injectable()
 export class Fabric8AppGeneratorService extends AppGeneratorService {
@@ -45,7 +45,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
   constructor(
     @Inject(IForgeServiceProvider.InjectToken) private forgeService: IForgeService,
     loggerFactory: LoggerFactory,
-    private _fieldLookupService: AppGeneratorConfigurationService) {
+    private _configService: AppGeneratorConfigurationService) {
     super();
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, Fabric8AppGeneratorService.instanceCount++);
     if ( logger ) {
@@ -133,7 +133,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
       };
       this.forgeService.executeCommand( commandRequest )
       .map( (forgeResponse) => this.transformForgeResponseToAppGeneratorResponse(request, forgeResponse) )
-      .map( (forgeResponse) => this._fieldLookupService.updateGeneratorResponse('',forgeResponse) )
+      .map( (forgeResponse) => this._configService.updateGeneratorResponse('',forgeResponse) )
       .subscribe( (response: IAppGeneratorResponse) => {
         this.log(`AppGenerator '${cmdDescription}' command completed`, response);
         observer.next(response);

@@ -1,7 +1,7 @@
 import { ClassProvider, FactoryProvider, OpaqueToken } from '@angular/core';
 import { LoggerFactory } from '../../common/logger';
 import { Fabric8AppGeneratorService } from '../concrete/fabric8-app-generator.service';
-import { AppGeneratorConfigurationService } from '../concrete/field-lookup.service';
+import { AppGeneratorConfigurationService } from '../concrete/app-generator-configuration.service';
 
 import { AppGeneratorService, IAppGeneratorServiceToken } from '../contracts/app-generator-service';
 
