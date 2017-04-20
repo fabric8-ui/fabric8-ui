@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { DropdownModule } from 'ng2-bootstrap';
 import { TabsModule, TooltipModule } from 'ng2-bootstrap';
-import { Broadcaster, Logger } from 'ngx-base';
+import { Broadcaster, Logger, Notifications } from 'ngx-base';
 import { Spaces } from 'ngx-fabric8-wit';
 import { ModalModule } from 'ngx-modal';
 import {
@@ -16,7 +16,6 @@ import {
   UserService,
   HttpService as HttpServiceLGC
 } from 'ngx-login-client';
-import { Notifications } from 'ngx-base';
 
 // Shared
 import { GlobalSettings } from './shared/globals';

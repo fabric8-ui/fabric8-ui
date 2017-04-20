@@ -351,16 +351,26 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
       .update(this.workItem)
       .subscribe(workItem => {
         this.workItem = workItem;
-        this.notifications.message({
-          message: workItem.attributes['system.title'] + ' has been moved to the Backlog.',
-          type: NotificationType.SUCCESS
-        } as Notification);
+        try {
+          this.notifications.message({
+            message: workItem.attributes['system.title'] + ' has been moved to the Backlog.',
+            type: NotificationType.SUCCESS
+          } as Notification);
+        } catch (e) {
+          console.log('Error displaying notification. Iteration was moved to Backlog.')
+        }
+
     },
     (err) => {
-      this.notifications.message({
+      try {
+        this.notifications.message({
           message: this.workItem.attributes['system.title'] + ' could not be moved to the Backlog.',
           type: NotificationType.DANGER
         } as Notification);
+      } catch (e) {
+        console.log('Error displaying notification. Error moving Iteration to Backlog.')
+      }
+
     });
   }
 
