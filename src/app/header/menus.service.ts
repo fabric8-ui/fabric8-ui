@@ -52,10 +52,6 @@ export class MenusService {
               {
                 name: 'Pipelines',
                 path: 'pipelines'
-              },
-              {
-                name: 'Environments',
-                path: 'environments'
               }
             ]
           }
