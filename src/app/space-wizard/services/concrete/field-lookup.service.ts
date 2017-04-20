@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 
 import { ContextService } from '../../../shared/context.service'
+import {
+  Space,
+  Context,
+  Contexts,
+  ContextTypes,
+  SpaceService,
+  SpaceNamePipe
+} from 'ngx-fabric8-wit';
 
 import {
   AppGeneratorService,
@@ -29,34 +37,33 @@ import {
   IForgeMetadata
 } from '../forge.service';
 
-
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
-import { SpaceConfigurator } from '../../models/codebase';
 
 @Injectable()
-export class FieldLookupService {
+export class AppGeneratorConfigurationService {
 
   static instanceCount: number = 1;
 
-  public configurator:SpaceConfigurator = SpaceConfigurator.default();
-
+  public currentSpace: Space;
 
   constructor(loggerFactory: LoggerFactory, private context:ContextService){
 
-    let logger = loggerFactory.createLoggerDelegate(this.constructor.name, FieldLookupService.instanceCount++);
+    let logger = loggerFactory.createLoggerDelegate(this.constructor.name, AppGeneratorConfigurationService.instanceCount++);
     if ( logger ) {
       this.log = logger;
     }
     this.log(`New instance...`);
+    this.context.current.subscribe( (ctx:Context) => {
+      if(ctx.space){
+        this.currentSpace = ctx.space;
+        this.log(`the current space is updated to ${this.currentSpace.attributes.name}`);
+      }
+    })
 
   }
 
-  public UpdateFields(context: string, appGeneratorResponse: IAppGeneratorResponse) : IAppGeneratorResponse {
+  public updateGeneratorResponse(context: string, appGeneratorResponse: IAppGeneratorResponse) : IAppGeneratorResponse {
 
-    this.context.current.subscribe(ctx=>{
-      let space= ctx.space;
-      this.log(`the current space is ${space.name}`);
-    })
 
     let title=appGeneratorResponse.payload.state.title || '';
     switch( title.toLowerCase() ) {
@@ -81,18 +88,26 @@ export class FieldLookupService {
       }
 
     }
-
+    let validationFields=[];
+    if( appGeneratorResponse.context
+        && appGeneratorResponse.context.validationCommand
+        && appGeneratorResponse.context.validationCommand.parameters
+        && appGeneratorResponse.context.validationCommand.parameters.fields ) {
+      validationFields=appGeneratorResponse.context.validationCommand.parameters.fields
+    }
     for( let field of appGeneratorResponse.payload.fields ) {
         switch(field.name.toLowerCase()){
           case 'gitrepository' : {
-            if( this.configurator
-              && this.configurator.space
-              && this.configurator.space.attributes
-              && (this.configurator.space.attributes.name || '' ).length > 0 ) {
-              let spaceName = this.configurator.space.attributes.name;
+            if( this.currentSpace && (this.currentSpace.attributes.name || '' ).length > 0 ) {
+              let spaceName = this.currentSpace.attributes.name;
               field.value = spaceName ;
-              this.log(`Updating ${field.name} field to space name = '${spaceName}'  ...`);
-            }
+              let namedField = validationFields.find( f => f.name ==='named');
+              // handle the scenario when someone chages the name (that is defaulted to the space name) to something else
+              // and the expecation that this defaults to the repo name. Do if that changes then default repo name needs to
+              // change too !!
+              if( namedField &&  (namedField.value||'').toString() !== spaceName ) {
+                  field.value= namedField.value
+              }
             field.display.label = 'Repository name';
             break;
           }
@@ -106,15 +121,12 @@ export class FieldLookupService {
             break;
           }
           case 'named' : {
-            if( this.configurator
-              && this.configurator.space
-              && this.configurator.space.attributes
-              && (this.configurator.space.attributes.name || '' ).length > 0 ) {
-              let spaceName = this.configurator.space.attributes.name;
+            if( this.currentSpace && (this.currentSpace.attributes.name || '' ).length > 0 ) {
+              let spaceName = this.currentSpace.attributes.name;
               field.value = spaceName ;
-              this.log(`Updating ${field.name} field to space name = '${spaceName}'  ...`);
+              field.value = spaceName ;
             }
-            field.display.label = 'GitHub repository name';
+            field.display.label = 'Name';
             if( field.display.note ){
               field.display.note=field.display.note.replace(/Downloadable project zip and/ig,'');
               field.display.note=field.display.note.replace(/project name/ig,'repository name');

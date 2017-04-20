@@ -2,20 +2,28 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Notification, NotificationAction, Notifications, NotificationType } from 'ngx-base';
-import { Space, SpaceAttributes, SpaceService, SpaceNamePipe } from 'ngx-fabric8-wit';
+import {
+  Space,
+  Context,
+  Contexts,
+  ContextTypes,
+  SpaceService,
+  SpaceNamePipe
+} from 'ngx-fabric8-wit';
 import { UserService } from 'ngx-login-client';
 
 import { Observable } from 'rxjs';
 import { DummyService } from '../shared/dummy.service';
 
 import { SpaceNamespaceService } from '../shared/runtime-console/space-namespace.service';
+import { ContextService } from '../shared/context.service'
 
 import { ILoggerDelegate, LoggerFactory } from './common/logger';
 import { SpaceConfigurator } from './models/codebase';
 import { IModalHost } from './models/modal-host';
 import { IWorkflow, WorkflowFactory } from './models/workflow';
 import { ForgeCommands } from './services/forge.service';
-import { FieldLookupService } from './services/app-generator.service';
+import { AppGeneratorConfigurationService } from './services/app-generator.service';
 
 @Component({
   host: {
@@ -79,18 +87,18 @@ export class SpaceWizardComponent implements OnInit {
     loggerFactory: LoggerFactory,
     private spaceNamespaceService: SpaceNamespaceService,
     private spaceNamePipe: SpaceNamePipe,
-    private _fieldLookupService: FieldLookupService) {
+    private _appGeneratorConfigurationService: AppGeneratorConfigurationService ) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, SpaceWizardComponent.instanceCount++);
     if ( logger ) {
       this.log = logger;
     }
     this.log(`New instance ...`);
+
   }
 
   ngOnInit() {
     this.log(`ngInit ...`);
     this.configureComponentHost();
-    this._fieldLookupService.configurator = this.configurator;
   }
 
   /**
@@ -154,7 +162,7 @@ export class SpaceWizardComponent implements OnInit {
     })
     .subscribe(createdSpace => {
       this.configurator.space = createdSpace;
-      this._fieldLookupService.configurator = this.configurator;
+      this._appGeneratorConfigurationService.currentSpace = createdSpace;
       let actionObservable = this.notifications.message({
         message: `Your new space is created!`,
         type: NotificationType.SUCCESS,
@@ -193,7 +201,6 @@ export class SpaceWizardComponent implements OnInit {
    * into a default empty state.
    */
   reset() {
-    this.log(`reset ...`);
     this.configurator = SpaceConfigurator.default();
     this.workflow = this.createAndInitializeWorkflow();
   }
