@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
 import { Subscription, Observable } from 'rxjs';
 
@@ -24,7 +24,7 @@ interface MenuHiddenCallback {
   styleUrls: ['./header.component.scss'],
   providers: []
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   title = 'Almighty';
   imgLoaded: Boolean = false;
 
@@ -51,9 +51,12 @@ export class HeaderComponent implements OnInit {
   private _context: Context;
   private _defaultContext: Context;
   private _loggedInUserSubscription: Subscription;
+  private plannerFollowQueryParams: Object = {};
+  private eventListeners: any[] = [];
 
   constructor(
     public router: Router,
+    public route: ActivatedRoute,
     private userService: UserService,
     private logger: Logger,
     public loginService: LoginService,
@@ -90,7 +93,22 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.listenToEvents();
+  }
 
+  ngOnDestroy() {
+    this.eventListeners.forEach(e => e.unsubscribe());
+  }
+
+  listenToEvents() {
+    this.eventListeners.push(
+      this.route.queryParams.subscribe(params => {
+        this.plannerFollowQueryParams = {};
+        if (Object.keys(params).indexOf('iteration') > -1) {
+          this.plannerFollowQueryParams['iteration'] = params['iteration'];
+        }
+      })
+    );
   }
 
   login() {

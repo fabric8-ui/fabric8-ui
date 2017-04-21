@@ -55,7 +55,10 @@
         </a>
         <ul class="dropdown-menu recent-items">
           <li class="recent-items-toggle" *ngFor="let m of recent">
-            <a class="recent-item-text-dropdown" [routerLink]="[m.path]" *ngIf="m.path !== null && m.path != context.path" data-toggle="tooltip" title="{{m.name}}">
+            <a class="recent-item-text-dropdown"
+              [routerLink]="[m.path]"
+              *ngIf="m.path !== null && m.path != context.path"
+              data-toggle="tooltip" title="{{m.name}}">
               <span class="nav-item-icon">
                 <span class=" {{m.type.icon}}"></span>
               </span>
@@ -106,7 +109,7 @@
         </a>
         <ul class="nav navbar-nav navbar-persistent" *ngIf="m.menus">
           <li *ngFor="let n of m.menus" [class.active]="n.active">
-            <a [routerLink]="[n.fullPath]" *ngIf="!n.hide">
+            <a [routerLink]="[n.fullPath]" [queryParams]="plannerFollowQueryParams" *ngIf="!n.hide">
               <span>
                 {{n.name}}
               </span>
