@@ -56,7 +56,8 @@ export class TypeaheadDropdown implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.values) {
+    this.logger.log('Typeahead Dropdown values changed.');
+    if (changes.values && JSON.stringify(changes.values.currentValue) !== JSON.stringify(changes.values.previousValue)) {
       this.values = changes.values.currentValue;
       this.sortValuesByLength(this.values);
       this.filteredValues = cloneDeep(this.values);
