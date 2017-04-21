@@ -2,7 +2,7 @@ import { SpacesService } from './../shared/standalone/spaces.service';
 import { DummySpace } from './DummySpace.service';
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Broadcaster, Logger } from 'ngx-base';
 import {
@@ -24,12 +24,14 @@ export class HeaderComponent implements OnInit {
   loggedInUser: User;
   loggedIn: Boolean = false;
   imgLoaded: Boolean = false;
+  followQueryParams: Object = {};
 
   spaces: Space[] = [];
   selectedSpace: Space = null;
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private userService: UserService,
     private logger: Logger,
     private auth: AuthenticationService,
@@ -82,6 +84,13 @@ export class HeaderComponent implements OnInit {
         this.logout();
         this.router.navigate(['/login']);
       });
+
+    this.route.queryParams.subscribe(params => {
+      this.followQueryParams = {};
+      if (Object.keys(params).indexOf('iteration') > -1) {
+        this.followQueryParams['iteration'] = params['iteration'];
+      }
+    })
   }
 
   onSpaceChange(newSpace: Space) {
