@@ -199,6 +199,10 @@ export class MockDataService {
             }
           },
         };
+    if (entity.data.relationships.baseType.data) {
+      // existing type on entity
+      localWorkItem.relationships.baseType = this.makeCopy(entity.data.relationships.baseType);
+    }
     this.workItems.push(localWorkItem);
     return { data: this.makeCopy(localWorkItem) };
   }

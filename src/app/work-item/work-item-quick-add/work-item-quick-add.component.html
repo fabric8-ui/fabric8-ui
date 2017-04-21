@@ -6,8 +6,14 @@
     <span class="quick-add-label">Create Work Item</span>
   </div>
   <div class="flex-container flex-grow-1 addWorkItemBlk " *ngIf="showQuickAdd">
-    <div class="workItemQuickAdd_IconType btn btn-default">
-      <i class="fa fa-bookmark pull-left "></i>
+    <!-- type dropdown -->
+    <div class="dropup dropdown-kebab-pf" dropdown>
+      <button class="btn btn-link dropdown-toggle" data-toggle="dropdown" type="button" dropdownToggle>
+        <i class="fa pull-left" [ngClass]="selectedType?selectedType.attributes.icon:''"></i>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownKebab" role="menu" dropdownMenu>
+        <li *ngFor="let type of availableTypes" (click)="selectType($event, type)"><a href="#" role="menuitem" class="dropdown-item"><i class="fa pull-left" [ngClass]="type.attributes.icon"></i>&nbsp;{{type.attributes.name}}</a></li>
+      </ul>
     </div>
     <div class="workItemQuickAdd_story flex-grow-9">
       <div class="col-md-6 col-sm-6 col-xs-12 workItemQuickAdd_storyInput">

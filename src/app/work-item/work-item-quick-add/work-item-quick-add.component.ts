@@ -1,4 +1,3 @@
-import { WorkItemType } from './../../models/work-item-type';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import {
   AfterViewInit,
@@ -18,6 +17,7 @@ import { cloneDeep } from 'lodash';
 import { Broadcaster, Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 
+import { WorkItemType } from './../../models/work-item-type';
 import { WorkItem, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
 
@@ -44,6 +44,8 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   descHeight: any = '26px';
   descResize: any = 'none';
   spaceSubscription: Subscription = null;
+  selectedType: WorkItemType  = null;
+  availableTypes: WorkItemType[] = null;
 
   constructor(
     private workItemService: WorkItemService,
@@ -60,11 +62,17 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
       if (space) {
         console.log('[WorkItemQuickAddComponent] New Space selected: ' + space.attributes.name);
         this.showQuickAddBtn = true;
+        // get the available types for this space
+        this.workItemService.getWorkItemTypes().first().subscribe((workItemTypes: WorkItemType[]) => {
+          this.availableTypes = workItemTypes;
+          // the first entry is the default entry for now
+          this.selectedType = this.availableTypes[0];
+        });
       } else {
         console.log('[WorkItemQuickAddComponent] Space deselected.');
         this.showQuickAddBtn = false;
       }
-    });
+    });    
   }
 
   ngOnDestroy() {
@@ -89,30 +97,26 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     });
   }
 
+  selectType(event: any, type: WorkItemType) {
+    if (event) 
+      event.preventDefault();
+    this.logger.log('Selected type ' + type.attributes.name + ' for quick add.');
+    this.selectedType = type;
+  }
+
   save(event: any = null): void {
-    if (event) event.preventDefault();
+    if (event) 
+      event.preventDefault();
 
-
-    // Set the default type
-    // FIXME: Not the proper way to get default wi type
-    // FIXME: Need to make a default workitem type subscriber
-    // when template is introduced
-    let defWit: WorkItemType = this.workItemService.workItemTypes.find((type: WorkItemType) => {
-      return type.attributes.name === 'userstory';
-    });
-    if (!defWit) {
-      defWit = this.workItemService.workItemTypes[0];
-    }
-    // Setting default type in relationship
+    // Setting type in relationship
     this.workItem.relationships = {
       baseType: {
         data: {
-          id: defWit.id,
-          type: defWit.type
+          id: this.selectedType?this.selectedType.id:'testtypeid',
+          type: this.selectedType?this.selectedType.type:'testtype'
         }
       }
     } as WorkItemRelations;
-
 
     // Do we have a real title?
     // If yes, trim; if not, reassign it as a (blank) string.
@@ -168,8 +172,8 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   resetQuickAdd(): void {
-    this.validTitle = false;
-    this.ngOnInit();
+    this.validTitle = false;    
+    this.createWorkItemObj();
     this.showQuickAddBtn = false;
     this.showQuickAdd = true;
     this.descHeight = this.initialDescHeight ? this.initialDescHeight : '26px';
