@@ -29,10 +29,10 @@ class WorkItemBoardPage {
       refresh_token: 'somerandomtoken',
       token_type: "bearer"
     }));
-    browser.get("http://localhost:8088/board?token_json="+url);
+    browser.get("http://localhost:8088/plan/board?token_json="+url);
     }
    else {
-     browser.get("http://localhost:8088/board");
+     browser.get("http://localhost:8088/plan/board");
    }
  };
 
@@ -118,6 +118,9 @@ class WorkItemBoardPage {
     return this.getFilterWITButton().getText();
   }
   clickWITFilterDropDownElements  (text){
+    return element(by.linkText(text)).click();
+  }
+  getByLinkText(text){
     return element(by.linkText(text)).click();
   }
   
