@@ -9,6 +9,7 @@ import { cloneDeep } from 'lodash';
 import { Broadcaster, Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
+import { Notification, Notifications, NotificationType } from 'ngx-base';
 
 import { IterationModel } from '../models/iteration.model';
 import { MockHttp } from '../shared/mock-http';
@@ -28,7 +29,8 @@ export class IterationService {
       private auth: AuthenticationService,
       private globalSettings: GlobalSettings,
       private broadcaster: Broadcaster,
-      private spaces: Spaces
+      private spaces: Spaces,
+      private notifications: Notifications
   ) {
     this.spaces.current.subscribe(val => this._currentSpace = val);
     if (this.auth.getToken() != null) {
@@ -36,6 +38,13 @@ export class IterationService {
      }
     this.selfId = this.createId();
     this.logger.log('Launching IterationService instance id ' + this.selfId);
+  }
+
+  notifyError(message: string, httpError: any) {
+    this.notifications.message({
+        message: message + (httpError.message?' '+httpError.message:''),
+        type: NotificationType.DANGER
+      } as Notification);
   }
 
   createId(): string {
@@ -70,11 +79,12 @@ export class IterationService {
         })
         .catch ((error: Error | any) => {
           if (error.status === 401) {
+            this.notifyError('You have been logged out.', error);
             this.auth.logout();
           } else {
             console.log('Fetch iteration API returned some error - ', error.message);
+            this.notifyError('Fetching iterations has from server has failed.', error);
             return Observable.throw(new Error(error.message));
-            // return Observable.throw<IterationModel[]> ([] as IterationModel[]);
           }
         });
     });
@@ -116,16 +126,16 @@ export class IterationService {
         })
         .catch ((error: Error | any) => {
           if (error.status === 401) {
+            this.notifyError('You have been logged out.', error);
             this.auth.logout();
           } else {
             console.log('Post iteration API returned some error - ', error.message);
+            this.notifyError('Creating iteration on server has failed.', error);
             return Observable.throw(new Error(error.message));
-            // return Observable.throw<IterationModel>({} as IterationModel);
           }
         });
     } else {
       return Observable.throw(new Error('error'));
-      // return Observable.throw<IterationModel>( {} as IterationModel );
     }
   }
 
@@ -157,11 +167,12 @@ export class IterationService {
       })
       .catch ((error: Error | any) => {
         if (error.status === 401) {
+          this.notifyError('You have been logged out.', error);
           this.auth.logout();
         } else {
           console.log('Patch iteration API returned some error - ', error.message);
+          this.notifyError('Updating iteration on server has failed.', error);
           return Observable.throw(new Error(error.message));
-          // return Observable.throw<IterationModel>({} as IterationModel);
         }
       });
   }
@@ -190,7 +201,11 @@ export class IterationService {
     if (Object.keys(iteration).length) {
       let iterationLink = iteration.data.links.self;
       return this.http.get(iterationLink)
-        .map(iterationresp => iterationresp.json().data);
+        .map(iterationresp => iterationresp.json().data)
+        .catch((error: Error | any) => {
+          this.notifyError('Error getting iteration data.', error);
+          return Observable.throw(new Error(error.message));
+        });
     } else {
       return Observable.of(undefined);
     }
@@ -201,24 +216,4 @@ export class IterationService {
       return resultIteration.relationships.workitems.meta.total;
     });
   }
-
-  /**
-   * checkValidIterationUrl checks if the API url for
-   * iterations is valid or not
-   * sample url -
-   * http://localhost:8080/api/spaces/d7d98b45-415a-4cfc-add2-ec7b7aee7dd5/iterations
-   *
-   * @param URL
-   * @return Boolean
-   */
-  // checkValidIterationUrl(url: string): Boolean {
-  //   let urlArr: string[] = url.split('/');
-  //   let uuidRegExpPattern = new RegExp('[^/]+');
-  //   return (
-  //     urlArr[urlArr.length - 1] === 'iterations' &&
-  //     uuidRegExpPattern.test(urlArr[urlArr.length - 2]) &&
-  //     urlArr[urlArr.length - 3] === 'spaces'
-  //   );
-  // }
-
 }

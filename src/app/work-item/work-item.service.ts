@@ -15,6 +15,7 @@ import {
 } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { WIT_API_URL } from 'ngx-fabric8-wit';
+import { Notification, Notifications, NotificationType } from 'ngx-base';
 
 import {
   Comment,
@@ -71,15 +72,22 @@ export class WorkItemService {
     private auth: AuthenticationService,
     private iterationService: IterationService,
     private userService: UserService,
+    private notifications: Notifications,
     private spaces: Spaces,
-    @Inject(WIT_API_URL) private baseApiUrl: string)
-  {
+    @Inject(WIT_API_URL) private baseApiUrl: string) {
     this.spaces.current.subscribe(val => this._currentSpace = val);
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
     }
     this.selfId = this.createId();
     this.logger.log('Launching WorkItemService instance id ' + this.selfId);
+  }
+
+  notifyError(message: string, httpError: any) {
+    this.notifications.message({
+        message: message + (httpError.message?' '+httpError.message:''),
+        type: NotificationType.DANGER
+      } as Notification);
   }
 
   createId(): string {
@@ -124,6 +132,9 @@ export class WorkItemService {
             this.resolveAreaForWorkItem(item);
           });
           return wItems;
+        }).catch((error: Error | any) => {
+          this.notifyError('Getting children of work item failed.', error);
+          return Observable.throw(new Error(error.message));
         }).toPromise();
     } else {
       this.logger.log('Work item does not have child related link, skipping: ' + parent.id);
@@ -145,6 +156,9 @@ export class WorkItemService {
             nextLink: resp.json().links.next,
             totalCount: resp.json().meta ? resp.json().meta.totalCount : 0
           };
+        }).catch((error: Error | any) => {
+          this.notifyError('Getting work items failed.', error);
+          return Observable.throw(new Error(error.message));
         });
     } else {
       return Observable.of<{workItems: WorkItem[], nextLink: string | null}>( {workItems: [] as WorkItem[], nextLink: null} );
@@ -163,6 +177,9 @@ export class WorkItemService {
             workItems: resp.json().data as WorkItem[],
             nextLink: resp.json().links.next
           };
+        }).catch((error: Error | any) => {
+          this.notifyError('Getting more work items failed.', error);
+          return Observable.throw(new Error(error.message));
         });
     } else {
       return Observable.throw('No more item found');
@@ -246,7 +263,11 @@ export class WorkItemService {
   getWorkItemById(id: string): Observable<WorkItem> {
     if (this._currentSpace) {
       return this.http.get(this._currentSpace.links.self + '/workitems/' + id)
-        .map(item => item.json().data );
+        .map(item => item.json().data)
+        .catch((error: Error | any) => {
+          this.notifyError('Getting work item data failed.', error);
+          return Observable.throw(new Error(error.message));
+        });
     } else {
       return Observable.of<WorkItem>( new WorkItem() );
     }
@@ -337,7 +358,11 @@ export class WorkItemService {
     if (Object.keys(assignees).length) {
       let observableBatch = assignees.data.map((assignee) => {
         return this.http.get(assignee.links.self)
-                .map((res) => res.json().data);
+                .map((res) => res.json().data)
+                .catch((error: Error | any) => {
+                  this.notifyError('Resolving assignees of work item failed.', error);
+                  return Observable.throw(new Error(error.message));
+                });
       });
       return Observable.forkJoin(observableBatch);
     } else {
@@ -349,7 +374,11 @@ export class WorkItemService {
     if (Object.keys(creator).length) {
       let creatorLink = creator.data.links.self;
       return this.http.get(creatorLink)
-        .map(creator => creator.json().data);
+        .map(creator => creator.json().data)
+        .catch((error: Error | any) => {
+          this.notifyError('Getting work item creator failed.', error);
+          return Observable.throw(new Error(error.message));
+        });
     } else {
       return Observable.of(creator);
     }
@@ -506,14 +535,10 @@ export class WorkItemService {
         .get(url, { headers: this.headers })
         .map(response => {
           return { data: response.json().data };
+        }).catch((error: Error | any) => {
+          this.notifyError('Getting comments failed.', error);
+          return Observable.throw(new Error(error.message));
         });
-        // .catch ((e) => {
-        //   if (e.status === 401) {
-        //     this.auth.logout();
-        //   } else {
-        //     this.handleError(e);
-        //   }
-        // });
   }
 
   /**
@@ -526,15 +551,11 @@ export class WorkItemService {
   resolveLinks(url: string): Observable<any> {
     return this.http
       .get(url, { headers: this.headers })
-      .map(response => [response.json().data as Link[], response.json().included]);
-      // .catch ((e) => {
-      //   if (e.status === 401) {
-      //     this.auth.logout();
-      //   } else {
-      //     wItem.relationalData.linkDicts = [];
-      //     this.handleError(e);
-      //   }
-      // });
+      .map(response => [response.json().data as Link[], response.json().included])
+      .catch((error: Error | any) => {
+        this.notifyError('Getting linked items data failed.', error);
+        return Observable.throw(new Error(error.message));
+      });
   }
 
   /**
@@ -551,14 +572,10 @@ export class WorkItemService {
         .map((response) => {
           this.workItemTypes = response.json().data as WorkItemType[];
           return this.workItemTypes;
+        }).catch((error: Error | any) => {
+          this.notifyError('Getting work item type information failed.', error);
+          return Observable.throw(new Error(error.message));
         });
-        // .catch ((e) => {
-        //   if (e.status === 401) {
-        //     this.auth.logout();
-        //   } else {
-        //     this.handleError(e);
-        //   }
-        // });
     } else {
       return Observable.of<WorkItemType[]>( [] as WorkItemType[] );
     }
@@ -587,6 +604,9 @@ export class WorkItemService {
               }
             }
             return workItemType;
+          }).catch((error: Error | any) => {
+            this.notifyError('Getting work item type info failed.', error);
+            return Observable.throw(new Error(error.message));
           });
       }
     } else {
@@ -612,14 +632,10 @@ export class WorkItemService {
             };
           });
           return this.availableStates;
+        }).catch((error: Error | any) => {
+          this.notifyError('Getting available status options for work item failed.', error);
+          return Observable.throw(new Error(error.message));
         });
-        // .catch ((e) => {
-        //   if (e.status === 401) {
-        //     this.auth.logout();
-        //   } else {
-        //     this.handleError(e);
-        //   }
-        // });
     }
   }
 
@@ -635,14 +651,10 @@ export class WorkItemService {
       .delete(workItem.links.self, { headers: this.headers, body: '' })
       .map(() => {
         this.broadcaster.broadcast('delete_workitem', workItem);
+      }).catch((error: Error | any) => {
+          this.notifyError('Deleting work item failed.', error);
+          return Observable.throw(new Error(error.message));
       });
-      // .catch ((e) => {
-      //   if (e.status === 401) {
-      //     this.auth.logout();
-      //   } else {
-      //     this.handleError(e);
-      //   }
-      // });
   }
 
    /**
@@ -662,14 +674,10 @@ export class WorkItemService {
         .map(response => {
           this.broadcaster.broadcast('create_workitem', response.json().data as WorkItem);
           return response.json().data as WorkItem;
+        }).catch((error: Error | any) => {
+          this.notifyError('Creating work item failed.', error);
+          return Observable.throw(new Error(error.message));
         });
-        // .catch ((e) => {
-        //   if (e.status === 401) {
-        //     this.auth.logout();
-        //   } else {
-        //     this.handleError(e);
-        //   }
-        // });
     } else {
       return Observable.of<WorkItem>( new WorkItem() );
     }
@@ -687,14 +695,10 @@ export class WorkItemService {
       .patch(workItem.links.self, JSON.stringify({data: workItem}), { headers: this.headers })
       .map(response => {
         return response.json().data;
+      }).catch((error: Error | any) => {
+        this.notifyError('Updating work item failed.', error);
+        return Observable.throw(new Error(error.message));
       });
-      // .catch ((e) => {
-      //   if (e.status === 401) {
-      //     this.auth.logout();
-      //   } else {
-      //     this.handleError(e);
-      //   }
-      // });
   }
 
   /**
@@ -710,8 +714,10 @@ export class WorkItemService {
       .post(url, c, { headers: this.headers })
       .map(response => {
         return response.json().data as Comment;
-      })
-      .catch (this.handleError);
+      }).catch((error: Error | any) => {
+        this.notifyError('Creating comment failed.', error);
+        return Observable.throw(new Error(error.message));
+      });
   }
 
   updateComment(comment: Comment): Observable<Comment> {
@@ -723,24 +729,35 @@ export class WorkItemService {
         let theUser: User = this.userService.getSavedLoggedInUser();
         comment.relationalData = { 'creator' : theUser };
         return comment;
+      }).catch((error: Error | any) => {
+        this.notifyError('Updating comment failed.', error);
+        return Observable.throw(new Error(error.message));
       });
   }
 
   deleteComment(comment: Comment): Observable<any> {
     let endpoint = comment.links.self;
-
-    return this
-          .http
-          .delete(endpoint, { headers: this.headers })
-          .catch (this.handleError);
+    return this.http.delete(endpoint, { headers: this.headers })
+      .catch((error: Error | any) => {
+          this.notifyError('Deleting comment failed.', error);
+          return Observable.throw(new Error(error.message));
+      });
   }
 
   getForwardLinkTypes(workItem: WorkItem): Observable<any> {
-    return this.http.get(workItem.links.targetLinkTypes, {headers: this.headers});
+    return this.http.get(workItem.links.targetLinkTypes, {headers: this.headers})
+      .catch((error: Error | any) => {
+        this.notifyError('Getting link meta info failed (forward).', error);
+        return Observable.throw(new Error(error.message));
+      });
   }
 
   getBackwardLinkTypes(workItem: WorkItem): Observable<any> {
-    return this.http.get(workItem.links.sourceLinkTypes, {headers: this.headers});
+    return this.http.get(workItem.links.sourceLinkTypes, {headers: this.headers})
+      .catch((error: Error | any) => {
+        this.notifyError('Getting link meta info failed (backward).', error);
+        return Observable.throw(new Error(error.message));
+      });
   }
 
   /**
@@ -1054,10 +1071,5 @@ export class WorkItemService {
     } else {
       return Observable.of<any>( {} as any );
     }
-  }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error);
-    return Promise.reject(error.message || error);
   }
 }

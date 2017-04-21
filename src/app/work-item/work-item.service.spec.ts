@@ -23,6 +23,7 @@ import {
   UserService,
   AUTH_API_URL
 } from 'ngx-login-client';
+import { Notifications } from 'ngx-base';
 
 import { MockDataService } from '../shared/mock-data.service';
 import { AreaService } from '../area/area.service';
@@ -193,6 +194,7 @@ describe('Work Item Service - ', () => {
         Logger,
         BaseRequestOptions,
         MockBackend,
+        Notifications,
         {
           provide: Http,
           useFactory: (backend: MockBackend,

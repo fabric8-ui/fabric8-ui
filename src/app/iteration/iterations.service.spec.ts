@@ -16,6 +16,7 @@ import { cloneDeep } from 'lodash';
 import { Broadcaster, Logger} from 'ngx-base';
 import { Spaces } from 'ngx-fabric8-wit';
 import { AuthenticationService } from 'ngx-login-client';
+import { Notifications } from 'ngx-base';
 
 import { MockHttp } from '../shared/mock-http';
 import { HttpService } from '../shared/http-service';
@@ -70,6 +71,7 @@ describe('Iteration service - ', () => {
         BaseRequestOptions,
         MockBackend,
         MockHttp,
+        Notifications,
         {
           provide: HttpService,
           useFactory: (backend: MockBackend,

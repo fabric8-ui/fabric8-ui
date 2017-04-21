@@ -16,6 +16,7 @@ import {
   UserService,
   HttpService as HttpServiceLGC
 } from 'ngx-login-client';
+import { Notifications } from 'ngx-base';
 
 // Shared
 import { GlobalSettings } from './shared/globals';
@@ -67,6 +68,7 @@ if (process.env.ENV == 'inmemory') {
     UserService,
     MockDataService,
     authApiUrlProvider,
+    Notifications,
     {
       provide: Spaces,
       useExisting: SpacesService
@@ -95,6 +97,7 @@ if (process.env.ENV == 'inmemory') {
     UserService,
     MockDataService,
     authApiUrlProvider,
+    Notifications,
     {
       provide: Spaces,
       useExisting: SpacesService
