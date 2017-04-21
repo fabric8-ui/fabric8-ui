@@ -31,8 +31,8 @@ describe('Work item list', function () {
   var MOCK_WORKITEM_TITLE_0 = "Title Text 0";
   var WORKITEM_0_ID = 'id0';
   var WORKITEM_1_ID = 'id1';
-  var AREA_0_TITLE = 'Area 0';
-  var AREA_1_TITLE = 'Area 1';
+  var AREA_0_TITLE = '/Root Area/Area 0';
+  var AREA_1_TITLE = '/Root Area/Area 1';
 
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');

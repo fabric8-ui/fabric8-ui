@@ -19,8 +19,9 @@ describe('Area tests :: ', function () {
   var until = protractor.ExpectedConditions;
   var WORKITEM_0_ID = 'id0';
   var WORKITEM_1_ID = 'id1';
-  var AREA_0_TITLE = 'Area 0';
-  var AREA_1_TITLE = 'Area 1';
+  var AREA_ROOT_TITLE = '/Root Area';
+  var AREA_0_TITLE = '/Root Area/Area 0';
+  var AREA_1_TITLE = '/Root Area/Area 1';
 
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');

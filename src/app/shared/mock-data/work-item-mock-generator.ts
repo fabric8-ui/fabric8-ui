@@ -148,7 +148,15 @@ export class WorkItemMockGenerator {
         'relationships': {
           'assignees': { },
           'iteration': (n % 2)? { } : { 'data': { 'id': 'iteration-id0', 'links': { 'self': 'http://mock.service/api/iterations/iteration-id0' }, 'type': 'iterations' } },
-          'area': { },
+          'area': {
+            'data': {
+              'id': 'rootarea',
+              'links': {
+                'self': 'http://mock.service/api/areas/rootarea'
+              },
+              'type': 'areas'
+            }
+          },
           'baseType': {
             'data': {
               'id': (n % 2) ? '86af5178-9b41-469b-9096-57e5155c3f31' : 'bbf35418-04b6-426c-a60b-7f80beb0b624',

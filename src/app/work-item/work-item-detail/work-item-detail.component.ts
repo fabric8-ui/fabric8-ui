@@ -862,20 +862,13 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     for (let i=0; i<areas.length; i++) {
       result.push({
         key: areas[i].id,
-        value: areas[i].attributes.name,
+        value: (areas[i].attributes.parent_path_resolved!='/'?areas[i].attributes.parent_path_resolved:'') + '/' + areas[i].attributes.name,
         selected: selectedAreaId===areas[i].id?true:false,
         cssLabelClass: undefined
       });
       if (selectedAreaId===areas[i].id)
         selectedFound = true;
     };
-    // insert neutral element on index 0, setting it selected when no other selected entry was found.
-    result.splice(0, 0, {
-      key: undefined,
-      value: 'None',
-      selected: selectedFound?false:true,
-      cssLabelClass: 'neutral-entry'
-    });
     return result;
   }
 
@@ -894,24 +887,15 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       selectedIterationId = this.workItem.relationships.iteration.data.id;
     }
     for (let i=0; i<iterations.length; i++) {
-      if (!this.iterationService.isRootIteration(iterations[i])) {
-        result.push({
-          key: iterations[i].id,
-          value: iterations[i].attributes.resolved_parent_path + '/' + iterations[i].attributes.name,
-          selected: selectedIterationId===iterations[i].id?true:false,
-          cssLabelClass: undefined
-        });
-        if (selectedIterationId===iterations[i].id)
-          selectedFound = true;
-      }
+      result.push({
+        key: iterations[i].id,
+        value: (iterations[i].attributes.resolved_parent_path!='/'?iterations[i].attributes.resolved_parent_path:'') + '/' + iterations[i].attributes.name,
+        selected: selectedIterationId===iterations[i].id?true:false,
+        cssLabelClass: undefined
+      });
+      if (selectedIterationId===iterations[i].id)
+        selectedFound = true;
     };
-    // insert neutral element on index 0, setting it selected when no other selected entry was found.
-    result.splice(0, 0, {
-      key: undefined,
-      value: 'None',
-      selected: selectedFound?false:true,
-      cssLabelClass: 'neutral-entry'
-    });
     return result;
   }
 

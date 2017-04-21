@@ -52,6 +52,7 @@ export class AreaService {
             return response.json().data as AreaModel[];
           })
           .map((data) => {
+            /*
             //Need to fix the Area data and service for inmemory mode
             //If the area has a parent, append it to the area's name
             data.forEach((area) => {
@@ -59,6 +60,7 @@ export class AreaService {
                 area.attributes.name = (area.attributes.parent_path_resolved).substring(1) + '/' + area.attributes.name;
               }
             });
+            */
 
             this.areas = data;
             return this.areas;

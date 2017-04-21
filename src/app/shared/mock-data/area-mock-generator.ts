@@ -10,13 +10,42 @@ export class AreaMockGenerator {
    * creating a consistent mock data. Keep in mind when changing this code.
    */
   public createAreas(): any {
-    let areas = [0, 1, 2, 3, 4, 5].map((n) => {
+    let areas = [{
+      'attributes': {
+          'description': 'Description for Root Area.',
+          'name': 'Root Area',
+          'parent_path': '/',
+          'parent_path_resolved': '/'
+        },
+        'id': 'rootarea',
+        'links': {
+          'self': 'http://mock.service/api/areas/rootarea'
+        },
+        'relationships': {
+          'space': {
+            'data': {
+              'id': 'space-id0',
+              'type': 'spaces'
+            },
+            'links': {
+              'self': 'http://mock.service/api/spaces/space-id0'
+            }
+          },
+          'workitems': {
+            'links': {
+              'related': 'http://mock.service/api/workitems?filter[area]=rootarea'
+            }
+          }
+        },
+        'type': 'areas'
+    }];
+    areas = areas.concat([0, 1, 2, 3, 4, 5].map((n) => {
       return {
         'attributes': {
           'description': 'Description for area ' + n,
           'name': 'Area ' + n,
-          'parent_path': '/',
-          'parent_path_resolved': '/'
+          'parent_path': '/rootarea',
+          'parent_path_resolved': '/Root Area'
         },
         'id': 'area-id' + n,
         'links': {
@@ -40,7 +69,8 @@ export class AreaMockGenerator {
         },
         'type': 'areas'
       };
-    });
+    }));
+    // add root area
     return areas;
   }
 }
