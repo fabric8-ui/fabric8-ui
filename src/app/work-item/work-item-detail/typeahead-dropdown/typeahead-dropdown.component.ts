@@ -1,4 +1,4 @@
-import { Component, Input, Output, ViewChild, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, ViewChild, OnInit, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { cloneDeep } from 'lodash';
@@ -24,7 +24,7 @@ export class TypeaheadDropdownValue {
   templateUrl: './typeahead-dropdown.component.html',
   styleUrls: ['./typeahead-dropdown.component.scss']
 })
-export class TypeaheadDropdown implements OnInit {
+export class TypeaheadDropdown implements OnInit, OnChanges {
 
   // array of possible values
   @Input() protected values: TypeaheadDropdownValue[];
@@ -53,6 +53,16 @@ export class TypeaheadDropdown implements OnInit {
       return a.value.length - b.value.length || // sort by length, if equal then
          a.value.localeCompare(b.value);    // sort by dictionary order
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.values) {
+      this.values = changes.values.currentValue;
+      this.sortValuesByLength(this.values);
+      this.filteredValues = cloneDeep(this.values);
+    } else if (changes.noValueLabel) {
+      this.noValueLabel = changes.noValueLabel.currentValue;
+    }
   }
 
   protected open() {

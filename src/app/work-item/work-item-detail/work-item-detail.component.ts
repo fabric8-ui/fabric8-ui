@@ -159,12 +159,19 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
                 this.title.nativeElement.focus();
               }});
             }
-          } else {
-            this.loadWorkItem(id);
-          }
+          }        
+        } else {
+          this.loadWorkItem(id);
+          this.spaceSubscription = this.spaces.current.subscribe(space => {
+            if (space) {
+              // this.getAreas();
+              // this.getIterations();
+              this.loadWorkItem(id);
+            }
+          });
         }
-      })
-    );
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -217,8 +224,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
         // Resolve work item type
         workItem.relationships.baseType.data =
-          workItemTypes.find(type => type.id === workItem.relationships.baseType.data.id) ||
-          workItem.relationships.baseType.data;
+          workItemTypes.find(type => type.id === workItem.relationships.baseType.data.id) || workItem.relationships.baseType.data;
 
         // Resolve assignees
         workItem.relationships.assignees = {
