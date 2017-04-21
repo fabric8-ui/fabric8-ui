@@ -146,6 +146,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   ngOnDestroy() {
     this.queryParamSubscriber.unsubscribe();
     this.eventListeners.map((e) => e.unsubscribe());
+    this.filterConfig.appliedFilters = [];
+    this.filterService.clearFilters(this.allowedFilterKeys);
   }
 
   setFilterTypes(filters: FilterModel[]) {

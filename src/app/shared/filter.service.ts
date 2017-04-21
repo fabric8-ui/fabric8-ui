@@ -47,7 +47,7 @@ export class FilterService {
   applyFilter() {
     console.log('[FilterService::applyFilter] - Applying filters', this.activeFilters);
     // this.broadcaster.broadcast('wi_item_filter', this.filters);
-    this.filterChange.next(this.applyFilter);
+    this.filterChange.next(this.activeFilters);
   }
 
   getAppliedFilters(): any {
