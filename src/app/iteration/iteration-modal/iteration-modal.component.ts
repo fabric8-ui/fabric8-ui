@@ -37,7 +37,6 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   private startDate: any;
   private endDate: any;
   private spaceError: Boolean = false;
-  private spaceName: string = 'FIXME';
   private iterationName: string;
   iterations: IterationModel[] = [];
   iterationsValue: any = [];
