@@ -39,6 +39,8 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   futureIterations: IterationModel[] = [];
   currentIterations: IterationModel[] = [];
   closedIterations: IterationModel[] = [];
+  eventListeners: any[] = [];
+  currentSelectedIteration: string = '';
 
   private spaceSubscription: Subscription = null;
 
@@ -122,6 +124,15 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.futureIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'new');
     this.currentIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'start');
     this.closedIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'close');
+
+    if (this.futureIterations.find(it => this.resolvedName(it) == this.currentSelectedIteration)) {
+      this.isCollapsedFutureIteration = false;
+    }
+  }
+
+
+  resolvedName(iteration: IterationModel) {
+    return iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name;
   }
 
   onCreateOrupdateIteration(iteration: IterationModel) {
@@ -180,27 +191,44 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   listenToEvents() {
-    this.broadcaster.on<string>('backlog_selected')
-      .subscribe(message => {
-        this.selectedIteration = null;
-        this.isBacklogSelected = true;
-    });
-    this.broadcaster.on<string>('logout')
-      .subscribe(message => {
-        this.loggedIn = false;
-        this.authUser = null;
-    });
-    this.broadcaster.on<string>('wi_change_state_it')
-      .subscribe((actions: any) => {
-        this.updateItemCounts();
-    });
-    this.broadcaster.on<string>('associate_iteration')
-      .subscribe((data: any) => {
-        this.updateItemCounts();
-    });
-    this.broadcaster.on<WorkItem>('delete_workitem')
-      .subscribe((data: WorkItem) => {
-        this.updateItemCounts();
-    });
+    this.eventListeners.push(
+      this.broadcaster.on<string>('backlog_selected')
+        .subscribe(message => {
+          this.selectedIteration = null;
+          this.isBacklogSelected = true;
+      })
+    );
+    this.eventListeners.push(
+      this.broadcaster.on<string>('logout')
+        .subscribe(message => {
+          this.loggedIn = false;
+          this.authUser = null;
+      })
+    );
+    this.eventListeners.push(
+      this.broadcaster.on<string>('wi_change_state_it')
+        .subscribe((actions: any) => {
+          this.updateItemCounts();
+      })
+    );
+    this.eventListeners.push(
+      this.broadcaster.on<string>('associate_iteration')
+        .subscribe((data: any) => {
+          this.updateItemCounts();
+      })
+    );
+    this.eventListeners.push(
+      this.broadcaster.on<WorkItem>('delete_workitem')
+        .subscribe((data: WorkItem) => {
+          this.updateItemCounts();
+      })
+    )
+    this.eventListeners.push(
+      this.route.queryParams.subscribe(params => {
+        if (Object.keys(params).indexOf('iteration')) {
+          this.currentSelectedIteration = params['iteration'];
+        }
+      })
+    )
   }
  }
