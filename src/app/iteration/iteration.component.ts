@@ -126,9 +126,14 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.closedIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'close');
 
     if (this.futureIterations.find(it => this.resolvedName(it) == this.currentSelectedIteration)) {
+      this.isCollapsedPastIteration = true;
       this.isCollapsedFutureIteration = false;
+    } else if (this.closedIterations.find(it => this.resolvedName(it) == this.currentSelectedIteration)) {
+      this.isCollapsedFutureIteration = true;
+      this.isCollapsedPastIteration = false;
     }
   }
+
 
 
   resolvedName(iteration: IterationModel) {
@@ -225,7 +230,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     )
     this.eventListeners.push(
       this.route.queryParams.subscribe(params => {
-        if (Object.keys(params).indexOf('iteration')) {
+        if (Object.keys(params).indexOf('iteration') > -1) {
           this.currentSelectedIteration = params['iteration'];
         }
       })
