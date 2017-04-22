@@ -1,6 +1,6 @@
 import { IterationModel } from './../models/iteration.model';
-import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Broadcaster, Logger } from 'ngx-base';
 
@@ -16,19 +16,21 @@ import { IterationService } from '../iteration/iteration.service';
   templateUrl: './side-panel.component.html',
   styleUrls: ['./side-panel.component.scss']
 })
-export class SidepanelComponent implements OnInit {
+export class SidepanelComponent implements OnInit, OnDestroy {
 
   @Input() iterations: IterationModel[] = [];
 
   rootIteration: IterationModel = null;
   backlogSelected: boolean = true;
   numberOfItemsInBacklog: number = 0;
+  eventListeners: any[] = [];
 
   constructor(
     private log: Logger,
     private workItemService: WorkItemService,
     private iterationService: IterationService,
     private router: Router,
+    private route: ActivatedRoute,
     private broadcaster: Broadcaster) {
   }
 
@@ -47,16 +49,8 @@ export class SidepanelComponent implements OnInit {
     };
   }
 
-  selectBacklog() {
-    this.log.log('Root iteration selected.');
-    this.backlogSelected = true;
-    let filters: any = [];
-    filters.push({
-      paramKey: 'filter[iteration]',
-      active: false,
-    });
-    this.broadcaster.broadcast('unique_filter', filters);
-    this.broadcaster.broadcast('backlog_selected', null);
+  ngOnDestroy() {
+    this.eventListeners.forEach(e => e.unsubscribe());
   }
 
   refreshBacklogSize() {
@@ -68,21 +62,27 @@ export class SidepanelComponent implements OnInit {
   }
 
   listenToEvents() {
-    this.broadcaster.on<string>('iteration_selected')
-      .subscribe(message => {
-        this.backlogSelected = false;
-    });
-    this.broadcaster.on<any>('associate_iteration')
-      .subscribe(message => {
-        this.refreshBacklogSize();
-    });
-    this.broadcaster.on<WorkItem>('delete_workitem')
-      .subscribe(message => {
-        this.refreshBacklogSize();
-    });
-    this.broadcaster.on<string>('create_workitem')
-      .subscribe(message => {
-        this.refreshBacklogSize();
-    });
-  };
+    this.eventListeners = [
+      this.broadcaster.on<any>('associate_iteration')
+        .subscribe(message => {
+          this.refreshBacklogSize();
+      }),
+      this.broadcaster.on<WorkItem>('delete_workitem')
+        .subscribe(message => {
+          this.refreshBacklogSize();
+      }),
+      this.broadcaster.on<string>('create_workitem')
+        .subscribe(message => {
+          this.refreshBacklogSize();
+      }),
+
+      this.route.queryParams.subscribe(params => {
+        if (Object.keys(params).indexOf('iteration') > -1) {
+          this.backlogSelected = false;
+        } else {
+          this.backlogSelected = true;
+        }
+      })
+    ];
+  }
 }
