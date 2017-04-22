@@ -138,37 +138,32 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     this.getIterations();
     this.loggedIn = this.auth.isLoggedIn();
     let id = null;
-    this.route.params.forEach((params: Params) => {
-      if (params['id'] !== undefined) {
-        id = params['id'];
 
-        if (id.indexOf('new') >= 0){
-          //Add a new work item
-          this.addNewWI = true;
-          this.headerEditable = true;
-          let type = this.route.queryParams.forEach(params => {
-            this.createWorkItemObj(params['type']);
-          });
-
-          // Open the panel
-          if (this.panelState === 'out') {
-            this.panelState = 'in';
-            if (this.headerEditable && typeof(this.title) !== 'undefined') {
-              this.title.nativeElement.focus();
+    this.eventListeners.push(
+      this.spaces.current.switchMap(space => {
+        return this.route.params;
+      }).subscribe((params) => {
+        if (params['id'] !== undefined) {
+          id = params['id'];
+          if (id === 'new'){
+            //Add a new work item
+            this.headerEditable = true;
+            let type = this.route.snapshot.queryParams['type'];
+            // Create new item with the WI type
+            this.createWorkItemObj(type);
+            // Open the panel
+            if (this.panelState === 'out') {
+              this.panelState = 'in';
+              if (this.headerEditable && typeof(this.title) !== 'undefined') {
+                this.title.nativeElement.focus();
+              }
             }
+          } else {
+            this.loadWorkItem(id);
           }
-        } else {
-          this.loadWorkItem(id);
         }
-      }
-    });
-    this.spaceSubscription = this.spaces.current.subscribe(space => {
-      if (space) {
-        // this.getAreas();
-        // this.getIterations();
-        this.loadWorkItem(id);
-      }
-    });
+      })
+    );
   }
 
   ngOnDestroy() {
