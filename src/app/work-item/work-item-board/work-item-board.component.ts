@@ -92,12 +92,6 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     private areaService: AreaService,
     private filterService: FilterService,
     private route: ActivatedRoute) {
-      router.events.subscribe(event => {
-        if(event instanceof NavigationEnd) {
-          this.initStuff();
-        }
-      });
-
       this.dragulaEventListeners.push(
         this.dragulaService.drag.subscribe((value) => {
           this.onDrag(value.slice(1));
@@ -543,6 +537,12 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
             }, 10 * index);
           })
         })
+      })
+    );
+
+    this.eventListeners.push(
+      this.workItemService.addWIObservable.subscribe(item => {
+        this.onCreateWorkItem(item);
       })
     );
   }
