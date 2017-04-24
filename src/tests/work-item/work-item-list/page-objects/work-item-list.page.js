@@ -174,6 +174,23 @@ class WorkItemListPage {
     return this.workItemKebabDeleteButton (parentElement).click();
   }
 
+  parentIterationDropDown (){
+    return element(by.id('parent-iteration'));
+  }
+ 
+  clickParentIterationDropDown(){
+    return this.parentIterationDropDown().click();
+  }
+
+  searchParentIteration (text,append){
+    if (!append) { this.parentIterationDropDown().clear(text) };
+    return this.parentIterationDropDown().sendKeys(text);
+  }
+
+  selectParentIterationById  (ids){
+    return element(by.id("iteration-id"+ids)).click();
+  }
+
   get workItemPopUpDeleteConfirmButton () {
     return element(by.buttonText('Confirm'));
   }

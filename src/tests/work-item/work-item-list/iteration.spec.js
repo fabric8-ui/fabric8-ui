@@ -32,7 +32,7 @@ describe('Iteration CRUD tests :: ', function () {
   });
 
   /* Verify the UI buttons are present */
-  it('Verify Iteration add button and label are clickable + dialoge label is present', function() {
+  xit('Verify Iteration add button and label are clickable + dialoge label is present', function() {
     expect(page.iterationAddButton().isPresent()).toBe(true);
     page.clickIterationAddButton();
     expect(page.getIterationDialogTitle()).toBe('Create Iteration');
@@ -40,7 +40,7 @@ describe('Iteration CRUD tests :: ', function () {
   });
 
   /* Verify the helpful message */
-  it('Verify Iteration helpbox is showing', function() {
+  xit('Verify Iteration helpbox is showing', function() {
     page.clickIterationAddButton();
     expect(page.getIterationDialogTitle()).toBe('Create Iteration');
     page.clickCreateIteration();
@@ -48,7 +48,7 @@ describe('Iteration CRUD tests :: ', function () {
   });
 
   /* Verify setting the fields in a new iteration*/
-  it('Verify setting the Iteration title and description fields', function() {
+  xit('Verify setting the Iteration title and description fields', function() {
 
     /* Create a new iteration */ 
     page.clickIterationAddButton();
@@ -65,7 +65,7 @@ describe('Iteration CRUD tests :: ', function () {
   }); 
 
   /* Query and edit an interation */
- it('Query/Edit iteration', function() {
+ xit('Query/Edit iteration', function() {
       page.clickExpandFutureIterationIcon();
       page.clickIterationKebab("1");
       page.clickEditIterationKebab();
@@ -76,7 +76,7 @@ describe('Iteration CRUD tests :: ', function () {
       expect(page.firstFutureIteration.getText()).toContain('Update Iteration');
   });
 
-  it('Associate Workitem from detail page', function() {
+  xit('Associate Workitem from detail page', function() {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0"); 
       browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
       detailPage.IterationOndetailPage().click();
@@ -86,7 +86,7 @@ describe('Iteration CRUD tests :: ', function () {
       detailPage.clickWorkItemDetailCloseButton();
     });
 
-  it('Re-Associate Workitem from detail page', function() {
+  xit('Re-Associate Workitem from detail page', function() {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0"); 
       detailPage.IterationOndetailPage().click();
       detailPage.associateIterationById("id1");
@@ -102,7 +102,7 @@ describe('Iteration CRUD tests :: ', function () {
       detailPage.clickWorkItemDetailCloseButton();
     });
  
-  it('Filter Associate Workitem from detail page', function() {
+  xit('Filter Associate Workitem from detail page', function() {
        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0"); 
        detailPage.IterationOndetailPage().click();
        detailPage.associateIterationById("id0");
@@ -111,7 +111,15 @@ describe('Iteration CRUD tests :: ', function () {
        detailPage.clickWorkItemDetailCloseButton();
        page.clickExpandFutureIterationIcon();
    });
-
+it('Verify Parent Iteration dropdown are clickable', function() {
+    page.clickIterationAddButton();
+    expect(page.parentIterationDropDown().isPresent()).toBe(true);
+    page.clickParentIterationDropDown();
+    page.searchParentIteration("iteration 1",false);
+    page.selectParentIterationById("1");
+    page.clickCreateIteration();
+    // page.clickCancelIteration();
+  });
   /* Verify iteration displays the correct workitem totals as workitems transition new->closed */
   // it( 'Verify counters for workitems within iteration', function() {
 
@@ -154,7 +162,7 @@ describe('Iteration CRUD tests :: ', function () {
 
   // });
 
-  // it('Re-Associate WI with Iteration from Kebab menu', function() {
+  // xit('Re-Associate WI with Iteration from Kebab menu', function() {
   //   associateWithIteration (page, "Title Text 3", "Iteration 0");
   //   associateWithIteration (page, "Title Text 3", "Iteration 1");
   //   var detailPage = page.clickWorkItemTitle(page.workItemByTitle('Title Text 3'), 'id2');
