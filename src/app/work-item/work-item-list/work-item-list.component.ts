@@ -19,7 +19,7 @@ import {
   DoCheck,
   OnDestroy,
   ViewEncapsulation,
-  Output, 
+  Output,
   EventEmitter
 } from '@angular/core';
 import {
@@ -497,6 +497,11 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
         }
       })
     );
+
+    this.eventListeners.push(
+      this.workItemService.addWIObservable.subscribe(item => {
+        //move the update list logic
+      }));
   }
 
   onDragStart() {
