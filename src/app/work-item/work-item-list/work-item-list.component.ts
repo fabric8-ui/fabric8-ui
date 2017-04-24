@@ -217,6 +217,8 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
         Observable.of(items[2]),
         this.workItemService.getWorkItems(
           this.pageSize,
+          // TODO: HERE WE NEED TO APPEND THE PARENT==NONE FILTER IF SWITCH IN ON
+          // /spaces/{id}/workitems?filter[parentexists]=false
           this.filterService.getAppliedFilters()
         )
       )
