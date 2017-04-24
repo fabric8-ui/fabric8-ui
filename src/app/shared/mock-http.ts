@@ -275,7 +275,12 @@ export class MockHttp extends HttpService {
       } else if (path.path === '/iterations') {
         if (typeof body == 'string')
           body = JSON.parse(body);
-        return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.createIteration(body) });
+        let parentIterationId = null;
+        if (url.indexOf('iteration-id')!=-1) {
+          // this is a create of a child iteration
+          parentIterationId = url.replace('http://mock.service/api/iterations/', '');
+        }
+        return this.createResponse(url.toString(), 200, 'ok', { data: this.mockDataService.createIteration(body, parentIterationId) });
       } else if (path.path === '/workitemlinks') {
         return this.createResponse(url.toString(), 200, 'ok', {
           data: this.mockDataService.createWorkItemLink(JSON.parse(body).data),

@@ -438,12 +438,39 @@ export class MockDataService {
     return null;
   }
 
-  public createIteration(iteration: any): any {
+  public createIteration(iteration: any, parentIterationId: string): any {
+    console.log('CREATE ITERATION');
+    console.log(iteration);
     var localIteration = this.makeCopy(iteration.data);
     localIteration.id = this.createId();
     if (!localIteration.attributes.hasOwnProperty('state') && !localIteration.attributes.state) {
       localIteration.attributes['state'] = 'new';
     }
+    if (parentIterationId) {
+      var parentIteration = this.getIteration(parentIterationId);
+      localIteration.attributes.parent_path = '/' + parentIteration.id;
+      localIteration.attributes.resolved_parent_path = '/' + parentIteration.attributes.name;
+      localIteration.relationships.parent = { 'data': {
+        'id': parentIteration.id,
+        'type': 'iteration'
+      }, 'links': {
+        'self': 'http://mock.service/api/iterations/' + parentIteration.id
+      }};      
+    }
+    localIteration.relationships.workitems = {
+      'links': {
+        'related': 'http://mock.service/api/workitems?filter[iteration]=' + localIteration.id
+      },
+      'meta': {
+        'total' : 0,
+        'closed' : 0
+      }
+    };
+    localIteration.links = {
+      'self': 'http://mock.service/api/iterations/' + localIteration.id
+    };
+    this.iterations.push(localIteration);
+    this.updateWorkItemCountsOnIteration();
     return this.makeCopy(localIteration);
   }
 
