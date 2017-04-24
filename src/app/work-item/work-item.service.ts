@@ -4,6 +4,7 @@ import { Headers } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 import { cloneDeep } from 'lodash';
 import { DropdownOption } from 'ngx-widgets';
@@ -64,6 +65,8 @@ export class WorkItemService {
   public _currentSpace;
 
   private selfId;
+
+  public addWIObservable: Subject<WorkItem> = new Subject();
 
   constructor(private http: HttpService,
     private broadcaster: Broadcaster,
@@ -684,6 +687,16 @@ export class WorkItemService {
     } else {
       return Observable.of<WorkItem>( new WorkItem() );
     }
+  }
+
+  /**
+   * Usage: This method emit a new work item created event
+   * The list view and board view listens to this event
+   * and updates the view based on applied filters.
+   */
+
+  emitAddWI(workItem: WorkItem) {
+    this.addWIObservable.next(workItem);
   }
 
   /**
