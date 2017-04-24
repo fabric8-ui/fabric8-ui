@@ -145,7 +145,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       }).subscribe((params) => {
         if (params['id'] !== undefined) {
           id = params['id'];
-          if (id === 'new'){
+          if (id === 'new') {
             //Add a new work item
             this.headerEditable = true;
             let type = this.route.snapshot.queryParams['type'];
@@ -170,8 +170,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
             }
           });
         }
-      }
-    });
+      })
+    );
   }
 
   ngOnDestroy() {
