@@ -29,6 +29,29 @@
             </li>
           </ul>
         </div>
+        <div *ngIf="context!=='boardview'" dropdown class="list-type-dropdown">
+          <button dropdownToggle
+              id="wi-list-type"
+              type="button"
+              class="btn btn-default">
+            <span class='dropdown-text'>
+              {{currentListType}}
+            </span>
+            <span class="caret"></span>
+          </button>
+          <ul id="wi-list-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" dropdownMenu>
+            <li class="dropdown-li" (click)="onChangeListType('Hierarchy')">
+              <a>
+                <span class='dropdown-text'>Hierarchy</span>
+              </a>
+            </li>
+            <li class="dropdown-li" (click)="onChangeListType('Flat')">
+              <a>
+                <span class='dropdown-text'>Flat</span>
+              </a>
+            </li>
+          </ul>
+        </div>
         <!--
         <span *ngIf="context==='listview'" class="dropdown primary-action" dropdown>
           <button class="btn btn-default" id="wi_filter_dropdown" type="button" dropdownToggle>

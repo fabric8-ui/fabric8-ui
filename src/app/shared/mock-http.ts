@@ -197,7 +197,7 @@ export class MockHttp extends HttpService {
         case '/workitems':
           if (path.extraPath) {
             return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemOrEntity(path.extraPath) );
-          } else if (path.params['filter[assignee]'] || path.params['filter[workitemtype]'] || path.params['filter[workitemstate]'] || path.params['filter[iteration]']) {
+          } else if (path.params['filter[assignee]'] || path.params['filter[workitemtype]'] || path.params['filter[workitemstate]'] || path.params['filter[iteration]'] || path.params['filter[parentexists]']) {
             this.logger.log('Request contains filter expressions: ' + JSON.stringify(path.params));
             return this.createResponse(url.toString(), 200, 'ok', this.createPage(this.mockDataService.getWorkItemsFiltered(path.params), path.params) );
           } else {

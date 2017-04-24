@@ -83,6 +83,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
   allUsers: User[] = [] as User[];
   authUser: any = null;
   eventListeners: any[] = [];
+  showHierarchyList: boolean = true;
   private spaceSubscription: Subscription = null;
   private iterations: IterationModel[] = [];
   private areas: AreaModel[] = [];
@@ -211,19 +212,35 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
       }
     })
     .switchMap((items) => {
+      let appliedFilters = this.filterService.getAppliedFilters();
+      // remove the filter item from the filters
+      for (let f=0; f<appliedFilters.length; f++) {
+        if (appliedFilters[f].paramKey=='filter[parentexists]') {
+          appliedFilters.splice(f, 1);
+        }
+      }
+      // KNOWN ISSUE: if the tree is expanded when switching the mode, the user will experience
+      // some weird issues. Problem is there seems to be no way of force-collapsing the tree yet.
+      // TODO: collapse the tree here so it does not give weird effects when switching modes
+      if (this.showHierarchyList) {
+        // we want to display the hierarchy, so filter out all items that are childs (have no parent)
+        // to do this, we need to append a filter: /spaces/{id}/workitems?filter[parentexists]=false
+        appliedFilters.push({ paramKey: 'filter[parentexists]', value: 'false' });
+      } 
+      this.logger.log('Requesting work items with filters: ' + JSON.stringify(appliedFilters));
       return Observable.forkJoin(
         Observable.of(items[0]),
         Observable.of(items[1]),
         Observable.of(items[2]),
         this.workItemService.getWorkItems(
           this.pageSize,
-          // TODO: HERE WE NEED TO APPEND THE PARENT==NONE FILTER IF SWITCH IN ON
-          // /spaces/{id}/workitems?filter[parentexists]=false
-          this.filterService.getAppliedFilters()
+          appliedFilters
         )
       )
     })
     .subscribe(([iterations, users, wiTypes, workItemResp]) => {
+      this.logger.log('Got work item list.');
+      this.logger.log(workItemResp.workItems);
       const workItems = workItemResp.workItems;
       this.nextLink = workItemResp.nextLink;
       this.workItems = this.workItemService.resolveWorkItems(
@@ -383,6 +400,26 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
           this.loggedIn = false;
           this.authUser = null;
           this.treeListOptions['allowDrag'] = false;
+      })
+    );
+
+    this.eventListeners.push(
+      this.broadcaster.on<string>('switched_show_wi_hierarchy_mode')
+        .subscribe(message => {
+          this.logger.log('Switching to hierarchy list mode.');
+          this.showHierarchyList = true;
+          this.workItemService.resetWorkItemList();
+          this.loadWorkItems();
+      })
+    );
+
+    this.eventListeners.push(
+      this.broadcaster.on<string>('switched_show_wi_flat_mode')
+        .subscribe(message => {
+          this.logger.log('Switching to flat list mode.');
+          this.showHierarchyList = false;
+          this.workItemService.resetWorkItemList();
+          this.loadWorkItems();
       })
     );
 

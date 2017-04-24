@@ -70,7 +70,7 @@ export class SchemaMockGenerator {
               }
             },
             'type': 'workitemlinktypes'
-            }
+          }
         ],
         'included': [
           {

@@ -75,6 +75,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     'assignee',
     'area'
   ];
+  currentListType: string = 'Hierarchy';
 
   private queryParamSubscriber = null;
   private savedFIlterFieldQueries = {};
@@ -89,7 +90,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
           value: null,
           separator: true
       };
-
 
   constructor(
     private router: Router,
@@ -148,6 +148,15 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     this.eventListeners.map((e) => e.unsubscribe());
     this.filterConfig.appliedFilters = [];
     this.filterService.clearFilters(this.allowedFilterKeys);
+  }
+
+  onChangeListType(type: string) {
+    this.currentListType = type;
+    if (type==='Hierarchy') {
+      this.broadcaster.broadcast('switched_show_wi_hierarchy_mode');
+    } else {
+      this.broadcaster.broadcast('switched_show_wi_flat_mode');
+    }
   }
 
   setFilterTypes(filters: FilterModel[]) {

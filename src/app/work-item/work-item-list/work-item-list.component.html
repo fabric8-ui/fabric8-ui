@@ -38,7 +38,8 @@
                 <alm-tree-list-item #treeListItem
                     [index]="index"
                     [node]="node"
-                    [template]="treeListItemTemplate">
+                    [template]="treeListItemTemplate"
+                    [class.expanderdisabled]="!showHierarchyList">
                   <template #treeListItemTemplate>
                     <alm-work-item-list-entry
                         id="{{'workItemList_OuterWrap_' + index}}"

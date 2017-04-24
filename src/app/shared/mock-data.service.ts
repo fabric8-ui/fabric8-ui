@@ -97,12 +97,14 @@ export class MockDataService {
     let workItemTypeFilter = pathParams['filter[workitemtype]'];
     let workItemStateFilter = pathParams['filter[workitemstate]'];
     let iterationFilter = pathParams['filter[iteration]'];
+    let hasParentFilter = pathParams['filter[parentexists]'];
 
     console.log('Filtering on: '
       + (assigneeFilter ? 'assignee==' + assigneeFilter + ' ' : '')
       + (workItemTypeFilter ? 'workitemtype==' + workItemTypeFilter + ' ' : '')
       + (workItemStateFilter ? 'state==' + workItemStateFilter + ' ' : '')
       + (iterationFilter ? 'iteration==' + iterationFilter + ' ' : '')
+      + (hasParentFilter ? 'parentexists==' + hasParentFilter + ' ' : '')
     );
 
     var filteredWorkitems = new Array();
@@ -118,6 +120,18 @@ export class MockDataService {
         filterMatches = filterMatches && (this.workItems[i].attributes['system.state'] === workItemStateFilter);
       if (iterationFilter)
         filterMatches = filterMatches && this.workItems[i].relationships.iteration.data && (this.workItems[i].relationships.iteration.data.id === iterationFilter);
+      if (hasParentFilter && hasParentFilter=='false') {
+        // this is very dirty and relies on the mock data being of a certain form.
+        // this should be replaced by a proper link behaviour of parent-childs (see links in this class).
+        let hasParent = false;
+        if (['id5','id6','id7','id8','id9','id10'].indexOf(this.workItems[i].id)!=-1) {
+          console.log('WorkItem ' + this.workItems[i].id + ' has a parent.');
+          hasParent = true;
+        } else {
+          console.log('WorkItem ' + this.workItems[i].id + ' has no parent.');          
+        }
+        filterMatches = filterMatches && !hasParent;
+      }
 
       if (filterMatches)
         filteredWorkitems.push(this.makeCopy(this.workItems[i]));
