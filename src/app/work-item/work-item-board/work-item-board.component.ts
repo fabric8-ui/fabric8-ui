@@ -307,7 +307,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
       this.workItemTypes
     );
 
-    let lane = this.lanes.find((lane) => lane.option === 'new');
+    let lane = this.lanes.find((lane) => lane.option === workItem.attributes['system.state']);
     lane.workItems = [...resolveItem, ...lane.workItems];
   }
 
