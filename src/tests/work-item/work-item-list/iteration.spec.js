@@ -32,7 +32,7 @@ describe('Iteration CRUD tests :: ', function () {
   });
 
   /* Verify the UI buttons are present */
-  xit('Verify Iteration add button and label are clickable + dialoge label is present', function() {
+ it('Verify Iteration add button and label are clickable + dialoge label is present', function() {
     expect(page.iterationAddButton().isPresent()).toBe(true);
     page.clickIterationAddButton();
     expect(page.getIterationDialogTitle()).toBe('Create Iteration');
@@ -40,7 +40,7 @@ describe('Iteration CRUD tests :: ', function () {
   });
 
   /* Verify the helpful message */
-  xit('Verify Iteration helpbox is showing', function() {
+ it('Verify Iteration helpbox is showing', function() {
     page.clickIterationAddButton();
     expect(page.getIterationDialogTitle()).toBe('Create Iteration');
     page.clickCreateIteration();
@@ -48,7 +48,7 @@ describe('Iteration CRUD tests :: ', function () {
   });
 
   /* Verify setting the fields in a new iteration*/
-  xit('Verify setting the Iteration title and description fields', function() {
+ it('Verify setting the Iteration title and description fields', function() {
 
     /* Create a new iteration */ 
     page.clickIterationAddButton();
@@ -65,7 +65,7 @@ describe('Iteration CRUD tests :: ', function () {
   }); 
 
   /* Query and edit an interation */
- xit('Query/Edit iteration', function() {
+it('Query/Edit iteration', function() {
       page.clickExpandFutureIterationIcon();
       page.clickIterationKebab("1");
       page.clickEditIterationKebab();
@@ -76,7 +76,7 @@ describe('Iteration CRUD tests :: ', function () {
       expect(page.firstFutureIteration.getText()).toContain('Update Iteration');
   });
 
-  xit('Associate Workitem from detail page', function() {
+ it('Associate Workitem from detail page', function() {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0"); 
       browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
       detailPage.IterationOndetailPage().click();
@@ -86,7 +86,7 @@ describe('Iteration CRUD tests :: ', function () {
       detailPage.clickWorkItemDetailCloseButton();
     });
 
-  xit('Re-Associate Workitem from detail page', function() {
+ it('Re-Associate Workitem from detail page', function() {
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0"); 
       detailPage.IterationOndetailPage().click();
       detailPage.associateIterationById("id1");
@@ -102,7 +102,7 @@ describe('Iteration CRUD tests :: ', function () {
       detailPage.clickWorkItemDetailCloseButton();
     });
  
-  xit('Filter Associate Workitem from detail page', function() {
+ it('Filter Associate Workitem from detail page', function() {
        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0"); 
        detailPage.IterationOndetailPage().click();
        detailPage.associateIterationById("id0");
@@ -112,14 +112,63 @@ describe('Iteration CRUD tests :: ', function () {
        page.clickExpandFutureIterationIcon();
    });
 it('Verify Parent Iteration dropdown are clickable', function() {
-    page.clickIterationAddButton();
-    expect(page.parentIterationDropDown().isPresent()).toBe(true);
-    page.clickParentIterationDropDown();
-    page.searchParentIteration("iteration 1",false);
-    page.selectParentIterationById("1");
-    page.clickCreateIteration();
-    // page.clickCancelIteration();
+      page.clickIterationAddButton();
+      page.setIterationTitle('Newest Iteration',false);
+      page.setIterationDescription('Newest Iteration',false);
+      expect(page.parentIterationDropDown().isPresent()).toBe(true);
+      page.clickParentIterationDropDown();
+      page.searchParentIteration("iteration 1",false);
+      page.selectParentIterationById("1");
+      page.clickCreateIteration();
+      page.clickExpandFutureIterationIcon();
   });
+it('create a child Iteration', function() {
+      page.clickExpandFutureIterationIcon();
+      page.clickIterationKebab("1");
+      page.clickChildIterationKebab();
+      page.setIterationTitle('child Iteration',false);
+      page.setIterationDescription('child Iteration',false);
+      expect(page.parentIterationDropDown().isPresent()).toBe(true);
+      page.clickParentIterationDropDown();
+      page.searchParentIteration("iteration 1",false);
+      page.selectParentIterationById("1");
+      page.clickCreateIteration();
+      expect(page.linkTextSearch("child Iteration").isPresent()).toBe(true);  
+  });
+  
+ it('start / close a child Iteration', function() {
+      page.clickExpandFutureIterationIcon();
+      page.clickIterationKebab("1");
+      page.clickStartIterationKebab();
+      page.clickCreateIteration();
+      expect(page.linkTextSearch("Iteration 0").isPresent()).toBe(true);  
+      page.clickIterationKebab("1");
+      page.clickCloseIterationKebab();
+      page.clickCreateIteration();
+      page.clickExpandPastIterationIcon();
+      expect(page.linkTextSearch("Iteration 0").isPresent()).toBe(true);  
+  });
+it('Edit child Iteration', function() {
+      page.clickExpandFutureIterationIcon();
+      page.clickIterationKebab("1");
+      page.clickStartIterationKebab();
+      page.clickCreateIteration();
+      expect(page.linkTextSearch("Iteration 0").isPresent()).toBe(true);  
+
+      //Edit
+      page.clickIterationKebab("1");
+      page.clickEditIterationKebab();
+      page.clickParentIterationDropDown();
+      expect(page.parentIterationById("1").isPresent()).toBe(false);
+      page.clickCreateIteration();  
+
+      page.clickIterationKebab("1");
+      page.clickCloseIterationKebab();
+      page.clickCreateIteration();
+      page.clickExpandPastIterationIcon();
+      expect(page.linkTextSearch("Iteration 0").isPresent()).toBe(true);  
+  });
+
   /* Verify iteration displays the correct workitem totals as workitems transition new->closed */
   // it( 'Verify counters for workitems within iteration', function() {
 
@@ -162,7 +211,7 @@ it('Verify Parent Iteration dropdown are clickable', function() {
 
   // });
 
-  // xit('Re-Associate WI with Iteration from Kebab menu', function() {
+  //it('Re-Associate WI with Iteration from Kebab menu', function() {
   //   associateWithIteration (page, "Title Text 3", "Iteration 0");
   //   associateWithIteration (page, "Title Text 3", "Iteration 1");
   //   var detailPage = page.clickWorkItemTitle(page.workItemByTitle('Title Text 3'), 'id2');

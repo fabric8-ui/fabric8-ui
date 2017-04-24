@@ -191,6 +191,9 @@ class WorkItemListPage {
     return element(by.id("iteration-id"+ids)).click();
   }
 
+  parentIterationById  (ids){
+    return element(by.id("iteration-id"+ids));
+  }
   get workItemPopUpDeleteConfirmButton () {
     return element(by.buttonText('Confirm'));
   }
@@ -541,6 +544,12 @@ class WorkItemListPage {
   }
   clickCloseIterationKebab (){
     return element(by.linkText ("Close")).click();
+  }
+  clickChildIterationKebab (){
+    return element(by.linkText ("Create child")).click();
+  }
+  linkTextSearch (text){
+    return element(by.linkText (text));
   }
   get expandCurrentIterationIcon () {
     return element(by.xpath (".//text()[contains(.,'Current Iteration')]"));
