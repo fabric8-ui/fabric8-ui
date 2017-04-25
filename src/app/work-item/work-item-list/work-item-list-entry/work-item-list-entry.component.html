@@ -4,7 +4,7 @@
 		[dialog]='dialog'
   ></alm-dialog>
 </div>
-<div class="workItemList_entry" (click)="onSelect($event)">
+<div class="workItemList_entry" (click)="onSelect($event)" [routerLink]="['./detail/' + workItem.id]" [queryParams]="queryParams">
 	<!--checkbox to select a WI and move it-->
 	<div class="row-cbh" title="Select the checkbox to move the item." *ngIf="loggedIn">
 		<input type="checkbox" [checked]="checkedWI" (click)="toggleEntry($event)" />
@@ -19,9 +19,7 @@
     <div class="list-view-pf-body">
       <div class="list-view-pf-description">
         <div class="workItemList_title truncate-ellipsis col-xs-12 row">
-          <a [routerLink]="['./detail/' + workItem.id]" [queryParams]="queryParams" >
-            <p class="col-md-12 col-sm-12 col-xs-12 pull-left truncate">{{workItem.attributes['system.title']}}</p>
-          </a>
+          <p class="col-md-12 col-sm-12 col-xs-12 pull-left truncate">{{workItem.attributes['system.title']}}</p>
         </div>
         <div class="list-group-item-text workItemList_description dn">
           {{workItem.attributes['system.description'] ? workItem.attributes['system.description'] : "No description available for this work item."}}

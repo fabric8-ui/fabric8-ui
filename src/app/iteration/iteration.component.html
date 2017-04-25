@@ -11,17 +11,16 @@
         </h3>
       </div>
       <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
-        <li class="active" *ngFor="let iteration of currentIterations" [routerLinkActive]="'selected-iteration'">
+        <li class="active" *ngFor="let iteration of currentIterations" [routerLinkActive]="'selected-iteration'" 
+                [routerLink]="[]"
+                [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}">
           <div class="iteration-subheader flex-container">
             <div class="flex-grow-1 truncate">
-              <a [routerLink]="[]"
-                [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" >
                 <strong class="iteration-name truncate"
                   tooltip="{{iteration.attributes.name}}"
                   placement="top">
                   {{iteration.attributes.name}}
                 </strong>
-              </a>
               <div class="parent-iteration">
                 <span>
                   {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}
@@ -101,16 +100,15 @@
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedFutureIteration">
-        <li class="iteration-subheader flex-container" *ngFor="let iteration of futureIterations" [routerLinkActive]="'selected-iteration'">
+        <li class="iteration-subheader flex-container" *ngFor="let iteration of futureIterations" [routerLinkActive]="'selected-iteration'" 
+                [routerLink]="[]"
+                [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}">
             <div class="flex-grow-1 truncate">
-              <a [routerLink]="[]"
-                [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" >
-                <strong class="iteration-name truncate"
-                  tooltip="{{iteration.attributes.name}}"
-                  placement="top">
-                  {{iteration.attributes.name}}
-                </strong>
-              </a>
+              <strong class="iteration-name truncate"
+                tooltip="{{iteration.attributes.name}}"
+                placement="top">
+                {{iteration.attributes.name}}
+              </strong>
               <div class="parent-iteration">
                 <span>{{(iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/')}}</span>
               </div>
@@ -159,16 +157,14 @@
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedPastIteration">
-        <li class="iteration-subheader flex-container" *ngFor="let iteration of closedIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}">
+        <li class="iteration-subheader flex-container" *ngFor="let iteration of closedIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}" 
+            [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" >
           <div class="truncate flex-grow-1">
-            <a [routerLink]="[]"
-              [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" >
-              <strong class="iteration-name truncate"
-                tooltip="{{iteration.attributes.name}}"
-                placement="top">
-                {{iteration.attributes.name}}
-              </strong>
-            </a>
+            <strong class="iteration-name truncate"
+              tooltip="{{iteration.attributes.name}}"
+              placement="top">
+              {{iteration.attributes.name}}
+            </strong>
             <div class="parent-iteration">
               <span>
                 {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}

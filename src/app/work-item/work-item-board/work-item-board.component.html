@@ -40,7 +40,8 @@
                   <div [dragula]='"first-bag"' class="card-wrapper">
                     <div class="board-card card-pf card-pf-view card-pf-view-select card-pf-view-single-select"
                           [class.active]="isSelected(item)" *ngFor='let item of lane.workItems'
-                          [attr.data-id]="item.id" (mousedown)="getWI(item)" (touchstart)="getWI(item)">
+                          [attr.data-id]="item.id" (mousedown)="getWI(item)" (touchstart)="getWI(item)"
+                          [routerLink]="['./detail/' + item.id]" [queryParams]="existingQueryParams">
                       <div class="row-wrapper">
                         <div class="">
                           <span class="wi-type-icon fa {{item.relationships?.baseType?.data?.attributes?.icon}}"></span>
@@ -61,9 +62,7 @@
                       </div>
                       <div class="row-wrapper">
                         <div class="">
-                          <a [routerLink]="['./detail/' + item.id]" [queryParams]="existingQueryParams" >
-                            <p class="multiline-truncation">{{ item.attributes['system.title'] }}</p>
-                          </a>
+                          <p class="multiline-truncation">{{ item.attributes['system.title'] }}</p>
                         </div>
                         <div class="user-avatar">
                           <img
