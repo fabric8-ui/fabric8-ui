@@ -12,7 +12,7 @@
           (ngModelChange)="fetchWorkItems()">
         <option value="default">Space name selector</option>
         <option *ngFor="let space of spaces" [value]="space.id">
-          {{space.attributes.name}}
+          {{space.attributes.name | spaceName}}
         </option>
       </select>
     </div>
