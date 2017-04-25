@@ -142,7 +142,7 @@ export class SpaceWizardComponent implements OnInit {
     this.log(`createSpace ...`);
     let space = this.configurator.space;
     console.log('Creating space', space);
-    space.attributes.name = space.name.replace(' ', '_');
+    space.attributes.name = space.name.replace(/ /g, '_');
     this.userService.getUser()
     .switchMap(user => {
       space.relationships[ 'owned-by' ].data.id = user.id;
