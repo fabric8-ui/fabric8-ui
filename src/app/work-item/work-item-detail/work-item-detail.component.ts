@@ -145,7 +145,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       }).subscribe((params) => {
         if (params['id'] !== undefined) {
           id = params['id'];
-          if (id === 'new') {
+          if (id === 'new'){
             //Add a new work item
             this.headerEditable = true;
             let type = this.route.snapshot.queryParams['type'];
@@ -159,16 +159,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
                 this.title.nativeElement.focus();
               }});
             }
-          }        
-        } else {
-          this.loadWorkItem(id);
-          this.spaceSubscription = this.spaces.current.subscribe(space => {
-            if (space) {
-              // this.getAreas();
-              // this.getIterations();
-              this.loadWorkItem(id);
-            }
-          });
+          } else {
+            this.loadWorkItem(id);
+          }
         }
       })
     );
@@ -224,7 +217,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
         // Resolve work item type
         workItem.relationships.baseType.data =
-          workItemTypes.find(type => type.id === workItem.relationships.baseType.data.id) || workItem.relationships.baseType.data;
+          workItemTypes.find(type => type.id === workItem.relationships.baseType.data.id) ||
+          workItem.relationships.baseType.data;
 
         // Resolve assignees
         workItem.relationships.assignees = {
