@@ -130,7 +130,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
       };
       this.forgeService.executeCommand( commandRequest )
       .map( (forgeResponse) => this.transformForgeResponseToAppGeneratorResponse(request, forgeResponse) )
-      .map( (forgeResponse) => this._configService.augmentGeneratorResponse('', forgeResponse) )
+      .map( (response) => this._configService.augmentGeneratorResponse('', { request,response}) )
       .subscribe( (response: IAppGeneratorResponse) => {
         this.log(`AppGenerator '${cmdDescription}' command completed`, response);
         observer.next(response);
@@ -260,6 +260,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
             name: choice.id,
             description: source.description,
             visible: true,
+            default: false,
             selected: hash[choice.id] === true
           });
         } else {
@@ -269,6 +270,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
             name: choice.id,
             description: choice.id,
             visible: true,
+            default: false,
             selected: hash[choice.id] === true
           });
         }

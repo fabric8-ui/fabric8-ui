@@ -5,6 +5,7 @@ export interface IFieldChoice {
   selected: boolean;
   visible: boolean;
   index: number;
+  default: boolean;
   // Other dynamic properties
   [key: string]: any;
 }

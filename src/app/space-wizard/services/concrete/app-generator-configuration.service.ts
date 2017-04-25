@@ -18,6 +18,7 @@ import {
   IAppGeneratorCommand,
   IAppGeneratorRequest,
   IAppGeneratorResponse,
+  IAppGeneratorPair,
   IAppGeneratorResponseContext,
   IAppGeneratorState,
   IField,
@@ -62,27 +63,28 @@ export class AppGeneratorConfigurationService {
 
   }
 
-  private augmentTitle(context: string, appGeneratorResponse: IAppGeneratorResponse) {
-    let title = appGeneratorResponse.payload.state.title || '';
+  private augmentTitle(context: string, execution: IAppGeneratorPair) {
+    let response = execution.response;
+    let title = response.payload.state.title || '';
     switch( title.toLowerCase() ) {
       case 'io.fabric8.forge.generator.github.githubrepostep': {
-        appGeneratorResponse.payload.state.title = 'GitHub repository information';
+        response.payload.state.title = 'GitHub repository information';
         break;
       }
       case 'fabric8: new project': {
-        appGeneratorResponse.payload.state.title = 'Quickstart';
+        response.payload.state.title = 'Quickstart';
         break;
       }
       case 'launchpad: new project': {
-        appGeneratorResponse.payload.state.title = 'Quickstart';
+        response.payload.state.title = 'Quickstart';
         break;
       }
       case 'obsidian: configure pipeline': {
-        appGeneratorResponse.payload.state.title = 'Select a build pipeline strategy ... ';
+        response.payload.state.title = 'Select a build pipeline strategy ... ';
         break;
       }
       case 'io.fabric8.forge.generator.kubernetes.createbuildconfigstep': {
-        appGeneratorResponse.payload.state.title = 'Select the pipeline build options ... ';
+        response.payload.state.title = 'Select the pipeline build options ... ';
         break;
       }
       default: {
@@ -91,22 +93,48 @@ export class AppGeneratorConfigurationService {
     }
   }
 
-  private getValidationCommandFields( context: string, appGeneratorResponse: IAppGeneratorResponse ) : IFieldCollection {
+  private getValidationCommandFields( context: string, execution: IAppGeneratorPair ) : IFieldCollection {
+    let response = execution.response;
     let validationFields=[];
-    if( appGeneratorResponse.context
-        && appGeneratorResponse.context.validationCommand
-        && appGeneratorResponse.context.validationCommand.parameters
-        && appGeneratorResponse.context.validationCommand.parameters.fields ) {
-      validationFields=appGeneratorResponse.context.validationCommand.parameters.fields
+    if( response.context
+        && response.context.validationCommand
+        && response.context.validationCommand.parameters
+        && response.context.validationCommand.parameters.fields ) {
+      validationFields=response.context.validationCommand.parameters.fields
     }
-    return validationFields
+    return validationFields;
   }
 
-  private augmentPipelineChoices( field:IField ) {
+  private has(obj, keys):boolean {
+    var next = keys.shift();
+    let tmp = false;
+    if(obj.hasOwnProperty(next)) {
+      tmp = true;
+      if( keys.length > 0 ) {
+        tmp = this.has(obj[next], keys);
+      }
+    }
+    //let tmp= obj[next] && (! keys.length || this.has(obj[next], keys));
+    return tmp;
+  }
+
+  private isFirstStep(context: string, execution: IAppGeneratorPair): boolean
+  {
+     let hasProperty = this.has(execution,['request','command','parameters','pipeline','step','index']);
+     if( hasProperty ) {
+        return execution.request.command.parameters.pipeline.step.index === 0;
+     }
+     return false;
+  }
+
+  private augmentPipelineChoices( field:IField, context:string, execution: IAppGeneratorPair ) {
+    // augment display properties
     for( let choice of <Array<IFieldChoice>>field.display.choices ) {
+      choice.default = false;
       switch(choice.id.toLowerCase()){
         case 'canaryrelease': {
           choice.index = 0;
+          choice.default = true;
           choice.name = 'Canary Release'
           choice.description = 'A canary - release continuous delivery pipeline strategy.';
           break;
@@ -128,6 +156,13 @@ export class AppGeneratorConfigurationService {
         }
       }
     }
+    // set the default in first step only
+    if(this.isFirstStep(context,execution)===true) {
+      let choice:IFieldChoice = field.display.choices.find((c)=>c.default===true);
+      field.value = choice.id;
+      field.display.text = choice.name;
+    }
+    // order by index
     field.display.choices=field.display.choices.sort( (c1,c2) => {
         return c1.index - c2.index
       })
@@ -142,7 +177,7 @@ export class AppGeneratorConfigurationService {
       }
   }
 
-  private augmentStackChoices( field:IField ) {
+  private augmentStackChoices( field:IField ,context:string, execution: IAppGeneratorPair ) {
       field.display.label = 'Technology Stack';
       for( let choice of <Array<IFieldChoice>>field.display.choices ) {
         switch(choice.id.toLowerCase()){
@@ -209,6 +244,7 @@ export class AppGeneratorConfigurationService {
           case 'vert.x http booster':{
             choice.index = 1;
             choice.name = 'Vert.x - Basic';
+            choice.default = true
             choice.description = 'Standalone reactive application in Java that exposes a simple HTTP endpoint';
             break;
           }
@@ -217,6 +253,13 @@ export class AppGeneratorConfigurationService {
           }
         }
       }
+      // set the default
+      if(this.isFirstStep(context,execution)===true) {
+        let choice:IFieldChoice = field.display.choices.find((c)=>c.default===true);
+        field.value = choice.id;
+        field.display.text = choice.name;
+      }
+      // order by index
       field.display.choices=field.display.choices.sort( (c1,c2) => {
         return c1.index - c2.index
       })
@@ -232,11 +275,11 @@ export class AppGeneratorConfigurationService {
 
   }
 
-  public augmentGeneratorResponse(context: string, appGeneratorResponse: IAppGeneratorResponse) : IAppGeneratorResponse {
-
-    this.augmentTitle(context,appGeneratorResponse);
-    let validationFields=this.getValidationCommandFields(context,appGeneratorResponse);
-    for( let field of appGeneratorResponse.payload.fields ) {
+  public augmentGeneratorResponse(context: string, execution: IAppGeneratorPair) : IAppGeneratorResponse {
+    let response = execution.response;
+    this.augmentTitle(context,execution);
+    let validationFields=this.getValidationCommandFields(context,execution);
+    for( let field of response.payload.fields ) {
         switch(field.name.toLowerCase()){
           case 'gitrepository' : {
             if( this.currentSpace && (this.currentSpace.attributes.name || '' ).length > 0 ) {
@@ -260,11 +303,11 @@ export class AppGeneratorConfigurationService {
           case 'type' : {
             field.display.note=field.display.note.replace(/configguration/ig,'configuration');
             field.display.label = 'Technology Stack';
-            this.augmentStackChoices(field);
+            this.augmentStackChoices( field, context, execution );
             break;
           }
           case 'pipeline' : {
-              this.augmentPipelineChoices(field);
+              this.augmentPipelineChoices(field , context, execution);
             break;
           }
           case 'named' : {
@@ -290,7 +333,7 @@ export class AppGeneratorConfigurationService {
           }
         }
     }
-    return appGeneratorResponse;
+    return response;
   }
 
 
