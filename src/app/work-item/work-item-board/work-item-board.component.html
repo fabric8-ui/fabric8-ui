@@ -34,7 +34,7 @@
 
                   <div *ngIf="lane.option == 'new'">
                     <div *ngIf="loggedIn" class="boardQuickAddContainer flex-container in-column-direction">
-                      <alm-work-item-quick-add [wilistview] = "'wi-card-view'" (close)="close($event)" (workItemCreate)="onCreateWorkItem($event)"></alm-work-item-quick-add>
+                      <alm-work-item-quick-add [forcedType]="currentBoardType" [wilistview]="'wi-card-view'" (close)="close($event)" (workItemCreate)="onCreateWorkItem($event)"></alm-work-item-quick-add>
                     </div>
                   </div>
                   <div [dragula]='"first-bag"' class="card-wrapper">

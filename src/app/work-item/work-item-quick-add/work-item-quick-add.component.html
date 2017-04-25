@@ -49,13 +49,13 @@
   </div>
   <div class="col-md-12 col-sm-12 col-xs-12 addWorkItemBlk " *ngIf="showQuickAdd">
     <div class="quickAdd_temp2-Story">
-      <i class="fa fa-bookmark pull-left "></i>
+      <i class="fa pull-left" [ngClass]="selectedType?selectedType.attributes.icon:''"></i>
     </div>
     <div class="quickAdd_temp2-Title ">
       <div class="col-md-12 col-sm-12 col-xs-12 no-padding ">
         <input #quickAddTitle type="text" id="exampleInput" class="form-control col-md-12 col-sm-12 col-xs-12"  [(ngModel)]="workItem.attributes['system.title']"
               (keyup.enter)="save($event)"
-              (keyup)="checkTitle()" placeholder="A New Story" required/>
+              (keyup)="checkTitle()" placeholder="Work Item Title" required/>
       </div>
       <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
         <textarea #quickAddDesc rows="1" type="text" id="exampleDesc" class="form-control width100 pull-left"  [(ngModel)]="workItem.attributes['system.description']"
@@ -64,7 +64,7 @@
                 (keydown.enter)="save($event)"
                 (keyup.enter)="preventDef($event)"
                 (keyup)="checkDesc()"
-                placeholder="Description">
+                placeholder="Work Item Description">
         </textarea>
       </div>
     </div>

@@ -7,7 +7,9 @@ import {
   Input,
   OnInit,
   OnDestroy,
+  OnChanges,
   Output,
+  SimpleChanges,
   ViewChild,
   ViewChildren,
   QueryList
@@ -26,12 +28,14 @@ import { WorkItemService } from '../work-item.service';
   templateUrl: './work-item-quick-add.component.html',
   styleUrls: ['./work-item-quick-add.component.scss']
 })
-export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewInit {
+export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @ViewChild('quickAddTitle') qaTitle: any;
   @ViewChild('quickAddDesc') qaDesc: any;
   @ViewChildren('quickAddTitle', {read: ElementRef}) qaTitleRef: QueryList<ElementRef>;
   @ViewChild('quickAddSubmit') qaSubmit: any;
+
   @Input() wilistview: string = 'wi-list-view';
+  @Input() forcedType: WorkItemType = null; 
   @Output('workItemCreate') workItemCreate = new EventEmitter();
 
   error: any = false;
@@ -65,19 +69,35 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
         // get the available types for this space
         this.workItemService.getWorkItemTypes().first().subscribe((workItemTypes: WorkItemType[]) => {
           this.availableTypes = workItemTypes;
-          // the first entry is the default entry for now
-          this.selectedType = this.availableTypes[0];
+          if (this.forcedType) {
+            this.selectedType = this.forcedType;
+          } else {
+            // the first entry is the default entry for now
+            this.selectedType = this.availableTypes[0];
+          }
         });
       } else {
         console.log('[WorkItemQuickAddComponent] Space deselected.');
         this.showQuickAddBtn = false;
       }
-    });    
+    });   
   }
 
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
     this.spaceSubscription.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.forcedType) {
+      this.logger.log('Updated forcedType on quick add component to ' + changes.forcedType.currentValue.attributes.name);
+      this.selectedType = changes.forcedType.currentValue;
+    }
+  }
+
+  setTypeContext(type: any) {
+    this.logger.log('Force set type context on quick add component to ' + type.attributes.name);
+    this.selectedType = type;
   }
 
   createWorkItemObj() {
