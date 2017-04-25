@@ -154,9 +154,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
             // Open the panel
             if (this.panelState === 'out') {
               this.panelState = 'in';
-              if (this.headerEditable && typeof(this.title) !== 'undefined') {
+              setTimeout(() => {
+                if (this.headerEditable && typeof(this.title) !== 'undefined') {
                 this.title.nativeElement.focus();
-              }
+              }});
             }
           } else {
             this.loadWorkItem(id);
