@@ -118,10 +118,10 @@ export class AppGeneratorConfigurationService {
     return tmp;
   }
 
-  private isFirstStep(context: string, execution: IAppGeneratorPair): boolean
+  private isFirstNonValidationStep(context: string, execution: IAppGeneratorPair): boolean
   {
      let hasProperty = this.has(execution,['request','command','parameters','pipeline','step','index']);
-     if( hasProperty ) {
+     if( hasProperty && execution.request.command.parameters.pipeline.step.name !== 'validate' ) {
         return execution.request.command.parameters.pipeline.step.index === 0;
      }
      return false;
@@ -156,25 +156,14 @@ export class AppGeneratorConfigurationService {
         }
       }
     }
-    // set the default in first step only
-    if(this.isFirstStep(context,execution)===true) {
-      let choice:IFieldChoice = field.display.choices.find((c)=>c.default===true);
-      field.value = choice.id;
-      field.display.text = choice.name;
+    // set the default for the first non validation step
+    if( this.isFirstNonValidationStep(context,execution)===true ) {
+      this.setFieldDefaults( field );
     }
-    // order by index
-    field.display.choices=field.display.choices.sort( (c1,c2) => {
-        return c1.index - c2.index
-      })
-      let selected = field.display.choices.find(c=>c.selected);
-      if(selected){
-        field.display.text=selected.name;
-      }
-      else {
-        if(field.display.choices.length > 0){
-          field.display.text=field.display.choices[0].name;
-        }
-      }
+    else {
+      this.setFieldSelection( field );
+    }
+    this.sortFieldOptionsByIndex(field);
   }
 
   private augmentStackChoices( field:IField ,context:string, execution: IAppGeneratorPair ) {
@@ -253,26 +242,46 @@ export class AppGeneratorConfigurationService {
           }
         }
       }
-      // set the default
-      if(this.isFirstStep(context,execution)===true) {
-        let choice:IFieldChoice = field.display.choices.find((c)=>c.default===true);
-        field.value = choice.id;
-        field.display.text = choice.name;
-      }
-      // order by index
-      field.display.choices=field.display.choices.sort( (c1,c2) => {
-        return c1.index - c2.index
-      })
-      let selected = field.display.choices.find(c=>c.selected);
-      if(selected){
-        field.display.text=selected.name;
+      // set the default for the first non validation step
+      if( this.isFirstNonValidationStep(context,execution)===true ) {
+        this.setFieldDefaults( field );
       }
       else {
-        if(field.display.choices.length > 0){
-          field.display.text=field.display.choices[0].name;
-        }
+        this.setFieldSelection( field );
       }
+      this.sortFieldOptionsByIndex(field);
 
+  }
+
+  private sortFieldOptionsByIndex(field:IField) {
+    field.display.choices = field.display.choices.sort( (c1,c2) => {
+      return c1.index - c2.index;
+    });
+  }
+
+  private setFieldSelection(field:IField) {
+    let choice:IFieldChoice = field.display.choices.find( (c)=>c.selected === true );
+    if(!choice) {
+      choice = field.display.choices.find( (c)=>c.default === true );
+    }
+    field.value = choice.id;
+    field.display.text = choice.name;
+    field.display.note = choice.description;
+
+  }
+
+  private setFieldDefaults(field:IField) {
+    let choice:IFieldChoice = field.display.choices.find( (c)=>c.default === true );
+    field.value = choice.id;
+    field.display.text = choice.name;
+    field.display.note = choice.description;
+    field.display.choices.filter((o) => {
+        // set everything to not selected, except for default
+        o.selected = false;
+        if (o.default === true) {
+          o.selected = true;
+        }
+    })
   }
 
   public augmentGeneratorResponse(context: string, execution: IAppGeneratorPair) : IAppGeneratorResponse {
