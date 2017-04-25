@@ -1,3 +1,4 @@
+import { ObservableFabric8UIConfig } from './../../shared/config/fabric8-ui-config.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -20,7 +21,7 @@ import {
   BuildStore
 } from 'fabric8-runtime-console';
 
-import {pathJoin} from "fabric8-runtime-console/src/app/kubernetes/model/utils";
+import { pathJoin } from "fabric8-runtime-console/src/app/kubernetes/model/utils";
 
 @Component({
   selector: 'alm-pipelines',
@@ -50,11 +51,12 @@ export class PipelinesComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthenticationService,
     private userService: UserService,
-    private pipelinesService: PipelinesService
+    private pipelinesService: PipelinesService,
+    private fabric8UIConfig: ObservableFabric8UIConfig
   ) {
 
     this.updateConsoleLink();
-    
+
     this.toolbarConfig = {
       filterConfig: {
         fields: [
@@ -174,16 +176,18 @@ export class PipelinesComponent implements OnInit, OnDestroy {
   }
 
   updateConsoleLink() {
-    this.openshiftConsoleUrl = process.env.OPENSHIFT_CONSOLE_URL;
-    let pipelines = this._allPipelines;
-    if (this.openshiftConsoleUrl && pipelines && pipelines.length) {
-      let pipeline = pipelines[0];
-      let namespace = pipeline.namespace;
-      if (namespace) {
-        console.log("Found pipeline namespace: " + namespace);
-        this.openshiftConsoleUrl = pathJoin(this.openshiftConsoleUrl, "/project", namespace, "/browse/pipelines");
+    this.fabric8UIConfig.subscribe(config => {
+      this.openshiftConsoleUrl = config.openshiftConsoleUrl;
+      let pipelines = this._allPipelines;
+      if (this.openshiftConsoleUrl && pipelines && pipelines.length) {
+        let pipeline = pipelines[0];
+        let namespace = pipeline.namespace;
+        if (namespace) {
+          console.log("Found pipeline namespace: " + namespace);
+          this.openshiftConsoleUrl = pathJoin(this.openshiftConsoleUrl, "/project", namespace, "/browse/pipelines");
+        }
       }
-    }
+    });
   }
 
   ngOnDestroy() {
