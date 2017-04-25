@@ -1,6 +1,14 @@
 @import '../../../../assets/stylesheets/base';
 @import '../../../../assets/stylesheets/shared/main';
 .link-container {
+  .table-row {
+    display: table-row !important;
+  }
+  .table-cell {
+    display: table-cell !important;
+    vertical-align: top;
+    padding-left: 10px;
+  }
   .link-header-nav-list {
     border-top: 1px solid $color-pf-black-200;
     li {
@@ -80,6 +88,17 @@
         @extend .flex-container;
         @extend .in-column-direction;
         padding: 0 rem(40);
+        .readonly {
+          background: white;
+        }
+        .selected-value {
+          color: black !important;
+        }
+        .link-button {
+          padding-top: 0;
+          padding-bottom: 0;
+          margin-bottom: 2px;
+        }
         ul.dropdown-menu {
           li {
             a {
