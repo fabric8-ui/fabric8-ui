@@ -10,8 +10,6 @@ import { HttpService } from './http-service';
 
 import { FilterModel } from '../models/filter.model';
 
-import { WorkItem } from '../models/work-item';
-
 @Injectable()
 export class FilterService {
   public filters: FilterModel[] = [];
@@ -90,7 +88,7 @@ export class FilterService {
    * @param WorkItem - workItem
    * @returns Boolean
    */
-  doesMatchCurrentFilter(workItem: WorkItem): Boolean {
+  doesMatchCurrentFilter(workItem): Boolean {
     //If filters have been applied
     if (this.activeFilters.length) {
       let matchFilterCount = 0;

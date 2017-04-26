@@ -16,7 +16,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Response } from '@angular/http';
-import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { cloneDeep, trimEnd } from 'lodash';
 
@@ -542,7 +542,9 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
 
     this.eventListeners.push(
       this.workItemService.addWIObservable.subscribe(item => {
-        this.onCreateWorkItem(item);
+        if(this.filterService.doesMatchCurrentFilter(item)) {
+          this.onCreateWorkItem(item);
+        }
       })
     );
   }
@@ -570,5 +572,4 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
         }
       });
   }
-
 }

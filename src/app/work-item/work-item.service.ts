@@ -28,7 +28,6 @@ import { AreaModel } from '../models/area.model';
 import { AreaService } from '../area/area.service';
 import { IterationModel } from '../models/iteration.model';
 import { IterationService } from '../iteration/iteration.service';
-import { FilterService } from '../shared/filter.service';
 import { LinkType } from '../models/link-type';
 import { Link } from '../models/link';
 import {
@@ -74,7 +73,6 @@ export class WorkItemService {
     private logger: Logger,
     private areaService: AreaService,
     private auth: AuthenticationService,
-    private filterService: FilterService,
     private iterationService: IterationService,
     private userService: UserService,
     private notifications: Notifications,
@@ -698,9 +696,7 @@ export class WorkItemService {
    */
 
   emitAddWI(workItem: WorkItem) {
-    if(this.filterService.doesMatchCurrentFilter(workItem)){
-      this.addWIObservable.next(workItem);
-    }
+    this.addWIObservable.next(workItem);
   }
 
   /**
