@@ -5,7 +5,7 @@
                (onSortChange)="sortChange($event)">
     <ng-template #addOpenShiftConsoleLink>
       <div class="openshift-links" placement="bottom">
-        <a [href]="openshiftConsoleUrl" *ngIf="openshiftConsoleUrl" class="pull-right" title="View in the OpenShift Console">OpenShift Console</a>
+        <a [href]="openshiftConsoleUrl" *ngIf="openshiftConsoleUrl" class="pull-right" title="View in the OpenShift Console" target="_blank">OpenShift Console <span class="fa fa-external-link"></span></a>
       </div>
     </ng-template>
   </alm-toolbar>
