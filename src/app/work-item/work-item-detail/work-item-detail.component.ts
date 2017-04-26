@@ -43,6 +43,7 @@ import { TypeaheadDropdown, TypeaheadDropdownValue } from './typeahead-dropdown/
 import { WorkItem, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
 import { WorkItemType } from '../../models/work-item-type';
+import { CollaboratorService } from '../../collaborator/collaborator.service'
 
 @Component({
   selector: 'alm-work-item-detail',
@@ -127,7 +128,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     private iterationService: IterationService,
     private userService: UserService,
     private workItemTypeControlService: WorkItemTypeControlService,
-    private spaces: Spaces
+    private spaces: Spaces,
+    private collaboratorService: CollaboratorService
   ) {}
 
   ngOnInit(): void {
@@ -325,7 +327,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   getAllUsers(): Observable<any> {
     return Observable.combineLatest(
       this.userService.getUser(),
-      this.userService.getAllUsers()
+      this.collaboratorService.getCollaborators()
     )
   }
 

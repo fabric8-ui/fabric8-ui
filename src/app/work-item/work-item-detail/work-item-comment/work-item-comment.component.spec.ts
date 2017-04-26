@@ -49,6 +49,7 @@ import { ModalModule } from 'ngx-modal';
 
 import { AreaModel } from '../../../models/area.model';
 import { AreaService } from '../../../area/area.service';
+import { CollaboratorService } from './../../../collaborator/collaborator.service';
 import { DynamicFieldComponent } from './../dynamic-form/dynamic-field.component';
 import { TypeaheadDropdown } from './../typeahead-dropdown/typeahead-dropdown.component';
 import { IterationModel } from '../../../models/iteration.model';
@@ -88,6 +89,7 @@ describe('Comment section for the work item detailed view - ', () => {
   let fakeWorkItemService: any;
   let fakeAuthService: any;
   let fakeUserService: any;
+  let fakeCollaboratorService: any;
   let fakeWorkItemTypes: WorkItemType[];
   let fakeWorkItemStates: Object[];
   let fakeWorkItemLinkTypes: Object;
@@ -421,6 +423,12 @@ describe('Comment section for the work item detailed view - ', () => {
       }
     };
 
+    fakeCollaboratorService = {
+      getCollaborators: function() {
+        return Observable.of(fakeUserList);
+      }
+    }
+
   });
 
 
@@ -480,6 +488,10 @@ describe('Comment section for the work item detailed view - ', () => {
         {
           provide: IterationService,
           useValue: fakeIterationService
+        },
+        {
+          provide: CollaboratorService,
+          useValue: fakeCollaboratorService
         },
         {
           provide: UserService,

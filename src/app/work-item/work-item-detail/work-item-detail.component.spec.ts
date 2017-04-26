@@ -46,7 +46,7 @@ import {
 
 import { ModalModule } from 'ngx-modal';
 import { SpacesService } from '../../shared/standalone/spaces.service';
-
+import { CollaboratorService } from './../../collaborator/collaborator.service';
 import { AreaModel } from '../../models/area.model';
 import { AreaService } from '../../area/area.service';
 import { DynamicFieldComponent } from './dynamic-form/dynamic-field.component';
@@ -87,6 +87,7 @@ describe('Detailed view and edit a selected work item - ', () => {
   let fakeWorkItemService: any;
   let fakeAuthService: any;
   let fakeUserService: any;
+  let fakeCollaboratorService: any;
   let fakeWorkItemTypes: WorkItemType[];
   let fakeWorkItemStates: Object[];
   let fakeWorkItemLinkTypes: Object;
@@ -390,6 +391,13 @@ describe('Detailed view and edit a selected work item - ', () => {
       }
     };
 
+
+    fakeCollaboratorService = {
+      getCollaborators: function() {
+        return Observable.of(fakeUserList);
+      }
+    }
+
     fakeUserService = {
       getUser: function () {
         return Observable.of(fakeUser);
@@ -467,6 +475,10 @@ describe('Detailed view and edit a selected work item - ', () => {
         {
           provide: UserService,
           useValue: fakeUserService
+        },
+        {
+          provide: CollaboratorService,
+          useValue: fakeCollaboratorService
         },
         {
           provide: WorkItemService,
