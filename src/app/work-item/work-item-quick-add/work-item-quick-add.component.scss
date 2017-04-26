@@ -11,7 +11,7 @@
 
   .dropup {
     .dropdown-menu {
-      margin-left: 8px;
+      margin-left: 16px;
       i {
         margin-top: 5px;
         width: 15px;
@@ -22,7 +22,7 @@
   .addWorkItem {
     padding: em(18);
     color: $navbar-pf-border-color;
-    height: 67px; //height is given to avoid jumping between this block and addWorkItemBlk
+    height: 69px; //height is given to avoid jumping between this block and addWorkItemBlk
     .quick-add-label {
       padding-left: em(5);
     }
@@ -43,8 +43,12 @@
     }
   }
   .addWorkItemBlk {
-    padding: em(17);
+    padding: 20px;
     position: relative;
+    .work-item-selector {
+      display: inline-flex;
+      height: 28px;
+    }
     .workItemQuickAdd_IconType {
       width:em(24);
       height: em(25);
