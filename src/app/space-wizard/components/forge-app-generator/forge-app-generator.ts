@@ -36,7 +36,7 @@ export class ForgeAppGenerator {
   private _fieldSet: IFieldCollection;
   private _responseHistory: Array<IAppGeneratorResponse>;
   private _currentResponse: IAppGeneratorResponse;
-  private _onBeginStep: Boolean = false;
+  private _onBeginStep: boolean = false;
 
   constructor(private _appGeneratorService: IAppGeneratorService, loggerFactory: LoggerFactory) {
     this.log = loggerFactory.createLoggerDelegate(this.constructor.name, ForgeAppGenerator.instanceCount++);
@@ -57,18 +57,17 @@ export class ForgeAppGenerator {
     this.clearMessage();
     this.processing = false;
   }
-  public get onBeginStep():Boolean {
+  public get onBeginStep(): boolean {
     return this._onBeginStep;
   }
-  public set onBeginStep(value:Boolean) {
+  public set onBeginStep(value: boolean) {
     this._onBeginStep = value;
-  };
+  }
 
   public get fields(): IFieldCollection {
     this._fieldSet = this._fieldSet || [];
     return this._fieldSet;
   }
-
 
   public set fields(value: IFieldCollection) {
     this._fieldSet = value;
@@ -106,11 +105,9 @@ export class ForgeAppGenerator {
    * When an error occurs the error area will be displayed. On the beginning step
    * and acknowldge will take back to the forge selector
    */
-  public acknowledgeError()
-  {
+  public acknowledgeError() {
     this.clearErrors();
-    if(this.onBeginStep)
-    {
+    if ( this.onBeginStep ) {
       this.reset();
       // go back to forge selector
       this.workflow.gotoPreviousStep();
@@ -146,7 +143,7 @@ export class ForgeAppGenerator {
   }
 
   public begin() {
-    this.onBeginStep=true;
+    this.onBeginStep = true;
     this.reset();
     let title = 'Application Generator';
     this.state.title = title;
@@ -207,15 +204,15 @@ export class ForgeAppGenerator {
         for ( let field of validationCommand.parameters.fields)
         {
           let requestField = nextCommand.parameters.fields.find((f) => f.name === field.name);
-          if(!requestField) {
+          if (!requestField) {
             nextCommand.parameters.fields.push(field);
-            let input=validationCommand.parameters.data.inputs.find(i=>i.name === field.name);
-            if(input) {
+            let input = validationCommand.parameters.data.inputs.find(i => i.name === field.name);
+            if (input) {
               nextCommand.parameters.data.inputs.push(input);
             }
           } else {
-            let input=validationCommand.parameters.data.inputs.find(i=>i.name === field.name);
-            if(input) {
+            let input = validationCommand.parameters.data.inputs.find(i => i.name === field.name);
+            if (input) {
               nextCommand.parameters.data.inputs.push(input);
             }
           }
@@ -223,7 +220,7 @@ export class ForgeAppGenerator {
         //
         let cmdInfo = `${nextCommand.name} :: ${nextCommand.parameters.pipeline.step.name} :: ${nextCommand.parameters.pipeline.step.index}`;
         this.log(`Next request for command ${cmdInfo}.`, request, console.group);
-        this.message.title=`Loading the next step ...`
+        this.message.title = `Loading the next step ...`;
         this._appGeneratorService.getFields( request )
           .subscribe( (response) => {
             this.log(`Next response for command ${cmdInfo}.`, request);
@@ -251,7 +248,7 @@ export class ForgeAppGenerator {
   }
 
 public execute() {
-    this.onBeginStep=false;
+    this.onBeginStep = false;
     return new Promise<IAppGeneratorPair>((resolve, reject) => {
       this.state.title = 'Generating the application ...';
       this.message = this.spinnerMessage('Validating ...');
@@ -267,15 +264,15 @@ public execute() {
           for ( let field of validationCommand.parameters.fields)
           {
             let requestField = executeCommand.parameters.fields.find((f) => f.name === field.name);
-            if(!requestField) {
+            if (!requestField) {
               executeCommand.parameters.fields.push(field);
-              let input=validationCommand.parameters.data.inputs.find(i=>i.name === field.name);
-              if(input) {
+              let input = validationCommand.parameters.data.inputs.find(i => i.name === field.name);
+              if (input) {
                 executeCommand.parameters.data.inputs.push(input);
               }
             } else {
-              let input=validationCommand.parameters.data.inputs.find(i=>i.name === field.name);
-              if(input) {
+              let input = validationCommand.parameters.data.inputs.find(i => i.name === field.name);
+              if (input) {
                 executeCommand.parameters.data.inputs.push(input);
               }
             }
@@ -389,7 +386,7 @@ public execute() {
       }
     };
     if ( results.length > 0 ) {
-      //let msg = `<span class='wizard-status-success'>[SUCCESS]</span> :`;
+      // let msg = `<span class='wizard-status-success'>[SUCCESS]</span> :`;
       let msg = ``;
       for (let response of results.filter(r => r !== null)) {
         if ( Array.isArray(response) ) {

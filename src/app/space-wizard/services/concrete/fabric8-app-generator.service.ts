@@ -68,7 +68,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
         let input: IForgeInput = inputs.find( i => i.name === field.name );
         if ( input ) {
           input.value = field.value;
-          this._configService.scrubAppGeneratorRequest(command,input,field);
+          this._configService.scrubAppGeneratorRequest(command, input, field);
         }
       }
     }
@@ -131,7 +131,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
       };
       this.forgeService.executeCommand( commandRequest )
       .map( (forgeResponse) => this.transformForgeResponseIntoAnAppGeneratorResponse(request, forgeResponse) )
-      .map( (response) => this._configService.scrubAppGeneratorResponse('', { request,response}) )
+      .map( (response) => this._configService.scrubAppGeneratorResponse('', { request, response }) )
       .subscribe( (response: IAppGeneratorResponse) => {
         this.log(`AppGenerator '${cmdDescription}' command completed`, response);
         observer.next(response);
@@ -200,7 +200,9 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
         command.parameters.data || { inputs: []} as IForgeCommandData);
     }
   }
-  private transformForgeResponseIntoAnAppGeneratorResponse( request: IAppGeneratorRequest, response: IForgeCommandResponse ) {
+  private transformForgeResponseIntoAnAppGeneratorResponse(
+    request: IAppGeneratorRequest,
+    response: IForgeCommandResponse ) {
     let forgeResponseData: IForgeCommandData = response.payload.data;
     forgeResponseData.metadata = forgeResponseData.metadata || {} as IForgeMetadata;
     let fields = this.transformForgeDataToFields( forgeResponseData );
@@ -253,7 +255,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
       {
         hash[item] = true;
       }
-      let index:number = 0;
+      let index: number = 0;
       for ( let choice of source.valueChoices ) {
         if ( source.description ) {
           items.push({

@@ -32,7 +32,7 @@
         }
       } else {
         for (let p of Object.getOwnPropertyNames(obj)) {
-          let tmp=obj[p];
+          let tmp = obj[p];
           if (Array.isArray(tmp)) {
             t = `${t}\n${s}<span class='wizard-property-name' >${p}</span>${op.assign}${ar.start}${formatJson(tmp, indent + 1)}${ar.end}`;
           } else if (typeof(tmp) !== 'function') {

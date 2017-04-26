@@ -96,7 +96,7 @@ export class Fabric8ForgeService extends ForgeService {
               status: error.status,
               statusText: error.statusText,
               url: error.url,
-              messages:body.messages
+              messages: body.messages
             }
           };
         } else {
