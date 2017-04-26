@@ -395,29 +395,6 @@ public execute() {
   private set responseHistory(value: Array<IAppGeneratorResponse>) {
     this._responseHistory = value;
   }
-
-  private hasResults(error: any) {
-    if ( error ) {
-      if ( error.descriptor ) {
-        return error.descriptor.hasResults || false;
-      }
-      if (error.inner) {
-        return this.hasResults( error.inner );
-      }
-    }
-    return false;
-  }
-  private hasException(error: any) {
-    if ( error ) {
-      if ( error.descriptor ) {
-        return error.descriptor.hasException || false;
-      }
-      if (error.inner) {
-        return this.hasResults( error.inner );
-      }
-    }
-    return false;
-  }
   /**
    * Removes and orders source object properties for  better error reporting
    * This is achieved by 'cloning' the source into a target.
@@ -452,7 +429,7 @@ public execute() {
       if (Array.isArray(source[p]) === true) {
         target[p] = [];
         for (let i of source[p]) {
-          target[p].push = this.filterObjectProperties(i);
+          target[p].push(this.filterObjectProperties(i));
         }
       } else if (typeof(source[p]) !== 'function') {
         if (typeof(source[p]) === 'object') {
@@ -467,9 +444,7 @@ public execute() {
 
   private handleError(error): Observable<any> {
     this.log({ message: error.message, inner: error.inner, error: true });
-    let hasResults = this.hasResults(error);
-    let hasException = this.hasException(error);
-    this.errorClassification = hasResults === true ? 'information' : 'error';
+    this.errorClassification = 'error';
     this.hasError = true;
     this.error = {
       title: `Something went wrong while attempting to perform this operation ...`,

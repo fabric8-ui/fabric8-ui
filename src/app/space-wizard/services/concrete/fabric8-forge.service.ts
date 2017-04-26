@@ -80,16 +80,6 @@ export class Fabric8ForgeService extends ForgeService {
     }
   }
 
-  private buildCommandStatusArray(results) {
-    let status = [];
-    if (Array.isArray(results)) {
-      for (let result of results ) {
-        // result has message and status properties
-        status.push(result);
-      }
-    }
-    return status;
-  }
 
   private handleError(error: any): Observable<any> {
     let errorMessage: any;
@@ -98,12 +88,15 @@ export class Fabric8ForgeService extends ForgeService {
     if (error instanceof Response) {
       try {
         const body = error.json() || '';
-        if (body.results) {
+        if (body.messages) {
           errorName = 'ForgeApiPartialCommandCompletionError';
           errorMessage = 'The forge command failed or partially succeeded';
           innerError = {
             partialCommandCompletionError: {
-              status: this.buildCommandStatusArray(body.results)
+              status: error.status,
+              statusText: error.statusText,
+              url: error.url,
+              messages:body.messages
             }
           };
         } else {

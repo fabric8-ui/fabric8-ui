@@ -28,17 +28,18 @@
         let count = 0;
         for ( let item of obj) {
           count++;
-          t = `${t}${s}\n${ob.start}${formatJson(item, indent + 1)}\n${s}${ob.end}${count < obj.length ? ',' : ''}`;
+          t = `${t}${s}\n${s}${ob.start}${formatJson(item, indent + 1)}\n${s}${ob.end}${count < obj.length ? ',' : ''}`;
         }
       } else {
         for (let p of Object.getOwnPropertyNames(obj)) {
-          if (Array.isArray(obj[p])) {
-            t = `${t}\n${s}<span class='wizard-property-name' >${p}</span>${op.assign}${ar.start}${formatJson(obj[p], indent + 1)}${ar.end}`;
-          } else if (typeof(obj[p]) !== 'function') {
-            if (typeof(obj[p]) === 'object') {
-              t = `${t}\n${s}<span class='wizard-property-name' >${p}</span>${op.assign}${formatJson(obj[p], indent + 1)}`;
+          let tmp=obj[p];
+          if (Array.isArray(tmp)) {
+            t = `${t}\n${s}<span class='wizard-property-name' >${p}</span>${op.assign}${ar.start}${formatJson(tmp, indent + 1)}${ar.end}`;
+          } else if (typeof(tmp) !== 'function') {
+            if (typeof(tmp) === 'object') {
+              t = `${t}\n${s}<span class='wizard-property-name' >${p}</span>${op.assign}${formatJson(tmp, indent + 1)}`;
             } else {
-              let propertyValue = `<span class = "wizard-property-value" >${obj[p]}</span>`;
+              let propertyValue = `<span class = "wizard-property-value" >${tmp}</span>`;
               if (propertyValue.toLowerCase().includes('exception') && !propertyValue.toLowerCase().includes('with-exception')) {
                 propertyValue = `<span class = "wizard-property-value with-exception" >${obj[p]}</span>`;
               }
