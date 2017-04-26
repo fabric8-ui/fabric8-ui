@@ -27,7 +27,6 @@ import { Notifications } from 'ngx-base';
 
 import { MockDataService } from '../shared/mock-data.service';
 import { AreaService } from '../area/area.service';
-import { FilterService } from '../shared/filter.service';
 import { IterationService } from '../iteration/iteration.service';
 import { WorkItem } from '../models/work-item';
 import { WorkItemService } from './work-item.service';
@@ -38,7 +37,6 @@ describe('Work Item Service - ', () => {
 
   let apiService: WorkItemService;
   let mockService: MockBackend;
-  let filterService:FilterService;
   let iterationService: IterationService;
   let areaService: AreaService;
 
@@ -218,7 +216,6 @@ describe('Work Item Service - ', () => {
         AreaService,
         WorkItemService,
         UserService,
-        FilterService,
         IterationService,
         Broadcaster,
         GlobalSettings,
@@ -237,11 +234,10 @@ describe('Work Item Service - ', () => {
   });
 
   beforeEach(inject(
-    [WorkItemService, MockBackend, FilterService, IterationService, AreaService],
-    (service: WorkItemService, mock: MockBackend, fService, iService: IterationService, aService: AreaService) => {
+    [WorkItemService, MockBackend, IterationService, AreaService],
+    (service: WorkItemService, mock: MockBackend, iService: IterationService, aService: AreaService) => {
       apiService = service;
       mockService = mock;
-      filterService = fService;
       iterationService = iService;
       areaService = aService;
       (apiService as any)._currentSpace = spaces[0];
