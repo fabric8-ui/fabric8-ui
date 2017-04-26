@@ -13,6 +13,7 @@ export interface IField {
     label: string;
     description: string;
     enabled: boolean;
+    readonly: boolean;
     required: boolean;
     visible: boolean;
     index: number;

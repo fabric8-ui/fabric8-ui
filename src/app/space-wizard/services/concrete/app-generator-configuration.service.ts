@@ -284,7 +284,7 @@ export class AppGeneratorConfigurationService {
     })
   }
 
-  public cleanseAppGeneratorRequest(command:IAppGeneratorCommand, input:IForgeInput, field:IField){
+  public scrubAppGeneratorRequest(command:IAppGeneratorCommand, input:IForgeInput, field:IField){
       switch(input.name.toLowerCase()) {
           case 'named':
           case 'gitrepository':{
@@ -308,11 +308,12 @@ export class AppGeneratorConfigurationService {
       }
   }
 
-  public augmentAppGeneratorResponse(context: string, execution: IAppGeneratorPair) : IAppGeneratorResponse {
+  public scrubAppGeneratorResponse(context: string, execution: IAppGeneratorPair) : IAppGeneratorResponse {
     let response = execution.response;
     this.augmentTitle(context,execution);
     let validationFields=this.getValidationCommandFields(context,execution);
     for( let field of response.payload.fields ) {
+        // update validation messages to be more descriptive
         if( field.display.message) {
           if(!field.display.valid) {
             field.display.message.description = field.display.message.description.trim();
@@ -323,6 +324,36 @@ export class AppGeneratorConfigurationService {
           }
         }
         switch(field.name.toLowerCase()){
+          case 'kubernetesspace':{
+            field.display.label = 'Kubernetes Space';
+            field.display.enabled = false
+
+            break;
+          }
+          case 'labelspace':{
+            field.display.label = 'Kubernetes Label Space';
+            field.display.enabled = false
+            //set label space to the current space by default
+            if( this.currentSpace && (this.currentSpace.attributes.name || '' ).length > 0 ) {
+               let spaceName = this.currentSpace.attributes.name;
+               field.value = spaceName ;
+               field.display.text = spaceName;
+            }
+            break;
+          }
+          case 'jenkinsspace':{
+            field.display.enabled = false
+            break;
+          }
+          case 'triggerbuild':{
+            field.display.enabled = true
+            break;
+          }
+          case 'addciwebhooks':{
+            field.display.enabled = true
+            field.display.label = 'Add continuous integration web hooks';
+            break;
+          }
           case 'gitrepository' : {
             // if( this.currentSpace && (this.currentSpace.attributes.name || '' ).length > 0 ) {
             //   let spaceName = this.currentSpace.attributes.name;

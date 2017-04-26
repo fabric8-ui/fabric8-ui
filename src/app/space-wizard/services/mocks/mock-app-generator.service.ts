@@ -58,6 +58,7 @@ function getFirstFieldSet(): Observable<IAppGeneratorResponse> {
             inputType: FieldWidgetClassificationOptions.SingleInput,
             label: 'label-f1',
             enabled: true,
+            readonly: false,
             required: true,
             visible: true,
             index: 0
@@ -73,6 +74,7 @@ function getFirstFieldSet(): Observable<IAppGeneratorResponse> {
             inputType: FieldWidgetClassificationOptions.SingleInput,
             label: 'label-f2',
             enabled: true,
+            readonly: false,
             required: true,
             visible: true,
             index: 0

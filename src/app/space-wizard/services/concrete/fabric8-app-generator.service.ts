@@ -68,7 +68,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
         let input: IForgeInput = inputs.find( i => i.name === field.name );
         if ( input ) {
           input.value = field.value;
-          this._configService.cleanseAppGeneratorRequest(command,input,field);
+          this._configService.scrubAppGeneratorRequest(command,input,field);
         }
       }
     }
@@ -130,8 +130,8 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
         }
       };
       this.forgeService.executeCommand( commandRequest )
-      .map( (forgeResponse) => this.transformForgeResponseToAppGeneratorResponse(request, forgeResponse) )
-      .map( (response) => this._configService.augmentAppGeneratorResponse('', { request,response}) )
+      .map( (forgeResponse) => this.transformForgeResponseIntoAnAppGeneratorResponse(request, forgeResponse) )
+      .map( (response) => this._configService.scrubAppGeneratorResponse('', { request,response}) )
       .subscribe( (response: IAppGeneratorResponse) => {
         this.log(`AppGenerator '${cmdDescription}' command completed`, response);
         observer.next(response);
@@ -165,6 +165,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
           inputType: this.mapWidgetClassification(sourceInput),
           label: sourceInput.label,
           required: sourceInput.required,
+          readonly: false,
           enabled: sourceInput.enabled,
           visible: sourceInput.deprecated === false,
           valid: true,
@@ -199,34 +200,34 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
         command.parameters.data || { inputs: []} as IForgeCommandData);
     }
   }
-  private transformForgeResponseToAppGeneratorResponse( request: IAppGeneratorRequest, source: IForgeCommandResponse ) {
-    let forgeData: IForgeCommandData = source.payload.data;
-    forgeData.metadata = forgeData.metadata || {} as IForgeMetadata;
-    let fields = this.transformForgeDataToFields( forgeData );
+  private transformForgeResponseIntoAnAppGeneratorResponse( request: IAppGeneratorRequest, response: IForgeCommandResponse ) {
+    let forgeResponseData: IForgeCommandData = response.payload.data;
+    forgeResponseData.metadata = forgeResponseData.metadata || {} as IForgeMetadata;
+    let fields = this.transformForgeDataToFields( forgeResponseData );
 
-    let commandResponse = {
+    let appGeneratorResponse = {
       payload: {
         fields: fields,
-        results: forgeData.results || [],
+        results: forgeResponseData.results || [],
         state: {
-          valid: forgeData.state.valid || false,
-          isExecute: forgeData.state.isExecute,
-          canMoveToNextStep: forgeData.state.canMoveToNextStep || false,
-          canMovePreviousStep: forgeData.state.canMoveToPreviousStep || false,
-          canExecute: forgeData.state.canExecute || false,
-          steps: forgeData.state.steps || [],
+          valid: forgeResponseData.state.valid || false,
+          isExecute: forgeResponseData.state.isExecute,
+          canMoveToNextStep: forgeResponseData.state.canMoveToNextStep || false,
+          canMovePreviousStep: forgeResponseData.state.canMoveToPreviousStep || false,
+          canExecute: forgeResponseData.state.canExecute || false,
+          steps: forgeResponseData.state.steps || [],
           currentStep: request.command.parameters.pipeline.step.index || 0,
-          title: forgeData.metadata.name || '',
-          description: forgeData.metadata.name || ''
+          title: forgeResponseData.metadata.name || '',
+          description: forgeResponseData.metadata.name || ''
         } as IAppGeneratorState
       },
-      context: source.context || {}
+      context: response.context || {}
     } as IAppGeneratorResponse;
     // now update commands with field data from forge data
 
-    this.transformDataToFieldsFields( commandResponse.context.validationCommand );
-    this.transformDataToFieldsFields( commandResponse.context.nextCommand );
-    return commandResponse;
+    this.transformDataToFieldsFields( appGeneratorResponse.context.validationCommand );
+    this.transformDataToFieldsFields( appGeneratorResponse.context.nextCommand );
+    return appGeneratorResponse;
 
   }
 
