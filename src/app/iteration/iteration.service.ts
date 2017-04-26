@@ -41,10 +41,13 @@ export class IterationService {
   }
 
   notifyError(message: string, httpError: any) {
+    this.logger.log('ERROR [IterationService] ' + message + (httpError.message?' '+httpError.message:''));
+    /*
     this.notifications.message({
         message: message + (httpError.message?' '+httpError.message:''),
         type: NotificationType.DANGER
       } as Notification);
+    */
   }
 
   createId(): string {

@@ -84,10 +84,13 @@ export class WorkItemService {
   }
 
   notifyError(message: string, httpError: any) {
+    this.logger.log('ERROR [WorkItemService] ' + message + (httpError.message?' '+httpError.message:''));
+    /*
     this.notifications.message({
         message: message + (httpError.message?' '+httpError.message:''),
         type: NotificationType.DANGER
       } as Notification);
+    */
   }
 
   createId(): string {
