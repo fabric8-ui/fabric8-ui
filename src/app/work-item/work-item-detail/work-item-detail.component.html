@@ -28,7 +28,7 @@
               </li>
             </ul>
           </div>-->
-          <div class="col-sm-4 pull-right padding-0">
+          <div class="col-sm-5 pull-right padding-0">
             <span class="pficon-close detail-close" (click)="closeDetails()"></span>
             <span *ngIf="workItem.id" class="detail-created-date">
                 Created <span id="created_at" [innerHTML]="workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'"></span>
