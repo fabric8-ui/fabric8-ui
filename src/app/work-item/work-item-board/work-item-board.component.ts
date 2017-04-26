@@ -76,6 +76,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   private currentIteration: BehaviorSubject<string | null>;
   private currentWIType: BehaviorSubject<string | null>;
   private existingQueryParams: Object = {};
+  private wiSubscription = null;
 
   constructor(
     private auth: AuthenticationService,
@@ -141,6 +142,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('Destroying all the listeners in board component');
+    if (this.wiSubscription !== null) this.wiSubscription.unsubscribe();
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
     this.dragulaEventListeners.forEach(subscriber => subscriber.unsubscribe());
     if (this.urlListener) {
@@ -200,13 +202,14 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
     });
   }
 
-  getWorkItems(pageSize, lane) {
-    this.workItemService.getWorkItems(pageSize, [{
+  getWorkItems(pageSize, mainLane) {
+    let lane = cloneDeep(mainLane);
+    return this.workItemService.getWorkItems(pageSize, [{
         active: true,
         paramKey: 'filter[workitemstate]',
         value: lane.option
       }, ...this.filterService.getAppliedFilters()])
-    .subscribe(workItemResp => {
+    .map(workItemResp => {
       const workItems = workItemResp.workItems;
       lane.workItems = this.workItemService.resolveWorkItems(
         workItems,
@@ -215,6 +218,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
         this.workItemTypes
       );
       lane.nextLink = workItemResp.nextLink;
+      return lane;
     });
   }
 
@@ -519,8 +523,20 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
 
     this.eventListeners.push(
       this.filterService.filterChange.subscribe(filters => {
-        this.lanes.forEach(lane => {
-          this.getWorkItems(this.pageSize, lane);
+        if (this.wiSubscription !== null) {
+          this.wiSubscription.unsubscribe();
+        }
+        this.wiSubscription = Observable.forkJoin(
+          this.lanes.map(lane => this.getWorkItems(this.pageSize, lane))
+        )
+        .take(1)
+        .subscribe(finalLanes => {
+          this.lanes.forEach((lane, index) => {
+            // FIXEME: Need to find a better way to do it
+            setTimeout(() => {
+              this.lanes[index].workItems = cloneDeep(finalLanes[index].workItems);
+            }, 10 * index);
+          })
         })
       })
     );
