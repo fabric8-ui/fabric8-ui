@@ -23,32 +23,38 @@
       vertical-align: top;
       white-space: normal;
       .board-lane-column {
-        background: $color-pf-black-200;
-        @include Border(1px, solid, $color-pf-black-300);
+        background: $color-pf-black-250;
+        border: 1px solid $color-pf-black-300;
         padding: em(0);
         height: 100%;
         padding-bottom: 0;
         .boardlaneWrapper{
           padding: em(0) rem(15);
           overflow: auto;
-          width: $width100;
+          width: 100%;
           height: calc( 100% - 2.5rem );
           .board-card {
-            @include Border(1px, solid , $color-pf-black-400);
-            background: $color-pf-white;
+            border: 2px solid $color-pf-black-400;
             padding: rem(15);
             margin: rem(5) 0;
             @extend .flex-container;
             @extend .in-column-direction;
             @extend .flex-grow-1;
             &.active {
-              border: 2px solid $color-pf-blue-300;
-              box-shadow: none;
+              border-color: $color-pf-blue-400;
+              &.gu-transit {
+                opacity: .1;
+                border-color: #bbb;
+              }
             }
             >div {
               p {
                 margin: 0;
+<<<<<<< HEAD
                 word-break: break-all;
+=======
+                word-break: all;
+>>>>>>> fix(board): update board with UX fixes
               }
               .wi-type-icon {
                 padding: em(0) em(6);
@@ -65,10 +71,10 @@
           }//boardcard ended
         }//boardlaneWrapper ended
         .lane-header {
-          text-align: $textCenter;
+          text-align: center;
           flex: 0 0 auto;
-          width: $width100;
-          background: $color-pf-black-200;
+          width: 100%;
+          background: $color-pf-black-250;
           padding: em(7) 0 em(3) 0;
           .issueCount {
             background: $color-pf-white;
@@ -78,13 +84,18 @@
           }// issue-count ended
         }// lane-header ended
       }//boad-lane-column ended
-     }//board-lane ended
-    }
+    }//board-lane ended
     .card-wrapper {
       height: 100%;
     }
   }
+<<<<<<< HEAD
 .side-panel-wrap {
+=======
+}
+.side-panel-wrap {
+  background-color: $color-pf-black-900;
+>>>>>>> fix(board): update board with UX fixes
   min-width: 340px;
   width: 340px;
   .side-panel-container {
@@ -222,16 +233,22 @@
     }
   }
 }
-.active-lane {
-  border: 2px solid $color-pf-blue-300!important;
-}
+// .active-lane {
+//   border: 2px solid $color-pf-blue-300!important;
+// }
 
 .not-assigned-user-icon {
   @include not-assigned-user-icon;
+  width: 30px;
+  height: 30px;
 }
 
 .user-avatar {
   @include user-avatar;
+  img {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 .gu-mirror {

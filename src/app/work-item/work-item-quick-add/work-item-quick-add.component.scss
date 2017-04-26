@@ -88,16 +88,20 @@
   }
 }
 
-.quickAdd_container2 {
+// .quickAdd_container2 {
+.board-quick-add-card {
   position: relative;
-  width: $width100;
+  width: 100%;
   float: left;
-  @include Border(0 , solid , transparent);
+  // border: 2px solid $color-pf-black-300;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
   .addWorkItem{
     background: $color-pf-white;
-    margin: em(5) 0;
-    @include Border(1px, solid ,$color-pf-black-400);
-    text-align: $textCenter;
+    border: 2px solid $color-pf-black-400;
+    text-align: center;
     padding: em(10) em(15);
     .workItemQuickAdd_saveBtn{
       i{
@@ -107,36 +111,34 @@
     }
   }
   .addWorkItemBlk {
-    padding: em(20);
     margin: em(5) 0;
     background:$color-pf-white;
-    @include Border(1px, solid ,$color-pf-black-300);
-    .quickAdd_temp2-Story {
-      float: left;
-      padding: em(2);
-      @include Border(1px, solid ,$color-pf-black-700);
-      i{
-        margin: 0;
-        font-size: em(12);
+    border: 1px solid $color-pf-black-300;
+    .board-inputs {
+      margin-top: 40px;
+      i {
+        padding-top: 5px;
+        padding-left: 10px;
       }
     }
-    .quickAdd_temp2-Title{
-      padding: 0 em(25);
-      input{
-        margin-bottom: em(7);
-      }
+    .board-description {
+      margin-top: 5px;
+      height: 29px;
+      width: 100%;
     }
     .workItemQuickAdd_Add{
-      @include Border(1px, solid ,$color-pf-black-300);
-      margin-top: em(10);
-      padding: em(1);
+      margin-top: 5px;
+      margin-bottom: 10px;
+      margin-left: -10px;
     }
     .closeQuickAdd{
       position: absolute;
-      top: em(10);
+      top: 10px;
+      right: 15px;
+      color: $color-pf-black;
     }
     .icon-btn{
-      @include Border(1px, solid ,$color-pf-blue-400);
+      border: 2px solid $color-pf-blue-400;
     }
   }
 }

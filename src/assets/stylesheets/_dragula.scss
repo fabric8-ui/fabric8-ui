@@ -7,7 +7,7 @@
   margin: 0!important;
   z-index: 9999!important;
   opacity: 1;
-  background-color: $color-pf-blue-100;
+  background-color: $color-pf-white;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
   filter: alpha(opacity=80);
 }
@@ -29,6 +29,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: $color-pf-black-400;
+    height: 0;
+    // padding: 0;
   }
 }

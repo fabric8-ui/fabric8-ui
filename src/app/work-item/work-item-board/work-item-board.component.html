@@ -43,9 +43,9 @@
                           [attr.data-id]="item.id" (mousedown)="getWI(item)" (touchstart)="getWI(item)"
                           [routerLink]="['./detail/' + item.id]" [queryParams]="existingQueryParams">
                       <div class="row-wrapper">
-                        <div class="">
+                        <div>
                           <span class="wi-type-icon fa {{item.relationships?.baseType?.data?.attributes?.icon}}"></span>
-                          <span class=""> {{item.id}} </span>
+                          <span> {{item.id}} </span>
                         </div>
                         <span class="dropdown-kebab-pf" dropdown>
                           <button class="btn btn-link color-grey" type="button" aria-haspopup="true" aria-expanded="true" (click)="kebabClick($event)" dropdownToggle>
@@ -61,18 +61,16 @@
                       </div>
                       <div class="row-wrapper">
                         <div class="margin-right-5">
-                          <a [routerLink]="['./detail/' + item.id]" [queryParams]="existingQueryParams" >
-                            <p>{{ item.attributes['system.title'] | truncate : 87 }}</p>
-                          </a>
+                          <p [routerLink]="['./detail/' + item.id]" [queryParams]="existingQueryParams">{{ item.attributes['system.title'] | truncate : 87 }}</p>
                         </div>
                         <div class="user-avatar">
                           <img
                             *ngFor="let wItem of item.relationships.assignees.data"
-                            placement="bottom"
+                            placement="top"
                             tooltip="{{wItem?.attributes?.fullName}}"
                             src="{{wItem?.attributes?.imageURL + '&s=20'}}"
                             onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
-                          <span *ngIf="!item.relationships?.assignees?.data?.length" class="pficon-user not-assigned-user-icon"></span>
+                          <span *ngIf="!item.relationships?.assignees?.data?.length" class="pficon-user not-assigned-user-icon" tooltip="unassigned" placement="top"></span>
                         </div>
                       </div>
                       <fab-planner-associate-iteration-modal

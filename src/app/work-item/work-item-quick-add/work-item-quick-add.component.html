@@ -41,24 +41,29 @@
 </div>
 
 <!-- Quick ADD Template for Board View -->
-<div class="quickAdd_container2" id="workItemQuickAdd_container" *ngIf="wilistview === 'wi-card-view'" >
-  <div class="col-md-12 col-sm-12 col-xs-12 addWorkItem" (click)="toggleQuickAdd()">
+<div class="board-quick-add-card card-pf" id="workItemQuickAdd_container" *ngIf="wilistview === 'wi-card-view'" >
+  <div class="col-sm-12 addWorkItem" (click)="toggleQuickAdd()">
     <a class="workItemQuickAdd_saveBtn">
       <i class='pficon-add-circle-o dib'></i>
     </a>
   </div>
-  <div class="col-md-12 col-sm-12 col-xs-12 addWorkItemBlk " *ngIf="showQuickAdd">
-    <div class="quickAdd_temp2-Story">
-      <i class="fa pull-left" [ngClass]="selectedType?selectedType.attributes.icon:''"></i>
+  <div class="col-sm-12 card-pf card-pf-view addWorkItemBlk" *ngIf="showQuickAdd">
+    <div class="row">
+      <button (click)="toggleQuickAdd()" class="btn btn-link closeQuickAdd">
+        <i class="pficon pficon-close"></i>
+      </button>
     </div>
-    <div class="quickAdd_temp2-Title ">
-      <div class="col-md-12 col-sm-12 col-xs-12 no-padding ">
-        <input #quickAddTitle type="text" id="exampleInput" class="form-control col-md-12 col-sm-12 col-xs-12"  [(ngModel)]="workItem.attributes['system.title']"
+    <div class="row board-inputs">
+      <div class="col-sm-2">
+        <i class="fa" [ngClass]="selectedType?selectedType.attributes.icon:''"></i>
+      </div>
+      <div class="col-sm-10">
+        <input #quickAddTitle type="text" id="exampleInput" class="form-control board-title col-sm-12"  [(ngModel)]="workItem.attributes['system.title']"
               (keyup.enter)="save($event)"
               (keyup)="checkTitle()" placeholder="Work Item Title" required/>
       </div>
-      <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
-        <textarea #quickAddDesc rows="1" type="text" id="exampleDesc" class="form-control width100 pull-left"  [(ngModel)]="workItem.attributes['system.description']"
+      <div class="col-sm-12 no-padding">
+        <textarea #quickAddDesc rows="1" type="text" id="exampleDesc" class="form-control board-description pull-left"  [(ngModel)]="workItem.attributes['system.description']"
                 [style.height]="descHeight"
                 [style.resize]="descResize"
                 (keydown.enter)="save($event)"
@@ -68,10 +73,9 @@
         </textarea>
       </div>
     </div>
-    <div class="pull-right">
-      <button #quickAddSubmit class="pull-left workItemQuickAdd_Add btn btn-primary"
+    <div class="col-sm-2 col-sm-offset-10">
+      <button #quickAddSubmit class="btn btn-primary workItemQuickAdd_Add"
         (click)="save($event)" [ngClass]="{'icon-btn': validTitle,'disabled':!validTitle}"><i class="fa fa-check"></i></button>
-      <span (click)="toggleQuickAdd()" class="pull-right closeQuickAdd"><i class="pficon pficon-close"></i></span>
     </div>
   </div>
 </div>
