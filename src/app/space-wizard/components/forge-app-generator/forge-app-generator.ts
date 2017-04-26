@@ -213,6 +213,11 @@ export class ForgeAppGenerator {
             if(input) {
               nextCommand.parameters.data.inputs.push(input);
             }
+          } else {
+            let input=validationCommand.parameters.data.inputs.find(i=>i.name === field.name);
+            if(input) {
+              nextCommand.parameters.data.inputs.push(input);
+            }
           }
         }
         //
@@ -252,12 +257,31 @@ public execute() {
       this.message = this.spinnerMessage('Validating ...');
       this.validate(false).then((validated) => {
         if (validated.response.payload.state.valid) {
-          let cmd: IAppGeneratorCommand = validated.response.context.executeCommand;
+          let executeCommand: IAppGeneratorCommand = validated.response.context.executeCommand;
           // pass along the validated data and fields
           let request: IAppGeneratorRequest = {
-            command: cmd
+            command: executeCommand
           };
-          let cmdInfo = `${cmd.name}:${cmd.parameters.pipeline.step.name}:${cmd.parameters.pipeline.step.index}`;
+          // add the accumulated validation fields to the 'next' command
+          let validationCommand: IAppGeneratorCommand = this._currentResponse.context.validationCommand;
+          for ( let field of validationCommand.parameters.fields)
+          {
+            let requestField = executeCommand.parameters.fields.find((f) => f.name === field.name);
+            if(!requestField) {
+              executeCommand.parameters.fields.push(field);
+              let input=validationCommand.parameters.data.inputs.find(i=>i.name === field.name);
+              if(input) {
+                executeCommand.parameters.data.inputs.push(input);
+              }
+            } else {
+              let input=validationCommand.parameters.data.inputs.find(i=>i.name === field.name);
+              if(input) {
+                executeCommand.parameters.data.inputs.push(input);
+              }
+            }
+          }
+
+          let cmdInfo = `${executeCommand.name}:${executeCommand.parameters.pipeline.step.name}:${executeCommand.parameters.pipeline.step.index}`;
           this.message.title = 'Generating ...';
           this.log(`Execute request for command ${cmdInfo}.`, request, console.group);
           this._appGeneratorService.getFields( request )
