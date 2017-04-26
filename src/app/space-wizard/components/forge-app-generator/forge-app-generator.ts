@@ -189,11 +189,12 @@ export class ForgeAppGenerator {
 
   public gotoNextStep() {
     this.onBeginStep = false;
-    this.processing  = true;
-    this.validate().then((validated) => {
+    this.processing  = false;
+    this.message = this.spinnerMessage('Validating ...');
+    this.validate(false).then((validated) => {
       if (validated.response.payload.state.valid ) {
         // if validation succeeded
-        this.processing = true;
+        // this.processing = true;
         let nextCommand: IAppGeneratorCommand = this._currentResponse.context.nextCommand;
         nextCommand.parameters.fields = this.fields;
         // pass along the validated data and fields
@@ -217,22 +218,27 @@ export class ForgeAppGenerator {
         //
         let cmdInfo = `${nextCommand.name} :: ${nextCommand.parameters.pipeline.step.name} :: ${nextCommand.parameters.pipeline.step.index}`;
         this.log(`Next request for command ${cmdInfo}.`, request, console.group);
+        this.message.title=`Loading the next step ...`
         this._appGeneratorService.getFields( request )
           .subscribe( (response) => {
             this.log(`Next response for command ${cmdInfo}.`, request);
             this.applyTheNextCommandResponse( { request, response } );
+            this.clearMessage();
             this.processing = false;
           }, (error) => {
+            this.clearMessage();
             this.processing = false;
             this.handleError(error);
           });
 
       } else {
+        this.clearMessage();
         this.processing = false;
       }
 
     }).catch(error => {
       this.processing = false;
+      this.clearMessage();
       this.handleError(error);
       this.log({ message: error.message, warning: true } );
     });
