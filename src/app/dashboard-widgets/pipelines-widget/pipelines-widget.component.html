@@ -22,7 +22,8 @@
       <li class='list-group-item' *ngFor="let buildconfig of buildConfigs | async" >
         <div>
           <div>
-            <span class="{{buildconfig.iconStyle}}" title="{{buildconfig.statusPhase}}"></span>
+            <span class="{{buildconfig.iconStyle}} fa-spin" title="{{buildconfig.statusPhase}}" *ngIf="buildconfig.iconStyle === 'pficon-running'"></span>
+            <span class="{{buildconfig.iconStyle}}" title="{{buildconfig.statusPhase}}" *ngIf="buildconfig.iconStyle !== 'pficon-running'"></span>
             <span class="pipeline-status-padding">{{buildconfig.name}}</span>
             <span class="pipeline-status-padding">Build #{{buildconfig.lastVersion}}</span>
           </div>
