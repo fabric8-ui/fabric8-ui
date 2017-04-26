@@ -167,7 +167,7 @@ export class PipelinesComponent implements OnInit, OnDestroy {
           });
       })
       .subscribe(val => {
-        console.log('Updating build configs:', val);
+        //console.log('Updating build configs:', val);
         this._allPipelines = val;
         this.applyFilters();
         this.applySort();
@@ -183,7 +183,6 @@ export class PipelinesComponent implements OnInit, OnDestroy {
         let pipeline = pipelines[0];
         let namespace = pipeline.namespace;
         if (namespace) {
-          console.log("Found pipeline namespace: " + namespace);
           this.openshiftConsoleUrl = pathJoin(this.openshiftConsoleUrl, "/project", namespace, "/browse/pipelines");
         }
       }
