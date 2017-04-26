@@ -3,3 +3,8 @@
 #cancel-iteration-button {
   margin-right: em(10);
 }
+#reassociate-msg {
+  strong {
+    word-break: break-all;
+  }
+}
