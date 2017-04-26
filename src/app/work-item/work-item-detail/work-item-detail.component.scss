@@ -69,11 +69,11 @@
   }
   .detail-created-date {
     text-align: right;
+    float: right;
   }
   .detail-close {
-    position: fixed;
-    top: 25px;
-    right: 40px;
+    float: right;
+    margin-left: 8px;
     cursor: pointer;
     font-size: em(18);
   }
