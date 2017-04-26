@@ -36,6 +36,9 @@ export class MarkdownControlComponent implements OnInit, OnChanges {
 
   // the alm-editable element from the DOM.
   @ViewChild('editTextPara') textEditableParaElement: any;
+  // Use detail text'height to determine display of Show More link
+  @ViewChild('detailText') detailText: any;
+  @ViewChild('detailWrapper') detailWrapper: any;
 
   protected loggedIn: Boolean = false;
   protected textEditable: Boolean = false;
@@ -45,6 +48,10 @@ export class MarkdownControlComponent implements OnInit, OnChanges {
   protected markdownText: string = '';
   protected markdownViewExpanded: boolean = false;
   protected tabBarVisible: boolean = false;
+  protected showMore: boolean = false;
+  protected initHeight: number = 58;
+  protected maxHeight: number = 192;
+
 
 constructor(
   protected authService: AuthenticationService,
@@ -65,6 +72,7 @@ constructor(
 
   // called when the parents data binding on markdownValue changes.
   ngOnChanges(changes: SimpleChanges) {
+    this.showMore = false;
     let newMarkdownValue: string = changes['markdownValue'].currentValue;
     if (!newMarkdownValue) {
       // reset the value
@@ -98,6 +106,19 @@ constructor(
         this.textViewType = 'preview';
         if (this.textEditableParaElement)
           this.textEditableParaElement.nativeElement.innerHTML = this.renderedText;
+            setTimeout( () => {
+              if(this.detailWrapper.nativeElement.clientHeight > this.maxHeight) {
+                this.showMore = true;
+              } else {
+                let cond1 = this.detailText.nativeElement.clientHeight > this.detailWrapper.nativeElement.clientHeight;
+                let cond2 = this.detailText.nativeElement.clientHeight > this.initHeight;
+                this.showMore = cond1 && cond2;
+                //console.log('Detail text', this.detailText.nativeElement.clientHeight);
+                //console.log('Detail wrapper', this.detailWrapper.nativeElement.clientHeight)
+              }
+            }, 10);
+
+
       });
   }
 

@@ -1,6 +1,6 @@
 <div class="form-group">
-  <div class="col-md-12 col-sm-12 col-xs-12 detail-text-wrap" [class.show-less]="!markdownViewExpanded">
-    <div class="col-md-12 col-sm-12 col-xs-12 detail-text" *ngIf="loggedIn">
+  <div class="col-md-12 col-sm-12 col-xs-12 detail-text-wrap" #detailWrapper [class.show-less]="!markdownViewExpanded">
+    <div class="col-md-12 col-sm-12 col-xs-12 detail-text" #detailText *ngIf="loggedIn">
       <div class="text-switcher">
         <ul class="nav nav-tabs">
           <li *ngIf="loggedIn && tabBarVisible" (click)="onClickMarkdownTab()" [ngClass]="{'active': textViewType === 'markdown'}">
@@ -58,8 +58,10 @@
           <b>Markdown Supported</b>
         </small>
       </span>
-      <span (click)="toggleMarkdownViewExpanded()" [ngClass]="{'arrow-down': markdownViewExpanded === true, 'arrow-up': markdownViewExpanded === false}" class="btn btn-link show-more-state col-md-4"></span>
-      <span class="col-md-4">
+      <span *ngIf="showMore" (click)="toggleMarkdownViewExpanded()"
+        [ngClass]="{'arrow-down': markdownViewExpanded === true, 'arrow-up': markdownViewExpanded === false}"
+        class="btn btn-link show-more-state col-md-4"></span>
+      <span class="col-md-4" [class.col-md-8]="!showMore">
         <div *ngIf="loggedIn && tabBarVisible"
             class="fl btn btn-default btn-cancel pull-right detail-action-btn markdown-test-btn-save"
             (click)="onClickCancelIcon()">
