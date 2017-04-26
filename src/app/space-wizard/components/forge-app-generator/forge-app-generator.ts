@@ -188,33 +188,34 @@ export class ForgeAppGenerator {
   }
 
   public gotoNextStep() {
-    this.onBeginStep=false;
-    this.processing = true;
+    this.onBeginStep = false;
+    this.processing  = true;
     this.validate().then((validated) => {
       if (validated.response.payload.state.valid ) {
+        // if validation succeeded
         this.processing = true;
-        let cmd: IAppGeneratorCommand = this._currentResponse.context.nextCommand;
-        cmd.parameters.fields = this.fields;
+        let nextCommand: IAppGeneratorCommand = this._currentResponse.context.nextCommand;
+        nextCommand.parameters.fields = this.fields;
         // pass along the validated data and fields
-        cmd.parameters.validatedData = validated.request.command.parameters.data;
+        nextCommand.parameters.validatedData = validated.request.command.parameters.data;
         let request: IAppGeneratorRequest = {
-          command: cmd
+          command: nextCommand
         };
-        //add the accumulated validation fields to the next command
-        // let vcmd: IAppGeneratorCommand = this._currentResponse.context.validationCommand;
-        // for ( let field of vcmd.parameters.fields)
-        // {
-        //   let requestField = cmd.parameters.fields.find((f) => f.name === field.name);
-        //   if(!requestField) {
-        //     cmd.parameters.fields.push(field);
-        //     let input=vcmd.parameters.data.inputs.find(i=>i.name === field.name);
-        //     if(input) {
-        //       cmd.parameters.data.inputs.push(input);
-        //     }
-        //   }
-        // }
+        // add the accumulated validation fields to the 'next' command
+        let validationCommand: IAppGeneratorCommand = this._currentResponse.context.validationCommand;
+        for ( let field of validationCommand.parameters.fields)
+        {
+          let requestField = nextCommand.parameters.fields.find((f) => f.name === field.name);
+          if(!requestField) {
+            nextCommand.parameters.fields.push(field);
+            let input=validationCommand.parameters.data.inputs.find(i=>i.name === field.name);
+            if(input) {
+              nextCommand.parameters.data.inputs.push(input);
+            }
+          }
+        }
         //
-        let cmdInfo = `${cmd.name} :: ${cmd.parameters.pipeline.step.name} :: ${cmd.parameters.pipeline.step.index}`;
+        let cmdInfo = `${nextCommand.name} :: ${nextCommand.parameters.pipeline.step.name} :: ${nextCommand.parameters.pipeline.step.index}`;
         this.log(`Next request for command ${cmdInfo}.`, request, console.group);
         this._appGeneratorService.getFields( request )
           .subscribe( (response) => {

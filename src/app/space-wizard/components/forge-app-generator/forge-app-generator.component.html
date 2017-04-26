@@ -59,7 +59,7 @@
                 <input *ngSwitchCase="'string'" id="{{forge.fields[i].name}}" name="{{forge.fields[i].name}}" (change)="forge.validate()" (keyup.enter)="forge.validate()" [(ngModel)]="forge.fields[i].value"
                   type="text" [class.form-control-danger]="!forge.fields[i].display.valid"  class="form-control"  placeholder="{{forge.fields[i].description}}" [required]="forge.fields[i].display.required"
                   [disabled]="!forge.fields[i].display.enabled" />
-                <input *ngSwitchCase="'boolean'" [class.form-control-danger]="!forge.fields[i].display.valid" type="checkbox" name="{{forge.fields[i].name}}" [(ngModel)]="forge.fields[i].value" class="form-control"
+                <input *ngSwitchCase="'boolean'" style="box-shadow:none;" [class.form-control-danger]="!forge.fields[i].display.valid" type="checkbox" name="{{forge.fields[i].name}}" [(ngModel)]="forge.fields[i].value" class="form-control"
                   [required]="forge.fields[i].display.required" [disabled]="!forge.fields[i].display.enabled">
                 <input *ngSwitchCase="'number'" [class.form-control-danger]="!forge.fields[i].display.valid" type="number" name="{{forge.fields[i].name}}" [(ngModel)]="forge.fields[i].value" class="form-control"
                   [required]="forge.fields[i].display.required" [disabled]="!forge.fields[i].display.enabled">

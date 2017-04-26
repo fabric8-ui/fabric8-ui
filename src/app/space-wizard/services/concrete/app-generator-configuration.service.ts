@@ -286,7 +286,8 @@ export class AppGeneratorConfigurationService {
 
   public cleanseAppGeneratorRequest(command:IAppGeneratorCommand, input:IForgeInput, field:IField){
       switch(input.name.toLowerCase()) {
-          case "named":{
+          case 'named':
+          case 'gitrepository':{
             if( !Array.isArray(input.value) ) {
               let value: string = input.value||'';
               if( value ) {
@@ -323,18 +324,18 @@ export class AppGeneratorConfigurationService {
         }
         switch(field.name.toLowerCase()){
           case 'gitrepository' : {
-            if( this.currentSpace && (this.currentSpace.attributes.name || '' ).length > 0 ) {
-              let spaceName = this.currentSpace.attributes.name;
-              field.value = spaceName ;
-              let namedField = validationFields.find( f => f.name ==='named');
-              // handle the scenario when someone chages the name (that is defaulted to the space name) to something else
-              // and the expecation that this defaults to the repo name. Do if that changes then default repo name needs to
-              // change too !!
-              if( namedField &&  (namedField.value||'').toString() !== spaceName ) {
-                  field.value= namedField.value
-              }
-            }
-            field.display.label = 'Repository name';
+            // if( this.currentSpace && (this.currentSpace.attributes.name || '' ).length > 0 ) {
+            //   let spaceName = this.currentSpace.attributes.name;
+            //   field.value = spaceName ;
+            //   let namedField = validationFields.find( f => f.name ==='named');
+            //   // handle the scenario when someone chages the name (that is defaulted to the space name) to something else
+            //   // and the expecation that this defaults to the repo name. Do if that changes then default repo name needs to
+            //   // change too !!
+            //   if( namedField &&  (namedField.value||'').toString() !== spaceName ) {
+            //       field.value= namedField.value
+            //   }
+            // }
+            field.display.label = 'GitHub repository name';
             break;
           }
           case 'version' : {
