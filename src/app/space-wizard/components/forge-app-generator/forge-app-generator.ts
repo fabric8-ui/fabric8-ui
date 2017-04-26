@@ -389,7 +389,8 @@ public execute() {
       }
     };
     if ( results.length > 0 ) {
-      let msg = `<span class='wizard-status-success'>[SUCCESS]</span> :`;
+      //let msg = `<span class='wizard-status-success'>[SUCCESS]</span> :`;
+      let msg = ``;
       for (let response of results.filter(r => r !== null)) {
         if ( Array.isArray(response) ) {
           continue;
