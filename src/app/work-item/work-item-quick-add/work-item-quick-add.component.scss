@@ -8,7 +8,7 @@
   border-top: 1px solid darken($color-pf-white, 20%);
   text-align: $textLeft;
   cursor: pointer;
- 
+
   .dropup {
     .dropdown-menu {
       margin-left: 8px;
@@ -43,7 +43,7 @@
     }
   }
   .addWorkItemBlk {
-    padding: em(20);
+    padding: em(17);
     position: relative;
     .workItemQuickAdd_IconType {
       width:em(24);
@@ -61,19 +61,20 @@
     }
     .workItemQuickAdd_AddBlk {
       .workItemQuickAdd_Add {
-        min-width: em(30);
+        min-width: em(30) !important;
         height: 27px;
         i {
           font-size: em(14);
         }
       }
       .closeQuickAdd {
-        min-width: em(35);
+        min-width: em(30) !important;
         margin-left: em(5);
         height: 27px;
         padding: em(5);
         i {
-          font-size: em(16);
+          font-size: em(14);
+          vertical-align: top;
         }
       }
     }

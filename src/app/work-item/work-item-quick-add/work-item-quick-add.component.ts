@@ -35,7 +35,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
   @ViewChild('quickAddSubmit') qaSubmit: any;
 
   @Input() wilistview: string = 'wi-list-view';
-  @Input() forcedType: WorkItemType = null; 
+  @Input() forcedType: WorkItemType = null;
   @Output('workItemCreate') workItemCreate = new EventEmitter();
 
   error: any = false;
@@ -45,7 +45,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
   showQuickAddBtn: Boolean;
   initialDescHeight: number = 0;
   initialDescHeightDiff: number = 0;
-  descHeight: any = '26px';
+  descHeight: any = '27px';
   descResize: any = 'none';
   spaceSubscription: Subscription = null;
   selectedType: WorkItemType  = null;
@@ -80,7 +80,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
         console.log('[WorkItemQuickAddComponent] Space deselected.');
         this.showQuickAddBtn = false;
       }
-    });   
+    });
   }
 
   ngOnDestroy() {
@@ -118,14 +118,14 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
   }
 
   selectType(event: any, type: WorkItemType) {
-    if (event) 
+    if (event)
       event.preventDefault();
     this.logger.log('Selected type ' + type.attributes.name + ' for quick add.');
     this.selectedType = type;
   }
 
   save(event: any = null): void {
-    if (event) 
+    if (event)
       event.preventDefault();
 
     // Setting type in relationship
@@ -192,7 +192,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
   }
 
   resetQuickAdd(): void {
-    this.validTitle = false;    
+    this.validTitle = false;
     this.createWorkItemObj();
     this.showQuickAddBtn = false;
     this.showQuickAdd = true;

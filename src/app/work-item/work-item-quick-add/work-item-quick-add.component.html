@@ -33,9 +33,9 @@
       </div>
     </div>
     <div class="workItemQuickAdd_AddBlk">
-      <button #quickAddSubmit class="pull-left workItemQuickAdd_Add btn btn-primary"
+      <button #quickAddSubmit class="btn btn-primary pull-left workItemQuickAdd_Add "
         (click)="save($event)" [ngClass]="{'icon-btn': validTitle,'disabled':!validTitle}"><i class="fa fa-check"></i></button>
-      <span (click)="toggleQuickAdd()" class="pull-right closeQuickAdd btn btn-default"><i class="pficon-close"></i></span>
+      <span (click)="toggleQuickAdd()" class="btn btn-default pull-right closeQuickAdd"><i class="pficon-close"></i></span>
     </div>
   </div>
 </div>
