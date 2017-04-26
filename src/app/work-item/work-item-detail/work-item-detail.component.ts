@@ -904,7 +904,18 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     return null;
   }
 
+  focusArea() {
+    this.iterationSelectbox.close();
+    this.cancelAssignment();
+  }
+
+  focusIteration() {
+    this.areaSelectbox.close();
+    this.cancelAssignment();
+  }
+
   areaUpdated(areaId: string) {
+
     if (this.workItem.id) {
       let payload = cloneDeep(this.workItemPayload);
       if (areaId) {

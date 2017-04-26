@@ -54,8 +54,8 @@
                 font-size: em(12);
               }
               .multiline-truncation {
-                @include multiline-truncate($line-height: 1.5em, $line-count: 3, $bg-color: $color-pf-white);
-              }
+                  @include multiline-truncate($line-height: 1.5em, $line-count: 3, $bg-color: $color-pf-white);
+               }
               .user-avatar {
                 padding-right: em(5);
               }
@@ -122,8 +122,8 @@
       }
       .card-pf-info {
         min-height: 4.5em;
-        @include multiline-truncate($line-height: 1.5em, $line-count: 3, $bg-color: $color-pf-white);
-      }
+         @include multiline-truncate($line-height: 1.5em, $line-count: 3, $bg-color: $color-pf-white);
+       }
     }
   }
 

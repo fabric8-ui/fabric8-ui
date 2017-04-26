@@ -90,7 +90,6 @@
     -moz-border-style: $borderStyle;
 }
 
-//multiline truncate
 @mixin multiline-truncate($line-height, $line-count, $bg-color) {
     overflow: hidden;
     position: relative;

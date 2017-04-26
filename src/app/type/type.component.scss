@@ -51,7 +51,7 @@
           padding: em(20) 0 em(15) 0;
         }
         .type-description {
-          @include multiline-truncate($line-height: 1.5em, $line-count: 2, $bg-color: $color-pf-white) ;
+          @include multiline-truncate($line-height: 1.5em, $line-count: 2, $bg-color: $color-pf-white);
         }
       }
     }

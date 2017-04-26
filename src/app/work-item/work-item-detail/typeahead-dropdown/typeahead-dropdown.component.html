@@ -1,26 +1,29 @@
-<div class="col-sm-10 typeahead-dropdown pull-left">
+<div class="col-sm-10 typeahead-dropdown combobox-container">
     <div *ngIf="!searchValue" (click)="open()" class="pointer details-dropdown" [ngClass]="getInitialValue().cssLabelClass?getInitialValue().cssLabelClass:''">{{ getInitialValue().value }}</div>
-    <div style="display: flex;">
-      <div *ngIf="searchValue" class="dropdown-search">
-        <div class="list-container">
-          <span class="fa fa-search dropdown-search-icon"> </span>
-          <input id="valueSearchInput" #valueSearch (keyup)="filterValue($event)" autocomplete="off" />
-          <ul class="item-ul dropdown-list" #valueList>
-            <li *ngIf="!values.length" class="textCenter"><div class="spinner spinner-sm"></div></li>
-            <li *ngIf="!filteredValues.length">No matches found.</li>
-            <li class="item-li" *ngFor="let item of filteredValues;" [attr.data-value]="item.key" (click)="showValueOnInput(item)" [id]="item.key">
-                <span [ngClass]="item.cssLabelClass?item.cssLabelClass:''" [innerHTML]="item.value | almSearchHighlight: valueSearch.value"></span>
-            </li>
-          </ul>
-        </div>
+    <div *ngIf="searchValue" class="dropdown-search col-md-6 padding-0">
+      <input type="hidden" name="" value="">
+      <div class="input-group">
+        <input id="valueSearchInput" #valueSearch
+          (keyup)="filterValue($event)" autocomplete="off"
+          class="combobox form-control" />
+        <ul class="item-ul dropdown-list" #valueList>
+          <li *ngIf="!values.length" class="textCenter"><div class="spinner spinner-sm"></div></li>
+          <li *ngIf="!filteredValues.length" class="padding-5">No matches found.</li>
+          <li class="item-li"*ngFor="let item of filteredValues;" [attr.data-value]="item.key" (click)="showValueOnInput(item)" [id]="item.key">
+            <a [ngClass]="item.cssLabelClass?item.cssLabelClass:''" [innerHTML]="item.value | almSearchHighlight: valueSearch.value"></a>
+          </li>
+        </ul>
+        <span class="input-group-addon">
+          <span class="fa fa-search"> </span>
+        </span>
       </div>
-      <div *ngIf="searchValue" class="btn-bar">
-        <button class="btn btn-lg btn-primary save-button" type="button" (click)="setValue()" [disabled]="!filteredValues.length || !selectedValue">
-          <span class="fa fa-check" ></span>
-        </button>
-        <button class="btn btn-lg btn-default cancel-button"  type="button" (click)="close()">
-          <span class="pficon pficon-close"></span>
-        </button>
-      </div>
+    </div>
+    <div *ngIf="searchValue" class="col-md-6">
+      <button class="btn btn-primary save-button detail-action-btn" type="button" (click)="setValue()" [disabled]="!filteredValues.length || !selectedValue">
+        <span class="fa fa-check" ></span>
+      </button>
+      <button class="btn btn-default cancel-button detail-action-btn"  type="button" (click)="close()">
+        <span class="pficon pficon-close"></span>
+      </button>
     </div>
 </div>

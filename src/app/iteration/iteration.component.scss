@@ -93,7 +93,7 @@
           padding: em(20) 0 em(15) 0;
         }
         .iteration-description {
-          @include multiline-truncate($line-height: 1.5em, $line-count: 2, $bg-color: $color-pf-black-700);
+           @include multiline-truncate( $line-height: 1.5em, $line-count: 2, $bg-color: $color-pf-black-700);
 
           &:after, &:before {
             background: transparent !important;

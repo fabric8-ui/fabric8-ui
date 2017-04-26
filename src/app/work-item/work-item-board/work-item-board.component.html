@@ -61,8 +61,10 @@
                         </span>
                       </div>
                       <div class="row-wrapper">
-                        <div class="">
-                          <p class="multiline-truncation">{{ item.attributes['system.title'] }}</p>
+                        <div class="margin-right-15">
+                          <a [routerLink]="['./detail/' + item.id]" [queryParams]="existingQueryParams" >
+                            <p class="multiline-truncation">{{ item.attributes['system.title'] }}</p>
+                          </a>
                         </div>
                         <div class="user-avatar">
                           <img
