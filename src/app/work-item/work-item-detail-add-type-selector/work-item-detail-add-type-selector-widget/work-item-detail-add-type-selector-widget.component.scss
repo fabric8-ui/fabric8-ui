@@ -20,11 +20,11 @@
         justify-content: space-between;
     }
     &.container-cards-pf {
-        .card-pf-title {
+      .card-pf-info {
+        min-height: 4.5em;
+      }
+      .card-pf-title {
           text-transform: capitalize;
-        }
-        .card-pf-info {
-          min-height: 4.5em;
-        }
+      }
     }
 }
