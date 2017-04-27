@@ -110,6 +110,12 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
             });
         })
         .subscribe((comment: Comment) => {
+            if (typeof(this.workItem.relationships.comments.data) === 'undefined') {
+              this.workItem.relationships.comments = Object.assign(
+                this.workItem.relationships.comments,
+                { data: [] }
+              );
+            }
             this.workItem.relationships.comments.data.splice(0, 0, comment);
             this.workItem.relationships.comments.meta.totalCount += 1;
             event.target.textContent = '';
