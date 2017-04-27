@@ -225,6 +225,10 @@ export class AppGeneratorConfigurationService {
         response.payload.state.title = 'Select the pipeline build options ... ';
         break;
       }
+      case 'io.fabric8.forge.generator.github.githubimportpickrepositoriesstep':{
+        response.payload.state.title = 'Select the GitHub repository that you wish to import ...';
+        break;
+      }
       default: {
         break;
       }
