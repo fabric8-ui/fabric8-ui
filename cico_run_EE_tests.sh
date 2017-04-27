@@ -29,9 +29,9 @@ service docker start
 cp /tmp/jenkins-env .
 docker build -t fabric8-ui-builder -f Dockerfile.builder .
 # User root is required to run webdriver-manager update. This shouldn't be a problem for CI containers
-mkdir -p dist && docker run --detach=true --name=fabric8-ui-builder --user=root --cap-add=SYS_ADMIN -e "API_URL=http://api.prod-preview.openshift.io/api/" -e "CI=true" -t -v $(pwd)/dist:/dist:Z fabric8-ui-builder
+mkdir -p dist && docker run --detach=true --name=fabric8-ui-builder --user=root --cap-add=SYS_ADMIN -e "API_URL=http://api.prod-preview.openshift.io/api/" -e "CI=true" -t -v $(pwd)/dist:/dist:Z -v $(pwd)/target:/home/fabric8/fabric8-ui/target:rw fabric8-ui-builder
 
-# Build 
+# Build
 docker exec fabric8-ui-builder npm install
 
 ## Exec EE tests
@@ -39,10 +39,3 @@ docker exec fabric8-ui-builder ./run_EE_tests.sh
 
 ## Test results to archive
 #mkdir target
-
-## Test condition not needed - target dir always created 
-#if (docker exec fabric8-ui-builder test -f /home/fabric8/fabric8-ui/target/screenshots/my-report.html); then docker cp fabric8-ui-builder:/home/fabric8/fabric8-ui/target/ . ; fi
-docker cp fabric8-ui-builder:/home/fabric8/fabric8-ui/target/ .
-
-docker cp fabric8-ui-builder:/home/fabric8/fabric8-ui/functional_tests.log target
-
