@@ -6,7 +6,9 @@ import {
   DropdownConfig,
   DropdownModule,
 } from 'ng2-bootstrap';
-
+import {
+  WidgetsModule
+} from 'ngx-widgets';
 import { ModalModule } from 'ngx-modal';
 import {
   FabPlannerAssociateIterationModalComponent
@@ -17,7 +19,9 @@ import {
     CommonModule,
     DropdownModule,
     FormsModule,
-    ModalModule ],
+    ModalModule,
+    WidgetsModule
+  ],
 
   declarations: [
     FabPlannerAssociateIterationModalComponent

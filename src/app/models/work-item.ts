@@ -51,10 +51,7 @@ export class WorkItemRelations {
     data: User;
   };
   iteration: {
-    data?: {
-      id: string,
-      type: string
-    }
+    data?: IterationModel;
   };
   codebase?: {
     links: {

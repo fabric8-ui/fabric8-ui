@@ -1,4 +1,9 @@
-<modal #iterationAssociationModal title="Associate with Iteration">
+<modal
+  #iterationAssociationModal
+  class="iteration-association-modal"
+  [title]="modalTitle"
+  (onClose)="actionOnClose()"
+  (onOpen)="actionOnOpen()">
   <modal-content>
     <div class="col-md-12 col-sm-12 col-xs-12">
 
@@ -6,37 +11,40 @@
       <div *ngIf="!!workItem.relationships.iteration" id="reassociate-msg">
         <strong>{{ workItem.attributes['system.title'] }}</strong>
         is currently associated with
-        <strong>{{ workItem.relationships.iteration.attributes?.name }}</strong>
+        <strong>
+          {{(workItem.relationships?.iteration?.data?.attributes?.resolved_parent_path +
+             '/' + workItem?.relationships?.iteration?.data?.attributes?.name).replace('//', '/')}}
+        </strong>
       </div>
 
       <!-- Form input to change iteration -->
       <div class="form-group" [class.has-error]="validationError">
 
         <div class="search-pf-input-group">
-          <label>
+          <div>
             {{ !(workItem.relationships.iteration) ? "Associate" : "Reassociate" }}
             <strong>{{ workItem.attributes['system.title'] }}</strong> with
-          </label>
+          </div>
 
-          <div class="dib" dropdown id="iteration-select-dropdown">
-              <button #dropdownButton class="btn btn-default" type="button" dropdownToggle>
-                  {{ workItem.relationships.iteration?.attributes?.name || "Select iteration..." }} <span class="caret"></span>
-              </button>
-              <ul class="test" role="menu" dropdownMenu>
-                <li *ngFor="let iteration of iterations;" role="presentation">
-                  <a role="menuitem" tabindex="-1" (click)="onChangeIteration(iteration)">
-                    {{ iteration.attributes.name }}
-                  </a>
-                </li>
-              </ul>
+          <div class="parent-iteration-container input-group dropdown open active">
+            <input id="parent-iteration" class="form-control " type="text" #iterationSearch (keyup)="filterIteration($event)"
+            autocomplete="off" [value]="selectedIterationName" (focus)="iterationSearchFocus();">
+            <ul class="iteration-list dropdown-menu dropdown-ul" *ngIf="showIterationDropdown" #iterationList>
+              <li *ngIf="!filteredIterations.length" (click)="showIterationDropdown = !showIterationDropdown">No matches found.</li>
+              <li *ngFor="let iteration of filteredIterations;" [attr.data-id]="iteration.key" (click)="associateIteration(iteration);">
+                <span [innerHTML]="(iteration.value) | almSearchHighlight: iterationSearch.value"></span>
+              </li>
+            </ul>
+            <span class="input-group-addon" (click)="iterationSearchFocus();" id="iteration-select-dropdown"> <span class="caret"></span> </span>
           </div>
         </div>
       </div>
 
       <!-- Action buttons to commit/abort -->
       <div class="text-right">
-        <button class="btn" type="submit" id="cancel-iteration-button" (click)="iterationAssociationModal.close()">Cancel</button>
-        <button class="btn btn-primary" type="submit" id="associate-iteration-button" disabled #commitAssociation (click)="assignIteration()">
+        <button class="btn btn-default" type="submit" id="cancel-iteration-button" (click)="iterationAssociationModal.close()">Cancel</button>
+        <button class="btn btn-primary" type="submit" id="associate-iteration-button" #commitAssociation (click)="assignIteration()"
+                [disabled]="!enableAssociateButton">
           {{ !!(workItem.relationships.iteration) ? "Reassociate" : "Associate" }}
         </button>
       </div>
