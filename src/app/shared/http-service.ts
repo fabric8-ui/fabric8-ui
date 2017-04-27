@@ -41,7 +41,7 @@ export class HttpService extends Http {
       this.headers.set('Authorization', `Bearer ${auth.getToken()}`);
     }
     // We are not dealing with cache so random Etag value is sent
-    this.headers.set('If-None-Match', 'somerandomEtagValue');
+    // this.headers.set('If-None-Match', 'somerandomEtagValue');
   }
 
   get(url: string, options = {}) {
