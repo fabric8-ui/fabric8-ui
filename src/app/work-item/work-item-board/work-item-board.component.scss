@@ -48,14 +48,12 @@
             >div {
               p {
                 margin: 0;
+                word-break: break-all;
               }
               .wi-type-icon {
                 padding: em(0) em(6);
                 font-size: em(12);
               }
-              .multiline-truncation {
-                  @include multiline-truncate($line-height: 1.5em, $line-count: 3, $bg-color: $color-pf-white);
-               }
               .user-avatar {
                 padding-right: em(5);
               }
@@ -86,8 +84,12 @@
       height: 100%;
     }
   }
-.side-panel-container {
-  background-color: $color-pf-black-900;
+.side-panel-wrap {
+  min-width: 340px;
+  width: 340px;
+  .side-panel-container {
+    background-color: $color-pf-black-900;
+  }
 }
 .work-item-page {
   display: flex;
@@ -120,10 +122,6 @@
       .card-pf-title {
         text-transform: capitalize;
       }
-      .card-pf-info {
-        min-height: 4.5em;
-         @include multiline-truncate($line-height: 1.5em, $line-count: 3, $bg-color: $color-pf-white);
-       }
     }
   }
 

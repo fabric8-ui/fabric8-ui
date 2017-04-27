@@ -21,11 +21,10 @@
     }
     &.container-cards-pf {
         .card-pf-title {
-            text-transform: capitalize;
+          text-transform: capitalize;
         }
         .card-pf-info {
           min-height: 4.5em;
-          @include multiline-truncate($line-height: 1.5em, $line-count: 3, $bg-color: $color-pf-white);
-      }
+        }
     }
 }

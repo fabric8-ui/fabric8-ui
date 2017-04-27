@@ -12,6 +12,7 @@ import { DragulaModule } from 'ng2-dragula';
 import { DropdownModule } from 'ng2-bootstrap';
 import { TreeModule } from 'angular2-tree-component';
 import { TooltipModule } from 'ng2-bootstrap';
+import { TruncateModule } from 'ng2-truncate';
 import { Broadcaster, Logger } from 'ngx-base';
 import {
   AlmIconModule,
@@ -94,6 +95,7 @@ if (process.env.ENV == 'inmemory') {
     TooltipModule,
     TreeModule,
     TreeListModule,
+    TruncateModule,
     WidgetsModule,
     WorkItemDetailModule,
     WorkItemDetailAddTypeSelectorModule,

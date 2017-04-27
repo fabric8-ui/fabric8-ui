@@ -63,23 +63,21 @@
             border-left: 4px solid $color-pf-blue;
             .iteration-description {
               // &:after {
-                @include multiline-truncate($line-height: 1.5em, $line-count: 2, $bg-color: $color-pf-white);
               // }
             }
           }
         }
 
         .iteration-subheader {
-          -webkit-box-align: center;
-          -ms-flex-align: center;
-          align-items: center;
+          -webkit-box-align: flex-start;
+          -ms-flex-align: flex-start;
+          align-items: flex-start;
 
           .dropdown-kebab-pf{
             margin-left: em(10);
           }
 
           .iteration-name{
-            line-height: 1.5rem;
             width: 100%;
             display: inline-block;
           }
@@ -93,8 +91,6 @@
           padding: em(20) 0 em(15) 0;
         }
         .iteration-description {
-           @include multiline-truncate( $line-height: 1.5em, $line-count: 2, $bg-color: $color-pf-black-700);
-
           &:after, &:before {
             background: transparent !important;
             content: none !important;
@@ -113,7 +109,6 @@
           background-color: $color-pf-black-700;
         }
         .iteration-name{
-            line-height: 1.5rem;
             width: 100%;
             display: inline-block;
           }

@@ -16,6 +16,7 @@ import { IterationComponent } from './iteration.component';
 import { IterationService } from './iteration.service';
 import { ModalModule } from 'ngx-modal';
 import { TooltipModule } from 'ng2-bootstrap';
+import { TruncateModule } from 'ng2-truncate';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { TooltipModule } from 'ng2-bootstrap';
     MyDatePickerModule,
     ModalModule,
     TooltipModule,
+    TruncateModule,
     WidgetsModule,
     RouterModule
   ],

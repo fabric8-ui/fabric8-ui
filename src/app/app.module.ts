@@ -11,6 +11,7 @@ import { TabsModule, TooltipModule } from 'ng2-bootstrap';
 import { Broadcaster, Logger, Notifications } from 'ngx-base';
 import { Spaces } from 'ngx-fabric8-wit';
 import { ModalModule } from 'ngx-modal';
+import { TruncateModule } from 'ng2-truncate';
 import {
   AuthenticationService,
   UserService,
@@ -127,6 +128,7 @@ if (process.env.ENV == 'inmemory') {
     ModalModule,
     TabsModule,
     TooltipModule,
+    TruncateModule,
     PlannerListModule
   ],
   declarations: [

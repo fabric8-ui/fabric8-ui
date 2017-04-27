@@ -23,6 +23,43 @@ body {
     @include truncate;
 }
 
+.left-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-overflow: clip;
+    @extend .posRel;
+    background-color: $color-pf-white;
+    &:before{
+      content: '\02026';
+      position: absolute;
+      z-index: 1;
+      left: -1em;
+      background-color: inherit;
+      padding-left: 1em;
+      margin-left: 6px;
+    }
+    span {
+      min-width: 100%;
+      position: relative;
+      display: inline-block;
+      float: right;
+      overflow: visible;
+      background-color: inherit;
+      text-indent: 0.5em;
+      &:before {
+        content: '';
+        position: absolute;
+        @extend .dib;
+        width: 1.05em;
+        height: 2em;
+        background-color: inherit;
+        z-index: 200;
+        left: -8px;
+      }
+    }
+  }
+
 .truncate-ellipsis {
     display: table;
     table-layout: fixed;

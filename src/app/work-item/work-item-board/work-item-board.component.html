@@ -1,6 +1,6 @@
 <div class="container-fluid work-item-page">
   <main class="row">
-    <aside>
+    <aside class="side-panel-wrap">
       <div class="contents">
         <side-panel
           [iterations]="iterations" class="side-panel-container">
@@ -60,9 +60,9 @@
                         </span>
                       </div>
                       <div class="row-wrapper">
-                        <div class="margin-right-15">
+                        <div class="margin-right-5">
                           <a [routerLink]="['./detail/' + item.id]" [queryParams]="existingQueryParams" >
-                            <p class="multiline-truncation">{{ item.attributes['system.title'] }}</p>
+                            <p>{{ item.attributes['system.title'] | truncate : 87 }}</p>
                           </a>
                         </div>
                         <div class="user-avatar">

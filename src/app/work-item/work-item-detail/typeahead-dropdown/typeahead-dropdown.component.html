@@ -10,7 +10,10 @@
           <li *ngIf="!values.length" class="textCenter"><div class="spinner spinner-sm"></div></li>
           <li *ngIf="!filteredValues.length" class="padding-5">No matches found.</li>
           <li class="item-li"*ngFor="let item of filteredValues;" [attr.data-value]="item.key" (click)="showValueOnInput(item)" [id]="item.key">
-            <a [ngClass]="item.cssLabelClass?item.cssLabelClass:''" [innerHTML]="item.value | almSearchHighlight: valueSearch.value"></a>
+            <a class="left-truncate">
+              <span [ngClass]="item.cssLabelClass?item.cssLabelClass:''" [innerHTML]="item.value | almSearchHighlight: valueSearch.value">
+              </span>
+            </a>
           </li>
         </ul>
         <span class="input-group-addon">

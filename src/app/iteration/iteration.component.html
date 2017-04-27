@@ -11,7 +11,7 @@
         </h3>
       </div>
       <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
-        <li class="active" *ngFor="let iteration of currentIterations" [routerLinkActive]="'selected-iteration'" 
+        <li class="active" *ngFor="let iteration of currentIterations" [routerLinkActive]="'selected-iteration'"
                 [routerLink]="[]"
                 [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}">
           <div class="iteration-subheader flex-container">
@@ -19,11 +19,12 @@
                 <strong class="iteration-name truncate"
                   tooltip="{{iteration.attributes.name}}"
                   placement="top">
-                  {{iteration.attributes.name}}
+                  {{iteration.attributes.name | truncate : 45 }}
                 </strong>
               <div class="parent-iteration">
-                <span>
-                  {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}
+                <span tooltip="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
+                  placement="top">
+                  {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | truncate : -50 }}
                 </span>
               </div>
             </div>
@@ -54,8 +55,8 @@
               </ul>
             </div>
           </div>
-          <div class="iteration-status display-flex">
-            <div class="flex-1">
+          <div class="iteration-status">
+            <div>
               <span><span *ngIf="iteration.attributes.startAt">{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}</span>&nbsp;</span>
               <span class="iteration-count">
                 <strong>
@@ -100,17 +101,19 @@
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedFutureIteration">
-        <li class="iteration-subheader flex-container" *ngFor="let iteration of futureIterations" [routerLinkActive]="'selected-iteration'" 
+        <li class="iteration-subheader flex-container" *ngFor="let iteration of futureIterations" [routerLinkActive]="'selected-iteration'"
                 [routerLink]="[]"
                 [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}">
             <div class="flex-grow-1 truncate">
               <strong class="iteration-name truncate"
                 tooltip="{{iteration.attributes.name}}"
                 placement="top">
-                {{iteration.attributes.name}}
+                {{iteration.attributes.name | truncate : 35}}
               </strong>
               <div class="parent-iteration">
-                <span>{{(iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/')}}</span>
+                <span tooltip="{{ (iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/') }}"
+                  placement="top">
+                {{(iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/') | truncate : -35 }}</span>
               </div>
             </div>
             <div>
@@ -157,17 +160,18 @@
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedPastIteration">
-        <li class="iteration-subheader flex-container" *ngFor="let iteration of closedIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}" 
+        <li class="iteration-subheader flex-container" *ngFor="let iteration of closedIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}"
             [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" >
           <div class="truncate flex-grow-1">
             <strong class="iteration-name truncate"
               tooltip="{{iteration.attributes.name}}"
               placement="top">
-              {{iteration.attributes.name}}
+              {{iteration.attributes.name | truncate : 40 }}
             </strong>
             <div class="parent-iteration">
-              <span>
-                {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}}
+              <span tooltip="{{ iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
+                placement="top">
+                {{ iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | truncate : -35 }}
               </span>
             </div>
           </div>
