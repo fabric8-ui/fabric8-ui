@@ -201,10 +201,11 @@ export type StoreType = {
     OAuthConfigStoreGuard,
     PipelinesService,
     ProfileService,
+    SpacesService,
     SpaceService,
     {
       provide: Spaces,
-      useClass: SpacesService
+      useExisting: SpacesService
     },
     SpaceNamespaceService,
     {

@@ -14,6 +14,7 @@ export class SpacesService implements Spaces {
   static readonly RECENT_SPACE_LENGTH = 8;
   private static readonly RECENT_SPACE_KEY = 'recentSpaceIds';
 
+  addRecent: Subject<Space> = new Subject<Space>();
   private _current: Observable<Space>;
   private _recent: ConnectableObservable<Space[]>;
 
@@ -29,11 +30,10 @@ export class SpacesService implements Spaces {
         .map(val => val.space),
       this.broadcaster.on<Space>('spaceUpdated'));
     // Create the recent context list
-    let addRecent: Subject<Space> = new Subject<Space>();
 
     this._recent = Observable.merge(
       this.broadcaster.on<Space>('spaceChanged'),
-      addRecent)
+      this.addRecent)
       // Map from the context being added to an array of recent contexts
       // The scan operator allows us to access the list of recent contexts and add ours
       .scan((recent, s) => {
@@ -65,7 +65,7 @@ export class SpacesService implements Spaces {
       })
       .multicast(() => new ReplaySubject(1));
     this._recent.connect();
-    this.loadRecent().subscribe(val => val.forEach(space => addRecent.next(space)));
+    this.loadRecent().subscribe(val => val.forEach(space => this.addRecent.next(space)));
   }
 
   get current(): Observable<Space> {

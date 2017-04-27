@@ -1,3 +1,4 @@
+import { SpacesService } from './../shared/spaces.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -26,8 +27,8 @@ import { AppGeneratorConfigurationService } from './services/app-generator.servi
   },
   selector: 'space-wizard',
   templateUrl: './space-wizard.component.html',
-  styleUrls: [ './space-wizard.component.scss' ],
-  providers: [ SpaceService ]
+  styleUrls: ['./space-wizard.component.scss'],
+  providers: [SpaceService]
 })
 export class SpaceWizardComponent implements OnInit {
 
@@ -62,7 +63,7 @@ export class SpaceWizardComponent implements OnInit {
   private _workflow: IWorkflow = null;
   @Input()
   get workflow(): IWorkflow {
-    if ( !this._workflow ) {
+    if (!this._workflow) {
       this._workflow = this.workflowFactory.create();
     }
     return this._workflow;
@@ -82,9 +83,11 @@ export class SpaceWizardComponent implements OnInit {
     loggerFactory: LoggerFactory,
     private spaceNamespaceService: SpaceNamespaceService,
     private spaceNamePipe: SpaceNamePipe,
-    private _appGeneratorConfigurationService: AppGeneratorConfigurationService ) {
+    private _appGeneratorConfigurationService: AppGeneratorConfigurationService,
+    private spacesService: SpacesService
+  ) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, SpaceWizardComponent.instanceCount++);
-    if ( logger ) {
+    if (logger) {
       this.log = logger;
     }
     this.log(`New instance ...`);
@@ -116,18 +119,18 @@ export class SpaceWizardComponent implements OnInit {
           index: 0
         };
       },
-      cancel: (... args) => {
-       /*
-        * Ensure 'finish' has the correct 'this'.
-        * That is why apply is being used.
-        */
+      cancel: (...args) => {
+        /*
+         * Ensure 'finish' has the correct 'this'.
+         * That is why apply is being used.
+         */
         component.cancel.apply(component, args);
       },
-      finish: (... args) => {
-       /*
-        * Ensure 'finish' has the correct 'this'.
-        * That is why apply is being used.
-        */
+      finish: (...args) => {
+        /*
+         * Ensure 'finish' has the correct 'this'.
+         * That is why apply is being used.
+         */
         component.finish.apply(component, args);
       }
     });
@@ -144,47 +147,51 @@ export class SpaceWizardComponent implements OnInit {
     console.log('Creating space', space);
     space.attributes.name = space.name.replace(/ /g, '_');
     this.userService.getUser()
-    .switchMap(user => {
-      space.relationships[ 'owned-by' ].data.id = user.id;
-      return this.spaceService.create(space);
-    })
-    .switchMap(createdSpace => {
-      return this.spaceNamespaceService
-      .updateConfigMap(Observable.of(createdSpace))
-      .map(() => createdSpace)
-      // Ignore any errors coming out here, we've logged and notified them earlier
-      .catch(err => Observable.of(createdSpace));
-    })
-    .subscribe(createdSpace => {
-      this.configurator.space = createdSpace;
-      this._appGeneratorConfigurationService.currentSpace = createdSpace;
-      let actionObservable = this.notifications.message({
-        message: `Your new space is created!`,
-        type: NotificationType.SUCCESS,
-        primaryAction: {
-          name: `Open Space`,
-          title: `Open ${this.spaceNamePipe.transform(createdSpace.attributes.name)}`,
-          id: 'openSpace'
-        } as NotificationAction
-      } as Notification);
-      actionObservable
-        .filter(action => action.id === 'openSpace')
-        .subscribe(action => {
-          this.router.navigate([ createdSpace.relationalData.creator.attributes.username,
-                                 createdSpace.attributes.name ]);
-          if ( this.host ) {
-            this.host.close();
-            this.reset();
-          }
-        });
+      .switchMap(user => {
+        space.relationships['owned-by'].data.id = user.id;
+        return this.spaceService.create(space);
+      })
+      .do(createdSpace => {
+        this.spacesService.addRecent.next(createdSpace)
+      })
+      .switchMap(createdSpace => {
+        return this.spaceNamespaceService
+          .updateConfigMap(Observable.of(createdSpace))
+          .map(() => createdSpace)
+          // Ignore any errors coming out here, we've logged and notified them earlier
+          .catch(err => Observable.of(createdSpace));
+      })
+      .subscribe(createdSpace => {
+        this.configurator.space = createdSpace;
+        this._appGeneratorConfigurationService.currentSpace = createdSpace;
+        let actionObservable = this.notifications.message({
+          message: `Your new space is created!`,
+          type: NotificationType.SUCCESS,
+          primaryAction: {
+            name: `Open Space`,
+            title: `Open ${this.spaceNamePipe.transform(createdSpace.attributes.name)}`,
+            id: 'openSpace'
+          } as NotificationAction
+        } as Notification);
+        actionObservable
+          .filter(action => action.id === 'openSpace')
+          .subscribe(action => {
+            this.router.navigate([createdSpace.relationalData.creator.attributes.username,
+            createdSpace.attributes.name]);
+            if (this.host) {
+              this.host.close();
+              this.reset();
+            }
+          });
         this.workflow.gotoNextStep();
       },
       err => {
+        console.log('Error creating space', err);
         this.notifications.message({
           message: `Failed to create "${space.name}"`,
           type: NotificationType.DANGER
         } as Notification);
-        if ( this.host ) {
+        if (this.host) {
           this.host.close();
           this.reset();
         }
@@ -203,17 +210,17 @@ export class SpaceWizardComponent implements OnInit {
   finish() {
     this.log(`finish ...`);
     this.router.navigate([
-                           this.configurator.space.relationalData.creator.attributes.username,
-                           this.configurator.space.attributes.name
-                         ]);
-    if ( this.host ) {
+      this.configurator.space.relationalData.creator.attributes.username,
+      this.configurator.space.attributes.name
+    ]);
+    if (this.host) {
       this.host.close();
     }
   }
 
   cancel() {
     this.log(`cancel...`);
-    if ( this.host ) {
+    if (this.host) {
       this.host.close();
     }
   }
@@ -233,7 +240,7 @@ export class SpaceWizardComponent implements OnInit {
      * perform initialization and settings adjustments.
      */
     let originalOpenHandler = this.host.open;
-    this.host.open = function(... args) {
+    this.host.open = function (...args) {
       me.log(`Opening wizard modal dialog ...`);
       me.reset();
       /**
@@ -243,7 +250,7 @@ export class SpaceWizardComponent implements OnInit {
       return originalOpenHandler.apply(this, args);
     };
     let originalCloseHandler = this.host.close;
-    this.host.close = function(... args) {
+    this.host.close = function (...args) {
       me.log(`Closing wizard modal dialog ...`);
       /**
        * note: 'this' is not me ... but an instance of Modal.
@@ -257,7 +264,7 @@ export class SpaceWizardComponent implements OnInit {
    * used to add a log entry to the logger
    * The default one shown here does nothing.
    */
-  log: ILoggerDelegate = () => {};
+  log: ILoggerDelegate = () => { };
 
 }
 
