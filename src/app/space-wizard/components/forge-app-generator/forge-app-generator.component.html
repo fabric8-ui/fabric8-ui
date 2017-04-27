@@ -70,7 +70,7 @@
                   [required]="forge.fields[i].display.required" [disabled]="forge.fields[i].display.enabled===false" >
               </div>
 
-              <div class="combobox-container" *ngSwitchCase="'singleSelection'">
+              <div class="combobox-container" *ngSwitchCase="'singleSelectionDropdown'">
                 <input type="hidden" name value>
                 <div [class.width-100]="forge.fields[i].display.enabled===false" class="input-group">
                   <input type="text" [class.form-control-danger]="!forge.fields[i].display.valid" id="{{forge.fields[i].name}}" name="{{forge.fields[i].name}}" class="user-select-none" readonly="true"  (change)="forge.validate()" [disabled]="forge.fields[i].display.enabled===false"  (click)="forge.fields[i].display.open =!forge.fields[i].display.open"  [(ngModel)]="forge.fields[i].display.text" name="{{forge.fields[i].name}}" placeholder="select an option" class="combobox form-control"   >
@@ -95,6 +95,27 @@
                     <span class="caret"></span>
                     <span class="glyphicon glyphicon-remove"></span>
                   </span>
+                </div>
+              </div>
+              <div class="single-selection-list-container" *ngSwitchCase="'singleSelectionList'">
+                <div class="input-group width-100">
+                  <ul class="choice-menu" style="list-style:none;margin:0;padding:0"   >
+                    <li style="display:flex;" class="choice-container"  (click)="forge.fields[i].display.text=choice.name;forge.fields[i].display.note=choice.description;forge.fields[i].value=choice.id;forge.fields[i].display.open=false;forge.validate();"  *ngFor="let choice of forge.fields[i].display.choices">
+                      <input style="width:auto;" [checked]="forge.fields[i].value === choice.id" [value]="choice.id" type="radio"  name="{{forge.fields[i].name}}" class="user-select-none" readonly="false"  [disabled]="forge.fields[i].display.enabled===false"  class="form-control margin-right-standard-offset"   >
+                      <div style="display:inline-block;flex-grow:1"  [class.selected]="forge.fields[i].value === choice.id" class=" user-select-none cursor-pointer" >
+                        <div  [class.vertical-layout]="choice.verticalLayout===true" [class.selected]="forge.fields[i].value === choice.id" class="choice-item">
+                          <div *ngIf="choice.hasIcon===true" class="choice-icon margin-right-standard-offset">
+                            <div [ngClass]="[choice.icon]"  ></div>
+                          </div>
+                          <div class="choice-content"  >
+                            <div class="item-name" >{{choice.name}}</div>
+                            <div *ngIf="choice.description" class="item-description" >{{choice.description||''}}</div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
 

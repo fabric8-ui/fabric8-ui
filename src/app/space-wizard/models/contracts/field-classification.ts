@@ -1,8 +1,10 @@
-export type FieldWidgetClassification = 'singleSelection' | 'multipleSelection' | 'singleInput';
+export type FieldWidgetClassification = 'singleSelectionDropdown' | 'singleSelectionList' | 'multipleSelection' | 'singleInput';
 
 export class FieldWidgetClassificationOptions {
   //noinspection TsLint
-  static SingleSelection: FieldWidgetClassification = 'singleSelection';
+  static SingleSelectionDropdown: FieldWidgetClassification = 'singleSelectionDropdown';
+  //noinspection TsLint
+  static SingleSelectionList: FieldWidgetClassification = 'singleSelectionList';
   //noinspection TsLint
   static MultipleSelection: FieldWidgetClassification = 'multipleSelection';
   //noinspection TsLint

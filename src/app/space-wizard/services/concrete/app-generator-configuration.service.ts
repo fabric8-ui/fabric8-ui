@@ -158,6 +158,8 @@ export class AppGeneratorConfigurationService {
           break;
         }
         case 'pipeline' : {
+          field.display.note = null;
+          field.display.inputType = FieldWidgetClassificationOptions.SingleSelectionList
           this.augmentPipelineChoices(field , context, execution);
           break;
         }
@@ -267,6 +269,7 @@ export class AppGeneratorConfigurationService {
       choice.default = false;
       choice.hasIcon = true;
       choice.verticalLayout = true;
+      choice.note=null;
       choice.icon='icon-pipeline icon-pipeline-release';
       switch (choice.id.toLowerCase()) {
         case 'release': {
@@ -274,21 +277,21 @@ export class AppGeneratorConfigurationService {
           choice.index = 0;
           choice.default = true;
           choice.name = 'Release';
-          choice.description = 'A release continuous delivery pipeline strategy.';
+          choice.description = null;// 'A release continuous delivery pipeline strategy.';
           break;
         }
         case 'release and stage': {
           choice.index = 1;
           choice.icon='icon-pipeline icon-pipeline-release-stage';
           choice.name = 'Release and Stage';
-          choice.description = 'A release and stage continuous delivery pipeline strategy.';
+          choice.description = null;//'A release and stage continuous delivery pipeline strategy.';
           break;
         }
         case 'release, stage, approve and promote': {
           choice.index = 2;
           choice.icon='icon-pipeline icon-pipeline-release-stage-approve-promote';
           choice.name = 'Release, Stage, Approve and Promote';
-          choice.description = 'A release, stage, approve, promote continuous delivery pipeline strategy.';
+          choice.description = null;// 'A release, stage, approve, promote continuous delivery pipeline strategy.';
           break;
         }
         default: {

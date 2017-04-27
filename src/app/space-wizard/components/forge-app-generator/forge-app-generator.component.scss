@@ -237,6 +237,7 @@ header{
     div.choice-content
     {
       flex-grow:1;
+      padding:5px;
       //border:solid 1px orange;
     }
     &.vertical-layout{
@@ -246,6 +247,9 @@ header{
         width:100%;
         // border:solid 1px red;
       }
+    }
+    &.selected{
+      border:solid 1px $color-pf-black-200;
     }
   }
 }

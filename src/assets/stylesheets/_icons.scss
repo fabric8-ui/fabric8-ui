@@ -2,7 +2,7 @@
 {
   margin:0;
   padding:0;
-  min-height:90px;
+  min-height:100px;
   min-width:250px;
   background-repeat: no-repeat;
   background-size:cover;
@@ -14,6 +14,8 @@
   {
     background-image: url("#{$icon-path}pipeline-release.png");
     background-size: 100%;
+    height:auto;
+    width:290px;
 
   }
   &.icon-pipeline-release-stage
