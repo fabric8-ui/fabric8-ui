@@ -631,6 +631,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         [this.router.url.split('/detail/')[0]],
         {queryParams: queryParams}
       );
+      this.broadcaster.broadcast('detail_close')
     }, 400);
   }
 
