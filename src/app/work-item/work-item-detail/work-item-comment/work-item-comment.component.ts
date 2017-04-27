@@ -45,11 +45,11 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
     ngOnInit() {
         this.currentUser = this.userService.getSavedLoggedInUser();
         this.createCommentObject();
+        this.resolveComments();
     }
 
     ngAfterViewInit() {
         let commentbox = document.querySelector("#wi-comment-add-comment") as HTMLParagraphElement;
-
         if (!!commentbox) {
             commentbox.textContent = commentbox.dataset['placeholder'];
             commentbox.blur();
@@ -57,11 +57,11 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-      this.resolveComments();
+
     }
 
     resolveComments() {
-      Observable.forkJoin(
+      Observable.combineLatest(
         this.collaboratorService.getCollaborators(),
         this.workItemService.resolveComments(this.workItem.relationships.comments.links.related)
       )
