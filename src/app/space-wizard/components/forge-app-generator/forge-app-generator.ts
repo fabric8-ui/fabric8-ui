@@ -27,7 +27,6 @@ export class ForgeAppGenerator {
   public processing: Boolean = false;
   public hasError: Boolean;
   public error: IAppGeneratorError;
-  public errorClassification: string = 'information';
   public hasResult: Boolean;
   public result: IAppGeneratorMessage;
   public hasMessage: Boolean;
@@ -286,6 +285,7 @@ public execute() {
               this.log(`Execute response for command ${cmdInfo}.`, response , console.groupEnd);
 
               this.applyTheExecuteCommandResponse({request, response});
+              this.state.title = 'Application Generator Results';
               resolve({request, response});
               this.clearMessage();
             }, (error) => {
@@ -402,7 +402,7 @@ public execute() {
         }
       }
       this.result = {
-        title: `A starter application was successfully created.`,
+        title: `A starter application was created.`,
         body: this.formatConsoleText(`\n`, `${msg}`)
       } as IAppGeneratorMessage;
       this.hasResult = true;
@@ -466,16 +466,18 @@ public execute() {
 
   private handleError(error): Observable<any> {
     this.log({ message: error.message, inner: error.inner, error: true });
-    this.errorClassification = 'error';
+    this.state.title = 'Application Generator Error';
     this.hasError = true;
     this.error = {
       title: `Something went wrong while attempting to perform this operation ...`,
       message: [
-        `<div class='wizard-status-failed' ><strong>${error.name}</strong></div>`,
-        `<div class='wizard-status-failed' ><strong>${error.message || 'No details available.'}</strong></div>`,
+        `<div class='message-status-failed' ><strong>${error.name}</strong></div>`,
+        `<div class='message-status-failed' ><strong>${error.message || 'No details available.'}</strong></div>`,
         `<div class='message-details' >${this.formatJson(this.filterObjectProperties(error.inner))}</div>`
         ].join('')
     } as IAppGeneratorError;
+    this.error.message=this.error.message.replace(/SUCCESS/g,'<span class="message-status-success" ><strong>SUCCESS</strong></span>')
+    this.error.message=this.error.message.replace(/FAILED/g,'<span class="message-status-failed" ><strong>FAILED</strong></span>')
     return Observable.empty();
   }
 

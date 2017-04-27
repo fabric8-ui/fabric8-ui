@@ -26,21 +26,27 @@
       </div>
     </div>
   </section>
-  <section [class.hide]="!forge.hasError" class="app-generator-message container-fluid padding-top-standard-offset">
-    <div class="message-title-container">
-      <h2 class="message-title user-select-none">
-        <span class="pficon pficon-error-circle-o"></span><span>{{forge.error.title||''}}</span>
-      </h2>
-    </div>
-    <div class="message-body-container">
-      <div [innerHTML]="forge.error.message" class="message-body">
+<section [class.hide]="!forge.hasError" class="app-generator-message container-fluid padding-top-standard-offset">
+  <div class="message-title-container padding-standard-offset margin-bottom-standard-offset color-error color-border color-background-light">
+    <div class="message-title user-select-none">
+      <span class="color-error fa-2x color-text pficon pficon-error-circle-o"></span>
+      <span><strong>Error! </strong> </span>
+      <span >{{forge.error.title||''}}</span>
+   </div>
+  </div>
+  <div class="message-body-container">
+    <div [innerHTML]="forge.error.message" class="message-body">
 
-      </div>
     </div>
-  </section>
+  </div>
+</section>
   <section [class.hide]="!forge.hasResult" class="app-generator-message container-fluid padding-top-standard-offset">
-    <div class="message-title-container">
-      <h2 class="message-title"><span class="pficon pficon-ok"></span><span>{{forge.result.title||''}}</span></h2>
+    <div class="message-title-container padding-standard-offset margin-bottom-standard-offset color-success color-border color-background-light">
+      <div class="message-title  user-select-none">
+        <span class="color-success fa-2x color-text pficon pficon-ok"></span>
+        <span><strong>Success! </strong> </span>
+        <span >{{forge.result.title||''}}</span>
+     </div>
     </div>
     <div class="message-body-container">
       <div [innerHTML]="forge.result.body" class="message-body">
