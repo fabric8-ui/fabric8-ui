@@ -59,9 +59,11 @@ describe('Work item list', function () {
         detailPage.clickworkItemDetailUnassignButton();
         expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
         detailPage.clickWorkItemDetailCloseButton();
-        page.clickWorkItemKebabButton(page.firstWorkItem);
-        page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
-        browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');
+
+        //Commented Due to Delete is temporarily not supported
+        // page.clickWorkItemKebabButton(page.firstWorkItem);
+        // page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
+        // browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');
 
         /* The attempt to delete the workitem shoudl be blocked by the UI
            but this is not implemented in the UI -  see issue:
