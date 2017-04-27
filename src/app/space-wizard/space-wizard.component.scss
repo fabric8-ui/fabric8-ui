@@ -23,6 +23,11 @@ $wizard-layout-block-shadow-color: darken($navbar-default-bg, 10%);
 //noinspection SassScssUnresolvedVariable,SassScssUnresolvedVariable
 $wizard-block-header-color: $color-pf-white;
 
+.process-description {
+  color: $color-pf-black-500;
+  padding-bottom: 50px;
+}
+
 .wizard-step {
   section {
     &.layout-block-container {
