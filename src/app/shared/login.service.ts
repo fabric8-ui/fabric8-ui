@@ -65,7 +65,7 @@ export class LoginService {
 
   public logout() {
     this.authService.logout();
-    window.location.href = this.apiUrl + '/logout?redirect=' + window.location.origin;
+    window.location.href = this.apiUrl + 'logout?redirect=' + encodeURIComponent(window.location.origin);
   }
 
   public login() {
