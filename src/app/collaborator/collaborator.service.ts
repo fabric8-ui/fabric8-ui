@@ -17,10 +17,6 @@ export class CollaboratorService {
 
   getCollaborators(): Observable<User[]> {
     return this.spaces.current.switchMap((space) => {
-      // This if section is temporary
-      if (space.attributes.name === 'system.space') {
-        return this.userService.getAllUsers();
-      }
       // FIXME: https://github.com/fabric8-ui/ngx-fabric8-wit/issues/82
       return this.http.get(space.links.self + '/collaborators')
         .map(resp => resp.json().data as User[]);

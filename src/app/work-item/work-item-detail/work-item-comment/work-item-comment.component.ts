@@ -14,6 +14,7 @@ import {
 import { Comment, CommentAttributes } from '../../../models/comment';
 import { WorkItem } from '../../../models/work-item';
 import { WorkItemService } from '../../work-item.service';
+import { CollaboratorService } from './../../../collaborator/collaborator.service';
 
 @Component({
     selector: 'alm-work-item-comment',
@@ -36,6 +37,7 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
         private workItemService: WorkItemService,
         private router: Router,
         private userService: UserService,
+        private collaboratorService: CollaboratorService,
         http: Http
     ) {
     }
@@ -60,7 +62,7 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
 
     resolveComments() {
       Observable.forkJoin(
-        this.userService.getAllUsers(),
+        this.collaboratorService.getCollaborators(),
         this.workItemService.resolveComments(this.workItem.relationships.comments.links.related)
       )
       .subscribe(
@@ -100,7 +102,7 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
       this.workItemService
         .createComment(this.workItem.relationships.comments.links.related, this.comment)
         .switchMap((comment: Comment) => {
-          return this.userService.getAllUsers()
+          return this.collaboratorService.getCollaborators()
             .map((users) => {
               comment.relationships['created-by'].data =
                 users.find(user => user.id === comment.relationships['created-by'].data.id);

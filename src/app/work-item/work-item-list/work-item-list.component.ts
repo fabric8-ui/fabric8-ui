@@ -42,6 +42,7 @@ import { WorkItem } from '../../models/work-item';
 import { WorkItemType }               from '../../models/work-item-type';
 import { WorkItemListEntryComponent } from './work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService }            from '../work-item.service';
+import { CollaboratorService } from './../../collaborator/collaborator.service';
 
 import { TreeListComponent } from 'ngx-widgets';
 
@@ -109,6 +110,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
   constructor(
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
+    private collaboratorService: CollaboratorService,
     private router: Router,
     private user: UserService,
     private workItemService: WorkItemService,
@@ -185,7 +187,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
     }
     this.wiSubscriber = Observable.combineLatest(
       this.iterationService.getIterations(),
-      this.userService.getAllUsers(),
+      this.collaboratorService.getCollaborators(),
       this.workItemService.getWorkItemTypes(),
       this.areaService.getAreas(),
       this.userService.getUser().catch(err => Observable.of({})),
@@ -226,7 +228,7 @@ export class WorkItemListComponent implements OnInit, AfterViewInit, DoCheck, On
         // we want to display the hierarchy, so filter out all items that are childs (have no parent)
         // to do this, we need to append a filter: /spaces/{id}/workitems?filter[parentexists]=false
         appliedFilters.push({ paramKey: 'filter[parentexists]', value: 'false' });
-      } 
+      }
       this.logger.log('Requesting work items with filters: ' + JSON.stringify(appliedFilters));
       return Observable.forkJoin(
         Observable.of(items[0]),
