@@ -20,7 +20,7 @@
             </span>
             <span class="caret"></span>
           </button>
-          <ul *ngIf="loggedIn" id="wi-board-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" dropdownMenu>
+          <ul id="wi-board-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" dropdownMenu>
             <li class="dropdown-li" *ngFor="let type of wiTypes;" (click)="onChangeBoardType(type)">
               <a>
                 <span class='dropdown-icon fa {{type?.attributes?.icon}}'></span>
