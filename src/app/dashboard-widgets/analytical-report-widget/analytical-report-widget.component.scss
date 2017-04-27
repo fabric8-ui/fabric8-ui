@@ -6,43 +6,13 @@
           transform: translate($x, $y);
 }
 
+.fifty-shades-of-grey {
+  color: $color-pf-black-500;
+}
+
 .card-pf-body {
     &.analytical-report-body {
         position: relative;
-        .fabric8-stack-analysis {
-            position: relative;
-            .recommender-overlay {
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: rgba(255, 255, 255, 0.5);
-                z-index: 99;
-            }
-            .recommendation-list {
-                .list-view-pf-main-info {
-                    margin-bottom: 0;
-                    margin-top: 0;
-                    padding-bottom: 0;
-                    padding-top: 0;
-                    &.no-recommendations {
-                        background: $color-pf-black-100;
-                        padding: 10px;
-                        border: 1px solid $color-pf-black-150;
-                    }
-                }
-                &.list-group-item {
-                    padding: 10px;
-                    .list-view-pf-left {
-                        padding-right: 10px;
-                        .pficon {
-                            font-size: 15px;
-                        }
-                    }
-                }
-            }
-        }
         .pipelines-absent {
             width: 50%;
             margin: 0 auto;
@@ -54,22 +24,7 @@
                 margin: 0 0 40px 0;
             }
         }
-        .margin-fix {
-            margin: 10px 0;
-        }
-        .always-at-bottom {
-            position: absolute;
-            bottom: 20px;
-            left: 30px;
-
-            .bottom-container {
-                position: relative;
-                .analysis-time {
-                    right: 10px;
-                    position: absolute;
-                    bottom: 0;
-                }
-            }
-        }
     }
 }
+
+

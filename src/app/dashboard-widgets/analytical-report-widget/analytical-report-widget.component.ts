@@ -27,7 +27,7 @@ export class AnalyticalReportWidgetComponent implements OnInit, OnDestroy {
   buildConfigs: Observable<BuildConfigs>;
   buildConfigsCount: Observable<number>;
 
-  currentPipeline: BuildConfig;
+  currentPipeline: string;
   currentPipelineBuilds: Array<Build>;
 
   pipelines: BuildConfigs;
@@ -60,6 +60,14 @@ export class AnalyticalReportWidgetComponent implements OnInit, OnDestroy {
     this.buildConfigs.subscribe((data) => {
       this.pipelines = data;
     });
+    // Locate the first pipeline
+    this.buildConfigs
+    .filter(val => val.length > 0)
+    .first()
+    .subscribe(val => {
+      this.currentPipeline = val[0].id;
+      this.selectedPipeline();
+    });
     let returnStatement: boolean = false;
     /*this.buildConfigs = this.buildConfigs.map(buildConfs => buildConfs.filter((builds) => {
       returnStatement = false;
@@ -83,7 +91,7 @@ export class AnalyticalReportWidgetComponent implements OnInit, OnDestroy {
   }
 
   selectedPipeline(): void {
-    let pipeline: BuildConfig = this.currentPipeline;
+    let pipeline: BuildConfig = this.pipelines.find(val => val.id === this.currentPipeline);
     this.currentPipelineBuilds = pipeline.interestingBuilds;
     this.currentBuild = null;
     for (let build of this.currentPipelineBuilds) {
