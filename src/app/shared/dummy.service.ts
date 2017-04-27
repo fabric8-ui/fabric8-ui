@@ -104,10 +104,24 @@ export class DummyService {
   ]);
 
   readonly PROCESS_TEMPLATES: ProcessTemplate[] = [
-    { name: 'Agile', description: 'Lorem ipsum' },
-    { name: 'Scrum', description: 'Scrum is Scrum' },
-    { name: 'Issue Tracking', description: 'How boring' },
-    { name: 'Scenario Driven Planning', description: 'We love Todd' }
+    {
+      name: 'Agile',
+      description: `Agile is self-organizing cross-functional teams, that focus on planning, evolutionary development, 
+      early delivery, and continuous improvement.`
+    },
+    {
+      name: 'Scrum',
+      description: `Scrum is an iterative and incremental agile software development framework for managing product development.`
+    },
+    {
+      name: 'Issue Tracking',
+      description: `An Issue Tracker manages and maintains lists of issues.`
+    },
+    {
+      name: 'Scenario Driven Planning',
+      description: `Scenario-driven planning is a new management technology for strategy design that employs computed or 
+      "strategic" scenarios to improve the quality of managerial thinking.`
+    }
   ];
 
   constructor(
