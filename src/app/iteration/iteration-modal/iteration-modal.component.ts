@@ -316,6 +316,8 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
         if (lis[i].getAttribute('data-id') !== null) {
           let item = this.iterationsValue.find((iteration) => iteration.key === lis[i].getAttribute('data-id'));
           this.setParentIteration(item);
+        } else {
+          this.showIterationDropdown = false;
         }
       }
     } else {

@@ -27,7 +27,7 @@
             <input id="parent-iteration" class="form-control " type="text" #iterationSearch (keyup)="filterIteration($event)"
             autocomplete="off" [value]="selectedParentIterationName" (focus)="iterationSearchFocus();" [disabled]="iterationSearchDisable">
             <ul class="iteration-list dropdown-menu dropdown-ul" *ngIf="showIterationDropdown" #iterationList>
-              <li *ngIf="!filteredIterations.length">No matches found.</li>
+              <li *ngIf="!filteredIterations.length" (click)="showIterationDropdown = !showIterationDropdown">No matches found.</li>
               <li *ngFor="let iteration of filteredIterations;" id='{{iteration.key}}'  [attr.data-id]="iteration.key" (click)="setParentIteration(iteration);">
                 <span [innerHTML]="(iteration.value) | almSearchHighlight: iterationSearch.value"></span>
               </li>
