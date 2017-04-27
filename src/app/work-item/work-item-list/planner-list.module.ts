@@ -21,7 +21,6 @@ import {
 import { Broadcaster, Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 
-import { AuthUserResolve, UsersResolve } from '../common.resolver';
 import { GlobalSettings } from '../../shared/globals';
 import {
   FabPlannerAssociateIterationModalModule
@@ -43,9 +42,7 @@ let providers = [];
 
 if (process.env.ENV == 'inmemory') {
   providers = [
-    AuthUserResolve,
     GlobalSettings,
-    UsersResolve,
     WorkItemService,
     Broadcaster,
     Logger,
@@ -56,9 +53,7 @@ if (process.env.ENV == 'inmemory') {
   ];
 } else {
   providers = [
-    AuthUserResolve,
     GlobalSettings,
-    UsersResolve,
     WorkItemService,
     Broadcaster,
     Logger,

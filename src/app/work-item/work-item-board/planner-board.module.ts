@@ -26,7 +26,6 @@ import { AuthenticationService } from 'ngx-login-client';
 import { HttpService } from './../../shared/http-service';
 
 import { AlmFilterBoardList } from '../../pipes/alm-board-filter.pipe';
-import { AuthUserResolve, UsersResolve } from '../common.resolver';
 import {
   FabPlannerAssociateIterationModalModule
 } from '../work-item-iteration-association-modal/work-item-iteration-association-modal.module';
@@ -47,9 +46,7 @@ let providers = [];
 
 if (process.env.ENV == 'inmemory') {
   providers = [
-    AuthUserResolve,
     GlobalSettings,
-    UsersResolve,
     WorkItemService,
     Broadcaster,
     Logger,
@@ -60,9 +57,7 @@ if (process.env.ENV == 'inmemory') {
   ];
 } else {
   providers = [
-    AuthUserResolve,
     GlobalSettings,
-    UsersResolve,
     WorkItemService,
     Broadcaster,
     Logger,
