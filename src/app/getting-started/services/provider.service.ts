@@ -17,7 +17,7 @@ export class ProviderService {
   }
 
   /**
-   * Link an OpenShit.com account to the user account
+   * Link an OpenShift.com account to the user account
    *
    * @param redirect URL to be redirected to after successful account linking
    */
@@ -35,7 +35,7 @@ export class ProviderService {
   }
 
   /**
-   * Link an OpenShit.com account to the user account
+   * Link an OpenShift.com account to the user account
    *
    * @param redirect URL to be redirected to after successful account linking
    */
