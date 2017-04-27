@@ -158,6 +158,7 @@ export class AppGeneratorConfigurationService {
           break;
         }
         case 'pipeline' : {
+          field.display.showLabel = false;
           field.display.note = null;
           field.display.inputType = FieldWidgetClassificationOptions.SingleSelectionList
           this.augmentPipelineChoices(field , context, execution);

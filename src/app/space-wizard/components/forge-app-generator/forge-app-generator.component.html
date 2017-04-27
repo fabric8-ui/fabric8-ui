@@ -59,8 +59,8 @@
       <div class="col-xs-12">
         <div class="form-horizontal">
           <div [class.has-danger]="!forge.fields[i].display.valid" class="form-group" *ngFor="let field of forge.fields; let i=index; trackBy:trackByFn">
-            <label [class.required]="forge.fields[i].display.required===true" for="{{forge.fields[i].name}}" class="user-select-none control-label col-xs-4">{{field.display.label}}</label>
-            <div class="col-xs-8" [ngSwitch]="forge.fields[i].display.inputType ">
+            <label [class.required]="forge.fields[i].display.required===true" for="{{forge.fields[i].name}}" *ngIf="field.display.showLabel!==false" [class.col-xs-4]="field.display.showLabel!==false" class="user-select-none control-label">{{field.display.label}}</label>
+            <div  [class.col-xs-8]="field.display.showLabel!==false" [class.col-xs-12]="field.display.showLabel===false"  [ngSwitch]="forge.fields[i].display.inputType ">
               <div *ngSwitchCase="'singleInput'" [ngSwitch]="forge.fields[i].valueType">
                 <input *ngSwitchCase="'string'" id="{{forge.fields[i].name}}" name="{{forge.fields[i].name}}" (change)="forge.validate()" (keyup.enter)="forge.validate()" [(ngModel)]="forge.fields[i].value"
                   type="text" [class.form-control-danger]="!forge.fields[i].display.valid"  class="form-control"  placeholder="{{forge.fields[i].description}}" [disabled]="forge.fields[i].display.enabled===false" [required]="forge.fields[i].display.required"  />

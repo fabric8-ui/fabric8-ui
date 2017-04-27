@@ -22,12 +22,16 @@
   {
     background-image: url("#{$icon-path}pipeline-release-stage.png");
     background-size: 100%;
+    height:auto;
+    width:500px;
   }
 
   &.icon-pipeline-release-stage-approve-promote
   {
     background-size: 100%;
     background-image: url("#{$icon-path}pipeline-release-stage-approve-promote.png");
+    height:auto;
+    width:700px;
   }
 
 }
