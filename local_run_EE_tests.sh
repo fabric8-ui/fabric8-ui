@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 LOGFILE=$(pwd)/functional_tests.log
-echo Using logfile $LOGFILE
+echo Using logfile $LOGFILE 
 
 # Download dependencies
 echo -n Updating Webdriver and Selenium...
@@ -30,3 +30,5 @@ fi
 # Cleanup webdriver-manager and web app processes
 fuser -k -n tcp 4444
 fuser -k -n tcp 8088
+
+

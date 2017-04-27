@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-LOGFILE=$(pwd)/target/functional_tests.log
+LOGFILE=$(pwd)/functional_tests.log
 echo Using logfile $LOGFILE
 
 # For the functional tests, we are mocking the core
@@ -34,3 +34,4 @@ else
   echo 'Functional tests FAIL'
   exit 1
 fi
+
