@@ -50,11 +50,6 @@
             >div {
               p {
                 margin: 0;
-<<<<<<< HEAD
-                word-break: break-all;
-=======
-                word-break: all;
->>>>>>> fix(board): update board with UX fixes
               }
               .wi-type-icon {
                 padding: em(0) em(6);
@@ -89,13 +84,9 @@
       height: 100%;
     }
   }
-<<<<<<< HEAD
-.side-panel-wrap {
-=======
 }
 .side-panel-wrap {
   background-color: $color-pf-black-900;
->>>>>>> fix(board): update board with UX fixes
   min-width: 340px;
   width: 340px;
   .side-panel-container {
