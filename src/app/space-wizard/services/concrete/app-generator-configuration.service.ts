@@ -265,24 +265,30 @@ export class AppGeneratorConfigurationService {
     // augment display properties
     for ( let choice of <Array<IFieldChoice>>field.display.choices ) {
       choice.default = false;
+      choice.hasIcon = true;
+      choice.verticalLayout = true;
+      choice.icon='icon-pipeline icon-pipeline-release';
       switch (choice.id.toLowerCase()) {
-        case 'canaryrelease': {
+        case 'release': {
+          choice.icon='icon-pipeline icon-pipeline-release';
           choice.index = 0;
           choice.default = true;
-          choice.name = 'Canary Release';
-          choice.description = 'A canary - release continuous delivery pipeline strategy.';
+          choice.name = 'Release';
+          choice.description = 'A release continuous delivery pipeline strategy.';
           break;
         }
-        case 'canaryreleaseandstage': {
+        case 'release and stage': {
           choice.index = 1;
-          choice.name = 'Canary Release and Stage';
-          choice.description = 'A canary - stage - release continuous delivery pipeline strategy.';
+          choice.icon='icon-pipeline icon-pipeline-release-stage';
+          choice.name = 'Release and Stage';
+          choice.description = 'A release and stage continuous delivery pipeline strategy.';
           break;
         }
-        case 'canaryreleasestageandapprovepromote': {
+        case 'release, stage, approve and promote': {
           choice.index = 2;
-          choice.name = 'Canary Release and Stage with Approvals';
-          choice.description = 'A canary - stage - release - approval - promote continuous delivery pipeline strategy.';
+          choice.icon='icon-pipeline icon-pipeline-release-stage-approve-promote';
+          choice.name = 'Release, Stage, Approve and Promote';
+          choice.description = 'A release, stage, approve, promote continuous delivery pipeline strategy.';
           break;
         }
         default: {
@@ -302,69 +308,93 @@ export class AppGeneratorConfigurationService {
   private augmentStackChoices( field: IField , context: string, execution: IAppGeneratorPair ) {
       field.display.label = 'Technology Stack';
       for ( let choice of <Array<IFieldChoice>>field.display.choices ) {
+        choice.hasIcon=false;
         switch ( choice.id.toLowerCase() ) {
           case 'configmaps - wildfly swarm': {
             choice.index = 10;
+            choice.hasIcon=true;
+            choice.icon='icon-stack icon-stack-wildfly';
             choice.name = 'WildFly Swarm - ConfigMap';
             choice.description = 'Adds externalised environment configuration to WildFly Swarm - Basic';
             break;
           }
           case 'http api - wildfly swarm': {
             choice.index = 8;
+            choice.hasIcon=true;
+            choice.icon='icon-stack icon-stack-wildfly';
             choice.name = 'WildFly Swarm - Basic';
             choice.description = 'Standalone Java EE application that exposes a simple HTTP endpoint';
             break;
           }
           case 'http crud - wildfly swarm': {
             choice.index = 9;
+            choice.hasIcon=true;
+            choice.icon='icon-stack  icon-stack-wildfly';
             choice.name = 'WildFly Swarm - CRUD';
             choice.description = 'Adds Create, Update and Delete to WildFly Swarm - Basic';
             break;
           }
           case 'health checks - wildfly swarm': {
             choice.index = 11;
+            choice.hasIcon=true;
+            choice.icon='icon-stack icon-stack-wildfly';
             choice.name = 'WildFly Swarm - Health Check';
             choice.description = 'Adds health checks to WildFly Swarm - Basic';
             break;
           }
           case 'spring boot - crud': {
             choice.index = 5;
+            choice.hasIcon=true;
+            choice.icon='icon-stack icon-stack-spring';
             choice.name = 'Spring Boot - CRUD';
             choice.description = 'Adds Create, Update and Delete to Spring Boot - Basic';
             break;
           }
           case 'spring boot - configmap': {
             choice.index = 6;
+            choice.hasIcon=true;
+            choice.icon='icon-stack icon-stack-spring';
             choice.name = 'Spring Boot - ConfigMap';
             choice.description = 'Adds externalised environment configuration to Spring Boot - Basic';
             break;
           }
           case 'spring boot - http': {
             choice.index = 4;
+            choice.hasIcon=true;
+            choice.icon='icon-stack icon-stack-spring';
             choice.name = 'Spring Boot - Basic';
             choice.description = 'Standalone Spring application that exposes a simple HTTP endpoint';
             break;
           }
           case 'spring boot health check example': {
             choice.index = 7;
+            choice.hasIcon=true;
+            choice.icon='icon-stack icon-stack-spring';
             choice.name = 'Spring Boot - Health Check';
             choice.description = 'Adds health checks to Spring Boot - Basic';
             break;
           }
           case 'vert.x - http & config map': {
             choice.index = 3;
+            choice.hasIcon=true;
+            choice.icon='icon-stack icon-stack-vertx';
             choice.name = 'Vert.x - ConfigMap';
             choice.description = 'Adds externalised environment configuration to Vert.x - Basic';
             break;
           }
           case 'vert.x crud example using jdbc': {
             choice.index = 2;
+            choice.hasIcon=true;
+            choice.icon='icon-stack icon-stack-vertx';
             choice.name = 'Vert.x - CRUD';
             choice.description = 'Adds Create, Update and Delete to Vert.x - Basic';
             break;
           }
           case 'vert.x http booster': {
             choice.index = 1;
+            choice.hasIcon=true;
+            // choice.verticalLayout=true;
+            choice.icon='icon-stack icon-stack-vertx';
             choice.name = 'Vert.x - Basic';
             choice.default = true;
             choice.description = 'Standalone reactive application in Java that exposes a simple HTTP endpoint';

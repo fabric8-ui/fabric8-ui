@@ -2,18 +2,39 @@
 {
   margin:0;
   padding:0;
-  height:100px;
-  min-width:200px;
+  min-height:90px;
+  min-width:250px;
   background-repeat: no-repeat;
   background-size:cover;
-  background-position-x: 0;
+  background-position-x:0px;
+  background-position-y:0px;
+  margin-top:10px;
+
+  &.icon-pipeline-release
+  {
+    background-image: url("#{$icon-path}pipeline-release.png");
+    background-size: 100%;
+
+  }
+  &.icon-pipeline-release-stage
+  {
+    background-image: url("#{$icon-path}pipeline-release-stage.png");
+    background-size: 100%;
+  }
+
+  &.icon-pipeline-release-stage-approve-promote
+  {
+    background-size: 100%;
+    background-image: url("#{$icon-path}pipeline-release-stage-approve-promote.png");
+  }
+
 }
 .icon-stack
 {
   margin:0;
   padding:0;
-  height:42px;
-  width:42px;
+  height:100px;
+  width:100px;
   //min-width: 42px;
   background-repeat: no-repeat;
   background-size:cover;
@@ -53,7 +74,9 @@
 
   &.icon-stack-spring
   {
+    background-size: 100%;
     background-image: url("#{$icon-path}icon-stack-spring.png");
+    background-position-x: 3px;
   }
 
   &.icon-stack-swift
@@ -64,15 +87,17 @@
   &.icon-stack-vertx
   {
     background-image: url("#{$icon-path}icon-stack-vertx.png");
-    background-size: 120%;
-    background-position-x: -5px;
-    background-position-y: 10px;
+    background-size: 100%;
+    background-position-x: 0;
+    background-position-y: 0;
 
   }
 
   &.icon-stack-wildfly
   {
+    background-size: 100%;
     background-image: url("#{$icon-path}icon-stack-wildfly.png");
+    background-position-x: 3px;
   }
   &.icon-stack-funktion
   {

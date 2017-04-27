@@ -1,4 +1,7 @@
+$icon-path:'../../../../assets/icon/';
 @import '../../../../assets/stylesheets/base';
+@import '../../../../assets/stylesheets/_icons';
+
 
 @keyframes select-item {
   from {
@@ -148,7 +151,7 @@ header{
         vertical-align: center !important;
       }
       h1,h2,h3 {
-        margin:0
+        margin:0;
       }
     }
 
@@ -183,6 +186,8 @@ header{
      border-top:solid 1px transparent;
      border-bottom:solid 1px transparent;
      padding-bottom:1.0rem;
+
+
     .item-name{
        font-weight: 600;
     }
@@ -215,9 +220,36 @@ header{
 
     }
 
+  }
 
+}
+.choice-container {
+  // border: solid 1px lime;
+  .choice-item
+  {
+    display:flex;
+    flex-direction:row ;
+    div.choice-icon
+    {
+      background-color:white !important;
+      // border:solid 1px red;
+    }
+    div.choice-content
+    {
+      flex-grow:1;
+      //border:solid 1px orange;
+    }
+    &.vertical-layout{
+      flex-direction:column-reverse;
+      div.choice-icon
+      {
+        width:100%;
+        // border:solid 1px red;
+      }
+    }
   }
 }
+
 .color-info
 {
    color:$color-pf-blue-400;
