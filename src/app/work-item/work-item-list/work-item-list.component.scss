@@ -116,7 +116,7 @@
             border: solid 0px red;
             position: relative;
             align-items: stretch;
-
+            overflow-x: hidden!important;
             .alm-blank-slate {
                 width: 90%;
                 display: block;
@@ -178,7 +178,7 @@
                 //@extend .fill-container;
                 flex: 1;
                 display: flex;
-                overflow: auto;
+                overflow-x: hidden;
                 align-items: stretch;
             }
         }

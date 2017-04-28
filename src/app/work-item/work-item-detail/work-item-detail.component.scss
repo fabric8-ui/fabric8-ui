@@ -3,14 +3,15 @@
 //detail panel
 .detail-panel {
   background: $color-pf-white;
-  position: fixed;
+  position: absolute;
   left: auto;
-  top: 80px;
+  top: 0;
   right: 0;
   bottom: 0;
-  width: 50%;
+  width: 60%;
   min-width: em(250);
   border-left: 1px solid darken($color-pf-white, 20%);
+  z-index: initial;
   overflow-y: scroll;
   overflow-x: hidden;
   box-shadow: -4px 0px 2px -2px $color-pf-black-300;
