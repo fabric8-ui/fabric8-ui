@@ -22,46 +22,74 @@
           (onSelect)="handleSelect($event)"
           (onSelectionChange)="handleSelectionChange($event)">
         <ng-template #itemTemplate let-item="item" let-index="index">
-          <div class="list-view-pf-left">
-            <span class="fa fa-plane list-view-pf-icon-sm"></span>
-          </div>
-          <div class="list-view-pf-body">
-            <div class="list-view-pf-description">
-              <div class="list-group-item-heading">
-                <span class="list-group-heading" *ngIf="index === 0">NAME</span>
-                {{item.name}}
+          <div *ngIf="index === 0; then showHeader else showCol"></div>
+          <ng-template #showHeader>
+            <div class="list-view-pf-left">
+              <!-- Extra padding for icon -->
+              <span class="margin-right-30"></span>
+            </div>
+            <div class="list-view-pf-body">
+              <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                  <span class="list-group-heading">{{item.name}}</span>
+                </div>
+                <div class="list-group-item-text">
+                  <span class="list-group-heading">{{item.address}}</span>
+                </div>
               </div>
-              <div class="list-group-item-text">
-                <span class="list-group-heading" *ngIf="index === 0">ADDRESS</span>
-                {{item.address}}
+              <div class="list-view-pf-additional-info">
+                <div class="list-view-pf-additional-info-item">
+                  <span class="list-group-heading">{{item.additionalInfo}}
+                    <i class="pficon pficon-info" tooltip="Additional info"></i>
+                  </span>
+                </div>
               </div>
             </div>
-            <div class="list-view-pf-additional-info">
-              <div class="list-view-pf-additional-info-item">
-                <span class="list-group-heading" *ngIf="index === 0">ADDITOINAL INFO</span>
-                <span class="pficon pficon-screen"></span>
-                <strong>8</strong> Hosts
+          </ng-template>
+          <ng-template #showCol>
+            <div class="list-view-pf-left">
+              <span class="fa fa-plane list-view-pf-icon-sm"></span>
+            </div>
+            <div class="list-view-pf-body">
+              <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                  {{item.name}}
+                </div>
+                <div class="list-group-item-text">
+                  {{item.address}}
+                </div>
               </div>
-              <div class="list-view-pf-additional-info-item">
-                <span class="pficon pficon-cluster"></span>
-                <strong>6</strong> Clusters
-              </div>
-              <div class="list-view-pf-additional-info-item">
-                <span class="pficon pficon-container-node"></span>
-                <strong>10</strong> Nodes
-              </div>
-              <div class="list-view-pf-additional-info-item">
-                <span class="pficon pficon-image"></span>
-                <strong>8</strong> Images
+              <div class="list-view-pf-additional-info">
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-screen"></span>
+                  <strong>8</strong> Hosts
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-cluster"></span>
+                  <strong>6</strong> Clusters
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-container-node"></span>
+                  <strong>10</strong> Nodes
+                </div>
+                <div class="list-view-pf-additional-info-item">
+                  <span class="pficon pficon-image"></span>
+                  <strong>8</strong> Images
+                </div>
               </div>
             </div>
-          </div>
+          </ng-template>
         </ng-template>
         <ng-template #actionTemplate let-item="item" let-index="index">
-          <span class="list-group-heading" *ngIf="index === 0">ACTIONS</span>
-          <button class="btn btn-default"
-                  (click)="handleInlineAction($event, 'Action button')">Action</button>
-          <span class="dropdown-kebab-pf dropdown" dropdown>
+          <div *ngIf="index === 0; then showHeader else showCol"></div>
+          <ng-template #showHeader>
+            <!-- Extra padding for button -->
+            <span class="list-group-heading margin-right-50">{{item.actions}}</span>
+          </ng-template>
+          <ng-template #showCol>
+            <button class="btn btn-default"
+                    (click)="handleInlineAction($event, 'Action button')">Action</button>
+            <span class="dropdown-kebab-pf dropdown" dropdown>
             <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
               <span class="fa fa-ellipsis-v"></span>
             </button>
@@ -93,6 +121,7 @@
               </li>
             </ul>
           </span>
+          </ng-template>
         </ng-template>
         <ng-template #itemExpandedTemplate let-item="item" let-index="index">
           <div class="row">

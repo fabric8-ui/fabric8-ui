@@ -47,6 +47,12 @@ export class ListViewExampleComponent implements OnInit {
 
   ngOnInit(): void {
     this.allItems = [{
+      // First array item can be empty for row header
+      name: "NAME",
+      actions: "ACTIONS",
+      additionalInfo: "ADDITOINAL INFO",
+      address: "ADDRESS"
+    },{
       name: "Fred Flintstone",
       address: "20 Dinosaur Way",
       city: "Bedrock",
@@ -177,6 +183,7 @@ export class ListViewExampleComponent implements OnInit {
       dblClick: false,
       dragEnabled: false,
       emptyStateConfig: this.emptyStateConfig,
+      headingRow: true,
       multiSelect: false,
       selectItems: false,
       selectionMatchProp: 'name',

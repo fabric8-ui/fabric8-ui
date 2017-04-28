@@ -1,6 +1,6 @@
 import { NgModule }  from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DropdownModule } from 'ng2-bootstrap';
+import { DropdownModule, TooltipModule } from 'ng2-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
 
@@ -16,7 +16,8 @@ import { ListViewExampleRoutingModule } from './listview-example-routing.module'
     FormsModule,
     HttpModule,
     ListViewExampleRoutingModule,
-    ListViewModule
+    ListViewModule,
+    TooltipModule
   ]
 })
 export class ListViewExampleModule {
