@@ -1,7 +1,7 @@
 import { Component, Input, Output, ViewChild, OnInit, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 
 import { Logger } from 'ngx-base';
 
@@ -37,6 +37,7 @@ export class TypeaheadDropdown implements OnInit, OnChanges {
   @ViewChild('valueSearch') protected valueSearch: any;
   @ViewChild('valueList') protected valueList: any;
 
+  protected proxyValues: TypeaheadDropdownValue[] = [];
   protected filteredValues: TypeaheadDropdownValue[] = [];
   protected selectedValue: TypeaheadDropdownValue;
   protected searchValue: boolean = false;
@@ -45,23 +46,24 @@ export class TypeaheadDropdown implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.sortValuesByLength(this.values);
-    this.filteredValues = cloneDeep(this.values);
+    this.proxyValues = cloneDeep(this.values);
+    this.sortValuesByLength(this.proxyValues);
+    this.filteredValues = cloneDeep(this.proxyValues);
   }
 
   protected sortValuesByLength(list: TypeaheadDropdownValue[]) {
-    list.sort(function(a, b) {
+    this.proxyValues.sort(function(a, b) {
       return a.value.length - b.value.length || // sort by length, if equal then
          a.value.localeCompare(b.value);    // sort by dictionary order
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.values && JSON.stringify(changes.values.currentValue) !== JSON.stringify(changes.values.previousValue)) {
+    if (changes.values && !isEqual(changes.values.currentValue, changes.values.previousValue)) {
       this.logger.log('Typeahead Dropdown values changed.');
-      this.values = changes.values.currentValue;
-      this.sortValuesByLength(this.values);
-      this.filteredValues = cloneDeep(this.values);
+      this.proxyValues = cloneDeep(this.values);
+      this.sortValuesByLength(this.proxyValues);
+      this.filteredValues = cloneDeep(this.proxyValues);
     } else if (changes.noValueLabel) {
       this.noValueLabel = changes.noValueLabel.currentValue;
     }
@@ -87,9 +89,9 @@ export class TypeaheadDropdown implements OnInit, OnChanges {
   }
 
   protected getInitialValue() {
-    for (let i=0; i<this.values.length; i++)
-      if (this.values[i].selected)
-        return this.values[i];
+    for (let i=0; i<this.proxyValues.length; i++)
+      if (this.proxyValues[i].selected)
+        return this.proxyValues[i];
     // this only happens if there was no
     // "selected" value in the list
     return {
@@ -100,7 +102,7 @@ export class TypeaheadDropdown implements OnInit, OnChanges {
     };
   }
 
-  // on clicking the area drop down option, the selected
+  // on clicking the drop down option, the selected
   // value needs to get displayed in the input box.
   protected showValueOnInput(value: TypeaheadDropdownValue): void {
     this.valueSearch.nativeElement.value = value.value;
@@ -161,7 +163,7 @@ export class TypeaheadDropdown implements OnInit, OnChanges {
       }
     } else {
       let inp = this.valueSearch.nativeElement.value.trim();
-      this.filteredValues = this.values.filter((item) => {
+      this.filteredValues = this.proxyValues.filter((item) => {
          return item.value.toLowerCase().indexOf(inp.toLowerCase()) > -1;
       });
       this.sortValuesByLength(this.filteredValues);
