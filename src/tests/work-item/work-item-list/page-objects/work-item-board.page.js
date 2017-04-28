@@ -123,6 +123,9 @@ class WorkItemBoardPage {
   getByLinkText(text){
     return element(by.linkText(text)).click();
   }
+  getBoardById(text){
+    return element(by.id(text)).click();
+  }
   
 }
 

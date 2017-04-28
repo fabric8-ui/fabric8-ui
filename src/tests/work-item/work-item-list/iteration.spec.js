@@ -133,7 +133,7 @@ it('create a child Iteration', function() {
       page.searchParentIteration("iteration 1",false);
       page.selectParentIterationById("1");
       page.clickCreateIteration();
-      expect(page.linkTextSearch("child Iteration").isPresent()).toBe(true);  
+      expect(page.IterationsById("child Iteration").isPresent()).toBe(true);  
   });
   
  it('start / close a child Iteration', function() {
@@ -141,19 +141,19 @@ it('create a child Iteration', function() {
       page.clickIterationKebab("1");
       page.clickStartIterationKebab();
       page.clickCreateIteration();
-      expect(page.linkTextSearch("Iteration 0").isPresent()).toBe(true);  
+      expect(page.IterationsById("Iteration 0").isPresent()).toBe(true);  
       page.clickIterationKebab("1");
       page.clickCloseIterationKebab();
       page.clickCreateIteration();
       page.clickExpandPastIterationIcon();
-      expect(page.linkTextSearch("Iteration 0").isPresent()).toBe(true);  
+      expect(page.IterationsById("Iteration 0").isPresent()).toBe(true);  
   });
 it('Edit child Iteration', function() {
       page.clickExpandFutureIterationIcon();
       page.clickIterationKebab("1");
       page.clickStartIterationKebab();
       page.clickCreateIteration();
-      expect(page.linkTextSearch("Iteration 0").isPresent()).toBe(true);  
+      expect(page.IterationsById("Iteration 0").isPresent()).toBe(true);  
 
       //Edit
       page.clickIterationKebab("1");
@@ -166,7 +166,7 @@ it('Edit child Iteration', function() {
       page.clickCloseIterationKebab();
       page.clickCreateIteration();
       page.clickExpandPastIterationIcon();
-      expect(page.linkTextSearch("Iteration 0").isPresent()).toBe(true);  
+      expect(page.IterationsById("Iteration 0").isPresent()).toBe(true);  
   });
 
   /* Verify iteration displays the correct workitem totals as workitems transition new->closed */

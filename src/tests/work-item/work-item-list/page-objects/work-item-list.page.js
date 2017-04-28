@@ -178,6 +178,12 @@ class WorkItemListPage {
     return element(by.id('parent-iteration'));
   }
  
+  clickIterationById(text){
+    return element(by.id(text)).click();
+  }
+  IterationsById(text){
+    return element(by.id(text));
+  }
   clickParentIterationDropDown(){
     return this.parentIterationDropDown().click();
   }
