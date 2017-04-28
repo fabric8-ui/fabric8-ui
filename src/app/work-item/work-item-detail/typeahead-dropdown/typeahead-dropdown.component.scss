@@ -2,12 +2,15 @@
 
 .typeahead-dropdown {
   padding-left: 0;
+  .pointer {
+    &:hover {
+      cursor: pointer;
+    }
+  }
   .neutral-entry {
-    font-style: italic !important;
     color: $color-pf-blue;
   }
   .no-value-label {
-    font-style: italic !important;
     color: $color-pf-blue;
   }
   .details-dropdown {

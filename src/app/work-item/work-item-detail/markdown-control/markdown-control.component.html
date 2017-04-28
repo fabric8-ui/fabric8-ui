@@ -1,6 +1,9 @@
 <div class="form-group">
-  <div class="col-md-12 col-sm-12 col-xs-12 detail-text-wrap" #detailWrapper [class.show-less]="!markdownViewExpanded">
-    <div class="col-md-12 col-sm-12 col-xs-12 detail-text" #detailText *ngIf="loggedIn">
+  <label class="col-sm-2 control-label" id="area_label">
+    Description
+  </label>
+  <div class="col-sm-10 detail-text-wrap" #detailWrapper [class.show-less]="!markdownViewExpanded">
+    <div class="col-sm-12 detail-text" #detailText *ngIf="loggedIn">
       <div class="text-switcher">
         <ul class="nav nav-tabs">
           <li *ngIf="loggedIn && tabBarVisible" (click)="onClickMarkdownTab()" [ngClass]="{'active': textViewType === 'markdown'}">
@@ -51,7 +54,7 @@
       [innerHTML]="renderedText">
     </div>
   </div>
-  <div class="col-md-12 col-sm-12 col-xs-12 detail-text-action">
+  <div class="col-sm-10 col-sm-offset-2 detail-text-action">
       <span class="col-md-4">
         <small *ngIf="loggedIn && tabBarVisible">
           <img src="../../../../../assets/img/markdown-solid.png" class="markdown-mark" />
@@ -63,12 +66,12 @@
         class="btn btn-link show-more-state col-md-4"></span>
       <span class="col-md-4" [class.col-md-8]="!showMore">
         <div *ngIf="loggedIn && tabBarVisible"
-            class="fl btn btn-default btn-cancel pull-right detail-action-btn markdown-test-btn-save"
+            class="fl btn btn-default btn-cancel pull-right detail-action-btn markdown-test-btn-cancel"
             (click)="onClickCancelIcon()">
             <span class="fa fa-close"></span>
         </div>
         <div *ngIf="loggedIn && tabBarVisible"
-            class="fl btn btn-primary pull-right detail-action-btn markdown-test-btn-cancel"
+            class="fl btn btn-primary pull-right detail-action-btn markdown-test-btn-save"
             (click)="onClickSaveIcon()">
             <span class="fa fa-check"></span>
         </div>

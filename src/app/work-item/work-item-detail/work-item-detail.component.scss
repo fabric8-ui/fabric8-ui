@@ -10,8 +10,6 @@
   bottom: 0;
   width: 50%;
   min-width: em(250);
-  // z-index: 0;
-  padding: em(20) 0 em(20) em(40);
   border-left: 1px solid darken($color-pf-white, 20%);
   overflow-y: scroll;
   overflow-x: hidden;
@@ -21,14 +19,19 @@
   label {
     font-weight: 400;
   }
-  .form-group {
-    margin-bottom: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
 }
 .detail-container {
-  width: $width100;
+  width: 100%;
+  .detail-panel-header {
+    background-color: $color-pf-black-200;
+    border-bottom: 1px solid $color-pf-black-300;
+    height: 145px;
+    padding-left: 10px;
+    padding-top: 20px;
+  }
+  .top-bar {
+    margin-bottom: 0;
+  }
   .user-avatar {
     cursor: pointer;
     margin-right: em(6);
@@ -52,8 +55,6 @@
     color: $color-pf-black-500;
   }
   .detail-type-dropdown {
-    position: relative;
-    margin-left: -50px;
     .saving-title {
       padding-left: 0.6em;
       font-size: 16px;
@@ -62,14 +63,14 @@
   }
   .detail-id {
     font-weight: 700;
-    margin:0;
-    padding-left: .6em;
-    line-height: 1 !important;
-    font-size: $pf-icon-2x;
+    margin: 0;
+    margin-left: 5px;
+    display: inline-block;
   }
   .detail-created-date {
     text-align: right;
     float: right;
+    margin-right: 10px;
   }
   .detail-close {
     float: right;
@@ -78,25 +79,35 @@
     font-size: em(18);
   }
   .wi-detail-title-blk{
-    padding: em(20) em(0) 0;
-    margin-left: -10px;
     .detail-title {
+      font-weight: 500;
       max-width: calc(100% - 25px);
-      margin:0;
       line-height: 1.5;
-      padding-left: 7px;
       border: 1px solid transparent;
-      margin-bottom: 31px;
+      padding-left: 2px;
     }
     .detail-title-edit-ico {
       line-height: 2;
       cursor: pointer;
     }
+    .edit-title-alignment {
+      display: inline-flex;
+    }
     .detail-title-edit {
-      margin: 0;
+      background-color: $color-pf-white;
+      font-weight: 500;
       line-height: 1.5;
-      padding-left: 7px;
-      border: 1px solid $color-pf-black-400;
+      padding-left: 2px;
+      border: 1px solid $color-pf-blue-400;
+      width: 550px;
+      resize: none;
+      height: 35px;
+      overflow: hidden;
+    }
+    .title-error {
+      position: absolute;
+      top: 55px;
+      color: $color-pf-red;
     }
     aside{
       padding: em(5) 0 0;
@@ -114,7 +125,8 @@
     }
     &:hover {
       background-clip: content-box;
-      border-color: $color-pf-black-400;
+      border-color: $color-pf-blue-400;
+      cursor: pointer;
       .detail-title-edit-ico {
         display: block;
       }
@@ -159,66 +171,96 @@
     }
   }
 
-  .detail-assignee-wrap {
-    .user-label{
-      margin-right: em(15);
-    }
-    .user-assign-icon {
-      padding: em(3);
-      color: $color-pf-black-500;
-      border: 1px dashed $color-pf-black;
-      cursor: pointer;
-      margin-right: em(6);
-    }
-    .user-assign-avatar {
-      cursor: pointer;
-      margin-right: em(6);
-      height: em(20);
-      width: em(20);
-    }
-    .active {
-      color: $color-pf-black;
-      padding: em(5);
-      border-style: solid;
-    }
-    .detail-assignee-name{
-      .placeholder {
-        font-style: italic;
-        color: $color-pf-black-400;
+  .item-action-block {
+    margin-left: 30px;
+    margin-top: 30px;
+    .detail-assignee-wrap {
+      height: 30px;
+      .control-label {
+        font-weight: 700;
+        text-align: left;
+      }
+      .user-label{
+        margin-right: em(15);
+      }
+      .user-assign-icon {
+        padding: em(3);
+        color: $color-pf-black-500;
+        border: 1px dashed $color-pf-black;
+        cursor: pointer;
+        margin-right: em(6);
+      }
+      .user-assign-avatar {
+        cursor: pointer;
+        margin-right: em(6);
+        height: em(20);
+        width: em(20);
+      }
+      .active {
+        color: $color-pf-black;
+        padding: em(5);
+        border-style: solid;
+      }
+      .detail-assignee-name{
+        .placeholder {
+          color: $color-pf-blue-400;
+          &:hover {
+            cursor: pointer;
+          }
+        }
       }
     }
-  }
-
-  .detail-iteration-wrap {
-    .iteration-label {
-      margin-right: em(16);
+    .detail-creator-wrap, .detail-assignee-wrap, .detail-area-wrap {
+      height: 30px;
+      .control-label {
+        font-weight: 700;
+        text-align: left;
+      }
+      [noValueLabel="none"] {
+        color: $color-pf-blue-400;
+      }
+    }
+    .detail-iteration-wrap {
+      height: 30px;
+      .control-label {
+        font-weight: 700;
+        text-align: left;
+      }
+      .iteration-label {
+        margin-right: em(16);
+      }
+    }
+    /**
+      This is for 'start coding' button
+    **/
+    .start-coding {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 30px;
+    }
+    .work-item-section {
+      margin-left: -47px;
     }
   }
-  /**
-    This is for 'start coding' button
-  **/
-  .start-coding {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0 30px;
-  }
-  .work-item-section {
-    margin-left: -47px;
+  .dynamic-fields-wrap, .description-fields-wrap, .start-coding-wrap {
+    margin-left: 30px;
+    .control-label {
+      font-weight: 700;
+      text-align: left;
+    }
   }
 }
-/* Commenting type drop down related tests for issue 635
-.wi-type-icon {
-  cursor: pointer;
-}*/
-
 .user-search {
   position: relative;
   .list-container{
+    margin-top: -5px;
     position: absolute;
     min-width: em(200);
     z-index: 10;
-    background-color: $color-pf-black-100;
+    background-color: $color-pf-white;
     border: 1px solid $color-pf-black-500;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    border-radius: 1px;
     .user-search-icon {
       position: absolute;
       line-height: em(30);
@@ -229,10 +271,11 @@
 
     input {
       outline: none;
-      width: $width100;
+      width: 100%;
       height: em(30);
       border: none;
-      border-bottom: 1px solid $color-pf-black-500;
+      border-bottom: 1px solid $color-pf-blue-400;
+      box-shadow: 0 0px 6px $color-pf-blue-400;
       padding-left: em(20);
     }
 
@@ -285,7 +328,7 @@
 @media (max-width: $grid-float-breakpoint){
   /*Toggle the details panel's width and left margin*/
   .detail-container {
-    .mobile-bar {
+    .top-bar {
       background-color:$color-pf-black;
       color: $color-pf-white;
       padding: em(10) em(20);
@@ -330,6 +373,8 @@
 
 .detail-action-btn {
   @include detail-action-btn;
+  height: 35px;
+  margin-top: 20px;
 }
 .none-assigned {
   color: $color-pf-blue;
