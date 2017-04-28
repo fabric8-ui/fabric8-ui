@@ -23,7 +23,7 @@ import { Router }                 from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
-import { cloneDeep, trimEnd, remove } from 'lodash';
+import { cloneDeep, trimEnd, remove, merge } from 'lodash';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { Broadcaster, Logger } from 'ngx-base';
 import {
@@ -246,14 +246,13 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         };
 
         // Resolve comments
-        if (comments.data) {
-          comments.data = comments.data.map((comment) => {
-            comment.relationships['created-by'].data =
-              users.find(user => user.id === comment.relationships['created-by'].data.id);
-            return comment;
-          });
-          workItem.relationships.comments.data = this.comments = comments.data;
-        } else workItem.relationships.comments.data = this.comments = [];
+        merge(workItem.relationships.comments, comments);
+        workItem.relationships.comments.data = workItem.relationships.comments.data.map((comment) => {
+          comment.relationships['created-by'].data =
+            users.find(user => user.id === comment.relationships['created-by'].data.id);
+          return comment;
+        });
+        this.comments = workItem.relationships.comments.data;
 
         // Resolve links
         workItem = Object.assign(
@@ -563,14 +562,13 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         };
 
         // Resolve comments
-        if (comments.data) {
-          comments.data = comments.data.map((comment) => {
-            comment.relationships['created-by'].data =
-              users.find(user => user.id === comment.relationships['created-by'].data.id);
-            return comment;
-          });
-          workItem.relationships.comments.data = this.comments = comments.data;
-        } else workItem.relationships.comments.data = this.comments = [];
+        merge(workItem.relationships.comments, comments);
+        workItem.relationships.comments.data = workItem.relationships.comments.data.map((comment) => {
+          comment.relationships['created-by'].data =
+            users.find(user => user.id === comment.relationships['created-by'].data.id);
+          return comment;
+        });
+        this.comments = workItem.relationships.comments.data;
 
         // Resolve links
         workItem = Object.assign(
@@ -651,7 +649,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     this.workItemService
         .createComment(this.workItem.relationships.comments.links.related, comment)
         .subscribe((comment) => {
-          console.log(this.loggedInUser);
             comment.relationships['created-by'].data = this.loggedInUser;
             this.workItem.relationships.comments.data.splice(0, 0, comment);
             this.workItem.relationships.comments.meta.totalCount += 1;

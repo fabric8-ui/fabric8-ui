@@ -2,7 +2,6 @@ import { Observable } from 'rxjs';
 import { CommentLink } from './../../../models/comment';
 
 import {
-    SimpleChanges,
     OnInit, OnChanges,
     Component, ViewChild,
     EventEmitter, Input, Output
@@ -22,7 +21,7 @@ import { CollaboratorService } from './../../../collaborator/collaborator.servic
     templateUrl: './work-item-comment.component.html',
     styleUrls: ['./work-item-comment.component.scss'],
 })
-export class WorkItemCommentComponent implements OnInit, OnChanges {
+export class WorkItemCommentComponent implements OnInit {
     @Input() comments: Comment[];
     @Input() loggedIn: Boolean;
     @Input() loggedInUser: User;
@@ -52,9 +51,6 @@ export class WorkItemCommentComponent implements OnInit, OnChanges {
             commentbox.textContent = commentbox.dataset['placeholder'];
             commentbox.blur();
         }
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
     }
 
     createCommentObject(): void {

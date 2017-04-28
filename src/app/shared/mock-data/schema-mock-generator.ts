@@ -109,7 +109,7 @@ export class SchemaMockGenerator {
     else {
       this.workItemTypes = [
       {
-         'id' : '86af5178-9b41-469b-9096-57e5155c3f31',
+         'id' : '86af5178-9b41-469b-9096-57e5155c3f30',
          'attributes' : {
             'name' : 'Planner Item',
             'icon': 'fa-paint-brush',
@@ -174,7 +174,7 @@ export class SchemaMockGenerator {
                   'type' : {
                      'kind' : 'markup'
                   }
-               },               
+               },
               'system.iteration' : {
                 'description' : 'The iteration to which the work item belongs',
                 'label' : 'Iteration',

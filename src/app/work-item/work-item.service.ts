@@ -540,7 +540,7 @@ export class WorkItemService {
       return this.http
         .get(url, { headers: this.headers })
         .map(response => {
-          return { data: response.json().data };
+          return { data: response.json().data, meta: response.json().meta, links: response.json().links};
         }).catch((error: Error | any) => {
           this.notifyError('Getting comments failed.', error);
           return Observable.throw(new Error(error.message));
@@ -560,7 +560,7 @@ export class WorkItemService {
       .map(response => [response.json().data as Link[], response.json().included])
       .catch((error: Error | any) => {
         this.notifyError('Getting linked items data failed.', error);
-        return Observable.throw(new Error(error.message));                            
+        return Observable.throw(new Error(error.message));
       });
   }
 
@@ -579,7 +579,7 @@ export class WorkItemService {
           let resultTypes = response.json().data as WorkItemType[];
 
           // THIS IS A HACK!
-          for (let i=0; i<resultTypes.length; i++) 
+          for (let i=0; i<resultTypes.length; i++)
             if (resultTypes[i].id==='86af5178-9b41-469b-9096-57e5155c3f31')
               resultTypes.splice(i, 1);
 

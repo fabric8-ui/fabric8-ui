@@ -128,7 +128,7 @@ export class MockDataService {
           console.log('WorkItem ' + this.workItems[i].id + ' has a parent.');
           hasParent = true;
         } else {
-          console.log('WorkItem ' + this.workItems[i].id + ' has no parent.');          
+          console.log('WorkItem ' + this.workItems[i].id + ' has no parent.');
         }
         filterMatches = filterMatches && !hasParent;
       }
@@ -171,10 +171,8 @@ export class MockDataService {
               },
               'type': 'comments'
         };
-        if (this.workItemComments[wiId])
-          this.workItemComments[wiId].data.push(newComment);
-        else
-          this.workItemComments[wiId] = { data: [ newComment ] };
+        this.workItemComments[wiId].data.push(newComment);
+        this.workItemComments[wiId].meta.totalCount += 1;
         return { data: newComment };
       }
       return {};
@@ -229,9 +227,7 @@ export class MockDataService {
       var subselect = parts[1];
       if (subselect === 'comments') {
         console.log('Requested comments for workitem ' + wiId);
-        if (this.workItemComments[wiId])
-          return this.makeCopy(this.workItemComments[wiId]);
-        return { data: [] };
+        return this.makeCopy(this.workItemComments[wiId]);
       } else if (subselect === 'relationships') {
         console.log('Request for relationships for workitem ' + wiId);
         if (parts[2] === 'links') {
@@ -469,7 +465,7 @@ export class MockDataService {
         'type': 'iteration'
       }, 'links': {
         'self': 'http://mock.service/api/iterations/' + parentIteration.id
-      }};      
+      }};
     }
     localIteration.relationships.workitems = {
       'links': {

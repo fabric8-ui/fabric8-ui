@@ -20,7 +20,7 @@
               data-placeholder="Add a new comment..." #comment></p>
       </div>
       <div class="flex-container flex-grow-1 in-column-direction comments-outer-wrapper">
-        <div *ngFor='let comment of comments.slice(); let counter = index' class="comments-wrap">
+        <div *ngFor='let comment of comments; let counter = index' class="comments-wrap">
           <div class="flex-container flex-grow-1">
             <div class="user-avatar">
                 <img id="{{'comment_avatar_' + counter}}"
