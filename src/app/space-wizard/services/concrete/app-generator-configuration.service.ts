@@ -320,7 +320,7 @@ export class AppGeneratorConfigurationService {
         switch ( choice.id.toLowerCase() ) {
           case 'configmaps - wildfly swarm': {
             choice.index = 10;
-            choice.hasIcon=true;
+            // choice.hasIcon=true;
             choice.icon='icon-stack icon-stack-wildfly';
             choice.name = 'WildFly Swarm - ConfigMap';
             choice.description = 'Adds externalised environment configuration to WildFly Swarm - Basic';
@@ -328,7 +328,7 @@ export class AppGeneratorConfigurationService {
           }
           case 'http api - wildfly swarm': {
             choice.index = 8;
-            choice.hasIcon=true;
+            // choice.hasIcon=true;
             choice.icon='icon-stack icon-stack-wildfly';
             choice.name = 'WildFly Swarm - Basic';
             choice.description = 'Standalone Java EE application that exposes a simple HTTP endpoint';
@@ -336,7 +336,7 @@ export class AppGeneratorConfigurationService {
           }
           case 'http crud - wildfly swarm': {
             choice.index = 9;
-            choice.hasIcon=true;
+            // choice.hasIcon=true;
             choice.icon='icon-stack  icon-stack-wildfly';
             choice.name = 'WildFly Swarm - CRUD';
             choice.description = 'Adds Create, Update and Delete to WildFly Swarm - Basic';
@@ -344,7 +344,7 @@ export class AppGeneratorConfigurationService {
           }
           case 'health checks - wildfly swarm': {
             choice.index = 11;
-            choice.hasIcon=true;
+            // choice.hasIcon=true;
             choice.icon='icon-stack icon-stack-wildfly';
             choice.name = 'WildFly Swarm - Health Check';
             choice.description = 'Adds health checks to WildFly Swarm - Basic';
@@ -352,7 +352,7 @@ export class AppGeneratorConfigurationService {
           }
           case 'spring boot - crud': {
             choice.index = 5;
-            choice.hasIcon=true;
+            // choice.hasIcon=true;
             choice.icon='icon-stack icon-stack-spring';
             choice.name = 'Spring Boot - CRUD';
             choice.description = 'Adds Create, Update and Delete to Spring Boot - Basic';
@@ -360,7 +360,7 @@ export class AppGeneratorConfigurationService {
           }
           case 'spring boot - configmap': {
             choice.index = 6;
-            choice.hasIcon=true;
+            // choice.hasIcon=true;
             choice.icon='icon-stack icon-stack-spring';
             choice.name = 'Spring Boot - ConfigMap';
             choice.description = 'Adds externalised environment configuration to Spring Boot - Basic';
@@ -368,7 +368,7 @@ export class AppGeneratorConfigurationService {
           }
           case 'spring boot - http': {
             choice.index = 4;
-            choice.hasIcon=true;
+            // choice.hasIcon=true;
             choice.icon='icon-stack icon-stack-spring';
             choice.name = 'Spring Boot - Basic';
             choice.description = 'Standalone Spring application that exposes a simple HTTP endpoint';
@@ -376,7 +376,7 @@ export class AppGeneratorConfigurationService {
           }
           case 'spring boot health check example': {
             choice.index = 7;
-            choice.hasIcon=true;
+            // choice.hasIcon=true;
             choice.icon='icon-stack icon-stack-spring';
             choice.name = 'Spring Boot - Health Check';
             choice.description = 'Adds health checks to Spring Boot - Basic';
@@ -384,7 +384,7 @@ export class AppGeneratorConfigurationService {
           }
           case 'vert.x - http & config map': {
             choice.index = 3;
-            choice.hasIcon=true;
+            // choice.hasIcon=true;
             choice.icon='icon-stack icon-stack-vertx';
             choice.name = 'Vert.x - ConfigMap';
             choice.description = 'Adds externalised environment configuration to Vert.x - Basic';
@@ -392,7 +392,7 @@ export class AppGeneratorConfigurationService {
           }
           case 'vert.x crud example using jdbc': {
             choice.index = 2;
-            choice.hasIcon=true;
+            // choice.hasIcon=true;
             choice.icon='icon-stack icon-stack-vertx';
             choice.name = 'Vert.x - CRUD';
             choice.description = 'Adds Create, Update and Delete to Vert.x - Basic';
@@ -400,7 +400,7 @@ export class AppGeneratorConfigurationService {
           }
           case 'vert.x http booster': {
             choice.index = 1;
-            choice.hasIcon=true;
+            // choice.hasIcon=true;
             // choice.verticalLayout=true;
             choice.icon='icon-stack icon-stack-vertx';
             choice.name = 'Vert.x - Basic';
