@@ -70,16 +70,20 @@ export class FilterService {
    */
   getFilters(): Observable<FilterModel[]> {
     return this.spaces.current.switchMap(space => {
-      let apiUrl = space.links.filters;
-      return this.http
-        .get(apiUrl)
-        .map(response => {
-          return response.json().data as FilterModel[];
-        })
-        .catch ((error: Error | any) => {
-          console.log('API returned error: ', error.message);
-          return Observable.throw('Error  - [FilterService - getFilters]' + error.message);
-        });
+      if (space) {
+        let apiUrl = space.links.filters;
+        return this.http
+          .get(apiUrl)
+          .map(response => {
+            return response.json().data as FilterModel[];
+          })
+          .catch ((error: Error | any) => {
+            console.log('API returned error: ', error.message);
+            return Observable.throw('Error  - [FilterService - getFilters]' + error.message);
+          });          
+      } else {
+        return Observable.of([] as FilterModel[]);
+      }
     });
   }
 
