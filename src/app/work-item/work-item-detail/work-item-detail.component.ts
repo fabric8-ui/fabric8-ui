@@ -52,10 +52,10 @@ import { CollaboratorService } from '../../collaborator/collaborator.service'
   animations: [
     trigger('slideInOut', [
       state('in', style({
-        right: 0
+        transform: 'translateX(0)'
       })),
       state('out', style({
-        right: '-100%'
+        transform: 'translateX(102%)'
       })),
       transition('in => out', animate('300ms ease-in-out')),
       transition('out => in', animate('500ms ease-in-out'))

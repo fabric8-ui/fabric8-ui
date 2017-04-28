@@ -168,7 +168,6 @@
       border: solid 0px red;
       position: relative;
       align-items: stretch;
-      overflow-x: hidden!important;
       >header {
         padding: 0 rem(20);
         border-bottom: 1px solid $color-pf-black-300 !important;
@@ -219,7 +218,7 @@
         //@extend .fill-container;
         flex: 1;
         display: flex;
-        overflow-x: hidden;
+        overflow: auto;
         align-items: stretch;
       }
     }

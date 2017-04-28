@@ -3,12 +3,12 @@
 //detail panel
 .detail-panel {
   background: $color-pf-white;
-  position: absolute;
+  position: fixed;
   left: auto;
-  top: 0;
+  top: 80px;
   right: 0;
   bottom: 0;
-  width: 60%;
+  width: 50%;
   min-width: em(250);
   // z-index: 0;
   padding: em(20) 0 em(20) em(40);
