@@ -57,7 +57,7 @@ describe('Work item list', function () {
 
         detailPage.details_assigned_user().click();
         detailPage.clickworkItemDetailUnassignButton();
-        expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
+        expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('None');
         detailPage.clickWorkItemDetailCloseButton();
 
         //Commented Due to Delete is temporarily not supported
@@ -229,4 +229,3 @@ it('check date showing up correctly - Desktop', function () {
   var compareWorkitems = function(page, targetIndex, expectedTitle) {
     expect(page.workItemTitle(page.workItemByIndex(targetIndex))).toBe(expectedTitle);
   }
-
