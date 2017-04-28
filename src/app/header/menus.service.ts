@@ -58,7 +58,7 @@ export class MenusService {
                 path: 'pipelines'
               },
               {
-                name: 'Apps',
+                name: 'Applications',
                 path: 'apps'
 /*
    TODO environments page is disabled for now due to resource usage
