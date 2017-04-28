@@ -38,10 +38,10 @@
                     </div>
                   </div>
                   <div [dragula]='"first-bag"' class="card-wrapper">
-                    <div  class="board-card card-pf card-pf-view card-pf-view-select card-pf-view-single-select"
+                    <div class="board-card card-pf card-pf-view card-pf-view-select card-pf-view-single-select"
                           [class.active]="isSelected(item)" *ngFor='let item of lane.workItems'
                           [attr.data-id]="item.id" (mousedown)="getWI(item)" (touchstart)="getWI(item)"
-                          [routerLink]="['./detail/' + item.id]" [queryParams]="existingQueryParams" id={{item.id}}>
+                          [routerLink]="['./detail/' + item.id]" [queryParams]="existingQueryParams">
                       <div class="row-wrapper">
                         <div>
                           <span class="wi-type-icon fa {{item.relationships?.baseType?.data?.attributes?.icon}}"></span>

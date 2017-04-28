@@ -651,7 +651,7 @@ class WorkItemDetailPage {
   }
 
   get stepsToReproduceText () {
-    return element(By.css('.pficon-edit.markdown-test-btn-edit'));
+    return element(By.xpath('.//p[contains(text(),"Edit Text")]'));
   }
 
   clickStepsToReproduceText () {

@@ -18,12 +18,12 @@
             <div class="flex-grow-1 truncate">
                 <strong class="iteration-name truncate"
                   tooltip="{{iteration.attributes.name}}"
-                  placement="top" id="{{iteration.attributes.name}}">
+                  placement="top">
                   {{iteration.attributes.name | truncate : 45 }}
                 </strong>
               <div class="parent-iteration">
                 <span tooltip="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
-                  placement="top" id="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}">
+                  placement="top">
                   {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | truncate : -50 }}
                 </span>
               </div>
@@ -107,7 +107,7 @@
             <div class="flex-grow-1 truncate">
               <strong class="iteration-name truncate"
                 tooltip="{{iteration.attributes.name}}"
-                placement="top" id="{{iteration.attributes.name}}">
+                placement="top">
                 {{iteration.attributes.name | truncate : 35}}
               </strong>
               <div class="parent-iteration">
@@ -165,7 +165,7 @@
           <div class="truncate flex-grow-1">
             <strong class="iteration-name truncate"
               tooltip="{{iteration.attributes.name}}"
-              placement="top" id="{{iteration.attributes.name}}">
+              placement="top">
               {{iteration.attributes.name | truncate : 40 }}
             </strong>
             <div class="parent-iteration">
