@@ -45,7 +45,7 @@
               </div>
               <!-- when comment is not editable -->
               <div *ngIf="!loggedIn ||
-                (!commentEditable || (loggedInUser.id !== comment.relationships['created-by']?.data?.id))
+                (!commentEditable || (loggedInUser?.id !== comment.relationships['created-by']?.data?.id))
                 || (selectedCommentId != comment.id)"
                 (click)='openComment(comment.id)'>
                 <p id="{{'comment_body_' + counter}}" class="noneditableComment margin-0 form-control">
@@ -55,7 +55,7 @@
               <!-- when comment is editable -->
               <div *ngIf="loggedIn &&
                   (selectedCommentId == comment.id) &&
-                  (commentEditable && (loggedInUser.id === comment.relationships['created-by']?.data?.id))" >
+                  (commentEditable && (loggedInUser?.id === comment.relationships['created-by']?.data?.id))" >
                 <p almEditable #commentBody
                     (keyup)="onCommentEdit($event, 'comment_body_' + counter, 'comment_save_btn' + counter)"
                     id="{{'comment_body_' + counter}}"
@@ -82,7 +82,7 @@
               </div>
             </div>
             <div class="dropdown dropdown-kebab-pf" dropdown>
-              <button *ngIf="loggedIn && (loggedInUser.id === comment.relationships['created-by']?.data?.id)"
+              <button *ngIf="loggedIn && (loggedInUser?.id === comment.relationships['created-by']?.data?.id)"
                       class="btn btn-link dropdown-toggle"
                       id="commentActionsKebab"
                       type="button"
@@ -92,7 +92,7 @@
                       aria-expanded="true">
                 <span class="fa fa-ellipsis-v"></span>
               </button>
-              <ul *ngIf="loggedIn && (loggedInUser.id === comment.relationships['created-by']?.data?.id)"
+              <ul *ngIf="loggedIn && (loggedInUser?.id === comment.relationships['created-by']?.data?.id)"
                   class="dropdown-menu dropdown-menu-right"
                   aria-labelledby="commentActionsKebab"
                   dropdownMenu>

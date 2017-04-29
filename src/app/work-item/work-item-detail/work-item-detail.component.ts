@@ -23,7 +23,7 @@ import { Router }                 from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
-import { cloneDeep, trimEnd, remove, merge } from 'lodash';
+import { cloneDeep, trimEnd, merge, remove } from 'lodash';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { Broadcaster, Logger } from 'ngx-base';
 import {
@@ -43,6 +43,7 @@ import { TypeaheadDropdown, TypeaheadDropdownValue } from './typeahead-dropdown/
 import { WorkItem, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../work-item.service';
 import { WorkItemType } from '../../models/work-item-type';
+import { CollaboratorService } from '../../collaborator/collaborator.service'
 
 @Component({
   selector: 'alm-work-item-detail',
@@ -117,6 +118,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   saving: Boolean = false;
   queryParams: Object = {};
 
+  itemSubscription: any = null;
+
   constructor(
     private areaService: AreaService,
     private auth: AuthenticationService,
@@ -129,7 +132,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     private iterationService: IterationService,
     private userService: UserService,
     private workItemTypeControlService: WorkItemTypeControlService,
-    private spaces: Spaces
+    private spaces: Spaces,
+    private collaboratorService: CollaboratorService
   ) {}
 
   ngOnInit(): void {
@@ -140,44 +144,39 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     this.getIterations();
     this.loggedIn = this.auth.isLoggedIn();
     if (this.loggedIn) {
-      this.getAllUsers()
-      .subscribe(([authUser, allUsers]) => {
-        this.users = allUsers;
-        this.loggedInUser = authUser;
-      });
+      this.eventListeners.push(
+        this.userService.loggedInUser.subscribe(user => {
+          this.loggedInUser = user;
+        })
+      );
     }
     let id = null;
-    this.route.params.forEach((params: Params) => {
-      if (params['id'] !== undefined) {
-        id = params['id'];
-
-        if (id.indexOf('new') >= 0){
-          //Add a new work item
-          this.addNewWI = true;
-          this.headerEditable = true;
-          let type = this.route.queryParams.forEach(params => {
-            this.createWorkItemObj(params['type']);
-          });
-
-          // Open the panel
-          if (this.panelState === 'out') {
-            this.panelState = 'in';
-            if (this.headerEditable && typeof(this.title) !== 'undefined') {
-              this.title.nativeElement.focus();
+    this.eventListeners.push(
+      this.spaces.current.switchMap(space => {
+        return this.route.params;
+      }).subscribe((params) => {
+        if (params['id'] !== undefined) {
+          id = params['id'];
+          if (id === 'new'){
+            //Add a new work item
+            this.headerEditable = true;
+            let type = this.route.snapshot.queryParams['type'];
+            // Create new item with the WI type
+            this.createWorkItemObj(type);
+            // Open the panel
+            if (this.panelState === 'out') {
+              this.panelState = 'in';
+              setTimeout(() => {
+                if (this.headerEditable && typeof(this.title) !== 'undefined') {
+                this.title.nativeElement.focus();
+              }});
             }
+          } else {
+            this.loadWorkItem(id);
           }
-        } else {
-          this.loadWorkItem(id);
         }
-      }
-    });
-    this.spaceSubscription = this.spaces.current.subscribe(space => {
-      if (space) {
-        // this.getAreas();
-        // this.getIterations();
-        this.loadWorkItem(id);
-      }
-    });
+      })
+    );
   }
 
   ngOnDestroy() {
@@ -204,11 +203,12 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   loadWorkItem(id: string): void {
+    this.itemSubscription =
     this.workItemService.getWorkItemById(id)
       .switchMap(workItem => {
-        return Observable.forkJoin(
+        return Observable.combineLatest(
           Observable.of(workItem),
-          this.userService.getAllUsers(),
+          this.collaboratorService.getCollaborators(),
           this.workItemService.getWorkItemTypes(),
           this.areaService.getArea(workItem.relationships.area),
           this.iterationService.getIteration(workItem.relationships.iteration),
@@ -303,9 +303,13 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         // this.getAllUsers();
 
         this.activeOnList(400);
+        // Used with setTimeout for inmemory mode
+        // where everything is synchronus
+        setTimeout(() => this.itemSubscription.unsubscribe());
       },
       err => {
         console.log(err);
+        setTimeout(() => this.itemSubscription.unsubscribe());
         // this.closeDetails();
       });
   }
@@ -349,7 +353,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   getAllUsers(): Observable<any> {
     return Observable.combineLatest(
       this.userService.getUser(),
-      this.userService.getAllUsers()
+      this.collaboratorService.getCollaborators()
     )
   }
 
@@ -520,16 +524,16 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       retObservable = this.workItemService
         .update(payload)
         .switchMap(workItem => {
-        return Observable.forkJoin(
-          Observable.of(workItem),
-          this.userService.getAllUsers(),
-          this.workItemService.getWorkItemTypes(),
-          this.areaService.getArea(workItem.relationships.area),
-          this.iterationService.getIteration(workItem.relationships.iteration),
-          this.workItemService.resolveAssignees(workItem.relationships.assignees),
-          this.workItemService.resolveCreator2(workItem.relationships.creator),
-          this.workItemService.resolveComments(workItem.relationships.comments.links.related),
-          this.workItemService.resolveLinks(workItem.links.self + '/relationships/links')
+          return Observable.combineLatest(
+            Observable.of(workItem),
+            this.collaboratorService.getCollaborators(),
+            this.workItemService.getWorkItemTypes(),
+            this.areaService.getArea(workItem.relationships.area),
+            this.iterationService.getIteration(workItem.relationships.iteration),
+            this.workItemService.resolveAssignees(workItem.relationships.assignees),
+            this.workItemService.resolveCreator2(workItem.relationships.creator),
+            this.workItemService.resolveComments(workItem.relationships.comments.links.related),
+            this.workItemService.resolveLinks(workItem.links.self + '/relationships/links')
         );
       })
       .map(([workItem, users, workItemTypes, area, iteration, assignees, creator, comments, [links, includes]]) => {
@@ -632,6 +636,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
             [this.router.url.split('/detail/')[0] + '/detail/' + workItem.id],
             { queryParams: queryParams } as NavigationExtras
           );
+          this.workItemService.emitAddWI(workItem);
           return workItem;
         });
       } else {
@@ -641,7 +646,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     if (returnObservable) {
       return retObservable;
     } else {
-      retObservable.subscribe();
+      this.itemSubscription = retObservable.subscribe(() => {
+        setTimeout(() => this.itemSubscription.unsubscribe())
+      });
     }
   }
 
@@ -700,6 +707,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         [this.router.url.split('/detail/')[0]],
         {queryParams: queryParams}
       );
+      this.broadcaster.broadcast('detail_close')
     }, 400);
   }
 
@@ -894,13 +902,14 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
           }
         });
       }
-      this.save(payload, true).subscribe((workItem:WorkItem) => {
+      this.itemSubscription = this.save(payload, true).subscribe((workItem:WorkItem) => {
         this.logger.log('Iteration has been updated, sending event to iteration panel to refresh counts.');
         this.broadcaster.broadcast('associate_iteration', {
           workItemId: workItem.id,
           currentIterationId: this.workItem.relationships.iteration.data?this.workItem.relationships.iteration.data.id:undefined,
           futureIterationId: workItem.relationships.iteration.data?workItem.relationships.iteration.data.id:undefined
         });
+        setTimeout(() => this.itemSubscription.unsubscribe());
       });
     } else {
       //creating a new work item - save the user input
@@ -974,7 +983,18 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     return null;
   }
 
+  focusArea() {
+    this.iterationSelectbox.close();
+    this.cancelAssignment();
+  }
+
+  focusIteration() {
+    this.areaSelectbox.close();
+    this.cancelAssignment();
+  }
+
   areaUpdated(areaId: string) {
+
     if (this.workItem.id) {
       let payload = cloneDeep(this.workItemPayload);
       if (areaId) {
