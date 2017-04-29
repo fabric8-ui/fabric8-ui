@@ -184,6 +184,12 @@ export class MockDataService {
           'sourceLinkTypes': 'http://mock.service/api/source-link-types',
           'targetLinkTypes': 'http://mock.service/api/target-link-types'
         };
+    this.workItemComments['id' + localWorkItem.id] = {
+      'data': [],
+      'meta': {
+        'totalCount': 0
+      }
+    };
     localWorkItem.relationships = {
           'assignees': { },
           'iteration': { },
