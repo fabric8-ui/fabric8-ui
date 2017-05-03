@@ -12,6 +12,7 @@
   min-width: em(250);
   border-left: 1px solid darken($color-pf-white, 20%);
   z-index: initial;
+  padding: 0;
   overflow-y: scroll;
   overflow-x: hidden;
   box-shadow: -4px 0px 2px -2px $color-pf-black-300;
