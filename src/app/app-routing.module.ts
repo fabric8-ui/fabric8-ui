@@ -5,12 +5,13 @@ import { EmptyStateExampleComponent } from './emptystate/examples/emptystate-exa
 import { FilterExampleComponent } from './filters/examples/filter-example.component';
 import { HomeComponent } from './home/home.component';
 import { ListViewExampleComponent } from './listview/examples/listview-example.component';
+import { RemainingCharsExampleComponent } from './remainingchars/examples/remainingchars-example.component';
+import { SlideOutExampleComponent } from './slide-out-panel/examples/slide-out-example.component';
 import { SortExampleComponent } from './sort/examples/sort-example.component';
 import { ToastNotificationExampleComponent } from './notification/examples/toast-notification-example.component';
 import { ToastNotificationListExampleComponent } from './notification/examples/toast-notification-list-example.component';
 import { ToolbarExampleComponent } from './toolbar/examples/toolbar-example.component';
 import { TreeListExampleComponent } from './treelist/examples/treelist-example.component';
-import { SlideOutExampleComponent } from './slide-out-panel/examples/slide-out-example.component';
 
 const routes: Routes = [{
     path: '',
@@ -28,6 +29,9 @@ const routes: Routes = [{
   },{
     path: 'listview',
     component: ListViewExampleComponent
+  },{
+    path: 'remainingchars',
+    component: RemainingCharsExampleComponent
   },{
     path: 'sort',
     component: SortExampleComponent

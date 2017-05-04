@@ -17,11 +17,12 @@ import { EmptyStateExampleModule } from './emptystate/examples/emptystate-exampl
 import { FilterExampleModule } from './filters/examples/filter-example.module';
 import { HomeModule } from './home/home.module';
 import { ListViewExampleModule } from './listview/examples/listview-example.module';
+import { RemainingCharsExampleModule } from './remainingchars/examples/remainingchars-example.module';
+import { SlideOutExampleModule } from './slide-out-panel/examples/slide-out-example.module';
 import { SortExampleModule } from './sort/examples/sort-example.module';
 import { NotificationExampleModule } from './notification/examples/notification-example.module';
 import { ToolbarExampleModule } from './toolbar/examples/toolbar-example.module';
 import { TreeListExampleModule } from './treelist/examples/treelist-example.module';
-import { SlideOutExampleModule } from './slide-out-panel/examples/slide-out-example.module';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { SlideOutExampleModule } from './slide-out-panel/examples/slide-out-exam
     HttpModule,
     ListViewExampleModule,
     NotificationExampleModule,
+    RemainingCharsExampleModule,
     SortExampleModule,
     SlideOutExampleModule,
     ToolbarExampleModule,

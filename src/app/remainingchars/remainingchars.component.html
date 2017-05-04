@@ -1,0 +1,23 @@
+<div *ngIf="config.inputType === 'input'; then showInput else showTextarea"></div>
+<ng-template #showInput>
+  <input class="{{config.styleClass}}" #textField
+         id="{{config.id}}"
+         name="{{config.name}}"
+         maxlength="{{config.blockInputAtMaxLimit ? config.charsMaxLimit : -1}}"
+         placeholder="{{config.placeholder}}"
+         type="text"
+         [(ngModel)]="config.value"
+         (change)="handleChange($event)"
+         (keyup)="handleKeypress($event)">
+</ng-template>
+<ng-template #showTextarea>
+  <textarea class="{{config.styleClass}}" #textField
+            id="{{config.id}}"
+            name="{{config.name}}"
+            maxlength="{{config.blockInputAtMaxLimit ? config.charsMaxLimit : -1}}"
+            placeholder="{{config.placeholder}}"
+            rows="{{config.rows}}"
+            [(ngModel)]="config.value"
+            (change)="handleChange($event)"
+            (keyup)="handleKeypress($event)"></textarea>
+</ng-template>
