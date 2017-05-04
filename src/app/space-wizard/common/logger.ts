@@ -21,24 +21,23 @@ export class LoggerFactory {
   private styles = {
     origin: `
       background:linear-gradient(#444, #333);
-      border-radius:15px;
       color:lime;
       font-style:italic;
-      border-left:solid 0px orangered;
-      padding:3px;
-      padding-left:10px;
-      padding-right:10px`,
+      padding:0 5px;
+      margin:0 0;
+      `,
     instance: `
       background:linear-gradient(#444, #333);
       color:orangered;
-      border-radius:10px;
-      padding:3px;
-      margin:3px 0;`,
+      padding:0 5px;
+      margin:0 0;
+      `,
     message: `
       background:linear-gradient(#444, #333);
       color:white;
-      border-radius:10px;
-      padding:3px 10px;`
+      padding:0 5px;
+      margin:0 0;
+      `
   };
 
   constructor() {
@@ -59,31 +58,14 @@ export class LoggerFactory {
       if ( entry.info === true ) {
         method = 'info';
       }
-      let msg = `${origin} ${instance} ${entry.message || ''}`;
-      console[ method ].apply(
-        null,
-        [ `%c${origin}%c ${instance} %c${entry.message || ''}`,
-          me.styles.origin,
-          me.styles.instance,
-          me.styles.message ]
-      );
-
-      if ( args && args.length === 1 ) {
-          if (typeof(args[0]) === 'function') {
-            args[0](msg);
-          } else {
-            console.dir(args[0]);
-          }
-      }
-      if ( args && args.length > 1 ) {
-          if (typeof(args[0]) === 'function') {
-            args[0](msg);
-          } else {
-            console.dir(args[0]);
-            if (typeof(args[1]) === 'function') {
-              args[1](msg);
-            }
-          }
+      let msg = `%c${origin}%c ${instance} %c${entry.message || ''}`;
+      let functionArgs=args.filter(a=>typeof(a)==='function');
+      let otherArgs=args.filter(a=>typeof(a)!=='function');
+      let newArgs=[msg,me.styles.origin,me.styles.instance,me.styles.message,...otherArgs];
+      if( functionArgs.length > 0 ){
+        functionArgs[0].apply(null,newArgs);
+      } else{
+        console[method].apply(null,newArgs);
       }
     }
 

@@ -209,6 +209,7 @@ export class SpaceWizardComponent implements OnInit {
 
   finish() {
     this.log(`finish ...`);
+    // navigate to the users space
     this.router.navigate([
       this.configurator.space.relationalData.creator.attributes.username,
       this.configurator.space.attributes.name
@@ -220,6 +221,7 @@ export class SpaceWizardComponent implements OnInit {
 
   cancel() {
     this.log(`cancel...`);
+    // just close the host dialog
     if (this.host) {
       this.host.close();
     }
