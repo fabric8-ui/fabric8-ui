@@ -10,51 +10,60 @@
       </div>
     </div>
   </header>
-  <section [class.hide]="!forge.hasMessage" class="app-generator-message container-fluid padding-top-standard-offset">
-    <div class="message-title-container">
-      <h2 class="message-title busy-message-title">
-        <span>
-          <span>{{forge.message.title||''}}</span>
-        </span>
-      </h2>
-    </div>
-    <div class="message-body-container no-border">
-      <div class="message-body vertical-align-center">
-        <div class="busy-indicator">
-             <div class="spinner spinner-lg"></div>
-        </div>
+
+<section [class.hide]="!forge.hasProcessingMessage" class="app-generator-message container-fluid padding-top-standard-offset">
+  <div class="message-title-container">
+
+    <h2 class="message-title busy-message-title">
+      <span>
+        <span>{{forge.processingMessage.title||''}}</span>
+      </span>
+    </h2>
+
+  </div>
+  <div class="message-body-container no-border">
+
+    <div class="message-body vertical-align-center">
+      <div class="busy-indicator">
+            <div class="spinner spinner-lg"></div>
       </div>
     </div>
-  </section>
+
+  </div>
+</section>
+
 <section [class.hide]="!forge.hasError" class="app-generator-message container-fluid padding-top-standard-offset">
   <div class="message-title-container padding-standard-offset margin-bottom-standard-offset color-error color-border color-background-light">
+
     <div class="message-title user-select-none">
       <span class="color-error fa-2x color-text pficon pficon-error-circle-o"></span>
       <span><strong>Error! </strong> </span>
       <span >{{forge.error.title||''}}</span>
    </div>
+
   </div>
   <div class="message-body-container">
-    <div [innerHTML]="forge.error.message" class="message-body">
 
+    <div [innerHTML]="forge.error.message" class="message-body"></div>
+
+  </div>
+</section>
+
+<section [class.hide]="!forge.hasResultMessage" class="app-generator-message container-fluid padding-top-standard-offset">
+  <div class="message-title-container padding-standard-offset margin-bottom-standard-offset color-success color-border color-background-light">
+    <div class="message-title  user-select-none">
+      <span class="color-success fa-2x color-text pficon pficon-ok"></span>
+      <span><strong>Success! </strong> </span>
+      <span >{{forge.resultMessage.title||''}}</span>
+    </div>
+  </div>
+  <div class="message-body-container">
+    <div [innerHTML]="forge.resultMessage.body" class="message-body">
     </div>
   </div>
 </section>
-  <section [class.hide]="!forge.hasResult" class="app-generator-message container-fluid padding-top-standard-offset">
-    <div class="message-title-container padding-standard-offset margin-bottom-standard-offset color-success color-border color-background-light">
-      <div class="message-title  user-select-none">
-        <span class="color-success fa-2x color-text pficon pficon-ok"></span>
-        <span><strong>Success! </strong> </span>
-        <span >{{forge.result.title||''}}</span>
-     </div>
-    </div>
-    <div class="message-body-container">
-      <div [innerHTML]="forge.result.body" class="message-body">
-      </div>
-    </div>
-  </section>
 
-  <section [hidden]="forge.hasError||forge.hasResult||forge.hasMessage" class="container-fluid padding-top-standard-offset">
+  <section [hidden]="forge.hasError||forge.hasResultMessage||forge.hasProcessingMessage" class="container-fluid padding-top-standard-offset">
     <div class="row">
       <div class="col-xs-12">
         <div class="form-horizontal">
@@ -167,16 +176,16 @@
   <footer class="container-fluid">
     <div class="row">
       <div class="col-xs-12 wizard-step-tool-bar with-items-at-end">
-        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResult && !forge.hasMessage" (click)="forge.cancel()">Cancel</button>
-        <!--<button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResult !forge.hasMessage" [disabled]="(!forge.state.canMoveToPreviousStep)||(forge.processing === true)"
+        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResultMessage && !forge.hasProcessingMessage" (click)="forge.cancel()">Cancel</button>
+        <!--<button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResultMessage !forge.hasProcessingMessage" [disabled]="(!forge.state.canMoveToPreviousStep)||(forge.processing === true)"
           (click)="forge.gotoPreviousStep()">Back</button>-->
-        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResult && !forge.hasMessage" [disabled]="(!forge.state.canMoveToNextStep)||(forge.processing === true)"
+        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResultMessage && !forge.hasProcessingMessage" [disabled]="(!forge.state.canMoveToNextStep)||(forge.processing === true)"
           (click)="forge.gotoNextStep()">Next</button>
-        <button type="button" class="btn btn-primary" *ngIf="!forge.hasError && !forge.hasResult && !forge.hasMessage" [disabled]="(!forge.state.canExecute)||(forge.processing === true)"
+        <button type="button" class="btn btn-primary" *ngIf="!forge.hasError && !forge.hasResultMessage && !forge.hasProcessingMessage" [disabled]="(!forge.state.canExecute)||(forge.processing === true)"
           (click)="forge.finish()">Finish</button>
         <button type="button" class="btn btn-primary" *ngIf="forge.hasError" (click)="forge.acknowledgeError()">OK</button>
-        <!--<button class='btn btn-primary margin-right-5' *ngIf="forge.hasResult" (click)="forge.addResultToSpace()"><span class="pficon pficon-add-circle-o" ></span> Add this code base to my space</button>-->
-        <button type="button" class="btn btn-primary" *ngIf="forge.hasResult" (click)="forge.acknowledgeResult()">OK</button>
+        <!--<button class='btn btn-primary margin-right-5' *ngIf="forge.hasResultMessage" (click)="forge.addResultToSpace()"><span class="pficon pficon-add-circle-o" ></span> Add this code base to my space</button>-->
+        <button type="button" class="btn btn-primary" *ngIf="forge.hasResultMessage" (click)="forge.acknowledgeResult()">OK</button>
       </div>
     </div>
   </footer>
