@@ -2,7 +2,7 @@
   <header class="container-fluid">
     <div class="row">
       <div class="col-xs-12 wizard-step-title">
-        <h3 ><strong>{{forge.state.title}}</strong></h3>
+        <h3><strong>{{forge.state.title}}</strong></h3>
         <div class="busy-indicator">
           <div *ngIf="!forge.hasError && forge.processing===true" class="spinner spinner-lg"></div>
         </div>
@@ -11,88 +11,100 @@
     </div>
   </header>
 
-<section [class.hide]="!forge.hasProcessingMessage" class="app-generator-message container-fluid padding-top-standard-offset">
-  <div class="message-title-container">
+  <section [class.hide]="!forge.hasProcessingMessage" class="app-generator-message container-fluid padding-top-standard-offset">
+    <div class="message-title-container">
 
-    <h2 class="message-title busy-message-title">
-      <span>
-        <span>{{forge.processingMessage.title||''}}</span>
-      </span>
-    </h2>
+      <h2 class="message-title busy-message-title">
+        <span>
+          <span>{{forge.processingMessage.title||''}}</span>
+        </span>
+      </h2>
 
-  </div>
-  <div class="message-body-container no-border">
+    </div>
+    <div class="message-body-container no-border">
 
-    <div class="message-body vertical-align-center">
-      <div class="busy-indicator">
-            <div class="spinner spinner-lg"></div>
+      <div class="message-body vertical-align-center">
+        <div class="busy-indicator">
+          <div class="spinner spinner-lg"></div>
+        </div>
       </div>
+
     </div>
+  </section>
 
-  </div>
-</section>
+  <section [class.hide]="!forge.hasError" class="app-generator-message container-fluid padding-top-standard-offset">
+    <div class="message-title-container padding-standard-offset margin-bottom-standard-offset color-error color-border color-background-light">
 
-<section [class.hide]="!forge.hasError" class="app-generator-message container-fluid padding-top-standard-offset">
-  <div class="message-title-container padding-standard-offset margin-bottom-standard-offset color-error color-border color-background-light">
+      <div class="message-title user-select-none">
+        <span class="color-error fa-2x color-text pficon pficon-error-circle-o"></span>
+        <span><strong>Error! </strong> </span>
+        <span>{{forge.errorMessage.title||''}}</span>
+      </div>
 
-    <div class="message-title user-select-none">
-      <span class="color-error fa-2x color-text pficon pficon-error-circle-o"></span>
-      <span><strong>Error! </strong> </span>
-      <span >{{forge.error.title||''}}</span>
-   </div>
-
-  </div>
-  <div class="message-body-container">
-
-    <div [innerHTML]="forge.error.message" class="message-body"></div>
-
-  </div>
-</section>
-
-<section [class.hide]="!forge.hasResultMessage" class="app-generator-message container-fluid padding-top-standard-offset">
-  <div class="message-title-container padding-standard-offset margin-bottom-standard-offset color-success color-border color-background-light">
-    <div class="message-title  user-select-none">
-      <span class="color-success fa-2x color-text pficon pficon-ok"></span>
-      <span><strong>Success! </strong> </span>
-      <span >{{forge.resultMessage.title||''}}</span>
     </div>
-  </div>
-  <div class="message-body-container">
-    <div [innerHTML]="forge.resultMessage.body" class="message-body">
+    <div class="message-body-container">
+
+      <div [innerHTML]="forge.errorMessage.body" class="message-body"></div>
+
     </div>
-  </div>
-</section>
+  </section>
+
+  <section [class.hide]="!forge.hasResultMessage" class="app-generator-message container-fluid padding-top-standard-offset">
+    <div class="message-title-container padding-standard-offset margin-bottom-standard-offset color-success color-border color-background-light">
+
+      <div class="message-title  user-select-none">
+        <span class="color-success fa-2x color-text pficon pficon-ok"></span>
+        <span><strong>Success! </strong> </span>
+        <span>{{forge.resultMessage.title||''}}</span>
+      </div>
+
+    </div>
+    <div class="message-body-container">
+
+      <div [innerHTML]="forge.resultMessage.body" class="message-body"></div>
+
+    </div>
+  </section>
 
   <section [hidden]="forge.hasError||forge.hasResultMessage||forge.hasProcessingMessage" class="container-fluid padding-top-standard-offset">
     <div class="row">
       <div class="col-xs-12">
         <div class="form-horizontal">
           <div [class.has-danger]="!forge.fields[i].display.valid" class="form-group" *ngFor="let field of forge.fields; let i=index; trackBy:trackByFn">
-            <label [class.required]="forge.fields[i].display.required===true" for="{{forge.fields[i].name}}" *ngIf="field.display.showLabel!==false" [class.col-xs-4]="field.display.showLabel!==false" class="user-select-none control-label">{{field.display.label}}</label>
-            <div  [class.col-xs-8]="field.display.showLabel!==false" [class.col-xs-12]="field.display.showLabel===false"  [ngSwitch]="forge.fields[i].display.inputType ">
+            <label [class.required]="forge.fields[i].display.required===true" for="{{forge.fields[i].name}}" *ngIf="field.display.showLabel!==false"
+              [class.col-xs-4]="field.display.showLabel!==false" class="user-select-none control-label">{{field.display.label}}</label>
+            <div [class.col-xs-8]="field.display.showLabel!==false" [class.col-xs-12]="field.display.showLabel===false" [ngSwitch]="forge.fields[i].display.inputType ">
               <div *ngSwitchCase="'singleInput'" [ngSwitch]="forge.fields[i].valueType">
-                <input *ngSwitchCase="'string'" id="{{forge.fields[i].name}}" name="{{forge.fields[i].name}}" (change)="forge.validate()" (keyup.enter)="forge.validate()" [(ngModel)]="forge.fields[i].value"
-                  type="text" [class.form-control-danger]="!forge.fields[i].display.valid"  class="form-control"  placeholder="{{forge.fields[i].description}}" [disabled]="forge.fields[i].display.enabled===false" [required]="forge.fields[i].display.required"  />
-                <input *ngSwitchCase="'boolean'" style="box-shadow:none;" [class.form-control-danger]="!forge.fields[i].display.valid" (change)="forge.validate()" type="checkbox" name="{{forge.fields[i].name}}" [(ngModel)]="forge.fields[i].value" class="form-control"
-                  [required]="forge.fields[i].display.required" [disabled]="forge.fields[i].display.enabled===false" >
-                <input *ngSwitchCase="'number'" [class.form-control-danger]="!forge.fields[i].display.valid" type="number" (change)="forge.validate()" name="{{forge.fields[i].name}}" [(ngModel)]="forge.fields[i].value" class="form-control"
-                  [required]="forge.fields[i].display.required" [disabled]="forge.fields[i].display.enabled===false" >
+                <input *ngSwitchCase="'string'" id="{{forge.fields[i].name}}" name="{{forge.fields[i].name}}" (change)="forge.validate()"
+                  (keyup.enter)="forge.validate()" [(ngModel)]="forge.fields[i].value" type="text" [class.form-control-danger]="!forge.fields[i].display.valid"
+                  class="form-control" placeholder="{{forge.fields[i].description}}" [disabled]="forge.fields[i].display.enabled===false"
+                  [required]="forge.fields[i].display.required" />
+                <input *ngSwitchCase="'boolean'" style="box-shadow:none;" [class.form-control-danger]="!forge.fields[i].display.valid" (change)="forge.validate()"
+                  type="checkbox" name="{{forge.fields[i].name}}" [(ngModel)]="forge.fields[i].value" class="form-control"
+                  [required]="forge.fields[i].display.required" [disabled]="forge.fields[i].display.enabled===false">
+                <input *ngSwitchCase="'number'" [class.form-control-danger]="!forge.fields[i].display.valid" type="number" (change)="forge.validate()"
+                  name="{{forge.fields[i].name}}" [(ngModel)]="forge.fields[i].value" class="form-control" [required]="forge.fields[i].display.required"
+                  [disabled]="forge.fields[i].display.enabled===false">
               </div>
 
               <div class="combobox-container" *ngSwitchCase="'singleSelectionDropdown'">
                 <input type="hidden" name value>
                 <div [class.width-100]="forge.fields[i].display.enabled===false" class="input-group">
-                  <input type="text" [class.form-control-danger]="!forge.fields[i].display.valid" id="{{forge.fields[i].name}}" name="{{forge.fields[i].name}}" class="user-select-none" readonly="true"  (change)="forge.validate()" [disabled]="forge.fields[i].display.enabled===false"  (click)="forge.fields[i].display.open =!forge.fields[i].display.open"  [(ngModel)]="forge.fields[i].display.text" name="{{forge.fields[i].name}}" placeholder="select an option" class="combobox form-control"   >
-                  <ul class="dropdown-menu" [class.open]="forge.fields[i].display.open"  >
-                    <li class="choice-container"  (click)="forge.fields[i].display.text=choice.name;forge.fields[i].display.note=choice.description;forge.fields[i].value=choice.id;forge.fields[i].display.open=false;forge.validate();"  *ngFor="let choice of forge.fields[i].display.choices">
-                      <div  [class.selected]="forge.fields[i].value === choice.id" class="dropdown-menu-item user-select-none cursor-pointer" >
-                        <div  [class.vertical-layout]="choice.verticalLayout===true" class="choice-item">
+                  <input type="text" [class.form-control-danger]="!forge.fields[i].display.valid" id="{{forge.fields[i].name}}" name="{{forge.fields[i].name}}"
+                    class="user-select-none" readonly="true" (change)="forge.validate()" [disabled]="forge.fields[i].display.enabled===false"
+                    (click)="forge.fields[i].display.open =!forge.fields[i].display.open" [(ngModel)]="forge.fields[i].display.text"
+                    name="{{forge.fields[i].name}}" placeholder="select an option" class="combobox form-control">
+                  <ul class="dropdown-menu" [class.open]="forge.fields[i].display.open">
+                    <li class="choice-container" (click)="forge.fields[i].display.text=choice.name;forge.fields[i].display.note=choice.description;forge.fields[i].value=choice.id;forge.fields[i].display.open=false;forge.validate();"
+                      *ngFor="let choice of forge.fields[i].display.choices">
+                      <div [class.selected]="forge.fields[i].value === choice.id" class="dropdown-menu-item user-select-none cursor-pointer">
+                        <div [class.vertical-layout]="choice.verticalLayout===true" class="choice-item">
                           <div *ngIf="choice.hasIcon===true" class="choice-icon margin-right-standard-offset">
-                            <div [ngClass]="[choice.icon]"  ></div>
+                            <div [ngClass]="[choice.icon]"></div>
                           </div>
-                          <div class="choice-content"  >
-                            <div class="item-name" >{{choice.name}}</div>
-                            <div *ngIf="choice.description" class="item-description" >{{choice.description||''}}</div>
+                          <div class="choice-content">
+                            <div class="item-name">{{choice.name}}</div>
+                            <div *ngIf="choice.description" class="item-description">{{choice.description||''}}</div>
                           </div>
 
                         </div>
@@ -100,25 +112,27 @@
 
                     </li>
                   </ul>
-                  <span *ngIf="forge.fields[i].display.enabled" class="input-group-addon" (click)="forge.fields[i].display.open =!forge.fields[i].display.open" >
-                    <span class="caret"></span>
-                    <span class="glyphicon glyphicon-remove"></span>
+                  <span *ngIf="forge.fields[i].display.enabled" class="input-group-addon" (click)="forge.fields[i].display.open =!forge.fields[i].display.open">
+                      <span class="caret"></span>
+                  <span class="glyphicon glyphicon-remove"></span>
                   </span>
                 </div>
               </div>
               <div class="single-selection-list-container" *ngSwitchCase="'singleSelectionList'">
                 <div class="input-group width-100">
-                  <ul class="choice-menu" style="list-style:none;margin:0;padding:0"   >
-                    <li style="display:flex;" class="choice-container"  (click)="forge.fields[i].display.text=choice.name;forge.fields[i].display.note=choice.description;forge.fields[i].value=choice.id;forge.fields[i].display.open=false;forge.validate();"  *ngFor="let choice of forge.fields[i].display.choices">
-                      <input style="width:auto;" [checked]="forge.fields[i].value === choice.id" [value]="choice.id" type="radio"  name="{{forge.fields[i].name}}" class="user-select-none" readonly="false"  [disabled]="forge.fields[i].display.enabled===false"  class="form-control margin-right-standard-offset"   >
-                      <div style="display:inline-block;flex-grow:1"  [class.selected]="forge.fields[i].value === choice.id" class=" user-select-none cursor-pointer" >
-                        <div  [class.vertical-layout]="choice.verticalLayout===true" [class.selected]="forge.fields[i].value === choice.id" class="choice-item">
+                  <ul class="choice-menu" style="list-style:none;margin:0;padding:0">
+                    <li style="display:flex;" class="choice-container" (click)="forge.fields[i].display.text=choice.name;forge.fields[i].display.note=choice.description;forge.fields[i].value=choice.id;forge.fields[i].display.open=false;forge.validate();"
+                      *ngFor="let choice of forge.fields[i].display.choices">
+                      <input style="width:auto;" [checked]="forge.fields[i].value === choice.id" [value]="choice.id" type="radio" name="{{forge.fields[i].name}}"
+                        class="user-select-none" readonly="false" [disabled]="forge.fields[i].display.enabled===false" class="form-control margin-right-standard-offset">
+                      <div style="display:inline-block;flex-grow:1" [class.selected]="forge.fields[i].value === choice.id" class=" user-select-none cursor-pointer">
+                        <div [class.vertical-layout]="choice.verticalLayout===true" [class.selected]="forge.fields[i].value === choice.id" class="choice-item">
                           <div *ngIf="choice.hasIcon===true" class="choice-icon margin-right-standard-offset">
-                            <div [ngClass]="[choice.icon]"  ></div>
+                            <div [ngClass]="[choice.icon]"></div>
                           </div>
-                          <div class="choice-content"  >
-                            <div class="item-name" >{{choice.name}}</div>
-                            <div *ngIf="choice.description" class="item-description" >{{choice.description||''}}</div>
+                          <div class="choice-content">
+                            <div class="item-name">{{choice.name}}</div>
+                            <div *ngIf="choice.description" class="item-description">{{choice.description||''}}</div>
                           </div>
 
                         </div>
@@ -137,7 +151,8 @@
                         class="fa"></span>
                     </div>
                   </div>
-                  <input #optionFilter [class.form-control-danger]="!forge.fields[i].display.valid" id="{{forge.fields[i].name}}" name="{{forge.fields[i].name}}" class="form-control form-control-filter-input" (keyup)="filterList(forge.fields[i],optionFilter.value)"
+                  <input #optionFilter [class.form-control-danger]="!forge.fields[i].display.valid" id="{{forge.fields[i].name}}" name="{{forge.fields[i].name}}"
+                    class="form-control form-control-filter-input" (keyup)="filterList(forge.fields[i],optionFilter.value)"
                   />
                   <div class="input-group-btn">
                     <div class="btn btn-default btn-sm btn-right-multi-select-button">
@@ -148,23 +163,23 @@
                 <!--included list-->
                 <div style="display:flex;flex-direction:row;flex-wrap:wrap; justify-content:start;" class="included-list">
                   <span class="btn btn-primary btn-sm" (click)="deselectOption(forge.fields[i],choice)" *ngFor="let choice of forge.fields[i].display.choices|selectedItems">
-                    <span class="pficon pficon-close"  ></span> {{choice.id}}
+                      <span class="pficon pficon-close"  ></span> {{choice.id}}
                   </span>
                 </div>
                 <!--filtered list-->
                 <div class="excluded-list">
                   <div [class.selected]="choice.selected" *ngFor="let choice of forge.fields[i].display.choices|visibleItems">
                     <label (click)="toggleOption(forge.fields[i],choice)" class="unselectedOption">
-                    <span style="padding-left:5px;padding-right:5px;" class="fa"
-                          [class.fa-check-square-o]="choice.selected"
-                          [class.fa-square-o]="!choice.selected"></span>
-                    {{choice.id}}
-                  </label>
+                      <span style="padding-left:5px;padding-right:5px;" class="fa"
+                            [class.fa-check-square-o]="choice.selected"
+                            [class.fa-square-o]="!choice.selected"></span>
+                      {{choice.id}}
+                    </label>
                   </div>
                 </div>
               </div>
               <small class="form-text text-muted user-select-none" *ngIf="forge.fields[i].display.note"><span class="color-info fa fa-info-circle"></span> <i>{{forge.fields[i].display.note}}</i></small>
-              <div *ngIf="!forge.fields[i].display.valid" style="position:relative;height:auto;display:block;" class="form-control-feedback user-select-none"  >
+              <div *ngIf="!forge.fields[i].display.valid" style="position:relative;height:auto;display:block;" class="form-control-feedback user-select-none">
                 {{forge.fields[i].display.message.description}}
               </div>
             </div>
@@ -176,13 +191,14 @@
   <footer class="container-fluid">
     <div class="row">
       <div class="col-xs-12 wizard-step-tool-bar with-items-at-end">
-        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResultMessage && !forge.hasProcessingMessage" (click)="forge.cancel()">Cancel</button>
+        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResultMessage && !forge.hasProcessingMessage"
+          (click)="forge.cancel()">Cancel</button>
         <!--<button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResultMessage !forge.hasProcessingMessage" [disabled]="(!forge.state.canMoveToPreviousStep)||(forge.processing === true)"
-          (click)="forge.gotoPreviousStep()">Back</button>-->
-        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResultMessage && !forge.hasProcessingMessage" [disabled]="(!forge.state.canMoveToNextStep)||(forge.processing === true)"
-          (click)="forge.gotoNextStep()">Next</button>
-        <button type="button" class="btn btn-primary" *ngIf="!forge.hasError && !forge.hasResultMessage && !forge.hasProcessingMessage" [disabled]="(!forge.state.canExecute)||(forge.processing === true)"
-          (click)="forge.finish()">Finish</button>
+            (click)="forge.gotoPreviousStep()">Back</button>-->
+        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResultMessage && !forge.hasProcessingMessage"
+          [disabled]="(!forge.state.canMoveToNextStep)||(forge.processing === true)" (click)="forge.gotoNextStep()">Next</button>
+        <button type="button" class="btn btn-primary" *ngIf="!forge.hasError && !forge.hasResultMessage && !forge.hasProcessingMessage"
+          [disabled]="(!forge.state.canExecute)||(forge.processing === true)" (click)="forge.finish()">Finish</button>
         <button type="button" class="btn btn-primary" *ngIf="forge.hasError" (click)="forge.acknowledgeError()">OK</button>
         <!--<button class='btn btn-primary margin-right-5' *ngIf="forge.hasResultMessage" (click)="forge.addResultToSpace()"><span class="pficon pficon-add-circle-o" ></span> Add this code base to my space</button>-->
         <button type="button" class="btn btn-primary" *ngIf="forge.hasResultMessage" (click)="forge.acknowledgeResult()">OK</button>

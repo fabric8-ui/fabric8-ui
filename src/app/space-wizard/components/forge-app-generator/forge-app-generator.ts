@@ -27,7 +27,7 @@ export class ForgeAppGenerator {
 
 
   public hasError: boolean;
-  public error: IAppGeneratorError;
+  public errorMessage: IAppGeneratorMessage;
 
   public hasResultMessage: boolean;
   public resultMessage: IAppGeneratorMessage;
@@ -48,8 +48,8 @@ export class ForgeAppGenerator {
     this.state = {
       canExecute: false,
       isExecute: false,
-      canMovePreviousStep : false ,
-      canMoveToNextStep : false,
+      canMovePreviousStep: false,
+      canMoveToNextStep: false,
       currentStep: 0,
       steps: [''],
       title: '',
@@ -58,7 +58,7 @@ export class ForgeAppGenerator {
     } as IAppGeneratorState;
 
     this.fields = [];
-    this.clearErrors();
+    this.clearErrorView();
     this.clearResult();
     this.clearProcessingView();
     this.processing = false;
@@ -80,12 +80,6 @@ export class ForgeAppGenerator {
     this._fieldSet = value;
   }
 
-  public clearErrors() {
-    this.hasError = false;
-    this.error = this.error || {} as IAppGeneratorError;
-    this.error.title = '';
-    this.error.message = '';
-  }
 
 
   public clearResult() {
@@ -99,7 +93,7 @@ export class ForgeAppGenerator {
     this.responseHistory = [];
     this._currentResponse = null;
     this.fields = [];
-    this.clearErrors();
+    this.clearErrorView();
     this.clearResult();
     this.clearProcessingView();
   }
@@ -108,8 +102,8 @@ export class ForgeAppGenerator {
    * and acknowldge will take back to the forge selector
    */
   public acknowledgeError() {
-    this.clearErrors();
-    if ( this.onBeginStep ) {
+    this.clearErrorView();
+    if (this.onBeginStep) {
       this.reset();
       // go back to forge selector
       this.workflow.gotoPreviousStep();
@@ -124,17 +118,17 @@ export class ForgeAppGenerator {
 
   public finish() {
     this.execute()
-    .then((execution)=>this.createCodeBase(execution))
-    .then((result)=>{
-       this.workflow.finish();
-    })
+      .then((execution) => this.createCodeBase(execution))
+      .then((result) => {
+        this.workflow.finish();
+      })
   }
 
-  public createCodeBase(execution:IAppGeneratorPair):Promise<object>{
+  public createCodeBase(execution: IAppGeneratorPair): Promise<object> {
     return new Promise<object>((resolve, reject) => {
       this.log('Creating codebase ...')
       resolve({
-        complete:true
+        complete: true
       } as Object);
     });
   }
@@ -165,25 +159,25 @@ export class ForgeAppGenerator {
     let commandInfo = `${request.command.name}`;
     this.log(`Begin request for command ${commandInfo}.`, request);
     return this._appGeneratorService.getFields(request)
-    .subscribe(response => {
-      this.log(`Begin response for command ${commandInfo}.`, request);
-      this.applyTheNextCommandResponse({ request, response });
-      // do an initial validate
-      title = this.state.title;
-      this.processingMessage.title = `Validating ...`;
-      this.validate(false).then( (validation) => {
-        this.state.title = title;
-        this.clearProcessingView();
+      .subscribe(response => {
+        this.log(`Begin response for command ${commandInfo}.`, request);
+        this.applyTheNextCommandResponse({ request, response });
+        // do an initial validate
+        title = this.state.title;
+        this.processingMessage.title = `Validating ...`;
+        this.validate(false).then((validation) => {
+          this.state.title = title;
+          this.clearProcessingView();
+        }, (error) => {
+          this.state.title = title;
+          this.clearProcessingView();
+          this.displayErrorView(error);
+        });
       }, (error) => {
         this.state.title = title;
         this.clearProcessingView();
-        this.handleError(error);
+        this.displayErrorView(error);
       });
-    }, (error) => {
-        this.state.title = title;
-      this.clearProcessingView();
-      this.handleError(error);
-    });
   }
 
   public gotoPreviousStep() {
@@ -195,10 +189,10 @@ export class ForgeAppGenerator {
 
   public gotoNextStep() {
     this.onBeginStep = false;
-    this.processing  = false;
+    this.processing = false;
     this.displayProcessingView('Validating ...');
     this.validate(false).then((validated) => {
-      if (validated.response.payload.state.valid ) {
+      if (validated.response.payload.state.valid) {
         // if validation succeeded
         // this.processing = true;
         let nextCommand: IAppGeneratorCommand = this._currentResponse.context.nextCommand;
@@ -210,8 +204,7 @@ export class ForgeAppGenerator {
         };
         // add the accumulated validation fields to the 'next' command
         let validationCommand: IAppGeneratorCommand = this._currentResponse.context.validationCommand;
-        for ( let field of validationCommand.parameters.fields)
-        {
+        for (let field of validationCommand.parameters.fields) {
           let requestField = nextCommand.parameters.fields.find((f) => f.name === field.name);
           if (!requestField) {
             nextCommand.parameters.fields.push(field);
@@ -229,17 +222,17 @@ export class ForgeAppGenerator {
         //
         let cmdInfo = `${nextCommand.name} :: ${nextCommand.parameters.pipeline.step.name} :: ${nextCommand.parameters.pipeline.step.index}`;
         this.log(`Next request for command ${cmdInfo}.`, request, console.group);
-        this.processingMessage.title = `Loading the next step ...`;
-        this._appGeneratorService.getFields( request )
-          .subscribe( (response) => {
+        this.displayProcessingView('Loading the next step ...');
+        this._appGeneratorService.getFields(request)
+          .subscribe((response) => {
             this.log(`Next response for command ${cmdInfo}.`, request);
-            this.applyTheNextCommandResponse( { request, response } );
+            this.applyTheNextCommandResponse({ request, response });
             this.clearProcessingView();
             this.processing = false;
           }, (error) => {
             this.clearProcessingView();
             this.processing = false;
-            this.handleError(error);
+            this.displayErrorView(error);
           });
 
       } else {
@@ -250,13 +243,13 @@ export class ForgeAppGenerator {
     }).catch(error => {
       this.processing = false;
       this.clearProcessingView();
-      this.handleError(error);
-      this.log({ message: error.message, warning: true } );
+      this.displayErrorView(error);
+      this.log({ message: error.message, warning: true });
     });
 
   }
 
-public execute() {
+  public execute() {
     this.onBeginStep = false;
     return new Promise<IAppGeneratorPair>((resolve, reject) => {
 
@@ -273,8 +266,7 @@ public execute() {
           };
           // add the accumulated validation fields to the 'next' command
           let validationCommand: IAppGeneratorCommand = this._currentResponse.context.validationCommand;
-          for ( let field of validationCommand.parameters.fields)
-          {
+          for (let field of validationCommand.parameters.fields) {
             let requestField = executeCommand.parameters.fields.find((f) => f.name === field.name);
             if (!requestField) {
               executeCommand.parameters.fields.push(field);
@@ -293,35 +285,34 @@ public execute() {
           let cmdInfo = `${executeCommand.name}:${executeCommand.parameters.pipeline.step.name}:${executeCommand.parameters.pipeline.step.index}`;
           this.displayProcessingView('Generating ...');
           this.log(`Execute request for command ${cmdInfo}.`, request, console.group);
-          this._appGeneratorService.getFields( request )
-            .subscribe( (response) => {
-              this.log(`Execute response for command ${cmdInfo}.`, response , console.groupEnd);
+          this._appGeneratorService.getFields(request)
+            .subscribe((response) => {
+              this.log(`Execute response for command ${cmdInfo}.`, response, console.groupEnd);
 
-              this.applyTheExecuteCommandResponse({request, response});
+              this.applyTheExecuteCommandResponse({ request, response });
               this.state.title = 'Application Generator Results';
-              resolve({request, response});
+              resolve({ request, response });
               this.clearProcessingView();
             }, (error) => {
               this.clearProcessingView();
-              this.handleError(error);
+              this.displayErrorView(error);
             });
         } else {
           this.clearProcessingView();
         }
       }).catch(error => {
         this.clearProcessingView();
-        this.handleError(error);
-        this.log({ message: error.message, warning: true } );
+        this.displayErrorView(error);
+        this.log({ message: error.message, warning: true });
       });
     });
   }
 
-  public validate(showProcessing: boolean = true) {
+  public validate(showProcessingIndicator: boolean = true) {
     return new Promise<IAppGeneratorPair>((resolve, reject) => {
       // update the values to be validated
       let cmd: IAppGeneratorCommand = this._currentResponse.context.validationCommand;
-      for ( let field of this.fields)
-      {
+      for (let field of this.fields) {
         let requestField = cmd.parameters.fields.find((f) => f.name === field.name);
         requestField.value = field.value;
       }
@@ -330,10 +321,10 @@ public execute() {
         command: cmd
       };
       let commandInfo = `${cmd.name}:${cmd.parameters.pipeline.step.name}:${cmd.parameters.pipeline.step.index}`;
-      this.log(`Validation request for command ${commandInfo}.`, request, console.group );
-      this.processing = showProcessing;
-      this._appGeneratorService.getFields( request )
-        .subscribe( (response) => {
+      this.log(`Validation request for command ${commandInfo}.`, request, console.group);
+      this.processing = showProcessingIndicator;
+      this._appGeneratorService.getFields(request)
+        .subscribe((response) => {
           let validationState = response.payload.state;
           this.log({
             message: `Validation response for command ${commandInfo}.`,
@@ -347,34 +338,35 @@ public execute() {
           this.state.canMovePreviousStep = validationState.canMovePreviousStep;
           this.state.valid = validationState.valid;
           // update any fields with the same name
-          for ( let field of this.fields) {
+          for (let field of this.fields) {
             let found = response.payload.fields.find((f) => f.name === field.name);
             field.display = found.display;
             field.value = found.value;
           }
-          resolve({request, response});
+          resolve({ request, response });
           this.processing = false;
 
-        }, ( error => {
+        }, (error => {
           this.processing = false;
           reject({
             name: 'Validation Error',
             message: 'Something went wrong while attempting to validate the request.',
-            inner: error} );
+            inner: error
+          });
         }));
     });
   }
 
 
-  private applyTheNextCommandResponse( next: IAppGeneratorPair ) {
+  private applyTheNextCommandResponse(next: IAppGeneratorPair) {
 
     let cmd: IAppGeneratorCommand = next.response.context.currentCommand;
 
     this.state = next.response.payload.state;
     let previousResponse = this._currentResponse;
-    if ( previousResponse ) {
-        this.responseHistory.push(previousResponse);
-        this.log(`Stored fieldset[${previousResponse.payload.fields.length}] into fieldset history
+    if (previousResponse) {
+      this.responseHistory.push(previousResponse);
+      this.log(`Stored fieldset[${previousResponse.payload.fields.length}] into fieldset history
                   ... there are ${this.responseHistory.length} responses in history ...`);
 
     }
@@ -382,7 +374,7 @@ public execute() {
     this.fields = next.response.payload.fields;
   }
 
-  private applyTheExecuteCommandResponse( execution: IAppGeneratorPair ) {
+  private applyTheExecuteCommandResponse(execution: IAppGeneratorPair) {
     let results = execution.response.payload.results || [];
     let buildHyperlink = (obj, property) => {
       if ((obj[property] || '').toString().toLowerCase().startsWith('http')) {
@@ -391,44 +383,29 @@ public execute() {
         return obj[property];
       }
     };
-    if ( results.length > 0 ) {
-      // let msg = `<span class='wizard-status-success'>[SUCCESS]</span> :`;
+    if (results.length > 0) {
       let msg = ``;
       for (let response of results.filter(r => r !== null)) {
-        if ( Array.isArray(response) ) {
+        if (Array.isArray(response)) {
           continue;
         }
         for (let property in response) {
           if (Array.isArray(response[property])) {
             continue;
           }
-          if ( response.hasOwnProperty(property) ) {
+          if (response.hasOwnProperty(property)) {
             msg = `${msg}\n<span class='wizard-result-property-name'>${property}</span>${buildHyperlink(response, property)}`;
           }
         }
       }
       this.resultMessage = {
         title: `A starter application was created.`,
-        //body: this.formatConsoleText(`\n`, `${msg}`)
         body: `${msg}`
       } as IAppGeneratorMessage;
       this.hasResultMessage = true;
     }
   }
 
-  private displayProcessingView(title: string) {
-    this.hasProcessingMessage = true;
-    this.processingMessage = this.processingMessage || {} as IAppGeneratorMessage;
-    this.processingMessage.title = title;
-    this.processingMessage.body = '';
-  }
-
-  private clearProcessingView() {
-    this.hasProcessingMessage = false;
-    this.processingMessage = this.processingMessage || {} as IAppGeneratorMessage;
-    this.processingMessage.title = '';
-    this.processingMessage.body = '';
-  }
 
 
   private get responseHistory(): Array<IAppGeneratorResponse> {
@@ -446,19 +423,19 @@ public execute() {
   private filterObjectProperties(source): any {
     let target: any = {};
     if (source.hasOwnProperty('name')) {
-       target.name = '';
+      target.name = '';
     }
     if (source.hasOwnProperty('origin')) {
-       target.origin = '';
+      target.origin = '';
     }
     if (source.hasOwnProperty('message')) {
-       target.message = '';
+      target.message = '';
     }
     if (source.hasOwnProperty('stack')) {
-       target.stack = '';
+      target.stack = '';
     }
     if (source.hasOwnProperty('inner')) {
-       target.inner = '';
+      target.inner = '';
     }
     for (let p of Object.getOwnPropertyNames(source)) {
       if (p.startsWith('_')) {
@@ -475,8 +452,8 @@ public execute() {
         for (let i of source[p]) {
           target[p].push(this.filterObjectProperties(i));
         }
-      } else if (typeof(source[p]) !== 'function') {
-        if (typeof(source[p]) === 'object') {
+      } else if (typeof (source[p]) !== 'function') {
+        if (typeof (source[p]) === 'object') {
           target[p] = this.filterObjectProperties(source[p]);
         } else {
           target[p] = source[p];
@@ -486,29 +463,45 @@ public execute() {
     return target;
   }
 
-  private handleError(error): Observable<any> {
+
+  private displayProcessingView(title: string) {
+    this.hasProcessingMessage = true;
+    this.processingMessage = this.processingMessage || {} as IAppGeneratorMessage;
+    this.processingMessage.title = title;
+    this.processingMessage.body = '';
+  }
+
+  private clearProcessingView() {
+    this.hasProcessingMessage = false;
+    this.processingMessage = this.processingMessage || {} as IAppGeneratorMessage;
+    this.processingMessage.title = '';
+    this.processingMessage.body = '';
+  }
+
+  private displayErrorView(error) {
     this.log({ message: error.message, inner: error.inner, error: true });
     this.state.title = 'Application Generator Error';
     this.hasError = true;
-    this.error = {
+    this.errorMessage = {
       title: `Something went wrong while attempting to perform this operation ...`,
-      message: [
+      body: [
         `<div class='message-status-failed' ><strong>${error.name}</strong></div>`,
         `<div class='message-status-failed' ><strong>${error.message || 'No details available.'}</strong></div>`,
         `<div class='message-details' >${this.formatJson(this.filterObjectProperties(error.inner))}</div>`
-        ].join('')
-    } as IAppGeneratorError;
-    this.error.message=this.error.message.replace(/SUCCESS/g,'<span class="message-status-success" ><strong>SUCCESS</strong></span>')
-    this.error.message=this.error.message.replace(/FAILED/g,'<span class="message-status-failed" ><strong>FAILED</strong></span>')
-    return Observable.empty();
+      ].join('')
+    } as IAppGeneratorMessage;
+    this.errorMessage.body = this.errorMessage.body.replace(/SUCCESS/g, '<span class="message-status-success" ><strong>SUCCESS</strong></span>');
+    this.errorMessage.body = this.errorMessage.body.replace(/FAILED/g, '<span class="message-status-failed" ><strong>FAILED</strong></span>');
   }
 
-  // private formatConsoleText(...lines: string[]) {
-  //   lines = lines || [];
-  //   return lines.join('\n');
-  // }
+  private clearErrorView() {
+    this.hasError = false;
+    this.errorMessage = this.errorMessage || {} as IAppGeneratorMessage;
+    this.errorMessage.title = '';
+    this.errorMessage.body = '';
+  }
 
-  private formatJson(source: any, indent: number= 0): string {
+  private formatJson(source: any, indent: number = 0): string {
     return formatJson(source);
   }
 
