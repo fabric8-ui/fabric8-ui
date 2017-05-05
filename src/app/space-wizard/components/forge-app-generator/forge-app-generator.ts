@@ -316,7 +316,7 @@ public execute() {
     });
   }
 
-  public validate(showProcessing: Boolean = true) {
+  public validate(showProcessing: boolean = true) {
     return new Promise<IAppGeneratorPair>((resolve, reject) => {
       // update the values to be validated
       let cmd: IAppGeneratorCommand = this._currentResponse.context.validationCommand;
