@@ -26,14 +26,14 @@ export class ForgeAppGenerator {
   public state: IAppGeneratorState;
 
 
-  public hasError: Boolean;
+  public hasError: boolean;
   public error: IAppGeneratorError;
 
-  public hasResultMessage: Boolean;
+  public hasResultMessage: boolean;
   public resultMessage: IAppGeneratorMessage;
 
-  public processing: Boolean = false;
-  public hasProcessingMessage: Boolean;
+  public processing: boolean = false;
+  public hasProcessingMessage: boolean;
   public processingMessage: IAppGeneratorMessage;
 
   private _fieldSet: IFieldCollection;
