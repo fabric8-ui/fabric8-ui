@@ -26,7 +26,7 @@ export class ForgeAppGenerator {
   public state: IAppGeneratorState;
 
 
-  public hasError: boolean;
+  public hasErrorMessage: boolean;
   public errorMessage: IAppGeneratorMessage;
 
   public hasResultMessage: boolean;
@@ -157,10 +157,10 @@ export class ForgeAppGenerator {
       }
     };
     let commandInfo = `${request.command.name}`;
-    this.log(`Begin request for command ${commandInfo}.`, request);
+    this.log(`Begin request for command ${commandInfo}.`, request,console.groupCollapsed);
     return this._appGeneratorService.getFields(request)
       .subscribe(response => {
-        this.log(`Begin response for command ${commandInfo}.`, request);
+        this.log(`Begin response for command ${commandInfo}.`, request,console.groupEnd);
         this.applyTheNextCommandResponse({ request, response });
         // do an initial validate
         title = this.state.title;
@@ -221,11 +221,11 @@ export class ForgeAppGenerator {
         }
         //
         let cmdInfo = `${nextCommand.name} :: ${nextCommand.parameters.pipeline.step.name} :: ${nextCommand.parameters.pipeline.step.index}`;
-        this.log(`Next request for command ${cmdInfo}.`, request, console.group);
+        this.log(`Next request for command ${cmdInfo}.`, request, console.groupCollapsed);
         this.displayProcessingView('Loading the next step ...');
         this._appGeneratorService.getFields(request)
           .subscribe((response) => {
-            this.log(`Next response for command ${cmdInfo}.`, request);
+            this.log(`Next response for command ${cmdInfo}.`, request ,console.groupEnd);
             this.applyTheNextCommandResponse({ request, response });
             this.clearProcessingView();
             this.processing = false;
@@ -284,7 +284,7 @@ export class ForgeAppGenerator {
 
           let cmdInfo = `${executeCommand.name}:${executeCommand.parameters.pipeline.step.name}:${executeCommand.parameters.pipeline.step.index}`;
           this.displayProcessingView('Generating ...');
-          this.log(`Execute request for command ${cmdInfo}.`, request, console.group);
+          this.log(`Execute request for command ${cmdInfo}.`, request, console.groupCollapsed);
           this._appGeneratorService.getFields(request)
             .subscribe((response) => {
               this.log(`Execute response for command ${cmdInfo}.`, response, console.groupEnd);
@@ -321,7 +321,7 @@ export class ForgeAppGenerator {
         command: cmd
       };
       let commandInfo = `${cmd.name}:${cmd.parameters.pipeline.step.name}:${cmd.parameters.pipeline.step.index}`;
-      this.log(`Validation request for command ${commandInfo}.`, request, console.group);
+      this.log(`Validation request for command ${commandInfo}.`, request, console.groupCollapsed);
       this.processing = showProcessingIndicator;
       this._appGeneratorService.getFields(request)
         .subscribe((response) => {
@@ -481,7 +481,7 @@ export class ForgeAppGenerator {
   private displayErrorView(error) {
     this.log({ message: error.message, inner: error.inner, error: true });
     this.state.title = 'Application Generator Error';
-    this.hasError = true;
+    this.hasErrorMessage = true;
     this.errorMessage = {
       title: `Something went wrong while attempting to perform this operation ...`,
       body: [
@@ -495,7 +495,7 @@ export class ForgeAppGenerator {
   }
 
   private clearErrorView() {
-    this.hasError = false;
+    this.hasErrorMessage = false;
     this.errorMessage = this.errorMessage || {} as IAppGeneratorMessage;
     this.errorMessage.title = '';
     this.errorMessage.body = '';

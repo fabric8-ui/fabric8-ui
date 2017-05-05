@@ -4,7 +4,7 @@
       <div class="col-xs-12 wizard-step-title">
         <h3><strong>{{forge.state.title}}</strong></h3>
         <div class="busy-indicator">
-          <div *ngIf="!forge.hasError && forge.processing===true" class="spinner spinner-lg"></div>
+          <div *ngIf="!forge.hasErrorMessage && forge.processing===true" class="spinner spinner-lg"></div>
         </div>
         <span (click)="forge.close()" class="pficon pficon-close"></span>
       </div>
@@ -15,9 +15,7 @@
     <div class="message-title-container">
 
       <h2 class="message-title busy-message-title">
-        <span>
-          <span>{{forge.processingMessage.title||''}}</span>
-        </span>
+        <span>{{forge.processingMessage.title||''}}</span>
       </h2>
 
     </div>
@@ -32,7 +30,7 @@
     </div>
   </section>
 
-  <section [class.hide]="!forge.hasError" class="app-generator-message container-fluid padding-top-standard-offset">
+  <section [class.hide]="!forge.hasErrorMessage" class="app-generator-message container-fluid padding-top-standard-offset">
     <div class="message-title-container padding-standard-offset margin-bottom-standard-offset color-error color-border color-background-light">
 
       <div class="message-title user-select-none">
@@ -66,7 +64,7 @@
     </div>
   </section>
 
-  <section [hidden]="forge.hasError||forge.hasResultMessage||forge.hasProcessingMessage" class="container-fluid padding-top-standard-offset">
+  <section [hidden]="forge.hasErrorMessage||forge.hasResultMessage||forge.hasProcessingMessage" class="container-fluid padding-top-standard-offset">
     <div class="row">
       <div class="col-xs-12">
         <div class="form-horizontal">
@@ -191,15 +189,15 @@
   <footer class="container-fluid">
     <div class="row">
       <div class="col-xs-12 wizard-step-tool-bar with-items-at-end">
-        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResultMessage && !forge.hasProcessingMessage"
+        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasErrorMessage && !forge.hasResultMessage && !forge.hasProcessingMessage"
           (click)="forge.cancel()">Cancel</button>
-        <!--<button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResultMessage !forge.hasProcessingMessage" [disabled]="(!forge.state.canMoveToPreviousStep)||(forge.processing === true)"
+        <!--<button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasErrorMessage && !forge.hasResultMessage !forge.hasProcessingMessage" [disabled]="(!forge.state.canMoveToPreviousStep)||(forge.processing === true)"
             (click)="forge.gotoPreviousStep()">Back</button>-->
-        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasError && !forge.hasResultMessage && !forge.hasProcessingMessage"
+        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasErrorMessage && !forge.hasResultMessage && !forge.hasProcessingMessage"
           [disabled]="(!forge.state.canMoveToNextStep)||(forge.processing === true)" (click)="forge.gotoNextStep()">Next</button>
-        <button type="button" class="btn btn-primary" *ngIf="!forge.hasError && !forge.hasResultMessage && !forge.hasProcessingMessage"
+        <button type="button" class="btn btn-primary" *ngIf="!forge.hasErrorMessage && !forge.hasResultMessage && !forge.hasProcessingMessage"
           [disabled]="(!forge.state.canExecute)||(forge.processing === true)" (click)="forge.finish()">Finish</button>
-        <button type="button" class="btn btn-primary" *ngIf="forge.hasError" (click)="forge.acknowledgeError()">OK</button>
+        <button type="button" class="btn btn-primary" *ngIf="forge.hasErrorMessage" (click)="forge.acknowledgeError()">OK</button>
         <!--<button class='btn btn-primary margin-right-5' *ngIf="forge.hasResultMessage" (click)="forge.addResultToSpace()"><span class="pficon pficon-add-circle-o" ></span> Add this code base to my space</button>-->
         <button type="button" class="btn btn-primary" *ngIf="forge.hasResultMessage" (click)="forge.acknowledgeResult()">OK</button>
       </div>
