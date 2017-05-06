@@ -11,17 +11,14 @@
     </div>
   </header>
 
-  <section [class.hide]="!forge.hasProcessingMessage" class="app-generator-message container-fluid padding-top-standard-offset">
+  <section [class.hide]="!forge.hasProcessingMessage" class="app-generator-message app-generator-message-processing">
     <div class="message-title-container">
-
-      <h2 class="message-title busy-message-title">
-        <span>{{forge.processingMessage.title||''}}</span>
-      </h2>
-
+      <div class="message-title">
+        <span class="message-title-text" >{{forge.processingMessage.title||''}}</span>
+      </div>
     </div>
-    <div class="message-body-container no-border">
-
-      <div class="message-body vertical-align-center">
+    <div class="message-body-container">
+      <div class="message-body">
         <div class="busy-indicator">
           <div class="spinner spinner-lg"></div>
         </div>
@@ -30,13 +27,13 @@
     </div>
   </section>
 
-  <section [class.hide]="!forge.hasErrorMessage" class="app-generator-message container-fluid padding-top-standard-offset">
-    <div class="message-title-container padding-standard-offset margin-bottom-standard-offset color-error color-border color-background-light">
+  <section [class.hide]="!forge.hasErrorMessage" class="app-generator-message app-generator-message-error">
+    <div class="message-title-container">
 
-      <div class="message-title user-select-none">
-        <span class="color-error fa-2x color-text pficon pficon-error-circle-o"></span>
-        <span><strong>Error! </strong> </span>
-        <span>{{forge.errorMessage.title||''}}</span>
+      <div class="message-title">
+        <span class="message-title-icon fa-2x pficon pficon-error-circle-o"></span>
+        <span class="message-title-icon-label" >Error!</span>
+        <span class="message-title-text" >{{forge.errorMessage.title||''}}</span>
       </div>
 
     </div>
@@ -47,20 +44,17 @@
     </div>
   </section>
 
-  <section [class.hide]="!forge.hasResultMessage" class="app-generator-message container-fluid padding-top-standard-offset">
-    <div class="message-title-container padding-standard-offset margin-bottom-standard-offset color-success color-border color-background-light">
-
-      <div class="message-title  user-select-none">
-        <span class="color-success fa-2x color-text pficon pficon-ok"></span>
-        <span><strong>Success! </strong> </span>
-        <span>{{forge.resultMessage.title||''}}</span>
+  <section [class.hide]="!forge.hasResultMessage" class="app-generator-message app-generator-message-success">
+    <div class="message-title-container">
+      <div class="message-title">
+        <span class="message-title-icon fa-2x pficon pficon-ok"></span>
+        <span class="message-title-icon-label" >Success!</span>
+        <span class="message-title-text">{{forge.resultMessage.title||''}}</span>
       </div>
-
     </div>
     <div class="message-body-container">
-
-      <div [innerHTML]="forge.resultMessage.body" class="message-body"></div>
-
+      <div [innerHTML]="forge.resultMessage.body" class="message-body">
+      </div>
     </div>
   </section>
 

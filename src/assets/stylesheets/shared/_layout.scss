@@ -402,46 +402,73 @@ $wizard-footer-divider-color: $color-pf-black-300;// $color-pf-black-200;
     margin-right: 0;
   }
 }
-$color-error-light:lighter(#e26f6f, 50%);//lighter($color-pf-red,30%);
-.color-error {
-  &.color-text{ color: $color-pf-red; }
-  &.color-border {
+
+// $color-error-light:lighter(#E26F6F,50%);//lighter($color-pf-red,30%);
+.color-error
+{
+  &.color-text{
+    color:$color-pf-red;
+  }
+//   &.color-border{
     border: solid 1px;
-    border-color: $color-pf-red;
+    border: solid 1px $color-pf-red;
+//   }
+  &.color-background-light{
+    background-color:$color-error-light;//$color-pf-black-200;
   }
-  &.color-background-light { background-color: $color-error-light; }
-}
-.color-success {
-  &.color-text { color: $color-pf-green; }
-  &.color-border {
+// }
+.color-success
+{
+  &.color-text{
+    color:$color-pf-green;
+  }
+//   &.color-border{
     border: solid 1px;
-    border-color: $color-pf-green;
+    border: solid 1px $color-pf-green;
+//   }
+  &.color-background-light{
+    background-color:#EAF4EA;//$color-pf-light-green-100;
   }
-  &.color-background-light { background-color: #eaf4ea; }
-}
-span,
-div {
-  &.message-status-success{ color: $color-pf-green; }
-  &.message-status-failed { color: $color-pf-red; }
-  &.message-status-warning { color: $color-pf-gold; }
-  &.wizard-result-property-name {
-    display: inline-block;
-    min-width: 200px;
-    text-align: left;
+// }
+span,div
+{
+  &.message-status-success{
+    color:$color-pf-green;
   }
-  &.wizard-property-name {
-    font-weight: bold;
+  &.message-status-failed{
+    color:$color-pf-red;
+  }
+  &.message-status-warning
+  {
+    color:$color-pf-gold;
+  }
+  &.wizard-result-property-name
+  {
+//     display:inline-block;
+//     min-width:200px;
+//     text-align: left;
+//   }
+  &.wizard-result-property-value
+  {
+  }
+  &.wizard-result-property-value-link
+  {
+  }
+//   &.wizard-property-name{
+    color:$color-pf-blue;
+//     font-weight: bold;
     color: $color-pf-blue;
-  }
-  &.wizard-property-value {
-    color: $color-pf-black;
-    &.with-exception{
-      font-weight: bold;
-      font-style: italic;
+//   }
+//   &.wizard-property-value{
+//     color:$color-pf-black;
+//     &.with-exception{
+      color:$color-pf-red;
+//       font-weight:bold;
+//       font-style: italic;
       color: $color-pf-red;
-    }
-  }
-}
+//     }
+//   }
+// }
 .cursor-pointer { cursor: pointer; }
 .user-select-none {
     -webkit-touch-callout: none;

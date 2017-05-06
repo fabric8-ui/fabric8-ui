@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
 import { IWorkflow } from '../../models/workflow';
 import { formatJson } from '../../common/utilities';
-
+import * as _ from 'lodash';
 import {
   IAppGeneratorCommand,
   IAppGeneratorPair,
@@ -31,6 +31,8 @@ export class ForgeAppGenerator {
 
   public hasResultMessage: boolean;
   public resultMessage: IAppGeneratorMessage;
+  public result:any;
+
 
   public processing: boolean = false;
   public hasProcessingMessage: boolean;
@@ -376,33 +378,57 @@ export class ForgeAppGenerator {
 
   private applyTheExecuteCommandResponse(execution: IAppGeneratorPair) {
     let results = execution.response.payload.results || [];
-    let buildHyperlink = (obj, property) => {
-      if ((obj[property] || '').toString().toLowerCase().startsWith('http')) {
-        return `<a class=' wizard-result-property-value wizard-result-property-value-link' target='_blank' href='${obj[property]}' > ${obj[property]} </a> `;
+    let buildHyperlink = (value) => {
+      if ((value || '').toString().toLowerCase().startsWith('http')) {
+        return `<a class="property-value property-value-result property-value-link" target="_blank" href="${value}" >${value}</a>`;
       } else {
-        return obj[property];
+        return `<span class="property-value property-value-result" >${value}</span>`;
       }
     };
+    let result = {};
+    let resultMessageProperties = [];
     if (results.length > 0) {
       let msg = ``;
       for (let response of results.filter(r => r !== null)) {
         if (Array.isArray(response)) {
           continue;
         }
-        for (let property in response) {
-          if (Array.isArray(response[property])) {
+        for (let key in response) {
+          if (Array.isArray(response[key])) {
             continue;
           }
-          if (response.hasOwnProperty(property)) {
-            msg = `${msg}\n<span class='wizard-result-property-name'>${property}</span>${buildHyperlink(response, property)}`;
+          if (response.hasOwnProperty(key)) {
+            if(!result[key]) {
+              resultMessageProperties.push( {
+                name:key,
+                label:_.replace(_.capitalize( _.kebabCase(key)),/\-/g,' '),
+                value:response[key]
+              });
+              result[key] = response[key];
+           }
           }
         }
       }
+      // sort labels alphabetically
+      resultMessageProperties.sort((a,b) => {
+        if(a.label < b.label){
+          return -1;
+        }
+        if(a.label > b.label){
+          return 1;
+        }
+        return 0;
+      });
+      resultMessageProperties.forEach(property=>{
+        msg = `${msg}\n<span class="property-name property-name-result" >${property.label}</span>${buildHyperlink(property.value)}`;
+      });
+
       this.resultMessage = {
         title: `A starter application was created.`,
         body: `${msg}`
       } as IAppGeneratorMessage;
       this.hasResultMessage = true;
+      this.result = result;
     }
   }
 
@@ -485,13 +511,13 @@ export class ForgeAppGenerator {
     this.errorMessage = {
       title: `Something went wrong while attempting to perform this operation ...`,
       body: [
-        `<div class='message-status-failed' ><strong>${error.name}</strong></div>`,
-        `<div class='message-status-failed' ><strong>${error.message || 'No details available.'}</strong></div>`,
-        `<div class='message-details' >${this.formatJson(this.filterObjectProperties(error.inner))}</div>`
+        `<div class="message-status-failed" >${error.name}</div>`,
+        `<div class="message-status-failed" >${error.message || 'No details available.'}</div>`,
+        `<div class="message-details" >${this.formatJson(this.filterObjectProperties(error.inner))}</div>`
       ].join('')
     } as IAppGeneratorMessage;
-    this.errorMessage.body = this.errorMessage.body.replace(/SUCCESS/g, '<span class="message-status-success" ><strong>SUCCESS</strong></span>');
-    this.errorMessage.body = this.errorMessage.body.replace(/FAILED/g, '<span class="message-status-failed" ><strong>FAILED</strong></span>');
+    this.errorMessage.body = this.errorMessage.body.replace(/SUCCESS/g, '<span class="message-status-success" >SUCCESS</span>');
+    this.errorMessage.body = this.errorMessage.body.replace(/FAILED/g, '<span class="message-status-failed" >FAILED</span>');
   }
 
   private clearErrorView() {

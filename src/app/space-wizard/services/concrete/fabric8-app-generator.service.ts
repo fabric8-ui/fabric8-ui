@@ -140,7 +140,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
          let error = {
            origin: 'Fabric8AppGeneratorService',
            name: 'ExecuteForgeCommandError' ,
-           message: `The <strong><i>${cmdDescription}</i></strong> command failed or only partially succeeded`,
+           message: `The ${cmdDescription} command failed or only partially succeeded`,
            inner: err
          };
          this.log({ message: error.message , error: true }, err);

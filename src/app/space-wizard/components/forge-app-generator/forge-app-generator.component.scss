@@ -1,6 +1,7 @@
 $icon-path:'../../../../assets/icon/';
 @import '../../../../assets/stylesheets/base';
 @import '../../../../assets/stylesheets/_icons';
+@import '../../../../assets/stylesheets/shared/_layout';
 
 
 @keyframes select-item {
@@ -101,63 +102,193 @@ header{
   min-height:60px;
 }
 
-.app-generator-message
-{
+
+
+// styling of the app generator message section
+.app-generator-message {
+
+  $color-success:$color-pf-green;
+  $color-success-border:$color-success;
+  $color-success-background:#EAF4EA;
+
+  $color-error:$color-pf-red;
+  $color-error-border:$color-error;
+  $color-error-background:$color-pf-black-100;
+
+  $color-warning:$color-pf-gold;
+  $color-warning-border:$color-warning;
+  $color-warning-background:$color-pf-black-100;
+
+
   max-width:900px;
   height:70vh;
-  padding:15px !important;
+  padding:$grid-gutter-width/2 !important;
+
   position:relative;
   display:flex;
   flex-direction:column;
+
   &.hide{
    display:none !important;
   }
-  .message-title-container
-  {    .message-title{
-      padding-left:0;
-      .pficon{
-        margin-right:15px;
-      }
-      &.busy-message-title
-      {
-        text-align: center !important;
+  .message-title-container {
+    padding:$grid-gutter-width/2;
+    margin-bottom:$grid-gutter-width/2;
+    .message-title {
+      user-select: none;
+      .message-title-icon {
+        margin-right:$grid-gutter-width/2;
       }
     }
   }
-  .message-body-container
-  {
+  .message-body-container {
+
     flex-grow: 1;
     position: relative;
     border: solid 1px $color-pf-black-300;
-    &.no-border{
-      border-width:0;
-    }
     overflow: auto;
-    .message-body
-    {
+
+    .message-body {
+
       vertical-align: top;
       position: relative;
       min-height: 100% !important;
       width: 100%;
       margin: 0;
-      padding: 15px;
+      padding: $grid-gutter-width/2;
       padding-top:3px;
       border: none;
       line-height: 3.0rem;
       font-size: 1.5rem;
       white-space: pre; //pre-wrap;
-      &.vertical-align-center
-      {
-        vertical-align: center !important;
+
+      .message-status-success {
+        color: $color-success;
       }
-      h1,h2,h3 {
-        margin:0;
+
+      .message-status-failed {
+        color: $color-error;
+      }
+
+      .message-status-warning {
+        color: $color-warning;
+      }
+
+      .property-name {
+
+        color:$color-pf-blue;
+        font-weight: bold;
+
+        &.property-name-result {
+
+          display: inline-block;
+          min-width: 220px;
+          text-align: left;
+          // font-weight: normal;
+          color: $color-pf-black;
+        }
+      }
+
+      .property-value{
+
+        color: $color-pf-black;
+
+        &.property-value-result {
+
+        }
+
+        &.property-value-error {
+
+          color: $color-error;
+          font-weight:bold;
+          font-style: italic;
+        }
+
+        &.property-value-link {
+
+          color: $color-pf-blue;
+        }
+      }
+    }
+  }
+
+  &.app-generator-message-error {
+    .message-title-container {
+
+      border: solid 1px $color-error-border;
+      background-color: $color-error-background;
+
+      .message-title {
+
+        .message-title-icon {
+          color:$color-error;
+        }
+
+        .message-title-icon-label {
+          color:$color-error;
+          font-weight: bold;
+        }
+
+        .message-title-text {
+          color:$color-pf-black;
+        }
+      }
+
+    }
+
+  }
+
+  &.app-generator-message-success {
+    .message-title-container {
+      border: solid 1px $color-success-border;
+      background-color: $color-success-background;
+
+      .message-title {
+
+        .message-title-icon {
+          color:$color-success;
+        }
+        .message-title-icon-label {
+          color:$color-success;
+          font-weight: bold;
+        }
+        .message-title-text {
+          color:$color-pf-black;
+        }
+      }
+
+    }
+  }
+  &.app-generator-message-processing
+  {
+    .message-title-container{
+      .message-title{
+        text-align: center !important;
+        .message-title-icon{
+        }
+        .message-title-icon-label{
+        }
+        .message-title-text{
+          font-size: 2.0rem;
+        }
+      }
+
+    }
+    .message-body-container{
+      border:solid 1px transparent;
+      .message-body{
+        vertical-align: middle;
       }
     }
 
   }
 
+
 }
+
+
+
+
 .combobox-container
 {
   input[type='text']{

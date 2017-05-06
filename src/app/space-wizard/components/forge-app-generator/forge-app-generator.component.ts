@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ViewEncapsulation, Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 //
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
 import { INotifyPropertyChanged } from '../../core/component';
@@ -20,6 +20,8 @@ import { FieldWidgetClassificationOptions } from '../../models/contracts/field-c
   host: {
    'class': 'wizard-step'
   },
+  // ensure that dynamically added html message get styles applied
+  encapsulation:ViewEncapsulation.None,
 
   selector: 'forge-app-generator',
   templateUrl: './forge-app-generator.component.html',

@@ -14,6 +14,7 @@ import { AppGeneratorConfigurationService } from './services/app-generator.servi
 import { SpaceWizardComponent } from './space-wizard.component';
 import { SelectedItemsPipe } from './pipes/selected-items.pipe';
 import { VisibleItemsPipe } from './pipes/visible-items.pipe';
+import { TrustHtmlPipe ,TrustStylePipe } from './pipes/safe-html.pipe';
 
 @NgModule({
   imports: [
@@ -27,7 +28,9 @@ import { VisibleItemsPipe } from './pipes/visible-items.pipe';
     UniqueSpaceNameValidatorDirective,
     ValidSpaceNameValidatorDirective,
     SelectedItemsPipe,
-    VisibleItemsPipe
+    VisibleItemsPipe,
+    TrustHtmlPipe,
+    TrustStylePipe,
   ],
   exports: [
     SpaceWizardComponent,
