@@ -3,6 +3,9 @@ $icon-path:'../../../../assets/icon/';
 @import '../../../../assets/stylesheets/_icons';
 @import '../../../../assets/stylesheets/shared/_layout';
 
+// Note: because component encapsulation = ViewEncapsulation.None ... this class scoping is needed
+// to limit the scope of the classes in this component
+.forge-app-generator-component {
 
 @keyframes select-item {
   from {
@@ -435,4 +438,6 @@ header{
 
 
   }
+}
+
 }

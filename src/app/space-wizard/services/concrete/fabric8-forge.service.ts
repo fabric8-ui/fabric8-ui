@@ -186,6 +186,7 @@ export class Fabric8ForgeService extends ForgeService {
         let options = new RequestOptions(<RequestOptionsArgs>{ headers: headers });
         this._http.post(url, body, options)
         .map((response: Response) => {
+          //test error
           if (body.isExecute === true) {
             // if this is an execute command then handle the response differently
             // e the data coming back is structured differently
