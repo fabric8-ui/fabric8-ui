@@ -7,6 +7,8 @@ $icon-path:'../../../../assets/icon/';
 // to limit the scope of the classes in this component
 .forge-app-generator-component {
 
+  min-height: 80vh;
+
 @keyframes select-item {
   from {
     background-color: #bbb;
@@ -78,10 +80,6 @@ $icon-path:'../../../../assets/icon/';
 
 }
 
-form
-{
-  min-height: 66vh;
-}
 
 .busy-indicator
 {
@@ -101,7 +99,10 @@ form
   margin-left:-50px;
 }
 
-header{
+>header {
+  min-height:60px;
+}
+>footer {
   min-height:60px;
 }
 
@@ -125,7 +126,7 @@ header{
   $standard-spacing:$grid-gutter-width/2;
 
   max-width:900px;
-  height:70vh;
+  //height:70vh;
   padding:$standard-spacing !important;
 
   position:relative;
