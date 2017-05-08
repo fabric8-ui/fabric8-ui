@@ -53,7 +53,7 @@ defaultWorkitemsPhantomJS = [
   'id10\nTitle Text 10' ];
 
   beforeEach(function () {
-    testSupport.setBrowserMode('phone');
+    testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);
     testSupport.setTestSpace(page);
   });

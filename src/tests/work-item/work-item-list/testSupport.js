@@ -24,9 +24,9 @@ module.exports = {
 	    browser.driver.manage().window().setSize(430, 667);
       break;
 	  case 'tablet':
-        browser.driver.manage().window().setSize(768, 1024);
+      browser.driver.manage().window().setSize(768, 1024);
       break;
-      case 'desktop':
+    case 'desktop':
         browser.driver.manage().window().setSize(1920, 1080);
     } 
   },

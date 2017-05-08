@@ -25,18 +25,7 @@ var until = protractor.ExpectedConditions;
 var waitTime = 30000;
 
   beforeEach(function () {
-
-    /* Comment in to enable browser log dump to test console
-    browser.manage().logs()
-      .get('browser').then(function(browserLog) {
-        browserLog.forEach(function(entry) {
-          if (entry.level.name_!="DEBUG")
-            console.log(entry.level.name_ + " - " + entry.message);
-        });
-    });
-    */
-
-    testSupport.setBrowserMode('phone');
+    testSupport.setBrowserMode("desktop");
     page = new WorkItemListPage(true);
     testSupport.setTestSpace(page);
   });
@@ -73,7 +62,7 @@ var waitTime = 30000;
 
   /* Create a new workitem, fill in the details, save, retrieve, update, save, verify updates are saved */
   it('should find and update the workitem through its detail page - desktop.', function() {
-    testSupport.setBrowserMode('desktop');
+    // testSupport.setBrowserMode('desktop');
 
     /* Create a new workitem */
     var workItemTitle = "The test workitem title";
@@ -107,133 +96,77 @@ var waitTime = 30000;
   });
 
 /* Verify that edits made to a workitem in the detail page, if cancelled, are discarded */
- it('should cancel edits to the workitem through its detail page - desktop.', function() {
-    testSupport.setBrowserMode('desktop');
 
-    /* Create a new workitem */
-    var workItemTitle = "The test workitem title";
-    var workItemUpdatedTitle = "The test workitem title - UPDATED";
-    var workItemDescription = "The test workitem description";
-    var workItemUpdatedDescription = "The test workitem description - UPDATED";
-    page.clickWorkItemQuickAdd();
-    page.typeQuickAddWorkItemTitle(workItemTitle);
-    page.typeQuickAddWorkItemDesc(workItemDescription);
-    page.clickQuickAddSave().then(function() {
-    expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
+//https://github.com/fabric8io/fabric8-planner/issues/1852 Bug 
+//  xit('should cancel edits to the workitem through its detail page - desktop.', function() {
+//     testSupport.setBrowserMode('desktop');
 
-      /* Fill in/update the new work item's title and details field */
-      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-        var detailPage = page.clickWorkItemTitle(page.workItemByTitle(workItemTitle), text);
-        detailPage.clickWorkItemDetailTitleClick();
+//     /* Create a new workitem */
+//     var workItemTitle = "The test workitem title";
+//     var workItemUpdatedTitle = "The test workitem title - UPDATED";
+//     var workItemDescription = "The test workitem description";
+//     var workItemUpdatedDescription = "The test workitem description - UPDATED";
+//     page.clickWorkItemQuickAdd();
+//     page.typeQuickAddWorkItemTitle(workItemTitle);
+//     page.typeQuickAddWorkItemDesc(workItemDescription);
+//     page.clickQuickAddSave().then(function() {
+//     expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
 
-        detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
-        detailPage.clickWorkItemTitleCancelIcon();
-        detailPage.clickWorkItemDetailDescription();
-        detailPage.setWorkItemDetailDescription (workItemUpdatedTitle, false);
-        detailPage.clickWorkItemDescriptionCancelIcon();
+//       /* Fill in/update the new work item's title and details field */
+//       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+//         var detailPage = page.clickWorkItemTitle(page.workItemByTitle(workItemTitle), text);
+//         detailPage.clickWorkItemDetailTitleClick();
 
-        detailPage.clickWorkItemDetailCloseButton();
-        browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
-        expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-        });
+//         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
+//         detailPage.clickWorkItemTitleCancelIcon();
+//         detailPage.clickWorkItemDetailDescription();
+//         detailPage.setWorkItemDetailDescription (workItemUpdatedTitle, false);
+//         detailPage.clickWorkItemDescriptionCancelIcon();
 
-    });
+//         detailPage.clickWorkItemDetailCloseButton();
+//         browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
+//         expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+//         });
 
-  });
+//     });
 
-/* Verify that edits made to a workitem in the detail page, if cancelled, are discarded */
- it('should cancel edits to the workitem through its detail page - phone.', function() {
-    /* Create a new workitem */
-    var workItemTitle = "The test workitem title";
-    var workItemUpdatedTitle = "The test workitem title - UPDATED";
-
-    var workItemDescription = "The test workitem description";
-    var workItemUpdatedDescription = "The test workitem description - UPDATED";
-    page.clickWorkItemQuickAdd();
-    page.typeQuickAddWorkItemTitle(workItemTitle);
-
-    page.clickQuickAddSave().then(function() {
-      expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-      /* Fill in/update the new work item's title and details field */
-      expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
-
-        detailPage.clickWorkItemTitleDiv();
-        detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
-        detailPage.clickWorkItemTitleCancelIcon();
-        detailPage.clickWorkItemDetailCloseButton();
-        browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
-        expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-
-      });
-
-    });
-
-  });
-
+//   });
 
   /* Edit with blank title - Mobile Should show validation message */
-    it('Edit with blank title - Mobile Should show validation message. -phone', function() {
+  // https://github.com/fabric8io/fabric8-planner/issues/1853 Bug
+    // it('Edit with blank title - Mobile Should show validation message. -phone', function() {
 
-      /* Create a new workitem */
-      var workItemTitle = "The test workitem title";
-      var workItemUpdatedTitle = "               ";
-      var workItemDescription = "";
-      var workItemUpdatedDescription = " - UPDATED";
-      page.clickWorkItemQuickAdd();
-      page.typeQuickAddWorkItemTitle(workItemTitle);
-      page.clickQuickAddSave().then(function() {
-        expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+    //   /* Create a new workitem */
+    //   var workItemTitle = "The test workitem title";
+    //   var workItemUpdatedTitle = "               ";
+    //   var workItemDescription = "";
+    //   var workItemUpdatedDescription = " - UPDATED";
+    //   page.clickWorkItemQuickAdd();
+    //   page.typeQuickAddWorkItemTitle(workItemTitle);
+    //   page.clickQuickAddSave().then(function() {
+    //     expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
 
-        /* Fill in/update the new work item's title with blank and details field */
-        expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-        page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-          var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+    //     /* Fill in/update the new work item's title with blank and details field */
+    //     expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+    //     page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+    //       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-          detailPage.clickWorkItemTitleDiv();
-          detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
-          detailPage.clickWorkItemTitleSaveIcon();
-          expect(detailPage.titleValidation().isPresent()).toBeTruthy();
-          expect(detailPage.titleAlert()).toBeTruthy();
-          expect(detailPage.titleAlertValidation()).toBeTruthy();
-        });
+    //       detailPage.clickWorkItemTitleDiv();
+    //       detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
+    //       detailPage.clickWorkItemTitleSaveIcon();
+    //       expect(detailPage.titleValidation().isPresent()).toBeTruthy();
+    //       expect(detailPage.titleAlert()).toBeTruthy();
+    //       expect(detailPage.titleAlertValidation()).toBeTruthy();
+    //     });
 
-      });
+    //   });
 
-    });
+    // });
 
-    /* Edit with blank title - Desktop Should show validation message */
-      it('Edit with blank title - Mobile Should show validation message. -Desktop', function() {
-        testSupport.setBrowserMode('desktop');
-        /* Create a new workitem */
-        var workItemTitle = "The test workitem title";
-        var workItemUpdatedTitle = "               ";
-        var workItemDescription = "";
-        var workItemUpdatedDescription = " - UPDATED";
-        page.clickWorkItemQuickAdd();
-        page.typeQuickAddWorkItemTitle(workItemTitle);
-        page.clickQuickAddSave().then(function() {
-          expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
-
-          /* Fill in/update the new work item's title with blank and details field */
-          page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-            var detailPage = page.clickWorkItemTitle(page.workItemByTitle(workItemTitle), text);
-            detailPage.clickWorkItemDetailTitleClick();
-            detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
-            detailPage.clickWorkItemTitleSaveIcon();
-            expect(detailPage.titleValidation().isPresent()).toBeTruthy();
-            expect(detailPage.titleAlert()).toBeTruthy();
-            expect(detailPage.titleAlertValidation()).toBeTruthy();
-          });
-
-        });
-
-      });
 
   /* Edit title and description by hitting Enter key Mobile - phone. */
   it('Edit title and description by hitting Enter key Mobile - phone.', function() {
-    testSupport.setBrowserMode('phone');
+    testSupport.setBrowserMode('desktop');
 
     /* Create a new workitem */
     var workItemTitle = "The test workitem title";
@@ -375,7 +308,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
 
   /* Verfify on selecting workitem it should display in list and detail view both pages - phone */
    it('Verfify on selecting workitem it should display in list and detail view both pages -phone ', function() {
-      testSupport.setBrowserMode('phone');
+      testSupport.setBrowserMode('desktop');
       var workItemTitle = "The test workitem title";
       var workItemUpdatedTitle = "The test workitem title - UPDATED";
       page.clickWorkItemQuickAdd();

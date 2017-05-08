@@ -22,7 +22,7 @@ describe('Work item list', function () {
   var page, items, browserMode;
 
   beforeEach(function () {
-    testSupport.setBrowserMode('phone');
+    testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);   
     testSupport.setTestSpace(page); 
     

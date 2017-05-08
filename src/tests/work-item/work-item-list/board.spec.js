@@ -35,7 +35,7 @@ describe('Work board tests :: ', function () {
 
   it( 'Shuffle Board elements New to Open  -desktop ', function() {
         var stateList = typesOfStatesList();  
-        boardPage.getByLinkText("Title Text 1");    
+        boardPage.getBoardById("id1");
         browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
         detailPage.clickWorkItemStateDropDownButton();
         detailPage.WorkItemStateDropDownList().get(1).click();
@@ -51,7 +51,7 @@ describe('Work board tests :: ', function () {
 
   it( '1.1 Shuffle Board elements Open to inProgress -desktop ', function() {
         var stateList = typesOfStatesList();   
-        boardPage.getByLinkText("Title Text 5"); 
+        boardPage.getBoardById("id5");
         browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
         detailPage.clickWorkItemStateDropDownButton();
         detailPage.WorkItemStateDropDownList().get(2).click();
@@ -65,7 +65,7 @@ describe('Work board tests :: ', function () {
 
   it( 'Shuffle Board elements inProgress- resolved  -desktop ', function() {
         var stateList = typesOfStatesList();  
-        boardPage.getByLinkText("Title Text 3"); 
+        boardPage.getBoardById("id3");
         browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
         detailPage.clickWorkItemStateDropDownButton();
         detailPage.WorkItemStateDropDownList().get(3).click();
@@ -79,7 +79,7 @@ describe('Work board tests :: ', function () {
 
   it( '2.1 Shuffle Board elements inProgress- open -desktop ', function() {
         var stateList = typesOfStatesList();
-        boardPage.getByLinkText("Title Text 3"); 
+        boardPage.getBoardById("id3");
         browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
         detailPage.clickWorkItemStateDropDownButton();
         detailPage.WorkItemStateDropDownList().get(1).click();
@@ -94,7 +94,7 @@ describe('Work board tests :: ', function () {
   it( 'Verify Board Filter elements are present -desktop ', function() {
        expect(boardPage.getFilterWITButton().isPresent()).toBe(true);
        expect(boardPage.getTextFilterWITButton()).toBe("Planner Item");
-       var list = ['Fundamental','Experience','Scenario','Feature','Bug','Planner Item'];
+       var list = ['Fundamental','Experience','Scenario','Feature','Bug','User Story'];
        for (var i=0;i<list.length;i++){
             boardPage.clickFilterWITButton();
             boardPage.clickWITFilterDropDownElements(list[i]);
@@ -104,20 +104,20 @@ describe('Work board tests :: ', function () {
   });
 
   it( 'Verify On change filters types represent correct data -desktop ', function() {
-        var list = ['Planner Item'];
+        var list = ['User Story'];
         //Few filters are pending due to : https://github.com/fabric8io/fabric8-planner/issues/1255
-      //  var list = ['User Story','Value Proposition','Fundamental','Experience','Scenario','Feature','Bug','Planner Item'];
+      //  var list = ['User Story','Value Proposition','Fundamental','Experience','Scenario','Feature','Bug','User Story'];
        for (var i=0;i<list.length;i++){
             boardPage.clickFilterWITButton();
             boardPage.clickWITFilterDropDownElements(list[i]);
             expect(boardPage.getFilterWITButton().isPresent()).toBe(true);
             expect(boardPage.getTextFilterWITButton()).toBe(list[i]);
             countstateList = totalCountOftypesOfStatesList();
-            if(list[i]== 'Planner Item'){
-            verifytotalCountPertypesOfStates(countstateList,'0','0');
+            if(list[i]== 'User Story'){
+            verifytotalCountPertypesOfStates(countstateList,'0','8');
             }
-            if(list[i]=='User Story'){
-              verifytotalCountPertypesOfStates(countstateList,'0','0'); 
+            if(list[i]=='Value Proposition'){
+              verifytotalCountPertypesOfStates(countstateList,'0','8'); 
             }
        }
   });

@@ -22,7 +22,7 @@ describe('Microservices page', function () {
   var waitTime = 30000;
 
   beforeEach(function () {
-    testSupport.setBrowserMode('phone');
+    testSupport.setBrowserMode('desktop');
     page = new CommonPage();
   });
 

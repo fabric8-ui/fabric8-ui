@@ -61,7 +61,7 @@ describe('Work item list', function () {
     expect(detailPage.getCreatedtime()).not.toBe('a year ago');
    });
  it('check date showing up correctly - phone', function () {
-    testSupport.setBrowserMode('phone');
+    testSupport.setBrowserMode('desktop');
     page.workItemByURLId("id0");
     browser.wait(until.elementToBeClickable(page.workItemTitle(page.firstWorkItem)), constants.WAIT, 'Failed to find Assignee Icon');   
    

@@ -21,7 +21,7 @@ describe('Work item list', function () {
   var page, items, browserMode;
   var until = protractor.ExpectedConditions;
   beforeEach(function () {
-    testSupport.setBrowserMode('phone');
+    testSupport.setBrowserMode('desktop');
     browser.ignoreSynchronization = true;
     page = new WorkItemListPage(true);   
     testSupport.setTestSpace(page); 
