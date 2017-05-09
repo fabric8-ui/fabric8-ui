@@ -115,29 +115,29 @@ describe('Work item list', function () {
    
  /** User can read , update , remove assignee  */
  // https://github.com/fabric8io/fabric8-planner/issues/1854 Bug
-  //  it ('User can read , update , remove assignee - desktop ', function() {
-  //     page.clickWorkItemQuickAdd();
-  //     page.typeQuickAddWorkItemTitle(workItemTitle);
-  //     page.clickQuickAddSave().then(function() {
-  //     page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-  //       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+   it ('User can read , update , remove assignee - desktop ', function() {
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle(workItemTitle);
+      page.clickQuickAddSave().then(function() {
+      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-  //       browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
-  //       detailPage.clickworkItemDetailAssigneeIcon();
+        browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
+        detailPage.clickworkItemDetailAssigneeIcon();
 
-  //       browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeSearch), constants.WAIT, 'Failed to find Assignee Search');   
-  //       detailPage.setWorkItemDetailAssigneeSearch(EXAMPLE_USER_1,false);
-  //       detailPage.clickAssignedUserDropDownList(EXAMPLE_USER_1);
-  //       expect(detailPage.details_assigned_user().getText()).toContain(EXAMPLE_USER_1);
-  //       detailPage.details_assigned_user().click();
-  //       detailPage.clickworkItemDetailUnassignButton();
-  //       expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
+        browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeSearch), constants.WAIT, 'Failed to find Assignee Search');   
+        detailPage.setWorkItemDetailAssigneeSearch(EXAMPLE_USER_1,false);
+        detailPage.clickAssignedUserDropDownList(EXAMPLE_USER_1);
+        expect(detailPage.details_assigned_user().getText()).toContain(EXAMPLE_USER_1);
+        detailPage.details_assigned_user().click();
+        detailPage.clickworkItemDetailUnassignButton();
+        expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
 
-  //       browser.wait(until.elementToBeClickable(detailPage.workItemDetailCloseButton), constants.WAIT, 'Failed to find Close Button');         
-  //       detailPage.clickWorkItemDetailCloseButton();
-  //     });
-  //   });
-  // }); 
+        browser.wait(until.elementToBeClickable(detailPage.workItemDetailCloseButton), constants.WAIT, 'Failed to find Close Button');         
+        detailPage.clickWorkItemDetailCloseButton();
+      });
+    });
+  }); 
 
  /** User can Cancel assignee  */
    it ('User can Cancel assignee - desktop ', function() {

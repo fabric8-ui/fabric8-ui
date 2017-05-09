@@ -98,70 +98,70 @@ var waitTime = 30000;
 /* Verify that edits made to a workitem in the detail page, if cancelled, are discarded */
 
 //https://github.com/fabric8io/fabric8-planner/issues/1852 Bug 
-//  xit('should cancel edits to the workitem through its detail page - desktop.', function() {
-//     testSupport.setBrowserMode('desktop');
+ it('should cancel edits to the workitem through its detail page - desktop.', function() {
+    testSupport.setBrowserMode('desktop');
 
-//     /* Create a new workitem */
-//     var workItemTitle = "The test workitem title";
-//     var workItemUpdatedTitle = "The test workitem title - UPDATED";
-//     var workItemDescription = "The test workitem description";
-//     var workItemUpdatedDescription = "The test workitem description - UPDATED";
-//     page.clickWorkItemQuickAdd();
-//     page.typeQuickAddWorkItemTitle(workItemTitle);
-//     page.typeQuickAddWorkItemDesc(workItemDescription);
-//     page.clickQuickAddSave().then(function() {
-//     expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
+    /* Create a new workitem */
+    var workItemTitle = "The test workitem title";
+    var workItemUpdatedTitle = "The test workitem title - UPDATED";
+    var workItemDescription = "The test workitem description";
+    var workItemUpdatedDescription = "The test workitem description - UPDATED";
+    page.clickWorkItemQuickAdd();
+    page.typeQuickAddWorkItemTitle(workItemTitle);
+    page.typeQuickAddWorkItemDesc(workItemDescription);
+    page.clickQuickAddSave().then(function() {
+    expect(page.workItemTitle(page.workItemByTitle(workItemTitle))).toBe(workItemTitle);
 
-//       /* Fill in/update the new work item's title and details field */
-//       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-//         var detailPage = page.clickWorkItemTitle(page.workItemByTitle(workItemTitle), text);
-//         detailPage.clickWorkItemDetailTitleClick();
+      /* Fill in/update the new work item's title and details field */
+      page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+        var detailPage = page.clickWorkItemTitle(page.workItemByTitle(workItemTitle), text);
+        detailPage.clickWorkItemDetailTitleClick();
 
-//         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
-//         detailPage.clickWorkItemTitleCancelIcon();
-//         detailPage.clickWorkItemDetailDescription();
-//         detailPage.setWorkItemDetailDescription (workItemUpdatedTitle, false);
-//         detailPage.clickWorkItemDescriptionCancelIcon();
+        detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
+        detailPage.clickWorkItemTitleCancelIcon();
+        detailPage.clickWorkItemDetailDescription();
+        detailPage.setWorkItemDetailDescription (workItemUpdatedTitle, false);
+        detailPage.clickWorkItemDescriptionCancelIcon();
 
-//         detailPage.clickWorkItemDetailCloseButton();
-//         browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
-//         expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-//         });
+        detailPage.clickWorkItemDetailCloseButton();
+        browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
+        expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+        });
 
-//     });
+    });
 
-//   });
+  });
 
   /* Edit with blank title - Mobile Should show validation message */
   // https://github.com/fabric8io/fabric8-planner/issues/1853 Bug
-    // it('Edit with blank title - Mobile Should show validation message. -phone', function() {
+    it('Edit with blank title - Mobile Should show validation message. -phone', function() {
 
-    //   /* Create a new workitem */
-    //   var workItemTitle = "The test workitem title";
-    //   var workItemUpdatedTitle = "               ";
-    //   var workItemDescription = "";
-    //   var workItemUpdatedDescription = " - UPDATED";
-    //   page.clickWorkItemQuickAdd();
-    //   page.typeQuickAddWorkItemTitle(workItemTitle);
-    //   page.clickQuickAddSave().then(function() {
-    //     expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+      /* Create a new workitem */
+      var workItemTitle = "The test workitem title";
+      var workItemUpdatedTitle = "               ";
+      var workItemDescription = "";
+      var workItemUpdatedDescription = " - UPDATED";
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle(workItemTitle);
+      page.clickQuickAddSave().then(function() {
+        expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
 
-    //     /* Fill in/update the new work item's title with blank and details field */
-    //     expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
-    //     page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-    //       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+        /* Fill in/update the new work item's title with blank and details field */
+        expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
+        page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
+          var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
-    //       detailPage.clickWorkItemTitleDiv();
-    //       detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
-    //       detailPage.clickWorkItemTitleSaveIcon();
-    //       expect(detailPage.titleValidation().isPresent()).toBeTruthy();
-    //       expect(detailPage.titleAlert()).toBeTruthy();
-    //       expect(detailPage.titleAlertValidation()).toBeTruthy();
-    //     });
+          detailPage.clickWorkItemTitleDiv();
+          detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
+          detailPage.clickWorkItemTitleSaveIcon();
+          expect(detailPage.titleValidation().isPresent()).toBeTruthy();
+          expect(detailPage.titleAlert()).toBeTruthy();
+          expect(detailPage.titleAlertValidation()).toBeTruthy();
+        });
 
-    //   });
+      });
 
-    // });
+    });
 
 
   /* Edit title and description by hitting Enter key Mobile - phone. */
