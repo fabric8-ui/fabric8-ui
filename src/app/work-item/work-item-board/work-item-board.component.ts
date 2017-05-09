@@ -452,6 +452,7 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
   }
 
   changeState(option: any, elId: string, adjElmId: string | null = null, direction: string): void {
+    let prevState = this.workItem.attributes['system.state'];
     this.workItem.attributes['system.state'] = option;
     let lane = this.lanes.find((lane) => lane.option === this.workItem.attributes['system.state']);
     if (this.workItem.id) {
@@ -460,6 +461,22 @@ export class WorkItemBoardComponent implements OnInit, OnDestroy {
         .subscribe((workItem) => {
           let wItem = lane.workItems.find((item) => item.id === workItem.id);
           wItem.attributes['version'] = workItem.attributes['version'];
+          if (wItem.relationships.iteration) {
+            // Item closed for an iteration
+            if (wItem.attributes['system.state'] !== 'closed' && prevState === 'closed') {
+              this.broadcaster.broadcast('wi_change_state_it', [{
+                iterationId: wItem.relationships.iteration.data.id,
+                closedItem: +1
+              }]);
+            }
+            // Item opened for an iteration
+            if (wItem.attributes['system.state'] === 'closed' && prevState !== 'closed') {
+              this.broadcaster.broadcast('wi_change_state_it', [{
+                iterationId: wItem.relationships.iteration.data.id,
+                closedItem: -1
+              }]);
+            }
+          }
           this.activeOnList();
           if (adjElmId !== null) {
             this.workItemService.reOrderWorkItem(wItem, adjElmId, direction)
