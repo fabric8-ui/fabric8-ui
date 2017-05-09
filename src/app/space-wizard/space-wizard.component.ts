@@ -1,5 +1,5 @@
 import { SpacesService } from './../shared/spaces.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Notification, NotificationAction, Notifications, NotificationType } from 'ngx-base';
@@ -22,13 +22,11 @@ import { ForgeCommands } from './services/forge.service';
 import { AppGeneratorConfigurationService } from './services/app-generator.service';
 
 @Component({
-  host: {
-    'class': 'wizard-container'
-  },
   selector: 'space-wizard',
   templateUrl: './space-wizard.component.html',
   styleUrls: ['./space-wizard.component.scss'],
   providers: [SpaceService]
+  //encapsulation:ViewEncapsulation.None,
 })
 export class SpaceWizardComponent implements OnInit {
 

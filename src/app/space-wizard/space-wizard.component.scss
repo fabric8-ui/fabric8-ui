@@ -2,11 +2,18 @@
 
 $icon-path: '../../assets/icon/';
 @import '../../assets/stylesheets/icons';
-@import '../../assets/stylesheets/shared/_layout';
-
+//@import '../../assets/stylesheets/shared/_layout';
+$debug-border:0;
+// wizard
+$wizard-spacing:$grid-gutter-width/2;
+$wizard-header-color:$color-pf-black-100;
+$wizard-header-divider-color: $color-pf-black-300;
+$wizard-footer-color: $color-pf-white;
+$wizard-footer-divider-color: $color-pf-black-300;
 //noinspection SassScssResolvedByNameOnly
 $wizard-padding: $grid-gutter-width / 2;
-$wizard-spacing: 5px;
+
+$wizard-spacing: 0px;
 // shadow distance from element
 $wizard-shadow-offset: 3px;
 // makes shadow bigger
@@ -22,6 +29,223 @@ $wizard-layout-block-header-border-color: $color-pf-black-100;// $color-pf-blue-
 $wizard-layout-block-shadow-color: darken($navbar-default-bg, 10%);
 //noinspection SassScssUnresolvedVariable,SassScssUnresolvedVariable
 $wizard-block-header-color: $color-pf-white;
+
+:host /deep/ {
+
+  flex:1;
+  display:flex;
+  //align-content: stretch;
+  position:relative;
+
+
+@mixin wizard-step-elements{
+  // position buttons
+
+  >header {
+    position:relative;
+    background-color: $wizard-header-color;
+    // border-bottom:solid 1px $wizard-header-divider-color;
+    &.container-fluid {
+        padding-left:$wizard-spacing + $debug-border ;
+        padding-right:$wizard-spacing + $debug-border ;
+        margin-left:0px;
+        margin-right:0px;
+        >.row {
+          margin-left:-($wizard-spacing + $debug-border) ;
+          margin-right:-($wizard-spacing + $debug-border);
+        }
+    }
+    &.container {
+        width:100%;
+    }
+    &.forge-header {
+      background-color: $color-pf-black-200;
+      .row {
+        &:first-of-type {
+          background-color: $color-pf-white !important;
+          border-bottom:solid 1px $color-pf-black-300;
+        }
+      }
+      .wizard-step-sub-title {
+        background-color: $color-pf-black-200;
+
+      }
+
+    }
+  }
+  >section
+  {
+    flex:1;
+    //when using flex here it is important to stretch the content:
+    //and choose the direction as column
+    // display:flex;
+    // flex-direction: column;
+    // align-content: stretch;
+    position:relative;
+    margin:0px;
+    padding:0px;
+    width:auto;
+    &.container-fluid
+    {
+        // Bug: there is an issue with this element, if the border/padding sum
+        // is less than 5px, content overflows and horizontal scroll bars kick
+        // in and it overflows the container.
+        .form-horizontal
+        {
+          padding-right:5px;
+        }
+        padding-left:$wizard-spacing  + $debug-border;
+        padding-right:$wizard-spacing + $debug-border;
+        position:relative;
+        >.row{
+          margin-left:-($wizard-spacing + $debug-border) ;
+          margin-right:-($wizard-spacing + $debug-border);
+          padding:0;
+          width:auto;
+          position:relative;
+        }
+    }
+    &.container
+    {
+        padding-left:$wizard-spacing + $debug-border;
+        padding-right:$wizard-spacing + $debug-border;
+        width:100%;
+        margin-left:0px;
+        margin-right:0px;
+    }
+    &.forge-section
+    {
+      background-color: $color-pf-black-200;
+
+    }
+  }
+  >footer{
+    position:relative;
+    border-top:solid 1px $wizard-footer-divider-color;
+    background-color: $wizard-footer-color;
+    &.container-fluid
+    {
+        padding-left:$wizard-spacing + $debug-border ;
+        padding-right:$wizard-spacing + $debug-border ;
+        margin-left:0px;
+        margin-right:0px;
+        >.row{
+          margin-left:-($wizard-spacing + $debug-border) ;
+          margin-right:-($wizard-spacing + $debug-border);
+
+        }
+    }
+    &.container
+    {
+        width:100%;
+    }
+  }
+};
+
+
+  .wizard{
+
+    flex:1;
+    display:flex;
+    //align-content: stretch;
+    position:relative;
+
+
+    // only applies to rows in the wizard
+    .row{
+      padding-top:0px;
+    }
+    // only applies to buttons in the wizard
+    .btn{
+      min-width: 90px;
+    }
+
+    .wizard-step{
+      // at least 50% of view height
+      //min-height: 50vh;
+      flex:1;
+      // by default the step is not visible but becomes
+      // visible when the active class is applied.
+      display:none;
+      &.active{
+        display:flex;
+        flex-direction: column;
+        align-content: stretch;
+        //align-content: stretch;
+      }
+      position:relative;
+      @include wizard-step-elements;
+      // for cases where the step has a form element
+      >form{
+
+        flex:1;
+        display:flex;
+        flex-direction: column;
+        //align-content: stretch;
+        position:relative;
+        @include wizard-step-elements;
+
+      }
+
+      .wizard-step-title
+      {
+        position:relative;
+        display:flex;
+        //main axis
+        justify-content: space-between;
+        //cross axis
+        align-items: center;
+        //main axis direction
+        flex-direction: row;
+        .text{
+          font-weight: 600;
+        }
+      }
+
+      .wizard-step-sub-title
+      {
+          background-color:$color-pf-white;
+          display:flex;
+          justify-content: center;
+          .text{
+              font-weight: 600;
+
+          }
+      }
+
+
+      .wizard-step-tool-bar
+      {
+        position:relative;
+        display:flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        padding-top:$wizard-spacing;
+        padding-bottom:$wizard-spacing;
+        &.with-items-at-end{
+          justify-content: flex-end;
+        }
+        &.with-items-at-start{
+          justify-content: flex-start;
+        }
+        &.with-items-in-center{
+          justify-content:center;
+        }
+        &.with-items-space-between{
+          justify-content:space-between;
+        }
+        &.with-items-space-around{
+          justify-content:space-around;
+        }
+        //will stretch auto sized items
+        &.with-items-stretch{
+          justify-content:stretch;
+        }
+      }
+    }
+  }
+
+
 
 .process-description {
   color: $color-pf-black-500;
@@ -168,4 +392,6 @@ $wizard-block-header-color: $color-pf-white;
   }
 }
 
+
+}
 
