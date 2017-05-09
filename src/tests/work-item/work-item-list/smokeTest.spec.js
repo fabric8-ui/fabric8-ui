@@ -57,7 +57,7 @@ describe('Work item list', function () {
 
         detailPage.details_assigned_user().click();
         detailPage.clickworkItemDetailUnassignButton();
-        expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('None');
+        expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
         detailPage.clickWorkItemDetailCloseButton();
 
         //Commented Due to Delete is temporarily not supported

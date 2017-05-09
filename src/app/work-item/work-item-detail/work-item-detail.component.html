@@ -115,7 +115,7 @@
 
                 <div class="pull-left detail-assignee-name">
                     <span *ngIf="!searchAssignee && !workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="placeholder pointer">
-                      None
+                      Unassigned
                     </span>
                     <span *ngIf="!searchAssignee && workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="pointer" id="WI_details_assigned_user">
                       {{workItem.relationships?.assignees?.data[0] | almUserName:'Assignee not found' }}
