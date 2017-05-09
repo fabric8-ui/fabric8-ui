@@ -17,6 +17,8 @@ import {
 
 import { PipelinesComponent } from './pipelines.component';
 import { PipelinesRoutingModule } from './pipelines-routing.module';
+import {SpaceWizardModule} from "../../space-wizard/space-wizard.module";
+import {ModalModule} from "ngx-modal";
 
 
 
@@ -26,7 +28,9 @@ import { PipelinesRoutingModule } from './pipelines-routing.module';
     PipelinesRoutingModule,
     PipelineModule,
     ToolbarModule,
-    DropdownModule
+    DropdownModule,
+    ModalModule,
+    SpaceWizardModule
   ],
   declarations: [PipelinesComponent],
   providers: [

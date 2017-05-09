@@ -1,5 +1,5 @@
 import { ObservableFabric8UIConfig } from './../../shared/config/fabric8-ui-config.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Subscription, Observable } from 'rxjs';
@@ -22,6 +22,9 @@ import {
 } from 'fabric8-runtime-console';
 
 import { pathJoin } from "fabric8-runtime-console/src/app/kubernetes/model/utils";
+import {IModalHost} from "../../space-wizard/models/modal-host";
+import {SpaceWizardComponent} from "../../space-wizard/space-wizard.component";
+import { Context, Contexts } from 'ngx-fabric8-wit';
 
 @Component({
   selector: 'alm-pipelines',
@@ -32,6 +35,12 @@ export class PipelinesComponent implements OnInit, OnDestroy {
 
   toolbarConfig: ToolbarConfig;
   openshiftConsoleUrl: string;
+
+  @ViewChild('updateSpace') updateSpace: IModalHost;
+  @ViewChild('spaceWizard') spaceWizard: SpaceWizardComponent;
+
+  private _context: Context;
+  private contextSubscription: Subscription;
 
   private _apps: FilterQuery[] = [];
   private _codebases: FilterQuery[] = [];
@@ -47,7 +56,9 @@ export class PipelinesComponent implements OnInit, OnDestroy {
   } as SortField;
   private _pipelinesSubscription: Subscription;
 
+
   constructor(
+    private contexts: Contexts,
     private router: Router,
     private authService: AuthenticationService,
     private userService: UserService,
@@ -173,6 +184,10 @@ export class PipelinesComponent implements OnInit, OnDestroy {
         this.applySort();
         this.updateConsoleLink();
       });
+
+    this.contextSubscription = this.contexts.current.subscribe(val => {
+      this._context = val;
+    });
   }
 
   updateConsoleLink() {
@@ -191,10 +206,16 @@ export class PipelinesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this._pipelinesSubscription.unsubscribe();
+    this.contextSubscription.unsubscribe();
   }
 
   get pipelines() {
     return this._filteredPipelines;
   }
 
+  openForgeWizard() {
+    this.updateSpace.open();
+    this.spaceWizard.configurator.space = this._context.space;
+    this.spaceWizard.workflow.gotoStep('forge-step');
+  }
 }
