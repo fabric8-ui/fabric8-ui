@@ -8,9 +8,16 @@ exports.config = {
     smokeTest: 'src/tests/**/smokeTest.spec.js',
     fullTest:  'src/tests/**/*.spec.js'
     },
+    
     jasmineNodeOpts: {
+        isVerbose: true,
+        showColors: true,
+        includeStackTrace: true,
         defaultTimeoutInterval: 60000
     },
+
+    troubleshoot: true,
+
     capabilities: {
       'browserName': 'chrome',
       'maxInstances': 2,
