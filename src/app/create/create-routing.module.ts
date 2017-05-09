@@ -14,6 +14,7 @@ const routes: Routes = [
       { path: '', component: CodebasesComponent },
       { path: 'pipelines', loadChildren: './pipelines/pipelines.module#PipelinesModule' },
       { path: 'environments', loadChildren: './environments/create-environments.module#CreateEnvironmentsModule' },
+      { path: 'apps', loadChildren: './apps/create-apps.module#CreateAppsModule' },
     ]
   }
 ];
