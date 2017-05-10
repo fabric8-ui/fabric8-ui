@@ -25,7 +25,6 @@ import { AuthenticationService } from 'ngx-login-client';
 
 import { HttpService } from './../../shared/http-service';
 
-import { AlmFilterBoardList } from '../../pipes/alm-board-filter.pipe';
 import {
   FabPlannerAssociateIterationModalModule
 } from '../work-item-iteration-association-modal/work-item-iteration-association-modal.module';
@@ -97,7 +96,6 @@ if (process.env.ENV == 'inmemory') {
     WorkItemQuickAddModule
   ],
   declarations: [
-    AlmFilterBoardList,
     WorkItemBoardComponent,
   ],
   providers: providers,

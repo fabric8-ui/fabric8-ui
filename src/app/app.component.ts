@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Broadcaster } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 
 import { GlobalSettings } from './shared/globals';
@@ -36,7 +35,6 @@ export class AppComponent implements OnInit {
 
   constructor(
     auth: AuthenticationService,
-    private broadcaster: Broadcaster,
     private globalSettings: GlobalSettings,
     private activatedRoute: ActivatedRoute,
     private authService: AuthenticationService
@@ -45,23 +43,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.broadcaster.on<any>('toastNotification')
-      .subscribe((notificationData: any) => {
-        this.notifications.splice(0, 0, {
-          text: notificationData.notificationText,
-          alertClass: this.notificationType[notificationData.notificationType],
-          iconClass: this.notificationTypeIcon[notificationData.notificationType]
-        });
-        let interval = setInterval(() => {
-          if (this.notifications.length) {
-            this.notifications.splice(-1, 1);
-          }
-          else {
-            clearInterval(interval);
-          }
-        }, 10000);
-      });
-
     if (this.authService.isLoggedIn()) {
       this.authService.onLogIn();
     } else {
