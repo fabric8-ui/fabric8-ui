@@ -398,7 +398,7 @@ $wizard-block-header-color: $color-pf-white;
           &:active {
             padding-top: $wizard-spacing + 1px;
             padding-left: $wizard-spacing - 1px;
-            margin-bottom:(($grid-gutter-width / 2) - 1px);
+            margin-bottom:(($grid-gutter-width / 4) - 1px);
 
             > header {
               padding-top: $wizard-padding + 1px;
