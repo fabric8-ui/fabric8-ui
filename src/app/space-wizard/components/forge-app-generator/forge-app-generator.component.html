@@ -64,8 +64,8 @@
         <div class="form-horizontal">
           <div [class.has-danger]="!forge.fields[i].display.valid" class="form-group" *ngFor="let field of forge.fields; let i=index; trackBy:trackByFn">
             <label [class.required]="forge.fields[i].display.required===true" for="{{forge.fields[i].name}}" *ngIf="field.display.showLabel!==false"
-              [class.col-xs-4]="field.display.showLabel!==false" class="user-select-none control-label">{{field.display.label}}</label>
-            <div [class.col-xs-8]="field.display.showLabel!==false" [class.col-xs-12]="field.display.showLabel===false" [ngSwitch]="forge.fields[i].display.inputType ">
+             [class.col-xs-12]="field.display.showLabel!==false" [class.col-sm-4]="field.display.showLabel!==false" class="user-select-none control-label">{{field.display.label}}</label>
+            <div [class.col-sm-8]="field.display.showLabel!==false" [class.col-xs-12]="field.display.showLabel===false" [ngSwitch]="forge.fields[i].display.inputType ">
               <div *ngSwitchCase="'singleInput'" [ngSwitch]="forge.fields[i].valueType">
                 <input *ngSwitchCase="'string'" id="{{forge.fields[i].name}}" name="{{forge.fields[i].name}}" (change)="forge.validate()"
                   (keyup.enter)="forge.validate()" [(ngModel)]="forge.fields[i].value" type="text" [class.form-control-danger]="!forge.fields[i].display.valid"
@@ -180,7 +180,7 @@
       </div>
     </div>
   </section>
-  <footer class="container-fluid padding-top-standard-offset">
+  <footer class="container-fluid padding-top-standard-offset" [class.border-transparent]="forge.hasProcessingMessage" >
     <div class="row">
       <div class="col-xs-12 wizard-step-tool-bar with-items-at-end">
         <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasErrorMessage && !forge.hasResultMessage && !forge.hasProcessingMessage"

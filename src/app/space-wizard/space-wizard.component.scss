@@ -2,8 +2,7 @@
 
 $icon-path: '../../assets/icon/';
 @import '../../assets/stylesheets/icons';
-//@import '../../assets/stylesheets/shared/_layout';
-$debug-border:0;
+
 // wizard
 $wizard-spacing:$grid-gutter-width/2;
 $wizard-header-color:$color-pf-black-100;
@@ -33,12 +32,28 @@ $wizard-block-header-color: $color-pf-white;
 // make styles apply to host element and all child elements , including child components
 :host /deep/ {
 
+  //ensure consistent padding on bootstrap rows
+  //startswith col-
+  [class^="col-"]
+  {
+    padding-left:$grid-gutter-width/2;
+    padding-right:$grid-gutter-width/2;
+  }
+  //contains col-
+  [class*=" col-"]
+  {
+    padding-left:$grid-gutter-width/2;
+    padding-right:$grid-gutter-width/2;
+  }
+
+
   flex:1;
   display:flex;
   //align-content: stretch;
   position:relative;
+  width:100%;
 
-  @mixin wizard-step-elements {
+  @mixin wizard-step-child-elements {
     // position buttons
 
     >header {
@@ -75,8 +90,8 @@ $wizard-block-header-color: $color-pf-white;
     }
     >section {
       flex:1;
-      //when using flex here it is important to stretch the content:
-      //and choose the direction as column
+      // when using flex here it is important to stretch the content:
+      // and choose the direction as column
       // display:flex;
       // flex-direction: column;
       // align-content: stretch;
@@ -87,9 +102,17 @@ $wizard-block-header-color: $color-pf-white;
       &.container-fluid {
         // Bug: there is an issue with this element, if the border/padding sum
         // is less than 5px, content overflows and horizontal scroll bars kick
-        // in and it overflows the container.
+        // in and it overflows the container. This is caused by a margin of 20px
+        // when it should be $grid-gutter-width / 2
         .form-horizontal {
-          padding-right:5px;
+          //padding-right:5px;
+          margin-left:-($grid-gutter-width / 2);
+          margin-right:-($grid-gutter-width / 2);
+        }
+        .form-group {
+          //padding-right:5px;
+          margin-left:0;//-$wizard-spacing;
+          margin-right:0;//-$wizard-spacing;
         }
         padding-left:$wizard-spacing  + $debug-border;
         padding-right:$wizard-spacing + $debug-border;
@@ -125,7 +148,6 @@ $wizard-block-header-color: $color-pf-white;
         >.row {
           margin-left:-($wizard-spacing + $debug-border) ;
           margin-right:-($wizard-spacing + $debug-border);
-
         }
       }
       &.container {
@@ -134,12 +156,12 @@ $wizard-block-header-color: $color-pf-white;
     }
   };
 
-
   .wizard {
     flex:1;
     display:flex;
     //align-content: stretch;
     position:relative;
+    //width:100% !important;
     // only applies to rows in the wizard
     .row {
       padding-top:0px;
@@ -149,6 +171,8 @@ $wizard-block-header-color: $color-pf-white;
       min-width: 90px;
     }
     .wizard-step {
+      position:relative;
+      //width:100% !important;
       // at least 50% of view height
       //min-height: 50vh;
       flex:1;
@@ -159,10 +183,10 @@ $wizard-block-header-color: $color-pf-white;
         display:flex;
         flex-direction: column;
         align-content: stretch;
+        width:100% !important;
         //align-content: stretch;
       }
-      position:relative;
-      @include wizard-step-elements;
+      @include wizard-step-child-elements;
       // for cases where the step has a form element
       >form {
 
@@ -171,7 +195,7 @@ $wizard-block-header-color: $color-pf-white;
         flex-direction: column;
         //align-content: stretch;
         position:relative;
-        @include wizard-step-elements;
+        @include wizard-step-child-elements;
 
       }
 
@@ -315,57 +339,96 @@ $wizard-block-header-color: $color-pf-white;
           }
         }
       }
-      .section-column {
+      .panel{
+        display:flex;
+        flex-grow:1;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap : wrap;
+        background-color: transparent;
+        box-shadow: none;
 
-
-
-        display: flex;
-        flex-grow: 1;
-        width:22%;
-        flex-direction: column;
-        padding: $wizard-spacing;
-        margin: 0;
-        margin-right: $wizard-padding;
-        border:solid 2px transparent;
-        box-shadow: $wizard-shadow-offset  $wizard-shadow-blur-radius $wizard-shadow-spread-radius $wizard-layout-block-shadow-color;
-        &:hover {
-
-          border: solid 2px $color-pf-blue-300;
-          box-shadow: $wizard-shadow-offset  $wizard-shadow-blur-radius $wizard-shadow-spread-radius darken($wizard-layout-block-shadow-color, 10%);
-        }
-        &:active {
-
-          padding-top: $wizard-spacing + 1px;
-          padding-left: $wizard-spacing - 1px;
-
-          border: solid 2px $color-pf-blue-400;
-          box-shadow: $wizard-shadow-offset  $wizard-shadow-blur-radius $wizard-shadow-spread-radius darken($wizard-layout-block-shadow-color, 20%);
-        }
-
-        &:last-of-type {
-          margin-right: 0;
-        }
-        background-color: $wizard-section-column-background-color;
-        > header {
-          padding-top: $wizard-padding;
-          text-align: center;
-          color: $color-pf-black;
-          font-weight: normal;
-        }
-        > div {
-          text-align: center;
+        .panel-item {
+          // this is a flex container for its children
+          display: flex;
+          //
           flex-grow: 1;
-          padding-top: $wizard-padding;
+          //starting width
+          max-width: 180px;
+          flex-basis: 180px;
+          // but it can grow
+          flex-grow: 1;
+          //or shrink
+          flex-shrink:1;
+          // content flex from top to bottom
+          flex-direction: column;
+          //padding: $wizard-spacing;
+          margin: ($grid-gutter-width / 4);
+          //margin-right: $wizard-padding;
+          border:solid 2px transparent;
+          box-shadow: $wizard-shadow-offset  $wizard-shadow-blur-radius $wizard-shadow-spread-radius $wizard-layout-block-shadow-color;
+
+          background-color: $wizard-section-column-background-color;
+          > header {
+            padding-top: $wizard-padding;
+            text-align: center;
+            color: $color-pf-black;
+            font-weight: normal;
+          }
+          > section {
+            text-align: center;
+            flex-grow: 1;
+            padding-top: $wizard-padding;
+          }
+          > div {
+            text-align: center;
+            flex-grow: 1;
+            padding-top: $wizard-padding;
+          }
+          > footer {
+            text-align: center;
+            height: auto;
+            padding-bottom: $wizard-padding;
+          }
+
+          &:hover {
+            border: solid 2px $color-pf-blue-300;
+            box-shadow: $wizard-shadow-offset  $wizard-shadow-blur-radius $wizard-shadow-spread-radius darken($wizard-layout-block-shadow-color, 10%);
+          }
+          &:active {
+            padding-top: $wizard-spacing + 1px;
+            padding-left: $wizard-spacing - 1px;
+            margin-bottom:(($grid-gutter-width / 2) - 1px);
+
+            > header {
+              padding-top: $wizard-padding + 1px;
+              margin-bottom:-1px;
+
+            }
+            > section {
+              padding-top: $wizard-padding + 1px;
+              margin-bottom:-1px;
+
+            }
+            > div {
+              padding-top: $wizard-padding + 1px;
+              margin-bottom:-1px;
+            }
+            > footer {
+              padding-top: 1px;
+              margin-bottom:-1px;
+
+            }
+
+            border: solid 2px $color-pf-blue-400;
+            box-shadow: $wizard-shadow-offset  $wizard-shadow-blur-radius $wizard-shadow-spread-radius darken($wizard-layout-block-shadow-color, 20%);
+          }
+
+
         }
-        > footer {
-          text-align: center;
-          height: auto;
-          padding-bottom: $wizard-padding;
-        }
+
       }
     }
   }
-
-
 }
 

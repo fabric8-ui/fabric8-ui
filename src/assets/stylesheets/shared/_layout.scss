@@ -373,7 +373,7 @@ $wizard-footer-divider-color: $color-pf-black-300;// $color-pf-black-200;
 
 @mixin flex-grow-x($count:12) {
   @for $i from 1 through $count {
-  .flex-grow-#{$i} { flex: $i; }
+  .flex-grow-#{$i} { flex-grow: $i; }
   }
 }
 // create 12 flex grow partitions

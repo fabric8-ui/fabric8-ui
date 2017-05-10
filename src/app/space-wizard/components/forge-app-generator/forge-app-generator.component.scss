@@ -125,12 +125,15 @@ $icon-path:'../../../../assets/icon/';
 
   $standard-spacing:$grid-gutter-width/2;
 
-  max-width:900px;
+  //max-width:900px;
   //height:70vh;
   padding:$standard-spacing !important;
 
   position:relative;
+  width:100%;
+
   display:flex;
+  flex:1;
   flex-direction:column;
 
   &.hide{
@@ -166,6 +169,10 @@ $icon-path:'../../../../assets/icon/';
     border: solid 1px $color-pf-black-300;
     overflow: auto;
 
+    .message-body * {
+      white-space: pre;
+    }
+
     .message-body {
 
       vertical-align: top;
@@ -178,22 +185,29 @@ $icon-path:'../../../../assets/icon/';
       border: none;
       line-height: 3.0rem;
       font-size: 1.5rem;
-      white-space: pre; //pre-wrap;
+      white-space:pre;
 
       .message-status-success {
+        white-space: pre-line;
         color: $color-success;
+        font-weight: bold;
       }
 
       .message-status-failed {
+        white-space: pre-line;
         color: $color-error;
+        font-weight: bold;
       }
 
       .message-status-warning {
+        white-space: pre-line;
         color: $color-warning;
+        font-weight: bold;
       }
 
       .property-name {
 
+        white-space: pre-line;
         color:$color-pf-blue;
         font-weight: bold;
 
@@ -210,6 +224,7 @@ $icon-path:'../../../../assets/icon/';
       .property-value{
 
         color: $color-pf-black;
+        white-space: pre-line;
 
         &.property-value-result {
 
