@@ -72,7 +72,6 @@
   .detail-created-date {
     text-align: right;
     float: right;
-    margin-right: 10px;
   }
   .detail-close {
     float: right;
@@ -94,6 +93,7 @@
     }
     .edit-title-alignment {
       display: inline-flex;
+      padding-left: 0;
     }
     .detail-title-edit {
       background-color: $color-pf-white;
