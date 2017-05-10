@@ -13,16 +13,6 @@
  */
 
 let testSupport = require('../testSupport');
-let constants = require("../constants");
-let HomePage = require('./home.page');
-let CodePage = require('./code.page');
-let TestPage = require('./test.page');
-let PipelinePage = require('./pipeline.page');
-let HypothesisPage = require('./hypothesis.page');
-let SettingsPage = require('./settings.page');
-let DashboardPage = require('./dashboard.page');
-let NotificationsPage = require('./notifications.page');
-let MicroservicesPage = require('./microservices.page');
 let WorkItemListPage = require('./work-item-list.page');
 let until = protractor.ExpectedConditions;
 let waitTime = 30000;
