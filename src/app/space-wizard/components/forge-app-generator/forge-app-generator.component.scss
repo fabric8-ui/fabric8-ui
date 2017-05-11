@@ -165,12 +165,18 @@ $icon-path:'../../../../assets/icon/';
   .message-body-container {
 
     flex-grow: 1;
+    display:flex;
     position: relative;
     border: solid 1px $color-pf-black-300;
     overflow: auto;
 
-    .message-body * {
-      white-space: pre;
+    .message-body {
+      flex:1;
+      &, & > * {
+        white-space: pre-line;
+        //overflow: hidden;
+        //text-overflow: ellipsis;
+      }
     }
 
     .message-body {
@@ -185,7 +191,7 @@ $icon-path:'../../../../assets/icon/';
       border: none;
       line-height: 3.0rem;
       font-size: 1.5rem;
-      white-space:pre;
+      //white-space:pre;
 
       .message-status-success {
         white-space: pre-line;

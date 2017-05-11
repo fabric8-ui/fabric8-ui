@@ -32,6 +32,9 @@ $wizard-block-header-color: $color-pf-white;
 // make styles apply to host element and all child elements , including child components
 :host /deep/ {
 
+
+  background-color: $color-pf-white;
+
   //ensure consistent padding on bootstrap rows
   //startswith col-
   [class^="col-"]
@@ -160,7 +163,9 @@ $wizard-block-header-color: $color-pf-white;
     flex:1;
     display:flex;
     //align-content: stretch;
-    position:relative;
+      border: solid 0px lime;
+      position:relative;
+      width:100%;
     //width:100% !important;
     // only applies to rows in the wizard
     .row {
@@ -171,7 +176,9 @@ $wizard-block-header-color: $color-pf-white;
       min-width: 90px;
     }
     .wizard-step {
+      border: solid 0px green;
       position:relative;
+      width:100%;
       //width:100% !important;
       // at least 50% of view height
       //min-height: 50vh;
@@ -189,12 +196,13 @@ $wizard-block-header-color: $color-pf-white;
       @include wizard-step-child-elements;
       // for cases where the step has a form element
       >form {
-
+        border: solid 0px hotpink;
         flex:1;
         display:flex;
         flex-direction: column;
         //align-content: stretch;
         position:relative;
+        width:100%;
         @include wizard-step-child-elements;
 
       }
