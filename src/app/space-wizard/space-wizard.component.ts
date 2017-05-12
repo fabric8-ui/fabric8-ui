@@ -20,6 +20,7 @@ import { IModalHost } from './models/modal-host';
 import { IWorkflow, WorkflowFactory } from './models/workflow';
 import { ForgeCommands } from './services/forge.service';
 import { AppGeneratorConfigurationService } from './services/app-generator.service';
+import { CodebasesService } from '../create/codebases/services/codebases.service';
 
 @Component({
   selector: 'space-wizard',
@@ -82,7 +83,8 @@ export class SpaceWizardComponent implements OnInit {
     private spaceNamespaceService: SpaceNamespaceService,
     private spaceNamePipe: SpaceNamePipe,
     private _appGeneratorConfigurationService: AppGeneratorConfigurationService,
-    private spacesService: SpacesService
+    private spacesService: SpacesService,
+    private codebasesService: CodebasesService,
   ) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, SpaceWizardComponent.instanceCount++);
     if (logger) {

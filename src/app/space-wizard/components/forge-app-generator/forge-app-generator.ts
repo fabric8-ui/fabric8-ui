@@ -17,6 +17,11 @@ import {
 
 } from '../../services/app-generator.service';
 
+import { CodebasesService } from '../../../create/codebases/services/codebases.service';
+import { Codebase } from '../../../create/codebases/services/codebase';
+import { SpacesService } from '../../../shared/spaces.service';
+
+
 export class ForgeAppGenerator {
   static instanceCount: number = 1;
 
@@ -43,7 +48,12 @@ export class ForgeAppGenerator {
   private _currentResponse: IAppGeneratorResponse;
   private _onBeginStep: boolean = false;
 
-  constructor(private _appGeneratorService: IAppGeneratorService, loggerFactory: LoggerFactory) {
+  constructor(
+    private _appGeneratorService: IAppGeneratorService,
+    private _codebasesService: CodebasesService,
+    private _spacesService:SpacesService,
+    loggerFactory: LoggerFactory
+    ) {
 
     this.log = loggerFactory.createLoggerDelegate(this.constructor.name, ForgeAppGenerator.instanceCount++);
 
@@ -128,11 +138,26 @@ export class ForgeAppGenerator {
 
   public createCodeBase(execution: IAppGeneratorPair): Promise<object> {
     return new Promise<object>((resolve, reject) => {
-      this.log('Creating codebase ...')
-      resolve({
-        complete: true
-      } as Object);
+        let createTransient = (url) => {
+            return {
+              attributes: {
+                type: 'git',
+                url: url// "https://github.com/" + this.gitHubRepoFullName + ".git"
+              },
+              type: 'codebases'
+            } as Codebase;
+        }
+        this._spacesService.current.subscribe(space=>{
+          let codeBase = createTransient(this.result.gitUrl);
+          this.log(`Creating codebase ...`,this.result);
+          //this._codebasesService.addCodebase(space.id,codeBase).subscribe((codebase)=>{
+        });
+        resolve({
+          complete: true
+        } as Object);
+
     });
+
   }
 
   /** closes the workflow all together i.e shuts down the host dialog */

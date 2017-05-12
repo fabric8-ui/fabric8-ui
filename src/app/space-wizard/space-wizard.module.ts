@@ -16,7 +16,7 @@ import { SpaceWizardComponent } from './space-wizard.component';
 import { SelectedItemsPipe } from './pipes/selected-items.pipe';
 import { VisibleItemsPipe } from './pipes/visible-items.pipe';
 import { TrustHtmlPipe ,TrustStylePipe } from './pipes/safe-html.pipe';
-
+import { CodebasesService } from '../create/codebases/services/codebases.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -42,7 +42,8 @@ import { TrustHtmlPipe ,TrustStylePipe } from './pipes/safe-html.pipe';
     IForgeServiceProvider.FactoryProvider,
     LoggerFactory,
     WorkflowFactory,
-    AppGeneratorConfigurationService
+    AppGeneratorConfigurationService,
+    CodebasesService
   ]
 })
 
