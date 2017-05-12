@@ -156,6 +156,8 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
         name: sourceInput.name,
         value: sourceInput.value,
         valueType: this.mapFieldValueDataType(sourceInput),
+        /** returns the original source data to be used  */
+        source:()=>sourceInput,
         display: {
           choices: this.mapValueChoices(sourceInput),
           hasChoices: this.mapValueHasOptions(sourceInput),

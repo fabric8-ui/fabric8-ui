@@ -270,41 +270,58 @@ export class AppGeneratorConfigurationService {
 
   private augmentPipelineChoices( field: IField, context: string, execution: IAppGeneratorPair ) {
     // augment display properties
+    let source = field.source();
+    let index: number = 0;
+    let defaultIndex = 0;
     for ( let choice of <Array<IFieldChoice>>field.display.choices ) {
       choice.default = false;
-      choice.hasIcon = true;
+      choice.hasIcon = false;
       choice.view ='pipelineView';
-
-      choice.verticalLayout = true;
-      choice.note=null;
-      choice.icon='icon-pipeline icon-pipeline-release';
-      switch (choice.id.toLowerCase()) {
-        case 'release': {
-          choice.icon='icon-pipeline icon-pipeline-release';
-          choice.index = 0;
-          choice.default = true;
-          choice.name = 'Release';
-          choice.description = null;// 'A release continuous delivery pipeline strategy.';
-          break;
+      let choiceSource = source.valueChoices.find(vc=>vc.id === choice.id)||{ environments:[],stages:[],color:'success' , icon:'fa-check-circle'};
+      let determineColor=(source:string):string => {
+        let found=(source||'').toLowerCase().includes('approve');
+        if(found){
+          return 'warning';
         }
-        case 'release and stage': {
-          choice.index = 1;
-          choice.icon='icon-pipeline icon-pipeline-release-stage';
-          choice.name = 'Release and Stage';
-          choice.description = null;//'A release and stage continuous delivery pipeline strategy.';
-          break;
-        }
-        case 'release, stage, approve and promote': {
-          choice.index = 2;
-          choice.icon='icon-pipeline icon-pipeline-release-stage-approve-promote';
-          choice.name = 'Release, Stage, Approve and Promote';
-          choice.description = null;// 'A release, stage, approve, promote continuous delivery pipeline strategy.';
-          break;
-        }
-        default: {
-          break;
-        }
+        return 'success';
       }
+      let determineIcon=(source:string):string => {
+        let found=(source||'').toLowerCase().includes('approve');
+        if(found){
+          return 'fa-pause-circle';
+        }
+        return 'fa-check-circle';
+      }
+      let buildStages=(source):Array<string> => {
+        let stages = [];
+        let index: number = 0;
+        for(let s of source.stages){
+          let stage = {
+            name:s,
+            index:index,
+            icon:determineIcon(s),
+            color:determineColor(s)
+          };
+          index++;
+          stages.push(stage);
+
+        }
+        return stages;
+      }
+      choice.model = {
+        environments:choiceSource.environments||[],
+        stages:buildStages(choiceSource)
+      };
+
+      choice.description = choiceSource.descriptionMarkdown;
+      choice.description = choice.description.replace(/\n\n/g,'\n');
+      choice.index = index ;
+      choice.name = choice.id;
+      choice.default = index === defaultIndex;
+      choice.verticalLayout = true;
+      //suppress note
+      choice.note=null;
+      index ++;
     }
     // set the default for the first non validation step
     if ( this.isFirstNonValidationStep(context, execution) === true ) {
@@ -313,6 +330,8 @@ export class AppGeneratorConfigurationService {
       this.setFieldSelection( field );
     }
     this.sortFieldOptionsByIndex(field);
+    //suppress field note
+    field.display.note = null;
   }
 
   private augmentStackChoices( field: IField , context: string, execution: IAppGeneratorPair ) {

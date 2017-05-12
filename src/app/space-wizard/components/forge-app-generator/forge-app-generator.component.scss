@@ -399,6 +399,13 @@ $icon-path:'../../../../assets/icon/';
     {
       flex-grow:1;
       padding:5px;
+      .item-name {
+        font-weight:bold;
+      }
+      .item-description {
+        font-size: smaller;
+        white-space: pre-line;
+      }
       //border:solid 1px orange;
     }
     &.vertical-layout{

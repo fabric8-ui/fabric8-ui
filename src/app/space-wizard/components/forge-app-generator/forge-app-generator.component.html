@@ -113,7 +113,7 @@
               <div class="single-selection-list-container" *ngSwitchCase="'singleSelectionList'">
                 <div class="input-group width-100">
                   <ul class="choice-menu" style="list-style:none;margin:0;padding:0">
-                    <li style="display:flex;" class="choice-container" (click)="forge.fields[i].display.text=choice.name;forge.fields[i].display.note=choice.description;forge.fields[i].value=choice.id;forge.fields[i].display.open=false;forge.validate();"
+                    <li style="display:flex;" class="choice-container" (click)="forge.fields[i].value=choice.id;forge.validate()"
                       *ngFor="let choice of forge.fields[i].display.choices">
                       <input style="width:auto;" [checked]="forge.fields[i].value === choice.id" [value]="choice.id" type="radio" name="{{forge.fields[i].name}}"
                         class="user-select-none" readonly="false" [disabled]="forge.fields[i].display.enabled===false" class="form-control margin-right-standard-offset">
@@ -122,10 +122,10 @@
                           <div *ngIf="choice.hasIcon===true && choice.view==='image'" class="choice-icon margin-right-standard-offset">
                             <div [ngClass]="[choice.icon]"></div>
                           </div>
-                          <forge-pipeline-view *ngIf="choice.view === 'pipelineView'" ></forge-pipeline-view>
+                          <forge-pipeline-view [pipeline]="choice.model"  *ngIf="choice.view === 'pipelineView'" ></forge-pipeline-view>
                           <div class="choice-content">
                             <div class="item-name">{{choice.name}}</div>
-                            <div *ngIf="choice.description" class="item-description">{{choice.description||''}}</div>
+                            <div *ngIf="choice.description" [innerHTML]="choice.description" class="item-description"></div>
                           </div>
                         </div>
                       </div>

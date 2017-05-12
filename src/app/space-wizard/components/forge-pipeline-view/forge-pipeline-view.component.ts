@@ -25,12 +25,12 @@ export class ForgePipelineViewComponent implements OnInit, OnDestroy {
   // keep track of the number of instances
   static instanceCount: number = 1;
 
-  public pipeline: any = {
+  @Input() public pipeline: any = {
     stages:[
-      { name:'Release',details:'2 minutes',color:'success' , icon:'fa-check-circle' },
-      { name:'Test',details:'5 minutes',color:'success' , icon:'fa-check-circle' },
-      { name:'Stage',details:'3 min',color:'success' , icon:'fa-check-circle' },
-      { name:'Approve',details:'click to approve...',color:'warning' , icon:'fa-pause-circle' },
+      { name:'Release',color:'success' , icon:'fa-check-circle' },
+      { name:'Test',color:'success' , icon:'fa-check-circle' },
+      { name:'Stage',color:'success' , icon:'fa-check-circle' },
+      { name:'Approve',color:'warning' , icon:'fa-pause-circle' },
     ]};
 
   constructor(
