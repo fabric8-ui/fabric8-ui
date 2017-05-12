@@ -273,6 +273,8 @@ export class AppGeneratorConfigurationService {
     for ( let choice of <Array<IFieldChoice>>field.display.choices ) {
       choice.default = false;
       choice.hasIcon = true;
+      choice.view ='pipelineView';
+
       choice.verticalLayout = true;
       choice.note=null;
       choice.icon='icon-pipeline icon-pipeline-release';

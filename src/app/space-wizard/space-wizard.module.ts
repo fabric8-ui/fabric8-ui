@@ -7,6 +7,7 @@ import { AuthenticationService } from 'ngx-login-client';
 import { runtimeConsoleImports } from './../shared/runtime-console/runtime-console';
 import { LoggerFactory } from './common/logger';
 import { ForgeAppGeneratorComponent } from './components/forge-app-generator/forge-app-generator.component';
+import { ForgePipelineViewComponent } from './components/forge-pipeline-view/forge-pipeline-view.component';
 import { WorkflowFactory } from './models/workflow';
 
 import { IForgeServiceProvider } from './services/forge.service';
@@ -25,6 +26,7 @@ import { TrustHtmlPipe ,TrustStylePipe } from './pipes/safe-html.pipe';
   declarations: [
     SpaceWizardComponent,
     ForgeAppGeneratorComponent,
+    ForgePipelineViewComponent,
     UniqueSpaceNameValidatorDirective,
     ValidSpaceNameValidatorDirective,
     SelectedItemsPipe,
