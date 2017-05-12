@@ -60,14 +60,10 @@ export class MenusService {
               {
                 name: 'Applications',
                 path: 'apps'
-/*
-   TODO environments page is disabled for now due to resource usage
-
               },
               {
                 name: 'Environments',
                 path: 'environments'
-*/
               }
             ]
           }
