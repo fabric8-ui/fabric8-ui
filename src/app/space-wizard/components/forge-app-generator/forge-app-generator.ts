@@ -21,15 +21,16 @@ import { CodebasesService } from '../../../create/codebases/services/codebases.s
 import { Codebase } from '../../../create/codebases/services/codebase';
 import { SpacesService } from '../../../shared/spaces.service';
 
+interface ICodebaseCreationDelegate{
+  ():Promise<object>
+}
 
 export class ForgeAppGenerator {
   static instanceCount: number = 1;
 
-
   public workflow: IWorkflow;
   public name: string;
   public state: IAppGeneratorState;
-
 
   public hasErrorMessage: boolean;
   public errorMessage: IAppGeneratorMessage;
@@ -37,7 +38,6 @@ export class ForgeAppGenerator {
   public hasResultMessage: boolean;
   public resultMessage: IAppGeneratorMessage;
   public result:any;
-
 
   public processing: boolean = false;
   public hasProcessingMessage: boolean;
@@ -92,8 +92,6 @@ export class ForgeAppGenerator {
     this._fieldSet = value;
   }
 
-
-
   public clearResult() {
     this.hasResultMessage = false;
     this.resultMessage = this.resultMessage || {} as IAppGeneratorMessage;
@@ -116,6 +114,7 @@ export class ForgeAppGenerator {
   public acknowledgeError() {
     this.clearErrorView();
     if (this.onBeginStep) {
+      //if on the first step
       this.reset();
       // go back to forge selector
       this.workflow.gotoPreviousStep();
@@ -130,34 +129,67 @@ export class ForgeAppGenerator {
 
   public finish() {
     this.execute()
-      .then((execution) => this.createCodeBase(execution))
-      .then((result) => {
-        this.workflow.finish();
-      })
-  }
-
-  public createCodeBase(execution: IAppGeneratorPair): Promise<object> {
-    return new Promise<object>((resolve, reject) => {
-        let createTransient = (url) => {
-            return {
-              attributes: {
-                type: 'git',
-                url: url// "https://github.com/" + this.gitHubRepoFullName + ".git"
-              },
-              type: 'codebases'
-            } as Codebase;
+      .then(
+        (execution) => {
+          this.createCodebase = this.createCodebaseCreationDelegate(execution);
+          if(this.createCodebase){
+            this.createCodebase();
+          }
         }
-        this._spacesService.current.subscribe(space=>{
-          let codeBase = createTransient(this.result.gitUrl);
-          this.log(`Creating codebase ...`,this.result);
-          //this._codebasesService.addCodebase(space.id,codeBase).subscribe((codebase)=>{
-        });
-        resolve({
-          complete: true
-        } as Object);
+      )
+      .then(
+        (createCodeBaseResult) => {
+          this.workflow.finish();
+        }
+      )
+      .catch(
+        (ex) => {
+          this.log({ origin :'finish', message:'App generator finish error', error: true }, ex);
+      });
 
-    });
+  }
+  /**
+   * Create a function that returns a promise containing the successful codebase creation
+   */
+  public createCodebaseCreationDelegate(execution: IAppGeneratorPair): ICodebaseCreationDelegate {
+    let delegate: ICodebaseCreationDelegate = () => {
+      return new Promise<object>((resolve, reject) => {
+        let createTransientCodeBase = (url) => {
+          return {
+            attributes: {
+              type: 'git',
+              url: url
+            },
+            type: 'codebases'
+          } as Codebase;
+        };
+        this._spacesService.current.subscribe(
+          (space) => {
+              let codeBase = createTransientCodeBase(this.result.gitUrl);
+              this.log(`Adding codebase ${this.result.gitUrl} to space ${space.attributes.name} ...`,this.result,console.groupCollapsed);
+              this._codebasesService.addCodebase(space.id,codeBase).subscribe(
+                (codebase) => {
+                  this.log(`Successfully added codebase ${this.result.gitUrl} to space ${space.attributes.name} ...`,this.result,console.groupEnd);
+                  resolve( <object>{
+                  complete:true,
+                  codebase: null,
+                  result:this.result,
+                  space:space,
+                  });
+                },
+                (addCodebaseError) => {
+                  reject(addCodebaseError)
+                }
+              );
 
+          },
+          (spaceError) => {
+            reject(spaceError);
+          }
+        );
+      });
+    };
+    return delegate;
   }
 
   /** closes the workflow all together i.e shuts down the host dialog */
@@ -271,12 +303,12 @@ export class ForgeAppGenerator {
       this.processing = false;
       this.clearProcessingView();
       this.displayErrorView(error);
-      this.log({ message: error.message, warning: true });
+      this.log({ origin:'gotoNextStep', message: error.message, warning: true });
     });
 
   }
 
-  public execute() {
+  public execute():Promise<IAppGeneratorPair> {
     this.onBeginStep = false;
     return new Promise<IAppGeneratorPair>((resolve, reject) => {
 
@@ -323,14 +355,18 @@ export class ForgeAppGenerator {
             }, (error) => {
               this.clearProcessingView();
               this.displayErrorView(error);
+              reject(error)
             });
         } else {
           this.clearProcessingView();
         }
-      }).catch(error => {
+      },(validationError => {
+        reject(validationError);
+      })).catch(error => {
         this.clearProcessingView();
         this.displayErrorView(error);
-        this.log({ message: error.message, warning: true });
+        this.log({ origin:'execute', message: error.message, warning: true });
+        reject(error);
       });
     });
   }
@@ -376,7 +412,8 @@ export class ForgeAppGenerator {
         }, (error => {
           this.processing = false;
           reject({
-            name: 'Validation Error',
+            origin: 'validate',
+            name: 'ValidationError',
             message: 'Something went wrong while attempting to validate the request.',
             inner: error
           });
@@ -558,5 +595,6 @@ export class ForgeAppGenerator {
 
   /** logger delegate delegates logging to a logger */
   private log: ILoggerDelegate = () => { };
+  private createCodebase: ICodebaseCreationDelegate = () => { };
 
 }

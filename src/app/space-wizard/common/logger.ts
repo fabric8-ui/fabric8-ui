@@ -6,6 +6,7 @@ export interface ILogEntry {
   error?: boolean;
   info?: boolean;
   inner?: any;
+  origin?: string;
 }
 export interface ILoggerDelegate {
   (options: string | ILogEntry, ...args): void;
