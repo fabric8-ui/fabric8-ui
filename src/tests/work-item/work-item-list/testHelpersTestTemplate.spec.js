@@ -1,15 +1,11 @@
 /**
- * POC test for automated UI tests for ALMighty
- *  Story: Display and Update Work Item Details
- *  https://github.com/almighty/almighty-core/issues/296
+ * POC test for automated UI tests using test helper functions
  *
  * Note on screen resolutions - See: http://www.itunesextractor.com/iphone-ipad-resolution.html
  * Tests will be run on these resolutions:
  * - iPhone6s - 375x667
  * - iPad air - 768x1024
  * - Desktop -  1920x1080
- *
- * beforeEach will set the mode to phone. Any tests requiring a different resolution will must set explicitly.
  *
  * @author 
  */
@@ -21,29 +17,30 @@ var WorkItemListPage = require('./page-objects/work-item-list.page'),
 
 describe('Work item list', function () {
     var page, items, browserMode;
-    var until = protractor.ExpectedConditions;
     beforeEach(function () {
         testSupport.setBrowserMode('desktop');
         page = new WorkItemListPage(true);
     testSupport.setTestSpace(page);
     });
 
+    /* Perform some tests on that workitem - set values and verify them */
     it('Quick Create workitem', function () { 
         var theWorkItem = testHelpers.quickCreateWorkItem (page, "testing123", "testing456");
-        // Perform some tests on that workitem
-        testHelpers.assignWorkItem (page, theWorkItem, "Example User 1");
-//        testHelpers.verifyAssignee (page, theWorkItem, "Example User 1");
         testHelpers.setWorkItemDescription (page, "testing123", "newDescText", true);
         testHelpers.setWorkItemTitle (page, "testing123", "newTitleText", true);
-        testHelpers.deleteWorkItem (page, theWorkItem, true);
+        testHelpers.setWorkItemAssignee (page, theWorkItem, "Example User 1");
+
+        testHelpers.verifyWorkItemDescription (page, theWorkItem, "newDescText");
+        testHelpers.verifyWorkItemTitle (page, theWorkItem, "newTitleText");
+        testHelpers.verifyworkItemAssignee (page, theWorkItem, "Example User 1");
     });
 
     it('Create workitem', function () { 
         var theWorkItem = testHelpers.createWorkItem (page, "testing123", "testing456", "userstory", "Example User 1"); 
-        browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');   
- 
-        // Perform some tests on that workitem
-        testHelpers.deleteWorkItem (page, theWorkItem);
+
+        testHelpers.verifyWorkItemDescription (page, theWorkItem, "testing456");
+        testHelpers.verifyWorkItemTitle (page, theWorkItem, "testing123");
+        testHelpers.verifyworkItemAssignee (page, theWorkItem, "Example User 1");
     });
 
 });

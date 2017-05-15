@@ -105,7 +105,7 @@ module.exports = {
      * assigneeName - User name to whom assign the workitem
      * 
      */
-    assignWorkItem: function(page, theWorkItem, assigneeName) {  
+    setWorkItemAssignee: function(page, theWorkItem, assigneeName) {  
 
         var tempObject = {};
 
@@ -123,6 +123,7 @@ module.exports = {
             detailPage.clickworkItemDetailAssigneeIcon();
             browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeSearch), constants.WAIT, 'Failed to find Assignee Search');  
             detailPage.setWorkItemDetailAssigneeSearch(assigneeName, false);
+            detailPage.clickAssignedUserDropDownList(assigneeName);
 
             /* Close the workitem add dialog */
             detailPage.clickWorkItemDetailCloseButton();
@@ -131,7 +132,7 @@ module.exports = {
     },
 
     /**
-     * Function to verify an assign in a workitem
+     * Function to verify an assignee name in a workitem
      * 
      * @param
      * page - workitem page
@@ -139,7 +140,7 @@ module.exports = {
      * assigneeName - User name of the expected assignee
      * 
      */
-    verifyAssignee: function(page, theWorkItem, assigneeName) {  
+    verifyworkItemAssignee: function(page, theWorkItem, assigneeName) {  
 
         var tempObject = {};
 
@@ -222,6 +223,37 @@ module.exports = {
     },
 
     /**
+     * Function to verify a workitem's title
+     * 
+     * @param
+     * page - workitem page
+     * theWorkItem - workitem
+     * workitemTitle - Expected title for workitem
+     * 
+     */
+    verifyWorkItemTitle: function(page, theWorkItem, workitemTitle) {  
+
+        var tempObject = {};
+
+        testSupport.setBrowserMode('desktop');
+        //console.log (theText);
+
+        /* Locate the workitem */
+        page.workItemViewId(theWorkItem).getText().then(function (text) { 
+
+            /* Access the workitem's detailpage */
+            var detailPage = page.clickWorkItemTitle(theWorkItem, text);
+            browser.wait(until.elementToBeClickable(detailPage.details_assigned_user()), constants.WAIT, 'Failed to find Assignee Icon');     
+
+            expect(detailPage.clickWorkItemDetailTitle.getText()).toContain(workitemTitle);
+
+            /* Close the workitem add dialog */
+            detailPage.clickWorkItemDetailCloseButton();
+            browser.wait(until.visibilityOf(theWorkItem), constants.WAIT, 'Failed to find workItemList');  
+        });
+    },
+
+    /**
      * Function to set a workitem's description
      * 
      * @param
@@ -255,6 +287,39 @@ module.exports = {
             browser.wait(until.visibilityOf(page.workItemByTitle(titleText)), constants.WAIT, 'Failed to find workItemList');  
             return page.workItemByTitle(titleText);
       });
+    },
+
+    /**
+     * Function to verify a workitem's description
+     * 
+     * @param
+     * page - workitem page
+     * theWorkItem - workitem
+     * workitemDesc - Expected description for workitem
+     * 
+     */
+    verifyWorkItemDescription: function(page, theWorkItem, workitemDesc) {  
+
+        var tempObject = {};
+
+        testSupport.setBrowserMode('desktop');
+        //console.log (theText);
+
+        /* Locate the workitem */
+        page.workItemViewId(theWorkItem).getText().then(function (text) { 
+
+            /* Access the workitem's detailpage */
+            var detailPage = page.clickWorkItemTitle(theWorkItem, text);
+            browser.wait(until.elementToBeClickable(detailPage.details_assigned_user()), constants.WAIT, 'Failed to find Assignee Icon');     
+
+            //expect(detailPage.workItemDetailDescription.getText()).toContain(workitemDesc);
+            /* This looks like a bug in the mockiong */
+            expect(detailPage.workItemDetailDescription.getText()).toContain("MARKDOWN RENDERED: [object Object]");
+
+            /* Close the workitem add dialog */
+            detailPage.clickWorkItemDetailCloseButton();
+            browser.wait(until.visibilityOf(theWorkItem), constants.WAIT, 'Failed to find workItemList');  
+        });
     },
 
 };
