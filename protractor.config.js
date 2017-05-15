@@ -1,4 +1,10 @@
 exports.config = {
+    params: {
+    baseUrl: {
+      osio: 'https://openshift.io/',
+      username: 'testuser@redhat.com'
+    }
+    },
     useAllAngular2AppRoots: true,
     getPageTimeout: 30000,
     seleniumAddress: 'http://localhost:4444/wd/hub',
