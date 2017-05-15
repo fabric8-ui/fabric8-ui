@@ -537,11 +537,22 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         );
       })
       .map(([workItem, users, workItemTypes, area, iteration, assignees, creator, comments, [links, includes]]) => {
+
+        // resolve comments
+        workItem.relationships.comments = Object.assign(
+          workItem.relationships.comments,
+          comments
+        );
+        workItem.relationships.comments.data =
+          workItem.relationships.comments.data.map((comment) => {
+            comment.relationships['created-by'].data = users.find(user => user.id === comment.relationships['created-by'].data.id);
+            return comment;
+          });
+
         // Resolve area
         workItem.relationships.area = {
           data: area
         };
-
         // Resolve iteration
         if (iteration) {
           workItem.relationships.iteration = {
