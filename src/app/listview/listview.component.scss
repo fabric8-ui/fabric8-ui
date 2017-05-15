@@ -2,50 +2,32 @@
 
 /* Overridding Fabric8's min button width */
 .list-view-pf-actions {
-  button {
-    margin-left: 0;
-  }
-  .dropdown-kebab-pf .btn {
-    min-width: initial;
+  button { margin-left: 0; }
+  .dropdown-kebab-pf {
+    .btn { min-width: initial; }
   }
 }
-
 /* Group heading above list view */
 .list-group-heading {
+  position: absolute;
+  top: -40px;
   font-size: $font-size-base;
   font-weight: initial;
-  @media (max-width: 992px) { // @screen-md-min
-    display: none;
-  }
+  @media (max-width: 992px) { display: none; }
 }
-
 .list-view-pf .list-group-item {
   margin-left: -2px;
   margin-right: -2px;
 }
-
 .list-view-pf .list-group-item {
   &.list-group-item-heading-row {
     border-top: none;
     pointer-events: none;
-    &:hover {
-      background-color: $color-pf-white;
-    }
-    i {
-      pointer-events: auto;
-    }
+    &:hover { background-color: $color-pf-white; }
+    i { pointer-events: auto; }
   }
 }
-
-.list-view-pf-dnd-drag-items-container {
-  display: flex;
-}
-
+.list-view-pf-dnd-drag-items-container { display: flex; }
 /* overriding pf base so that buttons have spaces between them */
-.pf-expand-placeholder {
-  margin-right: 15px;
-}
-
-.pf-cb-placeholder {
-  margin-right: 40px;
-}
+.pf-expand-placeholder { margin-right: 15px; }
+.pf-cb-placeholder { margin-right: 40px; }

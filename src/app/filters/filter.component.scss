@@ -1,11 +1,5 @@
 @import '../../assets/stylesheets/_base';
-
 .filter-pf {
-  a {
-    cursor: pointer;
-  }
+  a { cursor: pointer; }
 }
-
-.dropdown-menu {
-  min-width: 176px;
-}
+.dropdown-menu { min-width: 176px; }

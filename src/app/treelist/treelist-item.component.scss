@@ -4,74 +4,43 @@
   .list-group-item {
     display: block;
     border: none;
-    &:first-child {
-      border: none;
-    }
-    &.tree-item-placeholder {
-      padding-top: 5px;
-    }
+    &:first-child { border: none; }
+    &.tree-item-placeholder { padding-top: 5px; }
   }
 }
-
 .node-drop-slot {
   height: 5px;
   &.is-dragging-over {
-    background-color: $color-pf-black-400;
-    border: none;
     height: 30px;
+    border: none;
+    background-color: $color-pf-black-400;
   }
 }
-
 .node-content-wrapper {
   .list-group-item {
+    padding-left: 0;
     border: none;
     cursor: pointer;
-    padding-left: 0;
-    &:hover {
-      background-color: $color-pf-black-200;
-    }
+    &:hover { background-color: $color-pf-black-200; }
     &.tree-item-selected {
       background-color: $color-pf-blue-100;
-      &:hover {
-        background-color: $color-pf-blue-100;
-      }
+      &:hover { background-color: $color-pf-blue-100; }
     }
   }
-  /* Todo: Highlight drop on nodes?
-  &.is-dragging-over {
-    .list-group-item {
-      background-color: $color-pf-black-200;
-    }
-  }
-  */
 }
-
-.node-wrapper {
-  padding-left: 0 !important;
-}
-
+.node-wrapper { padding-left: 0 !important; }
 // Indentation -- highlighting should occupy entire row
 .tree-children {
   padding-left: 0;
-  .tree-list-item {
-    padding-left: 20px;
-  }
+  .tree-list-item { padding-left: 20px; }
   .tree-children {
-    .tree-list-item {
-      padding-left: 40px;
-    }
+    .tree-list-item { padding-left: 40px; }
     .tree-children {
-      .tree-list-item {
-        padding-left: 60px;
-      }
+      .tree-list-item { padding-left: 60px; }
       .tree-children {
-        .tree-list-item {
-          padding-left: 80px;
-        }
+        .tree-list-item { padding-left: 80px; }
         .tree-children {
-          .tree-list-item {
-            padding-left: 100px;
-          }
+          .tree-list-item { padding-left: 100px; }
         }
       }
     }
@@ -80,13 +49,7 @@
 
 .tree-list-item {
   padding-left: 10px;
-  .toggle-children-placeholder {
-    width: 15px;
-  }
-  .toggle-children-wrapper {
-    padding-right: 10px;
-  }
-  .toggle-children-wrapper-expanded {
-    padding-right: 7px;
-  }
+  .toggle-children-placeholder { width: 15px; }
+  .toggle-children-wrapper { padding-right: 10px; }
+  .toggle-children-wrapper-expanded { padding-right: 7px; }
 }

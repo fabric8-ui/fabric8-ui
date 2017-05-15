@@ -1,29 +1,18 @@
 @import '../../assets/stylesheets/_base';
-
-@media (min-width: 768px) {
-  .toolbar-pf-actions .toolbar-apf-filter {
-    padding-left: 0;
-  }
-}
 .toolbar-pf-actions {
-  .btn {
-    min-width: unset;
-  }
+  .btn { min-width: unset; }
   .toolbar-pf-view-selector {
-    a {
-      cursor: pointer;
-    }
+    a { cursor: pointer; }
   }
   .dropdown-menu {
-    a {
-      cursor: pointer;
-    }
+    a { cursor: pointer; }
   }
-  .dropdown-kebab-pf {
-    float: right;
-  }
+  .dropdown-kebab-pf { float: right; }
   .toolbar-apf-filter {
     padding-left: 0 !important;
+    @media (min-width: 768px) {
+      padding-left: 0;
+    }
   }
 }
 .toolbar-pf-include-actions {
@@ -34,6 +23,4 @@
   opacity: 0;
   pointer-events: none;
 }
-.toolbar-pf-actions.no-filter-results {
-  margin-bottom: 10px;
-}
+.toolbar-pf-actions.no-filter-results { margin-bottom: 10px; }
