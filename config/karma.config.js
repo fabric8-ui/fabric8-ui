@@ -22,13 +22,15 @@ module.exports = function (config) {
     webpack: webpackConfig,
 
     coverageReporter: {
-	      dir : 'coverage/',
-	      reporters: [
-		          { type: 'text-summary' },
-		          { type: 'json' },
-		          { type: 'html' }
-		        ]
-	  },
+      type: 'in-memory'
+    },
+
+    remapCoverageReporter: {
+      'text-summary': null,
+      json: './coverage/coverage.json',
+      html: './coverage/html'
+    },
+
     webpackMiddleware: {
       stats: 'errors-only'
     },
@@ -38,7 +40,7 @@ module.exports = function (config) {
     },
 
     // Possible values - 'progress'
-    reporters: ['kjhtml', 'coverage', 'mocha'],
+    reporters: ['coverage', 'mocha', 'remap-coverage'],
     port: 9876,
     colors: !process.env.CI,
     logLevel: config.LOG_INFO,
