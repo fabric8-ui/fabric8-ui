@@ -20,6 +20,7 @@ export interface ILoggerDelegate {
 export class LoggerFactory {
 
   private styles = {
+
     origin: `
       background:linear-gradient(#444, #333);
       color:lime;
@@ -42,7 +43,8 @@ export class LoggerFactory {
   };
 
   constructor() {
-    console.log(`%c${this.constructor.name} %cNew instance ...`, this.styles.origin, this.styles.message);
+    let fmt='%c';
+    console.log(`${fmt}${this.constructor.name} ${fmt}New instance ...`, this.styles.origin, this.styles.message);
   }
 
   createLoggerDelegate(origin: string, instance: number = 0): ILoggerDelegate {
@@ -59,10 +61,14 @@ export class LoggerFactory {
       if ( entry.info === true ) {
         method = 'info';
       }
-      let msg = `%c${origin}%c ${instance} %c${entry.message || ''}`;
+      let fmt: string = '';//'%c';
+      let msg = `${fmt}${origin}${fmt} ${instance} ${fmt}${entry.message || ''}`;
       let functionArgs=args.filter(a=>typeof(a)==='function');
       let otherArgs=args.filter(a=>typeof(a)!=='function');
-      let newArgs=[msg,me.styles.origin,me.styles.instance,me.styles.message,...otherArgs];
+      let newArgs=[msg,...otherArgs];
+      if( fmt.length > 0 ) {
+        newArgs = [msg,me.styles.origin,me.styles.instance,me.styles.message,...otherArgs];
+      }
       if( functionArgs.length > 0 ){
         functionArgs[0].apply(null,newArgs);
       } else{
