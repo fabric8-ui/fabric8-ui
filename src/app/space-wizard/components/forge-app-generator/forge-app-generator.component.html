@@ -44,21 +44,21 @@
     </div>
   </section>
 
-  <section [class.hide]="!forge.hasResultMessage" class="app-generator-message app-generator-message-success">
+  <section [class.hide]="!forge.hasSuccessMessage" class="app-generator-message app-generator-message-success">
     <div class="message-title-container">
       <div class="message-title">
         <span class="message-title-icon fa-2x pficon pficon-ok"></span>
         <span class="message-title-icon-label" >Success!</span>
-        <span class="message-title-text">{{forge.resultMessage.title||''}}</span>
+        <span class="message-title-text">{{forge.successMessage.title||''}}</span>
       </div>
     </div>
     <div class="message-body-container">
-      <div [innerHTML]="forge.resultMessage.body" class="message-body">
+      <div [innerHTML]="forge.successMessage.body" class="message-body">
       </div>
     </div>
   </section>
 
-  <section [hidden]="forge.hasErrorMessage||forge.hasResultMessage||forge.hasProcessingMessage" class="container-fluid padding-top-standard-offset">
+  <section [hidden]="forge.hasErrorMessage||forge.hasSuccessMessage||forge.hasProcessingMessage" class="container-fluid padding-top-standard-offset">
     <div class="row">
       <div class="col-xs-12">
         <div class="form-horizontal">
@@ -183,17 +183,16 @@
   <footer class="container-fluid padding-top-standard-offset" [class.border-transparent]="forge.hasProcessingMessage" >
     <div class="row">
       <div class="col-xs-12 wizard-step-tool-bar with-items-at-end">
-        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasErrorMessage && !forge.hasResultMessage && !forge.hasProcessingMessage"
+        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasErrorMessage && !forge.hasSuccessMessage && !forge.hasProcessingMessage"
           (click)="forge.cancel()">Cancel</button>
-        <!--<button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasErrorMessage && !forge.hasResultMessage !forge.hasProcessingMessage" [disabled]="(!forge.state.canMoveToPreviousStep)||(forge.processing === true)"
+        <!--<button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasErrorMessage && !forge.hasSuccessMessage !forge.hasProcessingMessage" [disabled]="(!forge.state.canMoveToPreviousStep)||(forge.processing === true)"
             (click)="forge.gotoPreviousStep()">Back</button>-->
-        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasErrorMessage && !forge.hasResultMessage && !forge.hasProcessingMessage"
+        <button type="button" class="btn btn-primary margin-right-5" *ngIf="!forge.hasErrorMessage && !forge.hasSuccessMessage && !forge.hasProcessingMessage"
           [disabled]="(!forge.state.canMoveToNextStep)||(forge.processing === true)" (click)="forge.gotoNextStep()">Next</button>
-        <button type="button" class="btn btn-primary" *ngIf="!forge.hasErrorMessage && !forge.hasResultMessage && !forge.hasProcessingMessage"
+        <button type="button" class="btn btn-primary" *ngIf="!forge.hasErrorMessage && !forge.hasSuccessMessage && !forge.hasProcessingMessage"
           [disabled]="(!forge.state.canExecute)||(forge.processing === true)" (click)="forge.finish()">Finish</button>
-        <button type="button" class="btn btn-primary" *ngIf="forge.hasErrorMessage" (click)="forge.acknowledgeError()">OK</button>
-        <!--<button class='btn btn-primary margin-right-5' *ngIf="forge.hasResultMessage" (click)="forge.addResultToSpace()"><span class="pficon pficon-add-circle-o" ></span> Add this code base to my space</button>-->
-        <button type="button" class="btn btn-primary" *ngIf="forge.hasResultMessage" (click)="forge.acknowledgeResult()">OK</button>
+        <button type="button" class="btn btn-primary" *ngIf="forge.hasErrorMessage" (click)="forge.acknowledgeErrorMessage()">OK</button>
+        <button type="button" class="btn btn-primary" *ngIf="forge.hasSuccessMessage" (click)="forge.acknowledgeSuccessMessage()">OK</button>
       </div>
     </div>
   </footer>
