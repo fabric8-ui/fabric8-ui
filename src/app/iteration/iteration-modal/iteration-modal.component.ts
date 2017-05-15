@@ -221,7 +221,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
     // Format 2016-11-29T23:18:14Z
     this.startDate = { date: event.date };
-    this.iteration.attributes.startAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T00:00:00Z';
+    this.iteration.attributes.startAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T12:00:00Z';
 
     let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
     endDatePickerComponentCopy['disableUntil'] = event.date;
@@ -231,7 +231,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   onEndDateChanged(event: IMyDateModel) {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
     this.endDate = { date: event.date };
-    this.iteration.attributes.endAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T00:00:00Z';
+    this.iteration.attributes.endAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T12:00:00Z';
   }
 
   iterationSearchFocus() {
