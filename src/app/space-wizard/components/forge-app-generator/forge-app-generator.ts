@@ -62,7 +62,7 @@ export class ForgeAppGenerator {
       canMovePreviousStep: false,
       canMoveToNextStep: false,
       currentStep: 0,
-      steps: [''],
+      steps: [],
       title: '',
       description: '',
       valid: false

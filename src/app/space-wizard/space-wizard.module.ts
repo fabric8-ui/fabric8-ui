@@ -7,6 +7,7 @@ import { runtimeConsoleImports } from './../shared/runtime-console/runtime-conso
 import { LoggerFactory } from './common/logger';
 import { ForgeAppGeneratorComponent } from './components/forge-app-generator/forge-app-generator.component';
 import { ForgePipelineViewComponent } from './components/forge-pipeline-view/forge-pipeline-view.component';
+import { ForgeStepViewComponent } from './components/forge-step-view/forge-step-view.component';
 import { WorkflowFactory } from './models/workflow';
 
 import { IForgeServiceProvider } from './services/forge.service';
@@ -27,6 +28,7 @@ import { CodebasesService } from '../create/codebases/services/codebases.service
     SpaceWizardComponent,
     ForgeAppGeneratorComponent,
     ForgePipelineViewComponent,
+    ForgeStepViewComponent,
     UniqueSpaceNameValidatorDirective,
     ValidSpaceNameValidatorDirective,
     SelectedItemsPipe,

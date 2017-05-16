@@ -10,8 +10,9 @@
       </div>
     </div>
   </header>
+  <forge-step-view  [class.hide]="forge.hasProcessingMessage||forge.hasSuccessMessage" [state]="forge.state"  ></forge-step-view>
 
-  <section [class.hide]="!forge.hasProcessingMessage" class="app-generator-message app-generator-message-processing">
+  <section  [class.hide]="!forge.hasProcessingMessage" class="app-generator-message app-generator-message-processing">
     <div class="message-title-container">
       <div class="message-title">
         <span class="message-title-text" >{{forge.processingMessage.title||''}}</span>
