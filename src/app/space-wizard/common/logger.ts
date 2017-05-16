@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-let formatConsole:boolean = false;
+let formatConsole: boolean = true;
 
 export interface ILogEntry {
   message: string;
@@ -45,8 +45,13 @@ export class LoggerFactory {
   };
 
   constructor() {
-    let fmt = formatConsole===true?'%c':'';
-    console.log(`${fmt}${this.constructor.name} ${fmt}New instance ...`, this.styles.origin, this.styles.message);
+    let fmt = formatConsole === true ? '%c' : '';
+    let msg = `${fmt}${this.constructor.name} ${fmt}New instance ...`;
+    if ( fmt.length > 0 ) {
+      console.log(msg, this.styles.origin, this.styles.message);
+    } else {
+      console.log(msg);
+    }
   }
 
   createLoggerDelegate(origin: string, instance: number = 0): ILoggerDelegate {
@@ -63,7 +68,7 @@ export class LoggerFactory {
       if ( entry.info === true ) {
         method = 'info';
       }
-      let fmt = formatConsole===true?'%c':'';
+      let fmt = formatConsole === true ? '%c' : '';
       let msg = `${fmt}${origin}${fmt} ${instance} ${fmt}${entry.message || ''}`;
       let functionArgs = args.filter(a => typeof(a) === 'function');
       let otherArgs = args.filter(a => typeof(a) !== 'function');

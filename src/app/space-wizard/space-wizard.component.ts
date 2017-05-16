@@ -19,7 +19,7 @@ import { SpaceConfigurator } from './models/codebase';
 import { IModalHost } from './models/modal-host';
 import { IWorkflow, WorkflowFactory } from './models/workflow';
 import { ForgeCommands } from './services/forge.service';
-import { AppGeneratorConfigurationService } from './services/app-generator.service';
+import { AppGeneratorConfiguratorService } from './services/app-generator.service';
 
 @Component({
   selector: 'space-wizard',
@@ -80,8 +80,8 @@ export class SpaceWizardComponent implements OnInit {
     loggerFactory: LoggerFactory,
     private spaceNamespaceService: SpaceNamespaceService,
     private spaceNamePipe: SpaceNamePipe,
-    private _appGeneratorConfigurationService: AppGeneratorConfigurationService,
-    private spacesService: SpacesService,
+    private _configuratorService: AppGeneratorConfiguratorService,
+    private spacesService: SpacesService
   ) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, SpaceWizardComponent.instanceCount++);
     if (logger) {
@@ -160,7 +160,7 @@ export class SpaceWizardComponent implements OnInit {
       })
       .subscribe(createdSpace => {
         this.configurator.space = createdSpace;
-        this._appGeneratorConfigurationService.currentSpace = createdSpace;
+        this._configuratorService.currentSpace = createdSpace;
         let actionObservable = this.notifications.message({
           message: `Your new space is created!`,
           type: NotificationType.SUCCESS,

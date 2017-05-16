@@ -16,13 +16,7 @@ import {
 
 import { CodebasesService } from '../../../create/codebases/services/codebases.service';
 import { Codebase } from '../../../create/codebases/services/codebase';
-import { SpacesService } from '../../../shared/spaces.service';
-import { ContextService } from '../../../shared/context.service';
-import { AppGeneratorConfigurationService } from '../../services/app-generator.service';
-
-import { Space, Spaces, SpaceService, Context, Contexts } from 'ngx-fabric8-wit';
-import { UserService, User } from 'ngx-login-client';
-
+import { AppGeneratorConfiguratorService } from '../../services/app-generator.service';
 
 interface ICodebaseCreationDelegate {
   (): Promise<object>;
@@ -56,7 +50,7 @@ export class ForgeAppGenerator {
   constructor(
     private _appGeneratorService: IAppGeneratorService,
     private _codebasesService: CodebasesService,
-    private _appGeneratorConfigurationService: AppGeneratorConfigurationService,
+    private _configuratorService: AppGeneratorConfiguratorService,
     loggerFactory: LoggerFactory
     ) {
 
@@ -131,7 +125,7 @@ export class ForgeAppGenerator {
   }
   /**
    * When an error occurs the error area will be displayed. On the beginning step
-   * and acknowldge will take back to the forge selector
+   * and acknowledge will take back to the forge selector
    */
   public acknowledgeErrorMessage() {
     this.clearErrorMessageView();
@@ -147,8 +141,10 @@ export class ForgeAppGenerator {
     if ( this.createCodebase ) {
       this.createCodebase().then(
         (createCodeBaseResults) => {
-            this.reset();
-            this.workflow.finish();
+          this.log({origin : 'acknowledgeSuccessMessage', message: 'Add codebase completed', info: true }, createCodeBaseResults);
+          this.reset();
+          // invoke the workflow complete handler that navigates to the current space
+          this.workflow.finish();
         })
         .catch((ex) => {
           this.log({ origin : 'acknowledgeSuccessMessage', message: 'Add codebase error', error: true }, ex);
@@ -358,7 +354,7 @@ export class ForgeAppGenerator {
       let cmd: IAppGeneratorCommand = this._currentResponse.context.validationCommand;
       for (let field of this.fields) {
         let requestField = cmd.parameters.fields.find((f) => f.name === field.name);
-        if( requestField ) {
+        if ( requestField ) {
           requestField.value = field.value;
         }
       }
@@ -386,7 +382,7 @@ export class ForgeAppGenerator {
           // update any fields with the same name
           for (let field of this.fields) {
             let found = response.payload.fields.find((f) => f.name === field.name);
-            if( found ) {
+            if ( found ) {
               field.display = found.display;
               field.value = found.value;
             }
@@ -422,7 +418,7 @@ export class ForgeAppGenerator {
             type: 'codebases'
           } as Codebase;
         };
-        let space = this._appGeneratorConfigurationService.currentSpace;
+        let space = this._configuratorService.currentSpace;
         let codeBase = createTransientCodeBase(this.result.gitUrl);
         this.log(`Adding codebase ${this.result.gitUrl} to space ${space.attributes.name} ...`, this.result, console.groupCollapsed);
         this._codebasesService.addCodebase( space.id, codeBase).subscribe(
@@ -430,7 +426,7 @@ export class ForgeAppGenerator {
             this.log(`Successfully added codebase ${this.result.gitUrl} to space ${space.attributes.name} ...`, this.result, console.groupEnd);
             resolve( <object>{
               codebase: codebase,
-              result: this.result,
+              forgeResult: this.result,
               space: space
             });
           },

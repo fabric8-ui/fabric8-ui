@@ -23,7 +23,7 @@ import {
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
 
 @Injectable()
-export class AppGeneratorConfigurationService {
+export class AppGeneratorConfiguratorService {
 
   static instanceCount: number = 1;
 
@@ -31,7 +31,7 @@ export class AppGeneratorConfigurationService {
 
   constructor(loggerFactory: LoggerFactory, private context: ContextService) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name,
-                                                    AppGeneratorConfigurationService.instanceCount++);
+                                                    AppGeneratorConfiguratorService.instanceCount++);
     if ( logger ) {
       this.log = logger;
     }

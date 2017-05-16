@@ -10,7 +10,7 @@ import { ForgePipelineViewComponent } from './components/forge-pipeline-view/for
 import { WorkflowFactory } from './models/workflow';
 
 import { IForgeServiceProvider } from './services/forge.service';
-import { AppGeneratorConfigurationService } from './services/app-generator.service';
+import { AppGeneratorConfiguratorService } from './services/app-generator.service';
 import { SpaceWizardComponent } from './space-wizard.component';
 import { SelectedItemsPipe } from './pipes/selected-items.pipe';
 import { VisibleItemsPipe } from './pipes/visible-items.pipe';
@@ -42,7 +42,7 @@ import { CodebasesService } from '../create/codebases/services/codebases.service
     IForgeServiceProvider.FactoryProvider,
     LoggerFactory,
     WorkflowFactory,
-    AppGeneratorConfigurationService,
+    AppGeneratorConfiguratorService,
     CodebasesService
   ]
 })
