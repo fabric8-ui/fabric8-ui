@@ -15,7 +15,8 @@ import {
 import { ForgeAppGenerator } from './forge-app-generator';
 import { FieldWidgetClassificationOptions } from '../../models/contracts/field-classification';
 import { CodebasesService } from '../../../create/codebases/services/codebases.service';
-import { SpacesService } from '../../../shared/spaces.service';
+
+import { AppGeneratorConfigurationService } from '../../services/app-generator.service';
 
 
 @Component({
@@ -23,7 +24,7 @@ import { SpacesService } from '../../../shared/spaces.service';
    'class': 'wizard-step'
   },
   // ensure that dynamically added html message get styles applied
-  encapsulation:ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None,
 
   selector: 'forge-app-generator',
   templateUrl: './forge-app-generator.component.html',
@@ -45,14 +46,14 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
   constructor(
     @Inject(IAppGeneratorServiceProvider.InjectToken) private _appGeneratorService: IAppGeneratorService,
     private _codebasesService: CodebasesService,
-    private _spacesService: SpacesService,
+    private _appGeneratorConfigurationService: AppGeneratorConfigurationService,
     loggerFactory: LoggerFactory) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, ForgeAppGeneratorComponent.instanceCount++);
     if ( logger ) {
       this.log = logger;
     }
     this.log(`New instance ...`);
-    this.forge = new ForgeAppGenerator(this._appGeneratorService, this._codebasesService,this._spacesService, loggerFactory);
+    this.forge = new ForgeAppGenerator(this._appGeneratorService, this._codebasesService, this._appGeneratorConfigurationService, loggerFactory);
   }
 
   @Input()

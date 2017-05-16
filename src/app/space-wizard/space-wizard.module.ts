@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UniqueSpaceNameValidatorDirective, ValidSpaceNameValidatorDirective, Fabric8WitModule } from 'ngx-fabric8-wit';
-import { AuthenticationService } from 'ngx-login-client';
 
 import { runtimeConsoleImports } from './../shared/runtime-console/runtime-console';
 import { LoggerFactory } from './common/logger';
@@ -15,8 +14,9 @@ import { AppGeneratorConfigurationService } from './services/app-generator.servi
 import { SpaceWizardComponent } from './space-wizard.component';
 import { SelectedItemsPipe } from './pipes/selected-items.pipe';
 import { VisibleItemsPipe } from './pipes/visible-items.pipe';
-import { TrustHtmlPipe ,TrustStylePipe } from './pipes/safe-html.pipe';
+import { TrustHtmlPipe, TrustStylePipe } from './pipes/safe-html.pipe';
 import { CodebasesService } from '../create/codebases/services/codebases.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -32,7 +32,7 @@ import { CodebasesService } from '../create/codebases/services/codebases.service
     SelectedItemsPipe,
     VisibleItemsPipe,
     TrustHtmlPipe,
-    TrustStylePipe,
+    TrustStylePipe
   ],
   exports: [
     SpaceWizardComponent,

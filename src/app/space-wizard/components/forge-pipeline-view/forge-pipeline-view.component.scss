@@ -1,6 +1,6 @@
     $base-color:gray;
     .pipeline {
-       border:solid 0px $base-color;
+       border:solid 0 $base-color;
        padding: 0.25rem;
        background-color: white;
        display :flex;
@@ -10,7 +10,7 @@
        align-content: center;
        align-items: center;
 
-       .stage-seperator{
+       .stage-seperator {
            height:1.0rem;
            padding:0 5px;
            color:$base-color;
@@ -18,7 +18,7 @@
        .stage {
            flex-shrink: 1;
            flex-grow:1;
-           border:dashed 0px $base-color;
+           border:dashed 0 $base-color;
            border-radius: .25rem;
            margin:0.25rem;
            padding:0.25rem;
@@ -33,9 +33,9 @@
             font-size: smaller;
             color:$base-color;
            }
-           .stage-graphic{
+           .stage-graphic {
             padding:0.25rem;
-            border:solid 0px $base-color;
+            border:solid 0 $base-color;
             display :flex;
             flex-direction:row;
             align-items: center;
@@ -57,7 +57,7 @@
                 color:$base-color;
             }
            }
-          &.success{
+          &.success {
               .stage-graphic-line {
                   background-color: green !important;
               }
@@ -65,7 +65,7 @@
                   color: green !important;
               }
           }
-          &.error{
+          &.error {
               .stage-graphic-line{
                   background-color: red !important;
               }
@@ -73,7 +73,7 @@
                   color: red !important;
               }
           }
-          &.warning{
+          &.warning {
               .stage-graphic-line{
                   background-color: orange !important;
               }
@@ -81,10 +81,6 @@
                   color: orange !important;
               }
           }
-
-
-
-
 
        }
     }

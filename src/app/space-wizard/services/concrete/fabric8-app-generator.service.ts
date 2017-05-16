@@ -157,7 +157,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
         value: sourceInput.value,
         valueType: this.mapFieldValueDataType(sourceInput),
         /** returns the original source data to be used  */
-        source:()=>sourceInput,
+        source: () => sourceInput,
         display: {
           choices: this.mapValueChoices(sourceInput),
           hasChoices: this.mapValueHasOptions(sourceInput),
@@ -266,7 +266,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
             name: choice.id,
             description: source.description,
             visible: true,
-            default: false,
+            isDefault: false,
             selected: hash[choice.id] === true
           });
         } else {
@@ -276,7 +276,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
             name: choice.id,
             description: choice.id,
             visible: true,
-            default: false,
+            isDefault: false,
             selected: hash[choice.id] === true
           });
         }

@@ -8,7 +8,7 @@ import { Observable, Observer } from 'rxjs/Rx';
 import { ApiLocatorService } from '../../../shared/api-locator.service';
 
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
-import { formatJson, clone } from '../../common/utilities';
+import { clone } from '../../common/utilities';
 
 
 import {
@@ -186,7 +186,6 @@ export class Fabric8ForgeService extends ForgeService {
         let options = new RequestOptions(<RequestOptionsArgs>{ headers: headers });
         this._http.post(url, body, options)
         .map((response: Response) => {
-          //test error
           if (body.isExecute === true) {
             // if this is an execute command then handle the response differently
             // e the data coming back is structured differently

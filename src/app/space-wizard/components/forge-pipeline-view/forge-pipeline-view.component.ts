@@ -1,19 +1,8 @@
-import { ViewEncapsulation, Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 //
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
-import { INotifyPropertyChanged } from '../../core/component';
-
-import { IWorkflow, IWorkflowTransition, WorkflowTransitionDirection } from '../../models/workflow';
-
-import {
-  IAppGeneratorService,
-  IAppGeneratorServiceProvider,
-  IField,
-  IFieldChoice
-} from '../../services/app-generator.service';
 
 import { ForgeAppGenerator } from './forge-app-generator';
-import { FieldWidgetClassificationOptions } from '../../models/contracts/field-classification';
 
 @Component({
   selector: 'forge-pipeline-view',
@@ -26,11 +15,11 @@ export class ForgePipelineViewComponent implements OnInit, OnDestroy {
   static instanceCount: number = 1;
 
   @Input() public pipeline: any = {
-    stages:[
-      { name:'Release',color:'success' , icon:'fa-check-circle' },
-      { name:'Test',color:'success' , icon:'fa-check-circle' },
-      { name:'Stage',color:'success' , icon:'fa-check-circle' },
-      { name:'Approve',color:'warning' , icon:'fa-pause-circle' },
+    stages: [
+      { name: 'Release', color: 'success' , icon: 'fa-check-circle' },
+      { name: 'Test', color: 'success' , icon: 'fa-check-circle' },
+      { name: 'Stage', color: 'success' , icon: 'fa-check-circle' },
+      { name: 'Approve', color: 'warning' , icon: 'fa-pause-circle' }
     ]};
 
   constructor(

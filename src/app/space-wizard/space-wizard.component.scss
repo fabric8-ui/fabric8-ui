@@ -66,8 +66,8 @@ $wizard-block-header-color: $color-pf-white;
       &.container-fluid {
           padding-left:$wizard-spacing + $debug-border ;
           padding-right:$wizard-spacing + $debug-border ;
-          margin-left:0px;
-          margin-right:0px;
+          margin-left:0;
+          margin-right:0;
           >.row {
             margin-left:-($wizard-spacing + $debug-border) ;
             margin-right:-($wizard-spacing + $debug-border);
@@ -99,8 +99,8 @@ $wizard-block-header-color: $color-pf-white;
       // flex-direction: column;
       // align-content: stretch;
       position:relative;
-      margin:0px;
-      padding:0px;
+      margin:0;
+      padding:0;
       width:auto;
       &.container-fluid {
         // Bug: there is an issue with this element, if the border/padding sum
@@ -132,8 +132,8 @@ $wizard-block-header-color: $color-pf-white;
         padding-left:$wizard-spacing + $debug-border;
         padding-right:$wizard-spacing + $debug-border;
         width:100%;
-        margin-left:0px;
-        margin-right:0px;
+        margin-left:0;
+        margin-right:0;
       }
       &.forge-section {
         background-color: $color-pf-black-200;
@@ -146,8 +146,8 @@ $wizard-block-header-color: $color-pf-white;
       &.container-fluid {
         padding-left:$wizard-spacing + $debug-border ;
         padding-right:$wizard-spacing + $debug-border ;
-        margin-left:0px;
-        margin-right:0px;
+        margin-left:0;
+        margin-right:0;
         >.row {
           margin-left:-($wizard-spacing + $debug-border) ;
           margin-right:-($wizard-spacing + $debug-border);
@@ -163,20 +163,20 @@ $wizard-block-header-color: $color-pf-white;
     flex:1;
     display:flex;
     //align-content: stretch;
-      border: solid 0px lime;
+      border: solid 0 lime;
       position:relative;
       width:100%;
     //width:100% !important;
     // only applies to rows in the wizard
     .row {
-      padding-top:0px;
+      padding-top:0;
     }
     // only applies to buttons in the wizard
     .btn {
       min-width: 90px;
     }
     .wizard-step {
-      border: solid 0px green;
+      border: solid 0 green;
       position:relative;
       width:100%;
       //width:100% !important;
@@ -196,7 +196,7 @@ $wizard-block-header-color: $color-pf-white;
       @include wizard-step-child-elements;
       // for cases where the step has a form element
       >form {
-        border: solid 0px hotpink;
+        border: solid 0 hotpink;
         flex:1;
         display:flex;
         flex-direction: column;
@@ -359,8 +359,6 @@ $wizard-block-header-color: $color-pf-white;
         .panel-item {
           // this is a flex container for its children
           display: flex;
-          //
-          flex-grow: 1;
           //starting width
           max-width: 180px;
           flex-basis: 180px;
