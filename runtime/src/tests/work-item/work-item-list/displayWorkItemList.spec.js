@@ -1,5 +1,5 @@
 /**
- * POC test for automated UI tests for ALMighty
+ * POC test for automated UI tests for Planner
  *  Story: Display work item list 
  *  https://github.com/almighty/almighty-core/issues/297
  *  

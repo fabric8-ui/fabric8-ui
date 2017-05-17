@@ -19,7 +19,7 @@ import { Space, Spaces, SpaceService } from 'ngx-fabric8-wit';
 })
 
 export class HeaderComponent implements OnInit {
-  title = 'Almighty';
+  title = 'Planner';
   loggedInUser: User;
   loggedIn: Boolean = false;
   imgLoaded: Boolean = false;

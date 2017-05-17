@@ -23,7 +23,7 @@ fi
 echo done.
 
 # Start the web app
-echo -n Starting Almighty development server...
+echo -n Starting Planner development server...
 (node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --progress --host 0.0.0.0 --port 8088 >>$LOGFILE 2>&1 &)
 # Wait for port 8088 to be listening connections
 if [ $OS = 'Darwin' ]

@@ -1,5 +1,5 @@
 /**
- * Support module for automated UI tests for ALMighty
+ * Support module for automated UI tests for Planner
  * 
  * Ref: https://www.sitepoint.com/understanding-module-exports-exports-node-js/
  * 

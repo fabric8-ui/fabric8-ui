@@ -1,5 +1,5 @@
 /**
- * POC test for automated UI tests for ALMighty
+ * POC test for automated UI tests for Planner
  *  
  * Note on screen resolutions - See: http://www.itunesextractor.com/iphone-ipad-resolution.html
  * Tests will be run on these resolutions:
