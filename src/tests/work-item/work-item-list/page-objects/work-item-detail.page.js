@@ -90,6 +90,10 @@ class WorkItemDetailPage {
     return this.workItemTitleEditIcon.click();
   }
 
+  get disabledWorkItemTitleSaveIcon () {
+    return element(by.css(".pull-right.btn.btn-primary.detail-action-btn.disabled"));
+  }
+
   get workItemTitleSaveIcon () {
     return element(by.id("workItemTitle_btn_save"));
   }
@@ -908,6 +912,16 @@ class WorkItemDetailPage {
   clickSeverityDropdownCancelButton () {
     return this.importantDropdownCancelButton.click(); 
   }
+
+  /* Error conditions */
+
+  /* When all text in the title field is deleted */
+  get deletedTitleError () {
+//    return element(By.xpath('.//*[@id="wi-title-div"]//p[contains(text(),"title is a required field")]'));
+    return element(By.css('.clearfloat.title-error'));
+  }
+
+
 
 }
 
