@@ -9,7 +9,7 @@ import { IMyOptions, IMyDateModel } from 'mydatepicker';
 import { Broadcaster } from 'ngx-base';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
-import { IterationService } from '../../../services/iteration.service';
+import { IterationService } from '../../services/iteration.service';
 import { IterationModel } from '../../models/iteration.model';
 
 

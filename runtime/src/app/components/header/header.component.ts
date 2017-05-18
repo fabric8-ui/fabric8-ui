@@ -1,5 +1,4 @@
 import { SpacesService } from '../../services/spaces.service';
-import { DummySpace } from '../../services/dummy-space.service';
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -36,7 +35,6 @@ export class HeaderComponent implements OnInit {
     private logger: Logger,
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
-    private spaceService: DummySpace,
     private spacesService: SpacesService) { }
 
   getLoggedUser(): void {
@@ -56,7 +54,7 @@ export class HeaderComponent implements OnInit {
     this.getLoggedUser();
     this.loggedIn = this.auth.isLoggedIn();
     this.spacesService.current.subscribe(val => this.selectedSpace = val);
-    this.spaceService.getAllSpaces().subscribe((spaces) => {
+    this.spacesService.getAllSpaces().subscribe((spaces) => {
       this.spaces = spaces as Space[];
       this.selectedSpace = spaces[0];
       this.onSpaceChange(this.selectedSpace);

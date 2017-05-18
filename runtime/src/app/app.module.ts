@@ -6,17 +6,24 @@ import { HttpModule, Http, RequestOptions, XHRBackend } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+// FIXME: do we really need to have this modules on top-level?
 import { DropdownModule } from 'ng2-bootstrap';
 import { TabsModule, TooltipModule } from 'ng2-bootstrap';
+import { TruncateModule } from 'ng2-truncate';
+
 import { Broadcaster, Logger, Notifications } from 'ngx-base';
 import { Spaces } from 'ngx-fabric8-wit';
 import { ModalModule } from 'ngx-modal';
-import { TruncateModule } from 'ng2-truncate';
-import {
-  AuthenticationService,
-  UserService,
-  HttpService as HttpServiceLGC
-} from 'ngx-login-client';
+import { AuthenticationService, UserService, HttpService as HttpServiceLGC } from 'ngx-login-client';
+
+// Root modules
+import { PlannerBoardModule } from 'fabric8-planner';
+import { PlannerListModule } from 'fabric8-planner';
+import { WorkItemQuickAddModule } from 'fabric8-planner';
+
+// Mock data
+import { MockDataService } from 'fabric8-planner';
+import { MockHttp } from 'fabric8-planner';
 
 // Shared
 import { GlobalSettings } from './shared/globals';
@@ -25,26 +32,16 @@ import { authApiUrlProvider } from './shared/auth-api.provider';
 import { ssoApiUrlProvider } from './shared/sso-api.provider';
 import { witApiUrlProvider } from './shared/wit-api.provider';
 
-// App components
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-
 // Header
 import { HeaderComponent } from './components/header/header.component';
-import { DummySpace } from './services/dummy-space.service';
 
 // Login
 import { LoginComponent } from './components/login/login.component';
 import { LoginService } from './services/login.service';
 
-// import { WorkItemModule } from './work-item/work-item.module';
-import { PlannerBoardModule } from 'fabric8-planner';
-import { PlannerListModule } from 'fabric8-planner';
-import { WorkItemQuickAddModule } from 'fabric8-planner';
-
-// Mock data
-import { MockDataService } from 'fabric8-planner';
-import { MockHttp } from 'fabric8-planner';
+// App components
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 
 // conditionally import the inmemory resource module
 let serviceImports: Array<any[] | any | ModuleWithProviders>;
@@ -76,7 +73,6 @@ if (process.env.ENV == 'inmemory') {
     SpacesService,
     ssoApiUrlProvider,
     MockHttp,
-    DummySpace,
     {
       provide: HttpServiceLGC,
       useExisting: MockHttp
@@ -103,7 +99,6 @@ if (process.env.ENV == 'inmemory') {
     GlobalSettings,
     witApiUrlProvider,
     serviceImports,
-    DummySpace,
     {
       provide: Http,
       useClass: HttpServiceLGC

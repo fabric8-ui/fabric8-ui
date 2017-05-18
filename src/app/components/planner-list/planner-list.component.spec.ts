@@ -38,7 +38,7 @@ import { WorkItemType } from '../../models/work-item-type';
 import { WorkItemService } from '../../services/work-item.service';
 
 import { IterationModel } from '../../models/iteration.model';
-import { IterationService } from '../../../services/iteration.service';
+import { IterationService } from '../../services/iteration.service';
 
 import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-list-entry.component';
 import { PlannerListComponent } from './planner-list.component';

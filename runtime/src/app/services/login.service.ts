@@ -4,8 +4,6 @@ import { WIT_API_URL } from 'ngx-fabric8-wit';
 
 import 'rxjs/add/operator/toPromise';
 
-import { LoginItem } from '../models/login-item';
-
 @Injectable()
 export class LoginService {
   // private githubUrl = 'app/loginStatus';

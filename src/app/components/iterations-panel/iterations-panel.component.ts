@@ -8,7 +8,7 @@ import { Broadcaster, Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
-import { IterationService } from '../../../services/iteration.service';
+import { IterationService } from '../../services/iteration.service';
 import { IterationModel } from '../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
 

@@ -53,7 +53,7 @@ import { CollaboratorService } from '../../services/collaborator.service';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
 import { TypeaheadDropdown } from '../typeahead-dropdown/typeahead-dropdown.component';
 import { IterationModel } from '../../models/iteration.model';
-import { IterationService } from '../../../services/iteration.service';
+import { IterationService } from '../../services/iteration.service';
 import { MarkdownControlComponent } from '../markdown-control/markdown-control.component';
 import { LinkType } from '../../models/link-type';
 import { Comment } from '../../models/comment';

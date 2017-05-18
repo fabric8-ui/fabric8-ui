@@ -27,7 +27,7 @@ import { Notifications } from 'ngx-base';
 
 import { MockDataService } from '../mock/mock-data.service';
 import { AreaService } from './area.service';
-import { IterationService } from '../../services/iteration.service';
+import { IterationService } from './iteration.service';
 import { WorkItem } from '../models/work-item';
 import { WorkItemService } from './work-item.service';
 import { GlobalSettings } from '../shared/globals';

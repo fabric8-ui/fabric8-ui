@@ -52,7 +52,7 @@ import { AreaService } from '../../services/area.service';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
 import { TypeaheadDropdown } from '../typeahead-dropdown/typeahead-dropdown.component';
 import { IterationModel } from '../../models/iteration.model';
-import { IterationService } from '../../../services/iteration.service';
+import { IterationService } from '../../services/iteration.service';
 import { LinkType } from '../../models/link-type';
 import { MarkdownControlComponent } from '../markdown-control/markdown-control.component';
 import { WorkItem } from '../../models/work-item';

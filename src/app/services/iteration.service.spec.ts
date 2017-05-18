@@ -22,7 +22,7 @@ import { MockHttp } from '../mock/mock-http';
 import { HttpService } from './http-service';
 import { SpacesService } from '../mock/standalone/spaces.service';
 import { IterationModel } from '../models/iteration.model';
-import { IterationService } from '../../services/iteration.service';
+import { IterationService } from './iteration.service';
 import { GlobalSettings } from '../shared/globals';
 
 describe('Iteration service - ', () => {

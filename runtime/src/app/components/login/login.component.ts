@@ -3,9 +3,7 @@ import { Router } from '@angular/router';
 
 import { AuthenticationService } from 'ngx-login-client';
 
-import { LoginItem } from '../../models/login-item';
 import { LoginService } from '../../services/login.service';
-
 
 @Component({
   selector: 'alm-login-form',
@@ -13,7 +11,6 @@ import { LoginService } from '../../services/login.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  loginItem: LoginItem;
   showError: boolean = false;
   feedbackMessage: string = '';
   statusCode: number = 0;

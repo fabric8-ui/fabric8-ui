@@ -1,4 +1,4 @@
-import { GlobalSettings } from '../app/shared/globals';
+import { GlobalSettings } from '../shared/globals';
 
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
@@ -11,9 +11,9 @@ import { AuthenticationService } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { Notification, Notifications, NotificationType } from 'ngx-base';
 
-import { IterationModel } from '../app/models/iteration.model';
-import { MockHttp } from '../app/mock/mock-http';
-import { HttpService } from '../app/services/http-service';
+import { IterationModel } from '../models/iteration.model';
+import { MockHttp } from '../mock/mock-http';
+import { HttpService } from './http-service';
 
 @Injectable()
 export class IterationService {

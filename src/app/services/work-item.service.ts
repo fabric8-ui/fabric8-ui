@@ -27,7 +27,7 @@ import {
 import { AreaModel } from '../models/area.model';
 import { AreaService } from './area.service';
 import { IterationModel } from '../models/iteration.model';
-import { IterationService } from '../../services/iteration.service';
+import { IterationService } from './iteration.service';
 import { LinkType } from '../models/link-type';
 import { Link } from '../models/link';
 import {
