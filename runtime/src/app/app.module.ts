@@ -20,9 +20,9 @@ import {
 
 // Shared
 import { GlobalSettings } from './shared/globals';
-import { SpacesService } from './shared/standalone/spaces.service';
-import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
-import { ssoApiUrlProvider } from './shared/standalone/sso-api.provider';
+import { SpacesService } from './services/spaces.service';
+import { authApiUrlProvider } from './shared/auth-api.provider';
+import { ssoApiUrlProvider } from './shared/sso-api.provider';
 import { witApiUrlProvider } from './shared/wit-api.provider';
 
 // App components
@@ -30,12 +30,12 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 // Header
-import { HeaderComponent } from './header/header.component';
-import { DummySpace } from './header/DummySpace.service';
+import { HeaderComponent } from './components/header/header.component';
+import { DummySpace } from './services/dummy-space.service';
 
 // Login
-import { LoginComponent } from './login/login.component';
-import { LoginService } from './login/login.service';
+import { LoginComponent } from './components/login/login.component';
+import { LoginService } from './services/login.service';
 
 // import { WorkItemModule } from './work-item/work-item.module';
 import { PlannerBoardModule } from 'fabric8-planner';

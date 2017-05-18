@@ -1,5 +1,5 @@
-import { SpacesService } from './../shared/standalone/spaces.service';
-import { DummySpace } from './DummySpace.service';
+import { SpacesService } from '../../services/spaces.service';
+import { DummySpace } from '../../services/dummy-space.service';
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';

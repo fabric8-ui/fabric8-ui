@@ -1,7 +1,7 @@
 import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './components/login/login.component';
 import { WorkItemQuickAddComponent } from 'fabric8-planner';
 import { PlannerListModule } from 'fabric8-planner';
 import { PlannerBoardModule } from 'fabric8-planner';
@@ -14,11 +14,11 @@ const routes: Routes = [
   },
   {
     path: 'plan/list',
-    loadChildren: './plan-list.module#PlanListModule'
+    loadChildren: './components/plan-list.module#PlanListModule'
   },
   {
     path: 'plan/board',
-    loadChildren: './plan-board.module#PlanListModule'
+    loadChildren: './components/plan-board.module#PlanListModule'
   },
   {
     path: 'login',

@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 
 import { AuthenticationService } from 'ngx-login-client';
 
-import { LoginItem } from './login-item';
-import { LoginService } from './login.service';
+import { LoginItem } from '../../models/login-item';
+import { LoginService } from '../../services/login.service';
 
 
 @Component({
