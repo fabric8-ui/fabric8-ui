@@ -1,4 +1,9 @@
 
+/*
+ * Main build file for fabric8-planner. Use the commands here to build and deploy
+ * the library. See the commands below for detailed documentation.
+ */
+
 var gulp = require('gulp'),
   sassCompiler = require('gulp-sass'),
   runSequence = require('run-sequence'),
@@ -17,10 +22,11 @@ var appSrc = 'src';
 var libraryDist = 'dist';
 var watchDist = 'dist-watch';
 
-/**
+/*
  * FUNCTION LIBRARY
  */
 
+// copies files to the libraryDist directory.
 function copyToDist(srcArr) {
   return gulp.src(srcArr)
     .pipe(gulp.dest(function (file) {
@@ -28,6 +34,7 @@ function copyToDist(srcArr) {
     }));
 }
 
+// copies files from the libraryDist to the watchDist.
 function updateWatchDist() {
   return gulp
     .src(libraryDist + '/**')
@@ -35,18 +42,18 @@ function updateWatchDist() {
     .pipe(gulp.dest(watchDist));
 }
 
+// transpiles a given SASS source set to CSS, storing results to libraryDist.
 function transpileSASS(src, debug) {
-  let opts = {
+  var opts = {
     outputStyle: 'compressed',
-    includePaths: sass.modules.map(val => {
+    includePaths: sass.modules.map(function (val) {
       return val.sassPath;
     })
   };
-
   if (debug) {
     opts.outputStyle = 'expanded';
     opts.sourceComments = true;
-    console.log('Compiling', src,'in debug mode using SASS options:', opts );
+    console.log('Compiling', src, 'in debug mode using SASS options:', opts);
   }
   return gulp.src(src)
     .pipe(sourcemaps.init())
@@ -57,10 +64,12 @@ function transpileSASS(src, debug) {
     }));
 }
 
-/**
+/*
  * TASKS
  */
 
+// FIXME: why do we need that?
+// replaces templateURL/styleURL with require statements in js.
 gulp.task('post-transpile', ['transpile'], function () {
   return gulp.src(['dist/src/app/**/*.js'])
     .pipe(replace(/templateUrl:\s/g, "template: require("))
@@ -72,7 +81,7 @@ gulp.task('post-transpile', ['transpile'], function () {
     }));
 });
 
-//Sass compilation and minifiction
+// Transpile and minify sass, storing results in libraryDist.
 gulp.task('transpile-sass', function () {
   if (argv['sass-src']) {
     return transpileSASS(argv['sass-src'], true);
@@ -81,7 +90,28 @@ gulp.task('transpile-sass', function () {
   }
 });
 
-// Put the SASS files back to normal
+// transpiles the ts sources to js using the tsconfig.
+gulp.task('transpile', function () {
+  return ngc('tsconfig.json')
+});
+
+// copies the template html files to libraryDist.
+gulp.task('copy-html', function () {
+  return copyToDist([
+    'src/**/*.html'
+  ]);
+});
+
+// copies the static asset files to libraryDist.
+gulp.task('copy-static-assets', function () {
+  return gulp.src([
+    'LICENSE',
+    'README.adoc',
+    'package.json',
+  ]).pipe(gulp.dest(libraryDist));
+});
+
+// Put the sass files back to normal
 gulp.task('build-library',
   [
     'transpile',
@@ -90,25 +120,6 @@ gulp.task('build-library',
     'copy-html',
     'copy-static-assets'
   ]);
-
-gulp.task('transpile', /*['pre-transpile'],*/ function () {
-  return ngc('tsconfig.json')
-});
-
-gulp.task('copy-html', function () {
-  return copyToDist([
-    'src/**/*.html'
-  ]);
-});
-
-gulp.task('copy-static-assets', function () {
-  return gulp.src([
-    'LICENSE',
-    'README.adoc',
-    'package.json',
-  ])
-    .pipe(gulp.dest(libraryDist));
-});
 
 gulp.task('copy-watch', ['post-transpile'], function () {
   return updateWatchDist();

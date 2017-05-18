@@ -39,6 +39,7 @@ testem.log
 /typings
 functional_tests.log
 unit_tests.log
+/linters
 
 # e2e
 /e2e/*.js
