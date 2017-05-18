@@ -2,7 +2,7 @@
 @Library('github.com/fabric8io/fabric8-pipeline-library@master')
 def utils = new io.fabric8.Utils()
 def org = 'fabric8-ui'
-def repo = 'ngx-fabric8-wit'
+def repo = 'ngx-widgets'
 fabric8UINode{
   ws {
     git "https://github.com/${org}/${repo}.git"
