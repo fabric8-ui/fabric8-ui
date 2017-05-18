@@ -2,7 +2,7 @@ import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
-import { WorkItemQuickAddComponent } from './work-item/work-item-quick-add/work-item-quick-add.component';
+import { WorkItemQuickAddComponent } from './components/work-item-quick-add/work-item-quick-add.component';
 
 const routes: Routes = [
   {
@@ -12,11 +12,11 @@ const routes: Routes = [
   },
   {
     path: 'plan/list',
-    loadChildren: 'app/work-item/work-item-list/planner-list.module#PlannerListModule'
+    loadChildren: 'app/components/planner-list/planner-list.module#PlannerListModule'
   },
   {
     path: 'plan/board',
-    loadChildren: 'app/work-item/work-item-board/planner-board.module#PlannerBoardModule'
+    loadChildren: 'app/components/planner-board/planner-board.module#PlannerBoardModule'
   },
   {
     path: 'login',

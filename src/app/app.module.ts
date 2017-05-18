@@ -20,9 +20,9 @@ import {
 
 // Shared
 import { GlobalSettings } from './shared/globals';
-import { SpacesService } from './shared/standalone/spaces.service';
-import { authApiUrlProvider } from './shared/standalone/auth-api.provider';
-import { ssoApiUrlProvider } from './shared/standalone/sso-api.provider';
+import { SpacesService } from './mock/standalone/spaces.service';
+import { authApiUrlProvider } from './mock/standalone/auth-api.provider';
+import { ssoApiUrlProvider } from './mock/standalone/sso-api.provider';
 import { witApiUrlProvider } from './shared/wit-api.provider';
 
 // App components
@@ -35,16 +35,16 @@ import { DummySpace } from './header/DummySpace.service';
 
 // Login
 import { LoginComponent } from './login/login.component';
-import { LoginService } from './login/login.service';
+import { LoginService } from './services/login.service';
 
 // import { WorkItemModule } from './work-item/work-item.module';
-import { PlannerBoardModule } from './work-item/work-item-board/planner-board.module';
-import { PlannerListModule } from './work-item/work-item-list/planner-list.module';
-import { WorkItemQuickAddModule } from './work-item/work-item-quick-add/work-item-quick-add.module';
+import { PlannerBoardModule } from './components/planner-board/planner-board.module';
+import { PlannerListModule } from './components/planner-list/planner-list.module';
+import { WorkItemQuickAddModule } from './components/work-item-quick-add/work-item-quick-add.module';
 
 // Mock data
-import { MockDataService } from './shared/mock-data.service';
-import { MockHttp } from './shared/mock-http';
+import { MockDataService } from './mock/mock-data.service';
+import { MockHttp } from './mock/mock-http';
 
 // conditionally import the inmemory resource module
 let serviceImports: Array<any[] | any | ModuleWithProviders>;

@@ -1,0 +1,107 @@
+@import '../../../assets/stylesheets/base';
+
+.comment-content {
+  li {
+    text-align: $textCenter;
+    &.toggle-icon {
+      width: rem(40);
+      display: inline-block;
+      padding-top: rem(8.5);
+      padding-bottom: rem(8.5);
+    }
+    a {
+      padding: rem(12.5) rem(15);
+    }
+    &:nth-child(2) {
+      a {
+        margin-left: rem(-13);
+      }
+    }
+    .badge{
+      margin-top: -3px // hack to align the badge
+    }
+    &.active {
+      .badge {
+        color: $color-pf-white;
+        background: $color-pf-blue-400;
+      }
+    }
+  }
+}
+.wi-comment-input {
+    padding: rem(20) rem(20) rem(20) rem(40);
+    background: $color-pf-black-100;
+    #wi-comment-add-comment {
+    /* Overrides pf's form-control style's height property */
+    /* The min-height is needed to avoid zero-height element */
+    /* The min-height is same as form-control's default height */
+      height: auto;
+      min-height: em(26);
+      margin-bottom: 0;
+      /* Helper class, should be moved out when almEditable is extended to support placeholders */
+      &.placeholder {
+          color: $color-pf-black-300;
+          font-style: italic;
+      }
+    }
+}
+.comments-outer-wrapper {
+  .comments-wrap {
+    border-bottom: 1px solid $color-pf-black-200;
+    padding: em(20) em(20) em(20) rem(40);
+    .comment-body {
+      min-width: 0; //fix for having full wrapper width and overflowen content
+      padding-left: em(10);
+      h5.comment-authr-name {
+        margin-top: em(0);
+        margin-bottom: em(5);
+        flex-shrink: 1;
+        flex-grow: 1;
+        min-width: 0;  //fix for having full wrapper width and overflowen content
+        max-width: 100%;
+        padding-right: rem(10);
+        strong {
+          display: inline-block;
+          width: $width100;
+          padding-left: em(6);
+          padding-right: em(6);
+        }
+      }
+      .createTimeBlock {
+        line-height: 1.2;
+        flex-grow: 0;
+        flex-shrink: 0;
+        max-width: 100%;
+      }
+      p.noneditableComment {
+        border-color: transparent;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        height: auto;
+        word-break: break-word;
+        &:hover {
+          border-color: $color-pf-blue-200;
+        }
+      }
+      p.editableComment {
+        height: auto;
+      }
+    }
+    .dropdown {
+      min-width: em(10);
+      text-align: right;
+    }
+    .dropdown-menu {
+      margin-top: -11px;
+    }
+  }
+}
+
+.user-avatar {
+  @include user-avatar;
+}
+
+.detail-action-btn {
+  @include detail-action-btn;
+}

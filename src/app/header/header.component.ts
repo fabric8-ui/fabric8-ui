@@ -1,4 +1,4 @@
-import { SpacesService } from './../shared/standalone/spaces.service';
+import { SpacesService } from '../mock/standalone/spaces.service';
 import { DummySpace } from './DummySpace.service';
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
