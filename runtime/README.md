@@ -1,10 +1,11 @@
-Minimal Runtime for the Planner.
+# Minimal Standalone Runtime for the Planner
 
 To use this with the Planner library:
 
-0. Get dependencies for Planner (in planner root directory): `npm install`
-1. Build the Planner library (in planner root directory): `gulp build:library`
-2. Go to the library build directory (`dist-library`) and link to npm cache: `npm link`
-3. Download dependencies for runtime (in runtime directory `runtime`): `npm install`
-4. Link Planner library to runtime (in `runtime`): `npm link fabric8-planner`
-5. Build and run runtime: (in `runtime`): `npm start`
+1. Get dependencies for Planner (in planner root directory): `npm install`
+2. Get dependencies for Planner Runtime (in `runtime`): `npm install`
+3. Start the library build in watch mode (in planner root directory): `npm run watch:library`
+4. Link Planner library to runtime (in `runtime`): `npm link ../dist-watch`
+5. Set runtime mode to inmemory (if applicable): `export NODE_ENV=inmemory`
+6. Build and run runtime: (in `runtime`): `npm start`
+7. Point your browser to http://localhost:8080/                                                                                                                                  

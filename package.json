@@ -8,38 +8,13 @@
   "scripts": {
     "build": "npm-run-all --serial remove-dist bundle build:library",
     "build:library": "gulp build-library",
-    "build:prod": "webpack --config config/webpack.prod.js -p",
-    "bundle": "webpack --config config/webpack.prod.js --progress --profile --bail",
     "check-coverage": "istanbul check-coverage --statements 23 --branches 5 --functions 9 --lines 24",
-    "clean-dist": "rimraf dist",
-    "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist bundles",
-    "cleanup": "rimraf dist/package.json dist/bundles dist/src dist/index.d.ts dist/index.metadata.json dist/index.js dist/index.js.map dist/LICENSE dist/README.md",
+    "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist dist-watch bundles",
     "copy-files": "gulp copyfiles",
-    "docker:run": "webpack-dev-server --inline --progress --port 8080",
-    "functests": "npm-run-all -p webdriver-start testserver-start protractor",
     "lint": "find src -name '*.ts' | xargs tslint -c tslint.json --force",
-    "minify": "uglifyjs dist/bundles/ngx-widgets.js --screw-ie8 --compress --mangle --comments --output dist/bundles/ngx-widgets.min.js",
-    "protractor": "sleep 15 && ./node_modules/protractor/bin/protractor protractor.config.js",
     "reinstall": "npm run clean && npm install",
-    "remove-dist": "rimraf dist dist-watch",
-    "rimraf": "rimraf",
-    "setup": "npm install && npm run validate",
     "sass-lint": "sass-lint -c .sass-lint.yml 'src/**/*.scss' -v -q",
     "semantic-release": "semantic-release pre && npm run build && cp -r .git dist && npm publish dist/ && semantic-release post",
-    "start": "webpack-dev-server --inline --progress --host 0.0.0.0 --port 8088",
-    "start-dev": "webpack-dashboard -t almighty -- webpack-dev-server --inline --progress --host 0.0.0.0 --port 8088",
-    "stats": "webpack --profile --json > stats.json",
-    "test": "npm-run-all --serial test:unit check-coverage test:func",
-    "test:browsers": "karma start --browsers Chrome,Firefox,Safari",
-    "test:debug": "karma start --no-single-run --browsers Chrome",
-    "test:func": "./run_functional_tests.sh",
-    "test:unit": "karma start",
-    "testserver-start": "webpack-dev-server --inline --progress --host 0.0.0.0 --port 8088",
-    "validate": "npm-run-all --parallel validate-webpack:* test:unit --serial check-coverage",
-    "validate-webpack:dev": "webpack-validator webpack.config.js --env.dev",
-    "validate-webpack:prod": "webpack-validator webpack.config.js --env.prod",
-    "webdriver-start": "./node_modules/protractor/bin/webdriver-manager update && ./node_modules/protractor/bin/webdriver-manager start",
-    "watch:test": "npm run test:unit -- --auto-watch --no-single-run",
     "watch:library": "gulp watch"
   },
   "license": "Apache-2.0",
@@ -49,7 +24,7 @@
       "email": "josh@redhat.com"
     },
     {
-      "name": "Nimisha",
+      "name": "Nimisha Mukherjee",
       "email": "nmukherj@redhat.com"
     },
     {
@@ -82,9 +57,11 @@
     "ng",
     "ng2",
     "ng4",
-    "Planner",
+    "planner",
     "alm",
-    "fabric8"
+    "fabric8",
+    "openshift",
+    "openshiftio"
   ],
   "homepage": "https://github.com/fabric8io/fabric8-planner",
   "repository": {
