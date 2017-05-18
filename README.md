@@ -1,6 +1,8 @@
 # ngx-widgets
 
 [![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-ngx-widgets-npm-publish-build-master)](https://ci.centos.org/view/Devtools/job/devtools-ngx-widgets-npm-publish-build-master/) 
+[![Build Status - f8](http://jenkins.cd.k8s.fabric8.io/job/fabric8-ui/job/ngx-widgets/job/master/)]
+(http://jenkins.cd.k8s.fabric8.io/job/fabric8-ui/job/ngx-widgets/job/master/) 
 [![npm version](https://badge.fury.io/js/ngx-widgets.svg)](https://badge.fury.io/js/ngx-widgets) 
 
 A collection of Angular components and other useful things to be shared.
