@@ -6,8 +6,9 @@
   "module": "index.js",
   "typings": "index.d.ts",
   "scripts": {
-    "build": "npm-run-all --serial remove-dist bundle build:library",
+    "build": "npm-run-all --serial remove-dist build:library",
     "build:library": "gulp build-library",
+    "remove-dist": "rimraf dist dist-watch",
     "check-coverage": "istanbul check-coverage --statements 23 --branches 5 --functions 9 --lines 24",
     "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist dist-watch bundles",
     "copy-files": "gulp copyfiles",
@@ -15,7 +16,8 @@
     "reinstall": "npm run clean && npm install",
     "sass-lint": "sass-lint -c .sass-lint.yml 'src/**/*.scss' -v -q",
     "semantic-release": "semantic-release pre && npm run build && cp -r .git dist && npm publish dist/ && semantic-release post",
-    "watch:library": "gulp watch"
+    "watch:library": "gulp watch",
+    "test:unit": "karma start tests/karma.conf.js"
   },
   "license": "Apache-2.0",
   "contributors": [

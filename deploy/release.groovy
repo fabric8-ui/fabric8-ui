@@ -6,7 +6,7 @@ def ci (){
     }
 
     stage('unit test'){
-        sh './run_unit_tests.sh'
+        sh 'npm run test:unit'
     }
 }
 
@@ -30,7 +30,7 @@ def buildImage(imageName){
 
 def cd (b){
     stage('fix git repo'){
-        sh './fix-git-repo.sh'
+        sh './scripts/fix-git-repo.sh'
     }
 
     stage('build'){
@@ -39,7 +39,7 @@ def cd (b){
     }
 
     stage('unit test'){
-        sh './run_unit_tests.sh'
+        sh './tests/run_unit_tests.sh'
     }
 
     stage('release'){
