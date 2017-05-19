@@ -1,3 +1,4 @@
+/*
 var webpackConfig = require('./../config/webpack.test');
 
 module.exports = function (config) {
@@ -69,3 +70,4 @@ module.exports = function (config) {
 
   config.set(_config);
 };
+*/

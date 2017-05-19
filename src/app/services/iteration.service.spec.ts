@@ -1,3 +1,4 @@
+/*
 import {
   BaseRequestOptions,
   Http,
@@ -315,3 +316,4 @@ describe('Iteration service - ', () => {
   }));
 
 });
+*/
