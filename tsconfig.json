@@ -17,7 +17,7 @@
     "noImplicitAny": false,
     "allowUnreachableCode": false,
     "baseUrl": ".",
-    "rootDir": ".",
+    "rootDir": "src",
     "outDir": "dist",
     "paths": {
       "@angular/common": ["node_modules/@angular/common"],

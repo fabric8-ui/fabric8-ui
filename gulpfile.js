@@ -30,7 +30,7 @@ var watchDist = 'dist-watch';
 function copyToDist(srcArr) {
   return gulp.src(srcArr)
     .pipe(gulp.dest(function (file) {
-      return libraryDist + file.base.slice(__dirname.length); // save directly to dist
+      return libraryDist + file.base.slice(__dirname.length + 'src/'.length); // save directly to dist
     }));
 }
 
@@ -60,7 +60,7 @@ function transpileSASS(src, debug) {
     .pipe(sassCompiler(opts).on('error', sassCompiler.logError)) // this will prevent our future watch-task from crashing on sass-errors
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(function (file) {
-      return libraryDist + file.base.slice(__dirname.length); // save directly to dist
+      return libraryDist + file.base.slice(__dirname.length + 'src/'.length); // save directly to dist
     }));
 }
 
@@ -71,7 +71,7 @@ function transpileSASS(src, debug) {
 // FIXME: why do we need that?
 // replaces templateURL/styleURL with require statements in js.
 gulp.task('post-transpile', ['transpile'], function () {
-  return gulp.src(['dist/src/app/**/*.js'])
+  return gulp.src(['dist/app/**/*.js'])
     .pipe(replace(/templateUrl:\s/g, "template: require("))
     .pipe(replace(/\.html',/g, ".html'),"))
     .pipe(replace(/styleUrls: \[/g, "styles: [require("))
