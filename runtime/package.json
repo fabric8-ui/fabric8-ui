@@ -34,7 +34,9 @@
     "watch": "npm run watch:dev",
     "webpack-dev-server": "webpack-dev-server",
     "webpack": "webpack",
-    "test:unit": "karma start tests/karma.conf.js"
+    "test:unit": "karma start tests/karma.conf.js",
+    "test:func": "./tests/local_run_functional_tests.sh",
+    "test:funcsmoke": "./tests/local_run_functional_tests.sh smokeTest"
   },
   "dependencies": {
     "@angular/animations": "4.0.1",
