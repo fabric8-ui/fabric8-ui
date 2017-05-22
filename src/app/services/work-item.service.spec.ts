@@ -1,6 +1,11 @@
 
-describe('1st tests', () => {
-  it('true is true', () => expect(true).toBe(true));
+import { Logger } from 'ngx-base';
+import { MockHttp } from '../mock/mock-http';
+
+describe('WorkItem Service', () => {
+  var logger = new Logger();
+  let mockHttp = new MockHttp(new Logger());
+  it('should be able to create a mockHttp service', () => expect(mockHttp).toBeDefined())
 });
 
 /*
