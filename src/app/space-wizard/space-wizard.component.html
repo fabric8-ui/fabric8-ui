@@ -91,22 +91,22 @@
     </header>
     <section class="forge-section container-fluid flex-container in-column-direction with-content-stretch padding-standard-offset ">
       <div class="row flex-grow-1 flex-container">
-        <div class="col-xs-12 flex-grow-1 flex-container in-row-direction with-content-stretch">
-          <div id="planSpaceButton" class="section-column cursor-pointer user-select-none">
+        <div class="col-xs-12 panel">
+          <div id="planSpaceButton" class="panel-item cursor-pointer user-select-none">
             <header>
               <h3><strong>Plan</strong> out my space</h3>
             </header>
             <section><span><br></span></section>
             <footer><span class="fa fa-3x fa-list text-muted" ></span></footer>
           </div>
-          <div id="newCodeButton" class="section-column cursor-pointer user-select-none">
+          <div id="newCodeButton" class="panel-item cursor-pointer user-select-none">
             <header>
               <h3>Create <strong>new code</strong> from <strong>scratch</strong></h3>
             </header>
             <section><span><br></span></section>
             <footer><span class="fa fa-3x fa-code text-muted" ></span></footer>
           </div>
-          <div id="importCodeButton" class="section-column cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:steps.forgeImportGit})" >
+          <div id="importCodeButton" class="panel-item cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:steps.forgeImportGit})" >
             <header>
               <h3>Import existing <strong>code</strong></h3>
             </header>
@@ -115,7 +115,7 @@
               <span class="pficon fa-3x pficon-import text-muted" ></span>
             </footer>
           </div>
-          <div id="techStackButton" class="section-column cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:steps.forgeQuickStart})" >
+          <div id="techStackButton" class="panel-item cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:steps.forgeQuickStart})" >
             <header>
               <h3>Select <strong>technology stack</strong> and <strong>pipeline</strong></h3>
             </header>
