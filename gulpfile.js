@@ -6,17 +6,19 @@
 
 var gulp = require('gulp'),
   sassCompiler = require('gulp-sass'),
-  runSequence = require('run-sequence'),
   del = require('del'),
   replace = require('gulp-string-replace'),
   sourcemaps = require('gulp-sourcemaps'),
-  exec = require('child_process').exec,
+  cp = require('child_process'),
+  exec = require('gulp-exec'),
   ngc = require('gulp-ngc'),
   changed = require('gulp-changed'),
   sass = require('./deploy/sass'),
+  runSequence = require('run-sequence'),
   argv = require('yargs').argv,
   path = require('path'),
-  util = require('gulp-util');
+  util = require('gulp-util'),
+  KarmaServer = require('karma').Server;
 
 var appSrc = 'src';
 var libraryDist = 'dist';
@@ -68,6 +70,40 @@ function transpileSASS(src, debug) {
  * TASKS
  */
 
+// Deletes dist directories.
+gulp.task('clean:dist', function () {
+  return del([
+    'dist-watch',
+    'dist'
+  ]);
+});
+
+// Deletes npm cache.
+gulp.task('clean:npmcache', function () {
+  return cp.execFile('npm cache clean');
+});
+
+// Deletes and cleans all.
+gulp.task('clean:all', ['clean:dist', 'clean:npmcache'], function () {
+  return del([
+    'node_modules',
+    'coverage'
+  ]);
+});
+
+// Deletes and re-installs dependencies.
+gulp.task('reinstall', ['clean:all'], function () {
+  return cp.execFile('npm install');
+});
+
+// Run unit tests.
+gulp.task('test:unit', function (done) {
+  new KarmaServer({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+});
+
 // FIXME: why do we need that?
 // replaces templateURL/styleURL with require statements in js.
 gulp.task('post-transpile', ['transpile'], function () {
@@ -112,7 +148,7 @@ gulp.task('copy-static-assets', function () {
 });
 
 // Put the sass files back to normal
-gulp.task('build-library',
+gulp.task('build:library',
   [
     'transpile',
     'post-transpile',
@@ -120,6 +156,15 @@ gulp.task('build-library',
     'copy-html',
     'copy-static-assets'
   ]);
+
+// Main build goal, builds the release library.
+gulp.task('build', function(callback) {
+  runSequence('clean:dist',
+              'build:library',
+              callback);
+});
+
+// Watch Tasks follow.
 
 gulp.task('copy-watch', ['post-transpile'], function () {
   return updateWatchDist();

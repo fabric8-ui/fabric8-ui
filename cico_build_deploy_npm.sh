@@ -31,10 +31,10 @@ docker exec fabric8-planner-builder ./fix-git-repo.sh
 docker exec fabric8-planner-builder npm install
 
 ## Build prod
-docker exec fabric8-planner-builder npm run build:prod
+docker exec fabric8-planner-builder npm run build
 
 ## Exec unit tests
-docker exec fabric8-planner-builder ./run_unit_tests.sh
+docker exec fabric8-planner-builder npm run test:unit
 
 ## Exec functional tests
 #docker exec fabric8-planner-builder ./run_functional_tests.sh

@@ -36,13 +36,11 @@ mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder --user=
 docker exec fabric8-planner-builder npm install
 
 ## Exec unit tests
-docker exec fabric8-planner-builder ./run_unit_tests.sh
-
+docker exec fabric8-planner-builder npm run test:unit
 
 ## Exec functional tests
 docker exec fabric8-planner-builder ./run_functional_tests.sh smokeTest
 
 ## All ok, build prod version
-docker exec fabric8-planner-builder ./upload_to_codecov.sh
-docker exec fabric8-planner-builder npm run build:prod
+docker exec fabric8-planner-builder npm run build
 docker exec -u root fabric8-planner-builder cp -r /home/fabric8/fabric8-planner/dist /
