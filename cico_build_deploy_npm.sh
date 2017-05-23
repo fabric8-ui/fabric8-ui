@@ -19,7 +19,7 @@ yum -y install docker
 yum clean all
 service docker start
 
-docker build -t fabric8-planner-builder -f Dockerfile.builder .
+docker build -t fabric8-planner-builder -f deploy/Dockerfile.builder .
 mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder -e JENKINS_URL -e GIT_BRANCH -e "CI=true" -e GH_TOKEN -e NPM_TOKEN -t -v $(pwd)/dist:/dist:Z fabric8-planner-builder
 
 # In order to run semantic-release we need a non detached HEAD, see https://github.com/semantic-release/semantic-release/issues/329
