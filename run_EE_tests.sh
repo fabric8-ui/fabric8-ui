@@ -18,7 +18,6 @@ echo Running tests...
 set +x
 cat ~/payload/jenkins-env | grep EE_TEST > ~/.ee_test_params
 . ~/.ee_test_params
-cat ~/payload/jenkins-env | grep EE_TEST_USERNAME
 node_modules/protractor/bin/protractor protractorEE.config.js --params.login.user=$EE_TEST_USERNAME --params.login.password=$EE_TEST_PASSWORD --params.target.url=$1
 TEST_RESULT=$?
 set -x
@@ -38,3 +37,4 @@ else
   echo 'Functional tests FAIL'
   exit 1
 fi
+
