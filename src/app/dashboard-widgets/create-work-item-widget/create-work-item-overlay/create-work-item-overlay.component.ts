@@ -11,9 +11,9 @@ import { removeAction } from '../../../app-routing.module';
 
 
 // TODO HACK
-import { WorkItemService } from 'fabric8-planner/src/app/work-item/work-item.service';
-import { WorkItemType } from 'fabric8-planner/src/app/models/work-item-type';
-import { WorkItemDetailAddTypeSelectorWidgetComponent } from 'fabric8-planner/src/app/work-item/work-item-detail-add-type-selector/work-item-detail-add-type-selector-widget/work-item-detail-add-type-selector-widget.component';
+import { WorkItemService } from 'fabric8-planner/app/services/work-item.service';
+import { WorkItemType } from 'fabric8-planner/app/models/work-item-type';
+import { WorkItemDetailAddTypeSelectorWidgetComponent } from 'fabric8-planner/app/components/work-item-create/work-item-create-selector/work-item-create-selector.component';
 
 @Component({
   selector: 'fabric8-create-work-item-overlay',
