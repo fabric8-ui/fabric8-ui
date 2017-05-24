@@ -43,6 +43,8 @@ module.exports = function(config) {
                 lib: ["ES2015", "DOM"]
             },
             exclude: [
+                'dist',
+                'dist-watch',
                 'node_modules',
                 'runtime', // explicitly exclude the runtime here
                 'src/app/mock/standalone/sso-api.provider.ts', // this class produces some errors when compiled in test mode
