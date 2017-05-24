@@ -16,17 +16,17 @@ if [ -e "jenkins-env" ]; then
 fi
 
 # We need to disable selinux for now, XXX
-/usr/sbin/setenforce 0
+#/usr/sbin/setenforce 0
 
 # Get all the deps in
-yum -y install \
-  docker \
-  make \
-  git
-service docker start
+#yum -y install \
+ # docker \
+ # make \
+ # git
+#service docker start
 
 # Build builder image
-cp /tmp/jenkins-env .
+#cp /tmp/jenkins-env .
 docker build -t fabric8-planner-builder -f deploy/Dockerfile.builder .
 # User root is required to run webdriver-manager update. This shouldn't be a problem for CI containers
 mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder --user=root --cap-add=SYS_ADMIN -e "API_URL=https://api.prod-preview.openshift.io/api/" -e "CI=true" -t -v $(pwd)/dist:/dist:Z fabric8-planner-builder
