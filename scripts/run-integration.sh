@@ -50,7 +50,9 @@ function runPlatform {
 # runs the planner in watch mode
 function runPlanner {
   echo "Running Planner in $PLANNER_HOME"
-  cd $PLANNER_HOME && npm run watch:library &
+  # as the watch task has to be started in the backgound, we need to create a minimal
+  # dist-watch directory befor launching it otherwise the following linking gets confused.
+  cd $PLANNER_HOME && mkdir -p dist-watch && cp package.json dist-watch/ && npm run watch:library &
 } 
 
 # extract options and their arguments into variables.

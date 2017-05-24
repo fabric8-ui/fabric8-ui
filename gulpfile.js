@@ -170,11 +170,11 @@ gulp.task('copy-watch', ['post-transpile'], function () {
   return updateWatchDist();
 });
 
-gulp.task('copy-watch-all', ['build-library'], function () {
+gulp.task('copy-watch-all', ['build:library'], function () {
   return updateWatchDist();
 });
 
-gulp.task('watch', ['build-library', 'copy-watch-all'], function () {
+gulp.task('watch', ['build:library', 'copy-watch-all'], function () {
   gulp.watch([appSrc + '/app/**/*.ts', '!' + appSrc + '/app/**/*.spec.ts'], ['transpile', 'post-transpile', 'copy-watch']).on('change', function (e) {
     util.log(util.colors.cyan(e.path) + ' has been changed. Compiling.');
   });

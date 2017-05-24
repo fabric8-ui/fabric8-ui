@@ -10,7 +10,15 @@ To use this with the Planner library:
 6. Build and run runtime: (in `runtime`): `npm start`
 7. Point your browser to http://localhost:8080/
 
+## Functional Tests
 
-## Functional test
 * To run all the functional tests you can simply run (in `runtime`): `npm run test:func`
 * To run only the **smoke** functional tests you can simply run (in `runtime`): `npm run test:funcsmoke`
+
+## Building for Functional Tests or Standalone Production
+
+1. Build Planner library (in planner root directory): `npm run build`
+2. Link Planner library to runtime (in `runtime`): `npm link ../dist`
+3. Build Runtime (in `runtime`): `npm run build`
+
+The runtime is now available in runtime/dist.

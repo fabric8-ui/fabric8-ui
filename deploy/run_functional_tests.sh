@@ -30,9 +30,9 @@ echo done.
 echo Running tests...
 if [ -z "$1" ]
   then
-    node_modules/protractor/bin/protractor protractor.config.js
+    node_modules/protractor/bin/protractor tests/protractor.config.js
 else
-    node_modules/protractor/bin/protractor protractor.config.js --suite $1
+    node_modules/protractor/bin/protractor tests/protractor.config.js --suite $1
 fi
 TEST_RESULT=$?
 

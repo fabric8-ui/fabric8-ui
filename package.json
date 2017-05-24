@@ -11,7 +11,7 @@
     "watch:library": "gulp watch",
     "clean:dist": "gulp clean:dist",
     "clean:all": "gulp clean:all",
-    "reinstall": "gulp reinstall",
+    "reinstall": "rimraf node_modules && npm cache clean && npm install",
     "test:unit": "gulp test:unit",
     "test:functional": "TBD",
     "semantic-release": "semantic-release pre && gulp build && cp -r .git dist && npm publish dist/ && semantic-release post"
