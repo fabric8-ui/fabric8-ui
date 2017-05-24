@@ -17,7 +17,7 @@ export interface IWorkflowTransition {
   /** The workflow action that caused the transition */
   action: WorkflowAction;
   /** Given the step name returns if the name is the transition target  */
-  isTransitioningTo(stepName: string):boolean;
+  isTransitioningTo(stepName: string): boolean;
   /** Given the step name returns if the name is the transition source  */
-  isTransitioningFrom(stepName: string):boolean;
+  isTransitioningFrom(stepName: string): boolean;
 }

@@ -13,15 +13,15 @@ export class WorkflowTransition implements IWorkflowTransition {
   canContinue: boolean = false;
   action: WorkflowAction;
 
-  public isTransitioningTo(stepName: string):boolean {
-    if( stepName!==null && stepName!==undefined ) {
+  public isTransitioningTo(stepName: string): boolean {
+    if ( stepName !== null && stepName !== undefined ) {
       return this.to && this.to.name && this.to.name.trim().toLowerCase() === stepName.trim().toLowerCase();
     }
     return false;
   }
 
-  public isTransitioningFrom(stepName: string):boolean {
-    if( stepName!==null && stepName!==undefined ) {
+  public isTransitioningFrom(stepName: string): boolean {
+    if ( stepName !== null && stepName !== undefined ) {
       return this.from && this.from.name && this.from.name.trim().toLowerCase() === stepName.trim().toLowerCase();
     }
     return false;
