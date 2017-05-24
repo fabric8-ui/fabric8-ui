@@ -66,7 +66,7 @@
     "reflect-metadata": "0.1.10",
     "rxjs": "5.2.0",
     "zone.js": "0.8.5",
-    "fabric8-planner": "file:../dist-watch"
+    "fabric8-planner": "file:../dist"
   },
   "devDependencies": {
     "@angular/compiler": "4.0.1",

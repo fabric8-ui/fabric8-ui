@@ -38,9 +38,15 @@ docker exec fabric8-planner-builder npm install
 ## Exec unit tests
 docker exec fabric8-planner-builder npm run test:unit
 
+docker exec fabric8-planner-builder npm build
+docker exec fabric8-planner-builder cd dist npm link
+
+docker exec cd runtime npm install
+docker exec fabric8-planner-builder cd runtime/node_modules/fabric8-planner npm link dist
+
 ## Exec functional tests
-docker exec fabric8-planner-builder ./runtime/tests/run_functional_tests.sh smokeTest
+docker exec fabric8-planner-builder runtime/tests/run_functional_tests.sh smokeTest
 
 ## All ok, build prod version
-docker exec fabric8-planner-builder npm run build
-docker exec -u root fabric8-planner-builder cp -r /home/fabric8/fabric8-planner/dist /
+docker exec fabric8-planner-builder cd runtime npm run build
+docker exec -u root fabric8-planner-builder cp -r /home/fabric8/fabric8-planner/runtime/dist /
