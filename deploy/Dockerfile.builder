@@ -49,7 +49,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 
 RUN npm install -g jasmine-node protractor
 
-COPY deploy/google-chrome.repo /etc/yum.repos.d/google-chrome.repo
+COPY runtime/tests/google-chrome.repo /etc/yum.repos.d/google-chrome.repo
 RUN yum install -y xorg-x11-server-Xvfb google-chrome-stable
 
 ENV DISPLAY=:99
@@ -69,4 +69,4 @@ WORKDIR $WORKSPACE/
 
 VOLUME /dist
 
-ENTRYPOINT ["/home/fabric8/fabric8-planner/deploy/docker-entrypoint.sh"]
+ENTRYPOINT ["/home/fabric8/fabric8-planner/runtime/tests/docker-entrypoint.sh"]
