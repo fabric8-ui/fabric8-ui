@@ -1,4 +1,5 @@
 import { ViewEncapsulation, Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Notification, NotificationAction, Notifications, NotificationType } from 'ngx-base';
 //
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
 import { INotifyPropertyChanged } from '../../core/component';
@@ -47,13 +48,15 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     @Inject(IAppGeneratorServiceProvider.InjectToken) private _appGeneratorService: IAppGeneratorService,
     private _codebasesService: CodebasesService,
     private _configuratorService: AppGeneratorConfiguratorService,
+    private _notifications: Notifications,
+
     loggerFactory: LoggerFactory) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, ForgeAppGeneratorComponent.instanceCount++);
     if ( logger ) {
       this.log = logger;
     }
     this.log(`New instance ...`);
-    this.forge = new ForgeAppGenerator(this._appGeneratorService, this._codebasesService, this._configuratorService, loggerFactory);
+    this.forge = new ForgeAppGenerator(this._appGeneratorService, this._codebasesService, this._configuratorService, this._notifications, loggerFactory);
   }
 
   @Input()
