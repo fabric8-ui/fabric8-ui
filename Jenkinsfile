@@ -5,58 +5,66 @@ def project = 'fabric8io/fabric8-planner'
 def ciDeploy = false
 def tempVersion
 def imageName
+node{
+    properties([
+        disableConcurrentBuilds()
+        ])
+}
+
 fabric8UITemplate{
     dockerNode{
         ws {
-            if (utils.isCI()){
-                checkout scm
-                readTrusted 'release.groovy'
-                def pipeline = load 'release.groovy'
+            timeout(time: 1, unit: 'HOURS') {
+                if (utils.isCI()){
+                    checkout scm
+                    readTrusted 'release.groovy'
+                    def pipeline = load 'release.groovy'
 
-                container('ui'){
-                    pipeline.ci()
-                }
+                    container('ui'){
+                        pipeline.ci()
+                    }
 
-                container('ui'){
-                    tempVersion = pipeline.ciBuildDownstreamProject(project)
-                }
+                    container('ui'){
+                        tempVersion = pipeline.ciBuildDownstreamProject(project)
+                    }
 
-                imageName = "fabric8/fabric8-ui:${tempVersion}"
-                container('docker'){
-                    pipeline.buildImage(imageName)
-                }
+                    imageName = "fabric8/fabric8-ui:${tempVersion}"
+                    container('docker'){
+                        pipeline.buildImage(imageName)
+                    }
 
-                ciDeploy = true
+                    ciDeploy = true
 
 
-            } else if (utils.isCD()){
+                } else if (utils.isCD()){
 
-                git "https://github.com/${project}.git"
-                readTrusted 'release.groovy'
-                sh "git remote set-url origin git@github.com:${project}.git"
-                def pipeline = load 'release.groovy'
+                    git "https://github.com/${project}.git"
+                    readTrusted 'release.groovy'
+                    sh "git remote set-url origin git@github.com:${project}.git"
+                    def pipeline = load 'release.groovy'
 
-                container('ui'){
-                    pipeline.ci()
-                }
+                    container('ui'){
+                        pipeline.ci()
+                    }
 
-                def branch
-                container('ui'){
-                    branch = utils.getBranch()
-                }
+                    def branch
+                    container('ui'){
+                        branch = utils.getBranch()
+                    }
 
-                def published
-                container('ui'){
-                    published = pipeline.cd(branch)
-                }
+                    def published
+                    container('ui'){
+                        published = pipeline.cd(branch)
+                    }
 
-                def releaseVersion
-                container('ui'){
-                    releaseVersion = utils.getLatestVersionFromTag()
-                }
+                    def releaseVersion
+                    container('ui'){
+                        releaseVersion = utils.getLatestVersionFromTag()
+                    }
 
-                if (published){
-                    pipeline.updateDownstreamProjects(releaseVersion)
+                    if (published){
+                        pipeline.updateDownstreamProjects(releaseVersion)
+                    }
                 }
             }
         }
