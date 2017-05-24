@@ -3,7 +3,7 @@ import { ViewEncapsulation, Component, Inject, Input, OnChanges, OnDestroy, OnIn
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
 import { INotifyPropertyChanged } from '../../core/component';
 
-import { IWorkflow, IWorkflowTransition, WorkflowTransitionDirection } from '../../models/workflow';
+import { IWorkflow, IWorkflowTransition, WorkflowTransitionAction } from '../../models/workflow';
 
 import {
   IAppGeneratorService,
@@ -208,14 +208,6 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     }
   }
 
-  private isTransitioningToThisStep(transition: IWorkflowTransition): boolean {
-    return transition.to && transition.to.name.toLowerCase() === this.workflowStepName.toLowerCase();
-  }
-
-  private isTransitioningFromThisStep(transition: IWorkflowTransition): boolean {
-    return transition.from && transition.from.name.toLowerCase() === this.workflowStepName.toLowerCase();
-  }
-
   private subscribeToWorkflowTransitions(workflow: IWorkflow) {
     if ( !workflow ) {
       return;
@@ -225,20 +217,20 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     workflow.transitions.subscribe((transition) => {
       this.log({
         message: `
-        Subscriber responding to an observed '${transition.direction}' workflow transition:
+        Subscriber responding to an observed '${transition.action}' workflow transition:
         from ${transition.from ? transition.from.name : 'null'}
         to ${transition.to ? transition.to.name : 'null'}.`});
-      if ( this.isTransitioningToThisStep(transition) ) {
+      if ( transition.isTransitioningTo(this.workflowStepName)) {
         this.forge.begin();
       }
-      if ( this.isTransitioningFromThisStep(transition) ) {
-        switch ( transition.direction ) {
-          case WorkflowTransitionDirection.NEXT: {
-            // arrived at this point in the workflow as the result of a nextStep transition
+      if ( transition.isTransitioningFrom(this.workflowStepName) ) {
+        switch ( transition.action ) {
+          case WorkflowTransitionAction.NEXT: {
+            // moving from this point in the workflow as the result of a nextStep transition
             break;
           }
-          case WorkflowTransitionDirection.GO: {
-            // arrived at this point in the workflow as the result of a goToStep transition
+          case WorkflowTransitionAction.GO: {
+            // moving from this point in the workflow as the result of a goToStep transition
             break;
           }
           default: {
