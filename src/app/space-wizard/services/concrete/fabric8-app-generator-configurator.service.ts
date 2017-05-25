@@ -30,7 +30,26 @@ export class AppGeneratorConfiguratorService {
 
   static instanceCount: number = 1;
 
-  public currentSpace: Space ;
+  public get currentSpace(): Space {
+    if ( !this._currentSpace ) {
+      this._currentSpace = this.createTransientSpace();
+    }
+    return this._currentSpace;
+  }
+
+  public set currentSpace(value: Space) {
+    this._currentSpace = value;
+  }
+
+  public get newSpace(): Space {
+    if ( !this._newSpace ) {
+      this._newSpace = this.createTransientSpace();
+    }
+    return this._newSpace;
+  }
+  public set newSpace(value: Space) {
+    this._newSpace = value;
+  }
 
   /**
    * Helps to specify wizard step names to prevent typos
@@ -50,36 +69,12 @@ export class AppGeneratorConfiguratorService {
     forgeImportGit: ForgeCommands.forgeImportGit
   };
 
+  private _newSpace: Space;
+  private _currentSpace: Space;
 
-  public resetSpace(): Space {
-      let space = {} as Space;
-      space.name = '';
-      space.path = '';
-      space.attributes = new SpaceAttributes();
-      space.attributes.name = space.name;
-      space.type = 'spaces';
-      space.privateSpace = false;
-      space.process = { name: '', description: ''};
-      space.relationships = {
-        areas: {
-          links: {
-            related: ''
-          }
-        },
-        iterations: {
-          links: {
-            related: ''
-          }
-        },
-        ['owned-by']: {
-          data: {
-            id: '',
-            type: 'identities'
-          }
-        }
-      };
-     this.currentSpace = space;
-     return space;
+  public resetNewSpace(): Space {
+     this.newSpace = null;
+     return this.newSpace;
   }
 
   constructor(loggerFactory: LoggerFactory, private context: ContextService) {
@@ -95,7 +90,6 @@ export class AppGeneratorConfiguratorService {
         this.log(`the current space is updated to ${this.currentSpace.attributes.name}`);
       }
     });
-    this.resetSpace();
   }
 
   // appends fields that are needed but may only be entered at a later stage in the wizard
@@ -241,6 +235,35 @@ export class AppGeneratorConfiguratorService {
     return response;
   }
 
+  private createTransientSpace(): Space {
+    let space = {} as Space;
+    space.name = '';
+    space.path = '';
+    space.attributes = new SpaceAttributes();
+    space.attributes.name = space.name;
+    space.type = 'spaces';
+    space.privateSpace = false;
+    space.process = { name: '', description: ''};
+    space.relationships = {
+      areas: {
+        links: {
+          related: ''
+        }
+      },
+      iterations: {
+        links: {
+          related: ''
+        }
+      },
+      ['owned-by']: {
+        data: {
+          id: '',
+          type: 'identities'
+        }
+      }
+    };
+    return space;
+  }
 
   private augmentTitle(context: string, execution: IAppGeneratorPair) {
     let response = execution.response;
@@ -515,7 +538,6 @@ export class AppGeneratorConfiguratorService {
         }
     });
   }
-
 
   private log: ILoggerDelegate = () => {};
 

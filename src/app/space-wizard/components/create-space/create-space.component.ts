@@ -63,7 +63,7 @@ export class CreateSpaceComponent implements OnInit {
    */
   createSpace() {
     this.log(`createSpace ...`);
-    let space = this.configurator.currentSpace;
+    let space = this.configurator.newSpace;
     console.log('Creating space', space);
     space.attributes.name = space.name.replace(/ /g, '_');
     this.userService.getUser()
@@ -83,30 +83,30 @@ export class CreateSpaceComponent implements OnInit {
       })
       .subscribe(createdSpace => {
         this.configurator.currentSpace = createdSpace;
-        let actionObservable = this.notifications.message({
+        const primaryAction: NotificationAction = {
+          name: `Open Space`,
+          title: `Open ${this.spaceNamePipe.transform(createdSpace.attributes.name)}`,
+          id: 'openSpace'
+        };
+        this.notifications.message(<Notification>{
           message: `Your new space is created!`,
           type: NotificationType.SUCCESS,
-          primaryAction: {
-            name: `Open Space`,
-            title: `Open ${this.spaceNamePipe.transform(createdSpace.attributes.name)}`,
-            id: 'openSpace'
-          } as NotificationAction
-        } as Notification);
-        actionObservable
-          .filter(action => action.id === 'openSpace')
-          .subscribe(action => {
-            this.router.navigate([createdSpace.relationalData.creator.attributes.username,
-            createdSpace.attributes.name]);
-            this.workflow.cancel();
-          });
+          primaryAction: primaryAction
+        })
+        .filter(action => action.id === primaryAction.id)
+        .subscribe(action => {
+          this.router.navigate([createdSpace.relationalData.creator.attributes.username,
+          createdSpace.attributes.name]);
+          this.workflow.cancel();
+        });
         this.workflow.gotoNextStep();
       },
       err => {
         console.log('Error creating space', err);
-        this.notifications.message({
+        this.notifications.message(<Notification>{
           message: `Failed to create "${space.name}"`,
           type: NotificationType.DANGER
-        } as Notification);
+        });
         this.workflow.cancel();
       });
   }

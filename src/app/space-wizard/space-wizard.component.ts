@@ -19,8 +19,14 @@ export class SpaceWizardComponent implements OnInit {
 
   @Input() host: IModalHost;
 
-  get configurator(): AppGeneratorConfiguratorService {
+  private get configurator(): AppGeneratorConfiguratorService {
      return this._configuratorService;
+  }
+  /*
+   * facilitates specifying a specific starting step when opening the host dialog
+   */
+  public get steps() {
+    return this.configurator.workflowSteps;
   }
 
   private _workflow: IWorkflow = null;
@@ -97,7 +103,7 @@ export class SpaceWizardComponent implements OnInit {
    * into a default empty state.
    */
   reset() {
-    this.configurator.resetSpace();
+    this.configurator.resetNewSpace();
     this.workflow = this.createAndInitializeWorkflow();
   }
 
@@ -123,6 +129,8 @@ export class SpaceWizardComponent implements OnInit {
 
   /**
    * Configures this component host dialog settings.
+   * host is an instance of the modal dialog object
+   * cast to IModalHost interface
    */
   configureComponentHost() {
 
@@ -132,15 +140,19 @@ export class SpaceWizardComponent implements OnInit {
     let me = this;
 
     /**
-     * Configure modal open and close intercept handlers.
-     * perform initialization and settings adjustments.
+     * Configure the modal dialog open and close intercept handlers.
      */
     let originalOpenHandler = this.host.open;
     this.host.open = function (...args) {
-      me.log(`Opening wizard modal dialog ...`);
+      me.log(`Opening wizard modal dialog ...`, args);
       me.reset();
+      if ( args.length > 0 && typeof args[0] === 'string' ) {
+        let step = args[0];
+        me.workflow.gotoStep(step);
+      }
       /**
-       * note: 'this' is not me ... but an instance of Modal.
+       * note: 'this' in this context is not me ( i.e component)
+       * ... but an instance of Modal.
        * That is why  => is not being used here
        */
       return originalOpenHandler.apply(this, args);
