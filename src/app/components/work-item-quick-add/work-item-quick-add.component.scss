@@ -1,14 +1,14 @@
 @import '../../../assets/stylesheets/base';
 
 .quickAdd_container {
-  display: -webkit-flex;
-  display: flex;
+  height: 69px; //height is given to avoid jumping between this block and addWorkItemBlk
+  background: $color-pf-black-200;
+  border-top: 1px solid darken($color-pf-white, 20%);
   text-align: $textLeft;
   background: $color-pf-black-200;
   border-top: 1px solid;
   border-top-color: (darken($color-pf-white, 20%));
   cursor: pointer;
-  align-items: center;
   .dropup {
     .dropdown-menu { margin-left: 16px;
       i {
@@ -18,10 +18,11 @@
     }
   }
   .addWorkItem {
-    height: 69px; //height is given to avoid jumping between this block and addWorkItemBlk
-    padding: em(18);
+    top: 50%;
+    padding: 18px 0;
     color: $navbar-pf-border-color;
-    .quick-add-label { padding-left: em(5); }
+    @include transform(translateY(-50%));
+    .quick-add-label { padding-left: 5px; }
     .workItemQuickAdd_saveBtn {
       display: inline-block;
       margin: 0;
@@ -34,35 +35,42 @@
     }
   }
   .addWorkItemBlk {
+    padding: 20px 0;
     position: relative;
     padding: 20px;
     .work-item-selector {
       display: inline-flex;
-      height: 28px;
+      height: 26px;
     }
     .workItemQuickAdd_IconType {
       position: relative;
+      width: 25px;
+      height: 25px;
       float: left;
-      width: em(24);
-      height: em(25);
-      i { font-size: em(14); }
+      i { font-size: 14px; }
     }
     .workItemQuickAdd_story {
-      #exampleDesc { max-height: 100px; }
+      padding-right: 76px;
+      padding-left: 42px;
+      #exampleDesc{
+        height: 26px !important;
+        max-height: 100px;
+        padding-top: 0;
+      }
     }
     .workItemQuickAdd_AddBlk {
       .workItemQuickAdd_Add {
-        min-width: em(30) !important;
+        min-width: 30px !important;
         height: 27px;
         i { font-size: em(14); }
       }
       .closeQuickAdd {
-        min-width: em(30) !important;
+        min-width: 30px !important;
         height: 27px;
-        padding: em(5);
-        margin-left: em(5);
+        margin-left: 5px;
+        padding: 5px;
         i {
-          font-size: em(14);
+          font-size: 14px;
           vertical-align: top;
         }
       }
@@ -82,26 +90,25 @@
   width: 100%;
   padding: 0;
   margin: 0;
-  background: transparent;
-  // border: 2px solid $color-pf-black-300;
-  box-shadow: none;
-  .addWorkItem {
-    padding: em(10) em(15);
-    text-align: center;
+  .addWorkItem{
     background: $color-pf-white;
+    text-align: center;
+    padding: 10px 15px;
     @include Border(2px, solid, $color-pf-black-400);
-    .workItemQuickAdd_saveBtn {
+    .workItemQuickAdd_saveBtn{
       i {
-        font-size: em(18);
+        font-size: 18px;
         color: $color-pf-blue-400;
       }
     }
   }
   .addWorkItemBlk {
-    margin: em(5) 0;
-    background:$color-pf-white;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background: $color-pf-white;
     @include Border(1px, solid, $color-pf-black-300);
-    .board-inputs { margin-top: 40px;
+    .board-inputs {
+      margin-top: 40px;
       i {
         padding-top: 5px;
         padding-left: 10px;
@@ -128,17 +135,17 @@
 }
 .add { background-color: $color-pf-white; }
 @media (max-width: $grid-float-breakpoint){
-  .quickAdd_container { text-align: center;
-    .addWorkItem { padding: em(10);
+  .quickAdd_container { @extend .textCenter;
+    .addWorkItem { padding: 10px;
       i,
       h4 { display: block; }
-      i { margin-bottom: em(5); }
+      i { margin-bottom: 5px; }
     }
-    .addWorkItemBlk { padding: em(10); }
+    .addWorkItemBlk { padding: 10px; }
   }
 }
 @-moz-document url-prefix() {
   .workItemQuickAdd_story {
-    textarea.form-control { max-height: em(26) !important; }
+    textarea.form-control { max-height: 26px !important; }
   }
 }
