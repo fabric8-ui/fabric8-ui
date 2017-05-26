@@ -31,22 +31,14 @@ docker build -t fabric8-planner-builder -f deploy/Dockerfile.builder .
 # User root is required to run webdriver-manager update. This shouldn't be a problem for CI containers
 mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder --user=root --cap-add=SYS_ADMIN -e "API_URL=https://api.prod-preview.openshift.io/api/" -e "CI=true" -t -v $(pwd)/dist:/dist:Z fabric8-planner-builder
 
-
-# Build almigty-ui
 docker exec fabric8-planner-builder npm install
 
-## Exec unit tests
 docker exec fabric8-planner-builder npm run test:unit
 
-docker exec fabric8-planner-builder npm build
-docker exec fabric8-planner-builder cd dist npm link
+docker exec fabric8-planner-builder npm run build
 
-docker exec cd runtime npm install
-docker exec fabric8-planner-builder cd runtime/node_modules/fabric8-planner npm link dist
+docker exec  -i fabric8-planner-builder bash -c "cd runtime ; npm install"
+docker exec fabric8-planner-builder bash -c "cd runtime ; npm run test:funcsmoke"
+docker exec  -i fabric8-planner-builder bash -c "cd runtime ; npm run build"
 
-## Exec functional tests
-docker exec fabric8-planner-builder runtime/tests/run_functional_tests.sh smokeTest
-
-## All ok, build prod version
-docker exec fabric8-planner-builder cd runtime npm run build
 docker exec -u root fabric8-planner-builder cp -r /home/fabric8/fabric8-planner/runtime/dist /

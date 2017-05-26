@@ -26,11 +26,8 @@ service docker start
 # Build builder image
 cp /tmp/jenkins-env .
 docker build -t fabric8-planner-builder -f deploy/Dockerfile.builder .
-# User root is required to run webdriver-manager update. This shouldn't be a problem for CI containers
 mkdir -p runtime/dist && docker run --detach=true --name=fabric8-planner-builder --user=root --cap-add=SYS_ADMIN -t -v $(pwd)/runtime/dist:/dist:Z fabric8-planner-builder
 
-
-# Build almigty-ui
 docker exec fabric8-planner-builder npm install
 
 docker exec fabric8-planner-builder npm run test:unit
@@ -38,10 +35,10 @@ docker exec fabric8-planner-builder npm run test:unit
 docker exec fabric8-planner-builder npm run build
 
 docker exec  -i fabric8-planner-builder bash -c "cd runtime ; npm install"
-docker exec  -i fabric8-planner-builder bash -c "cd runtime ; npm run build"
 
-## Exec functional tests
-# docker exec fabric8-planner-builder bash -c "cd runtime ; npm run test:funcsmoke"
+docker exec fabric8-planner-builder bash -c "cd runtime ; npm run test:funcsmoke"
+
+docker exec  -i fabric8-planner-builder bash -c "cd runtime ; npm run build"
 
 # Rest of it should be removed since there is no production from the registry
 # Let's discuss
