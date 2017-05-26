@@ -24,7 +24,7 @@ import { FieldWidgetClassificationOptions } from '../../models/contracts/field-c
   templateUrl: './forge-app-generator.component.html',
   styleUrls: [ './forge-app-generator.component.scss' ],
   providers: [
-    ForgeAppGeneratorServiceClient.FactoryProvider
+    ForgeAppGeneratorServiceClient.factoryProvider
   ]
 })
 export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges {

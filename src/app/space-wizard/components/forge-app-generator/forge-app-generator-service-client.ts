@@ -36,7 +36,7 @@ export class ForgeAppGeneratorServiceClient {
   /**
    * make allowance for non-singleton d-i semantics
    */
-  public static FactoryProvider = {
+  public static factoryProvider = {
       provide: ForgeAppGeneratorServiceClient,
       useFactory: (appGeneratorService, codebasesService, configuratorService, notifications, loggerFactory) => {
         let tmp = new ForgeAppGeneratorServiceClient(appGeneratorService, codebasesService, configuratorService, notifications, loggerFactory);
