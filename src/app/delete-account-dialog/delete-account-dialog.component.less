@@ -1,0 +1,52 @@
+@import (reference) '../../assets/stylesheets/_base';
+.createDeleteAccountBlock {
+  font-size: rem(10);
+  padding: 0;
+  > div { margin-top: 15px;
+    label {
+      width: 100%;
+      font-size: 14px;
+    }
+    p {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .icon-caret {
+      height: 15px;
+      margin-top: 5px;
+    }
+  }
+  .devProcessForm {
+    position: relative;
+    margin-bottom: 0;
+  }
+  .devProcessList {
+    position: absolute;
+    width: calc(100% - 40px);
+    list-style: none;
+    padding: 0;
+    border: 1px solid;
+    border-color: @color-pf-black-400;
+    background: @color-pf-white;
+    li {
+      width: 100%;
+      float: left;
+      padding: 2px;
+      cursor: pointer;
+    }
+  }
+  .delete-accountInputBlock {
+    > div { padding: 0;
+      label {
+        width: 90%;
+        padding-left: 20px;
+        font-weight: 500;
+        span {
+          width: 100%;
+          float: left;
+          &:nth-child(2) { color: @color-pf-black-500; }
+        }
+      }
+    }
+  }
+}

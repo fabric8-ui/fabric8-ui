@@ -18,7 +18,7 @@ import { WorkItemDetailAddTypeSelectorWidgetComponent } from 'fabric8-planner/ap
 @Component({
   selector: 'fabric8-create-work-item-overlay',
   templateUrl: './create-work-item-overlay.component.html',
-  styleUrls: ['./create-work-item-overlay.component.scss']
+  styleUrls: ['./create-work-item-overlay.component.less']
 })
 export class CreateWorkItemOverlayComponent implements OnInit, AfterViewInit {
 

@@ -11,7 +11,7 @@ import { AppGeneratorConfiguratorService } from './services/app-generator.servic
 @Component({
   selector: 'space-wizard',
   templateUrl: './space-wizard.component.html',
-  styleUrls: ['./space-wizard.component.scss']
+  styleUrls: ['./space-wizard.component.less']
 })
 export class SpaceWizardComponent implements OnInit {
 
@@ -172,4 +172,3 @@ export class SpaceWizardComponent implements OnInit {
   log: ILoggerDelegate = () => { };
 
 }
-

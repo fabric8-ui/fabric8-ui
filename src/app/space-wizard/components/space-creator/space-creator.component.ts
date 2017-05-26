@@ -19,7 +19,7 @@ import { AppGeneratorConfiguratorService } from '../../services/app-generator.se
 @Component({
   selector: 'space-creator',
   templateUrl: './space-creator.component.html',
-  styleUrls: ['./space-creator.component.scss'],
+  styleUrls: ['./space-creator.component.less'],
   providers: [SpaceService]
 })
 export class SpaceCreatorComponent implements OnInit {
@@ -113,4 +113,3 @@ export class SpaceCreatorComponent implements OnInit {
   log: ILoggerDelegate = () => { };
 
 }
-

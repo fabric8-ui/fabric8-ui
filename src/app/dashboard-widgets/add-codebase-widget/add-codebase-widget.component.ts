@@ -13,7 +13,7 @@ import { DummyService } from './../shared/dummy.service';
 @Component({
   selector: 'fabric8-add-codebase-widget',
   templateUrl: './add-codebase-widget.component.html',
-  styleUrls: ['./add-codebase-widget.component.scss']
+  styleUrls: ['./add-codebase-widget.component.less']
 })
 export class AddCodebaseWidgetComponent implements OnInit {
 

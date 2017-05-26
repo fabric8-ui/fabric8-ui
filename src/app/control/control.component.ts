@@ -7,7 +7,7 @@ import { Broadcaster, Notification, Notifications, NotificationType } from 'ngx-
 @Component({
   selector: 'alm-control',
   templateUrl: './control.component.html',
-  styleUrls: ['./control.component.scss']
+  styleUrls: ['./control.component.less']
 })
 export class ControlComponent implements OnInit {
 

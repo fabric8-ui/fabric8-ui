@@ -21,7 +21,7 @@ class WorkItemFilter {
 @Component({
   selector: 'fabric8-create-work-item-widget',
   templateUrl: './create-work-item-widget.component.html',
-  styleUrls: ['./create-work-item-widget.component.scss']
+  styleUrls: ['./create-work-item-widget.component.less']
 })
 export class CreateWorkItemWidgetComponent implements OnInit {
 

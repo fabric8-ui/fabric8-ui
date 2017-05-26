@@ -13,7 +13,7 @@ import { find } from 'lodash';
 @Component({
   selector: 'alm-collaborators',
   templateUrl: 'collaborators.component.html',
-  styleUrls: ['./collaborators.component.scss']
+  styleUrls: ['./collaborators.component.less']
 })
 export class CollaboratorsComponent implements OnInit, OnDestroy {
   private context: Context;

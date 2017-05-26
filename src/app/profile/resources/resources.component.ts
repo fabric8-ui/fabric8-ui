@@ -9,7 +9,7 @@ import { DummyService } from '../../shared/dummy.service';
 @Component({
   selector: 'alm-resources',
   templateUrl: 'resources.component.html',
-  styleUrls: ['./resources.component.scss']
+  styleUrls: ['./resources.component.less']
 })
 export class ResourcesComponent implements OnInit {
 

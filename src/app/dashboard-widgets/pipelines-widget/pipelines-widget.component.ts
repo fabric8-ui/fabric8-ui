@@ -22,7 +22,7 @@ import { DummyService } from './../shared/dummy.service';
 @Component({
   selector: 'fabric8-pipelines-widget',
   templateUrl: './pipelines-widget.component.html',
-  styleUrls: ['./pipelines-widget.component.scss']
+  styleUrls: ['./pipelines-widget.component.less']
 })
 export class PipelinesWidgetComponent implements OnInit {
 

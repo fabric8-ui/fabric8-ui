@@ -22,7 +22,7 @@ import {
   encapsulation: ViewEncapsulation.None,
   selector: 'codebases-toolbar',
   templateUrl: './codebases-toolbar.component.html',
-  styleUrls: ['./codebases-toolbar.component.scss']
+  styleUrls: ['./codebases-toolbar.component.less']
 })
 export class CodebasesToolbarComponent implements OnInit {
   @Input() resultsCount: number = 0;

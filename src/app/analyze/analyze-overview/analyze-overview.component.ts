@@ -9,7 +9,7 @@ import {Subscription } from 'rxjs';
 @Component({
   selector: 'alm-analyzeOverview',
   templateUrl: 'analyze-overview.component.html',
-  styleUrls: ['./analyze-overview.component.scss']
+  styleUrls: ['./analyze-overview.component.less']
 })
 export class AnalyzeOverviewComponent implements OnInit, OnDestroy {
 

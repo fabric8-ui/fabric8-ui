@@ -9,7 +9,7 @@ import { EventService } from "../../shared/event.service";
 @Component({
   selector: 'alm-spaces',
   templateUrl: 'spaces.component.html',
-  styleUrls: ['./spaces.component.scss'],
+  styleUrls: ['./spaces.component.less'],
 })
 export class SpacesComponent implements OnInit {
 

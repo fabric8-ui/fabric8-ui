@@ -355,6 +355,3 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
   private log: ILoggerDelegate = () => {};
 
 }
-
-
-

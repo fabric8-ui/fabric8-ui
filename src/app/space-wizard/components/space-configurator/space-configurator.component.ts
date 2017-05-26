@@ -15,7 +15,7 @@ import {
 @Component({
   selector: 'space-configurator',
   templateUrl: './space-configurator.component.html',
-  styleUrls: [ './space-configurator.component.scss' ]
+  styleUrls: [ './space-configurator.component.less' ]
 })
 export class SpaceConfiguratorComponent implements OnInit, OnDestroy {
 
@@ -45,4 +45,3 @@ export class SpaceConfiguratorComponent implements OnInit, OnDestroy {
   private log: ILoggerDelegate = () => {};
 
 }
-

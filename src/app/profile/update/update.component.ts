@@ -16,7 +16,7 @@ import { TenentService } from '../services/tenent.service';
 @Component({
   selector: 'alm-update',
   templateUrl: 'update.component.html',
-  styleUrls: ['./update.component.scss'],
+  styleUrls: ['./update.component.less'],
   providers: [CopyService, GettingStartedService, GitHubService, ProviderService, TenentService]
 })
 export class UpdateComponent implements AfterViewInit, OnInit {

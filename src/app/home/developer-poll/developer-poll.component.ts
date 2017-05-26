@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-developer-poll',
   templateUrl: './developer-poll.component.html',
-  styleUrls: ['./developer-poll.component.scss'],
+  styleUrls: ['./developer-poll.component.less'],
 })
 export class DeveloperPollComponent implements OnInit {
   voted: boolean = false;

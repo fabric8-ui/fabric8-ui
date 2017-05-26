@@ -13,7 +13,7 @@ import { AboutService } from '../shared/about.service';
 @Component({
   selector: 'fab-about-modal',
   templateUrl: './about-modal.component.html',
-  styleUrls: ['./about-modal.component.scss']
+  styleUrls: ['./about-modal.component.less']
 })
 export class AboutModalComponent implements AfterViewInit {
   @ViewChild('staticModal') staticModal: any;

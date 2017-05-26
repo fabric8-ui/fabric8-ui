@@ -17,7 +17,7 @@ import { StackAnalysesService, getStackRecommendations } from 'fabric8-stack-ana
 @Component({
   selector: 'fabric8-analytical-report-widget',
   templateUrl: './analytical-report-widget.component.html',
-  styleUrls: ['./analytical-report-widget.component.scss'],
+  styleUrls: ['./analytical-report-widget.component.less'],
   providers: [
     StackAnalysesService
   ]

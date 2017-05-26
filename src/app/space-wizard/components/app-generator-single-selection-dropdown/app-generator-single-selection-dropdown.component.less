@@ -1,0 +1,48 @@
+@import (reference) '../../../../assets/stylesheets/_base.less';
+@icon-path: '../../../../assets/stylesheets/_icons.less';
+
+:host {
+  .combobox-container {
+    input[type='text'] {
+      &.combobox {
+        background-color: @color-pf-white;
+        color: inherit;
+      }
+    }
+  }
+  .dropdown-menu {
+    display: block;
+    padding: 0;
+    margin: 0;
+    border-width: 0;
+    overflow: auto;
+    height: 0;
+    top: 26px;
+    &.open {
+      border-width: 1px;
+      height: 30vh;
+    }
+    .dropdown-menu-item {
+      padding: 5px;
+      border-top: solid 1px;
+      border-top-color: transparent;
+      border-bottom: solid 1px;
+      border-bottom-color: transparent;
+      padding-bottom: 1.0rem;
+      .item-name { font-weight: 600; }
+      &:hover {
+        background-color: @color-pf-blue-100;
+        border-top: solid 1px;
+        border-top-color: @color-pf-blue-200;
+        border-bottom: solid 1px;
+        border-bottom-color: @color-pf-blue-200;
+        .item-name { color: @color-pf-black; }
+        .item-description { color: @color-pf-black; }
+      }
+      &.selected { background-color: @color-pf-blue-300 !important;
+        .item-name { color: @color-pf-white !important; }
+        .item-description { color: @color-pf-white !important; }
+      }
+    }
+  }
+}

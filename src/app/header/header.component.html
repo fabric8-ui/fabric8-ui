@@ -32,12 +32,12 @@
             </li>
             <li class="divider"></li>
             <li>
-              <a [routerLink]="['/', loggedInUser.attributes.username, '_settings']">
+              <a [routerLink]="['/', loggedInUser.attributes.username, '_settings']" class="pointer">
                 <span>Settings</span>
               </a>
             </li>
             <li>
-              <a (click)="logout();">
+              <a (click)="logout();" class="pointer">
                 <span>Log Out</span>
               </a>
             </li>

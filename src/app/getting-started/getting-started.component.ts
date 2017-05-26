@@ -12,7 +12,7 @@ import { ProviderService } from './services/provider.service';
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-getting-started',
   templateUrl: './getting-started.component.html',
-  styleUrls: ['./getting-started.component.scss'],
+  styleUrls: ['./getting-started.component.less'],
   providers: [ GettingStartedService, ProviderService ]
 })
 export class GettingStartedComponent implements OnDestroy, OnInit {

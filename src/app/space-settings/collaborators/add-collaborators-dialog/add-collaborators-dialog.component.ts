@@ -12,7 +12,7 @@ import { IMultiSelectOption, IMultiSelectSettings } from 'angular-2-dropdown-mul
   },
   selector: 'add-collaborators-dialog',
   templateUrl: './add-collaborators-dialog.component.html',
-  styleUrls: ['./add-collaborators-dialog.component.scss']
+  styleUrls: ['./add-collaborators-dialog.component.less']
 })
 export class AddCollaboratorsDialogComponent implements OnInit, OnDestroy {
 

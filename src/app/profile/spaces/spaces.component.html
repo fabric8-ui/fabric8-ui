@@ -1,38 +1,40 @@
 <div id="overview" class="container-fluid spaces-page height-100">
   <main class="row">
-    <aside>
-      <div class="contents">
-        <div class="row">
+    <aside class="col-sm-3">
+      <ul class="user-attributes">
+        <li>
           <img src="{{context?.user?.attributes?.imageURL}}" />
-        </div>
-        <div class="row">
+        </li>
+        <li>
           <h2>{{context?.user?.attributes?.fullName}}</h2>
-        </div>
-        <div class="row">
+        </li>
+        <li>
           <p>
             {{context?.user?.attributes?.username}}
           </p>
           <p>
             {{context?.user?.attributes?.bio}}
           </p>
-        </div>
-      </div>
+        </li>
+      </ul>
     </aside>
-    <section>
+    <section class="col-sm-9">
       <div class="row">
-        <div class="form-group">
-          <div class="col-md-10 col-sm-10 col-xs-10">
-            <div class="search-pf-input-group">
-              <input id="spacesSearch" type="search" class="form-control" placeholder="Search spaces..." #search (keyup)="searchSpaces(search.value)">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <div class="col-sm-10">
+              <div class="search-pf-input-group">
+                <input id="spacesSearch" type="search" class="form-control" placeholder="Search spaces..." #search (keyup)="searchSpaces(search.value)">
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <button class="btn btn-default" (click)="createSpace.open()">New</button>
             </div>
           </div>
-          <div class="col-md-2 col-sm-2 col-xs-2">
-            <button class="btn btn-default" (click)="createSpace.open()">New</button>
-          </div>
-        </div>
+        </form>
       </div>
-      <div class="contents posRel height0">
-        <div class="spaces-list-page flex-container in-column-direction flex-grow-1">
+      <div class="row contents">
+        <div class="spaces-list-page">
           <div class="spaces-list-wrap" almInfiniteScroll (eachElementHeightInPx)='contentItemHeight' (initItems)='initSpaces($event)' (fetchMore)='fetchMoreSpaces($event)'>
             <div *ngFor="let s of spaces">
               <div class="space-item" *ngIf="s.relationalData && s.relationalData.creator && s.relationalData.creator.attributes">

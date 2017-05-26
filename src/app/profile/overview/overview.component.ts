@@ -10,7 +10,7 @@ import { UserService, User } from 'ngx-login-client';
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-overview',
   templateUrl: 'overview.component.html',
-  styleUrls: ['./overview.component.scss']
+  styleUrls: ['./overview.component.less']
 })
 export class OverviewComponent implements OnDestroy, OnInit {
   context: Context;

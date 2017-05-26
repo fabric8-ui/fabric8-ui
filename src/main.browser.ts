@@ -19,8 +19,8 @@ import {AppModule} from './app';
 /*
  * Import application wide styles
  */
-import './assets/stylesheets/shared/main.scss';
-import './assets/stylesheets/fabric8-ui-global-overrides.scss';
+import './assets/stylesheets/shared/main.less';
+import './assets/stylesheets/fabric8-ui-global-overrides.less';
 
 /*
  * Bootstrap our Angular app with a top level NgModule

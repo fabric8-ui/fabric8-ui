@@ -5,7 +5,7 @@ import { Router }            from '@angular/router';
 @Component({
   selector: 'delete-account-dialog',
   templateUrl: './delete-account-dialog.component.html',
-  styleUrls: ['./delete-account-dialog.component.scss']
+  styleUrls: ['./delete-account-dialog.component.less']
 })
 export class DeleteAccountDialogComponent {
 

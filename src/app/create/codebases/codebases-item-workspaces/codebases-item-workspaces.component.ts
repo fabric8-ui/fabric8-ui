@@ -16,7 +16,7 @@ export class WorkspaceCreatedEvent {
   encapsulation: ViewEncapsulation.None,
   selector: 'codebases-item-workspaces',
   templateUrl: './codebases-item-workspaces.component.html',
-  styleUrls: ['./codebases-item-workspaces.component.scss']
+  styleUrls: ['./codebases-item-workspaces.component.less']
 })
 export class CodebasesItemWorkspacesComponent implements OnDestroy, OnInit {
   @Input() codebase: Codebase;

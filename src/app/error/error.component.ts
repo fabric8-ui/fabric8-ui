@@ -11,7 +11,7 @@ import { ErrorService } from './error.service';
 @Component({
   selector: 'f8-error',
   templateUrl: './error.component.html',
-  styleUrls: ['./error.component.scss']
+  styleUrls: ['./error.component.less']
 })
 export class ErrorComponent implements OnDestroy {
 

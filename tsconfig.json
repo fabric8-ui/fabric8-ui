@@ -11,8 +11,6 @@
     "strictNullChecks": false,
     "noUnusedLocals": false,
     "baseUrl": "./src",
-    "paths": {
-    },
     "lib": [
       "dom",
       "es6"

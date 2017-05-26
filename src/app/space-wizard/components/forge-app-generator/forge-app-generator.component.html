@@ -3,10 +3,9 @@
     <div class="row">
       <div class="col-xs-12 wizard-step-title">
         <h3><strong>{{title}}</strong></h3>
-        <div class="busy-indicator">
-          <div *ngIf="!appGenerator.hasErrorMessage && appGenerator.processing===true" class="spinner spinner-lg"></div>
-        </div>
-        <span title="Close" id="forge-close-button" (click)="appGenerator.close()" class="pficon pficon-close"></span>
+      </div>
+      <div class="busy-indicator">
+        <div *ngIf="!appGenerator.hasErrorMessage && appGenerator.processing===true" class="spinner spinner-lg"></div>
       </div>
     </div>
   </header>

@@ -6,7 +6,7 @@ import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
 @Component({
   selector: 'app-generator-build-pipeline-view',
   templateUrl: './app-generator-build-pipeline-view.component.html',
-  styleUrls: [ './app-generator-build-pipeline-view.component.scss' ]
+  styleUrls: [ './app-generator-build-pipeline-view.component.less' ]
 })
 export class AppGeneratorBuildPipelineViewComponent implements OnInit, OnDestroy {
 
@@ -41,4 +41,3 @@ export class AppGeneratorBuildPipelineViewComponent implements OnInit, OnDestroy
   private log: ILoggerDelegate = () => {};
 
 }
-

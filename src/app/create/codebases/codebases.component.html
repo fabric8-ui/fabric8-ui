@@ -13,7 +13,7 @@
           [itemExpandedTemplate]="itemExpandedTemplate"
           (onActionSelect)="openAddCodebasePanel()">
         <ng-template #itemTemplate let-item="item" let-index="index">
-          <codebases-item [codebase]="item" [index]="index"></codebases-item>
+          <codebases-item [codebase]="item" [index]="index" class="codebase-item"></codebases-item>
         </ng-template>
         <ng-template #actionTemplate let-item="item" let-index="index">
           <codebases-item-actions [codebase]="item" [index]="index"></codebases-item-actions>

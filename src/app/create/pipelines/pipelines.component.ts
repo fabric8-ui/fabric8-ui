@@ -29,7 +29,7 @@ import { Context, Contexts } from 'ngx-fabric8-wit';
 @Component({
   selector: 'alm-pipelines',
   templateUrl: 'pipelines.component.html',
-  styleUrls: ['./pipelines.component.scss']
+  styleUrls: ['./pipelines.component.less']
 })
 export class PipelinesComponent implements OnInit, OnDestroy {
 

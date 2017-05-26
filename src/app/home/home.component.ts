@@ -9,12 +9,9 @@ import { UserService, User } from 'ngx-login-client';
 import { Logger } from 'ngx-base';
 
 @Component({
-  host: {
-    'class': "app-component"
-  },
   selector: 'alm-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.less']
 })
 export class HomeComponent implements OnInit, OnDestroy {
 

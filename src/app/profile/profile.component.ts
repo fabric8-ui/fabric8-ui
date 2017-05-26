@@ -5,7 +5,7 @@ import { Router }            from '@angular/router';
 @Component({
   selector: 'alm-profile',
   templateUrl: 'profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.less']
 })
 export class ProfileComponent implements OnInit {
 

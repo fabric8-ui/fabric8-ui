@@ -5,7 +5,7 @@ import { Router }            from '@angular/router';
 @Component({
   selector: 'alm-create',
   templateUrl: 'create.component.html',
-  styleUrls: ['./create.component.scss']
+  styleUrls: ['./create.component.less']
 })
 export class CreateComponent implements OnInit {
 
@@ -14,7 +14,7 @@ export class CreateComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
 }

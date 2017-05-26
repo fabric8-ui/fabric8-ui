@@ -1,0 +1,41 @@
+@import (reference) '../../../assets/stylesheets/_base';
+.height0 { height: 0; }
+.posRel { position: relative; }
+.spaces-page {
+  position: relative;
+  margin-top: 20px;
+  >main {
+    .user-attributes {
+      list-style: none;
+      text-align: center;
+      img {
+        height: 250px;
+        max-width: 100%;
+      }
+    }
+    >section {
+      position: relative;
+      align-items: stretch;
+      height: 100vh;
+      .row {
+        margin-right: 0;
+        margin-left: 0;
+      }
+      .contents {
+        overflow: auto;
+        align-items: stretch;
+      }
+    }
+  }
+}
+.spaces-list-page { padding-top: 20px;
+  .spaces-list-wrap {
+    overflow-y: scroll;
+    width: 100%;
+    margin-bottom: 0;
+    .space-item {
+      border-top: 1px solid;
+      border-top-color: @color-pf-black-300;
+    }
+  }
+}

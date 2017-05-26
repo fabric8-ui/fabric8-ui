@@ -2,7 +2,6 @@
 <div [class.with-filter]="showFilter===true"  class="label-list">
   <span title="{{choice.description}}"  class="label label-primary"  *ngFor="let choice of field.display.choices|selectedItems">
     <span>{{choice.id}}</span>
-    <span title="remove selection" class="pficon pficon-close" (click)="deselectOption(field,choice)" ></span>
   </span>
   <div title="Show filter for {{field.display.label}}" [hidden]="showFilter===true" (click)="showFilter=true"  class="filter-toggle"><span style class="fa fa-filter"></span></div>
 </div>
@@ -22,6 +21,6 @@
        <input type="checkbox" name="{{field.name}}" [(ngModel)]="choice.selected"  [checked]="choice.selected" ><span>{{choice.id}}</span>
        <!--<span class="fa" [class.fa-check-square-o]="choice.selected" [class.fa-square-o]="!choice.selected"></span>-->
     </label>
-    <p title=''  >{{choice.description}}</p>
+    <p title=''>{{choice.description}}</p>
   </li>
 </ul>

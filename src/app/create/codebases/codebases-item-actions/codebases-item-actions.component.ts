@@ -10,7 +10,7 @@ import { WorkspacesService } from '../services/workspaces.service';
   encapsulation: ViewEncapsulation.None,
   selector: 'codebases-item-actions',
   templateUrl: './codebases-item-actions.component.html',
-  styleUrls: ['./codebases-item-actions.component.scss']
+  styleUrls: ['./codebases-item-actions.component.less']
 })
 export class CodebasesItemActionsComponent implements OnDestroy, OnInit {
   @Input() codebase: Codebase;

@@ -10,7 +10,7 @@ import { ContextService } from '../../shared/context.service';
 @Component({
   selector: 'alm-areas',
   templateUrl: 'areas.component.html',
-  styleUrls: ['./areas.component.scss']
+  styleUrls: ['./areas.component.less']
 })
 export class AreasComponent implements OnInit, OnDestroy {
   private context: Context;

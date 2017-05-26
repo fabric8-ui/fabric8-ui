@@ -1,0 +1,24 @@
+@import (reference) '../../../assets/stylesheets/_base';
+.edit-space-description-widget { max-height: 245px;
+  h2 { text-transform: capitalize; }
+  .space-description {
+    margin: 5px 0;
+    resize: none;
+  }
+}
+.edit-space-description-btn {
+  cursor: pointer;
+  width: 42px;
+  .text-center;
+  padding: 0 !important;
+  margin-left: 5px;
+}
+.edit-space-description-span { line-height: 1.5;
+  &:hover {
+    &:after {
+      padding-left: 20px;
+      font-family: 'PatternFlyIcons-webfont';
+      content: '\E60A';
+    }
+  }
+}

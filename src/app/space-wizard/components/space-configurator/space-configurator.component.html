@@ -1,78 +1,68 @@
-    <header class="container-fluid forge-header user-select-none">
-      <div class="row">
-        <div class="col-xs-12 wizard-step-title">
-          <h4 class="text" >Welcome to your {{configurator.currentSpace.attributes.name | spaceName}} space.</h4>
-          <div></div>
-          <span title="Close" (click)="workflow.cancel()" class="pficon pficon-close cursor-pointer"></span>
-        </div>
+<header class="container-fluid forge-header">
+  <div class="row">
+    <div class="col-sm-12 wizard-step-title">
+      <h4>Welcome to your <strong>{{configurator.currentSpace.attributes.name | spaceName}}</strong> space.</h4>
+    </div>
+  </div>
+</header>
+<section class="forge-section container-fluid">
+  <div class="row">
+    <div class="col-sm-12 wizard-step-sub-title">
+      <h1 class="textCenter">
+        <b>How would you like to get started?</b>
+      </h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 panel">
+      <div id="planSpaceButton" class="col-sm-3 panel-item">
+        <ul class="action-panel-list">
+          <li>
+            <h3><strong>Plan</strong> out my space</h3>
+          </li>
+          <li>
+            <i class="fa fa-3x fa-list"></i>
+          </li>
+        </ul>
       </div>
-      <div class="row" >
-        <div class="col-xs-12 wizard-step-sub-title">
-          <h1 class="text" >How would you like to get started?</h1>
-        </div>
+      <div id="forgeStarterButton" class="col-sm-3 panel-item" (click)="workflow.gotoNextStep({name:configurator.workflowSteps.forgeStarter})">
+        <ul class="action-panel-list">
+          <li>
+            <h3>Create a new <strong>Starter</strong> project</h3>
+          </li>
+          <li>
+            <i class="fa fa-3x fa-code"></i>
+          </li>
+        </ul>
       </div>
-    </header>
-    <section class="forge-section container-fluid flex-container in-column-direction with-content-stretch padding-standard-offset ">
-      <div class="row flex-grow-1 flex-container">
-        <div class="col-xs-12 panel">
-          <div id="planSpaceButton" class="panel-item cursor-pointer user-select-none">
-            <header>
-              <h3><strong>Plan</strong> out my space</h3>
-            </header>
-            <section><span><br></span></section>
-            <footer><span class="fa fa-3x fa-list" ></span></footer>
-          </div>
-          <!--<div id="newCodeButton" class="panel-item cursor-pointer user-select-none">
-            <header>
-              <h3>Create <strong>new code</strong> from <strong>scratch</strong></h3>
-            </header>
-            <section><span><br></span></section>
-            <footer><span class="fa fa-3x fa-code" ></span></footer>
-          </div>-->
-          <div id="forgeStarterButton" class="panel-item cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:configurator.workflowSteps.forgeStarter})" >
-            <header>
-              <h3> Create a new <strong>Starter</strong> project</h3>
-            </header>
-            <section><span><br></span></section>
-            <footer class="container-fluid">
-              <div class="row">
-                <div class="col-xs-12">
-                  <span class="fa fa-3x fa-code" ></span>
-                </div>
-              </div>
-            </footer>
-          </div>
-          <div id="importCodeButton" class="panel-item cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:configurator.workflowSteps.forgeImportGit})" >
-            <header>
-              <h3>Import existing <strong>code</strong></h3>
-            </header>
-            <section><span><br></span></section>
-            <footer >
-              <span class="pficon fa-3x pficon-import " ></span>
-            </footer>
-          </div>
-          <div id="forgeQuickStartButton" class="panel-item cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:configurator.workflowSteps.forgeQuickStart})" >
-            <header>
-              <h3> Create a new <strong>Quick Start</strong> project</h3>
-            </header>
-            <section><span><br></span></section>
-            <footer class="container-fluid">
-              <div class="row">
-                <div class="col-xs-12">
-                  <span class="pficon fa-3x pficon-screen  " ></span>
-                </div>
-              </div>
-            </footer>
-          </div>
-
-        </div>
+      <div id="importCodeButton" class="col-sm-3 panel-item" (click)="workflow.gotoNextStep({name:configurator.workflowSteps.forgeImportGit})">
+        <ul class="action-panel-list">
+          <li>
+            <h3>Import existing <strong>code</strong></h3>
+          </li>
+          <li>
+            <i class="pficon fa-3x pficon-import"></i>
+          </li>
+        </ul>
       </div>
-    </section>
-    <footer class="container-fluid padding-standard-offset">
-      <div class="row">
-        <div class="col-xs-12 wizard-step-tool-bar with-items-in-center">
-          <a id="noThanksButton" class="btn btn-primary" (click)="workflow.finish()"> No thanks, take me to the
-            {{configurator.currentSpace.attributes.name | spaceName}} dashboard</a>
-        </div>
+      <div id="forgeQuickStartButton" class="col-sm-3 panel-item" (click)="workflow.gotoNextStep({name:configurator.workflowSteps.forgeQuickStart})">
+        <ul class="action-panel-list">
+          <li>
+            <h3>Create a new <strong>Quick Start</strong> project</h3>
+          </li>
+          <li>
+            <i class="pficon fa-3x pficon-screen"></i>
+          </li>
+        </ul>
       </div>
-    </footer>
+    </div>
+  </div>
+</section>
+<footer class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12 wizard-step-tool-bar textCenter">
+      <a id="noThanksButton" class="btn btn-primary" (click)="workflow.finish()"> No thanks, take me to the
+        {{configurator.currentSpace.attributes.name | spaceName}} dashboard</a>
+    </div>
+  </div>
+</footer>

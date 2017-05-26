@@ -5,7 +5,7 @@ import { Router }            from '@angular/router';
 @Component({
   selector: 'alm-work',
   templateUrl: 'work.component.html',
-  styleUrls: ['./work.component.scss']
+  styleUrls: ['./work.component.less']
 })
 export class WorkComponent implements OnInit {
 
@@ -14,7 +14,7 @@ export class WorkComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
 }

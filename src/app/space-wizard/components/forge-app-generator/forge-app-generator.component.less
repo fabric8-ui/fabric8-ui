@@ -1,0 +1,305 @@
+@import (reference) '../../../../assets/stylesheets/_base.less';
+@icon-path: '../../../../assets/stylesheets/_icons.less';
+// Note: because component encapsulation = ViewEncapsulation.None ... this class scoping is needed
+// to limit the scope of the classes in this component
+.forge-app-generator-component {
+  >header {
+    position: absolute;
+    top: -60px;
+    min-height: 60px;
+    .busy-indicator {
+      position: absolute;
+      right: 0;
+      margin-top: 10px;
+      margin-right: -25px;
+    }
+  }
+  .hidden { visibility: hidden; }
+  .selected {
+    animation-name: select-item;
+    animation-duration: 1s;
+  }
+  .btn-left-multi-select-button {
+    border-left-style: none;
+    border-top-style: none;
+    border-bottom: solid 3px;
+    border-bottom-color: #efefef;
+  }
+  .btn-right-multi-select-button {
+    border-right-style: none;
+    border-top-style: none;
+    border-bottom: solid 3px;
+    border-bottom-color: #efefef;
+  }
+  .form-control-filter-input {
+    height: 2.8rem;
+    border: none;
+    border-bottom: solid 0;
+    border-bottom-color: @color-pf-black-300;
+    border-left: solid 1px;
+    border-left-color: @color-pf-black-300;
+    border-right: solid 0;
+    border-right-color: @color-pf-black-300;
+    margin-right: -2px;
+    box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.075);
+  }
+  .included-list {
+    overflow: auto;
+    max-height: 30vh;
+    border-top: solid 1px;
+    border-top-color: @color-pf-black-300;
+    border-bottom: solid 1px;
+    border-bottom-color: @color-pf-black-300;
+  }
+  .excluded-list {
+    overflow: auto;
+    max-height: 30vh;
+    box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.075);
+    .excluded-list-icons {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+  .unselectedOption {
+    width: 100%;
+    border-bottom: solid 0;
+    border-bottom-color: @color-pf-black-300;
+    margin-bottom: 0;
+    font-weight: normal;
+  }
+  .selectedOption {
+    width: 100%;
+    border-bottom: solid 0;
+    border-bottom-color: @color-pf-black-300;
+    margin-bottom: 0;
+    font-weight: bold;
+  }
+  .busy-indicator {
+    min-width: 50px;
+    > div{
+      margin: auto;
+      padding: 0;
+    }
+  }
+  .busy-indicator-offset{
+    margin-left: -50px;
+  }
+  .multiple-selection-box {
+    border: solid 1px;
+    border-color: @color-pf-black-400;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .wizard-step-tool-bar { text-align: right; }
+  // styling of the app generator message section
+  .app-generator-message {
+    @color-success: @color-pf-green;
+    @color-success-border: @color-success;
+    @color-success-background: #EAF4EA;
+    @color-error: @color-pf-red;
+    @color-error-border: @color-error;
+    @color-error-background: @color-pf-black-100;
+    @color-warning: @color-pf-gold;
+    @color-warning-border: @color-warning;
+    @color-warning-background: @color-pf-black-100;
+    @standard-spacing: @grid-gutter-width/2;
+    padding: @standard-spacing !important;
+    position: relative;
+    width: 100%;
+    display: block;
+    z-index: 1;
+    &.hide { display: none !important; }
+    .message-title-container {
+      padding: @standard-spacing;
+      margin-bottom: @standard-spacing;
+      .message-title {
+        user-select: none;
+        .message-title-icon {
+          margin-right: @standard-spacing;
+          vertical-align: middle;
+        }
+        .message-title-icon-label {
+          font-weight: bold;
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .message-title-text {
+          font-weight: normal;
+          display: inline-block;
+          vertical-align: middle;
+          color: @color-pf-black;
+        }
+      }
+    }
+    .message-body-container {
+      position: relative;
+      display: block;
+      border: solid 1px;
+      border-color: @color-pf-black-300;
+      overflow: auto;
+      .message-body {
+        display: block;
+        position: relative;
+        min-height: 100% !important;
+        width: 100%;
+        margin: 0;
+        padding: @standard-spacing;
+        padding-top: 3px;
+        border: none;
+        line-height: 3.0rem;
+        font-size: 1.5rem;
+        .message-details {
+          overflow: visible;
+          &.hide { overflow: hidden; }
+        }
+        .message-status-success {
+          white-space: pre-line;
+          color: @color-success;
+          font-weight: bold;
+        }
+        .message-status-failed {
+          white-space: pre-line;
+          color: @color-error;
+          font-weight: bold;
+        }
+        .message-status-warning {
+          white-space: pre-line;
+          color: @color-warning;
+          font-weight: bold;
+        }
+        .property-name {
+          white-space: pre-line;
+          color: @color-pf-blue;
+          font-weight: bold;
+          &.property-name-result {
+            display: inline-block;
+            min-width: 220px;
+            text-align: left;
+            color: @color-pf-black;
+          }
+        }
+        .property-value {
+          color: @color-pf-black;
+          white-space: pre-line;
+          &.property-value-error {
+            color: @color-error;
+            font-weight: bold;
+            font-style: italic;
+          }
+          &.property-value-link { color: @color-pf-blue; }
+        }
+      }
+    }
+    &.app-generator-message-error {
+      .message-title-container {
+        border: solid 1px;
+        border-color: @color-error-border;
+        background-color: @color-error-background;
+        height: 90px;
+        .message-title {
+          position: absolute;
+          margin-top: 10px;
+          &-icon { color: @color-error; }
+          &-icon-label { color: @color-error; }
+        }
+      }
+    }
+    &.app-generator-message-success {
+      .message-title-container {
+        border: solid 1px;
+        border-color: @color-success-border;
+        background-color: @color-success-background;
+        height: 90px;
+        .message-title {
+          position: absolute;
+          margin-top: 10px;
+          &-icon { color: @color-success; }
+          &-icon-label { color:@color-success; }
+        }
+      }
+    }
+    &.app-generator-message-processing {
+      .message-title-container {
+        .message-title { text-align: center !important;
+          &-text { font-size: 2.0rem; }
+        }
+      }
+      .message-body-container { border: solid 1px transparent;
+        .message-body { text-align: center; }
+      }
+    }
+  }
+  .combobox-container {
+    input[type='text'] {
+      &.combobox {
+        background-color: @color-pf-white;
+        color: inherit;
+      }
+    }
+  }
+  .dropdown-menu {
+    top: 26px;
+    display: block;
+    padding: 0;
+    margin: 0;
+    border-width: 0;
+    overflow: auto;
+    height: 0;
+    &.open {
+      border-width: 1px;
+      height: 30vh;
+    }
+    .dropdown-menu-item {
+      padding: 5px;
+      border-top: solid 1px transparent;
+      border-bottom: solid 1px transparent;
+      padding-bottom: 1.0rem;
+      .item-name {
+        font-weight: 600;
+      }
+      &:hover {
+        background-color: @color-pf-blue-100;
+        border-top: solid 1px;
+        border-top-color: @color-pf-blue-200;
+        border-bottom: solid 1px;
+        border-bottom-color: @color-pf-blue-200;
+        .item-name,
+        .item-description { color: @color-pf-black; }
+      }
+      &.selected {
+        background-color: @color-pf-blue-300 !important;
+        .item-name,
+        .item-description { color: @color-pf-white !important; }
+      }
+    }
+  }
+  .color-info { color: @color-pf-blue-400; }
+  .form-group {
+    .control-label {
+      &.required {
+        &:after {
+          content: '*';
+          padding: 3px;
+          vertical-align: center;
+        }
+      }
+    }
+    &.has-danger {
+      .control-label {
+        &.required {
+          &:after { content: '*' }
+        }
+      }
+      .form-control-danger {
+        border-color: @color-pf-red !important;
+        box-shadow: inset 0 1px 1px rgba(255, 0, 0, 0.075);
+      }
+      .form-control-feedback {
+        color: @color-pf-red !important;
+        position: relative;
+        text-align: left;
+        width: 100%;
+      }
+    }
+  }
+}

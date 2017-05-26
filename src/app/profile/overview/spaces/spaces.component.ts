@@ -12,7 +12,7 @@ import { IModalHost } from '../../../space-wizard/models/modal-host';
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-spaces',
   templateUrl: './spaces.component.html',
-  styleUrls: ['./spaces.component.scss'],
+  styleUrls: ['./spaces.component.less'],
   providers: [SpaceService]
 })
 export class SpacesComponent implements OnDestroy, OnInit  {

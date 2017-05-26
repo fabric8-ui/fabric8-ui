@@ -1,0 +1,104 @@
+@import (reference) '../../../../assets/stylesheets/_base.less';
+@icon-path: '../../../../assets/stylesheets/_icons.less';
+:host {
+ .input-group-addon { min-width: 25px; }
+ ul {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    max-height: 30vh;
+    border: solid 1px;
+    border-color: @color-pf-black-400;
+    border-top-width: 0;
+    li {
+      padding: 0;
+      user-select: none;
+      border-bottom: solid 1px;
+      border-bottom-color: transparent;
+      border-top: solid 1px;
+      border-top-color: transparent;
+      label {
+        position: relative;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        input[type="checkbox"] {
+          position: relative;
+          margin: 0;
+          margin-left: 5px;
+          margin-right: 5px;
+          padding:0;
+        }
+        span { font-weight: bold; }
+      }
+      p {
+        padding-top: 5px;
+        padding-right: 5px;
+        padding-bottom: 10px;
+        padding-left: 25px;
+        margin: 0;
+      }
+      &:hover {
+        background-color: @color-pf-blue-100;
+        border-bottom: solid 1px;
+        border-bottom-color: @color-pf-blue-200;
+        border-top: solid 1px;
+        border-top-color: @color-pf-blue-200;
+      }
+      &.selected {
+        color: @color-pf-black;
+        background-color: @color-pf-black-200;
+        border-bottom: solid 1px;
+        border-bottom-color: @color-pf-black-200;
+        border-top: solid 1px;
+        border-top-color: @color-pf-black-200;
+      }
+    }
+  }
+  .label-list {
+    position: relative;
+    border: solid 1px;
+    border-color: @color-pf-black-400;
+    padding: 0;
+    padding-top: 3px;
+    padding-left: 3px;
+    padding-right: 25px;
+    margin: 0;
+    overflow: auto;
+    max-height: 30vh;
+    display: block;
+    min-height: 30px;
+    &.with-filter { border-bottom-width: 0; }
+    div.filter-toggle {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 25px !important;
+      height: 29px;
+      padding-left: 6px;
+      padding-right: 6px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      background-color: #f1f1f1;
+      background-image: linear-gradient(to bottom, @color-pf-black-100 0, @color-pf-black-200 100%);
+      border: 0;
+      border-left: solid 1px;
+      border-left-color: @color-pf-black-300;
+      border-bottom: solid 1px;
+      border-bottom-color: @color-pf-black-300;
+      margin-bottom: -1px;
+    }
+    span.label {
+      margin-right: 3px;
+      margin-bottom: 3px;
+      span.pficon {
+        margin-right: 5px;
+        margin-left: 5px;
+      }
+    }
+  }
+  .hidden { display: none; }
+}

@@ -9,7 +9,7 @@ import { Observable } from "rxjs/Observable";
 @Component({
   selector: 'alm-work-item-widget',
   templateUrl: './work-item-widget.component.html',
-  styleUrls: ['./work-item-widget.component.scss'],
+  styleUrls: ['./work-item-widget.component.less'],
   providers: [SpaceService]
 })
 export class WorkItemWidgetComponent implements OnDestroy, OnInit  {

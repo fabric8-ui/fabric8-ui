@@ -490,9 +490,9 @@ export class Fabric8AppGeneratorClient {
     let results = execution.response.payload.results || [];
     let buildHyperlink = (value) => {
       if ((value || '').toString().toLowerCase().startsWith('http')) {
-        return `<a class="property-value property-value-result property-value-link" target="_blank" href="${value}" >${value}</a>`;
+        return `<a class="property-value property-value-result property-value-link" target="_blank" href="${value}" >${value}</a></div>`;
       } else {
-        return `<span class="property-value property-value-result" >${value}</span>`;
+        return `<span class="property-value property-value-result" >${value}</span></div>`;
       }
     };
     let result:any = {};

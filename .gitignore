@@ -35,6 +35,9 @@ Thumbs.db
 /bower_components
 npm-debug.log
 
+#ignore npm 5 auto package inclusion until openshift support confirmed
+.package-lock.json
+
 # Coverage #
 /coverage/
 

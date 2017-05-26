@@ -11,7 +11,7 @@ import { WorkItemService, WorkItem } from 'fabric8-planner';
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-work-items',
   templateUrl: './work-items.component.html',
-  styleUrls: ['./work-items.component.scss'],
+  styleUrls: ['./work-items.component.less'],
   providers: [SpaceService]
 })
 export class WorkItemsComponent implements OnDestroy, OnInit  {

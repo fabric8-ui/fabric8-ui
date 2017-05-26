@@ -15,7 +15,7 @@ import { FieldWidgetClassificationOptions } from '../../models/contracts/field-c
 @Component({
   selector: './app-generator-multiple-selection-label-list',
   templateUrl: './app-generator-multiple-selection-label-list.component.html',
-  styleUrls: [ './app-generator-multiple-selection-label-list.component.scss' ]
+  styleUrls: [ './app-generator-multiple-selection-label-list.component.less' ]
 })
 export class AppGeneratorMultipleSelectionLabelListComponent implements OnInit, OnDestroy {
 
@@ -190,4 +190,3 @@ export class AppGeneratorMultipleSelectionLabelListComponent implements OnInit, 
 
 
 }
-

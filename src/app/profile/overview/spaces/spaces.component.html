@@ -27,11 +27,15 @@
             <div class="list-view-pf-body">
               <div class="list-view-pf-description">
                 <div class="list-group-item-text">
-                  <a [routerLink]="['/', space.relationalData.creator.attributes.username, space.attributes.name]">
-                    {{space.attributes.name | spaceName}}
-                  </a>
-                  <i class="fa fa-trash" (click)="confirmDeleteSpace(space)"></i>
-                  <span>{{space.description}}TEST</span>
+                  <div class="col-sm-10">
+                    <a [routerLink]="['/', space.relationalData.creator.attributes.username, space.attributes.name]">
+                      {{space.attributes.name | spaceName}}
+                    </a>
+                  </div>
+                  <button class="col-sm-2 btn btn-default io-button__delete">
+                    <i class="fa fa-trash" (click)="confirmDeleteSpace(space)"></i>
+                    <span>{{space.description}}TEST</span>
+                  </button>
                 </div>
               </div>
             </div>

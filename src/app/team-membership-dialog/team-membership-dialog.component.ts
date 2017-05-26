@@ -10,7 +10,7 @@ import { DummyService } from './../shared/dummy.service';
 @Component({
   selector: 'team-membership-dialog',
   templateUrl: './team-membership-dialog.component.html',
-  styleUrls: ['./team-membership-dialog.component.scss']
+  styleUrls: ['./team-membership-dialog.component.less']
 })
 export class TeamMembershipDialogComponent implements OnInit{
 

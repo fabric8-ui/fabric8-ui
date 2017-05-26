@@ -1,0 +1,103 @@
+@import (reference) '../../../../assets/stylesheets/_base';
+.action-panel-list {
+  padding-left: 0;
+  height: 150px;
+  list-style: none;
+  li { text-align: center; }
+}
+.wizard-step-tool-bar {
+  margin-top: 15px;
+}
+header {
+  position: absolute;
+  top: -53px;
+  min-height: 60px;
+}
+:host {
+  @panel-item-shadow-offset:3px;
+  @panel-item-spacing: 0;
+  @panel-item-shadow-blur-radius:3px;
+  @panel-item-shadow-spread-radius:3px;
+  @panel-item-border-color:@color-pf-black-200;
+  @panel-item-layout-block-shadow-color: darken(@color-pf-black-200, 10%);
+  @panel-item-section-column-background-color:@color-pf-white;
+  @panel-item-padding: @grid-gutter-width / 2;
+  &.forge-header {
+    .row {
+      &:first-of-type {
+        background-color: @color-pf-white !important;
+        border-bottom: solid 1px;
+        border-bottom-color: @color-pf-black-300;
+      }
+    }
+  }
+  .wizard-step-sub-title { background-color: @color-pf-black-200; }
+  section {
+    &.forge-section { background-color: @color-pf-black-200; }
+  }
+  .panel {
+    display: block;
+    background-color: transparent;
+    box-shadow: none;
+    .panel-item {
+      display: block;
+      max-width: 180px;
+      padding: 0;
+      margin-top: 10px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      margin-left: 10px;
+      border: solid 2px;
+      border-color: @color-pf-black-200;
+      box-shadow: 1px 1px 4px @color-pf-black-200;
+      background-color: @panel-item-section-column-background-color;
+      > header {
+        padding-top: 10px;
+        text-align: center;
+        color: @color-pf-black;
+        font-weight: normal;
+      }
+      > section {
+        text-align: center;
+        flex-grow: 1;
+        padding-top: @panel-item-padding;
+      }
+      > div {
+        text-align: center;
+        flex-grow: 1;
+        padding-top: @panel-item-padding;
+      }
+      > footer {
+        text-align: center;
+        height: auto;
+        padding-bottom: 50px;
+      }
+      &:hover {
+        border-color: @color-pf-blue-300;
+        box-shadow: 1px 1px 4px @color-pf-blue-300;
+        cursor: pointer;
+      }
+      &:active {
+        > header {
+          padding-top: 11px;
+          margin-bottom: -1px;
+        }
+        > section {
+          padding-top: @panel-item-padding + 1px;
+          margin-bottom: -1px;
+        }
+        > div {
+          padding-top: @panel-item-padding + 1px;
+          margin-bottom: -1px;
+        }
+        > footer {
+          padding-top: 1px;
+          margin-bottom: -1px;
+        }
+        border: solid 2px;
+        border-color: @color-pf-blue-400;
+        box-shadow: @panel-item-shadow-offset @panel-item-shadow-blur-radius @panel-item-shadow-spread-radius darken(@panel-item-layout-block-shadow-color, 20%);
+      }
+    }
+  }
+}

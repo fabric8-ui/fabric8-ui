@@ -24,7 +24,7 @@ import {
   encapsulation: ViewEncapsulation.None,
   selector: 'codebases',
   templateUrl: './codebases.component.html',
-  styleUrls: ['./codebases.component.scss'],
+  styleUrls: ['./codebases.component.less'],
   providers: [CodebasesService, DatePipe, GitHubService]
 })
 export class CodebasesComponent implements OnDestroy, OnInit {

@@ -11,7 +11,7 @@ import {
 @Component({
   selector: 'app-generator-step-view',
   templateUrl: './app-generator-step-view.component.html',
-  styleUrls: [ './app-generator-step-view.component.scss' ]
+  styleUrls: [ './app-generator-step-view.component.less' ]
 })
 export class AppGeneratorStepViewComponent implements OnInit, OnDestroy {
 
@@ -67,4 +67,3 @@ export class AppGeneratorStepViewComponent implements OnInit, OnDestroy {
   private log: ILoggerDelegate = () => {};
 
 }
-

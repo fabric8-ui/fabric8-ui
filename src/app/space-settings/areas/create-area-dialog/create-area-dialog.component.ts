@@ -10,7 +10,7 @@ import { ContextService } from '../../../shared/context.service';
   },
   selector: 'create-area-dialog',
   templateUrl: './create-area-dialog.component.html',
-  styleUrls: ['./create-area-dialog.component.scss']
+  styleUrls: ['./create-area-dialog.component.less']
 })
 export class CreateAreaDialogComponent implements OnInit, OnDestroy {
 

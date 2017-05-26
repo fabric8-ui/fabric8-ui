@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'f8-settings-tokens',
   templateUrl: 'tokens.component.html',
-  styleUrls: ['./tokens.component.scss']
+  styleUrls: ['./tokens.component.less']
 })
 export class TokensComponent {
 

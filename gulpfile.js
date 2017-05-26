@@ -1,5 +1,6 @@
 const gulp = require('gulp'),
   del = require('del'),
+  sourcemaps = require('gulp-sourcemaps'),
   changeCase = require('change-case'),
   replace = require('gulp-string-replace'),
   rename = require('gulp-rename'),
@@ -14,6 +15,9 @@ const gulp = require('gulp'),
     .describe('c', 'The name of the component to create in snake case.')
     .demandOption(['c', 'd'])
     .argv;
+
+var appSrc = 'src';
+var libraryDist = 'dist';
 
 function copyToDest(srcArr) {
   return gulp.src(srcArr)

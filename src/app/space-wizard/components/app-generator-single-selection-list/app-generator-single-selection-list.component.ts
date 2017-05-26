@@ -15,7 +15,7 @@ import { FieldWidgetClassificationOptions } from '../../models/contracts/field-c
 @Component({
   selector: 'app-generator-single-selection-list',
   templateUrl: './app-generator-single-selection-list.component.html',
-  styleUrls: [ './app-generator-single-selection-list.component.scss' ]
+  styleUrls: [ './app-generator-single-selection-list.component.less' ]
 })
 export class AppGeneratorSingleSelectionListComponent implements OnInit, OnDestroy {
 
@@ -45,4 +45,3 @@ export class AppGeneratorSingleSelectionListComponent implements OnInit, OnDestr
   private log: ILoggerDelegate = () => {};
 
 }
-

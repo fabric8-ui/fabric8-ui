@@ -15,7 +15,7 @@ import { FieldWidgetClassificationOptions } from '../../models/contracts/field-c
 @Component({
   selector: 'app-generator-single-input',
   templateUrl: './app-generator-single-input.component.html',
-  styleUrls: [ './app-generator-single-input.component.scss' ]
+  styleUrls: [ './app-generator-single-input.component.less' ]
 })
 export class AppGeneratorSingleInputComponent implements OnInit, OnDestroy {
 
