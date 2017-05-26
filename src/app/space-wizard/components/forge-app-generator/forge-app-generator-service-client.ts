@@ -38,12 +38,12 @@ export class ForgeAppGeneratorServiceClient {
    */
   public static FactoryProvider = {
       provide: ForgeAppGeneratorServiceClient,
-      useFactory: (appGeneratorService,codebasesService,configuratorService,notifications,loggerFactory) => {
-        let tmp=new ForgeAppGeneratorServiceClient(appGeneratorService,codebasesService,configuratorService,notifications,loggerFactory);
+      useFactory: (appGeneratorService, codebasesService, configuratorService, notifications, loggerFactory) => {
+        let tmp = new ForgeAppGeneratorServiceClient(appGeneratorService, codebasesService, configuratorService, notifications, loggerFactory);
         return tmp;
       },
-      deps:[IAppGeneratorServiceProvider.InjectToken,CodebasesService,AppGeneratorConfiguratorService,Notifications,LoggerFactory]
-  }
+      deps: [IAppGeneratorServiceProvider.InjectToken, CodebasesService, AppGeneratorConfiguratorService, Notifications, LoggerFactory]
+  };
 
   static instanceCount: number = 1;
 

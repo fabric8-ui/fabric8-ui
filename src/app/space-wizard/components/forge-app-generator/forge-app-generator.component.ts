@@ -204,7 +204,7 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     if ( !workflow ) {
       return;
     }
-    workflow.transitions.filter(transition=>transition.isTransitioningFrom(this.workflowStepName))
+    workflow.transitions.filter(transition => transition.isTransitioningFrom(this.workflowStepName))
     .subscribe((transition) => {
       switch ( transition.action ) {
         case WorkflowTransitionAction.NEXT: {
@@ -226,7 +226,7 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     if ( !workflow ) {
       return;
     }
-    workflow.transitions.filter(transition=>transition.isTransitioningTo(this.workflowStepName))
+    workflow.transitions.filter(transition => transition.isTransitioningTo(this.workflowStepName))
     .subscribe((transition) => {
       this.forgeClient.begin();
     });
