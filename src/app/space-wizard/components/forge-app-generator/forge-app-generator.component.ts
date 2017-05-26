@@ -1,5 +1,4 @@
 import { ViewEncapsulation, Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Notification, NotificationAction, Notifications, NotificationType } from 'ngx-base';
 //
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
 import { INotifyPropertyChanged } from '../../core/component';
@@ -7,18 +6,12 @@ import { INotifyPropertyChanged } from '../../core/component';
 import { IWorkflow, IWorkflowTransition, WorkflowTransitionAction } from '../../models/workflow';
 
 import {
-  IAppGeneratorService,
-  IAppGeneratorServiceProvider,
   IField,
   IFieldChoice
 } from '../../services/app-generator.service';
 
-import { ForgeAppGenerator } from './forge-app-generator';
+import { ForgeAppGeneratorServiceClient } from './forge-app-generator-service-client';
 import { FieldWidgetClassificationOptions } from '../../models/contracts/field-classification';
-import { CodebasesService } from '../../../create/codebases/services/codebases.service';
-
-import { AppGeneratorConfiguratorService } from '../../services/app-generator.service';
-
 
 @Component({
   host: {
@@ -30,14 +23,15 @@ import { AppGeneratorConfiguratorService } from '../../services/app-generator.se
   selector: 'forge-app-generator',
   templateUrl: './forge-app-generator.component.html',
   styleUrls: [ './forge-app-generator.component.scss' ],
-  providers: [ IAppGeneratorServiceProvider.FactoryProvider ]
+  providers: [
+    ForgeAppGeneratorServiceClient.FactoryProvider
+  ]
 })
 export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges {
 
   // keep track of the number of instances
   static instanceCount: number = 1;
 
-  public forge: ForgeAppGenerator = null;
   @Input() title: string = 'Forge Command Wizard';
   @Input() workflowStepName: string = '';
   @Input() forgeCommandName: string = 'none';
@@ -45,18 +39,13 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
   private _workflow: IWorkflow;
 
   constructor(
-    @Inject(IAppGeneratorServiceProvider.InjectToken) private _appGeneratorService: IAppGeneratorService,
-    private _codebasesService: CodebasesService,
-    private _configuratorService: AppGeneratorConfiguratorService,
-    private _notifications: Notifications,
-
+    public forgeClient: ForgeAppGeneratorServiceClient,
     loggerFactory: LoggerFactory) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, ForgeAppGeneratorComponent.instanceCount++);
     if ( logger ) {
       this.log = logger;
     }
     this.log(`New instance ...`);
-    this.forge = new ForgeAppGenerator(this._appGeneratorService, this._codebasesService, this._configuratorService, this._notifications, loggerFactory);
   }
 
   @Input()
@@ -74,8 +63,8 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
    */
   ngOnInit() {
     this.log(`ngOnInit ...`);
-    this.forge.commandName = this.forgeCommandName;
-    this.forge.workflow = this.workflow;
+    this.forgeClient.commandName = this.forgeCommandName;
+    this.forgeClient.workflow = this.workflow;
   }
 
   ngOnDestroy() {
@@ -133,7 +122,7 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
         } else {
           field.value = [];
         }
-        this.forge.validate();
+        this.forgeClient.validate();
         break;
       }
       default: {
@@ -205,43 +194,41 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
         this.log(`
           The workflow property changed value ...`);
         let current: IWorkflow = change.currentValue;
-        this.forge.workflow = current;
-        this.subscribeToWorkflowTransitions(current);
+        this.forgeClient.workflow = current;
+        this.subscribeToIncomingWorkflowTransitions(current);
+        this.subscribeToOutgoingWorkflowTransitions(current);
       }
     }
   }
-
-  private subscribeToWorkflowTransitions(workflow: IWorkflow) {
+  private subscribeToOutgoingWorkflowTransitions(workflow: IWorkflow) {
     if ( !workflow ) {
       return;
     }
-    this.log(`
-      Subscribing to workflow transitions ...`);
-    workflow.transitions.subscribe((transition) => {
-      this.log({
-        message: `
-        Subscriber responding to an observed '${transition.action}' workflow transition:
-        from ${transition.from ? transition.from.name : 'null'}
-        to ${transition.to ? transition.to.name : 'null'}.`});
-      if ( transition.isTransitioningTo(this.workflowStepName)) {
-        this.forge.begin();
-      }
-      if ( transition.isTransitioningFrom(this.workflowStepName) ) {
-        switch ( transition.action ) {
-          case WorkflowTransitionAction.NEXT: {
-            // moving from this point in the workflow as the result of a nextStep transition
-            break;
-          }
-          case WorkflowTransitionAction.GO: {
-            // moving from this point in the workflow as the result of a goToStep transition
-            break;
-          }
-          default: {
-            break;
-          }
-
+    workflow.transitions.filter(transition=>transition.isTransitioningFrom(this.workflowStepName))
+    .subscribe((transition) => {
+      switch ( transition.action ) {
+        case WorkflowTransitionAction.NEXT: {
+          // moving from this point in the workflow as the result of a nextStep transition
+          break;
+        }
+        case WorkflowTransitionAction.GO: {
+          // moving from this point in the workflow as the result of a goToStep transition
+          break;
+        }
+        default: {
+          break;
         }
       }
+    });
+  }
+
+  private subscribeToIncomingWorkflowTransitions(workflow: IWorkflow) {
+    if ( !workflow ) {
+      return;
+    }
+    workflow.transitions.filter(transition=>transition.isTransitioningTo(this.workflowStepName))
+    .subscribe((transition) => {
+      this.forgeClient.begin();
     });
   }
 

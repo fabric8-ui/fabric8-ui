@@ -14,6 +14,7 @@ import {
   IAppGeneratorRequest,
   IAppGeneratorResponse,
   IAppGeneratorService,
+  IAppGeneratorServiceProvider,
   IAppGeneratorState,
   IFieldCollection,
   IAppGeneratorMessage,
@@ -31,7 +32,19 @@ interface IAddCodebaseDelegate {
 }
 
 
-export class ForgeAppGenerator {
+export class ForgeAppGeneratorServiceClient {
+  /**
+   * make allowance for non-singleton d-i semantics
+   */
+  public static FactoryProvider = {
+      provide: ForgeAppGeneratorServiceClient,
+      useFactory: (appGeneratorService,codebasesService,configuratorService,notifications,loggerFactory) => {
+        let tmp=new ForgeAppGeneratorServiceClient(appGeneratorService,codebasesService,configuratorService,notifications,loggerFactory);
+        return tmp;
+      },
+      deps:[IAppGeneratorServiceProvider.InjectToken,CodebasesService,AppGeneratorConfiguratorService,Notifications,LoggerFactory]
+  }
+
   static instanceCount: number = 1;
 
   public workflow: IWorkflow;
@@ -64,7 +77,8 @@ export class ForgeAppGenerator {
     loggerFactory: LoggerFactory
     ) {
 
-    this.log = loggerFactory.createLoggerDelegate(this.constructor.name, ForgeAppGenerator.instanceCount++);
+    this.log = loggerFactory.createLoggerDelegate(this.constructor.name, ForgeAppGeneratorServiceClient.instanceCount++);
+    this.log(`New instance ...`);
 
     this.state = {
       canExecute: false,

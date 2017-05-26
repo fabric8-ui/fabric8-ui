@@ -13,7 +13,7 @@ import { CreateSpaceComponent } from './components/create-space/create-space.com
 import { WorkflowFactory } from './models/workflow';
 
 import { IForgeServiceProvider } from './services/forge.service';
-import { AppGeneratorConfiguratorService } from './services/app-generator.service';
+import { AppGeneratorConfiguratorService, IAppGeneratorServiceProvider } from './services/app-generator.service';
 import { SpaceWizardComponent } from './space-wizard.component';
 import { SelectedItemsPipe } from './pipes/selected-items.pipe';
 import { VisibleItemsPipe } from './pipes/visible-items.pipe';
@@ -48,6 +48,7 @@ import { CodebasesService } from '../create/codebases/services/codebases.service
     IForgeServiceProvider.FactoryProvider,
     LoggerFactory,
     WorkflowFactory,
+    IAppGeneratorServiceProvider.FactoryProvider,
     AppGeneratorConfiguratorService,
     CodebasesService
   ]
