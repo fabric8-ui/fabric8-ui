@@ -39,7 +39,7 @@ fabric8UITemplate{
                 } else if (utils.isCD()){
 
                     git "https://github.com/${project}.git"
-                    readTrusted 'release.groovy'
+                    readTrusted 'deploy/release.groovy'
                     sh "git remote set-url origin git@github.com:${project}.git"
                     def pipeline = load 'deploy/release.groovy'
 
