@@ -26,8 +26,8 @@ import { AuthenticationService } from 'ngx-login-client';
 import { HttpService } from '../../services/http-service';
 
 import {
-  FabPlannerAssociateIterationModalComponent
-} from './../work-item-iteration-modal/work-item-iteration-modal.component';
+  FabPlannerAssociateIterationModalModule
+} from './../work-item-iteration-modal/work-item-iteration-modal.module';
 import { GlobalSettings } from '../../shared/globals';
 import { IterationModule } from '../iterations-panel/iterations-panel.module';
 import { PlannerBoardRoutingModule } from './planner-board-routing.module';
@@ -78,6 +78,7 @@ if (process.env.ENV == 'inmemory') {
     DialogModule,
     DragulaModule,
     DropdownModule,
+    FabPlannerAssociateIterationModalModule,
     HttpModule,
     InfiniteScrollModule,
     IterationModule,
@@ -95,8 +96,7 @@ if (process.env.ENV == 'inmemory') {
     WorkItemQuickAddModule
   ],
   declarations: [
-    PlannerBoardComponent,
-    FabPlannerAssociateIterationModalComponent
+    PlannerBoardComponent
   ],
   providers: providers,
   exports: [ PlannerBoardComponent ]
