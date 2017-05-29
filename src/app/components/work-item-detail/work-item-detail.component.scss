@@ -30,6 +30,9 @@
     background-color: $color-pf-black-200;
     border-bottom: 1px solid;
     border-bottom-color: $color-pf-black-300;
+    .wi-type-icon {
+      vertical-align: text-top;
+    }
   }
   .top-bar { margin-bottom: 0; }
   .user-avatar {
@@ -204,15 +207,6 @@
       }
       .iteration-label { margin-right: em(16); }
     }
-    /**
-      This is for 'start coding' button
-    **/
-    .start-coding {
-      display: flex;
-      padding-right: 30px;
-      padding-left: 30px;
-      justify-content: flex-end;
-    }
     .work-item-section { margin-left: -47px; }
   }
   .dynamic-fields-wrap,
@@ -272,7 +266,6 @@
       }
       .selected { background-color: $color-pf-black-300; }
       .action-li {
-        display: flex;
         padding: em(5);
         margin-left: -15px;
         justify-content: space-between;
