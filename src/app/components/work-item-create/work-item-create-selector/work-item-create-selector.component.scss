@@ -1,30 +1,26 @@
 @import '../../../../assets/stylesheets/base';
 
 .container-modal {
-    border: solid 0 red;
-    background-color: $color-pf-black-100;
-    position: absolute;
-    padding: $grid-gutter-width/2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: ($grid-gutter-width/2);
+  margin: 0;
+  overflow-y: auto;
+  background-color: $color-pf-black-100;
+  @include Border(0, solid, red);
+  .container-modal-header {
+    display: flex;
     margin: 0;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 3;
-    overflow-y: auto;
-    .container-modal-header {
-        margin: 0;
-        margin-bottom: $grid-gutter-width/2;
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-    }
-    &.container-cards-pf {
-      .card-pf-info {
-        min-height: 4.5em;
-      }
-      .card-pf-title {
-          text-transform: capitalize;
-      }
-    }
+    margin-bottom: ($grid-gutter-width/2);
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  &.container-cards-pf {
+    .card-pf-info { min-height: 4.5em; }
+    .card-pf-title { text-transform: capitalize; }
+  }
 }

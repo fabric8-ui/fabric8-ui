@@ -1,36 +1,22 @@
 @import '../../../assets/stylesheets/base';
 
-#cancel-iteration-button {
-  margin-right: em(10);
-}
-
+#cancel-iteration-button { margin-right: em(10); }
 #reassociate-msg {
-  strong {
-    word-break: break-all;
-  }
+  strong { word-break: break-all; }
 }
-
-.iteration-association-modal {
-  cursor: auto;
-}
-
-.input-group-addon {
-  cursor: pointer;
-}
-
+.iteration-association-modal { cursor: auto; }
+.input-group-addon { cursor: pointer; }
 .iteration-list {
   width: 100%;
   max-height: em(140);
   overflow-y: auto;
   li {
-    list-style: none;
     padding: em(5) em(15);
+    list-style: none;
     &:hover {
       background-color: $color-pf-black-300;
       cursor: pointer;
     }
-    &.selected {
-      background-color: $color-pf-black-300;
-    }
+    &.selected { background-color: $color-pf-black-300; }
   }
 }

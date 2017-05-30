@@ -6,78 +6,56 @@
   align-items: center;
   .row-cbh {
     display: none; /* checkboxes are disabled for now */
+    padding:em(2) em(10) em(2) 0;
     margin-right: em(10);
     margin-left: em(5);
-    padding:em(2) em(10) em(2) 0;
-    border-right: 1px solid transparent;
+    border-right: 1px solid;
+    border-right-color: transparent;
     input[type=checkbox] {
       margin: 0;
       visibility: hidden;
     }
-    input[type=checkbox]:checked {
-      visibility: visible;
-    }
+    input[type=checkbox]:checked { visibility: visible; }
   }
-  &:focus {
-    outline: none;
-  }
+  &:focus { outline: none; }
   &:hover {
     .row-cbh {
-      border-right: 1px solid $color-pf-black-500;
-      input{
-        visibility: visible;
-      }
+      border-right: 1px solid;
+      border-right-color: $color-pf-black-500;
+      input { visibility: visible; }
     }
   }
-
   .workItemList_workItemType {
-    width: em(120);
     float: left;
-    span{
-      font-size: em(12);
+    width: em(120);
+    span {
       margin-right: em(10);
-      color: $color-pf-black-900;
+      font-size: em(12);
       font-weight: 200;
       line-height: 1;
+      color: $color-pf-black-900;
     }
   }
-  .workItemList_title{
-    line-height: 1.3;
-    p{
-      margin-bottom: 0 !important;
-    }
+  .workItemList_title { line-height: 1.3;
+    p { margin-bottom: 0 !important; }
   }
   .workItemList_title {
-    p{
-      margin: 0;
+    p { margin: 0; }
+  }
+  @media (max-width: $screen-md-min) {
+    .workItemList_title {
+      padding: 0 !important;
+      font-size: rem(16);
     }
   }
 }
-button{
-  &:active{
-    outline: none;
-    &:focus {
-      outline: none;
-    }
+button {
+  &:active { outline: none;
+    &:focus { outline: none; }
   }
 }
-span{
-  &:focus{
-    outline: none;
-  }
+span {
+  &:focus { outline: none; }
 }
-
-@media (max-width: $screen-md-min){
-  .workItemList_title{
-    font-size: rem(16);
-    padding: 0 !important;
-  }
-}
-
-.not-assigned-user-icon {
-  @include not-assigned-user-icon;
-}
-
-.user-avatar {
-  @include user-avatar;
-}
+.not-assigned-user-icon { @include not-assigned-user-icon; }
+.user-avatar { @include user-avatar; }

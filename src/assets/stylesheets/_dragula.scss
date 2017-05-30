@@ -1,35 +1,31 @@
 @import '../../assets/stylesheets/base';
 .gu-mirror {
-  position: fixed!important;
+  position: fixed !important;
+  z-index: 9999 !important;
+  margin: 0 !important;
+  background-color: $color-pf-white;
   cursor: -webkit-grabbing;
   cursor:    -moz-grabbing;
   cursor:         grabbing;
-  margin: 0!important;
-  z-index: 9999!important;
   opacity: 1;
-  background-color: $color-pf-white;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
   filter: alpha(opacity=80);
 }
-.gu-hide {
-  display: none!important;
-}
+.gu-hide { display: none!important; }
 .gu-unselectable {
   -webkit-user-select: none!important;
-  -moz-user-select: none!important;
-  -ms-user-select: none!important;
-  user-select: none!important;
+     -moz-user-select: none!important;
+      -ms-user-select: none!important;
+          user-select: none!important;
 }
-.gu-transit {
-  position: relative;
+.gu-transit { position: relative;
   &:after {
-    content: '';
     position: absolute;
+    right: 0;
     top: 0;
     bottom: 0;
     left: 0;
-    right: 0;
     height: 0;
-    // padding: 0;
+    content: '';
   }
 }

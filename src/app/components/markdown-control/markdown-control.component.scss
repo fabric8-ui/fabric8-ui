@@ -9,16 +9,11 @@
   text-align: left;
 }
 // Show More and Show Less buttons for the text field
-.show-more-state {
-  padding-left: 0;
-  &::before {
-    margin-right: 2px;
-  }
+.show-more-state { padding-left: 0;
+  &::before { margin-right: 2px; }
 }
-.show-less {
-  max-height: 192px;
-  .detail-text {
-    padding-left: 0;
+.show-less { max-height: 192px;
+  .detail-text { padding-left: 0;
     .detail-text-div-wrap {
       .detail-text-div {
         &.text-editable {
@@ -29,67 +24,55 @@
     }
   }
 }
-.hide {
-  display: none;
-}
+.hide { display: none; }
 .arrow-up {
   &::before{
-    content: 'Show More';
     margin-right: 2px;
+    content: 'Show More';
   }
 }
 .arrow-down {
+    margin-right: 2px;
   &::before {
     content: 'Show Less';
-    margin-right: 2px;
   }
 }
 // removes extra margin when code is entered into the text field
-pre {
-  margin: 0;
-}
+pre { margin: 0; }
 .btn-cancel {
   // margin-right: 20px;
 }
-.detail-action-btn {
-  width: 40px;
-}
-.markdown-test-btn-save {
-  margin-right: 10px;
-}
+.detail-action-btn { width: 40px; }
+.markdown-test-btn-save { margin-right: 10px; }
 .detail-text-wrap {
-    // margin-left: 20px;
-    overflow: hidden;
-    padding-left: 0;
-    .view-switch-btn {
-      margin-bottom: 10px;
-    }
-    .detail-text {
-      padding-left: 0;
+  padding-left: 0;
+  // margin-left: 20px;
+  overflow: hidden;
+  .view-switch-btn { margin-bottom: 10px; }
+  .detail-text { padding-left: 0;
     .text-switcher {
+      position: fixed;
+      right: 20px;
       min-height: 39px;
       margin-top: -34px;
       margin-right: 25px;
       margin-left: 20px;
-      position: fixed;
-      right: 20px;
-      border-bottom: 1px solid transparent;
+      border-bottom: 1px solid;
+      border-bottom-color: transparent;
       // sets blue border for the navigation tabs
       // to match border around text field
-      .nav-tabs {
-        border-bottom: none;
+      .nav-tabs { border-bottom: none;
         li {
           &.active {
             a {
-              border: 1px solid $color-pf-blue-400;
-              border-bottom: 1px solid $color-pf-white;
+              border-bottom-color: $color-pf-white;
+              @include Border(1px, solid, $color-pf-blue-400);
             }
           }
         }
       }
     }
-    .detail-text-div-wrap {
-      background-color: $color-pf-black-150;
+    .detail-text-div-wrap { background-color: $color-pf-black-150;
       // margin-left: 20px;
       .text-not-found {
         p {
@@ -99,41 +82,38 @@ pre {
       }
       .detail-text-div {
         min-height: em(50);
-        background-color: $color-pf-white;
         padding-right: em(30);
-        border: 1px solid $color-pf-white;
+        background-color: $color-pf-white;
+        @include Border(1px, solid, $color-pf-white);
         &::-webkit-scrollbar {
-          -webkit-appearance: none;
           width: 7px;
+          -webkit-appearance: none;
         }
         &::-webkit-scrollbar-thumb {
-          border-radius: 4px;
           background-color: rgba(0,0,0,.5);
           -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+             -moz-box-shadow: 0 0 1px rgba(255,255,255,.5);
+               -o-box-shadow: 0 0 1px rgba(255,255,255,.5);
+                  box-shadow: 0 0 1px rgba(255,255,255,.5);
+          @include borderRadius(4px);
         }
         &.text-editable {
-          .text {
-            padding-left: 5px;
-          }
-          .text-html-view {
-            padding-left: 5px;
-          }
+          .text { padding-left: 5px; }
+          .text-html-view { padding-left: 5px; }
         }
         p {
           margin: 0;
           outline: 0;
         }
-        .edit-icon {
-          display: none;
-        }
+        .edit-icon { display: none; }
         &:hover {
-          background-clip: content-box;
           cursor: pointer;
+          background-clip: content-box;
           .edit-icon {
-            display: block;
             position: absolute;
             right: em(28);
             top: em(1);
+            display: block;
             cursor: pointer;
           }
         }
@@ -141,12 +121,9 @@ pre {
     }
   }
 }
-
-.detail-text-action {
-  margin-top: em(10);
-}
+.detail-text-action { margin-top: em(10); }
 .text-editable {
-  border: 1px solid $color-pf-blue-400 !important;
   padding-right: em(30) !important;
   background-clip: content-box !important;
+  @include Border(1px, solid, $color-pf-blue-400 !important);
 }

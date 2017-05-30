@@ -1,124 +1,74 @@
 @import '../../../assets/stylesheets/base';
 
-.iteration-panel-header {
-    padding: em(20);
-    border-bottom: 1px solid $color-pf-black-300;
-    h3{
-      margin: 0;
+.iterations-container { background-color: $color-pf-black-900;
+  .iteration-wrapper { color: $color-pf-white;
+    li { cursor: pointer; }
+    .badge { background-color: $color-pf-black; }
+    i { color: $color-pf-white; }
+    .iteration-header { padding: em(10) em(20);
+      > h4 { margin: 0; }
+      .fa-icon { width: 15px; }
+      .add-btn { color: $color-pf-blue; }
     }
-  }
-
-.iterations-container {
-  background-color: $color-pf-black-900;
-  li {
-    cursor: pointer;
-  }
-  .badge {
-    background-color: $color-pf-black;
-  }
-  .selected-iteration {
-    background-color: $color-pf-black-700 !important;
-    color: $color-pf-white;
-    border-left: 4px solid $color-pf-blue;
-    i {
-      color: $color-pf-white !important;
-    }
-  }
-
-  /* Iterations expanded div styling */
-  .iteration-wrapper {
-    color: $color-pf-white;
-    i {
-      color: $color-pf-white;
-    }
-    .add-btn {
-      color: $color-pf-blue;
-    }
-    .iteration-header {
-      .pointer {
-        cursor: pointer;
-      }
-      padding: em(10) em(20);
-      > h4 {
-        margin: 0;
-      }
-      .fa-icon {
-        width: 15px;
+    .iteration-subheader {
+      -webkit-box-align: flex-start;
+         -ms-flex-align: flex-start;
+            align-items: flex-start;
+      .dropdown-kebab-pf { margin-left: em(10); }
+      .iteration-name {
+        display: inline-block;
+        width: 100%;
       }
     }
-
+    /* Iterations expanded div styling */
     .iteration-expanded-div {
       padding-left: 0;
       margin-bottom: 0;
-
       > li {
-        list-style: none;
         padding: em(15);
-        &:hover {
-          background-color: $color-pf-black-700;
-        }
+        list-style: none;
+        &:hover { background-color: $color-pf-black-700; }
         &.active {
-          border-left: 4px solid transparent;
+          border-left: 4px solid;
+          border-left-color: transparent;
           &.selected-iteration {
-            border-left: 4px solid $color-pf-blue;
-            .iteration-description {
-              // &:after {
-              // }
-            }
+            border-left: 4px solid;
+            border-left-color: $color-pf-blue;
           }
         }
-
-        .iteration-subheader {
-          -webkit-box-align: flex-start;
-          -ms-flex-align: flex-start;
-          align-items: flex-start;
-
-          .dropdown-kebab-pf{
-            margin-left: em(10);
-          }
-
-          .iteration-name{
-            width: 100%;
-            display: inline-block;
-          }
-        }
-
-        .iteration-count {
-          float: right;
-        }
-
+        .iteration-count { float: right; }
         .iteration-status {
-          padding: em(20) 0 em(15) 0;
+          padding-top: em(20);
+          padding-bottom: em(15);
         }
         .iteration-description {
-          &:after, &:before {
+          &:after,
+          &:before {
             background: transparent !important;
             content: none !important;
           }
         }
       }
     }
-
-    .not-current-iteration{
-      margin-bottom: 0;
+    .not-current-iteration {
       padding-left: 0;
-
-      > li {
-        padding: em(5) em(15) em(5) em(40);
-        &:hover {
-          background-color: $color-pf-black-700;
+      margin-bottom: 0;
+      > li { padding: em(5) em(15) em(5) em(40);
+        &:hover { background-color: $color-pf-black-700; }
+        .iteration-name {
+          display: inline-block;
+          width: 100%;
         }
-        .iteration-name{
-            width: 100%;
-            display: inline-block;
-          }
       }
-
-      .badge {
-        margin-right: em(10);
-      }
+      .badge { margin-right: em(10); }
     }
-
+    .selected-iteration {
+      color: $color-pf-white;
+      background-color: $color-pf-black-700 !important;
+      border-left: 4px solid;
+      border-left-color: $color-pf-blue;
+      i { color: $color-pf-white !important; }
+    }
     .parent-iteration {
       font-size: rem(12);
       font-style: italic;

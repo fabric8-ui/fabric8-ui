@@ -5,59 +5,57 @@
 .boardWrapper {
   position: relative;
   .board {
-    user-select: none;
-    white-space: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    padding: rem(10) 0;
+    padding-top: rem(10);
+    padding-bottom: rem(10);
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    user-select: none;
     .board-lane {
-      width: rem(300);
-      margin: 0 rem(5);
-      height: 100%;
       display: inline-block;
+      width: rem(300);
+      height: 100%;
+      margin-right: rem(5);
+      margin-left: rem(5);
       vertical-align: top;
       white-space: normal;
       .board-lane-column {
-        background: $color-pf-black-250;
-        border: 1px solid $color-pf-black-300;
-        padding: em(0);
         height: 100%;
-        padding-bottom: 0;
+        padding: 0;
+        background: $color-pf-black-250;
+        @include Border(1px, solid, $color-pf-black-300);
         .boardlaneWrapper{
-          padding: em(0) rem(15);
-          overflow: auto;
           width: 100%;
           height: calc( 100% - 2.5rem );
+          padding-right: rem(15);
+          padding-left: rem(15);
+          overflow: auto;
           .board-card {
-            border: 2px solid $color-pf-black-400;
             padding: rem(15);
             margin: rem(5) 0;
+            @include Border(2px, solid, $color-pf-black-400);
             @extend .flex-container;
             @extend .in-column-direction;
             @extend .flex-grow-1;
-            &.active {
-              border-color: $color-pf-blue-400;
+            &.active { border-color: $color-pf-blue-400;
               &.gu-transit {
-                opacity: .1;
                 border-color: #bbb;
+                opacity: .1;
               }
             }
             >div {
-              p {
-                margin: 0;
-              }
+              p { margin: 0; }
               .wi-type-icon {
-                padding: em(0) em(6);
+                padding-right: em(6);
+                padding-left: em(6);
                 font-size: em(12);
               }
-              .user-avatar {
-                padding-right: em(5);
-              }
+              .user-avatar { padding-right: em(5); }
             }//div ended
             .row-wrapper {
               display: flex;
@@ -66,126 +64,113 @@
           }//boardcard ended
         }//boardlaneWrapper ended
         .lane-header {
-          text-align: center;
-          flex: 0 0 auto;
           width: 100%;
-          background: $color-pf-black-250;
-          padding: em(7) 0 em(3) 0;
+          padding-top: em(7);
+          padding-bottom: em(3);
+          text-align: center;
+          background-color: $color-pf-black-250;
+          flex: 0 0 auto;
           .issueCount {
-            background: $color-pf-white;
-            padding: 0 em(8);
+            padding-right: em(8);
+            padding-left: em(8);
             margin-left: em(5);
             font-weight: 500;
+            background-color: $color-pf-white;
           }// issue-count ended
         }// lane-header ended
       }//boad-lane-column ended
     }//board-lane ended
-    .card-wrapper {
-      height: 100%;
-    }
+    .card-wrapper { height: 100%; }
   }
 }
 .side-panel-wrap {
-  background-color: $color-pf-black-900;
-  min-width: 340px;
   width: 340px;
-  .side-panel-container {
-    background-color: $color-pf-black-900;
-  }
+  min-width: 340px;
+  background-color: $color-pf-black-900;
+  .side-panel-container { background-color: $color-pf-black-900; }
 }
 .work-item-page {
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
-  position: relative;
-  > main {
-      border-top: 0 solid !important;
-  }
+  > main { border-top: 0 solid !important; }
   .container-modal {
-    border: solid 0 red;
-    background-color: $color-pf-black-100;
     position: absolute;
-    padding: $grid-gutter-width/2;
-    margin: 0;
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
+    left: 0;
     z-index: 3;
+    padding: ($grid-gutter-width/2);
+    margin: 0;
     overflow-y: auto;
+    background-color: $color-pf-black-100;
+    @include Border(0, solid, red);
     .container-modal-header {
-      margin: 0;
-      margin-bottom: $grid-gutter-width/2;
       display: flex;
+      margin: 0;
+      margin-bottom: ($grid-gutter-width/2);
       align-items: baseline;
       justify-content: space-between;
     }
     &.container-cards-pf {
-      .card-pf-title {
-        text-transform: capitalize;
-      }
+      .card-pf-title { text-transform: capitalize; }
     }
   }
-
   .dropdown {
     a {
-      cursor: pointer;
       color: $color-pf-dark;
+      cursor: pointer;
     }
   }
-  .with-cursor-pointer {
-    cursor: pointer;
-  }
-  .with-color-blue {
-    color: $color-pf-blue-400;
-  }
+  .with-cursor-pointer { cursor: pointer; }
+  .with-color-blue { color: $color-pf-blue-400; }
   >main {
     display: flex;
+    border-top: 1px solid;
+    border-top-color: $color-pf-black-300;
     flex-direction: row;
     flex: 1;
     align-items: stretch;
-    border-top: 1px solid $color-pf-black-300;
     >aside {
-      flex: 3;
-      display: flex;
-      flex-direction: column;
-      background-color: $color-pf-black-200;
-      border-right: 1px solid $color-pf-black-300;
       position: relative;
+      display: flex;
+      background-color: $color-pf-black-200;
+      border-right: 1px solid;
+      border-right-color: $color-pf-black-300;
       align-items: stretch;
+      flex: 3;
+      flex-direction: column;
       .contents {
-        //@extend .fill-container;
-        flex: 1;
         display: flex;
         overflow: auto;
+        flex: 1;
         align-items: stretch;
       }
     }
     >section {
-      flex: 9;
-      display: flex;
-      flex-direction: column;
-      border: solid 0px red;
       position: relative;
-      align-items: stretch;
+      display: flex;
       overflow-x: hidden!important;
+      align-items: stretch;
+      flex: 9;
+      flex-direction: column;
+      @include Border(0, solid, red);
       >header {
-        padding: 0 rem(20);
-        border-bottom: 1px solid $color-pf-black-300 !important;
-        .toolbar-pf {
-          border-color: transparent;
-          .toolbar-pf-actions {
-            border-color: transparent;
-            .form-group {
-              border-right: none;
-              &:first {
-                border-left: none;
-              }
+        padding-right: rem(20);
+        padding-left: rem(20);
+        border-bottom: 1px solid;
+        border-bottom-color: $color-pf-black-300 !important;
+        .toolbar-pf { border-color: transparent;
+          .toolbar-pf-actions { border-color: transparent;
+            .form-group {  border-right: none;
+              &:first { border-left: none; }
             }
             .toolbar-pf-action-right {
-              .pficon-add-circle-o{
+              .pficon-add-circle-o {
+                font-size: ceil(($font-size-base * 1.2));
                 @extend .with-color-blue;
-                font-size: ceil(($font-size-base * 1.2)) ;
               }
             }
           }
@@ -193,46 +178,43 @@
           .wi-input-filter-dropdown {
             position: relative;
             .wi-input-filter-dropdown-list {
-              width: 100%;
               top: 2.5rem;
-              padding: 0.25rem;
+              width: 100%;
+              padding: .25rem;
             }
             >div {
               position: relative;
               //HACK:prevents caret icon from folding to a new line
-              >input {
-                margin-right: -2.0rem;
-              }
+              >input { margin-right: -2.0rem; }
               //HACK:positions the caret in right margin are of input
               >span.caret::before {
                 z-index: 2;
                 display: inline-block;
+                width: 1.5rem;
                 height: 1.5rem;
                 line-height: 1.5rem;
-                width: 1.5rem;
               }
             }
           }
         }
       }
       .contents {
-        //@extend .fill-container;
-        flex: 1;
         display: flex;
         overflow-x: hidden;
         align-items: stretch;
+        flex: 1;
       }
     }
   }
 }
 // .active-lane {
-//   border: 2px solid $color-pf-blue-300!important;
+//   @include Border(2px, solid, $color-pf-blue-300!important);
 // }
 
 .not-assigned-user-icon {
-  @include not-assigned-user-icon;
   width: 30px;
   height: 30px;
+  @include not-assigned-user-icon;
 }
 
 .user-avatar {

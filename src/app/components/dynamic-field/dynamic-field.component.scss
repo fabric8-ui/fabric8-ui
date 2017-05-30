@@ -1,29 +1,14 @@
-
 .dynamic-control {
-
-  label {
-    font-weight: 400;
-  }
-
-  .no-left-padding {
-    padding-left: 0;
-  }
-
+  label { font-weight: 400; }
   input[type=text] {
     cursor: pointer;
     border: none;
   }
-
+  .no-left-padding { padding-left: 0; }
   .dynamic-control-edit-ico {
     margin-left: -2em;
     pointer-events: none;
   }
-
-  .dynamic-control-dropdown {
-    width: 30%;
-  }
-
-  .dynamic-control-datepicker {
-    width: 50%;
-  }
+  .dynamic-control-dropdown {width: 30%; }
+  .dynamic-control-datepicker { width: 50%; }
 }

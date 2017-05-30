@@ -1,26 +1,20 @@
 @import 'patternfly/variables';
 
 // overwrite PatternFly header highlight
-.navbar-pf {
-  border-color: #cc0000;
-}
-
+.navbar-pf { border-color: #cc0000; }
 //remove toolbar box shadow
-
 $font-size-base: 14px;
-
-.toolbar-pf
-{
-  box-shadow: none !important;
-}
+.toolbar-pf { box-shadow: none !important; }
 // add border top to filter results
 .toolbar-pf-results {
-  border-top : 1px solid $color-pf-black-300;
+  border-top : 1px solid;
+  border-top-color: $color-pf-black-300;
 }
 //increase font size for these elements, overriding PatternFly
-.form-control, .btn, .dropdown-menu, .badge {
-  font-size: $font-size-base;
-}
+.form-control,
+.btn,
+.dropdown-menu,
+.badge { font-size: $font-size-base; }
 h1 {
   font-size: 2em;
   line-height: 1.3em;

@@ -3,79 +3,64 @@
 .quickAdd_container {
   display: -webkit-flex;
   display: flex;
-  align-items: center;
-  background: $color-pf-black-200;
-  border-top: 1px solid darken($color-pf-white, 20%);
   text-align: $textLeft;
+  background: $color-pf-black-200;
+  border-top: 1px solid;
+  border-top-color: (darken($color-pf-white, 20%));
   cursor: pointer;
-
+  align-items: center;
   .dropup {
-    .dropdown-menu {
-      margin-left: 16px;
+    .dropdown-menu { margin-left: 16px;
       i {
-        margin-top: 5px;
         width: 15px;
+        margin-top: 5px;
       }
     }
   }
-
   .addWorkItem {
+    height: 69px; //height is given to avoid jumping between this block and addWorkItemBlk
     padding: em(18);
     color: $navbar-pf-border-color;
-    height: 69px; //height is given to avoid jumping between this block and addWorkItemBlk
-    .quick-add-label {
-      padding-left: em(5);
-    }
+    .quick-add-label { padding-left: em(5); }
     .workItemQuickAdd_saveBtn {
       display: inline-block;
-      margin:0;
-      &:hover{
-        text-decoration: none;
-      }
-
+      margin: 0;
+      &:hover { text-decoration: none; }
     }
     i {
-      color: $navbar-pf-border-color;
       display: inline-block;
-      &:hover {
-        color: $navbar-pf-border-color;
-      }
+      color: $navbar-pf-border-color;
+      &:hover { color: $navbar-pf-border-color; }
     }
   }
   .addWorkItemBlk {
-    padding: 20px;
     position: relative;
+    padding: 20px;
     .work-item-selector {
       display: inline-flex;
       height: 28px;
     }
     .workItemQuickAdd_IconType {
-      width:em(24);
-      height: em(25);
-      float: left;
       position: relative;
-      i{
-        font-size:em(14);
-      }
+      float: left;
+      width: em(24);
+      height: em(25);
+      i { font-size: em(14); }
     }
     .workItemQuickAdd_story {
-      #exampleDesc{
-        max-height: 100px;
-      }
+      #exampleDesc { max-height: 100px; }
     }
     .workItemQuickAdd_AddBlk {
       .workItemQuickAdd_Add {
         min-width: em(30) !important;
         height: 27px;
-        i {
-          font-size: em(14);
-        }
+        i { font-size: em(14); }
       }
       .closeQuickAdd {
         min-width: em(30) !important;
-        margin-left: em(5);
         height: 27px;
         padding: em(5);
+        margin-left: em(5);
         i {
           font-size: em(14);
           vertical-align: top;
@@ -86,29 +71,27 @@
       // font-size: em(24);
       text-decoration: none;
     }
-    .icon-btn {
-      cursor: pointer;
-    }
+    .icon-btn { cursor: pointer; }
   }
 }
 
 // .quickAdd_container2 {
 .board-quick-add-card {
   position: relative;
-  width: 100%;
   float: left;
-  // border: 2px solid $color-pf-black-300;
-  background: transparent;
-  box-shadow: none;
+  width: 100%;
   padding: 0;
   margin: 0;
-  .addWorkItem{
-    background: $color-pf-white;
-    border: 2px solid $color-pf-black-400;
-    text-align: center;
+  background: transparent;
+  // border: 2px solid $color-pf-black-300;
+  box-shadow: none;
+  .addWorkItem {
     padding: em(10) em(15);
-    .workItemQuickAdd_saveBtn{
-      i{
+    text-align: center;
+    background: $color-pf-white;
+    @include Border(2px, solid, $color-pf-black-400);
+    .workItemQuickAdd_saveBtn {
+      i {
         font-size: em(18);
         color: $color-pf-blue-400;
       }
@@ -117,59 +100,45 @@
   .addWorkItemBlk {
     margin: em(5) 0;
     background:$color-pf-white;
-    border: 1px solid $color-pf-black-300;
-    .board-inputs {
-      margin-top: 40px;
+    @include Border(1px, solid, $color-pf-black-300);
+    .board-inputs { margin-top: 40px;
       i {
         padding-top: 5px;
         padding-left: 10px;
       }
     }
     .board-description {
-      margin-top: 5px;
-      height: 29px;
       width: 100%;
+      height: 29px;
+      margin-top: 5px;
     }
-    .workItemQuickAdd_Add{
+    .workItemQuickAdd_Add {
       margin-top: 5px;
       margin-bottom: 10px;
       margin-left: -10px;
     }
-    .closeQuickAdd{
+    .closeQuickAdd {
       position: absolute;
       top: 10px;
       right: 15px;
       color: $color-pf-black;
     }
-    .icon-btn{
-      border: 2px solid $color-pf-blue-400;
-    }
+    .icon-btn { @include Border(2px, solid, $color-pf-blue-400); }
   }
 }
-.add{
-  background: $color-pf-white;
-}
+.add { background-color: $color-pf-white; }
 @media (max-width: $grid-float-breakpoint){
-  .quickAdd_container {
-    text-align: center;
-    .addWorkItem{
-      padding: em(10);
-      i,h4{
-        display: block;
-      }
-      i{
-        margin-bottom: em(5);
-      }
+  .quickAdd_container { text-align: center;
+    .addWorkItem { padding: em(10);
+      i,
+      h4 { display: block; }
+      i { margin-bottom: em(5); }
     }
-    .addWorkItemBlk {
-      padding:em(10);
-    }
+    .addWorkItemBlk { padding: em(10); }
   }
 }
 @-moz-document url-prefix() {
-  .workItemQuickAdd_story{
-    textarea.form-control {
-      max-height: em(26) !important;
-    }
+  .workItemQuickAdd_story {
+    textarea.form-control { max-height: em(26) !important; }
   }
 }

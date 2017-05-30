@@ -2,90 +2,83 @@
 
 //detail panel
 .detail-panel {
-  background: $color-pf-white;
   position: absolute;
-  left: auto;
   top: 0;
   right: 0;
   bottom: 0;
+  left: auto;
+  z-index: initial;
   width: 60%;
   min-width: em(250);
-  border-left: 1px solid darken($color-pf-white, 20%);
-  z-index: initial;
   padding: 0;
-  overflow-y: scroll;
   overflow-x: hidden;
-  box-shadow: -4px 0px 2px -2px $color-pf-black-300;
+  overflow-y: scroll;
+  background: $color-pf-white;
+  border-left: 1px solid;
+  border-left-color: (darken($color-pf-white, 20%));
   -webkit-box-shadow: -4px 0px 2px -2px $color-pf-black-300;
-  -moz-box-shadow: -4px 0px 2px -2px $color-pf-black-300;
-  label {
-    font-weight: 400;
-  }
+     -moz-box-shadow: -4px 0px 2px -2px $color-pf-black-300;
+       -o-box-shadow: -4px 0px 2px -2px $color-pf-black-300;
+          box-shadow: -4px 0px 2px -2px $color-pf-black-300;
+  label { font-weight: 400; }
 }
-.detail-container {
-  width: 100%;
+.detail-container { width: 100%;
   .detail-panel-header {
-    background-color: $color-pf-black-200;
-    border-bottom: 1px solid $color-pf-black-300;
     height: 145px;
-    padding-left: 10px;
     padding-top: 20px;
+    padding-left: 10px;
+    background-color: $color-pf-black-200;
+    border-bottom: 1px solid;
+    border-bottom-color: $color-pf-black-300;
   }
-  .top-bar {
-    margin-bottom: 0;
-  }
+  .top-bar { margin-bottom: 0; }
   .user-avatar {
-    cursor: pointer;
-    margin-right: em(6);
-    height: em(20);
     width: em(20);
+    height: em(20);
+    margin-right: em(6);
+    cursor: pointer;
   }
-  .common-wrap{
-    padding: em(20);
-    .user-label{
-      margin-right: em(20);
-    }
+  .common-wrap { padding: em(20);
+    .user-label { margin-right: em(20); }
     .user-creator-icon {
       padding: em(3);
-      color: $color-pf-black-500;
-      border: 1px dashed $color-pf-black;
-      cursor: pointer;
       margin-right: em(6);
+      color: $color-pf-black-500;
+      cursor: pointer;
+      @include Border(1px, dashed, $color-pf-black);
     }
   }
-  .note{
-    color: $color-pf-black-500;
-  }
+  .note { color: $color-pf-black-500; }
   .detail-type-dropdown {
     .saving-title {
-      padding-left: 0.6em;
+      padding-left: .6em;
       font-size: 16px;
       vertical-align: bottom;
     }
   }
   .detail-id {
-    font-weight: 700;
+    display: inline-block;
     margin: 0;
     margin-left: 5px;
-    display: inline-block;
+    font-weight: 700;
   }
   .detail-created-date {
-    text-align: right;
     float: right;
+    text-align: right;
   }
   .detail-close {
     float: right;
     margin-left: 8px;
-    cursor: pointer;
     font-size: em(18);
+    cursor: pointer;
   }
-  .wi-detail-title-blk{
+  .wi-detail-title-blk {
     .detail-title {
-      font-weight: 500;
       max-width: calc(100% - 25px);
-      line-height: 1.5;
-      border: 1px solid transparent;
       padding-left: 2px;
+      font-weight: 500;
+      line-height: 1.5;
+      @include Border(1px, solid, transparent);
     }
     .detail-title-edit-ico {
       line-height: 2;
@@ -96,288 +89,244 @@
       padding-left: 0;
     }
     .detail-title-edit {
-      background-color: $color-pf-white;
+      width: 550px;
+      height: 35px;
+      padding-left: 2px;
+      overflow: hidden;
       font-weight: 500;
       line-height: 1.5;
-      padding-left: 2px;
-      border: 1px solid $color-pf-blue-400;
-      width: 550px;
+      background-color: $color-pf-white;
       resize: none;
-      height: 35px;
-      overflow: hidden;
+      @include Border(1px, solid, $color-pf-blue-400);
     }
     .title-error {
       position: absolute;
       top: 55px;
       color: $color-pf-red;
     }
-    aside{
-      padding: em(5) 0 0;
-    }
-    .clearfloat{
-      clear: both;
-    }
+    aside { padding: em(5) 0 0; }
+    .clearfloat { clear: both; }
     .detail-title-edit-ico {
-      display: none;
       position: absolute;
       right: em(9);
-      z-index: 10;
       top: em(18);
+      z-index: 10;
+      display: none;
       cursor: pointer;
     }
     &:hover {
       background-clip: content-box;
       border-color: $color-pf-blue-400;
       cursor: pointer;
-      .detail-title-edit-ico {
-        display: block;
-      }
+      .detail-title-edit-ico { display: block; }
     }
-    &:focus{
-      border-color:$color-pf-blue;
-    }
+    &:focus { border-color: $color-pf-blue; }
   }
-  .wi-state-btn{
+  .wi-state-btn {
     max-width: em(132);
-    padding: em(20) 0;
-    .detail-status-dropdown {
-      text-align: $textRight;
+    padding-top: em(20);
+    padding-bottom: em(20);
+    .detail-status-dropdown { text-align: $textRight;
       .dropdown-icon {
         float: left;
+        margin-top: em(5);
         margin-right: em(5);
         font-size: em(12);
-        margin-top: em(5);
       }
       .dropdown-text {
         float: left;
+        text-align: left;
         text-transform: capitalize;
-        text-align:left;
       }
-      .caret{
-        margin-top: em(5);
-      }
+      .caret { margin-top: em(5); }
       .dropdown-ul {
-        min-width: em(132);
-        width: em(132);
         top: em(25);
+        width: em(132);
+        min-width: em(132);
         .dropdown-li {
-          width: $width100;
           float: left;
-          a{
-            width: $width100;
+          width: $width100;
+          a {
             float: left;
+            width: $width100;
             padding: em(2) em(10);
           }
         }
       }
     }
   }
-
   .item-action-block {
-    margin-left: 30px;
     margin-top: 30px;
-    .detail-assignee-wrap {
-      height: 30px;
+    margin-left: 30px;
+    .detail-assignee-wrap { height: 30px;
       .control-label {
         font-weight: 700;
         text-align: left;
       }
-      .user-label{
-        margin-right: em(15);
-      }
+      .user-label { margin-right: em(15); }
       .user-assign-icon {
         padding: em(3);
-        color: $color-pf-black-500;
-        border: 1px dashed $color-pf-black;
-        cursor: pointer;
         margin-right: em(6);
+        color: $color-pf-black-500;
+        cursor: pointer;
+        @include Border(1px, dashed, $color-pf-black);
       }
       .user-assign-avatar {
-        cursor: pointer;
-        margin-right: em(6);
-        height: em(20);
         width: em(20);
+        height: em(20);
+        margin-right: em(6);
+        cursor: pointer;
       }
       .active {
-        color: $color-pf-black;
         padding: em(5);
+        color: $color-pf-black;
         border-style: solid;
       }
-      .detail-assignee-name{
-        .placeholder {
-          color: $color-pf-blue-400;
-          &:hover {
-            cursor: pointer;
-          }
+      .detail-assignee-name {
+        .placeholder { color: $color-pf-blue-400;
+          &:hover { cursor: pointer; }
         }
       }
     }
-    .detail-creator-wrap, .detail-assignee-wrap, .detail-area-wrap {
-      height: 30px;
+    .detail-creator-wrap,
+    .detail-assignee-wrap,
+    .detail-area-wrap { height: 30px;
       .control-label {
         font-weight: 700;
         text-align: left;
       }
-      [noValueLabel="none"] {
-        color: $color-pf-blue-400;
-      }
+      [noValueLabel="none"] { color: $color-pf-blue-400; }
     }
-    .detail-iteration-wrap {
-      height: 30px;
+    .detail-iteration-wrap { height: 30px;
       .control-label {
         font-weight: 700;
         text-align: left;
       }
-      .iteration-label {
-        margin-right: em(16);
-      }
+      .iteration-label { margin-right: em(16); }
     }
     /**
       This is for 'start coding' button
     **/
     .start-coding {
       display: flex;
+      padding-right: 30px;
+      padding-left: 30px;
       justify-content: flex-end;
-      padding: 0 30px;
     }
-    .work-item-section {
-      margin-left: -47px;
-    }
+    .work-item-section { margin-left: -47px; }
   }
-  .dynamic-fields-wrap, .description-fields-wrap, .start-coding-wrap {
-    margin-left: 30px;
+  .dynamic-fields-wrap,
+  .description-fields-wrap,
+  .start-coding-wrap { margin-left: 30px;
     .control-label {
       font-weight: 700;
       text-align: left;
     }
   }
 }
-.user-search {
-  position: relative;
-  .list-container{
-    margin-top: -5px;
+
+.user-search { position: relative;
+  .list-container {
     position: absolute;
-    min-width: em(200);
     z-index: 10;
+    min-width: em(200);
+    margin-top: -5px;
     background-color: $color-pf-white;
-    border: 1px solid $color-pf-black-500;
     box-shadow: 0 6px 12px rgba(0,0,0,0.175);
-    border-radius: 1px;
+    @include borderRadius(1px);
+    @include Border(1px, solid, $color-pf-black-500);
     .user-search-icon {
       position: absolute;
-      line-height: em(30);
-      padding-left: em(5);
       height: inherit;
+      padding-left: em(5);
+      line-height: em(30);
       color: $color-pf-black-500;
     }
-
     input {
-      outline: none;
       width: 100%;
       height: em(30);
+      padding-left: em(20);
       border: none;
       border-bottom: 1px solid $color-pf-blue-400;
+      outline: none;
       box-shadow: 0 0px 6px $color-pf-blue-400;
-      padding-left: em(20);
     }
-
     .item-ul {
-      background: $color-pf-white;
-      list-style: none;
       margin-bottom: 0;
+      list-style: none;
+      background: $color-pf-white;
       .item-li {
-        cursor: pointer;
-        padding: em(5);
-        width: $width100;
         float: left;
-        &:hover {
-          background-color: $color-pf-black-300;
-        }
+        width: $width100;
+        padding: em(5);
+        cursor: pointer;
+        &:hover { background-color: $color-pf-black-300; }
       }
       .only-first-item {
-        span {
-          font-weight: 600;
-        }
+        span { font-weight: 600; }
       }
       .first-item {
-        border-bottom: 1px dashed $color-pf-black-500;
-        span {
-          font-weight: 600;
-        }
+        border-bottom: 1px dashed;
+        border-bottom-color: $color-pf-black-500;
+        span { font-weight: 600; }
       }
-      .selected {
-        background-color: $color-pf-black-300;
-      }
+      .selected { background-color: $color-pf-black-300; }
       .action-li {
         display: flex;
-        justify-content: space-between;
         padding: em(5);
         margin-left: -15px;
+        justify-content: space-between;
         .action-item {
-          cursor: pointer;
           color: $color-pf-black-500;
+          cursor: pointer;
         }
       }
     }
     .user-list {
       max-height: em(150);
       overflow-y: scroll;
-      border-bottom: 1px solid $color-pf-black-500;
+      border-bottom: 1px solid;
+      border-bottom-color: $color-pf-black-500;
     }
   }
 }
-
 @media (max-width: $grid-float-breakpoint){
   /*Toggle the details panel's width and left margin*/
   .detail-container {
     .top-bar {
-      background-color:$color-pf-black;
-      color: $color-pf-white;
       padding: em(10) em(20);
+      color: $color-pf-white;
+      background-color: $color-pf-black;
     }
-    .detail-type-dropdown {
-      position: relative;
-    }
-    .wi-state-btn{
-      padding-top: 0;
-    }
+    .detail-type-dropdown { position: relative; }
+    .wi-state-btn{ padding-top: 0; }
   }
-
   .detail-panel {
+    top: 0;
     width: $width100;
     padding: 0;
-    top: 0;
   }
-
   .user-search {
-    height: 100%;
-    width: $width100;
     position: fixed;
-    z-index: 9;
     top: 0;
     left: 0;
+    z-index: 9;
+    width: $width100;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     .list-container {
       top: em(144);
+      left: 50%;
       width: 80%;
       @include transform(translateX(-50%));
-      left: 50%;
-      .user-list {
-        max-height: em(250);
-      }
+      .user-list { max-height: em(250); }
     }
   }
 }
-
-.user-avatar {
-  @include user-avatar;
-}
-
+.user-avatar { @include user-avatar; }
 .detail-action-btn {
+  margin-top: 20px;
   @include detail-action-btn;
   height: 35px;
-  margin-top: 20px;
 }
-.none-assigned {
-  color: $color-pf-blue;
-}
+.none-assigned { color: $color-pf-blue; }

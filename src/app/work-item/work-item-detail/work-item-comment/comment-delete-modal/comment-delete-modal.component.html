@@ -1,0 +1,19 @@
+
+<modal title="Delete Comment" (onSubmit)="deleteComment()" #deleteCommentModal>
+  <modal-content>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+
+      <!-- UX feed for existing iteration association -->
+      <div id="comment-delete-msg">
+        Are you sure you want to delete this comment?
+      </div>
+
+      <!-- Action buttons to cancel/delete -->
+      <div class="text-right">
+        <button type="submit" id="comment-delete-cancel" class="btn" (click)="deleteCommentModal.close()">Cancel</button>
+        <button type="submit" id="comment-delete-confirm" class="btn btn-danger" (click)="deleteCommentModal.onSubmit.emit(undefined)">Delete</button>
+      </div>
+
+    </div>
+  </modal-content>
+</modal>

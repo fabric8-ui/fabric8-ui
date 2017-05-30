@@ -1,186 +1,145 @@
 @import '../../../assets/stylesheets/base';
 
-.error {color:$color-pf-red-100;}
-.suppress-hover{
-  &:hover{
-    background-color: transparent;
-  }
+.error { color: $color-pf-red-100; }
+.suppress-hover {
+  &:hover { background-color: transparent; }
 }
-
 .tree-list {
-  .node-drop-slot.is-dragging-over {
-    height: 70px;
-  }
+  .node-drop-slot.is-dragging-over { height: 70px; }
 }
-
 .expanderdisabled {
-    .toggle-children {
-        display: none !important;
-    }
+    .toggle-children { display: none !important; }
 }
-
 .tree-list-item {
   display: flex;
   align-items: inherit;
 }
 .side-panel-wrap {
-  min-width: 340px;
   width: 340px;
+  min-width: 340px;
   .side-panel-container {
-      background-color: $color-pf-black-900;
-      overflow-x: hidden;
+    overflow-x: hidden;
+    background-color: $color-pf-black-900;
   }
 }
-.work-item-list-page {
-  >.list-group
-  {
-    border-top-width:0 !important;
-  }
-  flex:1;
+.work-item-list-page { flex:1;
+  >.list-group { border-top-width:0 !important; }
   .detail-list-wrap {
-    flex: auto;
-    -webkit-flex: auto;
-    -ms-flex: auto;
-    overflow-y: scroll;
     width: $width100;
     margin-bottom: 0;
+    overflow-y: scroll;
+    -webkit-flex: auto;
+        -ms-flex: auto;
+            flex: auto;
   }
   .work-item-list-quick-add {
-    flex: none;
     -webkit-flex: none;
-    -ms-flex: none;
+        -ms-flex: none;
+            flex: none;
   }
   .card-pf {
     border: 0;
     box-shadow: none;
   }
   .card-pf-title {
-      .no-wi {
-        font-size: $pf-icon-4x;
-      }
+    .no-wi { font-size: $pf-icon-4x; }
   }
 }
-
-
-.node-drop-slot.is-dragging-over {
-  height: 66px!important;
-}
-
-
+.node-drop-slot.is-dragging-over { height: 66px!important; }
 .work-item-page {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  > main { border-top: 0 solid !important; }
+  .dropdown {
+    a { cursor: pointer; }
+  }
+  .with-cursor-pointer { cursor: pointer; }
+  .with-color-blue { color: $color-pf-blue-400; }
+  >main {
     display: flex;
+    border-top: 1px solid;
+    border-top-color: $color-pf-black-300;
+    flex-direction: row;
     flex: 1;
-    flex-direction: column;
-    position: relative;
-    > main {
-        border-top: 0 solid !important;
-    }
-
-    .dropdown {
-        a {
-            cursor: pointer;
-        }
-    }
-    .with-cursor-pointer {
-        cursor: pointer;
-    }
-    .with-color-blue {
-        color: $color-pf-blue-400;
-    }
-    >main {
+    align-items: stretch;
+    >aside {
+      position: relative;
+      display: flex;
+      background-color: $color-pf-black-200;
+      border-right: 1px solid;
+      border-right-color: $color-pf-black-300;
+      flex: 3;
+      flex-direction: column;
+      align-items: stretch;
+      .contents {
         display: flex;
-        flex-direction: row;
+        overflow: auto;
         flex: 1;
         align-items: stretch;
-        border-top: 1px solid $color-pf-black-300;
-        >aside {
-            flex: 3;
-            display: flex;
-            flex-direction: column;
-            background-color: $color-pf-black-200;
-            border-right: 1px solid $color-pf-black-300;
-            position: relative;
-            align-items: stretch;
-            .contents {
-                //@extend .fill-container;
-                flex: 1;
-                display: flex;
-                overflow: auto;
-                align-items: stretch;
+        //@extend .fill-container;
+      }
+    }
+    >section {
+      position: relative;
+      display: flex;
+      overflow-x: hidden!important;
+      align-items: stretch;
+      flex: 9;
+      flex-direction: column;
+      @include Border(0px, solid, red);
+      .alm-blank-slate {
+        display: block;
+        width: 90%;
+        color: #363636;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .alm-blank-slate:hover { box-shadow: 0 1px 6px rgba(3,3,3,.175); }
+      > header {
+        padding-right: rem(20);
+        padding-left: rem(20);
+        border-bottom: 1px solid;
+        border-bottom-color: $color-pf-black-300 !important;
+        .toolbar-pf { border-color: transparent;
+          .toolbar-pf-actions { border-color: transparent;
+            .form-group { border-right: none;
+              &:first { border-left: none; }
             }
-        }
-        >section {
-            flex: 9;
-            display: flex;
-            flex-direction: column;
-            border: solid 0px red;
-            position: relative;
-            align-items: stretch;
-            overflow-x: hidden!important;
-            .alm-blank-slate {
-                width: 90%;
-                display: block;
-                color: #363636;
-                text-decoration: none;
-                cursor: pointer;
+            .toolbar-pf-action-right {
+              .pficon-add-circle-o { @extend .with-color-blue;}
             }
-
-            .alm-blank-slate:hover {
-                box-shadow: 0 1px 6px rgba(3,3,3,.175);
+          }
+          // ensure icons dont fold around inputs
+          .wi-input-filter-dropdown { position: relative;
+            .wi-input-filter-dropdown-list {
+              top: 2.5rem;
+              width: 100%;
+              padding: .25rem;
             }
-
-            > header {
-              padding: 0 rem(20);
-              border-bottom: 1px solid $color-pf-black-300 !important;
-              .toolbar-pf {
-                  border-color: transparent;
-                  .toolbar-pf-actions {
-                      border-color: transparent;
-                      .form-group {
-                          border-right: none;
-                          &:first {
-                              border-left: none;
-                          }
-                      }
-                      .toolbar-pf-action-right {
-                        .pficon-add-circle-o{
-                          @extend .with-color-blue;
-                        }
-                      }
-                  }
-                  // ensure icons dont fold around inputs
-                  .wi-input-filter-dropdown {
-                      position: relative;
-                      .wi-input-filter-dropdown-list {
-                          width: 100%;
-                          top: 2.5rem;
-                          padding: 0.25rem;
-                      }
-                      >div {
-                          position: relative;
-                          //HACK:prevents caret icon from folding to a new line
-                          >input {
-                              margin-right: -2.0rem;
-                          }
-                          //HACK:positions the caret in right margin are of input
-                          >span.caret::before {
-                              z-index: 2;
-                              display: inline-block;
-                              height: 1.5rem;
-                              line-height: 1.5rem;
-                              width: 1.5rem;
-                          }
-                      }
-                  }
+            >div { position: relative;
+              //HACK:prevents caret icon from folding to a new line
+              >input {  margin-right: -2.0rem; }
+              //HACK:positions the caret in right margin are of input
+              >span.caret::before {
+                z-index: 2;
+                display: inline-block;
+                width: 1.5rem;
+                height: 1.5rem;
+                line-height: 1.5rem;
               }
             }
-            .contents {
-                //@extend .fill-container;
-                flex: 1;
-                display: flex;
-                overflow-x: hidden;
-                align-items: stretch;
-            }
+          }
         }
+      }
+      .contents {
+        display: flex;
+        overflow-x: hidden;
+        flex: 1;
+        align-items: stretch;
+        //@extend .fill-container;
+      }
     }
+  }
 }
