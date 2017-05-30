@@ -1,19 +1,40 @@
-<div class="link-container flex-container flex-grow-1 in-column-direction margin-top-10" id="wi-link">
+<div class="link-container margin-top-10" id="wi-link">
   <ul class="link-header-nav-list nav nav-tabs nav-tabs-pf">
     <li class="toggle-icon" (click)="toggleLinkComponent()">
-      <i id="caret-right" class="fa fa-icon" [ngClass]="{'fa-angle-down': showLinkComponent,
+      <i class="fa fa-icon"
+       id="caret-right"
+       [ngClass]="{'fa-angle-down': showLinkComponent,
             'fa-angle-right': !showLinkComponent}"></i>
     </li>
     <li
       [class.active]="selectedTab === 'all'"
       (click)="selectTab('all')">
       <a>
+<<<<<<< HEAD
         <span>
           Total Links
         </span>
         <span *ngIf="workItem?.relationalData?.linkDicts; else loading"
           id="wi-link-total" class="badge">
           {{workItem?.relationalData?.totalLinkCount}}
+=======
+        <span> Total Links </span>
+        <span class="badge"
+          id="wi-link-total" >
+          {{workItem.relationalData.totalLinkCount}}
+        </span>
+      </a>
+    </li>
+    <li *ngFor="let linkType of workItem.relationalData.linkDicts; let totalLink = index"
+    [class.active]="selectedTab === linkType.linkName"
+    (click)="selectTab(linkType.linkName)">
+      <a>
+        <span class="link-header-nav-text">
+          {{linkType.linkName}}
+        </span>
+        <span class="badge" id="linktotal_{{totalLink}}">
+          {{linkType.count}}
+>>>>>>> fix(wi-links): remove flex and fix units to px
         </span>
         <ng-template #loading>
           <span class="spinner spinner-sm spinner-inline"></span>
@@ -35,31 +56,42 @@
       </li>
     </template>
   </ul>
+<<<<<<< HEAD
   <div class="link-content" id="wi-link-content"
   *ngIf="showLinkComponent && workItem?.relationalData?.linkDicts">
     <div *ngIf="!workItem?.relationalData?.totalLinkCount && !showLinkView"
       class="link-content-create-link">
+=======
+  <div class="link-content" id="wi-link-content" *ngIf="showLinkComponent">
+    <div class="link-content-create-link"
+      *ngIf="!workItem.relationalData.totalLinkCount && !showLinkView">
+>>>>>>> fix(wi-links): remove flex and fix units to px
       <i class="pficon pficon-add-circle-o add-circle-icon"></i>
-      <p class="flex-container">Work Item Links</p>
-      <span class="flex-container">There are no items linked to this issue</span>
-      <button class="btn btn-primary dib create-link-btn" (click)="toggleLinkView()" id="create-link-button">Create Link</button>
+      <p>Work Item Links</p>
+      <span>There are no items linked to this issue</span>
+      <button class="btn btn-primary db create-link-btn"
+        id="create-link-button"
+        (click)="toggleLinkView()" >Create Link</button>
     </div>
-
-    <div *ngIf="workItem.relationalData.totalLinkCount || showLinkView" class="flex-container flex-grow-1 in-column-direction">
-      <div *ngIf="loggedIn" class="flex-container flex-grow-1 in-column-direction">
+    <div *ngIf="workItem.relationalData.totalLinkCount || showLinkView">
+      <div class="width-100 pull-left" *ngIf="loggedIn">
         <div class="link-item-hdr" (click)="toggleLinkCreator()">
-          <p *ngIf="workItem" id="link_item_title" class="margin-0 flex-grow-1">This item, {{ workItem.attributes['system.title'] }}</p>
-          <i id="caret-right" class="fa fa-icon" [ngClass]="{'fa-angle-down': showLinkCreator,
+          <i class="fa fa-icon"
+            id="caret-right"
+            [ngClass]="{'fa-angle-down': showLinkCreator,
             'fa-angle-right': !showLinkCreator}"></i>
+          <p class="margin-0"
+            id="link_item_title"
+            *ngIf="workItem" >This item, {{ workItem.attributes['system.title'] }}</p>
         </div>
-
-
-        <div *ngIf="showLinkCreator" class="link-editor table-row" id="wi-link-editor">
+        <div class="link-editor table width-100"
+          id="wi-link-editor"
+          *ngIf="showLinkCreator">
           <div class="table-cell">
             <div class="combobox-container">
               <div class="input-group" dropdown>
-                <input type="text" placeholder="Select Link Type"
-                  class="combobox form-control readonly"
+                <input class="combobox form-control readonly"
+                  type="text" placeholder="Select Link Type"
                   [ngClass]="{'selected-value': selectedLinkType }"
                   readonly dropdownToggle
                   [attr.value]="selectedLinkType?.name">
@@ -76,18 +108,18 @@
           <div class="table-cell">
             <div class="combobox-container">
               <input type="hidden" name="" value="">
-              <div class="input-group dropdown open active">
-                <input id="workitem-link-search" #searchBox
-                  class="combobox form-control"
+              <div class="input-group dropdown open active width-100">
+                <input class="combobox form-control"
+                  id="workitem-link-search" #searchBox
                   placeholder="Search for work items"
                   (keyup)="linkSearchWorkItem(searchBox.value, $event)"
                   [value]="selectedValue"
                   [disabled]="!selectedLinkType"/>
-                <ul *ngIf="searchWorkItems.length"
-                    class="dropdown-menu dropdown-ul"
+                <ul class="dropdown-menu dropdown-ul"
+                    *ngIf="searchWorkItems.length"
                     #searchResultList>
-                  <li *ngFor="let workItem of searchWorkItems"
-                      class="pointer"
+                  <li class="pointer"
+                      *ngFor="let workItem of searchWorkItems"
                       (click)="selectSearchResult(workItem.id, workItem.attributes['system.title'])"
                       [attr.data-wiid]="workItem.id"
                       [attr.data-wititle]="workItem.attributes['system.title']">
@@ -99,11 +131,13 @@
             </div>
           </div>
           <div class="table-cell">
-            <button [disabled]="!selectedLinkType || !selectedWorkItemId ? true : false"
+            <button
+              class="btn btn-xs link-button"
+              id="bind-link"
               type="button"
               value="Link"
-              class="btn btn-xs link-button"
-              (click)="createLink($event)" id="bind-link">
+              [disabled]="!selectedLinkType || !selectedWorkItemId ? true : false"
+              (click)="createLink($event)">
               Link
             </button>
           </div>
@@ -161,10 +195,7 @@
               Link
             </button>
           </div>
-        </div>
--->
-
-
+        </div>-->
       </div>
       <div class="link-list-wrap" *ngIf="workItem.relationalData.linkDicts.length">
         <p class="link-list-header">Links</p>
@@ -184,7 +215,8 @@
                 {{link.relationalData.source.id == workItem.id ? link.relationalData.target.state : link.relationalData.source.state}}
               </span>-->
               <a *ngIf="loggedIn" (click)="deleteLink($event, link, workItem)">
-                <i id="closeLink_{{counterlink}}" class="pull-right pficon pficon-close list-close-icon"></i>
+                <i class="pull-right pficon pficon-close list-close-icon margin-top-5"
+                  id="closeLink_{{counterlink}}"></i>
               </a>
             </li>
           </ul>
