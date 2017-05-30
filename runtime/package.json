@@ -17,6 +17,7 @@
     "clean:dist": "npm run rimraf -- dist",
     "clean:install": "npm set progress=false && npm install",
     "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist compiled dll",
+    "reinstall": "rimraf node_modules && npm cache clean && npm install",
     "lint": "npm run tslint \"src/**/*.ts\"",
     "postversion": "git push && git push --tags",
     "preclean:install": "npm run clean",

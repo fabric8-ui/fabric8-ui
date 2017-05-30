@@ -3,12 +3,13 @@
 # This script runs the Planner-Platform integration in one go.
 # It has the following commandline options:
 #
-#   -r   reinstalls both Planner and Platform before launching 
+#   -r reinstalls all needed components before launching 
+#   -s runs in standalone (non-Plaform mode) with inmemory mock data
 #   -p <planner_home_dir> sets the Planner home, defaults to current directory
 #   -f <platform_home_dir> sets the Platform home, defaults to <current directory>/../fabric8-ui
 #
-# NOTE: this does not set any run mode or api url environment. If you need that, set it as usual 
-# before launching this script.
+# NOTE: this does not set any run mode or api url environment for non-standalone mode. If you 
+# need that, set it as usual before launching this script.
 
 # get the script's absolute path
 pushd `dirname $0` > /dev/null
@@ -20,14 +21,15 @@ echo $SCRIPTPATH
 PLANNER_HOME="$SCRIPTPATH/.."
 PLATFORM_HOME="$PLANNER_HOME/../fabric8-ui"
 REINSTALL=0
+STANDALONE=0
 NODE_ENV=production
 
 # fire up getopt
-TEMP=`getopt -o rp:f: --long reinstall,plannerhome:,platformhome: -n 'run-integration.sh' -- "$@"`
+TEMP=`getopt -o rsp:f: --long reinstall,standalone,plannerhome:,platformhome: -n 'run-planner.sh' -- "$@"`
 eval set -- "$TEMP"
 
-# reinstall
-function reinstall {
+# reinstall Planner and Platform
+function reinstallPlatformIntegrated {
   echo "Reinstalling Planner in $PLANNER_HOME"
   cd $PLANNER_HOME && npm run reinstall &
   echo "Reinstalling Platform in $PLATFORM_HOME"
@@ -35,16 +37,37 @@ function reinstall {
   wait
 } 
 
+# reinstall Planner and Runtime
+function reinstallStandalone {
+  echo "Reinstalling Planner in $PLANNER_HOME"
+  cd $PLANNER_HOME && npm run reinstall &
+  echo "Reinstalling Runtime in $PLANNER_HOME/runtime"
+  cd $PLANNER_HOME/runtime && npm run reinstall &
+  wait
+} 
+
 # links planner to platform
-function linkPlanner {
+function linkPlannerToPlatform {
   echo "Linking Planner to Platform in $PLATFORM_HOME"
   cd $PLATFORM_HOME && npm link $PLANNER_HOME/dist-watch
+} 
+
+# links planner to runtime
+function linkPlannerToRuntime {
+  echo "Linking Planner to Runtime in $PLANNER_HOME/runtime"
+  cd $PLANNER_HOME/runtime && npm link $PLANNER_HOME/dist-watch
 } 
 
 # runs the platform
 function runPlatform {
   echo "Running Platform in $PLATFORM_HOME"
   cd $PLATFORM_HOME && npm start 
+} 
+
+# runs the standalone Runtime
+function runStandalone {
+  echo "Running Runtime in $PLANNER_HOME/runtime"
+  cd $PLANNER_HOME/runtime && npm start 
 } 
 
 # runs the planner in watch mode
@@ -59,6 +82,7 @@ function runPlanner {
 while true ; do
     case "$1" in
         -r|--reinstall) REINSTALL=1 ; shift ;;
+        -s|--standalone) STANDALONE=1 ; shift ;;
         -p|--plannerhome)
             case "$2" in
                 "") shift 2 ;;
@@ -76,10 +100,24 @@ done
 
 if [ $REINSTALL -eq 1 ]
   then
-    reinstall
+    if [ $STANDALONE -eq 1 ]
+      then
+        reinstallStandalone
+      else
+        reinstallPlatformIntegrated
+    fi
 fi
+
 runPlanner
-linkPlanner
-runPlatform
+
+if [ $STANDALONE -eq 1 ]
+  then
+    export NODE_ENV=inmemory
+    linkPlannerToRuntime
+    runStandalone
+  else
+    linkPlannerToPlatform
+    runPlatform
+fi
 
 

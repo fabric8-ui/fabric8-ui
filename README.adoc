@@ -5,129 +5,78 @@ image:https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-planner-npm-pu
 image:https://codecov.io/gh/fabric8io/fabric8-planner/branch/master/graph/badge.svg[Codecov.io, link="https://codecov.io/gh/fabric8io/fabric8-planner"]
 image:https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic%20release-b4d455.svg[Semantic Release, link="https://github.com/semantic-release/semantic-release"]
 
-**Fabric8 Planner is a task planner and issue tracker front-end.**
+**Fabric8 Planner is a task planner and issue tracker front-end for openshift.io**
 
 It uses https://github.com/almighty/almighty-core[Fabric8 Work Item Tracker]
-as the back-end.
+as the back-end. The Planner project itself only provides a component library
+is being used by other applications to provide a task planning frontend. For
+testing and experimental use, a minimal runtime is part of the Planner repository.
 
-== Running the app
+== Running the Planner
 
-=== Set NODE_ENV
-If you're just trying to test the application, please use inmemory mode which
-will load the app with mock data for you. If you, however, want to contribute
-to the codebase, unset it back or to "development" (default) mode and rebuild.
+The Planner can not be run by itself as it is an Angular component library. But 
+for testing purposes, a minimal runtime implementation is provided in the `runtime` 
+directory. To run the minimal runtime, follow the steps in *`runtime/README.adoc`*.
 
+=== Quickstart 
 
-[source,shell]
-```
-$ export NODE_ENV=inmemory # <1>
-$ export NODE_ENV=development # <2>
-$ export NODE_ENV=production # <3>
+To quickly run the provided minimal Runtime with the Planner, simply run
 
-<1> In-memory mode for trying-out the app
-<2> Development mode for contributing to the source
-<2> Production mode for deploying the application
-```
+ $ scripts/run-planner.sh --standalone
 
-Once you're done setting the environment, you can proceed with the next step(s)
+This will run the Planner using the minimal Runtime and a mock database. The service 
+will be available on *`localhost:8080`*
 
-NOTE: If you're directly trying to run the app in dev mode, you can skip this
-step, as *`NODE_ENV`* is treated as `"development"` by default.
+=== Running the Unit Tests
 
-IMPORTANT: If you're trying out the app `"inmemory"` mode, then after running
-the app (as explained in the next step) please don't forget to
-http://localhost:8088/?token_json=%7B%22access_token%22%3A%22somerandomtoken%22%2C%22expires_in%22%3A1800%2C%22refresh_expires_in%22%3A1800%2C%22refresh_token%22%3A%22somerandomtoken%22%2C%22token_type%22%3A%22bearer%22%7D[visit this URL]
-to load it up with mock data, including the authenticated/logged-in user.
+To run the linter, build validator, and unit tests use:
 
-=== First run
+ $ gulp test:unit
 
-If you're trying to run the app for the first time:
+== Other Useful Scripts and Tasks
 
- $ npm install
+The Planner uses `gulp` as the build tool and provides frequent used tasks as `npm` 
+tasks as well. The *`package.json`* file's `scripts:` section lists all the tasks available. 
 
-Then, start the app with:
-
- $ npm start
-
-=== Fresh run
-
-If you trying to refresh your installation, you need to run:
-
- $ npm run reinstall
-
-Then, start the app with:
-
- $ npm start
-
-=== Testcase run
-
-To run the linter, build validator, unit tests, and functional test use:
-
- $ npm test
-
-== Other useful scripts
-
-The *`package.json`* file's `scripts:` section lists _all the tasks_ we run.
-
-Here are some of the most useful/frequently used scripts you may need to run:
+Here are some of the most useful/frequently used scripts and `gulp` tasks you may need to run:
 
 [cols="1,2,4", options="header"]
 |===
-|Scipt
+|Script
 |Command
 |Description
 
-|Lint
-|`$ npm run lint`
-|Runs the TypeScript and Angular 2 linter
+|Clean
+|`$ npm run clean:all`
+|Cleans the project directory
 
-|Validation
-|`$ npm run validate`
-|Validates the webpack build
+|Reinstall
+|`$ npm run reinstall`
+|Cleans the dependencies and reinstalls them
 
 |Unit Tests
 |`$ npm run test:unit`
 |Runs the unit tests
 
-|Functional Tests
-|`$ npm run test:func`
-|Runs the functional tests
+|Semantic Release
+|`$ npm run semantic-release`
+|Builds the library and performs a semantic release to npmjs
 
-|Continuous Tests
-|`$ npm run watch:test`
-|Looks for changes in source code and runs unit tests
+|Continuous Build
+|`$ npm run watch:library`
+|Runs the build in watch mode, watching changes and rebuilding source
 |===
 
 === CI scripts
 
-There are some other scripts for CI-environment; such as `run_unit_tests.sh`,
-`run_functional_tests.sh`, `cico_run_tests.sh`, `cico_build_deploy.sh` etc.
-They're generally not meant to be run manually.
+There are some other scripts for CI-environment; such as `run_functional_tests.sh`, 
+`cico_run_tests.sh`, `cico_build_deploy.sh` etc. They're generally not meant to be run manually.
 
-== Building the app
+== Building the Component Library
 
 === Production build
 
 To generate production build, set API URL and run build script as follows:
-
-----
-$ npm run build:prod
-----
-
-The build output will be under `dist` directory.
-
-*To create a docker image,* run this command immediately after the production
-build completion:
-
-----
-$ docker build -t fabric8-planner-deploy -f Dockerfile.deploy .
-----
-
-=== Library Build
-
-==== For production:
-
-To build the Planner as an npm library, use:
 
 ----
 $ npm run build
@@ -138,7 +87,7 @@ The created library will be placed in `dist`.
 IMPORTANT: *You shouldn't ever publish the build manually,* instead you should
 let the CD pipeline do a semantic release.
 
-==== For development:
+=== Development Build
 
 To build fabric8-planner as an npm library and embed it into a webapp such as
 fabric8-ui, you should:
@@ -159,10 +108,26 @@ have access to both JS and SASS sourcemaps if your webapp is properly setup.
 NOTE: `fabric8-ui` is setup to do reloading and sourcemaps automatically when you
 run `npm start`.
 
-== Running with the launcher script
+=== Development Build using the Launcher Script
 
-The above integration can be run with the provided launcher script in scripts/. See
-the script for details on how to run it.
+The above integration can be run with the provided launcher script in `scripts/run-planner.sh`.
+
+There are two options available when using the script:
+
+1. Running the Planner using te standalone minimal Runtime and an inmemory mock database.
+2. Running the Planner using an external Runtime that uses the procedure above for 
+   integration (this can be used out-of-the-box with the `fabric8-ui? project)
+
+Using the minimal Runtime and a mock database (option 1) run:
+
+ $ scripts/run-planner.sh --standalone
+ 
+Using an external Euntime (option 1) run:
+
+ $ scripts/run-planner.sh 
+
+The paths for the runtimes can be configured using commandline arguments. See 
+`scripts/run-planner.sh` for further documentation.
 
 == CSS and SASS
 
