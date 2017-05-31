@@ -134,7 +134,8 @@ export class AppGeneratorConfiguratorService {
 
   public scrubAppGeneratorResponse(context: string, execution: IAppGeneratorPair): IAppGeneratorResponse {
     let response = execution.response;
-    this.augmentTitle(context, execution);
+    this.augmentResponseStateTitle(context, execution);
+    this.augmentResponseStateSteps(context, execution);
     let validationFields = this.getValidationCommandFields(context, execution);
     for ( let field of response.payload.fields ) {
       // update validation messages to be more descriptive
@@ -265,38 +266,51 @@ export class AppGeneratorConfiguratorService {
     return space;
   }
 
-  private augmentTitle(context: string, execution: IAppGeneratorPair) {
-    let response = execution.response;
-    let title = response.payload.state.title || '';
-    switch ( title.toLowerCase() ) {
+  private augmentStep(name:string):string {
+    let augmentedName = name;
+    switch ((name||'').toLowerCase() ) {
       case 'io.fabric8.forge.generator.github.githubrepostep': {
-        response.payload.state.title = 'GitHub repository information';
+        augmentedName = 'GitHub repository information';
         break;
       }
       case 'fabric8: new project': {
-        response.payload.state.title = 'Quickstart';
+        augmentedName = 'Quickstart';
         break;
       }
       case 'launchpad: new project': {
-        response.payload.state.title = 'Quickstart';
+        augmentedName = 'Quickstart';
         break;
       }
       case 'obsidian: configure pipeline': {
-        response.payload.state.title = 'Select a build pipeline strategy ... ';
+        augmentedName = 'Select a build pipeline strategy ... ';
         break;
       }
       case 'io.fabric8.forge.generator.kubernetes.createbuildconfigstep': {
-        response.payload.state.title = 'Select the pipeline build options ... ';
+        augmentedName = 'Select the pipeline build configuration options ... ';
         break;
       }
       case 'io.fabric8.forge.generator.github.githubimportpickrepositoriesstep': {
-        response.payload.state.title = 'Select the GitHub repository that you wish to import ...';
+        augmentedName = 'Select the GitHub repository that you wish to import ...';
         break;
       }
       default: {
         break;
       }
     }
+    return augmentedName;
+
+  }
+
+  private augmentResponseStateSteps(context: string, execution: IAppGeneratorPair) {
+    let response = execution.response;
+    let augmentedSteps: Array<string> = [];
+    (<Array<string>>response.payload.state.steps).forEach(step => augmentedSteps.push(this.augmentStep(step)));
+    response.payload.state.steps=augmentedSteps;
+  }
+
+  private augmentResponseStateTitle(context: string, execution: IAppGeneratorPair) {
+    let response = execution.response;
+    response.payload.state.title =this.augmentStep(response.payload.state.title );
   }
 
   private getValidationCommandFields( context: string, execution: IAppGeneratorPair ): IFieldCollection {
@@ -339,8 +353,18 @@ export class AppGeneratorConfiguratorService {
     let defaultIndex = 0;
     for ( let choice of <Array<IFieldChoice>>field.display.choices ) {
       choice.isDefault = false;
+
       choice.hasIcon = false;
+      choice.icon="fa fa-check";
+
+      choice.view = 'image';
+
+      choice.collapsed = true;
+      choice.collapsible = true;
+
       choice.view = 'pipelineView';
+      choice.hasView = true;
+
       let choiceSource = source.valueChoices.find(vc => vc.id === choice.id) || { environments: [], stages: [], color: 'success' , icon: 'fa-check-circle'};
       let determineColor = (value: string): string => {
         let found = (value || '').toLowerCase().includes('approve');
@@ -393,6 +417,8 @@ export class AppGeneratorConfiguratorService {
     } else {
       this.setFieldSelection( field );
     }
+    //selected choices should have choice display render in non collapsed mode
+    (<Array<IFieldChoice>>field.display.choices).filter( c=>c.selected===true ).forEach(c=>c.collapsed=false);
     this.sortFieldOptionsByIndex(field);
     // suppress field note
     field.display.note = null;

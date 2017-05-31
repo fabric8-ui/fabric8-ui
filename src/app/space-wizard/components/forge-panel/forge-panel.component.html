@@ -1,9 +1,9 @@
-    <header class="container-fluid forge-header">
+    <header class="container-fluid forge-header user-select-none">
       <div class="row">
         <div class="col-xs-12 wizard-step-title">
           <h4 class="text" >Welcome to your {{configurator.currentSpace.attributes.name | spaceName}} space.</h4>
           <div></div>
-          <span (click)="workflow.cancel()" class="pficon pficon-close cursor-pointer"></span>
+          <span title="Close" (click)="workflow.cancel()" class="pficon pficon-close cursor-pointer"></span>
         </div>
       </div>
       <div class="row" >
