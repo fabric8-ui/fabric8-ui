@@ -38,7 +38,7 @@ export class ForgeAppGeneratorServiceClient {
    */
   public static factoryProvider = {
       provide: ForgeAppGeneratorServiceClient,
-      useFactory: (appGeneratorService, codebasesService, configuratorService, notifications,broadcaster, loggerFactory) => {
+      useFactory: (appGeneratorService, codebasesService, configuratorService, notifications, broadcaster, loggerFactory) => {
         let tmp = new ForgeAppGeneratorServiceClient(appGeneratorService, codebasesService, configuratorService, notifications, broadcaster, loggerFactory);
         return tmp;
       },

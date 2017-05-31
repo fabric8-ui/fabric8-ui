@@ -22,7 +22,7 @@ export class AppGeneratorSingleSelectionListComponent implements OnInit, OnDestr
   // keep track of the number of instances
   static instanceCount: number = 1;
 
-  @Input() field: IField = <IField>{ name:'', value:'', display:{ choices:[] }};
+  @Input() field: IField = <IField>{ name: '', value: '', display: { choices: [] }};
   @Input() appGenerator: ForgeAppGeneratorServiceClient;
 
   constructor(

@@ -266,9 +266,9 @@ export class AppGeneratorConfiguratorService {
     return space;
   }
 
-  private augmentStep(name:string):string {
+  private augmentStep(name: string): string {
     let augmentedName = name;
-    switch ((name||'').toLowerCase() ) {
+    switch ((name || '').toLowerCase() ) {
       case 'io.fabric8.forge.generator.github.githubrepostep': {
         augmentedName = 'GitHub repository information';
         break;
@@ -305,12 +305,12 @@ export class AppGeneratorConfiguratorService {
     let response = execution.response;
     let augmentedSteps: Array<string> = [];
     (<Array<string>>response.payload.state.steps).forEach(step => augmentedSteps.push(this.augmentStep(step)));
-    response.payload.state.steps=augmentedSteps;
+    response.payload.state.steps = augmentedSteps;
   }
 
   private augmentResponseStateTitle(context: string, execution: IAppGeneratorPair) {
     let response = execution.response;
-    response.payload.state.title =this.augmentStep(response.payload.state.title );
+    response.payload.state.title = this.augmentStep(response.payload.state.title );
   }
 
   private getValidationCommandFields( context: string, execution: IAppGeneratorPair ): IFieldCollection {
@@ -355,7 +355,7 @@ export class AppGeneratorConfiguratorService {
       choice.isDefault = false;
 
       choice.hasIcon = false;
-      choice.icon="fa fa-check";
+      choice.icon = 'fa fa-check';
 
       choice.view = 'image';
 
@@ -417,8 +417,8 @@ export class AppGeneratorConfiguratorService {
     } else {
       this.setFieldSelection( field );
     }
-    //selected choices should have choice display render in non collapsed mode
-    (<Array<IFieldChoice>>field.display.choices).filter( c=>c.selected===true ).forEach(c=>c.collapsed=false);
+    // selected choices should have choice display render in non collapsed mode
+    (<Array<IFieldChoice>>field.display.choices).filter( c => c.selected === true ).forEach(c => c.collapsed = false);
     this.sortFieldOptionsByIndex(field);
     // suppress field note
     field.display.note = null;

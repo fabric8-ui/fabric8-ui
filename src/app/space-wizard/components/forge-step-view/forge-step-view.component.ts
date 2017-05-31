@@ -36,7 +36,7 @@ export class ForgeStepViewComponent implements OnInit, OnDestroy {
      let steps = [];
      let n: number = 0;
      for (let step of this._state.steps){
-       let s = { name: n + 1 , title:step, active: this._state.currentStep === n};
+       let s = { name: n + 1 , title: step, active: this._state.currentStep === n};
        steps.push(s);
        n++;
      }
