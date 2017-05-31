@@ -169,7 +169,9 @@ export class WorkItemListEntryComponent implements OnInit {
     this.workItemService
       .update(this.workItem)
       .subscribe(workItem => {
-        this.workItem = workItem;
+        //update only the relevant fields
+        this.workItem.relationships.iteration = {}
+        this.workItem.attributes['version'] = workItem.attributes['version'];
         try {
           this.notifications.message({
             message: workItem.attributes['system.title'] + ' has been moved to the Backlog.',
