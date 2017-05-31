@@ -6,7 +6,7 @@ import { UniqueSpaceNameValidatorDirective, ValidSpaceNameValidatorDirective, Fa
 import { runtimeConsoleImports } from './../shared/runtime-console/runtime-console';
 import { LoggerFactory } from './common/logger';
 import { ForgeAppGeneratorComponent } from './components/forge-app-generator/forge-app-generator.component';
-import { ForgePipelineViewComponent } from './components/forge-pipeline-view/forge-pipeline-view.component';
+import { AppGeneratorBuildPipelineViewComponent } from './components/app-generator-build-pipeline-view/app-generator-build-pipeline-view.component';
 import { AppGeneratorSingleSelectionListComponent } from './components/app-generator-single-selection-list/app-generator-single-selection-list.component';
 import { ForgeStepViewComponent } from './components/forge-step-view/forge-step-view.component';
 import { ForgePanelComponent } from './components/forge-panel/forge-panel.component';
@@ -30,7 +30,7 @@ import { CodebasesService } from '../create/codebases/services/codebases.service
   declarations: [
     SpaceWizardComponent,
     ForgeAppGeneratorComponent,
-    ForgePipelineViewComponent,
+    AppGeneratorBuildPipelineViewComponent,
     ForgeStepViewComponent,
     ForgePanelComponent,
     AppGeneratorSingleSelectionListComponent,

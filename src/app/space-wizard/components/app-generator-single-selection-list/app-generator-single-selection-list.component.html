@@ -11,7 +11,7 @@
         <div class="list-item-icon" *ngIf="choice.hasIcon===true && choice.view==='image'">
           <div [ngClass]="[choice.icon]"></div>
         </div>
-        <forge-pipeline-view class="list-item-view"  [class.collapsible]="choice.collapsible===true"  *ngIf="choice.hasView===true && choice.view === 'pipelineView'" [pipeline]="choice.model"></forge-pipeline-view>
+        <app-generator-build-pipeline-view class="list-item-view"  [class.collapsible]="choice.collapsible===true"  *ngIf="choice.hasView===true && choice.view === 'buildPipelineView'" [buildPipeline]="choice.model"></app-generator-build-pipeline-view>
         <div class="list-item-content">
           <div class="list-item-label"><label for="{{field.name}}">{{choice.name}}</label></div>
           <div class="list-item-details" [hidden]="choice.collapsible===true && choice.collapsed===true" *ngIf="choice.description" [innerHTML]="choice.description"></div>

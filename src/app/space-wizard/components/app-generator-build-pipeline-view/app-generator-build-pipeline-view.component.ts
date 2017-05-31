@@ -2,19 +2,18 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 //
 import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
 
-import { ForgeAppGenerator } from './forge-app-generator';
 
 @Component({
-  selector: 'forge-pipeline-view',
-  templateUrl: './forge-pipeline-view.component.html',
-  styleUrls: [ './forge-pipeline-view.component.scss' ]
+  selector: 'app-generator-build-pipeline-view',
+  templateUrl: './app-generator-build-pipeline-view.component.html',
+  styleUrls: [ './app-generator-build-pipeline-view.component.scss' ]
 })
-export class ForgePipelineViewComponent implements OnInit, OnDestroy {
+export class AppGeneratorBuildPipelineViewComponent implements OnInit, OnDestroy {
 
   // keep track of the number of instances
   static instanceCount: number = 1;
 
-  @Input() public pipeline: any = {
+  @Input() public buildPipeline: any = {
     stages: [
       { name: 'Release', color: 'success' , icon: 'fa-check-circle' },
       { name: 'Test', color: 'success' , icon: 'fa-check-circle' },
@@ -24,7 +23,7 @@ export class ForgePipelineViewComponent implements OnInit, OnDestroy {
 
   constructor(
     loggerFactory: LoggerFactory) {
-    let logger = loggerFactory.createLoggerDelegate(this.constructor.name, ForgePipelineViewComponent.instanceCount++);
+    let logger = loggerFactory.createLoggerDelegate(this.constructor.name, AppGeneratorBuildPipelineViewComponent.instanceCount++);
     if ( logger ) {
       this.log = logger;
     }

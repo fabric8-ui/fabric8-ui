@@ -362,7 +362,7 @@ export class AppGeneratorConfiguratorService {
       choice.collapsed = true;
       choice.collapsible = true;
 
-      choice.view = 'pipelineView';
+      choice.view = 'buildPipelineView';
       choice.hasView = true;
 
       let choiceSource = source.valueChoices.find(vc => vc.id === choice.id) || { environments: [], stages: [], color: 'success' , icon: 'fa-check-circle'};

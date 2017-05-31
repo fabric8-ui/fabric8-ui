@@ -1,5 +1,5 @@
 <div class="pipeline" >
-  <ng-template ngFor let-stage [ngForOf] ="pipeline.stages" let-c="count" let-i="index" >
+  <ng-template ngFor let-stage [ngForOf] ="buildPipeline.stages" let-c="count" let-i="index" >
     <div class="stage {{stage.color}}" >
       <div *ngIf="stage.name" class="stage-text" >{{stage.name}}</div>
       <div class="stage-graphic" >
