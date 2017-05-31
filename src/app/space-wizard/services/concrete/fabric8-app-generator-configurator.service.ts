@@ -56,8 +56,8 @@ export class AppGeneratorConfiguratorService {
    */
 
   public workflowSteps = {
-    spaceCreator: 'space-step',
-    spaceConfigurator: 'forge-step',
+    spaceCreator: 'space-creator-step',
+    spaceConfigurator: 'space-configurator-step',
     forgeQuickStart: 'forge-quick-start-step',
     forgeStarter: 'forge-starter-step',
     forgeImportGit: 'forge-import-git-step'
@@ -87,7 +87,7 @@ export class AppGeneratorConfiguratorService {
     this.context.current.subscribe( (ctx: Context) => {
       if (ctx.space) {
         this.currentSpace = ctx.space;
-        this.log(`the current space is updated to ${this.currentSpace.attributes.name}`);
+        this.log(`The current spacehas been updated to ${this.currentSpace.attributes.name}`);
       }
     });
   }

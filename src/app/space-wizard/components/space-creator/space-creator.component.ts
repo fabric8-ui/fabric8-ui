@@ -17,19 +17,14 @@ import { IWorkflow } from '../../models/workflow';
 import { AppGeneratorConfiguratorService } from '../../services/app-generator.service';
 
 @Component({
-  selector: 'create-space',
-  templateUrl: './create-space.component.html',
-  styleUrls: ['./create-space.component.scss'],
+  selector: 'space-creator',
+  templateUrl: './space-creator.component.html',
+  styleUrls: ['./space-creator.component.scss'],
   providers: [SpaceService]
 })
-export class CreateSpaceComponent implements OnInit {
+export class SpaceCreatorComponent implements OnInit {
 
   static instanceCount: number = 1;
-
-
-  get configurator(): AppGeneratorConfiguratorService {
-     return this._configuratorService;
-  }
 
   @Input() workflow: IWorkflow = null;
 
@@ -41,11 +36,11 @@ export class CreateSpaceComponent implements OnInit {
     private userService: UserService,
     private spaceNamespaceService: SpaceNamespaceService,
     private spaceNamePipe: SpaceNamePipe,
-    private _configuratorService: AppGeneratorConfiguratorService,
+    public configurator: AppGeneratorConfiguratorService,
     private spacesService: SpacesService,
     loggerFactory: LoggerFactory
   ) {
-    let logger = loggerFactory.createLoggerDelegate(this.constructor.name, CreateSpaceComponent.instanceCount++);
+    let logger = loggerFactory.createLoggerDelegate(this.constructor.name, SpaceCreatorComponent.instanceCount++);
     if (logger) {
       this.log = logger;
     }

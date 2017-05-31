@@ -10,7 +10,8 @@ import { AppGeneratorBuildPipelineViewComponent } from './components/app-generat
 import { AppGeneratorSingleSelectionListComponent } from './components/app-generator-single-selection-list/app-generator-single-selection-list.component';
 import { AppGeneratorStepViewComponent } from './components/app-generator-step-view/app-generator-step-view.component';
 import { SpaceConfiguratorComponent } from './components/space-configurator/space-configurator.component';
-import { CreateSpaceComponent } from './components/create-space/create-space.component';
+import { SpaceCreatorComponent } from './components/space-creator/space-creator.component';
+
 import { WorkflowFactory } from './models/workflow';
 
 import { IForgeServiceProvider } from './services/forge.service';
@@ -34,7 +35,7 @@ import { CodebasesService } from '../create/codebases/services/codebases.service
     AppGeneratorSingleSelectionListComponent,
     AppGeneratorBuildPipelineViewComponent,
     SpaceConfiguratorComponent,
-    CreateSpaceComponent,
+    SpaceCreatorComponent,
     UniqueSpaceNameValidatorDirective,
     ValidSpaceNameValidatorDirective,
     SelectedItemsPipe,

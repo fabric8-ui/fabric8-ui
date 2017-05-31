@@ -1,6 +1,6 @@
 <div class="wizard">
 
-  <create-space class="wizard-step" [class.active]="workflow.isStepActive({name:configurator.workflowSteps.spaceCreator})" [workflow]="workflow" ></create-space>
+  <space-creator class="wizard-step" [class.active]="workflow.isStepActive({name:configurator.workflowSteps.spaceCreator})" [workflow]="workflow" ></space-creator>
 
   <space-configurator class="wizard-step" [class.active]="workflow.isStepActive({name:configurator.workflowSteps.spaceConfigurator})" [workflow]="workflow" > </space-configurator>
 
