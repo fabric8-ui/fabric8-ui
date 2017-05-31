@@ -10,6 +10,7 @@ const ENV = process.env.ENV || process.env.NODE_ENV || 'development';
 const API_URL = process.env.API_URL || (ENV === 'inmemory' ? 'app/' : 'http://localhost:8080/api/');
 const FORGE_URL = process.env.FORGE_URL || 'http://localhost:8080/forge';
 const FABRIC8_WIT_API_URL = process.env.FABRIC8_WIT_API_URL || 'http://localhost:8080/api/';
+const FABRIC8_REALM = process.env.FABRIC8_REALM || "fabric8";
 const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL;
 const FABRIC8_FORGE_URL = process.env.FABRIC8_FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
@@ -21,6 +22,7 @@ const METADATA = webpackMerge(commonConfig.metadata, {
   API_URL: API_URL,
   ENV: ENV,
   FORGE_URL: FORGE_URL,
+  FABRIC8_REALM: FABRIC8_REALM,
   FABRIC8_WIT_API_URL: FABRIC8_WIT_API_URL,
   FABRIC8_RECOMMENDER_API_URL: FABRIC8_RECOMMENDER_API_URL,
   FABRIC8_FORGE_URL: FABRIC8_FORGE_URL,
@@ -69,7 +71,8 @@ module.exports = function (options) {
           'ENV': JSON.stringify(METADATA.ENV),
           'API_URL': JSON.stringify(METADATA.API_URL),
           'FORGE_URL': JSON.stringify(METADATA.FORGE_URL),
-          'PUBLIC_PATH': JSON.stringify(METADATA.PUBLIC_PATH)
+          'PUBLIC_PATH': JSON.stringify(METADATA.PUBLIC_PATH),
+          'FABRIC8_REALM': JSON.stringify(METADATA.FABRIC8_REALM)
         }
       })
     ],

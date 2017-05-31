@@ -26,6 +26,7 @@ import { SpacesService } from './services/spaces.service';
 import { authApiUrlProvider } from './shared/auth-api.provider';
 import { ssoApiUrlProvider } from './shared/sso-api.provider';
 import { witApiUrlProvider } from './shared/wit-api.provider';
+import { realmProvider } from './shared/realm-token.provider';
 
 // Header
 import { HeaderComponent } from './components/header/header.component';
@@ -64,6 +65,7 @@ if (process.env.ENV == 'inmemory') {
   providers = [
     GlobalSettings,
     witApiUrlProvider,
+    realmProvider,
     serviceImports,
     SpacesService,
     ssoApiUrlProvider,
@@ -97,6 +99,7 @@ if (process.env.ENV == 'inmemory') {
   providers = [
     GlobalSettings,
     witApiUrlProvider,
+    realmProvider,
     serviceImports,
     {
       provide: Http,
