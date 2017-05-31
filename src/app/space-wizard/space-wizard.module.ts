@@ -7,6 +7,7 @@ import { runtimeConsoleImports } from './../shared/runtime-console/runtime-conso
 import { LoggerFactory } from './common/logger';
 import { ForgeAppGeneratorComponent } from './components/forge-app-generator/forge-app-generator.component';
 import { ForgePipelineViewComponent } from './components/forge-pipeline-view/forge-pipeline-view.component';
+import { AppGeneratorSingleSelectionListComponent } from './components/app-generator-single-selection-list/app-generator-single-selection-list.component';
 import { ForgeStepViewComponent } from './components/forge-step-view/forge-step-view.component';
 import { ForgePanelComponent } from './components/forge-panel/forge-panel.component';
 import { CreateSpaceComponent } from './components/create-space/create-space.component';
@@ -32,6 +33,7 @@ import { CodebasesService } from '../create/codebases/services/codebases.service
     ForgePipelineViewComponent,
     ForgeStepViewComponent,
     ForgePanelComponent,
+    AppGeneratorSingleSelectionListComponent,
     CreateSpaceComponent,
     UniqueSpaceNameValidatorDirective,
     ValidSpaceNameValidatorDirective,

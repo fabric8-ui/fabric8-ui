@@ -1,0 +1,78 @@
+$icon-path:'../../../../assets/icon/';
+@import '../../../../assets/stylesheets/base';
+@import '../../../../assets/stylesheets/_icons';
+@import '../../../../assets/stylesheets/shared/_layout';
+
+:host {
+
+  $collapsible-offset: 7.0rem;
+  $icon-offset:0.3rem;
+
+  ul.selection-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      display:flex;
+      >.selection-list-expander {
+        padding-right:1.0rem;
+        padding-top:$icon-offset;
+        width:3.5rem;
+        z-index:100;
+        padding-left:1.0rem;
+      }
+      >.selection-list-input {
+        width:2.0rem;
+        margin-right:$grid-gutter-width/2;
+      }
+      >.selection-list-panel {
+        flex-grow:1;
+        &.collapsible {
+          margin-left:-$collapsible-offset;
+          padding-left:$collapsible-offset;
+        }
+      }
+
+      .list-item-panel
+      {
+        display:flex;
+        flex-direction:row;
+        .list-item-icon
+        {
+          background-color:transparent !important;
+          margin-right:$grid-gutter-width/2;
+          padding:$grid-gutter-width/4;
+          padding-top:$icon-offset;
+        }
+        .list-item-view {
+          &.collapsible {
+            margin-left:-$collapsible-offset;
+          }
+        }
+        .list-item-content {
+          flex-grow:1;
+          padding:5px;
+          .list-item-label {
+            font-weight:bold;
+          }
+          .list-item-details {
+            font-size: smaller;
+            white-space: pre-line;
+          }
+        }
+        // determines if icon is next to (default) or above the item content
+        &.vertical-layout {
+          flex-direction:column-reverse;
+          div.list-item-icon
+          {
+            width:100%;
+          }
+        }
+        &.selected{
+          border:solid 1px $color-pf-black-200;
+        }
+      }
+
+    }
+  }
+}

@@ -381,79 +381,6 @@ $icon-path:'../../../../assets/icon/';
 
 }
 
-ul.selection-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  li {
-    display:flex;
-    >.selection-expander {
-      padding-right:1.0rem;
-      padding-top:0.3rem;
-      width:3.5rem;
-      z-index:100;
-      padding-left:1.0rem;
-    }
-    >input[type = 'radio'] {
-      width:auto;
-      margin-right:$grid-gutter-width/2;
-    }
-    >.selection-panel {
-      flex-grow:1;
-      &.collapsible {
-        margin-left:-6.0rem;
-        padding-left:6.0rem;
-      }
-    }
-    .item
-    {
-      display:flex;
-      flex-direction:row;
-      div.item-icon
-      {
-        background-color:transparent !important;
-        margin-right:$grid-gutter-width/2;
-        padding:$grid-gutter-width/4;
-        padding-top:0.3rem;
-        // border:solid 1px red;
-      }
-      .item-view {
-        &.collapsible {
-          margin-left:-6.0rem;
-        }
-      }
-      div.item-content {
-        flex-grow:1;
-        padding:5px;
-        .item-label {
-          font-weight:bold;
-        }
-        .item-description {
-          font-size: smaller;
-          white-space: pre-line;
-        }
-        //border:solid 1px orange;
-      }
-      &.vertical-layout {
-        flex-direction:column-reverse;
-        div.choice-icon
-        {
-          width:100%;
-          // border:solid 1px red;
-        }
-      }
-      &.selected{
-        border:solid 1px $color-pf-black-200;
-      }
-    }
-
-  }
-}
-.choice-container {
-  //display:flex;
-  // border: solid 1px lime;
-}
-
 .color-info
 {
    color:$color-pf-blue-400;
@@ -464,9 +391,9 @@ ul.selection-list {
     .control-label{
       // color:$color-pf-red;
       &.required{
-        &:after{
+        &:before{
           content: '*';
-
+          color:$color-pf-red;
           padding:3px;
           vertical-align:center;
 
@@ -480,7 +407,10 @@ ul.selection-list {
       // color:$color-pf-red;
       &.required{
         &:after{
-          content: '*'
+          content: '*';
+          color:$color-pf-red;
+          padding:3px;
+          vertical-align:center;
         }
       }
     }
