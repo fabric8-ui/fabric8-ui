@@ -228,6 +228,13 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
           this.updateItemCounts();
       })
     )
+
+    this.eventListeners.push(
+      this.broadcaster.on<WorkItem>('create_workitem')
+        .subscribe((data: WorkItem) => {
+          this.updateItemCounts();
+      })
+    )
     this.eventListeners.push(
       this.route.queryParams.subscribe(params => {
         if (Object.keys(params).indexOf('iteration') > -1) {
