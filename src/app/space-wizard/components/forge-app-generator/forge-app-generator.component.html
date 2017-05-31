@@ -10,7 +10,7 @@
       </div>
     </div>
   </header>
-  <forge-step-view  [class.hide]="forgeClient.hasProcessingMessage||forgeClient.hasSuccessMessage" [state]="forgeClient.state"  ></forge-step-view>
+  <app-generator-step-view  [class.hide]="forgeClient.hasProcessingMessage||forgeClient.hasSuccessMessage" [state]="forgeClient.state"  ></app-generator-step-view>
 
   <section  [class.hide]="!forgeClient.hasProcessingMessage" class="app-generator-message app-generator-message-processing">
     <div class="message-title-container">

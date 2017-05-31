@@ -8,7 +8,7 @@ import { LoggerFactory } from './common/logger';
 import { ForgeAppGeneratorComponent } from './components/forge-app-generator/forge-app-generator.component';
 import { AppGeneratorBuildPipelineViewComponent } from './components/app-generator-build-pipeline-view/app-generator-build-pipeline-view.component';
 import { AppGeneratorSingleSelectionListComponent } from './components/app-generator-single-selection-list/app-generator-single-selection-list.component';
-import { ForgeStepViewComponent } from './components/forge-step-view/forge-step-view.component';
+import { AppGeneratorStepViewComponent } from './components/app-generator-step-view/app-generator-step-view.component';
 import { ForgePanelComponent } from './components/forge-panel/forge-panel.component';
 import { CreateSpaceComponent } from './components/create-space/create-space.component';
 import { WorkflowFactory } from './models/workflow';
@@ -30,10 +30,10 @@ import { CodebasesService } from '../create/codebases/services/codebases.service
   declarations: [
     SpaceWizardComponent,
     ForgeAppGeneratorComponent,
-    AppGeneratorBuildPipelineViewComponent,
-    ForgeStepViewComponent,
-    ForgePanelComponent,
+    AppGeneratorStepViewComponent,
     AppGeneratorSingleSelectionListComponent,
+    AppGeneratorBuildPipelineViewComponent,
+    ForgePanelComponent,
     CreateSpaceComponent,
     UniqueSpaceNameValidatorDirective,
     ValidSpaceNameValidatorDirective,

@@ -9,11 +9,11 @@ import {
 } from '../../services/app-generator.service';
 
 @Component({
-  selector: 'forge-step-view',
-  templateUrl: './forge-step-view.component.html',
-  styleUrls: [ './forge-step-view.component.scss' ]
+  selector: 'app-generator-step-view',
+  templateUrl: './app-generator-step-view.component.html',
+  styleUrls: [ './app-generator-step-view.component.scss' ]
 })
-export class ForgeStepViewComponent implements OnInit, OnDestroy {
+export class AppGeneratorStepViewComponent implements OnInit, OnDestroy {
 
   // keep track of the number of instances
   static instanceCount: number = 1;
@@ -48,7 +48,7 @@ export class ForgeStepViewComponent implements OnInit, OnDestroy {
 
   constructor(
     loggerFactory: LoggerFactory) {
-    let logger = loggerFactory.createLoggerDelegate(this.constructor.name, ForgeStepViewComponent.instanceCount++);
+    let logger = loggerFactory.createLoggerDelegate(this.constructor.name, AppGeneratorStepViewComponent.instanceCount++);
     if ( logger ) {
       this.log = logger;
     }
