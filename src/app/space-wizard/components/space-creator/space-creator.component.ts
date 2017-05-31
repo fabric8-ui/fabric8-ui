@@ -58,7 +58,7 @@ export class SpaceCreatorComponent implements OnInit {
    */
   createSpace() {
     this.log(`createSpace ...`);
-    let space = this.configurator.newSpace;
+    let space = this.configurator.transientSpace;
     console.log('Creating space', space);
     space.attributes.name = space.name.replace(/ /g, '_');
     this.userService.getUser()

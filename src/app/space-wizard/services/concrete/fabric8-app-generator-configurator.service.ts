@@ -41,14 +41,14 @@ export class AppGeneratorConfiguratorService {
     this._currentSpace = value;
   }
 
-  public get newSpace(): Space {
-    if ( !this._newSpace ) {
-      this._newSpace = this.createTransientSpace();
+  public get transientSpace(): Space {
+    if ( !this._transientSpace ) {
+      this._transientSpace = this.createTransientSpace();
     }
-    return this._newSpace;
+    return this._transientSpace;
   }
-  public set newSpace(value: Space) {
-    this._newSpace = value;
+  public set transientSpace(value: Space) {
+    this._transientSpace = value;
   }
 
   /**
@@ -69,12 +69,12 @@ export class AppGeneratorConfiguratorService {
     forgeImportGit: ForgeCommands.forgeImportGit
   };
 
-  private _newSpace: Space;
+  private _transientSpace: Space;
   private _currentSpace: Space;
 
-  public resetNewSpace(): Space {
-     this.newSpace = null;
-     return this.newSpace;
+  public resetTransientSpace(): Space {
+     this.transientSpace = null;
+     return this.transientSpace;
   }
 
   constructor(loggerFactory: LoggerFactory, private context: ContextService) {

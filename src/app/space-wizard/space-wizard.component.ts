@@ -19,9 +19,6 @@ export class SpaceWizardComponent implements OnInit {
 
   @Input() host: IModalHost;
 
-  private get configurator(): AppGeneratorConfiguratorService {
-     return this._configuratorService;
-  }
   /*
    * facilitates specifying a specific starting step when opening the host dialog
    */
@@ -46,7 +43,7 @@ export class SpaceWizardComponent implements OnInit {
     private router: Router,
     private workflowFactory: WorkflowFactory,
     loggerFactory: LoggerFactory,
-    private _configuratorService: AppGeneratorConfiguratorService
+    public configurator: AppGeneratorConfiguratorService
   ) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, SpaceWizardComponent.instanceCount++);
     if (logger) {
@@ -103,7 +100,7 @@ export class SpaceWizardComponent implements OnInit {
    * into a default empty state.
    */
   reset() {
-    this.configurator.resetNewSpace();
+    this.configurator.resetTransientSpace();
     this.workflow = this.createAndInitializeWorkflow();
   }
 
