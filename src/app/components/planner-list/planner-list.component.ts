@@ -157,7 +157,9 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   ngOnDestroy() {
     console.log('Destroying all the listeners in list component');
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
-    this.spaceSubscription.unsubscribe();
+    if (this.spaceSubscription) {
+      this.spaceSubscription.unsubscribe();
+    }
   }
 
   // model handlers

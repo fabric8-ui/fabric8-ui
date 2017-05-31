@@ -2,7 +2,6 @@ import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './components/login/login.component';
-import { WorkItemQuickAddComponent } from 'fabric8-planner';
 import { PlannerListModule } from 'fabric8-planner';
 import { PlannerBoardModule } from 'fabric8-planner';
 
@@ -18,15 +17,11 @@ const routes: Routes = [
   },
   {
     path: 'plan/board',
-    loadChildren: './components/plan-board.module#PlanListModule'
+    loadChildren: './components/plan-board.module#PlanBoardModule'
   },
   {
     path: 'login',
     component: LoginComponent
-  },
-  {
-    path: 'quick-add/:id',
-    component: WorkItemQuickAddComponent
   }
 ];
 

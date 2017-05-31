@@ -16,11 +16,6 @@ import { Spaces } from 'ngx-fabric8-wit';
 import { ModalModule } from 'ngx-modal';
 import { AuthenticationService, UserService, HttpService as HttpServiceLGC } from 'ngx-login-client';
 
-// Root modules
-import { PlannerBoardModule } from 'fabric8-planner';
-import { PlannerListModule } from 'fabric8-planner';
-import { WorkItemQuickAddModule } from 'fabric8-planner';
-
 // Mock data
 import { MockDataService } from 'fabric8-planner';
 import { MockHttp } from 'fabric8-planner';
@@ -102,10 +97,6 @@ if (process.env.ENV == 'inmemory') {
     {
       provide: Http,
       useClass: HttpServiceLGC
-    },
-    {
-      provide: Http,
-      useClass: HttpServiceLGC
     }
   ];
 }
@@ -121,8 +112,7 @@ if (process.env.ENV == 'inmemory') {
     ModalModule,
     TabsModule,
     TooltipModule,
-    TruncateModule,
-    PlannerListModule
+    TruncateModule
   ],
   declarations: [
     AppComponent,
