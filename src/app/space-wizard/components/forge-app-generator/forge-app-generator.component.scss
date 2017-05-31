@@ -404,7 +404,7 @@ $icon-path:'../../../../assets/icon/';
   &.has-danger{
 
     .control-label{
-       color:$color-pf-red;
+       // color:$color-pf-red;
       &.required{
         &:before{
           content: '*';
