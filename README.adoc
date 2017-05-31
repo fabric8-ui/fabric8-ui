@@ -24,6 +24,9 @@ To quickly run the provided minimal Runtime with the Planner, simply run
 
  $ scripts/run-planner.sh --standalone
 
+> NOTE: To run the script on macOS, you will need to have `gnu-getopt` installed, run `brew install gnu-getopt`, and set it in your PATH
+ `echo 'export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"' >> ~/.zshrc`
+
 This will run the Planner using the minimal Runtime and a mock database. The service 
 will be available on *`localhost:8080`*
 
