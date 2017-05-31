@@ -56,8 +56,8 @@ export class AppGeneratorConfiguratorService {
    */
 
   public workflowSteps = {
-    createSpace: 'space-step',
-    forgePanel: 'forge-step',
+    spaceCreator: 'space-step',
+    spaceConfigurator: 'forge-step',
     forgeQuickStart: 'forge-quick-start-step',
     forgeStarter: 'forge-starter-step',
     forgeImportGit: 'forge-import-git-step'

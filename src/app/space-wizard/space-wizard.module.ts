@@ -9,7 +9,7 @@ import { ForgeAppGeneratorComponent } from './components/forge-app-generator/for
 import { AppGeneratorBuildPipelineViewComponent } from './components/app-generator-build-pipeline-view/app-generator-build-pipeline-view.component';
 import { AppGeneratorSingleSelectionListComponent } from './components/app-generator-single-selection-list/app-generator-single-selection-list.component';
 import { AppGeneratorStepViewComponent } from './components/app-generator-step-view/app-generator-step-view.component';
-import { ForgePanelComponent } from './components/forge-panel/forge-panel.component';
+import { SpaceConfiguratorComponent } from './components/space-configurator/space-configurator.component';
 import { CreateSpaceComponent } from './components/create-space/create-space.component';
 import { WorkflowFactory } from './models/workflow';
 
@@ -33,7 +33,7 @@ import { CodebasesService } from '../create/codebases/services/codebases.service
     AppGeneratorStepViewComponent,
     AppGeneratorSingleSelectionListComponent,
     AppGeneratorBuildPipelineViewComponent,
-    ForgePanelComponent,
+    SpaceConfiguratorComponent,
     CreateSpaceComponent,
     UniqueSpaceNameValidatorDirective,
     ValidSpaceNameValidatorDirective,

@@ -13,25 +13,21 @@ import {
 } from '../../services/app-generator.service';
 
 @Component({
-  selector: 'forge-panel',
-  templateUrl: './forge-panel.component.html',
-  styleUrls: [ './forge-panel.component.scss' ]
+  selector: 'space-configurator',
+  templateUrl: './space-configurator.component.html',
+  styleUrls: [ './space-configurator.component.scss' ]
 })
-export class ForgePanelComponent implements OnInit, OnDestroy {
+export class SpaceConfiguratorComponent implements OnInit, OnDestroy {
 
   // keep track of the number of instances
   static instanceCount: number = 1;
 
   @Input() workflow: IWorkflow;
 
-  get configurator(): AppGeneratorConfiguratorService {
-     return this._configuratorService;
-  }
-
   constructor(
-    private _configuratorService: AppGeneratorConfiguratorService,
+    public configurator : AppGeneratorConfiguratorService,
     loggerFactory: LoggerFactory) {
-    let logger = loggerFactory.createLoggerDelegate(this.constructor.name, ForgePanelComponent.instanceCount++);
+    let logger = loggerFactory.createLoggerDelegate(this.constructor.name, SpaceConfiguratorComponent.instanceCount++);
     if ( logger ) {
       this.log = logger;
     }
