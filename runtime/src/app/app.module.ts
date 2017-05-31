@@ -71,6 +71,10 @@ if (process.env.ENV == 'inmemory') {
     {
       provide: HttpServiceLGC,
       useExisting: MockHttp
+    },
+    {
+      provide: Http,
+      useExisting: HttpServiceLGC
     }
   ];
 } else {
