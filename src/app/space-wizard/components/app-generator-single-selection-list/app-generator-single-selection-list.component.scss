@@ -17,13 +17,16 @@ $icon-path:'../../../../assets/icon/';
       >.selection-list-expander {
         padding-right:1.0rem;
         padding-top:$icon-offset;
-        width:3.5rem;
+        min-width:4.0rem !important;
         z-index:100;
         padding-left:1.0rem;
       }
       >.selection-list-input {
-        width:2.0rem;
+        width:2.0rem !important;
         margin-right:$grid-gutter-width/2;
+      }
+      input[type="radio"]{
+        width:2.0rem !important;
       }
       >.selection-list-panel {
         flex-grow:1;
