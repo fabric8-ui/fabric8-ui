@@ -648,6 +648,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
             { queryParams: queryParams } as NavigationExtras
           );
           this.workItemService.emitAddWI(workItem);
+          this.saving = false;
           return workItem;
         });
       } else {
