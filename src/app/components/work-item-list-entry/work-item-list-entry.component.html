@@ -14,6 +14,7 @@
     <div class="list-view-pf-left type workItemList_workItemType">
       <span almIcon [iconType]="workItem.attributes['system.state']" class="color-grey pull-left"></span>
       <span class="color-grey pull-left fa {{workItem.relationships?.baseType?.data?.attributes?.icon}}"></span>
+      <span class="pull-left">{{workItem.relationships?.baseType?.data?.attributes?.name}}"></span>
       <span class="pull-left"> {{workItem.id}} </span>
     </div>
     <div class="list-view-pf-body">
