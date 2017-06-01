@@ -38,9 +38,22 @@
               <span class="pficon fa-3x pficon-import " ></span>
             </footer>
           </div>
-          <div id="techStackButton" class="panel-item cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:configurator.workflowSteps.forgeQuickStart})" >
+          <div id="forgeQuickStartButton" class="panel-item cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:configurator.workflowSteps.forgeQuickStart})" >
             <header>
               <h3>Select <strong>technology stack</strong> and <strong>pipeline</strong></h3>
+            </header>
+            <section><span><br></span></section>
+            <footer class="container-fluid">
+              <div class="row">
+                <div class="col-xs-12">
+                  <span class="pficon fa-3x pficon-screen  " ></span>
+                </div>
+              </div>
+            </footer>
+          </div>
+          <div id="forgeStarterButton" class="panel-item cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:configurator.workflowSteps.forgeStarter})" >
+            <header>
+              <h3>Create a quick start <strong>project</strong></h3>
             </header>
             <section><span><br></span></section>
             <footer class="container-fluid">

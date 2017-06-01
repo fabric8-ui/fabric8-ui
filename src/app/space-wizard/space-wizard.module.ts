@@ -8,7 +8,9 @@ import { LoggerFactory } from './common/logger';
 import { ForgeAppGeneratorComponent } from './components/forge-app-generator/forge-app-generator.component';
 import { AppGeneratorBuildPipelineViewComponent } from './components/app-generator-build-pipeline-view/app-generator-build-pipeline-view.component';
 import { AppGeneratorSingleSelectionListComponent } from './components/app-generator-single-selection-list/app-generator-single-selection-list.component';
+import { AppGeneratorSingleSelectionDropDownComponent } from './components/app-generator-single-selection-dropdown/app-generator-single-selection-dropdown.component';
 import { AppGeneratorStepViewComponent } from './components/app-generator-step-view/app-generator-step-view.component';
+import { AppGeneratorMultipleSelectionSearchableListComponent } from './components/app-generator-multiple-selection-searchable-list/app-generator-multiple-selection-searchable-list.component';
 import { SpaceConfiguratorComponent } from './components/space-configurator/space-configurator.component';
 import { SpaceCreatorComponent } from './components/space-creator/space-creator.component';
 
@@ -33,6 +35,8 @@ import { CodebasesService } from '../create/codebases/services/codebases.service
     ForgeAppGeneratorComponent,
     AppGeneratorStepViewComponent,
     AppGeneratorSingleSelectionListComponent,
+    AppGeneratorSingleSelectionDropDownComponent,
+    AppGeneratorMultipleSelectionSearchableListComponent,
     AppGeneratorBuildPipelineViewComponent,
     SpaceConfiguratorComponent,
     SpaceCreatorComponent,

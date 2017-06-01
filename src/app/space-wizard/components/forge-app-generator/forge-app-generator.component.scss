@@ -9,403 +9,248 @@ $icon-path:'../../../../assets/icon/';
 
   min-height: 80vh;
 
-@keyframes select-item {
-  from {
-    background-color: #bbb;
-  }
-  to {
-    background-color: #efefef;
-  }
-}
-
-.hidden {
-  visibility: hidden;
-}
-
-.selected {
-  background-color: #efefef;
-  animation-name: select-item;
-  animation-duration: 1s;
-}
-
-.btn-left-multi-select-button {
-  //min-width: unset;
-  border-left-style: none;
-  border-top-style: none;
-  border-bottom: solid 3px #efefef;
-}
-
-.btn-right-multi-select-button {
-  //min-width: unset;
-  border-right-style: none;
-  border-top-style: none;
-  border-bottom: solid 3px #efefef;
-}
-
-.form-control-filter-input {
-  height: 2.8rem;
-  border: none;
-  border-bottom: solid 0 #ddd;
-  border-left: solid 1px #ddd;
-  border-right: solid 0 #ddd;
-  margin-right: -2px;
-  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.075);
-}
-
-.included-list {
-  overflow: auto;
-  max-height: 30vh;
-  border-top: solid 1px #ddd;
-  border-bottom: solid 1px #ddd;
-}
-
-.excluded-list {
-  overflow: auto;
-  max-height: 30vh;
-  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.075);
-}
-
-.unselectedOption {
-  width: 100%;
-  border-bottom: solid 0 #ddd;
-  margin-bottom: 0;
-  font-weight: normal;
-}
-
-.selectedOption {
-  width: 100%;
-  border-bottom: solid 0 #ddd;
-  margin-bottom: 0;
-  font-weight: bold;
-
-}
-
-.busy-indicator
-{
-  min-width:50px;
-  min-height:60px;
-  vertical-align: center;
-  top:0;
-  position:relative;
-  display:flex;
-  > div{
-    margin:auto;
-    padding:0;
-  }
-}
-
-.busy-indicator-offset{
-  margin-left:-50px;
-}
-
->header {
-  min-height:60px;
-}
->footer {
-  min-height:60px;
-}
-
-// styling of the app generator message section
-.app-generator-message {
-
-  $color-success:$color-pf-green;
-  $color-success-border:$color-success;
-  $color-success-background:#EAF4EA;
-
-  $color-error:$color-pf-red;
-  $color-error-border:$color-error;
-  $color-error-background:$color-pf-black-100;
-
-  $color-warning:$color-pf-gold;
-  $color-warning-border:$color-warning;
-  $color-warning-background:$color-pf-black-100;
-
-  $standard-spacing:$grid-gutter-width/2;
-
-  padding:$standard-spacing !important;
-
-  position:relative;
-  width:100%;
-
-  display:flex;
-  flex:1;
-  flex-direction:column;
-
-  &.hide{
-   display:none !important;
-  }
-  .message-title-container {
-    padding: $standard-spacing;
-    margin-bottom: $standard-spacing;
-    .message-title {
-      user-select: none;
-      .message-title-icon {
-        margin-right: $standard-spacing;
-        vertical-align: middle;
-      }
-      .message-title-icon-label {
-        font-weight: bold;
-        display: inline-block;
-        vertical-align: middle;
-      }
-
-      .message-title-text {
-        font-weight: normal;
-        display: inline-block;
-        vertical-align: middle;
-        color: $color-pf-black;
-      }
+  .busy-indicator
+  {
+    min-width:50px;
+    min-height:60px;
+    vertical-align: center;
+    top:0;
+    position:relative;
+    display:flex;
+    > div {
+      margin:auto;
+      padding:0;
     }
   }
-  .message-body-container {
 
-    flex-grow: 1;
+  .busy-indicator-offset {
+    margin-left:-50px;
+  }
+
+  >header {
+    min-height:60px;
+  }
+  >footer {
+    min-height:60px;
+  }
+
+  // styling of the app generator message section
+  .app-generator-message {
+
+    $color-success:$color-pf-green;
+    $color-success-border:$color-success;
+    $color-success-background:#EAF4EA;
+
+    $color-error:$color-pf-red;
+    $color-error-border:$color-error;
+    $color-error-background:$color-pf-black-100;
+
+    $color-warning:$color-pf-gold;
+    $color-warning-border:$color-warning;
+    $color-warning-background:$color-pf-black-100;
+
+    $standard-spacing:$grid-gutter-width/2;
+
+    padding:$standard-spacing !important;
+
+    position:relative;
+    width:100%;
+
     display:flex;
-    position: relative;
-    border: solid 1px $color-pf-black-300;
-    overflow: auto;
+    flex:1;
+    flex-direction:column;
 
-    .message-body {
-      flex:1;
-      white-space: pre-line;
-      // all child elements white space
-      & > * {
-        white-space: pre-line;
-        // overflow: hidden;
-        // text-overflow: ellipsis;
-      }
-      vertical-align: top;
-      position: relative;
-      min-height: 100% !important;
-      width: 100%;
-      margin: 0;
+    &.hide{
+    display:none !important;
+    }
+    .message-title-container {
       padding: $standard-spacing;
-      padding-top:3px;
-      border: none;
-      line-height: 3.0rem;
-      font-size: 1.5rem;
-      .message-details {
-        // by making the body height 0 but overflow visible
-        // then overall host dialog container does not expand
-        // but constrains text to message-body auto fit dimensions
-        // due to its flex layout
-        height:0;
-        overflow:visible;
-        &.hide {
-          overflow:hidden;
+      margin-bottom: $standard-spacing;
+      .message-title {
+        user-select: none;
+        .message-title-icon {
+          margin-right: $standard-spacing;
+          vertical-align: middle;
         }
-      }
-      .message-status-success {
-        white-space: pre-line;
-        color: $color-success;
-        font-weight: bold;
-      }
-
-      .message-status-failed {
-        white-space: pre-line;
-        color: $color-error;
-        font-weight: bold;
-      }
-
-      .message-status-warning {
-        white-space: pre-line;
-        color: $color-warning;
-        font-weight: bold;
-      }
-
-      .property-name {
-
-        white-space: pre-line;
-        color:$color-pf-blue;
-        font-weight: bold;
-
-        &.property-name-result {
-
+        .message-title-icon-label {
+          font-weight: bold;
           display: inline-block;
-          min-width: 220px;
-          text-align: left;
-          // font-weight: normal;
+          vertical-align: middle;
+        }
+
+        .message-title-text {
+          font-weight: normal;
+          display: inline-block;
+          vertical-align: middle;
           color: $color-pf-black;
         }
       }
+    }
+    .message-body-container {
 
-      .property-value{
+      flex-grow: 1;
+      display:flex;
+      position: relative;
+      border: solid 1px $color-pf-black-300;
+      overflow: auto;
 
-        color: $color-pf-black;
+      .message-body {
+        flex:1;
         white-space: pre-line;
-
-        &.property-value-result {
-
+        // all child elements white space
+        & > * {
+          white-space: pre-line;
+          // overflow: hidden;
+          // text-overflow: ellipsis;
+        }
+        vertical-align: top;
+        position: relative;
+        min-height: 100% !important;
+        width: 100%;
+        margin: 0;
+        padding: $standard-spacing;
+        padding-top:3px;
+        border: none;
+        line-height: 3.0rem;
+        font-size: 1.5rem;
+        .message-details {
+          // by making the body height 0 but overflow visible
+          // then overall host dialog container does not expand
+          // but constrains text to message-body auto fit dimensions
+          // due to its flex layout
+          height:0;
+          overflow:visible;
+          &.hide {
+            overflow:hidden;
+          }
+        }
+        .message-status-success {
+          white-space: pre-line;
+          color: $color-success;
+          font-weight: bold;
         }
 
-        &.property-value-error {
-
+        .message-status-failed {
+          white-space: pre-line;
           color: $color-error;
-          font-weight:bold;
-          font-style: italic;
+          font-weight: bold;
         }
 
-        &.property-value-link {
-
-          color: $color-pf-blue;
-        }
-      }
-    }
-  }
-
-  &.app-generator-message-error {
-    .message-title-container {
-
-      border: solid 1px $color-error-border;
-      background-color: $color-error-background;
-
-      .message-title {
-
-        .message-title-icon {
-          color:$color-error;
+        .message-status-warning {
+          white-space: pre-line;
+          color: $color-warning;
+          font-weight: bold;
         }
 
-        .message-title-icon-label {
-          color:$color-error;
-        }
-      }
-    }
-  }
+        .property-name {
 
-  &.app-generator-message-success {
-    .message-title-container {
-      border: solid 1px $color-success-border;
-      background-color: $color-success-background;
+          white-space: pre-line;
+          color:$color-pf-blue;
+          font-weight: bold;
 
-      .message-title {
+          &.property-name-result {
 
-        .message-title-icon {
-          color:$color-success;
+            display: inline-block;
+            min-width: 220px;
+            text-align: left;
+            // font-weight: normal;
+            color: $color-pf-black;
+          }
         }
-        .message-title-icon-label {
-          color:$color-success;
-        }
-      }
 
-    }
-  }
-  &.app-generator-message-processing
-  {
-    .message-title-container{
-      .message-title{
-        text-align: center !important;
-        .message-title-icon{
-        }
-        .message-title-icon-label{
-        }
-        .message-title-text{
-          font-size: 2.0rem;
+        .property-value{
+
+          color: $color-pf-black;
+          white-space: pre-line;
+
+          &.property-value-result {
+
+          }
+
+          &.property-value-error {
+
+            color: $color-error;
+            font-weight:bold;
+            font-style: italic;
+          }
+
+          &.property-value-link {
+
+            color: $color-pf-blue;
+          }
         }
       }
     }
-    .message-body-container{
-      border:solid 1px transparent;
-      .message-body{
-        vertical-align: middle;
+
+    &.app-generator-message-error {
+      .message-title-container {
+
+        border: solid 1px $color-error-border;
+        background-color: $color-error-background;
+
+        .message-title {
+
+          .message-title-icon {
+            color:$color-error;
+          }
+
+          .message-title-icon-label {
+            color:$color-error;
+          }
+        }
       }
     }
-  }
-}
 
+    &.app-generator-message-success {
+      .message-title-container {
+        border: solid 1px $color-success-border;
+        background-color: $color-success-background;
 
+        .message-title {
 
-
-.combobox-container
-{
-  input[type='text']{
-    &.combobox{
-      background-color:$color-pf-white;
-      color:inherit;
-    }
-  }
-}
-.dropdown-menu
-{
-  display:block;
-  padding:0;
-  margin:0;
-  border-width:0;
-  overflow:auto;
-  height:0;
-  top:26px;
-  &.open{
-     border-width:1px;
-     height:30vh;
-  }
-  .dropdown-menu-item
-  {
-     padding:5px;
-     border-top:solid 1px transparent;
-     border-bottom:solid 1px transparent;
-     padding-bottom:1.0rem;
-
-
-    .item-name{
-       font-weight: 600;
-    }
-    .item-description{
-
-    }
-    &:hover{
-      background-color: $color-pf-blue-100;
-      border-top:solid 1px $color-pf-blue-200;
-      border-bottom:solid 1px $color-pf-blue-200;
-      .item-name{
-        color: $color-pf-black;
-      }
-      .item-description{
-        color: $color-pf-black;
+          .message-title-icon {
+            color:$color-success;
+          }
+          .message-title-icon-label {
+            color:$color-success;
+          }
+        }
 
       }
-
     }
-    &.selected
+    &.app-generator-message-processing
     {
-      background-color: $color-pf-blue-300 !important;
-      .item-name{
-        color: $color-pf-white !important;
+      .message-title-container{
+        .message-title{
+          text-align: center !important;
+          .message-title-icon{
+          }
+          .message-title-icon-label{
+          }
+          .message-title-text{
+            font-size: 2.0rem;
+          }
+        }
       }
-      .item-description{
-        color: $color-pf-white !important;
-
+      .message-body-container{
+        border:solid 1px transparent;
+        .message-body{
+          vertical-align: middle;
+        }
       }
-
     }
-
   }
 
-}
+  // styling overrides for forms
 
-.color-info
-{
-   color:$color-pf-blue-400;
-}
+  .color-info {
+    color:$color-pf-blue-400;
+  }
 
-.form-group{
-
-    .control-label{
+  .form-group {
+    .control-label {
       // color:$color-pf-red;
-      &.required{
-        &:before{
-          content: '*';
-          color:$color-pf-red;
-          padding:3px;
-          vertical-align:center;
-
-        }
-      }
-    }
-
-  &.has-danger{
-
-    .control-label{
-       // color:$color-pf-red;
-      &.required{
+      &.required {
         &:before{
           content: '*';
           color:$color-pf-red;
@@ -415,20 +260,29 @@ $icon-path:'../../../../assets/icon/';
       }
     }
 
-    .form-control-danger
-    {
+    &.has-danger {
+      .control-label {
+        &.required {
+          &:before {
+            content: '*';
+            color:$color-pf-red;
+            padding:3px;
+            vertical-align:center;
+          }
+        }
+      }
+
+      .form-control-danger {
         border-color:$color-pf-red !important;
         box-shadow: inset 0 1px 1px rgba(255, 0, 0, 0.075);
-    }
-    .form-control-feedback{
+      }
+
+      .form-control-feedback {
         color:$color-pf-red !important;
         position:relative;
         text-align: left;
         width:100%;
+      }
     }
-
-
   }
-}
-
 }

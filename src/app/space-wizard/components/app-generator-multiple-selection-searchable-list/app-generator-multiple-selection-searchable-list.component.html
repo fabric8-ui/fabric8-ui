@@ -1,0 +1,24 @@
+<!--input-->
+<div class="input-group width-100">
+  <span (click)="toggleSelectAll(field)" class="input-group-addon"><span [ngClass]="{'fa-check-square-o' : allOptionsSelected(field),'fa-square-o' : !allOptionsSelected(field)}" class="fa"></span></span>
+  <input #optionFilter [class.form-control-danger]="!field.display.valid" id="{{field.name}}" name="{{field.name}}" class="form-control form-control-filter-input"
+    title="{{field.display.label}}" (keyup)="filterList(field,optionFilter.value)" />
+  <span class="input-group-addon"><span class="fa fa-search"></span></span>
+</div>
+<!--filtered list-->
+<div class="excluded-list">
+  <div [class.selected]="choice.selected" *ngFor="let choice of field.display.choices|visibleItems">
+    <label (click)="toggleOption(field,choice)" class="unselectedOption">
+      <span style="padding-left:5px;padding-right:5px;" class="fa"
+            [class.fa-check-square-o]="choice.selected"
+            [class.fa-square-o]="!choice.selected"></span>
+      {{choice.id}}
+    </label>
+  </div>
+</div>
+<!--included list-->
+<div class="included-list">
+  <span class="btn btn-primary btn-sm" (click)="deselectOption(field,choice)" *ngFor="let choice of field.display.choices|selectedItems">
+    <span class="pficon pficon-close"  ></span> {{choice.id}}
+  </span>
+</div>

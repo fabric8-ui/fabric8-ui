@@ -49,7 +49,7 @@ export class Fabric8ForgeService extends ForgeService {
     switch ( command.name ) {
       case ForgeCommands.forgeStarter: {
         // note that this is now deprecated
-        command.parameters.pipeline.name = 'launchpad-new-starer-project';
+        command.parameters.pipeline.name = 'launchpad-new-starter-project';
         return this.forgeHttpCommandRequest(request);
       }
       case ForgeCommands.forgeQuickStart: {

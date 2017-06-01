@@ -188,7 +188,9 @@ export class AppGeneratorConfiguratorService {
           break;
         }
         case 'type' : {
-          field.display.note = field.display.note.replace(/configguration/ig, 'configuration');
+          if(field.display.note) {
+            field.display.note = field.display.note.replace(/configguration/ig, 'configuration');
+          }
           field.display.label = 'Technology Stack';
           this.augmentStackChoices( field, context, execution );
           break;
@@ -553,9 +555,11 @@ export class AppGeneratorConfiguratorService {
 
   private setFieldDefaults(field: IField) {
     let choice: IFieldChoice = field.display.choices.find( (c) => c.isDefault === true );
-    field.value = choice.id;
-    field.display.text = choice.name;
-    field.display.note = choice.description;
+    if(choice) {
+      field.value = choice.id;
+      field.display.text = choice.name;
+      field.display.note = choice.description;
+    }
     field.display.choices.filter((o) => {
         // set everything to not selected, except for default
         o.selected = false;

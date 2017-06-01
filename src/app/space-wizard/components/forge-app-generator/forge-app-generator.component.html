@@ -81,74 +81,9 @@
                   [disabled]="forgeClient.fields[i].display.enabled===false">
               </div>
 
-              <div class="combobox-container" *ngSwitchCase="'singleSelectionDropdown'">
-                <input type="hidden"   name value>
-                <div [class.width-100]="forgeClient.fields[i].display.enabled===false" class="input-group">
-                  <input type="text" title="{{forgeClient.fields[i].display.label}}" [class.form-control-danger]="!forgeClient.fields[i].display.valid" id="{{forgeClient.fields[i].name}}" name="{{forgeClient.fields[i].name}}"
-                    class="user-select-none combobox form-control" readonly="true" (change)="forgeClient.validate()" [disabled]="forgeClient.fields[i].display.enabled===false"
-                    (click)="forgeClient.fields[i].display.open =!forgeClient.fields[i].display.open" [(ngModel)]="forgeClient.fields[i].display.text" placeholder="select an option">
-                  <ul class="dropdown-menu" [class.open]="forgeClient.fields[i].display.open">
-                    <li class="choice-container" (click)="forgeClient.fields[i].display.text=choice.name;forgeClient.fields[i].display.note=choice.description;forgeClient.fields[i].value=choice.id;forgeClient.fields[i].display.open=false;forgeClient.validate();"
-                      *ngFor="let choice of forgeClient.fields[i].display.choices">
-                      <div [class.selected]="forgeClient.fields[i].value === choice.id" class="dropdown-menu-item user-select-none cursor-pointer">
-                        <div [class.vertical-layout]="choice.verticalLayout===true" class="choice-item">
-                          <div *ngIf="choice.hasIcon===true" class="choice-icon margin-right-standard-offset">
-                            <div [ngClass]="[choice.icon]"></div>
-                          </div>
-                          <div class="choice-content">
-                            <div class="item-name">{{choice.name}}</div>
-                            <div *ngIf="choice.description" class="item-description">{{choice.description||''}}</div>
-                          </div>
-
-                        </div>
-                      </div>
-
-                    </li>
-                  </ul>
-                  <span *ngIf="forgeClient.fields[i].display.enabled" class="input-group-addon" (click)="forgeClient.fields[i].display.open =!forgeClient.fields[i].display.open">
-                      <span class="caret"></span>
-                  <span class="glyphicon glyphicon-remove"></span>
-                  </span>
-                </div>
-              </div>
-              <app-generator-single-selection-list class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'singleSelectionList'" ></app-generator-single-selection-list>
-
-              <div *ngSwitchCase="'multipleSelection'" style="border:solid 1px #bbb; overflow:hidden;  ; border-radius:4px;">
-                <!--input-->
-                <div class="input-group">
-                  <div class="input-group-btn">
-                    <div (click)="toggleSelectAll(field)" class="btn btn-default btn-sm btn-left-multi-select-button">
-                      <span [ngClass]="{'fa-check-square-o' : allOptionsSelected(forgeClient.fields[i]),'fa-square-o' : !allOptionsSelected(forgeClient.fields[i])}"
-                        class="fa"></span>
-                    </div>
-                  </div>
-                  <input #optionFilter [class.form-control-danger]="!forgeClient.fields[i].display.valid" id="{{forgeClient.fields[i].name}}" name="{{forgeClient.fields[i].name}}"
-                    class="form-control form-control-filter-input" title="{{forgeClient.fields[i].display.label}}" (keyup)="filterList(forgeClient.fields[i],optionFilter.value)"
-                  />
-                  <div class="input-group-btn">
-                    <div class="btn btn-default btn-sm btn-right-multi-select-button">
-                      <span class="fa fa-search"></span>
-                    </div>
-                  </div>
-                </div>
-                <!--included list-->
-                <div style="display:flex;flex-direction:row;flex-wrap:wrap; justify-content:start;" class="included-list">
-                  <span class="btn btn-primary btn-sm" (click)="deselectOption(forgeClient.fields[i],choice)" *ngFor="let choice of forgeClient.fields[i].display.choices|selectedItems">
-                      <span class="pficon pficon-close"  ></span> {{choice.id}}
-                  </span>
-                </div>
-                <!--filtered list-->
-                <div class="excluded-list">
-                  <div [class.selected]="choice.selected" *ngFor="let choice of forgeClient.fields[i].display.choices|visibleItems">
-                    <label (click)="toggleOption(forgeClient.fields[i],choice)" class="unselectedOption">
-                      <span style="padding-left:5px;padding-right:5px;" class="fa"
-                            [class.fa-check-square-o]="choice.selected"
-                            [class.fa-square-o]="!choice.selected"></span>
-                      {{choice.id}}
-                    </label>
-                  </div>
-                </div>
-              </div>
+              <app-generator-single-selection-dropdown class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'singleSelectionDropdown'" ></app-generator-single-selection-dropdown>
+              <app-generator-single-selection-list     class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'singleSelectionList'" ></app-generator-single-selection-list>
+              <app-generator-multiple-selection-searchable-list  class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'multipleSelection'" ></app-generator-multiple-selection-searchable-list>
               <small class="form-text text-muted user-select-none" *ngIf="forgeClient.fields[i].display.note"><span class="color-info fa fa-info-circle"></span> <i>{{forgeClient.fields[i].display.note}}</i></small>
               <div *ngIf="!forgeClient.fields[i].display.valid" style="position:relative;height:auto;display:block;" class="form-control-feedback user-select-none">
                 {{forgeClient.fields[i].display.message.description}}
