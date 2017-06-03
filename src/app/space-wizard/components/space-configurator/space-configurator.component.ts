@@ -25,7 +25,7 @@ export class SpaceConfiguratorComponent implements OnInit, OnDestroy {
   @Input() workflow: IWorkflow;
 
   constructor(
-    public configurator : AppGeneratorConfiguratorService,
+    public configurator: AppGeneratorConfiguratorService,
     loggerFactory: LoggerFactory) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, SpaceConfiguratorComponent.instanceCount++);
     if ( logger ) {

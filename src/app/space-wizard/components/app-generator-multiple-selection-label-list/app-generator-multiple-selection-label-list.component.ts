@@ -25,7 +25,7 @@ export class AppGeneratorMultipleSelectionLabelListComponent implements OnInit, 
   @Input() field: IField = <IField>{ name: '', value: '', display: { choices: [] }};
   @Input() appGenerator: ForgeAppGeneratorServiceClient;
 
-  public showFilter=false;
+  public showFilter= false;
 
   constructor(
     loggerFactory: LoggerFactory) {
@@ -43,19 +43,16 @@ export class AppGeneratorMultipleSelectionLabelListComponent implements OnInit, 
   ngOnDestroy() {
     this.log(`ngOnDestroy ...`);
   }
-  /** logger delegate delegates logging to a logger */
-  private log: ILoggerDelegate = () => {};
 
   // behaviors
   allOptionsSelected(field: IField): boolean {
     return !field.display.choices.find((i) => i.selected === false);
   }
 
-  hasValue(field: IField):boolean
-  {
-     let tmp=false;
-     if(field.value!=null && field.value!=undefined && (field.value.toString()||'').trim()!==''){
-       tmp=true;
+  hasValue(field: IField): boolean {
+     let tmp = false;
+     if (field.value != null && field.value !== undefined && (field.value.toString() || '').trim() !== '') {
+       tmp = true;
      }
      return tmp;
   }
@@ -75,8 +72,8 @@ export class AppGeneratorMultipleSelectionLabelListComponent implements OnInit, 
   }
 
   clearFilter(field: IField) {
-    this.showFilter=false;
-    this.filterList(field,'');
+    this.showFilter = false;
+    this.filterList(field, '');
   }
 
   updateFieldValue(field: IField): IField {
@@ -93,7 +90,7 @@ export class AppGeneratorMultipleSelectionLabelListComponent implements OnInit, 
         } else {
           field.value = [];
         }
-        if(field.display.required===true) {
+        if (field.display.required === true) {
           this.appGenerator.validate();
         }
         break;
@@ -119,11 +116,11 @@ export class AppGeneratorMultipleSelectionLabelListComponent implements OnInit, 
     filter = filter.replace('\\', '');
     filter = filter.replace('[', '\\[');
     filter = filter.replace(']', '\\]');
-    let filters = filter.split(",").map( f => f.trim()).filter( f => f.length > 0);
+    let filters = filter.split(',').map( f => f.trim()).filter( f => f.length > 0);
     let specialFilterIncludeSelectedItems = filters.filter( f => f.toLowerCase() === '\\[x\\]').length > 0;
-    if(filters.length ===0 ) {
+    if (filters.length === 0 ) {
         // if no filters ... everything is visible
-        field.display.choices.forEach(c=>c.visible=true);
+        field.display.choices.forEach(c => c.visible = true);
         return;
     }
     // remove the special 'show selected' filter
@@ -131,14 +128,14 @@ export class AppGeneratorMultipleSelectionLabelListComponent implements OnInit, 
 
 
 
-    let filterRegularExpressions = filters.map( f => new RegExp(f || '', 'ig'))
+    let filterRegularExpressions = filters.map( f => new RegExp(f || '', 'ig'));
 
 
     field.display.choices.filter( (choice) => {
       // set everything to not visible,
       // except for selected when 'include selected' special filter is on
       choice.visible = false;
-      if( specialFilterIncludeSelectedItems === true) {
+      if ( specialFilterIncludeSelectedItems === true) {
         if (choice.selected === true) {
           choice.visible = true;
         }
@@ -146,11 +143,11 @@ export class AppGeneratorMultipleSelectionLabelListComponent implements OnInit, 
       // then match at least one
       let match = filterRegularExpressions.find( r => (
           (choice.id.match(r))
-          ||(choice.description.match(r))
-          ||[]
+          || (choice.description.match(r))
+          || []
         ).length > 0
-      )
-      if(match) {
+      );
+      if (match) {
         // there is at least one match
         return true;
       }
@@ -158,7 +155,7 @@ export class AppGeneratorMultipleSelectionLabelListComponent implements OnInit, 
       return false;
     })
     .forEach(choice => {
-      //each matching choice gets set to visible
+      // each matching choice gets set to visible
       choice.visible = true;
     });
 
@@ -188,6 +185,8 @@ export class AppGeneratorMultipleSelectionLabelListComponent implements OnInit, 
     this.updateFieldValue(field);
   }
 
+  /** logger delegate delegates logging to a logger */
+  private log: ILoggerDelegate = () => {};
 
 
 }

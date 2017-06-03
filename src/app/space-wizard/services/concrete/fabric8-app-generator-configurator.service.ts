@@ -188,7 +188,7 @@ export class AppGeneratorConfiguratorService {
           break;
         }
         case 'type' : {
-          if(field.display.note) {
+          if (field.display.note) {
             field.display.note = field.display.note.replace(/configguration/ig, 'configuration');
           }
           field.display.label = 'Technology Stack';
@@ -555,7 +555,7 @@ export class AppGeneratorConfiguratorService {
 
   private setFieldDefaults(field: IField) {
     let choice: IFieldChoice = field.display.choices.find( (c) => c.isDefault === true );
-    if(choice) {
+    if (choice) {
       field.value = choice.id;
       field.display.text = choice.name;
       field.display.note = choice.description;
