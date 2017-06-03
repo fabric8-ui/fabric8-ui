@@ -1,5 +1,7 @@
-   @import '../../../../assets/stylesheets/base';
+  @import '../../../../assets/stylesheets/base';
+
   :host {
+
    $panel-item-shadow-offset:3px;
    $panel-item-spacing: 0;
    $panel-item-shadow-blur-radius:3px;
@@ -29,7 +31,6 @@
             margin-bottom: 0;
           }
         }
-
       }
     }
 
@@ -41,11 +42,13 @@
 
 
 
-      .panel{
+      .panel {
         display:flex;
         flex-grow:1;
         flex-direction: row;
         justify-content: center;
+        // control the position of the panel
+        // justify-content: flex-start;
         flex-wrap : wrap;
         background-color:transparent;
         box-shadow: none;
@@ -54,12 +57,12 @@
         .panel-item {
           // this is a flex container for its children
           display: flex;
-          //starting width
+          // starting width
           max-width: 180px;
           flex-basis: 180px;
           // but it can grow
           flex-grow: 1;
-          //or shrink
+          // or shrink
           flex-shrink:1;
           // content flex from top to bottom
           flex-direction: column;
@@ -95,6 +98,7 @@
             border: solid 2px $color-pf-blue-300;
             box-shadow: $panel-item-shadow-offset  $panel-item-shadow-blur-radius $panel-item-shadow-spread-radius darken($panel-item-layout-block-shadow-color, 10%);
           }
+          // style behaviors associated with 'clicking' the panel
           &:active {
             padding-left: $panel-item-spacing - 1px;
             margin-bottom:(($grid-gutter-width / 2) - 1px);
@@ -104,15 +108,18 @@
               margin-bottom:-1px;
 
             }
+
             > section {
               padding-top: $panel-item-padding + 1px;
               margin-bottom:-1px;
 
             }
+
             > div {
               padding-top: $panel-item-padding + 1px;
               margin-bottom:-1px;
             }
+
             > footer {
               padding-top: 1px;
               margin-bottom:-1px;
@@ -122,9 +129,6 @@
             border: solid 2px $color-pf-blue-400;
             box-shadow: $panel-item-shadow-offset  $panel-item-shadow-blur-radius $panel-item-shadow-spread-radius darken($panel-item-layout-block-shadow-color, 20%);
           }
-
-
         }
-
       }
   }

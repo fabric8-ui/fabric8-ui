@@ -13,11 +13,11 @@ import { ForgeAppGeneratorServiceClient } from '../forge-app-generator/forge-app
 import { FieldWidgetClassificationOptions } from '../../models/contracts/field-classification';
 
 @Component({
-  selector: './app-generator-multiple-selection-searchable-list',
-  templateUrl: './app-generator-multiple-selection-searchable-list.component.html',
-  styleUrls: [ './app-generator-multiple-selection-searchable-list.component.scss' ]
+  selector: './app-generator-multiple-selection-label-list',
+  templateUrl: './app-generator-multiple-selection-label-list.component.html',
+  styleUrls: [ './app-generator-multiple-selection-label-list.component.scss' ]
 })
-export class AppGeneratorMultipleSelectionSearchableListComponent implements OnInit, OnDestroy {
+export class AppGeneratorMultipleSelectionLabelListComponent implements OnInit, OnDestroy {
 
   // keep track of the number of instances
   static instanceCount: number = 1;
@@ -25,9 +25,11 @@ export class AppGeneratorMultipleSelectionSearchableListComponent implements OnI
   @Input() field: IField = <IField>{ name: '', value: '', display: { choices: [] }};
   @Input() appGenerator: ForgeAppGeneratorServiceClient;
 
+  public showFilter=false;
+
   constructor(
     loggerFactory: LoggerFactory) {
-    let logger = loggerFactory.createLoggerDelegate(this.constructor.name, AppGeneratorMultipleSelectionSearchableListComponent.instanceCount++);
+    let logger = loggerFactory.createLoggerDelegate(this.constructor.name, AppGeneratorMultipleSelectionLabelListComponent.instanceCount++);
     if ( logger ) {
       this.log = logger;
     }
@@ -49,6 +51,15 @@ export class AppGeneratorMultipleSelectionSearchableListComponent implements OnI
     return !field.display.choices.find((i) => i.selected === false);
   }
 
+  hasValue(field: IField):boolean
+  {
+     let tmp=false;
+     if(field.value!=null && field.value!=undefined && (field.value.toString()||'').trim()!==''){
+       tmp=true;
+     }
+     return tmp;
+  }
+
   selectOption(field: IField, choice: IFieldChoice) {
     choice.selected = true;
     this.updateFieldValue(field);
@@ -61,6 +72,11 @@ export class AppGeneratorMultipleSelectionSearchableListComponent implements OnI
   deselectOption(field: IField, choice: IFieldChoice) {
     choice.selected = false;
     this.updateFieldValue(field);
+  }
+
+  clearFilter(field: IField) {
+    this.showFilter=false;
+    this.filterList(field,'');
   }
 
   updateFieldValue(field: IField): IField {
@@ -77,7 +93,9 @@ export class AppGeneratorMultipleSelectionSearchableListComponent implements OnI
         } else {
           field.value = [];
         }
-        this.appGenerator.validate();
+        if(field.display.required===true) {
+          this.appGenerator.validate();
+        }
         break;
       }
       default: {
@@ -94,23 +112,54 @@ export class AppGeneratorMultipleSelectionSearchableListComponent implements OnI
   }
 
   filterList(field: IField, filter: string) {
-    // TODO: better validation of bad chars
+    // TODO: better validation of bad or illegal chars
     filter = filter.replace('*', '');
     filter = filter.replace('?', '');
     filter = filter.replace('/', '');
     filter = filter.replace('\\', '');
-    let r = new RegExp(filter || '', 'ig');
-    field.display.choices.filter((o) => {
-      // set everything to not visible, except for selected
-      o.visible = false;
-      if (o.selected === true) {
-        o.visible = true;
+    filter = filter.replace('[', '\\[');
+    filter = filter.replace(']', '\\]');
+    let filters = filter.split(",").map( f => f.trim()).filter( f => f.length > 0);
+    let specialFilterIncludeSelectedItems = filters.filter( f => f.toLowerCase() === '\\[x\\]').length > 0;
+    if(filters.length ===0 ) {
+        // if no filters ... everything is visible
+        field.display.choices.forEach(c=>c.visible=true);
+        return;
+    }
+    // remove the special 'show selected' filter
+    filters = filters.filter( f => f.toLowerCase() !== '\\[x\\]');
+
+
+
+    let filterRegularExpressions = filters.map( f => new RegExp(f || '', 'ig'))
+
+
+    field.display.choices.filter( (choice) => {
+      // set everything to not visible,
+      // except for selected when 'include selected' special filter is on
+      choice.visible = false;
+      if( specialFilterIncludeSelectedItems === true) {
+        if (choice.selected === true) {
+          choice.visible = true;
+        }
       }
-      // then match the input string
-      return ((o.id.match(r)) || []).length > 0;
+      // then match at least one
+      let match = filterRegularExpressions.find( r => (
+          (choice.id.match(r))
+          ||(choice.description.match(r))
+          ||[]
+        ).length > 0
+      )
+      if(match) {
+        // there is at least one match
+        return true;
+      }
+      // there are no matches
+      return false;
     })
-    .forEach(o => {
-      o.visible = true;
+    .forEach(choice => {
+      //each matching choice gets set to visible
+      choice.visible = true;
     });
 
   }

@@ -256,12 +256,12 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
       }
       let index: number = 0;
       for ( let choice of source.valueChoices ) {
-        if ( source.description ) {
+        if ( choice.description ) {
           items.push({
             index: index,
             id: choice.id,
             name: choice.id,
-            description: source.description,
+            description: choice.description,
             visible: true,
             isDefault: false,
             selected: hash[choice.id] === true

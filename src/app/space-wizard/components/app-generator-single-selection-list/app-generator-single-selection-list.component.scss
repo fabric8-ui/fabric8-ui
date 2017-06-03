@@ -5,7 +5,10 @@ $icon-path:'../../../../assets/icon/';
 
 :host {
 
-  $collapsible-offset: 7.0rem;
+  $expander-width:40px;
+  $input-width:40px;
+  $input-right-spacing: $grid-gutter-width/2;
+  $collapsible-offset: $expander-width + $input-width + $input-right-spacing;
   $icon-offset:0.3rem;
 
   ul.selection-list {
@@ -14,20 +17,22 @@ $icon-path:'../../../../assets/icon/';
     padding: 0;
     li {
       display:flex;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
       >.selection-list-expander {
         padding-right:1.0rem;
-        padding-top:$icon-offset;
-        min-width:4.0rem !important;
-        z-index:100;
+        padding-top:$icon-offset ;
+        width:$expander-width !important;
+        // z-index:100;
         padding-left:1.0rem;
       }
+
       >.selection-list-input {
-        width:2.0rem !important;
-        margin-right:$grid-gutter-width/2;
+        width:$input-width !important;
+        margin-right:$input-right-spacing;
       }
-      input[type="radio"]{
-        width:2.0rem !important;
-      }
+
       >.selection-list-panel {
         flex-grow:1;
         &.collapsible {
@@ -71,8 +76,14 @@ $icon-path:'../../../../assets/icon/';
             width:100%;
           }
         }
-        &.selected{
-          border:solid 1px $color-pf-black-200;
+      }
+
+      &.selected {
+        border:solid 3px $color-pf-black-200;
+        background-color: $color-pf-black-200;
+        .selection-list-panel {
+          // background-color: $color-pf-black-200;
+
         }
       }
 

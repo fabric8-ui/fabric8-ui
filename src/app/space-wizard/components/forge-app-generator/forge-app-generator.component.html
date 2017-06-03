@@ -83,7 +83,7 @@
 
               <app-generator-single-selection-dropdown class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'singleSelectionDropdown'" ></app-generator-single-selection-dropdown>
               <app-generator-single-selection-list     class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'singleSelectionList'" ></app-generator-single-selection-list>
-              <app-generator-multiple-selection-searchable-list  class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'multipleSelection'" ></app-generator-multiple-selection-searchable-list>
+              <app-generator-multiple-selection-label-list  class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'multipleSelection'" ></app-generator-multiple-selection-label-list>
               <small class="form-text text-muted user-select-none" *ngIf="forgeClient.fields[i].display.note"><span class="color-info fa fa-info-circle"></span> <i>{{forgeClient.fields[i].display.note}}</i></small>
               <div *ngIf="!forgeClient.fields[i].display.valid" style="position:relative;height:auto;display:block;" class="form-control-feedback user-select-none">
                 {{forgeClient.fields[i].display.message.description}}

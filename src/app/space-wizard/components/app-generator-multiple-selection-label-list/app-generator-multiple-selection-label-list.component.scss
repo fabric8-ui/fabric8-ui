@@ -1,0 +1,124 @@
+$icon-path:'../../../../assets/icon/';
+@import '../../../../assets/stylesheets/base';
+@import '../../../../assets/stylesheets/_icons';
+@import '../../../../assets/stylesheets/shared/_layout';
+
+:host {
+  $list-spacing:0.5rem;// 5px;
+  $selected-color:$color-pf-black-200;
+  $selected-text-color:$color-pf-black;
+  $hover-color:$color-pf-blue-100;
+  $hover-border-color:$color-pf-blue-200;
+  $border-color:$color-pf-black-400;
+  $add-on-width:25px;
+
+ .input-group-addon {
+   min-width: $add-on-width;
+ }
+
+ ul {
+   position:relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    max-height: 30vh;
+    border:solid 1px $border-color;
+    border-top-width: 0;
+
+    li {
+      padding:0;
+      user-select: none;
+      border-bottom:solid 1px transparent;
+      border-top:solid 1px transparent;
+      label {
+        display:inline-block;
+        position:relative;
+        width:100%;
+
+        margin:0;
+        padding:0;
+
+        input[type="checkbox"] {
+          position:relative;
+          margin:0;
+          margin-left:$list-spacing;
+          margin-right:$list-spacing;
+          padding:0;
+        }
+        span {
+        font-weight: bold;
+        }
+      }
+      p {
+        padding: $list-spacing $list-spacing $list-spacing*2 $list-spacing*5;
+        margin:0;
+      }
+      &:hover {
+        background-color:$hover-color;
+        border-bottom:solid 1px $hover-border-color;
+        border-top:solid 1px $hover-border-color;
+      }
+      &.selected {
+        background-color: $selected-color;
+        color:$selected-text-color;
+        border-bottom:solid 1px $selected-color;
+        border-top:solid 1px $selected-color;
+      }
+    }
+ }
+
+  .label-list {
+    position:relative;
+    border: solid 1px $border-color;
+    //border-bottom-width:0;
+    padding:0;
+    padding-top:3px;
+    padding-left:3px;
+    padding-right:$add-on-width;
+    margin:0;
+    overflow: auto;
+    max-height: 30vh;
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content:start;
+    min-height:30px;
+    &.with-filter {
+      border-bottom-width:0;
+    }
+
+    div.filter-toggle {
+      position:absolute;
+      right:0;
+      top:0;
+      width:$add-on-width !important;
+      height:29px;
+      padding-left:6px;
+      padding-right:6px;
+      padding-top:2px;
+      padding-bottom:2px;
+      background-color: #f1f1f1;
+      background-image:linear-gradient(to bottom, #fafafa 0, #ededed 100%);
+      border:0;
+      border-left:solid 1px $color-pf-black-300;
+      border-bottom:solid 1px $color-pf-black-300;
+      margin-bottom:-1px;
+
+    }
+    span.label {
+      margin-right:3px;
+      margin-bottom:3px;
+      span.pficon {
+        margin-right:5px;
+        margin-left:5px;
+      }
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+
+
+}

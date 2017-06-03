@@ -10,7 +10,7 @@ import { AppGeneratorBuildPipelineViewComponent } from './components/app-generat
 import { AppGeneratorSingleSelectionListComponent } from './components/app-generator-single-selection-list/app-generator-single-selection-list.component';
 import { AppGeneratorSingleSelectionDropDownComponent } from './components/app-generator-single-selection-dropdown/app-generator-single-selection-dropdown.component';
 import { AppGeneratorStepViewComponent } from './components/app-generator-step-view/app-generator-step-view.component';
-import { AppGeneratorMultipleSelectionSearchableListComponent } from './components/app-generator-multiple-selection-searchable-list/app-generator-multiple-selection-searchable-list.component';
+import { AppGeneratorMultipleSelectionLabelListComponent } from './components/app-generator-multiple-selection-label-list/app-generator-multiple-selection-label-list.component';
 import { SpaceConfiguratorComponent } from './components/space-configurator/space-configurator.component';
 import { SpaceCreatorComponent } from './components/space-creator/space-creator.component';
 
@@ -36,7 +36,7 @@ import { CodebasesService } from '../create/codebases/services/codebases.service
     AppGeneratorStepViewComponent,
     AppGeneratorSingleSelectionListComponent,
     AppGeneratorSingleSelectionDropDownComponent,
-    AppGeneratorMultipleSelectionSearchableListComponent,
+    AppGeneratorMultipleSelectionLabelListComponent,
     AppGeneratorBuildPipelineViewComponent,
     SpaceConfiguratorComponent,
     SpaceCreatorComponent,
