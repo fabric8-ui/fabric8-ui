@@ -7,8 +7,8 @@ $icon-path:'../../../../assets/icon/';
 
   $expander-width:40px;
   $input-width:40px;
-  $input-right-spacing: 10px;// $grid-gutter-width/2;
-  $input-left-spacing: 10px;// $grid-gutter-width/2;
+  $input-right-spacing: 10px;
+  $input-left-spacing: 10px;
   $collapsible-offset: $expander-width + $input-width + $input-right-spacing + $input-left-spacing;
   $icon-offset:0.3rem;
 
@@ -25,8 +25,6 @@ $icon-path:'../../../../assets/icon/';
         padding-right:1.0rem;
         padding-top:$icon-offset ;
         width:$expander-width !important;
-        // z-index:100;
-        //padding-left:1.0rem;
       }
 
       >.selection-list-input {
@@ -81,12 +79,8 @@ $icon-path:'../../../../assets/icon/';
       }
 
       &.selected {
-        border:solid 3px $color-pf-black-200;
-        background-color: $color-pf-black-200;
-        .selection-list-panel {
-          // background-color: $color-pf-black-200;
-
-        }
+        border:solid 3px $color-pf-black-300;
+        background-color: $color-pf-black-300;
       }
 
     }
