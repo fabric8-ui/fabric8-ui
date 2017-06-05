@@ -65,3 +65,6 @@ npm-debug.log
 # NPM #
 
 npm-debug.log*
+
+#ignore npm 5 auto package lock inclusion untill openshift support confirmed
+package-lock.json
