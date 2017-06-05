@@ -226,13 +226,6 @@ export class WorkItemService {
     return resolvedWorkItems;
   }
 
-
-  // Reset work item big list
-  resetWorkItemList() {
-    this.workItems = [];
-    this.workItemIdIndexMap = {};
-  }
-
   isListLoaded() {
     return !!this.workItems.length;
   }

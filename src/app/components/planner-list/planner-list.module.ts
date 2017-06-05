@@ -1,3 +1,4 @@
+import { EventService } from './../../services/event.service';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
 
@@ -45,6 +46,7 @@ if (process.env.ENV == 'inmemory') {
     GlobalSettings,
     WorkItemService,
     Broadcaster,
+    EventService,
     Logger,
     {
       provide: HttpService,
@@ -56,6 +58,7 @@ if (process.env.ENV == 'inmemory') {
     GlobalSettings,
     WorkItemService,
     Broadcaster,
+    EventService,
     Logger,
     {
       provide: HttpService,

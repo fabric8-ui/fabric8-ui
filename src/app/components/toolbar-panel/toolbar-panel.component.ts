@@ -1,3 +1,4 @@
+import { EventService } from './../../services/event.service';
 import { Component, Input, OnInit, AfterViewInit, TemplateRef, ViewChild, ViewEncapsulation, OnChanges, Output, OnDestroy, EventEmitter, SimpleChanges } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -97,6 +98,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       };
 
   constructor(
+    private eventService: EventService,
     private router: Router,
     private route: ActivatedRoute,
     private broadcaster: Broadcaster,
@@ -160,9 +162,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   onChangeListType(type: string) {
     this.currentListType = type;
     if (type==='Hierarchy') {
-      this.broadcaster.broadcast('switched_show_wi_hierarchy_mode');
+      this.eventService.showHierarchyListSubject.next(true);
     } else {
-      this.broadcaster.broadcast('switched_show_wi_flat_mode');
+      this.eventService.showHierarchyListSubject.next(false);
     }
   }
 

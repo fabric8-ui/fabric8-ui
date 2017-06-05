@@ -1,3 +1,4 @@
+import { EventService } from './../../services/event.service';
 import { Component, DoCheck, OnInit, Input, OnChanges, SimpleChanges, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Http } from '@angular/http';
@@ -47,6 +48,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck, OnDest
     private router: Router,
     private route: ActivatedRoute,
     private broadcaster: Broadcaster,
+    private eventService: EventService,
     http: Http
   ){}
 
@@ -151,8 +153,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck, OnDest
       .subscribe(([link, includes]) => {
         this.workItemService.addLinkToWorkItem(link, includes, this.workItem);
         this.resetSearchData();
-        // the hierarchy of work items has potentially changed (parent-child relationships may have changed)
-        this.broadcaster.broadcast('update_work_item_hierarchy');
+        this.eventService.workItemListReloadOnLink.next(true);
       },
       (error: any) => console.log(error));
   }
@@ -164,8 +165,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck, OnDest
       .deleteLink(link, currentWorkItem.id)
       .subscribe(() => {
         this.workItemService.removeLinkFromWorkItem(link, currentWorkItem);
-        // the hierarchy of work items has potentially changed (parent-child relationships may have changed)
-        this.broadcaster.broadcast('update_work_item_hierarchy');
+        this.eventService.workItemListReloadOnLink.next(true);
       },
       (error: any) => console.log(error));
   }
