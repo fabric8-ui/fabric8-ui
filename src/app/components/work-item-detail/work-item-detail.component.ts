@@ -368,9 +368,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     this.broadcaster.broadcast('updateWorkItem', JSON.stringify(this.workItem));
   }
 
-  addNewItem(workItem: WorkItem) {
-    this.broadcaster.broadcast('addWorkItem', JSON.stringify(workItem));
-  }
+  //addNewItem(workItem: WorkItem) {
+    //this.broadcaster.broadcast('addWorkItem', JSON.stringify(workItem));
+  //}
 
   checkTitle(event: any): void {
     this.titleText = event;
@@ -603,6 +603,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.workItemPayload.attributes['version'] = workItem.attributes['version'];
         this.updateOnList();
         this.activeOnList();
+        this.workItemService.emitEditWI(workItem);
         return workItem;
       },
         (err) => console.log(err)
@@ -636,7 +637,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
             data: creator
           };
 
-          this.addNewItem(workItem);
+          //this.addNewItem(workItem);
 
           let queryParams = cloneDeep(this.queryParams);
           if (Object.keys(queryParams).indexOf('type') > -1) {

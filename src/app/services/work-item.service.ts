@@ -67,6 +67,7 @@ export class WorkItemService {
   private selfId;
 
   public addWIObservable: Subject<WorkItem> = new Subject();
+  public editWIObservable: Subject<WorkItem> = new Subject();
 
   constructor(private http: HttpService,
     private broadcaster: Broadcaster,
@@ -704,6 +705,16 @@ export class WorkItemService {
 
   emitAddWI(workItem: WorkItem) {
     this.addWIObservable.next(workItem);
+  }
+
+  /**
+   * Usage: This method emit a new work item created event
+   * The list view and board view listens to this event
+   * and updates the view based on applied filters.
+   */
+
+  emitEditWI(workItem: WorkItem) {
+    this.editWIObservable.next(workItem);
   }
 
   /**

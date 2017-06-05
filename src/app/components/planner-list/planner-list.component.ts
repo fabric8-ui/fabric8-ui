@@ -504,8 +504,15 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
 
     this.eventListeners.push(
       this.workItemService.addWIObservable.subscribe(item => {
-        //move the update list logic
-      }));
+        this.loadWorkItems();
+      })
+    );
+
+    this.eventListeners.push(
+      this.workItemService.editWIObservable.subscribe(item => {
+        this.loadWorkItems();
+      })
+    );
   }
 
   onDragStart() {
