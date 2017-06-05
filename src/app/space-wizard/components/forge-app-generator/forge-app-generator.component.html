@@ -64,14 +64,14 @@
       <div class="col-xs-12">
         <div class="form-horizontal">
           <div [class.has-danger]="!forgeClient.fields[i].display.valid" class="form-group" *ngFor="let field of forgeClient.fields; let i=index; trackBy:trackByFn">
-            <label title="{{forgeClient.fields[i].display.label}}" [class.required]="forgeClient.fields[i].display.required===true" for="{{forgeClient.fields[i].name}}" *ngIf="field.display.showLabel!==false"
+            <label title="{{forgeClient.fields[i].display.label}}" [class.required]="forgeClient.fields[i].display.required===true" for="{{forgeClient.fields[i].name}}" *ngIf="field.display.showLabel!==false && field.display.visible!==false"
              [class.col-xs-12]="field.display.showLabel!==false" [class.col-sm-4]="field.display.showLabel!==false" class="user-select-none control-label">{{field.display.label}}</label>
-            <div [class.col-sm-8]="field.display.showLabel!==false" [class.col-xs-12]="field.display.showLabel===false" [ngSwitch]="forgeClient.fields[i].display.inputType ">
+            <div *ngIf="field.display.visible!==false" [class.col-sm-8]="field.display.showLabel!==false" [class.col-xs-12]="field.display.showLabel===false" [ngSwitch]="forgeClient.fields[i].display.inputType ">
 
               <div *ngSwitchCase="'singleInput'" [ngSwitch]="forgeClient.fields[i].valueType">
                 <input *ngSwitchCase="'string'" id="{{forgeClient.fields[i].name}}" title="{{forgeClient.fields[i].display.label}}" name="{{forgeClient.fields[i].name}}" (change)="forgeClient.validate()"
                   (keyup.enter)="forgeClient.validate()" [(ngModel)]="forgeClient.fields[i].value" type="text" [class.form-control-danger]="!forgeClient.fields[i].display.valid"
-                  class="form-control" placeholder="{{forgeClient.fields[i].description}}" [disabled]="forgeClient.fields[i].display.enabled===false"
+                  class="form-control" placeholder="{{forgeClient.fields[i].description}}"  [disabled]="forgeClient.fields[i].display.enabled===false"
                   [required]="forgeClient.fields[i].display.required" />
                 <input *ngSwitchCase="'boolean'" style="box-shadow:none;" title="{{forgeClient.fields[i].display.label}}" [class.form-control-danger]="!forgeClient.fields[i].display.valid" (change)="forgeClient.validate()"
                   type="checkbox" name="{{forgeClient.fields[i].name}}" [(ngModel)]="forgeClient.fields[i].value" class="form-control"

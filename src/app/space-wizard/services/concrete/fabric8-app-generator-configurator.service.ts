@@ -152,6 +152,7 @@ export class AppGeneratorConfiguratorService {
         case 'kubernetesspace': {
           field.display.label = 'Kubernetes Space';
           field.display.enabled = false;
+          field.display.visible = false;
 
           break;
         }
@@ -164,6 +165,7 @@ export class AppGeneratorConfiguratorService {
             field.value = spaceName ;
             field.display.text = spaceName;
           }
+          field.display.visible = false;
           break;
         }
         case 'jenkinsspace': {
