@@ -7,8 +7,9 @@ $icon-path:'../../../../assets/icon/';
 
   $expander-width:40px;
   $input-width:40px;
-  $input-right-spacing: $grid-gutter-width/2;
-  $collapsible-offset: $expander-width + $input-width + $input-right-spacing;
+  $input-right-spacing: 10px;// $grid-gutter-width/2;
+  $input-left-spacing: 10px;// $grid-gutter-width/2;
+  $collapsible-offset: $expander-width + $input-width + $input-right-spacing + $input-left-spacing;
   $icon-offset:0.3rem;
 
   ul.selection-list {
@@ -25,11 +26,12 @@ $icon-path:'../../../../assets/icon/';
         padding-top:$icon-offset ;
         width:$expander-width !important;
         // z-index:100;
-        padding-left:1.0rem;
+        //padding-left:1.0rem;
       }
 
       >.selection-list-input {
         width:$input-width !important;
+        margin-left:$input-left-spacing;
         margin-right:$input-right-spacing;
       }
 
