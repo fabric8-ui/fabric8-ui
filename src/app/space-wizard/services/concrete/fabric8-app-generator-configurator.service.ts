@@ -87,7 +87,7 @@ export class AppGeneratorConfiguratorService {
     this.context.current.subscribe( (ctx: Context) => {
       if (ctx.space) {
         this.currentSpace = ctx.space;
-        this.log(`The current spacehas been updated to ${this.currentSpace.attributes.name}`);
+        this.log(`The current space has been updated to ${this.currentSpace.attributes.name}`);
       }
     });
   }
