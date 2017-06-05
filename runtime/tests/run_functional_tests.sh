@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 LOGFILE=$(pwd)/functional_tests.log
-echo Using logfile $LOGFILE
+BROWSERLOGS=$(pwd)/browser_logs.log
+echo Using logfile $LOGFILE and $BROWSERLOGS
 
 # For the functional tests, we are mocking the core
 export NODE_ENV=inmemory
@@ -30,9 +31,10 @@ echo done.
 echo Running tests...
 if [ -z "$1" ]
   then
-    node_modules/protractor/bin/protractor protractor.config.js
+# Shouldn't we have the path appended with tests? e.g. tests/protractor.config.js
+    node_modules/protractor/bin/protractor protractor.config.js 2>&1 | tee -a $BROWSERLOGS
 else
-    node_modules/protractor/bin/protractor protractor.config.js --suite $1
+    node_modules/protractor/bin/protractor protractor.config.js --suite $1 2>&1 | tee -a $BROWSERLOGS
 fi
 TEST_RESULT=$?
 

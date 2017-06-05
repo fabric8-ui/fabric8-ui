@@ -22,6 +22,11 @@ exports.config = {
       'browserName': 'chrome',
       'maxInstances': 2,
       'shardTestFiles': true,
+      'loggingPrefs': {
+      'driver': 'WARNING',
+      'server': 'WARNING',
+      'browser': 'INFO'
+      },
       'chromeOptions': {
         'args': [ '--no-sandbox']
       }
