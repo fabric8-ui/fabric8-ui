@@ -18,14 +18,7 @@
       -ms-user-select: none!important;
           user-select: none!important;
 }
-.gu-transit { position: relative;
-  &:after {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    height: 0;
-    content: '';
-  }
+.gu-transit {
+  opacity: 0.1;
+  border-color: $color-pf-black-400;
 }

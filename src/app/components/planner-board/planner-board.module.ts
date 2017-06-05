@@ -25,6 +25,8 @@ import { AuthenticationService } from 'ngx-login-client';
 
 import { HttpService } from '../../services/http-service';
 
+import { CardComponent } from './../card/card.component';
+
 import {
   FabPlannerAssociateIterationModalModule
 } from './../work-item-iteration-modal/work-item-iteration-modal.module';
@@ -96,7 +98,8 @@ if (process.env.ENV == 'inmemory') {
     WorkItemQuickAddModule
   ],
   declarations: [
-    PlannerBoardComponent
+    PlannerBoardComponent,
+    CardComponent
   ],
   providers: providers,
   exports: [ PlannerBoardComponent ]

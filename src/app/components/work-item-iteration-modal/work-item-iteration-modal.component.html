@@ -8,11 +8,11 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
 
       <!-- UX feed for existing iteration association -->
-      <div *ngIf="!!workItem.relationships.iteration" id="reassociate-msg">
-        <strong>{{ workItem.attributes['system.title'] }}</strong>
+      <div *ngIf="!!workItem?.relationships?.iteration" id="reassociate-msg">
+        <strong>{{ workItem?.attributes['system.title'] }}</strong>
         is currently associated with
         <strong>
-          {{(workItem.relationships?.iteration?.data?.attributes?.resolved_parent_path +
+          {{(workItem?.relationships?.iteration?.data?.attributes?.resolved_parent_path +
              '/' + workItem?.relationships?.iteration?.data?.attributes?.name).replace('//', '/')}}
         </strong>
       </div>
@@ -22,8 +22,8 @@
 
         <div class="search-pf-input-group">
           <div>
-            {{ !(workItem.relationships.iteration) ? "Associate" : "Reassociate" }}
-            <strong>{{ workItem.attributes['system.title'] }}</strong> with
+            {{ !(workItem?.relationships?.iteration) ? "Associate" : "Reassociate" }}
+            <strong>{{ workItem?.attributes['system.title'] }}</strong> with
           </div>
 
           <div class="parent-iteration-container input-group dropdown open active">
@@ -45,7 +45,7 @@
         <button class="btn btn-default" type="submit" id="cancel-iteration-button" (click)="iterationAssociationModal.close()">Cancel</button>
         <button class="btn btn-primary" type="submit" id="associate-iteration-button" #commitAssociation (click)="assignIteration()"
                 [disabled]="!enableAssociateButton">
-          {{ !!(workItem.relationships.iteration) ? "Reassociate" : "Associate" }}
+          {{ !!(workItem?.relationships?.iteration) ? "Reassociate" : "Associate" }}
         </button>
       </div>
 

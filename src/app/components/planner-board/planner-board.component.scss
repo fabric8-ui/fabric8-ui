@@ -24,6 +24,9 @@
       margin-left: rem(5);
       vertical-align: top;
       white-space: normal;
+      .boardQuickAddContainer {
+        margin-bottom: rem(5);
+      }
       .board-lane-column {
         height: 100%;
         padding: 0;
@@ -35,33 +38,6 @@
           padding-right: rem(15);
           padding-left: rem(15);
           overflow: auto;
-          .board-card {
-            padding: rem(15);
-            margin: rem(5) 0;
-            @include Border(2px, solid, $color-pf-black-400);
-            @extend .flex-container;
-            @extend .in-column-direction;
-            @extend .flex-grow-1;
-            &.active { border-color: $color-pf-blue-400;
-              &.gu-transit {
-                border-color: #bbb;
-                opacity: .1;
-              }
-            }
-            >div {
-              p { margin: 0; }
-              .wi-type-icon {
-                padding-right: em(6);
-                padding-left: em(6);
-                font-size: em(12);
-              }
-              .user-avatar { padding-right: em(5); }
-            }//div ended
-            .row-wrapper {
-              display: flex;
-              justify-content: space-between;
-            }
-          }//boardcard ended
         }//boardlaneWrapper ended
         .lane-header {
           width: 100%;
@@ -210,25 +186,3 @@
 // .active-lane {
 //   @include Border(2px, solid, $color-pf-blue-300!important);
 // }
-
-.not-assigned-user-icon {
-  width: 30px;
-  height: 30px;
-  @include not-assigned-user-icon;
-}
-
-.user-avatar {
-  @include user-avatar;
-  img {
-    width: 30px;
-    height: 30px;
-  }
-}
-
-.gu-mirror {
-  padding: em(15);
-  .row-wrapper {
-    display: flex;
-    justify-content: space-between;
-  }
-}

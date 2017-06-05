@@ -1,0 +1,44 @@
+@import './../../../assets/stylesheets/base';
+@import './../../../assets/stylesheets/shared/layout';
+
+.board-card {
+  border: 2px solid $color-pf-black-400;
+  padding: rem(15);
+  margin: 0 0 rem(5) 0;
+  @extend .flex-container;
+  @extend .in-column-direction;
+  @extend .flex-grow-1;
+  &.active {
+    border-color: $color-pf-blue-400;
+  }
+  >div {
+    p {
+      margin: 0;
+    }
+    .wi-type-icon {
+      padding: em(0) em(6);
+      font-size: em(12);
+    }
+    .user-avatar {
+      padding-right: em(5);
+    }
+  }//div ended
+  .row-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+  .not-assigned-user-icon {
+    @include not-assigned-user-icon;
+    width: 30px;
+    height: 30px;
+  }
+
+  .user-avatar {
+    @include user-avatar;
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}//boardcard ended
+

@@ -31,6 +31,7 @@ import { ArrayCount } from 'ngx-widgets';
 import { DragulaService } from 'ng2-dragula';
 import { Dialog } from 'ngx-widgets';
 
+import { CardValue } from './../card/card.component';
 import { IterationModel } from '../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType } from '../../models/work-item-type';
@@ -51,8 +52,10 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
 
   @ViewChildren('activeFilters', {read: ElementRef}) activeFiltersRef: QueryList<ElementRef>;
   @ViewChild('activeFiltersDiv') activeFiltersDiv: any;
+  @ViewChild('associateIterationModal') associateIterationModal: any;
 
   workItem: WorkItem;
+  cardItem: CardValue;
   filters: any[] = [];
   lanes: Array<any> = [];
   pageSize: number = 20;
@@ -77,6 +80,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
   private currentWIType: BehaviorSubject<string | null>;
   private existingQueryParams: Object = {};
   private wiSubscription = null;
+  lane: any;
 
   constructor(
     private auth: AuthenticationService,
@@ -209,15 +213,139 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
         value: lane.option
       }, ...this.filterService.getAppliedFilters()])
     .map(workItemResp => {
-      const workItems = workItemResp.workItems;
+      let workItems = workItemResp.workItems;
+      let cardValue: CardValue[] = [];
       lane.workItems = this.workItemService.resolveWorkItems(
         workItems,
         this.iterations,
         this.allUsers,
         this.workItemTypes
       );
+
+      lane.cardValue = lane.workItems.map(item => {
+        return {
+            id: item.id,
+            type: item.relationships.baseType.data.attributes['icon'],
+            title: item.attributes['system.title'],
+            avatar: (() => {
+              if(item.relationships.assignees.data.length > 0)
+                return item.relationships.assignees.data[0].attributes['imageURL'];
+              else return '';})(),
+            menuItem: [{
+              id: 'card_associate_iteration',
+              value: 'Associate with iteration...'
+            },
+            {
+              id: 'card_open',
+              value: 'Open',
+              link: "./detail/"+item.id
+            },
+            {
+              id: 'card_move_to_backlog',
+              value: 'Move to backlog'
+            }]
+        }
+      });
       lane.nextLink = workItemResp.nextLink;
       return lane;
+    });
+  }
+
+  createCardItem(workItems: WorkItem[]) {
+    let lane;
+    let cardValues: CardValue[] = [];
+
+    workItems = this.workItemService.resolveWorkItems(
+      workItems,
+      this.iterations,
+      this.allUsers,
+      this.workItemTypes
+    );
+    for(let i=0; i<workItems.length; i++) {
+      lane = this.lanes.find((lane) => lane.option === workItems[i].attributes['system.state']);
+      cardValues.push({
+        id: workItems[i].id,
+        type: workItems[i].relationships.baseType.data.attributes['icon'],
+        title: workItems[i].attributes['system.title'],
+        avatar: (() => {
+                if(workItems[i].relationships.assignees.data.length > 0)
+                  return workItems[i].relationships.assignees.data[0].attributes['imageURL'];
+                else return '';})(),
+        menuItem: [{
+          id: 'card_associate_iteration',
+          value: 'Associate with iteration...'
+        },
+        {
+          id: 'card_open',
+          value: 'Open',
+          link: "./detail/"+workItems[i].id
+        },
+        {
+          id: 'card_move_to_backlog',
+          value: 'Move to backlog'
+        }]
+      });
+      lane.cardValue = [...cardValues, ...lane.cardValue];
+    }
+    //lane.cardValue = [...cardValues, ...lane.cardValue];
+  }
+
+  updateCardItem(workItem: WorkItem) {
+    let lane = this.lanes.find((lane) => lane.option === workItem.attributes['system.state']);
+    let cardItem = lane.cardValue.find((item) => item.id === workItem.id);
+    cardItem.title = workItem.attributes['system.title'];
+    cardItem.type = workItem.relationships.baseType.data.attributes['icon'];
+    cardItem.avatar = (() => {
+      if(workItem.relationships.assignees.data.length > 0)
+        return workItem.relationships.assignees.data[0].attributes['imageURL'];
+      else return '';})()
+  }
+
+   cardMenuClick(menuId: string, itemId: string, lane: any) {
+    this.workItem = lane.workItems.find((item) => item.id === itemId);
+    if (menuId === 'card_associate_iteration') {
+      this.associateIterationModal.open();
+    }
+    else if (menuId === 'card_move_to_backlog') {
+      this.onMoveToBacklog();
+    }
+  }
+
+  onMoveToBacklog(): void {
+    //set this work item's iteration to None
+    //send a patch request
+    this.workItem.relationships.iteration = {}
+    this.workItemService
+      .update(this.workItem)
+      .switchMap(item => {
+        return this.iterationService.getIteration(item.relationships.iteration)
+          .map(iteration => {
+            item.relationships.iteration.data = iteration;
+            return item;
+          });
+      })
+      .subscribe(workItem => {
+        this.workItem = workItem;
+        try {
+          this.notifications.message({
+            message: workItem.attributes['system.title'] + ' has been moved to the Backlog.',
+            type: NotificationType.SUCCESS
+          } as Notification);
+        } catch (e) {
+          console.log('Error displaying notification. Iteration was moved to Backlog.');
+        }
+
+    },
+    (err) => {
+      try {
+        this.notifications.message({
+          message: this.workItem.attributes['system.title'] + ' could not be moved to the Backlog.',
+          type: NotificationType.DANGER
+        } as Notification);
+      } catch (e) {
+        console.log('Error displaying notification. Error moving Iteration to Backlog.');
+      }
+
     });
   }
 
@@ -309,16 +437,13 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
 
     let lane = this.lanes.find((lane) => lane.option === workItem.attributes['system.state']);
     lane.workItems = [...resolveItem, ...lane.workItems];
+    this.createCardItem([workItem]);
   }
 
-  gotoDetail(workItem: WorkItem) {
-    let link = trimEnd(this.router.url.split('detail')[0], '/') + '/detail/' + workItem.id;
-    this.router.navigateByUrl(link);
-  }
-
-  kebabClick(event: any): void {
-    event.stopPropagation();
-  }
+  // gotoDetail(workItem: WorkItem) {
+  //   let link = trimEnd(this.router.url.split('detail')[0], '/') + '/detail/' + workItem.id;
+  //   this.router.navigateByUrl(link);
+  // }
 
   openDetail(event: any): void {
     event.stopPropagation();
@@ -345,38 +470,6 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     this.showDialog = false;
   }
 
-  onMoveToBacklog(event: any): void {
-    event.stopPropagation();
-    //set this work item's iteration to None
-    //send a patch request
-    this.workItem.relationships.iteration = {}
-    this.workItemService
-      .update(this.workItem)
-      .subscribe(workItem => {
-        this.workItem = workItem;
-        try {
-          this.notifications.message({
-            message: workItem.attributes['system.title'] + ' has been moved to the Backlog.',
-            type: NotificationType.SUCCESS
-          } as Notification);
-        } catch (e) {
-          console.log('Error displaying notification. Iteration was moved to Backlog.')
-        }
-
-    },
-    (err) => {
-      try {
-        this.notifications.message({
-          message: this.workItem.attributes['system.title'] + ' could not be moved to the Backlog.',
-          type: NotificationType.DANGER
-        } as Notification);
-      } catch (e) {
-        console.log('Error displaying notification. Error moving Iteration to Backlog.')
-      }
-
-    });
-  }
-
   onDelete(event: MouseEvent): void {
     if (event)
       event.stopPropagation();
@@ -394,10 +487,12 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     let [el, source] = args;
   }
 
-  getWI(workItem: WorkItem) {
-    let lane = this.lanes.find((lane) => lane.option === workItem.attributes['system.state']);
-    let _workItem = lane.workItems.find((item) => item.id === workItem.id);
+  getWI(workItemId: string, lane: any) {
+    //let lane = this.lanes.find((lane) => lane.option === workItem.attributes['system.state']);
+    let _workItem = lane.workItems.find((item) => item.id === workItemId);
+    let _cardItem = lane.cardValue.find((item) => item.id === workItemId);
     this.workItem = _workItem;
+    this.cardItem = _cardItem;
   }
 
   isSelected(wi: WorkItem){
@@ -416,7 +511,6 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     } catch (e) {}
 
     this.changeLane(this.workItem.attributes['system.state'], state, this.workItem, prevElId);
-
     if (el.previousElementSibling) {
       adjElm = el.previousElementSibling;
       this.changeState(state, el.getAttribute('data-id'), adjElm.getAttribute('data-id'), 'below');
@@ -493,19 +587,26 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     let oldLane = this.lanes.find((lane) => lane.option === oldState);
     let newLane = this.lanes.find((lane) => lane.option === newState);
     let index = oldLane.workItems.findIndex((item) => item.id === workItem.id);
+    let _index = oldLane.cardValue.findIndex((item) => item.id === workItem.id);
 
     oldLane.workItems.splice(index, 1);
+    oldLane.cardValue.splice(_index, 1);
 
     if (prevIdEl !== null) {
       let newIndex = newLane.workItems.findIndex((item) => item.id === prevIdEl);
-      if (newIndex > -1) {
+      let _newIndex = newLane.cardValue.findIndex((item) => item.id === prevIdEl);
+      if (newIndex > -1 && _newIndex > -1) {
         newIndex += 1;
+        _newIndex += 1;
         newLane.workItems.splice(newIndex, 0, workItem);
+        newLane.cardValue.splice(_newIndex, 0, this.cardItem);
       } else {
         newLane.workItems.splice(0, 0, workItem);
+        newLane.cardValue.splice(0, 0, this.cardItem);
       }
     } else {
       newLane.workItems.push(workItem);
+      newLane.cardValue.push(this.cardItem);
     }
   }
 
@@ -519,6 +620,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
           let index = lane.workItems.findIndex((item) => item.id === updatedItem.id);
           if (index > -1) {
             lane.workItems[index] = updatedItem;
+            this.updateCardItem(updatedItem);
           }
         })
     );
@@ -533,7 +635,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     this.eventListeners.push(
       this.broadcaster.on<string>('detail_close')
         .subscribe(()=>{
-          this.workItem = <WorkItem>{};
+          //this.workItem = <WorkItem>{};
         })
     );
 
@@ -550,6 +652,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
           this.lanes.forEach((lane, index) => {
             // FIXEME: Need to find a better way to do it
             setTimeout(() => {
+              this.lanes[index].cardValue = cloneDeep(finalLanes[index].cardValue);
               this.lanes[index].workItems = cloneDeep(finalLanes[index].workItems);
             }, 10 * index);
           })
