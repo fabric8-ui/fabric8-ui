@@ -29,6 +29,19 @@
             <section><span><br></span></section>
             <footer><span class="fa fa-3x fa-code" ></span></footer>
           </div>-->
+          <div id="forgeStarterButton" class="panel-item cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:configurator.workflowSteps.forgeStarter})" >
+            <header>
+              <h3> Create a new <strong>Starter</strong> project</h3>
+            </header>
+            <section><span><br></span></section>
+            <footer class="container-fluid">
+              <div class="row">
+                <div class="col-xs-12">
+                  <span class="fa fa-3x fa-code" ></span>
+                </div>
+              </div>
+            </footer>
+          </div>
           <div id="importCodeButton" class="panel-item cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:configurator.workflowSteps.forgeImportGit})" >
             <header>
               <h3>Import existing <strong>code</strong></h3>
@@ -40,20 +53,7 @@
           </div>
           <div id="forgeQuickStartButton" class="panel-item cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:configurator.workflowSteps.forgeQuickStart})" >
             <header>
-              <h3>Select <strong>technology stack</strong> and <strong>pipeline</strong></h3>
-            </header>
-            <section><span><br></span></section>
-            <footer class="container-fluid">
-              <div class="row">
-                <div class="col-xs-12">
-                  <span class="pficon fa-3x pficon-screen  " ></span>
-                </div>
-              </div>
-            </footer>
-          </div>
-          <div id="forgeStarterButton" class="panel-item cursor-pointer user-select-none" (click)="workflow.gotoNextStep({name:configurator.workflowSteps.forgeStarter})" >
-            <header>
-              <h3> Create a new Quick Start <strong>project</strong></h3>
+              <h3> Create a new <strong>Quick Start</strong> project</h3>
             </header>
             <section><span><br></span></section>
             <footer class="container-fluid">
