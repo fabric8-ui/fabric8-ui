@@ -4,18 +4,18 @@
       <div class="col-xs-12 wizard-step-title">
         <h3><strong>{{title}}</strong></h3>
         <div class="busy-indicator">
-          <div *ngIf="!forgeClient.hasErrorMessage && forgeClient.processing===true" class="spinner spinner-lg"></div>
+          <div *ngIf="!appGenerator.hasErrorMessage && appGenerator.processing===true" class="spinner spinner-lg"></div>
         </div>
-        <span title="Close" id="forge-close-button" (click)="forgeClient.close()" class="pficon pficon-close"></span>
+        <span title="Close" id="forge-close-button" (click)="appGenerator.close()" class="pficon pficon-close"></span>
       </div>
     </div>
   </header>
-  <app-generator-step-view  [class.hide]="forgeClient.hasProcessingMessage||forgeClient.hasSuccessMessage" [state]="forgeClient.state"  ></app-generator-step-view>
+  <app-generator-step-view  [class.hide]="appGenerator.hasProcessingMessage||appGenerator.hasSuccessMessage" [state]="appGenerator.state"  ></app-generator-step-view>
 
-  <section  [class.hide]="!forgeClient.hasProcessingMessage" class="app-generator-message app-generator-message-processing">
+  <section  [class.hide]="!appGenerator.hasProcessingMessage" class="app-generator-message app-generator-message-processing">
     <div class="message-title-container">
       <div class="message-title">
-        <span class="message-title-text" >{{forgeClient.processingMessage.title||''}}</span>
+        <span class="message-title-text" >{{appGenerator.processingMessage.title||''}}</span>
       </div>
     </div>
     <div class="message-body-container">
@@ -28,52 +28,52 @@
     </div>
   </section>
 
-  <section [class.hide]="!forgeClient.hasErrorMessage" class="app-generator-message app-generator-message-error">
+  <section [class.hide]="!appGenerator.hasErrorMessage" class="app-generator-message app-generator-message-error">
     <div class="message-title-container">
 
       <div class="message-title">
         <span class="message-title-icon fa-2x pficon pficon-error-circle-o"></span>
         <span class="message-title-icon-label" >Error!</span>
-        <span class="message-title-text" >{{forgeClient.errorMessage.title||''}}</span>
+        <span class="message-title-text" >{{appGenerator.errorMessage.title||''}}</span>
       </div>
 
     </div>
     <div class="message-body-container">
 
-      <div [innerHTML]="forgeClient.errorMessage.body" class="message-body"></div>
+      <div [innerHTML]="appGenerator.errorMessage.body" class="message-body"></div>
 
     </div>
   </section>
 
-  <section [class.hide]="!forgeClient.hasSuccessMessage" class="app-generator-message app-generator-message-success">
+  <section [class.hide]="!appGenerator.hasSuccessMessage" class="app-generator-message app-generator-message-success">
     <div class="message-title-container">
       <div class="message-title">
         <span class="message-title-icon fa-2x pficon pficon-ok"></span>
         <span class="message-title-icon-label" >Success!</span>
-        <span class="message-title-text">{{forgeClient.successMessage.title||''}}</span>
+        <span class="message-title-text">{{appGenerator.successMessage.title||''}}</span>
       </div>
     </div>
     <div class="message-body-container">
-      <div [innerHTML]="forgeClient.successMessage.body" class="message-body">
+      <div [innerHTML]="appGenerator.successMessage.body" class="message-body">
       </div>
     </div>
   </section>
 
-  <section [hidden]="forgeClient.hasErrorMessage||forgeClient.hasSuccessMessage||forgeClient.hasProcessingMessage" class="container-fluid padding-top-standard-offset">
+  <section [hidden]="appGenerator.hasErrorMessage||appGenerator.hasSuccessMessage||appGenerator.hasProcessingMessage" class="container-fluid padding-top-standard-offset">
     <div class="row">
       <div class="col-xs-12">
         <div class="form-horizontal">
-          <div [class.has-danger]="!forgeClient.fields[i].display.valid" class="form-group" *ngFor="let field of forgeClient.fields; let i=index; trackBy:trackByFn">
-            <label title="{{forgeClient.fields[i].display.label}}" [class.required]="forgeClient.fields[i].display.required===true" for="{{forgeClient.fields[i].name}}" *ngIf="(field.display.showLabel!==false && field.display.visible!==false)||field.display.showVerticalLabel === true"
+          <div [class.has-danger]="!field.display.valid" class="form-group" *ngFor="let field of appGenerator.fields">
+            <label title="{{field.display.label}}" [class.required]="field.display.required===true" for="{{field.name}}" *ngIf="(field.display.showLabel!==false && field.display.visible!==false)||field.display.showVerticalLabel === true"
             [class.margin-bottom-standard-offset]="field.display.showVerticalLabel === true" [class.margin-left-5]="field.display.showVerticalLabel === true" [class.padding-left-standard-offset]="field.display.showVerticalLabel === true" [class.col-xs-12]="field.display.showVerticalLabel === true" [class.col-xs-12]="field.display.showLabel!==false" [class.col-sm-4]="field.display.showLabel!==false" class="user-select-none control-label">{{field.display.label}}</label>
-            <div *ngIf="field.display.visible!==false" [class.col-sm-8]="field.display.showLabel!==false" [class.col-xs-12]="field.display.showLabel===false" [ngSwitch]="forgeClient.fields[i].display.inputType ">
-              <app-generator-single-input                   class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'singleInput'" ></app-generator-single-input>
-              <app-generator-single-selection-dropdown      class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'singleSelectionDropdown'" ></app-generator-single-selection-dropdown>
-              <app-generator-single-selection-list          class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'singleSelectionList'" ></app-generator-single-selection-list>
-              <app-generator-multiple-selection-label-list  class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'multipleSelection'" ></app-generator-multiple-selection-label-list>
-              <small class="form-text text-muted user-select-none" *ngIf="forgeClient.fields[i].display.note"><span class="color-info fa fa-info-circle"></span> <i>{{forgeClient.fields[i].display.note}}</i></small>
-              <div *ngIf="!forgeClient.fields[i].display.valid" style="position:relative;height:auto;display:block;" class="form-control-feedback user-select-none">
-                {{forgeClient.fields[i].display.message.description}}
+            <div *ngIf="field.display.visible!==false" [class.col-sm-8]="field.display.showLabel!==false" [class.col-xs-12]="field.display.showLabel===false" [ngSwitch]="field.display.inputType ">
+              <app-generator-single-input                   class="input-group width-100" [appGenerator]="appGenerator" [field]="field"  *ngSwitchCase="'singleInput'" ></app-generator-single-input>
+              <app-generator-single-selection-dropdown      class="input-group width-100" [appGenerator]="appGenerator" [field]="field"  *ngSwitchCase="'singleSelectionDropdown'" ></app-generator-single-selection-dropdown>
+              <app-generator-single-selection-list          class="input-group width-100" [appGenerator]="appGenerator" [field]="field"  *ngSwitchCase="'singleSelectionList'" ></app-generator-single-selection-list>
+              <app-generator-multiple-selection-label-list  class="input-group width-100" [appGenerator]="appGenerator" [field]="field"  *ngSwitchCase="'multipleSelection'" ></app-generator-multiple-selection-label-list>
+              <small class="form-text text-muted user-select-none" *ngIf="field.display.note"><span class="color-info fa fa-info-circle"></span> <i>{{field.display.note}}</i></small>
+              <div *ngIf="!field.display.valid" style="position:relative;height:auto;display:block;" class="form-control-feedback user-select-none">
+                {{field.display.message.description}}
               </div>
             </div>
           </div>
@@ -81,19 +81,19 @@
       </div>
     </div>
   </section>
-  <footer class="container-fluid padding-top-standard-offset" [class.border-transparent]="forgeClient.hasProcessingMessage" >
+  <footer class="container-fluid padding-top-standard-offset" [class.border-transparent]="appGenerator.hasProcessingMessage" >
     <div class="row">
       <div class="col-xs-12 wizard-step-tool-bar with-items-at-end">
-        <button title="Cancel" id="forge-cancel-button" type="button" class="btn btn-primary margin-right-5" *ngIf="!forgeClient.hasErrorMessage && !forgeClient.hasSuccessMessage && !forgeClient.hasProcessingMessage"
-          (click)="forgeClient.cancel()">Cancel</button>
-        <!--<button title="Back" type="button" class="btn btn-primary margin-right-5" *ngIf="!forgeClient.hasErrorMessage && !forgeClient.hasSuccessMessage !forgeClient.hasProcessingMessage" [disabled]="(!forgeClient.state.canMoveToPreviousStep)||(forgeClient.processing === true)"
-            (click)="forgeClient.gotoPreviousStep()">Back</button>-->
-        <button title="Next" id="forge-next-button" type="button" class="btn btn-primary margin-right-5" *ngIf="!forgeClient.hasErrorMessage && !forgeClient.hasSuccessMessage && !forgeClient.hasProcessingMessage"
-          [disabled]="(!forgeClient.state.canMoveToNextStep)||(forgeClient.processing === true)" (click)="forgeClient.gotoNextStep()">Next</button>
-        <button title="Finish" id="forge-finish-button" type="button" class="btn btn-primary" *ngIf="!forgeClient.hasErrorMessage && !forgeClient.hasSuccessMessage && !forgeClient.hasProcessingMessage"
-          [disabled]="(!forgeClient.state.canExecute)||(forgeClient.processing === true)" (click)="forgeClient.finish()">Finish</button>
-        <button title="OK" id="forge-error-ok-button" type="button" class="btn btn-primary" *ngIf="forgeClient.hasErrorMessage" (click)="forgeClient.acknowledgeErrorMessage()">OK</button>
-        <button title="OK" id="forge-ok-button" type="button" class="btn btn-primary" *ngIf="forgeClient.hasSuccessMessage" (click)="forgeClient.acknowledgeSuccessMessage()">OK</button>
+        <button title="Cancel" id="forge-cancel-button" type="button" class="btn btn-primary margin-right-5" *ngIf="!appGenerator.hasErrorMessage && !appGenerator.hasSuccessMessage && !appGenerator.hasProcessingMessage"
+          (click)="appGenerator.cancel()">Cancel</button>
+        <!--<button title="Back" type="button" class="btn btn-primary margin-right-5" *ngIf="!appGenerator.hasErrorMessage && !appGenerator.hasSuccessMessage !appGenerator.hasProcessingMessage" [disabled]="(!appGenerator.state.canMoveToPreviousStep)||(appGenerator.processing === true)"
+            (click)="appGenerator.gotoPreviousStep()">Back</button>-->
+        <button title="Next" id="forge-next-button" type="button" class="btn btn-primary margin-right-5" *ngIf="!appGenerator.hasErrorMessage && !appGenerator.hasSuccessMessage && !appGenerator.hasProcessingMessage"
+          [disabled]="(!appGenerator.state.canMoveToNextStep)||(appGenerator.processing === true)" (click)="appGenerator.gotoNextStep()">Next</button>
+        <button title="Finish" id="forge-finish-button" type="button" class="btn btn-primary" *ngIf="!appGenerator.hasErrorMessage && !appGenerator.hasSuccessMessage && !appGenerator.hasProcessingMessage"
+          [disabled]="(!appGenerator.state.canExecute)||(appGenerator.processing === true)" (click)="appGenerator.finish()">Finish</button>
+        <button title="OK" id="forge-error-ok-button" type="button" class="btn btn-primary" *ngIf="appGenerator.hasErrorMessage" (click)="appGenerator.acknowledgeErrorMessage()">OK</button>
+        <button title="OK" id="forge-ok-button" type="button" class="btn btn-primary" *ngIf="appGenerator.hasSuccessMessage" (click)="appGenerator.acknowledgeSuccessMessage()">OK</button>
       </div>
     </div>
   </footer>

@@ -35,11 +35,10 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
   @Input() title: string = 'Forge Wizard';
   @Input() workflowStepName: string = '';
   @Input() forgeCommandName: string = 'none';
-
-  private _workflow: IWorkflow;
+  @Input() workflow: IWorkflow;
 
   constructor(
-    public forgeClient: ForgeAppGeneratorServiceClient,
+    public appGenerator: ForgeAppGeneratorServiceClient,
     loggerFactory: LoggerFactory) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, ForgeAppGeneratorComponent.instanceCount++);
     if ( logger ) {
@@ -48,23 +47,14 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     this.log(`New instance ...`);
   }
 
-  @Input()
-  get workflow(): IWorkflow {
-    return this._workflow;
-  }
-
-  set workflow(value: IWorkflow) {
-    this._workflow = value;
-  }
-
   /**
    * All inputs are bound and values assigned, but the 'workflow' get a new instance every time the parents host dialog
    * is opened.
    */
   ngOnInit() {
     this.log(`ngOnInit ...`);
-    this.forgeClient.commandName = this.forgeCommandName;
-    this.forgeClient.workflow = this.workflow;
+    this.appGenerator.commandName = this.forgeCommandName;
+    this.appGenerator.workflow = this.workflow;
   }
 
   ngOnDestroy() {
@@ -90,17 +80,12 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     }
   }
 
-
-  trackByFn(index: any, item: any) {
-   return index;
-  }
-
   private onWorkflowPropertyChanged(change?: INotifyPropertyChanged<IWorkflow>) {
     if ( change ) {
       if ( change.currentValue !== change.previousValue ) {
         this.log(`The workflow property changed value ...`);
         let current: IWorkflow = change.currentValue;
-        this.forgeClient.workflow = current;
+        this.appGenerator.workflow = current;
         this.subscribeToIncomingWorkflowTransitions(current);
         this.subscribeToOutgoingWorkflowTransitions(current);
       }
@@ -134,7 +119,7 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
     }
     workflow.transitions.filter(transition => transition.isTransitioningTo(this.workflowStepName))
     .subscribe((transition) => {
-      this.forgeClient.begin();
+      this.appGenerator.begin();
     });
   }
 
