@@ -14,7 +14,7 @@ import { Notification, Notifications, NotificationType } from 'ngx-base';
 import { IterationModel } from '../models/iteration.model';
 import { MockHttp } from '../mock/mock-http';
 import { HttpService } from './http-service';
-  
+
 @Injectable()
 export class IterationService {
   public iterations: IterationModel[] = [];
@@ -33,9 +33,6 @@ export class IterationService {
       private notifications: Notifications
   ) {
     this.spaces.current.subscribe(val => this._currentSpace = val);
-    if (this.auth.getToken() != null) {
-      this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
-     }
     this.selfId = this.createId();
     this.logger.log('Launching IterationService instance id ' + this.selfId);
   }
@@ -69,7 +66,7 @@ export class IterationService {
     return this.spaces.current.take(1).switchMap(space => {
       let iterationsUrl = space.relationships.iterations.links.related;
       return this.http
-        .get(iterationsUrl, { headers: this.headers })
+        .get(iterationsUrl)
         .map (response => {
           if (/^[5, 4][0-9]/.test(response.status.toString())) {
             throw new Error('API error occured');
@@ -113,8 +110,7 @@ export class IterationService {
       return this.http
         .post(
           iterationsUrl,
-          { data: iteration },
-          { headers: this.headers }
+          { data: iteration }
         )
         .map (response => {
           if (/^[5, 4][0-9]/.test(response.status.toString())) {
@@ -150,7 +146,7 @@ export class IterationService {
   updateIteration(iteration: IterationModel): Observable<IterationModel> {
     console.log('Update on iteration service.');
     return this.http
-      .patch(iteration.links.self, { data: iteration }, { headers: this.headers })
+      .patch(iteration.links.self, { data: iteration })
       .map (response => {
         if (/^[5, 4][0-9]/.test(response.status.toString())) {
           throw new Error('API error occured');

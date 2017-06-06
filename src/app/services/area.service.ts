@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { GlobalSettings } from '../shared/globals';
 
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http } from '@angular/http';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -29,9 +29,6 @@ export class AreaService {
       private spaces: Spaces
   ) {
     this.spaces.current.subscribe(val => this._currentSpace = val);
-    if (this.auth.getToken() != null) {
-      this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
-     }
   }
   /**
    * getAreas - We call this service method to fetch
@@ -44,7 +41,7 @@ export class AreaService {
       let areasUrl = this._currentSpace.relationships.areas.links.related;
       if (this.checkValidUrl(areasUrl)) {
         return this.http
-          .get(areasUrl, { headers: this.headers })
+          .get(areasUrl)
           .map (response => {
             if (/^[5, 4][0-9]/.test(response.status.toString())) {
               throw new Error('API error occured');
