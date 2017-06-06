@@ -67,22 +67,9 @@
             <label title="{{forgeClient.fields[i].display.label}}" [class.required]="forgeClient.fields[i].display.required===true" for="{{forgeClient.fields[i].name}}" *ngIf="(field.display.showLabel!==false && field.display.visible!==false)||field.display.showVerticalLabel === true"
             [class.margin-bottom-standard-offset]="field.display.showVerticalLabel === true" [class.margin-left-5]="field.display.showVerticalLabel === true" [class.padding-left-standard-offset]="field.display.showVerticalLabel === true" [class.col-xs-12]="field.display.showVerticalLabel === true" [class.col-xs-12]="field.display.showLabel!==false" [class.col-sm-4]="field.display.showLabel!==false" class="user-select-none control-label">{{field.display.label}}</label>
             <div *ngIf="field.display.visible!==false" [class.col-sm-8]="field.display.showLabel!==false" [class.col-xs-12]="field.display.showLabel===false" [ngSwitch]="forgeClient.fields[i].display.inputType ">
-
-              <div *ngSwitchCase="'singleInput'" [ngSwitch]="forgeClient.fields[i].valueType">
-                <input *ngSwitchCase="'string'" id="{{forgeClient.fields[i].name}}" title="{{forgeClient.fields[i].display.label}}" name="{{forgeClient.fields[i].name}}" (change)="forgeClient.validate()"
-                  (keyup.enter)="forgeClient.validate()" [(ngModel)]="forgeClient.fields[i].value" type="text" [class.form-control-danger]="!forgeClient.fields[i].display.valid"
-                  class="form-control" placeholder="{{forgeClient.fields[i].description}}"  [disabled]="forgeClient.fields[i].display.enabled===false"
-                  [required]="forgeClient.fields[i].display.required" />
-                <input *ngSwitchCase="'boolean'" style="box-shadow:none;" title="{{forgeClient.fields[i].display.label}}" [class.form-control-danger]="!forgeClient.fields[i].display.valid" (change)="forgeClient.validate()"
-                  type="checkbox" name="{{forgeClient.fields[i].name}}" [(ngModel)]="forgeClient.fields[i].value" class="form-control"
-                  [required]="forgeClient.fields[i].display.required" [disabled]="forgeClient.fields[i].display.enabled===false">
-                <input *ngSwitchCase="'number'" [class.form-control-danger]="!forgeClient.fields[i].display.valid" title="{{forgeClient.fields[i].display.label}}" type="number" (change)="forgeClient.validate()"
-                  name="{{forgeClient.fields[i].name}}" [(ngModel)]="forgeClient.fields[i].value" class="form-control" [required]="forgeClient.fields[i].display.required"
-                  [disabled]="forgeClient.fields[i].display.enabled===false">
-              </div>
-
-              <app-generator-single-selection-dropdown class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'singleSelectionDropdown'" ></app-generator-single-selection-dropdown>
-              <app-generator-single-selection-list     class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'singleSelectionList'" ></app-generator-single-selection-list>
+              <app-generator-single-input                   class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'singleInput'" ></app-generator-single-input>
+              <app-generator-single-selection-dropdown      class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'singleSelectionDropdown'" ></app-generator-single-selection-dropdown>
+              <app-generator-single-selection-list          class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'singleSelectionList'" ></app-generator-single-selection-list>
               <app-generator-multiple-selection-label-list  class="input-group width-100" [appGenerator]="forgeClient" [field]="forgeClient.fields[i]"  *ngSwitchCase="'multipleSelection'" ></app-generator-multiple-selection-label-list>
               <small class="form-text text-muted user-select-none" *ngIf="forgeClient.fields[i].display.note"><span class="color-info fa fa-info-circle"></span> <i>{{forgeClient.fields[i].display.note}}</i></small>
               <div *ngIf="!forgeClient.fields[i].display.valid" style="position:relative;height:auto;display:block;" class="form-control-feedback user-select-none">
