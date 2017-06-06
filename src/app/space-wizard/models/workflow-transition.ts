@@ -1,8 +1,8 @@
-import { WorkflowAction } from '../contracts/workflow-action';
-import { IWorkflowStep } from '../contracts/workflow-step';
-import { IWorkflowTransition } from '../contracts/workflow-transition';
-import { IWorkflowTransitionContext } from '../contracts/workflow-transition-context';
-import { WorkflowTransitionAction } from '../contracts/workflow-transition-action';
+import { WorkflowAction } from './contracts/workflow-action';
+import { IWorkflowStep } from './contracts/workflow-step';
+import { IWorkflowTransition } from './contracts/workflow-transition';
+import { IWorkflowTransitionContext } from './contracts/workflow-transition-context';
+import { WorkflowTransitionAction } from './contracts/workflow-transition-action';
 
 /** allows intercepting of workflow transitions  */
 export class WorkflowTransition implements IWorkflowTransition {

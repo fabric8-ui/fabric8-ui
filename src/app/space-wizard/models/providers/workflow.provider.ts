@@ -1,6 +1,6 @@
 import { ClassProvider, FactoryProvider, OpaqueToken } from '@angular/core';
 import { LoggerFactory } from '../../common/logger';
-import { Workflow } from '../concrete/workflow';
+import { Workflow } from '../workflow';
 
 import { IWorkflowToken } from '../contracts/workflow';
 

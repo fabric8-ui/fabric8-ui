@@ -1,8 +1,8 @@
-import { IWorkflow } from '../contracts/workflow';
-import { IWorkflowLocator } from '../contracts/workflow-locator';
-import { IWorkflowStep } from '../contracts/workflow-step';
-import { IWorkflowTransitionContext } from '../contracts/workflow-transition-context';
-import { WorkflowTransitionAction } from '../contracts/workflow-transition-action';
+import { IWorkflow } from './contracts/workflow';
+import { IWorkflowLocator } from './contracts/workflow-locator';
+import { IWorkflowStep } from './contracts/workflow-step';
+import { IWorkflowTransitionContext } from './contracts/workflow-transition-context';
+import { WorkflowTransitionAction } from './contracts/workflow-transition-action';
 
 /** implementation of the IWorkflowStep */
 export class WorkflowStep implements IWorkflowStep {

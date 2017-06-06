@@ -1,8 +1,8 @@
 import { Injectable, Injector, ReflectiveInjector } from '@angular/core';
-import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
-import { IWorkflow } from '../contracts/workflow';
-import { IWorkflowOptions } from '../contracts/workflow-options';
-import { IWorkflowProvider } from '../providers/workflow.provider';
+import { ILoggerDelegate, LoggerFactory } from '../common/logger';
+import { IWorkflow } from './contracts/workflow';
+import { IWorkflowOptions } from './contracts/workflow-options';
+import { IWorkflowProvider } from './providers/workflow.provider';
 /**
  * Creates concrete implementations of the IWorkflow contract
  */

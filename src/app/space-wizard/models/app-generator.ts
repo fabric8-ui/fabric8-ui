@@ -1,4 +1,4 @@
-export { FieldCollection } from './concrete/field-set';
+export { FieldCollection } from './field-set';
 
 export { IField } from './contracts/field-info';
 export { IFieldCollection } from './contracts/field-set';
