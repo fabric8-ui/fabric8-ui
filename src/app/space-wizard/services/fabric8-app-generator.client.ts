@@ -62,7 +62,7 @@ export class Fabric8AppGeneratorClient {
   public hasProcessingMessage: boolean;
   public processingMessage: IAppGeneratorMessage;
 
-  private _fieldSet: IFieldCollection;
+  private _fields: IFieldCollection;
   private _responseHistory: Array<IAppGeneratorResponse>;
   private _currentResponse: IAppGeneratorResponse;
   private _onCommandPipelineBeginStep: boolean = false;
@@ -132,12 +132,12 @@ export class Fabric8AppGeneratorClient {
   }
 
   public get fields(): IFieldCollection {
-    this._fieldSet = this._fieldSet || [];
-    return this._fieldSet;
+    this._fields = this._fields || [];
+    return this._fields;
   }
 
   public set fields(value: IFieldCollection) {
-    this._fieldSet = value;
+    this._fields = value;
   }
 
   public reset() {
@@ -405,7 +405,10 @@ export class Fabric8AppGeneratorClient {
           this.state.canMoveToNextStep = validationState.canMoveToNextStep;
           this.state.canMovePreviousStep = validationState.canMovePreviousStep;
           this.state.valid = validationState.valid;
+          this.state.steps = validationState.steps;
+
           // update any fields with the same name
+
           for (let field of this.fields) {
             let found = response.payload.fields.find((f) => f.name === field.name);
             if ( found ) {
