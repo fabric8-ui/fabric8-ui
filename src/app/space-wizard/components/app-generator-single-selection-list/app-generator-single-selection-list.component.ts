@@ -9,7 +9,7 @@ import {
   IFieldChoice
 } from '../../services/app-generator.service';
 
-import { ForgeAppGeneratorServiceClient } from '../forge-app-generator/forge-app-generator-service-client';
+import { Fabric8AppGeneratorClient } from '../../services/fabric8-app-generator.client';
 import { FieldWidgetClassificationOptions } from '../../models/contracts/field-classification';
 
 @Component({
@@ -23,7 +23,7 @@ export class AppGeneratorSingleSelectionListComponent implements OnInit, OnDestr
   static instanceCount: number = 1;
 
   @Input() field: IField = <IField>{ name: '', value: '', display: { choices: [] }};
-  @Input() appGenerator: ForgeAppGeneratorServiceClient;
+  @Input() appGenerator: Fabric8AppGeneratorClient;
 
   constructor(
     loggerFactory: LoggerFactory) {

@@ -1,12 +1,12 @@
 //
 import { Broadcaster, Notification, NotificationAction, Notifications, NotificationType } from 'ngx-base';
-import { CodebasesService } from '../../../create/codebases/services/codebases.service';
+import { CodebasesService } from '../../create/codebases/services/codebases.service';
 import { Space } from 'ngx-fabric8-wit';
-import { Codebase } from '../../../create/codebases/services/codebase';
+import { Codebase } from '../../create/codebases/services/codebase';
 
-import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
-import { IWorkflow } from '../../models/workflow';
-import { formatJson } from '../../common/utilities';
+import { ILoggerDelegate, LoggerFactory } from '../common/logger';
+import { IWorkflow } from '../models/workflow';
+import { formatJson } from '../common/utilities';
 import * as _ from 'lodash';
 import {
   IAppGeneratorCommand,
@@ -19,7 +19,7 @@ import {
   IFieldCollection,
   IAppGeneratorMessage,
   AppGeneratorConfiguratorService
-} from '../../services/app-generator.service';
+} from '../services/app-generator.service';
 
 interface IAddCodebaseResult {
     codebase: Codebase;
@@ -32,14 +32,14 @@ interface IAddCodebaseDelegate {
 }
 
 
-export class ForgeAppGeneratorServiceClient {
+export class Fabric8AppGeneratorClient {
   /**
    * make allowance for non-singleton d-i semantics
    */
   public static factoryProvider = {
-      provide: ForgeAppGeneratorServiceClient,
+      provide: Fabric8AppGeneratorClient,
       useFactory: (appGeneratorService, codebasesService, configuratorService, notifications, broadcaster, loggerFactory) => {
-        let tmp = new ForgeAppGeneratorServiceClient(appGeneratorService, codebasesService, configuratorService, notifications, broadcaster, loggerFactory);
+        let tmp = new Fabric8AppGeneratorClient(appGeneratorService, codebasesService, configuratorService, notifications, broadcaster, loggerFactory);
         return tmp;
       },
       deps: [IAppGeneratorServiceProvider.InjectToken, CodebasesService, AppGeneratorConfiguratorService, Notifications, Broadcaster, LoggerFactory]
@@ -78,7 +78,7 @@ export class ForgeAppGeneratorServiceClient {
     loggerFactory: LoggerFactory
     ) {
 
-    this.log = loggerFactory.createLoggerDelegate(this.constructor.name, ForgeAppGeneratorServiceClient.instanceCount++);
+    this.log = loggerFactory.createLoggerDelegate(this.constructor.name, Fabric8AppGeneratorClient.instanceCount++);
     this.log(`New instance ...`);
 
     this.state = {

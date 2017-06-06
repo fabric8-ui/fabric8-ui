@@ -5,10 +5,10 @@ import { AuthenticationService } from 'ngx-login-client';
 
 import { Observable, Observer } from 'rxjs/Rx';
 
-import { ApiLocatorService } from '../../../shared/api-locator.service';
+import { ApiLocatorService } from '../../shared/api-locator.service';
 
-import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
-import { clone } from '../../common/utilities';
+import { ILoggerDelegate, LoggerFactory } from '../common/logger';
+import { clone } from '../common/utilities';
 
 
 import {
@@ -21,7 +21,7 @@ import {
   IForgeCommandResponse,
   IForgeInput,
   IForgeState
-} from '../contracts/forge-service';
+} from './contracts/forge-service';
 
 class CommandPipelineStep {
   public static begin = 'begin';

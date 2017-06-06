@@ -5,7 +5,7 @@ import { AuthenticationService } from 'ngx-login-client';
 import { ApiLocatorService } from '../../../shared/api-locator.service';
 import { LoggerFactory } from '../../common/logger';
 
-import { Fabric8ForgeService } from '../concrete/fabric8-forge.service';
+import { Fabric8ForgeService } from '../fabric8-forge.service';
 
 import { ForgeService, IForgeServiceToken } from '../contracts/forge-service';
 import { MockForgeService } from '../mocks/mock-forge.service';

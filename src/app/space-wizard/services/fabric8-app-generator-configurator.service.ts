@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { ContextService } from '../../../shared/context.service';
+import { ContextService } from '../../shared/context.service';
 import {
   Space,
   Context,
@@ -15,14 +15,14 @@ import {
   IField,
   IFieldCollection,
   IFieldChoice
-} from '../contracts/app-generator-service';
+} from './contracts/app-generator-service';
 /** dependencies */
 import {
   IForgeInput,
   ForgeCommands
-} from '../forge.service';
+} from './forge.service';
 
-import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
+import { ILoggerDelegate, LoggerFactory } from '../common/logger';
 
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
 
-import { ILoggerDelegate, LoggerFactory } from '../../common/logger';
+import { ILoggerDelegate, LoggerFactory } from '../common/logger';
 /** contracts  */
 import {
   AppGeneratorService,
@@ -15,7 +15,7 @@ import {
   IField,
   IFieldCollection,
   IFieldChoice
-} from '../contracts/app-generator-service';
+} from './contracts/app-generator-service';
 /** dependencies */
 import {
   IForgeCommandRequest,
@@ -26,7 +26,7 @@ import {
   IForgeCommandData,
   IForgeMetadata,
   IForgeState
-} from '../forge.service';
+} from './forge.service';
 
 import {
  AppGeneratorConfiguratorService

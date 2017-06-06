@@ -10,7 +10,7 @@ import {
   IFieldChoice
 } from '../../services/app-generator.service';
 
-import { ForgeAppGeneratorServiceClient } from './forge-app-generator-service-client';
+import { Fabric8AppGeneratorClient } from '../../services/fabric8-app-generator.client';
 import { FieldWidgetClassificationOptions } from '../../models/contracts/field-classification';
 
 @Component({
@@ -24,7 +24,7 @@ import { FieldWidgetClassificationOptions } from '../../models/contracts/field-c
   templateUrl: './forge-app-generator.component.html',
   styleUrls: [ './forge-app-generator.component.scss' ],
   providers: [
-    ForgeAppGeneratorServiceClient.factoryProvider
+    Fabric8AppGeneratorClient.factoryProvider
   ]
 })
 export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges {
@@ -38,7 +38,7 @@ export class ForgeAppGeneratorComponent implements OnInit, OnDestroy, OnChanges 
   @Input() workflow: IWorkflow;
 
   constructor(
-    public appGenerator: ForgeAppGeneratorServiceClient,
+    public appGenerator: Fabric8AppGeneratorClient,
     loggerFactory: LoggerFactory) {
     let logger = loggerFactory.createLoggerDelegate(this.constructor.name, ForgeAppGeneratorComponent.instanceCount++);
     if ( logger ) {

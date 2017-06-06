@@ -16,7 +16,7 @@ export {
 } from './contracts/app-generator-service';
 
 export { IAppGeneratorServiceProvider, FieldSetServiceProvider } from './providers/app-generator-service.provider';
-export { AppGeneratorConfiguratorService } from './concrete/fabric8-app-generator-configurator.service';
+export { AppGeneratorConfiguratorService } from './fabric8-app-generator-configurator.service';
 
 
 
