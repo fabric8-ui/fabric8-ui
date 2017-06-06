@@ -7,5 +7,6 @@ export class Fabric8UIConfig {
   ssoApiUrl: string;
   forgeApiUrl: string;
   recommenderApiUrl: string;
+  statusApiUrl: string;
 
 }

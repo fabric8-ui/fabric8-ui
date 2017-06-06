@@ -1,5 +1,5 @@
-import { ObservableFabric8UIConfig } from './../../shared/config/fabric8-ui-config.service';
-import {Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Fabric8UIConfig } from './../../shared/config/fabric8-ui-config';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Subscription, Observable } from 'rxjs';
@@ -21,9 +21,9 @@ import {
   BuildStore
 } from 'fabric8-runtime-console';
 
-import { pathJoin } from "fabric8-runtime-console/src/app/kubernetes/model/utils";
-import {IModalHost} from "../../space-wizard/models/modal-host";
-import {SpaceWizardComponent} from "../../space-wizard/space-wizard.component";
+import { pathJoin } from 'fabric8-runtime-console/src/app/kubernetes/model/utils';
+import { IModalHost } from '../../space-wizard/models/modal-host';
+import { SpaceWizardComponent } from './../../space-wizard/space-wizard.component';
 import { Context, Contexts } from 'ngx-fabric8-wit';
 
 @Component({
@@ -63,7 +63,7 @@ export class PipelinesComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private userService: UserService,
     private pipelinesService: PipelinesService,
-    private fabric8UIConfig: ObservableFabric8UIConfig
+    private fabric8UIConfig: Fabric8UIConfig
   ) {
 
     this.updateConsoleLink();
@@ -144,7 +144,7 @@ export class PipelinesComponent implements OnInit, OnDestroy {
       let filteredPipelines = [];
       this._allPipelines.forEach(bc => {
         let matches = true;
-        let spaceId = "";
+        let spaceId = '';
         if (this._context) {
           spaceId = this._context.name;
         }
@@ -188,7 +188,7 @@ export class PipelinesComponent implements OnInit, OnDestroy {
           });
       })
       .subscribe(val => {
-        //console.log('Updating build configs:', val);
+        // console.log('Updating build configs:', val);
         this._allPipelines = val;
         this.applyFilters();
         this.applySort();
@@ -201,17 +201,15 @@ export class PipelinesComponent implements OnInit, OnDestroy {
   }
 
   updateConsoleLink() {
-    this.fabric8UIConfig.subscribe(config => {
-      this.openshiftConsoleUrl = config.openshiftConsoleUrl;
-      let pipelines = this._allPipelines;
-      if (this.openshiftConsoleUrl && pipelines && pipelines.length) {
-        let pipeline = pipelines[0];
-        let namespace = pipeline.namespace;
-        if (namespace) {
-          this.openshiftConsoleUrl = pathJoin(this.openshiftConsoleUrl, "/project", namespace, "/browse/pipelines");
-        }
+    this.openshiftConsoleUrl = this.fabric8UIConfig.openshiftConsoleUrl;
+    let pipelines = this._allPipelines;
+    if (this.openshiftConsoleUrl && pipelines && pipelines.length) {
+      let pipeline = pipelines[0];
+      let namespace = pipeline.namespace;
+      if (namespace) {
+        this.openshiftConsoleUrl = pathJoin(this.openshiftConsoleUrl, '/project', namespace, '/browse/pipelines');
       }
-    });
+    }
   }
 
   ngOnDestroy() {

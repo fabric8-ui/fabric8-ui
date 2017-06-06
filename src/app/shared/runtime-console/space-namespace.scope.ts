@@ -8,7 +8,6 @@ import { DevNamespaceScope } from 'fabric8-runtime-console';
 import { SpaceNamespaceService } from './space-namespace.service';
 
 import { StaticNamespaceScope } from './static-namespace.scope';
-import { ObservableFabric8UIConfig } from './../../shared/config/fabric8-ui-config.service';
 
 /**
  * A NamespaceScope which returns the space-namespace for the space

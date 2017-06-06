@@ -1,10 +1,10 @@
+import { Fabric8UIConfig } from './config/fabric8-ui-config';
 import { NotificationsService } from './notifications.service';
 import { Contexts, Spaces } from 'ngx-fabric8-wit';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Broadcaster, Notifications } from 'ngx-base';
 import { UserService } from 'ngx-login-client';
-import { ObservableFabric8UIConfig } from './config/fabric8-ui-config.service';
 
 declare global {
   interface Window {
@@ -16,7 +16,7 @@ declare global {
 export class AnalyticService {
 
   constructor(
-    private fabric8UIConfig: ObservableFabric8UIConfig,
+    private fabric8UIConfig: Fabric8UIConfig,
     private broadcaster: Broadcaster,
     private userService: UserService,
     private router: Router,
@@ -25,13 +25,10 @@ export class AnalyticService {
     private spaces: Spaces
   ) {
     if ('production' === ENV) {
-      fabric8UIConfig.subscribe(config => {
-        if (config.analyticsWriteKey) {
-          this.initialize(config.analyticsWriteKey);
+        if (this.fabric8UIConfig.analyticsWriteKey) {
+          this.initialize(this.fabric8UIConfig.analyticsWriteKey);
           this.track();
         }
-      });
-
     }
   }
 

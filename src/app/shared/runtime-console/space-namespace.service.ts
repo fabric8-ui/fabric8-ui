@@ -1,3 +1,4 @@
+import { Fabric8UIConfig } from './../config/fabric8-ui-config';
 import { Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Spaces, Space } from 'ngx-fabric8-wit';
@@ -9,8 +10,6 @@ import { Notifications, NotificationType } from 'ngx-base';
 import * as yaml from 'js-yaml';
 
 import { Fabric8RuntimeConsoleService } from './fabric8-runtime-console.service';
-import { ObservableFabric8UIConfig } from './../config/fabric8-ui-config.service';
-
 
 interface ConfigMapWrapper {
   configMap?: ConfigMap;
@@ -26,7 +25,7 @@ export class SpaceNamespaceService {
 
   constructor(
     private userService: UserService,
-    private fabric8UIConfig: ObservableFabric8UIConfig,
+    private fabric8UIConfig: Fabric8UIConfig,
     private configMapService: ConfigMapService,
     private spaces: Spaces,
     private notifications: Notifications,
@@ -137,9 +136,7 @@ export class SpaceNamespaceService {
           return s ? s[0].replace('.', '-') : username;
         })
         .first(),
-      this.fabric8UIConfig
-        .map(config => config.pipelinesNamespace)
-        .first(),
+      Observable.of(this.fabric8UIConfig.pipelinesNamespace),
       (username: string, namespace: string) => ({ username, namespace })
     )
       .map(val => `${val.username}${val.namespace}`);
