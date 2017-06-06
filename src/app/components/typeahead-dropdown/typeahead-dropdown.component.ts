@@ -1,9 +1,20 @@
-import { Component, Input, Output, ViewChild, OnInit, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  ViewChild,
+  OnInit,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+  EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { cloneDeep, isEqual } from 'lodash';
 
-import { Logger } from 'ngx-base';
+import { Broadcaster, Logger } from 'ngx-base';
+
+import { AuthenticationService } from 'ngx-login-client';
 
 export class TypeaheadDropdownValue {
   key: string; // key, will be returned by the event on selection.
@@ -24,7 +35,7 @@ export class TypeaheadDropdownValue {
   templateUrl: './typeahead-dropdown.component.html',
   styleUrls: ['./typeahead-dropdown.component.scss']
 })
-export class TypeaheadDropdown implements OnInit, OnChanges {
+export class TypeaheadDropdown implements OnInit, OnChanges, OnDestroy {
 
   // array of possible values
   @Input() protected values: TypeaheadDropdownValue[];
@@ -41,14 +52,26 @@ export class TypeaheadDropdown implements OnInit, OnChanges {
   protected filteredValues: TypeaheadDropdownValue[] = [];
   protected selectedValue: TypeaheadDropdownValue;
   protected searchValue: boolean = false;
+  loggedIn: Boolean = false;
+  eventListeners: any[] = [];
 
-  constructor(private logger: Logger) {
-  }
+  constructor(
+    private logger: Logger,
+    private auth: AuthenticationService,
+    private broadcaster: Broadcaster
+  ){}
 
   ngOnInit(): void {
     this.proxyValues = cloneDeep(this.values);
     this.sortValuesByLength(this.proxyValues);
     this.filteredValues = cloneDeep(this.proxyValues);
+    this.listenToEvent();
+    this.loggedIn = this.auth.isLoggedIn();
+  }
+
+  ngOnDestroy() {
+    console.log('Destroying all the listeners in list component');
+    this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
   protected sortValuesByLength(list: TypeaheadDropdownValue[]) {
@@ -70,14 +93,16 @@ export class TypeaheadDropdown implements OnInit, OnChanges {
   }
 
   protected open() {
-    this.searchValue = true;
-    this.onFocus.emit(this);
-    // Takes a while to render the component
-    setTimeout(() => {
-      if (this.valueSearch) {
-        this.valueSearch.nativeElement.focus();
-      }
-    }, 50);
+    if (this.loggedIn) {
+      this.searchValue = true;
+      this.onFocus.emit(this);
+      // Takes a while to render the component
+      setTimeout(() => {
+        if (this.valueSearch) {
+          this.valueSearch.nativeElement.focus();
+        }
+      }, 50);
+    }
   }
 
   public isOpen(): boolean {
@@ -168,5 +193,14 @@ export class TypeaheadDropdown implements OnInit, OnChanges {
       });
       this.sortValuesByLength(this.filteredValues);
     }
+  }
+
+  listenToEvent() {
+    this.eventListeners.push(
+      this.broadcaster.on<string>('logout')
+        .subscribe(message => {
+          this.loggedIn = false;
+      })
+    );
   }
 }
