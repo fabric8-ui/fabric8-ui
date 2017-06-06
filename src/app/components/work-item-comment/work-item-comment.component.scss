@@ -4,13 +4,13 @@
   li { text-align: $textCenter;
     &.toggle-icon {
       display: inline-block;
-      width: rem(40);
-      padding-top: rem(8.5);
-      padding-bottom: rem(8.5);
+      width: 40px;
+      padding-top: 9px;
+      padding-bottom: 9px;
     }
-    a { padding: rem(12.5) rem(15); }
+    a { padding: 13px 15px; }
     &:nth-child(2) {
-      a { margin-left: rem(-13); }
+      a { margin-left: -13px; }
     }
     .badge { margin-top: -3px; }// hack to align the badge
     &.active {
@@ -22,14 +22,14 @@
   }
 }
 .wi-comment-input {
-    padding: rem(20) rem(20) rem(20) rem(40);
+    padding: 20px 20px 20px 40px;
     background-color: $color-pf-black-100;
     #wi-comment-add-comment {
     /* Overrides pf's form-control style's height property */
     /* The min-height is needed to avoid zero-height element */
     /* The min-height is same as form-control's default height */
     height: auto;
-    min-height: em(26);
+    min-height: 26px;
     margin-bottom: 0;
     /* Helper class, should be moved out when almEditable is extended to support placeholders */
     &.placeholder {
@@ -40,32 +40,29 @@
 }
 .comments-outer-wrapper {
   .comments-wrap {
-    padding: em(20) em(20) em(20) rem(40);
+    float: left;
+    width: $width100;
+    padding: 20px 20px 20px 40px;
     border-bottom: 1px solid;
     border-bottom-color: $color-pf-black-200;
     .comment-body {
       min-width: 0; //fix for having full wrapper width and overflowen content
-      padding-left: em(10);
+      padding-right: 25px;
+      padding-left: 40px;
       h5.comment-authr-name {
         max-width: 100%;
         min-width: 0;  //fix for having full wrapper width and overflowen content
-        padding-right: rem(10);
-        margin-top: em(0);
-        margin-bottom: em(5);
-        flex-shrink: 1;
-        flex-grow: 1;
+        padding-right: 10px;
+        margin-top: 0;
+        margin-bottom: 5px;
         strong {
           display: inline-block;
           width: $width100;
-          padding-right: em(6);
-          padding-left: em(6);
         }
       }
       .createTimeBlock {
         max-width: 100%;
         line-height: 1.2;
-        flex-grow: 0;
-        flex-shrink: 0;
       }
       p.noneditableComment {
         height: auto;
@@ -79,10 +76,10 @@
       p.editableComment { height: auto; }
     }
     .dropdown {
-      min-width: em(10);
+      min-width: 10px;
+      margin-top: -5px;
       text-align: right;
     }
-    .dropdown-menu { margin-top: -11px; }
   }
 }
 .user-avatar { @include user-avatar; }

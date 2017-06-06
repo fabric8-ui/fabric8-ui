@@ -1,4 +1,4 @@
-<div class="flex-container flex-grow-1 in-column-direction" id="wi-comment">
+<div class="" id="wi-comment">
     <ul class="comment-content nav nav-tabs nav-tabs-pf" id="wi-comment-content" *ngIf="true">
         <!-- Refactoring needed to toogle view -->
       <li class="toggle-icon" (click)="isCollapsedComments = !isCollapsedComments">
@@ -24,10 +24,10 @@
               (keydown.enter)="createComment($event)" (keyup.enter)="preventDef($event)"
               data-placeholder="Add a new comment..." #comment></p>
       </div>
-      <div class="flex-container flex-grow-1 in-column-direction comments-outer-wrapper">
+      <div class=" comments-outer-wrapper">
         <div *ngFor='let comment of comments; let counter = index' class="comments-wrap">
-          <div class="flex-container flex-grow-1">
-            <div class="user-avatar">
+          <div class="">
+            <div class="user-avatar pull-left">
                 <img id="{{'comment_avatar_' + counter}}"
                 class="user-assign-avatar pull-left"
                 placement="right"
@@ -37,20 +37,40 @@
                 [src]="comment.relationships['created-by']?.data?.attributes?.imageURL | almAvatarSize:30"
                 />
             </div>
-            <div class="comment-body flex-grow-1">
-              <div class="flex-container">
-                <h5 class="comment-authr-name">
+            <div class="dropdown dropdown-kebab-pf pull-right" dropdown>
+              <button *ngIf="loggedIn && (loggedInUser?.id === comment.relationships['created-by']?.data?.id)"
+                      class="btn btn-link dropdown-toggle"
+                      id="commentActionsKebab"
+                      type="button"
+                      dropdownToggle
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="true">
+                <span class="fa fa-ellipsis-v"></span>
+              </button>
+              <ul *ngIf="loggedIn && (loggedInUser?.id === comment.relationships['created-by']?.data?.id)"
+                  class="dropdown-menu dropdown-menu-right"
+                  aria-labelledby="commentActionsKebab"
+                  dropdownMenu>
+                <li><a (click)="openComment(comment.id)">Edit...</a></li>
+                <li><a (click)="confirmCommentDelete(comment)">Delete</a></li>
+              </ul>
+            </div>
+            <div class="comment-body ">
+              <div class="width-100 pull-left">
+                <h5 class="comment-authr-name pull-left">
                     <strong id="{{'comment_username_' + counter}}" class="truncate">
                         {{comment.relationships['created-by']?.data?.attributes?.fullName}}
                     </strong>
                 </h5>
-
-                <small class="createTimeBlock" id="{{'comment_time_' + counter}}">
+                <small class="createTimeBlock pull-right" id="{{'comment_time_' + counter}}">
                     {{comment.attributes['created-at'] | date:'medium'}}
                 </small>
               </div>
               <!-- when comment is not editable -->
-              <div *ngIf="!loggedIn ||
+              <div
+                class="width-100 pull-left"
+                *ngIf="!loggedIn ||
                 (!commentEditable || (loggedInUser?.id !== comment.relationships['created-by']?.data?.id))
                 || (selectedCommentId != comment.id)"
                 (click)='openComment(comment.id)'>
@@ -59,7 +79,9 @@
                 </p>
               </div>
               <!-- when comment is editable -->
-              <div *ngIf="loggedIn &&
+              <div
+                class="width-100 pull-left"
+                *ngIf="loggedIn &&
                   (selectedCommentId == comment.id) &&
                   (commentEditable && (loggedInUser?.id === comment.relationships['created-by']?.data?.id))" >
                 <p almEditable #commentBody
@@ -86,25 +108,6 @@
                   </button>
                 </aside>
               </div>
-            </div>
-            <div class="dropdown dropdown-kebab-pf" dropdown>
-              <button *ngIf="loggedIn && (loggedInUser?.id === comment.relationships['created-by']?.data?.id)"
-                      class="btn btn-link dropdown-toggle"
-                      id="commentActionsKebab"
-                      type="button"
-                      dropdownToggle
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="true">
-                <span class="fa fa-ellipsis-v"></span>
-              </button>
-              <ul *ngIf="loggedIn && (loggedInUser?.id === comment.relationships['created-by']?.data?.id)"
-                  class="dropdown-menu dropdown-menu-right"
-                  aria-labelledby="commentActionsKebab"
-                  dropdownMenu>
-                <li><a (click)="openComment(comment.id)">Edit...</a></li>
-                <li><a (click)="confirmCommentDelete(comment)">Delete</a></li>
-              </ul>
             </div>
           </div>
         </div>
