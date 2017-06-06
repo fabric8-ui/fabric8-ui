@@ -211,7 +211,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
       payload: {
         fields: fields,
         results: forgeResponseData.results || [],
-        state: this.transformState(request,response)
+        state: this.transformState(request, response)
       },
       context: response.context || {}
 
@@ -225,9 +225,9 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
   }
 
   private transformState(request: IAppGeneratorRequest,
-    response: IForgeCommandResponse ):IAppGeneratorState {
+    response: IForgeCommandResponse ): IAppGeneratorState {
     let forgeResponseData: IForgeCommandData = response.payload.data;
-    let forgeState:IForgeState = forgeResponseData.state;
+    let forgeState: IForgeState = forgeResponseData.state;
     let state = <IAppGeneratorState>{
       valid: forgeState.valid || false,
       isExecute: forgeState.isExecute,
@@ -242,16 +242,16 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
     return state;
   }
 
-  private transformSteps(steps: Array<string>=[]):Array<any> {
+  private transformSteps(steps: Array<string>= []): Array<any> {
     let index = 0;
-    let transformedSteps:Array<any> = steps.map(s => {
+    let transformedSteps: Array<any> = steps.map(s => {
        return {
-         id:(s||'').trim().toLowerCase(),
+         id: (s || '').trim().toLowerCase(),
          name: '',
          title: '',
-         active:false,
+         active: false,
          index: index ++
-        }
+        };
     });
     return transformedSteps;
   }

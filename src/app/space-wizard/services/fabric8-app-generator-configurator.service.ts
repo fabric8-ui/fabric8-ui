@@ -199,7 +199,7 @@ export class AppGeneratorConfiguratorService {
         case 'pipeline' : {
           field.display.showVerticalLabel = true;
           field.display.showLabel = false;
-          field.display.label= 'Select a build pipeline strategy';
+          field.display.label = 'Select a build pipeline strategy';
           field.display.note = null;
           field.display.inputType = FieldWidgetClassificationOptions.SingleSelectionList;
           this.augmentPipelineChoices(field , context, execution);
@@ -271,11 +271,11 @@ export class AppGeneratorConfiguratorService {
     return space;
   }
 
-  private augmentStep(step:any):any {
-    let id=(step.id||'').toLowerCase();
+  private augmentStep(step: any): any {
+    let id = (step.id || '').toLowerCase();
     let augmentedName = name;
-    step.name=`${(step.index+1)||1}`;
-    step.title=`Step ${step.name}`;
+    step.name = `${(step.index + 1) || 1}`;
+    step.title = `Step ${step.name}`;
     switch (id) {
       case 'io.fabric8.forge.generator.github.githubrepostep': {
         step.title = 'GitHub repository';
@@ -333,7 +333,7 @@ export class AppGeneratorConfiguratorService {
     (<Array<any>>response.payload.state.steps).forEach(step => {
       this.augmentStep(step);
       // set active step
-      if( (step.id||'').trim().toLowerCase() === (response.payload.state.title||'').trim().toLowerCase()) {
+      if ( (step.id || '').trim().toLowerCase() === (response.payload.state.title || '').trim().toLowerCase()) {
         step.active = true;
       }
       augmentedSteps.push(step);

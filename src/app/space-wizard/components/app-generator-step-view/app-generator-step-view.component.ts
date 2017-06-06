@@ -20,11 +20,11 @@ export class AppGeneratorStepViewComponent implements OnInit, OnDestroy {
 
   @Input() public sequence: any = {
     steps: [
-      { name: '1', active: true ,title:''  },
-      { name: '2', active: false,title:'' },
-      { name: '3', active: false,title:''  },
-      { name: '4', active: false,title:''  },
-      { name: '5', active: false,title:''  }
+      { name: '1', active: true , title: ''  },
+      { name: '2', active: false, title: '' },
+      { name: '3', active: false, title: ''  },
+      { name: '4', active: false, title: ''  },
+      { name: '5', active: false, title: ''  }
     ]};
 
   private _state: IAppGeneratorState = <IAppGeneratorState>{currentStep: 0, steps: []};
