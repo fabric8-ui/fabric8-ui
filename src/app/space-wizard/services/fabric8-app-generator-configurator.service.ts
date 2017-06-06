@@ -132,7 +132,8 @@ export class AppGeneratorConfiguratorService {
     }
   }
 
-  public scrubAppGeneratorResponse(context: string, execution: IAppGeneratorPair): IAppGeneratorResponse {
+  public scrubAppGeneratorResponse(execution: IAppGeneratorPair): IAppGeneratorResponse {
+    let context = execution.request.command.name
     let response = execution.response;
     this.augmentResponseStateSteps(context, execution);
     let validationFields = this.getValidationCommandFields(context, execution);

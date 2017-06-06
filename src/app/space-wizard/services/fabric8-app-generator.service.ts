@@ -129,7 +129,7 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
       };
       this.forgeService.executeCommand( commandRequest )
       .map( (forgeResponse) => this.transformForgeResponseIntoAnAppGeneratorResponse(request, forgeResponse) )
-      .map( (response) => this._configuratorService.scrubAppGeneratorResponse('', { request, response }) )
+      .map( (response) => this._configuratorService.scrubAppGeneratorResponse({ request, response }) )
       .subscribe( (response: IAppGeneratorResponse) => {
         this.log(`AppGenerator '${cmdDescription}' command completed`, response);
         observer.next(response);
