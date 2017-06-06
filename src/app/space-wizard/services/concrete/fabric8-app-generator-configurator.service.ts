@@ -134,7 +134,6 @@ export class AppGeneratorConfiguratorService {
 
   public scrubAppGeneratorResponse(context: string, execution: IAppGeneratorPair): IAppGeneratorResponse {
     let response = execution.response;
-    this.augmentResponseStateTitle(context, execution);
     this.augmentResponseStateSteps(context, execution);
     let validationFields = this.getValidationCommandFields(context, execution);
     for ( let field of response.payload.fields ) {
@@ -270,51 +269,74 @@ export class AppGeneratorConfiguratorService {
     return space;
   }
 
-  private augmentStep(name: string): string {
+  private augmentStep(step:any):any {
+    let id=(step.id||'').toLowerCase();
     let augmentedName = name;
-    switch ((name || '').toLowerCase() ) {
+    step.name=`${(step.index+1)||1}`;
+    step.title=`Step ${step.name}`;
+    switch (id) {
       case 'io.fabric8.forge.generator.github.githubrepostep': {
-        augmentedName = 'GitHub repository information';
+        step.title = 'GitHub repository';
         break;
       }
       case 'fabric8: new project': {
-        augmentedName = 'Quickstart';
+        step.title = 'Choose project type';
         break;
       }
+      case 'launchpad: new starter project': {
+        step.title = 'Choose project type';
+        break;
+      }
+      case 'spring boot: setup': {
+        step.title = 'Select dependencies';
+        break;
+      }
+      case 'wildfly swarm: setup': {
+        step.title = 'Select dependencies';
+        break;
+      }
+      case 'vert.x: setup': {
+        step.title = 'Select dependencies';
+        break;
+      }
+
+
       case 'launchpad: new project': {
-        augmentedName = 'Quickstart';
+        step.title = 'Quickstart';
         break;
       }
       case 'obsidian: configure pipeline': {
-        augmentedName = 'Select a build pipeline strategy ... ';
+        step.title = 'Select pipeline';
         break;
       }
       case 'io.fabric8.forge.generator.kubernetes.createbuildconfigstep': {
-        augmentedName = 'Select the pipeline build configuration options ... ';
+        step.title = 'Build configuration';
         break;
       }
       case 'io.fabric8.forge.generator.github.githubimportpickrepositoriesstep': {
-        augmentedName = 'Select the GitHub repository that you wish to import ...';
+        step.title = 'GitHub repository';
         break;
       }
       default: {
         break;
       }
     }
-    return augmentedName;
+    return step;
 
   }
 
   private augmentResponseStateSteps(context: string, execution: IAppGeneratorPair) {
     let response = execution.response;
     let augmentedSteps: Array<string> = [];
-    (<Array<string>>response.payload.state.steps).forEach(step => augmentedSteps.push(this.augmentStep(step)));
+    (<Array<any>>response.payload.state.steps).forEach(step => {
+      this.augmentStep(step);
+      // set active step
+      if( (step.id||'').trim().toLowerCase() === (response.payload.state.title||'').trim().toLowerCase()) {
+        step.active = true;
+      }
+      augmentedSteps.push(step);
+    });
     response.payload.state.steps = augmentedSteps;
-  }
-
-  private augmentResponseStateTitle(context: string, execution: IAppGeneratorPair) {
-    let response = execution.response;
-    response.payload.state.title = this.augmentStep(response.payload.state.title );
   }
 
   private getValidationCommandFields( context: string, execution: IAppGeneratorPair ): IFieldCollection {

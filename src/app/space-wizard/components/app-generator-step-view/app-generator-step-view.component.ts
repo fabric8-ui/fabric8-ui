@@ -20,11 +20,11 @@ export class AppGeneratorStepViewComponent implements OnInit, OnDestroy {
 
   @Input() public sequence: any = {
     steps: [
-      { name: '1', active: true  },
-      { name: '2', active: false },
-      { name: '3', active: false  },
-      { name: '4', active: false  },
-      { name: '5', active: false  }
+      { name: '1', active: true ,title:''  },
+      { name: '2', active: false,title:'' },
+      { name: '3', active: false,title:''  },
+      { name: '4', active: false,title:''  },
+      { name: '5', active: false,title:''  }
     ]};
 
   private _state: IAppGeneratorState = <IAppGeneratorState>{currentStep: 0, steps: []};
@@ -33,13 +33,14 @@ export class AppGeneratorStepViewComponent implements OnInit, OnDestroy {
      this._state = value || <IAppGeneratorState>{currentStep: 0, steps: []};
      this._state.steps = this._state.steps || [];
      this._state.currentStep = this._state.currentStep || 0;
-     let steps = [];
-     let n: number = 0;
-     for (let step of this._state.steps){
-       let s = { name: n + 1 , title: step, active: this._state.currentStep === n};
-       steps.push(s);
-       n++;
-     }
+      let steps = [];
+      let n: number = 0;
+      for (let step of this._state.steps){
+        steps.push(step);
+    //    let s = { name: n + 1 , title: step, active: this._state.currentStep === n};
+    //    steps.push(s);
+    //    n++;
+      }
      this.sequence.steps = steps;
   }
   public get state(): IAppGeneratorState {

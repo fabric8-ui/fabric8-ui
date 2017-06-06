@@ -24,7 +24,8 @@ import {
   IForgeService,
   IForgeServiceProvider,
   IForgeCommandData,
-  IForgeMetadata
+  IForgeMetadata,
+  IForgeState
 } from '../forge.service';
 
 import {
@@ -210,19 +211,10 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
       payload: {
         fields: fields,
         results: forgeResponseData.results || [],
-        state: {
-          valid: forgeResponseData.state.valid || false,
-          isExecute: forgeResponseData.state.isExecute,
-          canMoveToNextStep: forgeResponseData.state.canMoveToNextStep || false,
-          canMovePreviousStep: forgeResponseData.state.canMoveToPreviousStep || false,
-          canExecute: forgeResponseData.state.canExecute || false,
-          steps: forgeResponseData.state.steps || [],
-          currentStep: request.command.parameters.pipeline.step.index || 0,
-          title: forgeResponseData.metadata.name || '',
-          description: forgeResponseData.metadata.name || ''
-        } as IAppGeneratorState
+        state: this.transformState(request,response)
       },
       context: response.context || {}
+
     } as IAppGeneratorResponse;
     // now update commands with field data from forge data
 
@@ -230,6 +222,38 @@ export class Fabric8AppGeneratorService extends AppGeneratorService {
     this.transformDataToFieldsFields( appGeneratorResponse.context.nextCommand );
     return appGeneratorResponse;
 
+  }
+
+  private transformState(request: IAppGeneratorRequest,
+    response: IForgeCommandResponse ):IAppGeneratorState {
+    let forgeResponseData: IForgeCommandData = response.payload.data;
+    let forgeState:IForgeState = forgeResponseData.state;
+    let state = <IAppGeneratorState>{
+      valid: forgeState.valid || false,
+      isExecute: forgeState.isExecute,
+      canMoveToNextStep: forgeState.canMoveToNextStep || false,
+      canMovePreviousStep: forgeState.canMoveToPreviousStep || false,
+      canExecute: forgeState.canExecute || false,
+      steps: this.transformSteps(forgeState.steps || []),
+      currentStep: request.command.parameters.pipeline.step.index || 0,
+      title: forgeResponseData.metadata.name || '',
+      description: forgeResponseData.metadata.name || ''
+    };
+    return state;
+  }
+
+  private transformSteps(steps: Array<string>=[]):Array<any> {
+    let index = 0;
+    let transformedSteps:Array<any> = steps.map(s => {
+       return {
+         id:(s||'').trim().toLowerCase(),
+         name: '',
+         title: '',
+         active:false,
+         index: index ++
+        }
+    });
+    return transformedSteps;
   }
 
   private mapValueHasOptions( source: IForgeInput ): boolean {

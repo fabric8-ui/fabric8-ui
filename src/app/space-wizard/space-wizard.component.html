@@ -4,11 +4,11 @@
 
   <space-configurator class="wizard-step" [class.active]="workflow.isStepActive({name:configurator.workflowSteps.spaceConfigurator})" [workflow]="workflow" > </space-configurator>
 
-  <forge-app-generator class="wizard-step" [class.active]="workflow.isStepActive({name:configurator.workflowSteps.forgeStarter})" title="New Project Wizard "
+  <forge-app-generator class="wizard-step" [class.active]="workflow.isStepActive({name:configurator.workflowSteps.forgeStarter})" title="Add starter project to space"
     forgeCommandName="{{configurator.forgeCommands.forgeStarter}}" workflowStepName="{{configurator.workflowSteps.forgeStarter}}" [workflow]="workflow">
   </forge-app-generator>
 
-  <forge-app-generator class="wizard-step" [class.active]="workflow.isStepActive({name:configurator.workflowSteps.forgeQuickStart})" title="Quick Start"
+  <forge-app-generator class="wizard-step" [class.active]="workflow.isStepActive({name:configurator.workflowSteps.forgeQuickStart})" title="Add quickstart project to space"
     forgeCommandName="{{configurator.forgeCommands.forgeQuickStart}}" workflowStepName="{{configurator.workflowSteps.forgeQuickStart}}" [workflow]="workflow">
   </forge-app-generator>
 
