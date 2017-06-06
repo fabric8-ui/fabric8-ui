@@ -197,7 +197,9 @@ export class AppGeneratorConfiguratorService {
           break;
         }
         case 'pipeline' : {
+          field.display.showVerticalLabel = true;
           field.display.showLabel = false;
+          field.display.label= 'Select a build pipeline strategy';
           field.display.note = null;
           field.display.inputType = FieldWidgetClassificationOptions.SingleSelectionList;
           this.augmentPipelineChoices(field , context, execution);

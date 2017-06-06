@@ -64,8 +64,8 @@
       <div class="col-xs-12">
         <div class="form-horizontal">
           <div [class.has-danger]="!forgeClient.fields[i].display.valid" class="form-group" *ngFor="let field of forgeClient.fields; let i=index; trackBy:trackByFn">
-            <label title="{{forgeClient.fields[i].display.label}}" [class.required]="forgeClient.fields[i].display.required===true" for="{{forgeClient.fields[i].name}}" *ngIf="field.display.showLabel!==false && field.display.visible!==false"
-             [class.col-xs-12]="field.display.showLabel!==false" [class.col-sm-4]="field.display.showLabel!==false" class="user-select-none control-label">{{field.display.label}}</label>
+            <label title="{{forgeClient.fields[i].display.label}}" [class.required]="forgeClient.fields[i].display.required===true" for="{{forgeClient.fields[i].name}}" *ngIf="(field.display.showLabel!==false && field.display.visible!==false)||field.display.showVerticalLabel === true"
+            [class.margin-bottom-standard-offset]="field.display.showVerticalLabel === true" [class.margin-left-5]="field.display.showVerticalLabel === true" [class.padding-left-standard-offset]="field.display.showVerticalLabel === true" [class.col-xs-12]="field.display.showVerticalLabel === true" [class.col-xs-12]="field.display.showLabel!==false" [class.col-sm-4]="field.display.showLabel!==false" class="user-select-none control-label">{{field.display.label}}</label>
             <div *ngIf="field.display.visible!==false" [class.col-sm-8]="field.display.showLabel!==false" [class.col-xs-12]="field.display.showLabel===false" [ngSwitch]="forgeClient.fields[i].display.inputType ">
 
               <div *ngSwitchCase="'singleInput'" [ngSwitch]="forgeClient.fields[i].valueType">
