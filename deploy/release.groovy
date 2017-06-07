@@ -39,7 +39,7 @@ def cd (b){
     }
 
     stage('unit test'){
-        sh './tests/run_unit_tests.sh'
+        sh 'npm run test:unit'
     }
 
     stage('release'){
