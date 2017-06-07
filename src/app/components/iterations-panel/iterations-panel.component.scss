@@ -5,16 +5,13 @@
     li { cursor: pointer; }
     .badge { background-color: $color-pf-black; }
     i { color: $color-pf-white; }
-    .iteration-header { padding: em(10) em(20);
+    .iteration-header { padding: 10px 20px;
       > h4 { margin: 0; }
       .fa-icon { width: 15px; }
       .add-btn { color: $color-pf-blue; }
     }
     .iteration-subheader {
-      -webkit-box-align: flex-start;
-         -ms-flex-align: flex-start;
-            align-items: flex-start;
-      .dropdown-kebab-pf { margin-left: em(10); }
+      .dropdown-kebab-pf { margin-left: 10px; }
       .iteration-name {
         display: inline-block;
         width: 100%;
@@ -25,7 +22,7 @@
       padding-left: 0;
       margin-bottom: 0;
       > li {
-        padding: em(15);
+        padding: 15px;
         list-style: none;
         &:hover { background-color: $color-pf-black-700; }
         &.active {
@@ -38,8 +35,8 @@
         }
         .iteration-count { float: right; }
         .iteration-status {
-          padding-top: em(20);
-          padding-bottom: em(15);
+          padding-top: 20px;
+          padding-bottom: 15px;
         }
         .iteration-description {
           &:after,
@@ -53,14 +50,14 @@
     .not-current-iteration {
       padding-left: 0;
       margin-bottom: 0;
-      > li { padding: em(5) em(15) em(5) em(40);
+      > li { padding: 5px 15px 5px 40px;
         &:hover { background-color: $color-pf-black-700; }
         .iteration-name {
           display: inline-block;
           width: 100%;
         }
       }
-      .badge { margin-right: em(10); }
+      .badge { margin-right: 10px; }
     }
     .selected-iteration {
       color: $color-pf-white;
@@ -70,7 +67,7 @@
       i { color: $color-pf-white !important; }
     }
     .parent-iteration {
-      font-size: rem(12);
+      font-size: 12px;
       font-style: italic;
     }
   }

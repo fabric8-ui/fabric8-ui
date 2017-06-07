@@ -1,6 +1,7 @@
 <!--Iteration Start-->
-<div class="iterations-container flex-container flex-grow-1 in-column-direction">
+<div class="iterations-container">
   <div class="iteration-wrapper">
+    <!-- current iteration -->
     <div class="iterations">
       <div class="iteration-header pointer">
         <h3>
@@ -14,21 +15,8 @@
         <li class="active" *ngFor="let iteration of currentIterations" [routerLinkActive]="'selected-iteration'"
                 [routerLink]="[]"
                 [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}">
-          <div class="iteration-subheader flex-container">
-            <div class="flex-grow-1 truncate">
-                <strong class="iteration-name truncate"
-                  tooltip="{{iteration.attributes.name}}"
-                  placement="top" id="{{iteration.attributes.name}}">
-                  {{iteration.attributes.name | truncate : 45 }}
-                </strong>
-              <div class="parent-iteration">
-                <span tooltip="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
-                  placement="top" id="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}">
-                  {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | truncate : -50 }}
-                </span>
-              </div>
-            </div>
-            <div *ngIf="loggedIn" class="dropdown-kebab-pf" dropdown>
+          <div class="iteration-subheader">
+            <div *ngIf="loggedIn" class="dropdown-kebab-pf pull-right" dropdown>
               <button class="btn btn-link"
                       type="button"
                       aria-haspopup="true"
@@ -53,6 +41,19 @@
                   </a>
                 </li>
               </ul>
+            </div>
+            <div class="truncate padding-right-15">
+                <strong class="iteration-name truncate"
+                  tooltip="{{iteration.attributes.name}}"
+                  placement="top" id="{{iteration.attributes.name}}">
+                  {{iteration.attributes.name | truncate : 45 }}
+                </strong>
+              <div class="parent-iteration">
+                <span tooltip="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
+                  placement="top" id="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}">
+                  {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | truncate : -50 }}
+                </span>
+              </div>
             </div>
           </div>
           <div class="iteration-status">
@@ -81,6 +82,7 @@
         </li>
       </ul>
     </div>
+    <!-- future iteration -->
     <div class="iterations">
       <div class="iteration-header pointer">
         <h3>
@@ -101,22 +103,10 @@
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedFutureIteration">
-        <li class="iteration-subheader flex-container" *ngFor="let iteration of futureIterations" [routerLinkActive]="'selected-iteration'"
+        <li class="iteration-subheader" *ngFor="let iteration of futureIterations" [routerLinkActive]="'selected-iteration'"
                 [routerLink]="[]"
                 [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}">
-            <div class="flex-grow-1 truncate">
-              <strong class="iteration-name truncate"
-                tooltip="{{iteration.attributes.name}}"
-                placement="top" id="{{iteration.attributes.name}}">
-                {{iteration.attributes.name | truncate : 35}}
-              </strong>
-              <div class="parent-iteration">
-                <span tooltip="{{ (iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/') }}"
-                  placement="top">
-                {{(iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/') | truncate : -35 }}</span>
-              </div>
-            </div>
-            <div>
+            <div class="pull-right">
               <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
               <div *ngIf="loggedIn" class="dropdown-kebab-pf dib" dropdown>
                 <button class="btn btn-link"
@@ -145,9 +135,22 @@
                 </ul>
               </div>
             </div>
+            <div class="truncate">
+              <strong class="iteration-name truncate"
+                tooltip="{{iteration.attributes.name}}"
+                placement="top" id="{{iteration.attributes.name}}">
+                {{iteration.attributes.name | truncate : 35}}
+              </strong>
+              <div class="parent-iteration">
+                <span tooltip="{{ (iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/') }}"
+                  placement="top">
+                {{(iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/') | truncate : -35 }}</span>
+              </div>
+            </div>
         </li>
       </ul>
     </div>
+    <!-- past iteartion -->
     <div class="iterations">
       <div class="iteration-header pointer"
         (click)="isCollapsedPastIteration = !isCollapsedPastIteration">
@@ -160,22 +163,9 @@
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedPastIteration">
-        <li class="iteration-subheader flex-container" *ngFor="let iteration of closedIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}"
+        <li class="iteration-subheader" *ngFor="let iteration of closedIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}"
             [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" >
-          <div class="truncate flex-grow-1">
-            <strong class="iteration-name truncate"
-              tooltip="{{iteration.attributes.name}}"
-              placement="top" id="{{iteration.attributes.name}}">
-              {{iteration.attributes.name | truncate : 40 }}
-            </strong>
-            <div class="parent-iteration">
-              <span tooltip="{{ iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
-                placement="top">
-                {{ iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | truncate : -35 }}
-              </span>
-            </div>
-          </div>
-          <div>
+          <div class="pull-right">
             <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
             <div *ngIf="loggedIn" class="dropdown-kebab-pf dib" dropdown>
               <button class="btn btn-link"
@@ -202,6 +192,19 @@
                   </a>
                 </li>
               </ul>
+            </div>
+          </div>
+          <div class="truncate">
+            <strong class="iteration-name truncate"
+              tooltip="{{iteration.attributes.name}}"
+              placement="top" id="{{iteration.attributes.name}}">
+              {{iteration.attributes.name | truncate : 40 }}
+            </strong>
+            <div class="parent-iteration">
+              <span tooltip="{{ iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
+                placement="top">
+                {{ iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | truncate : -35 }}
+              </span>
             </div>
           </div>
         </li>
