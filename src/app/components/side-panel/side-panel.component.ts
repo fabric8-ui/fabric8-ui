@@ -10,7 +10,7 @@ import { IterationService } from '../../services/iteration.service';
 
 @Component({
   host:{
-      'class':'app-component flex-container in-column-direction flex-grow-1'
+      'class':'app-component width-100 pull-left'
   },
   selector: 'side-panel',
   templateUrl: './side-panel.component.html',

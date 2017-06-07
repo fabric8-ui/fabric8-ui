@@ -9,7 +9,8 @@ a.iteration-title:hover {
 }
 
 .side-panel-header {
-  display: flex;
+  width: $width100;
+  float: left;
   padding-left: ($grid-gutter-width/2);
   padding-right: ($grid-gutter-width/2);
   color: $color-pf-white;
@@ -19,10 +20,12 @@ a.iteration-title:hover {
   border-bottom-color: $color-pf-black-700;
   border-left: 4px solid;
   border-left-color: transparent;
-  align-items: baseline;
-  justify-content: space-between;
-  h3 {  margin-bottom: em(15); }
-  .badge { background-color: $color-pf-black; }
+  h3 {  margin-bottom: 15px; }
+  .badge {
+    margin-top: 23px;
+    margin-bottom: 23px;
+    background-color: $color-pf-black;
+  }
   &:hover { background-color: $color-pf-black-700; }
   &.backlog-selected {
     color: $color-pf-white;

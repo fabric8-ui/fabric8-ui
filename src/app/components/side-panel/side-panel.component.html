@@ -1,9 +1,9 @@
 <a [routerLink]="[]" [queryParams]="{}" class="iteration-title">
   <div class="side-panel-header" [class.backlog-selected]="backlogSelected">
-    <h3>Backlog</h3>
-    <span class="badge">{{numberOfItemsInBacklog}}</span>
+    <span class="badge pull-right">{{numberOfItemsInBacklog}}</span>
+    <h3 class="padding-right-15">Backlog</h3>
   </div>
 </a>
-<div class="flex-container flex-grow-1 in-column-direction">
+<div class="width-100 pull-left">
   <fab-planner-iteration [takeFromInput]="true" [iterations]="iterations" class="fab-planner-iteration"></fab-planner-iteration>
 </div>
