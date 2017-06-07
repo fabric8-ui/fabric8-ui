@@ -167,6 +167,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   // model handlers
 
   initWiItems(event: any): void {
+    console.log('Figure out :: list is initiating here');
     this.pageSize = event.pageSize;
     this.spaceSubscription =
       // On any of these event inside combineLatest
@@ -193,6 +194,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         }
 
         this.showHierarchyList = showHierarchyList;
+
+        console.log('Figure out :: this is in list page right before load work item');
 
         if (space) {
           console.log('[WorkItemListComponent] New Space selected: ' + space.attributes.name);
