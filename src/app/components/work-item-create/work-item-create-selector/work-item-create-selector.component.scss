@@ -13,14 +13,13 @@
   background-color: $color-pf-black-100;
   @include Border(0, solid, red);
   .container-modal-header {
-    display: flex;
+    width: $width100;
+    float: left;
     margin: 0;
     margin-bottom: ($grid-gutter-width/2);
-    align-items: baseline;
-    justify-content: space-between;
   }
   &.container-cards-pf {
-    .card-pf-info { min-height: 4.5em; }
+    .card-pf-info { min-height: 55px; }
     .card-pf-title { text-transform: capitalize; }
   }
 }
