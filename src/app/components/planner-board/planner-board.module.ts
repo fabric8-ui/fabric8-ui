@@ -10,6 +10,7 @@ import {
 import { ModalModule } from 'ngx-modal';
 import { DragulaModule } from 'ng2-dragula';
 import { DropdownModule } from 'ng2-bootstrap';
+import { EventService } from './../../services/event.service';
 import { TreeModule } from 'angular2-tree-component';
 import { TooltipModule } from 'ng2-bootstrap';
 import { TruncateModule } from 'ng2-truncate';
@@ -47,6 +48,7 @@ let providers = [];
 
 if (process.env.ENV == 'inmemory') {
   providers = [
+    EventService,
     GlobalSettings,
     WorkItemService,
     Broadcaster,
@@ -58,6 +60,7 @@ if (process.env.ENV == 'inmemory') {
   ];
 } else {
   providers = [
+    EventService,
     GlobalSettings,
     WorkItemService,
     Broadcaster,
