@@ -47,25 +47,23 @@
           </textarea>
         </div>
       </div>
-
       <div *ngIf="modalType=='create' || modalType=='update' || modalType=='start' || modalType=='createChild'"
         class="form-group datepicker-container">
-        <div class="start-date-container date-container">
+        <div class="date-container padding-right-5">
           <label>Start Date</label>
           <my-date-picker
-                [options]="startDatePickerOptions"
-                (dateChanged)="onStartDateChanged($event)"
-                [(ngModel)]="startDate"></my-date-picker>
+            [options]="startDatePickerOptions"
+            (dateChanged)="onStartDateChanged($event)"
+            [(ngModel)]="startDate"></my-date-picker>
         </div>
-        <div class="end-date-container date-container">
+        <div class="date-container padding-left-5">
           <label>End Date</label>
           <my-date-picker
-                [options]="endDatePickerOptions"
-                (dateChanged)="onEndDateChanged($event)"
-                [(ngModel)]="endDate"></my-date-picker>
+            [options]="endDatePickerOptions"
+            (dateChanged)="onEndDateChanged($event)"
+            [(ngModel)]="endDate"></my-date-picker>
         </div>
       </div>
-
       <div *ngIf="modalType=='close'"
         class="form-group datepicker-container">
         Do you really want to close this iteration?
@@ -76,8 +74,8 @@
     </div>
   </modal-content>
   <modal-footer>
-    <div class="text-right col-md-12 col-sm-12 col-xs-12 iteration-modal-footer">
-      <button class="btn btn-default marginR10" id="cancel-iteration-button" type="submit" value="0" (click)="createUpdateIterationDialog.close()">Cancel</button>
+    <div class="text-right col-md-12 col-sm-12 col-xs-12">
+      <button class="btn btn-default margin-right-10" id="cancel-iteration-button" type="submit" value="0" (click)="createUpdateIterationDialog.close()">Cancel</button>
       <button class="btn btn-primary" id="create-iteration-button" type="submit" value="0" (click)="createUpdateIterationDialog.onSubmit.emit(undefined)">
         {{submitBtnTxt}}
       </button>

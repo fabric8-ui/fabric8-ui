@@ -3,9 +3,6 @@
 .field-required-icon {
   color: $color-pf-red-200;
 }
-.marginR10 {
-  margin-right: em(10);
-}
 .parent-iteration-container {
   position: relative;
   .down-angle-icon {
@@ -13,17 +10,17 @@
     top: 0;
     right: 0;
     background-color: $color-pf-black-400;
-    padding: em(5);
+    padding: 5px;
     font-weight: 700;
     cursor: pointer;
   }
   .iteration-list {
     width: $width100;
-    max-height: em(140);
+    max-height: 140px;
     overflow-y: auto;
     li {
       list-style: none;
-      padding: em(5) em(15);
+      padding: 5px 15px;
       &:hover {
         background-color: $color-pf-black-300;
         cursor: pointer;
@@ -43,15 +40,6 @@
   .date-container {
     width: 50%;
   }
-}
-.start-date-container {
-  padding-right: em(5);
-}
-.end-date-container {
-  padding-left: em(5);
-}
-.iteration-modal-footer {
-  margin-top: em(20);
 }
 .has-error {
   .error-block {
