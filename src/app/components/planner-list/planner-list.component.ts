@@ -209,13 +209,14 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     if (this.wiSubscriber) {
       this.wiSubscriber.unsubscribe();
     }
+    const t1 = performance.now();
     this.wiSubscriber = Observable.combineLatest(
       this.iterationService.getIterations(),
       this.collaboratorService.getCollaborators(),
       this.workItemService.getWorkItemTypes(),
       this.areaService.getAreas(),
       this.userService.getUser().catch(err => Observable.of({})),
-    ).do((items) => {
+    ).take(1).do((items) => {
       const iterations = this.iterations = items[0];
       this.allUsers = items[1];
       this.workItemTypes = items[2];
@@ -264,6 +265,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       )
     })
     .subscribe(([iterations, users, wiTypes, workItemResp]) => {
+      const t2 = performance.now();
+      console.log('Performance :: Fetching the initial list - '  + (t2 - t1) + ' milliseconds.');
       this.logger.log('Got work item list.');
       this.logger.log(workItemResp.workItems);
       const workItems = workItemResp.workItems;
