@@ -351,14 +351,13 @@ export class WorkItemService {
   }
 
   resolveAssignees(assignees: any): Observable<User[]> {
-    if (Object.keys(assignees).length) {
+    if (Object.keys(assignees).length && assignees.data.length) {
       let observableBatch = assignees.data.map((assignee) => {
         return this.http.get(assignee.links.self)
-                .map((res) => res.json().data)
-                .catch((error: Error | any) => {
-                  this.notifyError('Resolving assignees of work item failed.', error);
-                  return Observable.throw(new Error(error.message));
-                });
+          .map((res) => res.json().data)
+          .catch((error: Error | any) => {
+            return Observable.throw(new Error(error.message));
+          });
       });
       return Observable.forkJoin(observableBatch);
     } else {

@@ -224,16 +224,15 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     const t1 = performance.now();
     this.wiSubscriber = Observable.combineLatest(
       this.iterationService.getIterations(),
-      this.collaboratorService.getCollaborators(),
+      // this.collaboratorService.getCollaborators(),
       this.workItemService.getWorkItemTypes(),
       this.areaService.getAreas(),
       this.userService.getUser().catch(err => Observable.of({})),
     ).take(1).do((items) => {
       const iterations = this.iterations = items[0];
-      this.allUsers = items[1];
-      this.workItemTypes = items[2];
-      this.areas = items[3];
-      this.loggedInUser = items[4];
+      this.workItemTypes = items[1];
+      this.areas = items[2];
+      this.loggedInUser = items[3];
 
       // If there is an iteration filter on the URL
       const queryParams = this.route.snapshot.queryParams;
@@ -267,16 +266,15 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       }
       this.logger.log('Requesting work items with filters: ' + JSON.stringify(appliedFilters));
       return Observable.forkJoin(
-        Observable.of(items[0]),
-        Observable.of(items[1]),
-        Observable.of(items[2]),
+        Observable.of(this.iterations),
+        Observable.of(this.workItemTypes),
         this.workItemService.getWorkItems(
           this.pageSize,
           appliedFilters
         )
       )
     })
-    .subscribe(([iterations, users, wiTypes, workItemResp]) => {
+    .subscribe(([iterations, wiTypes, workItemResp]) => {
       const t2 = performance.now();
       console.log('Performance :: Fetching the initial list - '  + (t2 - t1) + ' milliseconds.');
       this.logger.log('Got work item list.');
@@ -286,31 +284,62 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       this.workItems = this.workItemService.resolveWorkItems(
         workItems,
         this.iterations,
-        this.allUsers,
+        [], // We don't want to static resolve user at this point
         this.workItemTypes
       );
+
+      // Resolve assignees
+      const t3 = performance.now();
+      this.workItems.forEach((item, index) => {
+        this.workItemService.resolveAssignees(item.relationships.assignees).take(1)
+          .subscribe(assignees => {
+            item.relationships.assignees.data = assignees;
+            if (index == this.workItems.length - 1) {
+              const t4 = performance.now();
+              console.log('Performance :: Resolved all the users - '  + (t4 - t3) + ' milliseconds.');
+            }
+          })
+      });
     },
     (err) => {
-      console.log('Error in Work Item list',err);
+      console.log('Error in Work Item list', err);
     });
   }
 
   fetchMoreWiItems(): void {
+    const t1 = performance.now();
     this.workItemService
       .getMoreWorkItems(this.nextLink)
       .subscribe((newWiItemResp) => {
+        const t2 = performance.now();
         const workItems = newWiItemResp.workItems;
         this.nextLink = newWiItemResp.nextLink;
+        const wiLength = this.workItems.length;
         this.workItems = [
           ...this.workItems,
           // Returns an array of resolved work items
           ...this.workItemService.resolveWorkItems(
             workItems,
             this.iterations,
-            this.allUsers,
+            [],
             this.workItemTypes
           )
         ];
+        console.log('Performance :: Fetching more list items - '  + (t2 - t1) + ' milliseconds.');
+
+        // Resolve assignees
+        const t3 = performance.now();
+        for (let i = wiLength; i < this.workItems.length; i++) {
+          this.workItemService.resolveAssignees(this.workItems[i].relationships.assignees).take(1)
+            .subscribe(assignees => {
+              this.workItems[i].relationships.assignees.data = assignees
+              if (i == this.workItems.length - 1) {
+                const t4 = performance.now();
+                console.log('Performance :: Resolved all the users - '  + (t4 - t3) + ' milliseconds.');
+              }
+            })
+        }
+
         this.treeList.updateTree();
       },
       (e) => console.log(e));
@@ -352,7 +381,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     let resolveItem = this.workItemService.resolveWorkItems(
       [workItem],
       this.iterations,
-      this.allUsers,
+      [],
       this.workItemTypes
     );
     this.workItems = [...resolveItem, ...this.workItems];

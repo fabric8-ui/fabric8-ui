@@ -29,10 +29,10 @@
   </div>
   <div class="user-avatar">
       <img
-        *ngFor="let wItem of workItem.relationships.assignees.data"
+        *ngFor="let assignee of workItem.relationships.assignees.data"
         placement="bottom"
-        tooltip="{{wItem?.attributes?.fullName}}"
-        src="{{wItem?.attributes?.imageURL + '&s=23'}}"
+        tooltip="{{assignee?.attributes?.fullName}}"
+        src="{{assignee?.attributes?.imageURL + '&s=23'}}"
         onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
       <span *ngIf="!workItem.relationships?.assignees?.data?.length" class="pficon-user not-assigned-user-icon"></span>
   </div>
