@@ -379,6 +379,20 @@ export class WorkItemService {
     }
   }
 
+  resolveCommentCreator(creator): Observable<User>{
+    if (Object.keys(creator).length) {
+      let creatorLink = creator.links.related;
+      return this.http.get(creatorLink)
+        .map(creator => creator.json().data)
+        .catch((error: Error | any) => {
+          this.notifyError('Getting work item creator failed.', error);
+          return Observable.throw(new Error(error.message));
+        });
+    } else {
+      return Observable.of(creator);
+    }
+  }
+
   /**
    * Usage: Resolve the creator for a WorkItem
    */

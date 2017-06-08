@@ -184,6 +184,7 @@
                 placement="bottom"
                 tooltip="{{workItem.relationships.creator.data.attributes?.fullName}}"
                 src="{{workItem.relationships.creator.data.attributes?.imageURL + '&s=20'}}"
+                onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"
                 id="WI_details_reporter_img" />
               <div class="marginR10" style="display: inline-block;">
                   <span id="WI_details_reporter_user">
@@ -241,7 +242,9 @@
       </fieldset>
     </form>
     <div *ngIf="workItem.id" class="work-item-section">
-      <alm-work-item-link [workItem]="workItem" [loggedIn]="loggedIn"></alm-work-item-link>
+      <alm-work-item-link
+        *ngIf="this.workItem?.relationalData?.linkDicts"
+        [workItem]="workItem" [loggedIn]="loggedIn"></alm-work-item-link>
       <alm-work-item-comment
         [comments]="comments"
         [loggedIn]="loggedIn"

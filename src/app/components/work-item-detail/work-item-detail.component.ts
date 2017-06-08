@@ -1,3 +1,4 @@
+import { Comment } from './../../models/comment';
 import { Observable } from 'rxjs/Observable';
 import {
   AfterViewInit,
@@ -205,11 +206,23 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   loadWorkItem(id: string): void {
+    const t1 = performance.now();
     this.workItemService.getWorkItemById(id)
+      .do(workItem => {
+        this.workItem = workItem;
+        // Open the panel once work item is ready
+        const t2 = performance.now();
+        if (this.panelState === 'out') {
+          this.panelState = 'in';
+          console.log('Performance :: Details page first paint - '  + (t2 - t1) + ' milliseconds.');
+          if (this.headerEditable && typeof(this.title) !== 'undefined') {
+            this.title.nativeElement.focus();
+          }
+        }
+      })
+      .do (workItem => console.log('Work item fethced: ', cloneDeep(workItem)))
       .switchMap(workItem => {
         return Observable.combineLatest(
-          Observable.of(workItem),
-          this.collaboratorService.getCollaborators(),
           this.workItemService.getWorkItemTypes(),
           this.areaService.getArea(workItem.relationships.area),
           this.iterationService.getIteration(workItem.relationships.iteration),
@@ -218,47 +231,49 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
           this.workItemService.resolveComments(workItem.relationships.comments.links.related),
           this.workItemService.resolveLinks(workItem.links.self + '/relationships/links')
         );
-      })
-      .take(1)
-      .subscribe(([workItem, users, workItemTypes, area, iteration, assignees, creator, comments, [links, includes]]) => {
+      }).take(1)
+      .subscribe(([workItemTypes, area, iteration, assignees, creator, comments, [links, includes]]) => {
 
         // Resolve area
-        workItem.relationships.area = {
+        this.workItem.relationships.area = {
           data: area
         };
 
         // Resolve iteration
-        workItem.relationships.iteration = {
+        this.workItem.relationships.iteration = {
           data: iteration
         };
 
         // Resolve work item type
-        workItem.relationships.baseType.data =
-          workItemTypes.find(type => type.id === workItem.relationships.baseType.data.id) ||
-          workItem.relationships.baseType.data;
+        this.workItem.relationships.baseType.data =
+          workItemTypes.find(type => type.id === this.workItem.relationships.baseType.data.id) ||
+          this.workItem.relationships.baseType.data;
 
         // Resolve assignees
-        workItem.relationships.assignees = {
+        this.workItem.relationships.assignees = {
           data: assignees
         };
 
         // Resolve creator
-        workItem.relationships.creator = {
+       this.workItem.relationships.creator = {
           data: creator
         };
 
         // Resolve comments
-        merge(workItem.relationships.comments, comments);
-        workItem.relationships.comments.data = workItem.relationships.comments.data.map((comment) => {
-          comment.relationships['created-by'].data =
-            users.find(user => user.id === comment.relationships['created-by'].data.id);
-          return comment;
+        merge(this.workItem.relationships.comments, comments);
+        this.workItem.relationships.comments.data.forEach((comment, index) => {
+          this.workItemService.resolveCommentCreator(comment.relationships['created-by'])
+            .subscribe(creator => {
+              comment.relationships['created-by'] = {
+                data: creator
+              };
+            });
         });
-        this.comments = workItem.relationships.comments.data;
+        this.comments = this.workItem.relationships.comments.data;
 
         // Resolve links
-        workItem = Object.assign(
-          workItem,
+        this.workItem = Object.assign(
+          this.workItem,
           {
             relationalData: {
               linkDicts: [],
@@ -267,13 +282,12 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
           }
         );
         links.forEach((link) => {
-          this.workItemService.addLinkToWorkItem(link, includes, workItem);
+          this.workItemService.addLinkToWorkItem(link, includes, this.workItem);
         });
 
         this.closeUserRestFields();
-        this.titleText = workItem.attributes['system.title'];
-        this.descText = workItem.attributes['system.description'] || '';
-        this.workItem = workItem;
+        this.titleText = this.workItem.attributes['system.title'];
+        this.descText = this.workItem.attributes['system.description'] || '';
 
         this.workItemPayload = {
           id: this.workItem.id,
@@ -285,14 +299,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
           },
           type: this.workItem.type
         };
-
-        // Open the panel once all the data is ready
-        if (this.panelState === 'out') {
-          this.panelState = 'in';
-          if (this.headerEditable && typeof(this.title) !== 'undefined') {
-            this.title.nativeElement.focus();
-          }
-        }
 
         // init dynamic form
         this.dynamicFormGroup = this.workItemTypeControlService.toFormGroup(this.workItem);
