@@ -203,7 +203,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   loadWorkItem(id: string): void {
-    this.itemSubscription =
     this.workItemService.getWorkItemById(id)
       .switchMap(workItem => {
         return Observable.combineLatest(
@@ -218,6 +217,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
           this.workItemService.resolveLinks(workItem.links.self + '/relationships/links')
         );
       })
+      .take(1)
       .subscribe(([workItem, users, workItemTypes, area, iteration, assignees, creator, comments, [links, includes]]) => {
 
         // Resolve area
@@ -305,11 +305,11 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.activeOnList(400);
         // Used with setTimeout for inmemory mode
         // where everything is synchronus
-        setTimeout(() => this.itemSubscription.unsubscribe());
+        //setTimeout(() => this.itemSubscription.unsubscribe());
       },
       err => {
-        console.log(err);
-        setTimeout(() => this.itemSubscription.unsubscribe());
+        //console.log(err);
+        //setTimeout(() => this.itemSubscription.unsubscribe());
         // this.closeDetails();
       });
   }
@@ -536,6 +536,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
             this.workItemService.resolveLinks(workItem.links.self + '/relationships/links')
         );
       })
+      .take(1)
       .map(([workItem, users, workItemTypes, area, iteration, assignees, creator, comments, [links, includes]]) => {
 
         // resolve comments
@@ -659,9 +660,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     if (returnObservable) {
       return retObservable;
     } else {
-      this.itemSubscription = retObservable.subscribe(() => {
-        setTimeout(() => this.itemSubscription.unsubscribe())
-      });
+      retObservable.subscribe();
     }
   }
 
@@ -915,14 +914,13 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
           }
         });
       }
-      this.itemSubscription = this.save(payload, true).subscribe((workItem:WorkItem) => {
+      this.save(payload, true).subscribe((workItem:WorkItem) => {
         this.logger.log('Iteration has been updated, sending event to iteration panel to refresh counts.');
         this.broadcaster.broadcast('associate_iteration', {
           workItemId: workItem.id,
           currentIterationId: this.workItem.relationships.iteration.data?this.workItem.relationships.iteration.data.id:undefined,
           futureIterationId: workItem.relationships.iteration.data?workItem.relationships.iteration.data.id:undefined
         });
-        setTimeout(() => this.itemSubscription.unsubscribe());
       });
     } else {
       //creating a new work item - save the user input
