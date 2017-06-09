@@ -116,6 +116,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   usersLoaded: Boolean = false;
 
   saving: Boolean = false;
+  savingError: Boolean = false;
+  errorMessage: String = '';
   queryParams: Object = {};
 
   itemSubscription: any = null;
@@ -606,12 +608,19 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.activeOnList();
         this.workItemService.emitEditWI(workItem);
         return workItem;
-      },
-        (err) => console.log(err)
-      );
+      })
+      .catch((error: Error | any) => {
+        this.savingError = true;
+        this.errorMessage = 'Something went wrong. Try again.'
+        if (error && error.status && error.statusText) {
+          this.errorMessage = error.status + ' : ' + error.statusText+ '. Try again.';
+        }
+        return Observable.throw(error);
+      });
     } else {
       if (this.validTitle) {
         this.saving = true;
+        this.savingError = false;
         retObservable = this.workItemService
         .create(this.workItem)
         .switchMap(workItem => {
@@ -652,9 +661,16 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
           this.workItemService.emitAddWI(workItem);
           this.saving = false;
           return workItem;
+        })
+        .catch((error: Error | any) => {
+          this.saving = false;
+          this.savingError = true;
+          this.errorMessage = 'Something went wrong. Try again.'
+          if (error && error.status && error.statusText) {
+            this.errorMessage = error.status + ' : ' + error.statusText+ '. Try again.';
+          }
+          return Observable.throw(error);
         });
-      } else {
-        retObservable = Observable.throw('error');
       }
     }
     if (returnObservable) {

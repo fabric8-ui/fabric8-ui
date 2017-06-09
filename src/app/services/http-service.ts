@@ -64,7 +64,7 @@ export class HttpService extends Http {
         if (error.status == 0) { // Server offline :: keep trying
           console.log('########### Now offline #############', error);
           return Observable.timer(++count * 1000);
-        } else if (error.status == 500){ // Server error :: Try 3 times then throw error
+        } else if (error.status == 500 || error.status == 401){ // Server error :: Try 3 times then throw error
           return ++count >= 3 ? Observable.throw(error) : Observable.timer(1000);
         } else {
           return Observable.throw(error);
@@ -88,7 +88,7 @@ export class HttpService extends Http {
         if (error.status == 0) {
           console.log('########### Now offline #############', error);
           return Observable.timer(++count * 1000);
-        } else if (error.status == 500){
+        } else if (error.status == 500 || error.status == 401){
           return ++count >= 3 ? Observable.throw(error) : Observable.timer(1000);
         } else {
           return Observable.throw(error);
@@ -111,7 +111,7 @@ export class HttpService extends Http {
         if (error.status == 0) {
           console.log('########### Now offline #############', error);
           return Observable.timer(++count * 1000);
-        } else if (error.status == 500){
+        } else if (error.status == 500 || error.status == 401){
           return ++count >= 3 ? Observable.throw(error) : Observable.timer(1000);
         } else {
           return Observable.throw(error);
@@ -134,7 +134,7 @@ export class HttpService extends Http {
         if (error.status == 0) {
           console.log('########### Now offline #############', error);
           return Observable.timer(++count * 1000);
-        } else if (error.status == 500){
+        } else if (error.status == 500 || error.status == 401){
           return ++count >= 3 ? Observable.throw(error) : Observable.timer(1000);
         } else {
           return Observable.throw(error);
@@ -156,7 +156,7 @@ export class HttpService extends Http {
         if (error.status == 0) {
           console.log('########### Now offline #############', error);
           return Observable.timer(++count * 1000);
-        } else if (error.status == 500){
+        } else if (error.status == 500 || error.status == 401){
           return ++count >= 3 ? Observable.throw(error) : Observable.timer(1000);
         } else {
           return Observable.throw(error);

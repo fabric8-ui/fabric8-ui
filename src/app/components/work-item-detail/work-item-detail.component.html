@@ -15,6 +15,10 @@
                 <span class="spinner spinner-sm spinner-inline"></span>
                 Saving Work Item...
               </span>
+              <span *ngIf="savingError" class="saving-title">
+                <span class="pficon-error-circle-o"></span>
+                  {{ errorMessage }}
+              </span>
             </div>
             <div class="col-sm-4 pull-right padding-0">
               <span class="pficon-close detail-close" (click)="closeDetails()"></span>
