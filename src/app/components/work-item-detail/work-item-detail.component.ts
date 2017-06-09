@@ -58,8 +58,8 @@ import { CollaboratorService } from '../../services/collaborator.service'
       state('out', style({
         right: '-100%'
       })),
-      transition('in => out', animate('300ms ease-in-out')),
-      transition('out => in', animate('500ms ease-in-out'))
+      transition('in => out', animate('200ms ease-in-out')),
+      transition('out => in', animate('200ms ease-in-out'))
     ]),
   ]
 })
@@ -122,6 +122,9 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   queryParams: Object = {};
 
   itemSubscription: any = null;
+
+  loadingComments: boolean = true;
+  loadingTypes: boolean = true;
 
   constructor(
     private areaService: AreaService,
@@ -221,6 +224,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         }
       })
       .do (workItem => console.log('Work item fethced: ', cloneDeep(workItem)))
+      .do (() => {
+        this.loadingComments = true;
+        this.loadingTypes = true;
+      })
       .switchMap(workItem => {
         return Observable.combineLatest(
           this.workItemService.getWorkItemTypes(),
@@ -248,6 +255,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.workItem.relationships.baseType.data =
           workItemTypes.find(type => type.id === this.workItem.relationships.baseType.data.id) ||
           this.workItem.relationships.baseType.data;
+        this.loadingTypes = false;
 
         // Resolve assignees
         this.workItem.relationships.assignees = {
@@ -270,6 +278,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
             });
         });
         this.comments = this.workItem.relationships.comments.data;
+        this.loadingComments = false;
 
         // Resolve links
         this.workItem = Object.assign(

@@ -8,8 +8,13 @@
         <div class="detail-panel-header">
           <div class="form-group col-sm-12 mobile-bar">
             <div class="dropdown-kebab-pf detail-type-dropdown col-sm-8">
-              <span class="wi-type-icon fa {{workItem.relationships?.baseType?.data?.attributes?.icon}} fa-lg"></span>
-              {{workItem.relationships?.baseType?.data?.attributes?.name}}
+              <span *ngIf="loadingTypes; else witTypeLoaded"
+                class="spinner spinner-sm spinner-inline">
+              </span>
+              <ng-template #witTypeLoaded>
+                <span class="wi-type-icon fa {{workItem.relationships?.baseType?.data?.attributes?.icon}} fa-lg"></span>
+                {{workItem.relationships?.baseType?.data?.attributes?.name}}
+              </ng-template>
               <h3 *ngIf="workItem.id" class="detail-id" id="wi-detail-id">{{workItem.id}}</h3>
               <span *ngIf="saving" class="saving-title">
                 <span class="spinner spinner-sm spinner-inline"></span>
@@ -248,6 +253,7 @@
       </alm-work-item-link>
       <alm-work-item-comment
         [comments]="comments"
+        [loadingComments]="loadingComments"
         [loggedIn]="loggedIn"
         [loggedInUser]="loggedInUser"
         (create)="createComment($event)"

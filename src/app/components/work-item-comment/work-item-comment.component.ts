@@ -22,6 +22,7 @@ import { CollaboratorService } from '../../services/collaborator.service';
     styleUrls: ['./work-item-comment.component.scss'],
 })
 export class WorkItemCommentComponent implements OnInit {
+    @Input() loadingComments: boolean = true;
     @Input() comments: Comment[];
     @Input() loggedIn: Boolean;
     @Input() loggedInUser: User;
