@@ -11,26 +11,33 @@
         <span>
           Total Links
         </span>
-        <span id="wi-link-total" class="badge">
-          {{workItem.relationalData.totalLinkCount}}
+        <span *ngIf="workItem?.relationalData?.linkDicts; else loading"
+          id="wi-link-total" class="badge">
+          {{workItem?.relationalData?.totalLinkCount}}
         </span>
+        <ng-template #loading>
+          <span class="spinner spinner-sm spinner-inline"></span>
+        </ng-template>
       </a>
     </li>
-    <li *ngFor="let linkType of workItem.relationalData.linkDicts; let totalLink = index"
-    [class.active]="selectedTab === linkType.linkName"
-    (click)="selectTab(linkType.linkName)">
-      <a>
-        <span  class="link-header-nav-text">
-          {{linkType.linkName}}
-        </span>
-        <span id="linktotal_{{totalLink}}" class="badge">
-          {{linkType.count}}
-        </span>
-      </a>
-    </li>
+    <template *ngIf="workItem?.relationalData?.linkDicts">
+      <li *ngFor="let linkType of workItem.relationalData.linkDicts; let totalLink = index"
+      [class.active]="selectedTab === linkType.linkName"
+      (click)="selectTab(linkType.linkName)">
+        <a>
+          <span  class="link-header-nav-text">
+            {{linkType.linkName}}
+          </span>
+          <span id="linktotal_{{totalLink}}" class="badge">
+            {{linkType.count}}
+          </span>
+        </a>
+      </li>
+    </template>
   </ul>
-  <div class="link-content" id="wi-link-content" *ngIf="showLinkComponent">
-    <div *ngIf="!workItem.relationalData.totalLinkCount && !showLinkView"
+  <div class="link-content" id="wi-link-content"
+  *ngIf="showLinkComponent && workItem?.relationalData?.linkDicts">
+    <div *ngIf="!workItem?.relationalData?.totalLinkCount && !showLinkView"
       class="link-content-create-link">
       <i class="pficon pficon-add-circle-o add-circle-icon"></i>
       <p class="flex-container">Work Item Links</p>
@@ -52,7 +59,7 @@
             <div class="combobox-container">
               <div class="input-group" dropdown>
                 <input type="text" placeholder="Select Link Type"
-                  class="combobox form-control readonly" 
+                  class="combobox form-control readonly"
                   [ngClass]="{'selected-value': selectedLinkType }"
                   readonly dropdownToggle
                   [attr.value]="selectedLinkType?.name">
@@ -108,7 +115,7 @@
             <div class="combobox-container flex-grow-1">
               <div class="input-group" dropdown>
                 <input type="text" placeholder="Select"
-                  class="combobox form-control readonly" 
+                  class="combobox form-control readonly"
                   [ngClass]="{'selected-value': selectedLinkType }"
                   readonly dropdownToggle
                   [attr.value]="selectedLinkType?.name">
