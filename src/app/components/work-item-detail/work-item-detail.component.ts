@@ -102,7 +102,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
   areas: AreaModel[] = [];
 
-  iterations: IterationModel[] = [];
+  iterations: TypeaheadDropdownValue[] = [];
 
   comments: Comment[] = [];
 
@@ -124,7 +124,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   itemSubscription: any = null;
 
   loadingComments: boolean = true;
-  loadingTypes: boolean = true;
+  loadingTypes: boolean = false;
+  loadingIteration: boolean = false;
 
   constructor(
     private areaService: AreaService,
@@ -146,8 +147,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     this.saving = false;
     this.listenToEvents();
     this.getAreas();
-    // this.getAllUsers();
-    this.getIterations();
     this.loggedIn = this.auth.isLoggedIn();
     if (this.loggedIn) {
       this.eventListeners.push(
@@ -227,6 +226,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       .do (() => {
         this.loadingComments = true;
         this.loadingTypes = true;
+        this.loadingIteration = true;
       })
       .switchMap(workItem => {
         return Observable.combineLatest(
@@ -250,6 +250,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.workItem.relationships.iteration = {
           data: iteration
         };
+        this.iterations = this.extractIterationKeyValue([iteration]);
+        this.loadingIteration = false;
 
         // Resolve work item type
         this.workItem.relationships.baseType.data =
@@ -469,7 +471,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   getIterations() {
     this.iterationService.getIterations()
       .subscribe((iteration: IterationModel[]) => {
-        this.iterations = iteration;
+        this.iterations = this.extractIterationKeyValue(iteration);
       }, err => console.log(err));
   }
 
@@ -912,6 +914,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   iterationUpdated(iterationId: string): void {
+    if (iterationId === '0') return; // Loading item
+    this.loadingIteration = true;
     if (this.workItem.id) {
       // Send out an iteration change event
       let newIteration = iterationId;
@@ -946,6 +950,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         });
       }
       this.save(payload, true).subscribe((workItem:WorkItem) => {
+        this.loadingIteration = false;
+        this.iterations.forEach(it => it.selected = it.key === iterationId);
         this.logger.log('Iteration has been updated, sending event to iteration panel to refresh counts.');
         this.broadcaster.broadcast('associate_iteration', {
           workItemId: workItem.id,
@@ -959,9 +965,10 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       if (iterationId) {
         iteration = {
           data: {
-            attributes: {
-              name: this.findIterationById(iterationId).attributes.name
-            },
+            // Why do we need attribute for the relationship
+            // attributes: {
+            //   name: this.findIterationById(iterationId).attributes.name
+            // },
             id: iterationId,
             type: 'iteration'
           }
@@ -1018,12 +1025,12 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     return result;
   }
 
-  findIterationById(iterationId: string): IterationModel {
-    for (let i=0; i<this.iterations.length; i++)
-      if (this.iterations[i].id === iterationId)
-        return this.iterations[i];
-    return null;
-  }
+  // findIterationById(iterationId: string): IterationModel {
+  //   for (let i=0; i<this.iterations.length; i++)
+  //     if (this.iterations[i].id === iterationId)
+  //       return this.iterations[i];
+  //   return null;
+  // }
 
   focusArea() {
     this.iterationSelectbox.close();
@@ -1033,6 +1040,16 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   focusIteration() {
     this.areaSelectbox.close();
     this.cancelAssignment();
+    this.iterations = [
+      ...this.iterations,
+      {
+        key: '0',
+        value: '',
+        selected: false,
+        cssLabelClass: 'spinner spinner-sm spinner-inline'
+      }
+    ];
+    this.getIterations();
   }
 
   areaUpdated(areaId: string) {
