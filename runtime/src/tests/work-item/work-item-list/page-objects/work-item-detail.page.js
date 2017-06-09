@@ -567,8 +567,11 @@ class WorkItemDetailPage {
   clickStartCoding  (){
     return this.startCodingElement.click();
   }
-  startCodingDiv (){
-    return element(by.id("start-coding-link"));
+  startCodingDiv  (){
+    return element(by.css(".form-control-static.start-coding"));
+  }
+  startCodingLabel() {
+    return element(by.id("coding_label"));
   }
 
   /** UI elements for Areas */

@@ -28,12 +28,13 @@ var waitTime = 30000;
     page = new WorkItemListPage(true);
     testSupport.setTestSpace(page);
   });
- it('Verify start coding is visible when code base is presrent - Desktop', function () {
+ it('Verify start coding is visible when code base is present - Desktop', function () {
     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
+    browser.wait(until.textToBePresentInElement((detailPage.startCodingElement.getText()), 'Start Coding'), waitTime);
     expect(detailPage.startCodingElement.isPresent()).toBe(true);
-    browser.wait(until.textToBePresentInElement((detailPage.startCodingDiv()), 'Start coding'), waitTime);
-    expect(detailPage.startCodingDiv().getText()).toBe('</> Start coding');
+    expect(detailPage.startCodingElement.getText()).toBe('Start Coding');
    }); 
+
  it('Verify start coding is disable when creating new item  - Desktop', function () {
     var workItemTitle = 'Quick Add';
     page.clickWorkItemQuickAdd();
@@ -41,14 +42,22 @@ var waitTime = 30000;
     page.clickQuickAddSave();
     page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
         var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text); 
-        expect(detailPage.startCodingDiv().getText()).not.toBe('</> Start coding');
+          expect((detailPage.startCodingElement.isPresent().not));
+          expect((detailPage.startCodingLabel().isPresent().not));
     }); 
    });
  it('Try clicking on start coding it should redirect - Desktop', function () {
     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
-    expect(detailPage.startCodingElement.isPresent()).toBe(true);
+    // expect(detailPage.startCodingElement.isPresent()).toBe(true);
+    expect(detailPage.startCodingElement.getAttribute('href')).toEqual('http://mock.service/codebase');
     detailPage.clickStartCoding();
    });
-  
-});
 
+ it('Verify start coding label is visible when code base is present - Desktop', function () {
+    var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
+    browser.wait(until.textToBePresentInElement((detailPage.startCodingElement.getText()), 'Start Coding'), waitTime);
+    expect(detailPage.startCodingLabel().isPresent()).toBe(true);
+    expect(detailPage.startCodingLabel().getText()).toBe('Code');
+   }); 
+
+});
