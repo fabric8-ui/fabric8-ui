@@ -22,20 +22,24 @@
     background-color: $color-pf-black-900;
   }
 }
-.work-item-list-page { flex:1;
+.work-item-list-page {
+  width: $width100;
+  float: left;
   >.list-group { border-top-width:0 !important; }
   .detail-list-wrap {
     width: $width100;
-    margin-bottom: 0;
+    height: (calc(100% - 70px)); // to avoid overflown scroll height should be there
+    margin-bottom: 70px;
     overflow-y: scroll;
-    -webkit-flex: auto;
-        -ms-flex: auto;
-            flex: auto;
+    border-top: 1px solid;
+    border-top-color: $color-pf-black-300;
   }
   .work-item-list-quick-add {
-    -webkit-flex: none;
-        -ms-flex: none;
-            flex: none;
+    position: fixed;
+    bottom: 0;
+    width: $width100;
+    border-top: 1px solid;
+    border-top-color: $color-pf-black-300;
   }
   .card-pf {
     border: 0;
@@ -48,9 +52,6 @@
 .node-drop-slot.is-dragging-over { height: 66px!important; }
 .work-item-page {
   position: relative;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
   > main { border-top: 0 solid !important; }
   .dropdown {
     a { cursor: pointer; }
@@ -98,8 +99,8 @@
       }
       .alm-blank-slate:hover { box-shadow: 0 1px 6px rgba(3,3,3,.175); }
       > header {
-        padding-right: rem(20);
-        padding-left: rem(20);
+        padding-right: 20px;
+        padding-left: 20px;
         border-bottom: 1px solid;
         border-bottom-color: $color-pf-black-300 !important;
         .toolbar-pf { border-color: transparent;

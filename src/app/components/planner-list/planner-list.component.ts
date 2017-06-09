@@ -54,7 +54,7 @@ import { TreeListComponent } from 'ngx-widgets';
   encapsulation: ViewEncapsulation.None,
   // tslint:disable-next-line:use-host-property-decorator
   host: {
-    'class': 'app-component height-100 flex-container in-column-direction flex-grow-1'
+    'class': 'app-component height-100'
   },
   selector: 'alm-work-item-list',
   templateUrl: './planner-list.component.html',

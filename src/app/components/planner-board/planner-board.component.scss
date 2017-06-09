@@ -4,28 +4,32 @@
 
 .boardWrapper {
   position: relative;
+  height: 100%;
+  overflow-y: scroll;
+  border-top: 1px solid;
+  border-top-color: #d1d1d1;
   .board {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    padding-top: rem(10);
-    padding-bottom: rem(10);
+    padding-top: 10px;
+    padding-bottom: 10px;
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
     user-select: none;
     .board-lane {
       display: inline-block;
-      width: rem(300);
+      width: 300px;
       height: 100%;
-      margin-right: rem(5);
-      margin-left: rem(5);
+      margin-right: 5px;
+      margin-left: 5px;
       vertical-align: top;
       white-space: normal;
       .boardQuickAddContainer {
-        margin-bottom: rem(5);
+        margin-bottom: 5px;
       }
       .board-lane-column {
         height: 100%;
@@ -34,22 +38,21 @@
         @include Border(1px, solid, $color-pf-black-300);
         .boardlaneWrapper{
           width: 100%;
-          height: calc( 100% - 2.5rem );
-          padding-right: rem(15);
-          padding-left: rem(15);
+          height: calc( 100% - 25px );
+          padding-right: 15px;
+          padding-left: 15px;
           overflow: auto;
         }//boardlaneWrapper ended
         .lane-header {
           width: 100%;
-          padding-top: em(7);
-          padding-bottom: em(3);
+          padding-top: 7px;
+          padding-bottom: 3px;
           text-align: center;
           background-color: $color-pf-black-250;
-          flex: 0 0 auto;
           .issueCount {
-            padding-right: em(8);
-            padding-left: em(8);
-            margin-left: em(5);
+            padding-right: 8px;
+            padding-left: 8px;
+            margin-left: 5px;
             font-weight: 500;
             background-color: $color-pf-white;
           }// issue-count ended
@@ -67,9 +70,6 @@
 }
 .work-item-page {
   position: relative;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
   > main { border-top: 0 solid !important; }
   .container-modal {
     position: absolute;
@@ -134,8 +134,8 @@
       flex-direction: column;
       @include Border(0, solid, red);
       >header {
-        padding-right: rem(20);
-        padding-left: rem(20);
+        padding-right: 20px;
+        padding-left: 20px;
         border-bottom: 1px solid;
         border-bottom-color: $color-pf-black-300 !important;
         .toolbar-pf { border-color: transparent;
@@ -154,7 +154,7 @@
           .wi-input-filter-dropdown {
             position: relative;
             .wi-input-filter-dropdown-list {
-              top: 2.5rem;
+              top: 25px;
               width: 100%;
               padding: .25rem;
             }

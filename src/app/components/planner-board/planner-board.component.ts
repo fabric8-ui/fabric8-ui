@@ -41,7 +41,7 @@ import { CollaboratorService } from '../../services/collaborator.service';
 @Component({
   // tslint:disable-next-line:use-host-property-decorator
   host: {
-     'class': 'app-component height-100 flex-container in-column-direction flex-grow-1'
+     'class': 'app-component height-100'
   },
   selector: 'alm-board',
   templateUrl: './planner-board.component.html',
