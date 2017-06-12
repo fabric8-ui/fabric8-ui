@@ -100,7 +100,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
 
   panelState: string = 'out';
 
-  areas: AreaModel[] = [];
+  areas: TypeaheadDropdownValue[] = [];
 
   iterations: TypeaheadDropdownValue[] = [];
 
@@ -126,6 +126,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   loadingComments: boolean = true;
   loadingTypes: boolean = false;
   loadingIteration: boolean = false;
+  loadingArea: boolean = false;
 
   constructor(
     private areaService: AreaService,
@@ -146,7 +147,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnInit(): void {
     this.saving = false;
     this.listenToEvents();
-    this.getAreas();
     this.loggedIn = this.auth.isLoggedIn();
     if (this.loggedIn) {
       this.eventListeners.push(
@@ -227,6 +227,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.loadingComments = true;
         this.loadingTypes = true;
         this.loadingIteration = true;
+        this.loadingArea = true;
       })
       .switchMap(workItem => {
         return Observable.combineLatest(
@@ -245,6 +246,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         this.workItem.relationships.area = {
           data: area
         };
+        this.areas = this.extractAreaKeyValue([area]);
+        this.loadingArea = false;
 
         // Resolve iteration
         this.workItem.relationships.iteration = {
@@ -463,8 +466,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   getAreas() {
     this.areaService.getAreas()
       .subscribe((response: AreaModel[]) => {
-        this.areas = response;
-        // this.filteredAreas = cloneDeep(response);
+        this.areas = this.extractAreaKeyValue(response);
       }, err => console.log(err));
   }
 
@@ -949,7 +951,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
           }
         });
       }
-      this.save(payload, true).subscribe((workItem:WorkItem) => {
+      this.save(payload, true).subscribe((workItem: WorkItem) => {
         this.loadingIteration = false;
         this.iterations.forEach(it => it.selected = it.key === iterationId);
         this.logger.log('Iteration has been updated, sending event to iteration panel to refresh counts.');
@@ -985,7 +987,7 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.workItem.relationships.area && this.workItem.relationships.area.data && this.workItem.relationships.area.data.id) {
       selectedAreaId = this.workItem.relationships.area.data.id;
     }
-    for (let i=0; i<areas.length; i++) {
+      for (let i=0; i<areas.length; i++) {
       result.push({
         key: areas[i].id,
         value: (areas[i].attributes.parent_path_resolved!='/'?areas[i].attributes.parent_path_resolved:'') + '/' + areas[i].attributes.name,
@@ -996,13 +998,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         selectedFound = true;
     };
     return result;
-  }
-
-  findAreaById(areaId: string): AreaModel {
-    for (let i=0; i<this.areas.length; i++)
-      if (this.areas[i].id === areaId)
-        return this.areas[i];
-    return null;
   }
 
   extractIterationKeyValue(iterations: IterationModel[]): TypeaheadDropdownValue[] {
@@ -1035,6 +1030,16 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   focusArea() {
     this.iterationSelectbox.close();
     this.cancelAssignment();
+    this.areas = [
+      ...this.areas,
+      {
+        key: '0',
+        value: '',
+        selected: false,
+        cssLabelClass: 'spinner spinner-sm spinner-inline'
+      }
+    ];
+    this.getAreas();
   }
 
   focusIteration() {
@@ -1053,8 +1058,8 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   areaUpdated(areaId: string) {
-
     if (this.workItem.id) {
+      this.loadingArea = true;
       let payload = cloneDeep(this.workItemPayload);
       if (areaId) {
         // area was set to a value.
@@ -1076,16 +1081,17 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
           }
         });
       }
-      this.save(payload);
+      this.save(payload, true)
+        .subscribe((workItem: WorkItem) => {
+          this.loadingArea = false;
+          this.areas.forEach(area => area.selected = area.key === areaId);
+      });
     } else {
       let area = { };
       if (areaId) {
         // area was set to a value.
         let area = {
           data: {
-            attributes: {
-              name: this.findAreaById(areaId).attributes.name,
-            },
             id: areaId,
             type: 'area'
           }
