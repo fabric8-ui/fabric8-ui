@@ -1,4 +1,3 @@
-import { Comment } from './../../models/comment';
 import { Observable } from 'rxjs/Observable';
 import {
   AfterViewInit,
@@ -35,6 +34,7 @@ import {
 
 import { AreaModel } from '../../models/area.model';
 import { AreaService } from '../../services/area.service';
+import { Comment } from './../../models/comment';
 import { IterationModel } from '../../models/iteration.model';
 import { IterationService } from '../../services/iteration.service';
 import { WorkItemTypeControlService } from '../../services/work-item-type-control.service';
@@ -424,7 +424,14 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         markup: 'Markdown',
         content: this.descText.trim()
       };
-      this.save(payload);
+      this.save(payload, true)
+        .subscribe(workItem => {
+          this.workItem.attributes['system.description.rendered'] =
+          workItem.attributes['system.description.rendered'];
+          this.workItem.attributes['system.description'] =
+          workItem.attributes['system.description'];
+          this.updateOnList();
+        })
     } else {
       this.save();
     }
@@ -436,7 +443,12 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.workItem.id) {
       let payload = cloneDeep(this.workItemPayload);
       payload.attributes[event.formControlName] = event.newValue;
-      this.save(payload);
+      this.save(payload, true)
+        .subscribe(workItem => {
+          this.workItem.attributes[event.formControlName] =
+          workItem.attributes[event.formControlName];
+          this.updateOnList();
+        });
     } else {
       this.save();
     }
@@ -503,7 +515,12 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     if(this.workItem.id) {
       let payload = cloneDeep(this.workItemPayload);
       payload.attributes['system.state'] = option;
-      this.save(payload);
+      this.save(payload, true)
+      .subscribe(
+        workItem => {
+          this.workItem.attributes['system.state'] = workItem.attributes['system.state'];
+          this.updateOnList();
+        });
     }
   }
 
@@ -531,7 +548,11 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
       if (this.workItem.id) {
         let payload = cloneDeep(this.workItemPayload);
         payload.attributes['system.title'] = this.titleText;
-        this.save(payload);
+        this.save(payload, true)
+          .subscribe((workItem: WorkItem) => {
+            this.workItem.attributes['system.title'] = workItem.attributes['system.title'];
+            this.updateOnList();
+          });
       } else {
         this.save();
       }
@@ -544,98 +565,20 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.workItem.id) {
       retObservable = this.workItemService
         .update(payload)
-        .switchMap(workItem => {
-          return Observable.combineLatest(
-            Observable.of(workItem),
-            this.collaboratorService.getCollaborators(),
-            this.workItemService.getWorkItemTypes(),
-            this.areaService.getArea(workItem.relationships.area),
-            this.iterationService.getIteration(workItem.relationships.iteration),
-            this.workItemService.resolveAssignees(workItem.relationships.assignees),
-            this.workItemService.resolveCreator2(workItem.relationships.creator),
-            this.workItemService.resolveComments(workItem.relationships.comments.links.related),
-            this.workItemService.resolveLinks(workItem.links.self + '/relationships/links')
-        );
-      })
-      .take(1)
-      .map(([workItem, users, workItemTypes, area, iteration, assignees, creator, comments, [links, includes]]) => {
-
-        // resolve comments
-        workItem.relationships.comments = Object.assign(
-          workItem.relationships.comments,
-          comments
-        );
-        workItem.relationships.comments.data =
-          workItem.relationships.comments.data.map((comment) => {
-            comment.relationships['created-by'].data = users.find(user => user.id === comment.relationships['created-by'].data.id);
-            return comment;
-          });
-
-        // Resolve area
-        workItem.relationships.area = {
-          data: area
-        };
-        // Resolve iteration
-        if (iteration) {
-          workItem.relationships.iteration = {
-            data: iteration
-          };
-        } else {
-          workItem.relationships.iteration = { };
-        }
-        // Resolve work item type
-        workItem.relationships.baseType.data =
-          workItemTypes.find(type => type.id === workItem.relationships.baseType.data.id) ||
-          workItem.relationships.baseType.data;
-
-        // Resolve assignees
-        workItem.relationships.assignees = {
-          data: assignees
-        };
-
-        // Resolve creator
-        workItem.relationships.creator = {
-          data: creator
-        };
-
-        // Resolve comments
-        merge(workItem.relationships.comments, comments);
-        workItem.relationships.comments.data = workItem.relationships.comments.data.map((comment) => {
-          comment.relationships['created-by'].data =
-            users.find(user => user.id === comment.relationships['created-by'].data.id);
-          return comment;
-        });
-        this.comments = workItem.relationships.comments.data;
-
-        // Resolve links
-        workItem = Object.assign(
-          workItem,
-          {
-            relationalData: {
-              linkDicts: [],
-              totalLinkCount: 0
-            }
+        .do(workItem => {
+          this.workItemPayload.attributes['version'] =
+          this.workItem.attributes['version'] =
+          workItem.attributes['version'];
+        })
+        .take(1)
+        .catch((error: Error | any) => {
+          this.savingError = true;
+          this.errorMessage = 'Something went wrong. Try again.'
+          if (error && error.status && error.statusText) {
+            this.errorMessage = error.status + ' : ' + error.statusText+ '. Try again.';
           }
-        );
-        links.forEach((link) => {
-          this.workItemService.addLinkToWorkItem(link, includes, workItem);
+          return Observable.throw(error);
         });
-
-        this.workItem = workItem;
-        this.workItemPayload.attributes['version'] = workItem.attributes['version'];
-        this.updateOnList();
-        this.activeOnList();
-        this.workItemService.emitEditWI(workItem);
-        return workItem;
-      })
-      .catch((error: Error | any) => {
-        this.savingError = true;
-        this.errorMessage = 'Something went wrong. Try again.'
-        if (error && error.status && error.statusText) {
-          this.errorMessage = error.status + ' : ' + error.statusText+ '. Try again.';
-        }
-        return Observable.throw(error);
-      });
     } else {
       const t1 = performance.now();
       if (this.validTitle) {
@@ -845,7 +788,14 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
           }
         }
       });
-      this.save(payload);
+      this.save(payload, true)
+        .switchMap(workItem => this.workItemService.resolveAssignees(workItem.relationships.assignees))
+        .subscribe(assignees => {
+          this.workItem.relationships.assignees = {
+            data: assignees
+          };
+          this.updateOnList();
+        })
     } else {
       let assignee = [{
         attributes: {
@@ -870,7 +820,11 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         }
       }
     });
-    this.save(payload);
+    this.save(payload, true)
+    .subscribe(() => {
+      this.workItem.relationships.assignees.data = [] as User[];
+      this.updateOnList();
+    });
     this.searchAssignee = false;
   }
 
