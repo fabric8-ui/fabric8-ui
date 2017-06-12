@@ -70,15 +70,6 @@ Here are some of the most useful/frequently used scripts and `gulp` tasks you ma
 |Runs the build in watch mode, watching changes and rebuilding source
 |===
 
-=== CI scripts
-
-There are some other scripts for CI-environment; such as `run_functional_tests.sh`, 
-`cico_run_tests.sh`, `cico_build_deploy.sh` etc. 
-
-To run the smoke test subset of the functional UI tests locally, use this command: sh ./tests/local_run_functional_tests.sh smokeTest
-
-To run the full set of functional UI tests locally, use this command: sh ./tests/local_run_functional_tests.sh fullTest
-
 == Building the Component Library
 
 === Production build
