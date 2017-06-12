@@ -257,7 +257,8 @@ class WorkItemListPage {
 
   /* xpath = //alm-work-item-list-entry[.//text()[contains(.,'Some Title 6')]]   */
   workItemByTitle (titleString) {
-    return element(by.xpath("//alm-work-item-list-entry[.//text()[contains(.,'" + titleString + "')]]"));
+    // return element(by.xpath("//alm-work-item-list-entry[.//text()[contains(.,'" + titleString + "')]]"));
+    return element(by.xpath("//alm-tree-list-item[.//text()[contains(.,'" + titleString + "')]]"));
   }
 
   get firstWorkItem () {
