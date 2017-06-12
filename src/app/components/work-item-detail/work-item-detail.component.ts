@@ -637,49 +637,25 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
         return Observable.throw(error);
       });
     } else {
+      const t1 = performance.now();
       if (this.validTitle) {
         this.saving = true;
         this.savingError = false;
         retObservable = this.workItemService
         .create(this.workItem)
-        .switchMap(workItem => {
-          return Observable.forkJoin(
-            Observable.of(workItem),
-            this.workItemService.getWorkItemTypes(),
-            this.workItemService.resolveAssignees(workItem.relationships.assignees),
-            this.workItemService.resolveCreator2(workItem.relationships.creator)
-          );
-        })
-        .map(([workItem, workItemTypes, assignees, creator]) => {
-          // Resolve work item type
-          workItem.relationships.baseType.data =
-            workItemTypes.find(type => type.id === workItem.relationships.baseType.data.id) ||
-            workItem.relationships.baseType.data;
-
-          // Resolve assignees
-          workItem.relationships.assignees = {
-            data: assignees
-          };
-
-          // Resolve creator
-          workItem.relationships.creator = {
-            data: creator
-          };
-
-          //this.addNewItem(workItem);
-
+        .do(workItem => {
           let queryParams = cloneDeep(this.queryParams);
           if (Object.keys(queryParams).indexOf('type') > -1) {
             delete queryParams['type'];
           }
-
           this.router.navigate(
             [this.router.url.split('/detail/')[0] + '/detail/' + workItem.id],
             { queryParams: queryParams } as NavigationExtras
           );
           this.workItemService.emitAddWI(workItem);
           this.saving = false;
-          return workItem;
+          const t2 = performance.now();
+          console.log('Performance :: Detail add work item - '  + (t2 - t1) + ' milliseconds.');
         })
         .catch((error: Error | any) => {
           this.saving = false;
