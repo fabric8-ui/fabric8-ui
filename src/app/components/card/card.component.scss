@@ -32,6 +32,25 @@
     width: 30px;
     height: 30px;
   }
+  .dropdown-menu {
+    li {
+      span {
+        display: block;
+        padding: 1px 10px;
+        border: 1px transparent solid;
+        white-space: nowrap;
+        &:hover {
+          border-color: #bee1f4;
+          background-color: #def3ff;
+        }
+        &:active {
+          border-color: #0088ce;
+          background-color: #0088ce;
+          color: #fff;
+        }
+      }
+    }
+  }
 
   .user-avatar {
     @include user-avatar;

@@ -314,7 +314,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
   onMoveToBacklog(): void {
     //set this work item's iteration to None
     //send a patch request
-    this.workItem.relationships.iteration = {}
+    this.workItem.relationships.iteration = {};
     this.workItemService
       .update(this.workItem)
       .switchMap(item => {
@@ -325,7 +325,8 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
           });
       })
       .subscribe(workItem => {
-        this.workItem = workItem;
+        this.workItem.relationships.iteration = workItem.relationships.iteration;
+        this.workItem.attributes['version'] = workItem.attributes['version'];
         try {
           this.notifications.message({
             message: workItem.attributes['system.title'] + ' has been moved to the Backlog.',

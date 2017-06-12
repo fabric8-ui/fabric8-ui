@@ -6,6 +6,7 @@ import { Broadcaster, Logger, Notification, NotificationType, Notifications } fr
 import { AuthenticationService } from 'ngx-login-client';
 import { Dialog } from 'ngx-widgets';
 
+import { IterationService } from '../../services/iteration.service';
 import { WorkItem }        from '../../models/work-item';
 import { WorkItemService } from '../../services/work-item.service';
 
@@ -56,6 +57,7 @@ export class WorkItemListEntryComponent implements OnInit {
   constructor(private auth: AuthenticationService,
               private broadcaster: Broadcaster,
               private route: ActivatedRoute,
+              private iterationService: IterationService,
               private notifications: Notifications,
               private router: Router,
               private workItemService: WorkItemService,
@@ -168,9 +170,16 @@ export class WorkItemListEntryComponent implements OnInit {
     this.workItem.relationships.iteration = {}
     this.workItemService
       .update(this.workItem)
+      .switchMap(item => {
+        return this.iterationService.getIteration(item.relationships.iteration)
+          .map(iteration => {
+            item.relationships.iteration.data = iteration;
+            return item;
+          });
+      })
       .subscribe(workItem => {
         //update only the relevant fields
-        this.workItem.relationships.iteration = {}
+        this.workItem.relationships.iteration.data = workItem.relationships.iteration.data;
         this.workItem.attributes['version'] = workItem.attributes['version'];
         try {
           this.notifications.message({
