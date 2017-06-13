@@ -19,7 +19,7 @@ export class CollaboratorService {
     return this.spaces.current.switchMap((space) => {
       // FIXME: https://github.com/fabric8-ui/ngx-fabric8-wit/issues/82
       if (space) {
-        return this.http.get(space.links.self + '/collaborators')
+        return this.http.get(space.links.self + '/collaborators?page[offset]=0&page[limit]=1000')
           .map(resp => resp.json().data as User[]);
       } else {
         return Observable.of([] as User[]);
