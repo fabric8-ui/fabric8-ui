@@ -688,7 +688,6 @@ export class WorkItemService {
       return this.http
         .post(this.workItemUrl, payload)
         .map(response => {
-          this.broadcaster.broadcast('create_workitem', response.json().data as WorkItem);
           return response.json().data as WorkItem;
         }).catch((error: Error | any) => {
           this.notifyError('Creating work item failed.', error);
