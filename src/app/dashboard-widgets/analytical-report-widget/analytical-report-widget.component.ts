@@ -12,7 +12,7 @@ import {
   Build
 } from 'fabric8-runtime-console';
 
-import {StackAnalysesService, getStackRecommendations} from 'fabric8-stack-analysis-ui';
+import { StackAnalysesService, getStackRecommendations } from 'fabric8-stack-analysis-ui';
 
 @Component({
   selector: 'fabric8-analytical-report-widget',
@@ -51,7 +51,8 @@ export class AnalyticalReportWidgetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._contextSubscription = this.context.current.subscribe(context => console.log('Context', context));
+    this._contextSubscription = this.context.current
+      .subscribe(context => console.log('Context', context));
 
     let bcs = this.pipelinesService.current
       .publish();
@@ -59,21 +60,29 @@ export class AnalyticalReportWidgetComponent implements OnInit, OnDestroy {
 
     this.buildConfigs.subscribe((data) => {
       this.pipelines = data;
+      let filteredPipelines = this.filterPipelines(data);
+      if (filteredPipelines.length !== 0) {
+        if (this.currentPipeline !== filteredPipelines[0].id) {
+          this.currentPipeline = filteredPipelines[0].id;
+          this.selectedPipeline();
+        }
+      } else {
+        this.currentPipeline = 'default';
+      }
     });
-    // Locate the first pipeline
-    this.buildConfigs
-    .filter(val => val.length > 0)
-    .first()
-    .subscribe(val => {
-      this.currentPipeline = val[0].id;
-      this.selectedPipeline();
-    });
-    let returnStatement: boolean = false;
-    /*this.buildConfigs = this.buildConfigs.map(buildConfs => buildConfs.filter((builds) => {
-      returnStatement = false;
-      if (builds.interestingBuilds && builds.interestingBuilds.length > 0) {
-        for (let build of builds.interestingBuilds) {
-          console.log('Here');
+    this.buildConfigsCount = bcs.map(buildConfigs => buildConfigs.length);
+    bcs.connect();
+  }
+
+  ngOnDestroy() {
+    this._contextSubscription.unsubscribe();
+  }
+
+  filterPipelines(buildConfs: Array<any>): Array<any> {
+    return buildConfs.filter(item => {
+      let returnStatement: boolean = false;
+      if (item && item.interestingBuilds && item.interestingBuilds.length > 0) {
+        for (let build of item.interestingBuilds) {
           if (build.annotations['fabric8.io/bayesian.analysisUrl']) {
             returnStatement = true;
             break;
@@ -81,13 +90,7 @@ export class AnalyticalReportWidgetComponent implements OnInit, OnDestroy {
         }
       }
       return returnStatement;
-    }));*/
-    this.buildConfigsCount = bcs.map(buildConfigs => buildConfigs.length);
-    bcs.connect();
-  }
-
-  ngOnDestroy() {
-    this._contextSubscription.unsubscribe();
+    });
   }
 
   selectedPipeline(): void {
@@ -117,66 +120,66 @@ export class AnalyticalReportWidgetComponent implements OnInit, OnDestroy {
     if (build) {
       let url: string = build.annotations['fabric8.io/bayesian.analysisUrl'];
       this.stackAnalysisService
-          .getStackAnalyses(url)
-          .subscribe((data) => {
-            let recommendationsObservable = getStackRecommendations(data);
-            if (recommendationsObservable) {
-              let recommendations: Array<any> = [];
-              recommendationsObservable.subscribe((result) => {
-                let missing: Array<any> = result.missing || [];
-                let version: Array<any> = result.version || [];
+        .getStackAnalyses(url)
+        .subscribe((data) => {
+          let recommendationsObservable = getStackRecommendations(data);
+          if (recommendationsObservable) {
+            let recommendations: Array<any> = [];
+            recommendationsObservable.subscribe((result) => {
+              let missing: Array<any> = result.missing || [];
+              let version: Array<any> = result.version || [];
 
-                let stackName: string = result['stackName'] || 'An existing stack';
+              let stackName: string = result['stackName'] || 'An existing stack';
 
-                for (let i in missing) {
-                  if (missing.hasOwnProperty(i)) {
-                    let keys: Array<string> = Object.keys(missing[i]);
-                    recommendations.push({
-                      suggestion: 'Recommendation',
-                      action: 'Add',
-                      message: keys[0] + ' : ' + missing[i][keys[0]],
-                      subMessage: stackName + ' has this dependency included'
-                    });
-                  }
+              for (let i in missing) {
+                if (missing.hasOwnProperty(i)) {
+                  let keys: Array<string> = Object.keys(missing[i]);
+                  recommendations.push({
+                    suggestion: 'Recommendation',
+                    action: 'Add',
+                    message: keys[0] + ' : ' + missing[i][keys[0]],
+                    subMessage: stackName + ' has this dependency included'
+                  });
                 }
-                for (let i in version) {
-                  if (version.hasOwnProperty(i)) {
-                    let keys: Array<string> = Object.keys(version[i]);
-                    recommendations.push({
-                      suggestion: 'Recommendation',
-                      action: 'Update',
-                      message: keys[0] + ' : ' + version[i][keys[0]],
-                      subMessage: stackName + ' has a different version of dependency'
-                    });
-                  }
+              }
+              for (let i in version) {
+                if (version.hasOwnProperty(i)) {
+                  let keys: Array<string> = Object.keys(version[i]);
+                  recommendations.push({
+                    suggestion: 'Recommendation',
+                    action: 'Update',
+                    message: keys[0] + ' : ' + version[i][keys[0]],
+                    subMessage: stackName + ' has a different version of dependency'
+                  });
                 }
+              }
 
-                this.stackAnalysisInformation['recommendations'] = recommendations;
-                // Restrict the recommendations to a particular limit as specified in UX
-                this.stackAnalysisInformation['recommendations'].splice(this.stackAnalysisInformation['recommendationsLimit']);
-                let finishedTime: string = result.finishedTime;
-                if (finishedTime) {
-                  let date = null;
-                  try {
-                    date = new Date(finishedTime);
-                    let options: any = { year: 'numeric', month: 'long', day: 'numeric', time: 'numeric' };
-                    finishedTime = date.toLocaleDateString('en-US', options);
-                  } catch (error) {
+              this.stackAnalysisInformation['recommendations'] = recommendations;
+              // Restrict the recommendations to a particular limit as specified in UX
+              this.stackAnalysisInformation['recommendations'].splice(this.stackAnalysisInformation['recommendationsLimit']);
+              let finishedTime: string = result.finishedTime;
+              if (finishedTime) {
+                let date = null;
+                try {
+                  date = new Date(finishedTime);
+                  let options: any = { year: 'numeric', month: 'long', day: 'numeric', time: 'numeric' };
+                  finishedTime = date.toLocaleDateString('en-US', options);
+                } catch (error) {
 
-                  }
                 }
-                this.stackAnalysisInformation['finishedTime'] = 'Report Completed ' + finishedTime;
+              }
+              this.stackAnalysisInformation['finishedTime'] = 'Report Completed ' + finishedTime;
 
-              });
-            } else {
-              this.stackAnalysisInformation['recommendations'].length = 0;
-            }
-            this.hideLoader();
+            });
+          } else {
+            this.stackAnalysisInformation['recommendations'].length = 0;
+          }
+          this.hideLoader();
         });
-      } else {
-        this.currentBuild = null;
-        this.hideLoader();
-      }
+    } else {
+      this.currentBuild = null;
+      this.hideLoader();
+    }
   }
 
 }
