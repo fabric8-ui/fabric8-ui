@@ -27,6 +27,7 @@ import {
   Router,
   Event as NavigationEvent,
   NavigationStart,
+  NavigationEnd,
   ActivatedRoute
 } from '@angular/router';
 
@@ -80,7 +81,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   addingWorkItem = false;
   showOverlay : Boolean ;
   loggedIn: Boolean = false;
-  showWorkItemDetails: boolean = false;
   contentItemHeight: number = 67;
   pageSize: number = 20;
   filters: any[] = [];
@@ -171,7 +171,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   initWiItems(event: any): void {
     this.pageSize = event.pageSize;
 
-    // Spac subscription should only listen to changes
+    // Space subscription should only listen to changes
     // till the page is changed to something else.
     // Unsubscribe in ngOnDestroy acts way after the new page inits
     // So using takeUntill to watch over the routes in case of any change
@@ -360,22 +360,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     }
   }
 
-  onSelect(entryComponent: WorkItemListEntryComponent): void {
-    let workItem: WorkItem = entryComponent.getWorkItem();
-    // de-select prior selected element (if any)
-    if (this.selectedWorkItemEntryComponent && this.selectedWorkItemEntryComponent != entryComponent) {
-      this.selectedWorkItemEntryComponent.deselect();
-    }
-    // select new component
-    entryComponent.select();
-    this.selectedWorkItemEntryComponent = entryComponent;
-  }
-
-  onDetail(entryComponent: WorkItemListEntryComponent): void {
-    this.workItemDetail = entryComponent.getWorkItem();
-    this.onSelect(entryComponent);
-    this.showWorkItemDetails = true;
-  }
+  onDetail(entryComponent: WorkItemListEntryComponent): void { }
 
   onCreateWorkItem(workItem) {
     let resolveItem = this.workItemService.resolveWorkItems(
@@ -497,7 +482,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     this.eventListeners.push(
       this.broadcaster.on<string>('detail_close')
       .subscribe(()=>{
-        this.selectedWorkItemEntryComponent.deselect();
+        // this.selectedWorkItemEntryComponent.deselect();
       })
     );
 
