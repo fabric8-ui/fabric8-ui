@@ -369,7 +369,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   }
 
   updateOnList() {
-    this.broadcaster.broadcast('updateWorkItem', JSON.stringify(this.workItem));
+    this.workItemService.emitEditWI(this.workItem);
   }
 
   //addNewItem(workItem: WorkItem) {

@@ -509,7 +509,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
           this.workItems.splice(0, 0, item);
           this.treeList.updateTree();
         } else {
-          console.log('Added WI does not match the applied filters')
+          console.log('Added WI does not match the applied filters');
+          this.treeList.updateTree();
         }
       })
     );
@@ -534,6 +535,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
           //Remove the work item from the current displayed list
           this.workItems.splice(index, 1);
           console.log('Updated WI does not match the applied filters')
+          this.treeList.updateTree();
         }
       })
     );
