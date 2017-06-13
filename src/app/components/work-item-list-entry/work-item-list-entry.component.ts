@@ -232,13 +232,6 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
       })
     )
 
-    // this.eventListeners.push(
-    //   this.broadcaster.on<string>('activeWorkItem')
-    //     .subscribe(wiId => {
-    //       (this.workItem.id == wiId) ? this.select() : this.deselect();
-    //   })
-    // )
-
     this.eventListeners.push(
       this.route.queryParams.subscribe((params) => {
         this.queryParams = params;

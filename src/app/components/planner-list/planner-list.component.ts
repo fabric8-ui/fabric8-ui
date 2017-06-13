@@ -572,4 +572,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
           });
     }
   }
+
+  onSelect() {
+
+  }
 }
