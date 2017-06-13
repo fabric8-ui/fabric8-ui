@@ -64,7 +64,7 @@ import { CollaboratorService } from '../../services/collaborator.service'
   ]
 })
 
-export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy {
+export class WorkItemDetailComponent implements OnInit, OnDestroy {
 
   @ViewChild('title') title: any;
   @ViewChild('userSearch') userSearch: any;
@@ -187,24 +187,6 @@ export class WorkItemDetailComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnDestroy() {
     console.log('Destroying all the listeners in detail component');
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
-  }
-
-  ngAfterViewInit() {
-    // Open the panel
-    // Why use a setTimeOut -
-    // This is for unit testing.
-    // After every round of change detection,
-    // dev mode immediately performs a second round to verify
-    // that no bindings have changed since the end of the first,
-    // as this would indicate that changes are being caused by change detection itself.
-    // I had to triggers another round of change detection
-    // during that method - emit an event, whatever. Wrapping it in a timeout would do the job
-    // setTimeout(() => {
-    //   this.panelState = 'in';
-    //   if (this.headerEditable) {
-    //     this.title.nativeElement.focus();
-    //   }
-    // });
   }
 
   loadWorkItem(id: string): void {
