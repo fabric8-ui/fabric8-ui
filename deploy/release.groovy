@@ -8,6 +8,10 @@ def ci (){
     stage('unit test'){
         sh 'npm run test:unit'
     }
+
+    stage('func test'){
+        sh './scripts/run-functests.sh'
+    }
 }
 
 def ciBuildDownstreamProject(project){
@@ -40,6 +44,10 @@ def cd (b){
 
     stage('unit test'){
         sh 'npm run test:unit'
+    }
+
+    stage('func test'){
+        sh './scripts/run-functests.sh'
     }
 
     stage('release'){
