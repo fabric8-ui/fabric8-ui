@@ -33,12 +33,12 @@ mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder --user=
 
 docker exec fabric8-planner-builder npm install
 
-docker exec fabric8-planner-builder npm run test:unit
+#docker exec fabric8-planner-builder npm run test:unit
 
 docker exec fabric8-planner-builder npm run build
 
 docker exec  -i fabric8-planner-builder bash -c "cd runtime ; npm install"
 docker exec fabric8-planner-builder bash -c "cd runtime ; npm run test:funcsmoke"
-docker exec  -i fabric8-planner-builder bash -c "cd runtime ; npm run build"
+#docker exec  -i fabric8-planner-builder bash -c "cd runtime ; npm run build"
 
-docker exec -u root fabric8-planner-builder cp -r /home/fabric8/fabric8-planner/runtime/dist /
+#docker exec -u root fabric8-planner-builder cp -r /home/fabric8/fabric8-planner/runtime/dist /
