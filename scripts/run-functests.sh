@@ -3,7 +3,7 @@
 # Show command before executing
 set -x
 
-set -e
+#set -e
 
 # Source environment variables of the jenkins slave
 # that might interest this worker.
