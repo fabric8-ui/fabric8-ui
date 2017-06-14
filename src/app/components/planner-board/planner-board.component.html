@@ -38,8 +38,8 @@
                     </div>
                   </div>
                   <div [dragula]='"first-bag"' class="card-wrapper">
-                    <div *ngFor='let item of lane.cardValue' [routerLink]="['./detail/' + item.id]"
-                      [queryParams]="existingQueryParams" (mousedown)="getWI(item.id, lane)" (touchstart)="getWI(item.id, lane)"
+                    <div *ngFor='let item of lane.cardValue'
+                         (mousedown)="getWI(item.id, lane)" (touchstart)="getWI(item.id, lane)"
                       [attr.data-id]="item.id" id={{item.id}}>
                       <card [cardValue]='item'
                             (menuClickEvent)="cardMenuClick($event, item.id, lane)"

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
 import { User } from 'ngx-login-client';
 
 import { WorkItem } from './../../models/work-item';
@@ -10,7 +9,9 @@ export class CardValue {
   id: string;
   type: string;
   title: string;
+  hasLink: Boolean;
   avatar?: string;
+  link?: string;
   menuItem?: any;
 }
 
@@ -23,17 +24,15 @@ export class CardComponent implements OnInit, OnDestroy {
 
   @Input() cardValue: CardValue;
 
-  @Output() isSelectedEvent: EventEmitter<CardComponent> = new EventEmitter<CardComponent>();
   @Output() menuClickEvent = new EventEmitter();
-
-  constructor(
-    private notifications: Notifications,
-    private workItemService: WorkItemService,
-    private route: ActivatedRoute
-  ) {}
 
   private urlListener = null;
   private existingQueryParams: Object = {};
+
+  constructor(
+    private workItemService: WorkItemService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     if (this.urlListener === null) {

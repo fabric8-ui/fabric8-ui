@@ -1,4 +1,5 @@
-<div class="board-card card-pf card-pf-view card-pf-view-select card-pf-view-single-select">
+<div class="board-card card-pf card-pf-view card-pf-view-select card-pf-view-single-select" [routerLink]="cardValue.hasLink?cardValue?.link:null"
+     [routerLinkActive]="cardValue.hasLink?['active']:['']" [queryParams]="cardValue.hasLink?existingQueryParams:null">
   <div class="row-wrapper">
     <div>
       <span class="wi-type-icon fa {{cardValue.type}}"></span>
