@@ -31,7 +31,7 @@ The runtime is now available in runtime/dist.
 
 == The `NODE_ENV` Variable
 
-The `NODE_ENV` environment variable sets the execution environment on build time 
+The `NODE_ENV` environment variable sets the execution environment on build time
 for the provided minimal runtime.
 
 If you're just trying to test the application, please use inmemory mode which
@@ -76,3 +76,14 @@ build completion:
 ----
 $ docker build -t fabric8-planner-deploy -f Dockerfile.deploy .
 ----
+
+== Run tests locally
+
+To run the test like done in the CI, you should under the home repo directory.
+Next, you just need to run the following command:
+
+---
+$ ./scripts/local_docker.sh
+---
+
+This script generates a docker image that you could use to run planner within a container.

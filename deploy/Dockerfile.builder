@@ -2,7 +2,7 @@ FROM centos:7
 ENV LANG=en_US.utf8
 
 # load the gpg keys
-COPY gpg /gpg
+COPY deploy/gpg /gpg
 
 # gpg keys listed at https://github.com/nodejs/node
 RUN set -ex \
