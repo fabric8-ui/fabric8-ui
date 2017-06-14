@@ -15,7 +15,7 @@ if [ -e "jenkins-env" ]; then
   source /tmp/jenkins-env
 fi
 
-# We need to disable selinux for now, XXX
+# We need to disable selinux for now
 /usr/sbin/setenforce 0
 
 # Get all the deps in
