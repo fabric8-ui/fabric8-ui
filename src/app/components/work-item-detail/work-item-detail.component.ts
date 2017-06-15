@@ -867,6 +867,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         this.loadingIteration = false;
         this.iterations.forEach(it => it.selected = it.key === iterationId);
         this.logger.log('Iteration has been updated, sending event to iteration panel to refresh counts.');
+        this.workItem.relationships.iteration = workItem.relationships.iteration;
+        this.updateOnList();
         this.broadcaster.broadcast('associate_iteration', {
           workItemId: workItem.id,
           currentIterationId: this.workItem.relationships.iteration.data?this.workItem.relationships.iteration.data.id:undefined,
@@ -997,6 +999,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         .subscribe((workItem: WorkItem) => {
           this.loadingArea = false;
           this.areas.forEach(area => area.selected = area.key === areaId);
+          this.workItem.relationships.area = workItem.relationships.area;
+          this.updateOnList();
       });
     } else {
       let area = { };
