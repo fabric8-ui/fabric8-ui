@@ -866,9 +866,9 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
       this.save(payload, true).subscribe((workItem: WorkItem) => {
         this.loadingIteration = false;
         this.iterations.forEach(it => it.selected = it.key === iterationId);
-        this.logger.log('Iteration has been updated, sending event to iteration panel to refresh counts.');
         this.workItem.relationships.iteration = workItem.relationships.iteration;
         this.updateOnList();
+        this.logger.log('Iteration has been updated, sending event to iteration panel to refresh counts.');
         this.broadcaster.broadcast('associate_iteration', {
           workItemId: workItem.id,
           currentIterationId: this.workItem.relationships.iteration.data?this.workItem.relationships.iteration.data.id:undefined,
@@ -890,7 +890,12 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
           }
         }
       }
-      this.workItem.relationships.iteration = iteration;
+      // Need setTimeout for typeahead drop down't change detection to work
+      setTimeout(() => {
+        this.loadingIteration = false;
+        this.iterations.forEach(it => it.selected = it.key === iterationId);
+        this.workItem.relationships.iteration = iteration;
+      });
     }
   }
 
@@ -972,8 +977,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   }
 
   areaUpdated(areaId: string) {
+    this.loadingArea = true;
     if (this.workItem.id) {
-      this.loadingArea = true;
       let payload = cloneDeep(this.workItemPayload);
       if (areaId) {
         // area was set to a value.
@@ -1013,7 +1018,12 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
           }
         };
       };
-      this.workItem.relationships.area = area;
+      // Need setTimeout for typeahead drop down't change detection to work
+      setTimeout(() => {
+        this.loadingArea = false;
+        this.areas.forEach(area => area.selected = area.key === areaId);
+        this.workItem.relationships.area = area;
+      });
     }
   }
 
@@ -1031,9 +1041,9 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         this.closeHeader();
       } else if (this.searchAssignee) {
         this.searchAssignee = false;
-      } else if (this.areaSelectbox.isOpen()) {
+      } else if (this.areaSelectbox && this.areaSelectbox.isOpen()) {
         this.areaSelectbox.close();
-      } else if (this.iterationSelectbox.isOpen()) {
+      } else if (this.iterationSelectbox && this.iterationSelectbox.isOpen()) {
         this.iterationSelectbox.close();
     } else {
         this.closeDetails();
