@@ -5,25 +5,12 @@ set -x
 
 #set -e
 
-# Source environment variables of the jenkins slave
-# that might interest this worker.
-#if [ -e "jenkins-env" ]; then
-#  cat jenkins-env \
-#    | grep -E "(JENKINS_URL|GIT_BRANCH|GIT_COMMIT|BUILD_NUMBER|ghprbSourceBranch|ghprbActualCommit|BUILD_URL|ghprbPullId)=" \
-#    | sed 's/^/export /g' \
-#    > /tmp/jenkins-env
-#  source /tmp/jenkins-env
-#fi
+echo -n Updating Webdriver and Selenium...
+webdriver-manager update
+webdriver-manager update --versions.chrome 2.24
 
-# We need to disable selinux for now
-#/usr/sbin/setenforce 0
-
-# Get all the deps in
-#yum -y install \
-# docker \
-# make \
-# git
-#service docker start
+echo -n Running Xvfb...
+/usr/bin/Xvfb :99 -screen 0 1024x768x24 &
 
 # Build builder image
 #cp /tmp/jenkins-env .
