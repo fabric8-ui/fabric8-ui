@@ -1,5 +1,13 @@
 @import '../../../assets/stylesheets/base';
 
+/**
+ * a.iteration-title utility class introduced to address #1874
+ * Use this class to disable default undelining of anchors on hover
+ */
+a.iteration-title:hover {
+  text-decoration: none;
+}
+
 .side-panel-header {
   display: flex;
   padding-left: ($grid-gutter-width/2);
