@@ -550,12 +550,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   // Event listener for WI drop.
   onDragEnd(workItemId: string) {
     // rearrange is happening inside ng2-dnd library
-
-    // Build the ID-index map after rearrange.
-    this.workItemService.buildWorkItemIdIndexMap();
-
-    // save the order of work item.
-    // this.workItemService.reOrderWorkItem(workItemId);
   }
 
   onMoveNode($event) {
