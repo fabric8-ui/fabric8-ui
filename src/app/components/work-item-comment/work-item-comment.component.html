@@ -31,6 +31,7 @@
                 <img id="{{'comment_avatar_' + counter}}"
                 class="user-assign-avatar pull-left"
                 placement="right"
+                container="body"
                 tooltip="{{comment.relationships['created-by']?.data?.attributes?.fullName}}"
                 *ngIf="comment.relationships['created-by']?.data?.attributes?.imageURL"
                 [src]="comment.relationships['created-by']?.data?.attributes?.imageURL | almAvatarSize:30"
