@@ -295,14 +295,20 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
   }
 
   updateCardItem(workItem: WorkItem) {
+    this.workItemService.resolveType(workItem);
     let lane = this.lanes.find((lane) => lane.option === workItem.attributes['system.state']);
     let cardItem = lane.cardValue.find((item) => item.id === workItem.id);
     cardItem.title = workItem.attributes['system.title'];
     cardItem.type = workItem.relationships.baseType.data.attributes['icon'];
-    cardItem.avatar = (() => {
-      if(workItem.relationships.assignees.data.length > 0)
-        return workItem.relationships.assignees.data[0].attributes['imageURL'];
-      else return '';})()
+    this.workItemService.resolveAssignees(workItem.relationships.assignees)
+      .subscribe(assignees => {
+        workItem.relationships.assignees.data = assignees;
+        cardItem.avatar = (() => {
+          if(workItem.relationships.assignees.data.length > 0)
+            return workItem.relationships.assignees.data[0].attributes['imageURL'];
+          else return '';})()
+      });
+
   }
 
    cardMenuClick(menuId: string, itemId: string, lane: any) {
@@ -616,24 +622,30 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
   }
 
   listenToEvents() {
-
-    this.eventListeners.push(
-      this.broadcaster.on<string>('updateWorkItem')
-        .subscribe((workItem: string) => {
-          let updatedItem = JSON.parse(workItem) as WorkItem;
-          let lane = this.lanes.find((lane) => lane.option === updatedItem.attributes['system.state']);
-          let index = lane.workItems.findIndex((item) => item.id === updatedItem.id);
-          if (index > -1) {
-            lane.workItems[index] = updatedItem;
-            this.updateCardItem(updatedItem);
-          }
-        })
-    );
-
     this.eventListeners.push(
       this.broadcaster.on<string>('wi_change_state')
           .subscribe((data: any) => {
             this.changeLane(data[0].oldState, data[0].newState, data[0].workItem);
+      })
+    );
+
+    this.eventListeners.push(
+      this.workItemService.editWIObservable.subscribe(updatedItem => {
+        let lane = this.lanes.find(lane => lane.option === updatedItem.attributes['system.state']);
+        let index = lane.workItems.findIndex((item) => item.id == updatedItem.id);
+        let cardItem = lane.cardValue.find((item) => item.id == updatedItem.id);
+        if (this.filterService.doesMatchCurrentFilter(updatedItem)) {
+          if(index > -1) {
+            lane.workItems[index] = updatedItem;
+            this.updateCardItem(updatedItem);
+          } else {
+            lane.workItems.splice(0, 0, updatedItem);
+            this.createCardItem([updatedItem]);
+          }
+        } else {
+          lane.workItems.splice(index, 1);
+          lane.cardValue.splice(index, 1);
+        }
       })
     );
 

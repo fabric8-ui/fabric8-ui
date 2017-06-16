@@ -200,6 +200,7 @@ export class FabPlannerAssociateIterationModalComponent {
         this.selectedIteration = null;
         this.workItem.relationships.iteration = workItem.relationships.iteration;
         this.workItem.attributes['version'] = workItem.attributes['version'];
+        this.workItemService.emitEditWI(workItem);
       });
   }
 
