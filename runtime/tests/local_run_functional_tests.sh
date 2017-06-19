@@ -10,10 +10,7 @@ OS=$(uname -a | awk '{print $1;}')
 
 # Download dependencies
 echo -n Updating Webdriver and Selenium...
-node_modules/protractor/bin/webdriver-manager update
-# Start selenium server just for this test run
-echo -n Starting Webdriver and Selenium...
-(node_modules/protractor/bin/webdriver-manager start >>$LOGFILE 2>&1 &)
+(webdriver-manager start --versions.chrome 2.24 >>$LOGFILE 2>&1 &)
 # Wait for port 4444 to be listening connections
 if [ $OS = 'Darwin' ]
 then
@@ -23,9 +20,12 @@ else
 fi
 echo done.
 
+
+echo $(pwd)
+
 # Start the web app
 echo -n Starting Planner development server...
-(node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --progress --host 0.0.0.0 --port 8088 >>$LOGFILE 2>&1 &)
+(../node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --progress --host 0.0.0.0 --port 8088 ./webpack.config.js >>$LOGFILE 2>&1 &)
 # Wait for port 8088 to be listening connections
 if [ $OS = 'Darwin' ]
 then
@@ -33,7 +33,6 @@ then
 else
   while ! (ncat -w 1 127.0.0.1 8088 </dev/null >/dev/null 2>&1); do sleep 1; done
 fi
-
 echo done.
 
 # Retrieve index.html to trigger webpack to build the source
@@ -42,13 +41,17 @@ echo -n Building source...
 curl http://localhost:8088/ -o /dev/null -s
 echo done.
 
+
+echo $(pwd)
+
+
 # Finally run protractor
 echo Running tests...
 if [ -z "$1" ]
   then
-    node_modules/protractor/bin/protractor tests/protractor.config.js 2>&1 | tee -a $BROWSERLOGS
+    ../node_modules/protractor/bin/protractor ./tests/protractor.config.js 2>&1 | tee -a $BROWSERLOGS
 else
-    node_modules/protractor/bin/protractor tests/protractor.config.js --suite $1 2>&1 | tee -a $BROWSERLOGS
+    ../node_modules/protractor/bin/protractor ./tests/protractor.config.js --suite $1 2>&1 | tee -a $BROWSERLOGS
 fi
 
 TEST_RESULT=$?
@@ -71,4 +74,3 @@ else
   echo 'Functional tests FAIL'
   exit 1
 fi
-
