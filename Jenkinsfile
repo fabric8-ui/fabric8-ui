@@ -1,4 +1,4 @@
-@Library('github.com/fabric8io/fabric8-pipeline-library@master')
+@Library('github.com/hectorj2f/fabric8-pipeline-library@use-myimage-builder')
 def utils = new io.fabric8.Utils()
 def flow = new io.fabric8.Fabric8Commands()
 def project = 'fabric8io/fabric8-planner'
