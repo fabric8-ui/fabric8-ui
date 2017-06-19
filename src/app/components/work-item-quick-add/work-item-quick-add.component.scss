@@ -135,7 +135,7 @@
 }
 .add { background-color: $color-pf-white; }
 @media (max-width: $grid-float-breakpoint){
-  .quickAdd_container { @extend .textCenter;
+  .quickAdd_container { text-align: center;
     .addWorkItem { padding: 10px;
       i,
       h4 { display: block; }
