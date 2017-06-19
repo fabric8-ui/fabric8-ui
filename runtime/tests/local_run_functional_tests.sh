@@ -57,9 +57,10 @@ echo $(pwd)
 echo Running tests...
 if [ -z "$1" ]
   then
-    ../node_modules/protractor/bin/protractor ./tests/protractor.config.js 2>&1 | tee -a $BROWSERLOGS
+    ../node_modules/protractor/bin/protractor ./tests/protractor.config.js  --chromeDriver $(pwd)/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.24
+ 2>&1 | tee -a $BROWSERLOGS
 else
-    ../node_modules/protractor/bin/protractor ./tests/protractor.config.js --suite $1 2>&1 | tee -a $BROWSERLOGS
+  ../node_modules/protractor/bin/protractor ./tests/protractor.config.js --suite $1 --chromeDriver $(pwd)/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.24
 fi
 
 TEST_RESULT=$?
