@@ -5,10 +5,6 @@ set -x
 
 #set -e
 
-echo -n Updating Webdriver and Selenium...
-webdriver-manager update
-webdriver-manager update --versions.chrome 2.24
-
 echo -n Running Xvfb...
 /usr/bin/Xvfb :99 -screen 0 1024x768x24 &
 
