@@ -8,6 +8,11 @@ echo Using logfile $LOGFILE and $BROWSERLOGS
 export NODE_ENV=inmemory
 OS=$(uname -a | awk '{print $1;}')
 
+echo -n $(which webdriver-manager)
+
+
+webdriver-manager update && webdriver-manager update --versions.chrome 2.24
+
 # Download dependencies
 echo -n Updating Webdriver and Selenium...
 (webdriver-manager start --versions.chrome 2.24 2>&1 &)
