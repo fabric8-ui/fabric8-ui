@@ -10,7 +10,10 @@ OS=$(uname -a | awk '{print $1;}')
 
 # Download dependencies
 echo -n Updating Webdriver and Selenium...
-(webdriver-manager start --versions.chrome 2.24 >>$LOGFILE 2>&1 &)
+(webdriver-manager start --versions.chrome 2.24 2>&1 &)
+
+echo -n Checking if it is up Webdriver and Selenium...
+
 # Wait for port 4444 to be listening connections
 if [ $OS = 'Darwin' ]
 then
