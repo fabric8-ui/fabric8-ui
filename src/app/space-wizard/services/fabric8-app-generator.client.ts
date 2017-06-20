@@ -495,12 +495,14 @@ export class Fabric8AppGeneratorClient {
         return `<span class="property-value property-value-result" >${value}</span>`;
       }
     };
-    let result = {};
-    // build an array of result name/value/lables that can be sorted and augmented for readability and display
+    let result:any = {};
+    // build an array of result name/value/labels that can be sorted and augmented for readability and display
     let successMessageProperties = [];
     if (results.length > 0) {
       let msg = ``;
-      for (let response of results.filter(r => r !== null)) {
+      results = results.filter(r => r !== null);
+      // format to display property label/value
+      for (let response of results) {
         if (Array.isArray(response)) {
           continue;
         }
@@ -532,9 +534,10 @@ export class Fabric8AppGeneratorClient {
       });
       // now build the message to be displayed
       successMessageProperties.forEach(property => {
-        msg = `${msg}\n<span class="property-name property-name-result" >${property.label}</span>${buildHyperlink(property.value)}`;
+        if (property.value) {
+          msg = `${msg}\n<span class="property-name property-name-result" >${property.label}</span>${buildHyperlink(property.value)}`;
+        }
       });
-
       this.result = result;
       this.displaySuccessMessageView(`A starter application was created.`, msg);
     }
