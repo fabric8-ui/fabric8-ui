@@ -11,12 +11,15 @@ OS=$(uname -a | awk '{print $1;}')
 echo -n $(which webdriver-manager)
 
 
-webdriver-manager update && webdriver-manager update --versions.chrome 2.24
+webdriver-manager clean && webdriver-manager update
 
 # Download dependencies
 echo -n Updating Webdriver and Selenium...
-(webdriver-manager start --versions.chrome 2.24 2>&1 &)
+(webdriver-manager start 2>&1 &)
 
+node_modules/protractor/bin/webdriver-manager update
+node_modules/protractor/bin/webdriver-manager update -versions.chrome 2.24
+#node_modules/protractor/bin/webdriver-manager start --versions.chrome 2.24 &
 echo -n Checking if it is up Webdriver and Selenium...
 
 # Wait for port 4444 to be listening connections
