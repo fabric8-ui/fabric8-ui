@@ -65,6 +65,7 @@
 .side-panel-wrap {
   width: 340px;
   min-width: 340px;
+  height: 100%;
   background-color: $color-pf-black-900;
   .side-panel-container { background-color: $color-pf-black-900; }
 }
@@ -111,15 +112,13 @@
     align-items: stretch;
     >aside {
       position: relative;
-      display: flex;
+      float: left;
       background-color: $color-pf-black-200;
       border-right: 1px solid;
       border-right-color: $color-pf-black-300;
-      align-items: stretch;
-      flex: 3;
-      flex-direction: column;
       .contents {
         display: flex;
+        height: 100%;
         overflow: auto;
         flex: 1;
         align-items: stretch;
@@ -128,6 +127,7 @@
     >section {
       position: relative;
       display: flex;
+      height: 100%;
       overflow-x: hidden!important;
       align-items: stretch;
       flex: 9;

@@ -17,6 +17,7 @@
 .side-panel-wrap {
   width: 340px;
   min-width: 340px;
+  height: 100%;
   .side-panel-container {
     overflow-x: hidden;
     background-color: $color-pf-black-900;
@@ -37,7 +38,7 @@
   .work-item-list-quick-add {
     position: fixed;
     bottom: 0;
-    width: $width100;
+    width: (calc(100% - 340px));
     border-top: 1px solid;
     border-top-color: $color-pf-black-300;
   }
@@ -52,6 +53,7 @@
 .node-drop-slot.is-dragging-over { height: 66px!important; }
 .work-item-page {
   position: relative;
+  height: 100%;
   > main { border-top: 0 solid !important; }
   .dropdown {
     a { cursor: pointer; }
@@ -59,23 +61,18 @@
   .with-cursor-pointer { cursor: pointer; }
   .with-color-blue { color: $color-pf-blue-400; }
   >main {
-    display: flex;
+    height: 100%;
     border-top: 1px solid;
     border-top-color: $color-pf-black-300;
-    flex-direction: row;
-    flex: 1;
-    align-items: stretch;
     >aside {
       position: relative;
-      display: flex;
+      float: left;
       background-color: $color-pf-black-200;
       border-right: 1px solid;
       border-right-color: $color-pf-black-300;
-      flex: 3;
-      flex-direction: column;
-      align-items: stretch;
       .contents {
         display: flex;
+        height: 100%;
         overflow: auto;
         flex: 1;
         align-items: stretch;
@@ -85,6 +82,7 @@
     >section {
       position: relative;
       display: flex;
+      height: 100%;
       overflow-x: hidden!important;
       align-items: stretch;
       flex: 9;

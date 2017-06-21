@@ -10,31 +10,12 @@
       [class.active]="selectedTab === 'all'"
       (click)="selectTab('all')">
       <a>
-<<<<<<< HEAD
-        <span>
-          Total Links
-        </span>
-        <span *ngIf="workItem?.relationalData?.linkDicts; else loading"
-          id="wi-link-total" class="badge">
+        <span>Total Links</span>
+        <span
+          class="badge"
+          id="wi-link-total"
+          *ngIf="workItem?.relationalData?.linkDicts; else loading">
           {{workItem?.relationalData?.totalLinkCount}}
-=======
-        <span> Total Links </span>
-        <span class="badge"
-          id="wi-link-total" >
-          {{workItem.relationalData.totalLinkCount}}
-        </span>
-      </a>
-    </li>
-    <li *ngFor="let linkType of workItem.relationalData.linkDicts; let totalLink = index"
-    [class.active]="selectedTab === linkType.linkName"
-    (click)="selectTab(linkType.linkName)">
-      <a>
-        <span class="link-header-nav-text">
-          {{linkType.linkName}}
-        </span>
-        <span class="badge" id="linktotal_{{totalLink}}">
-          {{linkType.count}}
->>>>>>> fix(wi-links): remove flex and fix units to px
         </span>
         <ng-template #loading>
           <span class="spinner spinner-sm spinner-inline"></span>
@@ -56,16 +37,11 @@
       </li>
     </template>
   </ul>
-<<<<<<< HEAD
-  <div class="link-content" id="wi-link-content"
-  *ngIf="showLinkComponent && workItem?.relationalData?.linkDicts">
-    <div *ngIf="!workItem?.relationalData?.totalLinkCount && !showLinkView"
-      class="link-content-create-link">
-=======
-  <div class="link-content" id="wi-link-content" *ngIf="showLinkComponent">
+  <div class="link-content"
+    id="wi-link-content"
+    *ngIf="showLinkComponent && workItem?.relationalData?.linkDicts">
     <div class="link-content-create-link"
-      *ngIf="!workItem.relationalData.totalLinkCount && !showLinkView">
->>>>>>> fix(wi-links): remove flex and fix units to px
+      *ngIf="!workItem?.relationalData?.totalLinkCount && !showLinkView">
       <i class="pficon pficon-add-circle-o add-circle-icon"></i>
       <p>Work Item Links</p>
       <span>There are no items linked to this issue</span>
