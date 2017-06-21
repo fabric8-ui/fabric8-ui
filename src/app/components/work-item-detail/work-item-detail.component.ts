@@ -59,8 +59,8 @@ import { CollaboratorService } from '../../services/collaborator.service'
       state('out', style({
         right: '-100%'
       })),
-      transition('in => out', animate('200ms ease-in-out')),
-      transition('out => in', animate('200ms ease-in-out'))
+      transition('in => out', animate('400ms ease-in-out')),
+      transition('out => in', animate('400ms ease-in-out'))
     ]),
   ]
 })
@@ -210,6 +210,12 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
           }
         }
       })
+      .do (() => {
+        this.loadingComments = true;
+        this.loadingTypes = true;
+        this.loadingIteration = true;
+        this.loadingArea = true;
+      })
       .switchMap(() => this.workItemService.getWorkItemById(id))
       .do(workItem => {
         this.workItem = workItem;
@@ -227,12 +233,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         }
       })
       .do (workItem => console.log('Work item fethced: ', cloneDeep(workItem)))
-      .do (() => {
-        this.loadingComments = true;
-        this.loadingTypes = true;
-        this.loadingIteration = true;
-        this.loadingArea = true;
-      })
       .take(1)
       .switchMap(() => {
         return this.workItemService.getWorkItemTypes();
@@ -243,6 +243,20 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
           workItemTypes.find(type => type.id === this.workItem.relationships.baseType.data.id) ||
           this.workItem.relationships.baseType.data;
         this.loadingTypes = false;
+      })
+      .switchMap(() => this.workItemService.resolveAssignees(this.workItem.relationships.assignees))
+      .do(assignees => {
+        // Resolve assignees
+        this.workItem.relationships.assignees = {
+          data: assignees
+        };
+      })
+      .switchMap(() => this.workItemService.resolveCreator2(this.workItem.relationships.creator))
+      .do(creator => {
+        // Resolve creator
+        this.workItem.relationships.creator = {
+          data: creator
+        };
       })
       .switchMap(() => this.areaService.getArea(this.workItem.relationships.area))
       .do(area => {
@@ -262,35 +276,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         this.iterations = this.extractIterationKeyValue([iteration]);
         this.loadingIteration = false;
       })
-      .switchMap(() => this.workItemService.resolveAssignees(this.workItem.relationships.assignees))
-      .do(assignees => {
-        // Resolve assignees
-        this.workItem.relationships.assignees = {
-          data: assignees
-        };
-      })
-      .switchMap(() => this.workItemService.resolveCreator2(this.workItem.relationships.creator))
-      .do(creator => {
-        // Resolve creator
-        this.workItem.relationships.creator = {
-          data: creator
-        };
-      })
-      .switchMap(() => this.workItemService.resolveComments(this.workItem.relationships.comments.links.related))
-      .do(comments => {
-        // Resolve comments
-        merge(this.workItem.relationships.comments, comments);
-        this.workItem.relationships.comments.data.forEach((comment, index) => {
-          this.workItemService.resolveCommentCreator(comment.relationships['created-by'])
-            .subscribe(creator => {
-              comment.relationships['created-by'] = {
-                data: creator
-              };
-            });
-        });
-        this.comments = this.workItem.relationships.comments.data;
-        this.loadingComments = false;
-      })
       .switchMap(() => this.workItemService.resolveLinks(this.workItem.links.self + '/relationships/links'))
       .do(([links, includes]) => {
         // Resolve links
@@ -306,6 +291,21 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         links.forEach((link) => {
           this.workItemService.addLinkToWorkItem(link, includes, this.workItem);
         });
+      })
+      .switchMap(() => this.workItemService.resolveComments(this.workItem.relationships.comments.links.related))
+      .do(comments => {
+        // Resolve comments
+        merge(this.workItem.relationships.comments, comments);
+        this.workItem.relationships.comments.data.forEach((comment, index) => {
+          this.workItemService.resolveCommentCreator(comment.relationships['created-by'])
+            .subscribe(creator => {
+              comment.relationships['created-by'] = {
+                data: creator
+              };
+            });
+        });
+        this.comments = this.workItem.relationships.comments.data;
+        this.loadingComments = false;
       })
       .subscribe(() => {
         this.closeUserRestFields();
