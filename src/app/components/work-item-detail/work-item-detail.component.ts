@@ -197,6 +197,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
       .do(workItem => {
         if (workItem) {
           this.workItem = workItem;
+          this.titleText = this.workItem.attributes['system.title'];
+          this.descText = this.workItem.attributes['system.description'] || '';
           // Open the panel once work item is ready
           const t2 = performance.now();
           if (this.panelState === 'out') {
@@ -212,6 +214,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
       .do(workItem => {
         this.workItem = workItem;
         this.workItemDataService.setItem(workItem);
+        this.titleText = this.workItem.attributes['system.title'];
+        this.descText = this.workItem.attributes['system.description'] || '';
         // Open the panel once work item is ready
         const t2 = performance.now();
         if (this.panelState === 'out') {
@@ -305,8 +309,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
       })
       .subscribe(() => {
         this.closeUserRestFields();
-        this.titleText = this.workItem.attributes['system.title'];
-        this.descText = this.workItem.attributes['system.description'] || '';
 
         this.workItemPayload = {
           id: this.workItem.id,
