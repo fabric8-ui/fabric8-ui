@@ -210,50 +210,63 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         this.loadingTypes = true;
         this.loadingIteration = true;
         this.loadingArea = true;
+        this.activeOnList(400);
       })
-      .switchMap(workItem => {
-        return Observable.combineLatest(
-          this.workItemService.getWorkItemTypes(),
-          this.areaService.getArea(workItem.relationships.area),
-          this.iterationService.getIteration(workItem.relationships.iteration),
-          this.workItemService.resolveAssignees(workItem.relationships.assignees),
-          this.workItemService.resolveCreator2(workItem.relationships.creator),
-          this.workItemService.resolveComments(workItem.relationships.comments.links.related),
-          this.workItemService.resolveLinks(workItem.links.self + '/relationships/links')
-        );
-      }).take(1)
-      .subscribe(([workItemTypes, area, iteration, assignees, creator, comments, [links, includes]]) => {
-
+      .take(1)
+      .switchMap(() => {
+        return this.workItemService.getWorkItemTypes();
+      })
+      .do(workItemTypes => {
+        // Resolve work item type
+        this.workItem.relationships.baseType.data =
+          workItemTypes.find(type => type.id === this.workItem.relationships.baseType.data.id) ||
+          this.workItem.relationships.baseType.data;
+        this.loadingTypes = false;
+      })
+      .switchMap(() => {
+        return this.areaService.getArea(this.workItem.relationships.area);
+      })
+      .do(area => {
         // Resolve area
         this.workItem.relationships.area = {
           data: area
         };
         this.areas = this.extractAreaKeyValue([area]);
         this.loadingArea = false;
-
+      })
+      .switchMap(() => {
+        return this.iterationService.getIteration(this.workItem.relationships.iteration);
+      })
+      .do(iteration => {
         // Resolve iteration
         this.workItem.relationships.iteration = {
           data: iteration
         };
         this.iterations = this.extractIterationKeyValue([iteration]);
         this.loadingIteration = false;
-
-        // Resolve work item type
-        this.workItem.relationships.baseType.data =
-          workItemTypes.find(type => type.id === this.workItem.relationships.baseType.data.id) ||
-          this.workItem.relationships.baseType.data;
-        this.loadingTypes = false;
-
+      })
+      .switchMap(() => {
+        return this.workItemService.resolveAssignees(this.workItem.relationships.assignees);
+      })
+      .do(assignees => {
         // Resolve assignees
         this.workItem.relationships.assignees = {
           data: assignees
         };
-
+      })
+      .switchMap(() => {
+        return this.workItemService.resolveCreator2(this.workItem.relationships.creator);
+      })
+      .do(creator => {
         // Resolve creator
-       this.workItem.relationships.creator = {
+        this.workItem.relationships.creator = {
           data: creator
         };
-
+      })
+      .switchMap(() => {
+        return this.workItemService.resolveComments(this.workItem.relationships.comments.links.related)
+      })
+      .do(comments => {
         // Resolve comments
         merge(this.workItem.relationships.comments, comments);
         this.workItem.relationships.comments.data.forEach((comment, index) => {
@@ -266,7 +279,11 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         });
         this.comments = this.workItem.relationships.comments.data;
         this.loadingComments = false;
-
+      })
+      .switchMap(() => {
+        return this.workItemService.resolveLinks(this.workItem.links.self + '/relationships/links');
+      })
+      .do(([links, includes]) => {
         // Resolve links
         this.workItem = Object.assign(
           this.workItem,
@@ -280,7 +297,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         links.forEach((link) => {
           this.workItemService.addLinkToWorkItem(link, includes, this.workItem);
         });
-
+      })
+      .subscribe(() => {
         this.closeUserRestFields();
         this.titleText = this.workItem.attributes['system.title'];
         this.descText = this.workItem.attributes['system.description'] || '';
@@ -299,17 +317,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         // init dynamic form
         this.dynamicFormGroup = this.workItemTypeControlService.toFormGroup(this.workItem);
         this.dynamicFormDataArray = this.workItemTypeControlService.toAttributeArray(this.workItem.relationships.baseType.data.attributes.fields);
-
-        // fetch the list of user
-        // after getting the Workitem
-        // to set assigned user
-        // for this workitem from the list
-        // this.getAllUsers();
-
-        this.activeOnList(400);
-        // Used with setTimeout for inmemory mode
-        // where everything is synchronus
-        //setTimeout(() => this.itemSubscription.unsubscribe());
       },
       err => {
         //console.log(err);
