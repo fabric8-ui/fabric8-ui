@@ -120,7 +120,7 @@ Using the minimal Runtime and a mock database (option 1) run:
 
  $ scripts/run-planner.sh --standalone
  
-Using an external Euntime (option 1) run:
+Using an external Runtime (option 1) run:
 
  $ scripts/run-planner.sh 
 
