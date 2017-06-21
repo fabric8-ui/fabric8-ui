@@ -43,6 +43,7 @@ import { TypeaheadDropdown, TypeaheadDropdownValue } from '../typeahead-dropdown
 
 import { WorkItem, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../../services/work-item.service';
+import { WorkItemDataService } from './../../services/work-item-data.service';
 import { WorkItemType } from '../../models/work-item-type';
 import { CollaboratorService } from '../../services/collaborator.service'
 
@@ -133,6 +134,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     private workItemService: WorkItemService,
+    private workItemDataService: WorkItemDataService,
     private route: ActivatedRoute,
     private location: Location,
     private logger: Logger,
@@ -191,9 +193,25 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
 
   loadWorkItem(id: string): void {
     const t1 = performance.now();
-    this.workItemService.getWorkItemById(id)
+    this.workItemDataService.getItem(id)
+      .do(workItem => {
+        if (workItem) {
+          this.workItem = workItem;
+          // Open the panel once work item is ready
+          const t2 = performance.now();
+          if (this.panelState === 'out') {
+            this.panelState = 'in';
+            console.log('Performance :: Details page first paint (local data) - '  + (t2 - t1) + ' milliseconds.');
+            if (this.headerEditable && typeof(this.title) !== 'undefined') {
+              this.title.nativeElement.focus();
+            }
+          }
+        }
+      })
+      .switchMap(() => this.workItemService.getWorkItemById(id))
       .do(workItem => {
         this.workItem = workItem;
+        this.workItemDataService.setItem(workItem);
         // Open the panel once work item is ready
         const t2 = performance.now();
         if (this.panelState === 'out') {
@@ -210,7 +228,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         this.loadingTypes = true;
         this.loadingIteration = true;
         this.loadingArea = true;
-        this.activeOnList(400);
       })
       .take(1)
       .switchMap(() => {
@@ -223,9 +240,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
           this.workItem.relationships.baseType.data;
         this.loadingTypes = false;
       })
-      .switchMap(() => {
-        return this.areaService.getArea(this.workItem.relationships.area);
-      })
+      .switchMap(() => this.areaService.getArea(this.workItem.relationships.area))
       .do(area => {
         // Resolve area
         this.workItem.relationships.area = {
@@ -234,9 +249,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         this.areas = this.extractAreaKeyValue([area]);
         this.loadingArea = false;
       })
-      .switchMap(() => {
-        return this.iterationService.getIteration(this.workItem.relationships.iteration);
-      })
+      .switchMap(() => this.iterationService.getIteration(this.workItem.relationships.iteration))
       .do(iteration => {
         // Resolve iteration
         this.workItem.relationships.iteration = {
@@ -245,27 +258,21 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         this.iterations = this.extractIterationKeyValue([iteration]);
         this.loadingIteration = false;
       })
-      .switchMap(() => {
-        return this.workItemService.resolveAssignees(this.workItem.relationships.assignees);
-      })
+      .switchMap(() => this.workItemService.resolveAssignees(this.workItem.relationships.assignees))
       .do(assignees => {
         // Resolve assignees
         this.workItem.relationships.assignees = {
           data: assignees
         };
       })
-      .switchMap(() => {
-        return this.workItemService.resolveCreator2(this.workItem.relationships.creator);
-      })
+      .switchMap(() => this.workItemService.resolveCreator2(this.workItem.relationships.creator))
       .do(creator => {
         // Resolve creator
         this.workItem.relationships.creator = {
           data: creator
         };
       })
-      .switchMap(() => {
-        return this.workItemService.resolveComments(this.workItem.relationships.comments.links.related)
-      })
+      .switchMap(() => this.workItemService.resolveComments(this.workItem.relationships.comments.links.related))
       .do(comments => {
         // Resolve comments
         merge(this.workItem.relationships.comments, comments);
@@ -280,9 +287,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         this.comments = this.workItem.relationships.comments.data;
         this.loadingComments = false;
       })
-      .switchMap(() => {
-        return this.workItemService.resolveLinks(this.workItem.links.self + '/relationships/links');
-      })
+      .switchMap(() => this.workItemService.resolveLinks(this.workItem.links.self + '/relationships/links'))
       .do(([links, includes]) => {
         // Resolve links
         this.workItem = Object.assign(
@@ -366,13 +371,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
       this.userService.getUser(),
       this.collaboratorService.getCollaborators()
     )
-  }
-
-  activeOnList(timeOut: number = 0) {
-    setTimeout(() => {
-      this.saving = false;
-      this.broadcaster.broadcast('activeWorkItem', this.workItem.id);
-    }, timeOut);
   }
 
   updateOnList() {

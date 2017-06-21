@@ -46,6 +46,7 @@ import { WorkItem } from '../../models/work-item';
 import { WorkItemType }               from '../../models/work-item-type';
 import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService }            from '../../services/work-item.service';
+import { WorkItemDataService } from './../../services/work-item-data.service';
 import { CollaboratorService } from '../../services/collaborator.service';
 
 import { TreeListComponent } from 'ngx-widgets';
@@ -118,6 +119,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     private router: Router,
     private user: UserService,
     private workItemService: WorkItemService,
+    private workItemDataService: WorkItemDataService,
     private logger: Logger,
     private userService: UserService,
     private route: ActivatedRoute,
@@ -287,7 +289,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         [], // We don't want to static resolve user at this point
         this.workItemTypes
       );
-
+      this.workItemDataService.setItems(this.workItems);
       // Resolve assignees
       const t3 = performance.now();
       this.workItems.forEach((item, index) => {
@@ -325,6 +327,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
             this.workItemTypes
           )
         ];
+        this.workItemDataService.setItems(this.workItems);
         console.log('Performance :: Fetching more list items - '  + (t2 - t1) + ' milliseconds.');
 
         // Resolve assignees
