@@ -1,3 +1,4 @@
+import { WorkItemDataService } from './../../services/work-item-data.service';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
 import {
@@ -63,6 +64,7 @@ if (process.env.ENV == 'inmemory') {
     EventService,
     GlobalSettings,
     WorkItemService,
+    WorkItemDataService,
     Broadcaster,
     Logger,
     {
