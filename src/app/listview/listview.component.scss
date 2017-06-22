@@ -10,21 +10,31 @@
 /* Group heading above list view */
 .list-group-heading {
   position: absolute;
-  top: -40px;
   font-size: $font-size-base;
   font-weight: initial;
   @media (max-width: 992px) { display: none; }
 }
-.list-view-pf .list-group-item {
-  margin-left: -2px;
-  margin-right: -2px;
-}
-.list-view-pf .list-group-item {
-  &.list-group-item-heading-row {
-    border-top: none;
-    pointer-events: none;
-    &:hover { background-color: $color-pf-white; }
-    i { pointer-events: auto; }
+.list-view-pf {
+  &-body {
+    @media (max-width: 992px) { display: inline-flex; }
+  }
+  .list-group-item {
+    margin-left: -2px;
+    margin-right: -2px;
+    &:hover {
+      background-color: transparent;
+      .list-view-pf-body {
+        .list-group-item {
+          background-color: transparent;
+        }
+      }
+    }
+    &.list-group-item-heading-row {
+      border-top: none;
+      pointer-events: none;
+      &:hover { background-color: $color-pf-white; }
+      i { pointer-events: auto; }
+    }
   }
 }
 .list-view-pf-dnd-drag-items-container { display: flex; }

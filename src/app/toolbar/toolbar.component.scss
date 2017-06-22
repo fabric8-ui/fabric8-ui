@@ -1,5 +1,8 @@
 @import '../../assets/stylesheets/_base';
 .toolbar-pf-actions {
+  @media (max-width: 992px) {
+    display: inline-flex;
+  }
   .btn { min-width: unset; }
   .toolbar-pf-view-selector {
     a { cursor: pointer; }
