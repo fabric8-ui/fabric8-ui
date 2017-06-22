@@ -40,7 +40,7 @@ def cd (b){
 def updateDownstreamProjects(v){
     echo 'we would Update Downstream Projects'
     pushPackageJSONChangePR{
-        propertyName = 'ngx-fabric8-wit'
+        propertyName = 'ngx-widgets'
         projects = [
                 'fabric8-ui/fabric8-npm-dependencies'
         ]
