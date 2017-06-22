@@ -1,5 +1,11 @@
 @import '../../../assets/stylesheets/base';
-
+/* CSS3 calc() function to perform calculations */
+/* this is temporary until Less conversion is completed */
+@mixin calc($property, $expression) { 
+  #{$property}: -webkit-calc(#{$expression}); 
+  #{$property}: -moz-calc(#{$expression});
+  #{$property}: calc(#{$expression}); 
+}
 .error { color: $color-pf-red-100; }
 .suppress-hover {
   &:hover { background-color: transparent; }
@@ -53,7 +59,7 @@
 .node-drop-slot.is-dragging-over { height: 66px!important; }
 .work-item-page {
   position: relative;
-  height: 100%;
+  @include calc(height, "100vh - 79px");
   > main { border-top: 0 solid !important; }
   .dropdown {
     a { cursor: pointer; }
