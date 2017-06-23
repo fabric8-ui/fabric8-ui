@@ -144,7 +144,7 @@ export class FabPlannerAssociateIterationModalComponent {
   }
 
   associateIteration(value: any) {
-    this.selectedIteration =  this.iterations.find((iteration) => iteration.id === value.key);
+    this.selectedIteration = this.iterations.find((iteration) => iteration.id === value.key);
     this.selectedIterationName = value.value;
     this.iterationSearch.nativeElement.focus();
     if (this.selectedIteration) {

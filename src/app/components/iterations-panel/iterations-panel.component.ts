@@ -2,13 +2,15 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Params, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges, ViewChild } from '@angular/core';
 
-import { Broadcaster, Logger } from 'ngx-base';
+import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
+import { DragulaService } from 'ng2-dragula';
 
 import { IterationService } from '../../services/iteration.service';
+import { WorkItemService }   from '../../services/work-item.service';
 import { IterationModel } from '../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
 
@@ -41,6 +43,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   closedIterations: IterationModel[] = [];
   eventListeners: any[] = [];
   currentSelectedIteration: string = '';
+  dragulaEventListeners: any[] = [];
 
   private spaceSubscription: Subscription = null;
 
@@ -48,10 +51,50 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     private log: Logger,
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
+    private dragulaService: DragulaService,
     private iterationService: IterationService,
+    private notifications: Notifications,
     private route: ActivatedRoute,
-    private spaces: Spaces
-  ) {}
+    private spaces: Spaces,
+    private workItemService: WorkItemService) {
+      let bag: any = this.dragulaService.find('wi-bag');
+      this.dragulaEventListeners.push(
+        this.dragulaService.drop
+        .map(value => value.slice(1))
+        .filter(value => {
+          return value[1].classList.contains('iteration-container') &&
+                 !value[1].classList.contains('iteration-header');
+        })
+        .subscribe((args) => this.onDrop(args)),
+
+        this.dragulaService.over
+        .map(value => value.slice(1))
+        .filter(value => {
+          return value[1].classList.contains('iteration-container') ||
+                 value[1].classList.contains('iteration-header');
+        })
+        .subscribe((args) => {
+          this.onOver(args);
+        }),
+
+        this.dragulaService.out
+        .map(value => value.slice(1))
+        .filter(value => {
+          return value[1].classList.contains('iteration-container');
+        })
+        .subscribe(args => {
+          this.onOut(args);
+        })
+      );
+      if(bag !== undefined) {
+        this.dragulaService.destroy('wi-bag');
+      }
+      this.dragulaService.setOptions('wi-bag', {
+        moves: (el, container, handle) => {
+          return !container.classList.contains('iteration-container');
+        }
+      });
+    }
 
   ngOnInit(): void {
     this.listenToEvents();
@@ -90,6 +133,8 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
     this.spaceSubscription.unsubscribe();
+    this.dragulaEventListeners.forEach(subscriber => subscriber.unsubscribe());
+    this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
   getAndfilterIterations() {
@@ -195,6 +240,86 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     }, err => console.log(err));
   }
 
+  onDrop(args) {
+    let [el, target, source, sibling] = args;
+    let iterationId = target.getAttribute('id');
+    let workItemId = el.getAttribute('data-id');
+    let reqVersion = el.getAttribute('data-version');
+    let selfLink = el.getAttribute('data-selfLink');
+    this.assignWIToIteration(workItemId, parseInt(reqVersion), iterationId, selfLink);
+    target.classList.remove('on-hover-background');
+  }
+
+  onOver(args) {
+    let [el, container, source] = args;
+    el.classList.add('dn');
+    if(container.classList.contains('future-iteration-header')) {
+      this.isCollapsedFutureIteration = false;
+    } else if(container.classList.contains('past-iteration-header')) {
+      this.isCollapsedPastIteration = false;
+    } else {
+      container.classList.add('on-hover-background');
+    }
+  }
+
+  onOut(args) {
+    let [el, container, source] = args;
+    container.classList.remove('on-hover-background');
+  }
+
+  assignWIToIteration(workItemId: string, reqVersion: number, iterationID: string, selfLink: string) {
+    let workItemPayload: WorkItem = {
+      id: workItemId,
+      type: 'workitems',
+      attributes: {
+        'version': reqVersion
+      },
+      relationships: {
+        iteration: {
+          data: {
+            id: iterationID,
+            type: 'iteration'
+          }
+        }
+      },
+      links: {
+        self: selfLink
+      }
+    } as WorkItem;
+
+    this.workItemService.update(workItemPayload)
+      .switchMap(item => {
+        return this.iterationService.getIteration(item.relationships.iteration)
+          .map(iteration => {
+            item.relationships.iteration.data = iteration;
+            return item;
+          });
+      })
+      .subscribe(workItem => {
+        this.iterationService.emitDropWI(workItem);
+        this.updateItemCounts();
+        try {
+        this.notifications.message({
+            message: workItem.attributes['system.title']+' has been associated with '+workItem.relationships.iteration.data.attributes['name'],
+            type: NotificationType.SUCCESS
+          } as Notification);
+        } catch(error) {
+          console.log('Error in displaying notification. work item associated with iteration.');
+        }
+      },
+      (err) => {
+        this.iterationService.emitDropWI(workItemPayload, true);
+        try {
+          this.notifications.message({
+            message: 'Something went wrong. Please try again',
+            type: NotificationType.DANGER
+          } as Notification);
+        } catch(error) {
+          console.log('Error in displaying notification. Error in work item association with iteration.');
+        }
+      })
+  }
+
   listenToEvents() {
     this.eventListeners.push(
       this.broadcaster.on<string>('backlog_selected')
@@ -227,20 +352,21 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         .subscribe((data: WorkItem) => {
           this.updateItemCounts();
       })
-    )
+    );
 
     this.eventListeners.push(
       this.broadcaster.on<WorkItem>('create_workitem')
         .subscribe((data: WorkItem) => {
           this.updateItemCounts();
       })
-    )
+    );
+
     this.eventListeners.push(
       this.route.queryParams.subscribe(params => {
         if (Object.keys(params).indexOf('iteration') > -1) {
           this.currentSelectedIteration = params['iteration'];
         }
       })
-    )
+    );
   }
  }

@@ -70,5 +70,11 @@
       font-size: 12px;
       font-style: italic;
     }
+    .dn {
+      display: none;
+    }
+    .on-hover-background {
+      background-color: $color-pf-black-700;
+    }
   }
 }

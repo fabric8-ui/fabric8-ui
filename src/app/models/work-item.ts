@@ -9,7 +9,7 @@ export class WorkItem {
   hasChildren?: boolean;
   attributes: object = {};
   id: string;
-  number: number; 
+  number?: number;
   relationships?: WorkItemRelations;
   type: string;
   relationalData?: RelationalData;
@@ -19,13 +19,13 @@ export class WorkItem {
 }
 
 export class WorkItemRelations {
-  area: {
+  area?: {
     data?: AreaModel
   };
-  assignees: {
+  assignees?: {
     data?: User[]
   };
-  baseType: {
+  baseType?: {
     data: WorkItemType;
   };
   children?: {
@@ -46,10 +46,10 @@ export class WorkItemRelations {
       totalCount?: number;
     }
   };
-  creator: {
+  creator?: {
     data: User;
   };
-  iteration: {
+  iteration?: {
     data?: IterationModel;
   };
   codebase?: {

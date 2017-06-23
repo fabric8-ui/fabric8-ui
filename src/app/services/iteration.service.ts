@@ -2,6 +2,7 @@ import { GlobalSettings } from '../shared/globals';
 
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 
@@ -14,6 +15,7 @@ import { Notification, Notifications, NotificationType } from 'ngx-base';
 import { IterationModel } from '../models/iteration.model';
 import { MockHttp } from '../mock/mock-http';
 import { HttpService } from './http-service';
+import { WorkItem } from '../models/work-item';
 
 @Injectable()
 export class IterationService {
@@ -22,6 +24,8 @@ export class IterationService {
   private _currentSpace;
 
   private selfId;
+
+  public dropWIObservable: Subject<{workItem: WorkItem, error: boolean}> = new Subject();
 
   constructor(
       private logger: Logger,
@@ -214,5 +218,9 @@ export class IterationService {
     return this.getIteration({ data: iteration }).first().map((resultIteration:IterationModel) => {
       return resultIteration.relationships.workitems.meta.total;
     });
+  }
+
+  emitDropWI(workItem: WorkItem, err: boolean = false) {
+    this.dropWIObservable.next({workItem: workItem, error: err});
   }
 }

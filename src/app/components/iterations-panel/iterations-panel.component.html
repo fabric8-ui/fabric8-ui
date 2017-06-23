@@ -3,18 +3,17 @@
   <div class="iteration-wrapper">
     <!-- current iteration -->
     <div class="iterations">
-      <div class="iteration-header pointer">
+      <div class="iteration-header pointer current-iteration-header">
         <h3>
           <span (click)="isCollapsedIteration = !isCollapsedIteration">
-            <i class="fa fa-icon"></i>
             Current Iteration
           </span>
         </h3>
       </div>
       <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
-        <li class="active" *ngFor="let iteration of currentIterations" [routerLinkActive]="'selected-iteration'"
-                [routerLink]="[]"
-                [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}">
+        <li class="active iteration-container" *ngFor="let iteration of currentIterations" [routerLinkActive]="'selected-iteration'"
+                [routerLink]="[]" [attr.id]="iteration.id"
+                [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'">
           <div class="iteration-subheader">
             <div *ngIf="loggedIn" class="dropdown-kebab-pf pull-right" dropdown>
               <button class="btn btn-link"
@@ -84,7 +83,7 @@
     </div>
     <!-- future iteration -->
     <div class="iterations">
-      <div class="iteration-header pointer">
+      <div class="iteration-header pointer future-iteration-header" [dragula]="'wi-bag'">
         <h3>
           <span (click)="isCollapsedFutureIteration = !isCollapsedFutureIteration">
             <i class="fa fa-icon pointer"
@@ -103,9 +102,9 @@
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedFutureIteration">
-        <li class="iteration-subheader" *ngFor="let iteration of futureIterations" [routerLinkActive]="'selected-iteration'"
-                [routerLink]="[]"
-                [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}">
+        <li class="iteration-subheader iteration-container" *ngFor="let iteration of futureIterations" [routerLinkActive]="'selected-iteration'"
+                [routerLink]="[]" [attr.id]="iteration.id"
+                [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'">
             <div class="pull-right">
               <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
               <div *ngIf="loggedIn" class="dropdown-kebab-pf dib" dropdown>
@@ -152,7 +151,7 @@
     </div>
     <!-- past iteartion -->
     <div class="iterations">
-      <div class="iteration-header pointer"
+      <div class="iteration-header pointer past-iteration-header" [dragula]="'wi-bag'"
         (click)="isCollapsedPastIteration = !isCollapsedPastIteration">
         <h3>
           <i class="fa fa-icon pointer"
@@ -163,8 +162,8 @@
       </div>
       <ul class="not-current-iteration"
           [collapse]="isCollapsedPastIteration">
-        <li class="iteration-subheader" *ngFor="let iteration of closedIterations" (click)='getWorkItemsByIteration(iteration)' [ngClass]="{'selected-iteration': (selectedIteration && selectedIteration.id === iteration.id)}"
-            [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" >
+        <li class="iteration-subheader iteration-container" *ngFor="let iteration of closedIterations" (click)='getWorkItemsByIteration(iteration)' [routerLinkActive]="'selected-iteration'"
+            [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'" [attr.id]="iteration.id">
           <div class="pull-right">
             <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
             <div *ngIf="loggedIn" class="dropdown-kebab-pf dib" dropdown>

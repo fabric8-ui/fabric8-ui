@@ -98,20 +98,32 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     private areaService: AreaService,
     private filterService: FilterService,
     private route: ActivatedRoute) {
+      let bag: any = this.dragulaService.find('wi-bag');
       this.dragulaEventListeners.push(
         this.dragulaService.drag.subscribe((value) => {
           this.onDrag(value.slice(1));
         }),
-        this.dragulaService.drop.subscribe((value) => {
-          this.onDrop(value.slice(1));
-        }),
-        this.dragulaService.over.subscribe((value) => {
-          this.onOver(value.slice(1));
-        }),
+        this.dragulaService.drop
+        .map(value => value.slice(1))
+        .filter(value => {
+          return !value[1].classList.contains('iteration-container') &&
+                 !value[1].classList.contains('iteration-header');
+        }).subscribe((args) => this.onDrop(args)),
+
+        this.dragulaService.over
+        .map(value => value.slice(1))
+        .filter(value => {
+          return value[1].classList.contains('card-wrapper');
+        })
+        .subscribe((args) => this.onOver(args)),
+
          this.dragulaService.out.subscribe((value) => {
           this.onOut(value.slice(1));
         })
       );
+      if(bag !== undefined) {
+        this.dragulaService.destroy('wi-bag');
+      }
     }
 
   ngOnInit() {
@@ -181,7 +193,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
             currentIteration;
         })
         if (filterIteration) {
-           this.filterService.setFilterValues('iteration', filterIteration.id)
+           this.filterService.setFilterValues('iteration', filterIteration.id);
         }
       } else {
         this.filterService.clearFilters(['iteration']);
@@ -243,7 +255,10 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
             {
               id: 'card_move_to_backlog',
               value: 'Move to backlog'
-            }]
+            }],
+            selfLink: item.links.self,
+            version: item.attributes['version'],
+            UUID: item.id
         }
       });
       lane.nextLink = workItemResp.nextLink;
@@ -285,7 +300,10 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
         {
           id: 'card_move_to_backlog',
           value: 'Move to backlog'
-        }]
+        }],
+        selfLink: workItems[i].links.self,
+        version: workItems[i].attributes['version'],
+        UUID: workItems[i].id
       });
       lane.cardValue = [...cardValues, ...lane.cardValue];
     }
@@ -298,6 +316,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     let cardItem = lane.cardValue.find((item) => item.id === workItem.attributes['system.number']);
     cardItem.title = workItem.attributes['system.title'];
     cardItem.type = workItem.relationships.baseType.data.attributes['icon'];
+    cardItem.version = workItem.attributes['version'];
     this.workItemService.resolveAssignees(workItem.relationships.assignees)
       .subscribe(assignees => {
         workItem.relationships.assignees.data = assignees;
@@ -560,6 +579,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
 
   onDrag(args: any) {
     let [el, source] = args;
+    console.log('board component on drag');
   }
 
   getWI(workItemNumber: string, lane: any) {
@@ -575,6 +595,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
   }
 
   onDrop(args) {
+    console.log('board component on drop', args);
     let [el, target, source, sibling] = args;
     target.parentElement.parentElement.classList.remove('active-lane');
     let state = target.parentElement.parentElement.getAttribute('data-state');
@@ -607,6 +628,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
       laneSection[i].classList.remove('active-lane');
     }
     containerClassList.add('active-lane');
+    el.classList.remove('dn');
   }
 
   onOut(args) {
@@ -772,6 +794,39 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
           this.onCreateWorkItem(item);
         }
       })
+    );
+
+    this.eventListeners.push(
+      this.iterationService.dropWIObservable
+        .flatMap(data => {
+          if (data.error) {
+            return this.workItemDataService.getItem(data.workItem.id);
+          }
+          return Observable.of(data.workItem);
+        })
+        .map((WI: WorkItem) => {
+          let lane = this.lanes.find((lane) => lane.option === WI.attributes['system.state']);
+          let index = lane.workItems.findIndex((item) => item.id == WI.id);
+          return [index, lane, WI];
+        })
+        .filter(([index, lane, WI]) => {
+          return index > -1;
+        })
+        .map(([index, lane, WI]) => {
+          let workItem = cloneDeep(lane.workItems.splice(index, 1)[0]);
+          let cardItem = cloneDeep(lane.cardValue.splice(index, 1)[0]);
+          workItem.attributes['version'] = WI.attributes['version'];
+          workItem.relationships.iteration = WI.relationships.iteration;
+          cardItem.version = WI.attributes['version'];
+          return [lane, index, cardItem, workItem];
+        })
+        .delay(0)
+        .subscribe(([lane, index, cardItem, workItem]) => {
+          if(this.filterService.doesMatchCurrentFilter(workItem)) {
+            lane.cardValue.splice(index, 0, cardItem);
+            lane.workItems.splice(index, 0, workItem);
+          }
+        })
     );
   }
 

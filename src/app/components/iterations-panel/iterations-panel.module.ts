@@ -10,6 +10,7 @@ import {
   WidgetsModule
 } from 'ngx-widgets';
 
+import { DragulaModule } from 'ng2-dragula';
 import { FabPlannerIterationModalComponent } from '../iterations-modal/iterations-modal.component';
 import { MyDatePickerModule } from 'mydatepicker';
 import { IterationComponent } from './iterations-panel.component';
@@ -22,6 +23,7 @@ import { TruncateModule } from 'ng2-truncate';
   imports: [
     CollapseModule,
     CommonModule,
+    DragulaModule,
     DropdownModule,
     FormsModule,
     MyDatePickerModule,

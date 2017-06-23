@@ -13,6 +13,9 @@ export class CardValue {
   avatar?: string;
   link?: string;
   menuItem?: any;
+  selfLink?: string;
+  version?: number;
+  UUID?: string;
 }
 
 @Component({
