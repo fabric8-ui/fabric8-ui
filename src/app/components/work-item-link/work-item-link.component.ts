@@ -34,7 +34,6 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck, OnDest
   showLinkComponent: Boolean = false;
   showLinkView: Boolean = false;
   showLinkCreator: Boolean = true;
-  searchAllowedType: string = '';
   searchNotAllowedIds: string[] = [];
   prevWItem: WorkItem | null = null;
   selectedTab: string | null = null;
@@ -118,7 +117,6 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck, OnDest
     this.searchWorkItems = [];
     this.selectedWorkItemId = null;
     this.selectedLinkType = relation;
-    this.searchAllowedType = relation.wiType;
     this.setSearchNotAllowedIds();
   }
 
@@ -267,7 +265,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck, OnDest
       if (term.trim() != "") {
       // Search on atleast 3 char or numeric
         if (term.length >= 3 || !isNaN(term)) {
-          this.workItemService.searchLinkWorkItem(term, this.searchAllowedType)
+          this.workItemService.searchLinkWorkItem(term)
             .subscribe((searchData: WorkItem[]) => {
               this.searchWorkItems = searchData.filter((item) => {
                 return this.searchNotAllowedIds.indexOf(item.id) == -1;

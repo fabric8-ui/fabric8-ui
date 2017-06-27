@@ -56,18 +56,6 @@ export class SchemaMockGenerator {
                   'type': 'workitemlinkcategories'
                 }
               },
-              'source_type': {
-                'data': {
-                  'id': 'planneritem',
-                  'type': 'workitemtypes'
-                }
-              },
-              'target_type': {
-                'data': {
-                  'id': 'planneritem',
-                  'type': 'workitemtypes'
-                }
-              }
             },
             'type': 'workitemlinktypes'
           }
@@ -79,15 +67,6 @@ export class SchemaMockGenerator {
             'attributes': {
               'description': 'The system category is reserved for link types that are to be manipulated by the system only.',
               'name': 'system',
-              'version': 38
-            }
-          },
-          {
-            'id': 'wilt-cat-1',
-            'type': 'workitemlinkcategories',
-            'attributes': {
-              'description': 'The user category is reserved for link types that can to be manipulated by the user.',
-              'name': 'user',
               'version': 38
             }
           }

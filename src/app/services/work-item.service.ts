@@ -731,18 +731,17 @@ export class WorkItemService {
       });
   }
 
-  getForwardLinkTypes(workItem: WorkItem): Observable<any> {
-    return this.http.get(workItem.links.targetLinkTypes)
+  /**
+   * Usage: This function fetches all the work item link types
+   * Store it in an instance variable
+   *
+   * @return Promise of LinkType[]
+   */
+  getAllLinkTypes(workItem: WorkItem): Observable<any> {
+    let workItemLinkTypesUrl = this._currentSpace.links.self + '/workitemlinktypes';
+    return this.http.get(workItemLinkTypesUrl)
       .catch((error: Error | any) => {
         this.notifyError('Getting link meta info failed (forward).', error);
-        return Observable.throw(new Error(error.message));
-      });
-  }
-
-  getBackwardLinkTypes(workItem: WorkItem): Observable<any> {
-    return this.http.get(workItem.links.sourceLinkTypes)
-      .catch((error: Error | any) => {
-        this.notifyError('Getting link meta info failed (backward).', error);
         return Observable.throw(new Error(error.message));
       });
   }
@@ -754,23 +753,18 @@ export class WorkItemService {
    * @return Promise of LinkType[]
    */
   getLinkTypes(workItem: WorkItem): Observable<Object> {
-    return Observable.forkJoin(
-      this.getForwardLinkTypes(workItem),
-      this.getBackwardLinkTypes(workItem)
-    )
-    .map(items => {
-      let linkTypes: Object = {};
-      linkTypes['forwardLinks'] = items[0].json().data;
-      linkTypes['backwardLinks'] = items[1].json().data;
-      return linkTypes;
-    })
-    .map((linkTypes: any) => {
-      return this.formatLinkTypes(linkTypes);
-    })
-    .catch((err) => {
-      console.log(err);
-      return Observable.of({});
-    });
+    return this.getAllLinkTypes(workItem)
+        .map(item => {
+          let linkTypes: Object = {};
+          linkTypes['forwardLinks'] = item.json().data;
+          linkTypes['backwardLinks'] = item.json().data;
+          return linkTypes;
+        })
+        .map((linkTypes: any) => { return this.formatLinkTypes(linkTypes); })
+        .catch((err) => {
+          console.log(err);
+          return Observable.of({});
+        });
   }
 
   formatLinkTypes(linkTypes: any): any {
@@ -779,16 +773,14 @@ export class WorkItemService {
       opLinkTypes.push({
         name: linkType.attributes['forward_name'],
         linkId: linkType.id,
-        linkType: 'forward',
-        wiType: linkType.relationships.target_type.data.id
+        linkType: 'forward'
       });
     });
     linkTypes.backwardLinks.forEach((linkType: LinkType) => {
       opLinkTypes.push({
         name: linkType.attributes['reverse_name'],
         linkId: linkType.id,
-        linkType: 'reverse',
-        wiType: linkType.relationships.source_type.data.id
+        linkType: 'reverse'
       });
     });
     return opLinkTypes;
@@ -946,12 +938,12 @@ export class WorkItemService {
     }
   }
 
-  searchLinkWorkItem(term: string, workItemType: string): Observable<WorkItem[]> {
+  searchLinkWorkItem(term: string): Observable<WorkItem[]> {
     if (this._currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       // search within selected space
-      let searchUrl = this.baseApiUrl + 'search?spaceID=' + this._currentSpace.id + '&q=' + term + ' type:' + workItemType;
-      //let searchUrl = currentSpace.links.self + 'search?q=' + term + ' type:' + workItemType;
+      let searchUrl = this.baseApiUrl + 'search?spaceID=' + this._currentSpace.id + '&q=' + term;
+      //let searchUrl = currentSpace.links.self + 'search?q=' + term;
       return this.http
           .get(searchUrl)
           .map((response) => response.json().data as WorkItem[])

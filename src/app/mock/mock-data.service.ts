@@ -181,8 +181,6 @@ export class MockDataService {
     localWorkItem.id = this.createId();
     localWorkItem.links = {
           'self': 'http://mock.service/api/workitems/id' + localWorkItem.id,
-          'sourceLinkTypes': 'http://mock.service/api/source-link-types',
-          'targetLinkTypes': 'http://mock.service/api/target-link-types'
         };
     this.workItemComments['id' + localWorkItem.id] = {
       'data': [],

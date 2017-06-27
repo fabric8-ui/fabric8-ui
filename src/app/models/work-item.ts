@@ -14,8 +14,6 @@ export class WorkItem {
   relationalData?: RelationalData;
   links?: {
     self: string;
-    sourceLinkTypes?: string;
-    targetLinkTypes?: string;
   };
 }
 

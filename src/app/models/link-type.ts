@@ -8,24 +8,12 @@ export class LinkType {
     'forward_name': string,
     'name': string,
     'reverse_name': string,
-    'topology': string, 
+    'topology': string,
     'version': number
   };
   relationships: {
     // 'link_category': LinkCategory,
     'link_category': {
-      'data': {
-        'id': string,
-        'type': string
-      }
-    }
-    'source_type': {
-      'data': {
-        'id': string,
-        'type': string
-      }
-    },
-    'target_type': {
       'data': {
         'id': string,
         'type': string
