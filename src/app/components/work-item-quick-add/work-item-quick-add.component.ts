@@ -16,8 +16,10 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { cloneDeep } from 'lodash';
-import { Broadcaster, Logger } from 'ngx-base';
+import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
+
+import { FilterService } from '../../services/filter.service';
 
 import { WorkItemType } from '../../models/work-item-type';
 import { WorkItem, WorkItemRelations } from '../../models/work-item';
@@ -50,21 +52,24 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
   spaceSubscription: Subscription = null;
   selectedType: WorkItemType  = null;
   availableTypes: WorkItemType[] = null;
+  eventListeners: any[] = [];
 
   constructor(
     private workItemService: WorkItemService,
     private broadcaster: Broadcaster,
     private logger: Logger,
+    private notifications: Notifications,
     private auth: AuthenticationService,
+    private filterService:FilterService,
     private spaces: Spaces) {}
 
   ngOnInit(): void {
     this.createWorkItemObj();
     this.showQuickAdd = false;
     this.showQuickAddBtn = this.auth.isLoggedIn();
+    this.listenToEvents();
     this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
-        console.log('[WorkItemQuickAddComponent] New Space selected: ' + space.attributes.name);
         this.showQuickAddBtn = true;
         // get the available types for this space
         this.workItemService.getWorkItemTypes().first().subscribe((workItemTypes: WorkItemType[]) => {
@@ -77,10 +82,10 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
           }
         });
       } else {
-        console.log('[WorkItemQuickAddComponent] Space deselected.');
         this.showQuickAddBtn = false;
       }
     });
+
   }
 
   ngOnDestroy() {
@@ -106,6 +111,57 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
     this.workItem.relationships = new WorkItemRelations();
     this.workItem.type = 'workitems';
     this.workItem.attributes['system.state'] = 'new';
+    //set the default work item type
+    this.workItem.relationships.baseType = {
+      data: {
+        id: this.selectedType?this.selectedType.id:'testtypeid',
+        type: this.selectedType?this.selectedType.type:'testtype'
+      }
+    }
+    //Go through the active filters and apply them
+    let currentFilters = this.filterService.getAppliedFilters();
+    if( currentFilters.length ) {
+      for (let f=0; f < currentFilters.length; f++) {
+        switch (currentFilters[f].id) {
+          case 'iteration':
+            this.workItem.relationships.iteration = {
+              data: {
+                id: currentFilters[f].value,
+                type: currentFilters[f].id
+              }
+            } as any;
+            break;
+          case 'area':
+            this.workItem.relationships.area = {
+              data: {
+                id: currentFilters[f].value,
+                type: currentFilters[f].id
+              }
+            } as any;
+            break;
+          case 'workitemtype':
+            this.workItem.relationships.baseType = {
+              data: {
+                id: currentFilters[f].value,
+                type: currentFilters[f].id+'s'
+              }
+            } as any;
+            //update the selected filter
+            if(this.availableTypes != null) {
+              this.selectedType = this.availableTypes.find(item => item.id===currentFilters[f].value);
+            }
+            break;
+          case 'assignee':
+            this.workItem.relationships.assignees = {
+              data: [{
+                id: currentFilters[f].value,
+                type: 'identities'
+              }]
+            } as any;
+          break;
+        }
+      }
+    }
   }
 
   ngAfterViewInit() {
@@ -128,14 +184,17 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
       event.preventDefault();
 
     // Setting type in relationship
-    this.workItem.relationships = {
-      baseType: {
-        data: {
-          id: this.selectedType?this.selectedType.id:'testtypeid',
-          type: this.selectedType?this.selectedType.type:'testtype'
-        }
-      }
-    } as WorkItemRelations;
+    // this.workItem.relationships = {
+    //   baseType: {
+    //     data: {
+    //       id: this.selectedType?this.selectedType.id:'testtypeid',
+    //       type: this.selectedType?this.selectedType.type:'testtype'
+    //     }
+    //   }
+    // } as WorkItemRelations;
+
+    //Set the current selected iteration
+
 
     // Do we have a real title?
     // If yes, trim; if not, reassign it as a (blank) string.
@@ -161,7 +220,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
         })
         .subscribe(workItem => {
           this.workItem = workItem; // saved workItem, w/ id if new
-          this.logger.log(`created and returned this workitem:` + JSON.stringify(workItem));
           this.workItemService.emitAddWI(this.workItem);
           this.resetQuickAdd();
           this.qaSubmit.nativeElement.removeAttribute('disabled');
@@ -211,10 +269,21 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
       this.workItem.attributes['system.title'] = '';
       this.validTitle = false;
       this.descHeight = this.initialDescHeight ? this.initialDescHeight : 'inherit';
+    } else {
+      this.createWorkItemObj();
     }
   }
 
   preventDef(event: any) {
     event.preventDefault();
   }
+
+  listenToEvents() {
+    this.eventListeners.push(
+      this.filterService.filterObservable.subscribe(item => {
+        this.createWorkItemObj();
+      })
+    );
+  }
+
 }

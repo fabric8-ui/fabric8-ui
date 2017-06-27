@@ -682,6 +682,7 @@ export class WorkItemService {
     * @param: WorkItem - workItem (Item to be created)
     */
   create(workItem: WorkItem): Observable<WorkItem> {
+    console.log('work item in create ', workItem);
     let payload = JSON.stringify({data: workItem});
     if (this._currentSpace) {
       this.workItemUrl = this._currentSpace.links.self + '/workitems';

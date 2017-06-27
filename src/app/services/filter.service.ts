@@ -13,6 +13,7 @@ export class FilterService {
   public filters: FilterModel[] = [];
   public activeFilters = [];
   public filterChange = new Subject();
+  public filterObservable: Subject<any> = new Subject();
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(
@@ -33,6 +34,8 @@ export class FilterService {
         value: value
       });
     }
+    //Emit filter update event
+    this.filterObservable.next();
   }
 
   getFilterValue(id): any {
@@ -104,8 +107,16 @@ export class FilterService {
         let filterValue = activeFilters[i].value;
         //Check for a match under each active filter
         var res = Object.keys(workItem.relationships)
-          .find((j) =>
-            workItem.relationships[j].data ? workItem.relationships[j].data.id === filterValue : false);
+          .find((j) : boolean => {
+            switch (j) {
+              case 'assignees' :
+                return workItem.relationships[j].data ? workItem.relationships[j].data[0].id === filterValue : false;
+              case 'creator' :
+                return false;
+              default :
+                return workItem.relationships[j].data ? workItem.relationships[j].data.id === filterValue : false;
+            }
+          });
         if (res) matchFilterCount++; //If a match is found - increase the count
         else return false; //If no match return false - no need to go through all the filters
       }
