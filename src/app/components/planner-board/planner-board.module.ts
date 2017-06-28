@@ -52,6 +52,7 @@ if (process.env.ENV == 'inmemory') {
     EventService,
     GlobalSettings,
     WorkItemService,
+    WorkItemDataService,
     Broadcaster,
     Logger,
     {
