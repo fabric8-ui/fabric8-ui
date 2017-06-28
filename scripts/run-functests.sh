@@ -14,13 +14,13 @@ echo -n Running Xvfb...
 # User root is required to run webdriver-manager update. This shouldn't be a problem for CI containers
 #mkdir -p dist && docker run --detach=true --name=fabric8-planner-builder --user=root --cap-add=SYS_ADMIN -e "API_URL=https://api.prod-preview.openshift.io/api/" -e "CI=true" -t -v $(pwd)/dist:/dist:Z fabric8-planner-builder
 export API_URL=https://api.prod-preview.openshift.io/api/
-export NODE_ENV=development
+export NODE_ENV=inmemory
 
 #docker exec fabric8-planner-builder npm install
 npm install
 
 #docker exec fabric8-planner-builder npm run build
-npm run build
+mkdir -p dist && cp package.json dist/ && npm run build
 
 #docker exec  -i fabric8-planner-builder bash -c "cd runtime ; npm install"
 cd runtime
