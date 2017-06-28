@@ -312,6 +312,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
 
         this.workItemPayload = {
           id: this.workItem.id,
+          number: this.workItem.number,
           attributes: {
             version: this.workItem.attributes['version']
           },

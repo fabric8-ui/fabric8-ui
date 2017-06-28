@@ -15,7 +15,7 @@
                 <span class="wi-type-icon fa {{workItem.relationships?.baseType?.data?.attributes?.icon}} fa-lg"></span>
                 {{workItem.relationships?.baseType?.data?.attributes?.name}}
               </ng-template>
-              <h3 *ngIf="workItem.id" class="detail-id" id="wi-detail-id">{{workItem.id}}</h3>
+              <h3 *ngIf="workItem.id" class="detail-id" id="wi-detail-id">{{workItem.number}}</h3>
               <span *ngIf="saving" class="saving-title">
                 <span class="spinner spinner-sm spinner-inline"></span>
                 Saving Work Item...

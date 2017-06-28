@@ -9,6 +9,7 @@ export class WorkItem {
   hasChildren?: boolean;
   attributes: object = {};
   id: string;
+  number: number; 
   relationships?: WorkItemRelations;
   type: string;
   relationalData?: RelationalData;

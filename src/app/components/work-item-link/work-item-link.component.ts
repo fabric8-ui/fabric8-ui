@@ -258,8 +258,9 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck, OnDest
         }
         if (i < lis.length) {
           let selectedId = lis[i].dataset.wiid;
+          let selectedNumber = lis[i].dataset.winumber;
           let selectedTitle = lis[i].dataset.wititle;
-          this.selectSearchResult(selectedId, selectedTitle);
+          this.selectSearchResult(selectedId, selectedNumber, selectedTitle);
         }
     } else { // Normal case - search on type
       if (term.trim() != "") {
@@ -291,9 +292,9 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck, OnDest
     this.searchNotAllowedIds = [];
   }
 
-  selectSearchResult(id: string, title: string){
+  selectSearchResult(id: string, number: number, title: string){
     this.selectedWorkItemId = id;
-    this.selectedValue = id + ' - ' + title;
+    this.selectedValue = number + ' - ' + title;
     this.searchWorkItems = [];
   }
 
