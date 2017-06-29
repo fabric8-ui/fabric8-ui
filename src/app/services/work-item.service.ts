@@ -325,6 +325,17 @@ export class WorkItemService {
     }
   }
 
+  getUsersByURLs(userURLs: string[]): Observable<User[]> {
+    let observableBatch = userURLs.map((url) => {
+        return this.http.get(url)
+          .map((res) => res.json().data)
+          .catch((error: Error | any) => {
+            return Observable.throw(new Error(error.message));
+          });
+      });
+      return Observable.forkJoin(observableBatch);
+  }
+
   resolveCreator2(creator): Observable<User>{
     if (Object.keys(creator).length) {
       let creatorLink = creator.data.links.self;
