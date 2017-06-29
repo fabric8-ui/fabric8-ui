@@ -4,6 +4,10 @@ import { Modal } from 'ngx-modal';
 import { Context, AreaService, Area, AreaAttributes } from 'ngx-fabric8-wit';
 import { ContextService } from '../../../shared/context.service';
 
+interface Errors {
+  unique: boolean
+}
+
 @Component({
   host: {
     'class': 'create-dialog'
@@ -23,6 +27,7 @@ export class CreateAreaDialogComponent implements OnInit, OnDestroy {
   private context: Context;
   private openSubscription: Subscription;
   private name: string;
+  private errors: Errors;
 
   constructor(
     private contexts: ContextService,
@@ -33,6 +38,7 @@ export class CreateAreaDialogComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.openSubscription = this.host.onOpen.subscribe(() => {
       this.name = '';
+      this.errors = null;
     })
   }
 
@@ -48,6 +54,8 @@ export class CreateAreaDialogComponent implements OnInit, OnDestroy {
     this.areaService.create(this.parentId, area).subscribe(newArea => {
       this.onAdded.emit(newArea);
       this.host.close();
+    }, error => {
+      this.handleError(error.json());
     });
   }
 
@@ -62,5 +70,13 @@ export class CreateAreaDialogComponent implements OnInit, OnDestroy {
 
   cancel() {
     this.host.close();
+  }
+
+  handleError(error: any) {
+    if (error.errors[0].detail.indexOf('unique') > -1) {
+      this.errors = {
+        unique: true
+      };
+    }
   }
 }
