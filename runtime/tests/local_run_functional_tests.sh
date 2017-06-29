@@ -13,7 +13,7 @@ echo -n Updating Webdriver and Selenium...
 node_modules/protractor/bin/webdriver-manager update
 # Start selenium server just for this test run
 echo -n Starting Webdriver and Selenium...
-(node_modules/protractor/bin/webdriver-manager start 2>&1 &)
+(node_modules/protractor/bin/webdriver-manager start >>$LOGFILE 2>&1 &)
 # Wait for port 4444 to be listening connections
 if [ $OS = 'Darwin' ]
 then
@@ -25,7 +25,7 @@ echo done.
 
 # Start the web app
 echo -n Starting Planner development server...
-(../node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --progress --host 0.0.0.0 --port 8088 2>&1 &)
+(../node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --progress --host 0.0.0.0 --port 8088 >>$LOGFILE 2>&1 &)
 # Wait for port 8088 to be listening connections
 if [ $OS = 'Darwin' ]
 then
