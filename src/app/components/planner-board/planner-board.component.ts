@@ -224,7 +224,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
 
       lane.cardValue = lane.workItems.map(item => {
         return {
-            id: item.id,
+            id: item.attributes['system.number'],
             type: item.relationships.baseType.data.attributes['icon'],
             title: item.attributes['system.title'],
             avatar: (() => {
@@ -266,7 +266,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     for(let i=0; i<workItems.length; i++) {
       lane = this.lanes.find((lane) => lane.option === workItems[i].attributes['system.state']);
       cardValues.push({
-        id: workItems[i].id,
+        id: workItems[i].attributes['system.number'],
         type: workItems[i].relationships.baseType.data.attributes['icon'],
         title: workItems[i].attributes['system.title'],
         avatar: (() => {
@@ -297,7 +297,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
   updateCardItem(workItem: WorkItem) {
     this.workItemService.resolveType(workItem);
     let lane = this.lanes.find((lane) => lane.option === workItem.attributes['system.state']);
-    let cardItem = lane.cardValue.find((item) => item.id === workItem.id);
+    let cardItem = lane.cardValue.find((item) => item.id === workItem.attributes['system.number']);
     cardItem.title = workItem.attributes['system.title'];
     cardItem.type = workItem.relationships.baseType.data.attributes['icon'];
     this.workItemService.resolveAssignees(workItem.relationships.assignees)
@@ -498,12 +498,12 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     let [el, source] = args;
   }
 
-  getWI(workItemId: string, lane: any) {
+  getWI(workItemNumber: string, lane: any) {
     //let lane = this.lanes.find((lane) => lane.option === workItem.attributes['system.state']);
-    let _workItem = lane.workItems.find((item) => item.id === workItemId);
-    let _cardItem = lane.cardValue.find((item) => item.id === workItemId);
-    this.workItem = _workItem;
-    this.cardItem = _cardItem;
+    let _workItem = lane.workItems.find((item) => item.attributes['system.number'] === workItemNumber);
+    let _cardItem = lane.cardValue.find((item) => item.id === workItemNumber);
+    this.workItem = cloneDeep(_workItem);
+    this.cardItem = cloneDeep(_cardItem);
   }
 
   isSelected(wi: WorkItem){
@@ -598,14 +598,14 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     let oldLane = this.lanes.find((lane) => lane.option === oldState);
     let newLane = this.lanes.find((lane) => lane.option === newState);
     let index = oldLane.workItems.findIndex((item) => item.id === workItem.id);
-    let _index = oldLane.cardValue.findIndex((item) => item.id === workItem.id);
+    let _index = oldLane.cardValue.findIndex((item) => item.id === workItem.attributes['system.number']);
 
     oldLane.workItems.splice(index, 1);
     oldLane.cardValue.splice(_index, 1);
 
     if (prevIdEl !== null) {
-      let newIndex = newLane.workItems.findIndex((item) => item.id === prevIdEl);
-      let _newIndex = newLane.cardValue.findIndex((item) => item.id === prevIdEl);
+      let newIndex = newLane.workItems.findIndex((item) => item.attributes['system.number'] == prevIdEl);
+      let _newIndex = newLane.cardValue.findIndex((item) => item.id == prevIdEl);
       if (newIndex > -1 && _newIndex > -1) {
         newIndex += 1;
         _newIndex += 1;
@@ -633,7 +633,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
       this.workItemService.editWIObservable.subscribe(updatedItem => {
         let lane = this.lanes.find(lane => lane.option === updatedItem.attributes['system.state']);
         let index = lane.workItems.findIndex((item) => item.id == updatedItem.id);
-        let cardItem = lane.cardValue.find((item) => item.id == updatedItem.id);
+        let cardItem = lane.cardValue.find((item) => item.id == updatedItem.attributes['system.number']);
         if (this.filterService.doesMatchCurrentFilter(updatedItem)) {
           if(index > -1) {
             lane.workItems[index] = updatedItem;
