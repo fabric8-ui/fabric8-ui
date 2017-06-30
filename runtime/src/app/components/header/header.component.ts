@@ -15,7 +15,7 @@ import { Space, Spaces, SpaceService } from 'ngx-fabric8-wit';
 @Component({
   selector: 'alm-app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  styleUrls: ['./header.component.less'],
 })
 
 export class HeaderComponent implements OnInit {

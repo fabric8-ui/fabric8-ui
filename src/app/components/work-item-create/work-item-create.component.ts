@@ -20,7 +20,7 @@ import {
 @Component({
   selector: 'detail-add-type-selector',
   templateUrl: './work-item-create.component.html',
-  styleUrls: ['./work-item-create.component.scss']
+  styleUrls: ['./work-item-create.component.less']
 })
 export class WorkItemDetailAddTypeSelectorComponent implements OnInit, OnChanges {
 

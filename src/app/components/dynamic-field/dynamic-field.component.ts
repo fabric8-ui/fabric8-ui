@@ -17,7 +17,7 @@ export class DynamicUpdateEvent {
 }
 
 /*
- * NOTE: this control is not using the FormGroup "properly", like with 
+ * NOTE: this control is not using the FormGroup "properly", like with
  * a formControlName as an Input(). This is due to some components having
  * problems with that (namely the Datepicker). We may want to revisit this
  * later.
@@ -25,14 +25,14 @@ export class DynamicUpdateEvent {
 
 /*
  *  This class represents one single dynamic data field. It uses the
- *  Angular form facilities to create a form group and display the 
+ *  Angular form facilities to create a form group and display the
  *  control. If new data types should be supported, add them to this
  *  component.
  */
 @Component({
   selector: 'alm-dynamic-field',
   templateUrl: './dynamic-field.component.html',
-  styleUrls: ['./dynamic-field.component.scss']
+  styleUrls: ['./dynamic-field.component.less']
 })
 export class DynamicFieldComponent implements OnInit {
 
@@ -86,12 +86,12 @@ export class DynamicFieldComponent implements OnInit {
     // we might need to listen to changes using OnChanges().
   }
 
-  isValid() { 
-    return this.form.controls[this.attributeKey].valid; 
+  isValid() {
+    return this.form.controls[this.attributeKey].valid;
   }
 
-  isButtonsVisible() { 
-    return this.buttonsVisible; 
+  isButtonsVisible() {
+    return this.buttonsVisible;
   }
 
   focusIn() {
@@ -122,16 +122,16 @@ export class DynamicFieldComponent implements OnInit {
   }
 
   extractBooleanKeyValues(): TypeaheadDropdownValue[] {
-    let values = [ {  
+    let values = [ {
       key: undefined,
       value: 'None',
       selected: typeof this.form.value[this.attributeKey]!='boolean' && (typeof this.form.value[this.attributeKey]=='undefined'||this.form.value[this.attributeKey]=='')?true:false,
       cssLabelClass: 'neutral-entry'
-    }, {  
+    }, {
       key: 'true',
       value: 'Yes',
       selected: this.form.value[this.attributeKey]==true?true:false
-    }, {  
+    }, {
       key: 'false',
       value: 'No',
       selected: typeof this.form.value[this.attributeKey]=='boolean'&&!this.form.value[this.attributeKey]?true:false
@@ -153,7 +153,7 @@ export class DynamicFieldComponent implements OnInit {
       this.form.patchValue(this.toUpdateObject(this.attributeKey, undefined));
     else if (newOption == 'true')
       this.form.patchValue(this.toUpdateObject(this.attributeKey, true));
-    else 
+    else
       this.form.patchValue(this.toUpdateObject(this.attributeKey, false));
     this.save();
   }
@@ -176,7 +176,7 @@ export class DynamicFieldComponent implements OnInit {
     else {
       let date: Date = new Date(dateValue);
       let convertedDate = { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate() } ;
-      return convertedDate;      
+      return convertedDate;
     }
   }
 
@@ -198,7 +198,7 @@ export class DynamicFieldComponent implements OnInit {
         let number: number = parseInt(this.form.value[this.attributeKey]);
         if (isNaN(number))
           throw('invalid data for field - not an integer');
-        else 
+        else
           this.form.patchValue(this.toUpdateObject(this.attributeKey, number));
       } else if (this.attributeDesc.type.kind === 'float') {
         let number: number = parseFloat(this.form.value[this.attributeKey]);
@@ -217,7 +217,7 @@ export class DynamicFieldComponent implements OnInit {
     } catch (error) {
       this.error = error;
     }
-    // emit onUpdate event    
+    // emit onUpdate event
     if (this.onUpdate) {
       let newValue, oldValue;
       if (this.attributeDesc.type.kind === 'markup') {

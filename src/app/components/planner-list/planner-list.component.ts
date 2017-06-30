@@ -59,7 +59,7 @@ import { TreeListComponent } from 'ngx-widgets';
   },
   selector: 'alm-work-item-list',
   templateUrl: './planner-list.component.html',
-  styleUrls: ['./planner-list.component.scss']
+  styleUrls: ['./planner-list.component.less']
 })
 export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnDestroy {
 

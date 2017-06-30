@@ -12,7 +12,7 @@ import { GlobalSettings } from './shared/globals';
   selector: 'alm-app',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrls: ['./app.component.less'],
   providers: [GlobalSettings]
 })
 export class AppComponent implements OnInit {

@@ -19,7 +19,7 @@ import {
 @Component({
   selector: 'create-selector-widget',
   templateUrl: './work-item-create-selector.component.html',
-  styleUrls: ['./work-item-create-selector.component.scss']
+  styleUrls: ['./work-item-create-selector.component.less']
 })
 export class WorkItemDetailAddTypeSelectorWidgetComponent implements OnInit {
 

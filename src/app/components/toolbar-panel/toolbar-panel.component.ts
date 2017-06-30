@@ -29,7 +29,7 @@ import {
   encapsulation: ViewEncapsulation.None,
   selector: 'toolbar-panel',
   templateUrl: './toolbar-panel.component.html',
-  styleUrls: ['./toolbar-panel.component.scss']
+  styleUrls: ['./toolbar-panel.component.less']
 })
 export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() context: string;

@@ -41,7 +41,7 @@ import { TreeListItemComponent } from 'ngx-widgets';
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-work-item-list-entry',
   templateUrl: './work-item-list-entry.component.html',
-  styleUrls: ['./work-item-list-entry.component.scss'],
+  styleUrls: ['./work-item-list-entry.component.less'],
 })
 export class WorkItemListEntryComponent implements OnInit, OnDestroy {
   @Input() listItem: TreeListItemComponent;

@@ -50,7 +50,7 @@ import { CollaboratorService } from '../../services/collaborator.service'
 @Component({
   selector: 'alm-work-item-detail',
   templateUrl: './work-item-detail.component.html',
-  styleUrls: ['./work-item-detail.component.scss'],
+  styleUrls: ['./work-item-detail.component.less'],
   animations: [
     trigger('slideInOut', [
       state('in', style({

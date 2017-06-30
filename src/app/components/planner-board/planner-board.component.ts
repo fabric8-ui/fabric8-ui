@@ -46,7 +46,7 @@ import { CollaboratorService } from '../../services/collaborator.service';
   },
   selector: 'alm-board',
   templateUrl: './planner-board.component.html',
-  styleUrls: ['./planner-board.component.scss']
+  styleUrls: ['./planner-board.component.less']
 })
 
 export class PlannerBoardComponent implements OnInit, OnDestroy {

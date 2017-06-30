@@ -21,7 +21,7 @@ import { WorkItem } from '../../models/work-item';
   },
   selector: 'fab-planner-iteration',
   templateUrl: './iterations-panel.component.html',
-  styleUrls: ['./iterations-panel.component.scss']
+  styleUrls: ['./iterations-panel.component.less']
 })
 export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 

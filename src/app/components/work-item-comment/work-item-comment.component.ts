@@ -19,7 +19,7 @@ import { CollaboratorService } from '../../services/collaborator.service';
 @Component({
     selector: 'alm-work-item-comment',
     templateUrl: './work-item-comment.component.html',
-    styleUrls: ['./work-item-comment.component.scss'],
+    styleUrls: ['./work-item-comment.component.less'],
 })
 export class WorkItemCommentComponent implements OnInit {
     @Input() loadingComments: boolean = true;

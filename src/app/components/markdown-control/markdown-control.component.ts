@@ -23,7 +23,7 @@ import { WorkItemService } from '../../services/work-item.service';
 @Component({
   selector: 'markdown-control',
   templateUrl: './markdown-control.component.html',
-  styleUrls: ['./markdown-control.component.scss']
+  styleUrls: ['./markdown-control.component.less']
 })
 export class MarkdownControlComponent implements OnInit, OnChanges {
 
