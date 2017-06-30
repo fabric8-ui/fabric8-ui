@@ -5,7 +5,8 @@
  */
 
 var gulp = require('gulp'),
-  sassCompiler = require('gulp-sass'),
+  //sassCompiler = require('gulp-sass'),
+  less = require('gulp-less'),
   del = require('del'),
   replace = require('gulp-string-replace'),
   sourcemaps = require('gulp-sourcemaps'),
@@ -45,7 +46,7 @@ function updateWatchDist() {
 }
 
 // transpiles a given SASS source set to CSS, storing results to libraryDist.
-function transpileSASS(src, debug) {
+/*function transpileSASS(src, debug) {
   var opts = {
     outputStyle: 'compressed',
     includePaths: sass.modules.map(function (val) {
@@ -64,7 +65,20 @@ function transpileSASS(src, debug) {
     .pipe(gulp.dest(function (file) {
       return libraryDist + file.base.slice(__dirname.length + 'src/'.length); // save directly to dist
     }));
-}
+}*/
+// transpiles a given LESS source set to CSS, storing results to libraryDist.
+function transpileLESS(src, debug) {
+  var opts = {
+    // paths: [ path.join(__dirname, 'less', 'includes') ],
+  }
+  return gulp.src(src)
+    .pipe(sourcemaps.init())
+    .pipe(less(opts))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest(function (file) {
+      return libraryDist + file.base.slice(__dirname.length + 'src/'.length);
+  }));
+ }
 
 /*
  * TASKS
@@ -111,18 +125,27 @@ gulp.task('post-transpile', ['transpile'], function () {
     .pipe(replace(/templateUrl:\s/g, "template: require("))
     .pipe(replace(/\.html',/g, ".html'),"))
     .pipe(replace(/styleUrls: \[/g, "styles: [require("))
-    .pipe(replace(/\.scss']/g, ".css').toString()]"))
+    //.pipe(replace(/\.scss']/g, ".css').toString()]"))
+    .pipe(replace(/\.less']/g, ".css').toString()]"))
     .pipe(gulp.dest(function (file) {
       return file.base; // because of Angular 2's encapsulation, it's natural to save the css where the scss-file was
     }));
 });
 
 // Transpile and minify sass, storing results in libraryDist.
-gulp.task('transpile-sass', function () {
-  if (argv['sass-src']) {
-    return transpileSASS(argv['sass-src'], true);
+//gulp.task('transpile-sass', function () {
+//  if (argv['sass-src']) {
+//    return transpileSASS(argv['sass-src'], true);
+//  } else {
+//    return transpileSASS(appSrc + '/app/**/*.scss');
+//  }
+//});
+// Transpile and minify less, storing results in libraryDist.
+gulp.task('transpile-less', function () {
+  if (argv['less-src']) {
+    return transpileLESS(argv['less-src'], true);
   } else {
-    return transpileSASS(appSrc + '/app/**/*.scss');
+    return transpileLESS(appSrc + '/app/**/*.less');
   }
 });
 
@@ -152,7 +175,8 @@ gulp.task('build:library',
   [
     'transpile',
     'post-transpile',
-    'transpile-sass',
+   // 'transpile-sass',
+    'transpile-less',
     'copy-html',
     'copy-static-assets'
   ]);
@@ -178,9 +202,14 @@ gulp.task('watch', ['build:library', 'copy-watch-all'], function () {
   gulp.watch([appSrc + '/app/**/*.ts', '!' + appSrc + '/app/**/*.spec.ts'], ['transpile', 'post-transpile', 'copy-watch']).on('change', function (e) {
     util.log(util.colors.cyan(e.path) + ' has been changed. Compiling.');
   });
-  gulp.watch([appSrc + '/app/**/*.scss']).on('change', function (e) {
+  //gulp.watch([appSrc + '/app/**/*.scss']).on('change', function (e) {
+  //  util.log(util.colors.cyan(e.path) + ' has been changed. Updating.');
+  //  transpileSASS(e.path);
+  //  updateWatchDist();
+  //});
+  gulp.watch([appSrc + '/app/**/*.less']).on('change', function (e) {
     util.log(util.colors.cyan(e.path) + ' has been changed. Updating.');
-    transpileSASS(e.path);
+    transpileLESS(e.path);
     updateWatchDist();
   });
   gulp.watch([appSrc + '/app/**/*.html']).on('change', function (e) {

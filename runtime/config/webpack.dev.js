@@ -15,7 +15,8 @@ const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL;
 const FABRIC8_FORGE_URL = process.env.FABRIC8_FORGE_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
-const extractSASS = new ExtractTextPlugin('stylesheets/[name].scss');
+//const extractSASS = new ExtractTextPlugin('stylesheets/[name].scss');
+const extractLESS = new ExtractTextPlugin('stylesheets/[name].less');
 
 
 const METADATA = webpackMerge(commonConfig.metadata, {
@@ -50,7 +51,8 @@ module.exports = function (options) {
     plugins: [
       // new DashboardPlugin(),
       extractCSS,
-      extractSASS,
+      //extractSASS,
+      extractLESS,
 
       new webpack.optimize.CommonsChunkPlugin({
         name: ['app', 'vendor', 'polyfills']

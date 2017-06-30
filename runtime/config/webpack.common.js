@@ -1,7 +1,8 @@
 const webpack = require('webpack');
 const helpers = require('./helpers');
 const path = require('path');
-const sass = require('./sass');
+//const sass = require('./sass');
+const less = require('./less');
 
 const AssetsPlugin = require('assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
@@ -20,7 +21,7 @@ const ngcWebpack = require('ngc-webpack');
 const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
 const OptimizeJsPlugin = require('optimize-js-plugin');
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
-const sassLintPlugin = require('sasslint-webpack-plugin');
+//const sassLintPlugin = require('sasslint-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 
@@ -108,18 +109,19 @@ module.exports = {
                 context: '/'
               }
             }, {
-              loader: 'sass-loader',
+              loader: 'less-loader',
               options: {
-                includePaths: sass.modules.map(function (val) {
-                  return val.sassPath;
-                }),
+                paths: [
+                  path.resolve(__dirname, "../node_modules/patternfly/src/less"),
+                  path.resolve(__dirname, "../node_modules/patternfly/node_modules")
+                  ],
                 sourceMap: true
               }
             }
           ],
         })
       }, {
-        test: /\.component\.scss$/,
+        test: /\.component\.less$/,
         use: [
           {
             loader: 'to-string-loader'
@@ -131,11 +133,12 @@ module.exports = {
               context: '/'
             }
           }, {
-            loader: 'sass-loader',
+            loader: 'less-loader',
             options: {
-              includePaths: sass.modules.map(function (val) {
-                return val.sassPath;
-              }),
+              paths: [
+                path.resolve(__dirname, "../node_modules/patternfly/src/less"),
+                path.resolve(__dirname, "../node_modules/patternfly/node_modules")
+                ],
               sourceMap: true
             }
           }
