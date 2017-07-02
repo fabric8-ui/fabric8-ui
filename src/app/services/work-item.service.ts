@@ -259,27 +259,6 @@ export class WorkItemService {
   }
 
   /**
-   * Usage: to check if the workitem match with current filter or not.
-   * @param WorkItem - workItem
-   * @returns Boolean
-   */
-  doesMatchCurrentFilter(workItem: WorkItem): Boolean {
-    if (this.prevFilters.length) {
-      for (let i = 0; i < this.prevFilters.length; i++) {
-        // In case of assignee filter
-        if (this.prevFilters[i].id === 1 && this.prevFilters[i].active) {
-          if (!workItem.relationships.assignees.data // If un-assigned
-              || workItem.relationships.assignees.data.findIndex(item => item.id == this.prevFilters[i].value) === -1 // If assignee is not current
-          ) {
-            return false;
-          }
-        }
-      }
-    }
-    return true;
-  }
-
-  /**
    * Usage: To resolve the users in eact WorkItem
    * For now it resolves assignne and creator
    */
