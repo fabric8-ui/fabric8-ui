@@ -1,7 +1,5 @@
 const webpack = require('webpack');
-const helpers = require('./helpers');
 const path = require('path');
-//const sass = require('./sass');
 const less = require('./less');
 
 const AssetsPlugin = require('assets-webpack-plugin');
@@ -21,7 +19,6 @@ const ngcWebpack = require('ngc-webpack');
 const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
 const OptimizeJsPlugin = require('optimize-js-plugin');
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
-//const sassLintPlugin = require('sasslint-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 
@@ -192,18 +189,6 @@ module.exports = {
      */
     new CheckerPlugin(),
 
-
-    // new sassLintPlugin({
-    //   configFile: '.sass-lint.yml',
-    //   context: ['inherits from webpack'],
-    //   ignoreFiles: [],
-    //   ignorePlugins: [],
-    //   glob: '**/*.s?(a|c)ss',
-    //   quiet: false,
-    //   failOnWarning: false,
-    //   failOnError: false,
-    //   testing: false
-    // }),
     /**
      * Plugin: ContextReplacementPlugin
      * Description: Provides context to Angular's use of System.import

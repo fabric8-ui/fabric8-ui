@@ -1,9 +1,6 @@
 /**
  * @author: @AngularClass
  */
-//const sass = require('./sass');
-const less = require('./less');
-const helpers = require('./helpers');
 const webpack = require('webpack');
 
 /**
@@ -112,92 +109,6 @@ module.exports = {
           },
         ],
       },
-
-     /* {
-        test: /\.scss$/,
-        loaders: [
-          {
-            loader: 'to-string-loader'
-          }, {
-            loader: 'css-loader'
-          }, {
-            loader: 'sass-loader',
-            query: {
-              includePaths: sass.modules.map(val => {
-                return val.sassPath;
-              })
-            }
-          }
-        ]
-      },*/
-       {
-        test: /\.less$/,
-        loaders: [
-          {
-            loader: 'to-string-loader'
-          }, {
-            loader: 'css-loader'
-          }, {
-            loader: 'less-loader',
-            options: {
-              paths: [
-                path.resolve(__dirname, "../node_modules/patternfly/src/less"),
-                path.resolve(__dirname, "../node_modules/patternfly/node_modules")
-              ],
-              sourceMap: true
-            }
-          }
-        ]
-      },
-
-      /* File loader for supporting fonts, for example, in CSS files.
-       */
-      {
-        test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
-        loaders: [
-          {
-            loader: "url-loader",
-            query: {
-              limit: 3000,
-              name: 'vendor/fonts/[name].[hash].[ext]'
-            }
-          }
-        ]
-      }, {
-        test: /\.jpg$|\.png$|\.gif$|\.jpeg$/,
-        loaders: [
-          {
-            loader: "url-loader",
-            query: {
-              limit: 3000,
-              name: 'vendor/images/[name].[hash].[ext]'
-            }
-          }
-        ]
-      }, {
-        test: /\.html$/,
-        use: ['raw-loader']
-      },
-
-      /**
-       * Instruments JS files with Istanbul for subsequent code coverage reporting.
-       * Instrument only testing sources.
-       *
-       * See: https://github.com/deepsweet/istanbul-instrumenter-loader
-       */
-      {
-        enforce: 'post',
-        test: /\.(js|ts)$/,
-        loader: 'istanbul-instrumenter-loader',
-        query: {
-          esModules: true
-        },
-        include: helpers.root('src'),
-        exclude: [
-          /\.(e2e|spec)\.ts$/,
-          /node_modules/
-        ]
-      }
     ]
   },
 

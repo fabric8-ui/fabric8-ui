@@ -5,7 +5,6 @@
  */
 
 var gulp = require('gulp'),
-  //sassCompiler = require('gulp-sass'),
   less = require('gulp-less'),
   del = require('del'),
   replace = require('gulp-string-replace'),
@@ -14,7 +13,6 @@ var gulp = require('gulp'),
   exec = require('gulp-exec'),
   ngc = require('gulp-ngc'),
   changed = require('gulp-changed'),
-  sass = require('./deploy/sass'),
   runSequence = require('run-sequence'),
   argv = require('yargs').argv,
   path = require('path'),
@@ -45,27 +43,6 @@ function updateWatchDist() {
     .pipe(gulp.dest(watchDist));
 }
 
-// transpiles a given SASS source set to CSS, storing results to libraryDist.
-/*function transpileSASS(src, debug) {
-  var opts = {
-    outputStyle: 'compressed',
-    includePaths: sass.modules.map(function (val) {
-      return val.sassPath;
-    })
-  };
-  if (debug) {
-    opts.outputStyle = 'expanded';
-    opts.sourceComments = true;
-    console.log('Compiling', src, 'in debug mode using SASS options:', opts);
-  }
-  return gulp.src(src)
-    .pipe(sourcemaps.init())
-    .pipe(sassCompiler(opts).on('error', sassCompiler.logError)) // this will prevent our future watch-task from crashing on sass-errors
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest(function (file) {
-      return libraryDist + file.base.slice(__dirname.length + 'src/'.length); // save directly to dist
-    }));
-}*/
 // transpiles a given LESS source set to CSS, storing results to libraryDist.
 function transpileLESS(src, debug) {
   var opts = {
@@ -132,14 +109,6 @@ gulp.task('post-transpile', ['transpile'], function () {
     }));
 });
 
-// Transpile and minify sass, storing results in libraryDist.
-//gulp.task('transpile-sass', function () {
-//  if (argv['sass-src']) {
-//    return transpileSASS(argv['sass-src'], true);
-//  } else {
-//    return transpileSASS(appSrc + '/app/**/*.scss');
-//  }
-//});
 // Transpile and minify less, storing results in libraryDist.
 gulp.task('transpile-less', function () {
   if (argv['less-src']) {
@@ -170,12 +139,11 @@ gulp.task('copy-static-assets', function () {
   ]).pipe(gulp.dest(libraryDist));
 });
 
-// Put the sass files back to normal
+// Put the less files back to normal
 gulp.task('build:library',
   [
     'transpile',
     'post-transpile',
-   // 'transpile-sass',
     'transpile-less',
     'copy-html',
     'copy-static-assets'
@@ -202,11 +170,6 @@ gulp.task('watch', ['build:library', 'copy-watch-all'], function () {
   gulp.watch([appSrc + '/app/**/*.ts', '!' + appSrc + '/app/**/*.spec.ts'], ['transpile', 'post-transpile', 'copy-watch']).on('change', function (e) {
     util.log(util.colors.cyan(e.path) + ' has been changed. Compiling.');
   });
-  //gulp.watch([appSrc + '/app/**/*.scss']).on('change', function (e) {
-  //  util.log(util.colors.cyan(e.path) + ' has been changed. Updating.');
-  //  transpileSASS(e.path);
-  //  updateWatchDist();
-  //});
   gulp.watch([appSrc + '/app/**/*.less']).on('change', function (e) {
     util.log(util.colors.cyan(e.path) + ' has been changed. Updating.');
     transpileLESS(e.path);

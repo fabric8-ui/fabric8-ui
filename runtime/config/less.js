@@ -8,15 +8,15 @@ const modules = [
     name: 'font-awesome',
     module: 'font-awesome',
     path: 'font-awesome',
-    sass: 'scss'
+    sass: 'less'
   }, {
     name: 'patternfly',
-    module: 'patternfly-sass-with-css'
+    module: 'patternfly'
   }
 ];
 
 modules.forEach(val => {
-  val.module = val.module || val.name + '-sass';
+  val.module = val.module || val.name + '-less';
   val.path = val.path || path.join(val.module, 'assets');
   val.modulePath = val.modulePath || path.join('node_modules', val.path);
   val.sass = val.sass || path.join('stylesheets');
