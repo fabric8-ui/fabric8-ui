@@ -434,7 +434,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
             ...lane.cardValue,
             ...workItemResp.workItems.map(item => {
               return {
-                id: item.id,
+                id: item.attributes['system.number'],
                 type: item.relationships.baseType.data.attributes['icon'],
                 title: item.attributes['system.title'],
                 avatar: '',
