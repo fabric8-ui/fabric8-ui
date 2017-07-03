@@ -87,3 +87,10 @@ $ ./scripts/local_docker.sh
 ---
 
 This script generates a docker image that you could use to run planner within a container.
+
+Optionally, you could also run the functional tests by passing `functionalTests`
+as argument to the following script:
+
+---
+$ ./scripts/local_docker.sh functionalTests
+---
