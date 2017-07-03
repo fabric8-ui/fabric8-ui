@@ -102,10 +102,9 @@ gulp.task('post-transpile', ['transpile'], function () {
     .pipe(replace(/templateUrl:\s/g, "template: require("))
     .pipe(replace(/\.html',/g, ".html'),"))
     .pipe(replace(/styleUrls: \[/g, "styles: [require("))
-    //.pipe(replace(/\.scss']/g, ".css').toString()]"))
     .pipe(replace(/\.less']/g, ".css').toString()]"))
     .pipe(gulp.dest(function (file) {
-      return file.base; // because of Angular 2's encapsulation, it's natural to save the css where the scss-file was
+      return file.base; // because of Angular 2's encapsulation, it's natural to save the css where the less-file was
     }));
 });
 
