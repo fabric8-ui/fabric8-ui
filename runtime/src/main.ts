@@ -4,8 +4,8 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 
-import './assets/stylesheets/shared/main.scss';
-import './assets/stylesheets/planner-overrides.scss';
+//import './assets/stylesheets/shared/main.less';
+//import './assets/stylesheets/planner-overrides.less';
 
 if (process.env.ENV === 'production') {
   enableProdMode();

@@ -1,4 +1,4 @@
-@import '../../../assets/stylesheets/base';
+@import (reference) '../../../assets/stylesheets/_base';
 
 /**
  * a.iteration-title utility class introduced to address #1874
@@ -9,28 +9,28 @@ a.iteration-title:hover {
 }
 
 .side-panel-header {
-  width: $width100;
+  width: 100%;
   float: left;
-  padding-left: ($grid-gutter-width/2);
-  padding-right: ($grid-gutter-width/2);
-  color: $color-pf-white;
+  padding-left: (@grid-gutter-width/2);
+  padding-right: (@grid-gutter-width/2);
+  color: @color-pf-white;
   cursor: pointer;
-  background-color: $color-pf-black-900;
+  background-color: @color-pf-black-900;
   border-bottom: 1px solid;
-  border-bottom-color: $color-pf-black-700;
+  border-bottom-color: @color-pf-black-700;
   border-left: 4px solid;
   border-left-color: transparent;
   h3 {  margin-bottom: 15px; }
   .badge {
     margin-top: 23px;
     margin-bottom: 23px;
-    background-color: $color-pf-black;
+    background-color: @color-pf-black;
   }
-  &:hover { background-color: $color-pf-black-700; }
+  &:hover { background-color: @color-pf-black-700; }
   &.backlog-selected {
-    color: $color-pf-white;
-    background-color: $color-pf-black-700;
+    color: @color-pf-white;
+    background-color: @color-pf-black-700;
     border-left: 4px solid;
-    border-left-color: $color-pf-blue;
+    border-left-color: @color-pf-blue;
   }
 }

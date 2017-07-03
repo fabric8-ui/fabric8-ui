@@ -1,4 +1,4 @@
-@import '../../../assets/stylesheets/base';
+@import '../../../assets/stylesheets/_base';
 
 .workItemList_entry {
   display: flex;
@@ -21,7 +21,7 @@
   &:hover {
     .row-cbh {
       border-right: 1px solid;
-      border-right-color: $color-pf-black-500;
+      border-right-color: @color-pf-black-500;
       input { visibility: visible; }
     }
   }
@@ -33,7 +33,7 @@
       font-size: 12px;
       font-weight: 200;
       line-height: 1;
-      color: $color-pf-black-900;
+      color: @color-pf-black-900;
     }
   }
   .workItemList_title { line-height: 1.3;
@@ -42,7 +42,7 @@
   .workItemList_title {
     p { margin: 0; }
   }
-  @media (max-width: $screen-md-min) {
+  @media (max-width: @screen-md-min) {
     .workItemList_title {
       padding: 0 !important;
       font-size: 16px;
@@ -57,5 +57,5 @@ button {
 span {
   &:focus { outline: none; }
 }
-.not-assigned-user-icon { @include not-assigned-user-icon; }
-.user-avatar { @include user-avatar; }
+.not-assigned-user-icon { .not-assigned-user-icon; }
+.user-avatar { .user-avatar; }

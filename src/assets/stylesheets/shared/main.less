@@ -1,25 +1,25 @@
-@import '_custom-variables';
-@import '_custom-mixins';
+@import (reference) '_custom-variables';
+@import (reference) '_custom-mixins';
 body {
   font-family: Open Sans;
   font-size: 14px;
 }
 //colors
-.color-grey { color: $color-pf-black-800 !important; }
+.color-grey { color: @color-pf-black-800 !important; }
 // custom classes
 .containerPadd {
   padding-top: em(96);
   padding-bottom: em(66);
 }
 .containerPadd-nologin { padding-bottom: 0; }
-.truncate { @include truncate; }
+.truncate { .truncate; }
 .left-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
   text-overflow: clip;
   white-space: nowrap;
-  background-color: $color-pf-white;
-  @extend .posRel;
+  background-color: @color-pf-white;
+  &:extend(.posRel);
   &:before {
     position: absolute;
     z-index: 1;
@@ -45,7 +45,7 @@ body {
       height: 2em;
       background-color: inherit;
       content: '';
-      @extend .dib;
+      &:extend(.dib);
     }
   }
 }
@@ -57,10 +57,10 @@ body {
 .dn { display: none; }
 .dib { display: inline-block; }
 .db { display: block; }
-.textCenter { text-align: $textCenter; }
+.textCenter { text-align: @textCenter; }
 .posRel { position: relative; }
 
-@media (max-width: $grid-float-breakpoint) {
+@media (max-width: @grid-float-breakpoint) {
   .mobdn { display: none; }
   .list-view-pf {
     .list-group-item-heading {
@@ -68,9 +68,9 @@ body {
     }
   }
 }
-@media (max-width: ($grid-float-breakpoint - 1)) {
+@media (max-width: (@grid-float-breakpoint - 1)) {
   .containerPadd { padding-top: em(11); }
   .containerPadd-nologin { padding-bottom: 0; }
 }
-@import 'layout';
-@import 'overrides-for-patternfly';
+@import '_layout';
+@import '_overrides-for-patternfly';

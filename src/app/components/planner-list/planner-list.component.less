@@ -1,12 +1,12 @@
-@import '../../../assets/stylesheets/base';
+@import (reference) '../../../assets/stylesheets/_base';
 /* CSS3 calc() function to perform calculations */
 /* this is temporary until Less conversion is completed */
-@mixin calc($property, $expression) { 
-  #{$property}: -webkit-calc(#{$expression}); 
-  #{$property}: -moz-calc(#{$expression});
-  #{$property}: calc(#{$expression}); 
+.calc(@property, @expression) {
+  @property: -webkit-calc(@expression);
+  @property: -moz-calc(@expression);
+  @property: calc(@expression);
 }
-.error { color: $color-pf-red-100; }
+.error { color: @color-pf-red-100; }
 .suppress-hover {
   &:hover { background-color: transparent; }
 }
@@ -26,56 +26,56 @@
   height: 100%;
   .side-panel-container {
     overflow-x: hidden;
-    background-color: $color-pf-black-900;
+    background-color: @color-pf-black-900;
   }
 }
 .work-item-list-page {
-  width: $width100;
+  width: 100%;
   float: left;
   >.list-group { border-top-width:0 !important; }
   .detail-list-wrap {
-    width: $width100;
+    width: 100%;
     height: (calc(100% - 70px)); // to avoid overflown scroll height should be there
     margin-bottom: 70px;
     overflow-y: scroll;
     border-top: 1px solid;
-    border-top-color: $color-pf-black-300;
+    border-top-color: @color-pf-black-300;
   }
   .work-item-list-quick-add {
     position: fixed;
     bottom: 0;
     width: (calc(100% - 340px));
     border-top: 1px solid;
-    border-top-color: $color-pf-black-300;
+    border-top-color: @color-pf-black-300;
   }
   .card-pf {
     border: 0;
     box-shadow: none;
   }
   .card-pf-title {
-    .no-wi { font-size: $pf-icon-4x; }
+    .no-wi { font-size: @pf-icon-4x; }
   }
 }
 .node-drop-slot.is-dragging-over { height: 66px!important; }
 .work-item-page {
   position: relative;
-  @include calc(height, "100vh - 79px");
+  .calc(height, "100vh - 79px");
   > main { border-top: 0 solid !important; }
   .dropdown {
     a { cursor: pointer; }
   }
   .with-cursor-pointer { cursor: pointer; }
-  .with-color-blue { color: $color-pf-blue-400; }
+  .with-color-blue { color: @color-pf-blue-400; }
   >main {
     height: 100%;
     border-top: 1px solid;
-    border-top-color: $color-pf-black-300;
+    border-top-color: @color-pf-black-300;
     >aside {
       position: relative;
       float: left;
-      background-color: $color-pf-black-200;
+      background-color: @color-pf-black-200;
       border-right: 1px solid;
-      border-right-color: $color-pf-black-300;
+      border-right-color: @color-pf-black-300;
       .contents {
         display: flex;
         height: 100%;
@@ -93,7 +93,7 @@
       align-items: stretch;
       flex: 9;
       flex-direction: column;
-      @include Border(0px, solid, red);
+      .Border(0px, solid, red);
       .alm-blank-slate {
         display: block;
         width: 90%;
@@ -106,14 +106,14 @@
         padding-right: 20px;
         padding-left: 20px;
         border-bottom: 1px solid;
-        border-bottom-color: $color-pf-black-300 !important;
+        border-bottom-color: @color-pf-black-300 !important;
         .toolbar-pf { border-color: transparent;
           .toolbar-pf-actions { border-color: transparent;
             .form-group { border-right: none;
               &:first { border-left: none; }
             }
             .toolbar-pf-action-right {
-              .pficon-add-circle-o { @extend .with-color-blue;}
+              .pficon-add-circle-o { &:extend(.with-color-blue);}
             }
           }
           // ensure icons dont fold around inputs

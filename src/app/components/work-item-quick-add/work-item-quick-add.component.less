@@ -1,13 +1,13 @@
-@import '../../../assets/stylesheets/base';
+@import '../../../assets/stylesheets/_base';
 
 .quickAdd_container {
   height: 69px; //height is given to avoid jumping between this block and addWorkItemBlk
-  background: $color-pf-black-200;
-  border-top: 1px solid darken($color-pf-white, 20%);
-  text-align: $textLeft;
-  background: $color-pf-black-200;
+  background: @color-pf-black-200;
+  border-top: 1px solid darken(@color-pf-white, 20%);
+  text-align: @textLeft;
+  background: @color-pf-black-200;
   border-top: 1px solid;
-  border-top-color: (darken($color-pf-white, 20%));
+  border-top-color: (darken(@color-pf-white, 20%));
   cursor: pointer;
   .dropup {
     .dropdown-menu { margin-left: 16px;
@@ -20,8 +20,8 @@
   .addWorkItem {
     top: 50%;
     padding: 18px 0;
-    color: $navbar-pf-border-color;
-    @include transform(translateY(-50%));
+    color: @navbar-pf-border-color;
+    .transform(translateY(-50%));
     .quick-add-label { padding-left: 5px; }
     .workItemQuickAdd_saveBtn {
       display: inline-block;
@@ -30,8 +30,8 @@
     }
     i {
       display: inline-block;
-      color: $navbar-pf-border-color;
-      &:hover { color: $navbar-pf-border-color; }
+      color: @navbar-pf-border-color;
+      &:hover { color: @navbar-pf-border-color; }
     }
   }
   .addWorkItemBlk {
@@ -91,22 +91,22 @@
   padding: 0;
   margin: 0;
   .addWorkItem{
-    background: $color-pf-white;
+    background: @color-pf-white;
     text-align: center;
     padding: 10px 15px;
-    @include Border(2px, solid, $color-pf-black-400);
+    .Border(2px, solid, @color-pf-black-400);
     .workItemQuickAdd_saveBtn{
       i {
         font-size: 18px;
-        color: $color-pf-blue-400;
+        color: @color-pf-blue-400;
       }
     }
   }
   .addWorkItemBlk {
     margin-top: 5px;
     margin-bottom: 5px;
-    background: $color-pf-white;
-    @include Border(1px, solid, $color-pf-black-300);
+    background: @color-pf-white;
+    .Border(1px, solid, @color-pf-black-300);
     .board-inputs {
       margin-top: 40px;
       i {
@@ -128,13 +128,13 @@
       position: absolute;
       top: 10px;
       right: 15px;
-      color: $color-pf-black;
+      color: @color-pf-black;
     }
-    .icon-btn { @include Border(2px, solid, $color-pf-blue-400); }
+    .icon-btn { .Border(2px, solid, @color-pf-blue-400); }
   }
 }
-.add { background-color: $color-pf-white; }
-@media (max-width: $grid-float-breakpoint){
+.add { background-color: @color-pf-white; }
+@media (max-width: @grid-float-breakpoint){
   .quickAdd_container { text-align: center;
     .addWorkItem { padding: 10px;
       i,

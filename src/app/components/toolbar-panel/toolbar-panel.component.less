@@ -1,10 +1,10 @@
-@import '../../../assets/stylesheets/base';
+@import (reference) '../../../assets/stylesheets/_base';
 
 .toolbar-header {
   padding-right: 20px;
   padding-left: 20px;
   border-bottom: 1px solid;
-  border-bottom-color: $color-pf-black-300;
+  border-bottom-color: @color-pf-black-300;
   .btn-move { margin-top: 6px; }
   .toolbar-actions,
   .toolbar-apf-filter {
@@ -13,11 +13,11 @@
 }
 .filter-select {
   border-bottom: 1px solid;
-  border-bottom-color: $color-pf-black-300;
-  .btn-default { font-size: $font-size-base; }
+  border-bottom-color: @color-pf-black-300;
+  .btn-default { font-size: @font-size-base; }
 }
 .toolbar-pf-action-right {
-  .pficon-add-circle-o { color: $color-pf-blue-400; }
+  .pficon-add-circle-o { color: @color-pf-blue-400; }
 }
 .currently-showing { margin-right: 10px; }
 .board-type-dropdown {

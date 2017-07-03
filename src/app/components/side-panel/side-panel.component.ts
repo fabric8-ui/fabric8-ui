@@ -14,7 +14,7 @@ import { IterationService } from '../../services/iteration.service';
   },
   selector: 'side-panel',
   templateUrl: './side-panel.component.html',
-  styleUrls: ['./side-panel.component.scss']
+  styleUrls: ['./side-panel.component.less']
 })
 export class SidepanelComponent implements OnInit, OnDestroy {
 

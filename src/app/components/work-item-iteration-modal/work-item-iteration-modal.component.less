@@ -1,4 +1,4 @@
-@import '../../../assets/stylesheets/base';
+@import (reference) '../../../assets/stylesheets/_base';
 
 #cancel-iteration-button { margin-right: em(10); }
 #reassociate-msg {
@@ -14,9 +14,9 @@
     padding: em(5) em(15);
     list-style: none;
     &:hover {
-      background-color: $color-pf-black-300;
+      background-color: @color-pf-black-300;
       cursor: pointer;
     }
-    &.selected { background-color: $color-pf-black-300; }
+    &.selected { background-color: @color-pf-black-300; }
   }
 }

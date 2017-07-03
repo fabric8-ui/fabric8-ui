@@ -1,13 +1,13 @@
-@import '../../../assets/stylesheets/base';
-@import '../../../assets/stylesheets/shared/layout';
-@import '../../../assets/stylesheets/dragula';
+@import (reference) '../../../assets/stylesheets/_base';
+@import (reference) '../../../assets/stylesheets/shared/_layout';
+@import (reference) '../../../assets/stylesheets/_dragula';
 
 .boardWrapper {
   position: relative;
   height: 100%;
   overflow-y: scroll;
   border-top: 1px solid;
-  border-top-color: $color-pf-black-300;
+  border-top-color: @color-pf-black-300;
   .board {
     position: absolute;
     top: 0;
@@ -34,8 +34,8 @@
       .board-lane-column {
         height: 100%;
         padding: 0;
-        background: $color-pf-black-250;
-        @include Border(1px, solid, $color-pf-black-300);
+        background: @color-pf-black-250;
+        .Border(1px, solid, @color-pf-black-300);
         .boardlaneWrapper{
           width: 100%;
           height: calc( 100% - 25px );
@@ -48,13 +48,13 @@
           padding-top: 7px;
           padding-bottom: 3px;
           text-align: center;
-          background-color: $color-pf-black-250;
+          background-color: @color-pf-black-250;
           .issueCount {
             padding-right: 8px;
             padding-left: 8px;
             margin-left: 5px;
             font-weight: 500;
-            background-color: $color-pf-white;
+            background-color: @color-pf-white;
           }// issue-count ended
         }// lane-header ended
       }//boad-lane-column ended
@@ -66,8 +66,8 @@
   width: 340px;
   min-width: 340px;
   height: 100%;
-  background-color: $color-pf-black-900;
-  .side-panel-container { background-color: $color-pf-black-900; }
+  background-color: @color-pf-black-900;
+  .side-panel-container { background-color: @color-pf-black-900; }
 }
 .work-item-page {
   position: relative;
@@ -79,15 +79,15 @@
     bottom: 0;
     left: 0;
     z-index: 3;
-    padding: ($grid-gutter-width/2);
+    padding: (@grid-gutter-width/2);
     margin: 0;
     overflow-y: auto;
-    background-color: $color-pf-black-100;
-    @include Border(0, solid, red);
+    background-color: @color-pf-black-100;
+    .Border(0, solid, red);
     .container-modal-header {
       display: flex;
       margin: 0;
-      margin-bottom: ($grid-gutter-width/2);
+      margin-bottom: (@grid-gutter-width/2);
       align-items: baseline;
       justify-content: space-between;
     }
@@ -97,25 +97,25 @@
   }
   .dropdown {
     a {
-      color: $color-pf-dark;
+      color: @color-pf-dark;
       cursor: pointer;
     }
   }
   .with-cursor-pointer { cursor: pointer; }
-  .with-color-blue { color: $color-pf-blue-400; }
+  .with-color-blue { color: @color-pf-blue-400; }
   >main {
     display: flex;
     border-top: 1px solid;
-    border-top-color: $color-pf-black-300;
+    border-top-color: @color-pf-black-300;
     flex-direction: row;
     flex: 1;
     align-items: stretch;
     >aside {
       position: relative;
       float: left;
-      background-color: $color-pf-black-200;
+      background-color: @color-pf-black-200;
       border-right: 1px solid;
-      border-right-color: $color-pf-black-300;
+      border-right-color: @color-pf-black-300;
       .contents {
         display: flex;
         height: 100%;
@@ -132,12 +132,12 @@
       align-items: stretch;
       flex: 9;
       flex-direction: column;
-      @include Border(0, solid, red);
+      .Border(0, solid, red);
       >header {
         padding-right: 20px;
         padding-left: 20px;
         border-bottom: 1px solid;
-        border-bottom-color: $color-pf-black-300 !important;
+        border-bottom-color: @color-pf-black-300 !important;
         .toolbar-pf { border-color: transparent;
           .toolbar-pf-actions { border-color: transparent;
             .form-group {  border-right: none;
@@ -145,8 +145,8 @@
             }
             .toolbar-pf-action-right {
               .pficon-add-circle-o {
-                font-size: ceil(($font-size-base * 1.2));
-                @extend .with-color-blue;
+                font-size: ceil((@font-size-base * 1.2));
+                &:extend(.with-color-blue);
               }
             }
           }
@@ -184,5 +184,5 @@
   }
 }
 // .active-lane {
-//   @include Border(2px, solid, $color-pf-blue-300!important);
+//   .Border(2px, solid, @color-pf-blue-300!important);
 // }

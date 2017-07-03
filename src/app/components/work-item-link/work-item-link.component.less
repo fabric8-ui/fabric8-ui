@@ -1,5 +1,5 @@
-@import '../../../assets/stylesheets/base';
-@import '../../../assets/stylesheets/shared/main';
+@import (reference) '../../../assets/stylesheets/_base';
+@import (reference) '../../../assets/stylesheets/shared/main';
 .link-container {
   .table { display: table !important; }
   .table-cell {
@@ -11,14 +11,14 @@
   }
   .link-header-nav-list {
     border-top: 1px solid;
-    border-top-color: $color-pf-black-200;
+    border-top-color: @color-pf-black-200;
     li {
       &.toggle-icon {
         width: 40px;
         padding-top: 9px;
         padding-bottom: 9px;
-        @extend .dib;
-        @extend .textCenter;
+        &:extend(.dib);
+        &:extend(.textCenter);
       }
       a {
         padding: 13px 15px;
@@ -30,25 +30,25 @@
       .badge { margin-top: -3px; } // hack to align the badge
       &.active {
         .badge {
-          color: $color-pf-white;
-          background-color: $color-pf-blue-400;
+          color: @color-pf-white;
+          background-color: @color-pf-blue-400;
         }
       }
       &:hover { cursor: pointer; }
     }
   }
   .link-content {
-    background: $color-pf-white;
+    background: @color-pf-white;
     border-bottom: 1px solid;
-    border-bottom-color: $color-pf-black-200;
+    border-bottom-color: @color-pf-black-200;
     >div { padding: 0; }
     .link-content-create-link {
       padding-top: 50px;
       padding-bottom: 50px;
-      @extend .textCenter;
+      &:extend(.textCenter);
       .add-circle-icon {
         font-size: 50px;
-        color: $color-pf-black-500;
+        color: @color-pf-black-500;
       }
       p {
         margin-top: 15px;
@@ -66,7 +66,7 @@
     }
     .link-item-hdr {
       padding: 0 20px;
-      background-color: $color-pf-black-100;
+      background-color: @color-pf-black-100;
       >p { padding: 12px 20px; }
       >i {
         float: right;
@@ -77,24 +77,24 @@
       padding-right: 40px;
       padding-bottom: 20px;
       padding-left: 40px;
-      background-color: $color-pf-black-100;
-      .readonly { background: #fff; }
-      .selected-value { color: #000 !important; }
+      background-color: @color-pf-black-100;
+      .readonly { background: @color-pf-white; }
+      .selected-value { color: @color-pf-black !important; }
       .link-button {
         padding-top: 1.5px;
         padding-bottom: 1.5px;
       }
       ul.dropdown-menu {
         li {
-          a { color: $color-pf-black-800; }
+          a { color: @color-pf-black-800; }
           &:hover, &.active {
             a,
             a:focus,
             a:hover {
               text-decoration: none;
-              color: $color-pf-white;
-              background-color: $color-pf-blue-400;
-              border-color: $color-pf-blue-400;
+              color: @color-pf-white;
+              background-color: @color-pf-blue-400;
+              border-color: @color-pf-blue-400;
             }
           }
         }
@@ -111,25 +111,25 @@
       .link-list-type-header {
         padding: 0 40px;
         font-weight: 700;
-        color: $color-pf-black-600;
+        color: @color-pf-black-600;
       }
       .link-list {
         padding: 2px 50px;
         cursor: pointer;
-        &:hover { background-color: $color-pf-black-200; }
+        &:hover { background-color: @color-pf-black-200; }
         .link-title {
           max-width: 95%;
-          @extend .truncate;
-          @extend .dib;
+          &:extend(.truncate);
+          &:extend(.dib);
         }
-        a { color: $color-pf-black-700;
-          &:hover { color: $color-pf-blue;
+        a { color: @color-pf-black-700;
+          &:hover { color: @color-pf-blue;
           }
         }
       }
     }
     .workitem-link-search-box {
-      width: $width100;
+      width: @width100;
       padding: 2px 5px;
       outline: none;
     }
@@ -143,17 +143,17 @@
       position: absolute;
       top: 0;
       z-index: 10;
-      width: $width100;
+      width: @width100;
       max-height: 200px;
       overflow-y: auto;
       box-shadow: 0 1px 10px 0 rgba(192, 192, 192, 0.7);
       li {
         padding: 5px;
-        background-color: $color-pf-white;
-        @include Border(1px, solid, $color-pf-black-300);
+        background-color: @color-pf-white;
+        .Border(1px, solid, @color-pf-black-300);
         border-top: none;
-        &:hover { background-color: $color-pf-black-500; }
-        &.selected { background-color: $color-pf-black-200; }
+        &:hover { background-color: @color-pf-black-500; }
+        &.selected { background-color: @color-pf-black-200; }
       }
     }
   }

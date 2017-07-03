@@ -1,11 +1,11 @@
-@import '../../../assets/stylesheets/base';
+@import (reference) '../../../assets/stylesheets/_base';
 
 .typeahead-dropdown { padding-left: 0;
   .pointer {
     &:hover { cursor: pointer; }
   }
-  .neutral-entry { color: $color-pf-blue; }
-  .no-value-label { color: $color-pf-blue; }
+  .neutral-entry { color: @color-pf-blue; }
+  .no-value-label { color: @color-pf-blue; }
   .details-dropdown {
     /* width: 100%; */
   }
@@ -20,42 +20,42 @@
     padding: 5px 0;
     margin-top: -1px;
     list-style: none;
-    font-size: $font-size-base;
-    text-align: $textLeft;
-    background-color: $color-pf-white;
+    font-size: @font-size-base;
+    text-align: @textLeft;
+    background-color: @color-pf-white;
     -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
        -moz-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
          -o-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
     background-clip: padding-box;
-    @include Border(1px, solid, $color-pf-black-300);
-    @include borderRadius(1px);
+    .Border(1px, solid, @color-pf-black-300);
+    .borderRadius(1px);
     li {
       a{
         display: block;
         padding: 1px 10px;
         clear: both;
         font-weight: 400;
-        color: $color-pf-black-800;
+        color: @color-pf-black-800;
         line-height: 1.66666667;
         white-space: nowrap;
-        @include Border(1px, solid, transparent);
+        .Border(1px, solid, transparent);
         &:hover { background-image: none; }
         &:active {
-          color: $color-pf-white!important;
-          background-color: $color-pf-blue-400;
-          border-color: $color-pf-blue-400;
+          color: @color-pf-white!important;
+          background-color: @color-pf-blue-400;
+          border-color: @color-pf-blue-400;
           filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
         }
         &:hover, &:focus {
-          color: $color-pf-black-700;
+          color: @color-pf-black-700;
           text-decoration: none;
-          background-color: $color-pf-blue-50;
-          border-color: $color-pf-blue-100;
+          background-color: @color-pf-blue-50;
+          border-color: @color-pf-blue-100;
           filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
         }
       }
     }
   }
 }
-.detail-action-btn { @include detail-action-btn; }
+.detail-action-btn { .detail-action-btn; }

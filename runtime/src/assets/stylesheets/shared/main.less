@@ -1,110 +1,76 @@
-@import 'custom-variables';
-@import 'custom-mixins';
+@import (reference) '_custom-variables.less';
+@import (reference) '_custom-mixins.less';
 body {
-    font-family: Open Sans;
-    font-size: 14px;
+  font-family: Open Sans;
+  font-size: 14px;
 }
-
 //colors
-.color-grey {
-    color: $color-pf-black-800 !important;
-}
-
+.color-grey { color: @color-pf-black-800 !important; }
 // custom classes
 .containerPadd {
-    padding: em(96) 0 em(66) 0;
+  padding-top: em(96);
+  padding-bottom: em(66);
 }
-
-.containerPadd-nologin {
-    padding-bottom: 0;
-}
-
-.truncate {
-    @include truncate;
-}
-
+.containerPadd-nologin { padding-bottom: 0; }
+.truncate { .truncate; }
 .left-truncate {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-overflow: clip;
-    @extend .posRel;
-    background-color: $color-pf-white;
-    &:before{
-      content: '\02026';
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-overflow: clip;
+  white-space: nowrap;
+  background-color: @color-pf-white;
+  &:extend(.posRel);
+  &:before {
+    position: absolute;
+    z-index: 1;
+    left: -1em;
+    padding-left: 1em;
+    margin-left: 6px;
+    background-color: inherit;
+    content: '\02026';
+  }
+  span {
+    position: relative;
+    display: inline-block;
+    float: right;
+    min-width: 100%;
+    overflow: visible;
+    text-indent: 0.5em;
+    background-color: inherit;
+    &:before {
       position: absolute;
-      z-index: 1;
-      left: -1em;
+      z-index: 200;
+      left: -8px;
+      width: 1.05em;
+      height: 2em;
       background-color: inherit;
-      padding-left: 1em;
-      margin-left: 6px;
-    }
-    span {
-      min-width: 100%;
-      position: relative;
-      display: inline-block;
-      float: right;
-      overflow: visible;
-      background-color: inherit;
-      text-indent: 0.5em;
-      &:before {
-        content: '';
-        position: absolute;
-        @extend .dib;
-        width: 1.05em;
-        height: 2em;
-        background-color: inherit;
-        z-index: 200;
-        left: -8px;
-      }
+      content: '';
+      &:extend(.dib);
     }
   }
-
+}
 .truncate-ellipsis {
-    display: table;
-    table-layout: fixed;
-    white-space: nowrap;
+  display: table;
+  table-layout: fixed;
+  white-space: nowrap;
 }
+.dn { display: none; }
+.dib { display: inline-block; }
+.db { display: block; }
+.textCenter { text-align: @textCenter; }
+.posRel { position: relative; }
 
-.dn {
-    display: none;
-}
-
-.dib {
-    display: inline-block;
-}
-
-.db {
-    display: block;
-}
-
-.textCenter {
-    text-align: $textCenter;
-}
-
-.posRel {
-  position: relative;
-}
-
-@media (max-width: $grid-float-breakpoint) {
-    .mobdn {
-        display: none;
+@media (max-width: @grid-float-breakpoint) {
+  .mobdn { display: none; }
+  .list-view-pf {
+    .list-group-item-heading {
+        // font-size: em(12);
     }
-    .list-view-pf {
-        .list-group-item-heading {
-            // font-size: em(12);
-        }
-    }
+  }
 }
-
-@media (max-width: ($grid-float-breakpoint - 1)) {
-    .containerPadd {
-        padding-top: em(11);
-    }
-    .containerPadd-nologin {
-        padding-bottom: 0;
-    }
+@media (max-width: (@grid-float-breakpoint - 1)) {
+  .containerPadd { padding-top: em(11); }
+  .containerPadd-nologin { padding-bottom: 0; }
 }
-
-@import 'layout';
-@import 'overrides-for-patternfly';
+@import '_layout';
+@import '_overrides-for-patternfly';

@@ -16,4 +16,4 @@ import 'rxjs';
 
 // Other vendors for example jQuery, Lodash or Bootstrap
 // You can import js, ts, css, sass, ...
-import 'patternfly-sass-with-css/assets/css/patternfly.css';
+import 'patternfly/dist/css/patternfly.min.css';

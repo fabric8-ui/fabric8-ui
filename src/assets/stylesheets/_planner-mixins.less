@@ -1,24 +1,24 @@
-@mixin user-avatar {
+.user-avatar {
   width: em(25);
   height: em(25);
   img {
-    width: $width100;
+    width: 100%;
     height: 100%;
   }
 }
-@mixin not-assigned-user-icon {
+.not-assigned-user-icon {
   padding: em(1);
   font-size: em(20);
   border: 1px solid;
-  border-color: $color-pf-black-600;
+  border-color: @color-pf-black-600;
 }
 
 // action buttons for editing title, description, comment
-@mixin detail-action-btn {
+.detail-action-btn {
   width: em(42);
   padding: 0 !important;
   margin-left: em(5);
 //   font-size: em(14);
-  text-align: $textCenter;
+  text-align: center;
   cursor: pointer;
 }

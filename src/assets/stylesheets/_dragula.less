@@ -1,9 +1,9 @@
-@import '../../assets/stylesheets/base';
+@import (reference) '../../assets/stylesheets/_base';
 .gu-mirror {
   position: fixed !important;
   z-index: 9999 !important;
   margin: 0 !important;
-  background-color: $color-pf-white;
+  background-color: @color-pf-white;
   cursor: -webkit-grabbing;
   cursor:    -moz-grabbing;
   cursor:         grabbing;
@@ -20,5 +20,5 @@
 }
 .gu-transit {
   opacity: 0.1;
-  border-color: $color-pf-black-400;
+  border-color: @color-pf-black-400;
 }
