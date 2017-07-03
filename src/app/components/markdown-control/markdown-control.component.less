@@ -1,4 +1,4 @@
-@import (reference) '../../../assets/stylesheets/_base';
+@import '../../../assets/stylesheets/_base';
 
 .markdown-mark {
   width: 20px;
@@ -37,7 +37,7 @@
     content: 'Show Less';
   }
 }
-// removes extra margin when code is entered into the text field
+// rvepx extra margin when code is entered into the text field
 pre { margin: 0; }
 .btn-cancel {
   // margin-right: 20px;
@@ -81,8 +81,8 @@ pre { margin: 0; }
         }
       }
       .detail-text-div {
-        min-height: em(50);
-        padding-right: em(30);
+        min-height: 50px;
+        padding-right: 30px;
         background-color: @color-pf-white;
         .Border(1px, solid, @color-pf-white);
         &::-webkit-scrollbar {
@@ -111,8 +111,8 @@ pre { margin: 0; }
           background-clip: content-box;
           .edit-icon {
             position: absolute;
-            right: em(28);
-            top: em(1);
+            right: 28px;
+            top: 1)px
             display: block;
             cursor: pointer;
           }
@@ -121,9 +121,9 @@ pre { margin: 0; }
     }
   }
 }
-.detail-text-action { margin-top: em(10); }
+.detail-text-action { margin-top: 10px; }
 .text-editable {
-  padding-right: em(30) !important;
+  padding-right: 30px !important;
   background-clip: content-box !important;
   .Border(1px, solid, @color-pf-blue-400)!important;
 }

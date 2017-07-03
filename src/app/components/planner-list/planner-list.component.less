@@ -1,10 +1,11 @@
-@import (reference) '../../../assets/stylesheets/_base';
+@import '../../../assets/stylesheets/_base';
 /* CSS3 calc() function to perform calculations */
 /* this is temporary until Less conversion is completed */
-.calc(@property, @expression) {
-  @property: -webkit-calc(@expression);
-  @property: -moz-calc(@expression);
-  @property: calc(@expression);
+.calc(@property; @val) {
+  @{property}: calc(~'@{val}');
+  @{property}: -moz-calc(~'@{val}');
+  @{property}: -webkit-calc(~'@{val}');
+  @{property}: -o-calc(~'@{val}');
 }
 .error { color: @color-pf-red-100; }
 .suppress-hover {
@@ -35,7 +36,8 @@
   >.list-group { border-top-width:0 !important; }
   .detail-list-wrap {
     width: 100%;
-    height: (calc(100% - 70px)); // to avoid overflown scroll height should be there
+    .calc(height; '100% - 70px');
+    //height: (calc(100% - 70px)); // to avoid overflown scroll height should be there
     margin-bottom: 70px;
     overflow-y: scroll;
     border-top: 1px solid;
@@ -44,9 +46,8 @@
   .work-item-list-quick-add {
     position: fixed;
     bottom: 0;
-    width: (calc(100% - 340px));
-    border-top: 1px solid;
-    border-top-color: @color-pf-black-300;
+    .calc(width; '100% - 340px');
+    //width: ~'calc(100% - 340px)';
   }
   .card-pf {
     border: 0;

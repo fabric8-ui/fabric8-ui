@@ -1,6 +1,8 @@
 ///////////////////////////
 // Utility styles
 ///////////////////////////
+@import (reference) './../../../../node_modules/patternfly/node_modules/bootstrap/less/variables';
+@import (reference) './../../../../node_modules/patternfly/src/less/variables';
 
 .padding-loop(@i) when (@i > 0) {
   .padding-@{i} { padding: (1px * @i) !important; }
@@ -38,7 +40,7 @@
   margin: 0;
   border-width: 0;
 }
-@import 'layout-debug';
+//@import 'layout-debug';
 
 ///////////////////////
 // Styles relating to general html document
@@ -52,7 +54,7 @@ body {
   min-height:100vh;
   padding: 0;
   margin: 0;
-  .debug-stretch-to-fit-viewport;
+  //.debug-stretch-to-fit-viewport;
 }
 
 //////////////////////

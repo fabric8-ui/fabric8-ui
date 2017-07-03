@@ -145,7 +145,7 @@ gulp.task('transpile-less', function () {
   if (argv['less-src']) {
     return transpileLESS(argv['less-src'], true);
   } else {
-    return transpileLESS(appSrc + '/app/**/*.less');
+    return transpileLESS(appSrc + '/**/*.less');
   }
 });
 

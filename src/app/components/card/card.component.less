@@ -3,11 +3,11 @@
 
 .board-card {
   border: 2px solid @color-pf-black-400;
-  padding: rem(15);
-  margin: 0 0 rem(5) 0;
+  padding: 15px;
+  margin: 0 0 5px 0;
   &:extend(.flex-container);
-  &:extend(.in-column-direction);
-  &:extend(.flex-grow-1);
+  &:extend(.flex-container.in-column-direction);
+  &:extend(.flex-container.flex-grow-1);
   &.active {
     border-color: @color-pf-blue-400;
   }
@@ -16,11 +16,11 @@
       margin: 0;
     }
     .wi-type-icon {
-      padding: em(0) em(6);
-      font-size: em(12);
+      padding: 0px 6px;
+      font-size: 1px;
     }
     .user-avatar {
-      padding-right: em(5);
+      padding-right: 5px;
     }
   }//div ended
   .row-wrapper {
