@@ -20,7 +20,8 @@ export class FilterService {
   private filtertoWorkItemMap = {
     'assignee': ['relationships', 'assignees', 'data', ['id']],
     'area': ['relationships', 'area', 'data', 'id'],
-    'workitemtype': ['relationships', 'baseType', 'data', 'id']
+    'workitemtype': ['relationships', 'baseType', 'data', 'id'],
+    'iteration': ['relationships', 'iteration', 'data', 'id']
   }
 
   constructor(
@@ -95,6 +96,7 @@ export class FilterService {
   /**
    * Usage: to check if the workitem matches with current applied filter or not.
    * TODO: Make this function better and smarter
+   * NOTE: To add a new filter you have to do nothing here, just update the filtertoWorkItemMap
    * @param WorkItem - workItem
    * @returns boolean
    */
