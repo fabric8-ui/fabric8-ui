@@ -2,12 +2,11 @@
 @import (reference) './../../../assets/stylesheets/shared/_layout';
 
 .board-card {
-  border: 2px solid @color-pf-black-400;
+  width: 100%;
+  float: left;
   padding: 15px;
   margin: 0 0 5px 0;
-  &:extend(.flex-container);
-  &:extend(.flex-container.in-column-direction);
-  &:extend(.flex-container.flex-grow-1);
+  .Border(2px, solid, @color-pf-black-400);
   &.active {
     border-color: @color-pf-blue-400;
   }
@@ -24,13 +23,14 @@
     }
   }//div ended
   .row-wrapper {
-    display: flex;
-    justify-content: space-between;
+    width: 100%;
+    float: left;
   }
   .not-assigned-user-icon {
     .not-assigned-user-icon;
     width: 30px;
     height: 30px;
+    text-align: center;
   }
   .dropdown-menu {
     li {
@@ -40,13 +40,13 @@
         border: 1px transparent solid;
         white-space: nowrap;
         &:hover {
-          border-color: #bee1f4;
-          background-color: #def3ff;
+          border-color: @color-pf-blue-200;
+          background-color: @color-pf-blue-100 ;
         }
         &:active {
-          border-color: #0088ce;
-          background-color: #0088ce;
-          color: #fff;
+          border-color: @color-pf-blue;
+          background-color: @color-pf-blue;
+          color: @color-pf-white;
         }
       }
     }
@@ -54,6 +54,7 @@
 
   .user-avatar {
     .user-avatar;
+    float: right;
     img {
       width: 30px;
       height: 30px;

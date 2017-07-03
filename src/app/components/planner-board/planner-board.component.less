@@ -38,7 +38,7 @@
         .Border(1px, solid, @color-pf-black-300);
         .boardlaneWrapper{
           width: 100%;
-          height: ~'calc( 100% - 25px )';
+          height: ~'calc( 100% - 33px )';
           padding-right: 15px;
           padding-left: 15px;
           overflow: auto;
@@ -156,19 +156,19 @@
             .wi-input-filter-dropdown-list {
               top: 25px;
               width: 100%;
-              padding: .25rem;
+              padding: 2px;
             }
             >div {
               position: relative;
               //HACK:prevents caret icon from folding to a new line
-              >input { margin-right: -2.0rem; }
+              >input { margin-right: -24px; }
               //HACK:positions the caret in right margin are of input
               >span.caret::before {
                 z-index: 2;
                 display: inline-block;
-                width: 1.5rem;
-                height: 1.5rem;
-                line-height: 1.5rem;
+                width: 15px;
+                height: 15px;
+                line-height: 15px;
               }
             }
           }

@@ -1,20 +1,35 @@
-<div class="board-card card-pf card-pf-view card-pf-view-select card-pf-view-single-select" [routerLink]="cardValue.hasLink?cardValue?.link:null"
-     [routerLinkActive]="cardValue.hasLink?['active']:['']" [queryParams]="cardValue.hasLink?existingQueryParams:null">
+<div class="board-card card-pf card-pf-view card-pf-view-select card-pf-view-single-select"
+  [routerLink]="cardValue.hasLink?cardValue?.link:null"
+  [routerLinkActive]="cardValue.hasLink?['active']:['']"
+  [queryParams]="cardValue.hasLink?existingQueryParams:null">
   <div class="row-wrapper">
     <div>
       <span class="wi-type-icon fa {{cardValue.type}}"></span>
       <span> {{cardValue?.id}} </span>
     </div>
     <span class="dropdown-kebab-pf dropdown" dropdown>
-      <button class="btn btn-link color-grey dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="true" (click)="kebabClick($event)" dropdownToggle>
+      <button class="btn btn-link color-grey dropdown-toggle"
+        type="button"
+        aria-haspopup="true"
+        aria-expanded="true"
+        (click)="kebabClick($event)" dropdownToggle>
         <span class="fa fa-ellipsis-v"></span>
       </button>
-      <ul class="dropdown-menu-right dropdown-menu" aria-labelledby="dropdownKebabRight" *dropdownMenu>
-        <li *ngFor="let menu of cardValue.menuItem" [attr.id]="menu.id">
-            <a *ngIf="menu.link" [routerLink]="menu.link?[menu.link]:null" [queryParams]="menu.link?existingQueryParams:null" (click)="kebabMenuClick($event, menu.id)">
+      <ul class="dropdown-menu-right dropdown-menu"
+        aria-labelledby="dropdownKebabRight" *dropdownMenu>
+        <li *ngFor="let menu of cardValue.menuItem"
+          [attr.id]="menu.id">
+          <a *ngIf="menu.link"
+            [routerLink]="menu.link?[menu.link]:null"
+            [queryParams]="menu.link?existingQueryParams:null"
+            (click)="kebabMenuClick($event, menu.id)">
               {{menu.value}}
-            </a>
-            <span *ngIf="!menu.link" (click)="kebabMenuClick($event, menu.id)">{{menu.value}}</span>
+          </a>
+          <span
+            *ngIf="!menu.link"
+            (click)="kebabMenuClick($event, menu.id)">
+            {{menu.value}}
+          </span>
         </li>
       </ul>
     </span>
@@ -30,7 +45,10 @@
         tooltip="{{wItem?.attributes?.fullName}}"
         src="{{cardValue.avatar + '&s=20'}}"
         onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
-      <span *ngIf="cardValue.avatar==''" class="pficon-user not-assigned-user-icon" tooltip="unassigned" placement="top"></span>
+      <span class="pficon-user not-assigned-user-icon"
+        *ngIf="cardValue.avatar==''"
+        tooltip="unassigned"
+        placement="top"></span>
     </div>
   </div>
 </div>
