@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const path = require('path');
-const less = require('./less');
 
 const AssetsPlugin = require('assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
@@ -27,12 +26,11 @@ const precss = require('precss');
 var helpers = require('./helpers');
 
 // ExtractTextPlugin
-const extractCSS = new ExtractTextPlugin({
-  filename: '[name].[id]' + (helpers.isProd ? '.[contenthash]' : '') + '.css',
-  allChunks: true
-}
-);
 
+const extractCSS = new ExtractTextPlugin({
+  filename: '_assets/stylesheets/[name].[id]' + (helpers.isProd ? '.[contenthash]' : '') + '.css',
+  allChunks: true
+});
 
 /*
  * Webpack Constants
@@ -96,7 +94,7 @@ module.exports = {
         })
       },
       {
-        test: /^(?!.*component).*\.scss$/,
+        test: /^(?!.*component).*\.less$/,
         use: extractCSS.extract({
           fallback: 'style-loader',
           use: [

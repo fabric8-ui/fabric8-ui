@@ -39,6 +39,7 @@
   padding: 0;
   margin: 0;
   border-width: 0;
+  height:100%;
 }
 //@import 'layout-debug';
 
@@ -116,7 +117,6 @@ body {
     // margin-left:-@grid-gutter-width/2;
     // margin-right:-@grid-gutter-width/2;
   }
-  @include: debug-app-component;
 };
 @content-padding: 0;
 header { padding: @content-padding; }
@@ -126,7 +126,7 @@ footer { padding: @content-padding; }
 // This plays out in scenarios where view requires animation like slide ins/slie outs
 // These are not good for flex
 .view-container { position:relative;
-  >.view { &:extend(.fill-container);
+  >.view { //&:extend(.fill-container);
     &.with-rows {
       padding-right: @grid-gutter-width/2;
       padding-left: @grid-gutter-width/2;
@@ -135,7 +135,7 @@ footer { padding: @content-padding; }
     section,
     aside {
       padding: @content-padding;
-      overflow: auto;
+      //overflow: auto;
     }
     >.view-content {
       position: relative;
@@ -147,7 +147,7 @@ footer { padding: @content-padding; }
   a:hover { text-decoration: none; }
 }
 // chromeless dialog suppresses all chrome in the ng2-bootstrap modal component
-.chromeless-modal {
+/*.chromeless-modal {
   .modal-content {
     display: flex;
     padding: 0;
@@ -171,11 +171,11 @@ footer { padding: @content-padding; }
       }
     }
   }
-}
+}*/
 // wizard
 @wizard-padding: @grid-gutter-width/2;
 
-.wizard-container {
+/*.wizard-container {
   position: relative;
   display: flex;
   border: solid 0;
@@ -221,4 +221,4 @@ footer { padding: @content-padding; }
       }
     }
   }
-}
+}*/
