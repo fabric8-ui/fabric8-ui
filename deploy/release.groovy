@@ -14,10 +14,8 @@ def ci (){
     }
 
     stage('func test'){
-        dir('runtime'){
-            container('ui'){
-                sh './scripts/run-functests.sh'
-            }
+        container('ui'){
+            sh './scripts/run-functests.sh'
         }
     }
 }
