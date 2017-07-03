@@ -16,4 +16,4 @@ import 'rxjs';
 
 // Other vendors for example jQuery, Lodash or Bootstrap
 // You can import js, ts, css, csss, ...
-import 'node_modules/patternfly/src/less/patternfly.less';
+//import '../node_modules/patternfly/src/less/patternfly.less';

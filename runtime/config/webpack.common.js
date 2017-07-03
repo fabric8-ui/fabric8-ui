@@ -24,6 +24,8 @@ const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 
 const precss = require('precss');
 
+var helpers = require('./helpers');
+
 // ExtractTextPlugin
 const extractCSS = new ExtractTextPlugin({
   filename: '[name].[id]' + (helpers.isProd ? '.[contenthash]' : '') + '.css',
