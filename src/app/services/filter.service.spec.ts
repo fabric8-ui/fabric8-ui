@@ -56,5 +56,132 @@ describe('Unit Test :: Filter Service', () => {
     })
   );
   it('should execute the canary test', () => expect(true).toBe(true));
-  it('should match the current filter', () => expect(filterService.doesMatchCurrentFilter({} as WorkItem)).toBe(true))
+
+  it('should match the assignee filter', () => {
+    const workItem = {
+      relationships: {
+        assignees: {
+          data: [
+            {
+              id: 'assignee-id-1'
+            }
+          ]
+        }
+      }
+    };
+    filterService.activeFilters = [{
+      id: 'assignee',
+      value: 'assignee-id-1',
+      paramKey: 'filter[assignee]'
+    }];
+    expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeTruthy();
+  })
+
+  it('should not match the assignee filter', () => {
+    const workItem = {
+      relationships: {
+        assignees: {
+          data: [
+            {
+              id: 'assignee-id-1'
+            }
+          ]
+        }
+      }
+    };
+    filterService.activeFilters = [{
+      id: 'assignee',
+      value: 'assignee-id-2',
+      paramKey: 'filter[assignee]'
+    }];
+    expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeFalsy();
+  })
+
+  it('should not match the assignee filter if attribute data is not there', () => {
+    const workItem = {
+      relationships: {
+        assignees: {
+          data: []
+        }
+      }
+    };
+    filterService.activeFilters = [{
+      id: 'assignee',
+      value: 'assignee-id-2',
+      paramKey: 'filter[assignee]'
+    }];
+    expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeFalsy();
+  })
+
+  it('should not match the assignee filter if attribute assignees is not there', () => {
+    const workItem = {
+      relationships: {}
+    };
+    filterService.activeFilters = [{
+      id: 'assignee',
+      value: 'assignee-id-2',
+      paramKey: 'filter[assignee]'
+    }];
+    expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeFalsy();
+  })
+
+  it('should match the assignee and area filter', () => {
+    const workItem = {
+      relationships: {
+        assignees: {
+          data: [
+            {
+              id: 'assignee-id-1'
+            }
+          ]
+        },
+        area: {
+          data: {
+            id: 'area-id-1'
+          }
+        }
+      }
+    };
+    filterService.activeFilters = [{
+      id: 'assignee',
+      value: 'assignee-id-1',
+      paramKey: 'filter[assignee]'
+    },
+    {
+      id: 'area',
+      value: 'area-id-1',
+      paramKey: 'filter[area]'
+    }];
+    expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeTruthy();
+  })
+
+  it('should not match the assignee and area filter when atleast one is wrong', () => {
+    const workItem = {
+      relationships: {
+        assignees: {
+          data: [
+            {
+              id: 'assignee-id-1'
+            }
+          ]
+        },
+        area: {
+          data: {
+            id: 'area-id-2'
+          }
+        }
+      }
+    };
+    filterService.activeFilters = [{
+      id: 'assignee',
+      value: 'assignee-id-1',
+      paramKey: 'filter[assignee]'
+    },
+    {
+      id: 'area',
+      value: 'area-id-1',
+      paramKey: 'filter[area]'
+    }];
+    expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeFalsy();
+  })
 });
