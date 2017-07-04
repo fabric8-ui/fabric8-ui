@@ -179,6 +179,7 @@ export class MockDataService {
     }
     var localWorkItem = this.makeCopy(entity.data);
     localWorkItem.id = this.createId();
+    Object.assign(localWorkItem.attributes, {'system.number': localWorkItem.id});
     localWorkItem.links = {
           'self': 'http://mock.service/api/workitems/id' + localWorkItem.id,
         };
@@ -190,8 +191,16 @@ export class MockDataService {
     };
     localWorkItem.relationships = {
           'assignees': { },
-          'iteration': { },
-          'area': { },
+          'iteration': { 'data': { 'id': 'iteration-id1', 'links': { 'self': 'http://mock.service/api/iterations/iteration-id1' }, 'type': 'iterations' } },
+          'area': {
+            'data': {
+              'id': 'rootarea',
+              'links': {
+                'self': 'http://mock.service/api/areas/rootarea'
+              },
+              'type': 'areas'
+            }
+           },
           'baseType': {
             'data': {
               'id': '86af5178-9b41-469b-9096-57e5155c3f31',

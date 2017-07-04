@@ -42,10 +42,15 @@ export class WorkItemMockGenerator {
               },
               'relationships': {
                 'created-by': {
-                  'data': {
+
                     'id': 'user0',
+                    'imageURL': 'https://avatars.githubusercontent.com/u/2410471?v=3',
+                    'links': {
+                      'self': 'http://mock.service/api/user',
+                      'related': 'http://mock.service/api/user'
+                    },
                     'type': 'identities'
-                  }
+
                 }
               },
               'type': 'comments'
@@ -147,6 +152,7 @@ export class WorkItemMockGenerator {
       return {
         'attributes': {
           'system.created_at': this.dateTime(n),
+          'system.number': 'id-' + n,
           'system.description': 'Description Text ' + n,
           'system.description.rendered': 'Description Text ' + n,
           'system.remote_item_id': 'remote_id_' + n,
@@ -160,7 +166,7 @@ export class WorkItemMockGenerator {
         },
         'relationships': {
           'assignees': { },
-          'iteration': (n % 2)? { } : { 'data': { 'id': 'iteration-id0', 'links': { 'self': 'http://mock.service/api/iterations/iteration-id0' }, 'type': 'iterations' } },
+          'iteration': (n % 2) ? { 'data': { 'id': 'iteration-id1', 'links': { 'self': 'http://mock.service/api/iterations/iteration-id1' }, 'type': 'iterations' }} : { 'data': { 'id': 'iteration-id0', 'links': { 'self': 'http://mock.service/api/iterations/iteration-id0' }, 'type': 'iterations' }},
           'area': {
             'data': {
               'id': 'rootarea',

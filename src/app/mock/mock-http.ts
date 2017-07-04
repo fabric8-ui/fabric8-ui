@@ -127,7 +127,7 @@ export class MockHttp extends HttpService {
         body: body
       });
       var res = new Response(responseOptions);
-      return Observable.of(res);
+      return Observable.of(res).delay(100);
     }
 
     /*
@@ -250,8 +250,7 @@ export class MockHttp extends HttpService {
         case '/workitemlinktypes':
           return this.createResponse(url.toString(), 200, 'ok', this.mockDataService.getWorkItemLinkTypes());
         default:
-          console.log('######## URL Not found ########');
-          console.log(url.toString());
+          console.log('######## URL Not found ########', url.toString());
           return this.createResponse(url.toString(), 404, 'npt found', {} );
       }
     };
