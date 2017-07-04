@@ -1,21 +1,16 @@
 <div class="container-fluid work-item-page">
   <main class="row">
     <aside class="side-panel-wrap">
-      <div class="contents">
-        <side-panel
-          [iterations]="iterations" class="side-panel-container">
-        </side-panel>
-      </div>
+      <side-panel [iterations]="iterations"></side-panel>
     </aside>
     <section>
       <toolbar-panel
-        context="listview"
+        context="boardview"
         [wiTypes]="workItemTypes"
         (showDetailEvent)="typeSelectPanel.openPanel()"
+        [currentBoardType]="currentBoardType"
         [areas]="areas"
-        [loggedInUser]="loggedInUser">
-      </toolbar-panel>
-      <div class="contents posRel">
+        [loggedInUser]="loggedInUser"></toolbar-panel>
         <div class="work-item-list-page">
           <div #listContainer
               almInfiniteScroll
@@ -85,7 +80,6 @@
           </div>
         </div>
         <router-outlet></router-outlet>
-      </div>
     </section>
   </main>
 </div>

@@ -3,15 +3,15 @@
 //@import 'patternfly/mixin_overrides';
 
 // functions
-//convert px to em/rem
-.em(@px) { @em: (@px / @em-base-font-size) * 1em; }
-.rem(@px) { @rem: ((@x / @rem-base-font-size) * 1rem); }
-//custom mixins
-.truncate() {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* CSS3 calc() function to perform calculations */
+/* this is temporary until Less conversion is completed */
+.calc(@property; @val) {
+  @{property}: calc(~'@{val}');
+  @{property}: -moz-calc(~'@{val}');
+  @{property}: -webkit-calc(~'@{val}');
+  @{property}: -o-calc(~'@{val}');
 }
+//custom mixins
 .transform(@transform) {
   -webkit-transform: @transform;
      -moz-transform: @transform;
@@ -50,8 +50,8 @@
 .multiline-truncate(@line-height, @line-count, @bg-color) {
   position: relative;
   overflow: hidden;
-  margin-right: -1em;
-  padding-right: 1em;
+  margin-right: -12px;
+  padding-right: 12px;
   line-height: @line-height;
   max-height: @line-height * @line-count;
   text-align: justify;
@@ -64,21 +64,10 @@
   &:after {
     position: absolute;
     right: 0;
-    width: 1em;
-    height: 3em;
-    margin-top: 1em;
+    width: 12px;
+    height: 36px;
+    margin-top: 12px;
     background: @bg-color;
     content: '';
   }
-}
-.dib { display: inline-block; }
-.fill-container {
-    position: absolute;
-    margin: 0;
-    padding: 0;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    border-width: 0;
 }

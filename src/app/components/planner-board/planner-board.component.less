@@ -2,9 +2,66 @@
 @import (reference) '../../../assets/stylesheets/shared/_layout';
 @import (reference) '../../../assets/stylesheets/_dragula';
 
+.work-item-page {
+  position: relative;
+  .calc(height; "100vh - 60px");
+  >main {
+    height: 100%;
+    overflow: hidden;
+    >aside.side-panel-wrap {
+      width: 340px;
+      height: 100%;
+      float: left;
+      overflow-x: hidden;
+      background-color: @color-pf-black-900;
+    }
+    >section {
+      height: 100%;
+      padding-left: 340px;
+      //toolbar styles
+      > header {
+        padding-right: 20px;
+        padding-left: 20px;
+        border-bottom: 1px solid;
+        border-bottom-color: @color-pf-black-300 !important;
+        .toolbar-pf { border-color: transparent;
+          .toolbar-pf-actions { border-color: transparent;
+            .form-group { border-right: none;
+              &:first { border-left: none; }
+            }
+            .toolbar-pf-action-right {
+              .pficon-add-circle-o { &:extend(.with-color-blue);}
+            }
+          }
+          // ensure icons dont fold around inputs
+          .wi-input-filter-dropdown { position: relative;
+            .wi-input-filter-dropdown-list {
+              top: 25px;
+              width: 100%;
+              padding: 2px;
+            }
+            >div { position: relative;
+              //HACK:prevents caret icon from folding to a new line
+              >input {  margin-right: -20px; }
+              //HACK:positions the caret in right margin are of input
+              >span.caret::before {
+                z-index: 2;
+                display: inline-block;
+                width: 15px;
+                height: 15px;
+                line-height: 15px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 .boardWrapper {
   position: relative;
-  height: 100%;
+  .calc(height; '100% - 40px');
   overflow-y: scroll;
   border-top: 1px solid;
   border-top-color: @color-pf-black-300;
@@ -28,9 +85,6 @@
       margin-left: 5px;
       vertical-align: top;
       white-space: normal;
-      .boardQuickAddContainer {
-        margin-bottom: 5px;
-      }
       .board-lane-column {
         height: 100%;
         padding: 0;
@@ -38,7 +92,7 @@
         .Border(1px, solid, @color-pf-black-300);
         .boardlaneWrapper{
           width: 100%;
-          height: ~'calc( 100% - 33px )';
+          .calc(height; '100% - 33px');
           padding-right: 15px;
           padding-left: 15px;
           overflow: auto;
@@ -59,130 +113,5 @@
         }// lane-header ended
       }//boad-lane-column ended
     }//board-lane ended
-    .card-wrapper { height: 100%; }
   }
 }
-.side-panel-wrap {
-  width: 340px;
-  min-width: 340px;
-  height: 100%;
-  background-color: @color-pf-black-900;
-  .side-panel-container { background-color: @color-pf-black-900; }
-}
-.work-item-page {
-  position: relative;
-  > main { border-top: 0 solid !important; }
-  .container-modal {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 3;
-    padding: (@grid-gutter-width/2);
-    margin: 0;
-    overflow-y: auto;
-    background-color: @color-pf-black-100;
-    .Border(0, solid, red);
-    .container-modal-header {
-      display: flex;
-      margin: 0;
-      margin-bottom: (@grid-gutter-width/2);
-      align-items: baseline;
-      justify-content: space-between;
-    }
-    &.container-cards-pf {
-      .card-pf-title { text-transform: capitalize; }
-    }
-  }
-  .dropdown {
-    a {
-      color: @color-pf-black-800;
-      cursor: pointer;
-    }
-  }
-  .with-cursor-pointer { cursor: pointer; }
-  .with-color-blue { color: @color-pf-blue-400; }
-  >main {
-    display: flex;
-    border-top: 1px solid;
-    border-top-color: @color-pf-black-300;
-    flex-direction: row;
-    flex: 1;
-    align-items: stretch;
-    >aside {
-      position: relative;
-      float: left;
-      background-color: @color-pf-black-200;
-      border-right: 1px solid;
-      border-right-color: @color-pf-black-300;
-      .contents {
-        display: flex;
-        height: 100%;
-        overflow: auto;
-        flex: 1;
-        align-items: stretch;
-      }
-    }
-    >section {
-      position: relative;
-      display: flex;
-      height: 100%;
-      overflow-x: hidden!important;
-      align-items: stretch;
-      flex: 9;
-      flex-direction: column;
-      .Border(0, solid, red);
-      >header {
-        padding-right: 20px;
-        padding-left: 20px;
-        border-bottom: 1px solid;
-        border-bottom-color: @color-pf-black-300 !important;
-        .toolbar-pf { border-color: transparent;
-          .toolbar-pf-actions { border-color: transparent;
-            .form-group {  border-right: none;
-              &:first { border-left: none; }
-            }
-            .toolbar-pf-action-right {
-              .pficon-add-circle-o {
-                font-size: ceil((@font-size-base * 1.2));
-                &:extend(.with-color-blue);
-              }
-            }
-          }
-          // ensure icons dont fold around inputs
-          .wi-input-filter-dropdown {
-            position: relative;
-            .wi-input-filter-dropdown-list {
-              top: 25px;
-              width: 100%;
-              padding: 2px;
-            }
-            >div {
-              position: relative;
-              //HACK:prevents caret icon from folding to a new line
-              >input { margin-right: -24px; }
-              //HACK:positions the caret in right margin are of input
-              >span.caret::before {
-                z-index: 2;
-                display: inline-block;
-                width: 15px;
-                height: 15px;
-                line-height: 15px;
-              }
-            }
-          }
-        }
-      }
-      .contents {
-        display: flex;
-        overflow-x: hidden;
-        align-items: stretch;
-        flex: 1;
-      }
-    }
-  }
-}
-// .active-lane {
-//   .Border(2px, solid, @color-pf-blue-300!important);
-// }

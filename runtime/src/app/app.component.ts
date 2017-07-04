@@ -6,9 +6,6 @@ import { AuthenticationService } from 'ngx-login-client';
 import { GlobalSettings } from './shared/globals';
 
 @Component({
-  host: {
-    'class': 'app app-component flex-container in-column-direction flex-grow-1'
-  },
   selector: 'alm-app',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './app.component.html',

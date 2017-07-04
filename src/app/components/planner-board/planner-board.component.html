@@ -1,11 +1,7 @@
 <div class="container-fluid work-item-page">
   <main class="row">
     <aside class="side-panel-wrap">
-      <div class="contents">
-        <side-panel
-          [iterations]="iterations" class="side-panel-container">
-        </side-panel>
-      </div>
+      <side-panel [iterations]="iterations"></side-panel>
     </aside>
     <section>
       <toolbar-panel
@@ -15,34 +11,43 @@
         [currentBoardType]="currentBoardType"
         [areas]="areas"
         [loggedInUser]="loggedInUser"></toolbar-panel>
-      <div class="contents posRel">
-        <div id="board_topWorkItems" class="width-100 boardWrapper">
-          <div class="board" *ngIf="readyToInit" (touchmove)="onTouchstart($event);">
+      <div class="height-100">
+        <div class="width-100 boardWrapper"
+          id="board_topWorkItems">
+          <div class="board"
+            *ngIf="readyToInit"
+            (touchmove)="onTouchstart($event);">
             <!-- board columns -->
-            <div class="board-lane" *ngFor='let lane of lanes'>
-              <section class="width-100 pull-left board-lane-column" [attr.data-state]="lane.option">
+            <div class="board-lane"
+              *ngFor='let lane of lanes'>
+              <section class="width-100 pull-left board-lane-column"
+                [attr.data-state]="lane.option">
                 <div class="lane-header">
                   <span class="dib">{{lane.option}}</span>
                   <span class="issueCount dib" >{{lane.workItems | arrayCount}}</span>
                 </div>
-
                 <div class="boardlaneWrapper"
                   almInfiniteScroll
                   [eachElementHeightInPx]='contentItemHeight'
                   (initItems)='initWiItems($event, lane)'
                   (fetchMore)='fetchMoreWiItems(lane)' >
-
                   <div *ngIf="lane.option == 'new'">
-                    <div *ngIf="loggedIn" class="boardQuickAddContainer width-100 pull-left">
-                      <alm-work-item-quick-add [forcedType]="currentBoardType" [wilistview]="'wi-card-view'"
-                        (close)="close($event)" (workItemCreate)="onCreateWorkItem($event)"></alm-work-item-quick-add>
+                    <div class="width-100 pull-left margin-bottom-5"
+                      *ngIf="loggedIn">
+                      <alm-work-item-quick-add
+                        [forcedType]="currentBoardType"
+                        [wilistview]="'wi-card-view'"
+                        (close)="close($event)"
+                        (workItemCreate)="onCreateWorkItem($event)">
+                      </alm-work-item-quick-add>
                     </div>
                   </div>
-                  <div [dragula]='"wi-bag"' class="card-wrapper">
+                  <div class="card-wrapper height-100"
+                    [dragula]='"first-bag"'>
                     <div *ngFor='let item of lane.cardValue'
-                         (mousedown)="getWI(item.id, lane)" (touchstart)="getWI(item.id, lane)"
-                         [attr.data-id]="item.id" [attr.data-UUID]="item.extraData['UUID']"  id={{item.id}}
-                         [attr.data-version]="item.extraData['version']" [attr.data-selfLink]="item.extraData['selfLink']">
+                      (mousedown)="getWI(item.id, lane)"
+                      (touchstart)="getWI(item.id, lane)"
+                      [attr.data-id]="item.id" id={{item.id}}>
                       <card
                         [cardValue]='item'
                         (menuClickEvent)="cardMenuClick($event, item.id, lane)">
@@ -68,7 +73,6 @@
     [workItem]="workItem"
     #associateIterationModal>
 </fab-planner-associate-iteration-modal>
-
 <div *ngIf="showDialog">
   <alm-dialog
     (pfDialogClick)="onButtonClick($event)"

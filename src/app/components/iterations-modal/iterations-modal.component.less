@@ -28,16 +28,18 @@
   }
 }
 .iteration-desc { resize: none; }
+
+//date-picker styless
 .datepicker-container {
-  display: flex;
+  display: block;
   justify-content: space-between;
-  .date-container { width: 50%; }
+  .date-container { width: 49.6%; }
 }
 .has-error {
-  .error-block { visibility: visible; }
+  .error-block { display: block; }
 }
 .error-block {
-  visibility: hidden;
+  display: none;
   .help-block { color: @color-pf-red-200; }
 }
 .space-error { visibility: visible; }

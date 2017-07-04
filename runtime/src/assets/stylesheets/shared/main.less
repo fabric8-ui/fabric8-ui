@@ -3,16 +3,16 @@
 body {
   font-family: Open Sans;
   font-size: 14px;
+  overflow: hidden;
 }
 //colors
 .color-grey { color: @color-pf-black-800 !important; }
 // custom classes
-.containerPadd {
-  padding-top: 96px;
-  padding-bottom: 66px;
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.containerPadd-nologin { padding-bottom: 0; }
-.truncate { .truncate; }
 .left-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -67,10 +67,6 @@ body {
         // font-size: 12px;
     }
   }
-}
-@media (max-width: (@grid-float-breakpoint - 1)) {
-  .containerPadd { padding-top: 11px; }
-  .containerPadd-nologin { padding-bottom: 0; }
 }
 @import '_layout';
 @import '_overrides-for-patternfly';

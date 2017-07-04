@@ -9,9 +9,6 @@ import { WorkItemService } from '../../services/work-item.service';
 import { IterationService } from '../../services/iteration.service';
 
 @Component({
-  host:{
-      'class':'app-component width-100 pull-left'
-  },
   selector: 'side-panel',
   templateUrl: './side-panel.component.html',
   styleUrls: ['./side-panel.component.less']
