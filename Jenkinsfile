@@ -79,7 +79,7 @@ if (ciDeploy){
            route = deployOpenShiftSnapshot{
                mavenRepo = 'http://central.maven.org/maven2/io/fabric8/online/apps/fabric8-ui'
                githubRepo = 'fabric8-ui'
-               originalImageName = 'registry.devshift.net/fabric8io/fabric8-ui'
+               originalImageName = 'registry.devshift.net/fabric8-ui/fabric8-ui'
                newImageName = imageName
                openShiftProject = prj
            }
