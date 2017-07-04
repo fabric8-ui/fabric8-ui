@@ -1,7 +1,7 @@
 @Library('github.com/fabric8io/fabric8-pipeline-library@master')
 def utils = new io.fabric8.Utils()
 def flow = new io.fabric8.Fabric8Commands()
-def project = 'fabric8io/fabric8-planner'
+def project = 'fabric8-ui/fabric8-planner'
 def ciDeploy = false
 def tempVersion
 def imageName
