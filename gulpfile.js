@@ -6,6 +6,8 @@
 
 var gulp = require('gulp'),
   less = require('gulp-less'),
+  autoprefixer = require('gulp-autoprefixer'),
+  lesshint = require('gulp-lesshint'),
   del = require('del'),
   replace = require('gulp-string-replace'),
   sourcemaps = require('gulp-sourcemaps'),
@@ -49,9 +51,15 @@ function transpileLESS(src, debug) {
     // paths: [ path.join(__dirname, 'less', 'includes') ], //THIS NEEDED FOR REFERENCE
   }
   return gulp.src(src)
+    .pipe(lesshint({
+      // Options
+     }))
+    .pipe(lesshint.reporter()) // Leave empty to use the default, "stylish"
+    .pipe(lesshint.failOnError()) // Use this to fail the task on lint errors
     .pipe(sourcemaps.init())
     .pipe(less(opts))
     .pipe(sourcemaps.write())
+    .pipe(autoprefixer('last 10 versions', 'ie 9'))
     .pipe(gulp.dest(function (file) {
       return libraryDist + file.base.slice(__dirname.length + 'src/'.length);
   }));
