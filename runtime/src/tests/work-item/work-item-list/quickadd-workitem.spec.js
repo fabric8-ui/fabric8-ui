@@ -30,7 +30,7 @@ describe('Quickadd - Work item list', function () {
     testSupport.setTestSpace(page);
   });
 
-// March 28 - Failing due to: https://github.com/fabric8io/fabric8-planner/issues/1348
+// March 28 - Failing due to: https://github.com/fabric8-ui/fabric8-planner/issues/1348
  it('Quickadd - Creating a new quick add work item and delete - desktop.', function () {
     testSupport.setBrowserMode('desktop');
     page.clickWorkItemQuickAdd();

@@ -30,7 +30,7 @@ describe('Link item ', function () {
     testSupport.setTestSpace(page);  
   });
  /**Below commented code  works fine with the Chrome not with PhantomJS
-     * Issue : https://github.com/fabric8io/fabric8-planner/issues/319
+     * Issue : https://github.com/fabric8-ui/fabric8-planner/issues/319
      */
 //  it('Create a link item planner to planner - Desktop', function () {
 //     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
@@ -58,7 +58,7 @@ describe('Link item ', function () {
     browser.wait(until.elementToBeClickable(detailPage.linkItemHeaderCaret()), constants.WAIT, 'Link icon is not clickable');   
     detailPage.linkItemHeaderCaret().click();
      /**Below commented code  works fine with the Chrome not with PhantomJS
-     * Issue : https://github.com/fabric8io/fabric8-planner/issues/319
+     * Issue : https://github.com/fabric8-ui/fabric8-planner/issues/319
      */
     // expect(detailPage.linkTitle()).toBe('Title Text 1');
     // expect(detailPage.linkItemTotalCount().getText()).toBe('1');
@@ -73,7 +73,7 @@ describe('Link item ', function () {
     browser.wait(until.elementToBeClickable(detailPage.linkItemHeaderCaret()), constants.WAIT, 'Link icon is not clickable');   
     detailPage.linkItemHeaderCaret().click();
      /**Below commented code  works fine with the Chrome not with PhantomJS
-     * Issue : https://github.com/fabric8io/fabric8-planner/issues/319
+     * Issue : https://github.com/fabric8-ui/fabric8-planner/issues/319
      */
     // expect(detailPage.linkTitle()).toBe('Title Text 1');
     // expect(detailPage.linkState("0")).toBe('new');
@@ -89,7 +89,7 @@ describe('Link item ', function () {
     // detailPage.workItemDetailTitle.sendKeys(protractor.Key.ENTER);
     // detailPage.clickWorkItemDetailCloseButton();
     // /**Below commented code  works fine with the Chrome not with PhantomJS
-    //  * Issue : https://github.com/fabric8io/fabric8-planner/issues/319
+    //  * Issue : https://github.com/fabric8-ui/fabric8-planner/issues/319
     //  */
     // // page.workItemByIndex("1").click();
     // // expect(detailPage.commentDiv().isPresent()).toBe(true);

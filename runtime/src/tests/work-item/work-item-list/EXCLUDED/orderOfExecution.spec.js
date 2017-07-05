@@ -11,7 +11,7 @@
  *
  * These tests are commented out as, while they run cleanly on firefox and chrome, phantomJS is unable to
  * recognize when the "move" dropdown is active:
- * https://github.com/fabric8io/fabric8-planner/issues/319#issuecomment-272997188
+ * https://github.com/fabric8-ui/fabric8-planner/issues/319#issuecomment-272997188
  * We can uncomment the tests when we migrate the tetss to run on CI with firefox and chrome (or when
  * we can find a bug fix for PhantomJS).
  *
@@ -88,7 +88,7 @@ defaultWorkitemsPhantomJS = [
 //               page.clickWorkItemMovePulldown().then(function() {
 //                 browser.wait(until.elementToBeClickable(page.workItemMovePulldownDown(page.workItemMovePulldown)), waitTime);
 //                 page.clickWorkItemMovePulldownDown(page.workItemMovePulldown);
-                 // commented out due to: https://github.com/fabric8io/fabric8-planner/issues/762
+                 // commented out due to: https://github.com/fabric8-ui/fabric8-planner/issues/762
 //               });
 //             }
 
@@ -98,7 +98,7 @@ defaultWorkitemsPhantomJS = [
 //               page.clickWorkItemMovePulldown().then(function() {
 //                 browser.wait(until.elementToBeClickable(page.workItemMovePulldownUp(page.workItemMovePulldown)), waitTime);
 //                 page.clickWorkItemMovePulldownUp(page.workItemMovePulldown);
-                 // commented out due to: https://github.com/fabric8io/fabric8-planner/issues/762
+                 // commented out due to: https://github.com/fabric8-ui/fabric8-planner/issues/762
 //               });
              }
            });
@@ -138,14 +138,14 @@ defaultWorkitemsPhantomJS = [
 //                 browser.wait(until.elementToBeClickable(page.workItemMovePulldownBottom(page.workItemMovePulldown)), waitTime);
 //                 page.clickWorkItemMovePulldownBottom(page.workItemMovePulldown);
                  //compareWorkitems (page, totalCount - 1, "Title Text 0");
-                 // commented out due to: https://github.com/fabric8io/fabric8-planner/issues/762
+                 // commented out due to: https://github.com/fabric8-ui/fabric8-planner/issues/762
                });
 
             page.clickWorkItemMovePulldown().then(function() {
 //                 browser.wait(until.elementToBeClickable(page.workItemMovePulldownTop(page.workItemMovePulldown)), waitTime);
 //                 page.clickWorkItemMovePulldownTop(page.workItemMovePulldown);
                  //compareWorkitems (page, 0, "Title Text 0");
-                 // commented out due to: https://github.com/fabric8io/fabric8-planner/issues/762
+                 // commented out due to: https://github.com/fabric8-ui/fabric8-planner/issues/762
                });
 
            });

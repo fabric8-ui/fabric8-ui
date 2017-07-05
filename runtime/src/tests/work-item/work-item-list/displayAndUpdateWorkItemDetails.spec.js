@@ -97,7 +97,7 @@ var waitTime = 30000;
 
 /* Verify that edits made to a workitem in the detail page, if cancelled, are discarded */
 
-//https://github.com/fabric8io/fabric8-planner/issues/1852 Bug 
+//https://github.com/fabric8-ui/fabric8-planner/issues/1852 Bug 
  it('should cancel edits to the workitem through its detail page - desktop.', function() {
     testSupport.setBrowserMode('desktop');
 
@@ -133,7 +133,7 @@ var waitTime = 30000;
   });
 
   /* Edit with blank title - Mobile Should show validation message */
-  // https://github.com/fabric8io/fabric8-planner/issues/1853 Bug
+  // https://github.com/fabric8-ui/fabric8-planner/issues/1853 Bug
     it('Edit with blank title - Mobile Should show validation message. -phone', function() {
 
       /* Create a new workitem */

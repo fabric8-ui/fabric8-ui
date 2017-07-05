@@ -80,7 +80,7 @@ describe('Drag and drop Test', function () {
         //browser.wait(until.textToBePresentInElement(page.workItemByNumber(7), "Title Text 0"), waitTime);
         //expect(page.workItemTitle(page.workItemByNumber(7))).toBe("Title Text 0");
         // Test commented out pending resolution of PhantomJS/Chrome/Firefox/Protractor/Angular bugs
-        // see: https://github.com/fabric8io/fabric8-planner/issues/554
+        // see: https://github.com/fabric8-ui/fabric8-planner/issues/554
     });
 
   });

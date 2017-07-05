@@ -44,7 +44,7 @@ describe('Basic filter workitems by assignee Test', function () {
     //browser.wait(until.presenceOf(element(by.id("this-is-not-here"))), constants.WAIT, 'Failed to find active filter');  
 
     /* Test fails with PhantomJS due to this issue:
-    https://github.com/fabric8io/fabric8-planner/issues/319#issuecomment-274175439 */
+    https://github.com/fabric8-ui/fabric8-planner/issues/319#issuecomment-274175439 */
 
     page.clickWorkItemFilterPulldown();
     page.clickFilterAssignToMe();
@@ -53,7 +53,7 @@ describe('Basic filter workitems by assignee Test', function () {
   });
 
   // TDO - Add more tests after enhancement for dynamic refresh of filters is implemented
-  // see: https://github.com/fabric8io/fabric8-planner/issues/791
+  // see: https://github.com/fabric8-ui/fabric8-planner/issues/791
 });
 
 /* Create and assign a new workitem */

@@ -78,7 +78,7 @@ var createWorkItem = function(theText) {
    browser.wait(until.visibilityOf(detailPage.workItemTitleSaveIcon), waitTime, 'Failed to find workItemList');
    detailPage.clickWorkItemTitleSaveIcon();
 
-// Commenting out due to: https://github.com/fabric8io/fabric8-planner/issues/1342
+// Commenting out due to: https://github.com/fabric8-ui/fabric8-planner/issues/1342
 //   detailPage.clickWorkItemDetailDescription();
 //   browser.wait(until.visibilityOf(detailPage.workItemDetailDescription), waitTime, 'Failed to find workItemList');
 //   detailPage.setWorkItemDetailDescription (theText, false);

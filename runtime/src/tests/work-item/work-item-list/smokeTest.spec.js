@@ -67,7 +67,7 @@ describe('Work item list', function () {
 
         /* The attempt to delete the workitem shoudl be blocked by the UI
            but this is not implemented in the UI -  see issue:
-           https://github.com/fabric8io/fabric8-planner/issues/1621
+           https://github.com/fabric8-ui/fabric8-planner/issues/1621
            TODO - The test will be expanded to verify that an error is raised once
            the UI is updated to trap the deletion attempt */
 //        page.clickWorkItemPopUpDeleteConfirmButton().then(function() {

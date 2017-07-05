@@ -111,7 +111,7 @@ describe('Work board tests :: ', function () {
 
   it( 'Verify On change filters types represent correct data -desktop ', function() {
         var list = ['Planner Item','User Story'];
-        //Few filters are pending due to : https://github.com/fabric8io/fabric8-planner/issues/1255
+        //Few filters are pending due to : https://github.com/fabric8-ui/fabric8-planner/issues/1255
       //  var list = ['User Story','Value Proposition','Fundamental','Experience','Scenario','Feature','Bug','Planner Item'];
        for (var i=0;i<list.length;i++){
             boardPage.clickFilterWITButton();

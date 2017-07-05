@@ -2,7 +2,7 @@
 
 image:https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-planner-build-master[Jenkins, link="https://ci.centos.org/view/Devtools/job/devtools-fabric8-planner-build-master/lastBuild/"]
 image:https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-planner-npm-publish-build-master[Jenkins, link="https://ci.centos.org/view/Devtools/job/devtools-fabric8-planner-npm-publish-build-master/lastBuild/"]
-image:https://codecov.io/gh/fabric8io/fabric8-planner/branch/master/graph/badge.svg[Codecov.io, link="https://codecov.io/gh/fabric8io/fabric8-planner"]
+image:https://codecov.io/gh/fabric8-ui/fabric8-planner/branch/master/graph/badge.svg[Codecov.io, link="https://codecov.io/gh/fabric8-ui/fabric8-planner"]
 image:https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic%20release-b4d455.svg[Semantic Release, link="https://github.com/semantic-release/semantic-release"]
 
 **Fabric8 Planner is a task planner and issue tracker front-end for openshift.io**
@@ -14,11 +14,11 @@ testing and experimental use, a minimal runtime is part of the Planner repositor
 
 == Running the Planner
 
-The Planner can not be run by itself as it is an Angular component library. But 
-for testing purposes, a minimal runtime implementation is provided in the `runtime` 
+The Planner can not be run by itself as it is an Angular component library. But
+for testing purposes, a minimal runtime implementation is provided in the `runtime`
 directory. To run the minimal runtime, follow the steps in *`runtime/README.adoc`*.
 
-=== Quickstart 
+=== Quickstart
 
 To quickly run the provided minimal Runtime with the Planner, simply run
 
@@ -27,7 +27,7 @@ To quickly run the provided minimal Runtime with the Planner, simply run
 > NOTE: To run the script on macOS, you will need to have `gnu-getopt` installed, run `brew install gnu-getopt`, and set it in your PATH
  `echo 'export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"' >> ~/.zshrc`
 
-This will run the Planner using the minimal Runtime and a mock database. The service 
+This will run the Planner using the minimal Runtime and a mock database. The service
 will be available on *`localhost:8080`*
 
 === Running the Unit Tests
@@ -38,8 +38,8 @@ To run the linter, build validator, and unit tests use:
 
 == Other Useful Scripts and Tasks
 
-The Planner uses `gulp` as the build tool and provides frequent used tasks as `npm` 
-tasks as well. The *`package.json`* file's `scripts:` section lists all the tasks available. 
+The Planner uses `gulp` as the build tool and provides frequent used tasks as `npm`
+tasks as well. The *`package.json`* file's `scripts:` section lists all the tasks available.
 
 Here are some of the most useful/frequently used scripts and `gulp` tasks you may need to run:
 
@@ -113,18 +113,18 @@ The above integration can be run with the provided launcher script in `scripts/r
 There are two options available when using the script:
 
 1. Running the Planner using te standalone minimal Runtime and an inmemory mock database.
-2. Running the Planner using an external Runtime that uses the procedure above for 
+2. Running the Planner using an external Runtime that uses the procedure above for
    integration (this can be used out-of-the-box with the `fabric8-ui? project)
 
 Using the minimal Runtime and a mock database (option 1) run:
 
  $ scripts/run-planner.sh --standalone
- 
+
 Using an external Runtime (option 1) run:
 
- $ scripts/run-planner.sh 
+ $ scripts/run-planner.sh
 
-The paths for the runtimes can be configured using commandline arguments. See 
+The paths for the runtimes can be configured using commandline arguments. See
 `scripts/run-planner.sh` for further documentation.
 
 == CSS and SASS
