@@ -61,10 +61,10 @@
     "openshift",
     "openshiftio"
   ],
-  "homepage": "https://github.com/fabric8io/fabric8-planner",
+  "homepage": "https://github.com/fabric8-ui/fabric8-planner",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fabric8io/fabric8-planner.git"
+    "url": "https://github.com/fabric8-ui/fabric8-planner.git"
   },
   "bugs": {
     "url": "https://github.com/fabric8-ui/fabric8-planner/issues"
