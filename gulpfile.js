@@ -46,7 +46,7 @@ function updateWatchDist() {
 // transpiles a given LESS source set to CSS, storing results to libraryDist.
 function transpileLESS(src, debug) {
   var opts = {
-    // paths: [ path.join(__dirname, 'less', 'includes') ],
+    // paths: [ path.join(__dirname, 'less', 'includes') ], //THIS NEEDED FOR REFERENCE
   }
   return gulp.src(src)
     .pipe(sourcemaps.init())

@@ -16,7 +16,7 @@
       margin: 0;
     }
     .wi-type-icon {
-      padding: 0px 6px;
+      padding: 0 6px; // padding-top,bottom:0 required here
       font-size: 1px;
     }
     .user-avatar {
@@ -38,7 +38,7 @@
       span {
         display: block;
         padding: 1px 10px;
-        border: 1px transparent solid;
+        .Border(1px, solid, transparent);
         white-space: nowrap;
         &:hover {
           border-color: @color-pf-blue-200;

@@ -8,12 +8,14 @@
   >main {
     height: 100%;
     overflow: hidden;
-    >aside.side-panel-wrap {
-      width: 340px;
-      height: 100%;
-      float: left;
-      overflow-x: hidden;
-      background-color: @color-pf-black-900;
+    >aside {
+      &.side-panel-wrap {
+        width: 340px;
+        height: 100%;
+        float: left;
+        overflow-x: hidden;
+        background-color: @color-pf-black-900;
+      }
     }
     >section {
       height: 100%;
@@ -30,7 +32,7 @@
               &:first { border-left: none; }
             }
             .toolbar-pf-action-right {
-              .pficon-add-circle-o { &:extend(.with-color-blue);}
+              .pficon-add-circle-o { color: @color-pf-blue-400;}
             }
           }
           // ensure icons dont fold around inputs
@@ -44,7 +46,7 @@
               //HACK:prevents caret icon from folding to a new line
               >input {  margin-right: -20px; }
               //HACK:positions the caret in right margin are of input
-              >span.caret::before {
+              >.caret::before {
                 z-index: 2;
                 display: inline-block;
                 width: 15px;

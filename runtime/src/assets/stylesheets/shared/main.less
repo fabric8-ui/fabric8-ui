@@ -14,12 +14,12 @@ body {
   text-overflow: ellipsis;
 }
 .left-truncate {
+  position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
   text-overflow: clip;
   white-space: nowrap;
   background-color: @color-pf-white;
-  &:extend(.posRel);
   &:before {
     position: absolute;
     z-index: 1;
@@ -39,13 +39,13 @@ body {
     background-color: inherit;
     &:before {
       position: absolute;
+      display: inline-block;
       z-index: 200;
       left: -8px;
       width: 12px;
       height: 24px;
       background-color: inherit;
       content: '';
-      &:extend(.dib);
     }
   }
 }
@@ -60,13 +60,5 @@ body {
 .textCenter { text-align: center; }
 .posRel { position: relative; }
 
-@media (max-width: @grid-float-breakpoint) {
-  .mobdn { display: none; }
-  .list-view-pf {
-    .list-group-item-heading {
-        // font-size: 12px;
-    }
-  }
-}
 @import '_layout';
 @import '_overrides-for-patternfly';

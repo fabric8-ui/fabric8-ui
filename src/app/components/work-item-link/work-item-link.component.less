@@ -14,14 +14,11 @@
     border-top-color: @color-pf-black-200;
     li {
       &.toggle-icon {
+        display: inline-block;
         width: 40px;
         padding-top: 9px;
         padding-bottom: 9px;
-        &:extend(.dib);
-        &:extend(.textCenter);
-      }
-      a {
-        padding: 13px 15px;
+        text-align: center;
       }
       a { padding: 13px 15px; }
       &:nth-child(2) {
@@ -45,7 +42,7 @@
     .link-content-create-link {
       padding-top: 50px;
       padding-bottom: 50px;
-      &:extend(.textCenter);
+      text-align: center;
       .add-circle-icon {
         font-size: 50px;
         color: @color-pf-black-500;
@@ -118,9 +115,9 @@
         cursor: pointer;
         &:hover { background-color: @color-pf-black-200; }
         .link-title {
+          display: inline-block;
           max-width: 95%;
           &:extend(.truncate);
-          &:extend(.dib);
         }
         a { color: @color-pf-black-700;
           &:hover { color: @color-pf-blue;

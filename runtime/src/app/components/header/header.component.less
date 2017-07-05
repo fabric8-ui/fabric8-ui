@@ -51,7 +51,7 @@
      height: 100% !important;
     }
   }
-  span.nav-item-text {
+  .nav-item-text {
     position: relative;
     top: 0;
     display: inline-block !important;
@@ -59,18 +59,16 @@
     font-size: @pf-custom-navbar-font-size;
     font-weight: lighter !important;
     line-height: @pf-custom-navbar-item-height !important;
-    border: solid @pf-custom-navbar-debug-border;
-    border-color: orange !important;
+    .Border(@pf-custom-navbar-debug-border, solid, orange)!important;
   }
-  span.nav-item-icon {
+  .nav-item-icon {
     position: relative;
     height: 100%;
     line-height: @pf-custom-navbar-icon-height !important;
     min-width: @pf-custom-navbar-icon-min-width;
     display: inline-block !important;
     vertical-align: top !important;
-    border: solid @pf-custom-navbar-debug-border;
-    border-color: darkorange;
+    .Border(@pf-custom-navbar-debug-border, solid, darkorange)!important;
     >img {
       position: relative;
       display: inline-block !important;
@@ -78,8 +76,7 @@
       min-width: @pf-custom-navbar-icon-height;
       padding: 0;
       margin: auto;
-      border: solid @pf-custom-navbar-debug-border;
-      border-color: lime !important;
+      .Border(@pf-custom-navbar-debug-border, solid, lime)!important;
     }
     >span {
       &.nav-icon {
@@ -90,8 +87,7 @@
         margin: 0;
         line-height: 100%;
         text-align: center;
-        border: solid @pf-custom-navbar-debug-border;
-        border-color: lime !important;
+        .Border(@pf-custom-navbar-debug-border, solid, lime)!important;
         &:before {
           position: relative;
           width: 100%;
