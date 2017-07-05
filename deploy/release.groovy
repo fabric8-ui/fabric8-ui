@@ -72,7 +72,6 @@ def cd (b){
     '''
             }
         }
-        sh './scripts/run-functests.sh'
     }
 
     stage('release'){
