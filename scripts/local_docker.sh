@@ -1,14 +1,14 @@
 #!/bin/bash
 
-docker build -t almighty-ui-builder -f ./deploy/Dockerfile.builder .
-mkdir -p runtime/dist && docker run --detach=true --name=almighty-ui-builder -e "API_URL=http://demo.api.almighty.io/api/" -t -v $(pwd)/runtime/dist:/dist:Z almighty-ui-builder
-docker exec almighty-ui-builder npm install
-docker exec almighty-ui-builder ./run_unit_tests.sh
+docker build -t fabric8-ui-builder -f ./deploy/Dockerfile.builder .
+mkdir -p runtime/dist && docker run --detach=true --name=fabric8-ui-builder -e "API_URL=http://demo.api.openshift.io/api/" -t -v $(pwd)/runtime/dist:/dist:Z fabric8-ui-builder
+docker exec fabric8-ui-builder npm install
+docker exec fabric8-ui-builder npm run test:unit
 
 if [[ "$1" == "functionalTests" ]]; then
   echo "Running functional tests..."
-  #docker exec almighty-ui-builder ./scripts/run-functests.sh
+  docker exec fabric8-ui-builder ./scripts/run-functests.sh
 fi
 
-docker exec -u root almighty-ui-builder cp -r /home/almighty/dist /
-docker build -t almighty-ui-deploy -f ./deploy/Dockerfile.deploy .
+docker exec -u root fabric8-ui-builder cp -r /home/fabric8/fabric8-planner/dist /
+docker build -t fabric8-ui-deploy -f ./deploy/Dockerfile.deploy .
