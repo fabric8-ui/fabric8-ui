@@ -5,43 +5,60 @@ image:https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-planner-npm-pu
 image:https://codecov.io/gh/fabric8-ui/fabric8-planner/branch/master/graph/badge.svg[Codecov.io, link="https://codecov.io/gh/fabric8-ui/fabric8-planner"]
 image:https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic%20release-b4d455.svg[Semantic Release, link="https://github.com/semantic-release/semantic-release"]
 
-**Fabric8 Planner is a task planner and issue tracker front-end for openshift.io**
+:icons:
+:toc: macro
+:toc-title:
+:toclevels: 1
 
-It uses https://github.com/almighty/almighty-core[Fabric8 Work Item Tracker]
-as the back-end. The Planner project itself only provides a component library
-is being used by other applications to provide a task planning frontend. For
-testing and experimental use, a minimal runtime is part of the Planner repository.
+toc::[]
+
+== Overview
+Fabric8 Planner is a task planner and the issue tracker front-end for link:https://openshift.io/[openshift.io].
+It uses the link:https://github.com/fabric8-services/fabric8-wit[Fabric8 Work Item Tracker] as the back-end.
+
+The Planner project provides a component library which is used by other applications to provide a task planning front-end.
 
 == Running the Planner
 
-The Planner can not be run by itself as it is an Angular component library. But
-for testing purposes, a minimal runtime implementation is provided in the `runtime`
-directory. To run the minimal runtime, follow the steps in *`runtime/README.adoc`*.
+The Planner is available as an npm package. It can not be run by itself as it is an Angular component library.
+
+However, for development and testing purpose, a minimal runtime environment is available in the xref:../runtime[*_runtime_*] directory. So you can run Planner either as a minimal Standalone component or as an Integrated component using an external webapp like the *_fabric8-ui_*. Typically, you would want to develop in the Standalone mode and test your changes in the Integrated mode.
 
 === Quickstart
 
-To quickly run the provided minimal Runtime with the Planner, simply run
+The Planner build can be quickly run using the xref:../scripts/run-planner.sh[launcher script].
 
- $ scripts/run-planner.sh --standalone
+You can use the launcher script to run the Planner either as a Standalone component or as an Integrated component using an external webapp like the fabric8-ui.
 
-> NOTE: To run the script on macOS, you will need to have `gnu-getopt` installed, run `brew install gnu-getopt`, and set it in your PATH
- `echo 'export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"' >> ~/.zshrc`
+- To run a minimal runtime implementation of the Planner using an in-memory mock database use:
++
+----
+$ scripts/run-planner.sh --standalone
+----
+You can access the service on *`localhost:8080`*
 
-This will run the Planner using the minimal Runtime and a mock database. The service
-will be available on *`localhost:8080`*
+- To run the Planner in an integrated environment using an external webapp, use:
++
+----
+$ scripts/run-planner.sh
+----
++
+Note that the above command can be used out-of-the-box with the *_fabric8-ui_* project.
 
-=== Running the Unit Tests
+The paths for the runtimes can be configured using command line arguments.
+See the xref:../scripts/run-planner.sh[launcher script] for further information.
 
-To run the linter, build validator, and unit tests use:
+NOTE: To run the script on macOS, install `gnu-getopt`, run `brew install gnu-getopt`, and set it in your PATH:
+ `echo 'export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"' >> ~/.zshrc`.
 
- $ gulp test:unit
+For information on running the build manually see xref:..docs/building_planner.adoc[Building the Planner Component Library] documentation.
 
 == Other Useful Scripts and Tasks
 
-The Planner uses `gulp` as the build tool and provides frequent used tasks as `npm`
-tasks as well. The *`package.json`* file's `scripts:` section lists all the tasks available.
+The Planner uses `gulp` as the build tool and provides frequently used tasks like `npm` tasks as well.
+The `scripts` section of the xref:../package.json [*_package.json_*] file lists all the tasks available.
 
-Here are some of the most useful/frequently used scripts and `gulp` tasks you may need to run:
+The following table lists some of the most useful or frequently used scripts and `gulp` tasks you may need to run:
 
 [cols="1,2,4", options="header"]
 |===
@@ -67,186 +84,16 @@ Here are some of the most useful/frequently used scripts and `gulp` tasks you ma
 
 |Continuous Build
 |`$ npm run watch:library`
-|Runs the build in watch mode, watching changes and rebuilding source
+|Runs the build in watch mode, watches for changes and rebuilds source
 |===
 
-== Building the Component Library
+== Documentation
+The following documentation is available in the *_docs_* directory:
 
-=== Production build
+- xref:../docs/building_planner.adoc[Building the Planner]: Provides information on manually building the Planner in Standalone, Integrated, and Production environments.
+- xref:../docs/technology_stack.adoc[Technology Stack]: Lists the the technology stack used by Planner.
+- xref:../docs/testing.adoc[Testing]: Covers the tests you can run on Planner.
 
-To generate production build, set API URL and run build script as follows:
+== Contributing
 
-----
-$ npm run build
-----
-
-The created library will be placed in `dist`.
-
-IMPORTANT: *You shouldn't ever publish the build manually,* instead you should
-let the CD pipeline do a semantic release.
-
-=== Development Build
-
-To build fabric8-planner as an npm library and embed it into a webapp such as
-fabric8-ui, you should:
-
-Step 1: Run `npm run watch:library` in the source directory::
-This will build fabric8-planner as a library and then set up a watch task to
-rebuild any ts, html and scss files you change.
-
-Step 2: Run `npm link <path to fabric8-planner>/dist-watch`::
-In the webapp into which you are embedding. This will create a symlink from
-`node_modules/fabric8-planner` to the `dist-watch` directory and install that
-symlinked node module into your webapp.
-
-Step 3: Run your webapp in development mode::
-Make sure you have a watch on `node_modules/fabric8-planner` enabled. You will
-have access to both JS and SASS sourcemaps if your webapp is properly setup.
-
-NOTE: `fabric8-ui` is setup to do reloading and sourcemaps automatically when you
-run `npm start`.
-
-=== Development Build using the Launcher Script
-
-The above integration can be run with the provided launcher script in `scripts/run-planner.sh`.
-
-There are two options available when using the script:
-
-1. Running the Planner using te standalone minimal Runtime and an inmemory mock database.
-2. Running the Planner using an external Runtime that uses the procedure above for
-   integration (this can be used out-of-the-box with the `fabric8-ui? project)
-
-Using the minimal Runtime and a mock database (option 1) run:
-
- $ scripts/run-planner.sh --standalone
-
-Using an external Runtime (option 1) run:
-
- $ scripts/run-planner.sh
-
-The paths for the runtimes can be configured using commandline arguments. See
-`scripts/run-planner.sh` for further documentation.
-
-== CSS and SASS
-
-fabric8-planner uses SASS for it's stylesheets. It also uses the Angular emulation
-of the shadow dom, so you will normally want to place your styles in the
-`.component.scss` file next to the html and the typescript.
-
-If you find yourself wanting to create a shared style that multiple components will
-use, then we recommend adding it as a mixin to
-`src/assets/stylesheets/_planner-mixins.scss`. The mixins are imported in to every
-`.component.scss` file. You can then create a real class by doing something like
-
-    .my-class {
-      @include my-class;
-    }
-
-We use mixins to avoid polluting components with uncessary style classes, and to avoid
-an explosion of shared files.
-
-The `src/assets/stylesheets/` directory includes a `shared` directory. These are
-shared global styles that we will refactor out in to a shared library at some point.
-Only update these styles if you are making a truly global style, and are going to
-synchronise your changes across all the various UI projects.
-
-== Contributing to the app
-
-The development guide is part of the link:./CONTRIBUTING.adoc[contributors'
-instructions]. Please check it out in order to contribute to this project.
-
-
-=== Commit Message Format
-
-A commit message consists of a **header**, **body** and **footer**.  The header has a **type**, **scope** and **subject**:
-
-```
-<type>(<scope>): <subject>
-<BLANK LINE>
-<body>
-<BLANK LINE>
-<footer>
-```
-
-The **header** is mandatory and the **scope** of the header is optional.
-
-Any line of the commit message cannot be longer 100 characters! This allows the message to be easier
-to read on GitHub as well as in various git tools.
-
-=== Revert
-
-If the commit reverts a previous commit, it should begin with `revert: `, followed by the header of the reverted commit. In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
-
-=== Type
-
-If the prefix is `fix`, `feat`,  or `perf`, it will always appear in the changelog.
-
-Other prefixes are up to your discretion. Suggested prefixes are `docs`, `chore`, `style`, `refactor`, and `test` for non-changelog related tasks.
-
-=== Scope
-
-The scope could be anything specifying place of the commit change. For example `$location`,
-`$browser`, `$compile`, `$rootScope`, `ngHref`, `ngClick`, `ngView`, etc...
-
-=== Subject
-
-The subject contains succinct description of the change:
-
-* use the imperative, present tense: "change" not "changed" nor "changes"
-* don't capitalize first letter
-* no dot (.) at the end
-
-=== Body
-
-Just as in the **subject**, use the imperative, present tense: "change" not "changed" nor "changes".
-The body should include the motivation for the change and contrast this with previous behavior.
-
-=== Footer
-
-The footer should contain any information about **Breaking Changes** and is also the place to
-reference GitHub issues that this commit **Closes**.
-
-**Breaking Changes** should start with the word `BREAKING CHANGE:` with a space or two newlines. The rest of the commit message is then used for this.
-
-A detailed explanation can be found in this [document][commit-message-format].
-
-Based on https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit
-
-[commit-message-format]: https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#
-
-
-=== Examples
-
-Appears under "Features" header, pencil subheader:
-
-```
-feat(pencil): add 'graphiteWidth' option
-```
-
-Appears under "Bug Fixes" header, graphite subheader, with a link to issue #28:
-
-```
-fix(graphite): stop graphite breaking when width < 0.1
-
-Closes #28
-```
-
-Appears under "Performance Improvements" header, and under "Breaking Changes" with the breaking change explanation:
-
-```
-perf(pencil): remove graphiteWidth option
-
-BREAKING CHANGE: The graphiteWidth option has been removed. The default graphite width of 10mm is always used for performance reason.
-```
-
-The following commit and commit `667ecc1` do not appear in the changelog if they are under the same release. If not, the revert commit appears under the "Reverts" header.
-
-```
-revert: feat(pencil): add 'graphiteWidth' option
-
-This reverts commit 667ecc1654a317a13331b17617d973392f415f02.
-```
-
-=== Commitizen - craft valid commit messages
-
-Commitizen helps you craft correct commit messages. Install it using `npm install commitizen -g`. Then run `git cz` rather than `git commit`.
+All contributions are welcome, if you want to contribute to this project, ensure you follow the xref:../CONTRIBUTING.adoc[Contribution Guidelines].

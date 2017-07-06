@@ -1,0 +1,65 @@
+= Testing Planner
+:icons:
+:toc: macro
+:toc-title:
+:toclevels: 1
+
+toc::[]
+
+== Overview
+The following sections describe the tests used in Planner.
+
+== Unit Tests
+
+To run the linter, build validator, and unit tests, use:
+----
+$ gulp test:unit
+----
+
+== Functional Tests
+
+* To run all the functional tests, in the *_runtime_* directory, run:
++
+----
+$ npm run test:func
+----
+* To run only the *smoke* functional tests, in the *_runtime_* directory, run:
++
+----
+npm run test:funcsmoke
+----
+
+=== Building for Functional Tests or Standalone Production
+
+1. Build the Planner library. In the *_planner_* root directory run:
++
+----
+npm run build
+----
+2. Link the Planner library to runtime. Change directory to *_runtime_* and run:
++
+----
+npm link ../dist
+----
+3. Build the runtime using:
++
+----
+npm run build
+----
++
+The runtime is now available in the *_runtime/dist_* directory.
+
+== Local tests
+
+To run tests like those done in the CI run the following script in the *_Planner_* directory:
+
+----
+$ ./scripts/local_docker.sh
+----
+
+This script generates a docker image that you could use to run the planner within a container.
+
+Optionally, you could also run the functional tests by passing `functionalTests` as an argument to the above script:
+----
+$ ./scripts/local_docker.sh functionalTests
+----

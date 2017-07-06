@@ -1,0 +1,41 @@
+= Technology Stack used by Planner
+:icons:
+:toc: macro
+:toc-title:
+:toclevels: 1
+
+toc::[]
+
+== Overview
+The following sections describe the technology stack used by Planner.
+
+== Angular 4
+<TBD>
+
+== CSS and SASS
+<WIP, to be changed to PF CSS, Less>
+
+Fabric8-planner uses SASS for it's stylesheets. It also uses the Angular emulation
+of the shadow dom, hence it is recommended to place your styles in the
+*_.component.scss_* file next to the HTML and the TypeScript.
+
+If you want to create a shared style that could be used by multiple components, then we recommend adding it as a mixin to
+*_src/assets/stylesheets/_planner-mixins.scss_*. The mixins are imported into every
+*_.component.scss_* file.
+
+You can then create a real class by doing something like:
+
+    .my-class {
+      @include my-class;
+    }
+
+We use mixins to avoid polluting components with unnecessary style classes, and to avoid
+an explosion of shared files.
+
+The *_src/assets/stylesheets/_* directory includes a *_shared_* directory. These are
+shared global styles which will be refactored into a shared library at some point.
+You can update these styles only if you are making a truly global style, and are going to
+synchronize your changes across all the various UI projects.
+
+== Gulp
+<TBD>

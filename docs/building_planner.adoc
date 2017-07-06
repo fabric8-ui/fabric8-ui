@@ -1,0 +1,141 @@
+= Building the Planner Component Library
+:icons:
+:toc: macro
+:toc-title:
+:toclevels: 1
+
+toc::[]
+
+== Overview
+
+The following sections describe the manual steps to run the Planner in Standalone, Integrated, and Production environments.
+See the xref:../fabric8-planner#quickstart[Quickstart] section of the README for information on using the launcher script to run the Planner build.
+
+Prerequisite::
+
+Before you run the build steps you need to install the npm package as follows:
++
+----
+npm install
+----
+
+== Minimal standalone development environment
+
+The Planner provides you with a minimal standalone runtime for the Planner component library.
+It provides a complete runtime environment alongside a mock in-memory database to run functional tests or experiment with the Planner library.
+
+The following steps describe how you can run the Planner as a minimal standalone:
+
+*To use this with the Planner library:*
+
+. Get the dependencies for Planner. In the *_fabric8-planner_* root directory, run:
++
+----
+npm install
+----
+. Start the library build in watch mode.
++
+----
+npm run watch:library
+----
+. Change directory to *_runtime_* and get the dependencies for planner runtime.
++
+----
+npm install
+----
+. Link the Planner library to the runtime.
++
+----
+npm link ../dist-watch
+----
+. Set the execution environment on build time using the `NODE_ENV` variable.
++
+----
+export NODE_ENV=<mode>
+----
++
+NOTE: If you want to run the application in development mode, you can skip this step, as *`NODE_ENV`* takes `development` mode as the default.
++
+You can choose from the following modes as required:
+
+.. *Development mode (default):* `export NODE_ENV=development`
++
+Use this mode to contribute to the code base, it loads the application with local live data. Since this is the default mode,  you need to use this command only if you want to switch from another mode to development mode.
+
+.. *In-memory mode:* `export NODE_ENV=inmemory`
++
+Use this mode to try out or test the application, it loads the application with mock data.
+.. *Production mode:* `export NODE_ENV=production`
++
+Use this mode to deploy the application.
+
+. Build and run the runtime application.
++
+----
+npm start
+----
+. Point your browser to http://localhost:8080/.
++
+IMPORTANT: If you use `inmemory` mode, then after running
+the application, ensure that you
+http://localhost:8088/?token_json=%7B%22access_token%22%3A%22somerandomtoken%22%2C%22expires_in%22%3A1800%2C%22refresh_expires_in%22%3A1800%2C%22refresh_token%22%3A%22somerandomtoken%22%2C%22token_type%22%3A%22bearer%22%7D[visit this URL] which includes the authenticated/logged-in user token,
+to load it up with mock data.
+
+== Integrated environment
+
+The following steps describe how you can build the Fabric8-planner as an npm library and embed it into a webapp, such as the *_fabric8-ui_*.
+
+NOTE: You may need to have root access to run the following commands.
+
+. Build the fabric8-planner as a library and set up a watch task to rebuild any TS, HTML and SCSS files you change. In the *_fabric8-planner_* root directory, run:
++
+----
+npm run watch:library
+----
+
+.  Change directory to the webapp into which you want to embed the Planner library and ensure that you have installed the npm package.
++
+----
+npm install
+----
++
+For example, if you want to embed the Planner library into the *_fabric8-ui_* webapp, change directory to *_fabric8-ui_* and run the above command.
+
+. Create a symlink from the *_node_modules/fabric8-planner_* directory to the *_dist-watch_* directory and install that
+symlinked node module into your webapp.
++
+----
+npm link/<path to fabric8-planner>/dist-watch
+----
+
+. Run your webapp in development mode.
++
+----
+npm start
+----
++
+You can access both JS and SASS sourcemaps if your webapp is properly setup.
++
+NOTE: The *_fabric8-ui_* is set up to reload and provide access to sourcemaps automatically when you
+run `npm start`.
+
+
+== Production environment
+
+You can use the production environment to build a production package equivalent version.
+
+To generate the production build, set the API URL and run the build script as follows:
+
+----
+$ npm run build
+----
+
+The created library or the build output is placed in the *_fabric8-planner/dist_* directory.
+
+IMPORTANT: *Do not publish the build manually*. It is recommended to let the CD pipeline do a semantic release.
+
+*To create a docker image,* run this command immediately after the production build completion:
+
+----
+$ docker build -t fabric8-planner-deploy -f Dockerfile.deploy .
+----
