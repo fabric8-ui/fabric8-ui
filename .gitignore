@@ -40,6 +40,7 @@ testem.log
 functional_tests.log
 unit_tests.log
 /linters
+browser_logs.log
 
 # e2e
 /e2e/*.js
