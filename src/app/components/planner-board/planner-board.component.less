@@ -28,21 +28,23 @@
         border-bottom-color: @color-pf-black-300 !important;
         .toolbar-pf { border-color: transparent;
           .toolbar-pf-actions { border-color: transparent;
-            .form-group { border-right: none;
-              &:first { border-left: none; }
+            .form-group { border-right: 0;
+              &:first { border-left: 0; }
             }
             .toolbar-pf-action-right {
               .pficon-add-circle-o { color: @color-pf-blue-400;}
             }
           }
           // ensure icons dont fold around inputs
-          .wi-input-filter-dropdown { position: relative;
+          .wi-input-filter-dropdown {
+            position: relative;
             .wi-input-filter-dropdown-list {
               top: 25px;
               width: 100%;
               padding: 2px;
             }
-            >div { position: relative;
+            >div {
+              position: relative;
               //HACK:prevents caret icon from folding to a new line
               >input {  margin-right: -20px; }
               //HACK:positions the caret in right margin are of input
@@ -95,7 +97,7 @@
         padding: 0;
         background: @color-pf-black-300;
         .Border(1px, solid, @color-pf-black-300);
-        .boardlaneWrapper{
+        .boardlaneWrapper {
           width: 100%;
           .calc(height; '100% - 33px');
           padding-right: 15px;

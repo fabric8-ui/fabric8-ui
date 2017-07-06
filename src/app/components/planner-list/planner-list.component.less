@@ -26,8 +26,8 @@
         border-bottom-color: @color-pf-black-300 !important;
         .toolbar-pf { border-color: transparent;
           .toolbar-pf-actions { border-color: transparent;
-            .form-group { border-right: none;
-              &:first { border-left: none; }
+            .form-group { border-right: 0;
+              &:first { border-left: 0; }
             }
             .toolbar-pf-action-right {
               .pficon-add-circle-o { color: @color-pf-blue-400;}
@@ -69,7 +69,7 @@
     overflow-y: scroll;
     border-top: 1px solid;
     border-top-color: @color-pf-black-300;
-    >.list-group { border-top-width:0 !important; }
+    >.list-group { border-top-width: 0 !important; }
   }
   .work-item-list-quick-add {
     position: fixed;
@@ -89,7 +89,7 @@
     color: #363636;
     text-decoration: none;
     cursor: pointer;
-    &:hover { box-shadow: 0 1px 6px rgba(3,3,3,.175); }
+    &:hover { box-shadow: 0 1px 6px rgba(3, 3, 3, .175); }
   }
 }
 
@@ -108,4 +108,3 @@
   align-items: inherit;
 }
 .node-drop-slot.is-dragging-over { height: 66px!important; }
-

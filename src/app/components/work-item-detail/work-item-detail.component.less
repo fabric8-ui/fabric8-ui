@@ -16,7 +16,7 @@
   background: @color-pf-white;
   border-left: 1px solid;
   border-left-color: (darken(@color-pf-white, 20%));
-  box-shadow: -4px 0px 2px -2px @color-pf-black-300;
+  box-shadow: -4px 0 2px -2px @color-pf-black-300;
   label { font-weight: 400; }
 }
 .detail-container { width: 100%;
@@ -74,7 +74,7 @@
   }
   .wi-detail-title-blk {
     .detail-title {
-      max-width: calc(100% - 25px);
+      max-width: calc(100%-25px);
       padding-left: 2px;
       font-weight: 500;
       line-height: 1.5;
@@ -223,7 +223,7 @@
     min-width: 200px;
     margin-top: -5px;
     background-color: @color-pf-white;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
     .borderRadius(1px);
     .Border(1px, solid, @color-pf-black-500);
     .user-search-icon {
@@ -237,7 +237,7 @@
       width: 100%;
       height: 30px;
       padding-left: 20px;
-      border: none;
+      border: 0;
       border-bottom: 1px solid;
       border-bottom-color: @color-pf-blue-400;
       outline: none;
@@ -281,7 +281,7 @@
     }
   }
 }
-@media (max-width: @grid-float-breakpoint){
+@media (max-width: @grid-float-breakpoint) {
   /*Toggle the details panel's width and left margin*/
   .detail-container {
     .top-bar {
@@ -290,7 +290,7 @@
       background-color: @color-pf-black;
     }
     .detail-type-dropdown { position: relative; }
-    .wi-state-btn{ padding-top: 0; }
+    .wi-state-btn { padding-top: 0; }
   }
   .detail-panel {
     top: 0;
@@ -304,7 +304,7 @@
     z-index: 9;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, .6);
     .list-container {
       top: 144px;
       left: 50%;

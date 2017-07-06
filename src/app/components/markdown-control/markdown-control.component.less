@@ -12,8 +12,10 @@
 .show-more-state { padding-left: 0;
   &::before { margin-right: 2px; }
 }
-.show-less { max-height: 192px;
-  .detail-text { padding-left: 0;
+.show-less {
+  max-height: 192px;
+  .detail-text {
+    padding-left: 0;
     .detail-text-div-wrap {
       .detail-text-div {
         &.text-editable {
@@ -26,7 +28,7 @@
 }
 .hide { display: none; }
 .arrow-up {
-  &::before{
+  &::before {
     margin-right: 2px;
     content: 'Show More';
   }
@@ -39,14 +41,10 @@
 }
 // rvepx extra margin when code is entered into the text field
 pre { margin: 0; }
-.btn-cancel {
-  // margin-right: 20px;
-}
 .detail-action-btn { width: 40px; }
 .markdown-test-btn-save { margin-right: 10px; }
 .detail-text-wrap {
   padding-left: 0;
-  // margin-left: 20px;
   overflow: hidden;
   .view-switch-btn { margin-bottom: 10px; }
   .detail-text { padding-left: 0;
@@ -61,7 +59,8 @@ pre { margin: 0; }
       border-bottom-color: transparent;
       // sets blue border for the navigation tabs
       // to match border around text field
-      .nav-tabs { border-bottom: none;
+      .nav-tabs {
+        border-bottom: 0;
         li {
           &.active {
             a {
@@ -72,8 +71,8 @@ pre { margin: 0; }
         }
       }
     }
-    .detail-text-div-wrap { background-color: @color-pf-black-150;
-      // margin-left: 20px;
+    .detail-text-div-wrap {
+      background-color: @color-pf-black-150;
       .text-not-found {
         p {
           font-style: italic;
@@ -90,8 +89,8 @@ pre { margin: 0; }
           -webkit-appearance: none;
         }
         &::-webkit-scrollbar-thumb {
-          background-color: rgba(0,0,0,.5);
-          box-shadow: 0 0 1px rgba(255,255,255,.5);
+          background-color: rgba(0, 0, 0, .5);
+          box-shadow: 0 0 1px rgba(255, 255, 255, .5);
           .borderRadius(4px);
         }
         &.text-editable {

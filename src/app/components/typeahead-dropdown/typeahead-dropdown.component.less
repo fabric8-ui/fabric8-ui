@@ -1,6 +1,7 @@
 @import (reference) '../../../assets/stylesheets/_base';
 
-.typeahead-dropdown { padding-left: 0;
+.typeahead-dropdown {
+  padding-left: 0;
   .pointer {
     &:hover { cursor: pointer; }
   }
@@ -20,12 +21,12 @@
     font-size: @font-size-base;
     text-align: left;
     background-color: @color-pf-white;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
     background-clip: padding-box;
     .Border(1px, solid, @color-pf-black-300);
     .borderRadius(1px);
     li {
-      a{
+      a {
         display: block;
         padding: 1px 10px;
         clear: both;
