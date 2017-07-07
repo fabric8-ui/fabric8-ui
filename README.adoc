@@ -22,11 +22,11 @@ The Planner project provides a component library which is used by other applicat
 
 The Planner is available as an npm package. It can not be run by itself as it is an Angular component library.
 
-However, for development and testing purpose, a minimal runtime environment is available in the xref:../runtime[*_runtime_*] directory. So you can run Planner either as a minimal Standalone component or as an Integrated component using an external webapp like the *_fabric8-ui_*. Typically, you would want to develop in the Standalone mode and test your changes in the Integrated mode.
+However, for development and testing purpose, a minimal runtime environment is available in the link:runtime[*_runtime_*] directory. So you can run Planner either as a minimal Standalone component or as an Integrated component using an external webapp like the *_fabric8-ui_*. Typically, you would want to develop in the Standalone mode and test your changes in the Integrated mode.
 
 === Quickstart
 
-The Planner build can be quickly run using the xref:../scripts/run-planner.sh[launcher script].
+The Planner build can be quickly run using the link:scripts/run-planner.sh[launcher script].
 
 You can use the launcher script to run the Planner either as a Standalone component or as an Integrated component using an external webapp like the fabric8-ui.
 
@@ -46,17 +46,17 @@ $ scripts/run-planner.sh
 Note that the above command can be used out-of-the-box with the *_fabric8-ui_* project.
 
 The paths for the runtimes can be configured using command line arguments.
-See the xref:../scripts/run-planner.sh[launcher script] for further information.
+See the link:scripts/run-planner.sh[launcher script] for further information.
 
 NOTE: To run the script on macOS, install `gnu-getopt`, run `brew install gnu-getopt`, and set it in your PATH:
  `echo 'export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"' >> ~/.zshrc`.
 
-For information on running the build manually see xref:..docs/building_planner.adoc[Building the Planner Component Library] documentation.
+For information on running the build manually see link:docs/building_planner.adoc[Building the Planner Component Library] documentation.
 
 == Other Useful Scripts and Tasks
 
 The Planner uses `gulp` as the build tool and provides frequently used tasks like `npm` tasks as well.
-The `scripts` section of the xref:../package.json [*_package.json_*] file lists all the tasks available.
+The `scripts` section of the link:package.json [*_package.json_*] file lists all the tasks available.
 
 The following table lists some of the most useful or frequently used scripts and `gulp` tasks you may need to run:
 
@@ -90,10 +90,10 @@ The following table lists some of the most useful or frequently used scripts and
 == Documentation
 The following documentation is available in the *_docs_* directory:
 
-- xref:../docs/building_planner.adoc[Building the Planner]: Provides information on manually building the Planner in Standalone, Integrated, and Production environments.
-- xref:../docs/technology_stack.adoc[Technology Stack]: Lists the the technology stack used by Planner.
-- xref:../docs/testing.adoc[Testing]: Covers the tests you can run on Planner.
+- link:docs/building_planner.adoc[Building the Planner]: Provides information on manually building the Planner in Standalone, Integrated, and Production environments.
+- link:docs/technology_stack.adoc[Technology Stack]: Lists the the technology stack used by Planner.
+- link:docs/testing.adoc[Testing]: Covers the tests you can run on Planner.
 
 == Contributing
 
-All contributions are welcome, if you want to contribute to this project, ensure you follow the xref:../CONTRIBUTING.adoc[Contribution Guidelines].
+All contributions are welcome, if you want to contribute to this project, ensure you follow the link:CONTRIBUTING.adoc[Contribution Guidelines].

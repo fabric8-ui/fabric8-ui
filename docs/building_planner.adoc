@@ -9,7 +9,7 @@ toc::[]
 == Overview
 
 The following sections describe the manual steps to run the Planner in Standalone, Integrated, and Production environments.
-See the xref:../fabric8-planner#quickstart[Quickstart] section of the README for information on using the launcher script to run the Planner build.
+See the link:../README.adoc#quickstart[Quickstart] section of the README for information on using the launcher script to run the Planner build.
 
 Prerequisite::
 
