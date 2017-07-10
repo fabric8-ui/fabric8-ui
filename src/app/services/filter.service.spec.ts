@@ -226,4 +226,29 @@ describe('Unit Test :: Filter Service', () => {
     );
   })
 
+  /**
+   * Query string to JSON conversion
+   * Method to test - queryToJson
+   */
+  it('should return correct JSON object - 1', () => {
+    expect(filterService.queryToJson('a:b')).toEqual({'OR': [{'a':'b'}]});
+  });
+
+  it('should return correct JSON object - 2', () => {
+    expect(filterService.queryToJson('a:b AND c:d')).toEqual({'AND': [{'a':'b'}, {'c': 'd'}]});
+  });
+
+  it('should return correct JSON object - 3', () => {
+    expect(filterService.queryToJson('a:b AND c:d OR d:e')).toEqual({'OR': [{'AND': [{'a': 'b'}, {'c':'d'}]}, {'d': 'e'}]});
+  });
+
+  it('should return correct JSON object - 4', () => {
+    expect(filterService.queryToJson('a:b OR c:d OR d:e')).toEqual({'OR': [{'a': 'b'}, {'c':'d'}, {'d': 'e'}]});
+  });
+
+  it('should return correct JSON object - 5', () => {
+    expect(filterService.queryToJson('a:b OR (c:d AND d:e AND (l:m OR n:p)) AND f:g'))
+    .toEqual({'OR':[{'a':'b'},{'AND':[{'c':'d'},{'d':'e'},{'OR':[{'l':'m'},{'n':'p'}]},{'f':'g'}]}]});
+  });
+
 });

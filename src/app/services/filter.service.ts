@@ -147,7 +147,7 @@ export class FilterService {
     }
     // else return existingQuery
     else {
-      return existingQuery;
+      return decodeURIComponent(existingQuery);
     }
 
     // Check if the existing query is empty
@@ -171,5 +171,64 @@ export class FilterService {
       return '(' + decodedURL + ' AND ' + processedObject + ')';
     }
   }
+
+
+  /**
+   * Query string to JSON conversion
+   */
+  queryToJson(query: string, first_level: boolean = true): any {
+    let temp = [], p_count = 0, p_start = -1, new_str = '', output = {};
+    for(let i = 0; i < query.length; i++) {
+      if (query[i] === '(') {
+        if (p_start < 0) p_start = i;
+        p_count += 1;
+      }
+      if (p_start === -1) {
+        new_str += query[i];
+      }
+      if (query[i] === ')') {
+        p_count -= 1;
+      }
+      if (p_start >= 0 && p_count === 0) {
+        temp.push(query.substring(p_start + 1, i));
+        new_str += '__temp__';
+        p_start = -1;
+      }
+    }
+    temp.reverse();
+    let arr = new_str.split('OR');
+    if (arr.length > 1) {
+      output['OR'] = arr.map(item => {
+        item = item.trim();
+        if (item == '__temp__') {
+          item = temp.pop();
+        }
+        while (item.indexOf('__temp__') > -1) {
+          item = item.replace('__temp__', temp.pop());
+        }
+        return this.queryToJson(item, false);
+      })
+    } else {
+      arr = new_str.split('AND');
+      if (arr.length > 1) {
+        output['AND'] = arr.map(item => {
+          if (item.trim() == '__temp__') {
+            item = temp.pop();
+          }
+          return this.queryToJson(item, false);
+        })
+      } else {
+        let dObj = {};
+        dObj[new_str.split(':')[0].trim()] = new_str.split(':').slice(1, new_str.split(':').length).join(':').trim();
+        if (first_level) {
+          output['OR'] = [dObj];
+        } else {
+          return dObj;
+        }
+      }
+    }
+    return output;
+  }
+
 
 }

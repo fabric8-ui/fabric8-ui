@@ -13,9 +13,9 @@ module.exports = function(config) {
         plugins: [
             'karma-phantomjs-launcher',
             'karma-jasmine',
-            'karma-typescript', 
-            'karma-coverage', 
-            'karma-mocha', 
+            'karma-typescript',
+            'karma-coverage',
+            'karma-mocha',
             'karma-mocha-reporter'
         ],
 
@@ -57,7 +57,11 @@ module.exports = function(config) {
 
         browsers: ['PhantomJS'],
 
-        singleRun: true,
+        singleRun: true
 
     });
 };
+
+
+// ADD to check logs
+// logLevel: config.LOG_DEBUG
