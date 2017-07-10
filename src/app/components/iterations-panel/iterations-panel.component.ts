@@ -242,7 +242,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   onDrop(args) {
     let [el, target, source, sibling] = args;
-    let iterationId = target.getAttribute('id');
+    let iterationId = target.getAttribute('data-id');
     let workItemId = el.getAttribute('data-id');
     let reqVersion = el.getAttribute('data-version');
     let selfLink = el.getAttribute('data-selfLink');
