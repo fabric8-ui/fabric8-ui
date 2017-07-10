@@ -7,9 +7,9 @@
  * - iPad air - 768x1024
  * - Desktop -  1920x1080
  * 
- * beforeEach will set the mode to phone. Any tests requiring a different resolution will must set explicitly. 
+ * beforeEach will set the mode to desktop. Any tests requiring a different resolution will must set explicitly. 
  * 
- * @author ldimaggi
+ * @author ldimaggi, rgarg
  */
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
@@ -20,9 +20,9 @@ var WorkItemListPage = require('./page-objects/work-item-list.page'),
 describe('Work item list', function () {
   var page, items, browserMode;
   var until = protractor.ExpectedConditions;
+
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
-    browser.ignoreSynchronization = true;
     page = new WorkItemListPage(true);   
     testSupport.setTestSpace(page); 
     
@@ -38,42 +38,42 @@ describe('Work item list', function () {
   });
 
   it('should have the right mock data in the first entry - phone.', function() {
-    expect(page.workItemTitle(page.firstWorkItem)).toBe('Title Text 0');
-  });
-  
+      expect(page.workItemTitle(page.firstWorkItem)).toBe('Title Text 0');
+    });
+    
   it('should have the right mock data in the first entry - desktop.', function() {
-    testSupport.setBrowserMode('desktop');		  
-    expect(page.workItemTitle(page.firstWorkItem)).toBe('Title Text 0');
-  });
+      expect(page.workItemTitle(page.firstWorkItem)).toBe('Title Text 0');
+    });
 
-  it('should create a new workitem - phone.', function () {
-    page.clickWorkItemQuickAdd();
-    page.typeQuickAddWorkItemTitle('Some Title');
-    page.clickQuickAddSave().then(function() {
-      expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title');
-      expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Some Title');
-    });
-  });
- 
- it('should create a new workitem - desktop.', function () {
-    testSupport.setBrowserMode('desktop');	
-    page.clickWorkItemQuickAdd();
-    page.typeQuickAddWorkItemTitle('Some Title');
-    page.clickQuickAddSave().then(function() {
-      expect(page.workItemTitle(page.firstWorkItem)).toBe('Some Title');
-      expect(page.workItemTitle(page.workItemByNumber(0))).toBe('Some Title');
-    });
+  it('should create a new workitem - desktop.', function () {
+      testSupport.setBrowserMode('desktop');	
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle('test workitem');
+      page.clickQuickAddSave().then(function() {
+        expect(page.workItemTitle(page.firstWorkItem)).toBe('test workitem');
+        expect(page.workItemTitle(page.workItemByNumber(0))).toBe('test workitem');
+      });
   });	 
 
   it('should contain right mock data on detail page - desktop.', function() { 
-    testSupport.setBrowserMode('desktop');
-    page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
-      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
-      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
-      expect(detailPage.clickWorkItemDetailTitle.getText()).toBe(workItemMockData.workItemTitle);   
-      expect(detailPage.workItemDetailDescription.getText()).toContain(workItemMockData.workItemDescription);
-      //expect(detailPage.workItemDetailState.getText()).toBe(workItemMockData.workItemState);
-      //detailPage.clickWorkItemDetailCloseButton();
-     });
-   });
+      page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
+        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+        browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
+        expect(detailPage.clickWorkItemDetailTitle.getText()).toBe(workItemMockData.workItemTitle);   
+        expect(detailPage.workItemDetailDescription.getText()).toContain(workItemMockData.workItemDescription);
+        //expect(detailPage.workItemDetailState.getText()).toBe(workItemMockData.workItemState);
+        //detailPage.clickWorkItemDetailCloseButton();
+      });
+  });
+
+  it('should create a new workitem - phone.', function () {
+      testSupport.setBrowserMode('phone');
+      page.clickWorkItemQuickAdd();
+      page.typeQuickAddWorkItemTitle('test workitem');
+      page.clickQuickAddSave().then(function() {
+        expect(page.workItemTitle(page.firstWorkItem)).toBe('test workitem');
+        expect(page.workItemTitle(page.workItemByNumber(0))).toBe('test workitem');
+      });
+  });
+
 });

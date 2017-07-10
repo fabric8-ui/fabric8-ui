@@ -363,21 +363,88 @@ class WorkItemListPage {
   }
 
   /* Workitem filter pulldown */
-  get workItemFilterPulldown () {
-//    return element(by.css(".dropdown.filter-dropdown"));
-    return element(by.css(".filter-option.pull-left"));
+  get workItemFilterFieldsPulldown () {
+    return element(by.css(".filter-fields.dropdown-toggle"));
   }
-  clickWorkItemFilterPulldown () {
-    return this.workItemFilterPulldown.click();
+  clickWorkItemFilterFieldsPulldown () {
+    return this.workItemFilterFieldsPulldown.click();
   }
+
+  get filterByAssignee () {
+    browser.wait(until.presenceOf(element(by.xpath("//li[2]/a[@class='filter-field dropdown-item']"))), constants.WAIT, 'Failed to filter by Assignee Type');
+    return element(by.xpath("//li[2]/a[@class='filter-field dropdown-item']"));
+  }
+  clickFilterByAssignee () {
+    return this.filterByAssignee.click();
+  }
+
+  get filterByArea () {
+    browser.wait(until.presenceOf(element(by.xpath("//li[3]/a[@class='filter-field dropdown-item']"))), constants.WAIT, 'Failed to filter by Area Type');
+    return element(by.xpath("//li[3]/a[@class='filter-field dropdown-item']"));
+  }
+  clickFilterByArea () {
+    return this.filterByArea.click();
+  }
+
+  get filterByWorkitemType () {
+    browser.wait(until.presenceOf(element(by.xpath("//li[4]/a[@class='filter-field dropdown-item']"))), constants.WAIT, 'Failed to filter by Workitem Type');
+    return element(by.xpath("//li[4]/a[@class='filter-field dropdown-item']"));
+  }
+  clickFilterByWorkitemType () {
+    return this.filterByWorkitemType.click();
+  }
+
+  get workItemFilterPulldownDefault () {
+    browser.wait(until.presenceOf(element(by.css("div.pull-left.typeahead-input-container.dropdown-toggle > input.form-control"))), constants.WAIT, 'Failed to find filter-by dropdown list');
+    return element(by.css("div.pull-left.typeahead-input-container.dropdown-toggle > input.form-control"));
+  }
+  clickWorkItemFilterPulldownDefault () {
+    return this.workItemFilterPulldownDefault.click();
+  }
+
+  get workItemFilterPulldownEdited () {
+    browser.wait(until.presenceOf(element(by.css("span.filter-option.pull-left"))), constants.WAIT, 'Failed to find filter-by dropdown list');
+    return element(by.css("span.filter-option.pull-left"));
+  }
+  clickWorkItemFilterPulldownEdited () {
+    return this.workItemFilterPulldownEdited.click();
+  }
+
+  filterBy (val) {
+    browser.wait(until.presenceOf(element(by.xpath(".//*//li//text()[contains(.,' "+val+" ')]/.."))), constants.WAIT, 'Failed to find filter input field');
+    return element(by.xpath(".//*//li//text()[contains(.,' "+val+" ')]/.."));
+  }
+  clickFilterBy (val) {
+    return this.filterBy(val).click();
+  }
+
   /* Access the user assignment filter dropdown - 'assign to me' filter*/
   get filterAssignToMe () {
-    browser.wait(until.presenceOf(element(by.xpath(".//*//li//text()[contains(.,'Assigned to Me')]/.."))), constants.WAIT, 'Failed to find assigment filter');
-    return element(by.xpath(".//*//li//text()[contains(.,'Assigned to Me')]/.."));
+    browser.wait(until.presenceOf(element(by.xpath(".//*//li//text()[contains(.,'(me)')]/.."))), constants.WAIT, 'Failed to find assign to me');
+    return element(by.xpath(".//*//li//text()[contains(.,'(me)')]/.."));
   }
   clickFilterAssignToMe () {
     this.filterAssignToMe.click();
   }
+
+    /* Access the Area assignment filter dropdown - 'Area 0' filter*/
+  get filterAssignArea () {
+    browser.wait(until.presenceOf(element(by.xpath(".//*//li//text()[contains(.,'Area 0')]/.."))), constants.WAIT, 'Failed to find assign Area');
+    return element(by.xpath(".//*//li//text()[contains(.,'Area 0')]/.."));
+  }
+  clickFilterAssignArea () {
+    this.filterAssignArea.click();
+  }
+
+    /* Access the Workitem Type assignment filter dropdown - 'WI Type - Experience' filter*/
+  get filterAssignWIType () {
+    browser.wait(until.presenceOf(element(by.xpath(".//*//li//text()[contains(.,'Experience')]/.."))), constants.WAIT, 'Failed to find assign Area');
+    return element(by.xpath(".//*//li//text()[contains(.,'Experience')]/.."));
+  }
+  clickFilterAssignWIType () {
+    this.filterAssignWIType.click();
+  }
+
   get activeFilters () {
     return element(by.xpath(".//*//text()[contains(.,'Active filters:')]"));
   }

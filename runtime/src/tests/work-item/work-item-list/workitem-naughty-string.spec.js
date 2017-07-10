@@ -37,7 +37,7 @@ var UnicodeNumbers = "１２３١٢٣";
 
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
-    browser.ignoreSynchronization = true;
+    // browser.ignoreSynchronization = true;
     page = new WorkItemListPage(true);
     testSupport.setTestSpace(page);
   });
@@ -60,6 +60,7 @@ var quickCreateWorkItem = function(theText) {
     page.typeQuickAddWorkItemTitle(theText);
     page.clickQuickAddSave().then(function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe(theText);
+      expect(page.workItemTitle(page.workItemByNumber(0))).toBe(theText);
     });
 }
 

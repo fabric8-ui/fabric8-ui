@@ -35,7 +35,7 @@ describe('Work board tests :: ', function () {
 
   it( 'Shuffle Board elements New to Open  -desktop ', function() {
         var stateList = typesOfStatesList();  
-        boardPage.getBoardById("id1");
+        boardPage.getBoardById("id-1");
         browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
         detailPage.clickWorkItemStateDropDownButton();
         detailPage.WorkItemStateDropDownList().get(1).click();
@@ -51,7 +51,7 @@ describe('Work board tests :: ', function () {
 
   it( '1.1 Shuffle Board elements Open to inProgress -desktop ', function() {
         var stateList = typesOfStatesList();   
-        boardPage.getBoardById("id5");
+        boardPage.getBoardById("id-5");
         browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
         detailPage.clickWorkItemStateDropDownButton();
         detailPage.WorkItemStateDropDownList().get(2).click();
@@ -65,7 +65,7 @@ describe('Work board tests :: ', function () {
 
   it( 'Shuffle Board elements inProgress- resolved  -desktop ', function() {
         var stateList = typesOfStatesList();  
-        boardPage.getBoardById("id3");
+        boardPage.getBoardById("id-3");
         browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
         detailPage.clickWorkItemStateDropDownButton();
         detailPage.WorkItemStateDropDownList().get(3).click();
@@ -79,7 +79,7 @@ describe('Work board tests :: ', function () {
 
   it( '2.1 Shuffle Board elements inProgress- open -desktop ', function() {
         var stateList = typesOfStatesList();
-        boardPage.getBoardById("id3");
+        boardPage.getBoardById("id-3");
         browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
         detailPage.clickWorkItemStateDropDownButton();
         detailPage.WorkItemStateDropDownList().get(1).click();

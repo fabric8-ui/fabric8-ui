@@ -214,6 +214,10 @@ class WorkItemDetailPage {
     return element(by.css(".pull-left.dropdown-kebab-pf.detail-type-dropdown")).click();
   }
 
+  workItemType () {
+    return element(by.css(".pull-left.dropdown-kebab-pf.detail-type-dropdown"));
+  }
+
   userstroyIcon () {
     return element(by.xpath('//*[@id="workItemList_OuterWrap_0"]/div/div[1]/div[1]/span[2]'));
    }
