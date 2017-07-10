@@ -1,3 +1,4 @@
+import { FilterService } from './../../services/filter.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -53,6 +54,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     private dragulaService: DragulaService,
+    private filterService: FilterService,
     private iterationService: IterationService,
     private notifications: Notifications,
     private route: ActivatedRoute,
@@ -137,6 +139,10 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.spaceSubscription.unsubscribe();
     this.dragulaEventListeners.forEach(subscriber => subscriber.unsubscribe());
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
+  }
+
+  constructURL(iterationId: string) {
+    return this.filterService.constructQueryURL('', {iteration_id: iterationId});
   }
 
   getAndfilterIterations() {

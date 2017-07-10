@@ -131,4 +131,45 @@ export class FilterService {
     })
   }
 
+
+  /**
+   * Take the existing query and simply AND it with provided options
+   * @param existingQuery
+   * @param options
+   */
+  constructQueryURL(existingQuery: string, options: Object): string {
+    let processedObject = '';
+    // If onptions has any length enclose processedObject with ()
+    if (Object.keys(options).length > 1) {
+      processedObject = '(' + Object.keys(options).map(key => key + ':' + options[key]).join(' AND ') + ')';
+    } else if (Object.keys(options).length === 1) {
+      processedObject = Object.keys(options).map(key => key + ':' + options[key]).join(' AND ');
+    }
+    // else return existingQuery
+    else {
+      return existingQuery;
+    }
+
+    // Check if the existing query is empty
+    // Then return processedObject
+    if (existingQuery === '') {
+      return processedObject;
+    } else {
+      // Decode existing URL
+      let decodedURL = decodeURIComponent(existingQuery);
+
+      // Check if there is any composite query in existing one
+      if (decodedURL.indexOf('AND') > -1 || decodedURL.indexOf('OR') > -1) {
+        // Check if existing query is a group i.e. enclosed
+        if (decodedURL[0] != '(' || decodedURL[decodedURL.length - 1] != ')') {
+          // enclose it with ()
+          decodedURL = '(' + decodedURL + ')';
+        }
+      }
+
+      // Add the query from option with AND operation
+      return '(' + decodedURL + ' AND ' + processedObject + ')';
+    }
+  }
+
 }

@@ -13,7 +13,8 @@
       <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
         <li class="active iteration-container" *ngFor="let iteration of currentIterations" [routerLinkActive]="'selected-iteration'"
           [routerLink]="[]" [attr.data-id]="iteration.id"
-          [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'">
+          [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name, query: constructURL(iteration.id)}"
+          [dragula]="'wi-bag'">
           <div class="iteration-subheader">
             <div *ngIf="loggedIn" class="dropdown-kebab-pf pull-right dropdown" dropdown>
               <button class="btn btn-link dropdown-toggle" (click)="kebabMenuClick($event)"
@@ -104,7 +105,8 @@
           [collapse]="isCollapsedFutureIteration">
         <li class="iteration-subheader iteration-container" *ngFor="let iteration of futureIterations" [routerLinkActive]="'selected-iteration'"
           [routerLink]="[]" [attr.data-id]="iteration.id"
-          [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'">
+          [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name, query: constructURL(iteration.id)}"
+          [dragula]="'wi-bag'">
             <div class="pull-right">
               <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
               <div *ngIf="loggedIn" class="dropdown-kebab-pf dib dropdown" dropdown>
@@ -163,7 +165,8 @@
       <ul class="not-current-iteration"
           [collapse]="isCollapsedPastIteration">
         <li class="iteration-subheader iteration-container" *ngFor="let iteration of closedIterations" (click)='getWorkItemsByIteration(iteration)' [routerLinkActive]="'selected-iteration'"
-            [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'" [attr.data-id]="iteration.id">
+            [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name, query: constructURL(iteration.id)}"
+            [dragula]="'wi-bag'" [attr.data-id]="iteration.id">
           <div class="pull-right">
             <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
             <div *ngIf="loggedIn" class="dropdown-kebab-pf dib dropdown" dropdown>

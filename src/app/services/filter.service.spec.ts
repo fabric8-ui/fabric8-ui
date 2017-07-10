@@ -184,4 +184,46 @@ describe('Unit Test :: Filter Service', () => {
     }];
     expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeFalsy();
   })
+
+
+  /**
+   * Tests to check constructQueryURL function
+   * Test cases
+   *
+   * Input - ('iteration%3Asprint%20%231%2Fsprint%20%231.1', {'parentexists': true})
+   * Output - '(iteration%3Asprint%20%231%2Fsprint%20%231.1)%20AND%20(parentexists%3Atrue)'
+   */
+
+  it('should return existing query in case of empty options', () => {
+    expect(
+      filterService.constructQueryURL('iteration%3Asprint%20%231%2Fsprint%20%231.1', {})
+    ).toBe(
+      'iteration:sprint #1/sprint #1.1'
+    );
+  })
+
+  it('should return processed options in case of empty existing query', () => {
+    expect(
+      filterService.constructQueryURL('', {'parentexists': true})
+    ).toBe(
+      'parentexists:true'
+    );
+  })
+
+  it('should return processed options in case of empty existing query', () => {
+    expect(
+      filterService.constructQueryURL('', {'parentexists': true, 'iteration': 'Sprint #1/Sprint #1.1'})
+    ).toBe(
+      '(parentexists:true AND iteration:Sprint #1/Sprint #1.1)'
+    );
+  })
+
+  it('should return processed options in case of empty existing query', () => {
+    expect(
+      filterService.constructQueryURL('iteration%3ASprint%20%231%2FSprint%20%231.1', {'parentexists': true})
+    ).toBe(
+      '(iteration:Sprint #1/Sprint #1.1 AND parentexists:true)'
+    );
+  })
+
 });
