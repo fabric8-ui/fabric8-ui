@@ -40,7 +40,7 @@
                   <div [dragula]='"wi-bag"' class="card-wrapper">
                     <div *ngFor='let item of lane.cardValue'
                          (mousedown)="getWI(item.id, lane)" (touchstart)="getWI(item.id, lane)"
-                      [attr.data-id]="item.UUID" id={{item.id}} [attr.data-version]="item.version" [attr.data-selfLink]="item.selfLink">
+                      [attr.data-id]="item.id" [attr.data-UUID]="item.UUID"  id={{item.id}} [attr.data-version]="item.version" [attr.data-selfLink]="item.selfLink">
                       <card
                         [cardValue]='item'
                         (menuClickEvent)="cardMenuClick($event, item.id, lane)">

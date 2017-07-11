@@ -10,6 +10,7 @@ import { Space, Spaces } from 'ngx-fabric8-wit';
 import { DragulaService } from 'ng2-dragula';
 
 import { IterationService } from '../../services/iteration.service';
+import { WorkItemDataService } from './../../services/work-item-data.service';
 import { WorkItemService }   from '../../services/work-item.service';
 import { IterationModel } from '../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
@@ -56,6 +57,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     private notifications: Notifications,
     private route: ActivatedRoute,
     private spaces: Spaces,
+    private workItemDataService: WorkItemDataService,
     private workItemService: WorkItemService) {
       let bag: any = this.dragulaService.find('wi-bag');
       this.dragulaEventListeners.push(
@@ -243,7 +245,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   onDrop(args) {
     let [el, target, source, sibling] = args;
     let iterationId = target.getAttribute('data-id');
-    let workItemId = el.getAttribute('data-id');
+    let workItemId = el.getAttribute('data-UUID');
     let reqVersion = el.getAttribute('data-version');
     let selfLink = el.getAttribute('data-selfLink');
     this.assignWIToIteration(workItemId, parseInt(reqVersion), iterationId, selfLink);
@@ -296,6 +298,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
           });
       })
       .subscribe(workItem => {
+        this.workItemDataService.setItem(workItem);
         this.iterationService.emitDropWI(workItem);
         this.updateItemCounts();
         try {

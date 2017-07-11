@@ -609,11 +609,11 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     this.changeLane(this.workItem.attributes['system.state'], state, this.workItem, prevElId);
     if (el.previousElementSibling) {
       adjElm = el.previousElementSibling;
-      this.changeState(state, el.getAttribute('data-id'), adjElm.getAttribute('data-id'), 'below');
+      this.changeState(state, el.getAttribute('data-id'), adjElm.getAttribute('data-UUID'), 'below');
     }
     else if(el.nextElementSibling) {
       adjElm = el.nextElementSibling;
-      this.changeState(state, el.getAttribute('data-id'), adjElm.getAttribute('data-id'), 'above');
+      this.changeState(state, el.getAttribute('data-id'), adjElm.getAttribute('data-UUID'), 'above');
     }
     else {
       this.changeState(state, el.getAttribute('data-id'), null, 'above');
@@ -652,6 +652,8 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
         .subscribe((workItem) => {
           let wItem = lane.workItems.find((item) => item.id === workItem.id);
           wItem.attributes['version'] = workItem.attributes['version'];
+          this.updateCardItem(workItem);
+          this.workItemDataService.setItem(workItem);
           if (wItem.relationships.iteration) {
             // Item closed for an iteration
             if (wItem.attributes['system.state'] !== 'closed' && prevState === 'closed') {
@@ -672,8 +674,10 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
           if (adjElmId !== null) {
             this.workItemService.reOrderWorkItem(wItem, adjElmId, direction)
                 .subscribe((workitem) => {
-                  lane.workItems.find((item) => item.id === workItem.id).attributes['version'] = workitem.attributes['version'];
-                  lane.workItems.find((item) => item.id === workItem.id).attributes['system.order'] = workitem.attributes['system.order'];
+                  this.workItemDataService.setItem(workItem);
+                  lane.workItems.find(item => item.id === workItem.id).attributes['version'] = workitem.attributes['version'];
+                  lane.workItems.find(item => item.id === workItem.id).attributes['system.order'] = workitem.attributes['system.order'];
+                  this.updateCardItem(workitem);
                 });
           }
       });
