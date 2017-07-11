@@ -181,8 +181,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-
-
   resolvedName(iteration: IterationModel) {
     return iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name;
   }

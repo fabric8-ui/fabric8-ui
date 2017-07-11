@@ -12,10 +12,8 @@ export class CardValue {
   hasLink: Boolean;
   avatar?: string;
   link?: string;
-  menuItem?: any;
-  selfLink?: string;
-  version?: number;
-  UUID?: string;
+  menuItem?: object;
+  extraData?: object;
 }
 
 @Component({

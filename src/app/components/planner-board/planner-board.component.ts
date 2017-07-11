@@ -256,9 +256,11 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
               id: 'card_move_to_backlog',
               value: 'Move to backlog'
             }],
-            selfLink: item.links.self,
-            version: item.attributes['version'],
-            UUID: item.id
+            extraData: {
+              selfLink: item.links.self,
+              version: item.attributes['version'],
+              UUID: item.id
+            }
         }
       });
       lane.nextLink = workItemResp.nextLink;
@@ -301,9 +303,11 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
           id: 'card_move_to_backlog',
           value: 'Move to backlog'
         }],
-        selfLink: workItems[i].links.self,
-        version: workItems[i].attributes['version'],
-        UUID: workItems[i].id
+        extraData: {
+          selfLink: workItems[i].links.self,
+          version: workItems[i].attributes['version'],
+          UUID: workItems[i].id
+        }
       });
       lane.cardValue = [...cardValues, ...lane.cardValue];
     }
@@ -316,7 +320,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     let cardItem = lane.cardValue.find((item) => item.id === workItem.attributes['system.number']);
     cardItem.title = workItem.attributes['system.title'];
     cardItem.type = workItem.relationships.baseType.data.attributes['icon'];
-    cardItem.version = workItem.attributes['version'];
+    cardItem.extraData['version'] = workItem.attributes['version'];
     this.workItemService.resolveAssignees(workItem.relationships.assignees)
       .subscribe(assignees => {
         workItem.relationships.assignees.data = assignees;
@@ -821,7 +825,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
           let cardItem = cloneDeep(lane.cardValue.splice(index, 1)[0]);
           workItem.attributes['version'] = WI.attributes['version'];
           workItem.relationships.iteration = WI.relationships.iteration;
-          cardItem.version = WI.attributes['version'];
+          cardItem.extraData['version'] = WI.attributes['version'];
           return [lane, index, cardItem, workItem];
         })
         .delay(0)
