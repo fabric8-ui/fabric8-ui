@@ -93,7 +93,7 @@ if (ciDeploy){
            if (!pr){
                error "no pull request number found so cannot comment on PR"
            }
-           def message = "@${changeAuthor} snapshot fabric8-ui is deployed and available for testing at https://${route}"
+           def message = "@${changeAuthor} ${imageName} is deployed and available for testing at https://${route}"
            container('clients'){
                flow.addCommentToPullRequest(message, pr, project)
            }
