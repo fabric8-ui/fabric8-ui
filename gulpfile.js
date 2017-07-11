@@ -6,9 +6,10 @@
 
 var gulp = require('gulp'),
   less = require('gulp-less'),
-  autoprefixer = require('gulp-autoprefixer'),
+  LessAutoprefix = require('less-plugin-autoprefix'),
+  autoprefix = new LessAutoprefix({ browsers: ['last 2 versions'] });
   lesshint = require('gulp-lesshint'),
-  concat = require('gulp-concat'),
+  concat = require('gulp-concat-css'),
   del = require('del'),
   replace = require('gulp-string-replace'),
   sourcemaps = require('gulp-sourcemaps'),
@@ -49,9 +50,12 @@ function updateWatchDist() {
 // transpiles a given LESS source set to CSS, storing results to libraryDist.
 function transpileLESS(src, debug) {
   var opts = {
-    // paths: [ path.join(__dirname, 'less', 'includes') ], //THIS NEEDED FOR REFERENCE
+   // paths: [ path.join(__dirname, 'less', 'includes') ], //THIS NEEDED FOR REFERENCE
   }
   return gulp.src(src)
+    .pipe(less({
+      plugins: [autoprefix]
+    }))
     .pipe(lesshint({
       configPath: './.lesshintrc' // Options
     }))
@@ -59,9 +63,8 @@ function transpileLESS(src, debug) {
     .pipe(lesshint.failOnError()) // Use this to fail the task on lint errors
     .pipe(sourcemaps.init())
     .pipe(less(opts))
+    //.pipe(concat('styles.css'))
     .pipe(sourcemaps.write())
-    .pipe(autoprefixer('last 10 versions', 'ie 9'))
-   // .pipe(concat())
     .pipe(gulp.dest(function (file) {
       return libraryDist + file.base.slice(__dirname.length + 'src/'.length);
   }));
@@ -120,11 +123,7 @@ gulp.task('post-transpile', ['transpile'], function () {
 
 // Transpile and minify less, storing results in libraryDist.
 gulp.task('transpile-less', function () {
-  if (argv['less-src']) {
-    return transpileLESS(argv['less-src'], true);
-  } else {
-    return transpileLESS(appSrc + '/**/*.less');
-  }
+  return transpileLESS(appSrc + '/**/*.less');
 });
 
 // transpiles the ts sources to js using the tsconfig.
