@@ -219,6 +219,12 @@ export class FilterService {
         })
       } else {
         let dObj = {};
+        while (new_str.indexOf('__temp__') > -1) {
+          new_str = new_str.replace('__temp__', temp.pop());
+        }
+        if (new_str.indexOf('AND') > -1 || new_str.indexOf('OR') > -1) {
+          return this.queryToJson(new_str, false);
+        }
         dObj[new_str.split(':')[0].trim()] = new_str.split(':').slice(1, new_str.split(':').length).join(':').trim();
         if (first_level) {
           output['OR'] = [dObj];
@@ -228,6 +234,11 @@ export class FilterService {
       }
     }
     return output;
+  }
+
+
+  jsonToQuery(obj: Object): string {
+    return '';
   }
 
 

@@ -251,4 +251,9 @@ describe('Unit Test :: Filter Service', () => {
     .toEqual({'OR':[{'a':'b'},{'AND':[{'c':'d'},{'d':'e'},{'OR':[{'l':'m'},{'n':'p'}]},{'f':'g'}]}]});
   });
 
+  it('should return correct JSON object - 6', () => {
+    expect(filterService.queryToJson('(a:b OR (c:d AND d:e AND (l:m OR n:p)) AND f:g)'))
+    .toEqual({'OR':[{'a':'b'},{'AND':[{'c':'d'},{'d':'e'},{'OR':[{'l':'m'},{'n':'p'}]},{'f':'g'}]}]});
+  });
+
 });
