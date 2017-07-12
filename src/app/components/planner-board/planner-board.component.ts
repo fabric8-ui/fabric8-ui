@@ -309,8 +309,8 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
 
   }
 
-   cardMenuClick(menuId: string, itemId: string, lane: any) {
-    this.workItem = lane.workItems.find((item) => item.id === itemId);
+   cardMenuClick(menuId: string, itemNumber: string, lane: any) {
+    this.workItem = lane.workItems.find((item) => item.attributes['system.number'] === itemNumber);
     if (menuId === 'card_associate_iteration') {
       this.associateIterationModal.open();
     }
@@ -335,6 +335,8 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
       .subscribe(workItem => {
         this.workItem.relationships.iteration = workItem.relationships.iteration;
         this.workItem.attributes['version'] = workItem.attributes['version'];
+        this.updateCardItem(workItem);
+        this.workItemDataService.setItem(workItem);
         try {
           this.notifications.message({
             message: workItem.attributes['system.title'] + ' has been moved to the Backlog.',
@@ -696,6 +698,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
         let lane = this.lanes.find(lane => lane.option === updatedItem.attributes['system.state']);
         let index = lane.workItems.findIndex((item) => item.id == updatedItem.id);
         let cardItem = lane.cardValue.find((item) => item.id == updatedItem.attributes['system.number']);
+        this.workItemDataService.setItem(updatedItem);
         if (this.filterService.doesMatchCurrentFilter(updatedItem)) {
           if(index > -1) {
             lane.workItems[index] = updatedItem;
