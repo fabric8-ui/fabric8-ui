@@ -235,77 +235,15 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
       .do (workItem => console.log('Work item fethced: ', cloneDeep(workItem)))
       .take(1)
       .switchMap(() => {
-        return this.workItemService.getWorkItemTypes();
-      })
-      .do(workItemTypes => {
-        // Resolve work item type
-        this.workItem.relationships.baseType.data =
-          workItemTypes.find(type => type.id === this.workItem.relationships.baseType.data.id) ||
-          this.workItem.relationships.baseType.data;
-        this.loadingTypes = false;
-      })
-      .switchMap(() => this.workItemService.resolveAssignees(this.workItem.relationships.assignees))
-      .do(assignees => {
-        // Resolve assignees
-        this.workItem.relationships.assignees = {
-          data: assignees
-        };
-      })
-      .switchMap(() => this.workItemService.resolveCreator2(this.workItem.relationships.creator))
-      .do(creator => {
-        // Resolve creator
-        this.workItem.relationships.creator = {
-          data: creator
-        };
-      })
-      .switchMap(() => this.areaService.getArea(this.workItem.relationships.area))
-      .do(area => {
-        // Resolve area
-        this.workItem.relationships.area = {
-          data: area
-        };
-        this.areas = this.extractAreaKeyValue([area]);
-        this.loadingArea = false;
-      })
-      .switchMap(() => this.iterationService.getIteration(this.workItem.relationships.iteration))
-      .do(iteration => {
-        // Resolve iteration
-        this.workItem.relationships.iteration = {
-          data: iteration
-        };
-        this.iterations = this.extractIterationKeyValue([iteration]);
-        this.loadingIteration = false;
-      })
-      .switchMap(() => this.workItemService.resolveLinks(this.workItem.links.self + '/relationships/links'))
-      .do(([links, includes]) => {
-        // Resolve links
-        this.workItem = Object.assign(
-          this.workItem,
-          {
-            relationalData: {
-              linkDicts: [],
-              totalLinkCount: 0
-            }
-          }
-        );
-        links.forEach((link) => {
-          this.workItemService.addLinkToWorkItem(link, includes, this.workItem);
-        });
-      })
-      .switchMap(() => this.workItemService.resolveComments(this.workItem.relationships.comments.links.related))
-      .do(comments => {
-        // Resolve comments
-        merge(this.workItem.relationships.comments, comments);
-        this.workItem.relationships.comments.data.forEach((comment, index) => {
-          this.workItemService.resolveCommentCreator(comment.relationships['created-by'])
-            .subscribe(creator => {
-              comment.relationships['created-by'] = {
-                data: creator
-              };
-            });
-        });
-        this.comments = this.workItem.relationships.comments.data;
-        this.loadingComments = false;
+        return Observable.combineLatest(
+          this.resolveWITypes(),
+          this.resolveAssignees(),
+          this.resolveCreators(),
+          this.resolveArea(),
+          this.resolveIteration(),
+          this.resolveLinks(),
+          this.resolveComments()
+        )
       })
       .subscribe(() => {
         this.closeUserRestFields();
@@ -331,6 +269,98 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         //setTimeout(() => this.itemSubscription.unsubscribe());
         // this.closeDetails();
       });
+  }
+
+  resolveWITypes(): Observable<any> {
+    return this.workItemService.getWorkItemTypes()
+      .do(workItemTypes => {
+        // Resolve work item type
+        this.workItem.relationships.baseType.data =
+          workItemTypes.find(type => type.id === this.workItem.relationships.baseType.data.id) ||
+          this.workItem.relationships.baseType.data;
+        this.loadingTypes = false;
+      })
+  }
+
+  resolveAssignees(): Observable<any> {
+    return this.workItemService.resolveAssignees(this.workItem.relationships.assignees)
+      .do(assignees => {
+        // Resolve assignees
+        this.workItem.relationships.assignees = {
+          data: assignees
+        };
+      })
+  }
+
+  resolveCreators(): Observable<any> {
+    return this.workItemService.resolveCreator2(this.workItem.relationships.creator)
+      .do(creator => {
+        // Resolve creator
+        this.workItem.relationships.creator = {
+          data: creator
+        };
+      })
+  }
+
+  resolveArea(): Observable<any> {
+    return this.areaService.getArea(this.workItem.relationships.area)
+      .do(area => {
+        // Resolve area
+        this.workItem.relationships.area = {
+          data: area
+        };
+        this.areas = this.extractAreaKeyValue([area]);
+        this.loadingArea = false;
+      })
+  }
+
+  resolveIteration(): Observable<any> {
+    return this.iterationService.getIteration(this.workItem.relationships.iteration)
+      .do(iteration => {
+        // Resolve iteration
+        this.workItem.relationships.iteration = {
+          data: iteration
+        };
+        this.iterations = this.extractIterationKeyValue([iteration]);
+        this.loadingIteration = false;
+      })
+  }
+
+  resolveLinks(): Observable<any> {
+    return this.workItemService.resolveLinks(this.workItem.links.self + '/relationships/links')
+      .do(([links, includes]) => {
+        // Resolve links
+        this.workItem = Object.assign(
+          this.workItem,
+          {
+            relationalData: {
+              linkDicts: [],
+              totalLinkCount: 0
+            }
+          }
+        );
+        links.forEach((link) => {
+          this.workItemService.addLinkToWorkItem(link, includes, this.workItem);
+        });
+      })
+  }
+
+  resolveComments(): Observable<any> {
+    return this.workItemService.resolveComments(this.workItem.relationships.comments.links.related)
+      .do(comments => {
+        // Resolve comments
+        merge(this.workItem.relationships.comments, comments);
+        this.workItem.relationships.comments.data.forEach((comment, index) => {
+          this.workItemService.resolveCommentCreator(comment.relationships['created-by'])
+            .subscribe(creator => {
+              comment.relationships['created-by'] = {
+                data: creator
+              };
+            });
+        });
+        this.comments = this.workItem.relationships.comments.data;
+        this.loadingComments = false;
+      })
   }
 
   createWorkItemObj(type: string) {
