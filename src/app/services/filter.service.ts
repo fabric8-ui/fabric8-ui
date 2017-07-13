@@ -237,9 +237,17 @@ export class FilterService {
   }
 
 
-  jsonToQuery(obj: Object): string {
-    return '';
+  jsonToQuery(obj: object): string {
+    let key = Object.keys(obj)[0]; // key will be AND or OR
+    let value = obj[key];
+
+    return '(' + value.map(item => {
+      if (Object.keys(item)[0] == 'AND' || Object.keys(item)[0] == 'OR') {
+        return this.jsonToQuery(item);
+      } else {
+        return Object.keys(item)[0] + ':' + item[Object.keys(item)[0]];
+      }
+    })
+    .join(' ' + key + ' ') + ')';
   }
-
-
 }

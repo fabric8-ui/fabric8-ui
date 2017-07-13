@@ -256,4 +256,39 @@ describe('Unit Test :: Filter Service', () => {
     .toEqual({'OR':[{'a':'b'},{'AND':[{'c':'d'},{'d':'e'},{'OR':[{'l':'m'},{'n':'p'}]},{'f':'g'}]}]});
   });
 
+  it('should return correct query string - 7', () => {
+    expect(filterService.jsonToQuery({'OR': [{'a':'b'}]})).toBe('(a:b)');
+  });
+
+  it('should return correct query string - 8', () => {
+    expect(filterService.jsonToQuery({'AND': [{'a':'b'}, {'c': 'd'}]}))
+    .toBe('(a:b AND c:d)');
+  });
+
+  it('should return correct query string - 9', () => {
+    expect(filterService.jsonToQuery({'OR': [{'AND': [{'a': 'b'}, {'c':'d'}]}, {'d': 'e'}]}))
+    .toBe('((a:b AND c:d) OR d:e)');
+  });
+
+  it('should return correct query string - 10', () => {
+    expect(filterService.jsonToQuery({'OR': [{'a': 'b'}, {'c':'d'}, {'d': 'e'}]}))
+    .toBe('(a:b OR c:d OR d:e)');
+  });
+
+  it('should return correct query string - 11', () => {
+    expect(filterService.jsonToQuery({'OR':[{'a':'b'},{'AND':[{'c':'d'},{'d':'e'},{'OR':[{'l':'m'},{'n':'p'}]},{'f':'g'}]}]}))
+    .toBe('(a:b OR (c:d AND d:e AND (l:m OR n:p) AND f:g))');
+  });
+
+  it('should return correct query string - 11', () => {
+    expect(
+      filterService.queryToJson(
+        filterService.jsonToQuery(
+          {'OR':[{'a':'b'},{'AND':[{'c':'d'},{'d':'e'},{'OR':[{'l':'m'},{'n':'p'}]},{'f':'g'}]}]}
+        )
+      )
+    )
+    .toEqual({'OR':[{'a':'b'},{'AND':[{'c':'d'},{'d':'e'},{'OR':[{'l':'m'},{'n':'p'}]},{'f':'g'}]}]});
+  });
+
 });
