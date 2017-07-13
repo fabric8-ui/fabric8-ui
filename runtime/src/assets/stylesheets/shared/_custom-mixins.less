@@ -1,16 +1,5 @@
 @import (reference) './../../../../node_modules/patternfly/node_modules/bootstrap/less/mixins';
 @import (reference) './../../../../node_modules/patternfly/src/less/mixins';
-//@import 'patternfly/mixin_overrides';
-
-// functions
-/* CSS3 calc() function to perform calculations */
-/* this is temporary until Less conversion is completed */
-.calc(@prop; @val) {
-  @{prop}: ~"calc(e('@{val}'))";
-  @{prop}: ~"-moz-calc(e('@{val}'))";
-  @{prop}: ~"-webkit-calc(e('@{val}'))";
-  @{prop}: ~"-o-calc(e('@{val}'))";
-}
 
 //custom mixins
 .transform(@transform) { transform: @transform; }
