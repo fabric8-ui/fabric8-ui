@@ -2,7 +2,7 @@
 
 .work-item-page {
   position: relative;
-  .calc(height; "100vh - 60px");
+  height: ~"calc(e('100vh - 60px'))";
   >main {
     height: 100%;
     overflow: hidden;
@@ -65,7 +65,7 @@
   float: left;
   .detail-list-wrap {
     width: 100%;
-    .calc(height; '100% - 120px'); // to avoid overflown scroll height should be there
+    height: ~"calc(e('100% - 120px'))"; // to avoid overflown scroll height should be there
     overflow-y: scroll;
     border-top: 1px solid;
     border-top-color: @color-pf-black-300;
@@ -74,7 +74,7 @@
   .work-item-list-quick-add {
     position: fixed;
     bottom: 0;
-    .calc(width; '100% - 340px');
+    width: ~"calc(e('100% - 340px'))";
   }
   .card-pf {
     border: 0;
@@ -104,7 +104,7 @@
   .toggle-children { display: none !important; }
 }
 .tree-list-item {
-  display: inherit;
+  display: inline-flex;
   align-items: inherit;
 }
 .node-drop-slot.is-dragging-over { height: 66px!important; }

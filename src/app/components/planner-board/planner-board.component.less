@@ -4,7 +4,7 @@
 
 .work-item-page {
   position: relative;
-  .calc(height; "100vh - 60px");
+  height: ~"calc(e('100vh - 60px'))";
   >main {
     height: 100%;
     overflow: hidden;
@@ -68,7 +68,7 @@
 
 .boardWrapper {
   position: relative;
-  .calc(height; '100% - 40px');
+  height: ~"calc(e('100% - 40px'))";
   overflow-y: scroll;
   border-top: 1px solid;
   border-top-color: @color-pf-black-300;
@@ -99,7 +99,7 @@
         .Border(1px, solid, @color-pf-black-300);
         .boardlaneWrapper {
           width: 100%;
-          .calc(height; '100% - 33px');
+          height: ~"calc(e('100% - 33px'))";
           padding-right: 15px;
           padding-left: 15px;
           overflow: auto;
