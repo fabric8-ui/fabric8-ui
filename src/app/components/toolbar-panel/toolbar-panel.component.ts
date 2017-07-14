@@ -238,7 +238,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   }
 
   filterChange($event: FilterEvent): void {
-    console.log('####### - 3');
     // We don't support multiple filter for same type
     // i.e. no two filter by two different users as assignees
     // Unifying the filters with recent filter value
@@ -268,13 +267,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
       // Set this filter in filter service
       this.filterService.setFilterValues(filter.field.id, filter.query.id);
     });
-
-    // If query exists in the filter
-    if (Object.keys(params).indexOf('query') > -1) {
-      params['query'] = this.filterService.constructQueryURL(params['query'], queryObj);
-    } else {
-      params['query'] = this.filterService.constructQueryURL('', queryObj);
-    }
 
     // Set the internal change flag to true
     // So that the URL subscriber does not take any action

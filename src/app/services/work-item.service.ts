@@ -141,7 +141,7 @@ export class WorkItemService {
     }
   }
 
-  getWorkItems(pageSize: number = 20, filters: any[] = []): Observable<{workItems: WorkItem[], nextLink: string, totalCount: number | null}> {
+  getWorkItems(pageSize: number = 20, filters: any[] = []): Observable<{workItems: WorkItem[], nextLink: string, totalCount?: number | null}> {
     if (this._currentSpace) {
       this.workItemUrl = this._currentSpace.links.self + '/workitems';
       let url = this.workItemUrl + '?page[limit]=' + pageSize;
@@ -163,6 +163,28 @@ export class WorkItemService {
       return Observable.of<{workItems: WorkItem[], nextLink: string | null}>( {workItems: [] as WorkItem[], nextLink: null} );
     }
   }
+
+  // TODO Filter temp
+  getWorkItems2(pageSize: number = 20, filters: any): Observable<{workItems: WorkItem[], nextLink: string, totalCount?: number | null}> {
+    if (this._currentSpace) {
+      this.workItemUrl = this._currentSpace.links.self.split('spaces')[0] + 'search';
+      let url = this.workItemUrl + '?page[limit]=' + pageSize + '&filter[expression]=' + JSON.stringify(filters);
+      return this.http.get(url)
+        .map((resp) => {
+          return {
+            workItems: resp.json().data as WorkItem[],
+            nextLink: resp.json().links.next,
+            totalCount: resp.json().meta ? resp.json().meta.totalCount : 0
+          };
+        }).catch((error: Error | any) => {
+          this.notifyError('Getting work items failed.', error);
+          return Observable.throw(new Error(error.message));
+        });
+    } else {
+      return Observable.of<{workItems: WorkItem[], nextLink: string | null}>( {workItems: [] as WorkItem[], nextLink: null} );
+    }
+  }
+
 
   /**
    * This function is called from next page onwards in the scroll

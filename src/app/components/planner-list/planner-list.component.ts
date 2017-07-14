@@ -99,6 +99,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   private currentIteration: BehaviorSubject<string | null>;
   private loggedInUser: User | Object = {};
   private originalList: WorkItem[] = [];
+  private currentSpace: Space;
 
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
@@ -213,6 +214,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
 
         if (space) {
           console.log('[WorkItemListComponent] New Space selected: ' + space.attributes.name);
+          this.currentSpace = space;
           this.loadWorkItems();
         } else {
           console.log('[WorkItemListComponent] Space deselected');
@@ -267,15 +269,28 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       if (this.showHierarchyList) {
         // we want to display the hierarchy, so filter out all items that are childs (have no parent)
         // to do this, we need to append a filter: /spaces/{id}/workitems?filter[parentexists]=false
-        appliedFilters.push({ paramKey: 'filter[parentexists]', value: 'false' });
+        appliedFilters.push({ id: 'parentexists', paramKey: 'filter[parentexists]', value: 'false' });
       }
       this.logger.log('Requesting work items with filters: ' + JSON.stringify(appliedFilters));
+
+      // TODO Filter temp
+      // Take all the applied filters and prepare an object to make the query string
+      let newFilterObj = {};
+      appliedFilters.forEach(item => {
+        newFilterObj[item.id] = item.value;
+      })
+      newFilterObj['space'] = this.currentSpace.id;
+
       return Observable.forkJoin(
         Observable.of(this.iterations),
         Observable.of(this.workItemTypes),
-        this.workItemService.getWorkItems(
+        // this.workItemService.getWorkItems(
+        //   this.pageSize,
+        //   appliedFilters
+        // ),
+        this.workItemService.getWorkItems2(
           this.pageSize,
-          appliedFilters
+          this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj))
         )
       )
     })

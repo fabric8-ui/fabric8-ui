@@ -142,7 +142,8 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   constructURL(iterationId: string) {
-    return this.filterService.constructQueryURL('', {iteration_id: iterationId});
+    //return this.filterService.constructQueryURL('', {iteration_id: iterationId});
+    return '';
   }
 
   getAndfilterIterations() {

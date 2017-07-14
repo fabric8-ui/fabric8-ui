@@ -17,6 +17,9 @@ export class FilterService {
   public filterObservable: Subject<any> = new Subject();
   private headers = new Headers({'Content-Type': 'application/json'});
 
+  private and_notation = '$AND';
+  private or_notation = '$OR';
+
   private filtertoWorkItemMap = {
     'assignee': ['relationships', 'assignees', 'data', ['id']],
     'area': ['relationships', 'area', 'data', 'id'],
@@ -141,9 +144,9 @@ export class FilterService {
     let processedObject = '';
     // If onptions has any length enclose processedObject with ()
     if (Object.keys(options).length > 1) {
-      processedObject = '(' + Object.keys(options).map(key => key + ':' + options[key]).join(' AND ') + ')';
+      processedObject = '(' + Object.keys(options).map(key => key + ':' + options[key]).join(' ' + this.and_notation + ' ') + ')';
     } else if (Object.keys(options).length === 1) {
-      processedObject = Object.keys(options).map(key => key + ':' + options[key]).join(' AND ');
+      processedObject = Object.keys(options).map(key => key + ':' + options[key]).join(' ' + this.and_notation + ' ');
     }
     // else return existingQuery
     else {
@@ -159,7 +162,7 @@ export class FilterService {
       let decodedURL = decodeURIComponent(existingQuery);
 
       // Check if there is any composite query in existing one
-      if (decodedURL.indexOf('AND') > -1 || decodedURL.indexOf('OR') > -1) {
+      if (decodedURL.indexOf(this.and_notation) > -1 || decodedURL.indexOf(this.or_notation) > -1) {
         // Check if existing query is a group i.e. enclosed
         if (decodedURL[0] != '(' || decodedURL[decodedURL.length - 1] != ')') {
           // enclose it with ()
@@ -168,7 +171,7 @@ export class FilterService {
       }
 
       // Add the query from option with AND operation
-      return '(' + decodedURL + ' AND ' + processedObject + ')';
+      return '(' + decodedURL + ' ' + this.and_notation + ' ' + processedObject + ')';
     }
   }
 
@@ -196,9 +199,9 @@ export class FilterService {
       }
     }
     temp.reverse();
-    let arr = new_str.split('OR');
+    let arr = new_str.split(this.or_notation);
     if (arr.length > 1) {
-      output['OR'] = arr.map(item => {
+      output[this.or_notation] = arr.map(item => {
         item = item.trim();
         if (item == '__temp__') {
           item = temp.pop();
@@ -209,9 +212,9 @@ export class FilterService {
         return this.queryToJson(item, false);
       })
     } else {
-      arr = new_str.split('AND');
+      arr = new_str.split(this.and_notation);
       if (arr.length > 1) {
-        output['AND'] = arr.map(item => {
+        output[this.and_notation] = arr.map(item => {
           if (item.trim() == '__temp__') {
             item = temp.pop();
           }
@@ -222,12 +225,12 @@ export class FilterService {
         while (new_str.indexOf('__temp__') > -1) {
           new_str = new_str.replace('__temp__', temp.pop());
         }
-        if (new_str.indexOf('AND') > -1 || new_str.indexOf('OR') > -1) {
+        if (new_str.indexOf(this.and_notation) > -1 || new_str.indexOf(this.or_notation) > -1) {
           return this.queryToJson(new_str, false);
         }
         dObj[new_str.split(':')[0].trim()] = new_str.split(':').slice(1, new_str.split(':').length).join(':').trim();
         if (first_level) {
-          output['OR'] = [dObj];
+          output[this.or_notation] = [dObj];
         } else {
           return dObj;
         }
@@ -242,7 +245,7 @@ export class FilterService {
     let value = obj[key];
 
     return '(' + value.map(item => {
-      if (Object.keys(item)[0] == 'AND' || Object.keys(item)[0] == 'OR') {
+      if (Object.keys(item)[0] == this.and_notation || Object.keys(item)[0] == this.or_notation) {
         return this.jsonToQuery(item);
       } else {
         return Object.keys(item)[0] + ':' + item[Object.keys(item)[0]];
