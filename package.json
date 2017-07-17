@@ -187,7 +187,7 @@
     "tslint": "5.0.0",
     "tslint-loader": "3.4.3",
     "typedoc": "0.5.9",
-    "typescript": "2.2.2",
+    "typescript": "2.3",
     "url-loader": "0.5.8",
     "webpack": "2.3.2",
     "webpack-bundle-analyzer": "2.3.1",
