@@ -12,7 +12,7 @@ export class CardValue {
   hasLink: Boolean;
   avatar?: string;
   link?: string;
-  menuItem?: object;
+  menuItem?: Array<object>;
   extraData?: object;
 }
 
