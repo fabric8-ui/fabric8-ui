@@ -1,13 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import {
-  ComponentLoaderFactory,
-  DropdownConfig,
-  DropdownModule,
-  PositioningService,
-  TooltipConfig
-} from 'ng2-bootstrap';
+import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { CollaboratorService } from '../../services/collaborator.service';
 import { FilterService } from '../../services/filter.service';
@@ -17,28 +12,28 @@ import { ToolbarPanelComponent } from './toolbar-panel.component';
 import {
   AlmEditableModule,
   AlmIconModule,
-  ToolbarModule,
   WidgetsModule
 } from 'ngx-widgets';
+
+import { ToolbarModule } from 'patternfly-ng';
 
 @NgModule({
   imports: [
     AlmEditableModule,
     AlmIconModule,
+    BsDropdownModule.forRoot(),
     CommonModule,
-    DropdownModule,
     ToolbarModule,
+    TooltipModule.forRoot(),
     WidgetsModule
   ],
   declarations: [
     ToolbarPanelComponent
   ],
   providers: [
+    BsDropdownConfig,
     CollaboratorService,
     FilterService,
-    ComponentLoaderFactory,
-    DropdownConfig,
-    PositioningService,
     TooltipConfig,
     WorkItemService
   ],

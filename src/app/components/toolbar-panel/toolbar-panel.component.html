@@ -1,26 +1,26 @@
 <header class="toolbar-header">
   <div class="width-100 pull-left">
-    <alm-toolbar
+    <pfng-toolbar
         [config]="toolbarConfig"
-        [actionsTemplate]="actionsTemplate"
-        [viewsTemplate]="addTemplate"
+        [actionTemplate]="actionsTemplate"
+        [viewTemplate]="addTemplate"
         (onFilterChange)="filterChange($event)"
-        (onFilterQueries)="filterQueries($event)"
-        (onFilterTypeChange)="selectFilterType($event)">
-      <template #actions>
-        <div *ngIf="context==='boardview' && (wiTypes.length!=0)" dropdown class="card-pf-time-frame-filter board-type-dropdown">
+        (onFilterFieldSelect)="selectFilterType($event)"
+        (onFilterTypeAhead)="filterQueries($event)">
+      <template #actionsTemplate>
+        <div *ngIf="context==='boardview' && (wiTypes.length!=0)" dropdown class="card-pf-time-frame-filter board-type-dropdown dropdown">
           <span class="currently-showing">Currently showing:</span>
           <button dropdownToggle
               id="wi-board-type"
               type="button"
-              class="btn btn-default">
+              class="btn btn-default dropdown-toggle">
             <span class='dropdown-icon fa {{currentBoardType?.attributes?.icon}}'></span>
             <span class='dropdown-text'>
               {{currentBoardType?.attributes?.name}}
             </span>
             <span class="caret"></span>
           </button>
-          <ul id="wi-board-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" dropdownMenu>
+          <ul id="wi-board-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" *dropdownMenu>
             <li class="dropdown-li" *ngFor="let type of wiTypes;" (click)="onChangeBoardType(type)">
               <a>
                 <span class='dropdown-icon fa {{type?.attributes?.icon}}'></span>
@@ -29,17 +29,17 @@
             </li>
           </ul>
         </div>
-        <div *ngIf="context!=='boardview'" dropdown class="list-type-dropdown">
+        <div *ngIf="context!=='boardview'" dropdown class="list-type-dropdown dropdown">
           <button dropdownToggle
               id="wi-list-type"
               type="button"
-              class="btn btn-default">
+              class="btn btn-default dropdown-toggle">
             <span class='dropdown-text'>
               {{currentListType}}
             </span>
             <span class="caret"></span>
           </button>
-          <ul id="wi-list-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" dropdownMenu>
+          <ul id="wi-list-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" *dropdownMenu>
             <li class="dropdown-li" (click)="onChangeListType('Hierarchy')">
               <a>
                 <span class='dropdown-text'>Hierarchy</span>
@@ -76,13 +76,13 @@
         </span>
       -->
       </template>
-      <template #add>
+      <template #addTemplate>
         <div *ngIf="loggedIn && editEnabled && wiTypes.length"
           class="with-cursor-pointer" placement="bottom"
           tooltip="Add A Work Item" (click)="showDetailType($event)">
           <i class="pficon pficon-add-circle-o margin-top-4"></i>
         </div>
       </template>
-    </alm-toolbar>
+    </pfng-toolbar>
   </div>
 </header>

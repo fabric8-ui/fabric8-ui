@@ -20,12 +20,10 @@ import { WorkItemType } from '../../models/work-item-type';
 import { WorkItem } from '../../models/work-item';
 
 import {
-  AlmArrayFilter,
   FilterConfig,
   FilterEvent,
-  FilterField,
   ToolbarConfig
-} from 'ngx-widgets';
+} from 'patternfly-ng';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -34,9 +32,6 @@ import {
   styleUrls: ['./toolbar-panel.component.scss']
 })
 export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
-  @ViewChild('actions') actionsTemplate: TemplateRef<any>;
-  @ViewChild('add') addTemplate: TemplateRef<any>;
-
   @Input() context: string;
   @Input() wiTypes: WorkItemType[] = [];
   @Input() areas: AreaModel[] = [];
@@ -379,33 +374,33 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     }
   }
 
-  selectFilterType(data) {
+  selectFilterType(event: FilterEvent) {
     const filterMap = this.getFilterMap();
-    if (Object.keys(filterMap).indexOf(data.id) > -1) {
-      const index = this.filterConfig.fields.findIndex(i => i.id === data.id);
+    if (Object.keys(filterMap).indexOf(event.field.id) > -1) {
+      const index = this.filterConfig.fields.findIndex(i => i.id === event.field.id);
       if (this.filterConfig.fields[index].queries.length === 0) {
         this.toolbarConfig.filterConfig.fields[index].queries = [
           this.loader
         ];
-        filterMap[data.id].datasource.subscribe(resp => {
-          if (filterMap[data.id].datamap(resp).primaryQueries.length) {
+        filterMap[event.field.id].datasource.subscribe(resp => {
+          if (filterMap[event.field.id].datamap(resp).primaryQueries.length) {
             this.toolbarConfig.filterConfig.fields[index].queries =
-              filterMap[data.id].datamap(resp).queries.length ? [
-                ...filterMap[data.id].datamap(resp).primaryQueries,
+              filterMap[event.field.id].datamap(resp).queries.length ? [
+                ...filterMap[event.field.id].datamap(resp).primaryQueries,
                 this.separator,
-                ...filterMap[data.id].datamap(resp).queries
-              ] : filterMap[data.id].datamap(resp).primaryQueries;
+                ...filterMap[event.field.id].datamap(resp).queries
+              ] : filterMap[event.field.id].datamap(resp).primaryQueries;
           } else {
-            this.toolbarConfig.filterConfig.fields[index].queries = filterMap[data.id].datamap(resp).queries;
+            this.toolbarConfig.filterConfig.fields[index].queries = filterMap[event.field.id].datamap(resp).queries;
           }
           this.savedFIlterFieldQueries[this.filterConfig.fields[index].id] = {};
-          this.savedFIlterFieldQueries[this.filterConfig.fields[index].id]['fixed'] = filterMap[data.id].datamap(resp).primaryQueries;
-          this.savedFIlterFieldQueries[this.filterConfig.fields[index].id]['filterable'] = filterMap[data.id].datamap(resp).queries;
+          this.savedFIlterFieldQueries[this.filterConfig.fields[index].id]['fixed'] = filterMap[event.field.id].datamap(resp).primaryQueries;
+          this.savedFIlterFieldQueries[this.filterConfig.fields[index].id]['filterable'] = filterMap[event.field.id].datamap(resp).queries;
         })
       } else if (this.filterConfig.fields[index].type === 'typeahead'){
         this.filterQueries({
-          text: '',
-          field: data
+          value: '',
+          field: event.field
         });
       }
     }
@@ -416,9 +411,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
    * from tool bar component
    * @param event
    */
-  filterQueries(event) {
+  filterQueries(event: FilterEvent) {
     const index = this.filterConfig.fields.findIndex(i => i.id === event.field.id);
-    let inp = event.text.trim();
+    let inp = event.value.trim();
 
     if (inp) {
       this.filterConfig.fields[index].queries = [

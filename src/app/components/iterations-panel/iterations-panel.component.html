@@ -15,15 +15,15 @@
                 [routerLink]="[]" [attr.data-id]="iteration.id"
                 [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'">
           <div class="iteration-subheader">
-            <div *ngIf="loggedIn" class="dropdown-kebab-pf pull-right" dropdown>
-              <button class="btn btn-link"
+            <div *ngIf="loggedIn" class="dropdown-kebab-pf pull-right dropdown" dropdown>
+              <button class="btn btn-link dropdown-toggle"
                       type="button"
                       aria-haspopup="true"
                       aria-expanded="true"
                       dropdownToggle>
                 <i class="fa fa-ellipsis-v"></i>
               </button>
-              <ul class="dropdown-menu-right" dropdownMenu>
+              <ul class="dropdown-menu-right dropdown-menu" *dropdownMenu>
                 <li>
                   <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration, $event);">
                     Edit
@@ -107,15 +107,15 @@
                 [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'">
             <div class="pull-right">
               <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
-              <div *ngIf="loggedIn" class="dropdown-kebab-pf dib" dropdown>
-                <button class="btn btn-link"
+              <div *ngIf="loggedIn" class="dropdown-kebab-pf dib dropdown" dropdown>
+                <button class="btn btn-link dropdown-toggle"
                         type="button"
                         aria-haspopup="true"
                         aria-expanded="true"
                         dropdownToggle>
                   <i class="fa fa-ellipsis-v"></i>
                 </button>
-                <ul class="dropdown-menu-right" dropdownMenu>
+                <ul class="dropdown-menu-right dropdown-menu" *dropdownMenu>
                   <li>
                     <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration, $event);">
                       Edit
@@ -166,15 +166,15 @@
             [routerLink]="[]" [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'" [attr.data-id]="iteration.id">
           <div class="pull-right">
             <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
-            <div *ngIf="loggedIn" class="dropdown-kebab-pf dib" dropdown>
-              <button class="btn btn-link"
+            <div *ngIf="loggedIn" class="dropdown-kebab-pf dib dropdown" dropdown>
+              <button class="btn btn-link dropdown-toggle"
                       type="button"
                       aria-haspopup="true"
                       aria-expanded="true"
                       dropdownToggle>
                 <i class="fa fa-ellipsis-v"></i>
               </button>
-              <ul class="dropdown-menu-right" dropdownMenu>
+              <ul class="dropdown-menu-right" *dropdownMenu>
                 <li>
                   <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration, $event);">
                     Edit

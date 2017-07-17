@@ -37,7 +37,7 @@
                 [src]="comment.relationships['created-by']?.data?.attributes?.imageURL | almAvatarSize:30"
                 />
             </div>
-            <div class="dropdown dropdown-kebab-pf pull-right" dropdown>
+            <div class="dropdown dropdown-kebab-pf pull-right dropdown" dropdown>
               <button *ngIf="loggedIn && (loggedInUser?.id === comment.relationships['created-by']?.data?.id)"
                       class="btn btn-link dropdown-toggle"
                       id="commentActionsKebab"
@@ -48,10 +48,9 @@
                       aria-expanded="true">
                 <span class="fa fa-ellipsis-v"></span>
               </button>
-              <ul *ngIf="loggedIn && (loggedInUser?.id === comment.relationships['created-by']?.data?.id)"
-                  class="dropdown-menu dropdown-menu-right"
+              <ul class="dropdown-menu-right dropdown-menu"
                   aria-labelledby="commentActionsKebab"
-                  dropdownMenu>
+                  *dropdownMenu>
                 <li><a (click)="openComment(comment.id)">Edit...</a></li>
                 <li><a (click)="confirmCommentDelete(comment)">Delete</a></li>
               </ul>

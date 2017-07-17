@@ -10,7 +10,8 @@ import {
   RequestOptions
 } from '@angular/http';
 
-import { DropdownModule, TooltipModule } from 'ng2-bootstrap';
+import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-modal';
 import { TreeModule } from 'angular2-tree-component';
 import {
@@ -44,6 +45,7 @@ let providers = [];
 
 if (process.env.ENV == 'inmemory') {
   providers = [
+    BsDropdownConfig,
     GlobalSettings,
     WorkItemService,
     Broadcaster,
@@ -53,10 +55,12 @@ if (process.env.ENV == 'inmemory') {
     {
       provide: HttpService,
       useClass: MockHttp
-    }
+    },
+    TooltipConfig
   ];
 } else {
   providers = [
+    BsDropdownConfig,
     GlobalSettings,
     WorkItemService,
     WorkItemDataService,
@@ -69,16 +73,17 @@ if (process.env.ENV == 'inmemory') {
         return new HttpService(backend, options, auth);
       },
       deps: [XHRBackend, RequestOptions, AuthenticationService]
-    }
+    },
+    TooltipConfig
   ];
 }
 
 @NgModule({
   imports: [
     AlmIconModule,
+    BsDropdownModule.forRoot(),
     CommonModule,
     DialogModule,
-    DropdownModule,
     FabPlannerAssociateIterationModalModule,
     HttpModule,
     InfiniteScrollModule,
@@ -87,7 +92,7 @@ if (process.env.ENV == 'inmemory') {
     PlannerListRoutingModule,
     SidepanelModule,
     ToolbarPanelModule,
-    TooltipModule,
+    TooltipModule.forRoot(),
     TreeModule,
     TreeListModule,
     WidgetsModule,

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { ModalModule } from 'ngx-modal';
-import { DropdownModule } from 'ng2-bootstrap';
+import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 import { WorkItemService } from '../../services/work-item.service';
 import { WorkItemDetailAddTypeSelectorComponent } from './work-item-create.component';
@@ -16,6 +16,7 @@ import {
 
 @NgModule({
   imports: [
+    BsDropdownModule.forRoot(),
     CommonModule,
     ModalModule
   ],
@@ -24,6 +25,7 @@ import {
     WorkItemDetailAddTypeSelectorComponent
   ],
   providers: [
+    BsDropdownConfig,
     WorkItemService
   ],
   exports: [WorkItemDetailAddTypeSelectorComponent, WorkItemDetailAddTypeSelectorWidgetComponent]

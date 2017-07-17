@@ -7,8 +7,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // FIXME: do we really need to have this modules on top-level?
-import { DropdownModule } from 'ng2-bootstrap';
-import { TabsModule, TooltipModule } from 'ng2-bootstrap';
+import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TabsModule } from 'ng2-bootstrap';
 import { TruncateModule } from 'ng2-truncate';
 
 import { Broadcaster, Logger, Notifications } from 'ngx-base';
@@ -49,6 +50,7 @@ let providers: any[] = [
 // The inmemory environment variable is checked and if present then the in-memory dataset is added.
 if (process.env.ENV == 'inmemory') {
   serviceImports = [
+    BsDropdownConfig,
     Logger,
     AuthenticationService,
     Broadcaster,
@@ -60,9 +62,12 @@ if (process.env.ENV == 'inmemory') {
     {
       provide: Spaces,
       useExisting: SpacesService
-    }
+    },
+    TooltipConfig
   ];
   providers = [
+    BsDropdownConfig,
+
     GlobalSettings,
     witApiUrlProvider,
     realmProvider,
@@ -77,7 +82,8 @@ if (process.env.ENV == 'inmemory') {
     {
       provide: Http,
       useExisting: HttpServiceLGC
-    }
+    },
+    TooltipConfig
   ];
 } else {
   serviceImports = [
@@ -113,12 +119,12 @@ if (process.env.ENV == 'inmemory') {
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
-    DropdownModule,
+    BsDropdownModule.forRoot(),
     FormsModule,
     HttpModule,
     ModalModule,
     TabsModule,
-    TooltipModule,
+    TooltipModule.forRoot(),
     TruncateModule
   ],
   declarations: [

@@ -10,10 +10,10 @@ import {
 
 import { ModalModule } from 'ngx-modal';
 import { DragulaModule } from 'ng2-dragula';
-import { DropdownModule } from 'ng2-bootstrap';
+import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { EventService } from './../../services/event.service';
 import { TreeModule } from 'angular2-tree-component';
-import { TooltipModule } from 'ng2-bootstrap';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TruncateModule } from 'ng2-truncate';
 import { Broadcaster, Logger } from 'ngx-base';
 import {
@@ -49,6 +49,7 @@ let providers = [];
 
 if (process.env.ENV == 'inmemory') {
   providers = [
+    BsDropdownConfig,
     EventService,
     GlobalSettings,
     WorkItemService,
@@ -58,10 +59,12 @@ if (process.env.ENV == 'inmemory') {
     {
       provide: HttpService,
       useClass: MockHttp
-    }
+    },
+    TooltipConfig
   ];
 } else {
   providers = [
+    BsDropdownConfig,
     EventService,
     GlobalSettings,
     WorkItemService,
@@ -74,7 +77,8 @@ if (process.env.ENV == 'inmemory') {
         return new HttpService(backend, options, auth);
       },
       deps: [XHRBackend, RequestOptions, AuthenticationService]
-    }
+    },
+    TooltipConfig
   ];
 }
 
@@ -82,10 +86,10 @@ if (process.env.ENV == 'inmemory') {
 @NgModule({
   imports: [
     AlmIconModule,
+    BsDropdownModule.forRoot(),
     CommonModule,
     DialogModule,
     DragulaModule,
-    DropdownModule,
     FabPlannerAssociateIterationModalModule,
     HttpModule,
     InfiniteScrollModule,
@@ -94,7 +98,7 @@ if (process.env.ENV == 'inmemory') {
     PlannerBoardRoutingModule,
     SidepanelModule,
     ToolbarPanelModule,
-    TooltipModule,
+    TooltipModule.forRoot(),
     TreeModule,
     TreeListModule,
     TruncateModule,

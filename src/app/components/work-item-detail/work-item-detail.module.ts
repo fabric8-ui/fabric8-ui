@@ -4,9 +4,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }  from '@angular/forms';
 import { HttpModule, Http }    from '@angular/http';
 
-import { CollapseModule, TooltipModule } from 'ng2-bootstrap';
+import { CollapseModule } from 'ng2-bootstrap';
 import { Ng2CompleterModule } from 'ng2-completer';
-import { DropdownModule } from 'ng2-bootstrap';
+import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { MyDatePickerModule } from 'mydatepicker';
 
 import { MockHttp } from '../../mock/mock-http';
@@ -37,13 +38,14 @@ import { WorkItemTypeControlService } from '../../services/work-item-type-contro
 let providers = [];
 
 if (process.env.ENV == 'inmemory') {
-  providers = [ AreaService, WorkItemTypeControlService, { provide: Http, useExisting: MockHttp } ];
+  providers = [ AreaService, BsDropdownConfig, TooltipConfig, WorkItemTypeControlService, { provide: Http, useExisting: MockHttp } ];
 } else {
-  providers = [ AreaService, WorkItemTypeControlService ];
+  providers = [ AreaService, BsDropdownConfig, TooltipConfig, WorkItemTypeControlService ];
 }
 
 @NgModule({
   imports: [
+    BsDropdownModule.forRoot(),
     HttpModule,
     WidgetsModule,
     AlmIconModule,
@@ -51,9 +53,8 @@ if (process.env.ENV == 'inmemory') {
     ModalModule,
     CommonModule,
     CollapseModule,
-    DropdownModule,
     FormsModule,
-    TooltipModule,
+    TooltipModule.forRoot(),
     Ng2CompleterModule,
     ReactiveFormsModule,
     MyDatePickerModule,
