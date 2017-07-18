@@ -284,10 +284,11 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       return Observable.forkJoin(
         Observable.of(this.iterations),
         Observable.of(this.workItemTypes),
-        // this.workItemService.getWorkItems(
-        //   this.pageSize,
-        //   appliedFilters
-        // ),
+        // TODO implement search API mock for inmemory
+        process.env.ENV == 'inmemory' ? this.workItemService.getWorkItems(
+          this.pageSize,
+          appliedFilters
+        ) :
         this.workItemService.getWorkItems2(
           this.pageSize,
           this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj))
