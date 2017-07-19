@@ -1,6 +1,6 @@
 @import '../../../assets/stylesheets/_base';
 @import (reference) '../../../assets/stylesheets/shared/_layout';
-@import (reference) '../../../assets/stylesheets/_dragula';
+@import '../../../assets/stylesheets/_dragula'; //dragula css needs to add directly
 
 .work-item-page {
   position: relative;
@@ -103,6 +103,7 @@
           padding-right: 15px;
           padding-left: 15px;
           overflow: auto;
+          .card-wrapper { height: 100%; }
         }//boardlaneWrapper ended
         .lane-header {
           width: 100%;
