@@ -215,7 +215,9 @@ class WorkItemDetailPage {
   }
 
   workItemType () {
-    return element(by.css(".pull-left.dropdown-kebab-pf.detail-type-dropdown"));
+    // return element(by.css(".pull-left.dropdown-kebab-pf.detail-type-dropdown"));
+    return element(by.xpath(".//div[@class='dropdown-kebab-pf detail-type-dropdown col-sm-8']"));
+    
   }
 
   userstroyIcon () {
@@ -585,6 +587,7 @@ class WorkItemDetailPage {
   }
   AreaSelect (){
     return element(by.css('#area-dropdown .details-dropdown'));
+    //#area-dropdown > div.typeahead-dropdown.combobox-container > span.pointer.details-dropdown
   }
   clickAreaSelect (){
     return this.AreaSelect().click();
