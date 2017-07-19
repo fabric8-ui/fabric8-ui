@@ -43,11 +43,12 @@
                     </div>
                   </div>
                   <div class="card-wrapper height-100"
-                    [dragula]='"first-bag"'>
+                    [dragula]='"wi-bag"'>
                     <div *ngFor='let item of lane.cardValue'
                       (mousedown)="getWI(item.id, lane)"
                       (touchstart)="getWI(item.id, lane)"
-                      [attr.data-id]="item.id" id={{item.id}}>
+                      [attr.data-id]="item.id" [attr.data-UUID]="item.extraData['UUID']"  id={{item.id}}
+                      [attr.data-version]="item.extraData['version']" [attr.data-selfLink]="item.extraData['selfLink']">
                       <card
                         [cardValue]='item'
                         (menuClickEvent)="cardMenuClick($event, item.id, lane)">
