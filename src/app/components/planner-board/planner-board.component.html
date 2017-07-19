@@ -44,7 +44,9 @@
                   </div>
                   <div class="card-wrapper"
                     [dragula]='"wi-bag"'>
-                    <div *ngFor='let item of lane.cardValue'
+                    <div
+                      class="width-100 pull-left"
+                      *ngFor='let item of lane.cardValue'
                       (mousedown)="getWI(item.id, lane)"
                       (touchstart)="getWI(item.id, lane)"
                       [attr.data-id]="item.id" [attr.data-UUID]="item.extraData['UUID']"  id={{item.id}}
