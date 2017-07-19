@@ -3,11 +3,7 @@
   [routerLinkActive]="cardValue.hasLink?['active']:['']"
   [queryParams]="cardValue.hasLink?existingQueryParams:null">
   <div class="row-wrapper">
-    <div>
-      <span class="wi-type-icon fa {{cardValue.type}}"></span>
-      <span> {{cardValue?.id}} </span>
-    </div>
-    <span class="dropdown-kebab-pf dropdown" dropdown>
+    <span class="dropdown-kebab-pf dropdown pull-right" dropdown>
       <button class="btn btn-link color-grey dropdown-toggle"
         type="button"
         aria-haspopup="true"
@@ -33,11 +29,12 @@
         </li>
       </ul>
     </span>
+    <div class="pull-left">
+      <span class="wi-type-icon fa {{cardValue.type}}"></span>
+      <span> {{cardValue?.id}} </span>
+    </div>
   </div>
   <div class="row-wrapper">
-    <div class="margin-right-5">
-      {{ cardValue.title }}
-    </div>
     <div class="user-avatar">
       <img
         *ngIf="cardValue.avatar!==''"
@@ -49,6 +46,9 @@
         *ngIf="cardValue.avatar==''"
         tooltip="unassigned"
         placement="top"></span>
+    </div>
+    <div class="margin-right-15 padding-right-15">
+      {{ cardValue.title }}
     </div>
   </div>
 </div>
