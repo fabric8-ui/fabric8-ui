@@ -262,10 +262,15 @@ export class FilterService {
     let value = obj[key];
 
     return '(' + value.map(item => {
+      let splitter = ':';
       if (Object.keys(item)[0] == this.and_notation || Object.keys(item)[0] == this.or_notation) {
         return this.jsonToQuery(item);
       } else {
-        return Object.keys(item)[0] + ':' + item[Object.keys(item)[0]];
+        if (Object.keys(item).indexOf('negate') > -1) {
+          splitter = item['negate'] ? '!' : ':';
+          delete(item['negate']);
+        }
+        return Object.keys(item)[0] + splitter + item[Object.keys(item)[0]];
       }
     })
     .join(' ' + key + ' ') + ')';
