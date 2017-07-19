@@ -1,3 +1,4 @@
+import { CardValue } from './../components/card/card.component';
 import { WorkItem } from './../models/work-item';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -228,7 +229,23 @@ export class FilterService {
         if (new_str.indexOf(this.and_notation) > -1 || new_str.indexOf(this.or_notation) > -1) {
           return this.queryToJson(new_str, false);
         }
-        dObj[new_str.split(':')[0].trim()] = new_str.split(':').slice(1, new_str.split(':').length).join(':').trim();
+
+        let keyIndex = -1;
+        let splitter = '';
+        for (let i = 0; i < new_str.length; i ++) {
+          if (new_str[i] === ':' || new_str[i] === '!') {
+            splitter = new_str[i];
+            keyIndex = i;
+            break;
+          }
+        }
+
+        let key = new_str.substring(0, keyIndex).trim();
+        let value = new_str.substring(keyIndex + 1).trim();
+        if (splitter === '!') {
+          dObj['negate'] = true;
+        }
+        dObj[key] = value;
         if (first_level) {
           output[this.or_notation] = [dObj];
         } else {

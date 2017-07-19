@@ -234,6 +234,10 @@ describe('Unit Test :: Filter Service', () => {
     expect(filterService.queryToJson('a:b')).toEqual({'$OR': [{'a':'b'}]});
   });
 
+  it('should return correct JSON object - 1.1', () => {
+    expect(filterService.queryToJson('a!b')).toEqual({'$OR': [{'a':'b', 'negate': true}]});
+  });
+
   it('should return correct JSON object - 2', () => {
     expect(filterService.queryToJson('a:b $AND c:d')).toEqual({'$AND': [{'a':'b'}, {'c': 'd'}]});
   });
@@ -255,6 +259,13 @@ describe('Unit Test :: Filter Service', () => {
     expect(filterService.queryToJson('(a:b $OR (c:d $AND d:e $AND (l:m $OR n:p)) $AND f:g)'))
     .toEqual({'$OR':[{'a':'b'},{'$AND':[{'c':'d'},{'d':'e'},{'$OR':[{'l':'m'},{'n':'p'}]},{'f':'g'}]}]});
   });
+
+
+  it('should return correct JSON object - 6.1', () => {
+    expect(filterService.queryToJson('(a!b $OR (c:d $AND d:e $AND (l:m $OR n:p)) $AND f:g)'))
+    .toEqual({'$OR':[{'a':'b', 'negate': true},{'$AND':[{'c':'d'},{'d':'e'},{'$OR':[{'l':'m'},{'n':'p'}]},{'f':'g'}]}]});
+  });
+
 
   it('should return correct query string - 7', () => {
     expect(filterService.jsonToQuery({'$OR': [{'a':'b'}]})).toBe('(a:b)');
