@@ -12,8 +12,8 @@
       </div>
       <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
         <li class="active iteration-container" *ngFor="let iteration of currentIterations" [routerLinkActive]="'selected-iteration'"
-                [routerLink]="[]" [attr.data-id]="iteration.id"
-                [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'">
+          [routerLink]="[]" [attr.data-id]="iteration.id"
+          [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'">
           <div class="iteration-subheader">
             <div *ngIf="loggedIn" class="dropdown-kebab-pf pull-right dropdown" dropdown>
               <button class="btn btn-link dropdown-toggle"
@@ -103,8 +103,8 @@
       <ul class="not-current-iteration"
           [collapse]="isCollapsedFutureIteration">
         <li class="iteration-subheader iteration-container" *ngFor="let iteration of futureIterations" [routerLinkActive]="'selected-iteration'"
-                [routerLink]="[]" [attr.data-id]="iteration.id"
-                [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'">
+          [routerLink]="[]" [attr.data-id]="iteration.id"
+          [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'">
             <div class="pull-right">
               <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
               <div *ngIf="loggedIn" class="dropdown-kebab-pf dib dropdown" dropdown>
