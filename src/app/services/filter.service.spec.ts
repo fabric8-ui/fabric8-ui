@@ -231,61 +231,61 @@ describe('Unit Test :: Filter Service', () => {
    * Method to test - queryToJson
    */
   it('should return correct JSON object - 1', () => {
-    expect(filterService.queryToJson('a:b')).toEqual({'$OR': [{'$EQ': {'a':'b'}}]});
+    expect(filterService.queryToJson('a:b')).toEqual({'$OR': [{'a': {'$EQ':'b'}}]});
   });
 
   it('should return correct JSON object - 1.1', () => {
-    expect(filterService.queryToJson('a!b')).toEqual({'$OR': [{'$NEQ': {'a':'b'}}]});
+    expect(filterService.queryToJson('a!b')).toEqual({'$OR': [{'a': {'$NEQ':'b'}}]});
   });
 
   it('should return correct JSON object - 2', () => {
-    expect(filterService.queryToJson('a:b $AND c:d')).toEqual({'$AND': [{'$EQ': {'a':'b'}}, {'$EQ': {'c': 'd'}}]});
+    expect(filterService.queryToJson('a:b $AND c:d')).toEqual({'$AND': [{'a': {'$EQ':'b'}}, {'c': {'$EQ': 'd'}}]});
   });
 
   it('should return correct JSON object - 3', () => {
-    expect(filterService.queryToJson('a:b $AND c:d $OR d:e')).toEqual({'$OR': [{'$AND': [{'$EQ': {'a': 'b'}}, {'$EQ': {'c':'d'}}]}, {'$EQ': {'d': 'e'}}]});
+    expect(filterService.queryToJson('a:b $AND c:d $OR d:e')).toEqual({'$OR': [{'$AND': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ':'d'}}]}, {'d': {'$EQ': 'e'}}]});
   });
 
   it('should return correct JSON object - 4', () => {
-    expect(filterService.queryToJson('a:b $OR c:d $OR d:e')).toEqual({'$OR': [{'$EQ': {'a': 'b'}}, {'$EQ': {'c':'d'}}, {'$EQ': {'d': 'e'}}]});
+    expect(filterService.queryToJson('a:b $OR c:d $OR d:e')).toEqual({'$OR': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ':'d'}}, {'d': {'$EQ': 'e'}}]});
   });
 
   it('should return correct JSON object - 5', () => {
     expect(filterService.queryToJson('a:b $OR (c:d $AND d:e $AND (l:m $OR n:p)) $AND f:g'))
-    .toEqual({'$OR':[{'$EQ': {'a':'b'}},{'$AND':[{'$EQ': {'c':'d'}},{'$EQ': {'d':'e'}},{'$OR':[{'$EQ': {'l':'m'}},{'$EQ': {'n':'p'}}]},{'$EQ': {'f':'g'}}]}]});
+    .toEqual({'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]});
   });
 
   it('should return correct JSON object - 5.1', () => {
     expect(filterService.queryToJson('(a!b $OR (c:d $AND d:e $AND (l:m $OR n:p)) $AND f:g)'))
-    .toEqual({'$OR':[{'$NEQ': {'a':'b'}},{'$AND':[{'$EQ': {'c':'d'}},{'$EQ': {'d':'e'}},{'$OR':[{'$EQ': {'l':'m'}},{'$EQ': {'n':'p'}}]},{'$EQ': {'f':'g'}}]}]});
+    .toEqual({'$OR':[{'a': {'$NEQ':'b'}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]});
   });
 
 
   it('should return correct query string - 7', () => {
-    expect(filterService.jsonToQuery({'$OR': [{'$EQ': {'a':'b'}}]})).toBe('(a:b)');
+    expect(filterService.jsonToQuery({'$OR': [{'a': {'$EQ':'b'}}]})).toBe('(a:b)');
   });
 
   it('should return correct query string - 7.1', () => {
-    expect(filterService.jsonToQuery({'$OR': [{'$NEQ': {'a':'b'}}]})).toBe('(a!b)');
+    expect(filterService.jsonToQuery({'$OR': [{'a': {'$NEQ':'b'}}]})).toBe('(a!b)');
   });
 
   it('should return correct query string - 8', () => {
-    expect(filterService.jsonToQuery({'$AND': [{'$EQ': {'a':'b'}}, {'$EQ': {'c': 'd'}}]}))
+    expect(filterService.jsonToQuery({'$AND': [{'a': {'$EQ':'b'}}, {'c': {'$EQ': 'd'}}]}))
     .toBe('(a:b $AND c:d)');
   });
 
   it('should return correct query string - 9', () => {
-    expect(filterService.jsonToQuery({'$OR': [{'$AND': [{'$EQ': {'a': 'b'}}, {'$EQ': {'c':'d'}}]}, {'$EQ': {'d': 'e'}}]}))
+    expect(filterService.jsonToQuery({'$OR': [{'$AND': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ':'d'}}]}, {'d': {'$EQ': 'e'}}]}))
     .toBe('((a:b $AND c:d) $OR d:e)');
   });
 
   it('should return correct query string - 10', () => {
-    expect(filterService.jsonToQuery({'$OR': [{'$EQ': {'a': 'b'}}, {'$EQ': {'c':'d'}}, {'$EQ': {'d': 'e'}}]}))
+    expect(filterService.jsonToQuery({'$OR': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ':'d'}}, {'d': {'$EQ': 'e'}}]}))
     .toBe('(a:b $OR c:d $OR d:e)');
   });
 
   it('should return correct query string - 11', () => {
-    expect(filterService.jsonToQuery({'$OR':[{'$EQ': {'a':'b'}},{'$AND':[{'$EQ': {'c':'d'}},{'$EQ': {'d':'e'}},{'$OR':[{'$EQ': {'l':'m'}},{'$EQ': {'n':'p'}}]},{'$EQ': {'f':'g'}}]}]}))
+    expect(filterService.jsonToQuery({'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}))
     .toBe('(a:b $OR (c:d $AND d:e $AND (l:m $OR n:p) $AND f:g))');
   });
 
@@ -293,12 +293,12 @@ describe('Unit Test :: Filter Service', () => {
     expect(
       filterService.queryToJson(
         filterService.jsonToQuery(
-          {'$OR':[{'$EQ': {'a':'b'}},{'$AND':[{'$EQ': {'c':'d'}},{'$EQ': {'d':'e'}},{'$OR':[{'$EQ': {'l':'m'}},{'$EQ': {'n':'p'}}]},{'$EQ': {'f':'g'}}]}]}
+          {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
         )
       )
     )
     .toEqual(
-      {'$OR':[{'$EQ': {'a':'b'}},{'$AND':[{'$EQ': {'c':'d'}},{'$EQ': {'d':'e'}},{'$OR':[{'$EQ': {'l':'m'}},{'$EQ': {'n':'p'}}]},{'$EQ': {'f':'g'}}]}]}
+      {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
   );
   });
 
@@ -306,12 +306,12 @@ describe('Unit Test :: Filter Service', () => {
     expect(
       filterService.queryToJson(
         filterService.jsonToQuery(
-          {'$OR':[{'$EQ': {'a':'b'}},{'$AND':[{'$NEQ': {'c':'d'}},{'$EQ': {'d':'e'}},{'$OR':[{'$EQ': {'l':'m'}},{'$EQ': {'n':'p'}}]},{'$EQ': {'f':'g'}}]}]}
+          {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$NEQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
         )
       )
     )
     .toEqual(
-      {'$OR':[{'$EQ': {'a':'b'}},{'$AND':[{'$NEQ': {'c':'d'}},{'$EQ': {'d':'e'}},{'$OR':[{'$EQ': {'l':'m'}},{'$EQ': {'n':'p'}}]},{'$EQ': {'f':'g'}}]}]}
+      {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$NEQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
     );
   });
 
@@ -319,12 +319,12 @@ describe('Unit Test :: Filter Service', () => {
     expect(
       filterService.queryToJson(
         filterService.jsonToQuery(
-          {'$OR':[{'$EQ': {'a':'b'}},{'$AND':[{'$NEQ': {'c':'d'}},{'$EQ': {'d':'e'}},{'$OR':[{'$EQ': {'l':'m'}},{'$EQ': {'n':'p'}}]},{'$EQ': {'f':'g'}}]}]}
+          {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$NEQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
         )
       )
     )
     .toEqual(
-      {'$OR':[{'$EQ': {'a':'b'}},{'$AND':[{'$NEQ': {'c':'d'}},{'$EQ': {'d':'e'}},{'$OR':[{'$EQ': {'l':'m'}},{'$EQ': {'n':'p'}}]},{'$EQ': {'f':'g'}}]}]}
+      {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$NEQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
     );
   });
 

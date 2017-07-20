@@ -244,12 +244,11 @@ export class FilterService {
 
         let key = new_str.substring(0, keyIndex).trim();
         let value = new_str.substring(keyIndex + 1).trim();
+        dObj[key] = {};
         if (splitter === '!') {
-          dObj[this.not_equal_notation] = {};
-          dObj[this.not_equal_notation][key] = value;
+          dObj[key][this.not_equal_notation] = value;
         } else {
-          dObj[this.equal_notation] = {};
-          dObj[this.equal_notation][key] = value;
+          dObj[key][this.equal_notation] = value;
         }
         if (first_level) {
           output[this.or_notation] = [dObj];
@@ -267,16 +266,14 @@ export class FilterService {
     let value = obj[key];
 
     return '(' + value.map(item => {
-      let splitter = ':';
       if (Object.keys(item)[0] == this.and_notation || Object.keys(item)[0] == this.or_notation) {
         return this.jsonToQuery(item);
       } else {
-        let conditional_operator = Object.keys(item)[0];
-        splitter = conditional_operator === this.not_equal_notation ? '!' : ':';
-
-        let data = item[conditional_operator];
-        let data_key = Object.keys(data)[0];
-        return data_key + splitter + data[data_key];
+        let data_key = Object.keys(item)[0];
+        let data = item[data_key];
+        let conditional_operator = Object.keys(data)[0];
+        let splitter = conditional_operator === this.not_equal_notation ? '!' : ':';
+        return data_key + splitter + data[conditional_operator];
       }
     })
     .join(' ' + key + ' ') + ')';
