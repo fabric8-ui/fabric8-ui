@@ -321,6 +321,10 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       })
   }
 
+  kebabMenuClick(event: Event) {
+    event.stopPropagation();
+  }
+
   listenToEvents() {
     this.eventListeners.push(
       this.broadcaster.on<string>('backlog_selected')

@@ -16,7 +16,7 @@
           [queryParams]="{iteration: iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name}" [dragula]="'wi-bag'">
           <div class="iteration-subheader">
             <div *ngIf="loggedIn" class="dropdown-kebab-pf pull-right dropdown" dropdown>
-              <button class="btn btn-link dropdown-toggle"
+              <button class="btn btn-link dropdown-toggle" (click)="kebabMenuClick($event)"
                       type="button"
                       aria-haspopup="true"
                       aria-expanded="true"
@@ -108,7 +108,7 @@
             <div class="pull-right">
               <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
               <div *ngIf="loggedIn" class="dropdown-kebab-pf dib dropdown" dropdown>
-                <button class="btn btn-link dropdown-toggle"
+                <button class="btn btn-link dropdown-toggle" (click)="kebabMenuClick($event)"
                         type="button"
                         aria-haspopup="true"
                         aria-expanded="true"
@@ -167,7 +167,7 @@
           <div class="pull-right">
             <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
             <div *ngIf="loggedIn" class="dropdown-kebab-pf dib dropdown" dropdown>
-              <button class="btn btn-link dropdown-toggle"
+              <button class="btn btn-link dropdown-toggle" (click)="kebabMenuClick($event)"
                       type="button"
                       aria-haspopup="true"
                       aria-expanded="true"
