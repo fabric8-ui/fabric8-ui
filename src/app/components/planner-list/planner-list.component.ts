@@ -266,11 +266,11 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       // KNOWN ISSUE: if the tree is expanded when switching the mode, the user will experience
       // some weird issues. Problem is there seems to be no way of force-collapsing the tree yet.
       // TODO: collapse the tree here so it does not give weird effects when switching modes
-      if (this.showHierarchyList) {
-        // we want to display the hierarchy, so filter out all items that are childs (have no parent)
-        // to do this, we need to append a filter: /spaces/{id}/workitems?filter[parentexists]=false
-        appliedFilters.push({ id: 'parentexists', paramKey: 'filter[parentexists]', value: 'false' });
-      }
+      // if (this.showHierarchyList) {
+      //   // we want to display the hierarchy, so filter out all items that are childs (have no parent)
+      //   // to do this, we need to append a filter: /spaces/{id}/workitems?filter[parentexists]=false
+      //   appliedFilters.push({ id: 'parentexists', paramKey: 'filter[parentexists]', value: 'false' });
+      // }
       this.logger.log('Requesting work items with filters: ' + JSON.stringify(appliedFilters));
 
       // TODO Filter temp
@@ -291,7 +291,10 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         ) :
         this.workItemService.getWorkItems2(
           this.pageSize,
-          this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj))
+          {
+            expression: this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj)),
+            parentexists: !!!this.showHierarchyList
+          }
         )
       )
     })

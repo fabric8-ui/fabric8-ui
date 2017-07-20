@@ -165,10 +165,10 @@ export class WorkItemService {
   }
 
   // TODO Filter temp
-  getWorkItems2(pageSize: number = 20, filters: any): Observable<{workItems: WorkItem[], nextLink: string, totalCount?: number | null}> {
+  getWorkItems2(pageSize: number = 20, filters: object): Observable<{workItems: WorkItem[], nextLink: string, totalCount?: number | null}> {
     if (this._currentSpace) {
       this.workItemUrl = this._currentSpace.links.self.split('spaces')[0] + 'search';
-      let url = this.workItemUrl + '?page[limit]=' + pageSize + '&filter[expression]=' + JSON.stringify(filters);
+      let url = this.workItemUrl + '?page[limit]=' + pageSize + '&' + Object.keys(filters).map(k => 'filter['+k+']='+JSON.stringify(filters[k])).join('&');
       return this.http.get(url)
         .map((resp) => {
           return {
