@@ -20,6 +20,8 @@ export class FilterService {
 
   private and_notation = '$AND';
   private or_notation = '$OR';
+  private equal_notation = '$EQ';
+  private not_equal_notation = '$NEQ';
 
   private filtertoWorkItemMap = {
     'assignee': ['relationships', 'assignees', 'data', ['id']],
@@ -243,9 +245,12 @@ export class FilterService {
         let key = new_str.substring(0, keyIndex).trim();
         let value = new_str.substring(keyIndex + 1).trim();
         if (splitter === '!') {
-          dObj['negate'] = true;
+          dObj[this.not_equal_notation] = {};
+          dObj[this.not_equal_notation][key] = value;
+        } else {
+          dObj[this.equal_notation] = {};
+          dObj[this.equal_notation][key] = value;
         }
-        dObj[key] = value;
         if (first_level) {
           output[this.or_notation] = [dObj];
         } else {
@@ -266,11 +271,12 @@ export class FilterService {
       if (Object.keys(item)[0] == this.and_notation || Object.keys(item)[0] == this.or_notation) {
         return this.jsonToQuery(item);
       } else {
-        if (Object.keys(item).indexOf('negate') > -1) {
-          splitter = item['negate'] ? '!' : ':';
-          delete(item['negate']);
-        }
-        return Object.keys(item)[0] + splitter + item[Object.keys(item)[0]];
+        let conditional_operator = Object.keys(item)[0];
+        splitter = conditional_operator === this.not_equal_notation ? '!' : ':';
+
+        let data = item[conditional_operator];
+        let data_key = Object.keys(data)[0];
+        return data_key + splitter + data[data_key];
       }
     })
     .join(' ' + key + ' ') + ')';
