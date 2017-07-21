@@ -1,29 +1,23 @@
-@import '../../../assets/stylesheets/_base';
-.iteration-entry {
-  width: 100%;
-  cursor: pointer;
-  &.selected {
-    background-color: @color-pf-black-700 !important;
+@import (reference) '../../../assets/stylesheets/_base';
+
+.f8-itr {
+  &-entry {
+    width: 100%;
+    padding: 5px 15px 30px;
     border-left: 4px solid;
-    border-left-color: @color-pf-blue;
-  }
-  padding: 5px 15px 30px 15px;
-  .badge { background-color: @color-pf-black; }
-  .iteration-header {
-    padding: 10px 20px;
-    > h4 { margin: 0; }
-    .fa-icon { width: 15px; }
-    .add-btn { color: @color-pf-blue; }
-  }
-  .iteration-subheader {
-    .dropdown-kebab-pf {
-      margin-left: 10px;
+    border-left-color: transparent;
+    cursor: pointer;
+    &--selected {
+      background-color: @color-pf-black-700 !important;
+      border-left: 4px solid;
+      border-left-color: @color-pf-blue;
     }
-    i {
-      color: @color-pf-white;
-    }
+    .badge { background-color: @color-pf-black; }
   }
-  .iteration-status {
+  &__header {
+    i { color: @color-pf-white; }
+  }
+  &-status {
     color: @color-pf-black-600;
   }
   .active-tag {

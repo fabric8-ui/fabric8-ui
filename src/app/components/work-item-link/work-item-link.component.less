@@ -1,24 +1,18 @@
 @import (reference) '../../../assets/stylesheets/_base';
 
-.link-container {
-  .table { display: table !important; }
-  .table-cell {
-    padding-right: 10px;
-    padding-left: 10px;
-    vertical-align: top;
-  }
-  .link-header-nav-list {
+.f8-link {
+  // &-container { }
+  &__nav-list {
     border-top: 1px solid;
     border-top-color: @color-pf-black-200;
     li {
-      &.toggle-icon {
+      &.f8-toggle-caret{
         display: inline-block;
         width: 40px;
         padding-top: 9px;
         padding-bottom: 9px;
         text-align: center;
       }
-      a { padding: 13px 15px; }
       &:nth-child(2) {
         a { margin-left: -13px; }
       }
@@ -32,12 +26,11 @@
       &:hover { cursor: pointer; }
     }
   }
-  .link-content {
+  &__content {
     background: @color-pf-white;
     border-bottom: 1px solid;
     border-bottom-color: @color-pf-black-200;
-    >div { padding: 0; }
-    .link-content-create-link {
+    &-create-link {
       padding-top: 50px;
       padding-bottom: 50px;
       text-align: center;
@@ -49,36 +42,28 @@
         margin-top: 15px;
         font-size: 25px;
       }
-      span {
-        margin-right: 10px;
-        margin-left: 10px;
-      }
-      .create-link-btn {
+    }
+    &-hdr {
+      padding: 0 20px;
+      background-color: @color-pf-black-100;
+      >p { padding: 12px 20px; }
+    }
+    .table {
+      display: table !important;
+      &-cell {
+        display: table-cell !important;
         padding-right: 10px;
         padding-left: 10px;
-        margin: 30px auto 0;
+        vertical-align: top;
       }
     }
-    .link-item-hdr {
-      padding-right: 0;
-      background-color: @color-pf-black-100;
-      >p { padding: 12px 10px; }
-      >i {
-        float: right;
-        padding: 15px;
-      }
-    }
-    .link-editor {
-      padding-right: 10px;
+    &-editor {
+      padding-right: 40px;
       padding-bottom: 20px;
       padding-left: 10px;
       background-color: @color-pf-black-100;
       .readonly { background: @color-pf-white; }
       .selected-value { color: @color-pf-black !important; }
-      .link-button {
-        padding-top: 1.5px;
-        padding-bottom: 1.5px;
-      }
       ul.dropdown-menu {
         li {
           a { color: @color-pf-black-800; }
@@ -95,63 +80,38 @@
         }
       }
     }
-    .link-list-wrap {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      .link-list-header {
-        padding: 5px 10px;
-        margin: 0;
-        font-weight: 700;
+  }
+  &__create-btn {
+    padding-right: 10px;
+    padding-left: 10px;
+    margin: 30px auto 0;
+  }
+
+  &__list {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    &-header {
+      padding: 5px 40px;
+      margin: 0;
+      font-weight: 700;
+    }
+    &-type-header {
+      padding: 0 40px;
+      font-weight: 700;
+      color: @color-pf-black-600;
+    }
+    &-item {
+      padding: 2px 50px;
+      cursor: pointer;
+      &:hover { background-color: @color-pf-black-200; }
+      &-title {
+        display: inline-block;
+        max-width: 95%;
+        &:extend(.truncate);
       }
-      .link-list-type-header {
-        padding: 0 10px;
-        font-weight: 700;
-        color: @color-pf-black-600;
-      }
-      .wi-link-list {
-        list-style: none;
-      }
-      .link-list {
-        padding: 2px 20px;
-        cursor: pointer;
-        &:hover { background-color: @color-pf-black-200; }
-        .link-title {
-          display: inline-block;
-          max-width: 95%;
-          &:extend(.truncate);
+      a { color: @color-pf-black-700;
+        &:hover { color: @color-pf-blue;
         }
-        a { color: @color-pf-black-700;
-          &:hover { color: @color-pf-blue;
-          }
-        }
-      }
-    }
-    .workitem-link-search-box {
-      width: 100%;
-      padding: 2px 5px;
-      outline: none;
-    }
-    .search-result-container {
-      position: relative;
-      .weight-800 {
-        font-weight: 800;
-      }
-    }
-    .search-result {
-      position: absolute;
-      top: 0;
-      z-index: 10;
-      width: 100%;
-      max-height: 200px;
-      overflow-y: auto;
-      box-shadow: 0 1px 10px 0 rgba(192, 192, 192, .7);
-      li {
-        padding: 5px;
-        background-color: @color-pf-white;
-        .Border(1px, solid, @color-pf-black-300);
-        border-top: 0;
-        &:hover { background-color: @color-pf-black-500; }
-        &.selected { background-color: @color-pf-black-200; }
       }
     }
   }

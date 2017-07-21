@@ -1,6 +1,6 @@
-<div [formGroup]="form" class="dynamic-control">
-  <label [attr.for]="attributeDesc.key" class="col-xs-4 col-sm-4 col-md-4">{{attributeDesc.label}}</label>
-  <div class="col-xs-8 col-sm-8 col-md-8 no-left-padding">
+<div [formGroup]="form" class="f8-dynamic-control">
+  <label [attr.for]="attributeDesc.key" class="col-xs-2 col-sm-2 col-md-2">{{attributeDesc.label}}</label>
+  <div class="col-xs-10 col-sm-10 col-md-10 padding-left-0">
     <div [ngSwitch]="attributeDesc.type.kind">
 
       <!-- workitemtype field type: string -->
@@ -13,21 +13,21 @@
       <input *ngSwitchCase="'float'" [formControlName]="attributeDesc.key" type="text" (focus)="focusIn()">
 
       <!-- workitemtype field type: dropdown -->
-      <typeahead-dropdown *ngSwitchCase="'enum'" class="dynamic-control-dropdown" [values]="extractEnumKeyValues()" (onUpdate)="onChangeDropdown($event)"></typeahead-dropdown>
+      <typeahead-dropdown *ngSwitchCase="'enum'" class="f8-dynamic-control-dropdown" [values]="extractEnumKeyValues()" (onUpdate)="onChangeDropdown($event)"></typeahead-dropdown>
 
       <!-- workitemtype field type: boolean -->
-      <typeahead-dropdown *ngSwitchCase="'boolean'" class="dynamic-control-dropdown" [values]="extractBooleanKeyValues()" (onUpdate)="onChangeBoolean($event)"></typeahead-dropdown>
+      <typeahead-dropdown *ngSwitchCase="'boolean'" class="f8-dynamic-control-dropdown" [values]="extractBooleanKeyValues()" (onUpdate)="onChangeBoolean($event)"></typeahead-dropdown>
 
       <!-- workitemtype field type: markup -->
       <markdown-control *ngSwitchCase="'markup'" [markdownValue]="form.value[this.attributeKey].content" (onUpdate)="onChangeMarkup($event)"></markdown-control>
 
       <!-- workitemtype field type: instant (datetime) -->
-      <div *ngSwitchCase="'instant'" class="dynamic-control-datepicker">
+      <div *ngSwitchCase="'instant'" class="f8-dynamic-control-datepicker">
       <my-date-picker
-                [options]="datePickerOptions"
-                [selDate]="dateValue"
-                (dateChanged)="onDateChanged($event)"
-                placeholder="Set Date"></my-date-picker>
+        [options]="datePickerOptions"
+        [selDate]="dateValue"
+        (dateChanged)="onDateChanged($event)"
+        placeholder="Set Date"></my-date-picker>
       </div>
 
       <!-- TODO: -->

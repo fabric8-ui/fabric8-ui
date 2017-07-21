@@ -157,7 +157,7 @@
                         <input id="userAssigneeSearchInput" #userSearch (keyup)="filterUser($event)"
                           autocomplete="off" />
                         <ul class="item-ul no-padding user-list" #userList>
-                          <li *ngIf="!usersLoaded" class="textCenter"><i class="fa fa-spinner fa-pulse"></i></li>
+                          <li *ngIf="!usersLoaded" class="text-center"><i class="fa fa-spinner fa-pulse"></i></li>
                           <li
                             class="item-li"
                             [class.first-item] = "filteredUsers && filteredUsers.length"

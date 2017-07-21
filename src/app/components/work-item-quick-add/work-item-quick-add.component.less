@@ -1,27 +1,18 @@
-@import '../../../assets/stylesheets/_base';
+@import (reference) '../../../assets/stylesheets/_base';
 
-.quickAdd_container {
+.f8-quickadd {
   height: 69px; //height is given to avoid jumping between this block and addWorkItemBlk
   text-align: left;
   background: @color-pf-black-200;
   border-top: 1px solid;
-  border-top-color: (darken(@color-pf-white, 20%));
+  border-top-color: @color-pf-black-300;
   cursor: pointer;
-  .dropup {
-    .dropdown-menu { margin-left: 16px;
-      i {
-        width: 15px;
-        margin-top: 5px;
-      }
-    }
-  }
-  .addWorkItem {
+  &__addwi {
     top: 50%;
     padding: 18px 0;
     color: @navbar-pf-border-color;
     .transform(translateY(-50%));
-    .quick-add-label { padding-left: 5px; }
-    .workItemQuickAdd_saveBtn {
+    &-savebtn {
       display: inline-block;
       margin: 0;
       &:hover { text-decoration: none; }
@@ -32,117 +23,109 @@
       &:hover { color: @navbar-pf-border-color; }
     }
   }
-  .addWorkItemBlk {
+  &__wiblk {
     position: relative;
     padding: 20px;
-    .work-item-selector {
-      display: inline-flex;
-      height: 26px;
+    .dropdown-kebab-pf {
+      button[data-toggle='dropdown'] {
+        display: inline-flex;
+        height: 26px;
+      }
+      .dropdown-menu {
+        margin-left: 16px;
+        i {
+          width: 15px;
+          margin-top: 5px;
+        }
+      }
     }
-    .workItemQuickAdd_IconType {
-      position: relative;
-      width: 25px;
-      height: 25px;
-      float: left;
-      i { font-size: 14px; }
-    }
-    .workItemQuickAdd_story {
+    &-story {
       padding-right: 76px;
       padding-left: 42px;
-      #exampleDesc {
-        height: 26px !important;
+      textarea[id='exampleDesc'] {
         max-height: 100px;
+        height: 26px !important;
         padding-top: 0;
       }
     }
-    .workItemQuickAdd_AddBlk {
-      .workItemQuickAdd_Add {
+    &-btn {
+      &-add {
         min-width: 30px !important;
         height: 27px;
         i { font-size: 14px; }
       }
-      .closeQuickAdd {
+      &-close {
         min-width: 30px !important;
         height: 27px;
-        margin-left: 5px;
         padding: 5px;
+        margin-left: 5px;
         i {
           font-size: 14px;
           vertical-align: top;
         }
       }
     }
-    .icon-btn {
-      text-decoration: none;
-    }
-    .icon-btn { cursor: pointer; }
   }
 }
 
 // .quickAdd_container2 {
-.board-quick-add-card {
-  position: relative;
+.f8-quickadd-card {
   float: left;
+  position: relative;
+  box-shadow: none;
   width: 100%;
   padding: 0;
   margin: 0;
   border-top: 0;
-  .addWorkItem {
+  background: none;
+  &__addwi {
     background: @color-pf-white;
     text-align: center;
     padding: 10px 15px;
     .Border(2px, solid, @color-pf-black-400);
-    .workItemQuickAdd_saveBtn {
+    &-savebtn {
       i {
         font-size: 18px;
         color: @color-pf-blue-400;
       }
     }
   }
-  .addWorkItemBlk {
+  &__wiblk {
     margin-top: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 0;
+    margin-left: 0;
     background: @color-pf-white;
-    .Border(1px, solid, @color-pf-black-300);
-    .board-inputs {
-      margin-top: 40px;
-      i {
-        padding-top: 5px;
-        padding-left: 10px;
-      }
-    }
-    .board-description {
+    .Border(2px, solid, @color-pf-black-400);
+    textarea[id="exampleDesc"] {
       width: 100%;
       height: 29px;
       margin-top: 5px;
     }
-    .workItemQuickAdd_Add {
+    &-btn-add {
       margin-top: 5px;
       margin-bottom: 10px;
       margin-left: -10px;
     }
-    .closeQuickAdd {
+    &-btn-close {
       position: absolute;
       top: 10px;
       right: 15px;
       color: @color-pf-black;
     }
-    .icon-btn { .Border(2px, solid, @color-pf-blue-400); }
   }
 }
-.add { background-color: @color-pf-white; }
 @media (max-width: @grid-float-breakpoint) {
-  .quickAdd_container { text-align: center;
-    .addWorkItem { padding: 10px;
+  .f8-quickadd { text-align: center;
+    &__addwi { padding: 10px;
       i,
       h4 { display: block; }
       i { margin-bottom: 5px; }
     }
-    .addWorkItemBlk { padding: 10px; }
+    &__wiblk { padding: 10px; }
   }
 }
 @-moz-document url-prefix() {
-  .workItemQuickAdd_story {
-    textarea.form-control { max-height: 26px !important; }
+  .f8-quickadd__wiblk-story {
+    textarea[id="exampleDesc"] { max-height: 26px !important; }
   }
 }

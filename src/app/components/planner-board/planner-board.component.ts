@@ -105,14 +105,14 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
         this.dragulaService.drop
         .map(value => value.slice(1))
         .filter(value => {
-          return !value[1].classList.contains('iteration-container') &&
+          return !value[1].classList.contains('f8-itr') &&
                  !value[1].classList.contains('iteration-header');
         }).subscribe((args) => this.onDrop(args)),
 
         this.dragulaService.over
         .map(value => value.slice(1))
         .filter(value => {
-          return value[1].classList.contains('card-wrapper');
+          return value[1].classList.contains('f8-board__card');
         })
         .subscribe((args) => this.onOver(args)),
 
@@ -635,7 +635,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
       laneSection[i].classList.remove('active-lane');
     }
     containerClassList.add('active-lane');
-    el.classList.remove('dn');
+    el.classList.remove('hide');
   }
 
   onOut(args) {

@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { PlannerBoardModule } from './app/components/planner-board/planner-board.module';
 import { PlannerListModule } from './app/components/planner-list/planner-list.module';
 
-
 @NgModule({
   imports: [
   ],

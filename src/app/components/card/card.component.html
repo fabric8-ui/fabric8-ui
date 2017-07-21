@@ -1,10 +1,11 @@
-<div class="board-card card-pf card-pf-view card-pf-view-select card-pf-view-single-select"
+<div class="f8-board-card card-pf card-pf-view card-pf-view-select card-pf-view-single-select"
   [routerLink]="cardValue.hasLink?cardValue?.link:null"
   [routerLinkActive]="cardValue.hasLink?['active']:['']"
   [queryParams]="cardValue.hasLink?existingQueryParams:null">
-  <div class="row-wrapper">
+  <div class="f8-board-card__row">
     <span class="dropdown-kebab-pf dropdown pull-right" dropdown>
       <button class="btn btn-link color-grey dropdown-toggle"
+        id="f8-board-card__row-button"
         type="button"
         aria-haspopup="true"
         aria-expanded="true"
@@ -30,12 +31,12 @@
       </ul>
     </span>
     <div class="pull-left">
-      <span class="wi-type-icon fa {{cardValue.type}}"></span>
+      <span class="f8-board-card__type-icon fa {{cardValue.type}}"></span>
       <span> {{cardValue?.id}} </span>
     </div>
   </div>
-  <div class="row-wrapper">
-    <div class="user-avatar">
+  <div class="f8-board-card__row">
+    <div class="user-avatar pull-right padding-right-5">
       <img
         *ngIf="cardValue.avatar!==''"
         placement="top"

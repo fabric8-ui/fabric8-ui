@@ -1,6 +1,6 @@
-<div class="container-fluid work-item-page">
+<div class="container-fluid f8-wi-container">
   <main class="row">
-    <aside class="side-panel-wrap">
+    <aside class="f8-sidepanel">
       <side-panel [iterations]="iterations"></side-panel>
     </aside>
     <section>
@@ -11,10 +11,10 @@
         [currentBoardType]="currentBoardType"
         [areas]="areas"
         [loggedInUser]="loggedInUser"></toolbar-panel>
-        <div class="work-item-list-page">
+        <div class="f8-wi-list">
           <div #listContainer
               almInfiniteScroll
-              class="detail-list-wrap"
+              class="f8-wi-list-wrap"
               [eachElementHeightInPx]='contentItemHeight'
               (initItems)='initWiItems($event)'
               (fetchMore)='fetchMoreWiItems()'>
@@ -53,7 +53,7 @@
                 </alm-tree-list-item>
               </template>
             </alm-tree-list>
-            <a *ngIf="!workItems || workItems.length === 0" class="container-fluid container-cards-pf alm-blank-slate">
+            <a *ngIf="!workItems || workItems.length === 0" class="container-fluid container-cards-pf f8-blank-state">
               <div class="row row-cards-pf">
                 <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
                   <div class="card-pf card-pf-aggregate-status" (click)="typeSelectPanel.openPanel()">
@@ -73,7 +73,7 @@
 
           <div id="workItemList_Error" class="error" *ngIf="error">{{error}}</div>
 
-          <div id="workItemList_quickAdd" class="work-item-list-quick-add" *ngIf="loggedIn">
+          <div id="workItemList_quickAdd" class="f8-wi-list__quick-add" *ngIf="loggedIn">
               <alm-work-item-quick-add
                 [wilistview]="'wi-list-view'"
                 (close)="close($event)"

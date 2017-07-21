@@ -1,7 +1,4 @@
-@import (reference) './../../../../node_modules/patternfly/node_modules/bootstrap/less/mixins';
-@import (reference) './../../../../node_modules/patternfly/src/less/mixins';
-
-//custom mixins
+//common mixins
 .transform(@transform) { transform: @transform; }
 .transition(@transition) { transition: @transition; }
 .borderRadius(@radius) { border-radius: @radius; }
@@ -17,7 +14,7 @@
   margin-right: -12px;
   padding-right: 12px;
   line-height: @line-height;
-  max-height: (@line-height*@line-count);
+  max-height: @line-height * @line-count;
   text-align: justify;
   &:before {
     position: absolute;
@@ -35,3 +32,5 @@
     content: '';
   }
 }
+//planner based mixins
+@import '_planner-mixins.less';

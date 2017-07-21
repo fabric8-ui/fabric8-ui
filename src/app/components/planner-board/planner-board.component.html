@@ -1,6 +1,6 @@
-<div class="container-fluid work-item-page">
+<div class="container-fluid f8-wi-container">
   <main class="row">
-    <aside class="side-panel-wrap">
+    <aside class="f8-sidepanel">
       <side-panel [iterations]="iterations"></side-panel>
     </aside>
     <section>
@@ -12,21 +12,21 @@
         [areas]="areas"
         [loggedInUser]="loggedInUser">
       </toolbar-panel>
-      <div class="width-100 boardWrapper"
+      <div class="width-100 f8-board-wrapper"
         id="board_topWorkItems">
-        <div class="board"
+        <div class="f8-board"
           *ngIf="readyToInit"
           (touchmove)="onTouchstart($event);">
           <!-- board columns -->
-          <div class="board-lane"
+          <div class="f8-board-lane"
             *ngFor='let lane of lanes'>
-            <section class="width-100 pull-left board-lane-column"
+            <section class="width-100 pull-left f8-board-lane-column"
               [attr.data-state]="lane.option">
-              <div class="lane-header">
+              <div class="f8-board-lane__header">
                 <span class="dib">{{lane.option}}</span>
-                <span class="issueCount dib" >{{lane.workItems | arrayCount}}</span>
+                <span class="badge" >{{lane.workItems | arrayCount}}</span>
               </div>
-              <div class="boardlaneWrapper"
+              <div class="f8-board-lane__wrapper"
                 almInfiniteScroll
                 [eachElementHeightInPx]='contentItemHeight'
                 (initItems)='initWiItems($event, lane)'
@@ -42,7 +42,7 @@
                     </alm-work-item-quick-add>
                   </div>
                 </div>
-                <div class="card-wrapper"
+                <div class="f8-board__card height-100"
                   [dragula]='"wi-bag"'>
                   <div
                     class="width-100 pull-left"

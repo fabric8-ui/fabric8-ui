@@ -1,12 +1,12 @@
 @import (reference) '_base';
-.work-item-page {
+.f8-wi-container {
   position: relative;
   height: ~"calc(e('100vh - 60px'))";
   >main {
     height: 100%;
     overflow: hidden;
     >aside {
-      &.side-panel-wrap {
+      &.f8-sidepanel {
         float: left;
         width: 25%;
         height: 100%;
@@ -25,24 +25,28 @@
         border-bottom: 1px solid;
         border-bottom-color: @color-pf-black-300 !important;
         .toolbar-pf { border-color: transparent;
-          .toolbar-pf-actions { border-color: transparent;
+          .toolbar-pf-actions {
+            border-color: transparent;
             .form-group { border-right: 0;
               &:first { border-left: 0; }
             }
             .toolbar-pf-action-right {
-              .pficon-add-circle-o { color: @color-pf-blue-400;}
+              .pficon-add-circle-o {
+                color: @color-pf-blue-400;
+              }
             }
           }
           // ensure icons dont fold around inputs
-          .wi-input-filter-dropdown { position: relative;
-            .wi-input-filter-dropdown-list {
+          .wi-input-filter-dropdown {
+            position: relative;
+            &-list {
               top: 25px;
               width: 100%;
               padding: 2px;
             }
             >div { position: relative;
               //HACK:prevents caret icon from folding to a new line
-              >input {  margin-right: -20px; }
+              >input { margin-right: -20px; }
               //HACK:positions the caret in right margin are of input
               >.caret::before {
                 z-index: 2;

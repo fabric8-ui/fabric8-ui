@@ -1,8 +1,12 @@
-<div class="filter" *ngFor="let item of groupTypes">
-  <a [routerLink]="[]"
+<div class="f8-group-filter" *ngFor="let item of groupTypes">
+  <a
+    class="f8-group-filter__type"
+    id="{{item.group}}"
+    [routerLink]="[]"
     [queryParams]="{q: fnBuildQueryParam(item)}"
     [routerLinkActive]="'selected'"
-    id="{{item.group}}" (click)="setGuidedTypeWI(item);" *ngIf="item.group != 'execution'">
+    (click)="setGuidedTypeWI(item);"
+    *ngIf="item.group != 'execution'">
       {{ item.name }}
   </a>
   <!--If group is execution show a header and then embed the iteration component -->

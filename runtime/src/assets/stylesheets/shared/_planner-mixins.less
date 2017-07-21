@@ -1,6 +1,4 @@
-@import (reference) './../../../node_modules/patternfly/node_modules/bootstrap/less/variables';
-@import (reference) './../../../node_modules/patternfly/src/less/variables';
-@import (reference) './_base';
+@import (reference) '_variables';
 
 .user-avatar {
   width: 25px;
@@ -13,7 +11,8 @@
 .not-assigned-user-icon {
   padding: 1px;
   font-size: 20px;
-  .Border(1px, solid, @color-pf-black-600);
+  border: solid 1px;
+  border-color: @color-pf-black-600;
 }
 
 // action buttons for editing title, description, comment

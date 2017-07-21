@@ -1,62 +1,56 @@
-@import '../../../assets/stylesheets/_base';
-@import (reference) '../../../assets/stylesheets/shared/_layout';
-@import '../../../assets/stylesheets/_dragula'; //dragula css needs to add directly
+@import (reference) '../../../assets/stylesheets/_base';
+//css needs to add directly
+@import '../../../assets/stylesheets/_dragula';
 @import '../../../assets/stylesheets/_planner-layout';
 
-.boardWrapper {
-  position: relative;
-  height: ~"calc(e('100% - 40px'))";
-  overflow-y: scroll;
-  border-top: 1px solid;
-  border-top-color: @color-pf-black-300;
-  .board {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    user-select: none;
-    .board-lane {
-      display: inline-block;
-      width: 300px;
+.f8-board {
+  &-wrapper {
+    position: relative;
+    height: ~"calc(e('100% - 80px'))";
+    overflow-y: scroll;
+    border-top: 1px solid;
+    border-top-color: @color-pf-black-300;
+  }
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  user-select: none;
+  &-lane {
+    display: inline-block;
+    width: 300px;
+    height: 100%;
+    margin-right: 5px;
+    margin-left: 5px;
+    vertical-align: top;
+    white-space: normal;
+    &-column {
       height: 100%;
-      margin-right: 5px;
-      margin-left: 5px;
-      vertical-align: top;
-      white-space: normal;
-      .board-lane-column {
-        height: 100%;
-        padding: 0;
-        background: @color-pf-black-300;
-        .Border(1px, solid, @color-pf-black-300);
-        .boardlaneWrapper {
-          width: 100%;
-          height: ~"calc(e('100% - 33px'))";
-          padding-right: 15px;
-          padding-left: 15px;
-          overflow: auto;
-          .card-wrapper { height: 100%; }
-        }//boardlaneWrapper ended
-        .lane-header {
-          width: 100%;
-          padding-top: 7px;
-          padding-bottom: 3px;
-          text-align: center;
-          background-color: @color-pf-black-300;
-          .issueCount {
-            padding-right: 8px;
-            padding-left: 8px;
-            margin-left: 5px;
-            font-weight: 500;
-            background-color: @color-pf-white;
-          }// issue-count ended
-        }// lane-header ended
-      }//boad-lane-column ended
-    }//board-lane ended
+      padding: 0;
+      background: @color-pf-black-300;
+      .Border(1px, solid, @color-pf-black-300);
+    }
+    //lane-header
+    &__header {
+      width: 100%;
+      padding-top: 7px;
+      padding-bottom: 3px;
+      text-align: center;
+      background-color: @color-pf-black-300;
+    }
+    //lane-wrapper
+    &__wrapper {
+      width: 100%;
+      height: ~"calc(e('100% - 33px'))";
+      padding-right: 15px;
+      padding-left: 15px;
+      overflow: auto;
+    }
   }
 }

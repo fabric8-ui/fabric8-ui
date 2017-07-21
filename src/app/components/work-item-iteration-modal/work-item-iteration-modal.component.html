@@ -5,10 +5,10 @@
   (onClose)="actionOnClose()"
   (onOpen)="actionOnOpen()">
   <modal-content>
-    <div class="col-md-12 col-sm-12 col-xs-12">
-
+    <div class="col-xs-12 col-sm-12 col-md-12">
       <!-- UX feed for existing iteration association -->
-      <div *ngIf="!!workItem?.relationships?.iteration" id="reassociate-msg">
+      <div id="reassociate-msg"
+        *ngIf="!!workItem?.relationships?.iteration">
         <strong>{{ workItem?.attributes['system.title'] }}</strong>
         is currently associated with
         <strong>
@@ -16,39 +16,62 @@
              '/' + workItem?.relationships?.iteration?.data?.attributes?.name).replace('//', '/')}}
         </strong>
       </div>
-
       <!-- Form input to change iteration -->
-      <div class="form-group" [class.has-error]="validationError">
-
+      <div class="form-group"
+        [class.has-error]="validationError">
         <div class="search-pf-input-group">
           <div>
             {{ !(workItem?.relationships?.iteration) ? "Associate" : "Reassociate" }}
             <strong>{{ workItem?.attributes['system.title'] }}</strong> with
           </div>
 
-          <div class="parent-iteration-container input-group dropdown open active">
-            <input id="parent-iteration" class="form-control " type="text" #iterationSearch (keyup)="filterIteration($event)"
-            autocomplete="off" [value]="selectedIterationName" (focus)="iterationSearchFocus();">
-            <ul class="iteration-list dropdown-menu dropdown-ul" *ngIf="showIterationDropdown" #iterationList>
-              <li *ngIf="!filteredIterations.length" (click)="showIterationDropdown = !showIterationDropdown">No matches found.</li>
-              <li *ngFor="let iteration of filteredIterations;" [attr.data-id]="iteration.key" (click)="associateIteration(iteration);">
+          <div class="f8-iteration-modal input-group dropdown open active">
+            <input class="form-control"
+              id="parent-iteration"
+              type="text"
+              #iterationSearch
+              (keyup)="filterIteration($event)"
+              autocomplete="off"
+              [value]="selectedIterationName"
+              (focus)="iterationSearchFocus();">
+            <ul class="f8-iteration-modal-list dropdown-menu dropdown-ul"
+              *ngIf="showIterationDropdown"
+                #iterationList>
+              <li *ngIf="!filteredIterations.length"
+                (click)="showIterationDropdown = !showIterationDropdown">
+                  No matches found.
+              </li>
+              <li *ngFor="let iteration of filteredIterations;"
+                [attr.data-id]="iteration.key"
+                (click)="associateIteration(iteration);">
                 <span [innerHTML]="(iteration.value) | almSearchHighlight: iterationSearch.value"></span>
               </li>
             </ul>
-            <span class="input-group-addon" (click)="iterationSearchFocus();" id="iteration-select-dropdown"> <span class="caret"></span> </span>
+            <span class="input-group-addon pointer"
+              (click)="iterationSearchFocus();"
+              id="iteration-select-dropdown">
+              <span class="caret"></span>
+            </span>
           </div>
         </div>
       </div>
-
       <!-- Action buttons to commit/abort -->
       <div class="text-right">
-        <button class="btn btn-default" type="submit" id="cancel-iteration-button" (click)="iterationAssociationModal.close()">Cancel</button>
-        <button class="btn btn-primary" type="submit" id="associate-iteration-button" #commitAssociation (click)="assignIteration()"
-                [disabled]="!enableAssociateButton">
+        <button class="btn btn-default margin-right-10"
+          type="submit"
+          id="cancel-iteration-button"
+          (click)="iterationAssociationModal.close()">
+            Cancel
+        </button>
+        <button class="btn btn-primary"
+          type="submit"
+          id="associate-iteration-button"
+          #commitAssociation
+          (click)="assignIteration()"
+          [disabled]="!enableAssociateButton">
           {{ !!(workItem?.relationships?.iteration) ? "Reassociate" : "Associate" }}
         </button>
       </div>
-
     </div>
   </modal-content>
 </modal>

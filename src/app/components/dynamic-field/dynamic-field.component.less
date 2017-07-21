@@ -1,14 +1,19 @@
-.dynamic-control {
+.f8-dynamic-control {
   label { font-weight: 400; }
   input[type=text] {
     cursor: pointer;
     border: 0;
   }
-  .no-left-padding { padding-left: 0; }
-  .dynamic-control-edit-ico {
+  &-edit-ico {
     margin-left: -24px;
     pointer-events: none;
   }
-  .dynamic-control-dropdown { width: 30%; }
-  .dynamic-control-datepicker { width: 50%; }
+  &-dropdown {
+    float: left;
+    width: 30%;
+  }
+  &-datepicker {
+    float: left;
+    width: 50%;
+  }
 }

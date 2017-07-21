@@ -1,43 +1,15 @@
-///////////////////////////
-// Utility styles
-///////////////////////////
-@import (reference) './../../../../node_modules/patternfly/node_modules/bootstrap/less/variables';
-@import (reference) './../../../../node_modules/patternfly/src/less/variables';
-
-.padding-loop(@i) when (@i >= 0) {
-  .padding-top-@{i} { padding-top: (1px * @i) !important; }
-  .padding-left-@{i} { padding-left: (1px * @i) !important; }
-  .padding-bottom-@{i} { padding-bottom: (1px * @i) !important; }
-  .padding-right-@{i} { padding-right: (1px * @i) !important; }
-  .padding-loop(@i - 1);
-}
-.padding-loop(15);
-
-.margin-loop(@i) when (@i >= 0) {
-  .margin-v { margin: (1px * @i) !important; }
-  .margin-top-@{i} { margin-top: (1px * @i) !important; }
-  .margin-left-@{i} { margin-left: (1px * @i) !important; }
-  .margin-bottom-@{i} { margin-bottom: (1px * @i) !important; }
-  .margin-right-@{i} { margin-right: (1px * @i) !important; }
-  .margin-loop(@i - 1);
-}
-.margin-loop(15);
-
-@include: padding-x;
-@include: margin-x;
-
-.padding-0 {
-  padding: 0 !important;
-}
-.margin-0 {
-  margin: 0 !important;
-}
+@import (reference) '_variables';
 
 ///////////////////////
 // Styles relating to general html document
 ///////////////////////
 * { box-sizing: border-box; }
+body {
+  font-family: Open Sans;
+  font-size: 14px;
+  overflow: hidden;
+}
 
-.dropdown {
-  a:hover { text-decoration: none; }
+@media (max-width: @grid-float-breakpoint) {
+  .mobdn { display: none; }
 }

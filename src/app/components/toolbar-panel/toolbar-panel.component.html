@@ -57,11 +57,11 @@
         </div>
       </template>
       <template #addTemplate>
-        <button *ngIf="loggedIn && editEnabled && wiTypes.length" 
-            class="btn btn-default primary-action add-button" type="button" 
+        <button *ngIf="loggedIn && editEnabled && wiTypes.length"
+            class="btn btn-default primary-action add-button" type="button"
             (click)="createNewWorkItem($event)">
           <i class="pficon pficon-add-circle-o add-button-icon"></i>
-          <span class="add-button-text">Create</span> 
+          <span class="add-button-text">Create</span>
         </button>
       </template>
     </pfng-toolbar>

@@ -81,16 +81,16 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         this.dragulaService.drop
         .map(value => value.slice(1))
         .filter(value => {
-          return value[1].classList.contains('iteration-container') &&
-                 !value[1].classList.contains('iteration-header');
+          return value[1].classList.contains('f8-itr') &&
+                 !value[1].classList.contains('f8-itr__panel-hdr');
         })
         .subscribe((args) => this.onDrop(args)),
 
         this.dragulaService.over
         .map(value => value.slice(1))
         .filter(value => {
-          return value[1].classList.contains('iteration-container') ||
-                 value[1].classList.contains('iteration-header');
+          return value[1].classList.contains('f8-itr') ||
+                 value[1].classList.contains('f8-itr__panel-hdr');
         })
         .subscribe((args) => {
           this.onOver(args);
@@ -99,7 +99,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         this.dragulaService.out
         .map(value => value.slice(1))
         .filter(value => {
-          return value[1].classList.contains('iteration-container');
+          return value[1].classList.contains('f8-itr');
         })
         .subscribe(args => {
           this.onOut(args);
@@ -110,7 +110,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       }
       this.dragulaService.setOptions('wi-bag', {
         moves: (el, container, handle) => {
-          return !container.classList.contains('iteration-container');
+          return !container.classList.contains('f8-itr');
         }
       });
     }
@@ -300,10 +300,10 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   onOver(args) {
     let [el, container, source] = args;
-    el.classList.add('dn');
-    if(container.classList.contains('future-iteration-header')) {
+    el.classList.add('hide');
+    if(container.getAttribute('id') === 'f8-itr__panel-future-hdr') {
       //this.isCollapsedFutureIteration = false;
-    } else if(container.classList.contains('past-iteration-header')) {
+    } else if(container.getAttribute('id') === 'f8-itr__panel-past-hdr') {
       //this.isCollapsedPastIteration = false;
     } else {
       container.classList.add('on-hover-background');

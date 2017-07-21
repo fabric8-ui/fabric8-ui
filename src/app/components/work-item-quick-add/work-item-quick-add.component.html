@@ -1,22 +1,22 @@
-<div class="col-md-12 col-sm-12 col-xs-12 quickAdd_container "
+<div class="col-xs-12 col-sm-12 col-md-12 f8-quickadd"
   id="workItemQuickAdd_container"
   *ngIf="wilistview === 'wi-list-view'" >
-  <div class="col-md-12 col-sm-12 col-xs-12 addWorkItem"
+  <div class="col-xs-12 col-sm-12 col-md-12 f8-quickadd__addwi"
     (click)="toggleQuickAdd()"
-    [ngClass]="{'db' : showQuickAddBtn, 'dn' : !showQuickAddBtn}">
-    <a class="workItemQuickAdd_saveBtn">
+    [ngClass]="{'show' : showQuickAddBtn, 'hide' : !showQuickAddBtn}">
+    <a class="f8-quickadd__addwi-savebtn">
       <i class='pficon-add-circle-o dib'></i>
     </a>
-    <span class="quick-add-label">Create Work Item</span>
+    <span class="padding-left-5">Create Work Item</span>
   </div>
-  <div class="col-md-12 col-sm-12 col-xs-12 addWorkItemBlk "
+  <div class="col-xs-12 col-sm-12 col-md-12 f8-quickadd__wiblk"
     *ngIf="showQuickAdd">
     <!-- type dropdown -->
     <div class="dropdown-kebab-pf pull-left" dropdown [dropup]="true">
-      <button class="btn btn-default dropdown-toggle work-item-selector"
+      <button class="btn btn-default dropdown-toggle padding-v-0"
         type="button"
         dropdownToggle>
-        <i class="fa pull-left"
+        <i class="fa dib"
           [ngClass]="selectedType?selectedType.attributes.icon:''"></i>
         <span class="fa fa-angle-up"></span>
       </button>
@@ -34,9 +34,9 @@
         </li>
       </ul>
     </div>
-    <div class="workItemQuickAdd_story">
-      <div class="col-md-6 col-sm-6 col-xs-12 workItemQuickAdd_storyInput">
-        <input class="form-control col-md-12 col-sm-12 col-xs-12"
+    <div class="f8-quickadd__wiblk-story">
+      <div class="col-xs-12 col-sm-6 col-md-6 f8-quickadd__wiblk-storyinput">
+        <input class="form-control col-xs-12 col-sm-12 col-md-12"
           id="exampleInput"
           type="text"
           placeholder="Work Item Title"
@@ -45,7 +45,7 @@
           (keyup.enter)="save($event)"
           (keyup)="checkTitle()"  required/>
       </div>
-      <div class="col-md-6 col-sm-6 mobdn">
+      <div class="col-xs-12 col-sm-6 col-md-6 mobdn">
         <textarea
           class="form-control pull-left"
           id="exampleDesc"
@@ -62,45 +62,45 @@
         </textarea>
       </div>
     </div>
-    <div class="workItemQuickAdd_AddBlk pull-right">
-      <button class="btn btn-primary pull-left workItemQuickAdd_Add"
+    <div class="f8-quickadd__wiblk-btn pull-right">
+      <button class="btn btn-primary pull-left f8-quickadd__wiblk-btn-add"
         #quickAddSubmit
-        [ngClass]="{'icon-btn': validTitle,'disabled':!validTitle}"
+        [ngClass]="{'': validTitle,'disabled':!validTitle}"
         (click)="save($event)">
         <i class="fa fa-check"></i>
       </button>
-      <span class="btn btn-default pull-right closeQuickAdd"
+      <button class="btn btn-default pull-right f8-quickadd__wiblk-btn-close"
         (click)="toggleQuickAdd()">
         <i class="pficon-close"></i>
-      </span>
+      </button>
     </div>
   </div>
 </div>
 
 <!-- Quick ADD Template for Board View -->
-<div class="board-quick-add-card card-pf"
+<div class="f8-quickadd-card card-pf"
   id="workItemQuickAdd_container"
   *ngIf="wilistview === 'wi-card-view'" >
-  <div class="col-sm-12 addWorkItem"
+  <div class="col-xs-12 col-sm-12 col-md-12 f8-quickadd-card__addwi"
     (click)="toggleQuickAdd()">
-    <a class="workItemQuickAdd_saveBtn">
+    <a class="f8-quickadd-card__addwi-savebtn">
       <i class='pficon-add-circle-o dib'></i>
     </a>
   </div>
-  <div class="col-sm-12 card-pf card-pf-view addWorkItemBlk"
+  <div class="col-xs-12 col-sm-12 col-md-12 card-pf card-pf-view f8-quickadd-card__wiblk"
     *ngIf="showQuickAdd">
-    <div class="row">
-      <button class="btn btn-link closeQuickAdd"
+    <div class="row padding-bottom-10 margin-bottom-15">
+      <button class="btn btn-link f8-quickadd-card__wiblk-btn-close"
         (click)="toggleQuickAdd()">
         <i class="pficon pficon-close"></i>
       </button>
     </div>
-    <div class="row board-inputs">
-      <div class="col-sm-2">
-        <i class="fa" [ngClass]="selectedType?selectedType.attributes.icon:''"></i>
+    <div class="row padding-top-10 margin-top-15">
+      <div class="col-xs-2 col-sm-2 col-md-2">
+        <i class="fa padding-top-5 padding-left-10" [ngClass]="selectedType?selectedType.attributes.icon:''"></i>
       </div>
-      <div class="col-sm-10">
-        <input class="form-control board-title col-sm-12"
+      <div class="col-xs-10 col-sm-10 col-md-10">
+        <input class="form-control col-xs-12 col-sm-12 col-md-12"
           id="exampleInput"
           type="text"
           placeholder="Work Item Title"
@@ -110,7 +110,7 @@
           (keyup)="checkTitle()"
           required/>
       </div>
-      <div class="col-sm-12 no-padding">
+      <div class="col-xs-12 col-sm-12 col-md-12 no-padding">
         <textarea
           class="form-control board-description pull-left"
           id="exampleDesc"
@@ -127,10 +127,10 @@
         </textarea>
       </div>
     </div>
-    <div class="col-sm-2 col-sm-offset-10">
-      <button class="btn btn-primary workItemQuickAdd_Add"
+    <div class="col-xs-2 col-sm-2 col-md-2 col-xs-offset-10 col-sm-offset-10 col-md-offset-10">
+      <button class="btn btn-primary f8-quickadd-card__wiblk-btn-add"
         #quickAddSubmit
-        [ngClass]="{'icon-btn': validTitle,'disabled':!validTitle}"
+        [ngClass]="{'': validTitle,'disabled':!validTitle}"
         (click)="save($event)">
         <i class="fa fa-check"></i>
       </button>

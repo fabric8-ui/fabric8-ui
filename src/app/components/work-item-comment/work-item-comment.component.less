@@ -1,92 +1,87 @@
 @import (reference) '../../../assets/stylesheets/_base';
 
-.comment-content {
-  li { text-align: center;
-    &.toggle-icon {
-      display: inline-block;
-      width: 40px;
-      padding-top: 9px;
-      padding-bottom: 9px;
-    }
-    a { padding: 13px 15px; }
-    &:nth-child(2) {
-      a { margin-left: -13px; }
-    }
-    .badge { margin-top: -3px; }// hack to align the badge
-    &.active {
-      .badge {
-        color: @color-pf-white;
-        background-color: @color-pf-blue-400;
+.f8-comment {
+  &-content {
+    li { text-align: center;
+      &.f8-toggle-caret {
+        display: inline-block;
+        width: 40px;
+        padding-top: 9px;
+        padding-bottom: 9px;
+      }
+      a { padding: 13px 15px; }
+      &:nth-child(2) {
+        a { margin-left: -13px; }
+      }
+      .badge { margin-top: -3px; }// hack to align the badge
+      &.active {
+        .badge {
+          color: @color-pf-white;
+          background-color: @color-pf-blue-400;
+        }
       }
     }
   }
-}
-.wi-comment-input {
+
+  &--input {
     padding: 20px;
     background-color: @color-pf-black-100;
-    #wi-comment-add-comment {
-    /* Overrides pf's form-control style's height property */
-    /* The min-height is needed to avoid zero-height element */
-    /* The min-height is same as form-control's default height */
-    height: auto;
-    min-height: 26px;
-    margin-bottom: 0;
-    /* Helper class, should be moved out when almEditable is extended to support placeholders */
-    &.placeholder {
-      color: @color-pf-black-300;
-      font-style: italic;
+    div[id='wi-comment-add-comment'] {
+      /* Overrides pf's form-control style's height property */
+      /* The min-height is needed to avoid zero-height element */
+      /* The min-height is same as form-control's default height */
+      height: auto;
+      min-height: 26px;
+      margin-bottom: 0;
+      /* Helper class, should be moved out when almEditable
+       is extended to support placeholders */
+      &.placeholder {
+        color: @color-pf-black-300;
+        font-style: italic;
+      }
     }
   }
-}
-.comments-outer-wrapper {
-  .comments-wrap {
+
+  &__wrap {
     float: left;
     width: 100%;
     padding: 20px;
     border-bottom: 1px solid;
     border-bottom-color: @color-pf-black-200;
-    .user-avatar {
-      height: 25px;
-      width: 25px;
-      img {
-        height: 100%;
-        width: 100%;
-      }
-    }
-    .comment-body {
-      min-width: 0; //fix for having full wrapper width and overflowen content
-      padding-right: 25px;
-      padding-left: 40px;
-      h5.comment-authr-name {
-        max-width: 100%;
-        min-width: 0;  //fix for having full wrapper width and overflowen content
-        padding-right: 10px;
-        margin-top: 0;
-        margin-bottom: 5px;
-        strong {
-          display: inline-block;
-          width: 100%;
-        }
-      }
-      .createTimeBlock {
-        max-width: 100%;
-        line-height: 1.2;
-      }
-      p.noneditableComment {
-        height: auto;
-        word-break: break-word;
-        border-color: transparent;
-        box-shadow: none;
-        &:hover { border-color: @color-pf-blue-200; }
-      }
-      p.editableComment { height: auto; }
-    }
     .dropdown {
       min-width: 10px;
       margin-top: -5px;
       text-align: right;
     }
   }
+  &-body {
+    min-width: 0; //fix for having full wrapper width and overflowen content
+    padding-right: 25px;
+    padding-left: 40px;
+  }
+
+  &-comment-author {
+    max-width: 100%;
+    min-width: 0;  //fix for having full wrapper width and overflowen content
+    padding-right: 10px;
+    margin-top: 0;
+    margin-bottom: 5px;
+    strong {
+      display: inline-block;
+      width: 100%;
+    }
+  }
+  &--create-time {
+    max-width: 100%;
+    line-height: 1.2;
+  }
+  &--editable { height: auto; }
+  &--noneditable {
+    height: auto;
+    word-break: break-word;
+    border-color: transparent;
+    box-shadow: none;
+    &:hover { border-color: @color-pf-blue-200; }
+  }
 }
-.user-avatar { @include user-avatar; }
-.detail-action-btn { @include detail-action-btn; }
+

@@ -1,11 +1,12 @@
 <modal
+  class="f8-iteration-modal"
   #createUpdateIterationDialog
   [title]="modalTitle"
   (onOpen)="actionOnOpen()"
   (onClose)="actionOnClose()"
   (onSubmit)="actionOnSubmit()">
   <modal-content>
-    <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="col-xs-12 col-sm-12 col-md-12">
       <div *ngIf="modalType=='update' || modalType=='create' || modalType=='createChild'">
         <div class="form-group" [class.has-error]="validationError">
           <div class="search-pf-input-group">
@@ -23,10 +24,10 @@
         </div>
         <div class="form-group">
           <label for="parent-iteration">Parent Iteration</label>
-          <div class="parent-iteration-container input-group dropdown open active">
+          <div class="posRel input-group dropdown open active">
             <input id="parent-iteration" class="form-control " type="text" #iterationSearch (keyup)="filterIteration($event)"
             autocomplete="off" [value]="selectedParentIterationName" (focus)="iterationSearchFocus();" [disabled]="iterationSearchDisable">
-            <ul class="iteration-list dropdown-menu dropdown-ul" *ngIf="showIterationDropdown" #iterationList>
+            <ul class="f8-iteration-modal-list dropdown-menu dropdown-ul" *ngIf="showIterationDropdown" #iterationList>
               <li *ngIf="!filteredIterations.length" (click)="showIterationDropdown = !showIterationDropdown">No matches found.</li>
               <li *ngFor="let iteration of filteredIterations;" id='{{iteration.key}}'  [attr.data-id]="iteration.key" (click)="setParentIteration(iteration);">
                 <span [innerHTML]="(iteration.value) | almSearchHighlight: iterationSearch.value"></span>
@@ -39,7 +40,7 @@
           <label for="iteration-description">Description</label>
           <textarea
             #iterationDesc
-            class="form-control iteration-desc"
+            class="form-control"
             placeholder="Describe this iteration's goals and what it will include."
             id="iteration-description"
             rows="3"
@@ -78,7 +79,7 @@
     </div>
   </modal-content>
   <modal-footer>
-    <div class="text-right col-md-12 col-sm-12 col-xs-12">
+    <div class="text-right col-xs-12 col-sm-12 col-md-12">
       <button class="btn btn-default margin-right-10" id="cancel-iteration-button" type="submit" value="0" (click)="createUpdateIterationDialog.close()">Cancel</button>
       <button class="btn btn-primary" id="create-iteration-button" type="submit" value="0" (click)="createUpdateIterationDialog.onSubmit.emit(undefined)">
         {{submitBtnTxt}}

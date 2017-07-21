@@ -29,16 +29,16 @@
   .form-control, .btn, .dropdown-menu, .badge {
     /* this is only used for the assignee value dropdown as this is re-used from elsewhere */
     /* TODO: this should be patternfly default, but it gets overridden somehow */
-    font-size: 12px;    
-    /* TODO: the caret on the assignee dropdown looks different than on other values. 
-             It looks like the caret on the assignee is the correct one, but it gets 
+    font-size: 12px;
+    /* TODO: the caret on the assignee dropdown looks different than on other values.
+             It looks like the caret on the assignee is the correct one, but it gets
              overridden somehow. */
   }
 
   .toolbar-actions, .toolbar-apf-filter {
     border-right: 0 !important; /* disables the seperators */
   }
-  
+
   .filter-select {
     /* the value select for the filters */
     border-bottom: 1px solid;
@@ -47,15 +47,15 @@
 
     .btn {
       /* buttons in the toolbar don't have box shadows */
-      box-shadow: none;      
+      box-shadow: none;
     }
-    
+
     button {
       /* this is the left connecting side to the filter type dropdown, omit the border here */
-      border-left: none;    
+      border-left: none;
     }
   }
-  
+
   .toolbar-actions {
     /* left aligned action button area */
     .board-type-dropdown {
@@ -65,8 +65,8 @@
 
   .toolbar-pf-action-right {
     /* right aligned action button area */
-    .pficon-add-circle-o { 
-      color: @color-pf-blue-400; 
+    .pficon-add-circle-o {
+      color: @color-pf-blue-400;
     }
 
     .add-button {
@@ -75,15 +75,15 @@
       }
     }
   }
-  
+
   .currently-showing {
-    font-size: 12px; 
-    margin-right: 10px; 
+    font-size: 12px;
+    margin-right: 10px;
   }
-  
+
   .board-type-dropdown {
     .dropdown-menu { right: 0; }
-  }  
+  }
 
   .toolbar-pf-results {
     /* the active filters bar */
@@ -92,7 +92,25 @@
     .list-inline {
       /* the list of filter flags */
       /* TODO: why is this set to -5px per default? */
-      margin-left: 0; 
+      margin-left: 0;
     }
   }
+}
+.filter {
+  &-select {
+    border-bottom: 1px solid;
+    border-bottom-color: @color-pf-black-300;
+    .btn-default { font-size: @font-size-base; }
+  }
+  &-pf {
+    .btn-default { font-size: @font-size-base; }
+  }
+}
+
+.toolbar-pf-action-right {
+  .pficon-add-circle-o { color: @color-pf-blue-400; }
+}
+.currently-showing { margin-right: 10px; }
+.board-type-dropdown {
+  .dropdown-menu { right: 0; }
 }
