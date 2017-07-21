@@ -12,10 +12,9 @@
   <div class="col-md-12 col-sm-12 col-xs-12 addWorkItemBlk "
     *ngIf="showQuickAdd">
     <!-- type dropdown -->
-    <div class="dropup dropdown-kebab-pf pull-left" dropdown>
+    <div class="dropdown-kebab-pf pull-left" dropdown [dropup]="true">
       <button class="btn btn-default dropdown-toggle work-item-selector"
         type="button"
-        data-toggle="dropdown"
         dropdownToggle>
         <i class="fa pull-left"
           [ngClass]="selectedType?selectedType.attributes.icon:''"></i>
@@ -26,8 +25,9 @@
         aria-labelledby="dropdownKebab"
         *dropdownMenu>
         <li *ngFor="let type of availableTypes"
-          (click)="selectType($event, type)">
-          <a class="dropdown-item" href="#" role="menuitem">
+            role="menuitem"
+            (click)="selectType($event, type)">
+          <a class="dropdown-item" href="#">
             <i class="fa pull-left"
               [ngClass]="type.attributes.icon"></i>&nbsp;{{type.attributes.name}}
           </a>
