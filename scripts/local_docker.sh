@@ -12,3 +12,6 @@ fi
 
 docker exec -u root fabric8-ui-builder cp -r /home/fabric8/fabric8-planner/dist /
 docker build -t fabric8-ui-deploy -f ./deploy/Dockerfile.deploy .
+
+docker stop fabric8-ui-builder
+docker rm -f fabric8-ui-builder
