@@ -12,7 +12,7 @@
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
   testSupport = require('./testSupport'),
-   constants = require('./constants'),
+    constants = require('./constants'),
   testHelpers = require('./testHelpers');
 
 describe('Work item list', function () {
@@ -20,7 +20,7 @@ describe('Work item list', function () {
     beforeEach(function () {
         testSupport.setBrowserMode('desktop');
         page = new WorkItemListPage(true);
-    testSupport.setTestSpace(page);
+        testSupport.setTestSpace(page);
     });
 
     /* Perform some tests on that workitem - set values and verify them */

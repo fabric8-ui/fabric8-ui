@@ -66,14 +66,14 @@ describe('Work item list', function () {
       });
   });
 
-  it('should create a new workitem - phone.', function () {
-      testSupport.setBrowserMode('phone');
-      page.clickWorkItemQuickAdd();
-      page.typeQuickAddWorkItemTitle('test workitem');
-      page.clickQuickAddSave().then(function() {
-        expect(page.workItemTitle(page.firstWorkItem)).toBe('test workitem');
-        expect(page.workItemTitle(page.workItemByNumber(0))).toBe('test workitem');
-      });
-  });
+  // it('should create a new workitem - phone.', function () {
+  //     testSupport.setBrowserMode('phone');
+  //     page.clickWorkItemQuickAdd();
+  //     page.typeQuickAddWorkItemTitle('test workitem');
+  //     page.clickQuickAddSave().then(function() {
+  //       expect(page.workItemTitle(page.firstWorkItem)).toBe('test workitem');
+  //       expect(page.workItemTitle(page.workItemByNumber(0))).toBe('test workitem');
+  //     });
+  // });
 
 });

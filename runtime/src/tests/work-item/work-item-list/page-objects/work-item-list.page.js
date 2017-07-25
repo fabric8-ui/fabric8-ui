@@ -608,7 +608,7 @@ class WorkItemListPage {
 
   /* Iterations Page object model */
   clickIterationKebab (index){
-    return element(by.xpath ("(.//button[@type='button'])["+ index +"]")).click();
+    return element(by.xpath ("(.//button[@class='btn btn-link dropdown-toggle']/i[@class='fa fa-ellipsis-v'])["+ index +"]")).click();
   }
   clickEditIterationKebab (){
     return element(by.linkText ("Edit")).click();

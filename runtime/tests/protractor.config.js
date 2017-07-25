@@ -28,7 +28,7 @@ exports.config = {
       'browser': 'INFO'
       },
       'chromeOptions': {
-      'args': [ '--no-sandbox']
+      'args': [ '--no-sandbox', '--window-workspace=1']
       }
     }
 };
