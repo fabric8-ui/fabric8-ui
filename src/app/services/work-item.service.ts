@@ -247,7 +247,7 @@ export class WorkItemService {
    */
   getWorkItemById(id: string): Observable<WorkItem> {
     if (this._currentSpace) {
-      return this.http.get(this._currentSpace.links.self + '/workitems/' + id)
+      return this.http.get(this._currentSpace.links.self.split('/spaces/')[0] + '/workitems/' + id)
         .map(item => item.json().data)
         .catch((error: Error | any) => {
           this.notifyError('Getting work item data failed.', error);
