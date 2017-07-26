@@ -238,6 +238,14 @@ describe('Unit Test :: Filter Service', () => {
     expect(filterService.queryToJson('a!b')).toEqual({'$OR': [{'a': {'$NEQ':'b'}}]});
   });
 
+  it('should return correct JSON object - 1.2', () => {
+    expect(filterService.queryToJson('a ! b')).toEqual({'$OR': [{'a': {'$NEQ':'b'}}]});
+  });
+
+  it('should return correct JSON object - 1.3', () => {
+    expect(filterService.queryToJson('a : b')).toEqual({'$OR': [{'a': {'$EQ':'b'}}]});
+  });
+
   it('should return correct JSON object - 2', () => {
     expect(filterService.queryToJson('a:b $AND c:d')).toEqual({'$AND': [{'a': {'$EQ':'b'}}, {'c': {'$EQ': 'd'}}]});
   });
@@ -325,6 +333,33 @@ describe('Unit Test :: Filter Service', () => {
     )
     .toEqual(
       {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$NEQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
+    );
+  });
+
+  it('should return correct JSON object (with IN operator) - 13', () => {
+    expect(filterService.queryToJson('a : b,c,f,d')).toEqual({'$OR': [{'a': {'$IN':['b','c','f','d']}}]});
+  });
+
+  it('should return correct JSON object (with IN operator) - 13.1', () => {
+    expect(filterService.jsonToQuery({'$OR': [{'a': {'$IN':['b','c','f','d']}}]}))
+    .toEqual('(a:b,c,f,d)');
+  });
+
+  it('should return correct query string - 13.2', () => {
+    expect(filterService.jsonToQuery({'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$IN':['g', 'h', 'i']}}]}]}))
+    .toBe('(a:b $OR (c:d $AND d:e $AND (l:m $OR n:p) $AND f:g,h,i))');
+  });
+
+  it('should return correct query string - 13.3', () => {
+    expect(
+      filterService.queryToJson(
+        filterService.jsonToQuery(
+          {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$NEQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$IN':['p','q','r']}}]},{'f': {'$EQ':'g'}}]}]}
+        )
+      )
+    )
+    .toEqual(
+      {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$NEQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$IN':['p','q','r']}}]},{'f': {'$EQ':'g'}}]}]}
     );
   });
 

@@ -22,6 +22,8 @@ export class FilterService {
   private or_notation = '$OR';
   private equal_notation = '$EQ';
   private not_equal_notation = '$NEQ';
+  private in_notation = '$IN';
+  private not_in_notation = '$NIN';
 
   private filtertoWorkItemMap = {
     'assignee': ['relationships', 'assignees', 'data', ['id']],
@@ -244,11 +246,20 @@ export class FilterService {
 
         let key = new_str.substring(0, keyIndex).trim();
         let value = new_str.substring(keyIndex + 1).trim();
+        let val_arr = value.split(',').map(i => i.trim());
         dObj[key] = {};
         if (splitter === '!') {
-          dObj[key][this.not_equal_notation] = value;
-        } else {
-          dObj[key][this.equal_notation] = value;
+          if (val_arr.length > 1) {
+            dObj[key][this.not_in_notation] = val_arr;
+          } else {
+            dObj[key][this.not_equal_notation] = val_arr[0];
+          }
+        } else if(splitter === ':'){
+          if (val_arr.length > 1) {
+            dObj[key][this.in_notation] = val_arr;
+          } else {
+            dObj[key][this.equal_notation] = val_arr[0];
+          }
         }
         if (first_level) {
           output[this.or_notation] = [dObj];
@@ -272,8 +283,22 @@ export class FilterService {
         let data_key = Object.keys(item)[0];
         let data = item[data_key];
         let conditional_operator = Object.keys(data)[0];
-        let splitter = conditional_operator === this.not_equal_notation ? '!' : ':';
-        return data_key + splitter + data[conditional_operator];
+        let splitter: string = '';
+
+        switch (conditional_operator) {
+          case this.equal_notation:
+            splitter = ':';
+            return data_key + splitter + data[conditional_operator];
+          case this.not_equal_notation:
+            splitter = '!';
+            return data_key + splitter + data[conditional_operator];
+          case this.in_notation:
+            splitter = ':';
+            return data_key + splitter + data[conditional_operator].join();
+          case this.not_in_notation:
+            splitter = '!';
+            return data_key + splitter + data[conditional_operator].join();
+        }
       }
     })
     .join(' ' + key + ' ') + ')';
