@@ -308,7 +308,6 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
       });
       lane.cardValue = [...cardValues, ...lane.cardValue];
     }
-    //lane.cardValue = [...cardValues, ...lane.cardValue];
   }
 
   updateCardItem(workItem: WorkItem) {
@@ -474,7 +473,12 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
                 {
                   id: 'card_move_to_backlog',
                   value: 'Move to backlog'
-                }]
+                }],
+                extraData: {
+                  selfLink: item.links.self,
+                  version: item.attributes['version'],
+                  UUID: item.id
+                }
               }
             })
           ];
