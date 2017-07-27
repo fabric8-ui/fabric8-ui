@@ -1,0 +1,8 @@
+<!-- future iteration -->
+<div class="filter" *ngFor="let item of groupTypes">
+  <div class="first-level" (click)='setGroupType(item)' id='{{item.group}}'>
+    <h3>
+      {{ item.name }}
+    </h3>
+  </div>
+</div>

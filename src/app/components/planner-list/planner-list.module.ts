@@ -28,6 +28,7 @@ import { GlobalSettings } from '../../shared/globals';
 import {
   FabPlannerAssociateIterationModalModule
 } from '../work-item-iteration-modal/work-item-iteration-modal.module';
+import { GroupTypesModule } from '../group-types-panel/group-types-panel.module';
 import { IterationModule } from '../iterations-panel/iterations-panel.module';
 import { PlannerListRoutingModule } from './planner-list-routing.module';
 import { SidepanelModule } from '../side-panel/side-panel.module';
@@ -87,6 +88,7 @@ if (process.env.ENV == 'inmemory') {
     FabPlannerAssociateIterationModalModule,
     HttpModule,
     InfiniteScrollModule,
+    GroupTypesModule,
     IterationModule,
     ModalModule,
     PlannerListRoutingModule,

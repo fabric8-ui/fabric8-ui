@@ -44,6 +44,7 @@ import { Space, Spaces } from 'ngx-fabric8-wit';
 
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType }               from '../../models/work-item-type';
+import { GroupTypesService } from '../../services/group-types.service';
 import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService }            from '../../services/work-item.service';
 import { WorkItemDataService } from './../../services/work-item-data.service';
@@ -97,6 +98,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   private allowedFilterParams: string[] = ['iteration'];
   private currentIteration: BehaviorSubject<string | null>;
   private loggedInUser: User | Object = {};
+  private originalList: WorkItem[] = [];
 
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
@@ -117,6 +119,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     private collaboratorService: CollaboratorService,
     private eventService: EventService,
     private router: Router,
+    private groupTypesService: GroupTypesService,
     private user: UserService,
     private workItemService: WorkItemService,
     private workItemDataService: WorkItemDataService,
@@ -302,6 +305,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
             }
           })
       });
+      this.originalList = cloneDeep(this.workItems);
     },
     (err) => {
       console.log('Error in Work Item list', err);
@@ -346,6 +350,24 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         this.treeList.updateTree();
       },
       (e) => console.log(e));
+  }
+
+  fnSetTypeContext() {
+    //Guided work item type. Show work item which match the guided types
+    this.workItems = this.originalList;
+    let guidedWits = this.groupTypesService.getGuidedWits();
+    let filteredWis = []
+    this.workItems.forEach(item => {
+      guidedWits.forEach(wit => {
+        console.log(wit.id,' gwit=== ', item.relationships.baseType.data.id)
+        if(wit.id === item.relationships.baseType.data.id) {
+          filteredWis.push(item);
+         }
+       });
+     });
+    this.workItems = filteredWis;
+    console.log('after length = ', this.workItems.length);
+    //Build query
   }
 
   // event handlers
@@ -544,6 +566,13 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         }
       })
     );
+
+    //Set the guided work item type display context
+    this.eventListeners.push(
+      this.groupTypesService.groupTypeselected.subscribe(item =>{
+        this.fnSetTypeContext();
+      })
+    )
   }
 
   onDragStart() {
