@@ -10,6 +10,7 @@ import { AuthenticationService } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { DragulaService } from 'ng2-dragula';
 
+import { GroupTypesService } from '../../services/group-types.service';
 import { IterationService } from '../../services/iteration.service';
 import { WorkItemDataService } from './../../services/work-item-data.service';
 import { WorkItemService }   from '../../services/work-item.service';
@@ -55,6 +56,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     private broadcaster: Broadcaster,
     private dragulaService: DragulaService,
     private filterService: FilterService,
+    private groupTypesService: GroupTypesService,
     private iterationService: IterationService,
     private notifications: Notifications,
     private route: ActivatedRoute,
@@ -219,7 +221,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       //This is to view the backlog
       this.selectedIteration = null;
-      this.isBacklogSelected = true;
+      //this.isBacklogSelected = true;
       //Collapse the other iteration sets
       this.isCollapsedCurrentIteration = true;
       this.isCollapsedFutureIteration = true;
@@ -378,6 +380,12 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         if (Object.keys(params).indexOf('iteration') > -1) {
           this.currentSelectedIteration = params['iteration'];
         }
+      })
+    );
+    //A type group is selected.
+    this.eventListeners.push(
+      this.groupTypesService.groupTypeselected.subscribe(item =>{
+        this.selectedIteration = null;
       })
     );
   }

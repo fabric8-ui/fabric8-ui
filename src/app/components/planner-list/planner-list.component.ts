@@ -589,7 +589,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     //Set the guided work item type display context
     this.eventListeners.push(
       this.groupTypesService.groupTypeselected.subscribe(item =>{
-        this.fnSetTypeContext();
+        //this.fnSetTypeContext();
       })
     )
   }

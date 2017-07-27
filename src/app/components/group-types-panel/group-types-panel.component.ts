@@ -31,6 +31,7 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
   private groupTypes: GroupTypesModel[];
   private selectedgroupType: GroupTypesModel;
   private allowedChildWits: WorkItemType;
+  eventListeners: any[] = [];
 
   constructor(
     private log: Logger,
@@ -49,12 +50,12 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
         console.log('[Guided Work Item Types] New Space selected: ' + space.attributes.name);
         this.groupTypesService.getGroupTypes()
         .subscribe(response => {
-          console.log('response = ', response);
           this.groupTypes = response;
         });
       } else {
         console.log('[Guided Work Item Types] Space deselected.');
       }
+      this.listenToEvents();
     });
   }
 
@@ -76,6 +77,16 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
     alert('Work in progress.');
     this.selectedgroupType = groupType;
     this.setContext(groupType);
-    //this.groupTypesService.setCurrentGroupType(groupType);
+    this.groupTypesService.setCurrentGroupType(groupType);
+  }
+
+  listenToEvents() {
+    this.eventListeners = [
+      this.route.queryParams.subscribe(params => {
+        if (Object.keys(params).indexOf('typegroup') < 0) {
+          this.selectedgroupType = null;
+        }
+      })
+    ];
   }
 }
