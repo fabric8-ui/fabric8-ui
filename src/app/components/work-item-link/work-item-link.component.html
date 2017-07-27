@@ -66,17 +66,17 @@
           <div class="table-cell">
             <div class="combobox-container">
               <div *ngIf="linkTypes.length" class="input-group dropdown" dropdown>
-                <input class="combobox form-control readonly dropdown-toggle"
+                <input class="combobox form-control readonly"
                   type="text" placeholder="Select Link Type"
                   [ngClass]="{'selected-value': selectedLinkType }"
-                  readonly dropdownToggle
+                  readonly
                   [attr.value]="selectedLinkType?.name">
                 <ul class="typeahead typeahead-long dropdown-menu" role="menu" *dropdownMenu>
                   <li *ngFor="let linkType of selectedTab | workItemLinkTypeFilterByTypeName:(linkTypes)">
                     <a (click)="onSelectRelation(linkType)">{{linkType.name}}</a>
                   </li>
                 </ul>
-                <span class="input-group-addon" dropdownToggle> <span class="caret"></span> </span>
+                <span class="input-group-addon dropdown-toggle" dropdownToggle> <span class="caret"></span> </span>
               </div>
             </div>
           </div>
