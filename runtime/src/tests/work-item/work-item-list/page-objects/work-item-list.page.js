@@ -735,7 +735,18 @@ class WorkItemListPage {
   clickOnIterationDropDown(){
     return element(by.id('iteration-select-dropdown'));
   }
-
+  get Portfolio (){
+    return element(by.id('portfolio'));
+  }
+  clickPortfolio  (){
+    return this.Portfolio.click();
+  }
+  get Requirements (){
+    return element(by.id('portfolio'));
+  }
+  clickRequirements  (){
+    return this.Requirements.click();
+  }
 }
 
 module.exports = WorkItemListPage;
