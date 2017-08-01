@@ -363,4 +363,144 @@ describe('Unit Test :: Filter Service', () => {
     );
   });
 
+
+  it('Should build correct query - 14', () => {
+    expect(
+      filterService.queryBuilder(
+        'some_key',
+        filterService.equal_notation,
+        'some_value'
+      )
+    )
+    .toEqual(
+      {'some_key': {'$EQ': 'some_value'}}
+    );
+  });
+
+  it('Should build correct query - 14.1', () => {
+    expect(
+      filterService.queryBuilder(
+        'some_key',
+        filterService.equal_notation,
+        ['some_value', 'some_value1', 'some_value2', 'some_value3']
+      )
+    )
+    .toEqual(
+      {'some_key': {'$EQ': ['some_value', 'some_value1', 'some_value2', 'some_value3']}}
+    );
+  });
+
+  it('Should throw error on invalid notation - 15', () => {
+    expect(
+      function() {
+        filterService.queryBuilder(
+          'key',
+          'invalid_notation',
+          'value'
+        );
+      }
+    )
+    .toThrow(new Error('Not a valid compare notation'));
+  });
+
+  it('Should correctly join - 16', () => {
+    expect(
+      filterService.queryJoiner(
+        {},
+        '$AND',
+        {'some_key': {'$EQ': ['some_value', 'some_value1', 'some_value2', 'some_value3']}}
+      )
+    )
+    .toEqual({'$OR': [{'some_key': {'$EQ': ['some_value', 'some_value1', 'some_value2', 'some_value3']}}]});
+  });
+
+  it('Should correctly join - 16.1', () => {
+    expect(
+      filterService.queryJoiner(
+        {},
+        '$AND',
+        {'$OR': [{'some_key': {'$EQ': ['some_value', 'some_value1', 'some_value2', 'some_value3']}}]}
+      )
+    )
+    .toEqual({'$OR': [{'some_key': {'$EQ': ['some_value', 'some_value1', 'some_value2', 'some_value3']}}]});
+  });
+
+	it('Should correctly join - 17', () => {
+    expect(
+			filterService.queryJoiner(
+        {'$OR': [{'some_key': {'$EQ': ['some_value', 'some_value1', 'some_value2', 'some_value3']}}]},
+        '$AND',
+        {}
+      )
+    )
+    .toEqual(
+    	{'$OR': [{'some_key': {'$EQ': ['some_value', 'some_value1', 'some_value2', 'some_value3']}}]}
+		)
+  });
+
+	it('Should correctly join - 18', () => {
+    expect(
+			function() {
+				filterService.queryJoiner(
+        	{'some_key': 'some_value'},
+        	'$AND',
+        	{'$OR': [{'some_key': 'some_value3'}]}
+      	)
+			}
+    )
+    .toThrow(new Error('Existing query object is invalid without a joiner in root'));
+  });
+
+	it('Should correctly join - 19', () => {
+    expect(
+			filterService.queryJoiner(
+				{'$OR': [{'some_key1': 'some_value1'}]},
+        '$OR',
+        {'$OR': [{'some_key': 'some_value3'}]}
+      )
+    )
+    .toEqual(
+			{'$OR': [{'some_key1': 'some_value1'},{'some_key': 'some_value3'}]}
+		);
+  });
+
+	it('Should correctly join - 20', () => {
+    expect(
+			filterService.queryJoiner(
+				{'$OR': [{'some_key1': 'some_value1'}]},
+        '$AND',
+        {'$OR': [{'some_key': 'some_value3'}]}
+      )
+    )
+    .toEqual(
+			{'$AND': [{'$OR': [{'some_key1': 'some_value1'}]}, {'$OR': [{'some_key': 'some_value3'}]}]}
+		);
+  });
+
+	it('Should correctly join - 21', () => {
+    expect(
+			filterService.queryJoiner(
+				{'$OR': [{'some_key1': 'some_value1'}]},
+        '$AND',
+        {'some_key': 'some_value3'}
+      )
+    )
+    .toEqual(
+			{'$AND': [{'$OR': [{'some_key1': 'some_value1'}]}, {'some_key': 'some_value3'}]}
+		);
+  });
+
+	it('Should correctly join - 22', () => {
+    expect(
+			filterService.queryJoiner(
+				{'$OR': [{'some_key1': 'some_value1'}]},
+        '$OR',
+        {'some_key': 'some_value3'}
+      )
+    )
+    .toEqual(
+			{'$OR': [{'some_key1': 'some_value1'}, {'some_key': 'some_value3'}]}
+		);
+  });
+
 });

@@ -1,5 +1,3 @@
-import { CardValue } from './../components/card/card.component';
-import { WorkItem } from './../models/work-item';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { cloneDeep } from 'lodash';
@@ -7,6 +5,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { WIT_API_URL, Spaces } from 'ngx-fabric8-wit';
 import { HttpService } from './http-service';
+import { WorkItem } from './../models/work-item';
 
 import { FilterModel } from '../models/filter.model';
 
@@ -18,12 +17,24 @@ export class FilterService {
   public filterObservable: Subject<any> = new Subject();
   private headers = new Headers({'Content-Type': 'application/json'});
 
-  private and_notation = '$AND';
-  private or_notation = '$OR';
-  private equal_notation = '$EQ';
-  private not_equal_notation = '$NEQ';
-  private in_notation = '$IN';
-  private not_in_notation = '$NIN';
+  public and_notation = '$AND';
+  public or_notation = '$OR';
+  public equal_notation = '$EQ';
+  public not_equal_notation = '$NEQ';
+  public in_notation = '$IN';
+  public not_in_notation = '$NIN';
+
+  private compare_notations: string[] = [
+    this.equal_notation,
+    this.not_equal_notation,
+    this.in_notation,
+    this.not_in_notation,
+  ];
+
+  private join_notations: string[] = [
+    this.and_notation,
+    this.or_notation,
+  ];
 
   private filtertoWorkItemMap = {
     'assignee': ['relationships', 'assignees', 'data', ['id']],
@@ -177,6 +188,105 @@ export class FilterService {
 
       // Add the query from option with AND operation
       return '(' + decodedURL + ' ' + this.and_notation + ' ' + processedObject + ')';
+    }
+  }
+
+  /**
+   *
+   * @param key The value is the object key like 'wporkitem_type', 'iteration' etc
+   * @param compare The values are
+   *                FilterService::equal_notation',
+   *                FilterService::not_equal_notation',
+   *                FilterService::not_equal_notation',
+   *                FilterService::in_notation',
+   *                FilterService::not_in_notation'
+   * @param value string or array of string of values (in case of IN or NOT IN)
+   */
+
+  queryBuilder(key: string, compare: string, value: string | string[]): any {
+    if (this.compare_notations.indexOf(compare.trim()) == -1) {
+      throw new Error('Not a valid compare notation');
+    }
+    let op = {}; op[key.trim()] = {};
+    if (Array.isArray(value)) {
+      op[key.trim()][compare.trim()] = value.map(v => v.trim());
+    } else {
+      op[key.trim()][compare.trim()] = value.trim();
+    }
+    return op;
+  }
+
+  /**
+   *
+   * @param existingQueryObject
+   * @param join The values are
+   *                FilterService::and_notation,
+   *                FilterService::or_notation
+   * @param newQueryObject
+   */
+
+  queryJoiner(existingQueryObject: object, join: string, newQueryObject: object): any {
+    if (this.join_notations.indexOf(join.trim()) == -1) {
+      throw new Error('Not a valid compare notation');
+    }
+    // existingQueryObject is empty
+    if (!Object.keys(existingQueryObject).length) {
+      if (Object.keys(newQueryObject).length) {
+        if (this.join_notations.indexOf(Object.keys(newQueryObject)[0]) > -1) {
+          return newQueryObject;
+        } else {
+          let op = {};
+          op[this.or_notation] = [newQueryObject];
+          return op;
+        }
+      } else {
+				console.log(1);
+        return {};
+      }
+    } else {
+			// If existingObject is not empty
+			let existingJoiner = Object.keys(existingQueryObject)[0];
+			// If existing joiner is not valid
+			if (this.join_notations.indexOf(existingJoiner) == -1) {
+				throw new Error('Existing query object is invalid without a joiner in root');
+			}
+			// If new object is empty then return existingQueryObject
+			if (!Object.keys(newQueryObject).length) {
+				return existingQueryObject;
+			}
+			let newJoiner = Object.keys(newQueryObject)[0];
+			// If new object has join_notation as root
+      if (this.join_notations.indexOf(newJoiner) > -1) {
+				// If new joiner existing joiner and given joiner is same
+				// put all of them under one joiner
+				if (join === newJoiner && join === existingJoiner) {
+					let op = {};
+					op[join] = [
+						...existingQueryObject[join],
+						...newQueryObject[join]
+					]
+					return op;
+				} else {
+					let op = {};
+					op[join] = [
+						existingQueryObject,
+						newQueryObject
+					];
+					return op;
+				}
+			} else {
+				if (join === existingJoiner) {
+					existingQueryObject[join].push(newQueryObject);
+					return existingQueryObject;
+				} else {
+					let op = {};
+					op[join] = [
+						existingQueryObject,
+						newQueryObject
+					];
+					return op;
+				}
+			}
     }
   }
 
