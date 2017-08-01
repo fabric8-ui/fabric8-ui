@@ -516,4 +516,54 @@ describe('Unit Test :: Filter Service', () => {
 		);
   });
 
+  it('Should correctly build and join query - 23', () => {
+
+    // Build type query
+
+    const wi_key = 'workitemtype';
+    const wi_compare = filterService.in_notation;
+    const wi_value = ['type_id_1', 'type_id_2'];
+
+    const type_query = filterService.queryBuilder(wi_key, wi_compare, wi_value);
+    const should_type_query = {
+      'workitemtype': {
+        '$IN': ['type_id_1', 'type_id_2']
+      }
+    };
+
+    expect(type_query).toEqual(should_type_query);
+
+    // Build space query
+
+    const s_key = 'space';
+    const s_compare = filterService.equal_notation;
+    const s_value = 'space_id_1';
+
+    const space_query = filterService.queryBuilder(s_key, s_compare, s_value);
+
+    const should_space_query = {
+      'space': {
+        '$EQ': 'space_id_1'
+      }
+    };
+    expect(space_query).toEqual(should_space_query);
+
+    // Join query
+    const first_join = filterService.queryJoiner({}, '$AND', space_query);
+    const expected_first_join = {
+      '$OR': [space_query]
+    }
+
+    expect(first_join).toEqual(expected_first_join);
+
+    // Join wiTypes with space
+    const second_join = filterService.queryJoiner(first_join, '$AND', type_query);
+    const expected_second_join = {
+      '$AND': [space_query, type_query]
+    };
+
+    expect(second_join).toEqual(expected_second_join);
+
+  });
+
 });
