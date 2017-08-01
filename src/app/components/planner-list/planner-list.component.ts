@@ -374,7 +374,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   fnSetTypeContext() {
     //Guided work item type. Show work item which match the guided types
     this.workItems = this.originalList;
-    let guidedWits = this.groupTypesService.getGuidedWits();
+    let guidedWits = this.groupTypesService.getGuidedWits(this.workItemTypes);
     let filteredWis = []
     this.workItems.forEach(item => {
       guidedWits.forEach(wit => {
@@ -537,11 +537,16 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
             this.currentIteration.next(params['iteration']);
           }
         }
+        else if (Object.keys(params).indexOf('typegroup') > -1) {
+
+        }
         // If no iteration in the URL
         // and curent iteration value is not null
         // this means iteration has just got removed
         else if (this.currentIteration.getValue() !== null) {
           this.currentIteration.next(null);
+        } else {
+          this.loadWorkItems();
         }
       })
     );
@@ -589,7 +594,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     //Set the guided work item type display context
     this.eventListeners.push(
       this.groupTypesService.groupTypeselected.subscribe(item =>{
-        //this.fnSetTypeContext();
+        this.fnSetTypeContext();
       })
     )
   }

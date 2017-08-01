@@ -16,7 +16,6 @@ import { HttpService } from './http-service';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { GroupTypesModel } from '../models/group-types.model';
 import { WorkItemType } from '../models/work-item-type';
-import { WorkItemService } from '../services/work-item.service';
 import { MockHttp } from '../mock/mock-http';
 
 @Injectable()
@@ -27,6 +26,7 @@ export class GroupTypesService {
   private _currentSpace;
   private selectedGroupType: GroupTypesModel;
   public groupTypeselected: Subject<GroupTypesModel> = new Subject();
+
 
   constructor(
       private logger: Logger,
@@ -66,8 +66,8 @@ export class GroupTypesService {
     this.groupTypeselected.next(groupType);
   }
 
-  getGuidedWits(): Array<WorkItemType> {
-    //Concat work items for the same top leve
+  getGuidedWits(wiTypes): Array<WorkItemType> {
+    //Concat work items for the same top level
     //Example - we have two portfolio
     let wits = this.selectedGroupType.wit_collection;
     this.groupTypes.filter(item => {
@@ -78,11 +78,12 @@ export class GroupTypesService {
           });
       }
     });
-    //Parse through included and pull out the matching work item types
-    let witsList = this.groupTypeResponse.included;
-    let response = witsList.filter(wit => {
+    console.log("length = ", wiTypes)
+    //Fetch the work item types
+    let response = wiTypes.filter(wit => {
       return wits.find(item => wit.id === item)
     });
+    console.log('matching wits = ', response);
     return response;
   }
 

@@ -74,7 +74,6 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
   }
 
   setGroupType(groupType) {
-    alert('Work in progress.');
     this.selectedgroupType = groupType;
     this.setContext(groupType);
     this.groupTypesService.setCurrentGroupType(groupType);
