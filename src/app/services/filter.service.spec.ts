@@ -486,7 +486,20 @@ describe('Unit Test :: Filter Service', () => {
       )
     )
     .toEqual(
-			{'$AND': [{'$OR': [{'some_key1': 'some_value1'}]}, {'some_key': 'some_value3'}]}
+			{'$AND': [{'some_key1': 'some_value1'}, {'some_key': 'some_value3'}]}
+		);
+  });
+
+  it('Should correctly join - 21', () => {
+    expect(
+			filterService.queryJoiner(
+				{'$OR': [{'some_key1': 'some_value1'}, {'some_key2': 'some_value2'}]},
+        '$AND',
+        {'some_key3': 'some_value3'}
+      )
+    )
+    .toEqual(
+			{'$AND': [{'$OR': [{'some_key1': 'some_value1'}, {'some_key2': 'some_value2'}]}, {'some_key3': 'some_value3'}]}
 		);
   });
 

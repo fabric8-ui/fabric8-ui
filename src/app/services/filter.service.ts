@@ -279,11 +279,19 @@ export class FilterService {
 					existingQueryObject[join].push(newQueryObject);
 					return existingQueryObject;
 				} else {
-					let op = {};
-					op[join] = [
-						existingQueryObject,
-						newQueryObject
-					];
+          let op = {};
+          // If existingQueryObject has only one item in the array
+          if (existingQueryObject[existingJoiner].length === 1) {
+            op[join] = [
+              ...existingQueryObject[existingJoiner],
+              newQueryObject
+            ];
+          } else {
+            op[join] = [
+              existingQueryObject,
+              newQueryObject
+            ];
+          }
 					return op;
 				}
 			}
