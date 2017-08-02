@@ -8,6 +8,7 @@ import { Broadcaster, Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
+import { FilterService } from '../../services/filter.service';
 import { GroupTypesService } from '../../services/group-types.service';
 import { GroupTypesModel } from '../../models/group-types.model';
 import { IterationModel } from '../../models/iteration.model';
@@ -32,11 +33,13 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
   private selectedgroupType: GroupTypesModel;
   private allowedChildWits: WorkItemType;
   eventListeners: any[] = [];
+  private spaceId;
 
   constructor(
     private log: Logger,
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
+    private filterService: FilterService,
     private groupTypesService: GroupTypesService,
     private iterationService: IterationService,
     private route: ActivatedRoute,
@@ -48,6 +51,7 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
     this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[Guided Work Item Types] New Space selected: ' + space.attributes.name);
+        this.spaceId = space.id;
         this.groupTypesService.getGroupTypes()
         .subscribe(response => {
           this.groupTypes = response;
@@ -62,6 +66,23 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
     this.spaceSubscription.unsubscribe();
+  }
+
+  fnBuildQueryParam(wits) {
+    //this.filterService.queryBuilder({}, '$IN',)
+    const wi_key = 'workitemtype';
+    const wi_compare = this.filterService.in_notation;
+    const wi_value = wits;
+    //Query for type
+    const type_query = this.filterService.queryBuilder(wi_key, wi_compare, wi_value);
+    //Query for space
+   const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
+   //Join type and space query
+   const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, space_query );
+   const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
+   //second_join gives json object
+   return this.filterService.jsonToQuery(second_join);
+   //reverse function jsonToQuery(second_join);
   }
 
   //Set the

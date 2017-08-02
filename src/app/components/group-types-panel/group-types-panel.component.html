@@ -1,6 +1,6 @@
 <!-- future iteration -->
 <div class="filter" *ngFor="let item of groupTypes">
-  <a [routerLink]="[]" [queryParams]="{typegroup: item.name}">
+  <a [routerLink]="[]" [queryParams]="{q: fnBuildQueryParam(item.wit_collection)}">
     <div class="first-level" (click)='setGroupType(item)'
       id="{{item.group}}"
       [class.selected]="item.level == selectedgroupType?.level">

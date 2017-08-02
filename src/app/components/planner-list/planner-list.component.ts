@@ -537,7 +537,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
             this.currentIteration.next(params['iteration']);
           }
         }
-        else if (Object.keys(params).indexOf('typegroup') > -1) {
+        else if (Object.keys(params).indexOf('workitemtype') > -1) {
 
         }
         // If no iteration in the URL
