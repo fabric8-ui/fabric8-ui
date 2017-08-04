@@ -1,0 +1,19 @@
+<div class="padding-15 container">
+  <div class="row padding-bottom-15">
+    <div class="col-xs-12">
+      <div><a routerLink="/home" routerLinkActive="active">Home</a> &gt; Markdown Editor</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-12">
+      <f8-markdown
+        #markdownEditor
+        [rawText]="rawText"
+        [renderedText]="renderedText"
+        (onSaveClick)="onSave($event)"
+        (showPreview)="showPreview($event)">
+      </f8-markdown>
+    </div>
+  </div>
+</div>

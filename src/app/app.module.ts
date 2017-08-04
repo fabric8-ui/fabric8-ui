@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HomeModule } from './home/home.module';
 import { SlideOutExampleModule } from './slide-out-panel/examples/slide-out-example.module';
 import { TreeListExampleModule } from './treelist/examples/treelist-example.module';
+import { MarkdownExampleModule } from './markdown/examples/markdown-example.module';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { TreeListExampleModule } from './treelist/examples/treelist-example.modu
     HomeModule,
     HttpModule,
     SlideOutExampleModule,
-    TreeListExampleModule
+    TreeListExampleModule,
+    MarkdownExampleModule
   ],
   declarations: [
     AppComponent

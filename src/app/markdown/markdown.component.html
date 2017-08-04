@@ -1,0 +1,53 @@
+ <ul class="nav nav-tabs" *ngIf="editorActive">
+  <li [class.active]="viewType==='markdown'">
+    <a (click)="onClickMarkdownTab()" class="tab-btn">Markdown</a>
+  </li>
+  <li [class.active]="viewType==='preview'">
+    <a (click)="onClickPreviewTab()" class="tab-btn">
+      {{rendering ? "Loading.." : "Preview"}}
+    </a>
+  </li>
+</ul>
+
+<div class="editor-container">
+  <div class="editor"
+    [class.active]="editorActive"
+    [class.show-less]="!showMore && !editorActive">
+    <span (click)="activeEditor()" class="pficon-edit edit-icon"></span>
+    <p almEditable
+      #editorInput
+      *ngIf="viewType==='markdown'"
+      [editable]="true"
+      class="editor-box editor-markdown padding-10"
+      [innerText]="rawText">
+    </p>
+    <div
+      *ngIf="viewType==='preview'"
+      class="editor-box editor-preview padding-10"
+      [innerHtml]="renderedText">
+    </div>
+  </div>
+</div>
+<div class="actions" *ngIf="!editorActive">
+  <small class="pull-right clickable">
+    <a *ngIf="!showMore" (click)="lengthToggle(!showMore)">Show more</a>
+    <a *ngIf="showMore" (click)="lengthToggle(!showMore)">Show less</a>
+  </small>
+</div>
+<div class="actions" *ngIf="editorActive">
+  <small>
+    <b>Markdown Supported</b>
+  </small>
+
+  <div
+    (click)="closeClick()"
+    class="fl btn btn-primary pull-right action-btn">
+    <span class="fa fa-close"></span>
+  </div>
+  <div
+    (click)="saveClick()"
+    class="fl btn btn-primary pull-right action-btn btn-save"
+    [class.disabled]="saving">
+    <span class="fa fa-check"></span>
+  </div>
+</div>
