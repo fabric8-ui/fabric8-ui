@@ -384,6 +384,24 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       (e) => console.log(e));
   }
 
+  fnSetTypeContext() {
+    //Guided work item type. Show work item which match the guided types
+    this.workItems = this.originalList;
+    let guidedWits = this.groupTypesService.getGuidedWits(this.workItemTypes);
+    let filteredWis = []
+    this.workItems.forEach(item => {
+      guidedWits.forEach(wit => {
+        console.log(wit.id,' gwit=== ', item.relationships.baseType.data.id)
+        if(wit.id === item.relationships.baseType.data.id) {
+          filteredWis.push(item);
+         }
+       });
+     });
+    this.workItems = filteredWis;
+    console.log('after length = ', this.workItems.length);
+    //Build query
+  }
+
   // event handlers
   onToggle(entryComponent: WorkItemListEntryComponent): void {
     // This condition is to select a single work item for movement
@@ -564,6 +582,13 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         }
       })
     );
+
+    //Set the guided work item type display context
+    this.eventListeners.push(
+      this.groupTypesService.groupTypeSelected.subscribe(item =>{
+        this.fnSetTypeContext();
+      })
+    )
   }
 
   onDragStart() {
@@ -594,7 +619,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     }
   }
 
-  onSelect() {
-
+  onSelect($event) {
+    this.workItemService.emitSelectedWI($event.workItem);
+    this.groupTypesService.getAllowedChildWits($event.workItem);
   }
 }

@@ -14,6 +14,7 @@ import {
   ViewChildren,
   QueryList
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { cloneDeep } from 'lodash';
 import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
@@ -21,6 +22,7 @@ import { AuthenticationService } from 'ngx-login-client';
 
 import { FilterService } from '../../services/filter.service';
 
+import { GroupTypesService } from '../../services/group-types.service';
 import { WorkItemType } from '../../models/work-item-type';
 import { WorkItem, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../../services/work-item.service';
@@ -53,6 +55,10 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
   selectedType: WorkItemType  = null;
   availableTypes: WorkItemType[] = null;
   eventListeners: any[] = [];
+  allWorkItemTypes: WorkItemType[] = null;
+  linkObject: object;
+  selectedWorkItem: WorkItem = null;
+  childLinkType: any = null;
 
   constructor(
     private workItemService: WorkItemService,
@@ -61,6 +67,8 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
     private notifications: Notifications,
     private auth: AuthenticationService,
     private filterService:FilterService,
+    private groupTypesService: GroupTypesService,
+    private route: ActivatedRoute,
     private spaces: Spaces) {}
 
   ngOnInit(): void {
@@ -73,7 +81,8 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
         this.showQuickAddBtn = true;
         // get the available types for this space
         this.workItemService.getWorkItemTypes().first().subscribe((workItemTypes: WorkItemType[]) => {
-          this.availableTypes = workItemTypes;
+          this.allWorkItemTypes = workItemTypes;
+          this.availableTypes = cloneDeep(this.allWorkItemTypes);
           if (this.forcedType) {
             this.selectedType = this.forcedType;
           } else {
@@ -177,6 +186,36 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
       event.preventDefault();
     this.logger.log('Selected type ' + type.attributes.name + ' for quick add.');
     this.selectedType = type;
+    this.createWorkItemObj();
+  }
+
+  createLinkObject(workItem: WorkItem, childWI: WorkItem, linkId: string) : void {
+    this.linkObject = {
+      'type': 'workitemlinks',
+      'attributes': {
+        'version': 0
+      },
+      'relationships': {
+        'link_type': {
+          'data': {
+            'id': linkId,
+            'type': 'workitemlinktypes'
+          }
+        },
+        'source': {
+          'data': {
+            'id': workItem.id,
+            'type': 'workitems'
+          }
+        },
+        'target': {
+          'data': {
+            'id': childWI.id,
+            'type': 'workitems'
+          }
+        }
+      }
+    };
   }
 
   save(event: any = null): void {
@@ -219,6 +258,12 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
           return workItem;
         })
         .subscribe(workItem => {
+          if(this.selectedWorkItem != null) {
+            this.createLinkObject(this.selectedWorkItem, workItem, '25c326a7-6d03-4f5a-b23b-86a9ee4171e9');
+            let tempLinkObject = {'data': this.linkObject};
+            this.workItemService.createLink(tempLinkObject, this.selectedWorkItem.id)
+              .subscribe(([link, includes]) => {})
+          }
           this.workItem = workItem; // saved workItem, w/ id if new
           this.workItemService.emitAddWI(this.workItem);
           this.resetQuickAdd();
@@ -278,10 +323,57 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
     event.preventDefault();
   }
 
+  setGuidedWorkItemType(groupType) {
+    if (groupType !== undefined) {
+      this.availableTypes = cloneDeep(this.allWorkItemTypes);
+      let setWITCollection = new Set(groupType.wit_collection);
+      let setAvailableTypes = new Set(this.availableTypes);
+      let intersection = new Set([...Array.from(setAvailableTypes)].filter(x => setWITCollection.has(x.id)));
+      this.availableTypes = [...Array.from(intersection)];
+      this.selectedType = this.availableTypes[0];
+      this.showQuickAdd = false
+      this.showQuickAddBtn = true;
+    } else {
+      this.showQuickAddBtn = false;
+      this.showQuickAdd = false;
+    }
+  }
+
   listenToEvents() {
     this.eventListeners.push(
       this.filterService.filterObservable.subscribe(item => {
         this.createWorkItemObj();
+      })
+    );
+
+    this.eventListeners.push(
+      this.groupTypesService.workItemSelected.subscribe(groupType => {
+        this.setGuidedWorkItemType(groupType);
+      })
+    );
+
+    this.eventListeners.push(
+      this.groupTypesService.groupTypeSelected.subscribe(groupType => {
+        this.setGuidedWorkItemType(groupType);
+      })
+    );
+
+    this.eventListeners.push(
+      this.workItemService.selectedWIObservable.subscribe(workItem => {
+        this.selectedWorkItem = workItem;
+        this.workItemService.getAllLinkTypes(this.selectedWorkItem).subscribe(item => {
+          this.childLinkType = item.json().data.find(linkType =>
+            linkType.id === '25c326a7-6d03-4f5a-b23b-86a9ee4171e9');
+        });
+      })
+    );
+
+    this.eventListeners.push(
+      this.route.queryParams.subscribe(params => {
+        if (Object.keys(params).indexOf('iteration') > -1) {
+        } else {
+          this.availableTypes = this.allWorkItemTypes;
+        }
       })
     );
   }

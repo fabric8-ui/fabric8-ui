@@ -11,6 +11,7 @@ import {
 import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 import { Dialog } from 'ngx-widgets';
+import { GroupTypesService } from '../../services/group-types.service';
 
 import { IterationService } from '../../services/iteration.service';
 import { WorkItem }        from '../../models/work-item';
@@ -65,6 +66,7 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
 
   constructor(private auth: AuthenticationService,
               private broadcaster: Broadcaster,
+              private groupTypesService: GroupTypesService,
               private route: ActivatedRoute,
               private iterationService: IterationService,
               private notifications: Notifications,

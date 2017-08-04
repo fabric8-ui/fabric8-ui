@@ -63,6 +63,7 @@ export class WorkItemService {
 
   public addWIObservable: Subject<WorkItem> = new Subject();
   public editWIObservable: Subject<WorkItem> = new Subject();
+  public selectedWIObservable: Subject<WorkItem> = new Subject();
 
   constructor(private http: HttpService,
     private broadcaster: Broadcaster,
@@ -680,6 +681,13 @@ export class WorkItemService {
 
   emitEditWI(workItem: WorkItem) {
     this.editWIObservable.next(workItem);
+  }
+
+  /**
+   * Usage: This method emit a event when WI get seleceted.
+   */
+  emitSelectedWI(workItem: WorkItem) {
+    this.selectedWIObservable.next(workItem);
   }
 
   /**
