@@ -1,16 +1,8 @@
 import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { EmptyStateExampleComponent } from './emptystate/examples/emptystate-example.component';
-import { FilterExampleComponent } from './filters/examples/filter-example.component';
 import { HomeComponent } from './home/home.component';
-import { ListViewExampleComponent } from './listview/examples/listview-example.component';
-import { RemainingCharsExampleComponent } from './remainingchars/examples/remainingchars-example.component';
 import { SlideOutExampleComponent } from './slide-out-panel/examples/slide-out-example.component';
-import { SortExampleComponent } from './sort/examples/sort-example.component';
-import { ToastNotificationExampleComponent } from './notification/examples/toast-notification-example.component';
-import { ToastNotificationListExampleComponent } from './notification/examples/toast-notification-list-example.component';
-import { ToolbarExampleComponent } from './toolbar/examples/toolbar-example.component';
 import { TreeListExampleComponent } from './treelist/examples/treelist-example.component';
 
 const routes: Routes = [{
@@ -21,35 +13,11 @@ const routes: Routes = [{
     path: 'home',
     component: HomeComponent
   },{
-    path: 'emptystate',
-    component: EmptyStateExampleComponent
-  },{
-    path: 'filter',
-    component: FilterExampleComponent
-  },{
-    path: 'listview',
-    component: ListViewExampleComponent
-  },{
-    path: 'remainingchars',
-    component: RemainingCharsExampleComponent
-  },{
-    path: 'sort',
-    component: SortExampleComponent
-  },{
     path: 'slideoutpanel',
     component: SlideOutExampleComponent
   },{
-    path: 'toolbar',
-    component: ToolbarExampleComponent
-  },{
     path: 'treelist',
     component: TreeListExampleComponent
-  },{
-    path: 'toastnotification',
-    component: ToastNotificationExampleComponent
-  },{
-    path: 'toastnotificationlist',
-    component: ToastNotificationListExampleComponent
 }];
 
 @NgModule({

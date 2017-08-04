@@ -1,5 +1,4 @@
 import { AlmSearchHighlightModule } from './src/app/pipes/alm-search-highlight.module';
-import { NotificationModule } from './src/app/notification/notification.module';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -8,11 +7,8 @@ import { DialogModule } from './src/app/dialog/dialog.module';
 import { DropdownModule } from './src/app/dropdown/dropdown.module';
 import { AlmEditableModule } from './src/app/editable/almeditable.module';
 import { AlmIconModule } from './src/app/icon/almicon.module';
-import { FiltersModule } from './src/app/filters/filters.module';
 import { InfiniteScrollModule } from './src/app/infinitescroll/infinitescroll.module';
-import { SortModule } from './src/app/sort/sort.module';
 import { TreeListModule } from './src/app/treelist/treelist.module';
-import { ToolbarModule } from './src/app/toolbar/toolbar.module';
 
 import { AlmArrayFilter } from './src/app/pipes/alm-array-filter.pipe';
 import { AlmAvatarSize } from './src/app/pipes/alm-avatar-size.pipe';
@@ -44,18 +40,13 @@ import { ArrayCount } from './src/app/pipes/arrayCount.pipe';
     AlmSearchHighlight,
     AlmTrim,
     ArrayCount,
-
     AlmEditableModule,
     AlmIconModule,
     ContainerTogglerModule,
     DialogModule,
     DropdownModule,
-    FiltersModule,
     InfiniteScrollModule,
-    NotificationModule,
-    SortModule,
-    TreeListModule,
-    ToolbarModule
+    TreeListModule
   ]
 })
 export class WidgetsModule {
