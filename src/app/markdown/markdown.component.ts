@@ -51,7 +51,10 @@ export class MarkdownComponent {
       if (this.rawText !== this.editorInput.nativeElement.innerText.trim()) {
         // Emit raw text to get preview
         this.rawText = this.editorInput.nativeElement.innerText.trim();
-        this.showPreview.emit(this.rawText);
+        this.showPreview.emit({
+          rawText: this.rawText,
+          callBack: (t: string, m: string) => this.renderPreview(t, m)
+        });
         this.rendering = true;
       } else {
         this.viewType = 'preview';
@@ -85,11 +88,17 @@ export class MarkdownComponent {
     if (this.viewType === 'markdown' &&
       this.previousRawText !== this.editorInput.nativeElement.innerText.trim()) {
       this.saving = true;
-      this.onSaveClick.emit(this.editorInput.nativeElement.innerText.trim());
+      this.onSaveClick.emit({
+        rawText: this.editorInput.nativeElement.innerText.trim(),
+        callBack: (t: string, m: string) => this.saveUpdate(t, m)
+      });
     } else if (this.viewType === 'preview' &&
       this.previousRawText !== this.rawText) {
       this.saving = true;
-      this.onSaveClick.emit(this.rawText);
+      this.onSaveClick.emit({
+        rawText: this.rawText,
+        callBack: (t: string, m: string) => this.saveUpdate(t, m)
+      });
     } else {
       this.deactivateEditor();
     }

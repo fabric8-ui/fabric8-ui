@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewEncapsulation, ElementRef } from '@angular/core';
 
 const markdown = require('markdown').markdown;
 
@@ -12,20 +12,22 @@ const markdown = require('markdown').markdown;
 
 export class MarkdownExampleComponent {
 
-  @ViewChild('markdownEditor') markdownEditor: any;
-
   private renderedText: string = '<h1>hello, markdown!\</h1>';
   private rawText: string = '#hello, markdown!';
 
-  onSave(value: string) {
+  onSave(value: any) {
+    const rawText = value.rawText;
+    const callBack = value.callBack;
     setTimeout(() => {
-      this.markdownEditor.saveUpdate(value, markdown.toHTML(value));
+      callBack(rawText, markdown.toHTML(rawText));
     }, 2000);
   }
 
-  showPreview(value: string) {
+  showPreview(value: any) {
+    const rawText = value.rawText;
+    const callBack = value.callBack;
     setTimeout(() => {
-      this.markdownEditor.renderPreview(value, markdown.toHTML(value));
+      callBack(rawText, markdown.toHTML(rawText));
     }, 2000);
   }
 }
