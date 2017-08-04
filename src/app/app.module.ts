@@ -6,8 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { DropdownModule } from 'ng2-bootstrap/dropdown';
-
 // App components
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -22,7 +20,6 @@ import { TreeListExampleModule } from './treelist/examples/treelist-example.modu
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
-    DropdownModule,
     FormsModule,
     HomeModule,
     HttpModule,
