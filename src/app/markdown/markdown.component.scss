@@ -10,7 +10,7 @@
 
 
 .editor-container {
-    background-color: #f5f5f5;
+    background-color: $color-pf-black-200;
 
     .editor-markdown {
       font-size: 15px;
@@ -46,10 +46,10 @@
         }
       }
 
-      background-color: #ffffff;
+      background-color: $color-pf-white;
       padding-right: 30px;
       background-clip: content-box;
-      border: 1px solid #8b8d8f;
+      border: 1px solid $color-pf-black-500;
     }
 
     .show-less {
@@ -58,7 +58,7 @@
     }
 
     .active {
-      border: 1px solid #0088ce;
+      border: 1px solid $color-pf-blue-400;
     }
 }
 
