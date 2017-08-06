@@ -8,6 +8,4 @@ import { AlmEditableModule } from './../editable/almeditable.module';
   imports: [ CommonModule, AlmEditableModule ],
   exports: [ MarkdownComponent ]
 })
-export class MarkdownModule {
-  constructor() {}
-}
+export class MarkdownModule { }

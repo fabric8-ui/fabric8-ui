@@ -18,6 +18,7 @@ import { AlmSearchHighlight } from './src/app/pipes/alm-search-highlight.pipe';
 import { AlmTrim } from './src/app/pipes/alm-trim';
 import { ArrayCount } from './src/app/pipes/arrayCount.pipe';
 
+import { MarkdownModule } from './src/app/markdown/markdown.mdoule';
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { ArrayCount } from './src/app/pipes/arrayCount.pipe';
     DialogModule,
     DropdownModule,
     InfiniteScrollModule,
-    TreeListModule
+    TreeListModule,
+    MarkdownModule
   ]
 })
 export class WidgetsModule {

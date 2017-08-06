@@ -44,6 +44,5 @@
   },
   "compileOnSave": false,
   "buildOnSave": false,
-  "atom": { "rewriteTsconfig": false },
-  "include": [ "src/**/*" ]
+  "atom": { "rewriteTsconfig": false }
 }

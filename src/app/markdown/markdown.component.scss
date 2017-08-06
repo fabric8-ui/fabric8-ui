@@ -1,67 +1,51 @@
 @import "../../assets/stylesheets/_base";
-
 [contenteditable]:focus {
-    outline: 0px solid transparent;
+  outline: 0 solid transparent;
 }
-
 .tab-btn {
   cursor: pointer;
 }
-
-
 .editor-container {
-    background-color: $color-pf-black-200;
-
+  background-color: $color-pf-black-200;
+  .editor {
     .editor-markdown {
       font-size: 15px;
+        margin: 0;
     }
-
     .editor-preview {
       h1 {
-        margin-top: 0px;
+        margin-top: 0;
       }
     }
-
-    .editor {
-      P {
-        margin: 0px;
-      }
-
-      .editor-box {
-        min-height: 80px;
-        width: 100%;
-      }
-
+    .editor-box {
+      min-height: 80px;
+      width: 100%;
+    }
+    .edit-icon {
+      position: relative;
+      left: calc(100% + 10px);
+      top: 10px;
+      cursor: pointer;
+      opacity: 0;
+    }
+    &:hover {
       .edit-icon {
-        position: relative;
-        left: calc(100% + 10px);
-        top: 10px;
-        cursor: pointer;
-        opacity: 0;
+        opacity: 1;
       }
-
-      &:hover {
-        .edit-icon {
-          opacity: 1;
-        }
-      }
-
-      background-color: $color-pf-white;
-      padding-right: 30px;
-      background-clip: content-box;
-      border: 1px solid $color-pf-black-500;
     }
-
-    .show-less {
-      max-height: 300px;
-      overflow: hidden;
-    }
-
-    .active {
-      border: 1px solid $color-pf-blue-400;
-    }
+    background-color: $color-pf-white;
+    padding-right: 30px;
+    background-clip: content-box;
+    border: 1px solid $color-pf-black-500;
+  }
+  .show-less {
+    max-height: 300px;
+    overflow: hidden;
+  }
+  .active {
+    border: 1px solid $color-pf-blue-400;
+  }
 }
-
 .actions {
   margin-top: 8px;
   .action-btn { width: 40px; }

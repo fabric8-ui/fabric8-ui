@@ -33,4 +33,5 @@ export { TreeListItemComponent } from './src/app/treelist/treelist-item.componen
 export { TreeListModule } from './src/app/treelist/treelist.module';
 
 // Markdown module
-import { MarkdownModule } from './src/app/markdown/markdown.mdoule';
+export { MarkdownComponent } from './src/app/markdown/markdown.component';
+export { MarkdownModule } from './src/app/markdown/markdown.mdoule';
