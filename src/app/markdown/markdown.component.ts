@@ -24,6 +24,8 @@ export class MarkdownComponent {
   @Input() rawText: string = '';
   @Input() rendering: boolean = false;
   @Input() saving: boolean = false;
+  @Input() placeholder: string = 'This is place holder';
+  @Input() editAllow: boolean = true;
 
   @Output() onActiveEditor = new EventEmitter();
   @Output() onSaveClick = new EventEmitter();
@@ -63,17 +65,19 @@ export class MarkdownComponent {
   }
 
   activeEditor() {
-    // Activate the editor
-    this.editorActive = true;
+    if (this.editAllow) {
+      // Activate the editor
+      this.editorActive = true;
 
-    // Show the markdown default view
-    this.viewType = 'markdown';
+      // Show the markdown default view
+      this.viewType = 'markdown';
 
-    // Save current values
-    this.previousRawText = this.rawText;
-    this.previousRenderedText = this.renderedText;
+      // Save current values
+      this.previousRawText = this.rawText;
+      this.previousRenderedText = this.renderedText;
 
-    this.onActiveEditor.emit(true);
+      this.onActiveEditor.emit(true);
+    }
   }
 
   deactivateEditor() {

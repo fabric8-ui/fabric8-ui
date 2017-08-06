@@ -12,7 +12,7 @@
   <div class="editor"
     [class.active]="editorActive"
     [class.show-less]="!showMore && !editorActive">
-    <span (click)="activeEditor()" class="pficon-edit edit-icon"></span>
+    <span *ngIf="editAllow" (click)="activeEditor()" class="pficon-edit edit-icon"></span>
     <p almEditable
       #editorInput
       *ngIf="viewType==='markdown'"
@@ -21,9 +21,14 @@
       [innerText]="rawText">
     </p>
     <div
-      *ngIf="viewType==='preview'"
+      *ngIf="viewType==='preview' && renderedText.length"
       class="editor-box editor-preview padding-10"
       [innerHtml]="renderedText">
+    </div>
+    <div
+      *ngIf="viewType==='preview' && !renderedText.length"
+      class="editor-box editor-preview placeholder padding-10">
+      {{placeholder}}
     </div>
   </div>
 </div>

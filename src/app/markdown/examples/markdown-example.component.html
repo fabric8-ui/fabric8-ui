@@ -5,11 +5,38 @@
     </div>
   </div>
 
+  <label> Simple use case </label>
   <div class="row">
     <div class="col-xs-12">
       <f8-markdown
         [rawText]="rawText"
         [renderedText]="renderedText"
+        (onSaveClick)="onSave($event)"
+        (showPreview)="showPreview($event)">
+      </f8-markdown>
+    </div>
+  </div>
+
+  <label> Field with placeholder </label>
+  <div class="row">
+    <div class="col-xs-12">
+      <f8-markdown
+        [rawText]="''"
+        [renderedText]="''"
+        [placeholder]="'This is placeholder text'"
+        (onSaveClick)="onSave($event)"
+        (showPreview)="showPreview($event)">
+      </f8-markdown>
+    </div>
+  </div>
+
+  <label> Edit is not allowed </label>
+  <div class="row">
+    <div class="col-xs-12">
+      <f8-markdown
+        [rawText]="rawText"
+        [editAllow]="false"
+        [renderedText]="renderedTextNoEdit"
         (onSaveClick)="onSave($event)"
         (showPreview)="showPreview($event)">
       </f8-markdown>

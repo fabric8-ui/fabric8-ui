@@ -13,6 +13,7 @@ const markdown = require('markdown').markdown;
 export class MarkdownExampleComponent {
 
   private renderedText: string = '<h1>hello, markdown!\</h1>';
+  private renderedTextNoEdit: string = '<h1>Edit is not allowed here</h1>';
   private rawText: string = '#hello, markdown!';
 
   onSave(value: any) {

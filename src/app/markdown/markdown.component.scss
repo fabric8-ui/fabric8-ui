@@ -17,6 +17,11 @@
         margin-top: 0;
       }
     }
+    .placeholder {
+      font-size: 20px;
+      font-style: italic;
+      color: $color-pf-black-400;
+    }
     .editor-box {
       min-height: 80px;
       width: 100%;
