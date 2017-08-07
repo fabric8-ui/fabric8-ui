@@ -436,20 +436,16 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
     const rawText = event.rawText;
     const callBack = event.callBack;
     this.descText = rawText;
-    this.workItem.attributes['system.description'] = {
-      markup: 'Markdown',
-      content: this.descText.trim()
-    };
+    this.workItem.attributes['system.description'] = this.descText.trim();
+    this.workItem.attributes['system.description.markup'] = 'Markdown';
     if (this.workItem.id) {
       let payload = cloneDeep(this.workItemPayload);
-      payload.attributes['system.description'] = {
-        markup: 'Markdown',
-        content: this.descText.trim()
-      };
+      payload.attributes['system.description'] = this.descText.trim();
+      payload.attributes['system.description.markup'] = 'Markdown';
       this.save(payload, true)
         .subscribe(workItem => {
           callBack(
-            workItem.attributes['system.description'].content,
+            workItem.attributes['system.description'],
             workItem.attributes['system.description.rendered']
           )
           this.workItem.attributes['system.description.rendered'] =
