@@ -433,7 +433,9 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   }
 
   descUpdate(event: any): void {
-    this.descText = event;
+    const rawText = event.rawText;
+    const callBack = event.callBack;
+    this.descText = rawText;
     this.workItem.attributes['system.description'] = {
       markup: 'Markdown',
       content: this.descText.trim()
@@ -446,6 +448,10 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
       };
       this.save(payload, true)
         .subscribe(workItem => {
+          callBack(
+            workItem.attributes['system.description'].content,
+            workItem.attributes['system.description.rendered']
+          )
           this.workItem.attributes['system.description.rendered'] =
           workItem.attributes['system.description.rendered'];
           this.workItem.attributes['system.description'] =
@@ -455,6 +461,18 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
     } else {
       this.save();
     }
+  }
+
+  showPreview(event: any): void {
+    const rawText = event.rawText;
+    const callBack = event.callBack;
+    this.workItemService.renderMarkDown(rawText)
+      .subscribe(renderedHtml => {
+        callBack(
+          rawText,
+          renderedHtml
+        );
+      })
   }
 
   // called when a dynamic field is updated.

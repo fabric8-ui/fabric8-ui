@@ -242,7 +242,21 @@
 
         <div class="description-fields-wrap">
           <!-- Description Start -->
-          <markdown-control id="wi-detail-desc" [markdownValue]="descText" (onUpdate)="descUpdate($event)"></markdown-control>
+          <!-- <markdown-control id="wi-detail-desc" [markdownValue]="descText" (onUpdate)="descUpdate($event)"></markdown-control> -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label">
+              Description
+            </label>
+            <div class="col-sm-10 detail-desc-wrap">
+              <f8-markdown
+                [editAllow]="loggedIn"
+                [rawText]="workItem.attributes['system.description'].content"
+                [renderedText]="workItem.attributes['system.description.rendered']"
+                (onSaveClick)="descUpdate($event)"
+                (showPreview)="showPreview($event)">
+              </f8-markdown>
+            </div>
+          </div>
           <!-- Description End -->
         </div>
 
