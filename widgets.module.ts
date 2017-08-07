@@ -47,8 +47,8 @@ import { MarkdownModule } from './src/app/markdown/markdown.mdoule';
     DialogModule,
     DropdownModule,
     InfiniteScrollModule,
-    TreeListModule,
-    MarkdownModule
+    MarkdownModule,
+    TreeListModule
   ]
 })
 export class WidgetsModule {

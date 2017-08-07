@@ -23,6 +23,10 @@ export { ActionsConfig } from './src/app/config/actions-config';
 export { View } from './src/app/config/view';
 export { ViewsConfig } from './src/app/config/views-config';
 
+// Markdown module
+export { MarkdownComponent } from './src/app/markdown/markdown.component';
+export { MarkdownModule } from './src/app/markdown/markdown.mdoule';
+
 // Slide-out panel
 export { SlideOutPanelComponent } from './src/app/slide-out-panel/slide-out-panel.component';
 export { SlideOutPanelModule } from './src/app/slide-out-panel/slide-out-panel.module';
@@ -31,7 +35,3 @@ export { SlideOutPanelModule } from './src/app/slide-out-panel/slide-out-panel.m
 export { TreeListComponent } from './src/app/treelist/treelist.component';
 export { TreeListItemComponent } from './src/app/treelist/treelist-item.component';
 export { TreeListModule } from './src/app/treelist/treelist.module';
-
-// Markdown module
-export { MarkdownComponent } from './src/app/markdown/markdown.component';
-export { MarkdownModule } from './src/app/markdown/markdown.mdoule';

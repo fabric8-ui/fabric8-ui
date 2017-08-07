@@ -12,9 +12,9 @@ import { AppRoutingModule } from './app-routing.module';
 
 // Main areas
 import { HomeModule } from './home/home.module';
+import { MarkdownExampleModule } from './markdown/examples/markdown-example.module';
 import { SlideOutExampleModule } from './slide-out-panel/examples/slide-out-example.module';
 import { TreeListExampleModule } from './treelist/examples/treelist-example.module';
-import { MarkdownExampleModule } from './markdown/examples/markdown-example.module';
 
 @NgModule({
   imports: [
@@ -24,9 +24,9 @@ import { MarkdownExampleModule } from './markdown/examples/markdown-example.modu
     FormsModule,
     HomeModule,
     HttpModule,
+    MarkdownExampleModule,
     SlideOutExampleModule,
-    TreeListExampleModule,
-    MarkdownExampleModule
+    TreeListExampleModule
   ],
   declarations: [
     AppComponent
