@@ -35,11 +35,12 @@
     <div class="col-xs-12">
       <f8-markdown
         [rawText]="rawText"
-        [editAllow]="false"
+        [editAllow]="allowEdit"
         [renderedText]="renderedTextNoEdit"
         (onSaveClick)="onSave($event)"
         (showPreview)="showPreview($event)">
       </f8-markdown>
     </div>
   </div>
+  <button (click)="allowEdit=!allowEdit">Allow edit</button>
 </div>

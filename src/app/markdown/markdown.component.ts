@@ -4,6 +4,7 @@ import {
   ViewEncapsulation,
   Input,
   Output,
+  OnChanges,
   ViewChild,
   EventEmitter,
   SimpleChanges
@@ -17,7 +18,7 @@ import {
   templateUrl: './markdown.component.html'
 })
 
-export class MarkdownComponent {
+export class MarkdownComponent implements OnChanges {
 
   @Input() fieldName: string = 'Description';
   @Input() renderedText: string = '';
@@ -41,6 +42,12 @@ export class MarkdownComponent {
 
   private previousRawText = '';
   private previousRenderedText = '';
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.editAllow && this.editAllow === false) {
+      this.closeClick();
+    }
+  }
 
   onClickMarkdownTab() {
     if (this.viewType === 'preview') {

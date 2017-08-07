@@ -15,6 +15,7 @@ export class MarkdownExampleComponent {
   private renderedText: string = '<h1>hello, markdown!\</h1>';
   private renderedTextNoEdit: string = '<h1>Edit is not allowed here</h1>';
   private rawText: string = '#hello, markdown!';
+  private allowEdit = false;
 
   onSave(value: any) {
     const rawText = value.rawText;
