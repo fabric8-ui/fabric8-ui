@@ -20,6 +20,8 @@ import {
   WidgetsModule
 } from 'ngx-widgets';
 
+import { MarkdownModule } from './../markdown/markdown.mdoule';
+
 import { ModalModule } from 'ngx-modal';
 
 import { AreaService } from '../../services/area.service';
@@ -59,6 +61,7 @@ if (process.env.ENV == 'inmemory') {
     ReactiveFormsModule,
     MyDatePickerModule,
     RouterModule,
+    MarkdownModule
   ],
   declarations: [
     AlmUserName,
