@@ -2,7 +2,7 @@
   <a [routerLink]="[]"
     [queryParams]="{q: fnBuildQueryParam(item)}"
     [routerLinkActive]="'selected'"
-    id="{{item.group}}">
+    id="{{item.group}}" (click)="setGuidedTypeWI(item);">
       {{ item.name }}
   </a>
 </div>

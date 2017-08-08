@@ -44,12 +44,22 @@ export class GroupTypesService {
     //For now use the mock data which resembles the api response
     this.mockData();
     if (this._currentSpace) {
+      return Observable.of(this.groupTypes);
+    } else {
+      return Observable.of<GroupTypesModel[]>( [] as GroupTypesModel[] );;
+    }
+  }
+
+  getFlatGroupList(): Observable<GroupTypesModel[]>{
+    this.mockData();
+    if (this._currentSpace) {
       //Normalize the response - we don't want two portfolio - that is
       //no two entries for the same level
       let wi_collection = [];
-      let returnResponse = this.groupTypes.filter((item, index) => {
-        if(this.groupTypes[index+1]) {
-          if( item.level[0] == this.groupTypes[index+1].level[0] ) {
+      let groupTypes = cloneDeep(this.groupTypes);
+      let returnResponse = groupTypes.filter((item, index) => {
+        if(groupTypes[index+1]) {
+          if( item.level[0] == groupTypes[index+1].level[0] ) {
             wi_collection = item.wit_collection;
           } else {
             item.wit_collection = [...item.wit_collection, ...wi_collection]
@@ -92,25 +102,25 @@ export class GroupTypesService {
     return response;
   }
 
-  getAllowedChildWits(workItem: WorkItem): Array<WorkItemType> {
+  getAllowedChildWits(workItem: WorkItem) {
     //Get to the highest level
     //set sub level as child
     //If no sub level, get the next level as child
     let WITid = workItem.relationships.baseType.data.id;
-    let groupType = this.groupTypeResponse.attributes.hierarchy
+    let groupType = this.groupTypes
         .find(groupType => groupType.wit_collection.indexOf(WITid) > -1);
+
     let level = groupType.level[0];
     let subLevel = groupType.level[1];
-    let guidedGroupType = this.groupTypeResponse.attributes.hierarchy
+    let guidedGroupType = this.groupTypes
         .find(groupType => groupType.level[0] === level + 1);
 
     if(subLevel === 0 && groupType.group === 'portfolio') {
-      guidedGroupType = this.groupTypeResponse.attributes.hierarchy
+      guidedGroupType = this.groupTypes
         .find(groupType => groupType.level[1] === subLevel + 1);
     }
     this.selectedGroupType = guidedGroupType;
     this.workItemSelected.next(guidedGroupType);
-    return;
   }
 
   mockData(): Array<GroupTypesModel> {

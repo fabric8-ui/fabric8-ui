@@ -367,15 +367,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
         });
       })
     );
-
-    this.eventListeners.push(
-      this.route.queryParams.subscribe(params => {
-        if (Object.keys(params).indexOf('iteration') > -1) {
-        } else {
-          this.availableTypes = this.allWorkItemTypes;
-        }
-      })
-    );
   }
 
 }
