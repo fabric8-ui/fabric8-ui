@@ -367,6 +367,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
     this.workItem = new WorkItem();
     this.workItem.id = null;
     this.workItem.attributes = new Map<string, string | number>();
+    this.workItem.attributes['system.description'] = '';
+    this.workItem.attributes['system.description.rendered'] = '';
     this.workItem.relationships = new WorkItemRelations();
     this.workItem.type = 'workitems';
     this.workItem.relationships = {

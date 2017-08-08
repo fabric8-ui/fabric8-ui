@@ -133,7 +133,7 @@ class WorkItemDetailPage {
   }
 
   get workItemDetailDescriptionValue () {
-    return element(by.css("#wi-detail-desc .markdown-test-text"));
+    return element(by.css("#wi-detail-desc .editor-box"));
   }
 
   workItemDetailDescriptionById () {
@@ -150,7 +150,7 @@ class WorkItemDetailPage {
   }
 
   get workItemDescriptionEditIcon () {
-    return element(by.css("#wi-detail-desc .markdown-test-btn-edit"));
+    return element(by.css("#wi-detail-desc .edit-icon"));
   }
 
   clickWorkItemDescriptionEditIcon () {
@@ -158,11 +158,11 @@ class WorkItemDetailPage {
   }
 
   get workItemDescriptionSaveIcon () {
-    return element(by.css("#wi-detail-desc .markdown-test-btn-save"));
+    return element(by.css("#wi-detail-desc .btn-save"));
   }
 
   workItemDescriptionSaveIconById () {
-    return element(by.css("#wi-detail-desc .markdown-test-btn-save"));
+    return element(by.css("#wi-detail-desc .btn-save"));
   }
 
   clickWorkItemDescriptionSaveIcon () {
@@ -217,7 +217,7 @@ class WorkItemDetailPage {
   workItemType () {
     // return element(by.css(".pull-left.dropdown-kebab-pf.detail-type-dropdown"));
     return element(by.xpath(".//div[@class='dropdown-kebab-pf detail-type-dropdown col-sm-8']"));
-    
+
   }
 
   userstroyIcon () {
@@ -304,7 +304,7 @@ class WorkItemDetailPage {
   get workItemDetailAssigneeIcon () {
     return element(by.css(".user-assign-icon"));
   }
-  clickworkItemDetailAssigneeIcon () { 
+  clickworkItemDetailAssigneeIcon () {
     return this.workItemDetailAssigneeIcon.click();
   }
   get workItemDetailUnAssigneeIcon () {
@@ -678,7 +678,7 @@ class WorkItemDetailPage {
     return this.stepsToReproduceLabelParent.element(by.css('.text.markdown-test-text'));
   }
 
-  setstepsToReproduceText (newString) {     
+  setstepsToReproduceText (newString) {
     browser.wait(until.visibilityOf(this.editableTextForStepsToReproduce, constants.WAIT));
     return this.editableTextForStepsToReproduce.sendKeys(newString);
   }
@@ -693,7 +693,7 @@ class WorkItemDetailPage {
     return this.storyPointsLabelParent.element(by.css('.col-sm-10.no-left-padding>div>input'));
   }
 
-  setStoryPointsText (newString) {     
+  setStoryPointsText (newString) {
     browser.wait(until.visibilityOf(this.storyPoints, constants.WAIT));
     return this.storyPoints.sendKeys(newString);
   }
@@ -724,7 +724,7 @@ class WorkItemDetailPage {
 //    return this.importantLabelParent.element(by.css('.dropdown-toggle'));
     return this.importantLabelParent.element(by.css('.pointer.details-dropdown.neutral-entry'));
   }
-  
+
   clickImportantDropdown () {
     return this.importantDropdown.click();
   }
@@ -752,7 +752,7 @@ class WorkItemDetailPage {
   }
 
   clickImportantDropdownConfirmButton () {
-    return this.importantDropdownConfirmButton.click(); 
+    return this.importantDropdownConfirmButton.click();
   }
 
   get importantDropdownCancelButton () {
@@ -760,7 +760,7 @@ class WorkItemDetailPage {
   }
 
   clickImportantDropdownCancelButton () {
-    return this.importantDropdownCancelButton.click(); 
+    return this.importantDropdownCancelButton.click();
   }
 
   /* Dynamic field: Due Date */
@@ -786,9 +786,9 @@ class WorkItemDetailPage {
     return this.dueDateCalendarButton.click();
   }
 
-  displayedMonth (monthString) {   
+  displayedMonth (monthString) {
     var xpathString = ".//*[contains(@class,'monthlabel') and contains(text(),'" + monthString + "')]";
-    return this.dueDateLabelParent.element(by.xpath(xpathString));  
+    return this.dueDateLabelParent.element(by.xpath(xpathString));
   }
 
   clickDisplayedMonth (monthString) {
@@ -815,9 +815,9 @@ class WorkItemDetailPage {
     return this.monthSelectorRight(monthString).click();
   }
 
-  displayedYear (yearString) {   
+  displayedYear (yearString) {
     var xpathString = ".//*[contains(@class,'yearlabel') and contains(text(),'" + yearString + "')]";
-    return this.dueDateLabelParent.element(by.xpath(xpathString));  
+    return this.dueDateLabelParent.element(by.xpath(xpathString));
   }
 
   clickDisplayedYear (yearString) {
@@ -913,7 +913,7 @@ class WorkItemDetailPage {
   }
 
   clickSeverityDropdownConfirmButton () {
-    return this.severityDropdownConfirmButton.click(); 
+    return this.severityDropdownConfirmButton.click();
   }
 
   get severityDropdownCancelButton () {
@@ -921,7 +921,7 @@ class WorkItemDetailPage {
   }
 
   clickSeverityDropdownCancelButton () {
-    return this.importantDropdownCancelButton.click(); 
+    return this.importantDropdownCancelButton.click();
   }
 
   /* Error conditions */

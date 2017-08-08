@@ -60,7 +60,7 @@ describe('Work item list', function () {
         expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
         detailPage.clickWorkItemDetailCloseButton();
 
-        //Commented Due to Delete is temporarily not supported
+        // Commented Due to Delete is temporarily not supported
         // page.clickWorkItemKebabButton(page.firstWorkItem);
         // page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
         // browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');
@@ -98,6 +98,7 @@ describe('Work item list', function () {
         detailPage.clickWorkItemDetailTitleClick();
         detailPage.setWorkItemDetailTitle (WORK_ITEM_UPDATED_TITLE, false);
         detailPage.clickWorkItemTitleSaveIcon();
+        detailPage.clickWorkItemDescriptionEditIcon();
         detailPage.clickWorkItemDetailDescription()
         detailPage.setWorkItemDetailDescription (WORK_ITEM_UPDATED_DESCRIPTION, false);
         detailPage.clickWorkItemDescriptionSaveIcon();
@@ -149,6 +150,7 @@ describe('Work item list', function () {
 
     detailPage.setWorkItemDetailTitle (WORK_ITEM_TITLE, false);
     detailPage.clickWorkItemTitleSaveIcon();
+    detailPage.clickWorkItemDescriptionEditIcon();
     detailPage.clickWorkItemDetailDescription()
     detailPage.setWorkItemDetailDescription (WORK_ITEM_DESCRIPTION, true);
     detailPage.clickWorkItemDescriptionSaveIcon();
