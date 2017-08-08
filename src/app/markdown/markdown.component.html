@@ -12,7 +12,9 @@
   <div class="editor"
     [class.active]="editorActive"
     [class.show-less]="!showMore && !editorActive">
-    <span *ngIf="editAllow" (click)="activeEditor()" class="pficon-edit edit-icon"></span>
+    <div class="editor-icon-container">
+      <i *ngIf="editAllow" (click)="activeEditor()" class="pficon-edit edit-icon"></i>
+    </div>
     <p almEditable
       #editorInput
       *ngIf="viewType==='markdown'"

@@ -6,6 +6,7 @@
   cursor: pointer;
 }
 .editor-container {
+  width: 100%;
   background-color: $color-pf-black-200;
   .editor {
     .editor-markdown {
@@ -26,12 +27,16 @@
       min-height: 60px;
       width: 100%;
     }
-    .edit-icon {
+    .editor-icon-container {
       position: relative;
-      left: calc(100% + 10px);
-      top: 10px;
-      cursor: pointer;
-      opacity: 0;
+      .edit-icon {
+        position: absolute;
+        left: 100%;
+        top: 5px;
+        cursor: pointer;
+        opacity: 0;
+        margin-left: 10px;
+      }
     }
     &:hover {
       .edit-icon {
