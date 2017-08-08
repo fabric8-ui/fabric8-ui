@@ -59,7 +59,6 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
       } else {
         console.log('[Guided Work Item Types] Space deselected.');
       }
-      this.listenToEvents();
     });
   }
 
@@ -68,45 +67,26 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
     this.spaceSubscription.unsubscribe();
   }
 
-  fnBuildQueryParam(wits) {
+  fnBuildQueryParam(wit) {
     //this.filterService.queryBuilder({}, '$IN',)
     const wi_key = 'workitemtype';
     const wi_compare = this.filterService.in_notation;
-    const wi_value = wits;
+    const wi_value = wit.wit_collection;
+
     //Query for type
     const type_query = this.filterService.queryBuilder(wi_key, wi_compare, wi_value);
     //Query for space
-   const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
-   //Join type and space query
-   const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, space_query );
-   const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
-   //second_join gives json object
-   return this.filterService.jsonToQuery(second_join);
-   //reverse function jsonToQuery(second_join);
-  }
-
-  //Set the
-  setContext(groupType) {
-    //allowedChildWits
-    //For a group type, we need to allow the highest level WITs
-    //For portfolio, we need to show level 0 WITS and NOT level 1
-
-
+    const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
+    //Join type and space query
+    const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, space_query );
+    const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
+    this.setGroupType(wit);
+    //second_join gives json object
+    return this.filterService.jsonToQuery(second_join);
+    //reverse function jsonToQuery(second_join);
   }
 
   setGroupType(groupType) {
     this.selectedgroupType = groupType;
-    this.setContext(groupType);
-    this.groupTypesService.setCurrentGroupType(groupType);
-  }
-
-  listenToEvents() {
-    this.eventListeners = [
-      this.route.queryParams.subscribe(params => {
-        if (Object.keys(params).indexOf('typegroup') < 0) {
-          this.selectedgroupType = null;
-        }
-      })
-    ];
   }
 }

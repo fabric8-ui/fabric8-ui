@@ -78,20 +78,12 @@ export class SidepanelComponent implements OnInit, OnDestroy {
       }),
 
       this.route.queryParams.subscribe(params => {
-        if (Object.keys(params).indexOf('iteration') > -1) {
+        if (Object.keys(params).indexOf('q') > -1) {
           this.backlogSelected = false;
-          this.typeGroupSelected = false;
-        } else if (Object.keys(params).indexOf('typegroup') > -1) {
         } else {
           this.backlogSelected = true;
         }
-      }),
-      //A type group is selected.
-      this.eventListeners.push(
-        this.groupTypesService.groupTypeselected.subscribe(item =>{
-          this.backlogSelected = false;
-        })
-      )
+      })
     ];
   }
 }

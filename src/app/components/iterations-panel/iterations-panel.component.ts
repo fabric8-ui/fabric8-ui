@@ -374,19 +374,5 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
           this.updateItemCounts();
       })
     );
-
-    this.eventListeners.push(
-      this.route.queryParams.subscribe(params => {
-        if (Object.keys(params).indexOf('iteration') > -1) {
-          this.currentSelectedIteration = params['iteration'];
-        }
-      })
-    );
-    //A type group is selected.
-    this.eventListeners.push(
-      this.groupTypesService.groupTypeselected.subscribe(item =>{
-        this.selectedIteration = null;
-      })
-    );
   }
  }

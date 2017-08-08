@@ -24,9 +24,6 @@ export class GroupTypesService {
   public groupTypes: GroupTypesModel[] = [];
   private headers = new Headers({'Content-Type': 'application/json'});
   private _currentSpace;
-  private selectedGroupType: GroupTypesModel;
-  public groupTypeselected: Subject<GroupTypesModel> = new Subject();
-
 
   constructor(
       private logger: Logger,
@@ -43,48 +40,26 @@ export class GroupTypesService {
     //For now use the mock data which resembles the api response
     this.mockData();
     if (this._currentSpace) {
-        //Normalize the response - we don't want two portfolio - that is
-        //no two entries for the same level
-        let filterResponse = cloneDeep(this.groupTypes)
-        let returnResponse = filterResponse.filter((item, index) => {
-          console.log(item)
-          if( filterResponse[index+1]) {
-            return item.level[0] != filterResponse[index+1].level[0];
+      //Normalize the response - we don't want two portfolio - that is
+      //no two entries for the same level
+      let wi_collection = [];
+      let returnResponse = this.groupTypes.filter((item, index) => {
+        if(this.groupTypes[index+1]) {
+          if( item.level[0] == this.groupTypes[index+1].level[0] ) {
+            wi_collection = item.wit_collection;
           } else {
+            item.wit_collection = [...item.wit_collection, ...wi_collection]
+            wi_collection = [];
             return item;
           }
-        });
-        return Observable.of(returnResponse);
+        } else {
+          return item;
+        }
+      });
+      return Observable.of(returnResponse);
     } else {
       return Observable.of<GroupTypesModel[]>( [] as GroupTypesModel[] );;
     }
-  }
-
-  setCurrentGroupType(groupType) {
-    this.selectedGroupType = groupType;
-    //emit observable. Listener on planner backlog view
-    this.groupTypeselected.next(groupType);
-  }
-
-  getGuidedWits(wiTypes): Array<WorkItemType> {
-    //Concat work items for the same top level
-    //Example - we have two portfolio
-    let wits = this.selectedGroupType.wit_collection;
-    this.groupTypes.filter(item => {
-      if(item.group === this.selectedGroupType.group &&
-        item.level[1] != this.selectedGroupType.level[1]) {
-          item.wit_collection.forEach(wit => {
-            wits.push(wit);
-          });
-      }
-    });
-    console.log("length = ", wiTypes)
-    //Fetch the work item types
-    let response = wiTypes.filter(wit => {
-      return wits.find(item => wit.id === item)
-    });
-    console.log('matching wits = ', response);
-    return response;
   }
 
   getAllowedChildWits(): Array<WorkItemType> {
