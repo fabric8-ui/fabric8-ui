@@ -82,26 +82,6 @@ export class GroupTypesService {
     this.groupTypeSelected.next(groupType);
   }
 
-  getGuidedWits(wiTypes): Array<WorkItemType> {
-    //Concat work items for the same top level
-    //Example - we have two portfolio
-    let wits = this.selectedGroupType.wit_collection;
-    this.groupTypes.filter(item => {
-      if(item.group === this.selectedGroupType.group &&
-        item.level[1] != this.selectedGroupType.level[1]) {
-          item.wit_collection.forEach(wit => {
-            wits.push(wit);
-          });
-      }
-    });
-
-    let response = wiTypes.filter(wit => {
-      return wits.find(item => wit.id === item)
-    });
-
-    return response;
-  }
-
   getAllowedChildWits(workItem: WorkItem) {
     //Get to the highest level
     //set sub level as child

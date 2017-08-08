@@ -92,6 +92,16 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
   }
 
   setGuidedTypeWI(groupType: GroupTypesModel) {
-    this.groupTypesService.setCurrentGroupType(groupType);
+    let gType;
+    let gt;
+    this.groupTypesService.getGroupTypes()
+      .subscribe(response => {
+        gType = response;
+      });
+    gt = groupType;
+    if(groupType.group == 'portfolio') {
+      gt = gType.find(groupType => groupType.group == 'portfolio' && groupType.level[1] == 0);
+    }
+    this.groupTypesService.setCurrentGroupType(gt);
   }
 }
