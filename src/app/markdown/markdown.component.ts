@@ -44,7 +44,9 @@ export class MarkdownComponent implements OnChanges {
   private previousRenderedText = '';
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.editAllow && this.editAllow === false) {
+    if (changes.editAllow &&
+      this.editAllow === false &&
+      !changes.editAllow.isFirstChange) {
       this.closeClick();
     }
   }
