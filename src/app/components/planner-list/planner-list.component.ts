@@ -191,7 +191,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       Observable.combineLatest(
         this.spaces.current,
         this.filterService.filterChange,
-        this.currentIteration,
+        //this.currentIteration,
+        this.route.queryParams,
         this.eventService.showHierarchyListSubject,
         // only emits workItemReload when hierarchy view is on
         this.eventService.workItemListReloadOnLink.filter(() => this.showHierarchyList)
@@ -200,7 +201,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       .subscribe(([
         space,
         activeFilter,
-        iteration,
+        //iteration,
+        queryParams,
         showHierarchyList,
         workItemListReload
       ]) => {
@@ -242,18 +244,18 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       this.loggedInUser = items[3];
 
       // If there is an iteration filter on the URL
-      const queryParams = this.route.snapshot.queryParams;
-      if (Object.keys(queryParams).indexOf('iteration') > -1) {
-        const iteration = iterations.find(it => {
-          return it.attributes.resolved_parent_path + '/' + it.attributes.name
-            === queryParams['iteration'];
-        })
-        if (iteration) {
-          this.filterService.setFilterValues('iteration', iteration.id);
-        }
-      } else {
-        this.filterService.clearFilters(['iteration']);
-      }
+      // const queryParams = this.route.snapshot.queryParams;
+      // if (Object.keys(queryParams).indexOf('iteration') > -1) {
+      //   const iteration = iterations.find(it => {
+      //     return it.attributes.resolved_parent_path + '/' + it.attributes.name
+      //       === queryParams['iteration'];
+      //   })
+      //   if (iteration) {
+      //     this.filterService.setFilterValues('iteration', iteration.id);
+      //   }
+      // } else {
+      //   this.filterService.clearFilters(['iteration']);
+      // }
     })
     .switchMap((items) => {
       let appliedFilters = this.filterService.getAppliedFilters();
@@ -280,7 +282,21 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         newFilterObj[item.id] = item.value;
       })
       newFilterObj['space'] = this.currentSpace.id;
-
+      let payload = {
+        parentexists: !!!this.showHierarchyList
+      };
+      if ( this.route.snapshot.queryParams['q'] ) {
+        let existingQuery = this.filterService.queryToJson(this.route.snapshot.queryParams['q']);
+        let filterQuery = this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj));
+        let exp = this.filterService.queryJoiner(existingQuery, this.filterService.and_notation, filterQuery);
+        Object.assign(payload,{
+          expression:exp
+        });
+      } else {
+        Object.assign(payload,{
+          expression: this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj))
+        });
+      }
       return Observable.forkJoin(
         Observable.of(this.iterations),
         Observable.of(this.workItemTypes),
@@ -291,10 +307,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         ) :
         this.workItemService.getWorkItems2(
           this.pageSize,
-          {
-            expression: this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj)),
-            parentexists: !!!this.showHierarchyList
-          }
+          payload
         )
       )
     })
@@ -509,27 +522,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       this.broadcaster.on<string>('detail_close')
       .subscribe(()=>{
         // this.selectedWorkItemEntryComponent.deselect();
-      })
-    );
-
-    this.eventListeners.push(
-      this.route.queryParams.subscribe((params) => {
-        if (Object.keys(params).indexOf('iteration') > -1) {
-          if (params['iteration'] !== this.currentIteration.getValue()) {
-            this.currentIteration.next(params['iteration']);
-          }
-        }
-        else if (Object.keys(params).indexOf('workitemtype') > -1) {
-
-        }
-        // If no iteration in the URL
-        // and curent iteration value is not null
-        // this means iteration has just got removed
-        else if (this.currentIteration.getValue() !== null) {
-          this.currentIteration.next(null);
-        } else {
-          this.loadWorkItems();
-        }
       })
     );
     this.eventListeners.push(

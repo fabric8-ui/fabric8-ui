@@ -145,7 +145,21 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   constructURL(iterationId: string) {
     //return this.filterService.constructQueryURL('', {iteration_id: iterationId});
-    return '';
+    //this.filterService.queryBuilder({}, '$IN',)
+    const it_key = 'iteration';
+    const it_compare = this.filterService.equal_notation;
+    const it_value = iterationId;
+    //Query for type
+    const it_query = this.filterService.queryBuilder(it_key, it_compare, it_value);
+    //Query for space
+    //const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
+   //Join type and space query
+   const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, it_query );
+   //const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
+   //second_join gives json object
+   return this.filterService.jsonToQuery(first_join);
+   //reverse function jsonToQuery(second_join);
+    //return '';
   }
 
   getAndfilterIterations() {
