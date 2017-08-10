@@ -7,12 +7,7 @@ import { PlannerListComponent } from './planner-list.component';
 const routes: Routes = [
   {
     path: '',
-    component: PlannerListComponent,
-    children: [
-      { path: 'detail/:id',
-        component: WorkItemDetailComponent,
-      }
-    ]
+    component: PlannerListComponent
   }
 ];
 

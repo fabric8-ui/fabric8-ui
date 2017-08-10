@@ -96,7 +96,6 @@ export class GroupTypesService {
       let subLevel = groupType.level[1];
       let guidedGroupType = this.groupTypes
           .find(groupType => groupType.level[0] === level + 1);
-
       if(subLevel === 0 && groupType.group === 'portfolio') {
         guidedGroupType = this.groupTypes
           .find(groupType => groupType.level[1] === subLevel + 1);

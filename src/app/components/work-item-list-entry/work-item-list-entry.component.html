@@ -4,7 +4,7 @@
 		[dialog]='dialog'
   ></alm-dialog>
 </div>
-<div class="workItemList_entry" (click)="onSelect($event)" [routerLink]="['./detail/' + workItem.id]" [queryParams]="queryParams">
+<div class="workItemList_entry" (click)="onSelect($event)" [routerLink]="[constructUrl(workItem.id)]" [queryParams]="queryParams">
 	<!--checkbox to select a WI and move it-->
 	<div class="row-cbh" title="Select the checkbox to move the item." *ngIf="loggedIn">
 		<input type="checkbox" [checked]="checkedWI" (click)="toggleEntry($event)" />

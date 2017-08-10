@@ -2,8 +2,6 @@ import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './components/login/login.component';
-import { PlannerListModule } from 'fabric8-planner';
-import { PlannerBoardModule } from 'fabric8-planner';
 
 const routes: Routes = [
   {
@@ -12,12 +10,16 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'plan/list',
-    loadChildren: './components/plan-list.module#PlanListModule'
-  },
-  {
     path: 'plan/board',
     loadChildren: './components/plan-board.module#PlanBoardModule'
+  },
+  {
+    path: 'plan/detail',
+    loadChildren: './components/plan-detail.module#PlanDetailModule'
+  },
+  {
+    path: 'plan/list',
+    loadChildren: './components/plan-list.module#PlanListModule'
   },
   {
     path: 'login',
