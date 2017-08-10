@@ -90,17 +90,20 @@ export class GroupTypesService {
     let groupType = this.groupTypes
         .find(groupType => groupType.wit_collection.indexOf(WITid) > -1);
 
-    let level = groupType.level[0];
-    let subLevel = groupType.level[1];
-    let guidedGroupType = this.groupTypes
-        .find(groupType => groupType.level[0] === level + 1);
+    // grouptype is undefined when it's not find the WIT in the groupTypes JSON.
+    if(groupType !== undefined) {
+      let level = groupType.level[0];
+      let subLevel = groupType.level[1];
+      let guidedGroupType = this.groupTypes
+          .find(groupType => groupType.level[0] === level + 1);
 
-    if(subLevel === 0 && groupType.group === 'portfolio') {
-      guidedGroupType = this.groupTypes
-        .find(groupType => groupType.level[1] === subLevel + 1);
+      if(subLevel === 0 && groupType.group === 'portfolio') {
+        guidedGroupType = this.groupTypes
+          .find(groupType => groupType.level[1] === subLevel + 1);
+      }
+      this.selectedGroupType = guidedGroupType;
+      this.workItemSelected.next(guidedGroupType);
     }
-    this.selectedGroupType = guidedGroupType;
-    this.workItemSelected.next(guidedGroupType);
   }
 
   mockData(): Array<GroupTypesModel> {
