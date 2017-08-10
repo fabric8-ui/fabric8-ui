@@ -12,7 +12,6 @@ import { FilterService } from '../../services/filter.service';
 import { GroupTypesService } from '../../services/group-types.service';
 import { GroupTypesModel } from '../../models/group-types.model';
 import { IterationModel } from '../../models/iteration.model';
-import { IterationService } from '../../services/iteration.service';
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType } from '../../models/work-item-type';
 
@@ -25,6 +24,8 @@ import { WorkItemType } from '../../models/work-item-type';
   styleUrls: ['./group-types-panel.component.less']
 })
 export class GroupTypesComponent implements OnInit, OnDestroy {
+
+  @Input() iterations: IterationModel[] = [];
 
   authUser: any = null;
   loggedIn: Boolean = true;
@@ -41,7 +42,6 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
     private broadcaster: Broadcaster,
     private filterService: FilterService,
     private groupTypesService: GroupTypesService,
-    private iterationService: IterationService,
     private route: ActivatedRoute,
     private spaces: Spaces
   ) {}

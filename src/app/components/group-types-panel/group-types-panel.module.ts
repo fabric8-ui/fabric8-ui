@@ -12,6 +12,7 @@ import { GroupTypesService } from '../../services/group-types.service';
 import { ModalModule } from 'ngx-modal';
 import { TooltipModule } from 'ng2-bootstrap';
 import { TruncateModule } from 'ng2-truncate';
+import { IterationModule } from '../iterations-panel/iterations-panel.module';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { TruncateModule } from 'ng2-truncate';
     TooltipModule,
     TruncateModule,
     WidgetsModule,
+    IterationModule,
     RouterModule
   ],
   declarations: [

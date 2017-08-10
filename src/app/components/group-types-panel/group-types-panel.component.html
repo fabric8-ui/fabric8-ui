@@ -1,8 +1,18 @@
 <div class="filter" *ngFor="let item of groupTypes">
-  <a [routerLink]="[]"
+  <a *ngIf="item.group != 'execution'" [routerLink]="[]"
     [queryParams]="{q: fnBuildQueryParam(item)}"
     [routerLinkActive]="'selected'"
     id="{{item.group}}" (click)="setGuidedTypeWI(item);">
       {{ item.name }}
   </a>
+  <!--If group is execution show a header and then embed the iteration component -->
+  <div *ngIf="item.group == 'execution'">
+    <h3>
+      {{ item.name }}
+    </h3>
+    <div class="width-100 pull-left">
+      <fab-planner-iteration [takeFromInput]="true"
+        [iterations]="iterations" class="fab-planner-iteration"></fab-planner-iteration>
+    </div>
+  </div>
 </div>
