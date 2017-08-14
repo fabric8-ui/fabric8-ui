@@ -8,7 +8,7 @@ set -e
 
 # Export needed vars
 set +x
-for var in BUILD_NUMBER BUILD_URL JENKINS_URL GIT_BRANCH GH_TOKEN NPM_TOKEN GIT_COMMIT DEVSHIFT_USERNAME DEVSHIFT_PASSWORD; do
+for var in BUILD_NUMBER BUILD_URL JENKINS_URL GIT_BRANCH GH_TOKEN NPM_TOKEN GIT_COMMIT DEVSHIFT_USERNAME DEVSHIFT_PASSWORD DEVSHIFT_TAG_LEN; do
   export $(grep ${var} jenkins-env | xargs)
 done
 export BUILD_TIMESTAMP=`date -u +%Y-%m-%dT%H:%M:%S`+00:00
@@ -58,7 +58,7 @@ if [ $? -eq 0 ]; then
   if [ $? -eq 0 ]; then
     echo 'CICO: build OK'
 
-    TAG=$(echo $GIT_COMMIT | cut -c1-6)
+    TAG=$(echo $GIT_COMMIT | cut -c1-${DEVSHIFT_TAG_LEN})
     REGISTRY="push.registry.devshift.net"
 
     if [ -n "${DEVSHIFT_USERNAME}" -a -n "${DEVSHIFT_PASSWORD}" ]; then
@@ -69,7 +69,7 @@ if [ $? -eq 0 ]; then
 
     docker build -t fabric8-ui-deploy -f Dockerfile.deploy . && \
     docker tag fabric8-ui-deploy ${REGISTRY}/fabric8-ui/fabric8-ui:$TAG && \
-    docker push ${REGISTY}/fabric8-ui/fabric8-ui:$TAG && \
+    docker push ${REGISTRY}/fabric8-ui/fabric8-ui:$TAG && \
     docker tag fabric8-ui-deploy ${REGISTRY}/fabric8-ui/fabric8-ui:latest && \
     docker push ${REGISTRY}/fabric8-ui/fabric8-ui:latest
     if [ $? -eq 0 ]; then
