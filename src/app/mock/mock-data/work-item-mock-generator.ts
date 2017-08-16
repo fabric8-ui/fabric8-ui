@@ -1,4 +1,4 @@
-
+import { SchemaMockGenerator } from './schema-mock-generator';
 /*
  * This class contains mock generator code for work items and
  * dependend entities like links and comments.
@@ -17,6 +17,9 @@ export class WorkItemMockGenerator {
       'id1': [ workItems[8], workItems[9], workItems[10] ]
     };
   }
+
+  private schemaMockGenerator: SchemaMockGenerator = new SchemaMockGenerator();
+  private wiTypes = this.schemaMockGenerator.getWorkItemTypes();
 
   /*
    * Returns a map structure containing initial work item comments. The structure
@@ -178,7 +181,7 @@ export class WorkItemMockGenerator {
           },
           'baseType': {
             'data': {
-              'id': (n % 2) ? '86af5178-9b41-469b-9096-57e5155c3f30' : 'bbf35418-04b6-426c-a60b-7f80beb0b624' ,
+              'id': this.wiTypes[n % this.wiTypes.length].id,
               'type': 'workitemtypes'
             }
           },
