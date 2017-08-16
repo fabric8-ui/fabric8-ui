@@ -34,16 +34,16 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   loggedIn: Boolean = true;
   editEnabled: Boolean = false;
   isBacklogSelected: Boolean = true;
-  isCollapsedIteration: Boolean = false;
-  isCollapsedCurrentIteration: Boolean = false;
-  isCollapsedFutureIteration: Boolean = true;
-  isCollapsedPastIteration: Boolean = true;
+  //isCollapsedIteration: Boolean = false;
+  //isCollapsedCurrentIteration: Boolean = false;
+  //isCollapsedFutureIteration: Boolean = true;
+  //isCollapsedPastIteration: Boolean = true;
   barchatValue: number = 70;
   selectedIteration: IterationModel;
   allIterations: IterationModel[] = [];
-  futureIterations: IterationModel[] = [];
-  currentIterations: IterationModel[] = [];
-  closedIterations: IterationModel[] = [];
+  //futureIterations: IterationModel[] = [];
+  //currentIterations: IterationModel[] = [];
+  //closedIterations: IterationModel[] = [];
   eventListeners: any[] = [];
   currentSelectedIteration: string = '';
   dragulaEventListeners: any[] = [];
@@ -116,9 +116,9 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         console.log('[IterationComponent] Space deselected.');
         this.editEnabled = false;
         this.allIterations = [];
-        this.futureIterations = [];
-        this.currentIterations = [];
-        this.closedIterations = [];
+        // this.futureIterations = [];
+        // this.currentIterations = [];
+        // this.closedIterations = [];
       }
     });
   }
@@ -132,7 +132,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
           this.allIterations.push(this.iterations[i]);
         }
       }
-      this.clusterIterations();
+      //this.clusterIterations();
     }
   }
 
@@ -191,17 +191,17 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   clusterIterations() {
-    this.futureIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'new');
-    this.currentIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'start');
-    this.closedIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'close');
+    // this.futureIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'new');
+    // this.currentIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'start');
+    // this.closedIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'close');
 
-    if (this.futureIterations.find(it => this.resolvedName(it) == this.currentSelectedIteration)) {
-      this.isCollapsedPastIteration = true;
-      this.isCollapsedFutureIteration = false;
-    } else if (this.closedIterations.find(it => this.resolvedName(it) == this.currentSelectedIteration)) {
-      this.isCollapsedFutureIteration = true;
-      this.isCollapsedPastIteration = false;
-    }
+    // if (this.futureIterations.find(it => this.resolvedName(it) == this.currentSelectedIteration)) {
+    //   this.isCollapsedPastIteration = true;
+    //   this.isCollapsedFutureIteration = false;
+    // } else if (this.closedIterations.find(it => this.resolvedName(it) == this.currentSelectedIteration)) {
+    //   this.isCollapsedFutureIteration = true;
+    //   this.isCollapsedPastIteration = false;
+    // }
   }
 
   resolvedName(iteration: IterationModel) {
@@ -237,9 +237,9 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       this.selectedIteration = null;
       //this.isBacklogSelected = true;
       //Collapse the other iteration sets
-      this.isCollapsedCurrentIteration = true;
-      this.isCollapsedFutureIteration = true;
-      this.isCollapsedPastIteration = true;
+      // this.isCollapsedCurrentIteration = true;
+      // this.isCollapsedFutureIteration = true;
+      // this.isCollapsedPastIteration = true;
       filters.push({
         paramKey: 'filter[iteration]',
         active: false,
@@ -277,9 +277,9 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     let [el, container, source] = args;
     el.classList.add('dn');
     if(container.classList.contains('future-iteration-header')) {
-      this.isCollapsedFutureIteration = false;
+      //this.isCollapsedFutureIteration = false;
     } else if(container.classList.contains('past-iteration-header')) {
-      this.isCollapsedPastIteration = false;
+      //this.isCollapsedPastIteration = false;
     } else {
       container.classList.add('on-hover-background');
     }

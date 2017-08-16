@@ -1,17 +1,20 @@
 <!--Iteration Start-->
+<div class="add-iteration">
+  <a *ngIf="loggedIn && editEnabled"
+    class="text-right"
+    (click)="modal.openCreateUpdateModal('create', null, $event);">
+    <i *ngIf="loggedIn && editEnabled" id="add-iteration-icon" class="pficon-add-circle-o fa-lg pull-right with-cursor-pointer add-btn" placement="bottom" tooltip="Add an Iteration"></i>
+  </a>
+</div>
 <div class="iterations-container">
   <div class="iteration-wrapper">
-    <!-- current iteration -->
+    <!-- display the active iterations first -->
+    <!-- Nested Iteration Display -->
     <div class="iterations">
-      <div class="iteration-header pointer current-iteration-header">
-        <h3>
-          <span (click)="isCollapsedIteration = !isCollapsedIteration">
-            Current Iteration
-          </span>
-        </h3>
-      </div>
-      <ul class="iteration-expanded-div" [collapse]="isCollapsedCurrentIteration">
-        <li class="active iteration-container" *ngFor="let iteration of currentIterations" [routerLinkActive]="'selected-iteration'"
+      <ul class="iteration-expanded-div">
+        <li class="active iteration-container"
+          *ngFor="let iteration of allIterations"
+          [routerLinkActive]="'selected-iteration'"
           [routerLink]="[]" [attr.data-id]="iteration.id"
           [queryParams]="{q: constructURL(iteration.id)}"
           [dragula]="'wi-bag'">
@@ -43,17 +46,17 @@
               </ul>
             </div>
             <div class="truncate padding-right-15">
-                <strong class="iteration-name truncate"
+                <span class="iteration-name truncate"
                   tooltip="{{iteration.attributes.name}}"
                   placement="top" id="{{iteration.attributes.name}}">
                   {{iteration.attributes.name | truncate : 45 }}
-                </strong>
-              <div class="parent-iteration">
+                </span>
+              <!--<div class="parent-iteration">
                 <span tooltip="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
                   placement="top" id="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}">
                   {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | truncate : -50 }}
                 </span>
-              </div>
+              </div>-->
             </div>
           </div>
           <div class="iteration-status">
@@ -79,137 +82,6 @@
             </div>
           </div>
           <p class="iteration-description">{{ iteration.attributes?.description }}</p>
-        </li>
-      </ul>
-    </div>
-    <!-- future iteration -->
-    <div class="iterations">
-      <div class="iteration-header pointer future-iteration-header" [dragula]="'wi-bag'">
-        <h3>
-          <span (click)="isCollapsedFutureIteration = !isCollapsedFutureIteration">
-            <i class="fa fa-icon pointer"
-                [ngClass]="{'fa-angle-right': isCollapsedFutureIteration,
-                          'fa-angle-down': !isCollapsedFutureIteration}"></i>
-            Future Iterations
-          </span>
-          <small>
-            <a *ngIf="loggedIn && editEnabled"
-              class="text-right"
-              (click)="modal.openCreateUpdateModal('create', null, $event);">
-              <i *ngIf="loggedIn && editEnabled" id="add-iteration-icon" class="pficon-add-circle-o fa-lg pull-right with-cursor-pointer add-btn" placement="bottom" tooltip="Add an Iteration"></i>
-            </a>
-          </small>
-        </h3>
-      </div>
-      <ul class="not-current-iteration"
-          [collapse]="isCollapsedFutureIteration">
-        <li class="iteration-subheader iteration-container" *ngFor="let iteration of futureIterations" [routerLinkActive]="'selected-iteration'"
-          [routerLink]="[]" [attr.data-id]="iteration.id"
-          [queryParams]="{q: constructURL(iteration.id)}"
-          [dragula]="'wi-bag'">
-            <div class="pull-right">
-              <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
-              <div *ngIf="loggedIn" class="dropdown-kebab-pf dib dropdown" dropdown>
-                <button class="btn btn-link dropdown-toggle" (click)="kebabMenuClick($event)"
-                        type="button"
-                        aria-haspopup="true"
-                        aria-expanded="true"
-                        dropdownToggle>
-                  <i class="fa fa-ellipsis-v"></i>
-                </button>
-                <ul class="dropdown-menu-right dropdown-menu" *dropdownMenu>
-                  <li>
-                    <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration, $event);">
-                      Edit
-                    </a>
-                  </li>
-                  <li>
-                    <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration, $event);">
-                      Start
-                    </a>
-                  </li>
-                  <li>
-                    <a class="pointer" (click)="modal.openCreateUpdateModal('createChild', iteration, $event);">
-                      Create child
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="truncate">
-              <strong class="iteration-name truncate"
-                tooltip="{{iteration.attributes.name}}"
-                placement="top" id="{{iteration.attributes.name}}">
-                {{iteration.attributes.name | truncate : 35}}
-              </strong>
-              <div class="parent-iteration">
-                <span tooltip="{{ (iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/') }}"
-                  placement="top">
-                {{(iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name).replace('//', '/') | truncate : -35 }}</span>
-              </div>
-            </div>
-        </li>
-      </ul>
-    </div>
-    <!-- past iteartion -->
-    <div class="iterations">
-      <div class="iteration-header pointer past-iteration-header" [dragula]="'wi-bag'"
-        (click)="isCollapsedPastIteration = !isCollapsedPastIteration">
-        <h3>
-          <i class="fa fa-icon pointer"
-              [ngClass]="{'fa-angle-right': isCollapsedPastIteration,
-                          'fa-angle-down': !isCollapsedPastIteration}"></i>
-          Past Iterations
-        </h3>
-      </div>
-      <ul class="not-current-iteration"
-          [collapse]="isCollapsedPastIteration">
-        <li class="iteration-subheader iteration-container" *ngFor="let iteration of closedIterations" (click)='getWorkItemsByIteration(iteration)' [routerLinkActive]="'selected-iteration'"
-            [routerLink]="[]"
-            [queryParams]="{q: constructURL(iteration.id)}"
-            [dragula]="'wi-bag'" [attr.data-id]="iteration.id">
-          <div class="pull-right">
-            <span class="badge">{{iteration.relationships?.workitems?.meta?.total}}</span>
-            <div *ngIf="loggedIn" class="dropdown-kebab-pf dib dropdown" dropdown>
-              <button class="btn btn-link dropdown-toggle" (click)="kebabMenuClick($event)"
-                      type="button"
-                      aria-haspopup="true"
-                      aria-expanded="true"
-                      dropdownToggle>
-              <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu-right dropdown-menu" *dropdownMenu>
-                <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration, $event);">
-                    Edit
-                  </a>
-                </li>
-                <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('start', iteration, $event);">
-                    Start
-                  </a>
-                </li>
-                <li>
-                  <a class="pointer" (click)="modal.openCreateUpdateModal('createChild', iteration, $event);">
-                    Create child
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="truncate">
-            <strong class="iteration-name truncate"
-              tooltip="{{iteration.attributes.name}}"
-              placement="top" id="{{iteration.attributes.name}}">
-              {{iteration.attributes.name | truncate : 40 }}
-            </strong>
-            <div class="parent-iteration">
-              <span tooltip="{{ iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
-                placement="top">
-                {{ iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | truncate : -35 }}
-              </span>
-            </div>
-          </div>
         </li>
       </ul>
     </div>
