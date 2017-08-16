@@ -14,7 +14,6 @@ import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { EventService } from './../../services/event.service';
 import { TreeModule } from 'angular2-tree-component';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { TruncateModule } from 'ng2-truncate';
 import { Broadcaster, Logger } from 'ngx-base';
 import {
   AlmIconModule,
@@ -27,14 +26,13 @@ import { AuthenticationService } from 'ngx-login-client';
 
 import { HttpService } from '../../services/http-service';
 
-import { CardComponent } from './../card/card.component';
-
 import {
   FabPlannerAssociateIterationModalModule
 } from './../work-item-iteration-modal/work-item-iteration-modal.module';
 import { GlobalSettings } from '../../shared/globals';
 import { IterationModule } from '../iterations-panel/iterations-panel.module';
 import { PlannerBoardRoutingModule } from './planner-board-routing.module';
+import { CardModule } from '../card/card.module';
 import { SidepanelModule } from '../side-panel/side-panel.module';
 import { ToolbarPanelModule } from '../toolbar-panel/toolbar-panel.module';
 import { PlannerBoardComponent } from './planner-board.component';
@@ -87,6 +85,7 @@ if (process.env.ENV == 'inmemory') {
   imports: [
     AlmIconModule,
     BsDropdownModule.forRoot(),
+    CardModule,
     CommonModule,
     DialogModule,
     DragulaModule,
@@ -101,15 +100,13 @@ if (process.env.ENV == 'inmemory') {
     TooltipModule.forRoot(),
     TreeModule,
     TreeListModule,
-    TruncateModule,
     WidgetsModule,
     WorkItemDetailModule,
     WorkItemDetailAddTypeSelectorModule,
     WorkItemQuickAddModule
   ],
   declarations: [
-    PlannerBoardComponent,
-    CardComponent
+    PlannerBoardComponent
   ],
   providers: providers,
   exports: [ PlannerBoardComponent ]
