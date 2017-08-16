@@ -17,7 +17,7 @@ export class MarkdownExampleComponent {
   private rawText: string = '#hello, markdown!';
   private allowEdit = false;
 
-  onSave(value: any) {
+  onSaveOrPreview(value: any) {
     const rawText = value.rawText;
     const callBack = value.callBack;
     setTimeout(() => {
@@ -25,11 +25,12 @@ export class MarkdownExampleComponent {
     }, 2000);
   }
 
-  showPreview(value: any) {
+  onSaveOrPreviewUndefined(value: any) {
     const rawText = value.rawText;
     const callBack = value.callBack;
     setTimeout(() => {
-      callBack(rawText, markdown.toHTML(rawText));
+      callBack(undefined, undefined);
     }, 2000);
   }
+
 }

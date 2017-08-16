@@ -5,6 +5,7 @@ import {
   Input,
   Output,
   OnChanges,
+  OnInit,
   ViewChild,
   EventEmitter,
   SimpleChanges
@@ -18,11 +19,11 @@ import {
   templateUrl: './markdown.component.html'
 })
 
-export class MarkdownComponent implements OnChanges {
+export class MarkdownComponent implements OnChanges, OnInit {
 
   @Input() fieldName: string = 'Description';
-  @Input() renderedText: string = '';
-  @Input() rawText: string = '';
+  @Input('renderedText') inpRenderedText: string = '';
+  @Input('rawText') inpRawText: string = '';
   @Input() rendering: boolean = false;
   @Input() saving: boolean = false;
   @Input() placeholder: string = 'This is place holder';
@@ -38,6 +39,8 @@ export class MarkdownComponent implements OnChanges {
   private tabBarVisible: boolean = true;
   private viewType: string = 'preview'; // markdown
   private editorActive: boolean = false;
+  private renderedText = '';
+  private rawText = '';
   private showMore = false;
 
   private previousRawText = '';
@@ -48,6 +51,31 @@ export class MarkdownComponent implements OnChanges {
       this.editAllow === false &&
       !changes.editAllow.isFirstChange) {
       this.closeClick();
+    }
+    if (Object.keys(changes).indexOf('inpRenderedText') > -1
+      && typeof(this.inpRenderedText) === 'undefined') {
+        console.warn('Markdown component change :: renderedText is passed undefined');
+        this.renderedText = '';
+    } else {
+      this.renderedText = this.inpRenderedText;
+    }
+    if (Object.keys(changes).indexOf('inpRawText') > -1
+      && typeof(this.inpRawText) === 'undefined') {
+        console.warn('Markdown component change :: rawText is passed undefined');
+        this.rawText = '';
+    } else {
+      this.rawText = this.inpRawText;
+    }
+  }
+
+  ngOnInit() {
+    if (typeof(this.renderedText) === 'undefined') {
+      console.warn('Markdown component init :: renderedText is passed undefined');
+      this.renderedText = '';
+    }
+    if (typeof(this.rawText) === 'undefined') {
+      console.warn('Markdown component init :: rawText is passed undefined');
+      this.rawText = '';
     }
   }
 
@@ -126,15 +154,35 @@ export class MarkdownComponent implements OnChanges {
 
   renderPreview(rawText: string, renderedText: string) {
     this.rendering = false;
-    this.rawText = rawText;
-    this.renderedText = renderedText;
+    if (typeof(rawText) === 'undefined') {
+      console.warn('Markdown component preview callback :: rawText is passed undefined');
+      this.rawText = '';
+    } else {
+      this.rawText = rawText;
+    }
+    if (typeof(renderedText) === 'undefined') {
+      console.warn('Markdown component preview callback :: renderedText is passed undefined');
+      this.renderedText = '';
+    } else {
+      this.renderedText = renderedText;
+    }
     this.viewType = 'preview';
   }
 
   saveUpdate(rawText: string, renderedText: string) {
     this.saving = false;
-    this.rawText = rawText;
-    this.renderedText = renderedText;
+    if (typeof(rawText) === 'undefined') {
+      console.warn('Markdown component save callback :: rawText is passed undefined');
+      this.rawText = '';
+    } else {
+      this.rawText = rawText;
+    }
+    if (typeof(renderedText) === 'undefined') {
+      console.warn('Markdown component save callback :: renderedText is passed undefined');
+      this.renderedText = '';
+    } else {
+      this.renderedText = renderedText;
+    }
     this.deactivateEditor();
   }
 
