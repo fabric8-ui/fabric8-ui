@@ -145,7 +145,7 @@ export class GroupTypesService {
           {
             'level': [2,0],
             'group': 'execution',
-            'name': 'Execution',
+            'name': 'Iterations',
             'wit_collection':[
               'bbf35418-04b6-426c-a60b-7f80beb0b624'
             ]
