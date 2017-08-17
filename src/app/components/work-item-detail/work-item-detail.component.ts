@@ -148,45 +148,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.saving = false;
-    this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    if (this.loggedIn) {
-      this.eventListeners.push(
-        this.userService.loggedInUser.subscribe(user => {
-          this.loggedInUser = user;
-        })
-      );
-    }
-    let id = null;
-    this.eventListeners.push(
-      this.spaces.current.subscribe(space => {
-        this.closePreview();
-      })
-      // this.spaces.current.switchMap(space => {
-      //   return this.route.params;
-      // }).subscribe((params) => {
-      //   if (params['id'] !== undefined) {
-      //     id = params['id'];
-      //     if (id === 'new'){
-      //       //Add a new work item
-      //       this.headerEditable = true;
-      //       let type = this.route.snapshot.queryParams['type'];
-      //       // Create new item with the WI type
-      //       this.createWorkItemObj(type);
-      //       // Open the panel
-      //       if (this.panelState === 'out') {
-      //         this.panelState = 'in';
-      //         setTimeout(() => {
-      //           if (this.headerEditable && typeof(this.title) !== 'undefined') {
-      //           this.title.nativeElement.focus();
-      //         }});
-      //       }
-      //     } else {
-      //       this.loadWorkItem(id);
-      //     }
-      //   }
-      // })
-    );
+    this.listenToEvents();
   }
 
   ngOnDestroy() {
@@ -209,82 +172,84 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
 
   loadWorkItem(id: string): void {
     const t1 = performance.now();
-    this.workItemDataService.getItem(id)
-      .do(workItem => {
-        if (workItem) {
+    this.eventListeners.push(
+      this.workItemDataService.getItem(id)
+        .do(workItem => {
+          if (workItem) {
+            this.workItem = workItem;
+            this.titleText = this.workItem.attributes['system.title'];
+            this.descText = this.workItem.attributes['system.description'] || '';
+            // Open the panel once work item is ready
+            const t2 = performance.now();
+            if (this.panelState === 'out') {
+              this.panelState = 'in';
+              console.log('Performance :: Details page first paint (local data) - '  + (t2 - t1) + ' milliseconds.');
+              if (this.headerEditable && typeof(this.title) !== 'undefined') {
+                this.title.nativeElement.focus();
+              }
+            }
+          }
+        })
+        .do (() => {
+          this.loadingComments = true;
+          this.loadingTypes = true;
+          this.loadingIteration = true;
+          this.loadingArea = true;
+        })
+        .switchMap(() => this.workItemService.getWorkItemById(id))
+        .do(workItem => {
           this.workItem = workItem;
+          this.workItemDataService.setItem(workItem);
           this.titleText = this.workItem.attributes['system.title'];
           this.descText = this.workItem.attributes['system.description'] || '';
           // Open the panel once work item is ready
           const t2 = performance.now();
           if (this.panelState === 'out') {
             this.panelState = 'in';
-            console.log('Performance :: Details page first paint (local data) - '  + (t2 - t1) + ' milliseconds.');
+            console.log('Performance :: Details page first paint - '  + (t2 - t1) + ' milliseconds.');
             if (this.headerEditable && typeof(this.title) !== 'undefined') {
               this.title.nativeElement.focus();
             }
           }
-        }
-      })
-      .do (() => {
-        this.loadingComments = true;
-        this.loadingTypes = true;
-        this.loadingIteration = true;
-        this.loadingArea = true;
-      })
-      .switchMap(() => this.workItemService.getWorkItemById(id))
-      .do(workItem => {
-        this.workItem = workItem;
-        this.workItemDataService.setItem(workItem);
-        this.titleText = this.workItem.attributes['system.title'];
-        this.descText = this.workItem.attributes['system.description'] || '';
-        // Open the panel once work item is ready
-        const t2 = performance.now();
-        if (this.panelState === 'out') {
-          this.panelState = 'in';
-          console.log('Performance :: Details page first paint - '  + (t2 - t1) + ' milliseconds.');
-          if (this.headerEditable && typeof(this.title) !== 'undefined') {
-            this.title.nativeElement.focus();
-          }
-        }
-      })
-      .do (workItem => console.log('Work item fethced: ', cloneDeep(workItem)))
-      .take(1)
-      .switchMap(() => {
-        return Observable.combineLatest(
-          this.resolveWITypes(),
-          this.resolveAssignees(),
-          this.resolveCreators(),
-          this.resolveArea(),
-          this.resolveIteration(),
-          this.resolveLinks(),
-          this.resolveComments()
-        )
-      })
-      .subscribe(() => {
-        this.closeUserRestFields();
+        })
+        .do (workItem => console.log('Work item fethced: ', cloneDeep(workItem)))
+        .take(1)
+        .switchMap(() => {
+          return Observable.combineLatest(
+            this.resolveWITypes(),
+            this.resolveAssignees(),
+            this.resolveCreators(),
+            this.resolveArea(),
+            this.resolveIteration(),
+            this.resolveLinks(),
+            this.resolveComments()
+          )
+        })
+        .subscribe(() => {
+          this.closeUserRestFields();
 
-        this.workItemPayload = {
-          id: this.workItem.id,
-          number: this.workItem.number,
-          attributes: {
-            version: this.workItem.attributes['version']
-          },
-          links: {
-            self: this.workItem.links.self
-          },
-          type: this.workItem.type
-        };
+          this.workItemPayload = {
+            id: this.workItem.id,
+            number: this.workItem.number,
+            attributes: {
+              version: this.workItem.attributes['version']
+            },
+            links: {
+              self: this.workItem.links.self
+            },
+            type: this.workItem.type
+          };
 
-        // init dynamic form
-        this.dynamicFormGroup = this.workItemTypeControlService.toFormGroup(this.workItem);
-        this.dynamicFormDataArray = this.workItemTypeControlService.toAttributeArray(this.workItem.relationships.baseType.data.attributes.fields);
-      },
-      err => {
-        //console.log(err);
-        //setTimeout(() => this.itemSubscription.unsubscribe());
-        // this.closeDetails();
-      });
+          // init dynamic form
+          this.dynamicFormGroup = this.workItemTypeControlService.toFormGroup(this.workItem);
+          this.dynamicFormDataArray = this.workItemTypeControlService.toAttributeArray(this.workItem.relationships.baseType.data.attributes.fields);
+        },
+        err => {
+          //console.log(err);
+          //setTimeout(() => this.itemSubscription.unsubscribe());
+          // this.closeDetails();
+        })
+      );
   }
 
   resolveWITypes(): Observable<any> {
@@ -731,11 +696,43 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
           this.loggedInUser = null;
       })
     );
+    if (this.loggedIn) {
+      this.eventListeners.push(
+        this.userService.loggedInUser.subscribe(user => {
+          this.loggedInUser = user;
+        })
+      );
+    }
+    let id = null;
     this.eventListeners.push(
-      this.route.queryParams.subscribe((params) => {
-        this.queryParams = params;
+      this.spaces.current.subscribe(space => {
+        this.closePreview();
       })
-    )
+      // this.spaces.current.switchMap(space => {
+      //   return this.route.params;
+      // }).subscribe((params) => {
+      //   if (params['id'] !== undefined) {
+      //     id = params['id'];
+      //     if (id === 'new'){
+      //       //Add a new work item
+      //       this.headerEditable = true;
+      //       let type = this.route.snapshot.queryParams['type'];
+      //       // Create new item with the WI type
+      //       this.createWorkItemObj(type);
+      //       // Open the panel
+      //       if (this.panelState === 'out') {
+      //         this.panelState = 'in';
+      //         setTimeout(() => {
+      //           if (this.headerEditable && typeof(this.title) !== 'undefined') {
+      //           this.title.nativeElement.focus();
+      //         }});
+      //       }
+      //     } else {
+      //       this.loadWorkItem(id);
+      //     }
+      //   }
+      // })
+    );
   }
 
   preventDef(event: any) {
