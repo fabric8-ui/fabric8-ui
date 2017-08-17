@@ -48,7 +48,7 @@ import { WorkItemType } from '../../models/work-item-type';
 import { CollaboratorService } from '../../services/collaborator.service'
 
 @Component({
-  selector: 'alm-work-item-detail',
+  selector: 'alm-work-item-detail-preview',
   templateUrl: './work-item-detail.component.html',
   styleUrls: ['./work-item-detail.component.less'],
   animations: [
@@ -159,36 +159,52 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
     }
     let id = null;
     this.eventListeners.push(
-      this.spaces.current.switchMap(space => {
-        return this.route.params;
-      }).subscribe((params) => {
-        if (params['id'] !== undefined) {
-          id = params['id'];
-          if (id === 'new'){
-            //Add a new work item
-            this.headerEditable = true;
-            let type = this.route.snapshot.queryParams['type'];
-            // Create new item with the WI type
-            this.createWorkItemObj(type);
-            // Open the panel
-            if (this.panelState === 'out') {
-              this.panelState = 'in';
-              setTimeout(() => {
-                if (this.headerEditable && typeof(this.title) !== 'undefined') {
-                this.title.nativeElement.focus();
-              }});
-            }
-          } else {
-            this.loadWorkItem(id);
-          }
-        }
+      this.spaces.current.subscribe(space => {
+        this.closePreview();
       })
+      // this.spaces.current.switchMap(space => {
+      //   return this.route.params;
+      // }).subscribe((params) => {
+      //   if (params['id'] !== undefined) {
+      //     id = params['id'];
+      //     if (id === 'new'){
+      //       //Add a new work item
+      //       this.headerEditable = true;
+      //       let type = this.route.snapshot.queryParams['type'];
+      //       // Create new item with the WI type
+      //       this.createWorkItemObj(type);
+      //       // Open the panel
+      //       if (this.panelState === 'out') {
+      //         this.panelState = 'in';
+      //         setTimeout(() => {
+      //           if (this.headerEditable && typeof(this.title) !== 'undefined') {
+      //           this.title.nativeElement.focus();
+      //         }});
+      //       }
+      //     } else {
+      //       this.loadWorkItem(id);
+      //     }
+      //   }
+      // })
     );
   }
 
   ngOnDestroy() {
     console.log('Destroying all the listeners in detail component');
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
+  }
+
+  openPreview(workitem: WorkItem) {
+    if (!workitem) return;
+    this.loadWorkItem(workitem.id);
+  }
+
+  closePreview() {
+    this.panelState = 'out';
+    this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
+    setTimeout(() => {
+      this.workItem = null;
+    }, 400);
   }
 
   loadWorkItem(id: string): void {
@@ -686,25 +702,25 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   }
 
   closeDetails(): void {
-    //console.log(this.router.url.split('/')[1]);
-    this.panelState = 'out';
+    // //console.log(this.router.url.split('/')[1]);
+    // this.panelState = 'out';
 
-    // In case detaile wi add, on close type id query param should be removed
-    let queryParams = cloneDeep(this.queryParams);
-    if (Object.keys(queryParams).indexOf('type') > -1) {
-      delete queryParams['type'];
-    }
+    // // In case detaile wi add, on close type id query param should be removed
+    // let queryParams = cloneDeep(this.queryParams);
+    // if (Object.keys(queryParams).indexOf('type') > -1) {
+    //   delete queryParams['type'];
+    // }
 
-    // Wait for the animation to finish
-    // From in to out it takes 300 ms
-    // So wait for 400 ms
-    setTimeout(() => {
-      this.router.navigate(
-        [this.router.url.split('/detail/')[0]],
-        {queryParams: queryParams}
-      );
-      this.broadcaster.broadcast('detail_close')
-    }, 400);
+    // // Wait for the animation to finish
+    // // From in to out it takes 300 ms
+    // // So wait for 400 ms
+    // setTimeout(() => {
+    //   this.router.navigate(
+    //     [this.router.url.split('/detail/')[0]],
+    //     {queryParams: queryParams}
+    //   );
+    //   this.broadcaster.broadcast('detail_close')
+    // }, 400);
   }
 
   listenToEvents() {
@@ -1094,7 +1110,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
       } else if (this.iterationSelectbox && this.iterationSelectbox.isOpen()) {
         this.iterationSelectbox.close();
     } else {
-        this.closeDetails();
+        this.closePreview();
       }
     }
   }

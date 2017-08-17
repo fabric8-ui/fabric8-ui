@@ -53,6 +53,7 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
   @Output() toggleEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() selectEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() detailEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
+  @Output() previewEvent: EventEmitter<WorkItem> = new EventEmitter<WorkItem>();
   @Output() moveTopEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() moveBottomEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
 
@@ -170,6 +171,11 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     this.detailEvent.emit(this);
     this.router.navigateByUrl(this.router.url.split('detail')[0] + '/detail/' + this.workItem.id, { relativeTo: this.route });
+  }
+
+  onDetailPreview(event: MouseEvent): void {
+    event.stopPropagation();
+    this.previewEvent.emit(this.workItem);
   }
 
   onMoveToTop(event: MouseEvent): void {

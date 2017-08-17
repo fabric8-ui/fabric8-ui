@@ -43,6 +43,7 @@ import {
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
 import { WorkItem } from '../../models/work-item';
+import { WorkItemDetailComponent } from './../work-item-detail/work-item-detail.component';
 import { WorkItemType }               from '../../models/work-item-type';
 import { GroupTypesService } from '../../services/group-types.service';
 import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-list-entry.component';
@@ -73,6 +74,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   @ViewChild('treeListLoadTemplate') treeListLoadTemplate: TemplateRef<any>;
   @ViewChild('treeListTemplate') treeListTemplate: TemplateRef<any>;
   @ViewChild('treeListItem') treeListItem: TreeListComponent;
+  @ViewChild('detailPreview') detailPreview: WorkItemDetailComponent;
 
   workItems: WorkItem[] = [];
   prevWorkItemLength: number = 0;
@@ -400,6 +402,10 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   }
 
   onDetail(entryComponent: WorkItemListEntryComponent): void { }
+
+  onPreview(workItem: WorkItem): void {
+    this.detailPreview.openPreview(workItem);
+  }
 
   onCreateWorkItem(workItem) {
     let resolveItem = this.workItemService.resolveWorkItems(

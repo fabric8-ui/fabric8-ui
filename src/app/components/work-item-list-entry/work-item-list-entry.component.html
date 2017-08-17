@@ -4,7 +4,7 @@
 		[dialog]='dialog'
   ></alm-dialog>
 </div>
-<div class="workItemList_entry" (click)="onSelect($event)" [routerLink]="[constructUrl(workItem.id)]" [queryParams]="queryParams">
+<div class="workItemList_entry" (click)="onSelect($event); onDetailPreview($event);" >
 	<!--checkbox to select a WI and move it-->
 	<div class="row-cbh" title="Select the checkbox to move the item." *ngIf="loggedIn">
 		<input type="checkbox" [checked]="checkedWI" (click)="toggleEntry($event)" />
@@ -19,7 +19,11 @@
     <div class="list-view-pf-body">
       <div class="list-view-pf-description">
         <div class="workItemList_title truncate-ellipsis col-xs-12 row">
-          <p class="col-md-12 col-sm-12 col-xs-12 pull-left truncate">{{workItem.attributes['system.title']}}</p>
+            <p class="col-md-12 col-sm-12 col-xs-12 pull-left truncate">
+              <a [routerLink]="[constructUrl(workItem.id)]" [queryParams]="queryParams">
+                {{workItem.attributes['system.title']}}
+              </a>
+            </p>
         </div>
         <div class="list-group-item-text workItemList_description dn">
           {{workItem.attributes['system.description'] ? workItem.attributes['system.description'] : "No description available for this work item."}}
@@ -50,6 +54,7 @@
 				<li><a class="workItemList_Iteration" (click)="associateIterationModal.open($event)">Associate with Iteration...</a></li>
 				<li role="presentation" class="divider"></li>
 				<li><a [routerLink]="['./detail/' + workItem.id]" [queryParams]="queryParams" class="workItemList_Open">Open</a></li>
+				<li><a (click)="onDetailPreview($event)" class="workItemList_Open">Preview</a></li>
 				<li><a class="workItemList_Backlog" (click)="onMoveToBacklog($event)">Move to Backlog</a></li>
 			</ul>
 		</div>

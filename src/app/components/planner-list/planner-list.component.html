@@ -45,6 +45,7 @@
                         (selectEvent)="onSelect($event)"
                         (toggleEvent)="onToggle($event)"
                         (detailEvent)="onDetail($event)"
+                        (previewEvent)="onPreview($event)"
                         (moveTopEvent)="onMoveToTop($event)"
                         (moveBottomEvent)="onMoveToBottom($event)">
                     </alm-work-item-list-entry>
@@ -79,6 +80,8 @@
                 (workItemCreate)="onCreateWorkItem($event)"></alm-work-item-quick-add>
           </div>
         </div>
+        <!-- <router-outlet></router-outlet> -->
+        <alm-work-item-detail-preview #detailPreview></alm-work-item-detail-preview>
     </section>
   </main>
 </div>
