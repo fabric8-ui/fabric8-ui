@@ -2,7 +2,7 @@
   <div class="card-pf-heading f8-card-heading">
     <h2 id="spacehome-analytical-report-title" class="card-pf-title">
       Stack Report Recommendations
-      <div *ngIf="(buildConfigsCount | async) > 0" class="pull-right">
+      <div *ngIf="buildConfigsCount > 0" class="pull-right">
         <select id="spacehome-analytical-report-combobox" name="pipeSelect" [(ngModel)]="currentPipeline" (change)="selectedPipeline()"
           class="form-control">
           <option value="default">Select a pipeline...</option>
@@ -12,7 +12,7 @@
     </h2>
   </div>
   <div class="card-pf-body">
-    <div *ngIf="(buildConfigsCount | async) > 0">
+    <div *ngIf="buildConfigsCount > 0">
       <div class="fabric8-stack-analysis">
         <ul id="spacehome-analytical-report-list" class="list-group list-view-pf list-view-pf-view" *ngIf="currentBuild && currentBuild.annotations && currentBuild.annotations['fabric8.io/bayesian.analysisUrl'] && stackAnalysisInformation['recommendations']">
           <div *ngIf="stackAnalysisInformation['showLoader']" class="recommender-overlay">
@@ -45,7 +45,7 @@
         </ul>
       </div>
     </div>
-    <div *ngIf="(buildConfigsCount | async) === 0" class="card-pf-body f8-card-body pipelines-absent">
+    <div *ngIf="buildConfigsCount === 0" class="card-pf-body f8-card-body pipelines-absent">
       <div class="f8-blank-slate-card">
         <div class="f8-blank-slate-icon">
           <i class="pficon pficon-info"></i>

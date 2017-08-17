@@ -26,7 +26,7 @@ import { StackAnalysesService, getStackRecommendations } from 'fabric8-stack-ana
 export class AnalyticalReportWidgetComponent implements OnInit, OnDestroy {
 
   buildConfigs: Observable<BuildConfigs>;
-  buildConfigsCount: Observable<number>;
+  buildConfigsCount: number;
 
   currentPipeline: string;
   currentPipelineBuilds: Array<Build>;
@@ -49,6 +49,7 @@ export class AnalyticalReportWidgetComponent implements OnInit, OnDestroy {
     private pipelinesService: PipelinesService,
     private stackAnalysisService: StackAnalysesService
   ) {
+    this.buildConfigsCount = 0;
   }
 
   ngOnInit() {
@@ -60,18 +61,17 @@ export class AnalyticalReportWidgetComponent implements OnInit, OnDestroy {
     this.buildConfigs = bcs;
 
     this.buildConfigs.subscribe((data) => {
-      this.pipelines = data;
-      let filteredPipelines = this.filterPipelines(data);
-      if (filteredPipelines.length !== 0) {
-        if (this.currentPipeline !== filteredPipelines[0].id) {
-          this.currentPipeline = filteredPipelines[0].id;
+      this.pipelines = this.filterPipelines(data);
+      if (this.pipelines.length !== 0) {
+        if (this.currentPipeline !== this.pipelines[0].id) {
+          this.currentPipeline = this.pipelines[0].id;
           this.selectedPipeline();
         }
       } else {
         this.currentPipeline = 'default';
       }
+      this.buildConfigsCount = this.pipelines.length;
     });
-    this.buildConfigsCount = bcs.map(buildConfigs => buildConfigs.length);
     bcs.connect();
   }
 
