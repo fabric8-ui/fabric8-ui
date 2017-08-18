@@ -4,8 +4,7 @@
 @import (reference) './../../../../node_modules/patternfly/node_modules/bootstrap/less/variables';
 @import (reference) './../../../../node_modules/patternfly/src/less/variables';
 
-.padding-loop(@i) when (@i > 0) {
-  .padding-@{i} { padding: (1px * @i) !important; }
+.padding-loop(@i) when (@i >= 0) {
   .padding-top-@{i} { padding-top: (1px * @i) !important; }
   .padding-left-@{i} { padding-left: (1px * @i) !important; }
   .padding-bottom-@{i} { padding-bottom: (1px * @i) !important; }
@@ -14,7 +13,7 @@
 }
 .padding-loop(15);
 
-.margin-loop(@i) when (@i > 0) {
+.margin-loop(@i) when (@i >= 0) {
   .margin-v { margin: (1px * @i) !important; }
   .margin-top-@{i} { margin-top: (1px * @i) !important; }
   .margin-left-@{i} { margin-left: (1px * @i) !important; }

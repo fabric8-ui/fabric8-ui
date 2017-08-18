@@ -6,13 +6,15 @@
           id="wi-detail-form">
       <fieldset>
         <div class="detail-panel-header">
-          <div class="form-group col-sm-12 mobile-bar">
+          <div class="form-group col-xs-12 col-sm-12 col-md-12 mobile-bar">
             <div class="dropdown-kebab-pf detail-type-dropdown col-sm-8">
               <span *ngIf="loadingTypes; else witTypeLoaded"
                 class="spinner spinner-sm spinner-inline">
               </span>
               <ng-template #witTypeLoaded>
-                <span class="wi-type-icon fa {{workItem.relationships?.baseType?.data?.attributes?.icon}} fa-lg"></span>
+                <span
+                  class="fa {{workItem.relationships?.baseType?.data?.attributes?.icon}} fa-lg"
+                  id="wi-type-icon"></span>
                 {{workItem.relationships?.baseType?.data?.attributes?.name}}
               </ng-template>
               <h3 *ngIf="workItem.id" class="detail-id" id="wi-detail-id">{{workItem.attributes['system.number']}}</h3>
@@ -25,34 +27,37 @@
                   {{ errorMessage }}
               </span>
             </div>
-            <div class="col-sm-4 pull-right padding-0">
-              <span class="pficon-close detail-close" (click)="closeDetails()"></span>
+            <div class="col-xs-4 col-sm-4 col-md-4 pull-right padding-0" style="padding: 0;"><!-- padding fix is temporary -->
+              <span class="pficon-close detail-close padding-top-3" (click)="closeDetails()"></span>
               <span *ngIf="workItem.id" class="detail-created-date">
-                  <b>Created</b> <span id="created_at" [innerHTML]="workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'"></span>
+                <b>Created</b>
+                <span id="created_at" [innerHTML]="workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'"></span>
               </span> </div>
           </div>
 
-          <div class="form-group col-sm-12 truncate-ellipsis">
-            <div class="col-sm-9 wi-detail-title-blk">
+          <div class="form-group col-xs-12 col-sm-12 col-md-12 truncate-ellipsis">
+            <div class="col-xs-8 col-sm-8 col-md-8 wi-detail-title-blk">
               <div *ngIf="!headerEditable" (click)='openHeader()'
                 id="title-click-div">
-                <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate form-control-static">{{ workItem.attributes['system.title'] }}</h2>
-                <h2 *ngIf="loggedIn && workItem.id" id="wi-detail-title-click" class="detail-title truncate">{{ workItem.attributes['system.title'] }}</h2>
+                <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate margin-top-0 form-control-static">{{ workItem.attributes['system.title'] }}</h2>
+                <h2 *ngIf="loggedIn && workItem.id" id="wi-detail-title-click" class="detail-title truncate margin-top-0">{{ workItem.attributes['system.title'] }}</h2>
                 <span *ngIf="loggedIn && workItem.id"
-                  class="pficon-edit marginL10 fl detail-title-edit-ico"
+                  class="pficon-edit detail-title-edit-ico"
                   id="workItemTitle_btn_edit"></span>
               </div>
-              <div *ngIf="(loggedIn && headerEditable) || (loggedIn && !workItem.id)" id="wi-title-div" class="edit-title-alignment col-sm-12">
+              <div *ngIf="(loggedIn && headerEditable) || (loggedIn && !workItem.id)"
+                id="wi-title-div"
+                class="edit-title-alignment col-xs-12 col-sm-12 col-md-12">
                   <h2 almEditable
-                      (onUpdate)="checkTitle($event)"
-                      (keyup.enter)="onUpdateTitle()"
-                      (keydown.enter)="preventDef($event)"
-                      id="wi-detail-title"
-                      class="detail-title-edit"
-                      [innerText]="workItem.attributes['system.title'] | almTrim"
-                      #title >
+                    (onUpdate)="checkTitle($event)"
+                    (keyup.enter)="onUpdateTitle()"
+                    (keydown.enter)="preventDef($event)"
+                    id="wi-detail-title"
+                    class="detail-title-edit col-xs-9 col-sm-9 col-md-9 margin-top-5"
+                    [innerText]="workItem.attributes['system.title'] | almTrim"
+                    #title >
                   </h2>
-                  <!-- <aside class="col-sm-12"> -->
+                   <aside class="col-xs-3 col-sm-3 col-md-3">
                     <!--Save icon-->
                     <button id="workItemTitle_btn_save"
                         class="pull-right btn btn-primary detail-action-btn"
@@ -67,7 +72,7 @@
                         (click)="workItem.id && closeHeader()">
                       <span class="fa fa-close"></span>
                     </button>
-                  <!-- </aside> -->
+                  </aside>
                   <!--Error message for title-->
                   <p [hidden]="validTitle"
                       class="clearfloat title-error">
@@ -76,17 +81,18 @@
               </div>
             </div>
 
-            <div class="col-sm-3 wi-state-btn pull-right padding0">
-              <div *ngIf="loggedIn" dropdown class="card-pf-time-frame-filter detail-status-dropdown dropdown">
+            <div class="col-xs-4 col-sm-4 col-md-4 pull-right">
+              <div *ngIf="loggedIn" dropdown
+                class="card-pf-time-frame-filter text-right dropdown margin-v-15 padding-top-5">
                 <button dropdownToggle
                   id="wi-detail-state"
                   type="button"
-                  class="btn btn-default col-sm-12 dropdown-toggle">
+                  class="btn btn-default width-100 dropdown-toggle">
                   <span class='dropdown-icon' almIcon [iconType]="workItem.attributes['system.state']"></span>
                   <span class='dropdown-text'>
                     {{workItem.attributes['system.state']}}
                   </span>
-                  <span *ngIf="loggedIn" class="caret pull-right"></span>
+                  <span *ngIf="loggedIn" class="caret dib"></span>
                 </button>
                 <ul id="wi-status-dropdown" class="dropdown-menu-right dropdown-ul dropdown-menu" role="menu" *dropdownMenu>
                   <li class="dropdown-li" (click)="onChangeState(state)"

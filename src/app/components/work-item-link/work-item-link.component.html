@@ -100,7 +100,11 @@
                       [attr.data-wiid]="workItem.id"
                       [attr.data-winumber]="workItem.attributes['system.number']"
                       [attr.data-wititle]="workItem.attributes['system.title']">
-                      <a #searchresult><span class="weight-800">{{workItem.attributes['system.number']}} - </span>{{workItem.attributes['system.title']}}</a>
+                      <a class="truncate"
+                        #searchresult>
+                        <span class="weight-800">{{workItem.attributes['system.number']}} - </span>
+                        {{workItem.attributes['system.title']}}
+                      </a>
                   </li>
                 </ul>
                 <!-- <span class="input-group-addon"> <span class="caret"></span> </span> -->
@@ -119,60 +123,6 @@
             </button>
           </div>
         </div>
-
-<!--
-        <div *ngIf="showLinkCreator" class="link-editor" id="wi-link-editor">
-          <div class="flex-container in-row-direction">
-            <div class="combobox-container flex-grow-1">
-              <div class="input-group" dropdown>
-                <input type="text" placeholder="Select"
-                  class="combobox form-control readonly"
-                  [ngClass]="{'selected-value': selectedLinkType }"
-                  readonly dropdownToggle
-                  [attr.value]="selectedLinkType?.name">
-                <ul *ngIf="linkTypes.length" class="typeahead typeahead-long dropdown-menu" role="menu" dropdownMenu>
-                  <li *ngFor="let linkType of selectedTab | workItemLinkTypeFilterByTypeName:(linkTypes)">
-                    <a (click)="onSelectRelation(linkType)">{{linkType.name}}</a>
-                  </li>
-                </ul>
-                <span class="input-group-addon" dropdownToggle> <span class="caret"></span> </span>
-              </div>
-            </div>
-            <span class="flex-grow-1 padding-left-15"> item</span>
-          </div>
-          <div class="flex-container padding-bottom-5 margin-top-15 margin-bottom-15">
-            <div class="combobox-container flex-grow-1  margin-right-15 padding-right-15">
-              <input type="hidden" name="" value="">
-              <div class="input-group dropdown open active">
-                <input id="workitem-link-search" #searchBox
-                  class="combobox form-control"
-                  placeholder="Search for work items"
-                  (keyup)="linkSearchWorkItem(searchBox.value, $event)"
-                  [value]="selectedValue"
-                  [disabled]="!selectedLinkType"/>
-                <ul *ngIf="searchWorkItems.length"
-                    class="dropdown-menu dropdown-ul"
-                    #searchResultList>
-                  <li *ngFor="let workItem of searchWorkItems"
-                      class="pointer"
-                      (click)="selectSearchResult(workItem.id, workItem.attributes['system.title'])"
-                      [attr.data-wiid]="workItem.id"
-                      [attr.data-wititle]="workItem.attributes['system.title']">
-                      <a #searchresult><span class="weight-800">{{workItem.attributes['system.number']}} - </span>{{workItem.attributes['system.title']}}</a>
-                  </li>
-                </ul>
-                <span class="input-group-addon"> <span class="caret"></span> </span>
-              </div>
-            </div>
-            <button [disabled]="!selectedLinkType || !selectedWorkItemId ? true : false"
-              type="button"
-              value="Link"
-              class="margin-left-10 margin-right-15 btn btn-primary padding-left-15 padding-right-15"
-              (click)="createLink($event)" id="bind-link">
-              Link
-            </button>
-          </div>
-        </div>-->
       </div>
       <div class="link-list-wrap" *ngIf="workItem.relationalData.linkDicts.length">
         <p class="link-list-header">Links</p>
