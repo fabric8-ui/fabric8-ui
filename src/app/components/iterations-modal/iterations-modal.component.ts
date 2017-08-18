@@ -208,8 +208,6 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.submitBtnTxt = 'Close';
       this.modalTitle = 'Close Iteration';
     }
-
-    console.log(this.iteration.attributes.active, '###$$5%%%%');
     this.createUpdateIterationDialog.open();
   }
 
@@ -338,7 +336,6 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
 
   actionOnSubmit() {
     this.iteration.attributes.name = this.iteration.attributes.name.trim();
-    console.log(this.iteration, '#### this.iteration ####');
     if (this.iteration.attributes.name !== '') {
       if (this.iteration.attributes.name.indexOf('/') === -1 &&
           this.iteration.attributes.name.indexOf('\\') === -1 ) {
@@ -403,7 +400,6 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   }
 
   onChecked(event) {
-    // console.log(event, '###### catching Event ######');
     this.iteration.attributes.active = event;
   }
 }

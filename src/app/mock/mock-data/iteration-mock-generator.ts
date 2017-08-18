@@ -14,7 +14,7 @@ export class IterationMockGenerator {
     let iterations: any[] = [];
     iterations.push({
         'attributes': {
-          'active': 'false',
+          'active': false,
           'description': 'Root Iteration Description',
           'name': 'Root Iteration',
           'state': 'new',
@@ -50,7 +50,7 @@ export class IterationMockGenerator {
     for (let n=0; n<5; n++) {
       iterations.push({
         'attributes': {
-          'active': n < 2 ? 'true' : 'false',
+          'active': n < 2 ? true : false,
           'description': 'Description for iteration ' + n,
           'name': 'Iteration ' + n,
           'state': 'new',
