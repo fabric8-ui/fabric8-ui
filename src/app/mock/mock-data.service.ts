@@ -155,6 +155,8 @@ export class MockDataService {
         var newComment = {
               'attributes': {
                 'body': entity.data.attributes.body,
+                'body.rendered': entity.data.attributes.body,
+                'markup': 'Markdown',
                 'created-at': '2000-01-01T09:00:00.000000Z'
               },
               'id': newId,

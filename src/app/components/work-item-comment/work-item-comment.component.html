@@ -19,10 +19,14 @@
     </ul>
     <div [collapse]="isCollapsedComments">
       <div *ngIf="loggedIn" class="wi-comment-input">
-        <p almEditable id="wi-comment-add-comment" class="form-control placeholder"
-              (focus)="resetCommentDraft($event)" (blur)="resetCommentDraft($event)"
-              (keydown.enter)="createComment($event)" (keyup.enter)="preventDef($event)"
-              data-placeholder="Add a new comment..." #comment></p>
+        <f8-markdown
+          [editAllow]="loggedIn"
+          [rawText]="''"
+          [renderedText]="''"
+          [placeholder]="'Add a new comment...'"
+          (onSaveClick)="createComment($event)"
+          (showPreview)="showPreview($event)">
+        </f8-markdown>
       </div>
       <div class=" comments-outer-wrapper">
         <div *ngFor='let comment of comments; let counter = index' class="comments-wrap">
@@ -66,8 +70,28 @@
                     {{comment.attributes['created-at'] | date:'medium'}}
                 </small>
               </div>
+
+
+              <div class="width-100 pull-left">
+                <f8-markdown
+                  [attr.id]="'comment_body_' + counter"
+                  [editAllow]="(
+                    loggedIn &&
+                    (
+                      commentEditable ||
+                      (loggedInUser?.id === comment.relationships['created-by']?.data?.id)
+                    )
+                  )"
+                  [rawText]="comment.attributes.body"
+                  [renderedText]="comment.attributes['body.rendered']"
+                  [placeholder]="'Add a new comment...'"
+                  (onSaveClick)="updateComment($event, comment)"
+                  (showPreview)="showPreview($event)">
+                </f8-markdown>
+              </div>
+
               <!-- when comment is not editable -->
-              <div
+              <!-- <div
                 class="width-100 pull-left"
                 *ngIf="!loggedIn ||
                 (!commentEditable || (loggedInUser?.id !== comment.relationships['created-by']?.data?.id))
@@ -76,9 +100,9 @@
                 <p id="{{'comment_body_' + counter}}" class="noneditableComment margin-0 form-control">
                   {{ comment.attributes.body }}
                 </p>
-              </div>
+              </div> -->
               <!-- when comment is editable -->
-              <div
+              <!-- <div
                 class="width-100 pull-left"
                 *ngIf="loggedIn &&
                   (selectedCommentId == comment.id) &&
@@ -89,16 +113,16 @@
                     class="margin-0 form-control editableComment"
                     [innerText]="comment.attributes.body | almTrim">
                 </p>
-                <aside *ngIf="commentEditable" class="margin-top-10">
+                <aside *ngIf="commentEditable" class="margin-top-10"> -->
                   <!--Cancel icon-->
-                    <button
+                    <!-- <button
                         (click)="closeCommentEditing()"
                         class="pull-right btn btn-default detail-action-btn"
                         id="{{'comment_close_btn' + counter}}" >
                       <span class="fa fa-close"></span>
-                    </button>
+                    </button> -->
                   <!--Save icon-->
-                  <button
+                  <!-- <button
                     class="pull-right btn btn-primary detail-action-btn"
                     id="{{'comment_save_btn' + counter}}"
                     (click)="updateComment('comment_body_' + counter, comment)"
@@ -106,7 +130,7 @@
                     <span class="fa fa-check"></span>
                   </button>
                 </aside>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>

@@ -22,6 +22,8 @@ export class CommentLink {
 
 export class CommentAttributes {
     body: string;
+    'body.rendered': string;
+    'markup': string;
     'created-at': string;
 }
 

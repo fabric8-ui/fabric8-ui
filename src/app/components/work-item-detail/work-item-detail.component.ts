@@ -668,13 +668,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   }
 
   updateComment(comment) {
-    this.workItemService
-        .updateComment(comment)
-        .subscribe(response => {
-        },
-        (error) => {
-          console.log(error);
-        });
+    // Nothing required here
   }
 
   deleteComment(comment) {

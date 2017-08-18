@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { HttpService } from '../services/http-service';
 import { Injectable, ReflectiveInjector } from '@angular/core';
 import { Http } from '@angular/http';
@@ -379,8 +380,13 @@ export class MockHttp extends HttpService {
           return this.createResponse(url.toString(), 200, 'ok', { data: result });
         else
           return this.createResponse(url.toString(), 500, 'Iteration does not exist: ' + path.extraPath, {});
-      } else
+      } else if (path.path.includes('/comments/')) {
+        let resp = cloneDeep(body.data);
+        resp.attributes['body.rendered'] = resp.attributes['body'];
+        return this.createResponse(url.toString(), 200, 'ok', { data: resp });
+      } else {
         return this.createResponse(url.toString(), 500, 'PATCH to unknown resource: ' + path.extraPath, {});
+      }
     };
 
     /*

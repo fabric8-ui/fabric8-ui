@@ -413,8 +413,11 @@ class WorkItemDetailPage {
   getCommentTime  (index){
     return element(by.id('comment_time_'+index)).getText();
   }
+  commentEdit(index) {
+    return element(by.css('#comment_body_' + index + ' .edit-icon'));
+  }
   commentBody(index){
-    return element(by.id('comment_body_'+index));
+    return element(by.css('#comment_body_' + index + ' .editor-box'));
   }
   getCommentBody  (index){
     return this.commentBody(index).getText();
@@ -426,7 +429,7 @@ class WorkItemDetailPage {
     return element(by.id('comment_save_btn'+index)).click();
   }
   clickCloseComment(index){
-    return element(by.id('comment_close_btn'+index)).click();
+    return element(by.css('#comment_body_' + index + ' .fa-close')).click();
   }
   editComments(comment,index, append){
     if (!append) { this.commentBody(index).clear(comment) };

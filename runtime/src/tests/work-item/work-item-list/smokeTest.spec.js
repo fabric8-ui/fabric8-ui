@@ -211,19 +211,19 @@ it('check date showing up correctly - Desktop', function () {
       detailPage.clickWorkItemDetailCloseButton();
     });
 
- it('Try clicking on start coding it should redirect - Desktop', function () {
+  it('Try clicking on start coding it should redirect - Desktop', function () {
     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
     expect(detailPage.startCodingElement.isPresent()).toBe(true);
     detailPage.clickStartCoding();
    });
 
- it('Edit comment and cancel -desktop ', function() {
-      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0");
-      detailPage.commentBody("0").click();
-      detailPage.editComments("updated comment !",'0',false);
-      detailPage.clickCloseComment("0");
-      expect(detailPage.getCommentBody("0")).toBe('Some Comment 0');
-     });
+  it('Edit comment and cancel -desktop ', function() {
+    var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0");
+    detailPage.commentEdit('0').click();
+    detailPage.editComments('updated comment!','0',false);
+    detailPage.clickCloseComment('0');
+    expect(detailPage.getCommentBody('0')).toBe('Some Comment 0');
+  });
 });
 
 /* Compare an expected and actual work item - the offset values enable us to track

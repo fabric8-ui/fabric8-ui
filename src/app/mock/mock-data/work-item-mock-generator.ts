@@ -37,6 +37,8 @@ export class WorkItemMockGenerator {
             {
               'attributes': {
                 'body': 'Some Comment 0',
+                'body.rendered': 'Some Comment 0',
+                'markup': 'Markdown',
                 'created-at': '2000-01-01T09:00:00.000000Z'
               },
               'id': 'comment-0',
