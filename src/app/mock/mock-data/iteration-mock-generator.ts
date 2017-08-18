@@ -5,15 +5,16 @@
 export class IterationMockGenerator {
 
   /*
-   * Creates an array of 5 mock iterations plus parent with IDs 'iteration-id0' to 
-   * 'iteration-id25'. Other data structures in the mock generator rely on the 
-   * id naming, creating a consistent mock data. Keep in mind when changing 
+   * Creates an array of 5 mock iterations plus parent with IDs 'iteration-id0' to
+   * 'iteration-id25'. Other data structures in the mock generator rely on the
+   * id naming, creating a consistent mock data. Keep in mind when changing
    * this code.
    */
   public createIterations(): any {
     let iterations: any[] = [];
     iterations.push({
         'attributes': {
+          'active': 'false',
           'description': 'Root Iteration Description',
           'name': 'Root Iteration',
           'state': 'new',
@@ -49,6 +50,7 @@ export class IterationMockGenerator {
     for (let n=0; n<5; n++) {
       iterations.push({
         'attributes': {
+          'active': n < 2 ? 'true' : 'false',
           'description': 'Description for iteration ' + n,
           'name': 'Iteration ' + n,
           'state': 'new',

@@ -9,6 +9,7 @@ export class IterationModel {
 }
 
 export class IterationAttributes {
+  active?: boolean;
   endAt?: string;
   startAt?: string;
   name: string;
