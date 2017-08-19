@@ -1,3 +1,4 @@
+import { WorkItemLinkModule } from './../work-item-link/work-item-link.module';
 import { CommonModule } from '@angular/common';
 import { NgModule }     from '@angular/core';
 import { FormsModule, ReactiveFormsModule }  from '@angular/forms';
@@ -8,6 +9,8 @@ import { MockHttp } from './../../mock/mock-http';
 
 import { WorkItemNewDetailComponent } from './work-item-new-detail.component';
 import { WorkItemNewDetailRoutingModule } from './work-item-new-detail-routing.module';
+
+
 
 let providers = [];
 
@@ -24,7 +27,8 @@ if (process.env.ENV == 'inmemory') {
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    WorkItemNewDetailRoutingModule
+    WorkItemNewDetailRoutingModule,
+    WorkItemLinkModule
   ],
   declarations: [
     WorkItemNewDetailComponent

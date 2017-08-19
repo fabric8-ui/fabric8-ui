@@ -1,1 +1,93 @@
-<h2> This is the details page </h2>
+
+<form class="form-horizontal">
+  <fieldset>
+    <div class="f8-detail__header col-xs-12 col-sm-12 col-md-12 padding-0">
+      <span
+        class="pficon-close pull-right margin-right-5 padding-15">
+      </span>
+      <div class="width-100 pull-left">
+        <div class="col-xs-6 col-sm-4 col-md-3 pull-right text-right">
+          <strong>Created </strong>
+          <span>a few seconds ago</span>
+        </div>
+        <div class="col-xs-6 col-sm-8 col-md-9">
+          <div>
+            <span class="fa fa-puzzle-piece fa-lg dib"></span>
+            <span class="dib">Feature</span>
+            <span class="dib">
+              <strong>#1221</strong>
+            </span>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 margin-top-15">
+          <div class="dropdown" dropdown>
+            <button class="btn btn-default dropdown-toggle"
+              dropdowntoggle>
+              <span class="fa fa-close"></span>
+              <span>New</span>
+              <span class="caret dib"></span>
+            </button>
+            <ul class="dropdown-ul dropdown-menu" role="menu">
+              <li class="dropdown-li">
+                <a>
+                  <span class='dropdown-icon'></span>
+                  <span class='dropdown-text'>state</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+          <div class="form-horizontal">
+            <h2 class="posRel">Quick Preview for Work Items in Planner</h2>
+            <span class="pficon pficon-edit f8-detail__edit-icon"></span>
+          </div>
+          <div class="form-horizontal">
+            <aside class="pull-right">
+              <button class="pull-right btn btn-primary detail-action-btn">
+                <span class="fa fa-check"></span>
+              </button>
+              <button class="pull-right btn btn-primary detail-action-btn">
+                <span class="fa fa-close"></span>
+              </button>
+            </aside>
+            <h2 class="f8-detail__wi-title--edit">Quick Preview for Work Items in Planner</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="f8-detail__detail width-100 pull-left">
+      <div class="col-xs-12 col-sm-7 col-md-7 f8-detail__detail-wrap">
+        <div class="form-group">
+          <!-- assignee -->
+          <section class="f8-detail__assignee">
+            <label class="col-xs-4 col-sm-4 col-md-2 control-label">
+              Assignee
+            </label>
+            <div class="col-xs-8 col-sm-8 col-md-10">
+              Sukhvir
+            </div>
+          </section>
+        </div>
+        <!-- area -->
+        <div class="form-group">
+          <section class="f8-detail__area">
+            <label class="col-xs-4 col-sm-4 col-md-2 control-label">
+              Area
+            </label>
+            <div class="col-xs-8 col-sm-8 col-md-10">
+              <!--<typeahead-dropdown
+                class="area-dropdown">
+              </typeahead-dropdown> -->
+            </div>
+          </section>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-5 col-md-5 f8-detail__detail-wrap">
+        <alm-work-item-link
+          [workItem]="workItem">
+        </alm-work-item-link>
+      </div>
+    </div>
+  </fieldset>
+</form>

@@ -1,3 +1,4 @@
+
 import { RouterModule } from '@angular/router';
 import { NgModule }     from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -27,12 +28,8 @@ import { WorkItemDetailComponent } from './work-item-detail.component';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
 import { TypeaheadDropdown } from '../typeahead-dropdown/typeahead-dropdown.component';
 import { MarkdownControlComponent } from '../markdown-control/markdown-control.component';
-import { WorkItemLinkComponent } from '../work-item-link/work-item-link.component';
+import { WorkItemLinkModule } from '../work-item-link/work-item-link.module';
 import { WorkItemCommentComponent } from '../work-item-comment/work-item-comment.component';
-import {
-  WorkItemLinkFilterByTypeName,
-  WorkItemLinkTypeFilterByTypeName
-} from '../../pipes/work-item-link-filters.pipe';
 import { WorkItemTypeControlService } from '../../services/work-item-type-control.service';
 
 let providers = [];
@@ -59,7 +56,8 @@ if (process.env.ENV == 'inmemory') {
     ReactiveFormsModule,
     MarkdownModule,
     MyDatePickerModule,
-    RouterModule
+    RouterModule,
+    WorkItemLinkModule
   ],
   declarations: [
     AlmUserName,
@@ -67,10 +65,7 @@ if (process.env.ENV == 'inmemory') {
     WorkItemDetailComponent,
     DynamicFieldComponent,
     MarkdownControlComponent,
-    TypeaheadDropdown,
-    WorkItemLinkComponent,
-    WorkItemLinkFilterByTypeName,
-    WorkItemLinkTypeFilterByTypeName
+    TypeaheadDropdown
   ],
   exports: [WorkItemDetailComponent, AlmUserName],
   providers: providers
