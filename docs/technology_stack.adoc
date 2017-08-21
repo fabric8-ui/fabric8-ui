@@ -7,35 +7,45 @@
 toc::[]
 
 == Overview
-The following sections describe the technology stack used by Planner.
+The *Planner* is an *Angular* app built on top of *Node.js*. It can run as a standalone app, or be used as a library to be integrated into another app, like link:./fabric8-ui[Fabric8 UI].
 
-== Angular 4
-<TBD>
+Development or deployment of *Planner* is fairly platform agnostic, so we can skip the operating system requirements and discuss from the runtime environment onward.
 
-== CSS and SASS
-<WIP, to be changed to PF CSS, Less>
+== Development Runtime
+Planner uses *`Node.js`* as the platform-runtime, on top of which it builds; and *`npm`* for resolving and distributing packages for the project.
 
-Fabric8-planner uses SASS for it's stylesheets. It also uses the Angular emulation
-of the shadow dom, hence it is recommended to place your styles in the
-*_.component.scss_* file next to the HTML and the TypeScript.
+We keep ourselves compatible with the latest stable releases of *`Node.js`* & *`npm`* - however, *`Node.js >= 6.xx`* & *`npm >= 3.xx`* releases are recommended.
 
-If you want to create a shared style that could be used by multiple components, then we recommend adding it as a mixin to
-*_src/assets/stylesheets/_planner-mixins.scss_*. The mixins are imported into every
-*_.component.scss_* file.
+== Development Pipeline
 
-You can then create a real class by doing something like:
+Following are the components or parts of the process followed in order to develop, build, test and deploy *Planner*. Most of these components are standard, with limited project specific customizations and configurations applied.
 
-    .my-class {
-      @include my-class;
-    }
+Task Runner::
+We use *Gulp* for running predefined tasks. These tasks include, compiling or preprocessing the LESS/TypeScript sources into CSS/JS, building the distributable artifacts, running dev-server in watch mode and general house-keeping (install, reinstall, cleanup etc).
 
-We use mixins to avoid polluting components with unnecessary style classes, and to avoid
-an explosion of shared files.
+Build System::
+We use both *Gulp* and webpack for building the source. While *Gulp* takes care of the library builds, webpack is used for building the (minimal) `*_./runtime_*` to use the library, which makes *Planner* work as a standalone app. The build system works as intended for now, but can be expanded to use more sophisticated switches to build according to different needs (dev, tests, prod etc).
 
-The *_src/assets/stylesheets/_* directory includes a *_shared_* directory. These are
-shared global styles which will be refactored into a shared library at some point.
-You can update these styles only if you are making a truly global style, and are going to
-synchronize your changes across all the various UI projects.
+Test Framework::
+Our test stack is built with *Karma*, *Protractor* and *Google Chrome*. *Google Chrome* provides the browser engine to run the app over link:https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml[*Xvfb*]. *Protractor* interacts with it as a *WebDriverJS* wrapper and runs the tests according to *Karma's* configurations.
 
-== Gulp
-<TBD>
+Each `*_filename.ts_*` file is supposed to have unit tests along with them as a `*_filename.spec.ts_*` in the same parent directory. The functional tests reside inside `*_./runtime/tests/_*`. For more details about running the tests, please look into link:./testing.adoc[Testing Documentation].
+
+CI/CD::
+The CI/CD pipeline is made with *Jenkins*, as defined in the `*_./Jenkinsfile_*` at the root of the repo. It uses the content of `*_./deploy_*` (more specifically, `*_./deploy/release.groovy_*`) to orchestrate the CI/CD.
+
+Release Framework::
+We use semantic-release for versioning and publishing our *Planner* library to npm registry. It's fairly configuration less CLI task (`$ npm run semantic-release`) which takes the latest PR, merges and commit messages into account. It generates the new version number, publishes to npm registry, and then generates the release tag on *GitHub* in one simple process.
+
+Deployment::
+At the end of the day *Planner* is a static library, and can be used or served with minimal static frontend runtime as a standalone app or with a full fledged Fabric8 UI. So any deployment stack that can make those setups run, can essentially be the deployment platform for *Planner*.
+
+We use *Docker Compose* to generate the image, *Docker* for running the built app container, and *nginx* as the web server to serve the app contents.
+
+== Application Framework
+We use *`Angular 4`* to develop *Planner*. Main application code resides in `*_./src_*`, in which the `*_./src/app_*` contains all the application logic, subdivided into specific functional groups. For the minimalistic runtime added to make *Planner* work standalone, the source lies inside `*_./runtime/src/app_*` which is also an *`Angular 4`* app in itself.
+
+== Programming Languages
+For development ease, we do not use HTML, CSS, JS as is, but Angular Templates, Less and TypeScript instead. For UI elements and components, we use link:http://www.patternfly.org/[PatternFly v3].
+
+This requires us to pre-process and build the source-codes into consumable package, but that is automated and this overall accelerates the development process and eases code maintenance.
