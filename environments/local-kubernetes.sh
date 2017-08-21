@@ -41,10 +41,11 @@ export KUBERNETES_MODE=true
 
 echo "Configured to connect to kubernetes cluster at https://${PROXIED_K8S_API_SERVER}/ with namespace ${NAMESPACE}"
 
-export FABRIC8_SSO_API_URL="http://sso.fabric8.${VM_IP}.nip.io/"
 export FABRIC8_WIT_API_URL="http://wit.fabric8.${VM_IP}.nip.io/api/"
 export FABRIC8_FORGE_API_URL="http://forge.fabric8.${VM_IP}.nip.io/"
 export FABRIC8_TENANT_API_URL="http://f8tenant.fabric8.${VM_IP}.nip.io/"
+#export FABRIC8_SSO_API_URL="http://sso.fabric8.${VM_IP}.nip.io/"
+export FABRIC8_SSO_API_URL="${FABRIC8_TENANT_API_URL}"
 
 
 echo ""

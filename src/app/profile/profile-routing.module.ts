@@ -30,6 +30,13 @@ const routes: Routes = [
         data: {
           title: 'Cleanup'
         }
+      },
+      {
+        path: '_tenant',
+        loadChildren: './tenant/tenant.module#TenantModule',
+        data: {
+          title: 'Tenant'
+        }
       }
     ]
   }
