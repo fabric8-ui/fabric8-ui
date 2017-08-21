@@ -13,10 +13,10 @@
     <div class="iterations">
       <ul class="iteration-expanded-div">
         <li class="active iteration-container"
-          *ngFor="let iteration of allIterations"
+          *ngFor="let item of displayIterations"
           [routerLinkActive]="'selected-iteration'"
-          [routerLink]="[]" [attr.data-id]="iteration.id"
-          [queryParams]="{q: constructURL(iteration.id)}"
+          [routerLink]="[]" [attr.data-id]="item.iteration.id"
+          [queryParams]="{q: constructURL(item.iteration.id)}"
           [dragula]="'wi-bag'">
           <div class="iteration-subheader">
             <div *ngIf="loggedIn" class="dropdown-kebab-pf pull-right dropdown" dropdown>
@@ -27,7 +27,7 @@
                       dropdownToggle>
                 <i class="fa fa-ellipsis-v"></i>
               </button>
-              <ul class="dropdown-menu-right dropdown-menu" *dropdownMenu>
+              <!--<ul class="dropdown-menu-right dropdown-menu" *dropdownMenu>
                 <li>
                   <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration, $event);">
                     Edit
@@ -43,13 +43,13 @@
                     Create child
                   </a>
                 </li>
-              </ul>
+              </ul>-->
             </div>
             <div class="truncate padding-right-15">
                 <span class="iteration-name truncate"
-                  tooltip="{{iteration.attributes.name}}"
-                  placement="top" id="{{iteration.attributes.name}}">
-                  {{iteration.attributes.name | truncate : 45 }}
+                  tooltip="{{item.iteration.attributes.name}}"
+                  placement="top" id="{{item.iteration.attributes.name}}">
+                  {{item.iteration.attributes.name | truncate : 45 }}
                 </span>
               <!--<div class="parent-iteration">
                 <span tooltip="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
@@ -61,10 +61,18 @@
           </div>
           <div class="iteration-status">
             <div>
-              <span><span *ngIf="iteration.attributes.startAt">{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}</span>&nbsp;</span>
+              <span>
+                <span *ngIf="item.iteration.attributes.startAt">
+                  {{item.iteration.attributes.startAt | date:longDate}} -
+                  {{item.iteration.attributes.endAt | date:longDate}}
+                </span>
+                &nbsp;
+              </span>
               <span class="iteration-count">
                 <strong>
-                  {{iteration.relationships?.workitems?.meta?.closed}} of {{iteration.relationships?.workitems?.meta?.total}}
+                  {{item.iteration.relationships?.workitems?.meta?.closed}}
+                  of
+                  {{item.iteration.relationships?.workitems?.meta?.total}}
                 </strong>
                 <span> completed</span>
               </span>
@@ -73,15 +81,15 @@
           <div class="progress">
             <div class="progress-bar"
                 role="progressbar"
-                [attr.aria-valuenow]="iteration.relationships?.workitems?.meta?.closed"
+                [attr.aria-valuenow]="item.iteration.relationships?.workitems?.meta?.closed"
                 aria-valuemin="0"
-                [attr.aria-valuemax]="iteration.relationships?.workitems?.meta?.total"
-                [ngStyle]="{'width': ((iteration.relationships?.workitems?.meta?.closed / iteration.relationships?.workitems?.meta?.total) * 100) + '%'}"
+                [attr.aria-valuemax]="item.iteration.relationships?.workitems?.meta?.total"
+                [ngStyle]="{'width': ((item.iteration.relationships?.workitems?.meta?.closed / item.iteration.relationships?.workitems?.meta?.total) * 100) + '%'}"
                 placement="top"
-                tooltip="{{((iteration.relationships?.workitems?.meta?.closed / iteration.relationships?.workitems?.meta?.total) * 100) + '%'}}">
+                tooltip="{{((item.iteration.relationships?.workitems?.meta?.closed / item.iteration.relationships?.workitems?.meta?.total) * 100) + '%'}}">
             </div>
           </div>
-          <p class="iteration-description">{{ iteration.attributes?.description }}</p>
+          <p class="iteration-description">{{ item.iteration.attributes?.description }}</p>
         </li>
       </ul>
     </div>

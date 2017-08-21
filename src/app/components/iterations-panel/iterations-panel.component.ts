@@ -1,6 +1,7 @@
 import { FilterService } from './../../services/filter.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import * as _ from 'lodash';
 
 import { Params, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, Input, OnChanges, ViewChild } from '@angular/core';
@@ -47,6 +48,8 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   eventListeners: any[] = [];
   currentSelectedIteration: string = '';
   dragulaEventListeners: any[] = [];
+  displayIterations;
+  masterIterations;
 
   private spaceSubscription: Subscription = null;
 
@@ -116,6 +119,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         console.log('[IterationComponent] Space deselected.');
         this.editEnabled = false;
         this.allIterations = [];
+        console.log('....1 ', this.allIterations.length);
         // this.futureIterations = [];
         // this.currentIterations = [];
         // this.closedIterations = [];
@@ -133,6 +137,28 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
       //this.clusterIterations();
+      //Parse and arrange the iteration list as a parent child list
+      this.masterIterations = this.allIterations.map(iteration => {
+        let path = iteration.attributes.parent_path.split('/');
+        //Store the depth - for the first time show iteration with the
+        //lowest depth - these would be  the parent iterations
+        let depth = path.length - 1;
+        //Retain only the direct parent ID
+        iteration.attributes.parent_path = path[path.length-1];
+        let obj = {
+          iteration: iteration,
+          depth: depth,
+          nestedChildren: []
+        };
+        //Find the children for the current ID
+        obj.nestedChildren = this.allIterations.filter(i =>
+          i.attributes.parent_path != '' &&
+          i.attributes.parent_path == iteration.id
+        );
+        return obj;
+      });
+      this.displayIterations = this.masterIterations.filter(iteration =>
+        iteration.depth === 1);
     }
   }
 
@@ -171,18 +197,19 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
           this.allIterations.push(this.iterations[i]);
         }
       }
-      this.clusterIterations();
+      //this.clusterIterations();
     } else {
       this.iterationService.getIterations()
         .subscribe((iterations) => {
           // do not display the root iteration on the iteration panel.
           this.allIterations = [];
+          console.log('....5 ', this.allIterations.length);
           for (let i=0; i<iterations.length; i++) {
             if (!this.iterationService.isRootIteration(iterations[i])) {
               this.allIterations.push(iterations[i]);
             }
           }
-          this.clusterIterations();
+          //this.clusterIterations();
         },
         (e) => {
           console.log('Some error has occured', e);
