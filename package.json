@@ -98,7 +98,7 @@
     "ngx-fabric8-wit": "6.18.11",
     "ngx-login-client": "0.6.32",
     "ngx-modal": "0.0.29",
-    "ngx-widgets": "1.1.1",
+    "ngx-widgets": "1.1.2",
     "patternfly-ng": "0.0.13",
     "reflect-metadata": "0.1.10",
     "rxjs": "5.2.0",
