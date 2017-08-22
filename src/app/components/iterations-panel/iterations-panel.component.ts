@@ -1,10 +1,11 @@
 import { FilterService } from './../../services/filter.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import * as _ from 'lodash';
+import { TreeNode } from 'angular2-tree-component';
 
 import { Params, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy,
+  TemplateRef, Input, OnChanges, ViewChild } from '@angular/core';
 
 import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
@@ -18,6 +19,8 @@ import { WorkItemService }   from '../../services/work-item.service';
 import { IterationModel } from '../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
 
+import { TreeListComponent } from '../tree-list/tree-list.component';
+
 @Component({
   host: {
     'class':"app-component"
@@ -30,6 +33,13 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() takeFromInput: boolean = false;
   @Input() iterations: IterationModel[] = [];
+
+  @ViewChild('treeList') treeList: TreeListComponent;
+  @ViewChild('treeListItemTemplate') treeListItemTemplate: TemplateRef<any>;
+  @ViewChild('treeListLoadTemplate') treeListLoadTemplate: TemplateRef<any>;
+  @ViewChild('treeListTemplate') treeListTemplate: TemplateRef<any>;
+  @ViewChild('treeListItem') treeListItem: TreeListComponent;
+
 
   authUser: any = null;
   loggedIn: Boolean = true;
