@@ -9,7 +9,40 @@
 <div class="iterations-container">
   <div class="iteration-wrapper">
     <!-- display the active iterations first -->
+
     <!-- Nested Iteration Display -->
+    <div class="iterations">
+      <tree-list class="list-wrap"
+        #treeList
+        [listTemplate]="treeListTemplate"
+        [nodes]="displayIterations">
+        <template #treeListTemplate let-node="node">
+          <tree-list-item
+            [itemTemplate]="treeListItemTemplate"
+            [node]="node"
+            (onSelect)="itemSelected($event)">
+            <template #treeListItemTemplate let-node="node">
+              <iteration-list-entry
+                id="{{'workItemList_OuterWrap_' + node.id}}"
+                class="work-item-list-entry"
+                [listItem]="treeListItem"
+                [workItem]="node"
+                [iterations]="iterations"
+                (selectEvent)="onSelect($event)"
+                (toggleEvent)="onToggle($event)"
+                (detailEvent)="onDetail($event)"
+                (moveTopEvent)="onMoveToTop($event)"
+                (moveBottomEvent)="onMoveToBottom($event)">
+              </iteration-list-entry>
+            </template>
+          </tree-list-item>
+        </template>
+      </tree-list>
+    </div>
+
+
+
+
     <div class="iterations">
       <ul class="iteration-expanded-div">
         <li class="active iteration-container"
