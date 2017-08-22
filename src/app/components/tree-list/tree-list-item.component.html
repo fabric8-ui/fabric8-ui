@@ -1,0 +1,7 @@
+<div class="tree-list-item" (click)="onSelect($event)">
+  <!-- put the upper drop target here -->
+  <!-- put the expander here -->
+  <div>Halleo</div>
+  <ng-template [ngTemplateOutlet]="itemTemplate" [ngOutletContext]="{ node: node, index: index }"></ng-template>
+  <!-- put the lower drop target here -->
+</div>
