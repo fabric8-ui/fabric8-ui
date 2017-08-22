@@ -395,4 +395,8 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   removeError() {
     this.validationError = false;
   }
+
+  onChecked(event) {
+    // console.log(event, '###### catching Event ######');
+  }
 }

@@ -16,6 +16,7 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { IterationComponent } from './iterations-panel.component';
 import { IterationService } from '../../services/iteration.service';
 import { ModalModule } from 'ngx-modal';
+import { SwitchModule } from '../switch/switch.module';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TruncateModule } from 'ng2-truncate';
 
@@ -30,6 +31,7 @@ import { TruncateModule } from 'ng2-truncate';
     ModalModule,
     TooltipModule.forRoot(),
     TruncateModule,
+    SwitchModule,
     WidgetsModule,
     RouterModule
   ],
