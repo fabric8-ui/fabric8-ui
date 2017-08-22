@@ -60,6 +60,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   dragulaEventListeners: any[] = [];
   masterIterations;
   treeIterations;
+  activeIterations:IterationModel[] = [];
 
   private spaceSubscription: Subscription = null;
 
@@ -139,6 +140,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         // this.futureIterations = [];
         // this.currentIterations = [];
         // this.closedIterations = [];
+        this.activeIterations = [];
       }
     });
   }
@@ -225,6 +227,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     //   this.isCollapsedFutureIteration = true;
     //   this.isCollapsedPastIteration = false;
     // }
+    this.activeIterations = this.allIterations.filter((iteration) => iteration.attributes.active_status === true);
   }
 
   resolvedName(iteration: IterationModel) {

@@ -87,7 +87,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     this.iteration  = {
       // id: '',
       attributes: {
-        active: false,
+        user_active: false,
         name: '',
         description: '',
         state: 'new',
@@ -400,6 +400,6 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   }
 
   onChecked(event) {
-    this.iteration.attributes.active = event;
+    this.iteration.attributes.user_active = event;
   }
 }

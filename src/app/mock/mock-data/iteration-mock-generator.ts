@@ -14,7 +14,8 @@ export class IterationMockGenerator {
     let iterations: any[] = [];
     iterations.push({
         'attributes': {
-          'active': false,
+          'user_active': false,
+          'active_status': false,
           'description': 'Root Iteration Description',
           'name': 'Root Iteration',
           'state': 'new',
@@ -32,7 +33,7 @@ export class IterationMockGenerator {
               'type': 'spaces'
             },
             'links': {
-              'self': 'http://mock.service/api/spaces/space-id0'
+              'self': 'http://mock.seactivervice/api/spaces/space-id0'
             }
           },
           'workitems': {
@@ -50,7 +51,8 @@ export class IterationMockGenerator {
     for (let n=0; n<5; n++) {
       iterations.push({
         'attributes': {
-          'active': n < 2 ? true : false,
+          'user_active': n < 2 ? true : false,
+          'active_status': n == 1 ? true : false,
           'description': 'Description for iteration ' + n,
           'name': 'Iteration ' + n,
           'state': 'new',
