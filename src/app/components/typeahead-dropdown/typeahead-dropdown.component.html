@@ -1,4 +1,4 @@
-<div class="col-sm-10 typeahead-dropdown combobox-container">
+<div class="width-100 pull-left typeahead-dropdown combobox-container">
     <span *ngIf="!searchValue" (click)="open()" class="pointer details-dropdown" [ngClass]="getInitialValue().cssLabelClass?getInitialValue().cssLabelClass:''">{{ getInitialValue().value }}</span>
     <div *ngIf="searchValue" class="dropdown-search col-md-6 padding-0">
       <input type="hidden" name="" value="">

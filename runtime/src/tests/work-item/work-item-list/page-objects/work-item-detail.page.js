@@ -28,7 +28,7 @@ class WorkItemDetailPage {
   }
 
   get workItemDetailCloseButton () {
-    return element(by.css(".pficon-close.detail-close"));
+    return element(by.css(".pficon-close.f8-quick-preview--close"));
   }
 
   clickWorkItemDetailCloseButton () {

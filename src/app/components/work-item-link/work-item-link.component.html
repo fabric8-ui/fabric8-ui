@@ -60,10 +60,10 @@
             id="link_item_title"
             *ngIf="workItem" >This item, {{ workItem.attributes['system.title'] }}</p>
         </div>
-        <div class="link-editor table width-100"
+        <div class="link-editor width-100"
           id="wi-link-editor"
           *ngIf="showLinkCreator">
-          <div class="table-cell">
+          <div class="db">
             <div class="combobox-container">
               <div *ngIf="linkTypes.length" class="input-group dropdown" dropdown>
                 <input class="combobox form-control readonly"
@@ -80,8 +80,8 @@
               </div>
             </div>
           </div>
-          <span class="table-cell"> item</span>
-          <div class="table-cell">
+          <span class="db"> item</span>
+          <div class="db">
             <div class="combobox-container">
               <input type="hidden" name="" value="">
               <div class="input-group dropdown open active width-100">
@@ -111,9 +111,9 @@
               </div>
             </div>
           </div>
-          <div class="table-cell">
+          <div class="db">
             <button
-              class="btn btn-xs link-button"
+              class="btn btn-xs link-button margin-top-10"
               id="bind-link"
               type="button"
               value="Link"

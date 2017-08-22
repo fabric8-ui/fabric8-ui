@@ -1,19 +1,28 @@
-<div [@slideInOut]="panelState" class="detail-panel">
-  <div class="detail-container" *ngIf="workItem" id="workItemDetail_Wrapper">
+<div [@slideInOut]="panelState" class="f8-quick-preview">
+  <div class="width-100" *ngIf="workItem" id="workItemDetail_Wrapper">
     <form *ngIf="active"
           #almWorkItemDetailForm="ngForm"
           class="form-horizontal"
           id="wi-detail-form">
       <fieldset>
-        <div class="detail-panel-header">
-          <div class="form-group col-xs-12 col-sm-12 col-md-12 mobile-bar">
-            <div class="dropdown-kebab-pf detail-type-dropdown col-sm-8">
+        <div class="f8-quick-preview__header">
+          <span
+            class="pficon pficon-close pull-right f8-quick-preview--close"
+            (click)="closeDetails()">
+          </span>
+          <div class="form-group width-100 pull-left mobile-bar padding-h-10 padding-v-5 margin-0">
+            <span *ngIf="workItem.id" class="detail-created-date pull-right">
+              <b>Created</b>
+              <span id="created_at"
+                [innerHTML]="workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'"></span>
+            </span>
+            <div class="dropdown-kebab-pf detail-type-dropdown">
               <span *ngIf="loadingTypes; else witTypeLoaded"
                 class="spinner spinner-sm spinner-inline">
               </span>
               <ng-template #witTypeLoaded>
                 <span
-                  class="fa {{workItem.relationships?.baseType?.data?.attributes?.icon}} fa-lg"
+                  class="margin-right-5 {{workItem.relationships?.baseType?.data?.attributes?.icon}} fa-lg"
                   id="wi-type-icon"></span>
                 {{workItem.relationships?.baseType?.data?.attributes?.name}}
               </ng-template>
@@ -27,37 +36,63 @@
                   {{ errorMessage }}
               </span>
             </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 pull-right padding-0" style="padding: 0;"><!-- padding fix is temporary -->
-              <span class="pficon-close detail-close padding-top-3" (click)="closeDetails()"></span>
-              <span *ngIf="workItem.id" class="detail-created-date">
-                <b>Created</b>
-                <span id="created_at" [innerHTML]="workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'"></span>
-              </span> </div>
           </div>
-
-          <div class="form-group col-xs-12 col-sm-12 col-md-12 truncate-ellipsis">
-            <div class="col-xs-8 col-sm-8 col-md-8 wi-detail-title-blk">
-              <div *ngIf="!headerEditable" (click)='openHeader()'
+          <div class="form-group width-100 pull-left padding-h-10 padding-v-5 margin-0">
+            <div class="width-100 pull-left">
+              <div
+                class="card-pf-time-frame-filter text-right dropdown"
+                *ngIf="loggedIn"
+                dropdown>
+                <button dropdownToggle
+                  id="wi-detail-state"
+                  type="button"
+                  class="btn btn-default width-100 dropdown-toggle">
+                  <span class='dropdown-icon' almIcon [iconType]="workItem.attributes['system.state']"></span>
+                  <span class='dropdown-text'>
+                    {{workItem.attributes['system.state']}}
+                  </span>
+                  <span *ngIf="loggedIn" class="caret dib"></span>
+                </button>
+                <ul id="wi-status-dropdown" class="dropdown-menu-right dropdown-ul dropdown-menu" role="menu" *dropdownMenu>
+                  <li class="dropdown-li" (click)="onChangeState(state)"
+                    *ngFor="let state of workItem.relationships?.baseType?.data?.attributes?.fields['system.state'].type.values;"
+                  >
+                    <a>
+                      <span class='dropdown-icon' almIcon [iconType]="state"></span>
+                      <span class='dropdown-text'>{{state}}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <a class="pull-right">
+                <span class="dib margin-right-3">View full details</span>
+                <span class="pficon pficon-arrow"></span>
+              </a>
+            </div>
+            <div class="width-100 pull-left wi-detail-title-blk">
+              <div
+                class="posRel"
+                *ngIf="!headerEditable" (click)='openHeader()'
                 id="title-click-div">
-                <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate margin-top-0 form-control-static">{{ workItem.attributes['system.title'] }}</h2>
-                <h2 *ngIf="loggedIn && workItem.id" id="wi-detail-title-click" class="detail-title truncate margin-top-0">{{ workItem.attributes['system.title'] }}</h2>
+                <h2 *ngIf="!loggedIn" id="wi-detail-title-ne" class="detail-title truncate margin-top-15 form-control-static">{{ workItem.attributes['system.title'] }}</h2>
+                <h2 *ngIf="loggedIn && workItem.id" id="wi-detail-title-click" class="detail-title truncate margin-top-15">{{ workItem.attributes['system.title'] }}</h2>
                 <span *ngIf="loggedIn && workItem.id"
                   class="pficon-edit detail-title-edit-ico"
                   id="workItemTitle_btn_edit"></span>
               </div>
               <div *ngIf="(loggedIn && headerEditable) || (loggedIn && !workItem.id)"
                 id="wi-title-div"
-                class="edit-title-alignment col-xs-12 col-sm-12 col-md-12">
+                class="width-100 dib margin-top-15 margin-bottom-5">
                   <h2 almEditable
                     (onUpdate)="checkTitle($event)"
                     (keyup.enter)="onUpdateTitle()"
                     (keydown.enter)="preventDef($event)"
                     id="wi-detail-title"
-                    class="detail-title-edit col-xs-9 col-sm-9 col-md-9 margin-top-5"
+                    class="detail-title-edit col-xs-9 col-sm-9 col-md-9 margin-bottom-2 margin-top-1"
                     [innerText]="workItem.attributes['system.title'] | almTrim"
                     #title >
                   </h2>
-                   <aside class="col-xs-3 col-sm-3 col-md-3">
+                   <aside class="col-xs-3 col-sm-3 col-md-3 padding-0">
                     <!--Save icon-->
                     <button id="workItemTitle_btn_save"
                         class="pull-right btn btn-primary detail-action-btn"
@@ -80,41 +115,19 @@
                   </p>
               </div>
             </div>
-
-            <div class="col-xs-4 col-sm-4 col-md-4 pull-right">
-              <div *ngIf="loggedIn" dropdown
-                class="card-pf-time-frame-filter text-right dropdown margin-v-15 padding-top-5">
-                <button dropdownToggle
-                  id="wi-detail-state"
-                  type="button"
-                  class="btn btn-default width-100 dropdown-toggle">
-                  <span class='dropdown-icon' almIcon [iconType]="workItem.attributes['system.state']"></span>
-                  <span class='dropdown-text'>
-                    {{workItem.attributes['system.state']}}
-                  </span>
-                  <span *ngIf="loggedIn" class="caret dib"></span>
-                </button>
-                <ul id="wi-status-dropdown" class="dropdown-menu-right dropdown-ul dropdown-menu" role="menu" *dropdownMenu>
-                  <li class="dropdown-li" (click)="onChangeState(state)"
-                    *ngFor="let state of workItem.relationships?.baseType?.data?.attributes?.fields['system.state'].type.values;"
-                  >
-                    <a>
-                      <span class='dropdown-icon' almIcon [iconType]="state"></span>
-                      <span class='dropdown-text'>{{state}}</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
           </div>
         </div>
-        <div class="item-action-block">
+
+
+
+        <div class="width-100 pull-left padding-10 item-action-block">
           <!-- Assignee -->
           <div class="form-group">
             <div class="detail-assignee-wrap">
-                <label class="col-sm-2 control-label">
+                <label class="col-xs-4 col-sm-4 col-md-4 control-label">
                   {{workItem.relationships?.baseType?.data?.attributes?.fields['system.assignees']?.label || 'Label'}}
                 </label>
+                <div class="col-xs-8 col-sm-8 col-md-8 padding-left-0">
                 <span
                   *ngIf="!workItem.relationships?.assignees?.data?.length"
                   (click)="activeSearchAssignee()"
@@ -181,64 +194,75 @@
                       </div>
                     </div>
                 </div>
+              </div>
             </div>
           </div>
           <!--Creator-->
           <div class="form-group">
-            <div class="detail-creator-wrap">
-              <label class="col-sm-2 control-label">{{workItem.relationships?.baseType?.data?.attributes?.fields['system.creator']?.label || 'Label'}}</label>
-              <span *ngIf="!workItem.relationships?.creator?.data"
-                class="pficon pficon-user user-creator-icon" id="user_creator_icon">
-              </span>
-              <img *ngIf="workItem.relationships?.creator?.data"
-                class="user-avatar"
-                placement="bottom"
-                tooltip="{{workItem.relationships.creator.data.attributes?.fullName}}"
-                src="{{workItem.relationships.creator.data.attributes?.imageURL + '&s=20'}}"
-                onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"
-                id="WI_details_reporter_img" />
-              <div class="marginR10" style="display: inline-block;">
+            <div class="width-100 pull-left detail-creator-wrap">
+              <label class="col-xs-4 col-sm-4 col-md-4 control-label">
+                {{workItem.relationships?.baseType?.data?.attributes?.fields['system.creator']?.label || 'Label'}}
+              </label>
+              <div class="col-xs-8 col-sm-8 col-md-8 padding-left-0">
+                <span *ngIf="!workItem.relationships?.creator?.data"
+                  class="pficon pficon-user user-creator-icon" id="user_creator_icon">
+                </span>
+                <img *ngIf="workItem.relationships?.creator?.data"
+                  class="user-avatar"
+                  placement="bottom"
+                  tooltip="{{workItem.relationships.creator.data.attributes?.fullName}}"
+                  src="{{workItem.relationships.creator.data.attributes?.imageURL + '&s=20'}}"
+                  onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"
+                  id="WI_details_reporter_img" />
+                <div class="dib">
                   <span id="WI_details_reporter_user">
                     {{workItem.relationships?.creator?.data | almUserName:'Creator not found'}}
                   </span>
+                </div>
               </div>
             </div>
           </div>
           <!-- Areas -->
           <div class="form-group">
-            <div class="detail-area-wrap">
-              <label class="col-sm-2 control-label" id="area_label">
+            <div class="width-100 pull-left detail-area-wrap">
+              <label class="col-xs-4 col-sm-4 col-md-4 control-label" id="area_label">
                 {{workItem.relationships?.baseType?.data?.attributes?.fields['system.area']?.label || 'Label'}}
               </label>
-              <span *ngIf="loadingArea"
-                class="spinner spinner-sm spinner-inline">
-              </span>
-              <typeahead-dropdown #areaSelectbox
-                *ngIf="!loadingArea"
-                id="area-dropdown" class="area-dropdown"
-                noValueLabel="None" [values]="areas" (onFocus)="focusArea()"
-                (onUpdate)="areaUpdated($event)"></typeahead-dropdown>
+              <div class="col-xs-8 col-sm-8 col-md-8 padding-left-0">
+                <span *ngIf="loadingArea"
+                  class="spinner spinner-sm spinner-inline">
+                </span>
+                <typeahead-dropdown #areaSelectbox
+                  *ngIf="!loadingArea"
+                  id="area-dropdown" class="area-dropdown"
+                  noValueLabel="None" [values]="areas" (onFocus)="focusArea()"
+                  (onUpdate)="areaUpdated($event)">
+                </typeahead-dropdown>
+              </div>
             </div>
           </div>
 
           <!--Iteration-->
           <div class="form-group">
-            <div class="detail-iteration-wrap">
-              <label class="col-sm-2 control-label" id="iteration_label">
+            <div class="width-100 pull-left detail-iteration-wrap">
+              <label class="col-xs-4 col-sm-4 col-md-4 control-label" id="iteration_label">
                 {{workItem.relationships?.baseType?.data?.attributes?.fields['system.iteration']?.label || 'Label'}}
               </label>
-              <span *ngIf="loadingIteration"
-                class="spinner spinner-sm spinner-inline">
-              </span>
-              <typeahead-dropdown
-                *ngIf="!loadingIteration"
-                id="iteration-dropdown" class="iteration-dropdown"
-                #iterationSelectbox noValueLabel="None" [values]="iterations"
-                (onFocus)="focusIteration()" (onUpdate)="iterationUpdated($event)"></typeahead-dropdown>
+              <div class="col-xs-8 col-sm-8 col-md-8 padding-left-0">
+                <span *ngIf="loadingIteration"
+                  class="spinner spinner-sm spinner-inline">
+                </span>
+                <typeahead-dropdown
+                  *ngIf="!loadingIteration"
+                  id="iteration-dropdown" class="iteration-dropdown"
+                  #iterationSelectbox noValueLabel="None" [values]="iterations"
+                  (onFocus)="focusIteration()" (onUpdate)="iterationUpdated($event)">
+                </typeahead-dropdown>
+              </div>
             </div>
           </div>
         </div>
-        <div class="dynamic-fields-wrap">
+        <div class="width-100 pull-left dynamic-fields-wrap">
           <!-- Extra fields Start -->
           <div *ngFor="let attributeDesc of dynamicFormDataArray" class="form-group">
             <alm-dynamic-field [attributeDesc]="attributeDesc" [form]="dynamicFormGroup" (onUpdate)="dynamicFieldUpdated($event)"></alm-dynamic-field>
@@ -250,10 +274,10 @@
           <!-- Description Start -->
           <!-- <markdown-control id="wi-detail-desc" [markdownValue]="descText" (onUpdate)="descUpdate($event)"></markdown-control> -->
            <div class="form-group">
-            <label class="col-sm-2 control-label">
+            <label class="col-xs-4 col-sm-4 col-md-4 control-label">
               Description
             </label>
-            <div class="col-sm-10 detail-desc-wrap">
+            <div class="col-xs-8 col-sm-8 col-md-8 detail-desc-wrap">
               <f8-markdown
                 id="wi-detail-desc"
                 [editAllow]="loggedIn"
@@ -266,13 +290,12 @@
           </div>
           <!-- Description End -->
         </div>
-
         <div class="start-coding-wrap" *ngIf="loggedIn && workItem.relationships?.codebase?.links?.meta?.edit">
           <div class="form-group width-100">
-            <label class="col-sm-2 control-label" id="coding_label">
+            <label class="col-xs-4 col-sm-4 col-md-4 control-label" id="coding_label">
               Code
             </label>
-            <div class="form-control-static start-coding">
+            <div class="col-xs-8 col-sm-8 col-md-8 form-control-static start-coding">
               <a class="btn btn-default"
                 id="start-coding-link"
                 target="_blank" href="{{workItem.relationships?.codebase?.links?.meta?.edit}}">
