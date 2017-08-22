@@ -10,60 +10,59 @@
         (showDetailEvent)="typeSelectPanel.openPanel()"
         [currentBoardType]="currentBoardType"
         [areas]="areas"
-        [loggedInUser]="loggedInUser"></toolbar-panel>
-      <div>
-        <div class="width-100 boardWrapper"
-          id="board_topWorkItems">
-          <div class="board"
-            *ngIf="readyToInit"
-            (touchmove)="onTouchstart($event);">
-            <!-- board columns -->
-            <div class="board-lane"
-              *ngFor='let lane of lanes'>
-              <section class="width-100 pull-left board-lane-column"
-                [attr.data-state]="lane.option">
-                <div class="lane-header">
-                  <span class="dib">{{lane.option}}</span>
-                  <span class="issueCount dib" >{{lane.workItems | arrayCount}}</span>
-                </div>
-                <div class="boardlaneWrapper"
-                  almInfiniteScroll
-                  [eachElementHeightInPx]='contentItemHeight'
-                  (initItems)='initWiItems($event, lane)'
-                  (fetchMore)='fetchMoreWiItems(lane)' >
-                  <div *ngIf="lane.option == 'new'">
-                    <div class="width-100 pull-left margin-bottom-5"
-                      *ngIf="loggedIn">
-                      <alm-work-item-quick-add
-                        [forcedType]="currentBoardType"
-                        [wilistview]="'wi-card-view'"
-                        (close)="close($event)"
-                        (workItemCreate)="onCreateWorkItem($event)">
-                      </alm-work-item-quick-add>
-                    </div>
-                  </div>
-                  <div class="card-wrapper"
-                    [dragula]='"wi-bag"'>
-                    <div
-                      class="width-100 pull-left"
-                      *ngFor='let item of lane.cardValue'
-                      (mousedown)="getWI(item.id, lane)"
-                      (touchstart)="getWI(item.id, lane)"
-                      [attr.data-id]="item.id" [attr.data-UUID]="item.extraData['UUID']"  id={{item.id}}
-                      [attr.data-version]="item.extraData['version']" [attr.data-selfLink]="item.extraData['selfLink']">
-                      <card
-                        [cardValue]='item'
-                        (menuClickEvent)="cardMenuClick($event, item.id, lane)">
-                      </card>
-                    </div>
+        [loggedInUser]="loggedInUser">
+      </toolbar-panel>
+      <div class="width-100 boardWrapper"
+        id="board_topWorkItems">
+        <div class="board"
+          *ngIf="readyToInit"
+          (touchmove)="onTouchstart($event);">
+          <!-- board columns -->
+          <div class="board-lane"
+            *ngFor='let lane of lanes'>
+            <section class="width-100 pull-left board-lane-column"
+              [attr.data-state]="lane.option">
+              <div class="lane-header">
+                <span class="dib">{{lane.option}}</span>
+                <span class="issueCount dib" >{{lane.workItems | arrayCount}}</span>
+              </div>
+              <div class="boardlaneWrapper"
+                almInfiniteScroll
+                [eachElementHeightInPx]='contentItemHeight'
+                (initItems)='initWiItems($event, lane)'
+                (fetchMore)='fetchMoreWiItems(lane)' >
+                <div *ngIf="lane.option == 'new'">
+                  <div class="width-100 pull-left margin-bottom-5"
+                    *ngIf="loggedIn">
+                    <alm-work-item-quick-add
+                      [forcedType]="currentBoardType"
+                      [wilistview]="'wi-card-view'"
+                      (close)="close($event)"
+                      (workItemCreate)="onCreateWorkItem($event)">
+                    </alm-work-item-quick-add>
                   </div>
                 </div>
-              </section>
-            </div>
+                <div class="card-wrapper"
+                  [dragula]='"wi-bag"'>
+                  <div
+                    class="width-100 pull-left"
+                    *ngFor='let item of lane.cardValue'
+                    (mousedown)="getWI(item.id, lane)"
+                    (touchstart)="getWI(item.id, lane)"
+                    [attr.data-id]="item.id" [attr.data-UUID]="item.extraData['UUID']"  id={{item.id}}
+                    [attr.data-version]="item.extraData['version']" [attr.data-selfLink]="item.extraData['selfLink']">
+                    <card
+                      [cardValue]='item'
+                      (menuClickEvent)="cardMenuClick($event, item.id, lane)">
+                    </card>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
-        <router-outlet></router-outlet>
       </div>
+      <router-outlet></router-outlet>
     </section>
   </main>
 </div>
