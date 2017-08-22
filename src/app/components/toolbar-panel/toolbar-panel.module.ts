@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 
+import { ToolbarModule } from 'patternfly-ng';
+
 import { CollaboratorService } from '../../services/collaborator.service';
 import { FilterService } from '../../services/filter.service';
 import { WorkItemService } from '../../services/work-item.service';
@@ -14,8 +16,6 @@ import {
   AlmIconModule,
   WidgetsModule
 } from 'ngx-widgets';
-
-import { ToolbarModule } from 'patternfly-ng';
 
 @NgModule({
   imports: [

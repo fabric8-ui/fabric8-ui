@@ -1,5 +1,6 @@
 <header class="toolbar-header">
   <div class="width-100 pull-left">
+
     <pfng-toolbar
         [config]="toolbarConfig"
         [actionTemplate]="actionsTemplate"
@@ -10,24 +11,26 @@
       <template #actionsTemplate>
         <div *ngIf="context==='boardview' && (wiTypes.length!=0)" dropdown class="card-pf-time-frame-filter board-type-dropdown dropdown">
           <span class="currently-showing">Currently showing:</span>
-          <button dropdownToggle
-              id="wi-board-type"
-              type="button"
-              class="btn btn-default dropdown-toggle">
-            <span class='dropdown-icon fa {{currentBoardType?.attributes?.icon}}'></span>
-            <span class='dropdown-text'>
-              {{currentBoardType?.attributes?.name}}
-            </span>
-            <span class="caret"></span>
-          </button>
-          <ul id="wi-board-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" *dropdownMenu>
-            <li class="dropdown-li" *ngFor="let type of wiTypes;" (click)="onChangeBoardType(type)">
-              <a>
-                <span class='dropdown-icon fa {{type?.attributes?.icon}}'></span>
-                <span class='dropdown-text'>{{type.attributes.name}}</span>
-              </a>
-            </li>
-          </ul>
+          <span class="dropdown primary-action" dropdown>
+            <button dropdownToggle
+                id="wi-board-type"
+                type="button"
+                class="btn btn-default dropdown-toggle">
+              <span class='dropdown-icon fa {{currentBoardType?.attributes?.icon}}'></span>
+              <span class='dropdown-text'>
+                {{currentBoardType?.attributes?.name}}
+              </span>
+              <span class="caret"></span>
+            </button>
+            <ul id="wi-board-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" *dropdownMenu>
+              <li class="dropdown-li" *ngFor="let type of wiTypes;" (click)="onChangeBoardType(type)">
+                <a>
+                  <span class='dropdown-icon fa {{type?.attributes?.icon}}'></span>
+                  <span class='dropdown-text'>{{type.attributes.name}}</span>
+                </a>
+              </li>
+            </ul>
+          </span>
         </div>
         <div *ngIf="context!=='boardview'" dropdown class="list-type-dropdown dropdown">
           <button dropdownToggle
@@ -52,37 +55,16 @@
             </li>
           </ul>
         </div>
-        <!--
-        <span *ngIf="context==='listview'" class="dropdown primary-action" dropdown>
-          <button class="btn btn-default" id="wi_filter_dropdown" type="button" dropdownToggle>
-            Move
-            <span class="caret"></span>
-          </button>
-          <ul role="menu" aria-labelledby="wi_filter_dropdown" class="btn-move" *ngIf="loggedIn" dropdownMenu>
-            <li>
-              <a role="menuitem" tabindex="-1" (click)="moveItem('top')">Move to Top</a>
-            </li>
-            <li>
-              <a role="menuitem" tabindex="-1" (click)="moveItem('bottom')">Move to Bottom</a>
-            </li>
-            <li role="presentation" class="divider"></li>
-            <li>
-              <a role="menuitem" tabindex="-1" (click)="moveItem('up')">Move Up</a>
-            </li>
-            <li>
-              <a role="menuitem" tabindex="-1" (click)="moveItem('down')">Move Down</a>
-            </li>
-          </ul>
-        </span>
-      -->
       </template>
       <template #addTemplate>
-        <div *ngIf="loggedIn && editEnabled && wiTypes.length"
-          class="with-cursor-pointer" placement="bottom"
-          tooltip="Add A Work Item" (click)="showDetailType($event)">
-          <i class="pficon pficon-add-circle-o margin-top-4"></i>
-        </div>
+        <button *ngIf="loggedIn && editEnabled && wiTypes.length" 
+            class="btn btn-default primary-action add-button" type="button" 
+            (click)="showDetailType($event)">
+          <i class="pficon pficon-add-circle-o add-button-icon"></i>
+          <span class="add-button-text">Create</span> 
+        </button>
       </template>
     </pfng-toolbar>
+
   </div>
 </header>

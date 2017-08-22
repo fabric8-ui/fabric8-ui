@@ -5,21 +5,70 @@
   padding-left: 20px;
   border-bottom: 1px solid;
   border-bottom-color: @color-pf-black-300;
-  .btn-move { margin-top: 6px; }
-  .toolbar-actions,
-  .toolbar-apf-filter {
-    border-right: 0 !important; /* no move menu yet */
+
+  .btn {
+    /* font size for all buttons in the toolbar */
+    /* TODO: this should be patternfly default, but it gets overridden somehow */
+    font-size: 12px;
   }
-}
-.filter-select {
-  border-bottom: 1px solid;
-  border-bottom-color: @color-pf-black-300;
-  .btn-default { font-size: @font-size-base; }
-}
-.toolbar-pf-action-right {
-  .pficon-add-circle-o { color: @color-pf-blue-400; }
-}
-.currently-showing { margin-right: 10px; }
-.board-type-dropdown {
-  .dropdown-menu { right: 0; }
+
+  .toolbar-actions, .toolbar-apf-filter {
+    border-right: 0 !important; /* disables the seperators */
+  }
+  
+  .filter-select {
+    /* the value select for the filters */
+    border-bottom: 1px solid;
+    border-bottom-color: @color-pf-black-300;
+    box-shadow: none;
+
+    .btn {
+      /* buttons in the toolbar don't have box shadows */
+      box-shadow: none;      
+    }
+    
+    .btn-default { 
+      font-size: @font-size-base; 
+    }
+    
+    button {
+      /* this is the left connecting side to the filter type dropdown, omit the border here */
+      border-left: none;    
+    }
+  }
+  
+  .toolbar-pf-action-right {
+    /* right aligned action button area */
+    .pficon-add-circle-o { 
+      color: @color-pf-blue-400; 
+    }
+
+    .add-button {
+      .add-button-text {
+        vertical-align: middle;
+      }
+      .add-button-icon {
+        vertical-align: middle;      
+      }
+    }
+  }
+  
+  .currently-showing { 
+    margin-right: 10px; 
+  }
+  
+  .board-type-dropdown {
+    .dropdown-menu { right: 0; }
+  }  
+
+  .toolbar-pf-results {
+    /* the active filters bar */
+    font-size: 12px;
+
+    .list-inline {
+      /* the list of filter flags */
+      /* TODO: why is this set to -5px per default? */
+      margin-left: 0px; 
+    }
+  }
 }
