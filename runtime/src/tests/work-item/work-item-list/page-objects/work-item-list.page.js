@@ -735,6 +735,19 @@ class WorkItemListPage {
   clickOnIterationDropDown(){
     return element(by.id('iteration-select-dropdown'));
   }
+
+  get activeIterationButton () {
+    return  element(by.id("active-switch"));
+  }
+
+  clickActiveIterationButton () {
+    return this.activeIterationButton.click();
+  }
+
+  activeIterationButtonStatus (){
+    return this.activeIterationButton.isSelected();
+  }
+
   get Portfolio (){
     return element(by.id('portfolio'));
   }
