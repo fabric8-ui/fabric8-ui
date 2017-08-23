@@ -12,27 +12,38 @@
 
     <!-- Nested Iteration Display -->
     <div class="iterations">
-      <tree-list class="list-wrap"
-        #treeList
+      <iteration-tree-list #treeList
         [listTemplate]="treeListTemplate"
-        [nodes]="treeIterations">
-        <template #treeListTemplate let-node="node">
-          <tree-list-item
-            [itemTemplate]="treeListItemTemplate"
-            [node]="node"
-            (onSelect)="itemSelected($event)"
-            (onToggle)="itemToggled($event)">
-            <template #treeListItemTemplate let-node="node">
+        [loadTemplate]="treeListLoadTemplate"
+        [nodes]="treeIterations"
+        [options]="treeListOptions"
+        [showDropSlot]="false"
+        [showExpander]="false"
+        (onMoveNode)="onMoveNode($event)">
+        <template #treeListLoadTemplate let-node="node"
+          let-index="index">
+          <span>Loading...</span>
+        </template>
+        <template #treeListTemplate let-node="node"
+          let-index="index">
+          <iteration-tree-list-item #treeListItem
+              [index]="index"
+              [node]="node"
+              [template]="treeListItemTemplate">
+            <template #treeListItemTemplate>
               <iteration-list-entry
-                [iteration]="node"
+                id="{{'iterationList_OuterWrap_' + index}}"
+                class="iteration-list-entry"
+                [listItem]="treeListItem"
+                [iteration]="node.data"
                 (selectEvent)="onSelect($event)"
                 (toggleEvent)="onToggle($event)"
               >
               </iteration-list-entry>
             </template>
-          </tree-list-item>
+          </iteration-tree-list-item>
         </template>
-      </tree-list>
+      </iteration-tree-list>
     </div>
   </div>
 </div>

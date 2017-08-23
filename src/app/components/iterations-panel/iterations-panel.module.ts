@@ -18,8 +18,6 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { IterationComponent } from './iterations-panel.component';
 import { IterationService } from '../../services/iteration.service';
 import { IterationListEntryComponent } from '../iteration-list-entry/iteration-list-entry.component';
-import { TreeListComponent } from '../tree-list/tree-list.component'
-import { TreeListItemComponent } from '../tree-list/tree-list-item.component'
 
 import { ModalModule } from 'ngx-modal';
 import { SwitchModule } from '../switch/switch.module';
@@ -44,8 +42,6 @@ import { TruncateModule } from 'ng2-truncate';
     TreeListModule
   ],
   declarations: [
-    TreeListComponent,
-    TreeListItemComponent,
     FabPlannerIterationModalComponent,
     IterationComponent,
     IterationListEntryComponent

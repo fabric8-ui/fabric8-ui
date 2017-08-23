@@ -19,7 +19,7 @@ import { WorkItemService }   from '../../services/work-item.service';
 import { IterationModel } from '../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
 
-import { TreeListComponent } from '../tree-list/tree-list.component';
+import { TreeListComponent } from 'ngx-widgets';
 
 @Component({
   host: {
@@ -62,6 +62,19 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   treeIterations;
 
   private spaceSubscription: Subscription = null;
+
+  // See: https://angular2-tree.readme.io/docs/options
+  treeListOptions = {
+    allowDrag: false,
+    getChildren: (node: TreeNode): any => {
+      return this.workItemService.getChildren(node.data);
+    },
+    levelPadding: 30,
+    allowDrop: (element, to) => {
+      // return true / false based on element, to.parent, to.index. e.g.
+      return to.parent.hasChildren;
+    }
+  };
 
   constructor(
     private log: Logger,
