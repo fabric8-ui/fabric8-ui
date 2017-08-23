@@ -165,20 +165,16 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         let path = iteration.attributes.parent_path.split('/');
         iteration.attributes.parent_path = path[path.length-1];
       });
-
       //Parse and create a format compatible with tree list
       this.masterIterations = this.allIterations.map(iteration => {
         let path = iteration.attributes.resolved_parent_path.split('/');
         //Store the depth - for the first time show iteration with the
-        //lowest depth - these would be  the parent iterations
-        let depth = path.length - 1;
-        console.log('details = ', iteration.attributes.name, ' depth = ', depth)
         let obj = {
           id: iteration.id,
           name: iteration.attributes.name,
           hasChildren: false,
           children: [],
-          depth: depth,
+          depth: path.length - 1,
           parentId: iteration.attributes.parent_path
         };
         return obj;
@@ -188,7 +184,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         //Find the children for the current ID
         iteration.children = this.masterIterations.filter(i => {
           return (i.parentId != '' &&
-          i.attributes.parent_path == iteration.id)
+          i.parentId == iteration.id)
         });
         console.log('children', iteration.children);
         iteration.hasChildren = iteration.children.length > 0 ? true : false;

@@ -12,7 +12,7 @@
 
     <!-- Nested Iteration Display -->
     <div class="iterations">
-      <iteration-tree-list #treeList
+      <alm-tree-list #treeList
         [listTemplate]="treeListTemplate"
         [loadTemplate]="treeListLoadTemplate"
         [nodes]="treeIterations"
@@ -26,7 +26,7 @@
         </template>
         <template #treeListTemplate let-node="node"
           let-index="index">
-          <iteration-tree-list-item #treeListItem
+          <alm-tree-list-item #treeListItem
               [index]="index"
               [node]="node"
               [template]="treeListItemTemplate">
@@ -41,9 +41,9 @@
               >
               </iteration-list-entry>
             </template>
-          </iteration-tree-list-item>
+          </alm-tree-list-item>
         </template>
-      </iteration-tree-list>
+      </alm-tree-list>
     </div>
   </div>
 </div>
