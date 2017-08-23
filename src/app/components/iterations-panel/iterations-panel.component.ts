@@ -408,12 +408,16 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     event.stopPropagation();
   }
 
-  itemToggled(event: Event) {
-    console.log('toggleeee');
+  onSelect(event) {
+
   }
 
-  itemSelected(event: Event) {
-    console.log('selectedeeee');
+  onToggle(event) {
+
+  }
+
+  onQuery(event) {
+    return this.constructURL(event.iteration.id);
   }
 
   listenToEvents() {

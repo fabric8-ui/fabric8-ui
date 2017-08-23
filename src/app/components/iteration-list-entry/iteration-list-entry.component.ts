@@ -11,7 +11,7 @@ import {
 import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 import { Dialog } from 'ngx-widgets';
-import { IterationService } from '../../services/iteration.service';
+import { FilterService } from '../../services/filter.service';
 import { TreeListItemComponent } from 'ngx-widgets';
 
 @Component({
@@ -22,10 +22,11 @@ import { TreeListItemComponent } from 'ngx-widgets';
 })
 export class IterationListEntryComponent implements OnInit, OnDestroy {
   @Input() listItem: TreeListItemComponent;
-  @Input() iteration: any;
+  @Input() iteration: IterationModel;
   @Input() selected: boolean = false;
 
   @Output() selectEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
+  @Output() queryEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
 
   loggedIn: Boolean = false;
   queryParams: Object = {};
@@ -33,16 +34,14 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   selectedItemId: string | number = 0;
 
   constructor(private auth: AuthenticationService,
-              private broadcaster: Broadcaster,
-              private route: ActivatedRoute,
-              private iterationService: IterationService,
-              private notifications: Notifications,
-              private router: Router,
-              private logger: Logger) {}
+    private broadcaster: Broadcaster,
+    private route: ActivatedRoute,
+    private filterService: FilterService,
+    private notifications: Notifications,
+    private router: Router,
+    private logger: Logger) {}
 
   ngOnInit(): void {
-    //this.listenToEvents();
-    console.log('teration = ', this.iteration);
     this.loggedIn = this.auth.isLoggedIn();
   }
 
@@ -58,8 +57,6 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
     this.listItem.setSelected(false);
   }
 
-
-
   selectEntry(): void {
     this.selectEvent.emit(this);
   }
@@ -67,6 +64,29 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   onSelect(event: MouseEvent): void {
     event.stopPropagation();
     this.selectEvent.emit(this);
+  }
+
+  onSetQuery(): any {
+    return this.queryEvent.emit(this);
+  }
+
+  constructURL(iterationId: string) {
+    //return this.filterService.constructQueryURL('', {iteration_id: iterationId});
+    //this.filterService.queryBuilder({}, '$IN',)
+    const it_key = 'iteration';
+    const it_compare = this.filterService.equal_notation;
+    const it_value = iterationId;
+    //Query for type
+    const it_query = this.filterService.queryBuilder(it_key, it_compare, it_value);
+    //Query for space
+    //const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
+   //Join type and space query
+   const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, it_query );
+   //const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
+   //second_join gives json object
+   return this.filterService.jsonToQuery(first_join);
+   //reverse function jsonToQuery(second_join);
+    //return '';
   }
 
 }

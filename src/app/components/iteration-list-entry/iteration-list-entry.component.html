@@ -1,7 +1,6 @@
 <div class="iteration-entry"
   [routerLinkActive]="'selected-iteration'"
-  [routerLink]="[]" [attr.data-id]="iteration.id"
-  [queryParams]=""
+  [attr.data-id]="iteration.id"
   [dragula]="'wi-bag'">
   <div class="iteration-subheader">
     <div *ngIf="loggedIn"
@@ -31,7 +30,9 @@
         </li>
       </ul>
     </div>
-    <div class="truncate padding-right-15">
+    <div class="truncate padding-right-15"
+      [routerLink]="[]"
+      [queryParams]="{q: constructURL(iteration.id)}">
       <span class="iteration-name truncate">
         {{iteration.name | truncate : 45 }}
       </span>
