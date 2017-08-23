@@ -1,7 +1,17 @@
-<div class="tree-list-item" (click)="onSelect($event)">
+<div class="tree-list-item block-display" (click)="onSelect($event)">
   <!-- put the upper drop target here -->
   <!-- put the expander here -->
-  <div>V</div>
-  <ng-template [ngTemplateOutlet]="itemTemplate" [ngOutletContext]="{ node: node, index: index }"></ng-template>
+  <div *ngIf="node.hasChildren">
+    <i class="fa fa-icon pointer"
+      [ngClass]="{'fa-angle-right': !isExpanded,
+                  'fa-angle-down': isExpanded}"
+    ></i>
+  </div>
+  <div>
+    <ng-template
+      [ngTemplateOutlet]="itemTemplate"
+      [ngOutletContext]="{ node: node, index: index }">
+    </ng-template>
+  </div>
   <!-- put the lower drop target here -->
 </div>

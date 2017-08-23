@@ -2,6 +2,16 @@
 .iteration-entry {
   cursor: pointer;
   width: 100%;
+  display: block;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  .badge { background-color: @color-pf-black; }
+  .iteration-header {
+    padding: 10px 20px;
+    > h4 { margin: 0; }
+    .fa-icon { width: 15px; }
+    .add-btn { color: @color-pf-blue; }
+  }
   .iteration-subheader {
     display: block;
     .dropdown-kebab-pf { margin-left: 10px; }

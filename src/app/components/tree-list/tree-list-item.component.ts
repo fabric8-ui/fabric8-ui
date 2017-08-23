@@ -30,6 +30,7 @@ export class TreeListItemComponent implements OnInit, OnChanges {
   @ViewChild('target', {read: ViewContainerRef}) target: ViewContainerRef;
 
   private selected: boolean = false;
+  private isExpanded: boolean = false;
 
   constructor() {}
 

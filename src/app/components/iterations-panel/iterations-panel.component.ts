@@ -58,8 +58,8 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   eventListeners: any[] = [];
   currentSelectedIteration: string = '';
   dragulaEventListeners: any[] = [];
-  displayIterations;
   masterIterations;
+  treeIterations;
 
   private spaceSubscription: Subscription = null;
 
@@ -153,21 +153,26 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         //Store the depth - for the first time show iteration with the
         //lowest depth - these would be  the parent iterations
         let depth = path.length - 1;
+        console.log('details = ', iteration.attributes.name, ' depth = ', depth)
         //Retain only the direct parent ID
         iteration.attributes.parent_path = path[path.length-1];
         let obj = {
-          iteration: iteration,
-          depth: depth,
-          nestedChildren: []
+          id: iteration.id,
+          name: iteration.attributes.name,
+          hasChildren: false,
+          children: [],
+          depth: depth
         };
         //Find the children for the current ID
-        obj.nestedChildren = this.allIterations.filter(i =>
+        obj.children = this.allIterations.filter(i =>
           i.attributes.parent_path != '' &&
           i.attributes.parent_path == iteration.id
         );
+        console.log('children', obj.children);
+        obj.hasChildren = obj.children.length > 0 ? true : false;
         return obj;
       });
-      this.displayIterations = this.masterIterations.filter(iteration =>
+      this.treeIterations = this.masterIterations.filter(iteration =>
         iteration.depth === 1);
     }
   }

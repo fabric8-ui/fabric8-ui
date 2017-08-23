@@ -22,12 +22,11 @@ import { TreeListItemComponent } from 'ngx-widgets';
 })
 export class IterationListEntryComponent implements OnInit, OnDestroy {
   @Input() listItem: TreeListItemComponent;
-  @Input() displayIteration: any;
+  @Input() iteration: any;
   @Input() selected: boolean = false;
 
   @Output() selectEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
 
-  iteration: IterationModel;
   loggedIn: Boolean = false;
   queryParams: Object = {};
   eventListeners: any[] = [];
@@ -43,8 +42,7 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     //this.listenToEvents();
-    console.log('here in iteration entry = ', this.displayIteration);
-    this.iteration = this.displayIteration.iteration;
+    console.log('teration = ', this.iteration);
     this.loggedIn = this.auth.isLoggedIn();
   }
 

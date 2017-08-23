@@ -1,0 +1,128 @@
+<!--Iteration Start-->
+<div class="add-iteration">
+  <a *ngIf="loggedIn && editEnabled"
+    class="text-right"
+    (click)="modal.openCreateUpdateModal('create', null, $event);">
+    <i *ngIf="loggedIn && editEnabled" id="add-iteration-icon" class="pficon-add-circle-o fa-lg pull-right with-cursor-pointer add-btn" placement="bottom" tooltip="Add an Iteration"></i>
+  </a>
+</div>
+<div class="iterations-container">
+  <div class="iteration-wrapper">
+    <!-- display the active iterations first -->
+
+    <!-- Nested Iteration Display -->
+    <div class="iterations">
+      <tree-list class="list-wrap"
+        #treeList
+        [listTemplate]="treeListTemplate"
+        [nodes]="treeIterations">
+        <template #treeListTemplate let-node="node">
+          <tree-list-item
+            [itemTemplate]="treeListItemTemplate"
+            [node]="node"
+            (onSelect)="itemSelected($event)">
+            <template #treeListItemTemplate let-node="node">
+              <iteration-list-entry
+                [displayIteration]="node"
+              >
+              </iteration-list-entry>
+            </template>
+          </tree-list-item>
+        </template>
+      </tree-list>
+    </div>
+
+
+
+
+    <div class="iterations">
+      <ul class="iteration-expanded-div">
+        <li class="active iteration-container"
+          *ngFor="let item of displayIterations"
+          [routerLinkActive]="'selected-iteration'"
+          [routerLink]="[]" [attr.data-id]="item.iteration.id"
+          [queryParams]="{q: constructURL(item.iteration.id)}"
+          [dragula]="'wi-bag'">
+          <div class="iteration-subheader">
+            <div *ngIf="loggedIn" class="dropdown-kebab-pf pull-right dropdown" dropdown>
+              <button class="btn btn-link dropdown-toggle" (click)="kebabMenuClick($event)"
+                      type="button"
+                      aria-haspopup="true"
+                      aria-expanded="true"
+                      dropdownToggle>
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <!--<ul class="dropdown-menu-right dropdown-menu" *dropdownMenu>
+                <li>
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration, $event);">
+                    Edit
+                  </a>
+                </li>
+                <li>
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('close', iteration, $event);">
+                    Close
+                  </a>
+                </li>
+                <li>
+                  <a class="pointer" (click)="modal.openCreateUpdateModal('createChild', iteration, $event);">
+                    Create child
+                  </a>
+                </li>
+              </ul>-->
+            </div>
+            <div class="truncate padding-right-15">
+                <span class="iteration-name truncate"
+                  tooltip="{{item.iteration.attributes.name}}"
+                  placement="top" id="{{item.iteration.attributes.name}}">
+                  {{item.iteration.attributes.name | truncate : 45 }}
+                </span>
+              <!--<div class="parent-iteration">
+                <span tooltip="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
+                  placement="top" id="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}">
+                  {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | truncate : -50 }}
+                </span>
+              </div>-->
+            </div>
+          </div>
+          <div class="iteration-status">
+            <div>
+              <span>
+                <span *ngIf="item.iteration.attributes.startAt">
+                  {{item.iteration.attributes.startAt | date:longDate}} -
+                  {{item.iteration.attributes.endAt | date:longDate}}
+                </span>
+                &nbsp;
+              </span>
+              <span class="iteration-count">
+                <strong>
+                  {{item.iteration.relationships?.workitems?.meta?.closed}}
+                  of
+                  {{item.iteration.relationships?.workitems?.meta?.total}}
+                </strong>
+                <span> completed</span>
+              </span>
+            </div>
+          </div>
+          <div class="progress">
+            <div class="progress-bar"
+                role="progressbar"
+                [attr.aria-valuenow]="item.iteration.relationships?.workitems?.meta?.closed"
+                aria-valuemin="0"
+                [attr.aria-valuemax]="item.iteration.relationships?.workitems?.meta?.total"
+                [ngStyle]="{'width': ((item.iteration.relationships?.workitems?.meta?.closed / item.iteration.relationships?.workitems?.meta?.total) * 100) + '%'}"
+                placement="top"
+                tooltip="{{((item.iteration.relationships?.workitems?.meta?.closed / item.iteration.relationships?.workitems?.meta?.total) * 100) + '%'}}">
+            </div>
+          </div>
+          <p class="iteration-description">{{ item.iteration.attributes?.description }}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- Iteration End-->
+
+<fab-planner-iteration-modal
+  #modal
+  (onSubmit)="onCreateOrupdateIteration($event)" >
+</fab-planner-iteration-modal>
