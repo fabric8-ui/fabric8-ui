@@ -25,16 +25,19 @@ export class TreeListItemComponent implements OnInit, OnChanges {
   @Input() itemTemplate: TemplateRef<any>;
   @Input('node') node: any;
 
-  //@Output('onSelect') onSelect: EventEmitter<TreeListItemComponent> = new EventEmitter<TreeListItemComponent>();
+  @Output('onSelect') select: EventEmitter<TreeListItemComponent> = new EventEmitter<TreeListItemComponent>();
+  @Output('onToggle') toggle: EventEmitter<TreeListItemComponent> = new EventEmitter<TreeListItemComponent>();
 
   @ViewChild('target', {read: ViewContainerRef}) target: ViewContainerRef;
 
   private selected: boolean = false;
   private isExpanded: boolean = false;
+  private childNodes: any[];
 
   constructor() {}
 
   ngOnInit(): void {
+    console.log('node', this.node)
   }
 
   ngAfterViewInit(): void {
@@ -50,7 +53,15 @@ export class TreeListItemComponent implements OnInit, OnChanges {
   onSelect(event: MouseEvent): void {
     event.stopPropagation();
     console.log("################# ONSELECT 11")
-    //this.onSelect.emit(this);
+
+    this.select.emit(this);
+  }
+  toggleNodes(event: MouseEvent): void {
+    this.isExpanded = !this.isExpanded;
+    if(this.isExpanded) {
+      this.childNodes = this.node.children;
+      this.toggle.emit(this);
+    }
   }
 
   setSelected(select: boolean): void {

@@ -5,6 +5,7 @@
     <i class="fa fa-icon pointer"
       [ngClass]="{'fa-angle-right': !isExpanded,
                   'fa-angle-down': isExpanded}"
+      (click)="toggleNodes($event)"
     ></i>
   </div>
   <div>
@@ -14,4 +15,13 @@
     </ng-template>
   </div>
   <!-- put the lower drop target here -->
+  <!-- The children should come here -->
+  <div *ngIf="isExpanded">
+
+      <ng-template
+        [ngTemplateOutlet]="itemTemplate"
+        [ngOutletContext]="{ node: childNodes, index: index }">
+      </ng-template>
+
+  </div>
 </div>

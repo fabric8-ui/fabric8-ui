@@ -147,31 +147,40 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
       //this.clusterIterations();
-      //Parse and arrange the iteration list as a parent child list
-      this.masterIterations = this.allIterations.map(iteration => {
+      //Retain only the direct parent ID
+      this.allIterations.forEach(iteration => {
         let path = iteration.attributes.parent_path.split('/');
+        iteration.attributes.parent_path = path[path.length-1];
+      });
+
+      //Parse and create a format compatible with tree list
+      this.masterIterations = this.allIterations.map(iteration => {
+        let path = iteration.attributes.resolved_parent_path.split('/');
         //Store the depth - for the first time show iteration with the
         //lowest depth - these would be  the parent iterations
         let depth = path.length - 1;
         console.log('details = ', iteration.attributes.name, ' depth = ', depth)
-        //Retain only the direct parent ID
-        iteration.attributes.parent_path = path[path.length-1];
         let obj = {
           id: iteration.id,
           name: iteration.attributes.name,
           hasChildren: false,
           children: [],
-          depth: depth
+          depth: depth,
+          parentId: iteration.attributes.parent_path
         };
-        //Find the children for the current ID
-        obj.children = this.allIterations.filter(i =>
-          i.attributes.parent_path != '' &&
-          i.attributes.parent_path == iteration.id
-        );
-        console.log('children', obj.children);
-        obj.hasChildren = obj.children.length > 0 ? true : false;
         return obj;
       });
+      //Set children and has children
+      this.masterIterations.forEach(iteration => {
+        //Find the children for the current ID
+        iteration.children = this.masterIterations.filter(i => {
+          return (i.parentId != '' &&
+          i.attributes.parent_path == iteration.id)
+        });
+        console.log('children', iteration.children);
+        iteration.hasChildren = iteration.children.length > 0 ? true : false;
+      });
+
       this.treeIterations = this.masterIterations.filter(iteration =>
         iteration.depth === 1);
     }
@@ -388,6 +397,14 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   kebabMenuClick(event: Event) {
     event.stopPropagation();
+  }
+
+  itemToggled(event: Event) {
+    console.log('toggleeee');
+  }
+
+  itemSelected(event: Event) {
+    console.log('selectedeeee');
   }
 
   listenToEvents() {

@@ -20,10 +20,13 @@
           <tree-list-item
             [itemTemplate]="treeListItemTemplate"
             [node]="node"
-            (onSelect)="itemSelected($event)">
+            (onSelect)="itemSelected($event)"
+            (onToggle)="itemToggled($event)">
             <template #treeListItemTemplate let-node="node">
               <iteration-list-entry
                 [iteration]="node"
+                (selectEvent)="onSelect($event)"
+                (toggleEvent)="onToggle($event)"
               >
               </iteration-list-entry>
             </template>
