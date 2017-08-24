@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CollapseModule } from 'ng2-bootstrap';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-modal';
 import {
   AlmEditableModule,
@@ -30,7 +31,8 @@ if (process.env.ENV == 'inmemory') {
       provide: HttpService,
       useExisting: MockHttp
      },
-    TooltipConfig
+    TooltipConfig,
+    BsDropdownConfig
    ];
 } else {
   providers = [
@@ -42,7 +44,8 @@ if (process.env.ENV == 'inmemory') {
       deps: [XHRBackend, RequestOptions, AuthenticationService]
     },
     GlobalSettings,
-    TooltipConfig
+    TooltipConfig,
+    BsDropdownConfig
     ];
 }
 
@@ -52,6 +55,7 @@ if (process.env.ENV == 'inmemory') {
     AlmIconModule,
     CollapseModule,
     CommonModule,
+    BsDropdownModule,
     FormsModule,
     MarkdownModule,
     ModalModule,

@@ -8,7 +8,7 @@ import { IterationModel } from './../../models/iteration.model';
 import { TypeaheadDropdownValue } from './../typeahead-dropdown/typeahead-dropdown.component';
 import { AreaService } from './../../services/area.service';
 import { Observable } from 'rxjs';
-import { cloneDeep, merge } from 'lodash';
+import { cloneDeep, merge, remove } from 'lodash';
 import { WorkItemDataService } from './../../services/work-item-data.service';
 import { ActivatedRoute } from '@angular/router';
 import { Spaces } from 'ngx-fabric8-wit';
@@ -374,5 +374,36 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
         })
       );
     }
+  }
+
+  createComment(comment) {
+    this.workItemService
+      .createComment(this.workItem.relationships.comments.links.related, comment)
+      .subscribe((comment) => {
+          comment.relationships['created-by'].data = this.loggedInUser;
+          this.workItem.relationships.comments.data.splice(0, 0, comment);
+          this.workItem.relationships.comments.meta.totalCount += 1;
+      },
+      (error) => {
+          console.log(error);
+      });
+  }
+
+  updateComment(comment) {
+    // Nothing required here
+  }
+
+  deleteComment(comment) {
+    this.workItemService
+      .deleteComment(comment)
+      .subscribe(response => {
+        if (response.status === 200) {
+          remove(this.workItem.relationships.comments.data, cursor => {
+            if (!!comment) {
+                return cursor.id == comment.id;
+            }
+          });
+        }
+      }, err => console.log(err));
   }
 }
