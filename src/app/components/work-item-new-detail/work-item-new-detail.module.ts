@@ -1,5 +1,5 @@
 import { AuthenticationService } from 'ngx-login-client';
-import { InlineInputModule } from 'ngx-widgets';
+import { WidgetsModule, InlineInputModule } from 'ngx-widgets';
 import { HttpService } from './../../services/http-service';
 import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
 import { WorkItemService } from './../../services/work-item.service';
@@ -57,6 +57,7 @@ if (process.env.ENV == 'inmemory') {
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    WidgetsModule,
     WorkItemNewDetailRoutingModule,
     WorkItemLinkModule,
     InlineInputModule

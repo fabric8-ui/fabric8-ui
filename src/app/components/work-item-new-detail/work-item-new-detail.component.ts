@@ -1,3 +1,4 @@
+import { Broadcaster } from 'ngx-base';
 import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
 import { FormGroup } from '@angular/forms';
 import { Comment } from './../../models/comment';
@@ -15,7 +16,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { WorkItem, WorkItemRelations } from './../../models/work-item';
 import { WorkItemService } from './../../services/work-item.service';
-import { UserService } from 'ngx-login-client';
+import { AuthenticationService,
+  User,
+  UserService
+} from 'ngx-login-client';
 
 
 @Component({
@@ -37,9 +41,13 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   loadingTypes: boolean = false;
   loadingIteration: boolean = false;
   loadingArea: boolean = false;
+  loggedInUser: User;
+  loggedIn: boolean = false;
 
   constructor(
     private areaService: AreaService,
+    private auth: AuthenticationService,
+    private broadcaster: Broadcaster,
     private iterationService: IterationService,
     private route: ActivatedRoute,
     private spaces: Spaces,
@@ -50,6 +58,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.loggedIn = this.auth.isLoggedIn();
     this.spaces.current.switchMap(space => {
         return this.route.params;
       }).filter(params => params['id'] !== undefined)
@@ -313,5 +322,22 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
 
   createWorkItemObj(type: string) {
 
+  }
+
+  listenToEvents() {
+    this.eventListeners.push(
+      this.broadcaster.on<string>('logout')
+        .subscribe(message => {
+          this.loggedIn = false;
+          this.loggedInUser = null;
+      })
+    );
+    if (this.loggedIn) {
+      this.eventListeners.push(
+        this.userService.loggedInUser.subscribe(user => {
+          this.loggedInUser = user;
+        })
+      );
+    }
   }
 }

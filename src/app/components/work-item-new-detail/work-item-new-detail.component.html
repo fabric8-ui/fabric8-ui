@@ -8,7 +8,8 @@
       <div class="width-100 pull-left">
         <div class="col-xs-6 col-sm-4 col-md-3 pull-right text-right">
           <strong>Created </strong>
-          <span>a few seconds ago</span>
+          <span id="created_at"
+          [innerHTML]="workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'"></span>
         </div>
         <div class="col-xs-6 col-sm-8 col-md-9">
           <div>
@@ -20,24 +21,30 @@
           </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 margin-top-15">
-          <div class="dropdown" dropdown>
+          <div class="dropdown" dropdown *ngIf="loggedIn">
             <button class="btn btn-default dropdown-toggle"
               dropdowntoggle>
-              <span class="fa fa-close"></span>
-              <span>New</span>
+              <span class="fa fa-close"
+                almIcon
+                [iconType]="workItem.attributes['system.state']">
+              </span>
+              <span>
+                {{workItem.attributes['system.state']}}
+              </span>
               <span class="caret dib"></span>
             </button>
             <ul class="dropdown-ul dropdown-menu" role="menu">
-              <li class="dropdown-li">
+              <li class="dropdown-li"
+              *ngFor="let state of workItem.relationships?.baseType?.data?.attributes?.fields['system.state'].type.values;">
                 <a>
-                  <span class='dropdown-icon'></span>
-                  <span class='dropdown-text'>state</span>
+                  <span class='dropdown-icon' almIcon [iconType]="state"></span>
+                  <span class='dropdown-text'>{{state}}</span>
                 </a>
               </li>
             </ul>
           </div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="col-xs-12 col-sm-12 col-md-12 margin-top-15">
           <div class="form-horizontal">
             <f8-inlineinput
               [value]="workItem.attributes['system.title']"
