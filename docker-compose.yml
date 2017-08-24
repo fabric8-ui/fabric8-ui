@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  planner:
+    build: .
+    image: fabric8-planner-runtime
+    # command: ./scripts/containerize-with-runtime.sh
+    environment:
+      API_URL: http://core:8080/api/
+    depends_on:
+      - core
+    networks:
+      - default
+    ports:
+      - "8088:8088"
+    volumes:
+      - ./runtime/dist:/dist:Z
+  core:
+    image: fabric8/fabric8-wit:latest
+    command: -config /usr/local/wit/etc/config.yaml
+    depends_on:
+      - db
+    environment:
+      F8_POSTGRES_HOST: db
+    networks:
+      - default
+    ports:
+      - "8080:8080"
+  db:
+    image: registry.centos.org/postgresql/postgresql:9.5
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRESQL_ADMIN_PASSWORD: mysecretpassword
+    networks:
+      - default

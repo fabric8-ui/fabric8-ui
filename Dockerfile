@@ -62,11 +62,11 @@ ENV WORKSPACE=$HOME/fabric8-planner
 RUN mkdir $WORKSPACE
 
 COPY . $WORKSPACE
-RUN chown -R ${FABRIC8_USER_NAME}:${FABRIC8_USER_NAME} $HOME/*
+# RUN chown -R ${FABRIC8_USER_NAME}:${FABRIC8_USER_NAME} $HOME/*
 
 USER ${FABRIC8_USER_NAME}
 WORKDIR $WORKSPACE/
 
 VOLUME /dist
 
-ENTRYPOINT ["/home/fabric8/fabric8-planner/runtime/tests/docker-entrypoint.sh"]
+# ENTRYPOINT ["sudo /home/fabric8/fabric8-planner/runtime/tests/docker-entrypoint.sh"]
