@@ -5,17 +5,23 @@ import { Comment } from './../../models/comment';
 import { IterationService } from './../../services/iteration.service';
 import { AreaModel } from './../../models/area.model';
 import { IterationModel } from './../../models/iteration.model';
-import { TypeaheadDropdownValue } from './../typeahead-dropdown/typeahead-dropdown.component';
+import { TypeaheadDropdown, TypeaheadDropdownValue } from '../typeahead-dropdown/typeahead-dropdown.component';
 import { AreaService } from './../../services/area.service';
 import { Observable } from 'rxjs';
 import { cloneDeep, merge, remove } from 'lodash';
 import { WorkItemDataService } from './../../services/work-item-data.service';
 import { ActivatedRoute } from '@angular/router';
 import { Spaces } from 'ngx-fabric8-wit';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
 
 import { WorkItem, WorkItemRelations } from './../../models/work-item';
 import { WorkItemService } from './../../services/work-item.service';
+import { CollaboratorService } from '../../services/collaborator.service'
 import { AuthenticationService,
   User,
   UserService
@@ -29,6 +35,12 @@ import { AuthenticationService,
 })
 
 export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
+
+  @ViewChild('userSearch') userSearch: any;
+  @ViewChild('areaSelectbox') areaSelectbox: TypeaheadDropdown;
+  @ViewChild('iterationSelectbox') iterationSelectbox: TypeaheadDropdown;
+  @ViewChild('userList') userList: any;
+
   areas: TypeaheadDropdownValue[] = [];
   comments: Comment[] = [];
   dynamicFormGroup: FormGroup;
@@ -43,11 +55,18 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   loadingArea: boolean = false;
   loggedInUser: User;
   loggedIn: boolean = false;
+  users: User[] = [];
+  filteredUsers: User[] = [];
+  usersLoaded: Boolean = false;
+  searchAssignee: Boolean = false;
+  headerEditable: Boolean = false;
+    descText: any = '';
 
   constructor(
     private areaService: AreaService,
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
+    private collaboratorService: CollaboratorService,
     private iterationService: IterationService,
     private route: ActivatedRoute,
     private spaces: Spaces,
@@ -237,6 +256,13 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
       })
   }
 
+  getAllUsers(): Observable<any> {
+    return Observable.combineLatest(
+      this.userService.getUser(),
+      this.collaboratorService.getCollaborators()
+    )
+  }
+
   extractAreaKeyValue(areas: AreaModel[]): TypeaheadDropdownValue[] {
     let result: TypeaheadDropdownValue[] = [];
     let selectedFound: boolean = false;
@@ -376,6 +402,159 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateOnList() {
+    this.workItemService.emitEditWI(this.workItem);
+  }
+
+  activeSearchAssignee() {
+    if (this.loggedIn) {
+      this.getAllUsers()
+      .subscribe(([authUser, allUsers]) => {
+        this.users = allUsers;
+        this.loggedInUser = authUser;
+        this.users = this.users.filter(user => {
+          return user.id !== authUser.id;
+        });
+        this.filteredUsers = this.users;
+        this.usersLoaded = true;
+      });
+      this.closeUserRestFields();
+      this.searchAssignee = true;
+      // Takes a while to render the component
+      setTimeout(() => {
+        if (this.userSearch) {
+          this.userSearch.nativeElement.focus();
+        }
+      }, 50);
+    }
+  }
+
+  deactiveSearchAssignee() {
+    this.closeUserRestFields();
+  }
+
+  filterUser(event: any) {
+    // Down arrow or up arrow
+    if (event.keyCode == 40 || event.keyCode == 38) {
+      let lis = this.userList.nativeElement.children;
+      let i = 0;
+      for (; i < lis.length; i++) {
+        if (lis[i].classList.contains('selected')) {
+          break;
+        }
+      }
+      if (i == lis.length) { // No existing selected
+        if (event.keyCode == 40) { // Down arrow
+          lis[0].classList.add('selected');
+          lis[0].scrollIntoView(false);
+        } else { // Up arrow
+          lis[lis.length - 1].classList.add('selected');
+          lis[lis.length - 1].scrollIntoView(false);
+        }
+      } else { // Existing selected
+        lis[i].classList.remove('selected');
+        if (event.keyCode == 40) { // Down arrow
+          lis[(i + 1) % lis.length].classList.add('selected');
+          lis[(i + 1) % lis.length].scrollIntoView(false);
+        } else { // Down arrow
+          // In javascript mod gives exact mod for negative value
+          // For example, -1 % 6 = -1 but I need, -1 % 6 = 5
+          // To get the round positive value I am adding the divisor
+          // with the negative dividend
+          lis[(((i - 1) % lis.length) + lis.length) % lis.length].classList.add('selected');
+          lis[(((i - 1) % lis.length) + lis.length) % lis.length].scrollIntoView(false);
+        }
+      }
+    } else if (event.keyCode == 13) { // Enter key event
+      let lis = this.userList.nativeElement.children;
+      let i = 0;
+      for (; i < lis.length; i++) {
+        if (lis[i].classList.contains('selected')) {
+          break;
+        }
+      }
+      if (i < lis.length) {
+        let selectedId = lis[i].dataset.value;
+        this.assignUser(selectedId);
+      }
+    } else {
+      let inp = this.userSearch.nativeElement.value.trim();
+      this.filteredUsers = this.users.filter((item) => {
+        return item.attributes.fullName.toLowerCase().indexOf(inp.toLowerCase()) > -1;
+      });
+    }
+  }
+
+  assignUser(user: User): void {
+    if(this.workItem.id) {
+      let payload = cloneDeep(this.workItemPayload);
+      payload = Object.assign(payload, {
+        relationships : {
+          assignees: {
+            data: [{
+              id: user.id,
+              type: 'identities'
+            }]
+          }
+        }
+      });
+      this.save(payload, true)
+        .switchMap(workItem => this.workItemService.resolveAssignees(workItem.relationships.assignees))
+        .subscribe(assignees => {
+          this.workItem.relationships.assignees = {
+            data: assignees
+          };
+          this.updateOnList();
+        })
+    } else {
+      let assignee = [{
+        attributes: {
+          fullName: user.attributes.fullName
+        },
+        id: user.id,
+        type: 'identities'
+      } as User];
+      this.workItem.relationships.assignees = {
+        data : assignee
+      };
+    }
+    this.searchAssignee = false;
+  }
+
+  unassignUser(): void {
+    let payload = cloneDeep(this.workItemPayload);
+    payload = Object.assign(payload, {
+      relationships : {
+        assignees: {
+          data: []
+        }
+      }
+    });
+    this.save(payload, true)
+    .subscribe(() => {
+      this.workItem.relationships.assignees.data = [] as User[];
+      this.updateOnList();
+    });
+    this.searchAssignee = false;
+  }
+
+  cancelAssignment(): void {
+    this.searchAssignee = false;
+  }
+
+  closeUserRestFields(): void {
+    this.searchAssignee = false;
+    if (this.workItem && this.workItem.id != null) {
+      this.headerEditable = false;
+    }
+    if (this.areaSelectbox && this.areaSelectbox.isOpen()) {
+      this.areaSelectbox.close();
+    }
+    if (this.iterationSelectbox && this.iterationSelectbox.isOpen()) {
+      this.iterationSelectbox.close();
+    }
+  }
+
   createComment(comment) {
     this.workItemService
       .createComment(this.workItem.relationships.comments.links.related, comment)
@@ -405,5 +584,209 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
           });
         }
       }, err => console.log(err));
+  }
+
+  getAreas() {
+    this.areaService.getAreas()
+      .subscribe((response: AreaModel[]) => {
+        this.areas = this.extractAreaKeyValue(response);
+      }, err => console.log(err));
+  }
+
+  getIterations() {
+    this.iterationService.getIterations()
+      .subscribe((iteration: IterationModel[]) => {
+        this.iterations = this.extractIterationKeyValue(iteration);
+      }, err => console.log(err));
+  }
+
+  focusArea() {
+    this.iterationSelectbox.close();
+    this.cancelAssignment();
+    this.areas = [
+      ...this.areas,
+      {
+        key: '0',
+        value: '',
+        selected: false,
+        cssLabelClass: 'spinner spinner-sm spinner-inline'
+      }
+    ];
+    this.getAreas();
+  }
+
+  focusIteration() {
+    this.areaSelectbox.close();
+    this.cancelAssignment();
+    this.iterations = [
+      ...this.iterations,
+      {
+        key: '0',
+        value: '',
+        selected: false,
+        cssLabelClass: 'spinner spinner-sm spinner-inline'
+      }
+    ];
+    this.getIterations();
+  }
+
+  areaUpdated(areaId: string) {
+    this.loadingArea = true;
+    if (this.workItem.id) {
+      let payload = cloneDeep(this.workItemPayload);
+      if (areaId) {
+        // area was set to a value.
+        payload = Object.assign(payload, {
+          relationships : {
+            area: {
+              data: {
+                id: areaId,
+                type: 'area'
+              }
+            }
+          }
+        });
+      } else {
+        // area was unset.
+        payload = Object.assign(payload, {
+          relationships : {
+            area: { }
+          }
+        });
+      }
+      this.save(payload, true)
+        .subscribe((workItem: WorkItem) => {
+          this.loadingArea = false;
+          this.areas.forEach(area => area.selected = area.key === areaId);
+          this.workItem.relationships.area = workItem.relationships.area;
+          this.updateOnList();
+      });
+    } else {
+      let area = { };
+      if (areaId) {
+        // area was set to a value.
+        let area = {
+          data: {
+            id: areaId,
+            type: 'area'
+          }
+        };
+      };
+      // Need setTimeout for typeahead drop down't change detection to work
+      setTimeout(() => {
+        this.loadingArea = false;
+        this.areas.forEach(area => area.selected = area.key === areaId);
+        this.workItem.relationships.area = area;
+      });
+    }
+  }
+  iterationUpdated(iterationId: string): void {
+    if (iterationId === '0') return; // Loading item
+    this.loadingIteration = true;
+    if (this.workItem.id) {
+      // Send out an iteration change event
+      let newIteration = iterationId;
+      let currenIterationID = this.workItem.relationships.iteration.data ? this.workItem.relationships.iteration.data.id : 0;
+      // If already closed iteration
+      if (this.workItem.attributes['system.state'] == 'closed') {
+        this.broadcaster.broadcast('wi_change_state_it', [{
+          iterationId: currenIterationID,
+          closedItem: -1
+        }, {
+          iterationId: newIteration,
+          closedItem: +1
+        }]);
+      }
+      let payload = cloneDeep(this.workItemPayload);
+      if (newIteration) {
+        payload = Object.assign(payload, {
+          relationships : {
+            iteration: {
+              data: {
+                id: iterationId,
+                type: 'iteration'
+              }
+            }
+          }
+        });
+      } else {
+        payload = Object.assign(payload, {
+          relationships : {
+            iteration: { }
+          }
+        });
+      }
+      this.save(payload, true).subscribe((workItem: WorkItem) => {
+        this.loadingIteration = false;
+        this.iterations.forEach(it => it.selected = it.key === iterationId);
+        this.workItem.relationships.iteration = workItem.relationships.iteration;
+        this.updateOnList();
+        this.broadcaster.broadcast('associate_iteration', {
+          workItemId: workItem.id,
+          currentIterationId: this.workItem.relationships.iteration.data?this.workItem.relationships.iteration.data.id:undefined,
+          futureIterationId: workItem.relationships.iteration.data?workItem.relationships.iteration.data.id:undefined
+        });
+      });
+    } else {
+      //creating a new work item - save the user input
+      let iteration = { };
+      if (iterationId) {
+        iteration = {
+          data: {
+            // Why do we need attribute for the relationship
+            // attributes: {
+            //   name: this.findIterationById(iterationId).attributes.name
+            // },
+            id: iterationId,
+            type: 'iteration'
+          }
+        }
+      }
+      // Need setTimeout for typeahead drop down't change detection to work
+      setTimeout(() => {
+        this.loadingIteration = false;
+        this.iterations.forEach(it => it.selected = it.key === iterationId);
+        this.workItem.relationships.iteration = iteration;
+      });
+    }
+  }
+
+  descUpdate(event: any): void {
+    const rawText = event.rawText;
+    const callBack = event.callBack;
+    this.descText = rawText;
+    this.workItem.attributes['system.description'] = this.descText.trim();
+    this.workItem.attributes['system.description.markup'] = 'Markdown';
+    if (this.workItem.id) {
+      let payload = cloneDeep(this.workItemPayload);
+      payload.attributes['system.description'] = this.descText.trim();
+      payload.attributes['system.description.markup'] = 'Markdown';
+      this.save(payload, true)
+        .subscribe(workItem => {
+          callBack(
+            workItem.attributes['system.description'],
+            workItem.attributes['system.description.rendered']
+          )
+          this.workItem.attributes['system.description.rendered'] =
+          workItem.attributes['system.description.rendered'];
+          this.workItem.attributes['system.description'] =
+          workItem.attributes['system.description'];
+          this.updateOnList();
+        })
+    } else {
+      this.save();
+    }
+  }
+
+  showPreview(event: any): void {
+    const rawText = event.rawText;
+    const callBack = event.callBack;
+    this.workItemService.renderMarkDown(rawText)
+      .subscribe(renderedHtml => {
+        callBack(
+          rawText,
+          renderedHtml
+        );
+      })
   }
 }

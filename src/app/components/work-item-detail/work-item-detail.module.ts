@@ -26,7 +26,7 @@ import { ModalModule } from 'ngx-modal';
 import { AreaService } from '../../services/area.service';
 import { WorkItemDetailComponent } from './work-item-detail.component';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
-import { TypeaheadDropdown } from '../typeahead-dropdown/typeahead-dropdown.component';
+import { TypeaheadDropDownModule } from '../typeahead-dropdown/typeahead-dropdown.module';
 import { MarkdownControlComponent } from '../markdown-control/markdown-control.component';
 import { WorkItemLinkModule } from '../work-item-link/work-item-link.module';
 import { WorkItemCommentModule } from '../work-item-comment/work-item-comment.module';
@@ -52,6 +52,7 @@ if (process.env.ENV == 'inmemory') {
     CollapseModule,
     FormsModule,
     TooltipModule.forRoot(),
+    TypeaheadDropDownModule,
     Ng2CompleterModule,
     ReactiveFormsModule,
     MarkdownModule,
@@ -65,9 +66,8 @@ if (process.env.ENV == 'inmemory') {
     WorkItemDetailComponent,
     DynamicFieldComponent,
     MarkdownControlComponent,
-    TypeaheadDropdown
   ],
-  exports: [WorkItemDetailComponent, AlmUserName],
+  exports: [WorkItemDetailComponent],
   providers: providers
 })
 export class WorkItemDetailModule { }

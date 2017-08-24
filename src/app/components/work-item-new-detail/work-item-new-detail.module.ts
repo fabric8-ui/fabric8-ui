@@ -1,6 +1,6 @@
 import { AuthenticationService } from 'ngx-login-client';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { WidgetsModule, InlineInputModule } from 'ngx-widgets';
+import { WidgetsModule, InlineInputModule, MarkdownModule } from 'ngx-widgets';
 import { HttpService } from './../../services/http-service';
 import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
 import { WorkItemService } from './../../services/work-item.service';
@@ -13,12 +13,15 @@ import { NgModule }     from '@angular/core';
 import { FormsModule, ReactiveFormsModule }  from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { MockHttp } from './../../mock/mock-http';
 
 import { WorkItemNewDetailComponent } from './work-item-new-detail.component';
 import { WorkItemNewDetailRoutingModule } from './work-item-new-detail-routing.module';
 import { WorkItemCommentModule } from '../work-item-comment/work-item-comment.module';
+import { CollaboratorService } from '../../services/collaborator.service'
+import { TypeaheadDropDownModule } from '../typeahead-dropdown/typeahead-dropdown.module';
 
 
 
@@ -32,9 +35,11 @@ if (process.env.ENV == 'inmemory') {
     AreaService,
     BsDropdownConfig,
     IterationService,
+    TooltipConfig,
     WorkItemDataService,
     WorkItemService,
-    WorkItemTypeControlService
+    WorkItemTypeControlService,
+    CollaboratorService
   ];
 } else {
   providers = [
@@ -48,9 +53,11 @@ if (process.env.ENV == 'inmemory') {
     AreaService,
     BsDropdownConfig,
     IterationService,
+    TooltipConfig,
     WorkItemDataService,
     WorkItemService,
-    WorkItemTypeControlService
+    WorkItemTypeControlService,
+    CollaboratorService
   ];
 }
 
@@ -60,8 +67,11 @@ if (process.env.ENV == 'inmemory') {
     HttpModule,
     CommonModule,
     FormsModule,
+    MarkdownModule,
     ReactiveFormsModule,
     RouterModule,
+    TooltipModule,
+    TypeaheadDropDownModule,
     WidgetsModule,
     WorkItemNewDetailRoutingModule,
     WorkItemLinkModule,
