@@ -13,7 +13,7 @@ import { MyDatePickerModule } from 'mydatepicker';
 
 import { MockHttp } from '../../mock/mock-http';
 
-import { AlmUserName } from '../../pipes/alm-user-name.pipe';
+import { AlmUserNameModule } from '../../pipes/alm-user-name.module';
 
 import {
   AlmEditableModule,
@@ -42,6 +42,7 @@ if (process.env.ENV == 'inmemory') {
 
 @NgModule({
   imports: [
+    AlmUserNameModule,
     BsDropdownModule.forRoot(),
     HttpModule,
     WidgetsModule,
@@ -62,7 +63,6 @@ if (process.env.ENV == 'inmemory') {
     WorkItemCommentModule
   ],
   declarations: [
-    AlmUserName,
     WorkItemDetailComponent,
     DynamicFieldComponent,
     MarkdownControlComponent,

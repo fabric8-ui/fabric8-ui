@@ -95,7 +95,7 @@
                       Unassigned
                     </span>
                     <span *ngIf="!searchAssignee && workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="pointer" id="WI_details_assigned_user">
-                      {{workItem.relationships?.assignees?.data[0] }}
+                      {{workItem.relationships?.assignees?.data[0] | almUserName:'Assignee not found' }}
                     </span>
                     <div *ngIf="searchAssignee" class="user-search" >
                       <div class="list-container">
@@ -164,7 +164,7 @@
                   id="WI_details_reporter_img" />
                 <div class="dib">
                   <span id="WI_details_reporter_user">
-                    {{workItem.relationships?.creator?.data}}
+                    {{workItem.relationships?.creator?.data | almUserName:'Creator not found'}}
                   </span>
                 </div>
             </div>

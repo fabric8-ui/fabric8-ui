@@ -23,6 +23,8 @@ import { WorkItemCommentModule } from '../work-item-comment/work-item-comment.mo
 import { CollaboratorService } from '../../services/collaborator.service'
 import { TypeaheadDropDownModule } from '../typeahead-dropdown/typeahead-dropdown.module';
 
+import { AlmUserNameModule } from '../../pipes/alm-user-name.module';
+
 
 
 let providers = [];
@@ -63,6 +65,7 @@ if (process.env.ENV == 'inmemory') {
 
 @NgModule({
   imports: [
+    AlmUserNameModule,
     BsDropdownModule.forRoot(),
     HttpModule,
     CommonModule,
