@@ -13,16 +13,28 @@
         </div>
         <div class="col-xs-6 col-sm-8 col-md-9">
           <div>
-            <span class="fa fa-puzzle-piece fa-lg dib"></span>
-            <span class="dib">Feature</span>
+            <span *ngIf="loadingTypes"
+              class="spinner spinner-sm spinner-inline">
+            </span>
+            <span
+              *ngIf="!loadingTypes"
+              class="{{workItem.relationships?.baseType?.data?.attributes?.icon}} fa-lg dib">
+            </span>
+            <span
+              *ngIf="!loadingTypes"
+              class="dib">
+              {{workItem.relationships?.baseType?.data?.attributes?.name}}
+            </span>
             <span class="dib">
-              <strong>#1221</strong>
+              <strong>#{{workItem.attributes['system.number']}}</strong>
             </span>
           </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 margin-top-15">
           <div class="dropdown" dropdown *ngIf="loggedIn">
             <button class="btn btn-default dropdown-toggle"
+              id="wi-detail-state"
+              type="button"
               dropdowntoggle>
               <span class="fa fa-close"
                 almIcon
@@ -31,11 +43,11 @@
               <span>
                 {{workItem.attributes['system.state']}}
               </span>
-              <span class="caret dib"></span>
+              <span *ngIf="loggedIn" class="caret dib"></span>
             </button>
-            <ul class="dropdown-ul dropdown-menu" role="menu">
+            <ul class="dropdown-ul dropdown-menu" role="menu" *dropdownMenu>
               <li class="dropdown-li"
-              *ngFor="let state of workItem.relationships?.baseType?.data?.attributes?.fields['system.state'].type.values;">
+                *ngFor="let state of workItem.relationships?.baseType?.data?.attributes?.fields['system.state'].type.values;">
                 <a>
                   <span class='dropdown-icon' almIcon [iconType]="state"></span>
                   <span class='dropdown-text'>{{state}}</span>

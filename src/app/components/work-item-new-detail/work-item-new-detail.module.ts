@@ -1,4 +1,5 @@
 import { AuthenticationService } from 'ngx-login-client';
+import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { WidgetsModule, InlineInputModule } from 'ngx-widgets';
 import { HttpService } from './../../services/http-service';
 import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
@@ -28,6 +29,7 @@ if (process.env.ENV == 'inmemory') {
       provide: Http, useExisting: MockHttp
     },
     AreaService,
+    BsDropdownConfig,
     IterationService,
     WorkItemDataService,
     WorkItemService,
@@ -43,6 +45,7 @@ if (process.env.ENV == 'inmemory') {
       deps: [XHRBackend, RequestOptions, AuthenticationService]
     },
     AreaService,
+    BsDropdownConfig,
     IterationService,
     WorkItemDataService,
     WorkItemService,
@@ -52,6 +55,7 @@ if (process.env.ENV == 'inmemory') {
 
 @NgModule({
   imports: [
+    BsDropdownModule.forRoot(),
     HttpModule,
     CommonModule,
     FormsModule,
