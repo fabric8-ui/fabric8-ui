@@ -423,7 +423,8 @@ export class Fabric8AppGeneratorClient {
    * of a codebase to the current space
    */
   getAddCodebaseDelegate(): IAddCodebaseDelegate {
-    let delegate: IAddCodebaseDelegate = () => {
+    // let delegate: IAddCodebaseDelegate = () => {
+    return ( () => {
       return new Promise<object>((resolve, reject) => {
         let createTransientCodeBase = (repo, stack) => {
           return {
@@ -469,8 +470,8 @@ export class Fabric8AppGeneratorClient {
           );
         }
       });
-    };
-    return delegate;
+    }) as IAddCodebaseDelegate;
+    // return delegate;
   }
 
   private applyTheNextCommandResponse(next: IAppGeneratorPair) {
@@ -692,6 +693,6 @@ export class Fabric8AppGeneratorClient {
 
   /** logger delegate delegates logging to a logger */
   private log: ILoggerDelegate = () => { };
-  private addCodebaseDelegate: IAddCodebaseDelegate = (): Promise<object> => { return Promise.resolve(<object>{}); };
+  private addCodebaseDelegate: IAddCodebaseDelegate = ((): Promise<object> => { return Promise.resolve(<object>{}); }) as IAddCodebaseDelegate;
 
 }
