@@ -324,6 +324,41 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
 
   }
 
+  onChangeState(option: any): void {
+    if (this.workItem.relationships.iteration) {
+      this.broadcaster.broadcast('wi_change_state', [{
+        workItem: this.workItem,
+        oldState: this.workItem.attributes['system.state'],
+        newState: option
+      }]);
+      // Item closed for an iteration
+      if (this.workItem.attributes['system.state'] !== option && option === 'closed') {
+        this.broadcaster.broadcast('wi_change_state_it', [{
+          iterationId: this.workItem.relationships.iteration.data.id,
+          closedItem: +1
+        }]);
+      }
+      // Item opened for an iteration
+      if (this.workItem.attributes['system.state'] == 'closed' && option != 'closes') {
+        this.broadcaster.broadcast('wi_change_state_it', [{
+          iterationId: this.workItem.relationships.iteration.data.id,
+          closedItem: -1
+        }]);
+      }
+    }
+    this.workItem.attributes['system.state'] = option;
+    if(this.workItem.id) {
+      let payload = cloneDeep(this.workItemPayload);
+      payload.attributes['system.state'] = option;
+      this.save(payload, true)
+      .subscribe(
+        workItem => {
+          this.workItem.attributes['system.state'] = workItem.attributes['system.state'];
+          // this.updateOnList();
+        });
+    }
+  }
+
   listenToEvents() {
     this.eventListeners.push(
       this.broadcaster.on<string>('logout')

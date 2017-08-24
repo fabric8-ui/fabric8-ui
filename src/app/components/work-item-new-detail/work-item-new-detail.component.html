@@ -46,7 +46,7 @@
               <span *ngIf="loggedIn" class="caret dib"></span>
             </button>
             <ul class="dropdown-ul dropdown-menu" role="menu" *dropdownMenu>
-              <li class="dropdown-li"
+              <li class="dropdown-li" (click)="onChangeState(state)"
                 *ngFor="let state of workItem.relationships?.baseType?.data?.attributes?.fields['system.state'].type.values;">
                 <a>
                   <span class='dropdown-icon' almIcon [iconType]="state"></span>
