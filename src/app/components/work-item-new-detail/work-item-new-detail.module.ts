@@ -18,6 +18,7 @@ import { MockHttp } from './../../mock/mock-http';
 
 import { WorkItemNewDetailComponent } from './work-item-new-detail.component';
 import { WorkItemNewDetailRoutingModule } from './work-item-new-detail-routing.module';
+import { WorkItemCommentModule } from '../work-item-comment/work-item-comment.module';
 
 
 
@@ -64,7 +65,8 @@ if (process.env.ENV == 'inmemory') {
     WidgetsModule,
     WorkItemNewDetailRoutingModule,
     WorkItemLinkModule,
-    InlineInputModule
+    InlineInputModule,
+    WorkItemCommentModule
   ],
   declarations: [
     WorkItemNewDetailComponent

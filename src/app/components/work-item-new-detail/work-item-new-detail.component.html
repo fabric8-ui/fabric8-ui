@@ -95,9 +95,19 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-5 col-md-5 f8-detail__detail-wrap">
-        <!-- <alm-work-item-link
-          [workItem]="workItem">
-        </alm-work-item-link> -->
+        <alm-work-item-link
+          [workItem]="workItem"
+          [loggedIn]="loggedIn">
+        </alm-work-item-link>
+        <alm-work-item-comment
+          [comments]="comments"
+          [loadingComments]="loadingComments"
+          [loggedIn]="loggedIn"
+          [loggedInUser]="loggedInUser"
+          (create)="createComment($event)"
+          (update)="updateComment($event)"
+          (delete)="deleteComment($event)">
+        </alm-work-item-comment>
       </div>
     </div>
   </fieldset>

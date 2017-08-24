@@ -29,7 +29,7 @@ import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component'
 import { TypeaheadDropdown } from '../typeahead-dropdown/typeahead-dropdown.component';
 import { MarkdownControlComponent } from '../markdown-control/markdown-control.component';
 import { WorkItemLinkModule } from '../work-item-link/work-item-link.module';
-import { WorkItemCommentComponent } from '../work-item-comment/work-item-comment.component';
+import { WorkItemCommentModule } from '../work-item-comment/work-item-comment.module';
 import { WorkItemTypeControlService } from '../../services/work-item-type-control.service';
 
 let providers = [];
@@ -57,11 +57,11 @@ if (process.env.ENV == 'inmemory') {
     MarkdownModule,
     MyDatePickerModule,
     RouterModule,
-    WorkItemLinkModule
+    WorkItemLinkModule,
+    WorkItemCommentModule
   ],
   declarations: [
     AlmUserName,
-    WorkItemCommentComponent,
     WorkItemDetailComponent,
     DynamicFieldComponent,
     MarkdownControlComponent,

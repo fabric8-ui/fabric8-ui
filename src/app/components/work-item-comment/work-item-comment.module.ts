@@ -1,11 +1,20 @@
-
 import { GlobalSettings } from '../../shared/globals';
-import { HttpModule, Http }    from '@angular/http';
+import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
+import { AuthenticationService } from 'ngx-login-client';
 import { HttpService } from './../../services/http-service';
 import { RouterModule } from '@angular/router';
-import { NgModule }           from '@angular/core';
-import { CommonModule }       from '@angular/common';
-import { FormsModule }        from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CollapseModule } from 'ng2-bootstrap';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ModalModule } from 'ngx-modal';
+import {
+  AlmEditableModule,
+  AlmIconModule,
+  WidgetsModule,
+  MarkdownModule
+} from 'ngx-widgets';
 
 import { WorkItemCommentComponent } from './work-item-comment.component';
 
@@ -20,24 +29,41 @@ if (process.env.ENV == 'inmemory') {
     {
       provide: HttpService,
       useExisting: MockHttp
-     }
+     },
+    TooltipConfig
    ];
 } else {
   providers = [
-     GlobalSettings
+    {
+      provide: HttpService,
+      useFactory: (backend: XHRBackend, options: RequestOptions, auth: AuthenticationService) => {
+        return new HttpService(backend, options, auth);
+      },
+      deps: [XHRBackend, RequestOptions, AuthenticationService]
+    },
+    GlobalSettings,
+    TooltipConfig
     ];
 }
 
 @NgModule({
-  imports:      [
+  imports: [
+    AlmEditableModule,
+    AlmIconModule,
+    CollapseModule,
     CommonModule,
     FormsModule,
+    MarkdownModule,
+    ModalModule,
     RouterModule,
-    HttpModule
+    HttpModule,
+    TooltipModule,
+    WidgetsModule
   ],
   declarations: [
+    WorkItemCommentComponent
    ],
-  exports:      [ WorkItemCommentComponent ],
+  exports: [ WorkItemCommentComponent ],
   providers: providers
 })
 export class WorkItemCommentModule { }
