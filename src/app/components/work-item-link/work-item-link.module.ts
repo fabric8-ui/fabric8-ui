@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule }           from '@angular/core';
 import { CommonModule }       from '@angular/common';
 import { FormsModule }        from '@angular/forms';
+import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 import { WorkItemLinkComponent } from './work-item-link.component';
 import {
@@ -25,6 +26,7 @@ if (process.env.ENV == 'inmemory') {
   providers = [
     WorkItemService,
     AreaService,
+    BsDropdownConfig,
     IterationService,
     GlobalSettings,
     EventService,
@@ -37,6 +39,7 @@ if (process.env.ENV == 'inmemory') {
   providers = [
      WorkItemService,
      AreaService,
+     BsDropdownConfig,
      IterationService,
      GlobalSettings,
      EventService
@@ -46,6 +49,7 @@ if (process.env.ENV == 'inmemory') {
 @NgModule({
   imports:      [
     CommonModule,
+    BsDropdownModule,
     FormsModule,
     RouterModule,
     HttpModule
