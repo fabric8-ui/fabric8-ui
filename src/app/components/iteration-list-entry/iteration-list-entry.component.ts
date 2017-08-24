@@ -1,5 +1,15 @@
 import { IterationModel } from '../../models/iteration.model';
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation, OnChanges, SimpleChanges, DoCheck, OnDestroy } from '@angular/core';
+import { Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+  OnChanges,
+  SimpleChanges,
+  DoCheck,
+  OnDestroy,
+  ViewChild } from '@angular/core';
 import {
   Router,
   ActivatedRoute,
@@ -26,7 +36,11 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   @Input() selected: boolean = false;
 
   @Output() selectEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
-  @Output() queryEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
+  @Output() editEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
+  @Output() closeEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
+  @Output() createChildEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
+
+  @ViewChild('kebabMenu') kebabMenu: any;
 
   loggedIn: Boolean = false;
   queryParams: Object = {};
@@ -66,8 +80,19 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
     this.selectEvent.emit(this);
   }
 
-  onSetQuery(): any {
-    return this.queryEvent.emit(this);
+  onEdit(event: MouseEvent): any {
+    event.stopPropagation();
+    this.editEvent.emit(this);
+  }
+
+  onClose(event: MouseEvent): any {
+    event.stopPropagation();
+    this.closeEvent.emit(this);
+  }
+
+  onCreateChild(event: MouseEvent): any {
+    event.stopPropagation();
+    this.createChildEvent.emit(this);
   }
 
   constructURL(iterationId: string) {

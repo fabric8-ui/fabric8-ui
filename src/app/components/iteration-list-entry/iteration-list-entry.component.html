@@ -4,7 +4,7 @@
   [dragula]="'wi-bag'">
   <div class="iteration-subheader">
     <div *ngIf="loggedIn"
-      class="dropdown-kebab-pf pull-right dropdown" dropdown>
+      class="dropdown-kebab-pf pull-right dropdown" dropdown [autoClose]="true" #kebabMenu>
       <button class="btn btn-link dropdown-toggle"
         type="button"
         aria-haspopup="true"
@@ -12,19 +12,20 @@
         dropdownToggle>
         <i class="fa fa-ellipsis-v"></i>
       </button>
-      <ul class="dropdown-menu-right dropdown-menu" *dropdownMenu>
+      <ul class="dropdown-menu-right dropdown-menu"
+        *dropdownMenu>
         <li>
-          <a class="pointer" (click)="modal.openCreateUpdateModal('update', iteration, $event);">
+          <a class="pointer" (click)="onEdit($event)">
             Edit
           </a>
         </li>
         <li>
-          <a class="pointer" (click)="modal.openCreateUpdateModal('close', iteration, $event);">
+          <a class="pointer" (click)="onClose($event)">
             Close
           </a>
         </li>
         <li>
-          <a class="pointer" (click)="modal.openCreateUpdateModal('createChild', iteration, $event);">
+          <a class="pointer" (click)="onCreateChild($event)">
             Create child
           </a>
         </li>

@@ -18,7 +18,7 @@ import { WorkItemDataService } from './../../services/work-item-data.service';
 import { WorkItemService }   from '../../services/work-item.service';
 import { IterationModel } from '../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
-
+import { FabPlannerIterationModalComponent } from '../iterations-modal/iterations-modal.component';
 import { TreeListComponent } from 'ngx-widgets';
 
 @Component({
@@ -34,6 +34,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() takeFromInput: boolean = false;
   @Input() iterations: IterationModel[] = [];
 
+  @ViewChild('modal') modal: FabPlannerIterationModalComponent;
   @ViewChild('treeList') treeList: TreeListComponent;
   @ViewChild('treeListItemTemplate') treeListItemTemplate: TemplateRef<any>;
   @ViewChild('treeListLoadTemplate') treeListLoadTemplate: TemplateRef<any>;
@@ -416,8 +417,25 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   }
 
-  onQuery(event) {
-    return this.constructURL(event.iteration.id);
+  onEdit(event) {
+    let iteration = this.allIterations.find(item =>
+      item.id === event.iteration.id
+    );
+    this.modal.openCreateUpdateModal('update', iteration);
+  }
+
+  onClose(event) {
+    let iteration = this.allIterations.find(item =>
+      item.id === event.iteration.id
+    );
+    this.modal.openCreateUpdateModal('close', iteration);
+  }
+
+  onCreateChild(event) {
+    let iteration = this.allIterations.find(item =>
+      item.id === event.iteration.id
+    );
+    this.modal.openCreateUpdateModal('createChild', iteration);
   }
 
   listenToEvents() {
