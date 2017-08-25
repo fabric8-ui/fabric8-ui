@@ -7,7 +7,7 @@
       <toolbar-panel
         context="boardview"
         [wiTypes]="workItemTypes"
-        (showDetailEvent)="typeSelectPanel.openPanel()"
+        (onCreateNewWorkItemSelected)="typeSelectPanel.openPanel()"
         [currentBoardType]="currentBoardType"
         [areas]="areas"
         [loggedInUser]="loggedInUser">

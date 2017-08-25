@@ -59,7 +59,7 @@
       <template #addTemplate>
         <button *ngIf="loggedIn && editEnabled && wiTypes.length" 
             class="btn btn-default primary-action add-button" type="button" 
-            (click)="showDetailType($event)">
+            (click)="createNewWorkItem($event)">
           <i class="pficon pficon-add-circle-o add-button-icon"></i>
           <span class="add-button-text">Create</span> 
         </button>

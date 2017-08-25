@@ -1,14 +1,36 @@
-import { EventService } from './../../services/event.service';
-import { Component, Input, OnInit, AfterViewInit, TemplateRef, ViewChild, ViewEncapsulation, OnChanges, Output, OnDestroy, EventEmitter, SimpleChanges } from '@angular/core';
-import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-
-import { cloneDeep } from 'lodash';
-import { Broadcaster } from 'ngx-base';
-import { AuthenticationService, UserService, User } from 'ngx-login-client';
 import { Subscription } from 'rxjs/Subscription';
-import { Space, Spaces } from 'ngx-fabric8-wit';
+import { 
+  Component, 
+  Input, 
+  OnInit, 
+  AfterViewInit, 
+  ViewEncapsulation, 
+  Output, 
+  OnDestroy, 
+  EventEmitter 
+} from '@angular/core';
+import { 
+  Router, 
+  ActivatedRoute, 
+  NavigationExtras 
+} from '@angular/router';
+import { cloneDeep } from 'lodash';
+import {
+  FilterConfig,
+  FilterEvent,
+  ToolbarConfig
+} from 'patternfly-ng';
 
+import { Broadcaster } from 'ngx-base';
+import { Spaces } from 'ngx-fabric8-wit';
+import {
+  AuthenticationService, 
+  UserService, 
+  User 
+} from 'ngx-login-client';
+
+import { EventService } from './../../services/event.service';
 import { AreaModel } from '../../models/area.model';
 import { AreaService } from '../../services/area.service';
 import { FilterModel } from '../../models/filter.model';
@@ -19,33 +41,29 @@ import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-li
 import { WorkItemType } from '../../models/work-item-type';
 import { WorkItem } from '../../models/work-item';
 
-import {
-  FilterConfig,
-  FilterEvent,
-  ToolbarConfig
-} from 'patternfly-ng';
-
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'toolbar-panel',
   templateUrl: './toolbar-panel.component.html',
   styleUrls: ['./toolbar-panel.component.less']
 })
-export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
+
   @Input() context: string;
   @Input() wiTypes: WorkItemType[] = [];
   @Input() areas: AreaModel[] = [];
   @Input() loggedInUser: User | Object = {};
   @Input() currentBoardType: WorkItemType | Object = {};
 
-  @Output() showDetailEvent: EventEmitter<any | null> = new EventEmitter();
+  @Output() onCreateNewWorkItemSelected: EventEmitter<any | null> = new EventEmitter();
 
-  filters: any[] = [];
   loggedIn: boolean = false;
   editEnabled: boolean = false;
+  showTypesOptions: boolean = false;
+
+  filters: any[] = [];
   workItemToMove: WorkItemListEntryComponent;
   workItemDetail: WorkItem;
-  showTypesOptions: boolean = false;
   spaceSubscription: Subscription = null;
   eventListeners: any[] = [];
   currentQueryParams: Object = {};
@@ -71,6 +89,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     'assignee',
     'area'
   ];
+
+  // the type of the list is changed (Hierarchy/Flat).
   currentListType: string = 'Hierarchy';
 
   private queryParamSubscriber = null;
@@ -107,54 +127,56 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
   }
 
   ngOnInit() {
-    console.log('[FilterPanelComponent] Running in context: ' + this.context);
+    console.log('[ToolbarPanelComponent] Running in context: ' + this.context);
     this.loggedIn = this.auth.isLoggedIn();
     this.firstVisit = true;
+    // if this is a list view, we allow the wi type to be a filter.
     if (this.context === 'listview') {
       this.allowedFilterKeys.push('workitemtype');
-    } else {
-      // this.allowedFilterKeys.push('workitemtype');
     }
-
-    // this.filterService.getFilters().then(response => {
-    //   console.log(response);
-    // });
-
-    // we need to get the wi types for the types dropdown on the board item
-    // even when there is no active space change (initial population).
+    // we want to get notified on space changes.
     this.spaceSubscription = this.spaces.current.subscribe(space => {
-      console.log(this.eventListeners);
       if (space) {
-        console.log('[FilterPanelComponent] New Space selected: ' + space.attributes.name);
+        console.log('[ToolbarPanelComponent] New Space selected: ' + space.attributes.name);
         this.editEnabled = true;
       } else {
-        console.log('[FilterPanelComponent] Space deselected.');
+        console.log('[ToolbarPanelComponent] Space deselected.');
         this.editEnabled = false;
       }
     });
   }
 
   ngAfterViewInit(): void {
-    this.listenToEvents();
+    // listen for logout events.
+    this.eventListeners.push(
+      this.broadcaster.on<string>('logout')
+        .subscribe(message => {
+          this.loggedIn = false;
+      })
+    );
+    // listen for changes on the available filters.
     this.eventListeners.push(
       this.filterService.getFilters()
         .subscribe(filters => this.setFilterTypes(filters))
     );
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-  }
-
   ngOnDestroy() {
+    // make sure we unsubscribe from all events.
     if (this.queryParamSubscriber) {
       this.queryParamSubscriber.unsubscribe();
     }
     this.eventListeners.map((e) => e.unsubscribe());
+    // clean up.
     this.filterConfig.appliedFilters = [];
     this.filterService.clearFilters(this.allowedFilterKeys);
   }
 
   onChangeListType(type: string) {
+    // the type of the list is changed (Hierarchy/Flat).
+    // this will be removed with the new tree list.
+    // and if not removed, it should be converted to a 
+    // global event instead of a BehaviourSubject.
     this.currentListType = type;
     if (type==='Hierarchy') {
       this.eventService.showHierarchyListSubject.next(true);
@@ -170,6 +192,13 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
             f.attributes.query.lastIndexOf("]")
       )) > -1);
 
+    /*
+     * The current version of the patternfly filter dropdown does not fully support the async
+     * update of the filterConfig.fields fields set. It does not refresh the widget on field 
+     * array change. The current workaround is to add a "dummy" entry "Select Filter.." as
+     * the first entry in the fields array. When the user selects a new value from the 
+     * filter list, the implementation works subsequently.
+     */
     this.toolbarConfig.filterConfig.fields = [
       this.toolbarConfig.filterConfig.fields[0],
       ...filters.map(filter => {
@@ -186,6 +215,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
         };
       })
     ];
+
     this.listenToQueryParams();
   }
 
@@ -299,10 +329,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     this.router.navigate([], navigationExtras);
   }
 
-  moveItem(moveto: string) {
-    this.broadcaster.broadcast('move_item', moveto);
-  };
-
   showTypes() {
     this.showTypesOptions = true;
   }
@@ -331,9 +357,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
     }
   }
 
-  showDetailType(event: MouseEvent): void {
+  createNewWorkItem(event: MouseEvent): void {
     event.stopPropagation();
-    this.showDetailEvent.emit();
+    this.onCreateNewWorkItemSelected.emit();
   }
 
   getFilterMap() {
@@ -433,15 +459,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnChanges, 
         ...this.savedFIlterFieldQueries[event.field.id]['filterable']
       ]
     }
-  }
-
-  listenToEvents() {
-    this.eventListeners.push(
-      this.broadcaster.on<string>('logout')
-        .subscribe(message => {
-          this.loggedIn = false;
-      })
-    );
   }
 
   listenToQueryParams() {

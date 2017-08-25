@@ -6,6 +6,14 @@
   border-bottom: 1px solid;
   border-bottom-color: @color-pf-black-300;
 
+  /*
+    TODO: on the entry "WorkItem Type" of the filter dropdown, there is a
+    border on the right side of the key button missing. The border is actually there,
+    but gets overlayed with the right hand value dropdown. Having fewer text
+    in the button solves the problem. Setting margin to 0px also solves the problem,
+    but then there is a 1px gap in other value dropdowns.
+  */
+
   .btn {
     /* font size for all buttons in the toolbar */
     /* TODO: this should be patternfly default, but it gets overridden somehow */
@@ -16,6 +24,15 @@
     /* font size for all links (ex dropdown entries in the toolbar */
     /* TODO: this should be patternfly default, but it gets overridden somehow */
     font-size: 12px;
+  }
+
+  .form-control, .btn, .dropdown-menu, .badge {
+    /* this is only used for the assignee value dropdown as this is re-used from elsewhere */
+    /* TODO: this should be patternfly default, but it gets overridden somehow */
+    font-size: 12px;    
+    /* TODO: the caret on the assignee dropdown looks different than on other values. 
+             It looks like the caret on the assignee is the correct one, but it gets 
+             overridden somehow. */
   }
 
   .toolbar-actions, .toolbar-apf-filter {
