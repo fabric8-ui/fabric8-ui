@@ -62,11 +62,16 @@ ENV WORKSPACE=$HOME/fabric8-planner
 RUN mkdir $WORKSPACE
 
 COPY . $WORKSPACE
-# RUN chown -R ${FABRIC8_USER_NAME}:${FABRIC8_USER_NAME} $HOME/*
 
-USER ${FABRIC8_USER_NAME}
 WORKDIR $WORKSPACE/
 
-VOLUME /dist
+RUN npm install \
+ && npm run build \
+ && cd runtime \
+ && npm link ../dist \
+ && npm install
 
-# ENTRYPOINT ["sudo /home/fabric8/fabric8-planner/runtime/tests/docker-entrypoint.sh"]
+VOLUME /dist
+EXPOSE 8080
+
+CMD cd /home/fabric8/fabric8-planner/runtime ; npm start

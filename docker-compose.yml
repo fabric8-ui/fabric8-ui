@@ -4,7 +4,7 @@ services:
   planner:
     build: .
     image: fabric8-planner-runtime
-    # command: ./scripts/containerize-with-runtime.sh
+    # command: npm run test:unit
     environment:
       API_URL: http://core:8080/api/
     depends_on:
@@ -12,7 +12,7 @@ services:
     networks:
       - default
     ports:
-      - "8088:8088"
+      - "8088:8080"
     volumes:
       - ./runtime/dist:/dist:Z
   core:
