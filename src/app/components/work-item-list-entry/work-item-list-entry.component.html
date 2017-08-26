@@ -4,7 +4,7 @@
 		[dialog]='dialog'
   ></alm-dialog>
 </div>
-<div class="workItemList_entry" (click)="onSelect($event); onDetailPreview($event);" >
+<div class="workItemList_entry" (click)="onSelect($event);" >
 	<!--checkbox to select a WI and move it-->
 	<div class="row-cbh" title="Select the checkbox to move the item." *ngIf="loggedIn">
 		<input type="checkbox" [checked]="checkedWI" (click)="toggleEntry($event)" />
@@ -57,7 +57,10 @@
 				<li><a (click)="onDetailPreview($event)" class="workItemList_Open">Preview</a></li>
 				<li><a class="workItemList_Backlog" (click)="onMoveToBacklog($event)">Move to Backlog</a></li>
 			</ul>
-		</div>
+    </div>
+    <div class="pull-right">
+      <a (click)="onDetailPreview($event)" class="workItemList_Open">Preview</a>
+    </div>
 	</div>
 </div>
 
