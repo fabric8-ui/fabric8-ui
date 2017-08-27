@@ -114,7 +114,7 @@ export class StatusListComponent extends AbstractWatchComponent implements OnIni
       .subscribe(ns => {
         if (ns) {
           let namespaceName = ns.name;
-          let data = this.listAndWatch(this.podService, namespaceName, Pod).map(pods => podsToStatusInfo(pods, "app", "jenkins-openshift"));
+          let data = this.listAndWatch(this.podService, namespaceName, Pod).map(pods => podsToStatusInfo(pods, "app", "jenkins"));
           this.loading.next(false);
           this.pipelineStatus.replaceSubscription(ns, data);
         }
