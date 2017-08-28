@@ -4,6 +4,8 @@ export class IterationModel {
   links?: IterationLinks;
   relationships?: IterationRelations;
   type: string;
+  hasChildren?: boolean;
+  children?: IterationModel[];
 }
 
 export class IterationAttributes {

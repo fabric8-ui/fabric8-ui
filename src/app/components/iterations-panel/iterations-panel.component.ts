@@ -67,9 +67,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
     allowDrag: false,
-    getChildren: (node: TreeNode): any => {
-      return this.workItemService.getChildren(node.data);
-    },
     levelPadding: 30,
     allowDrop: (element, to) => {
       // return true / false based on element, to.parent, to.index. e.g.
@@ -161,39 +158,8 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
       //this.clusterIterations();
-      //Retain only the direct parent ID
-      this.allIterations.forEach(iteration => {
-        let path = iteration.attributes.parent_path.split('/');
-        iteration.attributes.parent_path = path[path.length-1];
-      });
-      //Parse and create a format compatible with tree list
-      this.masterIterations = this.allIterations.map(iteration => {
-        let path = iteration.attributes.resolved_parent_path.split('/');
-        //Store the depth - for the first time show iteration with the
-        let obj = {
-          id: iteration.id,
-          name: iteration.attributes.name,
-          hasChildren: false,
-          children: [],
-          depth: path.length - 1,
-          parentId: iteration.attributes.parent_path,
-          iteration:iteration
-        };
-        return obj;
-      });
-      //Set children and has children
-      this.masterIterations.forEach(iteration => {
-        //Find the children for the current ID
-        iteration.children = this.masterIterations.filter(i => {
-          return (i.parentId != '' &&
-          i.parentId == iteration.id)
-        });
-        console.log('children', iteration.children);
-        iteration.hasChildren = iteration.children.length > 0 ? true : false;
-      });
-
-      this.treeIterations = this.masterIterations.filter(iteration =>
-        iteration.depth === 1);
+      this.treeIterations = this.iterationService.getTopLevelIterations(this.allIterations);
+      console.log('this.treeIterations = ', this.treeIterations);
     }
   }
 
