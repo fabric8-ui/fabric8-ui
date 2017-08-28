@@ -60,7 +60,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   usersLoaded: Boolean = false;
   searchAssignee: Boolean = false;
   headerEditable: Boolean = false;
-    descText: any = '';
+  descText: any = '';
 
   constructor(
     private areaService: AreaService,
@@ -90,6 +90,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
             this.loadWorkItem(workItemId);
           }
       })
+    this.listenToEvents();
   }
 
   ngOnDestroy() {
@@ -775,7 +776,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
         })
     } else {
       this.save();
-    }
+    }``
   }
 
   showPreview(event: any): void {
@@ -788,5 +789,9 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
           renderedHtml
         );
       })
+  }
+
+  navigateBack() {
+    window.history.back();
   }
 }
