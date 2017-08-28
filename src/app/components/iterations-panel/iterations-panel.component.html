@@ -36,6 +36,7 @@
                 class="iteration-list-entry"
                 [listItem]="treeListItem"
                 [iteration]="node.data"
+                [collection]="collection"
                 (selectEvent)="onSelect($event)"
                 (toggleEvent)="onToggle($event)"
                 (queryEvent)="onQuery($event)"

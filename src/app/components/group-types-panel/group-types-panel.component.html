@@ -8,7 +8,7 @@
   <!--If group is execution show a header and then embed the iteration component -->
   <div *ngIf="item.group == 'execution'">
     <div class="width-100 pull-left">
-      <fab-planner-iteration [takeFromInput]="true"
+      <fab-planner-iteration [takeFromInput]="true" [collection]="item.wit_collection"
         [iterations]="iterations" class="fab-planner-iteration"></fab-planner-iteration>
     </div>
   </div>

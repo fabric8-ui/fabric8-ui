@@ -39,7 +39,6 @@
       </span>
     </div>
     <div class="iteration-status">
-      <div>
         <span>
             {{iteration.attributes.startAt ? (iteration.attributes.startAt | date:longDate) : 'No date set'}}
             -
@@ -50,7 +49,7 @@
             /{{iteration.relationships?.workitems?.meta?.total}}
             completed
         </span>
-      </div>
+
     </div>
   </div>
 </div>
