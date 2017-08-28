@@ -85,7 +85,6 @@ export class IterationService {
               iteration.hasChildren = true;
               iteration.children = childIterations;
             }
-            console.log('returning = ', iteration);
             return iteration;
           });
           return this.iterations;
@@ -234,12 +233,8 @@ export class IterationService {
   }
 
   checkForChildIterations(parent: IterationModel, iterations): IterationModel[] {
-    let children = iterations.filter(i => {
-      console.log(i.attributes.parent_path, '===', parent.id, '>>>index = ',i.attributes.resolved_parent_path.indexOf(parent.id))
-      return (i.attributes.parent_path.indexOf(parent.id) >= 0);
-    }
-    );
-    console.log('Parent name = ', parent.attributes.name, 'children = ', children);
+    let children = iterations.filter(i =>
+      i.attributes.parent_path.indexOf(parent.id) >= 0);
     return children;
   }
 
