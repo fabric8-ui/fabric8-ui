@@ -347,7 +347,6 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   }
 
   saveTitle(event: any) {
-    console.log('#### - 0');
     const value = event.value.trim();
     const callBack = event.callBack;
     if (value === '') {
@@ -399,7 +398,6 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
         retObservable = this.workItemService
         .create(this.workItem)
         .do(workItem => {
-          console.log('###### - 1', workItem);
           let queryParams = cloneDeep(this.route.snapshot.queryParams);
           if (Object.keys(queryParams).indexOf('type') > -1) {
             delete queryParams['type'];
@@ -739,18 +737,18 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
       let area = { };
       if (areaId) {
         // area was set to a value.
-        let area = {
+        area = {
           data: {
             id: areaId,
             type: 'area'
           }
         };
       };
+      this.workItem.relationships.area = area;
       // Need setTimeout for typeahead drop down't change detection to work
       setTimeout(() => {
         this.loadingArea = false;
         this.areas.forEach(area => area.selected = area.key === areaId);
-        this.workItem.relationships.area = area;
       });
     }
   }
@@ -816,11 +814,11 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
           }
         }
       }
+      this.workItem.relationships.iteration = iteration;
       // Need setTimeout for typeahead drop down't change detection to work
       setTimeout(() => {
         this.loadingIteration = false;
         this.iterations.forEach(it => it.selected = it.key === iterationId);
-        this.workItem.relationships.iteration = iteration;
       });
     }
   }
@@ -848,8 +846,17 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
           this.updateOnList();
         })
     } else {
-      this.save();
-    }``
+      this.workItem.attributes['system.description'] = this.descText.trim();
+      this.workItem.attributes['system.description.markup'] = 'Markdown';
+      this.workItemService.renderMarkDown(
+        this.workItem.attributes['system.description']
+      ).subscribe(rendered => {
+        callBack(
+          this.workItem.attributes['system.description'],
+          rendered
+        )
+      });
+    }
   }
 
   showPreview(event: any): void {
