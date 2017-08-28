@@ -176,7 +176,8 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
           hasChildren: false,
           children: [],
           depth: path.length - 1,
-          parentId: iteration.attributes.parent_path
+          parentId: iteration.attributes.parent_path,
+          iteration:iteration
         };
         return obj;
       });

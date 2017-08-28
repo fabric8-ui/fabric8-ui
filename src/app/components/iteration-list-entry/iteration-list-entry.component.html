@@ -38,6 +38,20 @@
         {{iteration.name | truncate : 45 }}
       </span>
     </div>
+    <div class="iteration-status">
+      <div>
+        <span>
+            {{iteration.iteration.attributes.startAt ? (iteration.iteration.attributes.startAt | date:longDate) : 'No date set'}}
+            -
+            {{iteration.iteration.attributes.endAt ? (iteration.iteration.attributes.endAt | date:longDate) : 'No date set'}}
+        </span>
+        <span class="iteration-count pull-right">
+            {{iteration.iteration.relationships?.workitems?.meta?.closed}}
+            /{{iteration.iteration.relationships?.workitems?.meta?.total}}
+            completed
+        </span>
+      </div>
+    </div>
   </div>
 </div>
 

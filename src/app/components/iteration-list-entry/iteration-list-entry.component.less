@@ -1,6 +1,7 @@
 @import '../../../assets/stylesheets/_base';
 .iteration-entry {
   cursor: pointer;
+  padding-bottom: 5px;
   .badge { background-color: @color-pf-black; }
   .iteration-header {
     padding: 10px 20px;
@@ -9,9 +10,14 @@
     .add-btn { color: @color-pf-blue; }
   }
   .iteration-subheader {
-    .dropdown-kebab-pf { margin-left: 10px; }
-    .iteration-name {
-
+    .dropdown-kebab-pf {
+      margin-left: 10px;
     }
+    i {
+      color: @color-pf-white;
+    }
+  }
+  .iteration-status {
+    color: @color-pf-black-600;
   }
 }

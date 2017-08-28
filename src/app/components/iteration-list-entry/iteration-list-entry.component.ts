@@ -57,6 +57,7 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loggedIn = this.auth.isLoggedIn();
+    console.log('iteration = ', this.iteration);
   }
 
   ngOnDestroy() {
