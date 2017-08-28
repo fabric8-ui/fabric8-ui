@@ -233,8 +233,12 @@ export class IterationService {
   }
 
   checkForChildIterations(parent: IterationModel, iterations): IterationModel[] {
-    let children = iterations.filter(i =>
-      i.attributes.parent_path.indexOf(parent.id) >= 0);
+    let children = iterations.filter(i => {
+      //check only for direct parent
+      let path_arr = i.attributes.parent_path.split('/');
+      let id = path_arr[path_arr.length-1];
+      return (id === parent.id);
+    });
     return children;
   }
 
