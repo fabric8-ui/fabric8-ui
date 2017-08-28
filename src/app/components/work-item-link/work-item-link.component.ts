@@ -207,12 +207,12 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck, OnDest
     if (links['relationships']['target']['data']['id'] == workItem['id']){
       workItemId = links['relationships']['source']['data']['id'];
     }
-    this.router.navigateByUrl(trimEnd(this.router.url.split('detail')[0], '/') + '/detail/' + workItemId);
+    this.router.navigateByUrl(trimEnd(this.router.url.split('plan')[0], '/') + '/detail/' + workItemId);
   }
 
-  getLinkId(link, wiId) {
-    return link.relationalData.source.id == wiId ?
-      link.relationalData.target.id : link.relationalData.source.id;
+  getWILink(link, wiId) {
+    return trimEnd(this.router.url.split('plan')[0], '/') + '/plan/detail/' + (link.relationalData.source.id == wiId ?
+      link.relationalData.target.id : link.relationalData.source.id);
   }
 
   linkSearchWorkItem(term: any, event: any) {
