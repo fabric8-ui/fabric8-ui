@@ -3,6 +3,7 @@
 .f8-detail {
   &__header {
     background: @color-pf-black-200;
+    height: 200px;
   }
   &__edit-icon {
     position: absolute;
@@ -17,6 +18,9 @@
       background: @color-pf-white;
       .Border(1px, solid, @color-pf-blue);
     }
+  }
+  &__detail {
+    height: ~"calc(e('100vh - 290px'))";
   }
   .close {
     cursor: pointer;
