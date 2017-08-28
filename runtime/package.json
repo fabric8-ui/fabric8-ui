@@ -23,7 +23,7 @@
     "preclean:install": "npm run clean",
     "preversion": "npm test",
     "rimraf": "rimraf",
-    "server:dev": "webpack-dev-server --config config/webpack.dev.js --progress --profile --watch --content-base src/",
+    "server:dev": "webpack-dev-server --host 0.0.0.0 --config config/webpack.dev.js --progress --profile --watch --content-base src/",
     "server:prod": "http-server dist -c-1 --cors",
     "server": "npm run server:dev",
     "start": "npm run server:dev",
