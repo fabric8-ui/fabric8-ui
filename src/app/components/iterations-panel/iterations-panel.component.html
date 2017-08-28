@@ -3,7 +3,9 @@
   <a *ngIf="loggedIn && editEnabled"
     class="text-right"
     (click)="modal.openCreateUpdateModal('create', null, $event);">
-    <i *ngIf="loggedIn && editEnabled" id="add-iteration-icon" class="pficon-add-circle-o fa-lg pull-right with-cursor-pointer add-btn" placement="bottom" tooltip="Add an Iteration"></i>
+    <i class="pficon-add-circle-o fa-lg pull-right with-cursor-pointer add-btn"
+      id="add-iteration-icon" placement="bottom"
+      tooltip="Add an Iteration"></i>
   </a>
 </div>
 <div class="iterations-container">
