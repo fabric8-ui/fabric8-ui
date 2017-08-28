@@ -2,10 +2,10 @@ import { CommonModule }     from '@angular/common';
 import { Http } from '@angular/http';
 import { NgModule }         from '@angular/core';
 
-import { WorkItemNewDetailModule } from 'fabric8-planner';
+import { PlannerDetailModule } from 'fabric8-planner';
 
 @NgModule({
-  imports:      [ CommonModule, WorkItemNewDetailModule ]
+  imports:      [ CommonModule, PlannerDetailModule ]
 })
 export class PlanDetailModule {
   constructor(http: Http) {}
