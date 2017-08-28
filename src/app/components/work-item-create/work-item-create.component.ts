@@ -2,7 +2,7 @@ import { WorkItemDetailAddTypeSelectorWidgetComponent } from './work-item-create
 import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 
-import { cloneDeep } from 'lodash';
+import { cloneDeep, trimEnd } from 'lodash';
 import { Broadcaster } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 import { Subscription } from 'rxjs/Subscription';
@@ -87,15 +87,11 @@ export class WorkItemDetailAddTypeSelectorComponent implements OnInit, OnChanges
 
   onChangeType(type: WorkItemType) {
     this.workItemDetailAddTypeSelectorWidget.close();
-    const queryParams = this.route.snapshot.queryParams;
-    let newQueryParams = {type: type.id};
-    Object.assign(newQueryParams, queryParams);
-    this.router.navigate(
-      ['detail', 'new'],
-      {
-        queryParams: newQueryParams,
-        relativeTo: this.route
-      } as NavigationExtras
+    this.router.navigateByUrl(
+      trimEnd(
+        this.router.url.split('plan')[0], '/')
+        + '/plan/detail/new?type='
+        + type.id
     );
   }
 }

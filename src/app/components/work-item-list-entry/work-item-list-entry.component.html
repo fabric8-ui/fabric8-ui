@@ -18,11 +18,10 @@
     </div>
     <div class="list-view-pf-body">
       <div class="list-view-pf-description">
-        <div class="workItemList_title truncate-ellipsis col-xs-12 row">
+        <div class="workItemList_title truncate-ellipsis col-xs-12 row"
+          (click)="onDetailPreview($event)">
             <p class="col-md-12 col-sm-12 col-xs-12 pull-left truncate">
-              <a [routerLink]="[constructUrl(workItem.id)]" [queryParams]="queryParams">
-                {{workItem.attributes['system.title']}}
-              </a>
+              {{workItem.attributes['system.title']}}
             </p>
         </div>
         <div class="list-group-item-text workItemList_description dn">
@@ -59,7 +58,9 @@
 			</ul>
     </div>
     <div class="pull-right">
-      <a (click)="onDetailPreview($event)" class="workItemList_Open">Preview</a>
+      <a [routerLink]="[constructUrl(workItem.id)]"
+        [queryParams]="queryParams"
+        class="pficon pficon-arrow"></a>
     </div>
 	</div>
 </div>

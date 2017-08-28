@@ -10,7 +10,7 @@ import { AreaService } from './../../services/area.service';
 import { Observable } from 'rxjs';
 import { cloneDeep, merge, remove } from 'lodash';
 import { WorkItemDataService } from './../../services/work-item-data.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Spaces } from 'ngx-fabric8-wit';
 import {
   Component,
@@ -69,6 +69,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
     private collaboratorService: CollaboratorService,
     private iterationService: IterationService,
     private route: ActivatedRoute,
+    private router: Router,
     private spaces: Spaces,
     private userService: UserService,
     private workItemService: WorkItemService,
@@ -85,6 +86,8 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
           let workItemId = params['id'];
           if (workItemId === 'new'){
             // Create new work item ID
+            let type = this.route.snapshot.queryParams['type'];
+            this.createWorkItemObj(type);
           } else {
             console.log('Work item ID: ', workItemId);
             this.loadWorkItem(workItemId);
@@ -96,6 +99,45 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     console.log('Destroying all the listeners in detail component');
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
+  }
+
+  createWorkItemObj(type: string) {
+    this.workItem = new WorkItem();
+    this.workItem.id = null;
+    this.workItem.attributes = new Map<string, string | number>();
+    this.workItem.attributes['system.title'] = '';
+    this.workItem.attributes['system.description'] = '';
+    this.workItem.attributes['system.description.rendered'] = '';
+    this.workItem.relationships = new WorkItemRelations();
+    this.workItem.type = 'workitems';
+    this.workItem.relationships = {
+      baseType: {
+        data: {
+          id: type,
+          type: 'workitemtypes'
+        }
+      }
+    } as WorkItemRelations;
+
+    // Add creator
+    this.userService.getUser()
+      .subscribe(
+        user => {
+          this.workItem.relationships = Object.assign(
+            this.workItem.relationships,
+            {
+              creator: {
+                data: user
+              }
+            }
+          );
+        },
+        err => console.log(err)
+      );
+
+    this.workItem.relationalData = {};
+    this.workItemService.resolveType(this.workItem);
+    this.workItem.attributes['system.state'] = 'new';
   }
 
   loadWorkItem(id: string): void {
@@ -305,12 +347,13 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   }
 
   saveTitle(event: any) {
+    console.log('#### - 0');
     const value = event.value.trim();
     const callBack = event.callBack;
-    if (this.workItem.attributes['system.title'] === value) {
-      callBack(value);
-    } else if (value === '') {
+    if (value === '') {
       callBack(value, 'Empty title not allowed');
+    } else if (this.workItem.attributes['system.title'] === value) {
+      callBack(value);
     } else {
       this.workItem.attributes['system.title'] = value;
       if (this.workItem.id) {
@@ -321,6 +364,17 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
             this.workItem.attributes['system.title'] = workItem.attributes['system.title'];
             callBack(value);
           });
+      } else {
+        let payload = cloneDeep(this.workItem);
+        payload.attributes['system.title'] = value;
+        this.save(payload, true)
+          .subscribe(() => {
+            callBack(value);
+          },
+          (err) => {
+            console.log(err);
+            callBack(value, 'Something went wrong');
+          })
       }
     }
   }
@@ -339,16 +393,35 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
         .catch((error: Error | any) => {
           return Observable.throw(error);
         });
+    } else {
+      const t1 = performance.now();
+      if (this.workItem.attributes['system.title']) {
+        retObservable = this.workItemService
+        .create(this.workItem)
+        .do(workItem => {
+          console.log('###### - 1', workItem);
+          let queryParams = cloneDeep(this.route.snapshot.queryParams);
+          if (Object.keys(queryParams).indexOf('type') > -1) {
+            delete queryParams['type'];
+          }
+          this.router.navigate(
+            [this.router.url.split('/detail/')[0] + '/detail/' + workItem.id],
+            { queryParams: queryParams } as NavigationExtras
+          );
+          this.workItemService.emitAddWI(workItem);
+          const t2 = performance.now();
+          console.log('Performance :: Detail add work item - '  + (t2 - t1) + ' milliseconds.');
+        })
+        .catch((error: Error | any) => {
+          return Observable.throw(error);
+        });
+      }
     }
     if (returnObservable) {
       return retObservable;
     } else {
       retObservable.subscribe();
     }
-  }
-
-  createWorkItemObj(type: string) {
-
   }
 
   onChangeState(option: any): void {

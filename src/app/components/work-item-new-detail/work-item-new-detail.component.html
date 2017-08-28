@@ -230,10 +230,12 @@
       </div>
       <div class="col-xs-12 col-sm-5 col-md-5 f8-detail__detail-wrap height-100 overflow-auto">
         <alm-work-item-link
+          *ngIf="this.workItem.id"
           [workItem]="workItem"
           [loggedIn]="loggedIn">
         </alm-work-item-link>
         <alm-work-item-comment
+          *ngIf="this.workItem.id"
           [comments]="comments"
           [loadingComments]="loadingComments"
           [loggedIn]="loggedIn"
