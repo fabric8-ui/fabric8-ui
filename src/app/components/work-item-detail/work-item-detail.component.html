@@ -65,7 +65,11 @@
                 </ul>
               </div>
               <a class="pull-right">
-                <span class="dib margin-right-3">View full details</span>
+                <span class="dib margin-right-3">
+                  <a [routerLink]="[constructUrl(workItem.id)]" [queryParams]="queryParams">
+                    View full details
+                  </a>
+                </span>
                 <span class="pficon pficon-arrow"></span>
               </a>
             </div>
