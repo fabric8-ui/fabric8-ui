@@ -13,3 +13,32 @@
     color: @color-pf-white;
   }
 }
+
+.iterations {
+  .list-group-item {
+    padding: 0 !important;
+    margin:  0 !important;
+    background-color: @color-pf-black-900;
+    .node-drop-slot,
+    &:hover {
+      padding: 0 !important;
+      margin:  0 !important;
+      background-color: @color-pf-black-900;
+    }
+
+  }
+  .tree-list-item {
+      width: 100%;
+      background-color: @color-pf-black-900;
+      display: inline-block;
+      padding: 5px 10px 10px 10px;
+      &:hover {
+        background-color: @color-pf-black-700;
+      }
+      span {
+        float: left;
+      }
+    }
+}
+
+

@@ -5,7 +5,7 @@ import { TreeNode } from 'angular2-tree-component';
 
 import { Params, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy,
-  TemplateRef, Input, OnChanges, ViewChild } from '@angular/core';
+  TemplateRef, Input, OnChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
@@ -22,9 +22,7 @@ import { FabPlannerIterationModalComponent } from '../iterations-modal/iteration
 import { TreeListComponent } from 'ngx-widgets';
 
 @Component({
-  host: {
-    'class':"app-component"
-  },
+  encapsulation: ViewEncapsulation.None,
   selector: 'fab-planner-iteration',
   templateUrl: './iterations-panel.component.html',
   styleUrls: ['./iterations-panel.component.less']
