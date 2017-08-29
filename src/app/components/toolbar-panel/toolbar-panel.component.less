@@ -50,10 +50,6 @@
       box-shadow: none;      
     }
     
-    .btn-default { 
-      font-size: @font-size-base; 
-    }
-    
     button {
       /* this is the left connecting side to the filter type dropdown, omit the border here */
       border-left: none;    
@@ -74,11 +70,8 @@
     }
 
     .add-button {
-      .add-button-text {
+      &-text, &-icon {
         vertical-align: middle;
-      }
-      .add-button-icon {
-        vertical-align: middle;      
       }
     }
   }
@@ -99,7 +92,7 @@
     .list-inline {
       /* the list of filter flags */
       /* TODO: why is this set to -5px per default? */
-      margin-left: 0px; 
+      margin-left: 0; 
     }
   }
 }
