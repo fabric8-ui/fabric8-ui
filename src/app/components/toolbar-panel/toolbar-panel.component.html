@@ -16,8 +16,8 @@
                 id="wi-board-type"
                 type="button"
                 class="btn btn-default dropdown-toggle">
-              <span class='dropdown-icon fa {{currentBoardType?.attributes?.icon}}'></span>
-              <span class='dropdown-text'>
+              <span class="dropdown-icon fa {{currentBoardType?.attributes?.icon}}"></span>
+              <span class="dropdown-text">
                 {{currentBoardType?.attributes?.name}}
               </span>
               <span class="caret"></span>
@@ -25,8 +25,8 @@
             <ul id="wi-board-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" *dropdownMenu>
               <li class="dropdown-li" *ngFor="let type of wiTypes;" (click)="onChangeBoardType(type)">
                 <a>
-                  <span class='dropdown-icon fa {{type?.attributes?.icon}}'></span>
-                  <span class='dropdown-text'>{{type.attributes.name}}</span>
+                  <span class="dropdown-icon fa {{type?.attributes?.icon}}"></span>
+                  <span class="dropdown-text">{{type.attributes.name}}</span>
                 </a>
               </li>
             </ul>
@@ -37,7 +37,7 @@
               id="wi-list-type"
               type="button"
               class="btn btn-default dropdown-toggle">
-            <span class='dropdown-text'>
+            <span class="dropdown-text">
               {{currentListType}}
             </span>
             <span class="caret"></span>
@@ -50,7 +50,7 @@
             </li>
             <li class="dropdown-li" (click)="onChangeListType('Flat')">
               <a>
-                <span class='dropdown-text'>Flat</span>
+                <span class="dropdown-text">Flat</span>
               </a>
             </li>
           </ul>
