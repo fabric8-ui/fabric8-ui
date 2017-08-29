@@ -154,7 +154,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
           this.allIterations.push(this.iterations[i]);
         }
       }
-      //this.clusterIterations();
+      this.clusterIterations();
       this.treeIterations = this.iterationService.getTopLevelIterations(this.allIterations);
       console.log('this.treeIterations = ', this.treeIterations);
     }
@@ -177,12 +177,21 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     const it_query = this.filterService.queryBuilder(it_key, it_compare, it_value);
     //Query for space
     //const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
-   //Join type and space query
-   const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, it_query );
-   //const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
-   //second_join gives json object
-   return this.filterService.jsonToQuery(first_join);
-   //reverse function jsonToQuery(second_join);
+    //Join type and space query
+    const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, it_query );
+
+    //Iterations should only show allowed work item types
+    const wi_key = 'workitemtype';
+    const wi_compare = this.filterService.in_notation;
+    const wi_value = this.collection;
+
+    //Query for type
+    const type_query = this.filterService.queryBuilder(wi_key, wi_compare, wi_value);
+    const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
+    //const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
+    //second_join gives json object
+    return this.filterService.jsonToQuery(second_join);
+    //reverse function jsonToQuery(second_join);
     //return '';
   }
 
@@ -195,7 +204,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
           this.allIterations.push(this.iterations[i]);
         }
       }
-      //this.clusterIterations();
+      this.clusterIterations();
     } else {
       this.iterationService.getIterations()
         .subscribe((iterations) => {
@@ -207,7 +216,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
               this.allIterations.push(iterations[i]);
             }
           }
-          //this.clusterIterations();
+          this.clusterIterations();
         },
         (e) => {
           console.log('Some error has occured', e);

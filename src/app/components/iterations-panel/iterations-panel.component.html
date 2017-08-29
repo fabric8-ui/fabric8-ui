@@ -1,13 +1,4 @@
 <!--Iteration Start-->
-<div class="add-iteration">
-  <a *ngIf="loggedIn && editEnabled"
-    class="text-right"
-    (click)="modal.openCreateUpdateModal('create', null, $event);">
-    <i class="pficon-add-circle-o fa-lg pull-right with-cursor-pointer add-btn"
-      id="add-iteration-icon" placement="bottom"
-      tooltip="Add an Iteration"></i>
-  </a>
-</div>
 <div class="iterations-container">
   <div class="iteration-wrapper">
   <!-- Active iteration -->
@@ -44,11 +35,11 @@
               </ul>
             </div>
             <div class="truncate padding-right-15">
-                <strong class="iteration-name truncate"
+                <span class="iteration-name truncate"
                   tooltip="{{iteration.attributes.name}}"
                   placement="top" id="{{iteration.attributes.name}}">
                   {{iteration.attributes.name | truncate : 45 }}
-                </strong>
+                </span>
               <div class="parent-iteration">
                 <span tooltip="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
                   placement="top" id="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}">
@@ -86,6 +77,18 @@
 
     <!-- Nested Iteration Display -->
     <div class="iterations">
+      <div class="iteration-header pointer active-iteration-header">
+        <h3>
+          Iterations
+        </h3>
+        <div class="add-iteration">
+          <a *ngIf="loggedIn && editEnabled"
+            class="text-right"
+            (click)="modal.openCreateUpdateModal('create', null, $event);">
+            <i *ngIf="loggedIn && editEnabled" id="add-iteration-icon" class="pficon-add-circle-o fa-lg pull-right with-cursor-pointer add-btn" placement="bottom" tooltip="Add an Iteration"></i>
+          </a>
+        </div>
+      </div>
       <alm-tree-list #treeList
         [listTemplate]="treeListTemplate"
         [loadTemplate]="treeListLoadTemplate"

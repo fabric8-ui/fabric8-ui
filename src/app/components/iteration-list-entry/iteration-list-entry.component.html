@@ -36,7 +36,7 @@
       [queryParams]="{q: constructURL(iteration.id)}">
       <span class="iteration-name truncate">
         {{iteration.attributes.name | truncate : 45 }}
-      </span>
+      </span><span *ngIf="iteration.attributes.active_status" class="active-tag">[Active]</span>
     </div>
     <div class="iteration-status">
         <span>

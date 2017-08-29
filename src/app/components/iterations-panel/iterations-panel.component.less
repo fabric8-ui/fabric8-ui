@@ -1,6 +1,6 @@
 @import '../../../assets/stylesheets/_base';
 .add-iteration {
-  margin-top: -58px;
+  margin-top: -67px;
   float: right;
   .add-btn {
     color: @color-pf-blue;
@@ -40,9 +40,40 @@
     .on-hover-background {
       background-color: @color-pf-black-700;
     }
-    .active-tag {
-      color: @color-pf-blue;
-      font-weight: 600;
+  }
+  .iteration-expanded-div {
+    padding-left: 0;
+    margin-bottom: 0;
+    .dropdown-kebab-pf {
+      .btn-link {
+        color: @color-pf-white;
+      }
+    }
+    > li {
+      padding: 15px;
+      list-style: none;
+      &:hover { background-color: @color-pf-black-700; }
+      &.active {
+        border-left: 4px solid;
+        border-left-color: transparent;
+        &.selected-iteration {
+          border-left: 4px solid;
+          border-left-color: @color-pf-blue;
+          background-color: @color-pf-black-700;
+        }
+      }
+      .iteration-count { float: right; }
+      .iteration-status {
+        padding-top: 20px;
+        padding-bottom: 15px;
+      }
+      .iteration-description {
+        &:after,
+        &:before {
+          background: transparent !important;
+          content: none !important;
+        }
+      }
     }
   }
 }
