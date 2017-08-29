@@ -22,6 +22,9 @@
   &__detail {
     height: ~"calc(e('100vh - 290px'))";
   }
+  &__detail-wrap {
+    height: 100%;
+  }
   .close {
     cursor: pointer;
   }
@@ -117,5 +120,15 @@
       border-bottom-color: @color-pf-black-500;
       padding-left: 0;
     }
+  }
+}
+
+// Sm
+@media (max-width: 1000px) {
+  .f8-detail__detail {
+    overflow: auto;
+  }
+  .f8-detail__detail-wrap {
+    height: auto;
   }
 }
