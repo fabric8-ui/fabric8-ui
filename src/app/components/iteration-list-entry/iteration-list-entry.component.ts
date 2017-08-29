@@ -36,7 +36,6 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   @Input() selected: boolean = false;
   @Input() collection = [];
 
-  @Output() selectEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
   @Output() editEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
   @Output() closeEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
   @Output() createChildEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
@@ -71,15 +70,6 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
 
   deselect(): void {
     this.listItem.setSelected(false);
-  }
-
-  selectEntry(): void {
-    this.selectEvent.emit(this);
-  }
-
-  onSelect(event: MouseEvent): void {
-    event.stopPropagation();
-    this.selectEvent.emit(this);
   }
 
   onEdit(event: MouseEvent): any {

@@ -1,7 +1,13 @@
 @import '../../../assets/stylesheets/_base';
 .iteration-entry {
+  width: 100%;
   cursor: pointer;
-  padding-bottom: 5px;
+  .selected {
+    background-color: @color-pf-black-700 !important;
+    border-left: 4px solid;
+    border-left-color: @color-pf-blue;
+  }
+  padding: 5px 15px 30px 15px;
   .badge { background-color: @color-pf-black; }
   .iteration-header {
     padding: 10px 20px;

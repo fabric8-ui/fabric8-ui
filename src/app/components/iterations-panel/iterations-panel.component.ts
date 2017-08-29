@@ -375,14 +375,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     event.stopPropagation();
   }
 
-  onSelect(event) {
-
-  }
-
-  onToggle(event) {
-
-  }
-
   onEdit(event) {
     let iteration = this.allIterations.find(item =>
       item.id === event.iteration.id

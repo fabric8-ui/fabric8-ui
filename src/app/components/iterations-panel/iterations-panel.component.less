@@ -15,23 +15,18 @@
 }
 
 .iterations {
+  .node-drop-slot,
   .list-group-item {
     padding: 0 !important;
     margin:  0 !important;
     background-color: @color-pf-black-900;
-    .node-drop-slot,
     &:hover {
-      padding: 0 !important;
-      margin:  0 !important;
-      background-color: @color-pf-black-900;
+      background-color: @color-pf-black-700;
     }
-
-  }
-  .tree-list-item {
+    .tree-list-item {
       width: 100%;
-      background-color: @color-pf-black-900;
       display: inline-block;
-      padding: 5px 10px 10px 10px;
+      background-color: @color-pf-black-900;
       &:hover {
         background-color: @color-pf-black-700;
       }
@@ -39,6 +34,19 @@
         float: left;
       }
     }
+  }
+/*.tree-item-selected {
+    .tree-list-item {
+      background-color: @color-pf-black-700;
+      border-left: 4px solid;
+      border-left-color: @color-pf-blue;
+      &:hover {
+        background-color: @color-pf-black-700;
+        border-left: 4px solid;
+        border-left-color: @color-pf-blue;
+      }
+    }
+  }*/
 }
 
 
