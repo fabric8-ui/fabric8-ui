@@ -67,10 +67,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   treeListOptions = {
     allowDrag: false,
     levelPadding: 30,
-    allowDrop: (element, to) => {
-      // return true / false based on element, to.parent, to.index. e.g.
-      return to.parent.hasChildren;
-    }
   };
 
   constructor(
