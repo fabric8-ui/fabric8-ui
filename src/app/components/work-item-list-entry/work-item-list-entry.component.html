@@ -18,11 +18,14 @@
     </div>
     <div class="list-view-pf-body">
       <div class="list-view-pf-description">
-        <div class="workItemList_title truncate-ellipsis col-xs-12 row"
-          (click)="onDetailPreview($event)">
-            <p class="col-md-12 col-sm-12 col-xs-12 pull-left truncate">
+        <div class="workItemList_title_wrap truncate-ellipsis col-xs-12 row">
+            <p class="workItemList_title col-md-12 col-sm-12 col-xs-12 truncate"
+              (click)="onDetailPreview($event)">
               {{workItem.attributes['system.title']}}
             </p>
+            <a [routerLink]="[constructUrl(workItem.id)]"
+              [queryParams]="queryParams"
+              class="fa fa-list-alt action-icon"></a>
         </div>
         <div class="list-group-item-text workItemList_description dn">
           {{workItem.attributes['system.description'] ? workItem.attributes['system.description'] : "No description available for this work item."}}
@@ -58,9 +61,8 @@
 			</ul>
     </div>
     <div class="pull-right">
-      <a [routerLink]="[constructUrl(workItem.id)]"
-        [queryParams]="queryParams"
-        class="pficon pficon-arrow"></a>
+      <a (click)="onDetailPreview($event)"
+        class="fa fa-columns action-icon"></a>
     </div>
 	</div>
 </div>

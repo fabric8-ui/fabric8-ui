@@ -56,42 +56,23 @@ describe('Work item list', function () {
         detailPage.clickworkItemDetailUnassignButton();
         expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
         detailPage.clickWorkItemDetailCloseButton();
-
-        // // Commented Due to Delete is temporarily not supported
-        // page.clickWorkItemKebabButton(page.firstWorkItem);
-        // page.clickWorkItemKebabDeleteButton(page.firstWorkItem);
-        // browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find Assignee Icon');
-
-        /* The attempt to delete the workitem shoudl be blocked by the UI
-           but this is not implemented in the UI -  see issue:
-           https://github.com/fabric8-ui/fabric8-planner/issues/1621
-           TODO - The test will be expanded to verify that an error is raised once
-           the UI is updated to trap the deletion attempt */
-//        page.clickWorkItemPopUpDeleteConfirmButton().then(function() {
-//          expect(page.workItemTitle(page.firstWorkItem)).not.toBe(WORK_ITEM_TITLE);
-//          expect(page.workItemTitle(page.workItemByNumber(0))).not.toBe(WORK_ITEM_TITLE);
-//        });
       });
     });
   });
 
   /* Create a new workitem, fill in the details, save, retrieve, update, save, verify updates are saved */
   it('should find and update the workitem through its detail page', function() {
-
     /* Create a new workitem */
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
     page.typeQuickAddWorkItemDesc(WORK_ITEM_DESCRIPTION);
     page.clickQuickAddSave().then(function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_TITLE);
-
       /* Fill in/update the new work item's title and details field */
       expect(page.workItemTitle(page.workItemByTitle(WORK_ITEM_TITLE))).toBe(WORK_ITEM_TITLE);
-
       page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
         var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');
-
         detailPage.clickWorkItemDetailTitleClick();
         detailPage.setWorkItemDetailTitle (WORK_ITEM_UPDATED_TITLE, false);
         detailPage.clickWorkItemTitleSaveIcon();
@@ -99,7 +80,6 @@ describe('Work item list', function () {
         detailPage.clickWorkItemDetailDescription()
         detailPage.setWorkItemDetailDescription (WORK_ITEM_UPDATED_DESCRIPTION, false);
         detailPage.clickWorkItemDescriptionSaveIcon();
-
         detailPage.clickWorkItemDetailCloseButton();
         browser.wait(until.presenceOf(page.firstWorkItem), constants.WAIT, 'Failed to find workItemList');
         expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_UPDATED_TITLE);
@@ -109,28 +89,17 @@ describe('Work item list', function () {
 
   /* Vary the order of execution of the workitems */
   it('should top workitem to the bottom and back to the top via the workitem kebab', function() {
-
     page.allWorkItems.count().then(function (text) {
       var totalCount = text
-
       /* Verify that the first work item is in the correct position */
       expect(page.workItemTitle(page.workItemByIndex(0))).toBe(MOCK_WORKITEM_TITLE_0);
       compareWorkitems (page, 0, MOCK_WORKITEM_TITLE_0);
-
       /* Move the workitem to the bottom */
       page.clickWorkItemKebabButton (page.workItemByTitle(MOCK_WORKITEM_TITLE_0)).then(function() {
         page.clickWorkItemKebabMoveToBottomButton(page.workItemByTitle(MOCK_WORKITEM_TITLE_0));
         compareWorkitems (page, totalCount - 1, MOCK_WORKITEM_TITLE_0);
       });
-      /* And then move it back to the top  This is not working with chrome due to Kebab is hidden for bottom WI*/
-      /* TODO - Resolve thi sissue for Chrome */
-//      page.clickWorkItemKebabButton (page.workItemByTitle(MOCK_WORKITEM_TITLE_0)).then(function() {
-//        page.clickWorkItemKebabMoveToTopButton(page.workItemByTitle(MOCK_WORKITEM_TITLE_0));
-//        compareWorkitems (page, 0, MOCK_WORKITEM_TITLE_0);
-//      });
-
     });
-
   });
 
   /* Test that the Quick add work item is visible */
