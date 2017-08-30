@@ -1,10 +1,11 @@
 import { AuthenticationService } from 'ngx-login-client';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { WidgetsModule, InlineInputModule, MarkdownModule } from 'ngx-widgets';
+import { WidgetsModule, MarkdownModule } from 'ngx-widgets';
 import { HttpService } from './../../services/http-service';
 import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
 import { WorkItemService } from './../../services/work-item.service';
 import { WorkItemDataService } from './../../services/work-item-data.service';
+import { InlineInputModule } from './../../widgets/inlineinput/inlineinput.module';
 import { IterationService } from './../../services/iteration.service';
 import { AreaService } from './../../services/area.service';
 import { WorkItemLinkModule } from './../work-item-link/work-item-link.module';

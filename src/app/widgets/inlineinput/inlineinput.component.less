@@ -1,0 +1,64 @@
+@import './../../../assets/stylesheets/_base';
+
+.inlineinput-container {
+  width: 100%;
+  .input-field {
+    border: 1px solid;
+    border-color: transparent;
+    background: transparent;
+    font-size: 20px;
+    height: 40px;
+    outline: none;
+    padding: 0px 10px;
+    resize: none;
+    width: ~"calc(e('100% - 100px'))";
+    &:focus {
+      border: 1px solid @color-pf-blue-400 !important;
+      background-color: @color-pf-white;
+    }
+  }
+
+  .action-btn {
+    min-width: 40px;
+    vertical-align: top;
+  }
+
+  .active {
+    border: 1px solid @color-pf-blue-400 !important;
+    background-color: @color-pf-white;
+  }
+
+  .editor-icon-container {
+    display: inline-block;
+    margin: 5px 5px;
+    vertical-align: top;
+    cursor: pointer;
+    .edit-icon {
+      opacity: 0;
+    }
+  }
+
+  .error-message {
+    color: @color-pf-red;
+  }
+
+  &:hover {
+    .input-field {
+      border: 1px solid @color-pf-black-400;
+    }
+    .edit-icon {
+      opacity: 1;
+    }
+  }
+
+  &.read-only {
+    &:hover {
+      .input-field {
+        border: 1px solid @color-pf-white;
+      }
+      .edit-icon {
+        opacity: 0;
+      }
+    }
+  }
+}
