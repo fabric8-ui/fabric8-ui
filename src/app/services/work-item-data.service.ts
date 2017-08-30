@@ -7,9 +7,16 @@ import { WorkItem } from './../models/work-item';
 export class WorkItemDataService {
 
   private workItems: object = {};
+  constructor() {
+    if (sessionStorage.getItem('planner_workItems') === null) {
+      sessionStorage.setItem('planner_workItems', JSON.stringify({}));
+    }
+  }
 
   public setItem(workItem: WorkItem): void {
-    this.workItems[workItem.id] = cloneDeep(workItem);
+    let items = JSON.parse(sessionStorage.getItem('planner_workItems'));
+    items[workItem.id] = cloneDeep(workItem);
+    sessionStorage.setItem('planner_workItems', JSON.stringify(items));
   }
 
   public setItems(workItems: WorkItem[]): void {
@@ -17,8 +24,9 @@ export class WorkItemDataService {
   }
 
   public getItem(workItemId: string | number): Observable<WorkItem | null> {
-    if (this.workItems[workItemId]) {
-      return Observable.of(this.workItems[workItemId]).delay(0);
+    let items = JSON.parse(sessionStorage.getItem('planner_workItems'));
+    if (items[workItemId]) {
+      return Observable.of(items[workItemId]).delay(0);
     } else {
       return Observable.of(null).delay(0);
     }
