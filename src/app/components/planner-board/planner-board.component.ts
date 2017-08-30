@@ -16,7 +16,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Response } from '@angular/http';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { cloneDeep, trimEnd } from 'lodash';
 
@@ -33,6 +33,7 @@ import { Dialog } from 'ngx-widgets';
 
 import { CardValue } from './../card/card.component';
 import { IterationModel } from '../../models/iteration.model';
+import { UrlService } from './../../services/url.service';
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType } from '../../models/work-item-type';
 import { WorkItemService } from '../../services/work-item.service';
@@ -91,6 +92,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     private dragulaService: DragulaService,
     private iterationService: IterationService,
     private userService: UserService,
+    private urlService: UrlService,
     private spaces: Spaces,
     private areaService: AreaService,
     private filterService: FilterService,
@@ -836,6 +838,24 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
             lane.workItems.splice(index, 0, workItem);
           }
         })
+    );
+
+    this.eventListeners.push(
+      this.router.events
+        .filter(event => event instanceof NavigationStart)
+        .subscribe(
+          (event: any) => {
+            if (event.url.indexOf('/plan/detail/') > -1) {
+                // It's going to the detail page
+                let url = location.pathname;
+                let query = location.href.split('?');
+                if (query.length == 2) {
+                  url = url + '?' + query[1];
+                }
+                this.urlService.recordLastListOrBoard(url);
+              }
+          }
+        )
     );
   }
 

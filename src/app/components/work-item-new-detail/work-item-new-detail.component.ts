@@ -19,6 +19,7 @@ import {
   ViewChild
 } from '@angular/core';
 
+import { UrlService } from './../../services/url.service';
 import { WorkItem, WorkItemRelations } from './../../models/work-item';
 import { WorkItemService } from './../../services/work-item.service';
 import { CollaboratorService } from '../../services/collaborator.service'
@@ -72,6 +73,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private spaces: Spaces,
     private userService: UserService,
+    private urlService: UrlService,
     private workItemService: WorkItemService,
     private workItemDataService: WorkItemDataService,
     private workItemTypeControlService: WorkItemTypeControlService,
@@ -872,6 +874,10 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   }
 
   navigateBack() {
-    window.history.back();
+    if (this.urlService.getLastListOrBoard() === '') {
+      this.router.navigate(['..']);
+    } else {
+      this.router.navigateByUrl(this.urlService.getLastListOrBoard());
+    }
   }
 }

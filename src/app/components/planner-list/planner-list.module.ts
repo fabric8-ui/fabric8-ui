@@ -33,6 +33,7 @@ import { IterationModule } from '../iterations-panel/iterations-panel.module';
 import { PlannerListRoutingModule } from './planner-list-routing.module';
 import { SidepanelModule } from '../side-panel/side-panel.module';
 import { ToolbarPanelModule } from '../toolbar-panel/toolbar-panel.module';
+import { UrlService } from './../../services/url.service';
 import { WorkItemDetailModule } from '../work-item-detail/work-item-detail.module';
 import { WorkItemDetailAddTypeSelectorModule } from '../work-item-create/work-item-create.module';
 import { PlannerListComponent } from './planner-list.component';
@@ -57,7 +58,8 @@ if (process.env.ENV == 'inmemory') {
       provide: HttpService,
       useClass: MockHttp
     },
-    TooltipConfig
+    TooltipConfig,
+    UrlService
   ];
 } else {
   providers = [
@@ -75,7 +77,8 @@ if (process.env.ENV == 'inmemory') {
       },
       deps: [XHRBackend, RequestOptions, AuthenticationService]
     },
-    TooltipConfig
+    TooltipConfig,
+    UrlService
   ];
 }
 

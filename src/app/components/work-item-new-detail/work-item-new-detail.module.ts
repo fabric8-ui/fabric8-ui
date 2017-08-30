@@ -1,3 +1,4 @@
+import { UrlService } from './../../services/url.service';
 import { AuthenticationService } from 'ngx-login-client';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { WidgetsModule, MarkdownModule } from 'ngx-widgets';
@@ -39,6 +40,7 @@ if (process.env.ENV == 'inmemory') {
     BsDropdownConfig,
     IterationService,
     TooltipConfig,
+    UrlService,
     WorkItemDataService,
     WorkItemService,
     WorkItemTypeControlService,
@@ -57,6 +59,7 @@ if (process.env.ENV == 'inmemory') {
     BsDropdownConfig,
     IterationService,
     TooltipConfig,
+    UrlService,
     WorkItemDataService,
     WorkItemService,
     WorkItemTypeControlService,

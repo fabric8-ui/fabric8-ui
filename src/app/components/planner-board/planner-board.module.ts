@@ -31,11 +31,12 @@ import {
 } from './../work-item-iteration-modal/work-item-iteration-modal.module';
 import { GlobalSettings } from '../../shared/globals';
 import { IterationModule } from '../iterations-panel/iterations-panel.module';
-import { PlannerBoardRoutingModule } from './planner-board-routing.module';
 import { CardModule } from '../card/card.module';
+import { PlannerBoardComponent } from './planner-board.component';
+import { PlannerBoardRoutingModule } from './planner-board-routing.module';
 import { SidepanelModule } from '../side-panel/side-panel.module';
 import { ToolbarPanelModule } from '../toolbar-panel/toolbar-panel.module';
-import { PlannerBoardComponent } from './planner-board.component';
+import { UrlService } from './../../services/url.service';
 import { WorkItemDetailAddTypeSelectorModule } from '../work-item-create/work-item-create.module';
 import { WorkItemDetailModule } from '../work-item-detail/work-item-detail.module';
 import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
@@ -58,7 +59,8 @@ if (process.env.ENV == 'inmemory') {
       provide: HttpService,
       useClass: MockHttp
     },
-    TooltipConfig
+    TooltipConfig,
+    UrlService
   ];
 } else {
   providers = [
@@ -76,7 +78,8 @@ if (process.env.ENV == 'inmemory') {
       },
       deps: [XHRBackend, RequestOptions, AuthenticationService]
     },
-    TooltipConfig
+    TooltipConfig,
+    UrlService
   ];
 }
 
