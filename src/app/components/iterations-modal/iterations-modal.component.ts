@@ -356,6 +356,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
             this.iteration.attributes.state = 'start';
           } else if (this.modalType == 'close') {
             this.iteration.attributes.state = 'close';
+            this.iteration.attributes.user_active = false;
           } else {
             // Not include state if it's just an update
             delete this.iteration.attributes.state;
@@ -392,7 +393,6 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
         this.validationError = true;
         this.validationString = 'This field is required.';
       }
-     console.log(this.iteration);
   }
 
   removeError() {

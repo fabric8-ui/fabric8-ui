@@ -45,16 +45,9 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   loggedIn: Boolean = true;
   editEnabled: Boolean = false;
   isBacklogSelected: Boolean = true;
-  //isCollapsedIteration: Boolean = false;
-  //isCollapsedCurrentIteration: Boolean = false;
-  //isCollapsedFutureIteration: Boolean = true;
-  //isCollapsedPastIteration: Boolean = true;
   barchatValue: number = 70;
   selectedIteration: IterationModel;
   allIterations: IterationModel[] = [];
-  //futureIterations: IterationModel[] = [];
-  //currentIterations: IterationModel[] = [];
-  //closedIterations: IterationModel[] = [];
   eventListeners: any[] = [];
   currentSelectedIteration: string = '';
   dragulaEventListeners: any[] = [];
@@ -136,10 +129,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         console.log('[IterationComponent] Space deselected.');
         this.editEnabled = false;
         this.allIterations = [];
-        console.log('....1 ', this.allIterations.length);
-        // this.futureIterations = [];
-        // this.currentIterations = [];
-        // this.closedIterations = [];
         this.activeIterations = [];
       }
     });
@@ -225,17 +214,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   clusterIterations() {
-    // this.futureIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'new');
-    // this.currentIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'start');
-    // this.closedIterations = this.allIterations.filter((iteration) => iteration.attributes.state === 'close');
-
-    // if (this.futureIterations.find(it => this.resolvedName(it) == this.currentSelectedIteration)) {
-    //   this.isCollapsedPastIteration = true;
-    //   this.isCollapsedFutureIteration = false;
-    // } else if (this.closedIterations.find(it => this.resolvedName(it) == this.currentSelectedIteration)) {
-    //   this.isCollapsedFutureIteration = true;
-    //   this.isCollapsedPastIteration = false;
-    // }
     this.activeIterations = this.allIterations.filter((iteration) => iteration.attributes.active_status === true);
   }
 
@@ -250,6 +228,8 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.allIterations.splice(this.allIterations.length, 0, iteration);
     }
+    this.treeIterations = this.iterationService.getTopLevelIterations(this.allIterations);
+    this.treeList.updateTree();
     this.clusterIterations();
   }
 
@@ -270,11 +250,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       //This is to view the backlog
       this.selectedIteration = null;
-      //this.isBacklogSelected = true;
-      //Collapse the other iteration sets
-      // this.isCollapsedCurrentIteration = true;
-      // this.isCollapsedFutureIteration = true;
-      // this.isCollapsedPastIteration = true;
       filters.push({
         paramKey: 'filter[iteration]',
         active: false,
