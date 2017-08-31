@@ -211,7 +211,8 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck, OnDest
   }
 
   getWILink(link, workItem) {
-    return trimEnd(this.router.url.split('plan')[0], '/') + '/plan/detail/' + (link.relationalData.source.id == workItem.id ?
+    return trimEnd(this.router.url.split('plan')[0], '/') + '/plan/detail/' +
+    (link.relationalData.source.id == workItem.id ?
       link.relationalData.target.number : link.relationalData.source.number);
   }
 

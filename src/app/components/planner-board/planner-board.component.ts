@@ -241,7 +241,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
             title: item.attributes['system.title'],
             avatar: '',
             hasLink: true,
-            link: "./../detail/"+item.id,
+            link: "./../detail/"+item.attributes['system.number'],
             menuItem: [{
               id: 'card_associate_iteration',
               value: 'Associate with iteration...'
@@ -249,7 +249,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
             {
               id: 'card_open',
               value: 'Open',
-              link: "./../detail/"+item.id
+              link: "./../detail/"+item.attributes['system.number']
             },
             {
               id: 'card_move_to_backlog',
