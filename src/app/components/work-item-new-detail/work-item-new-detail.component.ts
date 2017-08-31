@@ -91,8 +91,14 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
             let type = this.route.snapshot.queryParams['type'];
             this.createWorkItemObj(type);
           } else {
-            console.log('Work item ID: ', workItemId);
-            this.loadWorkItem(workItemId);
+            if (Object.keys(params).indexOf('entity') > -1
+              && Object.keys(params).indexOf('space') > -1) {
+              console.log('Work item ID: ', workItemId);
+              this.loadWorkItem(workItemId, params['entity'], params['space']);
+            } else {
+              console.log('Work item ID: ', workItemId);
+              this.loadWorkItem(workItemId);
+            }
           }
       })
     this.listenToEvents();
@@ -142,10 +148,10 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
     this.workItem.attributes['system.state'] = 'new';
   }
 
-  loadWorkItem(id: string): void {
+  loadWorkItem(id: string, owner: string = '', space: string = ''): void {
     const t1 = performance.now();
     this.eventListeners.push(
-      this.workItemDataService.getItem(id)
+      this.workItemDataService.getItembyNumber(id)
         .do(workItem => {
           if (workItem) {
             this.workItem = workItem;
@@ -159,7 +165,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
           this.loadingIteration = true;
           this.loadingArea = true;
         })
-        .switchMap(() => this.workItemService.getWorkItemById(id))
+        .switchMap(() => this.workItemService.getWorkItemById(id, owner, space))
         .do(workItem => {
           this.workItem = workItem;
           this.workItemDataService.setItem(workItem);

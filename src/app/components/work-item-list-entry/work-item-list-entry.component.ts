@@ -84,8 +84,9 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
-  constructUrl(workItemId) {
-    return this.router.url.split('plan')[0] + 'plan/detail/' + workItemId;
+  constructUrl(workItem: WorkItem) {
+    return this.router.url.split('plan')[0] + 'plan/detail/' +
+      workItem.attributes['system.number'];
   }
 
   getWorkItem(): WorkItem {

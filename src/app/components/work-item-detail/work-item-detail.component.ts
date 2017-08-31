@@ -1090,8 +1090,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructUrl(workItemId) {
-    return this.router.url.split('plan')[0] + 'plan/detail/' + workItemId;
+  constructUrl(workItem: WorkItem) {
+    return this.router.url.split('plan')[0] + 'plan/detail/' + workItem.attributes['system.number'];
   }
 
   @HostListener('window:keydown', ['$event'])

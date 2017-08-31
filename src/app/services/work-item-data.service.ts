@@ -32,4 +32,14 @@ export class WorkItemDataService {
     }
   }
 
+  public getItembyNumber(workItemNumber: string | number): Observable<WorkItem | null> {
+    let items = JSON.parse(sessionStorage.getItem('planner_workItems'));
+    const item_id = Object.keys(items).find(key => items[key]['attributes']['system.number'] === workItemNumber);
+    if (item_id) {
+      return Observable.of(items[item_id]).delay(0);
+    } else {
+      return Observable.of(null).delay(0);
+    }
+  }
+
 }

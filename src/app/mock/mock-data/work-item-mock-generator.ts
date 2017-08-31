@@ -157,7 +157,7 @@ export class WorkItemMockGenerator {
       return {
         'attributes': {
           'system.created_at': this.dateTime(n),
-          'system.number': 'id-' + n,
+          'system.number': 'id' + n,
           'system.description': 'Description Text ' + n,
           'system.description.rendered': 'Description Text ' + n,
           'system.remote_item_id': 'remote_id_' + n,

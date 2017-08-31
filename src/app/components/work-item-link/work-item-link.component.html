@@ -132,7 +132,7 @@
           <ul class="padding-left-0 wi-link-list">
             <li *ngFor='let link of linkDict.links'
               class="link-list">
-              <a [routerLink]="getWILink(link, workItem.id)">
+              <a [routerLink]="getWILink(link, workItem)">
                 <span class="link-title" [id]="link.id + '-text'">
                   {{link.relationalData.source.id == workItem.id ? link.relationalData.target.title : link.relationalData.source.title}}
                 </span>

@@ -35,11 +35,13 @@ export class RelationalData {
   source?: {
     title: string;
     id: string;
+    number: string;
     state: string;
   };
   target?: {
     title: string;
     id: string;
+    number: string;
     state: string;
   };
   linkType?: string;
