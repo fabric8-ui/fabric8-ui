@@ -227,6 +227,21 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       this.allIterations[index] = iteration;
     } else {
       this.allIterations.splice(this.allIterations.length, 0, iteration);
+      //Check if the new iteration has a parent
+      if (!this.iterationService.isTopLevelIteration(iteration)) {
+        let parent = this.iterationService.getDirectParent(iteration, this.allIterations);
+        let parentIndex = this.allIterations.findIndex(i => i.id === parent.id);
+        if(!this.allIterations[parentIndex].children) {
+          this.allIterations[parentIndex].children = [];
+          this.allIterations[parentIndex].hasChildren = true;
+        }
+        this.allIterations[parentIndex].children.push(iteration);
+      }
+      let childIterations = this.iterationService.checkForChildIterations(iteration, this.allIterations);
+      if(childIterations.length > 0) {
+        this.allIterations[this.allIterations.length].hasChildren = true;
+        this.allIterations[this.allIterations.length].children = childIterations;
+      }
     }
     this.treeIterations = this.iterationService.getTopLevelIterations(this.allIterations);
     this.treeList.updateTree();

@@ -248,4 +248,14 @@ export class IterationService {
     )
     return topLevelIterations;
   }
+
+  isTopLevelIteration(iteration): Boolean {
+    return ((iteration.attributes.parent_path.split('/')).length - 1) === 1;
+  }
+
+  getDirectParent(iteration, iterations): IterationModel {
+    let path_arr = iteration.attributes.parent_path.split('/');
+    let id = path_arr[path_arr.length-1];
+    return iterations.find(i => i.id === id);
+  }
 }
