@@ -101,6 +101,20 @@ export const routes: Routes = [
     }
   },
 
+  // Plan details
+  {
+    path: ':entity/:space/plan/detail',
+    resolve: {
+      context: ContextResolver,
+      featureFlagConfig: ExperimentalFeatureResolver
+    },
+    loadChildren: './space/plan/detail/detail.module#DetailModule',
+    data: {
+      title: 'Plan: Detail',
+      featureName: 'Planner'
+    }
+  },
+
   // Create
   {
     path: ':entity/:space/create',
