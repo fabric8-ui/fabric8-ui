@@ -48,7 +48,7 @@ import { WorkItemType } from '../../models/work-item-type';
 import { CollaboratorService } from '../../services/collaborator.service'
 
 @Component({
-  selector: 'alm-work-item-detail-preview',
+  selector: 'work-item-preview',
   templateUrl: './work-item-detail.component.html',
   styleUrls: ['./work-item-detail.component.less'],
   animations: [
