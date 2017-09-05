@@ -26,12 +26,12 @@
     <div class="list-view-pf-body">
       <div class="list-view-pf-description">
         <div class="f8-wi__list-title truncate-ellipsis col-xs-12 row">
-            <p class="col-xs-12 col-sm-12 col-md-12 pull-left truncate margin-0"
+            <p class="pull-left truncate margin-0 padding-right-15"
               (click)="onDetailPreview($event)">
               {{workItem.attributes['system.title']}}
             </p>
-            <a [routerLink]="[constructUrl(workItem)]"
-              class="fa fa-list-alt action-icon"></a>
+            <a class="fa fa-list-alt f8-action-icon"
+              [routerLink]="[constructUrl(workItem)]"></a>
         </div>
         <div class="list-group-item-text hide"
           id="workItemList_description">
@@ -106,7 +106,7 @@
     </div>
     <div class="pull-right">
       <a (click)="onDetailPreview($event)"
-        class="fa fa-columns action-icon"></a>
+        class="fa fa-columns f8-action-icon"></a>
     </div>
 	</div>
 </div>
