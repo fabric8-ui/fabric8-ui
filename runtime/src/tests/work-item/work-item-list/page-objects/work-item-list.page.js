@@ -271,11 +271,11 @@ class WorkItemListPage {
 
   /* Title element relative to a workitem */
   workItemTitle (workItemElement) {
-    return workItemElement.element(by.css(".f8-wi__list-title")).getText();
+    return workItemElement.element(by.css(".f8-wi__list-title")).element(by.css("p")).getText();
   }
 
   clickWorkItemTitle (workItemElement, idText) {
-    workItemElement.element(by.css(".f8-wi__list-title")).click();
+    workItemElement.element(by.css(".f8-wi__list-title")).element(by.css("p")).click();
     var theDetailPage = new WorkItemDetailPage (idText);
     var until = protractor.ExpectedConditions;
     //browser.wait(until.presenceOf(theDetailPage.workItemDetailPageTitle), constants.WAIT, 'Detail page title taking too long to appear in the DOM');
