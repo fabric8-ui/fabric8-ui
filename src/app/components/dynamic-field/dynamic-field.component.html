@@ -1,28 +1,57 @@
-<div [formGroup]="form" class="f8-dynamic-control">
-  <label [attr.for]="attributeDesc.key" class="col-xs-2 col-sm-2 col-md-2">{{attributeDesc.label}}</label>
+<div class="f8-dynamic-control"
+  [formGroup]="form">
+  <label class="col-xs-2 col-sm-2 col-md-2"
+    [attr.for]="attributeDesc.key">
+    {{attributeDesc.label}}
+  </label>
   <div class="col-xs-10 col-sm-10 col-md-10 padding-left-0">
     <div [ngSwitch]="attributeDesc.type.kind">
 
       <!-- workitemtype field type: string -->
-      <input *ngSwitchCase="'string'" [formControlName]="attributeDesc.key" type="text" (focus)="focusIn()">
+      <input *ngSwitchCase="'string'"
+        [formControlName]="attributeDesc.key"
+        type="text"
+        (focus)="focusIn()">
 
       <!-- workitemtype field type: integer -->
-      <input *ngSwitchCase="'integer'" [value]="form.value[this.attributeKey]" (change)="baseChangeBaseType($event.target.value)" type="text" (focus)="focusIn()">
+      <input *ngSwitchCase="'integer'"
+        [value]="form.value[this.attributeKey]"
+        (change)="baseChangeBaseType($event.target.value)"
+        type="text"
+        (focus)="focusIn()">
 
       <!-- workitemtype field type: float -->
-      <input *ngSwitchCase="'float'" [formControlName]="attributeDesc.key" type="text" (focus)="focusIn()">
+      <input *ngSwitchCase="'float'"
+        [formControlName]="attributeDesc.key"
+        type="text"
+        (focus)="focusIn()">
 
       <!-- workitemtype field type: dropdown -->
-      <typeahead-dropdown *ngSwitchCase="'enum'" class="f8-dynamic-control-dropdown" [values]="extractEnumKeyValues()" (onUpdate)="onChangeDropdown($event)"></typeahead-dropdown>
+      <typeahead-dropdown
+        class="f8-dynamic-control-dropdown"
+        *ngSwitchCase="'enum'"
+        [values]="extractEnumKeyValues()"
+        (onUpdate)="onChangeDropdown($event)">
+      </typeahead-dropdown>
 
       <!-- workitemtype field type: boolean -->
-      <typeahead-dropdown *ngSwitchCase="'boolean'" class="f8-dynamic-control-dropdown" [values]="extractBooleanKeyValues()" (onUpdate)="onChangeBoolean($event)"></typeahead-dropdown>
+      <typeahead-dropdown
+        class="f8-dynamic-control-dropdown"
+        *ngSwitchCase="'boolean'"
+        [values]="extractBooleanKeyValues()"
+        (onUpdate)="onChangeBoolean($event)">
+      </typeahead-dropdown>
 
       <!-- workitemtype field type: markup -->
-      <markdown-control *ngSwitchCase="'markup'" [markdownValue]="form.value[this.attributeKey].content" (onUpdate)="onChangeMarkup($event)"></markdown-control>
+      <markdown-control
+        *ngSwitchCase="'markup'"
+        [markdownValue]="form.value[this.attributeKey].content"
+        (onUpdate)="onChangeMarkup($event)">
+      </markdown-control>
 
       <!-- workitemtype field type: instant (datetime) -->
-      <div *ngSwitchCase="'instant'" class="f8-dynamic-control-datepicker">
+      <div class="f8-dynamic-control-datepicker"
+        *ngSwitchCase="'instant'" >
       <my-date-picker
         [options]="datePickerOptions"
         [selDate]="dateValue"
@@ -45,18 +74,37 @@
       <!-- TreePath (e.g. Areas and Iterations) (already in fixed fields) -->
 
       <!-- the edit icon that appears on text/textfield input types -->
-      <span *ngIf="!isButtonsVisible() && (attributeDesc.type.kind=='integer' || attributeDesc.type.kind=='float' || attributeDesc.type.kind=='string' )"
-            class="pficon-edit marginL10 fl dynamic-control-edit-ico">
+      <span class="pficon-edit pull-left dynamic-control-edit-ico"
+        *ngIf="(
+          !isButtonsVisible() &&
+            (
+              attributeDesc.type.kind=='integer' ||
+              attributeDesc.type.kind=='float' ||
+              attributeDesc.type.kind=='string'
+            )
+          )">
       </span>
 
-      <button *ngIf="isButtonsVisible()" class="btn btn-lg btn-primary detail-action-btn" type="button" (click)="save()">
+      <button class="btn btn-lg btn-primary detail-action-btn"
+        type="button"
+        *ngIf="isButtonsVisible()"
+        (click)="save()">
         <span class="fa fa-check"></span>
       </button>
-      <button *ngIf="isButtonsVisible()" class="btn btn-lg btn-default detail-action-btn" type="button" (click)="cancel()">
+      <button class="btn btn-lg btn-default detail-action-btn"
+        type="button"
+        *ngIf="isButtonsVisible()"
+        (click)="cancel()">
         <span class="pficon pficon-close"></span>
       </button>
     </div>
   </div>
-  <div class="errorMessage" *ngIf="!isValid()">{{attributeDesc.label}} is not given or not in the right format.</div>
-  <div class="errorMessage" *ngIf="error">Error on {{attributeDesc.label}}: {{error}}.</div>
+  <div class="errorMessage"
+    *ngIf="!isValid()">
+    {{attributeDesc.label}} is not given or not in the right format.
+  </div>
+  <div class="errorMessage"
+    *ngIf="error">
+    Error on {{attributeDesc.label}}: {{error}}.
+  </div>
 </div>
