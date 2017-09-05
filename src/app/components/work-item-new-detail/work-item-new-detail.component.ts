@@ -10,7 +10,7 @@ import { AreaService } from './../../services/area.service';
 import { Observable } from 'rxjs';
 import { cloneDeep, merge, remove } from 'lodash';
 import { WorkItemDataService } from './../../services/work-item-data.service';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angular/router';
 import { Spaces } from 'ngx-fabric8-wit';
 import {
   Component,
@@ -81,15 +81,33 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loggedIn = this.auth.isLoggedIn();
-    this.spaces.current.switchMap(space => {
+    const takeUntilObserver = this.router.events
+      .filter((event) => event instanceof NavigationStart)
+      .filter((event: NavigationStart) => event.url.indexOf('plan/detail') == -1);
+    this.eventListeners.push(
+      this.spaces.current.switchMap(space => {
         return this.route.params;
-      }).filter(params => params['id'] !== undefined)
+      })
+      .filter(params => params['id'] !== undefined)
+      .takeUntil(takeUntilObserver)
       .subscribe((params) => {
           let workItemId = params['id'];
           if (workItemId === 'new'){
             // Create new work item ID
             let type = this.route.snapshot.queryParams['type'];
             this.createWorkItemObj(type);
+          } else if (workItemId.split('-').length > 1) {
+            // The ID is a UUID
+            // To make it backword compaitable
+            // We find the number and redirect
+            // the URL to the new humna readable URL
+            this.workItemService.getWorkItemByNumber(workItemId)
+              .subscribe((workItem: WorkItem) => {
+                let urlSplit = location.pathname.split('/');
+                urlSplit[urlSplit.length - 1] = workItem.attributes['system.number'];
+                const redirectTo = urlSplit.join('/');
+                this.router.navigateByUrl(redirectTo);
+              })
           } else {
             if (Object.keys(params).indexOf('entity') > -1
               && Object.keys(params).indexOf('space') > -1) {
@@ -101,6 +119,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
             }
           }
       })
+    );
     this.listenToEvents();
   }
 
@@ -165,7 +184,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
           this.loadingIteration = true;
           this.loadingArea = true;
         })
-        .switchMap(() => this.workItemService.getWorkItemById(id, owner, space))
+        .switchMap(() => this.workItemService.getWorkItemByNumber(id, owner, space))
         .do(workItem => {
           this.workItem = workItem;
           this.workItemDataService.setItem(workItem);

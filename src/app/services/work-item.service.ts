@@ -264,11 +264,13 @@ export class WorkItemService {
   */
 
   /**
-   * Usage: This method gives a single work item by ID.
+   * Usage: This method gives a single work item by display number.
    *
-   * @param: number - id
+   * @param id : string - number
+   * @param owner : string
+   * @param space : string
    */
-  getWorkItemById(id: string, owner: string = '', space: string = ''): Observable<WorkItem> {
+  getWorkItemByNumber(id: string, owner: string = '', space: string = ''): Observable<WorkItem> {
     if (this._currentSpace) {
       if (owner && space) {
         return this.http.get(

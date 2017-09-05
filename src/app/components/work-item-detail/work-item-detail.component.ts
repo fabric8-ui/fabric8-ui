@@ -196,7 +196,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
           this.loadingIteration = true;
           this.loadingArea = true;
         })
-        .switchMap(() => this.workItemService.getWorkItemById(id))
+        .switchMap(() => this.workItemService.getWorkItemByNumber(id))
         .do(workItem => {
           this.workItem = workItem;
           this.workItemDataService.setItem(workItem);

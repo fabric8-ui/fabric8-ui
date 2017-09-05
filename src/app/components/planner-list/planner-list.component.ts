@@ -185,8 +185,12 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     // Unsubscribe in ngOnDestroy acts way after the new page inits
     // So using takeUntill to watch over the routes in case of any change
     const takeUntilObserver = this.router.events
-    .filter((event) => event instanceof NavigationStart)
-    .filter((event: NavigationStart) => event.url.indexOf('plan/board') > -1 || event.url.indexOf('plan') == -1)
+      .filter((event) => event instanceof NavigationStart)
+      .filter((event: NavigationStart) =>
+        event.url.indexOf('plan/board') > -1 ||
+        event.url.indexOf('plan/detail') > -1 ||
+        event.url.indexOf('plan') == -1
+      );
 
     this.spaceSubscription =
       // On any of these event inside combineLatest
