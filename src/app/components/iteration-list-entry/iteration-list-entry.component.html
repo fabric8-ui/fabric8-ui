@@ -33,7 +33,8 @@
     </div>
     <div class="truncate padding-right-15"
       [routerLink]="[]"
-      [queryParams]="{q: constructURL(iteration.id)}">
+      [queryParams]="{q: constructURL(iteration.id)}"
+      (click)="setGuidedTypeWI(collection)">
       <span class="iteration-name truncate">
         {{iteration.attributes.name | truncate : 45 }}
       </span><span *ngIf="iteration.attributes.active_status" class="active-tag">[Active]</span>

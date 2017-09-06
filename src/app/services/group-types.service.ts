@@ -26,8 +26,8 @@ export class GroupTypesService {
   private headers = new Headers({'Content-Type': 'application/json'});
   private _currentSpace;
   private selectedGroupType: GroupTypesModel;
-  public groupTypeSelected: Subject<GroupTypesModel> = new Subject();
-  public workItemSelected: Subject<GroupTypesModel> = new Subject();
+  public groupTypeSelected: Subject<string[]> = new Subject();
+  public workItemSelected: Subject<string[]> = new Subject();
 
   constructor(
     private logger: Logger,
@@ -77,7 +77,6 @@ export class GroupTypesService {
   }
 
   setCurrentGroupType(groupType) {
-    this.selectedGroupType = groupType;
     //emit observable. Listener on planner backlog view
     this.groupTypeSelected.next(groupType);
   }
@@ -89,7 +88,6 @@ export class GroupTypesService {
     let WITid = workItem.relationships.baseType.data.id;
     let groupType = this.groupTypes
         .find(groupType => groupType.wit_collection.indexOf(WITid) > -1);
-
     // grouptype is undefined when it's not find the WIT in the groupTypes JSON.
     if(groupType !== undefined) {
       let level = groupType.level[0];
@@ -100,8 +98,11 @@ export class GroupTypesService {
         guidedGroupType = this.groupTypes
           .find(groupType => groupType.level[1] === subLevel + 1);
       }
-      this.selectedGroupType = guidedGroupType;
-      this.workItemSelected.next(guidedGroupType);
+      if(guidedGroupType != undefined) {
+        this.workItemSelected.next(guidedGroupType.wit_collection);
+      } else {
+        this.workItemSelected.next([]);
+      }
     }
   }
 

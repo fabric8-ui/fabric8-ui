@@ -323,10 +323,10 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
     event.preventDefault();
   }
 
-  setGuidedWorkItemType(groupType) {
-    if (groupType !== undefined) {
+  setGuidedWorkItemType(wiTypeCollection) {
+    if (wiTypeCollection.length > 0) {
       this.availableTypes = cloneDeep(this.allWorkItemTypes);
-      let setWITCollection = new Set(groupType.wit_collection);
+      let setWITCollection = new Set(wiTypeCollection);
       let setAvailableTypes = new Set(this.availableTypes);
       let intersection = new Set([...Array.from(setAvailableTypes)].filter(x => setWITCollection.has(x.id)));
       this.availableTypes = [...Array.from(intersection)];
@@ -347,14 +347,14 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
     );
 
     this.eventListeners.push(
-      this.groupTypesService.workItemSelected.subscribe(groupType => {
-        this.setGuidedWorkItemType(groupType);
+      this.groupTypesService.workItemSelected.subscribe(wiTypeCollection => {
+        this.setGuidedWorkItemType(wiTypeCollection);
       })
     );
 
     this.eventListeners.push(
-      this.groupTypesService.groupTypeSelected.subscribe(groupType => {
-        this.setGuidedWorkItemType(groupType);
+      this.groupTypesService.groupTypeSelected.subscribe(wiTypeCollection => {
+        this.setGuidedWorkItemType(wiTypeCollection);
       })
     );
 

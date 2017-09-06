@@ -22,6 +22,7 @@ import { Broadcaster, Logger, Notification, NotificationType, Notifications } fr
 import { AuthenticationService } from 'ngx-login-client';
 import { Dialog } from 'ngx-widgets';
 import { FilterService } from '../../services/filter.service';
+import { GroupTypesService } from '../../services/group-types.service';
 import { TreeListItemComponent } from 'ngx-widgets';
 
 @Component({
@@ -51,6 +52,7 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
     private broadcaster: Broadcaster,
     private route: ActivatedRoute,
     private filterService: FilterService,
+    private groupTypesService: GroupTypesService,
     private notifications: Notifications,
     private router: Router,
     private logger: Logger) {}
@@ -85,6 +87,10 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   onCreateChild(event: MouseEvent): any {
     event.stopPropagation();
     this.createChildEvent.emit(this);
+  }
+
+  setGuidedTypeWI(wiCollection) {
+    this.groupTypesService.setCurrentGroupType(wiCollection);
   }
 
   constructURL(iterationId: string) {
