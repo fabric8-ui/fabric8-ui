@@ -748,17 +748,24 @@ class WorkItemListPage {
     return this.activeIterationButton.isSelected();
   }
 
-  get Portfolio (){
+  getPortfolio() {
     return element(by.id('portfolio'));
   }
-  clickPortfolio  (){
-    return this.Portfolio.click();
+
+  clickPortfolio() {
+    return this.getPortfolio().click();
   }
-  get Requirements (){
-    return element(by.id('portfolio'));
+
+  getRequirements() {
+    return element(by.id('requirements'));
   }
-  clickRequirements  (){
-    return this.Requirements.click();
+
+  clickRequirements() {
+    return this.getRequirements().click();
+  }
+
+  getExecution() {
+    return element(by.id('execution'));
   }
 }
 
