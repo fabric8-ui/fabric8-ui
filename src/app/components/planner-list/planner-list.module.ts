@@ -30,6 +30,7 @@ import {
 } from '../work-item-iteration-modal/work-item-iteration-modal.module';
 import { GroupTypesModule } from '../group-types-panel/group-types-panel.module';
 import { IterationModule } from '../iterations-panel/iterations-panel.module';
+import { LabelsModule } from '../labels/labels.module';
 import { PlannerListRoutingModule } from './planner-list-routing.module';
 import { SidepanelModule } from '../side-panel/side-panel.module';
 import { ToolbarPanelModule } from '../toolbar-panel/toolbar-panel.module';
@@ -93,6 +94,7 @@ if (process.env.ENV == 'inmemory') {
     InfiniteScrollModule,
     GroupTypesModule,
     IterationModule,
+    LabelsModule,
     ModalModule,
     PlannerListRoutingModule,
     SidepanelModule,

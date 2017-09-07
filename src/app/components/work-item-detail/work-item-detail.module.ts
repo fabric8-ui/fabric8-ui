@@ -27,6 +27,7 @@ import { AreaService } from '../../services/area.service';
 import { WorkItemDetailComponent } from './work-item-detail.component';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
 import { TypeaheadDropDownModule } from '../typeahead-dropdown/typeahead-dropdown.module';
+import { LabelsModule } from '../labels/labels.module';
 import { MarkdownControlComponent } from '../markdown-control/markdown-control.component';
 import { WorkItemLinkModule } from '../work-item-link/work-item-link.module';
 import { WorkItemCommentModule } from '../work-item-comment/work-item-comment.module';
@@ -52,6 +53,7 @@ if (process.env.ENV == 'inmemory') {
     CommonModule,
     CollapseModule,
     FormsModule,
+    LabelsModule,
     TooltipModule.forRoot(),
     TypeaheadDropDownModule,
     Ng2CompleterModule,
