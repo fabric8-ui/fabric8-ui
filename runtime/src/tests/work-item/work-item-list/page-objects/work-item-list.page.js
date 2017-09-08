@@ -151,8 +151,8 @@ class WorkItemListPage {
     return parentElement.element(by.css('.workItemList_Delete'));
   }
   workItemKebabAssocateIterationButton (parentElement) {
-    browser.wait(until.presenceOf(parentElement.element(by.css('f8-wi__list-iteration'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
-    return parentElement.element(by.css('f8-wi__list-iteration'));
+    browser.wait(until.presenceOf(parentElement.element(by.css('.f8-wi__list-iteration'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
+    return parentElement.element(by.css('.f8-wi__list-iteration'));
   }
   clickWorkItemKebabAssociateIterationButton (parentElement) {
     return this.workItemKebabAssocateIterationButton (parentElement).click();
@@ -285,7 +285,7 @@ class WorkItemListPage {
 
   /* Description element relative to a workitem */
   workItemDescription (workItemElement) {
-    return workItemElement.element(by.css("f8-wi__list-desc")).getText();
+    return workItemElement.element(by.css(".f8-wi__list-desc")).getText();
   }
 
   /* Icon element relative to a workitem */
@@ -320,7 +320,7 @@ class WorkItemListPage {
   }
 
   workItemViewDescription (parentElement) {
-    return parentElement.element(By.css( "f8-wi__list-desc" ));
+    return parentElement.element(By.css( ".f8-wi__list-desc" ));
   }
 
   /*
@@ -586,8 +586,8 @@ class WorkItemListPage {
   }
   /* Access the Kebab 'move to top' element relative to its parent workitem */
   workItemKebabMoveToTopButton (parentElement) {
-    browser.wait(until.presenceOf(parentElement.element(by.css('f8-wi__list-movetop'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
-    return parentElement.element(by.css('f8-wi__list-movetop'));
+    browser.wait(until.presenceOf(parentElement.element(by.css('.f8-wi__list-movetop'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
+    return parentElement.element(by.css('.f8-wi__list-movetop'));
   }
   clickWorkItemKebabMoveToTopButton (parentElement) {
     return this.workItemKebabMoveToTopButton (parentElement).click();
@@ -595,8 +595,8 @@ class WorkItemListPage {
 
   /* Access the Kebab 'move to bottom' element relative to its parent workitem */
   workItemKebabMoveToBottomButton (parentElement) {
-    browser.wait(until.presenceOf(parentElement.element(by.css('f8-wi__list-movebtm'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
-    return parentElement.element(by.css('f8-wi__list-movebtm'));
+    browser.wait(until.presenceOf(parentElement.element(by.css('.f8-wi__list-movebtm'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
+    return parentElement.element(by.css('.f8-wi__list-movebtm'));
   }
   clickWorkItemKebabMoveToBottomButton (parentElement) {
     return this.workItemKebabMoveToBottomButton (parentElement).click();
@@ -691,11 +691,11 @@ class WorkItemListPage {
   }
 
   clickIterationCreateLabel  (){
-    return element(by.id("f8-itr__add")).click();
+    return element(by.css(".f8-itr__add")).click();
   }
 
   get iterationTitle  (){
-    return element(by.id("f8-itr-name")).click();
+    return element(by.css(".f8-itr-name")).click();
   }
   setIterationTitle  (newTitleString,append){
     if (!append) { this.iterationTitle.clear(newTitleString) };
