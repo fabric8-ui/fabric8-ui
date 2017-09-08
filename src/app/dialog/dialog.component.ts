@@ -27,7 +27,7 @@ import { Dialog } from './dialog';
         opacity: '1',
         transform: 'translateY(0)'
       })),
-      transition('inactive <=>active', animate('500ms ease all'))
+      transition('inactive <=>active', animate('500ms ease-in'))
     ]),
     trigger('modalOverlay', [
       state('inactive', style({
@@ -36,7 +36,7 @@ import { Dialog } from './dialog';
       state('active', style({
         background: 'rgba(0,0,0,0.4)'
       })),
-      transition('inactive <=>active', animate('500ms ease all'))
+      transition('inactive <=>active', animate('500ms ease-in'))
     ]),
   ],
   selector: 'alm-dialog',
