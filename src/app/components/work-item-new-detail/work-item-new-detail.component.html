@@ -127,7 +127,6 @@
                               <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
                               <img
                                 class="pull-left user-assign-avatar"
-                                src="{{user.attributes?.fullName}}"
                                 src="{{user.attributes?.imageURL + '&s=20'}}"
                                 onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
                               <span [innerHTML]="user.attributes?.fullName | almSearchHighlight: userSearch.value"></span>
