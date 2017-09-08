@@ -33,8 +33,7 @@
             <a class="fa fa-list-alt f8-action-icon"
               [routerLink]="[constructUrl(workItem)]"></a>
         </div>
-        <div class="list-group-item-text hide"
-          id="workItemList_description">
+        <div class="list-group-item-text hide f8-wi__list-desc">
           {{workItem.attributes['system.description'] ? workItem.attributes['system.description'] : "No description available for this work item."}}
         </div>
       </div>

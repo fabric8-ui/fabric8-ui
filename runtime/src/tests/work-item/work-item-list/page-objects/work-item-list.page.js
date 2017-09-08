@@ -285,7 +285,7 @@ class WorkItemListPage {
 
   /* Description element relative to a workitem */
   workItemDescription (workItemElement) {
-    return workItemElement.element(by.id("workItemList_description")).getText();
+    return workItemElement.element(by.css("f8-wi__list-desc")).getText();
   }
 
   /* Icon element relative to a workitem */
@@ -320,7 +320,7 @@ class WorkItemListPage {
   }
 
   workItemViewDescription (parentElement) {
-    return parentElement.element(By.id( "workItemList_description" ));
+    return parentElement.element(By.css( "f8-wi__list-desc" ));
   }
 
   /*
