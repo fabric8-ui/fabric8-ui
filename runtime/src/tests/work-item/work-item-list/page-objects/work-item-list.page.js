@@ -94,7 +94,7 @@ class WorkItemListPage {
 /* Page elements - bottom of the page - work item quick add */
 
  get workItemQuickAddTitle () {
-   return element(by.css("f8-quickadd-input"));
+   return element(by.css(".f8-quickadd-input"));
   }
 
  typeQuickAddWorkItemTitle (keys) {
@@ -103,7 +103,7 @@ class WorkItemListPage {
  }
 
  get workItemQuickAddDesc () {
-   return element(by.css("f8-quickadd-desc"));
+   return element(by.css(".f8-quickadd-desc"));
  }
 
  typeQuickAddWorkItemDesc (keys) {
@@ -320,7 +320,7 @@ class WorkItemListPage {
   }
 
   workItemViewDescription (parentElement) {
-    return parentElement.element(By.css( ".f8-wi__list-desc" ));
+    return parentElement.element(By.css( ".list-group-item-text.f8-wi__list-desc" ));
   }
 
   /*

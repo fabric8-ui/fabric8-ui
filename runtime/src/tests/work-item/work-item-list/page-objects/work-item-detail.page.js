@@ -519,7 +519,7 @@ class WorkItemDetailPage {
     return element(by.id('wi-link'));
   }
   linkItemHeaderCaret (){
-    return element(by.css('f8-toggle-caret-right'));
+    return element(by.css('.f8-toggle-caret-right'));
   }
   linkItemDetailedDiv (){
     return element(by.css('.link-list-wrap'));
