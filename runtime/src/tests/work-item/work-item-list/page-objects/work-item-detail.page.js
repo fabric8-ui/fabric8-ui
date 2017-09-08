@@ -415,7 +415,9 @@ class WorkItemDetailPage {
   }
   commentEdit(index) {
     browser.actions().mouseMove(element(by.css('#comment_body_' + index))).perform();
-    browser.wait(until.elementToBeClickable(element(by.css('#comment_body_' + index + ' .edit-icon'))), constants.WAIT, 'Failed to find comment edit button');
+    browser.wait(until.elementToBeClickable(
+      element(by.css('#comment_body_' + index + ' .edit-icon'))),
+      constants.WAIT, 'Failed to find comment edit button');
     return element(by.css('#comment_body_' + index + ' .edit-icon'));
   }
   commentBody(index){

@@ -151,8 +151,8 @@ class WorkItemListPage {
     return parentElement.element(by.css('.workItemList_Delete'));
   }
   workItemKebabAssocateIterationButton (parentElement) {
-    browser.wait(until.presenceOf(parentElement.element(by.id('workItemList_Iteration'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
-    return parentElement.element(by.id('workItemList_Iteration'));
+    browser.wait(until.presenceOf(parentElement.element(by.css('f8-wi__list-iteration'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
+    return parentElement.element(by.css('f8-wi__list-iteration'));
   }
   clickWorkItemKebabAssociateIterationButton (parentElement) {
     return this.workItemKebabAssocateIterationButton (parentElement).click();
@@ -586,8 +586,8 @@ class WorkItemListPage {
   }
   /* Access the Kebab 'move to top' element relative to its parent workitem */
   workItemKebabMoveToTopButton (parentElement) {
-    browser.wait(until.presenceOf(parentElement.element(by.id('workItemList_MoveTop'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
-    return parentElement.element(by.id('workItemList_MoveTop'));
+    browser.wait(until.presenceOf(parentElement.element(by.css('f8-wi__list-movetop'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
+    return parentElement.element(by.css('f8-wi__list-movetop'));
   }
   clickWorkItemKebabMoveToTopButton (parentElement) {
     return this.workItemKebabMoveToTopButton (parentElement).click();
@@ -595,8 +595,8 @@ class WorkItemListPage {
 
   /* Access the Kebab 'move to bottom' element relative to its parent workitem */
   workItemKebabMoveToBottomButton (parentElement) {
-    browser.wait(until.presenceOf(parentElement.element(by.id('workItemList_MoveBottom'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
-    return parentElement.element(by.id('workItemList_MoveBottom'));
+    browser.wait(until.presenceOf(parentElement.element(by.css('f8-wi__list-movebtm'))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
+    return parentElement.element(by.css('f8-wi__list-movebtm'));
   }
   clickWorkItemKebabMoveToBottomButton (parentElement) {
     return this.workItemKebabMoveToBottomButton (parentElement).click();
