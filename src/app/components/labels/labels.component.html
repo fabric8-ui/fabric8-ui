@@ -1,18 +1,22 @@
-<span class="label" [ngStyle]="{'background-color': '#f7bd7f'}">Default <span class="close-icon-wrapper"><i class="pficon-close pointer"></i></span></span>
-<span class="label" [ngStyle]="{'background-color': '#c8eb79'}">Primary <span class="close-icon-wrapper"><i class="pficon-close pointer"></i></span></span>
-<span class="label" [ngStyle]="{'background-color': '#9ecf99'}">Success <span class="close-icon-wrapper"><i class="pficon-close pointer"></i></span></span>
-<span class="label" [ngStyle]="{'background-color': '#ededed'}">Info <span class="close-icon-wrapper"><i class="pficon-close pointer"></i></span></span>
-<span dropdown class="dropdown" placement="right">
-  <span dropdownToggle (click)="moreClick($event)" class="dropdown-toggle">3 more...</span>
-    <ul *dropdownMenu class="dropdown-menu label-dropdown dropdown-menu-right">
-      <li>
-        <span class="label" [ngStyle]="{'background-color': '#7bdbc3'}">Info <span class="close-icon-wrapper"><i class="pficon-close pointer"></i></span></span>
-      </li>
-      <li>
-        <span class="label" [ngStyle]="{'background-color': '#7cdbf3'}">Warning <span class="close-icon-wrapper"><i class="pficon-close pointer"></i></span></span>
-      </li>
-      <li>
-        <span class="label" [ngStyle]="{'background-color': '#a18fff'}">Danger <span class="close-icon-wrapper"><i class="pficon-close pointer"></i></span></span>
-      </li>
-    </ul>
-</span>
+<div class="label-wrapper">
+  <span *ngFor="let label of labels | slice:0:truncateAfter;" class="label"
+    [ngStyle]="{'background-color': label.color}" (click)="clickLabel(label, $event)">
+    {{label.name}}
+    <span class="close-icon-wrapper">
+      <i class="pficon-close pointer" (click)="removeLabel(label, $event)"></i>
+    </span>
+  </span>
+  <span dropdown class="dropdown" placement="right">
+    <span dropdownToggle (click)="moreClick($event)" class="dropdown-toggle">3 more...</span>
+      <ul *dropdownMenu class="dropdown-menu label-dropdown dropdown-menu-right">
+        <li *ngFor="let label of labels | slice:truncateAfter;">
+          <span class="label" [ngStyle]="{'background-color': label.color}" (click)="clickLabel(label, $event)">
+            {{label.name}}
+            <span class="close-icon-wrapper">
+              <i class="pficon-close pointer" (click)="removeLabel(label, $event)"></i>
+            </span>
+          </span>
+        </li>
+      </ul>
+  </span>
+</div>
