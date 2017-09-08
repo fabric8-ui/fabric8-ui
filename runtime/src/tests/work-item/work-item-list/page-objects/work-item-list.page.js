@@ -94,7 +94,7 @@ class WorkItemListPage {
 /* Page elements - bottom of the page - work item quick add */
 
  get workItemQuickAddTitle () {
-   return element(by.id("exampleInput"));
+   return element(by.css("f8-quickadd-input"));
   }
 
  typeQuickAddWorkItemTitle (keys) {
@@ -103,7 +103,7 @@ class WorkItemListPage {
  }
 
  get workItemQuickAddDesc () {
-   return element(by.id("exampleDesc"));
+   return element(by.css("f8-quickadd-desc"));
  }
 
  typeQuickAddWorkItemDesc (keys) {
@@ -223,7 +223,7 @@ class WorkItemListPage {
   }
 
   quickAddbuttonById () {
-    return element(by.id("workItemQuickAdd_container"));
+    return element(by.css("f8-quickadd-container"));
   }
 
   clickWorkItemQuickAdd () {

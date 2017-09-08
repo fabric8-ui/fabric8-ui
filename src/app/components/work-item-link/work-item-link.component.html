@@ -3,8 +3,7 @@
   <ul class="f8-link__nav-list nav nav-tabs nav-tabs-pf">
     <li class="f8-toggle-caret"
       (click)="toggleLinkComponent()">
-      <i class="fa fa-icon"
-       id="caret-right"
+      <i class="fa fa-icon f8-toggle-caret-right"
        [ngClass]="{'fa-angle-down': showLinkComponent,
             'fa-angle-right': !showLinkComponent}"></i>
     </li>
@@ -56,8 +55,7 @@
         *ngIf="loggedIn">
         <div class="f8-link__content-hdr"
           (click)="toggleLinkCreator()">
-          <i class="fa fa-icon padding-15 pull-right"
-            id="caret-right"
+          <i class="fa fa-icon padding-15 pull-right f8-toggle-caret-right"
             [ngClass]="{'fa-angle-down': showLinkCreator,
             'fa-angle-right': !showLinkCreator}"></i>
           <p class="margin-0"

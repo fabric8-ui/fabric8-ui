@@ -1,5 +1,5 @@
-<div class="col-xs-12 col-sm-12 col-md-12 f8-quickadd"
-  id="workItemQuickAdd_container"
+<div class="col-xs-12 col-sm-12 col-md-12
+  f8-quickadd f8-quickadd-container"
   *ngIf="wilistview === 'wi-list-view'" >
   <div class="col-xs-12 col-sm-12 col-md-12 f8-quickadd__addwi"
     (click)="toggleQuickAdd()"
@@ -35,9 +35,10 @@
       </ul>
     </div>
     <div class="f8-quickadd__wiblk-story">
-      <div class="col-xs-12 col-sm-6 col-md-6 f8-quickadd__wiblk-storyinput">
-        <input class="form-control col-xs-12 col-sm-12 col-md-12"
-          id="exampleInput"
+      <div class="col-xs-12 col-sm-6 col-md-6
+        f8-quickadd__wiblk-storyinput">
+        <input class="form-control col-xs-12 col-sm-12
+          col-md-12 f8-quickadd-input"
           type="text"
           placeholder="Work Item Title"
           #quickAddTitle
@@ -47,8 +48,7 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 mobdn">
         <textarea
-          class="form-control pull-left"
-          id="exampleDesc"
+          class="form-control pull-left f8-quickadd-desc"
           type="text"
           rows="1"
           placeholder="Work Item Description"
@@ -69,7 +69,8 @@
         (click)="save($event)">
         <i class="fa fa-check"></i>
       </button>
-      <button class="btn btn-default pull-right f8-quickadd__wiblk-btn-close"
+      <button class="btn btn-default pull-right
+        f8-quickadd__wiblk-btn-close"
         (click)="toggleQuickAdd()">
         <i class="pficon-close"></i>
       </button>
@@ -78,30 +79,33 @@
 </div>
 
 <!-- Quick ADD Template for Board View -->
-<div class="f8-quickadd-card card-pf"
-  id="workItemQuickAdd_container"
+<div class="f8-quickadd-card card-pf f8-quickadd-container"
   *ngIf="wilistview === 'wi-card-view'" >
-  <div class="col-xs-12 col-sm-12 col-md-12 f8-quickadd-card__addwi"
+  <div class="col-xs-12 col-sm-12 col-md-12
+    f8-quickadd-card__addwi"
     (click)="toggleQuickAdd()">
     <a class="f8-quickadd-card__addwi-savebtn">
       <i class='pficon-add-circle-o dib'></i>
     </a>
   </div>
-  <div class="col-xs-12 col-sm-12 col-md-12 card-pf card-pf-view f8-quickadd-card__wiblk"
+  <div class="col-xs-12 col-sm-12 col-md-12 card-pf
+    card-pf-view f8-quickadd-card__wiblk"
     *ngIf="showQuickAdd">
     <div class="row padding-bottom-10 margin-bottom-15">
-      <button class="btn btn-link f8-quickadd-card__wiblk-btn-close"
+      <button class="btn btn-link
+        f8-quickadd-card__wiblk-btn-close"
         (click)="toggleQuickAdd()">
         <i class="pficon pficon-close"></i>
       </button>
     </div>
     <div class="row padding-top-10 margin-top-15">
       <div class="col-xs-2 col-sm-2 col-md-2">
-        <i class="fa padding-top-5 padding-left-10" [ngClass]="selectedType?selectedType.attributes.icon:''"></i>
+        <i class="fa padding-top-5 padding-left-10"
+        [ngClass]="selectedType?selectedType.attributes.icon:''"></i>
       </div>
       <div class="col-xs-10 col-sm-10 col-md-10">
-        <input class="form-control col-xs-12 col-sm-12 col-md-12"
-          id="exampleInput"
+        <input class="form-control col-xs-12 col-sm-12
+          col-md-12 f8-quickadd-input"
           type="text"
           placeholder="Work Item Title"
           #quickAddTitle
@@ -112,8 +116,7 @@
       </div>
       <div class="col-xs-12 col-sm-12 col-md-12 no-padding">
         <textarea
-          class="form-control board-description pull-left"
-          id="exampleDesc"
+          class="form-control board-description pull-left f8-quickadd-desc"
           type="text"
           rows="1"
           placeholder="Work Item Description"
