@@ -10,7 +10,7 @@ import { DropdownOption } from './dropdown-option';
 
 @Component({
   selector: 'alm-dropdown',
-  styleUrls: ['./dropdown.component.scss'],
+  styleUrls: ['./dropdown.component.less'],
   templateUrl: './dropdown.component.html'
 })
 export class DropdownComponent implements OnInit {

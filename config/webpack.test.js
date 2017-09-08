@@ -5,7 +5,6 @@
 const helpers = require('./helpers');
 const path = require('path');
 const stringify = require('json-stringify');
-const sass = require('./sass');
 /**
  * Webpack Plugins
  */
@@ -15,7 +14,7 @@ const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 // const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 /**
  * Webpack Constants
  */
@@ -143,23 +142,30 @@ module.exports = function (options) {
             },
           ],
         },
-
+        
         {
-          test: /\.scss$/,
-          loaders: [
+          test: /\.component\.less$/,
+          use: [
             {
               loader: 'to-string-loader'
             }, {
-              loader: 'css-loader'
+              loader: 'css-loader',
+              options: {
+                minimize: true,
+                sourceMap: true,
+                context: '/'
+              }
             }, {
-              loader: 'sass-loader',
-              query: {
-                includePaths: sass.modules.map(val => {
-                  return val.sassPath;
-                })
+              loader: 'less-loader',
+              options: {
+                paths: [
+                  path.resolve(__dirname, "../node_modules/patternfly/src/less"),
+                  path.resolve(__dirname, "../node_modules/patternfly/node_modules")
+                ],
+                sourceMap: true
               }
             }
-          ]
+          ],
         },
 
         /* File loader for supporting fonts, for example, in CSS files.
@@ -263,9 +269,19 @@ module.exports = function (options) {
             resourcePath: 'src'
           }
         }
+      }),
+      /*
+       * StyleLintPlugin
+       */
+      new StyleLintPlugin({
+        configFile: '.stylelintrc',
+        syntax: 'less',
+        context: 'src',
+        files: '**/*.less',
+        failOnError: true,
+        quiet: false,
       })
     ],
-
     /**
      * Include polyfills or mocks for various node stuff
      * Description: Node configuration

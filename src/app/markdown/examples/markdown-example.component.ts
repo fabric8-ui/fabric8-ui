@@ -5,7 +5,7 @@ const markdown = require('markdown').markdown;
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'markdown-example',
-  styleUrls: ['./markdown-example.component.scss'],
+  styleUrls: ['./markdown-example.component.less'],
   templateUrl: './markdown-example.component.html'
 })
 

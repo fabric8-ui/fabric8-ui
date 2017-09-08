@@ -8,9 +8,7 @@ import { Router } from '@angular/router';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
-  host: {'class': 'app app-component flex-container in-column-direction flex-grow-1'},
   selector: 'slide-out-example',
-  styleUrls: ['./slide-out-example.component.scss'],
   templateUrl: './slide-out-example.component.html'
 })
 export class SlideOutExampleComponent implements OnInit {

@@ -40,7 +40,7 @@ import { Dialog } from './dialog';
     ]),
   ],
   selector: 'alm-dialog',
-  styleUrls: ['./dialog.component.scss'],
+  styleUrls: ['./dialog.component.less'],
   templateUrl: './dialog.component.html'
 })
 

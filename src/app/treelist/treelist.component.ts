@@ -33,7 +33,7 @@ import {
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-tree-list',
-  styleUrls: ['./treelist.component.scss'],
+  styleUrls: ['./treelist.component.less'],
   templateUrl: './treelist.component.html'
 })
 

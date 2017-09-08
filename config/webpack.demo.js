@@ -1,7 +1,6 @@
 const helpers = require('./helpers');
 const webpack = require('webpack');
 const path = require('path');
-const sass = require('./sass');
 
 /**
  * Webpack Plugins
@@ -17,7 +16,7 @@ const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplaceme
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin;
-
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 // ExtractTextPlugin
 const extractCSS = new ExtractTextPlugin({
   filename: '[name].[id].css',
@@ -68,26 +67,28 @@ module.exports = {
           use: "css-loader?sourceMap&context=/"
         })
       }, {
-        test: /\.scss$/,
-        loaders: [
+        test: /\.component\.less$/,
+        use: [
           {
-            loader: 'css-to-string-loader'
+            loader: 'to-string-loader'
           }, {
             loader: 'css-loader',
             options: {
+              minimize: true,
               sourceMap: true,
               context: '/'
             }
           }, {
-            loader: 'sass-loader',
+            loader: 'less-loader',
             options: {
-              includePaths: sass.modules.map(val => {
-                return val.sassPath;
-              }),
+              paths: [
+                path.resolve(__dirname, "../node_modules/patternfly/src/less"),
+                path.resolve(__dirname, "../node_modules/patternfly/node_modules")
+              ],
               sourceMap: true
             }
           }
-        ]
+        ],
       },
 
       /* File loader for supporting fonts, for example, in CSS files.
@@ -128,6 +129,17 @@ module.exports = {
 
   plugins: [
     extractCSS,
+    /*
+     * StyleLintPlugin
+     */
+    new StyleLintPlugin({
+      configFile: '.stylelintrc',
+      syntax: 'less',
+      context: 'src',
+      files: '**/*.less',
+      failOnError: true,
+      quiet: false,
+    }),
     /*
      * Plugin: CommonsChunkPlugin
      * Description: Shares common code between the pages.

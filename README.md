@@ -41,6 +41,9 @@ There are several services and a couple of models used by them available.
 #### Run the tests:
  
  `npm test`
+
+#### Run Stylelint checks
+ 'gulp lint-less'
  
 ## Library Build
 
@@ -63,14 +66,14 @@ To build ngx-widgets as an npm library and embed it into a webapp such as
 fabric8-ui, you should:
 
 1. Run `npm run watch:library` in this directory. This will build ngx-widgets as
-a library and then set up a watch task to rebuild any ts, html and scss files you
+a library and then set up a watch task to rebuild any ts, html and less files you
 change.
 2. In the webapp into which you are embedding, run `npm link <path to ngx-widgets>/dist-watch`.
 This will create a symlink from `node_modules/fabric8-planner` to the `dist-watch` directory
 and install that symlinked node module into your webapp.
 3. Run your webapp in development mode, making sure you have a watch on `node_modules/ngx-widgets`
 enabled. To do this using a typical Angular Webpack setup, such as the one based on Angular Class,
-just run `npm start. You will have access to both JS sourcemaps and SASS sourcemaps if your webapp
+just run `npm start`. You will have access to both JS sourcemaps and LESS sourcemaps if your webapp
 is properly setup.
 
 Note that `fabric8-ui` is setup to do reloading and sourcemaps automatically when you

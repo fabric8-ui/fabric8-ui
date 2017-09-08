@@ -1,9 +1,9 @@
-@import "../../assets/stylesheets/_base";
+@import (reference) '../../assets/stylesheets/ngx-widgets.less';
 
 .tree-list {
   &.list-group { border-top: none; }
   .node-drop-slot.is-dragging-over {
-    background-color: $color-pf-black-400;
+    background-color: @color-pf-black-400;
     border: none;
   }
   .node-content-wrapper {
@@ -12,7 +12,7 @@
     border-radius: inherit;
     transition: none;
     &.is-dragging-over {
-      background-color: $color-pf-black-400;
+      background-color: @color-pf-black-400;
       border: none;
       box-shadow: none;
     }
@@ -28,14 +28,14 @@
     background-image: none;
     background-position: inherit;
     background-repeat: inherit;
-    font-family: "FontAwesome";
+    font-family: FontAwesome;
     font-size: inherit;
-    &:before { content: "\f105"; }
+    &:before { content: '\f105'; }
   }
   .toggle-children-wrapper-collapsed .toggle-children { transform: none; }
   .toggle-children-wrapper-expanded .toggle-children {
     transform: none;
-    &:before { content: "\f107"; }
+    &:before { content: '\f107'; }
   }
   .tree { display: block; }
 

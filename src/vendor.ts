@@ -15,7 +15,8 @@ import '@angular/router';
 import 'rxjs';
 
 // Other vendors for example jQuery, Lodash or Bootstrap
-// You can import js, ts, css, sass, ...
+// You can import js, ts, css, less, ...
 
-import 'patternfly-sass-with-css/assets/css/patternfly.css';
-
+// import PatternFly CSS
+import '../node_modules/patternfly/dist/css/patternfly.min.css';
+import '../node_modules/patternfly/dist/css/patternfly-additions.min.css';

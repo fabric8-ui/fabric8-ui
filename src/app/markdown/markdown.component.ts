@@ -15,7 +15,7 @@ import {
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'f8-markdown',
-  styleUrls: ['./markdown.component.scss'],
+  styleUrls: ['./markdown.component.less'],
   templateUrl: './markdown.component.html'
 })
 

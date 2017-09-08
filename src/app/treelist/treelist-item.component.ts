@@ -14,7 +14,7 @@ import { TreeNode } from 'angular2-tree-component';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-tree-list-item',
-  styleUrls: ['./treelist-item.component.scss'],
+  styleUrls: ['./treelist-item.component.less'],
   templateUrl: './treelist-item.component.html'
 })
 

@@ -1,4 +1,4 @@
-@import "../../assets/stylesheets/_base";
+@import (reference) '../../assets/stylesheets/ngx-widgets.less';
 
 .tree-list {
   .list-group-item {
@@ -13,7 +13,7 @@
   &.is-dragging-over {
     height: 30px;
     border: none;
-    background-color: $color-pf-black-400;
+    background-color: @color-pf-black-400;
   }
 }
 .node-content-wrapper {
@@ -21,14 +21,16 @@
     padding-left: 0;
     border: none;
     cursor: pointer;
-    &:hover { background-color: $color-pf-black-200; }
+    &:hover { background-color: @color-pf-black-200; }
     &.tree-item-selected {
-      background-color: $color-pf-blue-100;
-      &:hover { background-color: $color-pf-blue-100; }
+      background-color: @color-pf-blue-100;
+      &:hover { background-color: @color-pf-blue-100; }
     }
   }
 }
+/* stylelint-disable */
 .node-wrapper { padding-left: 0 !important; }
+/* stylelint-enable */
 // Indentation -- highlighting should occupy entire row
 .tree-children {
   padding-left: 0;

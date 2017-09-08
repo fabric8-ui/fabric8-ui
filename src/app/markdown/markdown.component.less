@@ -1,4 +1,4 @@
-@import "../../assets/stylesheets/_base";
+@import (reference) '../../assets/stylesheets/ngx-widgets.less';
 [contenteditable]:focus {
   outline: 0 solid transparent;
 }
@@ -7,7 +7,7 @@
 }
 .editor-container {
   width: 100%;
-  background-color: $color-pf-black-200;
+  background-color: @color-pf-black-200;
   .editor {
     .editor-markdown {
       font-size: 1.071em;
@@ -21,7 +21,7 @@
     .placeholder {
       font-size: 1.429em;
       font-style: italic;
-      color: $color-pf-black-400;
+      color: @color-pf-black-400;
     }
     .editor-box {
       min-height: 60px;
@@ -43,22 +43,22 @@
         opacity: 1;
       }
     }
-    background-color: $color-pf-white;
+    background-color: @color-pf-white;
     padding-right: 30px;
     background-clip: content-box;
-    border: 1px solid $color-pf-black-500;
+    border: 1px solid @color-pf-black-500;
   }
   .show-less {
     max-height: 300px;
     overflow: hidden;
   }
   .active {
-    border: 1px solid $color-pf-blue-400;
+    border: 1px solid @color-pf-blue-400;
   }
 }
 .actions {
   margin-top: 8px;
   .action-btn { width: 40px; }
   .btn-save { margin-right: 10px; }
-  .clickable { cursor: pointer }
+  .clickable { cursor: pointer; }
 }

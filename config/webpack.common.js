@@ -4,7 +4,6 @@
 const path = require('path'),
   helpers = require('./helpers'),
   webpack = require('webpack'),
-  sass = require('./sass'),
   CleanWebpackPlugin = require('clean-webpack-plugin');
 // const stringify = require('json-stringify');
 
@@ -21,7 +20,7 @@ const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplaceme
 const OptimizeJsPlugin = require('optimize-js-plugin');
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
-
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 // ExtractTextPlugin
 const extractCSS = new ExtractTextPlugin({
   filename: '[name].[id].css',
@@ -62,34 +61,49 @@ module.exports = {
           }
         ],
         exclude: [/\.spec\.ts$/]
-      },{
+      },
+      /* HTML Linter
+       * Checks all files against .htmlhintrc
+       */
+      {
+        enforce: 'pre',
+        test: /\.html$/,
+        loader: 'htmlhint-loader',
+        exclude: [/node_modules/],
+        options: {
+          configFile: './.htmlhintrc'
+        }
+      },
+      {
         test: /\.css$/,
         loader: extractCSS.extract({
           fallback: "style-loader",
           use: "css-loader?sourceMap&context=/"
         })
-      }, {
-        test: /\.scss$/,
-        loaders: [
-          {
-            loader: 'to-string-loader'
-          }, {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true,
-              context: '/'
+        }, {
+          test: /\.component\.less$/,
+          use: [
+            {
+              loader: 'to-string-loader'
+            }, {
+              loader: 'css-loader',
+              options: {
+                minimize: true,
+                sourceMap: true,
+                context: '/'
+              }
+            }, {
+              loader: 'less-loader',
+              options: {
+                paths: [
+                  path.resolve(__dirname, "../node_modules/patternfly/src/less"),
+                  path.resolve(__dirname, "../node_modules/patternfly/node_modules")
+                ],
+                sourceMap: true
+              }
             }
-          }, {
-            loader: 'sass-loader',
-            options: {
-              includePaths: sass.modules.map(val => {
-                return val.sassPath;
-              }),
-              sourceMap: true
-            }
-          }
-        ]
-      },
+          ],
+        },
 
       /* File loader for supporting fonts, for example, in CSS files.
        */
@@ -196,9 +210,9 @@ module.exports = {
          * Reference: https://github.com/jtangelder/sass-loader
          * Transforms .scss files to .css
          */
-        sassLoader: {
+        // sassLoader: {
           //includePaths: [path.resolve(__dirname, "node_modules/foundation-sites/scss")]
-        }
+        // }
       }
     }),
     // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin
@@ -226,6 +240,17 @@ module.exports = {
       verbose: false,
       dry: false
     }),
-    extractCSS
+    extractCSS,
+    /*
+     * StyleLintPlugin
+     */
+    new StyleLintPlugin({
+      configFile: '.stylelintrc',
+      syntax: 'less',
+      context: 'src',
+      files: '**/*.less',
+      failOnError: true,
+      quiet: false,
+    })
   ]
 };

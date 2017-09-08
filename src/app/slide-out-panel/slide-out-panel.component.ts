@@ -17,7 +17,7 @@ import {
 
 @Component({
   selector: 'alm-slide-out-panel',
-  styleUrls: ['./slide-out-panel.component.scss'],
+  styleUrls: ['./slide-out-panel.component.less'],
   animations: [
     trigger('slideInOut', [
       state('in', style({
