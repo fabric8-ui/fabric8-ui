@@ -1,0 +1,51 @@
+<f8-select-dropdown
+  #dropdown
+  [toggleButtonRef]="toggleButtonRef"
+  [dropdownItem]="dropdownItem"
+  [dropdownFooter]="dropdownFooter"
+  [headerText]="'This is header'"
+  [menuItems]="labels"
+  [showSearch]="backup.length > 8"
+  (onSelect)="onSelect($event)"
+  (onSearch)="onSearch($event)">
+  <ng-template #toggleButtonRef>
+    <span class="clickable">
+      [ Toggle ]
+    </span>
+  </ng-template>
+  <ng-template #dropdownItem let-color="color" let-name="name">
+    <div [ngStyle]="{'background-color': color}" class="palet"></div>
+    <span [innerHTML]="name | almSearchHighlight: searchValue"></span>
+  </ng-template>
+  <ng-template #dropdownFooter>
+    <div *ngIf="!activeAddLabel"
+      (click)="clickOnAddLabel()"
+      class="create-label-button">
+      <span class="pficon pficon-add-circle-o"></span>
+      Create new label
+    </div>
+    <div *ngIf="activeAddLabel && !colorPickerActive"
+      class="create-label">
+      <div [ngStyle]="{'background-color': newSelectedColor}"
+        (click)="toggleColorPicker()" class="palet">
+      </div>
+      <input class="create-label-input" #labelname />
+      <button class="action-btn btn btn-primary fa fa-check"
+        (click)="createLabel(labelname.value)">
+      </button>
+      <button class="action-btn btn pficon pficon-close"
+        (click)="closeAddLabel()">
+      </button>
+    </div>
+    <div class="color-picker"
+      *ngIf="activeAddLabel && colorPickerActive">
+      <span
+        *ngFor="let color of colors" class="palet clickable"
+        [ngStyle]="{'background-color': color.color}"
+        (click)="selectColor(color); toggleColorPicker();">
+      </span>
+    </div>
+  </ng-template>
+</f8-select-dropdown>
+
+

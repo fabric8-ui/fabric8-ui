@@ -261,14 +261,15 @@
               </div>
             </div>
           </div>
-          <!-- Labels -->
+          <!--Lables-->
           <div class="form-group">
             <div class="width-100 pull-left detail-iteration-wrap">
-              <label class="col-xs-4 col-sm-4 col-md-4 control-label">
-                Labels
+              <label class="col-xs-4 col-sm-4 col-md-4 control-label" id="iteration_label">
+                {{workItem.relationships?.baseType?.data?.attributes?.fields['system.label']?.label || 'Label'}}
               </label>
               <div class="col-xs-8 col-sm-8 col-md-8 padding-left-0">
                 <f8-label></f8-label>
+                <label-selector></label-selector>
               </div>
             </div>
           </div>

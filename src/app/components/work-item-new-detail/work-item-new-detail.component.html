@@ -207,14 +207,15 @@
             </div>
           </section>
         </div>
-        <!-- Labels -->
+        <!--Lables-->
         <div class="form-group">
           <section class="f8-detail__area">
             <label class="col-xs-4 col-sm-4 col-md-2 control-label">
-              Labels
+              {{workItem.relationships?.baseType?.data?.attributes?.fields['system.label']?.label || 'Label'}}
             </label>
             <div class="col-xs-8 col-sm-8 col-md-10">
               <f8-label></f8-label>
+              <label-selector></label-selector>
             </div>
           </section>
         </div>

@@ -1,3 +1,4 @@
+import { LabelSelectorModule } from './../label-selector/label-selector.module';
 
 import { RouterModule } from '@angular/router';
 import { NgModule }     from '@angular/core';
@@ -49,6 +50,7 @@ if (process.env.ENV == 'inmemory') {
     WidgetsModule,
     AlmIconModule,
     AlmEditableModule,
+    LabelSelectorModule,
     ModalModule,
     CommonModule,
     CollapseModule,
