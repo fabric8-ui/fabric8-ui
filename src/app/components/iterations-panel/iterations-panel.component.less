@@ -50,19 +50,19 @@
         list-style: none;
         &.active {
           border-left: 4px solid;
-          border-left-color: @color-pf-blue-400;
+          border-left-color: transparent;
           background-color: @color-pf-black-700;
+          &.io-itr--selected {
+            border-left: 4px solid;
+            border-left-color: @color-pf-blue;
+            background-color: @color-pf-black-700;
+          }
         }
         &:hover {
           background-color: @color-pf-black-800 ;
         }
       }
     }
-  }
-  &--selected {
-    border-left: 4px solid;
-    border-left-color: @color-pf-blue;
-    background-color: @color-pf-black-700;
   }
   &-count { float: right; }
   &-desc {
