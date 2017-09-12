@@ -3,7 +3,7 @@
   [toggleButtonRef]="toggleButtonRef"
   [dropdownItem]="dropdownItem"
   [dropdownFooter]="dropdownFooter"
-  [headerText]="'This is header'"
+  [headerText]="'Add label'"
   [menuItems]="labels"
   [showSearch]="backup.length > 8"
   (onSelect)="onSelect($event)"
@@ -27,7 +27,7 @@
     </div>
     <div *ngIf="activeAddLabel && !colorPickerActive"
       class="create-label">
-      <div [ngStyle]="{'background-color': newSelectedColor.color, 'border-color': newSelectedColor.color}"
+      <div [ngStyle]="{'background-color': newSelectedColor.color, 'border-color': newSelectedColor.border}"
         (click)="toggleColorPicker()" class="palet">
       </div>
       <input class="create-label-input" #labelname />
