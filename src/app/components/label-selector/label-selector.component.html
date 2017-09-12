@@ -9,8 +9,9 @@
   (onSelect)="onSelect($event)"
   (onSearch)="onSearch($event)">
   <ng-template #toggleButtonRef>
-    <span class="clickable" (click)="closeAddLabel()">
-      [ Add label ]
+    <span class="clickable add-label" (click)="closeAddLabel()">
+      <i class="pficon pficon-add-circle-o"></i>
+      Add label
     </span>
   </ng-template>
   <ng-template #dropdownItem let-color="color" let-border="border" let-name="name">
