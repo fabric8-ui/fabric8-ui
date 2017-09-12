@@ -14,13 +14,11 @@
     [checked]="checkedWI"
     (click)="toggleEntry($event)" />
 	</div>
-	<!-- info area -->
+  <!-- info area -->
   <div class="list-view-pf-main-info">
     <div class="list-view-pf-left type f8-wi__list-witype">
-      <span  class="color-grey pull-left" almIcon
-        [iconType]="workItem.attributes['system.state']"></span>
-      <span class="color-grey pull-left fa
-        {{workItem.relationships?.baseType?.data?.attributes?.icon}}"></span>
+      <span almIcon [iconType]="workItem.attributes['system.state']" class="color-grey pull-left"></span>
+      <span class="color-grey pull-left fa {{workItem.relationships?.baseType?.data?.attributes?.icon}}"></span>
       <span class="pull-left"> {{workItem.attributes['system.number']}} </span>
     </div>
     <div class="list-view-pf-body">
