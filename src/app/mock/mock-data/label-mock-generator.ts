@@ -5,8 +5,14 @@ export class LabelMockGenerator {
 
     private label: any;
     private allLabels: any;
-    private BackgroundColors = ['#f7bd7f', '#c8eb79', '#9ecf99', '#ededed', '#7bdbc3', '#7cdbf3'];
-    private colors = ['#303030'];
+
+    private labels = [
+      {color: '#fbdebf', border: '#f39d3c'},
+      {color: '#f7bd7f', border: '#f39d3c'},
+      {color: '#fbeabc', border: '#f39d3c'},
+      {color: '#9ecf99', border: '#6ec664'},
+      {color: '#d1d1d1', border: '#bbbbbb'}
+    ];
 
     /*
      * Creates the label structure.
@@ -15,12 +21,13 @@ export class LabelMockGenerator {
       if (this.allLabels)
         return this.allLabels;
       else {
-        return this.allLabels = [0, 1, 2, 3, 4, 5].map((i) => {
+        return this.allLabels = this.labels.map((i) => {
           return {
             attributes: {
               name: 'Example Label ' + i,
-              "text-color": this.colors[i],
-              "background-color": this.BackgroundColors[i]
+              "text-color": "#000000",
+              "background-color": i.color,
+              "border-color": i.border
             },
             links: {
               self: 'http://mock.service/api/spaces/space-id0/labels/label'+i
