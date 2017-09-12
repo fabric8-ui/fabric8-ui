@@ -19,7 +19,7 @@ export class LabelSelectorComponent implements OnInit {
   private activeAddLabel: boolean = false;
   private colors: any[] = [];
   private colorPickerActive: boolean = false;
-  private newSelectedColor: string = '';
+  private newSelectedColor: any = {};
 
   ngOnInit() {
     this.colors = [
@@ -29,26 +29,23 @@ export class LabelSelectorComponent implements OnInit {
       {color: '#f9d67a', border: '#f39d3c'},
       {color: '#e4f5bc', border: '#ace12e'},
       {color: '#cfe7cd', border: '#6ec664'},
-      {color: '#fbdebf', border: '#f39d3c'},
-      {color: '#f7bd7f', border: '#f39d3c'},
-      {color: '#fbeabc', border: '#f39d3c'},
-      {color: '#f9d67a', border: '#f39d3c'},
-      {color: '#e4f5bc', border: '#ace12e'},
-      {color: '#cfe7cd', border: '#6ec664'},
-      {color: '#fbdebf', border: '#f39d3c'},
-      {color: '#f7bd7f', border: '#f39d3c'},
-      {color: '#fbeabc', border: '#f39d3c'},
-      {color: '#f9d67a', border: '#f39d3c'},
-      {color: '#e4f5bc', border: '#ace12e'},
-      {color: '#cfe7cd', border: '#6ec664'}
+      {color: '#9ecf99', border: '#6ec664'},
+      {color: '#bedee1', border: '#3a9ca6'},
+      {color: '#7dbdc3', border: '#3a9ca6'},
+      {color: '#beedf9', border: '#35caed'},
+      {color: '#7cdbf3', border: '#35caed'},
+      {color: '#c7bfff', border: '#8461f7'},
+      {color: '#a18fff', border: '#8461f7'},
+      {color: '#ededed', border: '#bbbbbb'},
+      {color: '#d1d1d1', border: '#bbbbbb'}
     ];
-    this.newSelectedColor = this.colors[0].color;
+    this.newSelectedColor = this.colors[0];
     this.labels = [
-      {id: 1, color: '#ffffff', name: 'white', selected: false},
-      {id: 2, color: '#000000', name: 'black', selected: false},
-      {id: 3, color: '#ff4c4c', name: 'red', selected: false},
-      {id: 4, color: '#4cff4c', name: 'green', selected: false},
-      {id: 5, color: '#ffffff', name: 'white', selected: false},
+      {id: 1, color: '#fbdebf', border: '#f39d3c', name: 'label-1', selected: false},
+      {id: 2, color: '#f7bd7f', border: '#f39d3c', name: 'label-2', selected: false},
+      {id: 3, color: '#fbeabc', border: '#f39d3c', name: 'label-3', selected: false},
+      {id: 4, color: '#9ecf99', border: '#6ec664', name: 'label-4', selected: false},
+      {id: 5, color: '#d1d1d1', border: '#bbbbbb', name: 'label-5', selected: false},
     ];
 
     this.backup = cloneDeep(this.labels);
@@ -89,6 +86,7 @@ export class LabelSelectorComponent implements OnInit {
   clickOnAddLabel() {
     this.activeAddLabel = true;
   }
+
   closeAddLabel() {
     this.activeAddLabel = false;
   }
@@ -98,7 +96,7 @@ export class LabelSelectorComponent implements OnInit {
   }
 
   selectColor(color: any) {
-    this.newSelectedColor = color.color;
+    this.newSelectedColor = color;
   }
   createLabel(name: any) {
     if (name.trim() === '') {
@@ -106,7 +104,8 @@ export class LabelSelectorComponent implements OnInit {
     }
     const newLabel = {
       id: this.backup.length + 1,
-      color: this.newSelectedColor,
+      color: this.newSelectedColor.color,
+      border: this.newSelectedColor.border,
       name: name,
       selected: true
     };
