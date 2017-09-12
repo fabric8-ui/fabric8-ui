@@ -1,14 +1,34 @@
 export class LabelModel {
-  attributes?: LabelAttributes;
+  attributes: LabelAttributes;
   id: string;
-  links: LabelLinks
+  links?: LabelLinks;
+  relationships?: LabelRelationships;
+  type?: string;
 }
 
 export class LabelAttributes {
+  "background-color"?: string;
+  "created-at"?: string;
   name: string;
-  color: string;
+  "text-color"?: string;
+  "updated-at"?: string;
+  version?: number;
 }
 
 export class LabelLinks {
+  related: string;
   self: string;
+}
+
+export class LabelRelationships {
+  space: {
+    data: {
+      id: string;
+      type: string;
+    }
+    links: {
+      related: string;
+      self: string;
+    }
+  }
 }

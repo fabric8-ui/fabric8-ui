@@ -13,6 +13,7 @@ import { FilterMockGenerator } from './mock-data/filter-mock-generator';
 import { SpaceMockGenerator } from './mock-data/space-mock-generator';
 import { AreaMockGenerator } from './mock-data/area-mock-generator';
 import { IterationMockGenerator } from './mock-data/iteration-mock-generator';
+import { LabelMockGenerator } from './mock-data/label-mock-generator';
 
 /*
   This class provides a mock database store for entities. It provides
@@ -44,6 +45,7 @@ export class MockDataService {
   private spaceMockGenerator: SpaceMockGenerator = new SpaceMockGenerator();
   private iterationMockGenerator: IterationMockGenerator = new IterationMockGenerator();
   private areaMockGenerator: AreaMockGenerator = new AreaMockGenerator();
+  private labelMockGenerator: LabelMockGenerator = new LabelMockGenerator();
 
   // persistence store, the MockDataService is a singleton when injected as a service.
   private workItems: any[];
@@ -53,6 +55,7 @@ export class MockDataService {
   private spaces: any[];
   private iterations: any[];
   private areas: any[];
+  private labels: any[];
 
   private selfId;
 
@@ -66,6 +69,7 @@ export class MockDataService {
     this.spaces = this.spaceMockGenerator.createSpaces();
     this.iterations = this.iterationMockGenerator.createIterations();
     this.areas = this.areaMockGenerator.createAreas();
+    this.labels = this.labelMockGenerator.getAllLabels();
 
     this.selfId = this.createId();
     console.log('Started MockDataService service instance ' + this.selfId);
@@ -281,6 +285,8 @@ export class MockDataService {
       if (subselect === 'comments') {
         console.log('Requested comments for workitem ' + wiId);
         return this.makeCopy(this.workItemComments[wiId]);
+      } else if (subselect === 'labels') {
+        // bad me karenge
       } else if (subselect === 'relationships') {
         console.log('Request for relationships for workitem ' + wiId);
         if (parts[2] === 'links') {
@@ -430,6 +436,10 @@ export class MockDataService {
 
   public getAllUsers(): any {
     return this.userMockGenerator.getAllUsers();
+  }
+
+  public getAllLabels(): any {
+    return this.labelMockGenerator.getAllLabels();
   }
 
   public getLoginStatus() {

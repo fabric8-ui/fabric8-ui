@@ -20,34 +20,44 @@ export class LabelsComponent implements OnInit {
   @Output() onLabelClick = new EventEmitter();
   @Output() onRemoveLabel = new EventEmitter();
 
+  showMore: boolean = false;
+
   ngOnInit() {
+    console.log(this.truncateAfter, "##### label component #####");
     this.labels = [{
       name: 'frontend',
-      color: '#f7bd7f'
+      'background-color': '#f7bd7f',
+      'text-color': '#303030'
     },
     {
       name: 'backend',
-      color: '#c8eb79'
+      'background-color': '#c8eb79',
+      'text-color': '#303030'
     },
     {
       name: 'bug',
-      color: '#9ecf99'
+      'background-color': '#9ecf99',
+      'text-color': '#303030'
     },
     {
       name: 'iteration',
-      color: '#ededed'
+      'background-color': '#ededed',
+      'text-color': '#303030'
     },
     {
       name: 'board view',
-      color: '#7bdbc3'
+      'background-color': '#7bdbc3',
+      'text-color': '#303030'
     },
     {
       name: 'list view',
-      color: '#7cdbf3'
+      'background-color': '#7cdbf3',
+      'text-color': '#303030'
     },
     {
       name: 'user story',
-      color: '#a18fff'
+      'background-color': '#a18fff',
+      'text-color': '#303030'
     }];
   }
 

@@ -4,6 +4,7 @@ import { Comments, Comment } from './comment';
 import { Link } from './link';
 import { User } from 'ngx-login-client';
 import { IterationModel } from './iteration.model';
+import { LabelModel } from './label.model';
 
 export class WorkItem {
   hasChildren?: boolean;
@@ -24,6 +25,9 @@ export class WorkItemRelations {
   };
   assignees?: {
     data?: User[]
+  };
+  labels?: {
+    data?: LabelModel[]
   };
   baseType?: {
     data: WorkItemType;
@@ -66,6 +70,7 @@ export class RelationalData {
   creator?: User;
   comments?: Comment[];
   assignees?: User[];
+  labels?: LabelModel[];
   linkDicts?: LinkDict[];
   iteration?: IterationModel;
   totalLinkCount?: number;

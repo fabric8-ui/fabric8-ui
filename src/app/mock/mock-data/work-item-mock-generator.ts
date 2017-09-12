@@ -171,6 +171,7 @@ export class WorkItemMockGenerator {
         },
         'relationships': {
           'assignees': { },
+          'labels': (n==0) ? { "data": [{"id": "label1","type": "labels"}], "links": {"related": "http://mock.service/api/workitems/id"+n+"/labels"}} : {},
           'iteration': (n % 2) ? { 'data': { 'id': 'iteration-id1', 'links': { 'self': 'http://mock.service/api/iterations/iteration-id1' }, 'type': 'iterations' }} : { 'data': { 'id': 'iteration-id0', 'links': { 'self': 'http://mock.service/api/iterations/iteration-id0' }, 'type': 'iterations' }},
           'area': {
             'data': {

@@ -43,6 +43,7 @@ import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-a
 import { WorkItemService } from '../../services/work-item.service';
 import { MockHttp } from '../../mock/mock-http';
 import { HttpService } from '../../services/http-service';
+import { LabelService } from '../../services/label.service';
 
 let providers = [];
 
@@ -59,6 +60,7 @@ if (process.env.ENV == 'inmemory') {
       provide: HttpService,
       useClass: MockHttp
     },
+    LabelService,
     TooltipConfig,
     UrlService
   ];
@@ -78,6 +80,7 @@ if (process.env.ENV == 'inmemory') {
       },
       deps: [XHRBackend, RequestOptions, AuthenticationService]
     },
+    LabelService,
     TooltipConfig,
     UrlService
   ];

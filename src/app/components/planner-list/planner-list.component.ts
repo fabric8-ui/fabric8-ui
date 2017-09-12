@@ -50,6 +50,8 @@ import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-li
 import { WorkItemService }            from '../../services/work-item.service';
 import { WorkItemDataService } from './../../services/work-item-data.service';
 import { CollaboratorService } from '../../services/collaborator.service';
+import { LabelService } from '../../services/label.service';
+import { LabelModel } from '../../models/label.model';
 import { TreeListComponent } from 'ngx-widgets';
 import { UrlService } from './../../services/url.service';
 
@@ -92,6 +94,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   authUser: any = null;
   eventListeners: any[] = [];
   showHierarchyList: boolean = true;
+  allLabels: LabelModel[] = [];
   private spaceSubscription: Subscription = null;
   private iterations: IterationModel[] = [];
   private areas: AreaModel[] = [];
@@ -117,6 +120,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   };
 
   constructor(
+    private labelService: LabelService,
     private areaService: AreaService,
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
@@ -348,6 +352,13 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     },
     (err) => {
       console.log('Error in Work Item list', err);
+    });
+  }
+
+  getLabels() {
+    this.labelService.getLabels().subscribe(labels => {
+      console.log(labels, '##### spaces labels #########');
+      this.allLabels = labels;
     });
   }
 
