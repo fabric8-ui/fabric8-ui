@@ -1,3 +1,4 @@
+import { LabelModel } from './../../models/label.model';
 import { Broadcaster } from 'ngx-base';
 import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
 import { FormGroup } from '@angular/forms';
@@ -5,6 +6,7 @@ import { Comment } from './../../models/comment';
 import { IterationService } from './../../services/iteration.service';
 import { AreaModel } from './../../models/area.model';
 import { IterationModel } from './../../models/iteration.model';
+import { LabelService } from './../../services/label.service';
 import { TypeaheadDropdown, TypeaheadDropdownValue } from '../typeahead-dropdown/typeahead-dropdown.component';
 import { AreaService } from './../../services/area.service';
 import { Observable } from 'rxjs';
@@ -62,6 +64,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   searchAssignee: Boolean = false;
   headerEditable: Boolean = false;
   descText: any = '';
+  labels: LabelModel[] = [];
 
   constructor(
     private areaService: AreaService,
@@ -69,6 +72,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
     private broadcaster: Broadcaster,
     private collaboratorService: CollaboratorService,
     private iterationService: IterationService,
+    private labelService: LabelService,
     private route: ActivatedRoute,
     private router: Router,
     private spaces: Spaces,
@@ -202,7 +206,8 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
             this.resolveArea(),
             this.resolveIteration(),
             this.resolveLinks(),
-            this.resolveComments()
+            this.resolveComments(),
+            this.resolveLabels()
           )
         })
         .subscribe(() => {
@@ -323,6 +328,17 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
         });
         this.comments = this.workItem.relationships.comments.data;
         this.loadingComments = false;
+      })
+  }
+
+  resolveLabels(): Observable<any> {
+    return this.labelService.getLabels()
+      .do(labels => {
+        this.labels = labels;
+        this.workItem.relationships.labels.data =
+          this.workItem.relationships.labels.data.map(label => {
+            return this.labels.find(l => l.id === label.id);
+          })
       })
   }
 

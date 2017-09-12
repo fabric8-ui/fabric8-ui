@@ -8,6 +8,7 @@ export class LabelModel {
 
 export class LabelAttributes {
   "background-color"?: string;
+  "border-color"?: string;
   "created-at"?: string;
   name: string;
   "text-color"?: string;

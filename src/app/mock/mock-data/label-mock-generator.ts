@@ -21,16 +21,16 @@ export class LabelMockGenerator {
       if (this.allLabels)
         return this.allLabels;
       else {
-        return this.allLabels = this.labels.map((i) => {
+        return this.allLabels = this.labels.map((i, index) => {
           return {
             attributes: {
-              name: 'Example Label ' + i,
+              name: 'Example Label ' + index,
               "text-color": "#000000",
               "background-color": i.color,
               "border-color": i.border
             },
             links: {
-              self: 'http://mock.service/api/spaces/space-id0/labels/label'+i
+              self: 'http://mock.service/api/spaces/space-id0/labels/label'+index
             },
             relationships: {
               'space': {
@@ -43,7 +43,7 @@ export class LabelMockGenerator {
                 }
               },
             },
-            id: 'label' + i,
+            id: 'label' + index,
             type: 'labels'
           }
         });

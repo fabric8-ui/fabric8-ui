@@ -1,3 +1,4 @@
+import { LabelService } from './../../services/label.service';
 import { LabelSelectorModule } from './../label-selector/label-selector.module';
 import { UrlService } from './../../services/url.service';
 import { AuthenticationService } from 'ngx-login-client';
@@ -41,6 +42,7 @@ if (process.env.ENV == 'inmemory') {
     AreaService,
     BsDropdownConfig,
     IterationService,
+    LabelService,
     TooltipConfig,
     UrlService,
     WorkItemDataService,
@@ -60,6 +62,7 @@ if (process.env.ENV == 'inmemory') {
     AreaService,
     BsDropdownConfig,
     IterationService,
+    LabelService,
     TooltipConfig,
     UrlService,
     WorkItemDataService,
