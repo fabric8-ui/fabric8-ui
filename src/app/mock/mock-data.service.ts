@@ -346,6 +346,14 @@ export class MockDataService {
               this.workItems[i].relationships.assignees = {};
             }
           }
+          // Label update
+          if (workItem.relationships.labels && workItem.relationships.labels.data) {
+            if (workItem.relationships.labels.data.length) {
+              this.workItems[i].relationships.labels.data = workItem.relationships.labels.data;
+            } else {
+              this.workItems[i].relationships.labels.data = [];
+            }
+          }
         } else {
           Object.assign(this.workItems[i].attributes, localWorkItem.attributes);
         }

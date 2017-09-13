@@ -218,7 +218,8 @@
               <div class="f8-detail__labels--selector">
                 <label-selector
                   [allLabels]="labels"
-                  [selectedLabels]="workItem.relationships?.labels?.data">
+                  [selectedLabels]="workItem.relationships?.labels?.data"
+                  (onSelectLable)="updateLabels($event)">
                 </label-selector>
               </div>
             </div>

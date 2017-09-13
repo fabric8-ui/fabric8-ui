@@ -1,7 +1,9 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   Input,
+  Output,
   OnChanges,
   OnInit,
   SimpleChanges,
@@ -24,13 +26,14 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
   @Input() allLabels: LabelModel[] = [];
   @Input() selectedLabels: LabelModel[] = [];
 
+  @Output() onSelectLable: EventEmitter<LabelModel[]> = new EventEmitter();
+
   private activeAddLabel: boolean = false;
   private backup: any[] = [];
   private colorPickerActive: boolean = false;
   private colors: any[] = [];
   private createDisabled: boolean = false;
   private labels: any[] = [];
-  private multiSelect: boolean = true;
   private newSelectedColor: any = {};
   private searchValue: string = '';
 
@@ -60,6 +63,7 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console
     if( changes.allLabels ) {
       this.backup = cloneDeep(this.allLabels.map((label: LabelModel) => {
         return {
@@ -79,39 +83,40 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
       }
     }
     if( changes.selectedLabels ) {
-      this.labels.forEach((label, index) => {
-        if (this.selectedLabels.find(l => label.id === l.id)) {
-          this.labels[index].selected = true;
-        }
-      })
-      this.backup.forEach((label, index) => {
-        if (this.selectedLabels.find(l => label.id === l.id)) {
-          this.backup[index].selected = true;
-        }
-      })
+      this.updateSelection();
     }
   }
 
 
   onSelect(event: any) {
-    let findIndex = this.labels.findIndex(i => i.id === event.id);
-    if (findIndex > -1) {
-      if (this.multiSelect) {
-        this.labels[findIndex].selected = !this.labels[findIndex].selected;
-      } else {
-        this.labels.forEach(i => i.selected = false);
-        this.labels[findIndex].selected = true;
+    let findSelectedIndex = this.selectedLabels.findIndex(i => i.id === event.id);
+    if (findSelectedIndex > -1) {
+      this.selectedLabels.splice(findSelectedIndex, 1);
+    } else {
+      let findLabel = cloneDeep(this.allLabels.find(i => i.id === event.id));
+      if (findLabel) {
+        this.selectedLabels.push(findLabel);
       }
     }
-    let findIndexBackup = this.backup.findIndex(i => i.id === event.id);
-    if (findIndexBackup > -1) {
-      if (this.multiSelect) {
-        this.backup[findIndexBackup].selected = !this.backup[findIndexBackup].selected;
+    this.updateSelection();
+    this.onSelectLable.emit(cloneDeep(this.selectedLabels));
+  }
+
+  updateSelection() {
+    this.labels.forEach((label, index) => {
+      if (this.selectedLabels.find(l => label.id === l.id)) {
+        this.labels[index].selected = true;
       } else {
-        this.backup.forEach(i => i.selected = false);
-        this.backup[findIndexBackup].selected = true;
+        this.labels[index].selected = false;
       }
-    }
+    });
+    this.backup.forEach((label, index) => {
+      if (this.selectedLabels.find(l => label.id === l.id)) {
+        this.backup[index].selected = true;
+      } else {
+        this.backup[index].selected = false;
+      }
+    });
   }
 
   onSearch(event: any) {

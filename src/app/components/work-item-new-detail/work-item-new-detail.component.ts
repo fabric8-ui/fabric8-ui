@@ -652,6 +652,34 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
     this.searchAssignee = false;
   }
 
+  updateLabels(selectedLabels: LabelModel[]) {
+    if(this.workItem.id) {
+      let payload = cloneDeep(this.workItemPayload);
+      payload = Object.assign(payload, {
+        relationships : {
+          labels: {
+            data: selectedLabels.map(label => {
+              return {
+                id: label.id,
+                type: label.type
+              }
+            })
+          }
+        }
+      });
+      this.save(payload, true)
+        .subscribe(workItem => {
+          this.workItem.relationships.labels = {
+            data: selectedLabels
+          };
+        })
+    } else {
+      this.workItem.relationships.labels = {
+        data : selectedLabels
+      };
+    }
+  }
+
   cancelAssignment(): void {
     this.searchAssignee = false;
   }
