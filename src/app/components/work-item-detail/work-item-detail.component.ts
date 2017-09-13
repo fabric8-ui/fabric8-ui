@@ -707,16 +707,25 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
 
   deleteComment(comment) {
     this.workItemService
-        .deleteComment(comment)
-        .subscribe(response => {
-            if (response.status === 200) {
-                remove(this.workItem.relationships.comments.data, cursor => {
-                    if (!!comment) {
-                        return cursor.id == comment.id;
-                    }
-                });
+      .deleteComment(comment)
+      .subscribe(response => {
+        if (response.status === 200) {
+          remove(this.workItem.relationships.comments.data, cursor => {
+            if (!!comment) {
+              return cursor.id == comment.id;
             }
-        }, err => console.log(err));
+          });
+        }
+      }, err => console.log(err));
+  }
+
+  removeLable(event) {
+    let labels = cloneDeep(this.workItem.relationships.labels.data);
+    let index = labels.indexOf(labels.find(l => l.id === event.id));
+    if(index > -1) {
+      labels.splice(index, 1);
+      this.updateLabels(labels);
+    }
   }
 
   closeDetails(): void {

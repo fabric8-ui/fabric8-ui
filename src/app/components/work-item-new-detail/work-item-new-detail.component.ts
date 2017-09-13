@@ -659,9 +659,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
 
   updateLabels(selectedLabels: LabelModel[]) {
     if(this.workItem.id) {
-      console.log('#### - 1', this.workItemPayload);
       let payload = cloneDeep(this.workItemPayload);
-      console.log('#### - 1', payload);
       payload = Object.assign(payload, {
         relationships : {
           labels: {
