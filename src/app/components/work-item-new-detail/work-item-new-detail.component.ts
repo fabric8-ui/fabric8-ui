@@ -196,7 +196,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
           const t2 = performance.now();
           console.log('Performance :: Details page first paint - '  + (t2 - t1) + ' milliseconds.');
         })
-        .do (workItem => console.log('Work item fethced: ', cloneDeep(workItem)))
+        .do (workItem => console.log('Work item fetched: ', cloneDeep(workItem)))
         .take(1)
         .switchMap(() => {
           return Observable.combineLatest(
@@ -212,7 +212,6 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
         })
         .subscribe(() => {
           // this.closeUserRestFields();
-
           this.workItemPayload = {
             id: this.workItem.id,
             number: this.workItem.number,

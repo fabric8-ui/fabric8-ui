@@ -33,7 +33,7 @@
                 class="fa fa-list-alt f8-action-icon"></a>
             </p>
             <div class="col-md-6 col-sm-6 col-xs-6">
-              <f8-label [truncateAfter]='4' (onLabelClick)="labelClick($event)" (onRemoveLabel)="removeLabel($event)"></f8-label>
+              <f8-label [labels]="workItem.relationships?.labels?.data" [truncateAfter]='4' (onLabelClick)="labelClick($event)" (onRemoveLabel)="removeLabel($event)"></f8-label>
             </div>
         </div>
         <div class="list-group-item-text hide f8-wi__list-desc">

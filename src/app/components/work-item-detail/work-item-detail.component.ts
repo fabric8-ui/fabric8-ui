@@ -45,7 +45,9 @@ import { WorkItem, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../../services/work-item.service';
 import { WorkItemDataService } from './../../services/work-item-data.service';
 import { WorkItemType } from '../../models/work-item-type';
-import { CollaboratorService } from '../../services/collaborator.service'
+import { CollaboratorService } from '../../services/collaborator.service';
+import { LabelService } from '../../services/label.service';
+import { LabelModel } from '../../models/label.model';
 
 @Component({
   selector: 'work-item-preview',
@@ -128,11 +130,13 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   loadingTypes: boolean = false;
   loadingIteration: boolean = false;
   loadingArea: boolean = false;
+  labels: LabelModel[] = [];
 
   constructor(
     private areaService: AreaService,
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
+    private labelService: LabelService,
     private workItemService: WorkItemService,
     private workItemDataService: WorkItemDataService,
     private route: ActivatedRoute,
@@ -222,7 +226,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
             this.resolveArea(),
             this.resolveIteration(),
             this.resolveLinks(),
-            this.resolveComments()
+            this.resolveComments(),
+            this.resolveLabels()
           )
         })
         .subscribe(() => {
@@ -343,6 +348,17 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         });
         this.comments = this.workItem.relationships.comments.data;
         this.loadingComments = false;
+      })
+  }
+
+  resolveLabels(): Observable<any> {
+    return this.labelService.getLabels()
+      .do(labels => {
+        this.labels = labels;
+        this.workItem.relationships.labels.data =
+          this.workItem.relationships.labels.data.map(label => {
+            return this.labels.find(l => l.id === label.id);
+          })
       })
   }
 

@@ -3,7 +3,9 @@ import {
   EventEmitter,
   OnInit,
   Input,
-  Output
+  OnChanges,
+  Output,
+  SimpleChanges
 } from '@angular/core';
 import { User } from 'ngx-login-client';
 
@@ -13,7 +15,7 @@ import { User } from 'ngx-login-client';
   styleUrls: ['./labels.component.less']
 })
 
-export class LabelsComponent implements OnInit {
+export class LabelsComponent implements OnInit, OnChanges {
 
   @Input() labels: any[];
   @Input() truncateAfter: number;
@@ -23,42 +25,10 @@ export class LabelsComponent implements OnInit {
   showMore: boolean = false;
 
   ngOnInit() {
-    console.log(this.truncateAfter, "##### label component #####");
-    this.labels = [{
-      name: 'frontend',
-      'background-color': '#f7bd7f',
-      'text-color': '#303030'
-    },
-    {
-      name: 'backend',
-      'background-color': '#c8eb79',
-      'text-color': '#303030'
-    },
-    {
-      name: 'bug',
-      'background-color': '#9ecf99',
-      'text-color': '#303030'
-    },
-    {
-      name: 'iteration',
-      'background-color': '#ededed',
-      'text-color': '#303030'
-    },
-    {
-      name: 'board view',
-      'background-color': '#7bdbc3',
-      'text-color': '#303030'
-    },
-    {
-      name: 'list view',
-      'background-color': '#7cdbf3',
-      'text-color': '#303030'
-    },
-    {
-      name: 'user story',
-      'background-color': '#a18fff',
-      'text-color': '#303030'
-    }];
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.labels = changes.labels.currentValue;
   }
 
   moreClick(event) {

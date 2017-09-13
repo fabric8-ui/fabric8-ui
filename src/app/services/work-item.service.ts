@@ -209,7 +209,7 @@ export class WorkItemService {
   }
 
 
-  resolveWorkItems(workItems, iterations, users, wiTypes): WorkItem[] {
+  resolveWorkItems(workItems, iterations, users, wiTypes, labels): WorkItem[] {
     let resolvedWorkItems = workItems.map((item) => {
       // put the hasChildren on the root level for the tree
       if (item.relationships.children && item.relationships.children.meta)
@@ -231,6 +231,11 @@ export class WorkItemService {
         item.relationships.iteration.data = iterations.find((it) => it.id === iteration.id) || iteration;
       }
 
+      // Resolve labels
+      let WIlabels = item.relationships.labels.data ? cloneDeep(item.relationships.labels.data) : [];
+      item.relationships.labels.data = WIlabels.map(label => {
+        return labels.find(l => l.id === label.id);
+      })
       // Resolve work item types
       let wiType = cloneDeep(item.relationships.baseType.data);
       if (wiType) {

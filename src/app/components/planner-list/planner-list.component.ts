@@ -94,7 +94,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   authUser: any = null;
   eventListeners: any[] = [];
   showHierarchyList: boolean = true;
-  allLabels: LabelModel[] = [];
   private spaceSubscription: Subscription = null;
   private iterations: IterationModel[] = [];
   private areas: AreaModel[] = [];
@@ -105,6 +104,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   private loggedInUser: User | Object = {};
   private originalList: WorkItem[] = [];
   private currentSpace: Space;
+  private labels: LabelModel[] = [];
 
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
@@ -248,12 +248,13 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       this.workItemService.getWorkItemTypes(),
       this.areaService.getAreas(),
       this.userService.getUser().catch(err => Observable.of({})),
+      this.labelService.getLabels()
     ).take(1).do((items) => {
       const iterations = this.iterations = items[0];
       this.workItemTypes = items[1];
       this.areas = items[2];
       this.loggedInUser = items[3];
-
+      this.labels = items[4];
       // If there is an iteration filter on the URL
       // const queryParams = this.route.snapshot.queryParams;
       // if (Object.keys(queryParams).indexOf('iteration') > -1) {
@@ -333,7 +334,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         workItems,
         this.iterations,
         [], // We don't want to static resolve user at this point
-        this.workItemTypes
+        this.workItemTypes,
+        this.labels
       );
       this.workItemDataService.setItems(this.workItems);
       // Resolve assignees
@@ -355,13 +357,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     });
   }
 
-  getLabels() {
-    this.labelService.getLabels().subscribe(labels => {
-      console.log(labels, '##### spaces labels #########');
-      this.allLabels = labels;
-    });
-  }
-
   fetchMoreWiItems(): void {
     const t1 = performance.now();
     this.workItemService
@@ -378,7 +373,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
             workItems,
             this.iterations,
             [],
-            this.workItemTypes
+            this.workItemTypes,
+            this.labels
           )
         ];
         this.workItemDataService.setItems(this.workItems);
@@ -428,7 +424,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       [workItem],
       this.iterations,
       [],
-      this.workItemTypes
+      this.workItemTypes,
+      this.labels
     );
     this.workItems = [...resolveItem, ...this.workItems];
   }
