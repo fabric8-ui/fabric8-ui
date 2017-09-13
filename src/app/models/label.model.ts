@@ -1,6 +1,6 @@
 export class LabelModel {
   attributes: LabelAttributes;
-  id: string;
+  id?: string;
   links?: LabelLinks;
   relationships?: LabelRelationships;
   type?: string;
