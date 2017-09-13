@@ -214,7 +214,8 @@
               {{workItem.relationships?.baseType?.data?.attributes?.fields['system.label']?.label || 'Label'}}
             </label>
             <div class="col-xs-8 col-sm-8 col-md-10">
-              <f8-label [labels]='workItem.relationships?.labels?.data'></f8-label>
+              <f8-label [labels]='workItem.relationships?.labels?.data'
+                (onRemoveLabel)="removeLable($event)"></f8-label>
               <div class="f8-detail__labels--selector">
                 <label-selector
                   [allLabels]="labels"

@@ -48,12 +48,10 @@ export class LabelsComponent implements OnInit, OnChanges {
   clickLabel(label, event) {
     event.stopPropagation();
     this.onLabelClick.emit(label);
-    console.log(label, 'Label Click');
   }
 
   removeLabel(label, event) {
     event.stopPropagation();
     this.onRemoveLabel.emit(label);
-    console.log(label, 'Remove Label');
   }
 }

@@ -710,6 +710,15 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
       });
   }
 
+  removeLable(event) {
+    let labels = cloneDeep(this.workItem.relationships.labels.data);
+    let index = labels.indexOf(labels.find(l => l.id === event.id));
+    if(index > -1) {
+      labels.splice(index, 1);
+      this.updateLabels(labels);
+    }
+  }
+
   updateComment(comment) {
     // Nothing required here
   }
