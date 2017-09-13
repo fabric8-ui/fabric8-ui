@@ -268,9 +268,15 @@
                 {{workItem.relationships?.baseType?.data?.attributes?.fields['system.label']?.label || 'Label'}}
               </label>
               <div class="col-xs-8 col-sm-8 col-md-8 padding-left-0">
-                <f8-label [labels]="workItem.relationships?.labels?.data"></f8-label>
+                <f8-label [labels]="workItem.relationships?.labels?.data ?
+                  workItem.relationships?.labels?.data : []"></f8-label>
                 <div class="label-selector-wrapper">
-                  <label-selector></label-selector>
+                  <label-selector
+                    [allLabels]="labels"
+                    [selectedLabels]="workItem.relationships?.labels?.data ?
+                      workItem.relationships?.labels?.data : []"
+                    (onSelectLable)="updateLabels($event)">
+                  </label-selector>
                 </div>
               </div>
             </div>

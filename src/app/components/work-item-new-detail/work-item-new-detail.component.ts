@@ -223,7 +223,6 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
             },
             type: this.workItem.type
           };
-
           // init dynamic form
           if (this.workItem.relationships.baseType.data.attributes) {
             this.dynamicFormGroup = this.workItemTypeControlService.toFormGroup(this.workItem);
@@ -231,7 +230,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
           }
         },
         err => {
-          //console.log(err);
+          console.log('#### - 4', err);
           //setTimeout(() => this.itemSubscription.unsubscribe());
           // this.closeDetails();
         })
@@ -334,10 +333,16 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
     return this.labelService.getLabels()
       .do(labels => {
         this.labels = labels;
-        this.workItem.relationships.labels.data =
+        if (this.workItem.relationships.labels.data) {
+          this.workItem.relationships.labels.data =
           this.workItem.relationships.labels.data.map(label => {
             return this.labels.find(l => l.id === label.id);
           });
+        } else {
+          this.workItem.relationships.labels = {
+            data: []
+          }
+        }
       })
   }
 
@@ -654,7 +659,9 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
 
   updateLabels(selectedLabels: LabelModel[]) {
     if(this.workItem.id) {
+      console.log('#### - 1', this.workItemPayload);
       let payload = cloneDeep(this.workItemPayload);
+      console.log('#### - 1', payload);
       payload = Object.assign(payload, {
         relationships : {
           labels: {

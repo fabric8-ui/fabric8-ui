@@ -355,10 +355,16 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
     return this.labelService.getLabels()
       .do(labels => {
         this.labels = labels;
-        this.workItem.relationships.labels.data =
+        if (this.workItem.relationships.labels.data) {
+          this.workItem.relationships.labels.data =
           this.workItem.relationships.labels.data.map(label => {
             return this.labels.find(l => l.id === label.id);
-          })
+          });
+        } else {
+          this.workItem.relationships.labels = {
+            data: []
+          }
+        }
       })
   }
 
@@ -592,6 +598,35 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         this.save();
       }
       this.closeHeader();
+    }
+  }
+
+  updateLabels(selectedLabels: LabelModel[]) {
+    if(this.workItem.id) {
+      let payload = cloneDeep(this.workItemPayload);
+      payload = Object.assign(payload, {
+        relationships : {
+          labels: {
+            data: selectedLabels.map(label => {
+              return {
+                id: label.id,
+                type: label.type
+              }
+            })
+          }
+        }
+      });
+      this.save(payload, true)
+        .subscribe(workItem => {
+          this.workItem.relationships.labels = {
+            data: selectedLabels
+          };
+          this.updateOnList();
+        })
+    } else {
+      this.workItem.relationships.labels = {
+        data : selectedLabels
+      };
     }
   }
 

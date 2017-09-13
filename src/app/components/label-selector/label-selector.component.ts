@@ -63,7 +63,6 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console
     if( changes.allLabels ) {
       this.backup = cloneDeep(this.allLabels.map((label: LabelModel) => {
         return {

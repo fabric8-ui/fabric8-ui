@@ -19,7 +19,7 @@ import { LabelModel } from './../../models/label.model';
 
 export class LabelsComponent implements OnInit, OnChanges {
 
-  @Input('labels') labelInput: LabelModel[];
+  @Input('labels') labelInput: LabelModel[] = [];
   @Input() truncateAfter: number;
   @Output() onLabelClick = new EventEmitter();
   @Output() onRemoveLabel = new EventEmitter();
