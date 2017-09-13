@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import {
   Component,
   EventEmitter,
@@ -8,6 +9,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { User } from 'ngx-login-client';
+import { LabelModel } from './../../models/label.model';
 
 @Component({
   selector: 'f8-label',
@@ -17,18 +19,26 @@ import { User } from 'ngx-login-client';
 
 export class LabelsComponent implements OnInit, OnChanges {
 
-  @Input() labels: any[];
+  @Input('labels') labelInput: LabelModel[];
   @Input() truncateAfter: number;
   @Output() onLabelClick = new EventEmitter();
   @Output() onRemoveLabel = new EventEmitter();
 
-  showMore: boolean = false;
+  private labels: LabelModel[] = [];
+  private showMore: boolean = false;
 
   ngOnInit() {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.labels = changes.labels.currentValue;
+    // this.labels = changes.labels.currentValue;
+    if (changes.labelInput) {
+      this.labels = this.labelInput.filter(label => {
+        return label.attributes &&
+          label.attributes['background-color'] &&
+          label.attributes['text-color']
+      })
+    }
   }
 
   moreClick(event) {

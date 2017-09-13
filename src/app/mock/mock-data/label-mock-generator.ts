@@ -72,7 +72,7 @@ export class LabelMockGenerator {
             }
           },
         },
-        id: 'label' + this.labels.length,
+        id: 'label' + this.allLabels.length,
         type: 'labels'
       });
       return this.allLabels[this.allLabels.length - 1];
