@@ -49,4 +49,32 @@ export class LabelMockGenerator {
         });
       }
     }
+
+    public createLabel(body): any {
+      this.allLabels.push({
+        attributes: {
+          name: body.attributes.name,
+          "text-color": "#000000",
+          "background-color": body.attributes["background-color"],
+          "border-color": body.attributes["border-color"]
+        },
+        links: {
+          self: 'http://mock.service/api/spaces/space-id0/labels/label'+this.labels.length
+        },
+        relationships: {
+          'space': {
+            'data': {
+              'id': 'space-id0',
+              'type': 'spaces'
+            },
+            'links': {
+              'self': 'http://mock.service/api/spaces/space-id0'
+            }
+          },
+        },
+        id: 'label' + this.labels.length,
+        type: 'labels'
+      });
+      return this.allLabels[this.allLabels.length - 1];
+    }
   }

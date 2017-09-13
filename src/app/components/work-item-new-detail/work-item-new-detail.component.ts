@@ -338,7 +338,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
         this.workItem.relationships.labels.data =
           this.workItem.relationships.labels.data.map(label => {
             return this.labels.find(l => l.id === label.id);
-          })
+          });
       })
   }
 

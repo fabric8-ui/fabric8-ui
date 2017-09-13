@@ -32,6 +32,7 @@
       </div>
       <input class="create-label-input" #labelname />
       <button class="action-btn btn btn-primary fa fa-check"
+        [class.disabled]="createDisabled"
         (click)="createLabel(labelname.value)">
       </button>
       <button class="action-btn btn pficon pficon-close"

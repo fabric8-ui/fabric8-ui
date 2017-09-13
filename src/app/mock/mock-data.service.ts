@@ -442,6 +442,10 @@ export class MockDataService {
     return this.labelMockGenerator.getAllLabels();
   }
 
+  public createLabel(body): any {
+    return this.labelMockGenerator.createLabel(body);
+  }
+
   public getLoginStatus() {
     return {
       'status': 200,

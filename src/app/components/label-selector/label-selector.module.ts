@@ -1,3 +1,4 @@
+import { LabelService } from './../../services/label.service';
 import { SelectDropdownModule } from './../../widgets/select-dropdown/select-dropdown.module';
 import { LabelSelectorComponent } from './label-selector.component';
 import { CommonModule } from '@angular/common';
@@ -17,7 +18,7 @@ import { WidgetsModule } from 'ngx-widgets';
     LabelSelectorComponent
   ],
   providers: [
-
+    LabelService
   ]
 })
 

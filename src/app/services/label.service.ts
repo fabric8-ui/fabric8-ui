@@ -33,9 +33,20 @@ export class LabelService {
 
   getLabels(): Observable<LabelModel[]> {
     return this.spaces.current.switchMap(
-      currentSpace => this.http.get(currentSpace.links.self+'/labels')
+      currentSpace => this.http.get(currentSpace.links.self + '/labels')
     ).map (response => {
       return response.json().data as LabelModel[];
+    })
+  }
+
+  createLabel(label: LabelModel): Observable<LabelModel> {
+    return this.spaces.current.switchMap(
+      currentSpace => {
+        return this.http.post(currentSpace.links.self + '/labels', label)
+      }
+    )
+    .map (response => {
+      return response.json().data as LabelModel;
     })
   }
 
