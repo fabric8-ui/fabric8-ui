@@ -153,7 +153,8 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
         'name': name,
         'background-color': this.newSelectedColor.color,
         'border-color': this.newSelectedColor.border
-      }
+      },
+      type: 'labels'
     };
     this.labelService.createLabel(labelPayload)
       .subscribe((data: LabelModel) => {
@@ -175,6 +176,12 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
           }
         this.labelnameInput.nativeElement.value = '';
         this.labelnameInput.nativeElement.focus();
-      });
+      },
+      (err) => {
+        console.log(err);
+        this.labelnameInput.nativeElement.value = '';
+        this.createDisabled = true;
+      }
+    );
   }
 }

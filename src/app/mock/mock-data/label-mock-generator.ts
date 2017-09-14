@@ -51,6 +51,7 @@ export class LabelMockGenerator {
     }
 
     public createLabel(body): any {
+      body = body.data;
       this.allLabels.push({
         attributes: {
           name: body.attributes.name,
