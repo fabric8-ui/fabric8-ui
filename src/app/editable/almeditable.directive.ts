@@ -51,6 +51,7 @@ export class AlmEditableDirective implements OnInit, OnChanges {
 
   makeEditable() {
     this.element.setAttribute('contenteditable', 'true');
+    this.element.focus();
   }
 
   makeNonEditable() {
