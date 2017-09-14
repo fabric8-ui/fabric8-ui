@@ -25,7 +25,7 @@
       <span class="pficon pficon-add-circle-o"></span>
       Create new label
     </div>
-    <div *ngIf="activeAddLabel && !colorPickerActive"
+    <div [class.hide]="!activeAddLabel || colorPickerActive"
       class="create-label">
       <div [ngStyle]="{'background-color': newSelectedColor.color, 'border-color': newSelectedColor.border}"
         (click)="toggleColorPicker()" class="palet">
@@ -40,7 +40,7 @@
       </button>
     </div>
     <div class="color-picker"
-      *ngIf="activeAddLabel && colorPickerActive">
+      [class.hide]="activeAddLabel && !colorPickerActive">
       <span
         *ngFor="let color of colors" class="palet clickable"
         [ngStyle]="{'background-color': color.color, 'border-color':color.border}"
