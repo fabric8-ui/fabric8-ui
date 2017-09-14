@@ -6,7 +6,7 @@
     }"
     (click)="clickLabel(label, $event)">
     {{label.attributes?.name}}
-    <span class="close-icon-wrapper">
+    <span class="close-icon-wrapper" *ngIf="allowDelete">
       <i class="pficon-close pointer" (click)="removeLabel(label, $event)"></i>
     </span>
   </span>
@@ -23,7 +23,7 @@
             }"
             (click)="clickLabel(label, $event)">
             {{label.attributes?.name}}
-            <span class="close-icon-wrapper">
+            <span class="close-icon-wrapper" *ngIf="allowDelete">
               <i class="pficon-close pointer" (click)="removeLabel(label, $event)"></i>
             </span>
           </span>

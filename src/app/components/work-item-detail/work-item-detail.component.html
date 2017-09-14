@@ -269,7 +269,8 @@
               </label>
               <div class="col-xs-8 col-sm-8 col-md-8 padding-left-0">
                 <f8-label [labels]="workItem.relationships?.labels?.data ?
-                  workItem.relationships?.labels?.data : []" (onRemoveLabel)="removeLable($event)"></f8-label>
+                  workItem.relationships?.labels?.data : []" (onRemoveLabel)="removeLable($event)"
+                  [allowDelete]="true"></f8-label>
                 <div class="label-selector-wrapper">
                   <label-selector
                     [allLabels]="labels"

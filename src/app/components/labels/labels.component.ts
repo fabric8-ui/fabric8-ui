@@ -21,6 +21,7 @@ export class LabelsComponent implements OnInit, OnChanges {
 
   @Input('labels') labelInput: LabelModel[] = [];
   @Input() truncateAfter: number;
+  @Input() allowDelete: boolean;
   @Output() onLabelClick = new EventEmitter();
   @Output() onRemoveLabel = new EventEmitter();
 

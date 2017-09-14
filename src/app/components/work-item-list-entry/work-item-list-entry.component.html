@@ -36,7 +36,7 @@
               <f8-label [labels]="workItem.relationships?.labels?.data ?
                 workItem.relationships?.labels?.data : []"
                 [truncateAfter]='4' (onLabelClick)="labelClick($event)"
-                (onRemoveLabel)="removeLabel($event)"></f8-label>
+                (onRemoveLabel)="removeLabel($event)" [allowDelete]="false"></f8-label>
             </div>
         </div>
         <div class="list-group-item-text hide f8-wi__list-desc">
