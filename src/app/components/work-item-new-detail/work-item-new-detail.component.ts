@@ -346,6 +346,13 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
       })
   }
 
+  onLabelSelectorOpen(event) {
+    if (!this.workItem.id) {
+      this.labelService.getLabels()
+        .subscribe(labels => this.labels = labels);
+    }
+  }
+
   getAllUsers(): Observable<any> {
     return Observable.combineLatest(
       this.userService.getUser(),

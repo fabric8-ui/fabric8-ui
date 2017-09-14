@@ -23,6 +23,9 @@ export class SelectDropdownComponent implements OnInit {
 
   @Output() onSelect: EventEmitter<any> = new EventEmitter();
   @Output() onSearch: EventEmitter<any> = new EventEmitter();
+  @Output() onOpen: EventEmitter<any> = new EventEmitter();
+  @Output() onClose: EventEmitter<any> = new EventEmitter();
+
 
   private displayDropdown: boolean = false;
 
@@ -31,9 +34,11 @@ export class SelectDropdownComponent implements OnInit {
 
   openDropdown() {
     this.displayDropdown = true;
+    this.onOpen.emit('open');
   }
   closeDropdown() {
     this.displayDropdown = false;
+    this.onClose.emit('close');
   }
 
   selectItem(item: any) {

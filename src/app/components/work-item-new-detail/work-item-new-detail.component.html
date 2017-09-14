@@ -223,6 +223,7 @@
                   [allLabels]="labels"
                   [selectedLabels]="workItem.relationships?.labels?.data ?
                     workItem.relationships?.labels?.data : []"
+                  (onOpenSelector)="onLabelSelectorOpen($event)"
                   (onSelectLable)="updateLabels($event)">
                 </label-selector>
               </div>

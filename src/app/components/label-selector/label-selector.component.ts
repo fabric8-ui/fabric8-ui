@@ -27,6 +27,8 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
   @Input() selectedLabels: LabelModel[] = [];
 
   @Output() onSelectLable: EventEmitter<LabelModel[]> = new EventEmitter();
+  @Output() onOpenSelector: EventEmitter<any> = new EventEmitter();
+  @Output() onCloseSelector: EventEmitter<any> = new EventEmitter();
 
   private activeAddLabel: boolean = false;
   private backup: any[] = [];
@@ -184,5 +186,13 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
         this.createDisabled = true;
       }
     );
+  }
+
+  onOpen(event) {
+    this.onOpenSelector.emit('open');
+  }
+
+  onClose(event) {
+
   }
 }

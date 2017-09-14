@@ -7,7 +7,9 @@
   [menuItems]="labels"
   [showSearch]="backup.length > 8"
   (onSelect)="onSelect($event)"
-  (onSearch)="onSearch($event)">
+  (onSearch)="onSearch($event)"
+  (onOpen)="onOpen($event)"
+  (onClose)="onClose($event)">
   <ng-template #toggleButtonRef>
     <span class="clickable add-label" (click)="closeAddLabel()">
       <i class="pficon pficon-add-circle-o"></i>
