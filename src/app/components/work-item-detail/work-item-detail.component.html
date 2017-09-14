@@ -273,6 +273,7 @@
                   [allowDelete]="true"></f8-label>
                 <div class="label-selector-wrapper">
                   <label-selector
+                    #labelSelector
                     [allLabels]="labels"
                     [selectedLabels]="workItem.relationships?.labels?.data ?
                       workItem.relationships?.labels?.data : []"

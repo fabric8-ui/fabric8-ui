@@ -12,6 +12,9 @@ import {
 import { cloneDeep } from 'lodash';
 import { LabelModel } from './../../models/label.model';
 import { LabelService } from './../../services/label.service';
+import {
+  SelectDropdownComponent
+} from './../../widgets/select-dropdown/select-dropdown.component';
 
 
 @Component({
@@ -23,6 +26,7 @@ import { LabelService } from './../../services/label.service';
 export class LabelSelectorComponent implements OnInit, OnChanges {
 
   @ViewChild('labelname') labelnameInput: ElementRef;
+  @ViewChild('dropdown') dropdownRef: SelectDropdownComponent;
   @Input() allLabels: LabelModel[] = [];
   @Input() selectedLabels: LabelModel[] = [];
 
@@ -193,6 +197,13 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
   }
 
   onClose(event) {
+  }
 
+  openDropdown() {
+    this.dropdownRef.openDropdown();
+  }
+
+  closeDropdown() {
+    this.dropdownRef.closeDropdown()
   }
 }

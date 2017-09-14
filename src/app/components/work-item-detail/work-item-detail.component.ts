@@ -37,6 +37,7 @@ import { AreaService } from '../../services/area.service';
 import { Comment } from './../../models/comment';
 import { IterationModel } from '../../models/iteration.model';
 import { IterationService } from '../../services/iteration.service';
+import { LabelSelectorComponent } from './../label-selector/label-selector.component';
 import { WorkItemTypeControlService } from '../../services/work-item-type-control.service';
 import { MarkdownControlComponent } from '../markdown-control/markdown-control.component';
 import { TypeaheadDropdown, TypeaheadDropdownValue } from '../typeahead-dropdown/typeahead-dropdown.component';
@@ -75,6 +76,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   @ViewChild('dropdownButton') dropdownButton: any;
   @ViewChild('areaSelectbox') areaSelectbox: TypeaheadDropdown;
   @ViewChild('iterationSelectbox') iterationSelectbox: TypeaheadDropdown;
+  @ViewChild('labelSelector') labelSelector: LabelSelectorComponent;
 
   workItem: WorkItem;
   workItemTypes: WorkItemType[];
@@ -175,6 +177,9 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   }
 
   loadWorkItem(id: string): void {
+    if (this.labelSelector) {
+      this.labelSelector.closeDropdown();
+    }
     const t1 = performance.now();
     this.eventListeners.push(
       this.workItemDataService.getItem(id)
