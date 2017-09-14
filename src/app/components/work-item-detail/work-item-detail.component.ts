@@ -354,7 +354,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   resolveLabels(): Observable<any> {
     return this.labelService.getLabels()
       .do(labels => {
-        this.labels = labels;
+        this.labels = cloneDeep(labels);
         if (this.workItem.relationships.labels.data) {
           this.workItem.relationships.labels.data =
           this.workItem.relationships.labels.data.map(label => {

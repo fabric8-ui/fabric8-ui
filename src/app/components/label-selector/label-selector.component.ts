@@ -159,6 +159,7 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
     this.labelService.createLabel(labelPayload)
       .subscribe((data: LabelModel) => {
         this.createDisabled = false;
+        this.allLabels = [cloneDeep(data), ...this.allLabels];
         const newLabel = {
           id: data.id,
           color: data.attributes['background-color'],
