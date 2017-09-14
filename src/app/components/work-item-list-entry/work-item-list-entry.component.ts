@@ -228,14 +228,6 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
     });
   }
 
-  labelClick(event) {
-    console.log(event, 'work item list entry label click');
-  }
-
-  removeLabel(event) {
-    console.log(event, 'work item list entry label remove');
-  }
-
   selectDeselectFromUrl(url: string) {
     if (url.indexOf('detail') > -1) {
       this.selectedItemId = url.split('detail/')[1].split('?')[0];

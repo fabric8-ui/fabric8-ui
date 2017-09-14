@@ -36,6 +36,7 @@ export class CardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    console.log(this.cardValue, '##$$##$$##$$');
     if (this.urlListener === null) {
      this.urlListener =
       this.route.queryParams.subscribe((params) => {

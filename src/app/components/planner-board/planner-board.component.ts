@@ -265,7 +265,8 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
             extraData: {
               selfLink: item.links.self,
               version: item.attributes['version'],
-              UUID: item.id
+              UUID: item.id,
+              labels: item.relationships.labels.data
             }
         }
       });
@@ -313,7 +314,8 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
         extraData: {
           selfLink: workItems[i].links.self,
           version: workItems[i].attributes['version'],
-          UUID: workItems[i].id
+          UUID: workItems[i].id,
+          labels: workItems[i].relationships.labels.data
         }
       });
       lane.cardValue = [...cardValues, ...lane.cardValue];
@@ -488,7 +490,8 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
                 extraData: {
                   selfLink: item.links.self,
                   version: item.attributes['version'],
-                  UUID: item.id
+                  UUID: item.id,
+                  labels: item.relationships.labels.data
                 }
               }
             })
