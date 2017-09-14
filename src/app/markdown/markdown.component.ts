@@ -101,6 +101,12 @@ export class MarkdownComponent implements OnChanges, OnInit {
     }
   }
 
+  enableEditor() {
+    if (this.rawText === '' ) {
+      this.activeEditor();
+    }
+  }
+
   activeEditor() {
     if (this.editAllow) {
       // Activate the editor

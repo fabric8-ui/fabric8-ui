@@ -10,6 +10,7 @@
 </ul>
 <div class="editor-container">
   <div class="editor"
+    (click)="enableEditor()"
     [class.active]="editorActive"
     [class.show-less]="!showMore && !editorActive">
     <div class="editor-icon-container">
