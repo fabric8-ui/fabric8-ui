@@ -245,6 +245,9 @@ export class MockDataService {
               'type': 'areas'
             }
            },
+          'labels': localWorkItem.relationships.labels ? {
+            'data': localWorkItem.relationships.labels.data
+            } : {},
           'baseType': {
             'data': {
               'id': '86af5178-9b41-469b-9096-57e5155c3f31',
