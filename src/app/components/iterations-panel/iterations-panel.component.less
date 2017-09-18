@@ -30,10 +30,25 @@
         span {
           float: left;
         }
+        .toggle-children-wrapper {
+          width: 25px;
+          padding-top: 5px;
+          padding-left: 10px;
+        }
       }
       .on-hover-background {
         background-color: @color-pf-black-700;
       }
+    }
+    .tree-children {
+        .tree-list-item {
+          .toggle-children-wrapper {
+            padding-left: ((@grid-gutter-width/3) * 2.5);
+          }
+          .f8-itr-entry {
+            padding-left: ((@grid-gutter-width/3)) * 4;
+          }
+        }
     }
   }
   &__List {

@@ -16,9 +16,6 @@ import { WorkItem } from '../../models/work-item';
 import { WorkItemType } from '../../models/work-item-type';
 
 @Component({
-  host: {
-    'class':"app-component"
-  },
   selector: 'group-types',
   templateUrl: './group-types-panel.component.html',
   styleUrls: ['./group-types-panel.component.less']
