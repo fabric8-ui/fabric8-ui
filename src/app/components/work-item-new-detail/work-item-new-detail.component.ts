@@ -1,25 +1,33 @@
-import { LabelModel } from './../../models/label.model';
-import { Broadcaster } from 'ngx-base';
-import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
-import { FormGroup } from '@angular/forms';
-import { Comment } from './../../models/comment';
-import { IterationService } from './../../services/iteration.service';
-import { AreaModel } from './../../models/area.model';
-import { IterationModel } from './../../models/iteration.model';
-import { LabelService } from './../../services/label.service';
-import { TypeaheadDropdown, TypeaheadDropdownValue } from '../typeahead-dropdown/typeahead-dropdown.component';
-import { AreaService } from './../../services/area.service';
-import { Observable } from 'rxjs';
-import { cloneDeep, merge, remove } from 'lodash';
-import { WorkItemDataService } from './../../services/work-item-data.service';
-import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angular/router';
-import { Spaces } from 'ngx-fabric8-wit';
 import {
   Component,
   OnInit,
   OnDestroy,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import {
+  ActivatedRoute,
+  Router,
+  NavigationExtras,
+  NavigationStart
+} from '@angular/router';
+
+import { Broadcaster } from 'ngx-base';
+import { cloneDeep, merge, remove } from 'lodash';
+import { Spaces } from 'ngx-fabric8-wit';
+import { Observable } from 'rxjs';
+
+import { AreaModel } from './../../models/area.model';
+import { AreaService } from './../../services/area.service';
+import { Comment } from './../../models/comment';
+import { IterationModel } from './../../models/iteration.model';
+import { IterationService } from './../../services/iteration.service';
+import { LabelModel } from './../../models/label.model';
+import { LabelService } from './../../services/label.service';
+import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
+import { TypeaheadDropdown, TypeaheadDropdownValue } from '../typeahead-dropdown/typeahead-dropdown.component';
+import { WorkItemDataService } from './../../services/work-item-data.service';
 
 import { UrlService } from './../../services/url.service';
 import { WorkItem, WorkItemRelations } from './../../models/work-item';
@@ -230,7 +238,6 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
           }
         },
         err => {
-          console.log('#### - 4', err);
           //setTimeout(() => this.itemSubscription.unsubscribe());
           // this.closeDetails();
         })
