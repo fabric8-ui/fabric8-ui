@@ -2,7 +2,7 @@ import { NgModule }  from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MarkdownExampleComponent } from './markdown-example.component';
-import { MarkdownModule } from './../markdown.mdoule';
+import { MarkdownModule } from './../markdown.module';
 
 @NgModule({
   declarations: [ MarkdownExampleComponent ],

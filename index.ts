@@ -25,7 +25,7 @@ export { ViewsConfig } from './src/app/config/views-config';
 
 // Markdown module
 export { MarkdownComponent } from './src/app/markdown/markdown.component';
-export { MarkdownModule } from './src/app/markdown/markdown.mdoule';
+export { MarkdownModule } from './src/app/markdown/markdown.module';
 
 // Slide-out panel
 export { SlideOutPanelComponent } from './src/app/slide-out-panel/slide-out-panel.component';

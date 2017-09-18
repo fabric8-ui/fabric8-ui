@@ -24,8 +24,8 @@
     </p>
     <div
       *ngIf="viewType==='preview' && renderedText.length"
-      class="editor-box editor-preview padding-10"
-      [innerHtml]="renderedText">
+      class="editor-box editor-preview padding-10">
+        <github-link-area [content]="renderedText"></github-link-area>
     </div>
     <div
       *ngIf="viewType==='preview' && !renderedText.length"

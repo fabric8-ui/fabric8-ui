@@ -9,7 +9,7 @@ src/app/**/*.css
 /compiled
 *.metadata.json
 *.ngFactory.ts
-
+package-lock.json
 
 # Logs
 logs
