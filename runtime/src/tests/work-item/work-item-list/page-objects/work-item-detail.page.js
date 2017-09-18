@@ -943,7 +943,11 @@ class WorkItemDetailPage {
     return element(By.css('.clearfloat.title-error'));
   }
 
-
+  scrollToBottom() {
+    return browser.executeScript(
+      'document.getElementsByClassName(\'f8-quick-preview\')[0].scrollTop = document.getElementsByClassName(\'f8-quick-preview\')[0].scrollHeight'
+    )
+  }
 
 }
 

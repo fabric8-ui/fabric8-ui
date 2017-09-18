@@ -183,12 +183,15 @@ it('check date showing up correctly - Desktop', function () {
     detailPage.clickStartCoding();
    });
 
-  it('Edit comment and cancel -desktop ', function() {
+  it('Edit comment and cancel - Desktop ', function() {
     var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0");
-    detailPage.commentEdit('0').click();
-    detailPage.editComments('updated comment!','0',false);
-    detailPage.clickCloseComment('0');
-    expect(detailPage.getCommentBody('0')).toBe('Some Comment 0');
+    detailPage.scrollToBottom()
+      .then(function() {
+        detailPage.commentEdit('0').click();
+        detailPage.editComments('updated comment!','0',false);
+        detailPage.clickCloseComment('0');
+        expect(detailPage.getCommentBody('0')).toBe('Some Comment 0');
+      });
   });
 });
 
