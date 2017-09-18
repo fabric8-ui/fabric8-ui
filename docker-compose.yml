@@ -19,7 +19,7 @@ services:
       - ./runtime/dist:/dist:Z
   core:
     image: fabric8/fabric8-wit:latest
-    command: -config /usr/local/wit/etc/config.yaml
+    entrypoint: bin/wit
     depends_on:
       - db
     environment:
