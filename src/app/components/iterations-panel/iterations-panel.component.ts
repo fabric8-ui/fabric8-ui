@@ -22,9 +22,10 @@ import { FabPlannerIterationModalComponent } from '../iterations-modal/iteration
 import { TreeListComponent } from 'ngx-widgets';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   selector: 'fab-planner-iteration',
   templateUrl: './iterations-panel.component.html',
-  styleUrls: ['./iterations-panel.component.less'],
+  styleUrls: ['./iterations-panel.component.less']
 })
 export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
