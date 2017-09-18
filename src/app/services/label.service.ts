@@ -49,18 +49,4 @@ export class LabelService {
       return response.json().data as LabelModel;
     })
   }
-
-  attachLabelsToWorkItem() {
-
-  }
-
-  detachLabelsFromWorkItem() {
-
-  }
-
-  resolveLabels(workItem: WorkItem) {
-    if (workItem.relationships.labels.data.length) {
-
-    }
-  }
 }

@@ -128,7 +128,7 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
     let needle = event.trim();
     this.searchValue = needle;
     if (needle.length) {
-      this.labels = cloneDeep(this.backup.filter(i => i.name.indexOf(needle) > - 1));
+      this.labels = cloneDeep(this.backup.filter(i => i.name.indexOf(needle) > -1));
     } else {
       this.labels = cloneDeep(this.backup);
     }
