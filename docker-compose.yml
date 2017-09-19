@@ -3,6 +3,7 @@ version: '3'
 services:
   planner:
     build: .
+    container_name: fabric8-planner-runtime
     image: fabric8-planner-runtime
     # command: npm run test:unit
     environment:
@@ -18,6 +19,7 @@ services:
     volumes:
       - ./runtime/dist:/dist:Z
   core:
+    container_name: fabric8-planner-core
     image: fabric8/fabric8-wit:latest
     entrypoint: bin/wit
     depends_on:
@@ -30,6 +32,7 @@ services:
     ports:
       - "8080:8080"
   db:
+    container_name: fabric8-planner-db
     image: registry.centos.org/postgresql/postgresql:9.5
     ports:
       - "5432:5432"
