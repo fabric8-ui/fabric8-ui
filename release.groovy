@@ -2,6 +2,8 @@
 def ci (){
     stage('build'){
         sh 'npm install'
+        sh 'npm run build'
+        
     }
     stage('unit test'){
         sh './run_unit_tests.sh'
