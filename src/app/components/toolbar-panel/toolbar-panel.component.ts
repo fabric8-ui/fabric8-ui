@@ -1,19 +1,19 @@
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { 
-  Component, 
-  Input, 
-  OnInit, 
-  AfterViewInit, 
-  ViewEncapsulation, 
-  Output, 
-  OnDestroy, 
-  EventEmitter 
+import {
+  Component,
+  Input,
+  OnInit,
+  AfterViewInit,
+  ViewEncapsulation,
+  Output,
+  OnDestroy,
+  EventEmitter
 } from '@angular/core';
-import { 
-  Router, 
-  ActivatedRoute, 
-  NavigationExtras 
+import {
+  Router,
+  ActivatedRoute,
+  NavigationExtras
 } from '@angular/router';
 import { cloneDeep } from 'lodash';
 import {
@@ -25,9 +25,9 @@ import {
 import { Broadcaster } from 'ngx-base';
 import { Spaces } from 'ngx-fabric8-wit';
 import {
-  AuthenticationService, 
-  UserService, 
-  User 
+  AuthenticationService,
+  UserService,
+  User
 } from 'ngx-login-client';
 
 import { EventService } from './../../services/event.service';
@@ -36,6 +36,7 @@ import { AreaService } from '../../services/area.service';
 import { FilterModel } from '../../models/filter.model';
 import { CollaboratorService } from '../../services/collaborator.service';
 import { FilterService } from '../../services/filter.service';
+import { LabelService } from '../../services/label.service';
 import { WorkItemService } from '../../services/work-item.service';
 import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-list-entry.component';
 import { WorkItemType } from '../../models/work-item-type';
@@ -87,7 +88,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     } as ToolbarConfig;
   allowedFilterKeys: string[] = [
     'assignee',
-    'area'
+    'area',
+    'label'
   ];
 
   // the type of the list is changed (Hierarchy/Flat).
@@ -120,6 +122,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     private areaService: AreaService,
     private collaboratorService: CollaboratorService,
     private filterService: FilterService,
+    private labelService: LabelService,
     private workItemService: WorkItemService,
     private auth: AuthenticationService,
     private spaces: Spaces,
@@ -157,6 +160,16 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     // listen for changes on the available filters.
     this.eventListeners.push(
       this.filterService.getFilters()
+        .map(filter => {
+          return [...filter, {
+            attributes:{
+              description: "Filter by label",
+              query: "filter[label]={id}",
+              title: "Label",
+              type: "labels"
+            },
+            type:"filters"}];
+        })
         .subscribe(filters => this.setFilterTypes(filters))
     );
   }
@@ -175,7 +188,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   onChangeListType(type: string) {
     // the type of the list is changed (Hierarchy/Flat).
     // this will be removed with the new tree list.
-    // and if not removed, it should be converted to a 
+    // and if not removed, it should be converted to a
     // global event instead of a BehaviourSubject.
     this.currentListType = type;
     if (type==='Hierarchy') {
@@ -194,9 +207,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
     /*
      * The current version of the patternfly filter dropdown does not fully support the async
-     * update of the filterConfig.fields fields set. It does not refresh the widget on field 
+     * update of the filterConfig.fields fields set. It does not refresh the widget on field
      * array change. The current workaround is to add a "dummy" entry "Select Filter.." as
-     * the first entry in the fields array. When the user selects a new value from the 
+     * the first entry in the fields array. When the user selects a new value from the
      * filter list, the implementation works subsequently.
      */
     this.toolbarConfig.filterConfig.fields = [
@@ -210,7 +223,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           id: type,
           title: filter.attributes.title,
           placeholder: filter.attributes.description,
-          type: type === 'assignee' ? 'typeahead' : 'select',
+          type: type === 'assignee' || 'label' ? 'typeahead' : 'select',
           queries: []
         };
       })
@@ -398,6 +411,21 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         },
         getvalue: (type) => type.attributes.name
+      },
+      label: {
+        datasource: this.labelService.getLabels().map(d => d as any[]),
+        datamap: (labels) => {
+          return {
+            queries: labels.map(label => {
+              return {
+                id: label.id,
+                value: label.attributes.name
+              }
+            }),
+            primaryQueries: []
+          }
+        },
+        getvalue: (label) => label.attributes.name
       }
     }
   }
