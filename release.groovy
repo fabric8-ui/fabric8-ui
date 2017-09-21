@@ -17,7 +17,7 @@ def cd (b){
     }
 
     stage('build'){
-        sh 'npm install'
+        sh 'npm run reinstall'
         sh 'npm run build'
     }
 
