@@ -17,7 +17,9 @@ def cd (b){
     }
 
     stage('build'){
-        sh 'npm run reinstall'
+        sh 'rm -rf node_modules'
+        sh 'npm cache clean'
+        sh 'npm install'
         sh 'npm run build'
     }
 
