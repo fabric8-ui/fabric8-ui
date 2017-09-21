@@ -530,9 +530,14 @@ export class MockDataService {
     console.log('CREATE ITERATION');
     console.log(iteration);
     var localIteration = this.makeCopy(iteration.data);
-    localIteration.id = this.createId();
+    localIteration.id = 'iteration-id-' + this.createId();
     if (!localIteration.attributes.hasOwnProperty('state') && !localIteration.attributes.state) {
       localIteration.attributes['state'] = 'new';
+    }
+    if (localIteration.attributes['user_active'] === true) {
+      localIteration.attributes['active_status'] = true;
+    } else {
+      localIteration.attributes['active_status'] = false;
     }
     if (parentIterationId) {
       var parentIteration = this.getIteration(parentIterationId);
@@ -569,6 +574,11 @@ export class MockDataService {
         // TODO: we might have to do a proper merge of the values at some point.
         if (!localIteration.attributes.hasOwnProperty('state') || !localIteration.attributes.state) {
           localIteration.attributes['state'] = this.iterations[i].attributes['state'];
+        }
+        if (localIteration.attributes['user_active'] === true) {
+          localIteration.attributes['active_status'] = true;
+        } else {
+          localIteration.attributes['active_status'] = false;
         }
         this.iterations.splice(i, 1, localIteration);
         return this.makeCopy(localIteration);

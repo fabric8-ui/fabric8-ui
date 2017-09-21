@@ -51,7 +51,7 @@ export class IterationMockGenerator {
     for (let n=0; n<5; n++) {
       iterations.push({
         'attributes': {
-          'user_active': n < 2 ? true : false,
+          'user_active': n == 1 ? true : false,
           'active_status': n == 1 ? true : false,
           'description': 'Description for iteration ' + n,
           'name': 'Iteration ' + n,
