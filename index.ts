@@ -30,8 +30,3 @@ export { MarkdownModule } from './src/app/markdown/markdown.module';
 // Slide-out panel
 export { SlideOutPanelComponent } from './src/app/slide-out-panel/slide-out-panel.component';
 export { SlideOutPanelModule } from './src/app/slide-out-panel/slide-out-panel.module';
-
-// TreeList
-export { TreeListComponent } from './src/app/treelist/treelist.component';
-export { TreeListItemComponent } from './src/app/treelist/treelist-item.component';
-export { TreeListModule } from './src/app/treelist/treelist.module';
