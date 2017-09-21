@@ -1,6 +1,7 @@
 @import '../../../assets/stylesheets/_base';
 
 .f8-detail {
+  background-color: @color-pf-white;
   &__header {
     background: @color-pf-black-200;
     height: 200px;
@@ -24,6 +25,10 @@
   }
   &__detail-wrap {
     height: 100%;
+    &--right {
+      padding-left: 0;
+      border-left: 1px solid @color-pf-black-400
+    }
   }
   &__labels {
     &--selector {

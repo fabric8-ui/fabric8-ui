@@ -1,5 +1,5 @@
 
-<form class="form-horizontal work-item-page" *ngIf="workItem">
+<form class="f8-detail form-horizontal work-item-page" *ngIf="workItem">
   <fieldset>
     <div class="f8-detail__header col-xs-12 col-sm-12 col-md-12 padding-0">
       <span
@@ -69,7 +69,7 @@
       </div>
     </div>
     <div class="f8-detail__detail width-100">
-      <div class="col-xs-12 col-sm-9 col-md-7 col-lg-7 f8-detail__detail-wrap margin-top-10 overflow-auto">
+      <div class="col-xs-12 col-sm-9 col-md-7 col-lg-7 f8-detail__detail-wrap padding-top-10 overflow-auto">
         <div class="form-group">
           <!-- assignee -->
           <section class="f8-detail__assignee detail-assignee-wrap">
@@ -249,7 +249,7 @@
           </section>
         </div>
       </div>
-      <div class="col-xs-12 col-sm-9 col-md-5 col-lg-5 f8-detail__detail-wrap overflow-auto">
+      <div class="col-xs-12 col-sm-9 col-md-5 col-lg-5 f8-detail__detail-wrap f8-detail__detail-wrap--right overflow-auto">
         <alm-work-item-link
           *ngIf="this.workItem.id"
           [workItem]="workItem"
