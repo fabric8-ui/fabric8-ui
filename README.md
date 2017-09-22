@@ -1,8 +1,9 @@
 # ngx-widgets
 
 [![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-ngx-widgets-npm-publish-build-master)](https://ci.centos.org/view/Devtools/job/devtools-ngx-widgets-npm-publish-build-master/) 
-[![Build Status](http://jenkins.cd.k8s.fabric8.io/job/fabric8-ui/job/ngx-widgets/job/master/)](http://jenkins.cd.k8s.fabric8.io/job/fabric8-ui/job/ngx-widgets/job/master/) 
-[![npm version](https://badge.fury.io/js/ngx-widgets.svg)](https://badge.fury.io/js/ngx-widgets) 
+[![Build Status](http://jenkins.cd.test.fabric8.io/job/fabric8-ui/job/ngx-widgets/job/master/)](http://jenkins.cd.k8s.fabric8.io/job/fabric8-ui/job/ngx-widgets/job/master/) 
+[![npm version](https://badge.fury.io/js/ngx-widgets.svg)](https://badge.fury.io/js/ngx-widgets)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) 
 
 A collection of Angular components and other useful things to be shared.
 
