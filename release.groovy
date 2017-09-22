@@ -2,8 +2,6 @@
 def ci (){
     stage('build'){
         sh 'npm install'
-        sh 'npm run build'
-        
     }
     stage('unit test'){
         sh './run_unit_tests.sh'
@@ -19,8 +17,6 @@ def cd (b){
     }
 
     stage('build'){
-        sh 'rm -rf node_modules'
-        sh 'npm cache clean'
         sh 'npm install'
         sh 'npm run build'
     }
