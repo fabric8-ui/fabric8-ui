@@ -49,7 +49,7 @@ There are several services and a couple of models used by them available.
 
 ### Production
 
-To build ngx-widgets as a npm library, use:
+To build ngx-widgets as a npm library, use:  
 
 ----
 npm run build
