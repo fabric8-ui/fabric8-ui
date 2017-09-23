@@ -77,7 +77,6 @@
     "@angular/core": "4.4.3",
     "@angular/forms": "4.4.3",
     "@angular/router": "4.4.3",
-    "angular2-tree-component": "2.7.0",
     "moment": "2.18.1",
     "patternfly-ng": "0.11.2"
   },
