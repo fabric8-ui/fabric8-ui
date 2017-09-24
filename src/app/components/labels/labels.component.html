@@ -5,7 +5,11 @@
       'color': label.attributes['text-color']
     }"
     (click)="clickLabel(label, $event)">
-    {{label.attributes?.name}}
+    <span class="pointer"
+          [routerLink]="[]"
+          [queryParams]="{q: buildQueryParam(label)}">
+        {{label.attributes?.name}}
+    </span>
     <span class="close-icon-wrapper" *ngIf="allowDelete">
       <i class="pficon-close pointer" (click)="removeLabel(label, $event)"></i>
     </span>
@@ -22,7 +26,11 @@
               'color': label.attributes['text-color']
             }"
             (click)="clickLabel(label, $event)">
-            {{label.attributes?.name}}
+            <span class="pointer"
+                  [routerLink]="[]"
+                  [queryParams]="{q: buildQueryParam(label)}">
+                {{label.attributes?.name}}
+            </span>
             <span class="close-icon-wrapper" *ngIf="allowDelete">
               <i class="pficon-close pointer" (click)="removeLabel(label, $event)"></i>
             </span>

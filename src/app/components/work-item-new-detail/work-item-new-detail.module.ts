@@ -11,6 +11,7 @@ import { WorkItemDataService } from './../../services/work-item-data.service';
 import { InlineInputModule } from './../../widgets/inlineinput/inlineinput.module';
 import { IterationService } from './../../services/iteration.service';
 import { AreaService } from './../../services/area.service';
+import { FilterService } from './../../services/filter.service';
 import { WorkItemLinkModule } from './../work-item-link/work-item-link.module';
 import { CommonModule } from '@angular/common';
 import { NgModule }     from '@angular/core';
@@ -40,6 +41,7 @@ if (process.env.ENV == 'inmemory') {
       provide: Http, useExisting: MockHttp
     },
     AreaService,
+    FilterService,
     BsDropdownConfig,
     IterationService,
     LabelService,
@@ -60,6 +62,7 @@ if (process.env.ENV == 'inmemory') {
       deps: [XHRBackend, RequestOptions, AuthenticationService]
     },
     AreaService,
+    FilterService,
     BsDropdownConfig,
     IterationService,
     LabelService,
