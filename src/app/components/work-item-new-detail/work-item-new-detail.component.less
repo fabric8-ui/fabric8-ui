@@ -3,8 +3,10 @@
 .f8-detail {
   background-color: @color-pf-white;
   &__header {
+    float: left;
+    width: 100%;
+    padding: ((@grid-gutter-width/3) * 2);
     background: @color-pf-black-200;
-    height: 200px;
   }
   &__edit-icon {
     position: absolute;
@@ -21,13 +23,17 @@
     }
   }
   &__detail {
-    height: ~"calc(e('100vh - 290px'))";
-  }
-  &__detail-wrap {
+    height: ~"calc(e('100vh - 200px'))";
+    label {
+      text-align: left !important;
+    }
+    &-wrap {
     height: 100%;
-    &--right {
-      padding-left: 0;
-      border-left: 1px solid @color-pf-black-400
+    overflow: auto;
+      &--right {
+        padding-left: 0;
+        border-left: 1px solid @color-pf-black-400
+      }
     }
   }
   &__labels {
@@ -38,34 +44,38 @@
   .close {
     cursor: pointer;
   }
-}
-.detail-assignee-wrap { height: 30px;
-  [noValueLabel='none'] { color: @color-pf-blue-400; }
-  .user-label { margin-right: 15px; }
-  .user-assign-icon {
-    padding: 3px;
-    margin-right: 6px;
-    color: @color-pf-black-500;
-    cursor: pointer;
-    .Border(1px, dashed, @color-pf-black);
-  }
-  .user-assign-avatar {
-    width: 20px;
-    height: 20px;
-    margin-right: 6px;
-    cursor: pointer;
-  }
-  .active {
-    padding: 5px;
-    color: @color-pf-black;
-    border-style: solid;
-  }
-  .detail-assignee-name {
-    .placeholder { color: @color-pf-blue-400;
-      &:hover { cursor: pointer; }
+  &__assignee {
+    height: 30px;
+    [noValueLabel='none'] {
+      color: @color-pf-blue-400;
+    }
+    .user-assign-icon {
+      padding: 4.5px 3.5px;
+      margin-right: 10px;
+      color: @color-pf-black-500;
+      cursor: pointer;
+      .Border(1px, dashed, @color-pf-black);
+    }
+    .user-assign-avatar {
+      width: 20px;
+      height: 20px;
+      margin-right: 6px;
+      cursor: pointer;
+      .Border(1px, solid, @color-pf-black-300);
+    }
+    .active {
+      padding: 5px;
+      color: @color-pf-black;
+      border-style: solid;
+    }
+    .detail-assignee-name {
+      .placeholder { color: @color-pf-blue-400;
+        &:hover { cursor: pointer; }
+      }
     }
   }
 }
+
 .user-search { position: relative;
   .list-container {
     position: absolute;
@@ -134,11 +144,12 @@
 }
 
 // Sm
-@media (max-width: 1000px) {
+@media (max-width: @screen-md-min) {
   .f8-detail__detail {
     overflow: auto;
-  }
-  .f8-detail__detail-wrap {
-    height: auto;
+    &-wrap {
+      height: auto;
+      overflow: initial;
+    }
   }
 }

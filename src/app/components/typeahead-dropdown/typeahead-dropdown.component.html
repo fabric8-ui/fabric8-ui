@@ -5,7 +5,7 @@
       [ngClass]="getInitialValue().cssLabelClass?getInitialValue().cssLabelClass:''">
       {{ getInitialValue().value }}
     </span>
-    <div class="dropdown-search col-md-6 padding-0"
+    <div class="dropdown-search col-xs-6 col-sm-6 col-md-6 padding-0"
       *ngIf="searchValue" >
       <input type="hidden" name="" value="">
       <div class="input-group">
@@ -38,7 +38,7 @@
         </span>
       </div>
     </div>
-    <div *ngIf="searchValue" class="col-md-6">
+    <div *ngIf="searchValue" class="col-xs-6 col-sm-6 col-md-6">
       <button class="btn btn-primary save-button detail-action-btn"
         type="button"
         (click)="setValue()"
