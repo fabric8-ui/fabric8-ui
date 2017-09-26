@@ -54,13 +54,17 @@
         <span id="created_at"
         [innerHTML]="workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'"></span>
       </div>
-      <div class="col-xs-12 col-sm-12 col-md-12 margin-top-15 padding-0">
-        <div class="form-horizontal">
-          <f8-inlineinput
-            [value]="workItem.attributes['system.title']"
-            [onLineClickEdit]="false"
-            (onSave)="saveTitle($event)">
-          </f8-inlineinput>
+        <div class="col-xs-12 col-sm-12 col-md-12 margin-top-15 padding-0">
+          <div class="form-horizontal">
+            <f8-inlineinput
+              [disabled]="loggedIn ? false : true"
+              [value]="workItem.attributes['system.title']"
+              [onLineClickEdit]="true"
+              [placeholder]="'Enter title'"
+              (onSave)="saveTitle($event)">
+            </f8-inlineinput>
+          </div>
+
         </div>
       </div>
     </div>
