@@ -1,54 +1,54 @@
 <div class="width-100 pull-left typeahead-dropdown combobox-container">
-    <span class="pointer details-dropdown"
-      *ngIf="!searchValue"
-      (click)="open()"
-      [ngClass]="getInitialValue().cssLabelClass?getInitialValue().cssLabelClass:''">
-      {{ getInitialValue().value }}
-    </span>
-    <div class="dropdown-search col-xs-6 col-sm-6 col-md-6 padding-0"
-      *ngIf="searchValue" >
-      <input type="hidden" name="" value="">
-      <div class="input-group">
-        <input class="combobox form-control"
-          id="valueSearchInput" #valueSearch
-          (keyup)="filterValue($event)" autocomplete="off" />
-        <ul class="item-ul dropdown-list" #valueList>
-          <li class="text-center"
-            *ngIf="!proxyValues.length">
-            <div class="spinner spinner-sm"></div>
-          </li>
-          <li class="padding-5"
-            *ngIf="!filteredValues.length">
-            No matches found.
-          </li>
-          <li class="item-li"
-            *ngFor="let item of filteredValues;"
-            [attr.data-value]="item.key"
-            (click)="showValueOnInput(item)"
-            [id]="item.key">
-            <a class="left-truncate">
-              <span [ngClass]="item.cssLabelClass?item.cssLabelClass:''"
-                [innerHTML]="item.value | almSearchHighlight: valueSearch.value">
-              </span>
-            </a>
-          </li>
-        </ul>
-        <span class="input-group-addon">
-          <span class="fa fa-search"> </span>
-        </span>
-      </div>
+  <span class="pointer details-dropdown"
+    *ngIf="!searchValue"
+    (click)="open()"
+    [ngClass]="getInitialValue().cssLabelClass?getInitialValue().cssLabelClass:''">
+    {{ getInitialValue().value }}
+  </span>
+  <div class="dropdown-search col-xs-6 col-sm-6 col-md-6 padding-0"
+    *ngIf="searchValue" >
+    <input type="hidden" name="" value="">
+    <div class="input-group">
+      <input class="combobox form-control"
+        id="valueSearchInput" #valueSearch
+        (keyup)="filterValue($event)" autocomplete="off" />
+      <ul class="item-ul dropdown-list" #valueList>
+        <li class="text-center"
+          *ngIf="!proxyValues.length">
+          <div class="spinner spinner-sm"></div>
+        </li>
+        <li class="padding-5"
+          *ngIf="!filteredValues.length">
+          No matches found.
+        </li>
+        <li class="item-li"
+          *ngFor="let item of filteredValues;"
+          [attr.data-value]="item.key"
+          (click)="showValueOnInput(item)"
+          [id]="item.key">
+          <a class="left-truncate">
+            <span [ngClass]="item.cssLabelClass?item.cssLabelClass:''"
+              [innerHTML]="item.value | almSearchHighlight: valueSearch.value">
+            </span>
+          </a>
+        </li>
+      </ul>
+      <span class="input-group-addon">
+        <span class="fa fa-search"> </span>
+      </span>
     </div>
-    <div *ngIf="searchValue" class="col-xs-6 col-sm-6 col-md-6">
-      <button class="btn btn-primary save-button detail-action-btn"
-        type="button"
-        (click)="setValue()"
-        [disabled]="!filteredValues.length || !selectedValue">
-        <span class="fa fa-check" ></span>
-      </button>
-      <button class="btn btn-default cancel-button detail-action-btn"
-        type="button"
-        (click)="close()">
-        <span class="pficon pficon-close"></span>
-      </button>
-    </div>
+  </div>
+  <div *ngIf="searchValue" class="col-xs-6 col-sm-6 col-md-6">
+    <button class="btn btn-primary save-button detail-action-btn"
+      type="button"
+      (click)="setValue()"
+      [disabled]="!filteredValues.length || !selectedValue">
+      <span class="fa fa-check" ></span>
+    </button>
+    <button class="btn btn-default cancel-button detail-action-btn"
+      type="button"
+      (click)="close()">
+      <span class="pficon pficon-close"></span>
+    </button>
+  </div>
 </div>

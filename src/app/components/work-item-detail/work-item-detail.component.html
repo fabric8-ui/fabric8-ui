@@ -40,18 +40,21 @@
           <div class="form-group width-100 pull-left padding-h-10 padding-v-5 margin-0">
             <div class="width-100 pull-left">
               <div
-                class="card-pf-time-frame-filter text-right dropdown"
+                class="card-pf-time-frame-filter pull-left dropdown"
                 *ngIf="loggedIn"
                 dropdown>
                 <button dropdownToggle
+                  class="btn btn-default width-100 dropdown-toggle padding-h-10"
                   id="wi-detail-state"
-                  type="button"
-                  class="btn btn-default width-100 dropdown-toggle">
-                  <span class='dropdown-icon' almIcon [iconType]="workItem.attributes['system.state']"></span>
-                  <span class='dropdown-text'>
+                  type="button">
+                  <span class='dropdown-icon pull-left margin-top-5'
+                    almIcon
+                    [iconType]="workItem.attributes['system.state']">
+                  </span>
+                  <span class='dropdown-text pull-left padding-h-10'>
                     {{workItem.attributes['system.state']}}
                   </span>
-                  <span *ngIf="loggedIn" class="caret dib"></span>
+                  <span *ngIf="loggedIn" class="caret pull-right margin-top-7"></span>
                 </button>
                 <ul id="wi-status-dropdown" class="dropdown-menu-right dropdown-ul dropdown-menu" role="menu" *dropdownMenu>
                   <li class="dropdown-li" (click)="onChangeState(state)"
@@ -73,7 +76,7 @@
                 <span class="fa fa-list-alt"></span>
               </a>
             </div>
-            <div class="width-100 pull-left wi-detail-title-blk margin-top-15" id="title-click-div">
+            <div class="width-100 pull-left wi-detail-title-blk" id="title-click-div">
               <div id="wi-title-div">
                   <f8-inlineinput
                     [disabled]="loggedIn ? false : true"
@@ -91,10 +94,10 @@
           <!-- Assignee -->
           <div class="form-group">
             <div class="detail-assignee-wrap">
-                <label class="col-xs-4 col-sm-4 col-md-4 control-label">
+                <label class="col-xs-4 col-sm-3 col-md-3 control-label">
                   {{workItem.relationships?.baseType?.data?.attributes?.fields['system.assignees']?.label || 'Label'}}
                 </label>
-                <div class="col-xs-8 col-sm-8 col-md-8 padding-left-0">
+                <div class="col-xs-8 col-sm-9 col-md-9 padding-left-0">
                 <span
                   *ngIf="!workItem.relationships?.assignees?.data?.length"
                   (click)="activeSearchAssignee()"
@@ -165,10 +168,10 @@
           <!--Creator-->
           <div class="form-group">
             <div class="width-100 pull-left detail-creator-wrap">
-              <label class="col-xs-4 col-sm-4 col-md-4 control-label">
+              <label class="col-xs-4 col-sm-3 col-md-3 control-label">
                 {{workItem.relationships?.baseType?.data?.attributes?.fields['system.creator']?.label || 'Label'}}
               </label>
-              <div class="col-xs-8 col-sm-8 col-md-8 padding-left-0">
+              <div class="col-xs-8 col-sm-9 col-md-9 padding-left-0">
                 <span *ngIf="!workItem.relationships?.creator?.data"
                   class="pficon pficon-user user-creator-icon" id="user_creator_icon">
                 </span>
@@ -190,10 +193,10 @@
           <!-- Areas -->
           <div class="form-group">
             <div class="width-100 pull-left detail-area-wrap">
-              <label class="col-xs-4 col-sm-4 col-md-4 control-label" id="area_label">
+              <label class="col-xs-4 col-sm-3 col-md-3 control-label" id="area_label">
                 {{workItem.relationships?.baseType?.data?.attributes?.fields['system.area']?.label || 'Label'}}
               </label>
-              <div class="col-xs-8 col-sm-8 col-md-8 padding-left-0">
+              <div class="col-xs-8 col-sm-9 col-md-9 padding-left-0">
                 <span *ngIf="loadingArea"
                   class="spinner spinner-sm spinner-inline">
                 </span>
@@ -210,10 +213,10 @@
           <!--Iteration-->
           <div class="form-group">
             <div class="width-100 pull-left detail-iteration-wrap">
-              <label class="col-xs-4 col-sm-4 col-md-4 control-label" id="iteration_label">
+              <label class="col-xs-4 col-sm-3 col-md-3 control-label" id="iteration_label">
                 {{workItem.relationships?.baseType?.data?.attributes?.fields['system.iteration']?.label || 'Label'}}
               </label>
-              <div class="col-xs-8 col-sm-8 col-md-8 padding-left-0">
+              <div class="col-xs-8 col-sm-9 col-md-9 padding-left-0">
                 <span *ngIf="loadingIteration"
                   class="spinner spinner-sm spinner-inline">
                 </span>
@@ -229,17 +232,20 @@
           <!--Lables-->
           <div class="form-group">
             <div class="width-100 pull-left detail-label-wrap">
-              <label class="col-xs-4 col-sm-4 col-md-4 control-label">
-                {{workItem.relationships?.baseType?.data?.attributes?.fields['system.labels']?.label || 'Label'}}
+              <label class="col-xs-4 col-sm-3 col-md-3 control-label">
+                {{workItem.relationships?.baseType?.data?.attributes?.fields['system.label']?.label || 'Label'}}
               </label>
-              <div class="col-xs-8 col-sm-8 col-md-8 padding-left-0">
+              <div class="col-xs-8 col-sm-9 col-md-9 padding-left-0">
                 <span *ngIf="loadingLabels"
                   class="spinner spinner-sm spinner-inline">
                 </span>
                 <f8-label *ngIf="!loadingLabels"
                   [labels]="workItem.relationships?.labels?.data ?
-                    workItem.relationships?.labels?.data : []" (onRemoveLabel)="removeLable($event)"
-                  [allowDelete]="true" (onLabelClick)="onLabelClick($event)"></f8-label>
+                    workItem.relationships?.labels?.data : []"
+                    (onRemoveLabel)="removeLable($event)"
+                    [allowDelete]="true"
+                    (onLabelClick)="onLabelClick($event)">
+                </f8-label>
                 <div class="label-selector-wrapper" *ngIf="loggedIn && !loadingLabels" >
                   <label-selector
                     id="labelSelector"
@@ -266,10 +272,10 @@
           <!-- Description Start -->
           <!-- <markdown-control id="wi-detail-desc" [markdownValue]="descText" (onUpdate)="descUpdate($event)"></markdown-control> -->
            <div class="form-group">
-            <label class="col-xs-4 col-sm-4 col-md-4 control-label">
+            <label class="col-xs-4 col-sm-3 col-md-3 control-label">
               Description
             </label>
-            <div class="col-xs-8 col-sm-8 col-md-8 detail-desc-wrap">
+            <div class="col-xs-8 col-sm-9 col-md-9 detail-desc-wrap">
               <f8-markdown
                 id="wi-detail-desc"
                 [editAllow]="loggedIn"
@@ -283,11 +289,11 @@
           <!-- Description End -->
         </div>
         <div class="start-coding-wrap" *ngIf="loggedIn && workItem.relationships?.codebase?.links?.meta?.edit">
-          <div class="form-group width-100">
-            <label class="col-xs-4 col-sm-4 col-md-4 control-label" id="coding_label">
+          <div class="form-group">
+            <label class="col-xs-4 col-sm-3 col-md-3 control-label" id="coding_label">
               Code
             </label>
-            <div class="col-xs-8 col-sm-8 col-md-8 form-control-static start-coding">
+            <div class="col-xs-8 col-sm-9 col-md-9 form-control-static start-coding">
               <a class="btn btn-default"
                 id="start-coding-link"
                 target="_blank" href="{{workItem.relationships?.codebase?.links?.meta?.edit}}">

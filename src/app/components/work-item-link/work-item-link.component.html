@@ -67,7 +67,7 @@
         <div class="f8-link__content-editor table width-100"
           id="wi-link-editor"
           *ngIf="showLinkCreator">
-          <div class="db">
+          <div class="col-xs-10 col-sm-10 col-md-10">
             <div class="combobox-container">
               <div class="input-group dropdown"
                 *ngIf="linkTypes.length"
@@ -90,8 +90,8 @@
               </div>
             </div>
           </div>
-          <span class="db"> item</span>
-          <div class="db">
+          <span class="col-xs-2 col-sm-2 col-md-2 text-right"> item</span>
+          <div class="col-xs-10 col-sm-10 col-md-10 margin-top-15">
             <div class="combobox-container">
               <input type="hidden" name="" value="">
               <div class="input-group dropdown open active width-100">
@@ -121,12 +121,14 @@
               </div>
             </div>
           </div>
-          <div class="db">
+          <div class="col-xs-2 col-sm-2 col-md-2 text-right margin-top-15">
             <button
               class="btn btn-xs padding-top-1 padding-bottom-2"
               id="bind-link"
               type="button"
               value="Link"
+              [class.btn-default]="!selectedLinkType || !selectedWorkItemId"
+              [class.btn-primary]="selectedLinkType || selectedWorkItemId"
               [disabled]="!selectedLinkType || !selectedWorkItemId ? true : false"
               (click)="createLink($event)">
               Link

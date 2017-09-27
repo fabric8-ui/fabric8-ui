@@ -8,18 +8,18 @@
       </span>
       <div class="pull-left margin-right-15">
         <div class="dropdown pull-left" dropdown *ngIf="loggedIn">
-          <button class="btn btn-default dropdown-toggle"
+          <button class="btn btn-default dropdown-toggle padding-h-10 width-100"
             id="wi-detail-state"
             type="button"
             dropdownToggle>
-            <span class="fa fa-close"
+            <span class="pull-left margin-top-5"
               almIcon
               [iconType]="workItem.attributes['system.state']">
             </span>
-            <span>
+            <span class="pull-left padding-h-10">
               {{workItem.attributes['system.state']}}
             </span>
-            <span *ngIf="loggedIn" class="caret dib"></span>
+            <span *ngIf="loggedIn" class="caret pull-right margin-top-7"></span>
           </button>
           <ul class="dropdown-ul dropdown-menu" role="menu" *dropdownMenu>
             <li class="dropdown-li" (click)="onChangeState(state)"

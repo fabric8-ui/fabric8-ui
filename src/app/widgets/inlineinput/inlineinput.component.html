@@ -4,14 +4,13 @@
   #input
   autosize
   (click)="startEditing($event, true)"
-  [init_height]="40"
+  [init_height]="23"
   [attr.disabled]="(!onLineClickEdit || readOnly) && !editing ? '' : null"
   [attr.placeholder]="placeholder"
   [class.active]="editing"
   [value]="inpvalue"
   class="input-field inlineinput-textarea">
 </textarea>
-
 <div
   *ngIf="editing"
   (click)="saveClick()"
@@ -20,9 +19,9 @@
   <i class="fa fa-check"></i>
 </div>
 <div
+  class="fl btn btn-primary action-btn inlineinput-btn-cancel"
   *ngIf="editing"
-  (click)="closeClick()"
-  class="fl btn btn-primary action-btn inlineinput-btn-cancel">
+  (click)="closeClick()">
   <i class="fa fa-close"></i>
 </div>
 
