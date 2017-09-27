@@ -27,7 +27,7 @@ export class WorkItemRelations {
     data?: User[]
   };
   labels?: {
-    data?: LabelModel[]
+    data?: LabelModel[];
   };
   baseType?: {
     data: WorkItemType;

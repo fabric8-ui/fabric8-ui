@@ -544,7 +544,15 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       })
     );
     this.eventListeners.push(
-      this.workItemService.addWIObservable.subscribe(item => {
+      this.workItemService.addWIObservable
+      .map(item => this.workItemService.resolveWorkItems(
+        [item],
+        this.iterations,
+        [],
+        this.workItemTypes,
+        this.labels
+      )[0])
+      .subscribe(item => {
         //Check if the work item meets the applied filters
         if(this.filterService.doesMatchCurrentFilter(item)){
           console.log('Added WI matches the applied filters');
@@ -561,7 +569,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       this.workItemService.editWIObservable.subscribe(updatedItem => {
         let index = this.workItems.findIndex((item) => item.id === updatedItem.id);
         if(this.filterService.doesMatchCurrentFilter(updatedItem)){
-          console.log('Updated WI matches the applied filters')
+          console.log('Updated WI matches the applied filters');
           if (index > -1) {
             this.workItems[index] = updatedItem;
           } else {

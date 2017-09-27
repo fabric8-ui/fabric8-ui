@@ -3,10 +3,13 @@ import {
   ViewChild,
   Output,
   EventEmitter,
-  Input
+  Input,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 
 import { Broadcaster, Logger } from 'ngx-base';
+import { cloneDeep } from 'lodash';
 import {
   AuthenticationService,
 } from 'ngx-login-client';
@@ -22,7 +25,7 @@ import { IterationService }  from '../../services/iteration.service';
   templateUrl: './work-item-iteration-modal.component.html',
   styleUrls: ['./work-item-iteration-modal.component.less']
 })
-export class FabPlannerAssociateIterationModalComponent {
+export class FabPlannerAssociateIterationModalComponent implements OnChanges {
 
   @Input() workItem: WorkItem;
   @ViewChild('dropdownButton') dropdownButton: any;
@@ -39,6 +42,7 @@ export class FabPlannerAssociateIterationModalComponent {
   selectedIterationName: any = '';
   enableAssociateButton: Boolean = false;
   modalTitle: string = "Associate with Iteration";
+  workItemPayload: WorkItem;
 
   constructor(
     private auth: AuthenticationService,
@@ -47,6 +51,21 @@ export class FabPlannerAssociateIterationModalComponent {
     private logger: Logger,
     private iterationService: IterationService,
   ) {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.workItem) {
+      this.workItemPayload = {
+        id: this.workItem.id,
+        attributes: {
+          version: this.workItem.attributes['version']
+        },
+        links: {
+          self: this.workItem.links.self
+        },
+        type: this.workItem.type
+      };
+    }
+  }
 
   getIterations() {
     this.iterationService.getIterations()
@@ -174,21 +193,26 @@ export class FabPlannerAssociateIterationModalComponent {
       }]);
     }
 
-    this.workItem.relationships.iteration = {
-      data: {
-        id: this.selectedIteration.id,
-        type: 'iteration'
+    let payload = cloneDeep(this.workItemPayload);
+    payload = Object.assign(payload, {
+      relationships: {
+        iteration: {
+          data: {
+            id: this.selectedIteration.id,
+            type: 'iteration'
+          }
+        }
       }
-    };
-    this.save();
+    });
+    this.save(payload);
     this.selectedIteration = null;
     this.iterationAssociationModal.close();
     this.enableAssociateButton = false;
   }
 
-  save(): void {
+  save(payload: WorkItem): void {
     this.workItemService
-      .update(this.workItem)
+      .update(payload)
       .switchMap(item => {
         return this.iterationService.getIteration(item.relationships.iteration)
           .map(iteration => {
@@ -200,7 +224,7 @@ export class FabPlannerAssociateIterationModalComponent {
         this.selectedIteration = null;
         this.workItem.relationships.iteration = workItem.relationships.iteration;
         this.workItem.attributes['version'] = workItem.attributes['version'];
-        this.workItemService.emitEditWI(workItem);
+        this.workItemService.emitEditWI(this.workItem);
       });
   }
 
