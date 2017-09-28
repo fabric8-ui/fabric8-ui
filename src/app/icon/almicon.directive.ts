@@ -1,6 +1,6 @@
 import { Directive, Input, ElementRef, OnInit, OnChanges } from '@angular/core';
 import { IconMap } from './iconmap';
-import { IconColor } from './iconcolor';
+
 
 @Directive({
     selector: '[almIcon]',
@@ -28,7 +28,7 @@ export class AlmIconDirective implements OnInit, OnChanges {
     let allClassesInMap: string[] = [];
     for (let key in IconMap) {
       if (IconMap.hasOwnProperty(key)) {
-        IconMap[key].forEach((item: string) => {
+        IconMap[key].icon.forEach((item: string) => {
           allClassesInMap.push(item);
         });
       }
@@ -42,18 +42,17 @@ export class AlmIconDirective implements OnInit, OnChanges {
     });
 
     if (this.iconType in IconMap) {
-       if(this.iconType in IconColor){
-         this.iconColor = IconColor[this.iconType];
+         this.iconColor = IconMap[this.iconType].colour;
          element.setAttribute("style","color:"+this.iconColor);
-       }
-      IconMap[this.iconType].forEach((item: any) => {
+       
+      IconMap[this.iconType].icon.forEach((item: any) => {
       
         element.classList.add(item);
       });       
     } else {
-      this.iconColor = IconColor[this.iconType];
+      this.iconColor = IconMap[this.iconType].colour;
       element.setAttribute("style", "color:" + this.iconColor);
-      IconMap['default'].forEach((item: any) => {
+      IconMap['default'].icon.forEach((item: any) => {
         element.classList.add(item);
       });
     }
