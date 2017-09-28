@@ -5,7 +5,7 @@
 [![npm version](https://badge.fury.io/js/ngx-widgets.svg)](https://badge.fury.io/js/ngx-widgets)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) 
 
-A collection of Angular components and other useful things to be shared.
+A collection of Angular components and other useful things to be shared.  
 
 You can see how it is used in our application [here](https://github.com/fabric8io/fabric8-ui).
 
