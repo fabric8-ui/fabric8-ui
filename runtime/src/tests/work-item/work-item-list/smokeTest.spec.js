@@ -183,16 +183,18 @@ it('check date showing up correctly - Desktop', function () {
     detailPage.clickStartCoding();
    });
 
-  // it('Edit comment and cancel - Desktop ', function() {
-  //   var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0");
-  //   detailPage.scrollToBottom()
-  //     .then(function() {
-  //       detailPage.commentEdit('0').click();
-  //       detailPage.editComments('updated comment!','0',false);
-  //       detailPage.clickCloseComment('0');
-  //       expect(detailPage.getCommentBody('0')).toBe('Some Comment 0');
-  //     });
-  // });
+  it('Edit comment and cancel - Desktop ', function() {
+    var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0");
+    detailPage.scrollToBottom()
+      .then(function() {
+        detailPage.commentEdit('0').click();
+        detailPage.editComments('updated comment!','0',false);
+        detailPage.scrollToBottom().then(function(){
+          detailPage.clickCloseComment('0');
+        });
+        expect(detailPage.getCommentBody('0')).toBe('Some Comment 0');
+      });
+  });
 });
 
 /* Compare an expected and actual work item - the offset values enable us to track
