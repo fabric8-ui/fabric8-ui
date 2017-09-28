@@ -31,6 +31,7 @@ def cd (b){
     }
 
     stage('release'){
+        sh 'git checkout master'
         def published = npmRelease{
             branch = b
         }
