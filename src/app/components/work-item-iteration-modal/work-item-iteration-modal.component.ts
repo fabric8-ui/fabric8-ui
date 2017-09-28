@@ -53,7 +53,7 @@ export class FabPlannerAssociateIterationModalComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.workItem) {
+    if(changes.workItem && this.workItem) {
       this.workItemPayload = {
         id: this.workItem.id,
         attributes: {
