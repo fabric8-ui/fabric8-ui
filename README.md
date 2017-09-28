@@ -19,7 +19,7 @@ This library does not run on it's own. It must be imported.
 
 `npm install ngx-widgets`
 
-There are several services and a couple of models used by them available.
+There are several services and a couple of models used by them available.  
 
     container-toggle
     dialog
