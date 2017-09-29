@@ -5,10 +5,10 @@ import { IconMap } from './iconmap';
     selector: '[almIcon]',
     exportAs: 'almIcon'
 })
+
 export class AlmIconDirective implements OnInit, OnChanges {
-  @Input() 
-  iconType: string = 'none';
-  iconColor: string = 'none';
+  @Input() iconType: string = 'none';
+  
   constructor(private elementRef: ElementRef) {
   }
 
@@ -21,6 +21,7 @@ export class AlmIconDirective implements OnInit, OnChanges {
   }
 
   addIcon() {
+    var iconColor: string = 'none';
     const element: HTMLElement = this.elementRef.nativeElement;
     let existingClassNames = element.className.split(' ');
     let allClassesInMap: string[] = [];
@@ -39,14 +40,14 @@ export class AlmIconDirective implements OnInit, OnChanges {
     });
 
     if (this.iconType in IconMap) {
-      this.iconColor = IconMap[this.iconType].colour;
-      element.setAttribute("style","color:"+this.iconColor);
+      iconColor = IconMap[this.iconType].color;
+      element.setAttribute("style", "color:" + iconColor);
       IconMap[this.iconType].icon.forEach((item: any) => {
         element.classList.add(item);
       });       
     } else {
-      this.iconColor = IconMap[this.iconType].colour;
-      element.setAttribute("style", "color:" + this.iconColor);
+      iconColor = IconMap[this.iconType].color;
+      element.setAttribute("style", "color:" + iconColor);
       IconMap['default'].icon.forEach((item: any) => {
         element.classList.add(item);
       });
