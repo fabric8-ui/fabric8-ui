@@ -473,7 +473,7 @@ describe('Unit Test :: Filter Service', () => {
       )
     )
     .toEqual(
-			{'$AND': [{'$OR': [{'some_key1': 'some_value1'}]}, {'$OR': [{'some_key': 'some_value3'}]}]}
+			{'$AND': [{'some_key1': 'some_value1'}, {'some_key': 'some_value3'}]}
 		);
   });
 
@@ -490,7 +490,7 @@ describe('Unit Test :: Filter Service', () => {
 		);
   });
 
-  it('Should correctly join - 21', () => {
+  it('Should correctly join - 21.1', () => {
     expect(
 			filterService.queryJoiner(
 				{'$OR': [{'some_key1': 'some_value1'}, {'some_key2': 'some_value2'}]},
@@ -500,6 +500,58 @@ describe('Unit Test :: Filter Service', () => {
     )
     .toEqual(
 			{'$AND': [{'$OR': [{'some_key1': 'some_value1'}, {'some_key2': 'some_value2'}]}, {'some_key3': 'some_value3'}]}
+		);
+  });
+
+  it('Should correctly join - 21.2', () => {
+    expect(
+			filterService.queryJoiner(
+				{'$OR': [{'some_key1': 'some_value1'}]},
+        '$AND',
+        {'$OR': [{'some_key3': 'some_value3'}]},
+      )
+    )
+    .toEqual(
+			{'$AND': [{'some_key1': 'some_value1'}, {'some_key3': 'some_value3'}]}
+		);
+  });
+
+  it('Should correctly join - 21.3', () => {
+    expect(
+			filterService.queryJoiner(
+				{'$OR': [{'some_key1': 'some_value1'}]},
+        '$AND',
+        {'$OR': [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]},
+      )
+    )
+    .toEqual(
+			{'$AND': [{'some_key1': 'some_value1'}, {'$OR' : [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]}]}
+		);
+  });
+
+  it('Should correctly join - 21.4', () => {
+    expect(
+			filterService.queryJoiner(
+				{'$OR': [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]},
+        '$AND',
+        {'$OR': [{'some_key1': 'some_value1'}]},
+      )
+    )
+    .toEqual(
+			{'$AND': [{'$OR' : [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]}, {'some_key1': 'some_value1'}]}
+		);
+  });
+
+  it('Should correctly join - 21.4', () => {
+    expect(
+			filterService.queryJoiner(
+				{'$OR': [{'some_key1': 'some_value1'}]},
+        '$AND',
+        {'$AND': [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]},
+      )
+    )
+    .toEqual(
+			{'$AND': [{'some_key1': 'some_value1'}, {'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]}
 		);
   });
 

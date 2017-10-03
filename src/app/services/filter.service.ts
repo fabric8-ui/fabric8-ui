@@ -240,7 +240,6 @@ export class FilterService {
           return op;
         }
       } else {
-				console.log(1);
         return {};
       }
     } else {
@@ -266,7 +265,53 @@ export class FilterService {
 						...newQueryObject[join]
 					]
 					return op;
-				} else {
+        }
+        // If both the objects have one element each
+        // Then given joiner gets priority
+        else if (existingQueryObject[existingJoiner].length === 1 &&
+          newQueryObject[newJoiner].length === 1) {
+            let op = {};
+            op[join] = [
+              ...existingQueryObject[existingJoiner],
+              ...newQueryObject[newJoiner]
+            ]
+            return op;
+        }
+        // If existing query has only one element
+        // then newJoiner gets the priority
+        else if (existingQueryObject[existingJoiner].length === 1) {
+          let op = {};
+          if (newJoiner === join) {
+            op[join] = [
+              ...existingQueryObject[existingJoiner],
+              ...newQueryObject[newJoiner]
+            ]
+          } else {
+            op[join] = [
+              ...existingQueryObject[existingJoiner],
+              newQueryObject
+            ]
+          }
+          return op;
+        }
+        // If new query has only one element
+        // then existingJoiner gets the priority
+        else if (newQueryObject[newJoiner].length === 1) {
+          let op = {};
+          if (existingJoiner === join) {
+            op[join] = [
+              ...existingQueryObject[existingJoiner],
+              ...newQueryObject[newJoiner]
+            ]
+          } else {
+            op[join] = [
+              existingQueryObject,
+              ...newQueryObject[newJoiner]
+            ]
+          }
+          return op;
+        }
+        else {
 					let op = {};
 					op[join] = [
 						existingQueryObject,
