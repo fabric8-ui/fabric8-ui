@@ -92,7 +92,7 @@
         </li>
 				<li role="presentation" class="divider"></li>
 				<li>
-          <a [routerLink]="['./detail/' + workItem.id]"
+          <a [routerLink]="['./detail/' + workItem.attributes['system.number']]"
              [queryParams]="queryParams">
             Open
           </a>
