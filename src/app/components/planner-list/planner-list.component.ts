@@ -105,7 +105,10 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   private originalList: WorkItem[] = [];
   private currentSpace: Space;
   private labels: LabelModel[] = [];
-
+  private uiLockedAll = false;
+  private uiLockedList = true;
+  private uiLockedSidebar = false;
+  
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
     allowDrag: false,
@@ -236,8 +239,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       });
   }
 
-
   loadWorkItems(): void {
+    this.uiLockedList = true;
     if (this.wiSubscriber) {
       this.wiSubscriber.unsubscribe();
     }
@@ -340,6 +343,10 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       this.workItemDataService.setItems(this.workItems);
       // Resolve assignees
       const t3 = performance.now();
+      if (!this.workItems || this.workItems.length==0) {
+        // if there are no work items, unlock the ui here
+        this.uiLockedList = false;        
+      }
       this.workItems.forEach((item, index) => {
         this.workItemService.resolveAssignees(item.relationships.assignees).take(1)
           .subscribe(assignees => {
@@ -347,6 +354,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
             if (index == this.workItems.length - 1) {
               const t4 = performance.now();
               console.log('Performance :: Resolved all the users - '  + (t4 - t3) + ' milliseconds.');
+              this.uiLockedList = false;              
             }
           })
       });
@@ -354,6 +362,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     },
     (err) => {
       console.log('Error in Work Item list', err);
+      this.uiLockedList = false;
     });
   }
 
@@ -543,6 +552,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         // this.selectedWorkItemEntryComponent.deselect();
       })
     );
+
     this.eventListeners.push(
       this.workItemService.addWIObservable
       .map(item => this.workItemService.resolveWorkItems(
@@ -608,6 +618,46 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
               }
           }
         )
+    );
+
+    // lock the ui when a complex query is starting in the background
+    this.eventListeners.push(
+      this.broadcaster.on<string>('backend_query_start')
+        .subscribe((context: string) => {
+          switch (context){
+            case 'workitems':
+              this.uiLockedList = true;
+              break;
+            case 'iterations':
+              this.uiLockedSidebar = true;
+              break;
+            case 'mixed':
+              this.uiLockedAll = true;
+              break;
+            default:
+              break;
+          }
+      })
+    );
+
+    // unlock the ui when a complex query is completed in the background
+    this.eventListeners.push(
+      this.broadcaster.on<string>('backend_query_end')
+        .subscribe((context: string) => {
+          switch (context){
+            case 'workitems':
+              this.uiLockedList = false;
+              break;
+            case 'iterations':
+              this.uiLockedSidebar = false;
+              break;
+            case 'mixed':
+              this.uiLockedAll = false;
+              break;
+            default:
+              break;
+          }
+      })
     );
   }
 

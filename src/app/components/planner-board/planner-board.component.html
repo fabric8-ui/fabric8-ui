@@ -1,6 +1,20 @@
 <div class="container-fluid f8-wi-container">
+  <div class="lock-overlay-board" *ngIf="uiLockedAll">
+    <div class="spinner-container">
+      <h2 class="spinner"></h2>
+      <h2>Loading ...</h2>
+      <h4>Please wait, we are loading your data.</h4>   
+    </div>
+  </div>      
   <main class="row">
     <aside class="f8-sidepanel">
+      <div class="lock-overlay-board" *ngIf="uiLockedSidebar">
+        <div class="spinner-container">
+          <h2 class="spinner"></h2>
+          <h2>Loading ...</h2>
+          <h4>Please wait, we are loading your data.</h4>   
+        </div>
+      </div>  
       <side-panel [iterations]="iterations"></side-panel>
     </aside>
     <section>
@@ -12,8 +26,14 @@
         [areas]="areas"
         [loggedInUser]="loggedInUser">
       </toolbar-panel>
-      <div class="width-100 f8-board-wrapper"
-        id="board_topWorkItems">
+      <div class="width-100 f8-board-wrapper" id="board_topWorkItems">
+        <div class="lock-overlay-board" *ngIf="uiLockedBoard">
+          <div class="spinner-container">
+            <h2 class="spinner"></h2>
+            <h2>Loading Work Items ...</h2>
+            <h4>Please wait, we are loading your work items.</h4>   
+          </div>
+        </div>
         <div class="f8-board"
           *ngIf="readyToInit"
           (touchmove)="onTouchstart($event);">

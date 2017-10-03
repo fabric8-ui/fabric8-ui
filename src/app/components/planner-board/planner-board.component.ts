@@ -83,6 +83,9 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
   private wiSubscription = null;
   lane: any;
   private labels: LabelModel[] = [];
+  private uiLockedAll = false;
+  private uiLockedBoard = true;
+  private uiLockedSidebar = false;
 
   constructor(
     private auth: AuthenticationService,
@@ -172,6 +175,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
   }
 
   initStuff() {
+    this.uiLockedBoard = true;
     Observable.combineLatest(
       this.iterationService.getIterations(),
       // this.collaboratorService.getCollaborators(),
@@ -220,6 +224,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
       else {
         this.getDefaultWorkItemTypeStates();
       }
+      this.uiLockedBoard = false;
     });
   }
 
@@ -869,6 +874,46 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
               }
           }
         )
+    );
+
+    // lock the ui when a complex query is starting in the background
+    this.eventListeners.push(
+      this.broadcaster.on<string>('backend_query_start')
+        .subscribe((context: string) => {
+          switch (context){
+            case 'workitems':
+              this.uiLockedBoard = true;
+              break;
+            case 'iterations':
+              this.uiLockedSidebar = true;
+              break;
+            case 'mixed':
+              this.uiLockedAll = true;
+              break;
+            default:
+              break;
+          }
+      })
+    );
+
+    // unlock the ui when a complex query is completed in the background
+    this.eventListeners.push(
+      this.broadcaster.on<string>('backend_query_end')
+        .subscribe((context: string) => {
+          switch (context){
+            case 'workitems':
+              this.uiLockedBoard = false;
+              break;
+            case 'iterations':
+              this.uiLockedSidebar = false;
+              break;
+            case 'mixed':
+              this.uiLockedAll = false;
+              break;
+            default:
+              break;
+          }
+      })
     );
   }
 

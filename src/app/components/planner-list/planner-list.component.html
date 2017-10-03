@@ -1,9 +1,23 @@
 <div class="container-fluid f8-wi-container">
+  <div class="lock-overlay-list" *ngIf="uiLockedAll">
+    <div class="spinner-container">
+      <h2 class="spinner"></h2>
+      <h2>Loading ...</h2>
+      <h4>Please wait, we are loading your data.</h4>   
+    </div>
+  </div>    
   <main class="row">
     <aside class="f8-sidepanel">
+      <div class="lock-overlay-list" *ngIf="uiLockedSidebar">
+        <div class="spinner-container">
+          <h2 class="spinner"></h2>
+          <h2>Loading ...</h2>
+          <h4>Please wait, we are loading your data.</h4>   
+        </div>
+      </div>
       <side-panel [iterations]="iterations"></side-panel>
     </aside>
-    <section>
+    <section class="planner-list-content">
       <toolbar-panel
         context="listview"
         [wiTypes]="workItemTypes"
@@ -11,7 +25,7 @@
         [currentBoardType]="currentBoardType"
         [areas]="areas"
         [loggedInUser]="loggedInUser"></toolbar-panel>
-        <div class="f8-wi-list">
+      <div class="f8-wi-list">
           <div #listContainer
               almInfiniteScroll
               class="f8-wi-list-wrap"
@@ -53,7 +67,14 @@
                 </alm-tree-list-item>
               </template>
             </alm-tree-list>
-            <a *ngIf="!workItems || workItems.length === 0" class="container-fluid container-cards-pf f8-blank-state">
+            <div class="lock-overlay-list" *ngIf="uiLockedList">
+              <div class="spinner-container">
+                <h2 class="spinner"></h2>
+                <h2>Loading Work Items ...</h2>
+                <h4>Please wait, we are loading your work items.</h4>   
+              </div>
+            </div>
+            <a *ngIf="(!workItems || workItems.length === 0) && !uiLockedList" class="container-fluid container-cards-pf f8-blank-state">
               <div class="row row-cards-pf">
                 <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
                   <div class="card-pf card-pf-aggregate-status" (click)="typeSelectPanel.openPanel()">
