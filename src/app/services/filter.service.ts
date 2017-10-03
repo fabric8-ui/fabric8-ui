@@ -160,9 +160,19 @@ export class FilterService {
     let processedObject = '';
     // If onptions has any length enclose processedObject with ()
     if (Object.keys(options).length > 1) {
-      processedObject = '(' + Object.keys(options).map(key => key + ':' + options[key]).join(' ' + this.and_notation + ' ') + ')';
+      processedObject = '(' + Object.keys(options).map(key => {
+        return typeof(options[key]) !== 'string' ? key + ':' + options[key] :
+          options[key].split(',').map(val => {
+            return key + ':' + val;
+          }).join(' ' + this.and_notation + ' ')
+      }).join(' ' + this.and_notation + ' ') + ')';
     } else if (Object.keys(options).length === 1) {
-      processedObject = Object.keys(options).map(key => key + ':' + options[key]).join(' ' + this.and_notation + ' ');
+      processedObject = Object.keys(options).map(key => {
+        return typeof(options[key]) !== 'string' ? key + ':' + options[key] :
+          options[key].split(',').map(val => {
+            return key + ':' + val;
+          }).join(' ' + this.and_notation + ' ')
+      }).join(' ' + this.and_notation + ' ');
     }
     // else return existingQuery
     else {

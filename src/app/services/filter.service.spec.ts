@@ -226,6 +226,14 @@ describe('Unit Test :: Filter Service', () => {
     );
   })
 
+  it('should return processed options in case of empty existing query - 1', () => {
+    expect(
+      filterService.constructQueryURL('iteration%3ASprint%20%231%2FSprint%20%231.1', {'somekey': 'somevalue, anothervalue'})
+    ).toBe(
+      '(iteration:Sprint #1/Sprint #1.1 $AND somekey:somevalue $AND somekey: anothervalue)'
+    );
+  })
+
   /**
    * Query string to JSON conversion
    * Method to test - queryToJson

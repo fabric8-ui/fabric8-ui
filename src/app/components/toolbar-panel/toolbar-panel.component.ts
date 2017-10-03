@@ -91,6 +91,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     'area',
     'label'
   ];
+  allowedMultipleFilterKeys: string[] = [
+    'label'
+  ];
 
   // the type of the list is changed (Hierarchy/Flat).
   currentListType: string = 'Hierarchy';
@@ -259,16 +262,18 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           } else {
             this.toolbarConfig.filterConfig.fields[index].queries = filterMap[key].datamap(data).queries;
           }
-          const selectedQuery = this.toolbarConfig.filterConfig.fields[index].queries.find(
-            item => item.value === params[key]
+          const selectedQueries = this.toolbarConfig.filterConfig.fields[index].queries.filter(
+            item => params[key].split(',').indexOf(item.value) > -1
           );
-          if (selectedQuery) {
-            this.toolbarConfig.filterConfig.appliedFilters.push({
-              field: this.toolbarConfig.filterConfig.fields[index],
-              query: selectedQuery,
-              value: params[key]
-            });
-            this.filterService.setFilterValues(key, selectedQuery.id);
+          if (selectedQueries.length) {
+            params[key].split(',').forEach(val => {
+              this.toolbarConfig.filterConfig.appliedFilters.push({
+                field: this.toolbarConfig.filterConfig.fields[index],
+                query: selectedQueries.find(v => v.value === val.trim()),
+                value: val.trim()
+              });
+            })
+            this.filterService.setFilterValues(key, selectedQueries.map(q => q.id).join());
             // When all the params are resolved
             // Apply the filter
             if (Object.keys(params).length - 1 == i) {
@@ -287,12 +292,28 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     let recentAppliedFilters = {};
     $event.appliedFilters.forEach((filter) => {
       if (filter.query.id !== 'loader') {
-        recentAppliedFilters[filter.field.id] = filter;
+        if (Object.keys(recentAppliedFilters).indexOf(filter.field.id) === - 1) {
+          // If this filter type was not found in this iteration before
+          recentAppliedFilters[filter.field.id] = [];
+
+          recentAppliedFilters[filter.field.id].push(filter);
+        } else {
+          // If this filter type was found in this iteration before
+          if (this.allowedMultipleFilterKeys.indexOf(filter.field.id) > -1) {
+            // Multiple value for this filter type is allowed
+            recentAppliedFilters[filter.field.id].push(filter);
+          } else {
+            // Apply the latest value for the vilter
+            recentAppliedFilters[filter.field.id][0] = filter;
+          }
+        }
       }
     });
     this.toolbarConfig.filterConfig.appliedFilters = [];
     Object.keys(recentAppliedFilters).forEach((filterId) => {
-      this.toolbarConfig.filterConfig.appliedFilters.push(recentAppliedFilters[filterId]);
+      recentAppliedFilters[filterId].forEach(el => {
+        this.toolbarConfig.filterConfig.appliedFilters.push(el);
+      });
     });
 
     // Initiate next query params from current query params
@@ -305,10 +326,15 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     // Prepare query params
     let queryObj = {};
     this.toolbarConfig.filterConfig.appliedFilters.forEach((filter) => {
-      params[filter.field.id] = filter.query.value;
-      queryObj[filter.field.id] = filter.query.value;
+      if (Object.keys(params).indexOf(filter.field.id) > -1) {
+        params[filter.field.id] = params[filter.field.id] + ',' + filter.query.value;
+        queryObj[filter.field.id] = queryObj[filter.field.id] + ',' + filter.query.id;
+      } else {
+        params[filter.field.id] = filter.query.value;
+        queryObj[filter.field.id] = filter.query.id;
+      }
       // Set this filter in filter service
-      this.filterService.setFilterValues(filter.field.id, filter.query.id);
+      this.filterService.setFilterValues(filter.field.id, queryObj[filter.field.id]);
     });
 
     // Set the internal change flag to true
