@@ -422,28 +422,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
     this.workItemService.emitEditWI(this.workItem);
   }
 
-  //addNewItem(workItem: WorkItem) {
-    //this.broadcaster.broadcast('addWorkItem', JSON.stringify(workItem));
-  //}
-
-  checkTitle(event: any): void {
-    this.titleText = event;
-    this.isValid(this.titleText);
-  }
-
-  isValid(checkTitle: String): void {
-    this.validTitle = checkTitle.trim() != '';
-  }
-
-  descOpen(): void {
-    if (this.loggedIn) {
-      if (this.headerEditable) {
-        this.onUpdateTitle();
-      }
-      this.closeUserRestFields();
-    }
-  }
-
   descUpdate(event: any): void {
     const rawText = event.rawText;
     const callBack = event.callBack;
@@ -587,22 +565,23 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   //   this.save(payload);
   // }
 
-  onUpdateTitle(): void {
-    this.isValid(this.titleText.trim());
-    if (this.validTitle) {
-      this.workItem.attributes['system.title'] = this.titleText;
-      if (this.workItem.id) {
-        let payload = cloneDeep(this.workItemPayload);
-        payload.attributes['system.title'] = this.titleText;
-        this.save(payload, true)
-          .subscribe((workItem: WorkItem) => {
-            this.workItem.attributes['system.title'] = workItem.attributes['system.title'];
-            this.updateOnList();
-          });
-      } else {
-        this.save();
-      }
-      this.closeHeader();
+  saveTitle(event: any) {
+    const value = event.value.trim();
+    const callBack = event.callBack;
+    if (value === '') {
+      callBack(value, 'Empty title not allowed');
+    } else if (this.workItem.attributes['system.title'] === value) {
+      callBack(value);
+    } else {
+      this.workItem.attributes['system.title'] = value;
+      let payload = cloneDeep(this.workItemPayload);
+      payload.attributes['system.title'] = value;
+      this.save(payload, true)
+        .subscribe((workItem: WorkItem) => {
+          this.workItem.attributes['system.title'] = workItem.attributes['system.title'];
+          callBack(value);
+          this.updateOnList();
+      });
     }
   }
 

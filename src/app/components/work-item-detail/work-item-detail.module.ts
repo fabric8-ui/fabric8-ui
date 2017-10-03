@@ -17,7 +17,6 @@ import { MockHttp } from '../../mock/mock-http';
 import { AlmUserNameModule } from '../../pipes/alm-user-name.module';
 
 import {
-  AlmEditableModule,
   AlmIconModule,
   WidgetsModule,
   MarkdownModule
@@ -25,6 +24,7 @@ import {
 import { ModalModule } from 'ngx-modal';
 
 import { AreaService } from '../../services/area.service';
+import { InlineInputModule } from './../../widgets/inlineinput/inlineinput.module';
 import { WorkItemDetailComponent } from './work-item-detail.component';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
 import { TypeaheadDropDownModule } from '../typeahead-dropdown/typeahead-dropdown.module';
@@ -47,9 +47,9 @@ if (process.env.ENV == 'inmemory') {
     AlmUserNameModule,
     BsDropdownModule.forRoot(),
     HttpModule,
+    InlineInputModule,
     WidgetsModule,
     AlmIconModule,
-    AlmEditableModule,
     LabelSelectorModule,
     ModalModule,
     CommonModule,

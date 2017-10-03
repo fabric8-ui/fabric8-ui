@@ -45,7 +45,7 @@ class WorkItemDetailPage {
 
   /* This UI element is only displayed when the user accesses the detail page of an existing work item */
   get clickWorkItemDetailTitle () {
-    return element(by.id("wi-detail-title-click"));
+    return element(by.id("wi-title-div"));
   }
 
   clickWorkItemDetailTitleClick () {
@@ -53,7 +53,7 @@ class WorkItemDetailPage {
   }
 
   get workItemDetailTitle () {
-    return element(by.id("wi-detail-title"));
+    return element(by.css("#wi-title-div .inlineinput-textarea"));
   }
 
   setWorkItemDetailTitle (newTitleString, append) {
@@ -95,11 +95,11 @@ class WorkItemDetailPage {
   }
 
   get workItemTitleSaveIcon () {
-    return element(by.id("workItemTitle_btn_save"));
+    return element(by.css("#wi-title-div .inlineinput-btn-save"));
   }
 
   workItemTitleSaveIconById () {
-    return element(by.id("workItemTitle_btn_save"));
+    return element(by.css("#wi-title-div .inlineinput-btn-save"));
   }
 
   clickWorkItemTitleSaveIcon () {
@@ -107,7 +107,7 @@ class WorkItemDetailPage {
   }
 
   get workItemTitleCancelIcon () {
-    return element(by.id("workItemTitle_btn_cancel"));
+    return element(by.css("#wi-title-div .inlineinput-btn-cancel"));
   }
 
   clickWorkItemTitleCancelIcon () {
