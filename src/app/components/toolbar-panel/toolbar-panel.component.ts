@@ -163,16 +163,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     // listen for changes on the available filters.
     this.eventListeners.push(
       this.filterService.getFilters()
-        .map(filter => {
-          return [...filter, {
-            attributes:{
-              description: "Filter by label",
-              query: "filter[label]={id}",
-              title: "Label",
-              type: "labels"
-            },
-            type:"filters"}];
-        })
         .subscribe(filters => this.setFilterTypes(filters))
     );
   }
