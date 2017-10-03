@@ -82,6 +82,7 @@ if (ciDeploy){
                originalImageName = 'registry.devshift.net/fabric8-ui/fabric8-ui'
                newImageName = imageName
                openShiftProject = prj
+               githubProject = project
            }
        }
        stage('notify'){
