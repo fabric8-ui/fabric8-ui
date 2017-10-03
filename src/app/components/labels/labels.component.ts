@@ -73,22 +73,7 @@ export class LabelsComponent implements OnInit, OnChanges {
     this.onRemoveLabel.emit(label);
   }
 
-  buildQueryParam(label) {
-    const label_key = 'label';
-    const label_compare = this.filterService.equal_notation;
-    const label_value = label.id;
-
-    //Query for type
-    const type_query = this.filterService.queryBuilder(label_key, label_compare, label_value);
-    //Query for space
-    const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
-
-    //Join type and space query
-    const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, space_query);
-
-    const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query);
-
-    //second_join gives json object
-    return this.filterService.jsonToQuery(second_join);
+  buildQueryParam(label: LabelModel) {
+    return {label: label.attributes.name};
   }
 }

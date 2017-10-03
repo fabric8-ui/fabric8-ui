@@ -7,7 +7,7 @@
     (click)="clickLabel(label, $event)">
     <span class="pointer"
           [routerLink]="[]"
-          [queryParams]="{q: buildQueryParam(label)}">
+          [queryParams]="buildQueryParam(label)">
         {{label.attributes?.name}}
     </span>
     <span class="close-icon-wrapper" *ngIf="allowDelete">
