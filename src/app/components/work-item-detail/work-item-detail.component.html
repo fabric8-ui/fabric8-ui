@@ -23,7 +23,7 @@
               <ng-template #witTypeLoaded>
                 <span
                   class="margin-right-5 {{workItem.relationships?.baseType?.data?.attributes?.icon}} fa-lg"
-                  id="wi-type-icon"></span>
+                  id="wi-type-icon" title="{{workItem.relationships?.baseType?.data?.attributes?.name}}"></span>
                 {{workItem.relationships?.baseType?.data?.attributes?.name}}
               </ng-template>
               <h3 *ngIf="workItem.id" class="detail-id" id="wi-detail-id">{{workItem.attributes['system.number']}}</h3>
