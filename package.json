@@ -102,7 +102,7 @@
     "clean-css": "4.1.9",
     "clean-webpack-plugin": "0.1.17",
     "codelyzer": "3.2.0",
-    "copy-webpack-plugin": "4.0.1",
+    "copy-webpack-plugin": "4.1.0",
     "copyfiles": "1.2.0",
     "core-js": "2.5.1",
     "cpy-cli": "1.0.1",
