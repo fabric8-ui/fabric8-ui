@@ -91,7 +91,7 @@
     "@krux/condition-jenkins": "1.0.1",
     "@types/core-js": "0.9.43",
     "@types/jasmine": "2.6.0",
-    "@types/lodash": "4.14.76",
+    "@types/lodash": "4.14.77",
     "angular2-load-children-loader": "0.2.0",
     "angular2-router-loader": "0.3.5",
     "angular2-template-loader": "0.6.2",
