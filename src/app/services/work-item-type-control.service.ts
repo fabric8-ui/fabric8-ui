@@ -8,28 +8,29 @@ import { WorkItemType } from '../models/work-item-type';
 
 /**
  * This service provides a pre-processing of the type information attached to the WITs.
- * It is used by the dynamic form components to retrieve the type information and to 
+ * It is used by the dynamic form components to retrieve the type information and to
  * create the FormGroup.
  */
 @Injectable()
 export class WorkItemTypeControlService {
-  
+
   // this properties/keys are considered fixed and will not be
-  // displayed in the dynamic form area. They will be skipped 
+  // displayed in the dynamic form area. They will be skipped
   // when creating the FormGroup.
   private FIXED_PROPERTIES: string[] = [
-    'system.area', 
+    'system.area',
     'system.assignees',
-    'system.codebase', 
-    'system.created_at', 
-    'system.creator', 
-    'system.description', 
-    'system.iteration', 
-    'system.order', 
-    'system.remote_item_id', 
-    'system.state', 
-    'system.title', 
-    'system.updated_at', 
+    'system.codebase',
+    'system.created_at',
+    'system.creator',
+    'system.description',
+    'system.iteration',
+    'system.order',
+    'system.remote_item_id',
+    'system.state',
+    'system.title',
+    'system.updated_at',
+    'system.labels'
   ];
 
   constructor(private log: Logger) { }
@@ -66,7 +67,7 @@ export class WorkItemTypeControlService {
     let fields = workItem.relationships.baseType.data.attributes.fields;
     for (var key in fields) {
       if (this.FIXED_PROPERTIES.indexOf(key) != -1) {
-        this.log.log('Skipping form control for ' + key);      
+        this.log.log('Skipping form control for ' + key);
       } else {
         this.log.log('Generating form control for ' + key);
         // create validators array
@@ -89,7 +90,7 @@ export class WorkItemTypeControlService {
     let resultArray: any[] = [];
     for (var key in fields) {
       if (this.FIXED_PROPERTIES.indexOf(key) != -1) {
-        this.log.log('Skipping creating array entry form control for ' + key);      
+        this.log.log('Skipping creating array entry form control for ' + key);
       } else {
         let thisElement = JSON.parse(JSON.stringify(fields[key]));
         thisElement.key = key;

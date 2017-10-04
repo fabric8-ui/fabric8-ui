@@ -197,7 +197,7 @@
               {{workItem.relationships?.baseType?.data?.attributes?.fields['system.iteration']?.label || 'Label'}}
             </label>
             <div class="col-xs-8 col-sm-8 col-md-10">
-              <span *ngIf="loadingIteration"
+                <span *ngIf="loadingIteration"
                   class="spinner spinner-sm spinner-inline">
                 </span>
                 <typeahead-dropdown
@@ -216,17 +216,21 @@
               {{workItem.relationships?.baseType?.data?.attributes?.fields['system.label']?.label || 'Label'}}
             </label>
             <div class="col-xs-8 col-sm-8 col-md-10">
-              <f8-label [labels]='workItem.relationships?.labels?.data ?
-                workItem.relationships?.labels?.data : []'
+              <span *ngIf="loadingLabels"
+                class="spinner spinner-sm spinner-inline">
+              </span>
+              <f8-label *ngIf="!loadingLabels"
+                [labels]='workItem.relationships?.labels?.data ?
+                  workItem.relationships?.labels?.data : []'
                 (onRemoveLabel)="removeLable($event)" [allowDelete]="true">
               </f8-label>
-              <div class="f8-detail__labels--selector">
+              <div class="f8-detail__labels--selector" *ngIf="loggedIn">
                 <label-selector
                   [allLabels]="labels"
                   [selectedLabels]="workItem.relationships?.labels?.data ?
                     workItem.relationships?.labels?.data : []"
                   (onOpenSelector)="onLabelSelectorOpen($event)"
-                  (onSelectLable)="updateLabels($event)">
+                  (onCloseSelector)="updateLabels($event)">
                 </label-selector>
               </div>
             </div>

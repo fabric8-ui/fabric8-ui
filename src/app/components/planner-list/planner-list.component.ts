@@ -108,12 +108,25 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   private uiLockedAll = false;
   private uiLockedList = true;
   private uiLockedSidebar = false;
-  
+  private children: string[] = [];
+
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
     allowDrag: false,
     getChildren: (node: TreeNode): any => {
-      return this.workItemService.getChildren(node.data);
+      return this.workItemService.getChildren(node.data)
+        .then((workItems: WorkItem[]) => this.workItemService.resolveWorkItems(
+          workItems,
+          this.iterations,
+          [], // We don't want to static resolve user at this point
+          this.workItemTypes,
+          this.labels
+        ))
+        .then((workItems: WorkItem[]) => {
+          // Save all the children fethced
+          workItems.forEach(w => this.children.push(w.id));
+          return workItems;
+        });
     },
     levelPadding: 30,
     allowDrop: (element, to) => {
@@ -244,6 +257,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     if (this.wiSubscriber) {
       this.wiSubscriber.unsubscribe();
     }
+    this.children = [];
     const t1 = performance.now();
     this.wiSubscriber = Observable.combineLatest(
       this.iterationService.getIterations(),
@@ -345,7 +359,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       const t3 = performance.now();
       if (!this.workItems || this.workItems.length==0) {
         // if there are no work items, unlock the ui here
-        this.uiLockedList = false;        
+        this.uiLockedList = false;
       }
       this.workItems.forEach((item, index) => {
         this.workItemService.resolveAssignees(item.relationships.assignees).take(1)
@@ -354,7 +368,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
             if (index == this.workItems.length - 1) {
               const t4 = performance.now();
               console.log('Performance :: Resolved all the users - '  + (t4 - t3) + ' milliseconds.');
-              this.uiLockedList = false;              
+              this.uiLockedList = false;
             }
           })
       });
@@ -588,7 +602,11 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
             //The panel is still open - set back the value(s) so that the work item matches the applied
             //filters
             //add the WI at the top of the list
-            this.workItems.splice(0, 0, updatedItem);
+
+            if (!this.children.find(c => c === updatedItem.id)) {
+              // If the item is not a child of any other item
+              this.workItems.splice(0, 0, updatedItem);
+            }
           }
           this.treeList.updateTree();
         } else {

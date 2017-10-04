@@ -32,7 +32,7 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
 
   @Output() onSelectLable: EventEmitter<LabelModel[]> = new EventEmitter();
   @Output() onOpenSelector: EventEmitter<any> = new EventEmitter();
-  @Output() onCloseSelector: EventEmitter<any> = new EventEmitter();
+  @Output() onCloseSelector: EventEmitter<LabelModel[]> = new EventEmitter();
 
   private activeAddLabel: boolean = false;
   private backup: any[] = [];
@@ -197,6 +197,7 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
   }
 
   onClose(event) {
+    this.onCloseSelector.emit(cloneDeep(this.selectedLabels));
   }
 
   openDropdown() {
@@ -204,6 +205,6 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
   }
 
   closeDropdown() {
-    this.dropdownRef.closeDropdown()
+    this.dropdownRef.closeDropdown();
   }
 }
