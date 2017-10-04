@@ -28,7 +28,8 @@ import {
   Event as NavigationEvent,
   NavigationStart,
   NavigationEnd,
-  ActivatedRoute
+  ActivatedRoute,
+  NavigationExtras
 } from '@angular/router';
 
 import { TreeNode } from 'angular2-tree-component';
@@ -725,5 +726,18 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
 
   togglePanel() {
     this.sidePanelRef.toggleSidePanel();
+  }
+
+  onClickLabel(event) {
+    let params = {
+      label: event.attributes.name
+    }
+    // Prepare navigation extra with query params
+    let navigationExtras: NavigationExtras = {
+      queryParams: params
+    };
+
+    // Navigated to filtered view
+    this.router.navigate([], navigationExtras);
   }
 }

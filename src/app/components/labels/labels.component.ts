@@ -72,8 +72,4 @@ export class LabelsComponent implements OnInit, OnChanges {
     event.stopPropagation();
     this.onRemoveLabel.emit(label);
   }
-
-  buildQueryParam(label: LabelModel) {
-    return {label: label.attributes.name};
-  }
 }

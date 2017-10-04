@@ -981,4 +981,21 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl(this.urlService.getLastListOrBoard());
     }
   }
+
+  onLabelClick(label) {
+    if (this.urlService.getLastListOrBoard() === '') {
+      let params = {
+        label: label.attributes.name
+      }
+      // Prepare navigation extra with query params
+      let navigationExtras: NavigationExtras = {
+        queryParams: params
+      };
+      this.router.navigate(['..'], navigationExtras);
+    } else {
+      let url = this.urlService.getLastListOrBoard().split('?')[0]
+        + '?label=' + label.attributes.name;
+      this.router.navigateByUrl(url);
+    }
+  }
 }

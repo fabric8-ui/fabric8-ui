@@ -222,7 +222,8 @@
               <f8-label *ngIf="!loadingLabels"
                 [labels]='workItem.relationships?.labels?.data ?
                   workItem.relationships?.labels?.data : []'
-                (onRemoveLabel)="removeLable($event)" [allowDelete]="true">
+                (onRemoveLabel)="removeLable($event)" [allowDelete]="true"
+                (onLabelClick)="onLabelClick($event)">
               </f8-label>
               <div class="f8-detail__labels--selector" *ngIf="loggedIn">
                 <label-selector

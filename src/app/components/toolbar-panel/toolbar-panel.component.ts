@@ -282,7 +282,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     let recentAppliedFilters = {};
     $event.appliedFilters.forEach((filter) => {
       if (filter.query.id !== 'loader') {
-        if (Object.keys(recentAppliedFilters).indexOf(filter.field.id) === - 1) {
+        if (Object.keys(recentAppliedFilters).indexOf(filter.field.id) === -1) {
           // If this filter type was not found in this iteration before
           recentAppliedFilters[filter.field.id] = [];
 

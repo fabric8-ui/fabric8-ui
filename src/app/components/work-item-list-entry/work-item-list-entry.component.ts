@@ -14,6 +14,7 @@ import { Dialog } from 'ngx-widgets';
 import { GroupTypesService } from '../../services/group-types.service';
 
 import { IterationService } from '../../services/iteration.service';
+import { LabelModel } from './../../models/label.model';
 import { WorkItem }        from '../../models/work-item';
 import { WorkItemService } from '../../services/work-item.service';
 
@@ -56,6 +57,7 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
   @Output() previewEvent: EventEmitter<WorkItem> = new EventEmitter<WorkItem>();
   @Output() moveTopEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() moveBottomEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
+  @Output() clickLabel = new EventEmitter();
 
   checkedWI: boolean = false;
   dialog: Dialog;
@@ -260,6 +262,10 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
         this.selectDeselectFromUrl(url);
       })
     );
+  }
+
+  labelClick(event) {
+    this.clickLabel.emit(event);
   }
 
 

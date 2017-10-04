@@ -1186,6 +1186,19 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
     return this.router.url.split('plan')[0] + 'plan/detail/' + workItem.attributes['system.number'];
   }
 
+  onLabelClick(event) {
+    let params = {
+      label: event.attributes.name
+    }
+    // Prepare navigation extra with query params
+    let navigationExtras: NavigationExtras = {
+      queryParams: params
+    };
+
+    // Navigated to filtered view
+    this.router.navigate([], navigationExtras);
+  }
+
   @HostListener('window:keydown', ['$event'])
   onKeyEvent(event: any) {
     event = (event || window.event);
