@@ -945,6 +945,88 @@ class WorkItemDetailPage {
     )
   }
 
+  /* UI elements for Label */
+  get addLabelButton() {
+    return $('.clickable.add-label');
+  }
+
+  clickAddLabelButton(){
+    return this.addLabelButton.click();
+  }
+
+  get selectLabelDropdown() {
+    return $('.select-dropdown.dropdown-menu.dropdown-menu-left.show');
+  }
+
+  getLabelByTitle(title) {
+    return element(by.xpath("//ul[@class='select-dropdown-menu']/li//*[text()='"+title+"']"));
+  }
+
+  // Removes label by clicking on 'x'
+  removeLabelByTitle(title) {
+    let path = "//div[@id='workItemDetail_Wrapper']//*[@class='label-wrapper']//span[contains(text(), '"+ title +"')]/span";
+    return element.all(by.xpath(path)).first().click();
+  }
+
+  selectLabelByTitle(labelTitle) {
+    return this.getLabelByTitle(labelTitle).click();
+  }
+
+  get labelsCount() {
+    return $$(".dropdown-menu.dropdown-menu-left.show li").count();
+  }
+
+  get createLabelButton(){
+    return $('div.create-label-button');
+  }
+
+  clickCreateLabelButton(){
+    return this.createLabelButton.click();
+  }
+
+  get labelInput() {
+    return $('.create-label .create-label-input');
+  }
+
+  setLabelName(text) {
+    return this.labelInput.sendKeys(text);
+  }
+
+  clickLabelCheckbox() {
+    return $('button.fa-check').click();
+  }
+
+  get labelCancelIcon() {
+    return this.createLabelInputDiv.$('.pficon-close');
+  }
+
+  clickLabelCancel() {
+    return this.labelCancelIcon.click();
+  }
+
+  get labelCloseIcon() {
+    return $('.select-dropdown-header .pull-right.pficon-close.close-pointer');
+  }
+
+  clickLabelClose() {
+    return this.labelCloseIcon.click();
+  }
+
+  get LabelColorSelectorIcon() {
+    return this.createLabelInputDiv.$('.palet');
+  }
+
+  clickLabelColorSelector() {
+    return this.LabelColorSelectorIcon.click();
+  }
+
+  listOfLabels() {
+    return $$('.select-dropdown-menu li').first();
+  }
+
+  attachedLabels() {
+    return $$('f8-label .label-wrapper span.label');
+  }
 }
 
 module.exports = WorkItemDetailPage;

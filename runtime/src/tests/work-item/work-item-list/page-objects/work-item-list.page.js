@@ -348,6 +348,10 @@ class WorkItemListPage {
     return button.click();
   }
 
+  workItemAttachedLabels(workItem){
+    return workItem.$$('.f8-wi__list-entry span.label');
+  }
+
   /* User assignment dropdown */
   get filterDropdown () {
     return  element(by.id("wi_filter_dropdown"));
