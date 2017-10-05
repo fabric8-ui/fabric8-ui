@@ -43,7 +43,7 @@
                     Edit
                   </a>
                 </li>
-                <li>
+                <li *ngIf="iteration.attributes.active_status">
                   <a class="pointer"
                     (click)="modal.openCreateUpdateModal('close', iteration, $event);">
                       Close
