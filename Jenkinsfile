@@ -5,7 +5,7 @@ def org = 'fabric8-ui'
 def repo = 'ngx-widgets'
 fabric8UINode{
   ws {
-    checkout scm
+    git "https://github.com/${org}/${repo}.git"
     readTrusted 'release.groovy'
     sh "git remote set-url origin git@github.com:${org}/${repo}.git"
     def pipeline = load 'release.groovy'
