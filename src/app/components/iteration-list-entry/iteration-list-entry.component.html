@@ -40,7 +40,12 @@
       (click)="setGuidedTypeWI(collection)">
       <span class="f8-itr-name truncate">
         {{iteration.attributes.name | truncate : 45 }}
-      </span><span *ngIf="iteration.attributes.active_status" class="active-tag">[Active]</span>
+      </span>
+      <span
+        *ngIf="iteration.attributes.active_status"
+        class="active-tag">
+          [Active]
+      </span>
     </div>
     <div class="f8-itr-status">
       <span>
@@ -51,7 +56,6 @@
       <span class="iteration-count pull-right">
         {{iteration.relationships?.workitems?.meta?.closed}}
         /{{iteration.relationships?.workitems?.meta?.total}}
-        completed
       </span>
     </div>
   </div>

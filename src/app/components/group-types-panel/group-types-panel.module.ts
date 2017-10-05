@@ -19,7 +19,7 @@ import { IterationModule } from '../iterations-panel/iterations-panel.module';
     CommonModule,
     FormsModule,
     ModalModule,
-    TooltipModule,
+    TooltipModule.forRoot(),
     TruncateModule,
     WidgetsModule,
     IterationModule,

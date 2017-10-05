@@ -18,6 +18,7 @@ import { IterationService } from '../../services/iteration.service';
 export class SidepanelComponent implements OnInit, OnDestroy {
 
   @Input() iterations: IterationModel[] = [];
+  @Input() sidePanelOpen: Boolean = true;
 
   rootIteration: IterationModel = null;
   backlogSelected: boolean = true;

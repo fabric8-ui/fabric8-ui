@@ -32,6 +32,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() takeFromInput: boolean = false;
   @Input() iterations: IterationModel[] = [];
   @Input() collection = [];
+  @Input() sidePanelOpen: Boolean = true;
 
   @ViewChild('modal') modal: FabPlannerIterationModalComponent;
   @ViewChild('treeList') treeList: TreeListComponent;
@@ -39,6 +40,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('treeListLoadTemplate') treeListLoadTemplate: TemplateRef<any>;
   @ViewChild('treeListTemplate') treeListTemplate: TemplateRef<any>;
   @ViewChild('treeListItem') treeListItem: TreeListComponent;
+
 
 
   authUser: any = null;

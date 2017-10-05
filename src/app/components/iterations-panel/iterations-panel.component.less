@@ -1,4 +1,5 @@
 @import (reference) '../../../assets/stylesheets/_base';
+@import (reference) '../../../assets/stylesheets/shared/_utilities';
 
 .f8-itr {
   background-color: @color-pf-black-900;
@@ -8,8 +9,14 @@
   &__panel {
     &-hdr {
       width: 100%;
-      padding: 20px;
-      padding-right: 15px;
+      display: inline-block;
+      padding: 20px 15px;
+      border-left: 4px solid;
+      border-left-color: transparent;
+      cursor: default; // as item is not clickable
+      &:hover {
+        background: @color-pf-black-700;
+      }
     }
     .node-drop-slot,
     .list-group-item {
@@ -22,7 +29,7 @@
       .tree-list-item {
         display: inline-block;
         width: 100%;
-        padding: 0;
+        padding: 0 !important;
         background-color: @color-pf-black-900;
         &:hover {
           background-color: @color-pf-black-700;
@@ -33,7 +40,7 @@
         .toggle-children-wrapper {
           width: 25px;
           padding-top: 5px;
-          padding-left: 10px;
+          padding-left: 30px;
         }
       }
       .on-hover-background {
@@ -41,14 +48,14 @@
       }
     }
     .tree-children {
-        .tree-list-item {
-          .toggle-children-wrapper {
-            padding-left: ((@grid-gutter-width/3) * 2.5);
-          }
-          .f8-itr-entry {
-            padding-left: ((@grid-gutter-width/3)) * 4;
-          }
+      .tree-list-item {
+        .toggle-children-wrapper {
+          padding-left: ((@grid-gutter-width/3) * 4);
         }
+        .f8-itr-entry {
+          padding-left: ((@grid-gutter-width/3)) * 5.5;
+        }
+      }
     }
   }
   &__List {
@@ -61,26 +68,67 @@
         }
       }
       > li {
+        width: 100%;
         padding: 15px;
+        padding-left: 45px;
         list-style: none;
         &.active {
           border-left: 4px solid;
           border-left-color: transparent;
-          background-color: @color-pf-black-700;
-          &.io-itr--selected {
+          background-color: @color-pf-black-800;
+          cursor: pointer;
+          &.f8-itr--selected {
             border-left: 4px solid;
             border-left-color: @color-pf-blue;
-            background-color: @color-pf-black-700;
+            background-color: @color-pf-black-800;
           }
         }
         &:hover {
-          background-color: @color-pf-black-800 ;
+          background-color: @color-pf-black-700;
+          .left-truncate {
+            &:before {
+              background-color: @color-pf-black-800;
+            }
+          }
+        }
+      }
+    }
+    &-parent {
+      float: right;
+      width: 55%;
+      padding-top: 3px;
+      .left-truncate {
+        padding-left: 12px;
+        color: @color-pf-white;
+        background-color: initial;
+        &::before {
+          color: @color-pf-white;
+          line-height: 1.3;
+          background-color: @color-pf-black-800;
+        }
+        span {
+          font-size: 12px;
         }
       }
     }
   }
-  &-count { float: right; }
+  &-name {
+    font-size: 12px;
+  }
+  &-status {
+    float: left;
+    width: 100%;
+    color: @color-pf-black-600;
+    font-size: 12px;
+  }
+  &-count {
+    float: right;
+    color: @color-pf-black-600;
+    font-size: 12px;
+  }
   &-desc {
+    margin: 0;
+    font-size: 12px;
     &:after,
     &:before {
       background: transparent !important;
@@ -91,6 +139,10 @@
     &-btn {
       color: @color-pf-blue;
       font-size: 13px;
+      cursor: pointer;
     }
+  }
+  .progress {
+    height: 12px;
   }
 }

@@ -34,9 +34,6 @@
       }
     }
   }
-  .f8-sidepanel {
-    position: relative;
-  }
   .f8-wi-list {
     background-color: @color-pf-white;
     float: left;
@@ -60,24 +57,11 @@
         .no-wi { font-size: @pf-icon-4x; }
       }
     }
-    &__quick-add {
-      position: fixed;
-      bottom: 0;
-      width: 75%;
-    }
-    .f8-wi-list-wrap {
-      position: relative;
-    }  
   }
-  .f8-blank-state {
-    display: block;
-    width: 90%;
-    color: #363636;
-    text-decoration: none;
-    cursor: pointer;
-    &:hover {
-      box-shadow: 0 1px 6px rgba(3, 3, 3, .175);
-    }
+  &__quick-add {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
   //tree-list, drag and drop css
   .error { color: @color-pf-red-100; }
@@ -101,4 +85,7 @@
   .node-drop-slot.is-dragging-over {
     height: 66px!important;
   }
+}
+.experimental-border .f8-wi-container {
+  height:  ~"calc(e('100vh - 106px'))"
 }

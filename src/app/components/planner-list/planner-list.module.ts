@@ -40,6 +40,7 @@ import { WorkItemDetailAddTypeSelectorModule } from '../work-item-create/work-it
 import { PlannerListComponent } from './planner-list.component';
 import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-list-entry.component';
 import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
+import { PlannerLayoutModule } from './../../widgets/planner-layout/planner-layout.module';
 import { WorkItemService } from '../../services/work-item.service';
 import { MockHttp } from '../../mock/mock-http';
 import { HttpService } from '../../services/http-service';
@@ -99,6 +100,7 @@ if (process.env.ENV == 'inmemory') {
     IterationModule,
     LabelsModule,
     ModalModule,
+    PlannerLayoutModule,
     PlannerListRoutingModule,
     SidepanelModule,
     ToolbarPanelModule,

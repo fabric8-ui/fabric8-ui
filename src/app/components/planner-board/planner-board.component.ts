@@ -54,6 +54,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
   @ViewChildren('activeFilters', {read: ElementRef}) activeFiltersRef: QueryList<ElementRef>;
   @ViewChild('activeFiltersDiv') activeFiltersDiv: any;
   @ViewChild('associateIterationModal') associateIterationModal: any;
+  @ViewChild('sidePanel') sidePanelRef: any;
 
   workItem: WorkItem;
   cardItem: CardValue;
@@ -87,6 +88,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
   private uiLockedBoard = true;
   private uiLockedSidebar = false;
 
+  sidePanelOpen: boolean = true;
   constructor(
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
@@ -161,6 +163,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
         this.workItemTypes = [];
       }
     });
+
   }
 
   ngOnDestroy() {
@@ -939,5 +942,19 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
           this.currentWIType.next(null);
         }
       });
+  }
+
+  togglePanelState(event: any): void {
+    if (event === 'out') {
+      setTimeout(() => {
+        this.sidePanelOpen = true;
+      }, 100)
+    } else {
+      this.sidePanelOpen = false;
+    }
+  }
+
+  togglePanel() {
+    this.sidePanelRef.toggleSidePanel();
   }
 }

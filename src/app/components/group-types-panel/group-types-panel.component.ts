@@ -23,6 +23,7 @@ import { WorkItemType } from '../../models/work-item-type';
 export class GroupTypesComponent implements OnInit, OnDestroy {
 
   @Input() iterations: IterationModel[] = [];
+  @Input() sidePanelOpen: Boolean = true;
 
   authUser: any = null;
   loggedIn: Boolean = true;

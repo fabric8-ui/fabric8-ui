@@ -5,15 +5,22 @@
 
   <!-- Active iteration -->
     <div class="f8-itr__panel">
-      <div class="f8-itr__panel-hdr pointer f8-itr__panel-hdr--active">
-        <h3 class="padding-0 margin-0">
+      <div class="f8-itr__panel-hdr f8-itr__panel-hdr--active">
+        <span class="fa fa-check pull-left margin-right-10"
+          tooltip="{{sidePanelOpen ? '' : 'Active Iteration'}}"
+          placement="right"></span>
+        <h3 class="padding-0 margin-0"
+          [class.show]="sidePanelOpen"
+          [class.hide]="!sidePanelOpen">
           Active Iteration
         </h3>
       </div>
-      <ul class="f8-itr__List--expanded">
-        <li class="active f8-itr__container"
+      <ul class="f8-itr__List--expanded"
+        [class.show]="sidePanelOpen"
+        [class.hide]="!sidePanelOpen">
+        <li class="active f8-itr__container pull-left"
           *ngFor="let iteration of activeIterations"
-          [routerLinkActive]="'io-itr--selected'"
+          [routerLinkActive]="'f8-itr--selected'"
           [routerLink]="[]" [attr.data-id]="iteration.id"
           [queryParams]="{q: constructURL(iteration.id)}"
           [dragula]="'wi-bag'">
@@ -52,31 +59,22 @@
               </ul>
             </div>
             <div class="truncate padding-right-15">
-                <span class="io-itr-name truncate"
-                  tooltip="{{iteration.attributes.name}}"
-                  placement="top" id="{{iteration.attributes.name}}">
-                  {{iteration.attributes.name | truncate : 45 }}
-                </span>
+              <span class="f8-itr-name truncate"
+                tooltip="{{iteration.attributes.name}}"
+                placement="top" id="{{iteration.attributes.name}}">
+                {{iteration.attributes.name | truncate : 45 }}
+              </span>
               <div class="f8-itr__List-parent parent-iteration">
-                <span tooltip="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
-                  placement="top" id="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}">
-                  {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | truncate : -50 }}
-                </span>
+                <div class="left-truncate">
+                  <span tooltip="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
+                    placement="top" id="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}">
+                    {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | truncate : -50 }}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="io-itr-status">
-            <div>
-              <span><span *ngIf="iteration.attributes.startAt">{{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}(UTC)</span>&nbsp;</span>
-              <span class="io-itr-count">
-                <strong>
-                  {{iteration.relationships?.workitems?.meta?.closed}} of {{iteration.relationships?.workitems?.meta?.total}}
-                </strong>
-                <span> completed</span>
-              </span>
-            </div>
-          </div>
-          <div class="progress">
+          <div class="progress margin-v-10">
             <div class="progress-bar"
                 role="progressbar"
                 [attr.aria-valuenow]="iteration.relationships?.workitems?.meta?.closed"
@@ -87,14 +85,24 @@
                 tooltip="{{((iteration.relationships?.workitems?.meta?.closed / iteration.relationships?.workitems?.meta?.total) * 100) + '%'}}">
             </div>
           </div>
-          <p class="io-itr-desc">{{ iteration.attributes?.description }}</p>
+          <div class="f8-itr-status">
+            <span *ngIf="iteration.attributes.startAt">
+              {{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}(UTC)
+            </span>
+            <span class="f8-itr-count">
+              {{iteration.relationships?.workitems?.meta?.closed}} / {{iteration.relationships?.workitems?.meta?.total}}
+            </span>
+          </div>
+          <p class="f8-itr-desc">{{ iteration.attributes?.description }}</p>
         </li>
       </ul>
     </div>
     <!-- Nested Iteration Display -->
     <div class="f8-itr__panel">
       <div class="f8-itr__panel-hdr pointer f8-itr__panel-hdr--active">
-        <div class="f8-itr__add">
+        <div class="f8-itr__add"
+          [class.show]="sidePanelOpen"
+          [class.hide]="!sidePanelOpen">
           <a *ngIf="loggedIn && editEnabled"
             class="text-right"
             (click)="modal.openCreateUpdateModal('create', null, $event);">
@@ -103,8 +111,14 @@
               tooltip="Add an Iteration"></i>
           </a>
         </div>
-        <h3 class="padding-0 margin-0">
-          Iterations
+        <span class="fa fa-repeat pull-left margin-right-10"
+          tooltip="{{sidePanelOpen ? '' : 'All Iterations'}}"
+          placement="right">
+        </span>
+        <h3 class="padding-0 margin-0"
+          [class.show]="sidePanelOpen"
+          [class.hide]="!sidePanelOpen">
+          All Iterations
         </h3>
       </div>
       <alm-tree-list #treeList
@@ -114,7 +128,9 @@
         [options]="treeListOptions"
         [showDropSlot]="false"
         [showExpander]="false"
-        (onMoveNode)="onMoveNode($event)">
+        (onMoveNode)="onMoveNode($event)"
+        [class.show]="sidePanelOpen"
+        [class.hide]="!sidePanelOpen">
         <template #treeListLoadTemplate let-node="node"
           let-index="index">
           <span>Loading...</span>

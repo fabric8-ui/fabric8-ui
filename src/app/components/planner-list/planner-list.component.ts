@@ -77,6 +77,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   @ViewChild('treeListTemplate') treeListTemplate: TemplateRef<any>;
   @ViewChild('treeListItem') treeListItem: TreeListComponent;
   @ViewChild('detailPreview') detailPreview: WorkItemDetailComponent;
+  @ViewChild('sidePanel') sidePanelRef: any;
 
   workItems: WorkItem[] = [];
   prevWorkItemLength: number = 0;
@@ -94,6 +95,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   authUser: any = null;
   eventListeners: any[] = [];
   showHierarchyList: boolean = true;
+  sidePanelOpen: boolean = true;
   private spaceSubscription: Subscription = null;
   private iterations: IterationModel[] = [];
   private areas: AreaModel[] = [];
@@ -710,5 +712,18 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   onSelect($event) {
     this.workItemService.emitSelectedWI($event.workItem);
     this.groupTypesService.getAllowedChildWits($event.workItem);
+  }
+  togglePanelState(event: any): void {
+    if (event === 'out') {
+      setTimeout(() => {
+        this.sidePanelOpen = true;
+      }, 100)
+    } else {
+      this.sidePanelOpen = false;
+    }
+  }
+
+  togglePanel() {
+    this.sidePanelRef.toggleSidePanel();
   }
 }

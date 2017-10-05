@@ -2,25 +2,46 @@
 
 .f8-wi-container {
   position: relative;
-  height: ~"calc(e('100vh - 60px'))";
+  height: ~"calc(e('100vh - 66px'))";
   >main {
     height: 100%;
     overflow: hidden;
-    >aside {
-      &.f8-sidepanel {
+    .f8-sidepanel {
+      width: 100%;
+      height: 100%;
+      padding-bottom: 20px;
+      overflow: auto;
+      background-color: @color-pf-black-900;
+      &--toggle {
         float: left;
-        width: 25%;
-        height: 100%;
-        overflow-x: hidden;
-        background-color: @color-pf-black-900;
+        width: 100%;
+        padding: 5px;
+        border-top: 1px solid;
+        border-top-color: @color-pf-black;
+        border-bottom: 1px solid;
+        border-bottom-color: @color-pf-black;
+        &-icon {
+          padding: 11.5px 10px;
+          color: @color-pf-white;
+          .Border(1px, solid, transparent);
+          cursor: pointer;
+          &:hover {
+            .Border(1px, solid, @color-pf-black-700);
+          }
+        }
       }
     }
-    >section {
-      float: left;
-      width: 75%;
-      height: 100%;
+    section {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow-y: hidden;
       //toolbar styles
-      > header {
+       header {
+        float: left;
+        width: 100%;
         padding-right: 20px;
         padding-left: 20px;
         border-bottom: 1px solid;
@@ -47,9 +68,9 @@
             }
             >div { position: relative;
               //HACK:prevents caret icon from folding to a new line
-              >input { margin-right: -20px; }
+              input { margin-right: -20px; }
               //HACK:positions the caret in right margin are of input
-              >.caret::before {
+              .caret::before {
                 z-index: 2;
                 display: inline-block;
                 width: 15px;
