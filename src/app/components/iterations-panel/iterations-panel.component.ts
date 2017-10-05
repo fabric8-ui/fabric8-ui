@@ -62,6 +62,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   // See: https://angular2-tree.readme.io/docs/options
   treeListOptions = {
     allowDrag: false,
+    allowDrop: false,
     levelPadding: 30,
   };
 
