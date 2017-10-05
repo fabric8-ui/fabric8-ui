@@ -76,15 +76,15 @@
                 <span class="fa fa-list-alt"></span>
               </a>
             </div>
-            <div class="width-100 pull-left wi-detail-title-blk" id="title-click-div">
+            <div class="width-100 pull-left wi-detail-title-blk margin-top-15" id="title-click-div">
               <div id="wi-title-div">
-                  <f8-inlineinput
-                    [disabled]="loggedIn ? false : true"
-                    [value]="workItem.attributes['system.title']"
-                    [onLineClickEdit]="true"
-                    (onSave)="saveTitle($event)"
-                    [placeholder]="'Enter title'">
-                  </f8-inlineinput>
+                <f8-inlineinput
+                  [disabled]="loggedIn ? false : true"
+                  [value]="workItem.attributes['system.title']"
+                  [onLineClickEdit]="true"
+                  (onSave)="saveTitle($event)"
+                  [placeholder]="'Enter title'">
+                </f8-inlineinput>
               </div>
             </div>
           </div>
@@ -232,7 +232,7 @@
           <!--Lables-->
           <div class="form-group">
             <div class="width-100 pull-left detail-label-wrap">
-              <label class="col-xs-4 col-sm-4 col-md-4 control-label">
+              <label class="col-xs-4 col-sm-3 col-md-3 control-label">
                 {{workItem.relationships?.baseType?.data?.attributes?.fields['system.labels']?.label || 'Label'}}
               </label>
               <div class="col-xs-8 col-sm-9 col-md-9 padding-left-0">

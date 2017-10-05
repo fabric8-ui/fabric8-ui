@@ -52,7 +52,9 @@
       <div class="col-xs-12 col-sm-4 col-md-3 padding-0 margin-v-3">
         <strong>Created </strong>
         <span id="created_at"
-        [innerHTML]="workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'"></span>
+          [innerHTML]="workItem.attributes['system.created_at'] ?
+          (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'">
+        </span>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-12 margin-top-15 padding-0">
         <div class="form-horizontal">
