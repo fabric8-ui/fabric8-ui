@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // FIXME: do we really need to have this modules on top-level?
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { TabsModule } from 'ng2-bootstrap';
+import { TabsModule } from 'ngx-bootstrap';
 import { TruncateModule } from 'ng2-truncate';
 
 import { Broadcaster, Logger, Notifications } from 'ngx-base';

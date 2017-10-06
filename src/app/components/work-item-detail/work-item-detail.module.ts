@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }  from '@angular/forms';
 import { HttpModule, Http }    from '@angular/http';
 
-import { CollapseModule } from 'ng2-bootstrap';
+import { CollapseModule } from 'ngx-bootstrap';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';

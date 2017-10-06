@@ -3,8 +3,8 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { CollapseModule } from 'ng2-bootstrap';
-import { TooltipModule } from 'ng2-bootstrap';
+import { CollapseModule } from 'ngx-bootstrap';
+import { TooltipModule } from 'ngx-bootstrap';
 import { ModalModule } from 'ngx-modal';
 import { GroupTypesModule } from '../group-types-panel/group-types-panel.module';
 import { SidepanelComponent } from './side-panel.component';
