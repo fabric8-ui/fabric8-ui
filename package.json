@@ -186,7 +186,7 @@
     "rimraf": "2.6.2",
     "run-sequence": "2.2.0",
     "script-ext-html-webpack-plugin": "1.8.5",
-    "semantic-release": "6.3.2",
+    "semantic-release": "7.0.2",
     "style-loader": "0.16.1",
     "systemjs": "0.20.12",
     "to-string-loader": "1.1.5",
