@@ -143,7 +143,7 @@
     "gulp-less": "3.3.2",
     "gulp-lesshint": "4.0.0",
     "gulp-ngc": "0.3.2",
-    "gulp-sourcemaps": "2.5.0",
+    "gulp-sourcemaps": "2.6.1",
     "gulp-string-replace": "0.4.0",
     "gulp-util": "3.0.8",
     "html-loader": "0.4.5",
