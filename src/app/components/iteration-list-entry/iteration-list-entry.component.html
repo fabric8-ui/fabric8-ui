@@ -2,37 +2,6 @@
   [routerLinkActive]="'f8-itr-entry--selected'"
   [attr.data-id]="iteration.id">
   <div class="f8-itr__header">
-    <div *ngIf="loggedIn"
-      class="dropdown-kebab-pf pull-right dropdown margin-left-10"
-      dropdown
-      [autoClose]="true"
-      #kebabMenu>
-      <button class="btn btn-link dropdown-toggle"
-        type="button"
-        aria-haspopup="true"
-        aria-expanded="true"
-        dropdownToggle>
-        <i class="fa fa-ellipsis-v"></i>
-      </button>
-      <ul class="dropdown-menu-right dropdown-menu"
-        *dropdownMenu>
-        <li>
-          <a class="pointer" (click)="onEdit($event)">
-            Edit
-          </a>
-        </li>
-        <li *ngIf="iteration.attributes.active_status">
-          <a class="pointer" (click)="onClose($event)">
-            Close
-          </a>
-        </li>
-        <li>
-          <a class="pointer" (click)="onCreateChild($event)">
-            Create child
-          </a>
-        </li>
-      </ul>
-    </div>
     <div class="truncate padding-right-15"
       [routerLink]="[]"
       [queryParams]="{q: constructURL(iteration.id)}"

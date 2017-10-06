@@ -57,6 +57,29 @@
         }
       }
     }
+    .tree-node {
+      border-left: 4px solid;
+      border-left-color: transparent;
+      :hover {
+        background-color: @color-pf-black-700;
+      }
+      &-active {
+        border-left-color: @color-pf-blue;
+        background-color: @color-pf-black-700;
+      }
+      .list-pf-container {
+        padding: 0 10px 10px 10px !important;
+        .list-pf-actions {
+          margin-left: 70px;
+          .btn-link {
+            color: @color-pf-white;
+          }
+        }
+      }
+    }
+    .node-drop-slot {
+      height: 0;
+    }
   }
   &__List {
     &--expanded {
@@ -144,5 +167,29 @@
   }
   .progress {
     height: 12px;
+  }
+  //Patternfly-ng's tree styles overwrite
+  .pfng-tree-list .toggle-children-wrapper-expanded .toggle-children::before {
+    content: "\F107";
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .pfng-tree-list .toggle-children-wrapper-collapsed .toggle-children::before {
+    content: "\F105";
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .list-pf-chevron + .list-pf-content {
+    border: none;
+    padding-left: 0;
+  }
+  .list-pf-item {
+    border: none;
+  }
+  .list-pf-chevron {
+    margin-right: 5px;
+  }
+  .blank-slate-pf {
+    display: none;
   }
 }

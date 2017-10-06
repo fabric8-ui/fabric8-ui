@@ -2,16 +2,14 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import { TreeModule } from 'angular2-tree-component';
 
 import { CollapseModule } from 'ng2-bootstrap';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 import {
-  WidgetsModule,
-  TreeListModule
+  WidgetsModule
 } from 'ngx-widgets';
-
+import { ActionModule, ListModule } from 'patternfly-ng';
 import { DragulaModule } from 'ng2-dragula';
 import { FabPlannerIterationModalComponent } from '../iterations-modal/iterations-modal.component';
 import { MyDatePickerModule } from 'mydatepicker';
@@ -26,6 +24,7 @@ import { TruncateModule } from 'ng2-truncate';
 
 @NgModule({
   imports: [
+    ActionModule,
     BsDropdownModule.forRoot(),
     CollapseModule,
     CommonModule,
@@ -33,13 +32,14 @@ import { TruncateModule } from 'ng2-truncate';
     FormsModule,
     MyDatePickerModule,
     ModalModule,
+    ListModule,
     TooltipModule.forRoot(),
     TruncateModule,
     SwitchModule,
     WidgetsModule,
     RouterModule,
-    TreeModule,
-    TreeListModule
+    //TreeModule
+    //TreeListModule
   ],
   declarations: [
     FabPlannerIterationModalComponent,

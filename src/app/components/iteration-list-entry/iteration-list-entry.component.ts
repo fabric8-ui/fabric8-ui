@@ -23,7 +23,7 @@ import { AuthenticationService } from 'ngx-login-client';
 import { Dialog } from 'ngx-widgets';
 import { FilterService } from '../../services/filter.service';
 import { GroupTypesService } from '../../services/group-types.service';
-import { TreeListItemComponent } from 'ngx-widgets';
+//import { TreeListItemComponent } from 'ngx-widgets';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -32,16 +32,12 @@ import { TreeListItemComponent } from 'ngx-widgets';
   styleUrls: ['./iteration-list-entry.component.less'],
 })
 export class IterationListEntryComponent implements OnInit, OnDestroy {
-  @Input() listItem: TreeListItemComponent;
+  //@Input() listItem: TreeListItemComponent;
   @Input() iteration: IterationModel;
   @Input() selected: boolean = false;
   @Input() collection = [];
 
-  @Output() editEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
   @Output() closeEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
-  @Output() createChildEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
-
-  @ViewChild('kebabMenu') kebabMenu: any;
 
   loggedIn: Boolean = false;
   queryParams: Object = {};
@@ -66,27 +62,9 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
-  select(): void {
-    this.listItem.setSelected(true);
-  }
-
-  deselect(): void {
-    this.listItem.setSelected(false);
-  }
-
-  onEdit(event: MouseEvent): any {
-    event.stopPropagation();
-    this.editEvent.emit(this);
-  }
-
   onClose(event: MouseEvent): any {
     event.stopPropagation();
     this.closeEvent.emit(this);
-  }
-
-  onCreateChild(event: MouseEvent): any {
-    event.stopPropagation();
-    this.createChildEvent.emit(this);
   }
 
   setGuidedTypeWI(wiCollection) {
@@ -120,5 +98,4 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
     //reverse function jsonToQuery(second_join);
     //return '';
   }
-
 }

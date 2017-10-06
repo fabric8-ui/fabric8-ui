@@ -120,41 +120,33 @@
           All Iterations
         </h3>
       </div>
-      <alm-tree-list #treeList
-        [listTemplate]="treeListTemplate"
-        [loadTemplate]="treeListLoadTemplate"
-        [nodes]="treeIterations"
-        [options]="treeListOptions"
-        [showDropSlot]="false"
-        [showExpander]="false"
-        (onMoveNode)="onMoveNode($event)"
+      <pfng-tree-list #treeList
+        [actionTemplate]="actionTemplate"
+        [config]="treeListConfig"
+        [itemTemplate]="itemTemplate"
+        [items]="treeIterations"
+        [loadTemplate]="loadTemplate"
+        (onActionSelect)="handleAction($event)"
         [class.show]="sidePanelOpen"
         [class.hide]="!sidePanelOpen">
-        <template #treeListLoadTemplate let-node="node"
-          let-index="index">
+        <ng-template #loadTemplate let-node="node" let-index="index">
           <span>Loading...</span>
-        </template>
-        <template #treeListTemplate let-node="node"
-          let-index="index">
-          <alm-tree-list-item #treeListItem
-              [index]="index"
-              [node]="node"
-              [template]="treeListItemTemplate">
-            <template #treeListItemTemplate>
-              <iteration-list-entry
-                id="{{'iterationList_OuterWrap_' + index}}"
-                class="iteration-list-entry"
-                [listItem]="treeListItem"
-                [iteration]="node.data"
-                [collection]="collection"
-                (editEvent)="onEdit($event)"
-                (closeEvent)="onClose($event)"
-                (createChildEvent)="onCreateChild($event)">
-              </iteration-list-entry>
-            </template>
-          </alm-tree-list-item>
-        </template>
-      </alm-tree-list>
+        </ng-template>
+        <ng-template #itemTemplate let-node="node" let-index="index">
+          <iteration-list-entry
+            id="{{'iterationList_OuterWrap_' + index}}"
+            class="iteration-list-entry"
+            [iteration]="node.data"
+            [collection]="collection">
+          </iteration-list-entry>
+        </ng-template>
+        <ng-template #actionTemplate let-node="node" let-index="index">
+          <pfng-action class="list-pf-actions"
+            [config]="actionConfig"
+            (onActionSelect)="handleAction($event, node)">
+          </pfng-action>
+        </ng-template>
+      </pfng-tree-list>
     </div>
   </div>
 </div>
