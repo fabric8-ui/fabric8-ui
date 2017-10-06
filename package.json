@@ -181,7 +181,7 @@
     "phantomjs-prebuilt": "2.1.15",
     "precss": "2.0.0",
     "promise-polyfill": "6.0.2",
-    "protractor": "5.1.1",
+    "protractor": "5.1.2",
     "raw-loader": "0.5.1",
     "rimraf": "2.6.1",
     "run-sequence": "1.2.2",
