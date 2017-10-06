@@ -178,7 +178,7 @@
     "npm-run-all": "4.0.2",
     "optimize-js-plugin": "0.0.4",
     "patternfly": "3.27.6",
-    "phantomjs-prebuilt": "2.1.14",
+    "phantomjs-prebuilt": "2.1.15",
     "precss": "1.4.0",
     "promise-polyfill": "6.0.2",
     "protractor": "5.1.1",
