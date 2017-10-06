@@ -179,7 +179,7 @@
     "optimize-js-plugin": "0.0.4",
     "patternfly": "3.27.6",
     "phantomjs-prebuilt": "2.1.15",
-    "precss": "1.4.0",
+    "precss": "2.0.0",
     "promise-polyfill": "6.0.2",
     "protractor": "5.1.1",
     "raw-loader": "0.5.1",
