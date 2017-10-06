@@ -113,7 +113,7 @@
     "@angular/compiler": "4.4.4",
     "@angular/compiler-cli": "4.4.4",
     "@krux/condition-jenkins": "1.0.1",
-    "@types/jasmine": "2.5.47",
+    "@types/jasmine": "2.6.0",
     "@types/lodash": "4.14.61",
     "@types/node": "7.0.12",
     "@types/selenium-webdriver": "3.0.1",
