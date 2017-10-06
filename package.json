@@ -171,7 +171,7 @@
     "karma-typescript-es6-transform": "1.0.2",
     "karma-webpack": "2.0.4",
     "less": "2.7.2",
-    "less-loader": "4.0.3",
+    "less-loader": "4.0.5",
     "mocha": "3.2.0",
     "ng-router-loader": "2.1.0",
     "ngc-webpack": "1.2.0",
