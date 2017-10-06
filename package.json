@@ -167,7 +167,7 @@
     "karma-safari-launcher": "1.0.0",
     "karma-sourcemap-loader": "0.3.7",
     "karma-typescript": "3.0.7",
-    "karma-typescript-angular2-transform": "1.0.0",
+    "karma-typescript-angular2-transform": "1.0.2",
     "karma-typescript-es6-transform": "1.0.1",
     "karma-webpack": "2.0.3",
     "less": "2.7.2",
