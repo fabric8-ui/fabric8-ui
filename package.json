@@ -106,7 +106,7 @@
     "patternfly-ng": "0.12.1",
     "reflect-metadata": "0.1.10",
     "rxjs": "5.4.3",
-    "zone.js": "0.8.5"
+    "zone.js": "0.8.18"
   },
   "peerDependencies": {},
   "devDependencies": {
