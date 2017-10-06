@@ -192,7 +192,7 @@
     "to-string-loader": "1.1.5",
     "ts-helpers": "1.1.2",
     "tslint": "5.7.0",
-    "tslint-loader": "3.4.3",
+    "tslint-loader": "3.5.3",
     "typedoc": "0.5.9",
     "typescript": "2.3",
     "url-loader": "0.5.8",
