@@ -172,7 +172,7 @@
     "karma-webpack": "2.0.4",
     "less": "2.7.2",
     "less-loader": "4.0.5",
-    "mocha": "3.2.0",
+    "mocha": "4.0.1",
     "ng-router-loader": "2.1.0",
     "ngc-webpack": "1.2.0",
     "npm-run-all": "4.0.2",
