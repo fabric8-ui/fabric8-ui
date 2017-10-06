@@ -103,7 +103,7 @@
     "ngx-login-client": "1.1.9",
     "ngx-modal": "0.0.29",
     "ngx-widgets": "2.2.3",
-    "patternfly-ng": "0.0.13",
+    "patternfly-ng": "0.12.1",
     "reflect-metadata": "0.1.10",
     "rxjs": "5.2.0",
     "zone.js": "0.8.5"
