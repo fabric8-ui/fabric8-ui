@@ -197,7 +197,7 @@
     "typescript": "2.5.3",
     "url-loader": "0.6.2",
     "webpack": "3.6.0",
-    "webpack-bundle-analyzer": "2.3.1",
+    "webpack-bundle-analyzer": "2.9.0",
     "webpack-dashboard": "0.3.0",
     "webpack-dev-middleware": "1.10.1",
     "webpack-dev-server": "2.4.2",
