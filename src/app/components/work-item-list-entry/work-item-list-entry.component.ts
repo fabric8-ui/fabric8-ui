@@ -18,7 +18,7 @@ import { LabelModel } from './../../models/label.model';
 import { WorkItem }        from '../../models/work-item';
 import { WorkItemService } from '../../services/work-item.service';
 
-import { TreeListItemComponent } from 'ngx-widgets';
+import { TreeListComponent } from 'patternfly-ng';
 
 /**
  * Work Item List Entry Component - Displays a work item and action elements for it.
@@ -46,17 +46,14 @@ import { TreeListItemComponent } from 'ngx-widgets';
   styleUrls: ['./work-item-list-entry.component.less'],
 })
 export class WorkItemListEntryComponent implements OnInit, OnDestroy {
-  @Input() listItem: TreeListItemComponent;
+  @Input() listItem: TreeListComponent;
   @Input() workItem: WorkItem;
   @Input() iterations: IterationModel[];
   @Input() selected: boolean = false;
 
   @Output() toggleEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
-  @Output() selectEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() detailEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() previewEvent: EventEmitter<WorkItem> = new EventEmitter<WorkItem>();
-  @Output() moveTopEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
-  @Output() moveBottomEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() clickLabel = new EventEmitter();
 
   checkedWI: boolean = false;
@@ -95,30 +92,6 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
     return this.workItem;
   }
 
-  select(): void {
-    this.listItem.setSelected(true);
-  }
-
-  deselect(): void {
-    this.listItem.setSelected(false);
-  }
-
-  isSelected(): boolean {
-    return this.listItem.isSelected();
-  }
-
-  isChecked(): boolean {
-    return this.checkedWI;
-  }
-
-  check(): void {
-    this.checkedWI = true;
-  }
-
-  uncheck(): void {
-    this.checkedWI = false;
-  }
-
   // helpers
 
   confirmDelete(event: MouseEvent) {
@@ -142,10 +115,6 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
     this.showDialog = false;
   }
 
-  selectEntry(): void {
-    this.selectEvent.emit(this);
-  }
-
   toggleEntry(event: MouseEvent): void {
     event.stopPropagation();
     this.toggleEvent.emit(this);
@@ -165,11 +134,6 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSelect(event: MouseEvent): void {
-    event.stopPropagation();
-    this.selectEvent.emit(this);
-  }
-
   onDetail(event: MouseEvent): void {
     event.stopPropagation();
     this.detailEvent.emit(this);
@@ -179,16 +143,6 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
   onDetailPreview(event: MouseEvent): void {
     event.stopPropagation();
     this.previewEvent.emit(this.workItem);
-  }
-
-  onMoveToTop(event: MouseEvent): void {
-    event.stopPropagation();
-    this.moveTopEvent.emit(this);
-  }
-
-  onMoveToBottom(event: MouseEvent): void {
-    event.stopPropagation();
-    this.moveBottomEvent.emit(this);
   }
 
   onMoveToBacklog(event: MouseEvent): void {
@@ -236,7 +190,7 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
     } else {
       this.selectedItemId = 0;
     }
-    this.listItem.setSelected(this.selectedItemId == this.workItem.id);
+    //this.listItem.setSelected(this.selectedItemId == this.workItem.id);
   }
 
   listenToEvents() {
@@ -267,6 +221,5 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
   labelClick(event) {
     this.clickLabel.emit(event);
   }
-
 
 }

@@ -56,42 +56,39 @@
         [eachElementHeightInPx]='contentItemHeight'
         (initItems)='initWiItems($event)'
         (fetchMore)='fetchMoreWiItems()'>
-        <alm-tree-list #treeList
-          [listTemplate]="treeListTemplate"
-          [loadTemplate]="treeListLoadTemplate"
-          [nodes]="workItems"
-          [options]="treeListOptions"
-          [showDropSlot]="false"
-          [showExpander]="false"
-          (onMoveNode)="onMoveNode($event)">
-          <template #treeListLoadTemplate let-node="node" let-index="index">
+        <pfng-tree-list #treeList
+          [actionTemplate]="actionTemplate"
+          [config]="treeListConfig"
+          [itemTemplate]="itemTemplate"
+          [items]="workItems"
+          [loadTemplate]="loadTemplate"
+          (onActionSelect)="handleAction($event)"
+          (onClick)="handleClick($event)"
+          (onDblClick)="handleDblClick($event)"
+          (onMoveNode)="handleMoveNode($event)"
+          (onToggleExpanded)="handleToggleExpanded($event)"
+          (onSelectionChange)="handleSelectionChange($event)">
+          <ng-template #loadTemplate let-node="node" let-index="index">
             <span>Loading...</span>
-          </template>
-          <template #treeListTemplate let-node="node" let-index="index">
-            <alm-tree-list-item #treeListItem
-              [index]="index"
-              [node]="node"
-              [template]="treeListItemTemplate"
-              [class.expanderdisabled]="!showHierarchyList">
-              <template #treeListItemTemplate>
-                <alm-work-item-list-entry
-                  id="{{'workItemList_OuterWrap_' + index}}"
-                  class="work-item-list-entry"
-                  [listItem]="treeListItem"
-                  [workItem]="node.data"
-                  [iterations]="iterations"
-                  (selectEvent)="onSelect($event)"
-                  (toggleEvent)="onToggle($event)"
-                  (detailEvent)="onDetail($event)"
-                  (previewEvent)="onPreview($event)"
-                  (moveTopEvent)="onMoveToTop($event)"
-                  (moveBottomEvent)="onMoveToBottom($event)"
-                  (clickLabel)="onClickLabel($event)">
-                </alm-work-item-list-entry>
-              </template>
-            </alm-tree-list-item>
-          </template>
-        </alm-tree-list>
+          </ng-template>
+          <ng-template #itemTemplate let-node="node" let-index="index">
+            <alm-work-item-list-entry
+              id="{{'workItemList_OuterWrap_' + index}}"
+              class="work-item-list-entry"
+              [workItem]="node.data"
+              [iterations]="iterations"
+              (toggleEvent)="onToggle($event)"
+              (detailEvent)="onDetail($event)"
+              (previewEvent)="onPreview($event)">
+            </alm-work-item-list-entry>
+          </ng-template>
+          <ng-template #actionTemplate let-node="node" let-index="index">
+            <pfng-action class="list-pf-actions"
+              [config]="actionConfig"
+              (onActionSelect)="handleAction($event, node)">
+            </pfng-action>
+          </ng-template>
+        </pfng-tree-list>
         <div class="lock-overlay-list" *ngIf="uiLockedList">
           <div class="spinner-container">
             <h2 class="spinner"></h2>
@@ -99,23 +96,6 @@
             <h4>Please wait, we are loading your work items.</h4>
           </div>
         </div>
-        <a class="container-fluid container-cards-pf f8-blank-state"
-          *ngIf="(!workItems || workItems.length === 0) && !uiLockedList">
-          <div class="row row-cards-pf">
-            <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
-              <div class="card-pf card-pf-aggregate-status" (click)="typeSelectPanel.openPanel()">
-                <div class="card-pf-title">
-                  <h2 class="pficon pficon-add-circle-o no-wi"></h2>
-                  <h2>Create a Work Item</h2>
-                </div>
-                <div class="card-pf-body">
-                  <h4>There are no Work Items for your selected criteria.</h4>
-                  <p>If you'd like to add a Work Item, you can do so using the Quick Add or the <i class="pficon pficon-add-circle-o"></i> in the bar above.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </a>
       </div>
 
       <div id="workItemList_Error" class="error" *ngIf="error">{{error}}</div>
@@ -137,3 +117,8 @@
   [takeFromInput]="true"
   [wiTypes]="workItemTypes">
 </detail-add-type-selector>
+
+<fab-planner-associate-iteration-modal
+  [workItem]="currentWorkItem"
+  #associateIterationModal>
+</fab-planner-associate-iteration-modal>

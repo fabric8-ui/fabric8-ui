@@ -13,14 +13,14 @@ import {
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-modal';
-import { TreeModule } from 'angular2-tree-component';
 import {
   AlmIconModule,
   DialogModule,
   InfiniteScrollModule,
-  TreeListModule,
   WidgetsModule
 } from 'ngx-widgets';
+
+import { ActionModule, ListModule } from 'patternfly-ng';
 import { Broadcaster, Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 
@@ -89,6 +89,7 @@ if (process.env.ENV == 'inmemory') {
 
 @NgModule({
   imports: [
+    ActionModule,
     AlmIconModule,
     BsDropdownModule.forRoot(),
     CommonModule,
@@ -99,14 +100,13 @@ if (process.env.ENV == 'inmemory') {
     GroupTypesModule,
     IterationModule,
     LabelsModule,
+    ListModule,
     ModalModule,
     PlannerLayoutModule,
     PlannerListRoutingModule,
     SidepanelModule,
     ToolbarPanelModule,
     TooltipModule.forRoot(),
-    TreeModule,
-    TreeListModule,
     WidgetsModule,
     WorkItemDetailModule,
     WorkItemQuickAddModule,

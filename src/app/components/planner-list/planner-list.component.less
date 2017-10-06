@@ -63,6 +63,23 @@
     bottom: 0;
     width: 100%;
   }
+  //Patternfly-ng's tree styles
+  .list-pf-container {
+    padding: 0 10px !important;
+  }
+  .pfng-tree-list .toggle-children-wrapper-expanded .toggle-children::before {
+  content: "\F107";
+    font-size: 22px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .pfng-tree-list .toggle-children-wrapper-collapsed .toggle-children::before {
+  content: "\F105";
+    font-size: 22px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .list-pf-actions {
+    margin-left: 15px;
+  }
   //tree-list, drag and drop css
   .error { color: @color-pf-red-100; }
   .suppress-hover {

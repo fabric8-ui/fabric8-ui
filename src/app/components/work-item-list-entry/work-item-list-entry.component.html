@@ -4,17 +4,8 @@
 		[dialog]='dialog'
   ></alm-dialog>
 </div>
-<div class="f8-wi__list-entry"
-(click)="onSelect($event);" >
-	<!--checkbox to select a WI and move it-->
-  <div class="row-cbh"
-    title="Select the checkbox to move the item."
-    *ngIf="loggedIn">
-    <input type="checkbox"
-    [checked]="checkedWI"
-    (click)="toggleEntry($event)" />
-	</div>
-  <!-- info area -->
+<div class="f8-wi__list-entry">
+	<!-- info area -->
   <div class="list-view-pf-main-info">
     <div class="list-view-pf-left type f8-wi__list-witype">
       <span almIcon [iconType]="workItem.attributes['system.state']" class="color-grey pull-left"></span>
@@ -56,68 +47,8 @@
       <span class="pficon-user not-assigned-user-icon"
         *ngIf="!workItem.relationships?.assignees?.data?.length"></span>
   </div>
-
-	<!-- action area -->
-  <div class="list-view-pf-actions"
-    (click)="kebabClick($event)">
-    <div class="pull-right dropdown-kebab-pf dropdown"
-       *ngIf="loggedIn" dropdown>
-      <button class="btn btn-link dropdown-toggle"
-        type="button" id="dropdownKebabRight"
-        aria-haspopup="true"
-        aria-expanded="true"
-        dropdownToggle>
-				<span class="fa fa-ellipsis-v"></span>
-			</button>
-      <ul class="dropdown-menu-right dropdown-menu"
-        aria-labelledby="dropdownKebabRight"
-        *dropdownMenu>
-				<li>
-          <a class="f8-wi__list-movetop"
-            (click)="onMoveToTop($event)">
-              Move to Top
-          </a>
-        </li>
-				<li>
-          <a class="f8-wi__list-movebtm"
-            (click)="onMoveToBottom($event)">
-              Move to Bottom
-          </a>
-        </li>
-				<li role="presentation" class="divider"></li>
-				<li>
-          <a class="f8-wi__list-iteration"
-            (click)="associateIterationModal.open($event)">
-              Associate with Iteration...
-          </a>
-        </li>
-				<li role="presentation" class="divider"></li>
-				<li>
-          <a [routerLink]="['./detail/' + workItem.attributes['system.number']]"
-             [queryParams]="queryParams">
-            Open
-          </a>
-        </li>
-				<li>
-          <a (click)="onDetailPreview($event)">
-            Preview
-          </a>
-        </li>
-				<li>
-          <a (click)="onMoveToBacklog($event)">
-            Move to Backlog
-          </a>
-        </li>
-			</ul>
-    </div>
-    <div class="pull-right">
-      <a (click)="onDetailPreview($event)"
-        class="fa fa-columns f8-action-icon"></a>
-    </div>
-	</div>
+  <div class="pull-right">
+    <a (click)="onDetailPreview($event)"
+      class="fa fa-columns f8-action-icon"></a>
+  </div>
 </div>
-
-<fab-planner-associate-iteration-modal
-  [workItem]="workItem"
-  #associateIterationModal>
-</fab-planner-associate-iteration-modal>
