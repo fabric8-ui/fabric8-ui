@@ -371,21 +371,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(['/work-item/list/detail/new?' + type]);
   }
 
-  // event handlers
-  onToggle(entryComponent: WorkItemListEntryComponent): void {
-    // This condition is to select a single work item for movement
-    // deselect the previous checked work item
-    if (this.workItemToMove) {
-      this.workItemToMove.uncheck();
-    }
-    if (this.workItemToMove == entryComponent) {
-      this.workItemToMove = null;
-    } else {
-      entryComponent.check();
-      this.workItemToMove = entryComponent;
-    }
-  }
-
   createNewWorkItem(event: MouseEvent): void {
     event.stopPropagation();
     this.onCreateNewWorkItemSelected.emit();

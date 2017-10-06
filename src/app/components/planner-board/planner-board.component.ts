@@ -70,7 +70,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
   private workItemTypes: WorkItemType[] = [];
   private readyToInit = false;
   private areas: AreaModel[] = [];
-  private loggedInUser: User;
+  private loggedInUser: any[];
   eventListeners: any[] = [];
   dialog: Dialog;
   showDialog = false;
@@ -194,15 +194,15 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
       this.workItemTypes = wiTypes;
       this.readyToInit = true;
       this.areas = areas;
-      this.loggedInUser = loggedInUser;
       this.labels = labels;
+      this.loggedInUser = loggedInUser;
       // Resolve iteration filter on the first load of board view
       // If there is an existing iteration query params already
       // Set the filter service with iteration filter
       if (currentIteration !== null) {
         const filterIteration = this.iterations.find(it => {
           return it.attributes.resolved_parent_path + '/' + it.attributes.name ===
-            currentIteration;
+            currentIteration.toString();
         })
         if (filterIteration) {
            this.filterService.setFilterValues('iteration', filterIteration.id);

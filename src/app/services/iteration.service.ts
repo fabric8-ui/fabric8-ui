@@ -96,8 +96,8 @@ export class IterationService {
           } else {
             console.log('Fetch iteration API returned some error - ', error.message);
             this.notifyError('Fetching iterations has from server has failed.', error);
-            return Observable.throw(new Error(error.message));
           }
+          return Observable.throw(new Error(error.message));
         });
     });
   }
@@ -204,7 +204,7 @@ export class IterationService {
         }
     })
     .catch( err => {
-      return Observable.empty();
+      return Observable.throw(new Error(err.message));
     });
   }
 
