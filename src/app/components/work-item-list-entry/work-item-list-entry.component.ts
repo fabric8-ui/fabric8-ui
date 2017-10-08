@@ -50,8 +50,7 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
   @Input() workItem: WorkItem;
   @Input() iterations: IterationModel[];
   @Input() selected: boolean = false;
-
-  @Output() toggleEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
+  //Retaining detail and preview events as they are not part of the tree's kebab menu
   @Output() detailEvent: EventEmitter<WorkItemListEntryComponent> = new EventEmitter<WorkItemListEntryComponent>();
   @Output() previewEvent: EventEmitter<WorkItem> = new EventEmitter<WorkItem>();
   @Output() clickLabel = new EventEmitter();
@@ -115,15 +114,6 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
     this.showDialog = false;
   }
 
-  toggleEntry(event: MouseEvent): void {
-    event.stopPropagation();
-    this.toggleEvent.emit(this);
-  }
-
-  kebabClick(event: MouseEvent): void {
-    event.stopPropagation();
-  }
-
   // event handlers
   onDelete(event: MouseEvent): void {
     if (event)
@@ -143,45 +133,6 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
   onDetailPreview(event: MouseEvent): void {
     event.stopPropagation();
     this.previewEvent.emit(this.workItem);
-  }
-
-  onMoveToBacklog(event: MouseEvent): void {
-    event.stopPropagation();
-    //set this work item's iteration to None
-    //send a patch request
-    this.workItem.relationships.iteration = {}
-    this.workItemService
-      .update(this.workItem)
-      .switchMap(item => {
-        return this.iterationService.getIteration(item.relationships.iteration)
-          .map(iteration => {
-            item.relationships.iteration.data = iteration;
-            return item;
-          });
-      })
-      .subscribe(workItem => {
-        //update only the relevant fields
-        this.workItem.relationships.iteration.data = workItem.relationships.iteration.data;
-        this.workItem.attributes['version'] = workItem.attributes['version'];
-        try {
-          this.notifications.message({
-            message: workItem.attributes['system.title'] + ' has been moved to the Backlog.',
-            type: NotificationType.SUCCESS
-          } as Notification);
-        } catch (e) {
-          console.log('Error displaying notification. Iteration was moved to Backlog.')
-        }
-    },
-    (err) => {
-      try{
-        this.notifications.message({
-          message: this.workItem.attributes['system.title'] + ' could not be moved to the Backlog.',
-          type: NotificationType.DANGER
-        } as Notification);
-      } catch (e) {
-        console.log('Error displaying notification. Error moving Iteration to Backlog.')
-      }
-    });
   }
 
   selectDeselectFromUrl(url: string) {

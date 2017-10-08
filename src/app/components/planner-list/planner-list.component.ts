@@ -33,7 +33,7 @@ import {
 } from '@angular/router';
 
 import { cloneDeep } from 'lodash';
-import { Broadcaster, Logger } from 'ngx-base';
+import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
 import {
   AuthenticationService,
   User,
@@ -131,6 +131,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     private groupTypesService: GroupTypesService,
     private iterationService: IterationService,
     private logger: Logger,
+    private notifications: Notifications,
     private user: UserService,
     private workItemService: WorkItemService,
     private workItemDataService: WorkItemDataService,
@@ -202,7 +203,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     this.emptyStateConfig = {
       actions: {
         primaryActions: [{
-          id: 'action1',
+          id: 'createWI',
           title: 'Create work item',
           tooltip: 'Start the server'
         }],
@@ -220,9 +221,9 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       dblClick: false,
       emptyStateConfig: this.emptyStateConfig,
       multiSelect: false,
-      selectItems: false,
+      selectItems: true,
       selectionMatchProp: 'name',
-      showCheckbox: true,
+      showCheckbox: false,
       treeOptions: {
         allowDrag: this.loggedIn,
         isExpandedField: 'expanded',
@@ -493,21 +494,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       });
   }
 
-  // event handlers
-  // onToggle(entryComponent: WorkItemListEntryComponent): void {
-  //   // This condition is to select a single work item for movement
-  //   // deselect the previous checked work item
-  //   if (this.workItemToMove) {
-  //     this.workItemToMove.uncheck();
-  //   }
-  //   if (this.workItemToMove == entryComponent) {
-  //     this.workItemToMove = null;
-  //   } else {
-  //     entryComponent.check();
-  //     this.workItemToMove = entryComponent;
-  //   }
-  // }
-
   onDetail(entryComponent: WorkItemListEntryComponent): void { }
 
   onPreview(workItem: WorkItem): void {
@@ -555,44 +541,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     });
   }
 
-  // onMoveUp(): void {
-  //   this.workItemDetail = this.workItemToMove;
-  //   let currentIndex = this.workItems.findIndex((item) => item.id === this.workItemDetail.id);
-  //   if (currentIndex > 0) {
-  //     this.workItemService.reOrderWorkItem(
-  //       this.workItemDetail,
-  //       this.workItems[currentIndex - 1].id,
-  //       'above'
-  //     ).subscribe((updatedWorkItem) => {
-  //       this.workItems[currentIndex].attributes['version'] = updatedWorkItem.attributes['version'];
-  //       // move the work item up by 1. Below statement will create two elements
-  //       this.workItems.splice( currentIndex - 1 , 0, this.workItemDetail);
-  //       // remove the duplicate element
-  //       this.workItems.splice( currentIndex + 1, 1 );
-  //       //this.treeList.update();
-  //     });
-  //   }
-  // }
-
-  // onMoveDown(): void {
-  //   this.workItemDetail = this.workItemToMove;
-  //   let currentIndex = this.workItems.findIndex((item) => item.id === this.workItemDetail.id);
-  //   if ( currentIndex < (this.workItems.length - 1) ) {
-  //     this.workItemService.reOrderWorkItem(
-  //       this.workItemDetail,
-  //       this.workItems[currentIndex + 1].id,
-  //       'below'
-  //     ).subscribe((updatedWorkItem) => {
-  //       this.workItems[currentIndex].attributes['version'] = updatedWorkItem.attributes['version'];
-  //       // move the work item up by 1. Below statement will create two elements
-  //       this.workItems.splice( currentIndex + 2 , 0, this.workItemDetail);
-  //       // remove the duplicate element
-  //       this.workItems.splice( currentIndex, 1 );
-  //       //this.treeList.update();
-  //     });
-  //   }
-  // }
-
   listenToEvents() {
     this.eventListeners.push(
       this.broadcaster.on<string>('logout')
@@ -602,28 +550,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
           //this.treeListOptions['allowDrag'] = false;
       })
     );
-
-    // this.eventListeners.push(
-    //   this.broadcaster.on<string>('move_item')
-    //     .subscribe((moveto: string) => {
-    //       switch (moveto){
-    //         case 'up':
-    //           this.onMoveUp();
-    //           break;
-    //         case 'down':
-    //           this.onMoveDown();
-    //           break;
-    //         case 'top':
-    //           //this.onMoveSelectedToTop();
-    //           break;
-    //         case 'bottom':
-    //           //this.onMoveSelectedToBottom();
-    //           break;
-    //         default:
-    //           break;
-    //       }
-    //   })
-    // );
 
     this.eventListeners.push(
       this.broadcaster.on<string>('detail_close')
@@ -753,7 +679,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     // rearrange is happening inside ng2-dnd library
   }
 
-  onMoveNode($event) {
+  handleMoveNode($event) {
     let movedWI = $event.node;
     let prevWI = $event.to.parent.children[$event.to.index - 1];
     let nextWI = $event.to.parent.children[$event.to.index + 1];
@@ -774,14 +700,14 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   //Patternfly-ng's tree list component
 
   setSelectedItem($event, selected) {
-    console.log($event)
-    console.log('*************', selected)
   }
 
   handleAction($event: Action, item: any): void {
     console.log($event);
     console.log(item);
     switch($event.id){
+      case 'createWI':
+      break;
       case 'move2top':
         this.workItemToMove = item.data;
         this.onMoveToTop(item);
@@ -796,9 +722,49 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         this.associateIterationModal.open();
       break;
       case 'open':
+        let link = this.router.url.split('/list')[0] + '/detail/' + item.data.id;
+        this.router.navigateByUrl(link, { relativeTo: this.route });
       break;
       case 'preview':
         this.onPreview(item.data);
+      break;
+      case 'move2backlog':
+        item.data.relationships.iteration = {}
+        this.workItemService
+          .update(item.data)
+          .switchMap(item => {
+            return this.iterationService.getIteration(item.relationships.iteration)
+            .map(iteration => {
+              item.relationships.iteration.data = iteration;
+              return item;
+            });
+          })
+          .subscribe(workItem => {
+          //update only the relevant fields
+          let index = this.workItems.findIndex(wi => wi.id === item.data.id)
+          this.workItems[index].relationships.iteration.data = workItem.relationships.iteration.data;
+          this.workItems[index].attributes['version'] = workItem.attributes['version'];
+          this.treeList.update();
+          try {
+            this.notifications.message({
+              message: workItem.attributes['system.title'] + ' has been moved to the Backlog.',
+              type: NotificationType.SUCCESS
+            } as Notification);
+          } catch (e) {
+            console.log('Error displaying notification. Iteration was moved to Backlog.')
+          }
+        },
+        (err) => {
+          try{
+            this.notifications.message({
+            message: item.data.attributes['system.title'] + ' could not be moved to the Backlog.',
+            type: NotificationType.DANGER
+          } as Notification);
+        } catch (e) {
+          console.log('Error displaying notification. Error moving Iteration to Backlog.')
+        }
+    });
+
       break;
     }
   }
