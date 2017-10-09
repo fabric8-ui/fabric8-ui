@@ -149,9 +149,9 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   }
 
   ngDoCheck() {
-    if(this.detailHeader){
-      let HdrDivHeight :any =  this.detailHeader.nativeElement.offsetHeight;
-      let targetHeight :any = window.innerHeight - HdrDivHeight - 90;
+    if(this.detailHeader) {
+      let HdrDivHeight:any =  this.detailHeader.nativeElement.offsetHeight;
+      let targetHeight:any = window.innerHeight - HdrDivHeight - 90;
       this.renderer.setStyle(this.detailContent.nativeElement, 'height', targetHeight + "px");
     }
   }
