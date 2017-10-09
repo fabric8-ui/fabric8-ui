@@ -80,6 +80,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   @ViewChild('detailPreview') detailPreview: WorkItemDetailComponent;
   @ViewChild('sidePanel') sidePanelRef: any;
   @ViewChild('associateIterationModal') associateIterationModal: any;
+  @ViewChild('typeSelectPanel') typeSelectPanel: any;
 
   actionConfig: ActionConfig;
   emptyStateConfig: EmptyStateConfig;
@@ -205,13 +206,15 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         primaryActions: [{
           id: 'createWI',
           title: 'Create work item',
-          tooltip: 'Start the server'
+          tooltip: 'Start the server',
+          styleClass: this.loggedIn ? 'show-wi' : 'hide-wi'
+
         }],
         moreActions: []
       } as ActionConfig,
       iconStyleClass: 'pficon-warning-triangle-o',
-      title: 'No Items Available',
-      info: '',
+      title: 'No Work Items Available',
+      info: 'There are no Work Items for your selected criteria',
       helpLink: {
         text: 'Create a new Work Item'
       }
@@ -670,15 +673,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     );
   }
 
-  onDragStart() {
-    //console.log('on drag start');
-  }
-
-  // Event listener for WI drop.
-  onDragEnd(workItemId: string) {
-    // rearrange is happening inside ng2-dnd library
-  }
-
+  //Patternfly-ng's tree list component
   handleMoveNode($event) {
     let movedWI = $event.node;
     let prevWI = $event.to.parent.children[$event.to.index - 1];
@@ -697,16 +692,13 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
           });
     }
   }
-  //Patternfly-ng's tree list component
-
-  setSelectedItem($event, selected) {
-  }
 
   handleAction($event: Action, item: any): void {
-    console.log($event);
-    console.log(item);
     switch($event.id){
       case 'createWI':
+        console.log('createwi');
+        //Empty state's Creat Work Item button
+        this.typeSelectPanel.openPanel()
       break;
       case 'move2top':
         this.workItemToMove = item.data;
@@ -777,9 +769,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   handleClick($event): void {
     this.workItemService.emitSelectedWI($event.item);
     this.groupTypesService.getAllowedChildWits($event.item);
-  }
-
-  handleToggleExpanded($event): void {
   }
 
   togglePanelState(event: any): void {
