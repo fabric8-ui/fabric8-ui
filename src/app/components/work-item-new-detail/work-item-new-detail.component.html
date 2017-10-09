@@ -1,7 +1,7 @@
 
 <form class="f8-detail form-horizontal work-item-page" *ngIf="workItem">
   <fieldset>
-    <div class="f8-detail__header">
+    <div class="f8-detail__header" #detailHeader>
       <span
         class="pficon-close pull-right close"
         (click)="navigateBack()">
@@ -68,7 +68,7 @@
         </div>
       </div>
     </div>
-    <div class="f8-detail__detail width-100">
+    <div class="f8-detail__detail width-100" #detailContent (window:resize)="onResize($event)">
       <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7
         f8-detail__detail-wrap padding-v-15">
         <div class="form-group">

@@ -176,13 +176,13 @@
                   class="pficon pficon-user user-creator-icon" id="user_creator_icon">
                 </span>
                 <img *ngIf="workItem.relationships?.creator?.data"
-                  class="user-avatar"
+                  class="user-avatar pull-left"
                   placement="bottom"
                   tooltip="{{workItem.relationships.creator.data.attributes?.fullName}}"
                   src="{{workItem.relationships.creator.data.attributes?.imageURL + '&s=20'}}"
                   onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"
                   id="WI_details_reporter_img" />
-                <div class="dib">
+                <div class="pull-left">
                   <span id="WI_details_reporter_user">
                     {{workItem.relationships?.creator?.data | almUserName:'Creator not found'}}
                   </span>

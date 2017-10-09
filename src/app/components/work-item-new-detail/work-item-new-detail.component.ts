@@ -3,7 +3,10 @@ import {
   OnInit,
   OnDestroy,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ElementRef,
+  Renderer2,
+  HostListener
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
@@ -51,6 +54,9 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   @ViewChild('areaSelectbox') areaSelectbox: TypeaheadDropdown;
   @ViewChild('iterationSelectbox') iterationSelectbox: TypeaheadDropdown;
   @ViewChild('userList') userList: any;
+  @ViewChild('detailHeader') detailHeader: ElementRef;
+  @ViewChild('detailContent') detailContent: ElementRef;
+
 
   areas: TypeaheadDropdownValue[] = [];
   comments: Comment[] = [];
@@ -90,6 +96,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
     private workItemService: WorkItemService,
     private workItemDataService: WorkItemDataService,
     private workItemTypeControlService: WorkItemTypeControlService,
+    private renderer: Renderer2
   ) {}
 
   ngOnInit() {
@@ -141,6 +148,17 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
+  ngDoCheck() {
+    if(this.detailHeader){
+      let HdrDivHeight :any =  this.detailHeader.nativeElement.offsetHeight;
+      let targetHeight :any = window.innerHeight - HdrDivHeight - 90;
+      this.renderer.setStyle(this.detailContent.nativeElement, 'height', targetHeight + "px");
+    }
+  }
+  @HostListener('window:resize', ['$event'])
+    onResize(event){
+
+    }
   createWorkItemObj(type: string) {
     this.workItem = new WorkItem();
     this.workItem.id = null;
