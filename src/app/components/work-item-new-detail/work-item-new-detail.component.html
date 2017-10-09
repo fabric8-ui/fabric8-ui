@@ -217,7 +217,7 @@
         <div class="form-group">
           <section class="f8-detail__labels">
             <label class="col-xs-4 col-sm-2 col-md-2 control-label">
-              {{workItem.relationships?.baseType?.data?.attributes?.fields['system.label']?.label || 'Label'}}
+              {{workItem.relationships?.baseType?.data?.attributes?.fields['system.labels']?.label || 'Label'}}
             </label>
             <div class="col-xs-8 col-sm-10 col-md-10">
               <span *ngIf="loadingLabels"
