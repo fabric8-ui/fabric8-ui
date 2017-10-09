@@ -126,6 +126,7 @@
         [itemTemplate]="itemTemplate"
         [items]="treeIterations"
         [loadTemplate]="loadTemplate"
+        (onClick)="handleClick($event)"
         (onActionSelect)="handleAction($event)"
         [class.show]="sidePanelOpen"
         [class.hide]="!sidePanelOpen">

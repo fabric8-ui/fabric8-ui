@@ -188,7 +188,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       }
       this.clusterIterations();
       this.treeIterations = this.iterationService.getTopLevelIterations(this.allIterations);
-      console.log('this.treeIterations = ', this.treeIterations);
     }
   }
 
@@ -242,7 +241,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         .subscribe((iterations) => {
           // do not display the root iteration on the iteration panel.
           this.allIterations = [];
-          console.log('....5 ', this.allIterations.length);
           for (let i=0; i<iterations.length; i++) {
             if (!this.iterationService.isRootIteration(iterations[i])) {
               this.allIterations.push(iterations[i]);
@@ -264,7 +262,9 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     return iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name;
   }
 
+  //This function is called after the iteration modal closes.
   onCreateOrupdateIteration(iteration: IterationModel) {
+    console.log('onCreateOrupdateIteration called >> ', iteration);
     let index = this.allIterations.findIndex((it) => it.id === iteration.id);
     if (index >= 0) {
       this.allIterations[index] = iteration;
@@ -417,7 +417,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onEdit(event) {
-    console.log('event = ', event);
     let iteration = this.allIterations.find(item =>
       item.id === event.id
     );
@@ -482,8 +481,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   //Patternfly-ng's tree list related functions
   handleAction($event: Action, item: any): void {
-    console.log($event);
-    console.log(item);
     switch($event.id) {
       case 'edit':
         this.onEdit(item.data);
@@ -496,4 +493,5 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       break;
     }
   }
+
  }

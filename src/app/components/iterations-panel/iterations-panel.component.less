@@ -57,9 +57,11 @@
         }
       }
     }
+    /*Patternfly-ng's tree styles overwrite*/
     .tree-node {
       border-left: 4px solid;
       border-left-color: transparent;
+      background-color: @color-pf-black-900;
       :hover {
         background-color: @color-pf-black-700;
       }
@@ -67,8 +69,16 @@
         border-left-color: @color-pf-blue;
         background-color: @color-pf-black-700;
       }
+      .list-pf-item{
+        border: none;
+        background-color: @color-pf-black-900;
+        :hover {
+          background-color: @color-pf-black-700;
+        }
+      }
       .list-pf-container {
         padding: 0 10px 10px 10px !important;
+        background-color: @color-pf-black-900;
         .list-pf-actions {
           margin-left: 70px;
           .btn-link {
@@ -182,9 +192,6 @@
   .list-pf-chevron + .list-pf-content {
     border: none;
     padding-left: 0;
-  }
-  .list-pf-item {
-    border: none;
   }
   .list-pf-chevron {
     margin-right: 5px;
