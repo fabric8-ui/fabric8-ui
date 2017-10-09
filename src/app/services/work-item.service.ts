@@ -209,7 +209,7 @@ export class WorkItemService {
   }
 
 
-  resolveWorkItems(workItems, iterations, users, wiTypes, labels): WorkItem[] {
+   resolveWorkItems(workItems, iterations, users, wiTypes, labels): WorkItem[] {
     let resolvedWorkItems = workItems.map((item) => {
       // put the hasChildren on the root level for the tree
       if (item.relationships.children && item.relationships.children.meta)

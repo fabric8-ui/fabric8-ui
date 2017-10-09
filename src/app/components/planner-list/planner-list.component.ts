@@ -93,7 +93,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   selectedWorkItemEntryComponent: WorkItemListEntryComponent;
   workItemToMove: WorkItem;
   workItemDetail: WorkItem;
-  currentWorkItem: WorkItem;
+  currentWorkItem: WorkItem = null;
   addingWorkItem = false;
   showOverlay : Boolean ;
   loggedIn: Boolean = false;
@@ -120,6 +120,9 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   private uiLockedList = true;
   private uiLockedSidebar = false;
   private children: string[] = [];
+  private allowedChildWIT: string[] = [];
+  private currentExpandedChildren: WorkItem[] = [];
+  private expandedNode: any;
 
   constructor(
     private labelService: LabelService,
@@ -493,6 +496,12 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       .then((workItems: WorkItem[]) => {
         // Save all the children fethced
         workItems.forEach(w => this.children.push(w.id));
+        if(this.currentWorkItem != null){
+          if(this.currentWorkItem.id === node.data.id) {
+            this.currentExpandedChildren = workItems;
+            this.expandedNode.node.data.children = workItems;
+          }
+        }
         return workItems;
       });
   }
@@ -500,7 +509,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   onDetail(entryComponent: WorkItemListEntryComponent): void { }
 
   onPreview(workItem: WorkItem): void {
-    this.groupTypesService.getAllowedChildWits(workItem);
+    //this.groupTypesService.getAllowedChildWits(workItem);
     this.detailPreview.openPreview(workItem);
   }
 
@@ -571,17 +580,37 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         this.labels
       )[0])
       .subscribe(item => {
+        //Update the parent work item
+        if(this.allowedChildWIT.length > 0  && this.currentWorkItem != null) {
+          let index = this.workItems.findIndex(wi =>
+            wi.id === this.currentWorkItem.id );
+          if (index > -1)
+            this.workItems[index].hasChildren = true;
+          if(this.expandedNode != null ) {
+            if(this.expandedNode.node.data.id === this.currentWorkItem.id) {
+              this.expandedNode.node.data.children.push(item);
+              this.workItems[index] = this.expandedNode.node.data;
+            }
+          }
+        }
         //Check if the work item meets the applied filters
         if(this.filterService.doesMatchCurrentFilter(item)){
           console.log('Added WI matches the applied filters');
-          this.workItems.splice(0, 0, item);
-          this.treeList.update();
+          if(this.allowedChildWIT.length === 0) {
+            this.workItems.splice(0, 0, item);
+          }
         } else {
           console.log('Added WI does not match the applied filters');
-          this.treeList.update();
         }
+        this.treeList.update();
       })
     );
+
+    this.eventListeners.push(
+      this.groupTypesService.workItemSelected.subscribe(item => {
+        this.allowedChildWIT = item;
+      })
+    )
 
     this.eventListeners.push(
       this.workItemService.editWIObservable.subscribe(updatedItem => {
@@ -696,7 +725,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   handleAction($event: Action, item: any): void {
     switch($event.id){
       case 'createWI':
-        console.log('createwi');
         //Empty state's Creat Work Item button
         this.typeSelectPanel.openPanel()
       break;
@@ -762,14 +790,26 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   }
 
   handleSelectionChange($event): void {
+  }
+
+  handleClick($event): void {
+    this.currentWorkItem = $event.item;
+    if($event.item.hasChildren) {
+      this.expandedNode = $event;
+    }
+    this.allowedChildWIT = [];
     this.workItemService.emitSelectedWI($event.item);
     this.groupTypesService.getAllowedChildWits($event.item);
   }
 
-  handleClick($event): void {
-    this.workItemService.emitSelectedWI($event.item);
-    this.groupTypesService.getAllowedChildWits($event.item);
+  handleToggleExpanded($event: any): void {
+    if($event.isExpanded) {
+      this.expandedNode = $event;
+    } else {
+      this.expandedNode = null;
+    }
   }
+
 
   togglePanelState(event: any): void {
     if (event === 'out') {
