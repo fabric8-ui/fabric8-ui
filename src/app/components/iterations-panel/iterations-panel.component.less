@@ -18,77 +18,103 @@
         background: @color-pf-black-700;
       }
     }
-    .node-drop-slot,
-    .list-group-item {
-      padding: 0 !important;
-      margin:  0 !important;
-      background-color: @color-pf-black-900;
-      &:hover {
-        background-color: @color-pf-black-700;
-      }
-      .tree-list-item {
-        display: inline-block;
-        width: 100%;
-        padding: 0 !important;
-        background-color: @color-pf-black-900;
-        &:hover {
-          background-color: @color-pf-black-700;
-        }
-        span {
-          float: left;
-        }
-        .toggle-children-wrapper {
-          width: 25px;
-          padding-top: 5px;
-          padding-left: 30px;
-        }
-      }
-      .on-hover-background {
-        background-color: @color-pf-black-700;
-      }
-    }
-    .tree-children {
-      .tree-list-item {
-        .toggle-children-wrapper {
-          padding-left: ((@grid-gutter-width/3) * 4);
-        }
-        .f8-itr-entry {
-          padding-left: ((@grid-gutter-width/3)) * 5.5;
-        }
-      }
-    }
-    /*Patternfly-ng's tree styles overwrite*/
-    .tree-node {
-      border-left: 4px solid;
-      border-left-color: transparent;
-      background-color: @color-pf-black-900;
-      :hover {
-        background-color: @color-pf-black-700;
-      }
-      &-active {
-        border-left-color: @color-pf-blue;
-        background-color: @color-pf-black-700;
-      }
-      .list-pf-item{
-        border: none;
-        background-color: @color-pf-black-900;
-        :hover {
-          background-color: @color-pf-black-700;
-        }
-      }
-      .list-pf-container {
-        padding: 0 10px 10px 10px !important;
-        background-color: @color-pf-black-900;
-        .list-pf-actions {
-          margin-left: 70px;
-          .btn-link {
-            color: @color-pf-white;
+    .list-pf {
+      border-bottom: none;
+      tree-viewport {
+        overflow: visible;
+        .node-drop-slot,
+        .list-group-item {
+          padding: 0 !important;
+          margin:  0 !important;
+          background-color: @color-pf-black-900;
+          &:hover {
+            background-color: @color-pf-black-700;
+          }
+          .tree-list-item {
+            display: inline-block;
+            width: 100%;
+            padding: 0 !important;
+            background-color: @color-pf-black-900;
+            &:hover {
+              background-color: @color-pf-black-700;
+            }
+            span {
+              float: left;
+            }
+            .toggle-children-wrapper {
+              width: 25px;
+              padding-top: 5px;
+              padding-left: 30px;
+            }
+          }
+          .on-hover-background {
+            background-color: @color-pf-black-700;
           }
         }
+        .tree-children {
+          padding-left: 0;
+          overflow: visible;
+          .tree-list-item {
+            .toggle-children-wrapper {
+              padding-left: ((@grid-gutter-width/3) * 4);
+            }
+            .f8-itr-entry {
+              padding-left: ((@grid-gutter-width/3)) * 5.5;
+            }
+          }
+        }
+        /*Patternfly-ng's tree styles overwrite*/
+        .tree-node {
+          background-color: @color-pf-black-900;
+          .list-pf-item{
+            border: none;
+            :hover {
+              background-color: @color-pf-black-700;
+            }
+          }
+          .list-pf-container {
+            padding: 0 15px !important;
+            background-color: @color-pf-black-900;
+            border-left: 4px solid;
+            border-left-color: transparent;
+            .pfng-tree-list-content {
+              width: 85%;
+            }
+            .list-pf-content {
+              align-items: flex-start;
+              justify-content: space-between;
+              .list-pf-actions {
+                .btn-link {
+                  color: @color-pf-white;
+                }
+                .dropdown-menu{
+                  background-color: @color-pf-white;
+                  li a:hover {
+                    background-color: @color-pf-blue-50;
+                    border-color: @color-pf-blue-100;
+                    cursor: pointer;
+                  }
+                }
+              }
+            }
+          }
+          &:hover {
+            .list-pf-item {
+              border-left-color: @color-pf-blue-400;
+            }
+          }
+          &-active {
+            background-color: @color-pf-black-700;
+            .list-pf-container {
+              background-color: @color-pf-black-700;
+              border-left-color: @color-pf-blue-400;
+            }
+          }
+        }
+        .node-drop-slot {
+          height: 0;
+        }
       }
-    }
-    .node-drop-slot {
-      height: 0;
     }
   }
   &__List {
@@ -113,16 +139,24 @@
           &.f8-itr--selected {
             border-left: 4px solid;
             border-left-color: @color-pf-blue;
-            background-color: @color-pf-black-800;
+            background-color: @color-pf-black-700;
+            .left-truncate {
+              &::before {
+                background-color: @color-pf-black-700;
+              }
+          }
           }
         }
         &:hover {
           background-color: @color-pf-black-700;
           .left-truncate {
-            &:before {
-              background-color: @color-pf-black-800;
+            &::before {
+              background-color: @color-pf-black-700;
             }
           }
+        }
+        &:focus {
+          outline: none;
         }
       }
     }
@@ -151,11 +185,6 @@
   &-status {
     float: left;
     width: 100%;
-    color: @color-pf-black-600;
-    font-size: 12px;
-  }
-  &-count {
-    float: right;
     color: @color-pf-black-600;
     font-size: 12px;
   }
@@ -198,5 +227,11 @@
   }
   .blank-slate-pf {
     display: none;
+  }
+  .iteration-count {
+    position: absolute;
+    right: 15px;
+    color: @color-pf-black-600;
+    font-size: 12px;
   }
 }

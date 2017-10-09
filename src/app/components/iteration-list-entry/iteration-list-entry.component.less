@@ -13,6 +13,9 @@
     display: inline-block;
     width: 100%;
     i { color: @color-pf-white; }
+    &:focus , >div:focus{
+      outline: none !important;
+    }
   }
   &-status {
     color: @color-pf-black-600;
