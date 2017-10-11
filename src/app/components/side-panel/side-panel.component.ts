@@ -63,6 +63,11 @@ export class SidepanelComponent implements OnInit, OnDestroy {
     })
   }
 
+  setGuidedTypeWI() {
+    let witCollection = this.workItemService.workItemTypes.map(wit => wit.id);
+    this.groupTypesService.setCurrentGroupType(witCollection);
+  }
+
   listenToEvents() {
     this.eventListeners = [
       this.broadcaster.on<any>('associate_iteration')

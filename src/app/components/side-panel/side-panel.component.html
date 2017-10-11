@@ -1,6 +1,7 @@
 <a class="f8-sidepanel__title"
   [routerLink]="[]"
   [queryParams]="{}"
+  (click)="setGuidedTypeWI()"
   [class.backlog--selected]="backlogSelected">
     <span class="badge pull-right"
       [class.show]="sidePanelOpen"
@@ -12,7 +13,7 @@
       placement="right"></span>
     <h3 class="margin-0"
       [class.show]="sidePanelOpen"
-      [class.hide]="!sidePanelOpen">All</h3>
+      [class.hide]="!sidePanelOpen">All 123</h3>
 </a>
 <div class="width-100 pull-left">
   <group-types [iterations]="iterations"

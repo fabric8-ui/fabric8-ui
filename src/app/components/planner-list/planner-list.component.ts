@@ -797,10 +797,9 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   }
 
   handleSelectionChange($event): void {
-    console.log('handle sel', $event);
     if($event.item.selected === true) {
       this.selectedWI = $event.item;
-      if($event.item.data.id !== this.expandedNode.node.item.id) {
+      if(this.expandedNode != null && ($event.item.data.id !== this.expandedNode.node.item.id)) {
         this.expandedNode = null;
       }
     } else {
