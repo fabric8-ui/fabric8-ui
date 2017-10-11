@@ -138,7 +138,7 @@ class WorkItemDetailPage {
   }
 
   workItemDetailAvatar () {
-    return element(by.css(".pull-left.user-assign-avatar"));
+    return element(by.css(".user-assign-avatar"));
   }
 
   get workItemDetailDescription () {

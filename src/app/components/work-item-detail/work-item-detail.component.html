@@ -89,216 +89,222 @@
             </div>
           </div>
         </div>
-
-        <div class="width-100 pull-left padding-10 item-action-block">
-          <!-- Assignee -->
-          <div class="form-group">
-            <div class="detail-assignee-wrap">
-                <label class="col-xs-4 col-sm-3 col-md-3 control-label">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+          <div class="width-100 pull-left padding-10 item-action-block">
+            <!-- Assignee -->
+            <div class="form-group">
+              <div class="width-100 pull-left detail-assignee-wrap">
+                <label class="control-label">
                   {{workItem.relationships?.baseType?.data?.attributes?.fields['system.assignees']?.label || 'Label'}}
                 </label>
-                <div class="col-xs-8 col-sm-9 col-md-9 padding-left-0">
-                <span
-                  *ngIf="!workItem.relationships?.assignees?.data?.length"
-                  (click)="activeSearchAssignee()"
-                  class="pull-left fa fa-user-plus user-assign-icon">
-                </span>
-                <img
-                  *ngIf="workItem.relationships?.assignees?.data?.length"
-                  (click)="activeSearchAssignee()"
-                  class="pull-left user-assign-avatar"
-                  placement="bottom"
-                  tooltip="{{workItem.relationships?.assignees?.data[0]?.attributes?.fullName}}"
-                  src="{{workItem.relationships?.assignees?.data[0]?.attributes?.imageURL + '&s=20'}}"
-                  onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
-
-                <div class="pull-left detail-assignee-name">
-                    <span *ngIf="!searchAssignee && !workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="placeholder pointer">
-                      Unassigned
-                    </span>
-                    <span *ngIf="!searchAssignee && workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="pointer" id="WI_details_assigned_user">
-                      {{workItem.relationships?.assignees?.data[0] | almUserName:'Assignee not found' }}
-                    </span>
-                    <div *ngIf="searchAssignee" class="user-search" >
-                      <div class="list-container">
-                        <span class="fa fa-search user-search-icon"> </span>
-                        <input id="userAssigneeSearchInput" #userSearch (keyup)="filterUser($event)"
-                          autocomplete="off" />
-                        <ul class="item-ul no-padding user-list" #userList>
-                          <li *ngIf="!usersLoaded" class="text-center"><i class="fa fa-spinner fa-pulse"></i></li>
-                          <li
-                            class="item-li"
-                            [class.first-item] = "filteredUsers && filteredUsers.length"
-                            [class.only-first-item] = "!filteredUsers || !filteredUsers.length"
-                            *ngIf="loggedInUser"
-                            [attr.data-value]="loggedInUser.id"
-                            (click)="assignUser(loggedInUser)">
-                              <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
-                              <img
-                                class="pull-left user-assign-avatar"
-                                src="{{loggedInUser.attributes?.imageURL + '&s=20'}}"
-                                onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
-                              <span [innerHTML]="loggedInUser.attributes?.fullName + ' (me)'"></span>
-                          </li>
-                          <li
-                            class="item-li"
-                            *ngFor="let user of filteredUsers;"
-                            [attr.data-value]="user.id"
-                            (click)="assignUser(user)">
-                              <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
-                              <img
-                                class="pull-left user-assign-avatar"
-                                src="{{user.attributes?.imageURL + '&s=20'}}"
-                                onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
-                              <span [innerHTML]="user.attributes?.fullName | almSearchHighlight: userSearch.value"></span>
-                          </li>
-                        </ul>
-                        <ul class="item-ul no-padding">
-                          <li class="action-li width-100 pull-left">
-                              <button class="btn btn-link action-item pull-left" (click)="unassignUser()">Unassign</button>
-                              <button class="btn btn-link action-item pull-right" (click)="cancelAssignment()">Cancel</button>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!--Creator-->
-          <div class="form-group">
-            <div class="width-100 pull-left detail-creator-wrap">
-              <label class="col-xs-4 col-sm-3 col-md-3 control-label">
-                {{workItem.relationships?.baseType?.data?.attributes?.fields['system.creator']?.label || 'Label'}}
-              </label>
-              <div class="col-xs-8 col-sm-9 col-md-9 padding-left-0">
-                <span *ngIf="!workItem.relationships?.creator?.data"
-                  class="pficon pficon-user user-creator-icon" id="user_creator_icon">
-                </span>
-                <img *ngIf="workItem.relationships?.creator?.data"
-                  class="user-avatar pull-left"
-                  placement="bottom"
-                  tooltip="{{workItem.relationships.creator.data.attributes?.fullName}}"
-                  src="{{workItem.relationships.creator.data.attributes?.imageURL + '&s=20'}}"
-                  onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"
-                  id="WI_details_reporter_img" />
-                <div class="pull-left">
-                  <span id="WI_details_reporter_user">
-                    {{workItem.relationships?.creator?.data | almUserName:'Creator not found'}}
+                <div class="detail-assignee-content">
+                  <span
+                    *ngIf="!workItem.relationships?.assignees?.data?.length"
+                    (click)="activeSearchAssignee()"
+                    class="pull-left fa fa-user-plus user-assign-icon">
                   </span>
+                  <div class="user-avatar margin-right-10 pull-left"
+                    *ngIf="workItem.relationships?.assignees?.data?.length">
+                    <img
+                      (click)="activeSearchAssignee()"
+                      class="user-assign-avatar"
+                      placement="bottom"
+                      tooltip="{{workItem.relationships?.assignees?.data[0]?.attributes?.fullName}}"
+                      src="{{workItem.relationships?.assignees?.data[0]?.attributes?.imageURL + '&s=20'}}"
+                      onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
+                  </div>
+                  <div class="pull-left detail-assignee-name">
+                      <span *ngIf="!searchAssignee && !workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="placeholder pointer">
+                        Unassigned
+                      </span>
+                      <span *ngIf="!searchAssignee && workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="pointer" id="WI_details_assigned_user">
+                        {{workItem.relationships?.assignees?.data[0] | almUserName:'Assignee not found' }}
+                      </span>
+                      <div *ngIf="searchAssignee" class="user-search" >
+                        <div class="list-container">
+                          <span class="fa fa-search user-search-icon"> </span>
+                          <input id="userAssigneeSearchInput" #userSearch (keyup)="filterUser($event)"
+                            autocomplete="off" />
+                          <ul class="item-ul no-padding user-list" #userList>
+                            <li *ngIf="!usersLoaded" class="text-center"><i class="fa fa-spinner fa-pulse"></i></li>
+                            <li
+                              class="item-li"
+                              [class.first-item] = "filteredUsers && filteredUsers.length"
+                              [class.only-first-item] = "!filteredUsers || !filteredUsers.length"
+                              *ngIf="loggedInUser"
+                              [attr.data-value]="loggedInUser.id"
+                              (click)="assignUser(loggedInUser)">
+                                <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
+                                <div class="user-avatar margin-right-10 pull-left">
+                                  <img
+                                    class="user-assign-avatar "
+                                    src="{{loggedInUser.attributes?.imageURL + '&s=20'}}"
+                                    onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
+                                </div>
+                                <span [innerHTML]="loggedInUser.attributes?.fullName + ' (me)'"></span>
+                            </li>
+                            <li
+                              class="item-li"
+                              *ngFor="let user of filteredUsers;"
+                              [attr.data-value]="user.id"
+                              (click)="assignUser(user)">
+                                <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
+                                <div class="user-avatar margin-right-10 pull-left">
+                                  <img
+                                  class="user-assign-avatar"
+                                  src="{{user.attributes?.imageURL + '&s=20'}}"
+                                  onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
+                                </div>
+                                <span [innerHTML]="user.attributes?.fullName | almSearchHighlight: userSearch.value"></span>
+                            </li>
+                          </ul>
+                          <ul class="item-ul no-padding">
+                            <li class="action-li width-100 pull-left">
+                                <button class="btn btn-link action-item pull-left" (click)="unassignUser()">Unassign</button>
+                                <button class="btn btn-link action-item pull-right" (click)="cancelAssignment()">Cancel</button>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- Areas -->
-          <div class="form-group">
-            <div class="width-100 pull-left detail-area-wrap">
-              <label class="col-xs-4 col-sm-3 col-md-3 control-label" id="area_label">
-                {{workItem.relationships?.baseType?.data?.attributes?.fields['system.area']?.label || 'Label'}}
-              </label>
-              <div class="col-xs-8 col-sm-9 col-md-9 padding-left-0">
-                <span *ngIf="loadingArea"
-                  class="spinner spinner-sm spinner-inline">
-                </span>
-                <typeahead-dropdown #areaSelectbox
-                  *ngIf="!loadingArea"
-                  id="area-dropdown" class="area-dropdown"
-                  noValueLabel="None" [values]="areas" (onFocus)="focusArea()"
-                  (onUpdate)="areaUpdated($event)">
-                </typeahead-dropdown>
+            <!--Creator-->
+            <div class="form-group">
+              <div class="width-100 pull-left detail-creator-wrap">
+                <label class="control-label">
+                  {{workItem.relationships?.baseType?.data?.attributes?.fields['system.creator']?.label || 'Label'}}
+                </label>
+                <div class="detail-creator-content">
+                  <span *ngIf="!workItem.relationships?.creator?.data"
+                    class="pficon pficon-user user-creator-icon" id="user_creator_icon">
+                  </span>
+                  <div class="user-avatar margin-right-10 pull-left">
+                    <img *ngIf="workItem.relationships?.creator?.data"
+                      placement="bottom"
+                      tooltip="{{workItem.relationships.creator.data.attributes?.fullName}}"
+                      src="{{workItem.relationships.creator.data.attributes?.imageURL + '&s=20'}}"
+                      onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"
+                      id="WI_details_reporter_img" />
+                    </div>
+                  <div class="pull-left">
+                    <span id="WI_details_reporter_user">
+                      {{workItem.relationships?.creator?.data | almUserName:'Creator not found'}}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+            <!-- Areas -->
+            <div class="form-group">
+              <div class="width-100 pull-left detail-area-wrap">
+                <label class="control-label" id="area_label">
+                  {{workItem.relationships?.baseType?.data?.attributes?.fields['system.area']?.label || 'Label'}}
+                </label>
+                <div class="detail-area-content">
+                  <span *ngIf="loadingArea"
+                    class="spinner spinner-sm spinner-inline">
+                  </span>
+                  <typeahead-dropdown #areaSelectbox
+                    *ngIf="!loadingArea"
+                    id="area-dropdown" class="area-dropdown"
+                    noValueLabel="None" [values]="areas" (onFocus)="focusArea()"
+                    (onUpdate)="areaUpdated($event)">
+                  </typeahead-dropdown>
+                </div>
+              </div>
+            </div>
 
-          <!--Iteration-->
-          <div class="form-group">
-            <div class="width-100 pull-left detail-iteration-wrap">
-              <label class="col-xs-4 col-sm-3 col-md-3 control-label" id="iteration_label">
-                {{workItem.relationships?.baseType?.data?.attributes?.fields['system.iteration']?.label || 'Label'}}
-              </label>
-              <div class="col-xs-8 col-sm-9 col-md-9 padding-left-0">
-                <span *ngIf="loadingIteration"
-                  class="spinner spinner-sm spinner-inline">
-                </span>
-                <typeahead-dropdown
-                  *ngIf="!loadingIteration"
-                  id="iteration-dropdown" class="iteration-dropdown"
-                  #iterationSelectbox noValueLabel="None" [values]="iterations"
-                  (onFocus)="focusIteration()" (onUpdate)="iterationUpdated($event)">
-                </typeahead-dropdown>
+            <!--Iteration-->
+            <div class="form-group">
+              <div class="width-100 pull-left detail-iteration-wrap">
+                <label class="control-label" id="iteration_label">
+                  {{workItem.relationships?.baseType?.data?.attributes?.fields['system.iteration']?.label || 'Label'}}
+                </label>
+                <div class="detail-itr-content">
+                  <span *ngIf="loadingIteration"
+                    class="spinner spinner-sm spinner-inline">
+                  </span>
+                  <typeahead-dropdown
+                    *ngIf="!loadingIteration"
+                    id="iteration-dropdown" class="iteration-dropdown"
+                    #iterationSelectbox noValueLabel="None" [values]="iterations"
+                    (onFocus)="focusIteration()" (onUpdate)="iterationUpdated($event)">
+                  </typeahead-dropdown>
+                </div>
               </div>
             </div>
-          </div>
-          <!--Lables-->
-          <div class="form-group">
-            <div class="width-100 pull-left detail-label-wrap">
-              <label class="col-xs-4 col-sm-3 col-md-3 control-label">
-                {{workItem.relationships?.baseType?.data?.attributes?.fields['system.labels']?.label || 'Label'}}
-              </label>
-              <div class="col-xs-8 col-sm-9 col-md-9 padding-left-0">
-                <span *ngIf="loadingLabels"
-                  class="spinner spinner-sm spinner-inline">
-                </span>
-                <f8-label *ngIf="!loadingLabels"
-                  [labels]="workItem.relationships?.labels?.data ?
-                    workItem.relationships?.labels?.data : []"
-                    (onRemoveLabel)="removeLable($event)"
-                    [allowDelete]="true"
-                    (onLabelClick)="onLabelClick($event)">
-                </f8-label>
-                <div class="label-selector-wrapper" *ngIf="loggedIn && !loadingLabels" >
-                  <label-selector
-                    id="labelSelector"
-                    #labelSelector
-                    [allLabels]="labels"
-                    [selectedLabels]="workItem.relationships?.labels?.data ?
+            <!--Labels-->
+            <div class="form-group">
+              <div class="width-100 pull-left detail-label-wrap">
+                <label class="control-label">
+                  {{workItem.relationships?.baseType?.data?.attributes?.fields['system.labels']?.label || 'Label'}}
+                </label>
+                <div class="detail-labels-content">
+                  <span *ngIf="loadingLabels"
+                    class="spinner spinner-sm spinner-inline">
+                  </span>
+                  <f8-label *ngIf="!loadingLabels"
+                    [labels]="workItem.relationships?.labels?.data ?
                       workItem.relationships?.labels?.data : []"
-                    (onCloseSelector)="updateLabels($event)">
-                  </label-selector>
+                      (onRemoveLabel)="removeLable($event)"
+                      [allowDelete]="true"
+                      (onLabelClick)="onLabelClick($event)">
+                  </f8-label>
+                  <div class="label-selector-wrapper" *ngIf="loggedIn && !loadingLabels" >
+                    <label-selector
+                      id="labelSelector"
+                      #labelSelector
+                      [allLabels]="labels"
+                      [selectedLabels]="workItem.relationships?.labels?.data ?
+                        workItem.relationships?.labels?.data : []"
+                      (onCloseSelector)="updateLabels($event)">
+                    </label-selector>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="width-100 pull-left dynamic-fields-wrap">
-          <!-- Extra fields Start -->
-          <div *ngFor="let attributeDesc of dynamicFormDataArray" class="form-group">
-            <alm-dynamic-field [attributeDesc]="attributeDesc" [form]="dynamicFormGroup" (onUpdate)="dynamicFieldUpdated($event)"></alm-dynamic-field>
-          </div>
-          <!-- Extra fields End -->
-        </div>
-
-        <div class="description-fields-wrap">
-          <!-- Description Start -->
-          <!-- <markdown-control id="wi-detail-desc" [markdownValue]="descText" (onUpdate)="descUpdate($event)"></markdown-control> -->
-           <div class="form-group">
-            <label class="col-xs-4 col-sm-3 col-md-3 control-label">
-              Description
-            </label>
-            <div class="col-xs-8 col-sm-9 col-md-9 detail-desc-wrap">
-              <f8-markdown
-                id="wi-detail-desc"
-                [editAllow]="loggedIn"
-                [rawText]="workItem.attributes['system.description']"
-                [renderedText]="workItem.attributes['system.description.rendered']"
-                (onSaveClick)="descUpdate($event)"
-                (showPreview)="showPreview($event)">
-              </f8-markdown>
+          <div class="width-100 pull-left dynamic-fields-wrap">
+            <!-- Extra fields Start -->
+            <div *ngFor="let attributeDesc of dynamicFormDataArray" class="form-group">
+              <alm-dynamic-field [attributeDesc]="attributeDesc" [form]="dynamicFormGroup" (onUpdate)="dynamicFieldUpdated($event)"></alm-dynamic-field>
             </div>
+            <!-- Extra fields End -->
           </div>
-          <!-- Description End -->
-        </div>
-        <div class="start-coding-wrap" *ngIf="loggedIn && workItem.relationships?.codebase?.links?.meta?.edit">
-          <div class="form-group">
-            <label class="col-xs-4 col-sm-3 col-md-3 control-label" id="coding_label">
-              Code
-            </label>
-            <div class="col-xs-8 col-sm-9 col-md-9 form-control-static start-coding">
-              <a class="btn btn-default"
-                id="start-coding-link"
-                target="_blank" href="{{workItem.relationships?.codebase?.links?.meta?.edit}}">
-                Start Coding
-              </a>
+          <div class="width-100 pull-left description-fields-wrap">
+            <!-- Description Start -->
+            <!-- <markdown-control id="wi-detail-desc" [markdownValue]="descText" (onUpdate)="descUpdate($event)"></markdown-control> -->
+            <div class="form-group">
+              <label class="control-label">
+                Description
+              </label>
+              <div class="detail-desc-wrap">
+                <f8-markdown
+                  id="wi-detail-desc"
+                  [editAllow]="loggedIn"
+                  [rawText]="workItem.attributes['system.description']"
+                  [renderedText]="workItem.attributes['system.description.rendered']"
+                  (onSaveClick)="descUpdate($event)"
+                  (showPreview)="showPreview($event)">
+                </f8-markdown>
+              </div>
+            </div>
+            <!-- Description End -->
+          </div>
+          <div class="width-100 pull-left start-coding-wrap" *ngIf="loggedIn && workItem.relationships?.codebase?.links?.meta?.edit">
+            <div class="form-group">
+              <label class="control-label" id="coding_label">
+                Code
+              </label>
+              <div class="form-control-static start-coding">
+                <a class="btn btn-default"
+                  id="start-coding-link"
+                  target="_blank" href="{{workItem.relationships?.codebase?.links?.meta?.edit}}">
+                  Start Coding
+                </a>
+              </div>
             </div>
           </div>
         </div>

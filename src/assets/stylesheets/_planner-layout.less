@@ -82,4 +82,14 @@
       }
     }
   }
+  .user-avatar {
+    cursor: pointer;
+    &:extend(.user-avatar);
+    img {
+      &:extend(.user-avatar img);
+    }
+  }
+  .not-assigned-user-icon {
+    &:extend(.not-assigned-user-icon);
+  }
 }

@@ -74,24 +74,26 @@
         <div class="form-group">
           <!-- assignee -->
           <section class="f8-detail__assignee">
-            <label class="col-xs-4 col-sm-2 col-md-2 control-label">
+            <label class="pull-left padding-left-15 control-label">
               {{workItem.relationships?.baseType?.data?.attributes?.fields['system.assignees']?.label || 'Label'}}
             </label>
-            <div class="col-xs-8 col-sm-10 col-md-10">
+            <div class="f8-detail__content">
               <span
                 *ngIf="!workItem.relationships?.assignees?.data?.length"
                 (click)="activeSearchAssignee()"
                 class="pull-left fa fa-user-plus user-assign-icon">
               </span>
-              <img
-                *ngIf="workItem.relationships?.assignees?.data?.length"
-                (click)="activeSearchAssignee()"
-                class="pull-left user-assign-avatar"
-                placement="bottom"
-                tooltip="{{workItem.relationships?.assignees?.data[0]?.attributes?.fullName}}"
-                src="{{workItem.relationships?.assignees?.data[0]?.attributes?.imageURL + '&s=20'}}"
-                onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"
-              />
+              <div class="user-avatar margin-right-10 pull-left"
+                *ngIf="workItem.relationships?.assignees?.data?.length">
+                <img
+                  (click)="activeSearchAssignee()"
+                  class="user-assign-avatar"
+                  placement="bottom"
+                  tooltip="{{workItem.relationships?.assignees?.data[0]?.attributes?.fullName}}"
+                  src="{{workItem.relationships?.assignees?.data[0]?.attributes?.imageURL + '&s=20'}}"
+                  onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"
+                />
+              </div>
               <div class="pull-left detail-assignee-name">
                 <span *ngIf="!searchAssignee && !workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="placeholder pointer">
                   Unassigned
@@ -116,10 +118,12 @@
                         [attr.data-value]="loggedInUser.id"
                         (click)="assignUser(loggedInUser)">
                           <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
-                          <img
-                            class="pull-left user-assign-avatar"
-                            src="{{loggedInUser.attributes?.imageURL + '&s=20'}}"
-                            onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
+                          <div class="pull-left user-avatar margin-right-10">
+                            <img
+                              class="user-assign-avatar"
+                              src="{{loggedInUser.attributes?.imageURL + '&s=20'}}"
+                              onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
+                          </div>
                           <span [innerHTML]="loggedInUser.attributes?.fullName + ' (me)'"></span>
                       </li>
                       <li
@@ -128,10 +132,12 @@
                         [attr.data-value]="user.id"
                         (click)="assignUser(user)">
                           <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
-                          <img
-                            class="pull-left user-assign-avatar"
-                            src="{{user.attributes?.imageURL + '&s=20'}}"
-                            onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
+                          <div class="pull-left user-avatar margin-right-10">
+                            <img
+                              class="user-assign-avatar"
+                              src="{{user.attributes?.imageURL + '&s=20'}}"
+                              onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
+                          </div>
                           <span [innerHTML]="user.attributes?.fullName | almSearchHighlight: userSearch.value"></span>
                       </li>
                     </ul>
@@ -152,14 +158,14 @@
         <!-- Creator -->
         <div class="form-group">
           <section class="f8-detail__area">
-            <label class="col-xs-4 col-sm-2 col-md-2 control-label">
+            <label class="pull-left padding-left-15 control-label ">
               {{workItem.relationships?.baseType?.data?.attributes?.fields['system.creator']?.label || 'Label'}}
             </label>
-            <div class="col-xs-8 col-sm-10 col-md-10">
+            <div class="f8-detail__content">
               <span *ngIf="!workItem.relationships?.creator?.data"
                 class="pficon pficon-user user-creator-icon" id="user_creator_icon">
               </span>
-              <div class="user-avatar pull-left">
+              <div class="user-avatar pull-left margin-right-10">
                 <img *ngIf="workItem.relationships?.creator?.data"
                   placement="bottom"
                   tooltip="{{workItem.relationships.creator.data.attributes?.fullName}}"
@@ -178,10 +184,10 @@
         <!-- area -->
         <div class="form-group">
           <section class="f8-detail__area">
-            <label class="col-xs-4 col-sm-2 col-md-2 control-label">
+            <label class="pull-left padding-left-15 control-label ">
               {{workItem.relationships?.baseType?.data?.attributes?.fields['system.area']?.label || 'Label'}}
             </label>
-            <div class="col-xs-8 col-sm-10 col-md-10">
+            <div class="f8-detail__content">
               <span *ngIf="loadingArea"
                   class="spinner spinner-sm spinner-inline">
                 </span>
@@ -197,10 +203,10 @@
         <!-- Iteration -->
         <div class="form-group">
           <section class="f8-detail__area">
-            <label class="col-xs-4 col-sm-2 col-md-2 control-label">
+            <label class="pull-left padding-left-15 control-label ">
               {{workItem.relationships?.baseType?.data?.attributes?.fields['system.iteration']?.label || 'Label'}}
             </label>
-            <div class="col-xs-8 col-sm-10 col-md-10">
+            <div class="f8-detail__content">
               <span *ngIf="loadingIteration"
                   class="spinner spinner-sm spinner-inline">
                 </span>
@@ -216,10 +222,10 @@
         <!--Lables-->
         <div class="form-group">
           <section class="f8-detail__labels">
-            <label class="col-xs-4 col-sm-2 col-md-2 control-label">
+            <label class="pull-left padding-left-15 control-label ">
               {{workItem.relationships?.baseType?.data?.attributes?.fields['system.labels']?.label || 'Label'}}
             </label>
-            <div class="col-xs-8 col-sm-10 col-md-10">
+            <div class="f8-detail__content">
               <span *ngIf="loadingLabels"
                 class="spinner spinner-sm spinner-inline">
               </span>
@@ -248,7 +254,7 @@
             <label class="col-xs-4 col-sm-4 col-md-2 control-label">
               Description
             </label>
-            <div class="col-xs-8 col-sm-10 col-md-10">
+            <div class="f8-detail__content">
               <f8-markdown
                 id="wi-detail-desc"
                 [editAllow]="loggedIn"

@@ -1,10 +1,10 @@
 <div class="f8-dynamic-control"
   [formGroup]="form">
-  <label class="col-xs-2 col-sm-2 col-md-2"
+  <label class="pull-left"
     [attr.for]="attributeDesc.key">
     {{attributeDesc.label}}
   </label>
-  <div class="col-xs-10 col-sm-10 col-md-10 padding-left-0">
+  <div class="f8-dynamic-control-content">
     <div [ngSwitch]="attributeDesc.type.kind">
 
       <!-- workitemtype field type: string -->
