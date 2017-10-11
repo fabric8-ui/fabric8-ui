@@ -65,26 +65,49 @@
   }
 
   //Patternfly-ng's tree styles - Start
-  .list-pf-container {
-    padding: 0 10px !important;
-  }
-  .pfng-tree-list .toggle-children-wrapper-expanded .toggle-children::before {
-  content: "\F107";
-    -webkit-font-smoothing: antialiased;
-  }
-  .pfng-tree-list .toggle-children-wrapper-collapsed .toggle-children::before {
-  content: "\F105";
-    -webkit-font-smoothing: antialiased;
-  }
-  .list-pf-actions {
-    margin-left: 15px;
-  }
-  .blank-slate-pf {
-    .show-wi {
-      display: inline-block;
+  .pfng-tree-list {
+    .list-pf-item {
+      display: flex;
+      .list-pf-container {
+        padding: 0 15px !important;
+        margin: 5px 0;
+      }
     }
-    .hide-wi {
-      display: none;
+    .tree-children {
+      padding-left: 0;
+      .tree-node-level-2 {
+        .list-pf-container {
+          padding-left: 30px !important;
+        }
+      }
+      .tree-node-level-3 {
+        .list-pf-container {
+          padding-left: 50px !important;
+        }
+      }
+    }
+    .toggle-children {
+      width: 10px;
+    }
+    .toggle-children-wrapper-expanded .toggle-children::before {
+      content: "\F107";
+      -webkit-font-smoothing: antialiased;
+    }
+    .toggle-children-wrapper-collapsed .toggle-children::before {
+      content: "\F105";
+      -webkit-font-smoothing: antialiased;
+    }
+    .list-pf-actions {
+      margin-left: 15px;
+    }
+
+    .blank-slate-pf {
+      .show-wi {
+        display: inline-block;
+      }
+      .hide-wi {
+        display: none;
+      }
     }
   }
   //Patternfly-ng's tree styles - End

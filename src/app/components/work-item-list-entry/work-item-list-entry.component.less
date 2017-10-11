@@ -18,7 +18,7 @@
       color: #252525;
       font-size: 16px;
       text-decoration: none;
-      margin-right: 20px;
+      margin-left: 20px;
       &:hover {
         color: @color-pf-blue-400;
       }
@@ -74,15 +74,22 @@
       padding: 0 !important;
       font-size: 16px;
     }
-    .workItemList_title {
-      width: auto;
+    p {
       display: inline-block;
+      width: auto;
       max-width: 95%;
-      vertical-align: text-top;
       padding-right: 5px;
+      margin-bottom: 0;
+      vertical-align: text-top;
     }
   }
-
+  &-description {
+    display: table-cell;
+    width: 50%;
+    padding: 0 20px;
+    vertical-align: middle;
+    text-align: left;
+  }
 }
 .user-avatar {
   &:extend(.user-avatar);

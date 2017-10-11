@@ -15,7 +15,7 @@
     <div class="list-view-pf-body">
       <div class="list-view-pf-description">
         <div class="f8-wi__list-title truncate-ellipsis col-xs-12 row">
-            <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="f8-wi__list-description">
               <p class="workItemList_title truncate"
                  (click)="onDetailPreview($event)">
                   {{workItem.attributes['system.title']}}
@@ -23,7 +23,7 @@
               <a [routerLink]="[constructUrl(workItem)]"
               class="fa fa-list-alt f8-action-icon"></a>
             </div>
-            <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="f8-wi__list-description">
               <f8-label [labels]="workItem.relationships?.labels?.data ?
                 workItem.relationships?.labels?.data : []"
                 [truncateAfter]='4'
