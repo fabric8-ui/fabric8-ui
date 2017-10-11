@@ -77,8 +77,13 @@ export class GroupTypesService {
   }
 
   setCurrentGroupType(groupType) {
+    this.selectedGroupType = groupType;
     //emit observable. Listener on planner backlog view
     this.groupTypeSelected.next(groupType);
+  }
+
+  getCurrentGroupType(): GroupTypesModel {
+    return this.selectedGroupType;
   }
 
   getAllowedChildWits(workItem: WorkItem) {

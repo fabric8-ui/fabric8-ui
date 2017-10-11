@@ -2,6 +2,7 @@ import { EventService } from './../../services/event.service';
 import { AreaModel } from '../../models/area.model';
 import { AreaService } from '../../services/area.service';
 import { FilterService } from '../../services/filter.service';
+import { GroupTypesModel } from '../../models/group-types.model';
 import { Observable } from 'rxjs/Observable';
 import { IterationService } from '../../services/iteration.service';
 import { IterationModel } from '../../models/iteration.model';
@@ -120,9 +121,11 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   private uiLockedList = true;
   private uiLockedSidebar = false;
   private children: string[] = [];
-  private allowedChildWIT: string[] = [];
   private currentExpandedChildren: WorkItem[] = [];
-  private expandedNode: any;
+  private expandedNode: any = null;
+  private selectedWI: WorkItem = null;
+  private initialGroup: GroupTypesModel;
+
 
   constructor(
     private labelService: LabelService,
@@ -316,6 +319,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   }
 
   loadWorkItems(): void {
+    this.initialGroup = this.groupTypesService.getCurrentGroupType();
     this.uiLockedList = true;
     if (this.wiSubscriber) {
       this.wiSubscriber.unsubscribe();
@@ -509,7 +513,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   onDetail(entryComponent: WorkItemListEntryComponent): void { }
 
   onPreview(workItem: WorkItem): void {
-    //this.groupTypesService.getAllowedChildWits(workItem);
     this.detailPreview.openPreview(workItem);
   }
 
@@ -580,37 +583,41 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         this.labels
       )[0])
       .subscribe(item => {
-        //Update the parent work item
-        if(this.allowedChildWIT.length > 0  && this.currentWorkItem != null) {
-          let index = this.workItems.findIndex(wi =>
-            wi.id === this.currentWorkItem.id );
-          if (index > -1)
-            this.workItems[index].hasChildren = true;
-          if(this.expandedNode != null ) {
-            if(this.expandedNode.node.data.id === this.currentWorkItem.id) {
+        if(this.selectedWI === null ) {
+          //add a work item to the top level list
+          this.workItems.splice(0, 0, item);
+        } else {
+          if (this.expandedNode === null) {
+            //A  WI has been selected - add the new WI as a child under that
+            this.selectedWI.hasChildren = true;
+          } else {
+            let index = this.workItems.findIndex(wi => wi.id === this.selectedWI.id)
+            if(this.selectedWI.id === this.expandedNode.node.data.id) {
+              //if the selected node is expanded
               this.expandedNode.node.data.children.push(item);
-              this.workItems[index] = this.expandedNode.node.data;
+              if(index > -1) {
+                //this means selectedWI is a not a child WI - top level WI
+                this.workItems[index] = this.expandedNode.node.data;
+              } else {
+                //index < 0 means wi not found in workItems
+                //the selected WI is a child node and a child is being added
+                this.selectedWI = this.expandedNode.node.data;
+              }
+            } else {
+              //selected WI and expanded WI are different
+              this.selectedWI.hasChildren = true;
             }
           }
         }
-        //Check if the work item meets the applied filters
         if(this.filterService.doesMatchCurrentFilter(item)){
           console.log('Added WI matches the applied filters');
-          if(this.allowedChildWIT.length === 0) {
-            this.workItems.splice(0, 0, item);
-          }
         } else {
           console.log('Added WI does not match the applied filters');
         }
-        this.treeList.update();
+        if(this.treeList)
+          this.treeList.update();
       })
     );
-
-    this.eventListeners.push(
-      this.groupTypesService.workItemSelected.subscribe(item => {
-        this.allowedChildWIT = item;
-      })
-    )
 
     this.eventListeners.push(
       this.workItemService.editWIObservable.subscribe(updatedItem => {
@@ -790,14 +797,20 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   }
 
   handleSelectionChange($event): void {
+    console.log('handle sel', $event);
+    if($event.item.selected === true) {
+      this.selectedWI = $event.item;
+      if($event.item.data.id !== this.expandedNode.node.item.id) {
+        this.expandedNode = null;
+      }
+    } else {
+      this.selectedWI = null;
+      //reset the quick add context to allowed WIT for the selected group
+      this.groupTypesService.setCurrentGroupType(this.initialGroup);
+    }
   }
 
   handleClick($event): void {
-    this.currentWorkItem = $event.item;
-    if($event.item.hasChildren) {
-      this.expandedNode = $event;
-    }
-    this.allowedChildWIT = [];
     this.workItemService.emitSelectedWI($event.item);
     this.groupTypesService.getAllowedChildWits($event.item);
   }
