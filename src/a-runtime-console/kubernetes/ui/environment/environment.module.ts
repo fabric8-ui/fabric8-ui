@@ -17,7 +17,8 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {RouterModule, Routes} from '@angular/router';
 import {ModalModule} from 'ngx-modal';
-import { TreeListModule, SlideOutPanelModule } from 'ngx-widgets';
+import { SlideOutPanelModule } from 'ngx-widgets';
+import { ActionModule } from 'patternfly-ng';
 import { TreeModule } from 'angular2-tree-component';
 import {Fabric8CommonModule} from '../../../common/common.module';
 import {MomentModule} from 'angular2-moment';
@@ -39,7 +40,7 @@ import { EnvironmentListToolbarComponent } from './list-toolbar/list-toolbar.env
     RouterModule,
     Fabric8CommonModule,
     KubernetesComponentsModule,
-    TreeListModule,
+    ActionModule,
     TreeModule,
     TabsModule.forRoot(),
     // Our Routing MUST go before the other Kuberenetes UI modules, so our routes take precedence

@@ -56,7 +56,7 @@ import {
   UserService
 }                             from 'ngx-login-client';
 import { WidgetsModule }      from 'ngx-widgets';
-import { PatternFlyNgModule } from 'patternfly-ng';
+import { ActionModule, ListModule, TreeListComponent, PatternFlyNgModule } from 'patternfly-ng';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -137,6 +137,7 @@ export type StoreType = {
 @NgModule({
   imports: [ // import (in alphabetical order) other modules with the components, directives and pipes needed by the components in this module
     AboutModalModule,
+    ActionModule,
     BrowserAnimationsModule,
     BrowserModule,
     BsDropdownModule.forRoot(),
@@ -144,6 +145,7 @@ export type StoreType = {
     HttpModule,
     KubernetesRestangularModule,
     KubernetesStoreModule,
+    ListModule,
     LocalStorageModule.withConfig({
       prefix: 'fabric8',
       storageType: 'localStorage'
@@ -234,6 +236,7 @@ export type StoreType = {
       useClass: Fabric8UISpaceNamespace
     },
     ssoApiUrlProvider,
+    TreeListComponent,
     UserService,
     witApiUrlProvider,
     realmProvider
