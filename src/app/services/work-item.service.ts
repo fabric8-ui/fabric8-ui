@@ -236,6 +236,14 @@ export class WorkItemService {
       item.relationships.labels.data = WIlabels.map(label => {
         return labels.find(l => l.id === label.id);
       })
+
+      // Sort labels in alphabetical order
+      item.relationships.labels.data = item.relationships.labels.data.sort(function(labelA, labelB) {
+        let labelAName = labelA.attributes.name.toUpperCase();
+        let labelBName = labelB.attributes.name.toUpperCase();
+        return labelAName.localeCompare(labelBName);
+      });
+
       // Resolve work item types
       let wiType = cloneDeep(item.relationships.baseType.data);
       if (wiType) {
