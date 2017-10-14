@@ -494,4 +494,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  handleClick($event: Action, item: any) {
+
+  }
  }

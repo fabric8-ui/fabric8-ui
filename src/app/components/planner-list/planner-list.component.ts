@@ -640,7 +640,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         } else {
           console.log('Added WI does not match the applied filters');
         }
-        if(this.treeList)
+        if( this.treeList.tree != undefined )
           this.treeList.update();
       })
     );
