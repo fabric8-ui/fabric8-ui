@@ -636,9 +636,23 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
           }
         }
         if(this.filterService.doesMatchCurrentFilter(item)){
-          console.log('Added WI matches the applied filters');
+          try {
+            this.notifications.message({
+              message: item.attributes['system.title'] + ' created.',
+              type: NotificationType.SUCCESS
+            } as Notification);
+          } catch (e) {
+            console.log('Error displaying notification. Added WI matches the applied filters.')
+          }
         } else {
-          console.log('Added WI does not match the applied filters');
+          try {
+            this.notifications.message({
+              message: item.attributes['system.title'] + ' created. Added WI does not match the applied filters',
+              type: NotificationType.SUCCESS
+            } as Notification);
+          } catch (e) {
+            console.log('Error displaying notification. Added WI does not match the applied filters.')
+          }
         }
         if( this.treeList.tree != undefined )
           this.treeList.update();
@@ -649,7 +663,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       this.workItemService.editWIObservable.subscribe(updatedItem => {
         let index = this.workItems.findIndex((item) => item.id === updatedItem.id);
         if(this.filterService.doesMatchCurrentFilter(updatedItem)){
-          console.log('Updated WI matches the applied filters');
           if (index > -1) {
             this.workItems[index] = updatedItem;
           } else {
@@ -664,12 +677,27 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
               this.workItems.splice(0, 0, updatedItem);
             }
           }
+          try {
+            this.notifications.message({
+            message: updatedItem.attributes['system.title'] + ' updated.',
+            type: NotificationType.SUCCESS
+            } as Notification);
+          } catch (e) {
+            console.log('Error displaying notification. Updated WI matches the applied filters.')
+          }
           this.treeList.update();
         } else {
           //Remove the work item from the current displayed list
           if (index > -1) {
+            try {
+              this.notifications.message({
+              message: updatedItem.attributes['system.title'] + ' updated. This work item no longer matches the applied filters.',
+              type: NotificationType.SUCCESS
+              } as Notification);
+            } catch (e) {
+              console.log('Error displaying notification. Updated WI does not match the applied filters.')
+            }
             this.workItems.splice(index, 1);
-            console.log('Updated WI does not match the applied filters')
             this.treeList.update();
           }
         }

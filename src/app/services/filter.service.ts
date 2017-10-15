@@ -88,20 +88,22 @@ export class FilterService {
 
   getFiltersFromUrl(): any {
     let refCurrentFilter = [];
-    let urlString = this.route.snapshot.queryParams['q']
-    .replace(' $AND ',' ')
-    .replace(' $OR ',' ')
-    .replace('(','')
-    .replace(')','')
-    let temp_arr = urlString.split(' ');
-    for(let i = 0; i < temp_arr.length; i++) {
-      let arr = temp_arr[i].split(':')
-      refCurrentFilter.push({
-        id: arr[0],
-        paramKey: 'filter[' + arr[0] + ']',
-        value: arr[1]
-      })
-    };
+    if(this.route.snapshot.queryParams['q']) {
+      let urlString = this.route.snapshot.queryParams['q']
+      .replace(' $AND ',' ')
+      .replace(' $OR ',' ')
+      .replace('(','')
+      .replace(')','')
+      let temp_arr = urlString.split(' ');
+      for(let i = 0; i < temp_arr.length; i++) {
+        let arr = temp_arr[i].split(':')
+        refCurrentFilter.push({
+          id: arr[0],
+          paramKey: 'filter[' + arr[0] + ']',
+          value: arr[1]
+        })
+      };
+    }
     return refCurrentFilter;
   }
 
