@@ -78,7 +78,31 @@ export class FilterService {
   }
 
   getAppliedFilters(): any {
-    return this.activeFilters;
+    let arr = this.getFiltersFromUrl();
+    arr = arr.concat(this.activeFilters);
+    //remove duplicates
+    arr = arr
+    .filter((thing, index, self) => self.findIndex((t) => {return t.id === thing.id }) === index)
+    return arr;
+  }
+
+  getFiltersFromUrl(): any {
+    let refCurrentFilter = [];
+    let urlString = this.route.snapshot.queryParams['q']
+    .replace(' $AND ',' ')
+    .replace(' $OR ',' ')
+    .replace('(','')
+    .replace(')','')
+    let temp_arr = urlString.split(' ');
+    for(let i = 0; i < temp_arr.length; i++) {
+      let arr = temp_arr[i].split(':')
+      refCurrentFilter.push({
+        id: arr[0],
+        paramKey: 'filter[' + arr[0] + ']',
+        value: arr[1]
+      })
+    };
+    return refCurrentFilter;
   }
 
   clearFilters(keys: string[] = []): void {
@@ -122,25 +146,12 @@ export class FilterService {
    * @returns boolean
    */
   doesMatchCurrentFilter(workItem: WorkItem): boolean {
-    let refCurrentFilter = [];
-    if(this.activeFilters.length <= 0) {
-      let urlString = this.route.snapshot.queryParams['q']
-      .replace(' $AND ',' ')
-      .replace(' $OR ',' ')
-      .replace('(','')
-      .replace(')','')
-      let temp_arr = urlString.split(' ');
-      for(let i = 0; i < temp_arr.length; i++) {
-        let arr = temp_arr[i].split(':')
-        refCurrentFilter.push({
-          id: arr[0],
-          paramKey: 'filter[' + arr[0] + ']',
-          value: arr[1]
-        })
-      };
-    } else {
-      refCurrentFilter = this.activeFilters;
-    }
+    let refCurrentFilter = this.getFiltersFromUrl();
+    //concat both arrays
+    refCurrentFilter = refCurrentFilter.concat(this.activeFilters);
+    //remove duplicates
+    refCurrentFilter = refCurrentFilter
+    .filter((thing, index, self) => self.findIndex((t) => {return t.id === thing.id }) === index)
     return refCurrentFilter.every(filter => {
       if (filter.id && Object.keys(this.filtertoWorkItemMap).indexOf(filter.id) > -1) {
         let currentAttr = workItem;
