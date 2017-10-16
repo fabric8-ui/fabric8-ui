@@ -17,6 +17,7 @@ import {
     MockBackend,
     MockConnection
 } from '@angular/http/testing';
+import { ActivatedRoute } from '@angular/router';
 import { Spaces } from 'ngx-fabric8-wit';
 import { WIT_API_URL } from 'ngx-fabric8-wit';
 import { FilterService } from './filter.service';
@@ -24,6 +25,11 @@ import { FilterService } from './filter.service';
 describe('Unit Test :: Filter Service', () => {
   let filterService: FilterService;
   let backend: MockBackend;
+  let mockActivatedRoute = {
+    snapshot: {
+      queryParams: { }
+    }
+  } as ActivatedRoute;
 
   beforeEach(
     async(() => {
@@ -34,6 +40,9 @@ describe('Unit Test :: Filter Service', () => {
           MockBackend,
           FilterService,
           Spaces,
+          { provide: ActivatedRoute,
+            useValue: mockActivatedRoute
+          },
           {
             provide: WIT_API_URL,
             useValue: 'https://api.url.com'
@@ -53,6 +62,7 @@ describe('Unit Test :: Filter Service', () => {
       const testbed = getTestBed();
       backend = testbed.get(MockBackend);
       filterService = testbed.get(FilterService);
+      mockActivatedRoute.snapshot.queryParams = {q:''};
     })
   );
   it('should execute the canary test', () => expect(true).toBe(true));
