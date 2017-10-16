@@ -91,6 +91,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
   private uiLockedAll = false;
   private uiLockedBoard = true;
   private uiLockedSidebar = false;
+  private currentSpace: Space;
 
   sidePanelOpen: boolean = true;
   constructor(
@@ -254,13 +255,19 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     });
   }
 
-  getWorkItems(pageSize, mainLane) {
+  getWorkItems(pageSize, mainLane, payload) {
     let lane = cloneDeep(mainLane);
-    return this.workItemService.getWorkItems(pageSize, [{
-        active: true,
-        paramKey: 'filter[workitemstate]',
-        value: lane.option
-      }, ...this.filterService.getAppliedFilters()])
+
+    let exp = {
+      expression: this.filterService.queryJoiner(
+        cloneDeep(payload.expression),
+        this.filterService.and_notation,
+        this.filterService.queryBuilder(
+          'state', this.filterService.equal_notation, lane.option
+        )
+    )}
+
+    return this.workItemService.getWorkItems2(pageSize, exp)
     .map(workItemResp => {
       let workItems = workItemResp.workItems;
       let cardValue: CardValue[] = [];
@@ -796,9 +803,35 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
         if (this.wiSubscription !== null) {
           this.wiSubscription.unsubscribe();
         }
-        this.wiSubscription = Observable.forkJoin(
-          this.lanes.map(lane => this.getWorkItems(this.pageSize, lane))
-        )
+
+        this.wiSubscription =
+        this.spaces.current.switchMap(space => {
+          let appliedFilters = this.filterService.getAppliedFilters();
+          // remove the filter item from the filters
+          for (let f=0; f<appliedFilters.length; f++) {
+            if (appliedFilters[f].paramKey=='filter[parentexists]') {
+              appliedFilters.splice(f, 1);
+            }
+          }
+          // TODO Filter temp
+          // Take all the applied filters and prepare an object to make the query string
+          let newFilterObj = {};
+          appliedFilters.forEach(item => {
+            newFilterObj[item.id] = item.value;``
+          })
+          newFilterObj['space'] = space.id;
+          let payload = {};
+          if ( this.route.snapshot.queryParams['q'] ) {
+
+          } else {
+            payload = {
+              expression: this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj))
+            }
+          }
+          return Observable.forkJoin(
+            this.lanes.map(lane => this.getWorkItems(this.pageSize, lane, payload))
+          )
+        })
         .take(1)
         .map(finalLanes => {
           let usersToFetch = [];
