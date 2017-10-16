@@ -1,4 +1,5 @@
-<div class="container-fluid f8-wi-container">
+<div class="container-fluid f8-wi-container"
+  #containerHeight>
   <div class="lock-overlay-board" *ngIf="uiLockedAll">
     <div class="spinner-container">
       <h2 class="spinner"></h2>
@@ -41,70 +42,75 @@
 </ng-template>
 <ng-template #sectionPanel>
   <section>
-    <toolbar-panel context="boardview"
+    <div class="width-100 pull-left"
+      #toolbarHeight>
+      <toolbar-panel context="boardview"
         [wiTypes]="workItemTypes"
         (onCreateNewWorkItemSelected)="typeSelectPanel.openPanel()"
         [currentBoardType]="currentBoardType"
         [areas]="areas"
         [loggedInUser]="loggedInUser">
       </toolbar-panel>
-      <div class="width-100 f8-board-wrapper" id="board_topWorkItems">
-        <div class="lock-overlay-board" *ngIf="uiLockedBoard">
-          <div class="spinner-container">
-            <h2 class="spinner"></h2>
-            <h2>Loading Work Items ...</h2>
-            <h4>Please wait, we are loading your work items.</h4>
-          </div>
-        </div>
-        <div class="f8-board"
-          *ngIf="readyToInit"
-          (touchmove)="onTouchstart($event);">
-          <!-- board columns -->
-          <div class="f8-board-lane"
-            *ngFor='let lane of lanes'>
-            <aside class="width-100 pull-left f8-board-lane-column"
-              [attr.data-state]="lane.option">
-              <div class="f8-board-lane__header">
-                <span class="dib">{{lane.option}}</span>
-                <span class="badge" >{{lane.workItems | arrayCount}}</span>
-              </div>
-              <div class="f8-board-lane__wrapper"
-                almInfiniteScroll
-                [eachElementHeightInPx]='contentItemHeight'
-                (initItems)='initWiItems($event, lane)'
-                (fetchMore)='fetchMoreWiItems(lane)' >
-                <div *ngIf="lane.option == 'new'">
-                  <div class="width-100 pull-left margin-bottom-5"
-                    *ngIf="loggedIn">
-                    <alm-work-item-quick-add
-                      [forcedType]="currentBoardType"
-                      [wilistview]="'wi-card-view'"
-                      (close)="close($event)"
-                      (workItemCreate)="onCreateWorkItem($event)">
-                    </alm-work-item-quick-add>
-                  </div>
-                </div>
-                <div class="f8-board__card height-100"
-                  [dragula]='"wi-bag"'>
-                  <div
-                    class="width-100 pull-left"
-                    *ngFor='let item of lane.cardValue'
-                    (mousedown)="getWI(item.id, lane)"
-                    (touchstart)="getWI(item.id, lane)"
-                    [attr.data-id]="item.id" [attr.data-UUID]="item.extraData['UUID']"  id={{item.id}}
-                    [attr.data-version]="item.extraData['version']" [attr.data-selfLink]="item.extraData['selfLink']">
-                    <card
-                      [cardValue]='item'
-                      (menuClickEvent)="cardMenuClick($event, item.id, lane)">
-                    </card>
-                  </div>
-                </div>
-              </div>
-            </aside>
-          </div>
+    </div>
+    <div class="width-100 f8-board-wrapper"
+      id="board_topWorkItems"
+      #boardContainer>
+      <div class="lock-overlay-board" *ngIf="uiLockedBoard">
+        <div class="spinner-container">
+          <h2 class="spinner"></h2>
+          <h2>Loading Work Items ...</h2>
+          <h4>Please wait, we are loading your work items.</h4>
         </div>
       </div>
-      <router-outlet></router-outlet>
+      <div class="f8-board"
+        *ngIf="readyToInit"
+        (touchmove)="onTouchstart($event);">
+        <!-- board columns -->
+        <div class="f8-board-lane"
+          *ngFor='let lane of lanes'>
+          <aside class="width-100 pull-left f8-board-lane-column"
+            [attr.data-state]="lane.option">
+            <div class="f8-board-lane__header">
+              <span class="dib">{{lane.option}}</span>
+              <span class="badge" >{{lane.workItems | arrayCount}}</span>
+            </div>
+            <div class="f8-board-lane__wrapper"
+              almInfiniteScroll
+              [eachElementHeightInPx]='contentItemHeight'
+              (initItems)='initWiItems($event, lane)'
+              (fetchMore)='fetchMoreWiItems(lane)' >
+              <div *ngIf="lane.option == 'new'">
+                <div class="width-100 pull-left margin-bottom-5"
+                  *ngIf="loggedIn">
+                  <alm-work-item-quick-add
+                    [forcedType]="currentBoardType"
+                    [wilistview]="'wi-card-view'"
+                    (close)="close($event)"
+                    (workItemCreate)="onCreateWorkItem($event)">
+                  </alm-work-item-quick-add>
+                </div>
+              </div>
+              <div class="f8-board__card height-100"
+                [dragula]='"wi-bag"'>
+                <div
+                  class="width-100 pull-left"
+                  *ngFor='let item of lane.cardValue'
+                  (mousedown)="getWI(item.id, lane)"
+                  (touchstart)="getWI(item.id, lane)"
+                  [attr.data-id]="item.id" [attr.data-UUID]="item.extraData['UUID']"  id={{item.id}}
+                  [attr.data-version]="item.extraData['version']" [attr.data-selfLink]="item.extraData['selfLink']">
+                  <card
+                    [cardValue]='item'
+                    (menuClickEvent)="cardMenuClick($event, item.id, lane)">
+                  </card>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
   </section>
 </ng-template>
 <detail-add-type-selector

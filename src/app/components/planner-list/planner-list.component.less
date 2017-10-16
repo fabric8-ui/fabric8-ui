@@ -41,7 +41,7 @@
     height: 100%;
     &-wrap {
       width: 100%;
-      height: ~"calc(e('100% - 120px'))";
+     // height: ~"calc(e('100% - 120px'))";
       // to avoid overflown scroll height should be there
       overflow-y: scroll;
       border-top: 1px solid;
@@ -57,11 +57,10 @@
         .no-wi { font-size: @pf-icon-4x; }
       }
     }
-  }
-  &__quick-add {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+    &__quick-add {
+      position: absolute;
+      bottom: 0;
+    }
   }
 
   //Patternfly-ng's tree styles - Start
@@ -134,7 +133,4 @@
   .node-drop-slot.is-dragging-over {
     height: 66px!important;
   }
-}
-.experimental-border .f8-wi-container {
-  height:  ~"calc(e('100vh - 106px'))"
 }

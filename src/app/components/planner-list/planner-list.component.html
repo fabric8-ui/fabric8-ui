@@ -1,4 +1,5 @@
-<div class="container-fluid f8-wi-container">
+<div class="container-fluid f8-wi-container"
+  #containerHeight>
   <div class="lock-overlay-list" *ngIf="uiLockedAll">
     <div class="spinner-container">
       <h2 class="spinner"></h2>
@@ -41,14 +42,17 @@
 </ng-template>
 <ng-template #sectionPanel>
   <section>
-    <toolbar-panel
-      context="listview"
-      [wiTypes]="workItemTypes"
-      (onCreateNewWorkItemSelected)="typeSelectPanel.openPanel()"
-      [currentBoardType]="currentBoardType"
-      [areas]="areas"
-      [loggedInUser]="loggedInUser">
-    </toolbar-panel>
+    <div class="width-100 pull-left"
+      #toolbarHeight>
+      <toolbar-panel
+        context="listview"
+        [wiTypes]="workItemTypes"
+        (onCreateNewWorkItemSelected)="typeSelectPanel.openPanel()"
+        [currentBoardType]="currentBoardType"
+        [areas]="areas"
+        [loggedInUser]="loggedInUser">
+      </toolbar-panel>
+    </div>
     <div class="f8-wi-list">
       <div #listContainer
         almInfiniteScroll
@@ -97,9 +101,15 @@
         </div>
       </div>
 
-      <div id="workItemList_Error" class="error" *ngIf="error">{{error}}</div>
+      <div class="error"
+        id="workItemList_Error"
+        *ngIf="error">{{error}}
+      </div>
 
-      <div id="workItemList_quickAdd" class="f8-wi-list__quick-add" *ngIf="loggedIn">
+      <div class="f8-wi-list__quick-add width-100 pull-left"
+        id="workItemList_quickAdd"
+        *ngIf="loggedIn"
+        #quickaddHeight>
         <alm-work-item-quick-add
           [wilistview]="'wi-list-view'"
           (close)="close($event)"
