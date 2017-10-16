@@ -33,7 +33,6 @@ describe('Area tests :: ', function () {
   it('Verify Area elements are present -desktop ', function() {
       detailPage = page.clickWorkItemTitle(page.firstWorkItem, WORKITEM_0_ID);
       browser.wait(until.elementToBeClickable(detailPage.areaLabel), constants.WAIT, 'Failed to find areaLabel');   
-      expect(detailPage.areaLabel.getText()).toBe('Area');
       expect(detailPage.AreaSelect().isPresent()).toBe(true);
      });
 

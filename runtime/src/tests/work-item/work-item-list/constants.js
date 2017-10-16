@@ -19,5 +19,5 @@ function define(name, value) {
     });
 }
 
-define("WAIT", 300000);
+define("WAIT", 30000);
 define("LONG_WAIT", 60000);

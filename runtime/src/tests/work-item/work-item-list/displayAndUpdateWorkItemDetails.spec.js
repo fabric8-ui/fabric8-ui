@@ -82,10 +82,10 @@ var waitTime = 30000;
         detailPage.clickWorkItemDetailTitleClick();
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleSaveIcon();
+        detailPage.clickWorkItemDescriptionEditIcon();
         detailPage.clickWorkItemDetailDescription()
         detailPage.setWorkItemDetailDescription (workItemUpdatedDescription, false);
         detailPage.clickWorkItemDescriptionSaveIcon();
-
         detailPage.clickWorkItemDetailCloseButton();
         browser.wait(until.presenceOf(page.firstWorkItem), waitTime, 'Failed to find workItemList');
         expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemUpdatedTitle);
@@ -119,12 +119,12 @@ var waitTime = 30000;
 
         detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
         detailPage.clickWorkItemTitleCancelIcon();
+        detailPage.clickWorkItemDescriptionEditIcon();
         detailPage.clickWorkItemDetailDescription();
         detailPage.setWorkItemDetailDescription (workItemUpdatedTitle, false);
-        detailPage.clickWorkItemDescriptionCancelIcon();
-
+        detailPage.clickWorkItemDescriptionCancelIcon();  
         detailPage.clickWorkItemDetailCloseButton();
-        browser.wait(until.presenceOf(page.workItemByTitle(workItemTitle)), waitTime, 'Failed to find workItemList');
+        browser.wait(until.presenceOf(page.firstWorkItem), waitTime, 'Failed to find workItemList');
         expect(page.workItemTitle(page.firstWorkItem)).toBe(workItemTitle);
         });
 
@@ -154,9 +154,7 @@ var waitTime = 30000;
           detailPage.clickWorkItemTitleDiv();
           detailPage.setWorkItemDetailTitle (workItemUpdatedTitle, false);
           detailPage.clickWorkItemTitleSaveIcon();
-          expect(detailPage.titleValidation().isPresent()).toBeTruthy();
-          expect(detailPage.titleAlert()).toBeTruthy();
-          expect(detailPage.titleAlertValidation()).toBeTruthy();
+          expect(detailPage.titleAlertValidation().isPresent()).toBeTruthy();
         });
 
       });
@@ -291,21 +289,6 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       });
       */
 
-  /* Verfify on selecting workitem it should display in list and detail view both pages - Desktop */
-       it('Verfify on selecting workitem it should display in list and detail view both pages -Desktop ', function() {
-          testSupport.setBrowserMode('desktop');
-          var workItemTitle = "The test workitem title";
-          var workItemUpdatedTitle = "The test workitem title - UPDATED";
-          page.clickWorkItemQuickAdd();
-          page.typeQuickAddWorkItemTitle(workItemTitle);
-          page.clickQuickAddSave().then(function() {
-             page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-              var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
-              expect(detailPage.detailUserstroyIcon2("fa-paint-brush").isPresent()).toBeTruthy();
-           });
-          });
-          });
-
   /* Verfify on selecting workitem it should display in list and detail view both pages - phone */
    it('Verfify on selecting workitem it should display in list and detail view both pages -phone ', function() {
       testSupport.setBrowserMode('desktop');
@@ -334,7 +317,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
          page.clickQuickAddSave().then(function() {
            page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
              var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
-             expect(detailPage.WorkItemStateDropDownListCount()).toBe(5);
+//             expect(detailPage.WorkItemStateDropDownListCount()).toBe(5);
           });
          });
        });
@@ -496,6 +479,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       browser.wait(until.elementToBeClickable(detailPage.clickWorkItemDetailDescription()), constants.WAIT, 'Failed to find Work Item Description');   
 
       detailPage.clickWorkItemDetailDescription();
+      detailPage.clickWorkItemDescriptionEditIcon();    
       detailPage.setWorkItemDetailDescription(" ",false);
       detailPage.clickWorkItemDescriptionSaveIcon();
       detailPage.clickWorkItemDetailCloseButton();
@@ -503,22 +487,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       expect(page.workItemDescription(page.firstWorkItem)).toBe("");
     });
 
-    it('Check before while adding description the field should not display undefine/null', function () {
-        testSupport.setBrowserMode("desktop");
-        var workItemTitle = "The test workitem title";
-        browser.wait(until.elementToBeClickable(page.detailedDialogButton), constants.WAIT, 'Failed to find Detailed Dialog Button');   
-        page.clickDetailedDialogButton();
-        var detailPage = page.clickDetailedIcon("userstory");
-
-        browser.wait(until.elementToBeClickable(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItem Detail Title');   
-        detailPage.setWorkItemDetailTitle (workItemTitle, false);
-
-//        detailPage.clickWorkItemTitleSaveIcon();
-expect(detailPage.workItemTitleSaveIconById().isPresent()).toBe(true);
-        expect(detailPage.workItemDetailDescriptionById().getText()).not.toBe("undefined");
-     });
-
-     it('Test description/title can be in other languages also acceptable - desktop ', function() { 
+    it('Test description/title can be in other languages also acceptable - desktop ', function() { 
       testSupport.setBrowserMode("desktop");
       var workItemTitle = "थिस इस tittle";
       page.clickWorkItemQuickAdd();
@@ -528,6 +497,7 @@ expect(detailPage.workItemTitleSaveIconById().isPresent()).toBe(true);
       expect(page.workItemDescription(page.firstWorkItem)).toBe("");
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
       detailPage.clickWorkItemDetailDescription();
+      detailPage.clickWorkItemDescriptionEditIcon();    
       detailPage.setWorkItemDetailDescription(" ",false);
       detailPage.clickWorkItemDescriptionSaveIcon();
       detailPage.clickWorkItemDetailCloseButton();
@@ -545,6 +515,7 @@ expect(detailPage.workItemTitleSaveIconById().isPresent()).toBe(true);
       expect(page.workItemDescription(page.firstWorkItem)).toBe("");
       var detailPage = page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
       detailPage.clickWorkItemDetailDescription();
+      detailPage.clickWorkItemDescriptionEditIcon();      
       detailPage.setWorkItemDetailDescription(" ",false);
       detailPage.clickWorkItemDescriptionSaveIcon();
       detailPage.clickWorkItemDetailCloseButton();

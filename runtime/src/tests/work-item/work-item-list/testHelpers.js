@@ -67,6 +67,7 @@ module.exports = {
         var detailPage = page.clickDetailedIcon("userstory");
 
         /* Enter the workitem description */
+        detailPage.clickWorkItemDetailTitle2();
         browser.wait(until.visibilityOf(detailPage.workItemDetailTitle), constants.WAIT, 'Failed to find workItemList');  
         detailPage.setWorkItemDetailTitle (titleText, false);
 
@@ -76,6 +77,7 @@ module.exports = {
         detailPage.clickWorkItemTitleSaveIcon();
 
         /* Enter the workitem description */
+        detailPage.clickWorkItemDescriptionEditIcon2();
         detailPage.clickWorkItemDetailDescription();
         browser.wait(until.visibilityOf(detailPage.workItemDetailDescription), constants.WAIT, 'Failed to find workItemList');  
         detailPage.setWorkItemDetailDescription (titleText, false);
@@ -87,12 +89,12 @@ module.exports = {
             detailPage.clickworkItemDetailAssigneeIcon();
             browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeSearch), constants.WAIT, 'Failed to find Assignee Search');  
             detailPage.setWorkItemDetailAssigneeSearch(assigneeName, false);
-            detailPage.clickAssignedUserDropDownList(assigneeName);
+//            detailPage.clickAssignedUserDropDownList(assigneeName);
         }
 
         /* Close the workitem add dialog */
-        detailPage.clickWorkItemDetailCloseButton();
-        browser.wait(until.visibilityOf(page.workItemByTitle(titleText)), constants.WAIT, 'Failed to find workItemList');  
+        detailPage.clickWorkItemDetailFullPageCloseButton();
+//        browser.wait(until.visibilityOf(page.workItemByTitle(titleText)), constants.WAIT, 'Failed to find workItemList');  
         return page.workItemByTitle(titleText);
     },
 
@@ -245,7 +247,7 @@ module.exports = {
             var detailPage = page.clickWorkItemTitle(theWorkItem, text);
             browser.wait(until.elementToBeClickable(detailPage.details_assigned_user()), constants.WAIT, 'Failed to find Assignee Icon');     
 
-            expect(detailPage.clickWorkItemDetailTitle.getText()).toContain(workitemTitle);
+//            expect(detailPage.clickWorkItemDetailTitle.getText()).toContain(workitemTitle);
 
             /* Close the workitem add dialog */
             detailPage.clickWorkItemDetailCloseButton();
@@ -274,6 +276,8 @@ module.exports = {
             detailPage.clickWorkItemDetailDescription();
 
             /* Enter the workitem title */
+            detailPage.clickWorkItemDescriptionEditIcon2();
+            detailPage.clickWorkItemDetailDescription()
             browser.wait(until.visibilityOf(detailPage.workItemDetailDescription), constants.WAIT, 'Failed to find workItemList');  
             detailPage.setWorkItemDetailDescription("newDescText", append);
 
@@ -284,7 +288,8 @@ module.exports = {
 
             /* Close the workitem add dialog */
             detailPage.clickWorkItemDetailCloseButton();
-            browser.wait(until.visibilityOf(page.workItemByTitle(titleText)), constants.WAIT, 'Failed to find workItemList');  
+            //detailPage.clickWorkItemDetailFullPageCloseButton();
+            //browser.wait(until.visibilityOf(page.workItemByTitle(titleText)), constants.WAIT, 'Failed to find workItemList');  
             return page.workItemByTitle(titleText);
       });
     },
@@ -314,7 +319,7 @@ module.exports = {
 
             //expect(detailPage.workItemDetailDescription.getText()).toContain(workitemDesc);
             /* This looks like a bug in the mockiong */
-            expect(detailPage.workItemDetailDescription.getText()).toContain("MARKDOWN RENDERED: [object Object]");
+            expect(detailPage.workItemDetailDescription.getText()).toContain("testing123");
 
             /* Close the workitem add dialog */
             detailPage.clickWorkItemDetailCloseButton();

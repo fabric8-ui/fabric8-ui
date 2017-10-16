@@ -83,7 +83,21 @@ generateString: function (size, newlines) {
   }
   // console.log ("return string ="  + retString);
   return retString;
-}
+},
 
+/* 
+ * Click UI element
+ */
+clickElement (theElement, theElementName, thePageName) {
+
+  var constants = require("./constants");
+  var until = protractor.ExpectedConditions;
+
+  browser.wait(until.elementToBeClickable(theElement), constants.WAIT, 'Failed to find element ' + theElementName);
+  theElement.click().then(function(){
+    console.log(thePageName + " - clicked element: " + theElementName);
+  });
+  return;
+}
 
 };

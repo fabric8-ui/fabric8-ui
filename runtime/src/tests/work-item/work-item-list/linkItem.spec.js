@@ -50,6 +50,7 @@ describe('Link item ', function () {
   //   expect(detailPage.linkclose("0").isPresent()).toBe(true);
   //   expect(detailPage.linkTotalByTypes("0")).toBe("1");
   //  });
+
    it('Read a link item - Desktop', function () {
     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
     expect(detailPage.commentDiv().isPresent()).toBe(true);
@@ -65,6 +66,7 @@ describe('Link item ', function () {
     // expect(detailPage.linkState("0")).toBe('new');
     // expect(detailPage.linkclose("0").isPresent()).toBe(true);
    });
+   
    it('Delete link and check if it exists in list or not - Desktop', function () {
     var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
     expect(detailPage.commentDiv().isPresent()).toBe(true);

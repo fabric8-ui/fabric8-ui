@@ -8,7 +8,8 @@ exports.config = {
     exclude: ['./../src/tests/**/*test-template.spec.js','./../src/tests/**/*work-item-dynamic-fields.spec.js','./../src/tests/**/EXCLUDED/*.spec.js'],
     suites: {
       smokeTest: './../src/tests/**/smokeTest.spec.js',
-      fullTest:  './../src/tests/**/*.spec.js'
+      fullTest:  './../src/tests/**/*.spec.js',
+      tempTest: './../src/tests/**/iteration.spec.js'
     },
 
     jasmineNodeOpts: {
@@ -24,7 +25,7 @@ exports.config = {
 
     capabilities: {
       'browserName': 'chrome',
-      'maxInstances': 2,
+//      'maxInstances': 2,
       'shardTestFiles': true,
       'loggingPrefs': {
       'driver': 'WARNING',
@@ -32,7 +33,8 @@ exports.config = {
       'browser': 'INFO'
       },
       'chromeOptions': {
-      'args': [ '--no-sandbox', '--window-workspace=1']
+//      'args': [ '--no-sandbox', '--window-workspace=1']
+       'args': [ '--no-sandbox']
       }
     },
 

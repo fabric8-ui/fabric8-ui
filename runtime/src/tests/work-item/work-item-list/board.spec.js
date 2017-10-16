@@ -26,7 +26,7 @@ describe('Work board tests :: ', function () {
     boardPage = new WorkBoardPage(true);
   });
 
-  it( 'Verify Board elements are present -desktop ', function() {
+/*  it( 'Verify Board elements are present -desktop ', function() {
         var stateList = typesOfStatesList();
         var countstateList = totalCountOftypesOfStatesList();
         verifytypesOfStates(stateList,'false','false');
@@ -121,7 +121,7 @@ describe('Work board tests :: ', function () {
             }
        }
   });
-
+*/
   
 });
 
