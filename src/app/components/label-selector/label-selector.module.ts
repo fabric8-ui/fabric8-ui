@@ -4,6 +4,7 @@ import { LabelSelectorComponent } from './label-selector.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { WidgetsModule } from 'ngx-widgets';
+import { EventService } from './../../services/event.service';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { WidgetsModule } from 'ngx-widgets';
     LabelSelectorComponent
   ],
   providers: [
-    LabelService
+    LabelService,
+    EventService
   ]
 })
 

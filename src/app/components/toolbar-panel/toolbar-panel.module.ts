@@ -7,6 +7,7 @@ import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToolbarModule } from 'patternfly-ng';
 
 import { CollaboratorService } from '../../services/collaborator.service';
+import { EventService } from './../../services/event.service';
 import { FilterService } from '../../services/filter.service';
 import { WorkItemService } from '../../services/work-item.service';
 import { ToolbarPanelComponent } from './toolbar-panel.component';
@@ -35,7 +36,8 @@ import {
     CollaboratorService,
     FilterService,
     TooltipConfig,
-    WorkItemService
+    WorkItemService,
+    EventService
   ],
   exports: [ToolbarPanelComponent]
 })

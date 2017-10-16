@@ -165,6 +165,23 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       this.filterService.getFilters()
         .subscribe(filters => this.setFilterTypes(filters))
     );
+
+    // TODO : should be replaced by ngrx/store implementation
+    this.eventListeners.push(
+      this.eventService.labelAdd
+        .subscribe(label => {
+          const filterMap = this.getFilterMap();
+          const index = this.filterConfig.fields.findIndex(i => i.id === 'label');
+          if (index > -1) {
+            if (this.filterConfig.fields[index].queries.length > 0) {
+              this.toolbarConfig.filterConfig.fields[index].queries = [
+                ...this.toolbarConfig.filterConfig.fields[index].queries,
+                ...filterMap.label.datamap([label]).queries
+              ];
+            }
+          }
+        })
+    );
   }
 
   ngOnDestroy() {
@@ -531,4 +548,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     }
   }
+
+
 }

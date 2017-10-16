@@ -1,3 +1,4 @@
+import { EventService } from './../../services/event.service';
 import {
   Component,
   ElementRef,
@@ -44,7 +45,8 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
   private searchValue: string = '';
 
   constructor(
-    private labelService: LabelService
+    private labelService: LabelService,
+    private eventService: EventService
   ) {}
 
   ngOnInit() {
@@ -175,6 +177,11 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
           name: data.attributes.name,
           selected: false
         };
+
+        // Emit new label
+        // TODO: Should be replaced by ngrx/store
+        this.eventService.labelAdd.next(data);
+
         this.backup = [cloneDeep(newLabel), ...this.backup];
         if (this.searchValue === '' ||
             (this.searchValue !== '' &&
