@@ -358,23 +358,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate([], navigationExtras);
   }
 
-
-  onChangeBoardType(type: WorkItemType) {
-    this.currentBoardType = type;
-
-    let params = cloneDeep(this.currentQueryParams);
-    params['workitemtype'] = type.attributes.name;
-
-    // Prepare navigation extra with query params
-    let navigationExtras: NavigationExtras = {
-      queryParams: params,
-      relativeTo: this.route
-    };
-
-    // Navigated to filtered view
-    this.router.navigate([], navigationExtras);
-  }
-
   showTypes() {
     this.showTypesOptions = true;
   }

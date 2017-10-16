@@ -9,29 +9,6 @@
         (onFilterFieldSelect)="selectFilterType($event)"
         (onFilterTypeAhead)="filterQueries($event)">
       <template #actionsTemplate>
-        <div *ngIf="context==='boardview' && (wiTypes.length!=0)" dropdown class="card-pf-time-frame-filter board-type-dropdown dropdown">
-          <span class="currently-showing">Currently showing:</span>
-          <span class="dropdown primary-action" dropdown>
-            <button dropdownToggle
-                id="wi-board-type"
-                type="button"
-                class="btn btn-default dropdown-toggle">
-              <span class="dropdown-icon fa {{currentBoardType?.attributes?.icon}}"></span>
-              <span class="dropdown-text">
-                {{currentBoardType?.attributes?.name}}
-              </span>
-              <span class="caret"></span>
-            </button>
-            <ul id="wi-board-type-dropdown" class="dropdown-menu dropdown-ul" role="menu" *dropdownMenu>
-              <li class="dropdown-li" *ngFor="let type of wiTypes;" (click)="onChangeBoardType(type)">
-                <a>
-                  <span class="dropdown-icon fa {{type?.attributes?.icon}}"></span>
-                  <span class="dropdown-text">{{type.attributes.name}}</span>
-                </a>
-              </li>
-            </ul>
-          </span>
-        </div>
       </template>
       <template #addTemplate>
         <button *ngIf="loggedIn && editEnabled && wiTypes.length"
