@@ -77,16 +77,23 @@ export class FilterService {
     this.filterChange.next(this.activeFilters);
   }
 
-  getAppliedFilters(): any {
-    let arr = this.getFiltersFromUrl();
-    arr = arr.concat(this.activeFilters);
-    //remove duplicates
-    arr = arr
-    .filter((thing, index, self) => self.findIndex((t) => {return t.id === thing.id }) === index)
-    return arr;
+  getAppliedFilters(includeSidePanel: boolean = false): any {
+    if (includeSidePanel) {
+      let arr = this.getFiltersFromUrl();
+      arr = arr.concat(this.activeFilters);
+      //remove duplicates
+      arr = arr
+      .filter((thing, index, self) => self.findIndex((t) => {return t.id === thing.id }) === index)
+      return arr;
+    } else {
+      return this.activeFilters;
+    }
   }
 
   getFiltersFromUrl(): any {
+    // TODO
+    // This code needs to be looked at
+    // to support in query from the expression as well
     let refCurrentFilter = [];
     if(this.route.snapshot.queryParams['q']) {
       let urlString = this.route.snapshot.queryParams['q']
