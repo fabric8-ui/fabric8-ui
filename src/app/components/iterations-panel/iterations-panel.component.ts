@@ -495,6 +495,9 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   handleClick($event: Action, item: any) {
+  }
 
+  setGuidedTypeWI() {
+    this.groupTypesService.setCurrentGroupType(this.collection);
   }
  }

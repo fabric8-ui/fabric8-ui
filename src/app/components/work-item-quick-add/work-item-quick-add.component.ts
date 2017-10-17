@@ -129,7 +129,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
     }
     //Go through the active filters and apply them
     let currentFilters = this.filterService.getAppliedFilters();
-    console.log('currentFilters = ', currentFilters);
     if( currentFilters.length ) {
       for (let f=0; f < currentFilters.length; f++) {
         switch (currentFilters[f].id) {

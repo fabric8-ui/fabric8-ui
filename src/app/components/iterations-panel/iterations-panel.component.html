@@ -22,7 +22,8 @@
           *ngFor="let iteration of activeIterations"
           [routerLinkActive]="'f8-itr--selected'"
           [routerLink]="[]" [attr.data-id]="iteration.id"
-          [queryParams]="{q: constructURL(iteration.id)}">
+          [queryParams]="{q: constructURL(iteration.id)}"
+          (click)="setGuidedTypeWI(item);">
           <div class="f8-itr__List-subheader">
             <div *ngIf="loggedIn"
               class="dropdown-kebab-pf pull-right dropdown"
