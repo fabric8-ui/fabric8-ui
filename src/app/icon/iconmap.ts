@@ -1,6 +1,6 @@
 export const IconMap: any = {
     'in progress'      : { icon : ['pficon', 'pficon-resources-almost-full'], color :  '#ec7a08' },
-    'new'              : { icon : ['fa', 'fa-arrow-down','color-purple'], color : '#582fc0' },
+    'new'              : { icon : ['fa', 'fa-star','color-purple'], color : '#582fc0' },
     'resolved'         : { icon : ['pficon', 'pficon-resources-full'], color : '#3f9c35' },
     'open'             : { icon : ['fa', 'fa-fire'], color : '#cc0000' },
     'closed'           : { icon : ['fa', 'fa-remove'], color : '#72767b' },
