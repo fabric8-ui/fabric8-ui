@@ -99,9 +99,27 @@
       </button>
     </div>
     <div class="row padding-top-10 margin-top-15">
-      <div class="col-xs-2 col-sm-2 col-md-2">
-        <i class="fa padding-top-5 padding-left-10"
-        [ngClass]="selectedType?selectedType.attributes.icon:''"></i>
+      <div class="dropdown-kebab-pf pull-left" dropdown>
+        <button class="btn btn-default dropdown-toggle padding-v-0"
+          type="button"
+          dropdownToggle>
+          <i class="fa dib"
+            [ngClass]="selectedType?selectedType.attributes.icon:''"></i>
+          <span class="fa fa-angle-down"></span>
+        </button>
+        <ul class="dropdown-menu"
+          role="menu"
+          aria-labelledby="dropdownKebab"
+          *dropdownMenu>
+          <li *ngFor="let type of availableTypes"
+              role="menuitem"
+              (click)="selectType($event, type)">
+            <a class="dropdown-item" href="#">
+              <i class="fa pull-left"
+                [ngClass]="type.attributes.icon"></i>&nbsp;{{type.attributes.name}}
+            </a>
+          </li>
+        </ul>
       </div>
       <div class="col-xs-10 col-sm-10 col-md-10">
         <input class="form-control col-xs-12 col-sm-12

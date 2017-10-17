@@ -94,6 +94,20 @@
     margin-left: 0;
     background: @color-pf-white;
     .Border(2px, solid, @color-pf-black-400);
+    .dropdown-kebab-pf {
+      button[data-toggle='dropdown'] {
+        display: inline-flex;
+        height: 26px;
+      }
+      .dropdown-menu {
+        top: auto;
+        margin-left: 16px;
+        i {
+          width: 15px;
+          margin-top: 5px;
+        }
+      }
+    }
     textarea[class="f8-quickadd-desc"] {
       width: 100%;
       height: 29px;
