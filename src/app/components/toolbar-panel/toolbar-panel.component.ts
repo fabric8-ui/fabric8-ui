@@ -89,7 +89,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   allowedFilterKeys: string[] = [
     'assignee',
     'area',
-    'label'
+    'label',
+    'workitemtype'
   ];
   allowedMultipleFilterKeys: string[] = [
     'label'
@@ -136,10 +137,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('[ToolbarPanelComponent] Running in context: ' + this.context);
     this.loggedIn = this.auth.isLoggedIn();
     this.firstVisit = true;
-    // if this is a list view, we allow the wi type to be a filter.
-    if (this.context === 'listview') {
-      this.allowedFilterKeys.push('workitemtype');
-    }
     // we want to get notified on space changes.
     this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
