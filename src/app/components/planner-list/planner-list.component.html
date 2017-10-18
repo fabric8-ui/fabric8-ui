@@ -82,7 +82,8 @@
               [workItem]="node.data"
               [iterations]="iterations"
               (detailEvent)="onDetail($event)"
-              (previewEvent)="onPreview($event)">
+              (previewEvent)="onPreview($event)"
+              (clickLabel)="onClickLabel($event)">
             </alm-work-item-list-entry>
           </ng-template>
           <ng-template #actionTemplate let-node="node" let-index="index">
