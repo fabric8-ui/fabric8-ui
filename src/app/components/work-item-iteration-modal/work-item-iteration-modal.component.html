@@ -9,7 +9,7 @@
       <!-- UX feed for existing iteration association -->
       <div id="reassociate-msg"
         *ngIf="!!workItem?.relationships?.iteration">
-        <strong>{{ workItem?.attributes['system.title'] }}</strong>
+        <strong [innerHTML]="workItem?.attributes['system.title']"></strong>
         is currently associated with
         <strong>
           {{(workItem?.relationships?.iteration?.data?.attributes?.resolved_parent_path +
@@ -22,7 +22,7 @@
         <div class="search-pf-input-group">
           <div>
             {{ !(workItem?.relationships?.iteration) ? "Associate" : "Reassociate" }}
-            <strong>{{ workItem?.attributes['system.title'] }}</strong> with
+            <strong [innerHTML]="workItem?.attributes['system.title']"></strong> with
           </div>
 
           <div class="f8-iteration-modal input-group dropdown open active">

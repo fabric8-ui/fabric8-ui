@@ -48,8 +48,10 @@
         tooltip="unassigned"
         placement="top"></span>
     </div>
-    <div class="margin-right-15 padding-right-15" tooltip="{{cardValue.title}}" placement="top">
-      {{ cardValue.title | truncate : 80 }}
+    <div class="margin-right-15 padding-right-15" 
+      tooltip="{{cardValue.title}}" 
+      placement="top" 
+      [innerHTML]="cardValue.title | truncate : 80">
     </div>
   </div>
   <f8-label [truncateAfter]='4' [labels]="cardValue.extraData.labels" [allowDelete]="false"></f8-label>

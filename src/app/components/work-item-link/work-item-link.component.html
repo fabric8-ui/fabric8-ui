@@ -61,7 +61,7 @@
           <p class="margin-0"
             id="link_item_title"
             *ngIf="workItem" >
-            This item, {{ workItem.attributes['system.title'] }}
+            This item, <span [innerHTML]="workItem.attributes['system.title']"></span>
           </p>
         </div>
         <div class="f8-link__content-editor table width-100"
@@ -111,9 +111,8 @@
                       [attr.data-winumber]="workItem.attributes['system.number']"
                       [attr.data-wititle]="workItem.attributes['system.title']">
                       <a #searchresult>
-                        <span>
-                          {{workItem.attributes['system.number']}} - </span>
-                        {{workItem.attributes['system.title']}}
+                        <span>{{workItem.attributes['system.number']}} - </span>
+                        <span [innerHTML]="workItem.attributes['system.title']"></span>
                       </a>
                   </li>
                 </ul>
@@ -146,8 +145,9 @@
             <li *ngFor='let link of linkDict.links'
               class="f8-link__list-item">
               <a [routerLink]="getWILink(link, workItem)">
-                <span class="f8-link__list-item-title" [id]="link.id + '-text'">
-                  {{link.relationalData.source.id == workItem.id ? link.relationalData.target.title : link.relationalData.source.title}}
+                <span class="f8-link__list-item-title" 
+                  [id]="link.id + '-text'" 
+                  [innerHTML]="link.relationalData.source.id == workItem.id ? link.relationalData.target.title : link.relationalData.source.title">
                 </span>
               </a>
               <!--<span id="linkSWIstate_{{counterlink}}">

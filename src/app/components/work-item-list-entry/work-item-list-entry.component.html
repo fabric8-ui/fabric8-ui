@@ -17,8 +17,8 @@
         <div class="f8-wi__list-title truncate-ellipsis col-xs-12 row">
             <div class="f8-wi__list-description">
               <p class="workItemList_title truncate"
-                 (click)="onDetailPreview($event)">
-                  {{workItem.attributes['system.title']}}
+                 (click)="onDetailPreview($event)"
+                 [innerHTML]="workItem.attributes['system.title']">
               </p>
               <a [routerLink]="[constructUrl(workItem)]"
               class="fa fa-list-alt f8-action-icon"></a>

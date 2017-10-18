@@ -8,7 +8,7 @@
   [attr.disabled]="(!onLineClickEdit || readOnly) && !editing ? '' : null"
   [attr.placeholder]="placeholder"
   [class.active]="editing"
-  [value]="inpvalue"
+  [innerHTML]="inpvalue"
   class="input-field inlineinput-textarea">
 </textarea>
 <div
