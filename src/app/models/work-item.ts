@@ -32,6 +32,9 @@ export class WorkItemRelations {
   baseType?: {
     data: WorkItemType;
   };
+  parent?: {
+    data: WorkItem;
+  };
   children?: {
     links: {
       related: string;
@@ -69,6 +72,7 @@ export class RelationalData {
   area?: AreaModel;
   creator?: User;
   comments?: Comment[];
+  parent?: WorkItem;
   assignees?: User[];
   labels?: LabelModel[];
   linkDicts?: LinkDict[];

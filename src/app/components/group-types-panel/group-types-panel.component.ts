@@ -100,6 +100,6 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
     if(groupType.group == 'portfolio') {
       gt = gType.find(groupType => groupType.group == 'portfolio' && groupType.level[1] == 0);
     }
-    this.groupTypesService.setCurrentGroupType(gt.wit_collection);
+    this.groupTypesService.setCurrentGroupType(gt.wit_collection, gt.group);
   }
 }

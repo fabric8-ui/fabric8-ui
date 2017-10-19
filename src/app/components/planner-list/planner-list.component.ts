@@ -132,6 +132,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   private expandedNode: any = null;
   private selectedWI: WorkItem = null;
   private initialGroup: GroupTypesModel;
+  private included: WorkItem[];
 
 
   constructor(
@@ -405,8 +406,13 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         newFilterObj[item.id] = item.value;
       })
       newFilterObj['space'] = this.currentSpace.id;
+      let showFlatList = false;
+      if (this.groupTypesService.groupName === 'execution' || this.groupTypesService.groupName === 'requirements')
+        showFlatList = true;
+      console.log('showFlatList', this.groupTypesService.groupName);
       let payload = {
-        parentexists: !!!this.showHierarchyList
+        //for execution level set this to true
+        parentexists: showFlatList
       };
       if ( this.route.snapshot.queryParams['q'] ) {
         let existingQuery = this.filterService.queryToJson(this.route.snapshot.queryParams['q']);
@@ -441,12 +447,14 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       this.logger.log(workItemResp.workItems);
       const workItems = workItemResp.workItems;
       this.nextLink = workItemResp.nextLink;
+      this.included = workItemResp.included;
       this.workItems = this.workItemService.resolveWorkItems(
         workItems,
         this.iterations,
         [], // We don't want to static resolve user at this point
         this.workItemTypes,
-        this.labels
+        this.labels,
+        this.included
       );
       this.workItemDataService.setItems(this.workItems);
       // Resolve assignees
@@ -492,7 +500,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
             this.iterations,
             [],
             this.workItemTypes,
-            this.labels
+            this.labels,
+            newWiItemResp.included
           )
         ];
         this.workItemDataService.setItems(this.workItems);
@@ -517,6 +526,14 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
 
   loadChildren(node): any {
     return this.workItemService.getChildren(node.data)
+      //set the parent information for the child WIs
+      .then((workItems: WorkItem[]) => {
+        workItems.map(wi => {
+          wi.relationships.parent = { data: {} as WorkItem };
+          wi.relationships.parent.data = node.data;
+        });
+        return workItems;
+      })
       .then((workItems: WorkItem[]) => this.workItemService.resolveWorkItems(
         workItems,
         this.iterations,
@@ -635,6 +652,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
           if (this.expandedNode === null) {
             //A  WI has been selected - add the new WI as a child under that
             this.selectedWI.hasChildren = true;
+            item.relationships.parent = { data: {} as WorkItem }
+            item.relationships.parent.data = this.selectedWI;
           } else {
             let index = this.workItems.findIndex(wi => wi.id === this.selectedWI.id)
             if(this.selectedWI.id === this.expandedNode.node.data.id) {

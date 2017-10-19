@@ -68,7 +68,7 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   }
 
   setGuidedTypeWI(wiCollection) {
-    this.groupTypesService.setCurrentGroupType(wiCollection);
+    this.groupTypesService.setCurrentGroupType(wiCollection, 'execution');
   }
 
   constructURL(iterationId: string) {

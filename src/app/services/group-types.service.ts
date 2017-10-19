@@ -28,6 +28,7 @@ export class GroupTypesService {
   private selectedGroupType: GroupTypesModel;
   public groupTypeSelected: Subject<string[]> = new Subject();
   public workItemSelected: Subject<string[]> = new Subject();
+  public groupName: string = '';
 
   constructor(
     private logger: Logger,
@@ -76,8 +77,9 @@ export class GroupTypesService {
     }
   }
 
-  setCurrentGroupType(groupType) {
+  setCurrentGroupType(groupType, groupName: string = '') {
     this.selectedGroupType = groupType;
+    this.groupName = groupName;
     //emit observable. Listener on planner backlog view
     this.groupTypeSelected.next(groupType);
   }

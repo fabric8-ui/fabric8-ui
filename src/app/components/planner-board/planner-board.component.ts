@@ -91,6 +91,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
   private uiLockedBoard = true;
   private uiLockedSidebar = false;
   private currentSpace: Space;
+  private included: WorkItem[];
 
   sidePanelOpen: boolean = true;
   constructor(
@@ -254,6 +255,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     return this.workItemService.getWorkItems2(pageSize, exp)
     .map(workItemResp => {
       let workItems = workItemResp.workItems;
+      this.included = workItemResp.included;
       let cardValue: CardValue[] = [];
       this.workItemDataService.setItems(workItems);
       lane.workItems = this.workItemService.resolveWorkItems(
@@ -261,7 +263,8 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
         this.iterations,
         [],
         this.workItemTypes,
-        this.labels
+        this.labels,
+        this.included
       );
       lane.cardValue = lane.workItems.map(item => {
         return {
@@ -459,7 +462,8 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
               this.iterations,
               [],
               this.workItemTypes,
-              this.labels
+              this.labels,
+              workItemResp.included
           )];
           lane.cardValue = [
             ...lane.cardValue,

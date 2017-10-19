@@ -62,6 +62,7 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
   queryParams: Object = {};
   eventListeners: any[] = [];
   selectedItemId: string | number = 0;
+  private parentWI: WorkItem;
 
   constructor(private auth: AuthenticationService,
               private broadcaster: Broadcaster,
@@ -75,6 +76,7 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.listenToEvents();
+    this.parentWI = this.workItem.relationships.parent.data;
     this.loggedIn = this.auth.isLoggedIn();
   }
 

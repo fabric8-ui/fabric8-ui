@@ -505,6 +505,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   setGuidedTypeWI() {
-    this.groupTypesService.setCurrentGroupType(this.collection);
+    this.groupTypesService.setCurrentGroupType(this.collection, 'execution');
   }
  }
