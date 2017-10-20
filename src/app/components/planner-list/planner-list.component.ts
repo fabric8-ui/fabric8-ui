@@ -348,6 +348,14 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
 
   loadWorkItems(): void {
     this.initialGroup = this.groupTypesService.getCurrentGroupType();
+    //if initialGroup is undefined, the page has been refreshed - find  group context based on URL
+    if(this.initialGroup === undefined) {
+      let wits = this.route.snapshot.queryParams['q'].split('workitemtype:')
+      let collection = wits[1].replace(')','').split(',');
+      this.groupTypesService.findGroupConext(collection);
+      this.initialGroup = this.groupTypesService.getCurrentGroupType();
+    }
+
     this.uiLockedList = true;
     if (this.wiSubscriber) {
       this.wiSubscriber.unsubscribe();
@@ -893,12 +901,13 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   handleSelectionChange($event): void {
     if($event.item.selected === true) {
       this.selectedWI = $event.item;
-      if(this.expandedNode != null && ($event.item.data.id !== this.expandedNode.node.item.id)) {
+      if(this.expandedNode != null && ($event.item.id !== this.expandedNode.node.item.id)) {
         this.expandedNode = null;
       }
     } else {
       this.selectedWI = null;
       //reset the quick add context to allowed WIT for the selected group
+      console.log('<><><>', this.initialGroup);
       this.groupTypesService.setCurrentGroupType(this.initialGroup);
     }
   }

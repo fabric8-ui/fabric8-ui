@@ -25,7 +25,7 @@ export class GroupTypesService {
   public groupTypes: GroupTypesModel[] = [];
   private headers = new Headers({'Content-Type': 'application/json'});
   private _currentSpace;
-  private selectedGroupType: GroupTypesModel;
+  private selectedGroupType: any;
   public groupTypeSelected: Subject<string[]> = new Subject();
   public workItemSelected: Subject<string[]> = new Subject();
   public groupName: string = '';
@@ -111,6 +111,20 @@ export class GroupTypesService {
         this.workItemSelected.next([]);
       }
     }
+  }
+
+  findGroupConext(collection) {
+    //check collection against wit_collection
+    let matchingGroup = this.groupTypes.find((gt, index) => {
+      if(gt.group === 'portfolio' && gt.level[1] === 0) {
+        //concat both portfolio
+        let arr = gt.wit_collection.concat(this.groupTypes[index + 1].wit_collection)
+        return arr.sort().toString() === collection.sort().toString();
+      } else {
+        return gt.wit_collection.sort().toString() === collection.sort().toString();
+      }
+    });
+    this.selectedGroupType = matchingGroup.wit_collection;
   }
 
   mockData(): Array<GroupTypesModel> {
