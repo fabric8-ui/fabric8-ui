@@ -76,7 +76,8 @@ export class WorkItemListEntryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.listenToEvents();
-    this.parentWI = this.workItem.relationships.parent.data;
+    if(this.workItem.relationships.parent)
+      this.parentWI = this.workItem.relationships.parent.data;
     this.loggedIn = this.auth.isLoggedIn();
   }
 

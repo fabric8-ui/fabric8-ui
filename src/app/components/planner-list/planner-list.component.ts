@@ -658,6 +658,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
             let index = this.workItems.findIndex(wi => wi.id === this.selectedWI.id)
             if(this.selectedWI.id === this.expandedNode.node.data.id) {
               //if the selected node is expanded
+              item.relationships.parent = { data: {} as WorkItem }
+              item.relationships.parent.data = this.selectedWI;
               this.expandedNode.node.data.children.push(item);
               if(index > -1) {
                 //this means selectedWI is a not a child WI - top level WI
@@ -692,7 +694,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
             console.log('Error displaying notification. Added WI does not match the applied filters.')
           }
         }
-        //if( this.treeList.tree != undefined )
+        if( this.treeList.tree != undefined )
           this.treeList.update();
       })
     );
