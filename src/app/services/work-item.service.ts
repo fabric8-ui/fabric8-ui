@@ -641,6 +641,7 @@ export class WorkItemService {
               option: item,
             };
           });
+          console.log('availableStates = ', this.availableStates);
           return this.availableStates;
         }).catch((error: Error | any) => {
           this.notifyError('Getting available status options for work item failed.', error);

@@ -86,12 +86,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       actionConfig: {},
       filterConfig: this.filterConfig
     } as ToolbarConfig;
-  allowedFilterKeys: string[] = [
-    'assignee',
-    'area',
-    'label',
-    'workitemtype'
-  ];
+  allowedFilterKeys: string[] = [];
   allowedMultipleFilterKeys: string[] = [
     'label'
   ];
@@ -147,6 +142,23 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         this.editEnabled = false;
       }
     });
+    //on the board view - do not show state filter as the lanes are based on state
+    if (this.context === 'boardview') {
+      this.allowedFilterKeys= [
+        'assignee',
+        'creator',
+        'area',
+        'label'
+      ]
+    } else {
+      this.allowedFilterKeys= [
+        'assignee',
+        'creator',
+        'area',
+        'label',
+        'state'
+      ]
+    }
   }
 
   ngAfterViewInit(): void {
@@ -400,6 +412,19 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         getvalue: (user) => user.attributes.username
       },
+      creator: {
+        datasource: Observable.combineLatest(this.collaboratorService.getCollaborators(), this.userService.getUser()),
+        datamap: ([users, authUser]) => {
+          if (Object.keys(authUser).length > 0) {
+            users = users.filter(u => u.id !== authUser.id);
+          }
+          return {
+            queries: users.map(user => {return {id: user.id, value: user.attributes.username, imageUrl: user.attributes.imageURL}}),
+            primaryQueries: [{id: authUser.id, value: authUser.attributes.username + ' (me)', imageUrl: authUser.attributes.imageURL}]
+          }
+        },
+        getvalue: (user) => user.attributes.username
+      },
       workitemtype: {
         datasource: this.workItemService.getWorkItemTypes(),
         datamap: (witypes) => {
@@ -409,6 +434,16 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         },
         getvalue: (type) => type.attributes.name
+      },
+      state: {
+        datasource: this.workItemService.getStatusOptions(),
+        datamap: (wistates) => {
+          return {
+            queries: wistates.map(wistate => {return {id: wistate.option, value: wistate.option }}),
+            primaryQueries: []
+          }
+        },
+        getvalue: (type) => type.option
       },
       label: {
         datasource: this.labelService.getLabels().map(d => d as any[]),
