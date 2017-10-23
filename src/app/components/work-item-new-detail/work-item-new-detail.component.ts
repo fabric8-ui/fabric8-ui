@@ -112,10 +112,13 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
       .takeUntil(takeUntilObserver)
       .subscribe((params) => {
           let workItemId = params['id'];
-          if (workItemId === 'new'){
+          if (workItemId === 'new') {
             // Create new work item ID
+            // you can add type, iteration and area GET params to the url to preselect values
             let type = this.route.snapshot.queryParams['type'];
-            this.createWorkItemObj(type);
+            let iteration = this.route.snapshot.queryParams['iteration'];
+            let area = this.route.snapshot.queryParams['area'];
+            this.createWorkItemObj(type, iteration, area);
           } else if (workItemId.split('-').length > 1) {
             // The ID is a UUID
             // To make it backword compaitable
@@ -159,7 +162,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
     onResize(event){
 
     }
-  createWorkItemObj(type: string) {
+  createWorkItemObj(type: string, iterationId: string, areaId: string) {
     this.workItem = new WorkItem();
     this.workItem.id = null;
     this.workItem.attributes = new Map<string, string | number>();
@@ -176,23 +179,52 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
         }
       }
     } as WorkItemRelations;
-
+    // create base empty relationship structure
+    this.workItem.relationships = Object.assign(this.workItem.relationships, {});
     // Add creator
     this.userService.getUser()
       .subscribe(
         user => {
-          this.workItem.relationships = Object.assign(
-            this.workItem.relationships,
-            {
-              creator: {
-                data: user
-              }
-            }
-          );
+          this.workItem.relationships.creator = {
+            data: user
+          };
         },
         err => console.log(err)
       );
-
+    // if the iteration is given, add the iteration
+    if (iterationId) {
+      this.iterationService.getIterationById(iterationId)
+      .subscribe(
+        iteration => {
+          // update the iteration value list
+          this.getIterations();
+          // select the returned iteration in that list
+          this.iterations.forEach(thisIteration => thisIteration.selected = thisIteration.key === iteration.id);
+          // set the value on the model
+          this.workItem.relationships.iteration = {
+            data: iteration
+          };
+        },
+        err => console.log(err)
+      );
+    }
+    // if the area is given, add the area
+    if (areaId) {
+      this.areaService.getAreaById(areaId)
+      .subscribe(
+        area => {
+          // update the area value list
+          this.getAreas();
+          // select the returned area in that list
+          this.areas.forEach(thisArea => thisArea.selected = thisArea.key === area.id);
+          // set the value on the model
+          this.workItem.relationships.area = {
+            data: area
+          };
+        },
+        err => console.log(err)
+      );
+    }
     this.workItem.relationalData = {};
     this.workItemService.resolveType(this.workItem);
     this.workItem.attributes['system.state'] = 'new';
@@ -886,6 +918,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
       });
     }
   }
+
   iterationUpdated(iterationId: string): void {
     if (iterationId === '0') return; // Loading item
     this.loadingIteration = true;

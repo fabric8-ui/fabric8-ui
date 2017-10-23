@@ -23,7 +23,7 @@ export class InlineInputComponent implements OnInit {
 
   @Input('disabled') readOnly: boolean = false;
   @Input('value') inpvalue: string = 'Hello World';
-  @Input() placeholder: string = 'This is just a place holder';
+  @Input() placeholder: string = 'Enter text here';
   @Input() onLineClickEdit: boolean = true;
 
   @Output() onSave = new EventEmitter();

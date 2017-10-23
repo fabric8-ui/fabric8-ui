@@ -65,6 +65,7 @@ import { CollaboratorService } from '../../services/collaborator.service';
 import { LabelService } from '../../services/label.service';
 import { LabelModel } from '../../models/label.model';
 import { UrlService } from './../../services/url.service';
+import { WorkItemDetailAddTypeSelectorComponent } from './../work-item-create/work-item-create.component';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -78,12 +79,13 @@ import { UrlService } from './../../services/url.service';
 export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnDestroy {
   @ViewChildren('activeFilters', {read: ElementRef}) activeFiltersRef: QueryList<ElementRef>;
   @ViewChild('activeFiltersDiv') activeFiltersDiv: any;
+  @ViewChild('typeSelectPanel') typeSelectPanel: WorkItemDetailAddTypeSelectorComponent;
+
   @ViewChild('listContainer') listContainer: any;
   @ViewChild('treeList') treeList: TreeListComponent;
   @ViewChild('detailPreview') detailPreview: WorkItemDetailComponent;
   @ViewChild('sidePanel') sidePanelRef: any;
   @ViewChild('associateIterationModal') associateIterationModal: any;
-  @ViewChild('typeSelectPanel') typeSelectPanel: any;
 
   actionConfig: ActionConfig;
   emptyStateConfig: EmptyStateConfig;
@@ -218,9 +220,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
         primaryActions: [{
           id: 'createWI',
           title: 'Create work item',
-          tooltip: 'Start the server',
+          tooltip: 'Create work item',
           styleClass: this.loggedIn ? 'show-wi' : 'hide-wi'
-
         }],
         moreActions: []
       } as ActionConfig,
@@ -582,6 +583,24 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     });
   }
 
+  // This opens the create new work item dialog. It parses the query string
+  // first to get iterationId and areaId for pre-selection in the new work item
+  // dialog. Note that this only works for the current capabilities of the query
+  // toolbar for now. If we extend that, we also need to extend this method.
+  onCreateFromContext() {
+    console.log('Activated create work item from a list view.');
+    let query = this.route.snapshot.queryParams['q'];
+    if (query) {
+      let contextIteration = this.filterService.getConditionFromQuery(query, "iteration");
+      let contextArea = this.filterService.getConditionFromQuery(query, "area");
+      this.typeSelectPanel.openPanel(contextIteration, contextArea);
+    } else {
+      console.log('No current query for add from empty list');
+      // use standard non-context create dialog
+      this.typeSelectPanel.openPanel();
+    }
+  }
+
   listenToEvents() {
     this.eventListeners.push(
       this.broadcaster.on<string>('logout')
@@ -786,8 +805,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   handleAction($event: Action, item: any): void {
     switch($event.id){
       case 'createWI':
-        //Empty state's Creat Work Item button
-        this.typeSelectPanel.openPanel()
+        // Empty state's Create Work Item button
+        this.onCreateFromContext()
       break;
       case 'move2top':
         this.workItemToMove = item.data;

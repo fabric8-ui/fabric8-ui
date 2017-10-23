@@ -47,7 +47,7 @@
       <toolbar-panel
         context="listview"
         [wiTypes]="workItemTypes"
-        (onCreateNewWorkItemSelected)="typeSelectPanel.openPanel()"
+        (onCreateNewWorkItemSelected)="onCreateFromContext()"
         [currentBoardType]="currentBoardType"
         [areas]="areas"
         [loggedInUser]="loggedInUser">

@@ -124,7 +124,6 @@ export class FilterService {
     }
   }
 
-
   /**
    * getFilters - Fetches all the available filters
    * @param apiUrl - The url to get list of all filters
@@ -250,7 +249,7 @@ export class FilterService {
 
   /**
    *
-   * @param key The value is the object key like 'wporkitem_type', 'iteration' etc
+   * @param key The value is the object key like 'workitem_type', 'iteration' etc
    * @param compare The values are
    *                FilterService::equal_notation',
    *                FilterService::not_equal_notation',
@@ -259,7 +258,6 @@ export class FilterService {
    *                FilterService::not_in_notation'
    * @param value string or array of string of values (in case of IN or NOT IN)
    */
-
   queryBuilder(key: string, compare: string, value: string | string[]): any {
     if (this.compare_notations.indexOf(compare.trim()) == -1) {
       throw new Error('Not a valid compare notation');
@@ -281,7 +279,6 @@ export class FilterService {
    *                FilterService::or_notation
    * @param newQueryObject
    */
-
   queryJoiner(existingQueryObject: object, join: string, newQueryObject: object): any {
     if (this.join_notations.indexOf(join.trim()) == -1) {
       throw new Error('Not a valid compare notation');
@@ -400,7 +397,6 @@ export class FilterService {
     }
   }
 
-
   /**
    * Query string to JSON conversion
    */
@@ -453,7 +449,6 @@ export class FilterService {
         if (new_str.indexOf(this.and_notation) > -1 || new_str.indexOf(this.or_notation) > -1) {
           return this.queryToJson(new_str, false);
         }
-
         let keyIndex = -1;
         let splitter = '';
         for (let i = 0; i < new_str.length; i ++) {
@@ -463,7 +458,6 @@ export class FilterService {
             break;
           }
         }
-
         let key = new_str.substring(0, keyIndex).trim();
         let value = new_str.substring(keyIndex + 1).trim();
         let val_arr = value.split(',').map(i => i.trim());
@@ -495,7 +489,6 @@ export class FilterService {
   jsonToQuery(obj: object): string {
     let key = Object.keys(obj)[0]; // key will be AND or OR
     let value = obj[key];
-
     return '(' + value.map(item => {
       if (Object.keys(item)[0] == this.and_notation || Object.keys(item)[0] == this.or_notation) {
         return this.jsonToQuery(item);
@@ -522,5 +515,43 @@ export class FilterService {
       }
     })
     .join(' ' + key + ' ') + ')';
+  }
+
+  /**
+   * This decodes a key query term value from a given query string. It is used to
+   * shortcut the parsing of the query string to get context info from it. Currently,
+   * it is used when getting the context info from an existing query to give context
+   * to a following UX flow. This only supports a very narrow usecase currently, but
+   * may be extended later.
+   * 
+   * @param queryString search/filter query string.
+   * @param key key of the term for which we look for the value.
+   */
+  getConditionFromQuery(queryString: string, key: string): string {
+    if (queryString) {
+      let decodedQuery = this.queryToJson(queryString);
+      // we ignore non-AND queries for now, might want to extend that later.
+      if (!decodedQuery['$AND']) {
+        console.log('The current query is not supported by getConditionFromQuery() (non-AND query): ' + queryString);
+        return undefined;
+      } else {
+        let terms: any[] = decodedQuery['$AND'];
+        if (terms || !Array.isArray(terms)) {
+          for (let i=0; i<terms.length; i++) {
+            let thisTerm = terms[i];
+            if (thisTerm && thisTerm[key]) {
+              // format of value: {$EQ: "value"}, if not found, value remains undefined
+              return thisTerm[key]['$EQ'];
+            }
+          }
+          console.log('Condition key not found in query: ' + key + ', query= ' + queryString);          
+          return undefined;
+        } else {
+          console.log('The current query is not supported by getConditionFromQuery() (bad format): ' + queryString);
+          // use standard non-context create dialog
+          return undefined;
+        }
+      }
+    }
   }
 }
