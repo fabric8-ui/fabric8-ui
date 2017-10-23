@@ -349,12 +349,13 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
   loadWorkItems(): void {
     this.initialGroup = this.groupTypesService.getCurrentGroupType();
     //if initialGroup is undefined, the page has been refreshed - find  group context based on URL
-    if(this.initialGroup === undefined) {
+    if ( this.route.snapshot.queryParams['q'] ) {
       let wits = this.route.snapshot.queryParams['q'].split('workitemtype:')
       let collection = wits[1].replace(')','').split(',');
       this.groupTypesService.findGroupConext(collection);
-      this.initialGroup = this.groupTypesService.getCurrentGroupType();
     }
+    if(this.initialGroup === undefined)
+      this.initialGroup = this.groupTypesService.getCurrentGroupType();
 
     this.uiLockedList = true;
     if (this.wiSubscriber) {
@@ -702,7 +703,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
             console.log('Error displaying notification. Added WI does not match the applied filters.')
           }
         }
-        if( this.treeList.tree != undefined )
+        if( this.workItems.length > 0 )
           this.treeList.update();
       })
     );
@@ -907,7 +908,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     } else {
       this.selectedWI = null;
       //reset the quick add context to allowed WIT for the selected group
-      console.log('<><><>', this.initialGroup);
       this.groupTypesService.setCurrentGroupType(this.initialGroup);
     }
   }
