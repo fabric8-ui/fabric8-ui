@@ -8,8 +8,14 @@
 	<!-- info area -->
   <div class="list-view-pf-main-info">
     <div class="list-view-pf-left type f8-wi__list-witype">
-      <span almIcon [iconType]="workItem.attributes['system.state']" class="color-grey pull-left"></span>
-      <span class="color-grey pull-left fa {{workItem.relationships?.baseType?.data?.attributes?.icon}}" title="{{workItem.relationships?.baseType?.data?.attributes?.name}}"></span>
+      <span class="color-grey pull-left"
+        almIcon
+        [iconType]="workItem.attributes['system.state']"
+        tooltip="{{workItem.attributes['system.state']}}"
+        placement="right"></span>
+      <span class="color-grey pull-left fa
+        {{workItem.relationships?.baseType?.data?.attributes?.icon}}"
+        title="{{workItem.relationships?.baseType?.data?.attributes?.name}}"></span>
       <span class="pull-left"> {{workItem.attributes['system.number']}} </span>
     </div>
     <div class="list-view-pf-body">
@@ -20,8 +26,10 @@
                  (click)="onDetailPreview($event)"
                  [innerHTML]="workItem.attributes['system.title']">
               </p>
-              <a [routerLink]="[constructUrl(workItem)]"
-              class="fa fa-list-alt f8-action-icon"></a>
+              <a class="fa fa-list-alt f8-action-icon"
+                [routerLink]="[constructUrl(workItem)]"
+                tooltip="Open Detail View"
+                placement="right"></a>
             </div>
             <div class="f8-wi__list-description">
               <f8-label [labels]="workItem.relationships?.labels?.data ?
@@ -32,22 +40,28 @@
             </div>
         </div>
         <div class="list-group-item-text hide f8-wi__list-desc">
-          {{workItem.attributes['system.description'] ? workItem.attributes['system.description'] : "No description available for this work item."}}
+          {{workItem.attributes['system.description'] ?
+          workItem.attributes['system.description'] :
+          "No description available for this work item."}}
         </div>
       </div>
     </div>
   </div>
-  <div class="user-avatar margin-right-10">
-      <img
-        *ngFor="let assignee of workItem.relationships.assignees.data"
-        placement="bottom"
-        tooltip="{{assignee?.attributes?.fullName}}"
-        src="{{assignee?.attributes?.imageURL + '&s=23'}}"
-        onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
-      <span class="pficon-user not-assigned-user-icon"
-        *ngIf="!workItem.relationships?.assignees?.data?.length"></span>
+  <div class="user-avatar margin-right-15">
+    <img
+      *ngFor="let assignee of workItem.relationships.assignees.data"
+      placement="left"
+      tooltip="{{assignee?.attributes?.fullName}}"
+      src="{{assignee?.attributes?.imageURL + '&s=23'}}"
+      onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
+    <span class="pficon-user not-assigned-user-icon"
+      *ngIf="!workItem.relationships?.assignees?.data?.length"
+      tooltip="Unassigned"
+      placement="left"></span>
   </div>
-  <div class="pull-right">
+  <div class="pull-right"
+    tooltip="Open Quick Preview"
+    placement="left">
     <a (click)="onDetailPreview($event)"
       class="fa fa-columns f8-action-icon"></a>
   </div>
