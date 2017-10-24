@@ -58,12 +58,14 @@
           {{workItem.attributes['system.description'] ?
           workItem.attributes['system.description'] :
         </div>
-        <img
-          *ngFor="let assignee of workItem.relationships.assignees.data"
-          placement="left"
-          tooltip="{{assignee?.attributes?.fullName}}"
-          src="{{assignee?.attributes?.imageURL + '&s=23'}}"
-          onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
+        <div class="user-avatar">
+          <img
+            *ngFor="let assignee of workItem.relationships.assignees.data"
+            placement="left"
+            tooltip="{{assignee?.attributes?.fullName}}"
+            src="{{assignee?.attributes?.imageURL + '&s=23'}}"
+            onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
+        </div>
         <span class="pficon-user not-assigned-user-icon"
           *ngIf="!workItem.relationships?.assignees?.data?.length"
           tooltip="Unassigned"
