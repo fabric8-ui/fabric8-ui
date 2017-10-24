@@ -8,10 +8,7 @@
   "scripts": {
     "build": "npm run remove-dist && npm run build:library",
     "build:library": "gulp build-library",
-    "bundle-rollup": "rollup -c",
-    "bundle": "webpack --config config/webpack.prod.js --progress --profile --bail",
     "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist distwatch bundles",
-    "cleanup": "rimraf dist/package.json dist/bundles dist/src dist/index.d.ts dist/index.metadata.json dist/index.js dist/index.js.map dist/LICENSE dist/README.md",
     "minify": "uglifyjs dist/bundles/ngx-widgets.js --screw-ie8 --compress --mangle --comments --output dist/bundles/ngx-widgets.min.js",
     "reinstall": "npm run clean && npm install",
     "remove-dist": "rimraf dist dist-watch",
