@@ -19,7 +19,7 @@
     "start": "webpack-dev-server --config config/webpack.demo.js --progress --host 0.0.0.0 --port 3001 --profile --watch --content-base src/",
     "test": "karma start",
     "transpile": "gulp transpile",
-    "transpile-sass": "gulp compile-sass",
+    "transpile-less": "gulp transpile-less",
     "semantic-release": "semantic-release pre && npm run build && cp -r .git dist && npm publish dist/ && semantic-release post",
     "watch:library": "gulp watch"
   },
