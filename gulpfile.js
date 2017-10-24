@@ -1,5 +1,5 @@
 
-var gulp = require('gulp'),
+const gulp = require('gulp'),
   autoprefixer = require('autoprefixer'),
   LessAutoprefix = require('less-plugin-autoprefix'),
   autoprefix = new LessAutoprefix({ browsers: ['last 2 versions'] }),
@@ -7,19 +7,19 @@ var gulp = require('gulp'),
   cssmin = require('gulp-cssmin'),
   del = require('del'),
   exec = require('child_process').exec,
-  lessCompiler = require('gulp-less')
+  lessCompiler = require('gulp-less'),
   ngc = require('gulp-ngc'),
   path = require('path'),
   postcss = require('postcss'),
-  runSequence = require('run-sequence'),
   replace = require('gulp-string-replace'),
+  runSequence = require('run-sequence'),
   sourcemaps = require('gulp-sourcemaps'),
   stylus = require('stylus');
 
-var appSrc = 'src';
-var libraryDist = 'dist';
-var watchDist = 'dist-watch';
-var globalExcludes = [ '!./**/examples/**', '!./**/examples' ]
+const appSrc = 'src';
+const libraryDist = 'dist';
+const watchDist = 'dist-watch';
+const globalExcludes = [ '!./**/examples/**', '!./**/examples' ];
 
 /**
  * FUNCTION LIBRARY
@@ -46,7 +46,7 @@ function transpileLESS(src) {
       paths: [ path.join(__dirname, 'less', 'includes') ]
     }))
     .pipe(cssmin().on('error', function(err) {
-      console.log(err);
+      console.error(err);
     }))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./dist/src/'));
@@ -54,17 +54,29 @@ function transpileLESS(src) {
 
 function minifyCSS(file) {
   try {
-    var minifiedFile = stylus.render(file);
+    let minifiedFile = stylus.render(file);
     minifiedFile = postcss([autoprefixer]).process(minifiedFile).css;
     minifiedFile = csso.minify(minifiedFile).css;
     return minifiedFile;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 /**
  * TASKS
  */
+
+// Put the LESS files back to normal
+gulp.task('build-library',
+  [
+    'lint-less',
+    'transpile-less',
+    'transpile',
+    'post-transpile',
+    'copy-css',
+    'copy-html',
+    'copy-static-assets'
+  ]);
 
 // stylelint
 gulp.task('lint-less', function lintLessTask() {
@@ -80,6 +92,16 @@ gulp.task('lint-less', function lintLessTask() {
   }));
 });
 
+// Less compilation - requires linting to complete before it will start
+gulp.task('transpile-less', ['lint-less'], function () {
+  return transpileLESS(appSrc + '/**/*.less');
+});
+
+// require transpile-less to finish before starting the transpile process
+gulp.task('transpile', ['transpile-less'], function () {
+  return ngc('tsconfig.json')
+});
+
 // require transpile to finish before the build starts the post-transpile task
 gulp.task('post-transpile', ['transpile'], function () {
   return gulp.src(['dist/src/app/**/*.js'])
@@ -89,30 +111,8 @@ gulp.task('post-transpile', ['transpile'], function () {
     .pipe(replace(/styleUrls: \[/g, "styles: [require("))
     .pipe(replace(/\.less']/g, ".css').toString()]"))
     .pipe(gulp.dest(function (file) {
-      return file.base; // because of Angular 2's encapsulation, it's natural to save the css where the less-file was
+      return file.base; // because of Angular's encapsulation, it's natural to save the css where the less-file was
     }));
-});
-
-// Less compilation - requires linting to complete before it will start
-gulp.task('transpile-less', ['lint-less'], function () {
-  return transpileLESS(appSrc + '/**/*.less');
-});
-
-// Put the LESS files back to normal
-gulp.task('build-library',
-  [
-    'lint-less',
-    'transpile-less',
-    'transpile',
-    'post-transpile',
-    'copy-css',
-    'copy-html',
-    'copy-static-assets'
-  ]);
-
-// require transpile-less to finish before starting the transpile process
-gulp.task('transpile', ['transpile-less'], function () {
-  return ngc('tsconfig.json')
 });
 
 // require transpile to finish before copying the css
