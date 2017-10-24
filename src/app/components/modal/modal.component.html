@@ -1,0 +1,25 @@
+<modal title="{{title}}" (onSubmit)="doAction()" #OSIOModal>
+  <modal-content>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+      <!-- UX feed for existing iteration association -->
+      <div id="modal-msg">
+        {{message}}
+      </div>
+      <!-- Action buttons to cancel/delete -->
+      <div class="text-right">
+        <button class="btn"
+          id="modal-cancel"
+          type="submit"
+          (click)="modal.close()">
+            Cancel
+        </button>
+        <button class="btn btn-danger"
+          id="modal-confirm"
+          type="submit"
+          (click)="modal.onSubmit.emit(undefined)">
+            {{buttonText}}
+        </button>
+      </div>
+    </div>
+  </modal-content>
+</modal>

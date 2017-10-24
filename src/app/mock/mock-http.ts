@@ -93,8 +93,11 @@ export class MockHttp extends HttpService {
         result['extraPath'] = result.path.replace(/^\/areas\//, '');
         result['path'] = '/areas';
       }
+      if (result.path.indexOf('/comments/') == 0) {
+        result['extraPath'] = result.path.replace(/^\/comments\//, '');
+        result['path'] = '/comments';
+      }
       // if request hat a /space prefix, note the space id, the re-parse the extra path
-      console.log(result.path);
       if (result.path.indexOf('/spaces/') == 0) {
         console.log('Space prefix detected, reparsing url..');
         var spaceId = result.path.split('/')[2];
@@ -348,6 +351,12 @@ export class MockHttp extends HttpService {
           return this.createResponse(url.toString(), 200, 'ok', {});
         else
           return this.createResponse(url.toString(), 500, 'WorkItemLink does not exist: ' + path.extraPath, {});
+      } else if (path.path === '/comments' && path.extraPath) {
+        console.log("DELETE EXEC");
+        if (this.mockDataService.deleteComment(path.extraPath))
+          return this.createResponse(url.toString(), 200, 'ok', {});
+        else
+          return this.createResponse(url.toString(), 500, 'Comment does not exist: ' + path.extraPath, {});
       }
     };
 

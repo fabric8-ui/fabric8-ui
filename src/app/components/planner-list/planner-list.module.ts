@@ -31,6 +31,7 @@ import {
 import { GroupTypesModule } from '../group-types-panel/group-types-panel.module';
 import { IterationModule } from '../iterations-panel/iterations-panel.module';
 import { LabelsModule } from '../labels/labels.module';
+import { PlannerModalModule } from '../modal/modal.module';
 import { PlannerListRoutingModule } from './planner-list-routing.module';
 import { SidepanelModule } from '../side-panel/side-panel.module';
 import { ToolbarPanelModule } from '../toolbar-panel/toolbar-panel.module';
@@ -110,7 +111,8 @@ if (process.env.ENV == 'inmemory') {
     WidgetsModule,
     WorkItemDetailModule,
     WorkItemQuickAddModule,
-    WorkItemDetailAddTypeSelectorModule
+    WorkItemDetailAddTypeSelectorModule,
+    PlannerModalModule
   ],
   declarations: [
     PlannerListComponent,

@@ -595,6 +595,21 @@ export class MockDataService {
     return false;
   }
 
+  // comments
+  public deleteComment(id: string): boolean {
+    Object.getOwnPropertyNames(this.workItemComments).map((key: string) => {
+      let thisCommentEntry = this.workItemComments[key];
+      for (var j = 0; j < thisCommentEntry.data.length; j++) {
+        if (thisCommentEntry.data[j].id === id) {
+          thisCommentEntry.data.splice(j, 1);
+          delete this.workItemComments[key];
+          return true;
+        }
+      }
+    });
+    return false;
+  }
+
   // schemas
 
   public getWorkItemTypes(): any {

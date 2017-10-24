@@ -9,7 +9,6 @@ import { FormsModule } from '@angular/forms';
 import { CollapseModule } from 'ngx-bootstrap';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ModalModule } from 'ngx-modal';
 import {
   AlmEditableModule,
   AlmIconModule,
@@ -18,9 +17,9 @@ import {
 } from 'ngx-widgets';
 
 import { WorkItemCommentComponent } from './work-item-comment.component';
+import { PlannerModalModule } from '../modal/modal.module';
 
 import { MockHttp } from '../../mock/mock-http';
-
 
 let providers = [];
 
@@ -58,7 +57,7 @@ if (process.env.ENV == 'inmemory') {
     BsDropdownModule,
     FormsModule,
     MarkdownModule,
-    ModalModule,
+    PlannerModalModule,
     RouterModule,
     HttpModule,
     TooltipModule,

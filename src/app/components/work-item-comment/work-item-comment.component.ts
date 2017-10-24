@@ -13,6 +13,7 @@ import { User } from 'ngx-login-client';
 import { Comment, CommentAttributes } from '../../models/comment';
 import { WorkItem } from '../../models/work-item';
 import { CollaboratorService } from '../../services/collaborator.service';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
     selector: 'alm-work-item-comment',
@@ -27,7 +28,6 @@ export class WorkItemCommentComponent implements OnInit {
     @Output() create = new EventEmitter<Comment>();
     @Output() update = new EventEmitter<Comment>();
     @Output() delete = new EventEmitter<Comment>();
-    @ViewChild('deleteCommentModal') deleteCommentModal: any;
     comment: Comment;
     isCollapsedComments: Boolean = false;
     commentEditable: Boolean = false;
@@ -35,7 +35,8 @@ export class WorkItemCommentComponent implements OnInit {
     convictedComment: Comment;
 
     constructor(
-        private workItemService: WorkItemService
+        private workItemService: WorkItemService,
+        private modalService: ModalService
     ) {
     }
 
@@ -109,13 +110,16 @@ export class WorkItemCommentComponent implements OnInit {
     }
 
     confirmCommentDelete(comment: Comment): void {
-        this.deleteCommentModal.open();
         this.convictedComment = comment;
+        this.modalService.openModal('Delete Comment', 'Are you sure you want to delete this comment?', 'Delete', 'deleteComment')
+            .subscribe(actionKey => {
+                if (actionKey==='deleteComment')
+                    this.deleteComment();
+            });
     }
 
     deleteComment(): void {
         this.delete.emit(this.convictedComment);
-        this.deleteCommentModal.close();
         this.createCommentObject();
     }
 
