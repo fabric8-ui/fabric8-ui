@@ -25,7 +25,7 @@
       </span>
     </div>
     <div class="list-view-pf-body">
-      <div class="list-view-pf-description padding-right-15 margin-right-10">
+      <div class="list-view-pf-description">
         <div class="f8-wi__list-title truncate-ellipsis col-xs-12 row">
           <div class="f8-wi__list-description">
             <p class="workItemList_title truncate"
@@ -37,6 +37,20 @@
               tooltip="Open Detail View"
               placement="right">
             </a>
+
+            <div class="f8-wi__list-parent-info">
+              <div *ngIf="workItem.relationships?.parent?.data">
+              <span class="pull-left"> Child of</span>
+                <a class="pull-left margin-left-7"
+                  [routerLink]="[constructUrl(parentWI)]">
+                  {{ parentWI.attributes['system.number'] }}
+                </a>
+                <span class="color-grey margin-left-7 pull-left fa {{parentWI.relationships?.baseType?.data?.attributes?.icon}}"
+                  title="parentWI.relationships?.baseType?.data?.attributes?.name">
+                </span>
+                <span class="truncate f8-wi__list-parent-info-title margin-left-7">{{ parentWI.attributes['system.title'] }}</span>
+              </div>
+            </div>
           </div>
           <div class="f8-wi__list-description">
             <f8-label [labels]="workItem.relationships?.labels?.data ?
@@ -65,12 +79,12 @@
             tooltip="{{assignee?.attributes?.fullName}}"
             src="{{assignee?.attributes?.imageURL + '&s=23'}}"
             onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
+          <span class="pficon-user not-assigned-user-icon"
+            *ngIf="!workItem.relationships?.assignees?.data?.length"
+            tooltip="Unassigned"
+            placement="left">
+          </span>
         </div>
-        <span class="pficon-user not-assigned-user-icon"
-          *ngIf="!workItem.relationships?.assignees?.data?.length"
-          tooltip="Unassigned"
-          placement="left">
-        </span>
       </div>
       <div class="pull-right margin-left-15"
         tooltip="Open Quick Preview"
@@ -79,18 +93,6 @@
           class="fa fa-columns f8-action-icon">
         </a>
       </div>
-    </div>
-  </div>
-  <div class="f8-wi__list-parent-info">
-    <div *ngIf="workItem.relationships?.parent?.data">
-      Child of
-      <a [routerLink]="[constructUrl(parentWI)]">
-        {{ parentWI.attributes['system.number'] }}
-      </a>
-      <span class="color-grey fa {{parentWI.relationships?.baseType?.data?.attributes?.icon}}"
-        title="parentWI.relationships?.baseType?.data?.attributes?.name">
-      </span>
-      {{ parentWI.attributes['system.title'] }}
     </div>
   </div>
 </div>
