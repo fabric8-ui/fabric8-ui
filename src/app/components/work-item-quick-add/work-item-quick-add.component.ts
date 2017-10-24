@@ -186,7 +186,13 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
       event.preventDefault();
     this.logger.log('Selected type ' + type.attributes.name + ' for quick add.');
     this.selectedType = type;
+    var wiTitle = this.workItem.attributes['system.title'];
+    var wiDescription = this.workItem.attributes['system.description'];
     this.createWorkItemObj();
+    if (wiTitle)
+      this.workItem.attributes['system.title'] = wiTitle;
+    if (wiDescription)
+      this.workItem.attributes['system.description'] = wiDescription;
   }
 
   createLinkObject(workItem: WorkItem, childWI: WorkItem, linkId: string) : void {
