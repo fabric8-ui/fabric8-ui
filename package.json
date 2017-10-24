@@ -77,8 +77,7 @@
     "moment": "2.18.1",
     "patternfly-ng": "^0.13.1"
   },
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@angular/compiler": "^4.4.4",
     "@angular/compiler-cli": "^4.4.4",
@@ -163,8 +162,6 @@
     "reflect-metadata": "^0.1.10",
     "resolve-url-loader": "^2.1.0",
     "rimraf": "^2.6.2",
-    "rollup": "^0.50.0",
-    "rollup-plugin-angular-aot": "^0.0.4",
     "run-sequence": "^2.2.0",
     "rxjs": "^5.0.1",
     "semantic-release": "=7.0.2",
