@@ -222,6 +222,8 @@ export class WorkItemService {
         if (item.relationships.parent != undefined && item.relationships.parent.data !=undefined) {
           let wi = included.find(inclwi => inclwi.id === item.relationships.parent.data.id);
           item.relationships.parent.data = wi;
+          let parentWITID = item.relationships.parent.data.relationships.baseType.data.id;
+          item.relationships.parent.data.relationships.baseType.data = wiTypes.find((type) => type.id === parentWITID);
         }
       }
       // Resolve assignnees
