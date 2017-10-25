@@ -418,10 +418,10 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       let showFlatList = false;
       if (this.groupTypesService.groupName === 'execution' || this.groupTypesService.groupName === 'requirements')
         showFlatList = true;
-      console.log('showFlatList', this.groupTypesService.groupName);
+      //console.log('showFlatList', this.groupTypesService.groupName);
       let payload = {
         //for execution level set this to true
-        parentexists: showFlatList
+        parentexists: true
       };
       if ( this.route.snapshot.queryParams['q'] ) {
         let existingQuery = this.filterService.queryToJson(this.route.snapshot.queryParams['q']);
