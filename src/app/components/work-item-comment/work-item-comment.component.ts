@@ -112,6 +112,7 @@ export class WorkItemCommentComponent implements OnInit {
     confirmCommentDelete(comment: Comment): void {
         this.convictedComment = comment;
         this.modalService.openModal('Delete Comment', 'Are you sure you want to delete this comment?', 'Delete', 'deleteComment')
+            .first()
             .subscribe(actionKey => {
                 if (actionKey==='deleteComment')
                     this.deleteComment();

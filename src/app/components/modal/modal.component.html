@@ -1,4 +1,4 @@
-<modal title="{{title}}" (onSubmit)="doAction()" #OSIOModal>
+<modal title="{{title}}" #OSIOModal>
   <modal-content>
     <div class="col-xs-12 col-sm-12 col-md-12">
       <!-- UX feed for existing iteration association -->
@@ -15,8 +15,7 @@
         </button>
         <button class="btn btn-danger"
           id="modal-confirm"
-          type="submit"
-          (click)="modal.onSubmit.emit(undefined)">
+          (click)="doAction(); modal.close()">
             {{buttonText}}
         </button>
       </div>

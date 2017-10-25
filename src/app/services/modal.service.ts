@@ -15,10 +15,12 @@ export class ModalService {
 
   public openModal(title: string, message: string, buttonText: string, actionKey?: string): Observable<string> {
     this.componentSource.next([ title, message, buttonText, actionKey ]);
+    console.log('Opened modal dialog for key ' + actionKey);
     return this.clientSource$;
   }
 
   public doAction(actionKey: string) {
+    console.log("Received confirm action for key " + actionKey + ", sending to clients");
     this.clientSource.next(actionKey);
   }
 

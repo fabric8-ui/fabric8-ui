@@ -35,7 +35,6 @@ export class ModalComponent {
   }
 
   public doAction() {
-    this.modal.close();
     this.modalService.doAction(this.actionKey);
   }
 }

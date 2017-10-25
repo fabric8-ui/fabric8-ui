@@ -30,8 +30,7 @@ import { CollaboratorService } from '../../services/collaborator.service'
 import { TypeaheadDropDownModule } from '../typeahead-dropdown/typeahead-dropdown.module';
 
 import { AlmUserNameModule } from '../../pipes/alm-user-name.module';
-
-
+import { PlannerModalModule } from '../modal/modal.module';
 
 let providers = [];
 
@@ -93,7 +92,8 @@ if (process.env.ENV == 'inmemory') {
     WorkItemNewDetailRoutingModule,
     WorkItemLinkModule,
     InlineInputModule,
-    WorkItemCommentModule
+    WorkItemCommentModule,
+    PlannerModalModule
   ],
   declarations: [
     WorkItemNewDetailComponent

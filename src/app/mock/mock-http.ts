@@ -352,7 +352,6 @@ export class MockHttp extends HttpService {
         else
           return this.createResponse(url.toString(), 500, 'WorkItemLink does not exist: ' + path.extraPath, {});
       } else if (path.path === '/comments' && path.extraPath) {
-        console.log("DELETE EXEC");
         if (this.mockDataService.deleteComment(path.extraPath))
           return this.createResponse(url.toString(), 200, 'ok', {});
         else
