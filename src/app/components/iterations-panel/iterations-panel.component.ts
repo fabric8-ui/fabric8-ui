@@ -268,6 +268,13 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     let index = this.allIterations.findIndex((it) => it.id === iteration.id);
     if (index >= 0) {
       this.allIterations[index] = iteration;
+      //if iteration is a child iteration update that content
+      let parent = this.iterationService.getDirectParent(iteration, this.allIterations);
+      if( parent != undefined ) {
+        let parentIndex = this.allIterations.findIndex(i => i.id === parent.id);
+        let childIndex = this.allIterations[parentIndex].children.findIndex(child => child.id === iteration.id);
+        this.allIterations[parentIndex].children[childIndex] = iteration;
+      }
     } else {
       this.allIterations.splice(this.allIterations.length, 0, iteration);
       //Check if the new iteration has a parent
