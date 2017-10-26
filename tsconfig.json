@@ -26,12 +26,16 @@
       "moment": ["node_modules/moment"]
     },
     "lib": [
-      "es2015",
+      "es6",
       "dom"
     ]
   },
   "files": [
     "index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ],
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,
