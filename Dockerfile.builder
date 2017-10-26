@@ -21,7 +21,7 @@ RUN set -ex \
   done
 
 #ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 6.5.0
+ENV NODE_VERSION 8.3.0
 
 RUN yum install -y bzip2 git fontconfig \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
