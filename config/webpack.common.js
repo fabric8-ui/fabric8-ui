@@ -71,9 +71,6 @@ module.exports = function (options) {
 
     devtool: 'inline-source-map',
 
-    // require those dependencies but don't bundle them
-    externals: [/^@angular\//, /^rxjs\//],
-
     /*
      * Options affecting the resolving of modules.
      *
