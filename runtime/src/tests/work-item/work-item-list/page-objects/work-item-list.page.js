@@ -261,7 +261,7 @@ class WorkItemListPage {
   /* xpath = //alm-work-item-list-entry[.//text()[contains(.,'Some Title 6')]]   */
   workItemByTitle (titleString) {
     // return element(by.xpath("//alm-work-item-list-entry[.//text()[contains(.,'" + titleString + "')]]"));
-    return element(by.xpath("//tree-node[.//text()[contains(.,'" + titleString + "')]]"));
+    return element(by.xpath("//tree-node[.//text()='" + titleString + "']"));
   }
 
   get firstWorkItem () {
@@ -277,13 +277,13 @@ class WorkItemListPage {
     return workItemElement.element(by.css(".f8-wi__list-title")).element(by.css("p")).getText();
   }
 
-  clickWorkItemTitle (workItemElement, idText) {
-    workItemElement.element(by.css(".f8-wi__list-title")).element(by.css("p")).click();
-    var theDetailPage = new WorkItemDetailPage (idText);
-    var until = protractor.ExpectedConditions;
-    //browser.wait(until.presenceOf(theDetailPage.workItemDetailPageTitle), constants.WAIT, 'Detail page title taking too long to appear in the DOM');
-    browser.wait(testSupport.waitForText(theDetailPage.clickWorkItemDetailTitle), constants.WAIT, "Title text is still not present");
-    return theDetailPage;
+  clickWorkItemTitle (title) {
+    return this.clickWorkItem(this.workItemByTitle(title));
+  }
+
+  clickWorkItem(workItemElement) {
+    workItemElement.element(by.css(".f8-wi__list-description")).element(by.css("p")).click()
+    return new WorkItemDetailPage();
   }
 
   /* Description element relative to a workitem */

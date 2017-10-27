@@ -43,7 +43,6 @@ describe('Iteration CRUD tests :: ', function () {
       'FullPath' : '/Root Iteration/Iteration 1',
       'Index': 2
     },
-    firstWorkItemID = 'id0',
     updateIterationTitle = 'Update Iteration',
     updateIterationDescription = 'Update Iteration Description',
     childIterationTitle = 'New Child Iteration',
@@ -160,7 +159,7 @@ describe('Iteration CRUD tests :: ', function () {
 //  });
 
   it('Associate Workitem from detail page', function() {
-    var detailPage = page.clickWorkItemTitle(page.firstWorkItem, firstWorkItemID);
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');
     detailPage.IterationOndetailPage().click();
     detailPage.associateIterationById(firstIteration.ID);
@@ -169,20 +168,20 @@ describe('Iteration CRUD tests :: ', function () {
     detailPage.clickWorkItemDetailCloseButton();
 
     // Reopen the same detail page and check changes are saved
-    var detailPage = page.clickWorkItemTitle(page.firstWorkItem, firstWorkItemID);
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');
     expect(detailPage.getAssociatedIteration()).toBe(firstIteration.FullPath);
     detailPage.clickWorkItemDetailCloseButton();
   });
 
   it('Re-Associate Workitem from detail page', function() {
-    var detailPage = page.clickWorkItemTitle(page.firstWorkItem, firstWorkItemID);
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     detailPage.IterationOndetailPage().click();
     detailPage.associateIterationById(firstIteration.ID);
     detailPage.saveIteration();
 
     // Re - associate
-    page.clickWorkItemTitle(page.firstWorkItem, firstWorkItemID);
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     detailPage.IterationOndetailPage().click();
     detailPage.associateIterationById(secondIteration.ID);
     detailPage.saveIteration();
@@ -360,7 +359,7 @@ describe('Iteration CRUD tests :: ', function () {
   var setWorkItemStatus = function (thePage, theWorkItemTitle, theWorkItemStatus) {
     var until = protractor.ExpectedConditions;
     thePage.workItemViewId(thePage.workItemByTitle(theWorkItemTitle)).getText().then(function (text) {
-      var detailPage = thePage.clickWorkItemTitle(thePage.workItemByTitle(theWorkItemTitle), text);
+      var detailPage = thePage.clickWorkItemTitle(theWorkItemTitle);
       browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
       detailPage.clickWorkItemStateDropDownButton();
       browser.wait(until.elementToBeClickable(detailPage.WorkItemStateDropDownList().get(theWorkItemStatus)), constants.WAIT, 'Failed to find workItemStateDropDownButton');   

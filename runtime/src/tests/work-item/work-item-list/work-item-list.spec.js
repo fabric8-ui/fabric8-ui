@@ -57,7 +57,7 @@ describe('Work item list', function () {
 
   it('should contain right mock data on detail page - desktop.', function() { 
       page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
-        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+        var detailPage = page.clickWorkItem(page.firstWorkItem);
         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
         
         /* TODO - text in title/desc fields once updated is not visible in DOM - have to find a diff way to get the text */

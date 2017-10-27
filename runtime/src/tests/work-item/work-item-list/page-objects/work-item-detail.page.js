@@ -643,16 +643,13 @@ testSupport.clickElement(this.workItemDescriptionCancelIcon, "workItemDescriptio
     return element(by.id("bind-link")).click();
   }
   linkTitle (){
-    return element(by.css(".link-title")).getText();
-  }
-  linkState (index){
-    return element(by.id("linkSWIstate_" + index)).getText();
+    return element(by.css(".f8-link__list-item-title")).getText();
   }
   linkclose (index){
     return element(by.id("closeLink_" + index));
   }
-  linkTotalByTypes (index){
-    return element(by.id("linktotal_" + index)).getText();
+  linkTotalByTypes (){
+    return element(by.id("wi-link-total")).getText();
   }
   linkItemTitle (){
     return element(by.id("link_item_title")).getText();

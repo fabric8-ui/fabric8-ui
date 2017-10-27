@@ -19,7 +19,7 @@ var WorkItemListPage = require('./page-objects/work-item-list.page'),
   testSupport = require('./testSupport');
 
 describe('Work item list', function () {
-  var page; 
+  var page;
   var until = protractor.ExpectedConditions;
   var workItemTitle = "The test workitem title";
   var workItemUpdatedTitle = "The test workitem title - UPDATED";
@@ -39,7 +39,7 @@ describe('Work item list', function () {
     page.typeQuickAddWorkItemTitle(workItemTitle);
     page.clickQuickAddSave(); 
     page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+      var detailPage = page.clickWorkItem(page.firstWorkItem);
 
       browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
       detailPage.clickworkItemDetailAssigneeIcon();
@@ -67,7 +67,7 @@ describe('Work item list', function () {
       page.typeQuickAddWorkItemTitle(workItemTitle);
       page.clickQuickAddSave().then(function() {
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+        var detailPage = page.clickWorkItem(page.firstWorkItem);
 
         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
         expect(detailPage.clickworkItemDetailAssigneeIcon()).toBe(null);
@@ -89,7 +89,7 @@ describe('Work item list', function () {
       page.typeQuickAddWorkItemTitle(workItemTitle);
       page.clickQuickAddSave();
       page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
-        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+        var detailPage = page.clickWorkItem(page.firstWorkItem);
 
         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
         detailPage.clickworkItemDetailAssigneeIcon();
@@ -120,7 +120,7 @@ describe('Work item list', function () {
       page.typeQuickAddWorkItemTitle(workItemTitle);
       page.clickQuickAddSave().then(function() {
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+        var detailPage = page.clickWorkItem(page.firstWorkItem);
 
         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
         detailPage.clickworkItemDetailAssigneeIcon();
@@ -145,7 +145,7 @@ describe('Work item list', function () {
       page.typeQuickAddWorkItemTitle(workItemTitle);
       page.clickQuickAddSave().then(function() {
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+        var detailPage = page.clickWorkItem(page.firstWorkItem);
 
         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
         detailPage.clickworkItemDetailAssigneeIcon();
@@ -178,7 +178,7 @@ describe('Work item list', function () {
       page.typeQuickAddWorkItemTitle(workItemTitle);
       page.clickQuickAddSave().then(function() {
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+        var detailPage = page.clickWorkItem(page.firstWorkItem);
 
         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
         detailPage.clickworkItemDetailAssigneeIcon();
@@ -207,7 +207,7 @@ describe('Work item list', function () {
       page.typeQuickAddWorkItemTitle(workItemTitle);
       page.clickQuickAddSave();
       page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
-        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+        var detailPage = page.clickWorkItem(page.firstWorkItem);
 
         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
         detailPage.clickworkItemDetailAssigneeIcon();
@@ -229,7 +229,7 @@ describe('Work item list', function () {
       page.typeQuickAddWorkItemTitle(workItemTitle);
       page.clickQuickAddSave();
       page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
-        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
+        var detailPage = page.clickWorkItem(page.firstWorkItem);
 
         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
         detailPage.clickworkItemDetailAssigneeIcon();

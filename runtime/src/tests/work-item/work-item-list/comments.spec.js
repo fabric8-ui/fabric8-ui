@@ -12,7 +12,7 @@
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
   constants = require('./constants'),
   testSupport = require('./testSupport');
-  WorkItemDetailPage = require('./page-objects/work-item-detail.page'),
+
 describe('Comments tests :: ', function () {
   var page, items, browserMode;
 
@@ -22,12 +22,11 @@ var waitTime = 30000;
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);
-    detailPage = new WorkItemDetailPage(true);
     testSupport.setTestSpace(page);
   });
 
   it('Verify comments text area, username, comment,time is present -desktop ', function() {
-    page.clickWorkItemTitle(page.firstWorkItem, "id0");
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     detailPage.clickCommentIcon();
     detailPage.clickCommentDiv();
     detailPage.clickActiveCommentEditorBox();

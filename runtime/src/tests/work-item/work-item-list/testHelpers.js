@@ -118,7 +118,7 @@ module.exports = {
         page.workItemViewId(theWorkItem).getText().then(function (text) { 
 
             /* Access the workitem's detailpage */
-            var detailPage = page.clickWorkItemTitle(theWorkItem, text);
+            var detailPage = page.clickWorkItemTitle(theWorkItem);
 
             /* Assign the workitem */
             browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
@@ -153,7 +153,7 @@ module.exports = {
         page.workItemViewId(theWorkItem).getText().then(function (text) { 
 
             /* Access the workitem's detailpage */
-            var detailPage = page.clickWorkItemTitle(theWorkItem, text);
+            var detailPage = page.clickWorkItemTitle(theWorkItem);
             browser.wait(until.elementToBeClickable(detailPage.details_assigned_user()), constants.WAIT, 'Failed to find Assignee Icon');   
  
             expect(detailPage.details_assigned_user().getText()).toContain(assigneeName);
@@ -201,7 +201,7 @@ module.exports = {
         //console.log (theText);
 
         page.workItemViewId(page.workItemByTitle(oldTitleText)).getText().then(function (text) { 
-            var detailPage = page.clickWorkItemTitle(page.workItemByTitle(oldTitleText), text);
+            var detailPage = page.clickWorkItemTitle(oldTitleText);
 
             detailPage.clickWorkItemDetailTitleClick();
 
@@ -244,7 +244,7 @@ module.exports = {
         page.workItemViewId(theWorkItem).getText().then(function (text) { 
 
             /* Access the workitem's detailpage */
-            var detailPage = page.clickWorkItemTitle(theWorkItem, text);
+            var detailPage = page.clickWorkItem(theWorkItem);
             browser.wait(until.elementToBeClickable(detailPage.details_assigned_user()), constants.WAIT, 'Failed to find Assignee Icon');     
 
 //            expect(detailPage.clickWorkItemDetailTitle.getText()).toContain(workitemTitle);
@@ -271,7 +271,7 @@ module.exports = {
         //console.log (theText);
 
         page.workItemViewId(page.workItemByTitle(titleText)).getText().then(function (text) { 
-            var detailPage = page.clickWorkItemTitle(page.workItemByTitle(titleText), text);
+            var detailPage = page.clickWorkItemTitle(titleText);
 
             detailPage.clickWorkItemDetailDescription();
 
@@ -314,7 +314,7 @@ module.exports = {
         page.workItemViewId(theWorkItem).getText().then(function (text) { 
 
             /* Access the workitem's detailpage */
-            var detailPage = page.clickWorkItemTitle(theWorkItem, text);
+            var detailPage = page.clickWorkItemTitle(theWorkItem);
             browser.wait(until.elementToBeClickable(detailPage.details_assigned_user()), constants.WAIT, 'Failed to find Assignee Icon');     
 
             //expect(detailPage.workItemDetailDescription.getText()).toContain(workitemDesc);

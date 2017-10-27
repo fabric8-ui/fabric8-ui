@@ -19,7 +19,6 @@
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
   testSupport = require('./testSupport'),
-  WorkItemDetailPage = require('./page-objects/work-item-detail.page'),
   CommonPage = require('./page-objects/common.page'),
   constants = require('./constants');
 
@@ -52,7 +51,7 @@ describe('Basic filter workitems by assignee Test', function () {
       page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
       page.clickQuickAddSave().then(function() {
         page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
-          var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
+          var detailPage = page.clickWorkItemTitle(WORK_ITEM_TITLE);
           expect(detailPage.details_assigned_user().getText()).toContain(EXAMPLE_USER_0_VERIFY);
           detailPage.clickWorkItemDetailCloseButton();
         })
@@ -73,7 +72,7 @@ describe('Basic filter workitems by assignee Test', function () {
       page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
       page.clickQuickAddSave().then(function() {
         page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
-          var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
+          var detailPage = page.clickWorkItemTitle(WORK_ITEM_TITLE);
           expect(detailPage.AreaSelect().getText()).toContain(AREA_0_TITLE);
           detailPage.clickWorkItemDetailCloseButton();
         })

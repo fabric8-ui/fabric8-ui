@@ -11,8 +11,7 @@
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
   constants = require('./constants'),
-  testSupport = require('./testSupport'),
-  WorkItemDetailPage = require('./page-objects/work-item-detail.page');
+  testSupport = require('./testSupport');
 
 describe('Area tests :: ', function () {
   var page; 
@@ -31,13 +30,13 @@ describe('Area tests :: ', function () {
   });
 
   it('Verify Area elements are present -desktop ', function() {
-      detailPage = page.clickWorkItemTitle(page.firstWorkItem, WORKITEM_0_ID);
+      var detailPage = page.clickWorkItem(page.firstWorkItem);
       browser.wait(until.elementToBeClickable(detailPage.areaLabel), constants.WAIT, 'Failed to find areaLabel');   
       expect(detailPage.AreaSelect().isPresent()).toBe(true);
      });
 
   it('Adding area to a WI -desktop ', function() {
-      detailPage = page.clickWorkItemTitle(page.firstWorkItem, WORKITEM_0_ID);
+      var detailPage = page.clickWorkItem(page.firstWorkItem);
       browser.wait(until.elementToBeClickable(detailPage.areaLabel), constants.WAIT, 'Failed to find areaLabel');   
       detailPage.clickAreaSelect();
       detailPage.clickAreas(WORKITEM_0_ID);
@@ -49,7 +48,7 @@ describe('Area tests :: ', function () {
      });
 
   it('Updating area to a WI -desktop ', function() {
-      detailPage = page.clickWorkItemTitle(page.firstWorkItem, WORKITEM_0_ID);
+      var detailPage = page.clickWorkItem(page.firstWorkItem);
       browser.wait(until.elementToBeClickable(detailPage.areaLabel), constants.WAIT, 'Failed to find areaLabel');   
       detailPage.clickAreaSelect();
       detailPage.clickAreas(WORKITEM_0_ID);
@@ -67,7 +66,7 @@ describe('Area tests :: ', function () {
      });
 
     it('Try Removing area from a WI -desktop ', function() {
-      detailPage = page.clickWorkItemTitle(page.firstWorkItem, WORKITEM_0_ID);
+      var detailPage = page.clickWorkItem(page.firstWorkItem);
       browser.wait(until.elementToBeClickable(detailPage.areaLabel), constants.WAIT, 'Failed to find areaLabel');   
       detailPage.clickAreaSelect();
       detailPage.clickAreas(WORKITEM_0_ID);

@@ -38,7 +38,7 @@ describe('Work item list', function () {
   it('Verify new dynamic fields in a workitem', function () {
 
     page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
-      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);   
+      var detailPage = page.clickWorkItem(page.firstWorkItem);
 
       detailPage.clickStepsToReproduceText();
       detailPage.setstepsToReproduceText('THIS IS A TEST');

@@ -11,15 +11,11 @@
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
 testSupport = require('./testSupport'),
-constants = require('./constants'),
-WorkItemDetailPage = require('./page-objects/work-item-detail.page');
+constants = require('./constants');
 
 describe('Labels CRUD Tests', function () {
-  var page, items, browserMode, detailPage,
+  var page, items, browserMode,
     until = protractor.ExpectedConditions,
-    firstitem = {
-      'id': 'id0',
-    },
     newLabelTitle = "My Test Label",
     defaultSelectedLableTitle = "Example Label 1",
     testLabelTitle1 = "Example Label 0",
@@ -32,7 +28,7 @@ describe('Labels CRUD Tests', function () {
   });
 
   it('Verify add label button exists', function(){
-    detailPage = page.clickWorkItemTitle(page.firstWorkItem, firstitem.id);
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     expect(detailPage.addLabelButton.isPresent()).toBeTruthy();
     expect(detailPage.selectLabelDropdown.isPresent()).toBeFalsy();
     detailPage.clickAddLabelButton();
@@ -41,13 +37,13 @@ describe('Labels CRUD Tests', function () {
   });
 
   it('Verify create new label button is clickable', function(){
-    detailPage = page.clickWorkItemTitle(page.firstWorkItem, firstitem.id);
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     let clickEvent = detailPage.clickAddLabelButton();
     expect(clickEvent).toBeDefined();
   });
 
   it('Verify create new Label', function(){
-    detailPage = page.clickWorkItemTitle(page.firstWorkItem, firstitem.id);
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     detailPage.clickAddLabelButton();
     let origLabelCount
     detailPage.labelsCount.then(function(count){
@@ -65,15 +61,10 @@ describe('Labels CRUD Tests', function () {
   })
 
   it('Verify adding existing labels', function(){
-    detailPage = page.clickWorkItemTitle(page.firstWorkItem,firstitem.id);
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     detailPage.clickAddLabelButton();
     detailPage.selectLabelByTitle(testLabelTitle1);
     detailPage.selectLabelByTitle(testLabelTitle2);
-
-    detailPage.attachedLabels().getText().then(function(text){
-      console.log ("LABEL TEXT = " + text);
-    });
-
     /* TODO - Mocking data is incorrect - text returns is:  Example Label 1,Example Label 1,
 
     expect(detailPage.attachedLabels().getText()).toContain(testLabelTitle1);
@@ -82,7 +73,7 @@ describe('Labels CRUD Tests', function () {
   });
 
   it('Verify removing existing label by unchecking label', function(){
-    detailPage = page.clickWorkItemTitle(page.firstWorkItem, firstitem.id);
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     detailPage.clickAddLabelButton();
     // Uncheck label by clicking on it again
     detailPage.selectLabelByTitle(defaultSelectedLableTitle);
@@ -93,7 +84,7 @@ describe('Labels CRUD Tests', function () {
   });
 
   it('Verify removing existing label by clicking x', function(){
-    detailPage = page.clickWorkItemTitle(page.firstWorkItem, firstitem.id);
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
 
     // Uncheck label by clicking on it again
 ////    detailPage.removeLabelByTitle(defaultSelectedLableTitle);
@@ -102,7 +93,7 @@ describe('Labels CRUD Tests', function () {
   });
 
   it('Verify adding new label', function(){
-    detailPage = page.clickWorkItemTitle(page.firstWorkItem, firstitem.id);
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     detailPage.clickAddLabelButton();
     detailPage.clickCreateLabelButton();
     detailPage.setLabelName(newLabelTitle);
@@ -121,7 +112,7 @@ describe('Labels CRUD Tests', function () {
   });
 
   it('Verify removing new label', function(){
-    detailPage = page.clickWorkItemTitle(page.firstWorkItem,firstitem.id);
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     detailPage.clickAddLabelButton();
     detailPage.clickCreateLabelButton();
     detailPage.setLabelName(newLabelTitle);
@@ -136,7 +127,7 @@ describe('Labels CRUD Tests', function () {
   });
 
   it('Verify added label appears on the list page', function(){
-    detailPage = page.clickWorkItemTitle(page.firstWorkItem,firstitem.id);
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     detailPage.clickAddLabelButton();
     detailPage.selectLabelByTitle(testLabelTitle1);
     detailPage.clickLabelClose();

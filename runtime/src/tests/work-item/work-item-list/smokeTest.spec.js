@@ -46,7 +46,7 @@ describe('Work item list', function () {
     page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
     page.clickQuickAddSave().then(function() {
       page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
-        var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
+        var detailPage = page.clickWorkItemTitle(WORK_ITEM_TITLE);
         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');
         detailPage.clickworkItemDetailAssigneeIcon();
         detailPage.setWorkItemDetailAssigneeSearch(EXAMPLE_USER_1, false);
@@ -71,7 +71,7 @@ describe('Work item list', function () {
       /* Fill in/update the new work item's title and details field */
       expect(page.workItemTitle(page.workItemByTitle(WORK_ITEM_TITLE))).toBe(WORK_ITEM_TITLE);
       page.workItemViewId(page.workItemByTitle(WORK_ITEM_TITLE)).getText().then(function (text) {
-        var detailPage = page.clickWorkItemTitle(page.workItemByTitle(WORK_ITEM_TITLE), text);
+        var detailPage = page.clickWorkItemTitle(WORK_ITEM_TITLE);
         browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');
         detailPage.clickWorkItemDetailTitleClick();
         detailPage.setWorkItemDetailTitle (WORK_ITEM_UPDATED_TITLE, false);
@@ -112,7 +112,7 @@ describe('Work item list', function () {
   /* Create workitem - verify user and icon */
   // it('Edit and check WorkItem , creatorname and image is reflected', function () {
   //   page.clickDetailedDialogButton();
-  //   var detailPage = page.clickDetailedIcon("userstory");
+  //   page.clickDetailedIcon("userstory");
   //   browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find workItem');
 
   //   detailPage.setWorkItemDetailTitle (WORK_ITEM_TITLE, false);
@@ -137,7 +137,7 @@ describe('Work item list', function () {
   // });
 
 it('check date showing up correctly - Desktop', function () {
-    var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "Title Text 0");
+    var detailPage = page.clickWorkItemTitle(MOCK_WORKITEM_TITLE_0);
     browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find workItem');
     expect(detailPage.getCreatedtime()).toBe('a few seconds ago');
     browser.wait(until.elementToBeClickable(detailPage.workItemDetailCloseButton), constants.WAIT, 'Failed to find close workItem detail page');
@@ -145,7 +145,7 @@ it('check date showing up correctly - Desktop', function () {
  });
 
   it('Updating area to a WI -desktop ', function() {
-      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, WORKITEM_0_ID);
+      var detailPage = page.clickWorkItem(page.firstWorkItem);
       browser.wait(until.elementToBeClickable(detailPage.areaLabel), constants.WAIT, 'Failed to find areaLabel');
       detailPage.clickAreaSelect();
       detailPage.clickAreas(WORKITEM_0_ID);
@@ -163,14 +163,14 @@ it('check date showing up correctly - Desktop', function () {
      });
 
    it('Re-Associate Workitem from detail page', function() {
-      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0");
+      var detailPage = page.clickWorkItem(page.firstWorkItem);
       detailPage.IterationOndetailPage().click();
       detailPage.associateIterationById("id1");
       detailPage.saveIteration();
       expect(detailPage.getAssociatedIteration()).toBe("/Root Iteration/Iteration 1");
       detailPage.clickWorkItemDetailCloseButton();
       // Re - assocaite
-      page.clickWorkItemTitle(page.firstWorkItem, "id0");
+      var detailPage = page.clickWorkItem(page.firstWorkItem);
       detailPage.IterationOndetailPage().click();
       detailPage.associateIterationById("id0");
       detailPage.saveIteration();
@@ -179,13 +179,13 @@ it('check date showing up correctly - Desktop', function () {
     });
 
   it('Try clicking on start coding it should redirect - Desktop', function () {
-    var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
+    var detailPage = page.clickWorkItemTitle(MOCK_WORKITEM_TITLE_0);
     expect(detailPage.startCodingElement.isPresent()).toBe(true);
     detailPage.clickStartCoding();
    });
 
   it('Edit comment and cancel - Desktop ', function() {
-    var detailPage = page.clickWorkItemTitle(page.firstWorkItem, "id0");
+    var detailPage = page.clickWorkItem(page.firstWorkItem);
     detailPage.scrollToBottom()
       .then(function() {
         detailPage.commentEdit('0').click();

@@ -29,7 +29,7 @@ var waitTime = 30000;
     testSupport.setTestSpace(page);
   });
  it('Verify start coding is visible when code base is present - Desktop', function () {
-    var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
+    var detailPage = page.clickWorkItemTitle("Title Text 0");
     browser.wait(until.textToBePresentInElement((detailPage.startCodingElement.getText()), 'Start Coding'), waitTime);
     expect(detailPage.startCodingElement.isPresent()).toBe(true);
     expect(detailPage.startCodingElement.getText()).toBe('Start Coding');
@@ -41,20 +41,20 @@ var waitTime = 30000;
     page.typeQuickAddWorkItemTitle(workItemTitle);
     page.clickQuickAddSave();
     page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-        var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text); 
+        var detailPage = page.clickWorkItem(page.firstWorkItem); 
           expect((detailPage.startCodingElement.isPresent().not));
           expect((detailPage.startCodingLabel().isPresent().not));
     }); 
    });
  it('Try clicking on start coding it should redirect - Desktop', function () {
-    var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
+    var detailPage = page.clickWorkItemTitle("Title Text 0");
     // expect(detailPage.startCodingElement.isPresent()).toBe(true);
     expect(detailPage.startCodingElement.getAttribute('href')).toEqual('http://mock.service/codebase');
     detailPage.clickStartCoding();
    });
 
  it('Verify start coding label is visible when code base is present - Desktop', function () {
-    var detailPage = page.clickWorkItemTitle(page.workItemByTitle("Title Text 0"), "id0");
+    var detailPage = page.clickWorkItemTitle("Title Text 0");
     browser.wait(until.textToBePresentInElement((detailPage.startCodingElement.getText()), 'Start Coding'), waitTime);
     expect(detailPage.startCodingLabel().isPresent()).toBe(true);
     expect(detailPage.startCodingLabel().getText()).toBe('Code');
