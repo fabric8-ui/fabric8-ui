@@ -148,7 +148,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         'assignee',
         'creator',
         'area',
-        'label'
+        'label',
+        'workitemtype'
       ]
     } else {
       this.allowedFilterKeys= [
@@ -156,6 +157,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         'creator',
         'area',
         'label',
+        'workitemtype',
         'state'
       ]
     }
