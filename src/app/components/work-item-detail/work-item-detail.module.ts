@@ -69,7 +69,7 @@ if (process.env.ENV == 'inmemory') {
   declarations: [
     WorkItemDetailComponent,
     DynamicFieldComponent,
-    MarkdownControlComponent,
+    MarkdownControlComponent
   ],
   exports: [WorkItemDetailComponent],
   providers: providers

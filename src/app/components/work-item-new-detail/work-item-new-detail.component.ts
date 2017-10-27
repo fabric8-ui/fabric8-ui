@@ -56,6 +56,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   @ViewChild('userList') userList: any;
   @ViewChild('detailHeader') detailHeader: ElementRef;
   @ViewChild('detailContent') detailContent: ElementRef;
+  @ViewChild('assignee') assignee: any;
 
 
   areas: TypeaheadDropdownValue[] = [];
@@ -98,6 +99,14 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
     private workItemTypeControlService: WorkItemTypeControlService,
     private renderer: Renderer2
   ) {}
+
+  @HostListener('document:click', ['$event.target','$event.target.classList.contains('+'"assigned_user"'+')'])
+  public onClick(targetElement,assigned_user) {
+      const clickedInsidePopup = this.assignee.nativeElement.contains(targetElement);
+      if (!clickedInsidePopup&&!assigned_user) {  
+          this.cancelAssignment();
+      }
+  }
 
   ngOnInit() {
     this.loggedIn = this.auth.isLoggedIn();

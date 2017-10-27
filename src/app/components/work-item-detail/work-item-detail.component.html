@@ -97,7 +97,7 @@
                 <label class="control-label">
                   {{workItem.relationships?.baseType?.data?.attributes?.fields['system.assignees']?.label || 'Label'}}
                 </label>
-                <div class="detail-assignee-content">
+                <div class="detail-assignee-content"  #assignee>
                   <span
                     *ngIf="!workItem.relationships?.assignees?.data?.length"
                     (click)="activeSearchAssignee()"
@@ -114,10 +114,10 @@
                       onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
                   </div>
                   <div class="pull-left detail-assignee-name">
-                      <span *ngIf="!searchAssignee && !workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="placeholder pointer">
+                      <span *ngIf="!searchAssignee && !workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="placeholder pointer assigned_user">
                         Unassigned
                       </span>
-                      <span *ngIf="!searchAssignee && workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="pointer" id="WI_details_assigned_user">
+                      <span *ngIf="!searchAssignee && workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="pointer assigned_user" id="WI_details_assigned_user">
                         {{workItem.relationships?.assignees?.data[0] | almUserName:'Assignee not found' }}
                       </span>
                       <div *ngIf="searchAssignee" class="user-search" >
@@ -161,7 +161,6 @@
                           <ul class="item-ul no-padding">
                             <li class="action-li width-100 pull-left">
                                 <button class="btn btn-link action-item pull-left" (click)="unassignUser()">Unassign</button>
-                                <button class="btn btn-link action-item pull-right" (click)="cancelAssignment()">Cancel</button>
                             </li>
                           </ul>
                         </div>
