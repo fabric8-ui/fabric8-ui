@@ -154,11 +154,10 @@
     }
     .user-label { margin-right: 15px; }
     .user-assign-icon {
-      padding: 4.5px 3.5px;
+      &:extend(.not-assigned-user-icon);
       margin-right: 10px;
       color: @color-pf-black-500;
       cursor: pointer;
-      .Border(1px, dashed, @color-pf-black);
     }
     .active {
       padding: 5px;
