@@ -20,7 +20,6 @@ import { WorkItem } from '../../models/work-item';
 import { FabPlannerIterationModalComponent } from '../iterations-modal/iterations-modal.component';
 import {
   Action,
-  ActionConfig,
   EmptyStateConfig,
   ListBase,
   ListEvent,
@@ -58,7 +57,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   masterIterations;
   treeIterations;
   activeIterations:IterationModel[] = [];
-  actionConfig: ActionConfig;
   emptyStateConfig: EmptyStateConfig;
   treeListConfig: TreeListConfig;
 
@@ -137,26 +135,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   setTreeConfigs() {
-    this.actionConfig = {
-      primaryActions: [],
-      moreActions: [{
-        id: 'edit',
-        title: 'Edit',
-        tooltip: 'Edit this iteration'
-      }, {
-        id: 'close',
-        title: 'Close',
-        tooltip: 'Close this iteration'
-      },
-      {
-        id: 'createChild',
-        title: 'Create Child',
-        tooltip: 'Create a child under this iteration',
-      }],
-      moreActionsDisabled: !this.loggedIn,
-      moreActionsVisible: this.loggedIn
-    } as ActionConfig;
-
     this.emptyStateConfig = {
       iconStyleClass: '',
       title: 'No Iterations Available',
@@ -487,20 +465,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   //Patternfly-ng's tree list related functions
-  handleAction($event: Action, item: any): void {
-    switch($event.id) {
-      case 'edit':
-        this.onEdit(item.data);
-      break;
-      case 'createChild':
-        this.onCreateChild(item.data);
-      break;
-      case 'close':
-        this.onClose(item.data);
-      break;
-    }
-  }
-
   handleClick($event: Action, item: any) {
   }
 

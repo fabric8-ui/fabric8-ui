@@ -144,8 +144,36 @@
         </ng-template>
         <ng-template #actionTemplate let-node="node" let-index="index">
           <pfng-action class="list-pf-actions"
-            [config]="actionConfig"
-            (onActionSelect)="handleAction($event, node)">
+            [template]="kebabAction">
+            <ng-template #kebabAction>
+              <div *ngIf="loggedIn"
+                class="dropdown-kebab-pf pull-right dropdown" dropdown>
+                <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
+                  <span class="fa fa-ellipsis-v"></span>
+                </button>
+                  <ul class="dropdown-menu-right dropdown-menu"
+                  *dropdownMenu>
+                  <li>
+                    <a class="pointer"
+                      (click)="onEdit(node.data)">
+                      Edit
+                    </a>
+                  </li>
+                  <li *ngIf="node.data.attributes.active_status">
+                    <a class="pointer"
+                      (click)="onClose(node.data)">
+                        Close
+                    </a>
+                  </li>
+                  <li>
+                    <a class="pointer"
+                      (click)="onCreateChild(node.data)">
+                        Create child
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </ng-template>
           </pfng-action>
         </ng-template>
       </pfng-tree-list>
