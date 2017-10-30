@@ -16,7 +16,7 @@
     "semantic-release": "semantic-release pre && gulp build && cp -r .git dist && npm publish dist/ && semantic-release post"
   },
   "license": "Apache-2.0",
-  "contributors": [ 
+  "contributors": [
     {
       "name": "Joshua Wilson",
       "email": "josh@redhat.com"
