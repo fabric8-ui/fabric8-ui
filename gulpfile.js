@@ -7,7 +7,7 @@
 var gulp = require('gulp'),
   less = require('gulp-less'),
   LessAutoprefix = require('less-plugin-autoprefix'),
-  autoprefix = new LessAutoprefix({ browsers: ['last 2 versions'] });
+  autoprefix = new LessAutoprefix({ browsers: ['last 2 versions'] }),
   lesshint = require('gulp-lesshint'),
   concat = require('gulp-concat-css'),
   del = require('del'),
