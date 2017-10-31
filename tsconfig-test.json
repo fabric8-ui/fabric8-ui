@@ -9,9 +9,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": false,
-    "inlineSources": false,
-    "noEmitHelpers": false, // Planner and demo won't run when true
+    "sourceMap": true,
+    "inlineSources": true,
+    "noEmitHelpers": false,
+    "doc-noEmitHelpers": "Planner and demo won't run when true",
     "strictNullChecks": false,
     "noImplicitAny": true,
     "allowUnreachableCode": false,

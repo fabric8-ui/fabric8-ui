@@ -31,6 +31,10 @@ const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL || '
 module.exports = function (options) {
   return {
 
+    entry: {
+      'app': './index.ts'
+    },
+
     /**
      * Source map for Karma from the help of karma-sourcemap-loader &  karma-webpack
      *
