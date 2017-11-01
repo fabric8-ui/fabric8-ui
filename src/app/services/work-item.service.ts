@@ -1,6 +1,8 @@
 import { Injectable, Component, Inject } from '@angular/core';
 
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/operators/map';
+import 'rxjs/add/operator/catch';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
