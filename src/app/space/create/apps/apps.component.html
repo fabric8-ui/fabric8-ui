@@ -2,9 +2,16 @@
 
   <div class="cards-pf">
     <div class="row row-cards-pf">
+      <div class="col-xs-12 col-sm-4 col-md-3"><h3><strong>Applications</strong></h3></div>
+      <div class="col-xs-12 col-sm-4 col-md-3"><h3><strong>Environments</strong></h3></div>
+    </div>
+  </div>
+
+  <div class="cards-pf">
+    <div class="row row-cards-pf">
       <div class="col-xs-12 col-sm-4 col-md-3"></div>
       <div class="col-xs-12 col-sm-4 col-md-3" *ngFor="let environment of environments">
-        <h2> {{ environment }}</h2>
+        <h2>{{ environment.name }}</h2>
       </div>
     </div>
   </div>
