@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AppsService } from './services/apps.service';
+import {
+  AppsService,
+  Environment,
+} from './services/apps.service';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -10,7 +13,7 @@ import { AppsService } from './services/apps.service';
 })
 export class AppsComponent implements OnInit {
   spaceId: string;
-  environments: string[];
+  environments: Environment[];
 
   constructor(
     private router: Router,

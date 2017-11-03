@@ -6,6 +6,11 @@ import { Observable } from 'rxjs';
 
 import { WIT_API_URL } from 'ngx-fabric8-wit';
 
+export declare class Environment {
+  environmentId: string;
+  name: string;
+}
+
 @Injectable()
 export class AppsService {
   private headers = new Headers({ 'Content-Type': 'application/json' });
@@ -24,8 +29,11 @@ export class AppsService {
     this.spacesUrl = apiUrl + 'spaces';
   }
 
-  getEnvironments(spaceId: string): Observable<string[]> {
-    return Observable.of(['stage', 'run']);
+  getEnvironments(spaceId: string): Observable<Environment[]> {
+    return Observable.of([
+      { environmentId: 'envId-stage', name: 'stage' },
+      { environmentId: 'envId-run', name: 'run'}
+    ]);
   }
 
   getTotalCpuCount(spaceId: string, environmentId: string): Observable<number> {
