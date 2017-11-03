@@ -37,7 +37,7 @@ export class AppsService {
   }
 
   getTotalCpuCount(spaceId: string, environmentId: string): Observable<number> {
-    return Observable.of(8);
+    return Observable.of(10);
   }
 
   getTotalMemory(spaceId: string, environmentId: string): Observable<number> {
@@ -45,10 +45,10 @@ export class AppsService {
   }
 
   getUsedCpuCount(spaceId: string, environmentId: string): Observable<number> {
-    return Observable.of(4);
+    return Observable.of(7);
   }
 
   getUsedMemory(spaceId: string, environmentId: string): Observable<number> {
-    return Observable.of(200);
+    return Observable.of(256);
   }
 }
