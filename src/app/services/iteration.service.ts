@@ -111,6 +111,7 @@ export class IterationService {
   createIteration(iteration: IterationModel, parentIteration: IterationModel): Observable<IterationModel> {
     console.log('Create on iteration service.');
     let iterationsUrl;
+    delete iteration.id;
     if (parentIteration) {
       iterationsUrl = parentIteration.links.self;
     }
