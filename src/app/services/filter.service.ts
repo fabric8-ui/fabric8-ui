@@ -25,6 +25,13 @@ export class FilterService {
   public in_notation = '$IN';
   public not_in_notation = '$NIN';
 
+  public special_keys = {
+    'null': null,
+    'true': true,
+    'false': false,
+    '': null
+  }
+
   private compare_notations: string[] = [
     this.equal_notation,
     this.not_equal_notation,
@@ -466,13 +473,21 @@ export class FilterService {
           if (val_arr.length > 1) {
             dObj[key][this.not_in_notation] = val_arr;
           } else {
-            dObj[key][this.not_equal_notation] = val_arr[0];
+            if (Object.keys(this.special_keys).findIndex(k => k === val_arr[0]) > -1) {
+              dObj[key][this.not_equal_notation] = this.special_keys[val_arr[0]];
+            } else {
+              dObj[key][this.not_equal_notation] = val_arr[0];
+            }
           }
         } else if(splitter === ':'){
           if (val_arr.length > 1) {
             dObj[key][this.in_notation] = val_arr;
           } else {
-            dObj[key][this.equal_notation] = val_arr[0];
+            if (Object.keys(this.special_keys).findIndex(k => k === val_arr[0]) > -1 ) {
+              dObj[key][this.equal_notation] = this.special_keys[val_arr[0]];
+            } else {
+              dObj[key][this.equal_notation] = val_arr[0];
+            }
           }
         }
         if (first_level) {
@@ -523,7 +538,7 @@ export class FilterService {
    * it is used when getting the context info from an existing query to give context
    * to a following UX flow. This only supports a very narrow usecase currently, but
    * may be extended later.
-   * 
+   *
    * @param queryString search/filter query string.
    * @param key key of the term for which we look for the value.
    */
@@ -544,7 +559,7 @@ export class FilterService {
               return thisTerm[key]['$EQ'];
             }
           }
-          console.log('Condition key not found in query: ' + key + ', query= ' + queryString);          
+          console.log('Condition key not found in query: ' + key + ', query= ' + queryString);
           return undefined;
         } else {
           console.log('The current query is not supported by getConditionFromQuery() (bad format): ' + queryString);
