@@ -23,7 +23,7 @@ export class AppsComponent implements OnInit {
     this.spaceId = 'placeholder-space';
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.updateResources();
   }
 
