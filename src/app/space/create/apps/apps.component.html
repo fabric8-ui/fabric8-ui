@@ -1,19 +1,36 @@
 <div id="apps" class="">
+
+  <div class="cards-pf">
+    <div class="row row-cards-pf">
+      <div class="col-xs-12 col-sm-4 col-md-3"></div>
+      <div class="col-xs-12 col-sm-4 col-md-3" *ngFor="let environment of environments">
+        <h2> {{ environment }}</h2>
+      </div>
+    </div>
+  </div>
+
   <div class="cards-pf" *ngFor="let application of applications">
     <div class="container-fluid container-cards-pf">
       <div class="row row-cards-pf">
-        <div class="col-xs-6 col-sm-4 col-md-4" *ngFor="let environment of environments">
+        <div class="col-xs-6 col-sm-4 col-md-3">
+          <h2>{{ application }}
+          </h2>
+        </div>
+        <div class="col-xs-6 col-sm-4 col-md-3" *ngFor="let environment of environments">
           <div class="card-pf">
             <div class="card-pf-body">
               <span class="pficon pficon-ok"></span>
               <span>6 Pods</span>
               <span>1.0.2</span>
               <div class="pull-right dropdown-kebab-pf dropdown" dropdown>
-                <button class="btn btn-link pull-right dropdown-toggle" id="appsKebab" type="button" aria-haspopup="true" aria-expanded="true" dropdownToggle>
+                <button class="btn btn-link pull-right dropdown-toggle" id="appsKebab" type="button" aria-haspopup="true" aria-expanded="true"
+                  dropdownToggle>
                   <span class="fa fa-ellipsis-v"></span>
                 </button>
                 <ul class="dropdown-menu-right dropdown-menu" aria-labelledby="appsKebab" *dropdownMenu>
-                    <li><a href="#">Action</a></li>
+                  <li>
+                    <a href="#">Action</a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -26,7 +43,8 @@
   <div class="cards-pf">
     <div class="container-fluid container-cards-pf">
       <div class="row row-cards-pf">
-        <div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let environment of environments">
+        <div class="col-xs-12 col-sm-4 col-md-3"></div>
+        <div class="col-xs-12 col-sm-4 col-md-3" *ngFor="let environment of environments">
           <div class="card-pf">
             <div class="card-pf-heading">
               <h2 class="card-pf-title">
