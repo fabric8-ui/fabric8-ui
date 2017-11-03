@@ -4,6 +4,7 @@ def ci (){
         container('ui'){
             sh 'npm install'
             sh 'npm run build'
+            sh 'npm pack dist/'
         }
     }
 
