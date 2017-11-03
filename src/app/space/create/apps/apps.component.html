@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <div class="cards-pf" *ngFor="let application of applications">
+  <div class="cards-pf" *ngFor="let application of applications; let i = index;">
     <div class="container-fluid container-cards-pf">
       <div class="row row-cards-pf">
         <div class="col-xs-6 col-sm-4 col-md-3">
@@ -23,14 +23,12 @@
               <span>6 Pods</span>
               <span>1.0.2</span>
               <div class="pull-right dropdown-kebab-pf dropdown" dropdown>
-                <button class="btn btn-link pull-right dropdown-toggle" id="appsKebab" type="button" aria-haspopup="true" aria-expanded="true"
-                  dropdownToggle>
+                <button class="btn btn-link pull-right dropdown-toggle" [id]="'kebab-' + i + '-' + environment + '-' + application"
+                  type="button" aria-haspopup="true" aria-expanded="true" data-toggle="dropdown" dropdownToggle>
                   <span class="fa fa-ellipsis-v"></span>
                 </button>
-                <ul class="dropdown-menu-right dropdown-menu" aria-labelledby="appsKebab" *dropdownMenu>
-                  <li>
-                    <a href="#">Action</a>
-                  </li>
+                <ul class="dropdown-menu-right dropdown-menu" [attr.aria-labelledby]="'kebab-' + i + '-' + environment + '-' + application" role="menu" *dropdownMenu>
+                    <li><a href="#">Action</a></li>
                 </ul>
               </div>
             </div>
