@@ -24,23 +24,23 @@ export class AppsService {
     this.spacesUrl = apiUrl + 'spaces';
   }
 
-  getEnvironments(spaceId: string): string[] {
-    return ['stage', 'run'];
+  getEnvironments(spaceId: string): Observable<string[]> {
+    return Observable.of(['stage', 'run']);
   }
 
-  getTotalCpuCount(spaceId: string, environmentId: string): number {
-    return 8;
+  getTotalCpuCount(spaceId: string, environmentId: string): Observable<number> {
+    return Observable.of(8);
   }
 
-  getTotalMemory(spaceId: string, environmentId: string): number {
-    return 400;
+  getTotalMemory(spaceId: string, environmentId: string): Observable<number> {
+    return Observable.of(400);
   }
 
-  getUsedCpuCount(spaceId: string, environmentId: string): number {
-    return 4;
+  getUsedCpuCount(spaceId: string, environmentId: string): Observable<number> {
+    return Observable.of(4);
   }
 
-  getUsedMemory(spaceId: string, environmentId: string): number {
-    return 200;
+  getUsedMemory(spaceId: string, environmentId: string): Observable<number> {
+    return Observable.of(200);
   }
 }

@@ -24,7 +24,7 @@ export class AppsComponent implements OnInit {
   }
 
   private updateResources(): void {
-    this.environments = this.appsService.getEnvironments(this.spaceId);
+    this.appsService.getEnvironments(this.spaceId).subscribe(val => this.environments = val);
   }
 
 }
