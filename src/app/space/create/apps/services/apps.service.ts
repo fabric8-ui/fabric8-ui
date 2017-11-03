@@ -31,8 +31,8 @@ export class AppsService {
 
   getEnvironments(spaceId: string): Observable<Environment[]> {
     return Observable.of([
-      { environmentId: 'envId-stage', name: 'stage' },
-      { environmentId: 'envId-run', name: 'run'}
+      { environmentId: 'envId-stage', name: 'stage' } as Environment,
+      { environmentId: 'envId-run', name: 'run' } as Environment
     ]);
   }
 
