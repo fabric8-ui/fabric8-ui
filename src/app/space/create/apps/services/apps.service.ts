@@ -29,11 +29,12 @@ export class AppsService {
     this.spacesUrl = apiUrl + 'spaces';
   }
 
-  getEnvironments(spaceId: string): Observable<Environment[]> {
-    return Observable.of([
-      { environmentId: 'envId-stage', name: 'stage' } as Environment,
-      { environmentId: 'envId-run', name: 'run' } as Environment
-    ]);
+  getApplications(spaceId: string): Observable<string[]> {
+    return Observable.of(['vertx-hello', 'vertx-paint', 'vertx-wiki']);
+  }
+
+  getEnvironments(spaceId: string): Observable<string[]> {
+    return Observable.of(['stage', 'run']);
   }
 
   getTotalCpuCount(spaceId: string, environmentId: string): Observable<number> {
