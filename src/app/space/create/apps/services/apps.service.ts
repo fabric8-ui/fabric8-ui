@@ -11,6 +11,16 @@ export declare class Environment {
   name: string;
 }
 
+export declare class MemoryStat {
+  used: number;
+  total: number;
+}
+
+export declare class CpuStat {
+  used: number;
+  total: number;
+}
+
 @Injectable()
 export class AppsService {
 
@@ -46,27 +56,15 @@ export class AppsService {
       .map(() => Math.floor(Math.random() * 5) + 1);
   }
 
-  getTotalCpuCount(spaceId: string, environmentId: string): Observable<number> {
+  getCpuStat(spaceId: string, environmentId: string): Observable<CpuStat> {
     return Observable
       .interval(AppsService.POLL_RATE_MS)
-      .map(() => Math.floor(Math.random() * 9) + 1);
+      .map(() => { return { used: Math.floor(Math.random() * 9) + 1, total: 10 }; });
   }
 
-  getTotalMemory(spaceId: string, environmentId: string): Observable<number> {
+  getMemoryStat(spaceId: string, environmentId: string): Observable<MemoryStat> {
     return Observable
       .interval(AppsService.POLL_RATE_MS)
-      .map(() => Math.floor(Math.random() * 200) + 200);
-  }
-
-  getUsedCpuCount(spaceId: string, environmentId: string): Observable<number> {
-    return Observable
-      .interval(AppsService.POLL_RATE_MS)
-      .map(() => Math.floor(Math.random() * 6) + 1);
-  }
-
-  getUsedMemory(spaceId: string, environmentId: string): Observable<number> {
-    return Observable
-      .interval(AppsService.POLL_RATE_MS)
-      .map(() => Math.floor(Math.random() * 156) + 100);
+      .map(() => { return { used: Math.floor(Math.random() * 156) + 100, total: 256 }; });
   }
 }
