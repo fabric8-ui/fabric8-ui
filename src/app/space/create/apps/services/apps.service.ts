@@ -6,17 +6,17 @@ import { Observable } from 'rxjs';
 
 import { WIT_API_URL } from 'ngx-fabric8-wit';
 
-export declare class Environment {
+export declare interface Environment {
   environmentId: string;
   name: string;
 }
 
-export declare class MemoryStat {
+export declare interface MemoryStat {
   used: number;
   total: number;
 }
 
-export declare class CpuStat {
+export declare interface CpuStat {
   used: number;
   total: number;
 }
