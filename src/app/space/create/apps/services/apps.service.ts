@@ -40,6 +40,12 @@ export class AppsService {
     return Observable.of(['stage', 'run']);
   }
 
+  getPodCount(spaceId: string, environmentId: string): Observable<number> {
+    return Observable
+      .interval(AppsService.POLL_RATE_MS)
+      .map(() => Math.floor(Math.random() * 5) + 1);
+  }
+
   getTotalCpuCount(spaceId: string, environmentId: string): Observable<number> {
     return Observable
       .interval(AppsService.POLL_RATE_MS)
