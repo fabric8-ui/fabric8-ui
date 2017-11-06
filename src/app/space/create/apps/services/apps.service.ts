@@ -14,7 +14,7 @@ export declare class Environment {
 @Injectable()
 export class AppsService {
 
-private static readonly POLL_RATE_MS: number = 5000;
+  private static readonly POLL_RATE_MS: number = 5000;
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private spacesUrl: string;
@@ -54,13 +54,13 @@ private static readonly POLL_RATE_MS: number = 5000;
 
   getUsedCpuCount(spaceId: string, environmentId: string): Observable<number> {
     return Observable
-    .interval(AppsService.POLL_RATE_MS)
-    .map(() => Math.floor(Math.random() * 6) + 1);
+      .interval(AppsService.POLL_RATE_MS)
+      .map(() => Math.floor(Math.random() * 6) + 1);
   }
 
   getUsedMemory(spaceId: string, environmentId: string): Observable<number> {
     return Observable
-    .interval(AppsService.POLL_RATE_MS)
-    .map(() => Math.floor(Math.random() * 156) + 100);
+      .interval(AppsService.POLL_RATE_MS)
+      .map(() => Math.floor(Math.random() * 156) + 100);
   }
 }
