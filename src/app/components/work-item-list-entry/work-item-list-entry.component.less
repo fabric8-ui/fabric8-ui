@@ -4,7 +4,7 @@
   &-entry {
     display: inline-flex;
     flex-direction: column;
-    padding: 10px 0;
+    padding: 0;
     cursor: pointer;
     align-items: center;
     button {
@@ -62,14 +62,12 @@
     color: gray;
     font-size: 10px;
     &-title {
+      float: left;
       width: ~"calc(e('100% - 100px'))";
     }
   }
   &-witype {
-    float: left;
-    width: 120px;
     span {
-      margin-right: 10px;
       font-size: 12px !important;
       font-weight: 200;
       line-height: 1;
@@ -78,6 +76,8 @@
   }
 
   &-title {
+    float: left;
+    width: 100%;
     line-height: 1.3;
     @media (max-width: @screen-md-min) {
       padding: 0 !important;
@@ -89,20 +89,21 @@
       max-width: 95%;
       padding-right: 5px;
       margin-bottom: 0;
+      font-weight: 600;
       vertical-align: text-top;
     }
   }
   &-description {
     display: table-cell;
     width: 50%;
-    padding: 0 20px;
+    padding: 0 15px;
     vertical-align: middle;
     text-align: left;
   }
 }
 
-.width-10 {
-  width: 10%;
+.width-100px {
+  width: 100px;
 }
 .list-group-item:hover {
   .f8-wi__list-title {

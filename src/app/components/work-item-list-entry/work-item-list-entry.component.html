@@ -7,19 +7,21 @@
 <div class="f8-wi__list-entry">
 	<!-- info area -->
   <div class="list-view-pf-main-info">
-    <div class="list-view-pf-left type f8-wi__list-witype">
-      <span class="pull-left">
+    <div class="list-view-pf-left type pull-left f8-wi__list-witype">
+      <span class="margin-0">
         {{workItem.attributes['system.number']}}
       </span>
-      <span class="color-grey pull-left fa
+      <span class="color-grey margin-h-10
         {{workItem.relationships?.baseType?.data?.attributes?.icon}}"
-        title="{{workItem.relationships?.baseType?.data?.attributes?.name}}"></span>
+        title="{{workItem.relationships?.baseType?.data?.attributes?.name}}">
+      </span>
+      <span> {{workItem.relationships?.baseType?.data?.attributes?.name}} </span>
     </div>
     <div class="list-view-pf-body">
       <div class="list-view-pf-description">
-        <div class="f8-wi__list-title truncate-ellipsis col-xs-12 row">
+        <div class="f8-wi__list-title truncate-ellipsis row">
             <div class="f8-wi__list-description">
-              <p class="workItemList_title truncate"
+              <p class="truncate"
                  (click)="onDetailPreview($event)"
                  [innerHTML]="workItem.attributes['system.title']">
               </p>
@@ -29,17 +31,18 @@
                 placement="right"></a>
               <div class="f8-wi__list-parent-info">
                 <div *ngIf="workItem.relationships?.parent?.data">
-                  Child of
-                  <a [routerLink]="[constructUrl(parentWI)]">
+                  <span class="pull-left margin-right-5"> Child of</span>
+                  <a class="pull-left"
+                    [routerLink]="[constructUrl(parentWI)]">
                     {{ parentWI.attributes['system.number'] }}
                   </a>
-                  <span class="color-grey fa {{parentWI.relationships?.baseType?.data?.attributes?.icon}}"
+                  <span class="color-grey fa margin-h-7 pull-left
+                    {{parentWI.relationships?.baseType?.data?.attributes?.icon}}"
                     title="{{ parentWI.relationships?.baseType?.data?.attributes?.name }}">
                   </span>
-                  <span class="truncate f8-wi__list-parent-info-title margin-left-7"
+                  <span class="truncate f8-wi__list-parent-info-title"
                     [innerHTML]="parentWI.attributes['system.title']">
                   </span>
-
                 </div>
               </div>
             </div>
@@ -50,8 +53,8 @@
                 [allowDelete]="false"
                 (onLabelClick)="labelClick($event)"></f8-label>
             </div>
-            <div class="f8-wi__list-description">
-              <span class="color-grey pull-left"
+            <div class="f8-wi__list-description width-100px">
+              <span class="pull-left"
                 almIcon
                 [iconType]="workItem.attributes['system.state']"
                 tooltip="{{workItem.attributes['system.state']}}"
@@ -77,7 +80,7 @@
         tooltip="Unassigned"
         placement="left"></span>
     </div>
-    <div class="pull-right"
+    <div class="pull-right margin-left-15"
       tooltip="Open Quick Preview"
       placement="left">
       <a (click)="onDetailPreview($event)"
