@@ -139,7 +139,6 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   }
 
   ngOnChanges() {
-    console.log(this.modalType);
   }
 
   ngOnDestroy() {
@@ -155,7 +154,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     if(e) {
       e.stopPropagation();
     }
-    console.log('iteration ====', iteration);
+
     this.modalType = type;
     if (iteration) {
       this.iteration = cloneDeep(iteration);
@@ -216,7 +215,6 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   }
 
   actionOnClose() {
-    //console.log('Close');
     this.resetValues();
   }
 
@@ -235,6 +233,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
     this.endDate = { date: event.date };
     this.iteration.attributes.endAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T12:00:00Z';
+    let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
+    startDatePickerComponentCopy['disableSince'] = event.date;
+    this.startDatePickerOptions = startDatePickerComponentCopy;
   }
 
   iterationSearchFocus() {
