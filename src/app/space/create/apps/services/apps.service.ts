@@ -13,6 +13,9 @@ export declare class Environment {
 
 @Injectable()
 export class AppsService {
+
+private static readonly POLL_RATE_MS: number = 5000;
+
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private spacesUrl: string;
   private nextLink: string = null;
@@ -38,18 +41,26 @@ export class AppsService {
   }
 
   getTotalCpuCount(spaceId: string, environmentId: string): Observable<number> {
-    return Observable.of(10);
+    return Observable
+      .interval(AppsService.POLL_RATE_MS)
+      .map(() => Math.floor(Math.random() * 9) + 1);
   }
 
   getTotalMemory(spaceId: string, environmentId: string): Observable<number> {
-    return Observable.of(400);
+    return Observable
+      .interval(AppsService.POLL_RATE_MS)
+      .map(() => Math.floor(Math.random() * 200) + 200);
   }
 
   getUsedCpuCount(spaceId: string, environmentId: string): Observable<number> {
-    return Observable.of(7);
+    return Observable
+    .interval(AppsService.POLL_RATE_MS)
+    .map(() => Math.floor(Math.random() * 6) + 1);
   }
 
   getUsedMemory(spaceId: string, environmentId: string): Observable<number> {
-    return Observable.of(256);
+    return Observable
+    .interval(AppsService.POLL_RATE_MS)
+    .map(() => Math.floor(Math.random() * 156) + 100);
   }
 }
