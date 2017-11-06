@@ -11,15 +11,14 @@ export declare interface Environment {
   name: string;
 }
 
-export declare interface MemoryStat {
+export declare interface Stat {
   used: number;
   total: number;
 }
 
-export declare interface CpuStat {
-  used: number;
-  total: number;
-}
+export declare interface MemoryStat extends Stat {}
+
+export declare interface CpuStat extends Stat {}
 
 @Injectable()
 export class AppsService {
