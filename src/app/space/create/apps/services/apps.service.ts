@@ -32,7 +32,7 @@ export class AppsService {
     this.spacesUrl = apiUrl + 'spaces';
   }
 
-  getApplications(readonly spaceId: string): Observable<string[]> {
+  getApplications(spaceId: string): Observable<string[]> {
     return Observable.of(['vertx-hello', 'vertx-paint', 'vertx-wiki']);
   }
 
