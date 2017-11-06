@@ -16,23 +16,23 @@ export class AppsService {
 
   private static readonly POLL_RATE_MS: number = 5000;
 
-  private headers = new Headers({ 'Content-Type': 'application/json' });
-  private spacesUrl: string;
+  private readonly headers: Headers = new Headers({ 'Content-Type': 'application/json' });
+  private readonly spacesUrl: string;
   private nextLink: string = null;
 
   constructor(
-    private http: Http,
-    private logger: Logger,
-    private auth: AuthenticationService,
-    private userService: UserService,
-    @Inject(WIT_API_URL) apiUrl: string) {
+    private readonly http: Http,
+    private readonly logger: Logger,
+    private readonly auth: AuthenticationService,
+    private readonly userService: UserService,
+    @Inject(WIT_API_URL) readonly apiUrl: string) {
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
     }
     this.spacesUrl = apiUrl + 'spaces';
   }
 
-  getApplications(spaceId: string): Observable<string[]> {
+  getApplications(readonly spaceId: string): Observable<string[]> {
     return Observable.of(['vertx-hello', 'vertx-paint', 'vertx-wiki']);
   }
 
