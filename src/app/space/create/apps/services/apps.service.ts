@@ -58,12 +58,12 @@ export class AppsService {
   getCpuStat(spaceId: string, environmentId: string): Observable<CpuStat> {
     return Observable
       .interval(AppsService.POLL_RATE_MS)
-      .map(() => { return { used: Math.floor(Math.random() * 9) + 1, total: 10 }; });
+      .map(() => ({ used: Math.floor(Math.random() * 9) + 1, total: 10 } as CpuStat));
   }
 
   getMemoryStat(spaceId: string, environmentId: string): Observable<MemoryStat> {
     return Observable
       .interval(AppsService.POLL_RATE_MS)
-      .map(() => { return { used: Math.floor(Math.random() * 156) + 100, total: 256 }; });
+      .map(() => ({ used: Math.floor(Math.random() * 156) + 100, total: 256 } as MemoryStat));
   }
 }
