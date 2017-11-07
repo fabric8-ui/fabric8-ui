@@ -34,7 +34,7 @@ export class AppsService {
     private readonly logger: Logger,
     private readonly auth: AuthenticationService,
     private readonly userService: UserService,
-    @Inject(WIT_API_URL) readonly apiUrl: string) {
+    @Inject(WIT_API_URL) private readonly apiUrl: string) {
     if (this.auth.getToken() != null) {
       this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
     }
