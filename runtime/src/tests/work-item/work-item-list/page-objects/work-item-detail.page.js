@@ -509,6 +509,7 @@ testSupport.clickElement(this.workItemDescriptionCancelIcon, "workItemDescriptio
     return element(by.css('#comment_body_' + index + ' .edit-icon'));
   }
   commentBody(index){
+    browser.wait(until.presenceOf(element(by.css('#comment_body_' + index + ' .editor-box')), constants.WAIT, "Failed to find the comment"))
     return element(by.css('#comment_body_' + index + ' .editor-box'));
   }
   getCommentBody  (index){

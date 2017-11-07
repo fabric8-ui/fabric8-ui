@@ -81,7 +81,7 @@ describe('Work item list', function () {
         detailPage.setWorkItemDetailDescription (WORK_ITEM_UPDATED_DESCRIPTION, false);
         detailPage.clickWorkItemDescriptionSaveIcon();
         detailPage.clickWorkItemDetailCloseButton();
-        browser.wait(until.presenceOf(page.firstWorkItem), constants.WAIT, 'Failed to find workItemList');
+        browser.wait(until.presenceOf(page.workItemByTitle(WORK_ITEM_UPDATED_TITLE)), constants.WAIT, 'Failed to find workItemList');
         expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_UPDATED_TITLE);
       });
     });
