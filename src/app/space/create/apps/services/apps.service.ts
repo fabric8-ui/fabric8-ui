@@ -7,13 +7,13 @@ import { Observable } from 'rxjs';
 import { WIT_API_URL } from 'ngx-fabric8-wit';
 
 export declare interface Environment {
-  environmentId: string;
-  name: string;
+  readonly environmentId: string;
+  readonly name: string;
 }
 
 export declare interface Stat {
-  used: number;
-  total: number;
+  readonly used: number;
+  readonly total: number;
 }
 
 export declare interface MemoryStat extends Stat {}
