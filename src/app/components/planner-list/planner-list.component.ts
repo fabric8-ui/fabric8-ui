@@ -376,6 +376,11 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       this.areas = items[2];
       this.loggedInUser = items[3];
       this.labels = items[4];
+      if(this.initialGroup === undefined) {
+        let witCollection = this.workItemTypes.map(wit => wit.id);
+        this.groupTypesService.setCurrentGroupType(witCollection);
+        this.initialGroup = this.groupTypesService.getCurrentGroupType();
+      }
       // If there is an iteration filter on the URL
       // const queryParams = this.route.snapshot.queryParams;
       // if (Object.keys(queryParams).indexOf('iteration') > -1) {
@@ -908,6 +913,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     } else {
       this.selectedWI = null;
       //reset the quick add context to allowed WIT for the selected group
+      this.logger.log('Reset work item types as per the work item type group.');
+      this.logger.log(this.initialGroup);
       this.groupTypesService.setCurrentGroupType(this.initialGroup);
     }
   }
