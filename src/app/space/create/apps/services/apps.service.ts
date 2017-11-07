@@ -1,10 +1,5 @@
-import { Injectable, Inject } from '@angular/core';
-import { Headers, Http } from '@angular/http';
-import { AuthenticationService, UserService } from 'ngx-login-client';
-import { Logger } from 'ngx-base';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
-import { WIT_API_URL } from 'ngx-fabric8-wit';
 
 export declare interface Environment {
   readonly environmentId: string;
@@ -24,22 +19,6 @@ export declare interface CpuStat extends Stat {}
 export class AppsService {
 
   private static readonly POLL_RATE_MS: number = 5000;
-
-  private readonly headers: Headers = new Headers({ 'Content-Type': 'application/json' });
-  private readonly spacesUrl: string;
-  private nextLink: string = null;
-
-  constructor(
-    private readonly http: Http,
-    private readonly logger: Logger,
-    private readonly auth: AuthenticationService,
-    private readonly userService: UserService,
-    @Inject(WIT_API_URL) private readonly apiUrl: string) {
-    if (this.auth.getToken() != null) {
-      this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
-    }
-    this.spacesUrl = apiUrl + 'spaces';
-  }
 
   getApplications(spaceId: string): Observable<string[]> {
     return Observable.of(['vertx-hello', 'vertx-paint', 'vertx-wiki']);
