@@ -1,26 +1,24 @@
-<div class="col-xs-6 col-sm-4 col-md-3">
-  <div class="card-pf">
-    <div class="card-pf-body">
-      <a style="color: black; cursor: pointer;" (click)="collapsed = !collapsed">
-        <span class="fa fa-angle-down"></span>
-      </a>
-      <span class="pficon pficon-ok"></span>
-      <span id="podCountLabel">{{ podCount }} Pods</span>
-      <span id="versionLabel">{{ version }}</span>
-      <div class="pull-right dropdown-kebab-pf dropdown" dropdown>
-        <button class="btn btn-link pull-right dropdown-toggle" id="kebab" type="button" aria-haspopup="true"
-          aria-expanded="true" data-toggle="dropdown" dropdownToggle>
-          <span class="fa fa-ellipsis-v"></span>
-        </button>
-        <ul class="dropdown-menu-right dropdown-menu" aria-labelledby="kebab" role="menu" *dropdownMenu>
-          <li>
-            <a href="#">Action</a>
-          </li>
-        </ul>
-      </div>
-      <div [collapse]="collapsed">
-        Detailed Information Placeholder
-      </div>
+<div class="card-pf">
+  <div class="card-pf-body">
+    <a style="color: black; cursor: pointer;" (click)="collapsed = !collapsed">
+      <span class="fa fa-angle-down"></span>
+    </a>
+    <span class="pficon pficon-ok"></span>
+    <span id="podCountLabel">{{ podCount }} Pods</span>
+    <span id="versionLabel">{{ version }}</span>
+    <div class="pull-right dropdown-kebab-pf dropdown" dropdown>
+      <button class="btn btn-link pull-right dropdown-toggle" id="kebab" type="button" aria-haspopup="true"
+        aria-expanded="true" data-toggle="dropdown" dropdownToggle>
+        <span class="fa fa-ellipsis-v"></span>
+      </button>
+      <ul class="dropdown-menu-right dropdown-menu" aria-labelledby="kebab" role="menu" *dropdownMenu>
+        <li>
+          <a href="#">Action</a>
+        </li>
+      </ul>
+    </div>
+    <div [collapse]="collapsed">
+      Detailed Information Placeholder
     </div>
   </div>
 </div>
