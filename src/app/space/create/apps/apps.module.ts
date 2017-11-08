@@ -7,6 +7,7 @@ import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 import { AppsComponent } from './apps.component';
+import { AppCardComponent } from './components/app-card.component';
 import { AppsRoutingModule } from './apps-routing.module';
 
 import { AppsService } from './services/apps.service';
@@ -18,7 +19,10 @@ import { AppsService } from './services/apps.service';
     CommonModule,
     AppsRoutingModule
   ],
-  declarations: [AppsComponent],
+  declarations: [
+    AppsComponent,
+    AppCardComponent
+  ],
   providers: [
     BsDropdownConfig,
     AppsService

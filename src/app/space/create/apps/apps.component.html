@@ -22,24 +22,7 @@
         <div class="col-xs-6 col-sm-4 col-md-2">
           <h4>{{ application }}</h4>
         </div>
-        <div class="col-xs-6 col-sm-4 col-md-3" *ngFor="let environment of environments">
-          <div class="card-pf">
-            <div class="card-pf-body">
-              <span class="pficon pficon-ok"></span>
-              <span>6 Pods</span>
-              <span>1.0.2</span>
-              <div class="pull-right dropdown-kebab-pf dropdown" dropdown>
-                <button class="btn btn-link pull-right dropdown-toggle" [id]="'kebab-' + environment + '-' + application"
-                  type="button" aria-haspopup="true" aria-expanded="true" data-toggle="dropdown" dropdownToggle>
-                  <span class="fa fa-ellipsis-v"></span>
-                </button>
-                <ul class="dropdown-menu-right dropdown-menu" [attr.aria-labelledby]="'kebab-' + environment + '-' + application" role="menu" *dropdownMenu>
-                    <li><a href="#">Action</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
+        <app-card [applicationId]="application" [environment]="environment" *ngFor="let environment of environments"></app-card>
       </div>
     </div>
   </div>
