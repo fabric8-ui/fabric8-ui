@@ -5,8 +5,8 @@
         <span class="fa fa-angle-down"></span>
       </a>
       <span class="pficon pficon-ok"></span>
-      <span>{{ podCount }} Pods</span>
-      <span>{{ version }}</span>
+      <span id="podCountLabel">{{ podCount }} Pods</span>
+      <span id="versionLabel">{{ version }}</span>
       <div class="pull-right dropdown-kebab-pf dropdown" dropdown>
         <button class="btn btn-link pull-right dropdown-toggle" [id]="'kebab-' + environment + '-' + application" type="button" aria-haspopup="true"
           aria-expanded="true" data-toggle="dropdown" dropdownToggle>
