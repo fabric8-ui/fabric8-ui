@@ -21,6 +21,7 @@ export class AppCardComponent implements OnDestroy, OnInit {
   @Input() applicationId: string;
   @Input() environment: Environment;
 
+  collapsed: boolean = true;
   podCount: number = 0;
   version: string = '1.0.2';
 
