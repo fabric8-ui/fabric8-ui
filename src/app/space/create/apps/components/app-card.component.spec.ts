@@ -8,6 +8,8 @@ import { DebugElement } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+
 import { AppCardComponent } from './app-card.component';
 import { AppsService } from '../services/apps.service';
 
@@ -33,6 +35,7 @@ describe('AppCardComponent', () => {
     spyOn(mockSvc, 'getMemoryStat').and.callThrough();
 
     TestBed.configureTestingModule({
+      imports: [ CollapseModule.forRoot() ],
       declarations: [ AppCardComponent ],
       providers: [ { provide: AppsService, useValue: mockSvc } ]
     });
