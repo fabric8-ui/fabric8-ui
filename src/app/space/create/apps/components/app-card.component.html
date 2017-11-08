@@ -8,11 +8,11 @@
       <span id="podCountLabel">{{ podCount }} Pods</span>
       <span id="versionLabel">{{ version }}</span>
       <div class="pull-right dropdown-kebab-pf dropdown" dropdown>
-        <button class="btn btn-link pull-right dropdown-toggle" [id]="'kebab'" type="button" aria-haspopup="true"
+        <button class="btn btn-link pull-right dropdown-toggle" id="kebab" type="button" aria-haspopup="true"
           aria-expanded="true" data-toggle="dropdown" dropdownToggle>
           <span class="fa fa-ellipsis-v"></span>
         </button>
-        <ul class="dropdown-menu-right dropdown-menu" [attr.aria-labelledby]="'kebab'" role="menu" *dropdownMenu>
+        <ul class="dropdown-menu-right dropdown-menu" aria-labelledby="kebab" role="menu" *dropdownMenu>
           <li>
             <a href="#">Action</a>
           </li>
