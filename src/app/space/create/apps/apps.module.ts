@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Http } from '@angular/http';
 
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 
@@ -16,6 +17,7 @@ import { AppsService } from './services/apps.service';
   imports: [
     BsDropdownModule.forRoot(),
     CollapseModule.forRoot(),
+    AccordionModule.forRoot(),
     CommonModule,
     AppsRoutingModule
   ],

@@ -1,6 +1,9 @@
 <div class="col-xs-6 col-sm-4 col-md-3">
   <div class="card-pf">
     <div class="card-pf-body">
+      <a style="color: black; cursor: pointer;" (click)="this['collapse' + environment.name + application] = !(this['collapse' + environment.name + application])">
+        <span class="fa fa-angle-down"></span>
+      </a>
       <span class="pficon pficon-ok"></span>
       <span>{{ podCount }} Pods</span>
       <span>{{ version }}</span>
@@ -9,11 +12,15 @@
           aria-expanded="true" data-toggle="dropdown" dropdownToggle>
           <span class="fa fa-ellipsis-v"></span>
         </button>
-        <ul class="dropdown-menu-right dropdown-menu" [attr.aria-labelledby]="'kebab-' + environment + '-' + application" role="menu" *dropdownMenu>
+        <ul class="dropdown-menu-right dropdown-menu" [attr.aria-labelledby]="'kebab-' + environment + '-' + application" role="menu"
+          *dropdownMenu>
           <li>
             <a href="#">Action</a>
           </li>
         </ul>
+      </div>
+      <div [collapse]="!(this['collapse' + environment.name + application])">
+        Detailed Information Placeholder
       </div>
     </div>
   </div>
