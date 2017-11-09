@@ -22,7 +22,6 @@ export class AppsComponent implements OnDestroy, OnInit {
   private readonly unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
-    private router: Router,
     private appsService: AppsService
   ) {
     this.spaceId = 'placeholder-space';
