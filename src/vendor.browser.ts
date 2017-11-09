@@ -28,6 +28,10 @@ import 'ngx-bootstrap';
 import '../node_modules/patternfly/dist/css/patternfly.min.css';
 import '../node_modules/patternfly/dist/css/patternfly-additions.min.css';
 
+// import PatternFly JS and jquery for charts
+import '../node_modules/patternfly/node_modules/jquery/dist/jquery.min.js';
+import '../node_modules/patternfly/dist/js/patternfly.min.js';
+
 if ('production' === ENV) {
   // Production
 
