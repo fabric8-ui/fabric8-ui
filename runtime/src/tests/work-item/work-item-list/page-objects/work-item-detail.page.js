@@ -28,7 +28,7 @@ class WorkItemDetailPage {
   }
 
   get workItemDetailFullPageCloseButton () {
-    return element(by.xpath(".//*[contains (@class,'pficon-close pull-right margin-right-5 padding-15 close')]"));
+    return element(by.xpath(".//*[contains(@class,'f8-detail__header')]/span[contains(@class,'pficon-close pull-right')]"));
   }
   clickWorkItemDetailFullPageCloseButton () {
     return this.workItemDetailFullPageCloseButton.click();

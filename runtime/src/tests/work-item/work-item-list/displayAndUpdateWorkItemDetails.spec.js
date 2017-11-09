@@ -347,14 +347,6 @@ it('Verify how many work item type exists in drop down - desktop', function() {
   });
 
   /*Verfify on selecting workitem it should display in list and detail view both pages */
-  it('Verfify on selecting workitem state it should display in list and detail view both pages -phone ', function() {
-     var workItemTitle = "The test workitem title";
-     var workItemUpdatedTitle = "The test workitem title - UPDATED";
-         page.clickWorkItemQuickAdd();
-         page.typeQuickAddWorkItemTitle(workItemTitle);
-         page.clickQuickAddSave().then(function() {
-         page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-         var detailPage = page.clickWorkItem(page.firstWorkItem);
 
          browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
          detailPage.clickWorkItemStateDropDownButton();
@@ -376,7 +368,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       browser.wait(until.elementToBeClickable(page.workItemTitle(page.firstWorkItem)), constants.WAIT, 'Failed to find firstWorkItem');   
 
       page.workItemViewId(page.workItemByTitle(workItemTitle)).getText().then(function (text) {
-      var detailPage = page.clickWorkItem(page.firstWorkItem);
+      var detailPage = page.clickWorkItemTitle(page.firstWorkItem, text);
 
       browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
       detailPage.clickWorkItemStateDropDownButton();
@@ -484,6 +476,7 @@ it('Verify how many work item type exists in drop down - desktop', function() {
       detailPage.clickWorkItemDescriptionSaveIcon();
       detailPage.clickWorkItemDetailCloseButton();
       var detailPage = page.clickWorkItem(page.firstWorkItem);
+      page.clickWorkItemTitle(page.firstWorkItem, workItemTitle);
       expect(page.workItemDescription(page.firstWorkItem)).toBe("");
     });
 

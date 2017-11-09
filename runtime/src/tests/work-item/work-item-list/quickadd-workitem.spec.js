@@ -20,7 +20,8 @@ var WorkItemListPage = require('./page-objects/work-item-list.page'),
 
 describe('Quickadd - Work item list', function () {
   var page, items, browserMode;
-  var char255 = '<div *ngFor=let comment of workItem.relationalData.comments; let counter = index" class="comments-wrap">   +            <div *ngFor="let comment of workItem.relationalData?.comments?.slice().reverse()" class="comments-wrap">                  <div>                      <div class="user-avatar pull-left">                          <img id="{{"comment_avatar_" + counter}}" -                        class="user-assign-avatar pull-left"  +                               />';
+//  var char255 = '<div *ngFor=let comment of workItem.relationalData.comments; let counter = index" class="comments-wrap">   +            <div *ngFor="let comment of workItem.relationalData?.comments?.slice().reverse()" class="comments-wrap">                  <div>                      <div class="user-avatar pull-left">                          <img id="{{"comment_avatar_" + counter}}" -                        class="user-assign-avatar pull-left"  +                               />';
+  var char255 = 'abcde1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890';
   var char255Expected = '<div *ngFor=let comment of workItem.relationalData.comments; let counter = index" class="comments-wrap"> + <div *ngFor="let comment of workItem.relationalData?.comments?.slice().reverse()" class="comments-wrap"> <div> <div class="user-avatar pull-left"> <img id="{{"comment_avatar_" + counter}}" - class="user-assign-avatar pull-left" + />';
   var until = protractor.ExpectedConditions;
 
@@ -57,8 +58,8 @@ describe('Quickadd - Work item list', function () {
     page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle(char255);
     page.clickQuickAddSave().then(function() {
-      expect(page.workItemTitle(page.firstWorkItem)).toBe(char255Expected);
-      expect(page.workItemTitle(page.workItemByNumber(0))).toBe(char255Expected);
+      expect(page.workItemTitle(page.firstWorkItem)).toBe(char255);
+      expect(page.workItemTitle(page.workItemByNumber(0))).toBe(char255);
       //commented due to delete is temporarily removed
       // page.clickWorkItemKebabButton(page.firstWorkItem);
 

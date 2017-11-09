@@ -8,8 +8,7 @@ exports.config = {
     exclude: ['./../src/tests/**/*test-template.spec.js','./../src/tests/**/*work-item-dynamic-fields.spec.js','./../src/tests/**/EXCLUDED/*.spec.js'],
     suites: {
       smokeTest: './../src/tests/**/smokeTest.spec.js',
-      fullTest:  './../src/tests/**/*.spec.js',
-      tempTest: './../src/tests/**/iteration.spec.js'
+      fullTest:  './../src/tests/**/*.spec.js'
     },
 
     jasmineNodeOpts: {
