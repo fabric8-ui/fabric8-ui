@@ -24,6 +24,7 @@ describe('AppCardComponent', () => {
       getApplications: () => { throw 'Not Implemented'; },
       getEnvironments: () => { throw 'Not Implemented'; },
       getPodCount: () => Observable.of(2),
+      getVersion: () => Observable.of('1.2.3'),
       getCpuStat: () => { throw 'Not Implemented'; },
       getMemoryStat: () => { throw 'Not Implemented'; }
     };
@@ -73,8 +74,9 @@ describe('AppCardComponent', () => {
       el = de.nativeElement;
     });
 
-    it('should be set to 1.0.2', () => {
-      expect(el.textContent).toEqual('1.0.2');
+    it('should be set from mockSvc.getVersion result', () => {
+      expect(mockSvc.getVersion).toHaveBeenCalledWith('mockAppId', 'mockEnvironmentId');
+      expect(el.textContent).toEqual('1.2.3');
     });
   });
 

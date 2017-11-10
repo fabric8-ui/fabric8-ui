@@ -46,6 +46,7 @@ describe('AppsComponent', () => {
         { environmentId: 'b2', name: 'prod' }
       ]),
       getPodCount: () => { throw 'Not Implemented'; },
+      getVersion: () => { throw 'NotImplemented'; },
       getCpuStat: () => { throw 'Not Implemented'; },
       getMemoryStat: () => { throw 'Not Implemented'; }
     };
