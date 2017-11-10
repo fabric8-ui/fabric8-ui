@@ -6,8 +6,6 @@ import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 
-import { ChartModule } from 'patternfly-ng';
-
 import { AppModule as RuntimeConsoleModule } from '../../../../a-runtime-console/index';
 
 import { AppsComponent } from './apps.component';
@@ -24,7 +22,6 @@ const imports = USE_RUNTIME_CONSOLE ?
     BsDropdownModule.forRoot(),
     CollapseModule.forRoot(),
     AccordionModule.forRoot(),
-    ChartModule,
     CommonModule,
     AppsRoutingModule
   ];

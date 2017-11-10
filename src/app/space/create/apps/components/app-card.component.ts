@@ -25,14 +25,6 @@ export class AppCardComponent implements OnDestroy, OnInit {
   podCount: Observable<number>;
   version: string = '1.0.2';
 
-  memoryConfig: any;
-  memoryData: any = {
-    dataAvailable: true,
-    total: 100,
-    xData: ['time', 10, 11, 12],
-    yData: ['memory', 10, 20, 30]
-  };
-
   constructor(
     private appsService: AppsService
   ) { }
@@ -40,11 +32,6 @@ export class AppCardComponent implements OnDestroy, OnInit {
   ngOnDestroy(): void { }
 
   ngOnInit(): void {
-    this.memoryConfig = {
-      chartId: 'memory-' + this.applicationId + '-' + this.environment.name,
-      tooltipType: 'default'
-    };
-
     this.podCount =
       this.appsService.getPodCount(this.applicationId, this.environment.environmentId);
   }
