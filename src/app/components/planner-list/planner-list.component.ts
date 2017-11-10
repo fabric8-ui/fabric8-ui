@@ -815,6 +815,17 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
           }
       })
     );
+
+    this.eventListeners.push(
+      this.iterationService.createIterationObservable.subscribe(iteration => {
+        let index = this.iterations.findIndex(i => i.id === iteration.id);
+        if (index > -1) {
+          this.iterations[index] = iteration;
+        } else {
+          this.iterations.push(iteration);
+        }
+      })
+    );
   }
 
   //Patternfly-ng's tree list component

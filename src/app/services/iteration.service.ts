@@ -27,6 +27,7 @@ export class IterationService {
   private selfId;
 
   public dropWIObservable: Subject<{workItem: WorkItem, error: boolean}> = new Subject();
+  public createIterationObservable: Subject<IterationModel> = new Subject();
 
   constructor(
       private logger: Logger,
@@ -279,5 +280,9 @@ export class IterationService {
     let path_arr = iteration.attributes.parent_path.split('/');
     let id = path_arr[path_arr.length-1];
     return iterations.find(i => i.id === id);
+  }
+
+  emitCreateIteration(iteration: IterationModel) {
+    this.createIterationObservable.next(iteration);
   }
 }

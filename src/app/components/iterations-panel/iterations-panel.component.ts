@@ -242,7 +242,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   //This function is called after the iteration modal closes.
   onCreateOrupdateIteration(iteration: IterationModel) {
-    console.log('onCreateOrupdateIteration called >> ', iteration);
     let index = this.allIterations.findIndex((it) => it.id === iteration.id);
     if (index >= 0) {
       this.allIterations[index] = iteration;
@@ -274,6 +273,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.treeIterations = this.iterationService.getTopLevelIterations(this.allIterations);
     this.treeList.update();
     this.clusterIterations();
+    this.iterationService.emitCreateIteration(iteration);
   }
 
   getWorkItemsByIteration(iteration: IterationModel) {
