@@ -82,7 +82,7 @@ describe('AppsComponent', () => {
   });
 
   it('should set service result to applications property', (done: DoneFn) => {
-    expect(mockSvc.getApplications).toHaveBeenCalled();
+    expect(mockSvc.getApplications).toHaveBeenCalledWith('fake-spaceId');
     component.applications.subscribe(applications => {
       expect(applications).toEqual(['foo-app', 'bar-app']);
       done();
@@ -90,7 +90,7 @@ describe('AppsComponent', () => {
   });
 
   it('should set service result to environments property', (done: DoneFn) => {
-    expect(mockSvc.getEnvironments).toHaveBeenCalled();
+    expect(mockSvc.getEnvironments).toHaveBeenCalledWith('fake-spaceId');
     component.environments.subscribe(environments => {
       expect(environments).toEqual([
         { environmentId: 'a1', name: 'stage' },
