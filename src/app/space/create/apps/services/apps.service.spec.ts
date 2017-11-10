@@ -39,6 +39,12 @@ describe('AppsService', () => {
     });
   });
 
+  describe('#getVersion', () => {
+    it('should return 1.0.2', () => {
+      svc.getVersion('foo', 'bar').subscribe(val => expect(val).toEqual('1.0.2'));
+    });
+  });
+
   describe('#getCpuStat', () => {
     it('should return a "total" value of 10', () => {
       svc.getPodCount('foo', 'bar')

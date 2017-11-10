@@ -35,6 +35,10 @@ export class AppsService {
       .map(() => Math.floor(Math.random() * 5) + 1);
   }
 
+  getVersion(spaceId: string, environmentId: string): Observable<string> {
+    return Observable.of('1.0.2');
+  }
+
   getCpuStat(spaceId: string, environmentId: string): Observable<CpuStat> {
     return Observable
       .interval(AppsService.POLL_RATE_MS)
