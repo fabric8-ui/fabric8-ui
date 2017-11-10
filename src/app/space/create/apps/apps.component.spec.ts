@@ -20,6 +20,8 @@ import {
   Environment
 } from './services/apps.service';
 
+import { Contexts } from 'ngx-fabric8-wit';
+
 @Component({
   selector: 'app-card',
   template: ''
@@ -34,6 +36,7 @@ describe('AppsComponent', () => {
   let component: AppsComponent;
   let fixture: ComponentFixture<AppsComponent>;
   let mockSvc: AppsService;
+  let contexts: Contexts;
 
   beforeEach(() => {
     mockSvc = {
@@ -47,6 +50,16 @@ describe('AppsComponent', () => {
       getMemoryStat: () => { throw 'Not Implemented'; }
     };
 
+    contexts = {
+      current: Observable.of({
+        user: null,
+        space: { id: 'fake-spaceId' },
+        type: null,
+        path: '',
+        name: 'fake-ctx'
+      })
+    } as Contexts;
+
     spyOn(mockSvc, 'getApplications').and.callThrough();
     spyOn(mockSvc, 'getEnvironments').and.callThrough();
     spyOn(mockSvc, 'getPodCount').and.callThrough();
@@ -56,7 +69,10 @@ describe('AppsComponent', () => {
     TestBed.configureTestingModule({
       imports: [ CollapseModule.forRoot() ],
       declarations: [ AppsComponent, FakeAppCardComponent ],
-      providers: [{ provide: AppsService, useValue: mockSvc }]
+      providers: [
+        { provide: AppsService, useValue: mockSvc },
+        { provide: Contexts, useValue: contexts }
+      ]
     });
 
     fixture = TestBed.createComponent(AppsComponent);
@@ -65,17 +81,23 @@ describe('AppsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should set service result to applications property', () => {
+  it('should set service result to applications property', (done: DoneFn) => {
     expect(mockSvc.getApplications).toHaveBeenCalled();
-    expect(component.applications).toEqual(['foo-app', 'bar-app']);
+    component.applications.subscribe(applications => {
+      expect(applications).toEqual(['foo-app', 'bar-app']);
+      done();
+    });
   });
 
-  it('should set service result to environments property', () => {
+  it('should set service result to environments property', (done: DoneFn) => {
     expect(mockSvc.getEnvironments).toHaveBeenCalled();
-    expect(component.environments).toEqual([
-      { environmentId: 'a1', name: 'stage' },
-      { environmentId: 'b2', name: 'prod' }
-    ]);
+    component.environments.subscribe(environments => {
+      expect(environments).toEqual([
+        { environmentId: 'a1', name: 'stage' },
+        { environmentId: 'b2', name: 'prod' }
+      ]);
+      done();
+    });
   });
 
 });
