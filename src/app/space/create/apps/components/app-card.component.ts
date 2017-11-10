@@ -10,7 +10,7 @@ import {
   Environment
 } from '../services/apps.service';
 
-import { Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-card',
@@ -22,7 +22,7 @@ export class AppCardComponent implements OnDestroy, OnInit {
   @Input() environment: Environment;
 
   collapsed: boolean = true;
-  podCount: number = 0;
+  podCount: Observable<number>;
   version: string = '1.0.2';
 
   public memoryConfig: any;
@@ -33,26 +33,20 @@ export class AppCardComponent implements OnDestroy, OnInit {
     yData: ['memory', 10, 20, 30]
   };
 
-  private readonly unsubscribe: Subject<void> = new Subject<void>();
-
   constructor(
     private appsService: AppsService
   ) { }
 
-  ngOnDestroy(): void {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
-  }
+  ngOnDestroy(): void { }
 
   ngOnInit(): void {
     this.memoryConfig = {
       chartId: 'memory-' + this.applicationId + '-' + this.environment.name,
       tooltipType: 'default'
     };
-    this.appsService
-      .getPodCount(this.applicationId, this.environment.environmentId)
-      .takeUntil(this.unsubscribe)
-      .subscribe(val => this.podCount = val);
+
+    this.podCount =
+      this.appsService.getPodCount(this.applicationId, this.environment.environmentId);
   }
 
 }

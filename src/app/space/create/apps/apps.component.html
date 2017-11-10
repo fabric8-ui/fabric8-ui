@@ -10,20 +10,20 @@
   <div class="cards-pf">
     <div class="row row-cards-pf">
       <div class="col-xs-12 col-sm-4 col-md-2"></div>
-      <div class="col-xs-12 col-sm-4 col-md-3" *ngFor="let environment of environments">
+      <div class="col-xs-12 col-sm-4 col-md-3" *ngFor="let environment of environments | async">
         <h4 style="text-transform: capitalize;">{{ environment.name }}</h4>
       </div>
     </div>
   </div>
 
-  <div class="cards-pf" *ngFor="let application of applications">
+  <div class="cards-pf" *ngFor="let application of applications | async">
     <div class="container-fluid container-cards-pf">
       <div class="row row-cards-pf">
         <div class="col-xs-6 col-sm-4 col-md-2">
           <h4>{{ application }}</h4>
         </div>
         <app-card class="col-xs-6 col-sm-4 col-md-3" [applicationId]="application" [environment]="environment"
-          *ngFor="let environment of environments"></app-card>
+          *ngFor="let environment of environments | async"></app-card>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@
               (click)="resourcesCollapsed = !resourcesCollapsed"><span class="fa fa-angle-down"></span>&nbsp;&nbsp;Resource Usage</a></strong></h3>
           </div>
           <div [collapse]="resourcesCollapsed">
-            <div class="col-xs-12 col-sm-4 col-md-3" *ngFor="let environment of environments">
+            <div class="col-xs-12 col-sm-4 col-md-3" *ngFor="let environment of environments | async">
               <div class="card-pf">
                 <div class="card-pf-body" style="font-size: 12px;">
                   <div class="progress-container progress-description-left progress-label-right">

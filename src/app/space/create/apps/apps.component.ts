@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ISubscription } from 'rxjs/Subscription';
 
 import {
@@ -16,10 +16,8 @@ import {
 })
 export class AppsComponent implements OnDestroy, OnInit {
   spaceId: string;
-  environments: Environment[];
-  applications: string[];
-
-  private readonly unsubscribe: Subject<void> = new Subject<void>();
+  environments: Observable<Environment[]>;
+  applications: Observable<string[]>;
 
   constructor(
     private appsService: AppsService
@@ -27,25 +25,18 @@ export class AppsComponent implements OnDestroy, OnInit {
     this.spaceId = 'placeholder-space';
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
-  }
+  ngOnDestroy(): void { }
 
   ngOnInit(): void {
     this.updateResources();
   }
 
   private updateResources(): void {
-    this.appsService
-      .getEnvironments(this.spaceId)
-      .takeUntil(this.unsubscribe)
-      .subscribe(val => this.environments = val);
+    this.environments =
+      this.appsService.getEnvironments(this.spaceId);
 
-    this.appsService
-      .getApplications(this.spaceId)
-      .takeUntil(this.unsubscribe)
-      .subscribe(val => this.applications = val);
+    this.applications =
+      this.appsService.getApplications(this.spaceId);
   }
 
 }
