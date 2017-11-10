@@ -31,14 +31,16 @@ export class AppsComponent implements OnDestroy, OnInit {
     this.spaceId = this.context.current.map(ctx => ctx.space.id);
    }
 
-  ngOnDestroy(): void { }
+  ngOnDestroy(): void {
+    this.contextSubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.updateResources();
   }
 
   private updateResources(): void {
-    this.spaceId.subscribe(spaceId => {
+    this.contextSubscription = this.spaceId.subscribe(spaceId => {
       this.environments =
         this.appsService.getEnvironments(spaceId);
 
