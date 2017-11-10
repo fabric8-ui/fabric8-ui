@@ -9,7 +9,7 @@ import {
   Environment,
 } from './services/apps.service';
 
-import { Contexts } from 'ngx-fabric8-wit';
+import { Spaces } from 'ngx-fabric8-wit';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -22,17 +22,17 @@ export class AppsComponent implements OnDestroy, OnInit {
   environments: Observable<Environment[]>;
   applications: Observable<string[]>;
 
-  private contextSubscription: ISubscription;
+  private spaceSubscription: ISubscription;
 
   constructor(
-    private context: Contexts,
+    private spaces: Spaces,
     private appsService: AppsService
   ) {
-    this.spaceId = this.context.current.map(ctx => ctx.space.id);
+    this.spaceId = this.spaces.current.map(space => space.id);
    }
 
   ngOnDestroy(): void {
-    this.contextSubscription.unsubscribe();
+    this.spaceSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -40,7 +40,7 @@ export class AppsComponent implements OnDestroy, OnInit {
   }
 
   private updateResources(): void {
-    this.contextSubscription = this.spaceId.subscribe(spaceId => {
+    this.spaceSubscription = this.spaceId.subscribe(spaceId => {
       this.environments =
         this.appsService.getEnvironments(spaceId);
 

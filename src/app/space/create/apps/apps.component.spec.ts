@@ -20,7 +20,7 @@ import {
   Environment
 } from './services/apps.service';
 
-import { Contexts } from 'ngx-fabric8-wit';
+import { Spaces } from 'ngx-fabric8-wit';
 
 @Component({
   selector: 'app-card',
@@ -36,7 +36,7 @@ describe('AppsComponent', () => {
   let component: AppsComponent;
   let fixture: ComponentFixture<AppsComponent>;
   let mockSvc: AppsService;
-  let contexts: Contexts;
+  let spaces: Spaces;
 
   beforeEach(() => {
     mockSvc = {
@@ -50,15 +50,9 @@ describe('AppsComponent', () => {
       getMemoryStat: () => { throw 'Not Implemented'; }
     };
 
-    contexts = {
-      current: Observable.of({
-        user: null,
-        space: { id: 'fake-spaceId' },
-        type: null,
-        path: '',
-        name: 'fake-ctx'
-      })
-    } as Contexts;
+    spaces = {
+      current: Observable.of({ id: 'fake-spaceId' })
+    } as Spaces;
 
     spyOn(mockSvc, 'getApplications').and.callThrough();
     spyOn(mockSvc, 'getEnvironments').and.callThrough();
@@ -71,7 +65,7 @@ describe('AppsComponent', () => {
       declarations: [ AppsComponent, FakeAppCardComponent ],
       providers: [
         { provide: AppsService, useValue: mockSvc },
-        { provide: Contexts, useValue: contexts }
+        { provide: Spaces, useValue: spaces }
       ]
     });
 
