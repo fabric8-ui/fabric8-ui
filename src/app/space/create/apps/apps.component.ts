@@ -9,21 +9,27 @@ import {
   Environment,
 } from './services/apps.service';
 
+import { Contexts } from 'ngx-fabric8-wit';
+
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-apps',
   templateUrl: 'apps.component.html'
 })
 export class AppsComponent implements OnDestroy, OnInit {
-  spaceId: string;
+
+  spaceId: Observable<string>;
   environments: Observable<Environment[]>;
   applications: Observable<string[]>;
 
+  private contextSubscription: ISubscription;
+
   constructor(
+    private context: Contexts,
     private appsService: AppsService
   ) {
-    this.spaceId = 'placeholder-space';
-  }
+    this.spaceId = this.context.current.map(ctx => ctx.space.id);
+   }
 
   ngOnDestroy(): void { }
 
@@ -32,11 +38,13 @@ export class AppsComponent implements OnDestroy, OnInit {
   }
 
   private updateResources(): void {
-    this.environments =
-      this.appsService.getEnvironments(this.spaceId);
+    this.spaceId.subscribe(spaceId => {
+      this.environments =
+        this.appsService.getEnvironments(spaceId);
 
-    this.applications =
-      this.appsService.getApplications(this.spaceId);
+      this.applications =
+        this.appsService.getApplications(spaceId);
+    });
   }
 
 }
