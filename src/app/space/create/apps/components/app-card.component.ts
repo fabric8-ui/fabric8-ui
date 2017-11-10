@@ -25,8 +25,8 @@ export class AppCardComponent implements OnDestroy, OnInit {
   podCount: Observable<number>;
   version: string = '1.0.2';
 
-  public memoryConfig: any;
-  public memoryData: any = {
+  memoryConfig: any;
+  memoryData: any = {
     dataAvailable: true,
     total: 100,
     xData: ['time', 10, 11, 12],
