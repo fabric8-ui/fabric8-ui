@@ -188,6 +188,9 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
 
       let targetContHeight:number = window.innerHeight - hdrHeight - expHeight;
       this.renderer.setStyle(this.containerHeight.nativeElement, 'height', targetContHeight + "px");
+      if(document.getElementsByTagName('body')) {
+        document.getElementsByTagName('body')[0].style.overflow = "hidden";
+      }
     }
   }
   ngOnDestroy() {
@@ -199,6 +202,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
       this.urlListener.unsubscribe();
       this.urlListener = null;
     }
+    document.getElementsByTagName('body')[0].style.overflow = "auto";
   }
 
   initStuff() {

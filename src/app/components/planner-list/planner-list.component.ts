@@ -276,6 +276,9 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       let targetContHeight:number = window.innerHeight - hdrHeight - expHeight;
       this.renderer.setStyle(this.containerHeight.nativeElement, 'height', targetContHeight + "px");
     }
+    if(document.getElementsByTagName('body')) {
+      document.getElementsByTagName('body')[0].style.overflow = "hidden";
+    }
   }
   @HostListener('window:resize', ['$event'])
     onResize(event) {
@@ -287,6 +290,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     if (this.spaceSubscription) {
       this.spaceSubscription.unsubscribe();
     }
+    document.getElementsByTagName('body')[0].style.overflow = "auto";
   }
 
   // model handlers

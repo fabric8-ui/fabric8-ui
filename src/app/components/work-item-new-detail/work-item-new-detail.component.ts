@@ -104,7 +104,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   @HostListener('document:click', ['$event.target','$event.target.classList.contains('+'"assigned_user"'+')'])
   public onClick(targetElement,assigned_user) {
       const clickedInsidePopup = this.assignee.nativeElement.contains(targetElement);
-      if (!clickedInsidePopup&&!assigned_user) {  
+      if (!clickedInsidePopup&&!assigned_user) {
           this.cancelAssignment();
       }
   }
@@ -159,6 +159,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     console.log('Destroying all the listeners in detail component');
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
+    document.getElementsByTagName('body')[0].style.overflow = "auto";
   }
 
   ngDoCheck() {
@@ -166,6 +167,9 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
       let HdrDivHeight:any =  this.detailHeader.nativeElement.offsetHeight;
       let targetHeight:any = window.innerHeight - HdrDivHeight - 90;
       this.renderer.setStyle(this.detailContent.nativeElement, 'height', targetHeight + "px");
+    }
+    if(document.getElementsByTagName('body')) {
+      document.getElementsByTagName('body')[0].style.overflow = "hidden";
     }
   }
   @HostListener('window:resize', ['$event'])
