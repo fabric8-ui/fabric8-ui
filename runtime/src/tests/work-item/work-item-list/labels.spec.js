@@ -42,23 +42,24 @@ describe('Labels CRUD Tests', function () {
     expect(clickEvent).toBeDefined();
   });
 
-  it('Verify create new Label', function(){
-    var detailPage = page.clickWorkItem(page.firstWorkItem);
-    detailPage.clickAddLabelButton();
-    let origLabelCount
-    detailPage.labelsCount.then(function(count){
-      origLabelCount = count
-    });
-    detailPage.clickCreateLabelButton();
-    detailPage.setLabelName(newLabelTitle);
-    detailPage.clickLabelCheckbox();
-    // Verify label count has increased by 1
-    detailPage.labelsCount.then(function(count){
-      expect(count).toBe(origLabelCount + 1);
-    });
-    // Verify label exists in the list
-    expect(detailPage.listOfLabels().getText()).toContain(detailPage.getLabelByTitle(newLabelTitle).getText());
-  })
+  // This test has been moved to smokeTest
+  // it('Verify create new Label', function(){
+  //   var detailPage = page.clickWorkItem(page.firstWorkItem);
+  //   detailPage.clickAddLabelButton();
+  //   let origLabelCount
+  //   detailPage.labelsCount.then(function(count){
+  //     origLabelCount = count
+  //   });
+  //   detailPage.clickCreateLabelButton();
+  //   detailPage.setLabelName(newLabelTitle);
+  //   detailPage.clickLabelCheckbox();
+  //   // Verify label count has increased by 1
+  //   detailPage.labelsCount.then(function(count){
+  //     expect(count).toBe(origLabelCount + 1);
+  //   });
+  //   // Verify label exists in the list
+  //   expect(detailPage.listOfLabels().getText()).toContain(detailPage.getLabelByTitle(newLabelTitle).getText());
+  // })
 
   it('Verify adding existing labels', function(){
     var detailPage = page.clickWorkItem(page.firstWorkItem);
@@ -126,13 +127,13 @@ describe('Labels CRUD Tests', function () {
     expect(detailPage.listOfLabels().getText()).not.toContain(newLabelTitle);
   });
 
-  it('Verify added label appears on the list page', function(){
-    var detailPage = page.clickWorkItem(page.firstWorkItem);
-    detailPage.clickAddLabelButton();
-    detailPage.selectLabelByTitle(testLabelTitle1);
-    detailPage.clickLabelClose();
-    detailPage.clickWorkItemDetailCloseButton();
-
-    expect(page.workItemAttachedLabels(page.firstWorkItem).getText()).toContain(testLabelTitle1);
- });
+// This test has been moved to smokeTest
+//   it('Verify added label appears on the list page', function(){
+//     var detailPage = page.clickWorkItem(page.firstWorkItem);
+//     detailPage.clickAddLabelButton();
+//     detailPage.selectLabelByTitle(testLabelTitle1);
+//     detailPage.clickLabelClose();
+//     detailPage.clickWorkItemDetailCloseButton();
+//     expect(page.workItemAttachedLabels(page.firstWorkItem).getText()).toContain(testLabelTitle1);
+//  });
 });

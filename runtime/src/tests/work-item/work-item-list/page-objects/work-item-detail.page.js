@@ -107,7 +107,7 @@ class WorkItemDetailPage {
 
   get workItemTitleSaveIcon () {
 //    return element(by.css("#wi-title-div .inlineinput-btn-save"));
-    return element(by.xpath(".//*[contains(@class,'inlineinput-btn-save')]"));
+    return element(by.css('.inlineinput-btn-save'));
   }
 
   workItemTitleSaveIconById () {
@@ -115,6 +115,7 @@ class WorkItemDetailPage {
   }
 
   clickWorkItemTitleSaveIcon () {
+    browser.wait(until.elementToBeClickable(this.workItemTitleSaveIcon));
     return this.workItemTitleSaveIcon.click();
   }
 
@@ -502,10 +503,7 @@ testSupport.clickElement(this.workItemDescriptionCancelIcon, "workItemDescriptio
     return element(by.id('comment_time_'+index)).getText();
   }
   commentEdit(index) {
-    browser.actions().mouseMove(element(by.css('#comment_body_' + index))).perform();
-    browser.wait(until.elementToBeClickable(
-      element(by.css('#comment_body_' + index + ' .edit-icon'))),
-      constants.WAIT, 'Failed to find comment edit button');
+    browser.wait(until.presenceOf(element(by.css('#comment_body_' + index))))
     return element(by.css('#comment_body_' + index + ' .edit-icon'));
   }
   commentBody(index){
