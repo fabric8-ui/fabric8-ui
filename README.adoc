@@ -30,28 +30,25 @@ The Planner build can be quickly run using the link:scripts/run-planner.sh[launc
 
 You can use the launcher script to run the Planner either as a Standalone component or as an Integrated component using an external webapp like the fabric8-ui.
 
-- To run a minimal runtime implementation of the Planner using an in-memory mock database use:
+- *Without Docker:* To run a minimal runtime implementation of the Planner using an in-memory mock database use:
 +
+[sh]
 ----
 $ scripts/run-planner.sh --standalone
 ----
 You can access the service on *`localhost:8080`*
-
-- To run the Planner in an integrated environment using an external webapp, use:
 +
-----
-$ scripts/run-planner.sh
-----
-+
-Note that the above command can be used out-of-the-box with the *_fabric8-ui_* project.
-
-The paths for the runtimes can be configured using command line arguments.
-See the link:scripts/run-planner.sh[launcher script] for further information.
-
 NOTE: To run the script on macOS, install `gnu-getopt`, run `brew install gnu-getopt`, and set it in your PATH:
  `echo 'export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"' >> ~/.zshrc`.
 
-For information on running the build manually see link:docs/building_planner.adoc[Building the Planner Component Library] documentation.
+- *With Docker:* To run the complete Planner stack using *`Docker Compose`* with link:https://github.com/fabric8-services/fabric8-wit[core], link:https://github.com/fabric8-services/fabric8-auth[auth] and their respective database setups use:
++
+[sh]
+----
+docker-compose up
+----
+
+For detailed information on building and running Planner see link:docs/building_planner.adoc[Building the Planner Component Library] documentation.
 
 == Other Useful Scripts and Tasks
 

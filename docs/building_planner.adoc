@@ -1,55 +1,93 @@
-= Building the Planner Component Library
+= Building Planner
 :icons:
+:numbered:
 :toc: macro
 :toc-title:
-:toclevels: 1
+:toclevels: 2
 
 toc::[]
 
 == Overview
 
-The following sections describe the manual steps to run the Planner in Standalone, Integrated, and Production environments.
-See the link:../README.adoc#quickstart[Quickstart] section of the README for information on using the launcher script to run the Planner build.
+Planner can be built as a standalone app or integrated within the Fabric8-UI. Here we'll mostly focus on various ways of running it as a webapp. We'll also briefly touch on the process of integrating and running it with Fabric8 UI.
 
-Prerequisite::
+== Build and Run for Development
 
-Before you run the build steps you need to install the npm package as follows:
+Planner comes with a minimal standalone runtime and mock in-memory database. This can be helpful to build and run Planner without having to build/setup all the components it relies on, for e.g. Fabric8 UI, WIT core, DB, Auth server etc.
+
+We'll primarily discuss here how to run Planner locally in standalone mode.
+
+- The *<<Without Containerization>>* section will touch on how to integrate it with Fabric8 UI as well, but while using mock backend.
+- Whereas the orchestrated setups *<<With Containerization>>* will fully setup the WIT core, DB and Auth for the Planner, but without Fabric8 UI integration (for now).
+
+=== Without Containerization
+
+In this part, we'll build and use Planner without having to setup various containerization and virtualization technologies.
+
+* *Pros:*
+** No need for setting up containerization, virtualization and orchestration tools.
+** Just having *`Node.js`* and *`npm`* installed is good enough.
+** Good for people who just want to run it
+* *Cons:*
+** Larger system footprints and it's never 100% reversible.
+** Needs installing a lot more dependencies, if backend is also setup locally.
+
+[NOTE]
+====
+In order to run Planner without containerization, you have to have *`Node.js`* and *`npm`* installed. Check their link:https://nodejs.org/en/download[official download page] for packages and docs to set it up on your platform. On latest Fedora `sudo dnf install nodejs` should do the job.
+
+Once they're installed, run `npm install` in the Planner directory to resolve all the libraries.
+====
+
+==== Using the launcher Script
+
+To run a minimal runtime implementation of the Planner using an in-memory mock database use:
+----
+$ scripts/run-planner.sh --standalone
+----
+You can access the service on *`http://localhost:8080`*
+
+NOTE: To run the script on macOS, install `gnu-getopt`, run `brew install gnu-getopt`, and set it in your PATH:
+ `echo 'export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"' >> ~/.zshrc`.
+
+This script can also build the Planner with an integrated environment such as *_fabric8-ui_* (or an external webapp):
+----
+$ scripts/run-planner.sh
+----
+
+See the link:../scripts/run-planner.sh[launcher script] for further information and configuration options.
+
+==== By manually building the app
+
+This process is functionally similar to building with the launcher script, but going through the steps manually.
+
+NOTE: You may need to have root access to run the following commands.
+
+. Build the fabric8-planner as a library and set up a watch task to rebuild any TS, HTML and SCSS files you change. In the *_fabric8-planner_* root directory, run:
 +
-----
-npm install
-----
-
-== Minimal standalone development environment
-
-The Planner provides you with a minimal standalone runtime for the Planner component library.
-It provides a complete runtime environment alongside a mock in-memory database to run functional tests or experiment with the Planner library.
-
-The following steps describe how you can run the Planner as a minimal standalone:
-
-*To use this with the Planner library:*
-
-. Get the dependencies for Planner. In the *_fabric8-planner_* root directory, run:
-+
-----
-npm install
-----
-. Start the library build in watch mode.
-+
+[sh]
 ----
 npm run watch:library
 ----
+
 . Change directory to *_runtime_* and get the dependencies for planner runtime.
 +
+[sh]
 ----
+cd ./runtime
 npm install
 ----
-. Link the Planner library to the runtime.
+
+. Link the Planner library to the runtime over *`npm`* (this may be required to be run as a super-user).
 +
+[sh]
 ----
 npm link ../dist-watch
 ----
+
 . Set the execution environment on build time using the `NODE_ENV` variable.
 +
+[sh]
 ----
 export NODE_ENV=<mode>
 ----
@@ -71,56 +109,130 @@ Use this mode to deploy the application.
 
 . Build and run the runtime application.
 +
+[sh]
 ----
 npm start
 ----
-. Point your browser to http://localhost:8080/.
-+
+
+. Point your browser to *http://localhost:8080*
+
 IMPORTANT: If you use `inmemory` mode, then after running
 the application, ensure that you
 http://localhost:8088/?token_json=%7B%22access_token%22%3A%22somerandomtoken%22%2C%22expires_in%22%3A1800%2C%22refresh_expires_in%22%3A1800%2C%22refresh_token%22%3A%22somerandomtoken%22%2C%22token_type%22%3A%22bearer%22%7D[visit this URL] which includes the authenticated/logged-in user token,
 to load it up with mock data.
 
-== Integrated environment
+---
 
-The following steps describe how you can build the Fabric8-planner as an npm library and embed it into a webapp, such as the *_fabric8-ui_*.
-
-NOTE: You may need to have root access to run the following commands.
+To *integrate planner with Fabric8 UI environment*, the steps are quite similar as before, but instead of the runtime, we're going to link and use Planner library into Fabric8 UI (or any other external app needing to embed planner).
 
 . Build the fabric8-planner as a library and set up a watch task to rebuild any TS, HTML and SCSS files you change. In the *_fabric8-planner_* root directory, run:
 +
+[sh]
 ----
 npm run watch:library
 ----
 
-.  Change directory to the webapp into which you want to embed the Planner library and ensure that you have installed the npm package.
+.  Change directory to the webapp into which you want to embed the Planner library (let's use Fabric8 UI in this example) and ensure that you have installed the npm package.
 +
+[sh]
 ----
+cd /path/to/fabric8-ui
 npm install
 ----
-+
-For example, if you want to embed the Planner library into the *_fabric8-ui_* webapp, change directory to *_fabric8-ui_* and run the above command.
 
-. Create a symlink from the *_node_modules/fabric8-planner_* directory to the *_dist-watch_* directory and install that
-symlinked node module into your webapp.
+. Link the Planner library to fabric8-ui over *`npm`* (this may be required to be run as a super-user).
 +
+[sh]
 ----
 npm link/<path to fabric8-planner>/dist-watch
 ----
 
-. Run your webapp in development mode.
+. Run *Fabric8 UI* in development mode.
 +
+[sh]
 ----
 npm start
 ----
 +
-You can access both JS and SASS sourcemaps if your webapp is properly setup.
-+
-NOTE: The *_fabric8-ui_* is set up to reload and provide access to sourcemaps automatically when you
+NOTE: *_fabric8-ui_* is set up to reload and provide access to sourcemaps automatically when you
 run `npm start`.
 
+. Point your browser to *http://localhost:8088*
 
-== Production environment
+=== With Containerization
+
+In this part, we'll orchestrate the Planner stack using containerization and virtualization (for minishift) technologies.
+
+* *Pros:*
+** Gives taste of the full planner stack, close to production 
+** Once set up, building and running is magically simple and easy
+** Doesn't need runtime and language installations on the host system
+** Smaller system footprints which are also fully removable/reversible
+* *Cons:*
+** Needs setting up containerization, virtualization and orchestration tools
+** Not good (yet) for continuous development as it lacks automatic rebuilding
+
+[NOTE]
+====
+In order to use containerization, you have to have orchestration strategy specific tools installed. Specific requirements are detailed in their respective sections.
+====
+
+==== Using Docker Compose
+
+This expects your system to have docker (and docker engine v1.13.0+ i.e. with version v3.x compose file support) set up and the service running.
+
+. First, build planner image from source. This is similar to manual build process, but without the `--watch` flag to rebuild changes (as of now).
++
+[sh]
+----
+docker build -t fabric8-planner-runtime .
+----
+
+. Run the stack with Docker Compose. This runs Planner, Core, DB, Auth & Auth's DB images orchestrated to work together.
++
+[sh]
+----
+docker-compose up
+----
+If wit/core fails to start with `docker-compose up`, just force a `docker-compose start core` on _another terminal_. This will continue the `stdout` on the former terminal and the later terminal can
+be closed after invoking the command.
+
+. Visit *`http://localhost:8088`* on your browser to access the app at this point.
+
+. When done, do the following to clean up:
++
+[sh]
+----
+docker-compose down
+----
+
+. Optionally, you can remove the images as well (also helps if you need to fetch new images):
++
+[sh]
+----
+docker images # lists the images
+docker rmi <imageID>
+----
+
+Alternatively, you can also run _only_ planner image, against external (prod/demo) API sources. In that case, use something like this:
+
+[sh]
+----
+docker build -t fabric8-planner-runtime .
+docker run -it --name=fabric8-planner-runtime -p 8088:8080 \
+        -e "API_URL=http://demo.api.openshift.io/api/" \
+        -v $(pwd)/runtime/dist:/dist:Z fabric8-planner-runtime
+----
+
+If you just want to run the unit-tests (or some other script in the container, instead of starting the server), then please uncomment and edit the `services::planner::entrypoint` field in the `docker-compose.yml`.
+
+*Known Limitation:* Data won't persist between subsequent runs - it's more of a choice
+than a limitation
+
+==== Using Minishift
+<Coming Soon>
+
+== Build for Production
 
 You can use the production environment to build a production package equivalent version.
 
