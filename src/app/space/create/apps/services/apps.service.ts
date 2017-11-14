@@ -1,13 +1,25 @@
-import { Injectable } from '@angular/core';
+import {
+  Injectable,
+  InjectionToken
+} from '@angular/core';
 import { Observable } from 'rxjs';
-
 import { Environment } from '../models/environment';
 import { CpuStat } from '../models/cpu-stat';
 import { MemoryStat } from '../models/memory-stat';
 
-@Injectable()
-export class AppsService {
+export const APPS_SERVICE = new InjectionToken<IAppsService>('IAppsService');
 
+export declare interface IAppsService {
+  getApplications(spaceId: string): Observable<string[]>;
+  getEnvironments(spaceId: string): Observable<Environment[]>;
+  getPodCount(spaceId: string, environmentId: string): Observable<number>;
+  getVersion(spaceId: string, environmentId: string): Observable<string>;
+  getCpuStat(spaceId: string, environmentId: string): Observable<CpuStat>;
+  getMemoryStat(spaceId: string, environmentId: string): Observable<MemoryStat>;
+}
+
+@Injectable()
+export class AppsService implements IAppsService {
   private static readonly POLL_RATE_MS: number = 5000;
 
   getApplications(spaceId: string): Observable<string[]> {
