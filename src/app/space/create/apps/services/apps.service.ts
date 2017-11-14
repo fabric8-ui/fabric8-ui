@@ -14,8 +14,11 @@ export class AppsService {
     return Observable.of(['vertx-hello', 'vertx-paint', 'vertx-wiki']);
   }
 
-  getEnvironments(spaceId: string): Observable<string[]> {
-    return Observable.of(['stage', 'run']);
+  getEnvironments(spaceId: string): Observable<Environment[]> {
+    return Observable.of([
+      { environmentId: 'envId-stage', name: 'stage' } as Environment,
+      { environmentId: 'envId-run', name: 'run' } as Environment
+    ]);
   }
 
   getPodCount(spaceId: string, environmentId: string): Observable<number> {
