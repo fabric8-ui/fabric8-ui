@@ -721,6 +721,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       this.workItemService.editWIObservable.subscribe(updatedItem => {
         let index = this.workItems.findIndex((item) => item.id === updatedItem.id);
         if(this.filterService.doesMatchCurrentFilter(updatedItem)){
+          updatedItem.hasChildren = updatedItem.relationships.children.meta.hasChildren;
+          updatedItem.relationships['parent'] = this.workItems[index].relationships.parent;
           if (index > -1) {
             this.workItems[index] = updatedItem;
           } else {
