@@ -15,10 +15,8 @@ import { Observable } from 'rxjs';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 import { AppsComponent } from './apps.component';
-import {
-  AppsService,
-  Environment
-} from './services/apps.service';
+import { AppsService } from './services/apps.service';
+import { Environment } from './models/environment';
 
 import { Spaces } from 'ngx-fabric8-wit';
 

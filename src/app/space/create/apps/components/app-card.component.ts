@@ -5,12 +5,10 @@ import {
   OnInit
 } from '@angular/core';
 
-import {
-  AppsService,
-  Environment
-} from '../services/apps.service';
-
 import { Observable } from 'rxjs';
+
+import { AppsService } from '../services/apps.service';
+import { Environment } from '../models/environment';
 
 @Component({
   selector: 'app-card',

@@ -1,19 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-export declare interface Environment {
-  readonly environmentId: string;
-  readonly name: string;
-}
-
-export declare interface Stat {
-  readonly used: number;
-  readonly total: number;
-}
-
-export declare interface MemoryStat extends Stat {}
-
-export declare interface CpuStat extends Stat {}
+import { Environment } from '../models/environment';
+import { CpuStat } from '../models/cpu-stat';
+import { MemoryStat } from '../models/memory-stat';
 
 @Injectable()
 export class AppsService {

@@ -3,12 +3,10 @@ import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 
-import {
-  AppsService,
-  Environment,
-} from './services/apps.service';
-
 import { Spaces } from 'ngx-fabric8-wit';
+
+import { AppsService } from './services/apps.service';
+import { Environment } from './models/environment';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
