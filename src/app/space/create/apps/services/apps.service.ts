@@ -20,7 +20,7 @@ export declare interface IAppsService {
 
 @Injectable()
 export class AppsService implements IAppsService {
-  private static readonly POLL_RATE_MS: number = 5000;
+  static readonly POLL_RATE_MS: number = 5000;
 
   getApplications(spaceId: string): Observable<string[]> {
     return Observable.of(['vertx-hello', 'vertx-paint', 'vertx-wiki']);
