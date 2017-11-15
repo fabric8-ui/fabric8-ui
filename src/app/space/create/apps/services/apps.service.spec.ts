@@ -63,19 +63,19 @@ describe('AppsService', () => {
 
   describe('#getCpuStat', () => {
     it('should return a "total" value of 10', fakeAsync(() => {
-      svc.getPodCount('foo', 'bar')
+      svc.getCpuStat('foo', 'bar')
         .subscribe(val => {
-          expect(val).toBe(10);
+          expect(val.total).toBe(10);
         });
       tick(AppsService.POLL_RATE_MS + 10);
       discardPeriodicTasks();
     }));
 
     it('should return a "used" value between 1 and 10', fakeAsync(() => {
-      svc.getPodCount('foo', 'bar')
+      svc.getCpuStat('foo', 'bar')
         .subscribe(val => {
-          expect(val).toBeGreaterThanOrEqual(1);
-          expect(val).toBeLessThanOrEqual(10);
+          expect(val.used).toBeGreaterThanOrEqual(1);
+          expect(val.used).toBeLessThanOrEqual(10);
         });
       tick(AppsService.POLL_RATE_MS + 10);
       discardPeriodicTasks();
@@ -84,19 +84,19 @@ describe('AppsService', () => {
 
   describe('#getMemoryStat', () => {
     it('should return a "total" value of 256', fakeAsync(() => {
-      svc.getPodCount('foo', 'bar')
+      svc.getMemoryStat('foo', 'bar')
         .subscribe(val => {
-          expect(val).toBe(400);
+          expect(val.total).toBe(256);
         });
       tick(AppsService.POLL_RATE_MS + 10);
       discardPeriodicTasks();
     }));
 
     it('should return a "used" value between 100 and 256', fakeAsync(() => {
-      svc.getPodCount('foo', 'bar')
+      svc.getMemoryStat('foo', 'bar')
         .subscribe(val => {
-          expect(val).toBeGreaterThanOrEqual(100);
-          expect(val).toBeLessThanOrEqual(256);
+          expect(val.used).toBeGreaterThanOrEqual(100);
+          expect(val.used).toBeLessThanOrEqual(256);
         });
       tick(AppsService.POLL_RATE_MS + 10);
       discardPeriodicTasks();
