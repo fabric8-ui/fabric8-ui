@@ -11,7 +11,7 @@
     <div class="row row-cards-pf">
       <div class="col-xs-12 col-sm-4 col-md-2"></div>
       <div class="col-xs-12 col-sm-4 col-md-3" *ngFor="let environment of environments | async">
-        <h4 style="text-transform: capitalize;">{{ environment.name }}</h4>
+        <h4 class="env-card-title">{{ environment.name }}</h4>
       </div>
     </div>
   </div>
@@ -29,17 +29,17 @@
   </div>
 
   <div class="row panel panel-default">
-    <div class="panel-body cards-pf" style="background: lightgrey; padding-top: 0; padding-bottom: 0; margin-top: 0; margin-bottom: 0;">
-      <div class="container-fluid container-cards-pf" style="padding-top: 0; padding-bottom: 0; margin-top: 0; margin-bottom: 0;">
+    <div class="panel-body cards-pf resource-card">
+      <div class="container-fluid container-cards-pf">
         <div class="row row-cards-pf">
           <div class="col-xs-12 col-sm-4 col-md-2">
-            <h3><strong><a style="color: black; cursor: pointer;"
+            <h3><strong><a class="resource-title"
               (click)="resourcesCollapsed = !resourcesCollapsed"><span class="fa fa-angle-down"></span>&nbsp;&nbsp;Resource Usage</a></strong></h3>
           </div>
           <div [collapse]="resourcesCollapsed">
             <div class="col-xs-12 col-sm-4 col-md-3" *ngFor="let environment of environments | async">
               <div class="card-pf">
-                <div class="card-pf-body" style="font-size: 12px;">
+                <div class="card-pf-body resource-card-body">
                   <div class="progress-container progress-description-left progress-label-right">
                     <div class="progress-description">
                       CPU (Cores)
