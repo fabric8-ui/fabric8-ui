@@ -954,7 +954,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     if (event === 'out') {
       setTimeout(() => {
         this.sidePanelOpen = true;
-      }, 100)
+      }, 200)
     } else {
       this.sidePanelOpen = false;
     }

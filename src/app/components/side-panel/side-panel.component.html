@@ -1,4 +1,4 @@
-<a class="f8-sidepanel__title"
+<a class="f8-sidepanel__title margin-bottom-1"
   [routerLink]="[]"
   [queryParams]="{}"
   (click)="setGuidedTypeWI()"
@@ -8,10 +8,10 @@
       [class.hide]="!sidePanelOpen">
         {{numberOfItemsInBacklog}}
       </span>
-    <span class="pull-left fa fa-th margin-right-10 padding-top-3"
+    <span class="pull-left fa fa-th margin-right-10 padding-v-3"
       tooltip="{{sidePanelOpen ? '' : 'All'}}"
       placement="right"></span>
-    <h3 class="margin-0"
+    <h3 class="margin-0 padding-top-1"
       [class.show]="sidePanelOpen"
       [class.hide]="!sidePanelOpen">All</h3>
 </a>

@@ -979,7 +979,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
     if (event === 'out') {
       setTimeout(() => {
         this.sidePanelOpen = true;
-      }, 100)
+      }, 200)
     } else {
       this.sidePanelOpen = false;
     }
