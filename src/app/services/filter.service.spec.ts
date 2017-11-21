@@ -295,6 +295,10 @@ describe('Unit Test :: Filter Service', () => {
     expect(filterService.jsonToQuery({'$OR': [{'a': {'$NEQ':'b'}}]})).toBe('(a!b)');
   });
 
+  it('should return correct query string - 7.2', () => {
+    expect(filterService.jsonToQuery({'$OR': [{'a': {'$SUBSTR':'b'}}]})).toBe('(a:b)');
+  });
+
   it('should return correct query string - 8', () => {
     expect(filterService.jsonToQuery({'$AND': [{'a': {'$EQ':'b'}}, {'c': {'$EQ': 'd'}}]}))
     .toBe('(a:b $AND c:d)');

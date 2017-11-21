@@ -24,6 +24,7 @@ export class FilterService {
   public not_equal_notation = '$NEQ';
   public in_notation = '$IN';
   public not_in_notation = '$NIN';
+  public sub_str_notation = '$SUBSTR'
 
   public special_keys = {
     'null': null,
@@ -37,6 +38,7 @@ export class FilterService {
     this.not_equal_notation,
     this.in_notation,
     this.not_in_notation,
+    this.sub_str_notation
   ];
 
   private join_notations: string[] = [
@@ -475,17 +477,25 @@ export class FilterService {
           } else {
             if (Object.keys(this.special_keys).findIndex(k => k === val_arr[0]) > -1) {
               dObj[key][this.not_equal_notation] = this.special_keys[val_arr[0]];
-            } else {
+            }
+            else if(key === 'title') {
+              dObj[key][this.sub_str_notation] = val_arr[0];
+            }
+            else {
               dObj[key][this.not_equal_notation] = val_arr[0];
             }
           }
-        } else if(splitter === ':'){
+        } else if(splitter === ':') {
           if (val_arr.length > 1) {
             dObj[key][this.in_notation] = val_arr;
           } else {
             if (Object.keys(this.special_keys).findIndex(k => k === val_arr[0]) > -1 ) {
               dObj[key][this.equal_notation] = this.special_keys[val_arr[0]];
-            } else {
+            }
+            else if(key === 'title') {
+              dObj[key][this.sub_str_notation] = val_arr[0];
+            }
+            else {
               dObj[key][this.equal_notation] = val_arr[0];
             }
           }
@@ -526,6 +536,9 @@ export class FilterService {
           case this.not_in_notation:
             splitter = '!';
             return data_key + splitter + data[conditional_operator].join();
+          case this.sub_str_notation:
+            splitter = ':'
+            return data_key + splitter + data[conditional_operator];
         }
       }
     })

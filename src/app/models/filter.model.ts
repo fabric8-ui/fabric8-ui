@@ -5,6 +5,7 @@ export class FilterModel {
 
 export class FilterAttributes {
     description: string;
+    key: string;
     query: string;
     title: string;
     type: string;
