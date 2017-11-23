@@ -2,22 +2,15 @@ version: '3'
 
 services:
   planner:
-    build: .
-    container_name: fabric8-planner-runtime
-    image: fabric8-planner-runtime
+    container_name: fabric8-planner-platform
+    image: fabric8-planner-platform
     # command: npm run test:unit
-    environment:
-      FABRIC8_WIT_API_URL: http://localhost:8080/api/
-      FABRIC8_SSO_API_URL: https://sso.prod-preview.openshift.io/
-      FABRIC8_REALM: fabric8-test
     depends_on:
       - core
     networks:
       - default
     ports:
-      - "8088:8080"
-    volumes:
-      - ./runtime/dist:/dist
+      - "8088:80"
   auth:
     container_name: fabric8-planner-auth
     image: docker.io/fabric8/fabric8-auth:latest
