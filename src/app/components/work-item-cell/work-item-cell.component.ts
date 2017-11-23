@@ -1,9 +1,14 @@
-import { Component, 
-    Input, Output  } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output
+} from '@angular/core';
 
 @Component({
     selector: 'work-item-cell',
-    template: './work-item-cell.component.html'
+    template: `
+      <span>{{col}}</span>
+    `
 })
 
 export class WorkItemCellComponent {
