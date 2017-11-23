@@ -20,9 +20,12 @@ import {
   WidgetsModule
 } from 'ngx-widgets';
 
+import { NgxDatatableModule } from 'rh-ngx-datatable';
+
 import { ActionModule, ListModule } from 'patternfly-ng';
 import { Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
+
 
 import { GlobalSettings } from '../../shared/globals';
 import {
@@ -47,6 +50,7 @@ import { MockHttp } from '../../mock/mock-http';
 import { HttpService } from '../../services/http-service';
 import { LabelService } from '../../services/label.service';
 import { AssigneesModule } from './../assignee/assignee.module';
+import { WorkItemCellComponent } from '../work-item-cell/work-item-cell.component';
 
 let providers = [];
 
@@ -112,11 +116,13 @@ if (process.env.ENV == 'inmemory') {
     WorkItemDetailModule,
     WorkItemQuickAddModule,
     WorkItemDetailAddTypeSelectorModule,
-    PlannerModalModule
+    PlannerModalModule,
+    NgxDatatableModule
   ],
   declarations: [
     PlannerListComponent,
-    WorkItemListEntryComponent
+    WorkItemListEntryComponent,
+    WorkItemCellComponent
   ],
   providers: providers,
   exports: [ PlannerListComponent ]

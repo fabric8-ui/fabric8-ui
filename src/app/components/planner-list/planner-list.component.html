@@ -1,5 +1,4 @@
-<div class="container-fluid f8-wi-container"
-  #containerHeight>
+<div class="container-fluid f8-wi-container" #containerHeight>
   <div class="lock-overlay-list" *ngIf="uiLockedAll">
     <div class="spinner-container">
       <h2 class="spinner"></h2>
@@ -8,11 +7,7 @@
     </div>
   </div>
   <main class="row">
-    <alm-planner-layout
-      #sidePanel
-      (sidePanelStateChange)="togglePanelState($event)"
-      [sidePanelContent]="sidePanel"
-      [sectionContent]="sectionPanel">
+    <alm-planner-layout #sidePanel (sidePanelStateChange)="togglePanelState($event)" [sidePanelContent]="sidePanel" [sectionContent]="sectionPanel">
     </alm-planner-layout>
   </main>
 </div>
@@ -26,73 +21,129 @@
       </div>
     </div>
     <a class="f8-sidepanel--toggle">
-      <span class="fa f8-sidepanel--toggle-icon fa-lg"
-        [class.fa-angle-double-left]="sidePanelOpen"
-        [class.fa-angle-double-right]="!sidePanelOpen"
-        (click)="togglePanel()"
-        tooltip="{{sidePanelOpen ?
-          'Hide Panel' : 'Show Panel'}}"
-        placement="right">
+      <span class="fa f8-sidepanel--toggle-icon fa-lg" [class.fa-angle-double-left]="sidePanelOpen" [class.fa-angle-double-right]="!sidePanelOpen"
+        (click)="togglePanel()" tooltip="{{sidePanelOpen ?
+          'Hide Panel' : 'Show Panel'}}" placement="right">
       </span>
     </a>
-    <side-panel
-      [sidePanelOpen]="sidePanelOpen"
-      [iterations]="iterations"></side-panel>
+    <side-panel [sidePanelOpen]="sidePanelOpen" [iterations]="iterations"></side-panel>
   </aside>
 </ng-template>
 <ng-template #sectionPanel>
   <section>
-    <div class="width-100 pull-left"
-      #toolbarHeight>
-      <toolbar-panel
-        context="listview"
-        [wiTypes]="workItemTypes"
-        (onCreateNewWorkItemSelected)="onCreateFromContext()"
-        [currentBoardType]="currentBoardType"
-        [areas]="areas"
-        [loggedInUser]="loggedInUser">
+    <div class="width-100 pull-left" #toolbarHeight>
+      <toolbar-panel context="listview" [wiTypes]="workItemTypes" (onCreateNewWorkItemSelected)="onCreateFromContext()" [currentBoardType]="currentBoardType"
+        [areas]="areas" [loggedInUser]="loggedInUser">
       </toolbar-panel>
     </div>
     <div class="f8-wi-list">
-      <div #listContainer
-        almInfiniteScroll
-        class="f8-wi-list-wrap"
-        [eachElementHeightInPx]='contentItemHeight'
-        (initItems)='initWiItems($event)'
+      <div #listContainer almInfiniteScroll class="f8-wi-list-wrap" [eachElementHeightInPx]='contentItemHeight' (initItems)='initWiItems($event)'
         (fetchMore)='fetchMoreWiItems()'>
-        <pfng-tree-list #treeList
-          [actionTemplate]="actionTemplate"
-          [config]="treeListConfig"
-          [itemTemplate]="itemTemplate"
-          [items]="workItems"
-          [loadTemplate]="loadTemplate"
-          (onActionSelect)="handleAction($event)"
-          (onClick)="handleClick($event)"
-          (onDblClick)="handleDblClick($event)"
-          (onMoveNode)="handleMoveNode($event)"
-          (onSelectionChange)="handleSelectionChange($event)"
-          (onToggleExpanded)="handleToggleExpanded($event)">
-          <ng-template #loadTemplate let-node="node" let-index="index">
-            <span>Loading...</span>
-          </ng-template>
-          <ng-template #itemTemplate let-node="node" let-index="index">
-            <alm-work-item-list-entry
-              id="{{'workItemList_OuterWrap_' + index}}"
-              class="work-item-list-entry"
-              [workItem]="node.data"
-              [iterations]="iterations"
-              (detailEvent)="onDetail($event)"
-              (previewEvent)="onPreview($event)"
-              (clickLabel)="onClickLabel($event)">
-            </alm-work-item-list-entry>
-          </ng-template>
-          <ng-template #actionTemplate let-node="node" let-index="index">
-            <pfng-action class="list-pf-actions"
-              [config]="actionConfig"
-              (onActionSelect)="handleAction($event, node)">
-            </pfng-action>
-          </ng-template>
-        </pfng-tree-list>
+        <ngx-datatable [rows]="workItems" [columns]="columns">
+          <ngx-datatable-column name="IDs">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+           <work-item-cell>
+              <strong>123</strong>
+            </work-item-cell>
+            </ng-template>
+          <!--<ng-template let-row="row" ngx-datatable-cell-template>
+            <strong>{{row.attributes['system.remote_item_id']}}</strong>
+          </ng-template> -->
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Type">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <span class="color-grey margin-h-10
+              {{row.relationships?.baseType?.data?.attributes?.icon}}" title="{{row.relationships?.baseType?.data?.attributes?.name}}">
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Title">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div class="f8-wi__list-description">
+                <p class="truncate" [innerHTML]="row.attributes['system.title']">
+                </p>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Status">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div class="f8-wi__list-description">
+                <span class="pull-left" almIcon [iconType]="row.attributes['system.state']" tooltip="{{row.attributes['system.state']}}"
+                  placement="right"> {{row.attributes['system.state']}} </span>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Label">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div class="f8-wi__list-description">
+                <f8-label [labels]="row.relationships?.labels?.data ?
+                          row.relationships?.labels?.data : []" [truncateAfter]='4' [allowDelete]="false" (onLabelClick)="labelClick($event)"></f8-label>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Creator">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div class="user-avatar">
+                <img placement="center" tooltip="{{row.relationships.creator.data?.id}}" src="{{row.relationships.creator.data?.imageURL + '&s=23'}}"
+                  onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Assignee">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div class="user-avatar">
+                <img *ngFor="let assignee of row.relationships.assignees.data" placement="left" tooltip="{{assignee?.attributes?.fullName}}"
+                  src="{{assignee?.attributes?.imageURL + '&s=23'}}" onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'"
+                />
+                <span class="pficon-user not-assigned-user-icon" *ngIf="!row.relationships?.assignees?.data?.length" tooltip="Unassigned"
+                  placement="left"></span>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div class="pull-right margin-left-15" tooltip="Open Quick Preview" placement="left">
+                <a (click)="onDetailPreview($event)" class="fa fa-columns f8-action-icon"></a>
+              </div>
+              <div class="dropdown-kebab-pf pull-right dropdown" dropdown>
+                <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
+                  <span class="fa fa-ellipsis-v"></span>
+                </button>
+                <ul class="dropdown-menu-right dropdown-menu" *dropdownMenu>
+                  <li>
+                    <a class="pointer" (click)="handleAction($event)">
+                      Move to Bottom
+                    </a>
+                  </li>
+                  <li>
+                    <a class="divider" (click)="handleAction($event)">
+                    </a>
+                  </li>
+                  <li>
+                    <a class="pointer" (click)="handleAction($event)">
+                      Associate with Iteration...
+                    </a>
+                  </li>
+                  <li>
+                    <a class="pointer" (click)="handleAction($event)">
+                      Open
+                    </a>
+                  </li>
+                  <li>
+                    <a class="pointer" (click)="handleAction($event)">
+                      Preview
+                    </a>
+                  </li>
+                  <li>
+                    <a class="pointer" (click)="handleAction($event)">
+                      Move to Backlog
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
         <div class="lock-overlay-list" *ngIf="uiLockedList">
           <div class="spinner-container">
             <h2 class="spinner"></h2>
@@ -102,14 +153,13 @@
         </div>
       </div>
 
-      <div class="error"
-        id="workItemList_Error"
-        *ngIf="error">{{error}}
+      <div class="error" id="workItemList_Error" *ngIf="error">{{error}}
       </div>
 
       <div class="f8-wi-list__quick-add width-100 pull-left"
         id="workItemList_quickAdd"
-        *ngIf="loggedIn">
+        *ngIf="loggedIn"
+        #quickaddHeight>
         <alm-work-item-quick-add
           [wilistview]="'wi-list-view'"
           (close)="close($event)"
@@ -121,15 +171,10 @@
 </ng-template>
 <!-- <router-outlet></router-outlet> -->
 
-<detail-add-type-selector
-  #typeSelectPanel
-  [takeFromInput]="true"
-  [wiTypes]="workItemTypes">
+<detail-add-type-selector #typeSelectPanel [takeFromInput]="true" [wiTypes]="workItemTypes">
 </detail-add-type-selector>
 
-<fab-planner-associate-iteration-modal
-  [workItem]="currentWorkItem"
-  #associateIterationModal>
+<fab-planner-associate-iteration-modal [workItem]="currentWorkItem" #associateIterationModal>
 </fab-planner-associate-iteration-modal>
 
 <osio-modal></osio-modal>
