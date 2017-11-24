@@ -355,8 +355,10 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
     //if initialGroup is undefined, the page has been refreshed - find  group context based on URL
     if ( this.route.snapshot.queryParams['q'] ) {
       let wits = this.route.snapshot.queryParams['q'].split('workitemtype:')
-      let collection = wits[1].replace(')','').split(',');
-      this.groupTypesService.findGroupConext(collection);
+      if(wits.length > 1) {
+        let collection = wits[1].replace(')','').split(',');
+        this.groupTypesService.findGroupConext(collection);
+      }
     }
     if(this.initialGroup === undefined)
       this.initialGroup = this.groupTypesService.getCurrentGroupType();
@@ -463,11 +465,29 @@ export class PlannerListComponent implements OnInit, AfterViewInit, DoCheck, OnD
       console.log('Performance :: Fetching the initial list - '  + (t2 - t1) + ' milliseconds.');
       this.logger.log('Got work item list.');
       this.logger.log(workItemResp.workItems);
-      const workItems = workItemResp.workItems;
+      const workItemsAll = workItemResp.workItems;
+      let tempWIs = []
       this.nextLink = workItemResp.nextLink;
       this.included = workItemResp.included;
+      //Remove work item duplicates - a child work item
+      //should not appear part of the root response only for iterations
+      if (this.groupTypesService.groupName === 'execution') {
+        tempWIs = workItemsAll.filter( wi => {
+          if( wi.relationships.parent.data != undefined ) {
+            //take the parent ID and loop thorough the work items
+            let i = workItemsAll.findIndex(item => item.id === wi.relationships.parent.data.id);
+            if (i === -1) {
+              return wi;
+            }
+          } else {
+            return wi;
+          }
+        });
+      } else {
+        tempWIs = workItemsAll;
+      }
       this.workItems = this.workItemService.resolveWorkItems(
-        workItems,
+        tempWIs,
         this.iterations,
         [], // We don't want to static resolve user at this point
         this.workItemTypes,
