@@ -39,65 +39,12 @@
     <div class="f8-wi-list">
       <div #listContainer almInfiniteScroll class="f8-wi-list-wrap" [eachElementHeightInPx]='contentItemHeight' (initItems)='initWiItems($event)'
         (fetchMore)='fetchMoreWiItems()'>
-        <ngx-datatable [rows]="workItems" [columns]="columns">
-          <ngx-datatable-column name="IDs">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <work-item-cell [col]="row['id']">
-              </work-item-cell>
-            </ng-template>
-          <!--<ng-template let-row="row" ngx-datatable-cell-template>
-            <strong>{{row.attributes['system.remote_item_id']}}</strong>
-          </ng-template> -->
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Type">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <span class="color-grey margin-h-10
-              {{row.relationships?.baseType?.data?.attributes?.icon}}" title="{{row.relationships?.baseType?.data?.attributes?.name}}">
-              </span>
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Title">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div class="f8-wi__list-description">
-                <p class="truncate" [innerHTML]="row.attributes['system.title']">
-                </p>
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Status">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div class="f8-wi__list-description">
-                <span class="pull-left" almIcon [iconType]="row.attributes['system.state']" tooltip="{{row.attributes['system.state']}}"
-                  placement="right"> {{row.attributes['system.state']}} </span>
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Label">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div class="f8-wi__list-description">
-                <f8-label [labels]="row.relationships?.labels?.data ?
-                          row.relationships?.labels?.data : []" [truncateAfter]='4' [allowDelete]="false" (onLabelClick)="labelClick($event)"></f8-label>
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Creator">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div class="user-avatar">
-                <img placement="center" tooltip="{{row.relationships.creator.data?.id}}" src="{{row.relationships.creator.data?.imageURL + '&s=23'}}"
-                  onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Assignee">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div class="user-avatar">
-                <img *ngFor="let assignee of row.relationships.assignees.data" placement="left" tooltip="{{assignee?.attributes?.fullName}}"
-                  src="{{assignee?.attributes?.imageURL + '&s=23'}}" onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'"
-                />
-                <span class="pficon-user not-assigned-user-icon" *ngIf="!row.relationships?.assignees?.data?.length" tooltip="Unassigned"
-                  placement="left"></span>
-              </div>
-            </ng-template>
+        <ngx-datatable class="material" [rows]="datatableWorkitems" [columns]="columns">
+          <ngx-datatable-column *ngFor="let c of columns" [name]="c.name">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                  <work-item-cell [row]="row" [col]="c.prop">
+                  </work-item-cell>
+                </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="">
             <ng-template let-row="row" ngx-datatable-cell-template>
