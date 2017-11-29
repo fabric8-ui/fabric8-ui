@@ -15,7 +15,7 @@ module.exports = {
  * Tests will be run on these resolutions:
  * - iPhone6s - 375x667 (note: tests on chrome+firefox fail unless width >= 400)
  * - iPad air - 768x1024
- * - Desktop -  1920x1080
+ * - Desktop -  1920x1080 (old), 1440x900 (new)
  * 
  */
   setBrowserMode: function(browserModeStr) {
@@ -27,7 +27,7 @@ module.exports = {
       browser.driver.manage().window().setSize(768, 1024);
       break;
     case 'desktop':
-        browser.driver.manage().window().setSize(1920, 1080);
+        browser.driver.manage().window().setSize(1440, 900);
     } 
   },
 

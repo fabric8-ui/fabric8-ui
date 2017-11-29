@@ -178,6 +178,7 @@ class WorkItemDetailPage {
   }
 
   clickWorkItemDescriptionEditIcon () {
+    this.workItemDescriptionEditIcon.click();
     return this.workItemDescriptionEditIcon.click();
   }
 
@@ -447,7 +448,7 @@ testSupport.clickElement(this.workItemDescriptionCancelIcon, "workItemDescriptio
   /* The edit box for a comment */
   commentDiv () {
     return element(by.id("wi-comment"));
-    return element(by.xpath(".//*[contains(@class,'editor active')]"));
+    //return element(by.xpath(".//*[contains(@class,'editor active')]"));
   }
   clickCommentDiv () {
     return this.commentDiv().click();
@@ -506,6 +507,12 @@ testSupport.clickElement(this.workItemDescriptionCancelIcon, "workItemDescriptio
     browser.wait(until.presenceOf(element(by.css('#comment_body_' + index))))
     return element(by.css('#comment_body_' + index + ' .edit-icon'));
   }
+  clickCommentEdit(index) {
+    var editcommenticon = this.commentEdit(index);
+    editcommenticon.click();
+    return editcommenticon.click();
+  }
+
   commentBody(index){
     browser.wait(until.presenceOf(element(by.css('#comment_body_' + index + ' .editor-box')), constants.WAIT, "Failed to find the comment"))
     return element(by.css('#comment_body_' + index + ' .editor-box'));
@@ -1039,7 +1046,8 @@ testSupport.clickElement(this.workItemDescriptionCancelIcon, "workItemDescriptio
   }
 
   getLabelByTitle(title) {
-    return element(by.xpath("//ul[@class='select-dropdown-menu']/li//*[text()='"+title+"']"));
+    browser.wait(until.elementToBeClickable(element(by.xpath("//ul[@class='select-dropdown-menu']/li//*[text()='"+ title +"']")), constants.WAIT));
+    return element(by.xpath("//ul[@class='select-dropdown-menu']/li//*[text()='"+ title +"']"));
   }
 
   // Removes label by clicking on 'x'
