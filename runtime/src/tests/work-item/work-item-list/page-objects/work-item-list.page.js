@@ -282,7 +282,7 @@ class WorkItemListPage {
   }
 
   clickWorkItem(workItemElement) {
-    workItemElement.element(by.css(".f8-wi__list-description")).element(by.css("p")).click()
+    workItemElement.$$(".f8-wi__list-description").first().element(by.css("p")).click()
     return new WorkItemDetailPage();
   }
 
