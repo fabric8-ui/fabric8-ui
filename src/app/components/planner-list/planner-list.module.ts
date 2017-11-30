@@ -21,6 +21,7 @@ import {
 } from 'ngx-widgets';
 
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { FilterColumn } from '../../pipes/column-filter.pipe';
 
 import { ActionModule, ListModule } from 'patternfly-ng';
 import { Logger } from 'ngx-base';
@@ -122,7 +123,8 @@ if (process.env.ENV == 'inmemory') {
   declarations: [
     PlannerListComponent,
     WorkItemListEntryComponent,
-    WorkItemCellComponent
+    WorkItemCellComponent,
+    FilterColumn
   ],
   providers: providers,
   exports: [ PlannerListComponent ]

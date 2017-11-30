@@ -55,6 +55,9 @@ import {
   TreeListConfig
 } from 'patternfly-ng';
 
+// import for column
+import { datatableColumn } from './datatable-config';
+
 import { WorkItemCellComponent } from '../work-item-cell/work-item-cell.component'
 import { WorkItem } from '../../models/work-item';
 import { WorkItemDetailComponent } from './../work-item-detail/work-item-detail.component';
@@ -99,8 +102,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
 
 
   datatableWorkitems: any[] = [];
-  checkableColumn: any[] = [];
-  columns: any[] = [];
+  checkableColumn: any[] = datatableColumn;
+  columns: any[] = this.checkableColumn;
   workItems: WorkItem[] = [];
   prevWorkItemLength: number = 0;
   workItemTypes: WorkItemType[] = [];
@@ -178,50 +181,49 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
     this.loggedIn = this.auth.isLoggedIn();
     this.setTreeConfigs();
 
-    this.columns = [{
-      name: 'ID',
-      prop: 'id'
-    },{
-      name: 'Type',
-      prop: 'type',
-    },
-    {
-      name: 'Title',
-      prop: 'title'
-    },{
-      name: 'Status',
-      prop: 'status'
-    },{
-      name: 'Label',
-      prop: 'label'
-    },
-    {
-      name: 'Creator',
-      prop: 'creator'
-    },
-    {
-      name: 'Assignees',
-      prop: 'assignees'
-    }
-    ]
+
   }
 
-  toggle(col) {
-    const isChecked = this.isChecked(col);
-
-    if(isChecked) {
-      this.columns = this.columns.filter(c => {
-        return c.name !== col.name;
-      });
+  toggleAvailable(event, col) {
+    if(event.target.checked) {
+      col.selected = true;
     } else {
-      this.columns = [...this.columns, col];
+      col.selected = false;
+    }
+
+  }
+  moveToDisplay() {
+    const selected = this.isSelected();
+    selected.forEach(col => {
+      if(col.display === true) return;
+      col.selected = false;
+      col.display = true;
+      col.available = false;
+    })
+    this.columns = [...this.checkableColumn]
+  }
+
+  moveToAvailable() {
+    const selected = this.isSelected();
+    selected.forEach(col => {
+      if(col.available === true) return;
+      col.selected = false;
+      col.display = false;
+      col.available = true;
+    });
+    this.columns = [...this.checkableColumn]
+  }
+
+  toggleDisplay(event, col) {
+    if(event.target.checked) {
+      col.selected = true;
+    } else {
+      col.selected = false;
     }
   }
 
-  isChecked(col) {
-    return this.columns.find(c => {
-      return c.name === col.name;
-    });
+  isSelected() {
+    return this.checkableColumn.filter(col => col.selected);
   }
 
   setTreeConfigs() {
@@ -333,9 +335,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
     if (document.getElementsByTagName('body')) {
       document.getElementsByTagName('body')[0].style.overflow = "hidden";
     }
-    console.log(this.workItems);
-     this.datatableWorkitems =  this.tableWorkitem(this.workItems);
-     console.log("####-iiii", this.datatableWorkitems);
+    this.datatableWorkitems = this.tableWorkitem(this.workItems);
   }
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -636,8 +636,9 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
 
   onDetail(entryComponent: WorkItemListEntryComponent): void { }
 
-  onPreview(workItem: WorkItem): void {
-    this.detailPreview.openPreview(workItem);
+  onPreview(event: MouseEvent, id: string): void {
+    this.workItemDataService.getItem(id).subscribe(workItem => {
+      this.detailPreview.openPreview(workItem);   });
   }
 
   onCreateWorkItem(workItem) {
@@ -775,8 +776,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
               console.log('Error displaying notification. Added WI does not match the applied filters.')
             }
           }
-          if (this.workItems.length > 0)
-            this.treeList.update();
+          //if (this.workItems.length > 0)
+            //this.treeList.update();
         })
     );
 
@@ -897,7 +898,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
     );
   }
 
-  tableWorkitem(workItems: WorkItem[]): any { 
+  tableWorkitem(workItems: WorkItem[]): any {
     return workItems.map(element => {
        return {
         id: element.id,
@@ -955,7 +956,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
         this.router.navigateByUrl(link, { relativeTo: this.route });
         break;
       case 'preview':
-        this.onPreview(item.data);
+       // this.onPreview(event: MouseEvent, id);
         break;
       case 'move2backlog':
         item.data.relationships.iteration = {}

@@ -4,6 +4,13 @@ import {
   Output
 } from '@angular/core';
 
+import { Router } from '@angular/router'
+
+import { WorkItem } from '../../models/work-item';
+import { WorkItemDataService } from '../../services/work-item-data.service';
+
+
+
 @Component({
     selector: 'work-item-cell',
     template: `
@@ -20,20 +27,21 @@ import {
     {{row.type?.data?.attributes?.icon}}"
     title="{{row.type?.data?.attributes?.name}}">
     </span>
-    <span> {{row.type?.data?.attributes?.name}} </span>
     </div>
     
     <!-- Title -->
     
-    <span *ngIf="col === 'title'">
-      {{row.title}}
-    </span>
+    <div *ngIf="col === 'title'">
+    <p class="truncate"
+    [innerHTML]="row.title">
+    </p>
+    </div>
     
     <!-- Status -->
     
     <div  *ngIf="col === 'status'" class="f8-wi__list-description">
         <span class="pull-left" almIcon [iconType]="row.status" tooltip="{{row.status}}"
-          placement="right"> {{row.status}} </span>
+          placement="right"> {{row.status}}</span>
     </div>
     
     <!-- Label -->
@@ -63,9 +71,17 @@ import {
 })
 
 export class WorkItemCellComponent {
-    constructor() {
+    constructor(private router: Router,
+                private workItemDataService: WorkItemDataService ) {
 
     }
     @Input() col: string;
     @Input() row: object;
+
+   /* constructUrl(id: string) {
+      this.workItemDataService.getItem(id).subscribe(workItem => {
+        return this.router.url.split('plan')[0] + 'plan/detail/' +
+        workItem.attributes['system.number'];  });
+      
+    }*/
 }
