@@ -11,7 +11,7 @@
       [class.active]="selectedTab === 'all'"
       (click)="selectTab('all')">
       <a class="padding-v-13 padding-h-15">
-        <span>Total Links</span>
+        <span>Links</span>
         <span
           class="badge"
           id="wi-link-total"
@@ -145,8 +145,8 @@
             <li *ngFor='let link of linkDict.links'
               class="f8-link__list-item">
               <a [routerLink]="getWILink(link, workItem)">
-                <span class="f8-link__list-item-title" 
-                  [id]="link.id + '-text'" 
+                <span class="f8-link__list-item-title"
+                  [id]="link.id + '-text'"
                   [innerHTML]="link.relationalData.source.id == workItem.id ? link.relationalData.target.title : link.relationalData.source.title">
                 </span>
               </a>
