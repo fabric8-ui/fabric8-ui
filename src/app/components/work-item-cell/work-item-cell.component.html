@@ -1,7 +1,7 @@
 <!-- id --> 
 
 <span *ngIf="col === 'id'" class="margin-0">
-  {{row.id}}
+  {{row.number}}
 </span>
 
 <!-- Type -->
@@ -21,14 +21,14 @@ title="{{row.type?.data?.attributes?.name}}">
 
 <!-- Status -->
 
-<div  *ngIf="col === 'status'" class="f8-wi__list-description">
+<div  *ngIf="col === 'status'" >
     <span class="pull-left" almIcon [iconType]="row.status" tooltip="{{row.status}}"
       placement="right">{{row.status}}</span>
 </div>
 
 <!-- Label -->
 
-<div *ngIf="col === 'label'" class="f8-wi__list-description">
+<div *ngIf="col === 'label'" >
     <f8-label [labels]="row?.labels ?
               row?.labels : []" [truncateAfter]='4' [allowDelete]="false" (onLabelClick)="labelClick($event)"></f8-label>
 </div>

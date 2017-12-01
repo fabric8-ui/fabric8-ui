@@ -87,6 +87,7 @@
     "@angular/platform-browser-dynamic": "^4.4.0",
     "@angular/platform-server": "^4.4.0",
     "@angular/router": "^4.4.0",
+    "@swimlane/ngx-datatable": "^11.1.5",
     "core-js": "^2.5.1",
     "less-plugin-autoprefix": "^1.5.1",
     "lodash": "^4.17.4",
@@ -103,7 +104,6 @@
     "ngx-widgets": "^2.3.2",
     "patternfly-ng": "^0.13.5",
     "reflect-metadata": "^0.1.10",
-    "rh-ngx-datatable": "0.0.1",
     "rxjs": "^5.0.1",
     "zone.js": "^0.8.18"
   },

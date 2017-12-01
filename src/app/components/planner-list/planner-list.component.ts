@@ -226,6 +226,14 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
     return this.checkableColumn.filter(col => col.selected);
   }
 
+  onDetailPreview(id): void {
+    event.stopPropagation();
+     //this.detailEvent.emit(this);
+       this.workItemDataService.getItem(id).subscribe(workItem => {
+       this.router.navigateByUrl(this.router.url.split('detail')[0] + '/detail/' + workItem.id, { relativeTo: this.route });
+       });
+  }
+
   setTreeConfigs() {
     this.actionConfig = {
       primaryActions: [],
@@ -599,7 +607,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
               }
             })
         }
-        this.treeList.update();
+        //this.treeList.update();
       },
       (e) => console.log(e));
   }
@@ -902,6 +910,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
     return workItems.map(element => {
        return {
         id: element.id,
+        number: element.attributes['system.number'],
         type: element.relationships.baseType ? element.relationships.baseType : '',
         title: element.attributes['system.title'],
         labels: element.relationships.labels.data ? element.relationships.labels.data : '',

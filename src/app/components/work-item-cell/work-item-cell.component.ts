@@ -1,15 +1,20 @@
 import {
   Component,
   Input,
-  Output
+  Output,
+  OnInit,
+  OnDestroy,
+  EventEmitter
 } from '@angular/core';
 
-import { Router } from '@angular/router'
+import { Router,
+        ActivatedRoute,
+        Event as NavigationEvent,
+        NavigationStart,
+        NavigationEnd } from '@angular/router';
 
 import { WorkItem } from '../../models/work-item';
 import { WorkItemDataService } from '../../services/work-item-data.service';
-
-
 
 @Component({
     selector: 'work-item-cell',
@@ -17,11 +22,11 @@ import { WorkItemDataService } from '../../services/work-item-data.service';
     <!-- id --> 
     
     <span *ngIf="col === 'id'" class="margin-0">
-      {{row.id}}
+      {{row.number}}
     </span>
     
     <!-- Type -->
-
+    
     <div *ngIf="col === 'type'" >
     <span  class="color-grey margin-h-10
     {{row.type?.data?.attributes?.icon}}"
@@ -31,22 +36,20 @@ import { WorkItemDataService } from '../../services/work-item-data.service';
     
     <!-- Title -->
     
-    <div *ngIf="col === 'title'">
-    <p class="truncate"
-    [innerHTML]="row.title">
-    </p>
-    </div>
+    <span *ngIf="col === 'title'">
+      {{row.title}}
+    </span>
     
     <!-- Status -->
     
-    <div  *ngIf="col === 'status'" class="f8-wi__list-description">
+    <div  *ngIf="col === 'status'" >
         <span class="pull-left" almIcon [iconType]="row.status" tooltip="{{row.status}}"
-          placement="right"> {{row.status}}</span>
+          placement="right">{{row.status}}</span>
     </div>
     
     <!-- Label -->
     
-    <div *ngIf="col === 'label'" class="f8-wi__list-description">
+    <div *ngIf="col === 'label'" >
         <f8-label [labels]="row?.labels ?
                   row?.labels : []" [truncateAfter]='4' [allowDelete]="false" (onLabelClick)="labelClick($event)"></f8-label>
     </div>
@@ -66,22 +69,24 @@ import { WorkItemDataService } from '../../services/work-item-data.service';
         />
         <span class="pficon-user not-assigned-user-icon" *ngIf="!row?.assignees?.length" tooltip="Unassigned"
           placement="left"></span>
-    </div>    
+    </div>       
     `,
 })
 
 export class WorkItemCellComponent {
+
+
+    
     constructor(private router: Router,
-                private workItemDataService: WorkItemDataService ) {
+                private workItemDataService: WorkItemDataService,
+                private route: ActivatedRoute ) {
 
     }
     @Input() col: string;
     @Input() row: object;
+    @Output() onDetailPreview = new EventEmitter();
 
-   /* constructUrl(id: string) {
-      this.workItemDataService.getItem(id).subscribe(workItem => {
-        return this.router.url.split('plan')[0] + 'plan/detail/' +
-        workItem.attributes['system.number'];  });
-      
-    }*/
+    onDetail(Event: MouseEvent, id: string) {
+      this.onDetailPreview.emit(id);
+    }
 }
