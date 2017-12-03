@@ -35,9 +35,10 @@ class WorkItemDetailPage {
   }
 
   get workItemDetailCloseButton () {
-    return element(by.css(".pficon-close.f8-quick-preview--close"));
+      return element(by.css(".pficon-close.f8-quick-preview--close")); 
 //    return element(by.xpath(".//*[contains (@class,'pficon-close pull-right margin-right-5 padding-15 close')]"));
   }
+
   clickWorkItemDetailCloseButton () {
     return this.workItemDetailCloseButton.click();
   }
@@ -1030,6 +1031,16 @@ testSupport.clickElement(this.workItemDescriptionCancelIcon, "workItemDescriptio
     return browser.executeScript(
       'document.getElementsByClassName(\'f8-quick-preview\')[0].scrollTop = document.getElementsByClassName(\'f8-quick-preview\')[0].scrollHeight'
     )
+  }
+
+  scrollToBottomRight() {
+    return browser.executeScript('window.scrollTo(1440,900);');
+  }
+
+  scrollToTopRight() {
+    // var elm = element(by.css(".pficon-close.f8-quick-preview--close"));
+    // return browser.executeScript("arguments[0].scrollIntoView();", elm.getWebElement());
+    return browser.executeScript('window.scrollTo(1440,0);');
   }
 
   /* UI elements for Label */

@@ -7,11 +7,11 @@
  * Tests will be run on these resolutions:
  * - iPhone6s - 375x667
  * - iPad air - 768x1024
- * - Desktop -  1920x1080
+ * - Desktop -  1440x900
  *
  * beforeEach will set the mode to phone. Any tests requiring a different resolution will must set explicitly.
  *
- * @author naina-verma
+ * @author naina-verma, rgarg@redhat.com
  */
 
 var WorkItemListPage = require('./page-objects/work-item-list.page'),
@@ -23,9 +23,9 @@ describe('Work item list', function () {
 
   var until = protractor.ExpectedConditions;
   var WORK_ITEM_TITLE = "The test workitem title";
-  var WORK_ITEM_UPDATED_TITLE = "The test workitem title - UPDATED";
+  var WORK_ITEM_UPDATED_TITLE = "Test workitem title-UPDATED";
   var WORK_ITEM_DESCRIPTION = "The test workitem description";
-  var WORK_ITEM_UPDATED_DESCRIPTION = "The test workitem description - UPDATED";
+  var WORK_ITEM_UPDATED_DESCRIPTION = "Test description-UPDATED";
   var EXAMPLE_USER_0 = "Example User 0";
   var EXAMPLE_USER_1 = "Example User 1";
   var MOCK_WORKITEM_TITLE_0 = "Title Text 0";
@@ -56,7 +56,6 @@ describe('Work item list', function () {
       detailPage.details_assigned_user().click();
       detailPage.clickworkItemDetailUnassignButton();
       expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
-      detailPage.clickWorkItemDetailCloseButton();
     });
   });
 
@@ -134,8 +133,6 @@ describe('Work item list', function () {
     var detailPage = page.clickWorkItemTitle(MOCK_WORKITEM_TITLE_0);
     browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find workItem');
     expect(detailPage.getCreatedtime()).toBe('a few seconds ago');
-    browser.wait(until.elementToBeClickable(detailPage.workItemDetailCloseButton), constants.WAIT, 'Failed to find close workItem detail page');
-    detailPage.clickWorkItemDetailCloseButton();
   });
 
   it('Updating area to a WI -desktop ', function() {
@@ -169,25 +166,24 @@ describe('Work item list', function () {
     detailPage.associateIterationById("id0");
     detailPage.saveIteration();
     expect(detailPage.getAssociatedIteration()).toBe("/Root Iteration/Iteration 0");
-    detailPage.clickWorkItemDetailCloseButton();
   });
 
   it('Try clicking on start coding it should redirect - Desktop', function () {
     var detailPage = page.clickWorkItemTitle(MOCK_WORKITEM_TITLE_0);
     expect(detailPage.startCodingElement.isPresent()).toBe(true);
-    detailPage.clickStartCoding();
    });
 
   it('Edit comment and cancel - Desktop ', function() {
     var detailPage = page.clickWorkItem(page.firstWorkItem);
-    detailPage.scrollToBottom().then(function() {
+    detailPage.scrollToBottomRight().then(function() {
         detailPage.clickCommentEdit('0');
         detailPage.editComments('updated comment!','0',false);
-        detailPage.scrollToBottom().then(function(){
+        detailPage.scrollToBottomRight().then(function(){
           detailPage.clickCloseComment('0');
         });
         expect(detailPage.getCommentBody('0')).toBe('Some Comment 0');
       });
+      
   });
 
     /* Commenting the following two tests as they are unreliable; failing often. 
