@@ -68,10 +68,16 @@
   }
   &-witype {
     span {
+      min-width: 15px;
       font-size: 12px !important;
       font-weight: 200;
       line-height: 1;
       color: @color-pf-black-900;
+    }
+    &-name {
+      display: inline-block;
+      width: 100px;
+      text-align: left;
     }
   }
 
@@ -96,8 +102,8 @@
   &-description {
     display: table-cell;
     width: 50%;
-    padding: 0 15px;
-    vertical-align: middle;
+    padding: 0px 15px;
+    vertical-align: top;
     text-align: left;
   }
 }

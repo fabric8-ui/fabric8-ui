@@ -6,16 +6,18 @@
 </div>
 <div class="f8-wi__list-entry">
 	<!-- info area -->
-  <div class="list-view-pf-main-info">
+  <div class="list-view-pf-main-info padding-0">
     <div class="list-view-pf-left type pull-left f8-wi__list-witype">
-      <span class="margin-0">
+      <span class="margin-0 dib">
         {{workItem.attributes['system.number']}}
       </span>
-      <span class="color-grey margin-h-10
+      <span class="color-grey margin-left-10 dib
         {{workItem.relationships?.baseType?.data?.attributes?.icon}}"
         title="{{workItem.relationships?.baseType?.data?.attributes?.name}}">
       </span>
-      <span> {{workItem.relationships?.baseType?.data?.attributes?.name}} </span>
+      <span class="f8-wi__list-witype-name">
+        {{workItem.relationships?.baseType?.data?.attributes?.name}}
+      </span>
     </div>
     <div class="list-view-pf-body">
       <div class="list-view-pf-description">
@@ -54,7 +56,7 @@
                 (onLabelClick)="labelClick($event)"></f8-label>
             </div>
             <div class="f8-wi__list-description width-100px">
-              <span class="pull-left"
+              <span class="pull-left padding-v-2"
                 almIcon
                 [iconType]="workItem.attributes['system.state']"
                 tooltip="{{workItem.attributes['system.state']}}"
