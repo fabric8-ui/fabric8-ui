@@ -109,8 +109,7 @@
 
       <div class="f8-wi-list__quick-add width-100 pull-left"
         id="workItemList_quickAdd"
-        *ngIf="loggedIn"
-        #quickaddHeight>
+        *ngIf="loggedIn">
         <alm-work-item-quick-add
           [wilistview]="'wi-list-view'"
           (close)="close($event)"

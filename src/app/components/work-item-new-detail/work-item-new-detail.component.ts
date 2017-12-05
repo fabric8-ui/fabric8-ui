@@ -6,7 +6,8 @@ import {
   ViewEncapsulation,
   ElementRef,
   Renderer2,
-  HostListener
+  HostListener,
+  AfterViewChecked
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
@@ -48,7 +49,7 @@ import { AuthenticationService,
   styleUrls: [ './work-item-new-detail.component.less' ]
 })
 
-export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
+export class WorkItemNewDetailComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   @ViewChild('userSearch') userSearch: any;
   @ViewChild('areaSelectbox') areaSelectbox: TypeaheadDropdown;
@@ -162,7 +163,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy {
     document.getElementsByTagName('body')[0].style.overflow = "auto";
   }
 
-  ngDoCheck() {
+  ngAfterViewChecked() {
     if(this.detailHeader) {
       let HdrDivHeight:any =  this.detailHeader.nativeElement.offsetHeight;
       let targetHeight:any = window.innerHeight - HdrDivHeight - 90;

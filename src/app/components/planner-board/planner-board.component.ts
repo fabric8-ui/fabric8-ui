@@ -15,7 +15,7 @@ import {
   DoCheck,
   ViewEncapsulation,
   Renderer2,
-  HostListener
+  AfterViewChecked
 } from '@angular/core';
 import { Response } from '@angular/http';
 import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
@@ -51,7 +51,7 @@ import { LabelModel } from '../../models/label.model';
   styleUrls: ['./planner-board.component.less']
 })
 
-export class PlannerBoardComponent implements OnInit, OnDestroy {
+export class PlannerBoardComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   @ViewChildren('activeFilters', {read: ElementRef}) activeFiltersRef: QueryList<ElementRef>;
   @ViewChild('activeFiltersDiv') activeFiltersDiv: any;
@@ -172,7 +172,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
 
   }
 
-  ngDoCheck() {
+  ngAfterViewChecked() {
     if(this.toolbarHeight) {
       let toolbarHt:any =  this.toolbarHeight.nativeElement.offsetHeight;
       let hdrHeight;
