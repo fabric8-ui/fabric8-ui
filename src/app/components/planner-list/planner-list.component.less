@@ -73,12 +73,12 @@
         }
         aside {
           float: right;
-          width: ~"calc(e('50% - 30px'))";
+          width: ~"calc(e('45% - 30px'))";
           height: 100%;
           padding-left: (@grid-gutter-width/6);
           padding-right: (@grid-gutter-width/6);
-          &:first-child {
-            width: 15%;
+          &:first-child, &:nth-child(3) {
+            width: 10%;
             padding: 0 (@grid-gutter-width/3);
             span.fa {
               width: 100%;
@@ -86,6 +86,9 @@
               padding: (@grid-gutter-width/6) 0;
               margin: (@grid-gutter-width/6) 0;
               font-size: @pf-icon-2x;
+            }
+            &:nth-child(3) {
+              margin-top: ((@grid-gutter-width/3) * 5);
             }
           }
         }
@@ -199,9 +202,23 @@
 .datatable-scroll {
   width: 100% !important;
 }
+.datatable-header-cell {
+  border-bottom: 1px solid;
+  border-bottom-color: @color-pf-black-300;
+}
 .datatable-body-cell ,
 .datatable-header-cell {
-  border: 1px solid red;
+  border-right: 1px solid;
+  border-right-color: @color-pf-black-300;
+  &:last-child {
+    border-right-width: 0;
+  }
+}
+.datatable-row-wrapper {
+  &:last-child {
+    border-bottom: 1px solid;
+    border-bottom-color: @color-pf-black-300;
+  }
 }
 .datatable-header-cell,
 .datatable-body-cell {

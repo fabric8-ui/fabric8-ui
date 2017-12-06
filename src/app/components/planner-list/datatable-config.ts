@@ -4,19 +4,18 @@ export const datatableColumn =  [{
     available: false,
     selected: false,
     display: true,
-    flexGrow: 0.7,
-    maxWidth: 80,
-    minWidth: 100
+    flexGrow: 0.5,
+    maxWidth: 50
   },{
     name: 'Type',
     prop: 'type',
     available: false,
     selected: false,
     display: true,
-    flexGrow: 1,
+    flexGrow: 0.5,
     maxWidth: undefined,
-    minWidth: undefined 
-    
+    minWidth: undefined
+
   },{
     name: 'Title',
     prop: 'title',
@@ -25,7 +24,7 @@ export const datatableColumn =  [{
     display: true,
     flexGrow: 2,
     maxWidth: undefined,
-    minWidth: 300 
+    minWidth: 300
   },{
     name: 'Status',
     prop: 'status',
@@ -34,7 +33,7 @@ export const datatableColumn =  [{
     display: true,
     flexGrow: 1,
     maxWidth: undefined,
-    minWidth: undefined 
+    minWidth: undefined
   },{
     name: 'Label',
     prop: 'label',
@@ -43,16 +42,16 @@ export const datatableColumn =  [{
     display: true,
     flexGrow: 2,
     maxWidth: undefined,
-    minWidth: 300 
+    minWidth: 300
   },{
     name: 'Creator',
     prop: 'creator',
     available: false,
     selected: false,
     display: true,
-    flexGrow: 1,
+    flexGrow: 0.6,
     maxWidth: undefined,
-    minWidth: undefined 
+    minWidth: undefined
   },{
     name: 'Assignees',
     prop: 'assignees',
@@ -61,8 +60,8 @@ export const datatableColumn =  [{
     display: true,
     flexGrow: 1,
     maxWidth: undefined,
-    minWidth: undefined 
-  }] 
+    minWidth: undefined
+  }]
 
 
 
