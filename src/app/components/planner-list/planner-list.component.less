@@ -1,8 +1,8 @@
 @import (reference) '../../../assets/stylesheets/_base';
 @import '../../../assets/stylesheets/_planner-layout';
-@import '../../../../node_modules/@swimlane/ngx-datatable/release/index.css';
-@import '../../../../node_modules/@swimlane/ngx-datatable/release/themes/material.css';
-@import '../../../../node_modules/@swimlane/ngx-datatable/release/assets/icons.css';
+//@import '../../../../node_modules/@swimlane/ngx-datatable/release/index.css';
+//@import '../../../../node_modules/@swimlane/ngx-datatable/release/themes/material.css';
+//@import '../../../../node_modules/@swimlane/ngx-datatable/release/assets/icons.css';
 
 .f8-wi-container {
   .lock-overlay-list {
@@ -43,6 +43,7 @@
     width: 100%;
     height: 100%;
     &-wrap {
+      position: relative;
       width: 100%;
      // height: ~"calc(e('100% - 120px'))";
       // to avoid overflown scroll height should be there
@@ -56,6 +57,52 @@
       }
       .tree-node-level-3 .list-pf-item {
         padding-left: 40px;
+      }
+    }
+    &__settings {
+      position: absolute;
+      top: 2px;
+      right: 15px;
+      &-dropdown {
+        width: 100%;
+        min-width: 400px;
+        height: 200px;
+        background-color: @color-pf-black-150;
+        &::after {
+          border-bottom-color: @color-pf-black-150;
+        }
+        aside {
+          float: right;
+          width: ~"calc(e('50% - 30px'))";
+          height: 100%;
+          padding-left: (@grid-gutter-width/6);
+          padding-right: (@grid-gutter-width/6);
+          &:first-child {
+            width: 15%;
+            padding: 0 (@grid-gutter-width/3);
+            span.fa {
+              width: 100%;
+              text-align: center;
+              padding: (@grid-gutter-width/6) 0;
+              margin: (@grid-gutter-width/6) 0;
+              font-size: @pf-icon-2x;
+            }
+          }
+        }
+      }
+      &-column {
+        float: left;
+        width: 100%;
+        height: ~"calc(e('100% - 30px'))";
+        padding: (@grid-gutter-width/3);
+        list-style: none;
+        background-color: @color-pf-white;
+        border: 1px solid;
+        border-color: @color-pf-black-300;
+        overflow-y: scroll;
+        li {
+          width: 100%;
+        }
       }
     }
     .card-pf {
@@ -141,4 +188,26 @@
     display: inline-flex;
     align-items: inherit;
   }
+}
+
+
+/// ng x-datatables css
+.datatable-header-inner,
+.datatable-row-center,
+.datatable-row-wrapper,
+.datatable-body-row,
+.datatable-scroll {
+  width: 100% !important;
+}
+.datatable-body-cell ,
+.datatable-header-cell {
+  width: 15% !important;
+  border: 1px solid red;
+}
+.datatable-header-cell,
+.datatable-body-cell {
+  padding: ((@grid-gutter-width/10)) ((@grid-gutter-width/3)) ;
+}
+.datatable-body-cell {
+  overflow-x: visible !important;
 }

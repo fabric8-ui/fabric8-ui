@@ -1,5 +1,7 @@
-<div class="container-fluid f8-wi-container" #containerHeight>
-  <div class="lock-overlay-list" *ngIf="uiLockedAll">
+<div class="container-fluid f8-wi-container"
+  #containerHeight>
+  <div class="lock-overlay-list"
+    *ngIf="uiLockedAll">
     <div class="spinner-container">
       <h2 class="spinner"></h2>
       <h2>Loading ...</h2>
@@ -7,13 +9,17 @@
     </div>
   </div>
   <main class="row">
-    <alm-planner-layout #sidePanel (sidePanelStateChange)="togglePanelState($event)" [sidePanelContent]="sidePanel" [sectionContent]="sectionPanel">
+    <alm-planner-layout #sidePanel
+      (sidePanelStateChange)="togglePanelState($event)"
+      [sidePanelContent]="sidePanel"
+      [sectionContent]="sectionPanel">
     </alm-planner-layout>
   </main>
 </div>
 <ng-template #sidePanel>
   <aside class="f8-sidepanel">
-    <div class="lock-overlay-list" *ngIf="uiLockedSidebar">
+    <div class="lock-overlay-list"
+      *ngIf="uiLockedSidebar">
       <div class="spinner-container">
         <h2 class="spinner"></h2>
         <h2>Loading ...</h2>
@@ -21,107 +27,187 @@
       </div>
     </div>
     <a class="f8-sidepanel--toggle">
-      <span class="fa f8-sidepanel--toggle-icon fa-lg" [class.fa-angle-double-left]="sidePanelOpen" [class.fa-angle-double-right]="!sidePanelOpen"
+      <span class="fa f8-sidepanel--toggle-icon fa-lg"
+        [class.fa-angle-double-left]="sidePanelOpen"
+        [class.fa-angle-double-right]="!sidePanelOpen"
         (click)="togglePanel()" tooltip="{{sidePanelOpen ?
-          'Hide Panel' : 'Show Panel'}}" placement="right">
+          'Hide Panel' : 'Show Panel'}}"
+        placement="right">
       </span>
     </a>
-    <side-panel [sidePanelOpen]="sidePanelOpen" [iterations]="iterations"></side-panel>
+    <side-panel
+      [sidePanelOpen]="sidePanelOpen"
+      [iterations]="iterations">
+    </side-panel>
   </aside>
 </ng-template>
 <ng-template #sectionPanel>
   <section>
-    <div class="width-100 pull-left" #toolbarHeight>
-      <toolbar-panel context="listview" [wiTypes]="workItemTypes" (onCreateNewWorkItemSelected)="onCreateFromContext()" [currentBoardType]="currentBoardType"
-        [areas]="areas" [loggedInUser]="loggedInUser">
+    <div class="width-100 pull-left"
+      #toolbarHeight>
+      <toolbar-panel
+        context="listview"
+        [wiTypes]="workItemTypes"
+        (onCreateNewWorkItemSelected)="onCreateFromContext()"
+        [currentBoardType]="currentBoardType"
+        [areas]="areas"
+        [loggedInUser]="loggedInUser">
       </toolbar-panel>
     </div>
     <div class="f8-wi-list">
-      <div #listContainer almInfiniteScroll class="f8-wi-list-wrap" [eachElementHeightInPx]='contentItemHeight' (initItems)='initWiItems($event)'
-        (fetchMore)='fetchMoreWiItems()'>
-        <ngx-datatable class="material"
-               [rows]="datatableWorkitems"
-               [rowHeight]="'auto'" >
-          <ngx-datatable-column *ngFor="let c of (columns | filterColumn:'display')" 
+      <div class="f8-wi-list-wrap"
+        [eachElementHeightInPx]='contentItemHeight'
+        (initItems)='initWiItems($event)'
+        (fetchMore)='fetchMoreWiItems()'
+        #listContainer
+        almInfiniteScroll>
+        <!-- ngx-datatable -->
+        <ngx-datatable
+          [rows]="datatableWorkitems"
+          [rowHeight]="'auto'" >
+          <ngx-datatable-column
+            *ngFor="let c of (columns | filterColumn:'display')"
             [name]="c.name"
-            [width]="30%">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                  <work-item-cell [row]="row" [col]="c.prop"
+            style="width: 30%;">
+              <ng-template let-row="row"
+                ngx-datatable-cell-template>
+                  <work-item-cell
+                    [row]="row"
+                    [col]="c.prop"
                     (onDetailPreview)="onDetailPreview($event)">
                   </work-item-cell>
-                </ng-template>
+              </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="<button class='caret' (click)='openPopover()'>
-                                      </button>" flexGrow="0.5">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div class="pull-right margin-left-15" tooltip="Open Quick Preview" placement="left">
-                <a (click)="onPreview($event, row['id'])" class="fa fa-columns f8-action-icon"></a>
-              </div>
-              <div class="dropdown-kebab-pf pull-right dropdown" dropdown>
-                <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
+          <ngx-datatable-column
+            name="<button class='caret'
+                    (click)='openPopover()'>
+                  </button>"
+            flexGrow="0.5">
+            <ng-template let-row="row"
+              ngx-datatable-cell-template>
+              <div class="dropdown-kebab-pf pull-right dropdown margin-left-10"
+                dropdown>
+                <button class="btn btn-link dropdown-toggle"
+                  type="button"
+                  dropdownToggle>
                   <span class="fa fa-ellipsis-v"></span>
                 </button>
-                <ul class="dropdown-menu-right dropdown-menu" *dropdownMenu>
+                <ul class="dropdown-menu-right dropdown-menu"
+                  *dropdownMenu>
                   <li>
-                    <a class="pointer" (click)="handleAction($event)">
+                    <a class="pointer"
+                      (click)="handleAction($event)">
                       Move to Bottom
                     </a>
                   </li>
                   <li>
-                    <a class="divider" (click)="handleAction($event)">
+                    <a class="divider"
+                      (click)="handleAction($event)">
                     </a>
                   </li>
                   <li>
-                    <a class="pointer" (click)="handleAction($event)">
+                    <a class="pointer"
+                      (click)="handleAction($event)">
                       Associate with Iteration...
                     </a>
                   </li>
                   <li>
-                    <a class="pointer" (click)="handleAction($event)">
+                    <a class="pointer"
+                      (click)="handleAction($event)">
                       Open
                     </a>
                   </li>
                   <li>
-                    <a class="pointer" (click)="handleAction($event)">
+                    <a class="pointer"
+                      (click)="handleAction($event)">
                       Preview
                     </a>
                   </li>
                   <li>
-                    <a class="pointer" (click)="handleAction($event)">
+                    <a class="pointer"
+                      (click)="handleAction($event)">
                       Move to Backlog
                     </a>
                   </li>
                 </ul>
               </div>
+              <div class="pull-right margin-left-15"
+                tooltip="Open Quick Preview"
+                placement="left">
+                <a class="fa fa-columns f8-action-icon"
+                  (click)="onPreview($event, row['id'])">
+                </a>
+              </div>
             </ng-template>
           </ngx-datatable-column>
         </ngx-datatable>
-        <div>
-            <ul>
-                <li *ngFor='let col of (columns | filterColumn: "display")'>
-                  <input
-                    type='checkbox'
-                    [id]="col.name"
-                    (change)='toggleDisplay($event, col)'
-                  />
-                  <label [attr.for]="col.name">{{col.name}}</label>
-                </li>
-            </ul>
-            <button class="btn btn-default" (click)="moveToDisplay()">up</button>
-            <button class="btn btn-default" (click)="moveToAvailable()">down</button>
-
-            <ul>
-                <li *ngFor='let col of (columns | filterColumn: "available")'>
-                  <input
-                    type='checkbox'
-                    [id]="col.name"
-                    (change)='toggleAvailable($event, col)'
-                  />
-                  <label [attr.for]="col.name">{{col.name}}</label>
-                </li>
-            </ul>
+        <!-- settings -->
+        <div class="f8-wi-list__settings">
+          <div class="dropdown-kebab-pf pull-right dropdown open">
+            <button class="btn btn-link dropdown-toggle"
+              dropdowntoggle
+              type="button"
+              data-toggle="dropdown">
+                <span class="fa fa-cog"></span>
+            </button>
+            <div class="dropdown-menu-right dropdown-menu show f8-wi-list__settings-dropdown">
+                <aside>
+                  <i class="db text-right fa fa-close"></i>
+                  <span class="db text-right fa fa-angle-double-up"
+                    tooltip="Move to top"
+                    (click)="moveToDisplay()">
+                  </span>
+                  <span class="db text-right fa fa-angle-up"
+                    tooltip="Move to top"
+                    (click)="moveToDisplay()">
+                  </span>
+                  <span class="db text-right fa fa-angle-down"
+                    tooltip="Move to Down"
+                    (click)="moveToAvailable()">
+                  </span>
+                  <span class="db text-right fa fa-angle-double-down"
+                    tooltip="Move to Down"
+                    (click)="moveToAvailable()">
+                  </span>
+                </aside>
+                <aside>
+                  <small>Displayed Atrributes</small>
+                  <ul class="f8-wi-list__settings-column">
+                    <li *ngFor='let col of (columns | filterColumn: "display")'>
+                      <input
+                        type='checkbox'
+                        [id]="col.name"
+                        (change)='toggleDisplay($event, col)'/>
+                      <label [attr.for]="col.name">{{col.name}}</label>
+                    </li>
+                  </ul>
+                </aside>
+                <aside>
+                  <small>Available Atrributes</small>
+                  <ul class="f8-wi-list__settings-column">
+                    <li *ngFor='let col of (columns | filterColumn: "available")'>
+                      <input
+                        type='checkbox'
+                        [id]="col.name"
+                        (change)='toggleAvailable($event, col)'/>
+                      <label [attr.for]="col.name">
+                        {{col.name}}
+                      </label>
+                    </li>
+                  </ul>
+                </aside>
+              <!-- <li
+              </li> -->
+            </div>
+          </div>
+          <!--  -->
+          <!-- <ul>
+            <li
+            </li>
+          </ul> -->
         </div>
-        <div class="lock-overlay-list" *ngIf="uiLockedList">
+        <div class="lock-overlay-list"
+          *ngIf="uiLockedList">
           <div class="spinner-container">
             <h2 class="spinner"></h2>
             <h2>Loading Work Items ...</h2>
@@ -129,10 +215,11 @@
           </div>
         </div>
       </div>
-
-      <div class="error" id="workItemList_Error" *ngIf="error">{{error}}
+      <div class="error"
+        id="workItemList_Error"
+        *ngIf="error">
+        {{error}}
       </div>
-
       <div class="f8-wi-list__quick-add width-100 pull-left"
         id="workItemList_quickAdd"
         *ngIf="loggedIn"
@@ -140,18 +227,26 @@
         <alm-work-item-quick-add
           [wilistview]="'wi-list-view'"
           (close)="close($event)"
-          (workItemCreate)="onCreateWorkItem($event)"></alm-work-item-quick-add>
+          (workItemCreate)="onCreateWorkItem($event)">
+        </alm-work-item-quick-add>
       </div>
     </div>
   </section>
-  <work-item-preview #detailPreview></work-item-preview>
+  <work-item-preview
+    #detailPreview>
+  </work-item-preview>
 </ng-template>
 <!-- <router-outlet></router-outlet> -->
 
-<detail-add-type-selector #typeSelectPanel [takeFromInput]="true" [wiTypes]="workItemTypes">
+<detail-add-type-selector
+  #typeSelectPanel
+  [takeFromInput]="true"
+  [wiTypes]="workItemTypes">
 </detail-add-type-selector>
 
-<fab-planner-associate-iteration-modal [workItem]="currentWorkItem" #associateIterationModal>
+<fab-planner-associate-iteration-modal
+  [workItem]="currentWorkItem"
+  #associateIterationModal>
 </fab-planner-associate-iteration-modal>
 
 <osio-modal></osio-modal>
