@@ -1,5 +1,5 @@
 <div class="label-wrapper">
-  <span *ngFor="let label of labels | slice:0:truncateAfter;" class="label"
+  <span *ngFor="let label of _labels | slice:0:truncateAfter;" class="label"
     [ngStyle]="{
       'background-color': label?.attributes['background-color'],
       'color': label.attributes['text-color']
@@ -14,11 +14,11 @@
   </span>
   <span dropdown class="dropdown" placement="right">
     <span dropdownToggle (click)="moreClick($event)" class="dropdown-toggle"
-      *ngIf="truncateAfter!==undefined && labels.length > 4">
-        {{ labels.length - truncateAfter }} more...
+      *ngIf="truncateAfter!==undefined && _labels.length > 4">
+        {{ _labels.length - truncateAfter }} more...
       </span>
       <ul *dropdownMenu class="dropdown-menu label-dropdown dropdown-menu-right">
-        <li *ngFor="let label of labels | slice:truncateAfter;">
+        <li *ngFor="let label of _labels | slice:truncateAfter;">
           <span class="label" [ngStyle]="{
               'background-color': label?.attributes['background-color'],
               'color': label.attributes['text-color']

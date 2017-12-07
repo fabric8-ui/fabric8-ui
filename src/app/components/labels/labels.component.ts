@@ -4,7 +4,6 @@ import {
   EventEmitter,
   OnInit,
   Input,
-  OnChanges,
   Output,
   SimpleChanges
 } from '@angular/core';
@@ -20,9 +19,18 @@ import { LabelModel } from './../../models/label.model';
   styleUrls: ['./labels.component.less']
 })
 
-export class LabelsComponent implements OnInit, OnChanges {
+export class LabelsComponent implements OnInit {
 
-  @Input('labels') labelInput: LabelModel[] = [];
+  private _labels: LabelModel[] = [];
+
+  @Input('labels') set labelInput(labels: LabelModel[]) {
+    this._labels = labels.filter(label => {
+      return label.attributes &&
+        label.attributes['background-color'] &&
+        label.attributes['text-color']
+    })
+  };
+
   @Input() truncateAfter: number;
   @Input() allowDelete: boolean;
   @Output() onLabelClick = new EventEmitter();
@@ -46,17 +54,6 @@ export class LabelsComponent implements OnInit, OnChanges {
         console.log('[Guided Work Item Types] Space deselected.');
       }
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    // this.labels = changes.labels.currentValue;
-    if (changes.labelInput) {
-      this.labels = this.labelInput.filter(label => {
-        return label.attributes &&
-          label.attributes['background-color'] &&
-          label.attributes['text-color']
-      });
-    }
   }
 
   moreClick(event) {
