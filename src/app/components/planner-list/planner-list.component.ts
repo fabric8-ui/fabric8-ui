@@ -447,7 +447,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
       this.areas = items[2];
       this.loggedInUser = items[3];
       this.labels = items[4];
-      console.log('#### - 0.0', this.labels);
       if (this.initialGroup === undefined) {
         let witCollection = this.workItemTypes.map(wit => wit.id);
         this.groupTypesService.setCurrentGroupType(witCollection);
@@ -534,7 +533,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
         const workItems = workItemResp.workItems;
         this.nextLink = workItemResp.nextLink;
         this.included = workItemResp.included;
-        console.log('#### - 0.1.0', cloneDeep(workItems));
         this.workItems = this.workItemService.resolveWorkItems(
           workItems,
           this.iterations,
@@ -543,9 +541,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
           this.labels,
           this.included
         );
-        console.log('#### - 0.1.1', this.workItems);
         this.datatableWorkitems = this.tableWorkitem(this.workItems);
-        console.log('#### - 0.2', this.datatableWorkitems);
         this.workItemDataService.setItems(this.workItems);
         // Resolve assignees
         const t3 = performance.now();
@@ -977,7 +973,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
         number: element.attributes['system.number'],
         type: element.relationships.baseType ? element.relationships.baseType : '',
         title: element.attributes['system.title'],
-        labels: element.relationships.labels,
+        labels: element.relationships.labels.data,
         creator: element.relationships.creator.data,
         assignees: element.relationships.assignees.data,
         status: element.attributes['system.state']
