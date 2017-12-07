@@ -563,8 +563,41 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
               }
             })
         });
-        //this.treeList.update();
-        this.originalList = cloneDeep(this.workItems);
+
+        // Resolve creators
+        const t5 = performance.now();
+        const allCreatorURLs: string[] = this.workItems.reduce(
+          (uniqueItems: WorkItem[], workItem: WorkItem) => {
+            if (!uniqueItems.find((item) => {
+              return item.relationships.creator.data.id ===
+                workItem.relationships.creator.data.id
+              })) {
+              return [...uniqueItems, workItem]
+            } else {
+              return uniqueItems;
+            }
+          }, [] as WorkItem[])
+          .map((item: WorkItem) => {
+            return item.relationships.creator.data.links.self;
+          });
+
+        this.workItemService.getUsersByURLs(allCreatorURLs)
+          .subscribe((creators: User[]) => {
+            this.workItems.forEach((item, index) => {
+              item.relationships.creator.data = creators.find(creator => {
+                if (item.relationships.creator.data.id === creator.id) {
+                  // After the assignees is resolved
+                  // We should add it to the datatableWorkitems
+                  this.datatableWorkitems[index].creator = creator;
+                  return true;
+                } else {
+                  return false;
+                }
+              })
+            })
+          })
+        // this.treeList.update();
+        // this.originalList = cloneDeep(this.workItems);
       },
       (err) => {
         console.log('Error in Work Item list', err);
