@@ -553,6 +553,9 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
           this.workItemService.resolveAssignees(item.relationships.assignees).take(1)
             .subscribe(assignees => {
               item.relationships.assignees.data = assignees;
+              // After the assignees is resolved
+              // We should add it to the datatableWorkitems
+              this.datatableWorkitems[index].assignees = assignees;
               if (index == this.workItems.length - 1) {
                 const t4 = performance.now();
                 console.log('Performance :: Resolved all the users - ' + (t4 - t3) + ' milliseconds.');
@@ -599,7 +602,10 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
         for (let i = wiLength; i < this.workItems.length; i++) {
           this.workItemService.resolveAssignees(this.workItems[i].relationships.assignees).take(1)
             .subscribe(assignees => {
-              this.workItems[i].relationships.assignees.data = assignees
+              this.workItems[i].relationships.assignees.data = assignees;
+              // After the assignees is resolved
+              // We should add it to the datatableWorkitems
+              this.datatableWorkitems[i].assignees = assignees;
               if (i == this.workItems.length - 1) {
                 const t4 = performance.now();
                 console.log('Performance :: Resolved all the users - ' + (t4 - t3) + ' milliseconds.');
