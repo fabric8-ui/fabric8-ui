@@ -9,7 +9,7 @@ import { IterationModel } from '../../models/iteration.model';
 import { Subscription } from 'rxjs/Subscription';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import {
-  AfterViewInit,
+  AfterViewChecked,
   Component,
   ElementRef,
   Input,
@@ -18,14 +18,12 @@ import {
   ViewChildren,
   QueryList,
   TemplateRef,
-  DoCheck,
   OnDestroy,
   ViewEncapsulation,
   Output,
   EventEmitter,
   Renderer2,
-  HostListener,
-  AfterViewChecked
+  HostListener
 } from '@angular/core';
 import {
   Router,
@@ -82,8 +80,8 @@ import { setTimeout } from 'core-js/library/web/timers';
   templateUrl: './planner-list.component.html',
   styleUrls: ['./planner-list.component.less']
 })
-export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
-  @ViewChildren('activeFilters', {read: ElementRef}) activeFiltersRef: QueryList<ElementRef>;
+export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy {
+  @ViewChildren('activeFilters', { read: ElementRef }) activeFiltersRef: QueryList<ElementRef>;
   @ViewChild('activeFiltersDiv') activeFiltersDiv: any;
   @ViewChild('typeSelectPanel') typeSelectPanel: WorkItemDetailAddTypeSelectorComponent;
 
@@ -114,7 +112,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
   addingWorkItem = false;
   showOverlay: Boolean;
   loggedIn: Boolean = false;
-  contentItemHeight: number = 67;
+  contentItemHeight: number = 50;
   pageSize: number = 20;
   filters: any[] = [];
   allUsers: User[] = [] as User[];
@@ -142,7 +140,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
   private selectedWI: WorkItem = null;
   private initialGroup: GroupTypesModel;
   private included: WorkItem[];
-
 
   constructor(
     private labelService: LabelService,
@@ -309,12 +306,9 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
     } as TreeListConfig;
   }
 
-  ngAfterViewInit() {
+  ngAfterViewChecked() {
     let oldHeight = 0;
     this.authUser = cloneDeep(this.route.snapshot.data['authuser']);
-  }
-
-  ngAfterViewChecked() {
     if (this.workItems.length != this.prevWorkItemLength) {
       //this.treeList.update();
       this.prevWorkItemLength = this.workItems.length;
@@ -339,7 +333,9 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
 
       let targetContHeight: number = window.innerHeight - hdrHeight - expHeight;
       this.renderer.setStyle(this.containerHeight.nativeElement, 'height', targetContHeight + "px");
+      this.initWiItems(Math.ceil(targetContHeight / this.contentItemHeight));
     }
+
     if (document.getElementsByTagName('body')) {
       document.getElementsByTagName('body')[0].style.overflow = "hidden";
     }
@@ -359,9 +355,8 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
 
   // model handlers
 
-  initWiItems(event: any): void {
-    this.pageSize = event.pageSize;
-
+  initWiItems(pageSize: any): void {
+    this.pageSize = pageSize;
     // Space subscription should only listen to changes
     // till the page is changed to something else.
     // Unsubscribe in ngOnDestroy acts way after the new page inits
@@ -373,7 +368,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
         event.url.indexOf('plan/detail') > -1 ||
         event.url.indexOf('plan') == -1
       );
-
     this.spaceSubscription =
       // On any of these event inside combineLatest
       // We load the work items

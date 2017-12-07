@@ -56,17 +56,19 @@
     </div>
     <div class="f8-wi-list">
       <div class="f8-wi-list-wrap"
-        [eachElementHeightInPx]='contentItemHeight'
-        (initItems)='initWiItems($event)'
-        (fetchMore)='fetchMoreWiItems()'
-        #listContainer
-        almInfiniteScroll>
+        #listContainer>
         <!-- ngx-datatable -->
         <ngx-datatable
+          class="datatable-height"
           [columnMode]="'flex'"
           [scrollbarH]="true"
+          [scrollbarV]="true"
           [rows]="datatableWorkitems"
-          [rowHeight]="'auto'">
+          [rowHeight]="contentItemHeight"
+          almInfiniteScroll
+          [eachElementHeightInPx]="contentItemHeight"
+          [fetchThreshold]="5"
+          (fetchMore)="fetchMoreWiItems()">
           <ngx-datatable-column
             *ngFor="let c of (columns | filterColumn:'display')"
             [name]="c.name"

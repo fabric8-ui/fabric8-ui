@@ -47,7 +47,9 @@
       width: 100%;
      // height: ~"calc(e('100% - 120px'))";
       // to avoid overflown scroll height should be there
-      overflow-y: scroll;
+      overflow-y: hidden;
+      border-top: 1px solid;
+      border-top-color: @color-pf-black-300;
       >.list-group {
         border-top-width: 0 !important;
       }
@@ -226,4 +228,7 @@
 }
 .datatable-body-cell {
   overflow-x: visible !important;
+}
+.datatable-height {
+  height: inherit;
 }
