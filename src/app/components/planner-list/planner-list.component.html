@@ -63,10 +63,10 @@
         almInfiniteScroll>
         <!-- ngx-datatable -->
         <ngx-datatable
-        [columnMode]="'flex'"
-        [scrollbarH]="true"
+          [columnMode]="'flex'"
+          [scrollbarH]="true"
           [rows]="datatableWorkitems"
-          [rowHeight]="'auto'" >
+          [rowHeight]="'auto'">
           <ngx-datatable-column
             *ngFor="let c of (columns | filterColumn:'display')"
             [name]="c.name"
@@ -77,12 +77,14 @@
                   <work-item-cell
                     [row]="row"
                     [col]="c.prop"
-                    (onDetailPreview)="onDetailPreview($event)">
+                    (onDetailPreview)="onDetailPreview($event)"
+                    (clickLabel)="onClickLabel($event)">
                   </work-item-cell>
               </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column
-            [flexGrow]="0.6">
+            [flexGrow]="0.6"
+            [headerTemplate]="headerTemplateN">
             <ng-template let-row="row"
               ngx-datatable-cell-template>
               <div class="dropdown-kebab-pf pull-right dropdown margin-left-10"
@@ -96,36 +98,39 @@
                   *dropdownMenu>
                   <li>
                     <a class="pointer"
-                      (click)="handleAction($event)">
+                      (click)="onMoveToTop(row['id'])">
+                      Move to Top
+                    </a>
+                  </li>
+                  <li>
+                    <a class="pointer"
+                      (click)="onMoveToBottom(row['id'])">
                       Move to Bottom
                     </a>
                   </li>
-                  <li>
-                    <a class="divider"
-                      (click)="handleAction($event)">
-                    </a>
-                  </li>
+                  <li class="divider"></li>
                   <li>
                     <a class="pointer"
-                      (click)="handleAction($event)">
+                      (click)="onAssociateIteration(row['id'])">
                       Associate with Iteration...
                     </a>
                   </li>
+                  <li class="divider"></li>
                   <li>
                     <a class="pointer"
-                      (click)="handleAction($event)">
+                      (click)="onOpen(row['id'])">
                       Open
                     </a>
                   </li>
                   <li>
                     <a class="pointer"
-                      (click)="handleAction($event)">
+                      (click)="onPreview($event, row['id'])">
                       Preview
                     </a>
                   </li>
                   <li>
                     <a class="pointer"
-                      (click)="handleAction($event)">
+                      (click)="onMoveToBacklog(row['id'])">
                       Move to Backlog
                     </a>
                   </li>
@@ -142,16 +147,16 @@
           </ngx-datatable-column>
         </ngx-datatable>
         <!-- settings -->
+        <ng-template #headerTemplateN>
       <div class="f8-wi-list__settings">
         <div class="dropdown-kebab-pf pull-right dropdown open">
           <button class="btn btn-link dropdown-toggle"
-            dropdowntoggle
-            type="button"
-            data-toggle="dropdown">
+            dropdownToggle
+            type="button">
               <span class="fa fa-cog"></span>
           </button>
           <div class="dropdown-menu-right dropdown-menu show f8-wi-list__settings-dropdown">
-            <aside>
+            <!--<aside>
               <i class="db text-right fa fa-close"></i>
               <span class="db text-right fa fa-angle-double-up"
                 tooltip="Move to top"
@@ -169,7 +174,7 @@
                 tooltip="Move to Down"
                 (click)="moveToAvailable()">
               </span>
-            </aside>
+            </aside>-->
             <aside>
               <small>Displayed Atrributes</small>
               <ul class="f8-wi-list__settings-column">
@@ -209,6 +214,7 @@
           </div>
         </div>
       </div>
+      </ng-template>
         <div class="lock-overlay-list"
           *ngIf="uiLockedList">
           <div class="spinner-container">

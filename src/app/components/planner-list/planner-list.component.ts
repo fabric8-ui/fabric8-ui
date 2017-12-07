@@ -230,7 +230,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
     event.stopPropagation();
      //this.detailEvent.emit(this);
        this.workItemDataService.getItem(id).subscribe(workItem => {
-       this.router.navigateByUrl(this.router.url.split('detail')[0] + '/detail/' + workItem.id, { relativeTo: this.route });
+       this.router.navigateByUrl(this.router.url.split('/list')[0] + '/detail/' + workItem.id, { relativeTo: this.route });
        });
   }
 
@@ -661,8 +661,9 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
     this.datatableWorkitems = this.tableWorkitem(this.workItems);
   }
 
-  onMoveToTop(entryComponent): void {
-    this.workItemDetail = entryComponent.data;
+  onMoveToTop(id: string): void {
+    this.workItemDataService.getItembyNumber(id).subscribe((entryComponent) => {
+    this.workItemDetail = entryComponent;
     this.workItemService.reOrderWorkItem(this.workItemDetail, null, 'top')
       .subscribe((updatedWorkItem) => {
         let currentIndex = this.workItems.findIndex((item) => item.id === updatedWorkItem.id);
@@ -673,10 +674,12 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
         this.workItems[0].attributes['version'] = updatedWorkItem.attributes['version'];
         this.treeList.update();
       });
+    });
   }
 
-  onMoveToBottom(entryComponent): void {
-    this.workItemDetail = entryComponent.data;
+  onMoveToBottom(id: string): void {
+    this.workItemDataService.getItembyNumber(id).subscribe((entryComponent) => {
+    this.workItemDetail = entryComponent;
     this.workItemService.reOrderWorkItem(this.workItemDetail, null, 'bottom')
       .subscribe((updatedWorkItem) => {
         let currentIndex = this.workItems.findIndex((item) => item.id === updatedWorkItem.id);
@@ -688,6 +691,61 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
         this.treeList.update();
         this.listContainer.nativeElement.scrollTop = this.workItems.length * this.contentItemHeight;
       });
+    });
+  }
+
+  onAssociateIteration(id: string): void {
+    this.workItemDataService.getItembyNumber(id).subscribe((item) => {
+    this.currentWorkItem = item;
+    this.associateIterationModal.workItem = item;
+    this.associateIterationModal.open();
+    });
+  }
+
+  onOpen(id: string){
+    this.workItemDataService.getItembyNumber(id).subscribe((item) => {
+      let link = this.router.url.split('/list')[0] + '/detail/' + item.id;
+      this.router.navigateByUrl(link, { relativeTo: this.route });
+    });
+  }
+  onMoveToBacklog(id: string): void {
+    this.workItemDataService.getItembyNumber(id).subscribe((item) => {
+    item.relationships.iteration = {}
+    this.workItemService
+      .update(item)
+      .switchMap(item => {
+        return this.iterationService.getIteration(item.relationships.iteration)
+          .map(iteration => {
+            item.relationships.iteration.data = iteration;
+            return item;
+          });
+      })
+      .subscribe(workItem => {
+        //update only the relevant fields
+        let index = this.workItems.findIndex(wi => wi.id === item.id)
+        this.workItems[index].relationships.iteration.data = workItem.relationships.iteration.data;
+        this.workItems[index].attributes['version'] = workItem.attributes['version'];
+        this.treeList.update();
+        try {
+          this.notifications.message({
+            message: workItem.attributes['system.title'] + ' has been moved to the Backlog.',
+            type: NotificationType.SUCCESS
+          } as Notification);
+        } catch (e) {
+          console.log('Error displaying notification. Iteration was moved to Backlog.')
+        }
+      },
+      (err) => {
+        try {
+          this.notifications.message({
+            message: item.attributes['system.title'] + ' could not be moved to the Backlog.',
+            type: NotificationType.DANGER
+          } as Notification);
+        } catch (e) {
+          console.log('Error displaying notification. Error moving Iteration to Backlog.')
+        }
+      });
+    });
   }
 
   // This opens the create new work item dialog. It parses the query string
@@ -913,7 +971,7 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
         number: element.attributes['system.number'],
         type: element.relationships.baseType ? element.relationships.baseType : '',
         title: element.attributes['system.title'],
-        labels: element.relationships.labels.data ? element.relationships.labels.data : '',
+        labels: element.relationships.labels,
         creator: element.relationships.creator.data,
         assignees: element.relationships.assignees.data,
         status: element.attributes['system.state']
@@ -938,73 +996,6 @@ export class PlannerListComponent implements OnInit, AfterViewInit, AfterViewChe
         .subscribe((workItem) => {
           this.workItems.find((item) => item.id === workItem.id).attributes['version'] = workItem.attributes['version'];
         });
-    }
-  }
-
-  handleAction($event: Action, item: any): void {
-    switch ($event.id) {
-      case 'createWI':
-        // Empty state's Create Work Item button
-        this.onCreateFromContext()
-        break;
-      case 'move2top':
-        this.workItemToMove = item.data;
-        this.onMoveToTop(item);
-        break;
-      case 'move2bottom':
-        this.workItemToMove = item.data;
-        this.onMoveToBottom(item);
-        break;
-      case 'associateIteration':
-        this.currentWorkItem = item.data;
-        this.associateIterationModal.workItem = item.data;
-        this.associateIterationModal.open();
-        break;
-      case 'open':
-        let link = this.router.url.split('/list')[0] + '/detail/' + item.data.id;
-        this.router.navigateByUrl(link, { relativeTo: this.route });
-        break;
-      case 'preview':
-       // this.onPreview(event: MouseEvent, id);
-        break;
-      case 'move2backlog':
-        item.data.relationships.iteration = {}
-        this.workItemService
-          .update(item.data)
-          .switchMap(item => {
-            return this.iterationService.getIteration(item.relationships.iteration)
-              .map(iteration => {
-                item.relationships.iteration.data = iteration;
-                return item;
-              });
-          })
-          .subscribe(workItem => {
-            //update only the relevant fields
-            let index = this.workItems.findIndex(wi => wi.id === item.data.id)
-            this.workItems[index].relationships.iteration.data = workItem.relationships.iteration.data;
-            this.workItems[index].attributes['version'] = workItem.attributes['version'];
-            this.treeList.update();
-            try {
-              this.notifications.message({
-                message: workItem.attributes['system.title'] + ' has been moved to the Backlog.',
-                type: NotificationType.SUCCESS
-              } as Notification);
-            } catch (e) {
-              console.log('Error displaying notification. Iteration was moved to Backlog.')
-            }
-          },
-          (err) => {
-            try {
-              this.notifications.message({
-                message: item.data.attributes['system.title'] + ' could not be moved to the Backlog.',
-                type: NotificationType.DANGER
-              } as Notification);
-            } catch (e) {
-              console.log('Error displaying notification. Error moving Iteration to Backlog.')
-            }
-          });
-
-        break;
     }
   }
 
