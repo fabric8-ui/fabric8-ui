@@ -794,6 +794,11 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           updatedItem.relationships['parent'] = this.workItems[index].relationships.parent;
           if (index > -1) {
             this.workItems[index] = updatedItem;
+            this.datatableWorkitems = [
+              ...this.datatableWorkitems.slice(0, index),
+              ...this.tableWorkitem([updatedItem]),
+              ...this.datatableWorkitems.slice(index + 1)
+            ];
           } else {
             //Scenario: work item detail panel is open.
             //Change a value so that it does not match the applied filter and gets removed from the list
@@ -804,6 +809,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
             if (!this.children.find(c => c === updatedItem.id)) {
               // If the item is not a child of any other item
               this.workItems.splice(0, 0, updatedItem);
+              this.datatableWorkitems = [...this.tableWorkitem([updatedItem]), ...this.datatableWorkitems];
             }
           }
           try {
