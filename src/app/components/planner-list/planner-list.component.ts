@@ -43,16 +43,6 @@ import {
 } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
-import {
-  Action,
-  ActionConfig,
-  EmptyStateConfig,
-  ListBase,
-  ListEvent,
-  TreeListComponent,
-  TreeListConfig
-} from 'patternfly-ng';
-
 // import for column
 import { datatableColumn } from './datatable-config';
 
@@ -86,15 +76,11 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   @ViewChild('typeSelectPanel') typeSelectPanel: WorkItemDetailAddTypeSelectorComponent;
 
   @ViewChild('listContainer') listContainer: any;
-  @ViewChild('treeList') treeList: TreeListComponent;
   @ViewChild('detailPreview') detailPreview: WorkItemDetailComponent;
   @ViewChild('sidePanel') sidePanelRef: any;
   @ViewChild('associateIterationModal') associateIterationModal: any;
 
-  actionConfig: ActionConfig;
-  emptyStateConfig: EmptyStateConfig;
   selectType: string = 'checkbox';
-  treeListConfig: TreeListConfig;
   @ViewChild('toolbarHeight') toolbarHeight: ElementRef;
   @ViewChild('containerHeight') containerHeight: ElementRef;
 
@@ -176,9 +162,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     }
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.setTreeConfigs();
-
-
   }
 
   toggleAvailable(event, col) {
@@ -225,87 +208,12 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   onDetailPreview(id): void {
     event.stopPropagation();
-     //this.detailEvent.emit(this);
-       this.workItemDataService.getItem(id).subscribe(workItem => {
+    this.workItemDataService.getItem(id).subscribe(workItem => {
        this.router.navigateByUrl(this.router.url.split('/list')[0] + '/detail/' + workItem.id, { relativeTo: this.route });
-       });
+    });
   }
 
-  setTreeConfigs() {
-    this.actionConfig = {
-      primaryActions: [],
-      moreActions: [{
-        id: 'move2top',
-        title: 'Move to Top',
-        tooltip: 'Move this work item to the top of the list'
-      }, {
-        id: 'move2bottom',
-        title: 'Move to Bottom',
-        tooltip: 'Move this work item to the bottom of the list'
-      },
-      {
-        id: 'divider1',
-        title: '',
-        separator: true
-      }, {
-        id: 'associateIteration',
-        title: 'Associate with Iteration...',
-        tooltip: 'Associate this work item with an Iteration',
-      },
-      {
-        id: 'divider2',
-        title: '',
-        separator: true
-      }, {
-        id: 'open',
-        title: 'Open',
-        tooltip: 'Open the detailed view of this work item'
-      }, {
-        id: 'preview',
-        title: 'Preview',
-        tooltip: 'Open the quick preview of this work item'
-      }, {
-        id: 'move2backlog',
-        title: 'Move to Backlog',
-        tooltip: 'Move this work item to the backlog'
-      }],
-      moreActionsDisabled: false,
-      moreActionsVisible: this.loggedIn
-    } as ActionConfig;
-
-    this.emptyStateConfig = {
-      actions: {
-        primaryActions: [{
-          id: 'createWI',
-          title: 'Create work item',
-          tooltip: 'Create work item',
-          styleClass: this.loggedIn ? 'show-wi' : 'hide-wi'
-        }],
-        moreActions: []
-      } as ActionConfig,
-      iconStyleClass: 'pficon-warning-triangle-o',
-      title: 'No Work Items Available',
-      info: 'There are no Work Items for your selected criteria',
-      helpLink: {
-        text: 'Create a new Work Item'
-      }
-    } as EmptyStateConfig;
-
-    this.treeListConfig = {
-      dblClick: false,
-      emptyStateConfig: this.emptyStateConfig,
-      multiSelect: false,
-      selectItems: true,
-      selectionMatchProp: 'name',
-      showCheckbox: false,
-      treeOptions: {
-        allowDrag: this.loggedIn,
-        isExpandedField: 'expanded',
-        getChildren: this.loadChildren.bind(this)
-      }
-    } as TreeListConfig;
-  }
-
+  
   ngAfterViewChecked() {
     let oldHeight = 0;
     this.authUser = cloneDeep(this.route.snapshot.data['authuser']);
@@ -590,7 +498,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
               })
             })
           })
-        // this.treeList.update();
         // this.originalList = cloneDeep(this.workItems);
       },
       (err) => {
@@ -707,7 +614,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         // Removing duplicate old item
         this.workItems.splice(currentIndex + 1, 1);
         this.workItems[0].attributes['version'] = updatedWorkItem.attributes['version'];
-        this.treeList.update();
+        //this.treeList.update();
       });
     });
   }
@@ -723,7 +630,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         //remove the duplicate element
         this.workItems.splice(currentIndex, 1);
         this.workItems[this.workItems.length - 1].attributes['version'] = updatedWorkItem.attributes['version'];
-        this.treeList.update();
         this.listContainer.nativeElement.scrollTop = this.workItems.length * this.contentItemHeight;
       });
     });
@@ -743,6 +649,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       this.router.navigateByUrl(link, { relativeTo: this.route });
     });
   }
+
   onMoveToBacklog(id: string): void {
     this.workItemDataService.getItembyNumber(id).subscribe((item) => {
     item.relationships.iteration = {}
@@ -760,7 +667,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         let index = this.workItems.findIndex(wi => wi.id === item.id)
         this.workItems[index].relationships.iteration.data = workItem.relationships.iteration.data;
         this.workItems[index].attributes['version'] = workItem.attributes['version'];
-        this.treeList.update();
         try {
           this.notifications.message({
             message: workItem.attributes['system.title'] + ' has been moved to the Backlog.',
@@ -877,8 +783,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
               console.log('Error displaying notification. Added WI does not match the applied filters.')
             }
           }
-          //if (this.workItems.length > 0)
-            //this.treeList.update();
         })
     );
 
@@ -910,7 +814,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           } catch (e) {
             console.log('Error displaying notification. Updated WI matches the applied filters.')
           }
-          this.treeList.update();
         } else {
           //Remove the work item from the current displayed list
           if (index > -1) {
@@ -923,7 +826,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
               console.log('Error displaying notification. Updated WI does not match the applied filters.')
             }
             this.workItems.splice(index, 1);
-            this.treeList.update();
           }
         }
       })
@@ -1013,55 +915,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       }
     });
   }
-
-  //Patternfly-ng's tree list component
-  handleMoveNode($event) {
-    let movedWI = $event.node;
-    let prevWI = $event.to.parent.children[$event.to.index - 1];
-    let nextWI = $event.to.parent.children[$event.to.index + 1];
-
-    if (typeof prevWI !== 'undefined') {
-      this.workItemService.reOrderWorkItem(movedWI, prevWI.id, 'below')
-        .subscribe((workItem) => {
-          this.workItems.find((item) => item.id === workItem.id).attributes['version'] = workItem.attributes['version'];
-        });
-    }
-    else {
-      this.workItemService.reOrderWorkItem(movedWI, nextWI.id, 'above')
-        .subscribe((workItem) => {
-          this.workItems.find((item) => item.id === workItem.id).attributes['version'] = workItem.attributes['version'];
-        });
-    }
-  }
-
-  handleSelectionChange($event): void {
-    if ($event.item.selected === true) {
-      this.selectedWI = $event.item;
-      if (this.expandedNode != null && ($event.item.id !== this.expandedNode.node.item.id)) {
-        this.expandedNode = null;
-      }
-    } else {
-      this.selectedWI = null;
-      //reset the quick add context to allowed WIT for the selected group
-      this.logger.log('Reset work item types as per the work item type group.');
-      this.logger.log(this.initialGroup);
-      this.groupTypesService.setCurrentGroupType(this.initialGroup);
-    }
-  }
-
-  handleClick($event): void {
-    this.workItemService.emitSelectedWI($event.item);
-    this.groupTypesService.getAllowedChildWits($event.item);
-  }
-
-  handleToggleExpanded($event: any): void {
-    if ($event.isExpanded) {
-      this.expandedNode = $event;
-    } else {
-      this.expandedNode = null;
-    }
-  }
-
 
   togglePanelState(event: any): void {
     if (event === 'out') {
