@@ -1,33 +1,29 @@
 <!-- id -->
 
-<span class="margin-0"
-  *ngIf="col === 'id'" >
+<span *ngIf="col === 'id'" class="margin-0">
   {{row.number}}
 </span>
 
 <!-- Type -->
 
-<div *ngIf="col === 'type'" >
+<div *ngIf="col === 'type'">
   <span class="color-grey margin-h-10
-    {{row.type?.data?.attributes?.icon}}"
+    {{row.type?.data?.attributes?.icon}}" 
     title="{{row.type?.data?.attributes?.name}}">
   </span>
 </div>
 
 <!-- Title -->
 
-<span *ngIf="col === 'title'">
-  <p class="truncate"> {{row.title}} </p>
-</span>
+<div *ngIf="col === 'title'">
+  <p class="truncate pointer" 
+      (click)="onDetail($event, row['id'])"> {{row.title}} </p>
+</div>
 
 <!-- Status -->
 
-<div *ngIf="col === 'status'" >
-  <span class="pull-left padding-right-5 padding-top-4"
-    almIcon
-    [iconType]="row.status"
-    tooltip="{{row.status}}"
-    placement="right">
+<div *ngIf="col === 'status'">
+  <span class="pull-left padding-right-5 padding-top-4" almIcon [iconType]="row.status">
   </span>
   <span class="pull-left">
     {{row.status}}
@@ -36,39 +32,33 @@
 
 <!-- Label -->
 
-<div *ngIf="col === 'label'" >
-  <f8-label
-    [labels]="row?.labels ? row?.labels : []"
-    [truncateAfter]='4'
-    [allowDelete]="false"
-    (onLabelClick)="labelClick($event)">
-  </f8-label>
+<div *ngIf="col === 'label'">
+  <f8-label 
+      [labels]="row?.labels ? row?.labels : []" 
+      [truncateAfter]='4' 
+      [allowDelete]="false" 
+      (onLabelClick)="labelClick($event)"></f8-label>
 </div>
 
 <!-- Creator -->
 
-<div class="user-avatar"
-  *ngIf="col === 'creator'" >
-  <img placement="right"
-    tooltip="{{row.creator?.id}}"
-    src="{{row.creator?.imageURL + '&s=23'}}"
-    onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
+<div *ngIf="col === 'creator'" class="user-avatar">
+  <img placement="left" 
+        tooltip="{{row.creator?.attributes?.fullName}}" 
+        src="{{row.creator?.attributes?.imageURL + '&s=23'}}"
+        onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
 </div>
 
 <!-- Assignee -->
 
 <div *ngIf="col === 'assignees'" class="user-avatar">
-  <img *ngFor="let assignee of row.assignees"
-    placement="left"
-    tooltip="{{assignee?.attributes?.fullName}}"
-    src="{{assignee?.attributes?.imageURL + '&s=23'}}"
-    onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'"/>
-    <span class="pficon-user not-assigned-user-icon"
-      *ngIf="!row?.assignees?.length"
-      tooltip="Unassigned"
-      placement="left"></span>
+  <img *ngFor="let assignee of row.assignees" 
+        placement="left" 
+        tooltip="{{assignee?.attributes?.fullName}}" 
+        src="{{assignee?.attributes?.imageURL + '&s=23'}}"
+        onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
+  <span class="pficon-user not-assigned-user-icon" 
+        *ngIf="!row?.assignees?.length" 
+        tooltip="Unassigned" 
+        placement="left"></span>
 </div>
-
-
-
-
