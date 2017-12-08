@@ -37,7 +37,7 @@ import { WorkItemDataService } from '../../services/work-item-data.service';
     <!-- Title -->
 
     <div *ngIf="col === 'title'" >
-      <p class="truncate" (click)="onDetail($event, row['id'])"> {{row.title}} </p>
+      <p class="truncate pointer" (click)="onDetail($event, row['id'])"> {{row.title}} </p>
     </div>
 
     <!-- Status -->
