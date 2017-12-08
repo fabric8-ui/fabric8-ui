@@ -153,7 +153,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     // Setting the value to currentIteration
     // BehaviorSubject so that we can compare
     // on update the value on URL
-    
+
     const queryParams = this.route.snapshot.queryParams;
     if (Object.keys(queryParams).indexOf('iteration') > -1) {
       this.currentIteration = new BehaviorSubject(queryParams['iteration']);
@@ -458,7 +458,9 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
                   return false;
                 }
               })
-            })
+            });
+            const t6 = performance.now();
+            console.log('Performance :: Resolved all the creators - ' + (t6 - t5) + ' milliseconds.');
           })
         // this.originalList = cloneDeep(this.workItems);
       },
@@ -508,6 +510,42 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
               }
             })
         }
+
+        // Resolve creators
+        const t5 = performance.now();
+        const allCreatorURLs: string[] = this.workItems.slice(wiLength).reduce(
+          (uniqueItems: WorkItem[], workItem: WorkItem) => {
+            if (!uniqueItems.find((item) => {
+              return item.relationships.creator.data.id ===
+                workItem.relationships.creator.data.id
+              })) {
+              return [...uniqueItems, workItem]
+            } else {
+              return uniqueItems;
+            }
+          }, [] as WorkItem[])
+          .map((item: WorkItem) => {
+            return item.relationships.creator.data.links.self;
+          });
+
+        this.workItemService.getUsersByURLs(allCreatorURLs)
+          .subscribe((creators: User[]) => {
+            this.workItems.slice(wiLength).forEach((item, index) => {
+              item.relationships.creator.data = creators.find(creator => {
+                if (item.relationships.creator.data.id === creator.id) {
+                  // After the assignees is resolved
+                  // We should add it to the datatableWorkitems
+                  this.datatableWorkitems[wiLength + index].creator = creator;
+                  return true;
+                } else {
+                  return false;
+                }
+              })
+            });
+            const t6 = performance.now();
+            console.log('Performance :: Resolved all the creators - ' + (t6 - t5) + ' milliseconds.');
+          })
+
         //this.treeList.update();
       },
       (e) => console.log(e));
@@ -862,7 +900,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   }
 
   //ngx-datatable methods
-  
+
   onDetailPreview(id): void {
     event.stopPropagation();
     this.workItemDataService.getItem(id).subscribe(workItem => {
