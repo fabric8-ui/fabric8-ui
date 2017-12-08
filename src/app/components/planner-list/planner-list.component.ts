@@ -152,6 +152,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     // Setting the value to currentIteration
     // BehaviorSubject so that we can compare
     // on update the value on URL
+    
     const queryParams = this.route.snapshot.queryParams;
     if (Object.keys(queryParams).indexOf('iteration') > -1) {
       this.currentIteration = new BehaviorSubject(queryParams['iteration']);
@@ -162,56 +163,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     this.loggedIn = this.auth.isLoggedIn();
   }
 
-  toggleAvailable(event, col) {
-    if(event.target.checked) {
-      col.selected = true;
-    } else {
-      col.selected = false;
-    }
-
-  }
-  moveToDisplay() {
-    const selected = this.isSelected();
-    selected.forEach(col => {
-      if(col.display === true) return;
-      col.selected = false;
-      col.display = true;
-      col.available = false;
-    })
-    this.columns = [...this.checkableColumn]
-  }
-
-  moveToAvailable() {
-    const selected = this.isSelected();
-    selected.forEach(col => {
-      if(col.available === true) return;
-      col.selected = false;
-      col.display = false;
-      col.available = true;
-    });
-    this.columns = [...this.checkableColumn]
-  }
-
-  toggleDisplay(event, col) {
-    if(event.target.checked) {
-      col.selected = true;
-    } else {
-      col.selected = false;
-    }
-  }
-
-  isSelected() {
-    return this.checkableColumn.filter(col => col.selected);
-  }
-
-  onDetailPreview(id): void {
-    event.stopPropagation();
-    this.workItemDataService.getItem(id).subscribe(workItem => {
-       this.router.navigateByUrl(this.router.url.split('/list')[0] + '/detail/' + workItem.id, { relativeTo: this.route });
-    });
-  }
-
-  
   ngAfterViewChecked() {
     let oldHeight = 0;
     this.authUser = cloneDeep(this.route.snapshot.data['authuser']);
@@ -897,6 +848,15 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     );
   }
 
+  //ngx-datatable methods
+  
+  onDetailPreview(id): void {
+    event.stopPropagation();
+    this.workItemDataService.getItem(id).subscribe(workItem => {
+       this.router.navigateByUrl(this.router.url.split('/list')[0] + '/detail/' + workItem.id, { relativeTo: this.route });
+    });
+  }
+
   tableWorkitem(workItems: WorkItem[]): any {
     return workItems.map(element => {
        return {
@@ -910,6 +870,50 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         status: element.attributes['system.state']
       }
     });
+  }
+
+  // Settings dropdown
+
+  toggleAvailable(event, col) {
+    if(event.target.checked) {
+      col.selected = true;
+    } else {
+      col.selected = false;
+    }
+
+  }
+  moveToDisplay() {
+    const selected = this.isSelected();
+    selected.forEach(col => {
+      if(col.display === true) return;
+      col.selected = false;
+      col.display = true;
+      col.available = false;
+    })
+    this.columns = [...this.checkableColumn]
+  }
+
+  moveToAvailable() {
+    const selected = this.isSelected();
+    selected.forEach(col => {
+      if(col.available === true) return;
+      col.selected = false;
+      col.display = false;
+      col.available = true;
+    });
+    this.columns = [...this.checkableColumn]
+  }
+
+  toggleDisplay(event, col) {
+    if(event.target.checked) {
+      col.selected = true;
+    } else {
+      col.selected = false;
+    }
+  }
+
+  isSelected() {
+    return this.checkableColumn.filter(col => col.selected);
   }
 
   togglePanelState(event: any): void {
