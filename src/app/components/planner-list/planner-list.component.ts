@@ -732,9 +732,11 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           this.labels
         )[0])
         .subscribe(item => {
+          // Resolve creator
+          item.relationships.creator.data = this.loggedInUser as User;
           if (this.selectedWI === null) {
             //add a work item to the top level list
-            this.workItems.splice(0, 0, item);
+            this.onCreateWorkItem(item);
           } else {
             if (this.expandedNode === null) {
               //A  WI has been selected - add the new WI as a child under that
