@@ -99,4 +99,8 @@ export class WorkItemCellComponent {
     onDetail(Event: MouseEvent, id: string) {
       this.onDetailPreview.emit(id);
     }
+
+    labelClick(event) {
+      this.clickLabel.emit(event);
+    }
 }
