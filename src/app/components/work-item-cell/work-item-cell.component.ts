@@ -65,7 +65,7 @@ import { WorkItemDataService } from '../../services/work-item-data.service';
 
     <div *ngIf="col === 'creator'" class="user-avatar">
         <img placement="right"
-          placement="left" tooltip="{{row.creator?.id}}"
+          placement="left" tooltip="{{row.creator?.attributes?.fullName}}"
           src="{{row.creator?.attributes?.imageURL + '&s=23'}}"
           onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
     </div>
