@@ -124,6 +124,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   private selectedWI: WorkItem = null;
   private initialGroup: GroupTypesModel;
   private included: WorkItem[];
+  private _lastTagetContentHeight: number = 0;
 
   constructor(
     private labelService: LabelService,
@@ -190,7 +191,19 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
       let targetContHeight: number = window.innerHeight - hdrHeight - expHeight;
       this.renderer.setStyle(this.containerHeight.nativeElement, 'height', targetContHeight + "px");
-      this.initWiItems(Math.ceil(targetContHeight / this.contentItemHeight));
+
+      if (this._lastTagetContentHeight !== targetContHeight) {
+        this._lastTagetContentHeight = targetContHeight;
+        this.initWiItems(Math.ceil(targetContHeight / this.contentItemHeight));
+      }
+    }
+
+    // To get the dropdown working
+    if (document.getElementsByClassName('row-dropdown-kebab').length) {
+      let arr = document.getElementsByClassName('row-dropdown-kebab');
+      for(let i = 0; i < arr.length; i++) {
+        arr[i].parentElement.parentElement.style.overflow = 'visible';
+      }
     }
 
     if (document.getElementsByTagName('body')) {

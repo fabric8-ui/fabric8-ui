@@ -20,7 +20,7 @@ import {
   WidgetsModule
 } from 'ngx-widgets';
 
-import { NgxDatatableModule } from '../../../../node_modules/@swimlane/ngx-datatable';
+import { NgxDatatableModule } from '../../../../node_modules/rh-ngx-datatable';
 import { FilterColumn } from '../../pipes/column-filter.pipe';
 
 import { ActionModule, ListModule } from 'patternfly-ng';
