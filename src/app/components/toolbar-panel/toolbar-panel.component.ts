@@ -38,7 +38,6 @@ import { CollaboratorService } from '../../services/collaborator.service';
 import { FilterService } from '../../services/filter.service';
 import { LabelService } from '../../services/label.service';
 import { WorkItemService } from '../../services/work-item.service';
-import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-list-entry.component';
 import { WorkItemType } from '../../models/work-item-type';
 import { WorkItem } from '../../models/work-item';
 
@@ -63,7 +62,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   showTypesOptions: boolean = false;
 
   filters: any[] = [];
-  workItemToMove: WorkItemListEntryComponent;
   workItemDetail: WorkItem;
   spaceSubscription: Subscription = null;
   eventListeners: any[] = [];

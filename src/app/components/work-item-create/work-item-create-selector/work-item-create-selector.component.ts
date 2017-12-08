@@ -19,7 +19,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
 import { WorkItemService } from '../../../services/work-item.service';
-import { WorkItemListEntryComponent } from '../../work-item-list-entry/work-item-list-entry.component';
 import { WorkItemType } from '../../../models/work-item-type';
 import { WorkItem } from '../../../models/work-item';
 

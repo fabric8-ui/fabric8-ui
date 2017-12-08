@@ -51,7 +51,6 @@ import { WorkItem } from '../../models/work-item';
 import { WorkItemDetailComponent } from './../work-item-detail/work-item-detail.component';
 import { WorkItemType } from '../../models/work-item-type';
 import { GroupTypesService } from '../../services/group-types.service';
-import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-list-entry.component';
 import { WorkItemService } from '../../services/work-item.service';
 import { WorkItemDataService } from './../../services/work-item-data.service';
 import { CollaboratorService } from '../../services/collaborator.service';
@@ -91,7 +90,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   workItems: WorkItem[] = [];
   prevWorkItemLength: number = 0;
   workItemTypes: WorkItemType[] = [];
-  selectedWorkItemEntryComponent: WorkItemListEntryComponent;
   workItemToMove: WorkItem;
   workItemDetail: WorkItem;
   currentWorkItem: WorkItem = null;
@@ -580,8 +578,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         return workItems;
       });
   }
-
-  onDetail(entryComponent: WorkItemListEntryComponent): void { }
 
   onPreview(event: MouseEvent, id: string): void {
     this.workItemDataService.getItem(id).subscribe(workItem => {

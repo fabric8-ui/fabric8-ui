@@ -43,7 +43,6 @@ import { UrlService } from './../../services/url.service';
 import { WorkItemDetailModule } from '../work-item-detail/work-item-detail.module';
 import { WorkItemDetailAddTypeSelectorModule } from '../work-item-create/work-item-create.module';
 import { PlannerListComponent } from './planner-list.component';
-import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-list-entry.component';
 import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
 import { PlannerLayoutModule } from './../../widgets/planner-layout/planner-layout.module';
 import { WorkItemService } from '../../services/work-item.service';
@@ -122,7 +121,6 @@ if (process.env.ENV == 'inmemory') {
   ],
   declarations: [
     PlannerListComponent,
-    WorkItemListEntryComponent,
     WorkItemCellComponent,
     FilterColumn
   ],

@@ -11,7 +11,6 @@ import { Space, Spaces } from 'ngx-fabric8-wit';
 
 import { WorkItemDetailAddTypeSelectorWidgetComponent } from './work-item-create-selector/work-item-create-selector.component';
 import { WorkItemService } from '../../services/work-item.service';
-import { WorkItemListEntryComponent } from '../work-item-list-entry/work-item-list-entry.component';
 import { WorkItemType } from '../../models/work-item-type';
 import { WorkItem } from '../../models/work-item';
 
