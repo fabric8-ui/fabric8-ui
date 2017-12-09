@@ -65,10 +65,7 @@
           [scrollbarV]="true"
           [rows]="datatableWorkitems"
           [rowHeight]="contentItemHeight"
-          almInfiniteScroll
-          [eachElementHeightInPx]="contentItemHeight"
-          [fetchThreshold]="5"
-          (fetchMore)="fetchMoreWiItems()">
+          (scroll)="onScroll($event)">
           <ngx-datatable-column
             *ngFor="let c of (columns | filterColumn:'display')"
             [name]="c.name"

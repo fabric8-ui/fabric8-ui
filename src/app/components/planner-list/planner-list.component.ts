@@ -125,6 +125,8 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   private initialGroup: GroupTypesModel;
   private included: WorkItem[];
   private _lastTagetContentHeight: number = 0;
+  private _scrollTrigger = 5;
+  private _lastCheckedScrollHeight = 0;
 
   constructor(
     private labelService: LabelService,
@@ -1002,4 +1004,16 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     this.router.navigate([], navigationExtras);
   }
 
+  onScroll(event) {
+    if (event.path &&
+        this._lastCheckedScrollHeight < event.path[0].scrollHeight) {
+      let scrollLeft = ((event.path[0].scrollHeight -
+        (event.path[0].offsetHeight + event.path[0].scrollTop)) * 100) /
+        event.path[0].scrollHeight;
+      if (scrollLeft <= this._scrollTrigger) {
+        this._lastCheckedScrollHeight = event.path[0].scrollHeight;
+        this.fetchMoreWiItems();
+      }
+    }
+  }
 }
