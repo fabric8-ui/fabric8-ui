@@ -481,19 +481,22 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         const workItems = newWiItemResp.workItems;
         this.nextLink = newWiItemResp.nextLink;
         const wiLength = this.workItems.length;
+        const newItems = this.workItemService.resolveWorkItems(
+          workItems,
+          this.iterations,
+          [],
+          this.workItemTypes,
+          this.labels,
+          newWiItemResp.included
+        );
         this.workItems = [
           ...this.workItems,
-          // Returns an array of resolved work items
-          ...this.workItemService.resolveWorkItems(
-            workItems,
-            this.iterations,
-            [],
-            this.workItemTypes,
-            this.labels,
-            newWiItemResp.included
-          )
+          ...newItems
         ];
-        this.datatableWorkitems = this.tableWorkitem(this.workItems);
+        this.datatableWorkitems = [
+          ...this.datatableWorkitems,
+          ...this.tableWorkitem(newItems)
+        ];
         this.workItemDataService.setItems(this.workItems);
         console.log('Performance :: Fetching more list items - ' + (t2 - t1) + ' milliseconds.');
 
@@ -553,13 +556,13 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       (e) => console.log(e));
   }
 
-  loadChildren(node): any {
-    return this.workItemService.getChildren(node.data)
+  loadChildren(workItem: WorkItem): any {
+    return this.workItemService.getChildren(workItem)
       //set the parent information for the child WIs
       .then((workItems: WorkItem[]) => {
         workItems.map(wi => {
           wi.relationships.parent = { data: {} as WorkItem };
-          wi.relationships.parent.data = node.data;
+          wi.relationships.parent.data = workItem;
         });
         return workItems;
       })
@@ -571,16 +574,19 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         this.labels
       ))
       .then((workItems: WorkItem[]) => {
-        // Save all the children fethced
-        workItems.forEach(w => this.children.push(w.id));
-        if (this.currentWorkItem != null) {
-          if (this.currentWorkItem.id === node.data.id) {
-            this.currentExpandedChildren = workItems;
-            this.expandedNode.node.data.children = workItems;
-          }
-        }
+        this.datatableWorkitems = [
+          ...this.datatableWorkitems,
+          ...this.tableWorkitem(workItems, workItem.id)
+        ];
         return workItems;
-      });
+      })
+      .then((workItems: WorkItem[]) => {
+        this.workItems = [
+          ...this.workItems,
+          ...workItems
+        ];
+        return workItems;
+      })
   }
 
   onPreview(event: MouseEvent, id: string): void {
@@ -918,7 +924,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     });
   }
 
-  tableWorkitem(workItems: WorkItem[]): any {
+  tableWorkitem(workItems: WorkItem[], parentId: string | null = null): any {
     return workItems.map(element => {
        return {
         id: element.id,
@@ -928,7 +934,10 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         labels: element.relationships.labels.data,
         creator: element.relationships.creator.data,
         assignees: element.relationships.assignees.data,
-        status: element.attributes['system.state']
+        status: element.attributes['system.state'],
+        treeStatus: element.relationships.children.meta.hasChildren ? 'collapsed' : 'disabled',
+        parentId: parentId,
+        childrenLoaded: false
       }
     });
   }
@@ -1014,6 +1023,27 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         this._lastCheckedScrollHeight = event.path[0].scrollHeight;
         this.fetchMoreWiItems();
       }
+    }
+  }
+
+  onTreeAction(event: any) {
+    const index = event.rowIndex;
+    const row = event.row;
+    if (this.datatableWorkitems[index].treeStatus === 'collapsed') {
+      this.datatableWorkitems[index].treeStatus = 'loading';
+      if (!this.datatableWorkitems[index].childrenLoaded) {
+        this.loadChildren(this.workItems[index])
+          .then((wi) => {
+            this.datatableWorkitems[index].childrenLoaded = true;
+            this.datatableWorkitems[index].treeStatus = 'expanded';
+          })
+      } else {
+        this.datatableWorkitems[index].treeStatus = 'expanded';
+        this.datatableWorkitems = [...this.datatableWorkitems];
+      }
+    } else {
+      this.datatableWorkitems[index].treeStatus = 'collapsed';
+      this.datatableWorkitems = [...this.datatableWorkitems];
     }
   }
 }

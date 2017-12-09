@@ -65,12 +65,40 @@
           [scrollbarV]="true"
           [rows]="datatableWorkitems"
           [rowHeight]="contentItemHeight"
-          (scroll)="onScroll($event)">
+          [treeFromRelation]="'parentId'"
+          [treeToRelation]="'id'"
+          (scroll)="onScroll($event)"
+          (treeAction)="onTreeAction($event)">
           <ngx-datatable-column
             *ngFor="let c of (columns | filterColumn:'display')"
+            [isTreeColumn]="c.name==='Title'"
             [name]="c.name"
             [flexGrow]="c.flexGrow"
             [resizeable]="false">
+              <ng-template ngx-datatable-cell-tree-expander *ngIf="c.name==='Title'">
+                <img
+                  [ngClass]="['icon']"
+                  src="https://png.icons8.com/android/540/collapse-arrow.png" />
+              </ng-template>
+
+              <ng-template ngx-datatable-cell-tree-collapser *ngIf="c.name==='Title'">
+                <img
+                  [ngClass]="['icon']"
+                  src="https://png.icons8.com/android/540/expand-arrow.png" />
+              </ng-template>
+
+              <ng-template ngx-datatable-cell-tree-disabled *ngIf="c.name==='Title'">
+                <img
+                  [ngClass]="['icon', 'disabled']"
+                  src="https://png.icons8.com/android/540/collapse-arrow.png" />
+              </ng-template>
+
+              <ng-template ngx-datatable-cell-tree-loader *ngIf="c.name==='Title'">
+                <img
+                  [ngClass]="['icon']"
+                  src="http://webcast.messukeskus.com/pub/player/img/wait.gif" />
+              </ng-template>
+
               <ng-template let-row="row"
                 ngx-datatable-cell-template>
                   <work-item-cell
