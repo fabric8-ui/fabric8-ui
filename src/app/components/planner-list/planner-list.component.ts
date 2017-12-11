@@ -196,7 +196,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
       if (this._lastTagetContentHeight !== targetContHeight) {
         this._lastTagetContentHeight = targetContHeight;
-        this.initWiItems(Math.ceil(targetContHeight / this.contentItemHeight));
+        this.initWiItems(Math.ceil(targetContHeight / this.contentItemHeight) + 20); // +20 is for demo purpose
       }
     }
 
