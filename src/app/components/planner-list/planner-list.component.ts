@@ -682,24 +682,28 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   }
 
   onMoveToTop(id: string): void {
-    this.workItemDataService.getItembyNumber(id).subscribe((entryComponent) => {
-    this.workItemDetail = entryComponent;
+    this.workItemDataService.getItem(id).subscribe((workItem) => {
+    this.workItemDetail = workItem;
     this.workItemService.reOrderWorkItem(this.workItemDetail, null, 'top')
       .subscribe((updatedWorkItem) => {
         let currentIndex = this.workItems.findIndex((item) => item.id === updatedWorkItem.id);
+        
         // Putting on top of the list
         this.workItems.splice(0, 0, this.workItems[currentIndex]);
+        this.datatableWorkitems.splice(0, 0, this.datatableWorkitems[currentIndex]);
         // Removing duplicate old item
         this.workItems.splice(currentIndex + 1, 1);
+        this.datatableWorkitems.splice(currentIndex + 1, 1);
         this.workItems[0].attributes['version'] = updatedWorkItem.attributes['version'];
         //this.treeList.update();
+        console.log('####', this.workItems, this.datatableWorkitems);
       });
     });
   }
 
   onMoveToBottom(id: string): void {
-    this.workItemDataService.getItembyNumber(id).subscribe((entryComponent) => {
-    this.workItemDetail = entryComponent;
+    this.workItemDataService.getItem(id).subscribe((workItem) => {
+    this.workItemDetail = workItem;
     this.workItemService.reOrderWorkItem(this.workItemDetail, null, 'bottom')
       .subscribe((updatedWorkItem) => {
         let currentIndex = this.workItems.findIndex((item) => item.id === updatedWorkItem.id);
@@ -714,7 +718,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   }
 
   onAssociateIteration(id: string): void {
-    this.workItemDataService.getItembyNumber(id).subscribe((item) => {
+    this.workItemDataService.getItem(id).subscribe((item) => {
     this.currentWorkItem = item;
     this.associateIterationModal.workItem = item;
     this.associateIterationModal.open();
@@ -722,14 +726,14 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   }
 
   onOpen(id: string){
-    this.workItemDataService.getItembyNumber(id).subscribe((item) => {
+    this.workItemDataService.getItem(id).subscribe((item) => {
       let link = this.router.url.split('/list')[0] + '/detail/' + item.id;
       this.router.navigateByUrl(link, { relativeTo: this.route });
     });
   }
 
   onMoveToBacklog(id: string): void {
-    this.workItemDataService.getItembyNumber(id).subscribe((item) => {
+    this.workItemDataService.getItem(id).subscribe((item) => {
     item.relationships.iteration = {}
     this.workItemService
       .update(item)
