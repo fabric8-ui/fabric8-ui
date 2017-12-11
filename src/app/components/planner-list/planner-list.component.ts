@@ -201,8 +201,8 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     }
 
     // To get the dropdown working
-    if (document.getElementsByClassName('row-dropdown-kebab').length) {
-      let arr = document.getElementsByClassName('row-dropdown-kebab');
+    if (document.getElementsByClassName('planner-hack-dropdown').length) {
+      let arr = document.getElementsByClassName('planner-hack-dropdown');
       for(let i = 0; i < arr.length; i++) {
         arr[i].parentElement.parentElement.style.overflow = 'visible';
       }
@@ -590,6 +590,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           ...this.workItems,
           ...workItems
         ];
+        this.workItemDataService.setItems(this.workItems);
         return {workItems, startIndex};
       })
       .map((values) => {
@@ -660,6 +661,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   }
 
   onPreview(event: MouseEvent, id: string): void {
+    console.log(id);
     this.workItemDataService.getItem(id).subscribe(workItem => {
       this.detailPreview.openPreview(workItem);   });
   }
