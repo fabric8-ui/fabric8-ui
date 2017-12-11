@@ -55,12 +55,16 @@
                 [allowDelete]="false"
                 (onLabelClick)="labelClick($event)"></f8-label>
             </div>
-            <div class="f8-wi__list-description width-100px">
+            <div class="f8-wi__list-description f8-wi__list-description-state">
               <span class="pull-left padding-v-2"
                 almIcon
                 [iconType]="workItem.attributes['system.state']"
                 tooltip="{{workItem.attributes['system.state']}}"
-                placement="right"></span>
+                placement="right">
+              </span>
+              <span class="pull-left f8-wi__list-description-state-text padding-v-2">
+                {{ workItem.attributes['system.state'] }}
+              </span>
             </div>
         </div>
         <div class="list-group-item-text hide f8-wi__list-desc">
