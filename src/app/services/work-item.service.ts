@@ -113,7 +113,7 @@ export class WorkItemService {
   //   this.logger.log('WorkItemService using url ' + this.workItemUrl);
   // }
 
-  getChildren(parent: WorkItem): Promise<WorkItem[]> {
+  getChildren(parent: WorkItem): Observable<WorkItem[]> {
     // TODO: it looks like the children are not retrieved with paging. This may cause problems in the future.
     if (parent.relationships.children) {
       this.logger.log('Requesting children for work item ' + parent.id);
@@ -137,10 +137,10 @@ export class WorkItemService {
         }).catch((error: Error | any) => {
           this.notifyError('Getting children of work item failed.', error);
           return Observable.throw(new Error(error.message));
-        }).toPromise();
+        });
     } else {
       this.logger.log('Work item does not have child related link, skipping: ' + parent.id);
-      return Observable.of([]).toPromise();
+      return Observable.of([]);
     }
   }
 

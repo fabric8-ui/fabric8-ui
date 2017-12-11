@@ -396,7 +396,9 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         console.log('Performance :: Fetching the initial list - ' + (t2 - t1) + ' milliseconds.');
         this.logger.log('Got work item list.');
         this.logger.log(workItemResp.workItems);
-        const workItems = workItemResp.workItems;
+        const workItems = workItemResp.workItems.filter((workItem: WorkItem) => {
+          return !!!Object.keys(workItem.relationships.parent).length;
+        });;
         this.nextLink = workItemResp.nextLink;
         this.included = workItemResp.included;
         this.workItems = this.workItemService.resolveWorkItems(
@@ -478,7 +480,9 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       .getMoreWorkItems(this.nextLink)
       .subscribe((newWiItemResp) => {
         const t2 = performance.now();
-        const workItems = newWiItemResp.workItems;
+        const workItems = newWiItemResp.workItems.filter((workItem: WorkItem) => {
+          return !!!Object.keys(workItem.relationships.parent).length;
+        });
         this.nextLink = newWiItemResp.nextLink;
         const wiLength = this.workItems.length;
         const newItems = this.workItemService.resolveWorkItems(
@@ -556,36 +560,102 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       (e) => console.log(e));
   }
 
-  loadChildren(workItem: WorkItem): any {
+  loadChildren(workItem: WorkItem): Observable<WorkItem[]> {
     return this.workItemService.getChildren(workItem)
       //set the parent information for the child WIs
-      .then((workItems: WorkItem[]) => {
+      .map((workItems: WorkItem[]) => {
         workItems.map(wi => {
           wi.relationships.parent = { data: {} as WorkItem };
           wi.relationships.parent.data = workItem;
         });
         return workItems;
       })
-      .then((workItems: WorkItem[]) => this.workItemService.resolveWorkItems(
+      .map((workItems: WorkItem[]) => this.workItemService.resolveWorkItems(
         workItems,
         this.iterations,
         [], // We don't want to static resolve user at this point
         this.workItemTypes,
         this.labels
       ))
-      .then((workItems: WorkItem[]) => {
+      .do((workItems: WorkItem[]) => {
         this.datatableWorkitems = [
           ...this.datatableWorkitems,
           ...this.tableWorkitem(workItems, workItem.id)
         ];
         return workItems;
       })
-      .then((workItems: WorkItem[]) => {
+      .map((workItems: WorkItem[]) => {
+        const startIndex = this.workItems.length;
         this.workItems = [
           ...this.workItems,
           ...workItems
         ];
-        return workItems;
+        return {workItems, startIndex};
+      })
+      .map((values) => {
+        // Resolve creator
+        const allCreatorURLs: string[] = this.workItems.slice(values.startIndex).reduce(
+          (uniqueItems: WorkItem[], workItem: WorkItem) => {
+            if (!uniqueItems.find((item) => {
+              return item.relationships.creator.data.id ===
+                workItem.relationships.creator.data.id
+              })) {
+              return [...uniqueItems, workItem]
+            } else {
+              return uniqueItems;
+            }
+          }, [] as WorkItem[])
+          .map((item: WorkItem) => {
+            return item.relationships.creator.data.links.self;
+          });
+
+        this.workItemService.getUsersByURLs(allCreatorURLs)
+          .subscribe((creators: User[]) => {
+            this.workItems.slice(values.startIndex).forEach((item, index) => {
+              item.relationships.creator.data = creators.find(creator => {
+                if (item.relationships.creator.data.id === creator.id) {
+                  // After the assignees is resolved
+                  // We should add it to the datatableWorkitems
+                  this.datatableWorkitems[values.startIndex + index].creator = creator;
+                  return true;
+                } else {
+                  return false;
+                }
+              })
+            });
+          })
+
+        // Resolve assignees
+        const allAssigneeURLs: string[] = this.workItems.slice(values.startIndex).reduce(
+          (urls: string[], workItem: WorkItem) => {
+            const assigneeURLs = workItem.relationships.assignees.data ?
+              workItem.relationships.assignees.data.map((assignee: User) => {
+                return assignee.links.self;
+              }) : [];
+            return [...urls, ...assigneeURLs]
+          }, []
+        ).reduce(
+          (uniqueURLs: string[], url: string) => {
+            if (!uniqueURLs.find(item => item === url)) {
+              return [...uniqueURLs, url]
+            } else {
+              return uniqueURLs;
+            }
+          }, [] as string[]);
+
+        this.workItemService.getUsersByURLs(allAssigneeURLs)
+          .subscribe((assignees: User[]) => {
+            this.workItems.slice(values.startIndex).forEach((item, index) => {
+              item.relationships.assignees.data = assignees.filter(assignee => {
+                return item.relationships.assignees.data
+                  .findIndex(a => a.id === assignee.id) > -1;
+              });
+              this.datatableWorkitems[values.startIndex + index].assignees =
+                item.relationships.assignees.data;
+            });
+          })
+
+        return values.workItems;
       })
   }
 
@@ -802,9 +872,12 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           updatedItem.relationships['parent'] = this.workItems[index].relationships.parent;
           if (index > -1) {
             this.workItems[index] = updatedItem;
+            let updatedTableItem = this.tableWorkitem([updatedItem], this.datatableWorkitems[index].parentId)[0];
+            updatedTableItem.treeStatus = this.datatableWorkitems[index].treeStatus;
+            updatedTableItem.childrenLoaded = this.datatableWorkitems[index].childrenLoaded;
             this.datatableWorkitems = [
               ...this.datatableWorkitems.slice(0, index),
-              ...this.tableWorkitem([updatedItem]),
+              updatedTableItem,
               ...this.datatableWorkitems.slice(index + 1)
             ];
           } else {
@@ -935,6 +1008,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         creator: element.relationships.creator.data,
         assignees: element.relationships.assignees.data,
         status: element.attributes['system.state'],
+        // Extra items for table
         treeStatus: element.relationships.children.meta.hasChildren ? 'collapsed' : 'disabled',
         parentId: parentId,
         childrenLoaded: false
@@ -1033,7 +1107,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       this.datatableWorkitems[index].treeStatus = 'loading';
       if (!this.datatableWorkitems[index].childrenLoaded) {
         this.loadChildren(this.workItems[index])
-          .then((wi) => {
+          .subscribe((wis) => {
             this.datatableWorkitems[index].childrenLoaded = true;
             this.datatableWorkitems[index].treeStatus = 'expanded';
           })
