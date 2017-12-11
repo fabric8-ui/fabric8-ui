@@ -687,16 +687,15 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     this.workItemService.reOrderWorkItem(this.workItemDetail, null, 'top')
       .subscribe((updatedWorkItem) => {
         let currentIndex = this.workItems.findIndex((item) => item.id === updatedWorkItem.id);
-        
         // Putting on top of the list
         this.workItems.splice(0, 0, this.workItems[currentIndex]);
-        this.datatableWorkitems.splice(0, 0, this.datatableWorkitems[currentIndex]);
         // Removing duplicate old item
         this.workItems.splice(currentIndex + 1, 1);
-        this.datatableWorkitems.splice(currentIndex + 1, 1);
+        // Remove duplicate from datatable workitems
+        this.datatableWorkitems.splice(currentIndex, 1);
         this.workItems[0].attributes['version'] = updatedWorkItem.attributes['version'];
-        //this.treeList.update();
-        console.log('####', this.workItems, this.datatableWorkitems);
+        // Update datatable WorkItems
+        this.datatableWorkitems = [...this.tableWorkitem([this.workItems[0]]), ...this.datatableWorkitems];
       });
     });
   }
@@ -711,7 +710,12 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         this.workItems.splice((this.workItems.length), 0, this.workItems[currentIndex]);
         //remove the duplicate element
         this.workItems.splice(currentIndex, 1);
+        // remove duplicate from datatable
+        this.datatableWorkitems.splice(currentIndex, 1);
         this.workItems[this.workItems.length - 1].attributes['version'] = updatedWorkItem.attributes['version'];
+        
+        // Update datatable WorkItems
+        this.datatableWorkitems = [...this.datatableWorkitems, ...this.tableWorkitem([this.workItems[this.workItems.length - 1]])]
         this.listContainer.nativeElement.scrollTop = this.workItems.length * this.contentItemHeight;
       });
     });
