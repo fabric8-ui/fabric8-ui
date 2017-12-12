@@ -14,7 +14,7 @@ import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { EventService } from './../../services/event.service';
 
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { Broadcaster, Logger } from 'ngx-base';
+import { Logger } from 'ngx-base';
 import {
   AlmIconModule,
   DialogModule,
@@ -55,7 +55,6 @@ if (process.env.ENV == 'inmemory') {
     GlobalSettings,
     WorkItemService,
     WorkItemDataService,
-    Broadcaster,
     Logger,
     {
       provide: HttpService,
@@ -71,7 +70,6 @@ if (process.env.ENV == 'inmemory') {
     GlobalSettings,
     WorkItemService,
     WorkItemDataService,
-    Broadcaster,
     Logger,
     {
       provide: HttpService,

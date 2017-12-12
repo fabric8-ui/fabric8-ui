@@ -21,7 +21,7 @@ import {
 } from 'ngx-widgets';
 
 import { ActionModule, ListModule } from 'patternfly-ng';
-import { Broadcaster, Logger } from 'ngx-base';
+import { Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 
 import { GlobalSettings } from '../../shared/globals';
@@ -54,7 +54,6 @@ if (process.env.ENV == 'inmemory') {
     BsDropdownConfig,
     GlobalSettings,
     WorkItemService,
-    Broadcaster,
     WorkItemDataService,
     EventService,
     Logger,
@@ -72,7 +71,6 @@ if (process.env.ENV == 'inmemory') {
     GlobalSettings,
     WorkItemService,
     WorkItemDataService,
-    Broadcaster,
     EventService,
     Logger,
     {
