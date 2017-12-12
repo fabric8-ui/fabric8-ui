@@ -4,7 +4,7 @@ export const datatableColumn =  [{
     available: false,
     selected: false,
     display: true,
-    flexGrow: 0.5,
+    flexGrow: 0.4,
     maxWidth: 50
   },{
     name: 'Type',
@@ -12,7 +12,7 @@ export const datatableColumn =  [{
     available: false,
     selected: false,
     display: true,
-    flexGrow: 0.5,
+    flexGrow: 0.4,
     maxWidth: undefined,
     minWidth: undefined
 
@@ -22,7 +22,7 @@ export const datatableColumn =  [{
     available: false,
     selected: false,
     display: true,
-    flexGrow: 2,
+    flexGrow: 3,
     maxWidth: undefined,
     minWidth: 300
   },{
@@ -49,7 +49,7 @@ export const datatableColumn =  [{
     available: false,
     selected: false,
     display: true,
-    flexGrow: 0.6,
+    flexGrow: 0.5,
     maxWidth: undefined,
     minWidth: undefined
   },{
@@ -58,7 +58,7 @@ export const datatableColumn =  [{
     available: false,
     selected: false,
     display: true,
-    flexGrow: 1,
+    flexGrow: 0.8,
     maxWidth: undefined,
     minWidth: undefined
   }]
