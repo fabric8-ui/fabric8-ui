@@ -15,7 +15,7 @@
     <div *ngIf="buildConfigsCount > 0">
       <div class="fabric8-stack-analysis">
         <div *ngIf="currentBuild && currentBuild.annotations && currentBuild.annotations['fabric8.io/bayesian.analysisUrl']">
-          <stack-report-inshort *ngIf="stackUrl !== ''" [buildNumber]="currentBuild.buildNumber" [appName]="currentBuild.buildConfigName" [repoInfo]="currentBuild && currentBuild.repositoryInformation" [stackUrl]="stackUrl && stackUrl"></stack-report-inshort>
+          <stack-report-inshort *ngIf="stackUrl !== ''" [buildNumber]="currentBuild.buildNumber" [appName]="currentBuild.buildConfigName" [repoInfo]="currentBuild && currentBuild.repositoryInformation" [stackUrl]="stackUrl && stackUrl" [pipeline]="currentPipeline && currentPipeline"></stack-report-inshort>
         </div>
       </div>
     </div>
