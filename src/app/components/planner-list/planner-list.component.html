@@ -106,7 +106,8 @@
                     [col]="c.prop"
                     (onDetailPreview)="onDetailPreview($event)"
                     (clickLabel)="onClickLabel($event)"
-                    [class.planner-hack-dropdown]="c.prop=='label'">
+                    [class.planner-hack-dropdown]="c.prop=='label'"
+                    [class.planner-hack-title-truncate]="c.prop=='title'">
                   </work-item-cell>
               </ng-template>
           </ngx-datatable-column>
