@@ -98,73 +98,24 @@
                   {{workItem.relationships?.baseType?.data?.attributes?.fields['system.assignees']?.label || 'Label'}}
                 </label>
                 <div class="detail-assignee-content"  #assignee>
-                  <span
-                    *ngIf="!workItem.relationships?.assignees?.data?.length"
-                    (click)="activeSearchAssignee()"
-                    class="pull-left fa fa-user-plus user-assign-icon">
+                  <span *ngIf="loadingAssignees"
+                    class="spinner spinner-sm spinner-inline">
                   </span>
-                  <div class="user-avatar margin-right-10 pull-left"
-                    *ngIf="workItem.relationships?.assignees?.data?.length">
-                    <img
-                      (click)="activeSearchAssignee()"
-                      class="user-assign-avatar"
-                      placement="bottom"
-                      tooltip="{{workItem.relationships?.assignees?.data[0]?.attributes?.fullName}}"
-                      src="{{workItem.relationships?.assignees?.data[0]?.attributes?.imageURL + '&s=20'}}"
-                      onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
-                  </div>
-                  <div class="pull-left detail-assignee-name">
-                      <span *ngIf="!searchAssignee && !workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="placeholder pointer assigned_user">
-                        Unassigned
-                      </span>
-                      <span *ngIf="!searchAssignee && workItem.relationships?.assignees?.data?.length" (click)="activeSearchAssignee()" class="pointer assigned_user" id="WI_details_assigned_user">
-                        {{workItem.relationships?.assignees?.data[0] | almUserName:'Assignee not found' }}
-                      </span>
-                      <div *ngIf="searchAssignee" class="user-search" >
-                        <div class="list-container">
-                          <span class="fa fa-search user-search-icon"> </span>
-                          <input id="userAssigneeSearchInput" #userSearch (keyup)="filterUser($event)"
-                            autocomplete="off" />
-                          <ul class="item-ul no-padding user-list" #userList>
-                            <li *ngIf="!usersLoaded" class="text-center"><i class="fa fa-spinner fa-pulse"></i></li>
-                            <li
-                              class="item-li"
-                              [class.first-item] = "filteredUsers && filteredUsers.length"
-                              [class.only-first-item] = "!filteredUsers || !filteredUsers.length"
-                              *ngIf="loggedInUser"
-                              [attr.data-value]="loggedInUser.id"
-                              (click)="assignUser(loggedInUser)">
-                                <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
-                                <div class="user-avatar margin-right-10 pull-left">
-                                  <img
-                                    class="user-assign-avatar "
-                                    src="{{loggedInUser.attributes?.imageURL + '&s=20'}}"
-                                    onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
-                                </div>
-                                <span [innerHTML]="loggedInUser.attributes?.fullName + ' (me)'"></span>
-                            </li>
-                            <li
-                              class="item-li"
-                              *ngFor="let user of filteredUsers;"
-                              [attr.data-value]="user.id"
-                              (click)="assignUser(user)">
-                                <!-- <span class="pull-left fa fa-user user-assign-icon active"></span> -->
-                                <div class="user-avatar margin-right-10 pull-left">
-                                  <img
-                                  class="user-assign-avatar"
-                                  src="{{user.attributes?.imageURL + '&s=20'}}"
-                                  onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"/>
-                                </div>
-                                <span [innerHTML]="user.attributes?.fullName | almSearchHighlight: userSearch.value"></span>
-                            </li>
-                          </ul>
-                          <ul class="item-ul no-padding">
-                            <li class="action-li width-100 pull-left">
-                                <button class="btn btn-link action-item pull-left" (click)="unassignUser()">Unassign</button>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
+                  <f8-assignee *ngIf="!loadingAssignees"
+                    [assignees]="workItem.relationships?.assignees?.data ?
+                      workItem.relationships?.assignees?.data : []">
+                  </f8-assignee>
+                  <div class="user-search"
+                    *ngIf="loggedIn && !loadingAssignees">
+                    <assignee-selector
+                      id="assigneeSelector"
+                      [allUsers]="users"
+                      [loggedInUser]="loggedInUser"
+                      [selectedAssignees]="workItem.relationships?.assignees?.data ?
+                      workItem.relationships?.assignees?.data : []"
+                      (onCloseAssignee)="assignUser($event)"
+                      (onOpenAssignee)="activeSearchAssignee()">
+                    </assignee-selector>
                   </div>
                 </div>
               </div>

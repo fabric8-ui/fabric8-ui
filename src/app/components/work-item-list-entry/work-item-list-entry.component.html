@@ -74,17 +74,20 @@
         </div>
       </div>
     </div>
-    <div class="user-avatar margin-right-15">
-      <img
-        *ngFor="let assignee of workItem.relationships.assignees.data"
-        placement="left"
-        tooltip="{{assignee?.attributes?.fullName}}"
-        src="{{assignee?.attributes?.imageURL + '&s=23'}}"
-        onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
+    <div class="width-100px">
+      <div class="user-avatar margin-right-5 pull-left"
+        *ngFor="let assignee of workItem.relationships.assignees.data">
+        <img
+          placement="left"
+          tooltip="{{assignee?.attributes?.fullName}}"
+          src="{{assignee?.attributes?.imageURL + '&s=23'}}"
+          onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
+      </div>
       <span class="pficon-user not-assigned-user-icon"
         *ngIf="!workItem.relationships?.assignees?.data?.length"
         tooltip="Unassigned"
-        placement="left"></span>
+        placement="left">
+      </span>
     </div>
     <div class="pull-right margin-left-15"
       tooltip="Open Quick Preview"

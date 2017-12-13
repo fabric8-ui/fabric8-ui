@@ -147,18 +147,12 @@
   }
 }
 .item-action-block {
-  .detail-assignee-wrap { height: 30px;
+  .detail-assignee-wrap {
     .control-label {
       font-weight: 700;
       text-align: left;
     }
     .user-label { margin-right: 15px; }
-    .user-assign-icon {
-      &:extend(.not-assigned-user-icon);
-      margin-right: 10px;
-      color: @color-pf-black-500;
-      cursor: pointer;
-    }
     .active {
       padding: 5px;
       color: @color-pf-black;
@@ -210,7 +204,12 @@
     padding-left: 90px;
   }
 }
-
+.user-assign-icon {
+  &:extend(.not-assigned-user-icon);
+  margin-right: 10px;
+  color: @color-pf-black-500;
+  cursor: pointer;
+}
 .user-search { position: relative;
   .list-container {
     position: absolute;

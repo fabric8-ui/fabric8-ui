@@ -35,7 +35,7 @@ class WorkItemDetailPage {
   }
 
   get workItemDetailCloseButton () {
-      return element(by.css(".pficon-close.f8-quick-preview--close")); 
+      return element(by.css(".f8-quick-preview--close"));
 //    return element(by.xpath(".//*[contains (@class,'pficon-close pull-right margin-right-5 padding-15 close')]"));
   }
 
@@ -168,7 +168,7 @@ class WorkItemDetailPage {
     //    return element(by.css("#wi-detail-desc .edit-icon"));
         return element(by.xpath(".//*[contains (@id,'wi-detail-desc')]/div/div/div/i[contains(@class,'pficon-edit edit-icon')]"));
       }
-    
+
       clickWorkItemDescriptionEditIcon2 () {
         return this.workItemDescriptionEditIcon2.click();
       }
@@ -339,96 +339,49 @@ testSupport.clickElement(this.workItemDescriptionCancelIcon, "workItemDescriptio
   /* The following UI elements support the assignment of a user to a work item */
 
   /* Icon for the user assigned to the workitem */
-  get workItemDetailAssigneeIcon () {
-    return element(by.css(".user-assign-icon"));
-  }
-  clickworkItemDetailAssigneeIcon () {
-    return this.workItemDetailAssigneeIcon.click();
-  }
-  get workItemDetailUnAssigneeIcon () {
-    return element(by.css(".pull-left.fa.fa-user-plus.user-assign-icon"));
-  }
-  clickWorkItemDetailUnAssigneeIcon () {
-    return this.workItemDetailUnAssigneeIcon.click();
+
+  /* ASSIGNEES */
+  get AddAssigneeButton () {
+    return element(by.id("f8-add-assignee"));
   }
 
-  /* The user assigned to the workitem */
-  workItemDetailAssignee () {
-    return element(by.xpath(".//*[contains(@class,'detail-assignee-name')]"));
-  }
-  workItemDetailAssigneeName () {
-    return element(by.css(".pull-left.detail-assignee-name"));
-  }
-  clickworkItemDetailAssigneeName () {
-    return this.workItemDetailAssigneeName.click();
+  clickAddAssigneeButton() {
+    return this.AddAssigneeButton.click();
   }
 
-  workItemDetailAssigneeNameClickable () {
-    return element(by.css(".placeholder.pointer"));
-  }
-  details_assigned_user () {
-    return element(by.id("WI_details_assigned_user"));
-  }
-  get clickWorkItemDetailAssignee () {
-    return this.workItemDetailAssignee.click();
+  get AssigneeDropdown() {
+    return element(by.css("#f8-add-assignee-dropdown .select-dropdown"));
   }
 
-  /* Search string box for the user to assign to the workitem */
-  get workItemDetailAssigneeSearch () {
-    return element(by.id('userAssigneeSearchInput'));
-  }
-  checkworkItemDetailAssigneeSearch () {
-    return element(by.id('userAssigneeSearchInput'));
-  }
-  setWorkItemDetailAssigneeSearch (newSearchString, append) {
-    if (!append) { this.workItemDetailAssigneeSearch.clear(newSearchString) };
-    return this.workItemDetailAssigneeSearch.sendKeys(newSearchString);
+  get AssigneeSearch () {
+    return element(by.css("#f8-add-assignee-dropdown .select-dropdown-search-input"));
   }
 
-  /* The list of users to whom work items can be assigned */
-  get workItemDetailAssigneeList () {
-    return element(by.css(".user-list"));
+  setAssigneeSearch(newSearchString, append) {
+    if (!append) { this.AssigneeSearch.clear() };
+    return this.AssigneeSearch.sendKeys(newSearchString);
   }
 
-  clickworkItemDetailAssigneeList () {
-    return this.workItemDetailAssigneeList.click();
+  get AssigneeDropdownListItem() {
+    return element(by.xpath('.//f8-select-dropdown[@id="f8-add-assignee-dropdown"]//li'));
   }
 
-  /* The first username in the list of users */
-  get workItemDetailFirstUser () {
-    return element(by.css(".item-li.first-item"));
+  clickAssigneeListItem(username) {
+    element(by.xpath('.//f8-select-dropdown[@id="f8-add-assignee-dropdown"]//b[text()="'+ username +'"]')).click();
   }
 
-  get clickworkItemDetailFirstUser () {
-    return this.workItemDetailFirstUser.click();
+  get closeAssigneeDropdown () {
+    return element(by.css("#f8-add-assignee-dropdown .close-pointer"));
   }
 
-  /* Select the assigned user by name */
-  assignedUserDropDownList (userName) {
-    return element(by.xpath(".//*[@id='wi-detail-form']//li[.//text()[contains(.,'" + userName + "')]]"));
+  clickCloseAssigneeDropdown() {
+    return this.closeAssigneeDropdown.click();
   }
 
-  clickAssignedUserDropDownList (userName) {
-    return this.assignedUserDropDownList(userName).click();
+  get AssignUsers() {
+    return $$(".f8-assignees span");
   }
 
-  /* The Unassign button */
-  get workItemDetailUnassignButton () {
-    return element(by.xpath(".//*[contains(@class,'action-item') and contains(text(),'Unassign')]"));
-  }
-
-  clickworkItemDetailUnassignButton () {
-    return this.workItemDetailUnassignButton.click();
-  }
-
-  /* The Cancel button */
-  get workItemDetailCancelButton () {
-    return element(by.xpath(".//*[contains(@class,'action-item') and contains(text(),'Cancel')]"));
-  }
-
-  clickworkItemDetailCancelButton () {
-    return this.workItemDetailCancelButton.click();
-  }
 /**UI elements for comments testSupport  */
   clickCommentsDiv (){
     return element(by.id("wi-comment-add-comment")).click();

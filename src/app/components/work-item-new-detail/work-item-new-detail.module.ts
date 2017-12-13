@@ -31,6 +31,9 @@ import { TypeaheadDropDownModule } from '../typeahead-dropdown/typeahead-dropdow
 
 import { AlmUserNameModule } from '../../pipes/alm-user-name.module';
 import { PlannerModalModule } from '../modal/modal.module';
+import { SelectDropdownModule } from './../../widgets/select-dropdown/select-dropdown.module';
+import { AssigneesModule } from './../assignee/assignee.module';
+import { AssigneeSelectorModule } from './../assignee-selector/assignee-selector.module';
 
 let providers = [];
 
@@ -77,6 +80,8 @@ if (process.env.ENV == 'inmemory') {
 @NgModule({
   imports: [
     AlmUserNameModule,
+    AssigneesModule,
+    AssigneeSelectorModule,
     BsDropdownModule.forRoot(),
     HttpModule,
     CommonModule,
@@ -92,6 +97,7 @@ if (process.env.ENV == 'inmemory') {
     WorkItemNewDetailRoutingModule,
     WorkItemLinkModule,
     InlineInputModule,
+    SelectDropdownModule,
     WorkItemCommentModule,
     PlannerModalModule
   ],

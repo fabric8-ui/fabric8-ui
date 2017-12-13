@@ -23,7 +23,7 @@
         </ng-template>
       </a>
     </li>
-    <template *ngIf="workItem?.relationalData?.linkDicts">
+    <ng-template *ngIf="workItem?.relationalData?.linkDicts">
       <li *ngFor="let linkType of workItem.relationalData.linkDicts; let totalLink = index"
         [class.active]="selectedTab === linkType.linkName"
         (click)="selectTab(linkType.linkName)">
@@ -36,7 +36,7 @@
           </span>
         </a>
       </li>
-    </template>
+    </ng-template>
   </ul>
   <div class="f8-link__content"
     id="wi-link-content"

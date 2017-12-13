@@ -8,16 +8,16 @@
         (onFilterChange)="filterChange($event)"
         (onFilterFieldSelect)="selectFilterType($event)"
         (onFilterTypeAhead)="filterQueries($event)">
-      <template #actionsTemplate>
-      </template>
-      <template #addTemplate>
+      <ng-template #actionsTemplate>
+      </ng-template>
+      <ng-template #addTemplate>
         <button *ngIf="loggedIn && editEnabled && wiTypes.length"
             class="btn btn-default primary-action add-button" type="button"
             (click)="createNewWorkItem($event)">
           <i class="pficon pficon-add-circle-o add-button-icon"></i>
           <span class="add-button-text">Create</span>
         </button>
-      </template>
+      </ng-template>
     </pfng-toolbar>
 
   </div>

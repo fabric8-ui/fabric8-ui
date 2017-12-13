@@ -3,9 +3,12 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
+  Input,
   OnInit,
   OnDestroy,
+  Output,
   ViewChild,
   ViewChildren,
   QueryList
@@ -49,6 +52,11 @@ import { WorkItemType } from '../../models/work-item-type';
 import { CollaboratorService } from '../../services/collaborator.service';
 import { LabelService } from '../../services/label.service';
 import { LabelModel } from '../../models/label.model';
+import { AssigneeSelectorComponent } from './../assignee-selector/assignee-selector.component';
+
+import {
+  SelectDropdownComponent
+} from './../../widgets/select-dropdown/select-dropdown.component';
 
 @Component({
   selector: 'work-item-preview',
@@ -71,13 +79,20 @@ import { LabelModel } from '../../models/label.model';
 export class WorkItemDetailComponent implements OnInit, OnDestroy {
 
   @ViewChild('title') title: any;
-  @ViewChild('userSearch') userSearch: any;
   @ViewChild('userList') userList: any;
   @ViewChild('dropdownButton') dropdownButton: any;
   @ViewChild('areaSelectbox') areaSelectbox: TypeaheadDropdown;
   @ViewChild('iterationSelectbox') iterationSelectbox: TypeaheadDropdown;
   @ViewChild('labelSelector') labelSelector: LabelSelectorComponent;
   @ViewChild('assignee') assignee : any;
+  @ViewChild('labelname') labelnameInput: ElementRef;
+  @ViewChild('dropdown') dropdownRef: SelectDropdownComponent;
+  @ViewChild('AssigneeSelector') AssigneeSelector: AssigneeSelectorComponent;
+  @Input() selectedLabels: LabelModel[] = [];
+  @Input() selectedAssignees: User[] = [];
+
+  @Output() onOpenSelector: EventEmitter<any> = new EventEmitter();
+  @Output() onCloseSelector: EventEmitter<LabelModel[]> = new EventEmitter();
 
   workItem: WorkItem;
   workItemRef: WorkItem;
@@ -99,7 +114,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   searchAssignee: Boolean = false;
 
   users: User[] = [];
-  filteredUsers: User[] = [];
 
   loggedInUser: User;
 
@@ -121,7 +135,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
 
   dynamicFormGroup: FormGroup;
   dynamicFormDataArray: any;
-  usersLoaded: Boolean = false;
 
   saving: Boolean = false;
   savingError: Boolean = false;
@@ -135,7 +148,11 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   loadingIteration: boolean = false;
   loadingArea: boolean = false;
   loadingLabels: boolean = false;
+  loadingAssignees: boolean = false;
   labels: LabelModel[] = [];
+
+  private activeAddAssignee: boolean = false;
+  private searchValue: string = '';
 
   constructor(
     private areaService: AreaService,
@@ -216,6 +233,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
           this.loadingIteration = true;
           this.loadingArea = true;
           this.loadingLabels = true;
+          this.loadingAssignees = true;
         })
         .switchMap(() => this.workItemService.getWorkItemByNumber(id))
         .do(workItem => {
@@ -294,6 +312,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         this.workItem.relationships.assignees = {
           data: assignees
         };
+        this.loadingAssignees = false;
       })
   }
 
@@ -626,6 +645,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   }
 
   updateLabels(selectedLabels: LabelModel[]) {
+    console.log('labels in WI detail >>>>', selectedLabels);
     if(this.workItem.id) {
       this.loadingLabels = true;
       let payload = cloneDeep(this.workItemPayload);
@@ -767,25 +787,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   }
 
   closeDetails(): void {
-    // //console.log(this.router.url.split('/')[1]);
-    // this.panelState = 'out';
 
-    // // In case detaile wi add, on close type id query param should be removed
-    // let queryParams = cloneDeep(this.queryParams);
-    // if (Object.keys(queryParams).indexOf('type') > -1) {
-    //   delete queryParams['type'];
-    // }
-
-    // // Wait for the animation to finish
-    // // From in to out it takes 300 ms
-    // // So wait for 400 ms
-    // setTimeout(() => {
-    //   this.router.navigate(
-    //     [this.router.url.split('/detail/')[0]],
-    //     {queryParams: queryParams}
-    //   );
-    //   this.broadcaster.broadcast('detail_close')
-    // }, 400);
   }
 
   listenToEvents() {
@@ -808,30 +810,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
       this.spaces.current.subscribe(space => {
         this.closePreview();
       })
-      // this.spaces.current.switchMap(space => {
-      //   return this.route.params;
-      // }).subscribe((params) => {
-      //   if (params['id'] !== undefined) {
-      //     id = params['id'];
-      //     if (id === 'new'){
-      //       //Add a new work item
-      //       this.headerEditable = true;
-      //       let type = this.route.snapshot.queryParams['type'];
-      //       // Create new item with the WI type
-      //       this.createWorkItemObj(type);
-      //       // Open the panel
-      //       if (this.panelState === 'out') {
-      //         this.panelState = 'in';
-      //         setTimeout(() => {
-      //           if (this.headerEditable && typeof(this.title) !== 'undefined') {
-      //           this.title.nativeElement.focus();
-      //         }});
-      //       }
-      //     } else {
-      //       this.loadWorkItem(id);
-      //     }
-      //   }
-      // })
     );
   }
 
@@ -848,92 +826,35 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         this.users = this.users.filter(user => {
           return user.id !== authUser.id;
         });
-        this.filteredUsers = this.users;
-        this.usersLoaded = true;
       });
       this.closeUserRestFields();
       this.searchAssignee = true;
-      // Takes a while to render the component
-      setTimeout(() => {
-        if (this.userSearch) {
-          this.userSearch.nativeElement.focus();
-        }
-      }, 50);
     }
   }
 
-  deactiveSearchAssignee() {
+  assignUser(users: User[]): void {
+    this.loadingAssignees = true;
     this.closeUserRestFields();
-  }
-
-  filterUser(event: any) {
-    // Down arrow or up arrow
-    if (event.keyCode == 40 || event.keyCode == 38) {
-      let lis = this.userList.nativeElement.children;
-      let i = 0;
-      for (; i < lis.length; i++) {
-        if (lis[i].classList.contains('selected')) {
-          break;
-        }
-      }
-      if (i == lis.length) { // No existing selected
-        if (event.keyCode == 40) { // Down arrow
-          lis[0].classList.add('selected');
-          lis[0].scrollIntoView(false);
-        } else { // Up arrow
-          lis[lis.length - 1].classList.add('selected');
-          lis[lis.length - 1].scrollIntoView(false);
-        }
-      } else { // Existing selected
-        lis[i].classList.remove('selected');
-        if (event.keyCode == 40) { // Down arrow
-          lis[(i + 1) % lis.length].classList.add('selected');
-          lis[(i + 1) % lis.length].scrollIntoView(false);
-        } else { // Down arrow
-          // In javascript mod gives exact mod for negative value
-          // For example, -1 % 6 = -1 but I need, -1 % 6 = 5
-          // To get the round positive value I am adding the divisor
-          // with the negative dividend
-          lis[(((i - 1) % lis.length) + lis.length) % lis.length].classList.add('selected');
-          lis[(((i - 1) % lis.length) + lis.length) % lis.length].scrollIntoView(false);
-        }
-      }
-    } else if (event.keyCode == 13) { // Enter key event
-      let lis = this.userList.nativeElement.children;
-      let i = 0;
-      for (; i < lis.length; i++) {
-        if (lis[i].classList.contains('selected')) {
-          break;
-        }
-      }
-      if (i < lis.length) {
-        let selectedId = lis[i].dataset.value;
-        this.assignUser(selectedId);
-      }
-    } else {
-      let inp = this.userSearch.nativeElement.value.trim();
-      this.filteredUsers = this.users.filter((item) => {
-        return item.attributes.fullName.toLowerCase().indexOf(inp.toLowerCase()) > -1;
-      });
-    }
-  }
-
-  assignUser(user: User): void {
     if(this.workItem.id) {
+      this.selectedAssignees = users;
+
       let payload = cloneDeep(this.workItemPayload);
       payload = Object.assign(payload, {
         relationships : {
           assignees: {
-            data: [{
-              id: user.id,
-              type: 'identities'
-            }]
+            data: this.selectedAssignees.map(assignee => {
+              return {
+                id: assignee.id,
+                type: 'identities'
+              }
+            })
           }
         }
       });
       this.save(payload, true)
         .switchMap(workItem => this.workItemService.resolveAssignees(workItem.relationships.assignees))
         .subscribe(assignees => {
+          this.loadingAssignees = false;
           this.workItem.relationships.assignees = {
             data: assignees
           };
@@ -942,43 +863,23 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
           this.workItemRef.relationships.assignees = {
             data: assignees
           };
-
           this.updateOnList();
         })
     } else {
-      let assignee = [{
-        attributes: {
-          fullName: user.attributes.fullName
-        },
-        id: user.id,
-        type: 'identities'
-      } as User];
+      let assignees = users.map(user => {
+        return {
+          attributes: {
+            fullName: user.attributes.fullName
+          },
+          id: user.id,
+          type: 'identities'
+        } as User;
+      });
       this.workItem.relationships.assignees = {
-        data : assignee
+        data : assignees
       };
     }
-    this.searchAssignee = false;
-  }
-
-  unassignUser(): void {
-    let payload = cloneDeep(this.workItemPayload);
-    payload = Object.assign(payload, {
-      relationships : {
-        assignees: {
-          data: []
-        }
-      }
-    });
-    this.save(payload, true)
-    .subscribe(() => {
-      this.workItem.relationships.assignees.data = [] as User[];
-
-      // TODO: List update hack. should go away
-      this.workItemRef.relationships.assignees.data = [] as User[];
-
-      this.updateOnList();
-    });
-    this.searchAssignee = false;
+    //this.searchAssignee = false;
   }
 
   cancelAssignment(): void {
@@ -1245,5 +1146,22 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         this.closePreview();
       }
     }
+  }
+  onOpen(event) {
+    this.onOpenSelector.emit('open');
+  }
+   onClose(event) {
+    this.onCloseSelector.emit(cloneDeep(this.selectedLabels));
+  }
+
+  openDropdown() {
+    this.dropdownRef.openDropdown();
+  }
+
+  closeDropdown() {
+    this.dropdownRef.closeDropdown();
+  }
+  closeAddAssignee() {
+    this.activeAddAssignee = false;
   }
 }

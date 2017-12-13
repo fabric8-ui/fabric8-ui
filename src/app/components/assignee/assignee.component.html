@@ -1,0 +1,20 @@
+<div>
+  <div *ngIf="assignees.length < 1">
+    <span class="dib fa fa-user-plus user-assign-icon margin-right-5"></span>
+    <small class="dib">Unassigned</small>
+  </div>
+  <div class="f8-assignees dib margin-right-15 margin-bottom-7"
+    *ngFor="let assignee of assignees">
+    <div class="user-avatar margin-right-10 pull-left">
+      <img
+        class="user-assign-avatar"
+        placement="bottom"
+        tooltip="{{assignee.attributes?.fullName}}"
+        src="{{assignee.attributes?.imageURL + '&s=20'}}"
+        onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
+    </div>
+    <span class="pointer">
+      {{ assignee.attributes?.fullName }}
+    </span>
+  </div>
+</div>

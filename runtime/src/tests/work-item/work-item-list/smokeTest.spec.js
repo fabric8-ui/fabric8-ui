@@ -48,15 +48,22 @@ describe('Work item list', function () {
     page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
     page.clickQuickAddSave().then(function() {
       var detailPage = page.clickWorkItemTitle(WORK_ITEM_TITLE);
-      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');
-      detailPage.clickworkItemDetailAssigneeIcon();
-      detailPage.setWorkItemDetailAssigneeSearch(EXAMPLE_USER_1, false);
-      detailPage.clickAssignedUserDropDownList(EXAMPLE_USER_1);
-      expect(detailPage.details_assigned_user().getText()).toContain(EXAMPLE_USER_1);
-      detailPage.details_assigned_user().click();
-      detailPage.clickworkItemDetailUnassignButton();
-      expect(detailPage.workItemDetailAssigneeNameClickable().getText()).toBe('Unassigned');
-    });
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailCloseButton), constants.WAIT, 'Failed to find detail page close Icon');
+      //Assign the user
+      detailPage.clickAddAssigneeButton();
+      detailPage.setAssigneeSearch(EXAMPLE_USER_1, false);
+      detailPage.clickAssigneeListItem(EXAMPLE_USER_1);
+      detailPage.clickCloseAssigneeDropdown();
+      //Verify assignee has been assigned
+      expect(detailPage.AssignUsers.getText()).toContain(EXAMPLE_USER_1);
+      //unassign the user
+      detailPage.clickAddAssigneeButton();
+      detailPage.setAssigneeSearch(EXAMPLE_USER_1, false);
+      detailPage.clickAssigneeListItem(EXAMPLE_USER_1);
+      detailPage.clickCloseAssigneeDropdown();
+      //Verify assignee has been unassigned
+      expect(detailPage.AssignUsers.getText()).not.toContain(EXAMPLE_USER_1);
+     });
   });
 
   /* Create a new workitem, fill in the details, save, retrieve, update, save, verify updates are saved */
@@ -70,7 +77,7 @@ describe('Work item list', function () {
       /* Fill in/update the new work item's title and details field */
       expect(page.workItemTitle(page.workItemByTitle(WORK_ITEM_TITLE))).toBe(WORK_ITEM_TITLE);
       var detailPage = page.clickWorkItemTitle(WORK_ITEM_TITLE);
-      browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');
+      browser.wait(until.elementToBeClickable(detailPage.workItemDetailCloseButton), constants.WAIT, 'Failed to find Assignee Icon');
       detailPage.clickWorkItemDetailTitleClick();
       detailPage.setWorkItemDetailTitle (WORK_ITEM_UPDATED_TITLE, false);
       detailPage.clickWorkItemTitleSaveIcon();
@@ -176,17 +183,16 @@ describe('Work item list', function () {
   it('Edit comment and cancel - Desktop ', function() {
     var detailPage = page.clickWorkItem(page.firstWorkItem);
     detailPage.scrollToBottomRight().then(function() {
-        detailPage.clickCommentEdit('0');
-        detailPage.editComments('updated comment!','0',false);
-        detailPage.scrollToBottomRight().then(function(){
-          detailPage.clickCloseComment('0');
-        });
-        expect(detailPage.getCommentBody('0')).toBe('Some Comment 0');
+      detailPage.clickCommentEdit('0');
+      detailPage.editComments('updated comment!','0',false);
+      detailPage.scrollToBottomRight().then(function(){
+        detailPage.clickCloseComment('0');
       });
-      
+      expect(detailPage.getCommentBody('0')).toBe('Some Comment 0');
+    });
   });
 
-    /* Commenting the following two tests as they are unreliable; failing often. 
+    /* Commenting the following two tests as they are unreliable; failing often.
   They will be added back once they attain certain reliability */
 
   // it('Verify create new Label', function(){

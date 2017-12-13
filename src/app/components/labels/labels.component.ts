@@ -55,7 +55,7 @@ export class LabelsComponent implements OnInit, OnChanges {
         return label.attributes &&
           label.attributes['background-color'] &&
           label.attributes['text-color']
-      })
+      });
     }
   }
 

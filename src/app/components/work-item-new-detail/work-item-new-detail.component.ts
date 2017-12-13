@@ -1,10 +1,13 @@
 import {
   Component,
+  Input,
   OnInit,
   OnDestroy,
+  Output,
   ViewChild,
   ViewEncapsulation,
   ElementRef,
+  EventEmitter,
   Renderer2,
   HostListener,
   AfterViewChecked
@@ -41,6 +44,11 @@ import { AuthenticationService,
   User,
   UserService
 } from 'ngx-login-client';
+import { AssigneeSelectorComponent } from './../assignee-selector/assignee-selector.component';
+
+import {
+  SelectDropdownComponent
+} from './../../widgets/select-dropdown/select-dropdown.component';
 
 
 @Component({
@@ -58,6 +66,13 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy, AfterViewC
   @ViewChild('detailHeader') detailHeader: ElementRef;
   @ViewChild('detailContent') detailContent: ElementRef;
   @ViewChild('assignee') assignee: any;
+  @ViewChild('dropdown') dropdownRef: SelectDropdownComponent;
+  @ViewChild('AssigneeSelector') AssigneeSelector: AssigneeSelectorComponent;
+  @Input() selectedLabels: LabelModel[] = [];
+  @Input() selectedAssignees: User[] = [];
+
+  @Output() onOpenSelector: EventEmitter<any> = new EventEmitter();
+  @Output() onCloseSelector: EventEmitter<LabelModel[]> = new EventEmitter();
 
 
   areas: TypeaheadDropdownValue[] = [];
@@ -66,6 +81,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy, AfterViewC
   dynamicFormDataArray: any;
   iterations: TypeaheadDropdownValue[] = [];
   workItem: WorkItem;
+  workItemRef: WorkItem;
   workItemPayload: WorkItem;
   eventListeners: any[] = [];
   loadingComments: boolean = true;
@@ -73,6 +89,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy, AfterViewC
   loadingIteration: boolean = false;
   loadingArea: boolean = false;
   loadingLabels: boolean = false;
+  loadingAssignees: boolean = false;
   loggedInUser: User;
   loggedIn: boolean = false;
   users: User[] = [];
@@ -82,6 +99,8 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy, AfterViewC
   headerEditable: Boolean = false;
   descText: any = '';
   labels: LabelModel[] = [];
+
+  private activeAddAssignee: boolean = false;
 
   constructor(
     private areaService: AreaService,
@@ -262,6 +281,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy, AfterViewC
           this.loadingIteration = true;
           this.loadingArea = true;
           this.loadingLabels = true;
+          this.loadingAssignees = true;
         })
         .switchMap(() => this.workItemService.getWorkItemByNumber(id, owner, space))
         .do(workItem => {
@@ -286,7 +306,7 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy, AfterViewC
           )
         })
         .subscribe(() => {
-          // this.closeUserRestFields();
+          this.closeUserRestFields();
           this.workItemPayload = {
             id: this.workItem.id,
             number: this.workItem.number,
@@ -323,12 +343,16 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy, AfterViewC
   }
 
   resolveAssignees(): Observable<any> {
+    this.activeSearchAssignee();
     return this.workItemService.resolveAssignees(this.workItem.relationships.assignees)
       .do(assignees => {
         // Resolve assignees
         this.workItem.relationships.assignees = {
           data: assignees
         };
+        this.loadingAssignees = false;
+
+    console.log("RESOLVE");
       })
   }
 
@@ -433,6 +457,9 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy, AfterViewC
       this.labelService.getLabels()
         .subscribe(labels => this.labels = labels);
     }
+  }
+  onAssigneeSelectorOpen(event) {
+    console.log("Dropdown open");
   }
 
   getAllUsers(): Observable<any> {
@@ -641,109 +668,49 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy, AfterViewC
     this.closeUserRestFields();
   }
 
-  filterUser(event: any) {
-    // Down arrow or up arrow
-    if (event.keyCode == 40 || event.keyCode == 38) {
-      let lis = this.userList.nativeElement.children;
-      let i = 0;
-      for (; i < lis.length; i++) {
-        if (lis[i].classList.contains('selected')) {
-          break;
-        }
-      }
-      if (i == lis.length) { // No existing selected
-        if (event.keyCode == 40) { // Down arrow
-          lis[0].classList.add('selected');
-          lis[0].scrollIntoView(false);
-        } else { // Up arrow
-          lis[lis.length - 1].classList.add('selected');
-          lis[lis.length - 1].scrollIntoView(false);
-        }
-      } else { // Existing selected
-        lis[i].classList.remove('selected');
-        if (event.keyCode == 40) { // Down arrow
-          lis[(i + 1) % lis.length].classList.add('selected');
-          lis[(i + 1) % lis.length].scrollIntoView(false);
-        } else { // Down arrow
-          // In javascript mod gives exact mod for negative value
-          // For example, -1 % 6 = -1 but I need, -1 % 6 = 5
-          // To get the round positive value I am adding the divisor
-          // with the negative dividend
-          lis[(((i - 1) % lis.length) + lis.length) % lis.length].classList.add('selected');
-          lis[(((i - 1) % lis.length) + lis.length) % lis.length].scrollIntoView(false);
-        }
-      }
-    } else if (event.keyCode == 13) { // Enter key event
-      let lis = this.userList.nativeElement.children;
-      let i = 0;
-      for (; i < lis.length; i++) {
-        if (lis[i].classList.contains('selected')) {
-          break;
-        }
-      }
-      if (i < lis.length) {
-        let selectedId = lis[i].dataset.value;
-        this.assignUser(selectedId);
-      }
-    } else {
-      let inp = this.userSearch.nativeElement.value.trim();
-      this.filteredUsers = this.users.filter((item) => {
-        return item.attributes.fullName.toLowerCase().indexOf(inp.toLowerCase()) > -1;
-      });
-    }
-  }
-
-  assignUser(user: User): void {
+  assignUser(users: User[]): void {
+    this.loadingAssignees = true;
     if(this.workItem.id) {
+      this.selectedAssignees = users;
+
       let payload = cloneDeep(this.workItemPayload);
       payload = Object.assign(payload, {
         relationships : {
           assignees: {
-            data: [{
-              id: user.id,
-              type: 'identities'
-            }]
+            data: this.selectedAssignees.map(assignee => {
+              return {
+                id: assignee.id,
+                type: 'identities'
+              }
+            })
           }
         }
       });
       this.save(payload, true)
-        .switchMap(workItem => this.workItemService.resolveAssignees(workItem.relationships.assignees))
-        .subscribe(assignees => {
-          this.workItem.relationships.assignees = {
-            data: assignees
-          };
-          this.updateOnList();
-        })
+      .switchMap(workItem => this.workItemService.resolveAssignees(workItem.relationships.assignees))
+      .subscribe(assignees => {
+        this.loadingAssignees = false;
+        this.workItem.relationships.assignees = {
+          data: assignees
+        };
+        this.updateOnList()
+      })
     } else {
-      let assignee = [{
-        attributes: {
-          fullName: user.attributes.fullName
-        },
-        id: user.id,
-        type: 'identities'
-      } as User];
+      let assignees = users.map(user => {
+        return {
+          attributes: {
+            fullName: user.attributes.fullName
+          },
+          id: user.id,
+          type: 'identities'
+        } as User;
+      });
       this.workItem.relationships.assignees = {
-        data : assignee
+        data : assignees
       };
+      console.log("STEP 3");
     }
-    this.searchAssignee = false;
-  }
-
-  unassignUser(): void {
-    let payload = cloneDeep(this.workItemPayload);
-    payload = Object.assign(payload, {
-      relationships : {
-        assignees: {
-          data: []
-        }
-      }
-    });
-    this.save(payload, true)
-    .subscribe(() => {
-      this.workItem.relationships.assignees.data = [] as User[];
-      this.updateOnList();
-    });
-    this.searchAssignee = false;
+    //this.searchAssignee = false;
   }
 
   updateLabels(selectedLabels: LabelModel[]) {
@@ -1077,5 +1044,16 @@ export class WorkItemNewDetailComponent implements OnInit, OnDestroy, AfterViewC
         + '?label=' + label.attributes.name;
       this.router.navigateByUrl(url);
     }
+  }
+
+  openDropdown() {
+    this.dropdownRef.openDropdown();
+  }
+
+  closeDropdown() {
+    this.dropdownRef.closeDropdown();
+  }
+  closeAddAssignee() {
+    this.activeAddAssignee = false;
   }
 }
