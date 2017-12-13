@@ -167,13 +167,14 @@
           </ngx-datatable-column>
         </ngx-datatable>
         <!-- settings -->
-        <div class="f8-wi-list__settings">
+        <ng-template #headerTemplateN>
+        <div class="f8-wi-list__settings planner-hack-dropdown">
           <div class="dropdown-kebab-pf pull-right dropdown margin-left-10"
                 dropdown [autoClose]="false">
             <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
               <span class="fa fa-cog"></span>
             </button>
-            <div class="dropdown-menu-right dropdown-menu f8-wi-list__settings-dropdown">
+            <div class="dropdown-menu-right dropdown-menu f8-wi-list__settings-dropdown" *dropdownMenu>
               <aside>
                 <i class="db text-right fa fa-close"></i>
                 <span class="db text-right fa fa-angle-double-up"
@@ -232,6 +233,7 @@
             </div>
           </div>
         </div>
+        </ng-template>
         <div class="lock-overlay-list"
           *ngIf="uiLockedList">
           <div class="spinner-container">
