@@ -15,7 +15,7 @@
   <span dropdown class="dropdown" placement="right">
     <span dropdownToggle (click)="moreClick($event)" class="dib dropdown-toggle pointer"
       *ngIf="truncateAfter!==undefined && _labels.length > 4">
-        {{ _labels.length - truncateAfter }} more...
+        {{ _labels.length - truncateAfter }}+
       </span>
       <ul *dropdownMenu class="dropdown-menu label-dropdown dropdown-menu-right">
         <li *ngFor="let label of _labels | slice:truncateAfter;">

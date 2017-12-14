@@ -7,10 +7,12 @@
 <!-- Type -->
 
 <div *ngIf="col === 'type'">
-  <span class="color-grey margin-h-10
+  <span class="color-grey margin-right-3 type-icon
     {{row.type?.data?.attributes?.icon}}"
     title="{{row.type?.data?.attributes?.name}}">
+    
   </span>
+  <span>{{row.type?.data?.attributes?.name}}</span>
 </div>
 
 <!-- Title -->
