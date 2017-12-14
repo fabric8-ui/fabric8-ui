@@ -103,7 +103,7 @@
     "ngx-widgets": "^2.3.2",
     "patternfly-ng": "^0.13.5",
     "reflect-metadata": "^0.1.10",
-    "rh-ngx-datatable": "^11.1.11",
+    "rh-ngx-datatable": "^11.2.1",
     "rxjs": "^5.0.1",
     "zone.js": "^0.8.18"
   },
