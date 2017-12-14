@@ -23,7 +23,8 @@ import {
   Output,
   EventEmitter,
   Renderer2,
-  HostListener
+  HostListener,
+  style
 } from '@angular/core';
 import {
   Router,
@@ -215,6 +216,16 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       }
     }
 
+    // Hack: To get the dropdown working in Header
+
+    if(document.getElementsByClassName('datatable-header-cell').length) {
+      document.getElementsByClassName('datatable-header-cell')[0].parentElement.style.transform = "translate3d(0px, 0px, 10px)";
+    }
+    if(document.getElementsByClassName('datatable-header').length) {
+      document.getElementsByClassName('datatable-header')[0].parentElement.style.transformStyle = "preserve-3d";
+    }
+
+    // End of Hack
 
     if (document.getElementsByTagName('body')) {
       document.getElementsByTagName('body')[0].style.overflow = "hidden";
