@@ -1,6 +1,8 @@
 import {
-  async,
   ComponentFixture,
+  fakeAsync,
+  flush,
+  flushMicrotasks,
   TestBed
 } from '@angular/core/testing';
 
@@ -56,7 +58,7 @@ describe('DeploymentCardComponent', () => {
   let fixture: ComponentFixture<DeploymentCardComponent>;
   let mockSvc: DeploymentsService;
 
-  beforeEach(() => {
+  beforeEach(fakeAsync(() => {
     mockSvc = {
       getApplications: () => { throw 'Not Implemented'; },
       getEnvironments: () => { throw 'Not Implemented'; },
@@ -97,6 +99,8 @@ describe('DeploymentCardComponent', () => {
     component.environment = { environmentId: 'mockEnvironmentId', name: 'mockEnvironment' };
 
     fixture.detectChanges();
+    flush();
+    flushMicrotasks();
 
     it('should generate a unique chartid for each DeploymentCardComponent instance', () => {
       let depCard1 = new DeploymentCardComponent(null);
@@ -107,7 +111,7 @@ describe('DeploymentCardComponent', () => {
       expect(depCard1.getChartIdNum()).not.toBe(depCard3.getChartIdNum());
       expect(depCard2.getChartIdNum()).not.toBe(depCard3.getChartIdNum());
     });
-  });
+  }));
 
   describe('versionLabel', () => {
     let de: DebugElement;
@@ -147,19 +151,14 @@ describe('DeploymentCardComponent', () => {
         .filter(item => item.nativeElement.textContent.includes(label))[0];
     }
 
-    beforeEach(async(() => {
-      fixture.detectChanges();
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        let de = fixture.debugElement.query(By.directive(BsDropdownToggleDirective));
-        de.triggerEventHandler('click', null);
+    beforeEach(fakeAsync(() => {
+      let de = fixture.debugElement.query(By.directive(BsDropdownToggleDirective));
+      de.triggerEventHandler('click', null);
 
-        fixture.detectChanges();
-        fixture.whenStable().then(() => {
-          let menu = fixture.debugElement.query(By.css('.dropdown-menu'));
-          menuItems = menu.queryAll(By.css('li'));
-        });
-      });
+      fixture.detectChanges();
+
+      let menu = fixture.debugElement.query(By.css('.dropdown-menu'));
+      menuItems = menu.queryAll(By.css('li'));
     }));
 
     it('should have menu items', () => {
@@ -190,27 +189,26 @@ describe('DeploymentCardComponent', () => {
       expect(link.attributes['href']).toEqual('mockAppUrl');
     });
 
-    it('should not display appUrl if none available', () => {
+    it('should not display appUrl if none available', fakeAsync(() => {
       component.appUrl = Observable.of('');
-      fixture.detectChanges();
-      fixture.whenStable().then(() => {
-        let menu = fixture.debugElement.query(By.css('.dropdown-menu'));
-        menuItems = menu.queryAll(By.css('li'));
-        let item = getItemByLabel('Open Application');
-        expect(item).toBeFalsy();
-      });
-    });
 
-    it('should invoke service \'delete\' function on Delete item click', async(() => {
+      fixture.detectChanges();
+
+      let menu = fixture.debugElement.query(By.css('.dropdown-menu'));
+      menuItems = menu.queryAll(By.css('li'));
+      let item = getItemByLabel('Open Application');
+      expect(item).toBeFalsy();
+    }));
+
+    it('should invoke service \'delete\' function on Delete item click', fakeAsync(() => {
       let item = getItemByLabel('Delete');
       expect(item).toBeTruthy();
       expect(mockSvc.deleteApplication).not.toHaveBeenCalled();
       item.query(By.css('a')).triggerEventHandler('click', null);
 
       fixture.detectChanges();
-      fixture.whenStable().then(() => {
-        expect(mockSvc.deleteApplication).toHaveBeenCalled();
-      });
+
+      expect(mockSvc.deleteApplication).toHaveBeenCalled();
     }));
   });
 
