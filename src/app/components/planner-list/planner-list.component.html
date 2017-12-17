@@ -59,8 +59,8 @@
         #listContainer>
         <!-- ngx-datatable -->
         <ngx-datatable
-          class="datatable-height"
-          [columnMode]="'flex'"
+          class="fullscreen"
+          [columnMode]="'force'"
           [scrollbarH]="true"
           [scrollbarV]="true"
           [rows]="datatableWorkitems"
@@ -73,7 +73,7 @@
             *ngFor="let c of (columns | filterColumn:'display')"
             [isTreeColumn]="c.name==='Title'"
             [name]="c.name"
-            [flexGrow]="c.flexGrow"
+            [width]="c.width"
             [resizeable]="false">
               <ng-template ngx-datatable-cell-tree-expander *ngIf="c.name==='Title'">
                 <i class="fa fa-angle-right tree-icon"></i>
@@ -104,7 +104,8 @@
               </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column
-            [flexGrow]="0.6"
+            [width]="120"
+            [resizeable]="false"
             [headerTemplate]="headerTemplateN">
             <ng-template let-row="row"
               ngx-datatable-cell-template>
