@@ -12,7 +12,7 @@ export const iterationReducer : ActionReducer<IterationState> = ( state = initia
     switch( action.type ) {
       case IterationActions.GET_SUCCESS:
            return {
-             iteration : action.payload
+             iterations : action.payload
            }
        
       case IterationActions.GET_ERROR:

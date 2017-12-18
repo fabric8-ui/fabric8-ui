@@ -4,9 +4,11 @@ import { PlannerBoardModule } from './app/components/planner-board/planner-board
 import { PlannerListModule } from './app/components/planner-list/planner-list.module';
 
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
-  imports: [StoreModule.forRoot({})
+  imports: [StoreModule.forRoot({}),
+    EffectsModule.forRoot([])
   ],
   declarations: [
   ],
