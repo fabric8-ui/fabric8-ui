@@ -5,6 +5,11 @@ services:
     container_name: fabric8-planner-platform
     image: fabric8-planner-platform
     # command: npm run test:unit
+    environment:
+      # $PROXY_PASS_URL is required by the nginx-config file
+      # It's set by pipeline-library in CI & is emulated here
+      # More info: github.com/fabric8-ui/fabric8-planner/issues/2360
+      PROXY_PASS_URL: "https://api.free-int.openshift.com:443"
     depends_on:
       - core
     networks:
