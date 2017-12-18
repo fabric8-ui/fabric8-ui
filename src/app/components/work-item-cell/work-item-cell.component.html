@@ -39,6 +39,11 @@
       (onLabelClick)="labelClick($event)"></f8-label>
 </div>
 
+<!-- Iteration -->
+  <span *ngIf="col === 'iteration'">
+    {{row.iteration.attributes?.name}}
+  </span>
+
 <!-- Creator -->
 
 <div *ngIf="col === 'creator'" class="user-avatar">

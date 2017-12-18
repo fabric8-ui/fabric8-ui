@@ -1024,6 +1024,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         type: element.relationships.baseType ? element.relationships.baseType : '',
         title: element.attributes['system.title'],
         labels: element.relationships.labels.data,
+        iteration: element.relationships.iteration.data,
         creator: element.relationships.creator.data,
         assignees: element.relationships.assignees.data,
         status: element.attributes['system.state'],

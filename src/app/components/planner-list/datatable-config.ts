@@ -29,6 +29,16 @@ export const datatableColumn =  [{
     minWidth: 300,
     width: 600
   },{
+    name: 'Label',
+    prop: 'label',
+    available: false,
+    selected: false,
+    display: true,
+    flexGrow: 1.5,
+    maxWidth: undefined,
+    minWidth: 300,
+    width: 250
+  },{
     name: 'Status',
     prop: 'status',
     available: false,
@@ -39,15 +49,15 @@ export const datatableColumn =  [{
     minWidth: undefined,
     width: 150
   },{
-    name: 'Label',
-    prop: 'label',
+    name: 'Iteration',
+    prop: 'iteration',
     available: false,
     selected: false,
     display: true,
-    flexGrow: 1.5,
+    flexGrow: 1,
+    minWidth: undefined,
     maxWidth: undefined,
-    minWidth: 300,
-    width: 250
+    width: 150
   },{
     name: 'Creator',
     prop: 'creator',
