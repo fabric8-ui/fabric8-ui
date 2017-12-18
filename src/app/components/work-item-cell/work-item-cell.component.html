@@ -18,11 +18,11 @@
 <!-- Title -->
 <div class="width-100"
   *ngIf="col === 'title'">
-  <div style="display:inline-flex; width: calc(100% - 20px)">
+  <div class="wi-detail-title">
     <p class="truncate pointer"
       (click)="onDetail($event, row['id'])"> {{row.title}} </p>
   </div>
-  <div style="width:20px; text-align:right;" class="dib">
+  <div class="dib text-right wi-detail-icon">
     <a class="fa fa-list-alt padding-v-5 pointer"></a>
   </div>
 </div>
@@ -61,15 +61,16 @@
 </div>
 
 <!-- Assignee -->
-
-<div *ngIf="col === 'assignees'" class="user-avatar">
-  <img *ngFor="let assignee of row.assignees"
-        placement="left"
+<div *ngIf="col === 'assignees'" >
+  <div class="user-avatar pull-left margin-right-5"
+    *ngFor="let assignee of row.assignees">
+    <img placement="left"
         tooltip="{{assignee?.attributes?.fullName}}"
         src="{{assignee?.attributes?.imageURL + '&s=23'}}"
         onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
-  <span class="pficon-user not-assigned-user-icon"
+    <span class="pficon-user not-assigned-user-icon"
         *ngIf="!row?.assignees?.length"
         tooltip="Unassigned"
         placement="left"></span>
+  </div>
 </div>

@@ -201,7 +201,7 @@ button.btn.btn-link.dropdown-toggle:focus {
 }
 
 .planner-hack-title-truncate {
-  width: ~"calc(e('100% - 20px'))";
+  max-width: ~"calc(e('100% - 20px'))";
 }
 
 /// ng x-datatables css
@@ -228,11 +228,10 @@ button.btn.btn-link.dropdown-toggle:focus {
     border-right-width: 0;
   }
 }
-.datatable-row-wrapper {
-  &:last-child {
-    border-bottom: 1px solid;
-    border-bottom-color: @color-pf-black-300;
-  }
+.datatable-header-cell ,
+.datatable-row-wrapper:last-child {
+  border-bottom: 1px solid;
+  border-bottom-color: @color-pf-black-300;
 }
 .datatable-header-cell,
 .datatable-body-cell {
@@ -246,5 +245,6 @@ button.btn.btn-link.dropdown-toggle:focus {
   min-width: 15px;
   &.tree-icon__disabled {
     opacity: 0.4;
+    cursor: not-allowed;
   }
 }
