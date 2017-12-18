@@ -1,4 +1,15 @@
-import { Component, OnInit, Input, OnChanges, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  AfterViewChecked,
+  OnChanges,
+  EventEmitter,
+  Output,
+  ViewChild,
+  ElementRef,
+  Renderer2
+} from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 
 import { cloneDeep } from 'lodash';
@@ -21,11 +32,12 @@ import {
   templateUrl: './work-item-create-selector.component.html',
   styleUrls: ['./work-item-create-selector.component.less']
 })
-export class WorkItemDetailAddTypeSelectorWidgetComponent implements OnInit {
+export class WorkItemDetailAddTypeSelectorWidgetComponent implements OnInit, AfterViewChecked{
 
   @Input() workItemTypes: WorkItemType[] = [];
   @Output('onSelect') onSelect = new EventEmitter();
   @Output('onClose') onClose = new EventEmitter();
+  @ViewChild('modalPosition') modalPosition: ElementRef;
 
   panelState: string = 'out';
 
@@ -35,10 +47,21 @@ export class WorkItemDetailAddTypeSelectorWidgetComponent implements OnInit {
     private broadcaster: Broadcaster,
     private workItemService: WorkItemService,
     private auth: AuthenticationService,
-    private spaces: Spaces) {
+    private spaces: Spaces,
+    private renderer: Renderer2 ) {
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewChecked() {
+    if(this.modalPosition) {
+      let hdrHeight:number = 0;
+      if(document.getElementsByClassName('navbar-pf').length > 0) {
+        hdrHeight = (document.getElementsByClassName('navbar-pf')[0] as HTMLElement).offsetHeight;
+      }
+      this.renderer.setStyle(this.modalPosition.nativeElement, 'top', hdrHeight + "px");
+    }
   }
 
   close() {

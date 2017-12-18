@@ -1,4 +1,6 @@
-<div *ngIf="panelState === 'in'" class="row f8-wi-modal container-cards-pf">
+<div #modalPosition
+  *ngIf="panelState === 'in'"
+  class="row f8-wi-modal container-cards-pf">
   <div class="f8-wi-modal__header">
     <i class="pficon pficon-close pull-right margin-top-5 pointer"
       (click)="close()">
