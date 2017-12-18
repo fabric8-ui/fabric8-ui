@@ -6,7 +6,7 @@ export const datatableColumn =  [{
     display: true,
     flexGrow: 0.4,
     maxWidth: 50,
-    width: 50
+    width: 100
   },{
     name: 'Type',
     prop: 'type',
@@ -27,7 +27,7 @@ export const datatableColumn =  [{
     flexGrow: 3,
     maxWidth: undefined,
     minWidth: 300,
-    width: 350
+    width: 600
   },{
     name: 'Status',
     prop: 'status',
