@@ -49,7 +49,7 @@
 
 <!-- Iteration -->
   <span *ngIf="col === 'iteration'">
-    {{row.iteration.attributes?.name}}
+    {{row.iteration.attributes?.parent_path === '/' ? 'NA' : row.iteration.attributes?.name}}
   </span>
 
 <!-- Creator -->
