@@ -20,10 +20,11 @@
   *ngIf="col === 'title'">
   <div class="wi-detail-title">
     <p class="truncate pointer"
-      (click)="onDetail($event, row['id'])"> {{row.title}} </p>
+        (click)="onPreview($event, row['id'])"> {{row.title}} </p>
   </div>
   <div class="dib text-right wi-detail-icon">
-    <a class="fa fa-list-alt padding-v-5 pointer"></a>
+    <a class="fa fa-list-alt padding-v-5 pointer"
+    (click)="onDetail($event, row['id'])"></a>
   </div>
 </div>
 <!-- Status -->

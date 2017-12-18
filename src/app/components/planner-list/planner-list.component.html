@@ -97,6 +97,7 @@
                     [row]="row"
                     [col]="c.prop"
                     (onDetailPreview)="onDetailPreview($event)"
+                    (onQuickPreview)="onPreview($event)"
                     (clickLabel)="onClickLabel($event)"
                     [class.planner-hack-dropdown]="c.prop=='label'"
                     [class.planner-hack-title-truncate]="c.prop=='title'">
@@ -161,7 +162,7 @@
               </div>
               <div class="pull-right margin-right-15 padding-top-2" placement="left">
                 <a class="fa fa-columns f8-action-icon pointer"
-                  (click)="onPreview($event, row['id'])">
+                  (click)="onPreview(row['id'])">
                 </a>
               </div>
             </ng-template>

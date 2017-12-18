@@ -19,6 +19,7 @@ export class WorkItemCellComponent {
     @Input() col: string;
     @Input() row: object;
     @Output() onDetailPreview = new EventEmitter();
+    @Output() onQuickPreview = new EventEmitter();
     @Output() clickLabel = new EventEmitter();
 
     onDetail(Event: MouseEvent, id: string) {
@@ -27,5 +28,9 @@ export class WorkItemCellComponent {
 
     labelClick(event) {
       this.clickLabel.emit(event);
+    }
+
+    onPreview(Event: MouseEvent, id: string) {
+      this.onQuickPreview.emit(id);
     }
 }

@@ -669,7 +669,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       })
   }
 
-  onPreview(event: MouseEvent, id: string): void {
+  onPreview(id: string): void {
     console.log(id);
     this.workItemDataService.getItem(id).subscribe(workItem => {
       this.detailPreview.openPreview(workItem);   });
