@@ -12,7 +12,7 @@
       <i class="pficon-close pointer" (click)="removeLabel(label, $event)"></i>
     </span>
   </span>
-  <span dropdown class="dropdown" placement="right">
+  <span dropdown class="pull-left margin-h-5 dropdown" placement="right">
     <span dropdownToggle (click)="moreClick($event)" class="dib dropdown-toggle pointer"
       *ngIf="truncateAfter!==undefined && _labels.length > 4">
         {{ _labels.length - truncateAfter }}+

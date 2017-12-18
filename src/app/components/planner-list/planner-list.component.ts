@@ -212,7 +212,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     if (document.getElementsByClassName('planner-hack-title-truncate').length) {
       let arr = document.getElementsByClassName('planner-hack-title-truncate');
       for(let i = 0; i < arr.length; i++) {
-        arr[i].parentElement.style.display = 'inline-flex';
+        arr[i].parentElement.style.display = 'flex';
       }
     }
     // End of Hack

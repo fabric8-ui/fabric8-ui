@@ -10,15 +10,22 @@
   <span class="color-grey margin-right-3 type-icon
     {{row.type?.data?.attributes?.icon}}"
     title="{{row.type?.data?.attributes?.name}}">
-    
+
   </span>
   <span>{{row.type?.data?.attributes?.name}}</span>
 </div>
 
 <!-- Title -->
-<p *ngIf="col === 'title'" class="truncate pointer"
-    (click)="onDetail($event, row['id'])"> {{row.title}} </p>
-
+<div class="width-100"
+  *ngIf="col === 'title'">
+  <div style="display:inline-flex; width: calc(100% - 20px)">
+    <p class="truncate pointer"
+      (click)="onDetail($event, row['id'])"> {{row.title}} </p>
+  </div>
+  <div style="width:20px; text-align:right;" class="dib">
+    <a class="fa fa-list-alt padding-v-5 pointer"></a>
+  </div>
+</div>
 <!-- Status -->
 
 <div *ngIf="col === 'status'">
