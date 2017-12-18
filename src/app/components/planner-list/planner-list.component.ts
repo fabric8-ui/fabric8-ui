@@ -215,16 +215,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         arr[i].parentElement.style.display = 'inline-flex';
       }
     }
-
-    // Hack: To get the dropdown working in Header
-
-    if(document.getElementsByClassName('datatable-header-cell').length) {
-      document.getElementsByClassName('datatable-header-cell')[0].parentElement.style.transform = "translate3d(0px, 0px, 10px)";
-    }
-    if(document.getElementsByClassName('datatable-header').length) {
-      document.getElementsByClassName('datatable-header')[0].parentElement.style.transformStyle = "preserve-3d";
-    }
-
     // End of Hack
 
     if (document.getElementsByTagName('body')) {
@@ -732,7 +722,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         // remove duplicate from datatable
         this.datatableWorkitems.splice(currentIndex, 1);
         this.workItems[this.workItems.length - 1].attributes['version'] = updatedWorkItem.attributes['version'];
-        
+
         // Update datatable WorkItems
         this.datatableWorkitems = [...this.datatableWorkitems, ...this.tableWorkitem([this.workItems[this.workItems.length - 1]])]
         this.listContainer.nativeElement.scrollTop = this.workItems.length * this.contentItemHeight;
