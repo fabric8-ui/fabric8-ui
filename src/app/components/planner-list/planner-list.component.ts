@@ -58,6 +58,7 @@ import { CollaboratorService } from '../../services/collaborator.service';
 import { LabelService } from '../../services/label.service';
 import { LabelModel } from '../../models/label.model';
 import { UrlService } from './../../services/url.service';
+import { CookieService } from './../../services/cookie.service';
 import { WorkItemDetailAddTypeSelectorComponent } from './../work-item-create/work-item-create.component';
 import { setTimeout } from 'core-js/library/web/timers';
 
@@ -86,8 +87,8 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
 
   datatableWorkitems: any[] = [];
-  checkableColumn: any[] = datatableColumn;
-  columns: any[] = this.checkableColumn;
+  checkableColumn: any[];
+  columns: any[];
   workItems: WorkItem[] = [];
   prevWorkItemLength: number = 0;
   workItemTypes: WorkItemType[] = [];
@@ -131,6 +132,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   constructor(
     private labelService: LabelService,
+    private cookieService: CookieService,
     private areaService: AreaService,
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
@@ -165,6 +167,19 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     }
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
+
+    // Cookie
+    if(!this.cookieService.getCookie(datatableColumn.length).status) {
+      console.log('cookie',this.cookieService.getCookie(datatableColumn.length));
+      this.cookieService.setCookie('datatableColumn', datatableColumn);
+      this.checkableColumn = datatableColumn;
+      this.columns = this.checkableColumn;
+    } else {
+      console.log('cookie',this.cookieService.getCookie(datatableColumn.length));
+      let temp = this.cookieService.getCookie(datatableColumn.length)
+      this.checkableColumn = temp.array;
+      this.columns = this.checkableColumn;
+    }
   }
 
   ngAfterViewChecked() {
@@ -1054,7 +1069,8 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       col.display = true;
       col.available = false;
     })
-    this.columns = [...this.checkableColumn]
+    this.columns = [...this.checkableColumn];
+    this.cookieService.setCookie('datatableColumn', this.columns);
   }
 
   moveToAvailable() {
@@ -1065,7 +1081,8 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       col.display = false;
       col.available = true;
     });
-    this.columns = [...this.checkableColumn]
+    this.columns = [...this.checkableColumn];
+    this.cookieService.setCookie('datatableColumn', this.columns);
   }
 
   toggleDisplay(event, col) {

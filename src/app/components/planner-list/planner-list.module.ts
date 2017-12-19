@@ -20,8 +20,8 @@ import {
   WidgetsModule
 } from 'ngx-widgets';
 
-//import { NgxDatatableModule } from '../../../../node_modules/rh-ngx-datatable';
-import { NgxDatatableModule } from 'rh-ngx-datatable';
+import { NgxDatatableModule } from '../../../../node_modules/rh-ngx-datatable';
+// import { NgxDatatableModule } from 'rh-ngx-datatable';
 
 import { FilterColumn } from '../../pipes/column-filter.pipe';
 
@@ -53,6 +53,7 @@ import { HttpService } from '../../services/http-service';
 import { LabelService } from '../../services/label.service';
 import { AssigneesModule } from './../assignee/assignee.module';
 import { WorkItemCellComponent } from '../work-item-cell/work-item-cell.component';
+import { CookieService } from '../../services/cookie.service';
 
 let providers = [];
 
@@ -70,7 +71,8 @@ if (process.env.ENV == 'inmemory') {
     },
     LabelService,
     TooltipConfig,
-    UrlService
+    UrlService,
+    CookieService
   ];
 } else {
   providers = [
@@ -89,7 +91,8 @@ if (process.env.ENV == 'inmemory') {
     },
     LabelService,
     TooltipConfig,
-    UrlService
+    UrlService,
+    CookieService
   ];
 }
 
