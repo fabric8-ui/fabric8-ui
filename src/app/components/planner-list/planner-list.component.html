@@ -99,7 +99,7 @@
                     (onDetailPreview)="onDetailPreview($event)"
                     (onQuickPreview)="onPreview($event)"
                     (clickLabel)="onClickLabel($event)"
-                    [class.planner-hack-dropdown]="c.prop=='label'"
+                    [class.planner-hack-dropdown]="c.prop=='label' || c.prop=='assignees'"
                     [class.planner-hack-title-truncate]="c.prop=='title'">
                   </work-item-cell>
               </ng-template>

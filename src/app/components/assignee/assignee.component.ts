@@ -22,6 +22,8 @@ import { User } from 'ngx-login-client';
 export class AssigneesComponent implements OnInit {
   private assignees: User[] = [];
 
+  @Input() truncateAfter: number;
+  @Input() showFullName: boolean;
   @Input('assignees') set assigneeInput(val) {
     this.assignees = val;
   };

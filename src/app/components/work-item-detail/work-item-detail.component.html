@@ -101,7 +101,7 @@
                   <span *ngIf="loadingAssignees"
                     class="spinner spinner-sm spinner-inline">
                   </span>
-                  <f8-assignee *ngIf="!loadingAssignees"
+                  <f8-assignee *ngIf="!loadingAssignees" [showFullName]="true"
                     [assignees]="workItem.relationships?.assignees?.data ?
                       workItem.relationships?.assignees?.data : []">
                   </f8-assignee>

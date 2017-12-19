@@ -63,15 +63,9 @@
 
 <!-- Assignee -->
 <div *ngIf="col === 'assignees'" >
-  <div class="user-avatar pull-left margin-right-5"
-    *ngFor="let assignee of row.assignees">
-    <img placement="left"
-        tooltip="{{assignee?.attributes?.fullName}}"
-        src="{{assignee?.attributes?.imageURL + '&s=23'}}"
-        onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
-    <span class="pficon-user not-assigned-user-icon"
-        *ngIf="!row?.assignees?.length"
-        tooltip="Unassigned"
-        placement="left"></span>
-  </div>
+  <f8-assignee
+    [showFullName]="false"
+    [truncateAfter]="3"
+    [assignees]="row.assignees ? row.assignees : []"
+  ></f8-assignee>
 </div>
