@@ -55,11 +55,12 @@ import { WorkItemDataService } from './../../services/work-item-data.service';
 import { EventService } from './../../services/event.service';
 
 // ngrx stuff
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import * as states from './../../states/index.state';
-import * as reducers from './../../reducers/index.reducer';
-import * as effects from './../../effects/index.effects';
+import {
+  StoreModule
+} from '@ngrx/store';
+import { IterationState, initialState as initialIterationState } from './../../states/iteration.state';
+import { iterationReducer } from './../../reducers/iteration-reducer';
+
 
 let providers = [];
 
@@ -131,33 +132,12 @@ if (process.env.ENV == 'inmemory') {
     PlannerModalModule,
     NgxDatatableModule,
     StoreModule.forFeature('listPage', {
-        iterations: reducers.iterationReducer,
-        labels: reducers.LabelReducer,
-        areas: reducers.AreaReducer,
-        collaborators: reducers.CollaboratorReducer,
-        workItems: reducers.WorkItemReducer,
-        workItemTypes: reducers.WorkItemTypeReducer,
-        filters: reducers.FilterReducer
+        iterations: iterationReducer
       }, {
       initialState: {
-        iterations: states.initialIterationState,
-        labels: states.initialLabelState,
-        areas: states.initialAreaState,
-        collaborators: states.initialCollaboratorState,
-        workItems: states.initialWorkItemState,
-        workItemTypes: states.initialWorkItemTypeState,
-        filters: states.initialFilterState
+        iterations: initialIterationState
       }
-    }),
-    EffectsModule.forFeature([
-      effects.IterationEffects,
-      effects.LabelEffects,
-      effects.AreaEffects,
-      effects.CollaboratorEffects,
-      effects.WorkItemEffects,
-      effects.WorkItemTypeEffects,
-      effects.FilterEffects
-    ])
+    })
   ],
   declarations: [
     PlannerListComponent,

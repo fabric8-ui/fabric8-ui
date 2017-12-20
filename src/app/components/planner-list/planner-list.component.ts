@@ -67,14 +67,6 @@ import { WorkItemDetailAddTypeSelectorComponent } from './../work-item-create/wo
 // ngrx stuff
 import { Store } from '@ngrx/store';
 import { AppState } from './../../states/app.state';
-import * as IterationActions from './../../actions/iteration.actions';
-import * as LabelActions from './../../actions/label.actions';
-import * as AreaActions from './../../actions/area.actions';
-import * as CollaboratorActions from './../../actions/collaborator.actions';
-import * as WorkItemActions from './../../actions/work-item.actions';
-import * as WorkItemTypeActions from './../../actions/work-item-type.actions';
-import * as FilterAction from './../../actions/filter.actions';
-
 @Component({
   encapsulation: ViewEncapsulation.None,
   host: {
@@ -185,12 +177,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       console.log('####-1', val);
     })
 
-    this.store.dispatch(new IterationActions.Get());
-    this.store.dispatch(new LabelActions.Get());
-    this.store.dispatch(new AreaActions.Get());
-    this.store.dispatch(new CollaboratorActions.Get());
-    this.store.dispatch(new WorkItemTypeActions.Get());
-    this.store.dispatch(new FilterAction.Get());
     // If there is an iteration on the URL
     // Setting the value to currentIteration
     // BehaviorSubject so that we can compare
