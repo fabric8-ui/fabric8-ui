@@ -8,9 +8,6 @@ import { IterationService } from '../../services/iteration.service';
 import { IterationModel } from '../../models/iteration.model';
 import { Subscription } from 'rxjs/Subscription';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Store } from '@ngrx/store';
-import * as IterationActions from '../../actions/iteration.actions';
-import { IterationState } from '../../states/iteration.state';
 import {
   AfterViewChecked,
   Component,
@@ -121,7 +118,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   showHierarchyList: boolean = true;
   sidePanelOpen: boolean = true;
   private spaceSubscription: Subscription = null;
-  private iterations: IterationModel[];
+  private iterations: IterationModel[] = [];
   private areas: AreaModel[] = [];
   private nextLink: string = '';
   private wiSubscriber: any = null;
@@ -167,10 +164,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     private spaces: Spaces,
     private userService: UserService,
     private urlService: UrlService,
-    private renderer: Renderer2,
-    private store: Store<IterationState> ) {
-      store.dispatch(new IterationActions.Get());
-    }
+    private renderer: Renderer2) {}
 
   ngOnInit(): void {
     // If there is an iteration on the URL
@@ -406,7 +400,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     this.children = [];
     const t1 = performance.now();
     this.wiSubscriber = Observable.combineLatest(
-      this.store.select('iterations'),
+      this.iterationService.getIterations(),
       // this.collaboratorService.getCollaborators(),
       this.workItemService.getWorkItemTypes(),
       this.areaService.getAreas(),

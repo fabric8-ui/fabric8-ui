@@ -42,6 +42,10 @@ import { LoginService } from './services/login.service';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
+import {
+  StoreModule
+} from '@ngrx/store';
+
 // conditionally import the inmemory resource module
 let serviceImports: Array<any[] | any | ModuleWithProviders>;
 let providers: any[] = [
@@ -132,6 +136,7 @@ if (process.env.ENV == 'inmemory') {
     TruncateModule,
     HeaderModule,
     FooterModule,
+    StoreModule.forRoot({})
   ],
   declarations: [
     AppComponent,
