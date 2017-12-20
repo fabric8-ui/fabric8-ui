@@ -168,14 +168,14 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
 
-    // Cookie
+    // Cookie for datatableColumn config
     if(!this.cookieService.getCookie(datatableColumn.length).status) {
-      console.log('cookie',this.cookieService.getCookie(datatableColumn.length));
+      //console.log('cookie',this.cookieService.getCookie(datatableColumn.length));
       this.cookieService.setCookie('datatableColumn', datatableColumn);
       this.checkableColumn = datatableColumn;
       this.columns = this.checkableColumn;
     } else {
-      console.log('cookie',this.cookieService.getCookie(datatableColumn.length));
+      //console.log('cookie',this.cookieService.getCookie(datatableColumn.length));
       let temp = this.cookieService.getCookie(datatableColumn.length)
       this.checkableColumn = temp.array;
       this.columns = this.checkableColumn;
