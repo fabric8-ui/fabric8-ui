@@ -14,12 +14,12 @@
 <div
   *ngIf="editing"
   (click)="saveClick()"
-  class="fl btn btn-primary action-btn btn-save inlineinput-btn-save"
+  class="btn btn-primary action-btn btn-save inlineinput-btn-save"
   [class.disabled]="saving">
   <i class="fa fa-check"></i>
 </div>
 <div
-  class="fl btn btn-primary action-btn inlineinput-btn-cancel"
+  class="btn btn-default action-btn inlineinput-btn-cancel"
   *ngIf="editing"
   (click)="closeClick()">
   <i class="fa fa-close"></i>
