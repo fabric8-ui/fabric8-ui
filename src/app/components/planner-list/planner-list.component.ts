@@ -217,21 +217,12 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       }
     }
 
-    // To get the dropdown working
-    if (document.getElementsByClassName('planner-hack-dropdown').length) {
-      let arr = document.getElementsByClassName('planner-hack-dropdown');
-      for(let i = 0; i < arr.length; i++) {
-        arr[i].parentElement.parentElement.style.overflow = 'visible';
-      }
-    }
-
     if (document.getElementsByClassName('planner-hack-title-truncate').length) {
       let arr = document.getElementsByClassName('planner-hack-title-truncate');
       for(let i = 0; i < arr.length; i++) {
         arr[i].parentElement.style.display = 'flex';
       }
     }
-    // End of Hack
 
     if (document.getElementsByTagName('body')) {
       document.getElementsByTagName('body')[0].style.overflow = "hidden";

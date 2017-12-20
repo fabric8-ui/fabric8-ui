@@ -69,13 +69,16 @@
           [treeToRelation]="'id'"
           (scroll)="onScroll($event)"
           (treeAction)="onTreeAction($event)">
+          <!-- columns id-assignees -->
           <ngx-datatable-column
             *ngFor="let c of (columns | filterColumn:'display')"
             [isTreeColumn]="c.name==='Title'"
             [name]="c.name"
             [width]="c.width"
             [resizeable]="false"
-            [sortable]="c.name === 'Title'">
+            [sortable]="c.name === 'Title'"
+            [cellClass]="'cell-overflow'"
+            [headerClass]="'cell-overflow'">
               <ng-template ngx-datatable-cell-tree-expander *ngIf="c.name==='Title'">
                 <i class="fa fa-angle-right tree-icon"></i>
               </ng-template>
@@ -105,11 +108,14 @@
                   </work-item-cell>
               </ng-template>
           </ngx-datatable-column>
+          <!-- Last Column  -->
           <ngx-datatable-column
             [width]="120"
             [resizeable]="false"
             [headerTemplate]="headerTemplateN"
-            [sortable]="false">
+            [sortable]="false"
+            [cellClass]="'cell-overflow'"
+            [headerClass]="'cell-overflow'">
             <ng-template let-row="row"
               ngx-datatable-cell-template>
               <div class="dropdown-kebab-pf planner-hack-dropdown
@@ -174,9 +180,9 @@
         <ng-template #headerTemplateN>
         <div class="f8-wi-list__settings planner-hack-dropdown">
           <div class="dropdown-kebab-pf pull-right dropdown margin-left-10"
-                dropdown 
-                [autoClose]="false" 
-                [isOpen]="isTableConfigOpen" 
+                dropdown
+                [autoClose]="false"
+                [isOpen]="isTableConfigOpen"
                 (isOpenChange)="tableConfigChange($event)">
             <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
               <span class="fa fa-cog"></span>
