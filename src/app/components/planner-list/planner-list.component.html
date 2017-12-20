@@ -174,14 +174,17 @@
         <ng-template #headerTemplateN>
         <div class="f8-wi-list__settings planner-hack-dropdown">
           <div class="dropdown-kebab-pf pull-right dropdown margin-left-10"
-                dropdown [autoClose]="false" [isOpen]="isTableConfigOpen" (isOpenChange)="tableConfigChange($event)">
+                dropdown 
+                [autoClose]="false" 
+                [isOpen]="isTableConfigOpen" 
+                (isOpenChange)="tableConfigChange($event)">
             <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
               <span class="fa fa-cog"></span>
             </button>
             <div class="dropdown-menu-right dropdown-menu f8-wi-list__settings-dropdown" *dropdownMenu>
               <aside>
                 <i class="db text-right fa fa-close btn btn-link" (click)="tableConfigToggle($event)"></i>
-                <span class="db text-right fa fa-angle-double-up"
+                <!--<span class="db text-right fa fa-angle-double-up"
                   tooltip="Move to top"
                   (click)="moveToDisplay()">
                 </span>
@@ -196,7 +199,7 @@
                 <span class="db text-right fa fa-angle-double-down"
                   tooltip="Move to Down"
                   (click)="moveToAvailable()">
-                </span>
+                </span>-->
               </aside>
               <aside>
                 <small>Displayed Atrributes</small>
