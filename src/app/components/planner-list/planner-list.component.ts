@@ -171,7 +171,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     private userService: UserService,
     private urlService: UrlService,
     private renderer: Renderer2,
-    private store: Store<AppState> ) {}
+    private store: Store<AppState>) {}
 
   ngOnInit(): void {
 
