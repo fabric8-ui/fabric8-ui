@@ -1,3 +1,4 @@
+
 import { EventService } from './../../services/event.service';
 import { AreaModel } from '../../models/area.model';
 import { AreaService } from '../../services/area.service';
@@ -62,6 +63,10 @@ import { LabelModel } from '../../models/label.model';
 import { UrlService } from './../../services/url.service';
 import { CookieService } from './../../services/cookie.service';
 import { WorkItemDetailAddTypeSelectorComponent } from './../work-item-create/work-item-create.component';
+
+// ngrx stuff
+import { Store } from '@ngrx/store';
+import { AppState } from './../../states/app.state';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -164,9 +169,15 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     private spaces: Spaces,
     private userService: UserService,
     private urlService: UrlService,
-    private renderer: Renderer2) {}
+    private renderer: Renderer2,
+    private store: Store<AppState>) {}
 
   ngOnInit(): void {
+
+    this.store.subscribe((val) => {
+      console.log('####-1', val);
+    })
+
     // If there is an iteration on the URL
     // Setting the value to currentIteration
     // BehaviorSubject so that we can compare

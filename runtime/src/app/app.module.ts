@@ -1,3 +1,4 @@
+import { EffectsModule } from '@ngrx/effects';
 import './rxjs-extensions';
 
 import { ModuleWithProviders, NgModule } from '@angular/core';
