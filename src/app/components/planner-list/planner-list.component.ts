@@ -89,6 +89,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   datatableWorkitems: any[] = [];
   checkableColumn: any[];
   columns: any[];
+  isTableConfigOpen: boolean = false;
   workItems: WorkItem[] = [];
   prevWorkItemLength: number = 0;
   workItemTypes: WorkItemType[] = [];
@@ -1051,7 +1052,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     });
   }
 
-  // Settings dropdown
+  // Start: Settings(tableConfig) dropdown
 
   toggleAvailable(event, col) {
     if(event.target.checked) {
@@ -1096,6 +1097,19 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   isSelected() {
     return this.checkableColumn.filter(col => col.selected);
   }
+
+  tableConfigChange(value: boolean) {
+    this.isTableConfigOpen = value;
+  }
+
+  tableConfigToggle(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isTableConfigOpen = !this.isTableConfigOpen;
+  }
+
+  // End:  Setting(tableConfig) Dropdown
+
 
   togglePanelState(event: any): void {
     if (event === 'out') {
