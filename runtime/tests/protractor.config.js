@@ -3,14 +3,14 @@ let SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 exports.config = {
     useAllAngular2AppRoots: true,
     getPageTimeout: 30000,
+    directConnect: process.env.DIRECT_CONNECT === 'true',
     seleniumAddress: 'http://localhost:4444/wd/hub',
     specs: ['./../src/tests/**/*.spec.js'],
     exclude: ['./../src/tests/**/*test-template.spec.js','./../src/tests/**/*work-item-dynamic-fields.spec.js','./../src/tests/**/EXCLUDED/*.spec.js'],
     suites: {
-      smokeTest: './../src/tests/**/smokeTest.spec.js',
-      fullTest:  './../src/tests/**/*.spec.js'
+        smokeTest: './../src/tests/**/smokeTest.spec.js',
+        fullTest:  './../src/tests/**/*.spec.js'
     },
-
     jasmineNodeOpts: {
         isVerbose: true,
         showColors: true,
@@ -19,33 +19,29 @@ exports.config = {
         print: function () {
         }
     },
-
     troubleshoot: true,
-
     capabilities: {
-      'browserName': 'chrome',
-//      'maxInstances': 2,
-      'shardTestFiles': true,
-      'loggingPrefs': {
-      'driver': 'WARNING',
-      'server': 'WARNING',
-      'browser': 'INFO'
-      },
-      'chromeOptions': {
-//      'args': [ '--no-sandbox', '--window-workspace=1']
-       'args': [ '--no-sandbox']
-      }
+        'browserName': 'chrome',
+        'shardTestFiles': true,
+        'loggingPrefs': {
+            'driver': 'WARNING',
+            'server': 'WARNING',
+            'browser': 'INFO'
+        },
+        'chromeOptions': {
+            'args': process.env.HEADLESS_MODE === 'true'? ['--no-sandbox', '--headless'] : ['--no-sandbox']
+        }
     },
 
     onPrepare: function () {
-      jasmine.getEnv().addReporter(new SpecReporter({
+        jasmine.getEnv().addReporter(new SpecReporter({
         spec: {
-          displayStacktrace: true,
-          displayDuration: true,
+            displayStacktrace: true,
+            displayDuration: true,
         },
         summary: {
-          displayDuration: true
+            displayDuration: true
         }
-      }));
+        }));
     }
 };

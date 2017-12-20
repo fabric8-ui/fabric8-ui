@@ -33,6 +33,8 @@
     "watch:dev": "npm run build:dev -- --watch",
     "watch:prod": "npm run build:prod -- --watch",
     "watch": "npm run watch:dev",
+    "webdriver:start": "webdriver-manager start --versions.chrome 2.33",
+    "webdriver:update": "webdriver-manager update --versions.chrome 2.33",
     "webpack-dev-server": "webpack-dev-server",
     "webpack": "webpack",
     "test:unit": "karma start tests/karma.conf.js",

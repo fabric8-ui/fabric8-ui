@@ -39,10 +39,10 @@ class WorkItemListPage {
       refresh_token: 'somerandomtoken',
       token_type: "bearer"
     }));
-    browser.get("http://localhost:8088/?token_json="+url);
+    browser.get(browser.baseUrl + "/?token_json="+url);
   }
    else {
-     browser.get("http://localhost:8088/");
+     browser.get(browser.baseUrl);
    }
  };
 
@@ -59,7 +59,7 @@ class WorkItemListPage {
  }
 
  workItemByURLId (workItemId) {
-   browser.get("http://localhost:8088/work-item/list/detail/"+ workItemId);
+   browser.get(browser.baseUrl + "/work-item/list/detail/"+ workItemId);
     var theDetailPage = new WorkItemDetailPage (workItemId);
  }
  clickCodeMenuTab () {

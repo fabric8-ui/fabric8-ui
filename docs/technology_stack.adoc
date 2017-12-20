@@ -27,7 +27,7 @@ Build System::
 We use both *Gulp* and webpack for building the source. While *Gulp* takes care of the library builds, webpack is used for building the (minimal) `*_./runtime_*` to use the library, which makes *Planner* work as a standalone app. The build system works as intended for now, but can be expanded to use more sophisticated switches to build according to different needs (dev, tests, prod etc).
 
 Test Framework::
-Our test stack is built with *Karma*, *Protractor* and *Google Chrome*. *Google Chrome* provides the browser engine to run the app over link:https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml[*Xvfb*]. *Protractor* interacts with it as a *WebDriverJS* wrapper and runs the tests according to *Karma's* configurations.
+Our test stack is built with *Karma*, *Protractor* and *Google Chrome*. *Google Chrome* provides the browser engine to run the tests. *Protractor* interacts with it as a *WebDriverJS* wrapper and runs the tests according to *Karma's* configurations.
 
 Each `*_filename.ts_*` file is supposed to have unit tests along with them as a `*_filename.spec.ts_*` in the same parent directory. The functional tests reside inside `*_./runtime/tests/_*`. For more details about running the tests, please look into link:./testing.adoc[Testing Documentation].
 
