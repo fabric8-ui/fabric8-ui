@@ -146,6 +146,7 @@ if (process.env.ENV == 'inmemory') {
     }),
     HeaderModule,
     FooterModule,
+    StoreModule.forRoot({})
   ],
   declarations: [
     AppComponent,
