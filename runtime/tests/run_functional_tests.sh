@@ -32,7 +32,7 @@ main() {
     echo
   fi
 
-  if [[ ${HEADLES_MODE:-false} == false ]]; then
+  if [[ ${HEADLES_MODE:-false} == true ]]; then
     echo "HEADLESS_MODE is set. Chrome will run in headless mode"
     echo
   fi
