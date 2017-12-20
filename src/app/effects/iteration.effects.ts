@@ -7,14 +7,16 @@ import { Action } from '@ngrx/store';
 
 @Injectable()
 export class IterationEffects {
-  constructor( private actions$ : Actions, 
+  constructor( private actions$ : Actions,
                private iterationService : IterationService ) {
   }
 
   @Effect() getIterations$ : Observable<Action> = this.actions$
     .ofType(IterationActions.GET)
-    .switchMap(action =>
-      this.iterationService.getIterations()
+    .switchMap(action => {
+      console.log('####-2', action);
+      return this.iterationService.getIterations()
            .map(iterations => (new IterationActions.GetSuccess(iterations)))
-           .catch(() => Observable.of(new IterationActions.GetError())));
+           .catch(() => Observable.of(new IterationActions.GetError()))
+    });
 }

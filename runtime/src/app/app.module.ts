@@ -137,7 +137,8 @@ if (process.env.ENV == 'inmemory') {
     TruncateModule,
     HeaderModule,
     FooterModule,
-    StoreModule.forRoot({})
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([])
   ],
   declarations: [
     AppComponent,
