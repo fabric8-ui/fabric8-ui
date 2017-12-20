@@ -69,7 +69,7 @@ import { setTimeout } from 'core-js/library/web/timers';
   },
   selector: 'alm-work-item-list',
   templateUrl: './planner-list.component.html',
-  styleUrls: ['./planner-list.component.less']
+  styleUrls: ['./planner-list.component.less' ]
 })
 export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChildren('activeFilters', { read: ElementRef }) activeFiltersRef: QueryList<ElementRef>;
@@ -84,8 +84,10 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   selectType: string = 'checkbox';
   @ViewChild('toolbarHeight') toolbarHeight: ElementRef;
   @ViewChild('containerHeight') containerHeight: ElementRef;
+  @ViewChild('myTable') table: any;
 
 
+  expanded: any = {};
   datatableWorkitems: any[] = [];
   checkableColumn: any[];
   columns: any[];
@@ -1016,6 +1018,15 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   //ngx-datatable methods
 
+  toggleExpandRow(row) {
+    console.log('Toggled Expand Row!', row);
+    this.table.rowDetail.toggleExpandRow(row);
+  }
+
+  onDetailToggle(event) {
+    console.log('Detail Toggled', event);
+  }
+
   onDetailPreview(id): void {
     event.stopPropagation();
     this.workItemDataService.getItem(id).subscribe(workItem => {
@@ -1096,11 +1107,10 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   tableConfigToggle(event: MouseEvent) {
     event.preventDefault();
     event.stopPropagation();
-    this.isTableConfigOpen = !this.isTableConfigOpen;
+    this.isTableConfigOpen = false;
   }
 
   // End:  Setting(tableConfig) Dropdown
-
 
   togglePanelState(event: any): void {
     if (event === 'out') {

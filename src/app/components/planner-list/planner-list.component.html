@@ -58,8 +58,8 @@
       <div class="f8-wi-list-wrap"
         #listContainer>
         <!-- ngx-datatable -->
-        <ngx-datatable
-          class="fullscreen"
+        <ngx-datatable #myTable
+          class="material fullscreen"
           [columnMode]="'force'"
           [scrollbarH]="true"
           [scrollbarV]="true"
@@ -69,6 +69,30 @@
           [treeToRelation]="'id'"
           (scroll)="onScroll($event)"
           (treeAction)="onTreeAction($event)">
+          <!-- First Column - quick Add - row detail -->
+          <ngx-datatable-row-detail [rowHeight]="100" #myDetailRow (toggle)="onDetailToggle($event)">
+            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+              <div style="padding-left:35px;">
+                {{expanded}} Woot! Woot!
+              </div>
+            </ng-template>
+          </ngx-datatable-row-detail>
+          <!-- First Column -->
+          <ngx-datatable-column
+              [width]="50"
+              [resizeable]="false"
+              [sortable]="false"
+              [cellClass]="'cell-overflow'">
+              <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+                <a
+                  href="javascript:void(0)"
+                  [class.pficon-add-circle-o]="!expanded"
+                  [class.pficon-close]="expanded"
+                  tooltip="Quick Add"
+                  (click)="toggleExpandRow(row)">
+                </a>
+              </ng-template>
+          </ngx-datatable-column>
           <!-- columns id-assignees -->
           <ngx-datatable-column
             *ngFor="let c of (columns | filterColumn:'display')"
