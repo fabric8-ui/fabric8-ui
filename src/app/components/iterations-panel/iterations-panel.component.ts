@@ -9,7 +9,6 @@ import { Component, OnInit, OnDestroy,
 import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
-import { DragulaService } from 'ng2-dragula';
 
 import { GroupTypesService } from '../../services/group-types.service';
 import { IterationService } from '../../services/iteration.service';
@@ -53,7 +52,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   allIterations: IterationModel[] = [];
   eventListeners: any[] = [];
   currentSelectedIteration: string = '';
-  dragulaEventListeners: any[] = [];
   masterIterations;
   treeIterations;
   activeIterations:IterationModel[] = [];
@@ -66,7 +64,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     private log: Logger,
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
-    private dragulaService: DragulaService,
     private filterService: FilterService,
     private groupTypesService: GroupTypesService,
     private iterationService: IterationService,
@@ -75,43 +72,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     private spaces: Spaces,
     private workItemDataService: WorkItemDataService,
     private workItemService: WorkItemService) {
-      let bag: any = this.dragulaService.find('wi-bag');
-      this.dragulaEventListeners.push(
-        this.dragulaService.drop
-        .map(value => value.slice(1))
-        .filter(value => {
-          return value[1].classList.contains('f8-itr') &&
-                 !value[1].classList.contains('f8-itr__panel-hdr');
-        })
-        .subscribe((args) => this.onDrop(args)),
-
-        this.dragulaService.over
-        .map(value => value.slice(1))
-        .filter(value => {
-          return value[1].classList.contains('f8-itr') ||
-                 value[1].classList.contains('f8-itr__panel-hdr');
-        })
-        .subscribe((args) => {
-          this.onOver(args);
-        }),
-
-        this.dragulaService.out
-        .map(value => value.slice(1))
-        .filter(value => {
-          return value[1].classList.contains('f8-itr');
-        })
-        .subscribe(args => {
-          this.onOut(args);
-        })
-      );
-      if(bag !== undefined) {
-        this.dragulaService.destroy('wi-bag');
-      }
-      this.dragulaService.setOptions('wi-bag', {
-        moves: (el, container, handle) => {
-          return !container.classList.contains('f8-itr');
-        }
-      });
     }
 
   ngOnInit(): void {
@@ -150,6 +110,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       showCheckbox: false,
       treeOptions: {
         allowDrag: false,
+        allowDrop: false,
         isExpandedField: 'expanded'
       }
     } as TreeListConfig;
@@ -172,7 +133,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
     this.spaceSubscription.unsubscribe();
-    this.dragulaEventListeners.forEach(subscriber => subscriber.unsubscribe());
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
@@ -314,33 +274,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         }
       });
     }, err => console.log(err));
-  }
-
-  onDrop(args) {
-    let [el, target, source, sibling] = args;
-    let iterationId = target.getAttribute('data-id');
-    let workItemId = el.getAttribute('data-UUID');
-    let reqVersion = el.getAttribute('data-version');
-    let selfLink = el.getAttribute('data-selfLink');
-    this.assignWIToIteration(workItemId, parseInt(reqVersion), iterationId, selfLink);
-    target.classList.remove('on-hover-background');
-  }
-
-  onOver(args) {
-    let [el, container, source] = args;
-    el.classList.add('hide');
-    if(container.getAttribute('id') === 'f8-itr__panel-future-hdr') {
-      //this.isCollapsedFutureIteration = false;
-    } else if(container.getAttribute('id') === 'f8-itr__panel-past-hdr') {
-      //this.isCollapsedPastIteration = false;
-    } else {
-      container.classList.add('on-hover-background');
-    }
-  }
-
-  onOut(args) {
-    let [el, container, source] = args;
-    container.classList.remove('on-hover-background');
   }
 
   assignWIToIteration(workItemId: string, reqVersion: number, iterationID: string, selfLink: string) {
