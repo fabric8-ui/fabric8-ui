@@ -147,7 +147,11 @@ if (process.env.ENV == 'inmemory') {
     HeaderModule,
     FooterModule,
     StoreModule.forRoot({}),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25 //  Retains last 25 states
+    })
   ],
   declarations: [
     AppComponent,
