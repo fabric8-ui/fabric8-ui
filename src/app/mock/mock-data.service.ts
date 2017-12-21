@@ -270,6 +270,14 @@ export class MockDataService {
               'type': 'identities'
             }
           },
+          'children': {
+            'links': {
+              'related': 'http://mock.service/api/workitems/id' + localWorkItem.id + '/childs'
+            },
+            'meta': {
+              'hasChildren': false, // the first two work items will have childs
+            }
+          }
         };
     if (entity.data.relationships.baseType.data) {
       // existing type on entity
