@@ -69,7 +69,7 @@ import { setTimeout } from 'core-js/library/web/timers';
   },
   selector: 'alm-work-item-list',
   templateUrl: './planner-list.component.html',
-  styleUrls: ['./planner-list.component.less' ]
+  styleUrls: ['./planner-list.component.less']
 })
 export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChildren('activeFilters', { read: ElementRef }) activeFiltersRef: QueryList<ElementRef>;

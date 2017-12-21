@@ -1,3 +1,68 @@
+<!-- Table Inline Quick Add -->
+<div class="col-xs-12 col-sm-12 col-md-12 f8-quickadd__wiblk"
+*ngIf="wilistview === 'wi-table-view'">
+<!-- type dropdown -->
+<div class="dropdown-kebab-pf pull-left" dropdown>
+  <button class="btn btn-default dropdown-toggle padding-v-0"
+    type="button"
+    dropdownToggle>
+    <i class="fa dib"
+      [ngClass]="selectedType?selectedType.attributes.icon:''"></i>&nbsp;{{selectedType?selectedType.attributes.name:''}}
+    <span class="fa fa-angle-down"></span>
+  </button>
+  <ul class="dropdown-menu"
+    role="menu"
+    aria-labelledby="dropdownKebab"
+    *dropdownMenu>
+    <li *ngFor="let type of availableTypes"
+        role="menuitem"
+        (click)="selectType($event, type)">
+      <a class="dropdown-item" href="#">
+        <i class="fa pull-left"
+          [ngClass]="type.attributes.icon"></i>&nbsp;{{type.attributes.name}}
+      </a>
+    </li>
+  </ul>
+</div>
+<div class="f8-quickadd__wiblk-story">
+  <div class="col-xs-12 col-sm-6 col-md-4
+    f8-quickadd__wiblk-storyinput">
+    <input class="form-control col-xs-12 col-sm-12
+      col-md-12 f8-quickadd-input"
+      type="text"
+      placeholder="Work Item Title"
+      #quickAddTitle
+      [(ngModel)]="workItem.attributes['system.title']"
+      (keyup.enter)="save($event)"
+      (keyup)="checkTitle()"  required/>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-4 mobdn">
+    <textarea
+      class="form-control pull-left f8-quickadd-desc"
+      type="text"
+      rows="1"
+      placeholder="Work Item Description"
+      #quickAddDesc
+      [(ngModel)]="workItem.attributes['system.description']"
+      [style.height]="descHeight"
+      [style.resize]="descResize"
+      (keydown.enter)="save($event)"
+      (keyup.enter)="preventDef($event)"
+      (keyup)="checkDesc()">
+    </textarea>
+  </div>
+</div>
+<div class="f8-quickadd__wiblk-btn pull-left">
+  <button class="btn btn-primary pull-left f8-quickadd__wiblk-btn-add"
+    #quickAddSubmit
+    [ngClass]="{'': validTitle,'disabled':!validTitle}"
+    (click)="save($event)">
+    Add
+  </button>
+</div>
+</div>
+
+<!-- List View Quick -->
 <div class="col-xs-12 col-sm-12 col-md-12
   f8-quickadd f8-quickadd-container"
   *ngIf="wilistview === 'wi-list-view'" >

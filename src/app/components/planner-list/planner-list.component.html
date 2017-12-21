@@ -70,10 +70,17 @@
           (scroll)="onScroll($event)"
           (treeAction)="onTreeAction($event)">
           <!-- First Column - quick Add - row detail -->
-          <ngx-datatable-row-detail [rowHeight]="100" #myDetailRow (toggle)="onDetailToggle($event)">
+          <ngx-datatable-row-detail [rowHeight]="70" #myDetailRow (toggle)="onDetailToggle($event)">
             <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-              <div style="padding-left:35px;">
-                {{expanded}} Woot! Woot!
+              <div class="f8-wi-list__quick-add-table width-100 pull-left"
+                id="workItemList_quickAdd_inline"
+                *ngIf="loggedIn"
+                #quickaddHeight>
+                <alm-work-item-quick-add
+                  [wilistview]="'wi-table-view'"
+                  (close)="close($event)"
+                  (workItemCreate)="onCreateWorkItem($event)">
+                </alm-work-item-quick-add>
               </div>
             </ng-template>
           </ngx-datatable-row-detail>
@@ -82,7 +89,8 @@
               [width]="50"
               [resizeable]="false"
               [sortable]="false"
-              [cellClass]="'cell-overflow'">
+              [cellClass]="'cell-overflow'"
+              [frozenLeft]="false">
               <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
                 <a
                   href="javascript:void(0)"
@@ -139,7 +147,8 @@
             [headerTemplate]="headerTemplateN"
             [sortable]="false"
             [cellClass]="'cell-overflow'"
-            [headerClass]="'cell-overflow'">
+            [headerClass]="'cell-overflow'"
+            [frozenRight]="false">
             <ng-template let-row="row"
               ngx-datatable-cell-template>
               <div class="dropdown-kebab-pf planner-hack-dropdown
