@@ -255,34 +255,37 @@ class WorkItemListPage {
   /* Page elements - work item list */
 
   get allWorkItems () {
-    return element.all(by.css(".work-item-list-entry"));
+    // return element.all(by.css(".work-item-list-entry"));
+    return element.all(by.css(".wi-detail-title>p"));
   }
 
   /* xpath = //alm-work-item-list-entry[.//text()[contains(.,'Some Title 6')]]   */
   workItemByTitle (titleString) {
     // return element(by.xpath("//alm-work-item-list-entry[.//text()[contains(.,'" + titleString + "')]]"));
-    return element(by.xpath("//tree-node[.//text()='" + titleString + "']"));
+    return element(by.xpath("//*[@class='wi-detail-title']/p[text()=' " + titleString + " ']"));
   }
 
   get firstWorkItem () {
-    return element.all(by.css(".work-item-list-entry")).first();
+    return element.all(by.css(".wi-detail-title>p")).first();
   }
 
   get lastWorkItem () {
-    return element.all(by.css(".work-item-list-entry")).last();
+    return element.all(by.css(".wi-detail-title>p")).last();
   }
 
   /* Title element relative to a workitem */
-  workItemTitle (workItemElement) {
-    return workItemElement.element(by.css(".f8-wi__list-title")).element(by.css("p")).getText();
+  workItemTitle () {
+    // return workItemElement.element(by.css(".f8-wi__list-title")).element(by.css("p")).getText();
+    return element.all(by.css(".wi-detail-title>p")).first().getText();
   }
 
   clickWorkItemTitle (title) {
-    return this.clickWorkItem(this.workItemByTitle(title));
+     this.workItemByTitle(title).click()
+     return new WorkItemDetailPage();     
   }
 
   clickWorkItem(workItemElement) {
-    workItemElement.$$(".f8-wi__list-description").first().element(by.css("p")).click()
+    workItemElement.$$(".f8-wi__list-description").first().element(by.css("p")).click();
     return new WorkItemDetailPage();
   }
 
