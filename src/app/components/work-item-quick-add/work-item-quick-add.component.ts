@@ -38,6 +38,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
   @ViewChildren('quickAddTitle', {read: ElementRef}) qaTitleRef: QueryList<ElementRef>;
   @ViewChild('quickAddSubmit') qaSubmit: any;
 
+  @Input() WIType: WorkItemType[];
   @Input() wilistview: string = 'wi-list-view';
   @Input() forcedType: WorkItemType = null;
   @Output('workItemCreate') workItemCreate = new EventEmitter();
@@ -80,8 +81,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
       if (space) {
         this.showQuickAddBtn = true;
         // get the available types for this space
-        this.workItemService.getWorkItemTypes().first().subscribe((workItemTypes: WorkItemType[]) => {
-          this.allWorkItemTypes = workItemTypes;
+          this.allWorkItemTypes = this.WIType;
           this.availableTypes = cloneDeep(this.allWorkItemTypes);
           if (this.forcedType) {
             this.selectedType = this.forcedType;
@@ -89,7 +89,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
             // the first entry is the default entry for now
             this.selectedType = this.availableTypes[0];
           }
-        });
       } else {
         this.showQuickAddBtn = false;
       }

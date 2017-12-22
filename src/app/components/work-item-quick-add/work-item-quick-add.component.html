@@ -1,8 +1,10 @@
 <!-- Table Inline Quick Add -->
 <div class="col-xs-12 col-sm-12 col-md-12 f8-quickadd__wiblk"
 *ngIf="wilistview === 'wi-table-view'">
+<b class="pull-left" style="padding-right: 20px;">Add Child Work Item</b>
 <!-- type dropdown -->
-<div class="dropdown-kebab-pf pull-left" dropdown>
+<div class="pull-left">
+<div class="dropdown-kebab-pf" dropdown>
   <button class="btn btn-default dropdown-toggle padding-v-0"
     type="button"
     dropdownToggle>
@@ -24,8 +26,9 @@
     </li>
   </ul>
 </div>
+</div>
 <div class="f8-quickadd__wiblk-story">
-  <div class="col-xs-12 col-sm-6 col-md-4
+  <div class="col-xs-12 col-sm-6 col-md-6
     f8-quickadd__wiblk-storyinput">
     <input class="form-control col-xs-12 col-sm-12
       col-md-12 f8-quickadd-input"
@@ -36,29 +39,20 @@
       (keyup.enter)="save($event)"
       (keyup)="checkTitle()"  required/>
   </div>
-  <div class="col-xs-12 col-sm-6 col-md-4 mobdn">
-    <textarea
-      class="form-control pull-left f8-quickadd-desc"
-      type="text"
-      rows="1"
-      placeholder="Work Item Description"
-      #quickAddDesc
-      [(ngModel)]="workItem.attributes['system.description']"
-      [style.height]="descHeight"
-      [style.resize]="descResize"
-      (keydown.enter)="save($event)"
-      (keyup.enter)="preventDef($event)"
-      (keyup)="checkDesc()">
-    </textarea>
-  </div>
 </div>
 <div class="f8-quickadd__wiblk-btn pull-left">
-  <button class="btn btn-primary pull-left f8-quickadd__wiblk-btn-add"
+  <button class="btn btn-primary pull-left f8-quickadd__wiblk-btn-add margin-right-20"
     #quickAddSubmit
     [ngClass]="{'': validTitle,'disabled':!validTitle}"
     (click)="save($event)">
     Add
   </button>
+  <button class="btn btn-primary pull-left f8-quickadd__wiblk-btn-add"
+    #quickAddSubmit
+    [ngClass]="{'': validTitle,'disabled':!validTitle}"
+    (click)="save($event)">
+    Add and Open
+</button>
 </div>
 </div>
 

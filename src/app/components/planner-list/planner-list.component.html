@@ -67,6 +67,9 @@
           [rowHeight]="contentItemHeight"
           [treeFromRelation]="'parentId'"
           [treeToRelation]="'id'"
+          [selected]="selected"
+          [selectionType]="'single'"
+          (select)="onSelect($event)"
           (scroll)="onScroll($event)"
           (treeAction)="onTreeAction($event)">
           <!-- First Column - quick Add - row detail -->
@@ -77,6 +80,7 @@
                 *ngIf="loggedIn"
                 #quickaddHeight>
                 <alm-work-item-quick-add
+                  [WIType]="workItemTypes"
                   [wilistview]="'wi-table-view'"
                   (close)="close($event)"
                   (workItemCreate)="onCreateWorkItem($event)">
@@ -299,6 +303,7 @@
         *ngIf="loggedIn"
         #quickaddHeight>
         <alm-work-item-quick-add
+          [WIType]="workItemTypes"
           [wilistview]="'wi-list-view'"
           (close)="close($event)"
           (workItemCreate)="onCreateWorkItem($event)">

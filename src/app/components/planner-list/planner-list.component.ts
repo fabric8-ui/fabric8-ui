@@ -86,7 +86,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   @ViewChild('containerHeight') containerHeight: ElementRef;
   @ViewChild('myTable') table: any;
 
-
+  selected: any = [];
   expanded: any = {};
   datatableWorkitems: any[] = [];
   checkableColumn: any[];
@@ -1018,13 +1018,21 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   //ngx-datatable methods
 
+  onSelect({ selected }) {
+    //console.log('Select Event', selected, this.selected);
+    this.workItemDataService.getItem(selected[0].id).subscribe(workItem => {
+      this.workItemService.emitSelectedWI(workItem);
+      this.groupTypesService.getAllowedChildWits(workItem);
+    });
+  }
+
   toggleExpandRow(row) {
-    console.log('Toggled Expand Row!', row);
+     //console.log('Toggled Expand Row!', row);
     this.table.rowDetail.toggleExpandRow(row);
   }
 
   onDetailToggle(event) {
-    console.log('Detail Toggled', event);
+    //console.log('Detail Toggled', event);
   }
 
   onDetailPreview(id): void {
