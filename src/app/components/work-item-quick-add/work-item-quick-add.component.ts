@@ -37,10 +37,19 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
   @ViewChild('quickAddDesc') qaDesc: any;
   @ViewChildren('quickAddTitle', {read: ElementRef}) qaTitleRef: QueryList<ElementRef>;
   @ViewChild('quickAddSubmit') qaSubmit: any;
-
-  @Input() WIType: WorkItemType[];
+  @Input('WITypes') set WITypeSetter(val: WorkItemType[]) {
+    this.allWorkItemTypes = val;
+    this.availableTypes = cloneDeep(this.allWorkItemTypes);
+    if(this.availableTypes.length){
+      this.selectedType = this.availableTypes[0];
+    }
+  };
   @Input() wilistview: string = 'wi-list-view';
-  @Input() forcedType: WorkItemType = null;
+  @Input() set forcedType(val: WorkItemType) {
+    if (this.forcedType) {
+      this.selectedType = this.forcedType;
+    }
+  };
   @Output('workItemCreate') workItemCreate = new EventEmitter();
 
   error: any = false;
@@ -77,28 +86,10 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
     this.showQuickAdd = false;
     this.showQuickAddBtn = this.auth.isLoggedIn();
     this.listenToEvents();
-    this.spaceSubscription = this.spaces.current.subscribe(space => {
-      if (space) {
-        this.showQuickAddBtn = true;
-        // get the available types for this space
-          this.allWorkItemTypes = this.WIType;
-          this.availableTypes = cloneDeep(this.allWorkItemTypes);
-          if (this.forcedType) {
-            this.selectedType = this.forcedType;
-          } else {
-            // the first entry is the default entry for now
-            this.selectedType = this.availableTypes[0];
-          }
-      } else {
-        this.showQuickAddBtn = false;
-      }
-    });
-
   }
 
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
-    this.spaceSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {

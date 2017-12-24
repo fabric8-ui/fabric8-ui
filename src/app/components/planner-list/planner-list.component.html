@@ -80,7 +80,7 @@
                 *ngIf="loggedIn"
                 #quickaddHeight>
                 <alm-work-item-quick-add
-                  [WIType]="workItemTypes"
+                  [WITypes]="workItemTypes"
                   [wilistview]="'wi-table-view'"
                   (close)="close($event)"
                   (workItemCreate)="onCreateWorkItem($event)">
@@ -303,7 +303,7 @@
         *ngIf="loggedIn"
         #quickaddHeight>
         <alm-work-item-quick-add
-          [WIType]="workItemTypes"
+          [WITypes]="workItemTypes"
           [wilistview]="'wi-list-view'"
           (close)="close($event)"
           (workItemCreate)="onCreateWorkItem($event)">
