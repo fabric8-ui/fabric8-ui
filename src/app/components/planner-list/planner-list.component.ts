@@ -697,6 +697,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       ...this.tableWorkitem([this.workItems[0]]),
       ...this.datatableWorkitems
     ];
+    this.workItemDataService.setItems([this.workItems[0]]);
   }
 
   onMoveToTop(id: string): void {
