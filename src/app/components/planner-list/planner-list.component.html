@@ -96,11 +96,10 @@
               [cellClass]="'cell-overflow'"
               [frozenLeft]="false">
               <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-                <a
+                <a class="quick-add-icon"
                   href="javascript:void(0)"
                   [class.pficon-add-circle-o]="!expanded"
                   [class.pficon-close]="expanded"
-                  tooltip="Quick Add"
                   (click)="toggleExpandRow(row)">
                 </a>
               </ng-template>

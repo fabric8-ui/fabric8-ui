@@ -241,6 +241,36 @@ button.btn.btn-link.dropdown-toggle:focus {
   width: 100%;
 }
 
+a.quick-add-icon, .f8-action-icon {
+  opacity: 0;
+  text-decoration: none;
+}
+
+.ngx-datatable.material.single-selection .datatable-body-row.active,
+.ngx-datatable.material.single-selection .datatable-body-row.active .datatable-row-group,{
+    background-color: @color-pf-black-300 !important;
+}
+
+.ngx-datatable.material.single-selection .datatable-body-row.active:hover,
+.ngx-datatable.material.single-selection .datatable-body-row.active:hover .datatable-row-group, {
+    background-color: @color-pf-black-300 !important; 
+}
+
+.ngx-datatable.material.single-selection .datatable-body-row.active:focus,
+.ngx-datatable.material.single-selection .datatable-body-row.active:focus .datatable-row-group{
+    background-color: @color-pf-black-300 !important;
+}
+
+.datatable-body-row:hover .wi-detail-icon {
+  opacity: 1;
+}
+.datatable-body-row:hover .f8-action-icon {
+  opacity: 1;
+}
+.datatable-body-row:hover a.quick-add-icon {
+  opacity: 1;
+}
+
 .datatable-body-cell ,
 .datatable-header-cell {
   border-right: 1px solid;
