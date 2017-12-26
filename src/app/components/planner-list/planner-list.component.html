@@ -253,7 +253,7 @@
               <aside>
                 <small>Displayed Atrributes</small>
                 <ul class="f8-wi-list__settings-column">
-                  <li *ngFor='let col of (columns | filterColumn: "display")'>
+                  <li *ngFor='let col of (columns | filterColumn: "showInDisplay")'>
                     <input
                       type='checkbox'
                       [id]="col.name"
