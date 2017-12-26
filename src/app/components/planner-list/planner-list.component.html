@@ -110,8 +110,8 @@
             *ngFor="let c of (columns | filterColumn:'display')"
             [isTreeColumn]="c.name==='Title'"
             [name]="c.name"
-            [width]="c.width"
             [resizeable]="false"
+            [width]="c.width"
             [sortable]="c.name === 'Title'"
             [cellClass]="'cell-overflow'"
             [headerClass]="'header-cell'">

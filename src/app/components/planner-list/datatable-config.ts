@@ -6,7 +6,7 @@ export const datatableColumn = [{
   display: true,
   flexGrow: 0.4,
   maxWidth: 50,
-  width: 100,
+  width: 60,
 }, {
   name: 'Type',
   prop: 'type',
@@ -16,7 +16,7 @@ export const datatableColumn = [{
   flexGrow: 1.5,
   maxWidth: undefined,
   minWidth: undefined,
-  width: 200,
+  width: 165,
 }, {
   name: 'Title',
   prop: 'title',
@@ -46,7 +46,7 @@ export const datatableColumn = [{
   flexGrow: 1,
   maxWidth: undefined,
   minWidth: undefined,
-  width: 150,
+  width: 120,
 }, {
   name: 'Iteration',
   prop: 'iteration',
@@ -66,7 +66,7 @@ export const datatableColumn = [{
   flexGrow: 0.6,
   maxWidth: undefined,
   minWidth: undefined,
-  width: 100,
+  width: 75,
 }, {
   name: 'Assignees',
   prop: 'assignees',
@@ -76,7 +76,7 @@ export const datatableColumn = [{
   flexGrow: 0.8,
   maxWidth: undefined,
   minWidth: undefined,
-  width: 150,
+  width: 145,
 }]
 
 
