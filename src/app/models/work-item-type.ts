@@ -1,3 +1,5 @@
+import { Space } from "ngx-fabric8-wit";
+
 export class WorkItemType {
     id: string;
     type: string;
@@ -8,6 +10,12 @@ export class WorkItemType {
         icon: string;
         fields: Map<string, WorkItemTypeField>;
     };
+    relationships? : {
+      guidedChildTypes?: {
+        data?: WorkItemType[]
+      },
+      space?: Space
+    }
 }
 
 export class WorkItemTypeField {

@@ -80,7 +80,9 @@
                 *ngIf="loggedIn"
                 #quickaddHeight>
                 <alm-work-item-quick-add
-                  [WITypes]="workItemTypes"
+                  [WITypes]="getChildWorkItemTypes(
+                    row?.type?.data?.relationships?.guidedChildTypes?.data
+                  )"
                   [wilistview]="'wi-table-view'"
                   (close)="close($event)"
                   (workItemCreate)="onCreateWorkItem($event)">
@@ -100,7 +102,11 @@
                   href="javascript:void(0)"
                   [class.pficon-add-circle-o]="!expanded"
                   [class.pficon-close]="expanded"
-                  (click)="toggleExpandRow(row)">
+                  [class.disabled]="!!!row?.type?.data?.relationships?.guidedChildTypes"
+                  (click)="toggleExpandRow(
+                    row,
+                    !!row?.type?.data?.relationships?.guidedChildTypes
+                  )">
                 </a>
               </ng-template>
           </ngx-datatable-column>

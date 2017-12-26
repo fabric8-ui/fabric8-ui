@@ -1027,9 +1027,11 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     });
   }
 
-  toggleExpandRow(row) {
-     //console.log('Toggled Expand Row!', row);
-    this.table.rowDetail.toggleExpandRow(row);
+  toggleExpandRow(row, quickAddEnabled = true) {
+    if (quickAddEnabled) {
+      // console.log('Toggled Expand Row!', row);
+      this.table.rowDetail.toggleExpandRow(row);
+    }
   }
 
   onDetailToggle(event) {
@@ -1179,6 +1181,16 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     } else {
       this.datatableWorkitems[index].treeStatus = 'collapsed';
       this.datatableWorkitems = [...this.datatableWorkitems];
+    }
+  }
+
+  getChildWorkItemTypes(types: WorkItemType[]) {
+    if (types) {
+      return this.workItemTypes.filter((item: WorkItemType) => {
+        return types.findIndex(type => type.id === item.id) > -1;
+      })
+    } else {
+      return [];
     }
   }
 }

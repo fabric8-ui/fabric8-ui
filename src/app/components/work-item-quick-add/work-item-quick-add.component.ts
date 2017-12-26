@@ -323,6 +323,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
   }
 
   setGuidedWorkItemType(wiTypeCollection) {
+    if (this.wilistview === 'wi-list-view' || this.wilistview === 'wi-card-view')
     if (wiTypeCollection.length > 0) {
       this.availableTypes = cloneDeep(this.allWorkItemTypes);
       let setWITCollection = new Set(wiTypeCollection);
