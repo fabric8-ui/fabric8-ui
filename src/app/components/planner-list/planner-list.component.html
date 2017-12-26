@@ -73,7 +73,7 @@
           (scroll)="onScroll($event)"
           (treeAction)="onTreeAction($event)">
           <!-- First Column - quick Add - row detail -->
-          <ngx-datatable-row-detail [rowHeight]="70" #myDetailRow (toggle)="onDetailToggle($event)">
+          <ngx-datatable-row-detail [rowHeight]="50" #myDetailRow (toggle)="onDetailToggle($event)">
             <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
               <div class="f8-wi-list__quick-add-table width-100 pull-left"
                 id="workItemList_quickAdd_inline"
