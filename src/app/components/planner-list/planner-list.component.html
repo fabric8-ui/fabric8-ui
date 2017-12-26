@@ -71,6 +71,7 @@
           [selectionType]="'single'"
           (select)="onSelect($event)"
           (scroll)="onScroll($event)"
+          (reorder)="handleReorder($event)"
           (treeAction)="onTreeAction($event)">
           <!-- First Column - quick Add - row detail -->
           <ngx-datatable-row-detail [rowHeight]="50" #myDetailRow (toggle)="onDetailToggle($event)">

@@ -1,6 +1,7 @@
 export const datatableColumn = [{
   name: 'ID',
   prop: 'id',
+  index: 1,
   available: false,
   selected: false,
   display: true,
@@ -11,6 +12,7 @@ export const datatableColumn = [{
 }, {
   name: 'Type',
   prop: 'type',
+  index: 2,
   available: false,
   selected: false,
   display: true,
@@ -22,6 +24,7 @@ export const datatableColumn = [{
 }, {
   name: 'Title',
   prop: 'title',
+  index: 3,
   available: false,
   selected: false,
   display: true,
@@ -33,6 +36,7 @@ export const datatableColumn = [{
 }, {
   name: 'Label',
   prop: 'label',
+  index: 4,
   available: false,
   selected: false,
   display: true,
@@ -44,6 +48,7 @@ export const datatableColumn = [{
 }, {
   name: 'Status',
   prop: 'status',
+  index: 5,
   available: false,
   selected: false,
   display: true,
@@ -55,6 +60,7 @@ export const datatableColumn = [{
 }, {
   name: 'Iteration',
   prop: 'iteration',
+  index: 6,
   available: false,
   selected: false,
   display: true,
@@ -66,6 +72,7 @@ export const datatableColumn = [{
 }, {
   name: 'Creator',
   prop: 'creator',
+  index: 7,
   available: false,
   selected: false,
   display: true,
@@ -77,6 +84,7 @@ export const datatableColumn = [{
 }, {
   name: 'Assignees',
   prop: 'assignees',
+  index: 8,
   available: false,
   selected: false,
   display: true,

@@ -1011,8 +1011,13 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   //ngx-datatable methods
 
+  handleReorder(event) {
+    this.columns[event.prevValue - 1].index = event.newValue;
+    this.columns[event.newValue - 1].index = event.prevValue;
+    this.columns.sort((a, b) => {return a.index - b.index});
+    this.cookieService.setCookie('datatableColumn', this.columns);
+  }
   onSelect({ selected }) {
-    //console.log('Select Event', selected, this.selected);
     this.workItemDataService.getItem(selected[0].id).subscribe(workItem => {
       this.workItemService.emitSelectedWI(workItem);
     });
