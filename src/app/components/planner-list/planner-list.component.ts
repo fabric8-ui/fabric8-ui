@@ -1023,7 +1023,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     //console.log('Select Event', selected, this.selected);
     this.workItemDataService.getItem(selected[0].id).subscribe(workItem => {
       this.workItemService.emitSelectedWI(workItem);
-      this.groupTypesService.getAllowedChildWits(workItem);
     });
   }
 

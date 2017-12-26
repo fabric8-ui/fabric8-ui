@@ -357,16 +357,5 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
         this.setGuidedWorkItemType(wiTypeCollection);
       })
     );
-
-    this.eventListeners.push(
-      this.workItemService.selectedWIObservable.subscribe(workItem => {
-        this.selectedWorkItem = workItem;
-        this.workItemService.getAllLinkTypes(this.selectedWorkItem).subscribe(item => {
-          this.childLinkType = item.json().data.find(linkType =>
-            linkType.id === '25c326a7-6d03-4f5a-b23b-86a9ee4171e9');
-        });
-      })
-    );
   }
-
 }
