@@ -12,7 +12,8 @@ import {
   SimpleChanges,
   ViewChild,
   ViewChildren,
-  QueryList
+  QueryList,
+  NgZone
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -32,21 +33,27 @@ import { WorkItemService } from '../../services/work-item.service';
   templateUrl: './work-item-quick-add.component.html',
   styleUrls: ['./work-item-quick-add.component.less']
 })
-export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('quickAddTitle') qaTitle: any;
   @ViewChild('quickAddDesc') qaDesc: any;
   @ViewChildren('quickAddTitle', {read: ElementRef}) qaTitleRef: QueryList<ElementRef>;
   @ViewChild('quickAddSubmit') qaSubmit: any;
+
   @Input('WITypes') set WITypeSetter(val: WorkItemType[]) {
-    this.allWorkItemTypes = val;
-    this.availableTypes = cloneDeep(this.allWorkItemTypes);
-    if(this.availableTypes.length){
-      this.selectedType = this.availableTypes[0];
+    if (JSON.stringify(val) !== JSON.stringify(this.allWorkItemTypes)) {
+      this.allWorkItemTypes = val;
+      this.availableTypes = cloneDeep(this.allWorkItemTypes);
+      if(this.availableTypes.length){
+        this.selectedType = this.availableTypes[0];
+      }
     }
   };
+
   @Input() wilistview: string = 'wi-list-view';
+
   @Input() set forcedType(val: WorkItemType) {
     if (this.forcedType) {
+      this.logger.log('Updated forcedType on quick add component to ' + this.forcedType.attributes.name);
       this.selectedType = this.forcedType;
     }
   };
@@ -79,7 +86,8 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
     private filterService:FilterService,
     private groupTypesService: GroupTypesService,
     private route: ActivatedRoute,
-    private spaces: Spaces) {}
+    private spaces: Spaces,
+    private zone: NgZone) {}
 
   ngOnInit(): void {
     this.createWorkItemObj();
@@ -90,13 +98,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, OnChanges, 
 
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.forcedType) {
-      this.logger.log('Updated forcedType on quick add component to ' + changes.forcedType.currentValue.attributes.name);
-      this.selectedType = changes.forcedType.currentValue;
-    }
   }
 
   setTypeContext(type: any) {
