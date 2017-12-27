@@ -17,6 +17,9 @@ import {
   SelectDropdownComponent
 } from './../../widgets/select-dropdown/select-dropdown.component';
 
+import { Store } from '@ngrx/store';
+import { AppState } from './../../states/app.state';
+import * as LabelActions from './../../actions/label.actions';
 
 @Component({
   selector: 'label-selector',
@@ -46,7 +49,8 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
 
   constructor(
     private labelService: LabelService,
-    private eventService: EventService
+    private eventService: EventService,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
@@ -168,40 +172,35 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
       },
       type: 'labels'
     };
-    this.labelService.createLabel(labelPayload)
-      .subscribe((data: LabelModel) => {
-        this.createDisabled = false;
-        this.newSelectedColor = this.colors[Math.floor(Math.random()*this.colors.length)];
-        this.allLabels = [cloneDeep(data), ...this.allLabels];
+    this.store.dispatch({type: LabelActions.ADD, payload: labelPayload});
+    this.store.select(state => {
+      return state.listPage.labels
+    })
+    .subscribe(data => {
+      this.createDisabled = false;
+      this.newSelectedColor = this.colors[Math.floor(Math.random()*this.colors.length)];
+      this.allLabels = data.labels;
+      if( data.newLabel !== null) {
         const newLabel = {
-          id: data.id,
-          color: data.attributes['background-color'],
-          border: data.attributes['border-color'],
-          name: data.attributes.name,
+          id: data.newLabel.id,
+          color: data.newLabel.attributes['background-color'],
+          border: data.newLabel.attributes['border-color'],
+          name: data.newLabel.attributes.name,
           selected: false
         };
 
-        // Emit new label
-        // TODO: Should be replaced by ngrx/store
-        this.eventService.labelAdd.next(data);
-
         this.backup = [cloneDeep(newLabel), ...this.backup];
         if (this.searchValue === '' ||
-            (this.searchValue !== '' &&
-              name.indexOf(this.searchValue) > - 1
-            )
-          ) {
-            this.labels = [cloneDeep(newLabel), ...this.labels];
-          }
-        this.labelnameInput.nativeElement.value = '';
-        this.labelnameInput.nativeElement.focus();
-      },
-      (err) => {
-        console.log(err);
-        this.labelnameInput.nativeElement.value = '';
-        this.createDisabled = true;
+          (this.searchValue !== '' &&
+            name.indexOf(this.searchValue) > - 1
+          )
+        ) {
+          this.labels = [cloneDeep(newLabel), ...this.labels];
+        }
       }
-    );
+      this.labelnameInput.nativeElement.value = '';
+      this.labelnameInput.nativeElement.focus();
+    })
   }
 
   onOpen(event) {

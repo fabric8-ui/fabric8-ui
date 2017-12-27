@@ -8,13 +8,18 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppState } from './app/states/app.state';
 import { IterationState } from './app/states/iteration.state';
 import { iterationReducer } from './app/reducers/iteration-reducer';
+import { LabelReducer } from './app/reducers/label.reducer';
 import { IterationEffects } from './app/effects/iteration.effects';
+import { LabelEffects } from './app/effects/label.effects';
 
 
 
 @NgModule({
-  imports: [StoreModule.forRoot({iterations : iterationReducer}),
-    EffectsModule.forRoot([IterationEffects])
+  imports: [StoreModule.forRoot({
+    iterations : iterationReducer,
+    labels: LabelReducer
+  }),
+    EffectsModule.forRoot([IterationEffects, LabelEffects])
   ],
   declarations: [
   ],

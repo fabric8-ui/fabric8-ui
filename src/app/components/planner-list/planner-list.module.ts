@@ -60,6 +60,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { IterationState, initialState as initialIterationState } from './../../states/iteration.state';
 import { iterationReducer } from './../../reducers/iteration-reducer';
 import { IterationEffects } from './../../effects/iteration.effects';
+import { LabelState, initialState as initialLabelState } from './../../states/label.state';
+import { LabelReducer } from './../../reducers/label.reducer';
+import { LabelEffects } from './../../effects/label.effects';
 
 let providers = [];
 
@@ -131,13 +134,15 @@ if (process.env.ENV == 'inmemory') {
     PlannerModalModule,
     NgxDatatableModule,
     StoreModule.forFeature('listPage', {
-        iterations: iterationReducer
+        iterations: iterationReducer,
+        labels: LabelReducer
       }, {
       initialState: {
-        iterations: initialIterationState
+        iterations: initialIterationState,
+        labels: initialLabelState
       }
     }),
-    EffectsModule.forFeature([IterationEffects])
+    EffectsModule.forFeature([IterationEffects, LabelEffects])
   ],
   declarations: [
     PlannerListComponent,
