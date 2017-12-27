@@ -43,13 +43,13 @@
   </div>
 
   <div class="f8-quickadd__wiblk-btn pull-left">
-    <button class="btn btn-primary pull-left f8-quickadd__wiblk-btn-add margin-right-20"
+    <button class="btn btn-primary f8-quickadd__wiblk-btn-add margin-right-20"
       #quickAddSubmit
       [ngClass]="{'': validTitle,'disabled':!validTitle}"
       (click)="save($event)">
       Add
     </button>
-    <button class="btn btn-primary pull-left f8-quickadd__wiblk-btn-add"
+    <button class="btn btn-primary f8-quickadd__wiblk-btn-add"
       #quickAddSubmit
       [ngClass]="{'': validTitle,'disabled':!validTitle}"
       (click)="save($event)">
