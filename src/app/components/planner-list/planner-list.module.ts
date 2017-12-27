@@ -63,6 +63,9 @@ import { IterationEffects } from './../../effects/iteration.effects';
 import { LabelState, initialState as initialLabelState } from './../../states/label.state';
 import { LabelReducer } from './../../reducers/label.reducer';
 import { LabelEffects } from './../../effects/label.effects';
+import { AreaState, initialState as initialAreaState } from './../../states/area.state';
+import { AreaReducer } from './../../reducers/area.reducer';
+import { AreaEffects } from './../../effects/area.effects';
 
 let providers = [];
 
@@ -135,14 +138,16 @@ if (process.env.ENV == 'inmemory') {
     NgxDatatableModule,
     StoreModule.forFeature('listPage', {
         iterations: iterationReducer,
-        labels: LabelReducer
+        labels: LabelReducer,
+        areas: AreaReducer
       }, {
       initialState: {
         iterations: initialIterationState,
-        labels: initialLabelState
+        labels: initialLabelState,
+        areas: initialAreaState
       }
     }),
-    EffectsModule.forFeature([IterationEffects, LabelEffects])
+    EffectsModule.forFeature([IterationEffects, LabelEffects, AreaEffects])
   ],
   declarations: [
     PlannerListComponent,

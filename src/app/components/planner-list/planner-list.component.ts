@@ -69,6 +69,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from './../../states/app.state';
 import * as IterationActions from './../../actions/iteration.actions';
 import * as LabelActions from './../../actions/label.actions';
+import * as AreaActions from './../../actions/area.actions';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -182,6 +183,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
     this.store.dispatch(new IterationActions.Get());
     this.store.dispatch(new LabelActions.Get());
+    this.store.dispatch(new AreaActions.Get());
     // console.log(this.store.select((labels: AppState) => labels.listPage.labels), '####-4');
     // If there is an iteration on the URL
     // Setting the value to currentIteration

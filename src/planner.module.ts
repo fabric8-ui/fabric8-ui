@@ -9,17 +9,21 @@ import { AppState } from './app/states/app.state';
 import { IterationState } from './app/states/iteration.state';
 import { iterationReducer } from './app/reducers/iteration-reducer';
 import { LabelReducer } from './app/reducers/label.reducer';
+import { AreaReducer } from './app/reducers/area.reducer';
 import { IterationEffects } from './app/effects/iteration.effects';
 import { LabelEffects } from './app/effects/label.effects';
+import { AreaEffects } from './app/effects/area.effects';
+import { AreaAttributes } from 'ngx-fabric8-wit/src/app/models/area';
 
 
 
 @NgModule({
   imports: [StoreModule.forRoot({
     iterations : iterationReducer,
-    labels: LabelReducer
+    labels: LabelReducer,
+    areas: AreaReducer
   }),
-    EffectsModule.forRoot([IterationEffects, LabelEffects])
+    EffectsModule.forRoot([IterationEffects, LabelEffects, AreaEffects])
   ],
   declarations: [
   ],

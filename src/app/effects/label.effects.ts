@@ -1,5 +1,5 @@
 import { Store } from '@ngrx/store';
-import { Actions, Effect, toPayload } from '@ngrx/effects';
+import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import * as LabelActions from './../actions/label.actions';
 import { Observable } from 'rxjs';
