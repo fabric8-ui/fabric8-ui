@@ -39,6 +39,8 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   @ViewChildren('quickAddTitle', {read: ElementRef}) qaTitleRef: QueryList<ElementRef>;
   @ViewChild('quickAddSubmit') qaSubmit: any;
 
+  @Input() parentWorkItemId: string = null;
+
   @Input('WITypes') set WITypeSetter(val: WorkItemType[]) {
     if (JSON.stringify(val) !== JSON.stringify(this.allWorkItemTypes)) {
       this.allWorkItemTypes = val;
@@ -74,7 +76,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   eventListeners: any[] = [];
   allWorkItemTypes: WorkItemType[] = null;
   linkObject: object;
-  selectedWorkItem: WorkItem = null;
   childLinkType: any = null;
 
   constructor(
@@ -186,7 +187,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
       this.workItem.attributes['system.description'] = wiDescription;
   }
 
-  createLinkObject(workItem: WorkItem, childWI: WorkItem, linkId: string) : void {
+  createLinkObject(parentWorkItemId: string, childWorekItemId: string, linkId: string) : void {
     this.linkObject = {
       'type': 'workitemlinks',
       'attributes': {
@@ -201,13 +202,13 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
         },
         'source': {
           'data': {
-            'id': workItem.id,
+            'id': parentWorkItemId,
             'type': 'workitems'
           }
         },
         'target': {
           'data': {
-            'id': childWI.id,
+            'id': childWorekItemId,
             'type': 'workitems'
           }
         }
@@ -258,14 +259,17 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
           return workItem;
         })
         .subscribe(workItem => {
-          if(this.selectedWorkItem != null) {
-            this.createLinkObject(this.selectedWorkItem, workItem, '25c326a7-6d03-4f5a-b23b-86a9ee4171e9');
+          if(this.parentWorkItemId != null) {
+            this.createLinkObject(this.parentWorkItemId, workItem.id, '25c326a7-6d03-4f5a-b23b-86a9ee4171e9');
             let tempLinkObject = {'data': this.linkObject};
-            this.workItemService.createLink(tempLinkObject, this.selectedWorkItem.id)
-              .subscribe(([link, includes]) => {})
+            this.workItemService.createLink(tempLinkObject)
+              .subscribe(([link, includes]) => {
+                this.workItemService.emitAddWIChild(this.parentWorkItemId);
+              })
+          } else {
+            this.workItemService.emitAddWI(workItem);
           }
           this.workItem = workItem; // saved workItem, w/ id if new
-          this.workItemService.emitAddWI(this.workItem);
           this.resetQuickAdd();
           this.qaSubmit.nativeElement.removeAttribute('disabled');
           this.qaTitle.nativeElement.removeAttribute('disabled');

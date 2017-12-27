@@ -148,7 +148,7 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck, OnDest
       );
     const tempValue = {'data': this.link};
     this.workItemService
-      .createLink(tempValue, this.workItem['id'])
+      .createLink(tempValue)
       .subscribe(([link, includes]) => {
         this.workItemService.addLinkToWorkItem(link, includes, this.workItem);
         this.resetSearchData();

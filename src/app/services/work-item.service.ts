@@ -64,6 +64,7 @@ export class WorkItemService {
   private selfId;
 
   public addWIObservable: Subject<WorkItem> = new Subject();
+  public addWIChildObservable: Subject<string> = new Subject();
   public editWIObservable: Subject<WorkItem> = new Subject();
   public selectedWIObservable: Subject<WorkItem> = new Subject();
 
@@ -220,6 +221,7 @@ export class WorkItemService {
       if (item.relationships.children && item.relationships.children.meta)
         item.hasChildren = item.relationships.children.meta.hasChildren;
         //Resolve parents using included
+
       if (included.length > 0 ){
         if (item.relationships.parent != undefined && item.relationships.parent.data !=undefined) {
           let wi = included.find(inclwi => inclwi.id === item.relationships.parent.data.id);
@@ -229,10 +231,12 @@ export class WorkItemService {
         }
       }
       // Resolve assignnees
-      let assignees = item.relationships.assignees.data ? cloneDeep(item.relationships.assignees.data) : [];
-      item.relationships.assignees.data = assignees.map((assignee) => {
-        return users.find((user) => user.id === assignee.id) || assignee;
-      });
+      if (item.relationships.assignees != undefined && item.relationships.assignees.data != undefined) {
+        let assignees = item.relationships.assignees.data ? cloneDeep(item.relationships.assignees.data) : [];
+        item.relationships.assignees.data = assignees.map((assignee) => {
+          return users.find((user) => user.id === assignee.id) || assignee;
+        });
+      }
 
       // Resolve creator
       let creator = cloneDeep(item.relationships.creator.data);
@@ -717,6 +721,10 @@ export class WorkItemService {
     this.addWIObservable.next(workItem);
   }
 
+  emitAddWIChild(parentWorkItemId: string) {
+    this.addWIChildObservable.next(parentWorkItemId);
+  }
+
   /**
    * Usage: This method emit a new work item created event
    * The list view and board view listens to this event
@@ -956,10 +964,9 @@ export class WorkItemService {
    * Resolves and add the new link to the workItem
    *
    * @param link: Link - The new link object for request params
-   * @param currentWiId: string - The work item ID where the link is created
    * @returns Promise<Link>
    */
-  createLink(link: Object, currentWiId: string): Observable<any> {
+  createLink(link: Object): Observable<any> {
     if (this._currentSpace) {
       // FIXME: make the URL great again (when we know the right API URL for this)!
       this.linksUrl = this.baseApiUrl + 'workitemlinks';

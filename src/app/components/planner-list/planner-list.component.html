@@ -84,6 +84,7 @@
                     row?.type?.data?.relationships?.guidedChildTypes?.data
                   )"
                   [wilistview]="'wi-table-view'"
+                  [parentWorkItemId]="row.id"
                   (close)="close($event)"
                   (workItemCreate)="onCreateWorkItem($event)">
                 </alm-work-item-quick-add>

@@ -596,9 +596,15 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         this.labels
       ))
       .do((workItems: WorkItem[]) => {
+        // filter out childrens are not loaded yet
+        const childrenItems = workItems
+          .filter(i => {
+            return this.datatableWorkitems
+              .findIndex(item => item.id === i.id) === -1;
+          });
         this.datatableWorkitems = [
           ...this.datatableWorkitems,
-          ...this.tableWorkitem(workItems, workItem.id)
+          ...this.tableWorkitem(childrenItems, workItem.id)
         ];
         return workItems;
       })
@@ -841,36 +847,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         .subscribe(item => {
           // Resolve creator
           item.relationships.creator.data = this.loggedInUser as User;
-          if (this.selectedWI === null) {
-            //add a work item to the top level list
-            this.onCreateWorkItem(item);
-          } else {
-            if (this.expandedNode === null) {
-              //A  WI has been selected - add the new WI as a child under that
-              this.selectedWI.hasChildren = true;
-              item.relationships.parent = { data: {} as WorkItem }
-              item.relationships.parent.data = this.selectedWI;
-            } else {
-              let index = this.workItems.findIndex(wi => wi.id === this.selectedWI.id)
-              if (this.selectedWI.id === this.expandedNode.node.data.id) {
-                //if the selected node is expanded
-                item.relationships.parent = { data: {} as WorkItem }
-                item.relationships.parent.data = this.selectedWI;
-                this.expandedNode.node.data.children.push(item);
-                if (index > -1) {
-                  //this means selectedWI is a not a child WI - top level WI
-                  this.workItems[index] = this.expandedNode.node.data;
-                } else {
-                  //index < 0 means wi not found in workItems
-                  //the selected WI is a child node and a child is being added
-                  this.selectedWI = this.expandedNode.node.data;
-                }
-              } else {
-                //selected WI and expanded WI are different
-                this.selectedWI.hasChildren = true;
-              }
-            }
-          }
+          this.onCreateWorkItem(item);
           if (this.filterService.doesMatchCurrentFilter(item)) {
             try {
               this.notifications.message({
@@ -889,6 +866,21 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
             } catch (e) {
               console.log('Error displaying notification. Added WI does not match the applied filters.')
             }
+          }
+        })
+    );
+
+    this.eventListeners.push(
+      this.workItemService.addWIChildObservable
+        .subscribe((parentWorkItemId: string) => {
+          let parentIndex = this.datatableWorkitems.findIndex(i => i.id === parentWorkItemId);
+          if (parentIndex > -1) {
+            this.datatableWorkitems[parentIndex].treeStatus = 'collapsed';
+            this.datatableWorkitems[parentIndex].childrenLoaded = false;
+            this.onTreeAction({
+              rowIndex: parentIndex,
+              row: this.datatableWorkitems[parentIndex]
+            });
           }
         })
     );
