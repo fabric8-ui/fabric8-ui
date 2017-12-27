@@ -1133,6 +1133,9 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   togglePanel() {
     this.sidePanelRef.toggleSidePanel();
+    setTimeout(() => {
+    this.datatableWorkitems = [...this.datatableWorkitems];
+    }, 500);
   }
 
   onClickLabel(event) {
