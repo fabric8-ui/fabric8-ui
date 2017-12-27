@@ -66,6 +66,9 @@ import { LabelEffects } from './../../effects/label.effects';
 import { AreaState, initialState as initialAreaState } from './../../states/area.state';
 import { AreaReducer } from './../../reducers/area.reducer';
 import { AreaEffects } from './../../effects/area.effects';
+import { CollaboratorState, initialState as initialCollaboratorState } from './../../states/collaborator.state';
+import { CollaboratorReducer } from './../../reducers/collaborator.reducer';
+import { CollaboratorEffects } from './../../effects/collaborator.effects';
 
 let providers = [];
 
@@ -139,15 +142,22 @@ if (process.env.ENV == 'inmemory') {
     StoreModule.forFeature('listPage', {
         iterations: iterationReducer,
         labels: LabelReducer,
-        areas: AreaReducer
+        areas: AreaReducer,
+        collaborators: CollaboratorReducer
       }, {
       initialState: {
         iterations: initialIterationState,
         labels: initialLabelState,
-        areas: initialAreaState
+        areas: initialAreaState,
+        collaborators: initialCollaboratorState
       }
     }),
-    EffectsModule.forFeature([IterationEffects, LabelEffects, AreaEffects])
+    EffectsModule.forFeature([
+      IterationEffects,
+      LabelEffects,
+      AreaEffects,
+      CollaboratorEffects
+    ])
   ],
   declarations: [
     PlannerListComponent,

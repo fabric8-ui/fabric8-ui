@@ -10,20 +10,26 @@ import { IterationState } from './app/states/iteration.state';
 import { iterationReducer } from './app/reducers/iteration-reducer';
 import { LabelReducer } from './app/reducers/label.reducer';
 import { AreaReducer } from './app/reducers/area.reducer';
+import { CollaboratorReducer } from './app/reducers/collaborator.reducer';
 import { IterationEffects } from './app/effects/iteration.effects';
 import { LabelEffects } from './app/effects/label.effects';
 import { AreaEffects } from './app/effects/area.effects';
-import { AreaAttributes } from 'ngx-fabric8-wit/src/app/models/area';
-
+import { CollaboratorEffects } from './app/effects/collaborator.effects';
 
 
 @NgModule({
   imports: [StoreModule.forRoot({
     iterations : iterationReducer,
     labels: LabelReducer,
-    areas: AreaReducer
+    areas: AreaReducer,
+    collaborator: CollaboratorReducer
   }),
-    EffectsModule.forRoot([IterationEffects, LabelEffects, AreaEffects])
+    EffectsModule.forRoot([
+      IterationEffects,
+      LabelEffects,
+      AreaEffects,
+      CollaboratorEffects
+    ])
   ],
   declarations: [
   ],
