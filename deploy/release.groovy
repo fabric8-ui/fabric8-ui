@@ -17,10 +17,8 @@ def ci (){
     stage('func test'){
         dir('runtime'){
             container('ui'){
-                sh '''
-        npm install
-        HEADLESS_MODE=true ./tests/run_functional_tests.sh smokeTest
-'''
+                sh 'npm install && HEADLESS_MODE=true ./tests/run_functional_tests.sh smokeTest'
+                archiveArtifacts artifacts: '**/tests/*.log'
             }
         }
     }
@@ -61,10 +59,8 @@ def cd (b){
     stage('func test'){
         dir('runtime'){
             container('ui'){
-                sh '''
-        npm install
-        HEADLESS_MODE=true ./tests/run_functional_tests.sh smokeTest
-    '''
+                sh 'npm install && HEADLESS_MODE=true ./tests/run_functional_tests.sh smokeTest'
+                archiveArtifacts artifacts: '**/tests/*.log'
             }
         }
     }
