@@ -41,7 +41,7 @@ describe('Work item list', function () {
     page = new WorkItemListPage(true);
     testSupport.setTestSpace(page);
   });
-//1.done-issue if wititle
+
   /* User can read, update, remove assignee on a workitem  */
   it('User can read, update, remove assignee', function() {
     page.clickWorkItemQuickAdd();
@@ -65,7 +65,7 @@ describe('Work item list', function () {
       expect(detailPage.AssignUsers.getText()).not.toContain(EXAMPLE_USER_1);
      });
   });
-//2.done issue 1 
+
   /* Create a new workitem, fill in the details, save, retrieve, update, save, verify updates are saved */
   it('should find and update the workitem through its detail page', function() {
     /* Create a new workitem */
@@ -107,13 +107,13 @@ describe('Work item list', function () {
   // //   });
   // // });
 
-  // /* Test that the Quick add work item is visible */
+  /* Test that the Quick add work item is visible */
   it('Test Quick workitem not visible without authorization', function () {
     page.clickLogoutButton().click();
     expect(page.quickAddbuttonById().isPresent()).toBeFalsy();
   });
 
-  // /* Create workitem - verify user and icon */
+  /* Create workitem - verify user and icon */
   it('Edit and check WorkItem, creator name and image is reflected', function () {
     var detailPage = page.clickWorkItemTitle(MOCK_WORKITEM_TITLE_0);
     detailPage.clickWorkItemTitleDiv();
