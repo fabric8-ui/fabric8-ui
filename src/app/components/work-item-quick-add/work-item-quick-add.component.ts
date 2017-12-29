@@ -12,8 +12,7 @@ import {
   SimpleChanges,
   ViewChild,
   ViewChildren,
-  QueryList,
-  NgZone
+  QueryList
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -87,8 +86,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     private filterService:FilterService,
     private groupTypesService: GroupTypesService,
     private route: ActivatedRoute,
-    private spaces: Spaces,
-    private zone: NgZone) {}
+    private spaces: Spaces) {}
 
   ngOnInit(): void {
     this.createWorkItemObj();

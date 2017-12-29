@@ -75,7 +75,6 @@ describe('Work item list', function () {
     page.clickQuickAddSave().then(function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_TITLE);
       /* Fill in/update the new work item's title and details field */
-      // expect(page.workItemTitle(page.workItemByTitle(WORK_ITEM_TITLE))).toBe(WORK_ITEM_TITLE);
       var detailPage = page.clickWorkItemTitle(WORK_ITEM_TITLE);
       browser.wait(until.elementToBeClickable(detailPage.workItemDetailCloseButton), constants.WAIT, 'Failed to find Assignee Icon');
       detailPage.clickWorkItemDetailTitleClick();
@@ -90,22 +89,6 @@ describe('Work item list', function () {
       expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_UPDATED_TITLE);
     });
   });
-
-  // //Commenting out this one - need to fix!
-  // /* Vary the order of execution of the workitems */
-  // // it('should top workitem to the bottom and back to the top via the workitem kebab', function() {
-  // //   page.allWorkItems.count().then(function (text) {
-  // //     var totalCount = text
-  // //     /* Verify that the first work item is in the correct position */
-  // //     expect(page.workItemTitle(page.workItemByIndex(0))).toBe(MOCK_WORKITEM_TITLE_0);
-  // //     compareWorkitems (page, 0, MOCK_WORKITEM_TITLE_0);
-  // //     /* Move the workitem to the bottom */
-  // //     page.clickWorkItemKebabButton (page.workItemByTitle(MOCK_WORKITEM_TITLE_0)).then(function() {
-  // //       page.clickWorkItemKebabMoveToBottomButton(page.workItemByTitle(MOCK_WORKITEM_TITLE_0));
-  // //       compareWorkitems (page, totalCount - 1, MOCK_WORKITEM_TITLE_0);
-  // //     });
-  // //   });
-  // // });
 
   /* Test that the Quick add work item is visible */
   it('Test Quick workitem not visible without authorization', function () {
@@ -143,7 +126,6 @@ describe('Work item list', function () {
   });
 
   it('Updating area to a WI -desktop ', function() {
-    // var detailPage = page.clickWorkItem(page.firstWorkItem);
       var detailPage = page.clickWorkItemTitle(MOCK_WORKITEM_TITLE_0);
       browser.wait(until.elementToBeClickable(detailPage.areaLabel), constants.WAIT, 'Failed to find areaLabel');
       detailPage.clickAreaSelect();
@@ -192,39 +174,7 @@ describe('Work item list', function () {
       expect(detailPage.getCommentBody('0')).toBe('Some Comment 0');
     });
   });
-
-    /* Commenting the following two tests as they are unreliable; failing often.
-  They will be added back once they attain certain reliability */
-
-  // it('Verify create new Label', function(){
-  //   // var detailPage = page.clickWorkItem(page.firstWorkItem);
-  //   var detailPage = page.clickWorkItemTitle(MOCK_WORKITEM_TITLE_0);
-  //   detailPage.clickAddLabelButton();
-  //   let origLabelCount
-  //   detailPage.labelsCount.then(function(count){
-  //     origLabelCount = count
-  //   });
-  //   detailPage.clickCreateLabelButton();
-  //   detailPage.setLabelName(newLabelTitle);
-  //   detailPage.clickLabelCheckbox();
-  //   // Verify label count has increased by 1
-  //   detailPage.labelsCount.then(function(count){
-  //     expect(count).toBe(origLabelCount + 1);
-  //   });
-  //   // Verify label exists in the list
-  //   expect(detailPage.listOfLabels().getText()).toContain(detailPage.getLabelByTitle(newLabelTitle).getText());
-  // });
-
-  // it('Verify added label appears on the list page', function(){
-  //   var detailPage = page.clickWorkItem(page.firstWorkItem);
-  //   detailPage.clickAddLabelButton();
-  //   detailPage.selectLabelByTitle(testLabelTitle);
-  //   detailPage.clickLabelClose();
-  //   detailPage.clickWorkItemDetailCloseButton();
-  //   browser.sleep(3000);
-  //   expect(page.workItemAttachedLabels(page.firstWorkItem).getText()).toContain(testLabelTitle);
-  // });
-  });
+});
 
 /* Compare an expected and actual work item - the offset values enable us to track
    workitems after they have been moved. */

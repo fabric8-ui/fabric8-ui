@@ -238,7 +238,7 @@ class WorkItemListPage {
   }
 
   clickQuickAddSave () {
-    browser.wait(until.visibilityOf(this.saveButton), constants.LONGER_WAIT, 'Failed to find the saveButton'); 
+    browser.wait(until.visibilityOf(this.saveButton), constants.LONGER_WAIT, 'Failed to find the saveButton');
     browser.wait(until.presenceOf(this.saveButton), constants.WAIT, 'Failed to find the saveButton');
     return this.saveButton.click();
   }
@@ -255,7 +255,6 @@ class WorkItemListPage {
   /* Page elements - work item list */
 
   get allWorkItems () {
-    // return element.all(by.css(".work-item-list-entry"));
     return element.all(by.css(".wi-detail-title>p"));
   }
 
@@ -275,13 +274,12 @@ class WorkItemListPage {
 
   /* Title element relative to a workitem */
   workItemTitle () {
-    // return workItemElement.element(by.css(".f8-wi__list-title")).element(by.css("p")).getText();
     return element.all(by.css(".wi-detail-title>p")).first().getText();
   }
 
   clickWorkItemTitle (title) {
      this.workItemByTitle(title).click()
-     return new WorkItemDetailPage();     
+     return new WorkItemDetailPage();
   }
 
   clickWorkItem(workItemElement) {

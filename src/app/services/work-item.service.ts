@@ -231,7 +231,7 @@ export class WorkItemService {
         }
       }
       // Resolve assignnees
-      if (item.relationships.assignees != undefined && item.relationships.assignees.data != undefined) {
+      if (item.relationships.assignees && item.relationships.assignees.data) {
         let assignees = item.relationships.assignees.data ? cloneDeep(item.relationships.assignees.data) : [];
         item.relationships.assignees.data = assignees.map((assignee) => {
           return users.find((user) => user.id === assignee.id) || assignee;
