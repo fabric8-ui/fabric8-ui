@@ -5,34 +5,23 @@ import { PlannerListModule } from './app/components/planner-list/planner-list.mo
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { AppState } from './app/states/app.state';
-import { IterationState } from './app/states/iteration.state';
-import { iterationReducer } from './app/reducers/iteration-reducer';
-import { LabelReducer } from './app/reducers/label.reducer';
-import { AreaReducer } from './app/reducers/area.reducer';
-import { CollaboratorReducer } from './app/reducers/collaborator.reducer';
-import { IterationEffects } from './app/effects/iteration.effects';
-import { LabelEffects } from './app/effects/label.effects';
-import { AreaEffects } from './app/effects/area.effects';
-import { CollaboratorEffects } from './app/effects/collaborator.effects';
-import { CommentEffects } from './app/effects/comment.effects';
-import { CommentReducer } from './app/reducers/comment.reducer';
-
+import * as reducers from './app/reducers/index.reducer';
+import  * as effects from './app/effects/index.effects';
 
 @NgModule({
   imports: [StoreModule.forRoot({
-    iterations : iterationReducer,
-    labels: LabelReducer,
-    areas: AreaReducer,
-    collaborators: CollaboratorReducer,
-    comments: CommentReducer
+    iterations : reducers.iterationReducer,
+    labels: reducers.LabelReducer,
+    areas: reducers.AreaReducer,
+    collaborators: reducers.CollaboratorReducer,
+    comments: reducers.CommentReducer
   }),
     EffectsModule.forRoot([
-      IterationEffects,
-      LabelEffects,
-      AreaEffects,
-      CollaboratorEffects,
-      CommentEffects
+      effects.IterationEffects,
+      effects.LabelEffects,
+      effects.AreaEffects,
+      effects.CollaboratorEffects,
+      effects.CommentEffects
     ])
   ],
   declarations: [

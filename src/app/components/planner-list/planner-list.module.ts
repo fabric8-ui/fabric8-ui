@@ -57,21 +57,9 @@ import { EventService } from './../../services/event.service';
 // ngrx stuff
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { IterationState, initialState as initialIterationState } from './../../states/iteration.state';
-import { iterationReducer } from './../../reducers/iteration-reducer';
-import { IterationEffects } from './../../effects/iteration.effects';
-import { LabelState, initialState as initialLabelState } from './../../states/label.state';
-import { LabelReducer } from './../../reducers/label.reducer';
-import { LabelEffects } from './../../effects/label.effects';
-import { AreaState, initialState as initialAreaState } from './../../states/area.state';
-import { AreaReducer } from './../../reducers/area.reducer';
-import { AreaEffects } from './../../effects/area.effects';
-import { CollaboratorState, initialState as initialCollaboratorState } from './../../states/collaborator.state';
-import { CollaboratorReducer } from './../../reducers/collaborator.reducer';
-import { CollaboratorEffects } from './../../effects/collaborator.effects';
-import { CommentState, initialState as initialCommentState } from './../../states/comment.state';
-import { CommentReducer } from './../../reducers/comment.reducer';
-import { CommentEffects } from './../../effects/comment.effects';
+import * as states from './../../states/index.state';
+import * as reducers from './../../reducers/index.reducer';
+import * as effects from './../../effects/index.effects';
 
 let providers = [];
 
@@ -143,26 +131,26 @@ if (process.env.ENV == 'inmemory') {
     PlannerModalModule,
     NgxDatatableModule,
     StoreModule.forFeature('listPage', {
-        iterations: iterationReducer,
-        labels: LabelReducer,
-        areas: AreaReducer,
-        collaborators: CollaboratorReducer,
-        comments: CommentReducer
+        iterations: reducers.iterationReducer,
+        labels: reducers.LabelReducer,
+        areas: reducers.AreaReducer,
+        collaborators: reducers.CollaboratorReducer,
+        comments: reducers.CommentReducer
       }, {
       initialState: {
-        iterations: initialIterationState,
-        labels: initialLabelState,
-        areas: initialAreaState,
-        collaborators: initialCollaboratorState,
-        comments: initialCommentState
+        iterations: states.initialIterationState,
+        labels: states.initialLabelState,
+        areas: states.initialAreaState,
+        collaborators: states.initialCollaboratorState,
+        comments: states.initialCommentState
       }
     }),
     EffectsModule.forFeature([
-      IterationEffects,
-      LabelEffects,
-      AreaEffects,
-      CollaboratorEffects,
-      CommentEffects
+      effects.IterationEffects,
+      effects.LabelEffects,
+      effects.AreaEffects,
+      effects.CollaboratorEffects,
+      effects.CommentEffects
     ])
   ],
   declarations: [

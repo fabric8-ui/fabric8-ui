@@ -1,10 +1,4 @@
-import { SpaceState } from './space.state';
-import { GroupTypeState } from './grouptype.state';
-import { IterationState } from './iteration.state';
-import { LabelState } from './label.state';
-import { AreaState } from './area.state';
-import { CollaboratorState } from './collaborator.state';
-import { CommentState } from './comment.state';
+import * as states from './index.state';
 
 export interface AppState {
   listPage?: {
