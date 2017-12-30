@@ -69,6 +69,9 @@ import { AreaEffects } from './../../effects/area.effects';
 import { CollaboratorState, initialState as initialCollaboratorState } from './../../states/collaborator.state';
 import { CollaboratorReducer } from './../../reducers/collaborator.reducer';
 import { CollaboratorEffects } from './../../effects/collaborator.effects';
+import { CommentState, initialState as initialCommentState } from './../../states/comment.state';
+import { CommentReducer } from './../../reducers/comment.reducer';
+import { CommentEffects } from './../../effects/comment.effects';
 
 let providers = [];
 
@@ -143,20 +146,23 @@ if (process.env.ENV == 'inmemory') {
         iterations: iterationReducer,
         labels: LabelReducer,
         areas: AreaReducer,
-        collaborators: CollaboratorReducer
+        collaborators: CollaboratorReducer,
+        comments: CommentReducer
       }, {
       initialState: {
         iterations: initialIterationState,
         labels: initialLabelState,
         areas: initialAreaState,
-        collaborators: initialCollaboratorState
+        collaborators: initialCollaboratorState,
+        comments: initialCommentState
       }
     }),
     EffectsModule.forFeature([
       IterationEffects,
       LabelEffects,
       AreaEffects,
-      CollaboratorEffects
+      CollaboratorEffects,
+      CommentEffects
     ])
   ],
   declarations: [

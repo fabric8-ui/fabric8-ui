@@ -4,6 +4,7 @@ import { IterationState } from './iteration.state';
 import { LabelState } from './label.state';
 import { AreaState } from './area.state';
 import { CollaboratorState } from './collaborator.state';
+import { CommentState } from './comment.state';
 
 export interface AppState {
   listPage?: {
@@ -13,5 +14,6 @@ export interface AppState {
     collaborators: CollaboratorState,
     groupTypes: GroupTypeState,
     space: SpaceState
+    comments: CommentState
   };
 };

@@ -15,6 +15,8 @@ import { IterationEffects } from './app/effects/iteration.effects';
 import { LabelEffects } from './app/effects/label.effects';
 import { AreaEffects } from './app/effects/area.effects';
 import { CollaboratorEffects } from './app/effects/collaborator.effects';
+import { CommentEffects } from './app/effects/comment.effects';
+import { CommentReducer } from './app/reducers/comment.reducer';
 
 
 @NgModule({
@@ -22,13 +24,15 @@ import { CollaboratorEffects } from './app/effects/collaborator.effects';
     iterations : iterationReducer,
     labels: LabelReducer,
     areas: AreaReducer,
-    collaborator: CollaboratorReducer
+    collaborators: CollaboratorReducer,
+    comments: CommentReducer
   }),
     EffectsModule.forRoot([
       IterationEffects,
       LabelEffects,
       AreaEffects,
-      CollaboratorEffects
+      CollaboratorEffects,
+      CommentEffects
     ])
   ],
   declarations: [
