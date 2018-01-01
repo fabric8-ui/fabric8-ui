@@ -185,7 +185,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
       this.workItem.attributes['system.description'] = wiDescription;
   }
 
-  createLinkObject(parentWorkItemId: string, childWorekItemId: string, linkId: string) : void {
+  createLinkObject(parentWorkItemId: string, childWorkItemId: string, linkId: string) : void {
     this.linkObject = {
       'type': 'workitemlinks',
       'attributes': {
@@ -206,7 +206,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
         },
         'target': {
           'data': {
-            'id': childWorekItemId,
+            'id': childWorkItemId,
             'type': 'workitems'
           }
         }
