@@ -217,6 +217,8 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   save(event: any = null): void {
     if (event)
       event.preventDefault();
+    
+    this.workItemCreate.emit({parentId: this.parentWorkItemId});
 
     // Setting type in relationship
     // this.workItem.relationships = {

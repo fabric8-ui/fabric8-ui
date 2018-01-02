@@ -685,6 +685,17 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       this.detailPreview.openPreview(workItem);   });
   }
 
+  onCreateWorkItemStart(event) {
+    const parentId = event.parentId;
+    if (parentId) {
+      const index = this.datatableWorkitems.findIndex(i => i.id === parentId);
+      if (index > -1) {
+        this.datatableWorkitems[index].treeStatus = 'loading';
+        this.table.rowDetail.collapseAllRows();
+      }
+    }
+  }
+
   onCreateWorkItem(workItem) {
     let resolveItem = this.workItemService.resolveWorkItems(
       [workItem],
