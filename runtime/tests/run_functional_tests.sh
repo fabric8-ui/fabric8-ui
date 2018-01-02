@@ -14,8 +14,7 @@ main() {
   # Start planner only if BASE_URL is not set
   if [[ -z ${BASE_URL+x} ]]; then
     echo "Starting Planner in inmemory mode"
-    local log_file="${SCRIPT_DIR}/planner.log"
-    start_planner "$log_file"
+    start_planner
     wait_for_planner
   fi
 
@@ -23,8 +22,7 @@ main() {
     echo "DIRECT_CONNECT not set; Using webdriver. Tests may run slow .. checking webdriver status"
     echo
     webdriver_running || {
-      local log_file="${SCRIPT_DIR}/webdriver.log"
-      start_webdriver "$log_file"
+      start_webdriver
       wait_for_webdriver
     }
   else

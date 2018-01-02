@@ -15,26 +15,22 @@ wait_for_webdriver() {
 }
 
 start_webdriver() {
-  local log_file="$1"; shift
-  echo "Webdriver will log to: $log_file"
   # Update webdriver
   echo "Updating Webdriver and Selenium..."
-  npm run webdriver:update >> $log_file 2>&1
+  npm run webdriver:update
   # Start selenium server just for this test run
   echo "Starting Webdriver and Selenium..."
-  npm run webdriver:start >> "$log_file" 2>&1 &
+  npm run webdriver:start &
 }
 
 start_planner() {
-  local log_file="$1"; shift
   echo "NODE_ENV=inmemory mode set; Planner will use mock data"
-  echo "Planner will log to: $log_file"
   echo "Starting local development server"
-  NODE_ENV=inmemory $(npm bin)/webpack-dev-server --inline --progress --host 0.0.0.0 --port 8088 >> $log_file 2>&1 &
+  NODE_ENV=inmemory $(npm bin)/webpack-dev-server --inline --progress --host 0.0.0.0 --port 8088 &
 }
 
 planner_running() {
-  curl --output /dev/null --silent --fail localhost:8088
+  curl --output /dev/null --silent localhost:8080
 }
 
 wait_for_planner() {
