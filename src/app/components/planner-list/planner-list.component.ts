@@ -35,7 +35,7 @@ import {
   NavigationExtras
 } from '@angular/router';
 
-import { cloneDeep } from 'lodash';
+import { cloneDeep, sortBy } from 'lodash';
 import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
 import {
   AuthenticationService,
@@ -89,7 +89,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   selected: any = [];
   expanded: any = {};
   datatableWorkitems: any[] = [];
-  checkableColumn: any[];
   columns: any[];
   isTableConfigOpen: boolean = false;
   workItems: WorkItem[] = [];
@@ -173,15 +172,11 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
     // Cookie for datatableColumn config
     if(!this.cookieService.getCookie(datatableColumn.length).status) {
-      //console.log('cookie',this.cookieService.getCookie(datatableColumn.length));
       this.cookieService.setCookie('datatableColumn', datatableColumn);
-      this.checkableColumn = datatableColumn;
-      this.columns = this.checkableColumn;
+      this.columns = datatableColumn;
     } else {
-      //console.log('cookie',this.cookieService.getCookie(datatableColumn.length));
       let temp = this.cookieService.getCookie(datatableColumn.length)
-      this.checkableColumn = temp.array;
-      this.columns = this.checkableColumn;
+      this.columns = temp.array;      
     }
   }
 
@@ -1015,7 +1010,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     if(event.newValue !== 0) {
       this.columns[event.prevValue - 1].index = event.newValue;
       this.columns[event.newValue - 1].index = event.prevValue;
-      this.columns.sort((a, b) => {return a.index - b.index});
+      this.columns = sortBy(this.columns, 'index');
       this.cookieService.setCookie('datatableColumn', this.columns);
     } 
   }
@@ -1065,7 +1060,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   // Start: Settings(tableConfig) dropdown
 
-  toggleAvailable(event, col) {
+  toggleCheckbox(event, col) {
     if(event.target.checked) {
       col.selected = true;
     } else {
@@ -1074,41 +1069,40 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   }
   moveToDisplay() {
-    const selected = this.isSelected();
-    selected.forEach(col => {
+    this.columns.filter(col => col.selected).forEach(col => {
       if(col.display === true) return;
       col.selected = false;
       col.display = true;
       col.showInDisplay = true;
       col.available = false;
     })
-    this.columns = [...this.checkableColumn];
+    this.updateColumnIndex();
     this.cookieService.setCookie('datatableColumn', this.columns);
   }
 
   moveToAvailable() {
-    const selected = this.isSelected();
-    selected.forEach(col => {
+    this.columns.filter(col => col.selected).forEach(col => {
       if(col.available === true) return;
       col.selected = false;
       col.display = false;
       col.showInDisplay = false;
       col.available = true;
-    });
-    this.columns = [...this.checkableColumn];
+    });    
+    this.updateColumnIndex();
     this.cookieService.setCookie('datatableColumn', this.columns);
   }
 
-  toggleDisplay(event, col) {
-    if(event.target.checked) {
-      col.selected = true;
-    } else {
-      col.selected = false;
-    }
-  }
-
-  isSelected() {
-    return this.checkableColumn.filter(col => col.selected);
+  updateColumnIndex() {
+    let index = 0;
+    this.columns.forEach(col => {
+      if(col.display === true) {
+        col.index = index + 1;
+        index += 1;
+      } else {
+        col.index = undefined;
+      }
+    });
+    this.columns = sortBy(this.columns, 'index');
   }
 
   tableConfigChange(value: boolean) {

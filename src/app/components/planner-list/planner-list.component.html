@@ -92,7 +92,7 @@
                       <input
                         type='checkbox'
                         [id]="col.name"
-                        (change)='toggleDisplay($event, col)'/>
+                        (change)='toggleCheckbox($event, col)'/>
                       <label [attr.for]="col.name">{{col.name}}</label>
                     </li>
                   </ul>
@@ -114,7 +114,7 @@
                       <input
                         type='checkbox'
                         [id]="col.name"
-                        (change)='toggleAvailable($event, col)'/>
+                        (change)='toggleCheckbox($event, col)'/>
                       <label [attr.for]="col.name">
                         {{col.name}}
                       </label>
