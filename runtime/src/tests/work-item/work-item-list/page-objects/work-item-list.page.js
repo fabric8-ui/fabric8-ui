@@ -255,35 +255,34 @@ class WorkItemListPage {
   /* Page elements - work item list */
 
   get allWorkItems () {
-    return element.all(by.css(".wi-detail-title>p"));
+    return $$("datatable-body-row");
   }
 
-  /* xpath = //alm-work-item-list-entry[.//text()[contains(.,'Some Title 6')]]   */
+  /* This function is used to fetch a workitem based on its "Title"   */
   workItemByTitle (titleString) {
-    // return element(by.xpath("//alm-work-item-list-entry[.//text()[contains(.,'" + titleString + "')]]"));
-    return element(by.xpath("//*[@class='wi-detail-title']/p[text()=' " + titleString + " ']"));
+    return element(by.xpath("//datatable-body-row[.//p[contains(text(), '" + titleString + "')]]"));
   }
 
   get firstWorkItem () {
-    return element.all(by.css(".wi-detail-title>p")).first();
+    return $$("datatable-body-row").first();
   }
 
   get lastWorkItem () {
-    return element.all(by.css(".wi-detail-title>p")).last();
+    return $$("datatable-body-row").last();
   }
 
   /* Title element relative to a workitem */
-  workItemTitle () {
-    return element.all(by.css(".wi-detail-title>p")).first().getText();
+  workItemTitle (workItemElement) {
+    return workItemElement.$("p").getText();
   }
 
   clickWorkItemTitle (title) {
-     this.workItemByTitle(title).click()
-     return new WorkItemDetailPage();
+    this.clickWorkItem(this.workItemByTitle(title)) 
+    return new WorkItemDetailPage();
   }
 
   clickWorkItem(workItemElement) {
-    workItemElement.$$(".f8-wi__list-description").first().element(by.css("p")).click();
+    workItemElement.$("p").click();
     return new WorkItemDetailPage();
   }
 
