@@ -58,6 +58,11 @@ import {
   SelectDropdownComponent
 } from './../../widgets/select-dropdown/select-dropdown.component';
 
+//ngrx stuff
+import { Store } from '@ngrx/store';
+import { AppState } from './../../states/app.state';
+import * as CommentActions from './../../actions/comment.actions';
+
 @Component({
   selector: 'work-item-preview',
   templateUrl: './work-item-detail.component.html',
@@ -171,7 +176,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private workItemTypeControlService: WorkItemTypeControlService,
     private spaces: Spaces,
-    private collaboratorService: CollaboratorService
+    private collaboratorService: CollaboratorService,
+    private store: Store<AppState>
   ) {}
 
   @HostListener('document:click', ['$event.target','$event.target.classList.contains('+'"assigned_user"'+')'])
@@ -216,6 +222,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         .do(workItem => {
           if (workItem) {
             this.workItem = cloneDeep(workItem);
+            this.store.dispatch(new CommentActions.Get(this.workItem.relationships.comments.links.related))
             this.titleText = this.workItem.attributes['system.title'];
             this.descText = this.workItem.attributes['system.description'] || '';
             // Open the panel once work item is ready

@@ -135,22 +135,19 @@ if (process.env.ENV == 'inmemory') {
         labels: reducers.LabelReducer,
         areas: reducers.AreaReducer,
         collaborators: reducers.CollaboratorReducer,
-        comments: reducers.CommentReducer
       }, {
       initialState: {
         iterations: states.initialIterationState,
         labels: states.initialLabelState,
         areas: states.initialAreaState,
-        collaborators: states.initialCollaboratorState,
-        comments: states.initialCommentState
+        collaborators: states.initialCollaboratorState
       }
     }),
     EffectsModule.forFeature([
       effects.IterationEffects,
       effects.LabelEffects,
       effects.AreaEffects,
-      effects.CollaboratorEffects,
-      effects.CommentEffects
+      effects.CollaboratorEffects
     ])
   ],
   declarations: [

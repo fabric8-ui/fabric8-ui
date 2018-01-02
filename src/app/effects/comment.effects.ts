@@ -16,12 +16,11 @@ export class CommentEffects {
     private store: Store<AppState>
   ) {}
 
-  @Effect() getWorkItemComments$ = this.actions$
+  @Effect() getWorkItemComments$: Observable<any> = this.actions$
     .ofType<CommentActions.Get>(CommentActions.GET)
-    .map(action => action.payload)
-    .do(payload => {
-      this.workItemService.resolveComments(payload)
-        .subscribe(comments => {
+    .switchMap(action => {
+      return this.workItemService.resolveComments(action.payload)
+        .map(comments => {
           this.store.dispatch(new CommentActions.GetSuccess(comments));
         })
     })

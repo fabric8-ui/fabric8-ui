@@ -8,6 +8,9 @@ export interface AppState {
     collaborators: CollaboratorState,
     groupTypes: GroupTypeState,
     space: SpaceState
-    comments: CommentState
+  };
+
+  detailPage: {
+    comments: states.CommentState
   };
 };
