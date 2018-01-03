@@ -20,7 +20,7 @@ start_webdriver() {
   npm run webdriver:update
   # Start selenium server just for this test run
   echo "Starting Webdriver and Selenium..."
-  npm run webdriver:start &
+  npm run webdriver:start >> /dev/null 2>&1 &
 }
 
 start_planner() {
@@ -30,7 +30,7 @@ start_planner() {
 }
 
 planner_running() {
-  curl --output /dev/null --silent localhost:8080
+  curl --output /dev/null --silent localhost:8088
 }
 
 wait_for_planner() {
