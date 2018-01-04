@@ -35,7 +35,9 @@ export class LabelRelationships {
   }
 }
 
-
-export interface labelUI extends modelUI {
-  // back
+export interface LabelUI extends modelUI {
+  version: number;
+  backgroundColor: string;
+  borderColor: string;
+  textColor: string;
 }

@@ -1,3 +1,5 @@
+import { modelUI } from './common.model';
+
 export class IterationModel {
   attributes?: IterationAttributes;
   id: string;
@@ -52,4 +54,14 @@ export class IterationRelations {
       total: number;
     };
   };
+}
+
+export interface IterationUI extends modelUI {
+  parentPath: string;
+  resolvedParentPath: string;
+  userActive: boolean;
+  activeStatus: boolean;
+  startAt: string;
+  endAt: string;
+  description: string;
 }

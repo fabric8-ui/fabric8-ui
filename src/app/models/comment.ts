@@ -38,3 +38,12 @@ export class CommentPost {
 export class RelationalData {
   creator?: User;
 }
+
+export interface CommentUI {
+  id: string;
+  body: string;
+  markup: string;
+  createdAt: string;
+  creator: User;
+  bodyRendered: string;
+}
