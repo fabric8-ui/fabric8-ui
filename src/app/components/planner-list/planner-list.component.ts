@@ -71,6 +71,7 @@ import * as IterationActions from './../../actions/iteration.actions';
 import * as LabelActions from './../../actions/label.actions';
 import * as AreaActions from './../../actions/area.actions';
 import * as CollaboratorActions from './../../actions/collaborator.actions';
+import * as WorkItemActions from './../../actions/work-item.actions';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -177,6 +178,20 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     private store: Store<AppState>) {}
 
   ngOnInit(): void {
+
+    this.store.subscribe((val) => {
+      console.log('####-1', val);
+    })
+
+    this.store.dispatch(new IterationActions.Get());
+    this.store.dispatch(new LabelActions.Get());
+    this.store.dispatch(new AreaActions.Get());
+    this.store.dispatch(new CollaboratorActions.Get());
+    // let payload = {
+    //   parentexists: true
+    // }
+    // this.store.dispatch(new WorkItemActions.Get({pageSize: 20, filters: payload}));
+    // console.log(this.store.select((labels: AppState) => labels.listPage.labels), '####-4');
     // If there is an iteration on the URL
     // Setting the value to currentIteration
     // BehaviorSubject so that we can compare

@@ -14,14 +14,16 @@ import  * as effects from './app/effects/index.effects';
     labels: reducers.LabelReducer,
     areas: reducers.AreaReducer,
     collaborators: reducers.CollaboratorReducer,
-    comments: reducers.CommentReducer
+    comments: reducers.CommentReducer,
+    workItems: reducers.WorkItemReducer
   }),
     EffectsModule.forRoot([
       effects.IterationEffects,
       effects.LabelEffects,
       effects.AreaEffects,
       effects.CollaboratorEffects,
-      effects.CommentEffects
+      effects.CommentEffects,
+      effects.WorkItemEffects
     ])
   ],
   declarations: [

@@ -4,3 +4,4 @@ export { CollaboratorState, initialState as initialCollaboratorState } from './c
 export { CommentState, initialState as initialCommentState } from './comment.state';
 export { IterationState, initialState as initialIterationState } from './iteration.state';
 export { LabelState, initialState as initialLabelState } from './label.state';
+export { WorkItemState, initialState as initialWorkItemState } from './work-item.state';

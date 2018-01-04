@@ -28,7 +28,7 @@ export const CommentReducer: ActionReducer<CommentState> = (state = initialState
     case CommentActions.UPDATE_SUCCESS: {
       let updatedComment = action.payload;
       let index = state.comments.findIndex(c => c.id === updatedComment.id);
-      if (index > -1){
+      if (index > -1) {
         state.comments[index] = action.payload
       }
       return {
