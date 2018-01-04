@@ -243,6 +243,7 @@ a.quick-add-icon, .f8-action-icon {
   text-decoration: none;
 }
 
+// Css for row selection
 .ngx-datatable.material.single-selection .datatable-body-row.active,
 .ngx-datatable.material.single-selection .datatable-body-row.active .datatable-row-group,
 .ngx-datatable.material.single-selection .datatable-body-row.active:hover,
@@ -252,8 +253,20 @@ a.quick-add-icon, .f8-action-icon {
     background-color: @color-pf-black-300 !important;
 }
 
+// css for row hover
+ .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover,
+ .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover .datatable-row-group,
+ .ngx-datatable.material.cell-selection .datatable-body-cell:hover,
+ .ngx-datatable.material.cell-selection .datatable-body-cell:hover .datatable-row-group {
+   background-color: @color-pf-blue-50;
+   transition-property: background;
+   transition-duration: .3s;
+   transition-timing-function: linear;
+ }
+ 
 
 
+// css to show icons on hover(quickAdd, quickPreview, detailPreview)
 .datatable-body-row:hover .wi-detail-icon, .datatable-body-row.active .wi-detail-icon,
 .datatable-body-row:hover .f8-action-icon, .datatable-body-row.active .f8-action-icon,
 .datatable-body-row:hover a.quick-add-icon, .datatable-body-row.active a.quick-add-icon {
@@ -283,7 +296,7 @@ a.quick-add-icon, .f8-action-icon {
 .tree-icon {
   min-width: 15px;
   &.tree-icon__disabled {
-    opacity: 0.4;
+    opacity: .4;
     cursor: not-allowed;
   }
 }
