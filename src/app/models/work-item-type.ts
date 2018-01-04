@@ -1,4 +1,5 @@
 import { Space } from "ngx-fabric8-wit";
+import { modelUI } from "src/app/models/common.model";
 
 export class WorkItemType {
     id: string;
@@ -28,4 +29,9 @@ export class WorkItemTypeField {
         kind: string,
         values?: string[]
     };
+}
+
+export interface WorkItemTypeUI extends modelUI {
+  icon: string;
+  version: number;
 }

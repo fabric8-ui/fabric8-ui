@@ -1,3 +1,4 @@
+import { modelUI } from './common.model';
 export class AreaModel {
   attributes?: AreaAttributes;
   id: string;
@@ -32,4 +33,9 @@ export class AreaRelations {
       related: string;
     };
   };
+}
+
+export interface AreaUI extends modelUI {
+  parentPath: string;
+  parentPathResolved: string;
 }

@@ -1,9 +1,12 @@
-import { WorkItemType } from './work-item-type';
-import { AreaModel } from './area.model';
+import {
+  WorkItemType,
+  WorkItemTypeUI
+} from './work-item-type';
+import { AreaModel, AreaUI } from './area.model';
 import { Comments, Comment } from './comment';
 import { Link } from './link';
 import { User } from 'ngx-login-client';
-import { IterationModel } from './iteration.model';
+import { IterationModel, IterationUI } from './iteration.model';
 import { LabelModel } from './label.model';
 
 export class WorkItem {
@@ -85,4 +88,13 @@ export class LinkDict {
   linkName: any;
   links: Link[];
   count: number;
+}
+
+
+export interface WorkItemUI {
+  id: string;
+  number: string;
+  type: WorkItemTypeUI;
+  area: AreaUI;
+  iteration: IterationUI;
 }

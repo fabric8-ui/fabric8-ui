@@ -1,3 +1,4 @@
+import { modelUI } from './common.model';
 export class LabelModel {
   attributes: LabelAttributes;
   id?: string;
@@ -32,4 +33,9 @@ export class LabelRelationships {
       self: string;
     }
   }
+}
+
+
+export interface labelUI extends modelUI {
+  // back
 }
