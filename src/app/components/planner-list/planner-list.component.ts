@@ -86,7 +86,8 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   @ViewChild('containerHeight') containerHeight: ElementRef;
   @ViewChild('myTable') table: any;
 
-  selected: any = [];
+  selectedRows: any = [];
+  detailExpandedRows: any = [];
   expanded: any = {};
   datatableWorkitems: any[] = [];
   columns: any[];
@@ -176,7 +177,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       this.columns = datatableColumn;
     } else {
       let temp = this.cookieService.getCookie(datatableColumn.length)
-      this.columns = temp.array;      
+      this.columns = temp.array;
     }
   }
 
@@ -1023,9 +1024,14 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       this.columns[event.newValue - 1].index = event.prevValue;
       this.columns = sortBy(this.columns, 'index');
       this.cookieService.setCookie('datatableColumn', this.columns);
-    } 
+    }
   }
   onSelect({ selected }) {
+    if (this.detailExpandedRows.length > 0 && this.detailExpandedRows[0].id !== selected[0].id) {
+      this.table.rowDetail.collapseAllRows();
+      this.detailExpandedRows = [];
+    }
+
     this.workItemDataService.getItem(selected[0].id).subscribe(workItem => {
       this.workItemService.emitSelectedWI(workItem);
     });
@@ -1033,13 +1039,18 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   toggleExpandRow(row, quickAddEnabled = true) {
     if (quickAddEnabled) {
-      // console.log('Toggled Expand Row!', row);
+      this.detailExpandedRows.forEach(r => {
+        if (r.id !== row.id)
+          this.table.rowDetail.toggleExpandRow(r);
+      });
+      this.detailExpandedRows = [];
       this.table.rowDetail.toggleExpandRow(row);
+      this.detailExpandedRows.push(row);
     }
   }
 
   onDetailToggle(event) {
-    //console.log('Detail Toggled', event);
+    // console.log('Detail Toggled ####-2', event);
   }
 
   onDetailPreview(id): void {
@@ -1098,7 +1109,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       col.display = false;
       col.showInDisplay = false;
       col.available = true;
-    });    
+    });
     this.updateColumnIndex();
     this.cookieService.setCookie('datatableColumn', this.columns);
   }
