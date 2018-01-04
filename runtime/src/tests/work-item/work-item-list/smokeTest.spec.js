@@ -126,21 +126,21 @@ describe('Work item list', function () {
   });
 
   it('Updating area to a WI -desktop ', function() {
-      var detailPage = page.clickWorkItemTitle(MOCK_WORKITEM_TITLE_0);
-      browser.wait(until.elementToBeClickable(detailPage.areaLabel), constants.WAIT, 'Failed to find areaLabel');
-      detailPage.clickAreaSelect();
-      detailPage.clickAreas(WORKITEM_0_ID);
-      expect(detailPage.saveAreasButton().isPresent()).toBe(true);
-      detailPage.SaveAreas();
+    var detailPage = page.clickWorkItemTitle(MOCK_WORKITEM_TITLE_0);
+    browser.wait(until.elementToBeClickable(detailPage.areaLabel), constants.WAIT, 'Failed to find areaLabel');
+    detailPage.clickAreaSelect();
+    detailPage.clickAreas(WORKITEM_0_ID);
+    expect(detailPage.saveAreasButton().isPresent()).toBe(true);
+    detailPage.SaveAreas();
 
-      browser.wait(until.elementToBeClickable(detailPage.AreaSelect()), constants.WAIT, 'Failed to find area');
-      expect(detailPage.AreaSelect().getText()).toBe(AREA_0_TITLE);
-      detailPage.clickAreaSelect();
-      detailPage.clickAreas(WORKITEM_1_ID);
+    browser.wait(until.elementToBeClickable(detailPage.AreaSelect()), constants.WAIT, 'Failed to find area');
+    expect(detailPage.AreaSelect().getText()).toBe(AREA_0_TITLE);
+    detailPage.clickAreaSelect();
+    detailPage.clickAreas(WORKITEM_1_ID);
 
-      detailPage.SaveAreas();
-      browser.wait(until.elementToBeClickable(detailPage.AreaSelect()), constants.WAIT, 'Failed to find area');
-      expect(detailPage.AreaSelect().getText()).toBe(AREA_1_TITLE);
+    detailPage.SaveAreas();
+    browser.wait(until.elementToBeClickable(detailPage.AreaSelect()), constants.WAIT, 'Failed to find area');
+    expect(detailPage.AreaSelect().getText()).toBe(AREA_1_TITLE);
   });
 
   it('Re-Associate Workitem from detail page', function() {
