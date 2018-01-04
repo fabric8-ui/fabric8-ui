@@ -5,7 +5,7 @@
       'color': label.attributes['text-color']
     }"
     (click)="clickLabel(label, $event)">
-    <span class="pointer">
+    <span class="label-name pointer">
         {{label.attributes?.name}}
     </span>
     <span class="close-icon-wrapper" *ngIf="allowDelete">
@@ -24,7 +24,7 @@
               'color': label.attributes['text-color']
             }"
             (click)="clickLabel(label, $event)">
-            <span class="pointer">
+            <span class="label-name pointer">
                 {{label.attributes?.name}}
             </span>
             <span class="close-icon-wrapper" *ngIf="allowDelete">
