@@ -16,4 +16,5 @@ export { HttpService } from './app/services/http-service';
 export { PlannerBoardComponent } from './app/components/planner-board/planner-board.component';
 export { PlannerBoardModule } from './app/components/planner-board/planner-board.module';
 export { PlannerListComponent } from './app/components/planner-list/planner-list.component';
-export { PlannerListModule } from './app/components/planner-list/planner-list.module';
+// export { PlannerListModule } from './app/components/planner-list/planner-list.module';
+export { PlannerListModule } from './app/components_ngrx/planner-list/planner-list.module';
