@@ -1,3 +1,4 @@
+import { PlannerLayoutModule } from './../../widgets/planner-layout/planner-layout.module';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
 import {
@@ -34,7 +35,7 @@ import { AreaEffects } from './../../effects/area.effects';
 import { CollaboratorState, initialState as initialCollaboratorState } from './../../states/collaborator.state';
 import { CollaboratorReducer } from './../../reducers/collaborator.reducer';
 import { CollaboratorEffects } from './../../effects/collaborator.effects';
-import { TooltipConfig } from 'ngx-bootstrap/tooltip/tooltip.config';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 
 let providers = [];
 
@@ -73,7 +74,10 @@ if (process.env.ENV == 'inmemory') {
 
 @NgModule({
   imports: [
+    CommonModule,
     PlannerListRoutingModule,
+    PlannerLayoutModule,
+    TooltipModule.forRoot(),
     StoreModule.forFeature('listPage', {
       iterations: iterationReducer,
       labels: LabelReducer,

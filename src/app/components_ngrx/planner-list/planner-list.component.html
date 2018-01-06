@@ -1,1 +1,44 @@
-<h1>This is list module</h1>
+<div class="container-fluid f8-wi-container" #containerHeight>
+  <div class="lock-overlay-list"
+    *ngIf="uiLockedAll">
+    <div class="spinner-container">
+      <h2 class="spinner"></h2>
+      <h2>Loading ...</h2>
+      <h4>Please wait, we are loading your data.</h4>
+    </div>
+  </div>
+
+  <main class="row">
+    <alm-planner-layout #plannerLayout
+      (sidePanelStateChange)="togglePanelState($event)"
+      [sidePanelContent]="sidePanel"
+      [sectionContent]="sectionPanel">
+    </alm-planner-layout>
+  </main>
+</div>
+
+<ng-template #sidePanel>
+  <aside class="f8-sidepanel">
+    <div class="lock-overlay-list"
+      *ngIf="uiLockedSidebar">
+      <div class="spinner-container">
+        <h2 class="spinner"></h2>
+        <h2>Loading ...</h2>
+        <h4>Please wait, we are loading your data.</h4>
+      </div>
+    </div>
+    <a class="f8-sidepanel--toggle">
+      <span class="fa f8-sidepanel--toggle-icon fa-lg"
+        [class.fa-angle-double-left]="sidePanelOpen"
+        [class.fa-angle-double-right]="!sidePanelOpen"
+        (click)="togglePanel()" tooltip="{{sidePanelOpen ?
+          'Hide Panel' : 'Show Panel'}}"
+        placement="right">
+      </span>
+    </a>
+  </aside>
+</ng-template>
+
+<ng-template #sectionPanel>
+  This is the body
+</ng-template>

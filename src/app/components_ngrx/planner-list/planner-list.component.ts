@@ -1,6 +1,7 @@
 import {
   Component,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ViewChild
 } from '@angular/core';
 
 @Component({
@@ -13,7 +14,18 @@ import {
   styleUrls: ['./planner-list.component.less']
 })
 export class PlannerListComponent {
-  constructor() {
+  private uiLockedAll: boolean = false;
+  private sidePanelOpen: boolean = true;
 
+  @ViewChild('plannerLayout') plannerLayout: any;
+
+  constructor() {}
+
+  togglePanelState(event) {
+    console.log(event);
+  }
+
+  togglePanel() {
+    this.plannerLayout.toggleSidePanel();
   }
 }
