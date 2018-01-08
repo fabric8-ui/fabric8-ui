@@ -693,19 +693,13 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       if (index > -1) {
         this.datatableWorkitems[index].treeStatus = 'loading';
         this.table.rowDetail.collapseAllRows();
+        this.detailExpandedRows = [];
       }
     }
   }
 
   onCreateWorkItem(workItem) {
-    let resolveItem = this.workItemService.resolveWorkItems(
-      [workItem],
-      this.iterations,
-      [],
-      this.workItemTypes,
-      this.labels
-    );
-    this.workItems = [...resolveItem, ...this.workItems];
+    this.workItems = [workItem, ...this.workItems];
     this.datatableWorkitems = [
       ...this.tableWorkitem([this.workItems[0]]),
       ...this.datatableWorkitems
@@ -1039,13 +1033,20 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   toggleExpandRow(row, quickAddEnabled = true) {
     if (quickAddEnabled) {
-      this.detailExpandedRows.forEach(r => {
-        if (r.id !== row.id)
+      const index = this.detailExpandedRows.findIndex(r => r.id === row.id);
+      if (index > -1) {
+        // For collapsing
+        this.table.rowDetail.toggleExpandRow(this.detailExpandedRows[index]);
+        this.detailExpandedRows.splice(index, 1); 
+      } else {
+        // For expanding
+        this.detailExpandedRows.forEach(r => {
           this.table.rowDetail.toggleExpandRow(r);
-      });
-      this.detailExpandedRows = [];
-      this.table.rowDetail.toggleExpandRow(row);
-      this.detailExpandedRows.push(row);
+        });
+        this.detailExpandedRows = [];
+        this.table.rowDetail.toggleExpandRow(row); 
+        this.detailExpandedRows.push(row);
+      }
     }
   }
 

@@ -55,7 +55,17 @@
       </toolbar-panel>
     </div>
     <!-- tableConfig Dropdown -->
-    <div class="col-md-12" style="height: 30px;">
+    <div class="col-md-12" style="height: 50px;">
+        <div class="f8-wi-list__quick-add width-100 pull-left"
+        id="workItemList_up_quickAdd"
+        *ngIf="loggedIn"
+        #quickaddHeight>
+        <alm-work-item-quick-add
+          [WITypes]="workItemTypes"
+          [wilistview]="'wi-table-view-top'"
+          (close)="close($event)">
+        </alm-work-item-quick-add>
+      </div>
         <div class="f8-wi-list__settings planner-hack-dropdown">
             <div class="dropdown-kebab-pf pull-right dropdown margin-left-10"
                   dropdown
@@ -169,7 +179,7 @@
               [width]="50"
               [resizeable]="false"
               [sortable]="false"
-              [cellClass]="'cell-overflow'"
+              [cellClass]="'cell-class'"
               [frozenLeft]="false">
               <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
                 <a class="quick-add-icon"
@@ -192,7 +202,7 @@
             [resizeable]="false"
             [width]="c.width"
             [sortable]="c.name === 'Title'"
-            [cellClass]="'cell-overflow'"
+            [cellClass]="'cell-class'"
             [headerClass]="'header-cell'">
               <ng-template ngx-datatable-cell-tree-expander *ngIf="c.name==='Title'">
                 <i class="fa fa-angle-right tree-icon"></i>
@@ -207,7 +217,7 @@
               </ng-template>
 
               <ng-template ngx-datatable-cell-tree-loader *ngIf="c.name==='Title'">
-                <div class="spinner spinner-xs margin-top-5"></div>
+                <div class="spinner spinner-xs icon-loader margin-top-15"></div>
               </ng-template>
 
               <ng-template let-row="row"
@@ -228,8 +238,7 @@
             [width]="120"
             [resizeable]="false"
             [sortable]="false"
-            [cellClass]="'cell-overflow'"
-            [headerClass]="'cell-overflow'"
+            [cellClass]="'cell-class'"
             [frozenRight]="false">
             <ng-template let-row="row"
               ngx-datatable-cell-template>
@@ -304,17 +313,6 @@
         id="workItemList_Error"
         *ngIf="error">
         {{error}}
-      </div>
-      <div class="f8-wi-list__quick-add width-100 pull-left"
-        id="workItemList_quickAdd"
-        *ngIf="loggedIn"
-        #quickaddHeight>
-        <alm-work-item-quick-add
-          [WITypes]="workItemTypes"
-          [wilistview]="'wi-list-view'"
-          (close)="close($event)"
-          (workItemCreate)="onCreateWorkItem($event)">
-        </alm-work-item-quick-add>
       </div>
     </div>
   </section>
