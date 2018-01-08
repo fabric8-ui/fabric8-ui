@@ -44,7 +44,6 @@ describe('Work item list', function () {
 
   /* User can read, update, remove assignee on a workitem  */
   it('User can read, update, remove assignee', function() {
-    page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
     page.clickQuickAddSave().then(function() {
       var detailPage = page.clickWorkItemTitle(WORK_ITEM_TITLE);
@@ -69,9 +68,7 @@ describe('Work item list', function () {
   /* Create a new workitem, fill in the details, save, retrieve, update, save, verify updates are saved */
   it('should find and update the workitem through its detail page', function() {
     /* Create a new workitem */
-    page.clickWorkItemQuickAdd();
     page.typeQuickAddWorkItemTitle(WORK_ITEM_TITLE);
-    page.typeQuickAddWorkItemDesc(WORK_ITEM_DESCRIPTION);
     page.clickQuickAddSave().then(function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe(WORK_ITEM_TITLE);
       /* Fill in/update the new work item's title and details field */

@@ -102,15 +102,6 @@ class WorkItemListPage {
    return this.workItemQuickAddTitle.sendKeys(keys);
  }
 
- get workItemQuickAddDesc () {
-   return element(by.css(".f8-quickadd-desc"));
- }
-
- typeQuickAddWorkItemDesc (keys) {
-   browser.wait(until.presenceOf(this.workItemQuickAddDesc), constants.WAIT, 'Failed to find workItemQuickAddDesc');
-   return this.workItemQuickAddDesc.sendKeys(keys);
- }
-
  /* Access the Kebab element relative to its parent workitem */
  workItemKebabButton (parentElement) {
    browser.wait(until.presenceOf(parentElement.element(by.id("dropdownKebabRight"))), constants.WAIT, 'Failed to find clickWorkItemKebabButton');
@@ -220,21 +211,12 @@ class WorkItemListPage {
     return this.workItemPopUpDeleteCancelConfirmButton.click();
   }
 
-  get openButton () {
-    return element(by.css(".f8-quickadd__addwi-savebtn"));
-  }
-
   quickAddbuttonById () {
     return element(by.css("f8-quickadd-container"));
   }
 
-  clickWorkItemQuickAdd () {
-    browser.wait(until.presenceOf(this.openButton), constants.WAIT, 'Failed to find the open button');
-    return this.openButton.click();
-  }
-
   get saveButton () {
-    return  element(by.css(".f8-quickadd__wiblk-btn-add"));
+    return  element(by.id("quickadd-save"));
   }
 
   clickQuickAddSave () {
