@@ -127,7 +127,8 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   private currentExpandedChildren: WorkItem[] = [];
   private expandedNode: any = null;
   private selectedWI: WorkItem = null;
-  private initialGroup: GroupTypesModel;
+  private groupTypes: GroupTypesModel[] = [];
+  private initialGroup = [];
   private included: WorkItem[];
   private _lastTagetContentHeight: number = 0;
   private _scrollTrigger = 5;
@@ -163,10 +164,14 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     // on update the value on URL
 
     const queryParams = this.route.snapshot.queryParams;
-    if (Object.keys(queryParams).indexOf('iteration') > -1) {
-      this.currentIteration = new BehaviorSubject(queryParams['iteration']);
+    if(Object.keys(queryParams).length === 0 ) {
+      this.setDefaultUrl();
     } else {
-      this.currentIteration = new BehaviorSubject(null);
+      if (Object.keys(queryParams).indexOf('iteration') > -1) {
+        this.currentIteration = new BehaviorSubject(queryParams['iteration']);
+      } else {
+        this.currentIteration = new BehaviorSubject(null);
+      }
     }
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
@@ -239,6 +244,34 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     document.getElementsByTagName('body')[0].style.overflow = "auto";
   }
 
+  setDefaultUrl() {
+    //redirect to default type group
+    //get space id
+    this.spaces.current.subscribe(space => {
+      if (space) {
+        const spaceId = space.id;
+        //get groupsgroups
+        this.groupTypesService.getGroupTypes().subscribe(groupTypes => {
+          const defaultGroupName = groupTypes[0].attributes.name;
+          //Query for work item type group
+          const type_query = this.filterService.queryBuilder('$WITGROUP', this.filterService.equal_notation, defaultGroupName);
+          //Query for space
+          const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, spaceId);
+          //Join type and space query
+          const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, space_query );
+          const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
+          //second_join gives json object
+          let query = this.filterService.jsonToQuery(second_join);
+          // { queryParams : {q: query}
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { q: query }
+          });
+        });
+      }
+    });
+  }
+
   // model handlers
 
   initWiItems(pageSize: any): void {
@@ -295,19 +328,27 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         });
   }
 
-  loadWorkItems(): void {
-    this.initialGroup = this.groupTypesService.getCurrentGroupType();
+  getCurrentGroupType() {
     //if initialGroup is undefined, the page has been refreshed - find  group context based on URL
-    if (this.route.snapshot.queryParams['q']) {
-      let wits = this.route.snapshot.queryParams['q'].split('workitemtype:')
-      if(wits.length > 1) {
-        let collection = wits[1].replace(')','').split(',');
-        this.groupTypesService.findGroupConext(collection);
+    if ( this.route.snapshot.queryParams['q'] ) {
+      let urlArray = this.route.snapshot.queryParams['q'].split('WITGROUP:');
+      let witGroupName = urlArray[1].replace(')','');
+      let witGroupList = this.groupTypesService.getWitGroupList();
+      if( witGroupList.length > 0 ) {
+        let selectedWitGroup = witGroupList.find(witg => witg.attributes.name === witGroupName);
+        this.groupTypesService.setCurrentGroupType(selectedWitGroup.relationships.typeList.data, witGroupName);
       }
-    }
-    if (this.initialGroup === undefined)
+    } else {
+      //redirect to the first group type hierachy
       this.initialGroup = this.groupTypesService.getCurrentGroupType();
+      //set the url
+    }
+  }
 
+  loadWorkItems(): void {
+    const queryParams = this.route.snapshot.queryParams;
+    if(Object.keys(queryParams).length === 0 )
+      this.setDefaultUrl();
     this.uiLockedList = true;
     if (this.wiSubscriber) {
       this.wiSubscriber.unsubscribe();
@@ -320,18 +361,16 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       this.workItemService.getWorkItemTypes(),
       this.areaService.getAreas(),
       this.userService.getUser().catch(err => Observable.of({})),
-      this.labelService.getLabels()
+      this.labelService.getLabels(),
+      this.groupTypesService.getGroupTypes()
     ).take(1).do((items) => {
       const iterations = this.iterations = items[0];
       this.workItemTypes = items[1];
       this.areas = items[2];
       this.loggedInUser = items[3];
       this.labels = items[4];
-      if (this.initialGroup === undefined) {
-        let witCollection = this.workItemTypes.map(wit => wit.id);
-        this.groupTypesService.setCurrentGroupType(witCollection);
-        this.initialGroup = this.groupTypesService.getCurrentGroupType();
-      }
+      this.groupTypes = items[5];
+      this.getCurrentGroupType();
       // If there is an iteration filter on the URL
       // const queryParams = this.route.snapshot.queryParams;
       // if (Object.keys(queryParams).indexOf('iteration') > -1) {

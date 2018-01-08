@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { Broadcaster, Logger } from 'ngx-base';
 
+import { GroupTypesModel } from 'src/app/models/group-types.model';
 import { GroupTypesService } from '../../services/group-types.service';
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType } from '../../models/work-item-type';
@@ -19,12 +20,18 @@ export class SidepanelComponent implements OnInit, OnDestroy {
 
   @Input() iterations: IterationModel[] = [];
   @Input() sidePanelOpen: Boolean = true;
+  @Input('groupTypes') set groupTypesSetup(types: GroupTypesModel[]) {
+    if(JSON.stringify(this.groupTypes) != JSON.stringify(types)) {
+      this.groupTypes = types;
+    }
+  }
 
   rootIteration: IterationModel = null;
   backlogSelected: boolean = true;
   typeGroupSelected: boolean = true;
   numberOfItemsInBacklog: number = 0;
   eventListeners: any[] = [];
+  groupTypes: GroupTypesModel[] = [];
 
   constructor(
     private log: Logger,

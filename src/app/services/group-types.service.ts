@@ -25,7 +25,7 @@ export class GroupTypesService {
   public groupTypes: GroupTypesModel[] = [];
   private headers = new Headers({'Content-Type': 'application/json'});
   private _currentSpace;
-  private selectedGroupType: any;
+  private selectedGroupType = [];
   public groupTypeSelected: Subject<string[]> = new Subject();
   public workItemSelected: Subject<string[]> = new Subject();
   public groupName: string = '';
@@ -41,40 +41,44 @@ export class GroupTypesService {
   }
 
   getGroupTypes(): Observable<GroupTypesModel[]> {
-    //this will change after integrating with API
-    //For now use the mock data which resembles the api response
-    this.mockData();
+    return this.spaces.current.take(1).switchMap(space => {
+      let workitemtypesUrl = space.relationships.workitemtypegroups.links.related;
+      return this.http
+        .get(workitemtypesUrl)
+        .map (response => {
+          if (/^[5, 4][0-9]/.test(response.status.toString())) {
+            throw new Error('API error occured');
+          }
+          this.groupTypes = response.json().data;
+          this.setCurrentGroupType(this.groupTypes[0].relationships.typeList.data, this.groupTypes[0].attributes.name);
+          return this.groupTypes;
+        })
+        .catch ((error: Error | any) => {
+          if (error.status === 401) {
+            //this.notifyError('You have been logged out.', error);
+            this.auth.logout();
+          } else {
+            console.log('Fetch iteration API returned some error - ', error.message);
+            //this.notifyError('Fetching iterations has from server has failed.', error);
+          }
+          return Observable.throw(new Error(error.message));
+        });
+    });
+  }
+
+  getFlatGroupList(): Observable<GroupTypesModel[]>{
+    //this.mockData();
     if (this._currentSpace) {
+      //Normalize the response - we don't want two portfolio - that is
+      //no two entries for the same level
       return Observable.of(this.groupTypes);
     } else {
       return Observable.of<GroupTypesModel[]>( [] as GroupTypesModel[] );;
     }
   }
 
-  getFlatGroupList(): Observable<GroupTypesModel[]>{
-    this.mockData();
-    if (this._currentSpace) {
-      //Normalize the response - we don't want two portfolio - that is
-      //no two entries for the same level
-      let wi_collection = [];
-      let groupTypes = cloneDeep(this.groupTypes);
-      let returnResponse = groupTypes.filter((item, index) => {
-        if(groupTypes[index+1]) {
-          if( item.level[0] == groupTypes[index+1].level[0] ) {
-            wi_collection = item.wit_collection;
-          } else {
-            item.wit_collection = [...item.wit_collection, ...wi_collection]
-            wi_collection = [];
-            return item;
-          }
-        } else {
-          return item;
-        }
-      });
-      return Observable.of(returnResponse);
-    } else {
-      return Observable.of<GroupTypesModel[]>( [] as GroupTypesModel[] );;
-    }
+  getWitGroupList(): GroupTypesModel[] {
+    return this.groupTypes;
   }
 
   setCurrentGroupType(groupType, groupName: string = '') {
@@ -84,112 +88,16 @@ export class GroupTypesService {
     this.groupTypeSelected.next(groupType);
   }
 
-  getCurrentGroupType(): GroupTypesModel {
+  getCurrentGroupType(): any[] {
     return this.selectedGroupType;
   }
 
-  getAllowedChildWits(workItem: WorkItem) {
-    //Get to the highest level
-    //set sub level as child
-    //If no sub level, get the next level as child
+  getAllowedChildWits(workItem: WorkItem, wits) {
     let WITid = workItem.relationships.baseType.data.id;
-    let groupType = this.groupTypes
-        .find(groupType => groupType.wit_collection.indexOf(WITid) > -1);
-    // grouptype is undefined when it's not find the WIT in the groupTypes JSON.
-    if(groupType !== undefined) {
-      let level = groupType.level[0];
-      let subLevel = groupType.level[1];
-      let guidedGroupType = this.groupTypes
-          .find(groupType => groupType.level[0] === level + 1);
-      if(subLevel === 0 && groupType.group === 'portfolio') {
-        guidedGroupType = this.groupTypes
-          .find(groupType => groupType.level[1] === subLevel + 1);
-      }
-      if(guidedGroupType != undefined) {
-        this.workItemSelected.next(guidedGroupType.wit_collection);
-      } else {
-        this.workItemSelected.next([]);
-      }
-    }
-  }
-
-  findGroupConext(collection) {
-    //check collection against wit_collection
-    let matchingGroup = this.groupTypes.find((gt, index) => {
-      if(gt.group === 'portfolio' && gt.level[1] === 0) {
-        //concat both portfolio
-        let arr = gt.wit_collection.concat(this.groupTypes[index + 1].wit_collection)
-        return arr.sort().toString() === collection.sort().toString();
-      } else {
-        return gt.wit_collection.sort().toString() === collection.sort().toString();
-      }
-    });
-    this.selectedGroupType = matchingGroup.wit_collection;
-  }
-
-  mockData(): Array<GroupTypesModel> {
-    //Map the json blob to what the UI needs
-    this.groupTypeResponse = {
-      'id':'f3423d58-ad28-427b-abf1-930afbb670c0',
-      'type':'typehierarchies',
-      "attributes": {
-        "hierarchy": [
-          {
-            "group": "portfolio",
-            "icon": "fa fa-suitcase",
-            "level": [
-              0,
-              0
-            ],
-            "name": "Portfolio",
-            "wit_collection": [
-              "71171e90-6d35-498f-a6a7-2083b5267c18",
-              "ee7ca005-f81d-4eea-9b9b-1965df0988d0",
-              "6d603ab4-7c5e-4c5f-bba8-a3ba9d370985"
-            ]
-          },
-          {
-            "group": "portfolio",
-            "icon": "fa fa-suitcase",
-            "level": [
-              0,
-              1
-            ],
-            "name": "Portfolio",
-            "wit_collection": [
-              "b9a71831-c803-4f66-8774-4193fffd1311",
-              "3194ab60-855b-4155-9005-9dce4a05f1eb"
-            ]
-          },
-          {
-            "group": "requirements",
-            "icon": "fa fa-list-ul",
-            "level": [
-              1,
-              0
-            ],
-            "name": "Requirements",
-            "wit_collection": [
-              "0a24d3c2-e0a6-4686-8051-ec0ea1915a28",
-              "26787039-b68f-4e28-8814-c2f93be1ef4e"
-            ]
-          },
-          {
-            "group": "execution",
-            "icon": "fa fa-repeat",
-            "level": [
-              2,
-              0
-            ],
-            "name": "Iterations",
-            "wit_collection": [
-              "bbf35418-04b6-426c-a60b-7f80beb0b624"
-            ]
-          }
-        ]
-      }
-    }
-    this.groupTypes = this.groupTypeResponse.attributes.hierarchy;
-    return this.groupTypes;
+    let selectedWIT = wits.find(wit => wit.id === WITid);
+    if (selectedWIT && selectedWIT.relationships.guidedChildTypes)
+      this.workItemSelected.next(selectedWIT.relationships.guidedChildTypes.data.map(i=>i.id));
+    else
+      this.workItemSelected.next([]);
   }
 }

@@ -43,6 +43,8 @@ import { WorkItemDataService } from './../../services/work-item-data.service';
 import { CollaboratorService } from '../../services/collaborator.service';
 import { LabelService } from '../../services/label.service';
 import { LabelModel } from '../../models/label.model';
+import { GroupTypesService } from '../../services/group-types.service';
+import { GroupTypesModel } from '../../models/group-types.model';
 
 @Component({
   // tslint:disable-next-line:use-host-property-decorator
@@ -74,7 +76,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy, AfterViewChecke
   private workItemTypes: WorkItemType[] = [];
   private readyToInit = false;
   private areas: AreaModel[] = [];
-  private loggedInUser: User;
+  private loggedInUser: any[];
   eventListeners: any[] = [];
   dialog: Dialog;
   showDialog = false;
@@ -92,6 +94,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy, AfterViewChecke
   private uiLockedSidebar = false;
   private currentSpace: Space;
   private included: WorkItem[];
+  groupTypes: GroupTypesModel[] = [];
 
   sidePanelOpen: boolean = true;
   constructor(
@@ -101,6 +104,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy, AfterViewChecke
     private notifications: Notifications,
     private router: Router,
     private workItemService: WorkItemService,
+    private groupTypesService: GroupTypesService,
     private workItemDataService: WorkItemDataService,
     private dragulaService: DragulaService,
     private iterationService: IterationService,
@@ -214,15 +218,17 @@ export class PlannerBoardComponent implements OnInit, OnDestroy, AfterViewChecke
       this.areaService.getAreas(),
       this.labelService.getLabels(),
       this.userService.getUser().catch(err => Observable.of({} as User)),
-      this.currentIteration
+      this.currentIteration,
+      this.groupTypesService.getGroupTypes()
     )
-    .subscribe(([iterations, wiTypes, areas, labels, loggedInUser, currentIteration]) => {
+    .subscribe(([iterations, wiTypes, areas, labels, loggedInUser, currentIteration, groupTypes]) => {
       this.iterations = iterations;
       this.workItemTypes = wiTypes;
       this.readyToInit = true;
       this.areas = areas;
       this.labels = labels;
       this.loggedInUser = loggedInUser;
+      this.groupTypes = groupTypes;
       // Resolve iteration filter on the first load of board view
       // If there is an existing iteration query params already
       // Set the filter service with iteration filter
