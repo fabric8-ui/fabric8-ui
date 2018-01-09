@@ -16,7 +16,7 @@
         role="menu"
         aria-labelledby="dropdownKebab"
         *dropdownMenu>
-        <li *ngFor="let type of availableTypes"
+        <li *ngFor="let type of allowedWITs"
             role="menuitem"
             (click)="selectType($event, type)">
           <a class="dropdown-item" href="#">
@@ -29,7 +29,7 @@
   </div>
 
   <div class="f8-quickadd__wiblk-story">
-    <div [ngClass]="wilistview === 'wi-table-view'? 'col-xs-12 col-sm-6 col-md-6' : 'col-xs-12 col-sm-8 col-md-8'" 
+    <div [ngClass]="wilistview === 'wi-table-view'? 'col-xs-12 col-sm-6 col-md-6' : 'col-xs-12 col-sm-8 col-md-8'"
       class="f8-quickadd__wiblk-storyinput">
       <input class="form-control col-xs-12 col-sm-12
         col-md-12 f8-quickadd-input"

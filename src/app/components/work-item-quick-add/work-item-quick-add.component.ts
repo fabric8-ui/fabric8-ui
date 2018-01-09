@@ -39,13 +39,18 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   @ViewChild('quickAddSubmit') qaSubmit: any;
 
   @Input() parentWorkItemId: string = null;
+  @Input() quickAddContext: any[] = [];
 
   @Input('WITypes') set WITypeSetter(val: WorkItemType[]) {
     if (JSON.stringify(val) !== JSON.stringify(this.allWorkItemTypes)) {
       this.allWorkItemTypes = val;
       this.availableTypes = cloneDeep(this.allWorkItemTypes);
+      this.allowedWITs = this.allWorkItemTypes.filter(entry => {
+        return this.quickAddContext.findIndex(i => i.id === entry.id) >= 0;
+      });
       if(this.availableTypes.length){
-        this.selectedType = this.availableTypes[0];
+        //this.selectedType = this.availableTypes[0];
+        this.selectedType = this.allowedWITs[0];
         if (this.wilistview === 'wi-table-view-top') {
           this.createWorkItemObj();
         }
@@ -79,6 +84,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   allWorkItemTypes: WorkItemType[] = null;
   linkObject: object;
   childLinkType: any = null;
+  allowedWITs: WorkItemType[] = [];
 
   constructor(
     private workItemService: WorkItemService,
@@ -220,7 +226,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   save(event: any = null): void {
     if (event)
       event.preventDefault();
-    
+
     this.workItemCreate.emit({parentId: this.parentWorkItemId});
 
     // Setting type in relationship
@@ -319,14 +325,19 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   setGuidedWorkItemType(wiTypeCollection) {
-    if (this.wilistview === 'wi-list-view' || this.wilistview === 'wi-card-view')
+    //if (this.wilistview === 'wi-list-view' || this.wilistview === 'wi-card-view')
     if (wiTypeCollection.length > 0) {
+      let currentGT = this.groupTypesService.getCurrentGroupType();
+      this.allowedWITs = this.allWorkItemTypes.filter(entry => {
+        return currentGT.findIndex(i => i.id === entry.id) >= 0;
+      });
       this.availableTypes = cloneDeep(this.allWorkItemTypes);
       let setWITCollection = new Set(wiTypeCollection);
       let setAvailableTypes = new Set(this.availableTypes);
       let intersection = new Set([...Array.from(setAvailableTypes)].filter(x => setWITCollection.has(x.id)));
       this.availableTypes = [...Array.from(intersection)];
-      this.selectedType = this.availableTypes[0];
+      //this.selectedType = this.availableTypes[0];
+      this.selectedType = this.allowedWITs[0];
       this.showQuickAdd = false
       this.showQuickAddBtn = true;
     } else {

@@ -128,6 +128,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   private expandedNode: any = null;
   private selectedWI: WorkItem = null;
   private groupTypes: GroupTypesModel[] = [];
+  private quickAddContext: String[] = [];
   private initialGroup = [];
   private included: WorkItem[];
   private _lastTagetContentHeight: number = 0;
@@ -375,6 +376,8 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       this.labels = items[4];
       this.groupTypes = items[5];
       this.getCurrentGroupType();
+      //set the context for the quick add based on which type group is selected
+      this.quickAddContext = this.groupTypesService.getCurrentGroupType();
       // If there is an iteration filter on the URL
       // const queryParams = this.route.snapshot.queryParams;
       // if (Object.keys(queryParams).indexOf('iteration') > -1) {
