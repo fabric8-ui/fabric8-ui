@@ -14,6 +14,7 @@ import { SpaceMockGenerator } from './mock-data/space-mock-generator';
 import { AreaMockGenerator } from './mock-data/area-mock-generator';
 import { IterationMockGenerator } from './mock-data/iteration-mock-generator';
 import { LabelMockGenerator } from './mock-data/label-mock-generator';
+import { GroupTypesMockGenerator } from './mock-data/group-types-mock-generator';
 
 /*
   This class provides a mock database store for entities. It provides
@@ -46,6 +47,7 @@ export class MockDataService {
   private iterationMockGenerator: IterationMockGenerator = new IterationMockGenerator();
   private areaMockGenerator: AreaMockGenerator = new AreaMockGenerator();
   private labelMockGenerator: LabelMockGenerator = new LabelMockGenerator();
+  private groupTypesMockGenerator: GroupTypesMockGenerator = new GroupTypesMockGenerator();
 
   // persistence store, the MockDataService is a singleton when injected as a service.
   private workItems: any[];
@@ -56,6 +58,7 @@ export class MockDataService {
   private iterations: any[];
   private areas: any[];
   private labels: any[];
+  private groupTypes: any[];
 
   private selfId;
 
@@ -70,6 +73,7 @@ export class MockDataService {
     this.iterations = this.iterationMockGenerator.createIterations();
     this.areas = this.areaMockGenerator.createAreas();
     this.labels = this.labelMockGenerator.getAllLabels();
+    this.groupTypes = this.groupTypesMockGenerator.createGroupTypes();
 
     this.selfId = this.createId();
     console.log('Started MockDataService service instance ' + this.selfId);
@@ -634,5 +638,9 @@ export class MockDataService {
 
   public getRedneredText(data: any): any {
     return this.schemaMockGenerator.renderText(data.attributes.content);
+  }
+
+  public getAllGroupTypes(): any {
+    return this.groupTypes;
   }
 }

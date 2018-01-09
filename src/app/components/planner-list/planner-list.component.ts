@@ -164,7 +164,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     // on update the value on URL
 
     const queryParams = this.route.snapshot.queryParams;
-    if(Object.keys(queryParams).length === 0 ) {
+    if(Object.keys(queryParams).length === 0 && process.env.ENV != 'inmemory') {
       this.setDefaultUrl();
     } else {
       if (Object.keys(queryParams).indexOf('iteration') > -1) {
@@ -347,7 +347,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   loadWorkItems(): void {
     const queryParams = this.route.snapshot.queryParams;
-    if(Object.keys(queryParams).length === 0 )
+    if(Object.keys(queryParams).length === 0 && process.env.ENV != 'inmemory')
       this.setDefaultUrl();
     this.uiLockedList = true;
     if (this.wiSubscriber) {
@@ -1076,14 +1076,14 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       if (index > -1) {
         // For collapsing
         this.table.rowDetail.toggleExpandRow(this.detailExpandedRows[index]);
-        this.detailExpandedRows.splice(index, 1); 
+        this.detailExpandedRows.splice(index, 1);
       } else {
         // For expanding
         this.detailExpandedRows.forEach(r => {
           this.table.rowDetail.toggleExpandRow(r);
         });
         this.detailExpandedRows = [];
-        this.table.rowDetail.toggleExpandRow(row); 
+        this.table.rowDetail.toggleExpandRow(row);
         this.detailExpandedRows.push(row);
       }
     }

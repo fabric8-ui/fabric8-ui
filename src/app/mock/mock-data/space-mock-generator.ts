@@ -49,6 +49,11 @@ export class SpaceMockGenerator {
             'links': {
               'related': 'http://mock.service/api/spaces/space-id' + n + '/workitems'
             }
+          },
+          'workitemtypegroups': {
+            'links': {
+              'related': 'http://mock.service/api/spacetemplates/sdd/workitemtypegroups'
+            }
           }
         },
         'type': 'spaces'
