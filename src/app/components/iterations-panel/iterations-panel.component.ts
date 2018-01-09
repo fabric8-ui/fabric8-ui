@@ -82,6 +82,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[IterationComponent] New Space selected: ' + space.attributes.name);
+        console.log('collection is ', this.collection);
         this.editEnabled = true;
         this.getAndfilterIterations();
       } else {
@@ -152,7 +153,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     //Iterations should only show allowed work item types
     const wi_key = 'workitemtype';
     const wi_compare = this.filterService.in_notation;
-    const wi_value = this.collection;
+    const wi_value = this.collection.map(i => i.id);
 
     //Query for type
     const type_query = this.filterService.queryBuilder(wi_key, wi_compare, wi_value);
