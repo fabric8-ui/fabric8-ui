@@ -332,11 +332,15 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     //if initialGroup is undefined, the page has been refreshed - find  group context based on URL
     if ( this.route.snapshot.queryParams['q'] ) {
       let urlArray = this.route.snapshot.queryParams['q'].split('WITGROUP:');
-      let witGroupName = urlArray[1].replace(')','');
-      let witGroupList = this.groupTypesService.getWitGroupList();
-      if( witGroupList.length > 0 ) {
-        let selectedWitGroup = witGroupList.find(witg => witg.attributes.name === witGroupName);
-        this.groupTypesService.setCurrentGroupType(selectedWitGroup.relationships.typeList.data, witGroupName);
+      if (urlArray.length > 1 ) {
+        let witGroupName = urlArray[1].replace(')','');
+        let witGroupList = this.groupTypesService.getWitGroupList();
+        if( witGroupList.length > 0 ) {
+          let selectedWitGroup = witGroupList.find(witg => witg.attributes.name === witGroupName);
+          this.groupTypesService.setCurrentGroupType(selectedWitGroup.relationships.typeList.data, witGroupName);
+        }
+      } else {
+        this.initialGroup = this.groupTypesService.getCurrentGroupType();
       }
     } else {
       //redirect to the first group type hierachy
