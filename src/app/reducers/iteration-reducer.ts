@@ -7,13 +7,11 @@ import { IterationState, initialState } from './../states/iteration.state';
 export type Action = IterationActions.All;
 
 
-export const iterationReducer : ActionReducer<IterationState> = ( state = initialState, action: Action) =>
-{
+export const iterationReducer : ActionReducer<IterationState> =
+  ( state = initialState, action: Action) => {
     switch( action.type ) {
       case IterationActions.GET_SUCCESS:
-           return {
-             iterations : action.payload
-           }
+           return action.payload
 
       case IterationActions.GET_ERROR:
 

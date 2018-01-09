@@ -1,4 +1,3 @@
-import { PlannerLayoutModule } from './../../widgets/planner-layout/planner-layout.module';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
 import {
@@ -26,6 +25,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { IterationState, initialState as initialIterationState } from './../../states/iteration.state';
 import { iterationReducer } from './../../reducers/iteration-reducer';
 import { IterationEffects } from './../../effects/iteration.effects';
+
 import { LabelState, initialState as initialLabelState } from './../../states/label.state';
 import { LabelReducer } from './../../reducers/label.reducer';
 import { LabelEffects } from './../../effects/label.effects';
@@ -36,6 +36,8 @@ import { CollaboratorState, initialState as initialCollaboratorState } from './.
 import { CollaboratorReducer } from './../../reducers/collaborator.reducer';
 import { CollaboratorEffects } from './../../effects/collaborator.effects';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { SidepanelModule } from './../side-panel/side-panel.module';
+import { PlannerLayoutModule } from './../../widgets/planner-layout/planner-layout.module';
 
 let providers = [];
 
@@ -78,25 +80,27 @@ if (process.env.ENV == 'inmemory') {
     PlannerListRoutingModule,
     PlannerLayoutModule,
     TooltipModule.forRoot(),
+    SidepanelModule,
     StoreModule.forFeature('listPage', {
-      iterations: iterationReducer,
-      labels: LabelReducer,
-      areas: AreaReducer,
-      collaborators: CollaboratorReducer
-    }, {
-    initialState: {
-      iterations: initialIterationState,
-      labels: initialLabelState,
-      areas: initialAreaState,
-      collaborators: initialCollaboratorState
-    }
-  }),
-  EffectsModule.forFeature([
-    IterationEffects,
-    LabelEffects,
-    AreaEffects,
-    CollaboratorEffects
-  ])],
+        iterations: iterationReducer,
+        labels: LabelReducer,
+        areas: AreaReducer,
+        collaborators: CollaboratorReducer
+      }, {
+      initialState: {
+        iterations: initialIterationState,
+        labels: initialLabelState,
+        areas: initialAreaState,
+        collaborators: initialCollaboratorState
+      }
+    }),
+    EffectsModule.forFeature([
+      IterationEffects,
+      LabelEffects,
+      AreaEffects,
+      CollaboratorEffects
+    ])
+  ],
   declarations: [ PlannerListComponent ],
   providers: providers,
   exports: [ PlannerListComponent ]

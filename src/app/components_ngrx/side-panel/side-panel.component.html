@@ -1,0 +1,22 @@
+<a class="f8-sidepanel__title margin-bottom-1"
+  [routerLink]="[]"
+  [queryParams]="{}"
+  (click)="setGuidedTypeWI()"
+  [class.backlog--selected]="backlogSelected">
+    <span class="badge pull-right"
+      [class.show]="sidePanelOpen"
+      [class.hide]="!sidePanelOpen">
+        {{numberOfItemsInBacklog}}
+      </span>
+    <span class="pull-left fa fa-th margin-right-10 padding-v-3"
+      tooltip="{{sidePanelOpen ? '' : 'All'}}"
+      placement="right"></span>
+    <h3 class="margin-0 padding-top-1"
+      [class.show]="sidePanelOpen"
+      [class.hide]="!sidePanelOpen">All</h3>
+</a>
+<div class="width-100 pull-left">
+  <!-- <group-types
+    [sidePanelOpen]="sidePanelOpen">
+  </group-types> -->
+</div>

@@ -9,6 +9,11 @@ import {
 
 import { PlannerLayoutComponent } from './../../widgets/planner-layout/planner-layout.component';
 
+// ngrx stuff
+import { Store } from '@ngrx/store';
+import { AppState } from './../../states/app.state';
+import * as IterationActions from './../../actions/iteration.actions';
+
 @Component({
   encapsulation: ViewEncapsulation.None,
   host: {
@@ -27,11 +32,13 @@ export class PlannerListComponent implements OnInit {
   @ViewChild('containerHeight') containerHeight: ElementRef;
 
   constructor(
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
     this.resizeHeight();
+    this.store.dispatch(new IterationActions.Get());
   }
 
   resizeHeight() {
@@ -47,7 +54,13 @@ export class PlannerListComponent implements OnInit {
   }
 
   togglePanelState(event) {
-    console.log(event);
+    if (event === 'out') {
+      setTimeout(() => {
+        this.sidePanelOpen = true;
+      }, 200)
+    } else {
+      this.sidePanelOpen = false;
+    }
   }
 
   togglePanel() {

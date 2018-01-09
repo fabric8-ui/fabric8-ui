@@ -4,7 +4,7 @@ import { AreaState } from './area.state';
 import { CollaboratorState } from './collaborator.state';
 
 export interface AppState {
-  listPage: {
+  listPage?: {
     iterations: IterationState,
     labels: LabelState,
     areas: AreaState,
