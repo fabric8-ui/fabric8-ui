@@ -169,6 +169,9 @@
                     row?.type?.data?.relationships?.guidedChildTypes?.data
                   )"
                   [wilistview]="'wi-table-view'"
+                  [quickAddContext]="getChildWorkItemTypes(
+                    row?.type?.data?.relationships?.guidedChildTypes?.data
+                  )"
                   [parentWorkItemId]="row.id"
                   (close)="close($event)"
                   (workItemCreate)="onCreateWorkItemStart($event)">
