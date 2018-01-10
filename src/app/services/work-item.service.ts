@@ -217,19 +217,6 @@ export class WorkItemService {
 
   resolveWorkItems(workItems, iterations, users, wiTypes, labels, included: WorkItem[] = []): WorkItem[] {
     let resolvedWorkItems = workItems.map((item) => {
-      // put the hasChildren on the root level for the tree
-      if (item.relationships.children && item.relationships.children.meta)
-        item.hasChildren = item.relationships.children.meta.hasChildren;
-        //Resolve parents using included
-
-      if (included.length > 0 ){
-        if (item.relationships.parent != undefined && item.relationships.parent.data !=undefined) {
-          let wi = included.find(inclwi => inclwi.id === item.relationships.parent.data.id);
-          item.relationships.parent.data = wi;
-          let parentWITID = item.relationships.parent.data.relationships.baseType.data.id;
-          item.relationships.parent.data.relationships.baseType.data = wiTypes.find((type) => type.id === parentWITID);
-        }
-      }
       // Resolve assignnees
       if (item.relationships.assignees && item.relationships.assignees.data) {
         let assignees = item.relationships.assignees.data ? cloneDeep(item.relationships.assignees.data) : [];

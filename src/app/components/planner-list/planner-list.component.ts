@@ -456,9 +456,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         console.log('Performance :: Fetching the initial list - ' + (t2 - t1) + ' milliseconds.');
         this.logger.log('Got work item list.');
         this.logger.log(workItemResp.workItems);
-        const workItems = workItemResp.workItems.filter((workItem: WorkItem) => {
-          return !!!Object.keys(workItem.relationships.parent).length;
-        });;
+        const workItems = workItemResp.workItems;
         this.nextLink = workItemResp.nextLink;
         this.included = workItemResp.included;
         this.workItems = this.workItemService.resolveWorkItems(
