@@ -20,7 +20,7 @@ export class AreaEffects {
   ){}
 
   @Effect() getAreas$: Observable<Action> = this.actions$
-    .ofType<AreaActions.Get>(AreaActions.GET)
+    .ofType(AreaActions.GET)
     .switchMap(() => {
       return this.areaService.getAreas()
         .map((areas: AreaService[]) => {

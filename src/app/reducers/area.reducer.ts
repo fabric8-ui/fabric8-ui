@@ -11,9 +11,7 @@ export type Action = AreaActions.All;
 export const AreaReducer: ActionReducer<AreaState> = (state = initialState, action: Action) => {
   switch(action.type) {
     case AreaActions.GET_SUCCESS: {
-      return {
-        areas: cloneDeep(action.payload)
-      }
+      return cloneDeep(action.payload);
     }
     case AreaActions.GET_ERROR: {
       return state;

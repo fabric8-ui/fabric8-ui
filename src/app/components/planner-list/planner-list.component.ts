@@ -187,11 +187,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     this.store.dispatch(new LabelActions.Get());
     this.store.dispatch(new AreaActions.Get());
     this.store.dispatch(new CollaboratorActions.Get());
-    // let payload = {
-    //   parentexists: true
-    // }
-    // this.store.dispatch(new WorkItemActions.Get({pageSize: 20, filters: payload}));
-    // console.log(this.store.select((labels: AppState) => labels.listPage.labels), '####-4');
     // If there is an iteration on the URL
     // Setting the value to currentIteration
     // BehaviorSubject so that we can compare
