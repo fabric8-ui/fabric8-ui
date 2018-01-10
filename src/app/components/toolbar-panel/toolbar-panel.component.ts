@@ -111,7 +111,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   private loader = {
           id: 'loader',
           value: 'Loading...',
-          iconClass: 'fa-spinner'
+          iconStyleClass: 'fa fa-spinner'
       };
 
   constructor(
@@ -243,7 +243,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           title: filter.attributes.title,
           placeholder: filter.attributes.description,
           type: filterMap[type].type,
-          queries: []
+          queries: [this.loader]
         };
       })
     ];
@@ -494,19 +494,15 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     const filterMap = this.getFilterMap();
     if (Object.keys(filterMap).indexOf(event.field.id) > -1) {
       const index = this.filterConfig.fields.findIndex(i => i.id === event.field.id);
-      if (filterMap[event.field.id].type !== 'text' &&
-          this.filterConfig.fields[index].queries.length === 0) {
-        this.toolbarConfig.filterConfig.fields[index].queries = [
-          this.loader
-        ];
+      if (filterMap[event.field.id].type !== 'text') {
         filterMap[event.field.id].datasource.subscribe(resp => {
           if (filterMap[event.field.id].datamap(resp).primaryQueries.length) {
             this.toolbarConfig.filterConfig.fields[index].queries =
-              filterMap[event.field.id].datamap(resp).queries.length ? [
-                ...filterMap[event.field.id].datamap(resp).primaryQueries,
-                this.separator,
-                ...filterMap[event.field.id].datamap(resp).queries
-              ] : filterMap[event.field.id].datamap(resp).primaryQueries;
+            filterMap[event.field.id].datamap(resp).queries[0].id !== 'loader' ? [
+              ...filterMap[event.field.id].datamap(resp).primaryQueries,
+              this.separator,
+              ...filterMap[event.field.id].datamap(resp).queries
+            ] : filterMap[event.field.id].datamap(resp).primaryQueries;
           } else {
             this.toolbarConfig.filterConfig.fields[index].queries = filterMap[event.field.id].datamap(resp).queries;
           }
