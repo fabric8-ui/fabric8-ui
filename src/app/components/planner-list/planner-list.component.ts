@@ -423,7 +423,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         //console.log('showFlatList', this.groupTypesService.groupName);
         let payload = {
           //for execution level set this to true
-          parentexists: true
+          //parentexists: true
         };
         if (this.route.snapshot.queryParams['q']) {
           let existingQuery = this.filterService.queryToJson(this.route.snapshot.queryParams['q']);
