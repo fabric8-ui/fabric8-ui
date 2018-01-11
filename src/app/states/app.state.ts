@@ -1,3 +1,5 @@
+import { SpaceState } from './space.state';
+import { GroupTypeState } from './grouptype.state';
 import { IterationState } from './iteration.state';
 import { LabelState } from './label.state';
 import { AreaState } from './area.state';
@@ -8,6 +10,8 @@ export interface AppState {
     iterations: IterationState,
     labels: LabelState,
     areas: AreaState,
-    collaborators: CollaboratorState
+    collaborators: CollaboratorState,
+    groupTypes: GroupTypeState,
+    space: SpaceState
   };
 };
