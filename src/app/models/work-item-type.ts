@@ -1,5 +1,5 @@
 import { Space } from "ngx-fabric8-wit";
-import { modelUI } from "src/app/models/common.model";
+import { modelUI } from "./common.model";
 
 export class WorkItemType {
     id: string;

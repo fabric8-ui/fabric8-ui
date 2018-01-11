@@ -7,7 +7,7 @@ import { CollapseModule } from 'ngx-bootstrap';
 import { TooltipModule } from 'ngx-bootstrap';
 import { ModalModule } from 'ngx-modal';
 import { GroupTypesModule } from
-  './../../components/group-types-panel/group-types-panel.module';
+  './../group-types-panel/group-types-panel.module';
 import { SidepanelComponent } from './side-panel.component';
 
 // ngrs stuff

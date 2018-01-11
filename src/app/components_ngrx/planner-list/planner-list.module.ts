@@ -1,3 +1,4 @@
+import { FilterService } from './../../services/filter.service';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
 import {
@@ -35,9 +36,15 @@ import { AreaEffects } from './../../effects/area.effects';
 import { CollaboratorState, initialState as initialCollaboratorState } from './../../states/collaborator.state';
 import { CollaboratorReducer } from './../../reducers/collaborator.reducer';
 import { CollaboratorEffects } from './../../effects/collaborator.effects';
+import { initialState as initialGroupTypeState } from './../../states/grouptype.state';
+import { GroupTypeReducer } from './../../reducers/group-type.reducer';
+import { GroupTypeEffects } from './../../effects/group-type.effects';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { SidepanelModule } from './../side-panel/side-panel.module';
 import { PlannerLayoutModule } from './../../widgets/planner-layout/planner-layout.module';
+import { SpaceReducer } from './../../reducers/space.reducer';
+import { SpaceState, initialState as initialSpaceState } from './../../states/space.state';
+import { SpaceEffects } from './../../effects/space.effects';
 
 let providers = [];
 
@@ -53,7 +60,8 @@ if (process.env.ENV == 'inmemory') {
     GlobalSettings,
     LabelService,
     AreaService,
-    CollaboratorService
+    CollaboratorService,
+    FilterService
   ];
 } else {
   providers = [
@@ -70,7 +78,8 @@ if (process.env.ENV == 'inmemory') {
     GlobalSettings,
     LabelService,
     AreaService,
-    CollaboratorService
+    CollaboratorService,
+    FilterService
   ];
 }
 
@@ -85,20 +94,26 @@ if (process.env.ENV == 'inmemory') {
         iterations: iterationReducer,
         labels: LabelReducer,
         areas: AreaReducer,
-        collaborators: CollaboratorReducer
+        collaborators: CollaboratorReducer,
+        groupTypes: GroupTypeReducer,
+        space: SpaceReducer
       }, {
       initialState: {
         iterations: initialIterationState,
         labels: initialLabelState,
         areas: initialAreaState,
-        collaborators: initialCollaboratorState
+        collaborators: initialCollaboratorState,
+        groupTypes: initialGroupTypeState,
+        space: initialSpaceState
       }
     }),
     EffectsModule.forFeature([
       IterationEffects,
       LabelEffects,
       AreaEffects,
-      CollaboratorEffects
+      CollaboratorEffects,
+      GroupTypeEffects,
+      SpaceEffects
     ])
   ],
   declarations: [ PlannerListComponent ],

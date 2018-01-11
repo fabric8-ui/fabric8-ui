@@ -1,0 +1,36 @@
+@import (reference) '../../../assets/stylesheets/shared/_variables';
+
+.f8-group-filter {
+  float: left;
+  width: 100%;
+  margin: 1px 0;
+  &__type {
+    float: left;
+    width: 100%;
+    padding: 20px 15px;
+    font-size: 15px;
+    line-height: 15px;
+    color: @color-pf-white;
+    text-decoration: none;
+    border-left: 4px solid;
+    border-left-color: transparent;
+    &:hover {
+      color: @color-pf-white;
+      background: @color-pf-black-700;
+      text-decoration: none;
+    }
+    &:visited, &:focus {
+      color: @color-pf-white;
+      text-decoration: none;
+    }
+  }
+  h3 {
+    padding: 20px;
+  }
+}
+
+.selected {
+  background-color: @color-pf-black-700 !important;
+  border-left: 4px solid;
+  border-left-color: @color-pf-blue;
+}
