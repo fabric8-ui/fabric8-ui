@@ -1,0 +1,31 @@
+import { Action } from '@ngrx/store';
+import {
+  GroupTypeUI,
+  GroupTypeService,
+  GroupTypeMapper
+} from './../models/group-types.model';
+
+export const GET = '[group-type] Get';
+export const GET_SUCCESS = '[group-type] GetSuccess';
+export const GET_ERROR = '[group-type] GetError';
+
+export class Get implements Action {
+  readonly type = GET;
+}
+
+export class GetSuccess implements Action {
+  payload: GroupTypeUI[];
+  constructor(payload: GroupTypeUI[]) {
+    this.payload = payload;
+  };
+  readonly type = GET_SUCCESS;
+}
+
+export class GetError implements Action {
+  readonly type = GET_ERROR;
+}
+
+export type All
+  = Get
+  | GetSuccess
+  | GetError
