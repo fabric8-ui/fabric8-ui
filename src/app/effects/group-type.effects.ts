@@ -20,7 +20,7 @@ export class GroupTypeEffects {
   @Effect() getGroupTypes$: Observable<Action> = this.actions$
     .ofType(GroupTypeActions.GET)
     .switchMap(action => {
-      return this.groupTypeService.getFlatGroupList()
+      return this.groupTypeService.getGroupTypes()
         .map((types: GroupTypeService[]) => {
           const gtm = new GroupTypeMapper();
           return new GroupTypeActions.GetSuccess(

@@ -1,3 +1,5 @@
+import { modelUI } from 'src/app/models/common.model';
+import { CommonModule } from '@angular/common';
 import {
   Mapper,
   MapTree,
@@ -49,54 +51,54 @@ export class TypeListData {
 
 export interface GroupTypeService extends GroupTypesModel {}
 
-export interface GroupTypeUI extends GroupTypesModel {
+// id: id
+// name: attributes / name
+export interface GroupTypeUI extends modelUI {
+  bucket: string; // attributes / bucket
+  level: number[]; // attributes / level
+  icon: string; // attributes / icon
+  sublevel?: number; // attributes / sublevel
+  group: string; // attributes / group
   selected: boolean;
+  showInSideBar: boolean; // attributes / show-in-sidebar
+  typeList: string[]; // relationships / typeList / data
 }
 
 export class GroupTypeMapper implements Mapper<GroupTypeService, GroupTypeUI> {
 
   serviceToUiMapTree: MapTree = [{
-      fromPath: ['level'],
-      toPath: ['level']
-    }, {
-      fromPath: ['icon'],
-      toPath: ['icon']
-    }, {
-      fromPath: ['sublevel'],
-      toPath: ['sublevel']
-    }, {
-      fromPath: ['group'],
-      toPath: ['group']
-    }, {
-      fromPath: ['name'],
+      fromPath: ['id'],
+      toPath: ['id']
+    },{
+      fromPath: ['attributes', 'name'],
       toPath: ['name']
     }, {
-      fromPath: ['wit_collection'],
-      toPath: ['wit_collection']
+      fromPath: ['attributes', 'bucket'],
+      toPath: ['bucket']
+    }, {
+      fromPath: ['attributes', 'level'],
+      toPath: ['level']
+    }, {
+      fromPath: ['attributes', 'icon'],
+      toPath: ['icon']
+    }, {
+      fromPath: ['attributes', 'sublevel'],
+      toPath: ['sublevel']
+    }, {
+      fromPath: ['attributes', 'group'],
+      toPath: ['group']
     }, {
       toPath: ['selected'],
       toValue: false
+    }, {
+      fromPath: ['attributes', 'show-in-sidebar'],
+      toPath: ['showInSideBar']
+    }, {
+      fromPath: ['relationships', 'typeList', 'data'],
+      toPath: ['typeList']
     }];
 
-  uiToServiceMapTree: MapTree = [{
-      fromPath: ['level'],
-      toPath: ['level']
-    }, {
-      fromPath: ['icon'],
-      toPath: ['icon']
-    }, {
-      fromPath: ['sublevel'],
-      toPath: ['sublevel']
-    }, {
-      fromPath: ['group'],
-      toPath: ['group']
-    }, {
-      fromPath: ['name'],
-      toPath: ['name']
-    }, {
-      fromPath: ['wit_collection'],
-      toPath: ['wit_collection']
-    }];
+  uiToServiceMapTree: MapTree = [];
 
   toUIModel(arg: GroupTypeService): GroupTypeUI {
     return switchModel<GroupTypeService, GroupTypeUI>(
@@ -105,7 +107,7 @@ export class GroupTypeMapper implements Mapper<GroupTypeService, GroupTypeUI> {
   }
 
   toServiceModel(arg: GroupTypeUI): GroupTypeService {
-    return switchModel<GroupTypeService, GroupTypeUI>(
+    return switchModel<GroupTypeUI, GroupTypeService>(
       arg, this.uiToServiceMapTree
     )
   }

@@ -66,20 +66,23 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
     this.spaceSubscription.unsubscribe();
   }
 
-  fnBuildQueryParam(wit) {
-    //this.filterService.queryBuilder({}, '$IN',)
-    const wi_key = 'workitemtype';
-    const wi_compare = this.filterService.in_notation;
-    const wi_value = wit.wit_collection;
-
-    //Query for type
-    const type_query = this.filterService.queryBuilder(wi_key, wi_compare, wi_value);
+  fnBuildQueryParam(witGroup) {
+    //Query for work item type group
+    const type_query = this.filterService.queryBuilder(
+      '$WITGROUP', this.filterService.equal_notation, witGroup.name
+    );
     //Query for space
-    const space_query = this.filterService.queryBuilder('space', this.filterService.equal_notation, this.spaceId);
+    const space_query = this.filterService.queryBuilder(
+      'space', this.filterService.equal_notation, this.spaceId
+    );
     //Join type and space query
-    const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, space_query );
-    const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
-    this.setGroupType(wit);
+    const first_join = this.filterService.queryJoiner(
+      {}, this.filterService.and_notation, space_query
+    );
+    const second_join = this.filterService.queryJoiner(
+      first_join, this.filterService.and_notation, type_query
+    );
+    this.setGroupType(witGroup);
     //second_join gives json object
     return this.filterService.jsonToQuery(second_join);
     //reverse function jsonToQuery(second_join);
