@@ -143,6 +143,7 @@
         #listContainer>
         <!-- ngx-datatable -->
         <ngx-datatable #myTable
+          *ngIf="datatableWorkitems?.length > 0"
           class="material fullscreen"
           [columnMode]="'force'"
           [scrollbarH]="true"
@@ -162,7 +163,6 @@
             <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
               <div class="f8-wi-list__quick-add-table width-100 pull-left"
                 id="workItemList_quickAdd_inline"
-                *ngIf="loggedIn"
                 #quickaddHeight>
                 <alm-work-item-quick-add
                   [WITypes]="getChildWorkItemTypes(
@@ -191,7 +191,7 @@
                   href="javascript:void(0)"
                   [class.pficon-add-circle-o]="!expanded"
                   [class.pficon-close]="expanded"
-                  [class.disabled]="!!!row?.type?.data?.relationships?.guidedChildTypes"
+                  [class.disabled]="!!!row?.type?.data?.relationships?.guidedChildTypes || !loggedIn"
                   (click)="toggleExpandRow(
                     row,
                     !!row?.type?.data?.relationships?.guidedChildTypes
@@ -297,7 +297,8 @@
                   </li>
                 </ul>
               </div>
-              <div class="pull-right margin-right-15 padding-top-2" placement="left">
+              <div class="pull-right margin-right-15 padding-top-2" 
+                placement="left">
                 <a class="fa fa-columns f8-action-icon pointer"
                   (click)="onPreview(row['id'])">
                 </a>
@@ -305,6 +306,9 @@
             </ng-template>
           </ngx-datatable-column>
         </ngx-datatable>
+        <pfng-empty-state 
+          *ngIf="datatableWorkitems?.length <= 0 && !uiLockedList" 
+          [config]="emptyStateConfig"></pfng-empty-state>
         <div class="lock-overlay-list"
           *ngIf="uiLockedList">
           <div class="spinner-container">

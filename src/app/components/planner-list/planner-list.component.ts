@@ -44,6 +44,8 @@ import {
 } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
+import { EmptyStateConfig } from 'patternfly-ng';
+
 // import for column
 import { datatableColumn } from './datatable-config';
 
@@ -92,6 +94,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   datatableWorkitems: any[] = [];
   columns: any[];
   isTableConfigOpen: boolean = false;
+  emptyStateConfig: any = {};
   workItems: WorkItem[] = [];
   prevWorkItemLength: number = 0;
   workItemTypes: WorkItemType[] = [];
@@ -185,6 +188,12 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       let temp = this.cookieService.getCookie(datatableColumn.length)
       this.columns = temp.array;
     }
+
+    this.emptyStateConfig = {
+      iconStyleClass: 'pficon-warning-triangle-o',
+      info: 'There are no Work Items for your selected criteria',
+      title: 'No Work Items Available'
+    } as EmptyStateConfig;
   }
 
   ngAfterViewChecked() {
@@ -1076,7 +1085,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   }
 
   toggleExpandRow(row, quickAddEnabled = true) {
-    if (quickAddEnabled) {
+    if (quickAddEnabled && this.loggedIn) {
       const index = this.detailExpandedRows.findIndex(r => r.id === row.id);
       if (index > -1) {
         // For collapsing
@@ -1101,7 +1110,10 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   onDetailPreview(id): void {
     event.stopPropagation();
     this.workItemDataService.getItem(id).subscribe(workItem => {
-      this.router.navigateByUrl(this.router.url.split('/plan')[0] + '/plan/detail/' + workItem.id);
+      this.router.navigateByUrl(
+        this.router.url.split('plan')[0] + 'plan/detail/' + workItem.id,
+        { relativeTo: this.route }
+      );
     });
   }
 
