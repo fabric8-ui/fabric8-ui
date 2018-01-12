@@ -40,7 +40,12 @@ export class PlannerListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.resizeHeight();
+    setTimeout(() => {
+      this.resizeHeight();
+    }, 200);
+    window.addEventListener("resize", () => {
+      this.resizeHeight()
+    });
     this.store.dispatch(new SpaceActions.Get());
     this.store
       .select('listPage')
@@ -53,15 +58,13 @@ export class PlannerListComponent implements OnInit {
   }
 
   resizeHeight() {
-    setTimeout(() => {
-      const navElemnts = document.getElementsByTagName('nav');
-      const navHeight = navElemnts[0].offsetHeight;
-      const totalHeight = window.innerHeight;
-      this.renderer.setStyle(
-        this.containerHeight.nativeElement,
-        'height',
-        (totalHeight - navHeight) + "px");
-    }, 200)
+    const navElemnts = document.getElementsByTagName('nav');
+    const navHeight = navElemnts[0].offsetHeight;
+    const totalHeight = window.innerHeight;
+    this.renderer.setStyle(
+      this.containerHeight.nativeElement,
+      'height',
+      (totalHeight - navHeight) + "px");
   }
 
   togglePanelState(event) {
