@@ -1,4 +1,9 @@
-import { modelUI } from './common.model';
+import {
+  modelUI,
+  Mapper,
+  MapTree,
+  switchModel
+} from './common.model';
 
 export class IterationModel {
   attributes?: IterationAttributes;
@@ -66,4 +71,103 @@ export interface IterationUI extends modelUI {
   startAt: string; // attributes / startAt
   endAt: string; // attributes / startAt
   description: string; // attributes / description
+}
+
+export class IterationMapper implements Mapper<IterationModel, IterationUI> {
+  
+  serviceToUiMapTree: MapTree = [{
+      fromPath: ['id'],
+      toPath: ['id']
+    }, {
+      fromPath: ['attributes','name'],
+      toPath: ['name']
+    }, {
+      fromPath: ['attributes','parent_path'],
+      toPath: ['parentPath']
+    }, {
+      fromPath: ['attributes','resolved_parent_path'],
+      toPath: ['resolvedParentPath']
+    }, {
+      fromPath: ['attributes','user_active'],
+      toPath: ['userActive']
+    }, {
+      fromPath: ['attributes','active_status'],
+      toPath: ['activeStatus']
+    }, {
+      fromPath: ['attributes','startAt'],
+      toPath: ['startAt']
+    }, {
+      fromPath: ['attributes','endAt'],
+      toPath: ['endAt']
+    }, {
+      fromPath: ['attributes','description'],
+      toPath: ['description']
+    }, {
+      fromPath: ['attributes','state'],
+      toPath: ['state']
+    }, {
+      fromPath: ['links','self'],
+      toPath: ['link']
+    }, {
+      fromPath: ['relationships','workitems','meta','total'],
+      toPath: ['workItemCount']
+    }, {
+      fromPath: ['type'],
+      toPath: ['type']
+    }
+  ];
+
+  uiToServiceMapTree: MapTree = [{
+      toPath: ['id'],
+      fromPath: ['id']
+    }, {
+      toPath: ['attributes','name'],
+      fromPath: ['name']
+    }, {
+      toPath: ['attributes','parent_path'],
+      fromPath: ['parentPath']
+    }, {
+      toPath: ['attributes','resolved_parent_path'],
+      fromPath: ['resolvedParentPath']
+    }, {
+      toPath: ['attributes','user_active'],
+      fromPath: ['userActive']
+    }, {
+      toPath: ['attributes','active_status'],
+      fromPath: ['activeStatus']
+    }, {
+      toPath: ['attributes','startAt'],
+      fromPath: ['startAt']
+    }, {
+      toPath: ['attributes','endAt'],
+      fromPath: ['endAt']
+    }, {
+      toPath: ['attributes','description'],
+      fromPath: ['description']
+    }, {
+      toPath: ['attributes','state'],
+      fromPath: ['state']
+    }, {
+      toPath: ['links','self'],
+      fromPath: ['link']
+    }, {
+      toPath: ['relationships','workitems','meta','total'],
+      fromPath: ['workItemCount']
+    }, {
+      toPath: ['type'],
+      fromPath: ['type']
+    }
+  ];
+
+  toUIModel(arg: IterationService): IterationUI {
+    return switchModel<IterationService, IterationUI>(
+      arg, this.serviceToUiMapTree
+    )
+  }
+
+  toServiceModel(arg: IterationUI): IterationService {
+    return switchModel<IterationService, IterationUI>(
+      arg, this.uiToServiceMapTree
+    )
+  }
 }
