@@ -4,7 +4,11 @@ import * as AreaActions from './../actions/area.actions';
 import { Observable } from 'rxjs';
 import { AppState } from './../states/app.state';
 
-import { AreaService } from './../services/area.service';
+import { AreaService as AService } from './../services/area.service';
+import {
+  AreaService,
+  AreaMapper
+} from './../models/area.model';
 
 export type Action = AreaActions.All;
 
@@ -12,13 +16,18 @@ export type Action = AreaActions.All;
 export class AreaEffects {
   constructor(
     private actions$: Actions,
-    private areaService: AreaService
+    private areaService: AService
   ){}
 
   @Effect() getAreas$: Observable<Action> = this.actions$
     .ofType(AreaActions.GET)
     .switchMap(action => {
       return this.areaService.getAreas()
-        .map(areas => (new AreaActions.GetSuccess(areas)))
+        .map((areas: AreaService[]) => {
+          const aMapper = new AreaMapper();
+          return new AreaActions.GetSuccess(
+            areas.map(a => aMapper.toUIModel(a))
+          )
+        })
     })
 }

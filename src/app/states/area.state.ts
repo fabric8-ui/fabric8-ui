@@ -1,9 +1,7 @@
-import { AreaModel } from './../models/area.model';
+import { AreaUI } from './../models/area.model';
 
 export interface AreaState {
-  areas: AreaModel[];
+  [index: number]: AreaUI[];
 }
 
-export const initialState: AreaState = {
-  areas: []
-}
+export const initialState: AreaState = [] as AreaState;
