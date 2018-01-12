@@ -13,9 +13,24 @@ export const GroupTypeReducer: ActionReducer<GroupTypeState> =
     case GroupTypeActions.GET_SUCCESS: {
       return action.payload;
     }
+
     case GroupTypeActions.GET_ERROR: {
       return state;
     }
+
+    case GroupTypeActions.SELECT: {
+      const index = state.findIndex(
+        item => item.id === action.payload.id
+      );
+      if (index > -1) {
+        for(let i = 0; i < state.length; i++) {
+          state[i].selected = i === index;
+        }
+      }
+      state = [...state]; // This is important for change detection
+      return state;
+    }
+
     default: {
       return state;
     }

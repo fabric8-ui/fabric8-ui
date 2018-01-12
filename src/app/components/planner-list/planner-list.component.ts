@@ -177,16 +177,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     private store: Store<AppState>) {}
 
   ngOnInit(): void {
-
-    this.store.subscribe((val) => {
-      console.log('####-1', val);
-    })
-
-    this.store.dispatch(new IterationActions.Get());
-    this.store.dispatch(new LabelActions.Get());
-    this.store.dispatch(new AreaActions.Get());
-    this.store.dispatch(new CollaboratorActions.Get());
-    // console.log(this.store.select((labels: AppState) => labels.listPage.labels), '####-4');
     // If there is an iteration on the URL
     // Setting the value to currentIteration
     // BehaviorSubject so that we can compare

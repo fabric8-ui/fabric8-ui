@@ -61,7 +61,7 @@ export interface GroupTypeUI extends modelUI {
   group: string; // attributes / group
   selected: boolean;
   showInSideBar: boolean; // attributes / show-in-sidebar
-  typeList: string[]; // relationships / typeList / data
+  typeList: TypeListData[]; // relationships / typeList / data
 }
 
 export class GroupTypeMapper implements Mapper<GroupTypeService, GroupTypeUI> {
