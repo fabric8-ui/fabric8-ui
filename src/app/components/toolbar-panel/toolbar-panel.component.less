@@ -5,7 +5,6 @@
   padding-left: 20px;
   border-bottom: 1px solid;
   border-bottom-color: @color-pf-black-300;
-
   /*
     TODO: on the entry "WorkItem Type" of the filter dropdown, there is a
     border on the right side of the key button missing. The border is actually there,
@@ -14,110 +13,52 @@
     but then there is a 1px gap in other value dropdowns.
   */
 
-  .btn {
-    /* font size for all buttons in the toolbar */
-    /* TODO: this should be patternfly default, but it gets overridden somehow */
-    font-size: 12px;
-  }
-
-  a {
-    /* font size for all links (ex dropdown entries in the toolbar */
-    /* TODO: this should be patternfly default, but it gets overridden somehow */
-    font-size: 12px;
-  }
-
-  .form-control, .btn, .dropdown-menu, .badge {
-    /* this is only used for the assignee value dropdown as this is re-used from elsewhere */
-    /* TODO: this should be patternfly default, but it gets overridden somehow */
-    font-size: 12px;
-    /* TODO: the caret on the assignee dropdown looks different than on other values.
-             It looks like the caret on the assignee is the correct one, but it gets
-             overridden somehow. */
-  }
-
-  .toolbar-actions, .toolbar-apf-filter {
-    border-right: 0 !important; /* disables the seperators */
-  }
-
-  .filter-select {
-    /* the value select for the filters */
-    border-bottom: 1px solid;
-    border-bottom-color: @color-pf-black-300;
-    box-shadow: none;
-
-    .btn {
-      /* buttons in the toolbar don't have box shadows */
+  .filter {
+    &-select {
+      border-bottom: 1px solid;
+      border-bottom-color: @color-pf-black-300;
       box-shadow: none;
-    }
-
-    button {
-      /* this is the left connecting side to the filter type dropdown, omit the border here */
-      border-left: none;
-    }
-    .avatar {
-      border-radius: 50%;
+      .btn {
+        /* buttons in the toolbar don't have box shadows */
+        box-shadow: none;
+        &-default {
+          font-size: 12px;
+        }
+      }
+      .avatar {
+        border-radius: 50%;
+      }
+      .dropdown-menu {
+        max-height: 230px;
+        overflow-y: auto;
+      }
     }
   }
-
   .toolbar-actions {
     /* left aligned action button area */
     .board-type-dropdown {
       width: 100%;
     }
   }
-
   .toolbar-pf-action-right {
     /* right aligned action button area */
     .pficon-add-circle-o {
       color: @color-pf-blue-400;
     }
-
-    .add-button {
-      &-text, &-icon {
-        vertical-align: middle;
-      }
-    }
   }
-
   .currently-showing {
     font-size: 12px;
     margin-right: 10px;
   }
-
   .board-type-dropdown {
     .dropdown-menu { right: 0; }
   }
-
   .toolbar-pf-results {
-    /* the active filters bar */
-    font-size: 12px;
-
+    font-size: 13px; /* the active filters bar */
     .list-inline {
       /* the list of filter flags */
       /* TODO: why is this set to -5px per default? */
       margin-left: 0;
     }
   }
-}
-.filter {
-  &-select {
-    border-bottom: 1px solid;
-    border-bottom-color: @color-pf-black-300;
-    .btn-default { font-size: 12px; }
-    .dropdown-menu {
-      max-height: 230px;
-      overflow-y: auto;
-    }
-  }
-  &-pf {
-    .btn-default { font-size: 12px; }
-  }
-}
-
-.toolbar-pf-action-right {
-  .pficon-add-circle-o { color: @color-pf-blue-400; }
-}
-.currently-showing { margin-right: 10px; }
-.board-type-dropdown {
-  .dropdown-menu { right: 0; }
 }

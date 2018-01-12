@@ -37,7 +37,8 @@
   margin-right: 10px;
   color: @color-pf-black-500;
   cursor: pointer;
-  .Border(1px, dashed, @color-pf-black);
+  border: 1px dashed;
+  border-color: @color-pf-black;
 }
 
 .note { color: @color-pf-black-500; }
@@ -69,13 +70,15 @@
     margin-top: 10px;
     font-weight: 500;
     line-height: 1.3;
-    .Border(1px, solid, transparent);
+    border: 1px solid;
+    border-color: transparent;
   }
   div[id='title-click-div'] {
     &:hover {
       .detail-title {
-        .Border(1px, solid, @color-pf-blue-200);
-        transition: border ease-in-out 0.2s;
+        border: 1px solid;
+        border-color: @color-pf-blue-200;
+        transition: border ease-in-out 200;
       }
     }
   }
@@ -90,8 +93,9 @@
     background-color: @color-pf-white;
     cursor: pointer;
     resize: none;
-    .Border(1px, solid, @color-pf-blue-400);
-    transition: all ease-in-out 0.3s;
+    border: 1px solid;
+    border-color: @color-pf-blue-400;
+    transition: all ease-in-out 300;
   }
   .title-error {
     position: absolute;
@@ -159,7 +163,8 @@
       border-style: solid;
     }
     .detail-assignee-name {
-      .placeholder { color: @color-pf-blue-400;
+      .placeholder {
+        color: @color-pf-blue-400;
         &:hover { cursor: pointer; }
       }
     }
@@ -210,7 +215,8 @@
   color: @color-pf-black-500;
   cursor: pointer;
 }
-.user-search { position: relative;
+.user-search {
+  position: relative;
   .list-container {
     position: absolute;
     z-index: 10;
@@ -218,8 +224,9 @@
     margin-top: -5px;
     background-color: @color-pf-white;
     box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-    .borderRadius(1px);
-    .Border(1px, solid, @color-pf-black-500);
+    border: 1px solid;
+    border-color: @color-pf-black-500;
+    border-radius: 1px;
     .user-search-icon {
       position: absolute;
       height: inherit;
@@ -296,7 +303,7 @@
       top: 144px;
       left: 50%;
       width: 80%;
-      .transform(translateX(-50%));
+      transform: translateX(-50%);
       .user-list { max-height: 250px; }
     }
   }

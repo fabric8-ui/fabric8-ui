@@ -44,7 +44,7 @@
     <div class="color-picker"
       [class.hide]="activeAddLabel && !colorPickerActive">
       <span
-        *ngFor="let color of colors" class="palet clickable"
+        *ngFor="let color of colors" class="palet clickable margin-4"
         [ngStyle]="{'background-color': color.color, 'border-color':color.border}"
         (click)="selectColor(color); toggleColorPicker();">
       </span>

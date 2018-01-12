@@ -22,13 +22,14 @@
       margin-right: 100px;
       line-height: 1.3;
       background: @color-pf-white;
-      .Border(1px, solid, @color-pf-blue);
+      border: 1px solid;
+      border-color: @color-pf-blue;
     }
   }
   &__detail {
    // height: ~"calc(e('100vh - 200px'))";
     label {
-      text-align: left !important;
+      text-align: left;
     }
     &-wrap {
     height: 100%;
@@ -64,7 +65,8 @@
       border-style: solid;
     }
     .detail-assignee-name {
-      .placeholder { color: @color-pf-blue-400;
+      .placeholder {
+        color: @color-pf-blue-400;
         &:hover { cursor: pointer; }
       }
     }
@@ -75,7 +77,8 @@
   }
 }
 
-.user-search { position: relative;
+.user-search {
+  position: relative;
   .list-container {
     position: absolute;
     z-index: 10;
@@ -83,8 +86,9 @@
     margin-top: -5px;
     background-color: @color-pf-white;
     box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-    .borderRadius(1px);
-    .Border(1px, solid, @color-pf-black-500);
+    border: 1px solid;
+    border-color: @color-pf-black-500;
+    border-radius: 1px;
     .user-search-icon {
       position: absolute;
       height: inherit;

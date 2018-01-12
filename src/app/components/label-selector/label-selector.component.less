@@ -5,17 +5,18 @@
 }
 
 .add-label {
-  color: @color-pf-blue-300;
   font-weight: 600;
+  color: @color-pf-blue-300;
 }
 
 .palet {
-  height: 12px;
-  width: 12px;
-  border: 1px solid @color-pf-black;
   display: inline-block;
-  vertical-align: middle;
+  width: 12px;
+  height: 12px;
   margin-right: 10px;
+  vertical-align: middle;
+  border: 1px solid;
+  border-color: @color-pf-black;
   border-radius: 2px;
   opacity: 1;
 }
@@ -28,36 +29,30 @@
   // If you wanna make it dynamic
   // then contribute to the footer
   // in the component first
-  line-height: 30px;
-  font-weight: 600;
-  cursor: pointer;
-  color: @color-pf-blue-300;
   font-size: 14px;
+  font-weight: 600;
+  line-height: 30px;
+  color: @color-pf-blue-300;
+  cursor: pointer;
 }
 
 .create-label {
   .create-label-input {
-    height: 100%;
     width: ~"calc(e('100% - 90px'))";
+    height: 100%;
     display: inline-block;
     vertical-align: middle;
   }
   .action-btn {
-    height: 27px;
     min-width: 27px;
+    height: 27px;
     vertical-align: middle;
-  }
-  .palet {
-    cursor: pointer;
   }
 }
 
 .color-picker {
   padding: 5px;
-  white-space: nowrap;
-  overflow: auto;
   padding-bottom: 30px; // to hide the scroll bar
-  .palet {
-    margin: 4px 4px;
-  }
+  overflow: auto;
+  white-space: nowrap;
 }

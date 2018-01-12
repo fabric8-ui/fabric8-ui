@@ -3,7 +3,8 @@
 .f8-group-filter {
   float: left;
   width: 100%;
-  margin: 1px 0;
+  margin-top: 1px;
+  margin-bottom: 1px;
   &__type {
     float: left;
     width: 100%;
@@ -16,8 +17,8 @@
     border-left-color: transparent;
     &:hover {
       color: @color-pf-white;
-      background: @color-pf-black-700;
       text-decoration: none;
+      background: @color-pf-black-700;
     }
     &:visited, &:focus {
       color: @color-pf-white;
@@ -30,7 +31,7 @@
 }
 
 .selected {
-  background-color: @color-pf-black-700 !important;
+  background-color: @color-pf-black-700;
   border-left: 4px solid;
   border-left-color: @color-pf-blue;
 }

@@ -9,35 +9,36 @@
     padding-top: 0px;
     padding-bottom: 0px;
     overflow: hidden;
-    .select-dropdown-header {
-      background-color: @color-pf-black-200;
+    &-header {
       height: 30px;
-      line-height: 26px;
-      font-weight: bold;
       padding: 2px;
       padding-left: 5px;
+      font-weight: bold;
+      line-height: 26px;
+      background-color: @color-pf-black-200;
       .close-pointer {
-        cursor: pointer;
-        line-height: 26px;
         margin-right: 4px;
+        line-height: 26px;
+        cursor: pointer;
       }
     }
-    .select-dropdown-footer {
+    &-footer {
       background-color: @color-pf-black-200;
       height: 50px;
       padding: 10px;
     }
-    .select-dropdown-search {
+    &-search {
       position: relative;
       height: 50px;
       padding: 10px;
-      .select-dropdown-search-input {
+      &-input {
         width: 100%;
         height: 100%;
-        border-radius: 2px;
-        outline: none;
         padding: 0px 30px 0px 10px;
-        border: 1px solid @color-pf-black-400;
+        outline: none;
+        border: 1px solid;
+        border-color: @color-pf-black-400;
+        border-radius: 2px;
       }
       .search-icon {
         position: absolute;
@@ -49,36 +50,36 @@
       }
     }
     .select-dropdown-menu {
-      list-style: none;
-      margin: 0px;
-      padding-left: 0px;
       max-height: 240px;
+      padding-left: 0;
+      margin: 0;
+      list-style: none;
       overflow: auto;
       li {
+        height: 30px;
         padding: 2px;
         padding-left: 10px;
-        height: 30px;
         line-height: 26px;
       }
       .item-li {
-        cursor: pointer;
         position: relative;
+        cursor: pointer;
         .tick {
           position: absolute;
-          right: 6px;
           top: 10px;
+          right: 6px;
         }
         &:hover {
-          background-color: @color-pf-blue-400;
           color: @color-pf-white;
+          background-color: @color-pf-blue-400;
         }
         &.item-selected {
-          background-color: @color-pf-blue-400;
           color: @color-pf-white;
+          background-color: @color-pf-blue-400;
         }
         .dynamic-item {
-          height: 30px;
           width: 90%;
+          height: 30px;
           overflow: hidden;
         }
       }

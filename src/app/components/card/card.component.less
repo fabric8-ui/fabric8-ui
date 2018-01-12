@@ -1,12 +1,14 @@
 @import (reference) './../../../assets/stylesheets/_base';
 
 .f8-board-card {
-  width: 100%;
   float: left;
+  width: 100%;
   padding: 15px;
-  margin: 0 0 5px 0;
+  margin: 0;
+  margin-bottom: 5px;
   background: @color-pf-white;
-  .Border(2px, solid, @color-pf-black-400);
+  border: 2px solid;
+  border-color: @color-pf-black-400;
   &.active {
     border-color: @color-pf-blue-400;
   }
@@ -18,16 +20,17 @@
         span {
           display: block;
           padding: 1px 10px;
-          .Border(1px, solid, transparent);
+          border: 1px solid;
+          border-color: transparent;
           white-space: nowrap;
           &:hover {
-            border-color: @color-pf-blue-200;
             background-color: @color-pf-blue-100;
+            border-color: @color-pf-blue-200;
           }
           &:active {
-            border-color: @color-pf-blue;
-            background-color: @color-pf-blue;
             color: @color-pf-white;
+            background-color: @color-pf-blue;
+            border-color: @color-pf-blue;
           }
         }
       }
@@ -35,7 +38,7 @@
     .user-avatar {
       &:extend(.user-avatar);
       img {
-        width:100%;
+        width: 100%;
         height: 100%;
       }
     }

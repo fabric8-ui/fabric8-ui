@@ -7,7 +7,7 @@
   .navbar-primary.persistent-secondary {
     >li {
       &.active { margin-bottom: @pf-custom-navbar-item-height;
-        &.with-no-children {  margin-bottom: @pf-custom-navbar-header-border-width !important; }// Note: this collapses the persistent menu
+        &.with-no-children {  margin-bottom: @pf-custom-navbar-header-border-width; }// Note: this collapses the persistent menu
         ul.navbar-persistent { top: @pf-custom-navbar-persistent-nav-offset + 2;
           li > a {
             padding-top: 0;
@@ -32,41 +32,44 @@
     }
   }
   a {
-    position: relative !important;
+    position: relative;
     display: inline-block;
-    margin: 0 !important;
-    vertical-align: top !important;
+    margin: 0;
+    vertical-align: top;
     >div {
      position: relative;
-     height: 100% !important;
+     height: 100%;
     }
   }
   .nav-item-text {
     position: relative;
+    display: inline-block;
     top: 0;
-    display: inline-block !important;
     height: 100%;
     font-size: @pf-custom-navbar-font-size;
-    font-weight: lighter !important;
-    line-height: @pf-custom-navbar-item-height !important;
-    .Border(@pf-custom-navbar-debug-border, solid, orange)!important;
+    font-weight: lighter;
+    line-height: @pf-custom-navbar-item-height;
+    border: @pf-custom-navbar-debug-border solid;
+    border-color: orange;
   }
   .nav-item-icon {
     position: relative;
-    height: 100%;
-    line-height: @pf-custom-navbar-icon-height !important;
+    display: inline-block;
     min-width: @pf-custom-navbar-icon-min-width;
-    display: inline-block !important;
-    vertical-align: top !important;
-    .Border(@pf-custom-navbar-debug-border, solid, darkorange)!important;
+    height: 100%;
+    line-height: @pf-custom-navbar-icon-height;
+    vertical-align: top;
+    border: @pf-custom-navbar-debug-border solid;
+    border-color: darkorange;
     >img {
       position: relative;
-      display: inline-block !important;
-      height: @pf-custom-navbar-icon-height !important ;
+      display: inline-block;
       min-width: @pf-custom-navbar-icon-height;
+      height: @pf-custom-navbar-icon-height;
       padding: 0;
       margin: auto;
-      .Border(@pf-custom-navbar-debug-border, solid, lime)!important;
+      border: @pf-custom-navbar-debug-border solid;
+      border-color: lime;
     }
     >span {
       &.nav-icon {
@@ -77,7 +80,8 @@
         margin: 0;
         line-height: 100%;
         text-align: center;
-        .Border(@pf-custom-navbar-debug-border, solid, lime)!important;
+        border: @pf-custom-navbar-debug-border solid;
+        border-color: lime;
         &:before {
           position: relative;
           width: 100%;

@@ -9,8 +9,9 @@
   text-align: left;
 }
 // Show More and Show Less buttons for the text field
-.show-more-state { padding-left: 0;
-  &::before { margin-right: 2px; }
+.show-more-state {
+  padding-left: 0;
+  &:before { margin-right: 2px; }
 }
 .show-less {
   max-height: 192px;
@@ -28,14 +29,14 @@
 }
 .hide { display: none; }
 .arrow-up {
-  &::before {
+  &:before {
     margin-right: 2px;
     content: 'Show More';
   }
 }
 .arrow-down {
     margin-right: 2px;
-  &::before {
+  &:before {
     content: 'Show Less';
   }
 }
@@ -47,7 +48,8 @@ pre { margin: 0; }
   padding-left: 0;
   overflow: hidden;
   .view-switch-btn { margin-bottom: 10px; }
-  .detail-text { padding-left: 0;
+  .detail-text {
+    padding-left: 0;
     .text-switcher {
       position: fixed;
       right: 20px;
@@ -65,7 +67,8 @@ pre { margin: 0; }
           &.active {
             a {
               border-bottom-color: @color-pf-white;
-              .Border(1px, solid, @color-pf-blue-400);
+              border: 1px solid;
+              border-color: @color-pf-blue-400;
             }
           }
         }
@@ -83,15 +86,16 @@ pre { margin: 0; }
         min-height: 50px;
         padding-right: 30px;
         background-color: @color-pf-white;
-        .Border(1px, solid, @color-pf-white);
-        &::-webkit-scrollbar {
+        border: 1px solid;
+        border-color: @color-pf-white;
+        &:-webkit-scrollbar {
           width: 7px;
           -webkit-appearance: none;
         }
-        &::-webkit-scrollbar-thumb {
+        &:-webkit-scrollbar-thumb {
           background-color: rgba(0, 0, 0, .5);
           box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-          .borderRadius(4px);
+          border-radius: 4px;
         }
         &.text-editable {
           .text { padding-left: 5px; }
@@ -107,9 +111,9 @@ pre { margin: 0; }
           background-clip: content-box;
           .edit-icon {
             position: absolute;
-            right: 28px;
-            top: 1px;
             display: block;
+            top: 1px;
+            right: 28px;
             cursor: pointer;
           }
         }
@@ -119,7 +123,8 @@ pre { margin: 0; }
 }
 .detail-text-action { margin-top: 10px; }
 .text-editable {
-  padding-right: 30px !important;
-  background-clip: content-box !important;
-  .Border(1px, solid, @color-pf-blue-400)!important;
+  padding-right: 30px;
+  background-clip: content-box;
+  border: 1px solid;
+  border-color: @color-pf-blue-400;
 }
