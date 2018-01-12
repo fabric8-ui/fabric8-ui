@@ -5,3 +5,5 @@ export { CommentState, initialState as initialCommentState } from './comment.sta
 export { IterationState, initialState as initialIterationState } from './iteration.state';
 export { LabelState, initialState as initialLabelState } from './label.state';
 export { WorkItemState, initialState as initialWorkItemState } from './work-item.state';
+export { SpaceState, initialState as  initialSpaceItemState } from './space.state';
+export { GroupTypeState, initialState as  initialGroupTypeItemState } from './grouptype.state';

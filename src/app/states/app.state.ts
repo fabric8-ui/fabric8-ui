@@ -7,8 +7,8 @@ export interface AppState {
     areas: states.AreaState,
     collaborators: states.CollaboratorState,
     workItems: states.WorkItemState,
-    groupTypes: GroupTypeState,
-    space: SpaceState
+    groupTypes: states.GroupTypeState,
+    space: states.SpaceState
   };
 
   detailPage: {
