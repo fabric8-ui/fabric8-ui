@@ -6,6 +6,10 @@ services:
     image: fabric8-planner-platform
     # command: npm run test:unit
     environment:
+      FABRIC8_REALM: "fabric8-test"
+      FABRIC8_WIT_API_URL: "http://localhost:8080/api/"
+      FABRIC8_AUTH_API_URL: "http://localhost:8089/api/"
+      FABRIC8_SSO_API_URL: "https://sso.prod-preview.openshift.io/"
       # $PROXY_PASS_URL is required by the nginx-config file
       # It's set by pipeline-library in CI & is emulated here
       # More info: github.com/fabric8-ui/fabric8-planner/issues/2360
@@ -15,7 +19,7 @@ services:
     networks:
       - default
     ports:
-      - "8088:80"
+      - "8088:8080"
   auth:
     container_name: fabric8-planner-auth
     image: docker.io/fabric8/fabric8-auth:latest

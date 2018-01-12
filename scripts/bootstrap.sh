@@ -139,7 +139,7 @@ fi
 echo "Generating f8ui integrated planner image from build artifacts..."
 docker rm fabric8-planner-platform
 docker rmi fabric8-planner-platform
-docker build -t fabric8-planner-platform -f Dockerfile .
+docker build -t fabric8-planner-platform -f Dockerfile.deploy .
 
 # echo "Cleaning up intermediate build container and image..."
 # docker stop fabric8-ui-builder
@@ -147,4 +147,4 @@ docker build -t fabric8-planner-platform -f Dockerfile .
 # docker rmi fabric8-ui-builder
 
 # echo "Running the container; visit http://localhost:8080/ on host browser..."
-# docker run -it --user=root -p 8080:80 --name=fabric8-planner-platform fabric8-planner-platform
+# docker run -it -p 8088:8080 --name=fabric8-planner-platform fabric8-planner-platform
