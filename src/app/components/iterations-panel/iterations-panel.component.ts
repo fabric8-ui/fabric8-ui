@@ -17,14 +17,7 @@ import { WorkItemService }   from '../../services/work-item.service';
 import { IterationModel } from '../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
 import { FabPlannerIterationModalComponent } from '../iterations-modal/iterations-modal.component';
-import {
-  Action,
-  EmptyStateConfig,
-  ListBase,
-  ListEvent,
-  TreeListComponent,
-  TreeListConfig
-} from 'patternfly-ng';
+import { IterationTreeComponent } from '../iteration-tree/iteration-tree.component';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -40,8 +33,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() sidePanelOpen: Boolean = true;
 
   @ViewChild('modal') modal: FabPlannerIterationModalComponent;
-  @ViewChild('treeList') treeList: TreeListComponent;
-
 
   authUser: any = null;
   loggedIn: Boolean = true;
@@ -55,8 +46,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   masterIterations;
   treeIterations;
   activeIterations:IterationModel[] = [];
-  emptyStateConfig: EmptyStateConfig;
-  treeListConfig: TreeListConfig;
+  menuList: any[] = [];
 
   private spaceSubscription: Subscription = null;
 
@@ -92,29 +82,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         this.activeIterations = [];
       }
     });
-    this.setTreeConfigs();
-  }
-
-  setTreeConfigs() {
-    this.emptyStateConfig = {
-      iconStyleClass: '',
-      title: 'No Iterations Available',
-      info: ''
-    } as EmptyStateConfig;
-
-    this.treeListConfig = {
-      dblClick: false,
-      emptyStateConfig: this.emptyStateConfig,
-      multiSelect: false,
-      selectItems: true,
-      selectionMatchProp: 'name',
-      showCheckbox: false,
-      treeOptions: {
-        allowDrag: false,
-        allowDrop: false,
-        isExpandedField: 'expanded'
-      }
-    } as TreeListConfig;
+    this.mockMenu();
   }
 
   ngOnChanges() {
@@ -232,7 +200,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       }
     }
     this.treeIterations = this.iterationService.getTopLevelIterations(this.allIterations);
-    this.treeList.update();
     this.clusterIterations();
     this.iterationService.emitCreateIteration(iteration);
   }
@@ -398,11 +365,144 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     );
   }
 
-  //Patternfly-ng's tree list related functions
-  handleClick($event: Action, item: any) {
-  }
-
   setGuidedTypeWI() {
     this.groupTypesService.setCurrentGroupType(this.collection, 'execution');
+  }
+
+  mockMenu() {
+    this.menuList =[
+                {
+                    title: 'Parent 1',
+                    routerLink: '/ap/dashboard',
+                    style: 'fa fa-home',
+                    nodeId: 'liDashboard',
+                    param: '',
+                    categories: []
+                },
+                {
+                    title: 'Parent 2',
+                    routerLink: '',
+                    style: 'fa fa-users',
+                    nodeId: 'liAssociates',
+                    param: '',
+                    categories: [
+                        {
+                            title: 'Child 1',
+                            style: 'fa fa-users',
+                            nodeId: 'liProspectiveAssociate',
+                            param: '',
+                            routerLink: '/ap/associates/view',
+                            categories: [
+                                            {
+                                                title: 'Grand Child 1',
+                                                style: 'fa fa-users',
+                                                nodeId: 'A',
+                                                param: '',
+                                                routerLink: '/ap/associates/view',
+                                                categories: [
+                                                                {
+                                                                    title: 'Grand Grand Child 1',
+                                                                    style: 'fa fa-user-plus',
+                                                                    nodeId: 'D',
+                                                                    param: '',
+                                                                    routerLink: '/ap/reports/resourcereport',
+                                                                    categories: []
+                                                                },
+                                                                {
+                                                                    title: 'Grand Grand Child 2',
+                                                                    style: 'fa fa-user-plus',
+                                                                    nodeId: 'E',
+                                                                    param: '',
+                                                                    routerLink: '/ap/reports/financereport',
+                                                                    categories: []
+                                                                },
+                                                                {
+                                                                    title: 'Grand Grand Child 3',
+                                                                    style: 'fa fa-pencil-square',
+                                                                    nodeId: 'F',
+                                                                    param: '',
+                                                                    routerLink: '/ap/reports/importRMGreport',
+                                                                    categories: []
+                                                                }
+                                                        ]
+                                            },
+                                            {
+                                                title: 'Grand Child 2',
+                                                style: 'fa fa-pencil-square',
+                                                nodeId: 'B',
+                                                param: '',
+                                                routerLink: '/ap/associates/prospective-associates',
+                                                categories: []
+                                            },
+                                            {
+                                                title: 'Grand Child 3',
+                                                style: 'fa fa-users',
+                                                nodeId: 'C',
+                                                param: '',
+                                                routerLink: '/ap/associates/list',
+                                                categories: []
+                                            }
+                                    ]
+                        },
+                        {
+                            title: 'Child 2',
+                            style: 'fa fa-pencil-square',
+                            nodeId: 'liAssociateJoining',
+                            param: '',
+                            routerLink: '/ap/associates/prospective-associates',
+                            categories: []
+                        },
+                        {
+                            title: 'Child 3',
+                            style: 'fa fa-users',
+                            nodeId: 'liAssociatesChild',
+                            param: '',
+                            routerLink: '/ap/associates/list',
+                            categories: []
+                        }
+                    ]
+                },
+                {
+                    title: 'Parent 3',
+                    routerLink: '',
+                    style: 'fa fa-users',
+                    nodeId: 'liTalentManagement',
+                    param: '',
+                    categories: []
+                },
+                {
+                    title: 'Parent 4',
+                    routerLink: '',
+                    style: 'fa fa-users',
+                    nodeId: 'liTeamManagement',
+                    param: '',
+                    categories: []
+                },
+                {
+                    title: 'Parent 5',
+                    routerLink: '',
+                    style: 'fa fa-users',
+                    nodeId: 'liPerformanceManagement',
+                    param: '',
+                    categories: []
+                },
+                {
+                    title: 'Parent 6',
+                    routerLink: '',
+                    style: 'fa fa-street-view',
+                    nodeId: 'liAdmin',
+                    param: '',
+                    categories: [ ]
+                },
+                {
+                    title: 'Parent 7',
+                    routerLink: '',
+                    style: 'fa fa-users',
+                    nodeId: 'liReports',
+                    param: '',
+                    categories: []
+                }
+            ]
+
   }
  }

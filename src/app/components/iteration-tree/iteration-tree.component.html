@@ -1,0 +1,16 @@
+<ul *ngIf="iterationList.length > 0">
+  <li *ngFor="let iteration of iterationList">
+    <span *ngIf="iteration.hasChildren && !iteration.showChildren"
+      (click)="toggleChildrenDisplay(iteration)"> > </span>
+    <span *ngIf="iteration.hasChildren && iteration.showChildren"
+    (click)="toggleChildrenDisplay(iteration)"> V </span>
+    <iteration-list-entry
+      [iteration] ="iteration"
+      [collection]="collection">
+    </iteration-list-entry>
+    <!--The kebab menu can come here as adding a child should get reflected here-->
+    <iteration-tree *ngIf="iteration.hasChildren && iteration.showChildren"
+      [iterationList]="iteration.children"
+      ></iteration-tree>
+  </li>
+</ul>
