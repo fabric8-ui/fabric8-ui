@@ -159,15 +159,24 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
     }
   ];
 
+  iterationServicetoIterationUI(iterations: IterationService[]): IterationUI[] {
+    let iterationUI: IterationUI[];
+    for(let i = 0; i < iterations.length; i = i + 1)
+    { 
+      iterationUI[i] = this.toUIModel(iterations[i]);
+    }
+    return iterationUI;
+  }
+
   toUIModel(arg: IterationService): IterationUI {
     return switchModel<IterationService, IterationUI>(
       arg, this.serviceToUiMapTree
-    )
+    );
   }
 
   toServiceModel(arg: IterationUI): IterationService {
     return switchModel<IterationService, IterationUI>(
       arg, this.uiToServiceMapTree
-    )
+    );
   }
 }
