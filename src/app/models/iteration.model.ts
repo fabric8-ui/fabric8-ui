@@ -56,12 +56,14 @@ export class IterationRelations {
   };
 }
 
+export type IterationService = IterationModel;
+
 export interface IterationUI extends modelUI {
-  parentPath: string;
-  resolvedParentPath: string;
-  userActive: boolean;
-  activeStatus: boolean;
-  startAt: string;
-  endAt: string;
-  description: string;
+  parentPath: string; // attributes / parent_path
+  resolvedParentPath: string; // attributes / resolved_parent_path
+  userActive: boolean; // attributes / user_active
+  isActive: boolean; // attributes / active_status
+  startAt: string; // attributes / startAt
+  endAt: string; // attributes / startAt
+  description: string; // attributes / description
 }

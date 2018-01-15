@@ -1,7 +1,5 @@
 import { IterationModel } from './../models/iteration.model';
 
-export interface IterationState {
-  [index: number]: IterationModel
-};
+export type IterationState = IterationModel[];
 
 export const initialState: IterationState = [] as IterationState;

@@ -1,0 +1,28 @@
+@import (reference) '../../../assets/stylesheets/_base';
+
+.f8-itr {
+  &-entry {
+    width: 100%;
+    padding: 5px;
+    border-left: 4px solid;
+    border-left-color: transparent;
+    cursor: pointer;
+    .badge { background-color: @color-pf-black; }
+  }
+  &__header {
+    display: inline-block;
+    width: 100%;
+    i { color: @color-pf-white; }
+    &:focus, >div:focus {
+      outline: none;
+    }
+  }
+  &-status {
+    color: @color-pf-black-600;
+  }
+  .active-tag {
+    padding-left: 10px;
+    font-weight: 600;
+    color: @color-pf-blue;
+  }
+}

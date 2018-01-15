@@ -12,7 +12,7 @@ import { GroupTypesService } from '../../services/group-types.service';
 import { ModalModule } from 'ngx-modal';
 import { TooltipModule } from 'ngx-bootstrap';
 import { TruncateModule } from 'ng2-truncate';
-import { IterationModule } from '../iterations-panel/iterations-panel.module';
+import { IterationModule } from './../iterations-panel/iterations-panel.module';
 
 @NgModule({
   imports: [

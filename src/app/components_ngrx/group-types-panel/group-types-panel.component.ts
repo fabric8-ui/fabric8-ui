@@ -94,11 +94,5 @@ export class GroupTypesComponent implements OnInit {
 
   setGuidedTypeWI(witGroup: GroupTypeUI) {
     this.store.dispatch(new GroupTypeActions.SelectType(witGroup));
-    let matchingWITGroup = this.groupTypes.find(gt => {
-      return gt.id === witGroup.id;
-    });
-    let witIdArray = matchingWITGroup.typeList
-      .map(wit => wit.id);
-    this.groupTypesService.setCurrentGroupType(witIdArray, matchingWITGroup.bucket);
   }
 }
