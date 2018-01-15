@@ -1,11 +1,11 @@
 import { async } from '@angular/core/testing';
 
-import { IterationMapper, IterationUI, IterationModel } from './iteration.model';
+import { IterationMapper, IterationUI, IterationService } from './iteration.model';
 
 describe('IterationMapper', () => {
     let iterationMapper: IterationMapper;
     let iterationUI: IterationUI;
-    let iterationModel: IterationModel;
+    let iterationService: IterationService;
 
     iterationUI = {
         id: '',
@@ -23,7 +23,7 @@ describe('IterationMapper', () => {
         type: 'iterations',
     } as IterationUI;
 
-    iterationModel  = {
+    iterationService  = {
         attributes: {
           user_active: false,
           name: '',
@@ -46,21 +46,21 @@ describe('IterationMapper', () => {
             }
         },
         type: 'iterations'
-      } as IterationModel;
+      } as IterationService;
     
     beforeEach(async(() => {
         iterationMapper = new IterationMapper();
     }));
 
-    it('Instance of IterationMapper should be created', () => {
-        expect(iterationMapper).toBeTruthy();
-    });
+    it('should execute the canary test', () => {
+        return expect(true).toBe(true)
+      });
   
-    it('UI Model mapped to Service Model', () => {
-        expect(iterationMapper.toServiceModel(iterationUI)).toEqual(iterationModel);
+    it('should correctly convert to service model - 1', () => {
+        expect(iterationMapper.toServiceModel(iterationUI)).toEqual(iterationService);
     });
 
-    it('Service Model mapped to UI Model', () => {
-        expect(iterationMapper._utilMapperUIModel(iterationModel)).toEqual(iterationUI);
+    it('should correctly convert to UI model - 2', () => {
+        expect(iterationMapper.toUIModel(iterationService)).toEqual(iterationUI);
     });
 });
