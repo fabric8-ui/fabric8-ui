@@ -175,7 +175,7 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
   }
 
   toServiceModel(arg: IterationUI): IterationService {
-    return switchModel<IterationService, IterationUI>(
+    return switchModel<IterationUI, IterationService>(
       arg, this.uiToServiceMapTree
     );
   }

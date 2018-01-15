@@ -101,12 +101,12 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
     toUIModel(arg: WorkItemTypeService): WorkItemTypeUI {
       return switchModel<WorkItemTypeService, WorkItemTypeUI>(
         arg, this.serviceToUiMapTree
-      )
+      );
     }
   
     toServiceModel(arg: WorkItemTypeUI): WorkItemTypeService {
-      return switchModel<WorkItemTypeService, WorkItemTypeUI>(
+      return switchModel<WorkItemTypeUI, WorkItemTypeService>(
         arg, this.uiToServiceMapTree
-      )
+      );
     }
 }
