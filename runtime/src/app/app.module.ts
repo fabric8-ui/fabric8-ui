@@ -143,7 +143,9 @@ if (process.env.ENV == 'inmemory') {
     StoreModule.forRoot({}),
     StoreDevtoolsModule.instrument({
       maxAge: 25 //  Retains last 25 states
-    })
+    }),
+    HeaderModule,
+    FooterModule,
   ],
   declarations: [
     AppComponent,
