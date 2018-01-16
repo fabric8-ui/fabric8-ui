@@ -1,35 +1,61 @@
 <!-- Table Inline Quick Add -->
-<div class="col-xs-12 col-sm-12 col-md-12 f8-quickadd-table__wiblk"
-  *ngIf="wilistview === 'wi-table-view' || wilistview === 'wi-table-view-top'">
-  <b class="pull-left" style="padding-right: 20px;">{{wilistview === 'wi-table-view'? 'Add Child Work Item' : 'Add Work Item'}}</b>
-  <!-- type dropdown -->
+<div class="col-xs-12 col-sm-12 col-md-12 f8-quickadd__wiblk" #quickAddElement
+  *ngIf="wilistview === 'wi-table-view' || wilistview === 'wi-table-view-top'"
+  [ngClass]="{'f8-quick-add-inline' : wilistview === 'wi-table-view'}">
   <div class="pull-left">
-    <div class="dropdown-kebab-pf" dropdown>
-      <button class="btn btn-default dropdown-toggle padding-v-0"
-        type="button"
-        dropdownToggle>
-        <i class="fa dib"
-          [ngClass]="selectedType?selectedType.attributes.icon:''"></i>&nbsp;{{selectedType?selectedType.attributes.name:''}}
-        <span class="fa fa-angle-down"></span>
-      </button>
-      <ul class="dropdown-menu"
-        role="menu"
-        aria-labelledby="dropdownKebab"
-        *dropdownMenu>
-        <li *ngFor="let type of allowedWITs"
-            role="menuitem"
-            (click)="selectType($event, type)">
-          <a class="dropdown-item" href="#">
-            <i class="fa pull-left"
-              [ngClass]="type.attributes.icon"></i>&nbsp;{{type.attributes.name}}
-          </a>
-        </li>
-      </ul>
+    <b class="pull-left padding-right-15">
+      {{wilistview === 'wi-table-view' ? 'Add Child Work Item' : 'Add Work Item'}}
+    </b>
+    <!-- type dropdown -->
+    <div class="pull-left">
+      <div class="dropdown-kebab-pf" dropdown>
+        <button class="btn btn-default dropdown-toggle padding-v-0"
+          type="button"
+          dropdownToggle>
+          <i class="fa dib"
+            [ngClass]="selectedType ?
+            selectedType.attributes.icon :
+            '' ">
+          </i>
+          &nbsp;
+          {{selectedType?selectedType.attributes.name:''}}
+          <span class="fa fa-angle-down"></span>
+        </button>
+        <ul class="dropdown-menu"
+          role="menu"
+          aria-labelledby="dropdownKebab"
+          *dropdownMenu>
+          <li *ngFor="let type of availableTypes"
+              role="menuitem"
+              (click)="selectType($event, type)">
+            <a class="dropdown-item" href="#">
+              <i class="fa pull-left"
+                [ngClass]="type.attributes.icon"></i>&nbsp;{{type.attributes.name}}
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-
+  <div class="f8-quickadd__wiblk-btn pull-right">
+    <button class="btn btn-primary f8-quickadd__wiblk-btn-add margin-right-15"
+      id="quickadd-save"
+      #quickAddSubmit
+      [ngClass]="{'': validTitle,'disabled':!validTitle}"
+      (click)="save($event)">
+      Add
+    </button>
+    <button class="btn btn-primary f8-quickadd__wiblk-btn-add margin-right-15"
+      #quickAddSubmit
+      [ngClass]="{'': validTitle,'disabled':!validTitle}"
+      (click)="save($event)">
+      Add and Open
+    </button>
+  </div>
   <div class="f8-quickadd__wiblk-story">
-    <div [ngClass]="wilistview === 'wi-table-view'? 'col-xs-12 col-sm-6 col-md-6' : 'col-xs-12 col-sm-8 col-md-8'"
+    <div [ngClass]="wilistview === 'wi-table-view' ?
+      'col-xs-12 col-sm-12 col-md-12'
+      : 'col-xs-12 col-sm-12 col-md-12'"
       class="f8-quickadd__wiblk-storyinput">
       <input class="form-control col-xs-12 col-sm-12
         col-md-12 f8-quickadd-input"
@@ -40,22 +66,6 @@
         (keyup.enter)="save($event)"
         (keyup)="checkTitle()"  required/>
     </div>
-  </div>
-
-  <div class="f8-quickadd__wiblk-btn pull-left">
-    <button class="btn btn-primary f8-quickadd__wiblk-btn-add margin-right-20"
-      id="quickadd-save"
-      #quickAddSubmit
-      [ngClass]="{'': validTitle,'disabled':!validTitle}"
-      (click)="save($event)">
-      Add
-    </button>
-    <button class="btn btn-primary f8-quickadd__wiblk-btn-add"
-      #quickAddSubmit
-      [ngClass]="{'': validTitle,'disabled':!validTitle}"
-      (click)="save($event)">
-      Add and Open
-    </button>
   </div>
 </div>
 <!-- Table Inline Quick Add Ends -->
@@ -86,7 +96,9 @@
           type="button"
           dropdownToggle>
           <i class="fa dib"
-            [ngClass]="selectedType?selectedType.attributes.icon:''"></i>
+            [ngClass]="selectedType?selectedType.attributes.icon :
+            '' ">
+          </i>
           <span class="fa fa-angle-down"></span>
         </button>
         <ul class="dropdown-menu"
@@ -94,11 +106,12 @@
           aria-labelledby="dropdownKebab"
           *dropdownMenu>
           <li *ngFor="let type of availableTypes"
-              role="menuitem"
-              (click)="selectType($event, type)">
+            role="menuitem"
+            (click)="selectType($event, type)">
             <a class="dropdown-item" href="#">
               <i class="fa pull-left"
-                [ngClass]="type.attributes.icon"></i>&nbsp;{{type.attributes.name}}
+                [ngClass]="type.attributes.icon"></i>
+                &nbsp;{{type.attributes.name}}
             </a>
           </li>
         </ul>

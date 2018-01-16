@@ -1,6 +1,7 @@
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import {
   AfterViewInit,
+  AfterViewChecked,
   Component,
   EventEmitter,
   ElementRef,
@@ -9,6 +10,7 @@ import {
   OnDestroy,
   OnChanges,
   Output,
+  Renderer2,
   SimpleChanges,
   ViewChild,
   ViewChildren,
@@ -32,11 +34,13 @@ import { WorkItemService } from '../../services/work-item.service';
   templateUrl: './work-item-quick-add.component.html',
   styleUrls: ['./work-item-quick-add.component.less']
 })
-export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewInit {
+export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
   @ViewChild('quickAddTitle') qaTitle: any;
   @ViewChild('quickAddDesc') qaDesc: any;
   @ViewChildren('quickAddTitle', {read: ElementRef}) qaTitleRef: QueryList<ElementRef>;
   @ViewChild('quickAddSubmit') qaSubmit: any;
+  @ViewChild('quickAddElement') quickAddElement: ElementRef;
+  @ViewChild('inlinequickAddElement') inlinequickAddElement: ElementRef;
 
   @Input() parentWorkItemId: string = null;
   @Input() quickAddContext: any[] = [];
@@ -95,7 +99,8 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     private filterService:FilterService,
     private groupTypesService: GroupTypesService,
     private route: ActivatedRoute,
-    private spaces: Spaces) {}
+    private spaces: Spaces,
+    private renderer: Renderer2) {}
 
   ngOnInit(): void {
     this.createWorkItemObj();
@@ -180,6 +185,18 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     });
   }
 
+  ngAfterViewChecked() {
+    if (this.quickAddElement) {
+      let quickaddWdth: number =  0;
+      if (document.getElementsByClassName('f8-wi-list__quick-add').length > 0) {
+        quickaddWdth = (document.getElementsByClassName('f8-wi-list__quick-add')[0] as HTMLElement).offsetWidth;
+      }
+      let targetWidth: number = quickaddWdth + 20;
+      if (this.quickAddElement.nativeElement.classList.contains('f8-quick-add-inline')) {
+        this.renderer.setStyle(this.quickAddElement.nativeElement, 'max-width', targetWidth + "px");
+      }
+    }
+  }
   selectType(event: any, type: WorkItemType) {
     if (event)
       event.preventDefault();

@@ -56,8 +56,8 @@
       </toolbar-panel>
     </div>
     <!-- tableConfig Dropdown -->
-    <div class="col-md-12" style="height: 50px;">
-        <div class="f8-wi-list__quick-add width-100 pull-left"
+    <div class="width-100 pull-left padding-10 posRel">
+      <div class="f8-wi-list__quick-add width-100 pull-left"
         id="workItemList_up_quickAdd"
         *ngIf="loggedIn"
         #quickaddHeight>
@@ -68,74 +68,74 @@
           (close)="close($event)">
         </alm-work-item-quick-add>
       </div>
-        <div class="f8-wi-list__settings planner-hack-dropdown">
-            <div class="dropdown-kebab-pf pull-right dropdown margin-left-10"
-                  dropdown
-                  [autoClose]="false"
-                  [isOpen]="isTableConfigOpen"
-                  (isOpenChange)="tableConfigChange($event)">
-              <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
-                <span class="fa fa-cog"></span>
-              </button>
-              <div class="dropdown-menu-right dropdown-menu f8-wi-list__settings-dropdown" *dropdownMenu>
-                <aside>
-                  <i class="db text-right fa fa-close btn btn-link" (click)="tableConfigToggle($event)"></i>
-                  <!--<span class="db text-right fa fa-angle-double-up"
-                    tooltip="Move to top"
-                    (click)="moveToDisplay()">
-                  </span>
-                  <span class="db text-right fa fa-angle-up"
-                    tooltip="Move to top"
-                    (click)="moveToDisplay()">
-                  </span>
-                  <span class="db text-right fa fa-angle-down"
-                    tooltip="Move to Down"
-                    (click)="moveToAvailable()">
-                  </span>
-                  <span class="db text-right fa fa-angle-double-down"
-                    tooltip="Move to Down"
-                    (click)="moveToAvailable()">
-                  </span>-->
-                </aside>
-                <aside>
-                  <small>Displayed Atrributes</small>
-                  <ul class="f8-wi-list__settings-column">
-                    <li *ngFor='let col of (columns | filterColumn: "showInDisplay")'>
-                      <input
-                        type='checkbox'
-                        [id]="col.name"
-                        (change)='toggleCheckbox($event, col)'/>
-                      <label [attr.for]="col.name">{{col.name}}</label>
-                    </li>
-                  </ul>
-                </aside>
-                <aside>
-                  <span class="db fa fa-angle-right"
-                    tooltip="Move to Displayed Attributes"
-                    (click)="moveToDisplay()">
-                  </span>
-                  <span class="db fa fa-angle-left"
-                    tooltip="Move to Available Attributes"
-                    (click)="moveToAvailable()">
-                  </span>
-                </aside>
-                <aside>
-                  <small>Available Atrributes</small>
-                  <ul class="f8-wi-list__settings-column">
-                    <li *ngFor='let col of (columns | filterColumn: "available")'>
-                      <input
-                        type='checkbox'
-                        [id]="col.name"
-                        (change)='toggleCheckbox($event, col)'/>
-                      <label [attr.for]="col.name">
-                        {{col.name}}
-                      </label>
-                    </li>
-                  </ul>
-                </aside>
-              </div>
-            </div>
+      <div class="f8-wi-list__settings planner-hack-dropdown">
+        <div class="dropdown-kebab-pf pull-right dropdown margin-left-10"
+              dropdown
+              [autoClose]="false"
+              [isOpen]="isTableConfigOpen"
+              (isOpenChange)="tableConfigChange($event)">
+          <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
+            <span class="fa fa-cog"></span>
+          </button>
+          <div class="dropdown-menu-right dropdown-menu f8-wi-list__settings-dropdown" *dropdownMenu>
+            <aside>
+              <i class="db text-right fa fa-close btn btn-link" (click)="tableConfigToggle($event)"></i>
+              <!--<span class="db text-right fa fa-angle-double-up"
+                tooltip="Move to top"
+                (click)="moveToDisplay()">
+              </span>
+              <span class="db text-right fa fa-angle-up"
+                tooltip="Move to top"
+                (click)="moveToDisplay()">
+              </span>
+              <span class="db text-right fa fa-angle-down"
+                tooltip="Move to Down"
+                (click)="moveToAvailable()">
+              </span>
+              <span class="db text-right fa fa-angle-double-down"
+                tooltip="Move to Down"
+                (click)="moveToAvailable()">
+              </span>-->
+            </aside>
+            <aside>
+              <small>Displayed Atrributes</small>
+              <ul class="f8-wi-list__settings-column">
+                <li *ngFor='let col of (columns | filterColumn: "showInDisplay")'>
+                  <input
+                    type='checkbox'
+                    [id]="col.name"
+                    (change)='toggleCheckbox($event, col)'/>
+                  <label [attr.for]="col.name">{{col.name}}</label>
+                </li>
+              </ul>
+            </aside>
+            <aside>
+              <span class="db fa fa-angle-right"
+                tooltip="Move to Displayed Attributes"
+                (click)="moveToDisplay()">
+              </span>
+              <span class="db fa fa-angle-left"
+                tooltip="Move to Available Attributes"
+                (click)="moveToAvailable()">
+              </span>
+            </aside>
+            <aside>
+              <small>Available Atrributes</small>
+              <ul class="f8-wi-list__settings-column">
+                <li *ngFor='let col of (columns | filterColumn: "available")'>
+                  <input
+                    type='checkbox'
+                    [id]="col.name"
+                    (change)='toggleCheckbox($event, col)'/>
+                  <label [attr.for]="col.name">
+                    {{col.name}}
+                  </label>
+                </li>
+              </ul>
+            </aside>
           </div>
+        </div>
+      </div>
     </div>
 
     <div class="f8-wi-list">
@@ -248,12 +248,13 @@
             <ng-template let-row="row"
               ngx-datatable-cell-template>
               <div class="dropdown-kebab-pf planner-hack-dropdown
-                          pull-right dropdown margin-left-10"
+                pull-right dropdown margin-left-10"
                 dropdown>
-                <button class="btn btn-link dropdown-toggle"
+                <button
+                  class="btn btn-link dropdown-toggle"
                   type="button"
                   dropdownToggle>
-                  <span class="fa fa-ellipsis-v"></span>
+                    <span class="fa fa-ellipsis-v"></span>
                 </button>
                 <ul class="dropdown-menu-right dropdown-menu"
                   *dropdownMenu>
@@ -297,7 +298,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="pull-right margin-right-15 padding-top-2" 
+              <div class="pull-right margin-right-15 padding-top-2"
                 placement="left">
                 <a class="fa fa-columns f8-action-icon pointer"
                   (click)="onPreview(row['id'])">
@@ -306,8 +307,8 @@
             </ng-template>
           </ngx-datatable-column>
         </ngx-datatable>
-        <pfng-empty-state 
-          *ngIf="datatableWorkitems?.length <= 0 && !uiLockedList" 
+        <pfng-empty-state
+          *ngIf="datatableWorkitems?.length <= 0 && !uiLockedList"
           [config]="emptyStateConfig"></pfng-empty-state>
         <div class="lock-overlay-list"
           *ngIf="uiLockedList">
