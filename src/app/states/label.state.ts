@@ -1,7 +1,5 @@
-import { LabelModel } from './../models/label.model';
+import { LabelUI } from './../models/label.model';
 
-export interface LabelState {
-  [index: number]: LabelModel;
-};
+export type LabelState = LabelUI[];
 
 export const initialState = [] as LabelState;
