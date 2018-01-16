@@ -101,15 +101,6 @@ export class LabelMapper implements Mapper<LabelService, LabelUI> {
     }
   ];
   
-  LabelServicetoLabelUI(labels: LabelService[]): LabelUI[] {
-    let labelUI: LabelUI[];
-    for(let i = 0; i < labels.length; i = i + 1)
-    { 
-      labelUI[i] = this.toUIModel(labels[i]);
-    }
-    return labelUI;
-  }
-  
   toUIModel(arg: LabelService): LabelUI {
     return switchModel<LabelService, LabelUI>(
       arg, this.serviceToUiMapTree

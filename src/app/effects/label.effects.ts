@@ -5,7 +5,7 @@ import * as LabelActions from './../actions/label.actions';
 import { Observable } from 'rxjs';
 import { LabelService } from './../services/label.service';
 import { AppState } from './../states/app.state';
-
+import { LabelMapper } from "../models/label.model";
 export type Action = LabelActions.All;
 
 @Injectable()
@@ -20,8 +20,12 @@ export class LabelEffects {
     .ofType(LabelActions.GET)
     .switchMap(action => {
       return this.labelService.getLabels()
-        .map(labels => (new LabelActions.GetSuccess(labels)))
-        .catch(() => Observable.of(new LabelActions.GetError()))
+      .map(labels => {
+         const lMapper = new LabelMapper();
+         return labels.map(l => lMapper.toUIModel(l));
+      })
+      .map(labels => (new LabelActions.GetSuccess(labels)))
+      .catch(() => Observable.of(new LabelActions.GetError()))
     })
 
   @Effect() createLabel$ = this.actions$

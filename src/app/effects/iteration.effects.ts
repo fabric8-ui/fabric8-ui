@@ -16,7 +16,10 @@ export class IterationEffects {
     .ofType(IterationActions.GET)
     .switchMap(action => {
       return this.iterationService.getIterations()
-       .do(iterations => { return new IterationMapper().iterationServicetoIterationUI(iterations); })
+      .map(iterations => {
+           const itMapper = new IterationMapper();
+           return iterations.map(it => itMapper.toUIModel(it));
+        })
        .map(iterations => (new IterationActions.GetSuccess(iterations)))
        .catch(() => Observable.of(new IterationActions.GetError()))
     });

@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { IterationUI, IterationModel } from './../models/iteration.model';
 
 export const ADD            = '[Iteration] Add';
 export const UPDATE         = '[Iteration] Update';
@@ -23,8 +24,8 @@ export class Get implements Action {
 }
 
 export class GetSuccess implements Action {
-  payload : any;
-  constructor(payload: any){
+  payload : IterationUI[];
+  constructor(payload: IterationUI[]){
     this.payload = payload;
   };
   readonly type = GET_SUCCESS;

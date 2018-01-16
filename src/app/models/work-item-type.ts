@@ -89,15 +89,6 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
       }
     ];
     
-    WorkItemTypeServicetoWorkItemTypeUI(types: WorkItemTypeService[]): WorkItemTypeUI[] {
-      let workItemTypeUI: WorkItemTypeUI[];
-      for(let i = 0; i < types.length; i = i + 1)
-      { 
-        workItemTypeUI[i] = this.toUIModel(types[i]);
-      }
-      return workItemTypeUI;
-    }
-    
     toUIModel(arg: WorkItemTypeService): WorkItemTypeUI {
       return switchModel<WorkItemTypeService, WorkItemTypeUI>(
         arg, this.serviceToUiMapTree
