@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import * as IterationActions from ".././actions/iteration.actions";
 import { IterationService } from '.././services/iteration.service';
 import { Action } from '@ngrx/store';
+import{ IterationMapper } from "../models/iteration.model";
 
 @Injectable()
 export class IterationEffects {

@@ -13,7 +13,7 @@ describe('IterationMapper', () => {
         parentPath: '',
         resolvedParentPath: '',
         userActive: false,
-        activeStatus: false,
+        isActive: false,
         startAt: '',
         endAt: '',
         description: '',

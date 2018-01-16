@@ -71,6 +71,10 @@ export interface IterationUI extends modelUI {
   startAt: string; // attributes / startAt
   endAt: string; // attributes / startAt
   description: string; // attributes / description
+  state: string;
+  link: string;
+  workItemCount: number;
+  type: string;
 }
 
 export class IterationMapper implements Mapper<IterationModel, IterationUI> {
@@ -92,7 +96,7 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
       toPath: ['userActive']
     }, {
       fromPath: ['attributes','active_status'],
-      toPath: ['activeStatus']
+      toPath: ['isActive']
     }, {
       fromPath: ['attributes','startAt'],
       toPath: ['startAt']
@@ -134,7 +138,7 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
       fromPath: ['userActive']
     }, {
       toPath: ['attributes','active_status'],
-      fromPath: ['activeStatus']
+      fromPath: ['isActive']
     }, {
       toPath: ['attributes','startAt'],
       fromPath: ['startAt']
@@ -161,8 +165,7 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
 
   iterationServicetoIterationUI(iterations: IterationService[]): IterationUI[] {
     let iterationUI: IterationUI[];
-    for(let i = 0; i < iterations.length; i = i + 1)
-    { 
+    for(let i = 0; i < iterations.length; i = i + 1) { 
       iterationUI[i] = this.toUIModel(iterations[i]);
     }
     return iterationUI;
