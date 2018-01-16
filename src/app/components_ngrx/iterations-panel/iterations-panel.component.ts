@@ -12,7 +12,7 @@ import { AuthenticationService } from 'ngx-login-client';
 import { GroupTypesService } from '../../services/group-types.service';
 import { IterationService } from '../../services/iteration.service';
 import { WorkItemService }   from '../../services/work-item.service';
-import { IterationModel } from '../../models/iteration.model';
+import { IterationUI } from '../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
 import { FabPlannerIterationModalComponent } from '../iterations-modal/iterations-modal.component';
 import {
@@ -27,6 +27,7 @@ import {
 // ngrx stuff
 import { Store } from '@ngrx/store';
 import { AppState } from './../../states/app.state';
+import { IterationState } from 'src/app/states/iteration.state';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -37,7 +38,7 @@ import { AppState } from './../../states/app.state';
 export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() takeFromInput: boolean = false;
-  @Input() iterations: IterationModel[] = [];
+  @Input() iterations: IterationUI[] = [];
   @Input() collection = [];
   @Input() sidePanelOpen: Boolean = true;
 
@@ -49,13 +50,13 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   loggedIn: Boolean = true;
   editEnabled: Boolean = false;
   barchatValue: number = 70;
-  selectedIteration: IterationModel;
-  allIterations: IterationModel[] = [];
+  selectedIteration: IterationUI;
+  allIterations: IterationUI[] = [];
   eventListeners: any[] = [];
   currentSelectedIteration: string = '';
   masterIterations;
   treeIterations;
-  activeIterations:IterationModel[] = [];
+  activeIterations:IterationUI[] = [];
   emptyStateConfig: EmptyStateConfig;
   treeListConfig: TreeListConfig;
 
@@ -122,12 +123,12 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       // do not display the root iteration on the iteration panel.
       this.allIterations = [];
       for (let i=0; i<this.iterations.length; i++) {
-        if (!this.iterationService.isRootIteration(this.iterations[i])) {
+        if (!this.iterationService.isRootIteration(this.iterations[i].parentPath)) {
           this.allIterations.push(this.iterations[i]);
         }
       }
       this.clusterIterations();
-      this.treeIterations = this.iterationService.getTopLevelIterations(this.allIterations);
+      this.treeIterations = this.iterationService.getTopLevelIterations2(this.allIterations);
     }
   }
 
@@ -170,28 +171,25 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       // do not display the root iteration on the iteration panel.
       this.allIterations = [];
       for (let i=0; i<this.iterations.length; i++) {
-        if (!this.iterationService.isRootIteration(this.iterations[i])) {
+        if (!this.iterationService.isRootIteration(this.iterations[i].parentPath)) {
           this.allIterations.push(this.iterations[i]);
         }
       }
       this.clusterIterations();
       this.treeIterations =
-            this.iterationService.getTopLevelIterations(this.allIterations);
+            this.iterationService.getTopLevelIterations2(this.allIterations);
     } else {
       this.store
         .select('listPage')
         .select('iterations')
-        .subscribe(iterations => {
+        .subscribe((iterations: IterationState) => {
           // do not display the root iteration on the iteration panel.
-          this.allIterations = [];
-          for (let i = 0; i < iterations.length; i++) {
-            if (!this.iterationService.isRootIteration(iterations[i])) {
-              this.allIterations.push(iterations[i]);
-            }
-          }
+          this.allIterations = iterations.filter(i => {
+            return !this.iterationService.isRootIteration(i.parentPath);
+          });
           this.clusterIterations();
           this.treeIterations =
-            this.iterationService.getTopLevelIterations(this.allIterations);
+            this.iterationService.getTopLevelIterations2(this.allIterations);
         },
         (e) => {
           console.log('Some error has occured', e);
@@ -200,15 +198,11 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   clusterIterations() {
-    this.activeIterations = this.allIterations.filter((iteration) => iteration.attributes.active_status === true);
-  }
-
-  resolvedName(iteration: IterationModel) {
-    return iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name;
+    this.activeIterations = this.allIterations.filter((iteration: IterationUI) => iteration.isActive);
   }
 
   //This function is called after the iteration modal closes.
-  onCreateOrupdateIteration(iteration: IterationModel) {
+  onCreateOrupdateIteration(iteration: IterationUI) {
     let index = this.allIterations.findIndex((it) => it.id === iteration.id);
     if (index >= 0) {
       this.allIterations[index] = iteration;
@@ -231,25 +225,25 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         }
         this.allIterations[parentIndex].children.push(iteration);
       }
-      let childIterations = this.iterationService.checkForChildIterations(iteration, this.allIterations);
+      let childIterations = this.iterationService.checkForChildIterations2(iteration, this.allIterations);
       if(childIterations.length > 0) {
         this.allIterations[this.allIterations.length].hasChildren = true;
         this.allIterations[this.allIterations.length].children = childIterations;
       }
     }
-    this.treeIterations = this.iterationService.getTopLevelIterations(this.allIterations);
+    this.treeIterations = this.iterationService.getTopLevelIterations2(this.allIterations);
     this.treeList.update();
     this.clusterIterations();
     this.iterationService.emitCreateIteration(iteration);
   }
 
-  getWorkItemsByIteration(iteration: IterationModel) {
+  getWorkItemsByIteration(iteration: IterationUI) {
     let filters: any = [];
     if (iteration) {
       this.selectedIteration = iteration;
       filters.push({
         id:  iteration.id,
-        name: iteration.attributes.name,
+        name: iteration.name,
         paramKey: 'filter[iteration]',
         active: true,
         value: iteration.id
@@ -269,13 +263,13 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   updateItemCounts() {
     this.log.log('Updating item counts..');
-    this.iterationService.getIterations().first().subscribe((updatedIterations:IterationModel[]) => {
+    this.iterationService.getIterations().first().subscribe((updatedIterations:IterationUI[]) => {
       // updating the counts from the response. May not the best solution on performance right now.
-      updatedIterations.forEach((thisIteration:IterationModel) => {
+      updatedIterations.forEach((thisIteration:IterationUI) => {
         for (let i=0; i<this.iterations.length; i++) {
           if (this.iterations[i].id === thisIteration.id) {
-            this.iterations[i].relationships.workitems.meta.total = thisIteration.relationships.workitems.meta.total;
-            this.iterations[i].relationships.workitems.meta.closed = thisIteration.relationships.workitems.meta.closed;
+            this.iterations[i].workItemTotalCount = thisIteration.workItemTotalCount;
+            this.iterations[i].workItemClosedCount = thisIteration.workItemClosedCount;
           }
         }
       });

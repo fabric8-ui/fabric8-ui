@@ -1,4 +1,4 @@
-import { IterationModel } from '../../models/iteration.model';
+import { IterationUI } from '../../models/iteration.model';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Broadcaster, Logger } from 'ngx-base';
@@ -33,24 +33,21 @@ export class SidepanelComponent implements OnInit {
     this.store
       .select('listPage')
       .select('iterations')
-      .subscribe((iterations: IterationModel[]) => {
+      .subscribe((iterations: IterationUI[]) => {
         if (iterations.length) {
           this.manipulateData(iterations);
         }
       })
   }
 
-  manipulateData(iterations: IterationModel[]) {
-    const rootIteration: IterationModel = iterations.find(i => {
-      return i.attributes['parent_path'] == '/';
+  manipulateData(iterations: IterationUI[]) {
+    const rootIteration: IterationUI = iterations.find(i => {
+      return i.parentPath == '/';
     });
     if (rootIteration) {
-      this.numberOfItemsInBacklog =
-      rootIteration.relationships.workitems.meta.total;
+      this.numberOfItemsInBacklog = rootIteration.workItemTotalCount;
     }
   }
 
-  setGuidedTypeWI() {
-
-  }
+  setGuidedTypeWI() {}
 }

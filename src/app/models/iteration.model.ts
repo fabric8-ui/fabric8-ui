@@ -73,12 +73,15 @@ export interface IterationUI extends modelUI {
   description: string; // attributes / description
   state: string;
   link: string;
-  workItemCount: number;
+  workItemTotalCount: number;
+  workItemClosedCount: number;
   type: string;
+  children: IterationUI[];
+  hasChildren?: boolean;
 }
 
 export class IterationMapper implements Mapper<IterationModel, IterationUI> {
-  
+
   serviceToUiMapTree: MapTree = [{
       fromPath: ['id'],
       toPath: ['id']
@@ -114,7 +117,13 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
       toPath: ['link']
     }, {
       fromPath: ['relationships','workitems','meta','total'],
-      toPath: ['workItemCount']
+      toPath: ['workItemTotalCount']
+    }, {
+      fromPath: ['relationships','workitems','meta','closed'],
+      toPath: ['workItemClosedCount']
+    }, {
+      fromPath: ['hasChildren'],
+      toPath: ['hasChildren']
     }, {
       fromPath: ['type'],
       toPath: ['type']
@@ -156,7 +165,13 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
       fromPath: ['link']
     }, {
       toPath: ['relationships','workitems','meta','total'],
-      fromPath: ['workItemCount']
+      fromPath: ['workItemTotalCount']
+    }, {
+      toPath: ['relationships','workitems','meta','closed'],
+      fromPath: ['workItemClosedCount']
+    }, {
+      toPath: ['hasChildren'],
+      fromPath: ['hasChildren']
     }, {
       toPath: ['type'],
       fromPath: ['type']

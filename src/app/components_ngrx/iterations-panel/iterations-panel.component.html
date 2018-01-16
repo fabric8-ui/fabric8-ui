@@ -45,7 +45,7 @@
                     Edit
                   </a>
                 </li>
-                <li *ngIf="iteration.attributes.active_status">
+                <li *ngIf="iteration.isActive">
                   <a class="pointer"
                     (click)="modal.openCreateUpdateModal('close', iteration, $event);">
                       Close
@@ -61,15 +61,15 @@
             </div>
             <div class="truncate padding-right-15">
               <span class="f8-itr-name truncate"
-                tooltip="{{iteration.attributes.name}}"
-                placement="top" id="{{iteration.attributes.name}}">
-                {{iteration.attributes.name | truncate : 45 }}
+                tooltip="{{iteration.name}}"
+                placement="top" id="{{iteration.name}}">
+                {{iteration.name | truncate : 45 }}
               </span>
               <div class="f8-itr__List-parent parent-iteration">
                 <div class="left-truncate">
-                  <span tooltip="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}"
-                    placement="top" id="{{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name }}">
-                    {{iteration.attributes.resolved_parent_path + '/' + iteration.attributes.name | truncate : -50 }}
+                  <span tooltip="{{iteration.resolvedParentPath + '/' + iteration.name }}"
+                    placement="top" id="{{iteration.resolvedParentPath + '/' + iteration.name }}">
+                    {{iteration.resolvedParentPath + '/' + iteration.name | truncate : -50 }}
                   </span>
                 </div>
               </div>
@@ -78,23 +78,23 @@
           <div class="progress margin-v-10">
             <div class="progress-bar"
                 role="progressbar"
-                [attr.aria-valuenow]="iteration.relationships?.workitems?.meta?.closed"
+                [attr.aria-valuenow]="iteration.workItemClosedCount"
                 aria-valuemin="0"
-                [attr.aria-valuemax]="iteration.relationships?.workitems?.meta?.total"
-                [ngStyle]="{'width': ((iteration.relationships?.workitems?.meta?.closed / iteration.relationships?.workitems?.meta?.total) * 100) + '%'}"
+                [attr.aria-valuemax]="iteration.workItemTotalCount"
+                [ngStyle]="{'width': ((iteration.workItemClosedCount / iteration.workItemTotalCount) * 100) + '%'}"
                 placement="top"
-                tooltip="{{((iteration.relationships?.workitems?.meta?.closed / iteration.relationships?.workitems?.meta?.total) * 100) + '%'}}">
+                tooltip="{{((iteration.workItemClosedCount / iteration.workItemTotalCount) * 100) + '%'}}">
             </div>
           </div>
           <div class="f8-itr-status">
-            <span *ngIf="iteration.attributes.startAt">
-              {{iteration.attributes.startAt | date:longDate}} - {{iteration.attributes.endAt | date:longDate}}(UTC)
+            <span *ngIf="iteration.startAt">
+              {{iteration.startAt | date:longDate}} - {{iteration.endAt | date:longDate}}(UTC)
             </span>
             <span class="f8-itr-count">
-              {{iteration.relationships?.workitems?.meta?.closed}} / {{iteration.relationships?.workitems?.meta?.total}}
+              {{iteration.workItemClosedCount}} / {{iteration.workItemTotalCount}}
             </span>
           </div>
-          <p class="f8-itr-desc">{{ iteration.attributes?.description }}</p>
+          <p class="f8-itr-desc">{{ iteration.description }}</p>
         </li>
       </ul>
     </div>
@@ -160,7 +160,7 @@
                       Edit
                     </a>
                   </li>
-                  <li *ngIf="node.data.attributes.active_status">
+                  <li *ngIf="node.data.isActive">
                     <a class="pointer"
                       (click)="onClose(node.data)">
                         Close

@@ -96,7 +96,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       // do not display the root iteration on the iteration panel.
       this.allIterations = [];
       for (let i=0; i<this.iterations.length; i++) {
-        if (!this.iterationService.isRootIteration(this.iterations[i])) {
+        if (!this.iterationService.isRootIteration(this.iterations[i].attributes.parent_path)) {
           this.allIterations.push(this.iterations[i]);
         }
       }
@@ -132,7 +132,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       // do not display the root iteration on the iteration panel.
       this.allIterations = [];
       for (let i=0; i<this.iterations.length; i++) {
-        if (!this.iterationService.isRootIteration(this.iterations[i])) {
+        if (!this.iterationService.isRootIteration(this.iterations[i].attributes.parent_path)) {
           this.allIterations.push(this.iterations[i]);
         }
       }
@@ -143,7 +143,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
           // do not display the root iteration on the iteration panel.
           this.allIterations = [];
           for (let i=0; i<iterations.length; i++) {
-            if (!this.iterationService.isRootIteration(iterations[i])) {
+            if (!this.iterationService.isRootIteration(iterations[i].attributes.parent_path)) {
               this.allIterations.push(iterations[i]);
             }
           }

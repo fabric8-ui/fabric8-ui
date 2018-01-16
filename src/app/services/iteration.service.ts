@@ -12,7 +12,7 @@ import { AuthenticationService } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { Notification, Notifications, NotificationType } from 'ngx-base';
 
-import { IterationModel } from '../models/iteration.model';
+import { IterationModel, IterationUI } from '../models/iteration.model';
 import { MockHttp } from '../mock/mock-http';
 import { HttpService } from './http-service';
 import { WorkItem } from '../models/work-item';
@@ -201,18 +201,15 @@ export class IterationService {
       });
   }
 
-  isRootIteration(iteration: IterationModel): boolean {
-    if (iteration.attributes.parent_path==='/')
-      return true;
-    else
-      return false;
+  isRootIteration(parentPath: string): boolean {
+    return parentPath === '/';
   }
 
   getRootIteration(): Observable<IterationModel> {
     return this.getIterations().first()
     .map((resultIterations) => {
       for (let i=0; i<resultIterations.length; i++) {
-        if (this.isRootIteration(resultIterations[i]))
+        if (this.isRootIteration(resultIterations[i].attributes.parent_path))
           return resultIterations[i];
         }
     })
@@ -269,9 +266,26 @@ export class IterationService {
     return children;
   }
 
+  checkForChildIterations2(parent: IterationUI, iterations: IterationUI[]): IterationUI[] {
+    let children = iterations.filter(i => {
+      //check only for direct parent
+      let path_arr = i.parentPath.split('/');
+      let id = path_arr[path_arr.length-1];
+      return (id === parent.id);
+    });
+    return children;
+  }
+
   getTopLevelIterations(iterations): IterationModel[] {
     let topLevelIterations = iterations.filter(iteration =>
       ((iteration.attributes.parent_path.split('/')).length - 1) === 1
+    )
+    return topLevelIterations;
+  }
+
+  getTopLevelIterations2(iterations: IterationUI[]): IterationUI[] {
+    let topLevelIterations = iterations.filter(iteration =>
+      ((iteration.parentPath.split('/')).length - 1) === 1
     )
     return topLevelIterations;
   }

@@ -1,5 +1,5 @@
-import { IterationModel } from './../models/iteration.model';
+import { IterationUI } from './../models/iteration.model';
 
-export type IterationState = IterationModel[];
+export type IterationState = IterationUI[];
 
 export const initialState: IterationState = [] as IterationState;
