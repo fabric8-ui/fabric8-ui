@@ -70,10 +70,10 @@
       </div>
       <div class="f8-wi-list__settings planner-hack-dropdown">
         <div class="dropdown-kebab-pf pull-right dropdown margin-left-10"
-              dropdown
-              [autoClose]="false"
-              [isOpen]="isTableConfigOpen"
-              (isOpenChange)="tableConfigChange($event)">
+          dropdown
+          [autoClose]="false"
+          [isOpen]="isTableConfigOpen"
+          (isOpenChange)="tableConfigChange($event)">
           <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
             <span class="fa fa-cog"></span>
           </button>
@@ -240,7 +240,7 @@
           </ngx-datatable-column>
           <!-- Last Column  -->
           <ngx-datatable-column
-            [width]="120"
+            [width]="80"
             [resizeable]="false"
             [sortable]="false"
             [cellClass]="'cell-class'"

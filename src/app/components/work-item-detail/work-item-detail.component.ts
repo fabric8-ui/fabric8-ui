@@ -65,10 +65,12 @@ import {
   animations: [
     trigger('slideInOut', [
       state('in', style({
-        transform: 'translateX(0)'
+        transform: 'translateX(5px)',
+        left: 'auto'
       })),
       state('out', style({
-        transform: 'translateX(100%)'
+        transform: 'translateX(100%)',
+        left: '100%'
       })),
       transition('in => out', animate('400ms ease-in-out')),
       transition('out => in', animate('400ms ease-in-out'))

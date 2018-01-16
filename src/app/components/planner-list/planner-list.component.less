@@ -232,10 +232,16 @@ a.disabled:hover {
   bottom: 0;
   width: 100%;
 }
-
-a.quick-add-icon, .f8-action-icon {
-  opacity: 0;
+a.quick-add-icon {
+  width: 100%;
+  text-align: center;
   text-decoration: none;
+  opacity: .4;
+}
+
+.f8-action-icon {
+  text-decoration: none;
+  opacity: 0;
 }
 
 // Css for row selection
@@ -245,7 +251,7 @@ a.quick-add-icon, .f8-action-icon {
 .ngx-datatable.material.single-selection .datatable-body-row.active:hover .datatable-row-group,
 .ngx-datatable.material.single-selection .datatable-body-row.active:focus,
 .ngx-datatable.material.single-selection .datatable-body-row.active:focus .datatable-row-group {
-    background-color: @color-pf-black-300 !important;
+    background-color: @color-pf-black-200 !important;
 }
 
 // css for row hover
@@ -278,7 +284,7 @@ a.quick-add-icon, .f8-action-icon {
 }
 .datatable-row-wrapper:last-child {
   border-bottom: 1px solid;
-  border-bottom-color: @color-pf-black-300;
+  border-bottom-color: @color-pf-black-200;
 }
 .datatable-header-cell,
 .datatable-body-cell {
