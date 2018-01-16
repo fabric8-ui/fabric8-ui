@@ -17,6 +17,8 @@ import { Spaces } from 'ngx-fabric8-wit';
 import { ModalModule } from 'ngx-modal';
 import { AuthenticationService, UserService, HttpService as HttpServiceLGC } from 'ngx-login-client';
 
+import { HeaderModule, FooterModule, HeaderService } from 'osio-ngx-framework';
+
 // Mock data
 import { MockDataService } from 'fabric8-planner';
 import { MockHttp } from 'fabric8-planner';
@@ -59,6 +61,7 @@ if (process.env.ENV == 'inmemory') {
     MockDataService,
     authApiUrlProvider,
     Notifications,
+    HeaderService,
     {
       provide: Spaces,
       useExisting: SpacesService
@@ -95,6 +98,7 @@ if (process.env.ENV == 'inmemory') {
     MockDataService,
     authApiUrlProvider,
     Notifications,
+    HeaderService,
     {
       provide: Spaces,
       useExisting: SpacesService
@@ -125,7 +129,9 @@ if (process.env.ENV == 'inmemory') {
     ModalModule,
     TabsModule,
     TooltipModule.forRoot(),
-    TruncateModule
+    TruncateModule,
+    HeaderModule,
+    FooterModule,
   ],
   declarations: [
     AppComponent,

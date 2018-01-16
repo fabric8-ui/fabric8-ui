@@ -55,6 +55,7 @@
     "less-plugin-autoprefix": "1.5.1",
     "lodash": "4.17.4",
     "moment": "2.18.1",
+    "osio-ngx-framework": "0.13.0",
     "mydatepicker": "2.1.0",
     "ng2-completer": "1.6.3",
     "ng2-dragula": "1.5.0",

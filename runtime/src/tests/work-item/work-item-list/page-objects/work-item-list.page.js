@@ -48,14 +48,14 @@ class WorkItemListPage {
 
  /* Select the space in which the tests will be run */
  get spaceDropdown (){
-   return element(by.css(".ng-valid"));
+   return element(by.css(".recent-items-toggle"));
  }
  clickOnSpaceDropdown (){
    return this.spaceDropdown.click();
  }
  selectSpaceDropDownValue  (index) {
    index++;
-   return element(by.xpath("//select[contains(@class,'ng-valid')]/option[" + index + "]")).click();
+   return element(by.xpath("//ul[contains(@class,'recent-items')]/li[" + index + "]/a")).click();
  }
 
  workItemByURLId (workItemId) {
@@ -84,7 +84,7 @@ class WorkItemListPage {
  }
 
  get userToggle () {
-     return element(by.id("header_dropdownToggle"));
+     return element(by.id("header_dropdownToggle2"));
  }
 
  clickUserToggle () {
@@ -123,7 +123,9 @@ class WorkItemListPage {
  }
 
  clickLogoutButton () {
-   return element(by.linkText('Logout'));
+   element(by.id("header_dropdownToggle2")).click()
+   browser.wait(until.presenceOf(element(by.linkText('Log Out'))), constants.WAIT, 'Failed to find logout option in user dropdown');
+   return element(by.linkText('Log Out'));
  }
 
  signInGithub (gitusername,gitpassword) {

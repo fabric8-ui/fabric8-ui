@@ -10,7 +10,7 @@ export class SpaceMockGenerator {
    * creating a consistent mock data. Keep in mind when changing this code.
    */
   public createSpaces(): any {
-    let spaces = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].map((n) => {
+    let spaces = [0, 1, 2, 3, 4, 5].map((n) => {
       return {
         'attributes': {
           'created-at': this.dateTime(n),
