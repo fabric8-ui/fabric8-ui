@@ -25,7 +25,7 @@
           role="menu"
           aria-labelledby="dropdownKebab"
           *dropdownMenu>
-          <li *ngFor="let type of availableTypes"
+          <li *ngFor="let type of allowedWITs"
               role="menuitem"
               (click)="selectType($event, type)">
             <a class="dropdown-item" href="#">
