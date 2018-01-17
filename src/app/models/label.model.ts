@@ -113,6 +113,3 @@ export class LabelMapper implements Mapper<LabelService, LabelUI> {
     );
   }
 }
-
-
-

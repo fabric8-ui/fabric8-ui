@@ -10,7 +10,7 @@ import { GroupTypesModule } from
   './../group-types-panel/group-types-panel.module';
 import { SidepanelComponent } from './side-panel.component';
 
-// ngrs stuff
+// ngrx stuff
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import {

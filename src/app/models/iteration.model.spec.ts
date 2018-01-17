@@ -19,7 +19,7 @@ describe('IterationMapper', () => {
         description: '',
         state: 'new',
         link: '',
-        workItemCount: 0,
+        workItemTotalCount: 0,
         type: 'iterations',
     } as IterationUI;
 
