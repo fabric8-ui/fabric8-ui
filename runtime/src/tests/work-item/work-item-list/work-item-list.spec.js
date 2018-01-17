@@ -21,6 +21,9 @@ describe('Work item list', function () {
   var page, items, browserMode;
   var until = protractor.ExpectedConditions;
 
+  var WORK_ITEM_TITLE = 'Title Text 2';
+  var CHILD_QUICK_ADD_TITLE = 'Child Work Item';
+
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);   
@@ -36,35 +39,55 @@ describe('Work item list', function () {
       workItemState:'New'
     }; 
   });
-
-  it('should have the right mock data in the first entry - phone.', function() {
-      expect(page.workItemTitle(page.firstWorkItem)).toBe('Title Text 0');
-    });
     
-  it('should have the right mock data in the first entry - desktop.', function() {
+  it('should have the right mock data in the first entry.', function() {
       expect(page.workItemTitle(page.firstWorkItem)).toBe('Title Text 0');
-    });
+  });
 
   it('should create a new workitem - desktop.', function () {
       testSupport.setBrowserMode('desktop');	
-      page.clickWorkItemQuickAdd();
       page.typeQuickAddWorkItemTitle('test workitem');
       page.clickQuickAddSave().then(function() {
         expect(page.workItemTitle(page.firstWorkItem)).toBe('test workitem');
-        expect(page.workItemTitle(page.workItemByNumber(0))).toBe('test workitem');
+        expect(page.workItemTitle(page.workItemByTitle('test workitem')).isPresent()).toBe(true);
       });
   });	 
 
-  it('should contain right mock data on detail page - desktop.', function() { 
-      page.workItemViewId(page.firstWorkItem).getText().then(function (text) { 
-        var detailPage = page.clickWorkItem(page.firstWorkItem);
-        browser.wait(until.elementToBeClickable(detailPage.workItemDetailAssigneeIcon), constants.WAIT, 'Failed to find Assignee Icon');   
-        
-        /* TODO - text in title/desc fields once updated is not visible in DOM - have to find a diff way to get the text */
-        //expect(detailPage.clickWorkItemDetailTitle.getText()).toBe(workItemMockData.workItemTitle);   
-        //expect(detailPage.workItemDetailDescription.getText()).toContain(workItemMockData.workItemDescription);
-        detailPage.clickWorkItemDetailCloseButton();
-      });
+  it('should open setting button and hide a column from view', function() { 
+    // default column count is 10
+    expect(page.getDataTableHeaderCellCount()).toEqual(10);
+    // hide and validate attribute header Count
+    page.clickSettingButton().then(function() {
+      browser.wait(until.presenceOf(page.settingDropdown()), constants.WAIT, 'Failed to open setting dropdown');
+      page.selectAttributeCheckBox("Iteration");
+      page.clickMoveToAvailableAttribute();
+      page.clickCancelButton();
+      expect(page.getDataTableHeaderCellCount()).toEqual(9);
+    });
+    //show and validate header count
+    page.clickSettingButton().then(function() {
+      browser.wait(until.presenceOf(page.settingDropdown()), constants.WAIT, 'Failed to open setting dropdown');
+      page.selectAttributeCheckBox("Iteration");
+      page.clickMoveToDisplayAttribute();
+      page.clickCancelButton();
+      expect(page.getDataTableHeaderCellCount()).toEqual(10);
+    });
   });
 
+  it('Tree icon should be disabled if no child work item exists', function() {
+    page.clickInlineQuickAdd(WORK_ITEM_TITLE).then(function() {
+      page.typeInlineQuickAddWorkItemTitle(CHILD_QUICK_ADD_TITLE);
+      page.clickInlineQuickAddCancel(WORK_ITEM_TITLE);
+      expect(page.treeIconDisable(WORK_ITEM_TITLE).isDisplayed()).toBe(true);
+    });
+  });
+
+  it('Add, Add and Open should be enabled after entering the value', function() {
+    page.clickInlineQuickAdd(WORK_ITEM_TITLE).then(function() {
+      expect(page.getInlineQuickAddBtn().getAttribute('class')).toMatch('disable');
+      page.typeInlineQuickAddWorkItemTitle(CHILD_QUICK_ADD_TITLE);
+      expect(page.getInlineQuickAddBtn().getAttribute('class')).not.toMatch('disable');      
+      page.clickInlineQuickAddCancel(WORK_ITEM_TITLE);
+    });
+  });
 });

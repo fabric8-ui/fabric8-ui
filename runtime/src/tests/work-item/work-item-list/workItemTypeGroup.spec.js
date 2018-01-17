@@ -39,37 +39,39 @@ var WorkItemListPage = require('./page-objects/work-item-list.page'),
 /* Start of Jasmine test suite. The string parameter is used in logging as a prefix for the test specs */
 describe('Type group tests', function () {
   var page, browserMode;
-
-  /* Test data */
-  //const UI_ELEMENT_TITLE = "the title";
+  var until = protractor.ExpectedConditions;
 
 /* Jasmine beforeEach function is executed before each test spec function. */
   beforeEach(function () {
     testSupport.setBrowserMode('desktop');
     page = new WorkItemListPage(true);
     testSupport.setTestSpace(page);
+    browser.wait(until.elementToBeClickable(page.firstWorkItem), constants.WAIT, 'Failed to find first work item');    
   });
 
 /* Jasmine test specs. The string in the spec definition is concatenated with the describe string to
    make a full sentence in BDD style. */
 
-  it('Portfolio link is displayed on the side panel', function() {
-    expect(page.getPortfolio().isPresent()).toBe(true);
+  it('Scenario link is displayed on the side panel', function() {
+    expect(page.getWorkItemGroup().get(0).getText()).toContain('Scenarios');
   });
 
-  it('Portfolio link is clickable', function() {
-    let clickEvent = page.clickPortfolio();
+  it('Scenario link is clickable', function() {
+    let clickEvent = page.clickScenario();
     expect(clickEvent).toBeDefined();
   });
 
-  // it('Clicking on portfolio should only display the portfolio level work item', function() {
-  //   //page.clickPortfolio();
-  //   //expect list to display only portfolio work items
+  it('Experiences link is displayed on the side panel', function() {
+    expect(page.getWorkItemGroup().get(1).getText()).toContain('Experiences')
+  });
 
-  // });
+  it('Experience link is clickable', function() {
+    let clickEvent = page.clickExperience();
+    expect(clickEvent).toBeDefined();
+  });
 
   it('Requirements link is displayed on the side panel', function() {
-    expect(page.getRequirements().isPresent()).toBe(true);
+    expect(page.getWorkItemGroup().get(2).getText()).toContain('Requirements')
   });
 
   it('Requirements link is clickable', function() {
@@ -77,15 +79,49 @@ describe('Type group tests', function () {
     expect(clickEvent).toBeDefined();
   });
 
-  // it('Clicking on requirements should only display the reqirement level work item', function() {
-  //   //page.clickPortfolio();
-  //   //expect list to display only portfolio work items
-
-  // });
-
-  it('Execution link is displayed on the side panel', function() {
-    expect(page.getRequirements().isPresent()).toBe(true);
+  it('click hide panel Button and WIT group name should not be displayed', function() {
+    page.clickHidePanelBtn();
+    expect(page.getWorkItemGroup().getText()).not.toContain('Scenarios'); 
+    expect(page.getWorkItemGroup().getText()).not.toContain('Experiences')    
+    expect(page.getWorkItemGroup().getText()).not.toContain('Requirements')
   });
 
+  it("Scenario-Quick Add should support Scenario, papercuts and fundamentals", function() {
+    page.clickScenario();
+    page.clickWorkItemQADropDown();
+    expect(page.getWorkItemType().get(0).getText()).toContain(' Scenario');
+    expect(page.getWorkItemType().get(1).getText()).toContain(' Papercuts');
+    expect(page.getWorkItemType().get(2).getText()).toContain(' Fundamental');
+  });
 
+  it("Experiences-Quick Add should support Experience and Value proposition", function() {
+    page.clickExperience();
+    page.clickWorkItemQADropDown();
+    expect(page.getWorkItemType().get(0).getText()).toContain(' Experience');
+    expect(page.getWorkItemType().get(1).getText()).toContain(' Value Proposition');
+  });
+
+  //issue first item in dropdown should be feature uncomment when issue is fixed
+
+  // it("Requirements-Quick Add should contain Bug and Feature", function() {
+  //   page.clickRequirements();
+  //   page.clickWorkItemQADropDown();
+  //   expect(page.getWorkItemType().get(0).getText()).toContain(' Feature');
+  //   expect(page.getWorkItemType().get(1).getText()).toContain(' Bug');
+  // });
+
+  it("Url should contain query WITGROUP:Scenario on clicking Scenario", function() {
+    page.clickScenario();    
+    expect(browser.getCurrentUrl()).toContain('WITGROUP:Scenarios');  
+  });
+
+  it("Url should contain query WITGROUP:Experiences on clicking Experience", function() {
+    page.clickExperience();    
+    expect(browser.getCurrentUrl()).toContain('WITGROUP:Experiences');  
+  });
+
+  it("Url should contain query WITGROUP:Requirements on clicking Requirements", function() {
+    page.clickRequirements();    
+    expect(browser.getCurrentUrl()).toContain('WITGROUP:Requirements');  
+  });
 });
