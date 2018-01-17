@@ -215,12 +215,16 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       if(document.getElementsByClassName('navbar-pf').length > 0) {
         hdrHeight = (document.getElementsByClassName('navbar-pf')[0] as HTMLElement).offsetHeight;
       }
-      let expHeight: number = 0;
-      if (document.getElementsByClassName('experimental-bar').length > 0) {
+      let expHeight: number;
+      if (document.getElementsByClassName('experimental-bar').length > 0 &&
+      !document.getElementsByClassName('experimental-bar')[0].classList.contains('experimental-bar-minimal')) {
+        expHeight = (document.getElementsByClassName('experimental-bar')[0] as HTMLElement).offsetHeight;
+
+        let targetHeight: number = window.innerHeight - toolbarHt - quickaddHt - hdrHeight - expHeight;
+        this.renderer.setStyle(this.listContainer.nativeElement, 'height', targetHeight - 23 + "px");
+      } else {
         expHeight = (document.getElementsByClassName('experimental-bar')[0] as HTMLElement).offsetHeight;
       }
-      let targetHeight: number = window.innerHeight - toolbarHt - quickaddHt - hdrHeight - expHeight;
-      this.renderer.setStyle(this.listContainer.nativeElement, 'height', targetHeight + "px");
 
       let targetContHeight: number = window.innerHeight - hdrHeight - expHeight;
       this.renderer.setStyle(this.containerHeight.nativeElement, 'height', targetContHeight + "px");
