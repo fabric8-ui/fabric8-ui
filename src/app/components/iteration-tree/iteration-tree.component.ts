@@ -11,6 +11,7 @@ export class IterationTreeComponent implements OnInit {
 
     @Input() iterationList: any;
     @Input() collection: any;
+    @Input() witGroup: string = '';
 
     @Output() onEditIteration = new EventEmitter<IterationModel>();
     @Output() onCloseIteration = new EventEmitter<IterationModel>();
