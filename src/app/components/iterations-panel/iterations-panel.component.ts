@@ -82,7 +82,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         this.activeIterations = [];
       }
     });
-    this.mockMenu();
   }
 
   ngOnChanges() {
@@ -302,24 +301,15 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     event.stopPropagation();
   }
 
-  onEdit(event) {
-    let iteration = this.allIterations.find(item =>
-      item.id === event.id
-    );
+  onEdit(iteration) {
     this.modal.openCreateUpdateModal('update', iteration);
   }
 
-  onClose(event) {
-    let iteration = this.allIterations.find(item =>
-      item.id === event.id
-    );
+  onClose(iteration) {
     this.modal.openCreateUpdateModal('close', iteration);
   }
 
-  onCreateChild(event) {
-    let iteration = this.allIterations.find(item =>
-      item.id === event.id
-    );
+  onCreateChild(iteration) {
     this.modal.openCreateUpdateModal('createChild', iteration);
   }
 
@@ -369,140 +359,4 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.groupTypesService.setCurrentGroupType(this.collection, 'execution');
   }
 
-  mockMenu() {
-    this.menuList =[
-                {
-                    title: 'Parent 1',
-                    routerLink: '/ap/dashboard',
-                    style: 'fa fa-home',
-                    nodeId: 'liDashboard',
-                    param: '',
-                    categories: []
-                },
-                {
-                    title: 'Parent 2',
-                    routerLink: '',
-                    style: 'fa fa-users',
-                    nodeId: 'liAssociates',
-                    param: '',
-                    categories: [
-                        {
-                            title: 'Child 1',
-                            style: 'fa fa-users',
-                            nodeId: 'liProspectiveAssociate',
-                            param: '',
-                            routerLink: '/ap/associates/view',
-                            categories: [
-                                            {
-                                                title: 'Grand Child 1',
-                                                style: 'fa fa-users',
-                                                nodeId: 'A',
-                                                param: '',
-                                                routerLink: '/ap/associates/view',
-                                                categories: [
-                                                                {
-                                                                    title: 'Grand Grand Child 1',
-                                                                    style: 'fa fa-user-plus',
-                                                                    nodeId: 'D',
-                                                                    param: '',
-                                                                    routerLink: '/ap/reports/resourcereport',
-                                                                    categories: []
-                                                                },
-                                                                {
-                                                                    title: 'Grand Grand Child 2',
-                                                                    style: 'fa fa-user-plus',
-                                                                    nodeId: 'E',
-                                                                    param: '',
-                                                                    routerLink: '/ap/reports/financereport',
-                                                                    categories: []
-                                                                },
-                                                                {
-                                                                    title: 'Grand Grand Child 3',
-                                                                    style: 'fa fa-pencil-square',
-                                                                    nodeId: 'F',
-                                                                    param: '',
-                                                                    routerLink: '/ap/reports/importRMGreport',
-                                                                    categories: []
-                                                                }
-                                                        ]
-                                            },
-                                            {
-                                                title: 'Grand Child 2',
-                                                style: 'fa fa-pencil-square',
-                                                nodeId: 'B',
-                                                param: '',
-                                                routerLink: '/ap/associates/prospective-associates',
-                                                categories: []
-                                            },
-                                            {
-                                                title: 'Grand Child 3',
-                                                style: 'fa fa-users',
-                                                nodeId: 'C',
-                                                param: '',
-                                                routerLink: '/ap/associates/list',
-                                                categories: []
-                                            }
-                                    ]
-                        },
-                        {
-                            title: 'Child 2',
-                            style: 'fa fa-pencil-square',
-                            nodeId: 'liAssociateJoining',
-                            param: '',
-                            routerLink: '/ap/associates/prospective-associates',
-                            categories: []
-                        },
-                        {
-                            title: 'Child 3',
-                            style: 'fa fa-users',
-                            nodeId: 'liAssociatesChild',
-                            param: '',
-                            routerLink: '/ap/associates/list',
-                            categories: []
-                        }
-                    ]
-                },
-                {
-                    title: 'Parent 3',
-                    routerLink: '',
-                    style: 'fa fa-users',
-                    nodeId: 'liTalentManagement',
-                    param: '',
-                    categories: []
-                },
-                {
-                    title: 'Parent 4',
-                    routerLink: '',
-                    style: 'fa fa-users',
-                    nodeId: 'liTeamManagement',
-                    param: '',
-                    categories: []
-                },
-                {
-                    title: 'Parent 5',
-                    routerLink: '',
-                    style: 'fa fa-users',
-                    nodeId: 'liPerformanceManagement',
-                    param: '',
-                    categories: []
-                },
-                {
-                    title: 'Parent 6',
-                    routerLink: '',
-                    style: 'fa fa-street-view',
-                    nodeId: 'liAdmin',
-                    param: '',
-                    categories: [ ]
-                },
-                {
-                    title: 'Parent 7',
-                    routerLink: '',
-                    style: 'fa fa-users',
-                    nodeId: 'liReports',
-                    param: '',
-                    categories: []
-                }
-            ]
-
-  }
  }

@@ -122,7 +122,12 @@
           All Iterations
         </h3>
       </div>
-      <iteration-tree [iterationList]="treeIterations" [collection]="collection">
+      <iteration-tree
+        [iterationList]="treeIterations"
+        [collection]="collection"
+        (onEditIteration)="onEdit($event)"
+        (onCloseIteration)="onClose($event)"
+        (onCreateIteration)="onCreateChild($event)">
       </iteration-tree>
     </div>
   </div>
