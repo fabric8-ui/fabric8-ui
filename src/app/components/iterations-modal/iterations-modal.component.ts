@@ -123,6 +123,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     let aDayBeforeDate = { date: { year: aDayBefore.format('YYYY'), month: aDayBefore.format('M'), day: aDayBefore.format('D') }} as any;
     endDatePickerComponentCopy['disableUntil'] = aDayBeforeDate.date;
     startDatePickerComponentCopy['componentDisabled'] = false;
+    startDatePickerComponentCopy['disableSince'] = {year: 0, month: 0, day: 0};
     this.startDatePickerOptions = startDatePickerComponentCopy;
     this.endDatePickerOptions = endDatePickerComponentCopy;
     this.validationError = false;
