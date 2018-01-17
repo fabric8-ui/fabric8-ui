@@ -1,9 +1,5 @@
-import { Comment } from './../models/comment';
+import { CommentUI } from './../models/comment';
 
-export interface CommentState {
-  comments: Comment[];
-};
+export type CommentState = CommentUI[];
 
-export const initialState: CommentState = {
-  comments: []
-}
+export const initialState: CommentState = [] as CommentState;

@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Comment } from './../models/comment';
+import { CommentUI, Comment } from './../models/comment';
 
 export const ADD = '[comment] Add';
 export const GET = '[comment] Get';
@@ -17,7 +17,7 @@ export const DELETE_ERROR = '[comment] DeleteError';
 export class Add implements Action {
   payload: {
     url: string,
-    comment: any
+    comment: Comment
   }
   constructor(payload: any) {
     this.payload = payload;
@@ -34,24 +34,24 @@ export class Get implements Action {
 }
 
 export class Update implements Action {
-  payload: any;
-  constructor(payload: any) {
+  payload: Comment;
+  constructor(payload: Comment) {
     this.payload = payload;
   }
   readonly type = UPDATE;
 }
 
 export class Delete implements Action {
-  payload: any;
-  constructor(payload: any) {
+  payload: Comment;
+  constructor(payload: Comment) {
     this.payload = payload;
   }
   readonly type = DELETE;
 }
 
 export class AddSuccess implements Action {
-  payload: any;
-  constructor(payload: any) {
+  payload: CommentUI;
+  constructor(payload: CommentUI) {
     this.payload = payload;
   }
   readonly type = ADD_SUCCESS;
@@ -62,8 +62,8 @@ export class AddError implements Action {
 }
 
 export class GetSuccess implements Action {
-  payload: any;
-  constructor(payload: any) {
+  payload: CommentUI[];
+  constructor(payload: CommentUI[]) {
     this.payload = payload;
   }
   readonly type = GET_SUCCESS;
@@ -74,8 +74,8 @@ export class GetError implements Action {
 }
 
 export class UpdateSuccess implements Action {
-  payload: any;
-  constructor(payload: any) {
+  payload: CommentUI;
+  constructor(payload: CommentUI) {
     this.payload = payload;
   }
   readonly type = UPDATE_SUCCESS;
@@ -86,8 +86,8 @@ export class UpdateError implements Action {
 }
 
 export class DeleteSuccess implements Action {
-  payload: any;
-  constructor(payload: any) {
+  payload: CommentUI;
+  constructor(payload: CommentUI) {
     this.payload = payload;
   }
   readonly type = DELETE_SUCCESS;

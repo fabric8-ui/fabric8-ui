@@ -5,6 +5,11 @@ import * as CommentActions from './../actions/comment.actions';
 import { AppState } from './../states/app.state';
 import { Observable } from 'rxjs';
 import { WorkItemService } from './../services/work-item.service';
+import {
+  CommentService,
+  CommentMapper
+} from './../models/comment';
+import { CommentState } from 'src/app/states/comment.state';
 
 export type Action = CommentActions.All;
 
@@ -16,42 +21,55 @@ export class CommentEffects {
     private store: Store<AppState>
   ) {}
 
-  @Effect() getWorkItemComments$: Observable<any> = this.actions$
+  @Effect() getWorkItemComments$: Observable<Action> = this.actions$
     .ofType<CommentActions.Get>(CommentActions.GET)
-    .switchMap(action => {
+    .map(action => action.payload)
+    .switchMap((action) => {
       return this.workItemService.resolveComments(action.payload)
-        .map(comments => {
-          this.store.dispatch(new CommentActions.GetSuccess(comments));
+        .map((comments: CommentService[]) => {
+          const cMapper = new CommentMapper();
+          return new CommentActions.GetSuccess(
+            comments.map(c => cMapper.toUIModel(c))
+          )
         })
     })
 
-  @Effect() addComment$ = this.actions$
+  @Effect() addComment$: Observable<Action> = this.actions$
     .ofType<CommentActions.Add>(CommentActions.ADD)
     .map(action => action.payload)
-    .do(payload => {
-      this.workItemService.createComment(payload.url, payload.comment)
-        .subscribe(comment => {
-          this.store.dispatch(new CommentActions.AddSuccess(comment));
+    .switchMap((payload) => {
+      return this.workItemService.createComment(payload.url, payload.comment)
+        .map((comment: CommentService) => {
+          const cMapper = new CommentMapper();
+          return new CommentActions.AddSuccess(
+            cMapper.toUIModel(comment)
+          );
         })
     })
 
-  @Effect() updateComment$ = this.actions$
+  @Effect() updateComment$: Observable<Action> = this.actions$
     .ofType<CommentActions.Update>(CommentActions.UPDATE)
     .map(action => action.payload)
-    .do(payload => {
-      this.workItemService.updateComment(payload)
-        .subscribe(comment => {
-          this.store.dispatch(new CommentActions.UpdateSuccess(comment));
+    .switchMap((payload) => {
+      return this.workItemService.updateComment(payload)
+        .map((comment: CommentService) => {
+          const cMapper = new CommentMapper();
+          return new CommentActions.UpdateSuccess(
+            cMapper.toUIModel(comment)
+          );
         })
     })
 
-  @Effect() deleteComment$ = this.actions$
+  @Effect() deleteComment$: Observable<Action> = this.actions$
     .ofType<CommentActions.Delete>(CommentActions.DELETE)
     .map(action => action.payload)
-    .do(payload => {
-      this.workItemService.deleteComment(payload)
-        .subscribe(() => {
-          this.store.dispatch(new CommentActions.DeleteSuccess(payload));
+    .switchMap((payload) => {
+      return this.workItemService.deleteComment(payload)
+        .map(() => {
+          const cMapper = new CommentMapper();
+          return new CommentActions.DeleteSuccess(
+            cMapper.toUIModel(payload)
+          );
         })
     })
 }

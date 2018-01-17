@@ -10,43 +10,35 @@ export type Action = CommentActions.All;
 export const CommentReducer: ActionReducer<CommentState> = (state = initialState, action: Action) => {
   switch(action.type) {
     case CommentActions.GET_SUCCESS: {
-      return {
-        comments: cloneDeep(action.payload)
-      }
+      return cloneDeep(action.payload);
     }
     case CommentActions.GET_ERROR: {
       return state;
     }
     case CommentActions.ADD_SUCCESS: {
-      return {
-        comments: [...action.payload, ...state.comments]
-      }
+      return [...[action.payload], ...state];
     }
     case CommentActions.ADD_ERROR: {
       return state;
     }
     case CommentActions.UPDATE_SUCCESS: {
       let updatedComment = action.payload;
-      let index = state.comments.findIndex(c => c.id === updatedComment.id);
+      let index = state.findIndex(c => c.id === updatedComment.id);
       if (index > -1) {
-        state.comments[index] = action.payload
+        state[index] = action.payload
       }
-      return {
-        comments: state.comments
-      }
+      return state;
     }
     case CommentActions.UPDATE_ERROR: {
       return state;
     }
     case CommentActions.DELETE_SUCCESS: {
       let deletedComment = action.payload;
-      let index = state.comments.findIndex(c => c.id === deletedComment.id);
+      let index = state.findIndex(c => c.id === deletedComment.id);
       if (index > -1) {
-        state.comments.splice(index, 1);
+        state.splice(index, 1);
       }
-      return {
-        comments: state.comments
-      }
+      return state;
     }
     case CommentActions.DELETE_ERROR: {
       return state;
