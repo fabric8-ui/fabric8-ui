@@ -1,15 +1,16 @@
-import { IterationModel } from '../../models/iteration.model';
-import { Component,
+import {
+  Component,
+  DoCheck,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewEncapsulation,
   OnChanges,
   SimpleChanges,
-  DoCheck,
-  OnDestroy,
-  ViewChild } from '@angular/core';
+  ViewChild
+} from '@angular/core';
 import {
   Router,
   ActivatedRoute,
@@ -21,11 +22,12 @@ import {
 import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 import { Dialog } from 'ngx-widgets';
-import { FilterService } from '../../services/filter.service';
-import { GroupTypesService } from '../../services/group-types.service';
-//import { TreeListItemComponent } from 'ngx-widgets';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { Subscription } from 'rxjs/Subscription';
+
+import { FilterService } from '../../services/filter.service';
+import { GroupTypesService } from '../../services/group-types.service';
+import { IterationModel } from '../../models/iteration.model';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -39,8 +41,6 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   @Input() selected: boolean = false;
   @Input() collection = [];
   @Input() witGroup: string = '';
-
-  @Output() closeEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
 
   loggedIn: Boolean = false;
   queryParams: Object = {};
@@ -70,11 +70,6 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
-  }
-
-  onClose(event: MouseEvent): any {
-    event.stopPropagation();
-    this.closeEvent.emit(this);
   }
 
   setGuidedTypeWI(wiCollection) {
