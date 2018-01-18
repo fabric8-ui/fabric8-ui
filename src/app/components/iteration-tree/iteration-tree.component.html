@@ -1,58 +1,60 @@
 <!--The kebab menu can come here as adding a child should get reflected here-->
-<ul *ngIf="iterationList.length > 0">
-  <li *ngFor="let iteration of iterationList">
-    <span *ngIf="iteration.hasChildren && !iteration.showChildren"
-      class="fa fa-angle-right" (click)="toggleChildrenDisplay(iteration)" ></span>
-    <span *ngIf="iteration.hasChildren && iteration.showChildren"
-      class="fa fa-angle-down" (click)="toggleChildrenDisplay(iteration)"></span>
-    <span>
-      <iteration-list-entry
-        [iteration] ="iteration"
+<div class="iteration-tree">
+  <ul *ngIf="iterationList.length > 0">
+    <li *ngFor="let iteration of iterationList">
+      <span *ngIf="iteration.hasChildren && !iteration.showChildren"
+        class="fa fa-angle-right" (click)="toggleChildrenDisplay(iteration)" ></span>
+      <span *ngIf="iteration.hasChildren && iteration.showChildren"
+        class="fa fa-angle-down" (click)="toggleChildrenDisplay(iteration)"></span>
+      <span>
+        <iteration-list-entry
+          [iteration] ="iteration"
+          [collection]="collection"
+          [witGroup]="witGroup"
+          (onEditIteration)="onEdit($event)"
+          (onCloseIteration)="onCloseIt($event)"
+          (onCreateIteration)="onCreateChild($event)">
+        </iteration-list-entry>
+      </span>
+      <div class="dropdown-kebab-pf pull-right dropdown"
+        dropdown>
+        <button class="btn btn-link dropdown-toggle"
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="true"
+          dropdownToggle>
+          <i class="fa fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu-right dropdown-menu"
+          *dropdownMenu>
+          <li>
+            <a class="pointer" (click)="editIteration(iteration)"
+              >
+              Edit {{ iteration.attributes.name }}
+            </a>
+          </li>
+          <li *ngIf="iteration.attributes.active_status">
+            <a class="pointer"
+              (click)="closeIteration(iteration)">
+                Close
+            </a>
+          </li>
+          <li>
+            <a class="pointer"
+              (click)="createIteration(iteration)">
+                Create child
+            </a>
+          </li>
+        </ul>
+      </div>
+      <iteration-tree *ngIf="iteration.hasChildren && iteration.showChildren"
+        [iterationList]="iteration.children"
         [collection]="collection"
         [witGroup]="witGroup"
-        (onEditIteration)="onEdit($event)"
-        (onCloseIteration)="onCloseIt($event)"
-        (onCreateIteration)="onCreateChild($event)">
-      </iteration-list-entry>
-    </span>
-    <div class="dropdown-kebab-pf pull-right dropdown"
-      dropdown>
-      <button class="btn btn-link dropdown-toggle"
-        type="button"
-        aria-haspopup="true"
-        aria-expanded="true"
-        dropdownToggle>
-        <i class="fa fa-ellipsis-v"></i>
-      </button>
-      <ul class="dropdown-menu-right dropdown-menu"
-        *dropdownMenu>
-        <li>
-          <a class="pointer" (click)="editIteration(iteration)"
-            >
-            Edit {{ iteration.attributes.name }}
-          </a>
-        </li>
-        <li *ngIf="iteration.attributes.active_status">
-          <a class="pointer"
-            (click)="closeIteration(iteration)">
-              Close
-          </a>
-        </li>
-        <li>
-          <a class="pointer"
-            (click)="createIteration(iteration)">
-              Create child
-          </a>
-        </li>
-      </ul>
-    </div>
-    <iteration-tree *ngIf="iteration.hasChildren && iteration.showChildren"
-      [iterationList]="iteration.children"
-      [collection]="collection"
-      [witGroup]="witGroup"
-      (onEditIteration)="editIteration($event)"
-      (onCloseIteration)="closeIteration($event)"
-      (onCreateIteration)="createIteration($event)"
-      ></iteration-tree>
-  </li>
-</ul>
+        (onEditIteration)="editIteration($event)"
+        (onCloseIteration)="closeIteration($event)"
+        (onCreateIteration)="createIteration($event)"
+        ></iteration-tree>
+    </li>
+  </ul>
+</div>
