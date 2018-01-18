@@ -56,9 +56,11 @@
       }
     }
     &__settings {
-      position: absolute;
-      top: 10px;
-      right: 15px;
+      position: relative;
+      right: 7px;
+      float: right;
+      margin-top: 3px;
+      margin-bottom: 3px;
       &-dropdown {
         width: 100%;
         min-width: 400px;
@@ -196,8 +198,10 @@ button.btn.btn-link.dropdown-toggle:focus {
   max-width: ~"calc(e('100% - 20px'))";
 }
 
-a.disabled:hover {
+a.disabled {
+  &:hover, &:focus, &:active {
     color: #8b8d8f;
+  }
 }
 /// ng x-datatables css
 

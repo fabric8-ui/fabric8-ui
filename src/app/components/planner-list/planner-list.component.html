@@ -57,7 +57,7 @@
     </div>
     <!-- tableConfig Dropdown -->
     <div class="width-100 pull-left padding-10 posRel">
-      <div class="f8-wi-list__quick-add width-100 pull-left"
+      <div class="f8-wi-list__quick-add padding-right-15 margin-right-15"
         id="workItemList_up_quickAdd"
         *ngIf="loggedIn"
         #quickaddHeight>
@@ -68,7 +68,7 @@
           (close)="close($event)">
         </alm-work-item-quick-add>
       </div>
-      <div class="f8-wi-list__settings planner-hack-dropdown">
+      <div class="f8-wi-list__settings f8-wi__table-config">
         <div class="dropdown-kebab-pf pull-right dropdown margin-left-10"
           dropdown
           [autoClose]="false"
@@ -233,7 +233,7 @@
                     (onDetailPreview)="onDetailPreview($event)"
                     (onQuickPreview)="onPreview($event)"
                     (clickLabel)="onClickLabel($event)"
-                    [class.planner-hack-dropdown]="c.prop=='label' || c.prop=='assignees'"
+                    [class.f8-wi__table-config]="c.prop=='label' || c.prop=='assignees'"
                     [class.planner-hack-title-truncate]="c.prop=='title'">
                   </work-item-cell>
               </ng-template>
@@ -247,7 +247,7 @@
             [frozenRight]="false">
             <ng-template let-row="row"
               ngx-datatable-cell-template>
-              <div class="dropdown-kebab-pf planner-hack-dropdown
+              <div class="dropdown-kebab-pf f8-wi__table-config
                 pull-right dropdown margin-left-10"
                 dropdown>
                 <button
