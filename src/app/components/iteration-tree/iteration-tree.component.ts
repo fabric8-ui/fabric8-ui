@@ -2,8 +2,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
   SimpleChange
@@ -16,9 +14,10 @@ import { IterationModel } from '../../models/iteration.model';
     templateUrl: './iteration-tree.component.html',
     styleUrls: ['./iterations-tree.component.less']
 })
-export class IterationTreeComponent implements OnChanges, OnInit {
+export class IterationTreeComponent {
 
   //using any as we are adding showChildren parameter
+  @Input() allIterations: any[] = [];
   @Input() iterationList: any[] = [];
   @Input() collection: any;
   @Input() witGroup: string = '';
@@ -26,26 +25,6 @@ export class IterationTreeComponent implements OnChanges, OnInit {
   @Output() onEditIteration = new EventEmitter<IterationModel>();
   @Output() onCloseIteration = new EventEmitter<IterationModel>();
   @Output() onCreateIteration = new EventEmitter<IterationModel>();
-
-
-  ngOnInit() {
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    const list = changes.iterationList;
-    if ( list.previousValue !== undefined ) {
-      //restore the showChildren value so that the tree state is retained
-      list.currentValue.map(item => {
-        item.showChildren = false;
-        let ind = list.previousValue.findIndex( i => i.id === item.id);
-        if( ind >=0 )
-          item.showChildren = list.previousValue[ind].showChildren;
-      });
-      this.iterationList = list.currentValue;
-    } else {
-      this.iterationList.map( item => item.showChildren = false );
-    }
-  }
 
   toggleChildrenDisplay(iteration) {
     iteration.showChildren = !iteration.showChildren;

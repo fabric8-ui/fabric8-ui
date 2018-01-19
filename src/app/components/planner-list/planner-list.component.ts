@@ -247,6 +247,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   ngOnDestroy() {
     console.log('Destroying all the listeners in list component');
+    this.iterationService.resetIterations();
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
     if (this.spaceSubscription) {
       this.spaceSubscription.unsubscribe();

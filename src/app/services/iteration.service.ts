@@ -68,39 +68,43 @@ export class IterationService {
    * @return Promise of IterationModel[] - Array of iterations.
    */
   getIterations(): Observable<IterationModel[]> {
-    // get the current iteration url from the space service
-    return this.spaces.current.take(1).switchMap(space => {
-      let iterationsUrl = space.relationships.iterations.links.related;
-      return this.http
-        .get(iterationsUrl)
-        .map (response => {
-          if (/^[5, 4][0-9]/.test(response.status.toString())) {
-            throw new Error('API error occured');
-          }
-          return response.json().data as IterationModel[];
-        })
-        .map((data) => {
-          this.iterations = data.map(iteration => {
-            let childIterations = this.checkForChildIterations(iteration, data);
-            if(childIterations.length > 0) {
-              iteration.hasChildren = true;
-              iteration.children = childIterations;
+    if (this.iterations.length > 0 ) {
+      return Observable.of(this.iterations);
+    } else {
+      // get the current iteration url from the space service
+      return this.spaces.current.take(1).switchMap(space => {
+        let iterationsUrl = space.relationships.iterations.links.related;
+        return this.http
+          .get(iterationsUrl)
+          .map (response => {
+            if (/^[5, 4][0-9]/.test(response.status.toString())) {
+              throw new Error('API error occured');
             }
-            return iteration;
+            return response.json().data as IterationModel[];
+          })
+          .map((data) => {
+            this.iterations = data.map(iteration => {
+              let childIterations = this.checkForChildIterations(iteration, data);
+              if(childIterations.length > 0) {
+                iteration.hasChildren = true;
+                iteration.children = childIterations;
+              }
+              return iteration;
+            });
+            return this.iterations;
+          })
+          .catch ((error: Error | any) => {
+            if (error.status === 401) {
+              this.notifyError('You have been logged out.', error);
+              this.auth.logout();
+            } else {
+              console.log('Fetch iteration API returned some error - ', error.message);
+              this.notifyError('Fetching iterations has from server has failed.', error);
+            }
+            return Observable.throw(new Error(error.message));
           });
-          return this.iterations;
-        })
-        .catch ((error: Error | any) => {
-          if (error.status === 401) {
-            this.notifyError('You have been logged out.', error);
-            this.auth.logout();
-          } else {
-            console.log('Fetch iteration API returned some error - ', error.message);
-            this.notifyError('Fetching iterations has from server has failed.', error);
-          }
-          return Observable.throw(new Error(error.message));
-        });
-    });
+      });
+    }
   }
 
   /**
@@ -284,5 +288,10 @@ export class IterationService {
 
   emitCreateIteration(iteration: IterationModel) {
     this.createIterationObservable.next(iteration);
+  }
+
+  resetIterations() {
+    //Hack on destroy empty iterations array
+    this.iterations = [];
   }
 }
