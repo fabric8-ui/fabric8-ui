@@ -32,11 +32,15 @@ export class LabelService {
    */
 
   getLabels(): Observable<LabelModel[]> {
-    return this.spaces.current.switchMap(
-      currentSpace => this.http.get(currentSpace.links.self + '/labels')
-    ).map (response => {
+    return this.spaces.current
+    .switchMap(currentSpace => {
+        if(currentSpace)
+          return this.http.get(currentSpace.links.self + '/labels')
+        else
+          return []
+    }).map (response => {
       return response.json().data as LabelModel[];
-    })
+    });
   }
 
   createLabel(label: LabelModel): Observable<LabelModel> {
