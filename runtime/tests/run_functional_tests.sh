@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-declare -r SCRIPT_PATH=$(readlink -f "$0")
-declare -r SCRIPT_DIR=$(cd $(dirname "$SCRIPT_PATH") && pwd)
-
+declare -r SCRIPT_DIR=$(cd $(dirname "$@" ) && pwd)/tests
 source "$SCRIPT_DIR/lib/common.inc.sh"
 
 main() {
@@ -38,9 +36,6 @@ main() {
   $protractor --baseUrl "${base_url}" "$SCRIPT_DIR/protractor.config.js" --suite "${suite}"
 
   TEST_RESULT=$?
-
-  fuser -k -n tcp 4444
-  fuser -k -n tcp 8088
 
   # Return test result
   if [ $TEST_RESULT -eq 0 ]; then
