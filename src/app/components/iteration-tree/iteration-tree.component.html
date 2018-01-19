@@ -3,7 +3,7 @@
   <ul *ngIf="iterationList.length > 0"
     class="padding-left-15">
     <li *ngFor="let iteration of iterationList">
-        <div class="dib">
+      <div class="dib">
         <iteration-list-entry
           [iteration] ="iteration"
           [collection]="collection"
@@ -13,7 +13,6 @@
           (onCreateIteration)="createIteration($event)">
         </iteration-list-entry>
       </div>
-
       <iteration-tree *ngIf="iteration.hasChildren && iteration.showChildren"
         [iterationList]="iteration.children"
         [collection]="collection"
