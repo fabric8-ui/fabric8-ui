@@ -1,12 +1,14 @@
 <!--The kebab menu can come here as adding a child should get reflected here-->
-<div class="iteration-tree">
-  <ul *ngIf="iterationList.length > 0">
+<div class="f8-itr__tree">
+  <ul *ngIf="iterationList.length > 0"
+    class="padding-left-15">
     <li *ngFor="let iteration of iterationList">
+      <span *ngIf="!iteration.hasChildren" class="fa"></span>
       <span *ngIf="iteration.hasChildren && !iteration.showChildren"
-        class="fa fa-angle-right" (click)="toggleChildrenDisplay(iteration)" ></span>
+        class="fa fa-angle-right margin-top-5" (click)="toggleChildrenDisplay(iteration)" ></span>
       <span *ngIf="iteration.hasChildren && iteration.showChildren"
-        class="fa fa-angle-down" (click)="toggleChildrenDisplay(iteration)"></span>
-      <span>
+        class="fa fa-angle-down margin-top-5" (click)="toggleChildrenDisplay(iteration)"></span>
+      <div class="dib">
         <iteration-list-entry
           [iteration] ="iteration"
           [collection]="collection"
@@ -15,7 +17,7 @@
           (onCloseIteration)="onCloseIt($event)"
           (onCreateIteration)="onCreateChild($event)">
         </iteration-list-entry>
-      </span>
+      </div>
       <div class="dropdown-kebab-pf pull-right dropdown"
         dropdown>
         <button class="btn btn-link dropdown-toggle"
@@ -53,8 +55,8 @@
         [witGroup]="witGroup"
         (onEditIteration)="editIteration($event)"
         (onCloseIteration)="closeIteration($event)"
-        (onCreateIteration)="createIteration($event)"
-        ></iteration-tree>
+        (onCreateIteration)="createIteration($event)">
+      </iteration-tree>
     </li>
   </ul>
 </div>

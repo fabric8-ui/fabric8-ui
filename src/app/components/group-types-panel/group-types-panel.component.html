@@ -10,22 +10,20 @@
       <span class="pull-left margin-right-10 {{ item.attributes.icon }}"
         tooltip="{{sidePanelOpen ? '' : item.attributes.name }}"
         placement="right"></span>
-      <span class="pull-left"
+      <span
         [class.show]="sidePanelOpen"
         [class.hide]="!sidePanelOpen">
       {{ item.attributes.name }}</span>
   </a>
   <!--If group is execution show a header and then embed the iteration component -->
   <div *ngIf="item.attributes.bucket == 'iteration'">
-    <div class="width-100 pull-left">
-      <fab-planner-iteration
-        class="fab-planner-iteration"
-        [takeFromInput]="true"
-        [collection]="item.relationships.typeList.data"
-        [iterations]="iterations"
-        [witGroup]="item.attributes.name"
-        [sidePanelOpen]="sidePanelOpen">
-      </fab-planner-iteration>
-    </div>
+    <fab-planner-iteration
+      class="fab-planner-iteration"
+      [takeFromInput]="true"
+      [collection]="item.relationships.typeList.data"
+      [iterations]="iterations"
+      [witGroup]="item.attributes.name"
+      [sidePanelOpen]="sidePanelOpen">
+    </fab-planner-iteration>
   </div>
 </div>

@@ -21,10 +21,6 @@
         -
         {{iteration.attributes.endAt ? (iteration.attributes.endAt | date:longDate) : 'Set end date'}}
       </span>
-      <span class="iteration-count pull-right">
-        {{iteration.relationships?.workitems?.meta?.closed}}
-        /{{iteration.relationships?.workitems?.meta?.total}}
-      </span>
     </div>
   </div>
 </div>

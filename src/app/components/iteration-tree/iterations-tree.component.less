@@ -1,26 +1,25 @@
 @import (reference) '../../../assets/stylesheets/_base';
 @import (reference) '../../../assets/stylesheets/shared/_utilities';
-.iteration-tree {
+.f8-itr__tree {
   ul {
     li {
-      list-style: none;
-      clear: both;
-      padding: 5px 2px;
-
+      padding-right: 10px;
+      iteration-tree li {
+        padding-right: 0;
+      }
       .fa {
+        float: left;
+        width: 15px;
         padding: 5px;
         font-size: 16px;
       }
-
-      span, div {
-        float: left;
-      }
-
-      .dropdown-kebab-pf
-      {
+      .dropdown-kebab-pf {
         .btn-link {
-          color: @color-pf-white;
           padding-right: 10px;
+          color: @color-pf-white;
+        }
+        .dropdown-menu-right {
+          right: -10px;
         }
       }
     }

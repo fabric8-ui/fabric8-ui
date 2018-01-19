@@ -18,42 +18,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.left-truncate {
-  position: relative;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-overflow: clip;
-  white-space: nowrap;
-  background-color: @color-pf-white;
-  &:before {
-    position: absolute;
-    z-index: 1;
-    left: -12px;
-    padding-left: 12px;
-    margin-left: 6px;
-    background-color: inherit;
-    content: '\02026';
-  }
-  span {
-    position: relative;
-    display: inline-block;
-    float: right;
-    min-width: 100%;
-    overflow: visible;
-    text-indent: 6px;
-    background-color: inherit;
-    &:before {
-      position: absolute;
-      display: inline-block;
-      z-index: 200;
-      left: -8px;
-      width: 12px;
-      height: 24px;
-      background-color: inherit;
-      content: '';
-    }
-  }
-}
 .truncate-ellipsis {
   display: table;
   table-layout: fixed;

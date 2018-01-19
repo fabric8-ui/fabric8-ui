@@ -2,16 +2,12 @@
 @import (reference) '../../../assets/stylesheets/shared/_utilities';
 
 .f8-itr {
+  color: @color-pf-white;
   background-color: @color-pf-black-900;
-  &-wrapper {
-    color: @color-pf-white;
-  }
   &__panel {
-    float: left;
-    width: 100%;
+    display: block;
     &-hdr {
-      float: left;
-      width: 100%;
+      display: block;
       padding: 20px 15px;
       border-left: 4px solid;
       border-left-color: transparent;
@@ -19,6 +15,16 @@
       &:not(.nohover):hover {
         background: @color-pf-black-700;
       }
+    }
+    ul {
+      list-style: none;
+      li {
+        display: block;
+      }
+    }
+    &--nested& {
+      border-top: 1px solid;
+      border-top-color: @color-pf-black;
     }
   }
 }
