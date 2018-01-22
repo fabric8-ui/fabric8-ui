@@ -135,14 +135,16 @@ if (process.env.ENV == 'inmemory') {
         labels: reducers.LabelReducer,
         areas: reducers.AreaReducer,
         collaborators: reducers.CollaboratorReducer,
-        workItems: reducers.WorkItemReducer
+        workItems: reducers.WorkItemReducer,
+        workItemTypes: reducers.WorkItemTypeReducer
       }, {
       initialState: {
         iterations: states.initialIterationState,
         labels: states.initialLabelState,
         areas: states.initialAreaState,
         collaborators: states.initialCollaboratorState,
-        workItems: states.initialWorkItemState
+        workItems: states.initialWorkItemState,
+        workItemTypes: states.initialWorkItemTypeItemState
       }
     }),
     EffectsModule.forFeature([
@@ -150,7 +152,8 @@ if (process.env.ENV == 'inmemory') {
       effects.LabelEffects,
       effects.AreaEffects,
       effects.CollaboratorEffects,
-      effects.WorkItemEffects
+      effects.WorkItemEffects,
+      effects.WorkItemTypeEffects
     ])
   ],
   declarations: [

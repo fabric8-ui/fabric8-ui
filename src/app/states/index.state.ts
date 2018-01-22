@@ -12,3 +12,4 @@ export { LabelState, initialState as initialLabelState } from './label.state';
 export { WorkItemState, initialState as initialWorkItemState } from './work-item.state';
 export { SpaceState, initialState as  initialSpaceItemState } from './space.state';
 export { GroupTypeState, initialState as  initialGroupTypeItemState } from './grouptype.state';
+export { WorkItemTypeState, initialState as  initialWorkItemTypeItemState } from './work-item-type.state';

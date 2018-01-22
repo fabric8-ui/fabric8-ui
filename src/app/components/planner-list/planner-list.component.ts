@@ -72,6 +72,7 @@ import * as LabelActions from './../../actions/label.actions';
 import * as AreaActions from './../../actions/area.actions';
 import * as CollaboratorActions from './../../actions/collaborator.actions';
 import * as WorkItemActions from './../../actions/work-item.actions';
+import * as WorkItemTypeActions from './../../actions/work-item-type.actions';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -187,6 +188,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     this.store.dispatch(new LabelActions.Get());
     this.store.dispatch(new AreaActions.Get());
     this.store.dispatch(new CollaboratorActions.Get());
+    this.store.dispatch(new WorkItemTypeActions.Get());
     // If there is an iteration on the URL
     // Setting the value to currentIteration
     // BehaviorSubject so that we can compare

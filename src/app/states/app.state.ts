@@ -8,7 +8,8 @@ export interface AppState {
     collaborators: states.CollaboratorState,
     workItems: states.WorkItemState,
     groupTypes: states.GroupTypeState,
-    space: states.SpaceState
+    space: states.SpaceState,
+    workItemTypes: states.WorkItemTypeState
   };
 
   iterationPanel: {

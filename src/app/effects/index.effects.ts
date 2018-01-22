@@ -4,3 +4,4 @@ export { CommentEffects } from './comment.effects';
 export { IterationEffects } from './iteration.effects';
 export { LabelEffects } from './label.effects';
 export { WorkItemEffects } from './work-item.effects';
+export { WorkItemTypeEffects } from './work-item-type.effects';
