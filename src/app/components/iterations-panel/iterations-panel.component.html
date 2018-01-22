@@ -3,6 +3,17 @@
   <!-- Active iteration -->
     <div class="f8-itr__panel margin-bottom-15">
       <div class="f8-itr__panel-hdr f8-itr__panel-hdr--active nohover">
+        <div class="f8-itr__add"
+          [class.show]="sidePanelOpen"
+          [class.hide]="!sidePanelOpen">
+          <a *ngIf="loggedIn && editEnabled"
+            class="text-right"
+            (click)="modal.openCreateUpdateModal('create', null, $event);">
+            <i class="pficon-add-circle-o pull-right f8-itr__add-btn"
+              id="add-iteration-icon" placement="bottom"
+              tooltip="Add an Iteration"></i>
+          </a>
+        </div>
         <span class="pull-left fa fa-check margin-right-10
           padding-top-2 padding-bottom-3"
           tooltip="{{sidePanelOpen ? '' : 'Active Iteration'}}"
@@ -16,7 +27,7 @@
       <ul
         [class.show]="sidePanelOpen"
         [class.hide]="!sidePanelOpen">
-        <li class="active f8-itr__container padding-v-2"
+        <li class="active f8-itr__container padding-v-2 padding-right-15"
           *ngFor="let iteration of activeIterations"
           [routerLinkActive]="'f8-itr--selected'"
           [routerLink]="[]" [attr.data-id]="iteration.id"
@@ -27,12 +38,12 @@
               {{iteration.attributes.resolved_parent_path +
                 '/' + iteration.attributes.name | truncate : -50 }}
             </span>
+            <span class="fa fa-check pull-right margin-top-3"></span>
             <span
               *ngIf="iteration.attributes.active_status"
-              class="active-tag">
+              class="active-tag pull-right">
                 [Active]
             </span>
-            <span class="fa fa-check"></span>
         </li>
       </ul>
       <form role="form" class="search-pf has-button padding-h-15">
@@ -51,29 +62,6 @@
     </div>
     <!-- Nested Iteration Display -->
     <div class="f8-itr__panel f8-itr__panel--nested">
-      <div class="f8-itr__panel-hdr f8-itr__panel-hdr--active nohover">
-        <div class="f8-itr__add"
-          [class.show]="sidePanelOpen"
-          [class.hide]="!sidePanelOpen">
-          <a *ngIf="loggedIn && editEnabled"
-            class="text-right"
-            (click)="modal.openCreateUpdateModal('create', null, $event);">
-            <i class="pficon-add-circle-o pull-right f8-itr__add-btn"
-              id="add-iteration-icon" placement="bottom"
-              tooltip="Add an Iteration"></i>
-          </a>
-        </div>
-        <span class="pull-left fa fa-repeat
-          margin-right-10 padding-top-2 padding-bottom-3"
-          tooltip="{{sidePanelOpen ? '' : 'All Iterations'}}"
-          placement="right">
-        </span>
-        <h3 class="padding-0 margin-0"
-          [class.show]="sidePanelOpen"
-          [class.hide]="!sidePanelOpen">
-          All Iterations
-        </h3>
-      </div>
       <iteration-tree
         [iterationList]="treeIterations"
         [collection]="collection"
