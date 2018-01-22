@@ -112,4 +112,8 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   createIteration(iteration) {
     this.onCreateIteration.emit(iteration);
   }
+  calcDepth(iteration:IterationModel): string {
+    let depth = ((iteration.attributes.parent_path).split('/')).length - 1;
+    return 'depth-' + depth;
+  }
 }

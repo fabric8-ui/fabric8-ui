@@ -46,3 +46,10 @@
     color: @color-pf-black-600;
   }
 }
+.calc-itr-depth(@n, @i: 1) when (@i =< @n) {
+  .depth-@{i} {
+    padding-left: (@i * 15px);
+  }
+  .calc-itr-depth(@n, (@i + 1));
+}
+.calc-itr-depth(4);

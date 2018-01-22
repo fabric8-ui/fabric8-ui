@@ -1,12 +1,13 @@
 <div class="f8-itr-entry"
+  [ngClass]="calcDepth(iteration)"
   [routerLinkActive]="'f8-itr-entry--selected'"
   [attr.data-id]="iteration.id">
-  <span *ngIf="!iteration.hasChildren" class="fa margin-h-10"></span>
+  <span *ngIf="!iteration.hasChildren" class="fa margin-right-15"></span>
   <span *ngIf="iteration.hasChildren && !iteration.showChildren"
-    class="fa fa-angle-right margin-h-10"
+    class="fa fa-angle-right margin-right-15"
     (click)="toggleChildrenDisplay(iteration)" ></span>
   <span *ngIf="iteration.hasChildren && iteration.showChildren"
-    class="fa fa-angle-down margin-h-10"
+    class="fa fa-angle-down margin-right-15"
     (click)="toggleChildrenDisplay(iteration)">
   </span>
   <div class="f8-itr__header">
