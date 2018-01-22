@@ -12,6 +12,7 @@
         (onCreateIteration)="createIteration($event)">
       </iteration-list-entry>
       <iteration-tree *ngIf="iteration.hasChildren && iteration.showChildren"
+        [ngClass]="calcDepth(iteration)"
         [iterationList]="iteration.children"
         [collection]="collection"
         [witGroup]="witGroup"
