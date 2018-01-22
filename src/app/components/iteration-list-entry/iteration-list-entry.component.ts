@@ -42,6 +42,11 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   @Input() collection = [];
   @Input() witGroup: string = '';
 
+  @Output() onEditIteration = new EventEmitter<IterationModel>();
+  @Output() onCloseIteration = new EventEmitter<IterationModel>();
+  @Output() onCreateIteration = new EventEmitter<IterationModel>();
+
+
   loggedIn: Boolean = false;
   queryParams: Object = {};
   eventListeners: any[] = [];
@@ -90,5 +95,21 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
     //this.setGroupType(witGroup);
     //second_join gives json object
     return this.filterService.jsonToQuery(third_join);
+  }
+
+  toggleChildrenDisplay(iteration) {
+    iteration.showChildren = !iteration.showChildren;
+  }
+
+  editIteration(iteration) {
+    this.onEditIteration.emit(iteration);
+  }
+
+  closeIteration(iteration) {
+    this.onCloseIteration.emit(iteration);
+  }
+
+  createIteration(iteration) {
+    this.onCreateIteration.emit(iteration);
   }
 }

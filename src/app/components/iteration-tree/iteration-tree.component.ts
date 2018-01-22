@@ -17,7 +17,6 @@ import { IterationModel } from '../../models/iteration.model';
 export class IterationTreeComponent {
 
   //using any as we are adding showChildren parameter
-  @Input() allIterations: any[] = [];
   @Input() iterationList: any[] = [];
   @Input() collection: any;
   @Input() witGroup: string = '';
@@ -25,10 +24,6 @@ export class IterationTreeComponent {
   @Output() onEditIteration = new EventEmitter<IterationModel>();
   @Output() onCloseIteration = new EventEmitter<IterationModel>();
   @Output() onCreateIteration = new EventEmitter<IterationModel>();
-
-  toggleChildrenDisplay(iteration) {
-    iteration.showChildren = !iteration.showChildren;
-  }
 
   editIteration(iteration) {
     this.onEditIteration.emit(iteration);

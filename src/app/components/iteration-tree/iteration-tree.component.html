@@ -3,54 +3,18 @@
   <ul *ngIf="iterationList.length > 0"
     class="padding-left-15">
     <li *ngFor="let iteration of iterationList">
-      <span *ngIf="!iteration.hasChildren" class="fa"></span>
-      <span *ngIf="iteration.hasChildren && !iteration.showChildren"
-        class="fa fa-angle-right margin-top-5" (click)="toggleChildrenDisplay(iteration)" ></span>
-      <span *ngIf="iteration.hasChildren && iteration.showChildren"
-        class="fa fa-angle-down margin-top-5" (click)="toggleChildrenDisplay(iteration)"></span>
         <div class="dib">
         <iteration-list-entry
           [iteration] ="iteration"
           [collection]="collection"
           [witGroup]="witGroup"
-          (onEditIteration)="onEdit($event)"
-          (onCloseIteration)="onCloseIt($event)"
-          (onCreateIteration)="onCreateChild($event)">
+          (onEditIteration)="editIteration($event)"
+          (onCloseIteration)="closeIteration($event)"
+          (onCreateIteration)="createIteration($event)">
         </iteration-list-entry>
       </div>
-      <div class="dropdown-kebab-pf pull-right dropdown"
-        dropdown>
-        <button class="btn btn-link dropdown-toggle"
-          type="button"
-          aria-haspopup="true"
-          aria-expanded="true"
-          dropdownToggle>
-          <i class="fa fa-ellipsis-v"></i>
-        </button>
-        <ul class="dropdown-menu-right dropdown-menu"
-          *dropdownMenu>
-          <li>
-            <a class="pointer" (click)="editIteration(iteration)"
-              >
-              Edit {{ iteration.attributes.name }}
-            </a>
-          </li>
-          <li *ngIf="iteration.attributes.active_status">
-            <a class="pointer"
-              (click)="closeIteration(iteration)">
-                Close
-            </a>
-          </li>
-          <li>
-            <a class="pointer"
-              (click)="createIteration(iteration)">
-                Create child
-            </a>
-          </li>
-        </ul>
-      </div>
+
       <iteration-tree *ngIf="iteration.hasChildren && iteration.showChildren"
-        [allIterations]="allIterations"
         [iterationList]="iteration.children"
         [collection]="collection"
         [witGroup]="witGroup"
