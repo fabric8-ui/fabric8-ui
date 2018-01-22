@@ -43,7 +43,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   selectedIteration: IterationModel;
   allIterations: IterationModel[] = [];
   eventListeners: any[] = [];
-  currentSelectedIteration: string = '';
   masterIterations;
   treeIterations;
   activeIterations:IterationModel[] = [];
@@ -70,6 +69,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.loggedIn = this.auth.isLoggedIn();
     this.getAndfilterIterations();
     this.editEnabled = true;
+    this.selectedIteration = {} as IterationModel;
     this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[IterationComponent] New Space selected: ' + space.attributes.name);
@@ -204,31 +204,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.iterationService.emitCreateIteration(iteration);
   }
 
-  getWorkItemsByIteration(iteration: IterationModel) {
-    let filters: any = [];
-    if (iteration) {
-      this.selectedIteration = iteration;
-      this.isBacklogSelected = false;
-      filters.push({
-        id:  iteration.id,
-        name: iteration.attributes.name,
-        paramKey: 'filter[iteration]',
-        active: true,
-        value: iteration.id
-      });
-      // emit event
-      this.broadcaster.broadcast('iteration_selected', iteration);
-    } else {
-      //This is to view the backlog
-      this.selectedIteration = null;
-      filters.push({
-        paramKey: 'filter[iteration]',
-        active: false,
-      });
-    }
-    this.broadcaster.broadcast('unique_filter', filters);
-  }
-
   updateItemCounts() {
     this.log.log('Updating item counts..');
     this.iterationService.getIterations().first().subscribe((updatedIterations:IterationModel[]) => {
@@ -316,13 +291,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   listenToEvents() {
     this.eventListeners.push(
-      this.broadcaster.on<string>('backlog_selected')
-        .subscribe(message => {
-          this.selectedIteration = null;
-          this.isBacklogSelected = true;
-      })
-    );
-    this.eventListeners.push(
       this.broadcaster.on<string>('logout')
         .subscribe(message => {
           this.loggedIn = false;
@@ -342,13 +310,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       })
     );
     this.eventListeners.push(
-      this.broadcaster.on<WorkItem>('delete_workitem')
-        .subscribe((data: WorkItem) => {
-          this.updateItemCounts();
-      })
-    );
-
-    this.eventListeners.push(
       this.broadcaster.on<WorkItem>('create_workitem')
         .subscribe((data: WorkItem) => {
           this.updateItemCounts();
@@ -356,8 +317,13 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     );
   }
 
-  setGuidedTypeWI() {
+  setGuidedTypeWI(iteration) {
+    this.selectedIteration = iteration;
     this.groupTypesService.setCurrentGroupType(this.collection, 'execution');
+  }
+
+  clearSelected() {
+    this.selectedIteration = {} as IterationModel;
   }
 
  }

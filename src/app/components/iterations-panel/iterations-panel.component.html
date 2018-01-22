@@ -32,13 +32,16 @@
           [routerLinkActive]="'f8-itr--selected'"
           [routerLink]="[]" [attr.data-id]="iteration.id"
           [queryParams]="{q: constructURL(iteration.id)}"
-          (click)="setGuidedTypeWI(item);">
+          (click)="setGuidedTypeWI(iteration);">
             <span id="{{iteration.attributes.resolved_parent_path +
                 '/' + iteration.attributes.name }}">
               {{iteration.attributes.resolved_parent_path +
                 '/' + iteration.attributes.name | truncate : -50 }}
             </span>
-            <span class="fa fa-check pull-right margin-top-3"></span>
+            <span *ngIf='selectedIteration.id != iteration.id'
+              class="fa pull-right margin-top-3"></span>
+            <span *ngIf='selectedIteration.id == iteration.id'
+              class="fa fa-check pull-right margin-top-3"></span>
             <span
               *ngIf="iteration.attributes.active_status"
               class="active-tag pull-right margin-right-5">
@@ -66,7 +69,8 @@
     <!-- Nested Iteration Display -->
     <div class="f8-itr__panel f8-itr__panel--nested"
       [class.show]="sidePanelOpen"
-      [class.hide]="!sidePanelOpen">
+      [class.hide]="!sidePanelOpen"
+      (click)="clearSelected();">
       <iteration-tree
         [iterationList]="treeIterations"
         [collection]="collection"
