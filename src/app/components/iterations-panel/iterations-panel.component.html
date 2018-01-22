@@ -14,7 +14,7 @@
               tooltip="Add an Iteration"></i>
           </a>
         </div>
-        <span class="pull-left fa fa-check margin-right-10
+        <span class="pull-left fa fa-repeat margin-right-15
           padding-top-2 padding-bottom-3"
           tooltip="{{sidePanelOpen ? '' : 'Active Iteration'}}"
           placement="right"></span>
@@ -27,7 +27,7 @@
       <ul
         [class.show]="sidePanelOpen"
         [class.hide]="!sidePanelOpen">
-        <li class="active f8-itr__container padding-v-2 padding-right-15"
+        <li class="active f8-itr__container padding-v-2 padding-right-15 padding-left-5"
           *ngFor="let iteration of activeIterations"
           [routerLinkActive]="'f8-itr--selected'"
           [routerLink]="[]" [attr.data-id]="iteration.id"
@@ -41,7 +41,7 @@
             <span class="fa fa-check pull-right margin-top-3"></span>
             <span
               *ngIf="iteration.attributes.active_status"
-              class="active-tag pull-right">
+              class="active-tag pull-right margin-right-5">
                 [Active]
             </span>
         </li>
