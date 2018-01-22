@@ -7,11 +7,11 @@
     [routerLinkActive]="'selected'"
     (click)="setGuidedTypeWI(item);"
     *ngIf="item.attributes['show-in-sidebar']">
-      <span class="pull-left margin-right-10 {{ item.attributes.icon }}"
+      <span class="dib margin-right-10 {{ item.attributes.icon }}"
         tooltip="{{sidePanelOpen ? '' : item.attributes.name }}"
         placement="right"></span>
       <span
-        [class.show]="sidePanelOpen"
+        [class.dib]="sidePanelOpen"
         [class.hide]="!sidePanelOpen">
       {{ item.attributes.name }}</span>
   </a>

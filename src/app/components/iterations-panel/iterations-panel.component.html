@@ -46,7 +46,10 @@
             </span>
         </li>
       </ul>
-      <form role="form" class="search-pf has-button padding-h-15">
+      <form role="form"
+        class="search-pf has-button padding-h-15"
+        [class.show]="sidePanelOpen"
+        [class.hide]="!sidePanelOpen">
         <div class="form-group">
           <div class="search-pf-input-group">
             <label for="search4" class="sr-only">Search</label>
@@ -61,7 +64,9 @@
       </form>
     </div>
     <!-- Nested Iteration Display -->
-    <div class="f8-itr__panel f8-itr__panel--nested">
+    <div class="f8-itr__panel f8-itr__panel--nested"
+      [class.show]="sidePanelOpen"
+      [class.hide]="!sidePanelOpen">
       <iteration-tree
         [iterationList]="treeIterations"
         [collection]="collection"
