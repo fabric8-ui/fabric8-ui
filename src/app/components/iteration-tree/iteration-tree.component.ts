@@ -12,8 +12,8 @@ import { IterationModel } from '../../models/iteration.model';
 @Component({
     selector: 'iteration-tree',
     templateUrl: './iteration-tree.component.html',
-    styleUrls: ['./iterations-tree.component.less']
 })
+
 export class IterationTreeComponent {
 
   //using any as we are adding showChildren parameter
