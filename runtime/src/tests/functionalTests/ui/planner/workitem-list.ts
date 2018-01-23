@@ -16,13 +16,15 @@ export class WorkItemList extends BaseElement {
   }
 
   async clickWorkItem(title: string) {
-    let wiSelector = this.element(by.xpath("//datatable-body-row[.//p[contains(text(), '" + title + "')]]"));
-    let wi = new WorkItemListEntry(wiSelector);
-    await wi.openQuickPreview();
+    await this.workItem(title).openQuickPreview();
   }
 
   async hasWorkItem(title: string): Promise<boolean> {
-    let wiSelector = this.element(by.xpath("//datatable-body-row[.//p[contains(text(), '" + title + "')]]"));
-    return wiSelector.isPresent();
+      return this.workItem(title).isPresent();
   }
+
+  workItem(title: string): WorkItemListEntry {
+    return new WorkItemListEntry(this.element(by.xpath("//datatable-body-row[.//p[contains(text(), '" + title + "')]]")));
+  }
+
 }

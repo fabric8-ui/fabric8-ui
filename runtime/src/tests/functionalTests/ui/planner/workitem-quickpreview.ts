@@ -3,52 +3,11 @@ import { ElementFinder, $ } from 'protractor';
 import * as ui from './../../ui';
 import * as support from './../../support';
 
-class StateDropdown extends ui.Dropdown {
-  selectButton = new ui.Button($('.dropdown-toggle'), 'Workitem state dropdown toggle');
-  newState = this.item('new');
-  openState = this.item('open');
-  inProgressState = this.item('in progress');
-  resolvedState = this.item('resolved');
-  closedState = this.item('closed');
-
-  constructor(element: ElementFinder = $('.dropdown-menu'), name: string = 'WorkItem state dropdown') {
-    super(element, name);
-  }
-
-  async ready() {
-    support.debug('... check if State Dropdown is ready');
-    await super.ready();
-    await this.selectButton.ready();
-    await this.newState.ready();
-    await this.openState.ready();
-    await this.inProgressState.ready();
-    await this.resolvedState.ready();
-    await this.closedState.ready();
-    support.debug('... check if State Dropdown is ready - OK');
-  }
-
-  // Override select function to click on selectButton before selecting item
-  async select(text: string) {
-    await this.selectButton.clickWhenReady();
-    await super.select(text);
-  }
-}
-
-// TODO - Implement a generic dynamic dropdown that can be used to model assignee, iteration, area dropdown
-class DynamicDropdown extends ui.BaseElement {
-  constructor(element: ElementFinder, name: string) {
-    super(element, name);
-  }
-
-  async ready() {
-    await super.ready();
-  }
-}
-
 export class WorkItemQuickPreview extends ui.BaseElement {
+  loadingAnimation = new ui.BaseElement($('.spinner'), 'Loading spinner animation');
   /* UI elements of the Top section of the workitem preview */
   closeButton = new ui.Button(this.$('.f8-quick-preview--close'));
-  stateDropdown = new StateDropdown();
+  stateDropdown = new ui.Dropdown(this.$('.dropdown-toggle'), this.$('#wi-status-dropdown'), 'WorkItem State dropdown');
   fullDetailButton = new ui.Clickable(this.$('span.dib'), 'View full details button');
   titleDiv = new ui.BaseElement(this.$('#wi-title-div'));
   titleInput = new ui.TextInput(this.titleDiv.$('textarea'), 'WorkItem Title Input');
@@ -56,11 +15,12 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   titleCancel = new ui.Button(this.titleDiv.$('.inlineinput-btn-cancel'), 'Workitem Title cancel button');
 
   /* UI elements for the middle section of the workitem preview */
-  // TODO - Implement Dynamicdropdown
-  assigneeDropdown: DynamicDropdown;
-  areadDropdown: DynamicDropdown;
-  iterationDropdown: DynamicDropdown;
-  labelDropdown: DynamicDropdown;
+  assigneeDropdown = new ui.Dropdown(this.$('#f8-add-assignee'), this.$('assignee-selector ul.select-dropdown-menu'), 'Assignee Select dropdown');
+  assigneeDropdownCloseButton = new ui.Button(this.$('#f8-add-assignee-dropdown .close-pointer'));
+  // TODO
+  areadDropdown: ui.Dropdown;
+  iterationDropdown: ui.Dropdown;
+  labelDropdown: ui.Dropdown;
   descriptionDiv = new ui.BaseElement(this.$('.description-fields-wrap'), 'WorkItem Description Div');
   descriptionTextarea = new ui.TextInput(this.descriptionDiv.$('.editor-box'), 'WorkItem Description Input');
   descriptionSaveButton =  new ui.Button(
@@ -89,7 +49,25 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     support.debug('... check if WorkItem preview is Ready - OK');
   }
 
+  async addAssignee(assignee: string) {
+    await this.assigneeDropdown.clickWhenReady();
+    await this.assigneeDropdown.select(assignee)
+    await this.assigneeDropdownCloseButton.clickWhenReady();
+  }
+
   async close() {
     await this.closeButton.clickWhenReady();
   }
+
+  async hasAssignee(name: string): Promise<Boolean> {
+    await this.loadingAnimation.untilAbsent();
+    let assigneeList = await this.$$(".f8-assignees span").getText();
+    return assigneeList == name;
+  }
+
+  async removeAssignee(assignee: string) {
+    // Removing the assignee is exactly similar to adding an assignee
+    await this.addAssignee(assignee);
+  }
+
 }

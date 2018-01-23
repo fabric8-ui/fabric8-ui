@@ -3,7 +3,7 @@ import { BaseElement, Clickable } from './base.element';
 import * as support from '../support';
 
 
-export class DropdownItem extends BaseElement {
+class DropdownItem extends BaseElement {
   constructor(element: ElementFinder, parent: ElementFinder, name: string = '') {
     super(element, name);
     this.parent = parent;
@@ -27,7 +27,7 @@ export class DropdownItem extends BaseElement {
 }
 
 
-export class DropdownMenu extends BaseElement {
+class DropdownMenu extends BaseElement {
 
   constructor(element: ElementFinder, parent: ElementFinder, name: string = '') {
     super(element, name);
@@ -48,10 +48,10 @@ export class DropdownMenu extends BaseElement {
 }
 
 export class Dropdown extends BaseElement {
-  menu = new DropdownMenu(this.$('ul.dropdown-menu'), this);
 
-  constructor(element: ElementFinder, name: string = '') {
+  constructor(element: ElementFinder, menuElement: ElementFinder, name: string = '') {
     super(element, name);
+    this.menu = new DropdownMenu(menuElement, this);
   }
 
   item(text: string): DropdownItem {
@@ -75,8 +75,8 @@ export class Dropdown extends BaseElement {
 export class SingleSelectionDropdown extends Dropdown {
   input = new Clickable(this.$('input.combobox[type="text"]'), '')
 
-	constructor(element: ElementFinder, name: string = '') {
-		super(element, name);
+	constructor(element: ElementFinder, menuElement: ElementFinder, name: string = '') {
+		super(element, menuElement, name);
     this.input.name = name
 	}
 

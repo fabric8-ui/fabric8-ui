@@ -5,8 +5,6 @@ import * as support from './../../support';
 
 // this is what you see when you click on the Plan Tab button
 export class PlannerPage extends AppPage {
-  // Override the existing header with new header
-  // SpaceDashboard and Planner page have the same header
   workItemList = new planner.WorkItemList($('alm-work-item-list'));
   quickAdd =  new planner.WorkItemQuickAdd($('alm-work-item-quick-add'));
   sidePanel = new planner.SidePanel($('aside.f8-sidepanel'));

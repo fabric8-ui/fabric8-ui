@@ -17,7 +17,6 @@ describe('Planner Tab', () => {
     planner = new PlannerPage(planner_url);
   });
 
-
   it('can create a work item', async () => {
     await planner.createWorkItem({
       title: 'Workitem Title',
@@ -26,12 +25,15 @@ describe('Planner Tab', () => {
 
     expect(await planner.workItemList.hasWorkItem('Workitem Title')).toBeTruthy();
     await planner.workItemList.clickWorkItem('Workitem Title');
+    await planner.quickPreview.addAssignee('Example User 1');
+    expect(await planner.quickPreview.hasAssignee('Example User 1')).toBeTruthy();
+
     await planner.quickPreview.close();
-    await planner.createWorkItem({
-      title: 'Second workitem title',
-      description: 'Describes the work item'
-    });
+
     await planner.workItemList.clickWorkItem('Workitem Title');
+    await planner.quickPreview.addAssignee('Example User 1');
+    expect(await planner.quickPreview.hasAssignee('Example User 1')).toBeFalsy();
+
     await planner.quickPreview.close();
     expect(await planner.workItemList.hasWorkItem('Workitem Title123')).toBeFalsy();
   });
