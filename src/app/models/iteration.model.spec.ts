@@ -20,7 +20,9 @@ describe('IterationMapper', () => {
         state: 'new',
         link: '',
         workItemTotalCount: 0,
-        type: 'iterations',
+        workItemClosedCount: 0,
+        parentId: 'parent_01',
+        hasChildren: false
     } as IterationUI;
 
     iterationService  = {
@@ -32,22 +34,31 @@ describe('IterationMapper', () => {
           parent_path: '',
           resolved_parent_path: '',
           startAt: '',
-          endAt: ''
+          endAt: '',
+          active_status: false
         },
         id: '',
         links: {
             self: '',
         },
         relationships: {
+            parent: {
+              data: {
+                id: 'parent_01',
+                type: 'iterations'
+              }
+            },
             workitems: {
                 meta: {
-                    total: 0
+                    total: 0,
+                    closed: 0
                 }
             }
         },
+        hasChildren: false,
         type: 'iterations'
       } as IterationService;
-    
+
     beforeEach(async(() => {
         iterationMapper = new IterationMapper();
     }));
@@ -55,7 +66,7 @@ describe('IterationMapper', () => {
     it('should execute the canary test', () => {
         return expect(true).toBe(true)
       });
-  
+
     it('should correctly convert to service model - 1', () => {
         expect(iterationMapper.toServiceModel(iterationUI)).toEqual(iterationService);
     });

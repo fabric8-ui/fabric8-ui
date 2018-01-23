@@ -2,7 +2,7 @@ import { async } from '@angular/core/testing';
 
 import { LabelMapper, LabelUI, LabelService } from './label.model';
 
-describe('IterationMapper', () => {
+describe('LabelMapper', () => {
     let labelMapper: LabelMapper;
     let labelUI: LabelUI;
     let labelService: LabelService;
@@ -28,7 +28,7 @@ describe('IterationMapper', () => {
             "text-color": '',
         }
     } as LabelService
-    
+
     beforeEach(async(() => {
         labelMapper = new LabelMapper();
     }));
@@ -36,7 +36,7 @@ describe('IterationMapper', () => {
     it('should execute the canary test', () => {
         return expect(true).toBe(true)
       });
-  
+
     it('should correctly convert to service model - 1', () => {
         expect(labelMapper.toServiceModel(labelUI)).toEqual(labelService);
     });

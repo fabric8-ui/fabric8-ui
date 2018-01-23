@@ -23,4 +23,20 @@ export class IterationEffects {
        .map(iterations => (new IterationActions.GetSuccess(iterations)))
        .catch(() => Observable.of(new IterationActions.GetError()))
     });
+
+  @Effect() addIteration$: Observable<Action> = this.actions$
+    .ofType(IterationActions.ADD)
+    .switchMap((action: IterationActions.Add) => {
+      const iteration = action.payload.iteration;
+      const parent = action.payload.parent;
+      console.log('####-1', iteration);
+      console.log('####-2', parent);
+      return this.iterationService.getIterations()
+        .map(iterations => {
+           const itMapper = new IterationMapper();
+           return iterations.map(it => itMapper.toUIModel(it));
+        })
+       .map(iterations => (new IterationActions.GetSuccess(iterations)))
+       .catch(() => Observable.of(new IterationActions.GetError()))
+    })
 }

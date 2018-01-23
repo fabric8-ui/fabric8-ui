@@ -1,9 +1,9 @@
-import { modelUI } from 'src/app/models/common.model';
 import { CommonModule } from '@angular/common';
 import {
   Mapper,
   MapTree,
-  switchModel
+  switchModel,
+  modelUI
 } from './common.model';
 
 export class GroupTypesModel {
@@ -35,7 +35,7 @@ export class WorkItemRelations {
     data?: object,
     links?: object
   };
-  spaceTemplate: {
+  spaceTemplate?: {
     data?: object,
     links?: object
   };

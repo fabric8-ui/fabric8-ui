@@ -78,6 +78,7 @@ export interface IterationUI extends modelUI {
   type: string;
   children: IterationUI[];
   hasChildren?: boolean;
+  parentId: string; // relationships / parent / data / id
 }
 
 export class IterationMapper implements Mapper<IterationModel, IterationUI> {
@@ -125,9 +126,10 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
       fromPath: ['hasChildren'],
       toPath: ['hasChildren']
     }, {
-      fromPath: ['type'],
-      toPath: ['type']
+      fromPath: ['relationships', 'parent', 'data', 'id'],
+      toPath: ['parentId']
     }
+
   ];
 
   uiToServiceMapTree: MapTree = [{
@@ -175,6 +177,15 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
     }, {
       toPath: ['type'],
       fromPath: ['type']
+    }, {
+      toPath: ['relationships', 'parent', 'data', 'id'],
+      fromPath: ['parentId']
+    }, {
+      toPath: ['relationships', 'parent', 'data', 'type'],
+      toValue: 'iterations'
+    }, {
+      toPath: ['type'],
+      toValue: 'iterations'
     }
   ];
 

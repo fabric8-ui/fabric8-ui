@@ -12,7 +12,23 @@ export const UPDATE_SUCCESS = '[Iteration] UpdateSuccess';
 export const UPDATE_ERROR   = '[Iteration] UpdateError';
 
 export class Add implements Action {
+  payload: {iteration: IterationUI; parent: IterationUI | null};
+  constructor(
+    payload: {iteration: IterationUI; parent: IterationUI | null}
+  ){
+    this.payload = payload;
+  };
   readonly type = ADD;
+}
+
+export class AddSuccess implements Action {
+  public payload: {iteration: IterationUI; parent: IterationUI | null};
+  constructor(
+    payload: {iteration: IterationUI; parent: IterationUI | null}
+  ){
+    this.payload = payload;
+  };
+  readonly type = ADD_SUCCESS;
 }
 
 export class Update implements Action {
@@ -33,10 +49,6 @@ export class GetSuccess implements Action {
 
 export class GetError implements Action {
   readonly type = GET_ERROR;
-}
-
-export class AddSuccess implements Action {
-  readonly type = ADD_SUCCESS;
 }
 
 export class AddError implements Action {

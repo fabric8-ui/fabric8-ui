@@ -52,7 +52,7 @@ export interface LabelUI extends modelUI {
 }
 
 export class LabelMapper implements Mapper<LabelService, LabelUI> {
-  
+
   serviceToUiMapTree: MapTree = [{
       fromPath: ['id'],
       toPath: ['id']
@@ -93,14 +93,14 @@ export class LabelMapper implements Mapper<LabelService, LabelUI> {
       toPath: ['attributes','border-color'],
       fromPath: ['borderColor']
     }, {
-      fromPath: ['attributes','text-color'],
-      toPath: ['textColor']
+      toPath: ['attributes','text-color'],
+      fromPath: ['textColor']
     }, {
       toPath: ['type'],
       fromPath: ['type']
     }
   ];
-  
+
   toUIModel(arg: LabelService): LabelUI {
     return switchModel<LabelService, LabelUI>(
       arg, this.serviceToUiMapTree
