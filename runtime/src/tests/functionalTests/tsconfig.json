@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "sourceMap": true,
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    "strictNullChecks": true
+  },
+  "exclude": [
+    "src/tests/",
+    "./*.js"
+  ]
+}
