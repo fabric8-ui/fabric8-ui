@@ -7,7 +7,7 @@ export class WorkItemListEntry extends ui.BaseElement {
   inlineQuickAdd = new ui.BaseElement($('.quick-add-icon'), 'Inline quick add button');
   id = new ui.BaseElement(this.$('span.margin-0'), 'WorkItem ID');
   type = new ui.BaseElement(this.$('datatable-body-cell:nth-child(3) work-item-cell > div'), 'WorkItem Type');
-  title = new ui.BaseElement(this.$('.wi-detail-title p'), 'WorkItem Title');
+  title = new ui.Clickable(this.$('.wi-detail-title p'), 'WorkItem Title');
   labels = new ui.BaseElement(this.$('f8-label'), 'WorkItem Labels');
   // TODO
   status: ui.BaseElement;

@@ -24,7 +24,7 @@ export class WorkItemList extends BaseElement {
   }
 
   workItem(title: string): WorkItemListEntry {
-    return new WorkItemListEntry(this.element(by.xpath("//datatable-body-row[.//p[contains(text(), '" + title + "')]]")));
+    return new WorkItemListEntry(this.element(by.xpath("//datatable-body-row[.//p[text()=' " + title + " ']]")));
   }
 
 }

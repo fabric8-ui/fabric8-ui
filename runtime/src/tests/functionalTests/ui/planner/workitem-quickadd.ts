@@ -25,6 +25,6 @@ export class WorkItemQuickAdd extends ui.BaseElement {
     await this.addButton.clickWhenReady();
 
     // TODO add more confirmation that the item has been added
-    this.log('New WorkItem', `${title} added`);
+    this.log('New WorkItem created', `${title} added`);
   }
 }
