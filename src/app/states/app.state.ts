@@ -10,6 +10,7 @@ export interface AppState {
     groupTypes: states.GroupTypeState,
     space: states.SpaceState,
     workItemTypes: states.WorkItemTypeState
+    workItemStates: states.WIState
   };
 
   iterationPanel: {

@@ -13,3 +13,4 @@ export { WorkItemState, initialState as initialWorkItemState } from './work-item
 export { SpaceState, initialState as  initialSpaceItemState } from './space.state';
 export { GroupTypeState, initialState as  initialGroupTypeItemState } from './grouptype.state';
 export { WorkItemTypeState, initialState as  initialWorkItemTypeItemState } from './work-item-type.state';
+export { WIState, initialState as  initialWIState } from './work-item-state.state';
