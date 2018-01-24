@@ -22,7 +22,7 @@ export class IterationService {
   public iterations: IterationModel[] = [];
   private transformedIterations = [];
   private headers = new Headers({'Content-Type': 'application/json'});
-  private _currentSpace;
+  private _currentSpace: Space;
 
   private selfId;
 
@@ -124,7 +124,15 @@ export class IterationService {
       iterationsUrl = this._currentSpace.relationships.iterations.links.related;
     }
     if (this._currentSpace) {
-      iteration.relationships.space.data.id = this._currentSpace.id;
+      iteration.relationships['space'] = {
+        data: {
+          id: this._currentSpace.id,
+          type: 'spaces'
+        },
+        links: {
+          self: this._currentSpace.links.self
+        }
+      };
       return this.http
         .post(
           iterationsUrl,

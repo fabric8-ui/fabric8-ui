@@ -11,6 +11,10 @@ export interface AppState {
     space: states.SpaceState
   };
 
+  iterationPanel: {
+    iterationUI: states.IterationUIState
+  }
+
   detailPage: {
     comments: states.CommentState
   };

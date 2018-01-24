@@ -15,7 +15,7 @@
               id="iteration-name"
               type="text" class="form-control"
               placeholder="Iteration Name"
-              [(ngModel)]="iteration.attributes.name"
+              [(ngModel)]="iteration.name"
               (keyup)="removeError()">
             <span class="error-block">
               <span class="help-block" id="iteration-help-label">{{validationString}}</span>
@@ -44,7 +44,7 @@
             placeholder="Describe this iteration's goals and what it will include."
             id="iteration-description"
             rows="3"
-            [(ngModel)]="iteration.attributes.description">
+            [(ngModel)]="iteration.description">
           </textarea>
         </div>
       </div>
@@ -67,9 +67,8 @@
       </div>
       <div *ngIf="modalType=='create' || modalType=='update' || modalType=='createChild'">
         <label class="f8-active-label">Force Active: </label>
-        <!--
-          <switch (onChecked)="onChecked($event)" [isChecked]="iteration.attributes.user_active" id="active-switch"></switch>
-        -->
+          <switch (onChecked)="onChecked($event)"
+            [isChecked]="iteration.userActive" id="active-switch"></switch>
       </div>
       <div *ngIf="modalType=='close'"
         class="form-group datepicker-container">
@@ -82,8 +81,17 @@
   </modal-content>
   <modal-footer>
     <div class="text-right col-xs-12 col-sm-12 col-md-12">
-      <button class="btn btn-default margin-right-10" id="cancel-iteration-button" type="submit" value="0" (click)="createUpdateIterationDialog.close()">Cancel</button>
-      <button class="btn btn-primary" id="create-iteration-button" type="submit" value="0" (click)="createUpdateIterationDialog.onSubmit.emit(undefined)">
+      <button
+        [disabled]="submitLoading"
+        class="btn btn-default margin-right-10"
+        id="cancel-iteration-button" type="submit"
+        value="0" (click)="createUpdateIterationDialog.close()">
+        Cancel
+      </button>
+      <button class="btn btn-primary"
+        [disabled]="submitLoading"
+        id="create-iteration-button" type="submit" value="0"
+        (click)="createUpdateIterationDialog.onSubmit.emit(undefined)">
         {{submitBtnTxt}}
       </button>
     </div>

@@ -18,9 +18,14 @@ import { IterationService } from '../../services/iteration.service';
 import { IterationListEntryComponent } from '../iteration-list-entry/iteration-list-entry.component';
 
 import { ModalModule } from 'ngx-modal';
-// import  { SwitchModule } from './../../components/switch/switch.module';
+import  { SwitchModule } from './../../components/switch/switch.module';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TruncateModule } from 'ng2-truncate';
+
+// ngrx stuff
+import { StoreModule } from '@ngrx/store';
+import { iterationUiReducer } from './../../reducers/iteration-reducer';
+import { initialUIState } from './../../states/iteration.state';
 
 @NgModule({
   imports: [
@@ -35,11 +40,18 @@ import { TruncateModule } from 'ng2-truncate';
     ListModule,
     TooltipModule.forRoot(),
     TruncateModule,
-    // SwitchModule,
+    SwitchModule,
     WidgetsModule,
     RouterModule,
     // TreeModule
     // TreeListModule
+    StoreModule.forFeature('iterationPanel', {
+      iterationUI: iterationUiReducer
+    }, {
+      initialState: {
+        iterationUI: initialUIState
+      }
+    })
   ],
   declarations: [
     FabPlannerIterationModalComponent,

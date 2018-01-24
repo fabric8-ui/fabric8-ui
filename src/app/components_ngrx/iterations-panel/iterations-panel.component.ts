@@ -12,7 +12,7 @@ import { AuthenticationService } from 'ngx-login-client';
 import { GroupTypesService } from '../../services/group-types.service';
 import { IterationService } from '../../services/iteration.service';
 import { WorkItemService }   from '../../services/work-item.service';
-import { IterationUI } from '../../models/iteration.model';
+import { IterationUI, IterationModel } from '../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
 import { FabPlannerIterationModalComponent } from '../iterations-modal/iterations-modal.component';
 import {
@@ -27,7 +27,7 @@ import {
 // ngrx stuff
 import { Store } from '@ngrx/store';
 import { AppState } from './../../states/app.state';
-import { IterationState } from 'src/app/states/iteration.state';
+import { IterationState, IterationUIState } from './../../states/iteration.state';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -195,6 +195,16 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
           console.log('Some error has occured', e);
         });
     }
+
+    // this.store
+    //     .select('iterationPanel')
+    //     .select('iterationUI')
+    //     .subscribe((val) => {
+    //       console.log('####-1', val);
+    //     },
+    //     (e) => {
+    //       console.log('Some error has occured', e);
+    //     });
   }
 
   clusterIterations() {
@@ -234,7 +244,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.treeIterations = this.iterationService.getTopLevelIterations2(this.allIterations);
     this.treeList.update();
     this.clusterIterations();
-    this.iterationService.emitCreateIteration(iteration);
+    // this.iterationService.emitCreateIteration(iteration);
   }
 
   getWorkItemsByIteration(iteration: IterationUI) {
@@ -262,18 +272,18 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   updateItemCounts() {
-    this.log.log('Updating item counts..');
-    this.iterationService.getIterations().first().subscribe((updatedIterations:IterationUI[]) => {
-      // updating the counts from the response. May not the best solution on performance right now.
-      updatedIterations.forEach((thisIteration:IterationUI) => {
-        for (let i=0; i<this.iterations.length; i++) {
-          if (this.iterations[i].id === thisIteration.id) {
-            this.iterations[i].workItemTotalCount = thisIteration.workItemTotalCount;
-            this.iterations[i].workItemClosedCount = thisIteration.workItemClosedCount;
-          }
-        }
-      });
-    }, err => console.log(err));
+    // this.log.log('Updating item counts..');
+    // this.iterationService.getIterations().first().subscribe((updatedIterations: IterationUI[]) => {
+    //   // updating the counts from the response. May not the best solution on performance right now.
+    //   updatedIterations.forEach((thisIteration:IterationUI) => {
+    //     for (let i=0; i<this.iterations.length; i++) {
+    //       if (this.iterations[i].id === thisIteration.id) {
+    //         this.iterations[i].workItemTotalCount = thisIteration.workItemTotalCount;
+    //         this.iterations[i].workItemClosedCount = thisIteration.workItemClosedCount;
+    //       }
+    //     }
+    //   });
+    // }, err => console.log(err));
   }
 
   assignWIToIteration(workItemId: string, reqVersion: number, iterationID: string, selfLink: string) {

@@ -32,7 +32,19 @@ export class AddSuccess implements Action {
 }
 
 export class Update implements Action {
+  payload: IterationUI;
+  constructor(paylod: IterationUI) {
+    this.payload = paylod;
+  }
   readonly type = UPDATE;
+}
+
+export class UpdateSuccess implements Action {
+  payload: IterationUI;
+  constructor(paylod: IterationUI) {
+    this.payload = paylod;
+  }
+  readonly type = UPDATE_SUCCESS;
 }
 
 export class Get implements Action {
@@ -53,10 +65,6 @@ export class GetError implements Action {
 
 export class AddError implements Action {
   readonly type = ADD_ERROR;
-}
-
-export class UpdateSuccess implements Action {
-  readonly type = UPDATE_SUCCESS;
 }
 
 export class UpdateError implements Action {

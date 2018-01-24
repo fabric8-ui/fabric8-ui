@@ -1,4 +1,14 @@
-import { Component, ViewChild, OnInit, Output, EventEmitter, Input, OnChanges, OnDestroy } from '@angular/core';
+import { AppState } from './../../../../dist-watch/app/states/app.state.d';
+import {
+  Component,
+  ViewChild,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy
+} from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -7,11 +17,12 @@ import { cloneDeep } from 'lodash';
 import * as moment from 'moment';
 import { IMyOptions, IMyDateModel } from 'mydatepicker';
 import { Broadcaster } from 'ngx-base';
-import { Space, Spaces } from 'ngx-fabric8-wit';
 
-import { IterationService } from '../../services/iteration.service';
-import { IterationModel } from '../../models/iteration.model';
+import { IterationUI } from '../../models/iteration.model';
 
+// ngrx stuff
+import { Store } from '@ngrx/store';
+import * as IterationActions from './../../actions/iteration.actions';
 
 @Component({
   selector: 'fab-planner-iteration-modal',
@@ -29,7 +40,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   @ViewChild('iterationSearch') iterationSearch: any;
   @ViewChild('iterationList') iterationList: any;
 
-  public iteration: IterationModel;
+  public iteration: IterationUI;
   private validationError = false;
   private modalType: string = 'create';
   private submitBtnTxt: string = 'Create';
@@ -38,14 +49,15 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   private endDate: any;
   private spaceError: Boolean = false;
   private iterationName: string;
-  iterations: IterationModel[] = [];
+  private submitLoading: boolean = false;
+  iterations: IterationUI[] = [];
   iterationsValue: any = [];
   filteredIterations: any = [];
-  selectedParentIteration: IterationModel;
+  selectedParentIteration: IterationUI;
   selectedParentIterationName:string = '';
   iterationSearchDisable: Boolean = false;
   showIterationDropdown: Boolean = false;
-  validationString: string = 'Something went wrong.'
+  validationString: string = 'Something went wrong.';
 
   private startDatePickerOptions: IMyOptions = {
     dateFormat: 'dd mmm yyyy',
@@ -66,56 +78,47 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   };
 
   constructor(
-    private iterationService: IterationService,
-    private spaces: Spaces,
-    private broadcaster: Broadcaster) {}
+    private broadcaster: Broadcaster,
+    private store: Store<AppState>) {}
 
 
   ngOnInit() {
     this.resetValues();
-    this.spaceSubscription = this.spaces.current.subscribe(space =>  {
-      if (space) {
-        console.log('[FabPlannerIterationModalComponent] New Space selected: ' + space.attributes.name);
-      } else {
-        console.log('[FabPlannerIterationModalComponent] Space deselected.');
-      }
-    });
+    this.store
+        .select('iterationPanel')
+        .select('iterationUI')
+        .subscribe((uiState) => {
+          if (uiState.error) {
+            this.validationError = true;
+            this.validationString = uiState.error;
+          }
+          if (this.submitLoading &&
+              !uiState.modalLoading &&
+              !this.validationError) {
+            this.createUpdateIterationDialog.close();
+          }
+          this.submitLoading = uiState.modalLoading;
+
+        },
+        (e) => {
+          console.log('Some error has occured', e);
+        });
   }
 
   resetValues() {
 
     this.iteration  = {
-      // id: '',
-      attributes: {
-        user_active: false,
-        name: '',
-        description: '',
-        state: 'new',
-        parent_path: '',
-        resolved_parent_path: ''
-      },
-      relationships: {
-        parent: {
-          data: {
-            id: "",
-            type: "iterations"
-          },
-          links: {
-            self: ""
-          }
-        },
-        space: {
-          data: {
-            id: '',
-            type: 'space'
-          },
-          links: {
-            self: ''
-          }
-        }
-      },
-      type: 'iterations'
-    } as IterationModel;
+      id: '',
+      name: '',
+      userActive: false,
+      isActive: false,
+      startAt: null,
+      endAt: null,
+      description: '',
+      state: 'new',
+      workItemTotalCount: 0,
+      workItemClosedCount: 0
+    } as IterationUI;
 
     let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
     let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
@@ -148,7 +151,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
 
   openCreateUpdateModal(
     type: string = 'create',
-    iteration: IterationModel | null = null,
+    iteration: IterationUI | null = null,
     e?: any
   ) {
     if(e) {
@@ -158,12 +161,12 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     this.modalType = type;
     if (iteration) {
       this.iteration = cloneDeep(iteration);
-      if (this.iteration.attributes.startAt) {
-        let startDate = moment(this.iteration.attributes.startAt);
+      if (this.iteration.startAt) {
+        let startDate = moment(this.iteration.startAt);
         this.startDate = { date: { year: startDate.format('YYYY'), month: startDate.format('M'), day: startDate.format('D') } };
       }
-      if (this.iteration.attributes.endAt) {
-        let endDate = moment(this.iteration.attributes.endAt);
+      if (this.iteration.endAt) {
+        let endDate = moment(this.iteration.endAt);
         this.endDate = { date: { year: endDate.format('YYYY'), month: endDate.format('M'), day: endDate.format('D') } };
       }
     }
@@ -185,9 +188,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.submitBtnTxt = 'Update';
       this.modalTitle = 'Update Iteration';
       this.iterationSearchDisable = true;
-      this.selectedParentIterationName = iteration.attributes.resolved_parent_path;
+      this.selectedParentIterationName = iteration.resolvedParentPath;
 
-      if (iteration.attributes.state === 'start') {
+      if (iteration.state === 'start') {
         let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
         startDatePickerComponentCopy['componentDisabled'] = true;
         this.startDatePickerOptions = startDatePickerComponentCopy;
@@ -197,9 +200,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.getIterations();
       this.submitBtnTxt = 'Create';
       this.modalTitle = 'Create Iteration';
-      this.selectedParentIterationName = (iteration.attributes.resolved_parent_path+'/'+iteration.attributes.name).replace("//", "/");
+      this.selectedParentIterationName = (iteration.resolvedParentPath+'/'+iteration.name).replace("//", "/");
       this.selectedParentIteration = iteration;
-      this.iteration.attributes.name = '';
+      this.iteration.name = '';
       this.startDate = '';
       this.endDate = '';
     }
@@ -222,7 +225,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
     // Format 2016-11-29T23:18:14Z
     this.startDate = { date: event.date };
-    this.iteration.attributes.startAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T12:00:00Z';
+    this.iteration.startAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T12:00:00Z';
 
     let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
     endDatePickerComponentCopy['disableUntil'] = event.date;
@@ -232,7 +235,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   onEndDateChanged(event: IMyDateModel) {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
     this.endDate = { date: event.date };
-    this.iteration.attributes.endAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T12:00:00Z';
+    this.iteration.endAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T12:00:00Z';
     let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
     startDatePickerComponentCopy['disableSince'] = event.date;
     this.startDatePickerOptions = startDatePickerComponentCopy;
@@ -250,13 +253,14 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   }
 
   getIterations() {
-    this.iterationService.getIterations()
-      .subscribe((iterations: IterationModel[]) => {
+    this.store.select('listPage')
+      .select('iterations')
+      .subscribe((iterations: IterationUI[]) => {
         this.iterations = iterations;
         for (let i=0; i<iterations.length; i++) {
           this.iterationsValue.push({
             key: iterations[i].id,
-            value: (iterations[i].attributes.resolved_parent_path + '/' + iterations[i].attributes.name).replace('//', '/')
+            value: (iterations[i].resolvedParentPath + '/' + iterations[i].name).replace('//', '/')
           });
         };
       });
@@ -336,55 +340,27 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   }
 
   actionOnSubmit() {
-    this.iteration.attributes.name = this.iteration.attributes.name.trim();
-    if (this.iteration.attributes.name !== '') {
-      if (this.iteration.attributes.name.indexOf('/') === -1 &&
-          this.iteration.attributes.name.indexOf('\\') === -1 ) {
+    this.iteration.name = this.iteration.name.trim();
+    if (this.iteration.name !== '') {
+      if (this.iteration.name.indexOf('/') === -1 &&
+          this.iteration.name.indexOf('\\') === -1 ) {
         this.validationError = false;
         if (this.modalType == 'create' || this.modalType == "createChild") {
-          this.iterationService.createIteration(this.iteration, this.selectedParentIteration)
-              .subscribe((iteration) => {
-                this.onSubmit.emit(iteration);
-                this.resetValues();
-                this.createUpdateIterationDialog.close();
-          },
-          (e) => {
-            this.validationError = true;
-            console.log('Some error has occured', e);
-          });
+          this.store.dispatch(new IterationActions.Add({
+            iteration: this.iteration,
+            parent: this.selectedParentIteration
+          }));
         } else {
           if (this.modalType == 'start') {
-            this.iteration.attributes.state = 'start';
+            this.iteration.state = 'start';
           } else if (this.modalType == 'close') {
-            this.iteration.attributes.state = 'close';
-            this.iteration.attributes.user_active = false;
+            this.iteration.state = 'close';
+            this.iteration.userActive = false;
           } else {
             // Not include state if it's just an update
-            delete this.iteration.attributes.state;
+            delete this.iteration.state;
           }
-          this.iterationService.updateIteration(this.iteration)
-            .subscribe((iteration) => {
-              this.onSubmit.emit(iteration);
-              if (this.modalType == 'start') {
-                let toastIterationName = this.iteration.attributes.name;
-                if (toastIterationName.length > 15) {
-                  toastIterationName = toastIterationName.slice(0, 15) + '...';
-                }
-                let notificationData = {
-                  'notificationText': `<strong>${toastIterationName}</strong> &nbsp; has started.`,
-                  'notificationType': 'ok'
-                };
-                this.broadcaster.broadcast('toastNotification', notificationData);
-                this.iterationName = this.iteration.attributes.name;
-              }
-              this.resetValues();
-              this.createUpdateIterationDialog.close();
-            },
-            (e) => {
-              this.spaceError = true;
-              // this.resetValues();
-              // console.log('Some error has occured', e.toString());
-            });
+          this.store.dispatch(new IterationActions.Update(this.iteration));
         }
       } else {
         this.validationError = true;
@@ -401,6 +377,6 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   }
 
   onChecked(event) {
-    this.iteration.attributes.user_active = event;
+    this.iteration.userActive = event;
   }
 }

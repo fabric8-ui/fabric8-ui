@@ -75,10 +75,9 @@ export interface IterationUI extends modelUI {
   link: string;
   workItemTotalCount: number;
   workItemClosedCount: number;
-  type: string;
   children: IterationUI[];
   hasChildren?: boolean;
-  parentId: string; // relationships / parent / data / id
+  parentId?: string; // relationships / parent / data / id
 }
 
 export class IterationMapper implements Mapper<IterationModel, IterationUI> {
@@ -174,9 +173,6 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
     }, {
       toPath: ['hasChildren'],
       fromPath: ['hasChildren']
-    }, {
-      toPath: ['type'],
-      fromPath: ['type']
     }, {
       toPath: ['relationships', 'parent', 'data', 'id'],
       fromPath: ['parentId']

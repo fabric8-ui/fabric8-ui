@@ -1,3 +1,4 @@
+import { Update } from './../actions/iteration.actions';
 import { Injectable } from "@angular/core";
 import { Actions, Effect } from "@ngrx/effects";
 import { Observable } from "rxjs";
@@ -27,16 +28,31 @@ export class IterationEffects {
   @Effect() addIteration$: Observable<Action> = this.actions$
     .ofType(IterationActions.ADD)
     .switchMap((action: IterationActions.Add) => {
-      const iteration = action.payload.iteration;
-      const parent = action.payload.parent;
-      console.log('####-1', iteration);
-      console.log('####-2', parent);
-      return this.iterationService.getIterations()
-        .map(iterations => {
-           const itMapper = new IterationMapper();
-           return iterations.map(it => itMapper.toUIModel(it));
+      const itMapper = new IterationMapper();
+      const iteration = itMapper.toServiceModel(action.payload.iteration);
+      const parent = action.payload.parent ?
+        itMapper.toServiceModel(action.payload.parent) :
+        null;
+      return this.iterationService.createIteration(iteration, parent)
+        .map(iteration => {
+          return itMapper.toUIModel(iteration);
         })
-       .map(iterations => (new IterationActions.GetSuccess(iterations)))
-       .catch(() => Observable.of(new IterationActions.GetError()))
+       .map(iteration => new IterationActions.AddSuccess({
+         iteration, parent: parent ? itMapper.toUIModel(parent) : null
+        }))
+       .catch(() => Observable.of(new IterationActions.AddError()))
+    })
+
+  @Effect() updateIteration$: Observable<Action> = this.actions$
+    .ofType(IterationActions.UPDATE)
+    .switchMap((action: IterationActions.Update) => {
+      const itMapper = new IterationMapper();
+      const iteration = itMapper.toServiceModel(action.payload);
+      return this.iterationService.updateIteration(iteration)
+        .map(iteration => {
+          return itMapper.toUIModel(iteration);
+        })
+       .map(iteration => new IterationActions.UpdateSuccess(iteration))
+       .catch(() => Observable.of(new IterationActions.UpdateError()))
     })
 }
