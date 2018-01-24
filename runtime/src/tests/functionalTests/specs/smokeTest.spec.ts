@@ -1,10 +1,12 @@
 import { browser } from 'protractor';
-import { PlannerPage } from '../page_objects/planner'
+import { PlannerPage } from '../page_objects/planner';
+import { Constants } from '../support/constants';
 import * as support from '../support';
 
 
 describe('Planner Smoke Tests', () => {
   let planner: PlannerPage;
+  let c = new Constants();
   beforeEach( async () => {
     await support.desktopTestSetup();
     let token = encodeURIComponent(JSON.stringify({
@@ -18,41 +20,33 @@ describe('Planner Smoke Tests', () => {
   });
 
   it('can create a work item and add/remove assignee', async () => {
-    await planner.createWorkItem({
-      title: 'Workitem Title',
-      description: 'Describes the work item'
-    });
-
-    expect(await planner.workItemList.hasWorkItem('Workitem Title')).toBeTruthy();
-    await planner.workItemList.clickWorkItem('Workitem Title');
-    await planner.quickPreview.addAssignee('Example User 1');
-    expect(await planner.quickPreview.hasAssignee('Example User 1')).toBeTruthy();
+    await planner.createWorkItem(c.newWorkItem);
+    expect(await planner.workItemList.hasWorkItem(c.newWorkItem.title)).toBeTruthy();
+    await planner.workItemList.clickWorkItem(c.newWorkItem.title);
+    await planner.quickPreview.addAssignee(c.user);
+    expect(await planner.quickPreview.hasAssignee(c.user)).toBeTruthy();
 
     await planner.quickPreview.close();
 
-    await planner.workItemList.clickWorkItem('Workitem Title');
-    await planner.quickPreview.addAssignee('Example User 1');
-    expect(await planner.quickPreview.hasAssignee('Example User 1')).toBeFalsy();
+    await planner.workItemList.clickWorkItem(c.newWorkItem.title);
+    await planner.quickPreview.addAssignee(c.user);
+    expect(await planner.quickPreview.hasAssignee(c.user)).toBeFalsy();
 
     await planner.quickPreview.close();
-    expect(await planner.workItemList.hasWorkItem('Workitem Title123')).toBeFalsy();
   });
 
   it('can update workitem title/description', async () => {
-    await planner.createWorkItem({
-      title: 'Workitem Title 1',
-      description: 'Describes the work item'
-    });
+    await planner.createWorkItem(c.newWorkItem1);
 
-    expect(await planner.workItemList.hasWorkItem('Workitem Title 1')).toBeTruthy();
-    await planner.workItemList.clickWorkItem('Workitem Title 1');
-    await planner.quickPreview.updateTitle('New Workitem Title');
-    await planner.quickPreview.updateDescription('New WorkItem Description');
+    expect(await planner.workItemList.hasWorkItem(c.newWorkItem1.title)).toBeTruthy();
+    await planner.workItemList.clickWorkItem(c.newWorkItem1.title);
+    await planner.quickPreview.updateTitle(c.updatedWorkItem.title);
+    await planner.quickPreview.updateDescription(c.updatedWorkItem.description);
     // Mock data doesn't support saving description
-    // expect(await planner.quickPreview.hasDescription('New WorkItem Description')).toBeTruthy();
+    // expect(await planner.quickPreview.hasDescription(c.updatedWorkItem.description)).toBeTruthy();
     await planner.quickPreview.close();
-    expect(await planner.workItemList.hasWorkItem('Workitem Title 1')).toBeFalsy();
-    expect(await planner.workItemList.hasWorkItem('New Workitem Title')).toBeTruthy();
+    expect(await planner.workItemList.hasWorkItem(c.newWorkItem1.title)).toBeFalsy();
+    expect(await planner.workItemList.hasWorkItem(c.updatedWorkItem.title)).toBeTruthy();
   });
 });
 
