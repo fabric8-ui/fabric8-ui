@@ -6,7 +6,6 @@ import * as support from '../support';
 describe('Planner Smoke Tests:', () => {
   let planner: PlannerPage;
   let c = new Constants();
-
   beforeEach( async () => {
     await support.desktopTestSetup();
     let token = encodeURIComponent(JSON.stringify({
