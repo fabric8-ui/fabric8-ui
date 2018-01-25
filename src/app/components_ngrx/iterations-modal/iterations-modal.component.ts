@@ -115,7 +115,11 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       description: '',
       state: 'new',
       workItemTotalCount: 0,
-      workItemClosedCount: 0
+      workItemClosedCount: 0,
+      parentPath: '',
+      resolvedParentPath: '',
+      link: '',
+      children: []
     } as IterationUI;
 
     let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
@@ -197,7 +201,10 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.getIterations();
       this.submitBtnTxt = 'Create';
       this.modalTitle = 'Create Iteration';
-      this.selectedParentIterationName = (iteration.resolvedParentPath+'/'+iteration.name).replace("//", "/");
+      this.selectedParentIterationName = (
+        iteration.resolvedParentPath + '/' +
+        iteration.name
+      ).replace("//", "/");
       this.selectedParentIteration = iteration;
       this.iteration.name = '';
       this.startDate = '';

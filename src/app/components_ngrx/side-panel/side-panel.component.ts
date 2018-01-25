@@ -20,7 +20,6 @@ export class SidepanelComponent implements OnInit {
 
   backlogSelected: boolean = true;
   typeGroupSelected: boolean = true;
-  numberOfItemsInBacklog: number = 0;
 
   constructor(
     private log: Logger,
@@ -29,25 +28,6 @@ export class SidepanelComponent implements OnInit {
     private store: Store<AppState>) {
   }
 
-  ngOnInit() {
-    this.store
-      .select('listPage')
-      .select('iterations')
-      .subscribe((iterations: IterationUI[]) => {
-        if (iterations.length) {
-          this.manipulateData(iterations);
-        }
-      })
-  }
-
-  manipulateData(iterations: IterationUI[]) {
-    const rootIteration: IterationUI = iterations.find(i => {
-      return i.parentPath == '/';
-    });
-    if (rootIteration) {
-      this.numberOfItemsInBacklog = rootIteration.workItemTotalCount;
-    }
-  }
-
+  ngOnInit() {}
   setGuidedTypeWI() {}
 }
