@@ -31,8 +31,6 @@ import * as IterationActions from './../../actions/iteration.actions';
 })
 export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnChanges {
 
-  private spaceSubscription: Subscription = null;
-
   @Output()
   public onSubmit = new EventEmitter();
 
@@ -146,7 +144,6 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
 
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
-    this.spaceSubscription.unsubscribe();
   }
 
   openCreateUpdateModal(
