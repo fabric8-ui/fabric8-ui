@@ -36,7 +36,7 @@
             <span id="{{iteration.attributes.resolved_parent_path +
                 '/' + iteration.attributes.name }}">
               {{iteration.attributes.resolved_parent_path +
-                '/' + iteration.attributes.name | truncate : -24 }}
+                '/' + iteration.attributes.name | truncate : -20   }}
             </span>
             <span *ngIf='selectedIteration.id != iteration.id'
               class="fa pull-right margin-top-3"></span>

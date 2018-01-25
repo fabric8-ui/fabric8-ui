@@ -16,7 +16,7 @@
       [queryParams]="{q: constructURL(iteration.id)}"
       (click)="setGuidedTypeWI(collection)">
       <span class="f8-itr-name truncate">
-        {{iteration.attributes.name | truncate : 25 }}
+        {{iteration.attributes.name | truncate : 15 }}
       </span>
       <span
         *ngIf="iteration.attributes.active_status"
