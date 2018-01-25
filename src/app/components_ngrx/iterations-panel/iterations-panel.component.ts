@@ -60,8 +60,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   emptyStateConfig: EmptyStateConfig;
   treeListConfig: TreeListConfig;
 
-  private spaceSubscription: Subscription = null;
-
   constructor(
     private log: Logger,
     private auth: AuthenticationService,
@@ -80,19 +78,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.loggedIn = this.auth.isLoggedIn();
     this.getAndfilterIterations();
     this.editEnabled = true;
-    // this.spaceSubscription = this.spaces.current.subscribe(space => {
-    //   if (space) {
-    //     console.log('[IterationComponent] New Space selected: ' + space.attributes.name);
-    //     console.log('collection is ', this.collection);
-    //     this.editEnabled = true;
-    //     this.getAndfilterIterations();
-    //   } else {
-    //     console.log('[IterationComponent] Space deselected.');
-    //     this.editEnabled = false;
-    //     this.allIterations = [];
-    //     this.activeIterations = [];
-    //   }
-    // });
     this.setTreeConfigs();
   }
 
@@ -134,7 +119,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
-    this.spaceSubscription.unsubscribe();
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
