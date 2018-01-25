@@ -1,4 +1,4 @@
-import { AppState } from './../../../../dist-watch/app/states/app.state.d';
+import { AppState } from './../../../app/states/app.state';
 import {
   Component,
   ViewChild,
