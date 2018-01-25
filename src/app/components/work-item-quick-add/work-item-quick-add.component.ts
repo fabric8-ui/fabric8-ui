@@ -240,7 +240,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     };
   }
 
-  save(event: any = null): void {
+  save(event: any = null, openStatus: boolean = false): void {
     if (event)
       event.preventDefault();
 
@@ -290,10 +290,13 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
             let tempLinkObject = {'data': this.linkObject};
             this.workItemService.createLink(tempLinkObject)
               .subscribe(([link, includes]) => {
-                this.workItemService.emitAddWIChild(this.parentWorkItemId);
+                this.workItemService.emitAddWIChild({
+                  pwid: this.parentWorkItemId,
+                  wid: workItem.id, status: openStatus
+                  });
               })
           } else {
-            this.workItemService.emitAddWI(workItem);
+            this.workItemService.emitAddWI({wi: workItem, status: openStatus});
           }
           this.workItem = workItem; // saved workItem, w/ id if new
           this.resetQuickAdd();

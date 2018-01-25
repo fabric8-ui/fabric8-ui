@@ -900,21 +900,21 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
     this.eventListeners.push(
       this.workItemService.addWIObservable
-        .map(item => this.workItemService.resolveWorkItems(
-          [item],
-          this.iterations,
-          [],
-          this.workItemTypes,
-          this.labels
-        )[0])
         .subscribe(item => {
+          let resolvedworkItem = this.workItemService.resolveWorkItems(
+            [item.wi],
+            this.iterations,
+            [],
+            this.workItemTypes,
+            this.labels
+          )[0];
           // Resolve creator
-          item.relationships.creator.data = this.loggedInUser as User;
-          this.onCreateWorkItem(item);
-          if (this.filterService.doesMatchCurrentFilter(item)) {
+          resolvedworkItem.relationships.creator.data = this.loggedInUser as User;
+          this.onCreateWorkItem(resolvedworkItem);
+          if (this.filterService.doesMatchCurrentFilter(resolvedworkItem)) {
             try {
               this.notifications.message({
-                message: item.attributes['system.title'] + ' created.',
+                message: resolvedworkItem.attributes['system.title'] + ' created.',
                 type: NotificationType.SUCCESS
               } as Notification);
             } catch (e) {
@@ -923,20 +923,23 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           } else {
             try {
               this.notifications.message({
-                message: item.attributes['system.title'] + ' created. Added WI does not match the applied filters',
+                message: resolvedworkItem.attributes['system.title'] + ' created. Added WI does not match the applied filters',
                 type: NotificationType.SUCCESS
               } as Notification);
             } catch (e) {
               console.log('Error displaying notification. Added WI does not match the applied filters.')
             }
           }
+          if (item.status) {
+            this.onDetailPreview(resolvedworkItem.id);
+          }
         })
     );
 
     this.eventListeners.push(
       this.workItemService.addWIChildObservable
-        .subscribe((parentWorkItemId: string) => {
-          let parentIndex = this.datatableWorkitems.findIndex(i => i.id === parentWorkItemId);
+        .subscribe((workitemDetail) => {
+          let parentIndex = this.datatableWorkitems.findIndex(i => i.id === workitemDetail.pwid);
           if (parentIndex > -1) {
             this.datatableWorkitems[parentIndex].treeStatus = 'collapsed';
             this.datatableWorkitems[parentIndex].childrenLoaded = false;
@@ -944,6 +947,9 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
               rowIndex: parentIndex,
               row: this.datatableWorkitems[parentIndex]
             });
+          }
+          if (workitemDetail.status) {
+            this.onDetailPreview(workitemDetail.wid);
           }
         })
     );
@@ -1118,12 +1124,10 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   onDetailPreview(id): void {
     event.stopPropagation();
-    this.workItemDataService.getItem(id).subscribe(workItem => {
-      this.router.navigateByUrl(
-        this.router.url.split('plan')[0] + 'plan/detail/' + workItem.id,
-        { relativeTo: this.route }
-      );
-    });
+    this.router.navigateByUrl(
+      this.router.url.split('plan')[0] + 'plan/detail/' + id,
+      { relativeTo: this.route }
+    );
   }
 
   tableWorkitem(workItems: WorkItem[], parentId: string | null = null): any {

@@ -48,7 +48,7 @@
     <button class="btn btn-primary f8-quickadd__wiblk-btn-add margin-right-15"
       #quickAddSubmit
       [ngClass]="{'': validTitle,'disabled':!validTitle}"
-      (click)="save($event)">
+      (click)="save($event, true)">
       Add and Open
     </button>
   </div>

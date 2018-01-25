@@ -63,8 +63,8 @@ export class WorkItemService {
 
   private selfId;
 
-  public addWIObservable: Subject<WorkItem> = new Subject();
-  public addWIChildObservable: Subject<string> = new Subject();
+  public addWIObservable: Subject<any> = new Subject();
+  public addWIChildObservable: Subject<any> = new Subject();
   public editWIObservable: Subject<WorkItem> = new Subject();
   public selectedWIObservable: Subject<WorkItem> = new Subject();
 
@@ -704,12 +704,12 @@ export class WorkItemService {
    * and updates the view based on applied filters.
    */
 
-  emitAddWI(workItem: WorkItem) {
-    this.addWIObservable.next(workItem);
+  emitAddWI(workitemDetail) {
+    this.addWIObservable.next(workitemDetail);
   }
 
-  emitAddWIChild(parentWorkItemId: string) {
-    this.addWIChildObservable.next(parentWorkItemId);
+  emitAddWIChild(workitemDetail) {
+    this.addWIChildObservable.next(workitemDetail);
   }
 
   /**
