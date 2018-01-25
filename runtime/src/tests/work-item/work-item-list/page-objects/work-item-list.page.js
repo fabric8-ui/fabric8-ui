@@ -875,7 +875,7 @@ class WorkItemListPage {
   }
 
   getWorkItemType() {
-    return $$('.dropdown-menu>li>a');
+    return $$('#workItemList_up_quickAdd li > a');
   }
 
 }

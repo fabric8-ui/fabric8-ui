@@ -89,6 +89,7 @@ describe('Type group tests', function () {
   it("Scenario-Quick Add should support Scenario, papercuts and fundamentals", function() {
     page.clickScenario();
     page.clickWorkItemQADropDown();
+    expect(page.getWorkItemType().count()).toBe(3);
     expect(page.getWorkItemType().get(0).getText()).toContain(' Scenario');
     expect(page.getWorkItemType().get(1).getText()).toContain(' Papercuts');
     expect(page.getWorkItemType().get(2).getText()).toContain(' Fundamental');
@@ -97,18 +98,22 @@ describe('Type group tests', function () {
   it("Experiences-Quick Add should support Experience and Value proposition", function() {
     page.clickExperience();
     page.clickWorkItemQADropDown();
+    expect(page.getWorkItemType().count()).toBe(2);
     expect(page.getWorkItemType().get(0).getText()).toContain(' Experience');
     expect(page.getWorkItemType().get(1).getText()).toContain(' Value Proposition');
   });
 
-  //issue first item in dropdown should be feature uncomment when issue is fixed
-
-  // it("Requirements-Quick Add should contain Bug and Feature", function() {
-  //   page.clickRequirements();
-  //   page.clickWorkItemQADropDown();
-  //   expect(page.getWorkItemType().get(0).getText()).toContain(' Feature');
-  //   expect(page.getWorkItemType().get(1).getText()).toContain(' Bug');
-  // });
+  // Commented out since the first item in dropdown should be feature and not bug in requirement context.
+  // Uncomment when https://openshift.io/openshiftio/openshiftio/plan/detail/1789 is resolved.
+  /*
+  it("Requirements-Quick Add should contain Bug and Feature", function() {
+    page.clickRequirements();
+    page.clickWorkItemQADropDown();
+    expect(page.getWorkItemType().count()).toBe(2);
+    expect(page.getWorkItemType().get(0).getText()).toContain(' Feature');
+    expect(page.getWorkItemType().get(1).getText()).toContain(' Bug');
+  });
+  */
 
   it("Url should contain query WITGROUP:Scenario on clicking Scenario", function() {
     page.clickScenario();    
