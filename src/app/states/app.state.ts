@@ -15,9 +15,13 @@ export interface AppState {
 
   iterationPanel: {
     iterationUI: states.IterationUIState
-  }
+  };
 
   detailPage: {
     comments: states.CommentState
+  };
+
+  toolbar: {
+    filters: states.FilterState
   };
 };
