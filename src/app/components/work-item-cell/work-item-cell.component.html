@@ -20,6 +20,7 @@
   *ngIf="col === 'title'">
   <div class="wi-detail-title">
     <p class="truncate pointer"
+        [class.bold]="row.bold"
         (click)="onPreview($event, row['id'])"> {{row.title}} </p>
   </div>
   <div class="dib text-right wi-detail-icon">
