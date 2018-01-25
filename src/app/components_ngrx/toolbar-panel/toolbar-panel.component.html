@@ -1,0 +1,21 @@
+<header class="toolbar-header">
+  <pfng-toolbar
+    [config]="toolbarConfig"
+    [actionTemplate]="actionsTemplate"
+    [viewTemplate]="addTemplate"
+    (onFilterChange)="filterChange($event)"
+    (onFilterFieldSelect)="selectFilterType($event)"
+    (onFilterTypeAhead)="filterQueries($event)">
+  </pfng-toolbar>
+</header>
+
+<ng-template #actionsTemplate>
+</ng-template>
+<ng-template #addTemplate>
+  <button *ngIf="loggedIn && editEnabled && wiTypes.length"
+      class="btn btn-default primary-action add-button" type="button"
+      (click)="createNewWorkItem($event)">
+    <i class="pficon pficon-add-circle-o add-button-icon"></i>
+    <span class="add-button-text">Create</span>
+  </button>
+</ng-template>
