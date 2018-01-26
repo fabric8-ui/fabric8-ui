@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { WorkItemTypeUI } from '../models/work-item-type';
+import { WorkItemType } from '../models/work-item-type';
 
 export const GET = '[wi-state] Get';
 export const GET_SUCCESS = '[wi-state] GetSuccess';
@@ -10,8 +10,8 @@ export class Get implements Action {
 }
 
 export class GetSuccess implements Action {
-  payload: WorkItemTypeUI[];
-  constructor(payload: WorkItemTypeUI[]) {
+  payload: WorkItemType[];
+  constructor(payload: WorkItemType[]) {
     this.payload = payload;
   };
   readonly type = GET_SUCCESS;

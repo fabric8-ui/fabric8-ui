@@ -4,7 +4,13 @@ import { Injectable } from '@angular/core';
 import * as CollaboratorActions from './../actions/collaborator.actions';
 import { Observable } from 'rxjs';
 import { AppState } from './../states/app.state';
-import { CollaboratorService } from './../services/collaborator.service';
+import {
+  CollaboratorService as CollabService
+} from './../services/collaborator.service';
+import {
+  UserService,
+  UserMapper
+} from './../models/user';
 
 export type Action = CollaboratorActions.All;
 
@@ -12,14 +18,18 @@ export type Action = CollaboratorActions.All;
 export class CollaboratorEffects {
   constructor(
     private actions$: Actions,
-    private collaboratorService: CollaboratorService,
-  ){}
+    private collaboratorService: CollabService,
+  ) {}
 
   @Effect() getCollaborators$: Observable<Action> = this.actions$
     .ofType(CollaboratorActions.GET)
     .switchMap(action => {
       return this.collaboratorService.getCollaborators()
-      .map(collaborators => (new CollaboratorActions.GetSuccess(collaborators)))
-      .catch(() => Observable.of(new CollaboratorActions.GetError()))
+        .map((collaborators: UserService[]) => {
+          const collabM = new UserMapper();
+          return new CollaboratorActions.GetSuccess(
+            collaborators.map(c => collabM.toUIModel(c))
+          )
+        })
     })
 }

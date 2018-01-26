@@ -49,7 +49,7 @@ export interface AreaService extends AreaModel {}
 
 export class AreaMapper implements Mapper<AreaService, AreaUI> {
 
-  serviceToUiMapTree: MapTree =[{
+  serviceToUiMapTree: MapTree = [{
     fromPath: ['id'],
     toPath: ['id']
   }, {
@@ -72,7 +72,7 @@ export class AreaMapper implements Mapper<AreaService, AreaUI> {
   }
 
   toServiceModel(arg: AreaUI): AreaService {
-    return switchModel<AreaUI, AreaService>(
+    return switchModel<AreaUI, AreaService> (
       arg, this.uiToServiceMapTree
     )
   }

@@ -13,9 +13,14 @@ import { Space } from 'ngx-fabric8-wit';
 // ngrx stuff
 import { Store } from '@ngrx/store';
 import { AppState } from './../../states/app.state';
+// import * as actions from './../../actions/index.actions';
 import * as IterationActions from './../../actions/iteration.actions';
 import * as GroupTypeActions from './../../actions/group-type.actions';
 import * as SpaceActions from './../../actions/space.actions';
+import * as CollaboratorActions from './../../actions/collaborator.actions';
+import * as AreaActions from './../../actions/area.actions';
+import * as WorkItemTypeActions from './../../actions/work-item-type.actions';
+import * as LabelActions from './../../actions/label.actions';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -54,6 +59,10 @@ export class PlannerListComponent implements OnInit {
       .subscribe((space: Space) => {
         this.store.dispatch(new IterationActions.Get());
         this.store.dispatch(new GroupTypeActions.Get());
+        this.store.dispatch(new CollaboratorActions.Get());
+        this.store.dispatch(new AreaActions.Get());
+        this.store.dispatch(new WorkItemTypeActions.Get());
+        this.store.dispatch(new LabelActions.Get());
       })
   }
 

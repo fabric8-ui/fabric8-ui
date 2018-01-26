@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { User } from 'ngx-login-client';
+import { UserUI } from './../models/user';
 
 export const GET = '[collaborator] Get';
 export const GET_SUCCESS = '[collaborator] GetSuccess';
@@ -10,9 +10,9 @@ export class Get implements Action {
 }
 
 export class GetSuccess implements Action {
-  payload: User[];
+  payload: UserUI[];
 
-  constructor(payload: User[]) {
+  constructor(payload: UserUI[]) {
     this.payload = payload;
   }
   readonly type = GET_SUCCESS;

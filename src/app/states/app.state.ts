@@ -9,7 +9,7 @@ export interface AppState {
     workItems: states.WorkItemState,
     groupTypes: states.GroupTypeState,
     space: states.SpaceState,
-    workItemTypes: states.WorkItemTypeState
+    workItemTypes: states.WorkItemTypeState,
     workItemStates: states.WIState
   };
 

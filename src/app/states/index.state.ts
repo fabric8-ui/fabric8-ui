@@ -31,17 +31,17 @@ export {
 } from './work-item.state';
 export {
   SpaceState,
-  initialState as  initialSpaceItemState
+  initialState as initialSpaceState
 } from './space.state';
 export {
   GroupTypeState,
-  initialState as  initialGroupTypeItemState
+  initialState as initialGroupTypeState
 } from './grouptype.state';
 export {
   WorkItemTypeState,
-  initialState as  initialWorkItemTypeItemState
+  initialState as  initialWorkItemTypeState
 } from './work-item-type.state';
 export {
   WIState,
-  initialState as  initialWIState
+  initialState as initialWIState
 } from './work-item-state.state';

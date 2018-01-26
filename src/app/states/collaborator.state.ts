@@ -1,9 +1,5 @@
-import { User } from 'ngx-login-client';
+import { UserUI } from './../models/user';
 
-export interface CollaboratorState {
-  collaborators: User[];
-}
+export type CollaboratorState = UserUI[];
 
-export const initialState: CollaboratorState = {
-  collaborators: []
-}
+export const initialState: CollaboratorState = [] as CollaboratorState;

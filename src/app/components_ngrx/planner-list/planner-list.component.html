@@ -43,5 +43,11 @@
 </ng-template>
 
 <ng-template #sectionPanel>
-  This is the body
+  <div class="width-100 pull-left"
+      #toolbarHeight>
+      <toolbar-panel
+        context="listview"
+        [loggedInUser]="loggedInUser">
+      </toolbar-panel>
+    </div>
 </ng-template>
