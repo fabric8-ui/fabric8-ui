@@ -1,16 +1,19 @@
-import { Update } from './../actions/iteration.actions';
 import { Injectable } from "@angular/core";
 import { Actions, Effect } from "@ngrx/effects";
 import { Observable } from "rxjs";
+import { Action } from '@ngrx/store';
+import { Notification, Notifications, NotificationType } from "ngx-base";
+
 import * as IterationActions from ".././actions/iteration.actions";
 import { IterationService } from '.././services/iteration.service';
-import { Action } from '@ngrx/store';
 import{ IterationMapper } from "../models/iteration.model";
+
 
 @Injectable()
 export class IterationEffects {
   constructor( private actions$ : Actions,
-               private iterationService : IterationService ) {
+               private iterationService : IterationService,
+               private notifications: Notifications ) {
   }
 
   @Effect() getIterations$ : Observable<Action> = this.actions$
@@ -37,10 +40,26 @@ export class IterationEffects {
         .map(iteration => {
           return itMapper.toUIModel(iteration);
         })
-       .map(iteration => new IterationActions.AddSuccess({
-         iteration, parent: parent ? itMapper.toUIModel(parent) : null
-        }))
-       .catch(() => Observable.of(new IterationActions.AddError()))
+        .map(iteration => {
+          let iterationName = iteration.name;
+          if (iterationName.length > 15) {
+            iterationName = iterationName.slice(0, 15) + '...';
+          }
+          try {
+            this.notifications.message({
+              message: `<strong>${iterationName}</strong> &nbsp; has started.`,
+              type: NotificationType.SUCCESS
+            } as Notification);
+          } catch (e) {
+            console.log('Error displaying notification.')
+          }
+          return new IterationActions.AddSuccess({
+            iteration, parent: parent ? itMapper.toUIModel(parent) : null
+          });
+        })
+        .catch(() => {
+          return Observable.of(new IterationActions.AddError());
+        })
     })
 
   @Effect() updateIteration$: Observable<Action> = this.actions$

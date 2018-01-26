@@ -1,4 +1,3 @@
-import { AppState } from './../../../app/states/app.state';
 import {
   Component,
   ViewChild,
@@ -23,6 +22,7 @@ import { IterationUI } from '../../models/iteration.model';
 // ngrx stuff
 import { Store } from '@ngrx/store';
 import * as IterationActions from './../../actions/iteration.actions';
+import { AppState } from './../../../app/states/app.state';
 
 @Component({
   selector: 'fab-planner-iteration-modal',
