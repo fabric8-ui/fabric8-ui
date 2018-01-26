@@ -1,5 +1,6 @@
 export class Constants {
-  areaTitle = '/Root Area/Area 0';
+  areaTitle1 = '/Root Area/Area 0';
+  areaTitle2 = '/Root Area/Area 1';
   newWorkItem = {
     title: "Workitem Title",
     description: "Describes the work item"

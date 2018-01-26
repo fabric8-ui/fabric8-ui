@@ -66,5 +66,19 @@ describe('Planner Smoke Tests:', () => {
     expect(await planner.quickPreview.hasCreator(c.user)).toBeTruthy();
     expect(await planner.quickPreview.hasCreatorAvatar(c.user_avatar)).toBeTruthy()
   });
+
+  it('Assign workitem to an Area', async () => {
+    await planner.workItemList.clickWorkItem(c.workItemTitle1);
+    await planner.quickPreview.addArea(c.areaTitle1);
+    expect(await planner.quickPreview.hasArea(c.areaTitle1)).toBeTruthy();
+    await planner.quickPreview.close();
+
+    await planner.workItemList.clickWorkItem(c.workItemTitle1);
+    expect(await planner.quickPreview.hasArea(c.areaTitle1)).toBeTruthy();
+    await planner.quickPreview.addArea(c.areaTitle2);
+    expect(await planner.quickPreview.hasArea(c.areaTitle1)).toBeFalsy();
+    expect(await planner.quickPreview.hasArea(c.areaTitle2)).toBeTruthy();
+    await planner.quickPreview.close();
+  })
 });
 

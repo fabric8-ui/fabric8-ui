@@ -2,7 +2,6 @@ import { ElementFinder, by, $ } from 'protractor';
 import { BaseElement, Clickable } from './base.element';
 import * as support from '../support';
 
-
 class DropdownItem extends BaseElement {
   constructor(element: ElementFinder, parent: ElementFinder, name: string = '') {
     super(element, name);
@@ -19,7 +18,6 @@ class DropdownItem extends BaseElement {
   async select() {
     await this.run(`select item: '${this.name}'`, async () => {
       await this.parent.ready();
-      await this.parent.click();
       await this.ready();
       await this.click();
     })
@@ -29,14 +27,13 @@ class DropdownItem extends BaseElement {
 
 class DropdownMenu extends BaseElement {
 
-  constructor(element: ElementFinder, parent: ElementFinder, name: string = '') {
+  constructor(element: ElementFinder, name: string = '') {
     super(element, name);
-    this.parent = parent;
   }
 
   item(text: string): DropdownItem {
     let item = this.element(by.cssContainingText('li', text));
-    return new DropdownItem(item, this.parent, text);
+    return new DropdownItem(item, this, text);
   }
 
   async ready() {
@@ -48,10 +45,11 @@ class DropdownMenu extends BaseElement {
 }
 
 export class Dropdown extends BaseElement {
+  menu: ElementFinder;
 
   constructor(element: ElementFinder, menuElement: ElementFinder, name: string = '') {
     super(element, name);
-    this.menu = new DropdownMenu(menuElement, this);
+    this.menu = new DropdownMenu(menuElement);
   }
 
   item(text: string): DropdownItem {
@@ -66,7 +64,6 @@ export class Dropdown extends BaseElement {
     await this.run('ready', async() => {
       await super.ready();
       await this.untilClickable();
-      await this.menu.ready();
     })
   }
 }
