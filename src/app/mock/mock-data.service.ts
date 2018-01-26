@@ -371,6 +371,8 @@ export class MockDataService {
           }
         } else {
           Object.assign(this.workItems[i].attributes, localWorkItem.attributes);
+          // Description update
+          this.workItems[i].attributes['system.description.rendered'] = workItem.attributes['system.description'];
         }
         return cloneDeep(this.workItems[i]);
       }
