@@ -1,4 +1,5 @@
 export class Constants {
+  areaTitle = '/Root Area/Area 0';
   newWorkItem = {
     title: "Workitem Title",
     description: "Describes the work item"
@@ -10,5 +11,9 @@ export class Constants {
     title: 'New Workitem Title',
     description: 'New WorkItem Description'
   };
-  user = "Example User 1";
+  workItemTitle1 = 'Title Text 0';
+  workItemTitle2 = 'Title Text 0';
+  user = "Example User 0";
+  user1 = "Example User 1";
+  user_avatar = 'https://avatars.githubusercontent.com/u/2410471?v=3&s=20';
 }

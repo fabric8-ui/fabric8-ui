@@ -112,11 +112,12 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
 }
 
 export class BaseElementArray extends ElementArrayFinder {
-  constructor(wrapped: ElementArrayFinder) {
+  constructor(wrapped: ElementArrayFinder, name: string = 'unnamed') {
     // see: clone https://github.com/angular/protractor/blob/5.2.0/lib/element.ts#L106
     super(
       wrapped.browser_, wrapped.getWebElements,
       wrapped.locator_, wrapped.actionResults_);
+    this.name = name;
   }
 
   async untilCount(compare: NumberComparer, wait?: number, msg?: string) {

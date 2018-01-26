@@ -4,9 +4,10 @@ import { Constants } from '../support/constants';
 import * as support from '../support';
 
 
-describe('Planner Smoke Tests', () => {
+describe('Planner Smoke Tests:', () => {
   let planner: PlannerPage;
   let c = new Constants();
+
   beforeEach( async () => {
     await support.desktopTestSetup();
     let token = encodeURIComponent(JSON.stringify({
@@ -19,23 +20,23 @@ describe('Planner Smoke Tests', () => {
     planner = new PlannerPage(planner_url);
   });
 
-  it('can create a work item and add/remove assignee', async () => {
+  it('create a work item and add/remove assignee', async () => {
     await planner.createWorkItem(c.newWorkItem);
     expect(await planner.workItemList.hasWorkItem(c.newWorkItem.title)).toBeTruthy();
     await planner.workItemList.clickWorkItem(c.newWorkItem.title);
-    await planner.quickPreview.addAssignee(c.user);
-    expect(await planner.quickPreview.hasAssignee(c.user)).toBeTruthy();
 
+    await planner.quickPreview.addAssignee(c.user1);
+    expect(await planner.quickPreview.hasAssignee(c.user1)).toBeTruthy();
+    expect(await planner.quickPreview.hasCreationTime('Creating now!')).toBeTruthy();
     await planner.quickPreview.close();
 
     await planner.workItemList.clickWorkItem(c.newWorkItem.title);
-    await planner.quickPreview.addAssignee(c.user);
-    expect(await planner.quickPreview.hasAssignee(c.user)).toBeFalsy();
-
+    await planner.quickPreview.addAssignee(c.user1);
+    expect(await planner.quickPreview.hasAssignee(c.user1)).toBeFalsy();
     await planner.quickPreview.close();
   });
 
-  it('can update workitem title/description', async () => {
+  it('update workitem title/description', async () => {
     await planner.createWorkItem(c.newWorkItem1);
 
     expect(await planner.workItemList.hasWorkItem(c.newWorkItem1.title)).toBeTruthy();
@@ -47,6 +48,23 @@ describe('Planner Smoke Tests', () => {
     await planner.quickPreview.close();
     expect(await planner.workItemList.hasWorkItem(c.newWorkItem1.title)).toBeFalsy();
     expect(await planner.workItemList.hasWorkItem(c.updatedWorkItem.title)).toBeTruthy();
+  });
+
+  it('Edit and check WorkItem, creator name and image is reflected', async () => {
+    await planner.workItemList.clickWorkItem(c.workItemTitle1);
+    expect(await planner.quickPreview.hasCreator(c.user)).toBeTruthy();
+
+    await planner.quickPreview.updateTitle(c.updatedWorkItem.title);
+    expect(await planner.quickPreview.hasCreator(c.user)).toBeTruthy();
+    expect(await planner.quickPreview.hasCreatorAvatar(c.user_avatar)).toBeTruthy()
+    await planner.quickPreview.close();
+
+    expect(await planner.workItemList.hasWorkItem(c.workItemTitle1)).toBeFalsy();
+    expect(await planner.workItemList.hasWorkItem(c.updatedWorkItem.title)).toBeTruthy();
+
+    await planner.workItemList.clickWorkItem(c.updatedWorkItem.title);
+    expect(await planner.quickPreview.hasCreator(c.user)).toBeTruthy();
+    expect(await planner.quickPreview.hasCreatorAvatar(c.user_avatar)).toBeTruthy()
   });
 });
 
