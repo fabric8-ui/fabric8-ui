@@ -47,7 +47,7 @@ export class IterationEffects {
           }
           try {
             this.notifications.message({
-              message: `<strong>${iterationName}</strong> &nbsp; has started.`,
+              message: `${iterationName} is added.`,
               type: NotificationType.SUCCESS
             } as Notification);
           } catch (e) {
@@ -58,6 +58,14 @@ export class IterationEffects {
           });
         })
         .catch(() => {
+          try {
+            this.notifications.message({
+              message: `There was some problem adding the iteration.`,
+              type: NotificationType.DANGER
+            } as Notification);
+          } catch (e) {
+            console.log('Error displaying notification.')
+          }
           return Observable.of(new IterationActions.AddError());
         })
     })
@@ -71,7 +79,31 @@ export class IterationEffects {
         .map(iteration => {
           return itMapper.toUIModel(iteration);
         })
-       .map(iteration => new IterationActions.UpdateSuccess(iteration))
-       .catch(() => Observable.of(new IterationActions.UpdateError()))
+        .map(iteration => {
+          let iterationName = iteration.name;
+          if (iterationName.length > 15) {
+            iterationName = iterationName.slice(0, 15) + '...';
+          }
+          try {
+            this.notifications.message({
+              message: `${iterationName} is updated.`,
+              type: NotificationType.SUCCESS
+            } as Notification);
+          } catch (e) {
+            console.log('Error displaying notification.')
+          }
+          return new IterationActions.UpdateSuccess(iteration);
+        })
+        .catch(() => {
+          try {
+            this.notifications.message({
+              message: `There was some problem updating the iteration.`,
+              type: NotificationType.DANGER
+            } as Notification);
+          } catch (e) {
+            console.log('Error displaying notification.')
+          }
+          return Observable.of(new IterationActions.UpdateError());
+        })
     })
 }
