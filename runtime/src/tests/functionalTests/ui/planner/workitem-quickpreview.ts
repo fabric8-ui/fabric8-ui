@@ -31,8 +31,15 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   areaSaveButton = new ui.Button(this.$('#area-dropdown .save-button'), 'Area save button');
   areaCancelButton = new ui.Button(this.$('#area-dropdown .cancel-button'), 'Area cancel button');
 
+  iterationDropdown = new ui.Dropdown(
+    this.$('#iteration-dropdown > div > span'),
+    this.$('ul.item-ul.dropdown-list'),
+    'Iteration select dropdown'
+  );
+  iterationSaveButton = new ui.Button(this.$('#iteration-dropdown .save-button'), 'Iteration save button');
+  iterationCancelButton = new ui.Button(this.$('#iteration-dropdown .cancel-button'), 'Iteration cancel button');
+
   // TODO
-  iterationDropdown: ui.Dropdown;
   labelDropdown: ui.Dropdown;
   descriptionDiv = new ui.BaseElement(this.$('.description-fields-wrap'), 'WorkItem Description Div');
   descriptionTextarea = new ui.TextInput(this.descriptionDiv.$('.editor-box'), 'WorkItem Description Input');
@@ -75,7 +82,14 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.areaDropdown.clickWhenReady();
     await this.areaDropdown.select(areaTitle);
     await this.areaSaveButton.click();
-}
+  }
+
+  async addIteration(iterationTitle: string) {
+    await this.loadingAnimation.untilAbsent();
+    await this.iterationDropdown.clickWhenReady();
+    await this.iterationDropdown.select(iterationTitle);
+    await this.iterationSaveButton.click();
+  }
 
   async close() {
     await this.closeButton.click();
@@ -112,6 +126,12 @@ export class WorkItemQuickPreview extends ui.BaseElement {
 
   async hasDescription(description: string): Promise<Boolean> {
     return await this.descriptionTextarea.getText() == description;
+  }
+
+  async hasIteration(iterationTitle: string): Promise<Boolean> {
+    await this.loadingAnimation.untilAbsent();
+    let iteration = await this.iterationDropdown.getText();
+    return iteration === iterationTitle;
   }
 
   async updateTitle(title: string, append: boolean = false) {
