@@ -3,7 +3,6 @@ import { PlannerPage } from '../page_objects/planner';
 import { Constants } from '../support/constants';
 import * as support from '../support';
 
-
 describe('Planner Smoke Tests:', () => {
   let planner: PlannerPage;
   let c = new Constants();
@@ -97,5 +96,21 @@ describe('Planner Smoke Tests:', () => {
     await planner.quickPreview.close();
   });
 
+  it('Scenario-Quick Add should support Scenario, papercuts and fundamentals' ,async () => {
+    await planner.sidePanel.clickScenarios();
+    let wiTypes = await planner.quickAdd.workItemTypes();
+    expect(wiTypes.length).toBe(3);
+    expect(wiTypes).toContain('Scenario');
+    expect(wiTypes).toContain('Papercuts');
+    expect(wiTypes).toContain('Fundamental');
+  });
+
+  it('Experiences-Quick Add should support Experience and Value proposition', async () => {
+    await planner.sidePanel.clickExperience();
+    let wiTypes = await planner.quickAdd.workItemTypes();
+    expect(wiTypes.length).toBe(2);
+    expect(wiTypes).toContain('Experience');
+    expect(wiTypes).toContain('Value Proposition');
+  });
 });
 

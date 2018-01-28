@@ -26,6 +26,14 @@ export class SidePanel extends ui.BaseElement {
     support.debug('... check if Side panel is Ready - OK');
   }
 
+  async clickScenarios() {
+    await this.scenarioButton.clickWhenReady();
+  }
+
+  async clickExperience() {
+    await this.experienceButton.clickWhenReady();
+  }
+
   async createNewIteration() {
     // TODO
   }

@@ -30,10 +30,6 @@ wait_for_webdriver() {
 
   echo
   log.info "Webdriver manager up and running $GREEN OK"
-
-  # Cleanup webdriver-manager and web app processes
-  script.on_exit fuser -k -n tcp 4444
-  script.on_exit fuser -k -n tcp 8088
 }
 
 validate_test_config() {

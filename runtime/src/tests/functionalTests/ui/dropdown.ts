@@ -45,7 +45,7 @@ class DropdownMenu extends BaseElement {
 }
 
 export class Dropdown extends BaseElement {
-  menu: ElementFinder;
+  menu: DropdownMenu;
 
   constructor(element: ElementFinder, menuElement: ElementFinder, name: string = '') {
     super(element, name);
