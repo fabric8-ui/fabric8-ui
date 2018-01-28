@@ -15,7 +15,6 @@ let conf: Config = {
   },
 
   directConnect: process.env.DIRECT_CONNECTION === "true",
-  restartBrowserBetweenTests: true,
   useAllAngular2AppRoots: true,
   getPageTimeout: 1 * 60 * 1000, // must load within 1 min
   seleniumAddress: "http://localhost:4444/wd/hub",
