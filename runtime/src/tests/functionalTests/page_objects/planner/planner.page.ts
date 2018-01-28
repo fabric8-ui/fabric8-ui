@@ -11,7 +11,7 @@ export class PlannerPage extends AppPage {
   quickPreview = new planner.WorkItemQuickPreview($('work-item-preview'));
 
   constructor(url: string){
-    super()
+    super();
     this.url = url;
     this.openInBrowser();
   }

@@ -8,9 +8,9 @@ import * as support from '../support';
 export class MultipleSelectionList extends BaseElement {
   list = new BaseElement(this.$('div > ul'));
 
-	constructor(element: ElementFinder, name: string = '') {
-		super(element, name);
-	}
+  constructor(element: ElementFinder, name: string = '') {
+    super(element, name);
+  }
 
   async ready() {
     await super.ready()

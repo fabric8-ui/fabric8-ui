@@ -11,7 +11,7 @@ export class ModalDialog extends BaseElement {
   }
 
   async ready() {
-		await super.ready();
+    await super.ready();
     await this.content.ready();
   }
 

@@ -72,10 +72,10 @@ export class Dropdown extends BaseElement {
 export class SingleSelectionDropdown extends Dropdown {
   input = new Clickable(this.$('input.combobox[type="text"]'), '')
 
-	constructor(element: ElementFinder, menuElement: ElementFinder, name: string = '') {
-		super(element, menuElement, name);
+  constructor(element: ElementFinder, menuElement: ElementFinder, name: string = '') {
+    super(element, menuElement, name);
     this.input.name = name
-	}
+  }
 
   async ready() {
     await super.ready();

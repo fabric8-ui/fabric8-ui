@@ -135,7 +135,6 @@ export class Clickable extends BaseElement {
     await this.run('ready', async () => {
       await super.ready();
       await this.untilClickable();
-
     })
   }
 }
