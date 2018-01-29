@@ -43,7 +43,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   selectedIteration: IterationModel;
   allIterations: IterationModel[] = [];
   eventListeners: any[] = [];
-  masterIterations;
   treeIterations;
   activeIterations:IterationModel[] = [];
   menuList: any[] = [];

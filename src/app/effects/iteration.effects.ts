@@ -6,7 +6,7 @@ import { Notification, Notifications, NotificationType } from "ngx-base";
 
 import * as IterationActions from ".././actions/iteration.actions";
 import { IterationService } from '.././services/iteration.service';
-import{ IterationMapper } from "../models/iteration.model";
+import{ IterationMapper, IterationUI } from "../models/iteration.model";
 
 
 @Injectable()
@@ -14,6 +14,14 @@ export class IterationEffects {
   constructor( private actions$ : Actions,
                private iterationService : IterationService,
                private notifications: Notifications ) {
+  }
+
+  resolveChildren(iterations: IterationUI[]): IterationUI[] {
+    for(let i = 0; i < iterations.length; i++) {
+      iterations[i].children =
+        iterations.filter(it => it.parentId === iterations[i].id);
+    }
+    return iterations;
   }
 
   @Effect() getIterations$ : Observable<Action> = this.actions$
@@ -24,8 +32,11 @@ export class IterationEffects {
            const itMapper = new IterationMapper();
            return iterations.map(it => itMapper.toUIModel(it));
         })
-       .map(iterations => (new IterationActions.GetSuccess(iterations)))
-       .catch(() => Observable.of(new IterationActions.GetError()))
+        .map(iterations => {
+          return this.resolveChildren(iterations)
+        })
+        .map(iterations => (new IterationActions.GetSuccess(iterations)))
+        .catch(() => Observable.of(new IterationActions.GetError()))
     });
 
   @Effect() addIteration$: Observable<Action> = this.actions$

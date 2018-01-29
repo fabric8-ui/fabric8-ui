@@ -16,9 +16,9 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { IterationComponent } from './iterations-panel.component';
 import { IterationService } from '../../services/iteration.service';
 import { IterationListEntryComponent } from '../iteration-list-entry/iteration-list-entry.component';
-
+import { IterationTreeComponent } from '../iteration-tree/iteration-tree.component';
 import { ModalModule } from 'ngx-modal';
-import  { SwitchModule } from './../../components/switch/switch.module';
+import { SwitchModule } from './../../components/switch/switch.module';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TruncateModule } from 'ng2-truncate';
 
@@ -43,8 +43,6 @@ import { initialUIState } from './../../states/iteration.state';
     SwitchModule,
     WidgetsModule,
     RouterModule,
-    // TreeModule
-    // TreeListModule
     StoreModule.forFeature('iterationPanel', {
       iterationUI: iterationUiReducer
     }, {
@@ -56,7 +54,8 @@ import { initialUIState } from './../../states/iteration.state';
   declarations: [
     FabPlannerIterationModalComponent,
     IterationComponent,
-    IterationListEntryComponent
+    IterationListEntryComponent,
+    IterationTreeComponent
   ],
   exports: [IterationComponent],
   providers: [BsDropdownConfig, IterationService, TooltipConfig]

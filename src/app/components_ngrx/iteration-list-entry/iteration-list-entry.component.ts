@@ -1,15 +1,16 @@
-import { IterationModel } from '../../models/iteration.model';
-import { Component,
+import {
+  Component,
+  DoCheck,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewEncapsulation,
   OnChanges,
   SimpleChanges,
-  DoCheck,
-  OnDestroy,
-  ViewChild } from '@angular/core';
+  ViewChild
+} from '@angular/core';
 import {
   Router,
   ActivatedRoute,
@@ -21,9 +22,12 @@ import {
 import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 import { Dialog } from 'ngx-widgets';
+import { Space, Spaces } from 'ngx-fabric8-wit';
+import { Subscription } from 'rxjs/Subscription';
+
 import { FilterService } from '../../services/filter.service';
 import { GroupTypesService } from '../../services/group-types.service';
-//import { TreeListItemComponent } from 'ngx-widgets';
+import { IterationUI } from '../../models/iteration.model';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -33,16 +37,22 @@ import { GroupTypesService } from '../../services/group-types.service';
 })
 export class IterationListEntryComponent implements OnInit, OnDestroy {
   //@Input() listItem: TreeListItemComponent;
-  @Input() iteration: IterationModel;
+  @Input() iteration: IterationUI;
   @Input() selected: boolean = false;
   @Input() collection = [];
+  @Input() witGroup: string = '';
 
-  @Output() closeEvent: EventEmitter<IterationListEntryComponent> = new EventEmitter<IterationListEntryComponent>();
+  @Output() onEditIteration = new EventEmitter<IterationUI>();
+  @Output() onCloseIteration = new EventEmitter<IterationUI>();
+  @Output() onCreateIteration = new EventEmitter<IterationUI>();
+
 
   loggedIn: Boolean = false;
   queryParams: Object = {};
   eventListeners: any[] = [];
   selectedItemId: string | number = 0;
+  private spaceSubscription: Subscription = null;
+  spaceId: string = '';
 
   constructor(private auth: AuthenticationService,
     private broadcaster: Broadcaster,
@@ -51,19 +61,20 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
     private groupTypesService: GroupTypesService,
     private notifications: Notifications,
     private router: Router,
+    private spaces: Spaces,
     private logger: Logger) {}
 
   ngOnInit(): void {
     this.loggedIn = this.auth.isLoggedIn();
+    this.spaceSubscription = this.spaces.current.subscribe(space => {
+      if (space) {
+        this.spaceId = space.id;
+      }
+    });
   }
 
   ngOnDestroy() {
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
-  }
-
-  onClose(event: MouseEvent): any {
-    event.stopPropagation();
-    this.closeEvent.emit(this);
   }
 
   setGuidedTypeWI(wiCollection) {
@@ -71,31 +82,38 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   }
 
   constructURL(iterationId: string) {
-    //return this.filterService.constructQueryURL('', {iteration_id: iterationId});
-    //this.filterService.queryBuilder({}, '$IN',)
-    const it_key = 'iteration';
-    const it_compare = this.filterService.equal_notation;
-    const it_value = iterationId;
-    //Query for type
-    const it_query = this.filterService.queryBuilder(it_key, it_compare, it_value);
+    //Query for work item type group
+    const type_query = this.filterService.queryBuilder('$WITGROUP', this.filterService.equal_notation, this.witGroup);
     //Query for space
-    //const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
+    const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
+    //Query for iteration
+    const iteration_query = this.filterService.queryBuilder('iteration',this.filterService.equal_notation, iterationId);
     //Join type and space query
-    const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, it_query );
-
-    //For better usability, show all work items under an iteration
-    //Iterations should only show allowed work item types
-    // const wi_key = 'workitemtype';
-    // const wi_compare = this.filterService.in_notation;
-    // const wi_value = this.collection;
-
-    //Query for type
-    //const type_query = this.filterService.queryBuilder(wi_key, wi_compare, wi_value);
-    //const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
-    //const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
+    const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, space_query );
+    const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
+    const third_join = this.filterService.queryJoiner(second_join, this.filterService.and_notation, iteration_query);
+    //this.setGroupType(witGroup);
     //second_join gives json object
-    return this.filterService.jsonToQuery(first_join);
-    //reverse function jsonToQuery(second_join);
-    //return '';
+    return this.filterService.jsonToQuery(third_join);
+  }
+
+  toggleChildrenDisplay(iteration) {
+    iteration.showChildren = !iteration.showChildren;
+  }
+
+  editIteration(iteration) {
+    this.onEditIteration.emit(iteration);
+  }
+
+  closeIteration(iteration) {
+    this.onCloseIteration.emit(iteration);
+  }
+
+  createIteration(iteration) {
+    this.onCreateIteration.emit(iteration);
+  }
+  calcDepth(iteration: IterationUI): string {
+    let depth = ((iteration.parentPath).split('/')).length - 1;
+    return 'depth-' + depth;
   }
 }

@@ -1,10 +1,11 @@
-import { FilterService } from './../../services/filter.service';
+import { Params, ActivatedRoute } from '@angular/router';
+import {
+  Component, OnInit, OnDestroy,
+  TemplateRef, Input, OnChanges,
+  ViewChild, ViewEncapsulation
+} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-
-import { Params, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy,
-  TemplateRef, Input, OnChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
@@ -12,7 +13,8 @@ import { AuthenticationService } from 'ngx-login-client';
 import { GroupTypesService } from '../../services/group-types.service';
 import { IterationService } from '../../services/iteration.service';
 import { WorkItemService }   from '../../services/work-item.service';
-import { IterationUI, IterationModel } from '../../models/iteration.model';
+import { FilterService } from './../../services/filter.service';
+import { IterationUI } from '../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
 import { FabPlannerIterationModalComponent } from '../iterations-modal/iterations-modal.component';
 import {
@@ -40,25 +42,23 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() takeFromInput: boolean = false;
   @Input() iterations: IterationUI[] = [];
   @Input() collection = [];
-  @Input() sidePanelOpen: Boolean = true;
+  @Input() sidePanelOpen: boolean = true;
+  @Input() witGroup: string = '';
 
   @ViewChild('modal') modal: FabPlannerIterationModalComponent;
-  @ViewChild('treeList') treeList: TreeListComponent;
-
 
   authUser: any = null;
-  loggedIn: Boolean = true;
-  editEnabled: Boolean = false;
+  loggedIn: boolean = true;
+  editEnabled: boolean = false;
   barchatValue: number = 70;
   selectedIteration: IterationUI;
   allIterations: IterationUI[] = [];
   eventListeners: any[] = [];
-  currentSelectedIteration: string = '';
-  masterIterations;
-  treeIterations;
+  treeIterations: IterationUI[] = [];
   activeIterations:IterationUI[] = [];
-  emptyStateConfig: EmptyStateConfig;
-  treeListConfig: TreeListConfig;
+  spaceId: string = '';
+
+  private spaceSubscription: Subscription = null;
 
   constructor(
     private log: Logger,
@@ -76,31 +76,25 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.listenToEvents();
     this.loggedIn = this.auth.isLoggedIn();
-    this.getAndfilterIterations();
     this.editEnabled = true;
-    this.setTreeConfigs();
-  }
-
-  setTreeConfigs() {
-    this.emptyStateConfig = {
-      iconStyleClass: '',
-      title: 'No Iterations Available',
-      info: ''
-    } as EmptyStateConfig;
-
-    this.treeListConfig = {
-      dblClick: false,
-      emptyStateConfig: this.emptyStateConfig,
-      multiSelect: false,
-      selectItems: true,
-      selectionMatchProp: 'name',
-      showCheckbox: false,
-      treeOptions: {
-        allowDrag: false,
-        allowDrop: false,
-        isExpandedField: 'expanded'
-      }
-    } as TreeListConfig;
+    this.selectedIteration = {} as IterationUI;
+    this.spaceSubscription = this.store
+      .select('listPage')
+      .select('space')
+      .subscribe(space => {
+        if (space) {
+          console.log('[IterationComponent] New Space selected: ' + space.attributes.name);
+          console.log('collection is ', this.collection);
+          this.spaceId = space.id;
+          this.editEnabled = true;
+          this.getAndfilterIterations();
+        } else {
+          console.log('[IterationComponent] Space deselected.');
+          this.editEnabled = false;
+          this.allIterations = [];
+          this.activeIterations = [];
+        }
+      })
   }
 
   ngOnChanges() {
@@ -119,35 +113,24 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
+    this.spaceSubscription.unsubscribe();
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
   constructURL(iterationId: string) {
-    //return this.filterService.constructQueryURL('', {iteration_id: iterationId});
-    //this.filterService.queryBuilder({}, '$IN',)
-    const it_key = 'iteration';
-    const it_compare = this.filterService.equal_notation;
-    const it_value = iterationId;
-    //Query for type
-    const it_query = this.filterService.queryBuilder(it_key, it_compare, it_value);
+    //Query for work item type group
+    const type_query = this.filterService.queryBuilder('$WITGROUP', this.filterService.equal_notation, this.witGroup);
     //Query for space
-    //const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
+    const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
+    //Query for iteration
+    const iteration_query = this.filterService.queryBuilder('iteration',this.filterService.equal_notation, iterationId);
     //Join type and space query
-    const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, it_query );
-
-    //Iterations should only show allowed work item types
-    const wi_key = 'workitemtype';
-    const wi_compare = this.filterService.in_notation;
-    const wi_value = this.collection.map(i => i.id);
-
-    //Query for type
-    const type_query = this.filterService.queryBuilder(wi_key, wi_compare, wi_value);
+    const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, space_query );
     const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
-    //const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
+    const third_join = this.filterService.queryJoiner(second_join, this.filterService.and_notation, iteration_query);
+    //this.setGroupType(witGroup);
     //second_join gives json object
-    return this.filterService.jsonToQuery(second_join);
-    //reverse function jsonToQuery(second_join);
-    //return '';
+    return this.filterService.jsonToQuery(third_join);
   }
 
   getAndfilterIterations() {
@@ -163,96 +146,28 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       this.treeIterations =
             this.iterationService.getTopLevelIterations2(this.allIterations);
     } else {
-      this.store
-        .select('listPage')
-        .select('iterations')
-        .subscribe((iterations: IterationState) => {
-          // do not display the root iteration on the iteration panel.
-          this.allIterations = iterations.filter(i => {
-            return !this.iterationService.isRootIteration(i.parentPath);
-          });
-          this.clusterIterations();
-          this.treeIterations =
-            this.iterationService.getTopLevelIterations2(this.allIterations);
-        },
-        (e) => {
-          console.log('Some error has occured', e);
-        });
+      this.eventListeners.push(
+        this.store
+          .select('listPage')
+          .select('iterations')
+          .subscribe((iterations: IterationState) => {
+            // do not display the root iteration on the iteration panel.
+            this.allIterations = iterations.filter(i => {
+              return !this.iterationService.isRootIteration(i.parentPath);
+            });
+            this.clusterIterations();
+            this.treeIterations =
+              this.iterationService.getTopLevelIterations2(this.allIterations);
+          },
+          (e) => {
+            console.log('Some error has occured', e);
+          })
+        );
     }
-
-    // this.store
-    //     .select('iterationPanel')
-    //     .select('iterationUI')
-    //     .subscribe((val) => {
-    //       console.log('####-1', val);
-    //     },
-    //     (e) => {
-    //       console.log('Some error has occured', e);
-    //     });
   }
 
   clusterIterations() {
     this.activeIterations = this.allIterations.filter((iteration: IterationUI) => iteration.isActive);
-  }
-
-  //This function is called after the iteration modal closes.
-  onCreateOrupdateIteration(iteration: IterationUI) {
-    let index = this.allIterations.findIndex((it) => it.id === iteration.id);
-    if (index >= 0) {
-      this.allIterations[index] = iteration;
-      //if iteration is a child iteration update that content
-      let parent = this.iterationService.getDirectParent(iteration, this.allIterations);
-      if( parent != undefined ) {
-        let parentIndex = this.allIterations.findIndex(i => i.id === parent.id);
-        let childIndex = this.allIterations[parentIndex].children.findIndex(child => child.id === iteration.id);
-        this.allIterations[parentIndex].children[childIndex] = iteration;
-      }
-    } else {
-      this.allIterations.splice(this.allIterations.length, 0, iteration);
-      //Check if the new iteration has a parent
-      if (!this.iterationService.isTopLevelIteration(iteration)) {
-        let parent = this.iterationService.getDirectParent(iteration, this.allIterations);
-        let parentIndex = this.allIterations.findIndex(i => i.id === parent.id);
-        if(!this.allIterations[parentIndex].children) {
-          this.allIterations[parentIndex].children = [];
-          this.allIterations[parentIndex].hasChildren = true;
-        }
-        this.allIterations[parentIndex].children.push(iteration);
-      }
-      let childIterations = this.iterationService.checkForChildIterations2(iteration, this.allIterations);
-      if(childIterations.length > 0) {
-        this.allIterations[this.allIterations.length].hasChildren = true;
-        this.allIterations[this.allIterations.length].children = childIterations;
-      }
-    }
-    this.treeIterations = this.iterationService.getTopLevelIterations2(this.allIterations);
-    this.treeList.update();
-    this.clusterIterations();
-    // this.iterationService.emitCreateIteration(iteration);
-  }
-
-  getWorkItemsByIteration(iteration: IterationUI) {
-    let filters: any = [];
-    if (iteration) {
-      this.selectedIteration = iteration;
-      filters.push({
-        id:  iteration.id,
-        name: iteration.name,
-        paramKey: 'filter[iteration]',
-        active: true,
-        value: iteration.id
-      });
-      // emit event
-      this.broadcaster.broadcast('iteration_selected', iteration);
-    } else {
-      //This is to view the backlog
-      this.selectedIteration = null;
-      filters.push({
-        paramKey: 'filter[iteration]',
-        active: false,
-      });
-    }
-    this.broadcaster.broadcast('unique_filter', filters);
   }
 
   updateItemCounts() {
@@ -327,24 +242,15 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     event.stopPropagation();
   }
 
-  onEdit(event) {
-    let iteration = this.allIterations.find(item =>
-      item.id === event.id
-    );
+  onEdit(iteration) {
     this.modal.openCreateUpdateModal('update', iteration);
   }
 
-  onClose(event) {
-    let iteration = this.allIterations.find(item =>
-      item.id === event.id
-    );
+  onClose(iteration) {
     this.modal.openCreateUpdateModal('close', iteration);
   }
 
-  onCreateChild(event) {
-    let iteration = this.allIterations.find(item =>
-      item.id === event.id
-    );
+  onCreateChild(iteration) {
     this.modal.openCreateUpdateModal('createChild', iteration);
   }
 
@@ -374,12 +280,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
           this.updateItemCounts();
       })
     );
-    this.eventListeners.push(
-      this.broadcaster.on<WorkItem>('delete_workitem')
-        .subscribe((data: WorkItem) => {
-          this.updateItemCounts();
-      })
-    );
 
     this.eventListeners.push(
       this.broadcaster.on<WorkItem>('create_workitem')
@@ -393,7 +293,12 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   handleClick($event: Action, item: any) {
   }
 
-  setGuidedTypeWI() {
+  setGuidedTypeWI(iteration) {
+    this.selectedIteration = iteration;
     this.groupTypesService.setCurrentGroupType(this.collection, 'execution');
+  }
+
+  clearSelected() {
+    this.selectedIteration = {} as IterationUI;
   }
  }

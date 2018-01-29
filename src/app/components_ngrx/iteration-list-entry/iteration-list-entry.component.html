@@ -1,13 +1,22 @@
 <div class="f8-itr-entry"
+  [ngClass]="calcDepth(iteration)"
   [routerLinkActive]="'f8-itr-entry--selected'"
   [attr.data-id]="iteration.id">
+  <span *ngIf="!iteration.hasChildren" class="fa margin-right-15"></span>
+  <span *ngIf="iteration.hasChildren && !iteration.showChildren"
+    class="fa fa-angle-right margin-right-15"
+    (click)="toggleChildrenDisplay(iteration)" ></span>
+  <span *ngIf="iteration.hasChildren && iteration.showChildren"
+    class="fa fa-angle-down margin-right-15"
+    (click)="toggleChildrenDisplay(iteration)">
+  </span>
   <div class="f8-itr__header">
     <div class="truncate padding-right-15"
       [routerLink]="[]"
       [queryParams]="{q: constructURL(iteration.id)}"
       (click)="setGuidedTypeWI(collection)">
       <span class="f8-itr-name truncate">
-        {{iteration.name | truncate : 45 }}
+        {{iteration.name | truncate : 15 }}
       </span>
       <span
         *ngIf="iteration.isActive"
@@ -21,11 +30,38 @@
         -
         {{iteration.endAt ? (iteration.endAt | date:longDate) : 'Set end date'}}
       </span>
-      <span class="iteration-count pull-right">
-        {{iteration.workItemClosedCount}}
-        /{{iteration.workItemTotalCount}}
-      </span>
     </div>
+  </div>
+  <div class="dropdown-kebab-pf pull-right dropdown"
+    dropdown>
+    <button class="btn btn-link dropdown-toggle"
+      type="button"
+      aria-haspopup="true"
+      aria-expanded="true"
+      dropdownToggle>
+      <i class="fa fa-ellipsis-v"></i>
+    </button>
+    <ul class="dropdown-menu-right dropdown-menu"
+      *dropdownMenu>
+      <li>
+        <a class="pointer" (click)="editIteration(iteration)"
+          >
+          Edit {{ iteration.name | truncate : 15 }}
+        </a>
+      </li>
+      <li *ngIf="iteration.isActive">
+        <a class="pointer"
+          (click)="closeIteration(iteration)">
+            Close
+        </a>
+      </li>
+      <li>
+        <a class="pointer"
+          (click)="createIteration(iteration)">
+            Create child
+        </a>
+      </li>
+    </ul>
   </div>
 </div>
 

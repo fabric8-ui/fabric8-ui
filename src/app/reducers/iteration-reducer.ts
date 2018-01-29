@@ -27,18 +27,44 @@ export const iterationReducer: ActionReducer<IterationState> =
           if (parentIndex > -1) {
             state[parentIndex].hasChildren = true;
           }
+          if (state[parentIndex].children.length) {
+            state[parentIndex].children = [
+              action.payload.iteration,
+              ...state[parentIndex].children
+            ];
+          } else {
+            state[parentIndex].children = [
+              action.payload.iteration
+            ];
+          }
         }
         return [ action.payload.iteration, ...state ];
 
       case IterationActions.UPDATE_SUCCESS:
         const updatedIteration = action.payload;
+        updatedIteration.children =
+          state.filter(i => i.parentId === updatedIteration.id);
         const index = state.findIndex(i => i.id === updatedIteration.id);
         if (index > -1) {
-          return [
+          let newState = [];
+          newState = [
             ...state.slice(0, index),
             updatedIteration,
             ...state.slice(index + 1)
           ]
+          const parentIndex = newState.findIndex(i => i.id === updatedIteration.parentId);
+          if (parentIndex > -1 && newState[parentIndex].children) {
+            const childIndex =
+              newState[parentIndex].children.findIndex(i => i.id === updatedIteration.id);
+            if (childIndex > -1) {
+              newState[parentIndex].children = [
+                ...newState[parentIndex].children.slice(0, childIndex),
+                updatedIteration,
+                ...newState[parentIndex].children.slice(index + 1)
+              ]
+            }
+          }
+          return newState;
         }
         return state;
 

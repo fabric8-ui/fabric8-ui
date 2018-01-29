@@ -1,105 +1,7 @@
 <!--Iteration Start-->
 <div class="f8-itr">
-  <div class="f8-itr-wrapper">
-    <!-- display the active iterations first -->
-
   <!-- Active iteration -->
-    <div class="f8-itr__panel">
-
-      <div class="f8-itr__panel-hdr f8-itr__panel-hdr--active nohover">
-        <span class="fa fa-check pull-left margin-right-10 padding-top-2 padding-bottom-3"
-          tooltip="{{sidePanelOpen ? '' : 'Active Iteration'}}"
-          placement="right"></span>
-        <h3 class="padding-0 margin-0"
-          [class.show]="sidePanelOpen"
-          [class.hide]="!sidePanelOpen">
-          Active Iteration
-        </h3>
-      </div>
-      <ul class="f8-itr__List--expanded"
-        [class.show]="sidePanelOpen"
-        [class.hide]="!sidePanelOpen">
-        <li class="active f8-itr__container pull-left"
-          *ngFor="let iteration of activeIterations"
-          [routerLinkActive]="'f8-itr--selected'"
-          [routerLink]="[]" [attr.data-id]="iteration.id"
-          [queryParams]="{q: constructURL(iteration.id)}"
-          (click)="setGuidedTypeWI(item);">
-          <div class="f8-itr__List-subheader">
-            <div *ngIf="loggedIn"
-              class="dropdown-kebab-pf pull-right dropdown"
-              dropdown>
-              <button class="btn btn-link dropdown-toggle"
-                (click)="kebabMenuClick($event)"
-                type="button"
-                aria-haspopup="true"
-                aria-expanded="true"
-                dropdownToggle>
-                <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu-right dropdown-menu"
-                *dropdownMenu>
-                <li>
-                  <a class="pointer"
-                    (click)="modal.openCreateUpdateModal('update', iteration, $event);">
-                    Edit
-                  </a>
-                </li>
-                <li *ngIf="iteration.isActive">
-                  <a class="pointer"
-                    (click)="modal.openCreateUpdateModal('close', iteration, $event);">
-                      Close
-                  </a>
-                </li>
-                <li>
-                  <a class="pointer"
-                    (click)="modal.openCreateUpdateModal('createChild', iteration, $event);">
-                      Create child
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div class="truncate padding-right-15">
-              <span class="f8-itr-name truncate"
-                tooltip="{{iteration.name}}"
-                placement="top" id="{{iteration.name}}">
-                {{iteration.name | truncate : 45 }}
-              </span>
-              <div class="f8-itr__List-parent parent-iteration">
-                <div class="left-truncate">
-                  <span tooltip="{{iteration.resolvedParentPath + '/' + iteration.name }}"
-                    placement="top" id="{{iteration.resolvedParentPath + '/' + iteration.name }}">
-                    {{iteration.resolvedParentPath + '/' + iteration.name | truncate : -50 }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="progress margin-v-10">
-            <div class="progress-bar"
-                role="progressbar"
-                [attr.aria-valuenow]="iteration.workItemClosedCount"
-                aria-valuemin="0"
-                [attr.aria-valuemax]="iteration.workItemTotalCount"
-                [ngStyle]="{'width': ((iteration.workItemClosedCount / iteration.workItemTotalCount) * 100) + '%'}"
-                placement="top"
-                tooltip="{{((iteration.workItemClosedCount / iteration.workItemTotalCount) * 100) + '%'}}">
-            </div>
-          </div>
-          <div class="f8-itr-status">
-            <span *ngIf="iteration.startAt">
-              {{iteration.startAt | date:longDate}} - {{iteration.endAt | date:longDate}}(UTC)
-            </span>
-            <span class="f8-itr-count">
-              {{iteration.workItemClosedCount}} / {{iteration.workItemTotalCount}}
-            </span>
-          </div>
-          <p class="f8-itr-desc">{{ iteration.description }}</p>
-        </li>
-      </ul>
-    </div>
-    <!-- Nested Iteration Display -->
-    <div class="f8-itr__panel">
+    <div class="f8-itr__panel margin-bottom-15">
       <div class="f8-itr__panel-hdr f8-itr__panel-hdr--active nohover">
         <div class="f8-itr__add"
           [class.show]="sidePanelOpen"
@@ -112,78 +14,74 @@
               tooltip="Add an Iteration"></i>
           </a>
         </div>
-        <span class="fa fa-repeat pull-left margin-right-10 padding-top-2 padding-bottom-3"
-          tooltip="{{sidePanelOpen ? '' : 'All Iterations'}}"
-          placement="right">
-        </span>
+        <span class="pull-left fa fa-repeat margin-right-15
+          padding-top-2 padding-bottom-3"
+          tooltip="{{sidePanelOpen ? '' : 'Active Iteration'}}"
+          placement="right"></span>
         <h3 class="padding-0 margin-0"
           [class.show]="sidePanelOpen"
           [class.hide]="!sidePanelOpen">
-          All Iterations
+          Iterations
         </h3>
       </div>
-      <pfng-tree-list #treeList
-        [actionTemplate]="actionTemplate"
-        [config]="treeListConfig"
-        [itemTemplate]="itemTemplate"
-        [items]="treeIterations"
-        [loadTemplate]="loadTemplate"
-        (onClick)="handleClick($event)"
-        (onActionSelect)="handleAction($event)"
+      <ul
         [class.show]="sidePanelOpen"
         [class.hide]="!sidePanelOpen">
-        <ng-template #loadTemplate let-node="node" let-index="index">
-          <span>Loading...</span>
-        </ng-template>
-        <ng-template #itemTemplate let-node="node" let-index="index">
-          <iteration-list-entry
-            id="{{'iterationList_OuterWrap_' + index}}"
-            class="iteration-list-entry"
-            [iteration]="node.data"
-            [collection]="collection">
-          </iteration-list-entry>
-        </ng-template>
-        <ng-template #actionTemplate let-node="node" let-index="index">
-          <pfng-action class="list-pf-actions"
-            [template]="kebabAction">
-            <ng-template #kebabAction>
-              <div *ngIf="loggedIn"
-                class="dropdown-kebab-pf pull-right dropdown" dropdown>
-                <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
-                  <span class="fa fa-ellipsis-v"></span>
-                </button>
-                  <ul class="dropdown-menu-right dropdown-menu"
-                  *dropdownMenu>
-                  <li>
-                    <a class="pointer"
-                      (click)="onEdit(node.data)">
-                      Edit
-                    </a>
-                  </li>
-                  <li *ngIf="node.data.isActive">
-                    <a class="pointer"
-                      (click)="onClose(node.data)">
-                        Close
-                    </a>
-                  </li>
-                  <li>
-                    <a class="pointer"
-                      (click)="onCreateChild(node.data)">
-                        Create child
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </ng-template>
-          </pfng-action>
-        </ng-template>
-      </pfng-tree-list>
+        <li class="active f8-itr__container padding-v-2 padding-right-15 padding-left-5"
+          *ngFor="let iteration of activeIterations"
+          [routerLinkActive]="'f8-itr--selected'"
+          [routerLink]="[]" [attr.data-id]="iteration.id"
+          [queryParams]="{q: constructURL(iteration.id)}"
+          (click)="setGuidedTypeWI(iteration);">
+            <span id="{{iteration.resolvedParentPath +
+                '/' + iteration.name }}">
+              {{iteration.resolvedParentPath +
+                '/' + iteration.name | truncate : -20   }}
+            </span>
+            <span *ngIf='selectedIteration.id != iteration.id'
+              class="fa pull-right margin-top-3"></span>
+            <span *ngIf='selectedIteration.id == iteration.id'
+              class="fa fa-check pull-right margin-top-3"></span>
+            <span
+              *ngIf="iteration.isActive"
+              class="active-tag pull-right margin-right-5">
+                [Active]
+            </span>
+        </li>
+      </ul>
+      <form role="form"
+        class="search-pf has-button padding-h-15"
+        [class.show]="sidePanelOpen"
+        [class.hide]="!sidePanelOpen">
+        <div class="form-group">
+          <div class="search-pf-input-group">
+            <label for="search4" class="sr-only">Search</label>
+            <input id="search4" type="search" class="form-control" placeholder="Search is not functional" readonly>
+          </div>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-default" type="submit" disabled>
+            <span class="fa fa-search"></span>
+          </button>
+        </div>
+      </form>
     </div>
-  </div>
+    <!-- Nested Iteration Display -->
+    <div class="f8-itr__panel f8-itr__panel--nested"
+      [class.show]="sidePanelOpen"
+      [class.hide]="!sidePanelOpen"
+      (click)="clearSelected();">
+      <iteration-tree
+        [iterationList]="treeIterations"
+        [collection]="collection"
+        [witGroup]="witGroup"
+        (onEditIteration)="onEdit($event)"
+        (onCloseIteration)="onClose($event)"
+        (onCreateIteration)="onCreateChild($event)">
+      </iteration-tree>
+    </div>
 </div>
 <!-- Iteration End-->
 
-<fab-planner-iteration-modal
-  #modal
-  (onSubmit)="onCreateOrupdateIteration($event)" >
+<fab-planner-iteration-modal #modal>
 </fab-planner-iteration-modal>

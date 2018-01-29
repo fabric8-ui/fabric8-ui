@@ -4,25 +4,52 @@
   &-entry {
     width: 100%;
     padding: 5px;
+    padding-right: 10px;
     border-left: 4px solid;
     border-left-color: transparent;
     cursor: pointer;
     .badge { background-color: @color-pf-black; }
+    .fa {
+      float: left;
+      width: 15px;
+      padding: 5px;
+      font-size: 16px;
+    }
+    &--selected {
+      border-left-color: @color-pf-blue;
+      background-color: @color-pf-black-800;
+    }
+    .dropdown-kebab-pf {
+      .btn-link {
+        color: @color-pf-white;
+      }
+      .dropdown-menu-right {
+        right: -10px;
+      }
+    }
   }
   &__header {
     display: inline-block;
-    width: 100%;
     i { color: @color-pf-white; }
     &:focus, >div:focus {
       outline: none;
     }
   }
   &-status {
+    font-size: 12px;
     color: @color-pf-black-600;
   }
   .active-tag {
     padding-left: 10px;
+    font-size: 12px;
     font-weight: 600;
-    color: @color-pf-blue;
+    color: @color-pf-black-600;
   }
 }
+.calc-itr-depth(@n, @i: 1) when (@i =< @n) {
+  .depth-@{i} {
+    padding-left: (@i * 15px);
+  }
+  .calc-itr-depth(@n, (@i + 1));
+}
+.calc-itr-depth(4);
