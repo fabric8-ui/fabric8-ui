@@ -7,13 +7,13 @@ declare -r SCRIPT_DIR=$(cd $(dirname "$SCRIPT_PATH") && pwd)
 source "$SCRIPT_DIR/scripts/common.inc.sh"
 
 clean_up() {
-  OS=$(uname -a | awk '{print $1;}')
-  if [ $OS = 'Darwin' ]; then
-    kill -9 $(lsof -ti tcp:4444)
-    kill -9 $(lsof -ti tcp:8089)
-  else
-    fuser -k -n tcp 4444
-    fuser -k -n tcp 8089
+  # Kill webpack-dev-server process.
+  if [[ -n ${planner_pid+x} ]]; then
+    kill $planner_pid
+  fi
+  # Kill webdirver process.
+  if [[ -n ${webdriver_pid+x} ]]; then
+    kill $webdriver_pid
   fi
 }
 

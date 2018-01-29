@@ -11,6 +11,7 @@ start_webdriver() {
   log.info "Webdriver will log to:$GREEN $log_file"
 
   npm run webdriver:start >> "$log_file" 2>&1 &
+  webdriver_pid=$!
 }
 
 webdriver_running() {
@@ -26,6 +27,7 @@ wait_for_webdriver() {
 start_planner() {
   log.info "NODE_ENV=inmemory mode set; Planner will use mock data"
   NODE_ENV=inmemory npm run server:test &
+  planner_pid=$!
 }
 
 planner_running() {
