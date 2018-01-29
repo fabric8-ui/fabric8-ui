@@ -51,8 +51,10 @@ export class InlineInputComponent implements OnInit {
   saveClick() {
     this.errorMessage = '';
     this.saving = true;
+    let value = this.inputField.nativeElement.value.replace(/\n/g, "");
+    this.inputField.nativeElement.value = value;
     this.onSave.emit({
-      value: this.inputField.nativeElement.value,
+      value: value,
       callBack: (v: string = '', e: string = '') => this.handleSave(v, e)
     });
   }
@@ -68,11 +70,16 @@ export class InlineInputComponent implements OnInit {
   handleSave(value: string, error: string) {
     this.errorMessage = error;
     this.saving = false;
-    if (this.errorMessage) {
-
-    } else {
+    if (this.errorMessage) {} 
+    else {
       this.editing = false;
       this.inputValue = value;
     }
+  }
+
+  submitOnEnter(event) {
+    event.preventDefault();
+    this.saveClick();
+    this.inputField.nativeElement.blur();
   }
 }
