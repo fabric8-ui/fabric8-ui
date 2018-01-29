@@ -1,25 +1,21 @@
 #!/bin/bash
 set -e -u -o pipefail
 
-declare -r CURRENT_DIR=$(pwd)
 declare -r SCRIPT_PATH=$(readlink -f "$0")
 declare -r SCRIPT_DIR=$(cd $(dirname "$SCRIPT_PATH") && pwd)
 declare -r PLANNER_PORT=8090
 
 source "$SCRIPT_DIR/scripts/common.inc.sh"
 
-cd $SCRIPT_DIR
-
 clean_up() {
-  # Kill webpack-dev-server process.
-  if [[ -n ${planner_pid+x} ]]; then
-    kill $planner_pid
+  OS=$(uname -a | awk '{print $1;}')
+  if [ $OS = 'Darwin' ]; then
+    kill -9 $(lsof -ti tcp:4444)
+    kill -9 $(lsof -ti tcp:8089)
+  else
+    fuser -k -n tcp 4444
+    fuser -k -n tcp 8089
   fi
-  # Kill webdirver process.
-  if [[ -n ${webdriver_pid+x} ]]; then
-    kill $webdriver_pid
-  fi
-  cd $CURRENT_DIR
 }
 
 trap clean_up EXIT
@@ -61,9 +57,6 @@ main() {
 
   local protractor="$(npm bin)/protractor"
 
-  # Update webdriver. This is required even when direct_connect is set to true
-  log.info "Updating webdriver"
-  npm run webdriver:update
   [[ ${NODE_DEBUG:-false} == true ]] && protractor="node --inspect --debug-brk $protractor"
 
   # NOTE: do NOT quote $protractor as we want spaces to be interpreted as
