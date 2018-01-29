@@ -6,29 +6,34 @@ declare -r SCRIPT_DIR=$(cd $(dirname "$SCRIPT_PATH") && pwd)
 
 source "$SCRIPT_DIR/scripts/common.inc.sh"
 
-validate_config() {
-  local ret=0
-  export OSIO_USERNAME="${OSIO_USERNAME:-}"
-  export OSIO_PASSWORD="${OSIO_PASSWORD:-}"
-  validate_test_config OSIO_USERNAME "$OSIO_USERNAME" || ret=1
-  validate_test_config OSIO_PASSWORD "$OSIO_PASSWORD" || ret=1
-
-  return $ret
+clean_up() {
+  OS=$(uname -a | awk '{print $1;}')
+  if [ $OS = 'Darwin' ]; then
+    kill -9 $(lsof -ti tcp:4444)
+    kill -9 $(lsof -ti tcp:8089)
+  else
+    fuser -k -n tcp 4444
+    fuser -k -n tcp 8089
+  fi
 }
 
+trap clean_up EXIT
 
 main() {
-  local suite=${1:-specs}
-  export BASE_URL="${BASE_URL:-http://localhost:8080}"
-  
-  # validate_config || {
-  #   log.info "Please set test configs and re-run $0"
-  #   exit 1
-  # }
+  local suite=${1:-smokeTest}
+
+  # BASE_URL is set means planner is already running.
+  # Start planner only if BASE_URL is not set
+  if [[ -z ${BASE_URL+x} ]]; then
+    log.info "Starting planner locally (inmemory mode) ..."
+    start_planner
+    wait_for_planner
+  fi
+
+  export BASE_URL="${BASE_URL:-http://localhost:8089}"
 
   # NOTE: DO NOT start webdriver since we are using directConnection to chrome
   # see: http://www.protractortest.org/#/server-setup#connecting-directly-to-browser-drivers
-
   local direct_connection=true
   if [[ ${USE_WEBDRIVER:-false} == true ]]; then
     direct_connection=false
@@ -53,15 +58,14 @@ main() {
 
   [[ ${NODE_DEBUG:-false} == true ]] && protractor="node --inspect --debug-brk $protractor"
 
-  # TODO: may be target.url isn't needed at all since baseUrl can be set
-  # using --baseUrl
-
   # NOTE: do NOT quote $protractor as we want spaces to be interpreted as
   # seperate arguments
   DIRECT_CONNECTION=${direct_connection} $protractor --baseUrl "$BASE_URL" \
     --suite "${suite}" \
     protractorTS.config.js
   return $?
+
+  clean_up
 }
 
 main "$@"

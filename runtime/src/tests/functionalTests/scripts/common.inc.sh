@@ -19,24 +19,31 @@ webdriver_running() {
 
 wait_for_webdriver() {
   log.info "Waiting for the webdriver to start ..."
-
-  # Wait for port 4444 to be listening connections
-  ##### while ! (nc -w 1 127.0.0.1 4444 </dev/null >/dev/null 2>&1); do sleep 1; done
-
-  until webdriver_running ; do
-    sleep 1
-    echo -n .
-  done
-
-  echo
-  log.info "Webdriver manager up and running $GREEN OK"
+  wait_for webdriver_running
+  log.info "Webdriver manager up and running - OK"
 }
 
-validate_test_config() {
-  local key="$1"; shift
-  local value="${1:-}"; shift
+start_planner() {
+  log.info "NODE_ENV=inmemory mode set; Planner will use mock data"
+  NODE_ENV=inmemory npm run server:test &
+}
 
-  has_value "$value" && return 0
-  log.error "invalid test config ${GREEN}$key${RESET}: $YELLOW'$value'${RESET}"
-  return 1
+planner_running() {
+  curl --output /dev/null --silent --connect-timeout 1 --max-time 1 localhost:8089
+}
+
+wait_for_planner() {
+  log.info "Waiting for the planner to start "
+  wait_for planner_running
+  log.info "Planner up and running - OK"
+}
+
+# First arg is the command to execute
+wait_for() {
+  WAIT_LIMIT=5
+  NEXT_WAIT_TIME=0
+
+  until $1 || [ $NEXT_WAIT_TIME -eq $WAIT_LIMIT ]; do
+    sleep $(( NEXT_WAIT_TIME++ ))
+  done
 }

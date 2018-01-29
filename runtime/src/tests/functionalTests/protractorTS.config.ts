@@ -25,14 +25,14 @@ let conf: Config = {
   specs: ["specs/*.js", "specs/**/*.js"],
 
   suites: {
-    specs: ["specs/**/*.spec.js"]
+    smokeTest: ["specs/**/*.spec.js"]
   },
 
   // see: https://github.com/angular/protractor/blob/master/docs/timeouts.md
   capabilities: {
     browserName: "chrome",
     chromeOptions: {
-      args: ["--no-sandbox", "disable-popup-blocking=true"]
+      args: process.env.HEADLESS_MODE === 'true'? ['--no-sandbox', '--headless'] : ['--no-sandbox']
     }
   },
 
