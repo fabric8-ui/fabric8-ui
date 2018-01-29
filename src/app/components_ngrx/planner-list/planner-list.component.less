@@ -1,28 +1,30 @@
 @import (reference) '../../../assets/stylesheets/_base';
 @import '../../../assets/stylesheets/_planner-layout';
+@import '~rh-ngx-datatable/release/assets/icons.css';
+@import '~rh-ngx-datatable/release/themes/material.css';
+
 
 .f8-wi-container {
   .lock-overlay-list {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1000;
     width: 100%;
     height: 100%;
     background-color: fade(@color-pf-white, 70%);
     pointer-events: auto;
     cursor: default;
-    z-index: 1000;
     .spinner-container {
       position: absolute;
-      text-align: center;
       top: 10%;
       left: 50%;
       font-size: 50px;
+      text-align: center;
       color: @color-pf-black;
       transform: translate(-50%,-50%);
-      -ms-transform: translate(-50%,-50%);
       h2 {
-        margin-top: 0.5em;
+        margin-top: .5em;
       }
       .spinner {
         &:before {
@@ -35,24 +37,71 @@
     }
   }
   .f8-wi-list {
-    background-color: @color-pf-white;
     float: left;
     width: 100%;
     height: 100%;
+    background-color: @color-pf-white;
     &-wrap {
+      position: relative;
       width: 100%;
      // height: ~"calc(e('100% - 120px'))";
       // to avoid overflown scroll height should be there
       overflow-y: scroll;
-      >.list-group {
-        border-top-width: 0 !important;
-      }
       //List entry tree view specific css
       .tree-node-level-2 .list-pf-item {
         padding-left: 20px;
       }
       .tree-node-level-3 .list-pf-item {
         padding-left: 40px;
+      }
+    }
+    &__settings {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      &-dropdown {
+        width: 100%;
+        min-width: 400px;
+        height: 200px;
+        background-color: @color-pf-black-150;
+        &::after {
+          border-bottom-color: @color-pf-black-150;
+        }
+        aside {
+          float: right;
+          width: ~"calc(e('45% - 30px'))";
+          height: 100%;
+          padding-left: (@grid-gutter-width/6);
+          padding-right: (@grid-gutter-width/6);
+          &:first-child, &:nth-child(3) {
+            width: 10%;
+            padding: 0 (@grid-gutter-width/3);
+            span.fa {
+              width: 100%;
+              text-align: center;
+              padding: (@grid-gutter-width/6) 0;
+              margin: (@grid-gutter-width/6) 0;
+              font-size: @pf-icon-2x;
+            }
+            &:nth-child(3) {
+              margin-top: ((@grid-gutter-width/3) * 5);
+            }
+          }
+        }
+      }
+      &-column {
+        float: left;
+        width: 100%;
+        height: ~"calc(e('100% - 30px'))";
+        padding: (@grid-gutter-width/3);
+        list-style: none;
+        background-color: @color-pf-white;
+        border: 1px solid;
+        border-color: @color-pf-black-300;
+        overflow-y: scroll;
+        li {
+          width: 100%;
+        }
       }
     }
     .card-pf {
@@ -62,9 +111,8 @@
         .no-wi { font-size: @pf-icon-4x; }
       }
     }
-    &__quick-add {
+    &__quick-add-table {
       position: absolute;
-      bottom: 0;
     }
   }
 
@@ -73,8 +121,8 @@
     .list-pf-item {
 
       .list-pf-container {
-        align-items: flex-start !important;
-        padding: 15px !important;
+        align-items: flex-start;
+        padding: 15px;
       }
     }
     .tree-children {
@@ -85,11 +133,11 @@
       font-size: 16px;
     }
     .toggle-children-wrapper-expanded .toggle-children::before {
-      content: "\F107";
+      content: '\F107';
       -webkit-font-smoothing: antialiased;
     }
     .toggle-children-wrapper-collapsed .toggle-children::before {
-      content: "\F105";
+      content: '\F105';
       -webkit-font-smoothing: antialiased;
     }
     .list-pf-actions {
@@ -106,12 +154,12 @@
     }
   }
   .list-pf-chevron+.list-pf-content, .list-pf-select+.list-pf-content {
-    border-color: transparent;
     padding-left: 0;
+    border-color: transparent;
   }
   .list-pf:not(.list-pf-stacked) .list-pf-content-flex,
   .list-view-pf-main-info {
-    align-items: flex-start !important;
+    align-items: flex-start;
   }
   .list-view-pf-left {
     line-height: 1.3;
@@ -131,11 +179,123 @@
   }
   .expanderdisabled {
     .toggle-children {
-      display: none !important;
+      display: none;
     }
   }
   .tree-list-item {
     display: inline-flex;
     align-items: inherit;
   }
+}
+
+button.btn.btn-link.dropdown-toggle:focus {
+  outline: none;
+}
+
+.planner-hack-title-truncate {
+  max-width: ~"calc(e('100% - 20px'))";
+}
+
+a.disabled:hover {
+    color: #8b8d8f;
+}
+/// ng x-datatables css
+
+
+.cell-class {
+  overflow: visible !important;
+  padding-top: 3px !important;
+  padding-bottom: 4px !important;
+  line-height: 44px !important;
+}
+
+.header-cell{
+  font-weight: bold !important;
+  overflow: visible !important;
+  color: #363636 !important;
+}
+
+.datatable-row-detail {
+  overflow-y: visible;
+}
+
+.datatable-header {
+  overflow: visible !important;
+}
+
+.fullscreen {
+  position: absolute !important;
+  height: auto !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+a.quick-add-icon, .f8-action-icon {
+  opacity: 0;
+  text-decoration: none;
+}
+
+// Css for row selection
+.ngx-datatable.material.single-selection .datatable-body-row.active,
+.ngx-datatable.material.single-selection .datatable-body-row.active .datatable-row-group,
+.ngx-datatable.material.single-selection .datatable-body-row.active:hover,
+.ngx-datatable.material.single-selection .datatable-body-row.active:hover .datatable-row-group,
+.ngx-datatable.material.single-selection .datatable-body-row.active:focus,
+.ngx-datatable.material.single-selection .datatable-body-row.active:focus .datatable-row-group {
+    background-color: @color-pf-black-300 !important;
+}
+
+// css for row hover
+ .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover,
+ .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover .datatable-row-group,
+ .ngx-datatable.material.cell-selection .datatable-body-cell:hover,
+ .ngx-datatable.material.cell-selection .datatable-body-cell:hover .datatable-row-group {
+   background-color: @color-pf-blue-50;
+   transition-property: background;
+   transition-duration: .3s;
+   transition-timing-function: linear;
+ }
+
+
+
+// css to show icons on hover(quickAdd, quickPreview, detailPreview)
+.datatable-body-row:hover .wi-detail-icon, .datatable-body-row.active .wi-detail-icon,
+.datatable-body-row:hover .f8-action-icon, .datatable-body-row.active .f8-action-icon,
+.datatable-body-row:hover a.quick-add-icon, .datatable-body-row.active a.quick-add-icon {
+  opacity: 1;
+}
+
+.datatable-body-cell ,
+.datatable-header-cell {
+  border-right: 1px solid;
+  border-right-color: @color-pf-black-300;
+  &:last-child {
+    border-right-width: 0;
+  }
+}
+.datatable-row-wrapper:last-child {
+  border-bottom: 1px solid;
+  border-bottom-color: @color-pf-black-300;
+}
+.datatable-header-cell,
+.datatable-body-cell {
+  padding: ((@grid-gutter-width/10)) ((@grid-gutter-width/3)) ;
+}
+.datatable-body-cell {
+  overflow-x: visible !important;
+}
+
+.tree-icon {
+  min-width: 15px;
+  &.tree-icon__disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
+}
+.icon-loader {
+  margin-left: -4px;
+  margin-right: 6px;
 }
