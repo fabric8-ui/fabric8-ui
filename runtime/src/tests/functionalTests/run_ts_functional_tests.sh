@@ -56,6 +56,9 @@ main() {
 
   local protractor="$(npm bin)/protractor"
 
+  # Update webdriver. This is required even when direct_connect is set to true
+  log.info "Updating webdriver"
+  npm run webdriver:update
   [[ ${NODE_DEBUG:-false} == true ]] && protractor="node --inspect --debug-brk $protractor"
 
   # NOTE: do NOT quote $protractor as we want spaces to be interpreted as
