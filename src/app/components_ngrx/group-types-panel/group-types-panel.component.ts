@@ -34,6 +34,7 @@ export class GroupTypesComponent implements OnInit {
   private allowedChildWits: WorkItemType;
   private spaceId;
   private eventListeners: any[] = [];
+  private startedCheckingURL: boolean = false;
 
   constructor(
     private auth: AuthenticationService,
@@ -61,6 +62,9 @@ export class GroupTypesComponent implements OnInit {
       ).subscribe(([types, space]) => {
         this.groupTypes = types as GroupTypeUI[];
         this.spaceId = space.id;
+        if (!this.startedCheckingURL) {
+          this.checkURL();
+        }
       })
     );
   }
@@ -81,18 +85,25 @@ export class GroupTypesComponent implements OnInit {
     const second_join = this.filterService.queryJoiner(
       first_join, this.filterService.and_notation, type_query
     );
-    this.setGroupType(witGroup);
     //second_join gives json object
     return this.filterService.jsonToQuery(second_join);
     //reverse function jsonToQuery(second_join);
   }
 
-
-  setGroupType(groupType: GroupTypeUI) {
-    this.selectedgroupType = groupType;
-  }
-
-  setGuidedTypeWI(witGroup: GroupTypeUI) {
-    this.store.dispatch(new GroupTypeActions.SelectType(witGroup));
+  checkURL() {
+    this.startedCheckingURL = true;
+    this.eventListeners.push(
+      this.route.queryParams.subscribe(val => {
+        if (val.hasOwnProperty('q')) {
+          const selectedTypeGroupName =
+            this.filterService.getConditionFromQuery(val.q, '$WITGROUP');
+          const selectedTypeGroup =
+            this.groupTypes.find(g => g.name === selectedTypeGroupName);
+          if (!selectedTypeGroup.selected) {
+            this.store.dispatch(new GroupTypeActions.SelectType(selectedTypeGroup));
+          }
+        }
+      })
+    );
   }
 }

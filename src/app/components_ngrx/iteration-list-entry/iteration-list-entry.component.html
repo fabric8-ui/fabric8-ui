@@ -1,6 +1,6 @@
 <div class="f8-itr-entry"
   [ngClass]="calcDepth(iteration)"
-  [routerLinkActive]="'f8-itr-entry--selected'"
+  [class.f8-itr-entry--selected]="iteration.selected"
   [attr.data-id]="iteration.id">
   <span *ngIf="!iteration.hasChildren" class="fa margin-right-15"></span>
   <span *ngIf="iteration.hasChildren && !iteration.showChildren"

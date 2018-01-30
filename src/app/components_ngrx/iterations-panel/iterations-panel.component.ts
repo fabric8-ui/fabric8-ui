@@ -30,6 +30,7 @@ import {
 import { Store } from '@ngrx/store';
 import { AppState } from './../../states/app.state';
 import { IterationState, IterationUIState } from './../../states/iteration.state';
+import * as IterationActions from './../../actions/iteration.actions';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -57,6 +58,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   treeIterations: IterationUI[] = [];
   activeIterations:IterationUI[] = [];
   spaceId: string = '';
+  startedCheckingURL: boolean = false;
 
   private spaceSubscription: Subscription = null;
 
@@ -65,7 +67,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     private auth: AuthenticationService,
     private broadcaster: Broadcaster,
     private filterService: FilterService,
-    private groupTypesService: GroupTypesService,
     private iterationService: IterationService,
     private notifications: Notifications,
     private route: ActivatedRoute,
@@ -150,6 +151,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         this.store
           .select('listPage')
           .select('iterations')
+          .filter(iterations => !!iterations.length)
           .subscribe((iterations: IterationState) => {
             // do not display the root iteration on the iteration panel.
             this.allIterations = iterations.filter(i => {
@@ -158,6 +160,9 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
             this.clusterIterations();
             this.treeIterations =
               this.iterationService.getTopLevelIterations2(this.allIterations);
+            if (!this.startedCheckingURL) {
+              this.checkURL();
+            }
           },
           (e) => {
             console.log('Some error has occured', e);
@@ -289,16 +294,24 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     );
   }
 
-  //Patternfly-ng's tree list related functions
-  handleClick($event: Action, item: any) {
+  checkURL() {
+    this.startedCheckingURL = true;
+    this.eventListeners.push(
+      this.route.queryParams.subscribe(val => {
+        if (val.hasOwnProperty('q')) {
+          const selectedIterationID =
+            this.filterService.getConditionFromQuery(val.q, 'iteration');
+          if (selectedIterationID !== undefined) {
+            const selectedIteration =
+              this.allIterations.find(it => it.id === selectedIterationID);
+            if (!selectedIteration.selected) {
+              this.store.dispatch(new IterationActions.Select(selectedIteration));
+            }
+          } else {
+            this.store.dispatch(new IterationActions.Select());
+          }
+        }
+      })
+    );
   }
-
-  setGuidedTypeWI(iteration) {
-    this.selectedIteration = iteration;
-    this.groupTypesService.setCurrentGroupType(this.collection, 'execution');
-  }
-
-  clearSelected() {
-    this.selectedIteration = {} as IterationUI;
-  }
- }
+}

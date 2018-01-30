@@ -5,7 +5,6 @@
     [routerLink]="[]"
     [queryParams]="{q: fnBuildQueryParam(item)}"
     [class.selected]="item.selected"
-    (click)="setGuidedTypeWI(item);"
     *ngIf="item.showInSideBar">
       <span class="dib margin-right-10 {{ item.icon }}"
         tooltip="{{sidePanelOpen ? '' : item.name }}"

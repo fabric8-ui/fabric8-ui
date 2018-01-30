@@ -31,17 +31,14 @@
           *ngFor="let iteration of activeIterations"
           [routerLinkActive]="'f8-itr--selected'"
           [routerLink]="[]" [attr.data-id]="iteration.id"
-          [queryParams]="{q: constructURL(iteration.id)}"
-          (click)="setGuidedTypeWI(iteration);">
+          [queryParams]="{q: constructURL(iteration.id)}">
             <span id="{{iteration.resolvedParentPath +
                 '/' + iteration.name }}">
               {{iteration.resolvedParentPath +
                 '/' + iteration.name | truncate : -20   }}
             </span>
-            <span *ngIf='selectedIteration.id != iteration.id'
-              class="fa pull-right margin-top-3"></span>
-            <span *ngIf='selectedIteration.id == iteration.id'
-              class="fa fa-check pull-right margin-top-3"></span>
+            <span class="fa pull-right margin-top-3"
+              [class.fa-check]="iteration.selected"></span>
             <span
               *ngIf="iteration.isActive"
               class="active-tag pull-right margin-right-5">
@@ -69,8 +66,7 @@
     <!-- Nested Iteration Display -->
     <div class="f8-itr__panel f8-itr__panel--nested"
       [class.show]="sidePanelOpen"
-      [class.hide]="!sidePanelOpen"
-      (click)="clearSelected();">
+      [class.hide]="!sidePanelOpen">
       <iteration-tree
         [iterationList]="treeIterations"
         [collection]="collection"

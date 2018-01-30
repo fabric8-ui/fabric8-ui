@@ -98,6 +98,7 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   }
 
   toggleChildrenDisplay(iteration) {
+    // TODO: Dispatch an action to this
     iteration.showChildren = !iteration.showChildren;
   }
 

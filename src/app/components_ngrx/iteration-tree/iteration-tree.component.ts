@@ -16,8 +16,7 @@ import { IterationUI } from '../../models/iteration.model';
 
 export class IterationTreeComponent {
 
-  //using any as we are adding showChildren parameter
-  @Input() iterationList: any[] = [];
+  @Input() iterationList: IterationUI[] = [];
   @Input() collection: any;
   @Input() witGroup: string = '';
 
