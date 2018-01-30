@@ -1,7 +1,6 @@
 import { Config } from "protractor";
 import { SpecReporter } from "jasmine-spec-reporter";
 
-
 // Full protractor configuration file reference could be found here:
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 let conf: Config = {
@@ -50,7 +49,6 @@ let conf: Config = {
       })
     );
   },
-
 };
 
 exports.config = conf;

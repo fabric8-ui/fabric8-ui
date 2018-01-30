@@ -53,7 +53,7 @@ export class Dropdown extends BaseElement {
   }
 
   item(text: string): DropdownItem {
-    return this.menu.item(text)
+    return this.menu.item(text);
   }
 
   async select(text: string) {
@@ -70,16 +70,15 @@ export class Dropdown extends BaseElement {
 
 
 export class SingleSelectionDropdown extends Dropdown {
-  input = new Clickable(this.$('input.combobox[type="text"]'), '')
+  input = new Clickable(this.$('input.combobox[type="text"]'), '');
 
   constructor(element: ElementFinder, menuElement: ElementFinder, name: string = '') {
     super(element, menuElement, name);
-    this.input.name = name
+    this.input.name = name;
   }
 
   async ready() {
     await super.ready();
-    await this.input.ready()
+    await this.input.ready();
   }
 }
-

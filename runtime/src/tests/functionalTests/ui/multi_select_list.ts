@@ -13,20 +13,19 @@ export class MultipleSelectionList extends BaseElement {
   }
 
   async ready() {
-    await super.ready()
-    await this.list.ready()
+    await super.ready();
+    await this.list.ready();
   }
 
   item(text: string) {
     let el = this.list.element(by.cssContainingText(
       'li.checkbox label', text
     ))
-    return new Checkbox(el)
+    return new Checkbox(el);
   }
 
   async select(text: string) {
-    let checkbox = this.item(text)
-    await checkbox.clickWhenReady()
+    let checkbox = this.item(text);
+    await checkbox.clickWhenReady();
   }
 }
-

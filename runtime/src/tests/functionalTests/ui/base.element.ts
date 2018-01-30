@@ -58,7 +58,7 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
   }
 
   async untilClickable(timeout?: number) {
-    await this.waitFor('clickable', EC.elementToBeClickable(this), timeout)
+    await this.waitFor('clickable', EC.elementToBeClickable(this), timeout);
   }
 
   async untilPresent(timeout?: number) {
@@ -97,7 +97,7 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
   }
 
   private async waitFor(msg: string, condition: Function, timeout?: number) {
-    let wait: number = timeout || DEFAULT_WAIT
+    let wait: number = timeout || DEFAULT_WAIT;
     this.debug(`waiting for "${msg}"`, `  | timeout: '${wait}'`);
     await browser.wait(condition, wait);
     this.debug(`waiting for "${msg}"`, '  - OK');
@@ -105,7 +105,7 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
 
   async run(msg: string, fn: () => Promise<any>) {
     this.debug(msg);
-    await fn()
+    await fn();
     this.debug(msg, '- DONE');
   }
 
@@ -125,7 +125,7 @@ export class BaseElementArray extends ElementArrayFinder {
   }
 
   async ready(count: number = 1) {
-    await this.untilCount(count)
+    await this.untilCount(count);
   }
 
 }
