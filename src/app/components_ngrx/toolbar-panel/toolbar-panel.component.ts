@@ -187,6 +187,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store
       .select('toolbar')
       .select('filters')
+      .filter(filters => !!filters.length)
       .subscribe((filters) => this.setFilterTypes(filters));
 
   }
@@ -490,14 +491,13 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     if (Object.keys(filterMap).indexOf(event.field.id) > -1) {
       const index = this.filterConfig.fields.findIndex(i => i.id === event.field.id);
       if (filterMap[event.field.id].type !== 'text') {
-        filterMap[event.field.id].datasource.subscribe(resp => {
+        filterMap[event.field.id].datasource.take(1).subscribe(resp => {
           if (filterMap[event.field.id].datamap(resp).primaryQueries.length) {
-            this.toolbarConfig.filterConfig.fields[index].queries =
-            filterMap[event.field.id].datamap(resp).queries[0].id !== 'loader' ? [
+            this.toolbarConfig.filterConfig.fields[index].queries = [
               ...filterMap[event.field.id].datamap(resp).primaryQueries,
               this.separator,
               ...filterMap[event.field.id].datamap(resp).queries
-            ] : filterMap[event.field.id].datamap(resp).primaryQueries;
+            ];
           } else {
             this.toolbarConfig.filterConfig.fields[index].queries = filterMap[event.field.id].datamap(resp).queries;
           }
