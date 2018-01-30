@@ -1,11 +1,14 @@
 #!/bin/bash
 set -e -u -o pipefail
 
+declare -r CURRENT_DIR=$(pwd)
 declare -r SCRIPT_PATH=$(readlink -f "$0")
 declare -r SCRIPT_DIR=$(cd $(dirname "$SCRIPT_PATH") && pwd)
 declare -r PLANNER_PORT=8090
 
 source "$SCRIPT_DIR/scripts/common.inc.sh"
+
+cd $SCRIPT_DIR
 
 clean_up() {
   # Kill webpack-dev-server process.
@@ -16,6 +19,7 @@ clean_up() {
   if [[ -n ${webdriver_pid+x} ]]; then
     kill $webdriver_pid
   fi
+  cd $CURRENT_DIR
 }
 
 trap clean_up EXIT
