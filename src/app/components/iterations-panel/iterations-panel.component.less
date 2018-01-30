@@ -4,6 +4,14 @@
 .f8-itr {
   color: @color-pf-white;
   background-color: @color-pf-black-900;
+  .check-display {
+    display: none;
+  }
+  &--selected {
+    .check-display {
+      display: block;
+    }
+  }
   &__panel {
     display: block;
     &-hdr {

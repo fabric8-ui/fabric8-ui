@@ -261,7 +261,7 @@ class WorkItemListPage {
   }
 
   clickWorkItemTitle (title) {
-    this.clickWorkItem(this.workItemByTitle(title)) 
+    this.clickWorkItem(this.workItemByTitle(title))
     return new WorkItemDetailPage();
   }
 
@@ -630,29 +630,29 @@ class WorkItemListPage {
     return this.expandCurrentIterationIcon.click();
   }
 
-  get expandFutureIterationIcon () {
-    return element(by.xpath (".//text()[contains(.,'Future Iterations')]/.."));
-  }
+  // get expandFutureIterationIcon () {
+  //   return element(by.xpath (".//text()[contains(.,'Future Iterations')]/.."));
+  // }
 
-  clickExpandFutureIterationIcon () {
-    return this.expandFutureIterationIcon.click();
-  }
+  // clickExpandFutureIterationIcon () {
+  //   return this.expandFutureIterationIcon.click();
+  // }
 
-  get expandPastIterationIcon () {
-    return element(by.xpath (".//text()[contains(.,'Past Iterations')]/.."));
-  }
+  // get expandPastIterationIcon () {
+  //   return element(by.xpath (".//text()[contains(.,'Past Iterations')]/.."));
+  // }
 
-  clickExpandPastIterationIcon () {
-    return this.expandPastIterationIcon.click();
-  }
+  // clickExpandPastIterationIcon () {
+  //   return this.expandPastIterationIcon.click();
+  // }
 
-  get futureIterations () {
-    return element.all(by.xpath (".//text()[contains(.,'Future Iterations')]/../../../../ul/li"));
-  }
+  // get futureIterations () {
+  //   return element.all(by.xpath (".//text()[contains(.,'Future Iterations')]/../../../../ul/li"));
+  // }
 
-  get firstFutureIteration () {
-    return element.all(by.xpath (".//text()[contains(.,'Future Iterations')]/../../../../ul/li")).first();
-  }
+  // get firstFutureIteration () {
+  //   return element.all(by.xpath (".//text()[contains(.,'Future Iterations')]/../../../../ul/li")).first();
+  // }
 
   getIterationCounter (parentElement) {
     return parentElement.element(by.css(".badge"));
@@ -666,25 +666,35 @@ class WorkItemListPage {
     return element(by.xpath(".//text()[contains(.,'" + name + "')]/../../../.."));
   }
 
-  get lastFutureIteration () {
-    return element.all(by.xpath (".//text()[contains(.,'Future Iterations')]/../../../../ul/li")).last();
+  ActiveIterationsParent(name) {
+    let child = element(by.css('.active-iterations')).element(by.xpath(".//text()[contains(.,'" + name + "')]/../../.."));
+    return child;
   }
 
-  get pastIterations () {
-    return element.all(by.xpath (".//text()[contains(.,'Past Iterations')]/../../../ul"));
+  IterationsParent(name) {
+    let child = element(by.id('nested-iteration')).element(by.xpath(".//text()[contains(.,'" + name + "')]/../../../.."));
+    return child;
   }
 
-  get firstPastIteration () {
-    return element.all(by.xpath (".//text()[contains(.,'Past Iterations')]/../../../ul/li")).first();
-  }
+  // get lastFutureIteration () {
+  //   return element.all(by.xpath (".//text()[contains(.,'Future Iterations')]/../../../../ul/li")).last();
+  // }
 
-  get lastPastIteration () {
-    return element.all(by.xpath (".//text()[contains(.,'Past Iterations')]/../../../ul/li")).last();
-  }
+  // get pastIterations () {
+  //   return element.all(by.xpath (".//text()[contains(.,'Past Iterations')]/../../../ul"));
+  // }
 
-  firstCurrentIteration () {
-    return element.all(by.xpath (".//text()[contains(.,'Current Iterations')]/../../../../../ul/li")).first();
-  }
+  // get firstPastIteration () {
+  //   return element.all(by.xpath (".//text()[contains(.,'Past Iterations')]/../../../ul/li")).first();
+  // }
+
+  // get lastPastIteration () {
+  //   return element.all(by.xpath (".//text()[contains(.,'Past Iterations')]/../../../ul/li")).last();
+  // }
+
+  // firstCurrentIteration () {
+  //   return element.all(by.xpath (".//text()[contains(.,'Current Iterations')]/../../../../../ul/li")).first();
+  // }
 
   clickIterationAddButton () {
     return this.iterationAddButton().click();
@@ -757,6 +767,8 @@ class WorkItemListPage {
     return this.activeIterationButton.element(by.css('input')).getAttribute('checked');
   }
 
+
+
   /* data table Page object model */
   getdataTableHeaderCell() {
     return $$('datatable-header-cell');
@@ -765,7 +777,7 @@ class WorkItemListPage {
   getHeaderCellText() {
     return this.getdataTableHeaderCell().getText();
   }
-  
+
   getDataTableHeaderCellCount() {
     return this.getdataTableHeaderCell().count();
   }
@@ -802,7 +814,7 @@ class WorkItemListPage {
   clickCancelButton() {
     return this.getCancelButton().click();
   }
-  
+
   selectAttributeCheckBox(AttributeValue) {
     return element(By.xpath("//input[@id= '"+ AttributeValue + "']")).click();
   }
@@ -831,7 +843,7 @@ class WorkItemListPage {
   clickInlineQuickAddButton() {
     this.getInlineQuickAddBtn().click();
   }
-  
+
   clickInlineQuickAddandOpenButton() {
      return this.inlineQuickAddWorkItem().element(By.xpath("//button[text()=' Add and Open ']")).click();
   }
@@ -842,7 +854,7 @@ class WorkItemListPage {
 
   /* side panel*/
   getWorkItemGroup() {
-    browser.wait(until.presenceOf(this.getHidePanel()), constants.WAIT, 'Failed to find Hide panel button');    
+    browser.wait(until.presenceOf(this.getHidePanel()), constants.WAIT, 'Failed to find Hide panel button');
     return $$('.f8-group-filter');
   }
 

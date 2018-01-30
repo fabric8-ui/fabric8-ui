@@ -74,7 +74,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.spaceSubscription = this.spaces.current.subscribe(space => {
       if (space) {
         console.log('[IterationComponent] New Space selected: ' + space.attributes.name);
-        console.log('collection is ', this.collection);
         this.spaceId = space.id;
         this.editEnabled = true;
         this.getAndfilterIterations();
@@ -85,6 +84,11 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         this.activeIterations = [];
       }
     });
+    if( this.groupTypesService.getCurrentGroupName() === this.witGroup )
+      this.checkUrl();
+    else
+      this.clearSelected();
+
   }
 
   ngOnChanges() {
@@ -194,75 +198,6 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.iterationService.emitCreateIteration(iteration);
   }
 
-  updateItemCounts() {
-    this.log.log('Updating item counts..');
-    this.iterationService.getIterations().first().subscribe((updatedIterations:IterationModel[]) => {
-      // updating the counts from the response. May not the best solution on performance right now.
-      updatedIterations.forEach((thisIteration:IterationModel) => {
-        for (let i=0; i<this.iterations.length; i++) {
-          if (this.iterations[i].id === thisIteration.id) {
-            this.iterations[i].relationships.workitems.meta.total = thisIteration.relationships.workitems.meta.total;
-            this.iterations[i].relationships.workitems.meta.closed = thisIteration.relationships.workitems.meta.closed;
-          }
-        }
-      });
-    }, err => console.log(err));
-  }
-
-  assignWIToIteration(workItemId: string, reqVersion: number, iterationID: string, selfLink: string) {
-    let workItemPayload: WorkItem = {
-      id: workItemId,
-      type: 'workitems',
-      attributes: {
-        'version': reqVersion
-      },
-      relationships: {
-        iteration: {
-          data: {
-            id: iterationID,
-            type: 'iteration'
-          }
-        }
-      },
-      links: {
-        self: selfLink
-      }
-    } as WorkItem;
-
-    this.workItemService.update(workItemPayload)
-      .switchMap(item => {
-        return this.iterationService.getIteration(item.relationships.iteration)
-          .map(iteration => {
-            item.relationships.iteration.data = iteration;
-            return item;
-          });
-      })
-      .subscribe(workItem => {
-        this.workItemDataService.setItem(workItem);
-        this.iterationService.emitDropWI(workItem);
-        this.updateItemCounts();
-        try {
-        this.notifications.message({
-            message: workItem.attributes['system.title']+' has been associated with '+workItem.relationships.iteration.data.attributes['name'],
-            type: NotificationType.SUCCESS
-          } as Notification);
-        } catch(error) {
-          console.log('Error in displaying notification. work item associated with iteration.');
-        }
-      },
-      (err) => {
-        this.iterationService.emitDropWI(workItemPayload, true);
-        try {
-          this.notifications.message({
-            message: 'Something went wrong. Please try again',
-            type: NotificationType.DANGER
-          } as Notification);
-        } catch(error) {
-          console.log('Error in displaying notification. Error in work item association with iteration.');
-        }
-      })
-  }
-
   kebabMenuClick(event: Event) {
     event.stopPropagation();
   }
@@ -288,32 +223,39 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
       })
     );
     this.eventListeners.push(
-      this.broadcaster.on<string>('wi_change_state_it')
-        .subscribe((actions: any) => {
-          this.updateItemCounts();
-      })
-    );
-    this.eventListeners.push(
-      this.broadcaster.on<string>('associate_iteration')
-        .subscribe((data: any) => {
-          this.updateItemCounts();
-      })
-    );
-    this.eventListeners.push(
-      this.broadcaster.on<WorkItem>('create_workitem')
-        .subscribe((data: WorkItem) => {
-          this.updateItemCounts();
+      this.groupTypesService.groupTypeSelected.subscribe(wiTypeCollection => {
+        // console.log('listener for groupTypeSelected1', this.groupTypesService.getCurrentGroupName());
+        // console.log('listener for groupTypeSelected2', this.witGroup);
+        // if( this.groupTypesService.getCurrentGroupName() !== this.witGroup )
+        //   this.clearSelected();
+        // else
+        //   this.checkUrl();
       })
     );
   }
 
   setGuidedTypeWI(iteration) {
     this.selectedIteration = iteration;
-    this.groupTypesService.setCurrentGroupType(this.collection, 'execution');
+    this.groupTypesService.setCurrentGroupType(this.collection, 'Execution');
   }
 
   clearSelected() {
     this.selectedIteration = {} as IterationModel;
   }
 
- }
+  checkUrl() {
+    const queryParams = this.route.snapshot.queryParams;
+    let urlArray = this.route.snapshot.queryParams['q'].split('iteration:');
+    if (urlArray.length > 1 ) {
+      let ind = urlArray[1].indexOf(' $AND ');
+      let iterationId = '';
+      if (ind >= 0) {
+        iterationId = urlArray[1].substring(0,ind);
+      } else {
+        iterationId = urlArray[1].replace(')','');
+      }
+      let iteration = this.iterations.find( i => i.id === iterationId );
+      this.setGuidedTypeWI(iteration);
+    }
+  }
+}

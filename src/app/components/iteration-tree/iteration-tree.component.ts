@@ -24,6 +24,7 @@ export class IterationTreeComponent {
   @Output() onEditIteration = new EventEmitter<IterationModel>();
   @Output() onCloseIteration = new EventEmitter<IterationModel>();
   @Output() onCreateIteration = new EventEmitter<IterationModel>();
+  @Output() onSelectIteration = new EventEmitter<IterationModel>();
 
   editIteration(iteration) {
     this.onEditIteration.emit(iteration);
@@ -35,5 +36,9 @@ export class IterationTreeComponent {
 
   createIteration(iteration) {
     this.onCreateIteration.emit(iteration);
+  }
+
+  selectIteration(iteration) {
+    this.onSelectIteration.emit(iteration);
   }
 }

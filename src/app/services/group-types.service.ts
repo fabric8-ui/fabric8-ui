@@ -78,7 +78,11 @@ export class GroupTypesService {
   }
 
   getWitGroupList(): GroupTypesModel[] {
-    return this.groupTypes;
+    return this.groupTypes ? this.groupTypes : [];
+  }
+
+  getCurrentGroupName(): string {
+    return this.groupName ? this.groupName : '';
   }
 
   setCurrentGroupType(groupType, groupName: string = '') {

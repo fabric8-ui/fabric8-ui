@@ -27,13 +27,15 @@
       <ul
         [class.show]="sidePanelOpen"
         [class.hide]="!sidePanelOpen">
-        <li class="active f8-itr__container padding-v-2 padding-right-15 padding-left-5"
+        <li class="active-iterations active f8-itr__container padding-v-2 padding-right-15 padding-left-5"
           *ngFor="let iteration of activeIterations"
           [routerLinkActive]="'f8-itr--selected'"
-          [routerLink]="[]" [attr.data-id]="iteration.id"
-          [queryParams]="{q: constructURL(iteration.id)}"
-          (click)="setGuidedTypeWI(iteration);">
-            <span id="{{iteration.attributes.resolved_parent_path +
+          [attr.data-id]="iteration.id">
+          <div class="" [routerLink]="[]"
+            [queryParams]="{q: constructURL(iteration.id)}"
+            (click)="setGuidedTypeWI(iteration);">
+            <span
+              id="{{iteration.attributes.resolved_parent_path +
                 '/' + iteration.attributes.name }}">
               {{iteration.attributes.resolved_parent_path +
                 '/' + iteration.attributes.name | truncate : -20   }}
@@ -41,12 +43,13 @@
             <span *ngIf='selectedIteration.id != iteration.id'
               class="fa pull-right margin-top-3"></span>
             <span *ngIf='selectedIteration.id == iteration.id'
-              class="fa fa-check pull-right margin-top-3"></span>
+              class="fa fa-check pull-right margin-top-3 check-display"></span>
             <span
               *ngIf="iteration.attributes.active_status"
               class="active-tag pull-right margin-right-5">
                 [Active]
             </span>
+          </div>
         </li>
       </ul>
       <form role="form"
@@ -68,16 +71,18 @@
     </div>
     <!-- Nested Iteration Display -->
     <div class="f8-itr__panel f8-itr__panel--nested"
+      id="nested-iteration"
       [class.show]="sidePanelOpen"
       [class.hide]="!sidePanelOpen"
-      (click)="clearSelected();">
+    >
       <iteration-tree
         [iterationList]="treeIterations"
         [collection]="collection"
         [witGroup]="witGroup"
         (onEditIteration)="onEdit($event)"
         (onCloseIteration)="onClose($event)"
-        (onCreateIteration)="onCreateChild($event)">
+        (onCreateIteration)="onCreateChild($event)"
+        (onSelectIteration)="setGuidedTypeWI($event)">
       </iteration-tree>
     </div>
 </div>

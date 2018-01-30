@@ -71,7 +71,7 @@ describe('Iteration CRUD tests :: ', function () {
 
   /* Verify setting the fields in a new iteration*/
   it('Verify setting the Iteration title and description fields', function() {
-    /* Create a new iteration */ 
+    /* Create a new iteration */
     page.clickIterationAddButton();
     page.setIterationTitle(newIteration.Title, false);
     page.clickParentIterationDropDown();
@@ -208,6 +208,22 @@ describe('Iteration CRUD tests :: ', function () {
 //    expect(page.parentIterationDropDown().getAttribute('value')).toBe(firstIteration.shortPath);
   });
 
+  it('Selected active iteration and iteration gets highlighted', function() {
+    let selIteration = page.ActiveIterationsParent('Iteration 1');
+    selIteration.click();
+    expect(selIteration.getAttribute('class')).toContain('f8-itr--selected');
+    //Active iteration and selected iteration are highlighted
+    let selIteration1 = page.IterationsParent('Iteration 1');
+    expect(selIteration1.getAttribute('class')).toContain('f8-itr-entry--selected');
+  });
+
+  it('Selected iteration gets highlighted', function() {
+    let selIteration = page.IterationsParent('Iteration 0');
+    selIteration.click();
+    expect(selIteration.getAttribute('class')).toContain('f8-itr-entry--selected');
+  });
+
+
 //  it('Create a child Iteration', function() {
 //    page.clickIterationKebab(secondIteration.Index);
 //    page.clickChildIterationKebab();
@@ -317,9 +333,9 @@ describe('Iteration CRUD tests :: ', function () {
   //   page.clickIterationKebab("5");
   //   page.clickStartIterationKebab();
   //   page.clickCreateIteration();
-    
+
   //   expect(page.iterationCount.getText()).toBe('0 of 1 completed');
-    
+
   //   setWorkItemStatus (page, "Title Text 3", workitemStatus.Closed);
   //   page.lastFutureIteration.click();
   //   expect(page.iterationCount.getText()).toBe('1 of 1 completed');
@@ -332,7 +348,7 @@ describe('Iteration CRUD tests :: ', function () {
   //   /* Verify that the iteration is now considered past */
   //   page.clickExpandPastIterationIcon();
   //   expect(page.firstPastIteration.getText()).toContain("Iteration 4");
-  //   expect(page.getIterationCounter(page.lastPastIteration).getText()).toBe('1');   
+  //   expect(page.getIterationCounter(page.lastPastIteration).getText()).toBe('1');
 
   // });
 
@@ -360,9 +376,9 @@ describe('Iteration CRUD tests :: ', function () {
     var until = protractor.ExpectedConditions;
     thePage.workItemViewId(thePage.workItemByTitle(theWorkItemTitle)).getText().then(function (text) {
       var detailPage = thePage.clickWorkItemTitle(theWorkItemTitle);
-      browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
+      browser.wait(until.elementToBeClickable(detailPage.workItemStateDropDownButton), constants.WAIT, 'Failed to find workItemStateDropDownButton');
       detailPage.clickWorkItemStateDropDownButton();
-      browser.wait(until.elementToBeClickable(detailPage.WorkItemStateDropDownList().get(theWorkItemStatus)), constants.WAIT, 'Failed to find workItemStateDropDownButton');   
+      browser.wait(until.elementToBeClickable(detailPage.WorkItemStateDropDownList().get(theWorkItemStatus)), constants.WAIT, 'Failed to find workItemStateDropDownButton');
       detailPage.WorkItemStateDropDownList().get(theWorkItemStatus).click();
       detailPage.clickWorkItemDetailCloseButton();
     });

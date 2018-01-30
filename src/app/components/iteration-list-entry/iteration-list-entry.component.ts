@@ -45,6 +45,7 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   @Output() onEditIteration = new EventEmitter<IterationModel>();
   @Output() onCloseIteration = new EventEmitter<IterationModel>();
   @Output() onCreateIteration = new EventEmitter<IterationModel>();
+  @Output() onSelectIteration = new EventEmitter<IterationModel>();
 
 
   loggedIn: Boolean = false;
@@ -77,8 +78,9 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
-  setGuidedTypeWI(wiCollection) {
-    this.groupTypesService.setCurrentGroupType(wiCollection, 'execution');
+  setGuidedTypeWI(wiCollection, iteration) {
+    this.onSelectIteration.emit(iteration);
+    this.groupTypesService.setCurrentGroupType(wiCollection, 'Execution');
   }
 
   constructURL(iterationId: string) {
@@ -112,6 +114,7 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   createIteration(iteration) {
     this.onCreateIteration.emit(iteration);
   }
+
   calcDepth(iteration:IterationModel): string {
     let depth = ((iteration.attributes.parent_path).split('/')).length - 1;
     return 'depth-' + depth;

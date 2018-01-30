@@ -439,14 +439,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           newFilterObj[item.id] = item.value;
         })
         newFilterObj['space'] = this.currentSpace.id;
-        let showFlatList = false;
-        if (this.groupTypesService.groupName === 'execution' || this.groupTypesService.groupName === 'requirements')
-          showFlatList = true;
-        //console.log('showFlatList', this.groupTypesService.groupName);
-        let payload = {
-          //for execution level set this to true
-          //parentexists: true
-        };
+        let payload = {};
         if (this.route.snapshot.queryParams['q']) {
           let existingQuery = this.filterService.queryToJson(this.route.snapshot.queryParams['q']);
           let filterQuery = this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj));

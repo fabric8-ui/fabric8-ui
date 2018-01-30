@@ -14,7 +14,7 @@
     <div class="truncate padding-right-15"
       [routerLink]="[]"
       [queryParams]="{q: constructURL(iteration.id)}"
-      (click)="setGuidedTypeWI(collection)">
+      (click)="setGuidedTypeWI(collection, iteration)">
       <span class="f8-itr-name truncate">
         {{iteration.attributes.name | truncate : 15 }}
       </span>
