@@ -4,7 +4,7 @@
     id="{{item.group}}"
     [routerLink]="[]"
     [queryParams]="{q: fnBuildQueryParam(item)}"
-    [routerLinkActive]="'selected'"
+    [class.selected]="item.selected"
     (click)="setGuidedTypeWI(item);"
     *ngIf="item.showInSideBar">
       <span class="dib margin-right-10 {{ item.icon }}"
@@ -16,7 +16,7 @@
       {{ item.name }}</span>
   </a>
   <!--If group is execution show a header and then embed the iteration component -->
-  <div *ngIf="item.bucket == 'iteration'">
+  <div *ngIf="item.bucket === 'iteration'">
     <div class="width-100 pull-left">
       <fab-planner-iteration
         class="fab-planner-iteration"
