@@ -1,11 +1,11 @@
 import { Clickable } from './../base.element';
-import { ElementFinder, $, $$ } from 'protractor';
+import { ElementFinder, $, $$, browser } from 'protractor';
 import * as ui from './../../ui';
 import * as support from './../../support';
 
 export class WorkItemQuickPreview extends ui.BaseElement {
   // TODO - move loading animation out of here. It doesn't belong here.
-  loadingAnimation = new ui.BaseElement($$('.spinner').first(), 'Loading spinner animation');
+  loadingAnimation = new ui.BaseElementArray($$('.spinner'), 'Loading spinner animation');
   /* UI elements of the Top section of the workitem preview */
   closeButton = new ui.Button(this.$('.f8-quick-preview--close'), 'WorkItem Quick Preview close button');
   stateDropdown = new ui.Dropdown(this.$('.dropdown-toggle'), this.$('#wi-status-dropdown'), 'WorkItem State dropdown');
@@ -135,7 +135,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async updateTitle(title: string, append: boolean = false) {
-    await this.titleDiv.click();
+    await this.titleDiv.clickWhenReady();
     if(!append) {
       await this.titleInput.clear();
     }
