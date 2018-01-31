@@ -1,3 +1,4 @@
+import { FilterService } from './../../services/filter.service';
 import {
   Component,
   ElementRef,
@@ -6,7 +7,7 @@ import {
   ViewEncapsulation,
   ViewChild
 } from '@angular/core';
-
+import { ActivatedRoute, Router } from '@angular/router';
 import { PlannerLayoutComponent } from './../../widgets/planner-layout/planner-layout.component';
 import { Space } from 'ngx-fabric8-wit';
 
@@ -41,7 +42,10 @@ export class PlannerListComponent implements OnInit {
 
   constructor(
     private renderer: Renderer2,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private route: ActivatedRoute,
+    private router: Router,
+    private filterService: FilterService
   ) {}
 
   ngOnInit() {
@@ -52,6 +56,7 @@ export class PlannerListComponent implements OnInit {
       this.resizeHeight()
     });
     this.store.dispatch(new SpaceActions.Get());
+
     this.store
       .select('listPage')
       .select('space')
@@ -63,7 +68,12 @@ export class PlannerListComponent implements OnInit {
         this.store.dispatch(new AreaActions.Get());
         this.store.dispatch(new WorkItemTypeActions.Get());
         this.store.dispatch(new LabelActions.Get());
-      })
+      });
+
+    const queryParams = this.route.snapshot.queryParams;
+    if(Object.keys(queryParams).length === 0 && process.env.ENV != 'inmemory') {
+      this.setDefaultUrl();
+    }
   }
 
   resizeHeight() {
@@ -88,5 +98,46 @@ export class PlannerListComponent implements OnInit {
 
   togglePanel() {
     this.plannerLayout.toggleSidePanel();
+  }
+
+  setDefaultUrl() {
+    //redirect to default type group
+    //get space id
+    this.store
+      .select('listPage')
+      .select('space')
+      .filter(s => !!s)
+      .take(1)
+      .subscribe(space => {
+        if (space) {
+          const spaceId = space.id;
+          //get groupsgroups
+          this.store
+            .select('listPage')
+            .select('groupTypes')
+            .filter(g => !!g.length)
+            .take(1)
+            .subscribe(groupTypes => {
+              const defaultGroupName = groupTypes[0].name;
+              //Query for work item type group
+              const type_query = this.filterService.queryBuilder('$WITGROUP', this.filterService.equal_notation, defaultGroupName);
+              //Query for space
+              const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, spaceId);
+              //Join type and space query
+              const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, space_query );
+              const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
+              //const view_query = this.filterService.queryBuilder('tree-view', this.filterService.equal_notation, 'true');
+              //const third_join = this.filterService.queryJoiner(second_join);
+              //second_join gives json object
+              let query = this.filterService.jsonToQuery(second_join);
+              console.log('query is ', query);
+              // { queryParams : {q: query}
+              this.router.navigate([], {
+                relativeTo: this.route,
+                queryParams: { q: query }
+              });
+            });
+        }
+      });
   }
 }
