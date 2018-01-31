@@ -23,6 +23,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   assigneeDropdownCloseButton = new ui.Button(
     this.$('#f8-add-assignee-dropdown .close-pointer'),
     'Assignee dropdown close button');
+  assigneeDiv = new ui.BaseElement(this.$('f8-assignee'), 'Assignee List Div');
   areaDropdown = new ui.Dropdown(
     this.$('#area-dropdown > div > span'),
     this.$('ul.item-ul.dropdown-list'),
@@ -81,18 +82,18 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.loadingAnimation.untilAbsent();
     await this.areaDropdown.clickWhenReady();
     await this.areaDropdown.select(areaTitle);
-    await this.areaSaveButton.click();
+    await this.areaSaveButton.clickWhenReady();
   }
 
   async addIteration(iterationTitle: string) {
     await this.loadingAnimation.untilAbsent();
     await this.iterationDropdown.clickWhenReady();
     await this.iterationDropdown.select(iterationTitle);
-    await this.iterationSaveButton.click();
+    await this.iterationSaveButton.clickWhenReady();
   }
 
   async close() {
-    await this.closeButton.click();
+    await this.closeButton.clickWhenReady();
   }
 
   async hasArea(areaName: string) {
@@ -115,7 +116,8 @@ export class WorkItemQuickPreview extends ui.BaseElement {
 
   async hasAssignee(name: string): Promise<Boolean> {
     await this.loadingAnimation.untilAbsent();
-    let assigneeList = await this.$$(".f8-assignees span").getText();
+    await this.assigneeDiv.untilDisplayed();
+    let assigneeList = await this.assigneeDiv.getText();
     return assigneeList.indexOf(name) > -1;
   }
 
@@ -140,11 +142,11 @@ export class WorkItemQuickPreview extends ui.BaseElement {
       await this.titleInput.clear();
     }
     await this.titleInput.sendKeys(title);
-    await this.titleSaveButton.click();
+    await this.titleSaveButton.clickWhenReady();
   }
 
   async updateDescription(description: string, append: boolean = false) {
-    await this.descriptionDiv.click();
+    await this.descriptionDiv.clickWhenReady();
     if(!append) {
       await this.descriptionTextarea.clear();
     }
