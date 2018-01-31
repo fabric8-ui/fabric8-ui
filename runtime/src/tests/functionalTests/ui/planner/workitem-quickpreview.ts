@@ -98,13 +98,13 @@ export class WorkItemQuickPreview extends ui.BaseElement {
 
   async hasArea(areaName: string) {
     await this.loadingAnimation.untilAbsent();
-    let area = await this.areaDropdown.getText();
+    let area = await this.areaDropdown.getTextWhenReady();
     return area === areaName;
   }
 
   async hasCreator(name: string): Promise<Boolean> {
     await this.loadingAnimation.untilAbsent();
-    let creator = await this.creatorusername.getText();
+    let creator = await this.creatorusername.getTextWhenReady();
     return creator === name;
   }
 
@@ -117,22 +117,22 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   async hasAssignee(name: string): Promise<Boolean> {
     await this.loadingAnimation.untilAbsent();
     await this.assigneeDiv.untilDisplayed();
-    let assigneeList = await this.assigneeDiv.getText();
+    let assigneeList = await this.assigneeDiv.getTextWhenReady();
     return assigneeList.indexOf(name) > -1;
   }
 
   async hasCreationTime(time: string): Promise<Boolean> {
-    let origTime = await this.creationTimeDiv.getText()
+    let origTime = await this.creationTimeDiv.getTextWhenReady()
     return time === origTime;
   }
 
   async hasDescription(description: string): Promise<Boolean> {
-    return await this.descriptionTextarea.getText() == description;
+    return await this.descriptionTextarea.getTextWhenReady() == description;
   }
 
   async hasIteration(iterationTitle: string): Promise<Boolean> {
     await this.loadingAnimation.untilAbsent();
-    let iteration = await this.iterationDropdown.getText();
+    let iteration = await this.iterationDropdown.getTextWhenReady();
     return iteration === iterationTitle;
   }
 

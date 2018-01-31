@@ -109,6 +109,10 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
     this.debug(msg, '- DONE');
   }
 
+  async getTextWhenReady(timeout?: number): Promise<string> {
+    await this.untilDisplayed(timeout);
+    return this.getText();
+  }
 }
 
 export class BaseElementArray extends ElementArrayFinder {
