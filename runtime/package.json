@@ -24,7 +24,7 @@
     "preversion": "npm test",
     "rimraf": "rimraf",
     "server:dev": "webpack-dev-server --host 0.0.0.0 --config config/webpack.dev.js --progress --profile --watch --content-base src/",
-    "server:test": "webpack-dev-server --host 0.0.0.0 --port 8089 --config config/webpack.dev.js --bail",
+    "server:test": "webpack-dev-server --host 0.0.0.0 --config config/webpack.dev.js --bail",
     "server:prod": "http-server dist -c-1 --cors",
     "server": "npm run server:dev",
     "start": "npm run server:dev",

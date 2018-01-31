@@ -4,6 +4,7 @@ set -e -u -o pipefail
 declare -r CURRENT_DIR=$(pwd)
 declare -r SCRIPT_PATH=$(readlink -f "$0")
 declare -r SCRIPT_DIR=$(cd $(dirname "$SCRIPT_PATH") && pwd)
+declare -r PLANNER_PORT=8090
 
 source "$SCRIPT_DIR/scripts/common.inc.sh"
 
@@ -34,7 +35,7 @@ main() {
     wait_for_planner
   fi
 
-  export BASE_URL="${BASE_URL:-http://localhost:8089}"
+  export BASE_URL="${BASE_URL:-http://localhost:$PLANNER_PORT}"
 
   # NOTE: DO NOT start webdriver since we are using directConnection to chrome
   # see: http://www.protractortest.org/#/server-setup#connecting-directly-to-browser-drivers
