@@ -20,14 +20,14 @@ export abstract class AppPage extends BasePage {
    * Returns an instance of the BaseElement that can be found using
    * the {css} and contains the {text}.
    *
-   * @param {UI} The Base Element Class e.g. Button, TextInput
+   * @param {ui} The Base Element Class e.g. Button, TextInput
    * @param {css}  Css within the appTag that identifies the element
    * @param {text} text in the element
    *
    */
-  innerElement(UI: typeof BaseElement, css: string, text: string): BaseElement {
+  innerElement(ui: typeof BaseElement, css: string, text: string): BaseElement {
     const element = this.appTag.element(by.cssContainingText(css, text));
-    return new UI(element, text);
+    return new ui(element, text);
   }
 
   async ready() {

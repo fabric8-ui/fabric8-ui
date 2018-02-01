@@ -44,7 +44,7 @@ export abstract class BasePage {
 
   async openInBrowser() {
     if (this.url === undefined ) {
-      throw Error('Trying to open and undefined url');
+      throw Error('Trying to open an undefined url');
     }
 
     this.log('Opening', this.url)

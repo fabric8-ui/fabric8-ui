@@ -1,11 +1,10 @@
 import { browser } from 'protractor';
 import { PlannerPage } from '../page_objects/planner';
-import { Constants } from '../support/constants';
 import * as support from '../support';
 
 describe('Planner Smoke Tests:', () => {
   let planner: PlannerPage;
-  let c = new Constants();
+  let c = new support.Constants();
 
   beforeEach( async () => {
     await support.desktopTestSetup();
