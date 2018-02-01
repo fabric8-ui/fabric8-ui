@@ -63,8 +63,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   commentsInputField = new ui.TextInput(this.commentDiv.$('.editor-box.editor-markdown'), 'comment input field');
   commentSaveButton = new ui.Button(this.commentDiv.$('.btn-save'), 'Comment save button');
   commentCancelButton = new ui.Button(this.commentDiv.$$('.fl.btn.btn-primary.pull-right.action-btn').first(), 'Comment cancel button');
-  commentBodyDiv = $('.f8-comment-body');
-  commentsText = this.commentBodyDiv.$$('.editor-box.editor-preview');
+  commentsText = new ui.BaseElementArray(this.$$('.f8-comment-body .editor-box.editor-preview'), 'Comment List');
   
   constructor(ele: ElementFinder, name: string = '') {
     super(ele, name);
@@ -104,7 +103,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   private async addComment(comment: string) {
     await this.loadingAnimation.untilAbsent();
     await this.commentsField.clickWhenReady();
-    await this.commentsInputField.sendKeys(comment);
+    await this.commentsInputField.enterText(comment);
   }
 
   async addCommentAndSave(comment: string) {
@@ -115,10 +114,6 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   async addCommentAndCancel(comment: string) {
     await this.addComment(comment);
     await this.commentCancelButton.clickWhenReady();
-  }
-
-  async getAllComments() {
-    return this.commentsText.getText();
   }
 
   async close() {
@@ -150,6 +145,11 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     return assigneeList.indexOf(name) > -1;
   }
 
+  async hasComment(comment: string): Promise<Boolean> {
+    let commentList = await this.commentsText.getTextWhenReady();
+    return commentList.indexOf(comment) > -1;
+  }
+
   async hasCreationTime(time: string): Promise<Boolean> {
     let origTime = await this.creationTimeDiv.getTextWhenReady()
     return time === origTime;
@@ -170,7 +170,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     if(!append) {
       await this.titleInput.clear();
     }
-    await this.titleInput.sendKeys(title);
+    await this.titleInput.enterText(title);
     await this.titleSaveButton.clickWhenReady();
   }
 
@@ -179,7 +179,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     if(!append) {
       await this.descriptionTextarea.clear();
     }
-    await this.descriptionTextarea.sendKeys(description);
+    await this.descriptionTextarea.enterText(description);
     await this.descriptionSaveButton.clickWhenReady();
   }
 

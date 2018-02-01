@@ -130,6 +130,15 @@ export class BaseElementArray extends ElementArrayFinder {
 
   async ready(count: number = 1) {
     await this.untilCount(count);
+    await this.each(async (item: ElementFinder, index: number) => {
+      let tempItem = new BaseElement(item, this.name + ' - ' + index);
+      await tempItem.ready();
+    });
+  }
+
+  async getTextWhenReady() {
+    await this.ready();
+    return await this.getText();
   }
 
   async untilAbsent() {
