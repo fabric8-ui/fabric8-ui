@@ -1,3 +1,4 @@
+import { Broadcaster } from 'ngx-base';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import {
@@ -22,7 +23,6 @@ import {
   ToolbarConfig
 } from 'patternfly-ng';
 
-import { Broadcaster } from 'ngx-base';
 import { Spaces } from 'ngx-fabric8-wit';
 import {
   AuthenticationService,
@@ -31,18 +31,15 @@ import {
 } from 'ngx-login-client';
 import { Space } from 'ngx-fabric8-wit';
 
-import { EventService } from './../../services/event.service';
 import { AreaUI } from '../../models/area.model';
-import { AreaService } from '../../services/area.service';
 import { FilterModel } from '../../models/filter.model';
-import { CollaboratorService } from '../../services/collaborator.service';
 import { FilterService } from '../../services/filter.service';
-import { LabelService } from '../../services/label.service';
 import { LabelUI } from './../../models/label.model';
-import { WorkItemService } from '../../services/work-item.service';
 import { WorkItemTypeUI } from '../../models/work-item-type';
 import { WorkItem } from '../../models/work-item';
 import { UserUI } from './../../models/user';
+import { IterationUI } from './../../models/iteration.model';
+import { GroupTypeUI } from './../../models/group-types.model';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
@@ -65,7 +62,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() onCreateNewWorkItemSelected: EventEmitter<any | null> = new EventEmitter();
 
   loggedIn: boolean = false;
-  editEnabled: boolean = false;
   showTypesOptions: boolean = false;
 
   filters: any[] = [];
@@ -105,11 +101,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   private queryParamSubscriber = null;
   private savedFIlterFieldQueries = {};
 
-  // This flag tells if an update for filter is coming from
-  // tool bar internaly or not
-  private internalFilterChange = false;
-  private firstVisit = true;
-
   private separator = {
           id: 'separator',
           value: null,
@@ -120,19 +111,26 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           value: 'Loading...',
           iconStyleClass: 'fa fa-spinner'
       };
+  private areaData: Observable<AreaUI[]>;
+  private allUsersData: Observable<UserUI[]>;
+  private workItemTypeData: Observable<WorkItemTypeUI[]>;
+  private stateData: Observable<string[]>;
+  private labelData: Observable<LabelUI[]>;
+  private spaceData: Observable<Space>;
+  private filterData: Observable<FilterModel[]>;
+  private groupTypeData: Observable<GroupTypeUI[]>;
+  private iterationData: Observable<IterationUI[]>;
+
+  private activeFilters = [];
+  private activeFilterFromSidePanel: string = '';
+  private currentQuery: string = '';
 
   constructor(
-    private eventService: EventService,
     private router: Router,
     private route: ActivatedRoute,
     private broadcaster: Broadcaster,
-    private areaService: AreaService,
-    private collaboratorService: CollaboratorService,
     private filterService: FilterService,
-    private labelService: LabelService,
-    private workItemService: WorkItemService,
     private auth: AuthenticationService,
-    private spaces: Spaces,
     private userService: UserService,
     private store: Store<AppState>) {
   }
@@ -140,38 +138,20 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     console.log('[ToolbarPanelComponent] Running in context: ' + this.context);
     this.loggedIn = this.auth.isLoggedIn();
-    this.firstVisit = true;
+    this.initiateDataSources();
     // we want to get notified on space changes.
-    this.spaceSubscription = this.store
-      .select('listPage')
-      .select('space')
-      .filter(space => space !== null)
+    this.spaceSubscription = this.spaceData
       .subscribe((space: Space) => {
         console.log('[ToolbarPanelComponent] New Space selected: ' + space.attributes.name);
-        this.editEnabled = true;
+        this.store.dispatch(new FilterActions.Get());
       });
-
-    this.store.dispatch(new FilterActions.Get());
     //on the board view - do not show state filter as the lanes are based on state
-    if (this.context === 'boardview') {
-      this.allowedFilterKeys= [
-        'assignee',
-        'creator',
-        'area',
-        'label',
-        'workitemtype',
-        'title'
-      ]
-    } else {
-      this.allowedFilterKeys= [
-        'assignee',
-        'creator',
-        'area',
-        'label',
-        'workitemtype',
-        'state',
-        'title'
-      ]
+    this.allowedFilterKeys= [
+      'assignee', 'creator', 'area', 'label',
+      'workitemtype', 'title'
+    ]
+    if (this.context !== 'boardview') {
+      this.allowedFilterKeys.push('state');
     }
   }
 
@@ -184,11 +164,25 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     );
 
-    this.store
-      .select('toolbar')
-      .select('filters')
-      .filter(filters => !!filters.length)
-      .subscribe((filters) => this.setFilterTypes(filters));
+    this.eventListeners.push(
+      this.filterData
+        .subscribe((filters) => this.setFilterTypes(filters))
+    );
+
+    this.eventListeners.push(
+      Observable.combineLatest(
+        this.areaData,
+        this.allUsersData,
+        this.workItemTypeData,
+        this.stateData,
+        this.labelData
+      ).subscribe(() => {
+        // Once all the attributes are resolved
+        // Listen for the URLs to set applied filters
+        this.checkURL();
+        this.checkFilterFromSidePanle()
+      })
+    )
 
   }
 
@@ -201,19 +195,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     // clean up.
     this.filterConfig.appliedFilters = [];
     this.filterService.clearFilters(this.allowedFilterKeys);
-  }
-
-  onChangeListType(type: string) {
-    // the type of the list is changed (Hierarchy/Flat).
-    // this will be removed with the new tree list.
-    // and if not removed, it should be converted to a
-    // global event instead of a BehaviourSubject.
-    this.currentListType = type;
-    if (type==='Hierarchy') {
-      this.eventService.showHierarchyListSubject.next(true);
-    } else {
-      this.eventService.showHierarchyListSubject.next(false);
-    }
   }
 
   setFilterTypes(filters: FilterModel[]) {
@@ -241,249 +222,32 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         };
       })
     ];
-
-    this.listenToQueryParams();
-  }
-
-  setAppliedFilterFromUrl() {
-    const filterMap = this.getFilterMap();
-    // Take all the existing params
-    let params = cloneDeep(this.currentQueryParams);
-    let keys = Object.keys(params);
-
-    // Delete all the not-allowed params for this tool bar
-    keys.forEach(key => {
-      if(this.allowedFilterKeys.indexOf(key) === -1) {
-        delete params[key]
-      }
-    });
-    // Apply each param from URL that is allowed here
-    // to the filter
-    Object.keys(params).forEach((key, i) => {
-      if (this.allowedFilterKeys.indexOf(key) > -1) {
-        const index = this.toolbarConfig.filterConfig.fields.findIndex(field => field.id === key);
-        if (filterMap[key].type !== 'text') {
-          filterMap[key].datasource.take(1).subscribe(data => {
-            if (filterMap[key].datamap(data).primaryQueries.length) {
-              this.toolbarConfig.filterConfig.fields[index].queries = [
-                ...filterMap[key].datamap(data).primaryQueries,
-                this.separator,
-                ...filterMap[key].datamap(data).queries
-              ];
-            } else {
-              this.toolbarConfig.filterConfig.fields[index].queries = filterMap[key].datamap(data).queries;
-            }
-            const selectedQueries = this.toolbarConfig.filterConfig.fields[index].queries.filter(
-              item => params[key].split(',').indexOf(item.value) > -1
-            );
-            if (selectedQueries.length) {
-              params[key].split(',').forEach(val => {
-                this.toolbarConfig.filterConfig.appliedFilters.push({
-                  field: this.toolbarConfig.filterConfig.fields[index],
-                  query: selectedQueries.find(v => v.value === val.trim()),
-                  value: val.trim()
-                });
-              })
-              this.filterService.setFilterValues(key, selectedQueries.map(q => q.id).join());
-            }
-          });
-        } else {
-          // Text search happens here
-          this.toolbarConfig.filterConfig.appliedFilters.push({
-            field: this.toolbarConfig.filterConfig.fields[index],
-            query: params[key],
-            value: params[key]
-          })
-          this.filterService.setFilterValues(key, params[key]);
-        }
-
-
-        // When all the params are resolved
-        // Apply the filter
-        if (Object.keys(params).length - 1 == i) {
-          this.filterService.applyFilter();
-        }
-      }
-    });
   }
 
   filterChange($event: FilterEvent): void {
-    // We don't support multiple filter for same type
-    // i.e. no two filter by two different users as assignees
-    // Unifying the filters with recent filter value
-    let recentAppliedFilters = {};
-    $event.appliedFilters.forEach((filter) => {
-      if (this.textFilterKeys.findIndex(k => k === filter.field.id) > -1 ||
-        filter.query.id !== 'loader') {
-        if (Object.keys(recentAppliedFilters).indexOf(filter.field.id) === -1) {
-          // If this filter type was not found in this iteration before
-          recentAppliedFilters[filter.field.id] = [];
-
-          recentAppliedFilters[filter.field.id].push(filter);
-        } else {
-          // If this filter type was found in this iteration before
-          if (this.allowedMultipleFilterKeys.indexOf(filter.field.id) > -1) {
-            // Multiple value for this filter type is allowed
-            recentAppliedFilters[filter.field.id].push(filter);
-          } else {
-            // Apply the latest value for the filter
-            recentAppliedFilters[filter.field.id][0] = filter;
-          }
-        }
-      }
-    });
     this.toolbarConfig.filterConfig.appliedFilters = [];
-    Object.keys(recentAppliedFilters).forEach((filterId) => {
-      recentAppliedFilters[filterId].forEach(el => {
-        this.toolbarConfig.filterConfig.appliedFilters.push(el);
-      });
+    const oldQueryJson = this.filterService.queryToJson(
+      this.currentQuery
+    );
+    console.log('####-1', $event);
+    const field = $event.field.id;
+    const value = $event.hasOwnProperty('query') ?
+      $event.query.id : $event.value;
+    const newQuery = this.filterService.queryBuilder(
+      field,
+      this.filterService.equal_notation,
+      value
+    );
+    const finalQuery = this.filterService.queryJoiner(
+      oldQueryJson,
+      this.filterService.and_notation,
+      newQuery
+    );
+    const queryString = this.filterService.jsonToQuery(finalQuery);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { q: queryString }
     });
-
-    // Initiate next query params from current query params
-    let params = cloneDeep(this.currentQueryParams);
-    this.allowedFilterKeys.forEach((key) => delete params[key]);
-
-    // Clean allowed filter keys
-    this.filterService.clearFilters(this.allowedFilterKeys);
-
-    // Prepare query params
-    let queryObj = {};
-    this.toolbarConfig.filterConfig.appliedFilters.forEach((filter) => {
-      if (Object.keys(params).indexOf(filter.field.id) > -1) {
-        params[filter.field.id] = params[filter.field.id] + ',' + filter.query.value;
-        queryObj[filter.field.id] = queryObj[filter.field.id] + ',' + filter.query.id;
-      }
-      else if (this.textFilterKeys.findIndex(k => k === filter.field.id) > -1) {
-        params[filter.field.id] = filter.value;
-        queryObj[filter.field.id] = filter.value;
-      }
-      else {
-        params[filter.field.id] = filter.query.value;
-        queryObj[filter.field.id] = filter.query.id;
-      }
-      // Set this filter in filter service
-      this.filterService.setFilterValues(filter.field.id, queryObj[filter.field.id]);
-    });
-
-    // Set the internal change flag to true
-    // So that the URL subscriber does not take any action
-    this.internalFilterChange = true;
-
-    // Prepare navigation extra with query params
-    let navigationExtras: NavigationExtras = {
-      queryParams: params,
-      relativeTo: this.route
-    };
-
-    // Navigated to filtered view
-    this.router.navigate([], navigationExtras);
-  }
-
-  showTypes() {
-    this.showTypesOptions = true;
-  }
-
-  closePanel() {
-    this.showTypesOptions = false;
-  }
-
-  onChangeType(type: string) {
-    this.showTypesOptions = false;
-    this.router.navigate(['/work-item/list/detail/new?' + type]);
-  }
-
-  createNewWorkItem(event: MouseEvent): void {
-    event.stopPropagation();
-    this.onCreateNewWorkItemSelected.emit();
-  }
-
-  getFilterMap() {
-    return {
-      area: {
-        datasource: this.store.select('listPage').select('areas'),
-        datamap: (areas: AreaUI[]) => {
-          return {
-            queries: areas.map(area => {return {id: area.id, value: area.name}}),
-            primaryQueries: []
-          }
-        },
-        getvalue: (area: AreaUI) => area.name,
-        type: 'select'
-      },
-      assignee: {
-        datasource: Observable.combineLatest(this.store.select('listPage').select('collaborators'), this.userService.getUser()),
-        datamap: ([users, authUser]) => {
-          if (Object.keys(authUser).length > 0) {
-            users = users.filter(u => u.id !== authUser.id);
-          }
-          return {
-            queries: users.map((user: UserUI) => {return {id: user.id, value: user.username, imageUrl: user.avatar}}),
-            primaryQueries: Object.keys(authUser).length ?
-              [{id: authUser.id, value: authUser.attributes.username + ' (me)', imageUrl: authUser.attributes.imageURL}, {id: null, value: 'Unassigned'}] :
-              [{id: null, value: 'Unassigned'}]
-          }
-        },
-        getvalue: (user) => user.attributes.username,
-        type: 'typeahead'
-      },
-      creator: {
-        datasource: Observable.combineLatest(this.store.select('listPage').select('collaborators'), this.userService.getUser()),
-        datamap: ([users, authUser]) => {
-          if (Object.keys(authUser).length > 0) {
-            users = users.filter(u => u.id !== authUser.id);
-          }
-          return {
-            queries: users.map((user: UserUI) => {return {id: user.id, value: user.username, imageUrl: user.avatar}}),
-            primaryQueries: Object.keys(authUser).length ?
-            [{id: authUser.id, value: authUser.attributes.username + ' (me)', imageUrl: authUser.attributes.imageURL}] :
-            []
-          }
-        },
-        getvalue: (user) => user.attributes.username,
-        type: 'typeahead'
-      },
-      workitemtype: {
-        datasource: this.store.select('listPage').select('workItemTypes'),
-        datamap: (witypes: WorkItemTypeUI[]) => {
-          return {
-            queries: witypes.map(witype => {return {id: witype.id, value: witype.name, iconStyleClass: witype.icon}}),
-            primaryQueries: []
-          }
-        },
-        getvalue: (type: WorkItemTypeUI) => type.name,
-        type: 'select'
-      },
-      state: {
-        datasource: this.store.select('listPage').select('workItemStates'),
-        datamap: (wistates: string[]) => {
-          return {
-            queries: wistates.map(wistate => {return {id: wistate, value: wistate }}),
-            primaryQueries: []
-          }
-        },
-        getvalue: (type) => type,
-        type: 'select'
-      },
-      label: {
-        datasource: this.store.select('listPage').select('labels'),
-        datamap: (labels: LabelUI[]) => {
-          return {
-            queries: labels.map(label => {
-              return {
-                id: label.id,
-                value: label.name
-              }
-            }),
-            primaryQueries: []
-          }
-        },
-        getvalue: (label: LabelUI) => label.name,
-        type: 'typeahead'
-      },
-      title: {
-        type: 'text'
-      }
-    }
   }
 
   selectFilterType(event: FilterEvent) {
@@ -541,47 +305,229 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  listenToQueryParams() {
-    if (this.queryParamSubscriber === null)  {
-      this.queryParamSubscriber =
-        this.route.queryParams.subscribe((params) => {
-          this.currentQueryParams = params;
-          // If any of the allowed key present in the URL
-          if (Object.keys(this.currentQueryParams).some(i => this.allowedFilterKeys.indexOf(i) > -1)) {
-            // Changing filter internally
-            if (this.internalFilterChange) {
-              this.filterService.applyFilter();
-              this.internalFilterChange = false;
-            }
-            // Applying filters on page reload or first load
-            // Or navigated by the browser's arrow
-            else {
-              // Cleaning filters in service as it will reset in setAppliedFilterFromUrl
-              this.toolbarConfig.filterConfig.appliedFilters = [];
-              this.filterService.clearFilters(this.allowedFilterKeys);
-              this.setAppliedFilterFromUrl();
-            }
+
+  initiateDataSources() {
+    this.areaData = this.store
+      .select('listPage').select('areas')
+      .filter(a =>!!a.length);
+    this.allUsersData = this.store
+      .select('listPage').select('collaborators')
+      .filter(a =>!!a.length);
+    this.workItemTypeData = this.store
+      .select('listPage').select('workItemTypes')
+      .filter(a =>!!a.length);
+    this.stateData = this.store
+      .select('listPage').select('workItemStates')
+      .filter(a =>!!a.length);
+    this.labelData = this.store
+      .select('listPage').select('labels')
+      .filter(a =>!!a.length);
+    this.spaceData = this.store
+      .select('listPage').select('space')
+      .filter(space => space !== null);
+    this.filterData = this.store
+      .select('toolbar').select('filters')
+      .filter(filters => !!filters.length);
+    this.iterationData = this.store
+      .select('listPage').select('iterations')
+      .filter(i => !!i.length)
+    this.groupTypeData = this.store
+      .select('listPage').select('groupTypes')
+      .filter(i => !!i.length)
+  }
+
+  getFilterMap() {
+    return {
+      area: {
+        datasource: this.areaData,
+        datamap: (areas: AreaUI[]) => {
+          return {
+            queries: areas.map(area => {return {id: area.id, value: area.name}}),
+            primaryQueries: []
           }
-          // Else clear the applied filter section
-          else {
-            // If filter value changed internally
-            // Or with arrorw key navigated to a page with no allowed
-            // filter params, then appliedFilters remains with values
-            if (this.internalFilterChange || this.toolbarConfig.filterConfig.appliedFilters.length) {
-              this.internalFilterChange = false;
-              this.toolbarConfig.filterConfig.appliedFilters = [];
-              this.filterService.clearFilters(this.allowedFilterKeys);
-              this.filterService.applyFilter();
-            } else {
-              if (this.firstVisit) {
-                this.firstVisit = false;
-                this.filterService.applyFilter();
+        },
+        getvalue: (area: AreaUI) => area.name,
+        type: 'select'
+      },
+      assignee: {
+        datasource: Observable.combineLatest(this.allUsersData, this.userService.getUser()),
+        datamap: ([users, authUser]) => {
+          if (Object.keys(authUser).length > 0) {
+            users = users.filter(u => u.id !== authUser.id);
+          }
+          return {
+            queries: users.map((user: UserUI) => {return {id: user.id, value: user.username, imageUrl: user.avatar}}),
+            primaryQueries: Object.keys(authUser).length ?
+              [{id: authUser.id, value: authUser.attributes.username + ' (me)', imageUrl: authUser.attributes.imageURL}, {id: null, value: 'Unassigned'}] :
+              [{id: null, value: 'Unassigned'}]
+          }
+        },
+        getvalue: (user) => user.attributes.username,
+        type: 'typeahead'
+      },
+      creator: {
+        datasource: Observable.combineLatest(this.allUsersData, this.userService.getUser()),
+        datamap: ([users, authUser]) => {
+          if (Object.keys(authUser).length > 0) {
+            users = users.filter(u => u.id !== authUser.id);
+          }
+          return {
+            queries: users.map((user: UserUI) => {return {id: user.id, value: user.username, imageUrl: user.avatar}}),
+            primaryQueries: Object.keys(authUser).length ?
+            [{id: authUser.id, value: authUser.attributes.username + ' (me)', imageUrl: authUser.attributes.imageURL}] :
+            []
+          }
+        },
+        getvalue: (user) => user.attributes.username,
+        type: 'typeahead'
+      },
+      workitemtype: {
+        datasource: this.workItemTypeData,
+        datamap: (witypes: WorkItemTypeUI[]) => {
+          return {
+            queries: witypes.map(witype => {return {id: witype.id, value: witype.name, iconStyleClass: witype.icon}}),
+            primaryQueries: []
+          }
+        },
+        getvalue: (type: WorkItemTypeUI) => type.name,
+        type: 'select'
+      },
+      state: {
+        datasource: this.stateData,
+        datamap: (wistates: string[]) => {
+          return {
+            queries: wistates.map(wistate => {return {id: wistate, value: wistate }}),
+            primaryQueries: []
+          }
+        },
+        getvalue: (type) => type,
+        type: 'select'
+      },
+      label: {
+        datasource: this.labelData,
+        datamap: (labels: LabelUI[]) => {
+          return {
+            queries: labels.map(label => {
+              return {
+                id: label.id,
+                value: label.name
               }
-            }
+            }),
+            primaryQueries: []
           }
-      });
+        },
+        getvalue: (label: LabelUI) => label.name,
+        type: 'typeahead'
+      },
+      title: {
+        type: 'text'
+      }
     }
   }
 
+  checkURL() {
+    this.eventListeners.push(
+      this.route.queryParams.subscribe(query => {
+        if (query.hasOwnProperty('q')){
+          this.currentQuery = query.q;
+          const fields = this.filterService.queryToFlat(
+            this.currentQuery
+          );
+          this.formatFilterFIelds(fields);
+        } else {
+          this.activeFilters = [];
+          this.currentQuery = '';
+        }
+      })
+    );
+  }
 
+  checkFilterFromSidePanle() {
+    this.eventListeners.push(
+      Observable.combineLatest(
+        this.groupTypeData,
+        this.iterationData
+      )
+      .map(([gt, it]) => {
+        const selectedIt: IterationUI = it.find(i => i.selected);
+        const selectedGt: GroupTypeUI = gt.find(i => i.selected);
+        return [selectedIt, selectedGt];
+      })
+      .filter(([gt, it]) => {
+        return !!gt || !!it;
+      })
+      .map(([gt, it]) => {
+        if (!!gt) {
+          return gt.name;
+        }
+        if (!!it) {
+          return it.name;
+        }
+      })
+      .subscribe(selected => {
+        this.activeFilterFromSidePanel = selected;
+      })
+    );
+  }
+
+  formatFilterFIelds(fields) {
+    Observable.combineLatest(
+      this.areaData,
+      this.allUsersData,
+      this.workItemTypeData,
+      this.stateData,
+      this.labelData
+    ).subscribe(([areas, users, wiTypes, states, labels]) => {
+      const filterMap = this.getFilterMap();
+      fields = fields.filter(f => {
+        return this.allowedFilterKeys.indexOf(f.field) > -1
+      });
+      this.activeFilters = [...fields.map(f => {
+        switch(f.field) {
+          case 'creator':
+          case 'assignee':
+            const user = users.find(u => u.id === f.value);
+            f['displayValue'] = user ? user.username : f.value;
+            break;
+          case 'area':
+            const area = areas.find(a => a.id === f.value);
+            f['displayValue'] = area ? area.name : f.value;
+            break;
+          case 'workitemtype':
+            const witype = wiTypes.find(w => w.id === f.value);
+            f['displayValue'] = witype ? witype.name : f.value;
+            break;
+          case 'state':
+            const state = states.find(s => s === f.value);
+            f['displayValue'] = state ? state : f.value;
+            break;
+          case 'label':
+            const label = labels.find(l => l.id === f.value);
+            f['displayValue'] = label ? label.name : f.value;
+            break;
+          case 'title':
+            f['displayValue'] = f.value;
+            break;
+          default:
+            f['displayValue'] = '';
+            break;
+        }
+        return f;
+      })];
+    });
+  }
+
+  removeFilter(field = null) {
+    const fields = this.filterService.queryToFlat(
+      this.currentQuery
+    );
+    fields.splice(field.index, 1);
+    const queryString = this.filterService.jsonToQuery(
+      this.filterService.flatToQuery(fields)
+    );
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { q: queryString }
+    });
+  }
 }

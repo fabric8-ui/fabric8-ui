@@ -8,6 +8,22 @@
     (onFilterTypeAhead)="filterQueries($event)">
   </pfng-toolbar>
 </header>
+<div class="active-filters-section">
+  <div *ngIf="activeFilters.length" class="active-filters-div">
+    <ul class="list-inline">
+      <li *ngFor="let filter of activeFilters">
+        <span class="active-filter label label-info">
+          {{filter.field}}: {{filter.displayValue}}
+          <span
+            class="margin-left-5 pficon pficon-close clickable"
+            (click)="removeFilter(filter)">
+          </span>
+        </span>
+      </li>
+    </ul>
+  </div>
+  <span><strong>14</strong> in {{activeFilterFromSidePanel}}</span>
+</div>
 
 <ng-template #actionsTemplate>
 </ng-template>

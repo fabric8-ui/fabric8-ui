@@ -590,4 +590,33 @@ export class FilterService {
       }
     }
   }
+
+  // Temporary function to deal with single level $AND operator
+  queryToFlat(query: string) {
+    return query.replace(/^\((.+)\)$/,"$1")
+      .split(this.and_notation).map((item, index) => {
+      return {
+        field: item.split(':')[0].trim(),
+        index: index,
+        value: item.split(':')[1].trim()
+      }
+    })
+  }
+
+  flatToQuery(arr: any[]) {
+    let query = {};
+    arr.forEach(item => {
+      const newQuery = this.queryBuilder(
+        item.field,
+        this.equal_notation,
+        item.value
+      );
+      query = this.queryJoiner(
+        query,
+        this.and_notation,
+        newQuery
+      );
+    })
+    return query;
+  }
 }
