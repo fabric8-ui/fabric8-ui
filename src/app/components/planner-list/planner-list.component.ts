@@ -62,7 +62,6 @@ import { LabelModel } from '../../models/label.model';
 import { UrlService } from './../../services/url.service';
 import { CookieService } from './../../services/cookie.service';
 import { WorkItemDetailAddTypeSelectorComponent } from './../work-item-create/work-item-create.component';
-import { setTimeout } from 'core-js/library/web/timers';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -463,7 +462,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           });
         } else {
           let exp = this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj));
-          exp['$OPTS'] = {'tree-view': true}; 
+          exp['$OPTS'] = {'tree-view': true};
           Object.assign(payload, {
             expression: exp
           });
@@ -788,7 +787,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     return items.reduce((parentIds, item) => {
       const parentid = item.relationships.parent && item.relationships.parent.data ?
         item.relationships.parent.data.id : null;
-      if (parentid && parentIds.findIndex(i => i === parentid) === -1) { 
+      if (parentid && parentIds.findIndex(i => i === parentid) === -1) {
         return [...parentIds, parentid];
       }
       return parentIds;
@@ -1184,7 +1183,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   }
 
   tableWorkitem(workItems: WorkItem[], parentId: string | null = null, matchingQuery: boolean = false): any {
-    
+
     return workItems.map(element => {
         const treeStatus = this.setTreeStatus(element, matchingQuery);
         return {
@@ -1201,7 +1200,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           treeStatus: treeStatus,
           parentId: element.relationships.parent && element.relationships.parent.data ? element.relationships.parent.data.id : parentId,
           childrenLoaded: treeStatus === 'expanded' ? true : false,
-          bold: matchingQuery 
+          bold: matchingQuery
         }
     });
   }
@@ -1213,7 +1212,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         return 'expanded';
       return element.relationships.children.meta.hasChildren ? 'collapsed' : 'disabled';
     } else {
-      if (this.included.findIndex(i => i.id === element.id) > -1) 
+      if (this.included.findIndex(i => i.id === element.id) > -1)
         return 'expanded';
       return element.relationships.children.meta.hasChildren ? 'collapsed' : 'disabled';
     }

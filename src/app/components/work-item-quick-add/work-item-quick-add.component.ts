@@ -198,6 +198,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
       event.preventDefault();
     this.logger.log('Selected type ' + type.attributes.name + ' for quick add.');
     this.selectedType = type;
+    this.qaTitle.nativeElement.focus();
   }
 
   createLinkObject(parentWorkItemId: string, childWorkItemId: string, linkId: string) : void {
@@ -289,8 +290,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
           }
           this.workItem = workItem; // saved workItem, w/ id if new
           this.resetQuickAdd();
-          this.qaSubmit.nativeElement.removeAttribute('disabled');
-          this.qaTitle.nativeElement.removeAttribute('disabled');
         },
         error => {
           this.error = error;
@@ -325,6 +324,8 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     this.showQuickAddBtn = false;
     this.showQuickAdd = true;
     this.descHeight = this.initialDescHeight ? this.initialDescHeight : '26px';
+    this.qaSubmit.nativeElement.removeAttribute('disabled');
+    this.qaTitle.nativeElement.removeAttribute('disabled');
     this.qaTitle.nativeElement.focus();
   }
 

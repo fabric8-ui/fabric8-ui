@@ -20,7 +20,6 @@ import {
 } from 'ngx-login-client';
 import { WorkItem, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../../services/work-item.service';
-import { setTimeout } from 'core-js/library/web/timers';
 
 @Component({
   selector: 'assignee-selector',
