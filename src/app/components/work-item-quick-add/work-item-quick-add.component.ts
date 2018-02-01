@@ -159,10 +159,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
                 type: currentFilters[f].id+'s'
               }
             } as any;
-            //update the selected filter
-            if(this.availableTypes != null) {
-              this.selectedType = this.availableTypes.find(item => item.id===currentFilters[f].value);
-            }
             break;
           case 'assignee':
             this.workItem.relationships.assignees = {
@@ -202,13 +198,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
       event.preventDefault();
     this.logger.log('Selected type ' + type.attributes.name + ' for quick add.');
     this.selectedType = type;
-    var wiTitle = this.workItem.attributes['system.title'];
-    var wiDescription = this.workItem.attributes['system.description'];
-    this.createWorkItemObj();
-    if (wiTitle)
-      this.workItem.attributes['system.title'] = wiTitle;
-    if (wiDescription)
-      this.workItem.attributes['system.description'] = wiDescription;
   }
 
   createLinkObject(parentWorkItemId: string, childWorkItemId: string, linkId: string) : void {
@@ -276,12 +265,12 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
       this.qaSubmit.nativeElement.setAttribute('disabled', true);
       this.qaTitle.nativeElement.setAttribute('disabled', true);
       this.workItem.hasChildren = false;
+      this.workItem.relationships.baseType.data = this.selectedType;
       console.log('before create ', this.workItem)
       this.workItemService
         .create(this.workItem)
         .map((workItem: WorkItem) => {
           workItem.hasChildren = false;
-          workItem.relationships.baseType.data = this.selectedType;
           return workItem;
         })
         .subscribe(workItem => {
