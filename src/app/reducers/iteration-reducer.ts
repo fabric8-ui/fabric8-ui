@@ -50,6 +50,7 @@ export const iterationReducer: ActionReducer<IterationState> =
           state.filter(i => i.parentId === updatedIteration.id);
         const index = state.findIndex(i => i.id === updatedIteration.id);
         if (index > -1) {
+          updatedIteration.selected = state[index].selected;
           state = [
             ...state.slice(0, index),
             updatedIteration,

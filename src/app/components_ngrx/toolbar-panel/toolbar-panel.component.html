@@ -22,7 +22,9 @@
       </li>
     </ul>
   </div>
-  <span><strong>14</strong> in {{activeFilterFromSidePanel}}</span>
+  <span *ngIf="activeFilterFromSidePane !== ''">
+    <strong>14</strong> in {{activeFilterFromSidePanel}}
+  </span>
 </div>
 
 <ng-template #actionsTemplate>
