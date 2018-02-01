@@ -1,4 +1,14 @@
-import { Component, ViewChild, OnInit, Output, EventEmitter, Input, OnChanges, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  ElementRef
+} from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -28,7 +38,8 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   @ViewChild('createUpdateIterationDialog') createUpdateIterationDialog: any;
   @ViewChild('iterationSearch') iterationSearch: any;
   @ViewChild('iterationList') iterationList: any;
-
+  @ViewChild('itrname') itrname: ElementRef;
+  
   public iteration: IterationModel;
   private validationError = false;
   private modalType: string = 'create';
@@ -212,7 +223,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   }
 
   actionOnOpen() {
-    // console.log('Open');
+    setTimeout(() => {
+      this.itrname.nativeElement.focus();
+    }, 200);
   }
 
   actionOnClose() {
