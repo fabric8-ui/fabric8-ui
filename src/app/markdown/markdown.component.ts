@@ -8,7 +8,9 @@ import {
   OnInit,
   ViewChild,
   EventEmitter,
-  SimpleChanges
+  SimpleChanges,
+  AfterViewChecked,
+  ChangeDetectorRef
 } from '@angular/core';
 
 
@@ -19,7 +21,7 @@ import {
   templateUrl: './markdown.component.html'
 })
 
-export class MarkdownComponent implements OnChanges, OnInit {
+export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
 
   @Input() fieldName: string = 'Description';
   @Input('renderedText') inpRenderedText: string = '';
@@ -28,13 +30,17 @@ export class MarkdownComponent implements OnChanges, OnInit {
   @Input() saving: boolean = false;
   @Input() placeholder: string = 'This is place holder';
   @Input() editAllow: boolean = true;
+  @Input() renderedHeight: number = 300;
 
   @Output() onActiveEditor = new EventEmitter();
   @Output() onSaveClick = new EventEmitter();
   @Output() showPreview = new EventEmitter();
 
   @ViewChild('editorInput') editorInput: ElementRef;
+  @ViewChild('editorBox') editorBox: ElementRef;
 
+  boxHeight: number;
+  enableShowMore: boolean = false;
   private markdownViewExpanded: boolean = false;
   private tabBarVisible: boolean = true;
   private viewType: string = 'preview'; // markdown
@@ -45,6 +51,8 @@ export class MarkdownComponent implements OnChanges, OnInit {
 
   private previousRawText = '';
   private previousRenderedText = '';
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.editAllow &&
@@ -76,6 +84,18 @@ export class MarkdownComponent implements OnChanges, OnInit {
     if (typeof(this.rawText) === 'undefined') {
       console.warn('Markdown component init :: rawText is passed undefined');
       this.rawText = '';
+    }
+  }
+
+  ngAfterViewChecked() {
+    if (this.editorBox) {
+      this.boxHeight = this.editorBox.nativeElement.offsetHeight;
+      if (this.boxHeight > this.renderedHeight) {
+        this.enableShowMore = true;
+      } else {
+        this.enableShowMore = false;
+      }
+      this.cdr.detectChanges();
     }
   }
 

@@ -1,4 +1,4 @@
- <ul class="nav nav-tabs" *ngIf="editorActive">
+<ul class="nav nav-tabs" *ngIf="editorActive">
   <li [class.active]="viewType==='markdown'">
     <a (click)="onClickMarkdownTab()" class="tab-btn">Markdown</a>
   </li>
@@ -23,19 +23,19 @@
       class="editor-box editor-markdown padding-10"
       [innerText]="rawText">
     </p>
-    <div
+    <div #editorBox
       *ngIf="viewType==='preview' && renderedText.length"
       class="editor-box editor-preview padding-10">
         <github-link-area [content]="renderedText"></github-link-area>
     </div>
-    <div
+    <div #editorBox
       *ngIf="viewType==='preview' && !renderedText.length"
       class="editor-box editor-preview placeholder padding-10">
       {{placeholder}}
     </div>
   </div>
 </div>
-<div class="actions" *ngIf="!editorActive">
+<div class="actions" *ngIf="!editorActive && enableShowMore">
   <small class="pull-right clickable">
     <a *ngIf="!showMore" (click)="lengthToggle(!showMore)">Show more</a>
     <a *ngIf="showMore" (click)="lengthToggle(!showMore)">Show less</a>
