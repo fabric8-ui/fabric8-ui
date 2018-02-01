@@ -64,7 +64,7 @@ export const iterationReducer: ActionReducer<IterationState> =
               state[parentIndex].children = [
                 ...state[parentIndex].children.slice(0, childIndex),
                 state[index],
-                ...state[parentIndex].children.slice(index + 1)
+                ...state[parentIndex].children.slice(childIndex + 1)
               ]
             }
           }
