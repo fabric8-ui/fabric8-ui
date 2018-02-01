@@ -102,5 +102,19 @@ describe('Planner Smoke Tests:', () => {
     expect(wiTypes).toContain('Experience');
     expect(wiTypes).toContain('Value Proposition');
   });
+
+  it('Edit Comment and Save', async() => {
+    await planner.workItemList.clickWorkItem(c.workItemTitle1);
+    await planner.quickPreview.addCommentAndSave(c.comment);
+    let comments = await planner.quickPreview.getAllComments();
+    expect(comments).toContain('new comment');
+  });
+
+  it('Edit Comment and Cancel', async() => {
+    await planner.workItemList.clickWorkItem(c.workItemTitle1);
+    await planner.quickPreview.addCommentAndCancel(c.comment);
+    let comments = await planner.quickPreview.getAllComments();
+    expect(comments).not.toContain('new comment');
+  });
 });
 

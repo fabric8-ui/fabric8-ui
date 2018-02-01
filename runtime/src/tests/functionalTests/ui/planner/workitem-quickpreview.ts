@@ -57,6 +57,15 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   commentsToggleButton = new ui.Clickable($('#wi-comment .f8-toggle-caret'), 'WorkItem Comments toggle button');
   creationTimeDiv = new ui.BaseElement(this.$('#created_at'), 'WorkItem creation time div');
 
+  /*UI elements for bottom section(comments) in quick preview */
+  commentDiv = new ui.BaseElement(this.$('.f8-comment--input'), 'comments div field');
+  commentsField = new ui.Clickable(this.commentDiv.$('.editor-box.editor-preview.placeholder'), 'comments clickable field');
+  commentsInputField = new ui.TextInput(this.commentDiv.$('.editor-box.editor-markdown'), 'comment input field');
+  commentSaveButton = new ui.Button(this.commentDiv.$('.btn-save'), 'Comment save button');
+  commentCancelButton = new ui.Button(this.commentDiv.$$('.fl.btn.btn-primary.pull-right.action-btn').first(), 'Comment cancel button');
+  commentBodyDiv = $('.f8-comment-body');
+  commentsText = this.commentBodyDiv.$$('.editor-box.editor-preview');
+  
   constructor(ele: ElementFinder, name: string = '') {
     super(ele, name);
   }
@@ -90,6 +99,26 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.iterationDropdown.clickWhenReady();
     await this.iterationDropdown.select(iterationTitle);
     await this.iterationSaveButton.clickWhenReady();
+  }
+
+  private async addComment(comment: string) {
+    await this.loadingAnimation.untilAbsent();
+    await this.commentsField.clickWhenReady();
+    await this.commentsInputField.sendKeys(comment);
+  }
+
+  async addCommentAndSave(comment: string) {
+    await this.addComment(comment);
+    await this.commentSaveButton.clickWhenReady();
+  }
+
+  async addCommentAndCancel(comment: string) {
+    await this.addComment(comment);
+    await this.commentCancelButton.clickWhenReady();
+  }
+
+  async getAllComments() {
+    return this.commentsText.getText();
   }
 
   async close() {
