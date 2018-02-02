@@ -16,6 +16,7 @@ describe('Planner Smoke Tests:', () => {
     }));
     let planner_url = browser.baseUrl + "/?token_json=" + token;
     planner = new PlannerPage(planner_url);
+    await planner.openInBrowser();
   });
 
   it('create a work item and add/remove assignee', async () => {

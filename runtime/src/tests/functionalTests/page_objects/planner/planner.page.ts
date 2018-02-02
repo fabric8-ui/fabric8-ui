@@ -13,7 +13,6 @@ export class PlannerPage extends AppPage {
   constructor(url: string){
     super();
     this.url = url;
-    this.openInBrowser();
   }
 
   async ready() {
