@@ -1,3 +1,4 @@
+import { UserMapper } from './user';
 import {
   CommentMapper,
   CommentUI,
@@ -10,7 +11,8 @@ describe('Unit Test :: Comment Model', () => {
   });
 
   it('should correctly convert to UI model - 1', () => {
-    const cm = new CommentMapper();
+    const userMapper = new UserMapper();
+    const cm = new CommentMapper(userMapper);
     const input: CommentService = {
       id: "5cd88093-53c2-4e7a-a7ee-6a74bfbbb204",
       attributes: {
@@ -21,6 +23,12 @@ describe('Unit Test :: Comment Model', () => {
       },
       relationships: {
         'created-by': {
+          data: {
+            id: "5cd88093",
+            type:"identities"
+          }
+        },
+        'creator': {
           data: {
             id: "5cd88093",
             type:"identities"
@@ -40,9 +48,9 @@ describe('Unit Test :: Comment Model', () => {
       createdAt: "2018-01-16T10:04:22.946692Z",
       creator: {
         id: "5cd88093",
-        name: "user",
-        username: "user1",
-        avatar: "user.png"
+        name: null,
+        username: null,
+        avatar: null
       },
       bodyRendered: "<p>comment</p>"
     };

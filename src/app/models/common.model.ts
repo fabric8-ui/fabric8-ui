@@ -11,6 +11,10 @@ export interface MapTree {
     // Any value from 'from' model for this
     // path will be overridden by this.
     toValue?: any;
+    // This is a function
+    // whatever is got from the FROM value
+    // will be given as an argument to this function
+    toFunction?: any;
   };
   length: number;
 }
@@ -55,7 +59,17 @@ export function switchModel<I, O>(input: I, mapTree: MapTree): O {
           break;
         }
       }
-      updateObj(output, toPath, fromCurrentVal);
+      if (
+        mapTree[i].hasOwnProperty('toFunction') &&
+        typeof(mapTree[i]['toFunction']) === 'function'
+      ) {
+        updateObj(
+          output, toPath,
+          mapTree[i].toFunction(fromCurrentVal)
+        );
+      } else {
+        updateObj(output, toPath, fromCurrentVal);
+      }
     }
   }
   return output;

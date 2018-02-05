@@ -1,5 +1,5 @@
 import { User } from 'ngx-login-client';
-import { UserUI } from './user';
+import { UserUI, UserMapper } from './user';
 import {
   Mapper,
   MapTree,
@@ -16,7 +16,13 @@ export class Comment {
               id: string;
               type: string;
             };
-        }
+        },
+        'creator': {
+          data: {
+            id: string;
+            type: string;
+          };
+      }
     };
     links: CommentLink;
     relationalData?: RelationalData;
@@ -57,6 +63,9 @@ export interface CommentUI {
 export interface CommentService extends Comment {}
 
 export class CommentMapper implements Mapper<CommentService, CommentUI> {
+  constructor(private userMapper: UserMapper) {
+    this.userMapper = userMapper
+  }
 
   serviceToUiMapTree: MapTree = [{
     fromPath: ['id'],
@@ -76,6 +85,10 @@ export class CommentMapper implements Mapper<CommentService, CommentUI> {
   }, {
     fromPath: ['attributes', 'body.rendered'],
     toPath: ['bodyRendered']
+  }, {
+    fromPath: ['relationships', 'creator', 'data'],
+    toPath: ['creator'],
+    toFunction: this.userMapper.toUIModel.bind(this.userMapper)
   }];
 
   uiToServiceMapTree: MapTree = [{
