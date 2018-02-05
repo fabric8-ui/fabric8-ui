@@ -103,17 +103,32 @@ export interface WorkItemService extends WorkItem {}
 export interface WorkItemUI {
   id: string;
   title: string;
-  sysNumber: string;
-  type: WorkItemTypeUI;
+  number: string;
+  createdAt: string;
+  updatedAt: string;
+  state: string;
+  descriptionMarkup: string;
+  descriptionRendered: string;
+  version: number;
+  link: string;
+
+
   area: AreaUI;
   iteration: IterationUI;
   assignees: UserUI[];
   creator: UserUI;
-  createdAt: string;
+  type: WorkItemTypeUI;
   labels: LabelUI[];
   comments: CommentUI[];
-  wiState: string;
-  wiDescription: string;
+  childrenLink: string;
+  hasChildren: boolean;
+  parentID: string;
+  workItemLink: string;
+
+
+  treeStatus: 'collapsed' | 'expanded' | 'disabled'; // collapsed
+  childrenLoaded: boolean; // false
+  bold: boolean; // false
 }
 
 export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
@@ -123,7 +138,7 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
   userMapper = new UserMapper();
   lMapper = new LabelMapper();
   cMapper = new CommentMapper();
-  
+
   serviceToUiMapTree: MapTree = [{
       fromPath: ['id'],
       toPath: ['id']
@@ -136,7 +151,7 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     }, {
       fromPath: ['attributes','createdAt'],
       toPath: ['createdAt']
-    }, 
+    }
   ];
 
   uiToServiceMapTree: MapTree = [{
@@ -153,30 +168,17 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
       fromPath: ['wiState']
     }
   ];
-  
+
   toUIModel(arg: WorkItemService): WorkItemUI {
-    let workItemUI = switchModel<WorkItemService, WorkItemUI>(
+    return switchModel<WorkItemService, WorkItemUI>(
       arg, this.serviceToUiMapTree
     );
-    return this.tempToUIModel(arg, workItemUI);
   }
 
-  tempToUIModel(arg: WorkItemService, workItemUI: WorkItemUI): WorkItemUI {
-    workItemUI.area = this.areaMapper.toUIModel(arg.relationalData.area);
-    workItemUI.assignees = arg.relationalData.assignees.map(a => this.userMapper.toUIModel(a));
-    workItemUI.creator = this.userMapper.toUIModel(arg.relationalData.creator);
-    workItemUI.comments = arg.relationalData.comments.map(c => this.cMapper.toUIModel(c));
-    workItemUI.iteration = this.itMapper.toUIModel(arg.relationalData.iteration);
-    workItemUI.labels = arg.relationalData.labels.map(l => this.lMapper.toUIModel(l));
-    workItemUI.type = this.wiTypeMapper.toUIModel(arg.relationalData.wiType);
-    return workItemUI;
-  } 
-
   toServiceModel(arg: WorkItemUI): WorkItemService {
-    let workItemService = switchModel<WorkItemUI, WorkItemService>(
+    return switchModel<WorkItemUI, WorkItemService>(
       arg, this.uiToServiceMapTree
     );
-    return this.tempToServiceModel(arg, workItemService);
   }
 
   tempToServiceModel(arg: WorkItemUI, workItemService: WorkItemService): WorkItemService {
@@ -188,5 +190,16 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     workItemService.relationalData.labels = arg.labels.map(l => this.lMapper.toServiceModel(l));
     workItemService.relationalData.wiType = this.wiTypeMapper.toServiceModel(arg.type);
     return workItemService;
-  } 
+  }
+
+  tempToUIModel(arg: WorkItemService, workItemUI: WorkItemUI): WorkItemUI {
+    workItemUI.area = this.areaMapper.toUIModel(arg.relationalData.area);
+    workItemUI.assignees = arg.relationalData.assignees.map(a => this.userMapper.toUIModel(a));
+    workItemUI.creator = this.userMapper.toUIModel(arg.relationalData.creator);
+    workItemUI.comments = arg.relationalData.comments.map(c => this.cMapper.toUIModel(c));
+    workItemUI.iteration = this.itMapper.toUIModel(arg.relationalData.iteration);
+    workItemUI.labels = arg.relationalData.labels.map(l => this.lMapper.toUIModel(l));
+    workItemUI.type = this.wiTypeMapper.toUIModel(arg.relationalData.wiType);
+    return workItemUI;
+  }
 }
