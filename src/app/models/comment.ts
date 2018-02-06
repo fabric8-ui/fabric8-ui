@@ -111,6 +111,10 @@ export class CommentMapper implements Mapper<CommentService, CommentUI> {
     fromPath: ['bodyRendered']
   }];
 
+  tempFunc(arg: CommentService[]): CommentUI[] {
+    return arg.map(comment=>this.toUIModel(comment))
+  }
+
   toUIModel(arg: CommentService): CommentUI {
     return switchModel<CommentService, CommentUI>(
       arg, this.serviceToUiMapTree

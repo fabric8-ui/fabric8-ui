@@ -147,11 +147,30 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
       toPath: ['title']
     }, {
       fromPath: ['attributes','system.number'],
-      toPath: ['sysNumber']
+      toPath: ['number']
     }, {
       fromPath: ['attributes','createdAt'],
       toPath: ['createdAt']
-    }
+    }, {
+      fromPath: ['link','self'],
+      toPath: ['link']
+    }, {
+      fromPath: ['relationalData','area'],
+      toPath: ['area'],
+      toFunction: this.areaMapper.toUIModel.bind(this.areaMapper)
+    }, {
+      fromPath: ['relationalData','creator'],
+      toPath: ['creator'],
+      toFunction: this.userMapper.toUIModel.bind(this.userMapper)
+    }, {
+      fromPath: ['relationalData','iteration'],
+      toPath: ['iteration'],
+      toFunction: this.itMapper.toUIModel.bind(this.itMapper)
+    }, {
+      fromPath: ['relationalData','comments'],
+      toPath: ['comments'],
+      toFunction: this.commentMapper.tempFunc.bind(this.commentMapper)
+    },
   ];
 
   uiToServiceMapTree: MapTree = [{
