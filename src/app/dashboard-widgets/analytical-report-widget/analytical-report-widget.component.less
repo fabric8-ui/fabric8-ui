@@ -11,12 +11,16 @@
 }
 .card-pf {
   &.analytical-report-widget {
+    padding: 0;
+    .card-pf-heading {
+      padding: 0 20px;
+      margin: 0;
+    }
     position: relative;
     .fifty-shades-of-grey {
       color: @color-pf-black-500;
     }
     .fabric8-stack-analysis {
-      margin-top: 5px;
       height: 370px;
       @media (max-width: @screen-xs-min) { height: 335px; }
       overflow-y: scroll;
