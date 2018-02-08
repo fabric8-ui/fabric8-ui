@@ -207,8 +207,8 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     if(this.toolbarHeight) {
       let toolbarHt:number =  this.toolbarHeight.nativeElement.offsetHeight;
       let quickaddHt:number =  0;
-      if(document.getElementsByClassName('f8-wi-list__quick-add').length > 0) {
-        quickaddHt = (document.getElementsByClassName('f8-wi-list__quick-add')[0] as HTMLElement).offsetHeight;
+      if(document.getElementsByClassName('f8-wi-list__quick-add-wrapper').length > 0) {
+        quickaddHt = (document.getElementsByClassName('f8-wi-list__quick-add-wrapper')[0] as HTMLElement).offsetHeight;
       }
       let hdrHeight:number = 0;
       if(document.getElementsByClassName('navbar-pf').length > 0) {
@@ -219,22 +219,24 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       let targetContHeight: number;
       if (document.getElementsByClassName('experimental-bar').length > 0){
         expHeight = (document.getElementsByClassName('experimental-bar')[0] as HTMLElement).offsetHeight;
+      } else if (document.getElementsByClassName('system-error-bar').length > 0) {
+        expHeight = (document.getElementsByClassName('system-error-bar')[0] as HTMLElement).offsetHeight;
       }
       targetHeight = window.innerHeight - (toolbarHt + quickaddHt + hdrHeight + expHeight);
-      this.renderer.setStyle(this.listContainer.nativeElement, 'height', targetHeight - 23 + "px");
+      this.renderer.setStyle(this.listContainer.nativeElement, 'height', targetHeight + "px");
       targetContHeight = window.innerHeight - (hdrHeight + expHeight);
       this.renderer.setStyle(this.containerHeight.nativeElement, 'height', targetContHeight - 3 + "px");
       if (document.getElementsByClassName('experimental-bar').length > 0 &&
       !document.getElementsByClassName('experimental-bar')[0].classList.contains('experimental-bar-minimal')) {
         expHeight = (document.getElementsByClassName('experimental-bar')[0] as HTMLElement).offsetHeight;
         targetHeight = window.innerHeight - (toolbarHt + quickaddHt + hdrHeight + expHeight);
-        this.renderer.setStyle(this.listContainer.nativeElement, 'height', targetHeight - 23 + "px");
+        this.renderer.setStyle(this.listContainer.nativeElement, 'height', targetHeight + "px");
         targetContHeight = window.innerHeight - (hdrHeight + expHeight);
         this.renderer.setStyle(this.containerHeight.nativeElement, 'height', targetContHeight - 3 + "px");
       } else if (document.getElementsByClassName('experimental-bar').length > 0 &&
           document.getElementsByClassName('experimental-bar')[0].classList.contains('experimental-bar-minimal')) {
             targetHeight = window.innerHeight - (toolbarHt + quickaddHt + hdrHeight);
-            this.renderer.setStyle(this.listContainer.nativeElement, 'height', targetHeight - 48 + "px");
+            this.renderer.setStyle(this.listContainer.nativeElement, 'height', targetHeight - 25 + "px");
       }
 
       if (this._lastTagetContentHeight !== targetContHeight) {
