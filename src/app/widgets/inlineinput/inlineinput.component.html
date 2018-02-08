@@ -10,7 +10,7 @@
   [class.active]="editing"
   [ngModel]="inputValue"
   class="input-field inlineinput-textarea"
-  (keyup.enter)="submitOnEnter($event)">
+  (keydown.enter)="submitOnEnter($event)">
 </textarea>
 <div
   *ngIf="editing"
