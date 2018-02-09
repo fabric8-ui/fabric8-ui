@@ -1,3 +1,4 @@
+import { UserMapper } from './../../models/user';
 import { LabelSelectorModule } from './../label-selector/label-selector.module';
 
 import { RouterModule } from '@angular/router';
@@ -47,9 +48,9 @@ import { CommentEffects } from './../../effects/comment.effects';
 let providers = [];
 
 if (process.env.ENV == 'inmemory') {
-  providers = [ AreaService, BsDropdownConfig, TooltipConfig, WorkItemTypeControlService, { provide: Http, useExisting: MockHttp } ];
+  providers = [ AreaService, BsDropdownConfig, TooltipConfig, WorkItemTypeControlService, { provide: Http, useExisting: MockHttp }, UserMapper ];
 } else {
-  providers = [ AreaService, BsDropdownConfig, TooltipConfig, WorkItemTypeControlService ];
+  providers = [ AreaService, BsDropdownConfig, TooltipConfig, WorkItemTypeControlService, UserMapper ];
 }
 
 @NgModule({

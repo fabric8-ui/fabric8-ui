@@ -137,7 +137,7 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
   areaMapper = new AreaMapper();
   userMapper = new UserMapper();
   lMapper = new LabelMapper();
-  cMapper = new CommentMapper();
+  cMapper = new CommentMapper(this.userMapper);
 
   serviceToUiMapTree: MapTree = [{
       fromPath: ['id'],

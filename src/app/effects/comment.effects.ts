@@ -9,6 +9,7 @@ import {
   CommentService,
   CommentMapper
 } from './../models/comment';
+import { UserMapper } from './../models/user';
 import { CommentState } from 'src/app/states/comment.state';
 
 export type Action = CommentActions.All;
@@ -18,7 +19,8 @@ export class CommentEffects {
   constructor(
     private actions$: Actions,
     private workItemService: WorkItemService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private userMapper: UserMapper
   ) {}
 
   @Effect() getWorkItemComments$: Observable<Action> = this.actions$
@@ -27,7 +29,7 @@ export class CommentEffects {
     .switchMap((action) => {
       return this.workItemService.resolveComments(action.payload)
         .map((comments: CommentService[]) => {
-          const cMapper = new CommentMapper();
+          const cMapper = new CommentMapper(this.userMapper);
           return new CommentActions.GetSuccess(
             comments.map(c => cMapper.toUIModel(c))
           )
@@ -40,7 +42,7 @@ export class CommentEffects {
     .switchMap((payload) => {
       return this.workItemService.createComment(payload.url, payload.comment)
         .map((comment: CommentService) => {
-          const cMapper = new CommentMapper();
+          const cMapper = new CommentMapper(this.userMapper);
           return new CommentActions.AddSuccess(
             cMapper.toUIModel(comment)
           );
@@ -53,7 +55,7 @@ export class CommentEffects {
     .switchMap((payload) => {
       return this.workItemService.updateComment(payload)
         .map((comment: CommentService) => {
-          const cMapper = new CommentMapper();
+          const cMapper = new CommentMapper(this.userMapper);
           return new CommentActions.UpdateSuccess(
             cMapper.toUIModel(comment)
           );
@@ -66,7 +68,7 @@ export class CommentEffects {
     .switchMap((payload) => {
       return this.workItemService.deleteComment(payload)
         .map(() => {
-          const cMapper = new CommentMapper();
+          const cMapper = new CommentMapper(this.userMapper);
           return new CommentActions.DeleteSuccess(
             cMapper.toUIModel(payload)
           );
