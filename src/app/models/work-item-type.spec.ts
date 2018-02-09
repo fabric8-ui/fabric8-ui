@@ -1,8 +1,6 @@
-import { async } from '@angular/core/testing';
-
 import { WorkItemTypeMapper, WorkItemTypeUI, WorkItemTypeService } from './work-item-type';
 
-describe('IterationMapper', () => {
+describe('WorkItemTypeMapper', () => {
     let workItemTypeMapper: WorkItemTypeMapper;
     let workItemTypeUI: WorkItemTypeUI;
     let workItemTypeService: WorkItemTypeService;
@@ -27,9 +25,9 @@ describe('IterationMapper', () => {
         }
     } as WorkItemTypeService
     
-    beforeEach(async(() => {
+    beforeEach(() => {
         workItemTypeMapper = new WorkItemTypeMapper();
-    }));
+    });
 
     it('should execute the canary test', () => {
         return expect(true).toBe(true)
