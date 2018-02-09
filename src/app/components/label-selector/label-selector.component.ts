@@ -139,6 +139,9 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
   clickOnAddLabel() {
     this.newSelectedColor = this.colors[Math.floor(Math.random()*this.colors.length)];
     this.activeAddLabel = true;
+    setTimeout(() => {
+      this.labelnameInput.nativeElement.focus();
+    }, 10);
   }
 
   closeAddLabel() {

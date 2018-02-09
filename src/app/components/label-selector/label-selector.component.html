@@ -32,7 +32,7 @@
       <div [ngStyle]="{'background-color': newSelectedColor.color, 'border-color': newSelectedColor.border}"
         (click)="toggleColorPicker()" class="palet">
       </div>
-      <input class="create-label-input" #labelname />
+      <input class="create-label-input" #labelname autofocus/>
       <button class="action-btn btn btn-primary fa fa-check"
         [class.disabled]="createDisabled"
         (click)="createLabel(labelname.value)">
