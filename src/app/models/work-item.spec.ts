@@ -1,7 +1,7 @@
 import { WorkItemMapper, WorkItemUI, WorkItemService } from './work-item';
 import { WorkItemTypeUI, WorkItemTypeService } from './work-item-type';
 
-describe('IterationMapper', () => {
+describe('WorkItemMapper', () => {
     let workItemMapper: WorkItemMapper;
     let workItemUI: WorkItemUI;
     let workItemService: WorkItemService;
