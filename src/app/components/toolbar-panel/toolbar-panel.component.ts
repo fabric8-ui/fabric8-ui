@@ -588,5 +588,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-
+  // show tree feature
+  checkboxToggle(event) {
+     this.workItemService.emitShowTree(event.target.checked);
+  }
 }

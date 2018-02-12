@@ -9,8 +9,10 @@
       <ng-template #actionsTemplate>
       </ng-template>
       <ng-template #addTemplate>
-        <input type="checkbox" checked="checked" onclick="return false;" name="Show Tree" id="showTree">
-        <label class="show-tree__label" for="showTree">&nbsp;Show Tree</label>
+        <ng-container *ngIf="context === 'listview'">
+          <input type="checkbox" checked="checked" (change)="checkboxToggle($event)" name="Show Tree" id="showTree">
+          <label class="show-tree__label" for="showTree">&nbsp;Show Tree</label>
+        </ng-container>
       </ng-template>
   </pfng-toolbar>
 </header>

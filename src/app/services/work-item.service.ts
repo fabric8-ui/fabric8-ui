@@ -67,6 +67,7 @@ export class WorkItemService {
   public addWIChildObservable: Subject<any> = new Subject();
   public editWIObservable: Subject<WorkItem> = new Subject();
   public selectedWIObservable: Subject<WorkItem> = new Subject();
+  public showTree: Subject<boolean> = new Subject();
 
   constructor(private http: HttpService,
     private broadcaster: Broadcaster,
@@ -145,7 +146,7 @@ export class WorkItemService {
     }
   }
 
-  getWorkItems(pageSize: number = 20, filters: any[] = []): Observable<{workItems: WorkItem[], nextLink: string, totalCount?: number | null, included?: WorkItem[] | null }> {
+  getWorkItems(pageSize: number = 20, filters: any[] = []): Observable<{workItems: WorkItem[], nextLink: string, totalCount?: number | null, included?: WorkItem[] | null, ancestorIDs?: Array<string> }> {
     if (this._currentSpace) {
       this.workItemUrl = this._currentSpace.links.self + '/workitems';
       let url = this.workItemUrl + '?page[limit]=' + pageSize;
@@ -158,7 +159,8 @@ export class WorkItemService {
             workItems: resp.json().data as WorkItem[],
             nextLink: resp.json().links.next,
             totalCount: resp.json().meta ? resp.json().meta.totalCount : 0,
-            included: resp.json().included ? resp.json().included as WorkItem[] : [] as WorkItem[]
+            included: resp.json().included ? resp.json().included as WorkItem[] : [] as WorkItem[],
+            ancestorIDs: resp.json().meta.ancestorIDs ? resp.json().meta.ancestorIDs : [],
           };
         }).catch((error: Error | any) => {
           this.notifyError('Getting work items failed.', error);
@@ -170,7 +172,7 @@ export class WorkItemService {
   }
 
   // TODO Filter temp
-  getWorkItems2(pageSize: number = 20, filters: object): Observable<{workItems: WorkItem[], nextLink: string, totalCount?: number | null, included?: WorkItem[] | null  }> {
+  getWorkItems2(pageSize: number = 20, filters: object): Observable<{workItems: WorkItem[], nextLink: string, totalCount?: number | null, included?: WorkItem[] | null, ancestorIDs?: Array<string>}> {
     if (this._currentSpace) {
       this.workItemUrl = this._currentSpace.links.self.split('spaces')[0] + 'search';
       let url = this.workItemUrl + '?page[limit]=' + pageSize + '&' + Object.keys(filters).map(k => 'filter['+k+']='+JSON.stringify(filters[k])).join('&');
@@ -180,7 +182,8 @@ export class WorkItemService {
             workItems: resp.json().data as WorkItem[],
             nextLink: resp.json().links.next,
             totalCount: resp.json().meta ? resp.json().meta.totalCount : 0,
-            included: resp.json().included ? resp.json().included as WorkItem[] : []
+            included: resp.json().included ? resp.json().included as WorkItem[] : [],
+            ancestorIDs: resp.json().meta.ancestorIDs ? resp.json().meta.ancestorIDs : [],
           };
         }).catch((error: Error | any) => {
           this.notifyError('Getting work items failed.', error);
@@ -196,14 +199,15 @@ export class WorkItemService {
    * This function is called from next page onwards in the scroll
    * It does pretty much same as the getWorkItems function
    */
-  getMoreWorkItems(url): Observable<{workItems: WorkItem[], nextLink: string | null, included?: WorkItem[] | null }> {
+  getMoreWorkItems(url): Observable<{workItems: WorkItem[], nextLink: string | null, included?: WorkItem[] | null, ancestorIDs?: Array<string>}> {
     if (url) {
       return this.http.get(url)
         .map((resp) => {
           return {
             workItems: resp.json().data as WorkItem[],
             nextLink: resp.json().links.next,
-            included: resp.json().included ? resp.json().included as WorkItem[] : []
+            included: resp.json().included ? resp.json().included as WorkItem[] : [],
+            ancestorIDs: resp.json().meta.ancestorIDs ? resp.json().meta.ancestorIDs : [],
           };
         }).catch((error: Error | any) => {
           this.notifyError('Getting more work items failed.', error);
@@ -727,6 +731,13 @@ export class WorkItemService {
    */
   emitSelectedWI(workItem: WorkItem) {
     this.selectedWIObservable.next(workItem);
+  }
+
+  /**
+   * Usage: this method emit a event when showTree is toggled
+   */
+  emitShowTree(showTree: boolean) {
+    this.showTree.next(showTree);
   }
 
   /**

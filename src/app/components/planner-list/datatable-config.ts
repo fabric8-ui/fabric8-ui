@@ -29,7 +29,8 @@ export const datatableColumn = [{
   showInDiplay: false,
   maxWidth: undefined,
   minWidth: 300,
-  width: 500,
+  width: 600,
+  isTreeColumn: true
 }, {
   name: 'Label',
   prop: 'label',
