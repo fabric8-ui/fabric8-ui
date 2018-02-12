@@ -174,6 +174,10 @@ export class PlannerBoardComponent implements OnInit, OnDestroy, AfterViewChecke
       }
     });
 
+    this.filterService.getFilters().subscribe(filters =>
+      filters.forEach(f => this.filters.push(f.attributes.key))
+    );
+
   }
 
   ngAfterViewChecked() {
@@ -782,7 +786,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy, AfterViewChecke
 
         this.wiSubscription =
         this.spaces.current.switchMap(space => {
-          let appliedFilters = this.filterService.getAppliedFilters();
+          let appliedFilters = this.filterService.getAppliedFilters(true);
           // remove the filter item from the filters
           for (let f=0; f<appliedFilters.length; f++) {
             if (appliedFilters[f].paramKey=='filter[parentexists]') {
@@ -793,21 +797,33 @@ export class PlannerBoardComponent implements OnInit, OnDestroy, AfterViewChecke
           // Take all the applied filters and prepare an object to make the query string
           let newFilterObj = {};
           appliedFilters.forEach(item => {
-            newFilterObj[item.id] = item.value;``
-          })
-          newFilterObj['space'] = space.id;
+            newFilterObj[item.id] = item.value;
+          });
+
           let payload = {};
-          if ( this.route.snapshot.queryParams['q'] ) {
-            let existingQuery = this.filterService.queryToJson(this.route.snapshot.queryParams['q']);
-            let filterQuery = this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj));
-            let exp = this.filterService.queryJoiner(existingQuery, this.filterService.and_notation, filterQuery);
+          if (this.route.snapshot.queryParams['q']) {
+            let urlString = this.route.snapshot.queryParams['q']
+              .replace(' ','')
+              .replace('$AND',' ')
+              .replace('$OR',' ')
+              .replace('(','')
+              .replace(')','');
+            let temp_arr = urlString.split(' ');
+            for(let i = 0; i < temp_arr.length; i++) {
+              let arr = temp_arr[i].split(':')
+              //check if it belongs in filter array
+              if (this.filters.indexOf(arr[0]) < 0 && arr[1] !== undefined)
+                newFilterObj[arr[0]] = arr[1];
+            }
+            let exp = this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj));
             Object.assign(payload, {
               expression: exp
             });
           } else {
-            payload = {
-              expression: this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj))
-            }
+            let exp = this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj));
+            Object.assign(payload, {
+              expression: exp
+            });
           }
           return Observable.forkJoin(
             this.lanes.map(lane => this.getWorkItems(this.pageSize, lane, payload))

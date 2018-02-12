@@ -114,6 +114,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           iconStyleClass: 'fa fa-spinner'
       };
 
+  permanentFilters;
+  transientFilters;
+
   constructor(
     private eventService: EventService,
     private router: Router,
@@ -302,8 +305,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           })
           this.filterService.setFilterValues(key, params[key]);
         }
-
-
         // When all the params are resolved
         // Apply the filter
         if (Object.keys(params).length - 1 == i) {
@@ -324,7 +325,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         if (Object.keys(recentAppliedFilters).indexOf(filter.field.id) === -1) {
           // If this filter type was not found in this iteration before
           recentAppliedFilters[filter.field.id] = [];
-
           recentAppliedFilters[filter.field.id].push(filter);
         } else {
           // If this filter type was found in this iteration before
@@ -348,16 +348,22 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     // Initiate next query params from current query params
     let params = cloneDeep(this.currentQueryParams);
     this.allowedFilterKeys.forEach((key) => delete params[key]);
-
     // Clean allowed filter keys
     this.filterService.clearFilters(this.allowedFilterKeys);
-
     // Prepare query params
     let queryObj = {};
+    let current_join = null;
+    this.fnSplitParams(this.toolbarConfig.filterConfig.appliedFilters);
+    let paramComp = this.transientFilters;
+    this.filterService.clearFilters();
     this.toolbarConfig.filterConfig.appliedFilters.forEach((filter) => {
-      if (Object.keys(params).indexOf(filter.field.id) > -1) {
+      if (Object.keys(paramComp).indexOf(filter.field.id) > -1) {
+        this.transientFilters[filter.field.id] = filter.value;
         params[filter.field.id] = params[filter.field.id] + ',' + filter.query.value;
-        queryObj[filter.field.id] = queryObj[filter.field.id] + ',' + filter.query.id;
+        if (this.allowedMultipleFilterKeys.indexOf(filter.field.id) > -1)
+          queryObj[filter.field.id] = queryObj[filter.field.id] + ',' + filter.query.id;
+        else
+          queryObj[filter.field.id] = filter.value;
       }
       else if (this.textFilterKeys.findIndex(k => k === filter.field.id) > -1) {
         params[filter.field.id] = filter.value;
@@ -366,21 +372,36 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       else {
         params[filter.field.id] = filter.query.value;
         queryObj[filter.field.id] = filter.query.id;
+        this.transientFilters[filter.field.id] = filter.value;
+        let val = filter.query.value;
+        if( filter.field.id === 'assignee' && filter.query.value.indexOf('(me)') >= 0 ) {
+          val = filter.query.value.replace('(me)','');
+          filter.query.value = val;
+          this.transientFilters[filter.field.id] = val;
+        }
       }
-      // Set this filter in filter service
       this.filterService.setFilterValues(filter.field.id, queryObj[filter.field.id]);
     });
-
-    // Set the internal change flag to true
-    // So that the URL subscriber does not take any action
+    //permanent filters
+    let expression;
+    let permQuery = {};
+    for (var key in this.permanentFilters) {
+      let query = this.filterService.queryBuilder(key, this.filterService.equal_notation, this.permanentFilters[key]);
+      permQuery = this.filterService.queryJoiner(permQuery, this.filterService.and_notation, query);
+    }
+    expression = permQuery;
+    let transQuery = {};
+    for (var key in this.transientFilters) {
+      let query = this.filterService.queryBuilder(key, this.filterService.equal_notation, this.transientFilters[key]);
+      transQuery = this.filterService.queryJoiner(transQuery, this.filterService.and_notation, query);
+    }
+    expression = this.filterService.queryJoiner(permQuery, this.filterService.and_notation, transQuery);
+    let query = this.filterService.jsonToQuery(expression);
     this.internalFilterChange = true;
-
-    // Prepare navigation extra with query params
     let navigationExtras: NavigationExtras = {
-      queryParams: params,
+      queryParams: { q: query },
       relativeTo: this.route
     };
-
     // Navigated to filtered view
     this.router.navigate([], navigationExtras);
   }
@@ -546,13 +567,40 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  fnSplitParams(ref_arr) {
+    //split params in to two types
+    //permanent and transient
+    if(this.route.snapshot.queryParams['q']) {
+      this.permanentFilters = {};
+      this.transientFilters = {};
+      let urlString = this.route.snapshot.queryParams['q']
+        .replace(' ','')
+        .replace('$AND',' ')
+        .replace('$OR',' ')
+        .replace('(','')
+        .replace(')','');
+      let temp_arr = urlString.split(' ');
+      for(let i = 0; i < temp_arr.length; i++) {
+        let arr = temp_arr[i].split(':')
+        //check if it belongs in filter array
+        if(arr[1] !== undefined) {
+          if (ref_arr.indexOf(arr[0]) >= 0)
+            this.transientFilters[arr[0]] = arr[1];
+          else if (arr[0] === '$WITGROUP' || arr[0] === 'space' || arr[0] === 'iteration')
+            this.permanentFilters[arr[0]] = arr[1];
+        }
+      }
+    }
+  }
+
   listenToQueryParams() {
     if (this.queryParamSubscriber === null)  {
       this.queryParamSubscriber =
         this.route.queryParams.subscribe((params) => {
-          this.currentQueryParams = params;
+          this.fnSplitParams(this.allowedFilterKeys);
+          this.currentQueryParams = this.transientFilters;
           // If any of the allowed key present in the URL
-          if (Object.keys(this.currentQueryParams).some(i => this.allowedFilterKeys.indexOf(i) > -1)) {
+          if (this.currentQueryParams && Object.keys(this.currentQueryParams).some(i => this.allowedFilterKeys.indexOf(i) > -1)) {
             // Changing filter internally
             if (this.internalFilterChange) {
               this.filterService.applyFilter();
@@ -574,7 +622,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
             // filter params, then appliedFilters remains with values
             if (this.internalFilterChange || this.toolbarConfig.filterConfig.appliedFilters.length) {
               this.internalFilterChange = false;
-              this.toolbarConfig.filterConfig.appliedFilters = [];
+              //this.toolbarConfig.filterConfig.appliedFilters = [];
+              this.toolbarConfig.filterConfig.appliedFilters
+                .filter((thing, index, self) => self.findIndex((t) => {return t.field.id === thing.field.id }) === index)
               this.filterService.clearFilters(this.allowedFilterKeys);
               this.filterService.applyFilter();
             } else {

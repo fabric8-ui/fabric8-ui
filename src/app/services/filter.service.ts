@@ -64,7 +64,7 @@ export class FilterService {
 
   setFilterValues(id, value): void {
     let index = this.activeFilters.findIndex(f => f.id === id);
-    if (index > -1) {
+    if (index > -1 && value !== undefined) {
       this.activeFilters[index].paramKey = 'filter[' + id + ']';
       this.activeFilters[index].value = value;
     } else {
@@ -115,19 +115,23 @@ export class FilterService {
       let temp_arr = urlString.split(' ');
       for(let i = 0; i < temp_arr.length; i++) {
         let arr = temp_arr[i].split(':')
-        refCurrentFilter.push({
-          id: arr[0],
-          paramKey: 'filter[' + arr[0] + ']',
-          value: arr[1]
-        })
+        if (arr[1] !== undefined ) {
+          refCurrentFilter.push({
+            id: arr[0],
+            paramKey: 'filter[' + arr[0] + ']',
+            value: arr[1]
+          })
+        }
       };
     }
-    return refCurrentFilter;
+    //active filter will have the transient filters
+    //witgroup and space are permanent filters
+    return refCurrentFilter.filter(f => f.id === '$WITGROUP' || f.id === 'space' || f.id === 'iteration');
   }
 
   clearFilters(keys: string[] = []): void {
     if (keys.length) {
-      this.activeFilters = this.activeFilters.filter(f => keys.indexOf(f.id) === -1)
+      this.activeFilters = this.activeFilters.filter(f => keys.indexOf(f.id) > -1)
     } else {
       this.activeFilters = [];
     }
@@ -155,6 +159,10 @@ export class FilterService {
         return Observable.of([] as FilterModel[]);
       }
     });
+  }
+
+  returnFilters() {
+      return this.filters
   }
 
   /**
