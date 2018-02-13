@@ -1,5 +1,6 @@
 import {
   switchModel,
+  cleanObject,
   MapTree
 } from "./common.model";
 
@@ -97,4 +98,79 @@ describe('Unit Test :: Common model', () => {
       );
   });
 
+})
+
+
+describe('Unit Test :: Common model :: Object cleaner', () => {
+  it('Should correctly clean up an objectm - 1', () => {
+    const input = {
+      name: 'Sudipta'
+    };
+    return expect(input).toEqual(cleanObject(input));
+  })
+
+  it('Should correctly clean up an objectm - 2', () => {
+    const input = {
+      name: 'Sudipta',
+      address: null
+    };
+    const expOutput = {
+      name: 'Sudipta'
+    };
+    const output = cleanObject(input);
+    return expect(output).toEqual(cleanObject(expOutput));
+  })
+
+  it('Should correctly clean up an objectm - 3', () => {
+    const input = {
+      name: 'Sudipta',
+      address: {
+        city: 'Bangalore',
+        country: 'India',
+        pin: null
+      }
+    };
+    const expOutput = {
+      name: 'Sudipta',
+      address: {
+        city: 'Bangalore',
+        country: 'India',
+      }
+    };
+    const output = cleanObject(input);
+    return expect(output).toEqual(cleanObject(expOutput));
+  })
+
+  it('Should correctly clean up an objectm - 3', () => {
+    const input = {
+      name: 'Sudipta',
+      address: {
+        city: 'Bangalore',
+        country: 'India',
+        pin: {
+          code: null,
+          random: {
+            one: ['one'],
+            two: null
+          }
+        }
+      }
+    };
+    const expOutput = {
+      name: 'Sudipta',
+      address: {
+        city: 'Bangalore',
+        country: 'India',
+        pin: {
+          code: null,
+          random: {
+            one: ['one'],
+            two: null
+          }
+        }
+      }
+    };
+    const output = cleanObject(input);
+    return expect(output).toEqual(cleanObject(expOutput));
+  })
 })
