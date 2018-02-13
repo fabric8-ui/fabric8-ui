@@ -63,7 +63,22 @@ export class AreaMapper implements Mapper<AreaService, AreaUI> {
     toPath: ['parentPathResolved']
   }];
 
-  uiToServiceMapTree: MapTree = [];
+  uiToServiceMapTree: MapTree = [{
+    toPath: ['id'],
+    fromPath: ['id']
+  }, {
+    toPath: ['attributes', 'name'],
+    fromPath: ['name']
+  }, {
+    toPath: ['attributes', 'parent_path'],
+    fromPath: ['parentPath']
+  }, {
+    toPath: ['attributes', 'parent_path_resolved'],
+    fromPath: ['parentPathResolved']
+  }, {
+    toPath: ['type'],
+    toValue: 'areas'
+  }];
 
   toUIModel(arg: AreaService): AreaUI {
     return switchModel<AreaService, AreaUI> (

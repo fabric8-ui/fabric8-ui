@@ -220,7 +220,7 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     }, {
       toPath: ['bold'],
       toValue: false
-    }, 
+    },
   ];
 
   uiToServiceMapTree: MapTree = [{
@@ -229,6 +229,9 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     }, {
       toPath: ['attributes','system.title'],
       fromPath: ['title']
+    }, {
+      toPath: ['attributes','system.number'],
+      fromPath: ['number']
     }, {
       toPath: ['attributes','system.created_at'],
       fromPath: ['createdAt']
@@ -279,8 +282,8 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
         return assignees.map(assignee => this.userMapper.toServiceModel(assignee))
       }.bind(this.userMapper)
     }, {
-      fromPath: ['relationships','labels','data'],
-      toPath: ['labels'],
+      toPath: ['relationships','labels','data'],
+      fromPath: ['labels'],
       toFunction: function(labels: LabelUI[]) {
         return labels.map(label => this.labelMapper.toServiceModel(label))
       }.bind(this.labelMapper)

@@ -29,7 +29,22 @@ export class UserMapper implements Mapper<UserService, UserUI> {
     toPath: ['username']
   }];
 
-  uiToServiceMapTree: MapTree = [];
+  uiToServiceMapTree: MapTree = [{
+    toPath: ['id'],
+    fromPath: ['id']
+  }, {
+    toPath: ['attributes', 'fullName'],
+    fromPath: ['name']
+  }, {
+    toPath: ['attributes', 'imageURL'],
+    fromPath: ['avatar']
+  }, {
+    toPath: ['attributes', 'username'],
+    fromPath: ['username']
+  }, {
+    toPath: ['type'],
+    toValue: 'identities'
+  }];
 
   toUIModel(arg: UserService): UserUI {
     return switchModel<UserService, UserUI> (

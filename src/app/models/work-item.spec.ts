@@ -15,7 +15,7 @@ describe('WorkItemMapper', () => {
         state: 'new',
         descriptionMarkup: '',
         descriptionRendered: '',
-        
+
         type: {
             id: '',
             name: '',
@@ -62,7 +62,7 @@ describe('WorkItemMapper', () => {
         hasChildren: false,
         parentID: '',
         workItemLink: '',
-      
+
         treeStatus: 'collapsed',
         childrenLoaded: false,
         bold: false
@@ -96,7 +96,7 @@ describe('WorkItemMapper', () => {
                         icon: '',
                     }
                 }
-            }, 
+            },
             iteration: {
                 data: {
                         attributes: {
@@ -153,7 +153,8 @@ describe('WorkItemMapper', () => {
                         imageURL: '',
                         fullName: '',
                         username: ''
-                    }
+                    },
+                    type: 'identities'
                 }
             },
             assignees: {
@@ -172,11 +173,11 @@ describe('WorkItemMapper', () => {
                     related: ''
                 }
             },
-            
+
         } as WorkItemRelations
 
     }  as WorkItemService
-    
+
     beforeEach(() => {
         workItemMapper = new WorkItemMapper();
     });
@@ -184,7 +185,7 @@ describe('WorkItemMapper', () => {
     it('should execute the canary test', () => {
         return expect(true).toBe(true)
       });
-  
+
     it('should correctly convert to service model - 1', () => {
         expect(workItemMapper.toServiceModel(workItemUI)).toEqual(workItemService);
     });
