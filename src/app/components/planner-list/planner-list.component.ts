@@ -193,7 +193,6 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     }
 
     this.emptyStateConfig = {
-      iconStyleClass: 'pficon-warning-triangle-o',
       info: 'There are no Work Items for your selected criteria',
       title: 'No Work Items Available'
     } as EmptyStateConfig;
@@ -451,7 +450,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           });
         } else {
           let exp = this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj));
-          exp['$OPTS'] = {'tree-view': true}; 
+          exp['$OPTS'] = {'tree-view': true};
           Object.assign(payload, {
             expression: exp
           });
@@ -485,7 +484,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           [], // We don't want to static resolve user at this point
           this.workItemTypes,
           this.labels
-        );       
+        );
         this.included = this.workItemService.resolveWorkItems(
           included,
           this.iterations,
@@ -582,7 +581,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           return this.workItems.findIndex(i => i.id === item.id) === -1;
         });
         this.resolvedWorkItems = [...this.resolvedWorkItems, ...newItems];
-        
+
           const newIncluded = this.workItemService.resolveWorkItems(
             newWiItemResp.included,
             this.iterations,
@@ -1126,7 +1125,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     this.eventListeners.push(
       this.workItemService.showTree.subscribe(status => {
         this.showTree = status;
-        this.detailExpandedRows = [];        
+        this.detailExpandedRows = [];
         this.updateTableWorkitems();
       })
     );
@@ -1228,7 +1227,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         return 'expanded';
       return element.relationships.children.meta.hasChildren ? 'collapsed' : 'disabled';
     } else {
-      if (this.nonMatchingParentIds.findIndex(i => i === element.id) > -1) 
+      if (this.nonMatchingParentIds.findIndex(i => i === element.id) > -1)
         return 'expanded';
       return element.relationships.children.meta.hasChildren ? 'collapsed' : 'disabled';
     }
