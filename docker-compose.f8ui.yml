@@ -4,7 +4,7 @@ services:
   planner:
     container_name: fabric8-planner-platform
     image: fabric8-planner-platform
-    # command: npm run test:unit
+    # command: npm run tests -- --unit
     environment:
       FABRIC8_REALM: "fabric8-test"
       FABRIC8_WIT_API_URL: "http://localhost:8080/api/"

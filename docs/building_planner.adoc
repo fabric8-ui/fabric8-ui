@@ -67,7 +67,7 @@ NOTE: You may need to have root access to run the following commands.
 +
 [sh]
 ----
-npm run watch:library
+npm run build -- --watch
 ----
 
 . Change directory to *_runtime_* and get the dependencies for planner runtime.
@@ -82,7 +82,7 @@ npm install
 +
 [sh]
 ----
-npm link ../dist-watch
+npm link ../dist
 ----
 
 . Set the execution environment on build time using the `NODE_ENV` variable.
@@ -129,7 +129,7 @@ To *integrate planner with Fabric8 UI environment*, the steps are quite similar 
 +
 [sh]
 ----
-npm run watch:library
+npm run build -- --watch
 ----
 
 .  Change directory to the webapp into which you want to embed the Planner library (let's use Fabric8 UI in this example) and ensure that you have installed the npm package.
@@ -144,7 +144,7 @@ npm install
 +
 [sh]
 ----
-npm link/<path to fabric8-planner>/dist-watch
+npm link/<path to fabric8-planner>/dist
 ----
 
 . Run *Fabric8 UI* in development mode.

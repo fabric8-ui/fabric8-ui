@@ -86,7 +86,7 @@ then
 else
     echo "Building planner library..."
     npm install
-    npm run build:library
+    npm run build
 fi
 
 echo "Starting docker..."

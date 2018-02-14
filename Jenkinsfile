@@ -20,11 +20,7 @@ fabric8UITemplate{
                 def pipeline = load 'deploy/release.groovy'
                 if (utils.isCI()){
 
-                    pipeline.ci()
-
-                    container('ui'){
-                        tempVersion = pipeline.ciBuildDownstreamProject(project)
-                    }
+                    tempVersion = pipeline.ci(project)
 
                     imageName = "fabric8/fabric8-ui:${tempVersion}"
                     container('docker'){

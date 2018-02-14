@@ -20,9 +20,11 @@ exports.config = {
         }
     },
     troubleshoot: true,
+    maxSessions: 5,
     capabilities: {
         'browserName': 'chrome',
         'shardTestFiles': true,
+        'maxInstances': 5,
         'loggingPrefs': {
             'driver': 'WARNING',
             'server': 'WARNING',

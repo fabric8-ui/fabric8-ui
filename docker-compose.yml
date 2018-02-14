@@ -5,7 +5,7 @@ services:
     build: .
     container_name: fabric8-planner-runtime
     image: fabric8-planner-runtime
-    # command: npm run test:unit
+    # command: npm run tests -- --unit
     environment:
       FABRIC8_WIT_API_URL: http://localhost:8080/api/
       FABRIC8_SSO_API_URL: https://sso.prod-preview.openshift.io/
