@@ -46,7 +46,7 @@ export interface WorkItemTypeUI extends modelUI {
 }
 
 export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemTypeUI> {
-    
+
     serviceToUiMapTree: MapTree = [{
         fromPath: ['id'],
         toPath: ['id']
@@ -63,11 +63,11 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
         fromPath: ['attributes','description'],
         toPath: ['description']
       }, {
-        fromPath: ['type'],
-        toPath: ['type']
+        toPath: ['type'],
+        toValue: 'workitemtypes'
       }
     ];
-  
+
     uiToServiceMapTree: MapTree = [{
         toPath: ['id'],
         fromPath: ['id']
@@ -85,16 +85,16 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
         fromPath: ['description']
       }, {
         toPath: ['type'],
-        fromPath: ['type']
+        toValue: 'workitemtypes'
       }
     ];
-    
+
     toUIModel(arg: WorkItemTypeService): WorkItemTypeUI {
       return switchModel<WorkItemTypeService, WorkItemTypeUI>(
         arg, this.serviceToUiMapTree
       );
     }
-  
+
     toServiceModel(arg: WorkItemTypeUI): WorkItemTypeService {
       return switchModel<WorkItemTypeUI, WorkItemTypeService>(
         arg, this.uiToServiceMapTree

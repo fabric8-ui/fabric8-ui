@@ -1,4 +1,8 @@
-import { WorkItemTypeMapper, WorkItemTypeUI, WorkItemTypeService } from './work-item-type';
+import {
+  WorkItemTypeMapper,
+  WorkItemTypeUI,
+  WorkItemTypeService
+} from './work-item-type';
 
 describe('WorkItemTypeMapper', () => {
     let workItemTypeMapper: WorkItemTypeMapper;
@@ -10,13 +14,13 @@ describe('WorkItemTypeMapper', () => {
         name: '',
         icon: '',
         version: 0,
-        type: '',
+        type: 'workitemtypes',
         description: ''
     } as WorkItemTypeUI;
 
     workItemTypeService = {
         id: '',
-        type: '',
+        type: 'workitemtypes',
         attributes: {
             name: '',
             version: 0,
@@ -24,7 +28,7 @@ describe('WorkItemTypeMapper', () => {
             icon: '',
         }
     } as WorkItemTypeService
-    
+
     beforeEach(() => {
         workItemTypeMapper = new WorkItemTypeMapper();
     });
@@ -32,7 +36,7 @@ describe('WorkItemTypeMapper', () => {
     it('should execute the canary test', () => {
         return expect(true).toBe(true)
       });
-  
+
     it('should correctly convert to service model - 1', () => {
         expect(workItemTypeMapper.toServiceModel(workItemTypeUI)).toEqual(workItemTypeService);
     });

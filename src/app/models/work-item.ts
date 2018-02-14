@@ -14,7 +14,8 @@ import {
   modelUI,
   Mapper,
   MapTree,
-  switchModel
+  switchModel,
+  cleanObject
 } from './common.model';
 
 export class WorkItem {
@@ -309,5 +310,9 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     return switchModel<WorkItemUI, WorkItemService>(
       arg, this.uiToServiceMapTree
     );
+  }
+
+  cleanModel(arg: WorkItemService, keysToRemove: string[] = []) {
+    return cleanObject(arg, keysToRemove);
   }
 }

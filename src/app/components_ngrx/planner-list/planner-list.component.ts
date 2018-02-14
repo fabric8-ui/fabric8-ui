@@ -1,8 +1,9 @@
-import { FilterService } from './../../services/filter.service';
+import { Observable } from 'rxjs/Observable';
 import {
   Component,
   ElementRef,
   OnInit,
+  OnDestroy,
   Renderer2,
   ViewEncapsulation,
   ViewChild
@@ -10,6 +11,14 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlannerLayoutComponent } from './../../widgets/planner-layout/planner-layout.component';
 import { Space } from 'ngx-fabric8-wit';
+import { WorkItemTypeUI } from '../../models/work-item-type';
+import {
+  AuthenticationService,
+  User,
+  UserService
+} from 'ngx-login-client';
+import { IterationUI } from './../../models/iteration.model';
+import { FilterService } from './../../services/filter.service';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
@@ -33,9 +42,30 @@ import * as LabelActions from './../../actions/label.actions';
   styleUrls: ['./planner-list.component.less']
 })
 
-export class PlannerListComponent implements OnInit {
+export class PlannerListComponent implements OnInit, OnDestroy {
   private uiLockedAll: boolean = false;
   private sidePanelOpen: boolean = true;
+  private groupTypeSource = this.store
+    .select('listPage')
+    .select('groupTypes')
+    .filter(g => !!g.length);
+  private workItemTypeSource = this.store
+    .select('listPage')
+    .select('workItemTypes')
+    .filter(w => !!w.length);
+  private spaceSource = this.store
+    .select('listPage')
+    .select('space')
+    .filter(s => !!s);
+  private selectedIterationSource = this.store
+    .select('listPage')
+    .select('iterations')
+    .filter(its => !!its.length)
+    .map(its => its.find(it => it.selected));
+  private workItemTypes: WorkItemTypeUI[] = [];
+  private selectedIteration: IterationUI = null;
+  private loggedIn: boolean = true;
+  private eventListeners: any[] = [];
 
   @ViewChild('plannerLayout') plannerLayout: PlannerLayoutComponent;
   @ViewChild('containerHeight') containerHeight: ElementRef;
@@ -45,6 +75,7 @@ export class PlannerListComponent implements OnInit {
     private store: Store<AppState>,
     private route: ActivatedRoute,
     private router: Router,
+    private auth: AuthenticationService,
     private filterService: FilterService
   ) {}
 
@@ -57,10 +88,7 @@ export class PlannerListComponent implements OnInit {
     });
     this.store.dispatch(new SpaceActions.Get());
 
-    this.store
-      .select('listPage')
-      .select('space')
-      .filter(space => space !== null)
+    this.spaceSource
       .subscribe((space: Space) => {
         this.store.dispatch(new IterationActions.Get());
         this.store.dispatch(new GroupTypeActions.Get());
@@ -74,6 +102,9 @@ export class PlannerListComponent implements OnInit {
     if(Object.keys(queryParams).length === 0 && process.env.ENV != 'inmemory') {
       this.setDefaultUrl();
     }
+    this.loggedIn = this.auth.isLoggedIn();
+    this.setWorkItemTypesForQuickAdd();
+    this.setSelectedIterationForQuickAdd();
   }
 
   resizeHeight() {
@@ -103,19 +134,13 @@ export class PlannerListComponent implements OnInit {
   setDefaultUrl() {
     //redirect to default type group
     //get space id
-    this.store
-      .select('listPage')
-      .select('space')
-      .filter(s => !!s)
+    this.spaceSource
       .take(1)
       .subscribe(space => {
         if (space) {
           const spaceId = space.id;
           //get groupsgroups
-          this.store
-            .select('listPage')
-            .select('groupTypes')
-            .filter(g => !!g.length)
+          this.groupTypeSource
             .take(1)
             .subscribe(groupTypes => {
               const defaultGroupName = groupTypes[0].name;
@@ -139,5 +164,37 @@ export class PlannerListComponent implements OnInit {
             });
         }
       });
+  }
+
+  setWorkItemTypesForQuickAdd() {
+    this.eventListeners.push(
+      Observable.combineLatest(
+        this.workItemTypeSource,
+        this.groupTypeSource
+      ).subscribe(([workItemTypes, groupTypes]) => {
+        const selectedGroupType = groupTypes.find(gt => gt.selected);
+        if (selectedGroupType) {
+          this.workItemTypes = workItemTypes.filter(type => {
+            return selectedGroupType
+              .typeList.findIndex(t => t.id === type.id) > -1;
+          })
+        } else {
+          this.workItemTypes = workItemTypes;
+        }
+      })
+    );
+  }
+
+  setSelectedIterationForQuickAdd() {
+    this.eventListeners.push(
+      this.selectedIterationSource
+        .subscribe(iteration => {
+          this.selectedIteration = iteration;
+        })
+    )
+  }
+
+  ngOnDestroy() {
+    this.eventListeners.forEach(e => e.unsubscribe());
   }
 }

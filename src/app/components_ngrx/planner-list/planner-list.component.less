@@ -46,7 +46,7 @@
       width: 100%;
      // height: ~"calc(e('100% - 120px'))";
       // to avoid overflown scroll height should be there
-      overflow-y: scroll;
+      overflow-y: auto;
       //List entry tree view specific css
       .tree-node-level-2 .list-pf-item {
         padding-left: 20px;
@@ -56,9 +56,11 @@
       }
     }
     &__settings {
-      position: absolute;
-      top: 10px;
-      right: 15px;
+      position: relative;
+      right: 7px;
+      float: right;
+      margin-top: 3px;
+      margin-bottom: 3px;
       &-dropdown {
         width: 100%;
         min-width: 400px;
@@ -196,8 +198,10 @@ button.btn.btn-link.dropdown-toggle:focus {
   max-width: ~"calc(e('100% - 20px'))";
 }
 
-a.disabled:hover {
+a.disabled {
+  &:hover, &:focus, &:active {
     color: #8b8d8f;
+  }
 }
 /// ng x-datatables css
 
@@ -232,10 +236,16 @@ a.disabled:hover {
   bottom: 0;
   width: 100%;
 }
-
-a.quick-add-icon, .f8-action-icon {
-  opacity: 0;
+a.quick-add-icon {
+  width: 100%;
+  text-align: center;
   text-decoration: none;
+  opacity: .4;
+}
+
+.f8-action-icon {
+  text-decoration: none;
+  opacity: 0;
 }
 
 // Css for row selection
@@ -245,7 +255,7 @@ a.quick-add-icon, .f8-action-icon {
 .ngx-datatable.material.single-selection .datatable-body-row.active:hover .datatable-row-group,
 .ngx-datatable.material.single-selection .datatable-body-row.active:focus,
 .ngx-datatable.material.single-selection .datatable-body-row.active:focus .datatable-row-group {
-    background-color: @color-pf-black-300 !important;
+    background-color: @color-pf-black-200 !important;
 }
 
 // css for row hover
@@ -278,7 +288,7 @@ a.quick-add-icon, .f8-action-icon {
 }
 .datatable-row-wrapper:last-child {
   border-bottom: 1px solid;
-  border-bottom-color: @color-pf-black-300;
+  border-bottom-color: @color-pf-black-200;
 }
 .datatable-header-cell,
 .datatable-body-cell {

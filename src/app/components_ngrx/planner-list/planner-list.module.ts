@@ -25,6 +25,9 @@ import { SidepanelModule } from './../side-panel/side-panel.module';
 import {
   PlannerLayoutModule
 } from './../../widgets/planner-layout/planner-layout.module';
+import { WorkItemQuickAddModule } from './../work-item-quick-add/work-item-quick-add.module';
+import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { FilterColumn } from '../../pipes/column-filter.pipe';
 
 // ngrx stuff
 import { StoreModule } from '@ngrx/store';
@@ -48,7 +51,8 @@ if (process.env.ENV == 'inmemory') {
     LabelService,
     AreaService,
     CollaboratorService,
-    FilterService
+    FilterService,
+    BsDropdownConfig
   ];
 } else {
   providers = [
@@ -66,7 +70,8 @@ if (process.env.ENV == 'inmemory') {
     LabelService,
     AreaService,
     CollaboratorService,
-    FilterService
+    FilterService,
+    BsDropdownConfig
   ];
 }
 
@@ -78,6 +83,8 @@ if (process.env.ENV == 'inmemory') {
     ToolbarPanelModule,
     TooltipModule.forRoot(),
     SidepanelModule,
+    WorkItemQuickAddModule,
+    BsDropdownModule.forRoot(),
     StoreModule.forFeature('listPage', {
         iterations: reducers.iterationReducer,
         labels: reducers.LabelReducer,
@@ -109,7 +116,10 @@ if (process.env.ENV == 'inmemory') {
       effects.WorkItemTypeEffects
     ])
   ],
-  declarations: [ PlannerListComponent ],
+  declarations: [
+    PlannerListComponent,
+    FilterColumn
+  ],
   providers: providers,
   exports: [ PlannerListComponent ]
 })
