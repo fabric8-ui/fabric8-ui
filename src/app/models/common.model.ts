@@ -87,16 +87,26 @@ function updateObj(obj: Object, keyPath: string[], value: any) {
   obj[keyPath[lastKeyIndex]] = value;
 }
 
-export function cleanObject(obj: any): any {
+
+/**
+ *
+ * @param obj the object to be cleaned
+ * @param keys the keys in the object to be clened
+ *
+ * Any property with value null will be deleted
+ * Any property mentioned in the key array will be deleted
+ */
+export function cleanObject(obj: any, keysToRemove: string[] = []): any {
   const allKeys = Object.keys(obj);
   for (let i = 0; i < allKeys.length; i++) {
-    if (obj[allKeys[i]] === null) {
+    if (obj[allKeys[i]] === null ||
+      keysToRemove.findIndex(k => k === allKeys[i]) > -1) {
       delete obj[allKeys[i]];
     } else if (
       typeof(obj[allKeys[i]]) === 'object' &&
       !Array.isArray(obj[allKeys[i]])
     ) {
-      obj[allKeys[i]] = cleanObject(obj[allKeys[i]]);
+      obj[allKeys[i]] = cleanObject(obj[allKeys[i]], keysToRemove);
       if (!Object.keys(obj[allKeys[i]]).length) {
         delete obj[allKeys[i]];
       }

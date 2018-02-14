@@ -118,7 +118,7 @@ describe('Unit Test :: Common model :: Object cleaner', () => {
       name: 'Sudipta'
     };
     const output = cleanObject(input);
-    return expect(output).toEqual(cleanObject(expOutput));
+    return expect(output).toEqual(expOutput);
   })
 
   it('Should correctly clean up an objectm - 3', () => {
@@ -138,7 +138,7 @@ describe('Unit Test :: Common model :: Object cleaner', () => {
       }
     };
     const output = cleanObject(input);
-    return expect(output).toEqual(cleanObject(expOutput));
+    return expect(output).toEqual(expOutput);
   })
 
   it('Should correctly clean up an objectm - 3', () => {
@@ -162,15 +162,47 @@ describe('Unit Test :: Common model :: Object cleaner', () => {
         city: 'Bangalore',
         country: 'India',
         pin: {
-          code: null,
           random: {
-            one: ['one'],
-            two: null
+            one: ['one']
           }
         }
       }
     };
     const output = cleanObject(input);
-    return expect(output).toEqual(cleanObject(expOutput));
+    return expect(output).toEqual(expOutput);
+  })
+
+  it('Should correctly clean up an objectm - 4', () => {
+    const input = {
+      name: 'Sudipta',
+      address: {
+        city: 'Bangalore',
+        country: 'India',
+        pin: {
+          code: null,
+          random: {
+            one: ['one'],
+            two: null
+          },
+          relationships: {
+            rel1: 'rel1'
+          }
+        }
+      }
+    };
+    const expOutput = {
+      name: 'Sudipta',
+      address: {
+        city: 'Bangalore',
+        country: 'India',
+        pin: {
+          random: {
+            one: ['one']
+          }
+        }
+      }
+    };
+    const output = cleanObject(input, ['relationships']);
+    return expect(output).toEqual(expOutput);
   })
 })
