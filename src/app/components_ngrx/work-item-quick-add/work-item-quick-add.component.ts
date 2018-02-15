@@ -20,8 +20,13 @@ import { cloneDeep } from 'lodash';
 import { Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 import { WorkItemTypeUI } from '../../models/work-item-type';
-import { WorkItem, WorkItemRelations } from '../../models/work-item';
+import { WorkItem, WorkItemService, WorkItemRelations } from '../../models/work-item';
 import { IterationUI } from './../../models/iteration.model';
+
+// ngrx stuff
+import { Store } from '@ngrx/store';
+import { AppState } from './../../states/app.state';
+import * as WorkItemActions from './../../actions/work-item.actions';
 
 @Component({
   selector: 'alm-work-item-quick-add',
@@ -44,7 +49,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
 
 
   error: any = false;
-  workItem: WorkItem;
+  workItem: WorkItemService;
   validTitle: boolean;
   linkObject: object;
 
@@ -59,7 +64,8 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     private logger: Logger,
     private auth: AuthenticationService,
     private route: ActivatedRoute,
-    private renderer: Renderer2) {}
+    private renderer: Renderer2,
+    private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.createWorkItemObj();
@@ -79,7 +85,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
 
 
   createWorkItemObj() {
-    this.workItem = new WorkItem();
+    this.workItem = new WorkItem() as WorkItemService;
     this.workItem.attributes = new Map<string, string | number>();
     this.workItem.relationships = new WorkItemRelations();
     this.workItem.type = 'workitems';
@@ -148,9 +154,10 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
         }
       }
     }
-
-    console.log('####-1', this.workItem);
-
+    this.store.dispatch(new WorkItemActions.Add({
+      createId: '1',
+      workItem: this.workItem
+    }));
 
     // if (this.workItem.attributes['system.title']) {
     //   this.qaSubmit.nativeElement.setAttribute('disabled', true);

@@ -113,7 +113,8 @@ if (process.env.ENV == 'inmemory') {
       effects.CollaboratorEffects,
       effects.GroupTypeEffects,
       effects.SpaceEffects,
-      effects.WorkItemTypeEffects
+      effects.WorkItemTypeEffects,
+      effects.WorkItemEffects
     ])
   ],
   declarations: [

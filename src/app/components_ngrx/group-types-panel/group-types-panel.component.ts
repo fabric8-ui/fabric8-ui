@@ -1,5 +1,4 @@
 import { cloneDeep } from 'lodash';
-import _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
