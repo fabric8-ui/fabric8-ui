@@ -5,7 +5,7 @@ import * as WorkItemActions from './../actions/work-item.actions';
 import { AppState } from './../states/app.state';
 import { Observable } from 'rxjs';
 import { WorkItemService as WIService } from './../services/work-item.service';
-import { WorkItemMapper, WorkItem, WorkItemService } from './../models/work-item';
+import { WorkItemMapper, WorkItem, WorkItemService, WorkItemResolver } from './../models/work-item';
 
 export type Action = WorkItemActions.All;
 
@@ -22,7 +22,7 @@ export class WorkItemEffects {
 
   @Effect() addWorkItems$ = this.actions$
     .ofType<WorkItemActions.Add>(WorkItemActions.ADD)
-    .withLatestFrom(this.store)
+    .withLatestFrom(this.store.select('listPage'))
     .map(([action, state]) => {
       return {
         payload: action.payload,
@@ -37,7 +37,16 @@ export class WorkItemEffects {
       return this.workItemService.create(workItem)
         .map(item => {
           const itemUI = this.workItemMapper.toUIModel(item);
-          return new WorkItemActions.AddSuccess(null);
+          const workItemResolver = new WorkItemResolver(itemUI);
+          workItemResolver.resolveArea(state.areas);
+          workItemResolver.resolveIteration(state.iterations);
+          workItemResolver.resolveCreator(state.collaborators);
+          workItemResolver.resolveType(state.workItemTypes);
+          const wItem = workItemResolver.getWorkItem();
+          wItem.createId = createID;
+          return new WorkItemActions.AddSuccess(
+            wItem
+          );
         })
         // .catch(() => Observable.of(
         //   new WorkItemActions.AddError()

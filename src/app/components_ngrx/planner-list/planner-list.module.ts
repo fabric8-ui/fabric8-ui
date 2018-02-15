@@ -1,3 +1,4 @@
+import { WorkItemReducer } from './../../reducers/work-item.reducer';
 import { FilterService } from './../../services/filter.service';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
@@ -93,6 +94,7 @@ if (process.env.ENV == 'inmemory') {
         groupTypes: reducers.GroupTypeReducer,
         space: reducers.SpaceReducer,
         workItemTypes: reducers.WorkItemTypeReducer,
+        workItems: reducers.WorkItemReducer,
         workItemStates: reducers.WorkItemStateReducer
       }, {
       initialState: {
@@ -103,6 +105,7 @@ if (process.env.ENV == 'inmemory') {
         groupTypes: states.initialGroupTypeState,
         space: states.initialSpaceState,
         workItemTypes: states.initialWorkItemTypeState,
+        workItems: states.initialWorkItemState,
         workItemStates: states.initialWIState
       }
     }),

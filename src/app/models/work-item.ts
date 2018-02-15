@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import {
   WorkItemType,
   WorkItemTypeUI,
@@ -360,5 +361,55 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
 
   cleanModel(arg: WorkItemService, keysToRemove: string[] = []) {
     return cleanObject(arg, keysToRemove);
+  }
+}
+
+export class WorkItemResolver {
+  constructor(private workItem: WorkItemUI) {}
+
+  resolveArea(areas: AreaUI[]) {
+    const area = areas.find(a => a.id === this.workItem.area.id);
+    if (area) {
+      this.workItem.area = cloneDeep(area);
+    }
+  }
+
+  resolveIteration(iterations: IterationUI[]) {
+    const iteration = iterations.find(it => it.id === this.workItem.iteration.id);
+    if (iteration) {
+      this.workItem.iteration = cloneDeep(iteration);
+      // We don't need this much value for a work item
+      this.workItem.iteration.children = [];
+    }
+  }
+
+  resolveAssignees(users: UserUI[]) {
+    this.workItem.assignees = this.workItem.assignees.map(assignee => {
+      return cloneDeep(users.find(u => u.id === assignee.id));
+    }).filter(item => !!item);
+  }
+
+  resolveCreator(users: UserUI[]) {
+    const creator = users.find(user => user.id === this.workItem.creator.id);
+    if(creator) {
+      this.workItem.creator = cloneDeep(creator);
+    }
+  }
+
+  resolveType(types: WorkItemTypeUI[]) {
+    const type = types.find(t => t.id === this.workItem.type.id);
+    if (type) {
+      this.workItem.type = cloneDeep(type);
+    }
+  }
+
+  resolveWiLabels(labels: LabelUI[]) {
+    this.workItem.labels = this.workItem.labels.map(label => {
+      return cloneDeep(labels.find(l => l.id === label.id));
+    }).filter(item => !!item);
+  }
+
+  getWorkItem() {
+    return this.workItem;
   }
 }

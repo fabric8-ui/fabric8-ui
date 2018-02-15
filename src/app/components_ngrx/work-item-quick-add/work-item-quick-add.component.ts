@@ -72,6 +72,13 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
 
     // This is board view specific
     this.showQuickAdd = false;
+
+    this.store
+      .select('listPage')
+      // .select('workItems')
+      .subscribe(items => {
+        console.log('####-1', items);
+      })
   }
 
   ngOnDestroy() {

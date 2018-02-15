@@ -8,9 +8,11 @@ import { WorkItem } from './../models/work-item';
 export type Action = WorkItemActions.All;
 
 export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialState, action: Action) => {
+  console.log('####-0', action);
   switch(action.type) {
 
     case WorkItemActions.ADD_SUCCESS: {
+      console.log('####-1', action);
       return [action.payload, ...state];
     }
 
