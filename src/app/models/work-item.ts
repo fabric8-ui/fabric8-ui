@@ -141,7 +141,7 @@ export interface WorkItemUI {
   childrenLoaded: boolean; // false
   bold: boolean; // false
 
-  createId: string; // this is used to identify newly created item
+  createId: number; // this is used to identify newly created item
 }
 
 export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {

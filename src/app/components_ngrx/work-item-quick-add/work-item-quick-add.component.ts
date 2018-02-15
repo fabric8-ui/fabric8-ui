@@ -37,7 +37,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   @ViewChild('quickAddTitle') qaTitle: any;
   @ViewChild('quickAddDesc') qaDesc: any;
   @ViewChildren('quickAddTitle', {read: ElementRef}) qaTitleRef: QueryList<ElementRef>;
-  @ViewChild('quickAddSubmit') qaSubmit: any;
   @ViewChild('quickAddElement') quickAddElement: ElementRef;
   @ViewChild('inlinequickAddElement') inlinequickAddElement: ElementRef;
 
@@ -50,7 +49,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
 
   error: any = false;
   workItem: WorkItemService;
-  validTitle: boolean;
+  validTitle: boolean = false;
   linkObject: object;
 
   // Board view specific
@@ -59,6 +58,9 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   descHeight: any = '27px';
   descResize: any = 'none';
   showQuickAdd: boolean;
+  createId: number= 0;
+  eventListeners: any[] = [];
+  blockAdd: boolean = false;
 
   constructor(
     private logger: Logger,
@@ -73,16 +75,24 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     // This is board view specific
     this.showQuickAdd = false;
 
-    this.store
-      .select('listPage')
-      // .select('workItems')
-      .subscribe(items => {
-        console.log('####-1', items);
-      })
+    // listen for item added
+    this.eventListeners.push(
+      this.store
+        .select('listPage')
+        .select('workItems')
+        .filter(items => !!items.length)
+        .subscribe(items => {
+          // const addedItem = items.find(item => item.createId === this.createId);
+          this.resetQuickAdd();
+        })
+    );
   }
 
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
+    this.eventListeners.forEach(e => {
+      e.unsubscribe();
+    })
   }
 
   setTypeContext(type: any) {
@@ -161,19 +171,18 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
         }
       }
     }
-    this.store.dispatch(new WorkItemActions.Add({
-      createId: '1',
-      workItem: this.workItem
-    }));
+    this.createId = new Date().getTime();
 
-    // if (this.workItem.attributes['system.title']) {
-    //   this.qaSubmit.nativeElement.setAttribute('disabled', true);
-    //   this.qaTitle.nativeElement.setAttribute('disabled', true);
-    //   this.workItem.hasChildren = false;
-    //   this.workItem.relationships.baseType.data = this.selectedType;
-    // } else {
-    //   this.error = 'Title can not be empty.';
-    // }
+    if (this.workItem.attributes['system.title']) {
+      this.blockAdd = true;
+      this.store.dispatch(new WorkItemActions.Add({
+        createId: this.createId,
+        workItem: this.workItem
+      }));
+    } else {
+      this.blockAdd = false;
+      this.error = 'Title can not be empty.';
+    }
   }
 
   checkTitle(): void {
@@ -189,8 +198,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     this.createWorkItemObj();
     this.showQuickAdd = true;
     this.descHeight = this.initialDescHeight ? this.initialDescHeight : '26px';
-    this.qaSubmit.nativeElement.removeAttribute('disabled');
-    this.qaTitle.nativeElement.removeAttribute('disabled');
+    this.blockAdd = false;
     this.qaTitle.nativeElement.focus();
   }
 

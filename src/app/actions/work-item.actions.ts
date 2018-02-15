@@ -12,9 +12,9 @@ export const UPDATE_SUCCESS = '[workItem] UpdateSuccess';
 export const UPDATE_ERROR = '[workItem] UpdateError';
 
 export class Add implements Action {
-  payload: {workItem: WorkItemService, createId: string};
+  payload: {workItem: WorkItemService, createId: number};
   constructor(
-    payload: {workItem: WorkItemService, createId: string}
+    payload: {workItem: WorkItemService, createId: number}
   ) {
     this.payload = payload;
   }

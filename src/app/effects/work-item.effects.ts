@@ -1,6 +1,7 @@
 import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
+import { Notification, Notifications, NotificationType } from "ngx-base";
 import * as WorkItemActions from './../actions/work-item.actions';
 import { AppState } from './../states/app.state';
 import { Observable } from 'rxjs';
@@ -17,7 +18,8 @@ export class WorkItemEffects {
   constructor(
     private actions$: Actions,
     private workItemService: WIService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private notifications: Notifications
   ){}
 
   @Effect() addWorkItems$ = this.actions$
@@ -43,13 +45,32 @@ export class WorkItemEffects {
           workItemResolver.resolveCreator(state.collaborators);
           workItemResolver.resolveType(state.workItemTypes);
           const wItem = workItemResolver.getWorkItem();
+          if (state.workItems.length) {
+            throw('daasda');
+          }
           wItem.createId = createID;
+          try {
+            this.notifications.message({
+              message: `Work item is added.`,
+              type: NotificationType.SUCCESS
+            } as Notification);
+          } catch (e) {
+            console.log('Error displaying notification.')
+          }
           return new WorkItemActions.AddSuccess(
             wItem
           );
         })
-        // .catch(() => Observable.of(
-        //   new WorkItemActions.AddError()
-        // ))
+        .catch(() => {
+          try {
+            this.notifications.message({
+              message: `Problem adding work item.`,
+              type: NotificationType.DANGER
+            } as Notification);
+          } catch (e) {
+            console.log('Error displaying notification.')
+          }
+          return Observable.of(new WorkItemActions.AddError());
+        })
     })
 }
