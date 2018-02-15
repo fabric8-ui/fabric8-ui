@@ -12,14 +12,13 @@ describe('LabelMapper', () => {
         name: '',
         backgroundColor: '',
         version: 0,
-        type: '',
         borderColor: '',
         textColor: ''
     } as LabelUI;
 
     labelService = {
         id: '',
-        type: '',
+        type: 'labels',
         attributes: {
             name: '',
             version: 0,

@@ -14,7 +14,6 @@ describe('WorkItemTypeMapper', () => {
         name: '',
         icon: '',
         version: 0,
-        type: 'workitemtypes',
         description: ''
     } as WorkItemTypeUI;
 
