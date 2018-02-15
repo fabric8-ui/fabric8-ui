@@ -40,7 +40,7 @@ describe('WorkItemMapper', () => {
         },
         type: {
           id: '71171e90-6d35-498f-a6a7-2083b5267c18', name: null, icon: null,
-          version: null, description: null, type: 'workitemtypes'
+          version: null, description: null
         },
         commentLink: 'https://api.openshift.io/api/workitems/8bccc228-bba7-43ad-b077-15fbb9148f7f/comments',
         assignees: [
