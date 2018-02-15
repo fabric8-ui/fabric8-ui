@@ -3,6 +3,11 @@ export interface modelUI {
   name: string;
 }
 
+export class modelService {
+  id: string;
+  type: string;
+}
+
 export interface MapTree {
   [index: number]: {
     fromPath?: string[];

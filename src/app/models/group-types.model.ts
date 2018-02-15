@@ -3,17 +3,16 @@ import {
   Mapper,
   MapTree,
   switchModel,
-  modelUI
+  modelUI,
+  modelService
 } from './common.model';
 
-export class GroupTypesModel {
+export class GroupTypesModel extends modelService {
   attributes: WITGroupAttributes;
-  id: string;
   links?: {
     related: string;
   };
   relationships?: WorkItemRelations;
-  type: string;
 }
 
 export class WITGroupAttributes {
@@ -98,7 +97,38 @@ export class GroupTypeMapper implements Mapper<GroupTypeService, GroupTypeUI> {
       toPath: ['typeList']
     }];
 
-  uiToServiceMapTree: MapTree = [];
+  uiToServiceMapTree: MapTree = [{
+    fromPath: ['id'],
+    toPath: ['id']
+  },{
+    fromPath: ['name'],
+    toPath: ['attributes', 'name']
+  }, {
+    fromPath: ['bucket'],
+    toPath: ['attributes', 'bucket']
+  }, {
+    fromPath: ['level'],
+    toPath: ['attributes', 'level'],
+  }, {
+    fromPath: ['icon'],
+    toPath: ['attributes', 'icon'],
+  }, {
+    fromPath: ['sublevel'],
+    toPath: ['attributes', 'sublevel'],
+  }, {
+    fromPath: ['group'],
+    toPath: ['attributes', 'group'],
+  }, {
+    fromPath: ['showInSideBar'],
+    toPath: ['attributes', 'show-in-sidebar'],
+  }, {
+    fromPath: ['typeList'],
+    toPath: ['relationships', 'typeList', 'data'],
+  }, {
+    toPath: ['type'],
+    toValue: 'grouptypes'
+  }];
+
 
   toUIModel(arg: GroupTypeService): GroupTypeUI {
     return switchModel<GroupTypeService, GroupTypeUI>(

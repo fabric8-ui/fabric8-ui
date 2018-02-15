@@ -1,15 +1,14 @@
 import {
   modelUI,
+  modelService,
   Mapper,
   MapTree,
   switchModel,
 } from './common.model';
-export class AreaModel {
+export class AreaModel extends modelService {
   attributes?: AreaAttributes;
-  id: string;
   links?: AreaLinks;
   relationships?: AreaRelations;
-  type: string;
 }
 
 export class AreaAttributes {

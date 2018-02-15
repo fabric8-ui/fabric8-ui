@@ -3,12 +3,11 @@ import { UserUI, UserMapper } from './user';
 import {
   Mapper,
   MapTree,
-  switchModel
+  switchModel,
+  modelService
 } from './common.model';
 
-export class Comment {
-    id: string;
-    type: string;
+export class Comment extends modelService {
     attributes: CommentAttributes;
     relationships: {
         'created-by': {
@@ -109,6 +108,9 @@ export class CommentMapper implements Mapper<CommentService, CommentUI> {
   }, {
     toPath: ['attributes', 'body.rendered'],
     fromPath: ['bodyRendered']
+  }, {
+    toPath: ['type'],
+    toValue: 'comments'
   }];
 
   toUIModel(arg: CommentService): CommentUI {

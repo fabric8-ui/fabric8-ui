@@ -1,16 +1,15 @@
 import {
   modelUI,
+  modelService,
   Mapper,
   MapTree,
   switchModel
 } from './common.model';
 
-export class LabelModel {
+export class LabelModel extends modelService {
   attributes: LabelAttributes;
-  id?: string;
   links?: LabelLinks;
   relationships?: LabelRelationships;
-  type?: string;
 }
 
 export class LabelAttributes {
@@ -48,7 +47,6 @@ export interface LabelUI extends modelUI {
   backgroundColor: string;
   borderColor: string;
   textColor: string;
-  type: string;
 }
 
 export class LabelMapper implements Mapper<LabelService, LabelUI> {
@@ -71,33 +69,30 @@ export class LabelMapper implements Mapper<LabelService, LabelUI> {
     }, {
       fromPath: ['attributes','text-color'],
       toPath: ['textColor']
-    }, {
-      fromPath: ['type'],
-      toPath: ['type']
     }
   ];
 
   uiToServiceMapTree: MapTree = [{
-      toPath: ['id'],
-      fromPath: ['id']
+      fromPath: ['id'],
+      toPath: ['id']
     }, {
+      fromPath: ['name'],      
       toPath: ['attributes','name'],
-      fromPath: ['name']
     }, {
+      fromPath: ['backgroundColor'],      
       toPath: ['attributes','background-color'],
-      fromPath: ['backgroundColor']
     }, {
+      fromPath: ['version'],      
       toPath: ['attributes','version'],
-      fromPath: ['version']
     }, {
+      fromPath: ['borderColor'],      
       toPath: ['attributes','border-color'],
-      fromPath: ['borderColor']
     }, {
+      fromPath: ['textColor'],      
       toPath: ['attributes','text-color'],
-      fromPath: ['textColor']
     }, {
       toPath: ['type'],
-      fromPath: ['type']
+      toValue: 'labels'
     }
   ];
 
