@@ -29,4 +29,37 @@ describe('Unit Test :: Area Modal', () => {
     };
     return expect(expectedOutput).toEqual(output);
   });
+
+  it('should correctly convert to UI model - 2', () => {
+    const aMapper = new AreaMapper();
+    const input: AreaService = {
+      id: 'qr3R',
+      links: {
+        related: "https://api.openshift.io/api/areas/qr3R",
+        self: "https://api.openshift.io/api/areas/qr3R"
+      },
+      type: 'areas'
+    };
+    const output: AreaUI = aMapper.toUIModel(input);
+    const expectedOutput: AreaUI = {
+      id: 'qr3R',
+      name: null,
+      parentPath: null,
+      parentPathResolved: null
+    };
+    return expect(expectedOutput).toEqual(output);
+  });
+
+  it('should correctly convert to UI model - 3', () => {
+    const aMapper = new AreaMapper();
+    const input: AreaService = null;
+    const output: AreaUI = aMapper.toUIModel(input);
+    const expectedOutput: AreaUI = {
+      id: null,
+      name: null,
+      parentPath: null,
+      parentPathResolved: null
+    };
+    return expect(expectedOutput).toEqual(output);
+  });
 });

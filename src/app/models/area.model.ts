@@ -20,6 +20,7 @@ export class AreaAttributes {
 }
 
 export class AreaLinks {
+  related: string;
   self: string;
 }
 

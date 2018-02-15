@@ -4,14 +4,23 @@ import {
   MapTree,
   switchModel
 } from './common.model';
-import { User } from 'ngx-login-client';
+import { User, Profile } from 'ngx-login-client';
+
+
+export interface UserService {
+  attributes?: Profile;
+  id: string;
+  type: string,
+  links?: {
+    self?: string;
+    related?: string;
+  }
+}
 
 export interface UserUI extends modelUI {
   avatar: string;
   username: string;
 }
-
-export interface UserService extends User {}
 
 export class UserMapper implements Mapper<UserService, UserUI> {
 

@@ -50,14 +50,18 @@ export function switchModel<I, O>(input: I, mapTree: MapTree): O {
       updateObj(output, toPath, mapTree[i].toValue);
     } else {
       let fromCurrentVal: any = input;
-      // Get the value to be mapped from service model
-      for(let j = 0; j < fromPath.length; j++) {
-        if (fromCurrentVal.hasOwnProperty(fromPath[j])) {
-          fromCurrentVal = fromCurrentVal[fromPath[j]];
-        } else {
-          fromCurrentVal = null;
-          break;
+      if (fromCurrentVal !== null && typeof(fromCurrentVal) !== 'undefined') {
+        // Get the value to be mapped from service model
+        for(let j = 0; j < fromPath.length; j++) {
+          if (fromCurrentVal.hasOwnProperty(fromPath[j])) {
+            fromCurrentVal = fromCurrentVal[fromPath[j]];
+          } else {
+            fromCurrentVal = null;
+            break;
+          }
         }
+      } else {
+        fromCurrentVal = null;
       }
       if (
         mapTree[i].hasOwnProperty('toFunction') &&
