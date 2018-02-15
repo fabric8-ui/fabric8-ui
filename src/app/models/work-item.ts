@@ -12,19 +12,18 @@ import { LabelModel, LabelUI, LabelMapper, LabelService } from './label.model';
 import { UserUI, UserMapper, UserService } from './user';
 import {
   modelUI,
+  modelService,
   Mapper,
   MapTree,
   switchModel,
   cleanObject
 } from './common.model';
 
-export class WorkItem {
+export class WorkItem extends modelService {
   hasChildren?: boolean;
   attributes: object = {};
-  id: string;
   number?: number;
   relationships?: WorkItemRelations;
-  type?: string;
   relationalData?: RelationalData;
   links?: {
     self: string;

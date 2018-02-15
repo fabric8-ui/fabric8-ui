@@ -1,5 +1,6 @@
 import {
   modelUI,
+  modelService,
   Mapper,
   MapTree,
   switchModel
@@ -7,10 +8,8 @@ import {
 import { User, Profile } from 'ngx-login-client';
 
 
-export interface UserService {
+export interface UserService extends modelService {
   attributes?: Profile;
-  id: string;
-  type: string,
   links?: {
     self?: string;
     related?: string;

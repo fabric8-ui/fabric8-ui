@@ -3,12 +3,11 @@ import {
   modelUI,
   Mapper,
   MapTree,
-  switchModel
+  switchModel,
+  modelService
 } from './common.model';
 
-export class WorkItemType {
-    id: string;
-    type: string;
+export class WorkItemType extends modelService{
     attributes?: {
         name: string;
         version: number;
@@ -62,9 +61,6 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
       }, {
         fromPath: ['attributes','description'],
         toPath: ['description']
-      }, {
-        toPath: ['type'],
-        toValue: 'workitemtypes'
       }
     ];
 
