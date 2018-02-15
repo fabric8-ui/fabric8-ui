@@ -10,7 +10,7 @@ import {
   CommentMapper
 } from './../models/comment';
 import { UserMapper } from './../models/user';
-import { CommentState } from 'src/app/states/comment.state';
+import { CommentState } from './../states/comment.state';
 
 export type Action = CommentActions.All;
 

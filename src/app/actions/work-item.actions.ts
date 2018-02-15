@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { WorkItem } from './../models/work-item';
+import { WorkItemUI, WorkItemService } from './../models/work-item';
 
 export const ADD = '[workItem] Add';
 export const GET = '[workItem] Get';
@@ -12,8 +12,10 @@ export const UPDATE_SUCCESS = '[workItem] UpdateSuccess';
 export const UPDATE_ERROR = '[workItem] UpdateError';
 
 export class Add implements Action {
-  payload: WorkItem;
-  constructor(payload: WorkItem) {
+  payload: {workItem: WorkItemService, createId: string};
+  constructor(
+    payload: {workItem: WorkItemService, createId: string}
+  ) {
     this.payload = payload;
   }
   readonly type = ADD;
@@ -31,16 +33,16 @@ export class Get implements Action {
 }
 
 export class Update implements Action {
-  payload: WorkItem;
-  constructor(payload: WorkItem) {
+  payload: WorkItemUI;
+  constructor(payload: WorkItemUI) {
     this.payload = payload;
   }
   readonly type = UPDATE;
 }
 
 export class AddSuccess implements Action {
-  payload: WorkItem;
-  constructor(payload: WorkItem) {
+  payload: WorkItemUI;
+  constructor(payload: WorkItemUI) {
     this.payload = payload;
   }
   readonly type = ADD_SUCCESS;
@@ -51,7 +53,7 @@ export class AddError implements Action {
 }
 
 export class GetSuccess implements Action {
-  payload: WorkItem[];
+  payload: WorkItemUI[];
   constructor(payload: any) {
     this.payload = payload;
   }
@@ -63,8 +65,8 @@ export class GetError implements Action {
 }
 
 export class UpdateSuccess implements Action {
-  payload: WorkItem;
-  constructor(payload: WorkItem) {
+  payload: WorkItemUI;
+  constructor(payload: WorkItemUI) {
     this.payload = payload;
   }
   readonly type = UPDATE_SUCCESS;

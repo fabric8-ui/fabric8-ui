@@ -1,9 +1,5 @@
-import { WorkItem } from './../models/work-item';
+import { WorkItemUI } from './../models/work-item';
 
-export interface WorkItemState {
-  workItems: WorkItem[];
-}
+export type WorkItemState = WorkItemUI[];
 
-export const initialState: WorkItemState = {
-  workItems: []
-}
+export const initialState: WorkItemState = [];
