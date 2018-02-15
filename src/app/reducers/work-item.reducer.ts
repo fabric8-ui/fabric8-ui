@@ -18,6 +18,14 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
       return [...state];
     }
 
+    case WorkItemActions.GET_SUCCESS: {
+      return action.payload;
+    }
+
+    case WorkItemActions.GET_ERROR: {
+      return [...state];
+    }
+
     default: {
       return state;
     }

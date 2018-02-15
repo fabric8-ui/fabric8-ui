@@ -6,7 +6,7 @@ import * as WorkItemActions from './../actions/work-item.actions';
 import { AppState } from './../states/app.state';
 import { Observable } from 'rxjs';
 import { WorkItemService as WIService } from './../services/work-item.service';
-import { WorkItemMapper, WorkItem, WorkItemService, WorkItemResolver } from './../models/work-item';
+import { WorkItemMapper, WorkItem, WorkItemService, WorkItemResolver, WorkItemUI } from './../models/work-item';
 
 export type Action = WorkItemActions.All;
 
@@ -68,6 +68,40 @@ export class WorkItemEffects {
             console.log('Error displaying notification.')
           }
           return Observable.of(new WorkItemActions.AddError());
+        })
+    })
+
+  @Effect() getWorkItems$: Observable<Action> = this.actions$
+    .ofType<WorkItemActions.Get>(WorkItemActions.GET)
+    .withLatestFrom(this.store.select('listPage'))
+    .map(([action, state]) => {
+      return {
+        payload: action.payload,
+        state: state
+      };
+    })
+    .switchMap(wp => {
+      const payload = wp.payload;
+      const state = wp.state;
+      return this.workItemService.getWorkItems2(payload.pageSize, payload.filters)
+        .map((data: any) => {
+          return data.workItems
+            .map((wi: WorkItemService, index) => {
+              const workItemUI = this.workItemMapper.toUIModel(wi);
+              const workItemResolver = new WorkItemResolver(workItemUI);
+              workItemResolver.resolveArea(state.areas);
+              workItemResolver.resolveIteration(state.iterations);
+              workItemResolver.resolveCreator(state.collaborators);
+              workItemResolver.resolveType(state.workItemTypes);
+              workItemResolver.resolveAssignees(state.collaborators);
+              workItemResolver.resolveWiLabels(state.labels);
+              return workItemResolver.getWorkItem();
+          });
+        })
+        .map(workItems => {
+          return new WorkItemActions.AddSuccess(
+            workItems
+          );
         })
     })
 }

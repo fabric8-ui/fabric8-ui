@@ -37,6 +37,7 @@ import * as AreaActions from './../../actions/area.actions';
 import * as WorkItemTypeActions from './../../actions/work-item-type.actions';
 import * as LabelActions from './../../actions/label.actions';
 import { WorkItemUI } from '../../models/work-item';
+import * as WorkItemActions from './../../actions/work-item.actions';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -51,6 +52,7 @@ import { WorkItemUI } from '../../models/work-item';
 export class PlannerListComponent implements OnInit, OnDestroy {
   private uiLockedAll: boolean = false;
   private sidePanelOpen: boolean = true;
+  private dataSource: any = null;
   private groupTypeSource = this.store
     .select('listPage')
     .select('groupTypes')
@@ -63,6 +65,22 @@ export class PlannerListComponent implements OnInit, OnDestroy {
     .select('listPage')
     .select('space')
     .filter(s => !!s);
+  private areaSource = this.store
+    .select('listPage')
+    .select('areas')
+    .filter(a => !!a);
+  private iterationSource = this.store
+    .select('listPage')
+    .select('iterations')
+    .filter(i => !!i.length);
+  private labelSource = this.store
+    .select('listPage')
+    .select('labels')
+    .filter(l => !!l.length);
+  private collaboratorSource = this.store
+    .select('listPage')
+    .select('collaborators')
+    .filter(c => !!c.length);
   private selectedIterationSource = this.store
     .select('listPage')
     .select('iterations')
@@ -105,6 +123,8 @@ export class PlannerListComponent implements OnInit, OnDestroy {
     window.addEventListener("resize", () => {
       this.resizeHeight()
     });
+    const payload = {};
+    let newFilterObj = {};
     this.store.dispatch(new SpaceActions.Get());
 
     this.spaceSource
@@ -116,6 +136,31 @@ export class PlannerListComponent implements OnInit, OnDestroy {
         this.store.dispatch(new WorkItemTypeActions.Get());
         this.store.dispatch(new LabelActions.Get());
       });
+
+    this.dataSource = Observable.combineLatest(
+      this.workItemTypeSource,
+      this.spaceSource,
+      this.areaSource,
+      this.iterationSource,
+      this.labelSource,
+      this.collaboratorSource
+    ).subscribe(([
+      workItemTypeSource,
+      spaceSource,
+      areaSource,
+      iterationSource,
+      labelSource,
+      collaboratorSource
+    ]) => {
+      newFilterObj['space'] = spaceSource.id;
+        let exp = this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj));
+        exp['$OPTS'] = {'tree-view': true};
+        Object.assign(payload, {
+          expression: exp
+        });
+        this.store.dispatch(new WorkItemActions.Get({pageSize: 20, filters: payload}))
+    })
+
 
     const queryParams = this.route.snapshot.queryParams;
     if(Object.keys(queryParams).length === 0 && process.env.ENV != 'inmemory') {
