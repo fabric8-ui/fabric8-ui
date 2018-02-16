@@ -43,6 +43,24 @@ var distPath  = 'dist';
 // Global namespace to contain the reusable utility routines
 let mach = {};
 
+// Serialized typescript compile and post-compile steps
+mach.transpileTS = function () {
+  return (gulp.series(function () {
+    return ngc('tsconfig.json');
+  }, function () {
+    // FIXME: why do we need that?
+    // Replace templateURL/styleURL with require statements in js.
+    return gulp.src(['dist/app/**/*.js'])
+    .pipe(replace(/templateUrl:\s/g, "template: require("))
+    .pipe(replace(/\.html',/g, ".html'),"))
+    .pipe(replace(/styleUrls: \[/g, "styles: [require("))
+    .pipe(replace(/\.less']/g, ".css').toString()]"))
+    .pipe(gulp.dest(function (file) {
+      return file.base; // because of Angular 2's encapsulation, it's natural to save the css where the less-file was
+    }));
+  }))();
+}
+
 // Copy files to the distPath
 mach.copyToDist = function (srcArr) {
   return gulp.src(srcArr)
@@ -85,22 +103,7 @@ gulp.task('build', function (done) {
 
   // app (default)
 
-  // Transpile *.ts to *.js; _then_ post-process require statements to load templates
-  (gulp.series(function () {
-    return ngc('tsconfig.json');
-  }, function () {
-    // FIXME: why do we need that?
-    // Replace templateURL/styleURL with require statements in js.
-    return gulp.src(['dist/app/**/*.js'])
-    .pipe(replace(/templateUrl:\s/g, "template: require("))
-    .pipe(replace(/\.html',/g, ".html'),"))
-    .pipe(replace(/styleUrls: \[/g, "styles: [require("))
-    .pipe(replace(/\.less']/g, ".css').toString()]"))
-    .pipe(gulp.dest(function (file) {
-      return file.base; // because of Angular 2's encapsulation, it's natural to save the css where the less-file was
-    }));
-  }))();
-
+  mach.transpileTS(); // Transpile *.ts to *.js; _then_ post-process require statements to load templates
   mach.transpileLESS(appSrc + '/**/*.less'); // Transpile and minify less, storing results in distPath.
   mach.copyToDist(['src/**/*.html']); // Copy template html files to distPath
   gulp.src(['LICENSE', 'README.adoc', 'package.json']).pipe(gulp.dest(distPath)); // Copy static assets to distPath
