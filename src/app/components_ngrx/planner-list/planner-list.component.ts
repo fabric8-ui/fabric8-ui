@@ -52,7 +52,6 @@ import * as WorkItemActions from './../../actions/work-item.actions';
 export class PlannerListComponent implements OnInit, OnDestroy {
   private uiLockedAll: boolean = false;
   private sidePanelOpen: boolean = true;
-  private dataSource: any = null;
   private groupTypeSource = this.store
     .select('listPage')
     .select('groupTypes')
@@ -137,14 +136,14 @@ export class PlannerListComponent implements OnInit, OnDestroy {
         this.store.dispatch(new LabelActions.Get());
       });
 
-    this.dataSource = Observable.combineLatest(
+    Observable.combineLatest(
       this.workItemTypeSource,
       this.spaceSource,
       this.areaSource,
       this.iterationSource,
       this.labelSource,
       this.collaboratorSource
-    ).subscribe(([
+    ).take(1).subscribe(([
       workItemTypeSource,
       spaceSource,
       areaSource,
@@ -160,7 +159,6 @@ export class PlannerListComponent implements OnInit, OnDestroy {
         });
         this.store.dispatch(new WorkItemActions.Get({pageSize: 20, filters: payload}))
     })
-
 
     const queryParams = this.route.snapshot.queryParams;
     if(Object.keys(queryParams).length === 0 && process.env.ENV != 'inmemory') {
