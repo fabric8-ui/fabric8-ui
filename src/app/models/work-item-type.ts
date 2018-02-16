@@ -66,7 +66,6 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
         fromPath: ['relationships', 'guidedChildTypes', 'data'],
         toPath: ['childTypeIds'],
         toFunction: (types: WorkItemTypeService[]) => {
-          console.log('####-2', types);
           if (!types) {
             return [];
           }
@@ -97,7 +96,6 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
         fromPath: ['childTypeIds'],
         toPath: ['relationships', 'guidedChildTypes', 'data'],
         toFunction: (types: WorkItemTypeUI[]) => {
-          console.log('####-1', types);
           if (!types) {
             return [];
           }
