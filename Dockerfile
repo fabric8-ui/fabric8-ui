@@ -68,8 +68,8 @@ WORKDIR $WORKSPACE/
 RUN npm install \
  && npm run build \
  && cd runtime \
- && npm link ../dist \
- && npm install
+ && npm install \
+ && npm link ../dist
 
 VOLUME /dist
 EXPOSE 8080
