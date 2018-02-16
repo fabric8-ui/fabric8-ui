@@ -1,3 +1,4 @@
+import { WorkItemService } from './work-item';
 import { Space } from "ngx-fabric8-wit";
 import {
   modelUI,
@@ -42,7 +43,7 @@ export interface WorkItemTypeUI extends modelUI {
   version: number;
   type: string;
   description: string;
-  childTypeIds: string[]
+  childTypes: WorkItemTypeUI[]
 }
 
 export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemTypeUI> {
@@ -64,12 +65,9 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
         toPath: ['description']
       }, {
         fromPath: ['relationships', 'guidedChildTypes', 'data'],
-        toPath: ['childTypeIds'],
-        toFunction: (types: WorkItemTypeService[]) => {
-          if (!types) {
-            return [];
-          }
-          return types.map(t => t.id);
+        toPath: ['childTypes'],
+        toFunction: (item: WorkItemService) => {
+          return !!item ? item : [];
         }
       }
     ];
@@ -93,18 +91,10 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
         toPath: ['type'],
         toValue: 'workitemtypes'
       }, {
-        fromPath: ['childTypeIds'],
+        fromPath: ['childTypes'],
         toPath: ['relationships', 'guidedChildTypes', 'data'],
-        toFunction: (types: WorkItemTypeUI[]) => {
-          if (!types) {
-            return [];
-          }
-          return types.map(t => {
-            return {
-              id: t,
-              type: 'workitemtypes'
-            }
-          });
+        toFunction: (item: WorkItemService) => {
+          return !!item ? item : [];
         }
       }
     ];
