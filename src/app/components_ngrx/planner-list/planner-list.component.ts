@@ -19,6 +19,11 @@ import {
 } from 'ngx-login-client';
 import { IterationUI } from './../../models/iteration.model';
 import { FilterService } from './../../services/filter.service';
+import { CookieService } from './../../services/cookie.service';
+import { cloneDeep, sortBy } from 'lodash';
+
+// import for column
+import { datatableColumn } from './../../components/planner-list/datatable-config';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
@@ -66,6 +71,8 @@ export class PlannerListComponent implements OnInit, OnDestroy {
   private selectedIteration: IterationUI = null;
   private loggedIn: boolean = true;
   private eventListeners: any[] = [];
+  private columns: any[] = [];
+  private isTableConfigOpen: boolean = false;
 
   @ViewChild('plannerLayout') plannerLayout: PlannerLayoutComponent;
   @ViewChild('containerHeight') containerHeight: ElementRef;
@@ -76,7 +83,8 @@ export class PlannerListComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private auth: AuthenticationService,
-    private filterService: FilterService
+    private filterService: FilterService,
+    private cookieService: CookieService
   ) {}
 
   ngOnInit() {
@@ -105,6 +113,7 @@ export class PlannerListComponent implements OnInit, OnDestroy {
     this.loggedIn = this.auth.isLoggedIn();
     this.setWorkItemTypesForQuickAdd();
     this.setSelectedIterationForQuickAdd();
+    this.setDataTableColumns();
   }
 
   resizeHeight() {
@@ -116,6 +125,76 @@ export class PlannerListComponent implements OnInit, OnDestroy {
       'height',
       (totalHeight - navHeight) + "px");
   }
+
+   //ngx-datatable methods
+
+   handleReorder(event) {
+    if(event.newValue !== 0) {
+      this.columns[event.prevValue - 1].index = event.newValue;
+      this.columns[event.newValue - 1].index = event.prevValue;
+      this.columns = sortBy(this.columns, 'index');
+      this.cookieService.setCookie('datatableColumn', this.columns);
+    }
+  }
+
+  // Start: Settings(tableConfig) dropdown
+
+  toggleCheckbox(event, col) {
+    if(event.target.checked) {
+      col.selected = true;
+    } else {
+      col.selected = false;
+    }
+  }
+
+  moveToDisplay() {
+    this.columns.filter(col => col.selected).forEach(col => {
+      if(col.display === true) return;
+      col.selected = false;
+      col.display = true;
+      col.showInDisplay = true;
+      col.available = false;
+    })
+    this.updateColumnIndex();
+    this.cookieService.setCookie('datatableColumn', this.columns);
+  }
+
+  moveToAvailable() {
+    this.columns.filter(col => col.selected).forEach(col => {
+      if(col.available === true) return;
+      col.selected = false;
+      col.display = false;
+      col.showInDisplay = false;
+      col.available = true;
+    });
+    this.updateColumnIndex();
+    this.cookieService.setCookie('datatableColumn', this.columns);
+  }
+
+  updateColumnIndex() {
+    let index = 0;
+    this.columns.forEach(col => {
+      if(col.display === true) {
+        col.index = index + 1;
+        index += 1;
+      } else {
+        col.index = undefined;
+      }
+    });
+    this.columns = sortBy(this.columns, 'index');
+  }
+
+  tableConfigChange(value: boolean) {
+    this.isTableConfigOpen = value;
+  }
+
+  tableConfigToggle(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isTableConfigOpen = false;
+  }
+
+  // End:  Setting(tableConfig) Dropdown
 
   togglePanelState(event) {
     if (event === 'out') {
@@ -192,6 +271,17 @@ export class PlannerListComponent implements OnInit, OnDestroy {
           this.selectedIteration = iteration;
         })
     )
+  }
+
+  setDataTableColumns() {
+    // Cookie for datatableColumn config
+    if(!this.cookieService.getCookie(datatableColumn.length).status) {
+      this.cookieService.setCookie('datatableColumn', datatableColumn);
+      this.columns = datatableColumn;
+    } else {
+      let temp = this.cookieService.getCookie(datatableColumn.length)
+      this.columns = temp.array;
+    }
   }
 
   ngOnDestroy() {

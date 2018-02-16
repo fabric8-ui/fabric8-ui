@@ -1,5 +1,3 @@
-import { WorkItemReducer } from './../../reducers/work-item.reducer';
-import { FilterService } from './../../services/filter.service';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
 import {
@@ -30,12 +28,16 @@ import { WorkItemQuickAddModule } from './../work-item-quick-add/work-item-quick
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { FilterColumn } from '../../pipes/column-filter.pipe';
 
+import { CookieService } from './../../services/cookie.service';
+import { FilterService } from './../../services/filter.service';
+
 // ngrx stuff
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import * as states from './../../states/index.state';
 import * as reducers from './../../reducers/index.reducer';
 import * as effects from './../../effects/index.effects';
+import { WorkItemReducer } from './../../reducers/work-item.reducer';
 
 let providers = [];
 
@@ -53,7 +55,8 @@ if (process.env.ENV == 'inmemory') {
     AreaService,
     CollaboratorService,
     FilterService,
-    BsDropdownConfig
+    BsDropdownConfig,
+    CookieService
   ];
 } else {
   providers = [
@@ -72,7 +75,8 @@ if (process.env.ENV == 'inmemory') {
     AreaService,
     CollaboratorService,
     FilterService,
-    BsDropdownConfig
+    BsDropdownConfig,
+    CookieService
   ];
 }
 
