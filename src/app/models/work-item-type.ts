@@ -42,6 +42,7 @@ export interface WorkItemTypeUI extends modelUI {
   version: number;
   type: string;
   description: string;
+  childTypeIds: string[]
 }
 
 export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemTypeUI> {
@@ -61,6 +62,16 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
       }, {
         fromPath: ['attributes','description'],
         toPath: ['description']
+      }, {
+        fromPath: ['relationships', 'guidedChildTypes', 'data'],
+        toPath: ['childTypeIds'],
+        toFunction: (types: WorkItemTypeService[]) => {
+          console.log('####-2', types);
+          if (!types) {
+            return [];
+          }
+          return types.map(t => t.id);
+        }
       }
     ];
 
@@ -82,6 +93,21 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
       }, {
         toPath: ['type'],
         toValue: 'workitemtypes'
+      }, {
+        fromPath: ['childTypeIds'],
+        toPath: ['relationships', 'guidedChildTypes', 'data'],
+        toFunction: (types: WorkItemTypeUI[]) => {
+          console.log('####-1', types);
+          if (!types) {
+            return [];
+          }
+          return types.map(t => {
+            return {
+              id: t,
+              type: 'workitemtypes'
+            }
+          });
+        }
       }
     ];
 
