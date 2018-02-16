@@ -4,7 +4,7 @@ export interface modelUI {
 }
 
 export class modelService {
-  id: string;
+  id?: string;
   type: string;
 }
 
