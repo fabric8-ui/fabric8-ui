@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import {
+  AfterViewChecked,
   Component,
   ElementRef,
   OnInit,
@@ -49,7 +50,7 @@ import * as WorkItemActions from './../../actions/work-item.actions';
   styleUrls: ['./planner-list.component.less']
 })
 
-export class PlannerListComponent implements OnInit, OnDestroy {
+export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked {
   private uiLockedAll: boolean = false;
   private sidePanelOpen: boolean = true;
   private groupTypeSource = this.store
@@ -338,16 +339,6 @@ export class PlannerListComponent implements OnInit, OnDestroy {
       this.workItemSource
         .subscribe(workItems => {
           this.workItems = [...workItems];
-
-          // This hack is applied to get the titles in the list in order
-          setTimeout(() => {
-            if (document.getElementsByClassName('planner-hack-title-truncate').length) {
-              let arr = document.getElementsByClassName('planner-hack-title-truncate');
-              for(let i = 0; i < arr.length; i++) {
-                arr[i].parentElement.style.display = 'flex';
-              }
-            }
-          }, 200);
         })
     );
   }
@@ -428,5 +419,15 @@ export class PlannerListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.eventListeners.forEach(e => e.unsubscribe());
+  }
+
+  ngAfterViewChecked() {
+    // This hack is applied to get the titles in the list in order
+    if (document.getElementsByClassName('planner-hack-title-truncate').length) {
+      let arr = document.getElementsByClassName('planner-hack-title-truncate');
+      for(let i = 0; i < arr.length; i++) {
+        arr[i].parentElement.style.display = 'flex';
+      }
+    }
   }
 }
