@@ -36,6 +36,7 @@ import * as CollaboratorActions from './../../actions/collaborator.actions';
 import * as AreaActions from './../../actions/area.actions';
 import * as WorkItemTypeActions from './../../actions/work-item-type.actions';
 import * as LabelActions from './../../actions/label.actions';
+import { WorkItemUI } from '../../models/work-item';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -67,15 +68,25 @@ export class PlannerListComponent implements OnInit, OnDestroy {
     .select('iterations')
     .filter(its => !!its.length)
     .map(its => its.find(it => it.selected));
-  private workItemTypes: WorkItemTypeUI[] = [];
+  private workItemSource = this.store
+    .select('listPage')
+    .select('workItems')
+    .filter(wis => !!wis.length);
+  private quickAddWorkItemTypes: WorkItemTypeUI[] = [];
+  private allWorkItemTypes: WorkItemTypeUI[] = [];
   private selectedIteration: IterationUI = null;
   private loggedIn: boolean = true;
   private eventListeners: any[] = [];
   private columns: any[] = [];
   private isTableConfigOpen: boolean = false;
+  private workItems: WorkItemUI[] = [];
+  private contentItemHeight: number = 50;
+  private selectedRows: any = [];
+  private detailExpandedRows: any = [];
 
   @ViewChild('plannerLayout') plannerLayout: PlannerLayoutComponent;
   @ViewChild('containerHeight') containerHeight: ElementRef;
+  @ViewChild('myTable') table: any;
 
   constructor(
     private renderer: Renderer2,
@@ -111,8 +122,9 @@ export class PlannerListComponent implements OnInit, OnDestroy {
       this.setDefaultUrl();
     }
     this.loggedIn = this.auth.isLoggedIn();
-    this.setWorkItemTypesForQuickAdd();
+    this.setWorkItemTypes();
     this.setSelectedIterationForQuickAdd();
+    this.setWorkItems();
     this.setDataTableColumns();
   }
 
@@ -245,20 +257,21 @@ export class PlannerListComponent implements OnInit, OnDestroy {
       });
   }
 
-  setWorkItemTypesForQuickAdd() {
+  setWorkItemTypes() {
     this.eventListeners.push(
       Observable.combineLatest(
         this.workItemTypeSource,
         this.groupTypeSource
       ).subscribe(([workItemTypes, groupTypes]) => {
+        this.allWorkItemTypes = workItemTypes;
         const selectedGroupType = groupTypes.find(gt => gt.selected);
         if (selectedGroupType) {
-          this.workItemTypes = workItemTypes.filter(type => {
+          this.quickAddWorkItemTypes = workItemTypes.filter(type => {
             return selectedGroupType
               .typeList.findIndex(t => t.id === type.id) > -1;
           })
         } else {
-          this.workItemTypes = workItemTypes;
+          this.quickAddWorkItemTypes = workItemTypes;
         }
       })
     );
@@ -273,6 +286,29 @@ export class PlannerListComponent implements OnInit, OnDestroy {
     )
   }
 
+  /**
+   * This function listens for any change in
+   * work item state and adopt it
+  */
+  setWorkItems() {
+    this.eventListeners.push(
+      this.workItemSource
+        .subscribe(workItems => {
+          this.workItems = [...workItems];
+
+          // This hack is applied to get the titles in the list in order
+          setTimeout(() => {
+            if (document.getElementsByClassName('planner-hack-title-truncate').length) {
+              let arr = document.getElementsByClassName('planner-hack-title-truncate');
+              for(let i = 0; i < arr.length; i++) {
+                arr[i].parentElement.style.display = 'flex';
+              }
+            }
+          }, 200);
+        })
+    );
+  }
+
   setDataTableColumns() {
     // Cookie for datatableColumn config
     if(!this.cookieService.getCookie(datatableColumn.length).status) {
@@ -281,6 +317,69 @@ export class PlannerListComponent implements OnInit, OnDestroy {
     } else {
       let temp = this.cookieService.getCookie(datatableColumn.length)
       this.columns = temp.array;
+    }
+  }
+
+  onSelect({ selected }) {
+    // if (this.detailExpandedRows.length > 0 && this.detailExpandedRows[0].id !== selected[0].id) {
+    //   this.table.rowDetail.collapseAllRows();
+    //   this.detailExpandedRows = [];
+    // }
+    // this.workItemDataService.getItem(selected[0].id).subscribe(workItem => {
+    //   this.workItemService.emitSelectedWI(workItem);
+    // });
+  }
+
+  onScroll(event) {
+    // if (event.path &&
+    //     this._lastCheckedScrollHeight < event.path[0].scrollHeight) {
+    //   let scrollLeft = ((event.path[0].scrollHeight -
+    //     (event.path[0].offsetHeight + event.path[0].scrollTop)) * 100) /
+    //     event.path[0].scrollHeight;
+    //   if (scrollLeft <= this._scrollTrigger) {
+    //     this._lastCheckedScrollHeight = event.path[0].scrollHeight;
+    //     this.fetchMoreWiItems();
+    //   }
+    // }
+  }
+
+  onTreeAction(event: any) {
+    // const index = event.rowIndex;
+    // const row = event.row;
+    // if (this.datatableWorkitems[index].treeStatus === 'collapsed') {
+    //   this.datatableWorkitems[index].treeStatus = 'loading';
+    //   if (!this.datatableWorkitems[index].childrenLoaded) {
+    //     this.loadChildren(this.workItems[index])
+    //       .subscribe((wis) => {
+    //         this.datatableWorkitems[index].childrenLoaded = true;
+    //         this.datatableWorkitems[index].treeStatus = 'expanded';
+    //       })
+    //   } else {
+    //     this.datatableWorkitems[index].treeStatus = 'expanded';
+    //     this.datatableWorkitems = [...this.datatableWorkitems];
+    //   }
+    // } else {
+    //   this.datatableWorkitems[index].treeStatus = 'collapsed';
+    //   this.datatableWorkitems = [...this.datatableWorkitems];
+    // }
+  }
+
+  toggleExpandRow(row, quickAddEnabled = true) {
+    if (quickAddEnabled && this.loggedIn) {
+      const index = this.detailExpandedRows.findIndex(r => r.id === row.id);
+      if (index > -1) {
+        // For collapsing
+        this.table.rowDetail.toggleExpandRow(this.detailExpandedRows[index]);
+        this.detailExpandedRows.splice(index, 1);
+      } else {
+        // For expanding
+        this.detailExpandedRows.forEach(r => {
+          this.table.rowDetail.toggleExpandRow(r);
+        });
+        this.detailExpandedRows = [];
+        this.table.rowDetail.toggleExpandRow(row);
+        this.detailExpandedRows.push(row);
+      }
     }
   }
 

@@ -43,80 +43,246 @@
 </ng-template>
 
 <ng-template #sectionPanel>
-  <div class="width-100 pull-left"
-    #toolbarHeight>
-    <toolbar-panel
-      context="listview"
-      [loggedInUser]="loggedInUser">
-    </toolbar-panel>
-  </div>
-
-  <!-- tableConfig Dropdown -->
-  <div class="width-100 pull-left padding-10 posRel">
-    <div class="f8-wi-list__quick-add padding-right-15 margin-right-15"
-      id="workItemList_up_quickAdd"
-      *ngIf="loggedIn"
-      #quickaddHeight>
-      <alm-work-item-quick-add
-        [wilistview]="'wi-table-view-top'"
-        [workItemTypes]="workItemTypes"
-        [selectedType]="workItemTypes.length ? workItemTypes[0] : null"
-        [selectedIteration]="selectedIteration"
-        (close)="close($event)">
-      </alm-work-item-quick-add>
+    <div class="width-100 pull-left"
+      #toolbarHeight>
+      <toolbar-panel
+        context="listview"
+        [loggedInUser]="loggedInUser">
+      </toolbar-panel>
     </div>
-    <div class="f8-wi-list__settings f8-wi__table-config">
-      <div class="dropdown-kebab-pf pull-right dropdown margin-left-10"
-        dropdown
-        [autoClose]="false"
-        [isOpen]="isTableConfigOpen"
-        (isOpenChange)="tableConfigChange($event)">
-        <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
-          <span class="fa fa-cog"></span>
-        </button>
-        <div class="dropdown-menu-right dropdown-menu f8-wi-list__settings-dropdown" *dropdownMenu>
-          <aside>
-            <i class="db text-right fa fa-close btn btn-link" (click)="tableConfigToggle($event)"></i>
-          </aside>
-          <aside>
-            <small>Displayed Atrributes</small>
-            <ul class="f8-wi-list__settings-column">
-              <li *ngFor='let col of (columns | filterColumn: "showInDisplay")'>
-                <input
-                  type='checkbox'
-                  [id]="col.name"
-                  (change)='toggleCheckbox($event, col)'/>
-                <label [attr.for]="col.name">{{col.name}}</label>
-              </li>
-            </ul>
-          </aside>
-          <aside>
-            <span class="db fa fa-angle-right"
-              tooltip="Move to Displayed Attributes"
-              (click)="moveToDisplay()">
-            </span>
-            <span class="db fa fa-angle-left"
-              tooltip="Move to Available Attributes"
-              (click)="moveToAvailable()">
-            </span>
-          </aside>
-          <aside>
-            <small>Available Atrributes</small>
-            <ul class="f8-wi-list__settings-column">
-              <li *ngFor='let col of (columns | filterColumn: "available")'>
-                <input
-                  type='checkbox'
-                  [id]="col.name"
-                  (change)='toggleCheckbox($event, col)'/>
-                <label [attr.for]="col.name">
-                  {{col.name}}
-                </label>
-              </li>
-            </ul>
-          </aside>
+
+    <!-- tableConfig Dropdown -->
+    <div class="width-100 pull-left padding-10 posRel">
+      <div class="f8-wi-list__quick-add padding-right-15 margin-right-15"
+        id="workItemList_up_quickAdd"
+        *ngIf="loggedIn"
+        #quickaddHeight>
+        <alm-work-item-quick-add
+          [wilistview]="'wi-table-view-top'"
+          [workItemTypes]="quickAddWorkItemTypes"
+          [selectedType]="quickAddWorkItemTypes.length ? quickAddWorkItemTypes[0] : null"
+          [selectedIteration]="selectedIteration"
+          (close)="close($event)">
+        </alm-work-item-quick-add>
+      </div>
+      <div class="f8-wi-list__settings f8-wi__table-config">
+        <div class="dropdown-kebab-pf pull-right dropdown margin-left-10"
+          dropdown
+          [autoClose]="false"
+          [isOpen]="isTableConfigOpen"
+          (isOpenChange)="tableConfigChange($event)">
+          <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
+            <span class="fa fa-cog"></span>
+          </button>
+          <div class="dropdown-menu-right dropdown-menu f8-wi-list__settings-dropdown" *dropdownMenu>
+            <aside>
+              <i class="db text-right fa fa-close btn btn-link" (click)="tableConfigToggle($event)"></i>
+            </aside>
+            <aside>
+              <small>Displayed Atrributes</small>
+              <ul class="f8-wi-list__settings-column">
+                <li *ngFor='let col of (columns | filterColumn: "showInDisplay")'>
+                  <input
+                    type='checkbox'
+                    [id]="col.name"
+                    (change)='toggleCheckbox($event, col)'/>
+                  <label [attr.for]="col.name">{{col.name}}</label>
+                </li>
+              </ul>
+            </aside>
+            <aside>
+              <span class="db fa fa-angle-right"
+                tooltip="Move to Displayed Attributes"
+                (click)="moveToDisplay()">
+              </span>
+              <span class="db fa fa-angle-left"
+                tooltip="Move to Available Attributes"
+                (click)="moveToAvailable()">
+              </span>
+            </aside>
+            <aside>
+              <small>Available Atrributes</small>
+              <ul class="f8-wi-list__settings-column">
+                <li *ngFor='let col of (columns | filterColumn: "available")'>
+                  <input
+                    type='checkbox'
+                    [id]="col.name"
+                    (change)='toggleCheckbox($event, col)'/>
+                  <label [attr.for]="col.name">
+                    {{col.name}}
+                  </label>
+                </li>
+              </ul>
+            </aside>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
+    <!-- list starts here -->
+
+    <div class="f8-wi-list">
+      <div class="f8-wi-list-wrap"
+        #listContainer>
+        <!-- ngx-datatable -->
+        <ngx-datatable #myTable
+          *ngIf="!!workItems.length"
+          class="material fullscreen"
+          [columnMode]="'force'"
+          [scrollbarH]="true"
+          [scrollbarV]="true"
+          [rows]="workItems"
+          [rowHeight]="contentItemHeight"
+          [treeFromRelation]="'parentId'"
+          [treeToRelation]="'id'"
+          [selected]="selectedRows"
+          [selectionType]="'single'"
+          (select)="onSelect($event)"
+          (scroll)="onScroll($event)"
+          (reorder)="handleReorder($event)"
+          (treeAction)="onTreeAction($event)">
+          <!-- First Column - quick Add - row detail -->
+          <ngx-datatable-row-detail [rowHeight]="50" #myDetailRow (toggle)="onDetailToggle($event)">
+            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+              <div class="f8-wi-list__quick-add-table width-100 pull-left"
+                id="workItemList_quickAdd_inline"
+                #quickaddHeight>
+                <alm-work-item-quick-add
+                  [wilistview]="'wi-table-view'"
+                  [workItemTypes]="row?.type?.childTypes"
+                  [selectedType]="row?.type?.childTypes?.length ? row.type.childTypes[0] : null"
+                  [selectedIteration]="selectedIteration"
+                  (close)="close($event)">
+                </alm-work-item-quick-add>
+              </div>
+            </ng-template>
+          </ngx-datatable-row-detail>
+          <!-- First Column -->
+          <ngx-datatable-column
+              [width]="50"
+              [resizeable]="false"
+              [sortable]="false"
+              [cellClass]="'cell-class'"
+              [frozenLeft]="false">
+              <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+                <a class="quick-add-icon"
+                  href="javascript:void(0)"
+                  [class.pficon-add-circle-o]="!expanded"
+                  [class.pficon-close]="expanded"
+                  [class.disabled]="!!!row?.type?.childTypes || !loggedIn"
+                  (click)="toggleExpandRow(
+                    row,
+                    !!!row?.type?.childTypes
+                  )">
+                </a>
+              </ng-template>
+          </ngx-datatable-column>
+          <!-- columns id-assignees -->
+          <ngx-datatable-column
+            *ngFor="let c of (columns | filterColumn:'display')"
+            [isTreeColumn]="c.name==='Title'"
+            [name]="c.name"
+            [resizeable]="false"
+            [width]="c.width"
+            [sortable]="c.name === 'Title'"
+            [cellClass]="'cell-class'"
+            [headerClass]="'header-cell'">
+              <ng-template ngx-datatable-cell-tree-expander *ngIf="c.name==='Title'">
+                <i class="fa fa-angle-right tree-icon"></i>
+              </ng-template>
+
+              <ng-template ngx-datatable-cell-tree-collapser *ngIf="c.name==='Title'">
+                <i class="fa fa-angle-down tree-icon"></i>
+              </ng-template>
+
+              <ng-template ngx-datatable-cell-tree-disabled *ngIf="c.name==='Title'">
+                <i class="fa fa-angle-right tree-icon tree-icon__disabled"></i>
+              </ng-template>
+
+              <ng-template ngx-datatable-cell-tree-loader *ngIf="c.name==='Title'">
+                <div class="spinner spinner-xs icon-loader margin-top-15"></div>
+              </ng-template>
+
+              <ng-template let-row="row"
+                ngx-datatable-cell-template>
+                  <work-item-cell
+                    [row]="row"
+                    [col]="c.prop"
+                    (onDetailPreview)="onDetailPreview($event)"
+                    [class.f8-wi__table-config]="c.prop=='label' || c.prop=='assignees'"
+                    [class.planner-hack-title-truncate]="c.prop=='title'">
+                  </work-item-cell>
+              </ng-template>
+          </ngx-datatable-column>
+          <!-- Last Column  -->
+          <ngx-datatable-column
+            [width]="80"
+            [resizeable]="false"
+            [sortable]="false"
+            [cellClass]="'cell-class'"
+            [frozenRight]="false">
+            <ng-template let-row="row"
+              ngx-datatable-cell-template>
+              <div class="dropdown-kebab-pf f8-wi__table-config
+                pull-right dropdown margin-left-10"
+                dropdown>
+                <button
+                  class="btn btn-link dropdown-toggle"
+                  type="button"
+                  dropdownToggle>
+                    <span class="fa fa-ellipsis-v"></span>
+                </button>
+                <ul class="dropdown-menu-right dropdown-menu"
+                  *dropdownMenu>
+                  <li>
+                    <a class="pointer"
+                      (click)="onMoveToTop(row['id'])">
+                      Move to Top
+                    </a>
+                  </li>
+                  <li>
+                    <a class="pointer"
+                      (click)="onMoveToBottom(row['id'])">
+                      Move to Bottom
+                    </a>
+                  </li>
+                  <li class="divider"></li>
+                  <li>
+                    <a class="pointer"
+                      (click)="onAssociateIteration(row['id'])">
+                      Associate with Iteration...
+                    </a>
+                  </li>
+                  <li class="divider"></li>
+                  <li>
+                    <a class="pointer"
+                      (click)="onOpen(row['id'])">
+                      Open
+                    </a>
+                  </li>
+                  <li>
+                    <a class="pointer"
+                      (click)="onPreview($event, row['id'])">
+                      Preview
+                    </a>
+                  </li>
+                  <li>
+                    <a class="pointer"
+                      (click)="onMoveToBacklog(row['id'])">
+                      Move to Backlog
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="pull-right margin-right-15 padding-top-2"
+                placement="left">
+                <a class="fa fa-columns f8-action-icon pointer"
+                  (click)="onPreview(row['id'])">
+                </a>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </div>
 </ng-template>

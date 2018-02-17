@@ -1,0 +1,54 @@
+  <ng-container *ngIf="assignees.length < 1">
+    <span class="dib fa fa-user-plus user-assign-icon margin-right-5"></span>
+    <small class="dib">Unassigned</small>
+  </ng-container>
+  <ng-container *ngIf="showFullName">
+    <div class="f8-assignees dib margin-right-15 margin-bottom-7"
+      *ngFor="let assignee of assignees">
+      <div class="user-avatar margin-right-10 pull-left">
+        <img
+          class="user-assign-avatar"
+          placement="bottom"
+          tooltip="{{assignee?.name}}"
+          src="{{assignee?.avatar + '&s=20'}}"
+          onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
+      </div>
+      <span class="pointer">
+        {{ assignee.attributes?.fullName }}
+      </span>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!showFullName">
+      <div class="f8-assignees dib margin-bottom-7">
+          <div *ngFor="let assignee of assignees | slice:0:truncateAfter"  class="user-avatar margin-right-5 pull-left">
+              <img
+                class="user-assign-avatar"
+                placement="left"
+                tooltip="{{assignee?.name}}"
+                src="{{assignee?.avatar + '&s=20'}}"
+                onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
+            </div>
+          <span dropdown class="pull-left margin-h-5 dropdown" placement="right">
+            <span dropdownToggle class="dib dropdown-toggle pointer"
+              *ngIf="truncateAfter!==undefined && assignees.length > 3">
+                {{ assignees.length - truncateAfter }}+
+              </span>
+              <ul *dropdownMenu class="dropdown-menu label-dropdown dropdown-menu-right">
+                <li *ngFor="let assignee of assignees | slice:truncateAfter;">
+                   <a><div class="user-avatar margin-right-10 pull-left">
+                        <img
+                          class="user-assign-avatar"
+                          placement="bottom"
+                          tooltip="{{assignee?.name}}"
+                          src="{{assignee?.avatar + '&s=20'}}"
+                          onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'" />
+                      </div>
+                      <span class="pointer">
+                        {{ assignee?.name }}
+                      </span>
+                    </a>
+                </li>
+              </ul>
+          </span>
+        </div>
+  </ng-container>

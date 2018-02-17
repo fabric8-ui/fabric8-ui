@@ -1,3 +1,7 @@
+import { LabelsModule } from './../labels/labels.module';
+import { AssigneesModule } from './../assignee/assignee.module';
+import { WorkItemCellComponent } from './../work-item-cell/work-item-cell.component';
+import { NgxDatatableModule } from 'rh-ngx-datatable';
 import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
 import {
@@ -38,6 +42,7 @@ import * as states from './../../states/index.state';
 import * as reducers from './../../reducers/index.reducer';
 import * as effects from './../../effects/index.effects';
 import { WorkItemReducer } from './../../reducers/work-item.reducer';
+import { AlmIconModule } from 'ngx-widgets';
 
 let providers = [];
 
@@ -82,14 +87,18 @@ if (process.env.ENV == 'inmemory') {
 
 @NgModule({
   imports: [
+    AlmIconModule,
+    AssigneesModule,
     CommonModule,
     PlannerListRoutingModule,
     PlannerLayoutModule,
+    LabelsModule,
     ToolbarPanelModule,
     TooltipModule.forRoot(),
     SidepanelModule,
     WorkItemQuickAddModule,
     BsDropdownModule.forRoot(),
+    NgxDatatableModule,
     StoreModule.forFeature('listPage', {
         iterations: reducers.iterationReducer,
         labels: reducers.LabelReducer,
@@ -126,6 +135,7 @@ if (process.env.ENV == 'inmemory') {
   ],
   declarations: [
     PlannerListComponent,
+    WorkItemCellComponent,
     FilterColumn
   ],
   providers: providers,

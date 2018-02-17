@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 import { WorkItemService } from './../services/work-item.service';
 import {
   WorkItemTypeService,
-  WorkItemTypeMapper
+  WorkItemTypeMapper,
+  WorkItemTypeResolver
 } from './../models/work-item-type';
 
 export type Action = WorkItemTypeActions.All;
@@ -27,10 +28,14 @@ export class WorkItemTypeEffects {
       return this.workItemService.getWorkItemTypes()
         .map((types: WorkItemTypeService[]) => {
           const witm = new WorkItemTypeMapper();
+          const wiTypes = types.map(t => witm.toUIModel(t));
+          const witResolver = new WorkItemTypeResolver(wiTypes);
+          witResolver.resolveChildren();
+          console.log('##### - 1', witResolver.getResolvedWorkItemTypes());
           this.store.dispatch(new WIStateActoins.GetSuccess(types));
           return new WorkItemTypeActions.GetSuccess(
-            types.map(t => witm.toUIModel(t))
-          )
+            witResolver.getResolvedWorkItemTypes()
+          );
         })
     })
 }

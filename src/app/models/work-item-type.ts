@@ -111,3 +111,24 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
       );
     }
 }
+
+
+export class WorkItemTypeResolver {
+  private allTypes:  WorkItemTypeUI[];
+
+  constructor(allTypes: WorkItemTypeUI[] = []) {
+    this.allTypes = allTypes;
+  }
+
+  resolveChildren() {
+    this.allTypes.forEach(type => {
+      type.childTypes = this.allTypes.filter(t => {
+        return type.childTypes.findIndex(ct => ct.id === t.id) > -1;
+      })
+    })
+  }
+
+  getResolvedWorkItemTypes() {
+    return this.allTypes;
+  }
+}

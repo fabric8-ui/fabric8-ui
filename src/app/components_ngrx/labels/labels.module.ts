@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { LabelsComponent } from './label.component';
+import { LabelsComponent } from './labels.component';
 
 //ngrx stuff
 import { StoreModule } from '@ngrx/store';

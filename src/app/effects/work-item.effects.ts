@@ -45,9 +45,6 @@ export class WorkItemEffects {
           workItemResolver.resolveCreator(state.collaborators);
           workItemResolver.resolveType(state.workItemTypes);
           const wItem = workItemResolver.getWorkItem();
-          if (state.workItems.length) {
-            throw('daasda');
-          }
           wItem.createId = createID;
           try {
             this.notifications.message({
