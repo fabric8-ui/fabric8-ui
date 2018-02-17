@@ -22,6 +22,21 @@ export class WorkItemEffects {
     private notifications: Notifications
   ){}
 
+  resolveWorkItems(workItems, state, matchingQuery: boolean = false): WorkItemUI[] {
+    return workItems.map((wi: WorkItemService) => {
+      const workItemUI = this.workItemMapper.toUIModel(wi);
+      workItemUI.bold = matchingQuery;
+      const workItemResolver = new WorkItemResolver(workItemUI);
+      workItemResolver.resolveArea(state.areas);
+      workItemResolver.resolveIteration(state.iterations);
+      workItemResolver.resolveCreator(state.collaborators);
+      workItemResolver.resolveType(state.workItemTypes);
+      workItemResolver.resolveAssignees(state.collaborators);
+      workItemResolver.resolveWiLabels(state.labels);
+      return workItemResolver.getWorkItem();
+    })
+  }
+
   @Effect() addWorkItems$ = this.actions$
     .ofType<WorkItemActions.Add>(WorkItemActions.ADD)
     .withLatestFrom(this.store.select('listPage'))
@@ -85,23 +100,14 @@ export class WorkItemEffects {
       const state = wp.state;
       return this.workItemService.getWorkItems2(payload.pageSize, payload.filters)
         .map((data: any) => {
-          return data.workItems
-            .map((wi: WorkItemService, index) => {
-              const workItemUI = this.workItemMapper.toUIModel(wi);
-              const workItemResolver = new WorkItemResolver(workItemUI);
-              workItemResolver.resolveArea(state.areas);
-              workItemResolver.resolveIteration(state.iterations);
-              workItemResolver.resolveCreator(state.collaborators);
-              workItemResolver.resolveType(state.workItemTypes);
-              workItemResolver.resolveAssignees(state.collaborators);
-              workItemResolver.resolveWiLabels(state.labels);
-              return workItemResolver.getWorkItem();
-          });
+          const wi = this.resolveWorkItems(data.workItems, state, true);
+          const wiIncludes = this.resolveWorkItems(data.included, state, false);
+          return [...wi, ...wiIncludes];
         })
-        .map(workItems => {
-          return new WorkItemActions.AddSuccess(
+        .map((workItems: WorkItemUI[]) => {
+          return new WorkItemActions.GetSuccess(
             workItems
-          );
+          );;
         })
     })
 }
