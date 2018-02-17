@@ -236,8 +236,15 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
       fromPath: ['relationships','children','links','related'],
       toPath: ['childrenLink']
     }, {
+      fromPath: ['relationships','children', 'meta', 'hasChildren'],
       toPath: ['treeStatus'],
-      toValue: 'collapsed'
+      toFunction: (hasChildren) => {
+        if (!hasChildren) {
+          return 'disabled';
+        } else {
+          return 'collapsed';
+        }
+      }
     }, {
       toPath: ['childrenLoaded'],
       toValue: false

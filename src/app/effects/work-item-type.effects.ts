@@ -31,7 +31,6 @@ export class WorkItemTypeEffects {
           const wiTypes = types.map(t => witm.toUIModel(t));
           const witResolver = new WorkItemTypeResolver(wiTypes);
           witResolver.resolveChildren();
-          console.log('##### - 1', witResolver.getResolvedWorkItemTypes());
           this.store.dispatch(new WIStateActoins.GetSuccess(types));
           return new WorkItemTypeActions.GetSuccess(
             witResolver.getResolvedWorkItemTypes()

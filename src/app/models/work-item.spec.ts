@@ -52,7 +52,7 @@ describe('WorkItemMapper', () => {
         hasChildren: false,
         parentID: null,
         childrenLink: 'https://api.openshift.io/api/workitems/8bccc228-bba7-43ad-b077-15fbb9148f7f/children',
-        treeStatus: 'collapsed',
+        treeStatus: 'disabled',
         childrenLoaded: false,
         bold: false
       } as WorkItemUI;
