@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Params, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
 
 import { AuthenticationService } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
@@ -23,7 +23,7 @@ import * as GroupTypeActions from './../../actions/group-type.actions';
   templateUrl: './group-types-panel.component.html',
   styleUrls: ['./group-types-panel.component.less']
 })
-export class GroupTypesComponent implements OnInit {
+export class GroupTypesComponent implements OnInit, OnDestroy {
 
   @Input() sidePanelOpen: boolean = true;
 
@@ -66,6 +66,10 @@ export class GroupTypesComponent implements OnInit {
         }
       })
     );
+  }
+
+  ngOnDestroy() {
+    this.eventListeners.forEach(e => e.unsubscribe());
   }
 
   fnBuildQueryParam(witGroup) {
