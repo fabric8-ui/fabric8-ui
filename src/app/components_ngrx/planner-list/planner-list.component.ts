@@ -27,6 +27,11 @@ import { EmptyStateConfig } from 'patternfly-ng';
 // import for column
 import { datatableColumn } from './../../components/planner-list/datatable-config';
 
+import {
+  WorkItemQuickPreviewComponent
+} from './../work-item-quick-preview/work-item-quick-preview.component';
+import { WorkItemDataService } from './../../services/work-item-data.service';
+
 // ngrx stuff
 import { Store } from '@ngrx/store';
 import { AppState } from './../../states/app.state';
@@ -111,6 +116,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   @ViewChild('plannerLayout') plannerLayout: PlannerLayoutComponent;
   @ViewChild('containerHeight') containerHeight: ElementRef;
   @ViewChild('myTable') table: any;
+  @ViewChild('quickPreview') quickPreview: WorkItemQuickPreviewComponent;
 
   constructor(
     private renderer: Renderer2,
@@ -119,7 +125,8 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     private router: Router,
     private auth: AuthenticationService,
     private filterService: FilterService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private workItemDataService: WorkItemDataService,
   ) {}
 
   ngOnInit() {
@@ -481,6 +488,11 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
       relativeTo: this.route,
       queryParams: queryParams
     });
+  }
+
+  onPreview(id: string): void {
+    const workItem = this.workItems.find(w => w.id === id);
+    this.quickPreview.openPreview(workItem);
   }
 
   ngOnDestroy() {

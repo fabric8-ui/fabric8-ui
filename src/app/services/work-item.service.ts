@@ -553,10 +553,7 @@ export class WorkItemService {
         .get(url)
         .map(response => {
           return { data: response.json().data, meta: response.json().meta, links: response.json().links};
-        }).catch((error: Error | any) => {
-          this.notifyError('Getting comments failed.', error);
-          return Observable.throw(new Error(error.message));
-        });
+        })
   }
 
   /**

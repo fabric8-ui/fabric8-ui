@@ -7,7 +7,9 @@ import { Observable } from 'rxjs';
 import { WorkItemService } from './../services/work-item.service';
 import {
   CommentService,
-  CommentMapper
+  CommentMapper,
+  CommentUI,
+  CommentCreatorResolver
 } from './../models/comment';
 import { UserMapper } from './../models/user';
 import { CommentState } from './../states/comment.state';
@@ -25,13 +27,29 @@ export class CommentEffects {
 
   @Effect() getWorkItemComments$: Observable<Action> = this.actions$
     .ofType<CommentActions.Get>(CommentActions.GET)
-    .map(action => action.payload)
-    .switchMap((action) => {
-      return this.workItemService.resolveComments(action.payload)
-        .map((comments: CommentService[]) => {
-          const cMapper = new CommentMapper(this.userMapper);
+    .withLatestFrom(this.store.select('listPage').select('collaborators'))
+    .map(([action, collaborators]) => {
+      return {
+        payload: action.payload,
+        collaborators: collaborators
+      }
+    })
+    .switchMap((cp) => {
+      const payload = cp.payload;
+      const collaborators = cp.collaborators;
+      return this.workItemService.resolveComments(payload)
+        .map((comments) => {
+          return comments.data.map(comment => {
+            const cMapper = new CommentMapper(this.userMapper);
+            const commentUI = cMapper.toUIModel(comment);
+            const creatorResolver = new CommentCreatorResolver(commentUI);
+            creatorResolver.resolveCreator(collaborators);
+            return creatorResolver.getComment();
+          })
+        })
+        .map((comments: CommentUI[]) => {
           return new CommentActions.GetSuccess(
-            comments.map(c => cMapper.toUIModel(c))
+            comments
           )
         })
     })

@@ -31,6 +31,8 @@ import {
 import { WorkItemQuickAddModule } from './../work-item-quick-add/work-item-quick-add.module';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { FilterColumn } from '../../pipes/column-filter.pipe';
+import { WorkItemQuickPreviewModule } from '../work-item-quick-preview/work-item-quick-preview.module';
+import { WorkItemDataService } from './../../services/work-item-data.service';
 
 import { CookieService } from './../../services/cookie.service';
 import { FilterService } from './../../services/filter.service';
@@ -62,7 +64,8 @@ if (process.env.ENV == 'inmemory') {
     CollaboratorService,
     FilterService,
     BsDropdownConfig,
-    CookieService
+    CookieService,
+    WorkItemDataService
   ];
 } else {
   providers = [
@@ -82,7 +85,8 @@ if (process.env.ENV == 'inmemory') {
     CollaboratorService,
     FilterService,
     BsDropdownConfig,
-    CookieService
+    CookieService,
+    WorkItemDataService
   ];
 }
 
@@ -101,6 +105,7 @@ if (process.env.ENV == 'inmemory') {
     WorkItemQuickAddModule,
     BsDropdownModule.forRoot(),
     NgxDatatableModule,
+    WorkItemQuickPreviewModule,
     StoreModule.forFeature('listPage', {
         iterations: reducers.iterationReducer,
         labels: reducers.LabelReducer,

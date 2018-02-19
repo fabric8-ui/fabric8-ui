@@ -14,6 +14,9 @@
       [sidePanelContent]="sidePanel"
       [sectionContent]="sectionPanel">
     </alm-planner-layout>
+    <work-item-preview
+      #quickPreview>
+    </work-item-preview>
   </main>
 </div>
 
@@ -212,6 +215,7 @@
                     [row]="row"
                     [col]="c.prop"
                     (onDetailPreview)="onDetailPreview($event)"
+                    (onQuickPreview)="onPreview($event)"
                     [class.f8-wi__table-config]="c.prop=='label' || c.prop=='assignees'"
                     [class.planner-hack-title-truncate]="c.prop=='title'">
                   </work-item-cell>

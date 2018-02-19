@@ -36,6 +36,13 @@ export class WorkItemTypeField {
     };
 }
 
+export class WorkItemTypeFieldUI {
+  required: boolean;
+  label: string;
+  description: string;
+  kind: string;
+}
+
 export interface WorkItemTypeService extends WorkItemType {}
 
 export interface WorkItemTypeUI extends modelUI {
@@ -43,7 +50,8 @@ export interface WorkItemTypeUI extends modelUI {
   version: number;
   type: string;
   description: string;
-  childTypes: WorkItemTypeUI[]
+  childTypes: WorkItemTypeUI[];
+  fields: Map<string, WorkItemTypeFieldUI>;
 }
 
 export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemTypeUI> {

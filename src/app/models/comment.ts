@@ -6,6 +6,7 @@ import {
   switchModel,
   modelService
 } from './common.model';
+import { cloneDeep } from 'lodash';
 
 export class Comment extends modelService {
     attributes: CommentAttributes;
@@ -123,5 +124,20 @@ export class CommentMapper implements Mapper<CommentService, CommentUI> {
     return switchModel<CommentUI, CommentService>(
       arg, this.uiToServiceMapTree
     )
+  }
+}
+
+export class CommentCreatorResolver {
+  constructor(private comment: CommentUI) {}
+
+  resolveCreator(creators: UserUI[]) {
+    const creator = creators.find(a => a.id === this.comment.creator.id);
+    if (creator) {
+      this.comment.creator = cloneDeep(creator);
+    }
+  }
+
+  getComment() {
+    return this.comment;
   }
 }
