@@ -122,16 +122,16 @@ gulp.task('build', function (done) {
   // watch
   if (argv.watch) {
     gulp.watch([appSrc + '/app/**/*.ts', '!' + appSrc + '/app/**/*.spec.ts']).on('change', function (e) {
-      util.log(util.colors.cyan(e.path) + ' has been changed. Compiling TypeScript.');
+      util.log(util.colors.cyan(e) + ' has been changed. Compiling TypeScript.');
       mach.transpileTS();
     });
-    gulp.watch([appSrc + '/app/**/*.less']).on('change', function (e) {
-      util.log(util.colors.cyan(e.path) + ' has been changed. Compiling LESS.');
-      mach.transpileLESS(e.path);
+    gulp.watch(appSrc + '/app/**/*.less').on('change', function (e) {
+      util.log(util.colors.cyan(e) + ' has been changed. Compiling LESS.');
+      mach.transpileLESS(e);
     });
-    gulp.watch([appSrc + '/app/**/*.html']).on('change', function (e) {
-      util.log(util.colors.cyan(e.path) + ' has been changed. Compiling HTML.');
-      mach.copyToDist(e.path);
+    gulp.watch(appSrc + '/app/**/*.html').on('change', function (e) {
+      util.log(util.colors.cyan(e) + ' has been changed. Compiling HTML.');
+      mach.copyToDist(e);
     });
     util.log('Now run');
     util.log('');
