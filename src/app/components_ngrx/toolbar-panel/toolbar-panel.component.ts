@@ -68,7 +68,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   workItemDetail: WorkItem;
   spaceSubscription: Subscription = null;
   eventListeners: any[] = [];
-  currentQueryParams: Object = {};
   existingAllowedQueryParams: Object = {};
   filterConfig: FilterConfig = {
       fields: [{
@@ -124,6 +123,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   private activeFilters = [];
   private activeFilterFromSidePanel: string = '';
   private currentQuery: string = '';
+
+  private isShowTreeOn: boolean = false;
 
   constructor(
     private router: Router,
@@ -229,7 +230,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     const oldQueryJson = this.filterService.queryToJson(
       this.currentQuery
     );
-    console.log('####-1', $event);
     const field = $event.field.id;
     const value = $event.hasOwnProperty('query') ?
       $event.query.id : $event.value;
@@ -244,9 +244,11 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       newQuery
     );
     const queryString = this.filterService.jsonToQuery(finalQuery);
+    let queryParams = cloneDeep(this.route.snapshot.queryParams);
+    queryParams['q'] = queryString;
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { q: queryString }
+      queryParams: queryParams
     });
   }
 
@@ -433,6 +435,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           const fields = this.filterService.queryToFlat(
             this.currentQuery
           );
+          this.handleShowTreeCheckBox();
           this.formatFilterFIelds(fields);
         } else {
           this.activeFilters = [];
@@ -525,9 +528,39 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     const queryString = this.filterService.jsonToQuery(
       this.filterService.flatToQuery(fields)
     );
+    let queryParams = cloneDeep(this.route.snapshot.queryParams);
+    queryParams['q'] = queryString;
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { q: queryString }
+      queryParams: queryParams
     });
+  }
+
+  showTreeToggle(e) {
+    let queryParams = cloneDeep(this.route.snapshot.queryParams);
+    if (e.target.checked) {
+      queryParams['showTree'] = true;
+    } else {
+      if (queryParams.hasOwnProperty('showTree')) {
+        delete queryParams['showTree'];
+      }
+    }
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: queryParams
+    });
+  }
+
+  handleShowTreeCheckBox() {
+    let currentParams = cloneDeep(this.route.snapshot.queryParams);
+    if (currentParams.hasOwnProperty('showTree')) {
+      if (currentParams['showTree'] === 'true') {
+        this.isShowTreeOn = true;
+      } else if (currentParams['showTree'] === 'false') {
+        this.isShowTreeOn = false;
+      }
+    } else {
+      this.isShowTreeOn = false;
+    }
   }
 }
