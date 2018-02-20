@@ -88,6 +88,8 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   @ViewChild('myTable') table: any;
 
   showTree: boolean = true;
+  wiLength: number;
+  resolvedIncludedAC : boolean;
   resolvedWorkItems: WorkItem[] = [];
   nonMatchingParentIds: Array<string>;
   wiParentIds: Array<string> = [];
@@ -478,6 +480,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         this.nextLink = workItemResp.nextLink;
         this.nonMatchingParentIds = workItemResp.ancestorIDs;
         const included = workItemResp.included;
+        this.wiLength = 0;
         this.resolvedWorkItems = this.workItemService.resolveWorkItems(
           workItems,
           this.iterations,
@@ -496,63 +499,16 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           ...this.getParentIdsAll(this.resolvedWorkItems),
           ...this.getParentIdsAll(this.included)
         ];
+        this.resolvedIncludedAC = false;
         this.updateTableWorkitems();
         this.workItemDataService.setItems(this.workItems);
-        // Resolve assignees
-        const t3 = performance.now();
+        // Resolve assignees and creator
         if (!this.workItems || this.workItems.length == 0) {
           // if there are no work items, unlock the ui here
           this.uiLockedList = false;
         }
-        this.workItems.forEach((item, index) => {
-          this.workItemService.resolveAssignees(item.relationships.assignees).take(1)
-            .subscribe(assignees => {
-              item.relationships.assignees.data = assignees;
-              // After the assignees is resolved
-              // We should add it to the datatableWorkitems
-              this.datatableWorkitems[index].assignees = assignees;
-              if (index == this.workItems.length - 1) {
-                const t4 = performance.now();
-                console.log('Performance :: Resolved all the users - ' + (t4 - t3) + ' milliseconds.');
-                this.uiLockedList = false;
-              }
-            })
-        });
-
-        // Resolve creators
-        const t5 = performance.now();
-        const allCreatorURLs: string[] = this.workItems.reduce(
-          (uniqueItems: WorkItem[], workItem: WorkItem) => {
-            if (!uniqueItems.find((item) => {
-              return item.relationships.creator.data.id ===
-                workItem.relationships.creator.data.id
-              })) {
-              return [...uniqueItems, workItem]
-            } else {
-              return uniqueItems;
-            }
-          }, [] as WorkItem[])
-          .map((item: WorkItem) => {
-            return item.relationships.creator.data.links.self;
-          });
-
-        this.workItemService.getUsersByURLs(allCreatorURLs)
-          .subscribe((creators: User[]) => {
-            this.workItems.forEach((item, index) => {
-              item.relationships.creator.data = creators.find(creator => {
-                if (item.relationships.creator.data.id === creator.id) {
-                  // After the assignees is resolved
-                  // We should add it to the datatableWorkitems
-                  this.datatableWorkitems[index].creator = creator;
-                  return true;
-                } else {
-                  return false;
-                }
-              })
-            });
-            const t6 = performance.now();
-            console.log('Performance :: Resolved all the creators - ' + (t6 - t5) + ' milliseconds.');
-          })
+        if(!this.resolvedIncludedAC)
+          this.resolveCreatorAssignee();
         // this.originalList = cloneDeep(this.workItems);
       },
       (err) => {
@@ -569,7 +525,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         const t2 = performance.now();
         const workItems = newWiItemResp.workItems;
         this.nextLink = newWiItemResp.nextLink;
-        const wiLength = this.workItems.length;
+        this.wiLength = this.workItems.length;
         const ancestorIDs = newWiItemResp.ancestorIDs;
         const newItems = this.workItemService.resolveWorkItems(
           workItems,
@@ -598,63 +554,69 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           ];
           this.nonMatchingParentIds = [...this.nonMatchingParentIds, ...ancestorIDs];
           this.included = [...this.included, ...newIncluded];
+          this.resolvedIncludedAC = false;
           this.updateTableWorkitems();
         this.workItemDataService.setItems(this.workItems);
         console.log('Performance :: Fetching more list items - ' + (t2 - t1) + ' milliseconds.');
-        // Resolve assignees
-        const t3 = performance.now();
-        for (let i = wiLength; i < this.workItems.length; i++) {
-          this.workItemService.resolveAssignees(this.workItems[i].relationships.assignees).take(1)
-            .subscribe(assignees => {
-              this.workItems[i].relationships.assignees.data = assignees;
-              // After the assignees is resolved
-              // We should add it to the datatableWorkitems
-              this.datatableWorkitems[i].assignees = assignees;
-              if (i == this.workItems.length - 1) {
-                const t4 = performance.now();
-                console.log('Performance :: Resolved all the users - ' + (t4 - t3) + ' milliseconds.');
-              }
-            })
+        // Resolve assignees and creator
+        if(!this.resolvedIncludedAC){
+          this.resolveCreatorAssignee(this.wiLength);
         }
-
-        // Resolve creators
-        const t5 = performance.now();
-        const allCreatorURLs: string[] = this.workItems.slice(wiLength).reduce(
-          (uniqueItems: WorkItem[], workItem: WorkItem) => {
-            if (!uniqueItems.find((item) => {
-              return item.relationships.creator.data.id ===
-                workItem.relationships.creator.data.id
-              })) {
-              return [...uniqueItems, workItem]
-            } else {
-              return uniqueItems;
-            }
-          }, [] as WorkItem[])
-          .map((item: WorkItem) => {
-            return item.relationships.creator.data.links.self;
-          });
-
-        this.workItemService.getUsersByURLs(allCreatorURLs)
-          .subscribe((creators: User[]) => {
-            this.workItems.slice(wiLength).forEach((item, index) => {
-              item.relationships.creator.data = creators.find(creator => {
-                if (item.relationships.creator.data.id === creator.id) {
-                  // After the assignees is resolved
-                  // We should add it to the datatableWorkitems
-                  this.datatableWorkitems[wiLength + index].creator = creator;
-                  return true;
-                } else {
-                  return false;
-                }
-              })
-            });
-            const t6 = performance.now();
-            console.log('Performance :: Resolved all the creators - ' + (t6 - t5) + ' milliseconds.');
-          })
-
-        //this.treeList.update();
       },
       (e) => console.log(e));
+  }
+  resolveCreatorAssignee(wiLength: number = 0) {
+    // resolve assignees
+    const t3 = performance.now();
+    this.workItems.slice(wiLength).forEach((item, index) => {
+      this.workItemService.resolveAssignees(item.relationships.assignees).take(1)
+        .subscribe(assignees => {
+          item.relationships.assignees.data = assignees;
+          // After the assignees is resolved
+          // We should add it to the datatableWorkitems
+          this.datatableWorkitems[wiLength + index].assignees = assignees;
+          if (index == this.workItems.length - 1) {
+            const t4 = performance.now();
+            console.log('Performance :: Resolved all the users - ' + (t4 - t3) + ' milliseconds.');
+            this.uiLockedList = false;
+          }
+        })
+    });
+
+    // Resolve creators
+    const t5 = performance.now();
+    const allCreatorURLs: string[] = this.workItems.slice(wiLength).reduce(
+      (uniqueItems: WorkItem[], workItem: WorkItem) => {
+        if (!uniqueItems.find((item) => {
+          return item.relationships.creator.data.id ===
+            workItem.relationships.creator.data.id
+        })) {
+          return [...uniqueItems, workItem]
+        } else {
+          return uniqueItems;
+        }
+      }, [] as WorkItem[])
+      .map((item: WorkItem) => {
+        return item.relationships.creator.data.links.self;
+      });
+
+    this.workItemService.getUsersByURLs(allCreatorURLs)
+      .subscribe((creators: User[]) => {
+        this.workItems.slice(wiLength).forEach((item, index) => {
+          item.relationships.creator.data = creators.find(creator => {
+            if (item.relationships.creator.data.id === creator.id) {
+              // After the assignees is resolved
+              // We should add it to the datatableWorkitems
+              this.datatableWorkitems[wiLength + index].creator = creator;
+              return true;
+            } else {
+              return false;
+            }
+          })
+        });
+        const t6 = performance.now();
+        console.log('Performance :: Resolved all the creators - ' + (t6 - t5) + ' milliseconds.');
+      })
   }
 
   updateTableWorkitems() {
@@ -664,6 +626,10 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         ...this.tableWorkitem(this.included, null, false)
       ];
       this.workItems = [...this.resolvedWorkItems, ...this.included];
+      if(!this.resolvedIncludedAC){
+        this.resolveCreatorAssignee(this.wiLength);
+        this.resolvedIncludedAC = true;
+      }
     } else {
       this.datatableWorkitems = [...this.tableWorkitem(this.resolvedWorkItems)];
       this.workItems = [...this.resolvedWorkItems];
@@ -806,6 +772,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
 
   onCreateWorkItem(workItem) {
     this.workItems = [workItem, ...this.workItems];
+    this.resolvedWorkItems = [workItem, ...this.resolvedWorkItems];
     this.datatableWorkitems = [
       ...this.tableWorkitem([this.workItems[0]]),
       ...this.datatableWorkitems
@@ -1007,6 +974,12 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           updatedItem.relationships['parent'] = this.workItems[index].relationships.parent;
           if (index > -1) {
             this.workItems[index] = updatedItem;
+            let resolvedWorkItemsIndex = this.resolvedWorkItems.findIndex((item) => item.id === updatedItem.id);
+            let includedIndex = this.included.findIndex((item) => item.id === updatedItem.id);
+            if(resolvedWorkItemsIndex > -1)
+              this.resolvedWorkItems[resolvedWorkItemsIndex] = updatedItem;
+            if(includedIndex > -1)
+              this.included[includedIndex] = updatedItem;
             let updatedTableItem = this.tableWorkitem([updatedItem], this.datatableWorkitems[index].parentId, bold)[0];
             updatedTableItem.treeStatus = this.datatableWorkitems[index].treeStatus;
             updatedTableItem.childrenLoaded = this.datatableWorkitems[index].childrenLoaded;
