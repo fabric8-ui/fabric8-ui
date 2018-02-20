@@ -102,11 +102,12 @@ mach.transpileLESS = function (src, debug) {
 gulp.task('build', function (done) {
 
   // app (default)
-
-  mach.transpileTS(); // Transpile *.ts to *.js; _then_ post-process require statements to load templates
-  mach.transpileLESS(appSrc + '/**/*.less'); // Transpile and minify less, storing results in distPath.
-  mach.copyToDist(['src/**/*.html']); // Copy template html files to distPath
-  gulp.src(['LICENSE', 'README.adoc', 'package.json']).pipe(gulp.dest(distPath)); // Copy static assets to distPath
+  if (!argv.release) { // @TODO: separate release from build step, maybe with `gulp release`
+    mach.transpileTS(); // Transpile *.ts to *.js; _then_ post-process require statements to load templates
+    mach.transpileLESS(appSrc + '/**/*.less'); // Transpile and minify less, storing results in distPath.
+    mach.copyToDist(['src/**/*.html']); // Copy template html files to distPath
+    gulp.src(['LICENSE', 'README.adoc', 'package.json']).pipe(gulp.dest(distPath)); // Copy static assets to distPath
+  }
 
   // image
 
