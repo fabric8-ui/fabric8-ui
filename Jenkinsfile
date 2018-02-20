@@ -35,9 +35,7 @@ fabric8UITemplate{
                     sh "git pull"
                     sh "git remote set-url origin git@github.com:${project}.git"
 
-                    container('ui'){
-                        pipeline.ci()
-                    }
+                    pipeline.ci(project)
 
                     def branch
                     container('ui'){
