@@ -86,6 +86,8 @@ export class PlannerBoardComponent implements OnInit, OnDestroy, AfterViewChecke
   private currentIteration: BehaviorSubject<string | null>;
   private currentWIType: BehaviorSubject<string | null>;
   private existingQueryParams: Object = {};
+  private quickAddContext: string[] = [];
+  private initialGroup = [];
   private wiSubscription = null;
   lane: any;
   private labels: LabelModel[] = [];
@@ -332,7 +334,7 @@ export class PlannerBoardComponent implements OnInit, OnDestroy, AfterViewChecke
         type: workItems[i].relationships.baseType.data.attributes['icon'],
         title: workItems[i].attributes['system.title'],
         avatar: (() => {
-                if(workItems[i].relationships.assignees.data.length > 0)
+                if(workItems[i].relationships.assignees.data)
                   return workItems[i].relationships.assignees.data[0].attributes['imageURL'];
                 else return '';})(),
         hasLink: true,
@@ -875,8 +877,8 @@ export class PlannerBoardComponent implements OnInit, OnDestroy, AfterViewChecke
 
     this.eventListeners.push(
       this.workItemService.addWIObservable.subscribe(item => {
-        if(this.filterService.doesMatchCurrentFilter(item)) {
-          this.onCreateWorkItem(item);
+        if(this.filterService.doesMatchCurrentFilter(item.wi)) {
+          this.onCreateWorkItem(item.wi);
         }
       })
     );

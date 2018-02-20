@@ -84,9 +84,9 @@
                 <div class="width-100 pull-left margin-bottom-5"
                   *ngIf="loggedIn">
                   <alm-work-item-quick-add
+                    [WITypes]="workItemTypes"
                     [wilistview]="'wi-card-view'"
-                    (close)="close($event)"
-                    (workItemCreate)="onCreateWorkItem($event)">
+                    (close)="close($event)">
                   </alm-work-item-quick-add>
                 </div>
               </div>

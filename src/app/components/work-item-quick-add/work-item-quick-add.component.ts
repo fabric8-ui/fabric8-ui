@@ -55,7 +55,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
       if(this.availableTypes.length){
         //this.selectedType = this.availableTypes[0];
         this.selectedType = this.allowedWITs[0];
-        if (this.wilistview === 'wi-table-view-top') {
+        if (this.wilistview === 'wi-table-view-top' || this.wilistview === 'wi-card-view' ) {
           this.createWorkItemObj();
         }
       }
@@ -329,6 +329,18 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     this.qaTitle.nativeElement.focus();
   }
 
+  toggleQuickAdd(): void {
+    this.showQuickAdd = !this.showQuickAdd;
+    this.showQuickAddBtn = !this.showQuickAddBtn;
+    if (!this.showQuickAdd) {
+      this.workItem.attributes['system.description'] = '';
+      this.workItem.attributes['system.title'] = '';
+      this.validTitle = false;
+      this.descHeight = this.initialDescHeight ? this.initialDescHeight : 'inherit';
+    } else {
+      this.createWorkItemObj();
+    }
+  }
 
   preventDef(event: any) {
     event.preventDefault();
