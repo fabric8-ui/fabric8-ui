@@ -28,13 +28,13 @@
     (click)="onDetail($event, row['id'])"></a>
   </div>
 </div>
-<!-- Status -->
+<!-- State -->
 
-<div *ngIf="col === 'status'">
-  <span class="padding-right-5 padding-top-4" almIcon [iconType]="row.status">
+<div *ngIf="col === 'state'">
+  <span class="padding-right-5 padding-top-4" almIcon [iconType]="row.state">
   </span>
   <span>
-    {{row.status}}
+    {{row.state}}
   </span>
 </div>
 

@@ -1170,7 +1170,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           iteration: element.relationships.iteration.data,
           creator: element.relationships.creator.data,
           assignees: element.relationships.assignees.data,
-          status: element.attributes['system.state'],
+          state: element.attributes['system.state'],
           // Extra items for table
           treeStatus: treeStatus,
           parentId: element.relationships.parent && element.relationships.parent.data ? element.relationships.parent.data.id : parentId,
@@ -1187,7 +1187,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           iteration: element.relationships.iteration.data,
           creator: element.relationships.creator.data,
           assignees: element.relationships.assignees.data,
-          status: element.attributes['system.state'],
+          state: element.attributes['system.state'],
         }
       }
     });

@@ -43,8 +43,8 @@ export const datatableColumn = [{
   minWidth: 300,
   width: 300,
 }, {
-  name: 'Status',
-  prop: 'status',
+  name: 'State',
+  prop: 'state',
   index: 5,
   available: false,
   selected: false,
