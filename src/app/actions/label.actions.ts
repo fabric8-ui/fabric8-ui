@@ -33,8 +33,8 @@ export class GetError implements Action {
 }
 
 export class AddSuccess implements Action {
-  payload: LabelModel;
-  constructor(payload: LabelModel) {
+  payload: LabelUI;
+  constructor(payload: LabelUI) {
     this.payload = payload;
   }
   readonly type = ADD_SUCCESS;

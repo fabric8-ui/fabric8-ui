@@ -28,13 +28,17 @@ export class LabelEffects {
       .catch(() => Observable.of(new LabelActions.GetError()))
     })
 
-  @Effect() createLabel$ = this.actions$
+  @Effect() createLabel$: Observable<Action> = this.actions$
     .ofType<LabelActions.Add>(LabelActions.ADD)
     .map(action => action.payload)
     .do(payload => {
+      console.log(payload, '####-2');
       this.labelService.createLabel(payload)
         .subscribe(label => {
-          this.store.dispatch(new LabelActions.AddSuccess(label));
+          const lMapper = new LabelMapper();
+          this.store.dispatch(new LabelActions.AddSuccess(
+            lMapper.toUIModel(label)
+          ));
         })
     })
 }

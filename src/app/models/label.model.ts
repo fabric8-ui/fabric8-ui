@@ -76,19 +76,19 @@ export class LabelMapper implements Mapper<LabelService, LabelUI> {
       fromPath: ['id'],
       toPath: ['id']
     }, {
-      fromPath: ['name'],      
+      fromPath: ['name'],
       toPath: ['attributes','name'],
     }, {
-      fromPath: ['backgroundColor'],      
+      fromPath: ['backgroundColor'],
       toPath: ['attributes','background-color'],
     }, {
-      fromPath: ['version'],      
+      fromPath: ['version'],
       toPath: ['attributes','version'],
     }, {
-      fromPath: ['borderColor'],      
+      fromPath: ['borderColor'],
       toPath: ['attributes','border-color'],
     }, {
-      fromPath: ['textColor'],      
+      fromPath: ['textColor'],
       toPath: ['attributes','text-color'],
     }, {
       toPath: ['type'],

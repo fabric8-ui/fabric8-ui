@@ -17,7 +17,7 @@ export const LabelReducer: ActionReducer<LabelState> = (state = initialState, ac
       return state;
     }
     case LabelActions.ADD_SUCCESS: {
-      return state;
+      return [action.payload, ...state];
     }
     case LabelActions.ADD_ERROR: {
       return state;

@@ -5,7 +5,6 @@ import {
   EventEmitter,
   Input,
   Output,
-  OnChanges,
   OnInit,
   SimpleChanges,
   ViewChild
@@ -17,6 +16,10 @@ import {
   SelectDropdownComponent
 } from './../../widgets/select-dropdown/select-dropdown.component';
 
+// ngrx stuff
+import { Store } from '@ngrx/store';
+import { AppState } from './../../../app/states/app.state';
+import * as LabelActions from './../../actions/label.actions';
 
 @Component({
   selector: 'label-selector',
@@ -24,11 +27,11 @@ import {
   styleUrls: ['./label-selector.component.less']
 })
 
-export class LabelSelectorComponent implements OnInit, OnChanges {
+export class LabelSelectorComponent implements OnInit {
 
   @ViewChild('labelname') labelnameInput: ElementRef;
   @ViewChild('dropdown') dropdownRef: SelectDropdownComponent;
-  @Input() allLabels: LabelUI[] = [];
+  @Input() allLabels: LabelUI[];
   @Input() selectedLabels: LabelUI[] = [];
 
   @Output() onSelectLabel: EventEmitter<LabelUI[]> = new EventEmitter();
@@ -46,7 +49,8 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
 
   constructor(
     private labelService: LabelService,
-    private eventService: EventService
+    private eventService: EventService,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
@@ -68,32 +72,35 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
       {color: '#d1d1d1', border: '#bbbbbb'}
     ];
     this.newSelectedColor = this.colors[Math.floor(Math.random()*this.colors.length)];
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if( changes.allLabels ) {
-      this.backup = cloneDeep(this.allLabels.map((label: LabelUI) => {
-        return {
-          id: label.id,
-          color: label.backgroundColor,
-          border: label.borderColor,
-          name: label.name,
-          selected: false
+    this.store
+      .select('listPage')
+      .select('labels')
+      .filter(l => !!l.length)
+      .subscribe(labels => {
+        this.allLabels = [...labels];
+        this.backup = cloneDeep(this.allLabels.map((label: LabelUI) => {
+          return {
+            id: label.id,
+            color: label.backgroundColor,
+            border: label.borderColor,
+            name: label.name,
+            selected: false
+          }
+        }));
+        if (this.searchValue.length) {
+          this.labels =
+            cloneDeep(this.backup.filter(i => i.name.indexOf(this.searchValue) > - 1));
         }
-      }));
-      if (this.searchValue.length) {
-        this.labels =
-          cloneDeep(this.backup.filter(i => i.name.indexOf(this.searchValue) > - 1));
-      }
-      else {
-        this.labels = cloneDeep(this.backup);
-      }
-    }
-    if( changes.selectedLabels ) {
-      this.updateSelection();
-    }
+        else {
+          this.labels = cloneDeep(this.backup);
+        }
+        this.updateSelection();
+        if (this.labelnameInput) {
+          this.labelnameInput.nativeElement.value = '';
+          this.labelnameInput.nativeElement.focus();
+        }
+      })
   }
-
 
   onSelect(event: any) {
     let findSelectedIndex = this.selectedLabels.findIndex(i => i.id === event.id);
@@ -152,54 +159,21 @@ export class LabelSelectorComponent implements OnInit, OnChanges {
   selectColor(color: any) {
     this.newSelectedColor = color;
   }
-  // createLabel(name: any) {
-  //   if (name.trim() === '' || this.createDisabled) {
-  //     return;
-  //   }
-  //   this.createDisabled = true;
-  //   let labelPayload: LabelModel  = {
-  //     attributes: {
-  //       'name': name,
-  //       'background-color': this.newSelectedColor.color,
-  //       'border-color': this.newSelectedColor.border
-  //     },
-  //     type: 'labels'
-  //   };
-  //   this.labelService.createLabel(labelPayload)
-  //     .subscribe((data: LabelModel) => {
-  //       this.createDisabled = false;
-  //       this.newSelectedColor = this.colors[Math.floor(Math.random()*this.colors.length)];
-  //       this.allLabels = [cloneDeep(data), ...this.allLabels];
-  //       const newLabel = {
-  //         id: data.id,
-  //         color: data.attributes['background-color'],
-  //         border: data.attributes['border-color'],
-  //         name: data.attributes.name,
-  //         selected: false
-  //       };
-
-  //       // Emit new label
-  //       // TODO: Should be replaced by ngrx/store
-  //       this.eventService.labelAdd.next(data);
-
-  //       this.backup = [cloneDeep(newLabel), ...this.backup];
-  //       if (this.searchValue === '' ||
-  //           (this.searchValue !== '' &&
-  //             name.indexOf(this.searchValue) > - 1
-  //           )
-  //         ) {
-  //           this.labels = [cloneDeep(newLabel), ...this.labels];
-  //         }
-  //       this.labelnameInput.nativeElement.value = '';
-  //       this.labelnameInput.nativeElement.focus();
-  //     },
-  //     (err) => {
-  //       console.log(err);
-  //       this.labelnameInput.nativeElement.value = '';
-  //       this.createDisabled = true;
-  //     }
-  //   );
-  // }
+  createLabel(name: any) {
+    if (name.trim() === '' || this.createDisabled) {
+      return;
+    }
+    this.createDisabled = true;
+    let labelPayload: LabelModel  = {
+      attributes: {
+        'name': name,
+        'background-color': this.newSelectedColor.color,
+        'border-color': this.newSelectedColor.border
+      },
+      type: 'labels'
+    };
+    this.store.dispatch(new LabelActions.Add(labelPayload));
+  }
 
   onOpen(event) {
     this.onOpenSelector.emit('open');

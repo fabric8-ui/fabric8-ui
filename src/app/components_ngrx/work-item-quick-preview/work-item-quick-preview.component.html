@@ -180,7 +180,6 @@
                     <label-selector
                       id="labelSelector"
                       #labelSelector
-                      [allLabels]="labels"
                       [selectedLabels]="workItem.labels.length ?
                         workItem.labels : []"
                       (onCloseSelector)="updateLabels($event)">
