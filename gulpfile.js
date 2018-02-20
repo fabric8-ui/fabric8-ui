@@ -112,7 +112,10 @@ gulp.task('build', function (done) {
 
   // release
   if (argv.release) {
-    proc.exec('$(npm bin)/semantic-release');
+    proc.exec('$(npm bin)/semantic-release', function(error, stdout) {
+      console.log("error: ", error);
+      console.log(stdout);
+    });
   }
 
   // tarball
