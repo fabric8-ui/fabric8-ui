@@ -9,7 +9,7 @@
     "build": "gulp build",
     "clean": "gulp clean",
     "tests": "gulp tests",
-    "semantic-release": "npm run build -- --release"
+    "semantic-release": "gulp release"
   },
   "license": "Apache-2.0",
   "contributors": [
