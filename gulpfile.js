@@ -203,16 +203,16 @@ gulp.task('clean', function (done) {
   done();
 });
 
-// Release
-gulp.task('release', function (done) {
-  gulp.src(['.git/**/*']).pipe(gulp.dest('dist/.git'));
-  proc.exec('$(npm bin)/semantic-release', function(error, stdout) {
-    console.log("error: ", error);
-    console.log(stdout);
-  });
+// // Release
+// gulp.task('release', function (done) {
+//   gulp.src(['.git/**/*']).pipe(gulp.dest('dist/.git'));
+//   proc.exec('$(npm bin)/semantic-release', function(error, stdout) {
+//     console.log("error: ", error);
+//     console.log(stdout);
+//   });
 
-  done();
-});
+//   done();
+// });
 
 // Test
 gulp.task('tests', function (done) {
