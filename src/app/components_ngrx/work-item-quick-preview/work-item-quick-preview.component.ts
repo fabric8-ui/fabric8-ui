@@ -301,12 +301,13 @@ export class WorkItemQuickPreviewComponent implements OnInit, OnDestroy {
     for (let i=0; i<areas.length; i++) {
       result.push({
         key: areas[i].id,
-        value: (areas[i].parentPathResolved!='/'?areas[i].parentPathResolved:'') + '/' + areas[i].name,
-        selected: selectedAreaId===areas[i].id?true:false,
+        value: (areas[i].parentPathResolved !== '/' ? areas[i].parentPathResolved:'') + '/' + areas[i].name,
+        selected: selectedAreaId === areas[i].id ? true : false,
         cssLabelClass: undefined
       });
-      if (selectedAreaId===areas[i].id)
+      if (selectedAreaId === areas[i].id) {
         selectedFound = true;
+      }
     };
     return result;
   }
@@ -321,12 +322,13 @@ export class WorkItemQuickPreviewComponent implements OnInit, OnDestroy {
     for (let i=0; i<iterations.length; i++) {
       result.push({
         key: iterations[i].id,
-        value: (iterations[i].resolvedParentPath!='/'?iterations[i].resolvedParentPath:'') + '/' + iterations[i].name,
-        selected: selectedIterationId===iterations[i].id?true:false,
+        value: (iterations[i].resolvedParentPath !== '/' ? iterations[i].resolvedParentPath:'') + '/' + iterations[i].name,
+        selected: selectedIterationId === iterations[i].id ? true : false,
         cssLabelClass: undefined
       });
-      if (selectedIterationId===iterations[i].id)
+      if (selectedIterationId === iterations[i].id) {
         selectedFound = true;
+      }
     };
     return result;
   }
