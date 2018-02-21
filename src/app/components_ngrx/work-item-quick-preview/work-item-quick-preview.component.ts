@@ -206,6 +206,8 @@ export class WorkItemQuickPreviewComponent implements OnInit, OnDestroy {
   openPreview(workitem) {
     if (!workitem) return;
     this.workItem = workitem;
+    this.areas = this.extractAreaKeyValue(this.areasUI);
+    this.iterations = this.extractIterationKeyValue(this.iterationUI);
     this.store.dispatch(new CommentActions.Get(this.workItem.commentLink));
     this.panelState = 'in';
   }
@@ -296,7 +298,7 @@ export class WorkItemQuickPreviewComponent implements OnInit, OnDestroy {
     if (this.workItem.area && this.workItem.area.id) {
       selectedAreaId = this.workItem.area.id;
     }
-      for (let i=0; i<areas.length; i++) {
+    for (let i=0; i<areas.length; i++) {
       result.push({
         key: areas[i].id,
         value: (areas[i].parentPathResolved!='/'?areas[i].parentPathResolved:'') + '/' + areas[i].name,
