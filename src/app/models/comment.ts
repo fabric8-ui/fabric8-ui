@@ -11,12 +11,6 @@ import { cloneDeep } from 'lodash';
 export class Comment extends modelService {
     attributes: CommentAttributes;
     relationships: {
-        'created-by': {
-            data: {
-              id: string;
-              type: string;
-            };
-        },
         'creator': {
           data: {
             id: string;
@@ -80,9 +74,6 @@ export class CommentMapper implements Mapper<CommentService, CommentUI> {
     fromPath: ['attributes', 'created-at'],
     toPath: ['createdAt']
   }, {
-    fromPath: ['relationships', 'created-by', 'data'],
-    toPath: ['creator']
-  }, {
     fromPath: ['attributes', 'body.rendered'],
     toPath: ['bodyRendered']
   }, {
@@ -104,7 +95,7 @@ export class CommentMapper implements Mapper<CommentService, CommentUI> {
     toPath: ['attributes', 'created-at'],
     fromPath: ['createdAt']
   }, {
-    toPath: ['relationships', 'created-by', 'data'],
+    toPath: ['relationships', 'creator', 'data'],
     fromPath: ['creator']
   }, {
     toPath: ['attributes', 'body.rendered'],

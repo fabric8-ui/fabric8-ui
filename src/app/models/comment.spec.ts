@@ -22,12 +22,6 @@ describe('Unit Test :: Comment Model', () => {
         'markup': "Markdown"
       },
       relationships: {
-        'created-by': {
-          data: {
-            id: "5cd88093",
-            type:"identities"
-          }
-        },
         'creator': {
           data: {
             id: "5cd88093",

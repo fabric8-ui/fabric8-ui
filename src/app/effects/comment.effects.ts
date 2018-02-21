@@ -56,13 +56,24 @@ export class CommentEffects {
 
   @Effect() addComment$: Observable<Action> = this.actions$
     .ofType<CommentActions.Add>(CommentActions.ADD)
-    .map(action => action.payload)
-    .switchMap((payload) => {
+    .withLatestFrom(this.store.select('listPage').select('collaborators'))
+    .map(([action, collaborators]) => {
+      return {
+        payload: action.payload,
+        collaborators: collaborators
+      }
+    })
+    .switchMap(cp => {
+      const payload = cp.payload;
+      const collaborators = cp.collaborators;
       return this.workItemService.createComment(payload.url, payload.comment)
-        .map((comment: CommentService) => {
+        .map((comment) => {
           const cMapper = new CommentMapper(this.userMapper);
+          const commentUI = cMapper.toUIModel(comment);
+          const creatorResolver = new CommentCreatorResolver(commentUI);
+          creatorResolver.resolveCreator(collaborators);
           return new CommentActions.AddSuccess(
-            cMapper.toUIModel(comment)
+            creatorResolver.getComment()
           );
         })
     })
