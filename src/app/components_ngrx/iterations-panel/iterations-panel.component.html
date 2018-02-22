@@ -28,22 +28,26 @@
         [class.show]="sidePanelOpen"
         [class.hide]="!sidePanelOpen">
         <li class="active f8-itr__container padding-v-2 padding-right-15 padding-left-5"
-          *ngFor="let iteration of activeIterations"
+          *ngFor="let iteration of activeIterations">
+          <a
           [routerLinkActive]="'f8-itr--selected'"
           [routerLink]="[]" [attr.data-id]="iteration.id"
-          [queryParams]="{q: constructURL(iteration.id)}">
-            <span id="{{iteration.resolvedParentPath +
-                '/' + iteration.name }}">
-              {{iteration.resolvedParentPath +
-                '/' + iteration.name | truncate : -20   }}
-            </span>
-            <span class="fa pull-right margin-top-3"
-              [class.fa-check]="iteration.selected"></span>
-            <span
-              *ngIf="iteration.isActive"
-              class="active-tag pull-right margin-right-5">
-                [Active]
-            </span>
+          [queryParams]="showTree ?
+              { q: constructURL(iteration.id), showTree: showTree } :
+              { q: constructURL(iteration.id) }">
+              <span id="{{iteration.resolvedParentPath +
+                  '/' + iteration.name }}">
+                {{iteration.resolvedParentPath +
+                  '/' + iteration.name | truncate : -20   }}
+              </span>
+              <span class="fa pull-right margin-top-3"
+                [class.fa-check]="iteration.selected"></span>
+              <span
+                *ngIf="iteration.isActive"
+                class="active-tag pull-right margin-right-5">
+                  [Active]
+              </span>
+          </a>
         </li>
       </ul>
       <form role="form"
@@ -71,6 +75,7 @@
         [iterationList]="treeIterations"
         [collection]="collection"
         [witGroup]="witGroup"
+        [showTree]="showTree"
         (onEditIteration)="onEdit($event)"
         (onCloseIteration)="onClose($event)"
         (onCreateIteration)="onCreateChild($event)">

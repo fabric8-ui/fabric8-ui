@@ -3,7 +3,9 @@
     class="f8-group-filter__type"
     id="{{item.group}}"
     [routerLink]="[]"
-    [queryParams]="{q: fnBuildQueryParam(item)}"
+    [queryParams]="showTree ?
+      {q: fnBuildQueryParam(item), showTree: showTree} :
+      {q: fnBuildQueryParam(item)}"
     [class.selected]="item.selected"
     *ngIf="item.showInSideBar">
       <span class="dib margin-right-10 {{ item.icon }}"
@@ -22,6 +24,7 @@
         [takeFromInput]="false"
         [collection]="item.typeList"
         [witGroup]="item.name"
+        [showTree]="showTree"
         [sidePanelOpen]="sidePanelOpen">
       </fab-planner-iteration>
     </div>

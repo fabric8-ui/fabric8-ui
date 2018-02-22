@@ -12,17 +12,20 @@
   </span>
   <div class="f8-itr__header">
     <div class="truncate padding-right-15"
-      [routerLink]="[]"
-      [queryParams]="{q: constructURL(iteration.id)}"
       (click)="setGuidedTypeWI(collection)">
-      <span class="f8-itr-name truncate">
-        {{iteration.name | truncate : 15 }}
-      </span>
-      <span
-        *ngIf="iteration.isActive"
-        class="active-tag">
-          [Active]
-      </span>
+      <a [routerLink]="[]"
+        [queryParams]="showTree ?
+          { q: constructURL(iteration.id), showTree: showTree } :
+          { q: constructURL(iteration.id) }">
+        <span class="f8-itr-name truncate">
+          {{iteration.name | truncate : 15 }}
+        </span>
+        <span
+          *ngIf="iteration.isActive"
+          class="active-tag">
+            [Active]
+        </span>
+      </a>
     </div>
     <div class="f8-itr-status">
       <span>

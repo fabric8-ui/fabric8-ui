@@ -182,27 +182,27 @@
           </ngx-datatable-row-detail>
           <!-- showTree: true -->
           <ng-container *ngIf="showTree">
-          <!-- First Column -->
-          <ngx-datatable-column
-              [width]="50"
-              [resizeable]="false"
-              [sortable]="false"
-              [cellClass]="'cell-class'"
-              [frozenLeft]="false">
-              <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-                <a class="quick-add-icon"
-                  href="javascript:void(0)"
-                  [class.pficon-add-circle-o]="!expanded"
-                  [class.pficon-close]="expanded"
-                  [class.disabled]="!!!row?.type?.data?.relationships?.guidedChildTypes || !loggedIn"
-                  (click)="toggleExpandRow(
-                    row,
-                    !!row?.type?.data?.relationships?.guidedChildTypes
-                  )">
-                </a>
-              </ng-template>
-          </ngx-datatable-column>
-          <!-- columns id-assignees-->
+            <!-- First Column -->
+            <ngx-datatable-column
+                [width]="50"
+                [resizeable]="false"
+                [sortable]="false"
+                [cellClass]="'cell-class'"
+                [frozenLeft]="false">
+                <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+                  <a class="quick-add-icon"
+                    href="javascript:void(0)"
+                    [class.pficon-add-circle-o]="!expanded"
+                    [class.pficon-close]="expanded"
+                    [class.disabled]="!!!row?.type?.data?.relationships?.guidedChildTypes || !loggedIn"
+                    (click)="toggleExpandRow(
+                      row,
+                      !!row?.type?.data?.relationships?.guidedChildTypes
+                    )">
+                  </a>
+                </ng-template>
+            </ngx-datatable-column>
+            <!-- columns id-assignees-->
             <ngx-datatable-column
               *ngFor="let c of (columns | filterColumn:'display')"
               [isTreeColumn]="c.name === 'Title'"
@@ -258,7 +258,7 @@
               </ng-template>
             </ngx-datatable-column>
             <!-- columns id-assignees -->
-            <ngx-datatable-column          
+            <ngx-datatable-column
               *ngFor="let c of (columns | filterColumn:'display')"
               [name]="c.name"
               [resizeable]="false"

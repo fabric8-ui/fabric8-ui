@@ -24,7 +24,8 @@ export class Add implements Action {
 export class Get implements Action {
   payload: {
     pageSize: number,
-    filters: any[]
+    filters: any[],
+    isShowTree: boolean
   }
   constructor(payload: any) {
     this.payload = payload;

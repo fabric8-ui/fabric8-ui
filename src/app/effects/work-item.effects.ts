@@ -22,10 +22,20 @@ export class WorkItemEffects {
     private notifications: Notifications
   ){}
 
-  resolveWorkItems(workItems, state, matchingQuery: boolean = false): WorkItemUI[] {
+  resolveWorkItems(
+    workItems, state,
+    matchingQuery: boolean = false,
+    ancestors: string[] = []
+  ): WorkItemUI[] {
+    const hasAncestors = !!ancestors.length;
     return workItems.map((wi: WorkItemService) => {
       const workItemUI = this.workItemMapper.toUIModel(wi);
       workItemUI.bold = matchingQuery;
+      if (hasAncestors) {
+        workItemUI.treeStatus = ancestors.findIndex(
+          a => a === workItemUI.id
+        ) > -1 ? 'expanded' : workItemUI.treeStatus;
+      }
       const workItemResolver = new WorkItemResolver(workItemUI);
       workItemResolver.resolveArea(state.areas);
       workItemResolver.resolveIteration(state.iterations);
@@ -34,7 +44,7 @@ export class WorkItemEffects {
       workItemResolver.resolveAssignees(state.collaborators);
       workItemResolver.resolveWiLabels(state.labels);
       return workItemResolver.getWorkItem();
-    })
+    });
   }
 
   @Effect() addWorkItems$ = this.actions$
@@ -100,9 +110,16 @@ export class WorkItemEffects {
       const state = wp.state;
       return this.workItemService.getWorkItems2(payload.pageSize, payload.filters)
         .map((data: any) => {
-          const wi = this.resolveWorkItems(data.workItems, state, true);
-          const wiIncludes = this.resolveWorkItems(data.included, state, false);
-          return [...wi, ...wiIncludes];
+          const wi = this.resolveWorkItems(data.workItems, state, payload.isShowTree);
+          if (payload.isShowTree) {
+            const ancestors = data.ancestorIDs;
+            const wiIncludes = this.resolveWorkItems(
+              data.included, state,
+              false, ancestors
+            );
+            return [...wi, ...wiIncludes];
+          }
+          return [...wi];
         })
         .map((workItems: WorkItemUI[]) => {
           return new WorkItemActions.GetSuccess(

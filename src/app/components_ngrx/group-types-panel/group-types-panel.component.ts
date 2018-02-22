@@ -34,6 +34,7 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
   private spaceId;
   private eventListeners: any[] = [];
   private startedCheckingURL: boolean = false;
+  private showTree: string = '';
 
   constructor(
     private auth: AuthenticationService,
@@ -105,6 +106,11 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
           if (!selectedTypeGroup.selected) {
             this.store.dispatch(new GroupTypeActions.SelectType(selectedTypeGroup));
           }
+        }
+        if (val.hasOwnProperty('showTree')) {
+          this.showTree = val.showTree;
+        } else {
+          this.showTree = '';
         }
       })
     );

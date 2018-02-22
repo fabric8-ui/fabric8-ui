@@ -88,8 +88,8 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     .map(its => its.find(it => it.selected));
   private workItemSource = this.store
     .select('listPage')
-    .select('workItems')
-    .filter(wis => !!wis.length);
+    .select('workItems');
+  private routeSource = this.route.queryParams;
   private quickAddWorkItemTypes: WorkItemTypeUI[] = [];
   private allWorkItemTypes: WorkItemTypeUI[] = [];
   private selectedIteration: IterationUI = null;
@@ -101,6 +101,8 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   private contentItemHeight: number = 50;
   private selectedRows: any = [];
   private detailExpandedRows: any = [];
+  private showTree: boolean = false;
+  private showTreeUI: boolean = false;
 
   @ViewChild('plannerLayout') plannerLayout: PlannerLayoutComponent;
   @ViewChild('containerHeight') containerHeight: ElementRef;
@@ -127,39 +129,58 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     let newFilterObj = {};
     this.store.dispatch(new SpaceActions.Get());
 
-    this.spaceSource
-      .subscribe((space: Space) => {
-        this.store.dispatch(new IterationActions.Get());
-        this.store.dispatch(new GroupTypeActions.Get());
-        this.store.dispatch(new CollaboratorActions.Get());
-        this.store.dispatch(new AreaActions.Get());
-        this.store.dispatch(new WorkItemTypeActions.Get());
-        this.store.dispatch(new LabelActions.Get());
-      });
+    this.eventListeners.push(
+      this.spaceSource
+        .take(1)
+        .subscribe((space: Space) => {
+          this.store.dispatch(new IterationActions.Get());
+          this.store.dispatch(new GroupTypeActions.Get());
+          this.store.dispatch(new CollaboratorActions.Get());
+          this.store.dispatch(new AreaActions.Get());
+          this.store.dispatch(new WorkItemTypeActions.Get());
+          this.store.dispatch(new LabelActions.Get());
+        })
+    );
 
-    Observable.combineLatest(
-      this.workItemTypeSource,
-      this.spaceSource,
-      this.areaSource,
-      this.iterationSource,
-      this.labelSource,
-      this.collaboratorSource
-    ).take(1).subscribe(([
-      workItemTypeSource,
-      spaceSource,
-      areaSource,
-      iterationSource,
-      labelSource,
-      collaboratorSource
-    ]) => {
-      newFilterObj['space'] = spaceSource.id;
-        let exp = this.filterService.queryToJson(this.filterService.constructQueryURL('', newFilterObj));
-        exp['$OPTS'] = {'tree-view': true};
+    this.eventListeners.push(
+      Observable.combineLatest(
+        this.workItemTypeSource.take(1),
+        this.spaceSource.take(1),
+        this.areaSource.take(1),
+        this.iterationSource.take(1),
+        this.labelSource.take(1),
+        this.collaboratorSource.take(1),
+        this.routeSource
+      ).subscribe(([
+        workItemTypeSource,
+        spaceSource,
+        areaSource,
+        iterationSource,
+        labelSource,
+        collaboratorSource,
+        queryParams
+      ]) => {
+        let exp = this.filterService.queryToJson(queryParams.q);
+        // Check for tree view
+        if (queryParams.hasOwnProperty('showTree') && queryParams.showTree) {
+          this.showTree = true;
+          exp['$OPTS'] = {'tree-view': true};
+        } else {
+          this.showTree = false;
+          exp['$OPTS'] = {'tree-view': false};
+        }
+
+
         Object.assign(payload, {
           expression: exp
         });
-        this.store.dispatch(new WorkItemActions.Get({pageSize: 20, filters: payload}))
-    })
+        this.store.dispatch(new WorkItemActions.Get({
+          pageSize: 20,
+          filters: payload,
+          isShowTree: this.showTree
+        }))
+      })
+    );
 
     const queryParams = this.route.snapshot.queryParams;
     if(Object.keys(queryParams).length === 0 && process.env.ENV != 'inmemory') {
@@ -338,6 +359,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     this.eventListeners.push(
       this.workItemSource
         .subscribe(workItems => {
+          this.showTreeUI = this.showTree;
           this.workItems = [...workItems];
         })
     );
