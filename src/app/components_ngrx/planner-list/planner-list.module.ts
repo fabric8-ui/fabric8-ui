@@ -43,6 +43,7 @@ import * as reducers from './../../reducers/index.reducer';
 import * as effects from './../../effects/index.effects';
 import { WorkItemReducer } from './../../reducers/work-item.reducer';
 import { AlmIconModule } from 'ngx-widgets';
+import { EmptyStateModule } from 'patternfly-ng';
 
 let providers = [];
 
@@ -92,6 +93,7 @@ if (process.env.ENV == 'inmemory') {
     CommonModule,
     PlannerListRoutingModule,
     PlannerLayoutModule,
+    EmptyStateModule,
     LabelsModule,
     ToolbarPanelModule,
     TooltipModule.forRoot(),

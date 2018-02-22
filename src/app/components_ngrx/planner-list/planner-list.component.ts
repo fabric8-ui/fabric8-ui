@@ -22,6 +22,7 @@ import { IterationUI } from './../../models/iteration.model';
 import { FilterService } from './../../services/filter.service';
 import { CookieService } from './../../services/cookie.service';
 import { cloneDeep, sortBy } from 'lodash';
+import { EmptyStateConfig } from 'patternfly-ng';
 
 // import for column
 import { datatableColumn } from './../../components/planner-list/datatable-config';
@@ -103,6 +104,8 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   private detailExpandedRows: any = [];
   private showTree: boolean = false;
   private showTreeUI: boolean = false;
+  private emptyStateConfig: any = {};
+  private uiLockedList: boolean = false;
 
   @ViewChild('plannerLayout') plannerLayout: PlannerLayoutComponent;
   @ViewChild('containerHeight') containerHeight: ElementRef;
@@ -127,6 +130,11 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     });
     const payload = {};
     let newFilterObj = {};
+    this.emptyStateConfig = {
+      info: 'There are no Work Items for your selected criteria',
+      title: 'No Work Items Available'
+    } as EmptyStateConfig;
+
     this.store.dispatch(new SpaceActions.Get());
 
     this.eventListeners.push(
@@ -160,6 +168,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
         collaboratorSource,
         queryParams
       ]) => {
+        this.uiLockedList = true;
         let exp = this.filterService.queryToJson(queryParams.q);
         // Check for tree view
         if (queryParams.hasOwnProperty('showTree') && queryParams.showTree) {
@@ -359,6 +368,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     this.eventListeners.push(
       this.workItemSource
         .subscribe(workItems => {
+          this.uiLockedList = false;
           this.showTreeUI = this.showTree;
           this.workItems = [...workItems];
         })

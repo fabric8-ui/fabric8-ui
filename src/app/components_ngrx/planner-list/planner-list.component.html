@@ -327,6 +327,18 @@
           </ng-template>
         </ngx-datatable-column>
       </ngx-datatable>
+      <pfng-empty-state
+        *ngIf="!workItems?.length && !uiLockedList"
+        [config]="emptyStateConfig"></pfng-empty-state>
+
+      <div class="lock-overlay-list"
+        *ngIf="uiLockedList">
+        <div class="spinner-container">
+          <h2 class="spinner"></h2>
+          <h2>Loading Work Items ...</h2>
+          <h4>Please wait, we are loading your work items.</h4>
+        </div>
+      </div>
     </div>
   </div>
 </ng-template>
