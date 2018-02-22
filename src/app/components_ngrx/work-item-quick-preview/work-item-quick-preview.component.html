@@ -83,7 +83,7 @@
             <div class="form-group">
               <div class="width-100 pull-left detail-assignee-wrap">
                 <label class="control-label">
-                  {{workItem.relationships?.baseType?.data?.attributes?.fields['system.assignees']?.label || 'Label'}}
+                  {{workItem.type.fields['system.assignees']?.label || 'Label'}}
                 </label>
                 <div class="detail-assignee-content"  #assignee>
                   <f8-assignee [showFullName]="true"
@@ -109,7 +109,7 @@
             <div class="form-group">
               <div class="width-100 pull-left detail-creator-wrap">
                 <label class="control-label">
-                  {{workItem.relationships?.baseType?.data?.attributes?.fields['system.creator']?.label || 'Label'}}
+                  {{workItem.type.fields['system.creator']?.label || 'Label'}}
                 </label>
                 <div class="detail-creator-content">
                   <span *ngIf="!workItem.creator"
@@ -135,7 +135,7 @@
             <div class="form-group">
               <div class="width-100 pull-left detail-area-wrap">
                 <label class="control-label" id="area_label">
-                  {{workItem.relationships?.baseType?.data?.attributes?.fields['system.area']?.label || 'Label'}}
+                  {{workItem.type.fields['system.area']?.label || 'Label'}}
                 </label>
                 <div class="detail-area-content">
                   <typeahead-dropdown #areaSelectbox
@@ -151,7 +151,7 @@
             <div class="form-group">
               <div class="width-100 pull-left detail-iteration-wrap">
                 <label class="control-label" id="iteration_label">
-                  {{workItem.relationships?.baseType?.data?.attributes?.fields['system.iteration']?.label || 'Label'}}
+                  {{workItem.type.fields['system.iteration']?.label || 'Label'}}
                 </label>
                 <div class="detail-itr-content">
                   <typeahead-dropdown
@@ -166,7 +166,7 @@
             <div class="form-group">
               <div class="width-100 pull-left detail-label-wrap">
                 <label class="control-label">
-                  {{workItem.relationships?.baseType?.data?.attributes?.fields['system.labels']?.label || 'Label'}}
+                  {{workItem.type.fields['system.labels']?.label || 'Label'}}
                 </label>
                 <div class="detail-labels-content">
                   <f8-label

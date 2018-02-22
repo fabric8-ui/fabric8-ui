@@ -10,11 +10,11 @@ import {
 
 export class WorkItemType extends modelService{
     attributes?: {
-        name: string;
-        version: number;
-        description: string;
-        icon: string;
-        fields: Map<string, WorkItemTypeField>;
+      name: string;
+      version: number;
+      description: string;
+      icon: string;
+      fields: Map<string, WorkItemTypeField>;
     };
     relationships? : {
       guidedChildTypes?: {
@@ -29,18 +29,11 @@ export class WorkItemTypeField {
     label: string;
     required: boolean;
     type: {
-        componentType?: string,
-        baseType?: string,
-        kind: string,
-        values?: string[]
+      componentType?: string,
+      baseType?: string,
+      kind: string,
+      values?: string[]
     };
-}
-
-export class WorkItemTypeFieldUI {
-  required: boolean;
-  label: string;
-  description: string;
-  kind: string;
 }
 
 export interface WorkItemTypeService extends WorkItemType {}
@@ -51,7 +44,7 @@ export interface WorkItemTypeUI extends modelUI {
   type: string;
   description: string;
   childTypes: WorkItemTypeUI[];
-  fields: Map<string, WorkItemTypeFieldUI>;
+  fields: Map<string, WorkItemTypeField>;
 }
 
 export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemTypeUI> {
@@ -77,6 +70,9 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
         toFunction: (item: WorkItemService) => {
           return !!item ? item : [];
         }
+      }, {
+        fromPath: ['attributes', 'fields'],
+        toPath: ['fields']
       }
     ];
 
@@ -104,6 +100,9 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
         toFunction: (item: WorkItemService) => {
           return !!item ? item : [];
         }
+      }, {
+        toPath: ['attributes', 'fields'],
+        fromPath: ['fields']
       }
     ];
 

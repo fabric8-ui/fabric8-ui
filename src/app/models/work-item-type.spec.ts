@@ -15,10 +15,21 @@ describe('WorkItemTypeMapper', () => {
         icon: '',
         version: 0,
         description: '',
+        type: 'workitemtypes',
         childTypes: [
           {id: "bbf35418-04b6-426c-a60b-7f80beb0b624", type: "workitemtypes"},
           {id: "26787039-b68f-4e28-8814-c2f93be1ef4e", type: "workitemtypes"}
-        ]
+        ],
+        fields: {
+          "system.area": {
+            "description": "The area to which the work item belongs",
+            "label": "Area",
+            "required": false,
+            "type": {
+              "kind": "area"
+            }
+          }
+        }
     } as WorkItemTypeUI;
 
     workItemTypeService = {
@@ -29,6 +40,16 @@ describe('WorkItemTypeMapper', () => {
           version: 0,
           description: '',
           icon: '',
+          fields: {
+            "system.area": {
+              "description": "The area to which the work item belongs",
+              "label": "Area",
+              "required": false,
+              "type": {
+                "kind": "area"
+              }
+            }
+          }
       },
       relationships: {
         guidedChildTypes: {
