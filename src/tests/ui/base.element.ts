@@ -140,13 +140,6 @@ export class BaseElementArray extends ElementArrayFinder {
     await this.ready();
     return await this.getText();
   }
-
-  async untilAbsent() {
-    this.each(async (item: ElementFinder, index: number) => {
-      let tempItem = new BaseElement(item, this.name + ' - ' + index);
-      await tempItem.untilAbsent();
-    });
-  }
 }
 
 export class Clickable extends BaseElement {

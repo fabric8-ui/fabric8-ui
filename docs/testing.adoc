@@ -18,16 +18,7 @@ $ gulp test:unit
 
 == Functional Tests
 
-* To run all the functional tests, in the *_runtime_* directory, run:
-+
-----
-$ npm run test:func
-----
-* To run only the *smoke* functional tests, in the *_runtime_* directory, run:
-+
-----
-npm run test:funcsmoke
-----
+See link:../tests/README.adoc[Running Functional Tests]:
 
 === Building for Functional Tests or Standalone Production
 

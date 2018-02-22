@@ -1,0 +1,77 @@
+= Test Runner
+
+This project contains a simple test runner for Protractor Angular tests. The intention is to have an 
+isolated test runner that does not share dependencies with code under test. This test runner works
+standalone and just needs to be pointed at a set of Typescript test specs and an URL to test them on.
+
+Please note that this test runner is for **black box tests** only!
+
+== Preparing the Test Runner
+
+The test runner installs it's own dependencies automatically. You just need `node/npm` available in
+the current context. You will also need to have `curl` and `bash` installed on your system 
+and available in the path. **You don't need to do `npm install` in the runner directory**.
+
+== Providing Test Specs
+
+To run a test suite, you need to create a set of test specs (which may include page objects). The
+test specs source directory needs to include a `tsconfig.json` configuration file. The path to the 
+spec source directory has to be provided using the env variable `TEST_SOURCE_PATH`:
+
+== Running Tests
+
+Next, you need to provide a URL of the system under test using the env variable `BASE_URL`. If 
+`BASE_URL` is not set, `http://localhost:8090/` is used.
+
+Tests can then be run with:
+
+```
+npm test
+```
+
+This will get all local dependencies, compile the specs, add runtime dependencies and runs the test specs. You can
+also give a suite to run as the first argument.
+
+*Note*: if you are developing Planner, then is recommended to use the provided script 
+```
+$(PLANNER_ROOT)/scripts/run-functests.sh
+```
+to run the tests. This script will build and start the Planner debug server and then runs the tests.
+
+It is also possible to run the tests as a black box runner using the script `tests/run.sh`.
+
+== Additional Configuration
+
+The test runner supports the following env variables to configure behaviour:
+
+|=======
+|`BASE_URL` | URL of the system under test. Defaults to `http://localhost:8088/`.
+|`ACCESS_TOKEN` | JWT Access Token to access the instance. Defaults to an example JWT token that can be used on local dev instances of OSIO.
+|`TEST_SOURCE_PATH` | Path to the spec source directory. Defaults to the included examples in `example-test-src`.
+|`TEMP_DIR` | Temporary directory for the test run. Defaults to a generated temporary directory.
+|`SPECS_PATTERN` | File pattern for the Protractor run. This should never be modified/set.
+|=======
+
+The test runner uses a fixed set of dependencies defined in `package.json` of the test runner. The specs will
+run with the same dependencies. If you need additional dependencies, you may have to modify the test runner's 
+`package.json`.
+
+== Test Development
+
+The access token given on the runtime environment is available to the test context via `browser.params.accessToken`. This can be utilized
+to implement constructors for page objects like this:
+
+```
+constructor(login: boolean) {
+  if (login) {
+    console.log(browser.params.accessToken);
+    let url = encodeURIComponent(JSON.stringify(JSON.parse(browser.params.accessToken)));
+    browser.get(browser.baseUrl + "/?token_json=" + url);
+  } else {
+    browser.get(browser.baseUrl);
+  }
+}
+```
+
+Make sure the env variable contains a valid JWT and that the JSON syntax is followed. The base url is available 
+on the `browser.baseUrl` variable.

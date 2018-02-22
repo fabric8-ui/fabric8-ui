@@ -1,5 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# lock files - for now
+package-lock.json
+
 # compiled output
 /dist
 /watch
@@ -19,6 +22,7 @@
 /bower_components
 /runtime/node_modules
 /services/node_modules
+/tests/node_modules
 
 # IDEs and editors
 /.idea
@@ -40,6 +44,7 @@ functional_tests.log
 unit_tests.log
 /linters
 browser_logs.log
+npm-debug.log*
 
 # e2e
 /e2e/*.js

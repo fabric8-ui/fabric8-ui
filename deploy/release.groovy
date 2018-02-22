@@ -2,6 +2,8 @@
 def ci (){
     stage('Setup & Build'){
         container('ui'){
+            sh 'npm cache clean --force'
+            sh 'npm cache verify'
             sh 'npm install'
             sh 'npm run build'
             sh 'npm pack dist/'
@@ -15,15 +17,13 @@ def ci (){
     }
 
     stage('Functional Tests'){
-        dir('runtime'){
-            container('ui'){
-                sh '''
-        npm cache clean --force
-        npm install
-        cd src/tests/functionalTests
-        DEBUG=true HEADLESS_MODE=true ./run_ts_functional_tests.sh smokeTest
-'''
-            }
+        container('ui'){
+            sh '''
+            npm cache clean --force
+            npm cache verify
+            npm install
+            DEBUG=true HEADLESS_MODE=true ./scripts/run-functests.sh
+        '''
         }
     }
 }
@@ -66,9 +66,9 @@ def cd (b){
             container('ui'){
                 sh '''
         npm cache clean --force
+        npm cache verify
         npm install
-        cd src/tests/functionalTests
-        DEBUG=true HEADLESS_MODE=true ./run_ts_functional_tests.sh smokeTest
+        DEBUG=true HEADLESS_MODE=true ./scripts/run-functests.sh smokeTest
         '''
             }
         }

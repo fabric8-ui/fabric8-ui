@@ -2,6 +2,8 @@ import { browser } from 'protractor';
 import { PlannerPage } from '../page_objects/planner';
 import * as support from '../support';
 
+/* Smoke Tests */
+
 describe('Planner Smoke Tests:', () => {
   let planner: PlannerPage;
   let c = new support.Constants();

@@ -87,21 +87,21 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async addArea(areaTitle: string) {
-    await this.loadingAnimation.untilAbsent();
+    await this.loadingAnimation.untilCount(0);
     await this.areaDropdown.clickWhenReady();
     await this.areaDropdown.select(areaTitle);
     await this.areaSaveButton.clickWhenReady();
   }
 
   async addIteration(iterationTitle: string) {
-    await this.loadingAnimation.untilAbsent();
+    await this.loadingAnimation.untilCount(0);
     await this.iterationDropdown.clickWhenReady();
     await this.iterationDropdown.select(iterationTitle);
     await this.iterationSaveButton.clickWhenReady();
   }
 
   private async addComment(comment: string) {
-    await this.loadingAnimation.untilAbsent();
+    await this.loadingAnimation.untilCount(0);
     await this.commentsField.clickWhenReady();
     await this.commentsInputField.enterText(comment);
   }
@@ -121,25 +121,25 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async hasArea(areaName: string) {
-    await this.loadingAnimation.untilAbsent();
+    await this.loadingAnimation.untilCount(0);
     let area = await this.areaDropdown.getTextWhenReady();
     return area === areaName;
   }
 
   async hasCreator(name: string): Promise<Boolean> {
-    await this.loadingAnimation.untilAbsent();
+    await this.loadingAnimation.untilCount(0);
     let creator = await this.creatorusername.getTextWhenReady();
     return creator === name;
   }
 
   async hasCreatorAvatar(avatarUrl: string): Promise<Boolean> {
-    await this.loadingAnimation.untilAbsent();
+    await this.loadingAnimation.untilCount(0);
     let creator = await this.creatorAvatar.getAttribute('src');
     return creator === avatarUrl;
   }
 
   async hasAssignee(name: string): Promise<Boolean> {
-    await this.loadingAnimation.untilAbsent();
+    await this.loadingAnimation.untilCount(0);
     await this.assigneeDiv.untilDisplayed();
     let assigneeList = await this.assigneeDiv.getTextWhenReady();
     return assigneeList.indexOf(name) > -1;
@@ -160,7 +160,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async hasIteration(iterationTitle: string): Promise<Boolean> {
-    await this.loadingAnimation.untilAbsent();
+    await this.loadingAnimation.untilCount(0);
     let iteration = await this.iterationDropdown.getTextWhenReady();
     return iteration === iterationTitle;
   }
