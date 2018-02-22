@@ -38,7 +38,7 @@
     "webdriver:update": "webdriver-manager update --versions.chrome 2.33",
     "webpack-dev-server": "webpack-dev-server",
     "webpack": "webpack",
-    "test:unit": "karma start tests/karma.conf.js",
+    "test:unit": "karma start ../karma.conf.js",
     "test:func": "./src/tests/functionalTests/run_ts_functional_tests.sh",
     "test:funcsmoke": "./src/tests/functionalTests/run_ts_functional_tests.sh smokeTest"
   },
