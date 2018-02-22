@@ -90,7 +90,8 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   private workItemSource = this.store
     .select('listPage')
     .select('workItems');
-  private routeSource = this.route.queryParams;
+  private routeSource = this.route.queryParams
+    .filter(p => p.hasOwnProperty('q'));
   private quickAddWorkItemTypes: WorkItemTypeUI[] = [];
   private allWorkItemTypes: WorkItemTypeUI[] = [];
   private selectedIteration: IterationUI = null;
