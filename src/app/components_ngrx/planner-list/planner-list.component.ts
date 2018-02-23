@@ -450,6 +450,33 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     }
   }
 
+  onClickLabel(event) {
+    const labelId = event.id;
+    let queryParams = cloneDeep(this.route.snapshot.queryParams);
+    const newQuery = this.filterService.queryBuilder(
+      'label',
+      this.filterService.equal_notation,
+      labelId
+    );
+    let existingQuery = {};
+    if (queryParams.hasOwnProperty('q')) {
+      existingQuery = this.filterService.queryToJson(queryParams['q']);
+    }
+    const finalQuery = this.filterService.jsonToQuery(
+      this.filterService.queryJoiner(
+        existingQuery,
+        this.filterService.and_notation,
+        newQuery
+      )
+    );
+    queryParams['q'] = finalQuery;
+    // Navigated to filtered view
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: queryParams
+    });
+  }
+
   ngOnDestroy() {
     this.eventListeners.forEach(e => e.unsubscribe());
   }
