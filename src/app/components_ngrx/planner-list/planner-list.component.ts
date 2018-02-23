@@ -325,7 +325,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
               // { queryParams : {q: query}
               this.router.navigate([], {
                 relativeTo: this.route,
-                queryParams: { q: query }
+                queryParams: { q: query, showTree: true }
               });
             });
         }
@@ -411,24 +411,26 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   onTreeAction(event: any) {
-    // const index = event.rowIndex;
-    // const row = event.row;
-    // if (this.datatableWorkitems[index].treeStatus === 'collapsed') {
-    //   this.datatableWorkitems[index].treeStatus = 'loading';
-    //   if (!this.datatableWorkitems[index].childrenLoaded) {
-    //     this.loadChildren(this.workItems[index])
-    //       .subscribe((wis) => {
-    //         this.datatableWorkitems[index].childrenLoaded = true;
-    //         this.datatableWorkitems[index].treeStatus = 'expanded';
-    //       })
-    //   } else {
-    //     this.datatableWorkitems[index].treeStatus = 'expanded';
-    //     this.datatableWorkitems = [...this.datatableWorkitems];
-    //   }
-    // } else {
-    //   this.datatableWorkitems[index].treeStatus = 'collapsed';
-    //   this.datatableWorkitems = [...this.datatableWorkitems];
-    // }
+    const index = event.rowIndex;
+    const row = event.row;
+    if (this.workItems[index].treeStatus === 'collapsed') {
+      this.workItems[index].treeStatus = 'loading';
+      if (!this.workItems[index].childrenLoaded) {
+        this.loadChildren(this.workItems[index]);
+      } else {
+        this.workItems[index].treeStatus = 'expanded';
+        this.workItems = [...this.workItems];
+      }
+    } else {
+      this.workItems[index].treeStatus = 'collapsed';
+      this.workItems = [...this.workItems];
+    }
+  }
+
+  loadChildren(workItem: WorkItemUI) {
+    this.store.dispatch(
+      new WorkItemActions.GetChildren(workItem)
+    );
   }
 
   toggleExpandRow(row, quickAddEnabled = true) {

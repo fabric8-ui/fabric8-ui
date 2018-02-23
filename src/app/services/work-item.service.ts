@@ -33,7 +33,8 @@ import { LinkType } from '../models/link-type';
 import { Link } from '../models/link';
 import {
   LinkDict,
-  WorkItem
+  WorkItem,
+  WorkItemService as WIService
 } from '../models/work-item';
 import { WorkItemType } from '../models/work-item-type';
 import { HttpService } from './http-service';
@@ -144,6 +145,12 @@ export class WorkItemService {
       this.logger.log('Work item does not have child related link, skipping: ' + parent.id);
       return Observable.of([]);
     }
+  }
+
+  getChildren2(url: string): Observable<WIService[]>{
+    return this.http
+        .get(url)
+        .map(response => response.json().data as WIService[]);
   }
 
   getWorkItems(pageSize: number = 20, filters: any[] = []): Observable<{workItems: WorkItem[], nextLink: string, totalCount?: number | null, included?: WorkItem[] | null, ancestorIDs?: Array<string> }> {

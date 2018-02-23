@@ -26,6 +26,20 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
       return [...state];
     }
 
+    case WorkItemActions.GET_CHILDREN_SUCCESS: {
+      const parent = action.payload.parent;
+      const children = action.payload.children;
+      const parentIndex = state.findIndex(s => {
+        return s.id === parent.id;
+      });
+      if (parentIndex) {
+        state[parentIndex].childrenLoaded = true;
+        state[parentIndex].treeStatus = 'expanded';
+        return [...state, ...children];
+      }
+      return [...state];
+    }
+
     default: {
       return state;
     }

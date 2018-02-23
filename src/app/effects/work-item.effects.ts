@@ -35,6 +35,9 @@ export class WorkItemEffects {
         workItemUI.treeStatus = ancestors.findIndex(
           a => a === workItemUI.id
         ) > -1 ? 'expanded' : workItemUI.treeStatus;
+        if (workItemUI.treeStatus === 'expanded') {
+          workItemUI.childrenLoaded = true;
+        }
       }
       const workItemResolver = new WorkItemResolver(workItemUI);
       workItemResolver.resolveArea(state.areas);
@@ -94,7 +97,7 @@ export class WorkItemEffects {
           }
           return Observable.of(new WorkItemActions.AddError());
         })
-    })
+    });
 
   @Effect() getWorkItems$: Observable<Action> = this.actions$
     .ofType<WorkItemActions.Get>(WorkItemActions.GET)
@@ -110,21 +113,54 @@ export class WorkItemEffects {
       const state = wp.state;
       return this.workItemService.getWorkItems2(payload.pageSize, payload.filters)
         .map((data: any) => {
-          const wi = this.resolveWorkItems(data.workItems, state, payload.isShowTree);
+          const wis = this.resolveWorkItems(data.workItems, state, payload.isShowTree);
           if (payload.isShowTree) {
             const ancestors = data.ancestorIDs;
             const wiIncludes = this.resolveWorkItems(
               data.included, state,
               false, ancestors
             );
-            return [...wi, ...wiIncludes];
+            return [...wis, ...wiIncludes];
           }
-          return [...wi];
+          return [...wis];
         })
         .map((workItems: WorkItemUI[]) => {
           return new WorkItemActions.GetSuccess(
             workItems
-          );;
+          );
+        })
+    });
+
+  @Effect() getWorkItemChildren$: Observable<Action> = this.actions$
+    .ofType<WorkItemActions.GetChildren>(WorkItemActions.GET_CHILDREN)
+    .withLatestFrom(this.store.select('listPage'))
+    .map(([action, state]) => {
+      return {
+        payload: action.payload,
+        state: state
+      };
+    })
+    .switchMap(wp => {
+      const parent = wp.payload;
+      const state = wp.state;
+      return this.workItemService
+        .getChildren2(parent.childrenLink)
+        .map((data: WorkItemService[]) => {
+          const wis = this.resolveWorkItems(
+            data, state
+          )
+          // resolve parent ID
+          .map(w => {
+            w.parentID = parent.id
+            return w;
+          });
+          return [...wis];
+        })
+        .map((workItems: WorkItemUI[]) => {
+          return new WorkItemActions.GetChildrenSuccess({
+            parent: parent,
+            children: workItems
+          });
         })
     })
 }

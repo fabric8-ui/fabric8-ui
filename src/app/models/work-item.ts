@@ -136,7 +136,7 @@ export interface WorkItemUI {
   link: string;
   WILinkUrl: string;
 
-  treeStatus: 'collapsed' | 'expanded' | 'disabled'; // collapsed
+  treeStatus: 'collapsed' | 'expanded' | 'disabled' | 'loading'; // collapsed
   childrenLoaded: boolean; // false
   bold: boolean; // false
 
