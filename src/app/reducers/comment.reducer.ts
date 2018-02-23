@@ -27,7 +27,7 @@ export const CommentReducer: ActionReducer<CommentState> = (state = initialState
       if (index > -1) {
         state[index] = action.payload
       }
-      return state;
+      return [...state];
     }
     case CommentActions.UPDATE_ERROR: {
       return state;
@@ -38,7 +38,7 @@ export const CommentReducer: ActionReducer<CommentState> = (state = initialState
       if (index > -1) {
         state.splice(index, 1);
       }
-      return state;
+      return [...state];
     }
     case CommentActions.DELETE_ERROR: {
       return state;

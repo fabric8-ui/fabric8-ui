@@ -15,8 +15,7 @@
       <a>
         <span>Comments</span>
         <span class="badge"
-          id="total_comments"
-          *ngIf="!loadingComments; else loading" >
+          id="total_comments">
           {{comments.length}}
         </span>
         <ng-template #loading>

@@ -88,24 +88,8 @@ export class WorkItemCommentComponent implements OnInit {
   }
 
   updateComment(event, comment): void {
-    const rawText = event.rawText;
-    const callBack = event.callBack;
-    let newCommentBody = rawText;
-    comment.attributes.body = newCommentBody;
-    comment.attributes.markup = 'Markdown';
-    this.workItemService
-      .updateComment(comment)
-      .subscribe(updatedComment => {
-        this.update.emit(updatedComment);
-        callBack(
-          updatedComment.attributes.body,
-          updatedComment.attributes['body.rendered']
-        );
-        this.createCommentObject();
-      },
-      (error) => {
-        console.log(error);
-      });
+    comment.body = event.rawText;
+    this.update.emit(comment);
   }
 
   confirmCommentDelete(comment: Comment): void {

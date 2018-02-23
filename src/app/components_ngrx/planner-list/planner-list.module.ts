@@ -33,6 +33,7 @@ import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { FilterColumn } from '../../pipes/column-filter.pipe';
 import { WorkItemQuickPreviewModule } from '../work-item-quick-preview/work-item-quick-preview.module';
 import { WorkItemDataService } from './../../services/work-item-data.service';
+import { PlannerModalModule } from '../../components/modal/modal.module';
 
 import { CookieService } from './../../services/cookie.service';
 import { FilterService } from './../../services/filter.service';
@@ -97,6 +98,7 @@ if (process.env.ENV == 'inmemory') {
     CommonModule,
     PlannerListRoutingModule,
     PlannerLayoutModule,
+    PlannerModalModule,
     EmptyStateModule,
     LabelsModule,
     ToolbarPanelModule,

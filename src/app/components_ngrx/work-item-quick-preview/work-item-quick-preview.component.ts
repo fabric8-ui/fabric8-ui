@@ -192,7 +192,6 @@ export class WorkItemQuickPreviewComponent implements OnInit, OnDestroy {
       this.workItemStates = [...workItemStateSource];
       this.workItemCommentSource.subscribe(comments => {
         this.comments = [...comments];
-        console.log('####-1', this.comments);
       })
     })
   }
@@ -233,10 +232,6 @@ export class WorkItemQuickPreviewComponent implements OnInit, OnDestroy {
 
   closeHeader(): void {
     this.headerEditable = false;
-  }
-
-  updateComment(comment) {
-    // Nothing required here
   }
 
   closeDetails(): void {
@@ -385,6 +380,14 @@ export class WorkItemQuickPreviewComponent implements OnInit, OnDestroy {
       comment: event
     };
     this.store.dispatch(new CommentActions.Add(payload));
+  }
+
+  updateComment(comment) {
+    this.store.dispatch(new CommentActions.Update(comment));
+  }
+
+  deleteComment(event: any) {
+    this.store.dispatch(new CommentActions.Delete(event));
   }
 
   @HostListener('window:keydown', ['$event'])

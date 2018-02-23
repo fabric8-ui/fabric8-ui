@@ -80,13 +80,26 @@ export class CommentEffects {
 
   @Effect() updateComment$: Observable<Action> = this.actions$
     .ofType<CommentActions.Update>(CommentActions.UPDATE)
-    .map(action => action.payload)
-    .switchMap((payload) => {
-      return this.workItemService.updateComment(payload)
+    .withLatestFrom(this.store.select('listPage').select('collaborators'))
+    .map(([action, collaborators]) => {
+      return {
+        payload: action.payload,
+        collaborators: collaborators
+      }
+    })
+    .switchMap((cp) => {
+      const payload = cp.payload;
+      const collaborators = cp.collaborators;
+      const cMapper = new CommentMapper(this.userMapper);
+      const comment = cMapper.toServiceModel(payload);
+      return this.workItemService.updateComment(comment)
         .map((comment: CommentService) => {
           const cMapper = new CommentMapper(this.userMapper);
+          const commentUI = cMapper.toUIModel(comment);
+          const creatorResolver = new CommentCreatorResolver(commentUI);
+          creatorResolver.resolveCreator(collaborators);
           return new CommentActions.UpdateSuccess(
-            cMapper.toUIModel(comment)
+            creatorResolver.getComment()
           );
         })
     })
@@ -95,12 +108,12 @@ export class CommentEffects {
     .ofType<CommentActions.Delete>(CommentActions.DELETE)
     .map(action => action.payload)
     .switchMap((payload) => {
-      return this.workItemService.deleteComment(payload)
+      const cMapper = new CommentMapper(this.userMapper);
+      const comment = cMapper.toServiceModel(payload);
+      return this.workItemService.deleteComment(comment)
         .map(() => {
           const cMapper = new CommentMapper(this.userMapper);
-          return new CommentActions.DeleteSuccess(
-            cMapper.toUIModel(payload)
-          );
+          return new CommentActions.DeleteSuccess(payload);
         })
     })
 }

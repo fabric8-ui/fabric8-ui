@@ -34,16 +34,16 @@ export class Get implements Action {
 }
 
 export class Update implements Action {
-  payload: Comment;
-  constructor(payload: Comment) {
+  payload: CommentUI;
+  constructor(payload: CommentUI) {
     this.payload = payload;
   }
   readonly type = UPDATE;
 }
 
 export class Delete implements Action {
-  payload: Comment;
-  constructor(payload: Comment) {
+  payload: CommentUI;
+  constructor(payload: CommentUI) {
     this.payload = payload;
   }
   readonly type = DELETE;

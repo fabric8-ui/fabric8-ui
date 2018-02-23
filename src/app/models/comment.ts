@@ -52,6 +52,7 @@ export interface CommentUI {
   createdAt: string;
   creator: UserUI;
   bodyRendered: string;
+  selfLink: string;
 }
 
 export interface CommentService extends Comment {}
@@ -80,6 +81,9 @@ export class CommentMapper implements Mapper<CommentService, CommentUI> {
     fromPath: ['relationships', 'creator', 'data'],
     toPath: ['creator'],
     toFunction: this.userMapper.toUIModel.bind(this.userMapper)
+  }, {
+    fromPath: ['links', 'self'],
+    toPath: ['selfLink']
   }];
 
   uiToServiceMapTree: MapTree = [{
@@ -103,6 +107,9 @@ export class CommentMapper implements Mapper<CommentService, CommentUI> {
   }, {
     toPath: ['type'],
     toValue: 'comments'
+  }, {
+    toPath: ['links', 'self'],
+    fromPath: ['selfLink']
   }];
 
   toUIModel(arg: CommentService): CommentUI {
