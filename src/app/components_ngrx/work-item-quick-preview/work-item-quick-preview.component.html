@@ -172,9 +172,9 @@
                   <f8-label
                     [labels]="workItem.labels.length ?
                       workItem.labels : []"
-                      (onRemoveLabel)="removeLable($event)"
-                      [allowDelete]="true"
-                      (onLabelClick)="onLabelClick($event)">
+                    (onRemoveLabel)="removeLable($event)"
+                    [allowDelete]="true"
+                    (onLabelClick)="onLabelClick($event)">
                   </f8-label>
                   <div class="label-selector-wrapper" *ngIf="loggedIn" >
                     <label-selector

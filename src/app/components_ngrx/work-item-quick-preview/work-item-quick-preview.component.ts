@@ -121,8 +121,7 @@ export class WorkItemQuickPreviewComponent implements OnInit, OnDestroy {
     .filter(wis => !!wis.length);
   private workItemCommentSource = this.store
     .select('detailPage')
-    .select('comments')
-    .filter(wic => !!wic.length);
+    .select('comments');
 
   private collaborators: UserUI[] = [];
   private areasUI: AreaUI[] = [];
@@ -139,7 +138,7 @@ export class WorkItemQuickPreviewComponent implements OnInit, OnDestroy {
   private queryParams: Object = {};
   private labels: LabelUI[] = [];
   private workItemStates: string[] = [];
-  private comments: CommentUI[];
+  private comments: CommentUI[] = [];
 
   private activeAddAssignee: boolean = false;
   private searchValue: string = '';
