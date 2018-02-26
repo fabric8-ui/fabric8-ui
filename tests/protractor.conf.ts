@@ -21,10 +21,15 @@ let conf: Config = {
   // Ref: https://github.com/angular/protractor/tree/master/exampleTypescript/asyncAwait
   SELENIUM_PROMISE_MANAGER: false,
 
-  specs: ["specs/*.js", "specs/**/*.js"],
-
+  specs: [
+    "specs/smoke/smokeTest.spec.js", 
+    "specs/*.js"
+  ],
   suites: {
-    smokeTest: ["specs/**/*.spec.js"]
+    smokeTest: ["specs/smoke/smokeTest.spec.js"],
+    quickPreviewTest: ["specs/**/quickPreview.spec.js"],
+    workItemTableTest: ["specs/**/workItemTableTest.spec.js"],
+    fullTest: ["specs/**/*.spec.js"]
   },
 
   // see: https://github.com/angular/protractor/blob/master/docs/timeouts.md

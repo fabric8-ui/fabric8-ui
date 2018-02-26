@@ -1,6 +1,6 @@
 import { browser } from 'protractor';
-import { PlannerPage } from '../page_objects/planner';
-import * as support from '../support';
+import { PlannerPage } from '../../page_objects/planner';
+import * as support from '../../support';
 
 /* Smoke Tests */
 
