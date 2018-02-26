@@ -13,6 +13,7 @@ def ci (){
     stage('Unit Tests'){
         container('ui'){
             sh 'npm run tests -- --unit'
+            sh 'scripts/upload_to_codecov.sh'
         }
     }
 
