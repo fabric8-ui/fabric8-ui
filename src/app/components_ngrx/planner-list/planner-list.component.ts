@@ -185,7 +185,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
           expression: exp
         });
         this.store.dispatch(new WorkItemActions.Get({
-          pageSize: 20,
+          pageSize: 200,
           filters: payload,
           isShowTree: this.showTree
         }))
