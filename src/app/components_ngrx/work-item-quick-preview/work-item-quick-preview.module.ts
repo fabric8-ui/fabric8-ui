@@ -43,6 +43,12 @@ import { EffectsModule } from '@ngrx/effects';
 import { CommentState, initialState as initialCommentState } from './../../states/comment.state';
 import { CommentReducer } from './../../reducers/comment.reducer';
 import { CommentEffects } from './../../effects/comment.effects';
+import {
+  DetailWorkItemState,
+  initialState as initialDetailWIState
+} from './../../states/detail-work-item.state';
+import { DetailWorkItemReducer } from './../../reducers/detail-work-item.reducer';
+import { DetailWorkItemEffects } from './../../effects/detail-work-item.effects';
 
 let providers = [];
 
@@ -79,13 +85,15 @@ if (process.env.ENV == 'inmemory') {
     WorkItemLinkModule,
     WorkItemCommentModule,
     StoreModule.forFeature('detailPage', {
-      comments: CommentReducer
+      comments: CommentReducer,
+      workItem: DetailWorkItemReducer
     }, {
       initialState: {
-        comments: initialCommentState
+        comments: initialCommentState,
+        workItem: initialDetailWIState
       }
     }),
-    EffectsModule.forFeature([CommentEffects])
+    EffectsModule.forFeature([CommentEffects, DetailWorkItemEffects])
   ],
   declarations: [
     WorkItemQuickPreviewComponent,

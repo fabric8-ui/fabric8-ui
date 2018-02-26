@@ -18,7 +18,8 @@ export interface AppState {
   };
 
   detailPage: {
-    comments: states.CommentState
+    comments: states.CommentState,
+    workItem: states.DetailWorkItemState
   };
 
   toolbar: {

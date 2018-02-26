@@ -45,3 +45,7 @@ export {
   WIState,
   initialState as initialWIState
 } from './work-item-state.state';
+export {
+  DetailWorkItemState,
+  initialState as initialDetailWIState
+} from './detail-work-item.state';
