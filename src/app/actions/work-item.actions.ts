@@ -10,13 +10,18 @@ export const GET_SUCCESS = '[workItem] GetSuccess';
 export const GET_ERROR = '[workItem] GetError';
 export const UPDATE_SUCCESS = '[workItem] UpdateSuccess';
 export const UPDATE_ERROR = '[workItem] UpdateError';
-export const GET_CHILDREN = '[workItem] GetChildren'
-export const GET_CHILDREN_SUCCESS = '[workItem] GetChildrenSuccess'
+export const GET_CHILDREN = '[workItem] GetChildren';
+export const GET_CHILDREN_SUCCESS = '[workItem] GetChildrenSuccess';
+export const GET_CHILDREN_ERROR = '[workItem] GetChildrenError';
 
 export class Add implements Action {
-  payload: {workItem: WorkItemService, createId: number};
+  payload: {workItem: WorkItemService, createId: number, parentId: string};
   constructor(
-    payload: {workItem: WorkItemService, createId: number}
+    payload: {
+      workItem: WorkItemService,
+      createId: number,
+      parentId: string
+    }
   ) {
     this.payload = payload;
   }
@@ -83,6 +88,14 @@ export class GetChildrenSuccess implements Action {
   readonly type = GET_CHILDREN_SUCCESS;
 }
 
+export class GetChildrenError implements Action {
+  payload: WorkItemUI;
+  constructor(payload: WorkItemUI) {
+    this.payload = payload;
+  }
+  readonly type = GET_CHILDREN_ERROR;
+}
+
 export class UpdateSuccess implements Action {
   payload: WorkItemUI;
   constructor(payload: WorkItemUI) {
@@ -107,3 +120,4 @@ export type All
   | UpdateError
   | GetChildren
   | GetChildrenSuccess
+  | GetChildrenError

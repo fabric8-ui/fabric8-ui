@@ -59,11 +59,12 @@ export class WorkItemEffects {
         state: state
       };
     })
-    .switchMap(op => {
+    .switchMap((op): Observable<WorkItemActions.GetChildren | WorkItemActions.AddSuccess | WorkItemActions.AddError> => {
       const payload = op.payload;
       const state = op.state;
       const createID = payload.createId;
       const workItem = payload.workItem;
+      const parentId = payload.parentId;
       return this.workItemService.create(workItem)
         .map(item => {
           const itemUI = this.workItemMapper.toUIModel(item);
@@ -74,17 +75,53 @@ export class WorkItemEffects {
           workItemResolver.resolveType(state.workItemTypes);
           const wItem = workItemResolver.getWorkItem();
           wItem.createId = createID;
-          try {
-            this.notifications.message({
-              message: `Work item is added.`,
-              type: NotificationType.SUCCESS
-            } as Notification);
-          } catch (e) {
-            console.log('Error displaying notification.')
+          return wItem;
+        })
+        .mergeMap(wItem => {
+          // If a child item is created
+          if (parentId) {
+            wItem.parentID = parentId;
+
+            // TODO : solve the hack :: link the item
+            const linkPayload = this.createLinkObject(
+              parentId,
+              wItem.id,
+              '25c326a7-6d03-4f5a-b23b-86a9ee4171e9'
+            );
+
+            return this.workItemService.createLink({
+              data: linkPayload
+            }).map(() => {
+              // for a normal (not a child) work item creation
+              // Add item success notification
+              try {
+                this.notifications.message({
+                  message: `New child added.`,
+                  type: NotificationType.SUCCESS
+                } as Notification);
+              } catch (e) {
+                console.log('Error displaying notification.')
+              }
+              const parent = state.workItems.find(w => w.id === parentId);
+              if (!parent.childrenLoaded && parent.hasChildren) {
+                return new WorkItemActions.GetChildren(parent);
+              } else {
+                return new WorkItemActions.AddSuccess(wItem);
+              }
+            });
+          } else {
+            // for a normal (not a child) work item creation
+            // Add item success notification
+            try {
+              this.notifications.message({
+                message: `Work item is added.`,
+                type: NotificationType.SUCCESS
+              } as Notification);
+            } catch (e) {
+              console.log('Error displaying notification.')
+            }
+            return Observable.of(new WorkItemActions.AddSuccess(wItem));
           }
-          return new WorkItemActions.AddSuccess(
-            wItem
-          );
         })
         .catch(() => {
           try {
@@ -97,7 +134,7 @@ export class WorkItemEffects {
           }
           return Observable.of(new WorkItemActions.AddError());
         })
-    });
+      });
 
   @Effect() getWorkItems$: Observable<Action> = this.actions$
     .ofType<WorkItemActions.Get>(WorkItemActions.GET)
@@ -162,5 +199,47 @@ export class WorkItemEffects {
             children: workItems
           });
         })
+        .catch(() => {
+          try {
+            this.notifications.message({
+              message: `Problem loading children.`,
+              type: NotificationType.DANGER
+            } as Notification);
+          } catch (e) {
+            console.log('Error displaying notification.')
+          }
+          return Observable.of(
+            new WorkItemActions.GetChildrenError(parent)
+          );
+        })
     })
+
+    createLinkObject(parentWorkItemId: string, childWorkItemId: string, linkId: string) {
+      return {
+        'type': 'workitemlinks',
+        'attributes': {
+          'version': 0
+        },
+        'relationships': {
+          'link_type': {
+            'data': {
+              'id': linkId,
+              'type': 'workitemlinktypes'
+            }
+          },
+          'source': {
+            'data': {
+              'id': parentWorkItemId,
+              'type': 'workitems'
+            }
+          },
+          'target': {
+            'data': {
+              'id': childWorkItemId,
+              'type': 'workitems'
+            }
+          }
+        }
+      };
+    }
 }

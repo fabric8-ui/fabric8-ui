@@ -11,6 +11,15 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
   switch(action.type) {
 
     case WorkItemActions.ADD_SUCCESS: {
+      if (action.payload.parentID) {
+        const parentIndex =
+          state.findIndex(s => s.id === action.payload.parentID);
+        if (parentIndex > -1) {
+          state[parentIndex].hasChildren = true;
+          state[parentIndex].childrenLoaded = true;
+          state[parentIndex].treeStatus = 'expanded';
+        }
+      }
       return [action.payload, ...state];
     }
 
@@ -26,13 +35,21 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
       return [...state];
     }
 
+    case WorkItemActions.GET_CHILDREN_ERROR: {
+      const parent = action.payload;
+      const parentIndex =
+        state.findIndex(s => s.id === action.payload.id);
+      state[parentIndex].treeStatus = 'collapsed';
+      return [...state];
+    }
+
     case WorkItemActions.GET_CHILDREN_SUCCESS: {
       const parent = action.payload.parent;
       const children = action.payload.children;
       const parentIndex = state.findIndex(s => {
         return s.id === parent.id;
       });
-      if (parentIndex) {
+      if (parentIndex > -1) {
         state[parentIndex].childrenLoaded = true;
         state[parentIndex].treeStatus = 'expanded';
         return [...state, ...children];

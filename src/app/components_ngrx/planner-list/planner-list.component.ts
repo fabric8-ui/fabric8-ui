@@ -452,6 +452,10 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     }
   }
 
+  onCreateStart() {
+    this.detailExpandedRows = [];
+  }
+
   onClickLabel(event) {
     const labelId = event.id;
     let queryParams = cloneDeep(this.route.snapshot.queryParams);

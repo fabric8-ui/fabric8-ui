@@ -46,6 +46,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   @Input() selectedIteration: IterationUI = null;
   @Input() wilistview: string = 'wi-list-view';
 
+  @Output() onStartCreateWI: EventEmitter<any> = new EventEmitter();
 
   error: any = false;
   workItem: WorkItemService;
@@ -175,9 +176,11 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
 
     if (this.workItem.attributes['system.title']) {
       this.blockAdd = true;
+      this.onStartCreateWI.emit(this.parentWorkItemId);
       this.store.dispatch(new WorkItemActions.Add({
         createId: this.createId,
-        workItem: this.workItem
+        workItem: this.workItem,
+        parentId: this.parentWorkItemId
       }));
     } else {
       this.blockAdd = false;
