@@ -1,11 +1,10 @@
 import {
-  AfterViewChecked,
-  Directive,
-  DoCheck,
-  EventEmitter,
-  ElementRef,
-  Input,
+  Directive, 
+  EventEmitter, 
+  ElementRef, 
+  Input, 
   Output,
+  OnInit,
   OnChanges,
   HostListener
 } from '@angular/core';
@@ -14,7 +13,7 @@ import {
     selector: '[almInfiniteScroll]',
     exportAs: 'almInfiniteScroll'
 })
-export class InfiniteScrollDirective implements DoCheck {
+export class InfiniteScrollDirective implements OnInit {
 
   @Output('initItems') initItems = new EventEmitter();
   @Output('fetchMore') fetchMore = new EventEmitter();
@@ -23,12 +22,13 @@ export class InfiniteScrollDirective implements DoCheck {
   pageSize: number = 10;
   lastCheckedHeight = 0;
   previousScrollHeight = 0;
-  private element: HTMLElement = this.elementRef.nativeElement;
 
   constructor(private elementRef: ElementRef) {
   }
 
-  ngDoCheck() {
+  private element: HTMLElement = this.elementRef.nativeElement;
+
+  ngOnInit() {
     this.pageSize = Math.ceil(this.element.offsetHeight / this.eachElementHeightInPx);
     // Page should always have more elements than it can hold
     // Normally twice than threshold value
@@ -42,19 +42,17 @@ export class InfiniteScrollDirective implements DoCheck {
     });
   }
 
-  @HostListener('scroll', ['$event'])
+  @HostListener('scroll', ['$event']) 
   onScrollContainer(event: any) {
     if (this.element.scrollHeight > this.lastCheckedHeight) {
       this.previousScrollHeight = this.element.scrollHeight;
-      let remainingHeight = this.element.scrollHeight
-        - (this.element.offsetHeight + this.element.scrollTop);
+      let remainingHeight = this.element.scrollHeight - (this.element.offsetHeight + this.element.scrollTop);
       let remainingElement = Math.ceil(remainingHeight / this.eachElementHeightInPx);
       if (remainingElement < this.fetchThreshold) {
         this.lastCheckedHeight = this.element.scrollHeight;
         this.fetchMore.emit();
       }
-    } else if (this.element.scrollHeight < this.previousScrollHeight) {
-      // The list has been reloaded
+    } else if (this.element.scrollHeight < this.previousScrollHeight) { // To check if the list is reloaded
       this.previousScrollHeight = this.element.scrollHeight;
       this.lastCheckedHeight = 0;
       this.element.scrollTop = 0; // Scroll the list to top
