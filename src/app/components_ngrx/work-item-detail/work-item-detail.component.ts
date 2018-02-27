@@ -136,6 +136,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
         return this.workItemSource;
       })
       .subscribe(workItem => {
+        console.log('####-100', workItem);
         this.workItem = workItem;
       });
   }
@@ -164,8 +165,17 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
     return this.router.url.split('plan')[0] + 'plan/detail/' + workItem.number;
   }
 
-  saveTitle(e) {
-    console.log(e);
+  saveTitle(event) {
+    const value = event.value.trim();
+    const callBack = event.callBack;
+    if (value !== '' && this.workItem.title !== value) {
+      let workItem = {} as WorkItemUI;
+      workItem['title'] = value;
+      workItem['version'] = this.workItem.version;
+      workItem['link'] = this.workItem.link;
+      workItem['id'] = this.workItem.id;
+      this.store.dispatch(new WorkItemActions.Update(workItem));
+    }
   }
 
   onChangeState(state) {

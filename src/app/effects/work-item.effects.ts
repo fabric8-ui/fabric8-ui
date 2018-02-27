@@ -168,51 +168,80 @@ export class WorkItemEffects {
         })
     });
 
-  @Effect() getWorkItemChildren$: Observable<Action> = this.actions$
-    .ofType<WorkItemActions.GetChildren>(WorkItemActions.GET_CHILDREN)
-    .withLatestFrom(this.store.select('listPage'))
-    .map(([action, state]) => {
-      return {
-        payload: action.payload,
-        state: state
-      };
-    })
-    .switchMap(wp => {
-      const parent = wp.payload;
-      const state = wp.state;
-      return this.workItemService
-        .getChildren2(parent.childrenLink)
-        .map((data: WorkItemService[]) => {
-          const wis = this.resolveWorkItems(
-            data, state
-          )
-          // resolve parent ID
+    @Effect() getWorkItemChildren$: Observable<Action> = this.actions$
+      .ofType<WorkItemActions.GetChildren>(WorkItemActions.GET_CHILDREN)
+      .withLatestFrom(this.store.select('listPage'))
+      .map(([action, state]) => {
+        return {
+          payload: action.payload,
+          state: state
+        };
+      })
+      .switchMap(wp => {
+        const parent = wp.payload;
+        const state = wp.state;
+        return this.workItemService
+          .getChildren2(parent.childrenLink)
+          .map((data: WorkItemService[]) => {
+            const wis = this.resolveWorkItems(
+              data, state
+            )
+            // resolve parent ID
+            .map(w => {
+              w.parentID = parent.id
+              return w;
+            });
+            return [...wis];
+          })
+          .map((workItems: WorkItemUI[]) => {
+            return new WorkItemActions.GetChildrenSuccess({
+              parent: parent,
+              children: workItems
+            });
+          })
+          .catch(() => {
+            try {
+              this.notifications.message({
+                message: `Problem loading children.`,
+                type: NotificationType.DANGER
+              } as Notification);
+            } catch (e) {
+              console.log('Error displaying notification.')
+            }
+            return Observable.of(
+              new WorkItemActions.GetChildrenError(parent)
+            );
+          })
+      })
+
+    @Effect() updateWorkItem$: Observable<Action> = this.actions$
+      .ofType<WorkItemActions.Update>(WorkItemActions.UPDATE)
+      .withLatestFrom(this.store.select('listPage'))
+      .map(([action, state]) => {
+        return {
+          payload: action.payload,
+          state: state
+        };
+      })
+      .switchMap(wp => {
+        const payload = this.workItemMapper.toServiceModel(wp.payload);
+        const state = wp.state;
+        return this.workItemService.update(payload)
+          .map(w => this.resolveWorkItems([w], state)[0])
           .map(w => {
-            w.parentID = parent.id
+            const item = state.workItems.find(i => i.id === w.id);
+            if(item) {
+              w.treeStatus = item.treeStatus;
+              w.bold = item.bold;
+              w.childrenLoaded = item.childrenLoaded;
+            }
             return w;
-          });
-          return [...wis];
-        })
-        .map((workItems: WorkItemUI[]) => {
-          return new WorkItemActions.GetChildrenSuccess({
-            parent: parent,
-            children: workItems
-          });
-        })
-        .catch(() => {
-          try {
-            this.notifications.message({
-              message: `Problem loading children.`,
-              type: NotificationType.DANGER
-            } as Notification);
-          } catch (e) {
-            console.log('Error displaying notification.')
-          }
-          return Observable.of(
-            new WorkItemActions.GetChildrenError(parent)
-          );
-        })
-    })
+          })
+          .map((workItem: WorkItemUI) => {
+            return new WorkItemActions.UpdateSuccess(workItem);
+          })
+      });
+
 
     createLinkObject(parentWorkItemId: string, childWorkItemId: string, linkId: string) {
       return {

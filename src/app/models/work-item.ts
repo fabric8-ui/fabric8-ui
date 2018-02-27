@@ -316,12 +316,14 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
       fromPath: ['assignees'],
       toPath: ['relationships','assignees','data'],
       toFunction: function(assignees: UserUI[]) {
+        if (!assignees) return null;
         return assignees.map(assignee => this.userMapper.toServiceModel(assignee))
       }.bind(this)
     }, {
       fromPath: ['labels'],
       toPath: ['relationships','labels','data'],
       toFunction: function(labels: LabelUI[]) {
+        if (!labels) return null;
         return labels.map(label => this.labelMapper.toServiceModel(label))
       }.bind(this)
     }, {
@@ -346,23 +348,32 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
   }
 
   toServiceModel(arg: WorkItemUI): WorkItemService {
-    let serviceModel = this.cleanModel(
+    let serviceModel =
       switchModel<WorkItemUI, WorkItemService>(
         arg, this.uiToServiceMapTree
-      )
-    );
+      );
 
     // Removing relationship part of iteration
-    serviceModel.relationships.iteration.data =
-      cleanObject(serviceModel.relationships.iteration.data, ['relationships']);
+    if (serviceModel.relationships.iteration.data !== null) {
+      serviceModel.relationships.iteration.data =
+        cleanObject(serviceModel.relationships.iteration.data, ['relationships']);
+    }
 
     // Removing attributes from assignees
-    serviceModel.relationships.assignees.data =
-      serviceModel.relationships.assignees.data.map(a => {
-        return cleanObject(a, ['attributes']);
-      });
+    if (serviceModel.relationships.assignees.data !== null) {
+      serviceModel.relationships.assignees.data =
+        serviceModel.relationships.assignees.data.map(a => {
+          return cleanObject(a, ['attributes']);
+        });
+    }
 
-    return serviceModel;
+    // Removing relationship part of baseType
+    if (serviceModel.relationships.baseType.data !== null) {
+      serviceModel.relationships.baseType.data =
+        cleanObject(serviceModel.relationships.baseType.data, ['relationships']);
+    }
+
+    return cleanObject(serviceModel);
   }
 
   cleanModel(arg: WorkItemService, keysToRemove: string[] = []) {

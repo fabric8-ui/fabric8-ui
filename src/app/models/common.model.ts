@@ -116,7 +116,12 @@ export function cleanObject(obj: any, keysToRemove: string[] = []): any {
       !Array.isArray(obj[allKeys[i]])
     ) {
       obj[allKeys[i]] = cleanObject(obj[allKeys[i]], keysToRemove);
-      if (!Object.keys(obj[allKeys[i]]).length) {
+      if (!Object.keys(obj[allKeys[i]]).length ||
+          (
+            Object.keys(obj[allKeys[i]])[0] === 'type' &&
+            Object.keys(obj[allKeys[i]]).length === 1
+          )
+        ) {
         delete obj[allKeys[i]];
       }
     }

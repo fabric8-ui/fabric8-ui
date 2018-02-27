@@ -57,6 +57,18 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
       return [...state];
     }
 
+    case WorkItemActions.UPDATE_SUCCESS: {
+      const index = state.findIndex(i => i.id === action.payload.id);
+      if (index > -1) {
+        return [
+          ...state.slice(0, index),
+          action.payload,
+          ...state.slice(index + 1)
+        ];
+      }
+      return [...state];
+    }
+
     default: {
       return state;
     }

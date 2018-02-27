@@ -1,21 +1,27 @@
 import { State, ActionReducer } from '@ngrx/store';
-import * as WorkItemActions from './../actions/detail-work-item.actions';
+import * as DetailWorkItemActions from './../actions/detail-work-item.actions';
+import * as WorkItemActions from './../actions/work-item.actions';
 import { DetailWorkItemState, initialState } from './../states/detail-work-item.state';
 import { cloneDeep } from 'lodash';
 
 import { WorkItem } from './../models/work-item';
 
-export type Action = WorkItemActions.All;
+export type Action = DetailWorkItemActions.All | WorkItemActions.All;
 
-export const DetailWorkItemReducer: ActionReducer<DetailWorkItemState> = (state = initialState, action: Action) => {
-  switch(action.type) {
+export const DetailWorkItemReducer: ActionReducer<DetailWorkItemState> =
+  (state = initialState, action: Action) => {
+    switch(action.type) {
 
-    case WorkItemActions.GET_WORKITEM_SUCCESS: {
-      return {...action.payload};
-    }
+      case DetailWorkItemActions.GET_WORKITEM_SUCCESS: {
+        return {...action.payload};
+      }
 
-    default: {
-      return state;
+      case WorkItemActions.UPDATE_SUCCESS: {
+        return {...action.payload};
+      }
+
+      default: {
+        return state;
+      }
     }
   }
-}
