@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { Broadcaster, Logger } from 'ngx-base';
 
-import { GroupTypesModel } from 'src/app/models/group-types.model';
+import { GroupTypesModel } from '../../models/group-types.model';
 import { GroupTypesService } from '../../services/group-types.service';
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType } from '../../models/work-item-type';
