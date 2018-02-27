@@ -6,12 +6,8 @@ export const GET_WORKITEM_SUCCESS = '[workItem] GetWorkItemSuccess';
 export const GET_WORKITEM_ERROR = '[workItem] GetWorkItemError';
 
 export class GetWorkItem implements Action {
-  payload: {
-    number: string,
-    owner: string,
-    space: string
-  }
-  constructor(payload) {
+  payload: {number: string | number}
+  constructor(payload: {number: string | number}) {
     this.payload = payload;
   }
   readonly type = GET_WORKITEM;

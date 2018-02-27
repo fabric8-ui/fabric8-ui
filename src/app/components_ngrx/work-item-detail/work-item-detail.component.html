@@ -1,0 +1,78 @@
+<form
+  *ngIf="workItem!==null"
+  #almWorkItemDetailForm="ngForm"
+  class="form-horizontal"
+  id="wi-detail-form">
+  <fieldset>
+    <div class="f8-quick-preview__header">
+      <span
+        class="pficon pficon-close pull-right f8-quick-preview--close"
+        (click)="closeDetail()">
+      </span>
+      <div class="form-group width-100 pull-left mobile-bar padding-h-10 padding-v-5 margin-0">
+        <span *ngIf="workItem.id" class="detail-created-date pull-right">
+          <b>Created</b>
+          <span id="created_at"
+            [innerHTML]="workItem.createdAt | almMomentTime"></span>
+        </span>
+        <div class="dropdown-kebab-pf detail-type-dropdown">
+            <span
+              class="margin-right-5 {{workItem.type.icon}} fa-lg"
+              id="wi-type-icon" title="{{workItem.type.name}}"></span>
+            {{workItem.type.name}}
+          <h3 *ngIf="workItem.id" class="detail-id" id="wi-detail-id">{{workItem.number}}</h3>
+        </div>
+      </div>
+      <div class="form-group width-100 pull-left padding-h-10 padding-v-5 margin-0">
+        <div class="width-100 pull-left">
+          <div
+            class="card-pf-time-frame-filter pull-left dropdown"
+            *ngIf="loggedIn"
+            dropdown>
+            <button dropdownToggle
+              class="btn btn-default width-100 dropdown-toggle padding-h-10"
+              id="wi-detail-state"
+              type="button">
+              <span class='dropdown-icon pull-left margin-top-5'
+                almIcon
+                [iconType]="workItem.state">
+              </span>
+              <span class='dropdown-text pull-left padding-h-10'>
+                {{workItem.state}}
+              </span>
+              <span *ngIf="loggedIn" class="caret pull-right margin-top-7"></span>
+            </button>
+            <ul id="wi-status-dropdown" class="dropdown-menu-right dropdown-ul dropdown-menu" role="menu" *dropdownMenu>
+              <li class="dropdown-li" (click)="onChangeState(state)"
+                *ngFor="let state of workItemStates">
+                <a>
+                  <span class='dropdown-icon' almIcon [iconType]="state"></span>
+                  <span class='dropdown-text'>{{state}}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <a *ngIf="detailContext === 'preview'" class="pull-right">
+            <span class="dib margin-right-3">
+              <a [routerLink]="[constructUrl(workItem)]" [queryParams]="queryParams">
+                View full details
+              </a>
+            </span>
+            <span class="fa fa-list-alt"></span>
+          </a>
+        </div>
+        <div class="width-100 pull-left wi-detail-title-blk margin-top-15" id="title-click-div">
+          <div id="wi-title-div">
+            <f8-inlineinput
+              [disabled]="false"
+              [value]="workItem.title"
+              [onLineClickEdit]="true"
+              (onSave)="saveTitle($event)"
+              [placeholder]="'Enter title'">
+            </f8-inlineinput>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</form>

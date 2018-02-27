@@ -1,3 +1,4 @@
+import { UrlService } from './../../services/url.service';
 import { Observable } from 'rxjs/Observable';
 import {
   AfterViewChecked,
@@ -9,7 +10,7 @@ import {
   ViewEncapsulation,
   ViewChild
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { PlannerLayoutComponent } from './../../widgets/planner-layout/planner-layout.component';
 import { Space } from 'ngx-fabric8-wit';
 import { WorkItemTypeUI } from '../../models/work-item-type';
@@ -27,11 +28,6 @@ import { EmptyStateConfig } from 'patternfly-ng';
 // import for column
 import { datatableColumn } from './../../components/planner-list/datatable-config';
 
-import {
-  WorkItemQuickPreviewComponent
-} from './../work-item-quick-preview/work-item-quick-preview.component';
-import { WorkItemDataService } from './../../services/work-item-data.service';
-
 // ngrx stuff
 import { Store } from '@ngrx/store';
 import { AppState } from './../../states/app.state';
@@ -45,6 +41,7 @@ import * as WorkItemTypeActions from './../../actions/work-item-type.actions';
 import * as LabelActions from './../../actions/label.actions';
 import { WorkItemUI } from '../../models/work-item';
 import * as WorkItemActions from './../../actions/work-item.actions';
+import { WorkItemPreviewPanelComponent } from '../work-item-preview-panel/work-item-preview-panel.component';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -116,7 +113,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   @ViewChild('plannerLayout') plannerLayout: PlannerLayoutComponent;
   @ViewChild('containerHeight') containerHeight: ElementRef;
   @ViewChild('myTable') table: any;
-  @ViewChild('quickPreview') quickPreview: WorkItemQuickPreviewComponent;
+  @ViewChild('quickPreview') quickPreview: WorkItemPreviewPanelComponent;
 
   constructor(
     private renderer: Renderer2,
@@ -126,7 +123,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     private auth: AuthenticationService,
     private filterService: FilterService,
     private cookieService: CookieService,
-    private workItemDataService: WorkItemDataService,
+    private urlService: UrlService
   ) {}
 
   ngOnInit() {
@@ -208,6 +205,25 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     this.setSelectedIterationForQuickAdd();
     this.setWorkItems();
     this.setDataTableColumns();
+
+    // Listen for the url change
+    this.eventListeners.push(
+      this.router.events
+        .filter(event => event instanceof NavigationStart)
+        .subscribe(
+        (event: any) => {
+          if (event.url.indexOf('/plan/detail/') > -1) {
+            // It's going to the detail page
+            let url = location.pathname;
+            let query = location.href.split('?');
+            if (query.length == 2) {
+              url = url + '?' + query[1];
+            }
+            this.urlService.recordLastListOrBoard(url);
+          }
+        }
+        )
+    );
   }
 
   resizeHeight() {
@@ -492,7 +508,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
 
   onPreview(id: string): void {
     const workItem = this.workItems.find(w => w.id === id);
-    this.quickPreview.openPreview(workItem);
+    this.quickPreview.open(workItem);
   }
 
   ngOnDestroy() {

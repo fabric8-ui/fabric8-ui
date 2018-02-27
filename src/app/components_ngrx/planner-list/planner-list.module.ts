@@ -1,3 +1,4 @@
+import { WorkItemPreviewPanelModule } from './../work-item-preview-panel/work-item-preview-panel.module';
 import { LabelsModule } from './../labels/labels.module';
 import { AssigneesModule } from './../assignee/assignee.module';
 import { WorkItemCellComponent } from './../work-item-cell/work-item-cell.component';
@@ -45,8 +46,10 @@ import * as states from './../../states/index.state';
 import * as reducers from './../../reducers/index.reducer';
 import * as effects from './../../effects/index.effects';
 import { WorkItemReducer } from './../../reducers/work-item.reducer';
+
 import { AlmIconModule } from 'ngx-widgets';
 import { EmptyStateModule } from 'patternfly-ng';
+import { UrlService } from '../../services/url.service';
 
 let providers = [];
 
@@ -66,7 +69,8 @@ if (process.env.ENV == 'inmemory') {
     FilterService,
     BsDropdownConfig,
     CookieService,
-    WorkItemDataService
+    WorkItemDataService,
+    UrlService
   ];
 } else {
   providers = [
@@ -87,7 +91,8 @@ if (process.env.ENV == 'inmemory') {
     FilterService,
     BsDropdownConfig,
     CookieService,
-    WorkItemDataService
+    WorkItemDataService,
+    UrlService
   ];
 }
 
@@ -107,7 +112,7 @@ if (process.env.ENV == 'inmemory') {
     WorkItemQuickAddModule,
     BsDropdownModule.forRoot(),
     NgxDatatableModule,
-    WorkItemQuickPreviewModule,
+    WorkItemPreviewPanelModule,
     StoreModule.forFeature('listPage', {
         iterations: reducers.iterationReducer,
         labels: reducers.LabelReducer,

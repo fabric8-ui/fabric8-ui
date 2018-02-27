@@ -1,13 +1,17 @@
 import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import * as WorkItemActions from './../actions/detail-work-item.actions';
+import * as DetailWorkItemActions from './../actions/detail-work-item.actions';
 import { AppState } from './../states/app.state';
 import { Observable } from 'rxjs';
 import { WorkItemService as WIService } from './../services/work-item.service';
-import { WorkItemMapper, WorkItem, WorkItemService, WorkItemResolver, WorkItemUI } from './../models/work-item';
+import {
+  WorkItemMapper, WorkItem,
+  WorkItemService, WorkItemResolver,
+  WorkItemUI
+} from './../models/work-item';
 
-export type Action = WorkItemActions.All;
+export type Action = DetailWorkItemActions.All;
 
 @Injectable()
 export class DetailWorkItemEffects {
@@ -49,7 +53,7 @@ export class DetailWorkItemEffects {
   }
 
   @Effect() getWorkItem$: Observable<Action> = this.actions$
-    .ofType<WorkItemActions.GetWorkItem>(WorkItemActions.GET_WORKITEM)
+    .ofType<DetailWorkItemActions.GetWorkItem>(DetailWorkItemActions.GET_WORKITEM)
     .withLatestFrom(this.store.select('listPage'))
     .map(([action, state]) => {
       return {
@@ -61,18 +65,21 @@ export class DetailWorkItemEffects {
       const state = wp.state;
       const payload = wp.payload;
       const workItem = state.workItems.find(w => w.number === payload.number);
-      console.log(workItem, '####-3');
-      console.log(payload, '####-4');
+      // If work item found in the existing list
       if (workItem) {
         return Observable
-          .of(new WorkItemActions.GetWorkItemSuccess(workItem));
+          .of(new DetailWorkItemActions.GetWorkItemSuccess(workItem));
       }
 
+      // Else fetch it from the server
+      const spaceName = state.space.attributes.name;
+      const spaceOwner =
+        state.space.relationalData.creator.attributes.username;
       return this.workItemService
-        .getWorkItemByNumber(payload.number, payload.owner, payload.space)
+        .getWorkItemByNumber(payload.number, spaceOwner, spaceName)
         .map((data: WorkItemService) => {
           const wi = this.resolveWorkItems([data], state);
-          return new WorkItemActions.GetWorkItemSuccess(wi[0]);
+          return new DetailWorkItemActions.GetWorkItemSuccess(wi[0]);
         })
     })
 }

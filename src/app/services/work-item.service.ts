@@ -298,7 +298,7 @@ export class WorkItemService {
    * @param owner : string
    * @param space : string
    */
-  getWorkItemByNumber(id: string, owner: string = '', space: string = ''): Observable<WorkItem> {
+  getWorkItemByNumber(id: string | number, owner: string = '', space: string = ''): Observable<WorkItem> {
     if (this._currentSpace) {
       if (owner && space) {
         return this.http.get(

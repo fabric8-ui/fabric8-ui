@@ -11,8 +11,7 @@ export const DetailWorkItemReducer: ActionReducer<DetailWorkItemState> = (state 
   switch(action.type) {
 
     case WorkItemActions.GET_WORKITEM_SUCCESS: {
-      console.log(action.payload, '####-2');
-      return action.payload;
+      return {...action.payload};
     }
 
     default: {
