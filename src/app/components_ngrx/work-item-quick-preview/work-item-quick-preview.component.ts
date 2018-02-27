@@ -374,22 +374,6 @@ export class WorkItemQuickPreviewComponent implements OnInit, OnDestroy {
     this.router.navigate([], navigationExtras);
   }
 
-  createComment(event: any) {
-    const payload = {
-      url: this.workItem.commentLink,
-      comment: event
-    };
-    this.store.dispatch(new CommentActions.Add(payload));
-  }
-
-  updateComment(comment) {
-    this.store.dispatch(new CommentActions.Update(comment));
-  }
-
-  deleteComment(event: any) {
-    this.store.dispatch(new CommentActions.Delete(event));
-  }
-
   @HostListener('window:keydown', ['$event'])
   onKeyEvent(event: any) {
     event = (event || window.event);

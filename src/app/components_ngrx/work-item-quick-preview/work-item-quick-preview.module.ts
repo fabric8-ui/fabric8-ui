@@ -32,6 +32,7 @@ import { TypeaheadDropDownModule } from './../../components/typeahead-dropdown/t
 import { LabelsModule } from '../labels/labels.module';
 import { WorkItemLinkModule } from './../../components/work-item-link/work-item-link.module';
 import { WorkItemCommentModule } from './../work-item-comment/work-item-comment.module';
+import { WorkItemCommentWrapperModule } from './../work-item-comment-wrapper/work-item-comment-wrapper.module'
 import { WorkItemTypeControlService } from '../../services/work-item-type-control.service';
 import { SelectDropdownModule } from './../../widgets/select-dropdown/select-dropdown.module';
 import { AssigneesModule } from './../assignee/assignee.module';
@@ -49,6 +50,7 @@ import {
 } from './../../states/detail-work-item.state';
 import { DetailWorkItemReducer } from './../../reducers/detail-work-item.reducer';
 import { DetailWorkItemEffects } from './../../effects/detail-work-item.effects';
+import { WorkItemCommentWrapperComponent } from 'src/app/components_ngrx/work-item-comment-wrapper/work-item-comment-wrapper.component';
 
 let providers = [];
 
@@ -84,6 +86,7 @@ if (process.env.ENV == 'inmemory') {
     SelectDropdownModule,
     WorkItemLinkModule,
     WorkItemCommentModule,
+    WorkItemCommentWrapperModule,
     StoreModule.forFeature('detailPage', {
       comments: CommentReducer,
       workItem: DetailWorkItemReducer
