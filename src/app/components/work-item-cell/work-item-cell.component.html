@@ -49,7 +49,8 @@
 </div>
 
 <!-- Iteration -->
-  <span *ngIf="col === 'iteration'">
+  <span *ngIf="col === 'iteration'"
+    class="truncate db">
     {{row.iteration.attributes?.parent_path === '/' ? 'NA' : row.iteration.attributes?.name}}
   </span>
 
