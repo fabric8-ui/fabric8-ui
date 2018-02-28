@@ -71,6 +71,7 @@ export class AssigneeSelectorComponent {
   selectedAssignees: UserUI[] = [];
   @Input('selectedAssignees') set selectedAssigneesSetter(val) {
     this.selectedAssignees = cloneDeep(val);
+    this.updateSelection();
   }
 
   @Output() onSelectAssignee: EventEmitter<UserUI[]> = new EventEmitter();

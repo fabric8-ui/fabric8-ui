@@ -19,6 +19,7 @@ export interface UserService extends modelService {
 export interface UserUI extends modelUI {
   avatar: string;
   username: string;
+  currentUser: boolean;
 }
 
 export class UserMapper implements Mapper<UserService, UserUI> {
@@ -35,6 +36,9 @@ export class UserMapper implements Mapper<UserService, UserUI> {
   }, {
     fromPath: ['attributes', 'username'],
     toPath: ['username']
+  }, {
+    toPath: ['currentUser'],
+    toValue: false
   }];
 
   uiToServiceMapTree: MapTree = [{

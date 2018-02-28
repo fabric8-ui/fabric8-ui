@@ -9,7 +9,6 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { FilterService } from '../../services/filter.service';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { User } from 'ngx-login-client';
 
@@ -32,7 +31,6 @@ export class AssigneesComponent implements OnInit {
   private spaceId;
 
   constructor(
-    private filterService: FilterService,
     private spaces: Spaces
   ){}
 

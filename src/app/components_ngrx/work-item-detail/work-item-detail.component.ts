@@ -1,9 +1,15 @@
+import { UserUI } from './../../models/user';
 import { AuthenticationService } from 'ngx-login-client';
 import { UrlService } from './../../services/url.service';
 import { GetWorkItem } from './../../actions/detail-work-item.actions';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component, Input, OnInit,
+  OnDestroy, Output, EventEmitter,
+  ElementRef, ViewChild, Renderer2
+} from '@angular/core';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
@@ -24,7 +30,10 @@ import * as LabelActions from './../../actions/label.actions';
   templateUrl: './work-item-detail.component.html',
   styleUrls: ['./work-item-detail.component.less']
 })
-export class WorkItemDetailComponent implements OnInit, OnDestroy {
+export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild('detailHeader') detailHeader: ElementRef;
+  @ViewChild('detailContent') detailContent: ElementRef;
+
   private spaceSource = this.store
     .select('listPage')
     .select('space')
@@ -91,15 +100,26 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
   private detailContext: 'preview' | 'detail' = 'preview';
   private eventListeners: any[] = [];
   private workItemSubscriber: any = null;
-  private workItemStates: string[];
+  private workItemStates: string[] = [];
+  private collaborators: UserUI[] = [];
   private loggedIn: boolean = false;
+  private titleCallback = null;
+
+  private loadingComments: boolean = true;
+  private loadingTypes: boolean = false;
+  private loadingIteration: boolean = false;
+  private loadingArea: boolean = false;
+  private loadingLabels: boolean = false;
+  private loadingAssignees: boolean = false;
+  private loggedInUser: UserUI = null;
 
   constructor(
     private store: Store<AppState>,
     private route: ActivatedRoute,
     private router: Router,
     private urlService: UrlService,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private renderer: Renderer2
   ) {
 
   }
@@ -122,6 +142,17 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewChecked() {
+    if(this.detailHeader) {
+      let HdrDivHeight:any =  this.detailHeader.nativeElement.offsetHeight;
+      let targetHeight:any = window.innerHeight - HdrDivHeight - 90;
+      this.renderer.setStyle(this.detailContent.nativeElement, 'height', targetHeight + "px");
+    }
+    if(document.getElementsByTagName('body')) {
+      document.getElementsByTagName('body')[0].style.overflow = "hidden";
+    }
+  }
+
   setWorkItem(wiNumber: string | number) {
     this.workItemSubscriber =
       this.spaceSource
@@ -130,14 +161,21 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
       })
       .switchMap(([areas, iterations, labels, collabs, states, type]) => {
         this.workItemStates = states;
+        this.collaborators = collabs.filter(c => !c.currentUser);
+        this.loggedInUser = collabs.find(c => c.currentUser);
         this.store.dispatch(new DetailWorkItemActions.GetWorkItem({
           number: wiNumber
         }));
         return this.workItemSource;
       })
       .subscribe(workItem => {
-        console.log('####-100', workItem);
         this.workItem = workItem;
+        this.loadingAssignees = false;
+        // set title on update
+        if (this.titleCallback !== null) {
+          this.titleCallback(this.workItem.title);
+          this.titleCallback = null;
+        }
       });
   }
 
@@ -167,18 +205,38 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
 
   saveTitle(event) {
     const value = event.value.trim();
-    const callBack = event.callBack;
+    this.titleCallback = event.callBack;
     if (value !== '' && this.workItem.title !== value) {
       let workItem = {} as WorkItemUI;
-      workItem['title'] = value;
       workItem['version'] = this.workItem.version;
       workItem['link'] = this.workItem.link;
       workItem['id'] = this.workItem.id;
+
+      workItem['title'] = value;
       this.store.dispatch(new WorkItemActions.Update(workItem));
     }
   }
 
   onChangeState(state) {
-    console.log(state);
+    if (state !== this.workItem.state) {
+      let workItem = {} as WorkItemUI;
+      workItem['version'] = this.workItem.version;
+      workItem['link'] = this.workItem.link;
+      workItem['id'] = this.workItem.id;
+
+      workItem['state'] = state;
+      this.store.dispatch(new WorkItemActions.Update(workItem));
+    }
+  }
+
+  assignUser(users) {
+    this.loadingAssignees = true;
+    let workItem = {} as WorkItemUI;
+    workItem['version'] = this.workItem.version;
+    workItem['link'] = this.workItem.link;
+    workItem['id'] = this.workItem.id;
+
+    workItem['assignees'] = users;
+    this.store.dispatch(new WorkItemActions.Update(workItem));
   }
 }

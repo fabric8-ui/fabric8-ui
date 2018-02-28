@@ -1,77 +1,151 @@
-<form
-  *ngIf="workItem!==null"
-  #almWorkItemDetailForm="ngForm"
-  class="form-horizontal"
-  id="wi-detail-form">
+<form class="f8-detail form-horizontal work-item-page" *ngIf="workItem">
   <fieldset>
-    <div class="f8-quick-preview__header">
+    <div class="f8-detail__header" #detailHeader>
       <span
-        class="pficon pficon-close pull-right f8-quick-preview--close"
+        class="pficon-close pull-right close"
         (click)="closeDetail()">
       </span>
-      <div class="form-group width-100 pull-left mobile-bar padding-h-10 padding-v-5 margin-0">
-        <span *ngIf="workItem.id" class="detail-created-date pull-right">
-          <b>Created</b>
-          <span id="created_at"
-            [innerHTML]="workItem.createdAt | almMomentTime"></span>
-        </span>
-        <div class="dropdown-kebab-pf detail-type-dropdown">
-            <span
-              class="margin-right-5 {{workItem.type.icon}} fa-lg"
-              id="wi-type-icon" title="{{workItem.type.name}}"></span>
+      <div class="pull-left margin-right-15">
+        <div class="dropdown pull-left" dropdown *ngIf="loggedIn">
+          <button class="btn btn-default dropdown-toggle padding-h-10 width-100"
+            id="wi-detail-state"
+            type="button"
+            dropdownToggle>
+            <span class="pull-left margin-top-5"
+              almIcon
+              [iconType]="workItem.state">
+            </span>
+            <span class="pull-left padding-h-10">
+              {{ workItem.state }}
+            </span>
+            <span *ngIf="loggedIn" class="caret pull-right margin-top-7"></span>
+          </button>
+          <ul class="dropdown-ul dropdown-menu" role="menu" *dropdownMenu>
+            <li class="dropdown-li" (click)="onChangeState(state)"
+              *ngFor="let state of workItemStates">
+              <a>
+                <span class='dropdown-icon' almIcon [iconType]="state"></span>
+                <span class='dropdown-text'>{{state}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <a *ngIf="detailContext === 'preview'" class="pull-right">
+          <span class="dib margin-right-3">
+            <a [routerLink]="[constructUrl(workItem)]" [queryParams]="queryParams">
+              View full details
+            </a>
+          </span>
+          <span class="fa fa-list-alt"></span>
+        </a>
+        <div class="pull-left margin-left-15 padding-v-3">
+          <span *ngIf="loadingTypes"
+            class="spinner spinner-sm spinner-inline">
+          </span>
+          <span
+            *ngIf="!loadingTypes"
+            class="{{workItem.type.icon}} fa-lg dib">
+          </span>
+          <span
+            *ngIf="!loadingTypes"
+            class="dib">
             {{workItem.type.name}}
-          <h3 *ngIf="workItem.id" class="detail-id" id="wi-detail-id">{{workItem.number}}</h3>
+          </span>
+          <span class="dib">
+            <strong>#{{workItem.number}}</strong>
+          </span>
         </div>
       </div>
-      <div class="form-group width-100 pull-left padding-h-10 padding-v-5 margin-0">
-        <div class="width-100 pull-left">
-          <div
-            class="card-pf-time-frame-filter pull-left dropdown"
-            *ngIf="loggedIn"
-            dropdown>
-            <button dropdownToggle
-              class="btn btn-default width-100 dropdown-toggle padding-h-10"
-              id="wi-detail-state"
-              type="button">
-              <span class='dropdown-icon pull-left margin-top-5'
-                almIcon
-                [iconType]="workItem.state">
-              </span>
-              <span class='dropdown-text pull-left padding-h-10'>
-                {{workItem.state}}
-              </span>
-              <span *ngIf="loggedIn" class="caret pull-right margin-top-7"></span>
-            </button>
-            <ul id="wi-status-dropdown" class="dropdown-menu-right dropdown-ul dropdown-menu" role="menu" *dropdownMenu>
-              <li class="dropdown-li" (click)="onChangeState(state)"
-                *ngFor="let state of workItemStates">
-                <a>
-                  <span class='dropdown-icon' almIcon [iconType]="state"></span>
-                  <span class='dropdown-text'>{{state}}</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <a *ngIf="detailContext === 'preview'" class="pull-right">
-            <span class="dib margin-right-3">
-              <a [routerLink]="[constructUrl(workItem)]" [queryParams]="queryParams">
-                View full details
-              </a>
-            </span>
-            <span class="fa fa-list-alt"></span>
-          </a>
+      <div class="col-xs-12 col-sm-4 col-md-3 padding-0 margin-v-3">
+        <strong>Created </strong>
+        <span id="created_at"
+          [innerHTML]="workItem.createdAt ?
+          (workItem.createdAt | almMomentTime) : 'Creating now!'">
+        </span>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12 margin-top-15 padding-0">
+        <div class="form-horizontal">
+          <f8-inlineinput
+            [disabled]="false"
+            [value]="workItem.title"
+            [onLineClickEdit]="true"
+            (onSave)="saveTitle($event)"
+            [placeholder]="'Enter title'">
+          </f8-inlineinput>
         </div>
-        <div class="width-100 pull-left wi-detail-title-blk margin-top-15" id="title-click-div">
-          <div id="wi-title-div">
-            <f8-inlineinput
-              [disabled]="false"
-              [value]="workItem.title"
-              [onLineClickEdit]="true"
-              (onSave)="saveTitle($event)"
-              [placeholder]="'Enter title'">
-            </f8-inlineinput>
-          </div>
+      </div>
+    </div>
+
+    <div class="f8-detail__detail width-100" #detailContent>
+      <div
+        class="col-xs-12 col-sm-12
+        f8-detail__detail-wrap padding-v-15"
+        [class.col-md-7]="detailContext=='detail'"
+        [class.col-lg-7]="detailContext=='detail'"
+        [class.col-md-12]="detailContext=='preview'"
+        [class.col-lg-12]="detailContext=='preview'">
+        <div class="form-group">
+          <!-- assignee -->
+          <section class="f8-detail__assignee">
+            <label class="pull-left padding-left-15 control-label">
+              {{workItem.type.fields['system.assignees']?.label || 'Label'}}
+            </label>
+            <div class="f8-detail__content" #assignee>
+              <span *ngIf="loadingAssignees"
+                class="spinner spinner-sm spinner-inline">
+              </span>
+              <f8-assignee *ngIf="!loadingAssignees" [showFullName]="true"
+                [assignees]="workItem?.assignees ?
+                  workItem?.assignees : []">
+              </f8-assignee>
+              <div class="user-search"
+                *ngIf="loggedIn">
+                  <assignee-selector
+                    [allUsers]="collaborators"
+                    [selectedAssignees]="workItem?.assignees"
+                    [loggedInUser]="loggedInUser"
+                    (onOpenSelector)="onAssigneeSelectorOpen($event)"
+                    (onCloseAssignee)="assignUser($event)">
+                  </assignee-selector>
+              </div>
+            </div>
+          </section>
         </div>
+
+        <!-- Creator -->
+        <div class="form-group">
+          <section class="f8-detail__area">
+            <label class="pull-left padding-left-15 control-label ">
+              {{workItem.type.fields['system.creator']?.label || 'Label'}}
+            </label>
+            <div class="f8-detail__content">
+              <span *ngIf="!workItem?.creator"
+                class="pficon pficon-user user-creator-icon" id="user_creator_icon">
+              </span>
+              <div class="user-avatar pull-left margin-right-10">
+                <img *ngIf="workItem?.creator"
+                  placement="bottom"
+                  tooltip="{{workItem?.creator?.name}}"
+                  src="{{workItem?.creator?.avatar + '&s=20'}}"
+                  onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"
+                  id="WI_details_reporter_img" />
+              </div>
+              <div class="dib">
+                <span id="WI_details_reporter_user">
+                  {{workItem?.creator | almUserName:'Creator not found'}}
+                </span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+      </div>
+      <div class="col-xs-12 col-sm-12
+        f8-detail__detail-wrap f8-detail__detail-wrap--right"
+        [class.col-md-5]="detailContext=='detail'"
+        [class.col-lg-5]="detailContext=='detail'"
+        [class.col-md-12]="detailContext=='preview'"
+        [class.col-lg-12]="detailContext=='preview'">
       </div>
     </div>
   </fieldset>

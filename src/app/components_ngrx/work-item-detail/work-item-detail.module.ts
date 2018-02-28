@@ -1,3 +1,6 @@
+import { AlmUserNameModule } from './../../pipes/alm-user-name.module';
+import { AssigneesModule } from './../assignee/assignee.module';
+import { AssigneeSelectorModule } from './../assignee-selector/assignee-selector.module';
 import { AuthenticationService } from 'ngx-login-client';
 import { RouterModule } from '@angular/router';
 import { InlineInputModule } from './../../widgets/inlineinput/inlineinput.module';
@@ -8,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { WorkItemDetailComponent } from './work-item-detail.component';
 import { WorkItemDetailRoutingModule } from './work-item-detail-routing.module';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 
 // ngrx stuff
 import { StoreModule } from '@ngrx/store';
@@ -26,12 +30,16 @@ import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   imports: [
+    AlmUserNameModule,
+    AssigneesModule,
+    AssigneeSelectorModule,
     CommonModule,
     FormsModule,
     WidgetsModule,
     InlineInputModule,
     RouterModule,
     BsDropdownModule.forRoot(),
+    TooltipModule.forRoot(),
     StoreModule.forFeature('detailPage', {
       comments: CommentReducer,
       workItem: DetailWorkItemReducer
@@ -50,7 +58,8 @@ import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
     UserMapper,
     UrlService,
     BsDropdownConfig,
-    AuthenticationService
+    AuthenticationService,
+    TooltipConfig
   ],
   declarations: [
     WorkItemDetailComponent
