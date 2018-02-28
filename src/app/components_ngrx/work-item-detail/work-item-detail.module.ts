@@ -1,3 +1,4 @@
+import { TypeaheadDropDownModule } from './../../components/typeahead-dropdown/typeahead-dropdown.module';
 import { AlmUserNameModule } from './../../pipes/alm-user-name.module';
 import { AssigneesModule } from './../assignee/assignee.module';
 import { AssigneeSelectorModule } from './../assignee-selector/assignee-selector.module';
@@ -40,6 +41,7 @@ import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
     RouterModule,
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
+    TypeaheadDropDownModule,
     StoreModule.forFeature('detailPage', {
       comments: CommentReducer,
       workItem: DetailWorkItemReducer

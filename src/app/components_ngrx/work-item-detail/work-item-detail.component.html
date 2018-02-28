@@ -139,6 +139,47 @@
           </section>
         </div>
 
+        <!-- area -->
+        <div class="form-group">
+            <section class="f8-detail__area">
+              <label class="pull-left padding-left-15 control-label ">
+                {{workItem.type.fields['system.area']?.label || 'Label'}}
+              </label>
+              <div class="f8-detail__content">
+                <span *ngIf="loadingArea"
+                  class="spinner spinner-sm spinner-inline">
+                </span>
+                <typeahead-dropdown #areaSelectbox
+                  *ngIf="!loadingArea"
+                  id="area-dropdown" class="area-dropdown"
+                  noValueLabel="None" [values]="areas"
+                  (onFocus)="focusArea()"
+                  (onUpdate)="areaUpdated($event)">
+                </typeahead-dropdown>
+            </div>
+          </section>
+        </div>
+
+        <!-- Iteration -->
+        <div class="form-group">
+          <section class="f8-detail__area">
+            <label class="pull-left padding-left-15 control-label ">
+              {{workItem.type.fields['system.iteration']?.label || 'Label'}}
+            </label>
+            <div class="f8-detail__content">
+              <span *ngIf="loadingIteration"
+                  class="spinner spinner-sm spinner-inline">
+                </span>
+                <typeahead-dropdown
+                  *ngIf="!loadingIteration"
+                  id="iteration-dropdown" class="iteration-dropdown"
+                  #iterationSelectbox noValueLabel="None" [values]="iterations"
+                  (onFocus)="focusIteration()" (onUpdate)="iterationUpdated($event)">
+                </typeahead-dropdown>
+            </div>
+          </section>
+        </div>
+
       </div>
       <div class="col-xs-12 col-sm-12
         f8-detail__detail-wrap f8-detail__detail-wrap--right"

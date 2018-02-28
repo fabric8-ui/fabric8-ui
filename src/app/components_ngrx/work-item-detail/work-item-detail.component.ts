@@ -1,3 +1,5 @@
+import { IterationUI } from './../../models/iteration.model';
+import { AreaUI } from './../../models/area.model';
 import { UserUI } from './../../models/user';
 import { AuthenticationService } from 'ngx-login-client';
 import { UrlService } from './../../services/url.service';
@@ -104,6 +106,10 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   private collaborators: UserUI[] = [];
   private loggedIn: boolean = false;
   private titleCallback = null;
+  private _areas: AreaUI[] = [];
+  private areas: any[] = []; // this goes in dropdown component
+  private _iterations: IterationUI[] = [];
+  private iterations: any[] = []; // this goes in dropdown component
 
   private loadingComments: boolean = true;
   private loadingTypes: boolean = false;
@@ -163,6 +169,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
         this.workItemStates = states;
         this.collaborators = collabs.filter(c => !c.currentUser);
         this.loggedInUser = collabs.find(c => c.currentUser);
+        this._areas = areas;
+        this._iterations = iterations;
         this.store.dispatch(new DetailWorkItemActions.GetWorkItem({
           number: wiNumber
         }));
@@ -170,7 +178,11 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
       })
       .subscribe(workItem => {
         this.workItem = workItem;
+        this.setAreas();
+        this.setIterations();
         this.loadingAssignees = false;
+        this.loadingArea = false;
+        this.loadingIteration = false;
         // set title on update
         if (this.titleCallback !== null) {
           this.titleCallback(this.workItem.title);
@@ -237,6 +249,58 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['id'] = this.workItem.id;
 
     workItem['assignees'] = users;
+    this.store.dispatch(new WorkItemActions.Update(workItem));
+  }
+
+  setAreas() {
+    this.areas = this._areas.map(a => {
+      return {
+        key: a.id,
+        value: (a.parentPathResolved!='/'?a.parentPathResolved:'') + '/' + a.name,
+        selected: a.id === this.workItem.area.id,
+        cssLabelClass: undefined
+      }
+    });
+  }
+
+  focusArea() {
+
+  }
+
+  areaUpdated(areaID) {
+    this.loadingArea = true;
+    let workItem = {} as WorkItemUI;
+    workItem['version'] = this.workItem.version;
+    workItem['link'] = this.workItem.link;
+    workItem['id'] = this.workItem.id;
+
+    workItem['area'] = this._areas.find(a => a.id === areaID);
+    this.store.dispatch(new WorkItemActions.Update(workItem));
+  }
+
+  setIterations() {
+    this.iterations = this._iterations.map(i => {
+      return {
+        key: i.id,
+        value: (i.resolvedParentPath!='/'?i.resolvedParentPath:'') + '/' + i.name,
+        selected: i.id === this.workItem.iteration.id,
+        cssLabelClass: undefined
+      }
+    });
+  }
+
+  focusIteration() {
+
+  }
+
+  iterationUpdated(iterationID) {
+    this.loadingIteration = true;
+    let workItem = {} as WorkItemUI;
+    workItem['version'] = this.workItem.version;
+    workItem['link'] = this.workItem.link;
+    workItem['id'] = this.workItem.id;
+
+    workItem['iteration'] = this._iterations.find(a => a.id === iterationID);
     this.store.dispatch(new WorkItemActions.Update(workItem));
   }
 }
