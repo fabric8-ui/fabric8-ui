@@ -175,9 +175,9 @@ export class WorkItemMockGenerator {
           'iteration': (n % 2) ? { 'data': { 'id': 'iteration-id1', 'links': { 'self': 'http://mock.service/api/iterations/iteration-id1' }, 'type': 'iterations' }} : { 'data': { 'id': 'iteration-id0', 'links': { 'self': 'http://mock.service/api/iterations/iteration-id0' }, 'type': 'iterations' }},
           'area': {
             'data': {
-              'id': 'rootarea',
+              'id': 'area-id' + (n % 2),
               'links': {
-                'self': 'http://mock.service/api/areas/rootarea'
+                'self': 'http://mock.service/api/areas/area-id' + (n % 2)
               },
               'type': 'areas'
             }

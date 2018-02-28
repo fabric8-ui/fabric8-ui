@@ -99,16 +99,20 @@ export class MockDataService {
   // work items and dependend entities (comments, ..)
 
   /* Filter the workitems */
-  public getWorkItemsFiltered(pathParams: any): any {
+  public  getWorkItemsFiltered(pathParams: any): any {
 
     let assigneeFilter = pathParams['filter[assignee]'];
+    let creatorFilter = pathParams['filter[creator]'];
+    let areaFilter = pathParams['filter[area]'];
     let workItemTypeFilter = pathParams['filter[workitemtype]'];
-    let workItemStateFilter = pathParams['filter[workitemstate]'];
+    let workItemStateFilter = pathParams['filter[state]'];
     let iterationFilter = pathParams['filter[iteration]'];
     let hasParentFilter = pathParams['filter[parentexists]'];
 
     console.log('Filtering on: '
       + (assigneeFilter ? 'assignee==' + assigneeFilter + ' ' : '')
+      + (creatorFilter ? 'creator==' + creatorFilter + ' ' : '')
+      + (areaFilter ? 'area==' + areaFilter + '' : '')
       + (workItemTypeFilter ? 'workitemtype==' + workItemTypeFilter + ' ' : '')
       + (workItemStateFilter ? 'state==' + workItemStateFilter + ' ' : '')
       + (iterationFilter ? 'iteration==' + iterationFilter + ' ' : '')
@@ -122,6 +126,10 @@ export class MockDataService {
       let filterMatches: boolean = true;
       if (assigneeFilter)
         filterMatches = filterMatches && (this.workItems[i].relationships.assignees.data && this.workItems[i].relationships.assignees.data[0].id === assigneeFilter);
+      if (creatorFilter)
+        filterMatches = filterMatches && (this.workItems[i].relationships.creator.data && this.workItems[i].relationships.creator.data.id === creatorFilter);
+      if (areaFilter)
+        filterMatches = filterMatches && (this.workItems[i].relationships.area.data && this.workItems[i].relationships.area.data.id === areaFilter);
       if (workItemTypeFilter)
         filterMatches = filterMatches && (this.workItems[i].relationships.baseType.data.id === workItemTypeFilter);
       if (workItemStateFilter)
