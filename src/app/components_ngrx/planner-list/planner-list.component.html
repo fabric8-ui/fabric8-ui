@@ -190,24 +190,14 @@
             [resizeable]="false"
             [width]="c.width"
             [sortable]="c.name === 'Title'"
-            [cellClass]="'cell-class'"
+            [cellClass]="c.name === 'Title'? 'cell-class-column-title' :'cell-class'"
             [headerClass]="'header-cell'">
-              <ng-template ngx-datatable-cell-tree-expander *ngIf="c.name==='Title'">
-                <i class="fa fa-angle-right tree-icon"></i>
+              <ng-template ngx-datatable-tree-icon let-tree="treeStatus" *ngIf="c.name==='Title'">
+                <i *ngIf="tree==='loading'" class="fa fa-ellipsis-h icon-loader margin-top-15"></i>
+                <i *ngIf="tree==='collapsed'" class="fa fa-angle-right tree-icon"></i>
+                <i *ngIf="tree==='expanded'" class="fa fa-angle-down tree-icon"></i>
+                <i *ngIf="tree==='disabled'" class="fa fa-angle-right tree-icon tree-icon__disabled"></i>
               </ng-template>
-
-              <ng-template ngx-datatable-cell-tree-collapser *ngIf="c.name==='Title'">
-                <i class="fa fa-angle-down tree-icon"></i>
-              </ng-template>
-
-              <ng-template ngx-datatable-cell-tree-disabled *ngIf="c.name==='Title'">
-                <i class="fa fa-angle-right tree-icon tree-icon__disabled"></i>
-              </ng-template>
-
-              <ng-template ngx-datatable-cell-tree-loader *ngIf="c.name==='Title'">
-                <div class="spinner spinner-xs icon-loader margin-top-15"></div>
-              </ng-template>
-
               <ng-template let-row="row"
                 ngx-datatable-cell-template>
                   <work-item-cell
