@@ -13,15 +13,7 @@ import { WorkItemCommentModule } from './../work-item-comment/work-item-comment.
 @NgModule({
   imports: [
     CommonModule,
-    WorkItemCommentModule,
-    StoreModule.forFeature('detailPage', {
-      comments: CommentReducer
-    }, {
-      initialState: {
-        comments: initialCommentState
-      }
-    }),
-    EffectsModule.forFeature([CommentEffects])
+    WorkItemCommentModule
   ],
   declarations: [
     WorkItemCommentWrapperComponent,

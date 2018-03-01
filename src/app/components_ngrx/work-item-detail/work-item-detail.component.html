@@ -234,7 +234,15 @@
         [class.col-lg-5]="detailContext=='detail'"
         [class.col-md-12]="detailContext=='preview'"
         [class.col-lg-12]="detailContext=='preview'">
+        <work-item-comment-wrapper
+          [workItem]="workItem"
+          [loggedInUser]="loggedInUser"
+          [loggedIn]="loggedIn">
+        </work-item-comment-wrapper>
       </div>
     </div>
   </fieldset>
 </form>
+
+
+<osio-modal *ngIf="detailContext=='detail'"></osio-modal>

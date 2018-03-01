@@ -14,6 +14,10 @@ import { NgModule } from '@angular/core';
 import { WorkItemDetailComponent } from './work-item-detail.component';
 import { WorkItemDetailRoutingModule } from './work-item-detail-routing.module';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import {
+  WorkItemCommentWrapperModule
+} from './../work-item-comment-wrapper/work-item-comment-wrapper.module';
+import { PlannerModalModule } from '../../components/modal/modal.module';
 
 // ngrx stuff
 import { StoreModule } from '@ngrx/store';
@@ -47,6 +51,8 @@ import { LabelSelectorModule } from '../label-selector/label-selector.module';
     LabelsModule,
     LabelSelectorModule,
     MarkdownModule,
+    WorkItemCommentWrapperModule,
+    PlannerModalModule,
     StoreModule.forFeature('detailPage', {
       comments: CommentReducer,
       workItem: DetailWorkItemReducer

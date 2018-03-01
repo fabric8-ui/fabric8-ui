@@ -72,13 +72,10 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     .select('workItemTypes')
     .do(i => {if (!i.length) this.store.dispatch(new WorkItemTypeActions.Get())})
     .filter(w => !!w.length);
-  private workItemCommentSource = this.store
-    .select('detailPage')
-    .select('comments');
   private workItemSource: Observable<WorkItemUI> =
     this.store
-      .select('detailPage')
-      .select('workItem');
+    .select('detailPage')
+    .select('workItem');
 
   private combinedSources = Observable.combineLatest(
     this.areaSource, this.iterationSource,

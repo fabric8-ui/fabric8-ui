@@ -26,8 +26,8 @@ export class Add implements Action {
 }
 
 export class Get implements Action {
-  payload: any;
-  constructor(payload: any) {
+  payload: string;
+  constructor(payload: string) {
     this.payload = payload;
   }
   readonly type = GET;
