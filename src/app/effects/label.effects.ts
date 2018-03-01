@@ -24,7 +24,7 @@ export class LabelEffects {
          const lMapper = new LabelMapper();
          return labels.map(l => lMapper.toUIModel(l));
       })
-      .map(labels => (new LabelActions.GetSuccess(labels)))
+      .map(labels => new LabelActions.GetSuccess(labels))
       .catch(() => Observable.of(new LabelActions.GetError()))
     })
 
@@ -32,7 +32,6 @@ export class LabelEffects {
     .ofType<LabelActions.Add>(LabelActions.ADD)
     .map(action => action.payload)
     .do(payload => {
-      console.log(payload, '####-2');
       this.labelService.createLabel(payload)
         .subscribe(label => {
           const lMapper = new LabelMapper();

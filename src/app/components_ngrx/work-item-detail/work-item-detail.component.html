@@ -180,6 +180,35 @@
           </section>
         </div>
 
+        <!--Lables-->
+        <div class="form-group">
+          <section class="f8-detail__labels">
+            <label class="pull-left padding-left-15 control-label ">
+              {{workItem.type.fields['system.labels']?.label || 'Label'}}
+            </label>
+            <div class="f8-detail__content">
+              <span *ngIf="loadingLabels"
+                class="spinner spinner-sm spinner-inline">
+              </span>
+              <f8-label *ngIf="!loadingLabels"
+                [labels]='workItem?.labels ?
+                  workItem?.labels : []'
+                (onRemoveLabel)="removeLable($event)"
+                [allowDelete]="true"
+                (onLabelClick)="onLabelClick($event)">
+              </f8-label>
+              <div class="f8-detail__labels--selector" *ngIf="loggedIn">
+                <label-selector
+                  [allLabels]="labels"
+                  [selectedLabels]="workItem?.labels ?
+                    workItem?.labels : []"
+                  (onCloseSelector)="updateLabels($event)">
+                </label-selector>
+              </div>
+            </div>
+          </section>
+        </div>
+
       </div>
       <div class="col-xs-12 col-sm-12
         f8-detail__detail-wrap f8-detail__detail-wrap--right"

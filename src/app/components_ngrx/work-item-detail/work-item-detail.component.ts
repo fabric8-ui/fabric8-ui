@@ -1,3 +1,4 @@
+import { LabelUI } from './../../models/label.model';
 import { IterationUI } from './../../models/iteration.model';
 import { AreaUI } from './../../models/area.model';
 import { UserUI } from './../../models/user';
@@ -110,6 +111,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   private areas: any[] = []; // this goes in dropdown component
   private _iterations: IterationUI[] = [];
   private iterations: any[] = []; // this goes in dropdown component
+  private labels: LabelUI[] = [];
 
   private loadingComments: boolean = true;
   private loadingTypes: boolean = false;
@@ -171,6 +173,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
         this.loggedInUser = collabs.find(c => c.currentUser);
         this._areas = areas;
         this._iterations = iterations;
+        this.labels = labels;
         this.store.dispatch(new DetailWorkItemActions.GetWorkItem({
           number: wiNumber
         }));
@@ -184,6 +187,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
         this.loadingAssignees = false;
         this.loadingArea = false;
         this.loadingIteration = false;
+        this.loadingLabels = false;
+
         // set title on update
         if (this.titleCallback !== null) {
           this.titleCallback(this.workItem.title);
@@ -302,6 +307,17 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['id'] = this.workItem.id;
 
     workItem['iteration'] = this._iterations.find(a => a.id === iterationID);
+    this.store.dispatch(new WorkItemActions.Update(workItem));
+  }
+
+  updateLabels(labels) {
+    this.loadingLabels = true;
+    let workItem = {} as WorkItemUI;
+    workItem['version'] = this.workItem.version;
+    workItem['link'] = this.workItem.link;
+    workItem['id'] = this.workItem.id;
+
+    workItem['labels'] = labels;
     this.store.dispatch(new WorkItemActions.Update(workItem));
   }
 }

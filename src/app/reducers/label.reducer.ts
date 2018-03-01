@@ -11,16 +11,16 @@ export type Action = LabelActions.All;
 export const LabelReducer: ActionReducer<LabelState> = (state = initialState, action: Action) => {
   switch(action.type) {
     case LabelActions.GET_SUCCESS: {
-      return cloneDeep(action.payload)
+      return [...action.payload];
     }
     case LabelActions.GET_ERROR: {
-      return state;
+      return [...state];
     }
     case LabelActions.ADD_SUCCESS: {
       return [action.payload, ...state];
     }
     case LabelActions.ADD_ERROR: {
-      return state;
+      return [...state];
     }
     default: {
       return state;

@@ -31,8 +31,34 @@ export class LabelSelectorComponent implements OnInit {
 
   @ViewChild('labelname') labelnameInput: ElementRef;
   @ViewChild('dropdown') dropdownRef: SelectDropdownComponent;
-  @Input() allLabels: LabelUI[];
-  @Input() selectedLabels: LabelUI[] = [];
+  @Input('allLabels') set allLabelsSetter(labels: LabelUI[]) {
+    this.allLabels = [...labels];
+    this.backup = cloneDeep(this.allLabels.map((label: LabelUI) => {
+      return {
+        id: label.id,
+        color: label.backgroundColor,
+        border: label.borderColor,
+        name: label.name,
+        selected: false
+      }
+    }));
+    if (this.searchValue.length) {
+      this.labels =
+        cloneDeep(this.backup.filter(i => i.name.indexOf(this.searchValue) > - 1));
+    }
+    else {
+      this.labels = cloneDeep(this.backup);
+    }
+    if (this.labelnameInput) {
+      this.labelnameInput.nativeElement.value = '';
+      this.labelnameInput.nativeElement.focus();
+    }
+  }
+
+  @Input('selectedLabels') set selectedLabelsSetter(labels: LabelUI[]) {
+    this.selectedLabels = labels;
+    this.updateSelection();
+  }
 
   @Output() onSelectLabel: EventEmitter<LabelUI[]> = new EventEmitter();
   @Output() onOpenSelector: EventEmitter<any> = new EventEmitter();
@@ -46,6 +72,8 @@ export class LabelSelectorComponent implements OnInit {
   private labels: any[] = [];
   private newSelectedColor: any = {};
   private searchValue: string = '';
+  private allLabels: LabelUI[] = [];
+  private selectedLabels: LabelUI[] = [];
 
   constructor(
     private labelService: LabelService,
@@ -72,34 +100,6 @@ export class LabelSelectorComponent implements OnInit {
       {color: '#d1d1d1', border: '#bbbbbb'}
     ];
     this.newSelectedColor = this.colors[Math.floor(Math.random()*this.colors.length)];
-    this.store
-      .select('listPage')
-      .select('labels')
-      .filter(l => !!l.length)
-      .subscribe(labels => {
-        this.allLabels = [...labels];
-        this.backup = cloneDeep(this.allLabels.map((label: LabelUI) => {
-          return {
-            id: label.id,
-            color: label.backgroundColor,
-            border: label.borderColor,
-            name: label.name,
-            selected: false
-          }
-        }));
-        if (this.searchValue.length) {
-          this.labels =
-            cloneDeep(this.backup.filter(i => i.name.indexOf(this.searchValue) > - 1));
-        }
-        else {
-          this.labels = cloneDeep(this.backup);
-        }
-        this.updateSelection();
-        if (this.labelnameInput) {
-          this.labelnameInput.nativeElement.value = '';
-          this.labelnameInput.nativeElement.focus();
-        }
-      })
   }
 
   onSelect(event: any) {

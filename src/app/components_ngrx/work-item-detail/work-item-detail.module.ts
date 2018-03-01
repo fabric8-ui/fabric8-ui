@@ -1,3 +1,4 @@
+import { LabelsModule } from './../labels/labels.module';
 import { TypeaheadDropDownModule } from './../../components/typeahead-dropdown/typeahead-dropdown.module';
 import { AlmUserNameModule } from './../../pipes/alm-user-name.module';
 import { AssigneesModule } from './../assignee/assignee.module';
@@ -28,6 +29,7 @@ import { DetailWorkItemReducer } from './../../reducers/detail-work-item.reducer
 import { DetailWorkItemEffects } from './../../effects/detail-work-item.effects';
 import { UrlService } from '../../services/url.service';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { LabelSelectorModule } from '../label-selector/label-selector.module';
 
 @NgModule({
   imports: [
@@ -42,6 +44,8 @@ import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     TypeaheadDropDownModule,
+    LabelsModule,
+    LabelSelectorModule,
     StoreModule.forFeature('detailPage', {
       comments: CommentReducer,
       workItem: DetailWorkItemReducer
