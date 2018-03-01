@@ -289,7 +289,7 @@ export class WorkItemEffects {
             w.treeStatus = op.payload.workitem.treeStatus;
             w.bold = op.payload.workitem.bold;
             w.childrenLoaded = op.payload.workitem.childrenLoaded;
-
+            w.parentID = op.state.workItems.find(wi => wi.id === w.id).parentID;
             return w;
           })
           .map(w => new WorkItemActions.UpdateSuccess(w));

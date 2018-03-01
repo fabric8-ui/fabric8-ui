@@ -22,7 +22,7 @@ import {
 import { IterationUI } from './../../models/iteration.model';
 import { FilterService } from './../../services/filter.service';
 import { CookieService } from './../../services/cookie.service';
-import { cloneDeep, sortBy } from 'lodash';
+import { cloneDeep, sortBy, isEqual } from 'lodash';
 import { EmptyStateConfig } from 'patternfly-ng';
 
 // import for column
@@ -513,8 +513,12 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
 
   onRowDrop(event) {
     console.log(event);
+    if(event.source.id === event.target.id) {
+      return;
+    }
+    this.uiLockedList = true;
     const payload =  {
-      workitem: event.src,
+      workitem: event.source,
       destinationWorkitemID: event.target.id,
       direction: 'above'
     }
