@@ -271,4 +271,27 @@ export class WorkItemEffects {
         }
       };
     }
+
+    @Effect() Reorder: Observable<Action> = this.actions$
+      .ofType<WorkItemActions.Reoder>(WorkItemActions.REORDER)
+      .withLatestFrom(this.store.select('listPage'))
+      .map(([action, state]) => {
+        return {
+          payload: action.payload,
+          state: state
+        };
+      })
+      .switchMap((op) => {
+        const workitem = this.workItemMapper.toServiceModel(op.payload.workitem);
+        return this.workItemService.reOrderWorkItem(workitem, op.payload.destinationWorkitemID, op.payload.direction)
+          .map(w => this.resolveWorkItems([w], op.state)[0])
+          .map(w => {
+            w.treeStatus = op.payload.workitem.treeStatus;
+            w.bold = op.payload.workitem.bold;
+            w.childrenLoaded = op.payload.workitem.childrenLoaded;
+
+            return w;
+          })
+          .map(w => new WorkItemActions.UpdateSuccess(w));
+      })
 }

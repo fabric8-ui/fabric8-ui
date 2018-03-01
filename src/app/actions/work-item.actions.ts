@@ -13,6 +13,8 @@ export const UPDATE_ERROR = '[workItem] UpdateError';
 export const GET_CHILDREN = '[workItem] GetChildren';
 export const GET_CHILDREN_SUCCESS = '[workItem] GetChildrenSuccess';
 export const GET_CHILDREN_ERROR = '[workItem] GetChildrenError';
+export const REORDER = '[workItem] Reorder';
+export const REORDER_ERROR = '[workItem] ReorderError';
 
 export class Add implements Action {
   payload: {workItem: WorkItemService, createId: number, parentId: string};
@@ -108,6 +110,24 @@ export class UpdateError implements Action {
   readonly type = UPDATE_ERROR;
 }
 
+export class Reoder implements Action {
+  readonly type = REORDER;
+  payload: {
+    workitem: WorkItemUI,
+    destinationWorkitemID: string,
+    direction: string
+  };
+  constructor(payload: {
+    workitem: WorkItemUI,
+    destinationWorkitemID: string,
+    direction: string
+  }) { this.payload = payload; }
+}
+
+export class ReoderError implements Action {
+  readonly type = REORDER_ERROR;
+}
+
 export type All
   = Add
   | Get
@@ -121,3 +141,5 @@ export type All
   | GetChildren
   | GetChildrenSuccess
   | GetChildrenError
+  | Reoder
+  | ReoderError

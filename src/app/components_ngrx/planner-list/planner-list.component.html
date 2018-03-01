@@ -138,6 +138,9 @@
         [treeToRelation]="'id'"
         [selected]="selectedRows"
         [selectionType]="'single'"
+        [rowDraggable]="true"
+        [rowDragHandle]="'.table-dnd-header'"
+        (rowDrop)="onRowDrop($event)"
         (select)="onSelect($event)"
         (scroll)="onScroll($event)"
         (reorder)="handleReorder($event)"
@@ -170,6 +173,9 @@
             [cellClass]="'cell-class'"
             [frozenLeft]="false">
             <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+              <span class="table-dnd-container">
+                <span class="table-dnd-header"></span>
+              </span>
               <a class="quick-add-icon"
                 href="javascript:void(0)"
                 [class.pficon-add-circle-o]="!expanded"
@@ -222,6 +228,9 @@
           [cellClass]="'cell-class'"
           [frozenLeft]="false">
             <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+              <span class="table-dnd-container">
+                 <span class="table-dnd-header"></span>
+              </span>
               <a class="quick-add-icon pficon-add-circle-o disabled"
                 href="javascript:void(0)">
               </a>
