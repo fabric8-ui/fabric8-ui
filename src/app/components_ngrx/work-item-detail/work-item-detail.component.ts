@@ -85,7 +85,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   );
 
   @Input('workItem') set workItemInput(val: WorkItemUI) {
-    if (val) {
+    if (val && val != null) {
       if (this.workItemSubscriber !== null) {
         this.workItemSubscriber.unsubscribe();
         this.workItemSubscriber = null;
@@ -176,6 +176,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
         }));
         return this.workItemSource;
       })
+      .filter(w => w !== null)
       .subscribe(workItem => {
         this.workItem = workItem;
         this.setAreas();
