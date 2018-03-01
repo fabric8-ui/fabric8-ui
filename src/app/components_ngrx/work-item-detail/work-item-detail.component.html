@@ -126,8 +126,8 @@
 
     <div class="f8-detail__detail width-100" #detailContent>
       <div
-        class="col-xs-12 col-sm-12
-        f8-detail__detail-wrap padding-v-15"
+        class="col-xs-12 col-sm-12 padding-v-15"
+        [class.f8-detail__detail-wrap]="detailContext=='detail'"
         [class.col-md-7]="detailContext=='detail'"
         [class.col-lg-7]="detailContext=='detail'"
         [class.col-md-12]="detailContext=='preview'"
@@ -180,7 +180,7 @@
               </div>
               <div class="dib">
                 <span id="WI_details_reporter_user">
-                  {{workItem?.creator | almUserName:'Creator not found'}}
+                  {{workItem.creator.name}}
                 </span>
               </div>
             </div>
@@ -276,8 +276,9 @@
         </div>
 
       </div>
-      <div class="col-xs-12 col-sm-12
-        f8-detail__detail-wrap f8-detail__detail-wrap--right"
+      <div class="col-xs-12 col-sm-12"
+        [class.f8-detail__detail-wrap--right]="detailContext=='detail'"
+        [class.f8-detail__detail-wrap]="detailContext=='detail'"
         [class.col-md-5]="detailContext=='detail'"
         [class.col-lg-5]="detailContext=='detail'"
         [class.col-md-12]="detailContext=='preview'"

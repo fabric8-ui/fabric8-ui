@@ -151,10 +151,12 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   }
 
   ngAfterViewChecked() {
-    if(this.detailHeader) {
-      let HdrDivHeight:any =  this.detailHeader.nativeElement.offsetHeight;
-      let targetHeight:any = window.innerHeight - HdrDivHeight - 90;
-      this.renderer.setStyle(this.detailContent.nativeElement, 'height', targetHeight + "px");
+    if(this.detailContext === 'detail') {
+      if(this.detailHeader) {
+        let HdrDivHeight:any =  this.detailHeader.nativeElement.offsetHeight;
+        let targetHeight:any = window.innerHeight - HdrDivHeight - 90;
+        this.renderer.setStyle(this.detailContent.nativeElement, 'height', targetHeight + "px");
+      }
     }
     if(document.getElementsByTagName('body')) {
       document.getElementsByTagName('body')[0].style.overflow = "hidden";
