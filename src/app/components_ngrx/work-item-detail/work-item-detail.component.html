@@ -194,8 +194,7 @@
                 [labels]='workItem?.labels ?
                   workItem?.labels : []'
                 (onRemoveLabel)="removeLable($event)"
-                [allowDelete]="true"
-                (onLabelClick)="onLabelClick($event)">
+                [allowDelete]="true">
               </f8-label>
               <div class="f8-detail__labels--selector" *ngIf="loggedIn">
                 <label-selector
@@ -205,6 +204,25 @@
                   (onCloseSelector)="updateLabels($event)">
                 </label-selector>
               </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <section class="f8-detail__area">
+            <label class="col-xs-4 col-sm-4 col-md-2 control-label">
+              Description
+            </label>
+            <div class="f8-detail__content">
+              <f8-markdown
+                id="wi-detail-desc"
+                [editAllow]="loggedIn"
+                [rawText]="workItem.description"
+                [renderedText]="workItem.descriptionRendered"
+                (onSaveClick)="descUpdate($event)"
+                (showPreview)="showPreview($event)">
+              </f8-markdown>
             </div>
           </section>
         </div>

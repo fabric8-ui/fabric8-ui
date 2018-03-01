@@ -27,6 +27,7 @@ import * as CollaboratorActions from './../../actions/collaborator.actions';
 import * as AreaActions from './../../actions/area.actions';
 import * as WorkItemTypeActions from './../../actions/work-item-type.actions';
 import * as LabelActions from './../../actions/label.actions';
+import { WorkItemService } from '../../..';
 
 @Component({
   selector: 'work-item-detail',
@@ -107,6 +108,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   private collaborators: UserUI[] = [];
   private loggedIn: boolean = false;
   private titleCallback = null;
+  private descCallback = null;
   private _areas: AreaUI[] = [];
   private areas: any[] = []; // this goes in dropdown component
   private _iterations: IterationUI[] = [];
@@ -127,7 +129,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     private router: Router,
     private urlService: UrlService,
     private auth: AuthenticationService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private workItemService: WorkItemService
   ) {
 
   }
@@ -193,6 +196,15 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
         if (this.titleCallback !== null) {
           this.titleCallback(this.workItem.title);
           this.titleCallback = null;
+        }
+
+        // set desc on update
+        if (this.descCallback !== null) {
+          this.descCallback(
+            this.workItem.description,
+            this.workItem.descriptionRendered
+          );
+          this.descCallback = null;
         }
       });
   }
@@ -318,6 +330,41 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['id'] = this.workItem.id;
 
     workItem['labels'] = labels;
+    this.store.dispatch(new WorkItemActions.Update(workItem));
+  }
+
+  removeLable(label) {
+    this.loadingLabels = true;
+    let workItem = {} as WorkItemUI;
+    workItem['version'] = this.workItem.version;
+    workItem['link'] = this.workItem.link;
+    workItem['id'] = this.workItem.id;
+
+    workItem['labels'] = this.workItem.labels.filter(l => l.id != label.id);
+    this.store.dispatch(new WorkItemActions.Update(workItem));
+  }
+
+  showPreview(event: any): void {
+    const rawText = event.rawText;
+    const callBack = event.callBack;
+    this.workItemService.renderMarkDown(rawText)
+      .subscribe(renderedHtml => {
+        callBack(
+          rawText,
+          renderedHtml
+        );
+      })
+  }
+
+  descUpdate(event: any): void {
+    const rawText = event.rawText;
+    this.descCallback = event.callBack;
+    let workItem = {} as WorkItemUI;
+    workItem['version'] = this.workItem.version;
+    workItem['link'] = this.workItem.link;
+    workItem['id'] = this.workItem.id;
+
+    workItem['description'] = rawText;
     this.store.dispatch(new WorkItemActions.Update(workItem));
   }
 }

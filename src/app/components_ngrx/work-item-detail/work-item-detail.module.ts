@@ -6,7 +6,7 @@ import { AssigneeSelectorModule } from './../assignee-selector/assignee-selector
 import { AuthenticationService } from 'ngx-login-client';
 import { RouterModule } from '@angular/router';
 import { InlineInputModule } from './../../widgets/inlineinput/inlineinput.module';
-import { WidgetsModule } from 'ngx-widgets';
+import { WidgetsModule, MarkdownModule } from 'ngx-widgets';
 import { FormsModule } from '@angular/forms';
 import { UserMapper } from './../../models/user';
 import { CommonModule } from '@angular/common';
@@ -46,6 +46,7 @@ import { LabelSelectorModule } from '../label-selector/label-selector.module';
     TypeaheadDropDownModule,
     LabelsModule,
     LabelSelectorModule,
+    MarkdownModule,
     StoreModule.forFeature('detailPage', {
       comments: CommentReducer,
       workItem: DetailWorkItemReducer

@@ -276,8 +276,8 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
       fromPath: ['state'],
       toPath: ['attributes','system.state'],
     }, {
-      fromPath: ['descriptionMarkup'],
-      toPath: ['attributes','system.description.markup']
+      toPath: ['attributes','system.description.markup'],
+      toValue: 'Markdown'
     }, {
       fromPath: ['descriptionRendered'],
       toPath: ['attributes','system.description.rendered'],
