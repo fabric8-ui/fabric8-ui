@@ -1,5 +1,12 @@
 import { WorkItemUI } from './../../models/work-item';
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  EventEmitter,
+  HostListener,
+  Output,
+  OnInit
+} from '@angular/core';
 import {
   animate,
   state,
@@ -54,6 +61,15 @@ export class WorkItemPreviewPanelComponent implements OnInit {
     this.panelState = 'out';
     this.workItem = null;
     this.onClose.emit();
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  onKeyEvent(event: any) {
+    event = (event || window.event);
+    // for ESC key handling
+    if (event.keyCode == 27) {
+     this.close();
+    }
   }
 
 }
