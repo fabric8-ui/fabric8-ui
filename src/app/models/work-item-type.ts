@@ -14,7 +14,7 @@ export class WorkItemType extends modelService{
       version: number;
       description: string;
       icon: string;
-      fields: Map<string, WorkItemTypeField>;
+      fields: any;
     };
     relationships? : {
       guidedChildTypes?: {
@@ -43,8 +43,8 @@ export interface WorkItemTypeUI extends modelUI {
   version: number;
   type: string;
   description: string;
-  childTypes: WorkItemTypeUI[];
-  fields: Map<string, WorkItemTypeField>;
+  childTypes: any;
+  fields: any;
 }
 
 export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemTypeUI> {

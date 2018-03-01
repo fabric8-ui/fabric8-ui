@@ -44,7 +44,8 @@ describe('Unit Test :: Comment Model', () => {
         id: "5cd88093",
         name: null,
         username: null,
-        avatar: null
+        avatar: null,
+        currentUser: false
       },
       bodyRendered: "<p>comment</p>",
       selfLink: "https://api.openshift.io/api/comments/2e7c4d7c-dd2b-465b-ad76-6115068a1184"
