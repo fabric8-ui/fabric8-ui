@@ -1,7 +1,6 @@
 import { State } from '@ngrx/store';
 import { ActionReducer } from '@ngrx/store';
 import * as GroupTypeActions from './../actions/group-type.actions';
-import { cloneDeep } from 'lodash';
 
 import { GroupTypeState, initialState } from '../states/grouptype.state';
 
