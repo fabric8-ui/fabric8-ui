@@ -234,6 +234,7 @@ export class WorkItemEffects {
               w.treeStatus = item.treeStatus;
               w.bold = item.bold;
               w.childrenLoaded = item.childrenLoaded;
+              w.parentID = item.parentID;
             }
             return w;
           })
