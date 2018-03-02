@@ -11,6 +11,11 @@ import {
   CommentUI,
   CommentCreatorResolver
 } from './../models/comment';
+import {
+  Notification,
+  Notifications,
+  NotificationType
+} from "ngx-base";
 import { UserMapper } from './../models/user';
 import { CommentState } from './../states/comment.state';
 
@@ -22,7 +27,8 @@ export class CommentEffects {
     private actions$: Actions,
     private workItemService: WorkItemService,
     private store: Store<AppState>,
-    private userMapper: UserMapper
+    private userMapper: UserMapper,
+    private notifications: Notifications
   ) {}
 
   @Effect() getWorkItemComments$: Observable<Action> = this.actions$
@@ -52,6 +58,17 @@ export class CommentEffects {
             comments
           )
         })
+        .catch(e => {
+          try {
+            this.notifications.message({
+              message: `Problem in fetching Comments.`,
+              type: NotificationType.DANGER
+            } as Notification);
+          } catch (e) {
+            console.log('Problem in fetching Comments.');
+          }
+          return Observable.of(new CommentActions.GetError());
+        })
     })
 
   @Effect() addComment$: Observable<Action> = this.actions$
@@ -75,6 +92,17 @@ export class CommentEffects {
           return new CommentActions.AddSuccess(
             creatorResolver.getComment()
           );
+        })
+        .catch(e => {
+          try {
+            this.notifications.message({
+              message: `Problem in add comment.`,
+              type: NotificationType.DANGER
+            } as Notification);
+          } catch (e) {
+            console.log('Problem in add comment.');
+          }
+          return Observable.of(new CommentActions.AddError());
         })
     })
 
@@ -102,6 +130,17 @@ export class CommentEffects {
             creatorResolver.getComment()
           );
         })
+        .catch(e => {
+          try {
+            this.notifications.message({
+              message: `Problem in update comment.`,
+              type: NotificationType.DANGER
+            } as Notification);
+          } catch (e) {
+            console.log('Problem in update comment.');
+          }
+          return Observable.of(new CommentActions.UpdateError());
+        })
     })
 
   @Effect() deleteComment$: Observable<Action> = this.actions$
@@ -114,6 +153,17 @@ export class CommentEffects {
         .map(() => {
           const cMapper = new CommentMapper(this.userMapper);
           return new CommentActions.DeleteSuccess(payload);
+        })
+        .catch(e => {
+          try {
+            this.notifications.message({
+              message: `Problem in delete comment.`,
+              type: NotificationType.DANGER
+            } as Notification);
+          } catch (e) {
+            console.log('Problem in delete comment.');
+          }
+          return Observable.of(new CommentActions.DeleteError());
         })
     })
 }

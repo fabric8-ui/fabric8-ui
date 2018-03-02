@@ -1,7 +1,6 @@
 import { State, ActionReducer } from '@ngrx/store';
 import * as CommentActions from './../actions/comment.actions';
 import { CommentState, initialState } from './../states/comment.state';
-import { cloneDeep } from 'lodash';
 
 import { Comment } from './../models/comment';
 
@@ -10,16 +9,16 @@ export type Action = CommentActions.All;
 export const CommentReducer: ActionReducer<CommentState> = (state = initialState, action: Action) => {
   switch(action.type) {
     case CommentActions.GET_SUCCESS: {
-      return cloneDeep(action.payload);
+      return [...action.payload];
     }
     case CommentActions.GET_ERROR: {
-      return state;
+      return [...state];
     }
     case CommentActions.ADD_SUCCESS: {
       return [...[action.payload], ...state];
     }
     case CommentActions.ADD_ERROR: {
-      return state;
+      return [...state];
     }
     case CommentActions.UPDATE_SUCCESS: {
       let updatedComment = action.payload;
@@ -30,7 +29,7 @@ export const CommentReducer: ActionReducer<CommentState> = (state = initialState
       return [...state];
     }
     case CommentActions.UPDATE_ERROR: {
-      return state;
+      return [...state];
     }
     case CommentActions.DELETE_SUCCESS: {
       let deletedComment = action.payload;
@@ -41,7 +40,7 @@ export const CommentReducer: ActionReducer<CommentState> = (state = initialState
       return [...state];
     }
     case CommentActions.DELETE_ERROR: {
-      return state;
+      return [...state];
     }
     default: {
       return state;
