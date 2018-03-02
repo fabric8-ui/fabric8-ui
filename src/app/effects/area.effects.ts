@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import * as AreaActions from './../actions/area.actions';
 import { Observable } from 'rxjs';
 import { AppState } from './../states/app.state';
+import { Notification, Notifications, NotificationType } from "ngx-base";
 
 import { AreaService as AService } from './../services/area.service';
 import {
@@ -16,7 +17,8 @@ export type Action = AreaActions.All;
 export class AreaEffects {
   constructor(
     private actions$: Actions,
-    private areaService: AService
+    private areaService: AService,
+    private notifications: Notifications
   ){}
 
   @Effect() getAreas$: Observable<Action> = this.actions$
@@ -29,5 +31,18 @@ export class AreaEffects {
             areas.map(a => aMapper.toUIModel(a))
           )
         })
-    })
+        .catch((e) => {
+          try {
+            this.notifications.message({
+              message: `Problem in fetching Areas.`,
+              type: NotificationType.DANGER
+            } as Notification);
+          } catch (e) {
+            console.log('Problem in fetching Areas.');
+          }
+          return Observable.of(
+            new AreaActions.GetError()
+          );
+        });
+    });
 }
