@@ -11,10 +11,11 @@ import{ IterationMapper, IterationUI } from "../models/iteration.model";
 
 @Injectable()
 export class IterationEffects {
-  constructor( private actions$ : Actions,
-               private iterationService : IterationService,
-               private notifications: Notifications ) {
-  }
+  constructor(
+    private actions$ : Actions,
+    private iterationService : IterationService,
+    private notifications: Notifications
+  ) {}
 
   resolveChildren(iterations: IterationUI[]): IterationUI[] {
     for(let i = 0; i < iterations.length; i++) {
@@ -62,7 +63,7 @@ export class IterationEffects {
               type: NotificationType.SUCCESS
             } as Notification);
           } catch (e) {
-            console.log('Error displaying notification.')
+            console.log('Iteration is added.')
           }
           return new IterationActions.AddSuccess({
             iteration, parent: parent ? itMapper.toUIModel(parent) : null
@@ -75,7 +76,7 @@ export class IterationEffects {
               type: NotificationType.DANGER
             } as Notification);
           } catch (e) {
-            console.log('Error displaying notification.')
+            console.log('There was some problem adding the iteration..')
           }
           return Observable.of(new IterationActions.AddError());
         })
