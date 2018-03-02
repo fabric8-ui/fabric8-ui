@@ -10,6 +10,11 @@ import {
   WorkItemService, WorkItemResolver,
   WorkItemUI
 } from './../models/work-item';
+import {
+  Notification,
+  Notifications,
+  NotificationType
+} from "ngx-base";
 
 export type Action = DetailWorkItemActions.All;
 
@@ -21,7 +26,8 @@ export class DetailWorkItemEffects {
   constructor(
     private actions$: Actions,
     private workItemService: WIService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private notifications: Notifications
   ){}
 
   resolveWorkItems(
@@ -80,6 +86,17 @@ export class DetailWorkItemEffects {
         .map((data: WorkItemService) => {
           const wi = this.resolveWorkItems([data], state);
           return new DetailWorkItemActions.GetWorkItemSuccess(wi[0]);
+        })
+        .catch (e => {
+          try {
+            this.notifications.message({
+              message: `Problem in get worktem.`,
+              type: NotificationType.DANGER
+            } as Notification);
+          } catch (e) {
+            console.log('Problem in get workitem.')
+          }
+          return Observable.of(new DetailWorkItemActions.GetWorkItemError());
         })
     })
 }

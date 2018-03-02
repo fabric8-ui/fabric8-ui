@@ -2,7 +2,6 @@ import { State, ActionReducer } from '@ngrx/store';
 import * as DetailWorkItemActions from './../actions/detail-work-item.actions';
 import * as WorkItemActions from './../actions/work-item.actions';
 import { DetailWorkItemState, initialState } from './../states/detail-work-item.state';
-import { cloneDeep } from 'lodash';
 
 import { WorkItem } from './../models/work-item';
 
@@ -18,6 +17,10 @@ export const DetailWorkItemReducer: ActionReducer<DetailWorkItemState> =
 
       case WorkItemActions.UPDATE_SUCCESS: {
         return {...action.payload};
+      }
+
+      case DetailWorkItemActions.GET_WORKITEM_ERROR: {
+        return {...state};
       }
 
       default: {
