@@ -57,7 +57,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     .select('listPage')
     .select('labels')
     .do(i => {if (!i.length) this.store.dispatch(new LabelActions.Get())})
-    .filter(l => !!l.length);
   private collaboratorSource = this.store
     .select('listPage')
     .select('collaborators')

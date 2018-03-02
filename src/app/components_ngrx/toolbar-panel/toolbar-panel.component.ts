@@ -323,7 +323,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       .filter(a =>!!a.length);
     this.labelData = this.store
       .select('listPage').select('labels')
-      .filter(a =>!!a.length);
     this.spaceData = this.store
       .select('listPage').select('space')
       .filter(space => space !== null);

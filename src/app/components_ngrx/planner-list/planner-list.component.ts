@@ -79,7 +79,6 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   private labelSource = this.store
     .select('listPage')
     .select('labels')
-    .filter(l => !!l.length);
   private collaboratorSource = this.store
     .select('listPage')
     .select('collaborators')
@@ -534,7 +533,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     if (document.getElementsByClassName('planner-hack-title-truncate').length) {
       let arr = document.getElementsByClassName('planner-hack-title-truncate');
       for(let i = 0; i < arr.length; i++) {
-        arr[i].parentElement.style.display = 'flex'; 
+        arr[i].parentElement.style.display = 'flex';
       }
     }
   }
