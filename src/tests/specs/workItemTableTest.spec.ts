@@ -40,6 +40,8 @@ describe('Work Item datatable list', () => {
     await planner.createWorkItem(c.newWorkItem1);
     expect(await planner.workItemList.hasWorkItem(c.newWorkItem1.title)).toBeTruthy();
     await planner.header.clickShowTree();
+    await browser.sleep(2000);
+    await planner.workItemList.overlay.untilHidden();
     expect(await planner.workItemList.hasWorkItem(c.newWorkItem1.title)).toBeTruthy();
   });
 
