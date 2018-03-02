@@ -53,6 +53,7 @@ export class LabelSelectorComponent implements OnInit {
       this.labelnameInput.nativeElement.value = '';
       this.labelnameInput.nativeElement.focus();
     }
+    this.updateSelection();
   }
 
   @Input('selectedLabels') set selectedLabelsSetter(labels: LabelUI[]) {
