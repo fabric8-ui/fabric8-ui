@@ -11,10 +11,10 @@ export type Action = CollaboratorActions.All;
 export const CollaboratorReducer: ActionReducer<CollaboratorState> = (state = initialState, action: Action) => {
   switch(action.type) {
     case CollaboratorActions.GET_SUCCESS: {
-      return action.payload
+      return [...action.payload];
     }
     case CollaboratorActions.GET_ERROR: {
-      return state;
+      return [...state];
     }
     default: {
       return state;
