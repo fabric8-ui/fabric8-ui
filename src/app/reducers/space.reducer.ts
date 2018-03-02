@@ -1,7 +1,6 @@
 import { State } from '@ngrx/store';
 import { ActionReducer } from '@ngrx/store';
 import * as SpaceActions from './../actions/space.actions';
-import { cloneDeep } from 'lodash';
 
 import { SpaceState, initialState } from '../states/space.state';
 

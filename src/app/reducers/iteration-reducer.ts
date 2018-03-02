@@ -12,14 +12,11 @@ import {
 
 export type Action = IterationActions.All;
 
-
 export const iterationReducer: ActionReducer<IterationState> =
   ( state = initialState, action: Action) => {
     switch( action.type ) {
       case IterationActions.GET_SUCCESS:
         return action.payload
-
-
 
       case IterationActions.ADD_SUCCESS:
         const parent = action.payload.parent;
@@ -41,8 +38,6 @@ export const iterationReducer: ActionReducer<IterationState> =
           }
         }
         return [ action.payload.iteration, ...state ];
-
-
 
       case IterationActions.UPDATE_SUCCESS:
         const updatedIteration = action.payload;
@@ -70,9 +65,6 @@ export const iterationReducer: ActionReducer<IterationState> =
           }
         }
         return [...state];
-
-
-
 
       case IterationActions.SELECT:
         if (action.payload !== null) {
