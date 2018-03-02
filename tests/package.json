@@ -11,8 +11,8 @@
   "license": "Apache 2",
   "scripts": {
     "tsc": "tsc",
-    "webdriver:update": "webdriver-manager update",
-    "webdriver:start": "webdriver-manager start",
+    "webdriver:update": "webdriver-manager update --versions.chrome 2.33",
+    "webdriver:start": "webdriver-manager start --versions.chrome 2.33",
     "protractor": "protractor tmp/protractor.conf.js",
     "test": "./run.sh"
   },
