@@ -312,7 +312,6 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     if (event === 'out') {
       setTimeout(() => {
         this.sidePanelOpen = true;
-        this.workItems = [...this.workItems];
       }, 200)
     } else {
       this.sidePanelOpen = false;
@@ -321,6 +320,9 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
 
   togglePanel() {
     this.plannerLayout.toggleSidePanel();
+    setTimeout(() => {
+    this.workItems = [...this.workItems];
+    }, 500);
   }
 
   setDefaultUrl() {
