@@ -50,7 +50,6 @@ import {
 } from './../../states/detail-work-item.state';
 import { DetailWorkItemReducer } from './../../reducers/detail-work-item.reducer';
 import { DetailWorkItemEffects } from './../../effects/detail-work-item.effects';
-import { WorkItemCommentWrapperComponent } from 'src/app/components_ngrx/work-item-comment-wrapper/work-item-comment-wrapper.component';
 
 let providers = [];
 
