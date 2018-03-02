@@ -33,6 +33,7 @@ export class LabelSelectorComponent implements OnInit {
   @ViewChild('dropdown') dropdownRef: SelectDropdownComponent;
   @Input('allLabels') set allLabelsSetter(labels: LabelUI[]) {
     this.allLabels = [...labels];
+    this.createDisabled = false;
     this.backup = cloneDeep(this.allLabels.map((label: LabelUI) => {
       return {
         id: label.id,
