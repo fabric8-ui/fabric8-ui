@@ -79,6 +79,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   private labelSource = this.store
     .select('listPage')
     .select('labels')
+    .filter(l => l !== null);
   private collaboratorSource = this.store
     .select('listPage')
     .select('collaborators')

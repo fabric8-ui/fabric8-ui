@@ -110,7 +110,7 @@ export class WorkItemQuickPreviewComponent implements OnInit, OnDestroy {
   private labelSource = this.store
     .select('listPage')
     .select('labels')
-    .filter(l => !!l.length);
+    .filter(l => l !== null);
   private collaboratorSource = this.store
     .select('listPage')
     .select('collaborators')

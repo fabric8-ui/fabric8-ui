@@ -166,6 +166,17 @@ export class WorkItemEffects {
             workItems
           );
         })
+        .catch((e) => {
+          try {
+            this.notifications.message({
+              message: `Problem loading workitems.`,
+              type: NotificationType.DANGER
+            } as Notification);
+          } catch (e) {
+            console.log('Error displaying notification.')
+          }
+          return Observable.of(new WorkItemActions.GetError());
+        })
     });
 
     @Effect() getWorkItemChildren$: Observable<Action> = this.actions$

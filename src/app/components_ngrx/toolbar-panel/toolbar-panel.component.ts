@@ -322,7 +322,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       .select('listPage').select('workItemStates')
       .filter(a =>!!a.length);
     this.labelData = this.store
-      .select('listPage').select('labels')
+      .select('listPage').select('labels').filter(l => l !== null);
     this.spaceData = this.store
       .select('listPage').select('space')
       .filter(space => space !== null);
