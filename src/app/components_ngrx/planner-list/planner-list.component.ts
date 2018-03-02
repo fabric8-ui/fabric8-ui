@@ -312,6 +312,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     if (event === 'out') {
       setTimeout(() => {
         this.sidePanelOpen = true;
+        this.workItems = [...this.workItems];
       }, 200)
     } else {
       this.sidePanelOpen = false;
@@ -336,7 +337,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
             .subscribe(groupTypes => {
               const defaultGroupName = groupTypes[0].name;
               //Query for work item type group
-              const type_query = this.filterService.queryBuilder('$WITGROUP', this.filterService.equal_notation, defaultGroupName);
+              const type_query = this.filterService.queryBuilder('typegroup.name', this.filterService.equal_notation, defaultGroupName);
               //Query for space
               const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, spaceId);
               //Join type and space query

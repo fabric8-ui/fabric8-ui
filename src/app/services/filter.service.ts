@@ -126,7 +126,7 @@ export class FilterService {
     }
     //active filter will have the transient filters
     //witgroup and space are permanent filters
-    return refCurrentFilter.filter(f => f.id === '$WITGROUP' || f.id === 'space' || f.id === 'iteration');
+    return refCurrentFilter.filter(f => f.id === 'typegroup.name' || f.id === 'space' || f.id === 'iteration');
   }
 
   clearFilters(keys: string[] = []): void {
