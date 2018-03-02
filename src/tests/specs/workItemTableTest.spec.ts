@@ -35,7 +35,9 @@ describe('Work Item datatable list', () => {
     expect(await planner.workItemList.getInlineQuickAddClass(c.workItemTitle1)).toContain('disable');
   });
 
-  it('hideTree and create a work item then work item should be displayed when show tree is selected', async () => {
+  // The test doesn't work on mock data. Hence, ignore it.
+  // The should work against real database.
+  xit('hideTree and create a work item then work item should be displayed when show tree is selected', async () => {
     await planner.header.clickShowTree();
     await planner.createWorkItem(c.newWorkItem1);
     expect(await planner.workItemList.hasWorkItem(c.newWorkItem1.title)).toBeTruthy();
