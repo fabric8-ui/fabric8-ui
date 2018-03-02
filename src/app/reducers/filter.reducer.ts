@@ -18,7 +18,7 @@ export const FilterReducer: ActionReducer<FilterState> =
       }
 
       case FilterActions.GET_ERROR: {
-        return state;
+        return [...state];
       }
 
       default: {

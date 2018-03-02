@@ -54,7 +54,7 @@ export class CollaboratorEffects {
         .catch(e => {
           try {
             this.notifications.message({
-              message: 'Problem in fetching collaborators',
+              message: `Problem in fetching collaborators`,
               type: NotificationType.DANGER
             } as Notification);
           } catch (e) {
