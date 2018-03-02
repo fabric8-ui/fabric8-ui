@@ -69,6 +69,10 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
       return [...state];
     }
 
+    case WorkItemActions.UPDATE_ERROR: {
+      return [...state];
+    }
+
     default: {
       return state;
     }

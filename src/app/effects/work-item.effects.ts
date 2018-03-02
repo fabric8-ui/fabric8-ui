@@ -100,7 +100,7 @@ export class WorkItemEffects {
                   type: NotificationType.SUCCESS
                 } as Notification);
               } catch (e) {
-                console.log('Error displaying notification.')
+                console.log('New child added.')
               }
               const parent = state.workItems.find(w => w.id === parentId);
               if (!parent.childrenLoaded && parent.hasChildren) {
@@ -118,7 +118,7 @@ export class WorkItemEffects {
                 type: NotificationType.SUCCESS
               } as Notification);
             } catch (e) {
-              console.log('Error displaying notification.')
+              console.log('Work item is added.')
             }
             return Observable.of(new WorkItemActions.AddSuccess(wItem));
           }
@@ -130,7 +130,7 @@ export class WorkItemEffects {
               type: NotificationType.DANGER
             } as Notification);
           } catch (e) {
-            console.log('Error displaying notification.')
+            console.log('Problem adding work item.')
           }
           return Observable.of(new WorkItemActions.AddError());
         })
@@ -173,7 +173,7 @@ export class WorkItemEffects {
               type: NotificationType.DANGER
             } as Notification);
           } catch (e) {
-            console.log('Error displaying notification.')
+            console.log('Problem loading workitems.')
           }
           return Observable.of(new WorkItemActions.GetError());
         })
@@ -217,7 +217,7 @@ export class WorkItemEffects {
                 type: NotificationType.DANGER
               } as Notification);
             } catch (e) {
-              console.log('Error displaying notification.')
+              console.log('Problem loading children.')
             }
             return Observable.of(
               new WorkItemActions.GetChildrenError(parent)
@@ -247,10 +247,31 @@ export class WorkItemEffects {
               w.childrenLoaded = item.childrenLoaded;
               w.parentID = item.parentID;
             }
+            try {
+              this.notifications.message({
+                message: `Workitem updated.`,
+                type: NotificationType.SUCCESS
+              } as Notification);
+            } catch (e) {
+              console.log('workitem updated.')
+            }
             return w;
           })
           .map((workItem: WorkItemUI) => {
             return new WorkItemActions.UpdateSuccess(workItem);
+          })
+          .catch(() => {
+            try {
+              this.notifications.message({
+                message: `Problem in update Workitem.`,
+                type: NotificationType.DANGER
+              } as Notification);
+            } catch (e) {
+              console.log('Problem in update Workitem.')
+            }
+            return Observable.of(
+              new WorkItemActions.UpdateError()
+            );
           })
       });
 
@@ -304,6 +325,17 @@ export class WorkItemEffects {
             w.parentID = op.state.workItems.find(wi => wi.id === w.id).parentID;
             return w;
           })
-          .map(w => new WorkItemActions.UpdateSuccess(w));
+          .map(w => new WorkItemActions.UpdateSuccess(w))
+          .catch( e => {
+            try {
+              this.notifications.message({
+                message: `Problem in reorder workitem.`,
+                type: NotificationType.DANGER
+              } as Notification);
+            } catch (e) {
+              console.log('Problem in reorder workitem.');
+            }
+            return Observable.of(new WorkItemActions.UpdateError());
+          })
       })
 }

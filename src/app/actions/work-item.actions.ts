@@ -124,10 +124,6 @@ export class Reoder implements Action {
   }) { this.payload = payload; }
 }
 
-export class ReoderError implements Action {
-  readonly type = REORDER_ERROR;
-}
-
 export type All
   = Add
   | Get
@@ -142,4 +138,3 @@ export type All
   | GetChildrenSuccess
   | GetChildrenError
   | Reoder
-  | ReoderError
