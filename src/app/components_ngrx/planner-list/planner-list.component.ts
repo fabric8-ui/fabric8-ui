@@ -196,7 +196,9 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     );
 
     const queryParams = this.route.snapshot.queryParams;
-    if(Object.keys(queryParams).length === 0 && process.env.ENV != 'inmemory') {
+    if(Object.keys(queryParams).length === 0 ||
+      ( Object.keys(queryParams).length === 1 &&  // for in memory
+        Object.keys(queryParams).indexOf('token_json') > -1)) {
       this.setDefaultUrl();
     }
     this.loggedIn = this.auth.isLoggedIn();

@@ -7,10 +7,10 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   // TODO - move loading animation out of here. It doesn't belong here.
   loadingAnimation = new ui.BaseElementArray($$('.spinner'), 'Loading spinner animation');
   /* UI elements of the Top section of the workitem preview */
-  closeButton = new ui.Button(this.$('.f8-quick-preview--close'), 'WorkItem Quick Preview close button');
+  closeButton = new ui.Button(this.$('.f8-detail--close'), 'WorkItem Quick Preview close button');
   stateDropdown = new ui.Dropdown(this.$('.dropdown-toggle'), this.$('#wi-status-dropdown'), 'WorkItem State dropdown');
   fullDetailButton = new ui.Clickable(this.$('span.dib'), 'View full details button');
-  titleDiv = new ui.BaseElement(this.$('#wi-title-div'));
+  titleDiv = new ui.BaseElement(this.$('#wi-title-div'), 'Workitem title div');
   titleInput = new ui.TextInput(this.titleDiv.$('textarea'), 'WorkItem Title Input');
   titleSaveButton = new ui.Button(this.titleDiv.$('.inlineinput-btn-save'), 'WorkItem Title Save button');
   titleCancelButton = new ui.Button(this.titleDiv.$('.inlineinput-btn-cancel'), 'Workitem Title cancel button');
@@ -44,7 +44,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     this.$('#labelSelector .add-label'),
     this.$('#labelSelector ul.select-dropdown-menu'),
     'Label Select dropdown');
-  labelListDiv = new ui.BaseElementArray(this.$$('f8-label .label-wrapper>span'), 'label list Div');    
+  labelListDiv = new ui.BaseElementArray(this.$$('f8-label .label-wrapper>span'), 'label list Div');
   labelDropDownDiv = new ui.BaseElement(this.$('#labelSelector .select-dropdown'), 'dropdown div');
   labelDropdownCloseButton = new ui.Clickable(this.labelDropDownDiv.$('.close-pointer'),'label dropdown close Button');
   createLabelButton = new ui.Clickable(this.labelDropDownDiv.$('.create-label-button'),'Create new label');
@@ -52,8 +52,8 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   createLabelInput = new ui.TextInput(this.createLabelDiv.$('.create-label-input'),'create label input');
   createLabelCancel = new ui.Button(this.createLabelDiv.$('.pficon-close'),'create label cancel');
   createLabelSaveButton = new ui.Button(this.createLabelDiv.$('.fa-check'),'create label save button');
-  
-  descriptionDiv = new ui.BaseElement(this.$('.description-fields-wrap'), 'WorkItem Description Div');
+
+  descriptionDiv = new ui.BaseElement(this.$('#wi-desc-div'), 'WorkItem Description Div');
   descriptionTextarea = new ui.TextInput(this.descriptionDiv.$('.editor-box'), 'WorkItem Description Input');
   descriptionSaveButton =  new ui.Button(
     this.descriptionDiv.$('.action-btn.btn-save'),
@@ -90,7 +90,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   commentSaveButton = new ui.Button(this.commentDiv.$('.btn-save'), 'Comment save button');
   commentCancelButton = new ui.Button(this.commentDiv.$$('.fl.btn.btn-primary.pull-right.action-btn').first(), 'Comment cancel button');
   commentsText = new ui.BaseElementArray(this.$$('.f8-comment-body .editor-box.editor-preview'), 'Comment List');
-  
+
   constructor(ele: ElementFinder, name: string = '') {
     super(ele, name);
   }
@@ -145,9 +145,9 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   async addLabel(label: string) {
     await this.labelDropdown.clickWhenReady()
     await this.labelDropdown.select(label);
-    await this.labelDropdownCloseButton.clickWhenReady();    
+    await this.labelDropdownCloseButton.clickWhenReady();
   }
-  
+
   async addLink(link: string, workItem: string) {
     await this.linksToggleButton.clickWhenReady();
     await this.createLinkButton.clickWhenReady();
@@ -161,6 +161,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
 
   async close() {
     await this.closeButton.clickWhenReady();
+    await browser.sleep(1000);
   }
 
   async createNewLabel(label: string) {
@@ -169,7 +170,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.createLabelInput.enterText(label);
     await this.createLabelSaveButton.clickWhenReady();
     await this.labelDropdown.select(label);
-    await this.labelDropdownCloseButton.clickWhenReady();    
+    await this.labelDropdownCloseButton.clickWhenReady();
   }
 
   async hasArea(areaName: string) {

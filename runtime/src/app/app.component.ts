@@ -6,7 +6,7 @@ import { AuthenticationService } from 'ngx-login-client';
 import { GlobalSettings } from './shared/globals';
 
 @Component({
-  selector: 'alm-app',
+  selector: 'f8-app',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less'],

@@ -2,7 +2,7 @@
   <fieldset>
     <div class="f8-detail__header" #detailHeader>
       <span
-        class="pficon-close pull-right close"
+        class="pficon-close pull-right close f8-detail--close"
         (click)="closeDetail()">
       </span>
       <div *ngIf="detailContext=='preview'">
@@ -114,6 +114,7 @@
       <div class="col-xs-12 col-sm-12 col-md-12 margin-top-15 padding-0">
         <div class="form-horizontal">
           <f8-inlineinput
+            id="wi-title-div"
             [disabled]="false"
             [value]="workItem.title"
             [onLineClickEdit]="true"
@@ -264,7 +265,7 @@
             </label>
             <div class="f8-detail__content">
               <f8-markdown
-                id="wi-detail-desc"
+                id="wi-desc-div"
                 [editAllow]="loggedIn"
                 [rawText]="workItem.description"
                 [renderedText]="workItem.descriptionRendered"

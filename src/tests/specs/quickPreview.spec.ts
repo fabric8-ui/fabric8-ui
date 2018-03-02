@@ -23,16 +23,18 @@ describe('planner quick preview tests', () => {
   it('should open quickpreview and apply label', async () => {
     await planner.workItemList.clickWorkItem(c.workItemTitle1);
     await planner.quickPreview.addLabel(c.label);
-    expect(await planner.quickPreview.hasLabel(c.label)).toBeTruthy();    
+    expect(await planner.quickPreview.hasLabel(c.label)).toBeTruthy();
   });
 
   it('should open quick preview and create new label',async () => {
     await planner.workItemList.clickWorkItem(c.workItemTitle1);
     await planner.quickPreview.createNewLabel(c.newLabel);
-    expect(await planner.quickPreview.hasLabel(c.newLabel)).toBeTruthy(); 
+    expect(await planner.quickPreview.hasLabel(c.newLabel)).toBeTruthy();
   });
 
-  it('should link a workitem',async () => {
+  // TODO: Work item link will be added shortly
+  // This test has to be activated
+  xit('should link a workitem',async () => {
     await planner.workItemList.clickWorkItem(c.workItemTitle3);
     await planner.quickPreview.addLink(c.linkType, c.workItemTitle4);
     expect(await planner.quickPreview.hasLinkedItem(c.workItemTitle4)).toBeTruthy();

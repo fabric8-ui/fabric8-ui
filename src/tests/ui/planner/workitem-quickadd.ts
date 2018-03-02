@@ -34,7 +34,7 @@ export class WorkItemQuickAdd extends ui.BaseElement {
 
   async workItemTypes(): Promise<string[]>{
     await this.workItemTypeDropdown.clickWhenReady();
-    let array = await this.workItemTypeDropdown.menu.getText();
+    let array = await this.workItemTypeDropdown.menu.getTextWhenReady();
     // Split array, remove invalid entries and trim the result
     return array.split("\n").reduce<string[]>((filtered ,current) => {
       if(current) {

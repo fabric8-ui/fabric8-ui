@@ -8,11 +8,11 @@ export class PlannerPage extends AppPage {
   workItemList = new planner.WorkItemList($('alm-work-item-list'));
   quickAdd =  new planner.WorkItemQuickAdd($('alm-work-item-quick-add'));
   sidePanel = new planner.SidePanel($('aside.f8-sidepanel'));
-  quickPreview = new planner.WorkItemQuickPreview($('work-item-preview'));
+  quickPreview = new planner.WorkItemQuickPreview($('work-item-detail'));
   header = new planner.ToolbarHeader($('pfng-toolbar'));
   settings = new planner.Settings($('div.f8-wi-list__settings'));
   iteration = new planner.Iteration($('fab-planner-iteration-modal'));
-  
+
   constructor(url: string){
     super(url);
   }

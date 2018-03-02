@@ -24,22 +24,23 @@ describe('Work Item datatable list', () => {
     expect(await planner.workItemList.getDataTableHeaderCellCount()).toBe(10);
     await planner.settings.clickSettings();
     await planner.settings.selectAttribute(c.attribute1);
-    await planner.settings.selectAttribute(c.attribute2);    
     await planner.settings.moveToAvailableAttribute();
-    expect(await planner.workItemList.getDataTableHeaderCellCount()).toBe(8);
+    expect(await planner.workItemList.getDataTableHeaderCellCount()).toBe(9);
   });
 
   it('quick add should be disable for flat view', async() => {
     await planner.header.clickShowTree();
+    await browser.sleep(2000);
+    await planner.workItemList.overlay.untilHidden();
     expect(await planner.workItemList.getInlineQuickAddClass(c.workItemTitle1)).toContain('disable');
   });
-  
+
   it('hideTree and create a work item then work item should be displayed when show tree is selected', async () => {
     await planner.header.clickShowTree();
     await planner.createWorkItem(c.newWorkItem1);
     expect(await planner.workItemList.hasWorkItem(c.newWorkItem1.title)).toBeTruthy();
     await planner.header.clickShowTree();
-    expect(await planner.workItemList.hasWorkItem(c.newWorkItem1.title)).toBeTruthy();    
+    expect(await planner.workItemList.hasWorkItem(c.newWorkItem1.title)).toBeTruthy();
   });
 
   it('work item should show updated title when switching from flat to tree view', async() => {
@@ -49,6 +50,6 @@ describe('Work Item datatable list', () => {
     expect(await planner.workItemList.hasWorkItem(c.updatedWorkItem.title)).toBeTruthy();
     await planner.quickPreview.close();
     await planner.header.clickShowTree();
-    expect(await planner.workItemList.hasWorkItem(c.updatedWorkItem.title)).toBeTruthy();    
+    expect(await planner.workItemList.hasWorkItem(c.updatedWorkItem.title)).toBeTruthy();
   });
 });

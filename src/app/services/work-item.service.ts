@@ -181,8 +181,13 @@ export class WorkItemService {
   // TODO Filter temp
   getWorkItems2(pageSize: number = 20, filters: object): Observable<{workItems: WorkItem[], nextLink: string, totalCount?: number | null, included?: WorkItem[] | null, ancestorIDs?: Array<string>}> {
     if (this._currentSpace) {
-      this.workItemUrl = this._currentSpace.links.self.split('spaces')[0] + 'search';
-      let url = this.workItemUrl + '?page[limit]=' + pageSize + '&' + Object.keys(filters).map(k => 'filter['+k+']='+JSON.stringify(filters[k])).join('&');
+      let url = '';
+      if (process.env.ENV === 'inmemory') {
+        url = 'http://mock.service/api/spaces/space-id0/workitems?page[limit]=42&filter[space]=space-id0&filter[$WITGROUP]=Scenarios';
+      } else {
+        this.workItemUrl = this._currentSpace.links.self.split('spaces')[0] + 'search';
+        url = this.workItemUrl + '?page[limit]=' + pageSize + '&' + Object.keys(filters).map(k => 'filter['+k+']='+JSON.stringify(filters[k])).join('&');
+      }
       return this.http.get(url)
         .map((resp) => {
           return {

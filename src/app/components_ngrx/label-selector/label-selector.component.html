@@ -9,7 +9,9 @@
   (onSelect)="onSelect($event)"
   (onSearch)="onSearch($event)"
   (onOpen)="onOpen($event)"
-  (onClose)="onClose($event)">
+  (onClose)="onClose($event)"
+  id="labelSelector"
+  >
   <ng-template #toggleButtonRef>
     <span class="clickable add-label" (click)="closeAddLabel()">
       <i class="pficon pficon-add-circle-o"></i>
