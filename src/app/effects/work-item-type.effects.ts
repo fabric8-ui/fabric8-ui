@@ -11,6 +11,11 @@ import {
   WorkItemTypeMapper,
   WorkItemTypeResolver
 } from './../models/work-item-type';
+import {
+  Notification,
+  Notifications,
+  NotificationType
+} from "ngx-base";
 
 export type Action = WorkItemTypeActions.All;
 
@@ -19,7 +24,8 @@ export class WorkItemTypeEffects {
   constructor(
     private actions$: Actions,
     private workItemService: WorkItemService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private notifications: Notifications
   ) {}
 
   @Effect() getWorkItemTypes$: Observable<Action> = this.actions$
@@ -35,6 +41,17 @@ export class WorkItemTypeEffects {
           return new WorkItemTypeActions.GetSuccess(
             witResolver.getResolvedWorkItemTypes()
           );
+        })
+        .catch(e => {
+          try {
+            this.notifications.message({
+              message: `Problem in fetching workitem type.`,
+              type: NotificationType.DANGER
+            } as Notification);
+          } catch (e) {
+            console.log('Problem in fetching work item type');
+          }
+          return Observable.of(new WorkItemTypeActions.GetError());
         })
     })
 }
