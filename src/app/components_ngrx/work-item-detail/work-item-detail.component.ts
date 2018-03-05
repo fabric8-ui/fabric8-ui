@@ -27,7 +27,7 @@ import * as CollaboratorActions from './../../actions/collaborator.actions';
 import * as AreaActions from './../../actions/area.actions';
 import * as WorkItemTypeActions from './../../actions/work-item-type.actions';
 import * as LabelActions from './../../actions/label.actions';
-import { WorkItemService } from '../../..';
+import { WorkItemService } from './../../services/work-item.service';
 
 @Component({
   selector: 'work-item-detail',
