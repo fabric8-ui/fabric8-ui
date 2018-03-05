@@ -12,13 +12,13 @@ export const CommentReducer: ActionReducer<CommentState> = (state = initialState
       return [...action.payload];
     }
     case CommentActions.GET_ERROR: {
-      return [...state];
+      return state;
     }
     case CommentActions.ADD_SUCCESS: {
       return [...[action.payload], ...state];
     }
     case CommentActions.ADD_ERROR: {
-      return [...state];
+      return state;
     }
     case CommentActions.UPDATE_SUCCESS: {
       let updatedComment = action.payload;
@@ -29,7 +29,7 @@ export const CommentReducer: ActionReducer<CommentState> = (state = initialState
       return [...state];
     }
     case CommentActions.UPDATE_ERROR: {
-      return [...state];
+      return state;
     }
     case CommentActions.DELETE_SUCCESS: {
       let deletedComment = action.payload;
@@ -40,7 +40,7 @@ export const CommentReducer: ActionReducer<CommentState> = (state = initialState
       return [...state];
     }
     case CommentActions.DELETE_ERROR: {
-      return [...state];
+      return state;
     }
     default: {
       return state;

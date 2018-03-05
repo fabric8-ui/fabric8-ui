@@ -97,10 +97,13 @@ export const iterationReducer: ActionReducer<IterationState> =
         return [...state]; // This is important for change detection
 
       case IterationActions.GET_ERROR:
+        return state;
 
       case IterationActions.ADD_ERROR:
+        return state;
 
       case IterationActions.UPDATE_ERROR:
+        return state;
 
       default:
         return state;

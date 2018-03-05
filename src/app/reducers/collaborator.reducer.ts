@@ -14,7 +14,7 @@ export const CollaboratorReducer: ActionReducer<CollaboratorState> = (state = in
       return [...action.payload];
     }
     case CollaboratorActions.GET_ERROR: {
-      return [...state];
+      return state;
     }
     default: {
       return state;

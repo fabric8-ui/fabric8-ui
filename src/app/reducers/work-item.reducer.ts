@@ -24,7 +24,7 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
     }
 
     case WorkItemActions.ADD_ERROR: {
-      return [...state];
+      return state;
     }
 
     case WorkItemActions.GET_SUCCESS: {
@@ -32,7 +32,7 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
     }
 
     case WorkItemActions.GET_ERROR: {
-      return [...state];
+      return state;
     }
 
     case WorkItemActions.GET_CHILDREN_ERROR: {
@@ -70,7 +70,7 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
     }
 
     case WorkItemActions.UPDATE_ERROR: {
-      return [...state];
+      return state;
     }
 
     default: {

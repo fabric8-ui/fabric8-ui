@@ -20,7 +20,7 @@ export const DetailWorkItemReducer: ActionReducer<DetailWorkItemState> =
       }
 
       case DetailWorkItemActions.GET_WORKITEM_ERROR: {
-        return {...state};
+        return state;
       }
 
       default: {

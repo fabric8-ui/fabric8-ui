@@ -100,7 +100,7 @@ export class WorkItemEffects {
                   type: NotificationType.SUCCESS
                 } as Notification);
               } catch (e) {
-                console.log('New child added.')
+                console.log('New child added.');
               }
               const parent = state.workItems.find(w => w.id === parentId);
               if (!parent.childrenLoaded && parent.hasChildren) {
@@ -118,7 +118,7 @@ export class WorkItemEffects {
                 type: NotificationType.SUCCESS
               } as Notification);
             } catch (e) {
-              console.log('Work item is added.')
+              console.log('Work item is added.');
             }
             return Observable.of(new WorkItemActions.AddSuccess(wItem));
           }
@@ -130,7 +130,7 @@ export class WorkItemEffects {
               type: NotificationType.DANGER
             } as Notification);
           } catch (e) {
-            console.log('Problem adding work item.')
+            console.log('Problem adding work item.');
           }
           return Observable.of(new WorkItemActions.AddError());
         })
@@ -173,7 +173,7 @@ export class WorkItemEffects {
               type: NotificationType.DANGER
             } as Notification);
           } catch (e) {
-            console.log('Problem loading workitems.')
+            console.log('Problem loading workitems.');
           }
           return Observable.of(new WorkItemActions.GetError());
         })
@@ -217,7 +217,7 @@ export class WorkItemEffects {
                 type: NotificationType.DANGER
               } as Notification);
             } catch (e) {
-              console.log('Problem loading children.')
+              console.log('Problem loading children.');
             }
             return Observable.of(
               new WorkItemActions.GetChildrenError(parent)
@@ -253,7 +253,7 @@ export class WorkItemEffects {
                 type: NotificationType.SUCCESS
               } as Notification);
             } catch (e) {
-              console.log('workitem updated.')
+              console.log('workitem updated.');
             }
             return w;
           })
@@ -267,7 +267,7 @@ export class WorkItemEffects {
                 type: NotificationType.DANGER
               } as Notification);
             } catch (e) {
-              console.log('Problem in update Workitem.')
+              console.log('Problem in update Workitem.');
             }
             return Observable.of(
               new WorkItemActions.UpdateError()

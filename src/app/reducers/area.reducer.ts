@@ -13,7 +13,7 @@ export const AreaReducer: ActionReducer<AreaState> = (state = initialState, acti
       return [...action.payload];
     }
     case AreaActions.GET_ERROR: {
-      return [...state];
+      return state;
     }
     default: {
       return state;
