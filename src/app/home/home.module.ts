@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule }     from '@angular/core';
 import { Http }         from '@angular/http';
 
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { Fabric8WitModule } from 'ngx-fabric8-wit';
 
 import { RecentPipelinesWidgetModule } from '../dashboard-widgets/recent-pipelines-widget/recent-pipelines-widget.module';
@@ -22,7 +24,9 @@ import { WorkItemWidgetModule } from './work-item-widget/work-item-widget.module
     Fabric8WitModule,
     WorkItemWidgetModule,
     RecentPipelinesWidgetModule,
-    ModalModule.forRoot()
+    CarouselModule.forRoot(),
+    ModalModule.forRoot(),
+    TooltipModule.forRoot()
   ],
   declarations: [ HomeComponent ]
 })

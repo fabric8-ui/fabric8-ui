@@ -15,6 +15,8 @@ import { Fabric8UIConfig } from '../shared/config/fabric8-ui-config';
 import fabric8Logo from '../../assets/images/fabric8_logo.png';
 import openshiftLogo from '../../assets/images/OpenShift-io_logo.png';
 
+import { FeatureTogglesService } from '../feature-flag/service/feature-toggles.service';
+
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-home',
@@ -22,6 +24,13 @@ import openshiftLogo from '../../assets/images/OpenShift-io_logo.png';
   styleUrls: ['./home.component.less']
 })
 export class HomeComponent implements OnInit, OnDestroy {
+
+  newHomeDashboardEnabled: boolean = false;
+  developmentEnabled: boolean = true; // set to false to hide the in development section
+  myInterval: number = 0;
+  noWrapSlides: boolean = true;
+  showIndicator: boolean = true;
+  subscriptions: Subscription[] = [];
 
   brandInformation: BrandInformation;
   loggedInUser: User;
@@ -38,6 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private space: string;
 
   constructor(
+    private featureTogglesService: FeatureTogglesService,
     private userService: UserService,
     private spaceService: SpaceService,
     private router: Router,
@@ -52,6 +62,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.space = '';
     this.selectedFlow = 'start';
     this._spaceSubscription = spaces.recent.subscribe(val => this.recent = val);
+    this.subscriptions.push(featureTogglesService.getFeature('newHomeDashboard').subscribe((feature) => {
+      this.newHomeDashboardEnabled = feature.attributes['enabled'] && feature.attributes['user-enabled'];
+      console.log('~', this.newHomeDashboardEnabled);
+    }));
   }
 
   ngOnInit() {
@@ -63,7 +77,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this._defaultContext = val;
       this.initSpaces();
     });
-
     this.brandInformation = new BrandInformation();
     if (this.fabric8UIConfig.branding && this.fabric8UIConfig.branding === 'fabric8') {
       this.brandInformation.logo = fabric8Logo;
