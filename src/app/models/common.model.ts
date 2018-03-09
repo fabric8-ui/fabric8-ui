@@ -1,6 +1,6 @@
 export interface modelUI {
   id: string;
-  name: string;
+  name?: string;
 }
 
 export class modelService {

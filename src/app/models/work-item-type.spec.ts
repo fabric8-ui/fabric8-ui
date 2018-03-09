@@ -29,6 +29,7 @@ describe('WorkItemTypeMapper', () => {
             }
           }
         }
+        type: 'workitemtypes'
     } as WorkItemTypeUI;
 
     workItemTypeService = {

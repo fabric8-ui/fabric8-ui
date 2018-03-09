@@ -44,7 +44,7 @@ export interface WorkItemTypeUI extends modelUI {
   type: string;
   description: string;
   childTypes: any;
-  fields: any;
+  fields: Map<string, WorkItemTypeField>;
 }
 
 export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemTypeUI> {
@@ -67,12 +67,15 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
       }, {
         fromPath: ['relationships', 'guidedChildTypes', 'data'],
         toPath: ['childTypes'],
-        toFunction: (item: WorkItemService) => {
+        toFunction: (item: WorkItemTypeService) => {
           return !!item ? item : [];
         }
       }, {
         fromPath: ['attributes', 'fields'],
         toPath: ['fields']
+      }, {
+        toPath: ['type'],
+        toValue: 'workitemtypes'
       }
     ];
 
@@ -97,7 +100,7 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
       }, {
         fromPath: ['childTypes'],
         toPath: ['relationships', 'guidedChildTypes', 'data'],
-        toFunction: (item: WorkItemService) => {
+        toFunction: (item: WorkItemTypeUI) => {
           return !!item ? item : [];
         }
       }, {
