@@ -183,7 +183,7 @@ export class WorkItemService {
     if (this._currentSpace) {
       let url = '';
       if (process.env.ENV === 'inmemory') {
-        url = 'http://mock.service/api/spaces/space-id0/workitems?page[limit]=42&filter[space]=space-id0&filter[$WITGROUP]=Scenarios';
+        url = 'http://mock.service/api/spaces/space-id0/workitems?page[limit]=42&filter[space]=space-id0&filter[typegroup.name]=Scenarios';
       } else {
         this.workItemUrl = this._currentSpace.links.self.split('spaces')[0] + 'search';
         url = this.workItemUrl + '?page[limit]=' + pageSize + '&' + Object.keys(filters).map(k => 'filter['+k+']='+JSON.stringify(filters[k])).join('&');

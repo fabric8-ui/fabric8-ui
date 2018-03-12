@@ -295,7 +295,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           const defaultGroupName = groupTypes[0].attributes.name;
           this.groupTypesService.setCurrentGroupType(groupTypes[0].relationships.typeList, groupTypes[0].attributes.bucket);
           //Query for work item type group
-          const type_query = this.filterService.queryBuilder('$WITGROUP', this.filterService.equal_notation, defaultGroupName);
+          const type_query = this.filterService.queryBuilder('typegroup.name', this.filterService.equal_notation, defaultGroupName);
           //Query for space
           const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, spaceId);
           //Join type and space query
@@ -373,7 +373,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   getCurrentGroupType() {
     //if initialGroup is undefined, the page has been refreshed - find  group context based on URL
     if ( this.route.snapshot.queryParams['q'] ) {
-      let urlArray = this.route.snapshot.queryParams['q'].split('WITGROUP:');
+      let urlArray = this.route.snapshot.queryParams['q'].split('typegroup.name:');
       if (urlArray.length > 1 ) {
         //If wit group is one of the parameters
         let ind = urlArray[1].indexOf(' $AND ');

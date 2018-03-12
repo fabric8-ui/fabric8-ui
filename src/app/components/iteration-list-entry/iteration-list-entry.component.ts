@@ -85,7 +85,7 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
 
   constructURL(iterationId: string) {
     //Query for work item type group
-    const type_query = this.filterService.queryBuilder('$WITGROUP', this.filterService.equal_notation, this.witGroup);
+    const type_query = this.filterService.queryBuilder('typegroup.name', this.filterService.equal_notation, this.witGroup);
     //Query for space
     const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
     //Query for iteration

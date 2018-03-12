@@ -115,18 +115,18 @@ describe('Type group tests', function () {
   });
   */
 
-  it("Url should contain query WITGROUP:Scenario on clicking Scenario", function() {
+  it("Url should contain query typegroup.name:Scenarios on clicking Scenarios", function() {
     page.clickScenario();    
-    expect(browser.getCurrentUrl()).toContain('WITGROUP:Scenarios');  
+    expect(browser.getCurrentUrl()).toContain('typegroup.name:Scenarios');  
   });
 
-  it("Url should contain query WITGROUP:Experiences on clicking Experience", function() {
+  it("Url should contain query typegroup.name:Experiences on clicking Experiences", function() {
     page.clickExperience();    
-    expect(browser.getCurrentUrl()).toContain('WITGROUP:Experiences');  
+    expect(browser.getCurrentUrl()).toContain('typegroup.name:Experiences');  
   });
 
-  it("Url should contain query WITGROUP:Requirements on clicking Requirements", function() {
+  it("Url should contain query typegroup.name:Requirements on clicking Requirements", function() {
     page.clickRequirements();    
-    expect(browser.getCurrentUrl()).toContain('WITGROUP:Requirements');  
+    expect(browser.getCurrentUrl()).toContain('typegroup.name:Requirements');  
   });
 });

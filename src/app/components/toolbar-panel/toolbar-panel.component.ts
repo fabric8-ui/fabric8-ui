@@ -586,7 +586,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         if(arr[1] !== undefined) {
           if (ref_arr.indexOf(arr[0]) >= 0)
             this.transientFilters[arr[0]] = arr[1];
-          else if (arr[0] === '$WITGROUP' || arr[0] === 'space' || arr[0] === 'iteration')
+          else if (arr[0] === 'typegroup.name' || arr[0] === 'space' || arr[0] === 'iteration')
             this.permanentFilters[arr[0]] = arr[1];
         }
       }

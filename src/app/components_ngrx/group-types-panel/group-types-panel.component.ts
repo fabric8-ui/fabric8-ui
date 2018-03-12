@@ -76,7 +76,7 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
   fnBuildQueryParam(witGroup) {
     //Query for work item type group
     const type_query = this.filterService.queryBuilder(
-      '$WITGROUP', this.filterService.equal_notation, witGroup.name
+      'typegroup.name', this.filterService.equal_notation, witGroup.name
     );
     //Query for space
     const space_query = this.filterService.queryBuilder(
@@ -100,7 +100,7 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
       this.route.queryParams.subscribe(val => {
         if (val.hasOwnProperty('q')) {
           const selectedTypeGroupName =
-            this.filterService.getConditionFromQuery(val.q, '$WITGROUP');
+            this.filterService.getConditionFromQuery(val.q, 'typegroup.name');
           const selectedTypeGroup =
             this.groupTypes.find(g => g.name === selectedTypeGroupName);
           if (!selectedTypeGroup.selected) {

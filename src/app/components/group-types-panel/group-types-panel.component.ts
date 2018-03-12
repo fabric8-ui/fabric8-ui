@@ -68,7 +68,7 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
 
   fnBuildQueryParam(witGroup) {
     //Query for work item type group
-    const type_query = this.filterService.queryBuilder('$WITGROUP', this.filterService.equal_notation, witGroup.attributes.name);
+    const type_query = this.filterService.queryBuilder('typegroup.name', this.filterService.equal_notation, witGroup.attributes.name);
     //Query for space
     const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
     //Join type and space query
