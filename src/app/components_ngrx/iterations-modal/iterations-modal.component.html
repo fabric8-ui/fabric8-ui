@@ -16,6 +16,7 @@
               type="text" class="form-control"
               placeholder="Iteration Name"
               [(ngModel)]="iteration.name"
+              (keyup.enter)="actionOnSubmit()"
               (keyup)="removeError()">
             <span class="error-block">
               <span class="help-block" id="iteration-help-label">{{validationString}}</span>
