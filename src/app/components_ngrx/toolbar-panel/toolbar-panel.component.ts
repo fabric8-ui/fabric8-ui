@@ -535,6 +535,25 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  removeAllFilters() {
+    const fields = this.filterService.queryToFlat(
+      this.currentQuery
+    ).filter(f => {
+      return this.activeFilters.findIndex(
+        af => af.field === f.field && af.value === f.value
+      ) === -1;
+    });
+    const queryString = this.filterService.jsonToQuery(
+      this.filterService.flatToQuery(fields)
+    );
+    let queryParams = cloneDeep(this.route.snapshot.queryParams);
+    queryParams['q'] = queryString;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: queryParams
+    });
+  }
+
   showTreeToggle(e) {
     let queryParams = cloneDeep(this.route.snapshot.queryParams);
     if (e.target.checked) {

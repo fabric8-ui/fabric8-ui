@@ -21,6 +21,9 @@
         </span>
       </li>
     </ul>
+    <span *ngIf="activeFilters.length > 1" class="clickable">
+      <a (click)="removeAllFilters()">Clear all filters</a>
+    </span>
   </div>
   <span *ngIf="activeFilterFromSidePane !== ''">
     <strong>14</strong> in {{activeFilterFromSidePanel}}
