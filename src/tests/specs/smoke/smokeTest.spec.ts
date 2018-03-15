@@ -50,6 +50,12 @@ describe('Planner Smoke Tests:', () => {
     expect(await planner.workItemList.hasWorkItem(c.updatedWorkItem.title)).toBeTruthy();
   });
 
+  it('update of empty workitem title is not allowed', async () => {
+    await planner.workItemList.clickWorkItem(c.workItemTitle1);
+    await planner.quickPreview.updateTitle('');
+    expect(await planner.quickPreview.hasTitleError('Empty title not allowed')).toBeTruthy();
+  })
+
   it('Check WorkItem creator name and image is reflected', async () => {
     await planner.workItemList.clickWorkItem(c.workItemTitle1);
     expect(await planner.quickPreview.hasCreator(c.user1)).toBeTruthy();

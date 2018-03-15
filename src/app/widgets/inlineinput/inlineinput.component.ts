@@ -22,12 +22,16 @@ export class InlineInputComponent implements OnInit {
   @ViewChild('input') inputField: ElementRef;
 
   @Input('disabled') readOnly: boolean = false;
-  @Input('value') inputValue: string = 'Hello World';
+  @Input('value') set input(val) {
+    this.inputValue = val;
+    this.previousValue = val;
+  }
   @Input() placeholder: string = 'Enter text here';
   @Input() onLineClickEdit: boolean = true;
 
   @Output() onSave = new EventEmitter();
 
+  private inputValue: string = '';
   private saving: boolean = false;
   private editing: boolean = false;
   private previousValue: string = '';
@@ -68,7 +72,7 @@ export class InlineInputComponent implements OnInit {
   handleSave(value: string, error: string) {
     this.errorMessage = error;
     this.saving = false;
-    if (this.errorMessage) {} 
+    if (this.errorMessage) {}
     else {
       this.editing = false;
       this.inputValue = value;
