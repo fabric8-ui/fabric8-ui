@@ -7,6 +7,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { Fabric8WitModule } from 'ngx-fabric8-wit';
 
+import { FeatureFlagModule } from '../feature-flag/feature-flag.module';
+
 import { RecentPipelinesWidgetModule } from '../dashboard-widgets/recent-pipelines-widget/recent-pipelines-widget.module';
 import { AddSpaceOverlayModule } from '../space/add-space-overlay/add-space-overlay.module';
 import { ForgeWizardModule } from '../space/forge-wizard/forge-wizard.module';
@@ -22,6 +24,7 @@ import { WorkItemWidgetModule } from './work-item-widget/work-item-widget.module
     SpaceWizardModule,
     ForgeWizardModule,
     Fabric8WitModule,
+    FeatureFlagModule,
     WorkItemWidgetModule,
     RecentPipelinesWidgetModule,
     CarouselModule.forRoot(),

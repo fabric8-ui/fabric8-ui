@@ -1,5 +1,5 @@
-<div *ngIf="newHomeDashboardEnabled && developmentEnabled"> <!-- set 'developmentEnabled' to false in home.component.ts to hide -->
-  <div class="container-fluid container-cards-pf f8-home-wrapper" *ngIf="loggedInUser && loggedInUser.attributes">
+<f8-feature-toggle featureName="newHomeDashboard" restricted="dev">
+  <div class="container-fluid container-cards-pf f8-home-wrapper" *ngIf="loggedInUser && loggedInUser.attributes" user-level>
     <div class="row row-cards-pf">
       <section class="card-pf card-pf-view f8-home-banner">
         <div class="row f8-home-banner-whats-new"> <!-- this expands to show what is new. If nothing new, then should be collapsed and not show the carousel -->
@@ -14,7 +14,7 @@
         </div>
         <div class="row">
           <!-- slides are fixed and updated manually -->
-          <carousel [interval]="myInterval" [noWrap]="noWrapSlides">
+          <carousel [interval]="0" [noWrap]="true">
             <slide>
               <div class="carousel-background"></div>
               <img src="../../assets/images/whatsnew_custom-space-avatars.png" class="f8-home-carousel-image" width="20%" height="75%">
@@ -97,42 +97,7 @@
           </div>
         </div>
         <div class="col-xs-12 col-md-4">
-          <div class="card-pf f8-card-lg">
-            <div class="card-pf-heading f8-card-heading">
-              <h2 class="card-pf-title">
-                Recent Workspaces
-              </h2>
-            </div>
-            <div class="card-pf-body f8-card-body">
-              <div class="f8-blank-slate-card">
-                <h3>Create a workspace</h3>
-                <p>Learn how to
-                  <a href="https://docs.openshift.io/user-guide.html#importing_a_codebase" target="top">
-                    create a workspace
-                  </a>
-                  by importing a codebase.
-                </p>
-              </div>
-              <!-- A list of the 5 most recent Workspaces will be displayed in place of the Blank Slate. -->
-              <!-- <div class="home-space-list-result">
-                <ul class="list-group list-view-pf list-view-pf-view list-view-pf-striped">
-                  <li class="list-group-item" *ngFor="let space of recent">
-                    <div class="list-view-pf-main-info">
-                      <div class="list-view-pf-body">
-                        <div class="list-view-pf-description">
-                          <div class="list-group-item-text">
-                            <a>
-                              Workspace name
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div> -->
-            </div>
-          </div>
+          <fabric8-recent-pipelines-widget></fabric8-recent-pipelines-widget>
         </div>
         <div class="col-xs-12 col-md-4">
           <alm-work-item-widget></alm-work-item-widget>
@@ -140,9 +105,7 @@
       </div>
     </div>
   </div>
-</div>
-<div *ngIf="!newHomeDashboardEnabled">
-  <div class="container-fluid container-cards-pf home-wrapper" *ngIf="loggedInUser && loggedInUser.attributes">
+  <div class="container-fluid container-cards-pf home-wrapper" *ngIf="loggedInUser && loggedInUser.attributes" default-level>
     <div class="row row-cards-pf">
       <div class="col-sm-12">
         <section class="card-pf card-pf-view home-banner {{brandInformation.backgroundClass}}">
@@ -260,7 +223,7 @@
       </div>
     </div>
   </div>
-</div>
+</f8-feature-toggle>
 
 <!-- Create Space modal -->
 <ng-template #createSpace>

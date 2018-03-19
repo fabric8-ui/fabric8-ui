@@ -24,12 +24,7 @@ import { FeatureTogglesService } from '../feature-flag/service/feature-toggles.s
   styleUrls: ['./home.component.less']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
   newHomeDashboardEnabled: boolean = false;
-  developmentEnabled: boolean = true; // set to false to hide the in development section
-  myInterval: number = 0;
-  noWrapSlides: boolean = true;
-  showIndicator: boolean = true;
   subscriptions: Subscription[] = [];
 
   brandInformation: BrandInformation;
@@ -64,7 +59,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._spaceSubscription = spaces.recent.subscribe(val => this.recent = val);
     this.subscriptions.push(featureTogglesService.getFeature('newHomeDashboard').subscribe((feature) => {
       this.newHomeDashboardEnabled = feature.attributes['enabled'] && feature.attributes['user-enabled'];
-      console.log('~', this.newHomeDashboardEnabled);
     }));
   }
 
