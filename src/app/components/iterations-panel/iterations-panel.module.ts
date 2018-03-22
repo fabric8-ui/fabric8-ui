@@ -9,7 +9,6 @@ import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import {
   WidgetsModule
 } from 'ngx-widgets';
-import { ActionModule, ListModule } from 'patternfly-ng';
 import { DragulaModule } from 'ng2-dragula';
 import { FabPlannerIterationModalComponent } from '../iterations-modal/iterations-modal.component';
 import { MyDatePickerModule } from 'mydatepicker';
@@ -24,7 +23,6 @@ import { TruncateModule } from 'ng2-truncate';
 
 @NgModule({
   imports: [
-    ActionModule,
     BsDropdownModule.forRoot(),
     CollapseModule,
     CommonModule,
@@ -32,7 +30,6 @@ import { TruncateModule } from 'ng2-truncate';
     FormsModule,
     MyDatePickerModule,
     ModalModule,
-    ListModule,
     TooltipModule.forRoot(),
     TruncateModule,
     SwitchModule,

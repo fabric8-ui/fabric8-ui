@@ -18,3 +18,4 @@ import 'rxjs';
 // You can import js, ts, css, less, ...
 import 'patternfly/dist/less/patternfly.less';
 import 'patternfly/dist/less/patternfly-additions.less';
+import 'patternfly-ng/dist/less/patternfly-ng.less';

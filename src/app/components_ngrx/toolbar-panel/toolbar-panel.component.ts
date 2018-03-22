@@ -17,11 +17,8 @@ import {
   NavigationExtras
 } from '@angular/router';
 import { cloneDeep } from 'lodash';
-import {
-  FilterConfig,
-  FilterEvent,
-  ToolbarConfig
-} from 'patternfly-ng';
+import { FilterConfig, FilterEvent } from 'patternfly-ng/filter';
+import { ToolbarConfig } from 'patternfly-ng/toolbar';
 
 import { Spaces } from 'ngx-fabric8-wit';
 import {

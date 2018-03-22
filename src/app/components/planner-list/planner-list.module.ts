@@ -22,7 +22,7 @@ import { NgxDatatableModule } from 'rh-ngx-datatable';
 
 import { FilterColumn } from '../../pipes/column-filter.pipe';
 
-import { ActionModule, ListModule, EmptyStateModule } from 'patternfly-ng';
+import { EmptyStateModule } from 'patternfly-ng/empty-state';
 import { Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 
@@ -105,7 +105,6 @@ if (process.env.ENV == 'inmemory') {
 
 @NgModule({
   imports: [
-    ActionModule,
     AlmIconModule,
     AssigneesModule,
     BsDropdownModule.forRoot(),
@@ -118,7 +117,6 @@ if (process.env.ENV == 'inmemory') {
     GroupTypesModule,
     IterationModule,
     LabelsModule,
-    ListModule,
     ModalModule,
     PlannerLayoutModule,
     PlannerListRoutingModule,

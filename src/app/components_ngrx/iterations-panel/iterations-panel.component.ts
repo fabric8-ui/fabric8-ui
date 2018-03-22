@@ -17,14 +17,6 @@ import { FilterService } from './../../services/filter.service';
 import { IterationUI } from '../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
 import { FabPlannerIterationModalComponent } from '../iterations-modal/iterations-modal.component';
-import {
-  Action,
-  EmptyStateConfig,
-  ListBase,
-  ListEvent,
-  TreeListComponent,
-  TreeListConfig
-} from 'patternfly-ng';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';

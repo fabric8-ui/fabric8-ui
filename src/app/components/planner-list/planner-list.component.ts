@@ -45,7 +45,7 @@ import {
 } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
-import { EmptyStateConfig } from 'patternfly-ng';
+import { EmptyStateConfig } from 'patternfly-ng/empty-state';
 
 // import for column
 import { datatableColumn } from './datatable-config';

@@ -23,7 +23,7 @@ import { IterationUI } from './../../models/iteration.model';
 import { FilterService } from './../../services/filter.service';
 import { CookieService } from './../../services/cookie.service';
 import { cloneDeep, sortBy, isEqual } from 'lodash';
-import { EmptyStateConfig } from 'patternfly-ng';
+import { EmptyStateConfig } from 'patternfly-ng/empty-state';
 
 // import for column
 import { datatableColumn } from './../../components/planner-list/datatable-config';
