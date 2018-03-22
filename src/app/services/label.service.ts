@@ -43,6 +43,13 @@ export class LabelService {
     });
   }
 
+  getLabels2(labelUrl): Observable<LabelModel[]> {
+    return this.http.get(labelUrl)
+    .map (response => {
+      return response.json().data as LabelModel[];
+    });
+  }
+
   createLabel(label: LabelModel): Observable<LabelModel> {
     return this.spaces.current.switchMap(
       currentSpace => {

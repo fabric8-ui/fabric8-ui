@@ -25,8 +25,9 @@ export class LabelEffects {
 
   @Effect() getLabels$: Observable<Action> = this.actions$
     .ofType(LabelActions.GET)
-    .switchMap(action => {
-      return this.labelService.getLabels()
+    .withLatestFrom(this.store.select('listPage').select('space'))
+    .switchMap(([action, space]) => {
+      return this.labelService.getLabels2(space.links.self + '/labels')
       .map(labels => {
          const lMapper = new LabelMapper();
          return labels.map(l => lMapper.toUIModel(l));

@@ -1,3 +1,5 @@
+import { Store } from '@ngrx/store';
+import { AppState } from './../states/app.state';
 import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import * as FilterActions from './../actions/filter.actions';
@@ -19,13 +21,15 @@ export class FilterEffects {
   constructor(
     private actions$: Actions,
     private filterService: FilterService,
-    private notifications: Notifications
+    private notifications: Notifications,
+    private store: Store<AppState>
   ) {}
 
   @Effect() GetFilters$: Observable<Action> = this.actions$
     .ofType(FilterActions.GET)
-    .switchMap(action => {
-      return this.filterService.getFilters()
+    .withLatestFrom(this.store.select('listPage').select('space'))
+    .switchMap(([action, space]) => {
+      return this.filterService.getFilters2(space.links.filters)
         .map((types: FilterModel[]) => {
           return new FilterActions.GetSuccess(types);
         })

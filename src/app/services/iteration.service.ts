@@ -108,6 +108,43 @@ export class IterationService {
   }
 
   /**
+   * getIteration - We call this service method to fetch
+   * @param iterationUrl - The url to get all the iteration
+   * @return Promise of IterationModel[] - Array of iterations.
+   */
+  getIterations2(iterationUrl): Observable<IterationModel[]> {
+    return this.http
+      .get(iterationUrl)
+      .map (response => {
+        if (/^[5, 4][0-9]/.test(response.status.toString())) {
+          throw new Error('API error occured');
+        }
+        return response.json().data as IterationModel[];
+      })
+      .map((data) => {
+        this.iterations = data.map(iteration => {
+          let childIterations = this.checkForChildIterations(iteration, data);
+          if(childIterations.length > 0) {
+            iteration.hasChildren = true;
+            iteration.children = childIterations;
+          }
+          return iteration;
+        });
+        return this.iterations;
+      })
+      .catch ((error: Error | any) => {
+        if (error.status === 401) {
+          this.notifyError('You have been logged out.', error);
+          this.auth.logout();
+        } else {
+          console.log('Fetch iteration API returned some error - ', error.message);
+          this.notifyError('Fetching iterations has from server has failed.', error);
+        }
+        return Observable.throw(new Error(error.message));
+      });
+  }
+
+  /**
    * Create new iteration
    * @param iterationUrl - POST url
    * @param iteration - data to create a new iteration

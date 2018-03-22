@@ -48,21 +48,17 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   private areaSource = this.store
     .select('listPage')
     .select('areas')
-    .do(a => {if (!a.length) this.store.dispatch(new AreaActions.Get())})
     .filter(a => !!a.length);
   private iterationSource = this.store
     .select('listPage')
     .select('iterations')
-    .do(i => {if (!i.length) this.store.dispatch(new IterationActions.Get())})
     .filter(i => !!i.length);
   private labelSource = this.store
     .select('listPage')
     .select('labels')
-    .do(i => {if (i === null) this.store.dispatch(new LabelActions.Get())});
   private collaboratorSource = this.store
     .select('listPage')
     .select('collaborators')
-    .do(i => {if (!i.length) this.store.dispatch(new CollaboratorActions.Get())})
     .filter(c => !!c.length);
   private workItemStateSource = this.store
     .select('listPage')
@@ -71,7 +67,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   private workItemTypeSource = this.store
     .select('listPage')
     .select('workItemTypes')
-    .do(i => {if (!i.length) this.store.dispatch(new WorkItemTypeActions.Get())})
     .filter(w => !!w.length);
   private workItemSource: Observable<WorkItemUI> =
     this.store

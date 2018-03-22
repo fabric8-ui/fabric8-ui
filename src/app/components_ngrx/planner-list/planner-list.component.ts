@@ -67,19 +67,20 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   private spaceSource = this.store
     .select('listPage')
     .select('space')
+    .do(s => {if (!s) this.store.dispatch(new SpaceActions.Get())})
     .filter(s => !!s);
   private areaSource = this.store
     .select('listPage')
     .select('areas')
-    .filter(a => !!a);
+    .filter(a => !!a.length);
   private iterationSource = this.store
     .select('listPage')
     .select('iterations')
-    .filter(i => !!i.length);
+    .filter(i => !!i.length)
   private labelSource = this.store
     .select('listPage')
     .select('labels')
-    .filter(l => l !== null);
+    .filter(i => i !== null)
   private collaboratorSource = this.store
     .select('listPage')
     .select('collaborators')
@@ -109,6 +110,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   private showTreeUI: boolean = false;
   private emptyStateConfig: any = {};
   private uiLockedList: boolean = false;
+  private uiLockedSidebar: boolean = false;
 
   @ViewChild('plannerLayout') plannerLayout: PlannerLayoutComponent;
   @ViewChild('containerHeight') containerHeight: ElementRef;
@@ -140,39 +142,31 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
       title: 'No Work Items Available'
     } as EmptyStateConfig;
 
-    this.store.dispatch(new SpaceActions.Get());
-
     this.eventListeners.push(
       this.spaceSource
-        .take(1)
-        .subscribe((space: Space) => {
-          this.store.dispatch(new IterationActions.Get());
-          this.store.dispatch(new GroupTypeActions.Get());
-          this.store.dispatch(new CollaboratorActions.Get());
-          this.store.dispatch(new AreaActions.Get());
-          this.store.dispatch(new WorkItemTypeActions.Get());
-          this.store.dispatch(new LabelActions.Get());
-        })
-    );
-
-    this.eventListeners.push(
-      Observable.combineLatest(
-        this.workItemTypeSource.take(1),
-        this.spaceSource.take(1),
-        this.areaSource.take(1),
-        this.iterationSource.take(1),
-        this.labelSource.take(1),
-        this.collaboratorSource.take(1),
-        this.routeSource
-      ).subscribe(([
+      .do(() => {
+        this.uiLockedSidebar = true;
+        this.uiLockedList = true;
+      })
+      .switchMap(s => {
+        return Observable.combineLatest(
+          this.workItemTypeSource,
+          this.areaSource,
+          this.iterationSource.take(1),
+          this.labelSource.take(1),
+          this.collaboratorSource,
+          this.routeSource
+        );
+      })
+      .subscribe(([
         workItemTypeSource,
-        spaceSource,
         areaSource,
         iterationSource,
         labelSource,
         collaboratorSource,
         queryParams
       ]) => {
+        this.uiLockedSidebar = false;
         this.uiLockedList = true;
         let exp = this.filterService.queryToJson(queryParams.q);
         // Check for tree view

@@ -66,6 +66,29 @@ export class GroupTypesService {
     });
   }
 
+  getGroupTypes2(url): Observable<GroupTypesModel[]> {
+    return this.http
+      .get(url)
+      .map (response => {
+        if (/^[5, 4][0-9]/.test(response.status.toString())) {
+          throw new Error('API error occured');
+        }
+        this.groupTypes = response.json().data;
+        this.setCurrentGroupType(this.groupTypes[0].relationships.typeList.data, this.groupTypes[0].attributes.name);
+        return this.groupTypes;
+      })
+      .catch ((error: Error | any) => {
+        if (error.status === 401) {
+          //this.notifyError('You have been logged out.', error);
+          this.auth.logout();
+        } else {
+          console.log('Fetch iteration API returned some error - ', error.message);
+          //this.notifyError('Fetching iterations has from server has failed.', error);
+        }
+        return Observable.throw(new Error(error.message));
+      });
+  }
+
   getFlatGroupList(): Observable<GroupTypesModel[]>{
     //this.mockData();
     if (this._currentSpace) {

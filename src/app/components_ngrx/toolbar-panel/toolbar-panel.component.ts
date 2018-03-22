@@ -9,7 +9,8 @@ import {
   ViewEncapsulation,
   Output,
   OnDestroy,
-  EventEmitter
+  EventEmitter,
+  ChangeDetectorRef
 } from '@angular/core';
 import {
   Router,
@@ -130,7 +131,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     private filterService: FilterService,
     private auth: AuthenticationService,
     private userService: UserService,
-    private store: Store<AppState>) {
+    private store: Store<AppState>,
+    private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -465,6 +467,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       })
       .subscribe(selected => {
         this.activeFilterFromSidePanel = selected;
+        this.cdr.markForCheck();
       })
     );
   }

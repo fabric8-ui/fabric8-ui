@@ -26,4 +26,9 @@ export class CollaboratorService {
       }
     });
   }
+
+  getCollaborators2(url: string): Observable<User[]> {
+    return this.http.get(url)
+      .map(resp => resp.json().data as User[]);
+  }
 }

@@ -27,13 +27,17 @@ export class CollaboratorEffects {
     private actions$: Actions,
     private collaboratorService: CollabService,
     private userService: UserService,
-    private notifications: Notifications
+    private notifications: Notifications,
+    private store: Store<AppState>
   ) {}
 
   @Effect() getCollaborators$: Observable<Action> = this.actions$
     .ofType(CollaboratorActions.GET)
-    .switchMap(action => {
-      return this.collaboratorService.getCollaborators()
+    .withLatestFrom(this.store.select('listPage').select('space'))
+    .switchMap(([action, space]) => {
+      return this.collaboratorService.getCollaborators2(
+          space.links.self + '/collaborators?page[offset]=0&page[limit]=1000'
+        )
         .map((collaborators: UserServiceModel[]) => {
           const collabM = new UserMapper();
           return collaborators.map(c => collabM.toUIModel(c))

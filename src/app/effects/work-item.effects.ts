@@ -150,14 +150,17 @@ export class WorkItemEffects {
       const state = wp.state;
       return this.workItemService.getWorkItems2(payload.pageSize, payload.filters)
         .map((data: any) => {
-          const wis = this.resolveWorkItems(data.workItems, state, payload.isShowTree);
+          let wis = [];
           if (payload.isShowTree) {
             const ancestors = data.ancestorIDs;
+            wis = this.resolveWorkItems(data.workItems, state, payload.isShowTree, ancestors);
             const wiIncludes = this.resolveWorkItems(
               data.included, state,
               false, ancestors
             );
             return [...wis, ...wiIncludes];
+          } else {
+            wis = this.resolveWorkItems(data.workItems, state, payload.isShowTree);
           }
           return [...wis];
         })

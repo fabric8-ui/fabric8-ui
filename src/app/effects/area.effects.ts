@@ -1,3 +1,4 @@
+import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import * as AreaActions from './../actions/area.actions';
@@ -18,13 +19,17 @@ export class AreaEffects {
   constructor(
     private actions$: Actions,
     private areaService: AService,
+    private store: Store<AppState>,
     private notifications: Notifications
   ){}
 
   @Effect() getAreas$: Observable<Action> = this.actions$
     .ofType(AreaActions.GET)
-    .switchMap(() => {
-      return this.areaService.getAreas()
+    .withLatestFrom(this.store.select('listPage').select('space'))
+    .switchMap(([action, space]) => {
+      return this.areaService.getAreas2(
+          space.relationships.areas.links.related
+        )
         .map((areas: AreaService[]) => {
           const aMapper = new AreaMapper();
           return new AreaActions.GetSuccess(

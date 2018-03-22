@@ -1,7 +1,8 @@
+import { AppState } from './../states/app.state';
 import { Injectable } from "@angular/core";
 import { Actions, Effect } from "@ngrx/effects";
 import { Observable } from "rxjs";
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { Notification, Notifications, NotificationType } from "ngx-base";
 
 import * as IterationActions from ".././actions/iteration.actions";
@@ -11,11 +12,11 @@ import{ IterationMapper, IterationUI } from "../models/iteration.model";
 
 @Injectable()
 export class IterationEffects {
-  constructor(
-    private actions$ : Actions,
-    private iterationService : IterationService,
-    private notifications: Notifications
-  ) {}
+  constructor( private actions$ : Actions,
+               private iterationService : IterationService,
+               private notifications: Notifications,
+               private store: Store<AppState> ) {
+  }
 
   resolveChildren(iterations: IterationUI[]): IterationUI[] {
     for(let i = 0; i < iterations.length; i++) {
@@ -27,8 +28,11 @@ export class IterationEffects {
 
   @Effect() getIterations$ : Observable<Action> = this.actions$
     .ofType(IterationActions.GET)
-    .switchMap(action => {
-      return this.iterationService.getIterations()
+    .withLatestFrom(this.store.select('listPage').select('space'))
+    .switchMap(([action, space]) => {
+      return this.iterationService.getIterations2(
+          space.relationships.iterations.links.related
+        )
         .map(iterations => {
            const itMapper = new IterationMapper();
            return iterations.map(it => itMapper.toUIModel(it));

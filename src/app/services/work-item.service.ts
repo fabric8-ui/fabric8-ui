@@ -608,6 +608,25 @@ export class WorkItemService {
     }
   }
 
+  getWorkItemTypes2(workItemTypeUrl): Observable<any[]> {
+    return this.http
+      .get(workItemTypeUrl)
+      .map((response) => {
+        let resultTypes = response.json().data as WorkItemType[];
+
+        // THIS IS A HACK!
+        for (let i=0; i<resultTypes.length; i++)
+          if (resultTypes[i].id==='86af5178-9b41-469b-9096-57e5155c3f31')
+            resultTypes.splice(i, 1);
+
+        this.workItemTypes = resultTypes;
+        return this.workItemTypes;
+      }).catch((error: Error | any) => {
+        this.notifyError('Getting work item type information failed.', error);
+        return Observable.throw(new Error(error.message));
+      });
+  }
+
   /**
    * Usage: This method is to fetch the work item types by ID
    */

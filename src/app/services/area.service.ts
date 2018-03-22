@@ -79,6 +79,39 @@ export class AreaService {
     }
   }
 
+  /**
+   * getAreas - We call this service method to fetch
+   * @param areaUrl - The url to get all the areas
+   * @return Observable of AreaModel[] - Array of areas
+   */
+  getAreas2(areaUrl): Observable<AreaModel[]> {
+    if (this.checkValidUrl(areaUrl)) {
+      return this.http
+        .get(areaUrl)
+        .map (response => {
+          if (/^[5, 4][0-9]/.test(response.status.toString())) {
+            throw new Error('API error occured');
+          }
+          return response.json().data as AreaModel[];
+        })
+        .map((data) => {
+          this.areas = data;
+          return this.areas;
+        })
+        .catch ((error: Error | any) => {
+          if (error.status === 401) {
+            //this.auth.logout(true);
+          } else {
+            console.log('Fetch area API returned some error - ', error.message);
+            return Promise.reject<AreaModel[]>([] as AreaModel[]);
+          }
+        });
+    } else {
+      this.logger.log('URL not matched');
+      return Observable.of<AreaModel[]>([] as AreaModel[]);
+    }
+  }
+
   getArea(area: any): Observable<AreaModel> {
     if (Object.keys(area).length) {
       let areaLink = area.data.links.self;
