@@ -38,6 +38,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     this.$('ul.item-ul.dropdown-list'),
     'Iteration select dropdown'
   );
+  iterationInput = new ui.TextInput(this.$('#valueSearchInput'), 'Iteration input');
   iterationSaveButton = new ui.Button(this.$('#iteration-dropdown .save-button'), 'Iteration save button');
   iterationCancelButton = new ui.Button(this.$('#iteration-dropdown .cancel-button'), 'Iteration cancel button');
 
@@ -125,6 +126,12 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.iterationDropdown.clickWhenReady();
     await this.iterationDropdown.select(iterationTitle);
     await this.iterationSaveButton.clickWhenReady();
+  }
+
+  async typeaHeadSearch(iterationTitle: string) {
+    await this.loadingAnimation.untilCount(0);
+    await this.iterationDropdown.clickWhenReady();
+    await this.iterationInput.enterText(iterationTitle);
   }
 
   private async addComment(comment: string) {

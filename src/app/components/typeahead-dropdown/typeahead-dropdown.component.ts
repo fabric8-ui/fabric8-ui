@@ -52,7 +52,7 @@ export class TypeaheadDropdown implements OnInit, OnChanges, OnDestroy {
   protected filteredValues: TypeaheadDropdownValue[] = [];
   protected selectedValue: TypeaheadDropdownValue;
   protected searchValue: boolean = false;
-  loggedIn: Boolean = false;
+  loggedIn: boolean = false;
   eventListeners: any[] = [];
 
   constructor(
@@ -95,6 +95,8 @@ export class TypeaheadDropdown implements OnInit, OnChanges, OnDestroy {
   protected open() {
     if (this.loggedIn) {
       this.searchValue = true;
+      this.proxyValues = cloneDeep(this.values);
+      this.filteredValues = this.proxyValues;
       this.onFocus.emit(this);
       // Takes a while to render the component
       setTimeout(() => {

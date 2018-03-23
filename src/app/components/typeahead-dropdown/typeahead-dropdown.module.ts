@@ -12,6 +12,7 @@ import { ModalModule } from 'ngx-modal';
 import { GroupTypesModule } from '../group-types-panel/group-types-panel.module';
 import { IterationModule } from '../iterations-panel/iterations-panel.module';
 import { TypeaheadDropdown } from './typeahead-dropdown.component';
+import { TruncateModule } from 'ng2-truncate';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { TypeaheadDropdown } from './typeahead-dropdown.component';
     IterationModule,
     ModalModule,
     RouterModule,
+    TruncateModule,
     WidgetsModule
   ],
   declarations: [

@@ -5,6 +5,8 @@ export class Constants {
   attribute2 = "Label";
   attribute3 = "Creator";
   attribute4 = "Assignees";
+  dropdownIteration1 = 'Iteration 0';
+  dropdownIteration2 = 'Iteration 1';
   iteration1 = '/Root Iteration/Iteration 0';
   iteration2 = '/Root Iteration/Iteration 1';
   label = 'Example Label 0';
@@ -31,4 +33,5 @@ export class Constants {
   user2 = "Example User 1";
   user_avatar = 'https://avatars.githubusercontent.com/u/2410471?v=3&s=20';
   comment = "new comment";
+  randomText = "zxz"
 }

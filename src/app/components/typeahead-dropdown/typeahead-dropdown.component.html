@@ -26,9 +26,9 @@
           [attr.data-value]="item.key"
           (click)="showValueOnInput(item)"
           [id]="item.key">
-          <a class="left-truncate">
+          <a>
             <span [ngClass]="item.cssLabelClass?item.cssLabelClass:''"
-              [innerHTML]="item.value | almSearchHighlight: valueSearch.value">
+              [innerHTML]="item.value | truncate : -25 | almSearchHighlight: valueSearch.value">
             </span>
           </a>
         </li>
