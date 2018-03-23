@@ -11,6 +11,7 @@ export class Constants {
   iteration2 = '/Root Iteration/Iteration 1';
   label = 'Example Label 0';
   label1 = 'Example Label 1';
+  label2 = 'sample_label_2';
   linkType = 'tests';
   newLabel = "new label";
   newIteration ='new Iteration';

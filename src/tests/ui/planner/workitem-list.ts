@@ -9,6 +9,11 @@ export class WorkItemList extends BaseElement {
   datatableHeaderdiv = new ui.BaseElement(this.$('.datatable-header'),'datatable header div');
   datatableHeaderCell = new ui.BaseElementArray(this.$$('datatable-header-cell'),'datatable header cell');
   datatableHeaderCellLabel = new ui.BaseElementArray(this.$$('datatable-header-cell-label'));
+  childWorkItemTypeDropdown = new ui.Dropdown(
+    this.$('.f8-quick-add-inline .dropdown-toggle'),
+    this.$('.f8-quick-add-inline .dropdown-menu'),
+    'Child WorkItem Type dropdown'
+  );
 
   constructor(el: ElementFinder, name = 'Work Item List') {
     super(el, name);
@@ -42,5 +47,10 @@ export class WorkItemList extends BaseElement {
   async getDataTableHeaderCellCount() {
     await this.datatableHeaderdiv.untilDisplayed();
     return await this.datatableHeaderCell.count();
+  }
+
+  async selectChildWorkItemType(type: string){
+    await this.childWorkItemTypeDropdown.clickWhenReady();
+    await this.childWorkItemTypeDropdown.select(type);
   }
 };
