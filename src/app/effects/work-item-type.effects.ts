@@ -33,7 +33,7 @@ export class WorkItemTypeEffects {
     .withLatestFrom(this.store.select('listPage').select('space'))
     .switchMap(([action, space]) => {
       return this.workItemService.getWorkItemTypes2(
-        space.links.self + '/workitemtypes'
+        space.relationships.workitemtypes.links.related
       )
       .map((types: WorkItemTypeService[]) => {
         const witm = new WorkItemTypeMapper();
