@@ -162,6 +162,13 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
       }
     }
 
+    // Setting state value from selected work item type
+    // This line can be removed when space template backend is in
+    // The backend will take care of setting the default state to
+    // a newly create work item
+    this.workItem.attributes['system.state'] =
+      this.selectedType.fields['system.state'].type.values[0];
+
     // Set the default iteration for new work item
     if (this.selectedIteration) {
       this.workItem.relationships.iteration = {

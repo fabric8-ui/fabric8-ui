@@ -2,6 +2,7 @@ import { LabelUI } from './../../models/label.model';
 import { IterationUI } from './../../models/iteration.model';
 import { AreaUI } from './../../models/area.model';
 import { UserUI } from './../../models/user';
+import { WorkItemTypeUI } from './../../models/work-item-type';
 import { AuthenticationService } from 'ngx-login-client';
 import { UrlService } from './../../services/url.service';
 import { GetWorkItem } from './../../actions/detail-work-item.actions';
@@ -110,6 +111,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   private _iterations: IterationUI[] = [];
   private iterations: any[] = []; // this goes in dropdown component
   private labels: LabelUI[] = [];
+  private wiTypes: WorkItemTypeUI[] = [];
 
   private loadingComments: boolean = true;
   private loadingTypes: boolean = false;
@@ -170,12 +172,12 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
         return this.combinedSources
       })
       .switchMap(([areas, iterations, labels, collabs, states, type]) => {
-        this.workItemStates = states;
         this.collaborators = collabs.filter(c => !c.currentUser);
         this.loggedInUser = collabs.find(c => c.currentUser);
         this._areas = areas;
         this._iterations = iterations;
         this.labels = labels;
+        this.wiTypes = type;
         this.store.dispatch(new DetailWorkItemActions.GetWorkItem({
           number: wiNumber
         }));
@@ -184,6 +186,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
       .filter(w => w !== null)
       .subscribe(workItem => {
         this.workItem = workItem;
+        const wiType = this.wiTypes.find(t => t.id === this.workItem.type.id);
+        this.workItemStates = wiType.fields['system.state'].type.values;
         this.setAreas();
         this.setIterations();
         this.loadingAssignees = false;
