@@ -8,7 +8,7 @@ import { IconMap } from './iconmap';
 
 export class AlmIconDirective implements OnInit, OnChanges {
   @Input() iconType: string = 'none';
-  
+
   constructor(private elementRef: ElementRef) {
   }
 
@@ -35,7 +35,7 @@ export class AlmIconDirective implements OnInit, OnChanges {
 
     existingClassNames.forEach((item: any) => {
       if (allClassesInMap.indexOf(item) > -1) {
-        element.classList.remove(item);             
+        element.classList.remove(item);
       }
     });
 
@@ -44,9 +44,9 @@ export class AlmIconDirective implements OnInit, OnChanges {
       element.setAttribute("style", "color:" + iconColor);
       IconMap[this.iconType].icon.forEach((item: any) => {
         element.classList.add(item);
-      });       
+      });
     } else {
-      iconColor = IconMap[this.iconType].color;
+      iconColor = IconMap['default'].color;
       element.setAttribute("style", "color:" + iconColor);
       IconMap['default'].icon.forEach((item: any) => {
         element.classList.add(item);
