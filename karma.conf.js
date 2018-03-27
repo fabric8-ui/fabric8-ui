@@ -9,7 +9,7 @@ module.exports = function(config) {
         ],
 
         plugins: [
-            'karma-phantomjs-launcher',
+            'karma-chrome-launcher',
             'karma-jasmine',
             'karma-typescript',
             'karma-coverage',
@@ -49,13 +49,18 @@ module.exports = function(config) {
                 'src/app/services/login.service.ts' // this requires some dependency from runtime, so exclude it
             ]
         },
-
         reporters: ['progress', 'karma-typescript', 'coverage'],
         coverageReporter: {
             reporters: [{type: 'lcov'}]
-          },
-        browsers: ['PhantomJS'],
-
+        },
+        // See https://github.com/karma-runner/karma-chrome-launcher/issues/158#issuecomment-339265457
+        browsers: ['ChromeHeadlessNoSandbox'],
+        customLaunchers: {
+          ChromeHeadlessNoSandbox: {
+            base: 'ChromeHeadless',
+            flags: ['--no-sandbox']
+          }
+        },
         singleRun: true
 
     });
