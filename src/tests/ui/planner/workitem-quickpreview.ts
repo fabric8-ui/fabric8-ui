@@ -56,6 +56,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   createLabelSaveButton = new ui.Button(this.createLabelDiv.$('.fa-check'),'create label save button');
 
   descriptionDiv = new ui.BaseElement(this.$('#wi-desc-div'), 'WorkItem Description Div');
+  descriptionEditIcon = new ui.Clickable(this.descriptionDiv.$('i'), 'WorkItem Description Edit icon');
   descriptionTextarea = new ui.TextInput(this.descriptionDiv.$('.editor-box'), 'WorkItem Description Input');
   descriptionSaveButton =  new ui.Button(
     this.descriptionDiv.$('.action-btn.btn-save'),
@@ -246,12 +247,26 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async updateDescription(description: string, append: boolean = false) {
-    await this.descriptionDiv.clickWhenReady();
+    await this.openDescriptionBox();
     if(!append) {
       await this.descriptionTextarea.clear();
     }
     await this.descriptionTextarea.enterText(description);
     await this.descriptionSaveButton.clickWhenReady();
+  }
+
+  async openDescriptionBox(){
+    await this.descriptionDiv.clickWhenReady();
+    await this.descriptionEditIcon.clickWhenReady();
+  }
+
+  async isSaveButtonDisplayed() {
+    try {
+      return await this.descriptionSaveButton.isDisplayed();
+    } 
+    catch (exception) {
+      return false;
+    }
   }
 
   async removeAssignee(assignee: string) {
