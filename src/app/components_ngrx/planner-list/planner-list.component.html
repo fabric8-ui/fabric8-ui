@@ -46,7 +46,7 @@
 
 <ng-template #sectionPanel>
   <div class="width-100 pull-left"
-    #toolbarHeight>
+    #toolbar>
     <toolbar-panel
       context="listview"
       [loggedInUser]="loggedInUser">
@@ -54,11 +54,10 @@
   </div>
 
   <!-- tableConfig Dropdown -->
-  <div class="width-100 pull-left padding-10 posRel">
+  <div class="width-100 pull-left padding-10 posRel" #quickaddWrapper>
     <div class="f8-wi-list__quick-add padding-right-15 margin-right-15"
       id="workItemList_up_quickAdd"
-      *ngIf="loggedIn && !!quickAddWorkItemTypes.length"
-      #quickaddHeight>
+      *ngIf="loggedIn && !!quickAddWorkItemTypes.length">
       <alm-work-item-quick-add
         [wilistview]="'wi-table-view-top'"
         [workItemTypes]="quickAddWorkItemTypes"
@@ -202,15 +201,15 @@
             <ng-template ngx-datatable-cell-tree-expander *ngIf="c.name==='Title'">
               <i class="fa fa-angle-right tree-icon"></i>
             </ng-template>
-            
+
             <ng-template ngx-datatable-cell-tree-collapser *ngIf="c.name==='Title'">
               <i class="fa fa-angle-down tree-icon"></i>
             </ng-template>
-            
+
             <ng-template ngx-datatable-cell-tree-disabled *ngIf="c.name==='Title'">
               <i class="fa fa-angle-right tree-icon tree-icon__disabled"></i>
             </ng-template>
-            
+
             <ng-template ngx-datatable-cell-tree-loader *ngIf="c.name==='Title'">
               <div class="spinner spinner-xs icon-loader margin-top-15"></div>
             </ng-template>

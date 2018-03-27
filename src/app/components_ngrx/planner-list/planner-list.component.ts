@@ -4,6 +4,7 @@ import {
   AfterViewChecked,
   Component,
   ElementRef,
+  HostListener,
   OnInit,
   OnDestroy,
   Renderer2,
@@ -111,9 +112,14 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   private emptyStateConfig: any = {};
   private uiLockedList: boolean = false;
   private uiLockedSidebar: boolean = false;
+  private hdrHeight: number = 0;
+  private toolbarHt: number = 0;
+  private quickaddHt: number = 0;
 
   @ViewChild('plannerLayout') plannerLayout: PlannerLayoutComponent;
-  @ViewChild('containerHeight') containerHeight: ElementRef;
+  @ViewChild('toolbar') toolbar: ElementRef;
+  @ViewChild('quickaddWrapper') quickaddWrapper: ElementRef;
+  @ViewChild('listContainer') listContainer: ElementRef;
   @ViewChild('myTable') table: any;
   @ViewChild('quickPreview') quickPreview: WorkItemPreviewPanelComponent;
 
@@ -129,12 +135,6 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   ) {}
 
   ngOnInit() {
-    setTimeout(() => {
-      this.resizeHeight();
-    }, 200);
-    window.addEventListener("resize", () => {
-      this.resizeHeight()
-    });
     const payload = {};
     let newFilterObj = {};
     this.emptyStateConfig = {
@@ -222,18 +222,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     );
   }
 
-  resizeHeight() {
-    const navElemnts = document.getElementsByTagName('nav');
-    const navHeight = navElemnts[0].offsetHeight;
-    const totalHeight = window.innerHeight;
-    this.renderer.setStyle(
-      this.containerHeight.nativeElement,
-      'height',
-      (totalHeight - navHeight) + "px");
-  }
-
    //ngx-datatable methods
-
    handleReorder(event) {
     if(event.newValue !== 0) {
       this.columns[event.prevValue - 1].index = event.newValue;
@@ -529,6 +518,19 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   ngAfterViewChecked() {
+    if(document.getElementsByClassName('navbar-pf').length > 0) {
+      this.hdrHeight = (document.getElementsByClassName('navbar-pf')[0] as HTMLElement).offsetHeight;
+    }
+    if(this.toolbar) {
+      this.toolbarHt =  this.toolbar.nativeElement.offsetHeight;
+    }
+    if(this.quickaddWrapper) {
+      this.quickaddHt =  this.quickaddWrapper.nativeElement.offsetHeight;
+    }
+    let targetHeight = window.innerHeight - (this.hdrHeight + this.toolbarHt + this.quickaddHt + 25); // add 25 for experimental bar height
+    if(this.listContainer) {
+      this.renderer.setStyle(this.listContainer.nativeElement, 'height', targetHeight + "px");
+    }
     // This hack is applied to get the titles in the list in order
     if (document.getElementsByClassName('planner-hack-title-truncate').length) {
       let arr = document.getElementsByClassName('planner-hack-title-truncate');
@@ -537,4 +539,6 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
       }
     }
   }
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {}
 }
