@@ -2,6 +2,8 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation }
 
 import { Subscription } from 'rxjs';
 
+import { FeatureTogglesService } from '../../feature-flag/service/feature-toggles.service';
+
 import { Contexts } from 'ngx-fabric8-wit';
 
 import { Codebase } from '../../space/create/codebases/services/codebase';
@@ -19,12 +21,19 @@ export class AddCodebaseWidgetComponent implements OnInit, OnDestroy {
   codebaseCount: number;
   contextPath: string;
   contextSubscription: Subscription;
+  newSpaceDashboardEnabled: boolean = false;
+  subscriptions: Subscription[] = [];
   @Output() addToSpace = new EventEmitter();
 
   constructor(
     private context: Contexts,
-    private codebaseService: CodebasesService
-  ) { }
+    private codebaseService: CodebasesService,
+    private featureTogglesService: FeatureTogglesService
+  ) {
+    this.subscriptions.push(featureTogglesService.getFeature('newSpaceDashboard').subscribe((feature) => {
+      this.newSpaceDashboardEnabled = feature.attributes['enabled'] && feature.attributes['user-enabled'];
+    }));
+  }
 
   ngOnInit() {
     this.contextSubscription = this.context.current.subscribe(context => {

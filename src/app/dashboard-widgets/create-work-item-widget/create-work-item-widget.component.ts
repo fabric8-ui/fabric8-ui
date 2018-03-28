@@ -7,6 +7,10 @@ import { Broadcaster } from 'ngx-base';
 import { Contexts } from 'ngx-fabric8-wit';
 import { UserService } from 'ngx-login-client';
 
+import { Subscription } from 'rxjs';
+
+import { FeatureTogglesService } from '../../feature-flag/service/feature-toggles.service';
+
 import { DummyService } from './../shared/dummy.service';
 
 class WorkItemFilter {
@@ -24,6 +28,9 @@ class WorkItemFilter {
 })
 export class CreateWorkItemWidgetComponent implements OnInit {
 
+  newSpaceDashboardEnabled: boolean = false;
+  subscriptions: Subscription[] = [];
+
   private _myWorkItems: ConnectableObservable<WorkItem[]>;
   myWorkItemsCount: Observable<number>;
   contextPath: Observable<string>;
@@ -33,8 +40,13 @@ export class CreateWorkItemWidgetComponent implements OnInit {
     private broadcaster: Broadcaster,
     private workItemService: WorkItemService,
     private userService: UserService,
-    private contexts: Contexts
-  ) { }
+    private contexts: Contexts,
+    private featureTogglesService: FeatureTogglesService
+  ) {
+    this.subscriptions.push(featureTogglesService.getFeature('newSpaceDashboard').subscribe((feature) => {
+      this.newSpaceDashboardEnabled = feature.attributes['enabled'] && feature.attributes['user-enabled'];
+    }));
+  }
 
   ngOnInit() {
     this.contextPath = this.contexts.current.map(context => context.path);

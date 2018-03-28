@@ -7,6 +7,8 @@ import { Context, Contexts, Space } from 'ngx-fabric8-wit';
 import { AuthenticationService } from 'ngx-login-client';
 import { Subscription } from 'rxjs';
 
+import { FeatureTogglesService } from '../../../feature-flag/service/feature-toggles.service';
+
 import { IWorkflow } from './models/workflow';
 
 @Component({
@@ -17,6 +19,9 @@ import { IWorkflow } from './models/workflow';
 })
 export class AnalyzeOverviewComponent implements OnInit, OnDestroy {
 
+  newSpaceDashboardEnabled: boolean = false;
+  subscriptions: Subscription[] = [];
+
   private _context: Context;
   private contextSubscription: Subscription;
   private selectedFlow: string;
@@ -26,9 +31,13 @@ export class AnalyzeOverviewComponent implements OnInit, OnDestroy {
   constructor(private modalService: BsModalService,
     private broadcaster: Broadcaster,
     private authentication: AuthenticationService,
-    private contexts: Contexts
+    private contexts: Contexts,
+    private featureTogglesService: FeatureTogglesService
   ) {
     this.selectedFlow = 'selectFlow';
+    this.subscriptions.push(featureTogglesService.getFeature('newSpaceDashboard').subscribe((feature) => {
+      this.newSpaceDashboardEnabled = feature.attributes['enabled'] && feature.attributes['user-enabled'];
+    }));
   }
   ngOnInit() {
     this.contextSubscription = this.contexts.current.subscribe(val => {
