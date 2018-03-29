@@ -352,10 +352,9 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
         this.allWorkItemTypes = workItemTypes;
         const selectedGroupType = groupTypes.find(gt => gt.selected);
         if (selectedGroupType) {
-          this.quickAddWorkItemTypes = workItemTypes.filter(type => {
-            return selectedGroupType
-              .typeList.findIndex(t => t.id === type.id) > -1;
-          })
+          this.quickAddWorkItemTypes = selectedGroupType.typeList.map(type => {
+            return workItemTypes.find(wit => wit.id === type.id);
+          });
         } else {
           this.quickAddWorkItemTypes = workItemTypes;
         }
