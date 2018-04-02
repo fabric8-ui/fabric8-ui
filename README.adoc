@@ -22,7 +22,7 @@ The Planner project provides a component library which is used by other applicat
 
 The Planner is available as an npm package. It can not be run by itself as it is an Angular component library.
 
-However, for development and testing purpose, a minimal runtime environment is available in the link:runtime[*_runtime_*] directory. So you can run Planner either as a minimal Standalone component or as an Integrated component using an external webapp like the *_fabric8-ui_*. Typically, you would want to develop in the Standalone mode and test your changes in the Integrated mode.
+However, for development and testing purpose, a minimal runtime environment is available in the link:runtime[*_runtime_*] directory. So you can run Planner either as a minimal Standalone component or as an Integrated component using an external webapp like the *_fabric8-ui_*. Typically, you would want to develop in the Standalone mode and test your changes in the Integrated mode. 
 
 === Quickstart
 
