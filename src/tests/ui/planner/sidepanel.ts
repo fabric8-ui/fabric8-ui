@@ -1,4 +1,4 @@
-import { $, ElementFinder, by} from 'protractor';
+import { $, ElementFinder, by, By, element} from 'protractor';
 import  *  as ui from './../../ui';
 import * as support from '../../support';
 
@@ -10,7 +10,8 @@ export class SidePanel extends ui.BaseElement {
   iterationDiv = new ui.BaseElement(this.$('.f8-itr'),'Iteration div');
   createIterationButton = new ui.Button(this.iterationDiv.$('#add-iteration-icon'), 'Side panel Add Iteration Button');
   iterationList = new ui.BaseElementArray(this.$$('.f8-itr__tree .f8-itr-name'),'Iteration list');
-  
+  iterationKebab = new ui.Button(this.$('.dropdown-toggle'), 'Side panel Iteration Kebab Dropdown');
+  editIteration = new ui.Clickable(this.element(by.cssContainingText('.f8-itr .dropdown.open ul>li','Edit')), 'Iteration Dropdown Edit Option');
 
   constructor(ele: ElementFinder, name: string = 'WorkItem List page Side Panel') {
     super(ele, name);
@@ -48,4 +49,13 @@ export class SidePanel extends ui.BaseElement {
     let iterationList = await this.iterationList.getTextWhenReady();
     return iterationList.indexOf(iteration) > -1;
   }
+
+  async selectIterationKebab(iterationName: string) {
+    return this.element(By.xpath("//iteration-list-entry[.//span[text()='"+ iterationName +"']]")).$('.dropdown-toggle').click();
+  }
+
+  async openIterationDialogue() {
+    await this.editIteration.clickWhenReady();
+  }
+
 }

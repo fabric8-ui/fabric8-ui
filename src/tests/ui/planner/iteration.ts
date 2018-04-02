@@ -20,4 +20,9 @@ export class Iteration extends ui.BaseElement {
     await this.parentDropdown.select(parentIteration);
     await this.createIterationButton.clickWhenReady();
   }
+
+  async editIteration(iterationName: string) {
+    await this.iterationName.enterText(iterationName);
+    await this.createIterationButton.clickWhenReady();
+  }
 }

@@ -12,7 +12,7 @@ export class WorkItemListEntry extends ui.BaseElement {
   inlineCloseButton = new ui.Clickable(this.$('.pficon-close'),'inline close');
   // TODO
   status: ui.BaseElement;
-  iteration: ui.BaseElement;
+  iteration= new ui.BaseElement(this.$('#table-iteration'), 'Table Workitem Iteration Name');
   creator: ui.BaseElement;
   assignees: ui.BaseElement;
 
@@ -34,5 +34,9 @@ export class WorkItemListEntry extends ui.BaseElement {
 
   async getInlineQuickAddClass() {
     return await this.inlineQuickAdd.getAttribute('className');
+  }
+
+  async getIterationText() {
+    return await this.iteration.getTextWhenReady();
   }
 }

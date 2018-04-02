@@ -8,6 +8,7 @@ import { Notification, Notifications, NotificationType } from "ngx-base";
 import * as IterationActions from ".././actions/iteration.actions";
 import { IterationService } from '.././services/iteration.service';
 import{ IterationMapper, IterationUI } from "../models/iteration.model";
+import { UpdateWorkitemIteration } from "../actions/work-item.actions";
 
 
 @Injectable()
@@ -108,8 +109,15 @@ export class IterationEffects {
           } catch (e) {
             console.log('Error displaying notification.')
           }
-          return new IterationActions.UpdateSuccess(iteration);
+          const payload = {
+            iteration: iteration
+          }
+          return [
+            new IterationActions.UpdateSuccess(iteration),
+            new UpdateWorkitemIteration(payload)
+          ];
         })
+        .switchMap(res => res)
         .catch(() => {
           try {
             this.notifications.message({

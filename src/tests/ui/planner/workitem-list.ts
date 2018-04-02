@@ -53,4 +53,8 @@ export class WorkItemList extends BaseElement {
     await this.childWorkItemTypeDropdown.clickWhenReady();
     await this.childWorkItemTypeDropdown.select(type);
   }
+
+  async iterationText(title: string) {
+    return await this.workItem(title).getIterationText();
+  }
 };

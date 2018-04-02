@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { WorkItemUI, WorkItemService } from './../models/work-item';
+import { IterationUI } from '../models/iteration.model';
 
 export const ADD = '[workItem] Add';
 export const GET = '[workItem] Get';
@@ -15,6 +16,7 @@ export const GET_CHILDREN_SUCCESS = '[workItem] GetChildrenSuccess';
 export const GET_CHILDREN_ERROR = '[workItem] GetChildrenError';
 export const REORDER = '[workItem] Reorder';
 export const REORDER_ERROR = '[workItem] ReorderError';
+export const UPDATE_WORKITEM_ITERATION= '[workItem] UpdateWorkitemIteration'
 
 export class Add implements Action {
   payload: {workItem: WorkItemService, createId: number, parentId: string};
@@ -124,6 +126,16 @@ export class Reoder implements Action {
   }) { this.payload = payload; }
 }
 
+export class UpdateWorkitemIteration implements Action {
+  readonly type = UPDATE_WORKITEM_ITERATION;
+  payload: {
+    iteration: IterationUI;
+  }
+  constructor(payload: {
+    iteration: IterationUI
+  }) { this.payload = payload; }
+}
+
 export type All
   = Add
   | Get
@@ -138,3 +150,4 @@ export type All
   | GetChildrenSuccess
   | GetChildrenError
   | Reoder
+  | UpdateWorkitemIteration
