@@ -14,7 +14,7 @@ toc::[]
 
 == Overview
 Fabric8 Planner is a task planner and the issue tracker front-end for link:https://openshift.io/[openshift.io].
-It uses the link:https://github.com/fabric8-services/fabric8-wit[Fabric8 Work Item Tracker] as the back-end.
+It uses the link:https://github.com/fabric8-services/fabric8-wit[Fabric8 Work Item Tracker] as the back-end. 
 
 The Planner project provides a component library which is used by other applications to provide a task planning front-end.
 
