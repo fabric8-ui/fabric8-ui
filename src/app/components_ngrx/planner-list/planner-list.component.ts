@@ -115,6 +115,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   private hdrHeight: number = 0;
   private toolbarHt: number = 0;
   private quickaddHt: number = 0;
+  private showCompleted: boolean = false;
 
   @ViewChild('plannerLayout') plannerLayout: PlannerLayoutComponent;
   @ViewChild('toolbar') toolbar: ElementRef;
@@ -178,6 +179,12 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
           exp['$OPTS'] = {'tree-view': false};
         }
 
+        if (!queryParams.hasOwnProperty('showCompleted') && !queryParams.showCompleted) {
+          this.showCompleted = false;
+          exp['$AND'].push({"state":{"$NE":"closed"}});
+        } else {
+          this.showCompleted = true;
+        }
 
         Object.assign(payload, {
           expression: exp

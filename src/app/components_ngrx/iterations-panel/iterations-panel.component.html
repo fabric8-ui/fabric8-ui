@@ -32,10 +32,8 @@
           <a
           [routerLinkActive]="'f8-itr--selected'"
           [routerLink]="[]" [attr.data-id]="iteration.id"
-          [queryParams]="showTree ?
-              { q: constructURL(iteration.id), showTree: showTree } :
-              { q: constructURL(iteration.id) }">
-              <span id="{{iteration.resolvedParentPath +
+          [queryParams]="addRemoveQueryParams(iteration.id)">
+              <span id="{{ iteration.resolvedParentPath +
                   '/' + iteration.name }}">
                 {{iteration.resolvedParentPath +
                   '/' + iteration.name | truncate : -20   }}
@@ -77,6 +75,7 @@
         [collection]="collection"
         [witGroup]="witGroup"
         [showTree]="showTree"
+        [showCompleted]="showCompleted"
         (onEditIteration)="onEdit($event)"
         (onCloseIteration)="onClose($event)"
         (onCreateIteration)="onCreateChild($event)">

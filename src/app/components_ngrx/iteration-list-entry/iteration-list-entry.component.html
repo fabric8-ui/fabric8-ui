@@ -14,10 +14,8 @@
     <div class="truncate padding-right-15"
       (click)="setGuidedTypeWI(collection)">
       <a [routerLink]="[]"
-        [queryParams]="showTree ?
-          { q: constructURL(iteration.id), showTree: showTree } :
-          { q: constructURL(iteration.id) }">
-        <span class="f8-itr-name truncate">{{iteration.name | truncate : 15 }}</span>
+        [queryParams]="addRemoveQueryParams(iteration.id)">
+        <span class="f8-itr-name truncate">{{iteration.name | truncate : 15}}</span>
         <span
           *ngIf="iteration.isActive"
           class="active-tag">

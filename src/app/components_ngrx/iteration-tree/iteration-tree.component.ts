@@ -20,6 +20,7 @@ export class IterationTreeComponent {
   @Input() collection: any;
   @Input() witGroup: string = '';
   @Input() showTree: string = '';
+  @Input() showCompleted: string = '';
 
   @Output() onEditIteration = new EventEmitter<IterationUI>();
   @Output() onCloseIteration = new EventEmitter<IterationUI>();

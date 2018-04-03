@@ -1,4 +1,4 @@
-<header class="toolbar-header">
+<div class="toolbar-header">
   <pfng-toolbar
     [config]="toolbarConfig"
     [actionTemplate]="actionsTemplate"
@@ -7,7 +7,7 @@
     (onFilterFieldSelect)="selectFilterType($event)"
     (onFilterTypeAhead)="filterQueries($event)">
   </pfng-toolbar>
-</header>
+</div>
 <div class="active-filters-section">
   <div *ngIf="activeFilters.length" class="active-filters-div">
     <ul class="list-inline">
@@ -34,8 +34,17 @@
 </ng-template>
 <ng-template #addTemplate>
   <input type="checkbox"
+    name="show completed" id="showCompleted"
+    [checked]="isShowCompletedOn"
+    (change)="showCompletedToggle($event)"
+    [disabled]="isStateFilterSelected">
+  <label class="show-close__label checkbox-label"
+    for="showCompleted"
+    [class.inactive]="isStateFilterSelected">&nbsp;Show Completed</label>
+
+  <input type="checkbox"
     [checked]="isShowTreeOn"
     (change)="showTreeToggle($event)"
     name="Show Tree" id="showTree">
-  <label class="show-tree__label" for="showTree">&nbsp;Show Tree</label>
+  <label class="show-tree__label checkbox-label" for="showTree">&nbsp;Show Tree</label>
 </ng-template>

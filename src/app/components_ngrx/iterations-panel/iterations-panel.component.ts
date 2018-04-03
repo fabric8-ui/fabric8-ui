@@ -38,6 +38,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() sidePanelOpen: boolean = true;
   @Input() witGroup: string = '';
   @Input() showTree: string = '';
+  @Input() showCompleted: string = '';
 
   @ViewChild('modal') modal: FabPlannerIterationModalComponent;
 
@@ -125,6 +126,30 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     //this.setGroupType(witGroup);
     //second_join gives json object
     return this.filterService.jsonToQuery(third_join);
+  }
+
+  addRemoveQueryParams(iterationId: string) {
+    if (this.showCompleted && this.showTree) {
+      return {
+        q: this.constructURL(iterationId),
+        showTree: this.showTree,
+        showCompleted: this.showCompleted
+      }
+    } else if (this.showTree) {
+      return {
+        q: this.constructURL(iterationId),
+        showTree: this.showTree
+      }
+    } else if (this.showCompleted) {
+      return {
+        q: this.constructURL(iterationId),
+        showCompleted: this.showCompleted
+      }
+    } else {
+      return {
+        q: this.constructURL(iterationId)
+      }
+    }
   }
 
   getAndfilterIterations() {
