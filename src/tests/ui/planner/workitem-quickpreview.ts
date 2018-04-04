@@ -258,14 +258,14 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async openDescriptionBox(){
-    await this.descriptionDiv.clickWhenReady();
+    await browser.actions().mouseMove(this.descriptionDiv).perform();
     await this.descriptionEditIcon.clickWhenReady();
   }
 
   async isSaveButtonDisplayed() {
     try {
       return await this.descriptionSaveButton.isDisplayed();
-    } 
+    }
     catch (exception) {
       return false;
     }
