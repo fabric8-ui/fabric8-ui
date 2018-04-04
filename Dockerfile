@@ -24,7 +24,7 @@ ENV NODE_VERSION 8.3.0
 
 RUN yum -y update && \
     yum install -y bzip2 fontconfig tar java-1.8.0-openjdk nmap-ncat psmisc gtk3 git \
-      python-setuptools xorg-x11-xauth wget unzip which \
+      python-setuptools xorg-x11-xauth wget unzip which gcc-c++ \
       xfonts-100dpi libXfont GConf2 \
       xorg-x11-fonts-75dpi xfonts-scalable xfonts-cyrillic \
       ipa-gothic-fonts xorg-x11-utils xorg-x11-fonts-Type1 xorg-x11-fonts-misc && \
@@ -47,12 +47,10 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 #  && yum install -y firefox \
 #  && npm install -g karma-firefox-launcher
 
-RUN npm install -g jasmine-node protractor
-
 COPY runtime/tests/google-chrome.repo /etc/yum.repos.d/google-chrome.repo
+
 RUN yum install -y google-chrome-stable
 
-ENV DISPLAY=:99
 ENV FABRIC8_USER_NAME=fabric8
 
 RUN useradd --user-group --create-home --shell /bin/false ${FABRIC8_USER_NAME}
@@ -64,14 +62,3 @@ RUN mkdir $WORKSPACE
 COPY . $WORKSPACE
 
 WORKDIR $WORKSPACE/
-
-RUN npm install \
- && npm run build \
- && cd runtime \
- && npm install \
- && npm link ../dist
-
-VOLUME /dist
-EXPOSE 8080
-
-CMD cd /home/fabric8/fabric8-planner/runtime ; npm start

@@ -104,7 +104,9 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.closeButton.ready();
     await this.titleDiv.ready();
     await this.descriptionDiv.ready();
-    await this.linksToggleButton.ready();
+    // We do not have the link button in current planner
+    // Uncomment when workitem linking is implemented
+    // await this.linksToggleButton.ready();
     await this.commentsToggleButton.ready();
     support.debug('... check if WorkItem preview is Ready - OK');
   }

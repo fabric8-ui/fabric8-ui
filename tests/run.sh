@@ -59,8 +59,8 @@ start_webdriver() {
   # Start selenium server just for this test run
   log.info "Starting Webdriver and Selenium..."
   log.info "Webdriver will log to:$GREEN $log_file"
-  npm run webdriver:update
-  npm run webdriver:start >> "$log_file" 2>&1 &
+  npm run webdriver:update -- --versions.chrome $WEBDRIVER_VERSION
+  npm run webdriver:start -- --versions.chrome $WEBDRIVER_VERSION >> "$log_file" 2>&1 &
   webdriver_pid=$!
 }
 

@@ -58,6 +58,7 @@ describe('Planner Smoke Tests:', () => {
 
   it('Check WorkItem creator name and image is reflected', async () => {
     await planner.workItemList.clickWorkItem(c.workItemTitle1);
+    await planner.quickPreview.ready();
     expect(await planner.quickPreview.hasCreator(c.user1)).toBeTruthy();
     expect(await planner.quickPreview.hasCreatorAvatar(c.user_avatar)).toBeTruthy()
     await planner.quickPreview.close();
