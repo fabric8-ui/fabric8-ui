@@ -128,6 +128,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     let aDayBeforeDate = { date: { year: aDayBefore.format('YYYY'), month: aDayBefore.format('M'), day: aDayBefore.format('D') }} as any;
     endDatePickerComponentCopy['disableUntil'] = aDayBeforeDate.date;
     startDatePickerComponentCopy['componentDisabled'] = false;
+    startDatePickerComponentCopy['disableSince'] = {year: 0, month: 0, day: 0};
     this.startDatePickerOptions = startDatePickerComponentCopy;
     this.endDatePickerOptions = endDatePickerComponentCopy;
     this.validationError = false;
@@ -228,8 +229,13 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   onStartDateChanged(event: IMyDateModel) {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
     // Format 2016-11-29T23:18:14Z
-    this.startDate = { date: event.date };
-    this.iteration.startAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T12:00:00Z';
+    if (event.jsdate !== null) {
+      this.startDate = { date: event.date };
+      this.iteration.startAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T12:00:00Z';
+    } else {
+      this.startDate = '';
+      this.iteration.startAt = '';
+    }
 
     let endDatePickerComponentCopy = Object.assign({}, this.endDatePickerOptions);
     endDatePickerComponentCopy['disableUntil'] = event.date;
@@ -238,8 +244,13 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
 
   onEndDateChanged(event: IMyDateModel) {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
-    this.endDate = { date: event.date };
-    this.iteration.endAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T12:00:00Z';
+    if (event.jsdate !== null) {
+      this.endDate = { date: event.date };
+      this.iteration.endAt = moment(event.jsdate).format('YYYY-MM-DD') + 'T12:00:00Z';
+    } else {
+      this.endDate = '';
+      this.iteration.endAt = '';
+    }
     let startDatePickerComponentCopy = Object.assign({}, this.startDatePickerOptions);
     startDatePickerComponentCopy['disableSince'] = event.date;
     this.startDatePickerOptions = startDatePickerComponentCopy;
