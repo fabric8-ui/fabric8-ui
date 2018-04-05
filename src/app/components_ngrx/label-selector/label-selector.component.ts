@@ -58,7 +58,8 @@ export class LabelSelectorComponent implements OnInit {
   }
 
   @Input('selectedLabels') set selectedLabelsSetter(labels: LabelUI[]) {
-    this.selectedLabels = labels;
+    this.selectedLabels = cloneDeep(labels);
+    this._selectedLabelsBackup = cloneDeep(labels);
     this.updateSelection();
   }
 
@@ -76,6 +77,7 @@ export class LabelSelectorComponent implements OnInit {
   private searchValue: string = '';
   private allLabels: LabelUI[] = [];
   private selectedLabels: LabelUI[] = [];
+  private _selectedLabelsBackup: LabelUI[] = [];
 
   constructor(
     private labelService: LabelService,
@@ -182,7 +184,15 @@ export class LabelSelectorComponent implements OnInit {
   }
 
   onClose(event) {
-    this.onCloseSelector.emit(cloneDeep(this.selectedLabels));
+    const compare1 = this.selectedLabels.filter(i => this._selectedLabelsBackup.findIndex(
+      b => b.id === i.id
+    ) === -1);
+    const compare2 = this._selectedLabelsBackup.filter(i => this.selectedLabels.findIndex(
+      b => b.id === i.id
+    ) === -1);
+    if (compare1.length !== 0 || compare2.length !== 0) {
+      this.onCloseSelector.emit(cloneDeep(this.selectedLabels));
+    }
   }
 
   openDropdown() {
