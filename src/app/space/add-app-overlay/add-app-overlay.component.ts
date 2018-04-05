@@ -24,6 +24,7 @@ export class AddAppOverlayComponent implements OnDestroy, OnInit {
   currentSpace: Space;
   loggedInUser: User;
   projectName: string = '';
+  selectedFlow: string = '';
   spaces: Space[] = [];
   subscriptions: Subscription[] = [];
 
@@ -58,22 +59,19 @@ export class AddAppOverlayComponent implements OnDestroy, OnInit {
   }
 
   /**
-   * Helper to route to create app
+   * Helper to update launcher selection
    */
-  routeToCreateApp(): void {
-    this.router.navigate(['/',
-      this.loggedInUser.attributes.username, this.currentSpace.attributes.name,
-      'applauncher', 'createapp', this.projectName]);
-    this.hideAddAppOverlay();
+  updateLauncherFlowSelection(selLaunch: string): void {
+    this.selectedFlow = selLaunch;
   }
 
   /**
-   * Helper to route to create app
+   * Helper to route to create/import app
    */
-  routeToImportApp(): void {
+  routeToLaunchApp(): void {
     this.router.navigate(['/',
       this.loggedInUser.attributes.username, this.currentSpace.attributes.name,
-      'applauncher', 'importapp', this.projectName]);
+      'applauncher', this.selectedFlow, this.projectName]);
     this.hideAddAppOverlay();
   }
 }

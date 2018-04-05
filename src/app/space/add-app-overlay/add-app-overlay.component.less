@@ -41,6 +41,7 @@ input,
   }
   .code-imports {
     color: @color-pf-white;
+    overflow-y: auto;
     .alert-danger {
       background-color: transparent;
       border: none;
@@ -74,19 +75,27 @@ input,
         margin-bottom: 10px;
       }
       &_content {
-        height: 350px;
         background-color: transparent;
         color: @color-pf-white;
         border: 0;
         &:hover {
           box-shadow: 0 1px 6px rgba(255, 255, 255, .35);
         }
-        i {
-          position: absolute;
-          right: 0;
-          bottom: 25px;
-          left: 0;
-          font-size: 8em;
+        .codebase-card-container {
+          height: 200px;
+          display: flex;
+          align-items: center;
+          &-radio {
+            height: 70%;
+            &-input {
+              display: flex;
+              align-items: center;
+              height: 70%;
+            }
+          }
+          &-desp {
+            height: 100%;
+          }
         }
       }
       &_toolbar {
@@ -102,6 +111,19 @@ input,
           background: transparent !important;
           /* stylelint-enable */
         }
+      }
+    }
+    .sticky.close {
+      color: @color-pf-white;
+      position: fixed;
+      right: 30px;
+      top: 71px;
+      z-index: 1030;
+      .pficon {
+        background: @color-pf-black-900;
+        border: 3px solid @color-pf-black-900;
+        border-radius: 50%;
+        padding: 2px 4px;
       }
     }
   }
