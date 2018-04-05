@@ -29,8 +29,6 @@ import { WorkItemService } from '../../services/work-item.service';
 })
 export class AssigneeSelectorComponent {
 
-  @ViewChild('userSearch') userSearch: any;
-  @ViewChild('userList') userList: any;
   @ViewChild('dropdown') dropdownRef: SelectDropdownComponent;
 
   @Input() loggedInUser: UserUI;

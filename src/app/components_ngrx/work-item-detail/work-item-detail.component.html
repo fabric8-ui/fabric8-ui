@@ -1,9 +1,9 @@
 <div [class.f8-wi-container]="detailContext=='detail'">
-  <form class="f8-detail form-horizontal work-item-page" 
-    id="wi-detail-form" 
+  <form class="f8-detail form-horizontal work-item-page"
+    id="wi-detail-form"
     *ngIf="workItem">
     <fieldset>
-      <div class="f8-detail__header" 
+      <div class="f8-detail__header"
         #detailHeader>
         <span
           class="pficon-close pull-right close f8-detail--close"
@@ -20,7 +20,7 @@
             <div class="dropdown-kebab-pf detail-type-dropdown">
               <span
                 class="margin-right-5 {{workItem.type.icon}} fa-lg"
-                id="wi-type-icon" 
+                id="wi-type-icon"
                 title="{{workItem.type.name}}">
               </span>
               {{workItem.type.name}}
@@ -46,16 +46,16 @@
                 <span class="caret pull-right margin-top-7"
                   *ngIf="loggedIn"></span>
               </button>
-              <ul class="dropdown-ul dropdown-menu" 
-                id="wi-status-dropdown" 
-                role="menu" 
+              <ul class="dropdown-ul dropdown-menu"
+                id="wi-status-dropdown"
+                role="menu"
                 *dropdownMenu>
-                <li class="dropdown-li" 
+                <li class="dropdown-li"
                   (click)="onChangeState(state)"
                   *ngFor="let state of workItemStates">
                   <a>
-                    <span class='dropdown-icon' 
-                      almIcon 
+                    <span class='dropdown-icon'
+                      almIcon
                       [iconType]="state">
                     </span>
                     <span class='dropdown-text'>{{state}}</span>
@@ -63,8 +63,8 @@
                 </li>
               </ul>
             </div>
-            <a class="pull-right" 
-              [routerLink]="[constructUrl(workItem)]" 
+            <a class="pull-right"
+              [routerLink]="[constructUrl(workItem)]"
               [queryParams]="queryParams">
               View full details
                 <span class="fa fa-list-alt"></span>
@@ -73,7 +73,7 @@
         </div>
         <div *ngIf="detailContext=='detail'">
           <div class="pull-left margin-right-15">
-            <div class="dropdown pull-left" 
+            <div class="dropdown pull-left"
               dropdown *ngIf="loggedIn">
               <button class="btn btn-default dropdown-toggle padding-h-10 width-100"
                 id="wi-detail-state"
@@ -89,15 +89,15 @@
                 <span class="caret pull-right margin-top-7"
                   *ngIf="loggedIn"></span>
               </button>
-              <ul class="dropdown-ul dropdown-menu" 
-                role="menu" 
+              <ul class="dropdown-ul dropdown-menu"
+                role="menu"
                 *dropdownMenu>
-                <li class="dropdown-li" 
+                <li class="dropdown-li"
                   (click)="onChangeState(state)"
                   *ngFor="let state of workItemStates">
                   <a>
-                    <span class='dropdown-icon' 
-                      almIcon 
+                    <span class='dropdown-icon'
+                      almIcon
                       [iconType]="state">
                     </span>
                     <span class='dropdown-text'>{{state}}</span>
@@ -164,7 +164,7 @@
                 <span *ngIf="loadingAssignees"
                   class="spinner spinner-sm spinner-inline">
                 </span>
-                <f8-assignee *ngIf="!loadingAssignees" 
+                <f8-assignee *ngIf="!loadingAssignees"
                   [showFullName]="true"
                   [assignees]="workItem?.assignees ?
                     workItem?.assignees : []">
@@ -191,7 +191,7 @@
               </label>
               <div class="f8-detail__content">
                 <span *ngIf="!workItem?.creator"
-                  class="pficon pficon-user user-creator-icon" 
+                  class="pficon pficon-user user-creator-icon"
                   id="user_creator_icon">
                 </span>
                 <div class="user-avatar pull-left margin-right-10">
@@ -221,20 +221,25 @@
                 <span *ngIf="loadingArea"
                   class="spinner spinner-sm spinner-inline">
                 </span>
-                <typeahead-dropdown 
+                <common-selector
+                  *ngIf="!loadingArea"
+                  [noValueLabel]="'None'"
                   class="area-dropdown"
-                  #areaSelectbox
+                  [items]="areas"
+                  [selectedItems]="selectedAreas"
+                  (onCloseSelector)="areaUpdated($event)">
+                </common-selector>
+                <!-- <typeahead-dropdown #areaSelectbox
                   *ngIf="!loadingArea"
                   id="area-dropdown"
-                  noValueLabel="None" 
+                  noValueLabel="None"
                   [values]="areas"
                   (onFocus)="focusArea()"
                   (onUpdate)="areaUpdated($event)">
-                </typeahead-dropdown>
+                </typeahead-dropdown> -->
               </div>
             </section>
           </div>
-
           <!-- Iteration -->
           <div class="form-group">
             <section class="f8-detail__area">
@@ -242,70 +247,75 @@
                 {{workItem.type.fields['system.iteration']?.label || 'Label'}}
               </label>
               <div class="f8-detail__content">
-                <span *ngIf="loadingIteration"
+                  <span *ngIf="loadingIteration"
                     class="spinner spinner-sm spinner-inline">
                   </span>
-                  <typeahead-dropdown
-                    class="iteration-dropdown"
+                  <common-selector
                     *ngIf="!loadingIteration"
-                    id="iteration-dropdown" 
-                    #iterationSelectbox 
-                    noValueLabel="None" 
-                    [values]="iterations"
-                    (onFocus)="focusIteration()" 
-                    (onUpdate)="iterationUpdated($event)">
-                  </typeahead-dropdown>
+                    [noValueLabel]="'None'"
+                    class="iteration-dropdown"
+                    [items]="iterations"
+                    [selectedItems]="selectedIterations"
+                    (onCloseSelector)="iterationUpdated($event)">
+                  </common-selector>
+                  <!-- <typeahead-dropdown
+                    *ngIf="!loadingIteration"
+                    class="iteration-dropdown"
+                    #iterationSelectbox noValueLabel="None" [values]="iterations"
+                    (onFocus)="focusIteration()" (onUpdate)="iterationUpdated($event)">
+                  </typeahead-dropdown> -->
               </div>
             </section>
           </div>
-        
-        <!--Lables-->
-        <div class="form-group">
-          <section class="f8-detail__labels">
-            <label class="pull-left padding-left-15 control-label ">
-              {{workItem.type.fields['system.labels']?.label || 'Label'}}
-            </label>
-            <div class="f8-detail__content">
-              <span *ngIf="loadingLabels"
-                class="spinner spinner-sm spinner-inline">
-              </span>
-              <f8-label *ngIf="!loadingLabels"
-                [labels]='workItem?.labels ?
-                  workItem?.labels : []'
-                (onRemoveLabel)="removeLable($event)"
-                [allowDelete]="true"
-                [context]="detailContext">
-              </f8-label>
-              <div class="f8-detail__labels--selector" *ngIf="loggedIn">
-                <label-selector
-                  [allLabels]="labels"
-                  [selectedLabels]="workItem?.labels ?
-                    workItem?.labels : []"
-                  (onCloseSelector)="updateLabels($event)">
-                </label-selector>
-              </div>
-            </div>
-          </section>
-        </div>
 
-        <!-- Description -->
-        <div class="form-group">
-          <section class="f8-detail__area">
-            <label class="pull-left padding-left-15 control-label">
-              Description
-            </label>
-            <div class="f8-detail__content">
-              <f8-markdown
-                id="wi-desc-div"
-                [editAllow]="loggedIn"
-                [rawText]="workItem.description"
-                [renderedText]="workItem.descriptionRendered"
-                (onSaveClick)="descUpdate($event)"
-                (showPreview)="showPreview($event)" #descMarkdown>
-              </f8-markdown>
-            </div>
-          </section>
-        </div>
+          <!--Lables-->
+          <div class="form-group">
+            <section class="f8-detail__labels">
+              <label class="pull-left padding-left-15 control-label ">
+                {{workItem.type.fields['system.labels']?.label || 'Label'}}
+              </label>
+              <div class="f8-detail__content">
+                <span *ngIf="loadingLabels"
+                  class="spinner spinner-sm spinner-inline">
+                </span>
+                <f8-label *ngIf="!loadingLabels"
+                  [labels]='workItem?.labels ?
+                    workItem?.labels : []'
+                  (onRemoveLabel)="removeLable($event)"
+                  [allowDelete]="true"
+                  [context]="detailContext">
+                </f8-label>
+                <div class="f8-detail__labels--selector"
+                  *ngIf="loggedIn">
+                  <label-selector
+                    [allLabels]="labels"
+                    [selectedLabels]="workItem?.labels ?
+                      workItem?.labels : []"
+                    (onCloseSelector)="updateLabels($event)">
+                  </label-selector>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <section class="f8-detail__area">
+              <label class="pull-left padding-left-15 control-label">
+                Description
+              </label>
+              <div class="f8-detail__content">
+                <f8-markdown
+                  id="wi-desc-div"
+                  [editAllow]="loggedIn"
+                  [rawText]="workItem.description"
+                  [renderedText]="workItem.descriptionRendered"
+                  (onSaveClick)="descUpdate($event)"
+                  (showPreview)="showPreview($event)" #descMarkdown>
+                </f8-markdown>
+              </div>
+            </section>
+          </div>
         </div>
         <div class="col-xs-12 col-sm-12 padding-0"
           [class.f8-detail__detail-wrap--right]="detailContext=='detail'"
@@ -325,7 +335,7 @@
             [loggedIn]="loggedIn">
           </work-item-comment-wrapper>
         </div>
-      </div> 
+      </div>
     </fieldset>
   </form>
 </div>
