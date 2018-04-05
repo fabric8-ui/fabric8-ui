@@ -1,0 +1,30 @@
+<f8-select-dropdown
+  id="f8-selector-dropdown"
+  #dropdown
+  *ngIf="menuItems.length"
+  [toggleButtonRef]="toggleButtonRef"
+  [dropdownItem]="dropdownItem"
+  [headerText]="headerText"
+  [menuItems]="menuItems"
+  [showSearch]="backup.length > 5"
+  (onSelect)="onSelect($event)"
+  (onSearch)="onSearch($event)"
+  (onOpen)="onOpen($event)"
+  (onClose)="onClose($event)">
+  <ng-template #toggleButtonRef>
+    <span
+      class="clickable"
+      *ngFor="let item of _selectedItemsBackup">
+      {{item.value}}
+    </span>
+    <span *ngIf="!_selectedItemsBackup.length" class="clickable">
+      {{noValueLabel}}
+    </span>
+  </ng-template>
+  <ng-template #dropdownItem let-value="value"
+    let-src="src + '&s=20'"
+    let-stickontop="stickontop">
+    <span *ngIf="!stickontop" [innerHTML]="value | almSearchHighlight: searchValue">
+    </span>
+  </ng-template>
+</f8-select-dropdown>
