@@ -317,6 +317,17 @@
             </section>
           </div>
         </div>
+
+        <div class="width-100 pull-left dynamic-fields-wrap">
+          <!-- Extra fields Start -->
+          <div *ngFor="let attributeDesc of dynamicFormDataArray" class="form-group">
+            <alm-dynamic-field [attributeDesc]="attributeDesc"
+              [form]="dynamicFormGroup"
+              (onUpdate)="dynamicFieldUpdated($event)"></alm-dynamic-field>
+          </div>
+          <!-- Extra fields End -->
+        </div>
+
         <div class="col-xs-12 col-sm-12 padding-0"
           [class.f8-detail__detail-wrap--right]="detailContext=='detail'"
           [class.f8-detail__detail-wrap]="detailContext=='detail'"

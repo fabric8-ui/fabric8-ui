@@ -1,3 +1,5 @@
+import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
+import { FormGroup } from '@angular/forms';
 import { LabelUI } from './../../models/label.model';
 import { IterationUI } from './../../models/iteration.model';
 import { AreaUI } from './../../models/area.model';
@@ -123,6 +125,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   private loadingAssignees: boolean = false;
   private loggedInUser: UserUI = null;
   private listenToEsc: boolean = false;
+  private dynamicFormGroup: FormGroup;
+  private dynamicFormDataArray: any;
 
   constructor(
     private store: Store<AppState>,
@@ -131,7 +135,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     private urlService: UrlService,
     private auth: AuthenticationService,
     private renderer: Renderer2,
-    private workItemService: WorkItemService
+    private workItemService: WorkItemService,
+    private workItemTypeControlService: WorkItemTypeControlService,
   ) {
 
   }
@@ -204,6 +209,12 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
         this.loadingArea = false;
         this.loadingIteration = false;
         this.loadingLabels = false;
+
+        // init dynamic form
+        if (this.workItem.type) {
+          this.dynamicFormGroup = this.workItemTypeControlService.toFormGroup(this.workItem);
+          this.dynamicFormDataArray = this.workItemTypeControlService.toAttributeArray(this.workItem.type.fields);
+        }
 
         if((this.detailContext === 'preview')
         && (this.descMarkdown)) {
@@ -385,6 +396,10 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
 
     workItem['description'] = rawText;
     this.store.dispatch(new WorkItemActions.Update(workItem));
+  }
+
+  dynamicFieldUpdated($event) {
+    console.log('####-1', $event);
   }
 
   @HostListener('window:keydown', ['$event'])

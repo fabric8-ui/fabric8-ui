@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators, ValidatorFn, AbstractControl } from
 
 import { Logger } from 'ngx-base';
 
-import { WorkItem } from '../models/work-item';
+import { WorkItemUI } from '../models/work-item';
 import { WorkItemType } from '../models/work-item-type';
 
 /**
@@ -30,7 +30,8 @@ export class WorkItemTypeControlService {
     'system.state',
     'system.title',
     'system.updated_at',
-    'system.labels'
+    'system.labels',
+    'system.number'
   ];
 
   constructor(private log: Logger) { }
@@ -57,14 +58,14 @@ export class WorkItemTypeControlService {
   }
 
   // create the FormGroup with the FormControl instances
-  toFormGroup(workItem: WorkItem) {
+  toFormGroup(workItem: WorkItemUI) {
     let group: any = {};
     // if there is no type information attached, just return an empty group
-    if (!workItem.relationalData || !workItem.relationships.baseType.data) {
+    if (!workItem.type) {
       this.log.warn('The work item ' + workItem.id + ' contains no normalized type information, no controls for form group can be created!');
       return group;
     }
-    let fields = workItem.relationships.baseType.data.attributes.fields;
+    let fields = workItem.type.fields;
     for (var key in fields) {
       if (this.FIXED_PROPERTIES.indexOf(key) != -1) {
         this.log.log('Skipping form control for ' + key);
@@ -79,7 +80,7 @@ export class WorkItemTypeControlService {
         else if (fields[key].type.kind === 'enum')
           validators.push(this.enumValidator(fields[key].type.values));
         // finally create FormControl, put it into the group under the key
-        group[key] = new FormControl(workItem.attributes[key] || '', validators);
+        group[key] = new FormControl(workItem[key] || '', validators);
       }
     }
     return new FormGroup(group);
