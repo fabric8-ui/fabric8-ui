@@ -90,11 +90,11 @@ export class DetailWorkItemEffects {
         .catch (e => {
           try {
             this.notifications.message({
-              message: `Problem in get worktem.`,
+              message: `Problem in getting work item.`,
               type: NotificationType.DANGER
             } as Notification);
           } catch (e) {
-            console.log('Problem in get workitem.')
+            console.log('Problem in getting work item.')
           }
           return Observable.of(new DetailWorkItemActions.GetWorkItemError());
         })
