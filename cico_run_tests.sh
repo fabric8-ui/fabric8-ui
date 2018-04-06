@@ -14,7 +14,7 @@ set -e
 # that might interest this worker.
 if [ -e "jenkins-env" ]; then
   cat jenkins-env \
-    | grep -E "(JENKINS_URL|DEVSHIFT_USERNAME|DEVSHIFT_PASSWORD|GIT_BRANCH|GIT_COMMIT|BUILD_NUMBER|ghprbSourceBranch|ghprbActualCommit|BUILD_URL|ghprbPullId)=" \
+    | grep -E "(JENKINS_URL|DEVSHIFT_USERNAME|DEVSHIFT_PASSWORD|GIT_BRANCH|GIT_COMMIT|BUILD_NUMBER|ghprbSourceBranch|ghprbActualCommit|BUILD_URL|ghprbPullId|DEVSHIFT_TAG_LEN|GIT_COMMIT)=" \
     | sed 's/^/export /g' \
     > /tmp/jenkins-env
   source /tmp/jenkins-env
@@ -96,8 +96,10 @@ else
 fi
 
 # Build and push image
-# Following code is not tested on local(remove this comment when tested with cico)
-TAG="SNAPSHOT-PR-${ghprbPullId}"
+# Use default length when not provided
+echo "${DEVSHIFT_TAG_LEN:=6}"
+VERSION_NUMBER=$(echo $GIT_COMMIT | cut -c1-${DEVSHIFT_TAG_LEN})
+TAG="SNAPSHOT-PR-${ghprbPullId}-${VERSION_NUMBER}"
 IMAGE_REPO="fabric8-ui/fabric8-planner"
 
 cd fabric8-ui-dist
@@ -107,6 +109,14 @@ docker push ${REGISTRY}/${IMAGE_REPO}:${TAG}
 
 PULL_REGISTRY="registry.devshift.net"
 image_name="${PULL_REGISTRY}/${IMAGE_REPO}:${TAG}"
-echo "======= Snapshot can be created by running following command"
-echo "docker run -e PROXY_PASS_URL=\"https://api.free-stg.openshift.com\" -p 8080:8080 ${image_name}"
-echo "======="
+
+# turn off showing command before executing
+set +x
+# Pretty print the command for snapshot
+echo
+echo -e "\e[92m========= Run snapshot by running following command =========\e[0m"
+echo -e "\e[92m\e[1mdocker run -it -p 5000:8080 ${image_name}\e[0m"
+echo -e "\e[92m=============================================================\e[0m"
+
+# Show command before executing
+set -x
