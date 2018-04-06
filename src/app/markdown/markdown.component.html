@@ -20,17 +20,17 @@
       #editorInput
       *ngIf="viewType==='markdown'"
       [editable]="true"
-      class="editor-box editor-markdown padding-10"
+      class="editor-box editor-markdown"
       [innerText]="rawText">
     </p>
     <div #editorBox
       *ngIf="viewType==='preview' && renderedText.length"
-      class="editor-box editor-preview padding-10">
+      class="editor-box editor-preview">
         <github-link-area [content]="renderedText"></github-link-area>
     </div>
     <div #editorBox
       *ngIf="viewType==='preview' && !renderedText.length"
-      class="editor-box editor-preview placeholder padding-10">
+      class="editor-box editor-preview placeholder">
       {{placeholder}}
     </div>
   </div>
@@ -47,7 +47,7 @@
   </small>
   <div
     (click)="closeClick()"
-    class="fl btn btn-primary pull-right action-btn">
+    class="fl btn btn-default pull-right action-btn">
     <i class="fa fa-close"></i>
   </div>
   <div
