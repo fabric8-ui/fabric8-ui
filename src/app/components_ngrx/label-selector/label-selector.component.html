@@ -3,7 +3,7 @@
   [toggleButtonRef]="toggleButtonRef"
   [dropdownItem]="dropdownItem"
   [dropdownFooter]="dropdownFooter"
-  [headerText]="'Add label'"
+  [headerText]="'Assign Label(s)'"
   [menuItems]="labels"
   [showSearch]="backup.length > 8"
   (onSelect)="onSelect($event)"
@@ -15,7 +15,7 @@
   <ng-template #toggleButtonRef>
     <span class="clickable add-label" (click)="closeAddLabel()">
       <i class="pficon pficon-add-circle-o"></i>
-      Add label
+      Assign Label(s)
     </span>
   </ng-template>
   <ng-template #dropdownItem let-color="color" let-border="border" let-name="name">
