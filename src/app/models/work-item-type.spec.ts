@@ -31,6 +31,7 @@ describe('WorkItemTypeMapper', () => {
           }
         },
         infotip: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        dynamicfields: [],
         type: 'workitemtypes'
     } as WorkItemTypeUI;
 
@@ -78,4 +79,35 @@ describe('WorkItemTypeMapper', () => {
     it('should correctly convert to UI model - 2', () => {
         expect(workItemTypeMapper.toUIModel(workItemTypeService)).toEqual(workItemTypeUI);
     });
+
+    it('should correctly convert to UI model - 3', () => {
+      workItemTypeService.attributes.fields = {
+        ...workItemTypeService.attributes.fields,
+        ...{
+          "dynamicfield" : {
+            "description": "This is a dynamic field",
+              "label": "DF",
+              "required": false,
+              "type": {
+                "kind": "area"
+              }
+          }
+        }
+      }
+      workItemTypeUI.fields = {
+        ...workItemTypeUI.fields,
+        ...{
+          "dynamicfield" : {
+            "description": "This is a dynamic field",
+              "label": "DF",
+              "required": false,
+              "type": {
+                "kind": "area"
+              }
+          }
+        }
+      };
+      workItemTypeUI['dynamicfields'] = ['dynamicfield'];
+      expect(workItemTypeMapper.toUIModel(workItemTypeService)).toEqual(workItemTypeUI);
+  });
 });

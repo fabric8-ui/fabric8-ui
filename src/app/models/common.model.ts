@@ -1,5 +1,5 @@
 export interface modelUI {
-  id: string;
+  id?: string;
   name?: string;
 }
 

@@ -121,7 +121,8 @@ describe('WorkItemMapper', () => {
         type: {
           id: '71171e90-6d35-498f-a6a7-2083b5267c18', name: null, icon: null,
           version: null, description: null, childTypes: [], type: "workitemtypes", fields: null,
-          infotip: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          infotip: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          dynamicfields: []
         },
         commentLink: 'https://api.openshift.io/api/workitems/8bccc228-bba7-43ad-b077-15fbb9148f7f/comments',
         assignees: [

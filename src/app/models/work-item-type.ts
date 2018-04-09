@@ -51,6 +51,7 @@ export interface WorkItemTypeUI extends modelUI {
   // TODO: [Symbol.toStringTag]' is missing in type fix
   // `any` should go away
   fields: Map<string, WorkItemTypeField> | any;
+  dynamicfields?: any;
 }
 
 export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemTypeUI> {
@@ -79,6 +80,10 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
       }, {
         fromPath: ['attributes', 'fields'],
         toPath: ['fields']
+      }, {
+        fromPath: ['attributes', 'fields'],
+        toPath: ['dynamicfields'],
+        toFunction: filterDynamicFields
       }, {
         toPath: ['type'],
         toValue: 'workitemtypes'
@@ -154,5 +159,33 @@ export class WorkItemTypeResolver {
 
   getResolvedWorkItemTypes() {
     return this.allTypes;
+  }
+}
+
+
+function filterDynamicFields(fields: any[]) {
+  if (fields !== null) {
+    const fieldKeys = Object.keys(fields);
+    const staticFields = [
+      'system.area',
+      'system.assignees',
+      'system.codebase',
+      'system.created_at',
+      'system.creator',
+      'system.description',
+      'system.iteration',
+      'system.labels',
+      'system.number',
+      'system.order',
+      'system.remote_item_id',
+      'system.state',
+      'system.title',
+      'system.updated_at'
+    ];
+    return fieldKeys.filter(
+      f => staticFields.findIndex(sf => sf === f) === -1
+    );
+  } else {
+    return [];
   }
 }
