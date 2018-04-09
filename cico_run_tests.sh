@@ -96,10 +96,7 @@ else
 fi
 
 # Build and push image
-# Use default length when not provided
-echo "${DEVSHIFT_TAG_LEN:=6}"
-VERSION_NUMBER=$(echo $GIT_COMMIT | cut -c1-${DEVSHIFT_TAG_LEN})
-TAG="SNAPSHOT-PR-${ghprbPullId}-${VERSION_NUMBER}"
+TAG="SNAPSHOT-PR-${ghprbPullId}"
 IMAGE_REPO="fabric8-ui/fabric8-planner"
 
 cd fabric8-ui-dist
@@ -114,9 +111,9 @@ image_name="${PULL_REGISTRY}/${IMAGE_REPO}:${TAG}"
 set +x
 # Pretty print the command for snapshot
 echo
-echo -e "\e[92m========= Run snapshot by running following command =========\e[0m"
-echo -e "\e[92m\e[1mdocker run -it -p 5000:8080 ${image_name}\e[0m"
-echo -e "\e[92m=============================================================\e[0m"
+echo -e "\e[92m========= Run snapshot by running following command =======================\e[0m"
+echo -e "\e[92m\e[1mdocker pull ${image_name} && docker run -it -p 5000:8080 ${image_name}\e[0m"
+echo -e "\e[92m===========================================================================\e[0m"
 
 # Show command before executing
 set -x
