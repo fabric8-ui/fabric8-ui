@@ -22,6 +22,8 @@ set -o pipefail
 
 setup;
 
+curl -X GET -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/user
+exit 0
 # Build fabric8-planner image
 docker build -t fabric8-planner-builder .
 
@@ -37,8 +39,9 @@ CID=$(docker run --detach=true \
 
 build_planner;
 
-run_unit_tests;
+# Commented out for temporary builds
+# run_unit_tests;
 
-run_functional_tests;
+# run_functional_tests;
 
 docker exec -e GH_TOKEN=$GH_TOKEN -e NPM_TOKEN=$NPM_TOKEN -e JENKINS_URL=$JENKINS_URL -e GIT_BRANCH=$GIT_BRANCH $CID bash -c 'sh cico_release.sh'
