@@ -637,7 +637,8 @@ export class WorkItemService {
       if (workItemType) {
         return Observable.of(workItemType);
       } else {
-        let workItemTypeUrl = this._currentSpace.links.self + '/workitemtypes/' + id;
+        let workItemTypeUrl = this._currentSpace.links.self.split('/spaces/')[0] +
+          '/workitemtypes/' + id;
         return this.http.get(workItemTypeUrl)
           .map((response) => {
             workItemType = response.json().data as WorkItemType;
