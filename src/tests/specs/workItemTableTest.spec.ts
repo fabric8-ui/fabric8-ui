@@ -21,11 +21,11 @@ describe('Work Item datatable list', () => {
   });
 
   it('should open settings button and hide columns', async () => {
-    expect(await planner.workItemList.getDataTableHeaderCellCount()).toBe(10);
+    expect(await planner.workItemList.getDataTableHeaderCellCount()).toBe(9);
     await planner.settings.clickSettings();
     await planner.settings.selectAttribute(c.attribute1);
     await planner.settings.moveToAvailableAttribute();
-    expect(await planner.workItemList.getDataTableHeaderCellCount()).toBe(9);
+    expect(await planner.workItemList.getDataTableHeaderCellCount()).toBe(8);
   });
 
   it('quick add should be disable for flat view', async() => {
