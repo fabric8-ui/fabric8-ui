@@ -9,3 +9,5 @@ export { FilterEffects } from './filter.effects';
 export { GroupTypeEffects } from './group-type.effects';
 export { SpaceEffects } from './space.effects';
 export { DetailWorkItemEffects } from './detail-work-item.effects';
+export { LinkTypeEffects } from './link-type.effects';
+export { WorkItemLinkEffects } from './work-item-link.effects';

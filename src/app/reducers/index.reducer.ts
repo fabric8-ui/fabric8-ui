@@ -10,3 +10,5 @@ export { GroupTypeReducer } from './group-type.reducer'
 export { SpaceReducer } from './space.reducer';
 export { WorkItemStateReducer } from './work-item-state.reducer';
 export { DetailWorkItemReducer } from './detail-work-item.reducer';
+export { LinkTypeReducer } from './link-type.reducer';
+export { WorkItemLinkReducer } from './work-item-link.reducer';

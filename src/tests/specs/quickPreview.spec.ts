@@ -32,9 +32,7 @@ describe('planner quick preview tests', () => {
     expect(await planner.quickPreview.hasLabel(c.newLabel)).toBeTruthy();
   });
 
-  // TODO: Work item link will be added shortly
-  // This test has to be activated
-  xit('should link a workitem',async () => {
+  it('should link a workitem',async () => {
     await planner.workItemList.clickWorkItem(c.workItemTitle3);
     await planner.quickPreview.addLink(c.linkType, c.workItemTitle4);
     expect(await planner.quickPreview.hasLinkedItem(c.workItemTitle4)).toBeTruthy();
@@ -44,10 +42,10 @@ describe('planner quick preview tests', () => {
     await planner.workItemList.clickWorkItem(c.workItemTitle1);
     await planner.quickPreview.openDescriptionBox();
     expect(await planner.quickPreview.isSaveButtonDisplayed()).toBeTruthy();
-  
+
     // Open another WI(Note: the description box is still in edit mode)
     await planner.workItemList.clickWorkItem(c.workItemTitle2);
-    // The description box should not be in edit mode 
+    // The description box should not be in edit mode
     expect(await planner.quickPreview.isSaveButtonDisplayed()).toBeFalsy();
   })
 });

@@ -1,4 +1,12 @@
 import { LinkCategory } from './link-category';
+import {
+  modelUI,
+  modelService,
+  Mapper,
+  MapTree,
+  switchModel,
+  cleanObject
+} from './common.model';
 
 export class LinkType {
   id: string;
@@ -25,5 +33,13 @@ export class LinkType {
 export class MinimizedLinkType {
   name: string;
   linkId: string;
+  linkType: string;
+}
+
+export interface LinkTypeService extends LinkType {}
+
+export interface LinkTypeUI {
+  id: string;
+  name: string;
   linkType: string;
 }

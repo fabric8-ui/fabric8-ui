@@ -56,8 +56,8 @@ if (process.env.ENV == 'inmemory') {
   ],
   declarations: [
     WorkItemLinkComponent,
-    WorkItemLinkFilterByTypeName,
-    WorkItemLinkTypeFilterByTypeName
+    // WorkItemLinkFilterByTypeName,
+    // WorkItemLinkTypeFilterByTypeName
    ],
   exports:      [ WorkItemLinkComponent ],
   providers: providers

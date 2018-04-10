@@ -1,5 +1,4 @@
-<div class="f8-link-container"
-  id="wi-link">
+<div class="f8-link-container" id="wi-link">
   <ul class="f8-link__nav-list nav nav-tabs nav-tabs-pf">
     <li class="f8-toggle-caret"
       (click)="toggleLinkComponent()">
@@ -15,42 +14,28 @@
         <span
           class="badge"
           id="wi-link-total"
-          *ngIf="workItem?.relationalData?.linkDicts; else loading">
-          {{workItem?.relationalData?.totalLinkCount}}
+          *ngIf="workItemLinks; else loading">
+          {{workItemLinks.length}}
         </span>
         <ng-template #loading>
           <span class="spinner spinner-sm spinner-inline"></span>
         </ng-template>
       </a>
     </li>
-    <ng-template *ngIf="workItem?.relationalData?.linkDicts">
-      <li *ngFor="let linkType of workItem.relationalData.linkDicts; let totalLink = index"
-        [class.active]="selectedTab === linkType.linkName"
-        (click)="selectTab(linkType.linkName)">
-        <a>
-          <span>
-            {{linkType.linkName}}
-          </span>
-          <span id="linktotal_{{totalLink}}" class="badge">
-            {{linkType.count}}
-          </span>
-        </a>
-      </li>
-    </ng-template>
   </ul>
   <div class="f8-link__content"
     id="wi-link-content"
-    *ngIf="showLinkComponent && workItem?.relationalData?.linkDicts">
+    *ngIf="showLinkComponent && workItemLinks">
     <div class="f8-link__content-create-link"
-      *ngIf="!workItem?.relationalData?.totalLinkCount && !showLinkView">
+      *ngIf="!workItemLinks.length && !showLinkView">
       <i class="pficon pficon-add-circle-o add-circle-icon"></i>
       <p>Work Item Links</p>
       <span class="margin-right-10 margin-left-10">There are no items linked to this issue</span>
       <button class="btn btn-primary db f8-link__create-btn"
         id="create-link-button"
-        (click)="toggleLinkView()" >Create Link</button>
+        (click)="toggleLinkView()">Create Link</button>
     </div>
-    <div *ngIf="workItem.relationalData.totalLinkCount || showLinkView">
+    <div *ngIf="workItemLinks.length || showLinkView">
       <div class="width-100 pull-left"
         *ngIf="loggedIn">
         <div class="f8-link__content-hdr"
@@ -61,7 +46,7 @@
           <p class="margin-0"
             id="link_item_title"
             *ngIf="workItem" >
-            This item, <span [innerHTML]="workItem.attributes['system.title']"></span>
+            This item, <span [innerHTML]="workItem.title"></span>
           </p>
         </div>
         <div class="f8-link__content-editor width-100"
@@ -76,12 +61,13 @@
                   type="text" placeholder="Select Link Type"
                   [ngClass]="{'selected-value': selectedLinkType }"
                   readonly
-                  [attr.value]="selectedLinkType?.name">
+                  [attr.value]="selectedLinkType?.name"
+                  #linkTypeSelector>
                 <ul class="typeahead typeahead-long dropdown-menu"
                   role="menu" *dropdownMenu>
-                  <!-- <li *ngFor="let linkType of selectedTab | workItemLinkTypeFilterByTypeName:(linkTypes)">
+                  <li *ngFor="let linkType of selectedTab | workItemLinkTypeFilterByTypeName:(linkTypes)">
                     <a (click)="onSelectRelation(linkType)">{{linkType.name}}</a>
-                  </li> -->
+                  </li>
                 </ul>
                 <span class="input-group-addon dropdown-toggle pointer" id="wi-link-type"
                   dropdownToggle>
@@ -93,15 +79,14 @@
           <span class="col-xs-2 col-sm-2 col-md-2 text-right"> item</span>
           <div class="col-xs-10 col-sm-10 col-md-10 margin-top-15">
             <div class="combobox-container">
-              <input type="hidden" name="" value="">
               <div class="input-group dropdown open active width-100">
                 <input class="combobox form-control"
-                  id="workitem-link-search" #searchBox
+                  id="workitem-link-search" #wiSearchBox
                   placeholder="Search for work items"
-                  (keyup)="linkSearchWorkItem(searchBox.value, $event)"
+                  (keyup)="searchWorkItem(wiSearchBox.value, $event)"
                   [value]="selectedValue"
                   [disabled]="!selectedLinkType"/>
-                <ul class="dropdown-menu dropdown-ul"
+                  <ul class="dropdown-menu dropdown-ul"
                     *ngIf="searchWorkItems.length"
                     #searchResultList>
                   <li class="pointer"
@@ -116,7 +101,6 @@
                       </a>
                   </li>
                 </ul>
-                <!-- <span class="input-group-addon"> <span class="caret"></span> </span> -->
               </div>
             </div>
           </div>
@@ -136,31 +120,32 @@
         </div>
       </div>
       <div class="f8-link__list"
-        *ngIf="workItem.relationalData.linkDicts.length">
+        *ngIf="workItemLinks.length">
         <p class="f8-link__list-header">Links</p>
-        <!-- <div *ngFor='let linkDict of selectedTab |
-            workItemLinkFilterByTypeName:workItem.relationalData.linkDicts;  let counterlink = index'>
-          <p class="f8-link__list-type-header">{{linkDict.linkName}}</p>
+        <div *ngFor="let linkDict of workItemLinks | groupWorkItemLinks:(workItem.id)">
+          <p class="f8-link__list-type-header">{{linkDict.linkType[linkDict.linkDirection]}}</p>
           <ul class="padding-left-0">
-            <li *ngFor='let link of linkDict.links'
+            <li *ngFor="let wi of linkDict.workItems; let i = index"
               class="f8-link__list-item">
-              <a [routerLink]="getWILink(link, workItem)">
+              <a [routerLink]="'detail/' + wi.number" *ngIf="detailContext === 'preview'">
                 <span class="f8-link__list-item-title"
-                  [id]="link.id + '-text'"
-                  [innerHTML]="link.relationalData.source.id == workItem.id ? link.relationalData.target.title : link.relationalData.source.title">
+                  [id]="wi.id + '-text'"
+                  [innerHTML]="wi.title">
                 </span>
               </a>
-              <span id="linkSWIstate_{{counterlink}}">
-                {{link.relationalData.source.id == workItem.id ? link.relationalData.target.state : link.relationalData.source.state}}
+              <span class="f8-link__list-item-title"
+                *ngIf="detailContext === 'detail'"
+                [id]="wi.id + '-text'"
+                [innerHTML]="wi.title">
               </span>
               <a *ngIf="loggedIn"
-                (click)="deleteLink($event, link, workItem)">
+                (click)="deleteLink($event, linkDict.links[i], workItem)">
                 <i class="pull-right pficon pficon-close list-close-icon margin-top-5"
                   id="closeLink_{{counterlink}}"></i>
               </a>
             </li>
           </ul>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>

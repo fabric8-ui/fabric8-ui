@@ -82,6 +82,32 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
       return [...state];
     }
 
+    case WorkItemActions.CREATE_LINK: {
+      if (action.payload.sourceTreeStatus === 'expanded') {
+        let index = state.findIndex(w => w.id === action.payload.target.id);
+        if (index > -1) {
+          state[index].parentID = action.payload.source.id;
+        }
+      } else if (action.payload.sourceTreeStatus === 'disabled') {
+        let sourceIndex = state.findIndex(w => w.id === action.payload.source.id);
+        let targetIndex = state.findIndex(w => w.id === action.payload.target.id);
+        if (sourceIndex > -1 && targetIndex > -1) {
+          state[sourceIndex].hasChildren = true;
+          state[sourceIndex].treeStatus = 'collapsed';
+          state.splice(targetIndex, 1);
+        }
+      }
+      return [...state];
+    }
+
+    case WorkItemActions.DELETE_LINK: {
+      let index = state.findIndex(w => w.id === action.payload.target.id);
+      if (index > -1) {
+        state[index].parentID = '';
+      }
+      return [...state];
+    }
+
     default: {
       return state;
     }

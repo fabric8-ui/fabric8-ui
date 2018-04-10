@@ -18,6 +18,7 @@ import {
   WorkItemCommentWrapperModule
 } from './../work-item-comment-wrapper/work-item-comment-wrapper.module';
 import { PlannerModalModule } from '../../components/modal/modal.module';
+import  { WorkItemLinkModule } from './../work-item-link/work-item-link.module';
 
 // ngrx stuff
 import { StoreModule } from '@ngrx/store';
@@ -31,6 +32,13 @@ import {
 } from './../../states/detail-work-item.state';
 import { DetailWorkItemReducer } from './../../reducers/detail-work-item.reducer';
 import { DetailWorkItemEffects } from './../../effects/detail-work-item.effects';
+import { WorkItemLinkReducer } from './../../reducers/work-item-link.reducer';
+import { WorkItemLinkEffects } from './../../effects/work-item-link.effects';
+import { WorkItemLinkState, initialState as initialWILinkState } from './../../states/work-item-link.state';
+import { LinkTypeReducer } from './../../reducers/link-type.reducer';
+import { LinkTypeEffects } from './../../effects/link-type.effects';
+import { LinkTypeState, initialState as initialLinkTypeState } from './../../states/link-type.state';
+
 import { UrlService } from '../../services/url.service';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { LabelSelectorModule } from '../label-selector/label-selector.module';
@@ -53,18 +61,25 @@ import { LabelSelectorModule } from '../label-selector/label-selector.module';
     MarkdownModule,
     WorkItemCommentWrapperModule,
     PlannerModalModule,
+    WorkItemLinkModule,
     StoreModule.forFeature('detailPage', {
       comments: CommentReducer,
-      workItem: DetailWorkItemReducer
+      workItem: DetailWorkItemReducer,
+      linkType: LinkTypeReducer,
+      workItemLink: WorkItemLinkReducer
     }, {
       initialState: {
         comments: initialCommentState,
-        workItem: initialDetailWIState
+        workItem: initialDetailWIState,
+        linkType: initialLinkTypeState,
+        workItemLink: initialWILinkState
       }
     }),
     EffectsModule.forFeature([
       CommentEffects,
-      DetailWorkItemEffects
+      DetailWorkItemEffects,
+      LinkTypeEffects,
+      WorkItemLinkEffects
     ])
   ],
   providers: [
