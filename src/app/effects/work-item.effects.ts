@@ -259,6 +259,12 @@ export class WorkItemEffects {
         const dynamicPayload = this.workItemMapper.toDyanmicServiceModel(wp.payload);
         console.log("###-2", dynamicPayload);
         const staticPayload = this.workItemMapper.toServiceModel(wp.payload);
+        const payload = Object.assign({}, staticPayload,
+           {
+             attributes: Object.assign({}, 
+                                      staticPayload.attributes,
+                                      dynamicPayload.attributes)
+                                    });
         const state = wp.state;
         return this.workItemService.update(staticPayload)
           .map(w => this.resolveWorkItems([w], state)[0])
