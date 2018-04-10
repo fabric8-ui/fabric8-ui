@@ -120,6 +120,7 @@ export interface WorkItemUI {
   description: string;
   version: number;
   order: number;
+  dynamicfields?: any;
 
   area: AreaUI;
   iteration: IterationUI;
@@ -344,7 +345,7 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     let serviceToDyanmicUiMapTree: MapTree = [];
     for(let i = 0; i < dynamicFields.length; i++) {
       serviceToDyanmicUiMapTree.push({
-        toPath: [dynamicFields[i]],
+        toPath: ['dynamicfields', dynamicFields[i]],
         fromPath: ['attributes', dynamicFields[i]]
       });
     }
@@ -358,7 +359,7 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     for(let i = 0; i < arg.type.dynamicfields.length; i++) {
       dynamicUiToServiceMapTree.push({
         toPath: ['attributes', arg.type.dynamicfields[i]],
-        fromPath: [arg.type.dynamicfields[i]]
+        fromPath: ['dynamicfields', arg.type.dynamicfields[i]]
       });
     }
     return switchModel<WorkItemUI, any>(
