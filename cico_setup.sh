@@ -91,12 +91,10 @@ function build_push_image() {
     fi
 
     # Build and push image
-    # Use default length when not provided
-    echo "${DEVSHIFT_TAG_LEN:=6}"
-    VERSION_NUMBER=$(echo $GIT_COMMIT | cut -c1-${DEVSHIFT_TAG_LEN})
-    TAG="SNAPSHOT-PR-${ghprbPullId}-${VERSION_NUMBER}"
+    TAG="SNAPSHOT-PR-${ghprbPullId}"
     IMAGE_REPO="fabric8-ui/fabric8-planner"
 
+    current_directory=$(pwd)
     cd fabric8-ui-dist
     docker build -t fabric8-planner-snapshot -f Dockerfile.deploy .
     docker tag fabric8-planner-snapshot ${REGISTRY}/${IMAGE_REPO}:$TAG
@@ -105,6 +103,7 @@ function build_push_image() {
     PULL_REGISTRY="registry.devshift.net"
     image_name="${PULL_REGISTRY}/${IMAGE_REPO}:${TAG}"
     show_docker_command
+    cd $current_directory
 }
 
 function show_docker_command() {

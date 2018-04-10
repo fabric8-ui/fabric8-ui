@@ -32,30 +32,7 @@ fabric8UITemplate{
 
 
                 } else if (utils.isCD()){
-                    sh "git checkout master"
-                    sh "git pull"
-                    sh "git remote set-url origin git@github.com:${project}.git"
-
-                    pipeline.ci()
-
-                    def branch
-                    container('ui'){
-                        branch = utils.getBranch()
-                    }
-
-                    def published
-                    container('ui'){
-                        published = pipeline.cd(branch)
-                    }
-
-                    def releaseVersion
-                    container('ui'){
-                        releaseVersion = utils.getLatestVersionFromTag()
-                    }
-
-                    if (published){
-                        pipeline.updateDownstreamProjects(releaseVersion)
-                    }
+                    echo "Planner release is being performed on CICO."
                 }
             }
         }
