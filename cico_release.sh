@@ -1,9 +1,20 @@
 #!/bin/bash
+# Show command before executing
+set -x
 
-# Build and Release Planner (It will update the tag on github and push fabric8-planner to npmjs.org)
-npm run semantic-release
+# Exit on error
+set -e
 
-create_merge_PR
+# This option sets the exit code of a pipeline to that of the rightmost command to exit with a
+# non-zero status, or to zero if all commands of the pipeline exit successfully.
+set -o pipefail
+
+function main() {
+    # Build and Release Planner (It will update the tag on github and push fabric8-planner to npmjs.org)
+    npm run semantic-release
+
+    create_merge_PR
+}
 
 # This function raises a PR against fabric8-npm-dependencies
 function create_merge_PR {
@@ -84,3 +95,5 @@ function waitUntilSuccess {
         sleep $(( NEXT_WAIT_TIME++ ))
     done
 }
+
+main;
