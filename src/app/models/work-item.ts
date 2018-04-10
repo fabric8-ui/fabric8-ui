@@ -340,6 +340,32 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     }
   ];
 
+  toDynamicUIModel(arg: WorkItemService, dynamicFields) {
+    let serviceToDyanmicUiMapTree: MapTree = [];
+    for(let i = 0; i < dynamicFields.length; i++) {
+      serviceToDyanmicUiMapTree.push({
+        toPath: [dynamicFields[i]],
+        fromPath: ['attributes', dynamicFields[i]]
+      });
+    }
+    return switchModel<WorkItemService, any>(
+      arg, serviceToDyanmicUiMapTree
+    );
+  }
+
+  toDyanmicServiceModel(arg: WorkItemUI) {
+    let dynamicUiToServiceMapTree: MapTree = [];
+    for(let i = 0; i < arg.type.dynamicfields.length; i++) {
+      dynamicUiToServiceMapTree.push({
+        toPath: ['attributes', arg.type.dynamicfields[i]],
+        fromPath: [arg.type.dynamicfields[i]]
+      });
+    }
+    return switchModel<WorkItemUI, any>(
+      arg, dynamicUiToServiceMapTree
+    );
+  }
+
   toUIModel(arg: WorkItemService): WorkItemUI {
     return switchModel<WorkItemService, WorkItemUI>(
       arg, this.serviceToUiMapTree

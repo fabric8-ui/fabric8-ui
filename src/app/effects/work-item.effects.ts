@@ -52,7 +52,10 @@ export class WorkItemEffects {
       workItemResolver.resolveType(state.workItemTypes);
       workItemResolver.resolveAssignees(state.collaborators);
       workItemResolver.resolveWiLabels(state.labels);
-      return workItemResolver.getWorkItem();
+      let wiu = workItemResolver.getWorkItem();
+      let wid = this.workItemMapper.toDynamicUIModel(wi, wiu.type.dynamicfields);
+      console.log("###-1", wiu, wid);
+      return Object.assign({}, wiu, wid);
     });
   }
 
@@ -253,9 +256,11 @@ export class WorkItemEffects {
         };
       })
       .switchMap(wp => {
-        const payload = this.workItemMapper.toServiceModel(wp.payload);
+        const dynamicPayload = this.workItemMapper.toDyanmicServiceModel(wp.payload);
+        console.log("###-2", dynamicPayload);
+        const staticPayload = this.workItemMapper.toServiceModel(wp.payload);
         const state = wp.state;
-        return this.workItemService.update(payload)
+        return this.workItemService.update(staticPayload)
           .map(w => this.resolveWorkItems([w], state)[0])
           .switchMap(w => util.workitemMatchesFilter(this.route.snapshot, this.filterService, this.workItemService, w))
           .map(w => {
@@ -294,7 +299,7 @@ export class WorkItemEffects {
       });
 
 
-    
+
 
     @Effect() Reorder: Observable<Action> = this.actions$
       .ofType<WorkItemActions.Reoder>(WorkItemActions.REORDER)

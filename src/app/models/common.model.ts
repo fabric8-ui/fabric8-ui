@@ -22,6 +22,7 @@ export interface MapTree {
     toFunction?: any;
   };
   length: number;
+  push: any;
 }
 
 export interface Mapper<I, O> {
