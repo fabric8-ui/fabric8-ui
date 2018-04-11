@@ -277,6 +277,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
       workItem['link'] = this.workItem.link;
       workItem['id'] = this.workItem.id;
       workItem['title'] = value;
+      workItem['type'] = this.workItem.type;
       this.store.dispatch(new WorkItemActions.Update(workItem));
     }
   }
@@ -287,6 +288,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
       workItem['version'] = this.workItem.version;
       workItem['link'] = this.workItem.link;
       workItem['id'] = this.workItem.id;
+      workItem['type'] = this.workItem.type;
 
       workItem['state'] = state;
       this.store.dispatch(new WorkItemActions.Update(workItem));
@@ -299,7 +301,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['version'] = this.workItem.version;
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
-
+    workItem['type'] = this.workItem.type;
     workItem['assignees'] = users;
     this.store.dispatch(new WorkItemActions.Update(workItem));
   }
@@ -323,7 +325,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['version'] = this.workItem.version;
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
-
+    workItem['type'] = this.workItem.type;
     workItem['area'] = this._areas.find(a => a.id === areaID);
     this.store.dispatch(new WorkItemActions.Update(workItem));
   }
@@ -347,6 +349,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['version'] = this.workItem.version;
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
+    workItem['type'] = this.workItem.type;
 
     workItem['iteration'] = this._iterations.find(a => a.id === iterationID);
     this.store.dispatch(new WorkItemActions.Update(workItem));
@@ -358,6 +361,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['version'] = this.workItem.version;
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
+    workItem['type'] = this.workItem.type;
 
     workItem['labels'] = labels;
     this.store.dispatch(new WorkItemActions.Update(workItem));
@@ -369,6 +373,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['version'] = this.workItem.version;
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
+    workItem['type'] = this.workItem.type;
 
     workItem['labels'] = this.workItem.labels.filter(l => l.id != label.id);
     this.store.dispatch(new WorkItemActions.Update(workItem));
@@ -393,7 +398,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['version'] = this.workItem.version;
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
-
+    workItem['type'] = this.workItem.type;
     workItem['description'] = rawText;
     this.store.dispatch(new WorkItemActions.Update(workItem));
   }
