@@ -21,6 +21,8 @@ RUN set -ex \
 
 #ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_VERSION 8.3.0
+# Get latest version of git. Default repository has git version 1.8.2
+RUN rpm -U http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
 
 RUN yum -y update && \
     yum install -y bzip2 fontconfig tar java-1.8.0-openjdk nmap-ncat psmisc gtk3 git \

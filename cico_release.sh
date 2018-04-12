@@ -22,18 +22,15 @@ function main() {
 # This function raises a PR against fabric8-npm-dependencies
 function create_merge_PR {
     # extract version number from latest git tag
-    # Following command works for git >= 2.3.3
-    # new_planner_version=$(git tag --sort=-v:refname | head -1 | cut -d'v' -f 2)
-    new_planner_version=$(git tag \
-                          | xargs -I@ git log --format=format:"%ai @%n" -1 @ \
-                          | sort | awk '{print $4}' | tail -1 | cut -d'v' -f 2)
+    new_planner_version=$(git tag --sort=-v:refname | head -1 | cut -d'v' -f 2)
+
     # Create PR on fabric8-npm-dependencies and merge it
     repo="fabric8-npm-dependencies"
     org="fabric8-ui"
     project="${org}/${repo}"
     baseUrl="https://api.github.com/repos"
     id=$(uuidgen)
-    git clone "git@github.com:${org}/${repo}.git"
+    git clone "https://github.com/${project}.git"
     cd ${repo} && git checkout -b versionUpdate"${id}"
 
     # find fabric8-planner > extract version number > remove ", char > trim whitespacs
@@ -48,8 +45,10 @@ function create_merge_PR {
         exit 0
     fi
 
-    git config --global user.email fabric8-admin@googlegroups.com
-    git config --global user.name fabric8-release
+    git config --global user.email fabric8cd@gmail.com
+    git config --global user.name fabric8-cd
+    # Set authentication credentials to allow "git push"
+    git remote set-url origin https://fabric8cd:${FABRIC8CD_GH_TOKEN}@github.com/${project}.git
 
     message="fix(version): update package.json fabric8-planner to ${new_planner_version}"
     updatePackageJSONVersion "$new_planner_version"
