@@ -22,7 +22,7 @@ import {
 export class InlineInputComponent implements OnInit {
   @ViewChild('input') inputField: ElementRef;
 
-  @Input() type: string;
+  @Input() type: string = 'string';
   @Input('disabled') readOnly: boolean = false;
   @Input('value') set input(val) {
     const v = this.convertSpecialChar(val);
@@ -92,29 +92,30 @@ export class InlineInputComponent implements OnInit {
   }
 
   submitOnEnter(event) {
-    console.log("####-2");
     event.preventDefault();
     this.saveClick();
     this.inputField.nativeElement.blur();
   }
-  onkeyDown(event) {
-    console.log("####-1");
+  onkeyDown(event, text) {
     let keycode = event.keyCode ? event.keyCode : event.which;
-    if(this.editing && keycode !== 13) {     
+    if(this.editing && keycode !== 13) {
+      if(this.type === 'float' &&
+        this.inputField.nativeElement.value.indexOf('.') > -1 &&
+        keycode === 190) {
+        event.preventDefault();
+        return;
+      }
       switch (this.type) {
         case 'integer':
           if(this.checkInteger(keycode, event)){
-            console.log("####-3");
             this.isNotValid = false;
           } else {
             this.isNotValid = true;
-            console.log("####-4");
             event.preventDefault();
           }
           break;
         case 'float':
-          if(this.checkInteger(keycode, event) ||
-             keycode === 190) {
+          if(this.checkInteger(keycode, event) || keycode === 190) {
             this.isNotValid = false;
           } else {
             this.isNotValid = true;
@@ -141,7 +142,7 @@ export class InlineInputComponent implements OnInit {
       // Allow: Ctrl+X
       (keycode === 88 && (event.ctrlKey || event.metaKey)) ||
       // Allow: home, end, left, right
-      (keycode >= 35 && keycode <= 39)) {
+      (keycode >= 48 && keycode <= 57)) {
         // let it happen, is valid: true
         return true;
       }
