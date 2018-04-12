@@ -320,10 +320,9 @@
 
         <div class="width-100 pull-left dynamic-fields-wrap">
           <!-- Extra fields Start -->
-          <div *ngFor="let attributeDesc of dynamicFormDataArray" class="form-group">
+          <div *ngFor="let field of dynamicKeyValueFields" class="form-group">
             <alm-dynamic-field
-              [attributeDesc]="attributeDesc"
-              [form]="dynamicFormGroup"
+              [keyValueField]="field"
               (onUpdate)="dynamicFieldUpdated($event)"></alm-dynamic-field>
           </div>
           <!-- Extra fields End -->

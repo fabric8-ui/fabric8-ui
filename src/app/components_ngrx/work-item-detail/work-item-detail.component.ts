@@ -127,6 +127,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   private listenToEsc: boolean = false;
   private dynamicFormGroup: FormGroup;
   private dynamicFormDataArray: any;
+  private dynamicKeyValueFields: {key: string; value: string | number | null; field: any}[];
 
   constructor(
     private store: Store<AppState>,
@@ -214,6 +215,13 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
         if (this.workItem.type) {
           this.dynamicFormGroup = this.workItemTypeControlService.toFormGroup(this.workItem);
           this.dynamicFormDataArray = this.workItemTypeControlService.toAttributeArray(this.workItem.type.fields);
+          this.dynamicKeyValueFields = this.workItem.type.dynamicfields.map(item => {
+            return {
+              key: item,
+              value: this.workItem.dynamicfields[item],
+              field: this.workItem.type.fields[item]
+            };
+          });
         }
 
         if((this.detailContext === 'preview')
@@ -410,7 +418,11 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
     workItem['type'] = this.workItem.type;
-    console.log('####-1', event);
+
+    workItem['dynamicfields'] = {};
+    workItem['dynamicfields'][event.key] = event.newValue;
+
+    this.store.dispatch(new WorkItemActions.Update(workItem));
   }
 
   @HostListener('window:keydown', ['$event'])

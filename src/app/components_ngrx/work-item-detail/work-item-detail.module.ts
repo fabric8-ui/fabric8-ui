@@ -1,4 +1,5 @@
 import { CommentQuery } from './../../models/comment';
+import { TruncateModule } from 'ng2-truncate';
 import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
 import { CommonSelectorModule } from './../common-selector/common-selector.module';
 import { LabelsModule } from './../labels/labels.module';
@@ -68,6 +69,7 @@ import { LabelSelectorModule } from '../label-selector/label-selector.module';
     MyDatePickerModule,
     WorkItemCommentWrapperModule,
     PlannerModalModule,
+    TruncateModule,
     WorkItemLinkModule,
     ReactiveFormsModule,
     StoreModule.forFeature('detailPage', {

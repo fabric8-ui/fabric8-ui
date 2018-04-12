@@ -1,62 +1,50 @@
-<div class="f8-dynamic-control"
-  [formGroup]="form">
-  <label class="pull-left"
-    [attr.for]="attributeDesc.key">
-    {{attributeDesc.label}}
+<div class="f8-dynamic-control">
+  <label class="pull-left strong"
+    [attr.for]="fieldValue.key">
+    {{ fieldValue.field.label | truncate: 15}}
   </label>
   <div class="f8-dynamic-control-content">
-    <div [ngSwitch]="attributeDesc.type.kind">
+    <div [ngSwitch]="fieldValue.field.type.kind">
 
       <!-- workitemtype field type: string -->
-      <input *ngSwitchCase="'string'"
+      <!-- <input *ngSwitchCase="'string'"
         [formControlName]="attributeDesc.key"
         type="text"
-        (focus)="focusIn()">
+        (focus)="focusIn()"> -->
 
       <!-- workitemtype field type: integer -->
-      <input *ngSwitchCase="'integer'"
-        [value]="form.value[this.attributeKey]"
+      <!-- <input *ngSwitchCase="'integer'"
+        [value]="form.value[this.attributeKey]"`
         (change)="baseChangeBaseType($event.target.value)"
         type="text"
-        (focus)="focusIn()">
+        (focus)="focusIn()"> -->
 
       <!-- workitemtype field type: float -->
-      <input *ngSwitchCase="'float'"
+      <!-- <input *ngSwitchCase="'float'"
         [formControlName]="attributeDesc.key"
         type="text"
-        (focus)="focusIn()">
+        (focus)="focusIn()"> -->
 
-      <!-- workitemtype field type: dropdown 
-      <typeahead-dropdown
-        class="f8-dynamic-control-dropdown"
-        *ngSwitchCase="'enum'"
-        [values]="extractEnumKeyValues()"
-        (onUpdate)="onChangeDropdown($event)">
-      </typeahead-dropdown> -->
+      <!-- workitemtype field type: dropdown -->
       <common-selector
         *ngSwitchCase="'enum'"
         [noValueLabel]="'None'"
-        id="dynamic-dropdown"
-        [items]="extractEnumKeyValues()"
-        [selectedItems]=""
+        class="dynamic-enum-dropdown"
+        [items]="dropdownMenuItems"
+        [selectedItems]="dropdownSelectedItems"
         (onCloseSelector)="onChangeDropdown($event)">
       </common-selector>
 
-      <!-- workitemtype field type: boolean 
-      <typeahead-dropdown
-        class="f8-dynamic-control-dropdown"
-        *ngSwitchCase=""
-        [values]="extractBooleanKeyValues()"
-        (onUpdate)="onChangeBoolean($event)"> 
-      </typeahead-dropdown> -->
+      <!-- workitemtype field type: boolean -->
       <common-selector
         *ngSwitchCase="'boolean'"
         [noValueLabel]="'None'"
-        id="dynamic-boolean-dropdown"
-        [items]="extractBooleanKeyValues()"
-        [selectedItems]=""
-        (onCloseSelector)="onChangeBoolean($event)">
+        class="dynamic-boolean-dropdown"
+        [items]="dropdownMenuItems"
+        [selectedItems]="dropdownSelectedItems"
+        (onCloseSelector)="onChangeDropdown($event)">
       </common-selector>
+
 
       <!-- workitemtype field type: markup -->
       <!-- <markdown-control
@@ -66,14 +54,14 @@
       </markdown-control> -->
 
       <!-- workitemtype field type: instant (datetime) -->
-      <div class="f8-dynamic-control-datepicker"
+      <!-- <div class="f8-dynamic-control-datepicker"
         *ngSwitchCase="'instant'" >
       <my-date-picker
         [options]="datePickerOptions"
         [selDate]="dateValue"
         (dateChanged)="onDateChanged($event)"
         placeholder="Set Date"></my-date-picker>
-      </div>
+      </div> -->
 
       <!-- TODO: -->
       <!-- workitemtype field type: duration -->
@@ -90,7 +78,7 @@
       <!-- TreePath (e.g. Areas and Iterations) (already in fixed fields) -->
 
       <!-- the edit icon that appears on text/textfield input types -->
-      <span class="pficon-edit pull-left dynamic-control-edit-ico"
+      <!-- <span class="pficon-edit pull-left dynamic-control-edit-ico"
         *ngIf="(
           !isButtonsVisible() &&
             (
@@ -99,7 +87,7 @@
               attributeDesc.type.kind=='string'
             )
           )">
-      </span>
+      </span> -->
 
       <button class="btn btn-lg btn-primary detail-action-btn"
         type="button"
@@ -117,10 +105,10 @@
   </div>
   <div class="errorMessage"
     *ngIf="!isValid()">
-    {{attributeDesc.label}} is not given or not in the right format.
+    {{fieldValue.field.label}} is not given or not in the right format.
   </div>
   <div class="errorMessage"
     *ngIf="error">
-    Error on {{attributeDesc.label}}: {{error}}.
+    Error on {{fieldValue.field.label}}: {{error}}.
   </div>
 </div>
