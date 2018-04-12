@@ -22,8 +22,11 @@ function main() {
 # This function raises a PR against fabric8-npm-dependencies
 function create_merge_PR {
     # extract version number from latest git tag
-    new_planner_version=$(git tag --sort=-v:refname | head -1 | cut -d'v' -f 2)
-
+    # Following command works for git >= 2.3.3
+    # new_planner_version=$(git tag --sort=-v:refname | head -1 | cut -d'v' -f 2)
+    new_planner_version=$(git tag \
+                          | xargs -I@ git log --format=format:"%ai @%n" -1 @ \
+                          | sort | awk '{print $4}' | tail -1 | cut -d'v' -f 2)
     # Create PR on fabric8-npm-dependencies and merge it
     repo="fabric8-npm-dependencies"
     org="fabric8-ui"
