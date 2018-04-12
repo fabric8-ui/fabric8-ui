@@ -403,8 +403,14 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     this.store.dispatch(new WorkItemActions.Update(workItem));
   }
 
-  dynamicFieldUpdated($event) {
-    console.log('####-1', $event);
+  dynamicFieldUpdated(event) {
+    let workItem = {} as WorkItemUI;
+    //let dynamicfield[event]
+    workItem['version'] = this.workItem.version;
+    workItem['link'] = this.workItem.link;
+    workItem['id'] = this.workItem.id;
+    workItem['type'] = this.workItem.type;
+    console.log('####-1', event);
   }
 
   @HostListener('window:keydown', ['$event'])

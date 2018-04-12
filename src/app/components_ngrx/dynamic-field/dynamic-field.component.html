@@ -26,21 +26,37 @@
         type="text"
         (focus)="focusIn()">
 
-      <!-- workitemtype field type: dropdown -->
+      <!-- workitemtype field type: dropdown 
       <typeahead-dropdown
         class="f8-dynamic-control-dropdown"
         *ngSwitchCase="'enum'"
         [values]="extractEnumKeyValues()"
         (onUpdate)="onChangeDropdown($event)">
-      </typeahead-dropdown>
+      </typeahead-dropdown> -->
+      <common-selector
+        *ngSwitchCase="'enum'"
+        [noValueLabel]="'None'"
+        id="dynamic-dropdown"
+        [items]="extractEnumKeyValues()"
+        [selectedItems]=""
+        (onCloseSelector)="onChangeDropdown($event)">
+      </common-selector>
 
-      <!-- workitemtype field type: boolean -->
+      <!-- workitemtype field type: boolean 
       <typeahead-dropdown
         class="f8-dynamic-control-dropdown"
-        *ngSwitchCase="'boolean'"
+        *ngSwitchCase=""
         [values]="extractBooleanKeyValues()"
-        (onUpdate)="onChangeBoolean($event)">
-      </typeahead-dropdown>
+        (onUpdate)="onChangeBoolean($event)"> 
+      </typeahead-dropdown> -->
+      <common-selector
+        *ngSwitchCase="'boolean'"
+        [noValueLabel]="'None'"
+        id="dynamic-boolean-dropdown"
+        [items]="extractBooleanKeyValues()"
+        [selectedItems]=""
+        (onCloseSelector)="onChangeBoolean($event)">
+      </common-selector>
 
       <!-- workitemtype field type: markup -->
       <!-- <markdown-control

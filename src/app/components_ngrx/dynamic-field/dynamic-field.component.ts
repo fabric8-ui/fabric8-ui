@@ -6,6 +6,7 @@ import { Logger } from 'ngx-base';
 import { IMyOptions, IMyDateModel } from 'mydatepicker';
 
 import { TypeaheadDropdown, TypeaheadDropdownValue } from '../../components/typeahead-dropdown/typeahead-dropdown.component';
+import { WorkItemUI } from '../../models/work-item';
 
 
 export class DynamicUpdateEvent {
@@ -35,7 +36,6 @@ export class DynamicUpdateEvent {
   styleUrls: ['./dynamic-field.component.less']
 })
 export class DynamicFieldComponent implements OnInit {
-
   // this is the type schema taken from the work item type.
   @Input() attributeDesc: any;
 
@@ -47,6 +47,8 @@ export class DynamicFieldComponent implements OnInit {
 
   // the attribute key we're dealing with.
   attributeKey: string;
+
+  selectedfield: string;
 
   // pristine old value that is needed for the cancel operation.
   oldValue: any;
@@ -110,6 +112,7 @@ export class DynamicFieldComponent implements OnInit {
       });
       if (this.attributeDesc.type.values[i]===this.form.value[this.attributeKey])
         selectedFound = true;
+        this.selectedfield = this.attributeDesc.type.values[i];
     };
     // insert neutral element on index 0, setting it selected when no other selected entry was found.
     result.splice(0, 0, {
