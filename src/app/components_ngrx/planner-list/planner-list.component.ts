@@ -533,7 +533,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     if(this.quickaddWrapper) {
       this.quickaddHt =  this.quickaddWrapper.nativeElement.offsetHeight;
     }
-    let targetHeight = window.innerHeight - (this.hdrHeight + this.toolbarHt + this.quickaddHt + 25); // add 25 for experimental bar height
+    let targetHeight = window.innerHeight - (this.hdrHeight + this.toolbarHt + this.quickaddHt);
     if(this.listContainer) {
       this.renderer.setStyle(this.listContainer.nativeElement, 'height', targetHeight + "px");
     }
