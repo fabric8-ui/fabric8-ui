@@ -33,7 +33,7 @@ function create_merge_PR {
     project="${org}/${repo}"
     baseUrl="https://api.github.com/repos"
     id=$(uuidgen)
-    git clone "https://github.com/${project}.git"
+    git clone "git@github.com:${org}/${repo}.git"
     cd ${repo} && git checkout -b versionUpdate"${id}"
 
     # find fabric8-planner > extract version number > remove ", char > trim whitespacs
