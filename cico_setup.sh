@@ -40,6 +40,7 @@ function build_planner() {
     docker exec $CID npm install
     docker exec $CID npm run build
     docker exec $CID npm pack dist/
+    echo "CICO: Planner build completed"
 }
 
 function run_unit_tests() {
