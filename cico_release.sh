@@ -21,6 +21,8 @@ function main() {
 
 # This function raises a PR against fabric8-npm-dependencies
 function create_merge_PR {
+    # Fetch latest tags
+    git pull --tags origin master
     # extract version number from latest git tag
     new_planner_version=$(git tag --sort=-v:refname | head -1 | cut -d'v' -f 2)
 
@@ -53,7 +55,7 @@ function create_merge_PR {
     message="fix(version): update package.json fabric8-planner to ${new_planner_version}"
     updatePackageJSONVersion "$new_planner_version"
     git add package.json
-    git commit -m \""${message}"\"
+    git commit -m \"${message}\"
     git push origin versionUpdate"${id}"
     local body="{
         \"title\": \"${message}\",
