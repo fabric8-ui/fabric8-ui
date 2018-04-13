@@ -31,7 +31,7 @@ import { FilterEffects } from './../../effects/filter.effects';
   imports: [
     AlmEditableModule,
     AlmIconModule,
-    BsDropdownModule.forRoot(),
+    BsDropdownModule,
     CommonModule,
     ToolbarModule,
     TooltipModule.forRoot(),

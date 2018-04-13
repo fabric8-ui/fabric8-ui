@@ -42,6 +42,7 @@ import { GroupTypeUI } from './../../models/group-types.model';
 // ngrx stuff
 import { Store } from '@ngrx/store';
 import { AppState } from './../../states/app.state';
+import * as CustomQueryActions from './../../actions/custom-query.actions';
 import * as FilterActions from './../../actions/filter.actions';
 import * as SpaceActions from './../../actions/space.actions';
 
@@ -92,6 +93,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     'title'
   ];
 
+  showSaveFilterButton: boolean = true;
+  isFilterSaveOpen: boolean = false;
+
   // the type of the list is changed (Hierarchy/Flat).
   currentListType: string = 'Hierarchy';
 
@@ -126,6 +130,10 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   private isShowCompletedOn: boolean = false;
   private isStateFilterSelected: boolean = false;
 
+  private routeSource = this.route.queryParams
+    .filter(p => p.hasOwnProperty('q'));
+  private queryExp;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -155,6 +163,26 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.context !== 'boardview') {
       this.allowedFilterKeys.push('state');
     }
+    this.routeSource.subscribe(queryParam => this.queryExp = queryParam.q);
+
+    const customQueriesData = this.store
+      .select('listPage')
+      .select('customQueries')
+      .filter(customQueries => !!customQueries.length);
+
+    this.eventListeners.push(
+      customQueriesData.subscribe(queries => {
+        const selected = queries.find(q => q.selected);
+        if (selected) {
+          // if any selected saved filter found
+          // then save filter button will not be shown
+          // to avoid duplication
+          this.showSaveFilterButton = false;
+        } else {
+          this.showSaveFilterButton = true;
+        }
+      })
+    );
   }
 
   ngAfterViewInit(): void {
@@ -206,7 +234,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     /*
      * The current version of the patternfly filter dropdown does not fully support the async
      * update of the filterConfig.fields fields set. It does not refresh the widget on field
-     * array change. The current workaround is to add a "dummy" entry "Select Filter.." as
+     * array change. The current workaround is to add a 'dummy' entry 'Select Filter..' as
      * the first entry in the fields array. When the user selects a new value from the
      * filter list, the implementation works subsequently.
      */
@@ -560,6 +588,24 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  saveFilters(filterName: string) {
+    if (filterName !== '') {
+      //let exp = JSON.stringify(this.filterService.queryToJson(this.queryExp));
+      let exp = this.queryExp;
+      let e1 = this.filterService.queryToJson(exp);
+      let str = '' + JSON.stringify(e1);
+      let customQuery = {
+        'attributes': {
+          'fields': str,
+          'title': filterName
+        },
+        'type': 'queries'
+      };
+      this.store.dispatch(new CustomQueryActions.Add(customQuery));
+      this.closeFilterSave();
+    }
+  }
+
   showTreeToggle(e) {
     let queryParams = cloneDeep(this.route.snapshot.queryParams);
     if (e.target.checked) {
@@ -610,5 +656,13 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.isShowCompletedOn = false;
     }
+  }
+
+  saveFilterDropdownChange(value: boolean) {
+    this.isFilterSaveOpen = value;
+  }
+
+  closeFilterSave() {
+    this.isFilterSaveOpen = false;
   }
 }

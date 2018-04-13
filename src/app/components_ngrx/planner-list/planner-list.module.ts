@@ -16,6 +16,7 @@ import { PlannerListComponent } from './planner-list.component';
 
 import { HttpService } from '../../services/http-service';
 import { MockHttp } from '../../mock/mock-http';
+import { CustomQueryService } from './../../services/custom-query.service';
 import { WorkItemService } from './../../services/work-item.service';
 import { IterationService } from './../../services/iteration.service';
 import { GlobalSettings } from './../../shared/globals';
@@ -59,6 +60,7 @@ if (process.env.ENV == 'inmemory') {
       provide: HttpService,
       useClass: MockHttp
     },
+    CustomQueryService,
     IterationService,
     TooltipConfig,
     GlobalSettings,
@@ -81,6 +83,7 @@ if (process.env.ENV == 'inmemory') {
       },
       deps: [XHRBackend, RequestOptions, AuthenticationService]
     },
+    CustomQueryService,
     IterationService,
     TooltipConfig,
     GlobalSettings,
@@ -117,6 +120,7 @@ if (process.env.ENV == 'inmemory') {
         labels: reducers.LabelReducer,
         areas: reducers.AreaReducer,
         collaborators: reducers.CollaboratorReducer,
+        customQueries: reducers.CustomQueryReducer,
         groupTypes: reducers.GroupTypeReducer,
         space: reducers.SpaceReducer,
         workItemTypes: reducers.WorkItemTypeReducer,
@@ -128,6 +132,7 @@ if (process.env.ENV == 'inmemory') {
         labels: states.initialLabelState,
         areas: states.initialAreaState,
         collaborators: states.initialCollaboratorState,
+        customQueries: states.initialCustomQueryState,
         groupTypes: states.initialGroupTypeState,
         space: states.initialSpaceState,
         workItemTypes: states.initialWorkItemTypeState,
@@ -140,6 +145,7 @@ if (process.env.ENV == 'inmemory') {
       effects.LabelEffects,
       effects.AreaEffects,
       effects.CollaboratorEffects,
+      effects.CustomQueryEffects,
       effects.GroupTypeEffects,
       effects.SpaceEffects,
       effects.WorkItemTypeEffects,

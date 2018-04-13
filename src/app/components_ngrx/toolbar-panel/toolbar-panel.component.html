@@ -21,9 +21,37 @@
         </span>
       </li>
     </ul>
-    <span *ngIf="activeFilters.length > 1" class="clickable">
+    <span *ngIf="activeFilters.length > 1"
+      class="clickable margin-left-5 margin-right-10">
       <a (click)="removeAllFilters()">Clear all filters</a>
     </span>
+    <div class="dropdown-kebab-pf dropdown save-filter-dropdown"
+        [autoClose]="false" #filterSaveDropdown
+        [isOpen]="isFilterSaveOpen"
+        (isOpenChange)="saveFilterDropdownChange($event)"
+        dropdown>
+      <span *ngIf="activeFilters.length > 0 && showSaveFilterButton"
+          class="clickable margin-left-10">
+        <a dropdownToggle class="save-filters">Save</a>
+      </span>
+      <div *dropdownMenu class="dropdown-menu-right dropdown-menu">
+        <aside>
+          <i class="db text-right fa fa-close btn btn-link"
+            (click)="closeFilterSave()"></i>
+        </aside>
+        <div>
+          <input class="form-control ng-pristine ng-valid ng-touched"
+          (keyup.enter)="saveFilters(filterSaveInp.value)"
+          #filterSaveInp />
+        </div>
+        <div class="save-filter-action">
+          <button class="btn btn-primary pull-right margin-left-5 save-cq-btn"
+            (click)="saveFilters(filterSaveInp.value)"
+            [disabled]="!filterSaveInp.value" >Save</button>
+          <button class="btn pull-right margin-right-5 cancel-cq-btn" (click)="closeFilterSave()">Cancel</button>
+        </div>
+      </div>
+    </div>
   </div>
   <span *ngIf="activeFilterFromSidePane !== ''">
     <strong>14</strong> in {{activeFilterFromSidePanel}}

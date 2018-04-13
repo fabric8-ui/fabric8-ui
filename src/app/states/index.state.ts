@@ -12,6 +12,10 @@ export {
   initialState as initialCommentState
 } from './comment.state';
 export {
+  CustomQueryState,
+  initialState as initialCustomQueryState
+} from './custom-query.state'
+export {
   FilterState,
   initialState as initialFilterState
 } from './filter.state'

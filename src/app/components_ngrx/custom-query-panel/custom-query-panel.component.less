@@ -1,0 +1,57 @@
+@import (reference) '../../../assets/stylesheets/_base';
+@import (reference) '../../../assets/stylesheets/shared/_utilities';
+
+.f8-cf {
+  color: @color-pf-white;
+  background-color: @color-pf-black-900;
+  &__panel {
+    display: block;
+    &-hdr {
+      display: block;
+      padding: 20px 15px;
+      border-left: 4px solid;
+      border-left-color: transparent;
+      cursor: default; // as item is not clickable
+      &.nohover {
+        h3 {
+          color: @color-pf-white;
+        }
+      }
+      &:not(.nohover):hover {
+        background: @color-pf-black-700;
+      }
+    }
+    ul {
+      list-style: none;
+      padding-left: 0px;
+      li {
+        display: block;
+        border-left: 4px solid transparent;
+        &:hover {
+          border-left-color: @color-pf-blue;
+          background-color: @color-pf-black-800;
+        }
+      }
+    }
+  }
+  &__container {
+    cursor: pointer;
+    a {
+      color: @color-pf-white;
+      margin-left: 40px;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    .fa {
+      width: 15px;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  &--selected {
+    border-left-color: @color-pf-blue !important;
+    background-color: @color-pf-black-800;
+  }
+}

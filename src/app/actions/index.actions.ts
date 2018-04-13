@@ -1,5 +1,6 @@
 export { All as AreaActions } from './area.actions';
 export { All as CollaboratorActions } from './collaborator.actions';
+export { All as CustomQueryActions } from './custom-query.actions';
 export { All as CommentActions } from './comment.actions';
 export { All as FilterActions } from './filter.actions';
 export { All as GroupTypeActions } from './group-type.actions';

@@ -8,6 +8,8 @@ import { TooltipModule } from 'ngx-bootstrap';
 import { ModalModule } from 'ngx-modal';
 import { GroupTypesModule } from
   './../group-types-panel/group-types-panel.module';
+import { CustomQueryModule } from
+  './../custom-query-panel/custom-query-panel.module'
 import { SidepanelComponent } from './side-panel.component';
 
 // ngrx stuff
@@ -24,6 +26,7 @@ import { IterationEffects } from './../../effects/iteration.effects';
   imports: [
     CollapseModule,
     CommonModule,
+    CustomQueryModule,
     GroupTypesModule,
     ModalModule,
     RouterModule,

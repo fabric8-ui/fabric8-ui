@@ -28,7 +28,7 @@ describe('WorkItemTypeMapper', () => {
               "kind": "area"
             }
           }
-        }
+        },
         type: 'workitemtypes'
     } as WorkItemTypeUI;
 

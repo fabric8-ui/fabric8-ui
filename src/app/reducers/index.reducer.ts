@@ -1,6 +1,7 @@
 export { AreaReducer } from './area.reducer';
 export { CollaboratorReducer } from './collaborator.reducer';
 export { CommentReducer } from './comment.reducer';
+export { CustomQueryReducer } from './custom-query.reducer';
 export { iterationReducer } from './iteration-reducer';
 export { LabelReducer } from './label.reducer';
 export { WorkItemReducer } from './work-item.reducer';
