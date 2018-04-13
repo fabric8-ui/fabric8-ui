@@ -48,7 +48,7 @@ function create_merge_PR {
     git config --global user.email fabric8cd@gmail.com
     git config --global user.name fabric8-cd
     # Set authentication credentials to allow "git push"
-    git remote set-url origin https://fabric8cd:${FABRIC8CD_GH_TOKEN}@github.com/${project}.git
+    git remote set-url origin https://fabric8cd:${GH_TOKEN}@github.com/${project}.git
 
     message="fix(version): update package.json fabric8-planner to ${new_planner_version}"
     updatePackageJSONVersion "$new_planner_version"
