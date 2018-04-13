@@ -33,7 +33,7 @@ export class LabelSelectorComponent implements OnInit {
   @ViewChild('dropdown') dropdownRef: SelectDropdownComponent;
   @Input('allLabels') set allLabelsSetter(labels: LabelUI[]) {
     this.allLabels = [...labels];
-    this.createDisabled = false;
+    this.createDisabled = true;
     this.backup = cloneDeep(this.allLabels.map((label: LabelUI) => {
       return {
         id: label.id,
@@ -70,7 +70,7 @@ export class LabelSelectorComponent implements OnInit {
   private backup: any[] = [];
   private colorPickerActive: boolean = false;
   private colors: any[] = [];
-  private createDisabled: boolean = false;
+  private createDisabled: boolean = true;
   private labels: any[] = [];
   private newSelectedColor: any = {};
   private searchValue: string = '';
@@ -191,5 +191,9 @@ export class LabelSelectorComponent implements OnInit {
 
   closeDropdown() {
     this.dropdownRef.closeDropdown();
+  }
+
+  onAddLabelInput(val) {
+    this.createDisabled = val === '';
   }
 }
