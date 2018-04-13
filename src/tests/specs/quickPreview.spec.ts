@@ -32,6 +32,13 @@ describe('planner quick preview tests', () => {
     expect(await planner.quickPreview.hasLabel(c.newLabel)).toBeTruthy();
   });
 
+  it('should open quick preview and edit the title',async () => {
+    await planner.workItemList.clickWorkItem(c.workItemTitle1);
+    await planner.quickPreview.updateTitle(c.editWorkItemTitle1);
+    expect(await planner.quickPreview.titleDiv.getTextWhenReady()).toBe('Title Text "<0>"');
+  });
+
+  
   it('should link a workitem',async () => {
     await planner.workItemList.clickWorkItem(c.workItemTitle3);
     await planner.quickPreview.addLink(c.linkType, c.workItemTitle4);

@@ -33,7 +33,7 @@ export class WorkItemList extends BaseElement {
   }
 
   workItem(title: string): WorkItemListEntry {
-    return new WorkItemListEntry(this.element(by.xpath("//datatable-body-row[.//p[text()=' " + title + " ']]")));
+    return new WorkItemListEntry(this.element(by.xpath("//datatable-body-row[.//p[text()='" + title + "']]")));
   }
 
   async clickInlineQuickAdd(title: string) {

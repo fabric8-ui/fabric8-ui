@@ -21,7 +21,8 @@
   <div class="wi-detail-title">
     <p class="truncate pointer"
         [class.bold]="row.bold"
-        (click)="onPreview($event, row['id'])"> {{row.title}} </p>
+        [innerHTML]="row.title"
+        (click)="onPreview($event, row['id'])"></p>
   </div>
   <div class="dib text-right wi-detail-icon">
     <a class="fa fa-list-alt padding-v-5 pointer"

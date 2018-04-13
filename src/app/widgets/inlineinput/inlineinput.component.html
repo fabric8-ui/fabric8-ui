@@ -8,7 +8,7 @@
   [attr.disabled]="(!onLineClickEdit || readOnly) && !editing ? '' : null"
   [attr.placeholder]="placeholder"
   [class.active]="editing"
-  [ngModel]="inputValue"
+  [innerHTML]="inputValue"
   class="input-field inlineinput-textarea"
   (keydown.enter)="submitOnEnter($event)">
 </textarea>
