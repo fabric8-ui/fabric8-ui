@@ -1,15 +1,25 @@
-@import (reference) '../../../assets/stylesheets/_base';
 @import '../../../assets/stylesheets/_planner-layout';
+@import (reference) '../../../assets/stylesheets/_base';
 
 .f8-detail {
   background-color: @color-pf-white;
   &__header {
     float: left;
     width: 100%;
-    padding: ((@grid-gutter-width/3) * 2);
+    padding: (@grid-gutter-width/2);
     background: @color-pf-black-200;
-    .dropdown {
+    .dropdown-ul, .dropdown {
       min-width: 160px;
+      .dropdown-icon {
+        display: inline-block;
+        min-width: 15px;
+        margin-right: 7px;
+        text-align: left;
+      }
+      .dropdown-text {
+        text-align: left;
+        text-transform: capitalize;
+      }
     }
   }
   &__edit-icon {

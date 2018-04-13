@@ -22,7 +22,7 @@ import {
   animations: [
     trigger('slideInOut', [
       state('in', style({
-        transform: 'translateX(5px)',
+        transform: 'translateX(0px)',
         left: 'auto'
       })),
       state('out', style({

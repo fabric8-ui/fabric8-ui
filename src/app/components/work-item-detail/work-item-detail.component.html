@@ -1,17 +1,22 @@
-<div [@slideInOut]="panelState" class="f8-quick-preview">
-  <div class="width-100" *ngIf="workItem" id="workItemDetail_Wrapper">
-    <form *ngIf="active"
-          #almWorkItemDetailForm="ngForm"
-          class="form-horizontal"
-          id="wi-detail-form">
+<div class="f8-quick-preview"
+  [@slideInOut]="panelState">
+  <div class="width-100"  
+    id="workItemDetail_Wrapper"
+    *ngIf="workItem">
+    <form
+      #almWorkItemDetailForm="ngForm"
+      class="form-horizontal"
+      id="wi-detail-form">
       <fieldset>
         <div class="f8-quick-preview__header">
           <span
             class="pficon pficon-close pull-right f8-quick-preview--close"
             (click)="closePreview()">
           </span>
-          <div class="form-group width-100 pull-left mobile-bar padding-h-10 padding-v-5 margin-0">
-            <span *ngIf="workItem.id" class="detail-created-date pull-right">
+          <div class="form-group width-100 pull-left mobile-bar 
+                      padding-h-10 padding-v-5 margin-0">
+            <span class="detail-created-date pull-right"
+              *ngIf="workItem.id">
               <b>Created</b>
               <span id="created_at"
                 [innerHTML]="workItem.attributes['system.created_at'] ? (workItem.attributes['system.created_at'] | almMomentTime) : 'Creating now!'"></span>
@@ -26,7 +31,11 @@
                   id="wi-type-icon" title="{{workItem.relationships?.baseType?.data?.attributes?.name}}"></span>
                 {{workItem.relationships?.baseType?.data?.attributes?.name}}
               </ng-template>
-              <h3 *ngIf="workItem.id" class="detail-id" id="wi-detail-id">{{workItem.attributes['system.number']}}</h3>
+              <h3 class="detail-id" 
+                id="wi-detail-id"
+                *ngIf="workItem.id">
+                  {{workItem.attributes['system.number']}}
+              </h3>
               <span *ngIf="saving" class="saving-title">
                 <span class="spinner spinner-sm spinner-inline"></span>
                 Saving Work Item...
@@ -37,7 +46,7 @@
               </span>
             </div>
           </div>
-          <div class="form-group width-100 pull-left padding-h-10 padding-v-5 margin-0">
+          <div class="form-group width-100 pull-left padding-h-15 padding-v-5 margin-0">
             <div class="width-100 pull-left">
               <div
                 class="card-pf-time-frame-filter pull-left dropdown"
@@ -47,21 +56,26 @@
                   class="btn btn-default width-100 dropdown-toggle padding-h-10"
                   id="wi-detail-state"
                   type="button">
-                  <span class='dropdown-icon pull-left margin-top-5'
+                  <span class='dropdown-icon'
                     almIcon
                     [iconType]="workItem.attributes['system.state']">
                   </span>
-                  <span class='dropdown-text pull-left padding-h-10'>
+                  <span class='dropdown-text'>
                     {{workItem.attributes['system.state']}}
                   </span>
-                  <span *ngIf="loggedIn" class="caret pull-right margin-top-7"></span>
+                  <span class="caret pull-right margin-top-7"
+                    *ngIf="loggedIn" ></span>
                 </button>
-                <ul id="wi-status-dropdown" class="dropdown-menu-right dropdown-ul dropdown-menu" role="menu" *dropdownMenu>
-                  <li class="dropdown-li" (click)="onChangeState(state)"
-                    *ngFor="let state of workItem.relationships?.baseType?.data?.attributes?.fields['system.state'].type.values;"
-                  >
+                <ul class="dropdown-ul dropdown-menu"
+                  id="wi-status-dropdown" 
+                  role="menu" 
+                  *dropdownMenu>
+                  <li class="dropdown-li" 
+                    (click)="onChangeState(state)"
+                    *ngFor="let state of workItem.relationships?.baseType?.data?.attributes?.fields['system.state'].type.values;">
                     <a>
-                      <span class='dropdown-icon' almIcon [iconType]="state"></span>
+                      <span class='dropdown-icon' 
+                        almIcon [iconType]="state"></span>
                       <span class='dropdown-text'>{{state}}</span>
                     </a>
                   </li>
@@ -69,14 +83,16 @@
               </div>
               <a class="pull-right">
                 <span class="dib margin-right-3">
-                  <a [routerLink]="[constructUrl(workItem)]" [queryParams]="queryParams">
+                  <a [routerLink]="[constructUrl(workItem)]" 
+                    [queryParams]="queryParams">
                     View full details
                   </a>
                 </span>
                 <span class="fa fa-list-alt"></span>
               </a>
             </div>
-            <div class="width-100 pull-left wi-detail-title-blk margin-top-15" id="title-click-div">
+            <div class="width-100 pull-left wi-detail-title-blk margin-top-15"
+              id="title-click-div">
               <div id="wi-title-div">
                 <f8-inlineinput
                   [disabled]="loggedIn ? false : true"
@@ -90,7 +106,7 @@
           </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
-          <div class="width-100 pull-left padding-10 item-action-block">
+          <div class="width-100 pull-left item-action-block">
             <!-- Assignee -->
             <div class="form-group">
               <div class="width-100 pull-left detail-assignee-wrap">
@@ -101,7 +117,8 @@
                   <span *ngIf="loadingAssignees"
                     class="spinner spinner-sm spinner-inline">
                   </span>
-                  <f8-assignee *ngIf="!loadingAssignees" [showFullName]="true"
+                  <f8-assignee *ngIf="!loadingAssignees" 
+                    [showFullName]="true"
                     [assignees]="workItem.relationships?.assignees?.data ?
                       workItem.relationships?.assignees?.data : []">
                   </f8-assignee>
@@ -128,7 +145,8 @@
                 </label>
                 <div class="detail-creator-content">
                   <span *ngIf="!workItem.relationships?.creator?.data"
-                    class="pficon pficon-user user-creator-icon" id="user_creator_icon">
+                    class="pficon pficon-user user-creator-icon" 
+                    id="user_creator_icon">
                   </span>
                   <div class="user-avatar margin-right-10 pull-left">
                     <img *ngIf="workItem.relationships?.creator?.data"
@@ -137,7 +155,7 @@
                       src="{{workItem.relationships.creator.data.attributes?.imageURL + '&s=20'}}"
                       onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"
                       id="WI_details_reporter_img" />
-                    </div>
+                  </div>
                   <div class="pull-left">
                     <span id="WI_details_reporter_user">
                       {{workItem.relationships?.creator?.data | almUserName:'Creator not found'}}
@@ -156,10 +174,14 @@
                   <span *ngIf="loadingArea"
                     class="spinner spinner-sm spinner-inline">
                   </span>
-                  <typeahead-dropdown #areaSelectbox
+                  <typeahead-dropdown 
+                    class="area-dropdown"
+                    id="area-dropdown"
+                    #areaSelectbox
                     *ngIf="!loadingArea"
-                    id="area-dropdown" class="area-dropdown"
-                    noValueLabel="None" [values]="areas" (onFocus)="focusArea()"
+                    noValueLabel="None" 
+                    [values]="areas" 
+                    (onFocus)="focusArea()"
                     (onUpdate)="areaUpdated($event)">
                   </typeahead-dropdown>
                 </div>
@@ -169,18 +191,23 @@
             <!--Iteration-->
             <div class="form-group">
               <div class="width-100 pull-left detail-iteration-wrap">
-                <label class="control-label" id="iteration_label">
+                <label class="control-label" 
+                  id="iteration_label">
                   {{workItem.relationships?.baseType?.data?.attributes?.fields['system.iteration']?.label || 'Label'}}
                 </label>
                 <div class="detail-itr-content">
                   <span *ngIf="loadingIteration"
                     class="spinner spinner-sm spinner-inline">
                   </span>
-                  <typeahead-dropdown
+                  <typeahead-dropdown 
+                    class="iteration-dropdown"
+                    id="iteration-dropdown"
                     *ngIf="!loadingIteration"
-                    id="iteration-dropdown" class="iteration-dropdown"
-                    #iterationSelectbox noValueLabel="None" [values]="iterations"
-                    (onFocus)="focusIteration()" (onUpdate)="iterationUpdated($event)">
+                    #iterationSelectbox 
+                    noValueLabel="None" 
+                    [values]="iterations"
+                    (onFocus)="focusIteration()" 
+                    (onUpdate)="iterationUpdated($event)">
                   </typeahead-dropdown>
                 </div>
               </div>
@@ -202,7 +229,8 @@
                       [allowDelete]="true"
                       (onLabelClick)="onLabelClick($event)">
                   </f8-label>
-                  <div class="label-selector-wrapper" *ngIf="loggedIn && !loadingLabels" >
+                  <div class="label-selector-wrapper" 
+                    *ngIf="loggedIn && !loadingLabels" >
                     <label-selector
                       id="labelSelector"
                       #labelSelector
@@ -243,7 +271,8 @@
             </div>
             <!-- Description End -->
           </div>
-          <div class="width-100 pull-left start-coding-wrap" *ngIf="loggedIn && workItem.relationships?.codebase?.links?.meta?.edit">
+          <div class="width-100 pull-left start-coding-wrap" 
+            *ngIf="loggedIn && workItem.relationships?.codebase?.links?.meta?.edit">
             <div class="form-group">
               <label class="control-label" id="coding_label">
                 Code
@@ -251,7 +280,8 @@
               <div class="form-control-static start-coding">
                 <a class="btn btn-default"
                   id="start-coding-link"
-                  target="_blank" href="{{workItem.relationships?.codebase?.links?.meta?.edit}}">
+                  target="_blank" 
+                  href="{{workItem.relationships?.codebase?.links?.meta?.edit}}">
                   Start Coding
                 </a>
               </div>
@@ -260,7 +290,9 @@
         </div>
       </fieldset>
     </form>
-    <div *ngIf="workItem.id" class="work-item-section">
+    <div 
+      class="work-item-section" 
+      *ngIf="workItem.id">
       <alm-work-item-link
         [workItem]="workItem"
         [loggedIn]="loggedIn">

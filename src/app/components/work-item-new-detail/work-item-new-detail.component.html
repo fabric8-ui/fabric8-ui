@@ -12,11 +12,11 @@
             id="wi-detail-state"
             type="button"
             dropdownToggle>
-            <span class="pull-left margin-top-5"
+            <span class="dropdown-icon"
               almIcon
               [iconType]="workItem.attributes['system.state']">
             </span>
-            <span class="pull-left padding-h-10">
+            <span class="dropdown-text">
               {{workItem.attributes['system.state']}}
             </span>
             <span *ngIf="loggedIn" class="caret pull-right margin-top-7"></span>
@@ -147,7 +147,7 @@
         <!-- Iteration -->
         <div class="form-group">
           <section class="f8-detail__area">
-            <label class="pull-left padding-left-15 control-label ">
+            <label class="pull-left padding-left-15 control-label">
               {{workItem.relationships?.baseType?.data?.attributes?.fields['system.iteration']?.label || 'Label'}}
             </label>
             <div class="f8-detail__content">
@@ -195,7 +195,7 @@
         <!-- Description -->
         <div class="form-group">
           <section class="f8-detail__area">
-            <label class="col-xs-4 col-sm-4 col-md-2 control-label">
+            <label class="pull-left padding-left-15 control-label">
               Description
             </label>
             <div class="f8-detail__content">

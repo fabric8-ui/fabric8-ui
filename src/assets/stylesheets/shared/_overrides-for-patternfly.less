@@ -13,6 +13,14 @@
 //button Styling
 .btn {
   border-radius: 0;
+  outline: 0;
+  &:hover, 
+  &:focus,
+  .active:hover,
+  .active:focus,
+  .dropdown-toggle:focus {
+    outline: 0;
+  }
 }
 //remove toolbar box shadow
 .toolbar-pf { box-shadow: none !important;

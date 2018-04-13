@@ -10,16 +10,20 @@
   (onSearch)="onSearch($event)"
   (onOpen)="onOpen($event)"
   (onClose)="onClose($event)"
-  id="labelSelector"
-  >
+  id="labelSelector">
   <ng-template #toggleButtonRef>
-    <span class="clickable add-label" (click)="closeAddLabel()">
-      <i class="pficon pficon-add-circle-o"></i>
+    <span class="clickable add-label"
+      (click)="closeAddLabel()">
+      <i class="pficon pficon-add-circle-o padding-right-5"></i>
       Assign Label(s)
     </span>
   </ng-template>
-  <ng-template #dropdownItem let-color="color" let-border="border" let-name="name">
-    <div [ngStyle]="{'background-color': color, 'border-color': border}" class="palet"></div>
+  <ng-template #dropdownItem 
+    let-color="color" 
+    let-border="border" 
+    let-name="name">
+    <div class="palet"
+      [ngStyle]="{'background-color': color, 'border-color': border}"></div>
     <span [innerHTML]="name | almSearchHighlight: searchValue"></span>
   </ng-template>
   <ng-template #dropdownFooter>
@@ -31,7 +35,8 @@
     </div>
     <div [class.hide]="!activeAddLabel || colorPickerActive"
       class="create-label">
-      <div [ngStyle]="{'background-color': newSelectedColor.color, 'border-color': newSelectedColor.border}"
+      <div [ngStyle]="{'background-color': newSelectedColor.color, 
+        'border-color': newSelectedColor.border}"
         (click)="toggleColorPicker()" class="palet">
       </div>
       <input class="create-label-input" #labelname />
@@ -45,8 +50,8 @@
     </div>
     <div class="color-picker"
       [class.hide]="activeAddLabel && !colorPickerActive">
-      <span
-        *ngFor="let color of colors" class="palet clickable margin-4"
+      <span class="palet clickable margin-4"
+        *ngFor="let color of colors"
         [ngStyle]="{'background-color': color.color, 'border-color':color.border}"
         (click)="selectColor(color); toggleColorPicker();">
       </span>

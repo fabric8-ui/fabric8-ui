@@ -1,24 +1,30 @@
 <div [class.f8-wi-container]="detailContext=='detail'">
-  <form class="f8-detail form-horizontal work-item-page" id="wi-detail-form" *ngIf="workItem">
+  <form class="f8-detail form-horizontal work-item-page" 
+    id="wi-detail-form" 
+    *ngIf="workItem">
     <fieldset>
-      <div class="f8-detail__header" #detailHeader>
+      <div class="f8-detail__header" 
+        #detailHeader>
         <span
           class="pficon-close pull-right close f8-detail--close"
           (click)="closeDetail()">
         </span>
         <div *ngIf="detailContext=='preview'">
-          <div class="form-group width-100 pull-left mobile-bar padding-h-10 padding-v-5 margin-0">
-            <span *ngIf="workItem.id" class="detail-created-date pull-right">
+          <div class="form-group width-100 pull-left mobile-bar padding-v-5 margin-0">
+            <span class="detail-created-date pull-right"
+              *ngIf="workItem.id">
               <b>Created</b>
               <span id="preview_created_at"
                 [innerHTML]="workItem.createdAt | almMomentTime"></span>
             </span>
             <div class="dropdown-kebab-pf detail-type-dropdown">
-                <span
-                  class="margin-right-5 {{workItem.type.icon}} fa-lg"
-                  id="wi-type-icon" title="{{workItem.type.name}}"></span>
-                {{workItem.type.name}}
-                <strong>#{{workItem.number}}</strong>
+              <span
+                class="margin-right-5 {{workItem.type.icon}} fa-lg"
+                id="wi-type-icon" 
+                title="{{workItem.type.name}}">
+              </span>
+              {{workItem.type.name}}
+              <strong>#{{workItem.number}}</strong>
             </div>
           </div>
           <div class="width-100 pull-left">
@@ -27,42 +33,48 @@
               *ngIf="loggedIn"
               dropdown>
               <button dropdownToggle
-                class="btn btn-default width-100 dropdown-toggle padding-h-10"
+                class="btn btn-default width-100 dropdown-toggle padding-h-10 text-left"
                 id="wi-preview-state"
                 type="button">
-                <span class='dropdown-icon pull-left margin-top-5'
+                <span class='dropdown-icon'
                   almIcon
                   [iconType]="workItem.state">
                 </span>
-                <span class='dropdown-text pull-left padding-h-10'>
+                <span class='dropdown-text'>
                   {{workItem.state}}
                 </span>
-                <span *ngIf="loggedIn" class="caret pull-right margin-top-7"></span>
+                <span class="caret pull-right margin-top-7"
+                  *ngIf="loggedIn"></span>
               </button>
-              <ul id="wi-status-dropdown" class="dropdown-menu-right dropdown-ul dropdown-menu" role="menu" *dropdownMenu>
-                <li class="dropdown-li" (click)="onChangeState(state)"
-                  *ngFor="let state of workItemStates"
-                >
+              <ul class="dropdown-ul dropdown-menu" 
+                id="wi-status-dropdown" 
+                role="menu" 
+                *dropdownMenu>
+                <li class="dropdown-li" 
+                  (click)="onChangeState(state)"
+                  *ngFor="let state of workItemStates">
                   <a>
-                    <span class='dropdown-icon' almIcon [iconType]="state"></span>
+                    <span class='dropdown-icon' 
+                      almIcon 
+                      [iconType]="state">
+                    </span>
                     <span class='dropdown-text'>{{state}}</span>
                   </a>
                 </li>
               </ul>
             </div>
-            <a class="pull-right">
-              <span class="dib margin-right-3">
-                <a [routerLink]="[constructUrl(workItem)]" [queryParams]="queryParams">
-                  View full details
-                </a>
-              </span>
-              <span class="fa fa-list-alt"></span>
+            <a class="pull-right" 
+              [routerLink]="[constructUrl(workItem)]" 
+              [queryParams]="queryParams">
+              View full details
+                <span class="fa fa-list-alt"></span>
             </a>
           </div>
         </div>
         <div *ngIf="detailContext=='detail'">
           <div class="pull-left margin-right-15">
-            <div class="dropdown pull-left" dropdown *ngIf="loggedIn">
+            <div class="dropdown pull-left" 
+              dropdown *ngIf="loggedIn">
               <button class="btn btn-default dropdown-toggle padding-h-10 width-100"
                 id="wi-detail-state"
                 type="button"
@@ -74,13 +86,20 @@
                 <span class="pull-left padding-h-10">
                   {{ workItem.state }}
                 </span>
-                <span *ngIf="loggedIn" class="caret pull-right margin-top-7"></span>
+                <span class="caret pull-right margin-top-7"
+                  *ngIf="loggedIn"></span>
               </button>
-              <ul class="dropdown-ul dropdown-menu" role="menu" *dropdownMenu>
-                <li class="dropdown-li" (click)="onChangeState(state)"
+              <ul class="dropdown-ul dropdown-menu" 
+                role="menu" 
+                *dropdownMenu>
+                <li class="dropdown-li" 
+                  (click)="onChangeState(state)"
                   *ngFor="let state of workItemStates">
                   <a>
-                    <span class='dropdown-icon' almIcon [iconType]="state"></span>
+                    <span class='dropdown-icon' 
+                      almIcon 
+                      [iconType]="state">
+                    </span>
                     <span class='dropdown-text'>{{state}}</span>
                   </a>
                 </li>
@@ -145,7 +164,8 @@
                 <span *ngIf="loadingAssignees"
                   class="spinner spinner-sm spinner-inline">
                 </span>
-                <f8-assignee *ngIf="!loadingAssignees" [showFullName]="true"
+                <f8-assignee *ngIf="!loadingAssignees" 
+                  [showFullName]="true"
                   [assignees]="workItem?.assignees ?
                     workItem?.assignees : []">
                 </f8-assignee>
@@ -171,7 +191,8 @@
               </label>
               <div class="f8-detail__content">
                 <span *ngIf="!workItem?.creator"
-                  class="pficon pficon-user user-creator-icon" id="user_creator_icon">
+                  class="pficon pficon-user user-creator-icon" 
+                  id="user_creator_icon">
                 </span>
                 <div class="user-avatar pull-left margin-right-10">
                   <img *ngIf="workItem?.creator"
@@ -192,21 +213,24 @@
 
           <!-- area -->
           <div class="form-group">
-              <section class="f8-detail__area">
-                <label class="pull-left padding-left-15 control-label ">
-                  {{workItem.type.fields['system.area']?.label || 'Label'}}
-                </label>
-                <div class="f8-detail__content">
-                  <span *ngIf="loadingArea"
-                    class="spinner spinner-sm spinner-inline">
-                  </span>
-                  <typeahead-dropdown #areaSelectbox
-                    *ngIf="!loadingArea"
-                    id="area-dropdown" class="area-dropdown"
-                    noValueLabel="None" [values]="areas"
-                    (onFocus)="focusArea()"
-                    (onUpdate)="areaUpdated($event)">
-                  </typeahead-dropdown>
+            <section class="f8-detail__area">
+              <label class="pull-left padding-left-15 control-label">
+                {{workItem.type.fields['system.area']?.label || 'Label'}}
+              </label>
+              <div class="f8-detail__content">
+                <span *ngIf="loadingArea"
+                  class="spinner spinner-sm spinner-inline">
+                </span>
+                <typeahead-dropdown 
+                  class="area-dropdown"
+                  #areaSelectbox
+                  *ngIf="!loadingArea"
+                  id="area-dropdown"
+                  noValueLabel="None" 
+                  [values]="areas"
+                  (onFocus)="focusArea()"
+                  (onUpdate)="areaUpdated($event)">
+                </typeahead-dropdown>
               </div>
             </section>
           </div>
@@ -214,7 +238,7 @@
           <!-- Iteration -->
           <div class="form-group">
             <section class="f8-detail__area">
-              <label class="pull-left padding-left-15 control-label ">
+              <label class="pull-left padding-left-15 control-label">
                 {{workItem.type.fields['system.iteration']?.label || 'Label'}}
               </label>
               <div class="f8-detail__content">
@@ -222,10 +246,14 @@
                     class="spinner spinner-sm spinner-inline">
                   </span>
                   <typeahead-dropdown
+                    class="iteration-dropdown"
                     *ngIf="!loadingIteration"
-                    id="iteration-dropdown" class="iteration-dropdown"
-                    #iterationSelectbox noValueLabel="None" [values]="iterations"
-                    (onFocus)="focusIteration()" (onUpdate)="iterationUpdated($event)">
+                    id="iteration-dropdown" 
+                    #iterationSelectbox 
+                    noValueLabel="None" 
+                    [values]="iterations"
+                    (onFocus)="focusIteration()" 
+                    (onUpdate)="iterationUpdated($event)">
                   </typeahead-dropdown>
               </div>
             </section>
@@ -247,7 +275,8 @@
                   (onRemoveLabel)="removeLable($event)"
                   [allowDelete]="true">
                 </f8-label>
-                <div class="f8-detail__labels--selector" *ngIf="loggedIn">
+                <div class="f8-detail__labels--selector" 
+                  *ngIf="loggedIn">
                   <label-selector
                     [allLabels]="labels"
                     [selectedLabels]="workItem?.labels ?
@@ -262,7 +291,7 @@
           <!-- Description -->
           <div class="form-group">
             <section class="f8-detail__area">
-              <label class="col-xs-4 col-sm-4 col-md-2 control-label">
+              <label class="pull-left padding-left-15 control-label">
                 Description
               </label>
               <div class="f8-detail__content">
@@ -279,7 +308,7 @@
           </div>
 
         </div>
-        <div class="col-xs-12 col-sm-12"
+        <div class="col-xs-12 col-sm-12 padding-0"
           [class.f8-detail__detail-wrap--right]="detailContext=='detail'"
           [class.f8-detail__detail-wrap]="detailContext=='detail'"
           [class.col-md-5]="detailContext=='detail'"
@@ -297,10 +326,9 @@
             [loggedIn]="loggedIn">
           </work-item-comment-wrapper>
         </div>
-      </div>
+      </div> 
     </fieldset>
   </form>
 </div>
-
 
 <osio-modal *ngIf="detailContext=='detail'"></osio-modal>

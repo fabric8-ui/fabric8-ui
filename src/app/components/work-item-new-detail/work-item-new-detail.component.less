@@ -1,14 +1,27 @@
-@import '../../../assets/stylesheets/_base';
+@import (reference) '../../../assets/stylesheets/_base';
 
 .f8-detail {
   background-color: @color-pf-white;
   &__header {
     float: left;
     width: 100%;
-    padding: ((@grid-gutter-width/3) * 2);
+    padding: (@grid-gutter-width/2);
     background: @color-pf-black-200;
     .dropdown {
       min-width: 160px;
+      .dropdown-icon {
+        min-width: 15px;
+        float: left;
+        margin-top: 5px;
+        margin-right: 7px;
+        font-size: 12px;
+        text-align: center;
+      }
+      .dropdown-text {
+        float: left;
+        text-align: left;
+        text-transform: capitalize;
+      }
     }
   }
   &__edit-icon {
@@ -29,6 +42,7 @@
   &__detail {
    // height: ~"calc(e('100vh - 200px'))";
     label {
+      padding-top: 0;
       text-align: left;
     }
     &-wrap {
@@ -145,7 +159,17 @@
     }
   }
 }
-
+.user-avatar {
+  &:extend(.user-avatar);
+  img {
+    &:extend(.user-avatar img);
+  }
+}
+.user-assign-icon {
+  &:extend(.not-assigned-user-icon);
+  margin-right: 10px;
+  color: @color-pf-black-500;
+}
 // Sm
 @media (max-width: @screen-md-min) {
   .f8-detail__detail {
