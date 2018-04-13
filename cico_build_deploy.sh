@@ -18,7 +18,7 @@ set -e
 # non-zero status, or to zero if all commands of the pipeline exit successfully.
 set -o pipefail
 
-. cico_setup.sh
+source cico_setup.sh
 
 setup;
 

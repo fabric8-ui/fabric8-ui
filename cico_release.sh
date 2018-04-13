@@ -55,7 +55,7 @@ function create_merge_PR {
     message="fix(version): update package.json fabric8-planner to ${new_planner_version}"
     updatePackageJSONVersion "$new_planner_version"
     git add package.json
-    git commit -m \"${message}\"
+    git commit -m "${message}"
     git push origin versionUpdate"${id}"
     local body="{
         \"title\": \"${message}\",
