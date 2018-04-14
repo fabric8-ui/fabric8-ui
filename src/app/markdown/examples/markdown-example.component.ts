@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation, ElementRef } from '@angular/core';
 
-const markdown = require('markdown').markdown;
+const markdownIt = require('markdown-it');
+const markdown = new markdownIt();
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -21,7 +22,7 @@ export class MarkdownExampleComponent {
     const rawText = value.rawText;
     const callBack = value.callBack;
     setTimeout(() => {
-      callBack(rawText, markdown.toHTML(rawText));
+      callBack(rawText, markdown.render(rawText));
     }, 2000);
   }
 

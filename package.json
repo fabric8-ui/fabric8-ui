@@ -147,7 +147,7 @@
     "less": "2.7.3",
     "less-loader": "4.0.5",
     "less-plugin-autoprefix": "1.5.1",
-    "markdown": "0.5.0",
+    "markdown-it": "8.4.1",
     "mocha": "4.0.1",
     "ng-router-loader": "2.1.0",
     "npm-run-all": "4.1.1",
