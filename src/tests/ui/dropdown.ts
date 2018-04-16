@@ -18,9 +18,12 @@ class DropdownItem extends BaseElement {
   async select() {
     await this.run(`select item: '${this.name}'`, async () => {
       await this.parent.ready();
-      await this.ready();
-      await this.click();
-    })
+      try {
+        await this.clickWhenReady();
+      } catch(e) {
+        await this.click();
+      }
+      })
   }
 }
 

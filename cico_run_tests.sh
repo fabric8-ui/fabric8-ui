@@ -10,9 +10,9 @@ set -x
 # Exit on error
 set -e
 
-. cico_setup.sh
+source cico_setup.sh
 
-setup;
+setup
 
 # Build fabric8-planner image
 docker build -t fabric8-planner-builder .
@@ -22,17 +22,14 @@ docker build -t fabric8-planner-builder .
 # Chrome crashes on low size of /dev/shm. We need the --shm-size=256m flag.
 CID=$(docker run --detach=true \
     --shm-size=256m \
-    -u $(shell id -u $(USER)):$(shell id -g $(USER)) \
     -v $(pwd)/fabric8-ui-dist:/home/fabric8/fabric8-planner/fabric8-ui-dist:Z \
     --cap-add=SYS_ADMIN \
     -t fabric8-planner-builder)
 
-build_planner;
+build_planner
 
-run_unit_tests;
+run_unit_tests
 
-run_functional_tests;
+build_fabric8_ui
 
-build_fabric8_ui;
-
-build_push_image;
+build_test_and_push_image

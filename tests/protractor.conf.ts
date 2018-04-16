@@ -1,5 +1,23 @@
-import { Config } from "protractor";
+import { Config, browser } from "protractor";
 import { SpecReporter } from "jasmine-spec-reporter";
+
+// Workaround to get global var in typescript
+const globalAny:any = global;
+const token:string = '';
+
+// Validate test config.
+function validate_config(){
+  if(process.env.NODE_ENV != 'inmemory'){
+    // Mysteriously, NODE_ENV is set to "test". NODE_ENV should not have been set to "test"
+    // Unset NODE_ENV variable.
+    process.env.NODE_ENV = '';
+    process.env.SPACE_NAME || new Error("SPACE_NAME variable not set");
+    process.env.USER_NAME || new Error("USER_NAME variable not set")
+    process.env.USER_FULLNAME || new Error("USER_FULLNAME variable not set")
+    process.env.AUTH_TOKEN || new Error("TOKEN (Auth token) variable not set");
+    process.env.REFRESH_TOKEN || new Error("OFFLINE_TOKEN (Refresh token) variable not set");
+  }
+}
 
 // Full protractor configuration file reference could be found here:
 // https://github.com/angular/protractor/blob/master/lib/config.ts
@@ -42,6 +60,7 @@ let conf: Config = {
 
   // Assign the test reporter to each running instance
   onPrepare: function() {
+    validate_config();
     jasmine.getEnv().addReporter(
       new SpecReporter({
         spec: {
@@ -53,7 +72,16 @@ let conf: Config = {
         }
       })
     );
-  },
+    // Disable control flow
+    browser.ignoreSynchronization = true;
+    browser.baseUrl = browser.baseUrl + '/' + process.env.USER_NAME + '/' + process.env.SPACE_NAME + '/plan';
+    browser.token = encodeURIComponent(JSON.stringify({
+      access_token: process.env.AUTH_TOKEN,
+      expires_in: 1800,
+      refresh_token: process.env.REFRESH_TOKEN,
+      token_type: "bearer"
+    }));
+  }
 };
 
 exports.config = conf;

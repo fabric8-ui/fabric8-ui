@@ -6,6 +6,7 @@ import * as support from './../../support';
 export class WorkItemQuickPreview extends ui.BaseElement {
   // TODO - move loading animation out of here. It doesn't belong here.
   loadingAnimation = new ui.BaseElementArray($$('.spinner'), 'Loading spinner animation');
+  notificationToast = new ui.BaseElementArray($$('pfng-toast-notification'), 'Notification Toast');
   /* UI elements of the Top section of the workitem preview */
   closeButton = new ui.Button(this.$('.f8-detail--close'), 'WorkItem Quick Preview close button');
   stateDropdown = new ui.Dropdown(this.$('.dropdown-toggle'), this.$('#wi-status-dropdown'), 'WorkItem State dropdown');
@@ -91,7 +92,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   commentsField = new ui.Clickable(this.commentDiv.$('.editor-box.editor-preview.placeholder'), 'comments clickable field');
   commentsInputField = new ui.TextInput(this.commentDiv.$('.editor-box.editor-markdown'), 'comment input field');
   commentSaveButton = new ui.Button(this.commentDiv.$('.btn-save'), 'Comment save button');
-  commentCancelButton = new ui.Button(this.commentDiv.$$('.fl.btn.btn-primary.pull-right.action-btn').first(), 'Comment cancel button');
+  commentCancelButton = new ui.Button(this.commentDiv.$('.fl.btn.btn-default.pull-right.action-btn'), 'Comment cancel button');
   commentsText = new ui.BaseElementArray(this.$$('.f8-comment-body .editor-box.editor-preview'), 'Comment List');
 
   constructor(ele: ElementFinder, name: string = '') {
@@ -112,23 +113,29 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async addAssignee(assignee: string) {
+    await this.loadingAnimation.untilCount(0);
     await this.assigneeDropdown.clickWhenReady();
-    await this.assigneeDropdown.select(assignee)
+    await this.assigneeDropdown.select(assignee);
     await this.assigneeDropdownCloseButton.clickWhenReady();
+    await this.loadingAnimation.untilCount(0);
   }
 
   async addArea(areaTitle: string) {
     await this.loadingAnimation.untilCount(0);
+    await browser.sleep(2000);
     await this.areaDropdown.clickWhenReady();
     await this.areaDropdown.select(areaTitle);
     await this.areaSaveButton.clickWhenReady();
+    await this.loadingAnimation.untilCount(0);
   }
 
   async addIteration(iterationTitle: string) {
     await this.loadingAnimation.untilCount(0);
+    await browser.sleep(2000);
     await this.iterationDropdown.clickWhenReady();
     await this.iterationDropdown.select(iterationTitle);
     await this.iterationSaveButton.clickWhenReady();
+    await this.notificationToast.untilCount(1);
   }
 
   async typeaHeadSearch(iterationTitle: string) {
@@ -144,6 +151,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async addCommentAndSave(comment: string) {
+    await this.ready()
     await this.addComment(comment);
     await this.commentSaveButton.clickWhenReady();
   }
@@ -170,11 +178,6 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.linkButton.clickWhenReady();
   }
 
-  async close() {
-    await this.closeButton.clickWhenReady();
-    await browser.sleep(1000);
-  }
-
   async createNewLabel(label: string) {
     await this.labelDropdown.clickWhenReady()
     await this.createLabelButton.clickWhenReady();
@@ -184,33 +187,57 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.labelDropdownCloseButton.clickWhenReady();
   }
 
+  // Try to click on the close button, if it fails, wait for notification to disappear
+  async close() {
+    while(true) {
+      try {
+        await this.closeButton.clickWhenReady();
+        break;
+      } catch(e) {
+        await browser.sleep(1000);
+        await this.notificationToast.untilCount(0);
+      }
+    }
+  }
+
   async hasArea(areaName: string) {
     await this.loadingAnimation.untilCount(0);
     let area = await this.areaDropdown.getTextWhenReady();
+    this.debug("Expect area: " + area + " to be " + areaName);
     return area === areaName;
   }
 
   async hasCreator(name: string): Promise<Boolean> {
     await this.loadingAnimation.untilCount(0);
+    await browser.sleep(3000);
     let creator = await this.creatorusername.getTextWhenReady();
+    this.debug("Expect Creator: " + creator + " to be " + name);
     return creator === name;
   }
 
   async hasCreatorAvatar(avatarUrl: string): Promise<Boolean> {
     await this.loadingAnimation.untilCount(0);
     let creator = await this.creatorAvatar.getAttribute('src');
+    this.debug("Expect Creator Avatar: " + creator + " to be " + avatarUrl);
     return creator === avatarUrl;
   }
 
   async hasAssignee(name: string): Promise<Boolean> {
     await this.loadingAnimation.untilCount(0);
     await this.assigneeDiv.untilDisplayed();
+    await browser.sleep(5000);
     let assigneeList = await this.assigneeDiv.getTextWhenReady();
     return assigneeList.indexOf(name) > -1;
   }
 
   async hasComment(comment: string): Promise<Boolean> {
-    let commentList = await this.commentsText.getTextWhenReady();
+    await this.ready();
+    await this.commentDiv.scrollIntoView();
+    let commentList:String = "" ;
+    if (await this.commentsText.isPresent()) {
+      commentList = await this.commentsText.getTextWhenReady();
+    }
+    this.debug("Comment list: " + commentList);
     return commentList.indexOf(comment) > -1;
   }
 
@@ -225,7 +252,9 @@ export class WorkItemQuickPreview extends ui.BaseElement {
 
   async hasIteration(iterationTitle: string): Promise<Boolean> {
     await this.loadingAnimation.untilCount(0);
+    await browser.sleep(1000);    
     let iteration = await this.iterationDropdown.getTextWhenReady();
+    this.debug(" iteration : " + iteration);
     return iteration === iterationTitle;
   }
 
@@ -254,7 +283,9 @@ export class WorkItemQuickPreview extends ui.BaseElement {
       await this.descriptionTextarea.clear();
     }
     await this.descriptionTextarea.enterText(description);
+    await this.descriptionSaveButton.scrollIntoView();
     await this.descriptionSaveButton.clickWhenReady();
+    await this.descriptionSaveButton.untilHidden();
   }
 
   async openDescriptionBox(){
@@ -278,5 +309,10 @@ export class WorkItemQuickPreview extends ui.BaseElement {
 
   async hasTitleError(error: string) {
     return await this.titleErrorMessage.getTextWhenReady() === error;
+  }
+
+  async changeStateTo(state: string) {
+    await this.stateDropdown.clickWhenReady();
+    await this.stateDropdown.select(state);
   }
 }

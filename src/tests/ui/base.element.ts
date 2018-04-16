@@ -75,7 +75,11 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
   }
 
   async untilHidden(timeout?: number) {
-    await this.waitFor('hidden', EC.invisibilityOf(this), timeout);
+    try {
+      await this.waitFor('hidden', EC.invisibilityOf(this), timeout);
+    } catch(e) {
+      this.debug("Element: ", this.name, " no longer exists.");
+    }
   }
 
   async untilAbsent(timeout?: number) {
@@ -84,10 +88,10 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
 
   async clickWhenReady(timeout?: number) {
     await this.run('click', async () => {
+      await this.untilDisplayed(timeout);
       await this.untilClickable(timeout);
       await this.click();
     })
-    this.log('Clicked');
   }
 
   async ready() {
@@ -104,18 +108,27 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
   }
 
   async run(msg: string, fn: () => Promise<any>) {
-    this.debug(msg);
+    this.debug(msg, '- ACTION STARTED');
     await fn();
     this.debug(msg, '- DONE');
   }
 
   async getTextWhenReady(timeout?: number): Promise<string> {
     await this.untilDisplayed(timeout);
-    return this.getText();
+    return await this.getText();
+  }
+
+  async scrollIntoView() {
+    await browser.executeScript('arguments[0].scrollIntoView(true)', this.getWebElement());
   }
 }
 
 export class BaseElementArray extends ElementArrayFinder {
+
+  // Loggin Mixin
+  log: (action: string, ...msg: string[]) => void;
+  debug: (context: string, ...msg: string[]) => void;
+
   constructor(wrapped: ElementArrayFinder, name: string = 'unnamed') {
     // see: clone https://github.com/angular/protractor/blob/5.2.0/lib/element.ts#L106
     super(
@@ -136,10 +149,22 @@ export class BaseElementArray extends ElementArrayFinder {
     });
   }
 
-  async getTextWhenReady() {
+  async getTextWhenReady(): Promise<String> {
     await this.ready();
     return await this.getText();
   }
+
+  async untilHidden() {
+    await this.each(async (item: ElementFinder, index: number) => {
+      let tempItem = new BaseElement(item, this.name + ' - ' + index);
+      try {
+        await tempItem.untilHidden();
+      } catch(e) {
+        this.debug("Element: ", tempItem.name, " no longer exists.");
+      }
+    });
+  }
+
 }
 
 export class Clickable extends BaseElement {

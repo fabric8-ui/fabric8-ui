@@ -23,6 +23,7 @@
   },
   "peerDependencies": {},
   "devDependencies": {
-    "@types/jasmine": "2.8.5"
+    "@types/jasmine": "2.8.5",
+    "@types/uuid": "^3.4.3"
   }
 }

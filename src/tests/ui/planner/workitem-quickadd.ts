@@ -12,6 +12,7 @@ export class WorkItemQuickAdd extends ui.BaseElement {
     this.$('.f8-quickadd__wiblk .dropdown-menu'),
     'WorkItem Type dropdown'
   );
+
   constructor(el: ElementFinder, name = 'Work Item Quick Add') {
     super(el, name);
   }
@@ -22,14 +23,14 @@ export class WorkItemQuickAdd extends ui.BaseElement {
   }
 
   async addWorkItem({ title, description = '', type = 'feature' }: WorkItem) {
-    await this.clickWhenReady();
     await this.titleTextInput.ready();
     await this.titleTextInput.enterText(title);
     await this.addAndOpenButton.untilClickable();
     await this.addButton.clickWhenReady();
-
     // TODO add more confirmation that the item has been added
     this.log('New WorkItem created', `${title} added`);
+    // The button is enabled only when the new WI is on the list.
+    await this.addButton.untilClickable();
   }
 
   async workItemTypes(): Promise<string[]>{

@@ -88,7 +88,6 @@ main() {
   local temp_dir=${TEMP_DIR:-$(mktemp -d)}
   local specs_pattern=${SPECS_PATTERN:-"${temp_dir}/**/*.spec.js"}
   local test_source_path=${TEST_SOURCE_PATH:-"../src/tests"}
-  local access_token=${ACCESS_TOKEN:-"{\"access_token\":\"somerandomtoken\",\"expires_in\":1800,\"refresh_expires_in\":1800,\"refresh_token\":\"somerandomtoken\",\"token_type\":\"bearer\"}"}
   local protractor="$(npm bin)/protractor"
   local typescript="$(npm bin)/tsc"
   local suite=${1:-""}
@@ -112,7 +111,6 @@ main() {
   cd "${temp_dir}" && npm install
 
   echo "Using base url ${base_url}"
-  echo "Using token ${access_token}"
 
   if [[ ${DIRECT_CONNECT:-false} == false ]]; then
     echo "DIRECT_CONNECT not set; Using webdriver. Tests may run slow .. checking webdriver status"
@@ -131,7 +129,11 @@ main() {
     echo
   fi
 
-  $protractor --baseUrl "${base_url}" --specs "${specs_pattern}" --exclude "node_modules/**/*.spec.js" --params.accessToken "${access_token}" --suite "${suite}" "${temp_dir}/protractor.conf.js"
+  AUTH_TOKEN=$AUTH_TOKEN REFRESH_TOKEN=$REFRESH_TOKEN $protractor --baseUrl "${base_url}" \
+    --specs "${specs_pattern}" \
+    --exclude "node_modules/**/*.spec.js" \
+    --suite "${suite}" \
+    "${temp_dir}/protractor.conf.js"
 
   TEST_RESULT=$?
 

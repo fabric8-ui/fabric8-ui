@@ -25,6 +25,7 @@ export class WorkItemList extends BaseElement {
   }
 
   async clickWorkItem(title: string) {
+    await this.overlay.untilHidden();    
     await this.workItem(title).openQuickPreview();
   }
 
@@ -33,7 +34,9 @@ export class WorkItemList extends BaseElement {
   }
 
   workItem(title: string): WorkItemListEntry {
-    return new WorkItemListEntry(this.element(by.xpath("//datatable-body-row[.//p[text()='" + title + "']]")));
+    return new WorkItemListEntry(
+      this.element(by.xpath("//datatable-body-row[.//p[text()='" + title + "']]")),
+      "Work Item - " + title);
   }
 
   async clickInlineQuickAdd(title: string) {

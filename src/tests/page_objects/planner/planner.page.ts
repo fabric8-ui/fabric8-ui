@@ -1,4 +1,5 @@
 import { $, browser } from 'protractor';
+import { v4 as uuid } from 'uuid';
 import { AppPage } from '../app.page';
 import * as planner from './../../ui/planner';
 import * as support from './../../support';
@@ -7,13 +8,14 @@ import * as support from './../../support';
 export class PlannerPage extends AppPage {
   workItemList = new planner.WorkItemList($('alm-work-item-list'));
   quickAdd =  new planner.WorkItemQuickAdd($('alm-work-item-quick-add'));
+  inlineQuickAdd =  new planner.WorkItemInlineQuickAdd($('#workItemList_quickAdd_inline'));
   sidePanel = new planner.SidePanel($('aside.f8-sidepanel'));
   quickPreview = new planner.WorkItemQuickPreview($('work-item-detail'));
-  header = new planner.ToolbarHeader($('pfng-toolbar'));
+  header = new planner.ToolbarHeader($('#header-div'));
   settings = new planner.Settings($('div.f8-wi-list__settings'));
   iteration = new planner.Iteration($('fab-planner-iteration-modal'));
   detailPage = new planner.WorkItemDetailPage($('work-item-detail'));
-  
+
   constructor(url: string){
     super(url);
   }
@@ -30,6 +32,16 @@ export class PlannerPage extends AppPage {
   async createWorkItem(item: planner.WorkItem) {
     this.debug('create item', JSON.stringify(item));
     await this.quickAdd.addWorkItem(item);
+  }
+
+  async createUniqueWorkItem(): Promise<string> {
+    let workItemTitle = uuid();
+    await this.createWorkItem({"title" : workItemTitle});
+    return workItemTitle;
+  }
+  async createInlineWorkItem(item: planner.WorkItem) {
+    this.debug('create inline item', JSON.stringify(item));
+    await this.inlineQuickAdd.addInlineWorkItem(item);
   }
 
 }

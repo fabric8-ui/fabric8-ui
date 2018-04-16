@@ -16,17 +16,6 @@ def ci (){
             sh 'scripts/upload_to_codecov.sh'
         }
     }
-
-    stage('Functional Tests'){
-        container('ui'){
-            sh '''
-            npm cache clean --force
-            npm cache verify
-            npm install
-            DEBUG=true HEADLESS_MODE=true ./scripts/run-functests.sh
-        '''
-        }
-    }
 }
 
 def buildF8UI(project){
@@ -60,17 +49,6 @@ def cd (b){
 
     stage('Unit Tests'){
         sh 'npm run tests -- --unit'
-    }
-
-    stage('Functional Tests'){
-        container('ui'){
-            sh '''
-            npm cache clean --force
-            npm cache verify
-            npm install
-            DEBUG=true HEADLESS_MODE=true ./scripts/run-functests.sh smokeTest
-        '''
-        }
     }
 
     stage('Release'){

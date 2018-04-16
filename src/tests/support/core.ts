@@ -34,10 +34,16 @@ export async function setBrowserMode(mode: BrowserMode) {
 }
 
 export async function desktopTestSetup() {
-  browser.ignoreSynchronization = true;
   await setBrowserMode(BrowserMode.Desktop);
 }
 
+/*
+* The function uses auth and refresh tokens to login
+*/
+export async function loginWithTokens() {
+ // Bypass login by supplying auth and refresh token
+ browser.get(browser.baseUrl + "/?token_json=" + browser.token);
+}
 /*
  * Joins the arguments as URI paths ensuring there's exactly one '/' between each path entry
  */

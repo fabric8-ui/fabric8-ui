@@ -20,7 +20,7 @@ set -o pipefail
 
 source cico_setup.sh
 
-setup;
+setup
 
 # Build fabric8-planner image
 docker build -t fabric8-planner-builder .
@@ -35,10 +35,12 @@ CID=$(docker run --detach=true \
     --cap-add=SYS_ADMIN \
     -t fabric8-planner-builder)
 
-build_planner;
+build_planner
 
-run_unit_tests;
+run_unit_tests
 
-run_functional_tests;
+build_fabric8_ui
+
+build_test_and_push_image
 
 docker exec -e GH_TOKEN=$GH_TOKEN -e NPM_TOKEN=$NPM_TOKEN -e JENKINS_URL=$JENKINS_URL -e GIT_BRANCH=$GIT_BRANCH $CID bash -c 'sh cico_release.sh'

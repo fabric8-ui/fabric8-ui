@@ -1,3 +1,4 @@
+export * from './workitem-inline-quickadd';
 export * from './workitem-list';
 export * from './workitem-quickadd';
 export * from './sidepanel';

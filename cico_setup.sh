@@ -5,7 +5,7 @@
 function load_jenkins_vars() {
     if [ -e "jenkins-env" ]; then
         cat jenkins-env \
-        | grep -E "(JENKINS_URL|DEVSHIFT_USERNAME|DEVSHIFT_PASSWORD|GIT_BRANCH|GIT_COMMIT|BUILD_NUMBER|ghprbSourceBranch|ghprbActualCommit|BUILD_URL|ghprbPullId|DEVSHIFT_TAG_LEN|GIT_COMMIT|NPM_TOKEN|FABRIC8CD_GH_TOKEN)=" \
+        | grep -E "^(JENKINS_URL|DEVSHIFT_USERNAME|DEVSHIFT_PASSWORD|GIT_BRANCH|GIT_COMMIT|BUILD_NUMBER|ghprbSourceBranch|ghprbActualCommit|BUILD_URL|ghprbPullId|DEVSHIFT_TAG_LEN|GIT_COMMIT|NPM_TOKEN|FABRIC8CD_GH_TOKEN|REFRESH_TOKEN)=" \
         | sed 's/^/export /g' \
         > /tmp/jenkins-env
         source /tmp/jenkins-env
@@ -46,13 +46,16 @@ function build_planner() {
 function run_unit_tests() {
     # Run unit tests
     docker exec $CID npm run tests -- --unit
-
 }
 
 function run_functional_tests() {
-    ## Exec functional tests
-    docker exec $CID bash -c 'cd runtime; npm install'
-    docker exec $CID bash -c 'DEBUG=true HEADLESS_MODE=true WEBDRIVER_VERSION=2.37 ./scripts/run-functests.sh'
+    # Run the docker image
+    SERVER_CID=$(docker run --detach fabric8-planner-snapshot)
+    SERVER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${SERVER_CID})
+
+    # Run the E2E tests against the running fabric8-ui container
+    docker exec -t -e REFRESH_TOKEN=$REFRESH_TOKEN $CID bash -c \
+        "cd tests && WEBDRIVER_VERSION=2.37 DEBUG=true HEADLESS_MODE=true BASE_URL='http://${SERVER_IP}:8080' ./run_e2e_tests.sh"
 }
 
 function build_fabric8_ui() {
@@ -84,8 +87,25 @@ function build_fabric8_ui() {
     docker exec $CID bash -c 'cd fabric8-ui; cp Dockerfile.deploy /home/fabric8/fabric8-planner/fabric8-ui-dist'
 }
 
-function build_push_image() {
+function build_test_and_push_image() {
     REGISTRY="push.registry.devshift.net"
+    TAG="SNAPSHOT-PR-${ghprbPullId}"
+    IMAGE_REPO="fabric8-ui/fabric8-planner"
+
+    current_directory=$(pwd)
+    cd fabric8-ui-dist
+
+    docker build -t fabric8-planner-snapshot -f Dockerfile.deploy .
+
+    run_functional_tests;
+
+    push_image;
+
+    show_docker_command;
+    cd $current_directory
+}
+
+function push_image() {
     # login first
     if [ -n "${DEVSHIFT_USERNAME}" -a -n "${DEVSHIFT_PASSWORD}" ]; then
         docker login -u ${DEVSHIFT_USERNAME} -p ${DEVSHIFT_PASSWORD} ${REGISTRY}
@@ -93,24 +113,13 @@ function build_push_image() {
         echo "Could not login, missing credentials for the registry"
         exit 1
     fi
-
-    # Build and push image
-    TAG="SNAPSHOT-PR-${ghprbPullId}"
-    IMAGE_REPO="fabric8-ui/fabric8-planner"
-
-    current_directory=$(pwd)
-    cd fabric8-ui-dist
-    docker build -t fabric8-planner-snapshot -f Dockerfile.deploy .
     docker tag fabric8-planner-snapshot ${REGISTRY}/${IMAGE_REPO}:$TAG
     docker push ${REGISTRY}/${IMAGE_REPO}:${TAG}
-
-    PULL_REGISTRY="registry.devshift.net"
-    image_name="${PULL_REGISTRY}/${IMAGE_REPO}:${TAG}"
-    show_docker_command
-    cd $current_directory
 }
 
 function show_docker_command() {
+    PULL_REGISTRY="registry.devshift.net"
+    image_name="${PULL_REGISTRY}/${IMAGE_REPO}:${TAG}"
     # turn off showing command before executing
     set +x
     # Pretty print the command for snapshot
