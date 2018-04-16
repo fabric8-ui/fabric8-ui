@@ -4,7 +4,10 @@
     {{ fieldValue.field.label | truncate: 15}}
   </label>
   <div class="f8-dynamic-control-content">
-    <div [ngSwitch]="fieldValue.field.type.kind">
+    <span *ngIf="loadingField"
+      class="spinner spinner-sm spinner-inline">
+    </span>
+    <div *ngIf="!loadingField">
 
       <!-- workitemtype field type: string -->
       <!-- <input *ngSwitchCase="'string'"
@@ -18,6 +21,16 @@
         (change)="baseChangeBaseType($event.target.value)"
         type="text"
         (focus)="focusIn()"> -->
+      <f8-inlineinput
+        class="dynamic-integer-field"
+        *ngIf="fieldValue.field.type.kind==='integer' || fieldValue.field.type.kind==='string'|| fieldValue.field.type.kind==='float'"
+        [disabled]="false"
+        [type]="fieldValue.field.type.kind"
+        [value]="fieldValue.value"
+        [onLineClickEdit]="true"
+        (onSave)="saveInputField($event)"
+        [placeholder]="fieldValue.field.description">
+      </f8-inlineinput>
 
       <!-- workitemtype field type: float -->
       <!-- <input *ngSwitchCase="'float'"
@@ -27,7 +40,7 @@
 
       <!-- workitemtype field type: dropdown -->
       <common-selector
-        *ngSwitchCase="'enum'"
+        *ngIf="fieldValue.field.type.kind==='enum'"
         [noValueLabel]="'None'"
         class="dynamic-enum-dropdown"
         [items]="dropdownMenuItems"
@@ -37,7 +50,7 @@
 
       <!-- workitemtype field type: boolean -->
       <common-selector
-        *ngSwitchCase="'boolean'"
+        *ngIf="fieldValue.field.type.kind==='boolean'"
         [noValueLabel]="'None'"
         class="dynamic-boolean-dropdown"
         [items]="dropdownMenuItems"
@@ -54,14 +67,14 @@
       </markdown-control> -->
 
       <!-- workitemtype field type: instant (datetime) -->
-      <!-- <div class="f8-dynamic-control-datepicker"
-        *ngSwitchCase="'instant'" >
+      <div class="f8-dynamic-control-datepicker"
+        *ngIf="fieldValue.field.type.kind==='instant'">
       <my-date-picker
         [options]="datePickerOptions"
         [selDate]="dateValue"
         (dateChanged)="onDateChanged($event)"
         placeholder="Set Date"></my-date-picker>
-      </div> -->
+      </div>
 
       <!-- TODO: -->
       <!-- workitemtype field type: duration -->

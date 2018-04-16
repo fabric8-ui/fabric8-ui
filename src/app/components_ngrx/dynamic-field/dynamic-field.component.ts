@@ -43,10 +43,12 @@ export class DynamicFieldComponent implements OnInit {
   private dropdownMenuItems: any[] = [];
   private dropdownSelectedItems: any[] = [];
 
+  private loadingField: boolean = false;
+
   // this is the input for dynamic field key and value
   @Input('keyValueField') set fieldValueSetter(val) {
     this.fieldValue = cloneDeep(val);
-
+    this.loadingField = false;
     // if it's an enum type
     // set the dropdown values
     // to support the dropdown
@@ -123,6 +125,8 @@ export class DynamicFieldComponent implements OnInit {
     if (this.fieldValue.field.type.kind === 'enum') {
       return this.fieldValue.field.type.values
         .findIndex(v => v === this.fieldValue.value) > -1;
+    } else {
+      return true;
     }
     // return this.form.controls[this.attributeKey].valid;
   }
@@ -168,11 +172,10 @@ export class DynamicFieldComponent implements OnInit {
     const oldValue = this.oldValue;
     const field = this.fieldValue.field;
     const key = this.fieldValue.key;
+    this.loadingField = true;
     this.onUpdate.emit({
-      newValue,
-      oldValue,
-      field,
-      key
+      newValue, oldValue,
+      field, key
     });
   }
 
@@ -183,9 +186,15 @@ export class DynamicFieldComponent implements OnInit {
   }
 
   onDateChanged(newDate: IMyDateModel) {
-    // let date = newDate.jsdate.toISOString();
-    // this.form.patchValue(this.toUpdateObject(this.attributeKey, date));
-    // this.save();
+    const newValue = newDate.jsdate.toISOString();
+    const oldValue = this.oldValue;
+    const field = this.fieldValue.field;
+    const key = this.fieldValue.key;
+    this.loadingField = true;
+    this.onUpdate.emit({
+      newValue, oldValue,
+      field, key
+    });
   }
 
   toDateModel(dateValue: string): any {
@@ -198,67 +207,22 @@ export class DynamicFieldComponent implements OnInit {
     }
   }
 
-  baseChangeBaseType(newValue: string) {
-    // this.form.patchValue(this.toUpdateObject(this.attributeKey, newValue));
+  saveInputField(event) {
+    this.loadingField = true;
+    const newValue = event.value;
+    const oldValue = this.oldValue;
+    const field = this.fieldValue.field;
+    const key = this.fieldValue.key;
+    this.onUpdate.emit({
+      newValue, oldValue,
+      field, key
+    });
   }
 
   toUpdateObject(key: string, value: any): any {
     let object = {};
     object[key] = value;
     return object;
-  }
-
-  save() {
-    // this.buttonsVisible = false;
-    // try {
-    //   // based on the data type, we're converting the data before storing it.
-    //   if (this.attributeDesc.type.kind === 'integer') {
-    //     let number: number = parseInt(this.form.value[this.attributeKey]);
-    //     if (isNaN(number))
-    //       throw('invalid data for field - not an integer');
-    //     else
-    //       this.form.patchValue(this.toUpdateObject(this.attributeKey, number));
-    //   } else if (this.attributeDesc.type.kind === 'float') {
-    //     let number: number = parseFloat(this.form.value[this.attributeKey]);
-    //     if (isNaN(number))
-    //       throw('invalid data for field - not a float');
-    //     else
-    //       this.form.patchValue(this.toUpdateObject(this.attributeKey, number));
-    //   } else if (this.attributeDesc.type.kind === 'enum') {
-    //     let value = this.form.value[this.attributeKey];
-    //     if (this.attributeDesc.type.values.indexOf(value) == -1 && value!='')
-    //       throw('invalid data for field - not in valid values');
-    //     else
-    //       this.form.patchValue(this.toUpdateObject(this.attributeKey, value));
-    //   } // no else needed, the value is already in the form data structure.
-    //   this.error = null;
-    // } catch (error) {
-    //   this.error = error;
-    // }
-    // // emit onUpdate event
-    // if (this.onUpdate) {
-    //   let newValue, oldValue;
-    //   if (this.attributeDesc.type.kind === 'markup') {
-    //     // if we're dealing with marup, we need to encapsulate the values.
-    //     newValue = { markup: 'Markdown', content: this.form.value[this.attributeKey] };
-    //     oldValue = { markup: 'Markdown', content: this.oldValue };
-    //   } else {
-    //     // all other data types are delivered normalized.
-    //     newValue = this.form.value[this.attributeKey];
-    //     oldValue = this.oldValue;
-    //   }
-    //   let updateEvent = {
-    //     form: this.form,
-    //     formControlName: this.attributeKey,
-    //     newValue: newValue,
-    //     oldValue: oldValue,
-    //     attributeDesc: this.attributeDesc
-    //   } as DynamicUpdateEvent;
-    //   this.logger.log('Emit dynamic form control update for key ' + this.attributeKey);
-    //   this.onUpdate.emit(updateEvent);
-    // };
-    // // update the oldValue
-    // this.oldValue = this.form.value[this.attributeKey];
   }
 
   cancel() {

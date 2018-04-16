@@ -60,9 +60,17 @@ export class InlineInputComponent implements OnInit {
     this.errorMessage = '';
     this.saving = true;
     this.onSave.emit({
-      value: this.inputField.nativeElement.value,
+      value: this.formatValue(this.inputField.nativeElement.value),
       callBack: (v: string = '', e: string = '') => this.handleSave(v, e)
     });
+  }
+
+  formatValue(value) {
+    if (this.type === 'integer' || this.type === 'float') {
+      return parseFloat(value);
+    } else {
+      return value;
+    }
   }
 
   closeClick() {

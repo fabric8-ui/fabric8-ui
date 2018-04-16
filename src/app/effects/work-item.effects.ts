@@ -83,8 +83,11 @@ export class WorkItemEffects {
           workItemResolver.resolveCreator(state.collaborators);
           workItemResolver.resolveType(state.workItemTypes);
           const wItem = workItemResolver.getWorkItem();
+          let wid = this.workItemMapper.toDynamicUIModel(
+            item, wItem.type.dynamicfields
+          );
           wItem.createId = createID;
-          return wItem;
+          return { ...wItem, ...wid };
         })
         .switchMap(w => util.workitemMatchesFilter(this.route.snapshot, this.filterService, this.workItemService, w))
         .mergeMap(wItem => {
