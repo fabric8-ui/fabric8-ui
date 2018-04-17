@@ -54,7 +54,11 @@ export class DetailWorkItemEffects {
       workItemResolver.resolveType(state.workItemTypes);
       workItemResolver.resolveAssignees(state.collaborators);
       workItemResolver.resolveWiLabels(state.labels);
-      return workItemResolver.getWorkItem();
+      const wItem = workItemResolver.getWorkItem();
+      let wid = this.workItemMapper.toDynamicUIModel(
+        wi, wItem.type.dynamicfields
+      );
+      return { ...wItem, ...wid };
     });
   }
 
