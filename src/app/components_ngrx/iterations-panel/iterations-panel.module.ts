@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 
 import { CollapseModule } from 'ngx-bootstrap';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { InfotipModule } from '../infotip/infotip.module';
 
 import {
   WidgetsModule
@@ -40,6 +41,7 @@ import { initialUIState } from './../../states/iteration.state';
     SwitchModule,
     WidgetsModule,
     RouterModule,
+    InfotipModule,
     StoreModule.forFeature('iterationPanel', {
       iterationUI: iterationUiReducer
     }, {

@@ -53,6 +53,8 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   activeIterations:IterationUI[] = [];
   spaceId: string = '';
   startedCheckingURL: boolean = false;
+  iterationInfotip: string = "An iteration is used to organize, plan, and execute work items in a certain order." + 
+                             "It comprises a logical mix of work items slated to be executed within the time frame of the iteration.";
 
   private spaceSubscription: Subscription = null;
 

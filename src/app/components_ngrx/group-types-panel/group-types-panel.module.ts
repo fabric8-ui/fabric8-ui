@@ -10,6 +10,7 @@ import {
 import { GroupTypesComponent } from './group-types-panel.component';
 import { ModalModule } from 'ngx-modal';
 import { TooltipModule } from 'ngx-bootstrap';
+import { InfotipModule } from '../infotip/infotip.module';
 import { TruncateModule } from 'ng2-truncate';
 import { GroupTypesService } from './../../services/group-types.service';
 import { IterationModule } from './../iterations-panel/iterations-panel.module';
@@ -20,6 +21,7 @@ import { IterationModule } from './../iterations-panel/iterations-panel.module';
     FormsModule,
     ModalModule,
     TooltipModule.forRoot(),
+    InfotipModule,
     TruncateModule,
     WidgetsModule,
     IterationModule,

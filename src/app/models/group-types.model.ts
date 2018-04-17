@@ -40,6 +40,9 @@ export class WorkItemRelations {
   };
   typeList?: {
     data?: TypeListData[]
+  };
+  infoTip?: {
+    data?: string;
   }
 }
 
@@ -61,6 +64,7 @@ export interface GroupTypeUI extends modelUI {
   selected: boolean;
   showInSideBar: boolean; // attributes / show-in-sidebar
   typeList: TypeListData[]; // relationships / typeList / data
+  infotip: string;
 }
 
 export class GroupTypeMapper implements Mapper<GroupTypeService, GroupTypeUI> {
@@ -94,7 +98,16 @@ export class GroupTypeMapper implements Mapper<GroupTypeService, GroupTypeUI> {
       toPath: ['showInSideBar']
     }, {
       fromPath: ['relationships', 'typeList', 'data'],
-      toPath: ['typeList']
+      toPath: ['typeList'],
+    }, {
+      fromPath: ['relationships', 'infoTip', 'data'],
+      toPath: ['infotip'],
+      toFunction: function(value) {
+        if (value === null) {
+          return 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+        }
+        return value;
+      }
     }];
 
   uiToServiceMapTree: MapTree = [{

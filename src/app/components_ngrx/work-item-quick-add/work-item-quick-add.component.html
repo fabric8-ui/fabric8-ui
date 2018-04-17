@@ -9,18 +9,21 @@
     <!-- type dropdown -->
     <div class="pull-left">
       <div class="dropdown" dropdown>
-        <button class="btn btn-default dropdown-toggle padding-v-0"
-          type="button"
-          dropdownToggle>
-          <i class="fa dib"
-            [ngClass]="selectedType ?
-            selectedType.icon :
-            '' ">
-          </i>
-          &nbsp;
-          {{selectedType ? selectedType.name : ''}}
-          <span class="fa fa-angle-down"></span>
-        </button>
+        <div class="infoArea">
+          <button class="btn btn-default dropdown-toggle padding-v-0" 
+            type="button"
+            dropdownToggle>
+            <i class="fa dib"
+              [ngClass]="selectedType ?
+              selectedType.icon :
+              '' ">
+            </i>
+            &nbsp;
+            {{selectedType ? selectedType.name : ''}}
+            <span class="fa fa-angle-down"></span>
+          </button>
+          <infotip [infotipText]="selectedType.infotip"></infotip>
+        </div>
         <ul class="dropdown-menu"
           role="menu"
           *dropdownMenu>
