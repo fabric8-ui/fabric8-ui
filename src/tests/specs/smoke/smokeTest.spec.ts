@@ -146,5 +146,17 @@ describe('Planner Smoke Tests:', () => {
     expect(await planner.sidePanel.hasCustomQuery('Query 1')).toBeTruthy();
   });
 
+  it('Update work item with a label and validate description', async() => {
+    let title = await planner.createUniqueWorkItem();
+    await planner.workItemList.clickWorkItem(title);
+    await planner.quickPreview.updateDescription("My new description");
+    await planner.quickPreview.createNewLabel("Validate description label");
+    expect(await planner.quickPreview.hasLabel("Validate description label")).toBeTruthy();
+    await planner.quickPreview.close();
+    await planner.workItemList.clickWorkItem(title);
+    await planner.quickPreview.addLabel("Validate description label");
+    expect(await planner.quickPreview.hasDescription("My new description")).toBeTruthy();
+    await planner.quickPreview.close();
+  })
 });
 
