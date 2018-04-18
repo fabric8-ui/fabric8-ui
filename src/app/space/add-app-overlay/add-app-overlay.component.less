@@ -83,6 +83,21 @@ input,
         position: absolute;
         top: 96px;
       }
+      &_tooltip-label {
+        cursor: pointer;
+        float: right;
+        margin-top: -8px;
+        span {
+          margin-left: 5px;
+        }
+      }
+      .popover {
+        max-width: none;
+        width: 250px;
+        ul {
+          padding-left: 18px;
+        }
+      }
       &_content {
         background-color: transparent;
         color: @color-pf-white;
@@ -102,7 +117,14 @@ input,
               height: 100px;
             }
           }
+          &-create-app-image {
+            height: 80px;
+          }
+          &-import-app-image {
+            height: 80px;
+          }
           &-desp {
+            align-self: flex-start;
             height: 100%;
             .card-pf-item {
               font-size: 1em;

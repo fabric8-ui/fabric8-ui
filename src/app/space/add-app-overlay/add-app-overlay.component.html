@@ -29,6 +29,16 @@
                     <input id="projectName" name="projectName" type="text" class="form-control code-imports--step_input col-sm-5" placeholder="Enter Application Name"
                       aria-label="Application Name Input" required [(ngModel)]="projectName" (keyup)="validateProjectName()">
                   </span>
+                  <ng-template #namingTemplate>
+                    Names must:
+                    <ul>
+                      <li>Be Unique</li>
+                      <li>Contain 4-65 characters</li>
+                      <li>Contain only letters, numbers, spaces, underscores, or hyphens</li>
+                      <li>Not start or end with spaces, underscores, or hyphens</li>
+                    </ul>
+                  </ng-template>
+                  <span class="code-imports--step_tooltip-label" [popover]="namingTemplate" popoverTitle="Naming Requirements" placement="bottom" triggers="mouseenter:mouseleave">Naming Requirements<span class="pficon pficon-info"></span></span>
                   <span class="help-block code-imports--step_help-block" *ngIf="isProjectNameValid === false">
                     Names may not start or end with spaces, underscores, or hyphens.
                   </span>
@@ -53,12 +63,12 @@
                           <input name="import" type="radio" [(ngModel)]="selectedFlow" value="createapp">
                         </div>
                       </div>
-                      <div class="col-sm-2">
+                      <div class="col-sm-3">
                         <p class="card-pf-info text-center">
-                          <i class="pficon pficon-add-circle-o fa-3x"></i>
+                          <img class="codebase-card-container-create-app-image" src="../../../assets/images/create-application.png" alt="Create Application">
                         </p>
                       </div>
-                      <div class="col-sm-9 codebase-card-container-desp">
+                      <div class="col-sm-8 codebase-card-container-desp">
                         <h2 class="card-pf-title">
                           Create a new codebase
                         </h2>
@@ -83,12 +93,12 @@
                           <input name="import" type="radio" [(ngModel)]="selectedFlow" value="importapp">
                         </div>
                       </div>
-                      <div class="col-sm-2">
+                      <div class="col-sm-3">
                         <p class="card-pf-info text-center">
-                          <i class="pficon pficon-export fa-3x"></i>
+                          <img class="codebase-card-container-import-app-image" src="../../../assets/images/import-application.png" alt="Import Application">
                         </p>
                       </div>
-                      <div class="col-sm-9 codebase-card-container-desp">
+                      <div class="col-sm-8 codebase-card-container-desp">
                         <h2 class="card-pf-title">
                           Import an existing codebase
                         </h2>

@@ -53,7 +53,7 @@ describe('Service: AppLauncherDependencyCheckService', () => {
   });
 
   it('validate Project Name to be truthy', () => {
-    let valProjectName = appLauncherDependencyCheckService.validateProjectName(dependencyCheck.projectName);
+    let valProjectName = appLauncherDependencyCheckService.validateProjectName('app-apr_10');
     expect(valProjectName).toBeTruthy();
   });
 
