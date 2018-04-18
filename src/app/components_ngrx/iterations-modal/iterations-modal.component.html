@@ -2,6 +2,7 @@
   class="f8-iteration-modal"
   #createUpdateIterationDialog
   [title]="modalTitle"
+  [closeOnOutsideClick]="false"
   (onOpen)="actionOnOpen()"
   (onClose)="actionOnClose()"
   (onSubmit)="actionOnSubmit()">
@@ -54,15 +55,19 @@
         <div class="date-container padding-right-5 dib">
           <label>Start Date</label>
           <my-date-picker
+            #startmydp="mydatepicker"
             [options]="startDatePickerOptions"
             (dateChanged)="onStartDateChanged($event)"
+            (calendarToggle)="onStartCalendarToggle($event)"
             [(ngModel)]="startDate"></my-date-picker>
         </div>
         <div class="date-container padding-left-5 dib">
           <label>End Date</label>
           <my-date-picker
+            #endmydp="mydatepicker"
             [options]="endDatePickerOptions"
             (dateChanged)="onEndDateChanged($event)"
+            (calendarToggle)="onEndCalendarToggle($event)"
             [(ngModel)]="endDate"></my-date-picker>
         </div>
       </div>
