@@ -1,7 +1,7 @@
 <div class="f8-dynamic-control">
-  <label class="pull-left strong"
+  <label class="pull-left padding-left-15 control-label"
     [attr.for]="fieldValue.key">
-    {{ fieldValue.field.label | truncate: 15}}
+    {{ fieldValue.field.label | truncate:15}}
   </label>
   <div class="f8-dynamic-control-content">
     <span *ngIf="loadingField"
@@ -29,7 +29,7 @@
         [value]="fieldValue.value"
         [onLineClickEdit]="true"
         (onSave)="saveInputField($event)"
-        [placeholder]="fieldValue.field.description">
+        [placeholder]="fieldValue.field.label">
       </f8-inlineinput>
 
       <!-- workitemtype field type: float -->
@@ -65,6 +65,15 @@
         [markdownValue]="form.value[this.attributeKey].content"
         (onUpdate)="onChangeMarkup($event)">
       </markdown-control> -->
+
+      <f8-markdown
+        *ngIf="fieldValue.field.type.kind==='markup'"
+        [editAllow]="true"
+        [rawText]="fieldValue.value?.content"
+        [renderedText]="fieldValue.value?.content"
+        (onSaveClick)="descUpdate($event)"
+        (showPreview)="showPreview($event)">
+      </f8-markdown>
 
       <!-- workitemtype field type: instant (datetime) -->
       <div class="f8-dynamic-control-datepicker"
