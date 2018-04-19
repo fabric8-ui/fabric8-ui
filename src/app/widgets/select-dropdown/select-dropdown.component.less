@@ -61,31 +61,33 @@
       margin: 0;
       list-style: none;
       overflow: auto;
-      li {
-        height: 30px;
-        padding: 2px;
-        padding-left: 10px;
-        line-height: 26px;
-      }
       .item-li {
         position: relative;
+        padding-top: 2px;
+        padding-right: 10px;
+        padding-bottom: 2px;
+        padding-left: 10px;
+        line-height: 26px;
         cursor: pointer;
+        border-width: 1px 0;
+        border-style: solid;
+        border-color: transparent;
         .tick {
-          position: absolute;
-          top: 10px;
-          right: 6px;
+          float: right;
+          padding-top: 5px;
         }
         &:hover {
-          color: @color-pf-white;
-          background-color: @color-pf-blue-400;
+          background-color: @color-pf-blue-50;
+          border-color: @color-pf-blue-100;
+          transition: background-color ease-in 0.1s;
         }
         &.item-selected {
           color: @color-pf-white;
           background-color: @color-pf-blue-400;
+          border-color: @color-pf-blue-400;
+          transition: background-color ease-in 0.1s;
         }
         .dynamic-item {
-          width: 90%;
-          height: 30px;
           overflow: hidden;
         }
       }

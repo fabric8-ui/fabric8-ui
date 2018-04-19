@@ -21,14 +21,16 @@
     </div>
     <ul class="select-dropdown-menu">
       <li class="item-li"
-         *ngFor="let item of menuItems"
-         [class.item-selected]="item.selected"
-         (click)="selectItem(item)">
+        *ngFor="let item of menuItems"
+        [class.item-selected]="item.selected"
+        (click)="selectItem(item)">
+        <span class="fa fa-check tick"
+          *ngIf="item.selected">
+        </span>
         <div class="dynamic-item">
           <ng-container *ngTemplateOutlet="dropdownItem; context: item" >
           </ng-container>
         </div>
-        <span *ngIf="item.selected" class="fa fa-check tick"></span>
       </li>
     </ul>
     <div *ngIf="dropdownFooter" class="select-dropdown-footer">
