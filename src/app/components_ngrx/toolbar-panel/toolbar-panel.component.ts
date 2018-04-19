@@ -419,7 +419,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         datasource: this.workItemTypeData,
         datamap: (witypes: WorkItemTypeUI[]) => {
           return {
-            queries: witypes.map(witype => {return {id: witype.id, value: witype.name, iconStyleClass: witype.icon}}),
+            queries: witypes.sort((a, b) => (a.name > b.name ? 1 : 0)).map(witype => ({ id: witype.id, value: witype.name, iconStyleClass: witype.icon })),
             primaryQueries: []
           }
         },
