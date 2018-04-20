@@ -3,14 +3,25 @@
     [ngStyle]="{
       'background-color': label.backgroundColor,
       'color': label.textColor
-    }"
-    (click)="clickLabel(label, $event)">
+    }">
+    <span *ngIf="context!='detail'">
+    <a [routerLink]=[] [queryParams]="constructQueryExpression(label.id)">
     <span class="label-name pointer">
+      {{label.name}}
+    </span>
+    </a>
+    <span class="close-icon-wrapper padding-left-5" *ngIf="allowDelete">
+      <i class="pficon-close pointer" (click)="removeLabel(label, $event)"></i>
+    </span>
+  </span>
+  <span *ngIf="context=='detail'">
+  <span class="label-name">
       {{label.name}}
     </span>
     <span class="close-icon-wrapper padding-left-5" *ngIf="allowDelete">
       <i class="pficon-close pointer" (click)="removeLabel(label, $event)"></i>
     </span>
+  </span>
   </span>
   <span *ngIf="truncateAfter!==undefined && _labels.length > 4" dropdown class="label dropdown" placement="right">
     <span dropdownToggle (click)="moreClick($event)" class="dib dropdown-toggle pointer">
@@ -21,13 +32,24 @@
         <span class="label" [ngStyle]="{
           'background-color': label.backgroundColor,
           'color': label.textColor
-          }"
-          (click)="clickLabel(label, $event)">
+          }">
+          <span *ngIf="context!='detail'">
+          <a [routerLink]=[] [queryParams]= "constructQueryExpression(label.id)">
           <span class="label-name pointer">
             {{label.name}}
           </span>
+          </a>
           <span class="close-icon-wrapper" *ngIf="allowDelete">
             <i class="pficon-close pointer" (click)="removeLabel(label, $event)"></i>
+          </span>
+          </span>
+          <span *ngIf="context=='detail'">
+            <span class="label-name">
+              {{label.name}}
+            </span>
+            <span class="close-icon-wrapper padding-left-5" *ngIf="allowDelete">
+              <i class="pficon-close pointer" (click)="removeLabel(label, $event)"></i>
+            </span>
           </span>
         </span>
       </li>

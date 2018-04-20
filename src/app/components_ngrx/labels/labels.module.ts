@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { LabelsComponent } from './labels.component';
-
+import{ FilterService } from '../../services/filter.service'
 @NgModule({
   imports: [
     BsDropdownModule,
@@ -14,7 +14,7 @@ import { LabelsComponent } from './labels.component';
   declarations: [
     LabelsComponent
   ],
-  providers: [BsDropdownConfig],
+  providers: [BsDropdownConfig, FilterService],
   exports: [LabelsComponent]
 })
 
