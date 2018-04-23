@@ -10,7 +10,7 @@
     <div class="pull-left">
       <div class="dropdown" dropdown>
         <div class="infoArea">
-          <button class="btn btn-default dropdown-toggle padding-v-0" 
+          <button class="btn btn-default dropdown-toggle padding-h-10" 
             type="button"
             dropdownToggle>
             <i class="fa dib"
@@ -18,8 +18,9 @@
               selectedType.icon :
               '' ">
             </i>
-            &nbsp;
-            {{selectedType ? selectedType.name : ''}}
+            <span class="padding-h-5">
+              {{selectedType ? selectedType.name : ''}}
+            </span>
             <span class="fa fa-angle-down"></span>
           </button>
           <infotip [infotipText]="selectedType.infotip"></infotip>
@@ -31,8 +32,9 @@
               role="menuitem"
               (click)="selectType($event, type)">
             <a class="dropdown-item" href="#">
-              <i class="fa pull-left"
-                [ngClass]="type.icon"></i>&nbsp;{{type.name}}
+              <i class="fa"
+                [ngClass]="type.icon"></i>
+                <span class="padding-h-3">{{type.name}}</span>
             </a>
           </li>
         </ul>

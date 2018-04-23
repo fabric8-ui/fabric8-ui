@@ -23,17 +23,17 @@
   }
   &__wiblk {
     padding-right: 0;
-    .dropdown-kebab-pf {
+    .dropdown {
       position: relative;
       button[data-toggle='dropdown'] {
         display: inline-flex;
         height: 26px;
       }
       .dropdown-menu {
-        margin-left: 16px;
         i {
-          width: 15px;
-          margin-top: 5px;
+          display: inline-block;
+          min-width: 16px;
+          text-align: left;
         }
       }
     }
@@ -84,17 +84,17 @@
     background: @color-pf-white;
     border: 2px solid;
     border-color: @color-pf-black-400;
-    .dropdown-kebab-pf {
+    .dropdown {
       button[data-toggle='dropdown'] {
         display: inline-flex;
         height: 26px;
       }
       .dropdown-menu {
         top: auto;
-        margin-left: 16px;
         i {
-          width: 15px;
-          margin-top: 5px;
+          display: inline-block;
+          min-width: 16px;
+          text-align: left;
         }
       }
     }
