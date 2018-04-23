@@ -181,12 +181,13 @@ export class WorkItemLinkComponent implements OnInit, OnChanges, DoCheck, OnDest
   }
 
   loadLinkTypes(): void {
-    this.workItemService
-    .getLinkTypes()
-      .subscribe((linkTypes: any) => {
-        this.linkTypes = cloneDeep(linkTypes);
-      },
-      (e) => console.log(e));
+    // not using this anymore.
+    // this.workItemService
+    // .getLinkTypes()
+    //   .subscribe((linkTypes: any) => {
+    //     this.linkTypes = cloneDeep(linkTypes);
+    //   },
+    //   (e) => console.log(e));
   }
 
   toggleLinkComponent(onlyOpen: Boolean = false): void{

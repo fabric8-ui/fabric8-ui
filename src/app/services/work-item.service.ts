@@ -836,34 +836,12 @@ export class WorkItemService {
    *
    * @return Promise of LinkType[]
    */
-  getAllLinkTypes(): Observable<any> {
-    let workItemLinkTypesUrl = this._currentSpace.links.self + '/workitemlinktypes';
-    return this.http.get(workItemLinkTypesUrl)
+  getAllLinkTypes(url: string): Observable<any> {
+    return this.http.get(url)
       .catch((error: Error | any) => {
         this.notifyError('Getting link meta info failed (forward).', error);
         return Observable.throw(new Error(error.message));
       });
-  }
-
-  /**
-   * Usage: This function fetches all the work item link types
-   * Store it in an instance variable
-   *
-   * @return Promise of LinkType[]
-   */
-  getLinkTypes(): Observable<Object> {
-    return this.getAllLinkTypes()
-        .map(item => {
-          let linkTypes: Object = {};
-          linkTypes['forwardLinks'] = item.json().data;
-          linkTypes['backwardLinks'] = item.json().data;
-          return linkTypes;
-        })
-        .map((linkTypes: any) => { return this.formatLinkTypes(linkTypes); })
-        .catch((err) => {
-          console.log(err);
-          return Observable.of({});
-        });
   }
 
   formatLinkTypes(linkTypes: any): any {

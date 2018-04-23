@@ -1,4 +1,6 @@
 import { Actions, Effect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { AppState } from './../states/app.state';
 import { Injectable } from '@angular/core';
 import * as LinkTypeActions from './../actions/link-type.actions';
 
@@ -15,13 +17,21 @@ export type Action = LinkTypeActions.All;
 export class LinkTypeEffects {
   constructor(
     private actions$: Actions,
-    private workItemService: WorkItemService
+    private workItemService: WorkItemService,
+    private store: Store<AppState>,
   ){}
 
   @Effect() getLinkTypes$: Observable<Action> = this.actions$
     .ofType(LinkTypeActions.GET)
-    .switchMap(action => {
-      return this.workItemService.getAllLinkTypes()
+    .withLatestFrom(this.store.select('listPage').select('space'))
+    .map(([action, space]) => {
+      return {
+        payload: action,
+        space: space
+      }
+    })
+    .switchMap(lt => {
+      return this.workItemService.getAllLinkTypes(lt.space.links.workitemlinktypes)
         .map((data) => {
           let lts: any = {};
           let linkTypes: LinkTypeUI[] = [];
