@@ -20,9 +20,9 @@ export class ToolbarHeader extends BaseElement {
   showCompleted = new BaseElement(this.$('.toolbar-pf-view-selector #showCompleted'), 'Show Completed');
   saveFilter = new ui.Clickable(this.$('.save-filters'), 'Save');
   saveFilterDialog = new BaseElement(this.$('.save-filter-dropdown'));
-  saveFilterBtn = new ui.Button(this.$('.save-cq-btn'),'Save');
+  saveFilterBtn = new ui.Button(this.saveFilterDialog.$('.save-cq-btn'),'Save');
   closeBtn = new ui.Button(this.$('.cancel-cq-btn'),'Cancel');
-  titleTextInput = new ui.TextInput(this.saveFilterDialog.$('input.query-title'), 'Query Title');
+  titleTextInput = new ui.TextInput(this.saveFilterDialog.$('input.form-control'), 'Query Title');
 
   constructor(el: ElementFinder, name = 'ToolBar Header') {
     super(el, name);

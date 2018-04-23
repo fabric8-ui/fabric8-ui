@@ -13,6 +13,8 @@ export class SidePanel extends ui.BaseElement {
   iterationKebab = new ui.Button(this.$('.dropdown-toggle'), 'Side panel Iteration Kebab Dropdown');
   editIteration = new ui.Clickable(this.element(by.cssContainingText('.f8-itr .dropdown.open ul>li','Edit')), 'Iteration Dropdown Edit Option');
   iterationHeader = new ui.BaseElementArray(this.$$('.f8-itr__header'), 'iteration header');
+  customQuery = new ui.BaseElement(this.$('custom-query'), 'My filters')
+  customQueryList = new ui.BaseElementArray(this.$$('.f8-cf__container'),' My filters list');
 
   constructor(ele: ElementFinder, name: string = 'WorkItem List page Side Panel') {
     super(ele, name);
@@ -67,5 +69,13 @@ export class SidePanel extends ui.BaseElement {
     let iterationList1 = iterationList.toString().replace("\n","");
     this.debug('iterationList1 : ' + iterationList1 );
     return iterationList1;
+  }
+
+  async getMyFiltersList(): Promise<String[]> {
+    await this.customQuery.ready();
+    let myFilterString = await this.customQueryList.getTextWhenReady();
+    let myFilterList = myFilterString.toString().split(",");
+    await this.debug('My Query list : ' + myFilterList);    
+    return myFilterList;  
   }
 }

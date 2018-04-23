@@ -139,11 +139,11 @@ describe('Planner Smoke Tests:', () => {
     expect(await planner.quickPreview.hasComment('new comment')).toBeFalsy();
   });
 
-  xit('Create custom query', async() => {
+  it('Create custom query', async() => {
     await planner.sidePanel.clickRequirement();
     await planner.header.selectFilter('State','in progress');
     await planner.header.saveFilters('Query 1');
-    expect(await planner.sidePanel.hasCustomQuery('Query 1')).toBeTruthy();
+    expect(await planner.sidePanel.getMyFiltersList()).toContain('Query 1');
   });
 
   it('Update work item with a label and validate description', async() => {

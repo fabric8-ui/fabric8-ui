@@ -8,10 +8,9 @@ export * from './toolbarHeader';
 export * from './iteration';
 export * from './workitem-detailpage';
 
-type WorkItemType = 'task' | 'feature' | 'bug';
 
 export interface WorkItem {
   title: string;
   description?: string;
-  type?: WorkItemType;
+  type?: string;
 }

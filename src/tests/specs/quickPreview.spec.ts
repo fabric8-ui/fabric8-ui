@@ -28,12 +28,14 @@ describe('Quick preview tests: ', () => {
     expect(await planner.quickPreview.hasLabel(c.newLabel)).toBeTruthy();
   });
 
-  // Skip this tests since it is failing (and we need to merge the E2E PR)
-  // Todo(Raunak): Fix this test
-  xit('should link a workitem',async () => {
-    await planner.workItemList.clickWorkItem(c.workItemTitle2);
-    await planner.quickPreview.addLink(c.linkType, c.workItemTitle1);
-    expect(await planner.quickPreview.hasLinkedItem(c.workItemTitle1)).toBeTruthy();
+  it('should link a workitem',async () => {
+    let workitemname = {"title": "link test"},
+      linkType = 'blocks',
+      workItemTitle17 = 'Workitem_Title_17';
+    await planner.createWorkItem(workitemname);    
+    await planner.workItemList.clickWorkItem(workitemname.title);
+    await planner.quickPreview.addLink(linkType, workItemTitle17);
+    expect(await planner.quickPreview.hasLinkedItem(workItemTitle17)).toBeTruthy();
   });
 
   it('should open quick preview and edit the title',async () => {

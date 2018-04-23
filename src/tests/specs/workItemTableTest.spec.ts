@@ -25,7 +25,7 @@ describe('Work Item datatable list: ', () => {
     expect(await planner.workItemList.getDataTableHeaderCellCount()).toBe(8);
   });
 
-  xit('quick add should be disable for flat view', async() => {
+  it('quick add should be disable for flat view', async() => {
     await planner.header.clickShowTree();
     await browser.sleep(2000);
     await planner.workItemList.overlay.untilHidden();
@@ -38,21 +38,21 @@ describe('Work Item datatable list: ', () => {
     await planner.header.selectFilter(c.attribute2, c.label2);
   });
 
-  // The test doesn't work on mock data. Hence, ignore it.
-  // The should work against real database.
-  xit('hideTree and create a work item then work item should be displayed when show tree is selected', async () => {
+  it('hideTree and create a work item then work item should be displayed when show tree is selected', async () => {
+    let newWorkItem1 = {"title" : 'New WorkItem'};
+
     await planner.header.clickShowTree();
-    await planner.createWorkItem(c.newWorkItem1);
-    expect(await planner.workItemList.hasWorkItem(c.newWorkItem1.title)).toBeTruthy();
+    await planner.workItemList.overlay.untilHidden();    
+    await planner.createWorkItem(newWorkItem1);
+    expect(await planner.workItemList.hasWorkItem(newWorkItem1.title)).toBeTruthy();
     await planner.quickPreview.notificationToast.untilHidden();
     await planner.header.clickShowTree();
-    expect(await planner.workItemList.hasWorkItem(c.newWorkItem1.title)).toBeTruthy();
+    expect(await planner.workItemList.hasWorkItem(newWorkItem1.title)).toBeTruthy();
   });
 
-  xit('check show completed and create a work item then update status to closed and uncheck show completed then work item should not visible in list', async() => {
+  it('check show completed and create a work item then update status to closed and uncheck show completed then work item should not visible in list', async() => {
     await planner.header.clickShowCompleted();
-    await planner.workItemList.overlay.untilPresent();
-    await planner.workItemList.overlay.untilAbsent();
+    await planner.workItemList.overlay.untilHidden();
     let newWorkItem = {
       title: 'Check for show complete work item'
     };
@@ -60,10 +60,10 @@ describe('Work Item datatable list: ', () => {
     expect(await planner.workItemList.hasWorkItem(newWorkItem.title)).toBeTruthy();
     await planner.workItemList.clickWorkItem(newWorkItem.title);
     await planner.quickPreview.changeStateTo('closed');
+    await planner.quickPreview.notificationToast.untilHidden();    
     await planner.quickPreview.close();
     await planner.header.clickShowCompleted();
-    await planner.workItemList.overlay.untilPresent();
-    await planner.workItemList.overlay.untilAbsent();
+    await planner.workItemList.overlay.untilHidden();
     expect(await planner.workItemList.hasWorkItem(newWorkItem.title)).toBeFalsy();
   });
 
@@ -98,18 +98,17 @@ describe('Work Item datatable list: ', () => {
     await browser.sleep(3000);
     expect(await planner.workItemList.hasWorkItem(c.workItemTitle13)).toBeTruthy();
   });
-
-  // Skip this tests since it is failing (and we need to merge the E2E PR)
-  // Todo(Raunak): Fix this test
-  xit ('matching child should be expanded initially', async() => {
+  
+  it('matching child should be expanded initially', async() => {
+    let workitemname = {"title": "child", "type": 'Bug'};
     await planner.sidePanel.clickRequirement();
     await planner.workItemList.workItem(c.workItemTitle17).clickInlineQuickAdd();
-    await planner.createInlineWorkItem(c.newWorkItem1);
+    await planner.createInlineWorkItem(workitemname);
     await browser.sleep(3000);
     await planner.sidePanel.clickScenarios();
     await browser.sleep(3000);
     await planner.sidePanel.clickRequirement();
     await browser.sleep(3000);
-    expect(await planner.workItemList.hasWorkItem(c.newWorkItem1.title)).toBeTruthy();
+    expect(await planner.workItemList.hasWorkItem(workitemname.title)).toBeTruthy();
   })
 });

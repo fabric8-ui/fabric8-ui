@@ -79,7 +79,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   searchWorkItem = new ui.TextInput(this.linksDiv.$('#workitem-link-search'),'Workitem search');
   workItemDropdown = new ui.Dropdown(
     this.searchWorkItem,
-    this.$('.dropdown-menu.dropdown-ul'),
+    this.$('.dropdown.open .dropdown-menu.dropdown-ul'),
     'select workitem'
   );
   linkButton = new ui.Button(this.linksDiv.$('#bind-link'),'link Button');
