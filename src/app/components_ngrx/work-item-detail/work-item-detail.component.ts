@@ -150,6 +150,9 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
       this.workItemSubscriber.unsubscribe();
       this.workItemSubscriber = null;
     }
+    if(document.getElementsByTagName('body')[0].style.overflow === "hidden") {
+      document.getElementsByTagName('body')[0].removeAttribute('style');
+    }
   }
 
   ngAfterViewChecked() {
