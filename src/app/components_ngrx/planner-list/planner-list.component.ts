@@ -259,6 +259,9 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     })
     this.updateColumnIndex();
     this.cookieService.setCookie('datatableColumn', this.columns);
+    setTimeout(() => {
+      this.workItems = [...this.workItems];
+    }, 500);
   }
 
   moveToAvailable() {

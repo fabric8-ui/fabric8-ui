@@ -54,7 +54,7 @@
     </div>
   </div>
   <span *ngIf="activeFilterFromSidePane !== ''">
-    <strong>14</strong> in {{activeFilterFromSidePanel}}
+    <strong>{{totalCount | async}}</strong> in {{activeFilterFromSidePanel}}
   </span>
 </div>
 

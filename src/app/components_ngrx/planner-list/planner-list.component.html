@@ -79,7 +79,7 @@
             <i class="db text-right fa fa-close btn btn-link" (click)="tableConfigToggle($event)"></i>
           </aside>
           <aside>
-            <small>Displayed Atrributes</small>
+            <small>Displayed Attributes</small>
             <ul class="f8-wi-list__settings-column">
               <li *ngFor='let col of (columns | filterColumn: "showInDisplay")'>
                 <input
@@ -101,7 +101,7 @@
             </span>
           </aside>
           <aside>
-            <small>Available Atrributes</small>
+            <small>Available Attributes</small>
             <ul class="f8-wi-list__settings-column">
               <li *ngFor='let col of (columns | filterColumn: "available")'>
                 <input
