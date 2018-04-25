@@ -1,4 +1,4 @@
-<div class="f8-dynamic-control">
+<div class="f8-dynamic-control" *ngIf="showField">
   <label class="pull-left padding-left-15 control-label"
     [attr.for]="fieldValue.key">
     {{ fieldValue.field.label | truncate:15}}
@@ -69,9 +69,9 @@
       <f8-markdown
         *ngIf="fieldValue.field.type.kind==='markup'"
         [editAllow]="true"
-        [rawText]="fieldValue?.value ? fieldValue?.value?.content : ''"
-        [renderedText]="fieldValue?.value ? fieldValue?.value?.rendered : ''"
-        (onSaveClick)="descUpdate($event)"
+        [rawText]="fieldValue?.value?.content"
+        [renderedText]="fieldValue?.value?.rendered"
+        (onSaveClick)="markupUpdate($event)"
         (showPreview)="showPreview($event)">
       </f8-markdown>
 

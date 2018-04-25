@@ -6,6 +6,7 @@ import { Logger } from 'ngx-base';
 
 import { IMyOptions, IMyDateModel } from 'mydatepicker';
 
+import { WorkItemService } from './../../services/work-item.service';
 import { WorkItemUI } from '../../models/work-item';
 
 
@@ -45,6 +46,9 @@ export class DynamicFieldComponent implements OnInit {
 
   private loadingField: boolean = false;
 
+  private markupCallBack: any = null;
+  private showField: boolean = true;
+
   // this is the input for dynamic field key and value
   @Input('keyValueField') set fieldValueSetter(val) {
     this.fieldValue = cloneDeep(val);
@@ -69,6 +73,21 @@ export class DynamicFieldComponent implements OnInit {
 
       this.dropdownSelectedItems =
         this.dropdownMenuItems.filter(v => v.key === this.fieldValue.value);
+    }
+
+    // if it's a markup type
+    // make the call back on update
+    // to support the markup value
+    if (this.fieldValue.field.type.kind === 'markup') {
+      if (this.fieldValue.value == null) {
+        this.showField = false;
+      } else if (this.markupCallBack != null) {
+        this.markupCallBack(
+          this.fieldValue.value.content,
+          this.fieldValue.value.rendered
+        );
+        this.markupCallBack = null;
+      }
     }
 
     this.oldValue = this.fieldValue.value;
@@ -102,7 +121,8 @@ export class DynamicFieldComponent implements OnInit {
   };
 
   constructor(
-    protected logger: Logger
+    protected logger: Logger,
+    protected workItemService: WorkItemService
   ) {}
 
   ngOnInit(): void {
@@ -223,6 +243,41 @@ export class DynamicFieldComponent implements OnInit {
     let object = {};
     object[key] = value;
     return object;
+  }
+
+  markupUpdate(event: any): void {
+    this.markupCallBack = event.callBack;
+    if (event.rawText === this.oldValue.content) {
+      this.markupCallBack(
+        this.oldValue.content,
+        this.oldValue.rendered
+      );
+      this.markupCallBack = null;
+    } else {
+      const newValue = {
+        content: event.rawText,
+        markup: 'Markdown'
+      };
+      const oldValue = this.oldValue;
+      const field = this.fieldValue.field;
+      const key = this.fieldValue.key;
+      this.onUpdate.emit({
+        newValue, oldValue,
+        field, key
+      });
+    }
+  }
+
+  showPreview(event: any): void {
+    const rawText = event.rawText;
+    const callBack = event.callBack;
+    this.workItemService.renderMarkDown(rawText)
+      .subscribe(renderedHtml => {
+        callBack(
+          rawText,
+          renderedHtml
+        );
+      })
   }
 
   cancel() {
