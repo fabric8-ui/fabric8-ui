@@ -69,8 +69,8 @@
       <f8-markdown
         *ngIf="fieldValue.field.type.kind==='markup'"
         [editAllow]="true"
-        [rawText]="fieldValue.value?.content"
-        [renderedText]="fieldValue.value?.content"
+        [rawText]="fieldValue?.value ? fieldValue?.value?.content : ''"
+        [renderedText]="fieldValue?.value ? fieldValue?.value?.rendered : ''"
         (onSaveClick)="descUpdate($event)"
         (showPreview)="showPreview($event)">
       </f8-markdown>
