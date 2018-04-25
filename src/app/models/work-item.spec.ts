@@ -10,7 +10,6 @@ describe('WorkItemMapper', () => {
       "attributes": {
         "system.created_at": "2017-06-28T07:44:36.640764Z",
         "system.description": "Cannot resolve Area/Iteration info for new WI created in in-memory mode under Backlog > Quick Add",
-        "system.description.markup": "Markdown",
         "system.description.rendered": "Cannot resolve Area/Iteration info for new WI created in in-memory mode under Backlog &gt; Quick Add",
         "system.number": 1343,
         "system.order": 1045750,
@@ -352,7 +351,7 @@ describe('WorkItemMapper', () => {
       const output = workItemMapper.toDynamicUIModel(expWIService, dynamicfields);
       expect(output).toEqual(dynamicWiUi);
     });
-    
+
     it('should correctly convert dynamic ui to service - 4', () => {
       const serviceMap = {
         "attributes": {
@@ -443,5 +442,5 @@ describe('WorkItemMapper', () => {
         }}
       }, ['baseType']);
       expect(finalServiceModel).toEqual(serviceModel)
-    });    
+    });
 });

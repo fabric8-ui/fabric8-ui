@@ -407,7 +407,10 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
     workItem['type'] = this.workItem.type;
-    workItem['description'] = rawText;
+    workItem['description'] = {
+      content: rawText,
+      markup: 'Markdown'
+    };
     this.store.dispatch(new WorkItemActions.Update(workItem));
   }
 
