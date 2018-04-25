@@ -308,8 +308,8 @@
                 <f8-markdown
                   id="wi-desc-div"
                   [editAllow]="loggedIn"
-                  [rawText]="workItem.description"
-                  [renderedText]="workItem.descriptionRendered"
+                  [rawText]="workItem.descriptionRendered!==null ? workItem.description : workItem.description.content"
+                  [renderedText]="workItem.descriptionRendered!==null ? workItem.descriptionRendered : workItem.description.rendered"
                   (onSaveClick)="descUpdate($event)"
                   (showPreview)="showPreview($event)" #descMarkdown>
                 </f8-markdown>
