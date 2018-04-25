@@ -1,3 +1,4 @@
+import { UPDATE_ERROR } from './../actions/comment.actions';
 import { State, ActionReducer } from '@ngrx/store';
 import * as DetailWorkItemActions from './../actions/detail-work-item.actions';
 import * as WorkItemActions from './../actions/work-item.actions';
@@ -17,6 +18,10 @@ export const DetailWorkItemReducer: ActionReducer<DetailWorkItemState> =
 
       case WorkItemActions.UPDATE_SUCCESS: {
         return {...action.payload};
+      }
+
+      case WorkItemActions.UPDATE_ERROR: {
+        return {...state};
       }
 
       case DetailWorkItemActions.GET_WORKITEM_ERROR: {
