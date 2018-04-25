@@ -7,6 +7,7 @@ import { AppState } from './../states/app.state';
 import { Observable } from 'rxjs';
 import { WorkItemService as WIService } from './../services/work-item.service';
 import { WorkItemMapper, WorkItem, WorkItemService, WorkItemResolver, WorkItemUI } from './../models/work-item';
+import { Router, ActivatedRoute } from '@angular/router';
 
 export type Action = WorkItemActions.All;
 
@@ -19,7 +20,9 @@ export class WorkItemEffects {
     private actions$: Actions,
     private workItemService: WIService,
     private store: Store<AppState>,
-    private notifications: Notifications
+    private notifications: Notifications,
+    private router: Router,
+    private route: ActivatedRoute
   ){}
 
   resolveWorkItems(
@@ -106,6 +109,10 @@ export class WorkItemEffects {
               if (!parent.childrenLoaded && parent.hasChildren) {
                 return new WorkItemActions.GetChildren(parent);
               } else {
+                if(payload.openDetailPage){
+                  this.router.navigateByUrl(this.router.url.split('plan')[0] + 'plan/detail/' + wItem.number,
+                                            {relativeTo: this.route});
+                }
                 return new WorkItemActions.AddSuccess(wItem);
               }
             });
@@ -119,6 +126,10 @@ export class WorkItemEffects {
               } as Notification);
             } catch (e) {
               console.log('Work item is added.');
+            }
+            if(payload.openDetailPage){
+              this.router.navigateByUrl(this.router.url.split('plan')[0] + 'plan/detail/' + wItem.number,
+                                        {relativeTo: this.route});
             }
             return Observable.of(new WorkItemActions.AddSuccess(wItem));
           }

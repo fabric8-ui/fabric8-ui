@@ -21,12 +21,13 @@ export const CREATE_LINK = '[workItemLink] CreateLink';
 export const DELETE_LINK = '[workItemLink] DeleteLink';
 
 export class Add implements Action {
-  payload: {workItem: WorkItemService, createId: number, parentId: string};
+  payload: {workItem: WorkItemService, createId: number, parentId: string, openDetailPage: boolean};
   constructor(
     payload: {
       workItem: WorkItemService,
       createId: number,
-      parentId: string
+      parentId: string,
+      openDetailPage: boolean
     }
   ) {
     this.payload = payload;
