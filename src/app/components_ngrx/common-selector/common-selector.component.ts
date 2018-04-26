@@ -52,6 +52,7 @@ export class CommonSelectorComponent {
   @Input('allowMultiSelect') allowMultiSelect: boolean = false;
   @Input('headerText') headerText: string = 'Default Header Text';
   @Input('noValueLabel') noValueLabel: string = 'None';
+  @Input('allowUpdate') allowUpdate: boolean = true;
 
   @Output() onSelectItem: EventEmitter<any[]> = new EventEmitter();
   @Output() onOpenSelector: EventEmitter<any> = new EventEmitter();
@@ -134,7 +135,9 @@ export class CommonSelectorComponent {
   }
 
   openDropdown() {
-    this.dropdownRef.openDropdown();
+    if (this.allowUpdate) {
+      this.dropdownRef.openDropdown();
+    }
   }
 
   closeDropdown() {

@@ -42,6 +42,7 @@
       <common-selector
         *ngIf="fieldValue.field.type.kind==='enum'"
         [noValueLabel]="'None'"
+        [allowUpdate]="editAllow"
         class="dynamic-enum-dropdown"
         [items]="dropdownMenuItems"
         [selectedItems]="dropdownSelectedItems"
@@ -52,6 +53,7 @@
       <common-selector
         *ngIf="fieldValue.field.type.kind==='boolean'"
         [noValueLabel]="'None'"
+        [allowUpdate]="editAllow"
         class="dynamic-boolean-dropdown"
         [items]="dropdownMenuItems"
         [selectedItems]="dropdownSelectedItems"

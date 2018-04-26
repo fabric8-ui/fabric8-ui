@@ -22,6 +22,7 @@ export class SelectDropdownComponent implements OnInit {
   @Input() dropdownFooter: TemplateRef<any>;
   @Input() menuItems: any[] = [];
   @Input() showSearch: boolean = false;
+  @Input() disabled: boolean = false;
 
   @Output() onSelect: EventEmitter<any> = new EventEmitter();
   @Output() onSearch: EventEmitter<any> = new EventEmitter();
@@ -38,8 +39,10 @@ export class SelectDropdownComponent implements OnInit {
   }
 
   openDropdown() {
-    this.displayDropdown = true;
-    this.onOpen.emit('open');
+    if (!this.disabled) {
+      this.displayDropdown = true;
+      this.onOpen.emit('open');
+    }
   }
   closeDropdown() {
     this.displayDropdown = false;
