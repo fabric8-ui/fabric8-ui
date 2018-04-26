@@ -1,47 +1,52 @@
 <div class="f8-cf">
-    <!-- Custom Filters -->
-      <div class="f8-cf__panel margin-bottom-15">
-        <div class="f8-cf__panel-hdr f8-cf__panel-hdr--active nohover">
-          <span class="pull-left fa fa-filter margin-right-15
-            padding-top-2 padding-bottom-3"
-            tooltip="{{sidePanelOpen ? '' : 'My Filters'}}"
-            placement="right"></span>
-          <h3 class="padding-0 margin-0"
-            [class.show]="sidePanelOpen"
-            [class.hide]="!sidePanelOpen">
-            My Filters ({{ customQueries.length }})
-          </h3>
-        </div>
-        <ul class="f8-cf__customquery-list"
-          [class.show]="sidePanelOpen"
-          [class.hide]="!sidePanelOpen">
-          <li class="active f8-cf__container padding-v-2 padding-right-10 padding-left-5"
-            *ngFor="let query of customQueries; let counter = index;"
-            [class.f8-cf--selected]="query?.selected"
-            id="{{'cf-list-' + counter}}">
-            <a class="a-custom-query" [routerLink]="[]" [attr.data-id]="query.id"
-              [queryParams]="addRemoveQueryParams(query.attributes.fields)">
-              <span id="query.attributes.title" title="{{ query.attributes.title }}">{{ query.attributes.title  | truncate : 15}}</span>
+  <!-- Custom Filters -->
+  <div class="f8-cf__hdr nohover">
+    <span class="dib fa fa-filter margin-right-15
+      padding-top-2 padding-bottom-3"
+      tooltip="{{sidePanelOpen ? '' : 'My Filters'}}"
+      placement="right"></span>
+    <h3 class="padding-0 margin-0"
+      [class.dib]="sidePanelOpen"
+      [class.hide]="!sidePanelOpen">
+      My Filters ({{ customQueries.length }})
+    </h3>
+  </div>
+  <ul class="list-group"
+    [class.show]="sidePanelOpen"
+    [class.hide]="!sidePanelOpen">
+    <li class="list-group-item f8-cf__list-type"
+      *ngFor="let query of customQueries"
+      [class.f8-cf--selected]="query?.selected"
+      [routerLink]="[]"
+      [queryParams]="showTree ?
+        { q: constructUrl(query.attributes.fields), showTree: showTree } :
+        { q: constructUrl(query.attributes.fields) }">
+      <a [routerLink]="[]" [attr.data-id]="query.id"
+        [queryParams]="showTree ?
+        { q: constructUrl(query.attributes.fields), showTree: showTree } :
+        { q: constructUrl(query.attributes.fields) }">
+          <span id="query.attributes.title">
+            {{ query.attributes.title  | truncate : 15}}
+          </span>
+      </a>
+      <div class="dropdown-kebab-pf pull-right dropdown f8-cf-kebab" dropdown>
+        <button class="btn btn-link dropdown-toggle"
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="true"
+          (click)="stopPropagation($event)"
+          id="{{'cf-kebab-' + counter}}"
+          dropdownToggle>
+          <i class="fa fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu-right dropdown-menu" *dropdownMenu>
+          <li>
+            <a class="pointer" (click)="confirmCustomQueryDelete($event, query)">
+              Delete
             </a>
-            <div class="dropdown-kebab-pf pull-right dropdown f8-cf-kebab" dropdown>
-              <button class="btn btn-link dropdown-toggle"
-                type="button"
-                aria-haspopup="true"
-                aria-expanded="true"
-                (click)="stopPropagation($event)"
-                id="{{'cf-kebab-' + counter}}"
-                dropdownToggle>
-                <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu-right dropdown-menu" *dropdownMenu>
-                <li>
-                  <a class="pointer" (click)="confirmCustomQueryDelete($event, query)">
-                    Delete
-                  </a>
-                </li>
-              </ul>
-            </div>
           </li>
         </ul>
       </div>
-  </div>
+    </li>
+  </ul>
+</div>

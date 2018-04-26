@@ -2,44 +2,50 @@
 @import (reference) '../../../assets/stylesheets/shared/_utilities';
 
 .f8-cf {
+  display: block;
   color: @color-pf-white;
   background-color: @color-pf-black-900;
-  &__panel {
+  &__hdr {
     display: block;
-    &-hdr {
-      display: block;
-      padding: 20px 15px;
-      border-left: 4px solid;
-      border-left-color: transparent;
-      cursor: default; // as item is not clickable
-      &.nohover {
-        h3 {
-          color: @color-pf-white;
-        }
-      }
-      &:not(.nohover):hover {
-        background: @color-pf-black-700;
+    padding: 20px 15px;
+    border-left: 4px solid;
+    border-left-color: transparent;
+    border-bottom: 1px solid;
+    border-bottom-color: @color-pf-black;
+    cursor: default; // as item is not clickable
+    &.nohover {
+      h3 {
+        color: @color-pf-black-500;
       }
     }
-  }
-  &__customquery-list {
-    list-style: none;
-    padding-left: 0px;
-    cursor: pointer;
-    li.f8-cf__container {
-      display: block;
-      border-left: 4px solid transparent;
-      &:hover {
-        background-color: @color-pf-black-800;
-      }
+    &:not(.nohover):hover {
+      background: @color-pf-black-700;
     }
   }
-  &__container {
-    a.a-custom-query {
-      color: @color-pf-white;
-      margin-left: 40px;
-      &:hover {
+  &__list {
+    &-type {
+      a {
+        display: block;
+        padding: 20px 15px;
+        padding-left: 45px;
+        font-size: 15px;
+        line-height: 15px;
+        color: @color-pf-white;
         text-decoration: none;
+        border-left: 4px solid;
+        border-left-color: transparent;
+        &:hover {
+          color: @color-pf-white;
+          text-decoration: none;
+          background: @color-pf-black-700;
+        }
+        &:visited, &:focus {
+          color: @color-pf-white;
+          text-decoration: none;
+        }
+        &:active {
+          border-left-color: @color-pf-blue;
+        }
       }
     }
     .fa {
@@ -50,8 +56,10 @@
     }
   }
   &--selected {
-    border-left-color: @color-pf-blue !important;
-    background-color: @color-pf-black-800;
+    a {
+      border-left-color: @color-pf-blue !important;
+      background-color: @color-pf-black-800;
+    }
   }
   .dropdown-kebab-pf {
     .btn-link {

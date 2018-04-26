@@ -4,36 +4,27 @@
 .f8-itr {
   color: @color-pf-white;
   background-color: @color-pf-black-900;
-  &__panel {
+  &-hdr {
     display: block;
-    &-hdr {
-      display: block;
-      padding: 20px 15px;
-      border-left: 4px solid;
-      border-left-color: transparent;
-      cursor: default; // as item is not clickable
-      &.nohover {
-        h3 {
-          color: @color-pf-black-500;
-        }
-      }
-      &:not(.nohover):hover {
-        background: @color-pf-black-700;
+    padding: 20px 15px;
+    border-left: 4px solid;
+    border-left-color: transparent;
+    cursor: default; // as item is not clickable
+    &.nohover {
+      h3 {
+        color: @color-pf-black-500;
       }
     }
-    ul {
-      list-style: none;
-      li {
-        display: block;
-      }
-    }
-    &--nested& {
-      border-top: 1px solid;
-      border-top-color: @color-pf-black;
+    &:not(.nohover):hover {
+      background: @color-pf-black-700;
     }
   }
   &__container {
-    cursor: pointer;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    list-style: none;
+    border-top: 1px solid;
+    border-top-color: @color-pf-black;
     a {
       color: @color-pf-white;
       &:hover {
@@ -46,5 +37,11 @@
     &:focus {
       outline: none;
     }
+  }
+  &__list {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 1px solid;
+    border-top-color: @color-pf-black;
   }
 }

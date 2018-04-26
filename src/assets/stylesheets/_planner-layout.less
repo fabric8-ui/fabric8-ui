@@ -4,16 +4,14 @@
   position: relative;
   >main {
     height: 100%;
-    //overflow: hidden;
     .f8-sidepanel {
       width: 100%;
       height: 100%;
       padding-bottom: 20px;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: unset;
       background-color: @color-pf-black-900;
       &--toggle {
-        // float: left;
-        // width: 100%;
         display: block;
         padding: 5px;
         border-top: 1px solid;
@@ -30,6 +28,16 @@
             border: 1px solid;
             border-color: @color-pf-black-700;
           }
+        }
+      }
+      .list-group {
+        display: block;
+        border-top-color: transparent;
+        &-item {
+          position: inherit;
+          padding: 0;
+          background-color: transparent;
+          border-color: @color-pf-black;
         }
       }
     }
