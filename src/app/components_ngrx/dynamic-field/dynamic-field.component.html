@@ -70,7 +70,7 @@
 
       <f8-markdown
         *ngIf="fieldValue.field.type.kind==='markup'"
-        [editAllow]="true"
+        [editAllow]="editAllow"
         [rawText]="fieldValue?.value?.content"
         [renderedText]="fieldValue?.value?.rendered"
         (onSaveClick)="markupUpdate($event)"
