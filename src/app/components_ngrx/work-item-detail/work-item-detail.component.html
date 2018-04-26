@@ -30,8 +30,7 @@
           <div class="width-100 pull-left">
             <div
               class="card-pf-time-frame-filter pull-left dropdown"
-              *ngIf="loggedIn"
-              dropdown>
+              dropdown *ngIf="loggedIn" [isDisabled]="!loggedInUser">
               <button dropdownToggle
                 class="btn btn-default width-100 dropdown-toggle padding-h-10 text-left"
                 id="wi-preview-state"
@@ -74,7 +73,7 @@
         <div *ngIf="detailContext=='detail'">
           <div class="pull-left margin-right-15">
             <div class="dropdown pull-left"
-              dropdown *ngIf="loggedIn">
+              dropdown *ngIf="loggedIn" [isDisabled]="!loggedInUser">
               <button class="btn btn-default dropdown-toggle padding-h-10 width-100"
                 id="wi-detail-state"
                 type="button"
