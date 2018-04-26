@@ -24,7 +24,7 @@
       <f8-inlineinput
         class="dynamic-integer-field"
         *ngIf="fieldValue.field.type.kind==='integer' || fieldValue.field.type.kind==='string'|| fieldValue.field.type.kind==='float'"
-        [disabled]="false"
+        [disabled]="!editAllow"
         [type]="fieldValue.field.type.kind"
         [value]="fieldValue.value"
         [onLineClickEdit]="true"

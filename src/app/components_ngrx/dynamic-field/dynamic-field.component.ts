@@ -97,6 +97,8 @@ export class DynamicFieldComponent implements OnInit {
   // this is the type schema taken from the work item type.
   @Input() attributeDesc: any;
 
+  @Input() editAllow: boolean = false;
+
   // event when value is updated, emits new value as the event.
   @Output() onUpdate = new EventEmitter();
 

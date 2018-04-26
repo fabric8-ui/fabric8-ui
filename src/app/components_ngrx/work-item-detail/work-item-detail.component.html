@@ -323,6 +323,7 @@
           <div *ngFor="let field of dynamicKeyValueFields" class="form-group">
             <alm-dynamic-field
               [keyValueField]="field"
+              [editAllow]="!!loggedInUser"
               (onUpdate)="dynamicFieldUpdated($event)"></alm-dynamic-field>
           </div>
           <!-- Extra fields End -->
