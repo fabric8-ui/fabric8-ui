@@ -12,7 +12,7 @@
   (onClose)="onClose($event)"
   id="labelSelector">
   <ng-template #toggleButtonRef>
-    <span class="clickable add-label"
+    <span *ngIf="allowUpdate" class="clickable add-label"
       (click)="closeAddLabel()">
       <i class="pficon pficon-add-circle-o padding-right-5"></i>
       Assign Label(s)

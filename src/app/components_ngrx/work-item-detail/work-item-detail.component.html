@@ -136,7 +136,7 @@
             <f8-inlineinput
               #inlineInput
               id="wi-title-div"
-              [disabled]="false"
+              [disabled]="!loggedInUser"
               [value]="workItem.title"
               [onLineClickEdit]="true"
               (onSave)="saveTitle($event)"
@@ -223,6 +223,7 @@
                 </span>
                 <common-selector
                   *ngIf="!loadingArea"
+                  [allowUpdate]="!!loggedInUser"
                   [noValueLabel]="'None'"
                   class="area-dropdown"
                   [items]="areas"
@@ -252,6 +253,7 @@
                   </span>
                   <common-selector
                     *ngIf="!loadingIteration"
+                    [allowUpdate]="!!loggedInUser"
                     [noValueLabel]="'None'"
                     class="iteration-dropdown"
                     [items]="iterations"
@@ -282,7 +284,7 @@
                   [labels]='workItem?.labels ?
                     workItem?.labels : []'
                   (onRemoveLabel)="removeLable($event)"
-                  [allowDelete]="true"
+                  [allowDelete]="!!loggedInUser"
                   [context]="detailContext">
                 </f8-label>
                 <div class="f8-detail__labels--selector"
@@ -291,6 +293,7 @@
                     [allLabels]="labels"
                     [selectedLabels]="workItem?.labels ?
                       workItem?.labels : []"
+                    [allowUpdate]="!!loggedInUser"
                     (onCloseSelector)="updateLabels($event)">
                   </label-selector>
                 </div>
@@ -307,7 +310,7 @@
               <div class="f8-detail__content">
                 <f8-markdown
                   id="wi-desc-div"
-                  [editAllow]="loggedIn"
+                  [editAllow]="!!loggedInUser"
                   [rawText]="workItem.descriptionRendered!==null ? workItem.description : workItem.description.content"
                   [renderedText]="workItem.descriptionRendered!==null ? workItem.descriptionRendered : workItem.description.rendered"
                   (onSaveClick)="descUpdate($event)"

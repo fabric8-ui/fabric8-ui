@@ -63,6 +63,8 @@ export class LabelSelectorComponent implements OnInit {
     this.updateSelection();
   }
 
+  @Input() allowUpdate: boolean = true;
+
   @Output() onSelectLabel: EventEmitter<LabelUI[]> = new EventEmitter();
   @Output() onOpenSelector: EventEmitter<any> = new EventEmitter();
   @Output() onCloseSelector: EventEmitter<LabelUI[]> = new EventEmitter();
