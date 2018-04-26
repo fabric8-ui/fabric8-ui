@@ -46,7 +46,8 @@ export class InlineInputComponent implements OnInit {
 
   startEditing(event: Event, onLineClick: boolean) {
     this.errorMessage = '';
-    if (!this.readOnly || !this.editing &&
+    if (this.readOnly) return;
+    if (!this.editing &&
       ((onLineClick && this.onLineClickEdit) || !onLineClick)) {
       this.editing = true;
       this.previousValue = this.inputField.nativeElement.value;
