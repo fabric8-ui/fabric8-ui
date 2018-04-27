@@ -51,7 +51,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 RUN npm install -g jasmine-node protractor
 
 COPY google-chrome.repo /etc/yum.repos.d/google-chrome.repo
-RUN yum install -y xorg-x11-server-Xvfb google-chrome-stable
+RUN yum install -y xorg-x11-server-Xvfb google-chrome-beta
 
 ENV DISPLAY=:99
 ENV FABRIC8_USER_NAME=fabric8
