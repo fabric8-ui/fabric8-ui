@@ -35,8 +35,15 @@ export class ToolbarHeader extends BaseElement {
 
   async clickShowTree() {
     await this.ready();
-    await this.showTree.untilDisplayed();
-    await this.showTree.clickWhenReady();
+    while(true) {
+      try {
+        await this.showTree.clickWhenReady();
+        break;
+      } catch(e) {
+        await browser.sleep(1000);
+        await this.notificationToast.untilCount(0);
+      }
+    }
   }
 
   async selectFilter(Label: string, LabelTest: string) {
