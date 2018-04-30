@@ -51,7 +51,7 @@ module.exports = function(config) {
         },
         reporters: ['progress', 'karma-typescript', 'coverage'],
         coverageReporter: {
-            reporters: [{type: 'lcov'}]
+            reporters: [{type: 'json', dir: './coverage'}]
         },
         // See https://github.com/karma-runner/karma-chrome-launcher/issues/158#issuecomment-339265457
         browsers: ['ChromeHeadlessNoSandbox'],

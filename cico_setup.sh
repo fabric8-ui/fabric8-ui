@@ -45,7 +45,8 @@ function build_planner() {
 
 function run_unit_tests() {
     # Run unit tests
-    docker exec $CID npm run tests -- --unit
+    docker exec $CID npm run tests -- --unit \
+        && bash <(curl -s https://codecov.io/bash) -f ./coverage/*/coverage-final.json -t 73933b5a-4aba-4b55-8612-a809ca4ada30
 }
 
 function run_functional_tests() {
