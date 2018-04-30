@@ -52,7 +52,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 
 COPY runtime/tests/google-chrome.repo /etc/yum.repos.d/google-chrome.repo
 
-RUN yum install -y google-chrome-stable
+RUN yum install -y google-chrome-beta
 
 ENV FABRIC8_USER_NAME=fabric8
 
