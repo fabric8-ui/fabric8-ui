@@ -70,7 +70,11 @@ export class SidePanel extends ui.BaseElement {
     this.debug('iterationList1 : ' + iterationList1 );
     return iterationList1;
   }
-
+  
+  async clickExpander(iterationName: string) {
+    await this.element(by.xpath("//iteration-list-entry[.//span[text()='"+ iterationName +"']]")).$('.fa-angle-right').click();
+  }
+  
   async getMyFiltersList(): Promise<String[]> {
     await this.customQuery.ready();
     let myFilterString = await this.customQueryList.getTextWhenReady();

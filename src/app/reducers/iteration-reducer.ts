@@ -26,7 +26,7 @@ export const iterationReducer: ActionReducer<IterationState> =
           if (parentIndex > -1) {
             state[parentIndex].hasChildren = true;
           }
-          if (state[parentIndex].children.length) {
+          if(state[parentIndex].children) {
             state[parentIndex].children = [
               action.payload.iteration,
               ...state[parentIndex].children

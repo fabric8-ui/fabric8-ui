@@ -20,8 +20,8 @@ export class Iteration extends ui.BaseElement {
   selectStartdate = new ui.Clickable(this.$$('.datevalue.currmonth').first(),' select start date');
   selectEndDate = new ui.Clickable(this.$$('.datevalue.currmonth').last(),' select end date');  
   month = new ui.Clickable(this.$('.headermonthtxt'), 'month');
-  year = new ui.Clickable(this.$('.yearlabel'), 'year');  
-
+  year = new ui.Clickable(this.$('.yearlabel'), 'year');
+    
   async addNewIteration(iterationName: string, parentIteration: string ) {
     await this.iterationName.enterText(iterationName);
     await this.parentIteration.enterText(parentIteration);
@@ -57,7 +57,13 @@ export class Iteration extends ui.BaseElement {
     await this.createIterationButton.clickWhenReady();
     await this.createIterationButton.untilHidden();
   }
-
+  
+  async addNewChildIteration(iterationName: string, parentIteration: string) {
+    await this.iterationName.enterText(iterationName);
+    await this.parentIteration.enterText(parentIteration);
+    await this.parentDropdown.select(parentIteration);
+  }
+  
   async getLastDayOfMonth(): Promise<String> {
     let day = await this.selectEndDate.getAttribute("innerText");
     return day;
