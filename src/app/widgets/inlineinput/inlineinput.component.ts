@@ -23,8 +23,9 @@ export class InlineInputComponent implements OnInit {
 
   @Input('disabled') readOnly: boolean = false;
   @Input('value') set input(val) {
-    this.inputValue = val;
-    this.previousValue = val;
+    const v = this.convertSpecialChar(val);
+    this.inputValue = v;
+    this.previousValue = v;
   }
   @Input() placeholder: string = 'Enter text here';
   @Input() onLineClickEdit: boolean = true;
@@ -77,6 +78,14 @@ export class InlineInputComponent implements OnInit {
       this.editing = false;
       this.inputValue = value;
     }
+  }
+
+  convertSpecialChar(str: string) {
+    return str.replace(/&amp;/g, "&")
+      .replace(/&gt;/g, ">")
+      .replace(/&lt;/g, "<")
+      .replace(/&#34;/g, '"')
+      .replace(/&#39;/g, "'");
   }
 
   submitOnEnter(event) {
