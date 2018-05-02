@@ -128,4 +128,12 @@ describe('Work Item datatable list: ', () => {
     await planner.workItemList.overlay.untilAbsent();
     expect(await planner.workItemList.hasWorkItem(workitemname.title)).toBeTruthy();
   });
+
+  it('clicking on label should filter the workitem list by label', async() => {
+    let labelFilter = 'label: '+c.label2;
+    await planner.workItemList.clickWorkItemLabel(c.workItemTitle7);
+    expect(await planner.header.getFilterConditions()).toContain(labelFilter);
+    await planner.header.clickShowTree();
+    expect(await planner.header.getFilterConditions()).toContain(labelFilter);
+  });
 });

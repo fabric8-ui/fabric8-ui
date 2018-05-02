@@ -60,4 +60,8 @@ export class WorkItemList extends BaseElement {
   async iterationText(title: string) {
     return await this.workItem(title).getIterationText();
   }
+
+  async clickWorkItemLabel(title: string) {
+    await this.workItem(title).clickLabel();
+  }
 };

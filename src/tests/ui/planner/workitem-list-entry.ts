@@ -1,4 +1,4 @@
-import { $, $$, ElementFinder } from 'protractor';
+import { $, $$, by, ElementFinder } from 'protractor';
 import { WorkItemQuickPreview } from './workitem-quickpreview';
 import * as ui from '../../ui';
 
@@ -11,6 +11,7 @@ export class WorkItemListEntry extends ui.BaseElement {
   labels = new ui.BaseElement(this.$('f8-label'), 'WorkItem Labels');
   inlineCloseButton = new ui.Clickable(this.$('.pficon-close'),'inline close');
   treeExpander = new ui.Clickable(this.$('.tree-icon'), 'WorkItem Expander');
+  labelName =  new ui.Clickable(this.element(by.cssContainingText('.label-name', 'sample_label_2')), 'WorkItem Label' );
 
   // TODO
   status: ui.BaseElement;
@@ -44,5 +45,8 @@ export class WorkItemListEntry extends ui.BaseElement {
   async getIterationText() {
     return await this.iteration.getTextWhenReady();
   }
-
+  
+  async clickLabel() {
+    await this.labelName.clickWhenReady();
+  }
 }
