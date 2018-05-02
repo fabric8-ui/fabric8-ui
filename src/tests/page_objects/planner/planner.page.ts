@@ -44,4 +44,9 @@ export class PlannerPage extends AppPage {
     await this.inlineQuickAdd.addInlineWorkItem(item);
   }
 
+  async resetState() {
+    await this.sidePanel.clickScenarios();
+    await $('body').sendKeys(protractor.Key.ESCAPE);
+    await this.quickPreview.notificationToast.untilHidden();
+  }
 }

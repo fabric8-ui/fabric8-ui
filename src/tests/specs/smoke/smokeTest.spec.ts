@@ -8,13 +8,17 @@ describe('Planner Smoke Tests:', () => {
   let planner: PlannerPage;
   let c = new support.Constants();
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     await support.desktopTestSetup();
     planner = new PlannerPage(browser.baseUrl);
     await planner.openInBrowser();
     // This is necessary since the planner takes time to load on prod/prod-preview
     await browser.sleep(5000);
     await planner.ready();
+  });
+
+  beforeEach( async () => {
+    await planner.resetState();
   });
 
   it('create a work item and add/remove assignee', async () => {
@@ -33,7 +37,6 @@ describe('Planner Smoke Tests:', () => {
 
   it('update workitem title/description', async () => {
     await planner.createWorkItem(c.newWorkItem2);
-
     expect(await planner.workItemList.hasWorkItem(c.newWorkItem2.title)).toBeTruthy();
     await planner.workItemList.clickWorkItem(c.newWorkItem2.title);
     await planner.quickPreview.updateTitle(c.updatedWorkItem.title);
@@ -95,11 +98,9 @@ describe('Planner Smoke Tests:', () => {
     await planner.quickPreview.iterationCancelButton.clickWhenReady();
     await planner.quickPreview.iterationDropdown.clickWhenReady();
     expect(await planner.quickPreview.iterationDropdown.menu.getTextWhenReady()).not.toBe('No matches found.');
-    await planner.quickPreview.close();
   });
 
   it('Scenario-Quick Add should support Scenario, papercuts and fundamentals' ,async () => {
-    await planner.quickPreview.loadingAnimation.untilHidden();
     let wiTypes = await planner.quickAdd.workItemTypes();
     expect(wiTypes.length).toBe(3);
     expect(wiTypes[0]).toBe('Scenario');
@@ -109,7 +110,6 @@ describe('Planner Smoke Tests:', () => {
 
   it('Experiences-Quick Add should support Experience and Value proposition', async () => {
     await planner.sidePanel.clickExperience();
-    await planner.quickPreview.loadingAnimation.untilHidden();
     let wiTypes = await planner.quickAdd.workItemTypes();
     expect(wiTypes.length).toBe(2);
     expect(wiTypes[0]).toBe('Experience');
@@ -133,7 +133,7 @@ describe('Planner Smoke Tests:', () => {
   });
 
   it('Edit Comment and Cancel', async() => {
-    let title = await planner.createUniqueWorkItem()
+    let title = await planner.createUniqueWorkItem();
     await planner.workItemList.clickWorkItem(title);
     await planner.quickPreview.addCommentAndCancel(c.comment);
     expect(await planner.quickPreview.getComments()).not.toContain('new comment');
@@ -143,6 +143,7 @@ describe('Planner Smoke Tests:', () => {
     await planner.sidePanel.clickRequirement();
     await planner.header.selectFilter('State','in progress');
     await planner.header.saveFilters('Query 1');
+    await planner.workItemList.overlay.untilHidden();
     expect(await planner.sidePanel.getMyFiltersList()).toContain('Query 1');
   });
 
@@ -165,6 +166,7 @@ describe('Planner Smoke Tests:', () => {
     await planner.quickPreview.notificationToast.untilHidden();
     await planner.detailPage.closeButton.ready();
     expect(await browser.getCurrentUrl()).toContain('detail');
+    await planner.detailPage.close();
   });
 });
 

@@ -8,7 +8,7 @@ describe('Work Item datatable list: ', () => {
   let planner: PlannerPage;
   let c = new support.Constants();
 
-  beforeEach( async () => {
+  beforeAll( async () => {
     await support.desktopTestSetup();
     planner = new PlannerPage(browser.baseUrl);
     await planner.openInBrowser();
@@ -17,12 +17,20 @@ describe('Work Item datatable list: ', () => {
     await planner.ready();
   });
 
+  beforeEach( async () => {
+    await planner.resetState();
+  });
+
   it('should open settings button and hide columns', async () => {
     expect(await planner.workItemList.getDataTableHeaderCellCount()).toBe(9);
     await planner.settings.clickSettings();
     await planner.settings.selectAttribute(c.attribute1);
     await planner.settings.moveToAvailableAttribute();
     expect(await planner.workItemList.getDataTableHeaderCellCount()).toBe(8);
+    await planner.settings.clickSettings();    
+    await planner.settings.selectAttribute(c.attribute1);
+    await planner.settings.moveToDisplayedAttribute();
+    expect(await planner.workItemList.getDataTableHeaderCellCount()).toBe(9);
   });
 
   it('quick add should be disable for flat view', async() => {
@@ -30,6 +38,8 @@ describe('Work Item datatable list: ', () => {
     await browser.sleep(2000);
     await planner.workItemList.overlay.untilHidden();
     expect(await planner.workItemList.getInlineQuickAddClass(c.workItemTitle1)).toContain('disable');
+    await planner.header.clickShowTree();
+    await planner.workItemList.overlay.untilHidden();    
   });
 
   // This test doesn't work on mock data. Hence, skip it.
@@ -90,8 +100,10 @@ describe('Work Item datatable list: ', () => {
     expect(await planner.workItemList.hasWorkItem(c.workItemTitle13)).toBeTruthy();
     await planner.workItemList.clickWorkItem(c.workItemTitle7);
     await planner.quickPreview.createNewLabel(c.newLabel1);
+    await planner.quickPreview.close();    
     await browser.sleep(3000);
     expect(await planner.workItemList.hasWorkItem(c.workItemTitle13)).toBeTruthy();
+    await planner.workItemList.workItem(c.workItemTitle7).clickExpandWorkItem();    
   });
 
   it('list should not update when new iteration is added', async() => {
@@ -101,7 +113,6 @@ describe('Work Item datatable list: ', () => {
     await planner.sidePanel.createNewIteration();
     await planner.iteration.addNewIteration(c.newIteration1, c.iteration3);
     await planner.iteration.clickCreateIteration();    
-    await browser.sleep(3000);
     expect(await planner.workItemList.hasWorkItem(c.workItemTitle13)).toBeTruthy();
   });
   
@@ -110,11 +121,11 @@ describe('Work Item datatable list: ', () => {
     await planner.sidePanel.clickRequirement();
     await planner.workItemList.workItem(c.workItemTitle17).clickInlineQuickAdd();
     await planner.createInlineWorkItem(workitemname);
-    await browser.sleep(3000);
+    await planner.quickPreview.notificationToast.untilHidden();
     await planner.sidePanel.clickScenarios();
     await browser.sleep(3000);
     await planner.sidePanel.clickRequirement();
-    await browser.sleep(3000);
+    await planner.workItemList.overlay.untilAbsent();
     expect(await planner.workItemList.hasWorkItem(workitemname.title)).toBeTruthy();
-  })
+  });
 });

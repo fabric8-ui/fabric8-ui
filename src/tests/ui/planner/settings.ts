@@ -31,6 +31,7 @@ export class Settings extends ui.BaseElement {
 
   async moveToDisplayedAttribute() {
     await this.moveToDisplayedAttributeButton.clickWhenReady();
+    await this.close.clickWhenReady();    
   }
 
   async moveToAvailableAttribute() {
