@@ -25,6 +25,9 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   assigneeDropdownCloseButton = new ui.Button(
     this.$('#f8-add-assignee-dropdown .close-pointer'),
     'Assignee dropdown close button');
+  assigneeDropdownMenu = new ui.BaseElement(
+    this.$('assignee-selector div.select-dropdown'),
+    'Assignee dropdown menu');
   assigneeDiv = new ui.BaseElement(this.$('f8-assignee'), 'Assignee List Div');
   areaDropdown = new ui.Dropdown(
     this.$('#area-dropdown > div > span'),

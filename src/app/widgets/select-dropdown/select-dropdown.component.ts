@@ -5,7 +5,9 @@ import {
   OnInit,
   Output,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  HostListener,
+  ElementRef
 } from '@angular/core';
 
 @Component({
@@ -25,6 +27,25 @@ export class SelectDropdownComponent implements OnInit {
   @Output() onSearch: EventEmitter<any> = new EventEmitter();
   @Output() onOpen: EventEmitter<any> = new EventEmitter();
   @Output() onClose: EventEmitter<any> = new EventEmitter();
+
+  @HostListener('document:click', ['$event', '$event.target']) 
+  onClick(event: MouseEvent, target: HTMLElement) :void {
+    if (this.displayDropdown) {
+      if (!target) {
+        return;
+      }
+
+      const clickedInside = this._el.nativeElement.contains(target);
+
+      if (!clickedInside) {
+        this.closeDropdown();
+      }
+    }
+  }
+
+  constructor(private _el: ElementRef) {
+
+  }
 
 
   private displayDropdown: boolean = false;

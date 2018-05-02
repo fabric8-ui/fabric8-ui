@@ -58,4 +58,12 @@ describe('Quick preview tests: ', () => {
     // The description box should not be in edit mode
     expect(await planner.quickPreview.isSaveButtonDisplayed()).toBeFalsy();
   })
+
+  it('should close assignee dropdown when clicked outside',async () => {
+    await planner.workItemList.clickWorkItem(c.workItemTitle1);
+    await planner.quickPreview.assigneeDropdown.clickWhenReady();
+    expect(await planner.quickPreview.assigneeDropdownMenu.getAttribute('className')).toContain('show');
+    await planner.quickPreview.titleInput.clickWhenReady();
+    expect(await planner.quickPreview.assigneeDropdownMenu.getAttribute('className')).not.toContain('show');
+  })
 });

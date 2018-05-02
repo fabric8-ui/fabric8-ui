@@ -18,16 +18,16 @@
       Assign Label(s)
     </span>
   </ng-template>
-  <ng-template #dropdownItem 
-    let-color="color" 
-    let-border="border" 
+  <ng-template #dropdownItem
+    let-color="color"
+    let-border="border"
     let-name="name">
     <div class="palet"
       [ngStyle]="{'background-color': color, 'border-color': border}"></div>
     <span [innerHTML]="name | almSearchHighlight: searchValue"></span>
   </ng-template>
   <ng-template #dropdownFooter>
-    <div *ngIf="!activeAddLabel"
+    <div [class.hide]="activeAddLabel"
       (click)="clickOnAddLabel()"
       class="create-label-button">
       <span class="pficon pficon-add-circle-o"></span>
@@ -35,17 +35,20 @@
     </div>
     <div [class.hide]="!activeAddLabel || colorPickerActive"
       class="create-label">
-      <div [ngStyle]="{'background-color': newSelectedColor.color, 
+      <div [ngStyle]="{'background-color': newSelectedColor.color,
         'border-color': newSelectedColor.border}"
         (click)="toggleColorPicker()" class="palet">
       </div>
       <input (input)="onAddLabelInput($event.target.value)"
+        (keyup.enter)="createLabel(labelname.value)"
         class="create-label-input" #labelname />
       <button class="action-btn btn btn-primary fa fa-check"
+        type="button"
         [class.disabled]="createDisabled"
         (click)="createLabel(labelname.value)">
       </button>
       <button class="action-btn btn pficon pficon-close"
+        type="button"
         (click)="closeAddLabel()">
       </button>
     </div>
