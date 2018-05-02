@@ -71,8 +71,11 @@
         [autoClose]="false"
         [isOpen]="isTableConfigOpen"
         (isOpenChange)="tableConfigChange($event)">
-        <button class="btn btn-link dropdown-toggle" type="button" dropdownToggle>
-          <span class="fa fa-cog"></span>
+        <button class="btn btn-link dropdown-toggle" 
+          type="button" dropdownToggle>
+          <span class="fa fa-cog"
+            placement="bottom"
+            tooltip="Open Config"></span>
         </button>
         <div class="dropdown-menu-right dropdown-menu f8-wi-list__settings-dropdown" *dropdownMenu>
           <aside>
@@ -177,6 +180,8 @@
                 <span class="table-dnd-header"></span>
               </span>
               <a class="quick-add-icon"
+                placement="right"
+                tooltip="Add Child Work Item"
                 href="javascript:void(0)"
                 [class.pficon-add-circle-o]="!expanded"
                 [class.pficon-close]="expanded"
@@ -241,6 +246,8 @@
                  <span class="table-dnd-header"></span>
               </span>
               <a class="quick-add-icon pficon-add-circle-o disabled"
+                placement="right"
+                tooltip="Add Child Work Item"
                 href="javascript:void(0)">
               </a>
             </ng-template>

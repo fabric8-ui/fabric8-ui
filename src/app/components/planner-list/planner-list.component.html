@@ -191,6 +191,8 @@
                 [frozenLeft]="false">
                 <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
                   <a class="quick-add-icon"
+                    placement="right"
+                    tooltip="Add Child Work Item"
                     href="javascript:void(0)"
                     [class.pficon-add-circle-o]="!expanded"
                     [class.pficon-close]="expanded"
@@ -253,6 +255,8 @@
             [frozenLeft]="false">
               <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
                 <a class="quick-add-icon pficon-add-circle-o disabled"
+                  placement="right"
+                  tooltip="Add Child Work Item"
                   href="javascript:void(0)">
                 </a>
               </ng-template>
@@ -343,6 +347,8 @@
               <div class="pull-right margin-right-15 padding-top-2"
                 placement="left">
                 <a class="fa fa-columns f8-action-icon pointer"
+                  placement="top"
+                  tooltip="Open Quick Preview"
                   (click)="onPreview(row['id'])">
                 </a>
               </div>
