@@ -165,6 +165,7 @@ export class WorkItemTypeResolver {
 
 function filterDynamicFields(fields: any[]) {
   if (fields !== null) {
+
     const fieldKeys = Object.keys(fields);
     const staticFields = [
       'system.area',
@@ -183,7 +184,10 @@ function filterDynamicFields(fields: any[]) {
       'system.updated_at'
     ];
     return fieldKeys.filter(
-      f => staticFields.findIndex(sf => sf === f) === -1
+      f => {
+        return staticFields.findIndex(sf => sf === f) === -1 &&
+               ['enum', 'markup'].indexOf(fields[f].type.kind) > -1;
+      }
     );
   } else {
     return [];
