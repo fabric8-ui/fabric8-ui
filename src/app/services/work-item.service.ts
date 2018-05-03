@@ -311,7 +311,8 @@ export class WorkItemService {
           '/namedspaces' +
           '/' + owner +
           '/' + space +
-          '/workitems/' + id
+          '/workitems/' + id,
+          {'no-header': null}
         )
         .map(item => item.json().data)
         .catch((error: Error | any) => {
