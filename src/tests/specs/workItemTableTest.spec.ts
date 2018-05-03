@@ -136,4 +136,24 @@ describe('Work Item datatable list: ', () => {
     await planner.header.clickShowTree();
     expect(await planner.header.getFilterConditions()).toContain(labelFilter);
   });
+
+  it('should update the workitem List on workitem edit', async() => {
+    let workitem = {'title': 'TITLE_TEXT'};
+    await planner.header.selectFilter('State', 'new');
+    await planner.createWorkItem(workitem);
+    await planner.workItemList.clickWorkItem(workitem.title);
+    await planner.quickPreview.changeStateTo('open');
+    await planner.quickPreview.notificationToast.untilCount(1);
+    await planner.quickPreview.notificationToast.untilHidden(); 
+    await planner.quickPreview.close();
+    expect(await planner.workItemList.isTitleTextBold(workitem.title)).not.toContain('bold');
+  });
+
+  it('should make the title bold based on filter when adding a new workitem', async() => {
+    let workitem = {'title': 'Scenario'};
+    await planner.header.selectFilter('State', 'new');
+    await planner.createWorkItem(workitem);
+    expect(await planner.workItemList.hasWorkItem(workitem.title)).toBeTruthy();
+    expect(await planner.workItemList.isTitleTextBold(workitem.title)).toContain('bold');
+  });
 });
