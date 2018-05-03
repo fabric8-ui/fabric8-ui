@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpService } from './http-service';
 import { InfotipState } from './../states/infotip.state';
 
-const infotipsUrl: string = 'http://docs.openshift.io/json/infotips.json';
+const infotipsUrl: string = 'https://docs.openshift.io/json/infotips.json';
 
 @Injectable()
 export class InfotipService {
