@@ -1,18 +1,9 @@
-import { Component, Input, HostListener } from '@angular/core';
+import { Component, Input} from '@angular/core';
 
 @Component({
   selector: 'infotip',
-  template: `<template #popoverTemplate>
-             <span class="popover-text">{{infotipText}}</span>
-             <span class="pficon-close close-popover" 
-             (click)="handlePropagation($event); pop.hide();"></span>
-             </template>
-             <span class="pficon-info infotip-icon"
-             (click)="handlePropagation($event)"
-             [style.opacity]="pop.isOpen ? '1' : ''"   
-             [popover]="popoverTemplate" placement="right" 
-             containerClass="popover-container" #pop="bs-popover">
-             </span>`
+  templateUrl: './infotip.component.html',
+  styleUrls: ['./infotip.component.less']
 })
 
 export class InfotipComponent {

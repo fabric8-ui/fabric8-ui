@@ -11,7 +11,8 @@ export interface AppState {
     space: states.SpaceState,
     workItemStates: states.WIState,
     workItemTypes: states.WorkItemTypeState,
-    customQueries: states.CustomQueryState
+    customQueries: states.CustomQueryState,
+    infotips: states.InfotipState
   };
 
   iterationPanel: {

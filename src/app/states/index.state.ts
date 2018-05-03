@@ -61,3 +61,7 @@ export {
   WorkItemLinkState,
   initialState as initialWorkItemLinkState
 } from './work-item-link.state';
+export {
+  InfotipState,
+  initialState as initialInfotipState
+} from './infotip.state';

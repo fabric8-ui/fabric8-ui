@@ -13,7 +13,7 @@
         [class.dib]="sidePanelOpen"
         [class.hide]="!sidePanelOpen">
       {{ item.name }}</span>
-      <infotip [infotipText]="item.infotip"></infotip>
+      <infotip [infotipText]="getInfotipText(item.id) | async"></infotip>
   </a>
   <!--If group is execution show a header and then embed the iteration component -->
   <div *ngIf="item.bucket === 'iteration'">
@@ -25,7 +25,8 @@
         [witGroup]="item.name"
         [showTree]="showTree"
         [showCompleted]="showCompleted"
-        [sidePanelOpen]="sidePanelOpen">
+        [sidePanelOpen]="sidePanelOpen"
+        [infotipText]="getInfotipText(item.id) | async">
       </fab-planner-iteration>
     </div>
   </div>

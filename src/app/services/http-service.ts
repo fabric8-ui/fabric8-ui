@@ -45,18 +45,27 @@ export class HttpService extends Http {
   }
 
   private setHeaders(options) {
-    (<any>Object).entries(options).forEach(([key, value]) => {
-      this.headers.set(key, value);
+    let headers = new Headers();
+    // This is a hack to forcefully define no extra header
+    // to the request
+    if (Object.keys(options).length && Object.keys(options)[0] === 'no-header') {
+      return headers;
+    }
+    this.headers.forEach((value, name) => {
+      headers.set(name, value);
     });
+    (<any>Object).entries(options).forEach(([key, value]) => {
+      headers.set(key, value);
+    });
+    return headers;
   }
 
   get(url: string, options = {}) {
     console.log('GET request initiated');
     console.log('URL - ', url);
     console.log('Options - ', options);
-    this.setHeaders(options);
     let retryCount = 1;
-    return super.get(url, { headers: this.headers })
+    return super.get(url, { headers: this.setHeaders(options) })
     .retryWhen(attempts => {
       console.log('retryWhen callback');
       let count = 0;
@@ -79,8 +88,7 @@ export class HttpService extends Http {
     console.log('URL - ', url);
     console.log('Body - ', body);
     console.log('Options - ', options);
-    this.setHeaders(options);
-    return super.post(url, body, { headers: this.headers })
+    return super.post(url, body, { headers: this.setHeaders(options) })
     .retryWhen(attempts => {
       console.log('retryWhen callback');
       let count = 0;
@@ -102,8 +110,7 @@ export class HttpService extends Http {
     console.log('URL - ', url);
     console.log('Body - ', body);
     console.log('Options - ', options);
-    this.setHeaders(options);
-    return super.put(url, body, { headers: this.headers })
+    return super.put(url, body, { headers: this.setHeaders(options) })
     .retryWhen(attempts => {
       console.log('retryWhen callback');
       let count = 0;
@@ -125,8 +132,7 @@ export class HttpService extends Http {
     console.log('URL - ', url);
     console.log('Body - ', body);
     console.log('Options - ', options);
-    this.setHeaders(options);
-    return super.patch(url, body, { headers: this.headers })
+    return super.patch(url, body, { headers: this.setHeaders(options) })
     .retryWhen(attempts => {
       console.log('retryWhen callback');
       let count = 0;
@@ -147,8 +153,7 @@ export class HttpService extends Http {
     console.log('DELETE request initiated');
     console.log('URL - ', url);
     console.log('Options - ', options);
-    this.setHeaders(options);
-    return super.delete(url, { headers: this.headers })
+    return super.delete(url, { headers: this.setHeaders(options) })
     .retryWhen(attempts => {
       console.log('retryWhen callback');
       let count = 0;
