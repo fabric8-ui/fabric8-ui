@@ -26,7 +26,7 @@
               [queryParams]="showTree ?
               { q: constructUrl(query.attributes.fields), showTree: showTree } :
               { q: constructUrl(query.attributes.fields) }">
-                <span id="query.attributes.title">
+                <span id="query.attributes.title" title="{{ query.attributes.title }}">
                     {{ query.attributes.title  | truncate : 15}}
                 </span>
             </a>
