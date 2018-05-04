@@ -35,6 +35,7 @@ export class WorkItemTypeEffects {
       return this.workItemService.getWorkItemTypes2(
         space.relationships.workitemtypes.links.related
       )
+      .map(types => types.filter(t => t.attributes['can-construct']))
       .map((types: WorkItemTypeService[]) => {
         const witm = new WorkItemTypeMapper();
         const wiTypes = types.map(t => witm.toUIModel(t));
