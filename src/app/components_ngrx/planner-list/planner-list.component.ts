@@ -146,6 +146,8 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     this.eventListeners.push(
       this.spaceSource
       .do(() => {
+        this.store.dispatch(new CollaboratorActions.Get());
+        this.store.dispatch(new AreaActions.Get());
         this.uiLockedSidebar = true;
         this.uiLockedList = true;
       })
