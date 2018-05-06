@@ -2,8 +2,10 @@ import { Observable } from 'rxjs';
 import { WorkItemUI } from '../models/work-item';
 
 export function workitemMatchesFilter(route, filterService, workItemService, workitem): Observable<WorkItemUI> {
-    
-    const currentRoute = route.queryParams;
+  const currentRoute = route.queryParams;
+  if (Object.keys(currentRoute).length === 0 && currentRoute.constructor === Object) {
+    return Observable.of(workitem);
+  } else {
     const wiQuery = filterService.queryBuilder(
       'number', filterService.equal_notation, workitem.number.toString()
     );
@@ -21,33 +23,34 @@ export function workitemMatchesFilter(route, filterService, workItemService, wor
         workitem.bold = count > 0;
         return workitem;
       });
+  }
 }
 
 export function createLinkObject(parentWorkItemId: string, childWorkItemId: string, linkId: string) {
-    return {
-      'type': 'workitemlinks',
-      'attributes': {
-        'version': 0
+  return {
+    'type': 'workitemlinks',
+    'attributes': {
+      'version': 0
+    },
+    'relationships': {
+      'link_type': {
+        'data': {
+          'id': linkId,
+          'type': 'workitemlinktypes'
+        }
       },
-      'relationships': {
-        'link_type': {
-          'data': {
-            'id': linkId,
-            'type': 'workitemlinktypes'
-          }
-        },
-        'source': {
-          'data': {
-            'id': parentWorkItemId,
-            'type': 'workitems'
-          }
-        },
-        'target': {
-          'data': {
-            'id': childWorkItemId,
-            'type': 'workitems'
-          }
+      'source': {
+        'data': {
+          'id': parentWorkItemId,
+          'type': 'workitems'
+        }
+      },
+      'target': {
+        'data': {
+          'id': childWorkItemId,
+          'type': 'workitems'
         }
       }
-    };
-  }
+    }
+  };
+}
