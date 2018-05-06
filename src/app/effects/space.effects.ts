@@ -54,6 +54,8 @@ export class SpaceEffects {
     .filter(action => action.payload.id !== this.oldSpaceId)
     .do(action => this.oldSpaceId = action.payload.id)
     .switchMap(() => [
+      new CollaboratorActions.Get(),
+      new AreaActions.Get(),
       new FilterActions.Get(),
       new GroupTypeActions.Get(),
       new IterationActions.Get(),
