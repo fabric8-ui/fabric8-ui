@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation, ElementRef } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 const markdownIt = require('markdown-it');
 const markdown = new markdownIt();
@@ -13,16 +14,52 @@ const markdown = new markdownIt();
 
 export class MarkdownExampleComponent {
 
-  private renderedText: string = '<p>hello, markdown!\</p>';
+    private renderedText: string = '<h1>hello, markdown!\</h1><ul>' +
+    // tslint:disable-next-line:max-line-length
+    '<li><input class="markdown-checkbox" type="checkbox" data-checkbox-index="0"></input> Item 0</li>' +
+    // tslint:disable-next-line:max-line-length
+    '<li><input class="markdown-checkbox" type="checkbox" checked="" data-checkbox-index="1"></input> Item 1</li>' +
+    // tslint:disable-next-line:max-line-length
+    '<li><input class="markdown-checkbox" type="checkbox" data-checkbox-index="2"></input> Item 2</li></ul>';
   private renderedTextNoEdit: string = '<p>Edit is not allowed here</p>';
-  private rawText: string = '#hello, markdown!';
+  private rawText: string = '# hello, markdown!\n* [ ] Item 1\n* [x] Item 2\n* [ ] Item 3';
   private allowEdit = false;
 
   onSaveOrPreview(value: any) {
     const rawText = value.rawText;
     const callBack = value.callBack;
+    console.log('MarkdownExampleComponent: Received markdown markup update in client: ' + rawText);
     setTimeout(() => {
-      callBack(rawText, markdown.render(rawText));
+      let text: string = markdown.render(rawText);
+      const regex = /\[[ xX]\]|\[\]/gm;
+      let m;
+      let matchIndex = 0;
+      // tslint:disable-next-line:no-conditional-assignment
+      while ((m = regex.exec(text)) !== null) {
+        // This is necessary to avoid infinite loops with zero-width matches.
+        if (m.index === regex.lastIndex) {
+          regex.lastIndex++;
+        }
+        if (m.length > 0) {
+          // JavaScript does not have a replace by index method.
+          let matchLen = m[0].length;
+          let matchEndIndex = regex.lastIndex;
+          let matchStartIndex = matchEndIndex - matchLen;
+          let replaceStr;
+          if (m[0] === '[]' || m[0] === '[ ]')
+            // tslint:disable-next-line:max-line-length
+            replaceStr = '<input class="markdown-checkbox" type="checkbox" data-checkbox-index="' + matchIndex + '"></input>';
+          else
+            // tslint:disable-next-line:max-line-length
+            replaceStr = '<input class="markdown-checkbox" type="checkbox" checked="" data-checkbox-index="' + matchIndex + '"></input>';
+          // tslint:disable-next-line:max-line-length
+          text = text.substring(0, matchStartIndex) + replaceStr + text.substring(matchEndIndex, text.length);
+        }
+        matchIndex++;
+      }
+      // tslint:disable-next-line:max-line-length
+      console.log('MarkdownExampleComponent: Rendering on service side completed, sending to component: ' + text);
+      callBack(rawText, text);
     }, 2000);
   }
 

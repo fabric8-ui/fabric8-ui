@@ -9,7 +9,7 @@
   </li>
 </ul>
 <div class="editor-container">
-  <div class="editor"
+  <div class="editor" #previewArea
     (click)="enableEditor()"
     [class.active]="editorActive"
     [class.show-less]="!showMore && !editorActive">
@@ -23,10 +23,10 @@
       class="editor-box editor-markdown"
       [innerText]="rawText">
     </p>
-    <div #editorBox
+    <div #editorBox #previewArea
       *ngIf="viewType==='preview' && renderedText.length"
-      class="editor-box editor-preview">
-        <github-link-area [content]="renderedText"></github-link-area>
+      class="editor-box editor-preview markdown-rendered">
+        <github-link-area [content]="renderedText" (onInputEvent)="onInputEvent($event)"></github-link-area>
     </div>
     <div #editorBox
       *ngIf="viewType==='preview' && !renderedText.length"

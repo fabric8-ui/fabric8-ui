@@ -13,7 +13,6 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 
-
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'f8-markdown',
@@ -38,21 +37,24 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
 
   @ViewChild('editorInput') editorInput: ElementRef;
   @ViewChild('editorBox') editorBox: ElementRef;
+  @ViewChild('previewArea') previewArea: ElementRef;
 
   boxHeight: number;
   enableShowMore: boolean = false;
+  // these need to be public for the tests accessing them.
+  renderedText = '';
+  rawText = '';
   private markdownViewExpanded: boolean = false;
   private tabBarVisible: boolean = true;
   private viewType: string = 'preview'; // markdown
   private editorActive: boolean = false;
-  private renderedText = '';
-  private rawText = '';
   private showMore = false;
+  private inputsDisabled = false;
 
   private previousRawText = '';
   private previousRenderedText = '';
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.editAllow &&
@@ -97,6 +99,58 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
       }
       this.cdr.detectChanges();
     }
+    this.checkInputsDisabled();
+  }
+
+  onInputEvent(event: any) {
+       console.log('In-Markup Markdown input Event detected for input type: ' + event.type +
+      ' with extraData ' + JSON.stringify(event.extraData));
+      // we only support this interaction on checkboxes for now.
+      // the mechanic is generic, add other controls below. In case,
+      // you need to also add support for them in github-link-area as well.
+      if (event.type === 'checkbox') {
+        // disable the inputs so we don't get into async issues when
+        // storing to the upstream component. This has to be done on
+        // new supported input types as well.
+        this.inputsDisabled = true;
+        // process the checkbox clicked, find the markdown markup reference, update it.
+        let activatedCheckboxIndex: number = event.extraData.checkboxIndex;
+        let checked: boolean = event.extraData.checked;
+        let markdownMarkup: string = this.rawText;
+        // the JavaScript RegExp flavour makes it hard to to nth occurence
+        // expressions, so we're doing it by hand here.
+        const regex = /^ *[-*] *\[[ xX]*\]/gm;
+        let m;
+        let matchIndex = 0;
+        // tslint:disable-next-line:no-conditional-assignment
+        while ((m = regex.exec(markdownMarkup)) !== null) {
+          // This is necessary to avoid infinite loops with zero-width matches.
+          if (m.index === regex.lastIndex) {
+            regex.lastIndex++;
+          }
+          if (matchIndex === activatedCheckboxIndex && m.length > 0) {
+            // JavaScript does not have a replace by index method.
+            let matchLen = m[0].length;
+            let matchEndIndex = regex.lastIndex;
+            let matchStartIndex = matchEndIndex - matchLen;
+            let replaceStr;
+            if (checked)
+              replaceStr = m[0].replace(/\[[ ]*\]/, '[x]');
+            else
+              replaceStr = m[0].replace(/\[[xX]+\]/, '[ ]');
+            markdownMarkup =
+              markdownMarkup.substring(0, matchStartIndex) +
+              replaceStr +
+              markdownMarkup.substring(matchEndIndex, markdownMarkup.length);
+          }
+          matchIndex++;
+        }
+        this.rawText = markdownMarkup;
+        // signal that the markdown has changed to the outside world.
+        this.saveClick();
+      } else {
+        console.log('Input type ' + event.type + ' is not supported yet.');
+      }
   }
 
   onClickMarkdownTab() {
@@ -121,10 +175,35 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
     }
   }
 
+  checkInputsDisabled() {
+    this.setPreviewInputsDisabled('input.markdown-checkbox', this.inputsDisabled);
+  }
+
+  // disables/enables the inputs on the rendered markup
+  setPreviewInputsDisabled(query: string, disabled: boolean) {
+    let el = this.previewArea;
+    if (el) {
+      let queryElems = el.nativeElement.querySelectorAll(query);
+      if (queryElems && queryElems.length > 0) {
+        // we need to use a classic loop instead of forEach here
+        // as forEach on NodeLists is not supported on every browser.
+        // Example: Chrome works, but Protractor not.
+        for (let i = 0; i < queryElems.length; ++i) {
+          if (disabled) {
+            queryElems[i].setAttribute('disabled', disabled ? 'true' : 'false');
+          } else {
+            queryElems[i].removeAttribute('disabled');
+          }
+        }
+      }
+    }
+  }
+
   enableEditor() {
     if (this.rawText === '' ) {
       this.activeEditor();
     }
+    this.inputsDisabled = true;
   }
 
   activeEditor() {
@@ -146,6 +225,9 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
   deactivateEditor() {
     // Deactivate the editor
     this.editorActive = false;
+
+    // deactivate inputs when in edit mode
+    this.inputsDisabled = false;
 
     // Show the preview default view
     this.viewType = 'preview';
@@ -195,7 +277,7 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
     this.viewType = 'preview';
   }
 
-  saveUpdate(rawText: string, renderedText: string) {
+  saveUpdate(rawText: string, renderedText: any) {
     this.saving = false;
     if (typeof(rawText) === 'undefined') {
       console.warn('Markdown component save callback :: rawText is passed undefined');
@@ -209,6 +291,7 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
     } else {
       this.renderedText = renderedText;
     }
+    // finally, deactivate the editor.
     this.deactivateEditor();
   }
 

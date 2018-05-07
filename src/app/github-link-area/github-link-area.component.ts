@@ -5,7 +5,10 @@ import {
   OnChanges,
   SimpleChanges,
   ViewChild,
-  ElementRef
+  ElementRef,
+  AfterViewChecked,
+  Output,
+  EventEmitter
 } from '@angular/core';
 
 import { GitHubLinkService } from './github-link.service';
@@ -26,16 +29,23 @@ import { GitHubLinkService } from './github-link.service';
     `],
   templateUrl: './github-link-area.component.html'
 })
-export class GitHubLinkAreaComponent implements OnChanges {
+export class GitHubLinkAreaComponent implements OnChanges, AfterViewChecked {
 
   @Input('content') content: string;
+  @Output('onInputEvent') onInputEvent = new EventEmitter();
 
-  constructor(private gitHubLinkService: GitHubLinkService) {}
+  constructor(
+    private gitHubLinkService: GitHubLinkService,
+    private elementRef: ElementRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes.content) {
       this.updateOnChanges();
     }
+  }
+
+  ngAfterViewChecked(): void {
+    this.instrumentInputs();
   }
 
   /*
@@ -46,6 +56,52 @@ export class GitHubLinkAreaComponent implements OnChanges {
   updateOnChanges() {
     this.updateLinkTexts();
     this.updateLinks();
+  }
+
+  /*
+   * Instruments the input elements in the content. This is used to report
+   * any interaction with inputs back to the parent using Outputs. This feature
+   * is used in the checkbox feature downstream.
+   */
+  instrumentInputs() {
+    // this uses a trick. The problem is that ngAfterViewChecked() is called
+    // multiple times and causes EventListeners added to the inputs multiple
+    // times. Using a dirty bit does not work as Angular is ansychronous and
+    // updates can happen between setting the EventListener and reverting the
+    // dirty bit.
+    // keeping track of the elements with EventListeners is also not working
+    // without a lot of extra work. So we do a trick and add a custom attribute
+    // to the input element when we added the EventListener. The selector
+    // matches only elements without that attribute, so we have a lightweight
+    // way of making sure each input element exactly gets one EventListener
+    // attached.
+    let el = this.elementRef;
+    if (el) {
+      let inputElements = el.nativeElement.querySelectorAll('input:not([data-event-attached])');
+      if (inputElements && inputElements.length > 0) {
+        // we need to use a classic loop instead of forEach here
+        // as forEach on NodeLists is not supported on every browser.
+        // Example: Chrome works, but Protractor not.
+        for (let i = 0; i < inputElements.length; ++i) {
+          inputElements[i].setAttribute('data-event-attached', 'true');
+          inputElements[i].addEventListener('change', (ref: any) => {
+            // we only support checkboxes for now, but the mechanism is generic.
+            // add new interactions here if needed.
+            if (ref.target && ref.target.getAttribute('type') === 'checkbox') {
+              let indexStr = ref.target.getAttribute('data-checkbox-index');
+              this.onInputEvent.emit({
+                'type': 'checkbox',
+                // '+' converts the string to an int.
+                'extraData': {
+                  checkboxIndex: +indexStr,
+                  checked: ref.target.checked
+                }
+              });
+            }
+          }, false);
+        }
+      }
+    }
   }
 
   /*

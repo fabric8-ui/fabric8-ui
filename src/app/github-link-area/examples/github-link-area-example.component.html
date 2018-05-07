@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="form-group">
-        <github-link-area [content]="content"></github-link-area>
+        <github-link-area [content]="content" (onInputEvent)="inputEvent($event)"></github-link-area>
       </div>
     </div>
   </div>
