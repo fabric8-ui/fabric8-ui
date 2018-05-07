@@ -89,7 +89,7 @@ describe('WorkItemTypeMapper', () => {
               "label": "DF",
               "required": false,
               "type": {
-                "kind": "area"
+                "kind": "enum"
               }
           }
         }
@@ -102,7 +102,7 @@ describe('WorkItemTypeMapper', () => {
               "label": "DF",
               "required": false,
               "type": {
-                "kind": "area"
+                "kind": "enum"
               }
           }
         }
