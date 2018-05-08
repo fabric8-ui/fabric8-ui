@@ -172,6 +172,31 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
         this.uiLockedSidebar = false;
         this.uiLockedList = true;
         let exp = this.filterService.queryToJson(queryParams.q);
+
+        if (!queryParams.hasOwnProperty('showCompleted') && !queryParams.showCompleted) {
+          this.showCompleted = false;
+          // not closed state
+          // TODO remove hard coded states and
+          // use meta-states when available
+          let stateQuery = {};
+          ['closed', 'Done', 'Removed'].forEach(state => {
+            stateQuery = this.filterService.queryJoiner(
+              stateQuery,
+              this.filterService.and_notation,
+              this.filterService.queryBuilder(
+                'state', this.filterService.not_equal_notation, state
+              )
+            )
+          });
+          exp = this.filterService.queryJoiner(
+            exp,
+            this.filterService.and_notation,
+            stateQuery
+          );
+        } else {
+          this.showCompleted = true;
+        }
+
         // Check for tree view
         if (queryParams.hasOwnProperty('showTree') && queryParams.showTree) {
           this.showTree = true;
@@ -179,13 +204,6 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
         } else {
           this.showTree = false;
           exp['$OPTS'] = {'tree-view': false};
-        }
-
-        if (!queryParams.hasOwnProperty('showCompleted') && !queryParams.showCompleted) {
-          this.showCompleted = false;
-          exp['$AND'].push({"state":{"$NE":"closed"}});
-        } else {
-          this.showCompleted = true;
         }
 
         Object.assign(payload, {

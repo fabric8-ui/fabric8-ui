@@ -21,7 +21,7 @@ export class FilterService {
   public and_notation = '$AND';
   public or_notation = '$OR';
   public equal_notation = '$EQ';
-  public not_equal_notation = '$NEQ';
+  public not_equal_notation = '$NE';
   public in_notation = '$IN';
   public not_in_notation = '$NIN';
   public sub_str_notation = '$SUBSTR'
