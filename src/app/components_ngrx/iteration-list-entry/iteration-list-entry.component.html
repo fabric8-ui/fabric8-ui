@@ -10,18 +10,10 @@
     class="fa fa-angle-down margin-right-15"
     (click)="toggleChildrenDisplay(iteration)">
   </span>
-  <div class="f8-itr__header">
-    <div class="truncate padding-right-15"
-      (click)="setGuidedTypeWI(collection)">
-      <a [routerLink]="[]"
-        [queryParams]="addRemoveQueryParams(iteration.id)">
-        <span class="f8-itr-name truncate">{{iteration.name | truncate : 15}}</span>
-        <span
-          *ngIf="iteration.isActive"
-          class="active-tag">
-            [Active]
-        </span>
-      </a>
+  <a [routerLink]="[]" [queryParams]="addRemoveQueryParams(iteration.id)" class="f8-itr__header">
+    <div class="truncate padding-right-15">
+      <span class="f8-itr-name truncate">{{iteration.name | truncate : 15}}</span>
+      <span *ngIf="iteration.isActive" class="active-tag">[Active]</span>
     </div>
     <div class="f8-itr-status">
       <span>
@@ -30,7 +22,7 @@
         {{iteration.endAt ? (iteration.endAt | date:longDate) : 'Set end date'}}
       </span>
     </div>
-  </div>
+  </a>
   <div class="dropdown-kebab-pf pull-right dropdown"
     dropdown>
     <button class="btn btn-link dropdown-toggle"

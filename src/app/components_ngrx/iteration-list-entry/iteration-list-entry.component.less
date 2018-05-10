@@ -7,13 +7,15 @@
     padding-right: 10px;
     border-left: 4px solid;
     border-left-color: transparent;
-    cursor: pointer;
     .badge { background-color: @color-pf-black; }
     .fa {
       float: left;
       width: 15px;
       padding: 5px;
       font-size: 16px;
+    }
+    &:hover {
+      background-color: @color-pf-black-700;
     }
     &--selected {
       border-left-color: @color-pf-blue;
@@ -30,15 +32,10 @@
   }
   &__header {
     display: inline-block;
-    i { color: @color-pf-white; }
-    &:focus, >div:focus {
-      outline: none;
-    }
-    a {
-      color: @color-pf-white;
-      &:hover {
-        text-decoration: none;
-      }
+    color: @color-pf-white;
+    &:hover {
+      color: @color-pf-black-200;
+      text-decoration: none;
     }
   }
   &-status {
