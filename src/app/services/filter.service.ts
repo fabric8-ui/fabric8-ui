@@ -193,7 +193,6 @@ export class FilterService {
     let refCurrentFilter = this.getFiltersFromUrl();
     //concat both arrays
     refCurrentFilter = refCurrentFilter.concat(this.activeFilters);
-    console.log('***refCurrentFilter = ', refCurrentFilter);
     //remove duplicates
     refCurrentFilter = refCurrentFilter
     .filter((thing, index, self) => self.findIndex((t) => {return t.id === thing.id }) === index)
@@ -201,9 +200,6 @@ export class FilterService {
       if (filter.id && Object.keys(this.filtertoWorkItemMap).indexOf(filter.id) > -1) {
         let currentAttr = workItem;
         return this.filtertoWorkItemMap[filter.id].every((attr, map_index) => {
-          console.log('****** attr = ',attr);
-          console.log('****** map_index = ',map_index);
-          console.log('****** filter value = ',filter.value);
           if (Array.isArray(attr)) {
             if (Array.isArray(currentAttr)) {
               let innerAttr = currentAttr;
