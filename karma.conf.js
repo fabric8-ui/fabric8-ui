@@ -53,7 +53,7 @@ module.exports = function(config) {
                 'tests/*' // excluding files for functional test and page objects
             ]
         },
-        reporters: ['progress', 'karma-typescript', 'coverage'],
+        reporters: ['mocha', 'coverage'],
         coverageReporter: {
             reporters: [{type: 'json', dir: './coverage'}]
         },
