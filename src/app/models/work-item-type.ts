@@ -48,7 +48,9 @@ export interface WorkItemTypeUI extends modelUI {
   description: string;
   childTypes: any;
   infotip: string;
-  fields: Map<string, WorkItemTypeField>;
+  // TODO: [Symbol.toStringTag]' is missing in type fix
+  // `any` should go away
+  fields: Map<string, WorkItemTypeField> | any;
 }
 
 export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemTypeUI> {

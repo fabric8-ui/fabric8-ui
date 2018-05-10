@@ -20,7 +20,9 @@ module.exports = function(config) {
         exclude: [
             'src/app/mock/standalone/sso-api.provider.ts', // this class produces some errors when compiled in test mode
             'src/app/shared/wit-api.provider.ts', // this class produces some errors when compiled in test mode
-            'src/app/services/login.service.ts' // this requires some dependency from runtime, so exclude it
+            'src/app/services/login.service.ts', // this requires some dependency from runtime, so exclude it
+            'src/tests/*',
+            'tests/*'
         ],
 
         preprocessors: {
@@ -46,7 +48,9 @@ module.exports = function(config) {
                 'runtime', // explicitly exclude the runtime here
                 'src/app/mock/standalone/sso-api.provider.ts', // this class produces some errors when compiled in test mode
                 'src/app/shared/wit-api.provider.ts', // this class produces some errors when compiled in test mode
-                'src/app/services/login.service.ts' // this requires some dependency from runtime, so exclude it
+                'src/app/services/login.service.ts', // this requires some dependency from runtime, so exclude it
+                'src/tests/*',
+                'tests/*'
             ]
         },
         reporters: ['progress', 'karma-typescript', 'coverage'],
