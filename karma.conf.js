@@ -21,8 +21,8 @@ module.exports = function(config) {
             'src/app/mock/standalone/sso-api.provider.ts', // this class produces some errors when compiled in test mode
             'src/app/shared/wit-api.provider.ts', // this class produces some errors when compiled in test mode
             'src/app/services/login.service.ts', // this requires some dependency from runtime, so exclude it
-            'src/tests/*',
-            'tests/*'
+            'src/tests/*', // excluding files for functional test and page objects
+            'tests/*' // excluding files for functional test and page objects
         ],
 
         preprocessors: {
@@ -49,8 +49,8 @@ module.exports = function(config) {
                 'src/app/mock/standalone/sso-api.provider.ts', // this class produces some errors when compiled in test mode
                 'src/app/shared/wit-api.provider.ts', // this class produces some errors when compiled in test mode
                 'src/app/services/login.service.ts', // this requires some dependency from runtime, so exclude it
-                'src/tests/*',
-                'tests/*'
+                'src/tests/*', // excluding files for functional test and page objects
+                'tests/*' // excluding files for functional test and page objects
             ]
         },
         reporters: ['progress', 'karma-typescript', 'coverage'],
