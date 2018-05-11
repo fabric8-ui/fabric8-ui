@@ -198,7 +198,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
       .subscribe(workItem => {
         if((this.detailContext === 'preview')
         && this.descMarkdown && this.workItem.id !== workItem.id) {
-          this.descMarkdown.closeClick();
+          this.descMarkdown.deactivateEditor();
         }
 
         this.workItem = workItem;
@@ -226,7 +226,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
 
         if((this.detailContext === 'preview')
         && (this.descMarkdown)) {
-          this.descMarkdown.closeClick();
+          this.descMarkdown.deactivateEditor();
         }
 
         // set title on update
