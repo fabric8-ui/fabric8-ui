@@ -29,7 +29,7 @@ describe('Iteration test', () => {
     await planner.iteration.clickCreateIteration();
     expect(await planner.sidePanel.getIterationDate()).toContain('new Iteration [Active]'+month+' 1, '+year+' - '+month+' '+ lastDayOfMonth, +year+'\n');
   });
-  
+
   it('should create a new child iteration', async () => {
     let newIteration = 'new Iteration1';
     let parentIteration = '/' + process.env.SPACE_NAME + '/Iteration_3';
@@ -40,12 +40,12 @@ describe('Iteration test', () => {
     await planner.sidePanel.clickExpander(iteration);
     expect(await planner.sidePanel.getIterationList()).toContain(newIteration);
   });
-    
-  it('updating iteration should update workitem associated to iteration', async() => {
+
+  xit('updating iteration should update workitem associated to iteration', async() => {
     let dropdownIteration1 = 'Iteration_5',
       updateIteration = 'Iteration 0123',
       workItemTitle1 = 'Workitem_Title_10';
-    
+
     await planner.sidePanel.ready();
     await planner.workItemList.workItem(workItemTitle1).openQuickPreview();
     await planner.quickPreview.addIteration(dropdownIteration1);
