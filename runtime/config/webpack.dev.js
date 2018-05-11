@@ -6,15 +6,13 @@ var helpers = require('./helpers');
 // var DashboardPlugin = require('webpack-dashboard/plugin');
 
 const ENV = process.env.ENV || process.env.NODE_ENV || 'development';
-// if env is 'inmemory', the inmemory debug resource is used
-const API_URL = process.env.API_URL || (ENV === 'inmemory' ? 'app/' : 'http://localhost:8080/api/');
-const FORGE_URL = process.env.FORGE_URL || 'http://localhost:8080/forge';
-const FABRIC8_WIT_API_URL = process.env.FABRIC8_WIT_API_URL || 'http://localhost:8080/api/';
-const FABRIC8_AUTH_API_URL = process.env.FABRIC8_AUTH_API_URL || 'http://localhost:8089/api/';
+const FABRIC8_WIT_API_URL = process.env.FABRIC8_WIT_API_URL || 'https://api.prod-preview.openshift.io/api/';
+const FABRIC8_AUTH_API_URL = process.env.FABRIC8_AUTH_API_URL || 'https://auth.prod-preview.openshift.io/api/';
 const FABRIC8_SSO_API_URL = process.env.FABRIC8_SSO_API_URL || 'https://sso.prod-preview.openshift.io/';
 const FABRIC8_REALM = process.env.FABRIC8_REALM || "fabric8";
 const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL;
-const FABRIC8_FORGE_URL = process.env.FABRIC8_FORGE_URL;
+const FABRIC8_FORGE_URL = process.env.FABRIC8_FORGE_URL || 'https://api.prod-preview.openshift.io/forge';
+const API_URL = FABRIC8_WIT_API_URL;
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 const extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
 const extractLESS = new ExtractTextPlugin('stylesheets/[name].less');
@@ -23,7 +21,6 @@ const extractLESS = new ExtractTextPlugin('stylesheets/[name].less');
 const METADATA = webpackMerge(commonConfig.metadata, {
   API_URL: API_URL,
   ENV: ENV,
-  FORGE_URL: FORGE_URL,
   FABRIC8_REALM: FABRIC8_REALM,
   FABRIC8_WIT_API_URL: FABRIC8_WIT_API_URL,
   FABRIC8_AUTH_API_URL: FABRIC8_AUTH_API_URL,

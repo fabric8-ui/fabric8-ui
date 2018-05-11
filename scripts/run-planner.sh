@@ -11,69 +11,88 @@
 # NOTE: this does not set any run mode or api url environment for non-standalone mode. If you 
 # need that, set it as usual before launching this script.
 
+set -euo pipefail
+
 # get the script's absolute path
-pushd `dirname $0` > /dev/null
-SCRIPTPATH=`pwd -P`
-popd > /dev/null
-echo $SCRIPTPATH
+declare -r SCRIPTPATH=$(realpath $(dirname $0))
 
 # defaults to script's parent dir and the common git name in parent
-PLANNER_HOME="$SCRIPTPATH/.."
-PLATFORM_HOME="$PLANNER_HOME/../fabric8-ui"
-REINSTALL=0
-STANDALONE=0
-NODE_ENV=production
+declare -r PLANNER_HOME=$(realpath "$SCRIPTPATH/..")
+declare -r PLATFORM_HOME=$(realpath "$PLANNER_HOME/../fabric8-ui")
+declare REINSTALL=0
+declare STANDALONE=0
 
 # fire up getopt
-TEMP=`getopt -o rsp:f: --long reinstall,standalone,plannerhome:,platformhome: -n 'run-planner.sh' -- "$@"`
-eval set -- "$TEMP"
+declare -r options=`getopt -o rsp:f: --long reinstall,standalone,plannerhome:,platformhome: -n 'run-planner.sh' -- "$@"`
+eval set -- "$options"
 
-# reinstall Planner and Platform
-function reinstallPlatformIntegrated {
-  echo "Reinstalling Planner in $PLANNER_HOME"
-  cd $PLANNER_HOME && npm run clean -- --cache --modules && npm install &
-  echo "Reinstalling Platform in $PLATFORM_HOME"
-  cd $PLATFORM_HOME && npm run reinstall &
-  wait
-} 
+function log {
+  echo
+  echo -e "\e[93m============================================================"
+  echo $1
+  echo -e "============================================================\e[0m"
+}
 
-# reinstall Planner and Runtime
-function reinstallStandalone {
-  echo "Reinstalling Planner in $PLANNER_HOME"
-  cd $PLANNER_HOME && npm run clean -- --cache --modules && npm install &
-  echo "Reinstalling Runtime in $PLANNER_HOME/runtime"
-  cd $PLANNER_HOME/runtime && npm run reinstall &
-  wait
-} 
+function buildPlanner {
+  log "Building Planner"
+  cd $PLANNER_HOME &&  npm run build
+}
 
-# links planner to platform
-function linkPlannerToPlatform {
-  echo "Linking Planner to Platform in $PLATFORM_HOME"
-  cd $PLATFORM_HOME && npm link $PLANNER_HOME/dist
-} 
+function reinstallPlannerAndBuild {
+  log "Installing Planner dependencies"
+  cd $PLANNER_HOME && npm run reinstall
+  buildPlanner
+}
 
-# links planner to runtime
-function linkPlannerToRuntime {
-  echo "Linking Planner to Runtime in $PLANNER_HOME/runtime"
-  cd $PLANNER_HOME/runtime && npm link $PLANNER_HOME/dist
-} 
+function linkPlannerTo {
+  log "Linking Planner to Platform in $1"
+  cd $1 && npm link $PLANNER_HOME/dist
+}
 
-# runs the platform
-function runPlatform {
-  echo "Running Platform in $PLATFORM_HOME"
-  cd $PLATFORM_HOME && npm start 
-} 
+function serveProject {
+  log "Running Planner in $1"
+  cd $1 && npm start
+}
+
+function runIntegrated {
+  declare buildDone=0
+  if [ $REINSTALL -eq 1]; then
+    reinstallPlannerAndBuild
+    buildDone=1
+    if [ ! -d "$PLATFORM_HOME" ]; then
+      log "Platform directory not found. Cloning fabric8-ui repository to $PLATFORM_HOME"
+      git clone https://github.com/fabric8-ui/fabric8-ui.git $PLATFORM_HOME
+    fi
+    log "Installing Platform dependencies"
+    cd $PLATFORM_HOME && npm run reinstall
+  fi
+
+  if [ $buildDone -eq 0]; then
+    buildPlanner
+  fi
+
+  linkPlannerTo $PLATFORM_HOME
+
+  serveProject $PLATFORM_HOME
+}
 
 # runs the standalone Runtime
 function runStandalone {
-  echo "Running Runtime in $PLANNER_HOME/runtime"
-  cd $PLANNER_HOME/runtime && npm start 
-} 
+  declare buildDone=0
+  if [ $REINSTALL -eq 1 ]; then
+    reinstallPlannerAndBuild
+    buildDone=1
+    log "Installing Planner Runtime dependencies"
+    cd $PLANNER_HOME/runtime && npm run reinstall
+  fi
 
-# runs the planner in watch mode
-function runPlanner {
-  echo "Running Planner in $PLANNER_HOME"
-  cd $PLANNER_HOME && npm run build -- --watch &
+  if [ $buildDone -eq 0 ]; then
+    buildPlanner
+  fi
+
+  linkPlannerTo "$PLANNER_HOME/runtime"
+
+  serveProject "$PLANNER_HOME/runtime"
 } 
 
 # extract options and their arguments into variables.
@@ -96,26 +115,8 @@ while true ; do
     esac
 done
 
-if [ $REINSTALL -eq 1 ]
-  then
-    if [ $STANDALONE -eq 1 ]
-      then
-        reinstallStandalone
-      else
-        reinstallPlatformIntegrated
-    fi
+if [ $STANDALONE -eq 1 ]; then
+  runStandalone
+else
+  runIntegrated
 fi
-
-runPlanner
-
-if [ $STANDALONE -eq 1 ]
-  then
-    export NODE_ENV=inmemory
-    linkPlannerToRuntime
-    runStandalone
-  else
-    linkPlannerToPlatform
-    runPlatform
-fi
-
-
