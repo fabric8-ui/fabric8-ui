@@ -2,6 +2,7 @@ import { SpacesService } from '../../services/spaces.service';
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { match } from 'minimatch';
 
 import { Broadcaster, Logger } from 'ngx-base';
 import { AuthenticationService, User, UserService, Profile } from 'ngx-login-client';
@@ -21,6 +22,7 @@ export class HeaderComponent implements OnInit {
   systemStatus: SystemStatus[];
   loggedInUser: User;
   followQueryParams: Object = {};
+  currentURLQuery: string;
   spaces: Space[] = [];
   currentSpace: Space = null;
 
@@ -121,6 +123,14 @@ export class HeaderComponent implements OnInit {
     // NOP
   }
   
+  setCurrentSpace(space: Space) {
+    this.currentSpace = space;
+    // Note: the ''+this.currentSpace.path is needed because Space is broken
+    let context = this.headerService.createContext(this.currentSpace.attributes.name, ''+this.currentSpace.id, this.currentSpace, this.loggedInUser);
+    this.currentContext = context;
+    this.spacesService.setCurrent(this.currentSpace);
+  }
+
   ngOnInit(): void {    
 
     // logout can also be called by an event from other parts of the app
@@ -172,19 +182,45 @@ export class HeaderComponent implements OnInit {
         this.recentContexts.push(context);
         this.headerService.addRecentContext(context);
       } 
-      // if there is no currentSpace yet, we select the first one to be the new currentSpace
+      // if there is no currentSpace yet, we smart select the new currentSpace
       if (!this.currentSpace) {
-        this.currentSpace = spaces[0];
-        if (this.currentSpace) {
-          this.logger.log('[PlannerHeader] Selected new Space on result of getAllSpaces: ' + this.currentSpace.id);
-          // Note: the ""+this.currentSpace.path is needed because Space is broken
-          let context = this.headerService.createContext(this.currentSpace.attributes.name, ""+this.currentSpace.id, this.currentSpace, this.loggedInUser);
-          this.currentContext = context;
-          this.spacesService.setCurrent(this.currentSpace);
+        // first, check if there is a space in the URL, which would be true at a deeplink
+        // note that this is needed, because the URL is parsed further down the line and 
+        // evaluated. Returning a space that does not match a present space in the URL
+        // crashes the application.
+        // this is a solution that only works for the dev runtime: we do a quick
+        // evaluation of the query to get the spaceID. This can not be used in production,
+        // but is sufficient for the purpose of this component.
+        if (this.currentURLQuery) {
+          // there is a query in the URL, let's parse it and see if there is a spaceID in there.
+          const regex = /.*space:([^% ]+).*/gm;
+          let match;
+          while ((match = regex.exec(this.currentURLQuery)) !== null) {
+              // This is necessary to avoid infinite loops with zero-width matches
+              if (match.index === regex.lastIndex) {
+                  regex.lastIndex++;
+              }
+              if (match.length>1) {
+                this.logger.log('[PlannerHeader] Found Space ID in URL: ' + match[1]);
+                // now retrieve this space.
+                this.spacesService.getSpace(match[1]).subscribe((space) => {
+                  if (space) {
+                    this.logger.log('[PlannerHeader] Found Space in getAllSpaces list: ' + space.id);
+                    this.setCurrentSpace(space);
+                  } else {
+                    this.logger.log('[PlannerHeader] getSpace returned nil for id ' + match[1] + ', using the first Space from getAllSpaces as the current Space.');
+                    this.setCurrentSpace(spaces[0]);
+                  }
+                });
+              } else {
+                this.logger.log('[PlannerHeader] No Space ID in URL query param, using the first Space from getAllSpaces as the current Space.');
+                this.setCurrentSpace(spaces[0]);
+              }
+          }  
         } else {
-          this.logger.log('[PlannerHeader] Deselected Space.');
-          this.currentContext = null;
-          this.spacesService.setCurrent(null);
+          // the query param is empty.
+          this.logger.log('[PlannerHeader] No query param, using the first Space from getAllSpaces as the current Space: ' + spaces[0].id);              
+          this.setCurrentSpace(spaces[0]);
         }
       }
     });
@@ -195,6 +231,9 @@ export class HeaderComponent implements OnInit {
       this.followQueryParams = {};
       if (Object.keys(params).indexOf('iteration') > -1) {
         this.followQueryParams['iteration'] = params['iteration'];
+      }
+      if (Object.keys(params).indexOf('q') > -1) {
+        this.currentURLQuery = params['q'];
       }
     });
     

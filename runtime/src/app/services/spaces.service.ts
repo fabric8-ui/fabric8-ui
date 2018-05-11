@@ -30,4 +30,9 @@ export class SpacesService implements Spaces {
     return this.http.get(this.baseApiUrl + 'spaces')
             .map(response => response.json().data);
   }
+
+  getSpace(id: string) {
+    return this.http.get(this.baseApiUrl + 'spaces/' + id)
+            .map(response => response.json().data);
+  }
 }
