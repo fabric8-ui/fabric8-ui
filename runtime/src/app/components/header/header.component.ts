@@ -177,10 +177,12 @@ export class HeaderComponent implements OnInit {
       this.logger.log('[PlannerHeader] Received from SpaceService new spaces list with length: ' + spaces.length);
       this.spaces = spaces as Space[];
       for (let thisSpace of this.spaces) {
+        // Note: this adds _all_ spaces to the recent menu - which makes sense in a dev environment
+        // only dealing with Planner.
         this.logger.log('[PlannerHeader] Prepare space from allSpaces: ' + thisSpace.id);
         let context = this.headerService.createContext(thisSpace.attributes.name, ""+thisSpace.id, thisSpace, this.loggedInUser);        
         this.recentContexts.push(context);
-        this.headerService.addRecentContext(context);
+        this.headerService.addRecentContext(context);  
       } 
       // if there is no currentSpace yet, we smart select the new currentSpace
       if (!this.currentSpace) {
