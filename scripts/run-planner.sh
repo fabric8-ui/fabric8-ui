@@ -4,7 +4,7 @@
 # It has the following commandline options:
 #
 #   -r reinstalls all needed components before launching 
-#   -s runs in standalone (non-Plaform mode) with inmemory mock data
+#   -s runs in standalone (non-Plaform mode)
 #   -p <planner_home_dir> sets the Planner home, defaults to current directory
 #   -f <platform_home_dir> sets the Platform home, defaults to <current directory>/../fabric8-ui
 #
