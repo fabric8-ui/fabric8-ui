@@ -56,7 +56,7 @@ function serveProject {
 
 function runIntegrated {
   declare buildDone=0
-  if [ $REINSTALL -eq 1]; then
+  if [ $REINSTALL -eq 1 ]; then
     reinstallPlannerAndBuild
     buildDone=1
     if [ ! -d "$PLATFORM_HOME" ]; then
@@ -67,7 +67,7 @@ function runIntegrated {
     cd $PLATFORM_HOME && npm run reinstall
   fi
 
-  if [ $buildDone -eq 0]; then
+  if [ $buildDone -eq 0 ]; then
     buildPlanner
   fi
 
