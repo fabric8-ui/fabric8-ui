@@ -46,7 +46,7 @@ function reinstallPlannerAndBuild {
 }
 
 function linkPlannerTo {
-  log "Linking Planner to Platform in $1"
+  log "Linking Planner to $1"
   cd $1 && npm link $PLANNER_HOME/dist
 }
 
