@@ -35,7 +35,8 @@ function log {
 
 function buildPlanner {
   log "Building Planner"
-  cd $PLANNER_HOME &&  npm run build
+  cd $PLANNER_HOME &&  npm run build -- --watch &
+  sleep 5
 }
 
 function reinstallPlannerAndBuild {
