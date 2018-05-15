@@ -11,8 +11,7 @@ describe('Quick preview tests: ', () => {
     await support.desktopTestSetup();
     planner = new PlannerPage(browser.baseUrl);
     await planner.openInBrowser();
-    // This is necessary since the planner takes time to load on prod/prod-preview
-    await browser.sleep(5000);
+    await planner.waitUntilUrlContains('typegroup');
     await planner.ready();
   });
 

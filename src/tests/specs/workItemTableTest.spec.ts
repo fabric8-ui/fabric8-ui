@@ -12,8 +12,7 @@ describe('Work Item datatable list: ', () => {
     await support.desktopTestSetup();
     planner = new PlannerPage(browser.baseUrl);
     await planner.openInBrowser();
-    // This is necessary since the planner takes time to load on prod/prod-preview
-    await browser.sleep(5000);
+    await planner.waitUntilUrlContains('typegroup');
     await planner.ready();
   });
 
@@ -123,8 +122,9 @@ describe('Work Item datatable list: ', () => {
     await planner.createInlineWorkItem(workitemname);
     await planner.quickPreview.notificationToast.untilHidden();
     await planner.sidePanel.clickScenarios();
-    await browser.sleep(3000);
+    await planner.waitUntilUrlContains('typegroup.name:Scenarios');
     await planner.sidePanel.clickRequirement();
+    await planner.waitUntilUrlContains('typegroup.name:Requirements');
     await planner.workItemList.overlay.untilAbsent();
     expect(await planner.workItemList.hasWorkItem(workitemname.title)).toBeTruthy();
   });
@@ -144,7 +144,7 @@ describe('Work Item datatable list: ', () => {
     await planner.workItemList.clickWorkItem(workitem.title);
     await planner.quickPreview.changeStateTo('open');
     await planner.quickPreview.notificationToast.untilCount(1);
-    await planner.quickPreview.notificationToast.untilHidden(); 
+    await planner.quickPreview.notificationToast.untilHidden();
     await planner.quickPreview.close();
     expect(await planner.workItemList.isTitleTextBold(workitem.title)).not.toContain('bold');
   });

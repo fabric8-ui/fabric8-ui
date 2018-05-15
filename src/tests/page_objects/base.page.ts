@@ -1,4 +1,4 @@
-import { browser } from 'protractor';
+import { browser, ExpectedConditions } from 'protractor';
 import * as mixins from '../mixins';
 import * as support from '../support';
 
@@ -57,6 +57,10 @@ export abstract class BasePage {
 
     let urlNow = await browser.getCurrentUrl();
     this.debug('now :', urlNow);
+  }
+
+  async waitUntilUrlContains(text: string) {
+    await browser.wait(ExpectedConditions.urlContains(text));
   }
 }
 
