@@ -156,4 +156,15 @@ describe('Work Item datatable list: ', () => {
     expect(await planner.workItemList.hasWorkItem(workitem.title)).toBeTruthy();
     expect(await planner.workItemList.isTitleTextBold(workitem.title)).toContain('bold');
   });
+
+  it('should filter the workitem list by Assignee', async() => {
+    let labelFilter = 'assignee: Unassigned';
+    await planner.workItemList.overlay.untilHidden();
+    let countUnassignedWorkItem = await planner.workItemList.getUnassignedWorkItemCount(' Unassigned ');
+    await planner.header.selectFilter('Assignee', 'Unassigned');
+    await planner.workItemList.overlay.untilHidden();
+    await browser.sleep(1000);
+    expect(await planner.header.getFilterConditions()).toContain(labelFilter);
+    expect(await planner.workItemList.datatableRow.count()).toEqual(countUnassignedWorkItem);
+  });
 });

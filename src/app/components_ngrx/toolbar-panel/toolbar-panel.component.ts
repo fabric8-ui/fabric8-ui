@@ -536,7 +536,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           case 'creator':
           case 'assignee':
             const user = users.find(u => u.id === f.value);
-            f['displayValue'] = user ? user.username : f.value;
+            f['displayValue'] = f.value == 'null' ? 'Unassigned' :
+              (user ? user.username : f.value);
             break;
           case 'area':
             const area = areas.find(a => a.id === f.value);

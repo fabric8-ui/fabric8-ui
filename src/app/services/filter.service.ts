@@ -296,7 +296,7 @@ export class FilterService {
     if (Array.isArray(value)) {
       op[key.trim()][compare.trim()] = value.map(v => v.trim());
     } else {
-      op[key.trim()][compare.trim()] = value.trim();
+      op[key.trim()][compare.trim()] = value === null ? null : value.trim();
     }
     return op;
   }

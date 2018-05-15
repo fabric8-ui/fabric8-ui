@@ -9,6 +9,7 @@ export class WorkItemList extends BaseElement {
   datatableHeaderdiv = new ui.BaseElement(this.$('.datatable-header'),'datatable header div');
   datatableHeaderCell = new ui.BaseElementArray(this.$$('datatable-header-cell'),'datatable header cell');
   datatableHeaderCellLabel = new ui.BaseElementArray(this.$$('datatable-header-cell-label'));
+  datatableRow = new ui.BaseElementArray(this.$$('datatable-body-row'), 'datatable row');
   childWorkItemTypeDropdown = new ui.Dropdown(
     this.$('.f8-quick-add-inline .dropdown-toggle'),
     this.$('.f8-quick-add-inline .dropdown-menu'),
@@ -25,7 +26,7 @@ export class WorkItemList extends BaseElement {
   }
 
   async clickWorkItem(title: string) {
-    await this.overlay.untilHidden();    
+    await this.overlay.untilHidden();
     await this.workItem(title).openQuickPreview();
   }
 
@@ -67,5 +68,11 @@ export class WorkItemList extends BaseElement {
 
   async isTitleTextBold(title: string) {
     return await this.workItem(title).title.getAttribute('className');
+  }
+
+  async getUnassignedWorkItemCount(assigneeName: string) {
+    let assignees: any = await this.$$('f8-assignee').getAttribute('innerText');
+    let unassigned:any = assignees.filter(assignee => assignee === assigneeName);
+    return unassigned.length;
   }
 };
