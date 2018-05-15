@@ -14,7 +14,7 @@ export class SidePanel extends ui.BaseElement {
   editIteration = new ui.Clickable(this.element(by.cssContainingText('.f8-itr .dropdown.open ul>li','Edit')), 'Iteration Dropdown Edit Option');
   iterationHeader = new ui.BaseElementArray(this.$$('.f8-itr__header'), 'iteration header');
   customQuery = new ui.BaseElement(this.$('custom-query'), 'My filters')
-  customQueryList = new ui.BaseElementArray(this.$$('.f8-cf__container'),' My filters list');
+  customQueryList = new ui.BaseElementArray(this.$$('.f8-cf__list-type'),' My filters list');
   deleteCustomQuery = new ui.Clickable(this.element(by.cssContainingText('.f8-cf-kebab.dropdown.open ul>li', 'Delete')), 'Custom query Dropdown Delete Option');
 
   constructor(ele: ElementFinder, name: string = 'WorkItem List page Side Panel') {
