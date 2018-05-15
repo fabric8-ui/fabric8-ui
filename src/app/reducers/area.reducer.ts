@@ -3,8 +3,6 @@ import { ActionReducer } from '@ngrx/store';
 import * as AreaActions from './../actions/area.actions';
 import { AreaState, initialState } from './../states/area.state';
 
-import { AreaModel } from './../models/area.model';
-
 export type Action = AreaActions.All;
 
 export const AreaReducer: ActionReducer<AreaState> = (state = initialState, action: Action) => {
