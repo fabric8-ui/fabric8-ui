@@ -4,7 +4,7 @@ import {
 } from 'protractor';
 
 import * as mixins from '../mixins';
-import { LONG_WAIT } from '../support';
+import { DEFAULT_WAIT } from '../support';
 
 
 // todo move to a different module
@@ -101,7 +101,7 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
   }
 
   private async waitFor(msg: string, condition: Function, timeout?: number) {
-    let wait: number = timeout || LONG_WAIT;
+    let wait: number = timeout || DEFAULT_WAIT;
     this.debug(`waiting for "${msg}"`, `  | timeout: '${wait}'`);
     await browser.wait(condition, wait);
     this.debug(`waiting for "${msg}"`, '  - OK');
