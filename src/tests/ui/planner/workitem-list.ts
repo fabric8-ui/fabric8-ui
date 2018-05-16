@@ -31,7 +31,7 @@ export class WorkItemList extends BaseElement {
   }
 
   async hasWorkItem(title: string): Promise<boolean> {
-      return this.workItem(title).isPresent();
+    return this.workItem(title).isPresent();
   }
 
   workItem(title: string): WorkItemListEntry {
@@ -68,6 +68,11 @@ export class WorkItemList extends BaseElement {
 
   async isTitleTextBold(title: string) {
     return await this.workItem(title).title.getAttribute('className');
+  }
+
+  async openDetailPage(title: string) {
+    await browser.actions().mouseMove(this.workItem(title)).perform();
+    await this.workItem(title).clickDetailIcon();
   }
 
   async getUnassignedWorkItemCount(assigneeName: string) {

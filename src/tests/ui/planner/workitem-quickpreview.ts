@@ -174,6 +174,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.linkTypeDropdown.clickWhenReady();
     await this.linkTypeDropdown.select(link);
     await this.searchWorkItem.enterText(workItem);
+    await browser.sleep(1000);
     await this.workItemDropdown.select(workItem);
     await this.linkButton.isPresent();
     await this.linkButton.clickWhenReady();

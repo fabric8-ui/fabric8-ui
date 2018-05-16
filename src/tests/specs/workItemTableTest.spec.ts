@@ -94,15 +94,16 @@ describe('Work Item datatable list: ', () => {
   });
 
   it('list should not update when new label is added', async() => {
+    await planner.workItemList.workItem(c.workItemTitle7).scrollIntoView();
     await planner.workItemList.workItem(c.workItemTitle7).clickExpandWorkItem();
     await browser.sleep(3000);
     expect(await planner.workItemList.hasWorkItem(c.workItemTitle13)).toBeTruthy();
     await planner.workItemList.clickWorkItem(c.workItemTitle7);
     await planner.quickPreview.createNewLabel(c.newLabel1);
-    await planner.quickPreview.close();    
-    await browser.sleep(3000);
+    await planner.quickPreview.close();
+    await planner.workItemList.workItem(c.workItemTitle13).scrollIntoView();
     expect(await planner.workItemList.hasWorkItem(c.workItemTitle13)).toBeTruthy();
-    await planner.workItemList.workItem(c.workItemTitle7).clickExpandWorkItem();    
+    await planner.workItemList.workItem(c.workItemTitle7).clickExpandWorkItem();
   });
 
   it('list should not update when new iteration is added', async() => {
@@ -111,7 +112,7 @@ describe('Work Item datatable list: ', () => {
     expect(await planner.workItemList.hasWorkItem(c.workItemTitle13)).toBeTruthy();
     await planner.sidePanel.createNewIteration();
     await planner.iteration.addNewIteration(c.newIteration1, c.iteration3);
-    await planner.iteration.clickCreateIteration();    
+    await planner.iteration.clickCreateIteration();
     expect(await planner.workItemList.hasWorkItem(c.workItemTitle13)).toBeTruthy();
   });
   
