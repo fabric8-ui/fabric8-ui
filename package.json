@@ -8,7 +8,7 @@
   "scripts": {
     "build": "gulp build",
     "clean": "gulp clean",
-    "reinstall": "rm -rf node_modules && npm  --force cache clean && npm install",
+    "reinstall": "rm -rf node_modules dist && npm --force cache clean && npm install",
     "tests": "gulp tests",
     "semantic-release": "semantic-release pre && gulp build  && npm publish dist/ && semantic-release post"
   },

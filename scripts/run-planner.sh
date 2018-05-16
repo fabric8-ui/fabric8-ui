@@ -26,6 +26,8 @@ declare STANDALONE=0
 declare -r options=`getopt -o rsp:f: --long reinstall,standalone,plannerhome:,platformhome: -n 'run-planner.sh' -- "$@"`
 eval set -- "$options"
 
+trap "trap - SIGTERM && kill -- -$$" INT TERM EXIT
+
 function log {
   echo
   echo -e "\e[93m============================================================"
@@ -35,8 +37,10 @@ function log {
 
 function buildPlanner {
   log "Building Planner"
-  cd $PLANNER_HOME &&  npm run build -- --watch &
-  sleep 5
+  cd $PLANNER_HOME && npm run build -- --watch &
+  # This sleep is necessary since the build takes about 15 secs.
+  # We need to wait for the build to complete.
+  sleep 20
 }
 
 function reinstallPlannerAndBuild {
