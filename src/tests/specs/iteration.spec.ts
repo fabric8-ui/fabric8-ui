@@ -41,7 +41,7 @@ describe('Iteration test', () => {
     expect(await planner.sidePanel.getIterationList()).toContain(newIteration);
   });
 
-  xit('updating iteration should update workitem associated to iteration', async() => {
+  it('updating iteration should update workitem associated to iteration', async() => {
     let dropdownIteration1 = 'Iteration_5',
       updateIteration = 'Iteration 0123',
       workItemTitle1 = 'Workitem_Title_10';

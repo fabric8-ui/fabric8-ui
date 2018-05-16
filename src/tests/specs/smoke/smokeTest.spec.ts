@@ -63,7 +63,7 @@ describe('Planner Smoke Tests:', () => {
     await planner.quickPreview.close();
   });
 
-  xit('Associate workitem with an Area', async () => {
+  it('Associate workitem with an Area', async () => {
     await planner.workItemList.clickWorkItem(c.workItemTitle1);
     await planner.quickPreview.addArea(c.dropdownareaTitle1);
     expect(await planner.quickPreview.getArea()).toBe(c.areaTitle1);
@@ -77,7 +77,7 @@ describe('Planner Smoke Tests:', () => {
     await planner.quickPreview.close();
   });
 
-  xit('Associate/Re-associate workitem with an Iteration', async () => {
+  it('Associate/Re-associate workitem with an Iteration', async () => {
     //add new iteration
     await planner.workItemList.clickWorkItem(c.workItemTitle7);
     await planner.quickPreview.addIteration(c.dropdownIteration1);
