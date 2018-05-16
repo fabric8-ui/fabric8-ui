@@ -25,7 +25,7 @@
   <ng-template #dropdownItem let-value="value"
     let-src="src + '&s=20'"
     let-stickontop="stickontop">
-    <span *ngIf="!stickontop" [innerHTML]="value | almSearchHighlight: searchValue">
+    <span *ngIf="!stickontop" [innerHTML]="value | truncate: -25 | almSearchHighlight: searchValue">
     </span>
   </ng-template>
 </f8-select-dropdown>

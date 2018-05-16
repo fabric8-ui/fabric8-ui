@@ -222,9 +222,10 @@
                 </span>
                 <common-selector
                   *ngIf="!loadingArea"
+                  class="area-dropdown"
                   [allowUpdate]="!!loggedInUser"
                   [noValueLabel]="'None'"
-                  class="area-dropdown"
+                  [headerText]="'Update area'"
                   [items]="areas"
                   [selectedItems]="selectedAreas"
                   (onCloseSelector)="areaUpdated($event)">
@@ -252,10 +253,11 @@
                   </span>
                   <common-selector
                     *ngIf="!loadingIteration"
-                    [allowUpdate]="!!loggedInUser"
-                    [noValueLabel]="'None'"
                     class="iteration-dropdown"
+                    [allowUpdate]="!!loggedInUser"
+                    [headerText]="'Update iteration'"
                     [items]="iterations"
+                    [noValueLabel]="'None'"
                     [selectedItems]="selectedIterations"
                     (onCloseSelector)="iterationUpdated($event)">
                   </common-selector>
