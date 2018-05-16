@@ -299,6 +299,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       .select('iterations')
       .subscribe((iterations: IterationUI[]) => {
         this.iterations = iterations;
+        this.iterationsValue = [];
         for (let i=0; i<iterations.length; i++) {
           this.iterationsValue.push({
             key: iterations[i].id,

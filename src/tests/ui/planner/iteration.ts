@@ -7,9 +7,10 @@ export class Iteration extends ui.BaseElement {
   iterationDialog = new ui.BaseElement(this.$('.modal-content'),'iteration Dialog');
   iterationName = new ui.TextInput(this.iterationDialog.$('#iteration-name'),'Iteration text input');
   parentIteration = new ui.TextInput(this.iterationDialog.$('#parent-iteration'),'parent iteration');
+  parentDropdownList = new ui.DropdownMenu(this.iterationDialog.$('.f8-iteration-modal-list'));
   parentDropdown = new ui.Dropdown(
    this.parentIteration,
-   this.iterationDialog.$('.f8-iteration-modal-list'),
+   this.parentDropdownList,
    'parent iteration dropdown'
   );
   createIterationButton = new ui.Button(this.iterationDialog.$('#create-iteration-button'),'Create Iteration button');
@@ -22,11 +23,15 @@ export class Iteration extends ui.BaseElement {
   month = new ui.Clickable(this.$('.headermonthtxt'), 'month');
   year = new ui.Clickable(this.$('.yearlabel'), 'year');
     
-  async addNewIteration(iterationName: string, parentIteration: string ) {
+  async addNewIteration(iterationName: string, parentIteration?: string, withDates?: boolean) {
     await this.iterationName.enterText(iterationName);
-    await this.parentIteration.enterText(parentIteration);
-    await this.parentIteration.clickWhenReady();
-    await this.selectCalendarDate();    
+    if(parentIteration) {
+      await this.parentIteration.enterText(parentIteration);
+      await this.parentDropdown.select(parentIteration);
+    }
+    if(withDates) {
+      await this.selectCalendarDate();
+    }
   }
 
   async editIteration(iterationName: string) {
@@ -56,13 +61,6 @@ export class Iteration extends ui.BaseElement {
   async clickCreateIteration() {
     await this.createIterationButton.clickWhenReady();
     await this.createIterationButton.untilHidden();
-  }
-  
-  async addNewChildIteration(iterationName: string, parentIteration: string) {
-    await this.parentIteration.clear();
-    await this.iterationName.enterText(iterationName);
-    await this.parentIteration.enterText(parentIteration);
-    await this.parentDropdown.select(parentIteration);
   }
   
   async getLastDayOfMonth(): Promise<String> {

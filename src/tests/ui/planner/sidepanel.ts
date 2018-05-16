@@ -67,7 +67,6 @@ export class SidePanel extends ui.BaseElement {
     await this.ready();
     let iterationList = await this.iterationHeader.getAttribute('innerText');
     let iterationList1 = iterationList.toString().replace("\n","");
-    this.debug('iterationList1 : ' + iterationList1 );
     return iterationList1;
   }
   
