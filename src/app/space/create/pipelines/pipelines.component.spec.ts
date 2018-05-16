@@ -38,6 +38,8 @@ import { AuthenticationService } from 'ngx-login-client';
 import { ToolbarModule } from 'patternfly-ng/toolbar';
 
 import { BuildConfig } from 'a-runtime-console/index';
+import { FeatureFlagModule } from '../../../feature-flag/feature-flag.module';
+import { Feature, FeatureTogglesService } from '../../../feature-flag/service/feature-toggles.service';
 import { PipelinesService as RuntimePipelinesService } from '../../../shared/runtime-console/pipelines.service';
 
 import { ForgeWizardModule } from '../../forge-wizard/forge-wizard.module';
@@ -70,13 +72,26 @@ describe('PipelinesComponent', () => {
   let broadcaster: { broadcast: Function };
 
   let pipelinesService: jasmine.SpyObj<PipelinesService>;
+  let featureServiceMock: jasmine.SpyObj<FeatureTogglesService>;
+  let feature: Feature = {
+    attributes: {
+      name: 'AppLauncher',
+      description: 'Description',
+      enabled: true,
+      'enablement-level': 'beta',
+      'user-enabled': true
+    },
+    id: 'AppLauncher'
+  };
 
   beforeAll(() => {
     pipelinesService = createMock(PipelinesService);
+    featureServiceMock = createMock(FeatureTogglesService);
   });
 
   beforeEach(async(() => {
     TestBed.overrideProvider(PipelinesService, { useFactory: () => pipelinesService, deps: [] });
+    TestBed.overrideProvider(FeatureTogglesService, { useFactory: () => featureServiceMock, deps: [] });
   }));
 
   beforeEach(() => {
@@ -133,6 +148,7 @@ describe('PipelinesComponent', () => {
         }
       ])
     );
+    featureServiceMock.getFeature.and.returnValue(Observable.of(feature));
     broadcaster = { broadcast: jasmine.createSpy('broadcast') };
   });
 
@@ -142,6 +158,7 @@ describe('PipelinesComponent', () => {
       CommonModule,
       ToolbarModule,
       ForgeWizardModule,
+      FeatureFlagModule,
       ModalModule.forRoot(),
       TooltipModule.forRoot()
     ],
@@ -154,7 +171,8 @@ describe('PipelinesComponent', () => {
       { provide: Contexts, useFactory: () => contexts },
       { provide: AuthenticationService, useFactory: () => authenticationService },
       { provide: PipelinesService, useFactory: () => pipelinesService },
-      { provide: Broadcaster, useFactory: () => broadcaster }
+      { provide: Broadcaster, useFactory: () => broadcaster },
+      { provide: FeatureTogglesService, useFactory: () => featureServiceMock }
     ]
   });
 
@@ -605,6 +623,32 @@ describe('PipelinesComponent', () => {
         }
       ]);
       expect(this.testedDirective.toolbarConfig.filterConfig.resultsCount).toEqual(2);
+    });
+  });
+
+  it('should trigger showAddAppOverlay on click, if toggles is on and user-enabled on', function(this: TestingContext) {
+    // given
+    feature.attributes.enabled = true;
+    feature.attributes['user-enabled'] = true;
+    featureServiceMock.getFeature.and.returnValue(Observable.of(feature));
+    this.fixture.detectChanges();
+    this.fixture.whenStable().then(() => {
+      expect(this.fixture.nativeElement.querySelector('#appLauncherAnchor')).toBeDefined();
+      this.fixture.nativeElement.querySelector('#appLauncherAnchor').click();
+      expect(this.testedDirective.showAddAppOverlay).toHaveBeenCalled();
+    });
+  });
+
+  it('should trigger openForgeWizard on click, if toggles is on and user-enabled off', function(this: TestingContext) {
+    // given
+    feature.attributes.enabled = true;
+    feature.attributes['user-enabled'] = false;
+    featureServiceMock.getFeature.and.returnValue(Observable.of(feature));
+    this.fixture.detectChanges();
+    this.fixture.whenStable().then(() => {
+      expect(this.fixture.nativeElement.querySelector('#appWizardAnchor')).toBeDefined();
+      this.fixture.nativeElement.querySelector('#appWizardAnchor').click();
+      expect(this.testedDirective.openForgeWizard).toHaveBeenCalled();
     });
   });
 

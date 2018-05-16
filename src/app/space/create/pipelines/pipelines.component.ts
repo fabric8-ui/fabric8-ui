@@ -144,6 +144,10 @@ export class PipelinesComponent implements OnInit, OnDestroy {
     return this._filteredPipelines;
   }
 
+  showAddAppOverlay(): void {
+    this.broadcaster.broadcast('showAddAppOverlay', true);
+  }
+
   openForgeWizard(addSpace: TemplateRef<any>): void {
     if (this.authService.getGitHubToken()) {
       this.selectedFlow = '';

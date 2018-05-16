@@ -9,6 +9,7 @@ import { ToolbarModule } from 'patternfly-ng/toolbar';
 
 
 import { PipelineModule } from 'a-runtime-console/index';
+import { FeatureFlagModule } from '../../../feature-flag/feature-flag.module';
 import { ForgeWizardModule } from '../../forge-wizard/forge-wizard.module';
 import { PipelinesRoutingModule } from './pipelines-routing.module';
 import { PipelinesComponent } from './pipelines.component';
@@ -23,6 +24,7 @@ import { PipelinesService } from './services/pipelines.service';
     PipelineModule,
     ToolbarModule,
     ForgeWizardModule,
+    FeatureFlagModule,
     ModalModule.forRoot(),
     TooltipModule.forRoot()
   ],
