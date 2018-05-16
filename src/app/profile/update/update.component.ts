@@ -172,6 +172,10 @@ export class UpdateComponent implements AfterViewInit, OnInit {
     this.bio = $event;
   }
 
+  handleOverCharsMaxLimit(): void {
+    this.bio = this.bio.substring(0, 255);
+  }
+
   linkImageUrl(): void {
     this.subscriptions.push(this.gitHubService.getUser().subscribe(user => {
       if (user.avatar_url !== undefined && user.avatar_url.length > 0) {
@@ -324,7 +328,7 @@ export class UpdateComponent implements AfterViewInit, OnInit {
       delete profile['registrationCompleted'];
     }
     if (this.bio !== undefined && this.bio.length > 0) {
-      profile.bio = this.bio.trim();
+      profile.bio = this.bio.trim().substring(0, 255);
     }
     if (this.company !== undefined && this.company.length > 0) {
       profile.company = this.company.trim();
