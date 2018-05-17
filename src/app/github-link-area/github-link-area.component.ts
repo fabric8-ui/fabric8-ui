@@ -10,7 +10,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { GitHubLinkService } from './github-link.service';
 
 /**
@@ -31,12 +31,13 @@ import { GitHubLinkService } from './github-link.service';
 })
 export class GitHubLinkAreaComponent implements OnChanges, AfterViewChecked {
 
-  @Input('content') content: string;
+  @Input('content') content: string | SafeHtml;
   @Output('onInputEvent') onInputEvent = new EventEmitter();
 
   constructor(
     private gitHubLinkService: GitHubLinkService,
-    private elementRef: ElementRef) {}
+    private elementRef: ElementRef,
+    private sanitizer: DomSanitizer) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes.content) {
@@ -104,18 +105,35 @@ export class GitHubLinkAreaComponent implements OnChanges, AfterViewChecked {
     }
   }
 
+  wrapStringSafeValue(input: string | SafeHtml): SafeHtml {
+    if (typeof input === 'string')
+      return this.sanitizer.bypassSecurityTrustHtml(input);
+    else
+      return input;
+  }
+
+  unwrapStringSafeValue(input: any): any {
+    if (typeof input === 'string')
+      return input;
+    else
+      return input['changingThisBreaksApplicationSecurity'];
+  }
+
   /*
    * Replaces the match (which should be the default icon) with an icon that
    * indicates the status contained in linkData.
    */
   replaceLink(linkData: any): void {
-    this.content = this.content.split(linkData.match).join(
-      // tslint:disable-next-line:max-line-length
-      (linkData.state === 'open' ? '<span class="fa fa-clock-o gh-link-open" tooltip="Issue Open"></span>' : '') +
-      (linkData.state === 'closed' ? '<span class="fa fa-check gh-link-closed" tooltip="Issue Closed"></span>' : '') +
-      ((linkData.state !== 'open' && linkData.state !== 'closed') ?
-      // tslint:disable-next-line:max-line-length
-      '<span class="fa pficon-warning-triangle-o gh-link-error" tooltip="Issue State Unknown"></span>' : '')
+    this.content = this.wrapStringSafeValue(
+      this.unwrapStringSafeValue(this.content).split(linkData.match).join(
+        // tslint:disable-next-line:max-line-length
+        (linkData.state === 'open' ? '<span class="fa fa-clock-o gh-link-open" tooltip="Issue Open"></span>' : '') +
+        // tslint:disable-next-line:max-line-length
+        (linkData.state === 'closed' ? '<span class="fa fa-check gh-link-closed" tooltip="Issue Closed"></span>' : '') +
+        ((linkData.state !== 'open' && linkData.state !== 'closed') ?
+        // tslint:disable-next-line:max-line-length
+        '<span class="fa pficon-warning-triangle-o gh-link-error" tooltip="Issue State Unknown"></span>' : '')
+      )
     );
   }
 
@@ -131,12 +149,13 @@ export class GitHubLinkAreaComponent implements OnChanges, AfterViewChecked {
     // additional classes etc.; if a markdown compiler (or some other content source)
     // creates different links to GitHub, this regexp needs to be extended to match
     // those formats.
+    let thisContent = this.unwrapStringSafeValue(this.content);
     let regexp: RegExp = new RegExp(
       '<a href="https:\/\/github.com\/([^\/]+)\/([^\/]+)\/issues\/([^"]+)[^<]*">([^<]+)<\/a>', 'gi'
     );
-    let result = regexp.exec(this.content);
+    let result = regexp.exec(thisContent);
     while (result) {
-      this.content = this.content.split(result[0])
+      thisContent = thisContent.split(result[0])
         .join('<a class="gh-link" href="https://github.com/' +
           result[1] + '/' +
           result[2] + '/' +
@@ -149,8 +168,9 @@ export class GitHubLinkAreaComponent implements OnChanges, AfterViewChecked {
             'data-gh-issue="' + result[3] + '" ' +
           'class="pficon pficon-warning-triangle-o gh-link-error"></span>' +
           '</a>');
-      result = regexp.exec(this.content);
+      result = regexp.exec(thisContent);
     }
+    this.content = this.wrapStringSafeValue(thisContent);
   }
 
   /*
@@ -159,11 +179,12 @@ export class GitHubLinkAreaComponent implements OnChanges, AfterViewChecked {
    * GitHubLinkService to use caching.
    */
   updateLinks(): void {
+    let thisContent = this.unwrapStringSafeValue(this.content);
     let regexp: RegExp = new RegExp(
       // tslint:disable-next-line:max-line-length
       '<span data-gh-org="([^"]+)" data-gh-repo="([^"]+)" data-gh-issue="([^"]+)" class="pficon pficon-warning-triangle-o gh-link-error"></span>', 'gi'
     );
-    let result = regexp.exec(this.content);
+    let result = regexp.exec(thisContent);
     while (result) {
       let thisLinkData = {
         match: result[0],
@@ -177,7 +198,7 @@ export class GitHubLinkAreaComponent implements OnChanges, AfterViewChecked {
           thisLinkData.state = data['state'];
           this.replaceLink(thisLinkData);
         });
-      result = regexp.exec(this.content);
+      result = regexp.exec(thisContent);
     }
   }
 

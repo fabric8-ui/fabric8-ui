@@ -24,12 +24,12 @@
       [innerText]="rawText">
     </p>
     <div #editorBox #previewArea
-      *ngIf="viewType==='preview' && renderedText.length"
+      *ngIf="viewType==='preview' && ( renderedText.length || ( renderedText.changingThisBreaksApplicationSecurity && renderedText.changingThisBreaksApplicationSecurity.length ) )"
       class="editor-box editor-preview markdown-rendered">
         <github-link-area [content]="renderedText" (onInputEvent)="onInputEvent($event)"></github-link-area>
     </div>
     <div #editorBox
-      *ngIf="viewType==='preview' && !renderedText.length"
+      *ngIf="viewType==='preview' && !renderedText.length && (!renderedText.changingThisBreaksApplicationSecurity || !renderedText.changingThisBreaksApplicationSecurity.length)"
       class="editor-box editor-preview placeholder">
       {{placeholder}}
     </div>

@@ -1,8 +1,35 @@
-import { Component, ViewEncapsulation, ElementRef } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, ViewEncapsulation, ElementRef, Pipe, PipeTransform } from '@angular/core';
+import {
+  DomSanitizer,
+  SafeHtml,
+  SafeStyle,
+  SafeScript,
+  SafeUrl,
+  SafeResourceUrl
+} from '@angular/platform-browser';
 
 const markdownIt = require('markdown-it');
 const markdown = new markdownIt();
+
+@Pipe({
+  name: 'safe'
+})
+export class SafePipe implements PipeTransform {
+
+ constructor(protected sanitizer: DomSanitizer) {}
+
+ public transform(value: any, type: string):
+  SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
+    switch (type) {
+      case 'html': return this.sanitizer.bypassSecurityTrustHtml(value);
+      case 'style': return this.sanitizer.bypassSecurityTrustStyle(value);
+      case 'script': return this.sanitizer.bypassSecurityTrustScript(value);
+      case 'url': return this.sanitizer.bypassSecurityTrustUrl(value);
+      case 'resourceUrl': return this.sanitizer.bypassSecurityTrustResourceUrl(value);
+      default: throw new Error(`Invalid safe type specified: ${type}`);
+    }
+  }
+}
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -10,8 +37,6 @@ const markdown = new markdownIt();
   styleUrls: ['./markdown-example.component.less'],
   templateUrl: './markdown-example.component.html'
 })
-
-
 export class MarkdownExampleComponent {
 
     private renderedText: string = '<h1>hello, markdown!\</h1><ul>' +
@@ -24,6 +49,8 @@ export class MarkdownExampleComponent {
   private renderedTextNoEdit: string = '<p>Edit is not allowed here</p>';
   private rawText: string = '# hello, markdown!\n* [ ] Item 1\n* [x] Item 2\n* [ ] Item 3';
   private allowEdit = false;
+
+  constructor(private sanitizer: DomSanitizer) {}
 
   onSaveOrPreview(value: any) {
     const rawText = value.rawText;
@@ -59,7 +86,7 @@ export class MarkdownExampleComponent {
       }
       // tslint:disable-next-line:max-line-length
       console.log('MarkdownExampleComponent: Rendering on service side completed, sending to component: ' + text);
-      callBack(rawText, text);
+      callBack(rawText, this.sanitizer.bypassSecurityTrustHtml(text));
     }, 2000);
   }
 
