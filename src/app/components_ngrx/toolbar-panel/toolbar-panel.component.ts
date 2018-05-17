@@ -57,7 +57,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() context: string;
   @Input() loggedInUser: User | Object = {};
-
+  @Input() dropdownPlacement: any = 'right'; // value is right or left
   @Output() onCreateNewWorkItemSelected: EventEmitter<any | null> = new EventEmitter();
 
   loggedIn: boolean = false;

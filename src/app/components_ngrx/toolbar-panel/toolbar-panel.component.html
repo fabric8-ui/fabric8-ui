@@ -36,10 +36,10 @@
         (isOpenChange)="saveFilterDropdownChange($event)"
         dropdown>
       <span *ngIf="activeFilters.length > 0 && showSaveFilterButton"
-          class="clickable margin-left-10">
+          class="clickable dib">
         <a dropdownToggle class="save-filters">Save</a>
       </span>
-      <div *dropdownMenu class="dropdown-menu-right dropdown-menu">
+      <div *dropdownMenu class="dropdown-menu-{{dropdownPlacement}} dropdown-menu">
         <aside>
           <i class="db text-right fa fa-close btn btn-link"
             (click)="closeFilterSave()"></i>
