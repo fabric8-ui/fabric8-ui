@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -12,19 +12,26 @@ import { ModalService } from '../../services/modal.service';
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.less']
 })
-export class ModalComponent {
+export class ModalComponent implements OnDestroy{
 
   @ViewChild('OSIOModal') private modal: Modal;
   private title: string;
   private buttonText: string;
   private message: string;
   private actionKey: string;
+  eventListeners: any[] = [];
 
   constructor(private modalService: ModalService) {
-    this.modalService.getComponentObservable().subscribe((params: string[]) => {
-      this.actionKey = params[3];
-      this.open(params[0], params[1], params[2]);
-    })
+    this.eventListeners.push(
+      this.modalService.getComponentObservable().subscribe((params: string[]) => {
+        this.actionKey = params[3];
+        this.open(params[0], params[1], params[2]);
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.eventListeners.forEach(e => e.unsubscribe());
   }
 
   public open(title: string, message: string, buttonText: string) {

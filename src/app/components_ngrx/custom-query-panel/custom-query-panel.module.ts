@@ -8,6 +8,7 @@ import {
 } from 'ngx-widgets';
 
 import { CustomQueryComponent } from './custom-query-panel.component';
+import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-modal';
 import { TooltipModule } from 'ngx-bootstrap';
 import { TruncateModule } from 'ng2-truncate';
@@ -16,6 +17,7 @@ import { IterationModule } from './../iterations-panel/iterations-panel.module';
 
 @NgModule({
   imports: [
+    BsDropdownModule.forRoot(),
     CommonModule,
     FormsModule,
     ModalModule,
@@ -29,6 +31,6 @@ import { IterationModule } from './../iterations-panel/iterations-panel.module';
     CustomQueryComponent
   ],
   exports: [CustomQueryComponent],
-  providers: [CustomQueryService]
+  providers: [BsDropdownConfig, CustomQueryService]
 })
 export class CustomQueryModule { }

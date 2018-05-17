@@ -21,22 +21,21 @@
         background: @color-pf-black-700;
       }
     }
-    ul {
-      list-style: none;
-      padding-left: 0px;
-      li {
-        display: block;
-        border-left: 4px solid transparent;
-        &:hover {
-          border-left-color: @color-pf-blue;
-          background-color: @color-pf-black-800;
-        }
+  }
+  &__customquery-list {
+    list-style: none;
+    padding-left: 0px;
+    cursor: pointer;
+    li.f8-cf__container {
+      display: block;
+      border-left: 4px solid transparent;
+      &:hover {
+        background-color: @color-pf-black-800;
       }
     }
   }
   &__container {
-    cursor: pointer;
-    a {
+    a.a-custom-query {
       color: @color-pf-white;
       margin-left: 40px;
       &:hover {
@@ -53,5 +52,13 @@
   &--selected {
     border-left-color: @color-pf-blue !important;
     background-color: @color-pf-black-800;
+  }
+  .dropdown-kebab-pf {
+    .btn-link {
+      color: @color-pf-white;
+    }
+    .dropdown-menu-right {
+      right: -10px;
+    }
   }
 }

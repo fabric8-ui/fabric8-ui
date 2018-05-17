@@ -15,6 +15,7 @@ export class PlannerPage extends AppPage {
   settings = new planner.Settings($('div.f8-wi-list__settings'));
   iteration = new planner.Iteration($('fab-planner-iteration-modal'));
   detailPage = new planner.WorkItemDetailPage($('work-item-detail'));
+  confirmModalButton = new planner.WorkItemList($('#modal-confirm'));
 
   constructor(url: string){
     super(url);

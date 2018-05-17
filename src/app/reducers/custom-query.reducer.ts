@@ -7,6 +7,7 @@ import {
   CustomQueryState,
   initialState
 } from '../states/custom-query.state';
+import { cloneDeep } from 'lodash';
 
 export type Action = CustomQueryActions.All;
 
@@ -23,6 +24,14 @@ export const CustomQueryReducer: ActionReducer<CustomQueryState> =
 
       case CustomQueryActions.ADD_SUCCESS: {
         return [...state, action.payload];
+      }
+
+      case CustomQueryActions.DELETE_SUCCESS: {
+        let index = state.findIndex(cq => cq.id === action.payload.id);
+        if (index > -1) {
+          state.splice(index, 1);
+        }
+        return [...state];
       }
 
       case CustomQueryActions.SELECT: {

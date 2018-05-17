@@ -64,4 +64,18 @@ export class CustomQueryService {
           return Observable.throw(new Error(error.message));
         });
     }
+
+    delete(customQuery: CustomQueryModel,
+      apiUrl: string): Observable<void> {
+      return this.http
+        .delete(apiUrl)
+        .map(response => {
+
+        })
+        .catch((error: Error | any) => {
+          console.log('Delete custom query failed', error);
+          return Observable.throw(new Error(error.message));
+        })
+      }
+
 }

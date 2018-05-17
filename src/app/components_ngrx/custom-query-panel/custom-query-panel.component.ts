@@ -3,13 +3,20 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Params, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  OnDestroy
+} from '@angular/core';
 
 import { AuthenticationService } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 
 import { CustomQueryModel } from '../../models/custom-query.model';
 import { FilterService } from '../../services/filter.service';
+import { ModalService } from '../../services/modal.service';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
@@ -30,10 +37,13 @@ export class CustomQueryComponent implements OnInit, OnDestroy {
   private eventListeners: any[] = [];
   private customQueries: CustomQueryModel[] = [];
   private startedCheckingURL: boolean = false;
+  private showTree: string = '';
+  private showCompleted: string = '';
 
   constructor(
     private auth: AuthenticationService,
     private filterService: FilterService,
+    private modalService: ModalService,
     private route: ActivatedRoute,
     private spaces: Spaces,
     private store: Store<AppState>
@@ -47,7 +57,6 @@ export class CustomQueryComponent implements OnInit, OnDestroy {
     this.eventListeners.push(
       customQueriesData
       .subscribe((customQueries) => {
-        console.log('####-1', customQueries);
         this.customQueries = customQueries;
         if (!this.startedCheckingURL && !!this.customQueries.length) {
           this.checkURL();
@@ -83,8 +92,60 @@ export class CustomQueryComponent implements OnInit, OnDestroy {
             this.store.dispatch(new CustomQueryActions.SelectNone());
           }
         }
+        if (val.hasOwnProperty('showTree')) {
+          this.showTree = val.showTree;
+        } else {
+          this.showTree = '';
+        }
+        if (val.hasOwnProperty('showCompleted')) {
+          this.showCompleted = val.showCompleted;
+        } else {
+          this.showCompleted = '';
+        }
       })
     );
   }
 
+  addRemoveQueryParams(queryField) {
+    if (this.showCompleted && this.showTree) {
+      return {
+        q: this.constructUrl(queryField),
+        showTree: this.showTree,
+        showCompleted: this.showCompleted
+      }
+    } else if (this.showTree) {
+      return {
+        q: this.constructUrl(queryField),
+        showTree: this.showTree
+      }
+    } else if (this.showCompleted) {
+      return {
+        q: this.constructUrl(queryField),
+        showCompleted: this.showCompleted
+      }
+    } else {
+      return {
+        q: this.constructUrl(queryField)
+      }
+    }
+  }
+
+  stopPropagation(event) {
+    event.stopPropagation();
+  }
+
+  confirmCustomQueryDelete(event, customQuery) {
+    // this.stopPropagation(event);
+    this.modalService.openModal('Delete Filter', 'Are you sure you want to delete this filter?', 'Delete', 'deleteFilter')
+      .first()
+      .subscribe(actionKey => {
+        if (actionKey === 'deleteFilter') {
+          this.deleteCustomQuery(customQuery);
+        }
+      });
+  }
+
+  deleteCustomQuery(customQuery) {
+    this.store.dispatch(new CustomQueryActions.Delete(customQuery));
+  }
 }

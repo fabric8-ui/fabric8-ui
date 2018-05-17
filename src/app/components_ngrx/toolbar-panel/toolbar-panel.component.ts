@@ -47,7 +47,6 @@ import * as CustomQueryActions from './../../actions/custom-query.actions';
 import * as FilterActions from './../../actions/filter.actions';
 import * as SpaceActions from './../../actions/space.actions';
 
-
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'toolbar-panel',
@@ -171,7 +170,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       .select('listPage')
       .select('customQueries')
       .filter(customQueries => !!customQueries.length);
-    
       this.totalCount = this.store
       .select('listPage')
       .select('workItems')
@@ -672,11 +670,11 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  saveFilterDropdownChange(value: boolean) {
-    this.isFilterSaveOpen = value;
-  }
-
   closeFilterSave() {
     this.isFilterSaveOpen = false;
+  }
+
+  saveFilterDropdownChange(value: boolean) {
+    this.isFilterSaveOpen = value;
   }
 }

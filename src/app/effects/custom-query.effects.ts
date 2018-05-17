@@ -54,7 +54,6 @@ export class CustomQueryEffects {
 
   @Effect() addCustomQuery$ = this.actions$
     .ofType<CustomQueryActions.Add>(CustomQueryActions.ADD)
-    .ofType(CustomQueryActions.ADD)
     .withLatestFrom(this.store.select('listPage').select('space'))
     .switchMap(([action, space]) => {
       let payload = action.payload;
@@ -90,4 +89,28 @@ export class CustomQueryEffects {
         return Observable.of(new CustomQueryActions.AddError());
       })
     })
+
+  @Effect() deleteCustomQuery = this.actions$
+    .ofType<CustomQueryActions.Delete>(CustomQueryActions.DELETE)
+    .withLatestFrom(this.store.select('listPage').select('space'))
+    .switchMap(([action, space]) => {
+      return this.customQueryService.delete(
+        action.payload, space.links.self + '/queries/' + action.payload.id
+      )
+      .map(customQuery => {
+        return new CustomQueryActions.DeleteSuccess(action.payload);
+      })
+      .catch(() => {
+        try {
+          this.notifications.message({
+            message: `There was some problem in deleting custom query`,
+            type: NotificationType.DANGER
+          } as Notification)
+        } catch(e) {
+          console.log('There was some problem in deleting custom query');
+        }
+        return Observable.of(new CustomQueryActions.DeleteError());
+      })
+    })
+
 }

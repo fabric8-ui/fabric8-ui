@@ -12,24 +12,35 @@
             My Filters ({{ customQueries.length }})
           </h3>
         </div>
-        <ul
+        <ul class="f8-cf__customquery-list"
           [class.show]="sidePanelOpen"
           [class.hide]="!sidePanelOpen">
-          <li class="active f8-cf__container padding-v-2 padding-right-15 padding-left-5"
-            *ngFor="let query of customQueries"
+          <li class="active f8-cf__container padding-v-2 padding-right-10 padding-left-5"
+            *ngFor="let query of customQueries; let counter = index;"
             [class.f8-cf--selected]="query?.selected"
-            [routerLink]="[]"
-            [queryParams]="showTree ?
-              { q: constructUrl(query.attributes.fields), showTree: showTree } :
-              { q: constructUrl(query.attributes.fields) }">
-            <a [routerLink]="[]" [attr.data-id]="query.id"
-              [queryParams]="showTree ?
-              { q: constructUrl(query.attributes.fields), showTree: showTree } :
-              { q: constructUrl(query.attributes.fields) }">
-                <span id="query.attributes.title" title="{{ query.attributes.title }}">
-                    {{ query.attributes.title  | truncate : 15}}
-                </span>
+            id="{{'cf-list-' + counter}}">
+            <a class="a-custom-query" [routerLink]="[]" [attr.data-id]="query.id"
+              [queryParams]="addRemoveQueryParams(query.attributes.fields)">
+              <span id="query.attributes.title" title="{{ query.attributes.title }}">{{ query.attributes.title  | truncate : 15}}</span>
             </a>
+            <div class="dropdown-kebab-pf pull-right dropdown f8-cf-kebab" dropdown>
+              <button class="btn btn-link dropdown-toggle"
+                type="button"
+                aria-haspopup="true"
+                aria-expanded="true"
+                (click)="stopPropagation($event)"
+                id="{{'cf-kebab-' + counter}}"
+                dropdownToggle>
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <ul class="dropdown-menu-right dropdown-menu" *dropdownMenu>
+                <li>
+                  <a class="pointer" (click)="confirmCustomQueryDelete($event, query)">
+                    Delete
+                  </a>
+                </li>
+              </ul>
+            </div>
           </li>
         </ul>
       </div>

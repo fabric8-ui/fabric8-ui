@@ -146,6 +146,18 @@ describe('Planner Smoke Tests:', () => {
     expect(await planner.sidePanel.getMyFiltersList()).toContain('Query 1');
   });
 
+  it('Delete custom query', async() => {
+    await planner.sidePanel.clickRequirement();
+    await planner.header.selectFilter('State', 'resolved');
+    await planner.header.saveFilters('My filter');
+    expect(await planner.sidePanel.getMyFiltersList()).toContain('My filter');
+    await planner.sidePanel.selectcustomFilterKebab('My filter');
+    await planner.sidePanel.deleteCustomQuery.clickWhenReady();
+    await planner.confirmModalButton.clickWhenReady();
+    await browser.sleep(1000);
+    expect(await planner.sidePanel.getMyFiltersList()).not.toContain('My filter');
+  });
+
   it('Update work item with a label and validate description', async() => {
     let title = await planner.createUniqueWorkItem();
     await planner.workItemList.clickWorkItem(title);

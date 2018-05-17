@@ -7,6 +7,9 @@ export const ADD_ERROR = '[customQuery] AddError';
 export const GET = '[customQuery] Get';
 export const GET_SUCCESS = '[customQuery] GetSuccess';
 export const GET_ERROR = '[customQuery] GetError';
+export const DELETE = '[customQuery] Delete';
+export const DELETE_SUCCESS = '[customQuery] DeleteSuccess';
+export const DELETE_ERROR = '[customQuery] DeleteError';
 export const SELECT = '[customQuery] Select';
 export const SELECT_NONE = '[customQuery] Select None';
 
@@ -48,6 +51,26 @@ export class GetError implements Action {
   readonly type = GET_ERROR;
 }
 
+export class Delete implements Action {
+  payload: CustomQueryModel;
+  constructor(payload: CustomQueryModel) {
+    this.payload = payload;
+  }
+  readonly type = DELETE;
+}
+
+export class DeleteSuccess implements  Action {
+  payload: CustomQueryModel;
+  constructor(payload: CustomQueryModel) {
+    this.payload = payload;
+  }
+  readonly type = DELETE_SUCCESS;
+}
+
+export class DeleteError implements Action {
+  readonly type = DELETE_ERROR;
+}
+
 export class Select implements Action {
   payload: CustomQueryModel;
   constructor(payload: CustomQueryModel) {
@@ -60,12 +83,13 @@ export class SelectNone implements Action {
   readonly type = SELECT_NONE;
 }
 
-
 export type All
   = Get
   | GetSuccess
   | GetError
   | AddSuccess
   | AddError
+  | DeleteSuccess
+  | DeleteError
   | Select
   | SelectNone
