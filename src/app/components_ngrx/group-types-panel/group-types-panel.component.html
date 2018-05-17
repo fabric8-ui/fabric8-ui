@@ -1,33 +1,34 @@
 <ul class="list-group margin-0">
   <li class="list-group-item" *ngFor="let item of groupTypes">
-  <a
-    class="f8-group-filter__type"
-    id="{{item.group}}"
-    [routerLink]="[]"
-    [queryParams]="addRemoveQueryParams(item)"
-    [class.selected]="item.selected"
-    *ngIf="item.showInSideBar">
-      <span class="dib margin-right-10 {{ item.icon }}"
-        tooltip="{{sidePanelOpen ? '' : item.name }}"
-        placement="right"></span>
-      <span
-        [class.dib]="sidePanelOpen"
-        [class.hide]="!sidePanelOpen">
-      {{ item.name }}</span>
-      <infotip [infotipText]="getInfotipText(item.id) | async"></infotip>
-  </a>
-  <!--If group is execution show a header and then embed the iteration component -->
-  <div *ngIf="item.bucket === 'iteration'">
-    <fab-planner-iteration
-      class="fab-planner-iteration"
-      [takeFromInput]="false"
-      [collection]="item.typeList"
-      [witGroup]="item.name"
-      [showTree]="showTree"
-      [showCompleted]="showCompleted"
-      [sidePanelOpen]="sidePanelOpen"
-      [infotipText]="getInfotipText(item.id) | async">
-    </fab-planner-iteration>
+    <a
+      class="f8-group-filter__type"
+      id="{{item.group}}"
+      [routerLink]="[]"
+      [queryParams]="addRemoveQueryParams(item)"
+      [class.selected]="item.selected"
+      *ngIf="item.showInSideBar">
+        <span class="dib margin-right-10 {{ item.icon }}"
+          tooltip="{{sidePanelOpen ? '' : item.name }}"
+          placement="right"></span>
+        <span
+          [class.dib]="sidePanelOpen"
+          [class.hide]="!sidePanelOpen">
+        {{ item.name }}</span>
+        <infotip [infotipText]="getInfotipText(item.id) | async"></infotip>
+    </a>
+    <!--If group is execution show a header and then embed the iteration component -->
+    <div *ngIf="item.bucket === 'iteration'">
+      <fab-planner-iteration
+        class="fab-planner-iteration"
+        [takeFromInput]="false"
+        [collection]="item.typeList"
+        [witGroup]="item.name"
+        [showTree]="showTree"
+        [showCompleted]="showCompleted"
+        [sidePanelOpen]="sidePanelOpen"
+        [infotipText]="getInfotipText(item.id) | async">
+      </fab-planner-iteration>
+    </div>
   </li>
 </ul>
 
