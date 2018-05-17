@@ -320,17 +320,17 @@
               </div>
             </section>
           </div>
-        </div>
 
-        <div class="col-xs-12 col-sm-12 padding-v-15 col-md-12 col-lg-12 dynamic-fields-wrap">
-          <!-- Extra fields Start -->
-          <div *ngFor="let field of dynamicKeyValueFields" class="form-group">
-            <alm-dynamic-field
-              [keyValueField]="field"
-              [editAllow]="!!loggedInUser"
-              (onUpdate)="dynamicFieldUpdated($event)"></alm-dynamic-field>
+          <div class="col-xs-12 col-sm-12 padding-v-15 col-md-12 col-lg-12 dynamic-fields-wrap">
+            <!-- Extra fields Start -->
+            <div *ngFor="let field of dynamicKeyValueFields" class="form-group">
+              <alm-dynamic-field
+                [keyValueField]="field"
+                [editAllow]="!!loggedInUser"
+                (onUpdate)="dynamicFieldUpdated($event)"></alm-dynamic-field>
+            </div>
+            <!-- Extra fields End -->
           </div>
-          <!-- Extra fields End -->
         </div>
 
         <div class="col-xs-12 col-sm-12 padding-0"
