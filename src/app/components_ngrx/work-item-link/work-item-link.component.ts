@@ -38,6 +38,7 @@ export class WorkItemLinkComponent implements OnInit {
     this.store.dispatch(
       new WorkItemLinkActions.Get(this.workItem.link+'/relationships/links')
     );
+    this.setSearchNotAllowedIds();
   }
 
   private workItem: WorkItemUI = null;
@@ -132,6 +133,10 @@ export class WorkItemLinkComponent implements OnInit {
     this.searchWorkItems = [];
     this.selectedWorkItemId = null;
     this.selectedLinkType = relation;
+  }
+
+  setSearchNotAllowedIds() {
+    this.searchNotAllowedIds.push(this.workItem.id);
   }
 
   selectSearchResult(id: string, number: number, title: string){
