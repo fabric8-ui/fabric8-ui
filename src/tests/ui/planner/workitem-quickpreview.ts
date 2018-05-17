@@ -31,18 +31,20 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     this.$('assignee-selector div.select-dropdown'),
     'Assignee dropdown menu');
   assigneeDiv = new ui.BaseElement(this.$('f8-assignee'), 'Assignee List Div');
+  areaDiv = new ui.BaseElement(this.$('.area-dropdown'), 'Assignee List Div');
   areaDropdown = new ui.Dropdown(
-    this.$('.area-dropdown f8-select-dropdown'),
-    this.$('ul.item-ul.dropdown-list'),
+    this.areaDiv.$('f8-select-dropdown>div>span'),
+    this.areaDiv.$('.select-dropdown-menu'),
     'Area select dropdown'
   );
-
+  iterationDiv = new ui.BaseElement(this.$('.iteration-dropdown'), 'Iteration List Div');
+  
   iterationDropdown = new ui.Dropdown(
-    this.$('.iteration-dropdown f8-select-dropdown'),
-    this.$('ul.item-ul.dropdown-list'),
+    this.iterationDiv.$('f8-select-dropdown>div>span'),
+    this.iterationDiv.$('.select-dropdown-menu'),
     'Iteration select dropdown'
   );
-  iterationInput = new ui.TextInput(this.$('#valueSearchInput'), 'Iteration input');
+  iterationInput = new ui.TextInput(this.iterationDiv.$('.select-dropdown-search-input'), 'Iteration input');
 
   labelDropdown = new ui.Dropdown(
     this.$('#labelSelector .add-label'),
