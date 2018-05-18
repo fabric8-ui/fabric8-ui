@@ -27,12 +27,12 @@
   <ul class="f8-itr__container"
     [class.show]="sidePanelOpen"
     [class.hide]="!sidePanelOpen">
-    <li class="active padding-v-2 padding-right-15 padding-left-5"
+    <li class="active"
       *ngFor="let iteration of activeIterations">
       <a
-      [routerLinkActive]="'f8-itr--selected'"
-      [routerLink]="[]" [attr.data-id]="iteration.id"
-      [queryParams]="addRemoveQueryParams(iteration.id)">
+        [routerLinkActive]="'f8-itr--selected'"
+        [routerLink]="[]" [attr.data-id]="iteration.id"
+        [queryParams]="addRemoveQueryParams(iteration.id)">
           <span id="{{ iteration.resolvedParentPath +
               '/' + iteration.name }}">
             {{iteration.resolvedParentPath +

@@ -20,15 +20,23 @@
     }
   }
   &__container {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 0;
     list-style: none;
-    border-top: 1px solid;
-    border-top-color: @color-pf-black;
-    a {
-      color: @color-pf-white;
-      &:hover {
-        text-decoration: none;
+    li {
+      padding-top: 5px;
+      padding-right: 15px;
+      padding-left: 40px;
+      padding-bottom: 5px;
+      &:first-child {
+        border-top: 1px solid;
+        border-top-color: @color-pf-black;
+      }
+      a {
+        padding: 5px 10px;
+        color: @color-pf-white;
+        &:hover {
+          text-decoration: none;
+        }
       }
     }
     .fa {
@@ -39,8 +47,6 @@
     }
   }
   &__list {
-    padding-top: 10px;
-    padding-bottom: 10px;
     border-top: 1px solid;
     border-top-color: @color-pf-black;
   }

@@ -14,7 +14,7 @@
   <ul class="list-group"
     [class.show]="sidePanelOpen"
     [class.hide]="!sidePanelOpen">
-    <li class="list-group-item f8-cf__list-type"
+    <li class="f8-cf__list-type"
       *ngFor="let query of customQueries"
       [class.f8-cf--selected]="query?.selected"
       [routerLink]="[]"
@@ -22,9 +22,7 @@
         { q: constructUrl(query.attributes.fields), showTree: showTree } :
         { q: constructUrl(query.attributes.fields) }">
       <a [routerLink]="[]" [attr.data-id]="query.id"
-        [queryParams]="showTree ?
-        { q: constructUrl(query.attributes.fields), showTree: showTree } :
-        { q: constructUrl(query.attributes.fields) }">
+        [queryParams]="showTree ? { q: constructUrl(query.attributes.fields), showTree: showTree } : { q: constructUrl(query.attributes.fields) }">
           <span id="query.attributes.title">
             {{ query.attributes.title  | truncate : 15}}
           </span>

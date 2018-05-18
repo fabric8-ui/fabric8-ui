@@ -24,16 +24,18 @@
   }
   &__list {
     &-type {
+      outline: none;
+      padding: 15px;
+      padding-left: 45px;
+      border-left: 4px solid;
+      border-left-color: transparent;
       a {
-        display: block;
-        padding: 20px 15px;
-        padding-left: 45px;
+        display: inline-block;
         font-size: 15px;
         line-height: 15px;
         color: @color-pf-white;
         text-decoration: none;
-        border-left: 4px solid;
-        border-left-color: transparent;
+        outline: none;
         &:hover {
           color: @color-pf-white;
           text-decoration: none;
@@ -42,10 +44,12 @@
         &:visited, &:focus {
           color: @color-pf-white;
           text-decoration: none;
+          outline: none;
         }
-        &:active {
-          border-left-color: @color-pf-blue;
-        }
+      }
+      &:hover {
+        color: @color-pf-white;
+        background: @color-pf-black-700;
       }
     }
     .fa {
@@ -56,10 +60,9 @@
     }
   }
   &--selected {
-    a {
-      border-left-color: @color-pf-blue !important;
-      background-color: @color-pf-black-800;
-    }
+    outline: none;
+    border-left-color: @color-pf-blue !important;
+    background-color: @color-pf-black-800;
   }
   .dropdown-kebab-pf {
     .btn-link {
