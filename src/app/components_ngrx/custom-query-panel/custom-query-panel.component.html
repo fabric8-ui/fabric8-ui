@@ -18,9 +18,7 @@
       *ngFor="let query of customQueries"
       [class.f8-cf--selected]="query?.selected"
       [routerLink]="[]"
-      [queryParams]="showTree ?
-        { q: constructUrl(query.attributes.fields), showTree: showTree } :
-        { q: constructUrl(query.attributes.fields) }">
+      [queryParams]="showTree ? { q: constructUrl(query.attributes.fields), showTree: showTree } : { q: constructUrl(query.attributes.fields) }">
       <a [routerLink]="[]" [attr.data-id]="query.id"
         [queryParams]="showTree ? { q: constructUrl(query.attributes.fields), showTree: showTree } : { q: constructUrl(query.attributes.fields) }">
           <span id="query.attributes.title">
