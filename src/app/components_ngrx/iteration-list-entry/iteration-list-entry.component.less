@@ -11,8 +11,13 @@
     .fa {
       float: left;
       width: 15px;
+      height: 30px;
       padding: 5px;
       font-size: 16px;
+      &:hover {
+        color: @color-pf-blue;
+        transition: color ease-in 0.2s;
+      }
     }
     &:hover {
       background-color: @color-pf-black-700;
@@ -28,14 +33,21 @@
       .dropdown-menu-right {
         right: -10px;
       }
+      &:hover {
+        .btn-link {
+          color: @color-pf-blue;
+          transition: color ease-in 0.2s;
+        }
+      }
     }
   }
   &__header {
-    display: inline-block;
     color: @color-pf-white;
+    cursor: pointer;
     &:hover {
-      color: @color-pf-black-200;
+      color: @color-pf-blue;
       text-decoration: none;
+      transition: color ease-in 0.2s;
     }
   }
   &-status {

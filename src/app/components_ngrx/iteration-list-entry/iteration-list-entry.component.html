@@ -2,27 +2,18 @@
   [ngClass]="calcDepth(iteration)"
   [class.f8-itr-entry--selected]="iteration.selected"
   [attr.data-id]="iteration.id">
-  <span *ngIf="!iteration.hasChildren" class="fa margin-right-15"></span>
-  <span *ngIf="iteration.hasChildren && !iteration.showChildren"
+  <span  class="fa margin-right-15"
+    *ngIf="!iteration.hasChildren"></span>
+  <span 
     class="fa fa-angle-right margin-right-15"
-    (click)="toggleChildrenDisplay(iteration)" ></span>
-  <span *ngIf="iteration.hasChildren && iteration.showChildren"
-    class="fa fa-angle-down margin-right-15"
-    (click)="toggleChildrenDisplay(iteration)">
+    (click)="toggleChildrenDisplay(iteration)"
+    *ngIf="iteration.hasChildren && !iteration.showChildren">
   </span>
-  <a [routerLink]="[]" [queryParams]="addRemoveQueryParams(iteration.id)" class="f8-itr__header">
-    <div class="truncate padding-right-15">
-      <span class="f8-itr-name truncate">{{iteration.name | truncate : 15}}</span>
-      <span *ngIf="iteration.isActive" class="active-tag">[Active]</span>
-    </div>
-    <div class="f8-itr-status">
-      <span>
-        {{iteration.startAt ? (iteration.startAt | date:longDate) : 'Set start date'}}
-        -
-        {{iteration.endAt ? (iteration.endAt | date:longDate) : 'Set end date'}}
-      </span>
-    </div>
-  </a>
+  <span
+    class="fa fa-angle-down margin-right-15"
+    (click)="toggleChildrenDisplay(iteration)"
+    *ngIf="iteration.hasChildren && iteration.showChildren">
+  </span>
   <div class="dropdown-kebab-pf pull-right dropdown"
     dropdown>
     <button class="btn btn-link dropdown-toggle"
@@ -54,5 +45,22 @@
       </li>
     </ul>
   </div>
+  <a 
+    class="f8-itr__header"
+    [routerLink]="[]" 
+    [queryParams]="addRemoveQueryParams(iteration.id)">
+    <div class="truncate padding-right-15">
+      <span class="f8-itr-name truncate">{{iteration.name | truncate : 15}}</span>
+      <span class="active-tag"
+      *ngIf="iteration.isActive" >[Active]</span>
+    </div>
+    <div class="f8-itr-status">
+      <span>
+        {{iteration.startAt ? (iteration.startAt | date:longDate) : 'Set start date'}}
+        -
+        {{iteration.endAt ? (iteration.endAt | date:longDate) : 'Set end date'}}
+      </span>
+    </div>
+  </a>
 </div>
 

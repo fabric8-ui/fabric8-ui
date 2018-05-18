@@ -15,16 +15,9 @@
     [class.show]="sidePanelOpen"
     [class.hide]="!sidePanelOpen">
     <li class="f8-cf__list-type"
+      id="{{'cf-list-' + counter}}"
       *ngFor="let query of customQueries"
-      [class.f8-cf--selected]="query?.selected"
-      [routerLink]="[]"
-      [queryParams]="showTree ? { q: constructUrl(query.attributes.fields), showTree: showTree } : { q: constructUrl(query.attributes.fields) }">
-      <a [routerLink]="[]" [attr.data-id]="query.id"
-        [queryParams]="showTree ? { q: constructUrl(query.attributes.fields), showTree: showTree } : { q: constructUrl(query.attributes.fields) }">
-          <span id="query.attributes.title">
-            {{ query.attributes.title  | truncate : 15}}
-          </span>
-      </a>
+      [class.f8-cf--selected]="query?.selected">
       <div class="dropdown-kebab-pf pull-right dropdown f8-cf-kebab" dropdown>
         <button class="btn btn-link dropdown-toggle"
           type="button"
@@ -43,6 +36,12 @@
           </li>
         </ul>
       </div>
+      <a class="f8-cf__list-type-link"
+        [routerLink]="[]" 
+        [attr.data-id]="query.id"
+        [queryParams]="addRemoveQueryParams(query.attributes.fields)">
+          <span class="db" title="{{ query.attributes.title }}"> {{query.attributes.title  | truncate : 15}}</span>
+      </a>
     </li>
   </ul>
 </div>

@@ -6,7 +6,7 @@
       [class.show]="sidePanelOpen"
       [class.hide]="!sidePanelOpen">
       <a *ngIf="loggedIn && editEnabled"
-        class="text-right"
+        class="text-right pointer"
         (click)="modal.openCreateUpdateModal('create', null, $event);">
         <i class="pficon-add-circle-o pull-right f8-itr__add-btn"
           id="add-iteration-icon" placement="bottom"

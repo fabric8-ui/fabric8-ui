@@ -25,24 +25,23 @@
   &__list {
     &-type {
       outline: none;
-      padding: 15px;
+      padding: 10px;
       padding-left: 45px;
       border-left: 4px solid;
       border-left-color: transparent;
-      a {
-        display: inline-block;
+      &-link {
+        display: block;
         font-size: 15px;
-        line-height: 15px;
         color: @color-pf-white;
+        line-height: 15px;
         text-decoration: none;
         outline: none;
         &:hover {
-          color: @color-pf-white;
+          color: @color-pf-blue;
           text-decoration: none;
           background: @color-pf-black-700;
         }
         &:visited, &:focus {
-          color: @color-pf-white;
           text-decoration: none;
           outline: none;
         }
@@ -51,9 +50,13 @@
         color: @color-pf-white;
         background: @color-pf-black-700;
       }
-    }
-    .fa {
-      width: 15px;
+      .fa {
+        padding: 0 5px;
+        font-size: 16px;
+        &:hover {
+          color: @color-pf-blue;
+        }
+      }
     }
     &:focus {
       outline: none;
