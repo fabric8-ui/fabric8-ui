@@ -301,20 +301,22 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     if (Object.keys(filterMap).indexOf(event.field.id) > -1) {
       const index = this.filterConfig.fields.findIndex(i => i.id === event.field.id);
       if (filterMap[event.field.id].type !== 'text') {
-        filterMap[event.field.id].datasource.take(1).subscribe(resp => {
-          if (filterMap[event.field.id].datamap(resp).primaryQueries.length) {
-            this.toolbarConfig.filterConfig.fields[index].queries = [
-              ...filterMap[event.field.id].datamap(resp).primaryQueries,
-              this.separator,
-              ...filterMap[event.field.id].datamap(resp).queries
-            ];
-          } else {
-            this.toolbarConfig.filterConfig.fields[index].queries = filterMap[event.field.id].datamap(resp).queries;
-          }
-          this.savedFIlterFieldQueries[this.filterConfig.fields[index].id] = {};
-          this.savedFIlterFieldQueries[this.filterConfig.fields[index].id]['fixed'] = filterMap[event.field.id].datamap(resp).primaryQueries;
-          this.savedFIlterFieldQueries[this.filterConfig.fields[index].id]['filterable'] = filterMap[event.field.id].datamap(resp).queries;
-        })
+        this.eventListeners.push(
+          filterMap[event.field.id].datasource.subscribe(resp => {
+            if (filterMap[event.field.id].datamap(resp).primaryQueries.length) {
+              this.toolbarConfig.filterConfig.fields[index].queries = [
+                ...filterMap[event.field.id].datamap(resp).primaryQueries,
+                this.separator,
+                ...filterMap[event.field.id].datamap(resp).queries
+              ];
+            } else {
+              this.toolbarConfig.filterConfig.fields[index].queries = filterMap[event.field.id].datamap(resp).queries;
+            }
+            this.savedFIlterFieldQueries[this.filterConfig.fields[index].id] = {};
+            this.savedFIlterFieldQueries[this.filterConfig.fields[index].id]['fixed'] = filterMap[event.field.id].datamap(resp).primaryQueries;
+            this.savedFIlterFieldQueries[this.filterConfig.fields[index].id]['filterable'] = filterMap[event.field.id].datamap(resp).queries;
+          })
+        );
       } else if (this.filterConfig.fields[index].type === 'typeahead'){
         this.filterQueries({
           value: '',
