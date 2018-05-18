@@ -16,7 +16,7 @@
           {{filter.field}}: {{filter.displayValue}}
           <span
             class="margin-left-5 pficon pficon-close clickable"
-            (click)="removeFilter(filter)">
+            (click)="isFilterSaveOpen=false; removeFilter(filter)">
           </span>
         </span>
       </li>
