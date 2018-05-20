@@ -1,4 +1,4 @@
-<div class="select-dropdown-container dropdown">
+<div (clickOut)="clickOut()" class="select-dropdown-container dropdown">
   <span (click)="openDropdown()">
     <ng-container *ngTemplateOutlet="toggleButtonRef">
     </ng-container>

@@ -319,6 +319,11 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     this.isTableConfigOpen = false;
   }
 
+  clickOut() {
+    if(this.isTableConfigOpen)
+      this.isTableConfigOpen = false;
+  }
+
   // End:  Setting(tableConfig) Dropdown
 
   togglePanelState(event) {

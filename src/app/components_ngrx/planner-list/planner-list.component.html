@@ -66,7 +66,7 @@
       </alm-work-item-quick-add>
     </div>
     <div class="f8-wi-list__settings f8-wi__table-config">
-      <div class="dropdown-kebab-pf pull-right dropdown margin-left-10"
+      <div (clickOut)="clickOut()" class="dropdown-kebab-pf pull-right dropdown margin-left-10"
         dropdown
         [autoClose]="false"
         [isOpen]="isTableConfigOpen"
