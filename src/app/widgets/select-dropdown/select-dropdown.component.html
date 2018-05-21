@@ -20,8 +20,10 @@
       <span class="fa fa-search search-icon"></span>
     </div>
     <ul class="select-dropdown-menu">
-      <li class="item-li"
+      <li
         *ngFor="let item of menuItems"
+        [class.item-li]="item.key!==null"
+        [class.item-li-disabled]="item.key===null"
         [class.item-selected]="item.selected"
         (click)="selectItem(item)">
         <span class="fa fa-check tick"

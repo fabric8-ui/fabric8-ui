@@ -67,6 +67,8 @@ export class CommonSelectorComponent {
   constructor() {}
 
   onSelect(event: any) {
+    // If 'No match found' selected then do nothing
+    if (event.key === null) return;
     let findSelectedIndex = this.selectedItems.findIndex(i => i.key === event.key);
     if (this.allowMultiSelect) {
       if (findSelectedIndex > -1) {
@@ -114,6 +116,12 @@ export class CommonSelectorComponent {
             i.value.toLowerCase().indexOf(needle.toLowerCase()) > -1 ||
             i.stickontop
         ));
+        if (!this.menuItems.length) {
+          this.menuItems = [{
+            key: null, value: "No matches found.",
+            selected: false, cssLabelClass: undefined
+          }];
+        }
     } else {
       this.menuItems = cloneDeep(this.backup);
     }

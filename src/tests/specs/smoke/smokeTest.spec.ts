@@ -94,8 +94,9 @@ describe('Planner Smoke Tests:', () => {
     await planner.workItemList.clickWorkItem(c.workItemTitle7);
     await planner.quickPreview.typeaHeadSearch(c.randomText);
     expect(await planner.quickPreview.iterationDropdown.menu.getTextWhenReady()).toBe('No matches found.');
-    await planner.quickPreview.iterationCancelButton.clickWhenReady();
+    await planner.quickPreview.iterationDropdownCloseButton.clickWhenReady();
     await planner.quickPreview.iterationDropdown.clickWhenReady();
+    await planner.quickPreview.typeaHeadSearch('');
     expect(await planner.quickPreview.iterationDropdown.menu.getTextWhenReady()).not.toBe('No matches found.');
   });
 
