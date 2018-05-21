@@ -27,7 +27,7 @@ import { cloneDeep, sortBy, isEqual } from 'lodash';
 import { EmptyStateConfig } from 'patternfly-ng/empty-state';
 
 // import for column
-import { datatableColumn } from './../../components/planner-list/datatable-config';
+import { datatableColumn } from './datatable-config';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';

@@ -18,7 +18,7 @@ export const datatableColumn = [{
   showInDiplay: false,
   maxWidth: undefined,
   minWidth: undefined,
-  width: 160,
+  width: 180,
 }, {
   name: 'Title',
   prop: 'title',

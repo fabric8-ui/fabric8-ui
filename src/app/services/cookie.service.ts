@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class CookieService {
   // Increase this by one everytime
-  // a change id made in the table columns
-  datatableColumnVersion = 1;
+  // a change is made in the table columns
+  datatableColumnVersion = 2;
 
   constructor() { }
 
