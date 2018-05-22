@@ -65,3 +65,7 @@ export {
   InfotipState,
   initialState as initialInfotipState
 } from './infotip.state';
+export {
+  UserState,
+  initialState as inititalUserState
+} from './user.state';

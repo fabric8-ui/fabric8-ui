@@ -6,6 +6,7 @@ export interface AppState {
     labels: states.LabelState,
     areas: states.AreaState,
     collaborators: states.CollaboratorState,
+    users: states.UserState,
     workItems: states.WorkItemState,
     groupTypes: states.GroupTypeState,
     space: states.SpaceState,

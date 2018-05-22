@@ -1,7 +1,8 @@
 import {
   switchModel,
   cleanObject,
-  MapTree
+  MapTree,
+  normalizeArray
 } from "./common.model";
 
 describe('Unit Test :: Common model', () => {
@@ -206,3 +207,75 @@ describe('Unit Test :: Common model :: Object cleaner', () => {
     return expect(output).toEqual(expOutput);
   })
 })
+
+describe('Unit Test :: normalizeArray', () => {
+  type testType = {
+    id?: string;
+    name: string;
+    add: string;
+  }
+
+  it('Should work for an empty array', () => {
+    const op = normalizeArray<any>([]);
+    expect(op).toEqual({});
+  });
+
+  it('Should throw error for non-array input', () => {
+    expect(
+      // ignore the type error because this is the test
+      function(){ normalizeArray<any>('string'); } // tslint:disable-line
+    ).toThrow(new Error('The input needs to be an array'));
+  });
+
+  it('Should normalize array of objects without \'id\' key by the index', () => {
+    const input: testType[] = [{
+      name: 'Sudipta',
+      add: 'Alpine Eco'
+    }, {
+      name: 'Ibrahim',
+      add: 'Brigade'
+    }];
+
+    const expectedOp: {[id: string]: testType} = {
+      '0': {
+        name: 'Sudipta',
+        add: 'Alpine Eco'
+      },
+      '1': {
+        name: 'Ibrahim',
+        add: 'Brigade'
+      }
+    };
+
+    const op = normalizeArray<testType>(input);
+    expect(op).toEqual(expectedOp);
+  });
+
+  it('Should normalize array of objects with \'id\' key by the id', () => {
+    const input: testType[] = [{
+      id: '1',
+      name: 'Sudipta',
+      add: 'Alpine Eco'
+    }, {
+      id: '2',
+      name: 'Ibrahim',
+      add: 'Brigade'
+    }];
+
+    const expectedOp: {[id: string]: testType} = {
+      '1': {
+        id: '1',
+        name: 'Sudipta',
+        add: 'Alpine Eco'
+      },
+      '2': {
+        id: '2',
+        name: 'Ibrahim',
+        add: 'Brigade'
+      }
+    };
+
+    const op = normalizeArray<testType>(input);
+    expect(op).toEqual(expectedOp);
+  });
+});

@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import {
   Component,
   Input,
@@ -11,7 +12,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from './../../states/app.state';
 import { WorkItemUI } from './../../models/work-item';
 import { UserUI } from './../../models/user';
-import { CommentUI } from './../../models/comment';
+import { CommentUI, CommentQuery } from './../../models/comment';
 import * as CommentActions from './../../actions/comment.actions';
 import * as CollaboratorActions from './../../actions/collaborator.actions';
 
@@ -30,38 +31,16 @@ export class WorkItemCommentWrapperComponent implements OnInit, OnDestroy {
   }
 
   private workItem: WorkItemUI = null;
-  private comments: CommentUI[] = [];
+  private comments: Observable<CommentUI[]> =
+    this.commentQuery.getCommentsWithCreators();
   private eventListeners: any[] = [];
 
-  private spaceSource = this.store
-    .select('listPage')
-    .select('space')
-    .filter(s => !!s);
-  private collaboratorSource = this.store
-    .select('listPage')
-    .select('collaborators')
-    .filter(c => !!c.length);
-  private commentSource = this.store
-    .select('detailPage')
-    .select('comments');
+  constructor(
+    private store: Store<AppState>,
+    private commentQuery: CommentQuery
+  ) {}
 
-  constructor(private store: Store<AppState>) {}
-
-  ngOnInit() {
-    Observable.combineLatest(
-      this.spaceSource,
-      this.collaboratorSource
-    ).take(1).subscribe(([
-      spaceSource,
-      collaboratorSource,
-    ]) => {
-      this.eventListeners.push(
-        this.commentSource.subscribe(comments => {
-          this.comments = [...comments];
-        })
-      )
-    })
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.eventListeners.forEach(e => e.unsubscribe());

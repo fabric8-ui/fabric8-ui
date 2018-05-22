@@ -11,8 +11,7 @@ describe('Unit Test :: Comment Model', () => {
   });
 
   it('should correctly convert to UI model - 1', () => {
-    const userMapper = new UserMapper();
-    const cm = new CommentMapper(userMapper);
+    const cm = new CommentMapper();
     const input: CommentService = {
       id: "5cd88093-53c2-4e7a-a7ee-6a74bfbbb204",
       attributes: {
@@ -40,13 +39,7 @@ describe('Unit Test :: Comment Model', () => {
       body: "comment",
       markup: "Markdown",
       createdAt: "2018-01-16T10:04:22.946692Z",
-      creator: {
-        id: "5cd88093",
-        name: null,
-        username: null,
-        avatar: null,
-        currentUser: false
-      },
+      creatorId: "5cd88093",
       bodyRendered: "<p>comment</p>",
       selfLink: "https://api.openshift.io/api/comments/2e7c4d7c-dd2b-465b-ad76-6115068a1184"
     };

@@ -1,17 +1,22 @@
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { cloneDeep } from 'lodash';
+import { Observable } from 'rxjs/Observable';
 import { User } from 'ngx-login-client';
-import { UserUI, UserMapper } from './user';
+
+import { UserUI, UserMapper, UserQuery } from './user';
 import {
   Mapper,
   MapTree,
   switchModel,
   modelService
 } from './common.model';
-import { cloneDeep } from 'lodash';
+import { AppState } from './../states/app.state';
 
 export class Comment extends modelService {
     attributes: CommentAttributes;
     relationships: {
-        'creator': {
+        'creator'?: {
           data: {
             id: string;
             type: string;
@@ -50,7 +55,8 @@ export interface CommentUI {
   body: string;
   markup: string;
   createdAt: string;
-  creator: UserUI;
+  creatorId: string;
+  creator?: Observable<UserUI>;
   bodyRendered: string;
   selfLink: string;
 }
@@ -58,9 +64,7 @@ export interface CommentUI {
 export interface CommentService extends Comment {}
 
 export class CommentMapper implements Mapper<CommentService, CommentUI> {
-  constructor(private userMapper: UserMapper) {
-    this.userMapper = userMapper
-  }
+  constructor(){}
 
   serviceToUiMapTree: MapTree = [{
     fromPath: ['id'],
@@ -78,9 +82,8 @@ export class CommentMapper implements Mapper<CommentService, CommentUI> {
     fromPath: ['attributes', 'body.rendered'],
     toPath: ['bodyRendered']
   }, {
-    fromPath: ['relationships', 'creator', 'data'],
-    toPath: ['creator'],
-    toFunction: this.userMapper.toUIModel.bind(this.userMapper)
+    fromPath: ['relationships', 'creator', 'data', 'id'],
+    toPath: ['creatorId'],
   }, {
     fromPath: ['links', 'self'],
     toPath: ['selfLink']
@@ -98,9 +101,6 @@ export class CommentMapper implements Mapper<CommentService, CommentUI> {
   }, {
     toPath: ['attributes', 'created-at'],
     fromPath: ['createdAt']
-  }, {
-    toPath: ['relationships', 'creator', 'data'],
-    fromPath: ['creator']
   }, {
     toPath: ['attributes', 'body.rendered'],
     fromPath: ['bodyRendered']
@@ -125,17 +125,30 @@ export class CommentMapper implements Mapper<CommentService, CommentUI> {
   }
 }
 
-export class CommentCreatorResolver {
-  constructor(private comment: CommentUI) {}
 
-  resolveCreator(creators: UserUI[]) {
-    const creator = creators.find(a => a.id === this.comment.creator.id);
-    if (creator) {
-      this.comment.creator = cloneDeep(creator);
-    }
+@Injectable()
+export class CommentQuery {
+  private commentSource = this.store
+    .select(state => state.detailPage)
+    .select(state => state.comments);
+  constructor(
+    private store: Store<AppState>,
+    private userQuery: UserQuery
+  ){}
+
+  getComments(commentIds: string[]) {
+    // Not needed now
   }
 
-  getComment() {
-    return this.comment;
+  getCommentsWithCreators() {
+    return this.commentSource
+      .map(comments => {
+        return comments.map(comment => {
+          return {
+            ...comment,
+            creator: this.userQuery.getUserObservableById(comment.creatorId)
+          };
+        })
+      })
   }
 }

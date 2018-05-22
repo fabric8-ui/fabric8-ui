@@ -1,3 +1,4 @@
+import { CommentQuery } from './../../models/comment';
 import { LabelsModule } from './../labels/labels.module';
 import { TypeaheadDropDownModule } from './../../components/typeahead-dropdown/typeahead-dropdown.module';
 import { AlmUserNameModule } from './../../pipes/alm-user-name.module';
@@ -8,7 +9,7 @@ import { RouterModule } from '@angular/router';
 import { InlineInputModule } from './../../widgets/inlineinput/inlineinput.module';
 import { WidgetsModule, MarkdownModule } from 'ngx-widgets';
 import { FormsModule } from '@angular/forms';
-import { UserMapper } from './../../models/user';
+import { UserMapper, UserQuery } from './../../models/user';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { WorkItemDetailComponent } from './work-item-detail.component';
@@ -83,6 +84,8 @@ import { LabelSelectorModule } from '../label-selector/label-selector.module';
     ])
   ],
   providers: [
+    CommentQuery,
+    UserQuery,
     UserMapper,
     UrlService,
     BsDropdownConfig,

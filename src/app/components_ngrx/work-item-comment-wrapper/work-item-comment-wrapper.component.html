@@ -1,6 +1,6 @@
 <div>
     <alm-work-item-comment
-      [comments]="comments"
+      [comments]="comments | async"
       [loggedIn]="loggedIn"
       [loggedInUser]="loggedInUser"
       (create)="createComment($event)"
