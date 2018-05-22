@@ -149,7 +149,7 @@ export class AssigneeSelectorComponent {
     this.onOpenAssignee.emit('open');
   }
   onClose(event) {
-    // Setting search input to empt string
+    // Setting search input to empty string
     this.dropdownRef.setSearchText('');
     // Thus reset the value
     this.assignees = cloneDeep(this.backup);

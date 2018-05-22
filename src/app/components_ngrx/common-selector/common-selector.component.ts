@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { cloneDeep, isEqual } from 'lodash';
+import { cloneDeep } from 'lodash';
 import {
   SelectDropdownComponent
 } from './../../widgets/select-dropdown/select-dropdown.component';
@@ -18,7 +18,7 @@ import {
   User,
   UserService
 } from 'ngx-login-client';
-import { UserUI } from './../../models/user'
+import { UserUI } from './../../models/user';
 
 @Component({
   selector: 'common-selector',
@@ -131,7 +131,7 @@ export class CommonSelectorComponent {
     this.onOpenSelector.emit('open');
   }
   onClose(event) {
-    // Setting search input to empt string
+    // Setting search input to empty string
     this.dropdownRef.setSearchText('');
     // Thus reset the value
     this.menuItems = cloneDeep(this.backup);

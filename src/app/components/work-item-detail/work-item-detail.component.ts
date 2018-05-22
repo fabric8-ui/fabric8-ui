@@ -291,7 +291,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy {
 
           // init dynamic form
           if (this.workItem.relationships.baseType.data.attributes) {
-            // this.dynamicFormGroup = this.workItemTypeControlService.toFormGroup(this.workItem);
             this.dynamicFormDataArray = this.workItemTypeControlService.toAttributeArray(this.workItem.relationships.baseType.data.attributes.fields);
           }
         },

@@ -69,7 +69,7 @@ export class DynamicFieldComponent implements OnInit {
     // set the dropdown values
     // to support the dropdown
     if (this.fieldValue.field.type.kind === 'boolean') {
-      this.dropdownMenuItems = this.extractBooleanKeyValues()
+      this.dropdownMenuItems = this.extractBooleanKeyValues();
 
       this.dropdownSelectedItems =
         this.dropdownMenuItems.filter(v => v.key === this.fieldValue.value);

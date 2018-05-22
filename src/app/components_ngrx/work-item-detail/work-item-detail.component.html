@@ -230,14 +230,6 @@
                   [selectedItems]="selectedAreas"
                   (onCloseSelector)="areaUpdated($event)">
                 </common-selector>
-                <!-- <typeahead-dropdown #areaSelectbox
-                  *ngIf="!loadingArea"
-                  id="area-dropdown"
-                  noValueLabel="None"
-                  [values]="areas"
-                  (onFocus)="focusArea()"
-                  (onUpdate)="areaUpdated($event)">
-                </typeahead-dropdown> -->
               </div>
             </section>
           </div>
@@ -248,25 +240,19 @@
                 {{workItem.type.fields['system.iteration']?.label || 'Label'}}
               </label>
               <div class="f8-detail__content">
-                  <span *ngIf="loadingIteration"
-                    class="spinner spinner-sm spinner-inline">
-                  </span>
-                  <common-selector
-                    *ngIf="!loadingIteration"
-                    class="iteration-dropdown"
-                    [allowUpdate]="!!loggedInUser"
-                    [headerText]="'Update iteration'"
-                    [items]="iterations"
-                    [noValueLabel]="'None'"
-                    [selectedItems]="selectedIterations"
-                    (onCloseSelector)="iterationUpdated($event)">
-                  </common-selector>
-                  <!-- <typeahead-dropdown
-                    *ngIf="!loadingIteration"
-                    class="iteration-dropdown"
-                    #iterationSelectbox noValueLabel="None" [values]="iterations"
-                    (onFocus)="focusIteration()" (onUpdate)="iterationUpdated($event)">
-                  </typeahead-dropdown> -->
+                <span *ngIf="loadingIteration"
+                  class="spinner spinner-sm spinner-inline">
+                </span>
+                <common-selector
+                  *ngIf="!loadingIteration"
+                  class="iteration-dropdown"
+                  [allowUpdate]="!!loggedInUser"
+                  [headerText]="'Update iteration'"
+                  [items]="iterations"
+                  [noValueLabel]="'None'"
+                  [selectedItems]="selectedIterations"
+                  (onCloseSelector)="iterationUpdated($event)">
+                </common-selector>
               </div>
             </section>
           </div>

@@ -186,7 +186,7 @@ export class LabelSelectorComponent implements OnInit {
   }
 
   onClose(event) {
-    // Setting search input to empt string
+    // Setting search input to empty string
     this.dropdownRef.setSearchText('');
     // Thus reset the value
     this.labels = cloneDeep(this.backup);
