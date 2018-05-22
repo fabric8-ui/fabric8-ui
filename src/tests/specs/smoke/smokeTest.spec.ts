@@ -96,7 +96,6 @@ describe('Planner Smoke Tests:', () => {
     expect(await planner.quickPreview.iterationDropdown.menu.getTextWhenReady()).toBe('No matches found.');
     await planner.quickPreview.iterationDropdownCloseButton.clickWhenReady();
     await planner.quickPreview.iterationDropdown.clickWhenReady();
-    await planner.quickPreview.typeaHeadSearch('');
     expect(await planner.quickPreview.iterationDropdown.menu.getTextWhenReady()).not.toBe('No matches found.');
   });
 

@@ -186,6 +186,11 @@ export class LabelSelectorComponent implements OnInit {
   }
 
   onClose(event) {
+    // Setting search input to empt string
+    this.dropdownRef.setSearchText('');
+    // Thus reset the value
+    this.labels = cloneDeep(this.backup);
+
     const compare1 = this.selectedLabels.filter(i => this._selectedLabelsBackup.findIndex(
       b => b.id === i.id
     ) === -1);

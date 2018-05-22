@@ -131,6 +131,11 @@ export class CommonSelectorComponent {
     this.onOpenSelector.emit('open');
   }
   onClose(event) {
+    // Setting search input to empt string
+    this.dropdownRef.setSearchText('');
+    // Thus reset the value
+    this.menuItems = cloneDeep(this.backup);
+
     const compare1 = this.selectedItems.filter(i => this._selectedItemsBackup.findIndex(
       b => b.key === i.key
     ) === -1);

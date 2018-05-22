@@ -149,6 +149,11 @@ export class AssigneeSelectorComponent {
     this.onOpenAssignee.emit('open');
   }
   onClose(event) {
+    // Setting search input to empt string
+    this.dropdownRef.setSearchText('');
+    // Thus reset the value
+    this.assignees = cloneDeep(this.backup);
+
     const compare1 = this.selectedAssignees.filter(i => this._selectedAssigneesBackup.findIndex(
       b => b.id === i.id
     ) === -1);

@@ -6,6 +6,7 @@ import {
   Output,
   TemplateRef,
   ViewEncapsulation,
+  ViewChild,
   HostListener,
   ElementRef
 } from '@angular/core';
@@ -28,6 +29,8 @@ export class SelectDropdownComponent implements OnInit {
   @Output() onSearch: EventEmitter<any> = new EventEmitter();
   @Output() onOpen: EventEmitter<any> = new EventEmitter();
   @Output() onClose: EventEmitter<any> = new EventEmitter();
+
+  @ViewChild('searchInput') searchInput: ElementRef;
 
   constructor() {
   }
@@ -60,6 +63,12 @@ export class SelectDropdownComponent implements OnInit {
   clickOut() {
     if(this.displayDropdown) {
       this.closeDropdown();
+    }
+  }
+
+  setSearchText(text: string) {
+    if (this.searchInput) {
+      this.searchInput.nativeElement.value = text;
     }
   }
 }
