@@ -299,7 +299,7 @@
                   id="wi-desc-div"
                   [editAllow]="!!loggedInUser"
                   [rawText]="workItem.descriptionRendered!==null ? workItem.description : workItem.description.content"
-                  [renderedText]="workItem.descriptionRendered!==null ? workItem.descriptionRendered : workItem.description.rendered"
+                  [renderedText]="(workItem.descriptionRendered!==null ? workItem.descriptionRendered : workItem.description.rendered) | safe: 'html'"
                   (onSaveClick)="descUpdate($event)"
                   (showPreview)="showPreview($event)" #descMarkdown>
                 </f8-markdown>

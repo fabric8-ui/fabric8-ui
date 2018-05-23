@@ -2,6 +2,7 @@ import { GlobalSettings } from '../../shared/globals';
 import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
 import { AuthenticationService } from 'ngx-login-client';
 import { HttpService } from './../../services/http-service';
+import { SafePipeModule } from '../../pipes/safe.module';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -61,7 +62,8 @@ if (process.env.ENV == 'inmemory') {
     RouterModule,
     HttpModule,
     TooltipModule,
-    WidgetsModule
+    WidgetsModule,
+    SafePipeModule
   ],
   declarations: [
     WorkItemCommentComponent

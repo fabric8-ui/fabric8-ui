@@ -48,6 +48,7 @@ import { LinkTypeState, initialState as initialLinkTypeState } from './../../sta
 import { UrlService } from '../../services/url.service';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { LabelSelectorModule } from '../label-selector/label-selector.module';
+import { SafePipeModule } from '../../pipes/safe.module';
 
 @NgModule({
   imports: [
@@ -90,7 +91,8 @@ import { LabelSelectorModule } from '../label-selector/label-selector.module';
       DetailWorkItemEffects,
       LinkTypeEffects,
       WorkItemLinkEffects
-    ])
+    ]),
+    SafePipeModule
   ],
   providers: [
     CommentQuery,

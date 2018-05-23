@@ -16,6 +16,7 @@ import {
   OnDestroy, Output, EventEmitter,
   ElementRef, ViewChild, Renderer2, HostListener
 } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { InlineInputComponent } from './../../widgets/inlineinput/inlineinput.component';
 import { MarkdownComponent } from 'ngx-widgets';
 
@@ -138,6 +139,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     private renderer: Renderer2,
     private workItemService: WorkItemService,
     private workItemTypeControlService: WorkItemTypeControlService,
+    private sanitizer: DomSanitizer
   ) {
 
   }
@@ -239,7 +241,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
         if (this.descCallback !== null) {
           this.descCallback(
             this.workItem.description,
-            this.workItem.descriptionRendered
+            this.sanitizer.bypassSecurityTrustHtml(this.workItem.descriptionRendered)
           );
           this.descCallback = null;
         }
@@ -394,7 +396,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
       .subscribe(renderedHtml => {
         callBack(
           rawText,
-          renderedHtml
+          this.sanitizer.bypassSecurityTrustHtml(renderedHtml)
         );
       })
   }

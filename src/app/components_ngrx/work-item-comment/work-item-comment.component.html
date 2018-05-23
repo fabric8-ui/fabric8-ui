@@ -94,7 +94,7 @@
                   )
                 )"
                 [rawText]="comment.body"
-                [renderedText]="comment.bodyRendered"
+                [renderedText]="comment.bodyRendered  | safe: 'html'"
                 [placeholder]="'Add a new comment...'"
                 (onSaveClick)="updateComment($event, comment)"
                 (showPreview)="showPreview($event)">

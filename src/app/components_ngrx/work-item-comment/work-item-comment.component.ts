@@ -7,6 +7,7 @@ import {
   Component, ViewChild,
   EventEmitter, Input, Output
 } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { User } from 'ngx-login-client';
 
@@ -36,7 +37,8 @@ export class WorkItemCommentComponent implements OnInit {
 
   constructor(
     private workItemService: WorkItemService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
@@ -82,7 +84,7 @@ export class WorkItemCommentComponent implements OnInit {
       .subscribe(renderedHtml => {
         callBack(
           rawText,
-          renderedHtml
+          this.sanitizer.bypassSecurityTrustHtml(renderedHtml)
         );
       })
   }
