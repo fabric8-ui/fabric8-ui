@@ -205,6 +205,12 @@ describe ('AddAppOverlayComponent', () => {
         expect(component).toBeTruthy();
     });
 
+    it('continue button is disabled on load', () => {
+        const element = fixture.nativeElement;
+        let btnElem = element.querySelector('.code-imports--step_toolbar > button');
+        expect(btnElem.getAttribute('disabled')).toBe('');
+    });
+
     it('application is not available', () => {
         component.projectName = 'app-may-11-2018';
         component.validateProjectName();

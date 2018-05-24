@@ -23,14 +23,15 @@ import { Application, DeploymentApiService } from '../create/deployments/service
 })
 export class AddAppOverlayComponent implements OnDestroy, OnInit {
   currentSpace: Space;
-  isProjectNameValid: boolean;
+  isProjectNameValid = false;
   loggedInUser: User;
   projectName: string = '';
   selectedFlow: string = '';
   spaces: Space[] = [];
   subscriptions: Subscription[] = [];
   applications: string[] = [];
-  isProjectNameAvailable: boolean;
+  isProjectNameAvailable = false;
+  onLoad = true;
 
   constructor(private context: ContextService,
               private dependencyCheckService: DependencyCheckService,
@@ -93,6 +94,7 @@ export class AddAppOverlayComponent implements OnDestroy, OnInit {
    * Validate the application name
    */
   validateProjectName(): void {
+    this.onLoad = false;
     this.projectName = this.projectName.toLowerCase();
     this.isProjectNameValid =
       this.dependencyCheckService.validateProjectName(this.projectName);

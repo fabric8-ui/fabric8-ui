@@ -41,7 +41,7 @@ describe('Service: AppLauncherDependencyCheckService', () => {
   let dependencyCheck = {
     mavenArtifact: 'booster-mission-runtime',
     groupId: 'io.openshift.booster',
-    projectName: 'app-test-1',
+    projectName: '',
     projectVersion: '1.0.0',
     spacePath: '/myspace'
   } as DependencyCheck;
