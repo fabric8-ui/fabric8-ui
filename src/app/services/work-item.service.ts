@@ -558,7 +558,7 @@ export class WorkItemService {
     return this.http
       .get(url)
       .map(response => {
-        return { data: response.json().data};
+        return response.json().data;
       })
 }
 
