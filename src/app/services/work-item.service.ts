@@ -548,6 +548,21 @@ export class WorkItemService {
   }
 
   /**
+   * Usage: This method is to resolve the events for a work item
+   * This method is only called when a single item is fetched for the
+   * details page.
+   *
+   * @param: WorkItem - wItem
+   */
+  resolveEvents(url: string): Observable<any> {
+    return this.http
+      .get(url)
+      .map(response => {
+        return { data: response.json().data};
+      })
+}
+
+  /**
    * Usage: This method is to resolve the comments for a work item
    * This method is only called when a single item is fetched for the
    * details page.
