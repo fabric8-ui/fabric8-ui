@@ -69,3 +69,7 @@ export {
   UserState,
   initialState as inititalUserState
 } from './user.state';
+export {
+  EventState,
+  initialState as InitialEventState
+} from './event.state';

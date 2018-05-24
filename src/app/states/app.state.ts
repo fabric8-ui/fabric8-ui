@@ -24,7 +24,8 @@ export interface AppState {
     comments: states.CommentState,
     workItem: states.DetailWorkItemState,
     linkType: states.LinkTypeState,
-    workItemLink: states.WorkItemLinkState
+    workItemLink: states.WorkItemLinkState,
+    events: states.EventState
   };
 
   toolbar: {
