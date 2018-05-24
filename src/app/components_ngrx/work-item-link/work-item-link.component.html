@@ -127,17 +127,13 @@
           <ul class="padding-left-0">
             <li *ngFor="let wi of linkDict.workItems; let i = index"
               class="f8-link__list-item">
-              <a [routerLink]="'detail/' + wi.number" *ngIf="detailContext === 'preview'">
+              <a [routerLink]="detailContext === 'preview' ? 'detail/' + wi.number : createRouterLink(wi.number, detailContext)"
+                (click)="detailContext === 'detail' && onLinkClicked(wi.number)">
                 <span class="f8-link__list-item-title"
                   [id]="wi.id + '-text'"
                   [innerHTML]="wi.title">
                 </span>
               </a>
-              <span class="f8-link__list-item-title"
-                *ngIf="detailContext === 'detail'"
-                [id]="wi.id + '-text'"
-                [innerHTML]="wi.title">
-              </span>
               <a *ngIf="loggedIn"
                 (click)="deleteLink($event, linkDict.links[i], workItem)">
                 <i class="pull-right pficon pficon-close list-close-icon margin-top-5"

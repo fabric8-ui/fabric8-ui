@@ -2,8 +2,10 @@ import {
   Component,
   Input,
   OnInit,
+  Output,
   ViewChild,
-  ElementRef
+  ElementRef,
+  EventEmitter
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Space } from 'ngx-fabric8-wit';
@@ -29,6 +31,7 @@ import * as WorkItemLinkActions from './../../actions/work-item-link.actions';
 export class WorkItemLinkComponent implements OnInit {
   @Input() loggedIn: Boolean;
   @Input() detailContext: string; // It should be detail or preview
+  @Output() onLinkClick = new EventEmitter();
   @ViewChild('searchResultList') searchResultList: any;
   @ViewChild('linkTypeSelector') linkTypeSelector: ElementRef;
   @ViewChild('wiSearchBox') wiSearchBox: ElementRef;
@@ -69,7 +72,8 @@ export class WorkItemLinkComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    private workItemService: WorkItemService
+    private workItemService: WorkItemService,
+    private router: Router
   ){}
 
   ngOnInit() {
@@ -229,6 +233,20 @@ export class WorkItemLinkComponent implements OnInit {
       wiLink: wiLink,
       workItemId: workItem.id
     }));
+  }
+
+  createRouterLink(wiNumber, detailContext) {
+    if (detailContext === "detail") {
+      let url = this.router.url.split('detail');
+      url[url.length-1] = 'detail/' + wiNumber;
+      return url.join("");
+    }
+  }
+
+  onLinkClicked(wiNumber) {
+    this.onLinkClick.emit({
+      number: wiNumber
+    });
   }
 
   createLinkObject(sourceId: string, targetId: string, linkId: string, linkType: string) {
