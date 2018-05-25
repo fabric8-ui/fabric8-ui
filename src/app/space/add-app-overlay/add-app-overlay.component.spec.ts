@@ -206,9 +206,9 @@ describe ('AddAppOverlayComponent', () => {
     });
 
     it('continue button is disabled on load', () => {
-        const element = fixture.nativeElement;
+        const element: HTMLElement = fixture.debugElement.nativeElement;
         let btnElem = element.querySelector('.code-imports--step_toolbar > button');
-        expect(btnElem.getAttribute('disabled')).toBe('');
+        expect(btnElem.hasAttribute('disabled')).toBeTruthy();
     });
 
     it('application is not available', () => {
