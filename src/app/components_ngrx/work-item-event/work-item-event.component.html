@@ -42,8 +42,8 @@
           </ng-container>
           </span>
         </h5>
-        <small class="f8-comment--create-time" [tooltip]="'exact time'">
-          | 3 days ago
+        <small class="f8-comment--create-time" [tooltip]="event.timestamp | date:'medium'">
+          | {{event.timestamp | f8Time}}
         </small>
       </div>
     </div>

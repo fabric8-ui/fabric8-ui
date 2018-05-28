@@ -9,6 +9,7 @@ import {
 } from 'ngx-widgets';
 import { LabelsModule } from "../labels/labels.module";
 import { TooltipModule, TooltipConfig } from "ngx-bootstrap";
+import { F8TimePipeModule } from './../../pipes/f8-time.module'
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import { TooltipModule, TooltipConfig } from "ngx-bootstrap";
         LabelsModule,
         MarkdownModule,
         CommonModule,
-        TooltipModule
+        TooltipModule,
+        F8TimePipeModule
     ],
     declarations: [WorkItemEventComponent],
     exports: [WorkItemEventComponent],
