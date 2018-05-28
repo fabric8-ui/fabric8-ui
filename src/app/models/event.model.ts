@@ -13,6 +13,7 @@ import { UserService } from 'ngx-login-client';
 import { cloneDeep } from 'lodash';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 
 export class Event extends modelService {
@@ -29,7 +30,7 @@ export class EventAttributes {
 }
 
 export class EventRelationships {
-  modifier:{
+  modifier: {
     data: {
       id: string;
       links: {
@@ -53,14 +54,16 @@ export interface EventUI {
   oldValue: string | null;
   modifierId: string;
   modifier?: Observable<UserUI>;
-  newValueResolved: any;
-  oldValueResolved: any;
+  newValueRelationships: any;
+  oldValueRelationships: any;
+  newValueType: string | null;
+  type: string | null;
 }
 
-export interface EventService extends Event {}
+export interface EventService extends Event { }
 
 export class EventMapper implements Mapper<EventService, EventUI> {
-  constructor () {}
+  constructor() { }
 
   serviceToUiMapTree: MapTree = [{
     fromPath: ['attributes', 'name'],
@@ -75,18 +78,38 @@ export class EventMapper implements Mapper<EventService, EventUI> {
     fromPath: ['attributes', 'timestamp'],
     toPath: ['timestamp']
   }, {
-    fromPath: ['relationships', 'modifier', 'data'],
-    toPath: ['modifier']
-  }, {
     fromPath: ['relationships', 'modifier', 'data', 'id'],
     toPath: ['modifierId']
   }, {
-    fromPath: ['relationships', 'newValue', 'data'],
-    toPath: ['newValueResolved']
+    fromPath: ['relationships', 'newValue'],
+    toPath: ['newValueRelationships'],
+    toFunction: (newValue) => {
+      if (newValue !== null) {
+        if(newValue.hasOwnProperty('data')){
+          return newValue["data"]
+        }else
+          return [];
+      } else {
+        return newValue
+      }
+    }
   }, {
-    fromPath: ['relationships', 'oldValue', 'data'],
-    toPath: ['oldValueResolved']
-  }];
+    fromPath: ['relationships', 'oldValue'],
+    toPath: ['oldValueRelationships'],
+    toFunction: (oldValue) => {
+        if (oldValue !== null) {
+        if(oldValue.hasOwnProperty('data'))
+          return oldValue["data"]
+        else
+          return [];
+      } else {
+        return oldValue
+      }
+    }
+  }, {
+    toPath: ['type'],
+    toValue: null
+  },];
   uiToServiceMapTree: MapTree;
 
   toUIModel(arg: EventService): EventUI {
@@ -100,23 +123,22 @@ export class EventMapper implements Mapper<EventService, EventUI> {
       arg, this.uiToServiceMapTree
     )
   }
-
-
 }
 
 export class EventResolver {
-  constructor (private event: EventUI, private state) {
-    switch(event.name) {
+  constructor(private event: EventUI, private state) {
+    console.log("#### ---- #### - a", this.event)
+    switch (event.name) {
       case 'system.assignees':
         this.resolve(state.collaborators);
         break;
-      
+
       case 'system.iteration':
         this.resolve(state.iterations);
         break;
-      
+
       case 'system.area':
-        this.resolve(state.area);
+        this.resolve(state.areas);
         break;
 
       case 'system.labels':
@@ -133,17 +155,23 @@ export class EventResolver {
   }
 
   resolve(data) {
-    this.event.newValueResolved = this.event.newValueResolved.map(item => {
-      return cloneDeep(data.find(u => u.id === item.id));
-    }).filter(item => !!item);
-    this.event.oldValueResolved = this.event.oldValueResolved.map(item => {
-      return cloneDeep(data.find(u => u.id === item.id));
-    }).filter(item => !!item);
+    if (this.event.newValueRelationships.length > 0) {
+      this.event.type = this.event.newValueRelationships[0].type;
+      this.event.newValueRelationships = this.event.newValueRelationships.map(item => {
+        return cloneDeep(data.find(u => u.id === item.id));
+      }).filter(item => !!item);
+    }
+    if (this.event.oldValueRelationships.length > 0) {
+      this.event.type = this.event.oldValueRelationships[0].type;
+      this.event.oldValueRelationships = this.event.oldValueRelationships.map(item => {
+        return cloneDeep(data.find(u => u.id === item.id));
+      }).filter(item => !!item);
+    }
   }
-
 }
 
-export class EvenQuery {
+@Injectable()
+export class EventQuery {
   private eventSource = this.store
     .select(state => state.detailPage)
     .select(state => state.events);
@@ -151,7 +179,7 @@ export class EvenQuery {
   constructor(
     private store: Store<AppState>,
     private userQuery: UserQuery
-    ) {}
+  ) { }
 
   getEventsWithModifier(): Observable<EventUI[]> {
     return this.eventSource

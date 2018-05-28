@@ -16,7 +16,8 @@ import  * as effects from './app/effects/index.effects';
     collaborators: reducers.CollaboratorReducer,
     comments: reducers.CommentReducer,
     workItems: reducers.WorkItemReducer,
-    infotips: reducers.InfotipReducer
+    infotips: reducers.InfotipReducer,
+    events: reducers.EventReducer
   }),
     EffectsModule.forRoot([
       effects.IterationEffects,
@@ -25,7 +26,8 @@ import  * as effects from './app/effects/index.effects';
       effects.CollaboratorEffects,
       effects.CommentEffects,
       effects.WorkItemEffects,
-      effects.InfotipEffects
+      effects.InfotipEffects,
+      effects.EventEffects
     ])
   ],
   declarations: [

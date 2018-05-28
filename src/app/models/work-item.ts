@@ -132,6 +132,7 @@ export interface WorkItemUI {
   children: WorkItemUI[];
   commentLink: string;
   childrenLink: string;
+  eventLink: string;
   hasChildren: boolean;
   parentID: string;
   link: string;
@@ -209,6 +210,9 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     }, {
       fromPath: ['relationships','comments','links', 'related'],
       toPath: ['commentLink']
+    }, {
+      fromPath: ['relationships','events','links', 'related'],
+      toPath: ['eventLink']
     }, {
       fromPath: ['relationships','assignees','data'],
       toPath: ['assignees'],

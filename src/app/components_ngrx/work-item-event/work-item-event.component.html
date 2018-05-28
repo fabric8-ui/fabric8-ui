@@ -1,0 +1,50 @@
+<div class="f8-comment__wrap">
+    <div class="user-avatar margin-right-10 pull-left">
+      <img class="user-assign-avatar"
+        placement="right"
+        container="body"
+        *ngIf="(event.modifier | async).avatar"
+        [src]="(event.modifier | async).avatar | almAvatarSize:30" />
+    </div>
+    <div class="f8-comment-body">
+      <div>
+        <h5 class="f8-comment-author pull-left">
+          <strong  class="truncate">
+            {{(event.modifier | async).name.split(' ')[0]}}
+          </strong>
+          <span *ngIf="textType === 'description'">edited the description</span>
+          <span *ngIf="textType === 'attribute'" class="dib" style="vertical-align: top">
+            <span [innerHTML]=intermediateText></span>
+            <i> '{{event.oldValue}}' </i>
+            {{ toText }} 
+            <i> '{{event.newValue}}'</i>
+          </span>
+          <span *ngIf="textType === 'relationship'" class="dib" style="vertical-align: top">
+            <span [innerHTML]=intermediateText></span>
+            <i *ngFor="let item of event.newValueRelationships"> '{{item.name}}' </i>
+            <ng-container *ngIf="toText">{{ toText }} 
+            <i *ngFor="let item of event.oldValueRelationships"> '{{item.name}}'</i>
+          </ng-container>
+          </span>
+          <span *ngIf="textType === 'label'" class="dib" style="vertical-align: top">
+            <span [innerHTML]=intermediateText></span>
+            <f8-label
+                  [labels]='event.newValueRelationships'
+                  [allowDelete]="false"
+                  [context]="detail">
+                  </f8-label>
+            <ng-container *ngIf="toText">{{ toText }} 
+                <f8-label
+                [labels]='event.oldValueRelationships'
+                [allowDelete]="false"
+                [context]="detail">
+                </f8-label>
+          </ng-container>
+          </span>
+        </h5>
+        <small class="f8-comment--create-time" [tooltip]="'exact time'">
+          | 3 days ago
+        </small>
+      </div>
+    </div>
+  </div>

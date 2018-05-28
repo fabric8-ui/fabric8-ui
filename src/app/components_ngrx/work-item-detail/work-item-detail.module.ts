@@ -21,6 +21,7 @@ import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import {
   WorkItemCommentWrapperModule
 } from './../work-item-comment-wrapper/work-item-comment-wrapper.module';
+import { WorkItemEventWrapperModule } from './../work-item-event-wrapper/work-item-event-wrapper.module';
 import { PlannerModalModule } from '../../components/modal/modal.module';
 import  { WorkItemLinkModule } from './../work-item-link/work-item-link.module';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
@@ -30,6 +31,7 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { CommentState, initialState as initialCommentState } from './../../states/comment.state';
+import { EventState, initialState as initialEventState } from './../../states/event.state';
 import { CommentReducer } from './../../reducers/comment.reducer';
 import { CommentEffects } from './../../effects/comment.effects';
 import {
@@ -49,6 +51,8 @@ import { UrlService } from '../../services/url.service';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { LabelSelectorModule } from '../label-selector/label-selector.module';
 import { SafePipeModule } from '../../pipes/safe.module';
+import { EventReducer } from '../../reducers/event.reducer';
+import { EventEffects } from '../../effects/event.effects';
 
 @NgModule({
   imports: [
@@ -69,6 +73,7 @@ import { SafePipeModule } from '../../pipes/safe.module';
     MarkdownModule,
     MyDatePickerModule,
     WorkItemCommentWrapperModule,
+    WorkItemEventWrapperModule,    
     PlannerModalModule,
     TruncateModule,
     WorkItemLinkModule,
@@ -77,9 +82,11 @@ import { SafePipeModule } from '../../pipes/safe.module';
       comments: CommentReducer,
       workItem: DetailWorkItemReducer,
       linkType: LinkTypeReducer,
-      workItemLink: WorkItemLinkReducer
+      workItemLink: WorkItemLinkReducer,
+      events: EventReducer
     }, {
       initialState: {
+        events: initialEventState,
         comments: initialCommentState,
         workItem: initialDetailWIState,
         linkType: initialLinkTypeState,
@@ -89,6 +96,7 @@ import { SafePipeModule } from '../../pipes/safe.module';
     EffectsModule.forFeature([
       CommentEffects,
       DetailWorkItemEffects,
+      EventEffects,
       LinkTypeEffects,
       WorkItemLinkEffects
     ]),

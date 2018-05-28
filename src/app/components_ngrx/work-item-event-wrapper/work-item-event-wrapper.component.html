@@ -1,0 +1,36 @@
+<div class="f8-comment"
+  id="wi-comment">
+  <ul class="f8-comment-content nav nav-tabs nav-tabs-pf"
+    id="wi-comment-content"
+    *ngIf="true">
+    <!-- Refactoring needed to toogle view -->
+    <li class="f8-toggle-caret"
+      (click)="isCollapsedTimeline = !isCollapsedTimeline">
+      <i class="fa fa-icon"
+        [ngClass]="{'fa-angle-right': isCollapsedTimeline,
+        'fa-angle-down': !isCollapsedTimeline}">
+      </i>
+    </li>
+    <li [class.active]="!isCollapsedTimeline"
+      (click)="isCollapsedTimeline = !isCollapsedTimeline">
+      <a>
+        <span>Timeline</span>
+        <span class="badge"
+          id="total_comments">
+         <!-- {{events.length}} -->
+        </span>
+        <ng-template #loading>
+          <span class="spinner spinner-sm spinner-inline"></span>
+        </ng-template>
+      </a>
+    </li>
+  </ul>
+  <div [collapse]="isCollapsedTimeline">
+      <work-item-event 
+        *ngFor="let event of events | async"
+        [event]="event"
+        [type]="event.type"
+        >
+      </work-item-event>
+    </div>
+</div>
