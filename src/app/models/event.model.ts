@@ -56,7 +56,6 @@ export interface EventUI {
   modifier?: Observable<UserUI>;
   newValueRelationships: any;
   oldValueRelationships: any;
-  newValueType: string | null;
   type: string | null;
 }
 

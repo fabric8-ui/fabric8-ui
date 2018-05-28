@@ -57,6 +57,11 @@ export class WorkItemRelations {
       hasChildren: boolean;
     };
   };
+  events?: {
+    links?: {
+      related?: string;
+    }
+  };
   comments?: {
     data?: Comment[];
     links: {
@@ -313,6 +318,9 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     }, {
       fromPath: ['commentLink'],
       toPath: ['relationships','comments','links', 'related']
+    },{
+      fromPath: ['eventLink'],
+      toPath: ['relationships','events','links', 'related']
     }, {
       fromPath: ['assignees'],
       toPath: ['relationships','assignees','data'],
