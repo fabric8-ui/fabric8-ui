@@ -1,4 +1,4 @@
-<div class="f8-comment__wrap">
+<div class="f8-event__wrap">
     <div class="user-avatar margin-right-10 pull-left">
       <img class="user-assign-avatar"
         placement="right"
@@ -6,9 +6,9 @@
         *ngIf="(event.modifier | async).avatar"
         [src]="(event.modifier | async).avatar | almAvatarSize:30"/>
     </div>
-    <div class="f8-comment-body">
+    <div class="f8-event-body">
       <div>
-        <h5 class="f8-comment-author pull-left">
+        <h5 class="f8-event-author pull-left">
           <strong class="truncate">
             {{(event.modifier | async).name.split(' ')[0]}}
           </strong>
@@ -55,7 +55,7 @@
             </ng-container>
           </div>
         </h5>
-        <small class="f8-comment--create-time" 
+        <small class="f8-event--create-time" 
           style="vertical-align: text-top"
           [tooltip]="event.timestamp | date:'medium'">
           | {{event.timestamp | f8Time}}
