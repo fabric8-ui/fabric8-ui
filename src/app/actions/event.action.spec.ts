@@ -5,7 +5,7 @@ import {
   GetError, GET_ERROR
 } from './event.action';
 
-fdescribe('Unit Test :: Event Actions', () => {
+describe('Unit Test :: Event Actions', () => {
   it('GetEvent :: should create get action', () => {
     const url = 'https://mock';
     const action = new Get(url);
