@@ -98,4 +98,8 @@ export class MarkdownExampleComponent {
     }, 2000);
   }
 
+  closeClicked() {
+    console.log('Close clicked event works');
+  }
+
 }

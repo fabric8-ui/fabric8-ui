@@ -12,7 +12,8 @@
         [rawText]="rawText"
         [renderedText]="renderedText | safe: 'html'"
         (onSaveClick)="onSaveOrPreview($event)"
-        (showPreview)="onSaveOrPreview($event)">
+        (showPreview)="onSaveOrPreview($event)"
+        (onCloseClick)="closeClicked()">
       </f8-markdown>
     </div>
   </div>

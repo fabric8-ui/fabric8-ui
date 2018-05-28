@@ -43,6 +43,7 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
   @Output() onActiveEditor = new EventEmitter();
   @Output() onSaveClick = new EventEmitter();
   @Output() showPreview = new EventEmitter();
+  @Output() onCloseClick = new EventEmitter();
 
   @ViewChild('editorInput') editorInput: ElementRef;
   @ViewChild('editorBox') editorBox: ElementRef;
@@ -267,6 +268,7 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
     this.rawText = this.previousRawText;
     this.renderedText = this.previousRenderedText;
     this.deactivateEditor();
+    this.onCloseClick.emit();
   }
 
   renderPreview(rawText: string, renderedText: string) {
