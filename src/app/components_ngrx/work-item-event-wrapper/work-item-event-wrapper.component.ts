@@ -8,7 +8,7 @@ import { EventQuery } from "../../models/event.model";
 @Component({
   selector: 'work-item-event-wrapper',
   templateUrl: './work-item-event-wrapper.component.html',
-  styleUrls: ['./../work-item-comment/work-item-comment.component.less']
+  styleUrls: ['./work-item-event-wrapper.component.less'],
 })
 
 export class WorkItemEventWrapperComponent {
