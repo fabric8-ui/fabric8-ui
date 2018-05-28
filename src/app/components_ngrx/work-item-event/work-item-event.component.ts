@@ -18,20 +18,29 @@ export class WorkItemEventComponent implements OnInit {
 
   ngOnInit() {
     this.getTitle();
-    if (this.type === null) {
-      this.singleValueChange();
-    }
-    if (this.type === 'areas') {
-      this.areasAndIteration();
-    }
-    if (this.type === 'users') {
-      this.users();
-    }
-    if (this.type === 'iterations') {
-      this.areasAndIteration();
-    }
-    if (this.type === 'labels') {
-      this.labels();
+    switch (this.type) {
+      case null:
+        this.singleValueChange();
+        break;
+      
+      case 'areas':
+        this.areasAndIteration();
+        break;
+      
+      case 'users':
+        this.users();
+        break;
+      
+      case 'iterations':
+        this.areasAndIteration();
+        break;
+      
+      case 'labels':
+        this.labels();
+        break;
+    
+      default:
+        break;
     }
   }
 

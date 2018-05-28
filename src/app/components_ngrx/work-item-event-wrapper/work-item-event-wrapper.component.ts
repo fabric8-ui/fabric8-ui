@@ -14,7 +14,6 @@ import { EventQuery } from "../../models/event.model";
 export class WorkItemEventWrapperComponent {
   @Input('workItem') set WorkItem(workitem: WorkItemUI) {
     this.workitem = workitem;
-    console.log("############ -------Action Dispatched--------- ##########", this.workitem.eventLink);
     this.store.dispatch(new EventActions.Get(this.workitem.eventLink));
   }
 

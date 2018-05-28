@@ -25,9 +25,7 @@ export class EventEffects {
   resolveEvents(events, state) {
     return events.map((event: EventService) => {
       const eventUI = this.eventMapper.toUIModel(event);
-      console.log("######## ------ eventUI ------#########", eventUI);
       const resolvedEvent = new EventResolver(eventUI, state);
-      console.log("#########--------------#######", resolvedEvent.getEvent());
       return {...resolvedEvent.getEvent()}
     })
   }
@@ -44,8 +42,7 @@ export class EventEffects {
     .switchMap((cp) => {
       return this.workItemService.resolveEvents(cp.payload)
         .map((resp) => {
-          console.log("###########-------event from call------##########", resp);
-          let events =  resp.filter(event => event !== null);
+          let events =  resp.filter(event => event !== null).reverse();
           return this.resolveEvents(events, cp.state);
         })
         .map((events: EventUI[]) => {

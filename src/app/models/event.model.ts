@@ -126,7 +126,6 @@ export class EventMapper implements Mapper<EventService, EventUI> {
 
 export class EventResolver {
   constructor(private event: EventUI, private state) {
-    console.log("#### ---- #### - a", this.event)
     switch (event.name) {
       case 'system.assignees':
         this.resolve(state.collaborators);
