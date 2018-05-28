@@ -24,8 +24,7 @@
   <div [collapse]="isCollapsedTimeline">
       <work-item-event 
         *ngFor="let event of events | async"
-        [event]="event"
-        [type]="event.type">
+        [event]="event">
       </work-item-event>
     </div>
 </div>

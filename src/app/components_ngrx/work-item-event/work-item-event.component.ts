@@ -8,17 +8,10 @@ import { EventUI } from '../../models/event.model';
 })
 
 export class WorkItemEventComponent implements OnInit {
-  @Input() event: EventUI;
-  @Input() type: string;
-
-  private intermediateText: string;
-  private title: string;
-  private toText: string | null = "to"
-  private textType: string;
-
-  ngOnInit() {
+  @Input('event') set Event(event: EventUI) {
+    this.event = event;
     this.getTitle();
-    switch (this.type) {
+    switch (event.type) {
       case null:
         this.singleValueChange();
         break;
@@ -42,6 +35,15 @@ export class WorkItemEventComponent implements OnInit {
       default:
         break;
     }
+  }
+  
+  private event: EventUI;
+  private intermediateText: string;
+  private title: string;
+  private toText: string | null = "to"
+  private textType: string;
+
+  ngOnInit() {
   }
 
   getTitle() {
@@ -67,8 +69,8 @@ export class WorkItemEventComponent implements OnInit {
       this.intermediateText = "added this work item to " + this.title + ":"
       this.toText = null;
     } else {
-      this.intermediateText = "moved this work item from " + this.title;
-      this.toText = 'to ' + this.title;
+      this.intermediateText = "moved this work item to " + this.title;
+      this.toText = 'from ' + this.title;
     }
     this.textType = "relationship";
   }
@@ -95,14 +97,14 @@ export class WorkItemEventComponent implements OnInit {
 
   labels() {
     if (this.event.oldValueRelationships.length === 0) {
-      this.intermediateText = "added";
+      this.intermediateText = "added ";
       this.toText = " label";
     } else if (this.event.newValueRelationships.length === 0) {
-      this.intermediateText = "removed the label";
+      this.intermediateText = "removed the label ";
       this.toText = ' ';
     } else {
-      this.intermediateText = "added the label";
-      this.toText = " and removed the label";
+      this.intermediateText = "added the label ";
+      this.toText = " and removed the label ";
     }
     this.textType = "label";
   }
