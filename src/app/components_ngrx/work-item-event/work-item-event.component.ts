@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { EventUI } from '../../models/event.model';
 
 @Component({
   selector: 'work-item-event',
   templateUrl: './work-item-event.component.html',
-  styleUrls: ['./../work-item-comment/work-item-comment.component.less']
+  styleUrls: ['./work-item-event.component.less'],
 })
 
 export class WorkItemEventComponent implements OnInit {

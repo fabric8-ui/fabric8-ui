@@ -9,40 +9,55 @@
     <div class="f8-comment-body">
       <div>
         <h5 class="f8-comment-author pull-left">
-          <strong  class="truncate">
+          <strong class="truncate">
             {{(event.modifier | async).name.split(' ')[0]}}
           </strong>
-          <span *ngIf="textType === 'description'">edited the description</span>
-          <span *ngIf="textType === 'attribute'" class="dib" style="vertical-align: top">
+          <span class="dib" style="vertical-align: text-top"
+            *ngIf="textType === 'description'">
+              edited the description
+          </span>
+          <span 
+            class="dib" 
+            style="vertical-align: top"
+            *ngIf="textType === 'attribute'" >
             <span [innerHTML]=intermediateText></span>
             <i> '{{event.oldValue}}' </i>
             {{ toText }} 
             <i> '{{event.newValue}}'</i>
           </span>
-          <span *ngIf="textType === 'relationship'" class="dib" style="vertical-align: top">
+          <span class="dib" style="vertical-align: text-top"
+            *ngIf="textType === 'relationship'" >
             <span [innerHTML]=intermediateText></span>
             <i *ngFor="let item of event.newValueRelationships"> '{{item.name}}' </i>
             <ng-container *ngIf="toText">{{ toText }} 
-            <i *ngFor="let item of event.oldValueRelationships"> '{{item.name}}'</i>
-          </ng-container>
+              <i *ngFor="let item of event.oldValueRelationships"> '{{item.name}}'</i>
+            </ng-container>
           </span>
-          <span *ngIf="textType === 'label'" class="dib" style="vertical-align: top">
-            <span [innerHTML]=intermediateText></span>
+          <div class="audit-trail__label"
+            *ngIf="textType === 'label'" >
+            <span style="vertical-align: text-top;"
+              [innerHTML]=intermediateText></span>
             <f8-label
-                  [labels]='event.newValueRelationships'
-                  [allowDelete]="false"
-                  [context]="detail">
-                  </f8-label>
-            <ng-container *ngIf="toText">{{ toText }} 
-                <f8-label
+              [labels]='event.newValueRelationships'
+              [allowDelete]="false"
+              [context]="detail">
+            </f8-label>
+            <ng-container *ngIf="toText">
+              <span class="dib" 
+                style="vertical-align: text-top;">
+                {{ toText }} 
+              </span>
+              <f8-label
                 [labels]='event.oldValueRelationships'
                 [allowDelete]="false"
                 [context]="detail">
-                </f8-label>
-          </ng-container>
-          </span>
+              </f8-label>
+            </ng-container>
+          </div>
         </h5>
-        <small class="f8-comment--create-time" [tooltip]="event.timestamp | date:'medium'">
+        <small class="f8-comment--create-time" 
+          style="vertical-align: text-top"
+          [tooltip]="event.timestamp | date:'medium'">
           | {{event.timestamp | f8Time}}
         </small>
       </div>
