@@ -40,110 +40,12 @@
     <div>
       <div class="f8-comment__wrap"
         *ngFor='let comment of comments; let counter = index'>
-        <div>
-          <div class="user-avatar margin-right-10 pull-left">
-            <img class="user-assign-avatar"
-              id="{{'comment_avatar_' + counter}}"
-              placement="right"
-              container="body"
-              tooltip="{{ (comment.creator | async)?.name }}"
-              *ngIf="(comment.creator | async)?.avatar"
-              [src]="(comment.creator | async)?.avatar | almAvatarSize:30"
-            />
-          </div>
-          <div class="dropdown dropdown-kebab-pf pull-right dropdown" dropdown>
-            <button class="btn btn-link dropdown-toggle"
-              *ngIf="loggedIn && (loggedInUser?.id === (comment.creator | async)?.id)"
-              id="commentActionsKebab"
-              type="button"
-              dropdownToggle
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="true">
-              <span class="fa fa-ellipsis-v"></span>
-            </button>
-            <ul class="dropdown-menu-right dropdown-menu"
-              aria-labelledby="commentActionsKebab"
-              *dropdownMenu>
-              <li>
-                <a (click)="confirmCommentDelete(comment)">Delete</a>
-              </li>
-            </ul>
-          </div>
-          <div class="f8-comment-body">
-            <div>
-              <h5 class="f8-comment-author pull-left">
-                <strong  class="truncate"
-                  id="{{'comment_username_' + counter}}">
-                  {{(comment.creator | async)?.name}}
-                </strong>
-              </h5>
-              <small class="f8-comment--create-time pull-right"
-                id="{{'comment_time_' + counter}}">
-                  {{comment.createdAt | date:'medium'}}
-              </small>
-            </div>
-            <div class="width-100 pull-left">
-              <f8-markdown
-                [attr.id]="'comment_body_' + counter"
-                [editAllow]="(
-                  loggedIn &&
-                  (
-                    commentEditable ||
-                    (loggedInUser?.id === (comment.creator | async)?.id)
-                  )
-                )"
-                [rawText]="comment.body"
-                [renderedText]="comment.bodyRendered  | safe: 'html'"
-                [placeholder]="'Add a new comment...'"
-                (onSaveClick)="updateComment($event, comment)"
-                (showPreview)="showPreview($event)">
-              </f8-markdown>
-            </div>
-
-            <!-- when comment is not editable -->
-            <!-- <div
-              class="width-100 pull-left"
-              *ngIf="!loggedIn ||
-              (!commentEditable || (loggedInUser?.id !== comment.relationships['created-by']?.data?.id))
-              || (selectedCommentId != comment.id)"
-              (click)='openComment(comment.id)'>
-              <p id="{{'comment_body_' + counter}}" class="f8-comment--noneditable margin-0 form-control">
-                {{ comment.attributes.body }}
-              </p>
-            </div> -->
-            <!-- when comment is editable -->
-            <!-- <div
-              class="width-100 pull-left"
-              *ngIf="loggedIn &&
-                (selectedCommentId == comment.id) &&
-                (commentEditable && (loggedInUser?.id === comment.relationships['created-by']?.data?.id))" >
-              <p almEditable #commentBody
-                  (keyup)="onCommentEdit($event, 'comment_body_' + counter, 'comment_save_btn' + counter)"
-                  id="{{'comment_body_' + counter}}"
-                  class="margin-0 form-control f8-comment--editable"
-                  [innerText]="comment.attributes.body | almTrim">
-              </p>
-              <aside *ngIf="commentEditable" class="margin-top-10"> -->
-                <!--Cancel icon-->
-                  <!-- <button
-                      (click)="closeCommentEditing()"
-                      class="pull-right btn btn-default detail-action-btn"
-                      id="{{'comment_close_btn' + counter}}" >
-                    <span class="fa fa-close"></span>
-                  </button> -->
-                <!--Save icon-->
-                <!-- <button
-                  class="pull-right btn btn-primary detail-action-btn"
-                  id="{{'comment_save_btn' + counter}}"
-                  (click)="updateComment('comment_body_' + counter, comment)"
-                  >
-                  <span class="fa fa-check"></span>
-                </button>
-              </aside>
-            </div> -->
-          </div>
-        </div>
+        <fabric8-comment
+          [comment]="comment"
+          (onShowPreview)="showPreview($event)"
+          (onCreateRequest)="createChildComment($event)"
+          (onUpdateRequest)="updateComment($event)"
+        ></fabric8-comment>
       </div>
     </div>
   </div>

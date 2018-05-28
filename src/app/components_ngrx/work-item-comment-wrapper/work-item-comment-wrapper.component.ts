@@ -8,8 +8,6 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Store } from '@ngrx/store';
-import { AppState } from './../../states/app.state';
 import { WorkItemUI } from './../../models/work-item';
 import { UserUI } from './../../models/user';
 import { CommentUI, CommentQuery } from './../../models/comment';
@@ -27,16 +25,15 @@ export class WorkItemCommentWrapperComponent implements OnInit, OnDestroy {
   @Input() loggedInUser: UserUI;
   @Input('workItem') set workItemSetter(workItem: WorkItemUI) {
     this.workItem = workItem;
-    this.store.dispatch(new CommentActions.Get(workItem.commentLink));
+    this.commentQuery.dispatchGet(workItem.commentLink);
   }
 
   private workItem: WorkItemUI = null;
   private comments: Observable<CommentUI[]> =
-    this.commentQuery.getCommentsWithCreators();
+    this.commentQuery.getCommentsWithChildren();
   private eventListeners: any[] = [];
 
   constructor(
-    private store: Store<AppState>,
     private commentQuery: CommentQuery
   ) {}
 
@@ -46,19 +43,16 @@ export class WorkItemCommentWrapperComponent implements OnInit, OnDestroy {
     this.eventListeners.forEach(e => e.unsubscribe());
   }
 
-  createComment(event: any) {
-    const payload = {
-      url: this.workItem.commentLink,
-      comment: event
-    };
-    this.store.dispatch(new CommentActions.Add(payload));
+  createComment(newComment: CommentUI) {
+    this.commentQuery.createComment(
+       this.workItem.commentLink,
+       newComment
+    );
   }
 
-  updateComment(comment) {
-    this.store.dispatch(new CommentActions.Update(comment));
+  updateComment(comment: CommentUI) {
+    this.commentQuery.updateComment(comment);
   }
 
-  deleteComment(event: any) {
-    this.store.dispatch(new CommentActions.Delete(event));
-  }
+  deleteComment(event: any) {}
 }

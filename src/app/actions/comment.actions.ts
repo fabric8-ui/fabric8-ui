@@ -19,7 +19,7 @@ export class Add implements Action {
     url: string,
     comment: Comment
   }
-  constructor(payload: any) {
+  constructor(payload: {url: string, comment: Comment}) {
     this.payload = payload;
   }
   readonly type = ADD;
@@ -34,8 +34,8 @@ export class Get implements Action {
 }
 
 export class Update implements Action {
-  payload: CommentUI;
-  constructor(payload: CommentUI) {
+  payload: Comment;
+  constructor(payload: Comment) {
     this.payload = payload;
   }
   readonly type = UPDATE;

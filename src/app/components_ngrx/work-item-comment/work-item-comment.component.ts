@@ -1,20 +1,18 @@
-import { WorkItemService } from './../../services/work-item.service';
-import { Observable } from 'rxjs';
-import { CommentLink } from '../../models/comment';
-
 import {
   OnInit, OnChanges,
   Component, ViewChild,
   EventEmitter, Input, Output
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Observable } from 'rxjs';
 
 import { User } from 'ngx-login-client';
 
-import { Comment, CommentAttributes } from '../../models/comment';
+import { CommentUI } from '../../models/comment';
 import { WorkItem } from '../../models/work-item';
 import { CollaboratorService } from '../../services/collaborator.service';
 import { ModalService } from '../../services/modal.service';
+import { WorkItemService } from './../../services/work-item.service';
 
 @Component({
   selector: 'alm-work-item-comment',
@@ -23,17 +21,16 @@ import { ModalService } from '../../services/modal.service';
 })
 export class WorkItemCommentComponent implements OnInit {
   @Input() loadingComments: boolean = true;
-  @Input() comments: Comment[];
+  @Input() comments: CommentUI[];
   @Input() loggedIn: Boolean;
   @Input() loggedInUser: User;
-  @Output() create = new EventEmitter<Comment>();
-  @Output() update = new EventEmitter<Comment>();
-  @Output() delete = new EventEmitter<Comment>();
-  comment: Comment;
+  @Output() create = new EventEmitter<CommentUI>();
+  @Output() update = new EventEmitter<CommentUI>();
+  @Output() delete = new EventEmitter<CommentUI>();
+
   isCollapsedComments: Boolean = false;
   commentEditable: Boolean = false;
   selectedCommentId: String = '';
-  convictedComment: Comment;
 
   constructor(
     private workItemService: WorkItemService,
@@ -41,9 +38,7 @@ export class WorkItemCommentComponent implements OnInit {
     private sanitizer: DomSanitizer
   ) {}
 
-  ngOnInit() {
-    this.createCommentObject();
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     let commentbox = document.querySelector("#wi-comment-add-comment") as HTMLParagraphElement;
@@ -52,13 +47,6 @@ export class WorkItemCommentComponent implements OnInit {
       commentbox.blur();
     }
   }
-
-  createCommentObject(): void {
-    this.comment = new Comment();
-    this.comment.type = 'comments';
-    this.comment.attributes = new CommentAttributes();
-    this.comment.links = new CommentLink();
-  };
 
   openComment(id): void {
     if (this.loggedIn) {
@@ -70,11 +58,18 @@ export class WorkItemCommentComponent implements OnInit {
   createComment(event): void {
     const rawText = event.rawText;
     const callBack = event.callBack;
-    this.comment.attributes.body = rawText;
-    this.comment.attributes.markup = 'Markdown';
-    this.create.emit(this.comment);
+    let newComment: CommentUI = {
+      body: rawText,
+    } as CommentUI;
+    if (event.hasOwnProperty('parentId')) {
+      newComment['parentId'] = event.parentId;
+    }
     callBack('', '');
-    this.createCommentObject();
+    this.create.emit(newComment);
+  }
+
+  createChildComment(newComment: CommentUI): void {
+    this.create.emit(newComment);
   }
 
   showPreview(event: any): void {
@@ -89,24 +84,8 @@ export class WorkItemCommentComponent implements OnInit {
       })
   }
 
-  updateComment(event, comment): void {
-    comment.body = event.rawText;
+  updateComment(comment: CommentUI): void {
     this.update.emit(comment);
-  }
-
-  confirmCommentDelete(comment: Comment): void {
-    this.convictedComment = comment;
-    this.modalService.openModal('Delete Comment', 'Are you sure you want to delete this comment?', 'Delete', 'deleteComment')
-      .first()
-      .subscribe(actionKey => {
-        if (actionKey==='deleteComment')
-          this.deleteComment();
-      });
-  }
-
-  deleteComment(): void {
-    this.delete.emit(this.convictedComment);
-    this.createCommentObject();
   }
 
   onCommentEdit($event, inpId, saveBtnId) {

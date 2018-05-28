@@ -1,15 +1,24 @@
-import { GlobalSettings } from '../../shared/globals';
-import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import {
+  HttpModule, Http,
+  RequestOptions, XHRBackend } from '@angular/http';
+import { RouterModule } from '@angular/router';
+
+import {
+  BsDropdownConfig,
+  BsDropdownModule,
+  CollapseModule,
+  TooltipConfig,
+  TooltipModule,
+} from 'ngx-bootstrap';
 import { AuthenticationService } from 'ngx-login-client';
+
+import { CommentModule } from './../../widgets/comment-module/comment.module';
+import { GlobalSettings } from './../../shared/globals';
 import { HttpService } from './../../services/http-service';
 import { SafePipeModule } from '../../pipes/safe.module';
-import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { CollapseModule } from 'ngx-bootstrap';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import {
   AlmEditableModule,
   AlmIconModule,
@@ -55,6 +64,7 @@ if (process.env.ENV == 'inmemory') {
     AlmIconModule,
     CollapseModule,
     CommonModule,
+    CommentModule,
     BsDropdownModule,
     FormsModule,
     MarkdownModule,

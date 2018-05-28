@@ -41,6 +41,7 @@ describe('Unit Test :: Comment Model', () => {
       createdAt: "2018-01-16T10:04:22.946692Z",
       creatorId: "5cd88093",
       bodyRendered: "<p>comment</p>",
+      parentId: null,
       selfLink: "https://api.openshift.io/api/comments/2e7c4d7c-dd2b-465b-ad76-6115068a1184"
     };
     return expect(expectedOutPut).toEqual(output);

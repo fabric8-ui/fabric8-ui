@@ -38,7 +38,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     'Area select dropdown'
   );
   iterationDiv = new ui.BaseElement(this.$('.iteration-dropdown'), 'Iteration List Div');
-  
+
   iterationDropdown = new ui.Dropdown(
     this.iterationDiv.$('f8-select-dropdown>div>span'),
     this.iterationDiv.$('.select-dropdown-menu'),
@@ -96,7 +96,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   commentsInputField = new ui.TextInput(this.commentDiv.$('.editor-box.editor-markdown'), 'comment input field');
   commentSaveButton = new ui.Button(this.commentDiv.$('.btn-save'), 'Comment save button');
   commentCancelButton = new ui.Button(this.commentDiv.$('.fl.btn.btn-default.pull-right.action-btn'), 'Comment cancel button');
-  commentsText = new ui.BaseElementArray(this.$$('.f8-comment-body .editor-box.editor-preview'), 'Comment List');
+  commentsText = new ui.BaseElementArray(this.$$('.f8-comment-body .comment .editor-box.editor-preview'), 'Comment List');
 
   constructor(ele: ElementFinder, name: string = '') {
     super(ele, name);
