@@ -11,10 +11,13 @@ describe('Iteration test', () => {
     planner = new PlannerPage(browser.baseUrl);
     await planner.openInBrowser();
     await planner.waitUntilUrlContains('typegroup');
-    await planner.ready();
   });
 
   beforeEach( async () => {
+    await planner.ready();
+  });
+
+  afterEach( async() => {
     await planner.resetState();
   });
 
@@ -32,8 +35,8 @@ describe('Iteration test', () => {
 
   it('should create a new child iteration', async () => {
     let newIteration = 'new Iteration1';
-    let parentIteration = '/' + process.env.SPACE_NAME + '/Iteration_3';
-    let iteration = 'Iteration_3';
+    let parentIteration = '/' + process.env.SPACE_NAME + '/Iteration_2';
+    let iteration = 'Iteration_2';
     await planner.sidePanel.createNewIteration();
     await planner.iteration.addNewIteration(newIteration, parentIteration);
     await planner.iteration.clickCreateIteration();
@@ -42,11 +45,14 @@ describe('Iteration test', () => {
   });
 
   it('updating iteration should update workitem associated to iteration', async() => {
-    let dropdownIteration1 = 'Iteration_5',
+    let dropdownIteration1 = 'new Iteration2',
       updateIteration = 'Iteration 0123',
-      workItemTitle1 = 'Workitem_Title_10';
+      workItemTitle1 = 'Workitem_Title_2';
 
-    await planner.sidePanel.ready();
+    await planner.sidePanel.createNewIteration();
+    await planner.iteration.addNewIteration(dropdownIteration1);
+    await planner.iteration.clickCreateIteration();
+
     await planner.workItemList.workItem(workItemTitle1).openQuickPreview();
     await planner.quickPreview.addIteration(dropdownIteration1);
     await planner.quickPreview.close();
@@ -71,6 +77,7 @@ describe('Iteration test', () => {
     await planner.iteration.parentIteration.enterText(iterationName);
     let val = await planner.iteration.parentDropdownList.getTextWhenReady();
     // Ensure val is exactly the value we expect it to be
-    expect(val).toBe('/' + process.env.SPACE_NAME + '/' + iterationName)
+    expect(val).toBe('/' + process.env.SPACE_NAME + '/' + iterationName);
+    await planner.iteration.clickCancel();
   });
 })

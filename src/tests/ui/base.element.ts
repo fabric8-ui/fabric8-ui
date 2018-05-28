@@ -74,6 +74,11 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
     await this.waitFor(`text ${text}`, condition, timeout);
   }
 
+  async untilTextIsPresentInValue(text: string, timeout?: number) {
+    let condition = EC.textToBePresentInElementValue(this, text);
+    await this.waitFor(`text ${text}`, condition, timeout);
+  }
+
   async untilHidden(timeout?: number) {
     try {
       await this.waitFor('hidden', EC.invisibilityOf(this), timeout);

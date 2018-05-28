@@ -5,8 +5,8 @@ export class Constants {
   attribute4 = "Assignees";
   dropdownareaTitle1 = 'Area_1';
   dropdownareaTitle2 = 'Area_2';  
-  dropdownIteration1 = 'Iteration_1/Iteration1_5';
-  dropdownIteration2 = 'Iteration_1/Iteration1_2';
+  dropdownIteration1 = 'Iteration_1/Iteration1_1';
+  dropdownIteration2 = 'Iteration_1';
   dropdownIteration_2 = 'Iteration_2';
   label = 'sample_label_1';
   updateIteration = 'Iteration_2123'
@@ -19,8 +19,8 @@ export class Constants {
   newIteration1 ='new Iteration 1';
   areaTitle1 = '/' + process.env.SPACE_NAME + '/Area_1';
   areaTitle2 = '/' + process.env.SPACE_NAME + '/Area_2';
-  iteration1 = '/' + process.env.SPACE_NAME + '/Iteration_1/Iteration1_5';
-  iteration2 = '/' + process.env.SPACE_NAME + '/Iteration_1/Iteration1_2';
+  iteration1 = '/' + process.env.SPACE_NAME + '/Iteration_1/Iteration1_1';
+  iteration2 = '/' + process.env.SPACE_NAME + '/Iteration_2';
   parentIteration = 'Iteration_2';
   iteration3 = '/' + process.env.SPACE_NAME;
   newWorkItem1 = {
@@ -37,11 +37,7 @@ export class Constants {
     title: 'New Workitem Title',
     description: 'New WorkItem Description'
   };
-  workItemTitle1 = 'Workitem_Title_10';
-  workItemTitle2 = 'Workitem_Title_5';
-  workItemTitle7 = 'Workitem_Title_7';
-  workItemTitle13 = 'Workitem_Title_13';
-  workItemTitle17 = 'Workitem_Title_17';
+  workItemTitle2 = 'Workitem_Title_2';
   user1 = process.env.USER_FULLNAME;
   editWorkItemTitle1 = 'Title Text "<0>"';
   // Required since we need 2 users. Do not remove

@@ -22,7 +22,7 @@ export class WorkItemList extends BaseElement {
 
   async ready() {
     await super.ready();
-    await this.overlay.untilAbsent();
+    await this.overlay.untilHidden();
   }
 
   async clickWorkItem(title: string) {

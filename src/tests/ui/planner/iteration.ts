@@ -22,7 +22,8 @@ export class Iteration extends ui.BaseElement {
   selectEndDate = new ui.Clickable(this.$$('.datevalue.currmonth').last(),' select end date');  
   month = new ui.Clickable(this.$('.headermonthtxt'), 'month');
   year = new ui.Clickable(this.$('.yearlabel'), 'year');
-    
+  cancel = new ui.Button(this.iterationDialog.$('#cancel-iteration-button'),'Cancel Iteration button');
+
   async addNewIteration(iterationName: string, parentIteration?: string, withDates?: boolean) {
     await this.iterationName.enterText(iterationName);
     if(parentIteration) {
@@ -66,5 +67,10 @@ export class Iteration extends ui.BaseElement {
   async getLastDayOfMonth(): Promise<String> {
     let day = await this.selectEndDate.getAttribute("innerText");
     return day;
+  }
+
+  async clickCancel() {
+    await this.cancel.clickWhenReady();
+    await this.cancel.untilHidden();
   }
 }
