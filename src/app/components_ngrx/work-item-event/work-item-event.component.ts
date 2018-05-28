@@ -106,7 +106,4 @@ export class WorkItemEventComponent implements OnInit {
     }
     this.textType = "label";
   }
-
-
-
 }

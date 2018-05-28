@@ -10,31 +10,6 @@ import { AuthenticationService } from 'ngx-login-client';
 import { MockHttp } from '../../mock/mock-http';
 import { EventQuery } from "../../models/event.model";
 
-let providers = [];
-
-if (process.env.ENV == 'inmemory') {
-  providers = [
-    GlobalSettings,
-    {
-      provide: HttpService,
-      useExisting: MockHttp
-     },
-   ];
-} else {
-  providers = [
-    {
-      provide: HttpService,
-      useFactory: (backend: XHRBackend, options: RequestOptions, auth: AuthenticationService) => {
-        return new HttpService(backend, options, auth);
-      },
-      deps: [XHRBackend, RequestOptions, AuthenticationService]
-    },
-    GlobalSettings,
-    EventQuery
-    ];
-}
-
-
 @NgModule({
   imports: [    
     CommonModule,
@@ -42,7 +17,7 @@ if (process.env.ENV == 'inmemory') {
     WorkItemEventModule],
   declarations: [WorkItemEventWrapperComponent],
   exports: [WorkItemEventWrapperComponent],
-  providers: providers
+  providers: [EventQuery]
 })
 
 export class WorkItemEventWrapperModule { }

@@ -21,7 +21,8 @@ export class WorkItemEventWrapperComponent {
 
   private events = this.eventsQuery.getEventsWithModifier();
 
-    constructor( private store: Store < AppState >,
+    constructor(
+      private store: Store<AppState>,
       private eventsQuery: EventQuery
     ) { }
 }
