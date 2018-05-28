@@ -40,7 +40,7 @@
             <f8-label
               [labels]='event.newValueRelationships'
               [allowDelete]="false"
-              [context]="detail">
+              [context]="'detail'">
             </f8-label>
             <ng-container *ngIf="toText">
               <span class="dib" 
@@ -50,7 +50,7 @@
               <f8-label
                 [labels]='event.oldValueRelationships'
                 [allowDelete]="false"
-                [context]="detail">
+                [context]="'detail'">
               </f8-label>
             </ng-container>
           </div>

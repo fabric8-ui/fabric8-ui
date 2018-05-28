@@ -9,11 +9,13 @@ import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
 import { AuthenticationService } from 'ngx-login-client';
 import { MockHttp } from '../../mock/mock-http';
 import { EventQuery } from "../../models/event.model";
+import { EmptyStateModule } from "patternfly-ng/empty-state";
 
 @NgModule({
   imports: [    
     CommonModule,
     CollapseModule,
+    EmptyStateModule,
     WorkItemEventModule],
   declarations: [WorkItemEventWrapperComponent],
   exports: [WorkItemEventWrapperComponent],
