@@ -555,7 +555,6 @@ export class WorkItemService {
    * @param: WorkItem - wItem
    */
   resolveEvents(url: string): Observable<any> {
-    console.log("########-----CAll Made-----------##########")
     return this.http
       .get(url)
       .map(response => {

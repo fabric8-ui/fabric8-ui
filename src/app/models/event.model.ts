@@ -153,6 +153,20 @@ export class EventResolver {
   }
 
   resolve(data) {
+    let added = this.event.newValueRelationships.filter(
+      newItem => this.event.oldValueRelationships.findIndex(
+        oldItem => oldItem.id === newItem.id
+      ) === -1
+    );
+
+    let removed = this.event.oldValueRelationships.filter(
+      oldItem => this.event.newValueRelationships.findIndex(
+        newItem => newItem.id === oldItem.id
+      ) === -1
+    );
+
+    this.event.newValueRelationships = added;
+    this.event.oldValueRelationships = removed;
     if (this.event.newValueRelationships.length > 0) {
       this.event.type = this.event.newValueRelationships[0].type;
       this.event.newValueRelationships = this.event.newValueRelationships.map(item => {

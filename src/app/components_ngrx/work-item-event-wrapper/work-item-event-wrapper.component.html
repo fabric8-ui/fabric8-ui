@@ -21,7 +21,7 @@
     </li>
   </ul>
   <div [collapse]="isCollapsedTimeline" 
-    *ngIf="(events | async).length > 1">
+    *ngIf="(events | async).length > 0">
     <work-item-event 
       *ngFor="let event of events | async" 
       [event]="event">
