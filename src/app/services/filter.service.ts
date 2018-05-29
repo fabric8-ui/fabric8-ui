@@ -608,10 +608,13 @@ export class FilterService {
   queryToFlat(query: string) {
     return query.replace(/^\((.+)\)$/,"$1")
       .split(this.and_notation).map((item, index) => {
+        // regex to match field:value pattern.
+        // for item=title:A:D, field -> title and value -> A:D
+        let filterValue = /(^[^:]+):(.*)$/.exec(item);
       return {
-        field: item.split(':')[0].trim(),
+        field: filterValue[1].trim(),
         index: index,
-        value: item.split(':')[1].trim()
+        value: filterValue[2].trim()
       }
     })
   }
