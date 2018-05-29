@@ -11,6 +11,7 @@ describe('WorkItemMapper', () => {
         "system.created_at": "2017-06-28T07:44:36.640764Z",
         "system.description": "Cannot resolve Area/Iteration info for new WI created in in-memory mode under Backlog > Quick Add",
         "system.description.rendered": "Cannot resolve Area/Iteration info for new WI created in in-memory mode under Backlog &gt; Quick Add",
+        "system.description.markup": "Markdown",
         "system.number": 1343,
         "system.order": 1045750,
         "system.state": "closed",
