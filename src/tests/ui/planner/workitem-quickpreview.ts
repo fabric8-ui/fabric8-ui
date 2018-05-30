@@ -9,6 +9,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   notificationToast = new ui.BaseElementArray($$('pfng-toast-notification'), 'Notification Toast');
   /* UI elements of the Top section of the workitem preview */
   closeButton = new ui.Button(this.$('.f8-detail--close'), 'WorkItem Quick Preview close button');
+  stateDiv = new ui.BaseElement(this.$('#wi-preview-state'),' State toggle');
   iterationDropdownCloseButton = new ui.Button(this.$('.iteration-dropdown .close-pointer'),'Iteration dropdown close button');
   areaDropdownCloseButton = new ui.Button(this.$('.area-dropdown .close-pointer'),'Area dropdown close button');
   stateDropdown = new ui.Dropdown(this.$('.dropdown-toggle'), this.$('#wi-status-dropdown'), 'WorkItem State dropdown');
@@ -20,6 +21,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   titleErrorMessage = new ui.BaseElement(this.$('.error-message small'), 'WorkItem Title error message');
 
   /* UI elements for the middle section of the workitem preview */
+  assigneeDropdownSelector = new ui.BaseElement(this.$('assignee-selector'), ' assignee selector');
   assigneeDropdown = new ui.Dropdown(
     this.$('#f8-add-assignee'),
     this.$('assignee-selector ul.select-dropdown-menu'),
