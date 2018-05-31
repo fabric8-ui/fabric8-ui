@@ -1,5 +1,5 @@
 import { BaseElement } from './../base.element';
-import { ElementFinder, by } from 'protractor';
+import { ElementFinder, by, browser } from 'protractor';
 import { WorkItemQuickAdd } from './workitem-quickadd';
 import { WorkItemListEntry } from './workitem-list-entry';
 import * as ui from '../../ui';
@@ -30,7 +30,10 @@ export class WorkItemList extends BaseElement {
     await this.workItem(title).openQuickPreview();
   }
 
-  async hasWorkItem(title: string): Promise<boolean> {
+  async hasWorkItem(title: string, showCompleted = false): Promise<boolean> {
+    if(!showCompleted) {
+      await this.workItem(title).untilTextIsPresent(title);
+    }
     return this.workItem(title).isPresent();
   }
 

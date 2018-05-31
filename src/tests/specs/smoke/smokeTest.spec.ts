@@ -47,7 +47,7 @@ describe('Planner Smoke Tests:', () => {
     await planner.quickPreview.updateDescription(c.updatedWorkItem.description);
     expect(await planner.quickPreview.getDescription()).toBe(c.updatedWorkItem.description);
     await planner.quickPreview.close();
-    expect(await planner.workItemList.hasWorkItem(c.newWorkItem2.title)).toBeFalsy();
+    expect(await planner.workItemList.hasWorkItem(c.newWorkItem2.title, true)).toBeFalsy();
     expect(await planner.workItemList.hasWorkItem(c.updatedWorkItem.title)).toBeTruthy();
   });
 
@@ -145,18 +145,24 @@ describe('Planner Smoke Tests:', () => {
 
   it('Create custom query', async() => {
     await planner.sidePanel.clickRequirement();
+    await planner.workItemList.overlay.untilHidden();
     await planner.header.selectFilter('State','in progress');
+    await planner.workItemList.overlay.untilHidden();
     await planner.header.saveFilters('Query 1');
     await planner.workItemList.overlay.untilHidden();
+    await planner.sidePanel.customQuery.untilTextIsPresent('Query 1');
     expect(await planner.sidePanel.getMyFiltersList()).toContain('Query 1');
   });
 
   it('Delete custom query', async() => {
     await planner.sidePanel.clickRequirement();
+    await planner.workItemList.overlay.untilHidden();
     await planner.header.selectFilter('State', 'resolved');
+    await planner.workItemList.overlay.untilHidden();
     await planner.header.saveFilters('My filter');
     await planner.workItemList.overlay.untilHidden();
-    await planner.quickPreview.notificationToast.untilHidden();
+    await planner.quickPreview.notificationToast.untilHidden()
+    await planner.sidePanel.customQuery.untilTextIsPresent('My filter');
     expect(await planner.sidePanel.getMyFiltersList()).toContain('My filter');
     await planner.sidePanel.selectcustomFilterKebab('My filter');
     await planner.sidePanel.deleteCustomQuery.clickWhenReady();
@@ -173,7 +179,7 @@ describe('Planner Smoke Tests:', () => {
     expect(await planner.quickPreview.getLabels()).toContain("Validate description label");
     await planner.quickPreview.close();
     await planner.workItemList.clickWorkItem(title);
-    await planner.quickPreview.addLabel("Validate description label");
+    await planner.quickPreview.addLabel("Validate description label", true);
     expect(await planner.quickPreview.getDescription()).toBe("My new description");
     await planner.quickPreview.close();
   });
@@ -187,7 +193,7 @@ describe('Planner Smoke Tests:', () => {
     await planner.detailPage.titleInput.untilTextIsPresentInValue('new detail workItem');
     await planner.detailPage.close();
     await planner.waitUntilUrlContains('typegroup');
-    await planner.ready();
+    expect(await planner.workItemList.hasWorkItem('new detail workItem')).toBeTruthy();
   });
 });
 

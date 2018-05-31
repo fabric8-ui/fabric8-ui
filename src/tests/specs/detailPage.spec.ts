@@ -77,11 +77,12 @@ describe('Detail View test: ', () => {
 
   it('should link a workitem', async () => {
     let linkType = 'blocks',
+      searchWorkItem = '2-Workitem_Title_3',
       Workitem_Title_3 = 'Workitem_Title_3';
     await planner.workItemList.openDetailPage(c.workItemTitle2);
     await planner.waitUntilUrlContains('detail');
     await planner.detailPage.titleInput.untilTextIsPresentInValue(c.workItemTitle2);
-    await planner.detailPage.addLink(linkType, Workitem_Title_3);
+    await planner.detailPage.addLink(linkType, searchWorkItem, Workitem_Title_3);
     expect(await planner.detailPage.getLinkedItems()).toContain(Workitem_Title_3);
   });
 
@@ -90,6 +91,7 @@ describe('Detail View test: ', () => {
     await planner.waitUntilUrlContains('detail');
     await planner.detailPage.titleInput.untilTextIsPresentInValue(c.workItemTitle2);
     await planner.detailPage.changeState('open');
+    await planner.detailPage.stateToggle.untilTextIsPresent('open');
     expect(planner.detailPage.stateToggle.getTextWhenReady()).toContain('open');
   });
 });

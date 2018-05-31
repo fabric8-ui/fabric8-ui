@@ -78,7 +78,7 @@ describe('Work Item datatable list: ', () => {
     await planner.quickPreview.close();
     await planner.header.clickShowCompleted();
     await planner.workItemList.overlay.untilHidden();
-    expect(await planner.workItemList.hasWorkItem(newWorkItem.title)).toBeFalsy();
+    expect(await planner.workItemList.hasWorkItem(newWorkItem.title, true)).toBeFalsy();
   });
 
   it('work item should show updated title when switching from flat to tree view', async() => {
@@ -98,19 +98,17 @@ describe('Work Item datatable list: ', () => {
     await planner.workItemList.overlay.untilHidden();
     expect(await planner.workItemList.hasWorkItem(updatedWorkItem.title)).toBeTruthy();
   });
-  
+
   it('list should not update when new label is added', async() => {
     let title = await planner.createUniqueWorkItem(),
     childWorkItem = {
-      "title": 'test list is not updated when new iteration is added',
+      "title": 'test list is not updated when new label is added',
       "type": 'Experience'
     };
-    await planner.workItemList.workItem(title).untilDisplayed();
     expect(await planner.workItemList.hasWorkItem(title)).toBeTruthy();
     await planner.workItemList.workItem(title).clickInlineQuickAdd();
     await planner.createInlineWorkItem(childWorkItem);
     await planner.quickPreview.notificationToast.untilHidden();
-    await browser.sleep(2000);
     expect(await planner.workItemList.hasWorkItem(childWorkItem.title)).toBeTruthy();
     await planner.workItemList.clickWorkItem(title);
     await planner.quickPreview.createNewLabel(c.newLabel1);
@@ -124,12 +122,10 @@ describe('Work Item datatable list: ', () => {
         "title": 'test list is not updated when new iteration is added',
         "type": 'Experience'
       };
-    await planner.workItemList.workItem(title).untilDisplayed();
     expect(await planner.workItemList.hasWorkItem(title)).toBeTruthy();
     await planner.workItemList.workItem(title).clickInlineQuickAdd();
     await planner.createInlineWorkItem(childWorkItem);
     await planner.quickPreview.notificationToast.untilHidden();
-    await browser.sleep(2000);
     expect(await planner.workItemList.hasWorkItem(childWorkItem.title)).toBeTruthy();
     await planner.sidePanel.createNewIteration();
     await planner.iteration.addNewIteration(c.newIteration1, c.iteration3);

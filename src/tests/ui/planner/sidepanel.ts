@@ -66,7 +66,7 @@ export class SidePanel extends ui.BaseElement {
 
   async getIterationDate(): Promise<String> {
     await this.ready();
-    let iterationList = await this.iterationHeader.getAttribute('innerText');
+    let iterationList = await this.iterationHeader.getTextWhenReady();
     let iterationList1 = iterationList.toString().replace("\n","");
     return iterationList1;
   }

@@ -52,7 +52,9 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     this.$('#labelSelector .add-label'),
     this.$('#labelSelector ul.select-dropdown-menu'),
     'Label Select dropdown');
-  labelListDiv = new ui.BaseElementArray(this.$$('f8-label .label-wrapper>span'), 'label list Div');
+  labelsDiv = new ui.BaseElement(this.$('.f8-detail__labels'), ' labels Div');
+  labels = new ui.BaseElement(this.labelsDiv.$('.label-wrapper'),' labels ');
+  labelListDiv = new ui.BaseElementArray(this.labelsDiv.$$('f8-label .label-wrapper>span'), 'label list Div');
   labelDropDownDiv = new ui.BaseElement(this.$('#labelSelector .select-dropdown'), 'dropdown div');
   labelDropdownCloseButton = new ui.Clickable(this.labelDropDownDiv.$('.close-pointer'),'label dropdown close Button');
   createLabelButton = new ui.Clickable(this.labelDropDownDiv.$('.create-label-button'),'Create new label');
@@ -99,6 +101,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   commentSaveButton = new ui.Button(this.commentDiv.$('.btn-save'), 'Comment save button');
   commentCancelButton = new ui.Button(this.commentDiv.$('.fl.btn.btn-default.pull-right.action-btn'), 'Comment cancel button');
   commentsText = new ui.BaseElementArray(this.$$('.f8-comment-body .comment .editor-box.editor-preview'), 'Comment List');
+  commentsCount = new ui.BaseElement(this.$('#total_comments'), 'comment count')
 
   constructor(ele: ElementFinder, name: string = '') {
     super(ele, name);
@@ -154,10 +157,13 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async addCommentAndSave(comment: string) {
-    await this.ready()
+    await this.ready();
+    let count = await this.commentsCount.getTextWhenReady();
     await this.addComment(comment);
     await this.commentSaveButton.clickWhenReady();
     await this.commentSaveButton.untilHidden();
+    count = (parseInt(count) + 1).toString();
+    await this.commentsCount.untilTextIsPresent(count);
   }
 
   async addCommentAndCancel(comment: string) {
@@ -165,18 +171,22 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.commentCancelButton.clickWhenReady();
   }
 
-  async addLabel(label: string) {
+  async addLabel(label: string, unassignLabel=false) {
     await this.labelDropdown.clickWhenReady()
     await this.labelDropdown.select(label);
     await this.labelDropdownCloseButton.clickWhenReady();
+    await this.loadingAnimation.untilCount(0);
+    if(!unassignLabel) {
+      await this.labels.untilTextIsPresent(label);
+    }
   }
 
-  async addLink(link: string, workItem: string) {
+  async addLink(link: string, searchWorkItem: string, workItem: string) {
     await this.linksToggleButton.clickWhenReady();
     await this.createLinkButton.clickWhenReady();
     await this.linkTypeDropdown.clickWhenReady();
     await this.linkTypeDropdown.select(link);
-    await this.searchWorkItem.enterText(workItem);
+    await this.searchWorkItem.enterText(searchWorkItem);
     await browser.sleep(1000);
     await this.workItemDropdown.select(workItem);
     await this.linkButton.isPresent();
@@ -190,6 +200,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.createLabelSaveButton.clickWhenReady();
     await this.labelDropdown.select(label);
     await this.labelDropdownCloseButton.clickWhenReady();
+    await this.loadingAnimation.untilCount(0);
   }
 
   // Try to click on the close button, if it fails, wait for notification to disappear
