@@ -3,12 +3,12 @@
 # This script runs the Planner-Platform integration in one go.
 # It has the following commandline options:
 #
-#   -r reinstalls all needed components before launching 
+#   -r reinstalls all needed components before launching
 #   -s runs in standalone (non-Plaform mode)
 #   -p <planner_home_dir> sets the Planner home, defaults to current directory
 #   -f <platform_home_dir> sets the Platform home, defaults to <current directory>/../fabric8-ui
 #
-# NOTE: this does not set any run mode or api url environment for non-standalone mode. If you 
+# NOTE: this does not set any run mode or api url environment for non-standalone mode. If you
 # need that, set it as usual before launching this script.
 
 set -euo pipefail
@@ -51,7 +51,7 @@ function reinstallPlannerAndBuild {
 
 function linkPlannerTo {
   log "Linking Planner to $1"
-  cd $1 && npm link $PLANNER_HOME/dist
+  cd $1 && npm link $PLANNER_HOME/dist --production
 }
 
 function serveProject {
@@ -98,7 +98,7 @@ function runStandalone {
   linkPlannerTo "$PLANNER_HOME/runtime"
 
   serveProject "$PLANNER_HOME/runtime"
-} 
+}
 
 # extract options and their arguments into variables.
 while true ; do

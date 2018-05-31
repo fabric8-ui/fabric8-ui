@@ -130,7 +130,7 @@ then
 else
     echo "Linking planner to platform within f8ui build container..."
     npm install
-    npm link $PLANNERPATH/dist
+    npm link $PLANNERPATH/dist --production
 
     echo "Building platform with integrated planner..."
     npm run build:prod

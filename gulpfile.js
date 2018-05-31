@@ -129,7 +129,7 @@ gulp.task('build', function (done) {
     });
     util.log('Now run');
     util.log('');
-    util.log(util.colors.red('    npm link', path.resolve(distPath)));
+    util.log(util.colors.red('    npm link', path.resolve(distPath), ' --production'));
     util.log('');
     util.log('in the npm module you want to link this one to');
   }
