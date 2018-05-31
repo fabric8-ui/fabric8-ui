@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  HostListener,
   OnInit,
   ViewChild,
   ViewEncapsulation
@@ -26,13 +27,18 @@ import { SpacesService } from 'app/shared/spaces.service';
   templateUrl: './add-space-overlay.component.html'
 })
 export class AddSpaceOverlayComponent implements OnInit {
+  @HostListener('document:keyup.escape', ['$event']) onKeydownHandler(evt: KeyboardEvent) {
+    this.hideAddSpaceOverlay();
+  }
+
+  @ViewChild('description') description: ElementRef;
+
   currentSpace: Space;
   selectedTemplate: ProcessTemplate = null;
   spaceTemplates: ProcessTemplate[];
   space: Space;
   subscriptions: Subscription[] = [];
   canSubmit: Boolean = true;
-  @ViewChild('description') description: ElementRef;
 
   constructor(private router: Router,
               private spaceService: SpaceService,
