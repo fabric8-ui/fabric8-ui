@@ -16,12 +16,13 @@
     <span class="dib fa fa-repeat margin-right-15
       padding-top-2 padding-bottom-3"
       tooltip="{{sidePanelOpen ? '' : 'Active Iteration'}}"
-      placement="right"></span>
+      placement="right">
+    </span>
     <h3 class="margin-0"
       [class.dib]="sidePanelOpen"
       [class.hide]="!sidePanelOpen">
       Iterations
-    <infotip [infotipText]="iterationInfotip"></infotip>
+      <infotip [infotipText]="infotipText"></infotip>
     </h3>
   </div>
   <ul class="f8-itr__container"
