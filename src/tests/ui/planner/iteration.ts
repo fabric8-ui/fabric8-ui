@@ -19,9 +19,9 @@ export class Iteration extends ui.BaseElement {
   private showEndDateCalendar = new ui.Clickable(this.datePickerDiv.$$('.selection.inputnoteditable').last(),'End date calendar');
   calendarDiv = new ui.BaseElement(this.$('.selector.selectorarrow.selectorarrowleft'),'');
   selectStartdate = new ui.Clickable(this.$$('.datevalue.currmonth').first(),' select start date');
-  selectEndDate = new ui.Clickable(this.$$('.datevalue.currmonth').last(),' select end date');  
+  selectEndDate = new ui.Clickable(this.$$('.datevalue.currmonth').last(),' select end date');
   month = new ui.Clickable(this.$('.headermonthtxt'), 'month');
-  year = new ui.Clickable(this.$('.yearlabel'), 'year');
+  year = new ui.Clickable(this.$('.headeryeartxt .headerlabelbtn'), 'year');
   cancel = new ui.Button(this.iterationDialog.$('#cancel-iteration-button'),'Cancel Iteration button');
 
   async addNewIteration(iterationName: string, parentIteration?: string, withDates?: boolean) {
@@ -63,7 +63,7 @@ export class Iteration extends ui.BaseElement {
     await this.createIterationButton.clickWhenReady();
     await this.createIterationButton.untilHidden();
   }
-  
+
   async getLastDayOfMonth(): Promise<String> {
     let day = await this.selectEndDate.getAttribute("innerText");
     return day;
