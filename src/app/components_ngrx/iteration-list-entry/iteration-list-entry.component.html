@@ -48,7 +48,8 @@
   <a 
     class="f8-itr__header"
     [routerLink]="[]" 
-    [queryParams]="addRemoveQueryParams(iteration.id)">
+    [queryParams]="addRemoveQueryParams(iteration.id)"
+    title="{{iteration.name}}">
     <div class="truncate padding-right-15">
       <span class="f8-itr-name truncate">{{iteration.name | truncate : 15}}</span>
       <span class="active-tag"

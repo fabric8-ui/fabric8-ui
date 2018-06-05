@@ -52,8 +52,11 @@
 </div>
 
 <!-- Iteration -->
-  <span id="table-iteration" *ngIf="col === 'iteration'">
-    {{row.iteration?.parentPath === '/' ? 'NA' : row.iteration?.name}}
+  <span id="table-iteration" 
+        title="{{row.iteration?.parentPath === '/' ? 'NA' 
+        : row.iteration?.name}}"
+        *ngIf="col === 'iteration'">
+    {{row.iteration?.parentPath === '/' ? 'NA' : row.iteration?.name | truncate : 18}}
   </span>
 
 <!-- Creator -->

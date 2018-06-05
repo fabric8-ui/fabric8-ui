@@ -35,6 +35,7 @@ import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { FilterColumn } from '../../pipes/column-filter.pipe';
 import { WorkItemDataService } from './../../services/work-item-data.service';
 import { PlannerModalModule } from '../../components/modal/modal.module';
+import { TruncateModule } from 'ng2-truncate';
 
 import { CookieService } from './../../services/cookie.service';
 import { FilterService } from './../../services/filter.service';
@@ -127,6 +128,7 @@ if (process.env.ENV == 'inmemory') {
     BsDropdownModule.forRoot(),
     NgxDatatableModule,
     WorkItemPreviewPanelModule,
+    TruncateModule,
     StoreModule.forFeature('listPage', {
         iterations: reducers.iterationReducer,
         labels: reducers.LabelReducer,
