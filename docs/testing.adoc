@@ -6,51 +6,38 @@
 
 toc::[]
 
-== Overview
 The following sections describe the tests used in Planner.
 
-== Unit Tests
+== Unit tests
 
-To run the linter, build validator, and unit tests, use:
+To run the unit tests use:
 ----
-$ gulp test:unit
-----
-
-== Functional Tests
-
-See link:../tests/README.adoc[Running Functional Tests]:
-
-=== Building for Functional Tests or Standalone Production
-
-1. Build the Planner library. In the *_planner_* root directory run:
-+
-----
-npm run build
-----
-2. Link the Planner library to runtime. Change directory to *_runtime_* and run:
-+
-----
-npm link ../dist
-----
-3. Build the runtime using:
-+
-----
-npm run build
-----
-+
-The runtime is now available in the *_runtime/dist_* directory.
-
-== Local tests
-
-To run tests like those done in the CI run the following script in the *_Planner_* directory:
-
-----
-$ ./scripts/local_docker.sh
+$ npm run tests -- --unit
 ----
 
-This script generates a docker image that you could use to run the planner within a container.
+== Functional tests
+.Prerequisite
+* To run the tests ensure that you have an account on prod-preview.openshift.io
 
-Optionally, you could also run the functional tests by passing `functionalTests` as an argument to the above script:
+.Procedure
+To run the functional tests:
+
+. Login to prod-preview.openshift.io.
+. Get the refresh token:
+.. In the Google Chrome browser, press kbd:[F12] to open the *Chrome Devtools* pane and navigate to the *Application* tab.
+.. In the *Storage* section expand *Local Storage* and click on *prod-preview.openshift.io*.
+.. Copy the value for the `refresh_token` key.
+
+. Run the tests with the following command:
 ----
-$ ./scripts/local_docker.sh functionalTests
+REFRESH_TOKEN=<YOUR_REFRESH_TOKEN> USER_NAME=<YOUR_PROD-PREVIEW-USERNAME> tests/run_e2e_tests.sh
 ----
+
+The functional tests support the following configuration variables:
+
+* `BASE_URL`: (default: https://prod-preview.openshift.io) - The tests are executed against this URL. To run tests against locally running integrated planner set the base url to http://localhost:3000.
+* `HEADLESS_MODE` (default=false): When `HEADLESS_MODE` is set, Protractor runs tests in headless chrome, similar to CI/CD environment.
+* `REFRESH_TOKEN`: This variable is required for authentication. See step 2 in the Run tests section to get this token.
+* `USER_NAME`: This variable is also required for authentication. `USER_NAME` is your prod-preview account username
+
+For further details see link:../tests/README.adoc[Test Runner] documentation.
