@@ -10,6 +10,7 @@ import {
   import { CommonModule } from '@angular/common';
   import { async, ComponentFixture, TestBed } from '@angular/core/testing';
   import { FormsModule } from '@angular/forms';
+  import { Http } from '@angular/http';
   import { RouterTestingModule } from '@angular/router/testing';
 
   import {
@@ -17,6 +18,7 @@ import {
     TokenProvider
   } from 'ngx-forge';
 
+  import { Fabric8UIHttpService } from '../../shared/fabric8-ui-http.service';
   import { AppLauncherComponent } from './app-launcher.component';
 
   describe('LauncherComponent', () => {
@@ -34,7 +36,11 @@ import {
           AppLauncherComponent
         ],
         providers: [
-          TokenProvider
+          TokenProvider,
+          {
+            provide: Http,
+            useClass: Fabric8UIHttpService
+          }
         ]
       }).compileComponents();
     }));
