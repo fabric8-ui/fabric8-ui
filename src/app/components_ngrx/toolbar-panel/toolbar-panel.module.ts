@@ -26,6 +26,8 @@ import {
   initialState as initialFilterState
 } from './../../states/filter.state';
 import { FilterEffects } from './../../effects/filter.effects';
+import { IterationQuery } from '../../models/iteration.model';
+import { AreaQuery } from '../../models/area.model';
 
 @NgModule({
   imports: [
@@ -54,7 +56,9 @@ import { FilterEffects } from './../../effects/filter.effects';
     FilterService,
     TooltipConfig,
     WorkItemService,
-    EventService
+    EventService,
+    IterationQuery,
+    AreaQuery
   ],
   exports: [ToolbarPanelComponent]
 })

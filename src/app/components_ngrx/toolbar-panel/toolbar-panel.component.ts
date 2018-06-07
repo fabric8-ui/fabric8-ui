@@ -30,14 +30,14 @@ import {
 } from 'ngx-login-client';
 import { Space } from 'ngx-fabric8-wit';
 
-import { AreaUI } from '../../models/area.model';
+import { AreaUI, AreaQuery } from '../../models/area.model';
 import { FilterModel } from '../../models/filter.model';
 import { FilterService } from '../../services/filter.service';
-import { LabelUI } from './../../models/label.model';
+import { LabelUI, LabelQuery } from './../../models/label.model';
 import { WorkItemTypeUI } from '../../models/work-item-type';
-import { WorkItem } from '../../models/work-item';
-import { UserUI } from './../../models/user';
-import { IterationUI } from './../../models/iteration.model';
+import { WorkItem, WorkItemQuery } from '../../models/work-item';
+import { IterationUI, IterationQuery } from './../../models/iteration.model';
+import { UserUI, UserQuery } from './../../models/user';
 import { GroupTypeUI } from './../../models/group-types.model';
 
 // ngrx stuff
@@ -112,8 +112,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     value: 'Loading...',
     iconStyleClass: 'fa fa-spinner'
   };
-  private areaData: Observable<AreaUI[]>;
-  private allUsersData: Observable<UserUI[]>;
   private workItemTypeData: Observable<WorkItemTypeUI[]>;
   private stateData: Observable<string[]>;
   private labelData: Observable<LabelUI[]>;
@@ -143,7 +141,12 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     private auth: AuthenticationService,
     private userService: UserService,
     private store: Store<AppState>,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef,
+    private userQuery: UserQuery,
+    private labelQuery: LabelQuery,
+    private iterationQuery: IterationQuery,
+    private areaQuery: AreaQuery,
+    private workItemQuery: WorkItemQuery) {
   }
 
   ngOnInit() {
@@ -166,13 +169,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.routeSource.subscribe(queryParam => this.queryExp = queryParam.q);
 
-    const customQueriesData = this.store
-      .select('listPage')
-      .select('customQueries')
+    const customQueriesData = this.workItemQuery.getWorkItems()
       .filter(customQueries => !!customQueries.length);
-      this.totalCount = this.store
-      .select('listPage')
-      .select('workItems')
+    this.totalCount = this.workItemQuery.getWorkItems()
       .map(items => {
         if(this.isShowTreeOn) {
           return items.filter(item => item.bold === true).length;
@@ -212,8 +211,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.eventListeners.push(
       Observable.combineLatest(
-        this.areaData,
-        this.allUsersData,
+        this.areaQuery.getAreas(),
+        this.userQuery.getCollaborators(),
         this.workItemTypeData,
         this.stateData,
         this.labelData
@@ -355,28 +354,21 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   initiateDataSources() {
-    this.areaData = this.store
-      .select('listPage').select('areas')
-      .filter(a =>!!a.length);
-    this.allUsersData = this.store
-      .select('listPage').select('collaborators')
-      .filter(a =>!!a.length);
     this.workItemTypeData = this.store
       .select('listPage').select('workItemTypes')
       .filter(a =>!!a.length);
     this.stateData = this.store
       .select('listPage').select('workItemStates')
       .filter(a =>!!a.length);
-    this.labelData = this.store
-      .select('listPage').select('labels').filter(l => l !== null);
+    this.labelData = this.labelQuery.getLables()
+      .filter(l => l !== null);
     this.spaceData = this.store
       .select('listPage').select('space')
       .filter(space => space !== null);
     this.filterData = this.store
       .select('toolbar').select('filters')
       .filter(filters => !!filters.length);
-    this.iterationData = this.store
-      .select('listPage').select('iterations')
+    this.iterationData = this.iterationQuery.getIterations()
       .filter(i => !!i.length)
     this.groupTypeData = this.store
       .select('listPage').select('groupTypes')
@@ -386,7 +378,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   getFilterMap() {
     return {
       area: {
-        datasource: this.areaData,
+        datasource: this.areaQuery.getAreas(),
         datamap: (areas: AreaUI[]) => {
           return {
             queries: areas.map(area => {return {id: area.id, value: area.name}}),
@@ -397,32 +389,29 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         type: 'select'
       },
       assignee: {
-        datasource: Observable.combineLatest(this.allUsersData, this.userService.getUser()),
-        datamap: ([users, authUser]) => {
-          if (Object.keys(authUser).length > 0) {
-            users = users.filter(u => u.id !== authUser.id);
-          }
+        datasource: this.userQuery.getCollaborators(),
+        datamap: (users) => {
+          const currentUsers = users.filter(u => u.currentUser);
+          const authUser = currentUsers.length ? currentUsers[0] : null;
           return {
-            queries: users.map((user: UserUI) => {return {id: user.id, value: user.username, imageUrl: user.avatar}}),
-            primaryQueries: Object.keys(authUser).length ?
-              [{id: authUser.id, value: authUser.attributes.username + ' (me)', imageUrl: authUser.attributes.imageURL}, {id: null, value: 'Unassigned'}] :
+            queries: users.filter(u => !u.currentUser).map((user: UserUI) => {return {id: user.id, value: user.username, imageUrl: user.avatar}}),
+            primaryQueries: authUser ?
+              [{id: authUser.id, value: authUser.username + ' (me1)', imageUrl: authUser.avatar}, {id: null, value: 'Unassigned'}] :
               [{id: null, value: 'Unassigned'}]
           }
         },
-        getvalue: (user) => user.attributes.username,
         type: 'typeahead'
       },
       creator: {
-        datasource: Observable.combineLatest(this.allUsersData, this.userService.getUser()),
-        datamap: ([users, authUser]) => {
-          if (Object.keys(authUser).length > 0) {
-            users = users.filter(u => u.id !== authUser.id);
-          }
+        datasource: this.userQuery.getCollaborators(),
+        datamap: (users) => {
+          const currentUsers = users.filter(u => u.currentUser);
+          const authUser = currentUsers.length ? currentUsers[0] : null;
           return {
-            queries: users.map((user: UserUI) => {return {id: user.id, value: user.username, imageUrl: user.avatar}}),
-            primaryQueries: Object.keys(authUser).length ?
-            [{id: authUser.id, value: authUser.attributes.username + ' (me)', imageUrl: authUser.attributes.imageURL}] :
-            []
+            queries: users.filter(u => !u.currentUser).map((user: UserUI) => {return {id: user.id, value: user.username, imageUrl: user.avatar}}),
+            primaryQueries: authUser ?
+              [{id: authUser.id, value: authUser.username + ' (me)', imageUrl: authUser.avatar}] :
+              []
           }
         },
         getvalue: (user) => user.attributes.username,
@@ -521,8 +510,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
   formatFilterFIelds(fields) {
     Observable.combineLatest(
-      this.areaData,
-      this.allUsersData,
+      this.areaQuery.getAreas(),
+      this.userQuery.getCollaborators(),
       this.workItemTypeData,
       this.stateData,
       this.labelData
