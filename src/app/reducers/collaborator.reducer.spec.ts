@@ -19,23 +19,7 @@ describe('CollaboratorReducer:', () => {
   });
 
   it('GetSuccess action should return new state', () => {
-    const collaborators: UserUI[] = [
-      {
-        id: "1",
-        name: 'user 1',
-        avatar: 'user1.jpg',
-        username: 'user1',
-        currentUser: false
-      },
-      {
-        id: "2",
-        name: 'user 2',
-        avatar: 'user2.jpg',
-        username: 'user2',
-        currentUser: false
-      }
-    ];
-
+    const collaborators: string[] = ['1', '2'];
     const action = new CollaboratorActions.GetSuccess(collaborators);
     const state = CollaboratorReducer(CollaboratorInitialState, action);
 
@@ -43,23 +27,7 @@ describe('CollaboratorReducer:', () => {
   });
 
   it('GetError action should return previous state', () => {
-    const previousState: UserUI[] = [
-      {
-        id: "1",
-        name: 'user 1',
-        avatar: 'user1.jpg',
-        username: 'user1',
-        currentUser: false
-      },
-      {
-        id: "2",
-        name: 'user 2',
-        avatar: 'user2.jpg',
-        username: 'user2',
-        currentUser: false
-      }
-    ];
-
+    const previousState: string[] = ['1', '2'];
     const action = new CollaboratorActions.GetError();
     const state = CollaboratorReducer(previousState, action);
 

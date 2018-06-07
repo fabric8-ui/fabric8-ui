@@ -29,12 +29,6 @@ export class UserEffects {
     private notifications: Notifications,
   ) {}
 
-  @Effect() getCollaboratorsSuccess$: Observable<UserAction> = this.actions$
-    .ofType(CollaboratorActions.GET_SUCCESS)
-    .map((action: CollabGetSuccess) => {
-      return new UserActions.Set(normalizeArray<UserUI>(action.payload));
-    });
-
   @Effect() getUser$: Observable<UserAction> = this.actions$
     .ofType(UserActions.GET)
     .switchMap((action: UserGetAction) => {

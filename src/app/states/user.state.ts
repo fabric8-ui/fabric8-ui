@@ -1,7 +1,7 @@
 import { UserUI } from './../models/user';
 
 export type UserState = {
-  [userId: string]: UserUI
+  [userId: string]: UserUI;
 }
 
 export const initialState: UserState = {};

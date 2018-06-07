@@ -10,9 +10,9 @@ export class Get implements Action {
 }
 
 export class GetSuccess implements Action {
-  payload: UserUI[];
+  payload: string[];
 
-  constructor(payload: UserUI[]) {
+  constructor(payload: string[]) {
     this.payload = payload;
   }
   readonly type = GET_SUCCESS;
