@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { AreaUI } from './../models/area.model';
+import { AreaState } from '../states/area.state';
 
 export const GET = '[area] Get';
 export const GET_SUCCESS = '[area] GetSuccess';
@@ -10,8 +11,8 @@ export class Get implements Action {
 }
 
 export class GetSuccess implements Action {
-  payload: AreaUI[];
-  constructor(payload: AreaUI[]) {
+  payload: AreaState;
+  constructor(payload: AreaState) {
     this.payload = payload;
   };
   readonly type = GET_SUCCESS;

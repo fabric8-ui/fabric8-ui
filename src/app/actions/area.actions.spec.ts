@@ -1,4 +1,4 @@
-import { AreaUI } from './../models/area.model';
+import { AreaState } from './../states/area.state';
 import {
   Get, GET,
   GetSuccess, GET_SUCCESS,
@@ -6,18 +6,23 @@ import {
 } from './area.actions';
 
 describe('Unit Test :: Area Actions', () => {
+
+  const areaAdapter =
+
   it('GetArea :: should create get action', () =>{
     const action = new Get();
     expect({...action}).toEqual({type: GET});
   })
 
   it('GetAreaSuccess :: should create get success action', () =>{
-    const areas = [{
-      id: 'area-1',
-      name: 'Area 1',
-      parentPath: '/',
-      parentPathResolved: '/'
-    }] as AreaUI[];
+    const areas = {
+      'area-1': {
+        id: 'area-1',
+        name: 'Area 1',
+        parentPath: '/',
+        parentPathResolved: '/'
+      }
+    } as AreaState;
 
     const action = new GetSuccess(areas);
     expect({...action}).toEqual({

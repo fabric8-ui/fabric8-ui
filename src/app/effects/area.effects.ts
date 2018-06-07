@@ -11,6 +11,7 @@ import {
   AreaService,
   AreaMapper
 } from './../models/area.model';
+import { normalizeArray } from '../models/common.model';
 
 export type Action = AreaActions.All;
 
@@ -32,10 +33,9 @@ export class AreaEffects {
         )
         .map((areas: AreaService[]) => {
           const aMapper = new AreaMapper();
-          return new AreaActions.GetSuccess(
-            areas.map(a => aMapper.toUIModel(a))
-          )
+          return areas.map(a => aMapper.toUIModel(a));
         })
+        .map(areas => new AreaActions.GetSuccess(normalizeArray(areas)))
         .catch((e) => {
           try {
             this.notifications.message({
