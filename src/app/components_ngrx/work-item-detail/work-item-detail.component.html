@@ -159,20 +159,19 @@
               <label class="pull-left padding-left-15 control-label">
                 {{workItem.type.fields['system.assignees']?.label || 'Label'}}
               </label>
-              <div class="f8-detail__content" #assignee>
+              <div class="f8-detail__content" #assignee >
                 <span *ngIf="loadingAssignees"
                   class="spinner spinner-sm spinner-inline">
                 </span>
                 <f8-assignee *ngIf="!loadingAssignees"
                   [showFullName]="true"
-                  [assignees]="workItem?.assignees ?
-                    workItem?.assignees : []">
+                  [assignees]="workItem?.assigneesObs | async">
                 </f8-assignee>
                 <div class="user-search"
                   *ngIf="loggedIn">
                     <assignee-selector
                       [allUsers]="collaborators"
-                      [selectedAssignees]="workItem?.assignees"
+                      [selectedAssignees]="workItem?.assigneesObs | async"
                       [loggedInUser]="loggedInUser"
                       (onOpenSelector)="onAssigneeSelectorOpen($event)"
                       (onCloseAssignee)="assignUser($event)">
@@ -188,22 +187,22 @@
               <label class="pull-left padding-left-15 control-label ">
                 {{workItem.type.fields['system.creator']?.label || 'Label'}}
               </label>
-              <div class="f8-detail__content">
-                <span *ngIf="!workItem?.creator"
+              <div class="f8-detail__content" *ngIf="workItem?.creatorObs | async; let creator">
+                <span *ngIf="!creator"
                   class="pficon pficon-user user-creator-icon"
                   id="user_creator_icon">
                 </span>
                 <div class="user-avatar pull-left margin-right-10">
-                  <img *ngIf="workItem?.creator"
+                  <img *ngIf="creator"
                     placement="bottom"
-                    tooltip="{{workItem?.creator?.name}}"
-                    src="{{workItem?.creator?.avatar + '&s=20'}}"
+                    tooltip="{{creator?.name}}"
+                    src="{{creator?.avatar + '&s=20'}}"
                     onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"
                     id="WI_details_reporter_img" />
                 </div>
                 <div class="dib">
                   <span id="WI_details_reporter_user">
-                    {{workItem.creator.name}}
+                    {{creator.name}}
                   </span>
                 </div>
               </div>
@@ -226,8 +225,8 @@
                   [allowUpdate]="!!loggedInUser"
                   [noValueLabel]="'None'"
                   [headerText]="'Update area'"
-                  [items]="areas"
-                  [selectedItems]="selectedAreas"
+                  [items]="areaSource | async"
+                  [selectedItems]="selectedAreas | async"
                   (onCloseSelector)="areaUpdated($event)">
                 </common-selector>
               </div>
@@ -248,9 +247,9 @@
                   class="iteration-dropdown"
                   [allowUpdate]="!!loggedInUser"
                   [headerText]="'Update iteration'"
-                  [items]="iterations"
+                  [items]="iterationSource | async"
                   [noValueLabel]="'None'"
-                  [selectedItems]="selectedIterations"
+                  [selectedItems]="selectedIterations | async"
                   (onCloseSelector)="iterationUpdated($event)">
                 </common-selector>
               </div>
@@ -268,8 +267,7 @@
                   class="spinner spinner-sm spinner-inline">
                 </span>
                 <f8-label *ngIf="!loadingLabels"
-                  [labels]='workItem?.labels ?
-                    workItem?.labels : []'
+                  [labels]='workItem?.labelsObs | async'
                   (onRemoveLabel)="removeLable($event)"
                   [allowDelete]="!!loggedInUser"
                   [context]="detailContext">
@@ -278,8 +276,7 @@
                   *ngIf="loggedIn">
                   <label-selector
                     [allLabels]="labels"
-                    [selectedLabels]="workItem?.labels ?
-                      workItem?.labels : []"
+                    [selectedLabels]="workItem?.labelsObs | async"
                     [allowUpdate]="!!loggedInUser"
                     (onCloseSelector)="updateLabels($event)">
                   </label-selector>

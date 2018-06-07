@@ -1,3 +1,4 @@
+import { WorkItemQuery } from './../../models/work-item';
 import {
   AfterViewInit,
   AfterViewChecked,
@@ -66,13 +67,14 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   infotipSource = this.store
   .select('listPage')
   .select('infotips');
-  
+
   constructor(
     private logger: Logger,
     private auth: AuthenticationService,
     private route: ActivatedRoute,
     private renderer: Renderer2,
-    private store: Store<AppState>) {}
+    private store: Store<AppState>,
+    private workItemQuery: WorkItemQuery) {}
 
   ngOnInit(): void {
     this.createWorkItemObj();
@@ -82,9 +84,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
 
     // listen for item added
     this.eventListeners.push(
-      this.store
-        .select('listPage')
-        .select('workItems')
+      this.workItemQuery.getWorkItems()
         .filter(items => !!items.length)
         .subscribe(items => {
           // const addedItem = items.find(item => item.createId === this.createId);
@@ -236,5 +236,5 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     return this.infotipSource
       .select(s => s[id])
       .select(i => i ? i['en'] : id);
-  }    
+  }
 }
