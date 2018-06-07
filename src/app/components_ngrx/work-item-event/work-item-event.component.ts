@@ -65,13 +65,8 @@ export class WorkItemEventComponent implements OnInit {
   }
 
   areasAndIteration() {
-    if (this.event.oldValueRelationships[0].parentPath === '/') {
-      this.intermediateText = "added this work item to " + this.title + ":"
-      this.toText = null;
-    } else {
-      this.intermediateText = "moved this work item to " + this.title;
-      this.toText = 'from ' + this.title;
-    }
+    this.intermediateText = "moved this work item to " + this.title;
+    this.toText = 'from ' + this.title;
     this.textType = "relationship";
   }
 
@@ -80,7 +75,7 @@ export class WorkItemEventComponent implements OnInit {
       if (this.event.newValueRelationships.length === 1 && this.event.newValueRelationships[0].id === this.event.modifierId) {
         this.intermediateText = "self assigned this workitem";
         this.toText = null;
-        this.event.newValueRelationships = [];
+        this.event.newValueRelationshipsObs = [];
       } else {
         this.intermediateText = "assigned this work item to"
         this.toText = null;
@@ -92,7 +87,7 @@ export class WorkItemEventComponent implements OnInit {
       this.intermediateText = "assigned";
       this.toText = "and unassgined"
     }
-    this.textType = "relationship";
+    this.textType = "assignee";
   }
 
   labels() {

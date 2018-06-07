@@ -12,50 +12,64 @@
           <strong class="truncate">
             {{(event.modifier | async).name.split(' ')[0]}}
           </strong>
+          <!-- Decription -->
           <span class="dib" style="vertical-align: text-top"
             *ngIf="textType === 'description'">
               edited the description
           </span>
-          <span 
-            class="dib" 
+
+          <!-- Single Value Change -->
+          <span
+            class="dib"
             style="vertical-align: top"
             *ngIf="textType === 'attribute'" >
             <span [innerHTML]=intermediateText></span>
             <i> '{{event.oldValue}}' </i>
-            {{ toText }} 
+            {{ toText }}
             <i> '{{event.newValue}}'</i>
           </span>
+
+          <!--Area, Iteration, Assignee-->
           <span class="dib" style="vertical-align: text-top"
-            *ngIf="textType === 'relationship'" >
+            *ngIf="textType === 'relationship' || textType === 'assignee'" >
             <span [innerHTML]=intermediateText></span>
-            <i *ngFor="let item of event.newValueRelationships"> '{{item.name}}' </i>
-            <ng-container *ngIf="toText">{{ toText }} 
-              <i *ngFor="let item of event.oldValueRelationships"> '{{item.name}}'</i>
+            <i *ngFor="let item of event.newValueRelationshipsObs"> '{{(item | async).name}}' </i>
+            <ng-container *ngIf="toText && textType === 'assignee'">{{ toText }}
+              <i *ngFor="let item of event.oldValueRelationshipsObs"> '{{(item | async).name}}'</i>
+            </ng-container>
+            <ng-container *ngIf="event.oldValueRelationshipsObs[0] | async as it">
+              <ng-container *ngIf="toText && textType === 'relationship' && it.parentPath !== '/'">
+                {{ toText }}
+                <i> '{{it.name}}'</i>
+              </ng-container>
             </ng-container>
           </span>
+
+          <!--Labels-->
           <div class="audit-trail__label"
             *ngIf="textType === 'label'" >
             <span style="vertical-align: text-top;"
               [innerHTML]=intermediateText></span>
             <f8-label
-              [labels]='event.newValueRelationships'
+              [labels]='event.newValueRelationshipsObs | async'
               [allowDelete]="false"
               [context]="'detail'">
             </f8-label>
             <ng-container *ngIf="toText">
-              <span class="dib" 
+              <span class="dib"
                 style="vertical-align: text-top;">
-                {{ toText }} 
+                {{ toText }}
               </span>
               <f8-label
-                [labels]='event.oldValueRelationships'
+                [labels]='event.oldValueRelationshipsObs | async'
                 [allowDelete]="false"
                 [context]="'detail'">
               </f8-label>
             </ng-container>
           </div>
+
         </h5>
-        <small class="f8-event--create-time" 
+        <small class="f8-event--create-time"
           style="vertical-align: text-top"
           [tooltip]="event.timestamp | date:'medium'">
           | {{event.timestamp | f8Time}}
