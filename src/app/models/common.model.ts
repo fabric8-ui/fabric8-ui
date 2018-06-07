@@ -8,6 +8,13 @@ export class modelService {
   type: string;
 }
 
+export interface CommonSelectorUI {
+  key: string;
+  value: string;
+  selected: boolean;
+  cssLabelClass: string | undefined;
+}
+
 export interface MapTree {
   [index: number]: {
     fromPath?: string[];
