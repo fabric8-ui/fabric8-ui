@@ -48,12 +48,7 @@ export class DetailWorkItemEffects {
         }
       }
       const workItemResolver = new WorkItemResolver(workItemUI);
-      workItemResolver.resolveArea(state.areas);
-      workItemResolver.resolveIteration(state.iterations);
-      workItemResolver.resolveCreator(state.collaborators);
       workItemResolver.resolveType(state.workItemTypes);
-      workItemResolver.resolveAssignees(state.collaborators);
-      workItemResolver.resolveWiLabels(state.labels);
       const wItem = workItemResolver.getWorkItem();
       let wid = this.workItemMapper.toDynamicUIModel(
         wi, wItem.type.dynamicfields
@@ -74,7 +69,9 @@ export class DetailWorkItemEffects {
     .switchMap(wp => {
       const state = wp.state;
       const payload = wp.payload;
-      const workItem = state.workItems.find(w => w.number === payload.number);
+      const workItem = Object.keys(state.workItems.entities)
+        .map(id => state.workItems.entities[id])
+        .find(w => w.number === payload.number);
       // If work item found in the existing list
       if (workItem) {
         return Observable
