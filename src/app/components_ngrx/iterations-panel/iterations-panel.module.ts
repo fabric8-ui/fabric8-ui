@@ -26,6 +26,7 @@ import { TruncateModule } from 'ng2-truncate';
 import { StoreModule } from '@ngrx/store';
 import { iterationUiReducer } from './../../reducers/iteration-reducer';
 import { initialUIState } from './../../states/iteration.state';
+import { IterationQuery } from '../../models/iteration.model';
 
 @NgModule({
   imports: [
@@ -57,6 +58,6 @@ import { initialUIState } from './../../states/iteration.state';
     IterationTreeComponent
   ],
   exports: [IterationComponent],
-  providers: [BsDropdownConfig, IterationService, TooltipConfig]
+  providers: [BsDropdownConfig, IterationService, TooltipConfig, IterationQuery]
 })
 export class IterationModule { }
