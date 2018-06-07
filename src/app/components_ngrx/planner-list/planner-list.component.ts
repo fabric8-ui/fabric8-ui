@@ -20,7 +20,7 @@ import {
   User,
   UserService
 } from 'ngx-login-client';
-import { IterationUI } from './../../models/iteration.model';
+import { IterationUI, IterationQuery } from './../../models/iteration.model';
 import { FilterService } from './../../services/filter.service';
 import { CookieService } from './../../services/cookie.service';
 import { cloneDeep, sortBy, isEqual } from 'lodash';
@@ -40,9 +40,12 @@ import * as CollaboratorActions from './../../actions/collaborator.actions';
 import * as AreaActions from './../../actions/area.actions';
 import * as WorkItemTypeActions from './../../actions/work-item-type.actions';
 import * as LabelActions from './../../actions/label.actions';
-import { WorkItemUI } from '../../models/work-item';
+import { WorkItemUI, WorkItemQuery } from '../../models/work-item';
 import * as WorkItemActions from './../../actions/work-item.actions';
 import { WorkItemPreviewPanelComponent } from '../work-item-preview-panel/work-item-preview-panel.component';
+import { UserQuery } from '../../models/user';
+import { LabelQuery } from './../../models/label.model';
+import { AreaQuery } from '../../models/area.model';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -70,30 +73,15 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     .select('space')
     .do(s => {if (!s) this.store.dispatch(new SpaceActions.Get())})
     .filter(s => !!s);
-  private areaSource = this.store
-    .select('listPage')
-    .select('areas')
+  private areaSource = this.areaQuery.getAreas()
     .filter(a => !!a.length);
-  private iterationSource = this.store
-    .select('listPage')
-    .select('iterations')
-    .filter(i => !!i.length)
-  private labelSource = this.store
-    .select('listPage')
-    .select('labels')
-    .filter(i => i !== null)
-  private collaboratorSource = this.store
-    .select('listPage')
-    .select('collaborators')
-    .filter(c => !!c.length);
-  private selectedIterationSource = this.store
-    .select('listPage')
-    .select('iterations')
-    .filter(its => !!its.length)
-    .map(its => its.find(it => it.selected));
-  private workItemSource = this.store
-    .select('listPage')
-    .select('workItems');
+  private labelSource = this.labelQuery.getLables();
+  private iterationSource = this.iterationQuery.getIterations()
+    .filter(i => !!i.length);
+  private selectedIterationSource = this.iterationQuery.getSelectedIteration()
+    .filter(i => i !== null);
+  private collaboratorSource = this.userQuery.getCollaborators();
+  private workItemSource = this.workItemQuery.getWorkItems();
   private routeSource = this.route.queryParams
     .filter(p => p.hasOwnProperty('q'));
   private quickAddWorkItemTypes: WorkItemTypeUI[] = [];
@@ -132,7 +120,12 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     private auth: AuthenticationService,
     private filterService: FilterService,
     private cookieService: CookieService,
-    private urlService: UrlService
+    private urlService: UrlService,
+    private iterationQuery: IterationQuery,
+    private userQuery: UserQuery,
+    private labelQuery: LabelQuery,
+    private workItemQuery: WorkItemQuery,
+    private areaQuery: AreaQuery
   ) {}
 
   ngOnInit() {
@@ -225,7 +218,6 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     }
     this.loggedIn = this.auth.isLoggedIn();
     this.setWorkItemTypes();
-    this.setSelectedIterationForQuickAdd();
     this.setWorkItems();
     this.setDataTableColumns();
 
@@ -395,15 +387,6 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
         }
       })
     );
-  }
-
-  setSelectedIterationForQuickAdd() {
-    this.eventListeners.push(
-      this.selectedIterationSource
-        .subscribe(iteration => {
-          this.selectedIteration = iteration;
-        })
-    )
   }
 
   /**

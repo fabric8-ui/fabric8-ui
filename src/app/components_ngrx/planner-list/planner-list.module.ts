@@ -56,6 +56,10 @@ import { ClickOutModule } from '../../widgets/clickout/clickout.module';
 // Data Querries
 import { CommentQuery } from './../../models/comment';
 import { UserQuery } from './../../models/user';
+import { WorkItemQuery } from './../../models/work-item';
+import { LabelQuery } from '../../models/label.model';
+import { IterationQuery } from '../../models/iteration.model';
+import { AreaQuery } from '../../models/area.model';
 
 let providers = [
     WorkItemService,
@@ -79,7 +83,11 @@ let providers = [
     InfotipService,
 
     CommentQuery,
-    UserQuery
+    UserQuery,
+    LabelQuery,
+    IterationQuery,
+    WorkItemQuery,
+    AreaQuery
   ];
 
 @NgModule({
