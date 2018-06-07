@@ -5,6 +5,12 @@ import {
   MapTree,
   switchModel
 } from './common.model';
+import { Injectable } from '@angular/core';
+import { Store, createFeatureSelector, createSelector } from '@ngrx/store';
+import { AppState, ListPage } from '../states/app.state';
+import { Observable } from 'rxjs';
+import  {IterationService as Service} from './../services/iteration.service'
+import { iterationUiReducer } from '../reducers/iteration-reducer';
 
 export class IterationModel extends modelService {
   attributes?: IterationAttributes;
@@ -148,10 +154,10 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
       fromPath: ['parentPath'],
       toPath: ['attributes','parent_path'],
     }, {
-      fromPath: ['resolvedParentPath'],      
+      fromPath: ['resolvedParentPath'],
       toPath: ['attributes','resolved_parent_path'],
     }, {
-      fromPath: ['userActive'],      
+      fromPath: ['userActive'],
       toPath: ['attributes','user_active'],
     }, {
       fromPath: ['isActive'],
@@ -160,7 +166,7 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
       fromPath: ['startAt'],
       toPath: ['attributes','startAt'],
     }, {
-      fromPath: ['endAt'],      
+      fromPath: ['endAt'],
       toPath: ['attributes','endAt'],
     }, {
       fromPath: ['description'],
@@ -171,17 +177,17 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
     }, {
       fromPath: ['link'],
       toPath: ['links','self'],
-    }, {      
+    }, {
       fromPath: ['workItemTotalCount'],
       toPath: ['relationships','workitems','meta','total'],
     }, {
-      fromPath: ['workItemClosedCount'],      
+      fromPath: ['workItemClosedCount'],
       toPath: ['relationships','workitems','meta','closed'],
     }, {
       fromPath: ['hasChildren'],
       toPath: ['hasChildren']
     }, {
-      fromPath: ['parentId'],      
+      fromPath: ['parentId'],
       toPath: ['relationships', 'parent', 'data', 'id'],
     }, {
       toPath: ['relationships', 'parent', 'data', 'type'],
@@ -202,5 +208,67 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
     return switchModel<IterationUI, IterationService>(
       arg, this.uiToServiceMapTree
     );
+  }
+}
+
+@Injectable()
+export class IterationQuery {
+  private listPageSelector = createFeatureSelector<ListPage>('listPage');
+  private iterationSelector = createSelector(
+    this.listPageSelector,
+    (state) => state.iterations
+  );
+  private iterationSource = this.store.select(this.iterationSelector);
+
+  constructor(private store: Store<AppState>,
+    private iterationService: Service) {}
+
+  getIterations(): Observable<IterationUI[]> {
+    return this.iterationSource.map(iterations => {
+      return Object.keys(iterations).map(id => iterations[id]);
+    });
+  }
+
+  getIterationObservableById(id: string): Observable<IterationUI> {
+    return this.iterationSource.select(state => state[id]);
+  }
+
+  getSelectedIteration(): Observable<IterationUI> {
+    return this.getIterations()
+      .map((iterations: IterationUI[]) => {
+        return iterations.filter(it => it.selected)
+      })
+      .map(iterations => {
+        if (iterations.length === 1) {
+          return iterations[0];
+        } return null;
+      });
+  }
+
+  getIterationsWithChildren(): Observable<IterationUI[]> {
+    return this.getIterations()
+      .map(iterations => {
+        for(let i = 0; i < iterations.length; i++) {
+          iterations[i].children = iterations.filter(it => it.parentId === iterations[i].id);
+        }
+        let allIterations = iterations.filter((i: IterationUI) => {
+          return !this.iterationService.isRootIteration(i.parentPath)
+        })
+        return allIterations;
+      })
+  }
+
+  getIterationForTree(): Observable<IterationUI[]> {
+    return this.getIterationsWithChildren().
+      map((iterations: IterationUI[]) => {
+        return this.iterationService.getTopLevelIterations2(iterations);
+      })
+  }
+
+  getActiveIterations(): Observable<IterationUI[]> {
+    return this.getIterations()
+      .map((iterations: IterationUI[]) => {
+        return iterations.filter((iteration: IterationUI) => iteration.isActive);
+    });
   }
 }

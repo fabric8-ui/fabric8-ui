@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash';
+  import { cloneDeep } from 'lodash';
 import * as IterationActions from '.././actions/iteration.actions';
 import { State } from '@ngrx/store';
 import { IterationModel } from './../models/iteration.model';
@@ -9,6 +9,7 @@ import {
   IterationUIState,
   initialUIState
 } from './../states/iteration.state';
+import { pipe } from 'rxjs';
 
 export type Action = IterationActions.All;
 
@@ -20,81 +21,40 @@ export const iterationReducer: ActionReducer<IterationState> =
 
       case IterationActions.ADD_SUCCESS:
         const parent = action.payload.parent;
-        const newIteration = action.payload.iteration;
+        const newIterationId = action.payload.iteration.id;
         if (parent) {
-          const parentIndex = state.findIndex(i => i.id === parent.id);
-          if (parentIndex > -1) {
-            state[parentIndex].hasChildren = true;
-          }
-          if(state[parentIndex].children) {
-            state[parentIndex].children = [
-              action.payload.iteration,
-              ...state[parentIndex].children
-            ];
-          } else {
-            state[parentIndex].children = [
-              action.payload.iteration
-            ];
-          }
+          state[parent.id].hasChildren = true
         }
-        return [ action.payload.iteration, ...state ];
+        return { newIterationId: action.payload.iteration, ...state} ;
 
       case IterationActions.UPDATE_SUCCESS:
-        const updatedIteration = action.payload;
-        updatedIteration.children =
-          state.filter(i => i.parentId === updatedIteration.id);
-        const index = state.findIndex(i => i.id === updatedIteration.id);
-        if (index > -1) {
-          updatedIteration.selected = state[index].selected;
-          state = [
-            ...state.slice(0, index),
-            updatedIteration,
-            ...state.slice(index + 1)
-          ]
-          const parentIndex = state.findIndex(i => i.id === updatedIteration.parentId);
-          if (parentIndex > -1 && state[parentIndex].children) {
-            const childIndex =
-              state[parentIndex].children.findIndex(i => i.id === updatedIteration.id);
-            if (childIndex > -1) {
-              state[parentIndex].children = [
-                ...state[parentIndex].children.slice(0, childIndex),
-                state[index],
-                ...state[parentIndex].children.slice(childIndex + 1)
-              ]
-            }
-          }
-        }
-        return [...state];
+        const updatedIterationid = action.payload.id;
+        if(state[updatedIterationid])
+          action.payload.selected = state[updatedIterationid].selected;
+        state[updatedIterationid] = action.payload
+        return {...state};
 
       case IterationActions.SELECT:
-        if (action.payload !== null) {
-          const itIndex = state.findIndex(
-            item => item.id === action.payload.id
-          );
-          if (itIndex > -1) {
-            for(let i = 0; i < state.length; i++) {
-              state[i].selected = i === itIndex;
-            }
+        if (state[action.payload]) {
+          for(let id in state) {
+            state[id].selected =  id === action.payload;
+            state[id].showChildren = false;
           }
-
-          // Expand all the parents
-          let pId = state[itIndex].parentId;
+          let pId = state[action.payload].parentId;
           while(pId) {
-            const pIndex = state.findIndex(
-              item => item.id === pId
-            );
-            if (pIndex > -1) {
-              state[pIndex].showChildren = true;
+            const pIndex = pId;
+            if(state[pId]){
+              state[pId].showChildren = true
               pId = state[pIndex].parentId;
             }
           }
         } else {
-          for(let i = 0; i < state.length; i++) {
+          for(let i in state) {
             state[i].selected = false;
             state[i].showChildren = false;
           }
         }
-        return [...state]; // This is important for change detection
+        return {...state}; // This is important for change detection
 
       case IterationActions.GET_ERROR:
         return state;

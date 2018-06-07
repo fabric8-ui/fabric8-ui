@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { IterationUI, IterationModel } from './../models/iteration.model';
+import { IterationState } from '../states/iteration.state';
 
 export const ADD            = '[Iteration] Add';
 export const UPDATE         = '[Iteration] Update';
@@ -53,8 +54,8 @@ export class Get implements Action {
 }
 
 export class GetSuccess implements Action {
-  payload : IterationUI[];
-  constructor(payload: IterationUI[]){
+  payload : IterationState;
+  constructor(payload: IterationState){
     this.payload = payload;
   };
   readonly type = GET_SUCCESS;
@@ -73,8 +74,8 @@ export class UpdateError implements Action {
 }
 
 export class Select implements Action {
-  payload : IterationUI | null;
-  constructor(payload: IterationUI | null = null){
+  payload : string | null;
+  constructor(payload: string | null = null){
     this.payload = payload;
   };
   readonly type = SELECT;
