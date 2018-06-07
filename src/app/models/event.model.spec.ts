@@ -28,10 +28,6 @@ describe('Unit Test :: Events Model', () => {
           "data": [
             {
               "id": "20694424-0841-4d6c-bfb5-bbbb0391b8db",
-              "links": {
-                "related": "https://api.prod-preview.openshift.io/api/users/20694424-0841-4d6c-bfb5-bbbb0391b8db",
-                "self": "https://api.prod-preview.openshift.io/api/users/20694424-0841-4d6c-bfb5-bbbb0391b8db"
-              },
               "type": "users"
             }
           ]
@@ -40,10 +36,6 @@ describe('Unit Test :: Events Model', () => {
           "data": [
             {
               "id": "20694424-0841-4d6c-bfb5-bbbb0391b8db",
-              "links": {
-                "related": "https://api.prod-preview.openshift.io/api/users/20694424-0841-4d6c-bfb5-bbbb0391b8db",
-                "self": "https://api.prod-preview.openshift.io/api/users/20694424-0841-4d6c-bfb5-bbbb0391b8db"
-              },
               "type": "users"
             }
           ]
@@ -61,20 +53,12 @@ describe('Unit Test :: Events Model', () => {
       newValueRelationships: [
         {
           id: "20694424-0841-4d6c-bfb5-bbbb0391b8db",
-          links: {
-            related: "https://api.prod-preview.openshift.io/api/users/20694424-0841-4d6c-bfb5-bbbb0391b8db",
-            self: "https://api.prod-preview.openshift.io/api/users/20694424-0841-4d6c-bfb5-bbbb0391b8db"
-          },
           type: "users"
         }
       ],
       oldValueRelationships: [
         {
           id: "20694424-0841-4d6c-bfb5-bbbb0391b8db",
-          links: {
-            related: "https://api.prod-preview.openshift.io/api/users/20694424-0841-4d6c-bfb5-bbbb0391b8db",
-            self: "https://api.prod-preview.openshift.io/api/users/20694424-0841-4d6c-bfb5-bbbb0391b8db"
-          },
           type: "users"
         }
       ],
@@ -120,7 +104,7 @@ describe('Unit Test :: Events Model', () => {
     expect(expectedOutPut).toEqual(output);
   })
 
-  it('should correctly convert to ui model - 1', () => {
+  it('should correctly convert to ui model - 2', () => {
     const map = new EventMapper();
     const input: EventService = {
       "attributes": {
