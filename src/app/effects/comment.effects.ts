@@ -33,16 +33,8 @@ export class CommentEffects {
 
   @Effect() getWorkItemComments$: Observable<Action> = this.actions$
     .ofType<CommentActions.Get>(CommentActions.GET)
-    .withLatestFrom(this.store.select('listPage').select('collaborators'))
-    .map(([action, collaborators]) => {
-      return {
-        payload: action.payload,
-        collaborators: collaborators
-      }
-    })
-    .switchMap((cp) => {
-      const payload = cp.payload;
-      const collaborators = cp.collaborators;
+    .switchMap(action => {
+      const payload = action.payload;
       return this.workItemService.resolveComments(payload)
         .map((comments) => {
           return comments.data.map(comment => {

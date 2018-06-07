@@ -73,7 +73,7 @@ export interface CommentUI {
   selfLink: string;
   parentId: string;
   children?: CommentUI[];
-  allowEdit: boolean;
+  allowEdit?: boolean;
 }
 
 export interface CommentService extends Comment {}
