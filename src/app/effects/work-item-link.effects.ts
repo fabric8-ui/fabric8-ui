@@ -73,21 +73,20 @@ export class WorkItemLinkEffects {
           link.relationships.link_type.data = includes.find(i => i.id === link.relationships.link_type.data.id);
           link.relationships.source.data = includes.find(i => i.id === link.relationships.source.data.id);
           link.relationships.target.data = includes.find(i => i.id === link.relationships.target.data.id);
-          let sourceWIIndex = p.workItems.findIndex(w => w.id === p.payload.relationships.source.data.id);
-          let targetWIIndex = p.workItems.findIndex(w => w.id === p.payload.relationships.target.data.id);
           let sourceWorkItem;
           let targetWorkItem;
 
           // the tree will updated
           // only if it is parent-child relationship
           if (link.relationships['link_type'].data.id === '25c326a7-6d03-4f5a-b23b-86a9ee4171e9') {
-            if (sourceWIIndex > -1) {
-              sourceWorkItem = p.workItems[sourceWIIndex];
+            if (p.workItems.entities[p.payload.relationships.source.data.id]) {
+              sourceWorkItem = p.workItems.entities[p.payload.relationships.source.data.id];
             }
-            if (targetWIIndex > -1) {
-              targetWorkItem = p.workItems[targetWIIndex];
+            if (p.workItems.entities[p.payload.relationships.target.data.id]) {
+              targetWorkItem = p.workItems.entities[p.payload.relationships.target.data.id];
             }
-            if (sourceWIIndex > -1 && targetWIIndex > -1) {
+            if (p.workItems.entities[p.payload.relationships.source.data.id] &&
+              p.workItems.entities[p.payload.relationships.target.data.id]) {
               if (sourceWorkItem.treeStatus === 'expanded' ||
               sourceWorkItem.childrenLoaded) {
                 this.store.dispatch(new WorkItemActions.CreateLink({
@@ -135,15 +134,13 @@ export class WorkItemLinkEffects {
       return this.workItemService
         .deleteLink(wiLink, p.payload.workItemId)
         .map(response => {
-          let targetWIIndex = p.workItems.findIndex(w => w.id === p.payload.wiLink.target.id);
-          let sourceWIIndex = p.workItems.findIndex(w => w.id === p.payload.wiLink.source.id);
           let targetWorkItem;
           let sourceWorkItem;
-          if (targetWIIndex > -1) {
-            targetWorkItem = p.workItems[targetWIIndex];
+          if (p.workItems.entities[p.payload.wiLink.target.id]) {
+            targetWorkItem = p.workItems.entities[p.payload.wiLink.target.id];
           }
-          if (sourceWIIndex > -1) {
-            sourceWorkItem = p.workItems[sourceWIIndex];
+          if (p.workItems.entities[p.payload.wiLink.source.id]) {
+            sourceWorkItem = p.workItems.entities[p.payload.wiLink.source.id];
           }
           this.store.dispatch(new WorkItemActions.DeleteLink({
             source: sourceWorkItem,

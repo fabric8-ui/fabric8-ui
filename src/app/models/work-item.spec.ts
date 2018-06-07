@@ -75,10 +75,7 @@ describe('WorkItemMapper', () => {
         "iteration": {
           "data": {
             "id": "2561c0c9-6d36-46de-89f4-41cbe5b02cd3",
-            "type": "iterations",
-            "links": {
-              "self": "https://api.openshift.io/api/iterations/2561c0c9-6d36-46de-89f4-41cbe5b02cd3"
-            }
+            "type": "iterations"
           }
         },
         "labels": {
@@ -116,23 +113,9 @@ describe('WorkItemMapper', () => {
         version: 14,
         link: 'https://api.openshift.io/api/workitems/8bccc228-bba7-43ad-b077-15fbb9148f7f',
         WILinkUrl: 'https://api.openshift.io/api/workitems/8bccc228-bba7-43ad-b077-15fbb9148f7f/links',
-        area: {
-          id: 'e5fc1d21-5c56-4aef-a58a-068865621881',
-          name: null, parentPath: null, parentPathResolved: null
-        },
-        creator: {
-          id: '29f698d6-5c65-4129-9e97-5286cdb18a1c',
-          name: null, avatar: null, username: null, currentUser: false
-        },
-        iteration: {
-          id: '2561c0c9-6d36-46de-89f4-41cbe5b02cd3',
-          name: null, parentPath: null, resolvedParentPath: null,
-          userActive: null, isActive: null, startAt: null,
-          endAt: null, description: null, state: null,
-          link: 'https://api.openshift.io/api/iterations/2561c0c9-6d36-46de-89f4-41cbe5b02cd3',
-          workItemTotalCount: null, workItemClosedCount: null, hasChildren: null,
-          parentId: null, selected: false, showChildren: false
-        },
+        areaId: 'e5fc1d21-5c56-4aef-a58a-068865621881',
+        creator: '29f698d6-5c65-4129-9e97-5286cdb18a1c',
+        iterationId: '2561c0c9-6d36-46de-89f4-41cbe5b02cd3',
         type: {
           id: '71171e90-6d35-498f-a6a7-2083b5267c18', name: null, icon: null,
           version: null, description: null, childTypes: [], type: "workitemtypes", fields: null,
@@ -141,10 +124,7 @@ describe('WorkItemMapper', () => {
         },
         eventLink: "https://api.prod-preview.openshift.io/api/workitems/a85b610d-6789-4989-bfe5-ebceb5ee4ef9/events",
         commentLink: 'https://api.openshift.io/api/workitems/8bccc228-bba7-43ad-b077-15fbb9148f7f/comments',
-        assignees: [
-          { id: '330b19d2-28d3-4b29-9abf-a324c94b437d', name: null, avatar: null, username: null,currentUser: false},
-          { id: '543d5193-d519-4126-9e9c-2d608f67639b', name: null, avatar: null, username: null,currentUser: false}
-        ],
+        assignees: ['330b19d2-28d3-4b29-9abf-a324c94b437d', '543d5193-d519-4126-9e9c-2d608f67639b'],
         labels: [  ],
         children: [  ],
         hasChildren: false,

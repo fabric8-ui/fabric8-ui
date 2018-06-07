@@ -47,12 +47,7 @@ export class WorkItemEffects {
         }
       }
       const workItemResolver = new WorkItemResolver(workItemUI);
-      workItemResolver.resolveArea(state.areas);
-      workItemResolver.resolveIteration(state.iterations);
-      workItemResolver.resolveCreator(state.collaborators);
       workItemResolver.resolveType(state.workItemTypes);
-      workItemResolver.resolveAssignees(state.collaborators);
-      workItemResolver.resolveWiLabels(state.labels);
       let wiu = workItemResolver.getWorkItem();
       let wid = this.workItemMapper.toDynamicUIModel(wi, wiu.type.dynamicfields);
       return { ...wiu, ...wid };
@@ -78,9 +73,6 @@ export class WorkItemEffects {
         .map(item => {
           const itemUI = this.workItemMapper.toUIModel(item);
           const workItemResolver = new WorkItemResolver(itemUI);
-          workItemResolver.resolveArea(state.areas);
-          workItemResolver.resolveIteration(state.iterations);
-          workItemResolver.resolveCreator(state.collaborators);
           workItemResolver.resolveType(state.workItemTypes);
           const wItem = workItemResolver.getWorkItem();
           let wid = this.workItemMapper.toDynamicUIModel(
@@ -115,7 +107,7 @@ export class WorkItemEffects {
               } catch (e) {
                 console.log('New child added.');
               }
-              const parent = state.workItems.find(w => w.id === parentId);
+              const parent = state.workItems.entities[parentId];
               if (!parent.childrenLoaded && parent.hasChildren) {
                 return new WorkItemActions.GetChildren(parent);
               } else {
@@ -278,7 +270,7 @@ export class WorkItemEffects {
           .map(w => this.resolveWorkItems([w], state)[0])
           .switchMap(w => util.workitemMatchesFilter(this.route.snapshot, this.filterService, this.workItemService, w))
           .map(w => {
-            const item = state.workItems.find(i => i.id === w.id);
+            const item = state.workItems.entities[w.id];
             if(item) {
               w.treeStatus = item.treeStatus;
               w.childrenLoaded = item.childrenLoaded;
@@ -332,7 +324,7 @@ export class WorkItemEffects {
             w.treeStatus = op.payload.workitem.treeStatus;
             w.bold = op.payload.workitem.bold;
             w.childrenLoaded = op.payload.workitem.childrenLoaded;
-            w.parentID = op.state.workItems.find(wi => wi.id === w.id).parentID;
+            w.parentID = op.state.workItems.entities[w.id].parentID;
             return w;
           })
           .map(w => new WorkItemActions.UpdateSuccess(w))

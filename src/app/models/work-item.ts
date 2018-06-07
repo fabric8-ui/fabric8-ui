@@ -1,23 +1,40 @@
+import { AppState, ListPage } from './../states/app.state';
+import { Observable } from 'rxjs';
+import { Store, createFeatureSelector, createSelector } from '@ngrx/store';
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { Injectable } from '@angular/core';
 import { cloneDeep } from 'lodash';
 import {
   WorkItemType,
   WorkItemTypeUI,
   WorkItemTypeMapper
 } from './work-item-type';
-import { AreaModel, AreaUI, AreaMapper, AreaService } from './area.model';
+import {
+  AreaModel, AreaUI, AreaMapper,
+  AreaService, AreaQuery
+} from './area.model';
 import { Comments, Comment, CommentUI, CommentMapper } from './comment';
 import { Link } from './link';
-import { IterationModel, IterationUI, IterationMapper, IterationService } from './iteration.model';
-import { LabelModel, LabelUI, LabelMapper, LabelService } from './label.model';
-import { UserUI, UserMapper, UserService } from './user';
+import {
+  IterationModel, IterationUI,
+  IterationMapper, IterationService,
+  IterationQuery
+} from './iteration.model';
+import {
+   LabelModel, LabelUI, LabelMapper,
+   LabelService, LabelQuery
+} from './label.model';
+import { UserUI, UserMapper, UserService, UserQuery } from './user';
 import {
   modelUI,
   modelService,
   Mapper,
   MapTree,
   switchModel,
-  cleanObject
+  cleanObject,
+  CommonSelectorUI
 } from './common.model';
+//import {IterationQuery} from './iteration.model';
 
 export class WorkItem extends modelService {
   hasChildren?: boolean;
@@ -127,14 +144,19 @@ export interface WorkItemUI {
   order: number;
   dynamicfields?: any;
 
-  area: AreaUI;
-  iteration: IterationUI;
-  assignees: UserUI[];
-  creator: UserUI;
+  areaId: string;
+  areaObs?: Observable<AreaUI>;
+  iterationId: string;
+  iterationObs?: Observable<IterationUI>;
+  assignees: string[];
+  assigneesObs?: Observable<UserUI[]>;
+  creator: string;
+  creatorObs?: Observable<UserUI>;
   type: WorkItemTypeUI;
-  labels: LabelUI[];
-  comments: CommentUI[];
-  children: WorkItemUI[];
+  labels: string[];
+  labelsObs: Observable<LabelUI[]>;
+  comments?: CommentUI[];
+  children?: WorkItemUI[];
   commentLink: string;
   childrenLink: string;
   eventLink: string;
@@ -147,8 +169,19 @@ export interface WorkItemUI {
   childrenLoaded: boolean; // false
   bold: boolean; // false
 
-  createId: number; // this is used to identify newly created item
+  createId?: number; // this is used to identify newly created item
+  selected: boolean;
 }
+
+export interface WorkItemStateModel extends EntityState<WorkItemUI> {}
+
+const workItemAdapter = createEntityAdapter<WorkItemUI>();
+const {
+  selectIds,
+  selectEntities,
+  selectAll,
+  selectTotal,
+} = workItemAdapter.getSelectors();
 
 export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
   itMapper = new IterationMapper();
@@ -197,17 +230,14 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
       fromPath: ['relationships','workItemLinks', 'links', 'related'],
       toPath: ['WILinkUrl']
     }, {
-      fromPath: ['relationships','area','data'],
-      toPath: ['area'],
-      toFunction: this.areaMapper.toUIModel.bind(this.areaMapper)
+      fromPath: ['relationships','area','data', 'id'],
+      toPath: ['areaId'],
     }, {
-      fromPath: ['relationships','creator','data'],
-      toPath: ['creator'],
-      toFunction: this.userMapper.toUIModel.bind(this.userMapper)
+      fromPath: ['relationships','creator','data', 'id'],
+      toPath: ['creator']
     }, {
-      fromPath: ['relationships','iteration','data'],
-      toPath: ['iteration'],
-      toFunction: this.itMapper.toUIModel.bind(this.itMapper)
+      fromPath: ['relationships','iteration','data', 'id'],
+      toPath: ['iterationId']
     }, {
       fromPath: ['relationships','baseType','data'],
       toPath: ['type'],
@@ -223,15 +253,15 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
       toPath: ['assignees'],
       toFunction: function(assignees: UserService[]) {
         if (!assignees) return [];
-        return assignees.map(assignee => this.userMapper.toUIModel(assignee))
-      }.bind(this)
+        return assignees.map(assignee => assignee.id)
+      }
     }, {
       fromPath: ['relationships','labels','data'],
       toPath: ['labels'],
       toFunction: function(labels: LabelModel[]) {
         if (!labels) return [];
-        return labels.map(label => this.labelMapper.toUIModel(label))
-      }.bind(this)
+        return labels.map(label => label.id)
+      }
     }, {
       toPath: ['children'],
       toValue: []
@@ -307,17 +337,26 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
       fromPath: ['WILinkUrl'],
       toPath: ['relationships','workItemLinks', 'links', 'related']
     }, {
-      fromPath: ['area'],
-      toPath: ['relationships','area','data'],
-      toFunction: this.areaMapper.toServiceModel.bind(this.areaMapper)
+      fromPath: ['areaId'],
+      toPath: ['relationships','area','data', 'id']
     }, {
+      toPath: ['relationships','area','data', 'type'],
+      toValue: 'areas'
+    },{
       fromPath: ['creator'],
-      toPath: ['relationships','creator','data'],
-      toFunction: this.userMapper.toServiceModel.bind(this.userMapper)
+      toPath: ['relationships','creator','data', 'id'],
     }, {
-      fromPath: ['iteration'],
+      toPath: ['relationships','creator','data', 'type'],
+      toValue: 'identities'
+    }, {
+      fromPath: ['iterationId'],
       toPath: ['relationships','iteration','data'],
-      toFunction: this.itMapper.toServiceModel.bind(this.itMapper)
+      toFunction: (id: string) => {
+        return {
+          id: id,
+          type: 'iterations'
+        }
+      }
     }, {
       fromPath: ['type'],
       toPath: ['relationships','baseType','data'],
@@ -331,16 +370,26 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     }, {
       fromPath: ['assignees'],
       toPath: ['relationships','assignees','data'],
-      toFunction: function(assignees: UserUI[]) {
+      toFunction: function(assignees: string[]) {
         if (!assignees) return null;
-        return assignees.map(assignee => this.userMapper.toServiceModel(assignee))
-      }.bind(this)
+        return assignees.map(assigneeId => {
+          return {
+            id: assigneeId,
+            type: 'identities'
+          }
+        })
+      }
     }, {
       fromPath: ['labels'],
       toPath: ['relationships','labels','data'],
       toFunction: function(labels: LabelUI[]) {
         if (!labels) return null;
-        return labels.map(label => this.labelMapper.toServiceModel(label))
+        return labels.map(
+          label => cleanObject(
+            this.labelMapper.toServiceModel({id: label}),
+            ['attributes', 'links', 'relationships']
+          )
+        );
       }.bind(this)
     }, {
       fromPath: ['hasChildren'],
@@ -427,35 +476,6 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
 export class WorkItemResolver {
   constructor(private workItem: WorkItemUI) {}
 
-  resolveArea(areas: AreaUI[]) {
-    const area = areas.find(a => a.id === this.workItem.area.id);
-    if (area) {
-      this.workItem.area = cloneDeep(area);
-    }
-  }
-
-  resolveIteration(iterations: IterationUI[]) {
-    const iteration = iterations.find(it => it.id === this.workItem.iteration.id);
-    if (iteration) {
-      this.workItem.iteration = cloneDeep(iteration);
-      // We don't need this much value for a work item
-      this.workItem.iteration.children = [];
-    }
-  }
-
-  resolveAssignees(users: UserUI[]) {
-    this.workItem.assignees = this.workItem.assignees.map(assignee => {
-      return cloneDeep(users.find(u => u.id === assignee.id));
-    }).filter(item => !!item);
-  }
-
-  resolveCreator(users: UserUI[]) {
-    const creator = users.find(user => user.id === this.workItem.creator.id);
-    if(creator) {
-      this.workItem.creator = cloneDeep(creator);
-    }
-  }
-
   resolveType(types: WorkItemTypeUI[]) {
     const type = types.find(t => t.id === this.workItem.type.id);
     if (type) {
@@ -463,13 +483,117 @@ export class WorkItemResolver {
     }
   }
 
-  resolveWiLabels(labels: LabelUI[]) {
-    this.workItem.labels = this.workItem.labels.map(label => {
-      return cloneDeep(labels.find(l => l.id === label.id));
-    }).filter(item => !!item);
-  }
-
   getWorkItem() {
     return this.workItem;
+  }
+}
+
+@Injectable()
+export class WorkItemQuery {
+  constructor(
+    private store: Store<AppState>,
+    private userQuery: UserQuery,
+    private iterationQuery: IterationQuery,
+    private areaQuery: AreaQuery,
+    private labelQuery: LabelQuery
+  ) {}
+
+  private listPageSelector = createFeatureSelector<ListPage>('listPage');
+  private workItemSelector = createSelector(
+    this.listPageSelector,
+    state => state.workItems
+  );
+  private workItemEntities = createSelector(
+    this.workItemSelector,
+    selectEntities
+  );
+  private getAllWorkItemSelector = createSelector(
+    this.workItemSelector,
+    selectAll
+  );
+  private workItemSource = this.store
+    .select(this.getAllWorkItemSelector);
+
+  private workItemDetailSource = this.store
+    .select(state => state.detailPage)
+    .select(state => state.workItem);
+
+  getWorkItems(): Observable<WorkItemUI[]> {
+    return this.workItemSource.map(workItems => {
+      return workItems.map(workItem => {
+        return {
+          ...workItem,
+          creatorObs: this.userQuery.getUserObservableById(workItem.creator),
+          assigneesObs: this.userQuery.getUserObservablesByIds(workItem.assignees),
+          iterationObs: this.iterationQuery.getIterationObservableById(workItem.iterationId),
+          areaObs: this.areaQuery.getAreaObservableById(workItem.areaId),
+          labelsObs: this.labelQuery.getLabelObservablesByIds(workItem.labels)
+        };
+      });
+    })
+  }
+
+  getWorkItem(number: string | number): Observable<WorkItemUI> {
+    return this.workItemDetailSource
+    .filter(item => item !== null)
+    .map(workItem => {
+      return {
+        ...workItem,
+        creatorObs: this.userQuery.getUserObservableById(workItem.creator),
+        assigneesObs: this.userQuery.getUserObservablesByIds(workItem.assignees),
+        iterationObs: this.store.select('listPage').select('iterations').select(workItem.iterationId),
+        areaObs: this.store.select('listPage').select('areas').select(state => state[workItem.areaId]),
+        labelsObs: this.labelQuery.getLabelObservablesByIds(workItem.labels)
+      }
+    });
+  }
+
+  /**
+   * This function returns an observable for the the selector component
+   * with iteration data and the selected iteration flagged
+   * This data can be used in work item detail page for the
+   * iteration selector dropdown.
+   * @param number
+   */
+  getIterationsForWorkItem(number: string | number): Observable<CommonSelectorUI[]> {
+    return this.getWorkItem(number)
+      .filter(w => !!w)
+      .switchMap(workitem => {
+        return this.iterationQuery.getIterations().map(iterations => {
+          return iterations.map(i => {
+            return {
+              key: i.id,
+              value: (i.resolvedParentPath!='/'?i.resolvedParentPath:'') + '/' + i.name,
+              selected: i.id === workitem.iterationId,
+              cssLabelClass: undefined
+            }
+          })
+        });
+      })
+  }
+
+  /**
+   * This function returns an observable for the the selector component
+   * with area data and the selected area flagged
+   * This data can be used in work item detail page for the
+   * area selector dropdown.
+   * @param number
+   */
+  getAreasForWorkItem(number: string | number): Observable<CommonSelectorUI[]> {
+    return this.getWorkItem(number)
+      .filter(w => !!w)
+      .switchMap(workItem => {
+        return this.areaQuery.getAreas()
+          .map(areas => {
+            return areas.map(area => {
+              return {
+                key: area.id,
+                value: (area.parentPathResolved!='/'?area.parentPathResolved:'') + '/' + area.name,
+                selected: area.id === workItem.areaId,
+                cssLabelClass: undefined
+              }
+            })
+          })
+      })
   }
 }
