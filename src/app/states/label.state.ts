@@ -1,5 +1,9 @@
+import { EntityState } from '@ngrx/entity';
 import { LabelUI } from './../models/label.model';
 
-export type LabelState = LabelUI[];
+export interface LabelState extends EntityState<LabelUI> {};
 
-export const initialState = null;
+export const initialState = {
+  ids: [],
+  entities: {}
+};

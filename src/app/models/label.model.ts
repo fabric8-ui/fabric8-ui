@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import {
   modelUI,
   modelService,
@@ -5,6 +6,19 @@ import {
   MapTree,
   switchModel
 } from './common.model';
+import { Injectable } from '@angular/core';
+import { Store, createFeatureSelector, createSelector } from '@ngrx/store';
+import { createEntityAdapter } from '@ngrx/entity';
+import { LabelService as LabelDataService } from './../services/label.service';
+import { AppState, ListPage } from './../states/app.state';
+
+const labelAdapter = createEntityAdapter<LabelUI>();
+const {
+  selectIds,
+  selectEntities,
+  selectAll,
+  selectTotal,
+} = labelAdapter.getSelectors();
 
 export class LabelModel extends modelService {
   attributes: LabelAttributes;
@@ -106,5 +120,44 @@ export class LabelMapper implements Mapper<LabelService, LabelUI> {
     return switchModel<LabelUI, LabelService>(
       arg, this.uiToServiceMapTree
     );
+  }
+}
+
+@Injectable()
+export class LabelQuery {
+  constructor(
+    private store: Store<AppState>,
+    private labelService: LabelDataService
+  ){}
+
+  private listPageSelector = createFeatureSelector<ListPage>('listPage');
+  private labelSelector = createSelector(
+    this.listPageSelector,
+    state => state.labels
+  );
+  private getAllLabelsSelector = createSelector(
+    this.labelSelector,
+    selectAll
+  );
+  private getLabelEntities = createSelector(
+    this.labelSelector,
+    selectEntities
+  );
+
+  getLables(): Store<LabelUI[]> {
+    return this.store.select(this.getAllLabelsSelector);
+  }
+
+  getLabelObservableById(number: string): Store<LabelUI> {
+    const labelSelector = createSelector(
+      this.getLabelEntities,
+      state => state[number]
+    );
+    return this.store.select(labelSelector);
+  }
+
+  getLabelObservablesByIds(ids: string[]): Observable<LabelUI[]> {
+    if (!ids.length) return Observable.of([]);
+    return Observable.combineLatest(ids.map(id => this.getLabelObservableById(id)));
   }
 }
