@@ -459,15 +459,10 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         return Observable.forkJoin(
           Observable.of(this.iterations),
           Observable.of(this.workItemTypes),
-          // TODO implement search API mock for inmemory
-          process.env.ENV == 'inmemory' ? this.workItemService.getWorkItems(
+          this.workItemService.getWorkItems2(
             this.pageSize,
-            appliedFilters
-          ) :
-            this.workItemService.getWorkItems2(
-              this.pageSize,
-              payload
-            )
+            payload
+          )
         )
       })
       .subscribe(([iterations, wiTypes, workItemResp]) => {

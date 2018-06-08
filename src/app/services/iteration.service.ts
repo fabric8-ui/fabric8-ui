@@ -13,7 +13,6 @@ import { Space, Spaces } from 'ngx-fabric8-wit';
 import { Notification, Notifications, NotificationType } from 'ngx-base';
 
 import { IterationModel, IterationUI } from '../models/iteration.model';
-import { MockHttp } from '../mock/mock-http';
 import { HttpService } from './http-service';
 import { WorkItem } from '../models/work-item';
 

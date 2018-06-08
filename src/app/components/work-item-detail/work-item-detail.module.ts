@@ -13,8 +13,6 @@ import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { MyDatePickerModule } from 'mydatepicker';
 
-import { MockHttp } from '../../mock/mock-http';
-
 import { AlmUserNameModule } from '../../pipes/alm-user-name.module';
 
 import {
@@ -38,13 +36,6 @@ import { SelectDropdownModule } from './../../widgets/select-dropdown/select-dro
 import { AssigneesModule } from './../assignee/assignee.module';
 import { AssigneeSelectorModule } from './../assignee-selector/assignee-selector.module';
 
-let providers = [];
-
-if (process.env.ENV == 'inmemory') {
-  providers = [ AreaService, BsDropdownConfig, TooltipConfig, WorkItemTypeControlService, { provide: Http, useExisting: MockHttp }, UserMapper ];
-} else {
-  providers = [ AreaService, BsDropdownConfig, TooltipConfig, WorkItemTypeControlService, UserMapper ];
-}
 
 @NgModule({
   imports: [
@@ -79,6 +70,12 @@ if (process.env.ENV == 'inmemory') {
     MarkdownControlComponent
   ],
   exports: [WorkItemDetailComponent],
-  providers: providers
+  providers: [
+    AreaService,
+    BsDropdownConfig,
+    TooltipConfig,
+    WorkItemTypeControlService,
+    UserMapper
+  ]
 })
 export class WorkItemDetailModule { }

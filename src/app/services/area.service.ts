@@ -13,7 +13,6 @@ import { HttpService } from './http-service';
 
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { AreaModel } from '../models/area.model';
-import { MockHttp } from '../mock/mock-http';
 
 @Injectable()
 export class AreaService {

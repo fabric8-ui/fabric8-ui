@@ -11,8 +11,6 @@ export { WorkItemDetailExternalModule as PlannerDetailModule } from './app/compo
 
 export { WorkItemQuickAddComponent } from './app/components/work-item-quick-add/work-item-quick-add.component';
 export { WorkItemQuickAddModule } from './app/components/work-item-quick-add/work-item-quick-add.module';
-export { MockHttp } from './app/mock/mock-http';
-export { MockDataService } from './app/mock/mock-data.service';
 export { HttpService } from './app/services/http-service';
 
 export { PlannerBoardComponent } from './app/components/planner-board/planner-board.component';

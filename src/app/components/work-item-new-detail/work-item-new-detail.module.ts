@@ -4,7 +4,7 @@ import { UrlService } from './../../services/url.service';
 import { AuthenticationService } from 'ngx-login-client';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { WidgetsModule, MarkdownModule } from 'ngx-widgets';
-import { HttpService } from './../../services/http-service';
+import { HttpService, factoryForHttpService } from './../../services/http-service';
 import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
 import { WorkItemService } from './../../services/work-item.service';
 import { WorkItemDataService } from './../../services/work-item-data.service';
@@ -20,8 +20,6 @@ import { RouterModule } from '@angular/router';
 import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 
-import { MockHttp } from './../../mock/mock-http';
-
 import { LabelsModule } from '../labels/labels.module';
 import { WorkItemNewDetailComponent } from './work-item-new-detail.component';
 import { WorkItemNewDetailRoutingModule } from './work-item-new-detail-routing.module';
@@ -35,47 +33,24 @@ import { SelectDropdownModule } from './../../widgets/select-dropdown/select-dro
 import { AssigneesModule } from './../assignee/assignee.module';
 import { AssigneeSelectorModule } from './../assignee-selector/assignee-selector.module';
 
-let providers = [];
-
-if (process.env.ENV == 'inmemory') {
-  providers = [
-    {
-      provide: Http, useExisting: MockHttp
-    },
-    AreaService,
-    FilterService,
-    BsDropdownConfig,
-    IterationService,
-    LabelService,
-    TooltipConfig,
-    UrlService,
-    WorkItemDataService,
-    WorkItemService,
-    WorkItemTypeControlService,
-    CollaboratorService
-  ];
-} else {
-  providers = [
-    {
-      provide: HttpService,
-      useFactory: (backend: XHRBackend, options: RequestOptions, auth: AuthenticationService) => {
-        return new HttpService(backend, options, auth);
-      },
-      deps: [XHRBackend, RequestOptions, AuthenticationService]
-    },
-    AreaService,
-    FilterService,
-    BsDropdownConfig,
-    IterationService,
-    LabelService,
-    TooltipConfig,
-    UrlService,
-    WorkItemDataService,
-    WorkItemService,
-    WorkItemTypeControlService,
-    CollaboratorService
-  ];
-}
+let providers = [
+  {
+    provide: HttpService,
+    useFactory: factoryForHttpService,
+    deps: [XHRBackend, RequestOptions, AuthenticationService]
+  },
+  AreaService,
+  FilterService,
+  BsDropdownConfig,
+  IterationService,
+  LabelService,
+  TooltipConfig,
+  UrlService,
+  WorkItemDataService,
+  WorkItemService,
+  WorkItemTypeControlService,
+  CollaboratorService
+];
 
 @NgModule({
   imports: [

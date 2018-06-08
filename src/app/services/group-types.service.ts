@@ -17,7 +17,6 @@ import { Space, Spaces } from 'ngx-fabric8-wit';
 import { GroupTypesModel } from '../models/group-types.model';
 import { WorkItem } from '../models/work-item'
 import { WorkItemType } from '../models/work-item-type';
-import { MockHttp } from '../mock/mock-http';
 
 @Injectable()
 export class GroupTypesService {
@@ -90,7 +89,6 @@ export class GroupTypesService {
   }
 
   getFlatGroupList(): Observable<GroupTypesModel[]>{
-    //this.mockData();
     if (this._currentSpace) {
       //Normalize the response - we don't want two portfolio - that is
       //no two entries for the same level

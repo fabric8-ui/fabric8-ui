@@ -7,7 +7,6 @@ import { GlobalSettings } from "../../shared/globals";
 import { HttpService } from './../../services/http-service';
 import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
 import { AuthenticationService } from 'ngx-login-client';
-import { MockHttp } from '../../mock/mock-http';
 import { EventQuery } from "../../models/event.model";
 import { EmptyStateModule } from "patternfly-ng/empty-state";
 

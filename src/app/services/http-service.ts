@@ -171,3 +171,7 @@ export class HttpService extends Http {
   }
 
 }
+
+export function factoryForHttpService(backend: XHRBackend, options: RequestOptions, auth: AuthenticationService){
+  return new HttpService(backend, options, auth);
+}

@@ -17,35 +17,6 @@ import {
   WorkItemLinkTypeFilterByTypeName
 } from '../../pipes/work-item-link-filters.pipe';
 
-import { MockHttp } from '../../mock/mock-http';
-
-
-let providers = [];
-
-if (process.env.ENV == 'inmemory') {
-  providers = [
-    WorkItemService,
-    AreaService,
-    BsDropdownConfig,
-    IterationService,
-    GlobalSettings,
-    EventService,
-    {
-      provide: HttpService,
-      useExisting: MockHttp
-     }
-   ];
-} else {
-  providers = [
-     WorkItemService,
-     AreaService,
-     BsDropdownConfig,
-     IterationService,
-     GlobalSettings,
-     EventService
-    ];
-}
-
 @NgModule({
   imports:      [
     CommonModule,
@@ -60,6 +31,13 @@ if (process.env.ENV == 'inmemory') {
     // WorkItemLinkTypeFilterByTypeName
    ],
   exports:      [ WorkItemLinkComponent ],
-  providers: providers
+  providers: [
+    WorkItemService,
+    AreaService,
+    BsDropdownConfig,
+    IterationService,
+    GlobalSettings,
+    EventService
+  ]
 })
 export class WorkItemLinkModule { }

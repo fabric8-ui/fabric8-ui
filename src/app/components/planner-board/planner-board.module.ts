@@ -24,7 +24,7 @@ import {
 } from 'ngx-widgets';
 import { AuthenticationService } from 'ngx-login-client';
 
-import { HttpService } from '../../services/http-service';
+import { HttpService, factoryForHttpService } from '../../services/http-service';
 
 import {
   FabPlannerAssociateIterationModalModule
@@ -44,45 +44,21 @@ import { WorkItemService } from '../../services/work-item.service';
 import { PlannerLayoutModule } from '../../widgets/planner-layout/planner-layout.module';
 import { PlannerModalModule } from '../modal/modal.module';
 
-import { MockHttp } from '../../mock/mock-http';
-
-let providers = [];
-
-if (process.env.ENV == 'inmemory') {
-  providers = [
-    BsDropdownConfig,
-    EventService,
-    GlobalSettings,
-    WorkItemService,
-    WorkItemDataService,
-    Logger,
-    {
-      provide: HttpService,
-      useClass: MockHttp
-    },
-    TooltipConfig,
-    UrlService
-  ];
-} else {
-  providers = [
-    BsDropdownConfig,
-    EventService,
-    GlobalSettings,
-    WorkItemService,
-    WorkItemDataService,
-    Logger,
-    {
-      provide: HttpService,
-      useFactory: (backend: XHRBackend, options: RequestOptions, auth: AuthenticationService) => {
-        return new HttpService(backend, options, auth);
-      },
-      deps: [XHRBackend, RequestOptions, AuthenticationService]
-    },
-    TooltipConfig,
-    UrlService
-  ];
-}
-
+let providers = [
+  BsDropdownConfig,
+  EventService,
+  GlobalSettings,
+  WorkItemService,
+  WorkItemDataService,
+  Logger,
+  {
+    provide: HttpService,
+    useFactory: factoryForHttpService,
+    deps: [XHRBackend, RequestOptions, AuthenticationService]
+  },
+  TooltipConfig,
+  UrlService
+];
 
 @NgModule({
   imports: [

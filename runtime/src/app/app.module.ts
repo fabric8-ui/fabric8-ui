@@ -20,10 +20,6 @@ import { AuthenticationService, UserService, HttpService as HttpServiceLGC } fro
 
 import { HeaderModule, FooterModule, HeaderService } from 'osio-ngx-framework';
 
-// Mock data
-import { MockDataService } from 'fabric8-planner';
-import { MockHttp } from 'fabric8-planner';
-
 // Shared
 import { GlobalSettings } from './shared/globals';
 import { SpacesService } from './services/spaces.service';
@@ -48,60 +44,18 @@ import {
 } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-// conditionally import the inmemory resource module
 let serviceImports: Array<any[] | any | ModuleWithProviders>;
 let providers: any[] = [
   GlobalSettings,
   serviceImports
 ];
 
-// The inmemory environment variable is checked and if present then the in-memory dataset is added.
-if (process.env.ENV == 'inmemory') {
-  serviceImports = [
-    BsDropdownConfig,
+serviceImports = [
     Logger,
     AuthenticationService,
     Broadcaster,
     LoginService,
     UserService,
-    MockDataService,
-    authApiUrlProvider,
-    Notifications,
-    HeaderService,
-    {
-      provide: Spaces,
-      useExisting: SpacesService
-    },
-    TooltipConfig
-  ];
-  providers = [
-    BsDropdownConfig,
-
-    GlobalSettings,
-    witApiUrlProvider,
-    realmProvider,
-    serviceImports,
-    SpacesService,
-    ssoApiUrlProvider,
-    MockHttp,
-    {
-      provide: HttpServiceLGC,
-      useExisting: MockHttp
-    },
-    {
-      provide: Http,
-      useExisting: HttpServiceLGC
-    },
-    TooltipConfig
-  ];
-} else {
-  serviceImports = [
-    Logger,
-    AuthenticationService,
-    Broadcaster,
-    LoginService,
-    UserService,
-    MockDataService,
     authApiUrlProvider,
     Notifications,
     HeaderService,
@@ -122,7 +76,6 @@ if (process.env.ENV == 'inmemory') {
       useClass: HttpServiceLGC
     }
   ];
-}
 
 @NgModule({
   imports: [

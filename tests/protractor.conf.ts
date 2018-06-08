@@ -7,16 +7,14 @@ const token:string = '';
 
 // Validate test config.
 function validate_config(){
-  if(process.env.NODE_ENV != 'inmemory'){
-    // Mysteriously, NODE_ENV is set to "test". NODE_ENV should not have been set to "test"
-    // Unset NODE_ENV variable.
-    process.env.NODE_ENV = '';
-    process.env.SPACE_NAME || new Error("SPACE_NAME variable not set");
-    process.env.USER_NAME || new Error("USER_NAME variable not set")
-    process.env.USER_FULLNAME || new Error("USER_FULLNAME variable not set")
-    process.env.AUTH_TOKEN || new Error("TOKEN (Auth token) variable not set");
-    process.env.REFRESH_TOKEN || new Error("OFFLINE_TOKEN (Refresh token) variable not set");
-  }
+  // Mysteriously, NODE_ENV is set to "test". NODE_ENV should not have been set to "test"
+  // Unset NODE_ENV variable.
+  process.env.NODE_ENV = '';
+  process.env.SPACE_NAME || new Error("SPACE_NAME variable not set");
+  process.env.USER_NAME || new Error("USER_NAME variable not set")
+  process.env.USER_FULLNAME || new Error("USER_FULLNAME variable not set")
+  process.env.AUTH_TOKEN || new Error("TOKEN (Auth token) variable not set");
+  process.env.REFRESH_TOKEN || new Error("OFFLINE_TOKEN (Refresh token) variable not set");
 }
 
 // Full protractor configuration file reference could be found here:
