@@ -45,15 +45,16 @@
   <small>
     <b>Markdown Supported</b>
   </small>
-  <div
+  <button
     (click)="closeClick()"
     class="fl btn btn-default pull-right action-btn">
     <i class="fa fa-close"></i>
-  </div>
-  <div
+  </button>
+  <button
     (click)="saveClick()"
     class="fl btn btn-primary pull-right action-btn btn-save"
+    [disabled]="saving"
     [class.disabled]="saving">
     <i class="fa fa-check"></i>
-  </div>
+  </button>
 </div>
