@@ -1,7 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # lock files - for now
-package-lock.json
+# package-lock.json
 
 # compiled output
 /dist
