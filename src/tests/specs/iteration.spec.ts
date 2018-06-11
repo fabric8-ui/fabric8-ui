@@ -30,7 +30,9 @@ describe('Iteration test', () => {
     let year = await planner.iteration.getYear();
     let lastDayOfMonth = await planner.iteration.getLastDayOfMonth();
     await planner.iteration.clickCreateIteration();
-    expect(await planner.sidePanel.getIterationDate()).toContain('new Iteration [Active]'+month+' 1, '+year+' - '+month+' '+ lastDayOfMonth, +year+'\n');
+    expect(await planner.sidePanel.getIterationDate()).toContain('new Iteration [Active]', 'Active test failed');
+    expect(await planner.sidePanel.getIterationDate()).toContain(`${month} 1, ${year}`);
+    expect(await planner.sidePanel.getIterationDate()).toContain(`${month} ${lastDayOfMonth}, ${year}`);
   });
 
   it('should create a new child iteration', async () => {
