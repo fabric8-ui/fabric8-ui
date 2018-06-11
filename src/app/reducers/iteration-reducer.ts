@@ -25,7 +25,8 @@ export const iterationReducer: ActionReducer<IterationState> =
         if (parent) {
           state[parent.id].hasChildren = true
         }
-        return { newIterationId: action.payload.iteration, ...state} ;
+        state[newIterationId] = action.payload.iteration;
+        return {...state};
 
       case IterationActions.UPDATE_SUCCESS:
         const updatedIterationid = action.payload.id;
