@@ -19,11 +19,11 @@ export class AlmEditableDirective implements OnInit, OnChanges {
   @Output('onUpdate') onUpdate = new EventEmitter();
   @Input() editable = true;
 
-  constructor(private elementRef: ElementRef) {
-  }
-
   private content: any = '';
   private element: HTMLElement = this.elementRef.nativeElement;
+
+  constructor(private elementRef: ElementRef) {
+  }
 
   ngOnInit() {
     this.element.style.whiteSpace = 'pre-wrap';
@@ -42,7 +42,7 @@ export class AlmEditableDirective implements OnInit, OnChanges {
 
   onEdit() {
     let newContent = this.element.innerText;
-    if (this.content != newContent) {
+    if (this.content !== newContent) {
       this.content = newContent;
       this.onUpdate.emit(this.content);
     }
@@ -73,7 +73,7 @@ export class AlmEditableDirective implements OnInit, OnChanges {
         let sel = window.getSelection();
         range.setStart(
           this.element.childNodes[this.element.childNodes.length - 1],
-          this.element.childNodes[this.element.childNodes.length - 1].nodeValue.length
+          this.element.childNodes[this.element.childNodes.length - 1].childNodes.length
         );
         range.collapse(true);
         sel.removeAllRanges();

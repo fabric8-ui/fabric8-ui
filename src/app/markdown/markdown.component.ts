@@ -39,6 +39,7 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
   @Input() placeholder: string = 'This is place holder';
   @Input() editAllow: boolean = true;
   @Input() renderedHeight: number = 300;
+  @Input() allowEmptySave: boolean = true;
 
   @Output() onActiveEditor = new EventEmitter();
   @Output() onSaveClick = new EventEmitter();
@@ -54,6 +55,9 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
   // these need to be public for the tests accessing them.
   renderedText: any = '';
   rawText = '';
+  fieldEmpty: boolean = true;
+  previousRawText = '';
+
   private markdownViewExpanded: boolean = false;
   private tabBarVisible: boolean = true;
   private viewType: string = 'preview'; // markdown
@@ -61,7 +65,6 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
   private showMore = false;
   private inputsDisabled = false;
 
-  private previousRawText = '';
   private previousRenderedText = '';
 
   constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {}
@@ -244,23 +247,30 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
   }
 
   saveClick() {
-    if (this.viewType === 'markdown' &&
-      this.previousRawText !== this.editorInput.nativeElement.innerText.trim()) {
-      this.saving = true;
-      this.onSaveClick.emit({
-        rawText: this.editorInput.nativeElement.innerText.trim(),
-        callBack: (t: string, m: string) => this.saveUpdate(t, m)
-      });
-    } else if (this.viewType === 'preview' &&
-      this.previousRawText !== this.rawText) {
-      this.saving = true;
-      this.onSaveClick.emit({
-        rawText: this.rawText,
-        callBack: (t: string, m: string) => this.saveUpdate(t, m)
-      });
-    } else {
-      this.deactivateEditor();
+    if (this.allowEmptySave || (!this.fieldEmpty && !this.allowEmptySave)) {
+      if (this.viewType === 'markdown' &&
+        this.previousRawText !== this.editorInput.nativeElement.innerText.trim()) {
+        this.saving = true;
+        this.onSaveClick.emit({
+          rawText: this.editorInput.nativeElement.innerText.trim(),
+          callBack: (t: string, m: string) => this.saveUpdate(t, m)
+        });
+      } else if (this.viewType === 'preview' &&
+        this.previousRawText !== this.rawText) {
+        this.saving = true;
+        this.onSaveClick.emit({
+          rawText: this.rawText,
+          callBack: (t: string, m: string) => this.saveUpdate(t, m)
+        });
+      } else {
+        this.deactivateEditor();
+      }
     }
+  }
+
+  editorKeyUp(event: Event) {
+    this.fieldEmpty =
+      event.srcElement.textContent.trim() === '';
   }
 
   closeClick() {

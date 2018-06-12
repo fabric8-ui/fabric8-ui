@@ -21,6 +21,7 @@
       *ngIf="viewType==='markdown'"
       [editable]="true"
       class="editor-box editor-markdown"
+      (keyup)="editorKeyUp($event)"
       [innerText]="rawText">
     </p>
     <div #editorBox #previewArea
@@ -53,8 +54,7 @@
   <button
     (click)="saveClick()"
     class="fl btn btn-primary pull-right action-btn btn-save"
-    [disabled]="saving"
-    [class.disabled]="saving">
+    [disabled]="saving || (!allowEmptySave && fieldEmpty)">
     <i class="fa fa-check"></i>
   </button>
 </div>
