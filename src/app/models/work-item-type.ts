@@ -186,7 +186,7 @@ function filterDynamicFields(fields: any[]) {
     return fieldKeys.filter(
       f => {
         return staticFields.findIndex(sf => sf === f) === -1 &&
-               ['enum', 'markup'].indexOf(fields[f].type.kind) > -1;
+          ['float', 'string', 'integer', 'enum', 'markup'].indexOf(fields[f].type.kind) > -1;
       }
     );
   } else {

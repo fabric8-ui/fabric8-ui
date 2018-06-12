@@ -25,7 +25,9 @@ export class InlineInputComponent implements OnInit {
   @Input() type: string = 'string';
   @Input('disabled') readOnly: boolean = false;
   @Input('value') set input(val) {
-    const v = this.convertSpecialChar(val);
+    // convert special charecters only the input value is a string
+    const v = typeof(val) === 'string' ?
+      this.convertSpecialChar(val) : val;
     this.inputValue = v;
     this.previousValue = v;
   }
