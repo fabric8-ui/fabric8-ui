@@ -169,7 +169,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.routeSource.subscribe(queryParam => this.queryExp = queryParam.q);
 
-    const customQueriesData = this.workItemQuery.getWorkItems()
+    const customQueriesData = this.store
+      .select('listPage')
+      .select('customQueries')
       .filter(customQueries => !!customQueries.length);
     this.totalCount = this.workItemQuery.getWorkItems()
       .map(items => {
