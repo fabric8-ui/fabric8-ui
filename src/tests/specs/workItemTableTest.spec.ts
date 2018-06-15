@@ -48,7 +48,7 @@ describe('Work Item datatable list: ', () => {
 
   it('should filter work item by type', async() => {
     let workItemTypeFilter = 'workitemtype: Scenario';
-    await planner.header.selectFilter('Workitem type', ' Scenario');
+    await planner.header.selectFilter('Type', ' Scenario');
     expect(await planner.header.getFilterConditions()).toContain(workItemTypeFilter);
   });
 
