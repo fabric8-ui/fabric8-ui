@@ -1,8 +1,8 @@
 import { Action } from '@ngrx/store';
 import {
-  GroupTypeUI,
+  GroupTypeMapper,
   GroupTypeService,
-  GroupTypeMapper
+  GroupTypeUI
 } from './../models/group-types.model';
 
 export const GET = '[group-type] Get';
@@ -18,7 +18,7 @@ export class GetSuccess implements Action {
   payload: GroupTypeUI[];
   constructor(payload: GroupTypeUI[]) {
     this.payload = payload;
-  };
+  }
   readonly type = GET_SUCCESS;
 }
 
@@ -31,11 +31,11 @@ export class SelectType implements Action {
   payload: GroupTypeUI;
   constructor(payload: GroupTypeUI) {
     this.payload = payload;
-  };
+  }
 }
 
 export type All
   = Get
   | GetSuccess
   | GetError
-  | SelectType
+  | SelectType;

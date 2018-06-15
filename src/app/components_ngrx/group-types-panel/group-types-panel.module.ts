@@ -1,19 +1,19 @@
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import {
   WidgetsModule
 } from 'ngx-widgets';
 
-import { GroupTypesComponent } from './group-types-panel.component';
-import { ModalModule } from 'ngx-modal';
-import { TooltipModule } from 'ngx-bootstrap';
-import { InfotipModule } from '../infotip/infotip.module';
 import { TruncateModule } from 'ng2-truncate';
+import { TooltipModule } from 'ngx-bootstrap';
+import { ModalModule } from 'ngx-modal';
+import { InfotipModule } from '../infotip/infotip.module';
 import { GroupTypesService } from './../../services/group-types.service';
 import { IterationModule } from './../iterations-panel/iterations-panel.module';
+import { GroupTypesComponent } from './group-types-panel.component';
 
 @NgModule({
   imports: [

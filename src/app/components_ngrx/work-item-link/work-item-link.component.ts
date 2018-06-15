@@ -1,26 +1,26 @@
 import {
   Component,
+  ElementRef,
+  EventEmitter,
   Input,
   OnInit,
   Output,
-  ViewChild,
-  ElementRef,
-  EventEmitter
+  ViewChild
 } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Space } from 'ngx-fabric8-wit';
-import { WorkItemUI, WorkItem } from './../../models/work-item';
+import { Observable } from 'rxjs/Observable';
 import { WorkItemLinkUI } from './../../models/link';
 import { LinkTypeUI } from './../../models/link-type';
-import { Observable } from 'rxjs/Observable';
+import { WorkItem, WorkItemUI } from './../../models/work-item';
 
 import { WorkItemService } from '../../services/work-item.service';
 
 //ngrx stuff
-import { AppState } from './../../states/app.state';
 import { Store } from '@ngrx/store';
 import * as LinkTypeActions from './../../actions/link-type.actions';
 import * as WorkItemLinkActions from './../../actions/work-item-link.actions';
+import { AppState } from './../../states/app.state';
 
 @Component({
   selector: 'work-item-link',
@@ -31,7 +31,7 @@ import * as WorkItemLinkActions from './../../actions/work-item-link.actions';
 export class WorkItemLinkComponent implements OnInit {
   @Input() loggedIn: Boolean;
   @Input() detailContext: string; // It should be detail or preview
-  @Output() onLinkClick = new EventEmitter();
+  @Output() readonly onLinkClick = new EventEmitter();
   @ViewChild('searchResultList') searchResultList: any;
   @ViewChild('linkTypeSelector') linkTypeSelector: ElementRef;
   @ViewChild('wiSearchBox') wiSearchBox: ElementRef;
@@ -39,7 +39,7 @@ export class WorkItemLinkComponent implements OnInit {
   @Input('workItem') set workItemSetter(workItem: WorkItemUI) {
     this.workItem = workItem;
     this.store.dispatch(
-      new WorkItemLinkActions.Get(this.workItem.link+'/relationships/links')
+      new WorkItemLinkActions.Get(this.workItem.link + '/relationships/links')
     );
     this.setSearchNotAllowedIds();
   }
@@ -74,7 +74,7 @@ export class WorkItemLinkComponent implements OnInit {
     private store: Store<AppState>,
     private workItemService: WorkItemService,
     private router: Router
-  ){}
+  ) {}
 
   ngOnInit() {
     this.eventListeners.push(
@@ -98,7 +98,7 @@ export class WorkItemLinkComponent implements OnInit {
           this.wiSearchBox.nativeElement.value = '';
         }
       });
-    })
+    });
   }
 
   toggleLinkComponent(onlyOpen: Boolean = false) {
@@ -131,7 +131,7 @@ export class WorkItemLinkComponent implements OnInit {
     this.showLinkCreator = !this.showLinkCreator;
   }
 
-  onSelectRelation(relation: any): void{
+  onSelectRelation(relation: any): void {
     //clear the search box and reset values related to search
     this.wiSearchBox.nativeElement.value = '';
     this.searchWorkItems = [];
@@ -143,7 +143,7 @@ export class WorkItemLinkComponent implements OnInit {
     this.searchNotAllowedIds.push(this.workItem.id);
   }
 
-  selectSearchResult(id: string, number: number, title: string){
+  selectSearchResult(id: string, number: number, title: string) {
     this.selectedWorkItemId = id;
     this.selectedValue = number + ' - ' + title;
     this.searchWorkItems = [];
@@ -152,7 +152,7 @@ export class WorkItemLinkComponent implements OnInit {
   searchWorkItem(term, event) {
     event.stopPropagation();
     //console.log(this.searchResultList.nativeElement.children.length);
-    if (event.keyCode == 40 || event.keyCode == 38){
+    if (event.keyCode == 40 || event.keyCode == 38) {
       let lis = this.searchResultList.nativeElement.children;
       let i = 0;
       for (; i < lis.length; i++) {
@@ -197,7 +197,7 @@ export class WorkItemLinkComponent implements OnInit {
           this.selectSearchResult(selectedId, selectedNumber, selectedTitle);
         }
     } else { // Normal case - search on type
-      if (term.trim() != "") {
+      if (term.trim() != '') {
       // Search on atleast 3 char or numeric
         if (term.length >= 3 || !isNaN(term)) {
           this.workItemService.searchLinkWorkItem(term)
@@ -207,8 +207,7 @@ export class WorkItemLinkComponent implements OnInit {
               });
             }, err => console.log(err));
         }
-      }
-      else {
+      } else {
         // Reseting search data
         this.searchWorkItems = [];
         if (this.selectedWorkItemId) {
@@ -236,10 +235,10 @@ export class WorkItemLinkComponent implements OnInit {
   }
 
   createRouterLink(wiNumber, detailContext) {
-    if (detailContext === "detail") {
+    if (detailContext === 'detail') {
       let url = this.router.url.split('detail');
-      url[url.length-1] = 'detail/' + wiNumber;
-      return url.join("");
+      url[url.length - 1] = 'detail/' + wiNumber;
+      return url.join('');
     }
   }
 

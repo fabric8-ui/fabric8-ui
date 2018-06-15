@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
-import { IterationUI, IterationModel } from './../models/iteration.model';
 import { IterationState } from '../states/iteration.state';
+import { IterationModel, IterationUI } from './../models/iteration.model';
 
 export const ADD            = '[Iteration] Add';
 export const UPDATE         = '[Iteration] Update';
@@ -17,9 +17,9 @@ export class Add implements Action {
   payload: {iteration: IterationUI; parent: IterationUI | null};
   constructor(
     payload: {iteration: IterationUI; parent: IterationUI | null}
-  ){
+  ) {
     this.payload = payload;
-  };
+  }
   readonly type = ADD;
 }
 
@@ -27,9 +27,9 @@ export class AddSuccess implements Action {
   public payload: {iteration: IterationUI; parent: IterationUI | null};
   constructor(
     payload: {iteration: IterationUI; parent: IterationUI | null}
-  ){
+  ) {
     this.payload = payload;
-  };
+  }
   readonly type = ADD_SUCCESS;
 }
 
@@ -54,10 +54,10 @@ export class Get implements Action {
 }
 
 export class GetSuccess implements Action {
-  payload : IterationState;
-  constructor(payload: IterationState){
+  payload: IterationState;
+  constructor(payload: IterationState) {
     this.payload = payload;
-  };
+  }
   readonly type = GET_SUCCESS;
 }
 
@@ -74,10 +74,10 @@ export class UpdateError implements Action {
 }
 
 export class Select implements Action {
-  payload : string | null;
-  constructor(payload: string | null = null){
+  payload: string | null;
+  constructor(payload: string | null = null) {
     this.payload = payload;
-  };
+  }
   readonly type = SELECT;
 }
 

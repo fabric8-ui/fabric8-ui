@@ -1,17 +1,17 @@
-import { Store } from '@ngrx/store';
-import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import * as WorkItemLinkActions from './../actions/work-item-link.actions';
-import { Observable } from 'rxjs';
-import { AppState } from './../states/app.state';
-import { WorkItemLinkMapper } from './../models/link';
-import { WorkItemService } from './../services/work-item.service';
-import * as WorkItemActions from './../actions/work-item.actions';
+import { Actions, Effect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import {
   Notification,
   Notifications,
   NotificationType
-} from "ngx-base";
+} from 'ngx-base';
+import { Observable } from 'rxjs';
+import * as WorkItemLinkActions from './../actions/work-item-link.actions';
+import * as WorkItemActions from './../actions/work-item.actions';
+import { WorkItemLinkMapper } from './../models/link';
+import { WorkItemService } from './../services/work-item.service';
+import { AppState } from './../states/app.state';
 
 export type Action = WorkItemLinkActions.All;
 
@@ -49,11 +49,11 @@ export class WorkItemLinkEffects {
               message: `Problem in fetching links.`,
               type: NotificationType.DANGER
             } as Notification);
-          } catch(e) {
+          } catch (e) {
             console.log('Problem in fetching links');
           }
           return Observable.of(new WorkItemLinkActions.GetError());
-        })
+        });
     });
 
   @Effect() createLink$: Observable<Action> = this.actions$
@@ -63,7 +63,7 @@ export class WorkItemLinkEffects {
       return {
         payload: action.payload,
         workItems: workItems
-      }
+      };
     })
     .switchMap(p => {
       let createLinkPayload = {'data': p.payload};
@@ -105,7 +105,7 @@ export class WorkItemLinkEffects {
           }
           return new WorkItemLinkActions.AddSuccess(
             this.wilMapper.toUIModel(link)
-          )
+          );
         })
         .catch((e) => {
           try {
@@ -117,8 +117,8 @@ export class WorkItemLinkEffects {
             console.log('Problem in creating link');
           }
           return Observable.of(new WorkItemLinkActions.AddError());
-        })
-    })
+        });
+    });
 
   @Effect() deleteLink$: Observable<Action> = this.actions$
     .ofType<WorkItemLinkActions.Delete>(WorkItemLinkActions.DELETE)
@@ -127,7 +127,7 @@ export class WorkItemLinkEffects {
       return {
         payload: action.payload,
         workItems: workItems
-      }
+      };
     })
     .switchMap(p => {
       let wiLink = this.wilMapper.toServiceModel(p.payload.wiLink);
@@ -146,7 +146,7 @@ export class WorkItemLinkEffects {
             source: sourceWorkItem,
             target: targetWorkItem,
             sourceTreeStatus: ''
-          }))
+          }));
           return new WorkItemLinkActions.DeleteSuccess(p.payload.wiLink);
         })
         .catch((e) => {
@@ -155,10 +155,10 @@ export class WorkItemLinkEffects {
               message: `Problem in deleting work item.`,
               type: NotificationType.DANGER
             } as Notification);
-          } catch(e) {
+          } catch (e) {
             console.log('Problem in deleting work item');
           }
           return Observable.of(new WorkItemLinkActions.DeleteError());
-        })
-    })
+        });
+    });
 }

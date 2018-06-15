@@ -14,11 +14,11 @@ export {
 export {
   CustomQueryState,
   initialState as initialCustomQueryState
-} from './custom-query.state'
+} from './custom-query.state';
 export {
   FilterState,
   initialState as initialFilterState
-} from './filter.state'
+} from './filter.state';
 export {
   IterationState,
   initialState as initialIterationState,

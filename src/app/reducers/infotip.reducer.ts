@@ -6,7 +6,7 @@ import { InfotipState, initialState } from './../states/infotip.state';
 export type Action = InfotipActions.All;
 
 export const InfotipReducer: ActionReducer<InfotipState> = (state = initialState, action: Action) => {
-  switch(action.type) {
+  switch (action.type) {
     case InfotipActions.GET_SUCCESS: {
       return action.payload;
     }
@@ -17,4 +17,4 @@ export const InfotipReducer: ActionReducer<InfotipState> = (state = initialState
       return state;
     }
   }
-}
+};

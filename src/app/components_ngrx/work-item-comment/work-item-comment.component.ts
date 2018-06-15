@@ -1,7 +1,8 @@
 import {
-  OnInit, OnChanges,
-  Component, ViewChild,
-  EventEmitter, Input, Output
+  AfterViewInit,
+  Component, EventEmitter,
+  Input, OnChanges,
+  OnInit, Output, ViewChild
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
@@ -17,16 +18,16 @@ import { WorkItemService } from './../../services/work-item.service';
 @Component({
   selector: 'alm-work-item-comment',
   templateUrl: './work-item-comment.component.html',
-  styleUrls: ['./work-item-comment.component.less'],
+  styleUrls: ['./work-item-comment.component.less']
 })
-export class WorkItemCommentComponent implements OnInit {
+export class WorkItemCommentComponent implements OnInit, AfterViewInit {
   @Input() loadingComments: boolean = true;
   @Input() comments: CommentUI[];
   @Input() loggedIn: Boolean;
   @Input() loggedInUser: User;
-  @Output() create = new EventEmitter<CommentUI>();
-  @Output() update = new EventEmitter<CommentUI>();
-  @Output() delete = new EventEmitter<CommentUI>();
+  @Output() readonly create = new EventEmitter<CommentUI>();
+  @Output() readonly update = new EventEmitter<CommentUI>();
+  @Output() readonly delete = new EventEmitter<CommentUI>();
 
   isCollapsedComments: Boolean = false;
   commentEditable: Boolean = false;
@@ -41,7 +42,7 @@ export class WorkItemCommentComponent implements OnInit {
   ngOnInit() {}
 
   ngAfterViewInit() {
-    let commentbox = document.querySelector("#wi-comment-add-comment") as HTMLParagraphElement;
+    let commentbox = document.querySelector('#wi-comment-add-comment') as HTMLParagraphElement;
     if (!!commentbox) {
       commentbox.textContent = commentbox.dataset['placeholder'];
       commentbox.blur();
@@ -59,7 +60,7 @@ export class WorkItemCommentComponent implements OnInit {
     const rawText = event.rawText;
     const callBack = event.callBack;
     let newComment: CommentUI = {
-      body: rawText,
+      body: rawText
     } as CommentUI;
     if (event.hasOwnProperty('parentId')) {
       newComment['parentId'] = event.parentId;
@@ -81,7 +82,7 @@ export class WorkItemCommentComponent implements OnInit {
           rawText,
           this.sanitizer.bypassSecurityTrustHtml(renderedHtml)
         );
-      })
+      });
   }
 
   updateComment(comment: CommentUI): void {
@@ -107,10 +108,10 @@ export class WorkItemCommentComponent implements OnInit {
       placeholder = event.target.dataset.placeholder;
 
     if (event.type === 'focus' && commentbox.textContent === placeholder) {
-      commentbox.classList.remove("placeholder");
+      commentbox.classList.remove('placeholder');
       commentbox.textContent = '';
     } else if (event.type === 'blur' && commentbox.textContent === '') {
-      commentbox.classList.add("placeholder");
+      commentbox.classList.add('placeholder');
       commentbox.textContent = placeholder;
     }
   }

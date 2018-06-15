@@ -1,6 +1,6 @@
-import { AreaReducer } from './area.reducer';
-import { initialState as AreaInitialState, AreaState } from './../states/area.state';
 import * as AreaActions from './../actions/area.actions';
+import { AreaState, initialState as AreaInitialState } from './../states/area.state';
+import { AreaReducer } from './area.reducer';
 export type Action = AreaActions.All;
 
 describe('AreaReducer:', () => {

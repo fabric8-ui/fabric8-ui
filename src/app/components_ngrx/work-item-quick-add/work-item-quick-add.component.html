@@ -4,7 +4,7 @@
   [ngClass]="{'f8-quick-add-inline' : wilistview === 'wi-table-view'}">
   <div class="pull-left">
     <b class="pull-left padding-right-15">
-      {{wilistview === 'wi-table-view' ? 'Add Child Work Item' : 'Add Work Item'}}
+      {{ wilistview === 'wi-table-view' ? 'Add Child Work Item' : 'Add Work Item' }}
     </b>
     <!-- type dropdown -->
     <div class="pull-left">
@@ -19,7 +19,7 @@
               '' ">
             </i>
             <span class="padding-h-5">
-              {{selectedType ? selectedType.name : ''}}
+              {{ selectedType ? selectedType.name : '' }}
             </span>
             <span class="fa fa-angle-down"></span>
           </button>
@@ -34,7 +34,7 @@
             <a class="dropdown-item" href="#">
               <i class="fa"
                 [ngClass]="type.icon"></i>
-                <span class="padding-h-3">{{type.name}}</span>
+                <span class="padding-h-3">{{ type.name }}</span>
             </a>
           </li>
         </ul>

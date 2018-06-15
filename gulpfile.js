@@ -24,6 +24,7 @@ var gulp = require('gulp')
   , concat    = require('gulp-concat-css')
   , srcmaps   = require('gulp-sourcemaps')
   , replace   = require('gulp-string-replace')
+  , tslint    = require('gulp-tslint')
   ;
 
 // Requirements with special treatments
@@ -52,7 +53,7 @@ mach.transpileTS = function () {
     // Replace templateURL/styleURL with require statements in js.
     return gulp.src(['dist/app/**/*.js'])
     .pipe(replace(/templateUrl:\s/g, "template: require("))
-    .pipe(replace(/\.html',/g, ".html'),"))
+    .pipe(replace(/\.html',{0,1}/g, ".html'),"))
     .pipe(replace(/styleUrls: \[/g, "styles: [require("))
     .pipe(replace(/\.less']/g, ".css').toString()]"))
     .pipe(gulp.dest(function (file) {
@@ -69,6 +70,17 @@ mach.copyToDist = function (srcArr) {
       return distPath + file.base.slice(__dirname.length + 'src/'.length);
     }));
 }
+
+//TSLint
+
+mach.tslint = function(src) {
+  return gulp.src(src)
+    .pipe(tslint({
+      formatter: 'verbose',
+      configuration: 'tslint.json' 
+    }))
+    .pipe(tslint.report())
+};
 
 // Transpile given LESS source(s) to CSS, storing results to distPath.
 mach.transpileLESS = function (src, debug) {
@@ -102,6 +114,7 @@ mach.transpileLESS = function (src, debug) {
 gulp.task('build', function (done) {
 
   // app (default)
+  mach.tslint(appSrc + '/app/**/*.ts'); // Report all the linter errors
   mach.transpileTS(); // Transpile *.ts to *.js; _then_ post-process require statements to load templates
   mach.transpileLESS(appSrc + '/**/*.less'); // Transpile and minify less, storing results in distPath.
   mach.copyToDist(['src/**/*.html']); // Copy template html files to distPath

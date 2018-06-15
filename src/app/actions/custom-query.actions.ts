@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { CustomQueryModel, CustomQueryService as CQService} from './../models/custom-query.model';
+import { CustomQueryModel, CustomQueryService as CQService } from './../models/custom-query.model';
 
 export const ADD = '[customQuery] Add';
 export const ADD_SUCCESS = '[customQuery] AddSuccess';
@@ -43,7 +43,7 @@ export class GetSuccess implements Action {
   payload: CustomQueryModel[];
   constructor(payload: CustomQueryModel[]) {
     this.payload = payload;
-  };
+  }
   readonly type = GET_SUCCESS;
 }
 
@@ -75,7 +75,7 @@ export class Select implements Action {
   payload: CustomQueryModel;
   constructor(payload: CustomQueryModel) {
     this.payload = payload;
-  };
+  }
   readonly type = SELECT;
 }
 
@@ -92,4 +92,4 @@ export type All
   | DeleteSuccess
   | DeleteError
   | Select
-  | SelectNone
+  | SelectNone;

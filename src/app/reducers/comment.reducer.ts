@@ -1,4 +1,4 @@
-import { State, ActionReducer } from '@ngrx/store';
+import { ActionReducer, State } from '@ngrx/store';
 import * as CommentActions from './../actions/comment.actions';
 import { CommentState, initialState } from './../states/comment.state';
 
@@ -7,7 +7,7 @@ import { Comment } from './../models/comment';
 export type Action = CommentActions.All;
 
 export const CommentReducer: ActionReducer<CommentState> = (state = initialState, action: Action) => {
-  switch(action.type) {
+  switch (action.type) {
     case CommentActions.GET_SUCCESS: {
       return [...action.payload];
     }
@@ -24,7 +24,7 @@ export const CommentReducer: ActionReducer<CommentState> = (state = initialState
       let updatedComment = action.payload;
       let index = state.findIndex(c => c.id === updatedComment.id);
       if (index > -1) {
-        state[index] = action.payload
+        state[index] = action.payload;
       }
       return [...state];
     }
@@ -46,4 +46,4 @@ export const CommentReducer: ActionReducer<CommentState> = (state = initialState
       return state;
     }
   }
-}
+};

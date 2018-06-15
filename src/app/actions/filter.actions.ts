@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { FilterModel} from './../models/filter.model';
+import { FilterModel } from './../models/filter.model';
 
 export const GET = '[filter] Get';
 export const GET_SUCCESS = '[filter] GetSuccess';
@@ -13,7 +13,7 @@ export class GetSuccess implements Action {
   payload: FilterModel[];
   constructor(payload: FilterModel[]) {
     this.payload = payload;
-  };
+  }
   readonly type = GET_SUCCESS;
 }
 
@@ -24,4 +24,4 @@ export class GetError implements Action {
 export type All
   = Get
   | GetSuccess
-  | GetError
+  | GetError;

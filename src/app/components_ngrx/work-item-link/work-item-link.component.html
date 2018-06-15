@@ -15,7 +15,7 @@
           class="badge"
           id="wi-link-total"
           *ngIf="workItemLinks; else loading">
-          {{workItemLinks.length}}
+          {{ workItemLinks.length }}
         </span>
         <ng-template #loading>
           <span class="spinner spinner-sm spinner-inline"></span>
@@ -66,7 +66,7 @@
                 <ul class="typeahead typeahead-long dropdown-menu"
                   role="menu" *dropdownMenu>
                   <li *ngFor="let linkType of selectedTab | workItemLinkTypeFilterByTypeName:(linkTypes)">
-                    <a (click)="onSelectRelation(linkType)">{{linkType.name}}</a>
+                    <a (click)="onSelectRelation(linkType)">{{ linkType.name }}</a>
                   </li>
                 </ul>
                 <span class="input-group-addon dropdown-toggle pointer" id="wi-link-type"
@@ -96,7 +96,7 @@
                       [attr.data-winumber]="workItem.attributes['system.number']"
                       [attr.data-wititle]="workItem.attributes['system.title']">
                       <a #searchresult>
-                        <span>{{workItem.attributes['system.number']}} - </span>
+                        <span>{{ workItem.attributes['system.number'] }} - </span>
                         <span [innerHTML]="workItem.attributes['system.title']"></span>
                       </a>
                   </li>
@@ -123,7 +123,7 @@
         *ngIf="workItemLinks.length">
         <p class="f8-link__list-header">Links</p>
         <div *ngFor="let linkDict of workItemLinks | groupWorkItemLinks:(workItem.id)">
-          <p class="f8-link__list-type-header">{{linkDict.linkType[linkDict.linkDirection]}}</p>
+          <p class="f8-link__list-type-header">{{ linkDict.linkType[linkDict.linkDirection] }}</p>
           <ul class="padding-left-0">
             <li *ngFor="let wi of linkDict.workItems; let i = index"
               class="f8-link__list-item">

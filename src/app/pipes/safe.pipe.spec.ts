@@ -1,7 +1,7 @@
 import {
-  inject,
   async,
   getTestBed,
+  inject,
   TestBed
 } from '@angular/core/testing';
 import { DomSanitizer, SafeHtml, SafeValue } from '@angular/platform-browser';
@@ -27,7 +27,7 @@ describe('Unit Test :: Safe Pipe', () => {
   it('should wrap values in SafeValue.', () => {
     expect(safePipe).toBeDefined();
     // Typescript is funny, it is not really typesafe, so typeof always returns 'object'.
-    // instanceof also does not work as this is a JS construct that does not work on 
+    // instanceof also does not work as this is a JS construct that does not work on
     // typescript interface definitions without extra measures like custom type guards.
     // So we're doing type checking by looking at the internal structure.
     expect(safePipe.transform('some value', 'html')['changingThisBreaksApplicationSecurity']).toBe('some value');

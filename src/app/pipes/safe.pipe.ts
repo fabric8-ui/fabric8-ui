@@ -2,10 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import {
   DomSanitizer,
   SafeHtml,
-  SafeStyle,
+  SafeResourceUrl,
   SafeScript,
-  SafeUrl,
-  SafeResourceUrl
+  SafeStyle,
+  SafeUrl
 } from '@angular/platform-browser';
 
 @Pipe({

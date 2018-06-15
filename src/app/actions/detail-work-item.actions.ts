@@ -6,7 +6,7 @@ export const GET_WORKITEM_SUCCESS = '[workItem] GetWorkItemSuccess';
 export const GET_WORKITEM_ERROR = '[workItem] GetWorkItemError';
 
 export class GetWorkItem implements Action {
-  payload: {number: string | number}
+  payload: {number: string | number};
   constructor(payload: {number: string | number}) {
     this.payload = payload;
   }
@@ -28,4 +28,4 @@ export class GetWorkItemError implements Action {
 export type All
   = GetWorkItem
   | GetWorkItemSuccess
-  | GetWorkItemError
+  | GetWorkItemError;

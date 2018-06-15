@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { RouterModule } from '@angular/router';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AssigneesComponent } from './assignee.component';
 
 @NgModule({

@@ -1,24 +1,24 @@
-import { Observable } from 'rxjs/Observable';
 import {
   Component,
   ElementRef,
   EventEmitter,
   Input,
-  Output,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { cloneDeep } from 'lodash';
 import {
-  SelectDropdownComponent
-} from './../../widgets/select-dropdown/select-dropdown.component';
-import {
   AuthenticationService,
   User,
   UserService
 } from 'ngx-login-client';
+import { Observable } from 'rxjs/Observable';
 import { UserUI } from './../../models/user';
+import {
+  SelectDropdownComponent
+} from './../../widgets/select-dropdown/select-dropdown.component';
 
 @Component({
   selector: 'common-selector',
@@ -54,9 +54,9 @@ export class CommonSelectorComponent {
   @Input('noValueLabel') noValueLabel: string = 'None';
   @Input('allowUpdate') allowUpdate: boolean = true;
 
-  @Output() onSelectItem: EventEmitter<any[]> = new EventEmitter();
-  @Output() onOpenSelector: EventEmitter<any> = new EventEmitter();
-  @Output() onCloseSelector: EventEmitter<any[]> = new EventEmitter();
+  @Output() readonly onSelectItem: EventEmitter<any[]> = new EventEmitter();
+  @Output() readonly onOpenSelector: EventEmitter<any> = new EventEmitter();
+  @Output() readonly onCloseSelector: EventEmitter<any[]> = new EventEmitter();
 
   users: User[] = [];
 
@@ -68,7 +68,7 @@ export class CommonSelectorComponent {
 
   onSelect(event: any) {
     // If 'No match found' selected then do nothing
-    if (event.key === null) return;
+    if (event.key === null) { return; }
     let findSelectedIndex = this.selectedItems.findIndex(i => i.key === event.key);
     if (this.allowMultiSelect) {
       if (findSelectedIndex > -1) {
@@ -118,7 +118,7 @@ export class CommonSelectorComponent {
         ));
         if (!this.menuItems.length) {
           this.menuItems = [{
-            key: null, value: "No matches found.",
+            key: null, value: 'No matches found.',
             selected: false, cssLabelClass: undefined
           }];
         }

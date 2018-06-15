@@ -1,9 +1,9 @@
-import { Action } from "@ngrx/store";
-import { EventUI } from './../models/event.model'
+import { Action } from '@ngrx/store';
+import { EventUI } from './../models/event.model';
 
 export const GET = '[event] Get';
 export const GET_SUCCESS = '[event] GetSuccess';
-export const GET_ERROR = '[event] GetError'
+export const GET_ERROR = '[event] GetError';
 
 export class Get implements Action {
   payload: string;
@@ -28,4 +28,4 @@ export class GetError implements Action {
 export type All
    = Get
    | GetSuccess
-   | GetError
+   | GetError;

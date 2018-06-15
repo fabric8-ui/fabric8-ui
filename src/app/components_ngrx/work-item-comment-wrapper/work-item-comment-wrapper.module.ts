@@ -1,14 +1,14 @@
-import { NgModule }     from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule }     from '@angular/core';
 
 //ngrx stuff
-import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { CommentState, initialState as initialCommentState } from './../../states/comment.state';
-import { CommentReducer } from './../../reducers/comment.reducer';
+import { StoreModule } from '@ngrx/store';
 import { CommentEffects } from './../../effects/comment.effects';
-import { WorkItemCommentWrapperComponent } from './work-item-comment-wrapper.component';
+import { CommentReducer } from './../../reducers/comment.reducer';
+import { CommentState, initialState as initialCommentState } from './../../states/comment.state';
 import { WorkItemCommentModule } from './../work-item-comment/work-item-comment.module';
+import { WorkItemCommentWrapperComponent } from './work-item-comment-wrapper.component';
 
 @NgModule({
   imports: [
@@ -16,8 +16,8 @@ import { WorkItemCommentModule } from './../work-item-comment/work-item-comment.
     WorkItemCommentModule
   ],
   declarations: [
-    WorkItemCommentWrapperComponent,
+    WorkItemCommentWrapperComponent
   ],
-  exports: [WorkItemCommentWrapperComponent],
+  exports: [WorkItemCommentWrapperComponent]
 })
 export class WorkItemCommentWrapperModule { }

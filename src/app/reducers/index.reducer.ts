@@ -7,7 +7,7 @@ export { LabelReducer } from './label.reducer';
 export { WorkItemReducer } from './work-item.reducer';
 export { WorkItemTypeReducer } from './work-item-type.reducer';
 export { FilterReducer } from './filter.reducer';
-export { GroupTypeReducer } from './group-type.reducer'
+export { GroupTypeReducer } from './group-type.reducer';
 export { SpaceReducer } from './space.reducer';
 export { WorkItemStateReducer } from './work-item-state.reducer';
 export { DetailWorkItemReducer } from './detail-work-item.reducer';

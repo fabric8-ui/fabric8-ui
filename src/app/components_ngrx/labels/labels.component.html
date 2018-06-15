@@ -7,7 +7,7 @@
     <span *ngIf="context!='detail'">
     <a [routerLink]=[] [queryParams]="constructQueryExpression(label.id)">
     <span class="label-name pointer">
-      {{label.name}}
+      {{ label.name }}
     </span>
     </a>
     <span class="close-icon-wrapper padding-left-5" *ngIf="allowDelete">
@@ -16,7 +16,7 @@
   </span>
   <span *ngIf="context=='detail'">
   <span class="label-name">
-      {{label.name}}
+      {{ label.name }}
     </span>
     <span class="close-icon-wrapper padding-left-5" *ngIf="allowDelete">
       <i class="pficon-close pointer" (click)="removeLabel(label, $event)"></i>
@@ -36,7 +36,7 @@
           <span *ngIf="context!='detail'">
           <a [routerLink]=[] [queryParams]= "constructQueryExpression(label.id)">
           <span class="label-name pointer">
-            {{label.name}}
+            {{ label.name }}
           </span>
           </a>
           <span class="close-icon-wrapper" *ngIf="allowDelete">
@@ -45,7 +45,7 @@
           </span>
           <span *ngIf="context=='detail'">
             <span class="label-name">
-              {{label.name}}
+              {{ label.name }}
             </span>
             <span class="close-icon-wrapper padding-left-5" *ngIf="allowDelete">
               <i class="pficon-close pointer" (click)="removeLabel(label, $event)"></i>

@@ -1,16 +1,16 @@
 import { createEntityAdapter } from '@ngrx/entity';
-import { State, ActionReducer } from '@ngrx/store';
-import * as WorkItemActions from './../actions/work-item.actions';
-import { WorkItemState, initialState } from './../states/work-item.state';
+import { ActionReducer, State } from '@ngrx/store';
 import { cloneDeep } from 'lodash';
+import * as WorkItemActions from './../actions/work-item.actions';
+import { initialState, WorkItemState } from './../states/work-item.state';
 
-import { WorkItem, WorkItemUI, WorkItemStateModel } from './../models/work-item';
+import { WorkItem, WorkItemStateModel, WorkItemUI } from './../models/work-item';
 
 export type Action = WorkItemActions.All;
 const workItemAdapter = createEntityAdapter<WorkItemUI>();
 
 export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialState, action: Action) => {
-  switch(action.type) {
+  switch (action.type) {
 
     case WorkItemActions.ADD_SUCCESS: {
       let newState = {...state};
@@ -53,7 +53,7 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
       return workItemAdapter.updateOne({
         id: action.payload.id,
         changes: action.payload
-      }, state)
+      }, state);
     }
 
     case WorkItemActions.UPDATE_ERROR: {
@@ -88,4 +88,4 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
       return state;
     }
   }
-}
+};

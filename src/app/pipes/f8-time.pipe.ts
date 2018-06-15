@@ -7,6 +7,6 @@ export class F8TimePipe implements PipeTransform {
     // TODO: add support for weeks
     // const dateObject = moment(value).toObject();
     // const dateArray = moment(value).toArray();
-    return moment(value).fromNow()
+    return moment(value).fromNow();
   }
 }

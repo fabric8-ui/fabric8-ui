@@ -35,7 +35,7 @@ export class GroupWorkItemLinks implements PipeTransform {
     let op = [];
     linkTypes.forEach(linkType => {
       const linksOfLinkType = arr.filter(link =>
-        link.linkType.id === linkType.id)
+        link.linkType.id === linkType.id);
       let forward = [];
       let reverse = [];
       let forwardLinks = [];

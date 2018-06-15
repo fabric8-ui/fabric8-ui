@@ -1,5 +1,5 @@
 import { Injectable }   from '@angular/core';
-import { FormControl, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 import { Logger } from 'ngx-base';
 
@@ -50,8 +50,9 @@ export class WorkItemTypeControlService {
     return (control: AbstractControl): { [key: string]: any } => {
       const value = control.value;
       // if the value is empty, it is valid (add a required validator in toFormGroup() if required).
-      if (!value)
+      if (!value) {
         return null;
+      }
       const isInvalid = (validValues.indexOf(value) == -1);
       return isInvalid ? { 'forbiddenName': { value } } : null;
     };
@@ -73,12 +74,14 @@ export class WorkItemTypeControlService {
         this.log.log('Generating form control for ' + key);
         // create validators array
         let validators: ValidatorFn[] = [];
-        if (fields[key].required)
+        if (fields[key].required) {
           validators.push(Validators.required);
-        if (fields[key].type.kind === 'integer' || fields[key].type.kind === 'float')
+        }
+        if (fields[key].type.kind === 'integer' || fields[key].type.kind === 'float') {
           validators.push(this.numberValidator());
-        else if (fields[key].type.kind === 'enum')
+        } else if (fields[key].type.kind === 'enum') {
           validators.push(this.enumValidator(fields[key].type.values));
+             }
         // finally create FormControl, put it into the group under the key
         group[key] = new FormControl(workItem[key] || '', validators);
       }

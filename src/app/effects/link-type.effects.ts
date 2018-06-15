@@ -1,15 +1,15 @@
+import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { AppState } from './../states/app.state';
-import { Injectable } from '@angular/core';
 import * as LinkTypeActions from './../actions/link-type.actions';
+import { AppState } from './../states/app.state';
 
 import { Observable } from 'rxjs';
-import { WorkItemService } from './../services/work-item.service';
 import {
   LinkTypeService,
   LinkTypeUI
 } from './../models/link-type';
+import { WorkItemService } from './../services/work-item.service';
 
 export type Action = LinkTypeActions.All;
 
@@ -18,8 +18,8 @@ export class LinkTypeEffects {
   constructor(
     private actions$: Actions,
     private workItemService: WorkItemService,
-    private store: Store<AppState>,
-  ){}
+    private store: Store<AppState>
+  ) {}
 
   @Effect() getLinkTypes$: Observable<Action> = this.actions$
     .ofType(LinkTypeActions.GET)
@@ -28,7 +28,7 @@ export class LinkTypeEffects {
       return {
         payload: action,
         space: space
-      }
+      };
     })
     .switchMap(lt => {
       return this.workItemService.getAllLinkTypes(lt.space.links.workitemlinktypes)
@@ -52,6 +52,6 @@ export class LinkTypeEffects {
             });
           });
           return new LinkTypeActions.GetSuccess(linkTypes);
-        })
-    })
+        });
+    });
 }

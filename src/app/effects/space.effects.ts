@@ -1,23 +1,23 @@
-import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import * as SpaceActions from './../actions/space.actions';
-import { Observable } from 'rxjs';
-import { Spaces, Space } from 'ngx-fabric8-wit';
+import { Actions, Effect } from '@ngrx/effects';
 import {
   Notification,
   Notifications,
   NotificationType
-} from "ngx-base";
+} from 'ngx-base';
+import { Space, Spaces } from 'ngx-fabric8-wit';
+import { Observable } from 'rxjs';
+import * as SpaceActions from './../actions/space.actions';
 
+import * as AreaActions from './../actions/area.actions';
 import * as CollaboratorActions from './../actions/collaborator.actions';
 import * as CustomQueryActions from './../actions/custom-query.actions';
-import * as AreaActions from './../actions/area.actions';
 import * as FilterActions from './../actions/filter.actions';
 import * as GroupTypeActions from './../actions/group-type.actions';
+import * as InfotipActions from './../actions/infotip.actions';
 import * as IterationActions from './../actions/iteration.actions';
 import * as LabelActions from './../actions/label.actions';
 import * as WorkItemTypeActions from './../actions/work-item-type.actions';
-import * as InfotipActions from './../actions/infotip.actions';
 
 export type Action = SpaceActions.All;
 
@@ -29,7 +29,7 @@ export class SpaceEffects {
     private actions$: Actions,
     private spaces: Spaces,
     private notifications: Notifications
-  ){}
+  ) {}
 
   @Effect() getSpace$: Observable<Action> = this.actions$
     .ofType(SpaceActions.GET)

@@ -1,40 +1,36 @@
-import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
-import { FormGroup } from '@angular/forms';
-import { LabelUI, LabelQuery } from './../../models/label.model';
-import { IterationUI } from './../../models/iteration.model';
-import { AreaUI } from './../../models/area.model';
-import { UserUI, UserQuery } from './../../models/user';
-import { WorkItemTypeUI } from './../../models/work-item-type';
-import { AuthenticationService } from 'ngx-login-client';
-import { UrlService } from './../../services/url.service';
-import { GetWorkItem } from './../../actions/detail-work-item.actions';
-import { Observable } from 'rxjs/Observable';
-import { ActivatedRoute, Router } from '@angular/router';
 import {
   AfterViewChecked,
-  Component, Input, OnInit,
-  OnDestroy, Output, EventEmitter,
-  ElementRef, ViewChild, Renderer2, HostListener
+  Component, ElementRef, EventEmitter,
+  HostListener, Input, OnDestroy,
+  OnInit, Output, Renderer2, ViewChild
 } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { InlineInputComponent } from './../../widgets/inlineinput/inlineinput.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from 'ngx-login-client';
 import { MarkdownComponent } from 'ngx-widgets';
+import { Observable } from 'rxjs/Observable';
+import { AreaUI } from './../../models/area.model';
+import { LabelQuery, LabelUI } from './../../models/label.model';
+import { UserQuery, UserUI } from './../../models/user';
+import { WorkItemTypeUI } from './../../models/work-item-type';
+import { UrlService } from './../../services/url.service';
+import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
+import { InlineInputComponent } from './../../widgets/inlineinput/inlineinput.component';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
-import { AppState } from './../../states/app.state';
-import { WorkItemUI, WorkItemQuery } from './../../models/work-item';
-import * as WorkItemActions from './../../actions/work-item.actions';
-import * as DetailWorkItemActions from './../../actions/detail-work-item.actions';
-import * as IterationActions from './../../actions/iteration.actions';
-import * as GroupTypeActions from './../../actions/group-type.actions';
-import * as SpaceActions from './../../actions/space.actions';
-import * as CollaboratorActions from './../../actions/collaborator.actions';
-import * as AreaActions from './../../actions/area.actions';
-import * as WorkItemTypeActions from './../../actions/work-item-type.actions';
-import * as LabelActions from './../../actions/label.actions';
-import { WorkItemService } from './../../services/work-item.service';
 import { CommonSelectorUI } from '../../models/common.model';
+import * as DetailWorkItemActions from './../../actions/detail-work-item.actions';
+import * as GroupTypeActions from './../../actions/group-type.actions';
+import * as IterationActions from './../../actions/iteration.actions';
+import * as LabelActions from './../../actions/label.actions';
+import * as SpaceActions from './../../actions/space.actions';
+import * as WorkItemTypeActions from './../../actions/work-item-type.actions';
+import * as WorkItemActions from './../../actions/work-item.actions';
+import { WorkItemQuery, WorkItemUI } from './../../models/work-item';
+import { WorkItemService } from './../../services/work-item.service';
+import { AppState } from './../../states/app.state';
 
 @Component({
   selector: 'work-item-detail',
@@ -50,7 +46,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   private spaceSource = this.store
     .select('listPage')
     .select('space')
-    .do(s => {if (!s) this.store.dispatch(new SpaceActions.Get())})
+    .do(s => {if (!s) { this.store.dispatch(new SpaceActions.Get()); }})
     .filter(s => !!s);
   private labelSource = this.labelQuery.getLables();
   private areaSource: Observable<CommonSelectorUI[]>;
@@ -83,7 +79,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     }
   }
 
-  @Output() closePreview: EventEmitter<any> = new EventEmitter();
+  @Output() readonly closePreview: EventEmitter<any> = new EventEmitter();
 
   private workItem: WorkItemUI = null;
   private detailContext: 'preview' | 'detail' = 'preview';
@@ -147,21 +143,21 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
       this.workItemSubscriber.unsubscribe();
       this.workItemSubscriber = null;
     }
-    if(document.getElementsByTagName('body')[0].style.overflow === "hidden") {
+    if (document.getElementsByTagName('body')[0].style.overflow === 'hidden') {
       document.getElementsByTagName('body')[0].removeAttribute('style');
     }
   }
 
   ngAfterViewChecked() {
-    if(this.detailContext === 'detail') {
-      if(this.detailHeader) {
-        let HdrDivHeight:any =  this.detailHeader.nativeElement.offsetHeight;
-        let targetHeight:any = window.innerHeight - HdrDivHeight - 90;
-        this.renderer.setStyle(this.detailContent.nativeElement, 'height', targetHeight + "px");
+    if (this.detailContext === 'detail') {
+      if (this.detailHeader) {
+        let HdrDivHeight: any =  this.detailHeader.nativeElement.offsetHeight;
+        let targetHeight: any = window.innerHeight - HdrDivHeight - 90;
+        this.renderer.setStyle(this.detailContent.nativeElement, 'height', targetHeight + 'px');
       }
     }
-    if(document.getElementsByTagName('body')) {
-      document.getElementsByTagName('body')[0].style.overflow = "hidden";
+    if (document.getElementsByTagName('body')) {
+      document.getElementsByTagName('body')[0].style.overflow = 'hidden';
     }
   }
 
@@ -173,7 +169,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     this.workItemSubscriber =
       this.spaceSource
       .switchMap(s => {
-        return this.combinedSources
+        return this.combinedSources;
       })
       .switchMap(([labels, collabs, states, type]) => {
         this.collaborators = collabs.filter(c => !c.currentUser);
@@ -187,7 +183,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
       })
       .filter(w => w !== null)
       .subscribe(workItem => {
-        if((this.detailContext === 'preview')
+        if ((this.detailContext === 'preview')
         && this.descMarkdown && this.workItem.id !== workItem.id) {
           this.descMarkdown.deactivateEditor();
         }
@@ -213,7 +209,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
           });
         }
 
-        if((this.detailContext === 'preview')
+        if ((this.detailContext === 'preview')
         && (this.descMarkdown)) {
           this.descMarkdown.deactivateEditor();
         }
@@ -236,10 +232,10 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   }
 
   getSelectedItems(itemSource: Observable<CommonSelectorUI[]>)
-    :Observable<CommonSelectorUI[]> {
+    : Observable<CommonSelectorUI[]> {
     return itemSource.map(items => {
-      return items.filter(i => i.selected)
-    })
+      return items.filter(i => i.selected);
+    });
   }
 
   closeDetail() {
@@ -368,7 +364,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
           rawText,
           this.sanitizer.bypassSecurityTrustHtml(renderedHtml)
         );
-      })
+      });
   }
 
   descUpdate(event: any): void {

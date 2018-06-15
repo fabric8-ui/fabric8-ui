@@ -2,22 +2,22 @@ import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Params, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 
-import { AuthenticationService } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
+import { AuthenticationService } from 'ngx-login-client';
 
-import { FilterService } from '../../services/filter.service';
-import { GroupTypesService } from '../../services/group-types.service';
 import { GroupTypesModel, GroupTypeUI } from '../../models/group-types.model';
 import { WorkItemType } from '../../models/work-item-type';
+import { FilterService } from '../../services/filter.service';
+import { GroupTypesService } from '../../services/group-types.service';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
-import { AppState } from './../../states/app.state';
-import * as GroupTypeActions from './../../actions/group-type.actions';
 import { InfotipState } from '../../states/index.state';
+import * as GroupTypeActions from './../../actions/group-type.actions';
+import { AppState } from './../../states/app.state';
 
 @Component({
   selector: 'group-types',
@@ -58,7 +58,7 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
     const spaceData = this.store
       .select('listPage')
       .select('space')
-      .filter(space => space !== null)
+      .filter(space => space !== null);
 
     this.eventListeners.push(
       Observable.combineLatest(
@@ -105,21 +105,21 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
         q: this.fnBuildQueryParam(witGroup),
         showTree: this.showTree,
         showCompleted: this.showCompleted
-      }
+      };
     } else if (this.showTree) {
       return {
         q: this.fnBuildQueryParam(witGroup),
         showTree: this.showTree
-      }
+      };
     } else if (this.showCompleted) {
       return {
         q: this.fnBuildQueryParam(witGroup),
         showCompleted: this.showCompleted
-      }
+      };
     } else {
       return {
         q: this.fnBuildQueryParam(witGroup)
-      }
+      };
     }
   }
 
@@ -154,5 +154,5 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
     return this.infotipSource
       .select(s => s[id])
       .select(i => i ? i['en'] : id);
-  }    
+  }
 }

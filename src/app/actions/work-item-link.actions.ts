@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { WorkItemLinkUI, WorkItemLinkService } from './../models/link';
+import { WorkItemLinkService, WorkItemLinkUI } from './../models/link';
 import { WorkItemUI } from './../models/work-item';
 
 export const ADD = '[workItemLink] Add';
@@ -32,13 +32,13 @@ export class Delete implements Action {
   payload: {
     wiLink: WorkItemLinkUI,
     workItemId: string
-  }
+  };
   constructor(
     payload: {
       wiLink: WorkItemLinkUI,
       workItemId: string
     }
-  ){
+  ) {
     this.payload = payload;
   }
   readonly type = DELETE;
@@ -89,4 +89,4 @@ export type All
   | GetError
   | Delete
   | DeleteSuccess
-  | DeleteError
+  | DeleteError;

@@ -1,51 +1,51 @@
-import { Broadcaster } from 'ngx-base';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { AsyncPipe } from '@angular/common';
 import {
-  Component,
-  Input,
-  OnInit,
   AfterViewInit,
-  ViewEncapsulation,
-  Output,
-  OnDestroy,
+  ChangeDetectorRef,
+  Component,
   EventEmitter,
-  ChangeDetectorRef
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewEncapsulation
 } from '@angular/core';
-import { AsyncPipe } from '@angular/common'
 import {
-  Router,
   ActivatedRoute,
-  NavigationExtras
+  NavigationExtras,
+  Router
 } from '@angular/router';
 import { cloneDeep } from 'lodash';
+import { Broadcaster } from 'ngx-base';
 import { FilterConfig, FilterEvent } from 'patternfly-ng/filter';
 import { ToolbarConfig } from 'patternfly-ng/toolbar';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 import { Spaces } from 'ngx-fabric8-wit';
+import { Space } from 'ngx-fabric8-wit';
 import {
   AuthenticationService,
-  UserService,
-  User
+  User,
+  UserService
 } from 'ngx-login-client';
-import { Space } from 'ngx-fabric8-wit';
 
-import { AreaUI, AreaQuery } from '../../models/area.model';
+import { AreaQuery, AreaUI } from '../../models/area.model';
 import { FilterModel } from '../../models/filter.model';
-import { FilterService } from '../../services/filter.service';
-import { LabelUI, LabelQuery } from './../../models/label.model';
-import { WorkItemTypeUI } from '../../models/work-item-type';
 import { WorkItem, WorkItemQuery } from '../../models/work-item';
-import { IterationUI, IterationQuery } from './../../models/iteration.model';
-import { UserUI, UserQuery } from './../../models/user';
+import { WorkItemTypeUI } from '../../models/work-item-type';
+import { FilterService } from '../../services/filter.service';
 import { GroupTypeUI } from './../../models/group-types.model';
+import { IterationQuery, IterationUI } from './../../models/iteration.model';
+import { LabelQuery, LabelUI } from './../../models/label.model';
+import { UserQuery, UserUI } from './../../models/user';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
-import { AppState } from './../../states/app.state';
 import * as CustomQueryActions from './../../actions/custom-query.actions';
 import * as FilterActions from './../../actions/filter.actions';
 import * as SpaceActions from './../../actions/space.actions';
+import { AppState } from './../../states/app.state';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -58,7 +58,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() context: string;
   @Input() loggedInUser: User | Object = {};
   @Input() dropdownPlacement: any = 'right'; // value is right or left
-  @Output() onCreateNewWorkItemSelected: EventEmitter<any | null> = new EventEmitter();
+  @Output() readonly onCreateNewWorkItemSelected: EventEmitter<any | null> = new EventEmitter();
 
   loggedIn: boolean = false;
   showTypesOptions: boolean = false;
@@ -160,10 +160,10 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         this.store.dispatch(new FilterActions.Get());
       });
     //on the board view - do not show state filter as the lanes are based on state
-    this.allowedFilterKeys= [
+    this.allowedFilterKeys = [
       'assignee', 'creator', 'area', 'label',
       'workitemtype', 'title'
-    ]
+    ];
     if (this.context !== 'boardview') {
       this.allowedFilterKeys.push('state');
     }
@@ -175,12 +175,12 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       .filter(customQueries => !!customQueries.length);
     this.totalCount = this.workItemQuery.getWorkItems()
       .map(items => {
-        if(this.isShowTreeOn) {
+        if (this.isShowTreeOn) {
           return items.filter(item => item.bold === true).length;
         } else {
           return items.length;
         }
-      })
+      });
 
     this.eventListeners.push(
       customQueriesData.subscribe(queries => {
@@ -222,9 +222,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         // Once all the attributes are resolved
         // Listen for the URLs to set applied filters
         this.checkURL();
-        this.checkFilterFromSidePanle()
+        this.checkFilterFromSidePanle();
       })
-    )
+    );
 
   }
 
@@ -318,7 +318,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
             this.savedFIlterFieldQueries[this.filterConfig.fields[index].id]['filterable'] = filterMap[event.field.id].datamap(resp).queries;
           })
         );
-      } else if (this.filterConfig.fields[index].type === 'typeahead'){
+      } else if (this.filterConfig.fields[index].type === 'typeahead') {
         this.filterQueries({
           value: '',
           field: event.field
@@ -350,7 +350,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         ...this.savedFIlterFieldQueries[event.field.id]['fixed'],
         this.separator,
         ...this.savedFIlterFieldQueries[event.field.id]['filterable']
-      ]
+      ];
     }
   }
 
@@ -358,10 +358,10 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   initiateDataSources() {
     this.workItemTypeData = this.store
       .select('listPage').select('workItemTypes')
-      .filter(a =>!!a.length);
+      .filter(a => !!a.length);
     this.stateData = this.store
       .select('listPage').select('workItemStates')
-      .filter(a =>!!a.length);
+      .filter(a => !!a.length);
     this.labelData = this.labelQuery.getLables()
       .filter(l => l !== null);
     this.spaceData = this.store
@@ -371,10 +371,10 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       .select('toolbar').select('filters')
       .filter(filters => !!filters.length);
     this.iterationData = this.iterationQuery.getIterations()
-      .filter(i => !!i.length)
+      .filter(i => !!i.length);
     this.groupTypeData = this.store
       .select('listPage').select('groupTypes')
-      .filter(i => !!i.length)
+      .filter(i => !!i.length);
   }
 
   getFilterMap() {
@@ -383,9 +383,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         datasource: this.areaQuery.getAreas(),
         datamap: (areas: AreaUI[]) => {
           return {
-            queries: areas.map(area => {return {id: area.id, value: area.name}}),
+            queries: areas.map(area => {return {id: area.id, value: area.name}; }),
             primaryQueries: []
-          }
+          };
         },
         getvalue: (area: AreaUI) => area.name,
         type: 'select'
@@ -396,11 +396,11 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           const currentUsers = users.filter(u => u.currentUser);
           const authUser = currentUsers.length ? currentUsers[0] : null;
           return {
-            queries: users.filter(u => !u.currentUser).map((user: UserUI) => {return {id: user.id, value: user.username, imageUrl: user.avatar}}),
+            queries: users.filter(u => !u.currentUser).map((user: UserUI) => {return {id: user.id, value: user.username, imageUrl: user.avatar}; }),
             primaryQueries: authUser ?
               [{id: authUser.id, value: authUser.username + ' (me1)', imageUrl: authUser.avatar}, {id: null, value: 'Unassigned'}] :
               [{id: null, value: 'Unassigned'}]
-          }
+          };
         },
         type: 'typeahead'
       },
@@ -410,11 +410,11 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           const currentUsers = users.filter(u => u.currentUser);
           const authUser = currentUsers.length ? currentUsers[0] : null;
           return {
-            queries: users.filter(u => !u.currentUser).map((user: UserUI) => {return {id: user.id, value: user.username, imageUrl: user.avatar}}),
+            queries: users.filter(u => !u.currentUser).map((user: UserUI) => {return {id: user.id, value: user.username, imageUrl: user.avatar}; }),
             primaryQueries: authUser ?
               [{id: authUser.id, value: authUser.username + ' (me)', imageUrl: authUser.avatar}] :
               []
-          }
+          };
         },
         getvalue: (user) => user.attributes.username,
         type: 'typeahead'
@@ -425,7 +425,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           return {
             queries: witypes.sort((a, b) => (a.name > b.name ? 1 : 0)).map(witype => ({ id: witype.id, value: witype.name, iconStyleClass: witype.icon })),
             primaryQueries: []
-          }
+          };
         },
         getvalue: (type: WorkItemTypeUI) => type.name,
         type: 'select'
@@ -434,9 +434,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         datasource: this.stateData,
         datamap: (wistates: string[]) => {
           return {
-            queries: wistates.map(wistate => {return {id: wistate, value: wistate }}),
+            queries: wistates.map(wistate => {return {id: wistate, value: wistate }; }),
             primaryQueries: []
-          }
+          };
         },
         getvalue: (type) => type,
         type: 'select'
@@ -449,10 +449,10 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
               return {
                 id: label.id,
                 value: label.name
-              }
+              };
             }),
             primaryQueries: []
-          }
+          };
         },
         getvalue: (label: LabelUI) => label.name,
         type: 'typeahead'
@@ -460,13 +460,13 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       title: {
         type: 'text'
       }
-    }
+    };
   }
 
   checkURL() {
     this.eventListeners.push(
       this.route.queryParams.subscribe(query => {
-        if (query.hasOwnProperty('q')){
+        if (query.hasOwnProperty('q')) {
           this.currentQuery = query.q;
           const fields = this.filterService.queryToFlat(
             this.currentQuery
@@ -520,10 +520,10 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe(([areas, users, wiTypes, states, labels]) => {
       const filterMap = this.getFilterMap();
       fields = fields.filter(f => {
-        return this.allowedFilterKeys.indexOf(f.field) > -1
+        return this.allowedFilterKeys.indexOf(f.field) > -1;
       });
       this.activeFilters = [...fields.map(f => {
-        switch(f.field) {
+        switch (f.field) {
           case 'creator':
           case 'assignee':
             const user = users.find(u => u.id === f.value);

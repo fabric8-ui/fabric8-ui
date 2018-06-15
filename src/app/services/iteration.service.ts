@@ -2,19 +2,19 @@ import { GlobalSettings } from '../shared/globals';
 
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 
 import { cloneDeep } from 'lodash';
 import { Broadcaster, Logger } from 'ngx-base';
-import { AuthenticationService } from 'ngx-login-client';
-import { Space, Spaces } from 'ngx-fabric8-wit';
 import { Notification, Notifications, NotificationType } from 'ngx-base';
+import { Space, Spaces } from 'ngx-fabric8-wit';
+import { AuthenticationService } from 'ngx-login-client';
 
 import { IterationModel, IterationUI } from '../models/iteration.model';
-import { HttpService } from './http-service';
 import { WorkItem } from '../models/work-item';
+import { HttpService } from './http-service';
 
 @Injectable()
 export class IterationService {
@@ -43,7 +43,7 @@ export class IterationService {
   }
 
   notifyError(message: string, httpError: any) {
-    this.logger.log('ERROR [IterationService] ' + message + (httpError.message?' '+httpError.message:''));
+    this.logger.log('ERROR [IterationService] ' + message + (httpError.message ? ' ' + httpError.message : ''));
     /*
     this.notifications.message({
         message: message + (httpError.message?' '+httpError.message:''),
@@ -55,8 +55,9 @@ export class IterationService {
   createId(): string {
     let id = '';
     let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++)
+    for (let i = 0; i < 5; i++) {
       id += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
     console.log('Created new id ' + id);
     return id;
   }
@@ -67,7 +68,7 @@ export class IterationService {
    * @return Promise of IterationModel[] - Array of iterations.
    */
   getIterations(): Observable<IterationModel[]> {
-    if (this.iterations.length > 0 ) {
+    if (this.iterations.length > 0) {
       return Observable.of(this.iterations);
     } else {
       // get the current iteration url from the space service
@@ -84,7 +85,7 @@ export class IterationService {
           .map((data) => {
             this.iterations = data.map(iteration => {
               let childIterations = this.checkForChildIterations(iteration, data);
-              if(childIterations.length > 0) {
+              if (childIterations.length > 0) {
                 iteration.hasChildren = true;
                 iteration.children = childIterations;
               }
@@ -123,7 +124,7 @@ export class IterationService {
       .map((data) => {
         this.iterations = data.map(iteration => {
           let childIterations = this.checkForChildIterations(iteration, data);
-          if(childIterations.length > 0) {
+          if (childIterations.length > 0) {
             iteration.hasChildren = true;
             iteration.children = childIterations;
           }
@@ -155,8 +156,7 @@ export class IterationService {
     delete iteration.id;
     if (parentIteration) {
       iterationsUrl = parentIteration.links.self;
-    }
-    else {
+    } else {
       iterationsUrl = this._currentSpace.relationships.iterations.links.related;
     }
     if (this._currentSpace) {
@@ -221,7 +221,7 @@ export class IterationService {
         if (index > -1) {
           //set hasChildren and children information
           let childIterations = this.checkForChildIterations(updatedData, this.iterations);
-          if(childIterations.length > 0) {
+          if (childIterations.length > 0) {
             updatedData.hasChildren = true;
             updatedData.children = childIterations;
           }
@@ -252,12 +252,13 @@ export class IterationService {
   getRootIteration(): Observable<IterationModel> {
     return this.getIterations().first()
     .map((resultIterations) => {
-      for (let i=0; i<resultIterations.length; i++) {
-        if (this.isRootIteration(resultIterations[i].attributes.parent_path))
+      for (let i = 0; i < resultIterations.length; i++) {
+        if (this.isRootIteration(resultIterations[i].attributes.parent_path)) {
           return resultIterations[i];
         }
+        }
     })
-    .catch( err => {
+    .catch(err => {
       return Observable.throw(new Error(err.message));
     });
   }
@@ -279,19 +280,19 @@ export class IterationService {
   getIterationById(iterationId: string): Observable<IterationModel> {
     return this.getIterations().first()
       .map((resultIterations) => {
-        for (let i=0; i<resultIterations.length; i++) {
-          if (resultIterations[i].id===iterationId) {
+        for (let i = 0; i < resultIterations.length; i++) {
+          if (resultIterations[i].id === iterationId) {
             return resultIterations[i];
           }
         }
       })
-      .catch( err => {
+      .catch(err => {
         return Observable.throw(new Error(err.message));
       });
   }
 
   getWorkItemCountInIteration(iteration: any): Observable<number> {
-    return this.getIteration({ data: iteration }).first().map((resultIteration:IterationModel) => {
+    return this.getIteration({ data: iteration }).first().map((resultIteration: IterationModel) => {
       return resultIteration.relationships.workitems.meta.total;
     });
   }
@@ -304,7 +305,7 @@ export class IterationService {
     let children = iterations.filter(i => {
       //check only for direct parent
       let path_arr = i.attributes.parent_path.split('/');
-      let id = path_arr[path_arr.length-1];
+      let id = path_arr[path_arr.length - 1];
       return (id === parent.id);
     });
     return children;
@@ -314,7 +315,7 @@ export class IterationService {
     let children = iterations.filter(i => {
       //check only for direct parent
       let path_arr = i.parentPath.split('/');
-      let id = path_arr[path_arr.length-1];
+      let id = path_arr[path_arr.length - 1];
       return (id === parent.id);
     });
     return children;
@@ -323,14 +324,14 @@ export class IterationService {
   getTopLevelIterations(iterations): IterationModel[] {
     let topLevelIterations = iterations.filter(iteration =>
       ((iteration.attributes.parent_path.split('/')).length - 1) === 1
-    )
+    );
     return topLevelIterations;
   }
 
   getTopLevelIterations2(iterations: IterationUI[]): IterationUI[] {
     let topLevelIterations = iterations.filter(iteration =>
       ((iteration.parentPath.split('/')).length - 1) === 1
-    )
+    );
     return topLevelIterations;
   }
 
@@ -340,7 +341,7 @@ export class IterationService {
 
   getDirectParent(iteration, iterations): IterationModel {
     let path_arr = iteration.attributes.parent_path.split('/');
-    let id = path_arr[path_arr.length-1];
+    let id = path_arr[path_arr.length - 1];
     return iterations.find(i => i.id === id);
   }
 

@@ -1,19 +1,18 @@
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { UserService } from 'ngx-login-client';
+import { Observable } from 'rxjs';
+import { AppState } from './../states/app.state';
+import { AreaModel, AreaQuery, AreaUI } from './area.model';
 import {
   Mapper,
   MapTree,
-  switchModel,
-  modelService
+  modelService,
+  switchModel
 } from './common.model';
-import { AppState } from './../states/app.state';
-import { UserUI, UserQuery } from './user';
-import { IterationUI, IterationModel, IterationQuery } from './iteration.model';
-import { AreaUI, AreaModel, AreaQuery } from './area.model';
-import { LabelUI, LabelModel, LabelQuery } from './label.model';
-import { UserService } from 'ngx-login-client';
-import { cloneDeep } from 'lodash';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { IterationModel, IterationQuery, IterationUI } from './iteration.model';
+import { LabelModel, LabelQuery, LabelUI } from './label.model';
+import { UserQuery, UserUI } from './user';
 
 
 export class Event extends modelService {
@@ -38,13 +37,13 @@ export class EventRelationships {
       }
       type: string;
     }
-  }
+  };
   newValue?: {
     data?: AreaModel[] | IterationModel[] | UserService[] | LabelModel[];
-  }
+  };
   oldValue?: {
     data?: AreaModel[] | IterationModel[] | UserService[] | LabelModel[];
-  }
+  };
 }
 
 export interface EventUI {
@@ -86,17 +85,18 @@ export class EventMapper implements Mapper<EventService, EventUI> {
     toPath: ['newValueRelationships'],
     toFunction: (newValue) => {
       if (newValue !== null) {
-        if(newValue.hasOwnProperty('data')){
-          return newValue["data"].map(item => {
+        if (newValue.hasOwnProperty('data')) {
+          return newValue['data'].map(item => {
             return {
               id: item.id,
               type: item.type
-            }
-          })
-        }else
+            };
+          });
+        } else {
           return [];
+        }
       } else {
-        return newValue
+        return newValue;
       }
     }
   }, {
@@ -104,35 +104,36 @@ export class EventMapper implements Mapper<EventService, EventUI> {
     toPath: ['oldValueRelationships'],
     toFunction: (oldValue) => {
         if (oldValue !== null) {
-        if(oldValue.hasOwnProperty('data'))
-          return oldValue["data"].map(item => {
+        if (oldValue.hasOwnProperty('data')) {
+          return oldValue['data'].map(item => {
             return {
               id: item.id,
               type: item.type
-            }
-          })
-        else
+            };
+          });
+        } else {
           return [];
+        }
       } else {
-        return oldValue
+        return oldValue;
       }
     }
   }, {
     toPath: ['type'],
     toValue: null
-  },];
+  }];
   uiToServiceMapTree: MapTree;
 
   toUIModel(arg: EventService): EventUI {
     return switchModel<EventService, EventUI>(
       arg, this.serviceToUiMapTree
-    )
+    );
   }
 
   toServiceModel(arg: EventUI): EventService {
     return switchModel<EventUI, EventService>(
       arg, this.uiToServiceMapTree
-    )
+    );
   }
 }
 
@@ -154,7 +155,7 @@ export class EventQuery {
     return this.eventSource
       .map(events => {
         return events.map(event => {
-          switch(event.name) {
+          switch (event.name) {
             case 'system.iteration':
               return {
                 ...event,
@@ -165,7 +166,7 @@ export class EventQuery {
                 oldValueRelationshipsObs: event.oldValueRelationships.map(item => {
                   return this.iterationQuery.getIterationObservableById(item.id);
                 })
-              }
+              };
             case 'system.area':
               return {
                 ...event,
@@ -176,7 +177,7 @@ export class EventQuery {
                 oldValueRelationshipsObs: event.oldValueRelationships.map(item => {
                   return this.areaQuery.getAreaObservableById(item.id);
                 })
-              }
+              };
             case 'system.assignees':
               return {
                 ...event,
@@ -187,7 +188,7 @@ export class EventQuery {
                 oldValueRelationshipsObs: event.oldValueRelationships.map(item => {
                   return this.userQuery.getUserObservableById(item.id);
                 })
-              }
+              };
 
             case 'system.labels':
               return {
@@ -201,15 +202,15 @@ export class EventQuery {
                   this.labelQuery.getLabelObservablesByIds(
                     event.oldValueRelationships.map(i => i.id)
                   )
-              }
+              };
 
             default:
               return {
                 ...event,
                 modifier: this.userQuery.getUserObservableById(event.modifierId)
-              }
+              };
           }
-        })
-      })
+        });
+      });
   }
 }

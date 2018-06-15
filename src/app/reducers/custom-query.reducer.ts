@@ -1,19 +1,19 @@
 import {
-  State,
-  ActionReducer
+  ActionReducer,
+  State
 } from '@ngrx/store';
-import * as CustomQueryActions from './../actions/custom-query.actions';
+import { cloneDeep } from 'lodash';
 import {
   CustomQueryState,
   initialState
 } from '../states/custom-query.state';
-import { cloneDeep } from 'lodash';
+import * as CustomQueryActions from './../actions/custom-query.actions';
 
 export type Action = CustomQueryActions.All;
 
 export const CustomQueryReducer: ActionReducer<CustomQueryState> =
   (state = initialState, action: Action) => {
-    switch(action.type) {
+    switch (action.type) {
       case CustomQueryActions.GET_SUCCESS: {
         return action.payload;
       }
@@ -54,4 +54,4 @@ export const CustomQueryReducer: ActionReducer<CustomQueryState> =
         return state;
       }
     }
-  }
+  };

@@ -1,21 +1,21 @@
-import { Store } from '@ngrx/store';
-import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import * as CommentActions from './../actions/comment.actions';
-import { AppState } from './../states/app.state';
-import { Observable } from 'rxjs';
-import { WorkItemService } from './../services/work-item.service';
-import {
-  CommentService,
-  CommentMapper,
-  CommentUI
-} from './../models/comment';
+import { Actions, Effect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import {
   Notification,
   Notifications,
   NotificationType
-} from "ngx-base";
+} from 'ngx-base';
+import { Observable } from 'rxjs';
+import * as CommentActions from './../actions/comment.actions';
+import {
+  CommentMapper,
+  CommentService,
+  CommentUI
+} from './../models/comment';
 import { UserMapper } from './../models/user';
+import { WorkItemService } from './../services/work-item.service';
+import { AppState } from './../states/app.state';
 import { CommentState } from './../states/comment.state';
 
 export type Action = CommentActions.All;
@@ -39,7 +39,7 @@ export class CommentEffects {
         .map((comments) => {
           return comments.data.map(comment => {
             return this.commentMapper.toUIModel(comment);
-          })
+          });
         })
         .map((comments: CommentUI[]) => {
           return new CommentActions.GetSuccess(comments);
@@ -54,8 +54,8 @@ export class CommentEffects {
             console.log('Problem in fetching Comments.');
           }
           return Observable.of(new CommentActions.GetError());
-        })
-    })
+        });
+    });
 
   @Effect() addComment$: Observable<Action> = this.actions$
     .ofType<CommentActions.Add>(CommentActions.ADD)
@@ -78,8 +78,8 @@ export class CommentEffects {
           console.log('Problem in add comment.');
         }
         return Observable.of(new CommentActions.AddError());
-      })
-    })
+      });
+    });
 
   @Effect() updateComment$: Observable<Action> = this.actions$
     .ofType<CommentActions.Update>(CommentActions.UPDATE)
@@ -101,8 +101,8 @@ export class CommentEffects {
             console.log('Problem in update comment.');
           }
           return Observable.of(new CommentActions.UpdateError());
-        })
-    })
+        });
+    });
 
   @Effect() deleteComment$: Observable<Action> = this.actions$
     .ofType<CommentActions.Delete>(CommentActions.DELETE)
@@ -123,6 +123,6 @@ export class CommentEffects {
             console.log('Problem in delete comment.');
           }
           return Observable.of(new CommentActions.DeleteError());
-        })
-    })
+        });
+    });
 }

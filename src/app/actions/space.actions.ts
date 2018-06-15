@@ -13,7 +13,7 @@ export class GetSuccess implements Action {
   payload: Space;
   constructor(payload: Space) {
     this.payload = payload;
-  };
+  }
   readonly type = GET_SUCCESS;
 }
 
@@ -24,4 +24,4 @@ export class GetError implements Action {
 export type All
   = Get
   | GetSuccess
-  | GetError
+  | GetError;

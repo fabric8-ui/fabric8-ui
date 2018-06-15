@@ -2,13 +2,13 @@ import { State } from '@ngrx/store';
 import { ActionReducer } from '@ngrx/store';
 import * as SpaceActions from './../actions/space.actions';
 
-import { SpaceState, initialState } from '../states/space.state';
+import { initialState, SpaceState } from '../states/space.state';
 
 export type Action = SpaceActions.All;
 
 export const SpaceReducer: ActionReducer<SpaceState> =
   (state = initialState, action: Action) => {
-  switch(action.type) {
+  switch (action.type) {
     case SpaceActions.GET_SUCCESS: {
       return action.payload;
     }
@@ -19,4 +19,4 @@ export const SpaceReducer: ActionReducer<SpaceState> =
       return state;
     }
   }
-}
+};

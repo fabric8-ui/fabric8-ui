@@ -1,26 +1,26 @@
-import { Observable } from 'rxjs/Observable';
 import {
   Component,
   ElementRef,
   EventEmitter,
   Input,
-  Output,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { cloneDeep } from 'lodash';
 import {
-  SelectDropdownComponent
-} from './../../widgets/select-dropdown/select-dropdown.component';
-import {
   AuthenticationService,
   User,
   UserService
 } from 'ngx-login-client';
-import { UserUI } from './../../models/user'
+import { Observable } from 'rxjs/Observable';
 import { WorkItem, WorkItemRelations } from '../../models/work-item';
 import { WorkItemService } from '../../services/work-item.service';
+import { UserUI } from './../../models/user';
+import {
+  SelectDropdownComponent
+} from './../../widgets/select-dropdown/select-dropdown.component';
 
 @Component({
   selector: 'assignee-selector',
@@ -43,13 +43,12 @@ export class AssigneeSelectorComponent {
         id: user.id,
         stickontop: false,
         selected: false
-      }
+      };
     }));
     if (this.searchValue.length) {
       this.assignees =
         cloneDeep(this.backup.filter(i => i.name.indexOf(this.searchValue) > - 1));
-    }
-    else {
+    } else {
       this.assignees = cloneDeep(this.backup);
     }
     if (this.loggedInUser) {
@@ -74,9 +73,9 @@ export class AssigneeSelectorComponent {
     this.updateSelection();
   }
 
-  @Output() onSelectAssignee: EventEmitter<UserUI[]> = new EventEmitter();
-  @Output() onOpenAssignee: EventEmitter<any> = new EventEmitter();
-  @Output() onCloseAssignee: EventEmitter<UserUI[]> = new EventEmitter();
+  @Output() readonly onSelectAssignee: EventEmitter<UserUI[]> = new EventEmitter();
+  @Output() readonly onOpenAssignee: EventEmitter<any> = new EventEmitter();
+  @Output() readonly onCloseAssignee: EventEmitter<UserUI[]> = new EventEmitter();
 
   workItem: WorkItem;
   workItemRef: WorkItem;

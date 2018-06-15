@@ -1,23 +1,23 @@
-import { Observable } from 'rxjs/Observable';
-import {
-  modelUI,
-  modelService,
-  Mapper,
-  MapTree,
-  switchModel
-} from './common.model';
 import { Injectable } from '@angular/core';
-import { Store, createFeatureSelector, createSelector } from '@ngrx/store';
 import { createEntityAdapter } from '@ngrx/entity';
+import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 import { LabelService as LabelDataService } from './../services/label.service';
 import { AppState, ListPage } from './../states/app.state';
+import {
+  Mapper,
+  MapTree,
+  modelService,
+  modelUI,
+  switchModel
+} from './common.model';
 
 const labelAdapter = createEntityAdapter<LabelUI>();
 const {
   selectIds,
   selectEntities,
   selectAll,
-  selectTotal,
+  selectTotal
 } = labelAdapter.getSelectors();
 
 export class LabelModel extends modelService {
@@ -27,12 +27,12 @@ export class LabelModel extends modelService {
 }
 
 export class LabelAttributes {
-  "background-color"?: string;
-  "border-color"?: string;
-  "created-at"?: string;
+  'background-color'?: string;
+  'border-color'?: string;
+  'created-at'?: string;
   name: string;
-  "text-color"?: string;
-  "updated-at"?: string;
+  'text-color'?: string;
+  'updated-at'?: string;
   version?: number;
 }
 
@@ -51,7 +51,7 @@ export class LabelRelationships {
       related: string;
       self: string;
     }
-  }
+  };
 }
 
 export interface LabelService extends LabelModel {}
@@ -69,19 +69,19 @@ export class LabelMapper implements Mapper<LabelService, LabelUI> {
       fromPath: ['id'],
       toPath: ['id']
     }, {
-      fromPath: ['attributes','name'],
+      fromPath: ['attributes', 'name'],
       toPath: ['name']
     }, {
-      fromPath: ['attributes','background-color'],
+      fromPath: ['attributes', 'background-color'],
       toPath: ['backgroundColor']
     }, {
-      fromPath: ['attributes','version'],
+      fromPath: ['attributes', 'version'],
       toPath: ['version']
     }, {
-      fromPath: ['attributes','border-color'],
+      fromPath: ['attributes', 'border-color'],
       toPath: ['borderColor']
     }, {
-      fromPath: ['attributes','text-color'],
+      fromPath: ['attributes', 'text-color'],
       toPath: ['textColor']
     }
   ];
@@ -91,19 +91,19 @@ export class LabelMapper implements Mapper<LabelService, LabelUI> {
       toPath: ['id']
     }, {
       fromPath: ['name'],
-      toPath: ['attributes','name'],
+      toPath: ['attributes', 'name']
     }, {
       fromPath: ['backgroundColor'],
-      toPath: ['attributes','background-color'],
+      toPath: ['attributes', 'background-color']
     }, {
       fromPath: ['version'],
-      toPath: ['attributes','version'],
+      toPath: ['attributes', 'version']
     }, {
       fromPath: ['borderColor'],
-      toPath: ['attributes','border-color'],
+      toPath: ['attributes', 'border-color']
     }, {
       fromPath: ['textColor'],
-      toPath: ['attributes','text-color'],
+      toPath: ['attributes', 'text-color']
     }, {
       toPath: ['type'],
       toValue: 'labels'
@@ -128,7 +128,7 @@ export class LabelQuery {
   constructor(
     private store: Store<AppState>,
     private labelService: LabelDataService
-  ){}
+  ) {}
 
   private listPageSelector = createFeatureSelector<ListPage>('listPage');
   private labelSelector = createSelector(
@@ -157,7 +157,7 @@ export class LabelQuery {
   }
 
   getLabelObservablesByIds(ids: string[]): Observable<LabelUI[]> {
-    if (!ids.length) return Observable.of([]);
+    if (!ids.length) { return Observable.of([]); }
     return Observable.combineLatest(ids.map(id => this.getLabelObservableById(id)));
   }
 }

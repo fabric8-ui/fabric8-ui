@@ -1,9 +1,9 @@
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { LabelModel } from './../models/label.model';
 
-import { Injectable, Inject } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 
 @Injectable()
 export class EventService {

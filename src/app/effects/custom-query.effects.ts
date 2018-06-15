@@ -1,18 +1,18 @@
-import { Store } from '@ngrx/store';
-import { AppState } from './../states/app.state';
-import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import * as CustomQueryActions from './../actions/custom-query.actions';
-import { Observable } from 'rxjs';
-import {
-  CustomQueryService
-} from './../services/custom-query.service';
-import { CustomQueryModel } from './../models/custom-query.model';
+import { Actions, Effect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import {
   Notification,
   Notifications,
   NotificationType
-} from "ngx-base";
+} from 'ngx-base';
+import { Observable } from 'rxjs';
+import * as CustomQueryActions from './../actions/custom-query.actions';
+import { CustomQueryModel } from './../models/custom-query.model';
+import {
+  CustomQueryService
+} from './../services/custom-query.service';
+import { AppState } from './../states/app.state';
 
 export type Action = CustomQueryActions.All;
 
@@ -36,7 +36,7 @@ export class CustomQueryEffects {
         types = types.map((t) => {
           t['selected'] = false;
           return t;
-        })
+        });
         return new CustomQueryActions.GetSuccess(types);
       })
       .catch(e => {
@@ -49,8 +49,8 @@ export class CustomQueryEffects {
           console.log('Problem in fetching custom queries');
         }
         return Observable.of(new CustomQueryActions.GetError());
-      })
-    })
+      });
+    });
 
   @Effect() addCustomQuery$ = this.actions$
     .ofType<CustomQueryActions.Add>(CustomQueryActions.ADD)
@@ -73,7 +73,7 @@ export class CustomQueryEffects {
             type: NotificationType.SUCCESS
           } as Notification);
         } catch (e) {
-          console.log('Custom query added.')
+          console.log('Custom query added.');
         }
         return new CustomQueryActions.AddSuccess(customQuery);
       })
@@ -84,11 +84,11 @@ export class CustomQueryEffects {
             type: NotificationType.DANGER
           } as Notification);
         } catch (e) {
-          console.log('There was some problem creating custom query.')
+          console.log('There was some problem creating custom query.');
         }
         return Observable.of(new CustomQueryActions.AddError());
-      })
-    })
+      });
+    });
 
   @Effect() deleteCustomQuery = this.actions$
     .ofType<CustomQueryActions.Delete>(CustomQueryActions.DELETE)
@@ -105,12 +105,12 @@ export class CustomQueryEffects {
           this.notifications.message({
             message: `There was some problem in deleting custom query`,
             type: NotificationType.DANGER
-          } as Notification)
-        } catch(e) {
+          } as Notification);
+        } catch (e) {
           console.log('There was some problem in deleting custom query');
         }
         return Observable.of(new CustomQueryActions.DeleteError());
-      })
-    })
+      });
+    });
 
 }

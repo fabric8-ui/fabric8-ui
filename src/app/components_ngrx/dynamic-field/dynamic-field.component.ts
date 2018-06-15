@@ -1,13 +1,13 @@
-import { cloneDeep } from 'lodash';
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { cloneDeep } from 'lodash';
 
 import { Logger } from 'ngx-base';
 
-import { IMyOptions, IMyDateModel } from 'mydatepicker';
+import { IMyDateModel, IMyOptions } from 'mydatepicker';
 
-import { WorkItemService } from './../../services/work-item.service';
 import { WorkItemUI } from '../../models/work-item';
+import { WorkItemService } from './../../services/work-item.service';
 
 
 export class DynamicUpdateEvent {
@@ -91,7 +91,7 @@ export class DynamicFieldComponent implements OnInit {
     }
 
     this.oldValue = this.fieldValue.value;
-  };
+  }
 
 
   // this is the type schema taken from the work item type.
@@ -104,7 +104,7 @@ export class DynamicFieldComponent implements OnInit {
   }
 
   // event when value is updated, emits new value as the event.
-  @Output() onUpdate = new EventEmitter();
+  @Output() readonly onUpdate = new EventEmitter();
 
   // the attribute key we're dealing with.
   attributeKey: string;
@@ -172,7 +172,7 @@ export class DynamicFieldComponent implements OnInit {
         return {
           key: v,
           value: v
-        }
+        };
       })
     ];
   }
@@ -224,9 +224,9 @@ export class DynamicFieldComponent implements OnInit {
   }
 
   toDateModel(dateValue: string): any {
-    if (!dateValue)
+    if (!dateValue) {
       return undefined;
-    else {
+    } else {
       let date: Date = new Date(dateValue);
       let convertedDate = { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate() } ;
       return convertedDate;
@@ -283,7 +283,7 @@ export class DynamicFieldComponent implements OnInit {
           rawText,
           renderedHtml
         );
-      })
+      });
   }
 
   cancel() {

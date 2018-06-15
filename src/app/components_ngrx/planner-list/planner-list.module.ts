@@ -1,65 +1,65 @@
-import { WorkItemPreviewPanelModule } from './../work-item-preview-panel/work-item-preview-panel.module';
-import { LabelsModule } from './../labels/labels.module';
-import { AssigneesModule } from './../assignee/assignee.module';
-import { WorkItemCellComponent } from './../work-item-cell/work-item-cell.component';
-import { NgxDatatableModule } from 'rh-ngx-datatable';
-import { NgModule }         from '@angular/core';
 import { CommonModule }     from '@angular/common';
+import { NgModule }         from '@angular/core';
 import {
-  XHRBackend,
-  RequestOptions
+  RequestOptions,
+  XHRBackend
 } from '@angular/http';
+import { NgxDatatableModule } from 'rh-ngx-datatable';
+import { AssigneesModule } from './../assignee/assignee.module';
+import { LabelsModule } from './../labels/labels.module';
+import { WorkItemCellComponent } from './../work-item-cell/work-item-cell.component';
+import { WorkItemPreviewPanelModule } from './../work-item-preview-panel/work-item-preview-panel.module';
 
 import { AuthenticationService } from 'ngx-login-client';
 
 import { PlannerListComponent } from './planner-list.component';
 
-import { HttpService, factoryForHttpService } from '../../services/http-service';
-import { CustomQueryService } from './../../services/custom-query.service';
-import { WorkItemService } from './../../services/work-item.service';
-import { IterationService } from './../../services/iteration.service';
-import { GlobalSettings } from './../../shared/globals';
-import { LabelService } from './../../services/label.service';
+import { TruncateModule } from 'ng2-truncate';
+import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { FilterColumn } from '../../pipes/column-filter.pipe';
+import { factoryForHttpService, HttpService } from '../../services/http-service';
+import { PlannerModalModule } from '../../widgets/modal/modal.module';
 import { AreaService } from './../../services/area.service';
 import { CollaboratorService } from './../../services/collaborator.service';
-import { PlannerListRoutingModule } from './../planner-list/planner-list-routing.module';
-import { ToolbarPanelModule } from './../toolbar-panel/toolbar-panel.module';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { SidepanelModule } from './../side-panel/side-panel.module';
+import { CustomQueryService } from './../../services/custom-query.service';
+import { IterationService } from './../../services/iteration.service';
+import { LabelService } from './../../services/label.service';
+import { WorkItemDataService } from './../../services/work-item-data.service';
+import { WorkItemService } from './../../services/work-item.service';
+import { GlobalSettings } from './../../shared/globals';
 import {
   PlannerLayoutModule
 } from './../../widgets/planner-layout/planner-layout.module';
+import { PlannerListRoutingModule } from './../planner-list/planner-list-routing.module';
+import { SidepanelModule } from './../side-panel/side-panel.module';
+import { ToolbarPanelModule } from './../toolbar-panel/toolbar-panel.module';
 import { WorkItemQuickAddModule } from './../work-item-quick-add/work-item-quick-add.module';
-import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { FilterColumn } from '../../pipes/column-filter.pipe';
-import { WorkItemDataService } from './../../services/work-item-data.service';
-import { PlannerModalModule } from '../../components/modal/modal.module';
-import { TruncateModule } from 'ng2-truncate';
 
 import { CookieService } from './../../services/cookie.service';
 import { FilterService } from './../../services/filter.service';
 
 // ngrx stuff
-import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import * as states from './../../states/index.state';
-import * as reducers from './../../reducers/index.reducer';
+import { StoreModule } from '@ngrx/store';
 import * as effects from './../../effects/index.effects';
+import * as reducers from './../../reducers/index.reducer';
 import { WorkItemReducer } from './../../reducers/work-item.reducer';
+import * as states from './../../states/index.state';
 
 import { AlmIconModule } from 'ngx-widgets';
 import { EmptyStateModule } from 'patternfly-ng/empty-state';
-import { UrlService } from '../../services/url.service';
 import { InfotipService } from '../../services/infotip.service';
+import { UrlService } from '../../services/url.service';
 import { ClickOutModule } from '../../widgets/clickout/clickout.module';
 
 // Data Querries
+import { AreaQuery } from '../../models/area.model';
+import { IterationQuery } from '../../models/iteration.model';
+import { LabelQuery } from '../../models/label.model';
 import { CommentQuery } from './../../models/comment';
 import { UserQuery } from './../../models/user';
 import { WorkItemQuery } from './../../models/work-item';
-import { LabelQuery } from '../../models/label.model';
-import { IterationQuery } from '../../models/iteration.model';
-import { AreaQuery } from '../../models/area.model';
 
 let providers = [
     WorkItemService,

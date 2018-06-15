@@ -16,4 +16,4 @@ export const initialUIState: IterationUIState = {
   modalLoading: false,
   error: '',
   success: ''
-}
+};

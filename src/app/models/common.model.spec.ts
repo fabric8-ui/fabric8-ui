@@ -1,26 +1,26 @@
 import {
-  switchModel,
   cleanObject,
   MapTree,
-  normalizeArray
-} from "./common.model";
+  normalizeArray,
+  switchModel
+} from './common.model';
 
 describe('Unit Test :: Common model', () => {
   it('should execute the canary test', () => {
-    return expect(true).toBe(true)
+    return expect(true).toBe(true);
   });
 
   it('should correctly convert to UI model - 1', () => {
     interface InputModel {
       user: {
         name: string;
-      }
+      };
     }
 
     interface OutputModel {
       name: {
         firstName: string;
-      }
+      };
     }
 
     const mapTree: MapTree = [{
@@ -56,7 +56,7 @@ describe('Unit Test :: Common model', () => {
             }
           }
         }
-      }
+      };
     }
 
     interface UIModel {
@@ -99,7 +99,7 @@ describe('Unit Test :: Common model', () => {
       );
   });
 
-})
+});
 
 
 describe('Unit Test :: Common model :: Object cleaner', () => {
@@ -108,7 +108,7 @@ describe('Unit Test :: Common model :: Object cleaner', () => {
       name: 'Sudipta'
     };
     return expect(input).toEqual(cleanObject(input));
-  })
+  });
 
   it('Should correctly clean up an objectm - 2', () => {
     const input = {
@@ -120,7 +120,7 @@ describe('Unit Test :: Common model :: Object cleaner', () => {
     };
     const output = cleanObject(input);
     return expect(output).toEqual(expOutput);
-  })
+  });
 
   it('Should correctly clean up an objectm - 3', () => {
     const input = {
@@ -135,12 +135,12 @@ describe('Unit Test :: Common model :: Object cleaner', () => {
       name: 'Sudipta',
       address: {
         city: 'Bangalore',
-        country: 'India',
+        country: 'India'
       }
     };
     const output = cleanObject(input);
     return expect(output).toEqual(expOutput);
-  })
+  });
 
   it('Should correctly clean up an objectm - 3', () => {
     const input = {
@@ -171,7 +171,7 @@ describe('Unit Test :: Common model :: Object cleaner', () => {
     };
     const output = cleanObject(input);
     return expect(output).toEqual(expOutput);
-  })
+  });
 
   it('Should correctly clean up an objectm - 4', () => {
     const input = {
@@ -205,15 +205,15 @@ describe('Unit Test :: Common model :: Object cleaner', () => {
     };
     const output = cleanObject(input, ['relationships']);
     return expect(output).toEqual(expOutput);
-  })
-})
+  });
+});
 
 describe('Unit Test :: normalizeArray', () => {
   type testType = {
     id?: string;
     name: string;
     add: string;
-  }
+  };
 
   it('Should work for an empty array', () => {
     const op = normalizeArray<any>([]);

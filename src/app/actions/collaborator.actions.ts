@@ -25,4 +25,4 @@ export class GetError implements Action {
 export type All
   = Get
   | GetSuccess
-  | GetError
+  | GetError;

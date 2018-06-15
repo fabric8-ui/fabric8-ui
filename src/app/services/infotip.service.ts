@@ -1,7 +1,7 @@
-import { Injectable, Component, Inject } from '@angular/core';
+import { Component, Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpService } from './http-service';
 import { InfotipState } from './../states/infotip.state';
+import { HttpService } from './http-service';
 
 const infotipsUrl: string = 'https://docs.openshift.io/json/infotips.json';
 
@@ -19,6 +19,6 @@ export class InfotipService {
           throw new Error('API error occured');
         }
         return response.json() as InfotipState;
-      })
+      });
   }
 }

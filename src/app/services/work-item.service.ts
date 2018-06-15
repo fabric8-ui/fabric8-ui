@@ -1,43 +1,43 @@
-import { Injectable, Component, Inject } from '@angular/core';
+import { Component, Inject, Injectable } from '@angular/core';
 
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/operators/map';
 import 'rxjs/add/operator/catch';
-import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/operators/map';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 
 import { cloneDeep } from 'lodash';
-import { DropdownOption } from 'ngx-widgets';
 import { Broadcaster, Logger } from 'ngx-base';
+import { Notification, Notifications, NotificationType } from 'ngx-base';
+import { Space, Spaces } from 'ngx-fabric8-wit';
+import { WIT_API_URL } from 'ngx-fabric8-wit';
 import {
   AuthenticationService,
   User,
   UserService
 } from 'ngx-login-client';
-import { Space, Spaces } from 'ngx-fabric8-wit';
-import { WIT_API_URL } from 'ngx-fabric8-wit';
-import { Notification, Notifications, NotificationType } from 'ngx-base';
+import { DropdownOption } from 'ngx-widgets';
 
 import {
   Comment,
-  Comments,
-  CommentPost
+  CommentPost,
+  Comments
 } from '../models/comment';
 
 import { AreaModel } from '../models/area.model';
-import { AreaService } from './area.service';
 import { IterationModel } from '../models/iteration.model';
-import { IterationService } from './iteration.service';
-import { LinkType } from '../models/link-type';
 import { Link } from '../models/link';
+import { LinkType } from '../models/link-type';
 import {
   LinkDict,
   WorkItem,
   WorkItemService as WIService
 } from '../models/work-item';
 import { WorkItemType } from '../models/work-item-type';
+import { AreaService } from './area.service';
 import { HttpService } from './http-service';
+import { IterationService } from './iteration.service';
 
 @Injectable()
 export class WorkItemService {
@@ -86,7 +86,7 @@ export class WorkItemService {
   }
 
   notifyError(message: string, httpError: any) {
-    this.logger.log('ERROR [WorkItemService] ' + message + (httpError.message?' '+httpError.message:''));
+    this.logger.log('ERROR [WorkItemService] ' + message + (httpError.message ? ' ' + httpError.message : ''));
     /*
     this.notifications.message({
         message: message + (httpError.message?' '+httpError.message:''),
@@ -98,8 +98,9 @@ export class WorkItemService {
   createId(): string {
     let id = '';
     let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++)
+    for (let i = 0; i < 5; i++) {
       id += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
     console.log('Created new id ' + id);
     return id;
   }
@@ -128,8 +129,9 @@ export class WorkItemService {
           wItems = response.json().data as WorkItem[];
           wItems.forEach((item) => {
             // put the hasChildren on the root level for the tree
-            if (item.relationships.children.meta)
+            if (item.relationships.children.meta) {
               item.hasChildren = item.relationships.children.meta.hasChildren;
+            }
             // Resolve the assignee and creator
             this.resolveUsersForWorkItem(item);
             this.resolveIterationForWorkItem(item);
@@ -147,7 +149,7 @@ export class WorkItemService {
     }
   }
 
-  getChildren2(url: string): Observable<WIService[]>{
+  getChildren2(url: string): Observable<WIService[]> {
     return this.http
         .get(url)
         .map(response => response.json().data as WIService[]);
@@ -167,14 +169,14 @@ export class WorkItemService {
             nextLink: resp.json().links.next,
             totalCount: resp.json().meta ? resp.json().meta.totalCount : 0,
             included: resp.json().included ? resp.json().included as WorkItem[] : [] as WorkItem[],
-            ancestorIDs: resp.json().meta.ancestorIDs ? resp.json().meta.ancestorIDs : [],
+            ancestorIDs: resp.json().meta.ancestorIDs ? resp.json().meta.ancestorIDs : []
           };
         }).catch((error: Error | any) => {
           this.notifyError('Getting work items failed.', error);
           return Observable.throw(new Error(error.message));
         });
     } else {
-      return Observable.of<{workItems: WorkItem[], nextLink: string | null}>( {workItems: [] as WorkItem[], nextLink: null} );
+      return Observable.of<{workItems: WorkItem[], nextLink: string | null}>({workItems: [] as WorkItem[], nextLink: null});
     }
   }
 
@@ -183,7 +185,7 @@ export class WorkItemService {
     if (this._currentSpace) {
       let url = '';
       this.workItemUrl = this._currentSpace.links.self.split('spaces')[0] + 'search';
-      url = this.workItemUrl + '?page[limit]=' + pageSize + '&' + Object.keys(filters).map(k => 'filter['+k+']='+JSON.stringify(filters[k])).join('&');
+      url = this.workItemUrl + '?page[limit]=' + pageSize + '&' + Object.keys(filters).map(k => 'filter[' + k + ']=' + JSON.stringify(filters[k])).join('&');
       return this.http.get(url)
         .map((resp) => {
           return {
@@ -191,14 +193,14 @@ export class WorkItemService {
             nextLink: resp.json().links.next,
             totalCount: resp.json().meta ? resp.json().meta.totalCount : 0,
             included: resp.json().included ? resp.json().included as WorkItem[] : [],
-            ancestorIDs: resp.json().meta.ancestorIDs ? resp.json().meta.ancestorIDs : [],
+            ancestorIDs: resp.json().meta.ancestorIDs ? resp.json().meta.ancestorIDs : []
           };
         }).catch((error: Error | any) => {
           this.notifyError('Getting work items failed.', error);
           return Observable.throw(new Error(error.message));
         });
     } else {
-      return Observable.of<{workItems: WorkItem[], nextLink: string | null}>( {workItems: [] as WorkItem[], nextLink: null} );
+      return Observable.of<{workItems: WorkItem[], nextLink: string | null}>({workItems: [] as WorkItem[], nextLink: null});
     }
   }
 
@@ -215,7 +217,7 @@ export class WorkItemService {
             workItems: resp.json().data as WorkItem[],
             nextLink: resp.json().links.next,
             included: resp.json().included ? resp.json().included as WorkItem[] : [],
-            ancestorIDs: resp.json().meta.ancestorIDs ? resp.json().meta.ancestorIDs : [],
+            ancestorIDs: resp.json().meta.ancestorIDs ? resp.json().meta.ancestorIDs : []
           };
         }).catch((error: Error | any) => {
           this.notifyError('Getting more work items failed.', error);
@@ -251,7 +253,7 @@ export class WorkItemService {
       let WIlabels = item.relationships.labels.data ? cloneDeep(item.relationships.labels.data) : [];
       item.relationships.labels.data = WIlabels.map(label => {
         return labels.find(l => l.id === label.id);
-      })
+      });
 
       // Sort labels in alphabetical order
       item.relationships.labels.data = item.relationships.labels.data.sort(function(labelA, labelB) {
@@ -324,7 +326,7 @@ export class WorkItemService {
           });
       }
     } else {
-      return Observable.of<WorkItem>( new WorkItem() );
+      return Observable.of<WorkItem>(new WorkItem());
     }
   }
 
@@ -385,7 +387,7 @@ export class WorkItemService {
       return Observable.forkJoin(observableBatch);
   }
 
-  resolveCreator2(creator): Observable<User>{
+  resolveCreator2(creator): Observable<User> {
     if (Object.keys(creator).length) {
       let creatorLink = creator.data.links.self;
       return this.http.get(creatorLink)
@@ -399,7 +401,7 @@ export class WorkItemService {
     }
   }
 
-  resolveCommentCreator(creator): Observable<User>{
+  resolveCommentCreator(creator): Observable<User> {
     if (Object.keys(creator).length) {
       let creatorLink = creator.links.related;
       return this.http.get(creatorLink)
@@ -555,7 +557,7 @@ export class WorkItemService {
       .get(url)
       .map(response => {
         return response.json().data;
-      })
+      });
 }
 
   /**
@@ -570,7 +572,7 @@ export class WorkItemService {
         .get(url)
         .map(response => {
           return { data: response.json().data, meta: response.json().meta, links: response.json().links};
-        })
+        });
   }
 
   /**
@@ -605,9 +607,11 @@ export class WorkItemService {
           let resultTypes = response.json().data as WorkItemType[];
 
           // THIS IS A HACK!
-          for (let i=0; i<resultTypes.length; i++)
-            if (resultTypes[i].id==='86af5178-9b41-469b-9096-57e5155c3f31')
+          for (let i = 0; i < resultTypes.length; i++) {
+            if (resultTypes[i].id === '86af5178-9b41-469b-9096-57e5155c3f31') {
               resultTypes.splice(i, 1);
+            }
+          }
 
           this.workItemTypes = resultTypes;
           return this.workItemTypes;
@@ -616,7 +620,7 @@ export class WorkItemService {
           return Observable.throw(new Error(error.message));
         });
     } else {
-      return Observable.of<WorkItemType[]>( [] as WorkItemType[] );
+      return Observable.of<WorkItemType[]>([] as WorkItemType[]);
     }
   }
 
@@ -627,9 +631,11 @@ export class WorkItemService {
         let resultTypes = response.json().data as WorkItemType[];
 
         // THIS IS A HACK!
-        for (let i=0; i<resultTypes.length; i++)
-          if (resultTypes[i].id==='86af5178-9b41-469b-9096-57e5155c3f31')
+        for (let i = 0; i < resultTypes.length; i++) {
+          if (resultTypes[i].id === '86af5178-9b41-469b-9096-57e5155c3f31') {
             resultTypes.splice(i, 1);
+        }
+          }
 
         this.workItemTypes = resultTypes;
         return this.workItemTypes;
@@ -669,7 +675,7 @@ export class WorkItemService {
           });
       }
     } else {
-      return Observable.of<WorkItemType>( {} as WorkItemType );
+      return Observable.of<WorkItemType>({} as WorkItemType);
     }
   }
 
@@ -687,7 +693,7 @@ export class WorkItemService {
         .map((response) => {
           this.availableStates = response[0].attributes.fields['system.state'].type.values.map((item: string, index: number) => {
             return {
-              option: item,
+              option: item
             };
           });
           console.log('availableStates = ', this.availableStates);
@@ -739,7 +745,7 @@ export class WorkItemService {
           return Observable.throw(new Error(error.message));
         });
     } else {
-      return Observable.of<WorkItem>( new WorkItem() );
+      return Observable.of<WorkItem>(new WorkItem());
     }
   }
 
@@ -937,10 +943,10 @@ export class WorkItemService {
       };
     }
     let lTypeIndex = wItem.relationalData.linkDicts.findIndex(i => i.linkName == link.relationalData.linkType);
-    if ( lTypeIndex > -1) {
+    if (lTypeIndex > -1) {
       // Add this link
       wItem.relationalData.linkDicts[lTypeIndex].count += 1;
-      wItem.relationalData.linkDicts[lTypeIndex].links.splice( wItem.relationalData.linkDicts[lTypeIndex].links.length, 0, link);
+      wItem.relationalData.linkDicts[lTypeIndex].links.splice(wItem.relationalData.linkDicts[lTypeIndex].links.length, 0, link);
     } else {
       // Create a new LinkDict item
       let newLinkDict = new LinkDict();
@@ -999,7 +1005,7 @@ export class WorkItemService {
         //   }
         // });
     } else {
-      return Observable.of<Link>( {} as Link );
+      return Observable.of<Link>({} as Link);
     }
   }
 
@@ -1019,7 +1025,7 @@ export class WorkItemService {
       const url = `${this.linksUrl}/${link.id}`;
       return this.http
         .delete(url)
-        .map(response => {} );
+        .map(response => {});
         // .catch ((e) => {
         //   if (e.status === 401) {
         //     this.auth.logout();
@@ -1038,7 +1044,7 @@ export class WorkItemService {
       //let searchUrl = currentSpace.links.self + 'search?q=' + term;
       return this.http
           .get(searchUrl)
-          .map((response) => response.json().data as WorkItem[])
+          .map((response) => response.json().data as WorkItem[]);
           // .catch ((e) => {
           //   if (e.status === 401) {
           //     this.auth.logout();
@@ -1047,7 +1053,7 @@ export class WorkItemService {
           //   }
           // });
     } else {
-      return Observable.of<WorkItem[]>( [] as WorkItem[] );
+      return Observable.of<WorkItem[]>([] as WorkItem[]);
     }
   }
 
@@ -1103,7 +1109,7 @@ export class WorkItemService {
       // this.renderUrl = currentSpace.links.self + '/render';
       return this.http
         .post(this.renderUrl, JSON.stringify(params))
-        .map(response => response.json().data.attributes.renderedContent)
+        .map(response => response.json().data.attributes.renderedContent);
         // .catch ((e) => {
         //   if (e.status === 401) {
         //     this.auth.logout();
@@ -1112,7 +1118,7 @@ export class WorkItemService {
         //   }
         // });
     } else {
-      return Observable.of<any>( {} as any );
+      return Observable.of<any>({} as any);
     }
   }
 }

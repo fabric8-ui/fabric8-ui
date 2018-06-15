@@ -1,12 +1,12 @@
-import { LinkCategory } from './link-category';
 import {
-  modelUI,
-  modelService,
+  cleanObject,
   Mapper,
   MapTree,
-  switchModel,
-  cleanObject
+  modelService,
+  modelUI,
+  switchModel
 } from './common.model';
+import { LinkCategory } from './link-category';
 
 export class LinkType {
   id: string;

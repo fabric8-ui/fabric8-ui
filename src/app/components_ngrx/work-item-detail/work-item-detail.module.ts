@@ -1,63 +1,62 @@
-import { TruncateModule } from 'ng2-truncate';
-import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
-import { CommonSelectorModule } from './../common-selector/common-selector.module';
-import { LabelsModule } from './../labels/labels.module';
-import { TypeaheadDropDownModule } from './../../components/typeahead-dropdown/typeahead-dropdown.module';
-import { AlmUserNameModule } from './../../pipes/alm-user-name.module';
-import { AssigneesModule } from './../assignee/assignee.module';
-import { AssigneeSelectorModule } from './../assignee-selector/assignee-selector.module';
-import { AuthenticationService } from 'ngx-login-client';
-import { RouterModule } from '@angular/router';
-import { InlineInputModule } from './../../widgets/inlineinput/inlineinput.module';
-import { WidgetsModule, MarkdownModule } from 'ngx-widgets';
-import { UserMapper, UserQuery } from './../../models/user';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { WorkItemDetailComponent } from './work-item-detail.component';
-import { WorkItemDetailRoutingModule } from './work-item-detail-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { MyDatePickerModule } from 'mydatepicker';
+import { TruncateModule } from 'ng2-truncate';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { AuthenticationService } from 'ngx-login-client';
+import { MarkdownModule, WidgetsModule } from 'ngx-widgets';
+import { PlannerModalModule } from '../../widgets/modal/modal.module';
+import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
+import { UserMapper, UserQuery } from './../../models/user';
+import { AlmUserNameModule } from './../../pipes/alm-user-name.module';
+import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
+import { InlineInputModule } from './../../widgets/inlineinput/inlineinput.module';
+import { AssigneeSelectorModule } from './../assignee-selector/assignee-selector.module';
+import { AssigneesModule } from './../assignee/assignee.module';
+import { CommonSelectorModule } from './../common-selector/common-selector.module';
+import { LabelsModule } from './../labels/labels.module';
 import {
   WorkItemCommentWrapperModule
 } from './../work-item-comment-wrapper/work-item-comment-wrapper.module';
 import { WorkItemEventWrapperModule } from './../work-item-event-wrapper/work-item-event-wrapper.module';
-import { PlannerModalModule } from '../../components/modal/modal.module';
 import  { WorkItemLinkModule } from './../work-item-link/work-item-link.module';
-import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
-import { MyDatePickerModule } from 'mydatepicker';
+import { WorkItemDetailRoutingModule } from './work-item-detail-routing.module';
+import { WorkItemDetailComponent } from './work-item-detail.component';
 
 // ngrx stuff
-import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { CommentState, initialState as initialCommentState } from './../../states/comment.state';
-import { EventState, initialState as initialEventState } from './../../states/event.state';
-import { CommentReducer } from './../../reducers/comment.reducer';
+import { StoreModule } from '@ngrx/store';
 import { CommentEffects } from './../../effects/comment.effects';
+import { DetailWorkItemEffects } from './../../effects/detail-work-item.effects';
+import { LinkTypeEffects } from './../../effects/link-type.effects';
+import { WorkItemLinkEffects } from './../../effects/work-item-link.effects';
+import { CommentReducer } from './../../reducers/comment.reducer';
+import { DetailWorkItemReducer } from './../../reducers/detail-work-item.reducer';
+import { LinkTypeReducer } from './../../reducers/link-type.reducer';
+import { WorkItemLinkReducer } from './../../reducers/work-item-link.reducer';
+import { CommentState, initialState as initialCommentState } from './../../states/comment.state';
 import {
   DetailWorkItemState,
   initialState as initialDetailWIState
 } from './../../states/detail-work-item.state';
-import { DetailWorkItemReducer } from './../../reducers/detail-work-item.reducer';
-import { DetailWorkItemEffects } from './../../effects/detail-work-item.effects';
-import { WorkItemLinkReducer } from './../../reducers/work-item-link.reducer';
-import { WorkItemLinkEffects } from './../../effects/work-item-link.effects';
-import { WorkItemLinkState, initialState as initialWILinkState } from './../../states/work-item-link.state';
-import { LinkTypeReducer } from './../../reducers/link-type.reducer';
-import { LinkTypeEffects } from './../../effects/link-type.effects';
-import { LinkTypeState, initialState as initialLinkTypeState } from './../../states/link-type.state';
+import { EventState, initialState as initialEventState } from './../../states/event.state';
+import { initialState as initialLinkTypeState, LinkTypeState } from './../../states/link-type.state';
+import { initialState as initialWILinkState, WorkItemLinkState } from './../../states/work-item-link.state';
 
-import { UrlService } from '../../services/url.service';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { LabelSelectorModule } from '../label-selector/label-selector.module';
+import { EventEffects } from '../../effects/event.effects';
 import { SafePipeModule } from '../../pipes/safe.module';
 import { EventReducer } from '../../reducers/event.reducer';
-import { EventEffects } from '../../effects/event.effects';
+import { UrlService } from '../../services/url.service';
+import { LabelSelectorModule } from '../label-selector/label-selector.module';
 
+import { AreaQuery } from '../../models/area.model';
 import { IterationQuery } from '../../models/iteration.model';
-import { WorkItemQuery } from './../../models/work-item';
 import { CommentQuery } from './../../models/comment';
 import { LabelQuery } from './../../models/label.model';
-import { AreaQuery } from '../../models/area.model';
+import { WorkItemQuery } from './../../models/work-item';
 
 @NgModule({
   imports: [
@@ -72,7 +71,6 @@ import { AreaQuery } from '../../models/area.model';
     RouterModule,
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
-    TypeaheadDropDownModule,
     LabelsModule,
     LabelSelectorModule,
     MarkdownModule,

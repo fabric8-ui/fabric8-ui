@@ -1,12 +1,12 @@
 import {
   Component,
-  ViewChild,
-  OnInit,
-  Output,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild
 } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
@@ -14,15 +14,15 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { cloneDeep } from 'lodash';
 import * as moment from 'moment';
-import { IMyOptions, IMyDateModel, MyDatePicker, IMySelector } from 'mydatepicker';
+import { IMyDateModel, IMyOptions, IMySelector, MyDatePicker } from 'mydatepicker';
 import { Broadcaster } from 'ngx-base';
 
-import { IterationUI, IterationQuery } from '../../models/iteration.model';
+import { IterationQuery, IterationUI } from '../../models/iteration.model';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
-import * as IterationActions from './../../actions/iteration.actions';
 import { AppState } from './../../../app/states/app.state';
+import * as IterationActions from './../../actions/iteration.actions';
 
 @Component({
   selector: 'fab-planner-iteration-modal',
@@ -31,8 +31,7 @@ import { AppState } from './../../../app/states/app.state';
 })
 export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnChanges {
 
-  @Output()
-  public onSubmit = new EventEmitter();
+  @Output() readonly onSubmit = new EventEmitter();
 
   @ViewChild('createUpdateIterationDialog') createUpdateIterationDialog: any;
   @ViewChild('iterationSearch') iterationSearch: any;
@@ -54,7 +53,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   iterationsValue: any = [];
   filteredIterations: any = [];
   selectedParentIteration: IterationUI;
-  selectedParentIterationName:string = '';
+  selectedParentIterationName: string = '';
   iterationSearchDisable: Boolean = false;
   showIterationDropdown: Boolean = false;
   validationString: string = 'Something went wrong.';
@@ -154,10 +153,10 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     this.iterationsValue = [];
     this.startDate = '';
     this.endDate = '';
-    if(this.startmydp && this.startDateSelector.open) {
+    if (this.startmydp && this.startDateSelector.open) {
       this.startmydp.openBtnClicked();
     }
-    if(this.endmydp && this.endDateSelector.open) {
+    if (this.endmydp && this.endDateSelector.open) {
       this.endmydp.openBtnClicked();
     }
   }
@@ -174,7 +173,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     iteration: IterationUI | null = null,
     e?: any
   ) {
-    if(e) {
+    if (e) {
       e.stopPropagation();
     }
 
@@ -194,8 +193,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.getIterations();
       this.submitBtnTxt = 'Create';
       this.modalTitle = 'Create Iteration';
-      if (this.iterationSearch)
+      if (this.iterationSearch) {
         this.iterationSearch.nativeElement.setAttribute('placeholder', 'None');
+      }
       this.startDate = '';
       this.endDate = '';
     }
@@ -223,7 +223,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       this.selectedParentIterationName = (
         iteration.resolvedParentPath + '/' +
         iteration.name
-      ).replace("//", "/");
+      ).replace('//', '/');
       this.selectedParentIteration = iteration;
       this.iteration.name = '';
       this.startDate = '';
@@ -253,7 +253,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   onEndCalendarToggle(event) {
     this.endDateSelector = {
       open: !this.endDateSelector.open
-    }
+    };
   }
 
   onStartDateChanged(event: IMyDateModel) {
@@ -276,7 +276,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     if (this.endDate !== null) {
       eDate = moment(this.endDate.jsdate);
     }
-    if(sDate > eDate) {
+    if (sDate > eDate) {
       this.endDate = null;
       this.iteration.endAt = null;
     }
@@ -309,12 +309,12 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
       .subscribe((iterations: IterationUI[]) => {
         this.iterations = iterations;
         this.iterationsValue = [];
-        for (let i=0; i<iterations.length; i++) {
+        for (let i = 0; i < iterations.length; i++) {
           this.iterationsValue.push({
             key: iterations[i].id,
             value: (iterations[i].resolvedParentPath + '/' + iterations[i].name).replace('//', '/')
           });
-        };
+        }
       });
   }
 
@@ -326,7 +326,7 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     this.showIterationDropdown = false;
   }
 
-  filterIteration(event:any) {
+  filterIteration(event: any) {
     event.stopPropagation();
     this.showIterationDropdown = true;
     // Down arrow or up arrow
@@ -395,9 +395,9 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
     this.iteration.name = this.iteration.name.trim();
     if (this.iteration.name !== '') {
       if (this.iteration.name.indexOf('/') === -1 &&
-          this.iteration.name.indexOf('\\') === -1 ) {
+          this.iteration.name.indexOf('\\') === -1) {
         this.validationError = false;
-        if (this.modalType == 'create' || this.modalType == "createChild") {
+        if (this.modalType == 'create' || this.modalType == 'createChild') {
           this.store.dispatch(new IterationActions.Add({
             iteration: this.iteration,
             parent: this.selectedParentIteration

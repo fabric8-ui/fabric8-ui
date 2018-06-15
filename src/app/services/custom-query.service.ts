@@ -1,11 +1,11 @@
+import { Inject, Injectable } from '@angular/core';
+import { Headers, Http } from '@angular/http';
+import { ActivatedRoute } from '@angular/router';
+import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { cloneDeep } from 'lodash';
-import { Injectable, Inject } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import { ActivatedRoute } from '@angular/router';
-import { HttpService } from './http-service';
 import { CustomQueryModel, CustomQueryService as CQService } from '../models/custom-query.model';
+import { HttpService } from './http-service';
 
 @Injectable()
 export class CustomQueryService {
@@ -75,7 +75,7 @@ export class CustomQueryService {
         .catch((error: Error | any) => {
           console.log('Delete custom query failed', error);
           return Observable.throw(new Error(error.message));
-        })
+        });
       }
 
 }

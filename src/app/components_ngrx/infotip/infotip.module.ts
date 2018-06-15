@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InfotipComponent } from './infotip.component';
+import { NgModule } from '@angular/core';
 import { PopoverModule } from 'ngx-bootstrap';
+import { InfotipComponent } from './infotip.component';
 
 @NgModule({
   imports: [CommonModule, PopoverModule.forRoot()],
@@ -9,4 +9,4 @@ import { PopoverModule } from 'ngx-bootstrap';
   exports: [InfotipComponent]
 })
 
-export class InfotipModule {} 
+export class InfotipModule {}

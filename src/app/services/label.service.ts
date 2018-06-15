@@ -1,16 +1,16 @@
-import { Injectable, Component, Inject } from '@angular/core';
+import { Component, Inject, Injectable } from '@angular/core';
 
 import 'rxjs/add/operator/toPromise';
-import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 
-import { Logger } from 'ngx-base';
 import { cloneDeep } from 'lodash';
-import { HttpService } from './http-service';
+import { Logger } from 'ngx-base';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { LabelModel } from '../models/label.model';
 import { WorkItem } from '../models/work-item';
+import { HttpService } from './http-service';
 
 @Injectable()
 export class LabelService {
@@ -22,7 +22,7 @@ export class LabelService {
   ) {}
 
   notifyError(message: string, httpError: any) {
-    this.logger.log('ERROR [WorkItemService] ' + message + (httpError.message?' '+httpError.message:''));
+    this.logger.log('ERROR [WorkItemService] ' + message + (httpError.message ? ' ' + httpError.message : ''));
   }
 
     /**
@@ -34,10 +34,11 @@ export class LabelService {
   getLabels(): Observable<LabelModel[]> {
     return this.spaces.current
     .switchMap(currentSpace => {
-        if(currentSpace)
-          return this.http.get(currentSpace.links.self + '/labels')
-        else
-          return []
+        if (currentSpace) {
+          return this.http.get(currentSpace.links.self + '/labels');
+        } else {
+          return [];
+        }
     }).map (response => {
       return response.json().data as LabelModel[];
     });
@@ -53,11 +54,11 @@ export class LabelService {
   createLabel(label: LabelModel): Observable<LabelModel> {
     return this.spaces.current.switchMap(
       currentSpace => {
-        return this.http.post(currentSpace.links.self + '/labels', {data: label})
+        return this.http.post(currentSpace.links.self + '/labels', {data: label});
       }
     )
     .map (response => {
       return response.json().data as LabelModel;
-    })
+    });
   }
 }

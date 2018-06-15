@@ -13,12 +13,12 @@
     <h5 class="f8-comment-author pull-left">
       <strong  class="truncate"
         id="{{'comment_username_' + counter}}">
-        {{(comment.creator | async)?.name}}
+        {{ (comment.creator | async)?.name }}
       </strong>
     </h5>
     <small class="f8-comment--create-time pull-right"
       id="{{'comment_time_' + counter}}">
-        {{comment.createdAt | date:'medium'}}
+        {{ comment.createdAt | date:'medium' }}
     </small>
   </div>
 

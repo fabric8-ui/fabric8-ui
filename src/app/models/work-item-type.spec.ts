@@ -1,7 +1,7 @@
 import {
   WorkItemTypeMapper,
-  WorkItemTypeUI,
-  WorkItemTypeService
+  WorkItemTypeService,
+  WorkItemTypeUI
 } from './work-item-type';
 
 describe('WorkItemTypeMapper', () => {
@@ -17,20 +17,20 @@ describe('WorkItemTypeMapper', () => {
         version: 0,
         description: '',
         childTypes: [
-          {id: "bbf35418-04b6-426c-a60b-7f80beb0b624", type: "workitemtypes"},
-          {id: "26787039-b68f-4e28-8814-c2f93be1ef4e", type: "workitemtypes"}
+          {id: 'bbf35418-04b6-426c-a60b-7f80beb0b624', type: 'workitemtypes'},
+          {id: '26787039-b68f-4e28-8814-c2f93be1ef4e', type: 'workitemtypes'}
         ],
         fields: {
-          "system.area": {
-            "description": "The area to which the work item belongs",
-            "label": "Area",
-            "required": false,
-            "type": {
-              "kind": "area"
+          'system.area': {
+            'description': 'The area to which the work item belongs',
+            'label': 'Area',
+            'required': false,
+            'type': {
+              'kind': 'area'
             }
           }
         },
-        infotip: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        infotip: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         dynamicfields: [],
         type: 'workitemtypes'
     } as WorkItemTypeUI;
@@ -44,12 +44,12 @@ describe('WorkItemTypeMapper', () => {
           description: '',
           icon: '',
           fields: {
-            "system.area": {
-              "description": "The area to which the work item belongs",
-              "label": "Area",
-              "required": false,
-              "type": {
-                "kind": "area"
+            'system.area': {
+              'description': 'The area to which the work item belongs',
+              'label': 'Area',
+              'required': false,
+              'type': {
+                'kind': 'area'
               }
             }
           }
@@ -57,19 +57,19 @@ describe('WorkItemTypeMapper', () => {
       relationships: {
         guidedChildTypes: {
           data: [
-            {id: "bbf35418-04b6-426c-a60b-7f80beb0b624", type: "workitemtypes"},
-            {id: "26787039-b68f-4e28-8814-c2f93be1ef4e", type: "workitemtypes"}
+            {id: 'bbf35418-04b6-426c-a60b-7f80beb0b624', type: 'workitemtypes'},
+            {id: '26787039-b68f-4e28-8814-c2f93be1ef4e', type: 'workitemtypes'}
           ]
         }
       }
-    } as WorkItemTypeService
+    } as WorkItemTypeService;
 
     beforeEach(() => {
         workItemTypeMapper = new WorkItemTypeMapper();
     });
 
     it('should execute the canary test', () => {
-        return expect(true).toBe(true)
+        return expect(true).toBe(true);
       });
 
     it('should correctly convert to service model - 1', () => {
@@ -84,25 +84,25 @@ describe('WorkItemTypeMapper', () => {
       workItemTypeService.attributes.fields = {
         ...workItemTypeService.attributes.fields,
         ...{
-          "dynamicfield" : {
-            "description": "This is a dynamic field",
-              "label": "DF",
-              "required": false,
-              "type": {
-                "kind": "enum"
+          'dynamicfield' : {
+            'description': 'This is a dynamic field',
+              'label': 'DF',
+              'required': false,
+              'type': {
+                'kind': 'enum'
               }
           }
         }
-      }
+      };
       workItemTypeUI.fields = {
         ...workItemTypeUI.fields,
         ...{
-          "dynamicfield" : {
-            "description": "This is a dynamic field",
-              "label": "DF",
-              "required": false,
-              "type": {
-                "kind": "enum"
+          'dynamicfield' : {
+            'description': 'This is a dynamic field',
+              'label': 'DF',
+              'required': false,
+              'type': {
+                'kind': 'enum'
               }
           }
         }

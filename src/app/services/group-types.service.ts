@@ -3,9 +3,9 @@ import { GlobalSettings } from '../shared/globals';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
-import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 
 
 import { cloneDeep } from 'lodash';
@@ -15,7 +15,7 @@ import { HttpService } from './http-service';
 
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { GroupTypesModel } from '../models/group-types.model';
-import { WorkItem } from '../models/work-item'
+import { WorkItem } from '../models/work-item';
 import { WorkItemType } from '../models/work-item-type';
 
 @Injectable()
@@ -88,13 +88,13 @@ export class GroupTypesService {
       });
   }
 
-  getFlatGroupList(): Observable<GroupTypesModel[]>{
+  getFlatGroupList(): Observable<GroupTypesModel[]> {
     if (this._currentSpace) {
       //Normalize the response - we don't want two portfolio - that is
       //no two entries for the same level
       return Observable.of(this.groupTypes);
     } else {
-      return Observable.of<GroupTypesModel[]>( [] as GroupTypesModel[] );;
+      return Observable.of<GroupTypesModel[]>([] as GroupTypesModel[]);
     }
   }
 
@@ -120,9 +120,10 @@ export class GroupTypesService {
   getAllowedChildWits(workItem: WorkItem, wits) {
     let WITid = workItem.relationships.baseType.data.id;
     let selectedWIT = wits.find(wit => wit.id === WITid);
-    if (selectedWIT && selectedWIT.relationships.guidedChildTypes)
-      this.workItemSelected.next(selectedWIT.relationships.guidedChildTypes.data.map(i=>i.id));
-    else
+    if (selectedWIT && selectedWIT.relationships.guidedChildTypes) {
+      this.workItemSelected.next(selectedWIT.relationships.guidedChildTypes.data.map(i => i.id));
+    } else {
       this.workItemSelected.next([]);
+    }
   }
 }

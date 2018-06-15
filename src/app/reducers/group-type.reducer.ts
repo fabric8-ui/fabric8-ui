@@ -8,7 +8,7 @@ export type Action = GroupTypeActions.All;
 
 export const GroupTypeReducer: ActionReducer<GroupTypeState> =
   (state = initialState, action: Action) => {
-  switch(action.type) {
+  switch (action.type) {
     case GroupTypeActions.GET_SUCCESS: {
       return action.payload;
     }
@@ -22,7 +22,7 @@ export const GroupTypeReducer: ActionReducer<GroupTypeState> =
         item => item.id === action.payload.id
       );
       if (index > -1) {
-        for(let i = 0; i < state.length; i++) {
+        for (let i = 0; i < state.length; i++) {
           state[i].selected = i === index;
         }
       }
@@ -34,4 +34,4 @@ export const GroupTypeReducer: ActionReducer<GroupTypeState> =
       return state;
     }
   }
-}
+};

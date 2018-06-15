@@ -1,7 +1,7 @@
 <div class="f8-dynamic-control" *ngIf="showField">
   <label class="pull-left padding-left-15 control-label"
     [attr.for]="fieldValue.key">
-    {{ fieldValue.field.label | truncate:15}}
+    {{ fieldValue.field.label | truncate:15 }}
   </label>
   <div class="f8-dynamic-control-content">
     <span *ngIf="loadingField"
@@ -62,12 +62,6 @@
 
 
       <!-- workitemtype field type: markup -->
-      <!-- <markdown-control
-        *ngSwitchCase="'markup'"
-        [markdownValue]="form.value[this.attributeKey].content"
-        (onUpdate)="onChangeMarkup($event)">
-      </markdown-control> -->
-
       <f8-markdown
         *ngIf="fieldValue.field.type.kind==='markup'"
         [editAllow]="editAllow"
@@ -129,10 +123,10 @@
   </div>
   <div class="errorMessage"
     *ngIf="!isValid()">
-    {{fieldValue.field.label}} is not given or not in the right format.
+    {{ fieldValue.field.label }} is not given or not in the right format.
   </div>
   <div class="errorMessage"
     *ngIf="error">
-    Error on {{fieldValue.field.label}}: {{error}}.
+    Error on {{ fieldValue.field.label }}: {{ error }}.
   </div>
 </div>

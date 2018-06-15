@@ -1,14 +1,14 @@
-import { WorkItemService } from './work-item';
-import { Space } from "ngx-fabric8-wit";
+import { Space } from 'ngx-fabric8-wit';
 import {
-  modelUI,
   Mapper,
   MapTree,
-  switchModel,
-  modelService
+  modelService,
+  modelUI,
+  switchModel
 } from './common.model';
+import { WorkItemService } from './work-item';
 
-export class WorkItemType extends modelService{
+export class WorkItemType extends modelService {
     attributes?: {
       name: string;
       version: number;
@@ -16,7 +16,7 @@ export class WorkItemType extends modelService{
       icon: string;
       fields: any;
     };
-    relationships? : {
+    relationships?: {
       guidedChildTypes?: {
         data?: WorkItemType[]
       },
@@ -24,7 +24,7 @@ export class WorkItemType extends modelService{
         data?: string;
       },
       space?: Space
-    }
+    };
 }
 
 export class WorkItemTypeField {
@@ -60,16 +60,16 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
         fromPath: ['id'],
         toPath: ['id']
       }, {
-        fromPath: ['attributes','name'],
+        fromPath: ['attributes', 'name'],
         toPath: ['name']
       }, {
-        fromPath: ['attributes','icon'],
+        fromPath: ['attributes', 'icon'],
         toPath: ['icon']
       }, {
-        fromPath: ['attributes','version'],
+        fromPath: ['attributes', 'version'],
         toPath: ['version']
       }, {
-        fromPath: ['attributes','description'],
+        fromPath: ['attributes', 'description'],
         toPath: ['description']
       }, {
         fromPath: ['relationships', 'guidedChildTypes', 'data'],
@@ -88,7 +88,7 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
         toPath: ['type'],
         toValue: 'workitemtypes'
       }, {
-        fromPath: ['relationships','infotip','data'],
+        fromPath: ['relationships', 'infotip', 'data'],
         toPath: ['infotip'],
         toFunction: function(value) {
           if (value === null) {
@@ -102,16 +102,16 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
         toPath: ['id'],
         fromPath: ['id']
       }, {
-        toPath: ['attributes','name'],
+        toPath: ['attributes', 'name'],
         fromPath: ['name']
       }, {
-        toPath: ['attributes','icon'],
+        toPath: ['attributes', 'icon'],
         fromPath: ['icon']
       }, {
-        toPath: ['attributes','version'],
+        toPath: ['attributes', 'version'],
         fromPath: ['version']
       }, {
-        toPath: ['attributes','description'],
+        toPath: ['attributes', 'description'],
         fromPath: ['description']
       }, {
         toPath: ['type'],
@@ -143,7 +143,7 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
 
 
 export class WorkItemTypeResolver {
-  private allTypes:  WorkItemTypeUI[];
+  private allTypes: WorkItemTypeUI[];
 
   constructor(allTypes: WorkItemTypeUI[] = []) {
     this.allTypes = allTypes;
@@ -153,8 +153,8 @@ export class WorkItemTypeResolver {
     this.allTypes.forEach(type => {
       type.childTypes = this.allTypes.filter(t => {
         return type.childTypes.findIndex(ct => ct.id === t.id) > -1;
-      })
-    })
+      });
+    });
   }
 
   getResolvedWorkItemTypes() {

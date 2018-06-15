@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
-import { WorkItemUI, WorkItemService } from './../models/work-item';
 import { IterationUI } from '../models/iteration.model';
+import { WorkItemService, WorkItemUI } from './../models/work-item';
 
 export const ADD = '[workItem] Add';
 export const GET = '[workItem] Get';
@@ -16,7 +16,7 @@ export const GET_CHILDREN_SUCCESS = '[workItem] GetChildrenSuccess';
 export const GET_CHILDREN_ERROR = '[workItem] GetChildrenError';
 export const REORDER = '[workItem] Reorder';
 export const REORDER_ERROR = '[workItem] ReorderError';
-export const UPDATE_WORKITEM_ITERATION= '[workItem] UpdateWorkitemIteration';
+export const UPDATE_WORKITEM_ITERATION = '[workItem] UpdateWorkitemIteration';
 export const CREATE_LINK = '[workItemLink] CreateLink';
 export const DELETE_LINK = '[workItemLink] DeleteLink';
 
@@ -40,7 +40,7 @@ export class Get implements Action {
     pageSize: number,
     filters: any[],
     isShowTree: boolean
-  }
+  };
   constructor(payload: any) {
     this.payload = payload;
   }
@@ -133,7 +133,7 @@ export class UpdateWorkitemIteration implements Action {
   readonly type = UPDATE_WORKITEM_ITERATION;
   payload: {
     iteration: IterationUI;
-  }
+  };
   constructor(payload: {
     iteration: IterationUI
   }) { this.payload = payload; }
@@ -144,7 +144,7 @@ export class CreateLink implements Action {
     source: WorkItemUI,
     target: WorkItemUI,
     sourceTreeStatus: string
-  }
+  };
   constructor(payload: {
     source: WorkItemUI,
     target: WorkItemUI,
@@ -160,7 +160,7 @@ export class DeleteLink implements Action {
     source: WorkItemUI,
     target: WorkItemUI,
     sourceTreeStatus: string
-  }
+  };
   constructor(payload: {
     source: WorkItemUI,
     target: WorkItemUI,
@@ -187,4 +187,4 @@ export type All
   | Reoder
   | UpdateWorkitemIteration
   | CreateLink
-  | DeleteLink
+  | DeleteLink;

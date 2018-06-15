@@ -1,4 +1,4 @@
-import { Injectable, Inject }    from '@angular/core';
+import { Inject, Injectable }    from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { WIT_API_URL } from 'ngx-fabric8-wit';
 
@@ -14,10 +14,10 @@ export class LoginService {
   constructor(
     private http: Http,
     @Inject(WIT_API_URL) private baseApiUrl: string) {
-      this.githubUrl = this.baseApiUrl + 'login/authorize '
+      this.githubUrl = this.baseApiUrl + 'login/authorize ';
   }
 
-  gitHubSignIn(){
+  gitHubSignIn() {
     window.location.href = this.githubUrl;
   }
 

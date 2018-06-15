@@ -1,18 +1,18 @@
 import {
-  State,
-  ActionReducer
+  ActionReducer,
+  State
 } from '@ngrx/store';
-import * as FilterActions from './../actions/filter.actions';
 import {
   FilterState,
   initialState
 } from '../states/filter.state';
+import * as FilterActions from './../actions/filter.actions';
 
 export type Action = FilterActions.All;
 
 export const FilterReducer: ActionReducer<FilterState> =
   (state = initialState, action: Action) => {
-    switch(action.type) {
+    switch (action.type) {
       case FilterActions.GET_SUCCESS: {
         return action.payload;
       }
@@ -25,4 +25,4 @@ export const FilterReducer: ActionReducer<FilterState> =
         return state;
       }
     }
-  }
+  };

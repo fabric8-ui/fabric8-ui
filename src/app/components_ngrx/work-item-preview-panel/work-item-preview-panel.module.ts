@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WorkItemPreviewPanelComponent } from './work-item-preview-panel.component';
+import { NgModule } from '@angular/core';
 import { WorkItemDetailModule } from './../work-item-detail/work-item-detail.module';
+import { WorkItemPreviewPanelComponent } from './work-item-preview-panel.component';
 
 @NgModule({
   imports: [

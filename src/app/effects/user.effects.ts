@@ -1,21 +1,21 @@
-import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
 import {
   Notification,
   Notifications,
   NotificationType
 } from 'ngx-base';
-import { Observable } from 'rxjs';
 import { UserService } from 'ngx-login-client';
+import { Observable } from 'rxjs';
 
+import { normalizeArray } from '../models/common.model';
 import * as CollaboratorActions from './../actions/collaborator.actions';
 import * as UserActions from './../actions/user.actions';
 import {
-  UserUI,
   UserMapper,
-  UserService as UserServiceModel
+  UserService as UserServiceModel,
+  UserUI
 } from './../models/user';
-import { normalizeArray } from '../models/common.model';
 
 export type CollabGetSuccess = CollaboratorActions.GetSuccess;
 export type UserAction = UserActions.All;
@@ -26,7 +26,7 @@ export class UserEffects {
   constructor(
     private actions$: Actions,
     private userService: UserService,
-    private notifications: Notifications,
+    private notifications: Notifications
   ) {}
 
   @Effect() getUser$: Observable<UserAction> = this.actions$
@@ -37,7 +37,7 @@ export class UserEffects {
           const userMapper = new UserMapper();
           const mappedUser: UserUI = userMapper.toUIModel(user);
           return new UserActions.Set(normalizeArray<UserUI>([mappedUser]));
-        })
+        });
     })
     .catch(e => {
       try {
@@ -50,5 +50,5 @@ export class UserEffects {
       }
       return Observable.of(new UserActions.GetError());
     });
-;
+
 }

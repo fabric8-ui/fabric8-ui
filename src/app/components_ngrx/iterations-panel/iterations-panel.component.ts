@@ -1,28 +1,28 @@
-import { Params, ActivatedRoute } from '@angular/router';
 import {
-  Component, OnInit, OnDestroy,
-  TemplateRef, Input, OnChanges,
+  Component, Input, OnChanges,
+  OnDestroy, OnInit, TemplateRef,
   ViewChild, ViewEncapsulation
 } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Broadcaster, Logger, Notification, NotificationType, Notifications } from 'ngx-base';
+import { Broadcaster, Logger, Notification, Notifications, NotificationType } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
 
+import { IterationQuery, IterationUI } from '../../models/iteration.model';
+import { WorkItem } from '../../models/work-item';
 import { GroupTypesService } from '../../services/group-types.service';
 import { IterationService } from '../../services/iteration.service';
 import { WorkItemService }   from '../../services/work-item.service';
-import { FilterService } from './../../services/filter.service';
-import { IterationUI, IterationQuery } from '../../models/iteration.model';
-import { WorkItem } from '../../models/work-item';
 import { FabPlannerIterationModalComponent } from '../iterations-modal/iterations-modal.component';
+import { FilterService } from './../../services/filter.service';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
+import * as IterationActions from './../../actions/iteration.actions';
 import { AppState } from './../../states/app.state';
 import { IterationState, IterationUIState } from './../../states/iteration.state';
-import * as IterationActions from './../../actions/iteration.actions';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -48,15 +48,15 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   editEnabled: boolean = false;
   barchatValue: number = 70;
   eventListeners: any[] = [];
-  treeIterations: Observable<IterationUI[]> = 
+  treeIterations: Observable<IterationUI[]> =
     this.iterationQuery.getIterationForTree()
     .filter(i => !!i.length)
     .do(i => {
-      if(!this.startedCheckingURL){
+      if (!this.startedCheckingURL) {
         this.checkURL();
       }
     });
-  activeIterations: Observable<IterationUI[]> = 
+  activeIterations: Observable<IterationUI[]> =
     this.iterationQuery.getActiveIterations();
   spaceId: string = '';
   startedCheckingURL: boolean = false;
@@ -93,7 +93,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
           console.log('[IterationComponent] Space deselected.');
           this.editEnabled = false;
         }
-      })
+      });
   }
 
   ngOnChanges() {
@@ -109,12 +109,12 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     //Query for work item type group
     const type_query = this.filterService.queryBuilder('typegroup.name', this.filterService.equal_notation, this.witGroup);
     //Query for space
-    const space_query = this.filterService.queryBuilder('space',this.filterService.equal_notation, this.spaceId);
+    const space_query = this.filterService.queryBuilder('space', this.filterService.equal_notation, this.spaceId);
     //Query for iteration
-    const iteration_query = this.filterService.queryBuilder('iteration',this.filterService.equal_notation, iterationId);
+    const iteration_query = this.filterService.queryBuilder('iteration', this.filterService.equal_notation, iterationId);
     //Join type and space query
-    const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, space_query );
-    const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query );
+    const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, space_query);
+    const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query);
     const third_join = this.filterService.queryJoiner(second_join, this.filterService.and_notation, iteration_query);
     //this.setGroupType(witGroup);
     //second_join gives json object
@@ -127,24 +127,23 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
         q: this.constructURL(iterationId),
         showTree: this.showTree,
         showCompleted: this.showCompleted
-      }
+      };
     } else if (this.showTree) {
       return {
         q: this.constructURL(iterationId),
         showTree: this.showTree
-      }
+      };
     } else if (this.showCompleted) {
       return {
         q: this.constructURL(iterationId),
         showCompleted: this.showCompleted
-      }
+      };
     } else {
       return {
         q: this.constructURL(iterationId)
-      }
+      };
     }
   }
-
 
 
   kebabMenuClick(event: Event) {

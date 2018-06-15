@@ -3,15 +3,15 @@ import {
   EventEmitter,
   Input,
   Output,
-  SimpleChanges,
-  SimpleChange
+  SimpleChange,
+  SimpleChanges
 } from '@angular/core';
-import { IterationListEntryComponent } from '../iteration-list-entry/iteration-list-entry.component'
 import { IterationUI } from '../../models/iteration.model';
+import { IterationListEntryComponent } from '../iteration-list-entry/iteration-list-entry.component';
 
 @Component({
     selector: 'iteration-tree',
-    templateUrl: './iteration-tree.component.html',
+    templateUrl: './iteration-tree.component.html'
 })
 
 export class IterationTreeComponent {
@@ -22,9 +22,9 @@ export class IterationTreeComponent {
   @Input() showTree: string = '';
   @Input() showCompleted: string = '';
 
-  @Output() onEditIteration = new EventEmitter<IterationUI>();
-  @Output() onCloseIteration = new EventEmitter<IterationUI>();
-  @Output() onCreateIteration = new EventEmitter<IterationUI>();
+  @Output() readonly onEditIteration = new EventEmitter<IterationUI>();
+  @Output() readonly onCloseIteration = new EventEmitter<IterationUI>();
+  @Output() readonly onCreateIteration = new EventEmitter<IterationUI>();
 
   editIteration(iteration) {
     this.onEditIteration.emit(iteration);

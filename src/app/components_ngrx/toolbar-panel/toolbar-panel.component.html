@@ -11,14 +11,14 @@
 <div class="active-filters-section">  
   <span class="dib margin-right-10"
     *ngIf="activeFilterFromSidePane !== ''">
-    <strong>{{totalCount | async}}</strong> in {{activeFilterFromSidePanel}}
+    <strong>{{ totalCount | async }}</strong> in {{ activeFilterFromSidePanel }}
   </span>
   <div class="active-filters-div"
     *ngIf="activeFilters.length">
     <ul class="list-inline">
       <li *ngFor="let filter of activeFilters">
         <span class="active-filter label label-info">
-          {{filter.field}}: {{filter.displayValue}}
+          {{ filter.field }}: {{ filter.displayValue }}
           <span
             class="margin-left-5 pficon pficon-close clickable"
             (click)="isFilterSaveOpen=false; removeFilter(filter)">

@@ -1,6 +1,6 @@
 import { createEntityAdapter } from '@ngrx/entity';
 import {
-  WorkItemUI, WorkItemStateModel
+  WorkItemStateModel, WorkItemUI
 } from './../models/work-item';
 
 const workItemAdapter = createEntityAdapter<WorkItemUI>();

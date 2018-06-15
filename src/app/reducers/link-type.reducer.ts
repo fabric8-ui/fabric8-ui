@@ -1,12 +1,12 @@
-import { State, ActionReducer } from '@ngrx/store';
+import { ActionReducer, State } from '@ngrx/store';
 import * as LinkTypeActions from './../actions/link-type.actions';
-import { LinkTypeState, initialState } from './../states/link-type.state';
+import { initialState, LinkTypeState } from './../states/link-type.state';
 
 export type Action = LinkTypeActions.All;
 
 export const LinkTypeReducer: ActionReducer<LinkTypeState> =
   (state = initialState, action: Action) => {
-    switch(action.type) {
+    switch (action.type) {
       case LinkTypeActions.GET_SUCCESS: {
         return action.payload;
       }
@@ -19,4 +19,4 @@ export const LinkTypeReducer: ActionReducer<LinkTypeState> =
         return state;
       }
     }
-  }
+  };

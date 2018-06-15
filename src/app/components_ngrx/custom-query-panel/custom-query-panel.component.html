@@ -40,7 +40,7 @@
         [routerLink]="[]" 
         [attr.data-id]="query.id"
         [queryParams]="addRemoveQueryParams(query.attributes.fields)">
-          <span class="db" title="{{ query.attributes.title }}">{{query.attributes.title  | truncate : 15}}</span>
+          <span class="db" title="{{ query.attributes.title }}">{{ query.attributes.title  | truncate : 15 }}</span>
       </a>
     </li>
   </ul>

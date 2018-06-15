@@ -1,18 +1,18 @@
-import { Store } from '@ngrx/store';
-import { AppState } from './../states/app.state';
-import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import * as FilterActions from './../actions/filter.actions';
-import { Observable } from 'rxjs';
-import {
-  FilterService
-} from './../services/filter.service';
-import { FilterModel } from './../models/filter.model';
+import { Actions, Effect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import {
   Notification,
   Notifications,
   NotificationType
-} from "ngx-base";
+} from 'ngx-base';
+import { Observable } from 'rxjs';
+import * as FilterActions from './../actions/filter.actions';
+import { FilterModel } from './../models/filter.model';
+import {
+  FilterService
+} from './../services/filter.service';
+import { AppState } from './../states/app.state';
 
 export type Action = FilterActions.All;
 
@@ -43,6 +43,6 @@ export class FilterEffects {
             console.log('Problem in fetching filters');
           }
           return Observable.of(new FilterActions.GetError());
-        })
-    })
+        });
+    });
 }

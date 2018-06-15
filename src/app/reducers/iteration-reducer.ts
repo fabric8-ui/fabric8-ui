@@ -1,56 +1,54 @@
-  import { cloneDeep } from 'lodash';
-import * as IterationActions from '.././actions/iteration.actions';
-import { State } from '@ngrx/store';
-import { IterationModel } from './../models/iteration.model';
 import { ActionReducer } from '@ngrx/store';
+import { cloneDeep } from 'lodash';
+import * as IterationActions from '.././actions/iteration.actions';
 import {
-  IterationState,
   initialState,
-  IterationUIState,
-  initialUIState
+  initialUIState,
+  IterationState,
+  IterationUIState
 } from './../states/iteration.state';
-import { pipe } from 'rxjs';
 
 export type Action = IterationActions.All;
 
 export const iterationReducer: ActionReducer<IterationState> =
-  ( state = initialState, action: Action) => {
-    switch( action.type ) {
+  (state = initialState, action: Action) => {
+    switch (action.type) {
       case IterationActions.GET_SUCCESS:
-        return action.payload
+        return action.payload;
 
       case IterationActions.ADD_SUCCESS:
         const parent = action.payload.parent;
         const newIterationId = action.payload.iteration.id;
         if (parent) {
-          state[parent.id].hasChildren = true
+          state[parent.id].hasChildren = true;
         }
         state[newIterationId] = action.payload.iteration;
         return {...state};
 
       case IterationActions.UPDATE_SUCCESS:
         const updatedIterationid = action.payload.id;
-        if(state[updatedIterationid])
+        if (state[updatedIterationid]) {
           action.payload.selected = state[updatedIterationid].selected;
-        state[updatedIterationid] = action.payload
+        }
+        state[updatedIterationid] = action.payload;
         return {...state};
 
       case IterationActions.SELECT:
         if (state[action.payload]) {
-          for(let id in state) {
+          for (let id in state) {
             state[id].selected =  id === action.payload;
             state[id].showChildren = false;
           }
           let pId = state[action.payload].parentId;
-          while(pId) {
+          while (pId) {
             const pIndex = pId;
-            if(state[pId]){
-              state[pId].showChildren = true
+            if (state[pId]) {
+              state[pId].showChildren = true;
               pId = state[pIndex].parentId;
             }
           }
         } else {
-          for(let i in state) {
+          for (let i in state) {
             state[i].selected = false;
             state[i].showChildren = false;
           }
@@ -69,12 +67,12 @@ export const iterationReducer: ActionReducer<IterationState> =
       default:
         return state;
     }
-  }
+  };
 
 export const iterationUiReducer: ActionReducer<IterationUIState> =
-  ( s = initialUIState, action: Action) => {
+  (s = initialUIState, action: Action) => {
     const state = cloneDeep(s);
-    switch( action.type ) {
+    switch (action.type) {
       case IterationActions.UPDATE_SUCCESS:
       case IterationActions.ADD_SUCCESS:
         state.error = '';
@@ -100,4 +98,4 @@ export const iterationUiReducer: ActionReducer<IterationUIState> =
       default:
         return state;
     }
-  }
+  };

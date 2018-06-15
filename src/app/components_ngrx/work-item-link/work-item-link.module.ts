@@ -1,16 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import {
   BsDropdownConfig,
   BsDropdownModule
 } from 'ngx-bootstrap/dropdown';
-import { RouterModule } from '@angular/router';
-import { WorkItemLinkComponent } from './work-item-link.component';
 import {
+  GroupWorkItemLinks,
   WorkItemLinkFilterByTypeName,
-  WorkItemLinkTypeFilterByTypeName,
-  GroupWorkItemLinks
+  WorkItemLinkTypeFilterByTypeName
 } from '../../pipes/work-item-link-filters.pipe';
+import { WorkItemLinkComponent } from './work-item-link.component';
 
 @NgModule({
   imports: [

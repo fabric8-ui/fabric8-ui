@@ -1,21 +1,21 @@
-import { AppState } from './../states/app.state';
-import { Store } from '@ngrx/store';
-import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import * as GroupTypeActions from './../actions/group-type.actions';
-import { Observable } from 'rxjs';
-import {
-  GroupTypesService as GTService
-} from './../services/group-types.service';
-import {
-  GroupTypeService,
-  GroupTypeMapper
-} from './../models/group-types.model';
+import { Actions, Effect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import {
   Notification,
   Notifications,
   NotificationType
-} from "ngx-base";
+} from 'ngx-base';
+import { Observable } from 'rxjs';
+import * as GroupTypeActions from './../actions/group-type.actions';
+import {
+  GroupTypeMapper,
+  GroupTypeService
+} from './../models/group-types.model';
+import {
+  GroupTypesService as GTService
+} from './../services/group-types.service';
+import { AppState } from './../states/app.state';
 
 export type Action = GroupTypeActions.All;
 
@@ -26,7 +26,7 @@ export class GroupTypeEffects {
     private groupTypeService: GTService,
     private notifications: Notifications,
     private store: Store<AppState>
-  ){}
+  ) {}
 
   @Effect() getGroupTypes$: Observable<Action> = this.actions$
     .ofType(GroupTypeActions.GET)
@@ -39,7 +39,7 @@ export class GroupTypeEffects {
           const gtm = new GroupTypeMapper();
           return new GroupTypeActions.GetSuccess(
             types.map(t => gtm.toUIModel(t))
-          )
+          );
         })
         .catch(e => {
           try {
@@ -51,6 +51,6 @@ export class GroupTypeEffects {
             console.log('Problem in fetching grouptypes.');
           }
           return Observable.of(new GroupTypeActions.GetError());
-        })
-    })
+        });
+    });
 }

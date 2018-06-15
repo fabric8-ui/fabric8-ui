@@ -1,16 +1,16 @@
-import { Store } from '@ngrx/store';
-import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import * as LabelActions from './../actions/label.actions';
-import { Observable } from 'rxjs';
-import { LabelService } from './../services/label.service';
-import { AppState } from './../states/app.state';
-import { LabelMapper } from "./../models/label.model";
+import { Actions, Effect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import {
   Notification,
   Notifications,
   NotificationType
-} from "ngx-base";
+} from 'ngx-base';
+import { Observable } from 'rxjs';
+import * as LabelActions from './../actions/label.actions';
+import { LabelMapper } from './../models/label.model';
+import { LabelService } from './../services/label.service';
+import { AppState } from './../states/app.state';
 
 export type Action = LabelActions.All;
 
@@ -21,7 +21,7 @@ export class LabelEffects {
     private labelService: LabelService,
     private store: Store<AppState>,
     private notifications: Notifications
-  ){}
+  ) {}
 
   @Effect() getLabels$: Observable<Action> = this.actions$
     .ofType(LabelActions.GET)
@@ -33,8 +33,8 @@ export class LabelEffects {
          return labels.map(l => lMapper.toUIModel(l));
       })
       .map(labels => new LabelActions.GetSuccess(labels))
-      .catch(() => Observable.of(new LabelActions.GetError()))
-    })
+      .catch(() => Observable.of(new LabelActions.GetError()));
+    });
 
   @Effect() createLabel$: Observable<Action> = this.actions$
     .ofType<LabelActions.Add>(LabelActions.ADD)
@@ -64,6 +64,6 @@ export class LabelEffects {
             console.log('There was some problem in adding the label.');
           }
           return Observable.of(new LabelActions.AddError());
-        })
-    })
+        });
+    });
 }

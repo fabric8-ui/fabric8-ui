@@ -4,8 +4,8 @@ import { NgModule } from '@angular/core';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { MarkdownModule, WidgetsModule } from 'ngx-widgets';
 
-import { CommentComponent } from './comment.component';
 import { SafePipeModule } from '../../pipes/safe.module';
+import { CommentComponent } from './comment.component';
 
 @NgModule({
   declarations: [ CommentComponent],

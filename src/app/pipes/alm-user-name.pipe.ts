@@ -1,5 +1,5 @@
-import { User } from 'ngx-login-client';
 import { Pipe, PipeTransform } from '@angular/core';
+import { User } from 'ngx-login-client';
 
 // tslint:disable-next-line:use-pipe-transform-interface
 @Pipe({ name: 'almUserName', pure: true })

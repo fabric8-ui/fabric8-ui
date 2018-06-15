@@ -1,10 +1,10 @@
-import { LinkTypeService, LinkType } from './link-type';
-import { WorkItemUI, WorkItemMapper } from './work-item';
 import {
   Mapper,
   MapTree,
   switchModel
 } from './common.model';
+import { LinkType, LinkTypeService } from './link-type';
+import { WorkItemMapper, WorkItemUI } from './work-item';
 
 export class Link {
   id?: string;
@@ -121,13 +121,13 @@ export class LinkTypeMapper implements Mapper<LinkTypeService, LinkTypeUI> {
   toUIModel(arg: LinkTypeService): LinkTypeUI {
     return switchModel<LinkTypeService, LinkTypeUI> (
       arg, this.serviceToUiMapTree
-    )
+    );
   }
 
   toServiceModel(arg: LinkTypeUI): LinkTypeService {
     return switchModel<LinkTypeUI, LinkTypeService> (
       arg, this.uiToServiceMapTree
-    )
+    );
   }
 }
 
@@ -199,6 +199,6 @@ export class WorkItemLinkMapper implements Mapper<WorkItemLinkService, WorkItemL
   toServiceModel(arg: WorkItemLinkUI): WorkItemLinkService {
     return switchModel<WorkItemLinkUI, WorkItemLinkService> (
       arg, this.uiToServiceMapTree
-    )
+    );
   }
 }

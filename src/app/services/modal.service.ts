@@ -1,7 +1,7 @@
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs';
-import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ModalService {
@@ -20,7 +20,7 @@ export class ModalService {
   }
 
   public doAction(actionKey: string) {
-    console.log("Received confirm action for key " + actionKey + ", sending to clients");
+    console.log('Received confirm action for key ' + actionKey + ', sending to clients');
     this.clientSource.next(actionKey);
   }
 

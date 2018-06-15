@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { cloneDeep } from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { User, UserService } from 'ngx-login-client';
+import { Observable } from 'rxjs/Observable';
 
-import { UserUI, UserMapper, UserQuery } from './user';
-import {
-  Mapper,
-  MapTree,
-  switchModel,
-  modelService,
-  cleanObject
-} from './common.model';
-import { AppState } from './../states/app.state';
 import {
   Add as AddCommentAction,
-  Update as UpdateCommentAction,
-  Get as GetCommentActions
+  Get as GetCommentActions,
+  Update as UpdateCommentAction
 } from './../actions/comment.actions';
+import { AppState } from './../states/app.state';
+import {
+  cleanObject,
+  Mapper,
+  MapTree,
+  modelService,
+  switchModel
+} from './common.model';
+import { UserMapper, UserQuery, UserUI } from './user';
 
 export class Comment extends modelService {
     attributes: CommentAttributes;
@@ -79,7 +79,7 @@ export interface CommentUI {
 export interface CommentService extends Comment {}
 
 export class CommentMapper implements Mapper<CommentService, CommentUI> {
-  constructor(){}
+  constructor() {}
 
   serviceToUiMapTree: MapTree = [{
     fromPath: ['id'],
@@ -98,7 +98,7 @@ export class CommentMapper implements Mapper<CommentService, CommentUI> {
     toPath: ['bodyRendered']
   }, {
     fromPath: ['relationships', 'creator', 'data', 'id'],
-    toPath: ['creatorId'],
+    toPath: ['creatorId']
   }, {
     fromPath: ['links', 'self'],
     toPath: ['selfLink']
@@ -140,7 +140,7 @@ export class CommentMapper implements Mapper<CommentService, CommentUI> {
   toUIModel(arg: CommentService): CommentUI {
     return switchModel<CommentService, CommentUI>(
       arg, this.serviceToUiMapTree
-    )
+    );
   }
 
   toServiceModel(arg: CommentUI): CommentService {
@@ -160,7 +160,7 @@ export class CommentQuery {
     private store: Store<AppState>,
     private userQuery: UserQuery,
     private userService: UserService
-  ){}
+  ) {}
 
   getComments(commentIds: string[]) {
     // Not needed now
@@ -174,7 +174,7 @@ export class CommentQuery {
             ...comment,
             creator: this.userQuery.getUserObservableById(comment.creatorId)
           };
-        })
+        });
       })
       .switchMap(comments => {
         return this.userService.loggedInUser
@@ -182,9 +182,9 @@ export class CommentQuery {
           .map(user => {
             return comments.map(c => {
               return {...c, allowEdit: c.creatorId === user.id};
-            })
-          })
-      })
+            });
+          });
+      });
   }
 
   getCommentsWithChildren(): Observable<CommentUI[]> {
@@ -194,11 +194,11 @@ export class CommentQuery {
           return {
             ...comment,
             children: comments.filter(c => c.parentId === comment.id)
-          } as CommentUI
+          } as CommentUI;
         })
         // keep only the root comments
         .filter(comment => !comment.parentId);
-      })
+      });
   }
 
   createComment(url: string, comment: CommentUI): void {

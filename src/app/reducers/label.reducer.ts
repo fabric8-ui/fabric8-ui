@@ -2,15 +2,14 @@ import { createEntityAdapter } from '@ngrx/entity';
 import { State } from '@ngrx/store';
 import { ActionReducer } from '@ngrx/store';
 import * as LabelActions  from './../actions/label.actions';
-
-import { LabelState, initialState } from './../states/label.state';
-import { LabelModel, LabelUI } from './../models/label.model';
+import { LabelUI } from './../models/label.model';
+import { initialState, LabelState } from './../states/label.state';
 
 export type Action = LabelActions.All;
 const labelAdapter = createEntityAdapter<LabelUI>();
 
 export const LabelReducer: ActionReducer<LabelState> = (state = initialState, action: Action) => {
-  switch(action.type) {
+  switch (action.type) {
     case LabelActions.GET_SUCCESS: {
       return labelAdapter.addAll(action.payload, state);
     }
@@ -27,4 +26,4 @@ export const LabelReducer: ActionReducer<LabelState> = (state = initialState, ac
       return state;
     }
   }
-}
+};

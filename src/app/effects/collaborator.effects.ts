@@ -1,25 +1,25 @@
-import { Store } from '@ngrx/store';
-import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import * as CollaboratorActions from './../actions/collaborator.actions';
-import * as UserActions from './../actions/user.actions';
-import { Observable } from 'rxjs';
-import { AppState } from './../states/app.state';
+import { Actions, Effect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import {
   Notification,
   Notifications,
   NotificationType
-} from "ngx-base";
+} from 'ngx-base';
+import { Observable } from 'rxjs';
+import * as CollaboratorActions from './../actions/collaborator.actions';
+import * as UserActions from './../actions/user.actions';
+import { AppState } from './../states/app.state';
 
+import { normalizeArray } from '../models/common.model';
+import {
+  UserMapper,
+  UserService as UserServiceModel,
+  UserUI
+} from './../models/user';
 import {
   CollaboratorService as CollabService
 } from './../services/collaborator.service';
-import {
-  UserService as UserServiceModel,
-  UserMapper,
-  UserUI
-} from './../models/user';
-import { normalizeArray } from '../models/common.model';
 
 export type Action = CollaboratorActions.All | UserActions.All;
 
@@ -42,7 +42,7 @@ export class CollaboratorEffects {
     })
     .map((collaborators: UserServiceModel[]) => {
       const collabM = new UserMapper();
-      return collaborators.map(c => collabM.toUIModel(c))
+      return collaborators.map(c => collabM.toUIModel(c));
     })
     .switchMap(collaborators => {
       return [
@@ -60,5 +60,5 @@ export class CollaboratorEffects {
         console.log('Problem in fetching collaborators');
       }
       return Observable.of(new CollaboratorActions.GetError());
-    })
+    });
 }

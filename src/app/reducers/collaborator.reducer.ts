@@ -9,7 +9,7 @@ import {
 export type Action = CollaboratorActions.All;
 
 export const CollaboratorReducer: ActionReducer<CollaboratorState> = (state = initialState, action: Action) => {
-  switch(action.type) {
+  switch (action.type) {
     case CollaboratorActions.GET_SUCCESS: {
       return [...action.payload];
     }
@@ -20,4 +20,4 @@ export const CollaboratorReducer: ActionReducer<CollaboratorState> = (state = in
       return state;
     }
   }
-}
+};

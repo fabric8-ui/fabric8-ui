@@ -1,35 +1,27 @@
-import { AppState } from './../states/app.state';
-import { Injectable } from "@angular/core";
-import { Actions, Effect } from "@ngrx/effects";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { Notification, Notifications, NotificationType } from "ngx-base";
+import { Notification, Notifications, NotificationType } from 'ngx-base';
+import { Observable } from 'rxjs';
+import { AppState } from './../states/app.state';
 
-import * as IterationActions from ".././actions/iteration.actions";
+import * as IterationActions from '.././actions/iteration.actions';
 import { IterationService } from '.././services/iteration.service';
-import{ IterationMapper, IterationUI } from "../models/iteration.model";
-import { UpdateWorkitemIteration } from "../actions/work-item.actions";
+import { UpdateWorkitemIteration } from '../actions/work-item.actions';
+import { IterationMapper, IterationUI } from '../models/iteration.model';
 
 import { normalizeArray } from '../models/common.model';
 
 
 @Injectable()
 export class IterationEffects {
-  constructor( private actions$ : Actions,
-               private iterationService : IterationService,
+  constructor(private actions$: Actions,
+               private iterationService: IterationService,
                private notifications: Notifications,
-               private store: Store<AppState> ) {
+               private store: Store<AppState>) {
   }
 
-  // resolveChildren(iterations: IterationUI[]): IterationUI[] {
-  //   for(let i = 0; i < iterations.length; i++) {
-  //     iterations[i].children =
-  //       iterations.filter(it => it.parentId === iterations[i].id);
-  //   }
-  //   return iterations;
-  // }
-
-  @Effect() getIterations$ : Observable<Action> = this.actions$
+  @Effect() getIterations$: Observable<Action> = this.actions$
     .ofType(IterationActions.GET)
     .withLatestFrom(this.store.select('listPage').select('space'))
     .switchMap(([action, space]) => {
@@ -40,11 +32,8 @@ export class IterationEffects {
            const itMapper = new IterationMapper();
            return iterations.map(it => itMapper.toUIModel(it));
         })
-        // .map(iterations => {
-        //   return this.resolveChildren(iterations)
-        // })
         .map(iterations => (new IterationActions.GetSuccess(normalizeArray(iterations))))
-        .catch(() => Observable.of(new IterationActions.GetError()))
+        .catch(() => Observable.of(new IterationActions.GetError()));
     });
 
   @Effect() addIteration$: Observable<Action> = this.actions$
@@ -70,7 +59,7 @@ export class IterationEffects {
               type: NotificationType.SUCCESS
             } as Notification);
           } catch (e) {
-            console.log('Iteration is added.')
+            console.log('Iteration is added.');
           }
           return new IterationActions.AddSuccess({
             iteration, parent: parent ? itMapper.toUIModel(parent) : null
@@ -83,11 +72,11 @@ export class IterationEffects {
               type: NotificationType.DANGER
             } as Notification);
           } catch (e) {
-            console.log('There was some problem adding the iteration..')
+            console.log('There was some problem adding the iteration..');
           }
           return Observable.of(new IterationActions.AddError());
-        })
-    })
+        });
+    });
 
   @Effect() updateIteration$: Observable<Action> = this.actions$
     .ofType(IterationActions.UPDATE)
@@ -109,11 +98,11 @@ export class IterationEffects {
               type: NotificationType.SUCCESS
             } as Notification);
           } catch (e) {
-            console.log('Error displaying notification.')
+            console.log('Error displaying notification.');
           }
           const payload = {
             iteration: iteration
-          }
+          };
           return [
             new IterationActions.UpdateSuccess(iteration),
             new UpdateWorkitemIteration(payload)
@@ -127,9 +116,9 @@ export class IterationEffects {
               type: NotificationType.DANGER
             } as Notification);
           } catch (e) {
-            console.log('Error displaying notification.')
+            console.log('Error displaying notification.');
           }
           return Observable.of(new IterationActions.UpdateError());
-        })
-    })
+        });
+    });
 }

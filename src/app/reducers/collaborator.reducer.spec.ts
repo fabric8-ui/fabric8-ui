@@ -1,7 +1,7 @@
-import { CollaboratorReducer } from './collaborator.reducer';
-import { initialState as CollaboratorInitialState } from './../states/collaborator.state';
 import * as CollaboratorActions from './../actions/collaborator.actions';
 import { UserUI } from './../models/user';
+import { initialState as CollaboratorInitialState } from './../states/collaborator.state';
+import { CollaboratorReducer } from './collaborator.reducer';
 
 export type Action = CollaboratorActions.All;
 

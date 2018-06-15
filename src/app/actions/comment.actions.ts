@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { CommentUI, Comment } from './../models/comment';
+import { Comment, CommentUI } from './../models/comment';
 
 export const ADD = '[comment] Add';
 export const GET = '[comment] Get';
@@ -18,7 +18,7 @@ export class Add implements Action {
   payload: {
     url: string,
     comment: Comment
-  }
+  };
   constructor(payload: {url: string, comment: Comment}) {
     this.payload = payload;
   }
@@ -109,4 +109,4 @@ export type All
   | UpdateSuccess
   | UpdateError
   | DeleteSuccess
-  | DeleteError
+  | DeleteError;

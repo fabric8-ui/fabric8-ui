@@ -20,7 +20,7 @@
               (keyup.enter)="actionOnSubmit()"
               (keyup)="removeError()">
             <span class="error-block">
-              <span class="help-block" id="iteration-help-label">{{validationString}}</span>
+              <span class="help-block" id="iteration-help-label">{{ validationString }}</span>
             </span>
           </div>
         </div>
@@ -98,7 +98,7 @@
         [disabled]="submitLoading"
         id="create-iteration-button" type="submit" value="0"
         (click)="createUpdateIterationDialog.onSubmit.emit(undefined)">
-        {{submitBtnTxt}}
+        {{ submitBtnTxt }}
       </button>
     </div>
   </modal-footer>

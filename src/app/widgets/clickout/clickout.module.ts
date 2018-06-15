@@ -1,5 +1,5 @@
-import { NgModule } from "@angular/core";
-import { ClickOutDirective } from "./clickout.directive";
+import { NgModule } from '@angular/core';
+import { ClickOutDirective } from './clickout.directive';
 
 @NgModule({
     declarations: [ClickOutDirective],

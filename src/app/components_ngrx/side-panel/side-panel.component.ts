@@ -1,7 +1,7 @@
-import { IterationUI } from '../../models/iteration.model';
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Broadcaster, Logger } from 'ngx-base';
+import { IterationUI } from '../../models/iteration.model';
 import { WorkItem } from '../../models/work-item';
 import { WorkItemType } from '../../models/work-item-type';
 

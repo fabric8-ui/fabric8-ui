@@ -1,34 +1,34 @@
-import { WorkItemQuery } from './../../models/work-item';
 import {
-  AfterViewInit,
   AfterViewChecked,
+  AfterViewInit,
   Component,
-  EventEmitter,
   ElementRef,
+  EventEmitter,
   Input,
-  OnInit,
-  OnDestroy,
   OnChanges,
+  OnDestroy,
+  OnInit,
   Output,
+  QueryList,
   Renderer2,
   SimpleChanges,
   ViewChild,
-  ViewChildren,
-  QueryList
+  ViewChildren
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { cloneDeep } from 'lodash';
 import { Logger } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
+import { WorkItem, WorkItemRelations, WorkItemService } from '../../models/work-item';
 import { WorkItemTypeUI } from '../../models/work-item-type';
-import { WorkItem, WorkItemService, WorkItemRelations } from '../../models/work-item';
 import { IterationUI } from './../../models/iteration.model';
+import { WorkItemQuery } from './../../models/work-item';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
-import { AppState } from './../../states/app.state';
-import * as WorkItemActions from './../../actions/work-item.actions';
 import { InfotipState } from '../../states/index.state';
+import * as WorkItemActions from './../../actions/work-item.actions';
+import { AppState } from './../../states/app.state';
 
 @Component({
   selector: 'alm-work-item-quick-add',
@@ -48,7 +48,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   @Input() selectedIteration: IterationUI = null;
   @Input() wilistview: string = 'wi-list-view';
 
-  @Output() onStartCreateWI: EventEmitter<any> = new EventEmitter();
+  @Output() readonly onStartCreateWI: EventEmitter<any> = new EventEmitter();
 
   error: any = false;
   workItem: WorkItemService;
@@ -97,7 +97,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     // prevent memory leak when component is destroyed
     this.eventListeners.forEach(e => {
       e.unsubscribe();
-    })
+    });
   }
 
   setTypeContext(type: any) {
@@ -129,22 +129,24 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
       }
       let targetWidth: number = quickaddWdth + 20;
       if (this.quickAddElement.nativeElement.classList.contains('f8-quick-add-inline')) {
-        this.renderer.setStyle(this.quickAddElement.nativeElement, 'max-width', targetWidth + "px");
+        this.renderer.setStyle(this.quickAddElement.nativeElement, 'max-width', targetWidth + 'px');
       }
     }
   }
 
   selectType(event: any, type: WorkItemTypeUI) {
-    if (event)
+    if (event) {
       event.preventDefault();
+    }
     this.logger.log('Selected type ' + type.name + ' for quick add.');
     this.selectedType = type;
     this.qaTitle.nativeElement.focus();
   }
 
   save(event: any = null, openStatus: boolean = false): void {
-    if (event)
+    if (event) {
       event.preventDefault();
+    }
     // Do we have a real title?
     // If yes, trim; if not, reassign it as a (blank) string.
     this.workItem.attributes['system.title'] =
@@ -164,7 +166,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
         id: this.selectedType ? this.selectedType.id : 'testtypeid',
         type: 'workitemtypes'
       }
-    }
+    };
 
     // Setting state value from selected work item type
     // This line can be removed when space template backend is in
@@ -180,7 +182,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
           id: this.selectedIteration.id,
           type: 'iterations'
         }
-      }
+      };
     }
     this.createId = new Date().getTime();
 
@@ -213,7 +215,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     this.showQuickAdd = true;
     this.descHeight = this.initialDescHeight ? this.initialDescHeight : '26px';
     this.blockAdd = false;
-    if(this.qaTitle) {
+    if (this.qaTitle) {
       this.qaTitle.nativeElement.focus();
     }
   }

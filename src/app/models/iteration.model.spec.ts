@@ -1,6 +1,6 @@
 import { async } from '@angular/core/testing';
 
-import { IterationMapper, IterationUI, IterationService } from './iteration.model';
+import { IterationMapper, IterationService, IterationUI } from './iteration.model';
 
 describe('IterationMapper', () => {
     let iterationMapper: IterationMapper;
@@ -41,7 +41,7 @@ describe('IterationMapper', () => {
         },
         id: '',
         links: {
-            self: '',
+            self: ''
         },
         relationships: {
             parent: {
@@ -66,7 +66,7 @@ describe('IterationMapper', () => {
     }));
 
     it('should execute the canary test', () => {
-        return expect(true).toBe(true)
+        return expect(true).toBe(true);
       });
 
     it('should correctly convert to service model - 1', () => {

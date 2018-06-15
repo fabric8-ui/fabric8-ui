@@ -1,21 +1,21 @@
+import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { AppState } from './../states/app.state';
-import { Injectable } from '@angular/core';
-import * as WorkItemTypeActions from './../actions/work-item-type.actions';
-import * as WIStateActoins from './../actions/work-item-state.actions';
-import { Observable } from 'rxjs';
-import { WorkItemService } from './../services/work-item.service';
-import {
-  WorkItemTypeService,
-  WorkItemTypeMapper,
-  WorkItemTypeResolver
-} from './../models/work-item-type';
 import {
   Notification,
   Notifications,
   NotificationType
-} from "ngx-base";
+} from 'ngx-base';
+import { Observable } from 'rxjs';
+import * as WIStateActoins from './../actions/work-item-state.actions';
+import * as WorkItemTypeActions from './../actions/work-item-type.actions';
+import {
+  WorkItemTypeMapper,
+  WorkItemTypeResolver,
+  WorkItemTypeService
+} from './../models/work-item-type';
+import { WorkItemService } from './../services/work-item.service';
+import { AppState } from './../states/app.state';
 
 export type Action = WorkItemTypeActions.All;
 
@@ -56,6 +56,6 @@ export class WorkItemTypeEffects {
           console.log('Problem in fetching work item type');
         }
         return Observable.of(new WorkItemTypeActions.GetError());
-      })
-    })
+      });
+    });
 }

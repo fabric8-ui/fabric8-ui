@@ -16,10 +16,10 @@
     <span
       class="clickable"
       *ngFor="let item of _selectedItemsBackup">
-      {{item.value}}
+      {{ item.value }}
     </span>
     <span *ngIf="!_selectedItemsBackup.length" class="clickable">
-      {{noValueLabel}}
+      {{ noValueLabel }}
     </span>
   </ng-template>
   <ng-template #dropdownItem let-value="value"

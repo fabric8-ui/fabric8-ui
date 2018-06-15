@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { FilterService } from '../../services/filter.service';
 import { LabelsComponent } from './labels.component';
-import{ FilterService } from '../../services/filter.service'
 @NgModule({
   imports: [
     BsDropdownModule,

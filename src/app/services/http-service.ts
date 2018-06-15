@@ -1,18 +1,18 @@
 import {
+  forwardRef,
   Inject,
   Injectable,
-  ReflectiveInjector,
-  forwardRef
+  ReflectiveInjector
 } from '@angular/core';
 
 import {
+  Headers,
   Http,
-  XHRBackend,
-  RequestOptions,
   Request,
+  RequestOptions,
   RequestOptionsArgs,
   Response,
-  Headers
+  XHRBackend
 } from '@angular/http';
 
 import { AuthenticationService } from 'ngx-login-client';
@@ -31,7 +31,7 @@ import { Observable } from 'rxjs/Observable';
 export class HttpService extends Http {
 
   private headers = new Headers({'Content-Type': 'application/json'});
-  constructor (
+  constructor(
     backend: any,
     options: RequestOptions,
     auth: AuthenticationService
@@ -54,7 +54,7 @@ export class HttpService extends Http {
     this.headers.forEach((value, name) => {
       headers.set(name, value);
     });
-    (<any>Object).entries(options).forEach(([key, value]) => {
+    (<any> Object).entries(options).forEach(([key, value]) => {
       headers.set(key, value);
     });
     return headers;
@@ -73,7 +73,7 @@ export class HttpService extends Http {
         if (error.status == 0) { // Server offline :: keep trying
           console.log('########### Now offline #############', error);
           return Observable.timer(++count * 1000);
-        } else if (error.status == 500 || error.status == 401){ // Server error :: Try 3 times then throw error
+        } else if (error.status == 500 || error.status == 401) { // Server error :: Try 3 times then throw error
           return ++count >= 3 ? Observable.throw(error) : Observable.timer(1000);
         } else {
           return Observable.throw(error);
@@ -96,7 +96,7 @@ export class HttpService extends Http {
         if (error.status == 0) {
           console.log('########### Now offline #############', error);
           return Observable.timer(++count * 1000);
-        } else if (error.status == 500 || error.status == 401){
+        } else if (error.status == 500 || error.status == 401) {
           return ++count >= 3 ? Observable.throw(error) : Observable.timer(1000);
         } else {
           return Observable.throw(error);
@@ -118,7 +118,7 @@ export class HttpService extends Http {
         if (error.status == 0) {
           console.log('########### Now offline #############', error);
           return Observable.timer(++count * 1000);
-        } else if (error.status == 500 || error.status == 401){
+        } else if (error.status == 500 || error.status == 401) {
           return ++count >= 3 ? Observable.throw(error) : Observable.timer(1000);
         } else {
           return Observable.throw(error);
@@ -140,7 +140,7 @@ export class HttpService extends Http {
         if (error.status == 0) {
           console.log('########### Now offline #############', error);
           return Observable.timer(++count * 1000);
-        } else if (error.status == 500 || error.status == 401){
+        } else if (error.status == 500 || error.status == 401) {
           return ++count >= 3 ? Observable.throw(error) : Observable.timer(1000);
         } else {
           return Observable.throw(error);
@@ -161,7 +161,7 @@ export class HttpService extends Http {
         if (error.status == 0) {
           console.log('########### Now offline #############', error);
           return Observable.timer(++count * 1000);
-        } else if (error.status == 500 || error.status == 401){
+        } else if (error.status == 500 || error.status == 401) {
           return ++count >= 3 ? Observable.throw(error) : Observable.timer(1000);
         } else {
           return Observable.throw(error);
@@ -172,6 +172,6 @@ export class HttpService extends Http {
 
 }
 
-export function factoryForHttpService(backend: XHRBackend, options: RequestOptions, auth: AuthenticationService){
+export function factoryForHttpService(backend: XHRBackend, options: RequestOptions, auth: AuthenticationService) {
   return new HttpService(backend, options, auth);
 }

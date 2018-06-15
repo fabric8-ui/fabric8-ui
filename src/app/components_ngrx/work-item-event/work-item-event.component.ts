@@ -4,7 +4,7 @@ import { EventUI } from '../../models/event.model';
 @Component({
   selector: 'work-item-event',
   templateUrl: './work-item-event.component.html',
-  styleUrls: ['./work-item-event.component.less'],
+  styleUrls: ['./work-item-event.component.less']
 })
 
 export class WorkItemEventComponent implements OnInit {
@@ -15,32 +15,32 @@ export class WorkItemEventComponent implements OnInit {
       case null:
         this.singleValueChange();
         break;
-      
+
       case 'areas':
         this.areasAndIteration();
         break;
-      
+
       case 'users':
         this.users();
         break;
-      
+
       case 'iterations':
         this.areasAndIteration();
         break;
-      
+
       case 'labels':
         this.labels();
         break;
-    
+
       default:
         break;
     }
   }
-  
+
   private event: EventUI;
   private intermediateText: string;
   private title: string;
-  private toText: string | null = "to"
+  private toText: string | null = 'to';
   private textType: string;
 
   ngOnInit() {
@@ -56,51 +56,51 @@ export class WorkItemEventComponent implements OnInit {
 
   singleValueChange() {
     if (this.title === 'description') {
-      this.textType = "description";
+      this.textType = 'description';
     } else {
-      this.intermediateText = "changed the " + this.title + " from";
-      this.textType = "attribute";
+      this.intermediateText = 'changed the ' + this.title + ' from';
+      this.textType = 'attribute';
     }
-    
+
   }
 
   areasAndIteration() {
-    this.intermediateText = "moved this work item to " + this.title;
+    this.intermediateText = 'moved this work item to ' + this.title;
     this.toText = 'from ' + this.title;
-    this.textType = "relationship";
+    this.textType = 'relationship';
   }
 
   users() {
     if (this.event.oldValueRelationships.length === 0) {
       if (this.event.newValueRelationships.length === 1 && this.event.newValueRelationships[0].id === this.event.modifierId) {
-        this.intermediateText = "self assigned this workitem";
+        this.intermediateText = 'self assigned this workitem';
         this.toText = null;
         this.event.newValueRelationshipsObs = [];
       } else {
-        this.intermediateText = "assigned this work item to"
+        this.intermediateText = 'assigned this work item to';
         this.toText = null;
       }
     } else if (this.event.newValueRelationships.length === 0) {
-      this.intermediateText = "unassigned";
+      this.intermediateText = 'unassigned';
       this.toText = ' ';
     } else {
-      this.intermediateText = "assigned";
-      this.toText = "and unassgined"
+      this.intermediateText = 'assigned';
+      this.toText = 'and unassgined';
     }
-    this.textType = "assignee";
+    this.textType = 'assignee';
   }
 
   labels() {
     if (this.event.oldValueRelationships.length === 0) {
-      this.intermediateText = "added ";
-      this.toText = " label";
+      this.intermediateText = 'added ';
+      this.toText = ' label';
     } else if (this.event.newValueRelationships.length === 0) {
-      this.intermediateText = "removed the label ";
+      this.intermediateText = 'removed the label ';
       this.toText = ' ';
     } else {
-      this.intermediateText = "added the label ";
-      this.toText = " and removed the label ";
+      this.intermediateText = 'added the label ';
+      this.toText = ' and removed the label ';
     }
-    this.textType = "label";
+    this.textType = 'label';
   }
 }

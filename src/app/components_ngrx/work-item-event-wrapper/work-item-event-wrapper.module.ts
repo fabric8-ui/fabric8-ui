@@ -1,17 +1,17 @@
-import { NgModule } from "@angular/core";
-import { WorkItemEventWrapperComponent } from "./work-item-event-wrapper.component";
-import { WorkItemEventModule } from "../work-item-event/work-item-event.module";
-import { CommonModule } from "@angular/common";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { Http, HttpModule, RequestOptions, XHRBackend } from '@angular/http';
 import { CollapseModule } from 'ngx-bootstrap';
-import { GlobalSettings } from "../../shared/globals";
-import { HttpService } from './../../services/http-service';
-import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
 import { AuthenticationService } from 'ngx-login-client';
-import { EventQuery } from "../../models/event.model";
-import { EmptyStateModule } from "patternfly-ng/empty-state";
+import { EmptyStateModule } from 'patternfly-ng/empty-state';
+import { EventQuery } from '../../models/event.model';
+import { GlobalSettings } from '../../shared/globals';
+import { WorkItemEventModule } from '../work-item-event/work-item-event.module';
+import { HttpService } from './../../services/http-service';
+import { WorkItemEventWrapperComponent } from './work-item-event-wrapper.component';
 
 @NgModule({
-  imports: [    
+  imports: [
     CommonModule,
     CollapseModule,
     EmptyStateModule,

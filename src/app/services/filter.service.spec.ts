@@ -1,9 +1,7 @@
-import { WorkItem } from './../models/work-item';
-import { AuthenticationService } from 'ngx-login-client';
 import {
-  inject,
   async,
   getTestBed,
+  inject,
   TestBed
 } from '@angular/core/testing';
 import {
@@ -12,7 +10,6 @@ import {
     ResponseOptions,
     XHRBackend
 } from '@angular/http';
-import { HttpService } from './http-service';
 import {
     MockBackend,
     MockConnection
@@ -20,7 +17,10 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Spaces } from 'ngx-fabric8-wit';
 import { WIT_API_URL } from 'ngx-fabric8-wit';
+import { AuthenticationService } from 'ngx-login-client';
+import { WorkItem } from './../models/work-item';
 import { FilterService } from './filter.service';
+import { HttpService } from './http-service';
 
 describe('Unit Test :: Filter Service', () => {
   let filterService: FilterService;
@@ -62,7 +62,7 @@ describe('Unit Test :: Filter Service', () => {
       const testbed = getTestBed();
       backend = testbed.get(MockBackend);
       filterService = testbed.get(FilterService);
-      mockActivatedRoute.snapshot.queryParams = {q:''};
+      mockActivatedRoute.snapshot.queryParams = {q: ''};
     })
   );
   it('should execute the canary test', () => expect(true).toBe(true));
@@ -85,7 +85,7 @@ describe('Unit Test :: Filter Service', () => {
       paramKey: 'filter[assignee]'
     }];
     expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeTruthy();
-  })
+  });
 
   it('should not match the assignee filter', () => {
     const workItem = {
@@ -105,7 +105,7 @@ describe('Unit Test :: Filter Service', () => {
       paramKey: 'filter[assignee]'
     }];
     expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeFalsy();
-  })
+  });
 
   it('should not match the assignee filter if attribute data is not there', () => {
     const workItem = {
@@ -121,7 +121,7 @@ describe('Unit Test :: Filter Service', () => {
       paramKey: 'filter[assignee]'
     }];
     expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeFalsy();
-  })
+  });
 
   it('should not match the assignee filter if attribute assignees is not there', () => {
     const workItem = {
@@ -133,7 +133,7 @@ describe('Unit Test :: Filter Service', () => {
       paramKey: 'filter[assignee]'
     }];
     expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeFalsy();
-  })
+  });
 
   it('should match the assignee and area filter', () => {
     const workItem = {
@@ -163,7 +163,7 @@ describe('Unit Test :: Filter Service', () => {
       paramKey: 'filter[area]'
     }];
     expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeTruthy();
-  })
+  });
 
   it('should not match the assignee and area filter when atleast one is wrong', () => {
     const workItem = {
@@ -193,7 +193,7 @@ describe('Unit Test :: Filter Service', () => {
       paramKey: 'filter[area]'
     }];
     expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeFalsy();
-  })
+  });
 
 
   /**
@@ -210,7 +210,7 @@ describe('Unit Test :: Filter Service', () => {
     ).toBe(
       'iteration:sprint #1/sprint #1.1'
     );
-  })
+  });
 
   it('should return processed options in case of empty existing query', () => {
     expect(
@@ -218,7 +218,7 @@ describe('Unit Test :: Filter Service', () => {
     ).toBe(
       'parentexists:true'
     );
-  })
+  });
 
   it('should return processed options in case of empty existing query', () => {
     expect(
@@ -226,7 +226,7 @@ describe('Unit Test :: Filter Service', () => {
     ).toBe(
       '(parentexists:true $AND iteration:Sprint #1/Sprint #1.1)'
     );
-  })
+  });
 
   it('should return processed options in case of empty existing query', () => {
     expect(
@@ -234,7 +234,7 @@ describe('Unit Test :: Filter Service', () => {
     ).toBe(
       '(iteration:Sprint #1/Sprint #1.1 $AND parentexists:true)'
     );
-  })
+  });
 
   it('should return processed options in case of empty existing query - 1', () => {
     expect(
@@ -242,80 +242,80 @@ describe('Unit Test :: Filter Service', () => {
     ).toBe(
       '(iteration:Sprint #1/Sprint #1.1 $AND somekey:somevalue $AND somekey: anothervalue)'
     );
-  })
+  });
 
   /**
    * Query string to JSON conversion
    * Method to test - queryToJson
    */
   it('should return correct JSON object - 1', () => {
-    expect(filterService.queryToJson('a:b')).toEqual({'$OR': [{'a': {'$EQ':'b'}}]});
+    expect(filterService.queryToJson('a:b')).toEqual({'$OR': [{'a': {'$EQ': 'b'}}]});
   });
 
   it('should return correct JSON object - 1.1', () => {
-    expect(filterService.queryToJson('a!b')).toEqual({'$OR': [{'a': {'$NE':'b'}}]});
+    expect(filterService.queryToJson('a!b')).toEqual({'$OR': [{'a': {'$NE': 'b'}}]});
   });
 
   it('should return correct JSON object - 1.2', () => {
-    expect(filterService.queryToJson('a ! b')).toEqual({'$OR': [{'a': {'$NE':'b'}}]});
+    expect(filterService.queryToJson('a ! b')).toEqual({'$OR': [{'a': {'$NE': 'b'}}]});
   });
 
   it('should return correct JSON object - 1.3', () => {
-    expect(filterService.queryToJson('a : b')).toEqual({'$OR': [{'a': {'$EQ':'b'}}]});
+    expect(filterService.queryToJson('a : b')).toEqual({'$OR': [{'a': {'$EQ': 'b'}}]});
   });
 
   it('should return correct JSON object - 2', () => {
-    expect(filterService.queryToJson('a:b $AND c:d')).toEqual({'$AND': [{'a': {'$EQ':'b'}}, {'c': {'$EQ': 'd'}}]});
+    expect(filterService.queryToJson('a:b $AND c:d')).toEqual({'$AND': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ': 'd'}}]});
   });
 
   it('should return correct JSON object - 3', () => {
-    expect(filterService.queryToJson('a:b $AND c:d $OR d:e')).toEqual({'$OR': [{'$AND': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ':'d'}}]}, {'d': {'$EQ': 'e'}}]});
+    expect(filterService.queryToJson('a:b $AND c:d $OR d:e')).toEqual({'$OR': [{'$AND': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ': 'd'}}]}, {'d': {'$EQ': 'e'}}]});
   });
 
   it('should return correct JSON object - 4', () => {
-    expect(filterService.queryToJson('a:b $OR c:d $OR d:e')).toEqual({'$OR': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ':'d'}}, {'d': {'$EQ': 'e'}}]});
+    expect(filterService.queryToJson('a:b $OR c:d $OR d:e')).toEqual({'$OR': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ': 'd'}}, {'d': {'$EQ': 'e'}}]});
   });
 
   it('should return correct JSON object - 5', () => {
     expect(filterService.queryToJson('a:b $OR (c:d $AND d:e $AND (l:m $OR n:p)) $AND f:g'))
-    .toEqual({'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]});
+    .toEqual({'$OR': [{'a': {'$EQ': 'b'}}, {'$AND': [{'c': {'$EQ': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$EQ': 'g'}}]}]});
   });
 
   it('should return correct JSON object - 5.1', () => {
     expect(filterService.queryToJson('(a!b $OR (c:d $AND d:e $AND (l:m $OR n:p)) $AND f:g)'))
-    .toEqual({'$OR':[{'a': {'$NE':'b'}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]});
+    .toEqual({'$OR': [{'a': {'$NE': 'b'}}, {'$AND': [{'c': {'$EQ': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$EQ': 'g'}}]}]});
   });
 
 
   it('should return correct query string - 7', () => {
-    expect(filterService.jsonToQuery({'$OR': [{'a': {'$EQ':'b'}}]})).toBe('(a:b)');
+    expect(filterService.jsonToQuery({'$OR': [{'a': {'$EQ': 'b'}}]})).toBe('(a:b)');
   });
 
   it('should return correct query string - 7.1', () => {
-    expect(filterService.jsonToQuery({'$OR': [{'a': {'$NE':'b'}}]})).toBe('(a!b)');
+    expect(filterService.jsonToQuery({'$OR': [{'a': {'$NE': 'b'}}]})).toBe('(a!b)');
   });
 
   it('should return correct query string - 7.2', () => {
-    expect(filterService.jsonToQuery({'$OR': [{'a': {'$SUBSTR':'b'}}]})).toBe('(a:b)');
+    expect(filterService.jsonToQuery({'$OR': [{'a': {'$SUBSTR': 'b'}}]})).toBe('(a:b)');
   });
 
   it('should return correct query string - 8', () => {
-    expect(filterService.jsonToQuery({'$AND': [{'a': {'$EQ':'b'}}, {'c': {'$EQ': 'd'}}]}))
+    expect(filterService.jsonToQuery({'$AND': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ': 'd'}}]}))
     .toBe('(a:b $AND c:d)');
   });
 
   it('should return correct query string - 9', () => {
-    expect(filterService.jsonToQuery({'$OR': [{'$AND': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ':'d'}}]}, {'d': {'$EQ': 'e'}}]}))
+    expect(filterService.jsonToQuery({'$OR': [{'$AND': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ': 'd'}}]}, {'d': {'$EQ': 'e'}}]}))
     .toBe('((a:b $AND c:d) $OR d:e)');
   });
 
   it('should return correct query string - 10', () => {
-    expect(filterService.jsonToQuery({'$OR': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ':'d'}}, {'d': {'$EQ': 'e'}}]}))
+    expect(filterService.jsonToQuery({'$OR': [{'a': {'$EQ': 'b'}}, {'c': {'$EQ': 'd'}}, {'d': {'$EQ': 'e'}}]}))
     .toBe('(a:b $OR c:d $OR d:e)');
   });
 
   it('should return correct query string - 11', () => {
-    expect(filterService.jsonToQuery({'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}))
+    expect(filterService.jsonToQuery({'$OR': [{'a': {'$EQ': 'b'}}, {'$AND': [{'c': {'$EQ': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$EQ': 'g'}}]}]}))
     .toBe('(a:b $OR (c:d $AND d:e $AND (l:m $OR n:p) $AND f:g))');
   });
 
@@ -323,12 +323,12 @@ describe('Unit Test :: Filter Service', () => {
     expect(
       filterService.queryToJson(
         filterService.jsonToQuery(
-          {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
+          {'$OR': [{'a': {'$EQ': 'b'}}, {'$AND': [{'c': {'$EQ': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$EQ': 'g'}}]}]}
         )
       )
     )
     .toEqual(
-      {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
+      {'$OR': [{'a': {'$EQ': 'b'}}, {'$AND': [{'c': {'$EQ': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$EQ': 'g'}}]}]}
   );
   });
 
@@ -336,12 +336,12 @@ describe('Unit Test :: Filter Service', () => {
     expect(
       filterService.queryToJson(
         filterService.jsonToQuery(
-          {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$NE':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
+          {'$OR': [{'a': {'$EQ': 'b'}}, {'$AND': [{'c': {'$NE': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$EQ': 'g'}}]}]}
         )
       )
     )
     .toEqual(
-      {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$NE':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
+      {'$OR': [{'a': {'$EQ': 'b'}}, {'$AND': [{'c': {'$NE': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$EQ': 'g'}}]}]}
     );
   });
 
@@ -349,12 +349,12 @@ describe('Unit Test :: Filter Service', () => {
     expect(
       filterService.queryToJson(
         filterService.jsonToQuery(
-          {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$NE':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
+          {'$OR': [{'a': {'$EQ': 'b'}}, {'$AND': [{'c': {'$NE': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$EQ': 'g'}}]}]}
         )
       )
     )
     .toEqual(
-      {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$NE':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
+      {'$OR': [{'a': {'$EQ': 'b'}}, {'$AND': [{'c': {'$NE': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$EQ': 'g'}}]}]}
     );
   });
 
@@ -362,12 +362,12 @@ describe('Unit Test :: Filter Service', () => {
     expect(
       filterService.queryToJson(
         filterService.jsonToQuery(
-          {'$OR':[{'a': {'$EQ':null}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
+          {'$OR': [{'a': {'$EQ': null}}, {'$AND': [{'c': {'$EQ': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$EQ': 'g'}}]}]}
         )
       )
     )
     .toEqual(
-      {'$OR':[{'a': {'$EQ':null}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
+      {'$OR': [{'a': {'$EQ': null}}, {'$AND': [{'c': {'$EQ': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$EQ': 'g'}}]}]}
   );
   });
 
@@ -375,26 +375,26 @@ describe('Unit Test :: Filter Service', () => {
     expect(
       filterService.queryToJson(
         filterService.jsonToQuery(
-          {'$OR':[{'a': {'$EQ':''}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
+          {'$OR': [{'a': {'$EQ': ''}}, {'$AND': [{'c': {'$EQ': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$EQ': 'g'}}]}]}
         )
       )
     )
     .toEqual(
-      {'$OR':[{'a': {'$EQ':null}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$EQ':'g'}}]}]}
+      {'$OR': [{'a': {'$EQ': null}}, {'$AND': [{'c': {'$EQ': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$EQ': 'g'}}]}]}
   );
   });
 
   it('should return correct JSON object (with IN operator) - 13', () => {
-    expect(filterService.queryToJson('a : b,c,f,d')).toEqual({'$OR': [{'a': {'$IN':['b','c','f','d']}}]});
+    expect(filterService.queryToJson('a : b,c,f,d')).toEqual({'$OR': [{'a': {'$IN': ['b', 'c', 'f', 'd']}}]});
   });
 
   it('should return correct JSON object (with IN operator) - 13.1', () => {
-    expect(filterService.jsonToQuery({'$OR': [{'a': {'$IN':['b','c','f','d']}}]}))
+    expect(filterService.jsonToQuery({'$OR': [{'a': {'$IN': ['b', 'c', 'f', 'd']}}]}))
     .toEqual('(a:b,c,f,d)');
   });
 
   it('should return correct query string - 13.2', () => {
-    expect(filterService.jsonToQuery({'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$EQ':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$EQ':'p'}}]},{'f': {'$IN':['g', 'h', 'i']}}]}]}))
+    expect(filterService.jsonToQuery({'$OR': [{'a': {'$EQ': 'b'}}, {'$AND': [{'c': {'$EQ': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$EQ': 'p'}}]}, {'f': {'$IN': ['g', 'h', 'i']}}]}]}))
     .toBe('(a:b $OR (c:d $AND d:e $AND (l:m $OR n:p) $AND f:g,h,i))');
   });
 
@@ -402,12 +402,12 @@ describe('Unit Test :: Filter Service', () => {
     expect(
       filterService.queryToJson(
         filterService.jsonToQuery(
-          {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$NE':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$IN':['p','q','r']}}]},{'f': {'$EQ':'g'}}]}]}
+          {'$OR': [{'a': {'$EQ': 'b'}}, {'$AND': [{'c': {'$NE': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$IN': ['p', 'q', 'r']}}]}, {'f': {'$EQ': 'g'}}]}]}
         )
       )
     )
     .toEqual(
-      {'$OR':[{'a': {'$EQ':'b'}},{'$AND':[{'c': {'$NE':'d'}},{'d': {'$EQ':'e'}},{'$OR':[{'l': {'$EQ':'m'}},{'n': {'$IN':['p','q','r']}}]},{'f': {'$EQ':'g'}}]}]}
+      {'$OR': [{'a': {'$EQ': 'b'}}, {'$AND': [{'c': {'$NE': 'd'}}, {'d': {'$EQ': 'e'}}, {'$OR': [{'l': {'$EQ': 'm'}}, {'n': {'$IN': ['p', 'q', 'r']}}]}, {'f': {'$EQ': 'g'}}]}]}
     );
   });
 
@@ -473,147 +473,147 @@ describe('Unit Test :: Filter Service', () => {
     .toEqual({'$OR': [{'some_key': {'$EQ': ['some_value', 'some_value1', 'some_value2', 'some_value3']}}]});
   });
 
-	it('Should correctly join - 17', () => {
+  it('Should correctly join - 17', () => {
     expect(
-			filterService.queryJoiner(
+      filterService.queryJoiner(
         {'$OR': [{'some_key': {'$EQ': ['some_value', 'some_value1', 'some_value2', 'some_value3']}}]},
         '$AND',
         {}
       )
     )
     .toEqual(
-    	{'$OR': [{'some_key': {'$EQ': ['some_value', 'some_value1', 'some_value2', 'some_value3']}}]}
-		)
+      {'$OR': [{'some_key': {'$EQ': ['some_value', 'some_value1', 'some_value2', 'some_value3']}}]}
+    );
   });
 
-	it('Should correctly join - 18', () => {
+  it('Should correctly join - 18', () => {
     expect(
-			function() {
-				filterService.queryJoiner(
-        	{'some_key': 'some_value'},
-        	'$AND',
-        	{'$OR': [{'some_key': 'some_value3'}]}
-      	)
-			}
+      function() {
+        filterService.queryJoiner(
+          {'some_key': 'some_value'},
+          '$AND',
+          {'$OR': [{'some_key': 'some_value3'}]}
+        );
+      }
     )
     .toThrow(new Error('Existing query object is invalid without a joiner in root'));
   });
 
-	it('Should correctly join - 19', () => {
+  it('Should correctly join - 19', () => {
     expect(
-			filterService.queryJoiner(
-				{'$OR': [{'some_key1': 'some_value1'}]},
+      filterService.queryJoiner(
+        {'$OR': [{'some_key1': 'some_value1'}]},
         '$OR',
         {'$OR': [{'some_key': 'some_value3'}]}
       )
     )
     .toEqual(
-			{'$OR': [{'some_key1': 'some_value1'},{'some_key': 'some_value3'}]}
-		);
+      {'$OR': [{'some_key1': 'some_value1'}, {'some_key': 'some_value3'}]}
+    );
   });
 
-	it('Should correctly join - 20', () => {
+  it('Should correctly join - 20', () => {
     expect(
-			filterService.queryJoiner(
-				{'$OR': [{'some_key1': 'some_value1'}]},
+      filterService.queryJoiner(
+        {'$OR': [{'some_key1': 'some_value1'}]},
         '$AND',
         {'$OR': [{'some_key': 'some_value3'}]}
       )
     )
     .toEqual(
-			{'$AND': [{'some_key1': 'some_value1'}, {'some_key': 'some_value3'}]}
-		);
+      {'$AND': [{'some_key1': 'some_value1'}, {'some_key': 'some_value3'}]}
+    );
   });
 
-	it('Should correctly join - 21', () => {
+  it('Should correctly join - 21', () => {
     expect(
-			filterService.queryJoiner(
-				{'$OR': [{'some_key1': 'some_value1'}]},
+      filterService.queryJoiner(
+        {'$OR': [{'some_key1': 'some_value1'}]},
         '$AND',
         {'some_key': 'some_value3'}
       )
     )
     .toEqual(
-			{'$AND': [{'some_key1': 'some_value1'}, {'some_key': 'some_value3'}]}
-		);
+      {'$AND': [{'some_key1': 'some_value1'}, {'some_key': 'some_value3'}]}
+    );
   });
 
   it('Should correctly join - 21.1', () => {
     expect(
-			filterService.queryJoiner(
-				{'$OR': [{'some_key1': 'some_value1'}, {'some_key2': 'some_value2'}]},
+      filterService.queryJoiner(
+        {'$OR': [{'some_key1': 'some_value1'}, {'some_key2': 'some_value2'}]},
         '$AND',
         {'some_key3': 'some_value3'}
       )
     )
     .toEqual(
-			{'$AND': [{'$OR': [{'some_key1': 'some_value1'}, {'some_key2': 'some_value2'}]}, {'some_key3': 'some_value3'}]}
-		);
+      {'$AND': [{'$OR': [{'some_key1': 'some_value1'}, {'some_key2': 'some_value2'}]}, {'some_key3': 'some_value3'}]}
+    );
   });
 
   it('Should correctly join - 21.2', () => {
     expect(
-			filterService.queryJoiner(
-				{'$OR': [{'some_key1': 'some_value1'}]},
+      filterService.queryJoiner(
+        {'$OR': [{'some_key1': 'some_value1'}]},
         '$AND',
-        {'$OR': [{'some_key3': 'some_value3'}]},
+        {'$OR': [{'some_key3': 'some_value3'}]}
       )
     )
     .toEqual(
-			{'$AND': [{'some_key1': 'some_value1'}, {'some_key3': 'some_value3'}]}
-		);
+      {'$AND': [{'some_key1': 'some_value1'}, {'some_key3': 'some_value3'}]}
+    );
   });
 
   it('Should correctly join - 21.3', () => {
     expect(
-			filterService.queryJoiner(
-				{'$OR': [{'some_key1': 'some_value1'}]},
-        '$AND',
-        {'$OR': [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]},
-      )
-    )
-    .toEqual(
-			{'$AND': [{'some_key1': 'some_value1'}, {'$OR' : [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]}]}
-		);
-  });
-
-  it('Should correctly join - 21.4', () => {
-    expect(
-			filterService.queryJoiner(
-				{'$OR': [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]},
-        '$AND',
+      filterService.queryJoiner(
         {'$OR': [{'some_key1': 'some_value1'}]},
+        '$AND',
+        {'$OR': [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]}
       )
     )
     .toEqual(
-			{'$AND': [{'$OR' : [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]}, {'some_key1': 'some_value1'}]}
-		);
+      {'$AND': [{'some_key1': 'some_value1'}, {'$OR' : [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]}]}
+    );
   });
 
   it('Should correctly join - 21.4', () => {
     expect(
-			filterService.queryJoiner(
-				{'$OR': [{'some_key1': 'some_value1'}]},
+      filterService.queryJoiner(
+        {'$OR': [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]},
         '$AND',
-        {'$AND': [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]},
+        {'$OR': [{'some_key1': 'some_value1'}]}
       )
     )
     .toEqual(
-			{'$AND': [{'some_key1': 'some_value1'}, {'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]}
-		);
+      {'$AND': [{'$OR' : [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]}, {'some_key1': 'some_value1'}]}
+    );
   });
 
-	it('Should correctly join - 22', () => {
+  it('Should correctly join - 21.4', () => {
     expect(
-			filterService.queryJoiner(
-				{'$OR': [{'some_key1': 'some_value1'}]},
+      filterService.queryJoiner(
+        {'$OR': [{'some_key1': 'some_value1'}]},
+        '$AND',
+        {'$AND': [{'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]}
+      )
+    )
+    .toEqual(
+      {'$AND': [{'some_key1': 'some_value1'}, {'some_key3': 'some_value3'}, {'some_key4': 'some_value4'}]}
+    );
+  });
+
+  it('Should correctly join - 22', () => {
+    expect(
+      filterService.queryJoiner(
+        {'$OR': [{'some_key1': 'some_value1'}]},
         '$OR',
         {'some_key': 'some_value3'}
       )
     )
     .toEqual(
-			{'$OR': [{'some_key1': 'some_value1'}, {'some_key': 'some_value3'}]}
-		);
+      {'$OR': [{'some_key1': 'some_value1'}, {'some_key': 'some_value3'}]}
+    );
   });
 
   it('Should correctly build and join query - 23', () => {
@@ -652,7 +652,7 @@ describe('Unit Test :: Filter Service', () => {
     const first_join = filterService.queryJoiner({}, '$AND', space_query);
     const expected_first_join = {
       '$OR': [space_query]
-    }
+    };
 
     expect(first_join).toEqual(expected_first_join);
 

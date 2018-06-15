@@ -1,23 +1,23 @@
-import { cloneDeep } from 'lodash';
 import {
   Component,
   Input,
-  ViewEncapsulation,
+  OnDestroy,
   OnInit,
-  OnDestroy
+  ViewEncapsulation
 } from '@angular/core';
+import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 
-import { WorkItemUI } from './../../models/work-item';
-import { UserUI } from './../../models/user';
-import { CommentUI, CommentQuery } from './../../models/comment';
-import * as CommentActions from './../../actions/comment.actions';
 import * as CollaboratorActions from './../../actions/collaborator.actions';
+import * as CommentActions from './../../actions/comment.actions';
+import { CommentQuery, CommentUI } from './../../models/comment';
+import { UserUI } from './../../models/user';
+import { WorkItemUI } from './../../models/work-item';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'work-item-comment-wrapper',
-  templateUrl: './work-item-comment-wrapper.component.html',
+  templateUrl: './work-item-comment-wrapper.component.html'
 })
 
 export class WorkItemCommentWrapperComponent implements OnInit, OnDestroy {

@@ -1,7 +1,7 @@
 <!-- id -->
 
 <span *ngIf="col === 'id'" class="margin-0">
-  {{row.number}}
+  {{ row.number }}
 </span>
 
 <!-- Type -->
@@ -12,7 +12,7 @@
     title="{{row.type?.name}}">
 
   </span>
-  <span>{{row.type?.name}}</span>
+  <span>{{ row.type?.name }}</span>
 </div>
 
 <!-- Title -->
@@ -37,7 +37,7 @@
   <span class="padding-right-5 padding-top-4" almIcon [iconType]="row.state">
   </span>
   <span>
-    {{row.state}}
+    {{ row.state }}
   </span>
 </div>
 
@@ -53,7 +53,7 @@
 
 <!-- Iteration -->
 <span id="table-iteration" *ngIf="col === 'iteration'">
-  {{(row.iterationObs | async)?.parentPath === '/' ? 'NA' : (row.iterationObs | async)?.name | truncate : 18}}
+  {{ (row.iterationObs | async)?.parentPath === '/' ? 'NA' : (row.iterationObs | async)?.name | truncate : 18 }}
 </span>
 
 <!-- Creator -->

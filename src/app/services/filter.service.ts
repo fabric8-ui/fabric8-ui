@@ -1,12 +1,12 @@
+import { Inject, Injectable } from '@angular/core';
+import { Headers, Http } from '@angular/http';
+import { ActivatedRoute } from '@angular/router';
+import { cloneDeep } from 'lodash';
+import { Spaces, WIT_API_URL } from 'ngx-fabric8-wit';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { cloneDeep } from 'lodash';
-import { Injectable, Inject } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import { ActivatedRoute } from '@angular/router';
-import { WIT_API_URL, Spaces } from 'ngx-fabric8-wit';
-import { HttpService } from './http-service';
 import { WorkItem } from './../models/work-item';
+import { HttpService } from './http-service';
 
 import { FilterModel } from '../models/filter.model';
 
@@ -24,14 +24,14 @@ export class FilterService {
   public not_equal_notation = '$NE';
   public in_notation = '$IN';
   public not_in_notation = '$NIN';
-  public sub_str_notation = '$SUBSTR'
+  public sub_str_notation = '$SUBSTR';
 
   public special_keys = {
     'null': null,
     'true': true,
     'false': false,
     '': null
-  }
+  };
 
   private compare_notations: string[] = [
     this.equal_notation,
@@ -43,7 +43,7 @@ export class FilterService {
 
   private join_notations: string[] = [
     this.and_notation,
-    this.or_notation,
+    this.or_notation
   ];
 
   private filtertoWorkItemMap = {
@@ -52,8 +52,8 @@ export class FilterService {
     'area': ['relationships', 'area', 'data', 'id'],
     'workitemtype': ['relationships', 'baseType', 'data', 'id'],
     'iteration': ['relationships', 'iteration', 'data', 'id'],
-    'state': ['attributes','system.state'],
-  }
+    'state': ['attributes', 'system.state']
+  };
 
   constructor(
     private http: HttpService,
@@ -94,7 +94,7 @@ export class FilterService {
       arr = arr.concat(this.activeFilters);
       //remove duplicates
       arr = arr
-      .filter((thing, index, self) => self.findIndex((t) => {return t.id === thing.id }) === index)
+      .filter((thing, index, self) => self.findIndex((t) => {return t.id === thing.id; }) === index);
       return arr;
     } else {
       return this.activeFilters;
@@ -106,23 +106,23 @@ export class FilterService {
     // This code needs to be looked at
     // to support in query from the expression as well
     let refCurrentFilter = [];
-    if(this.route.snapshot.queryParams['q']) {
+    if (this.route.snapshot.queryParams['q']) {
       let urlString = this.route.snapshot.queryParams['q']
-      .replace(' $AND ',' ')
-      .replace(' $OR ',' ')
-      .replace('(','')
-      .replace(')','')
+      .replace(' $AND ', ' ')
+      .replace(' $OR ', ' ')
+      .replace('(', '')
+      .replace(')', '');
       let temp_arr = urlString.split(' ');
-      for(let i = 0; i < temp_arr.length; i++) {
-        let arr = temp_arr[i].split(':')
-        if (arr[1] !== undefined ) {
+      for (let i = 0; i < temp_arr.length; i++) {
+        let arr = temp_arr[i].split(':');
+        if (arr[1] !== undefined) {
           refCurrentFilter.push({
             id: arr[0],
             paramKey: 'filter[' + arr[0] + ']',
             value: arr[1]
-          })
+          });
         }
-      };
+      }
     }
     //active filter will have the transient filters
     //witgroup and space are permanent filters
@@ -131,7 +131,7 @@ export class FilterService {
 
   clearFilters(keys: string[] = []): void {
     if (keys.length) {
-      this.activeFilters = this.activeFilters.filter(f => keys.indexOf(f.id) > -1)
+      this.activeFilters = this.activeFilters.filter(f => keys.indexOf(f.id) > -1);
     } else {
       this.activeFilters = [];
     }
@@ -179,7 +179,7 @@ export class FilterService {
   }
 
   returnFilters() {
-      return this.filters
+      return this.filters;
   }
 
   /**
@@ -195,7 +195,7 @@ export class FilterService {
     refCurrentFilter = refCurrentFilter.concat(this.activeFilters);
     //remove duplicates
     refCurrentFilter = refCurrentFilter
-    .filter((thing, index, self) => self.findIndex((t) => {return t.id === thing.id }) === index)
+    .filter((thing, index, self) => self.findIndex((t) => {return t.id === thing.id; }) === index);
     return refCurrentFilter.every(filter => {
       if (filter.id && Object.keys(this.filtertoWorkItemMap).indexOf(filter.id) > -1) {
         let currentAttr = workItem;
@@ -205,12 +205,11 @@ export class FilterService {
               let innerAttr = currentAttr;
               return currentAttr.some(item => {
                 return item[attr[0]] == filter.value;
-              })
+              });
             } else {
               return false;
             }
-          }
-          else if (currentAttr[attr]) {
+          } else if (currentAttr[attr]) {
             currentAttr = currentAttr[attr];
             if (map_index === this.filtertoWorkItemMap[filter.id].length - 1 && currentAttr != filter.value) {
               return false;
@@ -223,7 +222,7 @@ export class FilterService {
         });
       }
       return true;
-    })
+    });
   }
 
 
@@ -240,18 +239,16 @@ export class FilterService {
         return typeof(options[key]) !== 'string' ? key + ':' + options[key] :
           options[key].split(',').map(val => {
             return key + ':' + val;
-          }).join(' ' + this.and_notation + ' ')
+          }).join(' ' + this.and_notation + ' ');
       }).join(' ' + this.and_notation + ' ') + ')';
     } else if (Object.keys(options).length === 1) {
       processedObject = Object.keys(options).map(key => {
         return typeof(options[key]) !== 'string' ? key + ':' + options[key] :
           options[key].split(',').map(val => {
             return key + ':' + val;
-          }).join(' ' + this.and_notation + ' ')
+          }).join(' ' + this.and_notation + ' ');
       }).join(' ' + this.and_notation + ' ');
-    }
-    // else return existingQuery
-    else {
+    } else {
       return decodeURIComponent(existingQuery);
     }
 
@@ -327,87 +324,77 @@ export class FilterService {
         return {};
       }
     } else {
-			// If existingObject is not empty
-			let existingJoiner = Object.keys(existingQueryObject)[0];
-			// If existing joiner is not valid
-			if (this.join_notations.indexOf(existingJoiner) == -1) {
-				throw new Error('Existing query object is invalid without a joiner in root');
-			}
-			// If new object is empty then return existingQueryObject
-			if (!Object.keys(newQueryObject).length) {
-				return existingQueryObject;
-			}
-			let newJoiner = Object.keys(newQueryObject)[0];
-			// If new object has join_notation as root
+      // If existingObject is not empty
+      let existingJoiner = Object.keys(existingQueryObject)[0];
+      // If existing joiner is not valid
+      if (this.join_notations.indexOf(existingJoiner) == -1) {
+        throw new Error('Existing query object is invalid without a joiner in root');
+      }
+      // If new object is empty then return existingQueryObject
+      if (!Object.keys(newQueryObject).length) {
+        return existingQueryObject;
+      }
+      let newJoiner = Object.keys(newQueryObject)[0];
+      // If new object has join_notation as root
       if (this.join_notations.indexOf(newJoiner) > -1) {
-				// If new joiner existing joiner and given joiner is same
-				// put all of them under one joiner
-				if (join === newJoiner && join === existingJoiner) {
-					let op = {};
-					op[join] = [
-						...existingQueryObject[join],
-						...newQueryObject[join]
-					]
-					return op;
-        }
-        // If both the objects have one element each
-        // Then given joiner gets priority
-        else if (existingQueryObject[existingJoiner].length === 1 &&
+        // If new joiner existing joiner and given joiner is same
+        // put all of them under one joiner
+        if (join === newJoiner && join === existingJoiner) {
+          let op = {};
+          op[join] = [
+            ...existingQueryObject[join],
+            ...newQueryObject[join]
+          ];
+          return op;
+        } else if (existingQueryObject[existingJoiner].length === 1 &&
           newQueryObject[newJoiner].length === 1) {
             let op = {};
             op[join] = [
               ...existingQueryObject[existingJoiner],
               ...newQueryObject[newJoiner]
-            ]
+            ];
             return op;
-        }
-        // If existing query has only one element
-        // then newJoiner gets the priority
-        else if (existingQueryObject[existingJoiner].length === 1) {
+        } else if (existingQueryObject[existingJoiner].length === 1) {
           let op = {};
           if (newJoiner === join) {
             op[join] = [
               ...existingQueryObject[existingJoiner],
               ...newQueryObject[newJoiner]
-            ]
+            ];
           } else {
             op[join] = [
               ...existingQueryObject[existingJoiner],
               newQueryObject
-            ]
+            ];
           }
           return op;
-        }
-        // If new query has only one element
-        // then existingJoiner gets the priority
-        else if (newQueryObject[newJoiner].length === 1) {
+        } else if (newQueryObject[newJoiner].length === 1) {
           let op = {};
           if (existingJoiner === join) {
             op[join] = [
               ...existingQueryObject[existingJoiner],
               ...newQueryObject[newJoiner]
-            ]
+            ];
           } else {
             op[join] = [
               existingQueryObject,
               ...newQueryObject[newJoiner]
-            ]
+            ];
           }
           return op;
+        } else {
+          let op = {};
+          op[join] = [
+            existingQueryObject,
+            newQueryObject
+          ];
+          return op;
         }
-        else {
-					let op = {};
-					op[join] = [
-						existingQueryObject,
-						newQueryObject
-					];
-					return op;
-				}
-			} else {
-				if (join === existingJoiner) {
-					existingQueryObject[join].push(newQueryObject);
-					return existingQueryObject;
-				} else {
+      } else {
+        if (join === existingJoiner) {
+          existingQueryObject[join].push(newQueryObject);
+          return existingQueryObject;
+        } else {
           let op = {};
           // If existingQueryObject has only one item in the array
           if (existingQueryObject[existingJoiner].length === 1) {
@@ -421,9 +408,9 @@ export class FilterService {
               newQueryObject
             ];
           }
-					return op;
-				}
-			}
+          return op;
+        }
+      }
     }
   }
 
@@ -432,9 +419,9 @@ export class FilterService {
    */
   queryToJson(query: string, first_level: boolean = true): any {
     let temp = [], p_count = 0, p_start = -1, new_str = '', output = {};
-    for(let i = 0; i < query.length; i++) {
+    for (let i = 0; i < query.length; i++) {
       if (query[i] === '(') {
-        if (p_start < 0) p_start = i;
+        if (p_start < 0) { p_start = i; }
         p_count += 1;
       }
       if (p_start === -1) {
@@ -461,7 +448,7 @@ export class FilterService {
           item = item.replace('__temp__', temp.pop());
         }
         return this.queryToJson(item, false);
-      })
+      });
     } else {
       arr = new_str.split(this.and_notation);
       if (arr.length > 1) {
@@ -470,7 +457,7 @@ export class FilterService {
             item = temp.pop();
           }
           return this.queryToJson(item, false);
-        })
+        });
       } else {
         let dObj = {};
         while (new_str.indexOf('__temp__') > -1) {
@@ -498,25 +485,21 @@ export class FilterService {
           } else {
             if (Object.keys(this.special_keys).findIndex(k => k === val_arr[0]) > -1) {
               dObj[key][this.not_equal_notation] = this.special_keys[val_arr[0]];
-            }
-            else if(key === 'title') {
+            } else if (key === 'title') {
               dObj[key][this.sub_str_notation] = val_arr[0];
-            }
-            else {
+            } else {
               dObj[key][this.not_equal_notation] = val_arr[0];
             }
           }
-        } else if(splitter === ':') {
+        } else if (splitter === ':') {
           if (val_arr.length > 1) {
             dObj[key][this.in_notation] = val_arr;
           } else {
-            if (Object.keys(this.special_keys).findIndex(k => k === val_arr[0]) > -1 ) {
+            if (Object.keys(this.special_keys).findIndex(k => k === val_arr[0]) > -1) {
               dObj[key][this.equal_notation] = this.special_keys[val_arr[0]];
-            }
-            else if(key === 'title') {
+            } else if (key === 'title') {
               dObj[key][this.sub_str_notation] = val_arr[0];
-            }
-            else {
+            } else {
               dObj[key][this.equal_notation] = val_arr[0];
             }
           }
@@ -558,7 +541,7 @@ export class FilterService {
             splitter = '!';
             return data_key + splitter + data[conditional_operator].join();
           case this.sub_str_notation:
-            splitter = ':'
+            splitter = ':';
             return data_key + splitter + data[conditional_operator];
         }
       }
@@ -586,7 +569,7 @@ export class FilterService {
       } else {
         let terms: any[] = decodedQuery['$AND'];
         if (terms || !Array.isArray(terms)) {
-          for (let i=0; i<terms.length; i++) {
+          for (let i = 0; i < terms.length; i++) {
             let thisTerm = terms[i];
             if (thisTerm && thisTerm[key]) {
               // format of value: {$EQ: "value"}, if not found, value remains undefined
@@ -606,7 +589,7 @@ export class FilterService {
 
   // Temporary function to deal with single level $AND operator
   queryToFlat(query: string) {
-    return query.replace(/^\((.+)\)$/,"$1")
+    return query.replace(/^\((.+)\)$/, '$1')
       .split(this.and_notation).map((item, index) => {
         // regex to match field:value pattern.
         // for item=title:A:D, field -> title and value -> A:D
@@ -615,8 +598,8 @@ export class FilterService {
         field: filterValue[1].trim(),
         index: index,
         value: filterValue[2].trim()
-      }
-    })
+      };
+    });
   }
 
   flatToQuery(arr: any[]) {
@@ -632,7 +615,7 @@ export class FilterService {
         this.and_notation,
         newQuery
       );
-    })
+    });
     return query;
   }
 }

@@ -23,8 +23,8 @@
                 id="wi-type-icon"
                 title="{{workItem.type.name}}">
               </span>
-              {{workItem.type.name}}
-              <strong>#{{workItem.number}}</strong>
+              {{ workItem.type.name }}
+              <strong>#{{ workItem.number }}</strong>
             </div>
           </div>
           <div class="width-100 pull-left">
@@ -40,7 +40,7 @@
                   [iconType]="workItem.state">
                 </span>
                 <span class='dropdown-text'>
-                  {{workItem.state}}
+                  {{ workItem.state }}
                 </span>
                 <span class="caret pull-right margin-top-7"
                   *ngIf="loggedIn"></span>
@@ -57,7 +57,7 @@
                       almIcon
                       [iconType]="state">
                     </span>
-                    <span class='dropdown-text'>{{state}}</span>
+                    <span class='dropdown-text'>{{ state }}</span>
                   </a>
                 </li>
               </ul>
@@ -99,7 +99,7 @@
                       almIcon
                       [iconType]="state">
                     </span>
-                    <span class='dropdown-text'>{{state}}</span>
+                    <span class='dropdown-text'>{{ state }}</span>
                   </a>
                 </li>
               </ul>
@@ -115,10 +115,10 @@
               <span
                 *ngIf="!loadingTypes"
                 class="dib">
-                {{workItem.type.name}}
+                {{ workItem.type.name }}
               </span>
               <span class="dib">
-                <strong>#{{workItem.number}}</strong>
+                <strong>#{{ workItem.number }}</strong>
               </span>
             </div>
           </div>
@@ -157,7 +157,7 @@
             <!-- assignee -->
             <section class="f8-detail__assignee">
               <label class="pull-left padding-left-15 control-label">
-                {{workItem.type.fields['system.assignees']?.label || 'Label'}}
+                {{ workItem.type.fields['system.assignees']?.label || 'Label' }}
               </label>
               <div class="f8-detail__content" #assignee >
                 <span *ngIf="loadingAssignees"
@@ -185,7 +185,7 @@
           <div class="form-group">
             <section class="f8-detail__area">
               <label class="pull-left padding-left-15 control-label ">
-                {{workItem.type.fields['system.creator']?.label || 'Label'}}
+                {{ workItem.type.fields['system.creator']?.label || 'Label' }}
               </label>
               <div class="f8-detail__content" *ngIf="workItem?.creatorObs | async; let creator">
                 <span *ngIf="!creator"
@@ -202,7 +202,7 @@
                 </div>
                 <div class="dib">
                   <span id="WI_details_reporter_user">
-                    {{creator.name}}
+                    {{ creator.name }}
                   </span>
                 </div>
               </div>
@@ -213,7 +213,7 @@
           <div class="form-group">
             <section class="f8-detail__area">
               <label class="pull-left padding-left-15 control-label">
-                {{workItem.type.fields['system.area']?.label || 'Label'}}
+                {{ workItem.type.fields['system.area']?.label || 'Label' }}
               </label>
               <div class="f8-detail__content">
                 <span *ngIf="loadingArea"
@@ -236,7 +236,7 @@
           <div class="form-group">
             <section class="f8-detail__area">
               <label class="pull-left padding-left-15 control-label">
-                {{workItem.type.fields['system.iteration']?.label || 'Label'}}
+                {{ workItem.type.fields['system.iteration']?.label || 'Label' }}
               </label>
               <div class="f8-detail__content">
                 <span *ngIf="loadingIteration"
@@ -260,7 +260,7 @@
           <div class="form-group">
             <section class="f8-detail__labels">
               <label class="pull-left padding-left-15 control-label ">
-                {{workItem.type.fields['system.labels']?.label || 'Label'}}
+                {{ workItem.type.fields['system.labels']?.label || 'Label' }}
               </label>
               <div class="f8-detail__content">
                 <span *ngIf="loadingLabels"

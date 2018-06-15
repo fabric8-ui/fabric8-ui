@@ -15,7 +15,7 @@ export class ClickOutDirective {
 
   @Input('exclude') exclude: string;
 
-  @Output('clickOut') clickOutside: EventEmitter<any> = new EventEmitter();
+  @Output('clickOut') readonly clickOut: EventEmitter<any> = new EventEmitter();
 
   @HostListener('document:click', ['$event', '$event.target'])
   onClick(event: MouseEvent, target: HTMLElement): void {
@@ -30,7 +30,7 @@ export class ClickOutDirective {
     }
 
     if (!clickedInside && !this.isExcluded) {
-      this.clickOutside.emit(event);
+      this.clickOut.emit(event);
     }
   }
 
@@ -41,7 +41,7 @@ export class ClickOutDirective {
   excludeCheck(target: HTMLElement) {
     const excludeElements = Array.from(document.querySelectorAll(this.exclude)) as Array<HTMLElement>;
     for (let element of excludeElements) {
-      if(element.contains(target)){
+      if (element.contains(target)) {
         return true;
       }
     }

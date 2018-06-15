@@ -1,4 +1,4 @@
-import { Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'infotip',
@@ -10,9 +10,9 @@ export class InfotipComponent {
   @Input() infotipText: string;
 
   handlePropagation(e) {
-    if(e) {
-      e.stopPropagation(); 
+    if (e) {
+      e.stopPropagation();
       e.preventDefault();
     }
   }
-} 
+}

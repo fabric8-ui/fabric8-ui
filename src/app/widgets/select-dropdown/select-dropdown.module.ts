@@ -1,8 +1,8 @@
-import { NgModule }  from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SelectDropdownComponent } from './select-dropdown.component';
+import { NgModule }  from '@angular/core';
 import { AlmEditableModule } from 'ngx-widgets';
 import { ClickOutModule } from '../clickout/clickout.module';
+import { SelectDropdownComponent } from './select-dropdown.component';
 
 @NgModule({
   declarations: [ SelectDropdownComponent ],

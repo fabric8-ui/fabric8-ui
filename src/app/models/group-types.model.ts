@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import {
   Mapper,
   MapTree,
-  switchModel,
+  modelService,
   modelUI,
-  modelService
+  switchModel
 } from './common.model';
 
 export class GroupTypesModel extends modelService {
@@ -43,7 +43,7 @@ export class WorkItemRelations {
   };
   infoTip?: {
     data?: string;
-  }
+  };
 }
 
 export class TypeListData {
@@ -72,7 +72,7 @@ export class GroupTypeMapper implements Mapper<GroupTypeService, GroupTypeUI> {
   serviceToUiMapTree: MapTree = [{
       fromPath: ['id'],
       toPath: ['id']
-    },{
+    }, {
       fromPath: ['attributes', 'name'],
       toPath: ['name']
     }, {
@@ -98,7 +98,7 @@ export class GroupTypeMapper implements Mapper<GroupTypeService, GroupTypeUI> {
       toPath: ['showInSideBar']
     }, {
       fromPath: ['relationships', 'typeList', 'data'],
-      toPath: ['typeList'],
+      toPath: ['typeList']
     }, {
       fromPath: ['relationships', 'infoTip', 'data'],
       toPath: ['infotip'],
@@ -113,7 +113,7 @@ export class GroupTypeMapper implements Mapper<GroupTypeService, GroupTypeUI> {
   uiToServiceMapTree: MapTree = [{
     fromPath: ['id'],
     toPath: ['id']
-  },{
+  }, {
     fromPath: ['name'],
     toPath: ['attributes', 'name']
   }, {
@@ -121,22 +121,22 @@ export class GroupTypeMapper implements Mapper<GroupTypeService, GroupTypeUI> {
     toPath: ['attributes', 'bucket']
   }, {
     fromPath: ['level'],
-    toPath: ['attributes', 'level'],
+    toPath: ['attributes', 'level']
   }, {
     fromPath: ['icon'],
-    toPath: ['attributes', 'icon'],
+    toPath: ['attributes', 'icon']
   }, {
     fromPath: ['sublevel'],
-    toPath: ['attributes', 'sublevel'],
+    toPath: ['attributes', 'sublevel']
   }, {
     fromPath: ['group'],
-    toPath: ['attributes', 'group'],
+    toPath: ['attributes', 'group']
   }, {
     fromPath: ['showInSideBar'],
-    toPath: ['attributes', 'show-in-sidebar'],
+    toPath: ['attributes', 'show-in-sidebar']
   }, {
     fromPath: ['typeList'],
-    toPath: ['relationships', 'typeList', 'data'],
+    toPath: ['relationships', 'typeList', 'data']
   }, {
     toPath: ['type'],
     toValue: 'grouptypes'
@@ -146,12 +146,12 @@ export class GroupTypeMapper implements Mapper<GroupTypeService, GroupTypeUI> {
   toUIModel(arg: GroupTypeService): GroupTypeUI {
     return switchModel<GroupTypeService, GroupTypeUI>(
       arg, this.serviceToUiMapTree
-    )
+    );
   }
 
   toServiceModel(arg: GroupTypeUI): GroupTypeService {
     return switchModel<GroupTypeUI, GroupTypeService>(
       arg, this.uiToServiceMapTree
-    )
+    );
   }
 }

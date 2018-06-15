@@ -1,15 +1,15 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { WorkItemUI } from './../../models/work-item';
-import { Store } from "@ngrx/store";
-import { AppState } from "../../states/app.state";
+import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { EmptyStateConfig } from 'patternfly-ng/empty-state';
+import { EventQuery } from '../../models/event.model';
+import { AppState } from '../../states/app.state';
 import * as EventActions from './../../actions/event.action';
-import { EventQuery } from "../../models/event.model";
-import { EmptyStateConfig } from "patternfly-ng/empty-state";
+import { WorkItemUI } from './../../models/work-item';
 
 @Component({
   selector: 'work-item-event-wrapper',
   templateUrl: './work-item-event-wrapper.component.html',
-  styleUrls: ['./work-item-event-wrapper.component.less'],
+  styleUrls: ['./work-item-event-wrapper.component.less']
 })
 
 export class WorkItemEventWrapperComponent implements OnInit {

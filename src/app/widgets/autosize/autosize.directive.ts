@@ -1,10 +1,10 @@
-import { ElementRef, HostListener, Directive, Input } from '@angular/core';
+import { AfterContentChecked, Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
     selector: 'textarea[autosize]'
 })
 
-export class Autosize {
+export class AutosizeDirective implements AfterContentChecked {
   @Input() init_height: number = 0;
   @HostListener('input', ['$event.target'])
   onInput(textArea: HTMLTextAreaElement): void {

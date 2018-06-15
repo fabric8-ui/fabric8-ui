@@ -1,16 +1,16 @@
-import { EventService } from './../../services/event.service';
 import {
   Component,
   ElementRef,
   EventEmitter,
   Input,
-  Output,
   OnInit,
+  Output,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { cloneDeep } from 'lodash';
-import { LabelUI, LabelModel } from './../../models/label.model';
+import { LabelModel, LabelUI } from './../../models/label.model';
+import { EventService } from './../../services/event.service';
 import { LabelService } from './../../services/label.service';
 import {
   SelectDropdownComponent
@@ -41,13 +41,12 @@ export class LabelSelectorComponent implements OnInit {
         border: label.borderColor,
         name: label.name,
         selected: false
-      }
+      };
     }));
     if (this.searchValue.length) {
       this.labels =
         cloneDeep(this.backup.filter(i => i.name.indexOf(this.searchValue) > - 1));
-    }
-    else {
+    } else {
       this.labels = cloneDeep(this.backup);
     }
     if (this.labelnameInput) {
@@ -65,9 +64,9 @@ export class LabelSelectorComponent implements OnInit {
 
   @Input() allowUpdate: boolean = true;
 
-  @Output() onSelectLabel: EventEmitter<LabelUI[]> = new EventEmitter();
-  @Output() onOpenSelector: EventEmitter<any> = new EventEmitter();
-  @Output() onCloseSelector: EventEmitter<LabelUI[]> = new EventEmitter();
+  @Output() readonly onSelectLabel: EventEmitter<LabelUI[]> = new EventEmitter();
+  @Output() readonly onOpenSelector: EventEmitter<any> = new EventEmitter();
+  @Output() readonly onCloseSelector: EventEmitter<LabelUI[]> = new EventEmitter();
 
   private activeAddLabel: boolean = false;
   private backup: any[] = [];
@@ -105,7 +104,7 @@ export class LabelSelectorComponent implements OnInit {
       {color: '#ededed', border: '#bbbbbb'},
       {color: '#d1d1d1', border: '#bbbbbb'}
     ];
-    this.newSelectedColor = this.colors[Math.floor(Math.random()*this.colors.length)];
+    this.newSelectedColor = this.colors[Math.floor(Math.random() * this.colors.length)];
   }
 
   onSelect(event: any) {
@@ -150,7 +149,7 @@ export class LabelSelectorComponent implements OnInit {
   }
 
   clickOnAddLabel() {
-    this.newSelectedColor = this.colors[Math.floor(Math.random()*this.colors.length)];
+    this.newSelectedColor = this.colors[Math.floor(Math.random() * this.colors.length)];
     this.activeAddLabel = true;
   }
 

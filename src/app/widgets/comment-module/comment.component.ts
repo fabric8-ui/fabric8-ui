@@ -1,6 +1,6 @@
 import {
-  Component, Input,
-  EventEmitter, Output
+  Component, EventEmitter,
+  Input, Output
 } from '@angular/core';
 
 import { CommentUI } from './../../models/comment';
@@ -20,29 +20,29 @@ export class CommentComponent {
   /**
    * Event to show preview in markdown
    */
-  @Output('onShowPreview') onPreview: EventEmitter<{
-    rawText: string, callBack: (x: string, y:string) => void
+  @Output('onShowPreview') readonly onShowPreview: EventEmitter<{
+    rawText: string, callBack: (x: string, y: string) => void
   }> = new EventEmitter();
 
   /**
    * This output is emitted when new comment is added
    */
-  @Output('onCreateRequest') onCreateRequest: EventEmitter<CommentUI> =
+  @Output('onCreateRequest') readonly onCreateRequest: EventEmitter<CommentUI> =
    new EventEmitter();
 
   /**
    * This is an output event for any update request
    * to the comment or it's children
    */
-  @Output('onUpdateRequest') onUpdateRequest: EventEmitter<CommentUI> =
+  @Output('onUpdateRequest') readonly onUpdateRequest: EventEmitter<CommentUI> =
    new EventEmitter();
 
   private replyActive: boolean = false;
 
   constructor() {}
 
-  showPreview(event: {rawText: string, callBack: (x: string, y:string) => void}): void {
-    this.onPreview.emit(event);
+  showPreview(event: {rawText: string, callBack: (x: string, y: string) => void}): void {
+    this.onShowPreview.emit(event);
   }
 
   createComment(event): void {

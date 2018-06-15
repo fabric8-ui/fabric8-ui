@@ -1,11 +1,11 @@
 <div class="inlineinput-container"
-[class.read-only]="readOnly">
+[class.read-only]="disabled">
 <textarea
   #input
   autosize
   (click)="startEditing($event, true)"
   [init_height]="23"
-  [attr.disabled]="(!onLineClickEdit || readOnly) && !editing ? '' : null"
+  [attr.disabled]="(!onLineClickEdit || disabled) && !editing ? '' : null"
   [attr.placeholder]="placeholder"
   [class.active]="editing"
   [ngModel]="inputValue"
@@ -34,7 +34,7 @@
 </div>
 <div *ngIf="editing">
   <div class="error-message" *ngIf="errorMessage.length">
-    <small>{{errorMessage}}</small>
+    <small>{{ errorMessage }}</small>
   </div>
 </div>
 </div>

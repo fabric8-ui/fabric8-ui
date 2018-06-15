@@ -1,12 +1,12 @@
-import { cloneDeep } from 'lodash';
 import {
   Component,
   EventEmitter,
   Input,
   Output
 } from '@angular/core';
-import { LabelModel, LabelUI } from './../../models/label.model';
 import { ActivatedRoute } from '@angular/router';
+import { cloneDeep } from 'lodash';
+import { LabelModel, LabelUI } from './../../models/label.model';
 import { FilterService } from './../../services/filter.service';
 @Component({
   selector: 'f8-label',
@@ -20,14 +20,14 @@ export class LabelsComponent {
   @Input('labels') set labelInput(labels: LabelUI[]) {
     this._labels = labels.filter(label => {
       return label.backgroundColor &&
-      label.textColor
-    })
-  };
+      label.textColor;
+    });
+  }
   @Input() truncateAfter: number;
   @Input() allowDelete: boolean;
   @Input() context: string = '';
-  @Output() onLabelClick = new EventEmitter();
-  @Output() onRemoveLabel = new EventEmitter();
+  @Output() readonly onLabelClick = new EventEmitter();
+  @Output() readonly onRemoveLabel = new EventEmitter();
 
   private labels: LabelUI[] = [];
   private showMore: boolean = false;
@@ -50,9 +50,9 @@ export class LabelsComponent {
   removeLabel(label, event) {
     event.stopPropagation();
     this.onRemoveLabel.emit(label);
-  } 
-  
-  constructQueryExpression(labelId) { 
+  }
+
+  constructQueryExpression(labelId) {
    this.queryParams = cloneDeep(this.route.snapshot.queryParams);
    let showTree: boolean = this.queryParams.hasOwnProperty('showTree');
    let showCompleted: boolean = this.queryParams.hasOwnProperty('showCompleted');

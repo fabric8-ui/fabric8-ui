@@ -7,7 +7,7 @@ export const datatableColumn = [{
   display: true,
   showInDiplay: false,
   maxWidth: 50,
-  width: 60,
+  width: 60
 }, {
   name: 'Type',
   prop: 'type',
@@ -18,7 +18,7 @@ export const datatableColumn = [{
   showInDiplay: false,
   maxWidth: undefined,
   minWidth: undefined,
-  width: 180,
+  width: 180
 }, {
   name: 'Title',
   prop: 'title',
@@ -41,7 +41,7 @@ export const datatableColumn = [{
   showInDisplay: true,
   maxWidth: undefined,
   minWidth: 300,
-  width: 300,
+  width: 300
 }, {
   name: 'State',
   prop: 'state',
@@ -52,7 +52,7 @@ export const datatableColumn = [{
   showInDiplay: false,
   maxWidth: undefined,
   minWidth: undefined,
-  width: 120,
+  width: 120
 }, {
   name: 'Iteration',
   prop: 'iteration',
@@ -63,7 +63,7 @@ export const datatableColumn = [{
   showInDisplay: true,
   minWidth: undefined,
   maxWidth: undefined,
-  width: 150,
+  width: 150
 }, {
   name: 'Creator',
   prop: 'creator',
@@ -74,7 +74,7 @@ export const datatableColumn = [{
   showInDisplay: true,
   maxWidth: undefined,
   minWidth: undefined,
-  width: 75,
+  width: 75
 }, {
   name: 'Assignees',
   prop: 'assignees',
@@ -85,8 +85,6 @@ export const datatableColumn = [{
   showInDisplay: true,
   maxWidth: undefined,
   minWidth: undefined,
-  width: 145,
-}]
-
-
+  width: 145
+}];
 

@@ -2,17 +2,17 @@ import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Params, ActivatedRoute } from '@angular/router';
 import {
   Component,
-  OnInit,
   Input,
   OnChanges,
-  OnDestroy
+  OnDestroy,
+  OnInit
 } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 
-import { AuthenticationService } from 'ngx-login-client';
 import { Space, Spaces } from 'ngx-fabric8-wit';
+import { AuthenticationService } from 'ngx-login-client';
 
 import { CustomQueryModel } from '../../models/custom-query.model';
 import { FilterService } from '../../services/filter.service';
@@ -20,8 +20,8 @@ import { ModalService } from '../../services/modal.service';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
-import { AppState } from './../../states/app.state';
 import * as CustomQueryActions from './../../actions/custom-query.actions';
+import { AppState } from './../../states/app.state';
 
 @Component({
   selector: 'custom-query',
@@ -52,7 +52,7 @@ export class CustomQueryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const customQueriesData = this.store
       .select('listPage')
-      .select('customQueries')
+      .select('customQueries');
 
     this.eventListeners.push(
       customQueriesData
@@ -112,21 +112,21 @@ export class CustomQueryComponent implements OnInit, OnDestroy {
         q: this.constructUrl(queryField),
         showTree: this.showTree,
         showCompleted: this.showCompleted
-      }
+      };
     } else if (this.showTree) {
       return {
         q: this.constructUrl(queryField),
         showTree: this.showTree
-      }
+      };
     } else if (this.showCompleted) {
       return {
         q: this.constructUrl(queryField),
         showCompleted: this.showCompleted
-      }
+      };
     } else {
       return {
         q: this.constructUrl(queryField)
-      }
+      };
     }
   }
 

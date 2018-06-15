@@ -1,5 +1,5 @@
+import { ActionReducer, State } from '@ngrx/store';
 import { UPDATE_ERROR } from './../actions/comment.actions';
-import { State, ActionReducer } from '@ngrx/store';
 import * as DetailWorkItemActions from './../actions/detail-work-item.actions';
 import * as WorkItemActions from './../actions/work-item.actions';
 import { DetailWorkItemState, initialState } from './../states/detail-work-item.state';
@@ -10,7 +10,7 @@ export type Action = DetailWorkItemActions.All | WorkItemActions.All;
 
 export const DetailWorkItemReducer: ActionReducer<DetailWorkItemState> =
   (state = initialState, action: Action) => {
-    switch(action.type) {
+    switch (action.type) {
 
       case DetailWorkItemActions.GET_WORKITEM_SUCCESS: {
         return {...action.payload};
@@ -32,4 +32,4 @@ export const DetailWorkItemReducer: ActionReducer<DetailWorkItemState> =
         return state;
       }
     }
-  }
+  };

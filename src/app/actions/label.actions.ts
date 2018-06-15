@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { LabelUI, LabelModel } from './../models/label.model';
+import { LabelModel, LabelUI } from './../models/label.model';
 
 export const ADD            = '[label] Add';
 export const GET            = '[label] Get';
@@ -24,7 +24,7 @@ export class GetSuccess implements Action {
   payload: LabelUI[];
   constructor(payload: LabelUI[]) {
     this.payload = payload;
-  };
+  }
   readonly type = GET_SUCCESS;
 }
 
@@ -50,4 +50,4 @@ export type All
   | GetSuccess
   | GetError
   | AddSuccess
-  | AddError
+  | AddError;

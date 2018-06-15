@@ -1,8 +1,8 @@
 import { EventUI } from './../models/event.model';
 import {
   Get, GET,
-  GetSuccess, GET_SUCCESS,
-  GetError, GET_ERROR
+  GET_ERROR, GET_SUCCESS,
+  GetError, GetSuccess
 } from './event.action';
 
 describe('Unit Test :: Event Actions', () => {
@@ -12,29 +12,29 @@ describe('Unit Test :: Event Actions', () => {
     expect({ ...action }).toEqual({
       payload: url,
       type: GET
-    })
-  })
+    });
+  });
 
-  it("GetEventSuccess :: should create get success action", () => {
+  it('GetEventSuccess :: should create get success action', () => {
     const event = [{
-      name: "system.title",
+      name: 'system.title',
       newValue: 'a',
       oldValue: 'b',
-      timestamp: "2018-05-27T08:54:44.63509Z",
-      modifierId: "20694424-0841-4d6c-bfb5-bbbb0391b8db",
+      timestamp: '2018-05-27T08:54:44.63509Z',
+      modifierId: '20694424-0841-4d6c-bfb5-bbbb0391b8db',
       newValueRelationships: null,
       oldValueRelationships: null,
-      type: null,
+      type: null
     }] as EventUI[];
     const action = new GetSuccess(event);
     expect({ ...action }).toEqual({
       type: GET_SUCCESS,
       payload: event
     });
-  })
+  });
 
-  it("GetEventError :: should create get error action", () => {
+  it('GetEventError :: should create get error action', () => {
     const action = new GetError();
     expect({ ...action }).toEqual({ type: GET_ERROR });
-  })
-})
+  });
+});

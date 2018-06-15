@@ -1,20 +1,17 @@
 import { AreaState } from './../states/area.state';
 import {
   Get, GET,
-  GetSuccess, GET_SUCCESS,
-  GetError, GET_ERROR
+  GET_ERROR, GET_SUCCESS,
+  GetError, GetSuccess
 } from './area.actions';
 
 describe('Unit Test :: Area Actions', () => {
-
-  const areaAdapter =
-
-  it('GetArea :: should create get action', () =>{
+  it('GetArea :: should create get action', () => {
     const action = new Get();
     expect({...action}).toEqual({type: GET});
-  })
+  });
 
-  it('GetAreaSuccess :: should create get success action', () =>{
+  it('GetAreaSuccess :: should create get success action', () => {
     const areas = {
       'area-1': {
         id: 'area-1',
@@ -29,10 +26,10 @@ describe('Unit Test :: Area Actions', () => {
       type: GET_SUCCESS,
       payload: areas
     });
-  })
+  });
 
-  it('GetAreaError :: should create get error action', () =>{
+  it('GetAreaError :: should create get error action', () => {
     const action = new GetError();
     expect({...action}).toEqual({type: GET_ERROR});
-  })
+  });
 });

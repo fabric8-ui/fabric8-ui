@@ -10,7 +10,7 @@ export class CookieService {
 
   setCookie(cName: string, cValue: Array<any>) {
 
-    document.cookie = cName + "=" + JSON.stringify({
+    document.cookie = cName + '=' + JSON.stringify({
       version: this.datatableColumnVersion, value: cValue
     });
   }

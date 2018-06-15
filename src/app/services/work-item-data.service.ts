@@ -1,5 +1,5 @@
+import { Inject, Injectable } from '@angular/core';
 import { cloneDeep } from 'lodash';
-import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WorkItem } from './../models/work-item';
 

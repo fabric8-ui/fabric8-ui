@@ -51,15 +51,15 @@
     [queryParams]="addRemoveQueryParams(iteration.id)"
     title="{{iteration.name}}">
     <div class="truncate padding-right-15">
-      <span class="f8-itr-name truncate">{{iteration.name | truncate : 15}}</span>
+      <span class="f8-itr-name truncate">{{ iteration.name | truncate : 15 }}</span>
       <span class="active-tag"
       *ngIf="iteration.isActive" >[Active]</span>
     </div>
     <div class="f8-itr-status">
       <span>
-        {{iteration.startAt ? (iteration.startAt | date:longDate) : 'Set start date'}}
+        {{ iteration.startAt ? (iteration.startAt | date:longDate) : 'Set start date' }}
         -
-        {{iteration.endAt ? (iteration.endAt | date:longDate) : 'Set end date'}}
+        {{ iteration.endAt ? (iteration.endAt | date:longDate) : 'Set end date' }}
       </span>
     </div>
   </a>

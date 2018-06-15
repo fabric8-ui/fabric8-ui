@@ -1,15 +1,15 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { WorkItemEventComponent } from "./work-item-event.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap';
 import {
   AlmEditableModule,
   AlmIconModule,
-  WidgetsModule,
-  MarkdownModule
+  MarkdownModule,
+  WidgetsModule
 } from 'ngx-widgets';
-import { LabelsModule } from "../labels/labels.module";
-import { TooltipModule, TooltipConfig } from "ngx-bootstrap";
-import { F8TimePipeModule } from './../../pipes/f8-time.module'
+import { LabelsModule } from '../labels/labels.module';
+import { F8TimePipeModule } from './../../pipes/f8-time.module';
+import { WorkItemEventComponent } from './work-item-event.component';
 
 @NgModule({
     imports: [

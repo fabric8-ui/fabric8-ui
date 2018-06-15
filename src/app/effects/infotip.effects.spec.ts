@@ -1,13 +1,13 @@
-import { TestBed } from '@angular/core/testing'
-import { provideMockActions } from '@ngrx/effects/testing'
-import { hot, cold } from 'jasmine-marbles';
+import { TestBed } from '@angular/core/testing';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { cold, hot } from 'jasmine-marbles';
 
-import { InfotipEffects } from './infotip.effects';
-import { InfotipService } from '../services/infotip.service';
 import { Observable } from 'rxjs';
-import * as Actions from '../actions/infotip.actions';
 import { Action } from 'rxjs/scheduler/Action';
+import * as Actions from '../actions/infotip.actions';
+import { InfotipService } from '../services/infotip.service';
 import { InfotipState } from '../states/infotip.state';
+import { InfotipEffects } from './infotip.effects';
 
 describe('InfotipEffects', () => {
   let effects: InfotipEffects;
@@ -33,16 +33,16 @@ describe('InfotipEffects', () => {
     infotipService = TestBed.get(InfotipService);
   });
 
-  it("should fetch infotips", () => {
-    let payload: InfotipState = { 
-      "6cff4ab8-c380-4aa9-9980-17b6f223d181": {
-        "term": "alternate dependency",
-        "en": "Dependencies recommended by OpenShift.io to replace restrictive licenses or usage outliers."
-      } 
+  it('should fetch infotips', () => {
+    let payload: InfotipState = {
+      '6cff4ab8-c380-4aa9-9980-17b6f223d181': {
+        'term': 'alternate dependency',
+        'en': 'Dependencies recommended by OpenShift.io to replace restrictive licenses or usage outliers.'
+      }
     };
     const action = new Actions.Get();
     const success = new Actions.GetSuccess(payload);
-    
+
     infotipService.getInfotips.and.returnValue(Observable.of(payload));
 
     actions = hot('--a-', { a: action });
@@ -51,7 +51,7 @@ describe('InfotipEffects', () => {
     expect(effects.getInfotips$).toBeObservable(expected);
   });
 
-  it("should dispatch an error action", () => {
+  it('should dispatch an error action', () => {
     const action = new Actions.Get();
     const error = new Actions.GetError();
 
@@ -61,5 +61,5 @@ describe('InfotipEffects', () => {
     const expected = cold('--b', { b: error });
 
     expect(effects.getInfotips$).toBeObservable(expected);
-  })
+  });
 });

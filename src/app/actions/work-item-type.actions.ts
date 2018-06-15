@@ -1,8 +1,8 @@
 import { Action } from '@ngrx/store';
 import {
-  WorkItemTypeUI,
+  WorkItemTypeMapper,
   WorkItemTypeService,
-  WorkItemTypeMapper
+  WorkItemTypeUI
 } from './../models/work-item-type';
 
 export const GET = '[wi-type] Get';
@@ -17,7 +17,7 @@ export class GetSuccess implements Action {
   payload: WorkItemTypeUI[];
   constructor(payload: WorkItemTypeUI[]) {
     this.payload = payload;
-  };
+  }
   readonly type = GET_SUCCESS;
 }
 
@@ -28,4 +28,4 @@ export class GetError implements Action {
 export type All
   = Get
   | GetSuccess
-  | GetError
+  | GetError;

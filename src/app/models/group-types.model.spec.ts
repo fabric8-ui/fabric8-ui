@@ -1,24 +1,24 @@
 import {
   GroupTypeMapper,
-  GroupTypeUI,
-  GroupTypeService
-} from "./group-types.model";
+  GroupTypeService,
+  GroupTypeUI
+} from './group-types.model';
 
 describe('Unit Test :: Group type model', () => {
   it('should execute the canary test', () => {
-    return expect(true).toBe(true)
+    return expect(true).toBe(true);
   });
 
   it('should correctly convert to UI model - 1', () => {
     const gtm = new GroupTypeMapper();
     const input: GroupTypeService = {
       attributes: {
-        bucket: "portfolio",
-        icon: "fa fa-suitcase",
+        bucket: 'portfolio',
+        icon: 'fa fa-suitcase',
         level: [0, 1],
-        name: "Portfolio",
+        name: 'Portfolio',
         sublevel: 3,
-        group: "portfolio",
+        group: 'portfolio',
         ['show-in-sidebar']: true
       },
       id: 'gt_01',
@@ -28,8 +28,8 @@ describe('Unit Test :: Group type model', () => {
       relationships: {
         typeList: {
           data: [{
-            id: "b9a71831-c803-4f66-8774-4193fffd1311",
-            workitemtype: "type-1"
+            id: 'b9a71831-c803-4f66-8774-4193fffd1311',
+            workitemtype: 'type-1'
           }]
         }
       },
@@ -38,18 +38,18 @@ describe('Unit Test :: Group type model', () => {
     const output: GroupTypeUI = gtm.toUIModel(input);
     const expectedOutput: GroupTypeUI = {
       id: 'gt_01',
-      name: "Portfolio",
-      bucket: "portfolio",
+      name: 'Portfolio',
+      bucket: 'portfolio',
       level: [0, 1],
-      icon: "fa fa-suitcase",
+      icon: 'fa fa-suitcase',
       sublevel: 3,
-      group: "portfolio",
+      group: 'portfolio',
       selected: false,
       showInSideBar: true,
-      infotip: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      infotip: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       typeList: [{
-        id: "b9a71831-c803-4f66-8774-4193fffd1311",
-        workitemtype: "type-1"
+        id: 'b9a71831-c803-4f66-8774-4193fffd1311',
+        workitemtype: 'type-1'
       }]
     };
     return expect(expectedOutput).toEqual(output);
@@ -99,4 +99,4 @@ describe('Unit Test :: Group type model', () => {
   //   };
   //   return expect(expectedOutput).toEqual(output);
   // });
-})
+});

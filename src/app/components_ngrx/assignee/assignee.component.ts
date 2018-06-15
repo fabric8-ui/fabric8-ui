@@ -1,16 +1,16 @@
-import { cloneDeep } from 'lodash';
 import {
   Component,
   EventEmitter,
-  OnInit,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { cloneDeep } from 'lodash';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { User } from 'ngx-login-client';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'f8-assignee',
@@ -25,14 +25,14 @@ export class AssigneesComponent implements OnInit {
   @Input() showFullName: boolean;
   @Input('assignees') set assigneeInput(val) {
     this.assignees = val;
-  };
+  }
 
   private spaceSubscription: Subscription = null;
   private spaceId;
 
   constructor(
     private spaces: Spaces
-  ){}
+  ) {}
 
   ngOnInit() {
   }
