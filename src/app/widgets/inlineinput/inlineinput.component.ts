@@ -2,12 +2,9 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
-  OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -22,7 +19,7 @@ import {
 export class InlineInputComponent implements OnInit {
   @ViewChild('input') inputField: ElementRef;
 
-  @Input() type: string = 'string';
+  @Input('type') type: string = 'string';
   @Input('disabled') disabled: boolean = false;
   @Input('value') set input(val) {
     // convert special charecters only the input value is a string
@@ -32,7 +29,7 @@ export class InlineInputComponent implements OnInit {
     this.previousValue = v;
   }
   @Input() placeholder: string = 'Enter text here';
-  @Input() onLineClickEdit: boolean = true;
+  @Input() allowOnLineClickEdit: boolean = true;
 
   @Output() readonly onSave = new EventEmitter();
 
@@ -46,13 +43,19 @@ export class InlineInputComponent implements OnInit {
   ngOnInit() {
   }
 
-  startEditing(event: Event, onLineClick: boolean) {
+  startEditing(onLineClick: boolean) {
     this.errorMessage = '';
     if (this.disabled) { return; }
-    if (!this.editing &&
-      ((onLineClick && this.onLineClickEdit) || !onLineClick)) {
-      this.editing = true;
-      this.previousValue = this.inputField.nativeElement.value;
+    // If field was clicked and onLineClick edit is allowed
+    // Or startEditing was called from the edit icon click
+    if ((onLineClick && this.allowOnLineClickEdit) || !onLineClick) {
+      // If the editing is started
+      if (!this.editing) {
+        // Set previous value as the value in the field
+        this.previousValue = this.inputField.nativeElement.value;
+        // Set editing value as true
+        this.editing = true;
+      }
       this.inputField.nativeElement.focus();
     } else {
       this.inputField.nativeElement.blur();
@@ -61,11 +64,15 @@ export class InlineInputComponent implements OnInit {
 
   saveClick() {
     this.errorMessage = '';
-    this.saving = true;
-    this.onSave.emit({
-      value: this.formatValue(this.inputField.nativeElement.value),
-      callBack: (v: string = '', e: string = '') => this.handleSave(v, e)
-    });
+    if (this.validateValue(this.inputField.nativeElement.value)) {
+      this.saving = true;
+      this.onSave.emit({
+        value: this.formatValue(this.inputField.nativeElement.value),
+        callBack: (v: string = '', e: string = '') => this.handleSave(v, e)
+      });
+    } else {
+      this.errorMessage = `Invalid value for the field type ${this.type}`;
+    }
   }
 
   formatValue(value) {
@@ -76,12 +83,24 @@ export class InlineInputComponent implements OnInit {
     }
   }
 
+  validateValue(value) {
+    if (this.type === 'integer') {
+      return /^\d+$/.test(value);
+    }
+    if (this.type === 'float') {
+      return /^-?\d*(\.\d+)?$/.test(value);
+    }
+    return true;
+  }
+
   closeClick() {
-    this.errorMessage = '';
-    this.inputValue = this.previousValue;
-    this.inputField.nativeElement.value = this.previousValue;
-    this.previousValue = '';
-    this.editing = false;
+    if (this.editing) {
+      this.errorMessage = '';
+      this.inputValue = this.previousValue;
+      this.inputField.nativeElement.value = this.previousValue;
+      this.previousValue = '';
+      this.editing = false;
+    }
   }
 
   handleSave(value: string, error: string) {
@@ -106,9 +125,12 @@ export class InlineInputComponent implements OnInit {
     this.saveClick();
     this.inputField.nativeElement.blur();
   }
+
   onkeyDown(event, text) {
     let keycode = event.keyCode ? event.keyCode : event.which;
+    this.errorMessage = '';
     if (this.editing && keycode !== 13) {
+      // Checking if there is already a '.' in float value
       if (this.type === 'float' &&
         this.inputField.nativeElement.value.indexOf('.') > -1 &&
         keycode === 190) {
@@ -117,7 +139,7 @@ export class InlineInputComponent implements OnInit {
       }
       switch (this.type) {
         case 'integer':
-          if (this.checkInteger(keycode, event)) {
+          if (this.checkNumber(keycode, event)) {
             this.isNotValid = false;
           } else {
             this.isNotValid = true;
@@ -125,7 +147,7 @@ export class InlineInputComponent implements OnInit {
           }
           break;
         case 'float':
-          if (this.checkInteger(keycode, event) || keycode === 190) {
+          if (this.checkNumber(keycode, event, true) || keycode === 190) {
             this.isNotValid = false;
           } else {
             this.isNotValid = true;
@@ -139,10 +161,24 @@ export class InlineInputComponent implements OnInit {
           break;
       }
     }
+    if (this.isNotValid) {
+      this.errorMessage = `This is a ${this.type} field`;
+    }
   }
 
-  checkInteger(keycode, event) {
-    if ([46, 8, 9, 27, 13, 110, 190].indexOf(keycode) !== -1 ||
+  /**
+   * This function checks every key entry if it's a number or not
+   * @param keycode
+   * @param event
+   * @param allowFloat allows the charecter key to be a '.'
+   */
+  checkNumber(keycode, event, allowFloat = false) {
+    console.log(keycode, event);
+    let allowedCodes = [46, 8, 9, 27, 13, 110, 91, 17];
+    if (allowFloat) {
+      allowedCodes = [...allowedCodes, 190];
+    }
+    if (allowedCodes.indexOf(keycode) !== -1 ||
       // Allow: Ctrl+A
       (keycode === 65 && (event.ctrlKey || event.metaKey)) ||
       // Allow: Ctrl+C

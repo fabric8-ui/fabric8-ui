@@ -1,21 +1,12 @@
 import {
   Component,
-  ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
-  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { cloneDeep } from 'lodash';
-import {
-  AuthenticationService,
-  User,
-  UserService
-} from 'ngx-login-client';
-import { Observable } from 'rxjs/Observable';
-import { UserUI } from './../../models/user';
+import { User } from 'ngx-login-client';
 import {
   SelectDropdownComponent
 } from './../../widgets/select-dropdown/select-dropdown.component';

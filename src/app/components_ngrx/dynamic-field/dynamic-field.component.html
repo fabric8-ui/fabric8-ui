@@ -9,43 +9,25 @@
     </span>
     <div *ngIf="!loadingField">
 
-      <!-- workitemtype field type: string -->
-      <!-- <input *ngSwitchCase="'string'"
-        [formControlName]="attributeDesc.key"
-        type="text"
-        (focus)="focusIn()"> -->
-
-      <!-- workitemtype field type: integer -->
-      <!-- <input *ngSwitchCase="'integer'"
-        [value]="form.value[this.attributeKey]"`
-        (change)="baseChangeBaseType($event.target.value)"
-        type="text"
-        (focus)="focusIn()"> -->
       <f8-inlineinput
         class="dynamic-integer-field"
         *ngIf="fieldValue.field.type.kind==='integer' || fieldValue.field.type.kind==='string'|| fieldValue.field.type.kind==='float'"
         [disabled]="!editAllow"
         [type]="fieldValue.field.type.kind"
         [value]="fieldValue.value"
-        [onLineClickEdit]="true"
         (onSave)="saveInputField($event)"
         [placeholder]="fieldValue.field.label">
       </f8-inlineinput>
-
-      <!-- workitemtype field type: float -->
-      <!-- <input *ngSwitchCase="'float'"
-        [formControlName]="attributeDesc.key"
-        type="text"
-        (focus)="focusIn()"> -->
 
       <!-- workitemtype field type: dropdown -->
       <common-selector
         *ngIf="fieldValue.field.type.kind==='enum'"
         [noValueLabel]="'None'"
         [allowUpdate]="editAllow"
-        class="dynamic-enum-dropdown"
+        [headerText]="fieldValue.field.label + ' dropdown'"
         [items]="dropdownMenuItems"
         [selectedItems]="dropdownSelectedItems"
+        class="dynamic-enum-dropdown"
         (onCloseSelector)="onChangeDropdown($event)">
       </common-selector>
 
@@ -54,9 +36,10 @@
         *ngIf="fieldValue.field.type.kind==='boolean'"
         [noValueLabel]="'None'"
         [allowUpdate]="editAllow"
-        class="dynamic-boolean-dropdown"
+        [headerText]="fieldValue.field.label + ' dropdown'"
         [items]="dropdownMenuItems"
         [selectedItems]="dropdownSelectedItems"
+        class="dynamic-boolean-dropdown"
         (onCloseSelector)="onChangeDropdown($event)">
       </common-selector>
 
