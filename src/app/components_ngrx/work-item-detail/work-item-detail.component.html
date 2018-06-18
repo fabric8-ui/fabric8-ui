@@ -191,14 +191,11 @@
                   class="pficon pficon-user user-creator-icon"
                   id="user_creator_icon">
                 </span>
-                <div class="user-avatar pull-left margin-right-10">
-                  <img *ngIf="creator"
-                    placement="bottom"
-                    tooltip="{{creator?.name}}"
-                    src="{{creator?.avatar + '&s=20'}}"
-                    onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=20'"
-                    id="WI_details_reporter_img" />
-                </div>
+                <user-avatar
+                  id="WI_details_reporter_img"
+                  *ngIf="creator"
+                  [imgSrc]="creator?.avatar | almAvatarSize: 25">
+                </user-avatar>
                 <div class="dib">
                   <span id="WI_details_reporter_user">
                     {{ creator.name }}

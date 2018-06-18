@@ -22,10 +22,10 @@ import {
   WidgetsModule
 } from 'ngx-widgets';
 import { SafePipeModule } from '../../pipes/safe.module';
-import { WorkItemCommentWrapperComponent } from '../work-item-comment-wrapper/work-item-comment-wrapper.component';
 import { factoryForHttpService, HttpService } from './../../services/http-service';
 import { GlobalSettings } from './../../shared/globals';
 import { CommentModule } from './../../widgets/comment-module/comment.module';
+import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module';
 import { WorkItemCommentComponent } from './work-item-comment.component';
 
 let providers = [
@@ -53,7 +53,8 @@ let providers = [
     HttpModule,
     TooltipModule,
     WidgetsModule,
-    SafePipeModule
+    SafePipeModule,
+    UserAvatarModule
   ],
   declarations: [
     WorkItemCommentComponent

@@ -57,14 +57,12 @@
 </span>
 
 <!-- Creator -->
-
-<div *ngIf="col === 'creator'" class="user-avatar">
-  <img placement="left"
-        tooltip="{{(row.creatorObs | async)?.name}}"
-        src="{{(row.creatorObs | async)?.avatar + '&s=23'}}"
-        onError="this.src='https://avatars0.githubusercontent.com/u/563119?v=3&s=23'" />
-</div>
-
+<user-avatar
+  *ngIf="col === 'creator'"
+  [imgSrc]= "(row.creatorObs | async)?.avatar | almAvatarSize: 25"
+  [imgTooltip]= "(row.creatorObs | async)?.name"
+  [imgPlacement]="'left'">
+</user-avatar>
 <!-- Assignee -->
 <div *ngIf="col === 'assignees'" >
   <f8-assignee

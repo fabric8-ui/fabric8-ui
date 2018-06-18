@@ -57,6 +57,8 @@ import { IterationQuery } from '../../models/iteration.model';
 import { CommentQuery } from './../../models/comment';
 import { LabelQuery } from './../../models/label.model';
 import { WorkItemQuery } from './../../models/work-item';
+import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module';
+
 
 @NgModule({
   imports: [
@@ -103,7 +105,8 @@ import { WorkItemQuery } from './../../models/work-item';
       LinkTypeEffects,
       WorkItemLinkEffects
     ]),
-    SafePipeModule
+    SafePipeModule,
+    UserAvatarModule
   ],
   providers: [
     CommentQuery,

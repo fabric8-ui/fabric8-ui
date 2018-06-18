@@ -1,14 +1,11 @@
 <div class="f8-comment-body">
-  <div class="user-avatar margin-right-10 pull-left">
-    <img class="user-assign-avatar"
-      id="{{'comment_avatar_' + comment.id}}"
-      placement="right"
-      container="body"
-      tooltip="{{ (comment.creator | async)?.name }}"
-      *ngIf="(comment.creator | async)?.avatar"
-      [src]="(comment.creator | async)?.avatar | almAvatarSize:30"
-    />
-  </div>
+  <user-avatar
+    class="pull-left"
+    id="{{'comment_avatar_' + comment.id}}"
+    *ngIf="(comment.creator | async)?.avatar"
+    container="body"
+    [imgSrc]="(comment.creator | async)?.avatar | almAvatarSize: 25">
+  </user-avatar>
   <div>
     <h5 class="f8-comment-author pull-left">
       <strong  class="truncate"

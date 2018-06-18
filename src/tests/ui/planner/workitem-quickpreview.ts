@@ -73,7 +73,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     this.descriptionDiv.$$('.action-btn.btn').first(),
     'WorkItem Description Save Button');
   creatorusername = new ui.BaseElement(this.$('#WI_details_reporter_user'), 'WorkItem creator div');
-  creatorAvatar = new ui.BaseElement(this.$('#WI_details_reporter_img'), 'Creator Avatar URL')
+  creatorAvatar = new ui.BaseElement(this.$('#WI_details_reporter_img>img'), 'Creator Avatar URL')
   /* UI elements for the bottom section of the workitem preview */
   linksDiv = new ui.BaseElement($('#wi-link'),'WorkItem links div')
   linksToggleButton = new ui.Clickable(this.linksDiv.$('.f8-toggle-caret'), 'WorkItem Links toggle button');

@@ -47,7 +47,7 @@ import * as reducers from './../../reducers/index.reducer';
 import { WorkItemReducer } from './../../reducers/work-item.reducer';
 import * as states from './../../states/index.state';
 
-import { AlmIconModule } from 'ngx-widgets';
+import { AlmIconModule, WidgetsModule } from 'ngx-widgets';
 import { EmptyStateModule } from 'patternfly-ng/empty-state';
 import { InfotipService } from '../../services/infotip.service';
 import { UrlService } from '../../services/url.service';
@@ -60,6 +60,7 @@ import { LabelQuery } from '../../models/label.model';
 import { CommentQuery } from './../../models/comment';
 import { UserQuery } from './../../models/user';
 import { WorkItemQuery } from './../../models/work-item';
+import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module';
 
 let providers = [
     WorkItemService,
@@ -108,6 +109,7 @@ let providers = [
     BsDropdownModule.forRoot(),
     NgxDatatableModule,
     WorkItemPreviewPanelModule,
+    WidgetsModule,
     TruncateModule,
     StoreModule.forFeature('listPage', {
         iterations: reducers.iterationReducer,
@@ -150,7 +152,8 @@ let providers = [
       effects.WorkItemEffects,
       effects.InfotipEffects,
       effects.UserEffects
-    ])
+    ]),
+    UserAvatarModule
   ],
   declarations: [
     PlannerListComponent,

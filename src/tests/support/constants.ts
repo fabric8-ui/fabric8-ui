@@ -42,7 +42,7 @@ export class Constants {
   editWorkItemTitle1 = 'Title Text "<0>"';
   // Required since we need 2 users. Do not remove
   user2 = this.user1;
-  user_avatar = 'https://www.gravatar.com/avatar/f56b4884b4041f14b13d919008fd7d44.jpg&s=20';
+  user_avatar = 'https://www.gravatar.com/avatar/f56b4884b4041f14b13d919008fd7d44.jpg&s=25';
   comment = "new comment";
   randomText = "zxz"
 }

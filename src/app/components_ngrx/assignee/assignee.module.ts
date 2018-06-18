@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { WidgetsModule } from 'ngx-widgets';
+import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module';
 import { AssigneesComponent } from './assignee.component';
 
 @NgModule({
@@ -10,7 +12,9 @@ import { AssigneesComponent } from './assignee.component';
     CommonModule,
     RouterModule,
     TooltipModule,
-    BsDropdownModule
+    BsDropdownModule,
+    UserAvatarModule,
+    WidgetsModule
   ],
   declarations: [
     AssigneesComponent
