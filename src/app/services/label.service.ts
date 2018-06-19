@@ -51,14 +51,10 @@ export class LabelService {
     });
   }
 
-  createLabel(label: LabelModel): Observable<LabelModel> {
-    return this.spaces.current.switchMap(
-      currentSpace => {
-        return this.http.post(currentSpace.links.self + '/labels', {data: label});
-      }
-    )
-    .map (response => {
-      return response.json().data as LabelModel;
-    });
+  createLabel(label: LabelModel, url: string): Observable<LabelModel> {
+    return this.http.post(url, {data: label})
+      .map (response => {
+        return response.json().data as LabelModel;
+      });
   }
 }

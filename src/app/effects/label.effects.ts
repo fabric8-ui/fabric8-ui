@@ -38,9 +38,9 @@ export class LabelEffects {
 
   @Effect() createLabel$: Observable<Action> = this.actions$
     .ofType<LabelActions.Add>(LabelActions.ADD)
-    .map(action => action.payload)
-    .switchMap(payload => {
-      return this.labelService.createLabel(payload)
+    .withLatestFrom(this.store.select('listPage').select('space'))
+    .switchMap(([action, space])  => {
+      return this.labelService.createLabel(action.payload, space.links.self + '/labels')
         .map(label => {
           const lMapper = new LabelMapper();
           let labelUI = lMapper.toUIModel(label);
