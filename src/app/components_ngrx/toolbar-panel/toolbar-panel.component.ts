@@ -593,8 +593,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  saveFilters(filterName: string) {
-    if (filterName !== '') {
+  saveFilters(filterSaveInp: HTMLInputElement) {
+    if (filterSaveInp.value !== '') {
       //let exp = JSON.stringify(this.filterService.queryToJson(this.queryExp));
       let exp = this.queryExp;
       let e1 = this.filterService.queryToJson(exp);
@@ -602,12 +602,12 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       let customQuery = {
         'attributes': {
           'fields': str,
-          'title': filterName
+          'title': filterSaveInp.value
         },
         'type': 'queries'
       };
       this.store.dispatch(new CustomQueryActions.Add(customQuery));
-      this.closeFilterSave();
+      this.closeFilterSave(filterSaveInp);
     }
   }
 
@@ -663,8 +663,9 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  closeFilterSave() {
+  closeFilterSave(filterSaveInp: HTMLInputElement) {
     this.isFilterSaveOpen = false;
+    filterSaveInp.value = '';
   }
 
   saveFilterDropdownChange(value: boolean) {
