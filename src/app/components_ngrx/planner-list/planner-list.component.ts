@@ -224,6 +224,11 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
         .filter(event => event instanceof NavigationStart)
         .subscribe(
         (event: any) => {
+          if (event.url.indexOf('?q') === -1 &&
+            event.url.indexOf('/plan/detail/') === -1 &&
+            event.url.indexOf('/plan') > -1) {
+            this.setDefaultUrl();
+          }
           if (event.url.indexOf('/plan/detail/') > -1) {
             // It's going to the detail page
             let url = location.pathname;
