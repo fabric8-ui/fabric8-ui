@@ -33,6 +33,7 @@
         [rawText]="''"
         [renderedText]="''"
         [placeholder]="'Add a new comment...'"
+        [allowEmptySave]="false"
         (onSaveClick)="createComment($event)"
         (showPreview)="showPreview($event)">
       </f8-markdown>
