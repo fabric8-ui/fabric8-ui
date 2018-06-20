@@ -158,6 +158,12 @@ export class LabelQuery {
 
   getLabelObservablesByIds(ids: string[]): Observable<LabelUI[]> {
     if (!ids.length) { return Observable.of([]); }
-    return Observable.combineLatest(ids.map(id => this.getLabelObservableById(id)));
+    return Observable.combineLatest(ids.map(id => this.getLabelObservableById(id)))
+      // If the label is not available in the state
+      // it comes as undefined so we filter them out
+      .map(labels => labels.filter(l => !!l))
+      // In case the combine operation is stuck for any single
+      // observable inside, we start the stream with an empty array
+      .startWith([]);
   }
 }

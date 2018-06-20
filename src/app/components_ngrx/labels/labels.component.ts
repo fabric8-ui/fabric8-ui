@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { cloneDeep } from 'lodash';
-import { LabelModel, LabelUI } from './../../models/label.model';
+import { LabelUI } from './../../models/label.model';
 import { FilterService } from './../../services/filter.service';
 @Component({
   selector: 'f8-label',
