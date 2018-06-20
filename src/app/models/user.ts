@@ -119,7 +119,12 @@ export class UserQuery {
 
   getUserObservablesByIds(ids: string[] = []): Observable<UserUI[]> {
     if (!ids.length) { return Observable.of([]); }
-    return Observable.combineLatest(ids.map(id => this.getUserObservableById(id)));
+    return Observable.combineLatest(ids.map(id => this.getUserObservableById(id)))
+      // When a user is not there in the collaborator list
+      // it fetches that particular user from API service
+      // meanwhile the combine observables returns null if async pipe is used
+      // We should return empty array instead
+      .startWith([]);
   }
 
   getCollaborators(): Observable<UserUI[]> {
