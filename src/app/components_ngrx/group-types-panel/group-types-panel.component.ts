@@ -128,11 +128,14 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
     this.eventListeners.push(
       this.route.queryParams.subscribe(val => {
         if (val.hasOwnProperty('q')) {
+          let selectedTypeGroup: GroupTypeUI;
           const selectedTypeGroupName =
             this.filterService.getConditionFromQuery(val.q, 'typegroup.name');
-          const selectedTypeGroup =
-            this.groupTypes.find(g => g.name === selectedTypeGroupName);
-          if (!selectedTypeGroup.selected) {
+          if (selectedTypeGroupName) {
+            selectedTypeGroup =
+              this.groupTypes.find(g => g.name === selectedTypeGroupName);
+          }
+          if (selectedTypeGroup && !selectedTypeGroup.selected) {
             this.store.dispatch(new GroupTypeActions.SelectType(selectedTypeGroup));
           }
         }
