@@ -22,19 +22,18 @@
     }
   }
   &__wiblk {
-    padding-right: 10px;
-    padding-left: 10px;
-    .dropdown {
+    padding-right: 0;
+    .dropdown-kebab-pf {
       position: relative;
       button[data-toggle='dropdown'] {
         display: inline-flex;
         height: 26px;
       }
       .dropdown-menu {
+        margin-left: 16px;
         i {
-          display: inline-block;
-          min-width: 16px;
-          text-align: left;
+          width: 15px;
+          margin-top: 5px;
         }
       }
     }
@@ -80,17 +79,17 @@
     background: @color-pf-white;
     border: 2px solid;
     border-color: @color-pf-black-400;
-    .dropdown {
+    .dropdown-kebab-pf {
       button[data-toggle='dropdown'] {
         display: inline-flex;
         height: 26px;
       }
       .dropdown-menu {
         top: auto;
+        margin-left: 16px;
         i {
-          display: inline-block;
-          min-width: 16px;
-          text-align: left;
+          width: 15px;
+          margin-top: 5px;
         }
       }
     }

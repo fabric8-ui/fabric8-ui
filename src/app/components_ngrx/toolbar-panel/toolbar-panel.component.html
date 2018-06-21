@@ -8,37 +8,38 @@
     (onFilterTypeAhead)="filterQueries($event)">
   </pfng-toolbar>
 </div>
-<div class="active-filters-section">  
+<div class="f8-filters">  
   <span class="dib margin-right-10"
     *ngIf="activeFilterFromSidePane !== ''">
     <strong>{{ totalCount | async }}</strong> in {{ activeFilterFromSidePanel }}
   </span>
-  <div class="active-filters-div"
+  <div class="f8-filters--active"
     *ngIf="activeFilters.length">
     <ul class="list-inline">
       <li *ngFor="let filter of activeFilters">
         <span class="active-filter label label-info">
           {{ filter.field }}: {{ filter.displayValue }}
           <span
-            class="margin-left-5 pficon pficon-close clickable"
+            class="margin-left-5 pficon pficon-close pointer"
             (click)="isFilterSaveOpen=false; removeFilter(filter)">
           </span>
         </span>
       </li>
     </ul>
-    <span  class="clickable padding-h-10 dib"
-      *ngIf="activeFilters.length > 1">
-      <a (click)="removeAllFilters()">Clear all filters</a>
-    </span>
+    <a class="pointer"
+      *ngIf="activeFilters.length > 1"
+      (click)="removeAllFilters()">
+      Clear all filters
+    </a>
     <div class="dropdown-kebab-pf dropdown save-filter-dropdown"
-        [autoClose]="false" #filterSaveDropdown
-        [isOpen]="isFilterSaveOpen"
-        (isOpenChange)="saveFilterDropdownChange($event)"
-        dropdown>
-      <span *ngIf="activeFilters.length > 0 && showSaveFilterButton"
-          class="clickable dib">
-        <a dropdownToggle class="save-filters">Save</a>
-      </span>
+      [autoClose]="false" #filterSaveDropdown
+      [isOpen]="isFilterSaveOpen"
+      (isOpenChange)="saveFilterDropdownChange($event)"
+      dropdown>
+      <a dropdownToggle class="save-filters margin-left-10"
+        *ngIf="activeFilters.length > 0 && showSaveFilterButton">
+          Save
+      </a>
       <div *dropdownMenu class="dropdown-menu-{{dropdownPlacement}} dropdown-menu">
         <aside>
           <i class="db text-right fa fa-close btn btn-link"
@@ -53,7 +54,8 @@
           <button class="btn btn-primary pull-right margin-left-5 save-cq-btn"
             (click)="saveFilters(filterSaveInp)"
             [disabled]="!filterSaveInp.value">Save</button>
-          <button class="btn pull-right margin-right-5 cancel-cq-btn" (click)="closeFilterSave(filterSaveInp)">Cancel</button>
+          <button class="btn pull-right margin-right-5 cancel-cq-btn" 
+            (click)="closeFilterSave(filterSaveInp)">Cancel</button>
         </div>
       </div>
     </div>

@@ -23,7 +23,7 @@ export class ToolbarHeader extends BaseElement {
   saveFilterBtn = new ui.Button(this.saveFilterDialog.$('.save-cq-btn'),'Save');
   closeBtn = new ui.Button(this.$('.cancel-cq-btn'),'Cancel');
   titleTextInput = new ui.TextInput(this.saveFilterDialog.$('input.form-control'), 'Query Title');
-  activeFiltersList = new ui.BaseElementArray(this.$$('.active-filters-div li'), 'Active filters div');
+  activeFiltersList = new ui.BaseElementArray(this.$$('.f8-filters--active li'), 'Active filters div');
 
   constructor(el: ElementFinder, name = 'ToolBar Header') {
     super(el, name);

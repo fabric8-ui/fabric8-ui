@@ -1,11 +1,11 @@
 <!-- Table Inline Quick Add -->
-<div class="col-xs-12 col-sm-12 col-md-12 f8-quickadd__wiblk" #quickAddElement
+<div class="f8-quickadd__wiblk" #quickAddElement
   *ngIf="wilistview === 'wi-table-view' || wilistview === 'wi-table-view-top'"
   [ngClass]="{'f8-quick-add-inline' : wilistview === 'wi-table-view'}">
   <div class="pull-left">
-    <b class="pull-left padding-right-15">
+    <strong class="pull-left padding-right-10 padding-v-3">
       {{ wilistview === 'wi-table-view' ? 'Add Child Work Item' : 'Add Work Item' }}
-    </b>
+    </strong>
     <!-- type dropdown -->
     <div class="pull-left">
       <div class="dropdown" dropdown>
@@ -42,14 +42,14 @@
     </div>
   </div>
   <div class="f8-quickadd__wiblk-btn pull-right">
-    <button class="btn btn-primary f8-quickadd__wiblk-btn-add margin-right-15"
+    <button class="btn btn-primary f8-quickadd__wiblk-btn-add margin-right-5"
       id="quickadd-save"
       [disabled]="blockAdd"
       [ngClass]="{'': validTitle,'disabled':!validTitle}"
       (click)="save($event)">
       Add
     </button>
-    <button class="btn btn-primary f8-quickadd__wiblk-btn-add margin-right-15"
+    <button class="btn btn-primary f8-quickadd__wiblk-btn-add"
       [disabled]="blockAdd"
       [ngClass]="{'': validTitle,'disabled':!validTitle}"
       (click)="save($event, true)">
@@ -57,10 +57,7 @@
     </button>
   </div>
   <div class="f8-quickadd__wiblk-story">
-    <div [ngClass]="wilistview === 'wi-table-view' ?
-      'col-xs-12 col-sm-12 col-md-12'
-      : 'col-xs-12 col-sm-12 col-md-12'"
-      class="f8-quickadd__wiblk-storyinput">
+    <div class="f8-quickadd__wiblk-storyinput padding-h-10">
       <input class="form-control col-xs-12 col-sm-12
         col-md-12 f8-quickadd-input"
         type="text"

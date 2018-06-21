@@ -56,16 +56,6 @@
 
   <!-- tableConfig Dropdown -->
   <div class="width-100 pull-left padding-10 posRel" #quickaddWrapper>
-    <div class="f8-wi-list__quick-add padding-right-15 margin-right-15"
-      id="workItemList_up_quickAdd"
-      *ngIf="loggedIn && !!quickAddWorkItemTypes.length">
-      <alm-work-item-quick-add
-        [wilistview]="'wi-table-view-top'"
-        [workItemTypes]="quickAddWorkItemTypes"
-        [selectedType]="quickAddWorkItemTypes[0]"
-        [selectedIteration]="selectedIterationSource | async">
-      </alm-work-item-quick-add>
-    </div>
     <div class="f8-wi-list__settings f8-wi__table-config">
       <div (clickOut)="clickOut()" class="dropdown-kebab-pf pull-right dropdown margin-left-10"
         dropdown
@@ -120,6 +110,16 @@
           </aside>
         </div>
       </div>
+    </div>
+    <div class="f8-wi-list__quick-add padding-right-10 margin-right-10"
+      id="workItemList_up_quickAdd"
+      *ngIf="loggedIn && !!quickAddWorkItemTypes.length">
+      <alm-work-item-quick-add
+        [wilistview]="'wi-table-view-top'"
+        [workItemTypes]="quickAddWorkItemTypes"
+        [selectedType]="quickAddWorkItemTypes[0]"
+        [selectedIteration]="selectedIteration">
+      </alm-work-item-quick-add>
     </div>
   </div>
 
