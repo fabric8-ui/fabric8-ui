@@ -252,7 +252,7 @@
             </section>
           </div>
 
-          <!--Lables-->
+          <!--Labels-->
           <div class="form-group">
             <section class="f8-detail__labels">
               <label class="pull-left padding-left-15 control-label ">
@@ -300,13 +300,16 @@
             </section>
           </div>
 
-          <div class="col-xs-12 col-sm-12 padding-v-15 col-md-12 col-lg-12 dynamic-fields-wrap">
+          <div class="dynamic-fields-wrap">
             <!-- Extra fields Start -->
-            <div *ngFor="let field of dynamicKeyValueFields" class="form-group">
+            <div class="form-group margin-bottom-0"
+              *ngFor="let field of dynamicKeyValueFields">
               <alm-dynamic-field
+                class="db"
                 [keyValueField]="field"
                 [editAllow]="!!loggedInUser"
-                (onUpdate)="dynamicFieldUpdated($event)"></alm-dynamic-field>
+                (onUpdate)="dynamicFieldUpdated($event)">
+              </alm-dynamic-field>
             </div>
             <!-- Extra fields End -->
           </div>
