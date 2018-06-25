@@ -37,6 +37,16 @@ describe('Quick preview tests: ', () => {
     expect(await planner.quickPreview.getLabels()).toContain(c.newLabel);
   });
 
+  it('should open quickpreview and create new label using Enter Key', async () => {
+    let workitemname = {"title": "text labels"};
+    let newLabel = "Enter Key Label";
+    await planner.createWorkItem(workitemname);
+    await planner.workItemList.clickWorkItem(workitemname.title);
+    await planner.quickPreview.createNewLabel(newLabel, true);
+    await planner.quickPreview.notificationToast.untilHidden();
+    expect(await planner.quickPreview.getLabels()).toContain(newLabel);
+  });
+
   it('should link a workitem',async () => {
     let workitemname = {"title": "link test"},
       linkType = 'blocks',

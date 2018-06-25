@@ -193,11 +193,15 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.linkButton.clickWhenReady();
   }
 
-  async createNewLabel(label: string) {
-    await this.labelDropdown.clickWhenReady()
+  async createNewLabel(label: string, isPressEnter: boolean = false) {
+    await this.labelDropdown.clickWhenReady();
     await this.createLabelButton.clickWhenReady();
     await this.createLabelInput.enterText(label);
-    await this.createLabelSaveButton.clickWhenReady();
+    if (isPressEnter) {
+      await this.createLabelInput.pressEnter();
+    } else {
+      await this.createLabelSaveButton.clickWhenReady();
+    }
     await this.labelDropdown.select(label);
     await this.labelDropdownCloseButton.clickWhenReady();
     await this.loadingAnimation.untilCount(0);

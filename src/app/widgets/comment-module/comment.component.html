@@ -40,6 +40,7 @@
     *ngIf="!comment.parentId">
     <!-- Add reply button-->
     <button class="btn pull-right"
+      type="button"
       (click)="replyActive=true; replyEditor?.enableEditor();"
     >{{ 'Reply' }}</button>
 

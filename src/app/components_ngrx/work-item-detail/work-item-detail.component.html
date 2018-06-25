@@ -1,5 +1,5 @@
 <div [class.f8-wi-container]="detailContext=='detail'">
-  <form class="f8-detail form-horizontal work-item-page"
+  <div class="f8-detail form-horizontal work-item-page"
     id="wi-detail-form"
     *ngIf="workItem">
     <fieldset>
@@ -339,7 +339,7 @@
         </div>
       </div>
     </fieldset>
-  </form>
+  </div>
 </div>
 
 <osio-modal *ngIf="detailContext=='detail'"></osio-modal>
