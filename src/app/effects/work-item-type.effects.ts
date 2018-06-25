@@ -31,7 +31,7 @@ export class WorkItemTypeEffects {
     .ofType(WorkItemTypeActions.GET)
     .withLatestFrom(this.store.select('planner').select('space'))
     .switchMap(([action, space]) => {
-      return this.workItemService.getWorkItemTypes2(
+      return this.workItemService.getWorkItemTypes(
         space.relationships.workitemtypes.links.related
       )
       .map(types => types.filter(t => t.attributes['can-construct']))

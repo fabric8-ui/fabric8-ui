@@ -58,7 +58,7 @@ export class EventEffects {
       };
     })
     .switchMap((cp) => {
-      return this.workItemService.resolveEvents(cp.payload)
+      return this.workItemService.getEvents(cp.payload)
         .map((resp) => {
           let events =  resp.filter(event => event !== null).reverse();
           return this.resolveEvents(events, cp.state);

@@ -138,9 +138,9 @@ export class AssigneeSelectorComponent {
       this.assignees = cloneDeep(this.backup);
     }
   }
-  updateOnList() {
-    this.workItemService.emitEditWI(this.workItem);
-  }
+
+  updateOnList() {}
+
   cancelAssignment(): void {
     this.searchAssignee = false;
   }

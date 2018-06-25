@@ -69,7 +69,10 @@ export class WorkItemEffects {
       const createID = payload.createId;
       const workItem = payload.workItem;
       const parentId = payload.parentId;
-      return this.workItemService.create(workItem)
+      return this.workItemService.create(
+          state.space.links.self + '/workitems',
+          workItem
+        )
         .map(item => {
           let itemUI = this.workItemMapper.toUIModel(item);
           let wid = this.workItemMapper.toDynamicUIModel(
@@ -91,20 +94,21 @@ export class WorkItemEffects {
               '25c326a7-6d03-4f5a-b23b-86a9ee4171e9'
             );
 
-            return this.workItemService.createLink({
-              data: linkPayload
-            }).map(() => {
+            return this.workItemService.createLink(
+              state.space.links.self.split('space')[0] + 'workitemlinks',
+              { data: linkPayload }
+            ).map(() => {
               // for a normal (not a child) work item creation
               // Add item success notification
               const parent = state.workItems.entities[parentId];
               if (!parent.childrenLoaded && parent.hasChildren) {
-                return new WorkItemActions.GetChildren(parent);
+                return Observable.of(new WorkItemActions.GetChildren(parent));
               } else {
                 if (payload.openDetailPage) {
                   this.router.navigateByUrl(document.location.pathname + '/detail/' + wItem.number,
                                             {relativeTo: this.route});
                 }
-                return new WorkItemActions.AddSuccess(wItem);
+                return Observable.of(new WorkItemActions.AddSuccess(wItem));
               }
             });
           } else {
@@ -113,22 +117,22 @@ export class WorkItemEffects {
             if (payload.openDetailPage) {
               this.router.navigateByUrl(document.location.pathname + '/detail/' + wItem.number,
                                         {relativeTo: this.route});
-            }
-            return Observable.of(new WorkItemActions.AddSuccess(wItem));
           }
-        })
-        .catch(() => {
-          try {
-            this.notifications.message({
-              message: `Problem adding work item.`,
-              type: NotificationType.DANGER
-            } as Notification);
-          } catch (e) {
-            console.log('Problem adding work item.');
-          }
-          return Observable.of(new WorkItemActions.AddError());
-        });
+          return Observable.of(new WorkItemActions.AddSuccess(wItem));
+        }
+      })
+      .catch(() => {
+        try {
+          this.notifications.message({
+            message: `Problem adding work item.`,
+            type: NotificationType.DANGER
+          } as Notification);
+        } catch (e) {
+          console.log('Problem adding work item.');
+        }
+        return Observable.of(new WorkItemActions.AddError());
       });
+    });
 
   @Effect() getWorkItems$: Observable<Action> = this.actions$
     .ofType<WorkItemActions.Get>(WorkItemActions.GET)
@@ -148,7 +152,7 @@ export class WorkItemEffects {
       const finalQuery = this.filterService.queryJoiner(
         payload.filters, this.filterService.and_notation, spaceQuery
       );
-      return this.workItemService.getWorkItems2(payload.pageSize, {expression: finalQuery})
+      return this.workItemService.getWorkItems(payload.pageSize, {expression: finalQuery})
         .map((data: any) => {
           let wis = [];
           if (payload.isShowTree) {
@@ -195,7 +199,7 @@ export class WorkItemEffects {
         const parent = wp.payload;
         const state = wp.state;
         return this.workItemService
-          .getChildren2(parent.childrenLink)
+          .getChildren(parent.childrenLink)
           .map((data: WorkItemService[]) => {
             const wis = this.resolveWorkItems(
               data, state
@@ -391,7 +395,7 @@ export class WorkItemEffects {
       })
       .switchMap(wp => {
         return this.workItemService
-          .getChildren2(wp.payload)
+          .getChildren(wp.payload)
           .map((data: WorkItemService[]) => {
             return this.resolveWorkItems(data, wp.state);
           })

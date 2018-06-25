@@ -36,7 +36,7 @@ export function workitemMatchesFilter(route,
       const searchPayload = {
         expression: finalQuery
       };
-      return workItemService.getWorkItems2(1, searchPayload)
+      return workItemService.getWorkItems(1, searchPayload)
         .map(data => data.totalCount)
         .map(count => {
           workitem.bold = count > 0;
