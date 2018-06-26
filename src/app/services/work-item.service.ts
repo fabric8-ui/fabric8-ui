@@ -69,7 +69,6 @@ export class WorkItemService {
     for (let i = 0; i < 5; i++) {
       id += possible.charAt(Math.floor(Math.random() * possible.length));
     }
-    console.log('Created new id ' + id);
     return id;
   }
 
@@ -444,16 +443,11 @@ export class WorkItemService {
       }
     };
 
-    if (this._currentSpace) {
-      // FIXME: make the URL great again (when we know the right API URL for this)!
-      this.renderUrl = this.baseApiUrl + 'render';
-      // this.renderUrl = currentSpace.links.self + '/render';
-      return this.http
-        .post(this.renderUrl, JSON.stringify(params))
-        .map(response => response.json().data.attributes.renderedContent);
-    } else {
-      return Observable.of<any>({} as any);
-    }
+    // FIXME: make the URL great again (when we know the right API URL for this)!
+    this.renderUrl = this.baseApiUrl + 'render';
+    return this.http
+      .post(this.renderUrl, JSON.stringify(params))
+      .map(response => response.json().data.attributes.renderedContent);
   }
 
 
