@@ -42,7 +42,8 @@ export class CollaboratorEffects {
     })
     .map((collaborators: UserServiceModel[]) => {
       const collabM = new UserMapper();
-      return collaborators.map(c => collabM.toUIModel(c));
+      return collaborators.map(c => collabM.toUIModel(c)).
+      sort((c1, c2) => (c1.name > c2.name ? 1 : 0));
     })
     .switchMap(collaborators => {
       return [

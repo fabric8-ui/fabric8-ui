@@ -445,7 +445,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         datasource: this.labelData,
         datamap: (labels: LabelUI[]) => {
           return {
-            queries: labels.map(label => {
+            queries: labels.sort((l1, l2) => (l1.name.toLowerCase() > l2.name.toLowerCase() ? 1 : 0))
+            .map(label => {
               return {
                 id: label.id,
                 value: label.name

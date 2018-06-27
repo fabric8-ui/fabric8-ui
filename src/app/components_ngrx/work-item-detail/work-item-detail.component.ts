@@ -174,7 +174,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
       .switchMap(([labels, collabs, states, type]) => {
         this.collaborators = collabs.filter(c => !c.currentUser);
         this.loggedInUser = collabs.find(c => c.currentUser);
-        this.labels = labels;
+        this.labels = labels.sort((l1, l2) => (l1.name.toLowerCase() > l2.name.toLowerCase() ? 1 : 0));
         this.wiTypes = type;
         this.store.dispatch(new DetailWorkItemActions.GetWorkItem({
           number: wiNumber

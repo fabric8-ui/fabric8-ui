@@ -33,7 +33,8 @@ export class AreaEffects {
         )
         .map((areas: AreaService[]) => {
           const aMapper = new AreaMapper();
-          return areas.map(a => aMapper.toUIModel(a));
+          return areas.map(a => aMapper.toUIModel(a)).
+          sort((a1, a2) => (a1.name.toLowerCase() > a2.name.toLowerCase() ? 1 : 0));
         })
         .map(areas => new AreaActions.GetSuccess(normalizeArray(areas)))
         .catch((e) => {

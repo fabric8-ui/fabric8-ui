@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, orderBy } from 'lodash';
 import { Observable } from 'rxjs';
 import { AppState, ListPage } from './../states/app.state';
 import {
@@ -557,7 +557,7 @@ export class WorkItemQuery {
       .filter(w => !!w)
       .switchMap(workitem => {
         return this.iterationQuery.getIterations().map(iterations => {
-          return iterations.map(i => {
+          return orderBy(iterations, 'name', 'asc').map(i => {
             return {
               key: i.id,
               value: (i.resolvedParentPath != '/' ? i.resolvedParentPath : '') + '/' + i.name,
