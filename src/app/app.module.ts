@@ -62,7 +62,6 @@ import { AppState, InternalStateType } from './app.service';
 
 // Header
 import { FeatureFlagResolver } from './feature-flag/resolver/feature-flag.resolver';
-import { featureTogglesApiUrlProvider, FeatureTogglesService } from './feature-flag/service/feature-toggles.service';
 
 import { HeaderComponent } from './layout/header/header.component';
 import { MenusService }    from './layout/header/menus.service';
@@ -112,11 +111,20 @@ import { AddSpaceOverlayModule } from './space/add-space-overlay/add-space-overl
 // About Modal
 import { AboutModalModule } from './layout/about-modal/about-modal.module';
 
-import { FeatureFlagModule } from './feature-flag/feature-flag.module';
+import { TooltipModule } from 'ngx-bootstrap';
+import {
+  FeatureTogglesService
+} from 'ngx-feature-flag';
 import { FeatureFooterModule } from './feature-flag/notification-footer/feature-footer.module';
 import { FeatureAcknowledgementService } from './feature-flag/service/feature-acknowledgement.service';
+import { TogglesModule } from './feature-flag/toggles.module';
 import { GettingStartedService } from './getting-started/services/getting-started.service';
 import { RavenExceptionHandler } from './shared/exception.handler';
+import { togglesApiUrlProvider } from './shared/toggles.api.provider';
+<<<<<<< HEAD
+=======
+
+>>>>>>> fa48a801... refactor(feature-flag): use ext library
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -147,7 +155,6 @@ export type StoreType = {
     BsDropdownModule.forRoot(),
     EffectsModule.forRoot([]),
     EmptyStateModule,
-    FeatureFooterModule,
     FormsModule,
     HttpModule,
     KubernetesRestangularModule,
@@ -156,7 +163,7 @@ export type StoreType = {
       prefix: 'fabric8',
       storageType: 'localStorage'
     }),
-    ModalModule.forRoot(),
+
     MomentModule,
     ToastNotificationListModule,
     ReactiveFormsModule,
@@ -167,7 +174,10 @@ export type StoreType = {
     StoreModule.forRoot({}),
     AppRoutingModule,
     // Must be at the end
-    FeatureFlagModule
+
+    ModalModule.forRoot(),
+    TooltipModule.forRoot(),
+    FeatureFooterModule
   ],
   declarations: [ // declare which components, directives and pipes belong to the module
     AppComponent,
@@ -205,7 +215,6 @@ export type StoreType = {
     FeatureFlagResolver,
     FeatureTogglesService,
     FeatureAcknowledgementService,
-    featureTogglesApiUrlProvider,
     Fabric8RuntimeConsoleResolver,
     Fabric8RuntimeConsoleService,
     {
@@ -250,6 +259,7 @@ export type StoreType = {
     UserService,
     WindowService,
     witApiUrlProvider,
+    togglesApiUrlProvider,
     realmProvider
   ],
   schemas: [],
