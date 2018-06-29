@@ -305,7 +305,10 @@ export class WorkItemEffects {
       })
       .switchMap((op) => {
         const workitem = this.workItemMapper.toServiceModel(op.payload.workitem);
-        return this.workItemService.reOrderWorkItem(workitem, op.payload.destinationWorkitemID, op.payload.direction)
+        return this.workItemService.reOrderWorkItem(
+          op.state.space.links.self, workitem,
+          op.payload.destinationWorkitemID, op.payload.direction
+        )
           .map(w => this.resolveWorkItems([w], op.state)[0])
           .map(w => {
             w.treeStatus = op.payload.workitem.treeStatus;
@@ -346,7 +349,10 @@ export class WorkItemEffects {
           reorderPayload.workitem.version = workitem.attributes['version'];
           const workItem = this.workItemMapper.toServiceModel(reorderPayload.workitem);
           return reorderPayload.direction ?
-            this.workItemService.reOrderWorkItem(workItem, reorderPayload.destinationWorkitemID, reorderPayload.direction) :
+            this.workItemService.reOrderWorkItem(
+              wp.state.space.links.self, workItem,
+              reorderPayload.destinationWorkitemID, reorderPayload.direction
+            ) :
             Observable.of(workitem);
         })
         .map(w => {

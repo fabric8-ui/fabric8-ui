@@ -91,26 +91,22 @@ export class WorkItemService {
    * @param filters filters to the work items
    */
   getWorkItems(pageSize: number = 20, filters: object): Observable<{workItems: WorkItem[], nextLink: string, totalCount?: number | null, included?: WorkItem[] | null, ancestorIDs?: Array<string>}> {
-    if (this._currentSpace) {
-      let url = '';
-      this.workItemUrl = this._currentSpace.links.self.split('spaces')[0] + 'search';
-      url = this.workItemUrl + '?page[limit]=' + pageSize + '&' + Object.keys(filters).map(k => 'filter[' + k + ']=' + encodeURIComponent(JSON.stringify(filters[k]))).join('&');
-      return this.http.get(url)
-        .map((resp) => {
-          return {
-            workItems: resp.json().data as WorkItem[],
-            nextLink: resp.json().links.next,
-            totalCount: resp.json().meta ? resp.json().meta.totalCount : 0,
-            included: resp.json().included ? resp.json().included as WorkItem[] : [],
-            ancestorIDs: resp.json().meta.ancestorIDs ? resp.json().meta.ancestorIDs : []
-          };
-        }).catch((error: Error | any) => {
-          this.notifyError('Getting work items failed.', error);
-          return Observable.throw(new Error(error.message));
-        });
-    } else {
-      return Observable.of<{workItems: WorkItem[], nextLink: string | null}>({workItems: [] as WorkItem[], nextLink: null});
-    }
+    let url = '';
+    this.workItemUrl = this.baseApiUrl + 'search';
+    url = this.workItemUrl + '?page[limit]=' + pageSize + '&' + Object.keys(filters).map(k => 'filter[' + k + ']=' + JSON.stringify(filters[k])).join('&');
+    return this.http.get(url)
+      .map((resp) => {
+        return {
+          workItems: resp.json().data as WorkItem[],
+          nextLink: resp.json().links.next,
+          totalCount: resp.json().meta ? resp.json().meta.totalCount : 0,
+          included: resp.json().included ? resp.json().included as WorkItem[] : [],
+          ancestorIDs: resp.json().meta.ancestorIDs ? resp.json().meta.ancestorIDs : []
+        };
+      }).catch((error: Error | any) => {
+        this.notifyError('Getting work items failed.', error);
+        return Observable.throw(new Error(error.message));
+      });
   }
 
 
@@ -145,31 +141,27 @@ export class WorkItemService {
    * @param space : string
    */
   getWorkItemByNumber(id: string | number, owner: string = '', space: string = ''): Observable<WorkItem> {
-    if (this._currentSpace) {
-      if (owner && space) {
-        return this.http.get(
-          this._currentSpace.links.self.split('/spaces/')[0] +
-          '/namedspaces' +
-          '/' + owner +
-          '/' + space +
-          '/workitems/' + id,
-          {'no-header': null}
-        )
+    if (owner && space) {
+      return this.http.get(
+        this.baseApiUrl +
+        'namedspaces' +
+        '/' + owner +
+        '/' + space +
+        '/workitems/' + id,
+        {'no-header': null}
+      )
+      .map(item => item.json().data)
+      .catch((error: Error | any) => {
+        this.notifyError('Getting work item data failed.', error);
+        return Observable.throw(new Error(error.message));
+      });
+    } else {
+      return this.http.get(this.baseApiUrl + 'workitems/' + id)
         .map(item => item.json().data)
         .catch((error: Error | any) => {
           this.notifyError('Getting work item data failed.', error);
           return Observable.throw(new Error(error.message));
         });
-      } else {
-        return this.http.get(this._currentSpace.links.self.split('/spaces/')[0] + '/workitems/' + id)
-          .map(item => item.json().data)
-          .catch((error: Error | any) => {
-            this.notifyError('Getting work item data failed.', error);
-            return Observable.throw(new Error(error.message));
-          });
-      }
-    } else {
-      return Observable.of<WorkItem>(new WorkItem());
     }
   }
 
@@ -404,9 +396,15 @@ export class WorkItemService {
    * Usage: Make a API call to save
    * the order of work item.
    *
+   * @param spaceLink: string
    * @param workItemId: string
+   * @param prevWiId: string
+   * @param direction: string
    */
-  reOrderWorkItem(workItem: WorkItem, prevWiId: string | null = null, direction: string): Observable<any> {
+  reOrderWorkItem(
+    spaceLink: string, workItem: WorkItem,
+    prevWiId: string | null = null, direction: string
+  ): Observable<WorkItem> {
     let newWItem = new WorkItem();
     let arr = [];
     newWItem.id = workItem.id.toString();
@@ -414,18 +412,13 @@ export class WorkItemService {
     newWItem.attributes['version'] = workItem.attributes['version'];
     newWItem.type = workItem.type;
     arr.push(newWItem);
-
-    if (this._currentSpace) {
-      let url = `${this._currentSpace.links.self}/workitems/reorder`;
-      return this.http
-        .patch(url, JSON.stringify({data: arr, position: {direction: direction, id: prevWiId}}))
-        .map(response => {
-          let updatedWorkItem: WorkItem = response.json().data[0] as WorkItem;
-          return updatedWorkItem;
-        });
-    } else {
-      Observable.throw('No space selected');
-    }
+    let url = `${spaceLink}/workitems/reorder`;
+    return this.http
+      .patch(url, JSON.stringify({data: arr, position: {direction: direction, id: prevWiId}}))
+      .map(response => {
+        let updatedWorkItem: WorkItem = response.json().data[0] as WorkItem;
+        return updatedWorkItem;
+      }).catch(err => Observable.of(workItem));
   }
 
   /**

@@ -23,7 +23,7 @@ import {
     workItemSnapshot
 } from './work-item.snapshot';
 
-describe('Unit Test :: WorkItemService', () => {
+fdescribe('Unit Test :: WorkItemService', () => {
     beforeEach(() => {
         const mockHttpService = jasmine.createSpyObj(
             'HttpService', ['get']
@@ -96,6 +96,7 @@ describe('Unit Test :: WorkItemService', () => {
 
     it('getChildren :: Should get the list of workitems when getChildren is called', (done) => {
         const wiService = TestBed.get(WorkItemService);
+        wiService['baseApiUrl'] = 'link/to/spaces/';
         wiService.http.get.and.returnValue(
             Observable.of(new Response(
                 new ResponseOptions({
@@ -113,9 +114,7 @@ describe('Unit Test :: WorkItemService', () => {
 
     it('getWorkItems :: Should get the list of workitems in proper format when getWorkItems is called', (done) => {
         const wiService = TestBed.get(WorkItemService);
-        wiService['_currentSpace'] = {
-            links: { self: '' }
-        };
+        wiService['baseApiUrl'] = 'link/to/spaces/';
         wiService.http.get.and.returnValue(
             Observable.of(new Response(
                 new ResponseOptions({
@@ -133,9 +132,7 @@ describe('Unit Test :: WorkItemService', () => {
 
     it('getWorkItems :: Should call notifyError if error response comes', (done) => {
         const wiService = TestBed.get(WorkItemService);
-        wiService['_currentSpace'] = {
-            links: { self: '' }
-        };
+        wiService['baseApiUrl'] = 'link/to/spaces/';
         wiService.http.get.and.returnValue(
             Observable.throw(new Error('Internal service error'))
             .delay(100)
@@ -149,17 +146,6 @@ describe('Unit Test :: WorkItemService', () => {
                     done();
                 }
             );
-    });
-
-    it('getWorkItems :: Should return an empty list if space not found', (done) => {
-        const wiService = TestBed.get(WorkItemService);
-        wiService['_currentSpace'] = null;
-        wiService.getWorkItems('', {})
-            .subscribe((data) => {
-                expect(data.workItems.length).toBe(0);
-                expect(data.nextLink).toBeNull();
-                done();
-            });
     });
 
     it('getMoreWorkItems :: Should get the list of workitems in proper format when getMoreWorkItems is called', (done) => {
@@ -208,22 +194,10 @@ describe('Unit Test :: WorkItemService', () => {
             );
     });
 
-    it('getWorkItemByNumber :: Should return empty workItem if there is no currentSpace', (done) => {
-        const wiService = TestBed.get(WorkItemService);
-        wiService['_currentSpace'] = null;
-        wiService.getWorkItemByNumber('1', 'owner1', 'space1')
-            .subscribe((data) => {
-                expect(data).toEqual(new WorkItem());
-                done();
-            });
-    });
-
     it(`getWorkItemByNumber :: Should construct the right URL if 'owner' is
         not provided considering to fetch workItem by the ID`, (done) => {
         const wiService = TestBed.get(WorkItemService);
-        wiService['_currentSpace'] = {
-            links: { self: 'link/to/spaces/' }
-        };
+        wiService['baseApiUrl'] = 'link/to/';
         wiService.http.get.and.returnValue(
             Observable.of(new Response(
                 new ResponseOptions({
@@ -244,9 +218,7 @@ describe('Unit Test :: WorkItemService', () => {
     it(`getWorkItemByNumber :: Should construct the right URL if 'space'
         is not provided considering to fetch workItem by the ID`, (done) => {
         const wiService = TestBed.get(WorkItemService);
-        wiService['_currentSpace'] = {
-            links: { self: 'link/to/spaces/' }
-        };
+        wiService['baseApiUrl'] = 'link/to/';
         wiService.http.get.and.returnValue(
             Observable.of(new Response(
                 new ResponseOptions({
@@ -267,9 +239,7 @@ describe('Unit Test :: WorkItemService', () => {
     it(`getWorkItemByNumber :: Should log error when work item is requested by
         the ID considering 'space' or 'owner' is not provided`, (done) => {
         const wiService = TestBed.get(WorkItemService);
-        wiService['_currentSpace'] = {
-            links: { self: 'link/to/spaces/' }
-        };
+        wiService['baseApiUrl'] = 'link/to/';
         wiService.http.get.and.returnValue(
             Observable.throw(Observable.throw(new Error('Internal service error')))
             .delay(100)
@@ -290,9 +260,7 @@ describe('Unit Test :: WorkItemService', () => {
     it(`getWorkItemByNumber :: Should construct the right URL if 'owner' and
         'space' are provided considering to fetch workItem by the number`, (done) => {
         const wiService = TestBed.get(WorkItemService);
-        wiService['_currentSpace'] = {
-            links: { self: 'link/to/spaces/' }
-        };
+        wiService['baseApiUrl'] = 'link/to/';
         wiService.http.get.and.returnValue(
             Observable.of(new Response(
                 new ResponseOptions({
@@ -316,9 +284,7 @@ describe('Unit Test :: WorkItemService', () => {
     it(`getWorkItemByNumber :: Should log error when work item is requested by
         the number considering 'space' or 'owner' is provided`, (done) => {
         const wiService = TestBed.get(WorkItemService);
-        wiService['_currentSpace'] = {
-            links: { self: 'link/to/spaces/' }
-        };
+        wiService['baseApiUrl'] = 'link/to/';
         wiService.http.get.and.returnValue(
             Observable.throw(Observable.throw(new Error('Internal service error')))
             .delay(100)
