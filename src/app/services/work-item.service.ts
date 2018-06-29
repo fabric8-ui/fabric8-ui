@@ -15,8 +15,7 @@ import {
 } from 'ngx-login-client';
 
 import {
-  Comment,
-  CommentPost
+  Comment
 } from '../models/comment';
 
 import { AreaModel } from '../models/area.model';
@@ -221,17 +220,12 @@ export class WorkItemService {
     return this.http
       .get(workItemTypeUrl)
       .map((response) => {
-        let resultTypes = response.json().data as WorkItemType[];
 
-        // THIS IS A HACK!
-        for (let i = 0; i < resultTypes.length; i++) {
-          if (resultTypes[i].id === '86af5178-9b41-469b-9096-57e5155c3f31') {
-            resultTypes.splice(i, 1);
-          }
-        }
+        // TODO : this line can be removed when
+        // getWorkItemTypesById function is removed
+        this.workItemTypes = response.json().data;
 
-        this.workItemTypes = resultTypes;
-        return this.workItemTypes;
+        return response.json().data as WorkItemType[];
       }).catch((error: Error | any) => {
         this.notifyError('Getting work item type information failed.', error);
         return Observable.throw(new Error(error.message));
@@ -291,10 +285,8 @@ export class WorkItemService {
    * @param: Comment
    */
   createComment(url: string, comment: Comment): Observable<Comment> {
-    let c = new CommentPost();
-    c.data = comment;
     return this.http
-      .post(url, c)
+      .post(url, {data: comment})
       .map(response => {
         return response.json().data as Comment;
       }).catch((error: Error | any) => {

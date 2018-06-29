@@ -2207,3 +2207,1398 @@ export const resolveLinkExpectedOutputSnapShot = [
      linkResponseSnapShot.data,
      linkResponseSnapShot.included
  ];
+
+export const workItemTypesResponseSnapshot = {
+    'data': [
+       {
+          'attributes': {
+             'can-construct': true,
+             'created-at': '0001-01-01T00:00:00Z',
+             'description': 'TBD',
+             'fields': {
+                'system.area': {
+                   'description': 'The area to which the work item belongs',
+                   'label': 'Area',
+                   'required': false,
+                   'type': {
+                      'kind': 'area'
+                   }
+                },
+                'system.assignees': {
+                   'description': 'The users that are assigned to the work item',
+                   'label': 'Assignees',
+                   'required': false,
+                   'type': {
+                      'componentType': 'user',
+                      'kind': 'list'
+                   }
+                },
+                'system.codebase': {
+                   'description': 'Contains codebase attributes to which this WI belongs to',
+                   'label': 'Codebase',
+                   'required': false,
+                   'type': {
+                      'kind': 'codebase'
+                   }
+                },
+                'system.created_at': {
+                   'description': 'The date and time when the work item was created',
+                   'label': 'Created at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                },
+                'system.creator': {
+                   'description': 'The user that created the work item',
+                   'label': 'Creator',
+                   'required': true,
+                   'type': {
+                      'kind': 'user'
+                   }
+                },
+                'system.description': {
+                   'description': 'A descriptive text of the work item',
+                   'label': 'Description',
+                   'required': false,
+                   'type': {
+                      'kind': 'markup'
+                   }
+                },
+                'system.iteration': {
+                   'description': 'The iteration to which the work item belongs',
+                   'label': 'Iteration',
+                   'required': false,
+                   'type': {
+                      'kind': 'iteration'
+                   }
+                },
+                'system.labels': {
+                   'description': 'List of labels attached to the work item',
+                   'label': 'Labels',
+                   'required': false,
+                   'type': {
+                      'componentType': 'label',
+                      'kind': 'list'
+                   }
+                },
+                'system.number': {
+                   'description': 'The unique number that was given to this workitem within its space.',
+                   'label': 'Number',
+                   'required': false,
+                   'type': {
+                      'kind': 'integer'
+                   }
+                },
+                'system.order': {
+                   'description': 'Execution Order of the workitem',
+                   'label': 'Execution Order',
+                   'required': false,
+                   'type': {
+                      'kind': 'float'
+                   }
+                },
+                'system.remote_item_id': {
+                   'description': 'The ID of the remote work item',
+                   'label': 'Remote item',
+                   'required': false,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.state': {
+                   'description': 'The state of the work item',
+                   'label': 'State',
+                   'required': true,
+                   'type': {
+                      'baseType': 'string',
+                      'kind': 'enum',
+                      'values': [
+                         'new',
+                         'open',
+                         'in progress',
+                         'resolved',
+                         'closed'
+                      ]
+                   }
+                },
+                'system.title': {
+                   'description': 'The title text of the work item',
+                   'label': 'Title',
+                   'required': true,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.updated_at': {
+                   'description': 'The date and time when the work item was last updated',
+                   'label': 'Updated at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                }
+             },
+             'icon': 'fa fa-university',
+             'name': 'Fundamental',
+             'updated-at': '2018-06-28T08:50:11.598499Z',
+             'version': 0
+          },
+          'id': 'ee7ca005-f81d-4eea-9b9b-1965df0988d0',
+          'relationships': {
+             'guidedChildTypes': {
+                'data': [
+                   {
+                      'id': 'b9a71831-c803-4f66-8774-4193fffd1311',
+                      'type': 'workitemtypes'
+                   },
+                   {
+                      'id': '3194ab60-855b-4155-9005-9dce4a05f1eb',
+                      'type': 'workitemtypes'
+                   }
+                ]
+             },
+             'space': {
+                'data': {
+                   'id': '2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'type': 'spaces'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'self': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2'
+                }
+             },
+             'space_template': {
+                'data': {
+                   'id': '929c963a-174c-4c37-b487-272067e88bd4',
+                   'type': 'spacetemplates'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4',
+                   'self': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4'
+                }
+             }
+          },
+          'type': 'workitemtypes'
+       },
+       {
+          'attributes': {
+             'can-construct': true,
+             'created-at': '0001-01-01T00:00:00Z',
+             'description': 'TBD',
+             'fields': {
+                'system.area': {
+                   'description': 'The area to which the work item belongs',
+                   'label': 'Area',
+                   'required': false,
+                   'type': {
+                      'kind': 'area'
+                   }
+                },
+                'system.assignees': {
+                   'description': 'The users that are assigned to the work item',
+                   'label': 'Assignees',
+                   'required': false,
+                   'type': {
+                      'componentType': 'user',
+                      'kind': 'list'
+                   }
+                },
+                'system.codebase': {
+                   'description': 'Contains codebase attributes to which this WI belongs to',
+                   'label': 'Codebase',
+                   'required': false,
+                   'type': {
+                      'kind': 'codebase'
+                   }
+                },
+                'system.created_at': {
+                   'description': 'The date and time when the work item was created',
+                   'label': 'Created at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                },
+                'system.creator': {
+                   'description': 'The user that created the work item',
+                   'label': 'Creator',
+                   'required': true,
+                   'type': {
+                      'kind': 'user'
+                   }
+                },
+                'system.description': {
+                   'description': 'A descriptive text of the work item',
+                   'label': 'Description',
+                   'required': false,
+                   'type': {
+                      'kind': 'markup'
+                   }
+                },
+                'system.iteration': {
+                   'description': 'The iteration to which the work item belongs',
+                   'label': 'Iteration',
+                   'required': false,
+                   'type': {
+                      'kind': 'iteration'
+                   }
+                },
+                'system.labels': {
+                   'description': 'List of labels attached to the work item',
+                   'label': 'Labels',
+                   'required': false,
+                   'type': {
+                      'componentType': 'label',
+                      'kind': 'list'
+                   }
+                },
+                'system.number': {
+                   'description': 'The unique number that was given to this workitem within its space.',
+                   'label': 'Number',
+                   'required': false,
+                   'type': {
+                      'kind': 'integer'
+                   }
+                },
+                'system.order': {
+                   'description': 'Execution Order of the workitem',
+                   'label': 'Execution Order',
+                   'required': false,
+                   'type': {
+                      'kind': 'float'
+                   }
+                },
+                'system.remote_item_id': {
+                   'description': 'The ID of the remote work item',
+                   'label': 'Remote item',
+                   'required': false,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.state': {
+                   'description': 'The state of the work item',
+                   'label': 'State',
+                   'required': true,
+                   'type': {
+                      'baseType': 'string',
+                      'kind': 'enum',
+                      'values': [
+                         'new',
+                         'open',
+                         'in progress',
+                         'resolved',
+                         'closed'
+                      ]
+                   }
+                },
+                'system.title': {
+                   'description': 'The title text of the work item',
+                   'label': 'Title',
+                   'required': true,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.updated_at': {
+                   'description': 'The date and time when the work item was last updated',
+                   'label': 'Updated at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                }
+             },
+             'icon': 'fa fa-bullseye',
+             'name': 'Scenario',
+             'updated-at': '2018-06-28T08:50:11.384153Z',
+             'version': 0
+          },
+          'id': '71171e90-6d35-498f-a6a7-2083b5267c18',
+          'relationships': {
+             'guidedChildTypes': {
+                'data': [
+                   {
+                      'id': 'b9a71831-c803-4f66-8774-4193fffd1311',
+                      'type': 'workitemtypes'
+                   },
+                   {
+                      'id': '3194ab60-855b-4155-9005-9dce4a05f1eb',
+                      'type': 'workitemtypes'
+                   }
+                ]
+             },
+             'space': {
+                'data': {
+                   'id': '2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'type': 'spaces'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'self': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2'
+                }
+             },
+             'space_template': {
+                'data': {
+                   'id': '929c963a-174c-4c37-b487-272067e88bd4',
+                   'type': 'spacetemplates'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4',
+                   'self': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4'
+                }
+             }
+          },
+          'type': 'workitemtypes'
+       },
+       {
+          'attributes': {
+             'can-construct': true,
+             'created-at': '0001-01-01T00:00:00Z',
+             'description': 'TBD',
+             'fields': {
+                'system.area': {
+                   'description': 'The area to which the work item belongs',
+                   'label': 'Area',
+                   'required': false,
+                   'type': {
+                      'kind': 'area'
+                   }
+                },
+                'system.assignees': {
+                   'description': 'The users that are assigned to the work item',
+                   'label': 'Assignees',
+                   'required': false,
+                   'type': {
+                      'componentType': 'user',
+                      'kind': 'list'
+                   }
+                },
+                'system.codebase': {
+                   'description': 'Contains codebase attributes to which this WI belongs to',
+                   'label': 'Codebase',
+                   'required': false,
+                   'type': {
+                      'kind': 'codebase'
+                   }
+                },
+                'system.created_at': {
+                   'description': 'The date and time when the work item was created',
+                   'label': 'Created at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                },
+                'system.creator': {
+                   'description': 'The user that created the work item',
+                   'label': 'Creator',
+                   'required': true,
+                   'type': {
+                      'kind': 'user'
+                   }
+                },
+                'system.description': {
+                   'description': 'A descriptive text of the work item',
+                   'label': 'Description',
+                   'required': false,
+                   'type': {
+                      'kind': 'markup'
+                   }
+                },
+                'system.iteration': {
+                   'description': 'The iteration to which the work item belongs',
+                   'label': 'Iteration',
+                   'required': false,
+                   'type': {
+                      'kind': 'iteration'
+                   }
+                },
+                'system.labels': {
+                   'description': 'List of labels attached to the work item',
+                   'label': 'Labels',
+                   'required': false,
+                   'type': {
+                      'componentType': 'label',
+                      'kind': 'list'
+                   }
+                },
+                'system.number': {
+                   'description': 'The unique number that was given to this workitem within its space.',
+                   'label': 'Number',
+                   'required': false,
+                   'type': {
+                      'kind': 'integer'
+                   }
+                },
+                'system.order': {
+                   'description': 'Execution Order of the workitem',
+                   'label': 'Execution Order',
+                   'required': false,
+                   'type': {
+                      'kind': 'float'
+                   }
+                },
+                'system.remote_item_id': {
+                   'description': 'The ID of the remote work item',
+                   'label': 'Remote item',
+                   'required': false,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.state': {
+                   'description': 'The state of the work item',
+                   'label': 'State',
+                   'required': true,
+                   'type': {
+                      'baseType': 'string',
+                      'kind': 'enum',
+                      'values': [
+                         'new',
+                         'open',
+                         'in progress',
+                         'resolved',
+                         'closed'
+                      ]
+                   }
+                },
+                'system.title': {
+                   'description': 'The title text of the work item',
+                   'label': 'Title',
+                   'required': true,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.updated_at': {
+                   'description': 'The date and time when the work item was last updated',
+                   'label': 'Updated at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                }
+             },
+             'icon': 'fa fa-bug',
+             'name': 'Bug',
+             'updated-at': '2018-06-28T08:50:11.331753Z',
+             'version': 0
+          },
+          'id': '26787039-b68f-4e28-8814-c2f93be1ef4e',
+          'relationships': {
+             'guidedChildTypes': {
+                'data': [
+                   {
+                      'id': 'bbf35418-04b6-426c-a60b-7f80beb0b624',
+                      'type': 'workitemtypes'
+                   }
+                ]
+             },
+             'space': {
+                'data': {
+                   'id': '2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'type': 'spaces'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'self': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2'
+                }
+             },
+             'space_template': {
+                'data': {
+                   'id': '929c963a-174c-4c37-b487-272067e88bd4',
+                   'type': 'spacetemplates'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4',
+                   'self': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4'
+                }
+             }
+          },
+          'type': 'workitemtypes'
+       },
+       {
+          'attributes': {
+             'can-construct': true,
+             'created-at': '0001-01-01T00:00:00Z',
+             'description': 'TBD',
+             'fields': {
+                'system.area': {
+                   'description': 'The area to which the work item belongs',
+                   'label': 'Area',
+                   'required': false,
+                   'type': {
+                      'kind': 'area'
+                   }
+                },
+                'system.assignees': {
+                   'description': 'The users that are assigned to the work item',
+                   'label': 'Assignees',
+                   'required': false,
+                   'type': {
+                      'componentType': 'user',
+                      'kind': 'list'
+                   }
+                },
+                'system.codebase': {
+                   'description': 'Contains codebase attributes to which this WI belongs to',
+                   'label': 'Codebase',
+                   'required': false,
+                   'type': {
+                      'kind': 'codebase'
+                   }
+                },
+                'system.created_at': {
+                   'description': 'The date and time when the work item was created',
+                   'label': 'Created at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                },
+                'system.creator': {
+                   'description': 'The user that created the work item',
+                   'label': 'Creator',
+                   'required': true,
+                   'type': {
+                      'kind': 'user'
+                   }
+                },
+                'system.description': {
+                   'description': 'A descriptive text of the work item',
+                   'label': 'Description',
+                   'required': false,
+                   'type': {
+                      'kind': 'markup'
+                   }
+                },
+                'system.iteration': {
+                   'description': 'The iteration to which the work item belongs',
+                   'label': 'Iteration',
+                   'required': false,
+                   'type': {
+                      'kind': 'iteration'
+                   }
+                },
+                'system.labels': {
+                   'description': 'List of labels attached to the work item',
+                   'label': 'Labels',
+                   'required': false,
+                   'type': {
+                      'componentType': 'label',
+                      'kind': 'list'
+                   }
+                },
+                'system.number': {
+                   'description': 'The unique number that was given to this workitem within its space.',
+                   'label': 'Number',
+                   'required': false,
+                   'type': {
+                      'kind': 'integer'
+                   }
+                },
+                'system.order': {
+                   'description': 'Execution Order of the workitem',
+                   'label': 'Execution Order',
+                   'required': false,
+                   'type': {
+                      'kind': 'float'
+                   }
+                },
+                'system.remote_item_id': {
+                   'description': 'The ID of the remote work item',
+                   'label': 'Remote item',
+                   'required': false,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.state': {
+                   'description': 'The state of the work item',
+                   'label': 'State',
+                   'required': true,
+                   'type': {
+                      'baseType': 'string',
+                      'kind': 'enum',
+                      'values': [
+                         'new',
+                         'open',
+                         'in progress',
+                         'resolved',
+                         'closed'
+                      ]
+                   }
+                },
+                'system.title': {
+                   'description': 'The title text of the work item',
+                   'label': 'Title',
+                   'required': true,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.updated_at': {
+                   'description': 'The date and time when the work item was last updated',
+                   'label': 'Updated at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                }
+             },
+             'icon': 'fa fa-tasks',
+             'name': 'Task',
+             'updated-at': '2018-06-28T08:50:11.319344Z',
+             'version': 0
+          },
+          'id': 'bbf35418-04b6-426c-a60b-7f80beb0b624',
+          'relationships': {
+             'space': {
+                'data': {
+                   'id': '2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'type': 'spaces'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'self': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2'
+                }
+             },
+             'space_template': {
+                'data': {
+                   'id': '929c963a-174c-4c37-b487-272067e88bd4',
+                   'type': 'spacetemplates'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4',
+                   'self': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4'
+                }
+             }
+          },
+          'type': 'workitemtypes'
+       },
+       {
+          'attributes': {
+             'can-construct': true,
+             'created-at': '0001-01-01T00:00:00Z',
+             'description': 'TBD',
+             'fields': {
+                'system.area': {
+                   'description': 'The area to which the work item belongs',
+                   'label': 'Area',
+                   'required': false,
+                   'type': {
+                      'kind': 'area'
+                   }
+                },
+                'system.assignees': {
+                   'description': 'The users that are assigned to the work item',
+                   'label': 'Assignees',
+                   'required': false,
+                   'type': {
+                      'componentType': 'user',
+                      'kind': 'list'
+                   }
+                },
+                'system.codebase': {
+                   'description': 'Contains codebase attributes to which this WI belongs to',
+                   'label': 'Codebase',
+                   'required': false,
+                   'type': {
+                      'kind': 'codebase'
+                   }
+                },
+                'system.created_at': {
+                   'description': 'The date and time when the work item was created',
+                   'label': 'Created at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                },
+                'system.creator': {
+                   'description': 'The user that created the work item',
+                   'label': 'Creator',
+                   'required': true,
+                   'type': {
+                      'kind': 'user'
+                   }
+                },
+                'system.description': {
+                   'description': 'A descriptive text of the work item',
+                   'label': 'Description',
+                   'required': false,
+                   'type': {
+                      'kind': 'markup'
+                   }
+                },
+                'system.iteration': {
+                   'description': 'The iteration to which the work item belongs',
+                   'label': 'Iteration',
+                   'required': false,
+                   'type': {
+                      'kind': 'iteration'
+                   }
+                },
+                'system.labels': {
+                   'description': 'List of labels attached to the work item',
+                   'label': 'Labels',
+                   'required': false,
+                   'type': {
+                      'componentType': 'label',
+                      'kind': 'list'
+                   }
+                },
+                'system.number': {
+                   'description': 'The unique number that was given to this workitem within its space.',
+                   'label': 'Number',
+                   'required': false,
+                   'type': {
+                      'kind': 'integer'
+                   }
+                },
+                'system.order': {
+                   'description': 'Execution Order of the workitem',
+                   'label': 'Execution Order',
+                   'required': false,
+                   'type': {
+                      'kind': 'float'
+                   }
+                },
+                'system.remote_item_id': {
+                   'description': 'The ID of the remote work item',
+                   'label': 'Remote item',
+                   'required': false,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.state': {
+                   'description': 'The state of the work item',
+                   'label': 'State',
+                   'required': true,
+                   'type': {
+                      'baseType': 'string',
+                      'kind': 'enum',
+                      'values': [
+                         'new',
+                         'open',
+                         'in progress',
+                         'resolved',
+                         'closed'
+                      ]
+                   }
+                },
+                'system.title': {
+                   'description': 'The title text of the work item',
+                   'label': 'Title',
+                   'required': true,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.updated_at': {
+                   'description': 'The date and time when the work item was last updated',
+                   'label': 'Updated at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                }
+             },
+             'icon': 'pficon pficon-infrastructure',
+             'name': 'Experience',
+             'updated-at': '2018-06-28T08:50:11.357481Z',
+             'version': 0
+          },
+          'id': 'b9a71831-c803-4f66-8774-4193fffd1311',
+          'relationships': {
+             'guidedChildTypes': {
+                'data': [
+                   {
+                      'id': '0a24d3c2-e0a6-4686-8051-ec0ea1915a28',
+                      'type': 'workitemtypes'
+                   },
+                   {
+                      'id': '26787039-b68f-4e28-8814-c2f93be1ef4e',
+                      'type': 'workitemtypes'
+                   }
+                ]
+             },
+             'space': {
+                'data': {
+                   'id': '2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'type': 'spaces'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'self': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2'
+                }
+             },
+             'space_template': {
+                'data': {
+                   'id': '929c963a-174c-4c37-b487-272067e88bd4',
+                   'type': 'spacetemplates'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4',
+                   'self': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4'
+                }
+             }
+          },
+          'type': 'workitemtypes'
+       },
+       {
+          'attributes': {
+             'can-construct': true,
+             'created-at': '0001-01-01T00:00:00Z',
+             'description': 'TBD',
+             'fields': {
+                'system.area': {
+                   'description': 'The area to which the work item belongs',
+                   'label': 'Area',
+                   'required': false,
+                   'type': {
+                      'kind': 'area'
+                   }
+                },
+                'system.assignees': {
+                   'description': 'The users that are assigned to the work item',
+                   'label': 'Assignees',
+                   'required': false,
+                   'type': {
+                      'componentType': 'user',
+                      'kind': 'list'
+                   }
+                },
+                'system.codebase': {
+                   'description': 'Contains codebase attributes to which this WI belongs to',
+                   'label': 'Codebase',
+                   'required': false,
+                   'type': {
+                      'kind': 'codebase'
+                   }
+                },
+                'system.created_at': {
+                   'description': 'The date and time when the work item was created',
+                   'label': 'Created at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                },
+                'system.creator': {
+                   'description': 'The user that created the work item',
+                   'label': 'Creator',
+                   'required': true,
+                   'type': {
+                      'kind': 'user'
+                   }
+                },
+                'system.description': {
+                   'description': 'A descriptive text of the work item',
+                   'label': 'Description',
+                   'required': false,
+                   'type': {
+                      'kind': 'markup'
+                   }
+                },
+                'system.iteration': {
+                   'description': 'The iteration to which the work item belongs',
+                   'label': 'Iteration',
+                   'required': false,
+                   'type': {
+                      'kind': 'iteration'
+                   }
+                },
+                'system.labels': {
+                   'description': 'List of labels attached to the work item',
+                   'label': 'Labels',
+                   'required': false,
+                   'type': {
+                      'componentType': 'label',
+                      'kind': 'list'
+                   }
+                },
+                'system.number': {
+                   'description': 'The unique number that was given to this workitem within its space.',
+                   'label': 'Number',
+                   'required': false,
+                   'type': {
+                      'kind': 'integer'
+                   }
+                },
+                'system.order': {
+                   'description': 'Execution Order of the workitem',
+                   'label': 'Execution Order',
+                   'required': false,
+                   'type': {
+                      'kind': 'float'
+                   }
+                },
+                'system.remote_item_id': {
+                   'description': 'The ID of the remote work item',
+                   'label': 'Remote item',
+                   'required': false,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.state': {
+                   'description': 'The state of the work item',
+                   'label': 'State',
+                   'required': true,
+                   'type': {
+                      'baseType': 'string',
+                      'kind': 'enum',
+                      'values': [
+                         'new',
+                         'open',
+                         'in progress',
+                         'resolved',
+                         'closed'
+                      ]
+                   }
+                },
+                'system.title': {
+                   'description': 'The title text of the work item',
+                   'label': 'Title',
+                   'required': true,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.updated_at': {
+                   'description': 'The date and time when the work item was last updated',
+                   'label': 'Updated at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                }
+             },
+             'icon': 'fa fa-puzzle-piece',
+             'name': 'Feature',
+             'updated-at': '2018-06-28T08:50:11.344194Z',
+             'version': 0
+          },
+          'id': '0a24d3c2-e0a6-4686-8051-ec0ea1915a28',
+          'relationships': {
+             'guidedChildTypes': {
+                'data': [
+                   {
+                      'id': 'bbf35418-04b6-426c-a60b-7f80beb0b624',
+                      'type': 'workitemtypes'
+                   },
+                   {
+                      'id': '26787039-b68f-4e28-8814-c2f93be1ef4e',
+                      'type': 'workitemtypes'
+                   }
+                ]
+             },
+             'space': {
+                'data': {
+                   'id': '2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'type': 'spaces'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'self': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2'
+                }
+             },
+             'space_template': {
+                'data': {
+                   'id': '929c963a-174c-4c37-b487-272067e88bd4',
+                   'type': 'spacetemplates'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4',
+                   'self': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4'
+                }
+             }
+          },
+          'type': 'workitemtypes'
+       },
+       {
+          'attributes': {
+             'can-construct': true,
+             'created-at': '0001-01-01T00:00:00Z',
+             'description': 'TBD',
+             'fields': {
+                'system.area': {
+                   'description': 'The area to which the work item belongs',
+                   'label': 'Area',
+                   'required': false,
+                   'type': {
+                      'kind': 'area'
+                   }
+                },
+                'system.assignees': {
+                   'description': 'The users that are assigned to the work item',
+                   'label': 'Assignees',
+                   'required': false,
+                   'type': {
+                      'componentType': 'user',
+                      'kind': 'list'
+                   }
+                },
+                'system.codebase': {
+                   'description': 'Contains codebase attributes to which this WI belongs to',
+                   'label': 'Codebase',
+                   'required': false,
+                   'type': {
+                      'kind': 'codebase'
+                   }
+                },
+                'system.created_at': {
+                   'description': 'The date and time when the work item was created',
+                   'label': 'Created at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                },
+                'system.creator': {
+                   'description': 'The user that created the work item',
+                   'label': 'Creator',
+                   'required': true,
+                   'type': {
+                      'kind': 'user'
+                   }
+                },
+                'system.description': {
+                   'description': 'A descriptive text of the work item',
+                   'label': 'Description',
+                   'required': false,
+                   'type': {
+                      'kind': 'markup'
+                   }
+                },
+                'system.iteration': {
+                   'description': 'The iteration to which the work item belongs',
+                   'label': 'Iteration',
+                   'required': false,
+                   'type': {
+                      'kind': 'iteration'
+                   }
+                },
+                'system.labels': {
+                   'description': 'List of labels attached to the work item',
+                   'label': 'Labels',
+                   'required': false,
+                   'type': {
+                      'componentType': 'label',
+                      'kind': 'list'
+                   }
+                },
+                'system.number': {
+                   'description': 'The unique number that was given to this workitem within its space.',
+                   'label': 'Number',
+                   'required': false,
+                   'type': {
+                      'kind': 'integer'
+                   }
+                },
+                'system.order': {
+                   'description': 'Execution Order of the workitem',
+                   'label': 'Execution Order',
+                   'required': false,
+                   'type': {
+                      'kind': 'float'
+                   }
+                },
+                'system.remote_item_id': {
+                   'description': 'The ID of the remote work item',
+                   'label': 'Remote item',
+                   'required': false,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.state': {
+                   'description': 'The state of the work item',
+                   'label': 'State',
+                   'required': true,
+                   'type': {
+                      'baseType': 'string',
+                      'kind': 'enum',
+                      'values': [
+                         'new',
+                         'open',
+                         'in progress',
+                         'resolved',
+                         'closed'
+                      ]
+                   }
+                },
+                'system.title': {
+                   'description': 'The title text of the work item',
+                   'label': 'Title',
+                   'required': true,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.updated_at': {
+                   'description': 'The date and time when the work item was last updated',
+                   'label': 'Updated at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                }
+             },
+             'icon': 'fa fa-diamond',
+             'name': 'Value Proposition',
+             'updated-at': '2018-06-28T08:50:11.370728Z',
+             'version': 0
+          },
+          'id': '3194ab60-855b-4155-9005-9dce4a05f1eb',
+          'relationships': {
+             'guidedChildTypes': {
+                'data': [
+                   {
+                      'id': '0a24d3c2-e0a6-4686-8051-ec0ea1915a28',
+                      'type': 'workitemtypes'
+                   },
+                   {
+                      'id': '26787039-b68f-4e28-8814-c2f93be1ef4e',
+                      'type': 'workitemtypes'
+                   }
+                ]
+             },
+             'space': {
+                'data': {
+                   'id': '2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'type': 'spaces'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'self': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2'
+                }
+             },
+             'space_template': {
+                'data': {
+                   'id': '929c963a-174c-4c37-b487-272067e88bd4',
+                   'type': 'spacetemplates'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4',
+                   'self': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4'
+                }
+             }
+          },
+          'type': 'workitemtypes'
+       },
+       {
+          'attributes': {
+             'can-construct': true,
+             'created-at': '0001-01-01T00:00:00Z',
+             'description': 'TBD',
+             'fields': {
+                'system.area': {
+                   'description': 'The area to which the work item belongs',
+                   'label': 'Area',
+                   'required': false,
+                   'type': {
+                      'kind': 'area'
+                   }
+                },
+                'system.assignees': {
+                   'description': 'The users that are assigned to the work item',
+                   'label': 'Assignees',
+                   'required': false,
+                   'type': {
+                      'componentType': 'user',
+                      'kind': 'list'
+                   }
+                },
+                'system.codebase': {
+                   'description': 'Contains codebase attributes to which this WI belongs to',
+                   'label': 'Codebase',
+                   'required': false,
+                   'type': {
+                      'kind': 'codebase'
+                   }
+                },
+                'system.created_at': {
+                   'description': 'The date and time when the work item was created',
+                   'label': 'Created at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                },
+                'system.creator': {
+                   'description': 'The user that created the work item',
+                   'label': 'Creator',
+                   'required': true,
+                   'type': {
+                      'kind': 'user'
+                   }
+                },
+                'system.description': {
+                   'description': 'A descriptive text of the work item',
+                   'label': 'Description',
+                   'required': false,
+                   'type': {
+                      'kind': 'markup'
+                   }
+                },
+                'system.iteration': {
+                   'description': 'The iteration to which the work item belongs',
+                   'label': 'Iteration',
+                   'required': false,
+                   'type': {
+                      'kind': 'iteration'
+                   }
+                },
+                'system.labels': {
+                   'description': 'List of labels attached to the work item',
+                   'label': 'Labels',
+                   'required': false,
+                   'type': {
+                      'componentType': 'label',
+                      'kind': 'list'
+                   }
+                },
+                'system.number': {
+                   'description': 'The unique number that was given to this workitem within its space.',
+                   'label': 'Number',
+                   'required': false,
+                   'type': {
+                      'kind': 'integer'
+                   }
+                },
+                'system.order': {
+                   'description': 'Execution Order of the workitem',
+                   'label': 'Execution Order',
+                   'required': false,
+                   'type': {
+                      'kind': 'float'
+                   }
+                },
+                'system.remote_item_id': {
+                   'description': 'The ID of the remote work item',
+                   'label': 'Remote item',
+                   'required': false,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.state': {
+                   'description': 'The state of the work item',
+                   'label': 'State',
+                   'required': true,
+                   'type': {
+                      'baseType': 'string',
+                      'kind': 'enum',
+                      'values': [
+                         'new',
+                         'open',
+                         'in progress',
+                         'resolved',
+                         'closed'
+                      ]
+                   }
+                },
+                'system.title': {
+                   'description': 'The title text of the work item',
+                   'label': 'Title',
+                   'required': true,
+                   'type': {
+                      'kind': 'string'
+                   }
+                },
+                'system.updated_at': {
+                   'description': 'The date and time when the work item was last updated',
+                   'label': 'Updated at',
+                   'required': false,
+                   'type': {
+                      'kind': 'instant'
+                   }
+                }
+             },
+             'icon': 'fa fa-scissors',
+             'name': 'Papercuts',
+             'updated-at': '2018-06-28T08:50:11.612794Z',
+             'version': 0
+          },
+          'id': '6d603ab4-7c5e-4c5f-bba8-a3ba9d370985',
+          'relationships': {
+             'guidedChildTypes': {
+                'data': [
+                   {
+                      'id': 'b9a71831-c803-4f66-8774-4193fffd1311',
+                      'type': 'workitemtypes'
+                   },
+                   {
+                      'id': '3194ab60-855b-4155-9005-9dce4a05f1eb',
+                      'type': 'workitemtypes'
+                   }
+                ]
+             },
+             'space': {
+                'data': {
+                   'id': '2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'type': 'spaces'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2',
+                   'self': 'https://api.prod-preview.openshift.io/api/spaces/2e0698d8-753e-4cef-bb7c-f027634824a2'
+                }
+             },
+             'space_template': {
+                'data': {
+                   'id': '929c963a-174c-4c37-b487-272067e88bd4',
+                   'type': 'spacetemplates'
+                },
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4',
+                   'self': 'https://api.prod-preview.openshift.io/api/spacetemplates/929c963a-174c-4c37-b487-272067e88bd4'
+                }
+             }
+          },
+          'type': 'workitemtypes'
+       }
+    ]
+ };
+
+export const singleCommentResponseSnapshot = {
+    'data': {
+       'attributes': {
+          'body': 'This is comment',
+          'body.rendered': '\u003cp\u003eThis is comment\u003c/p\u003e\n',
+          'created-at': '2018-06-29T11:01:00.280557Z',
+          'markup': 'Markdown',
+          'updated-at': '2018-06-29T11:01:00.280557Z'
+       },
+       'id': '64110861-ccfc-4885-82ef-97e792b0b6ef',
+       'links': {
+          'related': 'https://api.prod-preview.openshift.io/api/comments/64110861-ccfc-4885-82ef-97e792b0b6ef',
+          'self': 'https://api.prod-preview.openshift.io/api/comments/64110861-ccfc-4885-82ef-97e792b0b6ef'
+       },
+       'relationships': {
+          'created-by': {
+             'data': {
+                'id': '86c20119-9442-4459-940d-33ef9c628760',
+                'type': 'identities'
+             },
+             'links': {
+                'related': 'https://api.prod-preview.openshift.io/api/users/86c20119-9442-4459-940d-33ef9c628760'
+             }
+          },
+          'creator': {
+             'data': {
+                'id': '86c20119-9442-4459-940d-33ef9c628760',
+                'links': {
+                   'related': 'https://api.prod-preview.openshift.io/api/users/86c20119-9442-4459-940d-33ef9c628760'
+                },
+                'type': 'identities'
+             }
+          }
+       },
+       'type': 'comments'
+    }
+ };

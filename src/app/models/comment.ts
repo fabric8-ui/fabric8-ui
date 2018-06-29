@@ -54,10 +54,6 @@ export class Comments {
     data: Comment[];
 }
 
-export class CommentPost {
-    data: Comment;
-}
-
 export class RelationalData {
   creator?: User;
 }

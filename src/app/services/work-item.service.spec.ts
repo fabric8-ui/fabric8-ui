@@ -19,14 +19,16 @@ import {
     getWorkItemResponseSnapshot,
     linkResponseSnapShot,
     resolveLinkExpectedOutputSnapShot,
+    singleCommentResponseSnapshot,
     workItemEventsSnapshot,
-    workItemSnapshot
+    workItemSnapshot,
+    workItemTypesResponseSnapshot
 } from './work-item.snapshot';
 
 fdescribe('Unit Test :: WorkItemService', () => {
     beforeEach(() => {
         const mockHttpService = jasmine.createSpyObj(
-            'HttpService', ['get']
+            'HttpService', ['get', 'delete', 'post', 'patch']
         );
 
         const mockLoggerService = jasmine.createSpyObj(
@@ -125,6 +127,9 @@ fdescribe('Unit Test :: WorkItemService', () => {
         );
         wiService.getWorkItems('', {})
             .subscribe((data) => {
+                expect(wiService.http.get).toHaveBeenCalledWith(
+                    'link/to/spaces/search?page[limit]=&'
+                );
                 expect(data).toEqual(getWorkItemResponseSnapshot);
                 done();
             });
@@ -142,6 +147,10 @@ fdescribe('Unit Test :: WorkItemService', () => {
             .subscribe(
                 () => {},
                 (err) => {
+                    expect(wiService.http.get).toHaveBeenCalledTimes(1);
+                    expect(wiService.http.get).toHaveBeenCalledWith(
+                        'link/to/spaces/search?page[limit]=&'
+                    );
                     expect(wiService.notifyError).toHaveBeenCalledTimes(1);
                     done();
                 }
@@ -158,8 +167,9 @@ fdescribe('Unit Test :: WorkItemService', () => {
                 })
             )).delay(100)
         );
-        wiService.getMoreWorkItems('spme/url')
+        wiService.getMoreWorkItems('some/url')
             .subscribe((data) => {
+                expect(wiService.http.get).toHaveBeenCalledWith('some/url');
                 expect(data).toEqual(getMoreWorkItemResponseSnapshot);
                 done();
             });
@@ -176,6 +186,7 @@ fdescribe('Unit Test :: WorkItemService', () => {
             .subscribe(
                 () => {},
                 (err) => {
+                    expect(wiService.http.get).toHaveBeenCalledWith('some/url');
                     expect(wiService.notifyError).toHaveBeenCalledTimes(1);
                     done();
                 }
@@ -188,6 +199,7 @@ fdescribe('Unit Test :: WorkItemService', () => {
             .subscribe(
                 () => {},
                 (err) => {
+                    expect(wiService.http.get).toHaveBeenCalledTimes(0);
                     expect(err).toBe('No more item found');
                     done();
                 }
@@ -241,7 +253,7 @@ fdescribe('Unit Test :: WorkItemService', () => {
         const wiService = TestBed.get(WorkItemService);
         wiService['baseApiUrl'] = 'link/to/';
         wiService.http.get.and.returnValue(
-            Observable.throw(Observable.throw(new Error('Internal service error')))
+            Observable.throw(new Error('Internal service error'))
             .delay(100)
         );
         spyOn(wiService, 'notifyError');
@@ -286,7 +298,7 @@ fdescribe('Unit Test :: WorkItemService', () => {
         const wiService = TestBed.get(WorkItemService);
         wiService['baseApiUrl'] = 'link/to/';
         wiService.http.get.and.returnValue(
-            Observable.throw(Observable.throw(new Error('Internal service error')))
+            Observable.throw(new Error('Internal service error'))
             .delay(100)
         );
         spyOn(wiService, 'notifyError');
@@ -317,6 +329,7 @@ fdescribe('Unit Test :: WorkItemService', () => {
         );
         wiService.getEvents('link/to/events')
             .subscribe((data) => {
+                expect(wiService.http.get).toHaveBeenCalledWith('link/to/events');
                 expect(data).toEqual(workItemEventsSnapshot.data);
                 done();
             });
@@ -334,6 +347,7 @@ fdescribe('Unit Test :: WorkItemService', () => {
         );
         wiService.resolveComments('link/to/comments')
             .subscribe((data) => {
+                expect(wiService.http.get).toHaveBeenCalledWith('link/to/comments');
                 expect(data).toEqual(commentsSnapshot);
                 done();
             });
@@ -351,8 +365,128 @@ fdescribe('Unit Test :: WorkItemService', () => {
         );
         wiService.resolveLinks('link/to/links')
             .subscribe((data) => {
+                expect(wiService.http.get).toHaveBeenCalledWith('link/to/links');
                 expect(data).toEqual(resolveLinkExpectedOutputSnapShot);
                 done();
             });
+    });
+
+    it('getWorkItemTypes :: Should fetch work item types', (done) => {
+        const wiService = TestBed.get(WorkItemService);
+        wiService.http.get.and.returnValue(
+            Observable.of(new Response(
+                new ResponseOptions({
+                    body: JSON.stringify(workItemTypesResponseSnapshot),
+                    status: 200
+                })
+            )).delay(100)
+        );
+        wiService.getWorkItemTypes('link/to/types')
+            .subscribe((data) => {
+                expect(wiService.http.get).toHaveBeenCalledWith('link/to/types');
+                expect(data).toEqual(workItemTypesResponseSnapshot.data);
+                done();
+            });
+    });
+
+    it('getWorkItemTypes :: Should call notifyError on error', (done) => {
+        const wiService = TestBed.get(WorkItemService);
+        wiService.http.get.and.returnValue(
+            Observable.throw(new Error('Internal server error')).delay(100)
+        );
+        spyOn(wiService, 'notifyError');
+        wiService.getWorkItemTypes('link/to/types')
+            .subscribe(
+                () => {},
+                (err) => {
+                    expect(wiService.http.get).toHaveBeenCalledWith('link/to/types');
+                    expect(wiService.notifyError).toHaveBeenCalledTimes(1);
+                    done();
+                }
+            );
+    });
+
+    it('delete :: Should call http delete', (done) => {
+        const wiService = TestBed.get(WorkItemService);
+        wiService.http.delete.and.returnValue(
+            Observable.of({}).delay(100)
+        );
+        wiService.delete({links: {self: 'link/to/delete'}})
+            .subscribe(
+                (data) => {
+                    expect(wiService.http.delete).toHaveBeenCalledWith('link/to/delete');
+                    expect(data).toBeUndefined(); // void output
+                    done();
+                }
+            );
+    });
+
+    it('create :: Should call http post to create work item', (done) => {
+        const wiService = TestBed.get(WorkItemService);
+        wiService.http.post.and.returnValue(
+            Observable.of(new Response(
+                new ResponseOptions({
+                    body: JSON.stringify(getSingleWorkItemSnapShot),
+                    status: 200
+                })
+            )).delay(100)
+        );
+        wiService.create('link/to/create', getSingleWorkItemSnapShot.data)
+            .subscribe(
+                (data) => {
+                    expect(wiService.http.post).toHaveBeenCalledWith(
+                        'link/to/create',
+                        JSON.stringify(getSingleWorkItemSnapShot)
+                    );
+                    expect(data).toEqual(getSingleWorkItemSnapShot.data);
+                    done();
+                }
+            );
+    });
+
+    it('update :: Should call http patch to update work item', (done) => {
+        const wiService = TestBed.get(WorkItemService);
+        wiService.http.patch.and.returnValue(
+            Observable.of(new Response(
+                new ResponseOptions({
+                    body: JSON.stringify(getSingleWorkItemSnapShot),
+                    status: 200
+                })
+            )).delay(100)
+        );
+        wiService.update(getSingleWorkItemSnapShot.data)
+            .subscribe(
+                (data) => {
+                    expect(wiService.http.patch).toHaveBeenCalledWith(
+                        getSingleWorkItemSnapShot.data.links.self,
+                        JSON.stringify(getSingleWorkItemSnapShot)
+                    );
+                    expect(data).toEqual(getSingleWorkItemSnapShot.data);
+                    done();
+                }
+            );
+    });
+
+    it('createComment :: Should call http post to create comment', (done) => {
+        const wiService = TestBed.get(WorkItemService);
+        wiService.http.post.and.returnValue(
+            Observable.of(new Response(
+                new ResponseOptions({
+                    body: JSON.stringify(singleCommentResponseSnapshot),
+                    status: 200
+                })
+            )).delay(100)
+        );
+        wiService.createComment('link/to/create/comment', singleCommentResponseSnapshot.data)
+            .subscribe(
+                (data) => {
+                    expect(wiService.http.post).toHaveBeenCalledWith(
+                        'link/to/create/comment',
+                        singleCommentResponseSnapshot
+                    );
+                    expect(data).toEqual(singleCommentResponseSnapshot.data);
+                    done();
+                }
+            );
     });
 });
