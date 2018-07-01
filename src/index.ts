@@ -1,3 +1,4 @@
+export { FilterService } from './app/services/filter.service';
 export { WorkItemType } from './app/models/work-item-type';
 export { WorkItemDetailModule } from './app/components_ngrx/work-item-detail/work-item-detail.module';
 export { WorkItemService } from './app/services/work-item.service';

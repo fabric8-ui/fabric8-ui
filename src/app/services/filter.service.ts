@@ -1,7 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
 import { ActivatedRoute } from '@angular/router';
-import { cloneDeep } from 'lodash';
 import { Spaces, WIT_API_URL } from 'ngx-fabric8-wit';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -16,7 +14,6 @@ export class FilterService {
   public activeFilters = [];
   public filterChange = new Subject();
   public filterObservable: Subject<any> = new Subject();
-  private headers = new Headers({'Content-Type': 'application/json'});
 
   public and_notation = '$AND';
   public or_notation = '$OR';
