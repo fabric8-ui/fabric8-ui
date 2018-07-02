@@ -3,7 +3,6 @@ import {
   CommentService,
   CommentUI
 } from './comment';
-import { UserMapper } from './user';
 
 describe('Unit Test :: Comment Model', () => {
   it('should execute the canary test', () => {
