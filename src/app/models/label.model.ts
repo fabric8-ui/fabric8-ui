@@ -126,8 +126,7 @@ export class LabelMapper implements Mapper<LabelService, LabelUI> {
 @Injectable()
 export class LabelQuery {
   constructor(
-    private store: Store<AppState>,
-    private labelService: LabelDataService
+    private store: Store<AppState>
   ) {}
 
   private listPageSelector = createFeatureSelector<ListPage>('listPage');
