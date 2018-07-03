@@ -151,7 +151,7 @@ export interface WorkItemUI {
   creatorObs?: Observable<UserUI>;
   type: WorkItemTypeUI;
   labels: string[];
-  labelsObs: Observable<LabelUI[]>;
+  labelsObs?: Observable<LabelUI[]>;
   comments?: CommentUI[];
   children?: WorkItemUI[];
   commentLink: string;
