@@ -36,7 +36,7 @@ export class CollaboratorEffects {
     .ofType(CollaboratorActions.GET)
     .withLatestFrom(this.store.select('listPage').select('space'))
     .switchMap(([action, space]) => {
-      return this.collaboratorService.getCollaborators2(
+      return this.collaboratorService.getCollaborators(
         space.links.self + '/collaborators?page[offset]=0&page[limit]=1000'
       );
     })
