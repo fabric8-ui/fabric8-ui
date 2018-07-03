@@ -34,7 +34,7 @@ export class CollaboratorEffects {
 
   @Effect() getCollaborators$: Observable<Action> = this.actions$
     .ofType(CollaboratorActions.GET)
-    .withLatestFrom(this.store.select('listPage').select('space'))
+    .withLatestFrom(this.store.select('planner').select('space'))
     .switchMap(([action, space]) => {
       return this.collaboratorService.getCollaborators(
         space.links.self + '/collaborators?page[offset]=0&page[limit]=1000'

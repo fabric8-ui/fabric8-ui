@@ -8,7 +8,7 @@ import {
 import { ConnectableObservable } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { Get as GetUserAction } from './../actions/user.actions';
-import { AppState, ListPage } from './../states/app.state';
+import { AppState, PlannerState } from './../states/app.state';
 import {
   Mapper,
   MapTree,
@@ -89,15 +89,15 @@ export class UserQuery {
     private userService: UserServiceClass
   ) {}
 
-  private listPageSelector = createFeatureSelector<ListPage>('listPage');
+  private plannerSelector = createFeatureSelector<PlannerState>('planner');
   private userSelector = createSelector(
-    this.listPageSelector,
+    this.plannerSelector,
     (state) => state.users
   );
   private userSource = this.store.select(this.userSelector);
 
   private collaboratorIdsSelector = createSelector(
-    this.listPageSelector,
+    this.plannerSelector,
     (state) => state.collaborators
   );
 

@@ -36,9 +36,8 @@ import { CommentReducer } from './../../reducers/comment.reducer';
 import { DetailWorkItemReducer } from './../../reducers/detail-work-item.reducer';
 import { LinkTypeReducer } from './../../reducers/link-type.reducer';
 import { WorkItemLinkReducer } from './../../reducers/work-item-link.reducer';
-import { CommentState, initialState as initialCommentState } from './../../states/comment.state';
+import { initialState as initialCommentState } from './../../states/comment.state';
 import {
-  DetailWorkItemState,
   initialState as initialDetailWIState
 } from './../../states/detail-work-item.state';
 import { EventState, initialState as initialEventState } from './../../states/event.state';

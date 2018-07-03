@@ -59,7 +59,7 @@ export class DetailWorkItemEffects {
 
   @Effect() getWorkItem$: Observable<Action> = this.actions$
     .ofType<DetailWorkItemActions.GetWorkItem>(DetailWorkItemActions.GET_WORKITEM)
-    .withLatestFrom(this.store.select('listPage'))
+    .withLatestFrom(this.store.select('planner'))
     .map(([action, state]) => {
       return {
         payload: action.payload,

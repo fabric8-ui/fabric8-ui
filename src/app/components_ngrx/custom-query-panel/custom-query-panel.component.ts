@@ -51,7 +51,7 @@ export class CustomQueryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const customQueriesData = this.store
-      .select('listPage')
+      .select('planner')
       .select('customQueries');
 
     this.eventListeners.push(

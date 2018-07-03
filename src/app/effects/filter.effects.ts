@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import {
   Notification,
   Notifications,
@@ -9,10 +8,10 @@ import {
 import { Observable } from 'rxjs';
 import * as FilterActions from './../actions/filter.actions';
 import { FilterModel } from './../models/filter.model';
+import { SpaceQuery } from './../models/space';
 import {
   FilterService
 } from './../services/filter.service';
-import { AppState } from './../states/app.state';
 
 export type Action = FilterActions.All;
 
@@ -22,12 +21,12 @@ export class FilterEffects {
     private actions$: Actions,
     private filterService: FilterService,
     private notifications: Notifications,
-    private store: Store<AppState>
+    private spaceQuery: SpaceQuery
   ) {}
 
   @Effect() GetFilters$: Observable<Action> = this.actions$
     .ofType(FilterActions.GET)
-    .withLatestFrom(this.store.select('listPage').select('space'))
+    .withLatestFrom(this.spaceQuery.getCurrentSpace)
     .switchMap(([action, space]) => {
       return this.filterService.getFilters2(space.links.filters)
         .map((types: FilterModel[]) => {

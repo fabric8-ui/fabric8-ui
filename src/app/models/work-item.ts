@@ -3,7 +3,7 @@ import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
 import { cloneDeep, orderBy } from 'lodash';
 import { Observable } from 'rxjs';
-import { AppState, ListPage } from './../states/app.state';
+import { AppState, PlannerState } from './../states/app.state';
 import {
   AreaMapper, AreaModel,
   AreaQuery, AreaUI
@@ -500,10 +500,18 @@ export class WorkItemQuery {
     private labelQuery: LabelQuery
   ) {}
 
-  private listPageSelector = createFeatureSelector<ListPage>('listPage');
+  private plannerSelector = createFeatureSelector<PlannerState>('planner');
   private workItemSelector = createSelector(
-    this.listPageSelector,
-    state => state.workItems
+    this.plannerSelector,
+    // TODO
+    // This is a HACK till fabric8-ui removes the unnecessary planner imports
+    // it should just be
+    // state => state.workItems
+    state => state ? state.workItems : {entities: {}, ids: []}
+  );
+  private workItemEntities = createSelector(
+    this.workItemSelector,
+    selectEntities
   );
   private getAllWorkItemSelector = createSelector(
     this.workItemSelector,
@@ -604,5 +612,9 @@ export class WorkItemQuery {
             });
           });
       });
+  }
+
+  get getWorkItemEntities(): Observable<{[id: string]: WorkItemUI}> {
+    return this.store.select(this.workItemEntities);
   }
 }

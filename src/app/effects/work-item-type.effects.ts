@@ -30,7 +30,7 @@ export class WorkItemTypeEffects {
 
   @Effect() getWorkItemTypes$: Observable<Action> = this.actions$
     .ofType(WorkItemTypeActions.GET)
-    .withLatestFrom(this.store.select('listPage').select('space'))
+    .withLatestFrom(this.store.select('planner').select('space'))
     .switchMap(([action, space]) => {
       return this.workItemService.getWorkItemTypes2(
         space.relationships.workitemtypes.links.related

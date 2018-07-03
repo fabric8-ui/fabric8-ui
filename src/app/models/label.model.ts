@@ -3,7 +3,7 @@ import { createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { LabelService as LabelDataService } from './../services/label.service';
-import { AppState, ListPage } from './../states/app.state';
+import { AppState, PlannerState } from './../states/app.state';
 import {
   Mapper,
   MapTree,
@@ -129,9 +129,9 @@ export class LabelQuery {
     private store: Store<AppState>
   ) {}
 
-  private listPageSelector = createFeatureSelector<ListPage>('listPage');
+  private plannerSelector = createFeatureSelector<PlannerState>('planner');
   private labelSelector = createSelector(
-    this.listPageSelector,
+    this.plannerSelector,
     state => state.labels
   );
   private getAllLabelsSelector = createSelector(

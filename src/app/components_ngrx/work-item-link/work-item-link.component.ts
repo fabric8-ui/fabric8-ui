@@ -59,7 +59,7 @@ export class WorkItemLinkComponent implements OnInit {
   selectedValue: string = '';
 
   private spaceSource = this.store
-    .select('listPage')
+    .select('planner')
     .select('space')
     .filter(s => !!s);
   private linkTypeSource = this.store

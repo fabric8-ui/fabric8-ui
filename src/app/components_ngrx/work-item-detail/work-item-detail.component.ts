@@ -44,7 +44,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   @ViewChild('descMarkdown') descMarkdown: MarkdownComponent;
 
   private spaceSource = this.store
-    .select('listPage')
+    .select('planner')
     .select('space')
     .do(s => {if (!s) { this.store.dispatch(new SpaceActions.Get()); }})
     .filter(s => !!s);
@@ -53,11 +53,11 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   private iterationSource: Observable<CommonSelectorUI[]>;
   private collaboratorSource = this.userQuery.getCollaborators();
   private workItemStateSource = this.store
-    .select('listPage')
+    .select('planner')
     .select('workItemStates')
     .filter(wis => !!wis.length);
   private workItemTypeSource = this.store
-    .select('listPage')
+    .select('planner')
     .select('workItemTypes')
     .filter(w => !!w.length);
 

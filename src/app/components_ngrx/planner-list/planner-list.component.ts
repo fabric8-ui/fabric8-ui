@@ -10,12 +10,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
-import { cloneDeep, isEqual, sortBy } from 'lodash';
-import { Space } from 'ngx-fabric8-wit';
+import { cloneDeep, sortBy } from 'lodash';
 import {
-  AuthenticationService,
-  User,
-  UserService
+  AuthenticationService
 } from 'ngx-login-client';
 import { EmptyStateConfig } from 'patternfly-ng/empty-state';
 import { Observable } from 'rxjs/Observable';
@@ -37,15 +34,12 @@ import { WorkItemQuery, WorkItemUI } from '../../models/work-item';
 import { WorkItemPreviewPanelComponent } from '../work-item-preview-panel/work-item-preview-panel.component';
 import * as AreaActions from './../../actions/area.actions';
 import * as CollaboratorActions from './../../actions/collaborator.actions';
-import * as GroupTypeActions from './../../actions/group-type.actions';
-// import * as actions from './../../actions/index.actions';
-import * as IterationActions from './../../actions/iteration.actions';
-import * as LabelActions from './../../actions/label.actions';
 import * as SpaceActions from './../../actions/space.actions';
-import * as WorkItemTypeActions from './../../actions/work-item-type.actions';
 import * as WorkItemActions from './../../actions/work-item.actions';
+import { cleanObject } from './../../models/common.model';
 import { LabelQuery } from './../../models/label.model';
 import { AppState } from './../../states/app.state';
+
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -58,15 +52,15 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   private uiLockedAll: boolean = false;
   private sidePanelOpen: boolean = true;
   private groupTypeSource = this.store
-    .select('listPage')
+    .select('planner')
     .select('groupTypes')
     .filter(g => !!g.length);
   private workItemTypeSource = this.store
-    .select('listPage')
+    .select('planner')
     .select('workItemTypes')
     .filter(w => !!w.length);
   private spaceSource = this.store
-    .select('listPage')
+    .select('planner')
     .select('space')
     .do(s => {if (!s) { this.store.dispatch(new SpaceActions.Get()); }})
     .filter(s => !!s);
@@ -461,7 +455,15 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
 
   loadChildren(workItem: WorkItemUI) {
     this.store.dispatch(
-      new WorkItemActions.GetChildren(workItem)
+      // Clean object is used to remove
+      // Observables from the object so that
+      // it works with Redux dev-tools
+      new WorkItemActions.GetChildren(
+        cleanObject({...workItem}, [
+          'areaObs', 'assigneesObs', 'creatorObs',
+          'iterationObs', 'labelsObs']
+        )
+      )
     );
   }
 

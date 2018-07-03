@@ -170,7 +170,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     this.routeSource.subscribe(queryParam => this.queryExp = queryParam.q);
 
     const customQueriesData = this.store
-      .select('listPage')
+      .select('planner')
       .select('customQueries')
       .filter(customQueries => !!customQueries.length);
     this.totalCount = this.workItemQuery.getWorkItems()
@@ -357,15 +357,15 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
   initiateDataSources() {
     this.workItemTypeData = this.store
-      .select('listPage').select('workItemTypes')
+      .select('planner').select('workItemTypes')
       .filter(a => !!a.length);
     this.stateData = this.store
-      .select('listPage').select('workItemStates')
+      .select('planner').select('workItemStates')
       .filter(a => !!a.length);
     this.labelData = this.labelQuery.getLables()
       .filter(l => l !== null);
     this.spaceData = this.store
-      .select('listPage').select('space')
+      .select('planner').select('space')
       .filter(space => space !== null);
     this.filterData = this.store
       .select('toolbar').select('filters')
@@ -373,7 +373,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     this.iterationData = this.iterationQuery.getIterations()
       .filter(i => !!i.length);
     this.groupTypeData = this.store
-      .select('listPage').select('groupTypes')
+      .select('planner').select('groupTypes')
       .filter(i => !!i.length);
   }
 

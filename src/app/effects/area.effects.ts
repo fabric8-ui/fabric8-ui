@@ -26,7 +26,7 @@ export class AreaEffects {
 
   @Effect() getAreas$: Observable<Action> = this.actions$
     .ofType(AreaActions.GET)
-    .withLatestFrom(this.store.select('listPage').select('space'))
+    .withLatestFrom(this.store.select('planner').select('space'))
     .switchMap(([action, space]) => {
       return this.areaService.getAreas2(
           space.relationships.areas.links.related

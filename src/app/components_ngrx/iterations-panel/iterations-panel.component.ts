@@ -81,7 +81,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.loggedIn = this.auth.isLoggedIn();
     this.editEnabled = true;
     this.spaceSubscription = this.store
-      .select('listPage')
+      .select('planner')
       .select('space')
       .subscribe(space => {
         if (space) {

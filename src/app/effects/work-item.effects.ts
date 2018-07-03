@@ -56,7 +56,7 @@ export class WorkItemEffects {
 
   @Effect() addWorkItems$ = this.actions$
     .ofType<WorkItemActions.Add>(WorkItemActions.ADD)
-    .withLatestFrom(this.store.select('listPage'))
+    .withLatestFrom(this.store.select('planner'))
     .map(([action, state]) => {
       return {
         payload: action.payload,
@@ -151,7 +151,7 @@ export class WorkItemEffects {
 
   @Effect() getWorkItems$: Observable<Action> = this.actions$
     .ofType<WorkItemActions.Get>(WorkItemActions.GET)
-    .withLatestFrom(this.store.select('listPage'))
+    .withLatestFrom(this.store.select('planner'))
     .map(([action, state]) => {
       return {
         payload: action.payload,
@@ -197,7 +197,7 @@ export class WorkItemEffects {
 
     @Effect() getWorkItemChildren$: Observable<Action> = this.actions$
       .ofType<WorkItemActions.GetChildren>(WorkItemActions.GET_CHILDREN)
-      .withLatestFrom(this.store.select('listPage'))
+      .withLatestFrom(this.store.select('planner'))
       .map(([action, state]) => {
         return {
           payload: action.payload,
@@ -243,7 +243,7 @@ export class WorkItemEffects {
 
     @Effect() updateWorkItem$: Observable<Action> = this.actions$
       .ofType<WorkItemActions.Update>(WorkItemActions.UPDATE)
-      .withLatestFrom(this.store.select('listPage'))
+      .withLatestFrom(this.store.select('planner'))
       .map(([action, state]) => {
         return {
           payload: action.payload,
@@ -307,7 +307,7 @@ export class WorkItemEffects {
 
     @Effect() Reorder: Observable<Action> = this.actions$
       .ofType<WorkItemActions.Reoder>(WorkItemActions.REORDER)
-      .withLatestFrom(this.store.select('listPage'))
+      .withLatestFrom(this.store.select('planner'))
       .map(([action, state]) => {
         return {
           payload: action.payload,

@@ -30,7 +30,7 @@ export class GroupTypeEffects {
 
   @Effect() getGroupTypes$: Observable<Action> = this.actions$
     .ofType(GroupTypeActions.GET)
-    .withLatestFrom(this.store.select('listPage').select('space'))
+    .withLatestFrom(this.store.select('planner').select('space'))
     .switchMap(([action, space]) => {
       return this.groupTypeService.getGroupTypes2(
           space.relationships.workitemtypegroups.links.related

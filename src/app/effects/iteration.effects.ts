@@ -23,7 +23,7 @@ export class IterationEffects {
 
   @Effect() getIterations$: Observable<Action> = this.actions$
     .ofType(IterationActions.GET)
-    .withLatestFrom(this.store.select('listPage').select('space'))
+    .withLatestFrom(this.store.select('planner').select('space'))
     .switchMap(([action, space]) => {
       return this.iterationService.getIterations2(
           space.relationships.iterations.links.related

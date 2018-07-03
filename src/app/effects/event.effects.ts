@@ -50,7 +50,7 @@ export class EventEffects {
 
   @Effect() getWorkItemEvents$: Observable<Action> = this.actions$
     .ofType<EventActions.Get>(EventActions.GET)
-    .withLatestFrom(this.store.select('listPage'))
+    .withLatestFrom(this.store.select('planner'))
     .map(([action, state]) => {
       return {
         payload: action.payload,

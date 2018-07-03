@@ -30,7 +30,7 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
 
   authUser: any = null;
   infotipSource = this.store
-  .select('listPage')
+  .select('planner')
   .select('infotips');
   private groupTypes: GroupTypeUI[];
   private selectedgroupType: GroupTypeUI;
@@ -52,11 +52,11 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const groupTypesData = this.store
-      .select('listPage')
+      .select('planner')
       .select('groupTypes')
       .filter((types: GroupTypeUI[]) => !!types.length);
     const spaceData = this.store
-      .select('listPage')
+      .select('planner')
       .select('space')
       .filter(space => space !== null);
 

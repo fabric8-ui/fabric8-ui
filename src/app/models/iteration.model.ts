@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AppState, ListPage } from '../states/app.state';
+import { AppState, PlannerState } from '../states/app.state';
 import  {IterationService as Service } from './../services/iteration.service';
 import {
   Mapper,
@@ -212,9 +212,9 @@ export class IterationMapper implements Mapper<IterationModel, IterationUI> {
 
 @Injectable()
 export class IterationQuery {
-  private listPageSelector = createFeatureSelector<ListPage>('listPage');
+  private plannerSelector = createFeatureSelector<PlannerState>('planner');
   private iterationSelector = createSelector(
-    this.listPageSelector,
+    this.plannerSelector,
     (state) => state.iterations
   );
   private iterationSource = this.store.select(this.iterationSelector);

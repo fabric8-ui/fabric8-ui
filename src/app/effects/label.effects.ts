@@ -25,7 +25,7 @@ export class LabelEffects {
 
   @Effect() getLabels$: Observable<Action> = this.actions$
     .ofType(LabelActions.GET)
-    .withLatestFrom(this.store.select('listPage').select('space'))
+    .withLatestFrom(this.store.select('planner').select('space'))
     .switchMap(([action, space]) => {
       return this.labelService.getLabels2(space.links.self + '/labels')
       .map(labels => {
@@ -38,7 +38,7 @@ export class LabelEffects {
 
   @Effect() createLabel$: Observable<Action> = this.actions$
     .ofType<LabelActions.Add>(LabelActions.ADD)
-    .withLatestFrom(this.store.select('listPage').select('space'))
+    .withLatestFrom(this.store.select('planner').select('space'))
     .switchMap(([action, space])  => {
       return this.labelService.createLabel(action.payload, space.links.self + '/labels')
         .map(label => {

@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import * as WorkItemLinkActions from './../actions/work-item-link.actions';
 import * as WorkItemActions from './../actions/work-item.actions';
 import { WorkItemLinkMapper } from './../models/link';
+import { WorkItemQuery } from './../models/work-item';
 import { WorkItemService } from './../services/work-item.service';
 import { AppState } from './../states/app.state';
 
@@ -18,10 +19,10 @@ export type Action = WorkItemLinkActions.All;
 @Injectable()
 export class WorkItemLinkEffects {
   private wilMapper = new WorkItemLinkMapper();
-
   constructor(
     private actions$: Actions,
     private workItemService: WorkItemService,
+    private workItemQuery: WorkItemQuery,
     private notifications: Notifications,
     private store: Store<AppState>
   ) {}
@@ -58,7 +59,7 @@ export class WorkItemLinkEffects {
 
   @Effect() createLink$: Observable<Action> = this.actions$
     .ofType<WorkItemLinkActions.Add>(WorkItemLinkActions.ADD)
-    .withLatestFrom(this.store.select('listPage').select('workItems'))
+    .withLatestFrom(this.workItemQuery.getWorkItemEntities)
     .map(([action, workItems]) => {
       return {
         payload: action.payload,
@@ -75,18 +76,17 @@ export class WorkItemLinkEffects {
           link.relationships.target.data = includes.find(i => i.id === link.relationships.target.data.id);
           let sourceWorkItem;
           let targetWorkItem;
-
           // the tree will updated
           // only if it is parent-child relationship
           if (link.relationships['link_type'].data.id === '25c326a7-6d03-4f5a-b23b-86a9ee4171e9') {
-            if (p.workItems.entities[p.payload.relationships.source.data.id]) {
-              sourceWorkItem = p.workItems.entities[p.payload.relationships.source.data.id];
+            if (p.workItems[p.payload.relationships.source.data.id]) {
+              sourceWorkItem = p.workItems[p.payload.relationships.source.data.id];
             }
-            if (p.workItems.entities[p.payload.relationships.target.data.id]) {
-              targetWorkItem = p.workItems.entities[p.payload.relationships.target.data.id];
+            if (p.workItems[p.payload.relationships.target.data.id]) {
+              targetWorkItem = p.workItems[p.payload.relationships.target.data.id];
             }
-            if (p.workItems.entities[p.payload.relationships.source.data.id] &&
-              p.workItems.entities[p.payload.relationships.target.data.id]) {
+            if (p.workItems[p.payload.relationships.source.data.id] &&
+              p.workItems[p.payload.relationships.target.data.id]) {
               if (sourceWorkItem.treeStatus === 'expanded' ||
               sourceWorkItem.childrenLoaded) {
                 this.store.dispatch(new WorkItemActions.CreateLink({
@@ -122,7 +122,7 @@ export class WorkItemLinkEffects {
 
   @Effect() deleteLink$: Observable<Action> = this.actions$
     .ofType<WorkItemLinkActions.Delete>(WorkItemLinkActions.DELETE)
-    .withLatestFrom(this.store.select('listPage').select('workItems'))
+    .withLatestFrom(this.workItemQuery.getWorkItemEntities)
     .map(([action, workItems]) => {
       return {
         payload: action.payload,
@@ -136,11 +136,11 @@ export class WorkItemLinkEffects {
         .map(response => {
           let targetWorkItem;
           let sourceWorkItem;
-          if (p.workItems.entities[p.payload.wiLink.target.id]) {
-            targetWorkItem = p.workItems.entities[p.payload.wiLink.target.id];
+          if (p.workItems[p.payload.wiLink.target.id]) {
+            targetWorkItem = p.workItems[p.payload.wiLink.target.id];
           }
-          if (p.workItems.entities[p.payload.wiLink.source.id]) {
-            sourceWorkItem = p.workItems.entities[p.payload.wiLink.source.id];
+          if (p.workItems[p.payload.wiLink.source.id]) {
+            sourceWorkItem = p.workItems[p.payload.wiLink.source.id];
           }
           this.store.dispatch(new WorkItemActions.DeleteLink({
             source: sourceWorkItem,

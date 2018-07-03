@@ -39,14 +39,6 @@ import { WorkItemQuickAddModule } from './../work-item-quick-add/work-item-quick
 import { CookieService } from './../../services/cookie.service';
 import { FilterService } from './../../services/filter.service';
 
-// ngrx stuff
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import * as effects from './../../effects/index.effects';
-import * as reducers from './../../reducers/index.reducer';
-import { WorkItemReducer } from './../../reducers/work-item.reducer';
-import * as states from './../../states/index.state';
-
 import { AlmIconModule, WidgetsModule } from 'ngx-widgets';
 import { EmptyStateModule } from 'patternfly-ng/empty-state';
 import { InfotipService } from '../../services/infotip.service';
@@ -58,6 +50,7 @@ import { AreaQuery } from '../../models/area.model';
 import { IterationQuery } from '../../models/iteration.model';
 import { LabelQuery } from '../../models/label.model';
 import { CommentQuery } from './../../models/comment';
+import { SpaceQuery } from './../../models/space';
 import { UserQuery } from './../../models/user';
 import { WorkItemQuery } from './../../models/work-item';
 import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module';
@@ -88,7 +81,8 @@ let providers = [
     LabelQuery,
     IterationQuery,
     WorkItemQuery,
-    AreaQuery
+    AreaQuery,
+    SpaceQuery
   ];
 
 @NgModule({
@@ -111,48 +105,6 @@ let providers = [
     WorkItemPreviewPanelModule,
     WidgetsModule,
     TruncateModule,
-    StoreModule.forFeature('listPage', {
-        iterations: reducers.iterationReducer,
-        labels: reducers.LabelReducer,
-        areas: reducers.AreaReducer,
-        collaborators: reducers.CollaboratorReducer,
-        customQueries: reducers.CustomQueryReducer,
-        groupTypes: reducers.GroupTypeReducer,
-        space: reducers.SpaceReducer,
-        workItemTypes: reducers.WorkItemTypeReducer,
-        workItems: reducers.WorkItemReducer,
-        workItemStates: reducers.WorkItemStateReducer,
-        infotips: reducers.InfotipReducer,
-        users: reducers.UserReducer
-      }, {
-      initialState: {
-        iterations: states.initialIterationState,
-        labels: states.initialLabelState,
-        areas: states.initialAreaState,
-        collaborators: states.initialCollaboratorState,
-        customQueries: states.initialCustomQueryState,
-        groupTypes: states.initialGroupTypeState,
-        space: states.initialSpaceState,
-        workItemTypes: states.initialWorkItemTypeState,
-        workItems: states.initialWorkItemState,
-        workItemStates: states.initialWIState,
-        infotips: states.initialInfotipState,
-        users: states.inititalUserState
-      }
-    }),
-    EffectsModule.forFeature([
-      effects.IterationEffects,
-      effects.LabelEffects,
-      effects.AreaEffects,
-      effects.CollaboratorEffects,
-      effects.CustomQueryEffects,
-      effects.GroupTypeEffects,
-      effects.SpaceEffects,
-      effects.WorkItemTypeEffects,
-      effects.WorkItemEffects,
-      effects.InfotipEffects,
-      effects.UserEffects
-    ]),
     UserAvatarModule
   ],
   declarations: [

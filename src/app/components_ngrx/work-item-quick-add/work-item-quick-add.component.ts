@@ -65,7 +65,7 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
   eventListeners: any[] = [];
   blockAdd: boolean = false;
   infotipSource = this.store
-  .select('listPage')
+  .select('planner')
   .select('infotips');
 
   constructor(

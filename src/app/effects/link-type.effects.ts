@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import * as LinkTypeActions from './../actions/link-type.actions';
-import { AppState } from './../states/app.state';
 
 import { Observable } from 'rxjs';
 import {
-  LinkTypeService,
   LinkTypeUI
 } from './../models/link-type';
+import { SpaceQuery } from './../models/space';
 import { WorkItemService } from './../services/work-item.service';
 
 export type Action = LinkTypeActions.All;
@@ -18,12 +16,12 @@ export class LinkTypeEffects {
   constructor(
     private actions$: Actions,
     private workItemService: WorkItemService,
-    private store: Store<AppState>
+    private spaceQuery: SpaceQuery
   ) {}
 
   @Effect() getLinkTypes$: Observable<Action> = this.actions$
     .ofType(LinkTypeActions.GET)
-    .withLatestFrom(this.store.select('listPage').select('space'))
+    .withLatestFrom(this.spaceQuery.getCurrentSpace)
     .map(([action, space]) => {
       return {
         payload: action,

@@ -77,7 +77,7 @@ mach.tslint = function(src) {
   return gulp.src(src)
     .pipe(tslint({
       formatter: 'verbose',
-      configuration: 'tslint.json' 
+      configuration: 'tslint.json'
     }))
     .pipe(tslint.report())
 };
@@ -128,7 +128,10 @@ gulp.task('build', function (done) {
 
   // watch
   if (argv.watch) {
-    gulp.watch([appSrc + '/app/**/*.ts', '!' + appSrc + '/app/**/*.spec.ts']).on('change', function (e) {
+    gulp.watch([
+      appSrc + '/app/**/*.ts', '!' + appSrc + '/app/**/*.spec.ts',
+      appSrc + '/planner.module.ts'
+    ]).on('change', function (e) {
       util.log(util.colors.cyan(e) + ' has been changed. Compiling TypeScript.');
       mach.transpileTS();
     });
