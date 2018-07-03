@@ -34,6 +34,10 @@ export const CustomQueryReducer: ActionReducer<CustomQueryState> =
         return [...state];
       }
 
+      case CustomQueryActions.DELETE_ERROR: {
+        return state;
+      }
+
       case CustomQueryActions.SELECT: {
         const newState = state.map(q => {
           q.selected = q.id === action.payload.id;
