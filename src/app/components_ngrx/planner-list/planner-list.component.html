@@ -118,7 +118,7 @@
         [wilistview]="'wi-table-view-top'"
         [workItemTypes]="quickAddWorkItemTypes"
         [selectedType]="quickAddWorkItemTypes[0]"
-        [selectedIteration]="selectedIteration">
+        [selectedIteration]="selectedIterationSource | async">
       </alm-work-item-quick-add>
     </div>
   </div>

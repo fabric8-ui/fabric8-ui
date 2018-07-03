@@ -195,5 +195,16 @@ describe('Planner Smoke Tests:', () => {
     await planner.waitUntilUrlContains('typegroup');
     expect(await planner.workItemList.hasWorkItem('new detail workItem')).toBeTruthy();
   });
-});
 
+  it('Add new work-item to the selected iteration', async () => {
+    await planner.workItemList.overlay.untilHidden();
+    await planner.sidePanel.clickIteration('Iteration_1');
+    await planner.quickAdd.addWorkItem({title : 'Add new work item to iteration test'});
+    expect(await planner.workItemList.hasWorkItem('Add new work item to iteration test')).toBeTruthy();
+    await planner.quickPreview.notificationToast.untilCount(1);
+    await planner.quickPreview.notificationToast.untilHidden();
+    await planner.sidePanel.clickScenarios();
+    await planner.sidePanel.clickIteration('Iteration_1');
+    expect(await planner.workItemList.hasWorkItem('Add new work item to iteration test')).toBeTruthy();
+  });
+});
