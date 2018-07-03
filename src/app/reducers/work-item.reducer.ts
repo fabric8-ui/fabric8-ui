@@ -78,7 +78,7 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
     }
 
     case WorkItemActions.DELETE_LINK: {
-      if (state.entities[action.payload.target.id]) {
+      if (action.payload.target) {
         state.entities[action.payload.target.id].parentID = '';
       }
       return {...state};

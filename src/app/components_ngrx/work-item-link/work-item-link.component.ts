@@ -7,7 +7,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Space } from 'ngx-fabric8-wit';
 import { Observable } from 'rxjs/Observable';
 import { WorkItemLinkUI } from './../../models/link';
@@ -94,6 +94,11 @@ export class WorkItemLinkComponent implements OnInit {
       this.linkTypes = [...linkTypeSource];
       this.workItemLinkSource.subscribe(workItemLinks => {
         this.workItemLinks = [...workItemLinks];
+        if (!this.workItemLinks.length) {
+          this.showLinkView = false;
+        }
+        this.selectedLinkType = null;
+        this.selectedWorkItemId = null;
         if (this.linkTypeSelector && this.wiSearchBox) {
           this.wiSearchBox.nativeElement.value = '';
         }

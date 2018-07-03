@@ -1,7 +1,6 @@
-import { Clickable } from './../base.element';
-import { ElementFinder, $, $$, browser } from 'protractor';
-import * as ui from './../../ui';
+import { $, $$, browser, by, ElementFinder } from 'protractor';
 import * as support from './../../support';
+import * as ui from './../../ui';
 
 export class WorkItemQuickPreview extends ui.BaseElement {
   // TODO - move loading animation out of here. It doesn't belong here.
@@ -9,9 +8,9 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   notificationToast = new ui.BaseElementArray($$('pfng-toast-notification'), 'Notification Toast');
   /* UI elements of the Top section of the workitem preview */
   closeButton = new ui.Button(this.$('.f8-detail--close'), 'WorkItem Quick Preview close button');
-  stateDiv = new ui.BaseElement(this.$('#wi-preview-state'),' State toggle');
-  iterationDropdownCloseButton = new ui.Button(this.$('.iteration-dropdown .close-pointer'),'Iteration dropdown close button');
-  areaDropdownCloseButton = new ui.Button(this.$('.area-dropdown .close-pointer'),'Area dropdown close button');
+  stateDiv = new ui.BaseElement(this.$('#wi-preview-state'), ' State toggle');
+  iterationDropdownCloseButton = new ui.Button(this.$('.iteration-dropdown .close-pointer'), 'Iteration dropdown close button');
+  areaDropdownCloseButton = new ui.Button(this.$('.area-dropdown .close-pointer'), 'Area dropdown close button');
   stateDropdown = new ui.Dropdown(this.$('.dropdown-toggle'), this.$('#wi-status-dropdown'), 'WorkItem State dropdown');
   fullDetailButton = new ui.Clickable(this.$('span.dib'), 'View full details button');
   titleDiv = new ui.BaseElement(this.$('#wi-title-div'), 'Workitem title div');
@@ -19,6 +18,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   titleSaveButton = new ui.Button(this.titleDiv.$('.inlineinput-btn-save'), 'WorkItem Title Save button');
   titleCancelButton = new ui.Button(this.titleDiv.$('.inlineinput-btn-cancel'), 'Workitem Title cancel button');
   titleErrorMessage = new ui.BaseElement(this.$('.error-message small'), 'WorkItem Title error message');
+  linkCount = new ui.Clickable(this.$('#wi-link-total'), 'work item link total');
 
   /* UI elements for the middle section of the workitem preview */
   assigneeDropdownSelector = new ui.BaseElement(this.$('assignee-selector'), ' assignee selector');
@@ -53,15 +53,15 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     this.$('#labelSelector ul.select-dropdown-menu'),
     'Label Select dropdown');
   labelsDiv = new ui.BaseElement(this.$('.f8-detail__labels'), ' labels Div');
-  labels = new ui.BaseElement(this.labelsDiv.$('.label-wrapper'),' labels ');
+  labels = new ui.BaseElement(this.labelsDiv.$('.label-wrapper'), ' labels ');
   labelListDiv = new ui.BaseElementArray(this.labelsDiv.$$('f8-label .label-wrapper>span'), 'label list Div');
   labelDropDownDiv = new ui.BaseElement(this.$('#labelSelector .select-dropdown'), 'dropdown div');
-  labelDropdownCloseButton = new ui.Clickable(this.labelDropDownDiv.$('.close-pointer'),'label dropdown close Button');
-  createLabelButton = new ui.Clickable(this.labelDropDownDiv.$('.create-label-button'),'Create new label');
-  createLabelDiv = new ui.BaseElement(this.$('.create-label'),'create label div');
-  createLabelInput = new ui.TextInput(this.createLabelDiv.$('.create-label-input'),'create label input');
-  createLabelCancel = new ui.Button(this.createLabelDiv.$('.pficon-close'),'create label cancel');
-  createLabelSaveButton = new ui.Button(this.createLabelDiv.$('.fa-check'),'create label save button');
+  labelDropdownCloseButton = new ui.Clickable(this.labelDropDownDiv.$('.close-pointer'), 'label dropdown close Button');
+  createLabelButton = new ui.Clickable(this.labelDropDownDiv.$('.create-label-button'), 'Create new label');
+  createLabelDiv = new ui.BaseElement(this.$('.create-label'), 'create label div');
+  createLabelInput = new ui.TextInput(this.createLabelDiv.$('.create-label-input'), 'create label input');
+  createLabelCancel = new ui.Button(this.createLabelDiv.$('.pficon-close'), 'create label cancel');
+  createLabelSaveButton = new ui.Button(this.createLabelDiv.$('.fa-check'), 'create label save button');
 
   descriptionDiv = new ui.BaseElement(this.$('#wi-desc-div'), 'WorkItem Description Div');
   descriptionEditIcon = new ui.Clickable(this.descriptionDiv.$('i'), 'WorkItem Description Edit icon');
@@ -73,23 +73,23 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     this.descriptionDiv.$$('.action-btn.btn').first(),
     'WorkItem Description Save Button');
   creatorusername = new ui.BaseElement(this.$('#WI_details_reporter_user'), 'WorkItem creator div');
-  creatorAvatar = new ui.BaseElement(this.$('#WI_details_reporter_img>img'), 'Creator Avatar URL')
+  creatorAvatar = new ui.BaseElement(this.$('#WI_details_reporter_img>img'), 'Creator Avatar URL');
   /* UI elements for the bottom section of the workitem preview */
-  linksDiv = new ui.BaseElement($('#wi-link'),'WorkItem links div')
+  linksDiv = new ui.BaseElement($('#wi-link'), 'WorkItem links div');
   linksToggleButton = new ui.Clickable(this.linksDiv.$('.f8-toggle-caret'), 'WorkItem Links toggle button');
-  createLinkButton = new ui.Button(this.linksDiv.$('#create-link-button'),'Create link Button');
+  createLinkButton = new ui.Button(this.linksDiv.$('#create-link-button'), 'Create link Button');
   linkTypeDropdown = new ui.Dropdown(
     this.$('#wi-link-type'),
     this.$('.typeahead-long.dropdown-menu'),
     'select link type dropdown'
   );
-  searchWorkItem = new ui.TextInput(this.linksDiv.$('#workitem-link-search'),'Workitem search');
+  searchWorkItem = new ui.TextInput(this.linksDiv.$('#workitem-link-search'), 'Workitem search');
   workItemDropdown = new ui.Dropdown(
     this.searchWorkItem,
     this.$('.dropdown.open .dropdown-menu.dropdown-ul'),
     'select workitem'
   );
-  linkButton = new ui.Button(this.linksDiv.$('#bind-link'),'link Button');
+  linkButton = new ui.Button(this.linksDiv.$('#bind-link'), 'link Button');
   linklistItem = new ui.BaseElement(this.$('#wi-link .f8-link__list-item'), 'link lst item');
 
   commentsToggleButton = new ui.Clickable($('#wi-comment .f8-toggle-caret'), 'WorkItem Comments toggle button');
@@ -101,7 +101,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   commentSaveButton = new ui.Button(this.commentDiv.$('.btn-save'), 'Comment save button');
   commentCancelButton = new ui.Button(this.commentDiv.$('.fl.btn.btn-default.pull-right.action-btn'), 'Comment cancel button');
   commentsText = new ui.BaseElementArray(this.$$('.f8-comment-body .comment .editor-box.editor-preview'), 'Comment List');
-  commentsCount = new ui.BaseElement(this.$('#total_comments'), 'comment count')
+  commentsCount = new ui.BaseElement(this.$('#total_comments'), 'comment count');
 
   constructor(ele: ElementFinder, name: string = '') {
     super(ele, name);
@@ -171,12 +171,12 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.commentCancelButton.clickWhenReady();
   }
 
-  async addLabel(label: string, unassignLabel=false) {
-    await this.labelDropdown.clickWhenReady()
+  async addLabel(label: string, unassignLabel= false) {
+    await this.labelDropdown.clickWhenReady();
     await this.labelDropdown.select(label);
     await this.labelDropdownCloseButton.clickWhenReady();
     await this.loadingAnimation.untilCount(0);
-    if(!unassignLabel) {
+    if (!unassignLabel) {
       await this.labels.untilTextIsPresent(label);
     }
   }
@@ -191,6 +191,10 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.workItemDropdown.select(workItem);
     await this.linkButton.isPresent();
     await this.linkButton.clickWhenReady();
+  }
+
+  async removeLink(workItem) {
+    await new ui.BaseElement(this.element(by.xpath("//li[contains(@class,'f8-link__list-item')][.//span[text()='" + workItem + "']]")).$('.pficon-close')).clickWhenReady();
   }
 
   async createNewLabel(label: string, isPressEnter: boolean = false) {
@@ -209,11 +213,11 @@ export class WorkItemQuickPreview extends ui.BaseElement {
 
   // Try to click on the close button, if it fails, wait for notification to disappear
   async close() {
-    while(true) {
+    while (true) {
       try {
         await this.closeButton.clickWhenReady();
         break;
-      } catch(e) {
+      } catch (e) {
         await browser.sleep(1000);
         await this.notificationToast.untilCount(0);
       }
@@ -251,7 +255,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   async getComments() {
     await this.ready();
     await this.commentDiv.scrollIntoView();
-    let commentList:String = "" ;
+    let commentList: String = '' ;
     if (await this.commentsText.isPresent()) {
       commentList = await this.commentsText.getTextWhenReady();
     }
@@ -259,12 +263,12 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async getCreationTime() {
-    let origTime = await this.creationTimeDiv.getTextWhenReady()
+    let origTime = await this.creationTimeDiv.getTextWhenReady();
     return origTime;
   }
 
   async getDescription() {
-    return await this.descriptionTextarea.getTextWhenReady();
+    return this.descriptionTextarea.getTextWhenReady();
   }
 
   async getIteration() {
@@ -286,7 +290,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
 
   async updateTitle(title: string, append: boolean = false) {
     await this.titleDiv.clickWhenReady();
-    if(!append) {
+    if (!append) {
       await this.titleInput.clear();
     }
     await this.titleInput.enterText(title);
@@ -295,7 +299,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
 
   async updateDescription(description: string, append: boolean = false) {
     await this.openDescriptionBox();
-    if(!append) {
+    if (!append) {
       await this.descriptionTextarea.clear();
     }
     await this.descriptionTextarea.enterText(description);
@@ -304,7 +308,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.descriptionSaveButton.untilHidden();
   }
 
-  async openDescriptionBox(){
+  async openDescriptionBox() {
     await browser.actions().mouseMove(this.descriptionDiv).perform();
     await this.descriptionEditIcon.clickWhenReady();
   }
@@ -312,8 +316,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   async isSaveButtonDisplayed() {
     try {
       return await this.descriptionSaveButton.isDisplayed();
-    }
-    catch (exception) {
+    } catch (exception) {
       return false;
     }
   }
@@ -324,7 +327,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async getTitleError() {
-    return await this.titleErrorMessage.getTextWhenReady();
+    return this.titleErrorMessage.getTextWhenReady();
   }
 
   async changeStateTo(state: string) {
