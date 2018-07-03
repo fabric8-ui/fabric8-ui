@@ -1,4 +1,5 @@
 import { CommonModule }     from '@angular/common';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule }         from '@angular/core';
 import {
   RequestOptions,
@@ -43,8 +44,10 @@ import { UrlService } from '../../services/url.service';
 import { ClickOutModule } from '../../widgets/clickout/clickout.module';
 
 // Data Querries
+import { AreaQuery } from '../../models/area.model';
 import { WorkItemTypeQuery } from '../../models/work-item-type';
-import { AreaQuery } from './../../models/area.model';
+import { HttpClientService } from '../../services/http.service';
+import { AuthInterceptor } from '../../services/interceptors';
 import { CommentQuery } from './../../models/comment';
 import { GroupTypeQuery } from './../../models/group-types.model';
 import { IterationQuery } from './../../models/iteration.model';
@@ -63,6 +66,11 @@ let providers = [
       useFactory: factoryForHttpService,
       deps: [XHRBackend, RequestOptions, AuthenticationService]
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
     CustomQueryService,
     IterationService,
     TooltipConfig,
@@ -76,6 +84,7 @@ let providers = [
     WorkItemDataService,
     UrlService,
     InfotipService,
+    HttpClientService,
     CommentQuery,
     UserQuery,
     LabelQuery,
@@ -94,6 +103,7 @@ let providers = [
     CommonModule,
     ClickOutModule,
     FilterColumnModule,
+    HttpClientModule,
     PlannerListRoutingModule,
     PlannerLayoutModule,
     PlannerModalModule,
