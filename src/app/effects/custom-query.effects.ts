@@ -95,9 +95,9 @@ export class CustomQueryEffects {
     .withLatestFrom(this.store.select('listPage').select('space'))
     .switchMap(([action, space]) => {
       return this.customQueryService.delete(
-        action.payload, space.links.self + '/queries/' + action.payload.id
+        space.links.self + '/queries/' + action.payload.id
       )
-      .map(customQuery => {
+      .map(() => {
         return new CustomQueryActions.DeleteSuccess(action.payload);
       })
       .catch(() => {

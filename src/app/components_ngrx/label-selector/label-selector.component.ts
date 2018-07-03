@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { cloneDeep } from 'lodash';
 import { LabelModel, LabelUI } from './../../models/label.model';
-import { EventService } from './../../services/event.service';
 import { LabelService } from './../../services/label.service';
 import {
   SelectDropdownComponent
@@ -82,7 +81,6 @@ export class LabelSelectorComponent implements OnInit {
 
   constructor(
     private labelService: LabelService,
-    private eventService: EventService,
     private store: Store<AppState>
   ) {}
 
