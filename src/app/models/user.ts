@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
-import { Profile, UserService as UserServiceClass } from 'ngx-login-client';
+import {
+  Profile, User,
+  UserService as UserServiceClass
+} from 'ngx-login-client';
+import { ConnectableObservable } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { Get as GetUserAction } from './../actions/user.actions';
 import { AppState, ListPage } from './../states/app.state';
@@ -138,5 +142,20 @@ export class UserQuery {
             });
           });
       });
+  }
+
+  /**
+   * getCollaboratorAndLoggedInUserIds this function returns an
+   * array of all the collaborators IDs and loggedIn user IDs
+   */
+  get getCollaboratorIds() {
+    return this.store.select(this.collaboratorIdsSelector);
+  }
+
+  /**
+   * This function returns the loggedInUser subject
+   */
+  get getLoggedInUser(): ConnectableObservable<User> {
+    return this.userService.loggedInUser;
   }
 }

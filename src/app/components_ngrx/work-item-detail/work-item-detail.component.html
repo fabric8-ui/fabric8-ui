@@ -30,7 +30,7 @@
           <div class="width-100 pull-left">
             <div
               class="card-pf-time-frame-filter pull-left dropdown"
-              dropdown *ngIf="loggedIn" [isDisabled]="!loggedInUser">
+              dropdown *ngIf="loggedIn" [isDisabled]="!workItem?.editable">
               <button dropdownToggle
                 class="btn btn-default width-100 dropdown-toggle padding-h-10 text-left"
                 id="wi-preview-state"
@@ -73,7 +73,7 @@
         <div *ngIf="detailContext=='detail'">
           <div class="pull-left margin-right-15">
             <div class="dropdown pull-left"
-              dropdown *ngIf="loggedIn" [isDisabled]="!loggedInUser">
+              dropdown *ngIf="loggedIn" [isDisabled]="!workItem?.editable">
               <button class="btn btn-default dropdown-toggle padding-h-10 width-100"
                 id="wi-detail-state"
                 type="button"
@@ -135,7 +135,7 @@
             <f8-inlineinput
               #inlineInput
               id="wi-title-div"
-              [disabled]="!loggedInUser"
+              [disabled]="!workItem?.editable"
               [value]="workItem.title"
               (onSave)="saveTitle($event)"
               [placeholder]="'Enter title'">
@@ -167,10 +167,11 @@
                   [assignees]="workItem?.assigneesObs | async">
                 </f8-assignee>
                 <div class="user-search"
-                  *ngIf="loggedIn">
+                  *ngIf="workItem?.editable">
                     <assignee-selector
                       [allUsers]="collaborators"
                       [selectedAssignees]="workItem?.assigneesObs | async"
+                      [editAllow]="workItem?.editable"
                       [loggedInUser]="loggedInUser"
                       (onOpenSelector)="onAssigneeSelectorOpen($event)"
                       (onCloseAssignee)="assignUser($event)">
@@ -218,7 +219,7 @@
                 <common-selector
                   *ngIf="!loadingArea"
                   class="area-dropdown"
-                  [allowUpdate]="!!loggedInUser"
+                  [allowUpdate]="workItem?.editable"
                   [noValueLabel]="'None'"
                   [headerText]="'Update area'"
                   [items]="areaSource | async"
@@ -241,7 +242,7 @@
                 <common-selector
                   *ngIf="!loadingIteration"
                   class="iteration-dropdown"
-                  [allowUpdate]="!!loggedInUser"
+                  [allowUpdate]="workItem?.editable"
                   [headerText]="'Update iteration'"
                   [items]="iterationSource | async"
                   [noValueLabel]="'None'"
@@ -265,7 +266,7 @@
                 <f8-label *ngIf="!loadingLabels"
                   [labels]='workItem?.labelsObs | async'
                   (onRemoveLabel)="removeLable($event)"
-                  [allowDelete]="!!loggedInUser"
+                  [allowDelete]="workItem?.editable"
                   [context]="detailContext">
                 </f8-label>
                 <div class="f8-detail__labels--selector"
@@ -273,7 +274,7 @@
                   <label-selector
                     [allLabels]="labels"
                     [selectedLabels]="workItem?.labelsObs | async"
-                    [allowUpdate]="!!loggedInUser"
+                    [allowUpdate]="workItem?.editable"
                     (onCloseSelector)="updateLabels($event)">
                   </label-selector>
                 </div>
@@ -290,7 +291,7 @@
               <div class="f8-detail__content">
                 <f8-markdown
                   id="wi-desc-div"
-                  [editAllow]="!!loggedInUser"
+                  [editAllow]="workItem?.editable"
                   [rawText]="workItem.descriptionRendered!==null ? workItem.description : workItem.description.content"
                   [renderedText]="(workItem.descriptionRendered!==null ? workItem.descriptionRendered : workItem.description.rendered) | safe: 'html'"
                   (onSaveClick)="descUpdate($event)"
@@ -307,7 +308,7 @@
               <alm-dynamic-field
                 class="db"
                 [keyValueField]="field"
-                [editAllow]="!!loggedInUser"
+                [editAllow]="workItem?.editable"
                 (onUpdate)="dynamicFieldUpdated($event)">
               </alm-dynamic-field>
             </div>

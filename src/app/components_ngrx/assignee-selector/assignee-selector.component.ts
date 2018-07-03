@@ -11,8 +11,7 @@ import {
 import { cloneDeep } from 'lodash';
 import {
   AuthenticationService,
-  User,
-  UserService
+  User
 } from 'ngx-login-client';
 import { Observable } from 'rxjs/Observable';
 import { WorkItem, WorkItemRelations } from '../../models/work-item';
@@ -32,6 +31,7 @@ export class AssigneeSelectorComponent {
   @ViewChild('dropdown') dropdownRef: SelectDropdownComponent;
 
   @Input() loggedInUser: UserUI;
+  @Input() editAllow: boolean = false;
 
   allUsers: UserUI[] = [];
   @Input('allUsers') set allUsersSetter(val: UserUI[]) {

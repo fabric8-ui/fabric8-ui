@@ -11,7 +11,7 @@
   (onOpen)="onOpen($event)"
   (onClose)="onClose($event)">
   <ng-template #toggleButtonRef>
-    <span *ngIf="!!loggedInUser" class="clickable add-label"
+    <span *ngIf="editAllow" class="clickable add-label"
       id="f8-add-assignee"
       (click)="closeAddAssignee()">
       <i class="pficon pficon-add-circle-o padding-right-5"></i>

@@ -33,7 +33,7 @@ describe('Planner Collaborator Tests:', () => {
 
   it('Non collaborator should not be able to add assignee', async() => {
     await planner1.workItemList.clickWorkItem('Work Item 4');
-    expect(await planner1.quickPreview.assigneeDropdownSelector.getTextWhenReady()).not.toBe(' Add Assignee ');
+    expect(await planner1.quickPreview.assigneeSection.getTextWhenReady()).not.toBe(' Add Assignee ');
   });
 
   it('Non collaborator should Comment and Save', async() => {

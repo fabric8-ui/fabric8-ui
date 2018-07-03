@@ -168,6 +168,7 @@ export interface WorkItemUI {
 
   createId?: number; // this is used to identify newly created item
   selected: boolean;
+  editable?: boolean; // Based on the logged in user this value will be changed. Default value is false
 }
 
 export interface WorkItemStateModel extends EntityState<WorkItemUI> {}
@@ -287,7 +288,11 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     }, {
       toPath: ['bold'],
       toValue: false
+    }, {
+      toPath: ['editable'],
+      toValue: false
     }
+
   ];
 
   uiToServiceMapTree: MapTree = [{
@@ -500,10 +505,6 @@ export class WorkItemQuery {
     this.listPageSelector,
     state => state.workItems
   );
-  private workItemEntities = createSelector(
-    this.workItemSelector,
-    selectEntities
-  );
   private getAllWorkItemSelector = createSelector(
     this.workItemSelector,
     selectAll
@@ -515,32 +516,43 @@ export class WorkItemQuery {
     .select(state => state.detailPage)
     .select(state => state.workItem);
 
+  resolveWorkItem(workItem: WorkItemUI): WorkItemUI {
+    return {
+      ...workItem,
+      creatorObs: this.userQuery.getUserObservableById(workItem.creator),
+      assigneesObs: this.userQuery.getUserObservablesByIds(workItem.assignees),
+      iterationObs: this.iterationQuery.getIterationObservableById(workItem.iterationId),
+      areaObs: this.areaQuery.getAreaObservableById(workItem.areaId),
+      labelsObs: this.labelQuery.getLabelObservablesByIds(workItem.labels)
+    };
+  }
+
   getWorkItems(): Observable<WorkItemUI[]> {
     return this.workItemSource.map(workItems => {
-      return workItems.map(workItem => {
-        return {
-          ...workItem,
-          creatorObs: this.userQuery.getUserObservableById(workItem.creator),
-          assigneesObs: this.userQuery.getUserObservablesByIds(workItem.assignees),
-          iterationObs: this.iterationQuery.getIterationObservableById(workItem.iterationId),
-          areaObs: this.areaQuery.getAreaObservableById(workItem.areaId),
-          labelsObs: this.labelQuery.getLabelObservablesByIds(workItem.labels)
-        };
-      });
+      return workItems.map(this.resolveWorkItem.bind(this));
     });
   }
 
   getWorkItem(number: string | number): Observable<WorkItemUI> {
     return this.workItemDetailSource
-    .filter(item => item !== null)
-    .map(workItem => {
+      .filter(item => item !== null)
+      .map(this.resolveWorkItem.bind(this))
+      .switchMap(this.setWorkItemEditable.bind(this));
+  }
+
+  /**
+   * Allow edit work item
+   */
+  setWorkItemEditable(workItem: WorkItemUI): Observable<WorkItemUI> {
+    return Observable.combineLatest(
+      this.userQuery.getLoggedInUser,
+      this.userQuery.getCollaboratorIds
+    )
+    .map(([loggdInuser, collabIDs]): WorkItemUI => {
+      const allAllowedIds = loggdInuser ? [...collabIDs, workItem.creator] : [];
       return {
         ...workItem,
-        creatorObs: this.userQuery.getUserObservableById(workItem.creator),
-        assigneesObs: this.userQuery.getUserObservablesByIds(workItem.assignees),
-        iterationObs: this.store.select('listPage').select('iterations').select(workItem.iterationId),
-        areaObs: this.store.select('listPage').select('areas').select(state => state[workItem.areaId]),
-        labelsObs: this.labelQuery.getLabelObservablesByIds(workItem.labels)
+        editable: allAllowedIds.indexOf(loggdInuser.id) > -1
       };
     });
   }
