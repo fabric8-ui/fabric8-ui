@@ -26,6 +26,7 @@ import {
    LabelQuery, LabelUI
 } from './label.model';
 import { Link } from './link';
+import { plannerSelector } from './space';
 import { UserMapper, UserQuery, UserService, UserUI } from './user';
 import {
   WorkItemType,
@@ -490,6 +491,24 @@ export class WorkItemResolver {
   }
 }
 
+
+export const workItemSelector = createSelector(
+  plannerSelector,
+  // TODO
+  // This is a HACK till fabric8-ui removes the unnecessary planner imports
+  // it should just be
+  // state => state.workItems
+  state => state ? state.workItems : {entities: {}, ids: []}
+);
+export const workItemEntities = createSelector(
+  workItemSelector,
+  selectEntities
+);
+export const getAllWorkItemSelector = createSelector(
+  workItemSelector,
+  selectAll
+);
+
 @Injectable()
 export class WorkItemQuery {
   constructor(
@@ -500,25 +519,8 @@ export class WorkItemQuery {
     private labelQuery: LabelQuery
   ) {}
 
-  private plannerSelector = createFeatureSelector<PlannerState>('planner');
-  private workItemSelector = createSelector(
-    this.plannerSelector,
-    // TODO
-    // This is a HACK till fabric8-ui removes the unnecessary planner imports
-    // it should just be
-    // state => state.workItems
-    state => state ? state.workItems : {entities: {}, ids: []}
-  );
-  private workItemEntities = createSelector(
-    this.workItemSelector,
-    selectEntities
-  );
-  private getAllWorkItemSelector = createSelector(
-    this.workItemSelector,
-    selectAll
-  );
   private workItemSource = this.store
-    .select(this.getAllWorkItemSelector);
+    .select(getAllWorkItemSelector);
 
   private workItemDetailSource = this.store
     .select(state => state.detailPage)
@@ -615,6 +617,6 @@ export class WorkItemQuery {
   }
 
   get getWorkItemEntities(): Observable<{[id: string]: WorkItemUI}> {
-    return this.store.select(this.workItemEntities);
+    return this.store.select(workItemEntities);
   }
 }
