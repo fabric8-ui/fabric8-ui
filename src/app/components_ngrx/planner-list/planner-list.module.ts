@@ -46,8 +46,9 @@ import { ClickOutModule } from '../../widgets/clickout/clickout.module';
 // Data Querries
 import { AreaQuery } from '../../models/area.model';
 import { WorkItemTypeQuery } from '../../models/work-item-type';
+import { AuthInterceptor } from '../../services/auth.interceptors';
 import { HttpClientService } from '../../services/http.service';
-import { AuthInterceptor } from '../../services/interceptors';
+import { HttpBackendClient } from '../../services/httpbackendclient.service';
 import { CommentQuery } from './../../models/comment';
 import { GroupTypeQuery } from './../../models/group-types.model';
 import { IterationQuery } from './../../models/iteration.model';
@@ -85,6 +86,7 @@ let providers = [
     UrlService,
     InfotipService,
     HttpClientService,
+    HttpBackendClient,
     CommentQuery,
     UserQuery,
     LabelQuery,

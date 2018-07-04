@@ -1,7 +1,9 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { Http, RequestOptions, XHRBackend } from '@angular/http';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AuthenticationService } from 'ngx-login-client';
+import { HttpBackendClient } from '../../services/httpbackendclient.service';
 import { AreaService } from './../../services/area.service';
 import { CollaboratorService } from './../../services/collaborator.service';
 import { factoryForHttpService, HttpService } from './../../services/http-service';
@@ -24,14 +26,16 @@ let providers = [
     provide: HttpService,
     useFactory: factoryForHttpService,
     deps: [XHRBackend, RequestOptions, AuthenticationService]
-  }
+  },
+  HttpBackendClient
 ];
 
 @NgModule({
   imports: [
     WorkItemDetailRoutingModule,
     WorkItemDetailModule,
-    TooltipModule
+    TooltipModule,
+    HttpClientModule
   ],
   providers: providers
 })
