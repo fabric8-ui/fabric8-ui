@@ -1,6 +1,8 @@
-import { $, $$, browser, by, ElementFinder } from 'protractor';
+import { $, $$, browser, by, ElementFinder, Key } from 'protractor';
 import * as support from './../../support';
 import * as ui from './../../ui';
+import { Clickable } from './../base.element';
+
 
 export class WorkItemQuickPreview extends ui.BaseElement {
   // TODO - move loading animation out of here. It doesn't belong here.
@@ -103,6 +105,11 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   commentCancelButton = new ui.Button(this.commentDiv.$('.fl.btn.btn-default.pull-right.action-btn'), 'Comment cancel button');
   commentsText = new ui.BaseElementArray(this.$$('.f8-comment-body .comment .editor-box.editor-preview'), 'Comment List');
   commentsCount = new ui.BaseElement(this.$('#total_comments'), 'comment count');
+
+  /* UI elements for the Agile template of the workitem preview */
+  effortTextArea = new ui.TextInput(this.$('[placeholder="Effort"]'), 'effort textarea');
+  workItemsGroup = new ui.Clickable(this.element(by.cssContainingText('alm-dynamic-field .f8-dynamic-control', ' Work Items ')),'Side panel WorkItem button');
+  businessValue = new ui.TextInput(this.$('textarea[placeholder="Business Value"]'), ' Business value textarea');
 
   constructor(ele: ElementFinder, name: string = '') {
     super(ele, name);
@@ -334,5 +341,16 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   async changeStateTo(state: string) {
     await this.stateDropdown.clickWhenReady();
     await this.stateDropdown.select(state);
+  }
+
+  /* Agile Template */
+  async updateEffort(effort: string) {
+    await this.effortTextArea.enterText(effort);
+    await this.effortTextArea.sendKeys(Key.ENTER);
+  }
+
+  async updateBusinessValue(businessValue: string) {
+    await this.businessValue.enterText(businessValue);
+    await this.businessValue.sendKeys(Key.ENTER);
   }
 }

@@ -11,6 +11,7 @@ function validate_config(){
   // Unset NODE_ENV variable.
   process.env.NODE_ENV = '';
   process.env.SPACE_NAME || new Error("SPACE_NAME variable not set");
+  process.env.SPACE_NAME_SCRUM || new Error("SPACE_NAME_SCRUM variable not set");
   process.env.USER_NAME || new Error("USER_NAME variable not set")
   process.env.USER_FULLNAME || new Error("USER_FULLNAME variable not set")
   process.env.AUTH_TOKEN || new Error("TOKEN (Auth token) variable not set");

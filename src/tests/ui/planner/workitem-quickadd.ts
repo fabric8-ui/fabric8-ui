@@ -1,6 +1,6 @@
-import { ElementFinder, $ } from 'protractor';
-import { WorkItem } from './index';
+import { $, ElementFinder } from 'protractor';
 import * as ui from '../../ui';
+import { WorkItem } from './index';
 
 export class WorkItemQuickAdd extends ui.BaseElement {
   titleTextInput = new ui.TextInput(this.$('input.f8-quickadd-input'), 'Work item Title');
@@ -22,7 +22,9 @@ export class WorkItemQuickAdd extends ui.BaseElement {
     await this.addAndOpenButton.ready();
   }
 
-  async addWorkItem({ title, description = '', type = 'feature' }: WorkItem) {
+  async addWorkItem({ title, description = '', type = '' }: WorkItem) {
+    await this.workItemTypeDropdown.clickWhenReady();
+    await this.workItemTypeDropdown.select(type);
     await this.titleTextInput.ready();
     await this.titleTextInput.enterText(title);
     await this.addAndOpenButton.untilClickable();
@@ -37,15 +39,15 @@ export class WorkItemQuickAdd extends ui.BaseElement {
     await this.workItemTypeDropdown.clickWhenReady();
     let array = await this.workItemTypeDropdown.menu.getTextWhenReady();
     // Split array, remove invalid entries and trim the result
-    return array.split("\n").reduce<string[]>((filtered ,current) => {
-      if(current) {
+    return array.split('\n').reduce<string[]>((filtered , current) => {
+      if (current) {
         filtered.push(current.trim());
       }
       return filtered;
     }, []);
   }
-  
-  async addAndOpenWorkItem(title: string, workItemType:string) {
+
+  async addAndOpenWorkItem(title: string, workItemType: string) {
     await this.workItemTypeDropdown.clickWhenReady();
     await this.workItemTypeDropdown.select(workItemType);
     await this.titleTextInput.enterText(title);

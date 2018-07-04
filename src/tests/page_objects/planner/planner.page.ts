@@ -1,8 +1,8 @@
 import { $, browser, Key } from 'protractor';
 import { v4 as uuid } from 'uuid';
 import { AppPage } from '../app.page';
-import * as planner from './../../ui/planner';
 import * as support from './../../support';
+import * as planner from './../../ui/planner';
 
 // this is what you see when you click on the Plan Tab button
 export class PlannerPage extends AppPage {
@@ -17,7 +17,7 @@ export class PlannerPage extends AppPage {
   detailPage = new planner.WorkItemDetailPage($('work-item-detail'));
   confirmModalButton = new planner.WorkItemList($('#modal-confirm'));
 
-  constructor(url: string){
+  constructor(url: string) {
     super(url);
   }
 
@@ -37,7 +37,7 @@ export class PlannerPage extends AppPage {
 
   async createUniqueWorkItem(): Promise<string> {
     let workItemTitle = uuid();
-    await this.createWorkItem({"title" : workItemTitle});
+    await this.createWorkItem({'title' : workItemTitle});
     return workItemTitle;
   }
   async createInlineWorkItem(item: planner.WorkItem) {
