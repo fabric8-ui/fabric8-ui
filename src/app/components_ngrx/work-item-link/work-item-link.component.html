@@ -127,7 +127,7 @@
           <ul class="padding-left-0">
             <li *ngFor="let wi of linkDict.workItems; let i = index"
               class="f8-link__list-item">
-              <a [routerLink]="detailContext === 'preview' ? 'detail/' + wi.number : createRouterLink(wi.number, detailContext)"
+              <a [routerLink]="detailContext === 'preview' ? 'detail/' + wi.number : '../' + wi.number"
                 (click)="detailContext === 'detail' && onLinkClicked(wi.number)">
                 <span class="f8-link__list-item-title"
                   [id]="wi.id + '-text'"

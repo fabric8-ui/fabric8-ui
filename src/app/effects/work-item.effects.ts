@@ -112,7 +112,7 @@ export class WorkItemEffects {
                 return new WorkItemActions.GetChildren(parent);
               } else {
                 if (payload.openDetailPage) {
-                  this.router.navigateByUrl(this.router.url.split('plan')[0] + 'plan/detail/' + wItem.number,
+                  this.router.navigateByUrl(document.location.pathname + '/detail/' + wItem.number,
                                             {relativeTo: this.route});
                 }
                 return new WorkItemActions.AddSuccess(wItem);
@@ -130,7 +130,7 @@ export class WorkItemEffects {
               console.log('Work item is added.');
             }
             if (payload.openDetailPage) {
-              this.router.navigateByUrl(this.router.url.split('plan')[0] + 'plan/detail/' + wItem.number,
+              this.router.navigateByUrl(document.location.pathname + '/detail/' + wItem.number,
                                         {relativeTo: this.route});
             }
             return Observable.of(new WorkItemActions.AddSuccess(wItem));

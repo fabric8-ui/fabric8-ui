@@ -239,14 +239,6 @@ export class WorkItemLinkComponent implements OnInit {
     }));
   }
 
-  createRouterLink(wiNumber, detailContext) {
-    if (detailContext === 'detail') {
-      let url = this.router.url.split('detail');
-      url[url.length - 1] = 'detail/' + wiNumber;
-      return url.join('');
-    }
-  }
-
   onLinkClicked(wiNumber) {
     this.onLinkClick.emit({
       number: wiNumber

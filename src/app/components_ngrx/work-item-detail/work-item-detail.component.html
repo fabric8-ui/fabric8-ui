@@ -63,7 +63,7 @@
               </ul>
             </div>
             <a class="pull-right"
-              [routerLink]="[constructUrl(workItem)]"
+              [routerLink]="['detail', workItem.number]"
               [queryParams]="queryParams">
               View full details
                 <span class="fa fa-list-alt"></span>

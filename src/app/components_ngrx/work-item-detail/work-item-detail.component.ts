@@ -262,10 +262,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     }
   }
 
-  constructUrl(workItem: WorkItemUI) {
-    return this.router.url.split('plan')[0] + 'plan/detail/' + workItem.number;
-  }
-
   saveTitle(event) {
     const value = event.value.trim();
     this.titleCallback = event.callBack;
