@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
-import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
+
+// MemoizedSelector is needed even if it's not being used in this file
+// Else you get this error
+// Exported variable 'plannerSelector' has or is using name 'MemoizedSelector'
+// from external module "@ngrx/store/src/selector" but cannot be named.
+import { createFeatureSelector, createSelector, MemoizedSelector, Store } from '@ngrx/store';
 import { Space } from 'ngx-fabric8-wit';
 import { Observable } from 'rxjs';
 import { AppState, PlannerState } from './../states/app.state';
 
-export const  plannerSelector = createFeatureSelector<PlannerState>('planner');
+export const plannerSelector = createFeatureSelector<PlannerState>('planner');
 export const spaceSelector = createSelector(
     plannerSelector,
     // TODO

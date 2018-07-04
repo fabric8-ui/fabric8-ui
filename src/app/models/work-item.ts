@@ -1,6 +1,17 @@
 import { Injectable } from '@angular/core';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
-import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
+
+// Dictionary is needed even if it's not being used in this file
+// Else you get this error
+// Exported variable 'workItemEntities' has or is using name 'Dictionary'
+// from external module "@ngrx/entity/src/models" but cannot be named.
+import { Dictionary } from '@ngrx/entity/src/models';
+
+// MemoizedSelector is needed even if it's not being used in this file
+// Else you get this error
+// Exported variable 'workItemSelector' has or is using name 'MemoizedSelector'
+// from external module "@ngrx/store/src/selector" but cannot be named.
+import { createSelector, MemoizedSelector, Store } from '@ngrx/store';
 import { cloneDeep, orderBy } from 'lodash';
 import { Observable } from 'rxjs';
 import { AppState, PlannerState } from './../states/app.state';
