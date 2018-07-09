@@ -54,7 +54,6 @@ class HostComponent { }
   template: ''
 })
 class FakeDeleteDeploymentModal {
-  @Input() host: ModalDirective;
   @Input() applicationId: string;
   @Input() environmentName: string;
   @Output() deleteEvent = new EventEmitter();
