@@ -1,11 +1,11 @@
-<span class="pficon-info infotip-icon"
-  (click)="handlePropagation($event)"
-  [style.opacity]="pop.isOpen ? '1' : ''"   
-  [popover]="popoverTemplate" placement="right" 
+<span class="pficon-info infotip-icon {{infotipId}}"
+  (click)="$event.preventDefault()"
+  [class.infotip-bold]="pop.isOpen"
+  [popover]="popoverTemplate" [outsideClick]="true" placement="right"
   containerClass="popover-container" #pop="bs-popover">
 </span>
 <ng-template #popoverTemplate>
     <span class="pficon-close pull-right pointer" 
     (click)="handlePropagation($event); pop.hide();"></span>
-  <span class="popover-text">{{ infotipText }}</span>
+  <span class="popover-text" (click)="handlePropagation($event)">{{ infotipText }}</span>
 </ng-template>

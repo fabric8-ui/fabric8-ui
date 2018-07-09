@@ -8,11 +8,10 @@ import { Component, Input } from '@angular/core';
 
 export class InfotipComponent {
   @Input() infotipText: string;
+  @Input() infotipId: string = '';
 
-  handlePropagation(e) {
-    if (e) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
-  }
+   handlePropagation(e) {
+    e.stopPropagation();
+    e.preventDefault();
+   }
 }

@@ -1,10 +1,9 @@
 <ul class="list-group margin-0">
   <li class="list-group-item" *ngFor="let item of groupTypes">
     <a
-      class="f8-group-filter__type"
+      class="f8-group-filter__type pointer"
       id="{{item.group}}"
-      [routerLink]="[]"
-      [queryParams]="addRemoveQueryParams(item)"
+      (click)="groupTypeClickHandler($event, item)"
       [class.selected]="item.selected"
       *ngIf="item.showInSideBar">
         <span class="dib margin-right-10 {{ item.icon }}"
@@ -14,7 +13,8 @@
           [class.dib]="sidePanelOpen"
           [class.hide]="!sidePanelOpen">
         {{ item.name }}</span>
-        <infotip 
+        <infotip
+          [infotipId]="'infotip-group-type-'+item.id"
           [class.dib]="sidePanelOpen"
           [class.hide]="!sidePanelOpen"
           [infotipText]="getInfotipText(item.id) | async">

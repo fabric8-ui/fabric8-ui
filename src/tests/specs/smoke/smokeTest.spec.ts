@@ -196,6 +196,12 @@ describe('Planner Smoke Tests:', () => {
     expect(await planner.workItemList.hasWorkItem('new detail workItem')).toBeTruthy();
   });
 
+  it('Infotip opens on clicking on infotip icon and closes on outside click', async () => {
+    await planner.sidePanel.infotipIconExperience.clickWhenReady();
+    await planner.sidePanel.infotipIconRequirement.clickWhenReady();
+    expect(await planner.sidePanel.infotipPopover.count()).toBe(1);
+  });
+
   it('Add new work-item to the selected iteration', async () => {
     await planner.workItemList.overlay.untilHidden();
     await planner.sidePanel.clickIteration('Iteration_1');
