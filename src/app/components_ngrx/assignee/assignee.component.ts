@@ -15,6 +15,7 @@ export class AssigneesComponent {
   @Input('assignees') set assigneeInput(val) {
     this.assignees = val;
   }
+  @Input() overlapAvatar: boolean = false;
 
   constructor() {}
 }

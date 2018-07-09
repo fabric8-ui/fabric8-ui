@@ -21,7 +21,8 @@
         *ngFor="let assignee of assignees | slice:0:truncateAfter"
         [imgTooltip]="assignee?.name"
         [imgPlacement]="'left'"
-        [imgSrc]="assignee?.avatar | almAvatarSize: 25">
+        [imgSrc]="assignee?.avatar | almAvatarSize: 25"
+        [ngClass]="{'user-avatar--overlap': overlapAvatar}">
       </user-avatar>
       <div dropdown class="dib dropdown" placement="right">
         <span dropdownToggle class="dib dropdown-toggle pointer"
