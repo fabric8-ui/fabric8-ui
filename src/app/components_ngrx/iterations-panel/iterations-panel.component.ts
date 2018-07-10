@@ -22,7 +22,6 @@ import { FilterService } from './../../services/filter.service';
 import { Store } from '@ngrx/store';
 import * as IterationActions from './../../actions/iteration.actions';
 import { AppState } from './../../states/app.state';
-import { IterationState, IterationUIState } from './../../states/iteration.state';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -40,6 +39,7 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() showTree: string = '';
   @Input() showCompleted: string = '';
   @Input() infotipText: string = '';
+  @Input() context: 'list' | 'board'; // 'list' or 'board'
 
   @ViewChild('modal') modal: FabPlannerIterationModalComponent;
 
@@ -145,6 +145,9 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  getRouterLink() {
+    return this.context === 'board' ? ['..'] : [];
+  }
 
   kebabMenuClick(event: Event) {
     event.stopPropagation();

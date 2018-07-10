@@ -28,17 +28,18 @@ import { datatableColumn } from './datatable-config';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
-import { AreaQuery } from '../../models/area.model';
-import { UserQuery } from '../../models/user';
-import { WorkItemQuery, WorkItemUI } from '../../models/work-item';
-import { WorkItemPreviewPanelComponent } from '../work-item-preview-panel/work-item-preview-panel.component';
 import * as AreaActions from './../../actions/area.actions';
 import * as CollaboratorActions from './../../actions/collaborator.actions';
 import * as SpaceActions from './../../actions/space.actions';
 import * as WorkItemActions from './../../actions/work-item.actions';
+import { AreaQuery } from './../../models/area.model';
 import { cleanObject } from './../../models/common.model';
+import { GroupTypeQuery } from './../../models/group-types.model';
 import { LabelQuery } from './../../models/label.model';
+import { UserQuery } from './../../models/user';
+import { WorkItemQuery, WorkItemUI } from './../../models/work-item';
 import { AppState } from './../../states/app.state';
+import { WorkItemPreviewPanelComponent } from './../work-item-preview-panel/work-item-preview-panel.component';
 
 
 @Component({
@@ -51,10 +52,6 @@ import { AppState } from './../../states/app.state';
 export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked {
   private uiLockedAll: boolean = false;
   private sidePanelOpen: boolean = true;
-  private groupTypeSource = this.store
-    .select('planner')
-    .select('groupTypes')
-    .filter(g => !!g.length);
   private workItemTypeSource = this.store
     .select('planner')
     .select('workItemTypes')
@@ -116,7 +113,8 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     private userQuery: UserQuery,
     private labelQuery: LabelQuery,
     private workItemQuery: WorkItemQuery,
-    private areaQuery: AreaQuery
+    private areaQuery: AreaQuery,
+    private groupTypeQuery: GroupTypeQuery
   ) {}
 
   ngOnInit() {
@@ -342,10 +340,10 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
         if (space) {
           const spaceId = space.id;
           //get groupsgroups
-          this.groupTypeSource
+          this.groupTypeQuery.getFirstGroupType
             .take(1)
-            .subscribe(groupTypes => {
-              const defaultGroupName = groupTypes[0].name;
+            .subscribe(groupType => {
+              const defaultGroupName = groupType.name;
               //Query for work item type group
               const type_query = this.filterService.queryBuilder('typegroup.name', this.filterService.equal_notation, defaultGroupName);
               //Query for space
@@ -372,7 +370,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     this.eventListeners.push(
       Observable.combineLatest(
         this.workItemTypeSource,
-        this.groupTypeSource
+        this.groupTypeQuery.getGroupTypes
       ).subscribe(([workItemTypes, groupTypes]) => {
         this.allWorkItemTypes = workItemTypes;
         const selectedGroupType = groupTypes.find(gt => gt.selected);

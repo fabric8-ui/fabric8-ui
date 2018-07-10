@@ -1,21 +1,18 @@
-import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { Space, Spaces } from 'ngx-fabric8-wit';
+import { Spaces } from 'ngx-fabric8-wit';
 import { AuthenticationService } from 'ngx-login-client';
 
-import { GroupTypesModel, GroupTypeUI } from '../../models/group-types.model';
+import { GroupTypeUI } from '../../models/group-types.model';
 import { WorkItemType } from '../../models/work-item-type';
 import { FilterService } from '../../services/filter.service';
 import { GroupTypesService } from '../../services/group-types.service';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
-import { InfotipState } from '../../states/index.state';
 import * as GroupTypeActions from './../../actions/group-type.actions';
 import { AppState } from './../../states/app.state';
 
@@ -27,6 +24,7 @@ import { AppState } from './../../states/app.state';
 export class GroupTypesComponent implements OnInit, OnDestroy {
 
   @Input() sidePanelOpen: boolean = true;
+  @Input() context: 'list' | 'board'; // 'list' or 'board'
 
   authUser: any = null;
   infotipSource = this.store
@@ -101,6 +99,12 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
   }
 
   addRemoveQueryParams(witGroup) {
+    // If it's a board view then quoery should only have the board id
+    if (this.context === 'board') {
+      return {boardContextId: witGroup.id};
+    }
+
+    // For list view it works differently
     if (this.showCompleted && this.showTree) {
       return {
         q: this.fnBuildQueryParam(witGroup),
@@ -149,6 +153,15 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
           this.showCompleted = val.showCompleted;
         } else {
           this.showCompleted = '';
+        }
+
+        // If it's a board view then check for board context ID
+        if (val.hasOwnProperty('boardContextId')) {
+          const selectedTypeGroup: GroupTypeUI =
+              this.groupTypes.find(g => g.id === val.boardContextId);
+          if (selectedTypeGroup) {
+            this.store.dispatch(new GroupTypeActions.SelectType(selectedTypeGroup));
+          }
         }
       })
     );

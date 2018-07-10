@@ -4,7 +4,7 @@
   [attr.data-id]="iteration.id">
   <span  class="fa margin-right-15"
     *ngIf="!iteration.hasChildren"></span>
-  <span 
+  <span
     class="fa fa-angle-right margin-right-15"
     (click)="toggleChildrenDisplay(iteration)"
     *ngIf="iteration.hasChildren && !iteration.showChildren">
@@ -45,9 +45,9 @@
       </li>
     </ul>
   </div>
-  <a 
+  <a
     class="f8-itr__header"
-    [routerLink]="[]" 
+    [routerLink]="getRouterLink()"
     [queryParams]="addRemoveQueryParams(iteration.id)"
     title="{{iteration.name}}">
     <div class="truncate padding-right-15">

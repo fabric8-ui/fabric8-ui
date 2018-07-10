@@ -2,7 +2,7 @@
 <div class="f8-itr__tree">
   <ul *ngIf="iterationList.length > 0"
     class="padding-left-0">
-    <li 
+    <li
       *ngFor="let iteration of iterationList">
       <iteration-list-entry
         [iteration] ="iteration"
@@ -10,6 +10,7 @@
         [witGroup]="witGroup"
         [showTree]="showTree"
         [showCompleted]="showCompleted"
+        [context]="context"
         (onEditIteration)="editIteration($event)"
         (onCloseIteration)="closeIteration($event)"
         (onCreateIteration)="createIteration($event)">
@@ -20,6 +21,7 @@
         [witGroup]="witGroup"
         [showTree]="showTree"
         [showCompleted]="showCompleted"
+        [context]="context"
         (onEditIteration)="editIteration($event)"
         (onCloseIteration)="closeIteration($event)"
         (onCreateIteration)="createIteration($event)">

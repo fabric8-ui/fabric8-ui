@@ -46,13 +46,15 @@ import { UrlService } from '../../services/url.service';
 import { ClickOutModule } from '../../widgets/clickout/clickout.module';
 
 // Data Querries
-import { AreaQuery } from '../../models/area.model';
-import { IterationQuery } from '../../models/iteration.model';
-import { LabelQuery } from '../../models/label.model';
+import { AreaQuery } from './../../models/area.model';
 import { CommentQuery } from './../../models/comment';
+import { GroupTypeQuery } from './../../models/group-types.model';
+import { IterationQuery } from './../../models/iteration.model';
+import { LabelQuery } from './../../models/label.model';
 import { SpaceQuery } from './../../models/space';
 import { UserQuery } from './../../models/user';
 import { WorkItemQuery } from './../../models/work-item';
+
 import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module';
 
 let providers = [
@@ -82,7 +84,8 @@ let providers = [
     IterationQuery,
     WorkItemQuery,
     AreaQuery,
-    SpaceQuery
+    SpaceQuery,
+    GroupTypeQuery
   ];
 
 @NgModule({

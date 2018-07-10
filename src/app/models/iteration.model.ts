@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AppState, PlannerState } from '../states/app.state';
+import * as IterationActions from './../actions/iteration.actions';
 import  {IterationService as Service } from './../services/iteration.service';
+import { AppState, PlannerState } from './../states/app.state';
 import {
   Mapper,
   MapTree,
@@ -269,5 +270,9 @@ export class IterationQuery {
       .map((iterations: IterationUI[]) => {
         return iterations.filter((iteration: IterationUI) => iteration.isActive);
     });
+  }
+
+  deselectAllIteration() {
+    this.store.dispatch(new IterationActions.Select());
   }
 }

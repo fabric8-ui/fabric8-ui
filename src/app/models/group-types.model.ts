@@ -1,4 +1,12 @@
-import { CommonModule } from '@angular/common';
+import { Injectable } from '@angular/core';
+// MemoizedSelector is needed even if it's not being used in this file
+// Else you get this error
+// Exported variable 'groupTypeSelector' has or is using name 'MemoizedSelector'
+// from external module "@ngrx/store/src/selector" but cannot be named.
+import { createSelector, MemoizedSelector, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { AppState } from './../states/app.state';
 import {
   Mapper,
   MapTree,
@@ -6,6 +14,7 @@ import {
   modelUI,
   switchModel
 } from './common.model';
+import { plannerSelector } from './space';
 
 export class GroupTypesModel extends modelService {
   attributes: WITGroupAttributes;
@@ -153,5 +162,21 @@ export class GroupTypeMapper implements Mapper<GroupTypeService, GroupTypeUI> {
     return switchModel<GroupTypeUI, GroupTypeService>(
       arg, this.uiToServiceMapTree
     );
+  }
+}
+
+export const groupTypeSelector = createSelector(
+  plannerSelector,
+  state => state.groupTypes
+);
+@Injectable()
+export class GroupTypeQuery {
+  constructor(private store: Store<AppState>) {}
+  get getGroupTypes(): Observable<GroupTypeUI[]> {
+    return this.store.select(groupTypeSelector)
+      .filter(g => g.length > 0);
+  }
+  get getFirstGroupType(): Observable<GroupTypeUI> {
+    return this.getGroupTypes.map(g => g[0]);
   }
 }

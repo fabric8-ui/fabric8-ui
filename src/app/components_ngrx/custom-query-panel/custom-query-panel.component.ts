@@ -1,17 +1,12 @@
-import { cloneDeep } from 'lodash';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
 import {
   Component,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit
 } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { Space, Spaces } from 'ngx-fabric8-wit';
+import { Spaces } from 'ngx-fabric8-wit';
 import { AuthenticationService } from 'ngx-login-client';
 
 import { CustomQueryModel } from '../../models/custom-query.model';
@@ -31,6 +26,7 @@ import { AppState } from './../../states/app.state';
 export class CustomQueryComponent implements OnInit, OnDestroy {
 
   @Input() sidePanelOpen: boolean = true;
+  @Input() context: 'list' | 'board'; // 'list' or 'board'
 
   authUser: any = null;
   private spaceId;
@@ -128,6 +124,10 @@ export class CustomQueryComponent implements OnInit, OnDestroy {
         q: this.constructUrl(queryField)
       };
     }
+  }
+
+  getRouterLink() {
+    return this.context === 'board' ? ['..'] : [];
   }
 
   stopPropagation(event) {

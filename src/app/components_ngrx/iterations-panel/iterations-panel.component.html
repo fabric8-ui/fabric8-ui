@@ -36,7 +36,7 @@
       *ngFor="let iteration of activeIterations | async">
       <a
         [routerLinkActive]="'f8-itr--selected'"
-        [routerLink]="[]" [attr.data-id]="iteration.id"
+        [routerLink]="getRouterLink()" [attr.data-id]="iteration.id"
         [queryParams]="addRemoveQueryParams(iteration.id)"
         title="{{ iteration.resolvedParentPath +
           '/' + iteration.name }}">
@@ -83,6 +83,7 @@
       [witGroup]="witGroup"
       [showTree]="showTree"
       [showCompleted]="showCompleted"
+      [context]="context"
       (onEditIteration)="onEdit($event)"
       (onCloseIteration)="onClose($event)"
       (onCreateIteration)="onCreateChild($event)">

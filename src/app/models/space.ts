@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { createFeatureSelector, createSelector, MemoizedSelector, Store } from '@ngrx/store';
 import { Space } from 'ngx-fabric8-wit';
 import { Observable } from 'rxjs';
+import * as SpaceActions from './../actions/space.actions';
 import { AppState, PlannerState } from './../states/app.state';
 
 export const plannerSelector = createFeatureSelector<PlannerState>('planner');
@@ -23,6 +24,7 @@ export class SpaceQuery {
     constructor(private store: Store<AppState>) {}
 
     get getCurrentSpace(): Observable<Space> {
-        return this.store.select(spaceSelector);
+        return this.store.select(spaceSelector)
+            .do(s => {if (!s) { this.store.dispatch(new SpaceActions.Get()); }});
     }
 }
