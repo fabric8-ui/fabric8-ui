@@ -1,5 +1,11 @@
+[[html-css-guidelines]]
+== HTML/CSS Guidelines
+
+Fabric8-planner follows the guidelines listed in the link:https://uxd.fabric8.io/code-guidelines/ [HTML/CSS Code Guidelines], 
+ensure that you use the same guidelines while contributing to the repository.
+
 [[continuous-delivery-semantic-relases]]
-== Continuous Delivery & Semantic Relases
+== Continuous Delivery & Semantic Releases
 
 In fabric8-planner we use the
 https://github.com/semantic-release/semantic-release[semantic-release
