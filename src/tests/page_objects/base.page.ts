@@ -20,7 +20,7 @@ export abstract class BasePage {
   // to set the url. Need to do this because '' is a valid url and
   // refers to the baseUrl
 
-  protected url: string|undefined;
+  protected url: string | undefined;
 
   constructor(url?: string) {
     this.url = url;
@@ -43,12 +43,12 @@ export abstract class BasePage {
   }
 
   async openInBrowser() {
-    if (this.url === undefined ) {
+    if (this.url === undefined) {
       throw Error('Trying to open an undefined url');
     }
-    this.log("Authenticating with Auth and Refresh token");
+    this.log('Authenticating with Auth and Refresh token');
     await support.loginWithTokens();
-    this.log('Opening', this.url)
+    this.log('Opening', this.url);
     let currentUrl = await browser.getCurrentUrl();
     this.debug('at  :', currentUrl);
 

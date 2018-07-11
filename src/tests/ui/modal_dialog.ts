@@ -1,4 +1,4 @@
-import { ExpectedConditions as until, ElementFinder } from 'protractor';
+import { ElementFinder, ExpectedConditions as until } from 'protractor';
 import { BaseElement } from './base.element';
 
 export class ModalDialog extends BaseElement {

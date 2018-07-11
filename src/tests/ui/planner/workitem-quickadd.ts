@@ -35,7 +35,7 @@ export class WorkItemQuickAdd extends ui.BaseElement {
     await this.addButton.untilClickable();
   }
 
-  async workItemTypes(): Promise<string[]>{
+  async workItemTypes(): Promise<string[]> {
     await this.workItemTypeDropdown.clickWhenReady();
     let array = await this.workItemTypeDropdown.menu.getTextWhenReady();
     // Split array, remove invalid entries and trim the result
@@ -47,9 +47,9 @@ export class WorkItemQuickAdd extends ui.BaseElement {
     }, []);
   }
 
-  async addAndOpenWorkItem(title: string, workItemType: string) {
+  async addAndOpenWorkItem({ title, description = '', type = '' }: WorkItem) {
     await this.workItemTypeDropdown.clickWhenReady();
-    await this.workItemTypeDropdown.select(workItemType);
+    await this.workItemTypeDropdown.select(type);
     await this.titleTextInput.enterText(title);
     await this.addAndOpenButton.clickWhenReady();
     this.log('New WorkItem created', `${title} added`);

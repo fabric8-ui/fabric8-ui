@@ -1,4 +1,4 @@
-import { browser, ExpectedConditions as until, $, by } from 'protractor';
+import { $, browser, by, ExpectedConditions as until } from 'protractor';
 import * as support from '../support';
 import { BaseElement } from '../ui';
 

@@ -185,7 +185,8 @@ describe('Planner Smoke Tests:', () => {
   });
 
   it('Create a work item and Open detail page', async () => {
-    await planner.quickAdd.addAndOpenWorkItem('new detail workItem', 'Scenario');
+    let workitem = { title : 'new detail workItem', type: 'Scenario'};
+    await planner.quickAdd.addAndOpenWorkItem(workitem);
     await planner.quickPreview.notificationToast.untilCount(1);
     await planner.quickPreview.notificationToast.untilHidden();
     await planner.detailPage.closeButton.ready();

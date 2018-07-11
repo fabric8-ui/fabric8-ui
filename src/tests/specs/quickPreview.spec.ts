@@ -7,18 +7,18 @@ describe('Quick preview tests: ', () => {
   let planner: PlannerPage;
   let c = new support.Constants();
 
-  beforeAll( async () => {
+  beforeAll(async () => {
     await support.desktopTestSetup();
     planner = new PlannerPage(browser.baseUrl);
     await planner.openInBrowser();
     await planner.waitUntilUrlContains('typegroup');
   });
 
-  beforeEach( async () => {
+  beforeEach(async () => {
     await planner.ready();
   });
 
-  afterEach( async () => {
+  afterEach(async () => {
     await planner.resetState();
   });
 
@@ -29,7 +29,7 @@ describe('Quick preview tests: ', () => {
   });
 
   it('should open quickpreview and create new label', async () => {
-    let workitemname = {"title": "test labels"};
+    let workitemname = {'title': 'test labels'};
     await planner.createWorkItem(workitemname);
     await planner.workItemList.clickWorkItem(workitemname.title);
     await planner.quickPreview.createNewLabel(c.newLabel);
@@ -38,8 +38,8 @@ describe('Quick preview tests: ', () => {
   });
 
   it('should open quickpreview and create new label using Enter Key', async () => {
-    let workitemname = {"title": "text labels"};
-    let newLabel = "Enter Key Label";
+    let workitemname = {'title': 'text labels'};
+    let newLabel = 'Enter Key Label';
     await planner.createWorkItem(workitemname);
     await planner.workItemList.clickWorkItem(workitemname.title);
     await planner.quickPreview.createNewLabel(newLabel, true);
@@ -47,8 +47,8 @@ describe('Quick preview tests: ', () => {
     expect(await planner.quickPreview.getLabels()).toContain(newLabel);
   });
 
-  it('should link a workitem',async () => {
-    let workitemname = {"title": "link test"},
+  it('should link a workitem', async () => {
+    let workitemname = {'title': 'link test'},
       linkType = 'blocks',
       searchWorkItem = '3-Workitem_Title_4',
       workItemTitle17 = 'Workitem_Title_4';
@@ -67,8 +67,8 @@ describe('Quick preview tests: ', () => {
     expect(await planner.quickPreview.titleInput.getAttribute('value')).toBe('Title Text "<0>"');
   });
 
-  it('description box should not be open for wis',async () => {
-    let workitemname = {"title": "quickpreview test"};
+  it('description box should not be open for wis', async () => {
+    let workitemname = {'title': 'quickpreview test'};
     await planner.createWorkItem(workitemname);
     await planner.workItemList.clickWorkItem(workitemname.title);
     await planner.quickPreview.openDescriptionBox();
@@ -78,13 +78,13 @@ describe('Quick preview tests: ', () => {
     await planner.workItemList.clickWorkItem(c.workItemTitle2);
     // The description box should not be in edit mode
     expect(await planner.quickPreview.isSaveButtonDisplayed()).toBeFalsy();
-  })
+  });
 
-  it('should close assignee dropdown when clicked outside',async () => {
+  it('should close assignee dropdown when clicked outside', async () => {
     await planner.workItemList.clickWorkItem(c.workItemTitle2);
     await planner.quickPreview.assigneeDropdown.clickWhenReady();
     expect(await planner.quickPreview.assigneeDropdownMenu.getAttribute('className')).toContain('show');
     await planner.quickPreview.titleInput.clickWhenReady();
     expect(await planner.quickPreview.assigneeDropdownMenu.getAttribute('className')).not.toContain('show');
-  })
+  });
 });

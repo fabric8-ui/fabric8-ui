@@ -1,6 +1,6 @@
 import {
-  browser, ExpectedConditions as EC,
-  ElementFinder, ElementArrayFinder
+  browser, ElementArrayFinder,
+  ElementFinder, ExpectedConditions as EC
 } from 'protractor';
 
 import * as mixins from '../mixins';
@@ -10,10 +10,10 @@ import { DEFAULT_WAIT } from '../support';
 // todo move to a different module
 
 type NumberComparerFn = (x: number) => boolean;
-type NumberComparer = number|NumberComparerFn;
+type NumberComparer = number | NumberComparerFn;
 
 function makeNumberComparer(compare: NumberComparer): NumberComparerFn {
-  if (typeof(compare) == "number") {
+  if (typeof(compare) == 'number') {
     return (n: number) =>  n >= compare;
   }
   return compare;
@@ -82,8 +82,8 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
   async untilHidden(timeout?: number) {
     try {
       await this.waitFor('hidden', EC.invisibilityOf(this), timeout);
-    } catch(e) {
-      this.debug("Element: ", this.name, " no longer exists.");
+    } catch (e) {
+      this.debug('Element: ', this.name, ' no longer exists.');
     }
   }
 
@@ -96,7 +96,7 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
       await this.untilDisplayed(timeout);
       await this.untilClickable(timeout);
       await this.click();
-    })
+    });
   }
 
   async ready() {
@@ -120,7 +120,7 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
 
   async getTextWhenReady(timeout?: number): Promise<string> {
     await this.untilDisplayed(timeout);
-    return await this.getText();
+    return this.getText();
   }
 
   async scrollIntoView() {
@@ -156,7 +156,7 @@ export class BaseElementArray extends ElementArrayFinder {
 
   async getTextWhenReady(): Promise<String> {
     await this.ready();
-    return await this.getText();
+    return this.getText();
   }
 
   async untilHidden() {
@@ -164,8 +164,8 @@ export class BaseElementArray extends ElementArrayFinder {
       let tempItem = new BaseElement(item, this.name + ' - ' + index);
       try {
         await tempItem.untilHidden();
-      } catch(e) {
-        this.debug("Element: ", tempItem.name, " no longer exists.");
+      } catch (e) {
+        this.debug('Element: ', tempItem.name, ' no longer exists.');
       }
     });
   }
@@ -177,7 +177,7 @@ export class Clickable extends BaseElement {
     await this.run('ready', async () => {
       await super.ready();
       await this.untilClickable();
-    })
+    });
   }
 }
 

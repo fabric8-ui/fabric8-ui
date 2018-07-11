@@ -1,4 +1,4 @@
-import { ExpectedConditions as until, ElementFinder, Key } from 'protractor';
+import { ElementFinder, ExpectedConditions as until, Key } from 'protractor';
 import { BaseElement } from './base.element';
 
 export class TextInput extends BaseElement {

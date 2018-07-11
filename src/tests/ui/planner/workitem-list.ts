@@ -1,13 +1,13 @@
-import { BaseElement } from './../base.element';
-import { ElementFinder, by, browser } from 'protractor';
-import { WorkItemQuickAdd } from './workitem-quickadd';
-import { WorkItemListEntry } from './workitem-list-entry';
+import { browser, by, ElementFinder } from 'protractor';
 import * as ui from '../../ui';
+import { BaseElement } from './../base.element';
+import { WorkItemListEntry } from './workitem-list-entry';
+import { WorkItemQuickAdd } from './workitem-quickadd';
 
 export class WorkItemList extends BaseElement {
   overlay = new BaseElement(this.$('div.lock-overlay-list'));
-  datatableHeaderdiv = new ui.BaseElement(this.$('.datatable-header'),'datatable header div');
-  datatableHeaderCell = new ui.BaseElementArray(this.$$('datatable-header-cell'),'datatable header cell');
+  datatableHeaderdiv = new ui.BaseElement(this.$('.datatable-header'), 'datatable header div');
+  datatableHeaderCell = new ui.BaseElementArray(this.$$('datatable-header-cell'), 'datatable header cell');
   datatableHeaderCellLabel = new ui.BaseElementArray(this.$$('datatable-header-cell-label'));
   datatableRow = new ui.BaseElementArray(this.$$('datatable-body-row'), 'datatable row');
   childWorkItemTypeDropdown = new ui.Dropdown(
@@ -31,7 +31,7 @@ export class WorkItemList extends BaseElement {
   }
 
   async hasWorkItem(title: string, showCompleted = false): Promise<boolean> {
-    if(!showCompleted) {
+    if (!showCompleted) {
       await this.workItem(title).untilTextIsPresent(title);
     }
     return this.workItem(title).isPresent();
@@ -40,7 +40,7 @@ export class WorkItemList extends BaseElement {
   workItem(title: string): WorkItemListEntry {
     return new WorkItemListEntry(
       this.element(by.xpath("//datatable-body-row[.//p[text()='" + title + "']]")),
-      "Work Item - " + title);
+      'Work Item - ' + title);
   }
 
   async clickInlineQuickAdd(title: string) {
@@ -48,21 +48,21 @@ export class WorkItemList extends BaseElement {
   }
 
   async getInlineQuickAddClass(title: string) {
-    return await this.workItem(title).getInlineQuickAddClass();
+    return this.workItem(title).getInlineQuickAddClass();
   }
 
   async getDataTableHeaderCellCount() {
     await this.datatableHeaderdiv.untilDisplayed();
-    return await this.datatableHeaderCell.count();
+    return this.datatableHeaderCell.count();
   }
 
-  async selectChildWorkItemType(type: string){
+  async selectChildWorkItemType(type: string) {
     await this.childWorkItemTypeDropdown.clickWhenReady();
     await this.childWorkItemTypeDropdown.select(type);
   }
 
   async iterationText(title: string) {
-    return await this.workItem(title).getIterationText();
+    return this.workItem(title).getIterationText();
   }
 
   async clickWorkItemLabel(title: string) {
@@ -70,7 +70,7 @@ export class WorkItemList extends BaseElement {
   }
 
   async isTitleTextBold(title: string) {
-    return await this.workItem(title).title.getAttribute('className');
+    return this.workItem(title).title.getAttribute('className');
   }
 
   async openDetailPage(title: string) {
@@ -80,7 +80,7 @@ export class WorkItemList extends BaseElement {
 
   async getUnassignedWorkItemCount(assigneeName: string) {
     let assignees: any = await this.$$('f8-assignee').getAttribute('innerText');
-    let unassigned:any = assignees.filter(assignee => assignee === assigneeName);
+    let unassigned: any = assignees.filter(assignee => assignee === assigneeName);
     return unassigned.length;
   }
-};
+}

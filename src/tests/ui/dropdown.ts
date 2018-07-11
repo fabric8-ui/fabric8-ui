@@ -1,6 +1,6 @@
-import { ElementFinder, by, $ } from 'protractor';
-import { BaseElement, Clickable } from './base.element';
+import { $, by, ElementFinder } from 'protractor';
 import * as support from '../support';
+import { BaseElement, Clickable } from './base.element';
 
 class DropdownItem extends BaseElement {
   constructor(element: ElementFinder, parent: ElementFinder, name: string = '') {
@@ -20,10 +20,10 @@ class DropdownItem extends BaseElement {
       await this.parent.ready();
       try {
         await this.clickWhenReady();
-      } catch(e) {
+      } catch (e) {
         await this.click();
       }
-      })
+      });
   }
 }
 
@@ -64,10 +64,10 @@ export class Dropdown extends BaseElement {
   }
 
   async ready() {
-    await this.run('ready', async() => {
+    await this.run('ready', async () => {
       await super.ready();
       await this.untilClickable();
-    })
+    });
   }
 }
 

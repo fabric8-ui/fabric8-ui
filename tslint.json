@@ -5,7 +5,6 @@
   "linterOptions": {
     "exclude": [
       "node_modules/*",
-      "src/tests/",
       "dist/*",
       "runtime/"
     ]

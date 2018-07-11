@@ -1,6 +1,6 @@
 import { ElementFinder } from 'protractor';
-import { WorkItem } from './index';
 import * as ui from '../../ui';
+import { WorkItem } from './index';
 
 export class Settings extends ui.BaseElement {
   settingsDropdownDiv = new ui.BaseElement(this.$('.f8-wi-list__settings-dropdown'), 'settings div');
@@ -8,10 +8,10 @@ export class Settings extends ui.BaseElement {
     this.$('.f8-wi-list__settings .dropdown-toggle'),
     this.$('.f8-wi-list__settings-dropdown')
   );
-  moveToDisplayedAttributeButton = new ui.Clickable(this.settingsDropdownDiv.$("span[tooltip='Move to Displayed Attributes']"),'move to displayed attribute');
-  moveToAvailableAttributeButton = new ui.Clickable(this.settingsDropdownDiv.$("span[tooltip='Move to Available Attributes']"),'move to available attribute');
-  close = new ui.Clickable(this.settingsDropdownDiv.$('.fa-close.btn'),' close button');
-  
+  moveToDisplayedAttributeButton = new ui.Clickable(this.settingsDropdownDiv.$("span[tooltip='Move to Displayed Attributes']"), 'move to displayed attribute');
+  moveToAvailableAttributeButton = new ui.Clickable(this.settingsDropdownDiv.$("span[tooltip='Move to Available Attributes']"), 'move to available attribute');
+  close = new ui.Clickable(this.settingsDropdownDiv.$('.fa-close.btn'), ' close button');
+
   constructor(el: ElementFinder, name = 'Settings') {
     super(el, name);
   }
@@ -31,7 +31,7 @@ export class Settings extends ui.BaseElement {
 
   async moveToDisplayedAttribute() {
     await this.moveToDisplayedAttributeButton.clickWhenReady();
-    await this.close.clickWhenReady();    
+    await this.close.clickWhenReady();
   }
 
   async moveToAvailableAttribute() {

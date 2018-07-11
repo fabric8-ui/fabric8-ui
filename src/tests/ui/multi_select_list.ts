@@ -1,4 +1,4 @@
-import { ElementFinder, by, $ } from 'protractor';
+import { $, by, ElementFinder } from 'protractor';
 import { BaseElement } from './base.element';
 import { Checkbox } from './checkbox';
 
@@ -20,7 +20,7 @@ export class MultipleSelectionList extends BaseElement {
   item(text: string) {
     let el = this.list.element(by.cssContainingText(
       'li.checkbox label', text
-    ))
+    ));
     return new Checkbox(el);
   }
 

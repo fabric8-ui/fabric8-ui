@@ -1,5 +1,5 @@
-import { browser } from 'protractor';
 import * as fs from 'fs';
+import { browser } from 'protractor';
 
 
 export enum BrowserMode {
@@ -42,12 +42,12 @@ export async function desktopTestSetup() {
 */
 export async function loginWithTokens() {
  // Bypass login by supplying auth and refresh token
- browser.get(browser.baseUrl + "/?token_json=" + browser.token);
+ browser.get(browser.baseUrl + '/?token_json=' + browser.token);
 }
 /*
  * Joins the arguments as URI paths ensuring there's exactly one '/' between each path entry
  */
-  export function joinURIPath (...args: string[]) {
+  export function joinURIPath(...args: string[]) {
     // TODO: improve this method using available modules for uri operations
 
     let answer = null;

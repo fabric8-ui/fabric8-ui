@@ -1,36 +1,36 @@
 import { ElementFinder } from 'protractor';
-import { WorkItemQuickPreview } from './workitem-quickpreview';
 import * as ui from '../../ui';
+import { WorkItemQuickPreview } from './workitem-quickpreview';
 
 export class Iteration extends ui.BaseElement {
 
-  iterationDialog = new ui.BaseElement(this.$('.modal-content'),'iteration Dialog');
-  iterationName = new ui.TextInput(this.iterationDialog.$('#iteration-name'),'Iteration text input');
-  parentIteration = new ui.TextInput(this.iterationDialog.$('#parent-iteration'),'parent iteration');
+  iterationDialog = new ui.BaseElement(this.$('.modal-content'), 'iteration Dialog');
+  iterationName = new ui.TextInput(this.iterationDialog.$('#iteration-name'), 'Iteration text input');
+  parentIteration = new ui.TextInput(this.iterationDialog.$('#parent-iteration'), 'parent iteration');
   parentDropdownList = new ui.DropdownMenu(this.iterationDialog.$('.f8-iteration-modal-list'));
   parentDropdown = new ui.Dropdown(
    this.parentIteration,
    this.parentDropdownList,
    'parent iteration dropdown'
   );
-  createIterationButton = new ui.Button(this.iterationDialog.$('#create-iteration-button'),'Create Iteration button');
-  datePickerDiv = new ui.BaseElement(this.$('.datepicker-container'),'date picker div');
-  private showStartDateCalendar = new ui.Clickable(this.datePickerDiv.$$('.selection.inputnoteditable').first(),'start date calendar');
-  private showEndDateCalendar = new ui.Clickable(this.datePickerDiv.$$('.selection.inputnoteditable').last(),'End date calendar');
-  calendarDiv = new ui.BaseElement(this.$('.selector.selectorarrow.selectorarrowleft'),'');
-  selectStartdate = new ui.Clickable(this.$$('.datevalue.currmonth').first(),' select start date');
-  selectEndDate = new ui.Clickable(this.$$('.datevalue.currmonth').last(),' select end date');
+  createIterationButton = new ui.Button(this.iterationDialog.$('#create-iteration-button'), 'Create Iteration button');
+  datePickerDiv = new ui.BaseElement(this.$('.datepicker-container'), 'date picker div');
+  private showStartDateCalendar = new ui.Clickable(this.datePickerDiv.$$('.selection.inputnoteditable').first(), 'start date calendar');
+  private showEndDateCalendar = new ui.Clickable(this.datePickerDiv.$$('.selection.inputnoteditable').last(), 'End date calendar');
+  calendarDiv = new ui.BaseElement(this.$('.selector.selectorarrow.selectorarrowleft'), '');
+  selectStartdate = new ui.Clickable(this.$$('.datevalue.currmonth').first(), ' select start date');
+  selectEndDate = new ui.Clickable(this.$$('.datevalue.currmonth').last(), ' select end date');
   month = new ui.Clickable(this.$('.headermonthtxt'), 'month');
   year = new ui.Clickable(this.$('.headeryeartxt .headerlabelbtn'), 'year');
-  cancel = new ui.Button(this.iterationDialog.$('#cancel-iteration-button'),'Cancel Iteration button');
+  cancel = new ui.Button(this.iterationDialog.$('#cancel-iteration-button'), 'Cancel Iteration button');
 
   async addNewIteration(iterationName: string, parentIteration?: string, withDates?: boolean) {
     await this.iterationName.enterText(iterationName);
-    if(parentIteration) {
+    if (parentIteration) {
       await this.parentIteration.enterText(parentIteration);
       await this.parentDropdown.select(parentIteration);
     }
-    if(withDates) {
+    if (withDates) {
       await this.selectCalendarDate();
     }
   }
@@ -65,7 +65,7 @@ export class Iteration extends ui.BaseElement {
   }
 
   async getLastDayOfMonth(): Promise<String> {
-    let day = await this.selectEndDate.getAttribute("innerText");
+    let day = await this.selectEndDate.getAttribute('innerText');
     return day;
   }
 

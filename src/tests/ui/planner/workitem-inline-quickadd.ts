@@ -1,7 +1,7 @@
-import { BaseElementArray } from './../base.element';
-import { ElementFinder, $ } from 'protractor';
-import { WorkItem } from './index';
+import { $, ElementFinder } from 'protractor';
 import * as ui from '../../ui';
+import { BaseElementArray } from './../base.element';
+import { WorkItem } from './index';
 
 export class WorkItemInlineQuickAdd extends ui.BaseElement {
   titleTextInlineInput = new ui.TextInput(this.$('input.f8-quickadd-input'), 'Work item inline Title');
@@ -22,7 +22,7 @@ export class WorkItemInlineQuickAdd extends ui.BaseElement {
     await this.addAndOpenButton.ready();
   }
 
-  async addInlineWorkItem({ title, description = '', type }:WorkItem)  {
+  async addInlineWorkItem({ title, description = '', type = '' }: WorkItem)  {
     await this.workItemTypeDropdown.clickWhenReady();
     await this.workItemTypeDropdown.select(type);
     await this.titleTextInlineInput.ready();
@@ -32,12 +32,12 @@ export class WorkItemInlineQuickAdd extends ui.BaseElement {
     this.log('New Inline WorkItem created', `${title} added`);
   }
 
-  async workItemTypes(): Promise<string[]>{
+  async workItemTypes(): Promise<string[]> {
     await this.workItemTypeDropdown.clickWhenReady();
     let array = await this.workItemTypeDropdown.menu.getTextWhenReady();
     // Split array, remove invalid entries and trim the result
-    return array.split("\n").reduce<string[]>((filtered ,current) => {
-      if(current) {
+    return array.split('\n').reduce<string[]>((filtered , current) => {
+      if (current) {
         filtered.push(current.trim());
       }
       return filtered;
