@@ -1,6 +1,6 @@
 <span class="pficon-info infotip-icon {{infotipId}}"
   (click)="$event.preventDefault()"
-  [class.infotip-bold]="pop.isOpen"
+  [class.infotip--open]="pop.isOpen"
   [popover]="popoverTemplate" [outsideClick]="true" placement="right"
   containerClass="popover-container" #pop="bs-popover">
 </span>

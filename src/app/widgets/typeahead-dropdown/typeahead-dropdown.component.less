@@ -3,10 +3,16 @@
 .typeahead-dropdown {
   padding-left: 0;
   .pointer {
-    &:hover { cursor: pointer; }
+    &:hover {
+      cursor: pointer;
+    }
   }
-  .neutral-entry { color: @color-pf-blue; }
-  .no-value-label { color: @color-pf-blue; }
+  .neutral-entry {
+    color: @color-pf-blue;
+  }
+  .no-value-label {
+    color: @color-pf-blue;
+  }
   .item-ul {
     position: absolute;
     top: 100%;
@@ -40,14 +46,17 @@
         cursor: pointer;
         border: 1px solid;
         border-color: transparent;
-        &:hover { background-image: none; }
+        &:hover {
+          background-image: none;
+        }
         &:active {
           color: @color-pf-white!important;
           background-color: @color-pf-blue-400;
           border-color: @color-pf-blue-400;
           filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
         }
-        &:hover, &:focus {
+        &:hover,
+        &:focus {
           color: @color-pf-black-700;
           text-decoration: none;
           background-color: @color-pf-blue-50;
@@ -58,4 +67,6 @@
     }
   }
 }
-.detail-action-btn { .detail-action-btn; }
+.detail-action-btn {
+  .detail-action-btn;
+}

@@ -6,8 +6,8 @@
     left: 0;
     width: 270px;
     max-height: max-content;
-    padding-top: 0px;
-    padding-bottom: 0px;
+    padding-top: 0;
+    padding-bottom: 0;
     overflow: hidden;
     &-header {
       height: 30px;
@@ -34,7 +34,7 @@
       &-input {
         width: 100%;
         height: 100%;
-        padding: 0px 30px 0px 10px;
+        padding: 0 30px 0 10px;
         outline: none;
         border: 1px solid;
         border-color: @color-pf-black-400;
@@ -42,8 +42,7 @@
         &:focus {
           border-color: @color-pf-blue-400;
           outline: 0;
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075),
-                      0 0 8px rgba(0, 136, 206, .6);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 136, 206, .6); // lesshint-disable-line
         }
       }
       .search-icon {
@@ -90,13 +89,13 @@
         &:hover {
           background-color: @color-pf-blue-50;
           border-color: @color-pf-blue-100;
-          transition: background-color ease-in 0.1s;
+          transition: background-color ease-in .1s;
         }
         &.item-selected {
           color: @color-pf-white;
           background-color: @color-pf-blue-400;
           border-color: @color-pf-blue-400;
-          transition: background-color ease-in 0.1s;
+          transition: background-color ease-in .1s;
         }
         .dynamic-item {
           overflow: hidden;

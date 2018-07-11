@@ -8,7 +8,8 @@
     width: 100%;
     padding: (@grid-gutter-width/2);
     background: @color-pf-black-200;
-    .dropdown-ul, .dropdown {
+    .dropdown-ul,
+    .dropdown {
       min-width: 160px;
       .dropdown-icon {
         display: inline-block;
@@ -37,17 +38,17 @@
     }
   }
   &__detail {
-   // height: ~"calc(e('100vh - 200px'))";
+    // height: ~"calc(e('100vh - 200px'))";
     label {
       text-align: left;
     }
     &-wrap {
-    height: 100%;
-    padding-top: 10px;
-    overflow: auto;
+      height: 100%;
+      padding-top: 10px;
+      overflow: auto;
       &--right {
         padding: 0;
-        border-left: 1px solid @color-pf-black-400
+        border-left: 1px solid @color-pf-black-400;
       }
     }
   }
@@ -75,7 +76,9 @@
     .detail-assignee-name {
       .placeholder {
         color: @color-pf-blue-400;
-        &:hover { cursor: pointer; }
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
   }
@@ -126,17 +129,25 @@
         width: 100%;
         padding: 5px;
         cursor: pointer;
-        &:hover { background-color: @color-pf-black-300; }
+        &:hover {
+          background-color: @color-pf-black-300;
+        }
       }
       .only-first-item {
-        span { font-weight: 600; }
+        span {
+          font-weight: 600;
+        }
       }
       .first-item {
         border-bottom: 1px dashed;
         border-bottom-color: @color-pf-black-500;
-        span { font-weight: 600; }
+        span {
+          font-weight: 600;
+        }
       }
-      .selected { background-color: @color-pf-black-300; }
+      .selected {
+        background-color: @color-pf-black-300;
+      }
       .action-li {
         padding: 5px;
         margin-left: -15px;

@@ -3,10 +3,10 @@
 .inlineinput-container {
   width: 100%;
   .input-field {
-    width: ~"calc(e('100% - 30px'))";
+    width: ~"calc(e('100% - 30px'))"; // lesshint-disable-line
     height: 27px;
     min-height: 27px;
-    padding: 0px (@grid-gutter-width/3);
+    padding: 0 (@grid-gutter-width/3);
     font-size: 18px;
     line-height: 1.3;
     background: transparent;
@@ -14,7 +14,6 @@
     resize: none;
     border: 1px solid;
     border-color: @color-pf-black-400;
-
     transition-property: border-color, background-color;
     transition-duration: 300ms;
     transition-timing-function: ease-in;
@@ -38,7 +37,7 @@
     vertical-align: top;
     cursor: pointer;
     .edit-icon {
-      opacity: 0.2;
+      opacity: .2;
     }
   }
   .error-message {
@@ -55,12 +54,11 @@
     }
   }
   .active {
-    width: ~"calc(e('100% - 110px'))";
+    width: ~"calc(e('100% - 110px'))"; // lesshint-disable-line
     background-color: @color-pf-white;
     border: 1px solid;
     border-color: @color-pf-blue-400;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075),
-                0 0 8px rgba(0, 136, 206, .6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 136, 206, .6); // lesshint-disable-line
     transition-property: box-shadow, background-color;
     transition-duration: 300;
     transition-timing-function: ease-in-out, ease-in;
@@ -72,7 +70,7 @@
         border-color: @color-pf-black-400;
       }
       .edit-icon {
-        opacity: 0.2;
+        opacity: .2;
         cursor: none;
       }
     }

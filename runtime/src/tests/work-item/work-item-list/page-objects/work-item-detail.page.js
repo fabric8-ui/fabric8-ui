@@ -998,7 +998,7 @@ testSupport.clickElement(this.workItemDescriptionCancelIcon, "workItemDescriptio
 
   /* UI elements for Label */
   get addLabelButton() {
-    return $('.clickable.add-label');
+    return $('.pointer.add-label');
   }
 
   clickAddLabelButton(){

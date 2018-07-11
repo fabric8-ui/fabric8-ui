@@ -21,7 +21,7 @@
       left: 50%;
       text-align: center;
       color: @color-pf-black;
-      transform: translate(-50%,-50%);
+      transform: translate(-50%, -50%);
       h2 {
         margin-top: .5em;
       }
@@ -43,7 +43,7 @@
     &-wrap {
       position: relative;
       width: 100%;
-     // height: ~"calc(e('100% - 120px'))";
+      // height: ~"calc(e('100% - 120px'))";
       // to avoid overflown scroll height should be there
       overflow-y: auto;
       //List entry tree view specific css
@@ -68,11 +68,12 @@
         }
         aside {
           float: right;
-          width: ~"calc(e('45% - 30px'))";
+          width: ~"calc(e('45% - 30px'))"; // lesshint-disable-line
           height: 100%;
           padding-left: (@grid-gutter-width/6);
           padding-right: (@grid-gutter-width/6);
-          &:first-child, &:nth-child(3) {
+          &:first-child,
+          &:nth-child(3) {
             width: 10%;
             padding: 0 (@grid-gutter-width/3);
             span.fa {
@@ -83,7 +84,7 @@
               font-size: @pf-icon-2x;
             }
             &:nth-child(3) {
-              margin-top: ((@grid-gutter-width/3) * 5);
+              margin-top: ((@grid-gutter-width/3)*5);
             }
           }
         }
@@ -91,7 +92,7 @@
       &-column {
         float: left;
         width: 100%;
-        height: ~"calc(e('100% - 30px'))";
+        height: ~"calc(e('100% - 30px'))"; // lesshint-disable-line
         padding: (@grid-gutter-width/3);
         list-style: none;
         background-color: @color-pf-white;
@@ -110,7 +111,9 @@
       border: 0;
       box-shadow: none;
       .card-pf-title {
-        .no-wi { font-size: @pf-icon-4x; }
+        .no-wi {
+          font-size: @pf-icon-4x;
+        }
       }
     }
     &__quick-add-table {
@@ -121,7 +124,6 @@
   //Patternfly-ng's tree styles - Start
   .pfng-tree-list {
     .list-pf-item {
-
       .list-pf-container {
         align-items: flex-start;
         padding: 15px;
@@ -155,7 +157,8 @@
       }
     }
   }
-  .list-pf-chevron+.list-pf-content, .list-pf-select+.list-pf-content {
+  .list-pf-chevron+ .list-pf-content,
+  .list-pf-select+ .list-pf-content {
     padding-left: 0;
     border-color: transparent;
   }
@@ -170,9 +173,13 @@
   //Patternfly-ng's tree styles - End
 
   //tree-list, drag and drop css
-  .error { color: @color-pf-red-100; }
+  .error {
+    color: @color-pf-red-100;
+  }
   .suppress-hover {
-    &:hover { background-color: transparent; }
+    &:hover {
+      background-color: transparent;
+    }
   }
   .tree-list {
     .node-drop-slot.is-dragging-over {
@@ -195,16 +202,17 @@ button.btn.btn-link.dropdown-toggle:focus {
 }
 
 .planner-hack-title-truncate {
-  max-width: ~"calc(e('100% - 20px'))";
+  max-width: ~"calc(e('100% - 20px'))";// lesshint-disable-line
 }
 
 a.disabled {
-  &:hover, &:focus, &:active {
-    color: #8b8d8f;
+  &:hover,
+  &:focus,
+  &:active {
+    color: @color-pf-black-300;
   }
 }
 /// ng x-datatables css
-
 
 .cell-class {
   overflow: visible !important;
@@ -213,10 +221,10 @@ a.disabled {
   line-height: 44px !important;
 }
 
-.header-cell{
+.header-cell {
   font-weight: bold !important;
   overflow: visible !important;
-  color: #363636 !important;
+  color: @color-pf-black !important;
 }
 
 .datatable-row-detail {
@@ -251,30 +259,33 @@ a.quick-add-icon {
 .ngx-datatable.material.single-selection .datatable-body-row.active:hover .datatable-row-group,
 .ngx-datatable.material.single-selection .datatable-body-row.active:focus,
 .ngx-datatable.material.single-selection .datatable-body-row.active:focus .datatable-row-group {
-    background-color: @color-pf-black-200 !important;
+  background-color: @color-pf-black-200 !important;
 }
 
 // css for row hover
- .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover,
- .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover .datatable-row-group,
- .ngx-datatable.material.cell-selection .datatable-body-cell:hover,
- .ngx-datatable.material.cell-selection .datatable-body-cell:hover .datatable-row-group {
-   background-color: @color-pf-blue-50;
-   transition-property: background;
-   transition-duration: .3s;
-   transition-timing-function: linear;
- }
+.ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover,
+.ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover .datatable-row-group,
+.ngx-datatable.material.cell-selection .datatable-body-cell:hover,
+.ngx-datatable.material.cell-selection .datatable-body-cell:hover .datatable-row-group {
+  background-color: @color-pf-blue-50;
+  transition-property: background;
+  transition-duration: .3s;
+  transition-timing-function: linear;
+}
 
 
 
 // css to show icons on hover(quickAdd, quickPreview, detailPreview, dragHandle)
-.datatable-body-row:hover .table-dnd-container, .datatable-body-row.active .table-dnd-container,
-.datatable-body-row:hover .wi-detail-icon, .datatable-body-row.active .wi-detail-icon,
-.datatable-body-row:hover a.quick-add-icon, .datatable-body-row.active a.quick-add-icon {
+.datatable-body-row:hover .table-dnd-container,
+.datatable-body-row.active .table-dnd-container,
+.datatable-body-row:hover .wi-detail-icon,
+.datatable-body-row.active .wi-detail-icon,
+.datatable-body-row:hover a.quick-add-icon,
+.datatable-body-row.active a.quick-add-icon {
   opacity: 1;
 }
 
-.datatable-body-cell ,
+.datatable-body-cell,
 .datatable-header-cell {
   border-right: 1px solid;
   border-right-color: @color-pf-black-300;
@@ -288,7 +299,7 @@ a.quick-add-icon {
 }
 .datatable-header-cell,
 .datatable-body-cell {
-  padding: ((@grid-gutter-width/10)) ((@grid-gutter-width/3)) ;
+  padding: ((@grid-gutter-width/10)) ((@grid-gutter-width/3));
 }
 .datatable-body-cell {
   overflow-x: visible !important;
@@ -306,7 +317,7 @@ a.quick-add-icon {
   margin-right: 6px;
 }
 
-.table{
+.table {
   &-dnd-container {
     align-self: stretch;
     display: flex;
@@ -332,4 +343,3 @@ a.quick-add-icon {
     }
   }
 }
-

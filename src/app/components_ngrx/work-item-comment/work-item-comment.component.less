@@ -11,11 +11,17 @@
         padding-bottom: 9px;
         cursor: pointer;
       }
-      a { padding: 13px 15px; }
-      &:nth-child(2) {
-        a { margin-left: -13px; }
+      a {
+        padding: 13px 15px;
       }
-      .badge { margin-top: -3px; }// hack to align the badge
+      &:nth-child(2) {
+        a {
+          margin-left: -13px;
+        }
+      }
+      .badge {
+        margin-top: -3px;
+      }// hack to align the badge
       &.active {
         .badge {
           color: @color-pf-white;
@@ -57,12 +63,16 @@
     }
   }
 
-  &--editable { height: auto; }
+  &--editable {
+    height: auto;
+  }
   &--noneditable {
     height: auto;
     word-break: break-word;
     border-color: transparent;
     box-shadow: none;
-    &:hover { border-color: @color-pf-blue-200; }
+    &:hover {
+      border-color: @color-pf-blue-200;
+    }
   }
 }

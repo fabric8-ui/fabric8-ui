@@ -19,9 +19,7 @@ var gulp = require('gulp')
   , less = require('gulp-less')
   , util = require('gulp-util')
 
-  , changed   = require('gulp-changed')
   , lesshint  = require('gulp-lesshint')
-  , concat    = require('gulp-concat-css')
   , srcmaps   = require('gulp-sourcemaps')
   , replace   = require('gulp-string-replace')
   , tslint    = require('gulp-tslint')
@@ -84,22 +82,17 @@ mach.tslint = function(src) {
 
 // Transpile given LESS source(s) to CSS, storing results to distPath.
 mach.transpileLESS = function (src, debug) {
-  var opts = {
-    // THIS IS NEEDED FOR REFERENCE
-    // paths: [ path.join(__dirname, 'less', 'includes') ]
-  }
   return gulp.src(src)
-    .pipe(less({
-      plugins: [autoprefix]
-    }))
     .pipe(lesshint({
       configPath: './.lesshintrc' // Options
+    }))
+    .pipe(less({
+      plugins: [autoprefix]
     }))
     .pipe(lesshint.reporter()) // Leave empty to use the default, "stylish"
     .pipe(lesshint.failOnError()) // Use this to fail the task on lint errors
     .pipe(srcmaps.init())
-    .pipe(less(opts))
-    //.pipe(concat('styles.css'))
+    .pipe(less())
     .pipe(srcmaps.write())
     .pipe(gulp.dest(function (file) {
       return distPath + file.base.slice(__dirname.length + 'src/'.length);

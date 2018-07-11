@@ -1,4 +1,5 @@
 @import (reference) '../../../assets/stylesheets/_base';
+@import (reference) '../../../assets/stylesheets/shared/_formulas';
 
 .f8-itr {
   &-entry {
@@ -7,7 +8,9 @@
     padding-right: 10px;
     border-left: 4px solid;
     border-left-color: transparent;
-    .badge { background-color: @color-pf-black; }
+    .badge {
+      background-color: @color-pf-black;
+    }
     .fa {
       float: left;
       width: 15px;
@@ -16,7 +19,7 @@
       font-size: 16px;
       &:hover {
         color: @color-pf-blue;
-        transition: color ease-in 0.2s;
+        transition: color ease-in 200ms;
       }
     }
     &:hover {
@@ -36,7 +39,7 @@
       &:hover {
         .btn-link {
           color: @color-pf-blue;
-          transition: color ease-in 0.2s;
+          transition: color ease-in 200ms;
         }
       }
     }
@@ -47,9 +50,10 @@
     &:hover {
       color: @color-pf-blue;
       text-decoration: none;
-      transition: color ease-in 0.2s;
+      transition: color ease-in 200ms;
     }
-    &:focus, &:visited {
+    &:focus,
+    &:visited {
       text-decoration: none;
     }
   }
@@ -62,11 +66,5 @@
     font-weight: 600;
     color: @color-pf-black-600;
   }
-}
-.calc-itr-depth(@n, @i: 1) when (@i =< @n) {
-  .depth-@{i} {
-    padding-left: (@i * 15px);
-  }
-  .calc-itr-depth(@n, (@i + 1));
 }
 .calc-itr-depth(4);

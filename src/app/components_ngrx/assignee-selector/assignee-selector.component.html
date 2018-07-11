@@ -11,7 +11,7 @@
   (onOpen)="onOpen($event)"
   (onClose)="onClose($event)">
   <ng-template #toggleButtonRef>
-    <span *ngIf="editAllow" class="clickable add-label"
+    <span *ngIf="editAllow" class="pointer add-label"
       id="f8-add-assignee"
       (click)="closeAddAssignee()">
       <i class="pficon pficon-add-circle-o padding-right-5"></i>
@@ -25,9 +25,11 @@
       [imgSrc]="src | almAvatarSize: 25">
     </user-avatar>
     <span *ngIf="!stickontop" [innerHTML]="name | almSearchHighlight: searchValue"></span>
-    <span
-      *ngIf="stickontop"
-      [innerHTML]="(name | almSearchHighlight: searchValue) + ' (me)'"
-      class="bold"></span>
+    <strong>
+      <span
+        *ngIf="stickontop"
+        [innerHTML]="(name | almSearchHighlight: searchValue) + ' (me)'">
+      </span>
+    </strong>
   </ng-template>
 </f8-select-dropdown>

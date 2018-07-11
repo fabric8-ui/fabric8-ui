@@ -14,7 +14,7 @@
 .btn {
   border-radius: 0;
   outline: 0;
-  &:hover, 
+  &:hover,
   &:focus,
   .active:hover,
   .active:focus,
@@ -23,10 +23,11 @@
   }
 }
 //remove toolbar box shadow
-.toolbar-pf { box-shadow: none !important;
+.toolbar-pf {
+  box-shadow: none !important;
   // add border top to filter results
   &-results {
-    border-top : 1px solid;
+    border-top: 1px solid;
     border-top-color: @color-pf-black-300;
   }
 }
@@ -35,10 +36,14 @@
 .form-control,
 .btn,
 .dropdown-menu,
-.badge { font-size: @font-size-base; }
+.badge {
+  font-size: @font-size-base;
+}
 .dropdown {
   a {
     cursor: pointer;
-    &:hover { text-decoration: none; }
+    &:hover {
+      text-decoration: none;
+    }
   }
 }

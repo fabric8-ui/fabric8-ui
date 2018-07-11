@@ -2,7 +2,7 @@
 
 .f8-wi-container {
   position: relative;
-  >main {
+  > main {
     height: 100%;
     .f8-sidepanel {
       width: 100%;
@@ -33,7 +33,7 @@
     }
     section {
       //toolbar styles
-       header {
+      header {
         float: left;
         width: 100%;
         padding-top: 0;
@@ -42,11 +42,15 @@
         padding-left: 20px;
         border-bottom: 1px solid;
         border-bottom-color: @color-pf-black-300 !important;
-        .toolbar-pf { border-color: transparent;
+        .toolbar-pf {
+          border-color: transparent;
           .toolbar-pf-actions {
             border-color: transparent;
-            .form-group { border-right: 0;
-              &:first { border-left: 0; }
+            .form-group {
+              border-right: 0;
+              &:first {
+                border-left: 0;
+              }
             }
             .toolbar-pf-action-right {
               .pficon-add-circle-o {
@@ -62,9 +66,12 @@
               width: 100%;
               padding: 2px;
             }
-            >div { position: relative;
+            > div {
+              position: relative;
               //HACK:prevents caret icon from folding to a new line
-              input { margin-right: -20px; }
+              input {
+                margin-right: -20px;
+              }
               //HACK:positions the caret in right margin are of input
               .caret::before {
                 z-index: 2;

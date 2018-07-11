@@ -1,73 +1,132 @@
 {
-    "fileExtensions": [".less", ".css"],
+  "fileExtensions": [".less", ".css"],
 
-    "excludedFiles": ["./node_modules/**"],
+  "excludedFiles": ["./node_modules/**"],
 
-    "newlineAfterBlock": false,
+  "attributeQuotes": {
+    "enabled": true,
+    "severity": "error"
+  },
+  
+  "borderZero": {
+    "enabled": true,
+    "style": "zero",
+    "severity": "error"
+  },
 
-    "emptyRule": true, // If there are no options for a rule, you can simply enable it by setting it to true
+  "colorVariables": {
+    "enabled": true,
+    "severity": "error"
+  },
 
-    "importantRule": false, // To disable a rule completely, set it to false
+  "decimalZero": {
+    "enabled": true,
+    "style": "none",
+    "severity": "error"
+  },
 
-    "borderZero": {
-      "enabled": true,
-      "style": "zero"
-    },
+  "duplicateProperty": {
+    "enabled": true,
+    "severity": "error"
+  },
 
-    "decimalZero": {
-      "enabled": true,
-      "style": "none"
-    },
+  "emptyRule": true, // If there are no options for a rule, you can simply enable it by setting it to true
 
-    "hexLength": {
-      "enabled": true,
-      "style": "short"
-    },
+  "idSelector": {
+    "enabled": true,
+    "severity": "error"
+  },
+  
+  "importantRule": false, // To disable a rule completely, set it to false
 
-    "hexNotation": {
-      "enabled": true,
-      "style": "lowercase"
-    },
+  "importPath": {
+    "enabled": false,
+    "filenameExtension": true,
+    "leadingUnderscore": true
+  },
 
-    "hexValidation": {
-      "enabled": true
-    },
+  "maxCharPerLine": {
+    "limit": 100,
+    "severity": "error"
+  },
 
-    "idSelector": {
-      "enabled": true
-    },
+  "newlineAfterBlock": {
+    "enabled": false,
+    "severity": "error"
+  },
 
-    "importPath": {
-      "enabled": false,
-      "filenameExtension": true,
-      "leadingUnderscore": true
-    },
+  "propertyOrdering": {
+    "enabled": false
+  },
 
-    "propertyOrdering": {
-      "enabled": false
-    },
+  "qualifyingElement": {
+    "allowWithAttribute": true,
+    "allowWithClass": true,
+    "allowWithId": true
+  },
 
-    "qualifyingElement": {
-     "allowWithAttribute": true,
-     "allowWithClass": true,
-     "allowWithId": true
-    },
+  "singleLinePerProperty": {
+    "allowSingleLineRules": true
+  },
 
-    "singleLinePerProperty": {
-      "allowSingleLineRules": true
-    },
+  "spaceAfterPropertyColon": {
+    "enabled": true,
+    "style": "one_space", // Comments are allowed
+    "severity": "error"
+  },
 
-    "spaceAfterPropertyColon": {
-        "enabled": true,
-        "style": "one_space" // Comments are allowed
-    },
+  "spaceAfterPropertyName": {
+    "style": "no_space",
+    "severity": "error"
+  },
 
-    "spaceAroundOperator": {
-     "style": "none"
-    },
+  "spaceAfterPropertyValue": {
+    "style": "no_space",
+    "severity": "error"
+  },
+  
+  "spaceAroundComma": {
+    "style": "after",
+    "severity": "error"
+  },
 
-    "zeroUnit": {
-      "enabled": true,
-      "style": "no_unit"
-    }
+  "spaceAroundOperator": {
+    "style": "none",
+    "severity": "error"
+  },
+
+  "spaceBeforeBrace": {
+    "style": "one_space",
+    "severity": "error"
+  },
+
+  "spaceBetweenParens": {
+    "style": "no_space",
+    "severity": "error"
+  },
+
+  "stringQuotes": {
+    "style": "single",
+    "severity": "error"
+  },
+
+  "trailingSemicolon": {
+    "enabled": true,
+    "severity": "error"
+  },
+
+  "trailingWhitespace": {
+    "enabled": true,
+    "severity": "error"
+  },
+
+  "universalSelector": {
+    "enabled": true,
+    "severity": "error"
+  },
+
+  "zeroUnit": {
+    "enabled": true,
+    "style": "no_unit"
+  }
 }
