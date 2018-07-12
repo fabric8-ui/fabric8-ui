@@ -110,6 +110,11 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   effortTextArea = new ui.TextInput(this.$('[placeholder="Effort"]'), 'effort textarea');
   workItemsGroup = new ui.Clickable(this.element(by.cssContainingText('alm-dynamic-field .f8-dynamic-control', ' Work Items ')), 'Side panel WorkItem button');
   businessValue = new ui.TextInput(this.$('textarea[placeholder="Business Value"]'), ' Business value textarea');
+  storyPoints = new ui.TextInput(this.$('textarea[placeholder="Storypoints"]'), ' Storypoints textarea');
+  dynamicFieldDiv = new ui.BaseElement(this.element(by.xpath("//textarea[@placeholder='Storypoints']/ancestor::f8-inlineinput")));
+  dynamicFieldSaveButton =  new ui.Button(
+    this.dynamicFieldDiv.$('.inlineinput-btn-save'),
+    'Dynamic Fields Save Button');
 
   constructor(ele: ElementFinder, name: string = '') {
     super(ele, name);
@@ -352,5 +357,13 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   async updateBusinessValue(businessValue: string) {
     await this.businessValue.enterText(businessValue);
     await this.businessValue.sendKeys(Key.ENTER);
+  }
+
+  async isDynamicFieldSaveButtonDisplayed() {
+    try {
+      return await this.dynamicFieldSaveButton.isDisplayed();
+    } catch (exception) {
+      return false;
+    }
   }
 }

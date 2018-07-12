@@ -55,5 +55,19 @@ describe('Agile template tests: ', () => {
     await planner1.quickPreview.updateBusinessValue('Business value for this Theme');
     await planner1.quickPreview.businessValue.untilTextIsPresentInValue('Business value for this Theme');
     expect(await planner1.quickPreview.businessValue.getAttribute('value')).toBe('Business value for this Theme');
+    await planner1.quickPreview.close();
+  });
+
+  it('Dynamic fields should not get closed on outside click', async () => {
+    let newWorkItem = { title: 'Workitem of type Story', type : 'Story'};
+    await planner1.createWorkItem(newWorkItem);
+    expect(planner1.workItemList.hasWorkItem(newWorkItem.title)).toBeTruthy();
+    /* Edit Story Points */
+    await planner1.workItemList.clickWorkItem(newWorkItem.title);
+    await planner1.quickPreview.storyPoints.clickWhenReady();
+    expect(await planner1.quickPreview.isDynamicFieldSaveButtonDisplayed()).toBeTruthy();
+    await planner1.quickPreview.labelDropdown.clickWhenReady();
+    expect(await planner1.quickPreview.isDynamicFieldSaveButtonDisplayed()).toBeTruthy();
+    await planner1.quickPreview.close();
   });
 });

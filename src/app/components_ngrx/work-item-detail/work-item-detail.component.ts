@@ -209,11 +209,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
           });
         }
 
-        if ((this.detailContext === 'preview')
-        && (this.descMarkdown)) {
-          this.descMarkdown.deactivateEditor();
-        }
-
         // set title on update
         if (this.titleCallback !== null) {
           this.titleCallback(this.workItem.title);

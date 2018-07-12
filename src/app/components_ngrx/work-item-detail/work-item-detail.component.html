@@ -138,7 +138,8 @@
               [disabled]="!workItem?.editable"
               [value]="workItem.title"
               (onSave)="saveTitle($event)"
-              [placeholder]="'Enter title'">
+              [placeholder]="'Enter title'"
+              (clickOut)="inlineInput.closeClick()">
             </f8-inlineinput>
           </div>
         </div>
