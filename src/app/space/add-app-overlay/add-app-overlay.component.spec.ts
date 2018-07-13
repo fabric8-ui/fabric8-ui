@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { Broadcaster, Logger, Notification, Notifications, NotificationType } from 'ngx-base';
 import { PopoverConfig, PopoverModule } from 'ngx-bootstrap/popover';
 import { Context, ProcessTemplate, Space, SpaceNamePipe, SpaceService } from 'ngx-fabric8-wit';
-import { DependencyCheckService } from 'ngx-forge';
+import { DependencyCheckService } from 'ngx-launcher';
 import { Profile, User, UserService } from 'ngx-login-client';
 import { Observable } from 'rxjs/Observable';
 
@@ -257,6 +257,52 @@ describe('AddAppOverlayComponent', () => {
       component.validateProjectName();
       expect(component.isProjectNameValid).toBeTruthy();
     });
+
+    it('validate Project Name to be truthy', () => {
+      let valProjectName = component.isValidProjectName('app-apr_10');
+      expect(valProjectName).toBeTruthy();
+    });
+
+    it('validate Project Name to be falsy', () => {
+      let valProjectName = component.isValidProjectName('#app-test-1');
+      expect(valProjectName).toBeFalsy();
+    });
+
+    it('validate Project Name to be falsy as length is not satisfied', () => {
+      let valProjectName = component.isValidProjectName('ap');
+      expect(valProjectName).toBeFalsy();
+    });
+
+    it('validate Project Name to be falsy as length is not satisfied', () => {
+      let valProjectName = component.isValidProjectName('12345678901234567890123456789012345678901');
+      expect(valProjectName).toBeFalsy();
+    });
+
+    it('validate Project Name to be truthy as length is satisfied', () => {
+      let valProjectName = component.isValidProjectName('a123456789012345678901234567890123456789');
+      expect(valProjectName).toBeTruthy();
+    });
+
+    it('should return false if the project name has continous hyphens (-)', () => {
+      let valProjectName = component.isValidProjectName('app_name--name');
+      expect(valProjectName).toBeFalsy();
+    });
+
+    it('should return false if the project name has continous underscores (_)', () => {
+      let valProjectName = component.isValidProjectName('app_name__name');
+      expect(valProjectName).toBeFalsy();
+    });
+
+    it('should not allow project name with spaces', () => {
+      let valProjectName = component.isValidProjectName('app_name name');
+      expect(valProjectName).toBeFalsy();
+    });
+
+    it('should not allow project name starting with a number', () => {
+      let valProjectName = component.isValidProjectName('1app_namename');
+      expect(valProjectName).toBeFalsy();
+    });
+
   });
 
 });

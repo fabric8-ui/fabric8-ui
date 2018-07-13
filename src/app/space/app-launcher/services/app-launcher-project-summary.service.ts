@@ -14,7 +14,7 @@ import {
   ProjectSummaryService,
   Summary,
   TokenProvider
-} from 'ngx-forge';
+} from 'ngx-launcher';
 
 import { ContextService } from '../../../shared/context.service';
 

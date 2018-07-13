@@ -15,7 +15,7 @@ import {
   ProjectSummaryService,
   TargetEnvironmentService,
   TokenProvider
-} from 'ngx-forge';
+} from 'ngx-launcher';
 
 import { FeatureFlagModule } from 'ngx-feature-flag';
 import { AppLauncherDependencyCheckService } from '../services/app-launcher-dependency-check.service';

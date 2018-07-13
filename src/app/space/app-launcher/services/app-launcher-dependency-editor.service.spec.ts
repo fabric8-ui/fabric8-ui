@@ -9,7 +9,7 @@ import {
     HelperService,
     TokenProvider,
     URLProvider
-} from 'ngx-forge';
+} from 'ngx-launcher';
 
 import { FABRIC8_FORGE_API_URL } from '../../../shared/runtime-console/fabric8-ui-forge-api';
 import { DeploymentApiService } from '../../create/deployments/services/deployment-api.service';

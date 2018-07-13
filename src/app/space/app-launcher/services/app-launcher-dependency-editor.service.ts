@@ -8,7 +8,7 @@ import {
     HelperService,
     TokenProvider,
     URLProvider
-} from 'ngx-forge';
+} from 'ngx-launcher';
 
 @Injectable()
 export class AppLauncherDependencyEditorService implements DependencyEditorService {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Config } from 'ngx-forge';
+import { Config } from 'ngx-launcher';
 
 @Injectable()
 export class MockHelperService  {

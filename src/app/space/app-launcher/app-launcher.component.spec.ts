@@ -4,13 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { Http } from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import {
-  AuthHelperService,
-  DependencyEditorTokenProvider,
-  TokenProvider,
-  URLProvider
-} from 'ngx-forge';
-import { AUTH_API_URL } from 'ngx-login-client';
+  import {
+    AuthHelperService,
+    Config,
+    DependencyEditorTokenProvider,
+    HelperService,
+    TokenProvider,
+    URLProvider
+  } from 'ngx-launcher';
+  import { AUTH_API_URL } from 'ngx-login-client';
 
 import { ApiLocatorService } from '../../shared/api-locator.service';
 import { Fabric8UIHttpService } from '../../shared/fabric8-ui-http.service';

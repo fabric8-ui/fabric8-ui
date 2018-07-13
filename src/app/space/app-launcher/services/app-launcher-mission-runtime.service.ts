@@ -7,7 +7,7 @@ import {
   HelperService,
   MissionRuntimeService,
   TokenProvider
-} from 'ngx-forge';
+} from 'ngx-launcher';
 
 @Injectable()
 export class AppLauncherMissionRuntimeService extends MissionRuntimeService {
