@@ -161,7 +161,6 @@ describe('Planner Smoke Tests:', () => {
     await planner.workItemList.overlay.untilHidden();
     await planner.header.saveFilters('My filter');
     await planner.workItemList.overlay.untilHidden();
-    await planner.quickPreview.notificationToast.untilHidden();
     await planner.sidePanel.customQuery.untilTextIsPresent('My filter');
     expect(await planner.sidePanel.getMyFiltersList()).toContain('My filter');
     await planner.sidePanel.selectcustomFilterKebab('My filter');
@@ -187,11 +186,10 @@ describe('Planner Smoke Tests:', () => {
   it('Create a work item and Open detail page', async () => {
     let workitem = { title : 'new detail workItem', type: 'Scenario'};
     await planner.quickAdd.addAndOpenWorkItem(workitem);
-    await planner.quickPreview.notificationToast.untilCount(1);
-    await planner.quickPreview.notificationToast.untilHidden();
+    await planner.waitUntilUrlContains('detail');
+    await planner.detailPage.titleInput.untilTextIsPresentInValue('new detail workItem');
     await planner.detailPage.closeButton.ready();
     expect(await browser.getCurrentUrl()).toContain('detail');
-    await planner.detailPage.titleInput.untilTextIsPresentInValue('new detail workItem');
     await planner.detailPage.close();
     await planner.waitUntilUrlContains('typegroup');
     expect(await planner.workItemList.hasWorkItem('new detail workItem')).toBeTruthy();
@@ -208,8 +206,6 @@ describe('Planner Smoke Tests:', () => {
     await planner.sidePanel.clickIteration('Iteration_1');
     await planner.quickAdd.addWorkItem({title : 'Add new work item to iteration test'});
     expect(await planner.workItemList.hasWorkItem('Add new work item to iteration test')).toBeTruthy();
-    await planner.quickPreview.notificationToast.untilCount(1);
-    await planner.quickPreview.notificationToast.untilHidden();
     await planner.sidePanel.clickScenarios();
     await planner.sidePanel.clickIteration('Iteration_1');
     expect(await planner.workItemList.hasWorkItem('Add new work item to iteration test')).toBeTruthy();

@@ -21,8 +21,7 @@ describe('Detail View test: ', () => {
   });
 
   afterEach(async () => {
-    await browser.executeScript("document.getElementsByClassName('f8-detail--close')[0].click()");
-    await planner.quickPreview.notificationToast.untilHidden();
+    await planner.quickPreview.close();
   });
 
   it('should open detail view and apply label', async () => {

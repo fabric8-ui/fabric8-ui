@@ -1,6 +1,7 @@
-import { $$, browser, ElementFinder } from 'protractor';
+import { $, $$, browser, ElementFinder } from 'protractor';
 import * as ui from '../../ui';
 import { BaseElement } from './../base.element';
+import { WorkItemList } from './workitem-list';
 
 export class ToolbarHeader extends BaseElement {
   notificationToast = new ui.BaseElementArray($$('pfng-toast-notification'), 'Notification Toast');
@@ -24,6 +25,7 @@ export class ToolbarHeader extends BaseElement {
   closeBtn = new ui.Button(this.$('.cancel-cq-btn'), 'Cancel');
   titleTextInput = new ui.TextInput(this.saveFilterDialog.$('input.form-control'), 'Query Title');
   activeFiltersList = new ui.BaseElementArray(this.$$('.f8-filters--active li'), 'Active filters div');
+  workItemList = new WorkItemList($('alm-work-item-list'));
 
   constructor(el: ElementFinder, name = 'ToolBar Header') {
     super(el, name);
@@ -36,15 +38,8 @@ export class ToolbarHeader extends BaseElement {
 
   async clickShowTree() {
     await this.ready();
-    while (true) {
-      try {
-        await this.showTree.clickWhenReady();
-        break;
-      } catch (e) {
-        await browser.sleep(1000);
-        await this.notificationToast.untilCount(0);
-      }
-    }
+    await this.showTree.clickWhenReady();
+    await this.workItemList.overlay.untilHidden();
   }
 
   async selectFilter(Label: string, LabelTest: string) {
@@ -53,24 +48,19 @@ export class ToolbarHeader extends BaseElement {
     await this.filterDropdown.select(Label);
     await this.selectFilterCondition.clickWhenReady();
     await this.selectFilterCondition.select(LabelTest);
+    await this.workItemList.overlay.untilHidden();
   }
 
   async clickClearAllFilters() {
     await this.clearAllFilter.clickWhenReady();
+    await this.workItemList.overlay.untilHidden();
   }
 
   async clickShowCompleted() {
     await this.ready();
     await this.showCompleted.untilDisplayed();
-    while (true) {
-      try {
-        await this.showCompleted.clickWhenReady();
-        break;
-      } catch (e) {
-        await browser.sleep(1000);
-        await this.notificationToast.untilCount(0);
-      }
-    }
+    await this.showCompleted.clickWhenReady();
+    await this.workItemList.overlay.untilHidden();
   }
 
   async saveFilters(title: string) {

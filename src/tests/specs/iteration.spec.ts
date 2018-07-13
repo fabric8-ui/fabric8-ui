@@ -58,11 +58,12 @@ describe('Iteration test', () => {
     await planner.workItemList.workItem(workItemTitle1).openQuickPreview();
     await planner.quickPreview.addIteration(dropdownIteration1);
     await planner.quickPreview.close();
+    await planner.workItemList.workItem(workItemTitle1).iteration.untilTextIsPresent(dropdownIteration1);
     expect(await planner.workItemList.iterationText(workItemTitle1)).toBe(dropdownIteration1);
     await planner.sidePanel.selectIterationKebab(dropdownIteration1);
     await planner.sidePanel.openIterationDialogue();
     await planner.iteration.editIteration(updateIteration);
-    await planner.quickPreview.notificationToast.untilCount(1);
+    await planner.workItemList.workItem(workItemTitle1).iteration.untilTextIsPresent(updateIteration);
     expect(await planner.workItemList.iterationText(workItemTitle1)).toBe(updateIteration);
   });
 

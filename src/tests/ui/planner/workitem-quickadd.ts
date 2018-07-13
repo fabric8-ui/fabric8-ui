@@ -50,7 +50,9 @@ export class WorkItemQuickAdd extends ui.BaseElement {
   async addAndOpenWorkItem({ title, description = '', type = '' }: WorkItem) {
     await this.workItemTypeDropdown.clickWhenReady();
     await this.workItemTypeDropdown.select(type);
+    await this.titleTextInput.ready();
     await this.titleTextInput.enterText(title);
+    await this.addAndOpenButton.untilClickable();
     await this.addAndOpenButton.clickWhenReady();
     this.log('New WorkItem created', `${title} added`);
   }

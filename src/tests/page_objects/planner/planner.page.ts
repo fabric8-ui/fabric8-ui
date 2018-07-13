@@ -40,6 +40,7 @@ export class PlannerPage extends AppPage {
     await this.createWorkItem({'title' : workItemTitle});
     return workItemTitle;
   }
+
   async createInlineWorkItem(item: planner.WorkItem) {
     this.debug('create inline item', JSON.stringify(item));
     await this.inlineQuickAdd.addInlineWorkItem(item);
@@ -48,6 +49,5 @@ export class PlannerPage extends AppPage {
   async resetState() {
     await this.sidePanel.clickScenarios();
     await $('body').sendKeys(Key.ESCAPE);
-    await this.quickPreview.notificationToast.untilHidden();
   }
 }

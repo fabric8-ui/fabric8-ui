@@ -67,14 +67,6 @@ export class CustomQueryEffects {
         if (customQueryName.length > 15) {
           customQueryName = customQueryName.slice(0, 15) + '...';
         }
-        try {
-          this.notifications.message({
-            message: `${customQueryName} added.`,
-            type: NotificationType.SUCCESS
-          } as Notification);
-        } catch (e) {
-          console.log('Custom query added.');
-        }
         return new CustomQueryActions.AddSuccess(customQuery);
       })
       .catch(() => {

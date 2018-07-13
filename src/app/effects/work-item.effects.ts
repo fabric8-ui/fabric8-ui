@@ -99,14 +99,6 @@ export class WorkItemEffects {
             }).map(() => {
               // for a normal (not a child) work item creation
               // Add item success notification
-              try {
-                this.notifications.message({
-                  message: `New child added.`,
-                  type: NotificationType.SUCCESS
-                } as Notification);
-              } catch (e) {
-                console.log('New child added.');
-              }
               const parent = state.workItems.entities[parentId];
               if (!parent.childrenLoaded && parent.hasChildren) {
                 return new WorkItemActions.GetChildren(parent);
@@ -121,14 +113,6 @@ export class WorkItemEffects {
           } else {
             // for a normal (not a child) work item creation
             // Add item success notification
-            try {
-              this.notifications.message({
-                message: `Work item is added.`,
-                type: NotificationType.SUCCESS
-              } as Notification);
-            } catch (e) {
-              console.log('Work item is added.');
-            }
             if (payload.openDetailPage) {
               this.router.navigateByUrl(document.location.pathname + '/detail/' + wItem.number,
                                         {relativeTo: this.route});
@@ -275,14 +259,6 @@ export class WorkItemEffects {
               w.treeStatus = item.treeStatus;
               w.childrenLoaded = item.childrenLoaded;
               w.parentID = item.parentID;
-            }
-            try {
-              this.notifications.message({
-                message: `Workitem updated.`,
-                type: NotificationType.SUCCESS
-              } as Notification);
-            } catch (e) {
-              console.log('workitem updated.');
             }
             return w;
           })

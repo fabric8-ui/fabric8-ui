@@ -53,14 +53,6 @@ export class IterationEffects {
           if (iterationName.length > 15) {
             iterationName = iterationName.slice(0, 15) + '...';
           }
-          try {
-            this.notifications.message({
-              message: `${iterationName} is added.`,
-              type: NotificationType.SUCCESS
-            } as Notification);
-          } catch (e) {
-            console.log('Iteration is added.');
-          }
           return new IterationActions.AddSuccess({
             iteration, parent: parent ? itMapper.toUIModel(parent) : null
           });
@@ -91,14 +83,6 @@ export class IterationEffects {
           let iterationName = iteration.name;
           if (iterationName.length > 15) {
             iterationName = iterationName.slice(0, 15) + '...';
-          }
-          try {
-            this.notifications.message({
-              message: `${iterationName} is updated.`,
-              type: NotificationType.SUCCESS
-            } as Notification);
-          } catch (e) {
-            console.log('Error displaying notification.');
           }
           const payload = {
             iteration: iteration

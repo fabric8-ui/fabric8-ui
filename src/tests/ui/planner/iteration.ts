@@ -39,6 +39,7 @@ export class Iteration extends ui.BaseElement {
     await this.iterationName.clear();
     await this.iterationName.enterText(iterationName);
     await this.createIterationButton.clickWhenReady();
+    await this.createIterationButton.untilHidden();
   }
 
   async selectCalendarDate() {
