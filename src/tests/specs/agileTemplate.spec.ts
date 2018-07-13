@@ -70,4 +70,46 @@ describe('Agile template tests: ', () => {
     expect(await planner1.quickPreview.isDynamicFieldSaveButtonDisplayed()).toBeTruthy();
     await planner1.quickPreview.close();
   });
+
+  it('should create a workitem of type THEME and check for the order of child types in dropdown', async () => {
+    let newWorkItem = { title: 'Theme 1', type : 'Theme'};
+    await planner1.createWorkItem(newWorkItem);
+    expect(planner1.workItemList.hasWorkItem(newWorkItem.title)).toBeTruthy();
+    // open the inline quick add for newly created WorkItem
+    await planner1.workItemList.workItem(newWorkItem.title).clickInlineQuickAdd();
+    // get the workItem types for inline quick add
+    let wiTypes = await planner1.inlineQuickAdd.workItemTypes();
+    expect(wiTypes.length).toBe(3);
+    expect(wiTypes[0]).toBe('Defect');
+    expect(wiTypes[1]).toBe('Epic');
+    expect(wiTypes[2]).toBe('Impediment');
+  });
+
+  it('should create a workitem of type EPIC and check for the order of child types in dropdown', async () => {
+    let newWorkItem = { title: 'Epic 1', type : 'Epic'};
+    await planner1.createWorkItem(newWorkItem);
+    expect(planner1.workItemList.hasWorkItem(newWorkItem.title)).toBeTruthy();
+    // open the inline quick add for newly created WorkItem
+    await planner1.workItemList.workItem(newWorkItem.title).clickInlineQuickAdd();
+    // get the workItem types for inline quick add
+    let wiTypes = await planner1.inlineQuickAdd.workItemTypes();
+    expect(wiTypes.length).toBe(3);
+    expect(wiTypes[0]).toBe('Defect');
+    expect(wiTypes[1]).toBe('Story');
+    expect(wiTypes[2]).toBe('Impediment');
+  });
+
+  it('should create a workitem of type STORY and check for the order of child types in dropdown', async () => {
+    let newWorkItem = { title: 'Story 1', type : 'Story'};
+    await planner1.createWorkItem(newWorkItem);
+    expect(planner1.workItemList.hasWorkItem(newWorkItem.title)).toBeTruthy();
+    // open the inline quick add for newly created WorkItem
+    await planner1.workItemList.workItem(newWorkItem.title).clickInlineQuickAdd();
+    // get the workItem types for inline quick add
+    let wiTypes = await planner1.inlineQuickAdd.workItemTypes();
+    expect(wiTypes.length).toBe(3);
+    expect(wiTypes[0]).toBe('Task');
+    expect(wiTypes[1]).toBe('Defect');
+    expect(wiTypes[2]).toBe('Impediment');
+  });
 });

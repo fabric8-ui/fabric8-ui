@@ -4,6 +4,7 @@ import {
   MapTree,
   modelService,
   modelUI,
+  normalizeArray,
   switchModel
 } from './common.model';
 import { WorkItemService } from './work-item';
@@ -144,16 +145,16 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
 
 export class WorkItemTypeResolver {
   private allTypes: WorkItemTypeUI[];
+  private normalizedTypes: {[id: string]: WorkItemTypeUI};
 
   constructor(allTypes: WorkItemTypeUI[] = []) {
     this.allTypes = allTypes;
+    this.normalizedTypes = normalizeArray(allTypes);
   }
 
   resolveChildren() {
     this.allTypes.forEach(type => {
-      type.childTypes = this.allTypes.filter(t => {
-        return type.childTypes.findIndex(ct => ct.id === t.id) > -1;
-      });
+      type.childTypes = type.childTypes.map(ct => this.normalizedTypes[ct.id]);
     });
   }
 
