@@ -294,10 +294,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   selectFilterType(event: FilterEvent) {
-    this.isStateFilterSelected = false;
-    if (event.field.id === 'state') {
-      this.isStateFilterSelected = true;
-    }
     const filterMap = this.getFilterMap();
     if (Object.keys(filterMap).indexOf(event.field.id) > -1) {
       const index = this.filterConfig.fields.findIndex(i => i.id === event.field.id);
@@ -472,6 +468,11 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           const fields = this.filterService.queryToFlat(
             this.currentQuery
           );
+          let stateFilter = fields.findIndex(f => f.field === 'state');
+          this.isStateFilterSelected = false;
+          if (stateFilter > -1) {
+            this.isStateFilterSelected = true;
+          }
           this.handleShowTreeCheckBox();
           this.formatFilterFIelds(fields);
         } else {

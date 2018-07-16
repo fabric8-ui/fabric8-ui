@@ -185,4 +185,20 @@ describe('Work Item datatable list: ', () => {
     expect(await planner.header.getFilterConditions()).toContain(labelFilter);
     expect(await planner.workItemList.datatableRow.count()).toEqual(countUnassignedWorkItem);
   });
+
+  it('Should filter the work item by close state', async () => {
+    let newWorkItem = {
+      title: 'Should filter the work item by close state - xxx'
+    };
+    let filterLabel = 'state: closed';
+    await planner.createWorkItem(newWorkItem);
+    expect(await planner.workItemList.hasWorkItem(newWorkItem.title)).toBeTruthy();
+    await planner.workItemList.clickWorkItem(newWorkItem.title);
+    await planner.quickPreview.changeStateTo('closed');
+    await planner.quickPreview.close();
+    await planner.header.selectFilter('State', 'closed');
+    await planner.workItemList.overlay.untilHidden();
+    expect(await planner.header.getFilterConditions()).toContain(filterLabel);
+    expect(await planner.workItemList.hasWorkItem(newWorkItem.title, true)).toBeTruthy();
+  });
 });
