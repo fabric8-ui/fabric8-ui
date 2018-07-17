@@ -17,6 +17,7 @@ describe('Work Item datatable list: ', () => {
 
   beforeEach(async () => {
     await planner.ready();
+    await planner.workItemList.overlay.untilHidden();
   });
 
   afterEach(async () => {
@@ -139,7 +140,7 @@ describe('Work Item datatable list: ', () => {
     await planner.waitUntilUrlContains('typegroup.name:Scenarios');
     await planner.sidePanel.clickRequirement();
     await planner.waitUntilUrlContains('typegroup.name:Requirements');
-    await planner.workItemList.overlay.untilAbsent();
+    await planner.workItemList.overlay.untilHidden();
     expect(await planner.workItemList.hasWorkItem(workitemname.title)).toBeTruthy();
   });
 

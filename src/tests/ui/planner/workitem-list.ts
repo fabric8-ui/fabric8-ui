@@ -27,6 +27,7 @@ export class WorkItemList extends BaseElement {
 
   async clickWorkItem(title: string) {
     await this.overlay.untilHidden();
+    await this.workItem(title).untilTextIsPresent(title);
     await this.workItem(title).openQuickPreview();
   }
 
@@ -74,6 +75,7 @@ export class WorkItemList extends BaseElement {
   }
 
   async openDetailPage(title: string) {
+    await this.overlay.untilHidden();
     await browser.actions().mouseMove(this.workItem(title)).perform();
     await this.workItem(title).clickDetailIcon();
   }

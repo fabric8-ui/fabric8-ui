@@ -17,6 +17,7 @@ describe('Planner Smoke Tests:', () => {
 
   beforeEach(async () => {
     await planner.ready();
+    await planner.workItemList.overlay.untilHidden();
   });
 
   afterEach(async () => {
@@ -59,10 +60,17 @@ describe('Planner Smoke Tests:', () => {
   });
 
   it('Check WorkItem creator name and image is reflected', async () => {
+    let prodAvatar = 'https://avatars0.githubusercontent.com/u/563119?v=3&s=25';
     await planner.workItemList.clickWorkItem(c.workItemTitle2);
     await planner.quickPreview.ready();
+    /* Run tests against production or prod-preview */
+    let url = await browser.getCurrentUrl();
+    if (url.startsWith('https://openshift.io')) {
+      expect(await planner.quickPreview.getCreatorAvatar()).toBe(prodAvatar);
+    } else {
+      expect(await planner.quickPreview.getCreatorAvatar()).toBe(c.user_avatar);
+    }
     expect(await planner.quickPreview.getCreator()).toBe(c.user1);
-    expect(await planner.quickPreview.getCreatorAvatar()).toBe(c.user_avatar);
     await planner.quickPreview.close();
   });
 
@@ -204,9 +212,11 @@ describe('Planner Smoke Tests:', () => {
   it('Add new work-item to the selected iteration', async () => {
     await planner.workItemList.overlay.untilHidden();
     await planner.sidePanel.clickIteration('Iteration_1');
+    await planner.workItemList.overlay.untilHidden();
     await planner.quickAdd.addWorkItem({title : 'Add new work item to iteration test'});
     expect(await planner.workItemList.hasWorkItem('Add new work item to iteration test')).toBeTruthy();
     await planner.sidePanel.clickScenarios();
+    await planner.workItemList.overlay.untilHidden();
     await planner.sidePanel.clickIteration('Iteration_1');
     expect(await planner.workItemList.hasWorkItem('Add new work item to iteration test')).toBeTruthy();
   });

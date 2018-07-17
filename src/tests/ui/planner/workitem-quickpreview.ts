@@ -87,6 +87,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     this.$('.typeahead-long.dropdown-menu'),
     'select link type dropdown'
   );
+  workItemList = new ui.BaseElementArray(this.$$('.dropdown.open .dropdown-menu.dropdown-ul li'), 'work item list');
   searchWorkItem = new ui.TextInput(this.linksDiv.$('#workitem-link-search'), 'Workitem search');
   workItemDropdown = new ui.Dropdown(
     this.searchWorkItem,
@@ -195,14 +196,16 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async addLink(link: string, searchWorkItem: string, workItem: string) {
+    await this.linksDiv.untilTextIsPresent('Links');
     await this.linksToggleButton.clickWhenReady();
+    await this.createLinkButton.untilTextIsPresent('Create Link');
     await this.createLinkButton.clickWhenReady();
     await this.linkTypeDropdown.clickWhenReady();
     await this.linkTypeDropdown.select(link);
     await this.searchWorkItem.enterText(searchWorkItem);
-    await browser.sleep(1000);
+    await this.workItemList.untilCount(1);
     await this.workItemDropdown.select(workItem);
-    await this.linkButton.isPresent();
+    await this.linkButton.untilTextIsPresent('Link');
     await this.linkButton.clickWhenReady();
   }
 
@@ -299,6 +302,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     }
     await this.titleInput.enterText(title);
     await this.titleSaveButton.clickWhenReady();
+    await browser.sleep(2000);
     await this.titleInput.untilTextIsPresentInValue(title);
   }
 

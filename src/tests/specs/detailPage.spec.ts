@@ -18,6 +18,7 @@ describe('Detail View test: ', () => {
   beforeEach(async () => {
     await planner.waitUntilUrlContains('typegroup');
     await planner.ready();
+    await planner.workItemList.overlay.untilHidden();
   });
 
   afterEach(async () => {
@@ -76,7 +77,7 @@ describe('Detail View test: ', () => {
 
   it('should link a workitem', async () => {
     let linkType = 'blocks',
-      searchWorkItem = '2-Workitem_Title_3',
+      searchWorkItem = '2 - Workitem_Title_3',
       Workitem_Title_3 = 'Workitem_Title_3';
     await planner.workItemList.openDetailPage(c.workItemTitle2);
     await planner.waitUntilUrlContains('detail');
@@ -86,16 +87,14 @@ describe('Detail View test: ', () => {
   });
 
   it('should remove link from workitem', async () => {
-    let workItemName1 = {'title': 'Remove_link_from_workitem_test'};
+    let workItemName1 = {'title': 'Remove_link_from_workitem_test'},
+      linkType = 'blocks',
+      searchWorkItem = '3 - Workitem_Title_4',
+      Workitem_Title = 'Workitem_Title_4';
     await planner.createWorkItem(workItemName1);
-    let workItemName2 = {'title': 'Add_link'};
-    await planner.createWorkItem(workItemName2);
-    let linkType = 'blocks',
-      searchWorkItem = 'Remove_link_from_workitem_test',
-      Workitem_Title = 'Remove_link_from_workitem_test';
-    await planner.workItemList.openDetailPage(workItemName2.title);
+    await planner.workItemList.openDetailPage(workItemName1.title);
     await planner.waitUntilUrlContains('detail');
-    await planner.detailPage.titleInput.untilTextIsPresentInValue(workItemName2.title);
+    await planner.detailPage.titleInput.untilTextIsPresentInValue(workItemName1.title);
     await planner.detailPage.addLink(linkType, searchWorkItem, Workitem_Title);
     expect(await planner.detailPage.getLinkedItems()).toContain(Workitem_Title);
     await planner.detailPage.removeLink(Workitem_Title);

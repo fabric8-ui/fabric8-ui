@@ -20,6 +20,7 @@ describe('Agile template tests: ', () => {
   });
 
   beforeEach(async () => {
+    await planner1.workItemList.overlay.untilHidden();
     await planner1.sidePanel.workItemsGroupAgile.clickWhenReady();
   });
 

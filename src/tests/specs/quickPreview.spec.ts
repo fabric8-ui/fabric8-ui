@@ -16,6 +16,7 @@ describe('Quick preview tests: ', () => {
 
   beforeEach(async () => {
     await planner.ready();
+    await planner.workItemList.overlay.untilHidden();
   });
 
   afterEach(async () => {
@@ -48,7 +49,7 @@ describe('Quick preview tests: ', () => {
   it('should link a workitem', async () => {
     let workitemname = {'title': 'link test'},
       linkType = 'blocks',
-      searchWorkItem = '3-Workitem_Title_4',
+      searchWorkItem = '3 - Workitem_Title_4',
       workItemTitle17 = 'Workitem_Title_4';
     await planner.createWorkItem(workitemname);
     await planner.workItemList.clickWorkItem(workitemname.title);
