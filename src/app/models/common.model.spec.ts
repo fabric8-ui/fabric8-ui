@@ -278,4 +278,61 @@ describe('Unit Test :: normalizeArray', () => {
     const op = normalizeArray<testType>(input);
     expect(op).toEqual(expectedOp);
   });
+
+  it('should normalize array based on the id given', () => {
+    const input: testType[] = [{
+      id: '1',
+      name: 'Sudipta',
+      add: 'Alpine Eco'
+    }, {
+      id: '2',
+      name: 'Ibrahim',
+      add: 'Brigade'
+    }];
+
+    const expectedOp: {[id: string]: testType} = {
+      'Sudipta': {
+        id: '1',
+        name: 'Sudipta',
+        add: 'Alpine Eco'
+      },
+      'Ibrahim': {
+        id: '2',
+        name: 'Ibrahim',
+        add: 'Brigade'
+      }
+    };
+
+    const op = normalizeArray<testType>(input, 'name');
+    expect(op).toEqual(expectedOp);
+  });
+
+  it('Should normalize array of objects with \'id\' key if given id is not in object', () => {
+    const input: testType[] = [{
+      id: '1',
+      name: 'Sudipta',
+      add: 'Alpine Eco'
+    }, {
+      id: '2',
+      name: 'Ibrahim',
+      add: 'Brigade'
+    }];
+
+    const expectedOp: {[id: string]: testType} = {
+      '1': {
+        id: '1',
+        name: 'Sudipta',
+        add: 'Alpine Eco'
+      },
+      '2': {
+        id: '2',
+        name: 'Ibrahim',
+        add: 'Brigade'
+      }
+    };
+
+    const op = normalizeArray<testType>(input, 'key');
+    expect(op).toEqual(expectedOp);
+  });
+
 });

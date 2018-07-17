@@ -139,7 +139,8 @@ describe('WorkItemMapper', () => {
         treeStatus: 'disabled',
         childrenLoaded: false,
         bold: false,
-        editable: false
+        editable: false,
+        columnIds: null
       } as WorkItemUI;
 
     it('should execute the canary test', () => {
@@ -234,6 +235,7 @@ describe('WorkItemMapper', () => {
           'labels': {
             'data': []
           },
+          'system.boardColumns': {},
           'workItemLinks': {
             'links': {
               'related': 'https://api.openshift.io/api/workitems/8bccc228-bba7-43ad-b077-15fbb9148f7f/links'

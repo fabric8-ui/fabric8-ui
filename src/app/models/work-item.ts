@@ -174,6 +174,7 @@ export interface WorkItemUI {
   parentID: string;
   link: string;
   WILinkUrl: string;
+  columnIds?: string[] | null;
 
   treeStatus: 'collapsed' | 'expanded' | 'disabled' | 'loading'; // collapsed
   childrenLoaded: boolean; // false
@@ -300,6 +301,12 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     }, {
       toPath: ['editable'],
       toValue: false
+    }, {
+      fromPath: ['relationships', 'system.boardcolumns', 'data'],
+      toPath: ['columnIds'],
+      toFunction: (data) => {
+        return Array.isArray(data) ? data.map(col => col.id) : null;
+      }
     }
 
   ];
@@ -626,5 +633,13 @@ export class WorkItemQuery {
 
   get getWorkItemEntities(): Observable<{[id: string]: WorkItemUI}> {
     return this.store.select(workItemEntities);
+  }
+
+  getWorkItemsWithIds(ids: string[]): Store<WorkItemUI[]> {
+    const selector = createSelector(
+      workItemEntities,
+      state => ids.map(i => this.resolveWorkItem(state[i]))
+    );
+    return this.store.select(selector);
   }
 }

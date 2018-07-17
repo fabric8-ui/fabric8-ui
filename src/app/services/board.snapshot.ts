@@ -40,7 +40,8 @@ export const spaceTemplateResponse = {
    }
 };
 
-export const boardsResponse = { 'data': [{
+export const boardsResponse = {
+  'data': [{
     'id': '000-000-002',
     'attributes': {
       'name': 'Scenarios Board',
@@ -60,22 +61,25 @@ export const boardsResponse = { 'data': [{
       'columns': {
         'data': [
           {
-            'id': '000-000-005',
+            'id': '4953fd3a-32dd-4943-8dcf-4b4c9bfcfef1',
             'type': 'boardcolumns'
           }
         ]
       }
     },
-    'included': [
-      {
-        'id': '000-000-005',
-        'title': 'workitemboardcolumn',
-        'columnOrder': 0,  // the left-to-right order of the column in the view
-        'type': 'boardcolumns'
-      }
-    ],
     'type': 'workitemboards'
-  }]};
+  }],
+  'included': [
+    {
+      'attributes': {
+        'name': 'New',
+        'order': 0
+      },
+    'id': '4953fd3a-32dd-4943-8dcf-4b4c9bfcfef1',
+    'type': 'boardcolumns'
+    }
+  ]
+};
 
 export const boardUIData: BoardModelUI = {
   'id': '000-000-002',
@@ -85,10 +89,55 @@ export const boardUIData: BoardModelUI = {
     'context': '000-000-003',
     'columns': [
       {
-          'id': '000-000-005',
-          'title': 'workitemboardcolumn',
+          'id': '4953fd3a-32dd-4943-8dcf-4b4c9bfcfef1',
+          'title': 'New',
           'columnOrder': 0,
           'type': 'boardcolumns'
       }
+  ]
+};
+
+export const boardsResponseToUIModel = {
+  'data': [{
+    'id': '000-000-002',
+    'attributes': {
+      'name': 'Scenarios Board',
+      'description': 'This is the default board config for the legacy template (Experiences).',
+      'contextType': 'TypeLevelContext',  // this designates the type of the context
+      'context': '000-000-003',  // this designates the ID of the context, in this case the typegroup ID
+      'created-at': '0001-01-01T00:00:00Z',
+      'updated-at': '0001-01-01T00:00:00Z'
+    },
+    'relationships': {
+      'spaceTemplate': {
+        'data': {
+          'id': '000-000-004',
+          'type': 'spacetemplates'
+        }
+      },
+      'columns': {
+        'data': [
+          {
+            'attributes': {
+              'name': 'New',
+              'order': 0
+            },
+          'id': '4953fd3a-32dd-4943-8dcf-4b4c9bfcfef1',
+          'type': 'boardcolumns'
+          }
+        ]
+      }
+    },
+    'type': 'workitemboards'
+  }],
+  'included': [
+    {
+      'attributes': {
+        'name': 'New',
+        'order': 0
+      },
+    'id': '4953fd3a-32dd-4943-8dcf-4b4c9bfcfef1',
+    'type': 'boardcolumns'
+    }
   ]
 };

@@ -1,4 +1,3 @@
-import { UserUI } from './../models/user';
 
 export type CollaboratorState = string[];
 

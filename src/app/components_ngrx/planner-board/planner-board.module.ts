@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap';
+import { BoardEffects } from '../../effects/board.effect';
+import { BoardReducer, ColumnWorkItemReducer } from '../../reducers/index.reducer';
+import { BoardService } from '../../services/board.service';
+import { InitialBoardState, InitialColumnWorkItemState } from './../../states/index.state';
 
 import { PlannerLayoutModule } from './../../widgets/planner-layout/planner-layout.module';
 import { SidepanelModule } from './../side-panel/side-panel.module';
@@ -21,7 +27,6 @@ import { WorkItemQuery } from './../../models/work-item';
 @NgModule({
     providers: [
         TooltipConfig,
-
         CommentQuery,
         UserQuery,
         LabelQuery,
@@ -29,7 +34,8 @@ import { WorkItemQuery } from './../../models/work-item';
         WorkItemQuery,
         AreaQuery,
         SpaceQuery,
-        GroupTypeQuery
+        GroupTypeQuery,
+        BoardService
     ],
     imports: [
         CommonModule,
@@ -37,7 +43,19 @@ import { WorkItemQuery } from './../../models/work-item';
         PlannerLayoutModule,
         WorkItemPreviewPanelModule,
         SidepanelModule,
-        TooltipModule.forRoot()
+        TooltipModule.forRoot(),
+        StoreModule.forFeature('boardView', {
+          boards: BoardReducer,
+          columnWorkItem: ColumnWorkItemReducer
+        }, {
+          initialState: {
+            boards: InitialBoardState,
+            columnWorkItem: InitialColumnWorkItemState
+          }
+        }),
+        EffectsModule.forFeature([
+          BoardEffects
+        ])
     ],
     declarations: [
         PlannerBoardComponent

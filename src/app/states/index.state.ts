@@ -73,3 +73,12 @@ export {
   EventState,
   initialState as InitialEventState
 } from './event.state';
+export {
+  BoardState,
+  initialState as InitialBoardState
+} from './board.state';
+
+export {
+  ColumnWorkItemState,
+  initialState as InitialColumnWorkItemState
+} from './column-workItem.state';

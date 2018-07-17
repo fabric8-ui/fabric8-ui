@@ -144,13 +144,15 @@ export function cleanObject(obj: any, keysToRemove: string[] = []): any {
  * a key value paired dictionary
  * @param arr
  */
-export function normalizeArray<I>(arr: I[]): {[id: string]: I} {
+export function normalizeArray<I>(arr: I[], id: string = ''): {[id: string]: I} {
   if (!Array.isArray(arr)) {
     throw(new Error('The input needs to be an array'));
   }
   let output = {};
   arr.forEach((item, index) => {
-    if (item.hasOwnProperty('id')) {
+    if (item.hasOwnProperty(id)) {
+      output[item[id].toString()] = item;
+    } else if (item.hasOwnProperty('id')) {
       output[item['id'].toString()] = item;
     } else {
       output[index.toString()] = item;
