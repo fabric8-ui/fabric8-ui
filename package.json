@@ -8,7 +8,7 @@
   "scripts": {
     "build": "npm run remove-dist && npm run build:library",
     "build:library": "gulp build-library",
-    "clean": "npm cache verify && npm run rimraf -- node_modules doc coverage dist distwatch bundles",
+    "clean": "npm cache verify && npm run rimraf -- package-lock.json node_modules doc coverage dist distwatch bundles",
     "minify": "uglifyjs dist/bundles/ngx-widgets.js --screw-ie8 --compress --mangle --comments --output dist/bundles/ngx-widgets.min.js",
     "perf": "webpack --config config/webpack.perf.js --progress --profile",
     "reinstall": "npm run clean && npm install",
