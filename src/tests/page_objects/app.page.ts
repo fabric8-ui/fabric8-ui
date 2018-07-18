@@ -1,11 +1,15 @@
 import { $, browser, by, ExpectedConditions as until } from 'protractor';
 import * as support from '../support';
-import { BaseElement } from '../ui';
+import { BaseElement, Clickable } from '../ui';
 
 import { BasePage } from './base.page';
 
 export abstract class AppPage extends BasePage {
   appTag = $('f8-app');
+  mainNavBar = new BaseElement($('header ul.navbar-primary.persistent-secondary'), 'Main Navigation Bar');
+  planTab = new Clickable(this.mainNavBar.element(by.xpath("//span[text()='Plan']")), 'Plan Tab');
+  backLogTab = new Clickable(this.mainNavBar.element(by.xpath("//span[text()=' Backlog ']")), 'Backlog Tab');
+  boardTab = new Clickable(this.mainNavBar.element(by.xpath("//span[text()=' Board ']")), 'Board Tab');
 
   /**
    * Extend this class, to describe Application Page(after logging in)
@@ -34,4 +38,15 @@ export abstract class AppPage extends BasePage {
     await browser.wait(until.presenceOf(this.appTag));
   }
 
+  async clickPlanTab() {
+    await this.planTab.clickWhenReady();
+  }
+
+  async clickBacklogTab() {
+    await this.backLogTab.clickWhenReady();
+  }
+
+   async clickBoardTab() {
+    await this.boardTab.clickWhenReady();
+  }
 }
