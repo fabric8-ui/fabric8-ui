@@ -81,7 +81,8 @@
     "@angular/common": "^6.1.0-rc.0",
     "@angular/core": "^6.1.0-rc.0",
     "@angular/forms": "^6.1.0-rc.0",
-    "@angular/router": "^6.1.0-rc.0"
+    "@angular/router": "^6.1.0-rc.0",
+    "rxjs": "^6.2.2"
   },
   "devDependencies": {
     "@angular/animations": "6.1.0-rc.0",
