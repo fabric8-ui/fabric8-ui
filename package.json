@@ -122,7 +122,7 @@
     "gulp-changed": "3.2.0",
     "gulp-cssmin": "0.2.0",
     "gulp-less": "4.0.1",
-    "gulp-ngc": "0.3.3",
+    "gulp-ngc": "0.2.1",
     "gulp-sourcemaps": "2.6.4",
     "gulp-string-replace": "1.1.1",
     "gulp-stylelint": "7.0.0",
