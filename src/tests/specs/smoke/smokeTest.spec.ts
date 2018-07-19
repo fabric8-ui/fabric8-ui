@@ -60,13 +60,16 @@ describe('Planner Smoke Tests:', () => {
   });
 
   it('Check WorkItem creator name and image is reflected', async () => {
-    let prodAvatar = 'https://avatars0.githubusercontent.com/u/563119?v=3&s=25';
+    let prodAvatar = 'https://avatars0.githubusercontent.com/u/563119?v=3&s=25',
+      prodPreviewAvatar = 'https://www.gravatar.com/avatar/d77d23eebe9907842b8ad9f1d9905454.jpg&s=25';
     await planner.workItemList.clickWorkItem(c.workItemTitle2);
     await planner.quickPreview.ready();
     /* Run tests against production or prod-preview */
     let url = await browser.getCurrentUrl();
     if (url.startsWith('https://openshift.io')) {
       expect(await planner.quickPreview.getCreatorAvatar()).toBe(prodAvatar);
+    } else if (url.startsWith('https://prod-preview.openshift.io/')) {
+      expect(await planner.quickPreview.getCreatorAvatar()).toBe(prodPreviewAvatar);
     } else {
       expect(await planner.quickPreview.getCreatorAvatar()).toBe(c.user_avatar);
     }
