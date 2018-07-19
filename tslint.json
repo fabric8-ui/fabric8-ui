@@ -1,6 +1,7 @@
 {
   "rulesDirectory": [
     "node_modules/codelyzer",
+    "node_modules/rxjs-tslint",
     "node_modules/tslint/lib/rules"
   ],
   "rules": {
@@ -33,6 +34,11 @@
         "variable-declaration": "space"
       }
     ],
+
+    "rxjs-collapse-imports": true,
+    "rxjs-pipeable-operators-only": true,
+    "rxjs-no-static-observable-methods": true,
+    "rxjs-proper-imports": true,
 
     "ban": false,
     "curly": false,
