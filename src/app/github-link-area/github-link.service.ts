@@ -1,10 +1,12 @@
-import { Observable } from 'rxjs';
-
 import { Injectable } from '@angular/core';
 
 import {
   HttpClient
 } from '@angular/common/http';
+
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
 
 /**
  * This provides a very simple retrieval of issue information from
@@ -29,16 +31,16 @@ export class GitHubLinkService {
   getIssue(linkData: any): Observable<any> {
     let cachedData = this.findInCache(linkData);
     if (cachedData) {
-      return Observable.of(cachedData);
+      return of(cachedData);
     } else {
       let query: Observable<any> = this.http.get(
         'https://api.github.com/repos/' +
         linkData.org + '/' +
         linkData.repo +
         '/issues/' + linkData.issue)
-      .catch(error => {
-        return Observable.of({state: 'error'});
-      });
+        .pipe(catchError((error: any) => {
+          return of({state: 'error'});
+        }));
       query.subscribe(data => {
         this.linkCache.push(data);
       });
