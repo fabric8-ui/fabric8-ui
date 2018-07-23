@@ -7,6 +7,17 @@ import {
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
+/**
+ * This is the Type used for the data returned from Github
+ */
+export interface Gh_issue {
+  match: string;
+  org: string;
+  repo: string;
+  issue: string;
+  state?: string;
+  url?: string;
+}
 
 /**
  * This provides a very simple retrieval of issue information from
@@ -17,7 +28,7 @@ import { catchError } from 'rxjs/operators';
 @Injectable()
 export class GitHubLinkService {
 
-  private linkCache: any[] = [];
+  private linkCache: Gh_issue[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -28,18 +39,19 @@ export class GitHubLinkService {
    * once for every GitHub issue for the entire runtime of the service. This is needed
    * because GitHub is enforcing a strict rate limiting.
    */
-  getIssue(linkData: any): Observable<any> {
+  getIssue(linkData: Gh_issue): Observable<Gh_issue> {
     let cachedData = this.findInCache(linkData);
     if (cachedData) {
       return of(cachedData);
     } else {
-      let query: Observable<any> = this.http.get(
+      let query: Observable<Gh_issue> = this.http.get<Gh_issue>(
         'https://api.github.com/repos/' +
         linkData.org + '/' +
         linkData.repo +
         '/issues/' + linkData.issue)
         .pipe(catchError((error: any) => {
-          return of({state: 'error'});
+          linkData.state = 'error';
+          return of(linkData);
         }));
       query.subscribe(data => {
         this.linkCache.push(data);
@@ -48,7 +60,7 @@ export class GitHubLinkService {
     }
   }
 
-  private findInCache(linkData: any): any {
+  private findInCache(linkData: Gh_issue): any {
     for (let i = 0; i < this.linkCache.length; i++) {
       let link = this.linkCache[i];
       if (link.url === 'https://api.github.com/repos/' +

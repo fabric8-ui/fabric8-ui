@@ -22,11 +22,7 @@ import { GitHubLinkService } from './github-link.service';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'github-link-area',
-  styles: [ `
-    .gh-link-open { color: @color-pf-red; }
-    .gh-link-closed { color: @color-pf-green; }
-    .gh-link-error { color: @color-pf-orange; }
-    `],
+  styleUrls: [ './github-link-area.component.less'],
   templateUrl: './github-link-area.component.html'
 })
 export class GitHubLinkAreaComponent implements OnChanges, AfterViewChecked {
