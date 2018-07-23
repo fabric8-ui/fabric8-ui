@@ -50,7 +50,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 #  && yum install -y firefox \
 #  && npm install -g karma-firefox-launcher
 
-COPY runtime/tests/google-chrome.repo /etc/yum.repos.d/google-chrome.repo
+COPY tests/google-chrome.repo /etc/yum.repos.d/google-chrome.repo
 
 RUN yum install -y google-chrome-stable
 
