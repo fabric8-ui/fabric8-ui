@@ -110,4 +110,18 @@ describe('Detail View test: ', () => {
     await planner.detailPage.stateToggle.untilTextIsPresent('open');
     expect(planner.detailPage.stateToggle.getTextWhenReady()).toContain('open');
   });
+
+  xit('Should change the type of work item', async () => {
+    let newWorkItem = {
+      title: 'Should change the type of work item - xxx'
+    };
+    await planner.createWorkItem(newWorkItem);
+    expect(await planner.workItemList.hasWorkItem(newWorkItem.title)).toBeTruthy();
+    await planner.workItemList.clickWorkItem(newWorkItem.title);
+    await planner.quickPreview.changeTypeTo('Task');
+    await planner.quickPreview.close();
+    await planner.workItemList.clickWorkItem(newWorkItem.title);
+    expect(await planner.quickPreview.typeToggle.getTextWhenReady()).toEqual('Task');
+    await planner.quickPreview.close();
+  });
 });

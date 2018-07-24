@@ -17,15 +17,42 @@
               <span id="preview_created_at"
                 [innerHTML]="workItem.createdAt | almMomentTime"></span>
             </span>
-            <div class="dropdown-kebab-pf detail-type-dropdown">
-              <span
-                class="margin-right-5 {{type.icon}} fa-lg"
-                id="wi-type-icon"
-                title="{{type.name}}">
+            <span *ngIf="loadingTypes"
+                class="spinner spinner-sm spinner-inline">
+            </span>
+            <span class="dropdown" dropdown
+            *ngIf="loggedIn && !loadingTypes" [isDisabled]="!workItem?.editable">
+            <button class="btn btn-default dropdown-toggle padding-h-10 text-left"
+              id="preview-wi-type"
+              style="min-width: 159px;"
+              type="button"
+              dropdownToggle>
+              <i class="dropdown-icon"
+                [ngClass]="workItem.type ?
+                workItem.type.icon : '' ">
+              </i>
+              <span class="dropdown-text">
+                {{ workItem.type ? workItem.type.name : '' }}
               </span>
-              {{ type.name }}
-              <strong>#{{ workItem.number }}</strong>
-            </div>
+              <span class="caret pull-right margin-top-7"
+                *ngIf="loggedIn"></span>
+            </button>
+            <ul class="dropdown-menu"
+              id="preview-wi-type-dropdown"
+              role="menu"
+              *dropdownMenu>
+              <li *ngFor="let type of wiTypes"
+                  role="menuitem"
+                  (click)="updateType($event, type)">
+                <a class="dropdown-item" href="#">
+                  <i class="fa dropdown-icon"
+                    [ngClass]="type.icon"></i>
+                    <span class="dropdown-text">{{ type.name }}</span>
+                </a>
+              </li>
+            </ul>
+          </span>
+          <strong class="margin-left-10">#{{ workItem.number }}</strong>
           </div>
           <div class="width-100 pull-left">
             <div
@@ -89,6 +116,7 @@
                   *ngIf="loggedIn"></span>
               </button>
               <ul class="dropdown-ul dropdown-menu"
+                id="wi-detail-status-dropdown"
                 role="menu"
                 *dropdownMenu>
                 <li class="dropdown-li"
@@ -104,7 +132,7 @@
                 </li>
               </ul>
             </div>
-            <div class="pull-left margin-left-15 padding-v-3">
+            <div class="pull-left margin-left-15">
               <span *ngIf="loadingTypes"
                 class="spinner spinner-sm spinner-inline">
               </span>
@@ -120,6 +148,7 @@
               <span class="dib">
                 <strong>#{{ workItem.number }}</strong>
               </span>
+              <strong class="margin-left-10">#{{ workItem.number }}</strong>
             </div>
           </div>
           <div class="col-xs-12 col-sm-4 col-md-3 padding-0 margin-v-3">
