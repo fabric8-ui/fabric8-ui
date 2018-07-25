@@ -25,12 +25,8 @@ ENV NODE_VERSION 8.3.0
 RUN rpm -U http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
 
 RUN yum -y update && \
-    yum install -y bzip2 fontconfig tar java-1.8.0-openjdk nmap-ncat psmisc gtk3 git \
-      python-setuptools xorg-x11-xauth wget unzip which gcc-c++ \
-      xfonts-100dpi libXfont GConf2 \
-      xorg-x11-fonts-75dpi xfonts-scalable xfonts-cyrillic \
-      ipa-gothic-fonts xorg-x11-utils xorg-x11-fonts-Type1 xorg-x11-fonts-misc \
-      epel-release libappindicator && \
+    yum install -y bzip2 git epel-release libappindicator \
+      java-1.8.0-openjdk wget unzip which gcc-c++ && \
       yum -y clean all
 
 RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
@@ -50,7 +46,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 #  && yum install -y firefox \
 #  && npm install -g karma-firefox-launcher
 
-COPY runtime/tests/google-chrome.repo /etc/yum.repos.d/google-chrome.repo
+COPY tests/google-chrome.repo /etc/yum.repos.d/google-chrome.repo
 
 RUN yum install -y google-chrome-stable
 
