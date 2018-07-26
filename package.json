@@ -186,7 +186,7 @@
     "semantic-release": "8.2.0",
     "source-map-loader": "0.2.3",
     "style-loader": "0.21.0",
-    "stylelint": "9.3.0",
+    "stylelint": "9.4.0",
     "stylelint-webpack-plugin": "0.10.5",
     "stylus": "0.54.5",
     "to-string-loader": "1.1.5",
