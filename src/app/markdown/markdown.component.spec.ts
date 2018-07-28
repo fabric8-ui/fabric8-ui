@@ -85,7 +85,7 @@ describe('Markdown component - ', () => {
     })
   );
 
-  fit('should emit output onsave empty field when ' +
+  it('should emit output onsave empty field when ' +
   '`allowEmptySave` is false and the field is empty', () => {
     spyOn(comp.onSaveClick, 'emit');
     comp.allowEmptySave = false;
@@ -96,7 +96,7 @@ describe('Markdown component - ', () => {
     expect(comp.onSaveClick.emit).not.toHaveBeenCalled();
   });
 
-  fit('should emit output onsave empty field when `allowEmptySave` is true', () => {
+  it('should emit output onsave empty field when `allowEmptySave` is true', () => {
     spyOn(comp.onSaveClick, 'emit');
     comp.allowEmptySave = true;
     comp.fieldEmpty = true;
@@ -106,7 +106,7 @@ describe('Markdown component - ', () => {
     expect(comp.onSaveClick.emit).toHaveBeenCalled();
   });
 
-  fit('should emit output onsave empty field when ' +
+  it('should emit output onsave empty field when ' +
       '`allowEmptySave` is false and the field is not empty', () => {
     spyOn(comp.onSaveClick, 'emit');
     comp.allowEmptySave = false;
