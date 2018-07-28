@@ -11,10 +11,13 @@ import { Dictionary } from '@ngrx/entity/src/models';
 // Else you get this error
 // Exported variable 'workItemSelector' has or is using name 'MemoizedSelector'
 // from external module "@ngrx/store/src/selector" but cannot be named.
-import { createSelector, MemoizedSelector, Store } from '@ngrx/store';
+import {
+  createFeatureSelector, createSelector,
+  MemoizedSelector, Store
+} from '@ngrx/store';
 import { cloneDeep, orderBy } from 'lodash';
 import { Observable } from 'rxjs';
-import { AppState, PlannerState } from './../states/app.state';
+import { AppState, DetailPageState, PlannerState } from './../states/app.state';
 import {
   AreaModel,
   AreaQuery, AreaUI
@@ -525,6 +528,14 @@ export const getAllWorkItemSelector = createSelector(
   selectAll
 );
 
+export const workItemDetailSelector =
+  createFeatureSelector<DetailPageState>('detailPage');
+
+export const workItemInDetailSelector = createSelector(
+  workItemDetailSelector,
+  state => state.workItem
+);
+
 @Injectable()
 export class WorkItemQuery {
   constructor(
@@ -538,10 +549,6 @@ export class WorkItemQuery {
 
   private workItemSource = this.store
     .select(getAllWorkItemSelector);
-
-  private workItemDetailSource = this.store
-    .select(state => state.detailPage)
-    .select(state => state.workItem);
 
   resolveWorkItem(workItem: WorkItemUI): WorkItemUI {
     return {
@@ -562,7 +569,7 @@ export class WorkItemQuery {
   }
 
   getWorkItem(number: string | number): Observable<WorkItemUI> {
-    return this.workItemDetailSource
+    return this.store.select(workItemInDetailSelector)
       .filter(item => item !== null)
       .map(this.resolveWorkItem.bind(this))
       .switchMap(this.setWorkItemsEditable.bind(this));

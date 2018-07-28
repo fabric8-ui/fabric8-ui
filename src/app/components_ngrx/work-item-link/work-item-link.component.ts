@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { Space } from 'ngx-fabric8-wit';
 import { Observable } from 'rxjs/Observable';
 import { WorkItemLinkUI } from './../../models/link';
+import { WorkItemLinkTypeQuery } from './../../models/link-type';
 import { LinkTypeUI } from './../../models/link-type';
 import { WorkItem, WorkItemUI } from './../../models/work-item';
 
@@ -52,7 +53,6 @@ export class WorkItemLinkComponent implements OnInit {
   private showLinkComponent: Boolean = false;
   private selectedTab: string | null = null;
   private showLinkView: Boolean = false;
-  private showLinkCreator: Boolean = true;
   private selectedLinkType: LinkTypeUI = null;
   searchWorkItems: WorkItem[] = [];
   searchNotAllowedIds: string[] = [];
@@ -63,10 +63,6 @@ export class WorkItemLinkComponent implements OnInit {
     .select('planner')
     .select('space')
     .filter(s => !!s);
-  private linkTypeSource = this.store
-    .select('detailPage')
-    .select('linkType')
-    .filter(lt => !!lt.length);
   private workItemLinkSource = this.store
     .select('detailPage')
     .select('workItemLink');
@@ -74,20 +70,14 @@ export class WorkItemLinkComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private workItemService: WorkItemService,
+    private linkTypeQuery: WorkItemLinkTypeQuery,
     private router: Router
   ) {}
 
   ngOnInit() {
-    this.eventListeners.push(
-      this.spaceSource.take(1)
-        .subscribe((space: Space) => {
-          this.store.dispatch(new LinkTypeActions.Get());
-        })
-    );
-
     Observable.combineLatest(
       this.spaceSource,
-      this.linkTypeSource
+      this.linkTypeQuery.getLinkTypes
     ).take(1).subscribe(([
       spaceSource,
       linkTypeSource
@@ -131,10 +121,6 @@ export class WorkItemLinkComponent implements OnInit {
 
   toggleLinkView() {
     this.showLinkView = !this.showLinkView;
-  }
-
-  toggleLinkCreator() {
-    this.showLinkCreator = !this.showLinkCreator;
   }
 
   onSelectRelation(relation: any): void {

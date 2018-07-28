@@ -5,18 +5,21 @@ import {
   BsDropdownConfig,
   BsDropdownModule
 } from 'ngx-bootstrap/dropdown';
+import { WorkItemLinkTypeQuery } from './../../models/link-type';
 import {
   GroupWorkItemLinks,
   WorkItemLinkFilterByTypeName,
   WorkItemLinkTypeFilterByTypeName
-} from '../../pipes/work-item-link-filters.pipe';
+} from './../../pipes/work-item-link-filters.pipe';
+import { CommonSelectorModule } from './../common-selector/common-selector.module';
 import { WorkItemLinkComponent } from './work-item-link.component';
 
 @NgModule({
   imports: [
     CommonModule,
     BsDropdownModule,
-    RouterModule
+    RouterModule,
+    CommonSelectorModule
   ],
   declarations: [
     WorkItemLinkComponent,
@@ -25,6 +28,9 @@ import { WorkItemLinkComponent } from './work-item-link.component';
     GroupWorkItemLinks
    ],
   exports: [ WorkItemLinkComponent ],
-  providers: [BsDropdownConfig]
+  providers: [
+    BsDropdownConfig,
+    WorkItemLinkTypeQuery
+  ]
 })
 export class WorkItemLinkModule {}

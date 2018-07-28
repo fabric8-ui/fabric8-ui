@@ -11,13 +11,7 @@ export interface AppState {
     iterationUI: states.IterationUIState
   };
 
-  detailPage: {
-    comments: states.CommentState,
-    workItem: states.DetailWorkItemState,
-    linkType: states.LinkTypeState,
-    workItemLink: states.WorkItemLinkState,
-    events: states.EventState
-  };
+  detailPage: DetailPageState;
 
   toolbar: {
     filters: states.FilterState
@@ -49,4 +43,12 @@ export interface PlannerState {
   workItemStates: states.WIState;
   workItemTypes: states.WorkItemTypeState;
   infotips: states.InfotipState;
+}
+
+export interface  DetailPageState {
+  comments: states.CommentState;
+  workItem: states.DetailWorkItemState;
+  linkType: states.LinkTypeState;
+  workItemLink: states.WorkItemLinkState;
+  events: states.EventState;
 }

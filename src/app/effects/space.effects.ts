@@ -18,6 +18,7 @@ import * as GroupTypeActions from './../actions/group-type.actions';
 import * as InfotipActions from './../actions/infotip.actions';
 import * as IterationActions from './../actions/iteration.actions';
 import * as LabelActions from './../actions/label.actions';
+import * as LinkTypeActions from './../actions/link-type.actions';
 import * as WorkItemTypeActions from './../actions/work-item-type.actions';
 
 export type Action = SpaceActions.All;
@@ -62,6 +63,7 @@ export class SpaceEffects {
       new IterationActions.Get(),
       new LabelActions.Get(),
       new WorkItemTypeActions.Get(),
+      new LinkTypeActions.Get(),
       new CustomQueryActions.Get(),
       new InfotipActions.Get(),
       new BoardActions.Get()

@@ -1,3 +1,8 @@
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { AppState } from './../states/app.state';
 import {
   cleanObject,
   Mapper,
@@ -7,6 +12,7 @@ import {
   switchModel
 } from './common.model';
 import { LinkCategory } from './link-category';
+import { workItemDetailSelector } from './work-item';
 
 export class LinkType {
   id: string;
@@ -42,4 +48,17 @@ export interface LinkTypeUI {
   id: string;
   name: string;
   linkType: string;
+}
+
+@Injectable()
+export class WorkItemLinkTypeQuery {
+  constructor(
+    private store: Store<AppState>
+  ) {}
+
+  get getLinkTypes(): Observable<LinkTypeUI[]> {
+    return this.store.select(workItemDetailSelector)
+      .select(state => state.linkType)
+      .filter(lt => !!lt.length);
+  }
 }
