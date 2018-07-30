@@ -1,6 +1,6 @@
   <ng-container *ngIf="assignees.length < 1">
     <span class="dib fa fa-user-plus user-assign-icon margin-right-5"></span>
-    <small class="dib">Unassigned</small>
+    <small *ngIf="!overlapAvatar" class="dib">Unassigned</small>
   </ng-container>
   <ng-container *ngIf="showFullName">
     <div class="f8-assignees dib margin-right-15 margin-bottom-7"
@@ -17,7 +17,7 @@
   </ng-container>
   <ng-container *ngIf="!showFullName">
     <div class="f8-assignees dib margin-bottom-7">
-      <user-avatar 
+      <user-avatar
         *ngFor="let assignee of assignees | slice:0:truncateAfter"
         [imgTooltip]="assignee?.name"
         [imgPlacement]="'left'"

@@ -66,6 +66,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     this.workItemStateSource, this.workItemTypeSource
   );
 
+  @Input() context: string;
   @Input('workItem') set workItemInput(val: WorkItemUI) {
     if (val && val != null) {
       if (this.workItemSubscriber !== null) {

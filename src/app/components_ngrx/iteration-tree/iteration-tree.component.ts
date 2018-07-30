@@ -6,6 +6,7 @@ import {
   SimpleChange,
   SimpleChanges
 } from '@angular/core';
+import { GroupTypeUI } from '../../models/group-types.model';
 import { IterationUI } from '../../models/iteration.model';
 import { IterationListEntryComponent } from '../iteration-list-entry/iteration-list-entry.component';
 
@@ -18,7 +19,7 @@ export class IterationTreeComponent {
 
   @Input() iterationList: IterationUI[] = [];
   @Input() collection: any;
-  @Input() witGroup: string = '';
+  @Input() witGroup: GroupTypeUI;
   @Input() showTree: string = '';
   @Input() showCompleted: string = '';
   @Input() context: 'list' | 'board'; // 'list' or 'board'

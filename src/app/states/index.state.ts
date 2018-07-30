@@ -77,7 +77,10 @@ export {
   BoardState,
   initialState as InitialBoardState
 } from './board.state';
-
+export {
+  BoardUIState,
+  initialState as InitialBoardUIState
+} from './board-ui.state';
 export {
   ColumnWorkItemState,
   initialState as InitialColumnWorkItemState

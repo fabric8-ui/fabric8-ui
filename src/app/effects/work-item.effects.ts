@@ -6,13 +6,16 @@ import { Notification, Notifications, NotificationType } from 'ngx-base';
 import { Observable } from 'rxjs';
 import { cleanObject } from '../models/common.model';
 import { FilterService } from '../services/filter.service';
+import * as BoardUIActions from './../actions/board-ui.actions';
+import * as ColumnWorkItemActions from './../actions/column-workitem.action';
 import * as WorkItemActions from './../actions/work-item.actions';
 import { WorkItem, WorkItemMapper, WorkItemResolver, WorkItemService, WorkItemUI } from './../models/work-item';
 import { WorkItemService as WIService } from './../services/work-item.service';
 import { AppState } from './../states/app.state';
 import * as util from './work-item-utils';
 
-export type Action = WorkItemActions.All;
+
+export type Action = WorkItemActions.All | ColumnWorkItemActions.All | BoardUIActions.All;
 
 @Injectable()
 export class WorkItemEffects {
@@ -282,7 +285,7 @@ export class WorkItemEffects {
 
 
     @Effect() Reorder: Observable<Action> = this.actions$
-      .ofType<WorkItemActions.Reoder>(WorkItemActions.REORDER)
+      .ofType<WorkItemActions.Reorder>(WorkItemActions.REORDER)
       .withLatestFrom(this.store.select('planner'))
       .map(([action, state]) => {
         return {
@@ -314,4 +317,60 @@ export class WorkItemEffects {
             return Observable.of(new WorkItemActions.UpdateError());
           });
       });
+
+    @Effect() updateWorkItemFromBoard: Observable<Action> = this.actions$
+    .ofType<ColumnWorkItemActions.Update>(ColumnWorkItemActions.UPDATE)
+    .withLatestFrom(this.store.select('planner'))
+    .map(([action, state]) => {
+      return {
+        payload: action.payload,
+        state: state
+      };
+    })
+    .switchMap(wp => {
+        const staticPayload = this.workItemMapper.toServiceModel(wp.payload.workItem);
+        const payload = cleanObject(staticPayload, ['baseType']);
+        return this.workItemService.update(payload)
+        .switchMap((workitem) => {
+          let reorderPayload = wp.payload.reorder;
+          reorderPayload.workitem.version = workitem.attributes['version'];
+          const workItem = this.workItemMapper.toServiceModel(reorderPayload.workitem);
+          return reorderPayload.direction ?
+            this.workItemService.reOrderWorkItem(workItem, reorderPayload.destinationWorkitemID, reorderPayload.direction) :
+            Observable.of(workitem);
+        })
+        .map(w => {
+          let wi = this.resolveWorkItems([w], wp.state)[0];
+          return wi;
+
+        })
+        .switchMap((w: WorkItemUI) => {
+          return [
+            new WorkItemActions.UpdateSuccess(w),
+            new ColumnWorkItemActions.UpdateSuccess({
+              workItemId: w.id,
+              prevColumnId: wp.payload.prevColumnId,
+              newColumnIds: w.columnIds
+            }),
+            new BoardUIActions.UnlockBoard()
+          ];
+        })
+        .catch((e) => {
+          try {
+            this.notifications.message({
+              message: `Problem loading workitems.`,
+              type: NotificationType.DANGER
+            } as Notification);
+          } catch (e) {
+            console.log('Problem loading workitems.');
+          }
+          return [
+            new ColumnWorkItemActions.UpdateError({
+              prevColumnId: wp.payload.prevColumnId,
+              newColumnIds: wp.payload.workItem.columnIds
+            }),
+            new BoardUIActions.UnlockBoard()
+          ];
+        });
+    });
 }

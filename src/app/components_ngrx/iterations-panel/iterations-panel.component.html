@@ -23,7 +23,7 @@
       [class.hide]="!sidePanelOpen">
       Iterations
   </p>
-    <infotip 
+    <infotip
       [infotipText]="infotipText"
       [class.dib]="sidePanelOpen"
       [class.hide]="!sidePanelOpen">
@@ -36,7 +36,7 @@
       *ngFor="let iteration of activeIterations | async">
       <a
         [routerLinkActive]="'f8-itr--selected'"
-        [routerLink]="getRouterLink()" [attr.data-id]="iteration.id"
+        [routerLink]="[]" [attr.data-id]="iteration.id"
         [queryParams]="addRemoveQueryParams(iteration.id)"
         title="{{ iteration.resolvedParentPath +
           '/' + iteration.name }}">

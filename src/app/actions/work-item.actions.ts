@@ -115,7 +115,7 @@ export class UpdateError implements Action {
   readonly type = UPDATE_ERROR;
 }
 
-export class Reoder implements Action {
+export class Reorder implements Action {
   readonly type = REORDER;
   payload: {
     workitem: WorkItemUI,
@@ -184,7 +184,7 @@ export type All
   | GetChildren
   | GetChildrenSuccess
   | GetChildrenError
-  | Reoder
+  | Reorder
   | UpdateWorkitemIteration
   | CreateLink
   | DeleteLink;

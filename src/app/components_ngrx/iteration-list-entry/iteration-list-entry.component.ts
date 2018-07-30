@@ -25,6 +25,7 @@ import { AuthenticationService } from 'ngx-login-client';
 import { Dialog } from 'ngx-widgets';
 import { Subscription } from 'rxjs/Subscription';
 
+import { GroupTypeUI } from '../../models/group-types.model';
 import { IterationUI } from '../../models/iteration.model';
 import { FilterService } from '../../services/filter.service';
 import { GroupTypesService } from '../../services/group-types.service';
@@ -40,7 +41,7 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
   @Input() iteration: IterationUI;
   @Input() selected: boolean = false;
   @Input() collection = [];
-  @Input() witGroup: string = '';
+  @Input() witGroup: GroupTypeUI;
   @Input() showTree: string = '';
   @Input() showCompleted: string = '';
   @Input() context: 'list' | 'board'; // 'list' or 'board'
@@ -86,7 +87,7 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
 
   constructURL(iterationId: string) {
     //Query for work item type group
-    const type_query = this.filterService.queryBuilder('typegroup.name', this.filterService.equal_notation, this.witGroup);
+    const type_query = this.filterService.queryBuilder('typegroup.name', this.filterService.equal_notation, this.witGroup.name);
     //Query for space
     const space_query = this.filterService.queryBuilder('space', this.filterService.equal_notation, this.spaceId);
     //Query for iteration
@@ -100,7 +101,23 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
     return this.filterService.jsonToQuery(third_join);
   }
 
+  constructURLforBoard(iterationId: string) {
+    //Query for work item type group
+    const type_query = this.filterService.queryBuilder('boardContextId', this.filterService.equal_notation, this.witGroup.id);
+    //Query for iteration
+    const iteration_query = this.filterService.queryBuilder('iteration', this.filterService.equal_notation, iterationId);
+    // join type and iteration query
+    const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, type_query);
+    const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, iteration_query);
+    return this.filterService.jsonToQuery(second_join);
+  }
+
   addRemoveQueryParams(iterationId: string) {
+    if (this.context === 'board') {
+      return {
+        q: this.constructURLforBoard(iterationId)
+      };
+    }
     if (this.showCompleted && this.showTree) {
       return {
         q: this.constructURL(iterationId),
@@ -122,10 +139,6 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
         q: this.constructURL(iterationId)
       };
     }
-  }
-
-  getRouterLink() {
-    return this.context === 'board' ? ['..'] : [];
   }
 
   toggleChildrenDisplay(iteration) {

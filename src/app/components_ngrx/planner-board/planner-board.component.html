@@ -1,6 +1,6 @@
 <div class="container-fluid f8-wi-container" #containerHeight>
     <div class="lock-overlay-list"
-      *ngIf="uiLockedAll">
+      *ngIf="boardUiQuery.boardLocked | async">
       <div class="spinner-container">
         <h2 class="spinner"></h2>
         <h2>Loading ...</h2>
@@ -14,7 +14,8 @@
         [sidePanelContent]="sidePanel"
         [sectionContent]="sectionPanel">
       </alm-planner-layout>
-      <work-item-preview-panel #quickPreview >
+      <work-item-preview-panel #quickPreview
+        [context]="'board'">
       </work-item-preview-panel>
     </main>
 </div>
@@ -48,6 +49,24 @@
 
 <ng-template #sectionPanel>
   <div class="f8-wi-board" #boardContainer>
-
+  <ng-container *ngIf="board$ | async as board">
+    <f8-planner-column class="f8-planner-column" *ngFor="let column of board.columns"
+      [columnBody]="boardColumnBody"
+      [itemCount]="(column.workItems | async)?.length"
+      [columnName]="column.title">
+      <ng-template #boardColumnBody>
+        <div class="f8-board-column__body"
+          [dragula]="'board-column'"
+          [attr.data-id]="column.id">
+          <f8-planner-card *ngFor="let workitem of column.workItems | async"
+            [class.item-not-draggable]="!workitem?.editable"
+            [workItem]="workitem"
+            (onTitleClick)="openQuickPreview($event)"></f8-planner-card>
+        </div>
+      </ng-template>
+    </f8-planner-column>
+  </ng-container>
   </div>
 </ng-template>
+
+<osio-modal></osio-modal>

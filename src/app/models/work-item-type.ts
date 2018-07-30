@@ -168,6 +168,7 @@ function filterDynamicFields(fields: any[]) {
   if (fields !== null) {
 
     const fieldKeys = Object.keys(fields);
+    // These fields won't show up in the details page
     const staticFields = [
       'system.area',
       'system.assignees',
@@ -182,12 +183,17 @@ function filterDynamicFields(fields: any[]) {
       'system.remote_item_id',
       'system.state',
       'system.title',
-      'system.updated_at'
+      'system.updated_at',
+      'system.metastate'
+    ];
+    // These fields types won't show up in the details page
+    const restrictedFieldTypes = [
+      'float', 'string', 'integer', 'enum', 'markup'
     ];
     return fieldKeys.filter(
       f => {
         return staticFields.findIndex(sf => sf === f) === -1 &&
-          ['float', 'string', 'integer', 'enum', 'markup'].indexOf(fields[f].type.kind) > -1;
+          restrictedFieldTypes.indexOf(fields[f].type.kind) > -1;
       }
     );
   } else {

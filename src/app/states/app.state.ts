@@ -5,10 +5,7 @@ export interface AppState {
 
   listPage?: ListPage;
 
-  boardView?: {
-    boards: states.BoardState,
-    columnWorkItem: states.ColumnWorkItemState
-  };
+  boardView?: BoardViewState;
 
   iterationPanel: {
     iterationUI: states.IterationUIState
@@ -29,6 +26,12 @@ export interface AppState {
   workItemLink: {
     workItems: states.WorkItemState
   };
+}
+
+export interface BoardViewState {
+  boards: states.BoardState;
+  columnWorkItem: states.ColumnWorkItemState;
+  boardUi: states.BoardUIState;
 }
 
 export interface ListPage {}

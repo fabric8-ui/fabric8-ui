@@ -532,7 +532,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
       destinationWorkitemID: event.target.id,
       direction: 'above'
     };
-    this.store.dispatch(new WorkItemActions.Reoder(payload));
+    this.store.dispatch(new WorkItemActions.Reorder(payload));
   }
 
   ngOnDestroy() {

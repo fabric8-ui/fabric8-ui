@@ -12,3 +12,4 @@ export { All as WITypeActions } from './work-item-type.actions';
 export { All as WorkItemActions } from './work-item.actions';
 export { All as EventActions } from './event.action';
 export { All as BoardActions } from './board.actions';
+export { All as BoardUIActions } from './board-ui.actions';

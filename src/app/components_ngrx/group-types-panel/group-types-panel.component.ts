@@ -98,10 +98,21 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
     //reverse function jsonToQuery(second_join);
   }
 
+  fnBuildQueryParamForBoard(witGroup) {
+    const type_query = this.filterService.queryBuilder(
+      'boardContextId', this.filterService.equal_notation, witGroup.id
+    );
+    // join query with typeQuery
+    const second_join = this.filterService.queryJoiner(
+      {}, this.filterService.and_notation, type_query
+    );
+    return this.filterService.jsonToQuery(second_join);
+  }
+
   addRemoveQueryParams(witGroup) {
     // If it's a board view then quoery should only have the board id
     if (this.context === 'board') {
-      return {boardContextId: witGroup.id};
+      return {q: this.fnBuildQueryParamForBoard(witGroup)};
     }
 
     // For list view it works differently
@@ -134,11 +145,23 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
       this.route.queryParams.subscribe(val => {
         if (val.hasOwnProperty('q')) {
           let selectedTypeGroup: GroupTypeUI;
-          const selectedTypeGroupName =
-            this.filterService.getConditionFromQuery(val.q, 'typegroup.name');
-          if (selectedTypeGroupName) {
-            selectedTypeGroup =
-              this.groupTypes.find(g => g.name === selectedTypeGroupName);
+          if (val['q'].includes('boardContextId')) {
+            //filter service getConditionFromQuery returns undefined for non AND operations
+            let selectedTypeGroupId = this.filterService.getConditionFromQuery(val.q, 'boardContextId');
+            if (selectedTypeGroupId === undefined) {
+              selectedTypeGroupId = this.filterService.queryToFlat(val.q)[0].value;
+            }
+            if (selectedTypeGroupId) {
+              selectedTypeGroup =
+                this.groupTypes.find(g => g.id === selectedTypeGroupId);
+            }
+          } else {
+            const selectedTypeGroupName =
+              this.filterService.getConditionFromQuery(val.q, 'typegroup.name');
+            if (selectedTypeGroupName) {
+              selectedTypeGroup =
+                this.groupTypes.find(g => g.name === selectedTypeGroupName);
+            }
           }
           if (selectedTypeGroup && !selectedTypeGroup.selected) {
             this.store.dispatch(new GroupTypeActions.SelectType(selectedTypeGroup));
@@ -153,15 +176,6 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
           this.showCompleted = val.showCompleted;
         } else {
           this.showCompleted = '';
-        }
-
-        // If it's a board view then check for board context ID
-        if (val.hasOwnProperty('boardContextId')) {
-          const selectedTypeGroup: GroupTypeUI =
-              this.groupTypes.find(g => g.id === val.boardContextId);
-          if (selectedTypeGroup) {
-            this.store.dispatch(new GroupTypeActions.SelectType(selectedTypeGroup));
-          }
         }
       })
     );

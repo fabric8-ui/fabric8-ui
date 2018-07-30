@@ -2,9 +2,25 @@
 @import '../../../assets/stylesheets/_planner-layout';
 @import '~rh-ngx-datatable/release/assets/icons.css';
 @import '~rh-ngx-datatable/release/themes/material.css';
+@import './../../../assets/stylesheets/_dragula';
 
 
 .f8-wi-container {
+  .f8-wi-board {
+    background-color: @color-pf-black-100;
+    padding-top: 24px;
+    padding-right: 24px;
+    padding-bottom: 24px;
+    padding-left: 24px;
+    overflow-x: auto;
+    white-space: nowrap;
+    .f8-planner-column {
+      margin-left: 10px;
+      &:first-of-type {
+        margin-left: 0;
+      }
+    }
+  }
   .lock-overlay-list {
     position: absolute;
     top: 0;
@@ -17,9 +33,8 @@
     cursor: default;
     .spinner-container {
       position: absolute;
-      top: 10%;
+      top: 50%;
       left: 50%;
-      font-size: 50px;
       text-align: center;
       color: @color-pf-black;
       transform: translate(-50%, -50%);
@@ -36,4 +51,7 @@
       }
     }
   }
+}
+.f8-board-column__body {
+  height: 100%;
 }

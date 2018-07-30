@@ -63,7 +63,7 @@
               </ul>
             </div>
             <a class="pull-right"
-              [routerLink]="['detail', workItem.number]"
+              [routerLink]="context === 'list' ? ['detail', workItem.number] : ['../', 'detail', workItem.number]"
               [queryParams]="queryParams">
               View full details
                 <span class="fa fa-list-alt"></span>
