@@ -48,7 +48,7 @@ describe('Planner Collaborator Tests:', () => {
   });
 
   it('Non collaborator should Comment and Save', async () => {
-    await planner1.workItemList.clickWorkItem('Work Item 4');
+    await planner1.workItemList.clickWorkItem('Work Item 3');
     await planner1.quickPreview.addCommentAndSave(c.comment);
     expect(await planner1.quickPreview.getComments()).toContain(c.comment);
   });
