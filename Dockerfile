@@ -25,7 +25,7 @@ ENV NODE_VERSION 8.3.0
 RUN rpm -U http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
 
 RUN yum -y update && \
-    yum install -y bzip2 git epel-release libappindicator \
+    yum install -y bzip2 git epel-release libappindicator python-devel\
       java-1.8.0-openjdk wget unzip which gcc-c++ && \
       yum -y clean all
 

@@ -27,6 +27,7 @@ generate_db() {
   log "Installing python pip"
   yum install -y epel-release && yum install -y python-pip
   log "Installing all the required packages..."
+  pip install --upgrade pip
   pip install pytest requests jmespath
   log "Running the EE_API_Automation Tests (DB Generation)"
   sh run_me.sh "$FABRIC8_WIT_API_URL" "$USER_NAME" "$REFRESH_TOKEN"
