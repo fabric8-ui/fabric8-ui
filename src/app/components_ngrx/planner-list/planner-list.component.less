@@ -215,16 +215,23 @@ a.disabled {
 /// ng x-datatables css
 
 .cell-class {
-  overflow: visible !important;
+  display: table !important;
   padding-top: 3px !important;
-  padding-bottom: 4px !important;
-  line-height: 44px !important;
+  padding-bottom: 3px !important;
 }
-
+.datatable-body-cell-label {
+  display: table-cell;
+  vertical-align: middle;
+  height: 100%;
+  align-items: center;
+  label {
+    margin: 0;
+  }
+}
 .header-cell {
-  font-weight: bold !important;
-  overflow: visible !important;
-  color: @color-pf-black !important;
+  font-weight: bold;
+  overflow: visible;
+  color: @color-pf-black-800;
 }
 
 .datatable-row-detail {
@@ -232,7 +239,7 @@ a.disabled {
 }
 
 .datatable-header {
-  overflow: visible !important;
+  overflow: visible;
 }
 
 .fullscreen {

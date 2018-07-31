@@ -7,7 +7,6 @@
   "eof-newline": true,
   "exclude": ["src/assets/stylesheets/shared/_formulas.less"],
   "leading-zero": false,
-  "lines-between-rulesets": 1,
   "quotes": "single",
   "remove-empty-rulesets": true,
   "space-before-colon": 0,
@@ -24,7 +23,7 @@
   "tab-size": 2,
   "unitless-zero": true,
   "verbose": true,
-  "sort-order": 
+  "csscomb-preset": 
   [
     [
       "content",

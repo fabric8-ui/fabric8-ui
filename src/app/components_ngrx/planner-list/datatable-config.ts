@@ -40,8 +40,8 @@ export const datatableColumn = [{
   display: true,
   showInDisplay: true,
   maxWidth: undefined,
-  minWidth: 300,
-  width: 300
+  minWidth: 200,
+  width: 220
 }, {
   name: 'State',
   prop: 'state',
@@ -52,7 +52,7 @@ export const datatableColumn = [{
   showInDiplay: false,
   maxWidth: undefined,
   minWidth: undefined,
-  width: 120
+  width: 130
 }, {
   name: 'Iteration',
   prop: 'iteration',
@@ -63,7 +63,7 @@ export const datatableColumn = [{
   showInDisplay: true,
   minWidth: undefined,
   maxWidth: undefined,
-  width: 150
+  width: 120
 }, {
   name: 'Creator',
   prop: 'creator',
@@ -85,6 +85,6 @@ export const datatableColumn = [{
   showInDisplay: true,
   maxWidth: undefined,
   minWidth: undefined,
-  width: 145
+  width: 150
 }];
 

@@ -217,7 +217,7 @@
             </ng-template>
 
             <ng-template ngx-datatable-cell-tree-loader *ngIf="c.name==='Title'">
-              <div class="spinner spinner-xs icon-loader margin-top-15"></div>
+              <div class="spinner spinner-xs icon-loader margin-top-5"></div>
             </ng-template>
               <ng-template let-row="row"
                 ngx-datatable-cell-template>
@@ -242,9 +242,10 @@
           [sortable]="false"
           [cellClass]="'cell-class'"
           [frozenLeft]="false">
-            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+            <ng-template let-row="row" let-expanded="expanded"
+              ngx-datatable-cell-template>
               <span class="table-dnd-container">
-                 <span class="table-dnd-header"></span>
+                <span class="table-dnd-header"></span>
               </span>
               <a class="quick-add-icon pficon-add-circle-o disabled"
                 placement="right"

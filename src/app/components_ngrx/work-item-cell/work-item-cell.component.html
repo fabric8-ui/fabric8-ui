@@ -19,10 +19,10 @@
 <div class="width-100"
   *ngIf="col === 'title'">
   <div class="wi-detail-title">
-    <p class="truncate pointer"
-        [class.bold]="row.bold"
-        [innerHTML]="row.title"
-        (click)="onPreview($event, row['id'])"></p>
+    <p class="truncate pointer margin-0"
+      [class.bold]="row.bold"
+      [innerHTML]="row.title"
+      (click)="onPreview($event, row['id'])"></p>
   </div>
   <div class="dib text-right wi-detail-icon">
     <a class="fa fa-list-alt padding-v-5 pointer"
@@ -45,15 +45,19 @@
 
 <div *ngIf="col === 'label'">
   <f8-label
-      [labels]="row?.labelsObs | async"
-      [truncateAfter]='4'
-      [allowDelete]="false"
-      (onLabelClick)="labelClick($event)"></f8-label>
+    [labels]="row?.labelsObs | async"
+    [truncateAfter]='4'
+    [allowDelete]="false"
+    (onLabelClick)="labelClick($event)">
+  </f8-label>
 </div>
 
 <!-- Iteration -->
-<span id="table-iteration" *ngIf="col === 'iteration'">
-  {{ (row.iterationObs | async)?.parentPath === '/' ? 'NA' : (row.iterationObs | async)?.name | truncate : 18 }}
+<span id="table-iteration" 
+  *ngIf="col === 'iteration'"
+  tooltip="{{ (row.iterationObs | async)?.parentPath === '/' ? 'NA' : (row.iterationObs | async)?.name }}"
+  placement="left">
+  {{ (row.iterationObs | async)?.parentPath === '/' ? 'NA' : (row.iterationObs | async)?.name | truncate : 12 }}
 </span>
 
 <!-- Creator -->
@@ -64,10 +68,11 @@
   [imgPlacement]="'left'">
 </user-avatar>
 <!-- Assignee -->
-<div *ngIf="col === 'assignees'" >
+<div class="assignees-cell"
+  *ngIf="col === 'assignees'">
   <f8-assignee
     [showFullName]="false"
     [truncateAfter]="3"
-    [assignees]="row.assigneesObs | async"
-  ></f8-assignee>
+    [assignees]="row.assigneesObs | async">
+  </f8-assignee>
 </div>

@@ -7,12 +7,10 @@
     [imgSrc]="(comment.creator | async)?.avatar | almAvatarSize: 25">
   </user-avatar>
   <div>
-    <h5 class="f8-comment-author pull-left">
-      <strong  class="truncate"
-        id="{{'comment_username_' + counter}}">
+    <strong class="f8-comment-author pull-left"
+      id="{{'comment_username_' + counter}}">
         {{ (comment.creator | async)?.name }}
-      </strong>
-    </h5>
+    </strong>
     <small class="f8-comment--create-time pull-right"
       id="{{'comment_time_' + counter}}">
         {{ comment.createdAt | date:'medium' }}
@@ -41,8 +39,9 @@
     <!-- Add reply button-->
     <button class="btn pull-right"
       type="button"
-      (click)="replyActive=true; replyEditor?.enableEditor();"
-    >{{ 'Reply' }}</button>
+      (click)="replyActive=true; replyEditor?.enableEditor();">
+        {{ 'Reply' }}
+    </button>
 
     <!-- Reply editor -->
     <f8-markdown
@@ -61,7 +60,7 @@
     <fabric8-comment
       *ngFor="let childComment of comment.children"
       [comment]="childComment"
-      (onUpdateRequest)="updateChildComment($event)"
-    ></fabric8-comment>
+      (onUpdateRequest)="updateChildComment($event)">
+    </fabric8-comment>
   </div>
 </div>
