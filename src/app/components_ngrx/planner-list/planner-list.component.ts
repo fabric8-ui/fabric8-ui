@@ -220,6 +220,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
           if (event.url.indexOf('?q') === -1 &&
             event.url.indexOf('/plan/detail/') === -1 &&
             event.url.indexOf('/plan/board') === -1 &&
+            event.url.indexOf('/plan/query') === -1 &&
             event.url.indexOf('/plan') > -1) {
             this.setDefaultUrl();
           }

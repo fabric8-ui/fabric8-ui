@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { PlannerBoardModule } from './app/components_ngrx/planner-board/planner-board.module';
 import { PlannerListModule } from './app/components_ngrx/planner-list/planner-list.module';
+import { PlannerQueryModule } from './app/components_ngrx/planner-query/planner-query.module';
 import { WorkItemDetailExternalModule } from './app/components_ngrx/work-item-detail/work-item-detail-external.module';
 
 // ngrx stuff
@@ -69,6 +70,7 @@ export class PlannerRoutingModule {}
       effects.InfotipEffects
     ]),
     PlannerBoardModule,
+    PlannerQueryModule,
     WorkItemDetailExternalModule,
     PlannerListModule,
     PlannerRoutingModule
