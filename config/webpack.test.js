@@ -106,13 +106,19 @@ module.exports = function () {
         //   use: [{
         //     loader: 'tslint-loader',
         //     options: {
+        //       configFile: "tslint.json",
+        //       tsConfigFile: 'tsconfig.json',
+        //       formattersDirectory: 'node_modules/tslint-loader/formatters/',
+        //       formatter: 'custom',
         //       emitErrors: false,
-        //       failOnHint: false,
+        //       failOnHint: true,
         //       resourcePath: 'src',
         //       typeCheck: true,
         //     }
         //   }],
-        //   exclude: [helpers.root('node_modules')]
+        //   exclude: [
+        //     helpers.root('node_modules')
+        //   ]
         // },
 
         {
@@ -140,26 +146,17 @@ module.exports = function () {
          * HTML Linter
          * Checks all files against .htmlhintrc
          */
-        // {
-        //   test: /\.ts$/,
-        //   enforce: 'pre',
-        //   use: [{
-        //     loader: 'tslint-loader',
-        //     options: {
-        //       configFile: "tslint.json",
-        //       tsConfigFile: 'tsconfig.json',
-        //       formattersDirectory: 'node_modules/tslint-loader/formatters/',
-        //       formatter: 'custom',
-        //       emitErrors: false,
-        //       failOnHint: true,
-        //       resourcePath: 'src',
-        //       typeCheck: true,
-        //     }
-        //   }],
-        //   exclude: [
-        //     helpers.root('node_modules')
-        //   ]
-        // },
+        {
+          enforce: 'pre',
+          test: /\.html$/,
+          use: {
+            loader: 'htmlhint-loader',
+            options: {
+              configFile: './.htmlhintrc'
+            }
+          },
+          exclude: [/node_modules/]
+        },
 
         /**
          * Raw loader support for *.html
