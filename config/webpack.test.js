@@ -5,35 +5,40 @@
 const helpers = require('./helpers');
 const path = require('path');
 const stringify = require('json-stringify');
+
 /**
  * Webpack Plugins
  */
-const webpack = require('webpack');
-const ProvidePlugin = require('webpack/lib/ProvidePlugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
-const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 /**
  * Webpack Constants
  */
 const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
-const API_URL = process.env.API_URL || (ENV==='inmemory'?'app/':'http://localhost:8080/api/');
+const API_URL = process.env.API_URL || (ENV === 'inmemory'?'app/':'http://localhost:8080/api/');
 const FABRIC8_WIT_API_URL = process.env.FABRIC8_WIT_API_URL;
 const FABRIC8_RECOMMENDER_API_URL = process.env.FABRIC8_RECOMMENDER_API_URL || 'http://api-bayesian.dev.rdu2c.fabric8.io/api/v1/';
 
-/**
- * Webpack configuration
- *
- * See: http://webpack.github.io/docs/configuration.html#cli
- */
-module.exports = function (options) {
-  return {
+module.exports = function () {
+   return {
+    /**
+     * Cache generated modules and chunks to improve performance for multiple incremental builds.
+     * This is enabled by default in watch mode.
+     * You can pass false to disable it.
+     *
+     * See: http://webpack.github.io/docs/configuration.html#cache
+     */
+    //cache: false,
 
-    entry: {
-      'app': './index.ts'
-    },
+    /**
+     * As of Webpack 4 we need to set the mode.
+     * Since this is a library and it uses gulp to build the library,
+     * we only have Test and Perf.
+     */
+    mode: 'development',
 
     /**
      * Source map for Karma from the help of karma-sourcemap-loader &  karma-webpack
@@ -41,36 +46,34 @@ module.exports = function (options) {
      * Do not change, leave as is or it wont work.
      * See: https://github.com/webpack/karma-webpack#source-maps
      */
-    //devtool: 'inline-source-map',
+    devtool: 'inline-source-map',
+
+    entry: {
+      'polyfills': './src/polyfills.ts',
+      'vendor': './src/vendor.ts',
+      'app': './src/main.ts'
+    },
 
     /**
      * Options affecting the resolving of modules.
      *
-     * See: http://webpack.github.io/docs/configuration.html#resolve
+     * See: https://webpack.js.org/configuration/resolve
      */
     resolve: {
 
       /**
-       * An array of extensions that should be used to resolve modules.
+       * An array that automatically resolve certain extensions.
+       * Which is what enables users to leave off the extension when importing.
        *
-       * See: http://webpack.github.io/docs/configuration.html#resolve-extensions
+       * See: https://webpack.js.org/configuration/resolve/#resolve-extensions
        */
-      extensions: ['.ts', '.js']
+      extensions: ['.webpack.js', '.ts', '.js', '.json']
     },
 
-    /**
-     * Options affecting the normal modules.
-     *
-     * See: http://webpack.github.io/docs/configuration.html#module
-     */
+    // require those dependencies but don't bundle them
+    // externals: [/^@angular\//, /^rxjs\//],
+
     module: {
-
-    /**
-     * An array of applied pre and post loaders.
-     *
-     * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
-     */
-
       /**
        * An array of automatically applied loaders.
        *
@@ -87,33 +90,36 @@ module.exports = function (options) {
          *
          * See: https://github.com/webpack/source-map-loader
          */
+        {
+          test: /\.js$/,
+          use: ['source-map-loader'],
+          exclude: [
+            // these packages have problems with their sourcemaps
+            helpers.root('node_modules/rxjs'),
+            helpers.root('node_modules/@angular')
+          ]
+        },
+
         // {
-        //   test: /\.js$/,
-        //   use: ['source-map-loader'],
-        //   exclude: [
-        //     // these packages have problems with their sourcemaps
-        //     helpers.root('node_modules/rxjs'),
-        //     helpers.root('node_modules/@angular')
-        //   ]
+        //   test: /\.ts$/,
+        //   enforce: 'pre',
+        //   use: [{
+        //     loader: 'tslint-loader',
+        //     options: {
+        //       emitErrors: false,
+        //       failOnHint: false,
+        //       resourcePath: 'src',
+        //       typeCheck: true,
+        //     }
+        //   }],
+        //   exclude: [helpers.root('node_modules')]
         // },
 
-        /**
-         * Typescript loader support for .ts and Angular 2 async routes via .async.ts
-         *
-         * See: https://github.com/s-panferov/awesome-typescript-loader
-         */
         {
           test: /\.ts$/,
           use: [
-            {
-              loader: "awesome-typescript-loader",
-              options: {
-                configFileName: 'tsconfig-test.json'
-              }
-            },
-            {
-              loader: "angular2-template-loader"
-            }
+            'ts-loader',
+            'angular2-template-loader'
           ],
           exclude: [/\.e2e\.ts$/]
         },
@@ -125,78 +131,36 @@ module.exports = function (options) {
          */
         {
           test: /\.json$/,
+          type: "javascript/auto",
           use: ['json-loader'],
           exclude: [helpers.root('src/index.html')]
         },
 
-        /*
-         * to string and css loader support for *.css files
-         * Returns file content as string
-         *
+        /**
+         * HTML Linter
+         * Checks all files against .htmlhintrc
          */
-        {
-          test: /\.css$/,
-          loaders: [
-            { loader: "to-string-loader" },
-            {
-              loader: "style-loader"
-            },
-            {
-              loader: "css-loader"
-            },
-          ],
-        },
-        
-        {
-          test: /\.component\.less$/,
-          use: [
-            {
-              loader: 'to-string-loader'
-            }, {
-              loader: 'css-loader',
-              options: {
-                minimize: true,
-                sourceMap: true,
-                context: '/'
-              }
-            }, {
-              loader: 'less-loader',
-              options: {
-                paths: [
-                  path.resolve(__dirname, "../node_modules/patternfly/src/less"),
-                  path.resolve(__dirname, "../node_modules/patternfly/node_modules")
-                ],
-                sourceMap: true
-              }
-            }
-          ],
-        },
+        // {
+        //   test: /\.ts$/,
+        //   enforce: 'pre',
+        //   use: [{
+        //     loader: 'tslint-loader',
+        //     options: {
+        //       configFile: "tslint.json",
+        //       tsConfigFile: 'tsconfig.json',
+        //       formattersDirectory: 'node_modules/tslint-loader/formatters/',
+        //       formatter: 'custom',
+        //       emitErrors: false,
+        //       failOnHint: true,
+        //       resourcePath: 'src',
+        //       typeCheck: true,
+        //     }
+        //   }],
+        //   exclude: [
+        //     helpers.root('node_modules')
+        //   ]
+        // },
 
-        /* File loader for supporting fonts, for example, in CSS files.
-         */
-        {
-          test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
-          loaders: [
-            {
-              loader: "url-loader",
-              query: {
-                limit: 3000,
-                name: 'vendor/fonts/[name].[hash].[ext]'
-              }
-            }
-          ]
-        }, {
-          test: /\.jpg$|\.png$|\.gif$|\.jpeg$/,
-          loaders: [
-            {
-              loader: "url-loader",
-              query: {
-                limit: 3000,
-                name: 'vendor/images/[name].[hash].[ext]'
-              }
-            }
-          ]
-        },
         /**
          * Raw loader support for *.html
          * Returns file content as string
@@ -205,11 +169,82 @@ module.exports = function (options) {
          */
         {
           test: /\.html$/,
-          use: ['raw-loader'],
-          exclude: [helpers.root('src/index.html')]
+          use: ['html-loader']
         },
 
-      /**
+        /**
+         * to string and css loader support for *.css files
+         * Returns file content as string
+         *
+         */
+        {
+          test: /\.css$/,
+          use:
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+              }
+            }
+        },
+        {
+          test: /\.less$/,
+          use: [
+            {
+              loader: 'css-to-string-loader'
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+                context: '/'
+              }
+            },
+            {
+              loader: 'less-loader',
+              options: {
+                paths: [
+                  path.resolve(__dirname, "../node_modules/patternfly/dist/less"),
+                  path.resolve(__dirname, "../node_modules/patternfly/dist/less/dependencies"),
+                  path.resolve(__dirname, "../node_modules/patternfly/dist/less/dependencies/bootstrap"),
+                  path.resolve(__dirname, "../node_modules/patternfly/dist/less/dependencies/font-awesome"),
+                ],
+                sourceMap: true
+              }
+            }
+          ]
+        },
+
+        /**
+         *  File loader for supporting fonts, for example, in CSS files.
+         */
+        {
+          test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
+          use: [
+            {
+              loader: "url-loader",
+              options: {
+                limit: 3000,
+                includePaths: [
+                  path.resolve(__dirname, "../node_modules/patternfly/dist/fonts/")
+                ],
+                name: 'assets/fonts/[name].[hash].[ext]'
+              }
+            }
+          ]
+        }, {
+          test: /\.jpg$|\.png$|\.gif$|\.jpeg$/,
+          use: {
+            loader: "url-loader",
+            options: {
+              limit: 3000,
+              name: 'assets/fonts/[name].[hash].[ext]'
+            }
+          },
+          exclude: path.resolve(__dirname, "../node_modules/patternfly/dist/fonts/")
+        },
+
+        /**
          * Instruments JS files with Istanbul for subsequent code coverage reporting.
          * Instrument only testing sources.
          *
@@ -218,9 +253,11 @@ module.exports = function (options) {
         {
           enforce: 'post',
           test: /\.(js|ts)$/,
-          loader: 'istanbul-instrumenter-loader',
-          query: {
-            esModules: true
+          use: {
+            loader: 'istanbul-instrumenter-loader',
+            options: {
+              esModules: true
+            }
           },
           include: helpers.root('src'),
           exclude: [
@@ -237,7 +274,6 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: [
-
       /**
        * Plugin: DefinePlugin
        * Description: Define free variables.
@@ -268,32 +304,26 @@ module.exports = function (options) {
        */
       new ContextReplacementPlugin(
         // The (\\|\/) piece accounts for path separators in *nix and Windows
+        // /angular(\\|\/)core(\\|\/)@angular/,
+        /\@angular(\\|\/)core(\\|\/)fesm5/,
+        helpers.root('./src')
+      ),
+      new ContextReplacementPlugin(
+        // The (\\|\/) piece accounts for path separators in *nix and Windows
         /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
         helpers.root('src') // location of your src
       ),
 
-       /**
-       * Plugin LoaderOptionsPlugin (experimental)
-       *
-       * See: https://gist.github.com/sokra/27b24881210b56bbaff7
-       */
-      new LoaderOptionsPlugin({
-        debug: true,
-        options: {
+      new HtmlWebpackPlugin(),
 
-          /**
-           * Static analysis linter for TypeScript advanced options configuration
-           * Description: An extensible linter for the TypeScript language.
-           *
-           * See: https://github.com/wbuchwalter/tslint-loader
-           */
-          tslint: {
-            emitErrors: false,
-            failOnHint: false,
-            resourcePath: 'src'
-          }
-        }
+      // Reference: https://github.com/johnagan/clean-webpack-plugin
+      // Removes the bundle folder before the build
+      new CleanWebpackPlugin(['bundles'], {
+        root: helpers.root(),
+        verbose: false,
+        dry: false
       }),
+
       /*
        * StyleLintPlugin
        */
@@ -304,8 +334,9 @@ module.exports = function (options) {
         files: '**/*.less',
         failOnError: true,
         quiet: false,
-      })
+      }),
     ],
+
     /**
      * Include polyfills or mocks for various node stuff
      * Description: Node configuration
@@ -313,12 +344,12 @@ module.exports = function (options) {
      * See: https://webpack.github.io/docs/configuration.html#node
      */
     node: {
-      global: true,
-      process: false,
-      crypto: 'empty',
-      module: false,
       clearImmediate: false,
+      crypto: 'empty',
+      global: true,
+      module: false,
+      process: false,
       setImmediate: false
     }
-  };
+   };
 };

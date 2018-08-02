@@ -1,27 +1,12 @@
 const helpers = require('./helpers');
-const webpack = require('webpack');
 const path = require('path');
 
 /**
  * Webpack Plugins
  */
-const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
-const DefinePlugin = require('webpack/lib/DefinePlugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const IgnorePlugin = require('webpack/lib/IgnorePlugin');
+const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
-const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
-const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
-const ProvidePlugin = require('webpack/lib/ProvidePlugin');
-const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
-const TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin;
 const StyleLintPlugin = require('stylelint-webpack-plugin');
-// ExtractTextPlugin
-const extractCSS = new ExtractTextPlugin({
-  filename: '[name].[id].css',
-  allChunks: true
-});
 
 module.exports = {
   devServer: {
@@ -29,6 +14,13 @@ module.exports = {
     stats: 'minimal',
     inline: true
   },
+
+  /**
+   * As of Webpack 4 we need to set the mode.
+   * Since this is a library and it uses gulp to build the library,
+   * we only have Demo, Test, and Perf.
+   */
+  mode: 'development',
 
   devtool: 'cheap-module-eval-source-map',
 
@@ -49,73 +41,161 @@ module.exports = {
 
   module: {
     rules: [
+
+      /**
+       * Source map loader support for *.js files
+       * Extracts SourceMaps for source files that as added as sourceMappingURL comment.
+       *
+       * See: https://github.com/webpack/source-map-loader
+       */
+      {
+        test: /\.js$/,
+        use: ['source-map-loader'],
+        exclude: [
+          // these packages have problems with their sourcemaps
+          helpers.root('node_modules/rxjs'),
+          helpers.root('node_modules/@angular')
+        ]
+      },
+
+      // {
+      //   test: /\.ts$/,
+      //   enforce: 'pre',
+      //   use: [{
+      //     loader: 'tslint-loader',
+      //     options: {
+      //       configFile: "tslint.json",
+      //       tsConfigFile: 'tsconfig.json',
+      //       formattersDirectory: 'node_modules/tslint-loader/formatters/',
+      //       formatter: 'custom',
+      //       emitErrors: false,
+      //       failOnHint: true,
+      //       resourcePath: 'src',
+      //       typeCheck: true,
+      //     }
+      //   }],
+      //   exclude: [
+      //     helpers.root('node_modules')
+      //   ]
+      // },
+
       {
         test: /\.ts$/,
-        loaders: [
-          'awesome-typescript-loader',
+        use: [
+          'ts-loader',
           'angular2-template-loader'
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
       },
+
+      /**
+       * Json loader support for *.json files.
+       *
+       * See: https://github.com/webpack/json-loader
+       */
+      {
+        test: /\.json$/,
+        type: "javascript/auto",
+        use: ['json-loader'],
+        exclude: [helpers.root('src/index.html')]
+      },
+
+      /**
+       * HTML Linter
+       * Checks all files against .htmlhintrc
+       */
+      {
+        enforce: 'pre',
+        test: /\.html$/,
+        use: {
+          loader: 'htmlhint-loader',
+          options: {
+            configFile: './.htmlhintrc'
+          }
+        },
+        exclude: [/node_modules/]
+      },
+
+      /* Raw loader support for *.html
+       * Returns file content as string
+       *
+       * See: https://github.com/webpack/raw-loader
+       */
       {
         test: /\.html$/,
-        loader: 'html-loader'
-      }, {
+        use: ['html-loader']
+      },
+
+      /*
+       * to string and css loader support for *.css files
+       * Returns file content as string
+       *
+       */
+      {
         test: /\.css$/,
-        loader: extractCSS.extract({
-          fallback: "style-loader",
-          use: "css-loader?sourceMap&context=/"
-        })
-      }, {
-        test: /\.component\.less$/,
+        use:
+        {
+          loader: 'css-loader',
+          options: {
+            sourceMap: true,
+          }
+        }
+      },
+      {
+        test: /\.less$/,
         use: [
           {
-            loader: 'to-string-loader'
-          }, {
+            loader: 'css-to-string-loader'
+          },
+          {
             loader: 'css-loader',
             options: {
-              minimize: true,
               sourceMap: true,
-              context: '/'
             }
-          }, {
+          },
+          {
             loader: 'less-loader',
             options: {
               paths: [
-                path.resolve(__dirname, "../node_modules/patternfly/src/less"),
-                path.resolve(__dirname, "../node_modules/patternfly/node_modules")
+                path.resolve(__dirname, "../node_modules/patternfly/dist/less"),
+                path.resolve(__dirname, "../node_modules/patternfly/dist/less/dependencies"),
+                path.resolve(__dirname, "../node_modules/patternfly/dist/less/dependencies/bootstrap"),
+                path.resolve(__dirname, "../node_modules/patternfly/dist/less/dependencies/font-awesome"),
               ],
               sourceMap: true
             }
           }
-        ],
+        ]
       },
 
-      /* File loader for supporting fonts, for example, in CSS files.
+      /**
+       *  File loader for supporting fonts, for example, in CSS files.
        */
       {
         test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
-        loaders: [
+        use: [
           {
             loader: "url-loader",
             query: {
               limit: 3000,
+              includePaths: [
+                path.resolve(__dirname, "../node_modules/patternfly/dist/fonts/")
+              ],
               name: 'assets/fonts/[name].[ext]'
             }
           }
         ]
       }, {
         test: /\.jpg$|\.png$|\.gif$|\.jpeg$/,
-        loaders: [
-          {
-            loader: "url-loader",
-            query: {
-              limit: 3000,
-              name: 'assets/fonts/[name].[ext]'
-            }
+        use: {
+          loader: "url-loader",
+          query: {
+            limit: 3000,
+            name: 'assets/fonts/[name].[ext]'
           }
-        ]
-      },
+        },
+        exclude: path.resolve(__dirname, "../node_modules/patternfly/dist/fonts/")
+      }
     ]
   },
 
@@ -127,9 +207,13 @@ module.exports = {
     sourceMapFilename: '[name].map'
   },
 
+  /*
+   * Add additional plugins to the compiler.
+   *
+   * See: http://webpack.github.io/docs/configuration.html#plugins
+   */
   plugins: [
-    extractCSS,
-    /*
+    /**
      * StyleLintPlugin
      */
     new StyleLintPlugin({
@@ -140,17 +224,25 @@ module.exports = {
       failOnError: true,
       quiet: false,
     }),
-    /*
-     * Plugin: CommonsChunkPlugin
-     * Description: Shares common code between the pages.
-     * It identifies common modules and put them into a commons chunk.
+
+    /**
+     * Plugin: ContextReplacementPlugin
+     * Description: Provides context to Angular's use of System.import
      *
-     * See: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
-     * See: https://github.com/webpack/docs/wiki/optimization#multi-page-app
+     * See: https://webpack.github.io/docs/list-of-plugins.html#contextreplacementplugin
+     * See: https://github.com/angular/angular/issues/11580
      */
-    new CommonsChunkPlugin({
-      name: ['app', 'vendor', 'polyfills']
-    }),
+    new ContextReplacementPlugin(
+      // The (\\|\/) piece accounts for path separators in *nix and Windows
+      // /angular(\\|\/)core(\\|\/)@angular/,
+      /\@angular(\\|\/)core(\\|\/)fesm5/,
+      helpers.root('./src')
+    ),
+    new ContextReplacementPlugin(
+      // The (\\|\/) piece accounts for path separators in *nix and Windows
+      /angular(\\|\/)core(\\|\/)@angular/,
+      helpers.root('./src')
+    ),
 
     /*
      * Plugin: HtmlWebpackPlugin
@@ -165,30 +257,24 @@ module.exports = {
       template: 'src/index.html'
     }),
 
-    /**
-     * Plugin: NamedModulesPlugin (experimental)
-     * Description: Uses file names as module name.
-     *
-     * See: https://github.com/webpack/webpack/commit/a04ffb928365b19feb75087c63f13cadfc08e1eb
-     */
-    new NamedModulesPlugin(),
+    // // Todo: config is not loading.
+    // new TsConfigPathsPlugin({
+    //   configFileName: helpers.root("tsconfig-demo.json")
+    // }),
 
-    // Todo: config is not loading.
-    new TsConfigPathsPlugin({
-      configFileName: helpers.root("tsconfig-demo.json")
-    }),
+  ],
 
-    /**
-     * Plugin: ContextReplacementPlugin
-     * Description: Provides context to Angular's use of System.import
-     *
-     * See: https://webpack.github.io/docs/list-of-plugins.html#contextreplacementplugin
-     * See: https://github.com/angular/angular/issues/11580
-     */
-    new webpack.ContextReplacementPlugin(
-      // The (\\|\/) piece accounts for path separators in *nix and Windows
-      /angular(\\|\/)core(\\|\/)@angular/,
-      helpers.root('src') // location of your src
-    )
-  ]
+  /**
+   * These common plugins were removed from Webpack 3 and are now set in this object.
+   */
+  optimization: {
+    namedModules: true, // NamedModulesPlugin()
+    splitChunks: { // CommonsChunkPlugin()
+      chunks: 'all',
+      // minChunks: Infinity
+    },
+    noEmitOnErrors: true, // NoEmitOnErrorsPlugin
+    concatenateModules: true, //ModuleConcatenationPlugin
+    nodeEnv: '8.3.0'
+  }
 };

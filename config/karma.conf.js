@@ -3,7 +3,7 @@
  */
 
 module.exports = function(config) {
-  var testWebpackConfig = require('./webpack.test.js')({env: 'test'});
+  var testWebpackConfig = require('./webpack.test.js')();
 
   var configuration = {
 
@@ -26,7 +26,7 @@ module.exports = function(config) {
      * we are building the test environment in ./spec-bundle.js
      */
     files: [
-      { pattern: './src/assets/img/*', watched: false, included: false, served: true },
+      // { pattern: './src/assets/img/*', watched: false, included: false, served: true },
       { pattern: './config/spec-bundle.js', watched: false }
     ],
 
@@ -79,18 +79,18 @@ module.exports = function(config) {
      * start these browsers
      * available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
      */
-/*
-    browsers: [
-      'Chrome'
-    ],
+        browsers: [
+          'Chrome'
+        ],
 
-    customLaunchers: {
-      ChromeTravisCi: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    },
-*/
+        customLaunchers: {
+          ChromeTravisCi: {
+            base: 'Chrome',
+            flags: ['--no-sandbox'],
+            debug: false
+          }
+        },
+/*
     browsers: ['PhantomJS_custom'],
     customLaunchers: {
       'PhantomJS_custom': {
@@ -105,12 +105,12 @@ module.exports = function(config) {
         debug: false
       }
     },
+*/
     phantomjsLauncher: {
       // Have phantomjs exit if a ResourceError is encountered
       // (useful if karma exits without killing phantom)
       exitOnResourceError: true
     },
-
     /*
      * Continuous Integration mode
      * if true, Karma captures browsers, runs the tests and exits
@@ -119,9 +119,7 @@ module.exports = function(config) {
   };
 
   if (process.env.TRAVIS){
-    configuration.browsers = [
-      'ChromeTravisCi'
-    ];
+    configuration.browsers = ['ChromeTravisCi'];
   }
 
   config.set(configuration);
