@@ -146,14 +146,15 @@ describe('Work Item datatable list: ', () => {
 
   it('clicking on label should filter the workitem list by label', async () => {
     let labelFilter = 'label: ' + c.label,
-      workItemTitle4 = {'title': 'Workitem_Title_4'};
+      workItemTitle = {'title': 'test clicking on label should filter the workitem list by label'};
 
     await planner.sidePanel.clickRequirement();
     await planner.waitUntilUrlContains('typegroup.name:Requirements');
-    await planner.workItemList.clickWorkItem(workItemTitle4.title);
+    await planner.createWorkItem(workItemTitle);
+    await planner.workItemList.clickWorkItem(workItemTitle.title);
     await planner.quickPreview.addLabel(c.label);
     await planner.quickPreview.close();
-    await planner.workItemList.clickWorkItemLabel(workItemTitle4.title);
+    await planner.workItemList.clickWorkItemLabel(workItemTitle.title);
     expect(await planner.header.getFilterConditions()).toContain(labelFilter);
     await planner.header.clickShowTree();
     expect(await planner.header.getFilterConditions()).toContain(labelFilter);
