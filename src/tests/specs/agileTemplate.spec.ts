@@ -111,4 +111,17 @@ describe('Agile template tests: ', () => {
     expect(wiTypes[1]).toBe('Defect');
     expect(wiTypes[2]).toBe('Impediment');
   });
+
+  it('by default Closed work item should not show in list', async () => {
+    let newWorkItem = { title: 'Closed work item test', type: 'Theme' };
+    await plannerAgile.createWorkItem(newWorkItem);
+    expect(plannerAgile.workItemList.hasWorkItem(newWorkItem.title)).toBeTruthy();
+    await plannerAgile.workItemList.clickWorkItem(newWorkItem.title);
+    await plannerAgile.quickPreview.changeStateTo('Closed');
+    await plannerAgile.quickPreview.close();
+    await plannerAgile.header.clickShowCompleted();
+    expect(await plannerAgile.workItemList.hasWorkItem(newWorkItem.title)).toBeTruthy();
+    await plannerAgile.header.clickShowCompleted();
+    expect(await plannerAgile.workItemList.hasWorkItem(newWorkItem.title, true)).toBeFalsy();
+  });
 });

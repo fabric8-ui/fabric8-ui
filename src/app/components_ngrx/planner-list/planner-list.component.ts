@@ -162,7 +162,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
           // TODO remove hard coded states and
           // use meta-states when available
           let stateQuery = {};
-          ['closed', 'Done', 'Removed'].forEach(state => {
+          ['closed', 'Done', 'Removed', 'Closed'].forEach(state => {
             stateQuery = this.filterService.queryJoiner(
               stateQuery,
               this.filterService.and_notation,
