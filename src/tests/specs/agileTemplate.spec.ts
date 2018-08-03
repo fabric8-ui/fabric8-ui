@@ -79,8 +79,8 @@ describe('Agile template tests: ', () => {
     // get the workItem types for inline quick add
     let wiTypes = await plannerAgile.inlineQuickAdd.workItemTypes();
     expect(wiTypes.length).toBe(3);
-    expect(wiTypes[0]).toBe('Defect');
-    expect(wiTypes[1]).toBe('Epic');
+    expect(wiTypes[0]).toBe('Epic');
+    expect(wiTypes[1]).toBe('Defect');
     expect(wiTypes[2]).toBe('Impediment');
   });
 
@@ -93,8 +93,8 @@ describe('Agile template tests: ', () => {
     // get the workItem types for inline quick add
     let wiTypes = await plannerAgile.inlineQuickAdd.workItemTypes();
     expect(wiTypes.length).toBe(3);
-    expect(wiTypes[0]).toBe('Defect');
-    expect(wiTypes[1]).toBe('Story');
+    expect(wiTypes[0]).toBe('Story');
+    expect(wiTypes[1]).toBe('Defect');
     expect(wiTypes[2]).toBe('Impediment');
   });
 
