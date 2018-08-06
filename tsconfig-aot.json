@@ -1,50 +1,48 @@
 {
+  "angularCompilerOptions": {
+    "genDir": "build-aot/codegen",
+    "skipTemplateCodegen": true,
+    "strictMetadataEmit": true
+  },
+  "atom": { "rewriteTsconfig": false },
+  "buildOnSave": false,
+  "compileOnSave": false,
   "compilerOptions": {
     "target": "es5",
     "module": "es2015",
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "rootDir": "build/src",
+    "outDir": "build-aot",
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "noEmitHelpers": false, // Planner and demo won't run when true
-    "strictNullChecks": false,
-    "noUnusedLocals": false,
-    "skipLibCheck": true,
-    "noStrictGenericChecks": true,
-    "noImplicitAny": true,
     "allowUnreachableCode": false,
     "declaration": true,
-    "stripInternal": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "inlineSources": true,
-    "baseUrl": ".",
-    "rootDir": ".",
-    "outDir": "dist",
+    "lib": [ "dom", "es6" ],
+    "noEmitHelpers": false, // Planner and demo won't run when true
+    "noImplicitAny": true,
+    "noStrictGenericChecks": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "paths": {
       "@angular/core": ["node_modules/@angular/core"],
       "@angular/common": ["node_modules/@angular/common"],
       "@angular/forms": ["node_modules/@angular/forms"],
-      "rxjs/*": ["node_modules/rxjs/*"],
-      "moment": ["node_modules/moment"]
+      "moment": ["node_modules/moment"],
+      "rxjs/*": ["node_modules/rxjs/*"]
     },
-    "lib": [
-      "es6",
-      "dom"
-    ]
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strictNullChecks": false,
+    "stripInternal": true
   },
-  "files": [
-    "index.ts"
-  ],
   "exclude": [
     "node_modules",
     "dist"
   ],
-  "angularCompilerOptions": {
-    "strictMetadataEmit": true,
-    "skipTemplateCodegen": true,
-    "genDir": "compiled"
-  },
-  "compileOnSave": false,
-  "buildOnSave": false,
-  "atom": { "rewriteTsconfig": false }
+  "files": [
+    "build/src/app/index.ts"
+  ]
 }

@@ -2,7 +2,10 @@
 
 # compiled output
 /dist
+/dist-demo
 /dist-watch
+/build
+/build-aot
 
 # Build generated files
 src/app/**/*.css
