@@ -1,11 +1,11 @@
-import { Component, ViewEncapsulation, ElementRef, Pipe, PipeTransform } from '@angular/core';
+import { Component, ElementRef, Pipe, PipeTransform, ViewEncapsulation } from '@angular/core';
 import {
   DomSanitizer,
   SafeHtml,
-  SafeStyle,
+  SafeResourceUrl,
   SafeScript,
-  SafeUrl,
-  SafeResourceUrl
+  SafeStyle,
+  SafeUrl
 } from '@angular/platform-browser';
 
 const markdownIt = require('markdown-it');
@@ -73,12 +73,13 @@ export class MarkdownExampleComponent {
           let matchEndIndex = regex.lastIndex;
           let matchStartIndex = matchEndIndex - matchLen;
           let replaceStr;
-          if (m[0] === '[]' || m[0] === '[ ]')
+          if (m[0] === '[]' || m[0] === '[ ]') {
             // tslint:disable-next-line:max-line-length
             replaceStr = '<input class="markdown-checkbox" type="checkbox" data-checkbox-index="' + matchIndex + '"></input>';
-          else
+          } else {
             // tslint:disable-next-line:max-line-length
             replaceStr = '<input class="markdown-checkbox" type="checkbox" checked="" data-checkbox-index="' + matchIndex + '"></input>';
+          }
           // tslint:disable-next-line:max-line-length
           text = text.substring(0, matchStartIndex) + replaceStr + text.substring(matchEndIndex, text.length);
         }

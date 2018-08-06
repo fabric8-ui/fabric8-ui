@@ -13,7 +13,7 @@ import { SlideOutPanelComponent } from './slide-out-panel.component';
 describe('Slide out component - ', () => {
   let comp: SlideOutPanelComponent;
   let fixture: ComponentFixture<SlideOutPanelComponent>;
-  let panelState: string = "in";
+  let panelState: string = 'in';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -46,7 +46,7 @@ describe('Slide out component - ', () => {
     expect(icon.length).toBe(1);
   });
 
-  it('should update the drawer when clicked', function () {
+  it('should update the drawer when clicked', function() {
     let result = fixture.debugElement.query(By.css('.detail-close'));
 
     expect(comp.panelState).toBe('in');

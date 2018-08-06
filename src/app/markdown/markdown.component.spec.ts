@@ -7,12 +7,12 @@ import {
   tick
 } from '@angular/core/testing';
 
-import { DebugElement, SimpleChanges, SimpleChange } from '@angular/core';
+import { DebugElement, SimpleChange, SimpleChanges } from '@angular/core';
 import { FormsModule }  from '@angular/forms';
-import { By, DomSanitizer, BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, By, DomSanitizer } from '@angular/platform-browser';
 
-import { MarkdownModule } from './markdown.module';
 import { MarkdownComponent } from './markdown.component';
+import { MarkdownModule } from './markdown.module';
 
 describe('Markdown component - ', () => {
   let comp: MarkdownComponent;

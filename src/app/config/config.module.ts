@@ -10,7 +10,7 @@ export {
   ActionsConfig,
   View,
   ViewsConfig
-}
+};
 
 @NgModule({
   imports: [ ],

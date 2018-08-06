@@ -1,16 +1,16 @@
 import {
+  AfterViewChecked,
+  ChangeDetectorRef,
   Component,
   ElementRef,
-  ViewEncapsulation,
+  EventEmitter,
   Input,
-  Output,
   OnChanges,
   OnInit,
-  ViewChild,
-  EventEmitter,
+  Output,
   SimpleChanges,
-  AfterViewChecked,
-  ChangeDetectorRef
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { Pipe, PipeTransform } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
@@ -147,10 +147,11 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
             let matchEndIndex = regex.lastIndex;
             let matchStartIndex = matchEndIndex - matchLen;
             let replaceStr;
-            if (checked)
+            if (checked) {
               replaceStr = m[0].replace(/\[[ ]*\]/, '[x]');
-            else
+            } else {
               replaceStr = m[0].replace(/\[[xX]+\]/, '[ ]');
+            }
             markdownMarkup =
               markdownMarkup.substring(0, matchStartIndex) +
               replaceStr +
@@ -213,7 +214,7 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
   }
 
   enableEditor() {
-    if (this.rawText === '' ) {
+    if (this.rawText === '') {
       this.activeEditor();
     }
     this.inputsDisabled = true;

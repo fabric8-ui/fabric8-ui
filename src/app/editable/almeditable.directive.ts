@@ -1,13 +1,13 @@
 import {
   AfterContentInit,
   Directive,
-  EventEmitter,
   ElementRef,
+  EventEmitter,
+  HostListener,
   Input,
-  Output,
-  OnInit,
   OnChanges,
-  HostListener
+  OnInit,
+  Output
 } from '@angular/core';
 
 @Directive({

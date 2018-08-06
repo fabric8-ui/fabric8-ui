@@ -6,6 +6,7 @@ import {
   OnInit,
   Output
 } from '@angular/core';
+
 import {
   animate,
   state,
@@ -37,7 +38,7 @@ import { Dialog } from './dialog';
         background: 'rgba(0,0,0,0.4)'
       })),
       transition('inactive <=>active', animate('500ms ease-in'))
-    ]),
+    ])
   ],
   selector: 'alm-dialog',
   styleUrls: ['./dialog.component.less'],

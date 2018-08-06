@@ -11,8 +11,8 @@ import { DebugElement } from '@angular/core';
 import { FormsModule }  from '@angular/forms';
 import { By }           from '@angular/platform-browser';
 
-import { GitHubLinkAreaModule } from './github-link-area.module';
 import { GitHubLinkAreaComponent } from './github-link-area.component';
+import { GitHubLinkAreaModule } from './github-link-area.module';
 
 describe('GitHubLinkArea component - ', () => {
   let comp: GitHubLinkAreaComponent;

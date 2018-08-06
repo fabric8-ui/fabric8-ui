@@ -1,9 +1,9 @@
-import { ArrayCount } from './arrayCount.pipe'
+import { ArrayCount } from './arrayCount.pipe';
 
 interface ITestCase {
-  label: string
-  input: any
-  expect: any
+  label: string;
+  input: any;
+  expect: any;
 }
 
 let testCases: Array<ITestCase> = [
@@ -31,7 +31,7 @@ let testCases: Array<ITestCase> = [
     label: 'Test for an array of 5 items',
     input: [ 'a', 'b', 'c', 'd', 'e' ],
     expect: 5
-  },
+  }
 ];
 
 describe (
@@ -42,18 +42,18 @@ describe (
 
     beforeEach (
       () => {
-        pipe = new ArrayCount ()
+        pipe = new ArrayCount ();
       }
     );
 
-    for ( let testCase of testCases ) {
+    for (let testCase of testCases) {
       it (
         testCase.label,
         () => {
-          let result = pipe.transform ( testCase.input );
-          expect ( result ).toEqual ( testCase.expect )
+          let result = pipe.transform (testCase.input);
+          expect (result).toEqual (testCase.expect);
         }
-      )
+      );
     }
   }
 );

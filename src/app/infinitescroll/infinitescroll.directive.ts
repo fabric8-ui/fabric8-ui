@@ -1,12 +1,12 @@
 import {
-  Directive, 
-  EventEmitter, 
-  ElementRef, 
-  Input, 
-  Output,
-  OnInit,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
   OnChanges,
-  HostListener
+  OnInit,
+  Output
 } from '@angular/core';
 
 @Directive({
@@ -42,7 +42,7 @@ export class InfiniteScrollDirective implements OnInit {
     });
   }
 
-  @HostListener('scroll', ['$event']) 
+  @HostListener('scroll', ['$event'])
   onScrollContainer(event: any) {
     if (this.element.scrollHeight > this.lastCheckedHeight) {
       this.previousScrollHeight = this.element.scrollHeight;

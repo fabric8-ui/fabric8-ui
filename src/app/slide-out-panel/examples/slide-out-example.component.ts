@@ -23,14 +23,14 @@ export class SlideOutExampleComponent implements OnInit {
   ngOnInit(): void {
     this.itemName = 'test item';
     this.itemIcon = 'fa-calendar';
-    this.panelState = "in";
+    this.panelState = 'in';
   }
 
   togglePanel(): void {
-    if(this.panelState === "in") {
-      this.panelState = "out";
+    if (this.panelState === 'in') {
+      this.panelState = 'out';
     } else {
-      this.panelState = "in";
+      this.panelState = 'in';
     }
   }
 

@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 
-import { GitHubLinkService } from './github-link.service';
 import { GitHubLinkAreaComponent } from './github-link-area.component';
+import { GitHubLinkService } from './github-link.service';
 
 /**
  * A module containing objects associated with the GitHubLinkArea component

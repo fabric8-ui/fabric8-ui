@@ -6,8 +6,9 @@ export class AlmSearchHighlight implements PipeTransform {
     if (search != '' && search.length) {
       let lowerVal = val.toLowerCase();
       search = search.toLowerCase();
-      if (!lowerVal) return '';
-      else return this.convertToOriginal(lowerVal.split(search).join('<b>' + search + '</b>'), val);
+      if (!lowerVal) {
+        return '';
+      } else { return this.convertToOriginal(lowerVal.split(search).join('<b>' + search + '</b>'), val); }
     } else {
       return val;
     }

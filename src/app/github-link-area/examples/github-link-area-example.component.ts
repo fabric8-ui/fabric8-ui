@@ -34,7 +34,7 @@ export class GitHubLinkAreaExampleComponent implements OnInit {
     And for testing purposes, the same link as the first as a dupe:
     <a href="https://github.com/patternfly/patternfly-ng/issues/127" rel="nofollow">
     https://github.com/patternfly/patternfly-ng/issues/127</a>.
-    Note: the link html formatting is following the currently used OSIO server 
+    Note: the link html formatting is following the currently used OSIO server
     side link markdown formatting. It may need changes
     if used with a different markdown compiler`;
 
@@ -43,7 +43,7 @@ export class GitHubLinkAreaExampleComponent implements OnInit {
   ngOnInit(): void {}
 
   inputEvent(event: any) {
-    console.log('Input Event detected on input type: ' + event.type + 
+    console.log('Input Event detected on input type: ' + event.type +
       ' with index ' + event.extraData);
   }
 }

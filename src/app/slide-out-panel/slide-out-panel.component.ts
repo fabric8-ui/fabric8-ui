@@ -1,4 +1,11 @@
 import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger
+} from '@angular/animations';
+import {
   AfterViewInit,
   Component,
   EventEmitter,
@@ -6,13 +13,6 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
 
 
 @Component({
@@ -28,7 +28,7 @@ import {
       })),
       transition('in => out', animate('300ms ease-in-out')),
       transition('out => in', animate('500ms ease-in-out'))
-    ]),
+    ])
   ],
   templateUrl: './slide-out-panel.component.html'
 })
@@ -49,7 +49,7 @@ export class SlideOutPanelComponent implements OnInit, AfterViewInit {
   }
 
   closeDetails(): void {
-    this.panelState = "out";
+    this.panelState = 'out';
     this.panelStateChange.emit(this.panelState);
   }
 }

@@ -1,4 +1,9 @@
-import { Component, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 
 /**
  * Container-toggler

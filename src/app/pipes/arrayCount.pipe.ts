@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core'
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe (
   {
@@ -9,12 +9,12 @@ import { Pipe, PipeTransform } from '@angular/core'
 
 export class ArrayCount implements PipeTransform {
 
-  transform( objArray: Array<any> ) {
+  transform(objArray: Array<any>) {
 
-    if ( false === objArray instanceof Array ) {
-      return null
+    if (false === objArray instanceof Array) {
+      return null;
     }
 
-    return objArray.length
+    return objArray.length;
   }
 }

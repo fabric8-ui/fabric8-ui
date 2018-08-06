@@ -1,12 +1,10 @@
 import { NgModule }  from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { GitHubLinkAreaExampleComponent } from './github-link-area/examples/github-link-area-example.component';
 import { HomeComponent } from './home/home.component';
 import { MarkdownExampleComponent } from './markdown/examples/markdown-example.component';
 import { SlideOutExampleComponent } from './slide-out-panel/examples/slide-out-example.component';
-import {
-  GitHubLinkAreaExampleComponent
-} from './github-link-area/examples/github-link-area-example.component';
 
 const routes: Routes = [{
     path: '',

@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpModule, Http } from '@angular/http';
+import { NgModule } from '@angular/core';
+import { Http, HttpModule } from '@angular/http';
 
-import { HomeComponent } from './home.component';
 import { HomeRoutingModule } from './home-routing.module';
+import { HomeComponent } from './home.component';
 
 @NgModule({
   imports:      [ CommonModule, HomeRoutingModule, HttpModule ],
