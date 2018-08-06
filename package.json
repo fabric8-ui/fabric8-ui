@@ -106,7 +106,7 @@
     "@ngtools/webpack": "6.1.2",
     "@types/core-js": "2.5.0",
     "@types/jasmine": "2.8.8",
-    "@types/lodash": "4.14.115",
+    "@types/lodash": "4.14.116",
     "angular2-load-children-loader": "0.2.1",
     "angular2-router-loader": "0.3.5",
     "angular2-template-loader": "0.6.2",
