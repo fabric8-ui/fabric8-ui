@@ -82,19 +82,11 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
     const type_query = this.filterService.queryBuilder(
       'typegroup.name', this.filterService.equal_notation, witGroup.name
     );
-    //Query for space
-    const space_query = this.filterService.queryBuilder(
-      'space', this.filterService.equal_notation, this.spaceId
-    );
-    //Join type and space query
     const first_join = this.filterService.queryJoiner(
-      {}, this.filterService.and_notation, space_query
-    );
-    const second_join = this.filterService.queryJoiner(
-      first_join, this.filterService.and_notation, type_query
+      {}, this.filterService.and_notation, type_query
     );
     //second_join gives json object
-    return this.filterService.jsonToQuery(second_join);
+    return this.filterService.jsonToQuery(first_join);
     //reverse function jsonToQuery(second_join);
   }
 

@@ -184,13 +184,9 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
           this.showTree = false;
           exp['$OPTS'] = {'tree-view': false};
         }
-
-        Object.assign(payload, {
-          expression: exp
-        });
         this.store.dispatch(new WorkItemActions.Get({
           pageSize: 200,
-          filters: payload,
+          filters: exp,
           isShowTree: this.showTree
         }));
       })
@@ -291,15 +287,13 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
               const defaultGroupName = groupType.name;
               //Query for work item type group
               const type_query = this.filterService.queryBuilder('typegroup.name', this.filterService.equal_notation, defaultGroupName);
-              //Query for space
-              const space_query = this.filterService.queryBuilder('space', this.filterService.equal_notation, spaceId);
               //Join type and space query
-              const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, space_query);
-              const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, type_query);
+              const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, type_query);
               //const view_query = this.filterService.queryBuilder('tree-view', this.filterService.equal_notation, 'true');
               //const third_join = this.filterService.queryJoiner(second_join);
               //second_join gives json object
-              let query = this.filterService.jsonToQuery(second_join);
+              let query = this.filterService.jsonToQuery(first_join);
+              console.log('query is ', query);
               // { queryParams : {q: query}
               this.router.navigate([], {
                 relativeTo: this.route,
