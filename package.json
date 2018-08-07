@@ -10,6 +10,7 @@
     "build:aot": "npm run rimraf -- build build-aot && gulp build-aot",
     "build:bundle": "npm-run-all --serial build:library",
     "build:demo": "npm-run-all --serial 'rimraf -- dist-demo' demo:copy-examples demo:webpack",
+    "build:library": "npm run rimraf -- build dist dist-watch src/**/*.css && gulp build",
     "clean": "npm cache clear --force && npm run rimraf -- package-lock.json node_modules doc coverage dist distwatch bundles",
     "lint:less": "stylelint 'src/**/*.less' --config .stylelintrc",
     "lint:less:fix": "npm run lint:less -- --fix",
