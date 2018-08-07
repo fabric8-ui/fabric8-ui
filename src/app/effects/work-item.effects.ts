@@ -142,7 +142,13 @@ export class WorkItemEffects {
     .switchMap(wp => {
       const payload = wp.payload;
       const state = wp.state;
-      return this.workItemService.getWorkItems2(payload.pageSize, payload.filters)
+      const spaceQuery = this.filterService.queryBuilder(
+        'space', this.filterService.equal_notation, state.space.id
+      );
+      const finalQuery = this.filterService.queryJoiner(
+        payload.filters, this.filterService.and_notation, spaceQuery
+      );
+      return this.workItemService.getWorkItems2(payload.pageSize, {expression: finalQuery})
         .map((data: any) => {
           let wis = [];
           if (payload.isShowTree) {
