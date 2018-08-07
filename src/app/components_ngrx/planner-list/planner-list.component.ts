@@ -245,71 +245,18 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   // Start: Settings(tableConfig) dropdown
-
-  toggleCheckbox(event, col) {
-    if (event.target.checked) {
-      col.selected = true;
-    } else {
-      col.selected = false;
-    }
-  }
-
-  moveToDisplay() {
-    this.columns.filter(col => col.selected).forEach(col => {
-      if (col.display === true) { return; }
-      col.selected = false;
-      col.display = true;
-      col.showInDisplay = true;
-      col.available = false;
-    });
-    this.updateColumnIndex();
+  moveToDisplay(columns) {
+    this.columns = [...columns];
     this.cookieService.setCookie('datatableColumn', this.columns);
     setTimeout(() => {
       this.workItems = [...this.workItems];
     }, 500);
   }
 
-  moveToAvailable() {
-    this.columns.filter(col => col.selected).forEach(col => {
-      if (col.available === true) { return; }
-      col.selected = false;
-      col.display = false;
-      col.showInDisplay = false;
-      col.available = true;
-    });
-    this.updateColumnIndex();
-    this.cookieService.setCookie('datatableColumn', this.columns);
+  moveToAvailable(columns) {
+    this.cookieService.setCookie('datatableColumn', columns);
+    this.columns = [...columns];
   }
-
-  updateColumnIndex() {
-    let index = 0;
-    this.columns.forEach(col => {
-      if (col.display === true) {
-        col.index = index + 1;
-        index += 1;
-      } else {
-        col.index = undefined;
-      }
-    });
-    this.columns = sortBy(this.columns, 'index');
-  }
-
-  tableConfigChange(value: boolean) {
-    this.isTableConfigOpen = value;
-  }
-
-  tableConfigToggle(event: MouseEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.isTableConfigOpen = false;
-  }
-
-  clickOut() {
-    if (this.isTableConfigOpen) {
-      this.isTableConfigOpen = false;
-    }
-  }
-
   // End:  Setting(tableConfig) Dropdown
 
   togglePanelState(event) {

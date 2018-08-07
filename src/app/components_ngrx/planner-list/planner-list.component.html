@@ -56,61 +56,10 @@
 
   <!-- tableConfig Dropdown -->
   <div class="width-100 pull-left padding-10 posRel" #quickaddWrapper>
-    <div class="f8-wi-list__settings f8-wi__table-config">
-      <div (clickOut)="clickOut()" class="dropdown-kebab-pf pull-right dropdown margin-left-10"
-        dropdown
-        [autoClose]="false"
-        [isOpen]="isTableConfigOpen"
-        (isOpenChange)="tableConfigChange($event)">
-        <button class="btn btn-link dropdown-toggle"
-          type="button" dropdownToggle>
-          <span class="fa fa-cog"
-            placement="bottom"
-            tooltip="Open Config"></span>
-        </button>
-        <div class="dropdown-menu-right dropdown-menu f8-wi-list__settings-dropdown" *dropdownMenu>
-          <aside>
-            <i class="db text-right fa fa-close btn btn-link" (click)="tableConfigToggle($event)"></i>
-          </aside>
-          <aside>
-            <small>Displayed Attributes</small>
-            <ul class="f8-wi-list__settings-column">
-              <li *ngFor='let col of (columns | filterColumn: "showInDisplay")'>
-                <input
-                  type='checkbox'
-                  [id]="col.name"
-                  (change)='toggleCheckbox($event, col)'/>
-                <label [attr.for]="col.name">{{ col.name }}</label>
-              </li>
-            </ul>
-          </aside>
-          <aside>
-            <span class="db fa fa-angle-right"
-              tooltip="Move to Displayed Attributes"
-              (click)="moveToDisplay()">
-            </span>
-            <span class="db fa fa-angle-left"
-              tooltip="Move to Available Attributes"
-              (click)="moveToAvailable()">
-            </span>
-          </aside>
-          <aside>
-            <small>Available Attributes</small>
-            <ul class="f8-wi-list__settings-column">
-              <li *ngFor='let col of (columns | filterColumn: "available")'>
-                <input
-                  type='checkbox'
-                  [id]="col.name"
-                  (change)='toggleCheckbox($event, col)'/>
-                <label [attr.for]="col.name">
-                  {{ col.name }}
-                </label>
-              </li>
-            </ul>
-          </aside>
-        </div>
-      </div>
-    </div>
+    <table-config
+      [columns]="columns"
+      (onMovetoDisplay)="moveToDisplay($event)"
+      (onMovetoAvailable)="moveToAvailable($event)"></table-config>
     <div class="f8-wi-list__quick-add padding-right-10 margin-right-10"
       id="workItemList_up_quickAdd"
       *ngIf="loggedIn && !!quickAddWorkItemTypes.length">
@@ -268,7 +217,6 @@
                   <work-item-cell
                     [row]="row"
                     [col]="c.prop"
-                    (onDetailPreview)="onDetailPreview($event)"
                     (onQuickPreview)="onPreview($event)"
                     [class.f8-wi__table-config]="c.prop === 'label' || c.prop === 'assignees'"
                     [class.planner-hack-title-truncate]="c.prop === 'title'">

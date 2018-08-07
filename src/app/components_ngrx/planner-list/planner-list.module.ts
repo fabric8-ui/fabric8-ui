@@ -5,9 +5,7 @@ import {
   XHRBackend
 } from '@angular/http';
 import { NgxDatatableModule } from 'rh-ngx-datatable';
-import { AssigneesModule } from './../assignee/assignee.module';
-import { LabelsModule } from './../labels/labels.module';
-import { WorkItemCellComponent } from './../work-item-cell/work-item-cell.component';
+import { WorkItemCellModule } from './../work-item-cell/work-item-cell.module';
 import { WorkItemPreviewPanelModule } from './../work-item-preview-panel/work-item-preview-panel.module';
 
 import { AuthenticationService } from 'ngx-login-client';
@@ -17,7 +15,6 @@ import { PlannerListComponent } from './planner-list.component';
 import { TruncateModule } from 'ng2-truncate';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { FilterColumn } from '../../pipes/column-filter.pipe';
 import { factoryForHttpService, HttpService } from '../../services/http-service';
 import { PlannerModalModule } from '../../widgets/modal/modal.module';
 import { AreaService } from './../../services/area.service';
@@ -56,7 +53,8 @@ import { SpaceQuery } from './../../models/space';
 import { UserQuery } from './../../models/user';
 import { WorkItemQuery } from './../../models/work-item';
 
-import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module';
+import { FilterColumnModule } from '../../pipes/column-filter.module';
+import { TableConfigModule } from './../table-config/table-config.module';
 
 let providers = [
     WorkItemService,
@@ -93,14 +91,13 @@ let providers = [
 @NgModule({
   imports: [
     AlmIconModule,
-    AssigneesModule,
     CommonModule,
     ClickOutModule,
+    FilterColumnModule,
     PlannerListRoutingModule,
     PlannerLayoutModule,
     PlannerModalModule,
     EmptyStateModule,
-    LabelsModule,
     ToolbarPanelModule,
     TooltipModule.forRoot(),
     SidepanelModule,
@@ -109,13 +106,12 @@ let providers = [
     NgxDatatableModule,
     WorkItemPreviewPanelModule,
     WidgetsModule,
+    TableConfigModule,
     TruncateModule,
-    UserAvatarModule
+    WorkItemCellModule
   ],
   declarations: [
-    PlannerListComponent,
-    WorkItemCellComponent,
-    FilterColumn
+    PlannerListComponent
   ],
   providers: providers,
   exports: [ PlannerListComponent ]
