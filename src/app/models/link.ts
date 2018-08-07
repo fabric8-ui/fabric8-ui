@@ -1,10 +1,15 @@
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { AppState } from '../states/app.state';
 import {
   Mapper,
   MapTree,
   switchModel
 } from './common.model';
 import { LinkType, LinkTypeService } from './link-type';
-import { WorkItemMapper, WorkItemUI } from './work-item';
+import { workItemDetailSelector, WorkItemMapper, WorkItemUI } from './work-item';
 
 export class Link {
   id?: string;
@@ -200,5 +205,20 @@ export class WorkItemLinkMapper implements Mapper<WorkItemLinkService, WorkItemL
     return switchModel<WorkItemLinkUI, WorkItemLinkService> (
       arg, this.uiToServiceMapTree
     );
+  }
+}
+
+@Injectable()
+export class WorkItemLinkQuery {
+  constructor(private store: Store<AppState>) {}
+
+  get getWorkItemLinks() {
+    return this.store.select(workItemDetailSelector)
+      .select(state => state.workItemLink);
+  }
+
+  get getWorkItemLinksCount() {
+    return this.getWorkItemLinks
+      .map(links => Array.isArray(links) ? links.length : -1);
   }
 }

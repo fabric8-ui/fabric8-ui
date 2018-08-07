@@ -61,4 +61,13 @@ export class WorkItemLinkTypeQuery {
       .select(state => state.linkType)
       .filter(lt => !!lt.length);
   }
+
+  get getLinkTypesForDropdown() {
+    return this.getLinkTypes
+    .map(types => {
+      // The common-dropdown component needs the data in a specific format
+      // Each item should have `key` and `value` property
+      return types.map(t => {return {...t, value: t.name, key: t.name}; });
+    });
+  }
 }
