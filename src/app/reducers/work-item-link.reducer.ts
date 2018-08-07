@@ -35,6 +35,10 @@ export const WorkItemLinkReducer: ActionReducer<WorkItemLinkState> =
         return state;
       }
 
+      case WorkItemLinkActions.RESET_LINKS: {
+        return null;
+      }
+
       default: {
         return state;
       }
