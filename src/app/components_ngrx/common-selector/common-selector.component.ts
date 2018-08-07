@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -14,7 +15,8 @@ import {
 @Component({
   selector: 'common-selector',
   templateUrl: './common-selector.component.html',
-  styleUrls: ['./common-selector.component.less']
+  styleUrls: ['./common-selector.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommonSelectorComponent {
 
@@ -88,8 +90,8 @@ export class CommonSelectorComponent {
         this.menuItems[index].selected = false;
       }
     });
-    this.backup.forEach((assignee, index) => {
-      if (this.selectedItems.find(a => assignee.key === a.key)) {
+    this.backup.forEach((item, index) => {
+      if (this.selectedItems.find(a => item.key === a.key)) {
         this.backup[index].selected = true;
       } else {
         this.backup[index].selected = false;

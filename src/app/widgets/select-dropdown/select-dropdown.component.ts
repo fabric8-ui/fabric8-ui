@@ -1,20 +1,20 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
   OnInit,
   Output,
   TemplateRef,
-  ViewChild,
-  ViewEncapsulation
+  ViewChild
 } from '@angular/core';
 
 @Component({
   selector: 'f8-select-dropdown',
   templateUrl: './select-dropdown.component.html',
-  styleUrls: ['./select-dropdown.component.less']
+  styleUrls: ['./select-dropdown.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectDropdownComponent implements OnInit {
   @Input() headerText: string = 'This is default header';

@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule }  from '@angular/core';
-import { AlmEditableModule } from 'ngx-widgets';
 import { ClickOutModule } from '../clickout/clickout.module';
 import { SelectDropdownComponent } from './select-dropdown.component';
 
