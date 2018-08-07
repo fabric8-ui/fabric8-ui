@@ -33,6 +33,10 @@ RUN yum install -y bzip2 git fontconfig \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
   && yum clean all
 
+COPY config/google-chrome.repo /etc/yum.repos.d/google-chrome.repo
+
+RUN yum install -y google-chrome-stable
+
 ENV FABRIC8_USER_NAME=fabric8
 
 RUN useradd --user-group --create-home --shell /bin/false ${FABRIC8_USER_NAME}
