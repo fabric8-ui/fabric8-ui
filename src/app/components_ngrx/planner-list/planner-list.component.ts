@@ -453,8 +453,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     });
   }
 
-  onPreview(id: string): void {
-    const workItem = this.workItems.find(w => w.id === id);
+  onPreview(workItem: WorkItemUI): void {
     this.quickPreview.open(workItem);
   }
 

@@ -5,6 +5,7 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+import { WorkItem, WorkItemUI } from '../../models/work-item';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -18,6 +19,7 @@ export class WorkItemCellComponent {
     }
     @Input() col: string;
     @Input() row: object;
+    @Input() context: string = 'list';
     @Output() readonly onDetailPreview = new EventEmitter();
     @Output() readonly onQuickPreview = new EventEmitter();
     @Output() readonly clickLabel = new EventEmitter();
@@ -30,7 +32,7 @@ export class WorkItemCellComponent {
       this.clickLabel.emit(event);
     }
 
-    onPreview(Event: MouseEvent, id: string) {
-      this.onQuickPreview.emit(id);
+    onPreview(Event: MouseEvent, workItem: WorkItemUI) {
+      this.onQuickPreview.emit(workItem);
     }
 }

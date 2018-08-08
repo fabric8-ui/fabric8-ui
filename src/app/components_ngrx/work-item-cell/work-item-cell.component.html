@@ -21,13 +21,13 @@
     <p class="truncate pointer margin-0"
       [class.bold]="row.bold"
       [innerHTML]="row.title"
-      (click)="onPreview($event, row['id'])"></p>
+      (click)="onPreview($event, row)"></p>
   </div>
   <div class="dib text-right wi-detail-icon">
     <a class="fa fa-list-alt padding-v-5 pointer"
       placement="right"
       tooltip="Open Detail View"
-      [routerLink]="['detail', row.number]"></a>
+      [routerLink]="context === 'list' ? ['detail', row.number] : ['../', 'detail', row.number]"></a>
   </div>
 </div>
 <!-- Status -->

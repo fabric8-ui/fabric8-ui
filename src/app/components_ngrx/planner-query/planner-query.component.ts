@@ -50,6 +50,7 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
       info: 'There are no Work Items for your selected criteria',
       title: 'No Work Items Available'
     } as EmptyStateConfig;
+    this.store.dispatch(new WorkItemActions.ResetWorkItems());
     this.eventListeners.push(
       this.spaceQuery.getCurrentSpace
       .do(() => {
@@ -61,25 +62,11 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   }
 
   ngOnDestroy() {
+    this.store.dispatch(new WorkItemActions.ResetWorkItems());
     this.eventListeners.forEach(e => e.unsubscribe());
   }
 
   checkURL() {
-  // this.eventListeners.push(
-  //   this.router.events
-  //     .filter(event => event instanceof NavigationStart)
-  //     .map((e: NavigationStart) => e.url)
-  //     .subscribe(url => {
-  //       if (url.indexOf('?q') > -1 &&
-  //         url.indexOf('/plan/query') > -1) {
-  //           console.log('#### - 0 url', url);
-  //           if (this.searchQuery === '') {
-  //             console.log('#### - 1 url', url);
-  //           }
-  //       }
-  //     })
-  // );
-
   this.eventListeners.push(
     this.route.queryParams
       .filter(params => params.hasOwnProperty('q'))
@@ -99,9 +86,9 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   );
 }
 
-  onPreview(id: string): void {
-    // const workItem = this.workItems.find(w => w.id === id);
-    // this.quickPreview.open(workItem);
+  onPreview(workItem: WorkItemUI): void {
+    console.log(workItem);
+    this.quickPreview.open(workItem);
   }
 
   setDataTableColumns() {
