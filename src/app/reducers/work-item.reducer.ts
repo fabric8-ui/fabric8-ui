@@ -84,6 +84,10 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
       return {...state};
     }
 
+    case WorkItemActions.RESET_WORKITEMS: {
+      return workItemAdapter.removeAll(state);
+    }
+
     default: {
       return state;
     }
