@@ -1,5 +1,5 @@
 
-<div class="container-fluid row f8-wi-container" #containerHeight>
+<div class="container-fluid row f8-wi-container " #containerHeight>
 	<div class="lock-overlay-list"
 		*ngIf="uiLockedAll">
 		<div class="spinner-container">
@@ -12,11 +12,17 @@
 <work-item-preview-panel #quickPreview >
 </work-item-preview-panel>
 
-<div #querySearch>
-<input #query style="width: 100%"
-	 (keyup.enter)="fetchWorkItemForQuery(query.value)"
-	 [(ngModel)]="searchQuery"
-		placeholder="Press Enter to Search...">
+<div #querySearch class="f8-query__input-wrapper">
+	<span
+		*ngIf="searchQuery !== ''"
+		class="pficon-close close f8-query__clear-button"
+		(click)="searchQuery='';"
+		></span>
+	<input #query class="f8-query__input"
+		(keyup.enter)="fetchWorkItemForQuery(query.value)"
+		[(ngModel)]="searchQuery"
+			placeholder="Enter your Query...">
+	<span class="f8-query__input-hint">Press Enter to Search....</span>
 	</div>
 <div class="f8-wi-list">
 	<div class="f8-wi-list-wrap"
@@ -48,6 +54,7 @@
 					<work-item-cell
 						[row]="row"
 						[col]="c.prop"
+						[context]="'query'"
 						(onQuickPreview)="onPreview($event)"
 						[class.f8-wi__table-config]="c.prop === 'label' || c.prop === 'assignees'"
 						[class.planner-hack-title-truncate]="c.prop === 'title'">
