@@ -24,7 +24,8 @@
 
 import {
   Directive, EmbeddedViewRef,
-  Input, TemplateRef,
+  Input, NgModule,
+  TemplateRef,
   ViewContainerRef
 } from '@angular/core';
 
@@ -63,3 +64,11 @@ export class NgLetContext {
   public $implicit: any = null;
   public ngLet: any = null;
 }
+
+
+@NgModule({
+  declarations: [NgLetDirective],
+  exports: [NgLetDirective]
+})
+
+export class NgLetModule {}
