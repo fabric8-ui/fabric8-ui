@@ -4,7 +4,9 @@ import {
   Output, ViewChild
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { SelectDropdownComponent } from './../../widgets/select-dropdown/select-dropdown.component';
+import {
+  SelectDropdownComponent
+} from './../../widgets/select-dropdown/select-dropdown.component';
 
 export type TypeaheadDropdownItem = {
   key: string;
@@ -120,7 +122,7 @@ export class TypeaheadSelectorComponent implements OnInit {
   }
 
   onOpen(event) {
-
+    this.onOpenSelector.emit();
   }
 
   onClose(event) {
