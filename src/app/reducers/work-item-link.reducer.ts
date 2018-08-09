@@ -20,7 +20,7 @@ export const WorkItemLinkReducer: ActionReducer<WorkItemLinkState> =
       }
 
       case WorkItemLinkActions.ADD_ERROR: {
-        return state;
+        return [...state];
       }
 
       case WorkItemLinkActions.DELETE_SUCCESS: {
@@ -32,7 +32,7 @@ export const WorkItemLinkReducer: ActionReducer<WorkItemLinkState> =
       }
 
       case WorkItemLinkActions.DELETE_ERROR: {
-        return state;
+        return [...state];
       }
 
       case WorkItemLinkActions.RESET_LINKS: {
