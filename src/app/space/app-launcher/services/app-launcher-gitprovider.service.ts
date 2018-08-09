@@ -151,21 +151,16 @@ export class AppLauncherGitproviderService implements GitProviderService {
     } else {
       url = this.END_POINT + this.API_BASE + 'repositories/?organization=' + org;
     }
-    let res = this.options.flatMap((option) => {
+    return this.options.flatMap((option) => {
       return this.http.get(url, option)
         .map(response => {
-            let repoList: string[] =  response.json();
-            if (repoList.indexOf(fullName) === -1) {
-              return false;
-            } else {
-              return true;
-            }
-          })
+          let repoList: string[] = response.json();
+          return repoList.indexOf(fullName) !== -1;
+        })
         .catch(error => {
           return Observable.throw(error);
         });
-      });
-    return res;
+    });
   }
 
   /**
