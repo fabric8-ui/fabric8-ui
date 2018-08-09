@@ -17,7 +17,8 @@
       <input (keyup)="searchItem(searchInput.value)"
         #searchInput
         class="select-dropdown-search-input" />
-      <span class="fa fa-search search-icon"></span>
+      <span *ngIf="!loading" class="fa fa-search in-input-icon"></span>
+      <span *ngIf="loading" class="spinner spinner-sm in-input-icon"></span>
     </div>
     <ul class="select-dropdown-menu">
       <li

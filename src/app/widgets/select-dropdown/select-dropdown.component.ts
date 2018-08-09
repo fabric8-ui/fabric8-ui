@@ -24,6 +24,7 @@ export class SelectDropdownComponent implements OnInit {
   @Input() menuItems: any[] = [];
   @Input() showSearch: boolean = false;
   @Input() disabled: boolean = false;
+  @Input() loading: boolean = false;
 
   @Output() readonly onSelect: EventEmitter<any> = new EventEmitter();
   @Output() readonly onSearch: EventEmitter<any> = new EventEmitter();

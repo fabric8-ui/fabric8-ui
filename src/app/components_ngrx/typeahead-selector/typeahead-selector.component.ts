@@ -61,6 +61,7 @@ export class TypeaheadSelectorComponent implements OnInit {
   private selectedItems: TypeaheadDropdownItem[] = [];
 
   private searchValue: string = '';
+  searching: boolean = false;
 
   private menuItems: Observable<TypeaheadDropdownItem[]> =
     this.searchTermObs.asObservable()
@@ -72,7 +73,8 @@ export class TypeaheadSelectorComponent implements OnInit {
             this.dataSource(term),
             this.selectedItemsObs
           )
-          .map(([items, selectedItems]) => this.updateSelection(items, selectedItems));
+          .map(([items, selectedItems]) => this.updateSelection(items, selectedItems))
+          .do(v => this.searching = false);
       } else {
         return Observable.of([]);
       }
@@ -116,6 +118,7 @@ export class TypeaheadSelectorComponent implements OnInit {
     // Search on atleast 3 char or numeric
     if (event.trim().length >= 3 || !isNaN(parseInt(event.trim()))) {
       this.searchTermObs.next(event.trim());
+      this.searching = true;
     } else {
       this.searchTermObs.next('');
     }
