@@ -370,18 +370,11 @@ export class WorkItemService {
       .map(response => {});
   }
 
-  searchLinkWorkItem(term: string): Observable<WorkItem[]> {
-    if (this._currentSpace) {
-      // FIXME: make the URL great again (when we know the right API URL for this)!
-      // search within selected space
-      let searchUrl = this.baseApiUrl + 'search?spaceID=' + this._currentSpace.id + '&q=' + term;
-      //let searchUrl = currentSpace.links.self + 'search?q=' + term;
-      return this.http
-          .get(searchUrl)
-          .map((response) => response.json().data as WorkItem[]);
-    } else {
-      return Observable.of<WorkItem[]>([] as WorkItem[]);
-    }
+  searchLinkWorkItem(term: string, spaceId: string): Observable<WorkItem[]> {
+    let searchUrl = this.baseApiUrl + 'search?spaceID=' + spaceId + '&q=' + term;
+    return this.http
+        .get(searchUrl)
+        .map((response) => response.json().data as WorkItem[]);
   }
 
   /**
