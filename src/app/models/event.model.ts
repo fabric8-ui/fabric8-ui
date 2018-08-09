@@ -23,8 +23,8 @@ export class Event extends modelService {
 
 export class EventAttributes {
   name: string;
-  newValue: string | null;
-  oldValue: string | null;
+  newValue?: string | null;
+  oldValue?: string | null;
   timestamp: string;
 }
 
