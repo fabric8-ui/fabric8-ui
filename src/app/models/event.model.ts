@@ -23,8 +23,8 @@ export class Event extends modelService {
 
 export class EventAttributes {
   name: string;
-  newValue?: string | null;
-  oldValue?: string | null;
+  newValue?: string | null | any[];
+  oldValue?: string | null | any[];
   timestamp: string;
 }
 
@@ -70,10 +70,32 @@ export class EventMapper implements Mapper<EventService, EventUI> {
     toPath: ['name']
   }, {
     fromPath: ['attributes', 'newValue'],
-    toPath: ['newValue']
+    toPath: ['newValue'],
+    toFunction: (newValue) => {
+      if (newValue !== null) {
+        if (Array.isArray(newValue)) {
+          return newValue.join(', ');
+        } else {
+          return newValue;
+        }
+      } else {
+        return newValue;
+      }
+    }
   }, {
     fromPath: ['attributes', 'oldValue'],
-    toPath: ['oldValue']
+    toPath: ['oldValue'],
+    toFunction: (oldValue) => {
+      if (oldValue !== null) {
+        if (Array.isArray(oldValue)) {
+          return oldValue.join(', ');
+        } else {
+          return oldValue;
+        }
+      } else {
+        return oldValue;
+      }
+    }
   }, {
     fromPath: ['attributes', 'timestamp'],
     toPath: ['timestamp']
