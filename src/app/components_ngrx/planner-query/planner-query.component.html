@@ -16,10 +16,12 @@
 	<span
 		*ngIf="searchQuery !== ''"
 		class="pficon-close close f8-query__clear-button"
+		tooltip="Press ctrl+backspace to clear"
+		placement="left"
 		(click)="searchQuery='';"
 		></span>
 	<input #query class="f8-query__input"
-		(keyup.enter)="fetchWorkItemForQuery(query.value)"
+		(keydown)="fetchWorkItemForQuery($event, query.value)"
 		[(ngModel)]="searchQuery"
 			placeholder="Enter your Query...">
 	<span class="f8-query__input-hint">Press Enter to Search....</span>

@@ -128,12 +128,17 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   }
   // End:  Setting(tableConfig) Dropdown
 
-  fetchWorkItemForQuery(query) {
+  fetchWorkItemForQuery(event: KeyboardEvent, query: string) {
     console.log(query);
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { q : query}
-    });
+    let keycode = event.keyCode ? event.keyCode : event.which;
+    if (keycode === 13 && query !== '') {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { q : query}
+      });
+    } else if (keycode === 8 && (event.ctrlKey || event.metaKey)) {
+      this.searchQuery = '';
+    }
   }
 
   ngAfterViewChecked() {

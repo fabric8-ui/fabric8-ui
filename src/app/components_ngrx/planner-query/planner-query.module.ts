@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap';
 import { EmptyStateModule } from 'patternfly-ng/empty-state';
 import { NgxDatatableModule } from 'rh-ngx-datatable';
 import { SpaceQuery } from '../../models/space';
@@ -26,6 +27,7 @@ import { togglesApiUrlProvider } from '../../shared/toggles-api.provider';
     InlineInputModule,
     PlannerQueryRoutingModule,
     NgxDatatableModule,
+    TooltipModule,
     WorkItemCellModule,
     WorkItemPreviewPanelModule
   ],
@@ -35,7 +37,8 @@ import { togglesApiUrlProvider } from '../../shared/toggles-api.provider';
     SpaceQuery,
     CookieService,
     WorkItemQuery,
-    FilterService
+    FilterService,
+    TooltipConfig
   ]
 })
 export class PlannerQueryModule { }
