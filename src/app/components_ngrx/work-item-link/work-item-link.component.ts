@@ -113,14 +113,19 @@ export class WorkItemLinkComponent implements OnInit, OnDestroy {
 
   createLink(event: Event) {
     event.stopPropagation();
-    this.lockCreation = true;
-    let linkPayload = this.createLinkObject(
-      this.workItem.id,
-      this.selectedWorkItem.key,
-      this.selectedLinkType.id,
-      this.selectedLinkType.linkType
-    );
-    this.store.dispatch(new WorkItemLinkActions.Add(linkPayload));
+    if (
+      this.selectedLinkType &&
+      this.selectedWorkItem &&
+      !this.lockCreation) {
+      this.lockCreation = true;
+      let linkPayload = this.createLinkObject(
+        this.workItem.id,
+        this.selectedWorkItem.key,
+        this.selectedLinkType.id,
+        this.selectedLinkType.linkType
+      );
+      this.store.dispatch(new WorkItemLinkActions.Add(linkPayload));
+    }
   }
 
   deleteLink(event, wiLink, workItem) {
