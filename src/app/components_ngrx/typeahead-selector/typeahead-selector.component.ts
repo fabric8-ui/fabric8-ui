@@ -62,6 +62,7 @@ export class TypeaheadSelectorComponent implements OnInit {
 
   private searchValue: string = '';
   searching: boolean = false;
+  isOpen: boolean = false;
 
   private menuItems: Observable<TypeaheadDropdownItem[]> =
     this.searchTermObs.asObservable()
@@ -125,10 +126,12 @@ export class TypeaheadSelectorComponent implements OnInit {
   }
 
   onOpen(event) {
+    this.isOpen = true;
     this.onOpenSelector.emit();
   }
 
   onClose(event) {
+    this.isOpen = false;
     this.dropdownRef.setSearchText('');
     // Empty the search results on close
     this.searchTermObs.next('');

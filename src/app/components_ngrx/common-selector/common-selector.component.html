@@ -13,13 +13,19 @@
   (onClose)="onClose($event)">
   <ng-template #toggleButtonRef>
     <span
-      class="pointer"
+      [class.toggle]="allowUpdate"
+      [class.active]="isOpen"
+      [class.disable]="!allowUpdate"
       *ngFor="let item of _selectedItemsBackup">
       <i *ngIf="item?.icon"
         [ngClass]="['margin-right-10', item.icon]"></i>
       {{ item.value }}
     </span>
-    <span *ngIf="!_selectedItemsBackup.length" class="pointer">
+    <span
+      [class.toggle]="allowUpdate"
+      [class.active]="isOpen"
+      [class.disable]="!allowUpdate"
+      *ngIf="!_selectedItemsBackup.length">
       {{ noValueLabel }}
     </span>
   </ng-template>

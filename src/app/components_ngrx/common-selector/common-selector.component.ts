@@ -55,6 +55,7 @@ export class CommonSelectorComponent {
   private backup: any[] = [];
   private searchValue: string = '';
   private menuItems: any[] = [];
+  isOpen: boolean = false;
 
   constructor() {}
 
@@ -123,9 +124,11 @@ export class CommonSelectorComponent {
   }
 
   onOpen(event) {
+    this.isOpen = true;
     this.onOpenSelector.emit('open');
   }
   onClose(event) {
+    this.isOpen = false;
     // Setting search input to empty string
     this.dropdownRef.setSearchText('');
     // Thus reset the value

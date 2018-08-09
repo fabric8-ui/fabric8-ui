@@ -13,12 +13,20 @@
   (onClose)="onClose($event)">
   <ng-template #toggleButtonRef>
     <span
-      class="pointer"
+      [class.toggle]="allowUpdate"
       *ngFor="let item of selectedItems; let i = index;">
-      <span>{{ item.displayValue | truncate: 20 }}</span>
+      <span
+        [class.active]="isOpen"
+        [class.disable]="!allowUpdate">
+        {{ item.displayValue | truncate: 20 }}
+      </span>
       <span *ngIf="i === selectedItems.length-2">, </span>
     </span>
-    <span *ngIf="!selectedItems.length" class="pointer">
+    <span
+      [class.toggle]="allowUpdate"
+      [class.active]="isOpen"
+      [class.disable]="!allowUpdate"
+      *ngIf="!selectedItems.length">
       {{ noValueLabel }}
     </span>
   </ng-template>

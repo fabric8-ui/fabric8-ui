@@ -70,9 +70,10 @@
           <ng-template #linkView>
             <div class="f8-link__content-editor width-100"
               *ngLet="linkTypesSource | async as lTypes">
+              <div><label>Create Link</label></div>
               <span>This item</span>
               <common-selector
-                class="type-selector"
+                class="type-selector margin-left-5 margin-right-5"
                 [allowUpdate]="!lockCreation"
                 [noValueLabel]="'None'"
                 [headerText]="'Choose a link type'"
@@ -80,19 +81,21 @@
                 [selectedItems]="selectedLinkType ? [selectedLinkType] : []"
                 (onCloseSelector)="onSelectRelation($event)">
               </common-selector>
+              <span> item </span>
               <f8-typeahead-selector
-                class="type-selector"
+                class="type-selector margin-left-5"
                 [allowUpdate]="!lockCreation"
                 [dataSource]="searchWorkItem.bind(this)"
                 [selectedItems]="selectedWorkItem ? [selectedWorkItem] : []"
-                [noValueLabel]="'None, Click to search'"
+                [noValueLabel]="'None (click to search)'"
                 [headerText]="'Search for work item'"
                 (onCloseSelector)="onSelectWorkItem($event)"
               ></f8-typeahead-selector>
+              <span>.</span>
               <button
                 [class.disabled]="!(selectedLinkType && selectedWorkItem && !lockCreation)"
                 (click)="createLink($event)"
-                class="btn btn-primary pull-right margin-right-10">Save</button>
+                class="btn btn-primary pull-right margin-right-10">Create Link</button>
             </div>
           </ng-template>
 
