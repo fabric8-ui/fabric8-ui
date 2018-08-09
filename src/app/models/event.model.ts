@@ -96,7 +96,7 @@ export class EventMapper implements Mapper<EventService, EventUI> {
           return [];
         }
       } else {
-        return newValue;
+        return [];
       }
     }
   }, {
@@ -115,7 +115,7 @@ export class EventMapper implements Mapper<EventService, EventUI> {
           return [];
         }
       } else {
-        return oldValue;
+        return [];
       }
     }
   }, {
@@ -155,8 +155,8 @@ export class EventQuery {
     return this.eventSource
       .map(events => {
         return events.map(event => {
-          switch (event.name) {
-            case 'system.iteration':
+          switch (event.type) {
+            case 'iterations':
               return {
                 ...event,
                 modifier: this.userQuery.getUserObservableById(event.modifierId),
@@ -167,7 +167,7 @@ export class EventQuery {
                   return this.iterationQuery.getIterationObservableById(item.id);
                 })
               };
-            case 'system.area':
+            case 'areas':
               return {
                 ...event,
                 modifier: this.userQuery.getUserObservableById(event.modifierId),
@@ -178,7 +178,7 @@ export class EventQuery {
                   return this.areaQuery.getAreaObservableById(item.id);
                 })
               };
-            case 'system.assignees':
+            case 'users':
               return {
                 ...event,
                 modifier: this.userQuery.getUserObservableById(event.modifierId),
@@ -190,7 +190,7 @@ export class EventQuery {
                 })
               };
 
-            case 'system.labels':
+            case 'labels':
               return {
                 ...event,
                 modifier: this.userQuery.getUserObservableById(event.modifierId),
