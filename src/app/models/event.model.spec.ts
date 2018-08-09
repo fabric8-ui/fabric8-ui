@@ -137,7 +137,7 @@ describe('Unit Test :: Events Model', () => {
     expect(expectedOutPut).toEqual(output);
   });
 
-  it('should correctly conver to ui model -3', () => {
+  it('should correctly convert to ui model -3', () => {
     const map = new EventMapper();
     const input: EventService = {
       'attributes': {
@@ -187,7 +187,7 @@ describe('Unit Test :: Events Model', () => {
     expect(expectedOutPut).toEqual(output);
   });
 
-  it('should correctly conver to ui model -4', () => {
+  it('should correctly convert to ui model -4', () => {
     const map = new EventMapper();
     const input: EventService = {
       'attributes': {
@@ -226,7 +226,7 @@ describe('Unit Test :: Events Model', () => {
     expect(expectedOutPut).toEqual(output);
   });
 
-  it('should correctly conver to ui model - 5', () => {
+  it('should correctly convert to ui model - 5', () => {
     const map = new EventMapper();
     const input = {
       'attributes': {
@@ -291,6 +291,42 @@ describe('Unit Test :: Events Model', () => {
           type: 'users'
         }
       ],
+      type: null
+    };
+    expect(expectedOutPut).toEqual(output);
+  });
+
+  it('should correctly convert to ui model - 6', () => {
+    const map = new EventMapper();
+    const input: EventService = {
+      'attributes': {
+        'name': 'system.title',
+        'newValue': 'abc',
+        'timestamp': '2018-05-27T08:54:44.63509Z'
+      },
+      'id': '5e7adc1d-2c8a-440d-9466-aedf4b2d60c2',
+      'relationships': {
+        'modifier': {
+          'data': {
+            'id': '20694424-0841-4d6c-bfb5-bbbb0391b8db',
+            'links': {
+              'related': 'https://api.prod-preview.openshift.io/api/users/20694424-0841-4d6c-bfb5-bbbb0391b8db'
+            },
+            'type': 'identities'
+          }
+        }
+      },
+      'type': 'events'
+    };
+    const output: EventUI = map.toUIModel(input);
+    const expectedOutPut: EventUI = {
+      name: 'system.title',
+      newValue: 'abc',
+      oldValue: null,
+      timestamp: '2018-05-27T08:54:44.63509Z',
+      modifierId: '20694424-0841-4d6c-bfb5-bbbb0391b8db',
+      newValueRelationships: [],
+      oldValueRelationships: [],
       type: null
     };
     expect(expectedOutPut).toEqual(output);
