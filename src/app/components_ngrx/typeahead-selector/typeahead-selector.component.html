@@ -1,0 +1,28 @@
+<f8-select-dropdown
+  #dropdown
+  [toggleButtonRef]="toggleButtonRef"
+  [dropdownItem]="dropdownItem"
+  [headerText]="headerText"
+  [menuItems]="menuItems | async"
+  [showSearch]="true"
+  [disabled]="!allowUpdate"
+  (onSelect)="onSelect($event)"
+  (onSearch)="onSearch($event)"
+  (onOpen)="onOpen($event)"
+  (onClose)="onClose($event)">
+  <ng-template #toggleButtonRef>
+      <span
+        class="pointer"
+        *ngFor="let item of selectedItems; let i = index;">
+        <span>{{ item.displayValue | truncate: 15 }}</span>
+        <span *ngIf="i === selectedItems.length-2">, </span>
+      </span>
+      <span *ngIf="!selectedItems.length" class="pointer">
+        {{ noValueLabel }}
+      </span>
+  </ng-template>
+  <ng-template #dropdownItem let-value="value">
+    <span [innerHTML]="value | almSearchHighlight: searchValue">
+    </span>
+  </ng-template>
+</f8-select-dropdown>
