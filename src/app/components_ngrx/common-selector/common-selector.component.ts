@@ -43,6 +43,7 @@ export class CommonSelectorComponent {
   }
 
   @Input('allowMultiSelect') allowMultiSelect: boolean = false;
+  @Input('closeOnSelect') closeOnSelect: boolean = true;
   @Input('headerText') headerText: string = 'Default Header Text';
   @Input('noValueLabel') noValueLabel: string = 'None';
   @Input('allowUpdate') allowUpdate: boolean = true;
@@ -50,8 +51,6 @@ export class CommonSelectorComponent {
   @Output() readonly onSelectItem: EventEmitter<any[]> = new EventEmitter();
   @Output() readonly onOpenSelector: EventEmitter<any> = new EventEmitter();
   @Output() readonly onCloseSelector: EventEmitter<any[]> = new EventEmitter();
-
-  users: User[] = [];
 
   private backup: any[] = [];
   private searchValue: string = '';
@@ -80,6 +79,9 @@ export class CommonSelectorComponent {
     }
     this.updateSelection();
     this.onSelectItem.emit(cloneDeep(this.selectedItems));
+    if (this.closeOnSelect && !this.allowMultiSelect) {
+      this.dropdownRef.closeDropdown();
+    }
   }
 
   updateSelection() {
