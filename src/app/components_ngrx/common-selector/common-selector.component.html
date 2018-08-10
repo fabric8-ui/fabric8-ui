@@ -20,7 +20,7 @@
         *ngFor="let item of _selectedItemsBackup">
         <i *ngIf="item?.icon"
           [ngClass]="['margin-right-10', item.icon]"></i>
-        {{ item.value }}
+        {{ item.value | truncate: toggleTruncate }}
       </span>
       <span
         *ngIf="!_selectedItemsBackup.length">
@@ -32,13 +32,10 @@
         class="fa"></span>
     </span>
   </ng-template>
-  <ng-template #dropdownItem
-    let-value="value"
-    let-icon="icon"
-    let-stickontop="stickontop">
+  <ng-template #dropdownItem let-value="value" let-icon="icon">
     <i *ngIf="icon"
       [ngClass]="['margin-right-10', icon]"></i>
-    <span *ngIf="!stickontop" [innerHTML]="value | truncate: -25 | almSearchHighlight: searchValue">
+    <span [innerHTML]="value | truncate: itemTruncate | almSearchHighlight: searchValue">
     </span>
   </ng-template>
 </f8-select-dropdown>

@@ -47,6 +47,8 @@ export class CommonSelectorComponent {
   @Input('headerText') headerText: string = 'Default Header Text';
   @Input('noValueLabel') noValueLabel: string = 'None';
   @Input('allowUpdate') allowUpdate: boolean = true;
+  @Input('itemTruncate') itemTruncate: number = 500;
+  @Input('toggleTruncate') toggleTruncate: number = 500;
 
   @Output() readonly onSelectItem: EventEmitter<any[]> = new EventEmitter();
   @Output() readonly onOpenSelector: EventEmitter<any> = new EventEmitter();

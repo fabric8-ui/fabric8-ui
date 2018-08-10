@@ -162,6 +162,8 @@
                   [headerText]="'Update area'"
                   [items]="areaSource | async"
                   [selectedItems]="selectedAreas | async"
+                  [itemTruncate]="-25"
+                  [toggleTruncate]="-25"
                   (onCloseSelector)="areaUpdated($event)">
                 </common-selector>
               </div>
@@ -186,6 +188,8 @@
                   [items]="iterationSource | async"
                   [noValueLabel]="'None'"
                   [selectedItems]="selectedIterations | async"
+                  [itemTruncate]="-25"
+                  [toggleTruncate]="-25"
                   (onCloseSelector)="iterationUpdated($event)">
                 </common-selector>
               </div>

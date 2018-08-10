@@ -42,6 +42,8 @@ export class TypeaheadSelectorComponent implements OnInit {
     this.selectedItems = items;
     this._selectedItems = [...this.selectedItems];
   }
+  @Input('itemTruncate') itemTruncate: number = 500;
+  @Input('toggleTruncate') toggleTruncate: number = 500;
 
   @Output() readonly onSelectItem: EventEmitter<any[]> = new EventEmitter();
   @Output() readonly onOpenSelector: EventEmitter<any> = new EventEmitter();

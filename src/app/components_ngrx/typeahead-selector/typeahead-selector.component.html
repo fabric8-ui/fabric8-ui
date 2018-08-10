@@ -19,7 +19,7 @@
       <span
         *ngFor="let item of selectedItems; let i = index;">
         <span>
-          {{ item.displayValue | truncate: 40 }}
+          {{ item.value | truncate: toggleTruncate }}
         </span>
         <span *ngIf="i === selectedItems.length-2">, </span>
       </span>
@@ -34,7 +34,7 @@
     </span>
   </ng-template>
   <ng-template #dropdownItem let-value="value">
-    <span [innerHTML]="value | almSearchHighlight: searchValue">
+    <span [innerHTML]="value | truncate: itemTruncate | almSearchHighlight: searchValue">
     </span>
   </ng-template>
 </f8-select-dropdown>
