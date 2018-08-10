@@ -33,8 +33,9 @@
         class="fa"></span>
     </span>
   </ng-template>
-  <ng-template #dropdownItem let-value="value">
+  <ng-template #dropdownItem let-value="value" let-description="description">
     <span [innerHTML]="value | truncate: itemTruncate | almSearchHighlight: searchValue">
     </span>
+    <span class="item-desc margin-left-10">{{ description }}</span>
   </ng-template>
 </f8-select-dropdown>

@@ -39,14 +39,16 @@ export class LinkTypeEffects {
             linkTypes.push({
               name: linkType.attributes['forward_name'],
               id: linkType.id,
-              linkType: 'forward'
+              linkType: 'forward',
+              description: linkType.attributes['description']
             });
           });
           lts.backwardLinks.forEach((linkType) => {
             linkTypes.push({
               name: linkType.attributes['reverse_name'],
               id: linkType.id,
-              linkType: 'reverse'
+              linkType: 'reverse',
+              description: linkType.attributes['description']
             });
           });
           return new LinkTypeActions.GetSuccess(linkTypes);

@@ -32,10 +32,10 @@
         class="fa"></span>
     </span>
   </ng-template>
-  <ng-template #dropdownItem let-value="value" let-icon="icon">
-    <i *ngIf="icon"
-      [ngClass]="['margin-right-10', icon]"></i>
+  <ng-template #dropdownItem let-value="value" let-description="description" let-icon="icon">
+    <i *ngIf="icon" [ngClass]="['margin-right-10', icon]"></i>
     <span [innerHTML]="value | truncate: itemTruncate | almSearchHighlight: searchValue">
     </span>
+    <span class="item-desc margin-left-10">{{ description }}</span>
   </ng-template>
 </f8-select-dropdown>
