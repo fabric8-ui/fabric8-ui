@@ -98,6 +98,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
 
   private loadingComments: boolean = true;
   private loadingTypes: boolean = false;
+  private loadingStates: boolean = false;
   private loadingIteration: boolean = false;
   private loadingArea: boolean = false;
   private loadingLabels: boolean = false;
@@ -193,6 +194,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
         this.loadingArea = false;
         this.loadingIteration = false;
         this.loadingLabels = false;
+        this.loadingTypes = false;
+        this.loadingStates = false;
 
         // init dynamic form
         if (this.workItem.type) {
@@ -274,6 +277,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
 
   onChangeState(state) {
     if (state !== this.workItem.state) {
+      this.loadingStates = true;
       let workItem = {} as WorkItemUI;
       workItem['version'] = this.workItem.version;
       workItem['link'] = this.workItem.link;
@@ -362,6 +366,21 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
       markup: 'Markdown'
     };
     this.store.dispatch(new WorkItemActions.Update(workItem));
+  }
+
+  updateType(e: any, type: WorkItemTypeUI) {
+    if (e) {
+      e.preventDefault();
+    }
+    if (type !== this.workItem.type) {
+      this.loadingTypes = true;
+      let workItem = {} as WorkItemUI;
+      workItem['version'] = this.workItem.version;
+      workItem['link'] = this.workItem.link;
+      workItem['id'] = this.workItem.id;
+      workItem['type'] = type;
+      this.store.dispatch(new WorkItemActions.Update(workItem));
+    }
   }
 
   dynamicFieldUpdated(event) {

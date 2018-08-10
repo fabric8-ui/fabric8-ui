@@ -10,154 +10,36 @@
           (click)="closeDetail()">
         </span>
         <div *ngIf="detailContext=='preview'">
-          <div class="form-group width-100 pull-left mobile-bar padding-v-5 margin-0">
-            <span class="detail-created-date pull-right"
+          <div class="pull-left">
+            <b>#{{ workItem.number }}</b>
+            <span class="detail-created-date created-by"
               *ngIf="workItem.id">
-              <b>Created</b>
+              created by
+              <span id="preview_created_by"
+                *ngIf="workItem?.creatorObs | async; let creator">
+                {{creator.name}}</span>           
               <span id="preview_created_at"
                 [innerHTML]="workItem.createdAt | almMomentTime"></span>
             </span>
-            <span *ngIf="loadingTypes"
-                class="spinner spinner-sm spinner-inline">
-            </span>
-            <span class="dropdown" dropdown
-            *ngIf="loggedIn && !loadingTypes" [isDisabled]="!workItem?.editable">
-            <button class="btn btn-default dropdown-toggle padding-h-10 text-left"
-              id="preview-wi-type"
-              style="min-width: 159px;"
-              type="button"
-              dropdownToggle>
-              <i class="dropdown-icon"
-                [ngClass]="workItem.type ?
-                workItem.type.icon : '' ">
-              </i>
-              <span class="dropdown-text">
-                {{ workItem.type ? workItem.type.name : '' }}
-              </span>
-              <span class="caret pull-right margin-top-7"
-                *ngIf="loggedIn"></span>
-            </button>
-            <ul class="dropdown-menu"
-              id="preview-wi-type-dropdown"
-              role="menu"
-              *dropdownMenu>
-              <li *ngFor="let type of wiTypes"
-                  role="menuitem"
-                  (click)="updateType($event, type)">
-                <a class="dropdown-item" href="#">
-                  <i class="fa dropdown-icon"
-                    [ngClass]="type.icon"></i>
-                    <span class="dropdown-text">{{ type.name }}</span>
-                </a>
-              </li>
-            </ul>
-          </span>
-          <strong class="margin-left-10">#{{ workItem.number }}</strong>
-          </div>
-          <div class="width-100 pull-left">
-            <div
-              class="card-pf-time-frame-filter pull-left dropdown"
-              dropdown *ngIf="loggedIn" [isDisabled]="!workItem?.editable">
-              <button dropdownToggle
-                class="btn btn-default width-100 dropdown-toggle padding-h-10 text-left"
-                id="wi-preview-state"
-                type="button">
-                <span class='dropdown-icon'
-                  almIcon
-                  [iconType]="workItem.state">
-                </span>
-                <span class='dropdown-text'>
-                  {{ workItem.state }}
-                </span>
-                <span class="caret pull-right margin-top-7"
-                  *ngIf="loggedIn"></span>
-              </button>
-              <ul class="dropdown-ul dropdown-menu"
-                id="wi-status-dropdown"
-                role="menu"
-                *dropdownMenu>
-                <li class="dropdown-li"
-                  (click)="onChangeState(state)"
-                  *ngFor="let state of workItemStates">
-                  <a>
-                    <span class='dropdown-icon'
-                      almIcon
-                      [iconType]="state">
-                    </span>
-                    <span class='dropdown-text'>{{ state }}</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <a class="pull-right"
+            <a class="pull-right" style="padding-left: 120px"
               [routerLink]="context === 'list' ? ['detail', workItem.number] : ['../', 'detail', workItem.number]"
               [queryParams]="queryParams">
               View full details
-                <span class="fa fa-list-alt"></span>
+              <span class="fa fa-list-alt"></span>
             </a>
           </div>
         </div>
         <div *ngIf="detailContext=='detail'">
-          <div class="pull-left margin-right-15">
-            <div class="dropdown pull-left"
-              dropdown *ngIf="loggedIn" [isDisabled]="!workItem?.editable">
-              <button class="btn btn-default dropdown-toggle padding-h-10 width-100"
-                id="wi-detail-state"
-                type="button"
-                dropdownToggle>
-                <span class="pull-left padding-top-5 margin-0"
-                  almIcon
-                  [iconType]="workItem.state">
-                </span>
-                <span class="pull-left padding-h-10">
-                  {{ workItem.state }}
-                </span>
-                <span class="caret pull-right margin-top-7"
-                  *ngIf="loggedIn"></span>
-              </button>
-              <ul class="dropdown-ul dropdown-menu"
-                id="wi-detail-status-dropdown"
-                role="menu"
-                *dropdownMenu>
-                <li class="dropdown-li"
-                  (click)="onChangeState(state)"
-                  *ngFor="let state of workItemStates">
-                  <a>
-                    <span class='dropdown-icon'
-                      almIcon
-                      [iconType]="state">
-                    </span>
-                    <span class='dropdown-text'>{{ state }}</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div class="pull-left margin-left-15">
-              <span *ngIf="loadingTypes"
-                class="spinner spinner-sm spinner-inline">
-              </span>
-              <span
-                *ngIf="!loadingTypes"
-                class="{{type.icon}} fa-lg dib">
-              </span>
-              <span
-                *ngIf="!loadingTypes"
-                class="dib">
-                {{ type.name }}
-              </span>
-              <span class="dib">
-                <strong>#{{ workItem.number }}</strong>
-              </span>
-              <strong class="margin-left-10">#{{ workItem.number }}</strong>
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-4 col-md-3 padding-0 margin-v-3">
-            <strong>Created </strong>
-            <span id="created_at"
-              [innerHTML]="workItem.createdAt ?
-              (workItem.createdAt | almMomentTime) : 'Creating now!'">
-            </span>
-          </div>
+          <b>#{{ workItem.number }}</b>
+          <span class="detail-created-date created-by"
+            *ngIf="workItem.id">
+            created by
+            <span id="preview_created_by"
+              *ngIf="workItem?.creatorObs | async; let creator">
+              {{creator.name}}</span>           
+            <span id="preview_created_at"
+              [innerHTML]="workItem.createdAt | almMomentTime"></span>
+          </span>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 margin-top-15 padding-0">
           <div class="form-horizontal">
@@ -184,6 +66,90 @@
           [class.col-lg-12]="detailContext=='preview'">
           <!-- assignee -->
           <div class="form-group">
+            <!-- work-item-type dropdown -->
+            <section class="f8-detail__area">
+              <label class="pull-left padding-left-15 control-label">
+                Type
+              </label>
+              <div class="f8-detail__content">
+                <span *ngIf="loadingTypes"
+                  class="spinner spinner-sm spinner-inline">
+                </span>
+                <span class="dropdown" dropdown
+                *ngIf="loggedIn && !loadingTypes" [isDisabled]="!workItem?.editable">
+                  <span class="pointer"
+                    id="preview-wi-type"
+                    dropdownToggle>
+                    <i class="dropdown-icon"
+                      [ngClass]="workItem.type ?
+                      workItem.type.icon : '' ">
+                    </i>
+                    <span class="padding-left-5">
+                      {{ workItem.type ? workItem.type.name : '' }}
+                    </span>
+                  </span>
+                  <ul class="dropdown-menu"
+                    id="preview-wi-type-dropdown"
+                    role="menu"
+                    *dropdownMenu>
+                    <li *ngFor="let type of wiTypes"
+                      role="menuitem"
+                      (click)="updateType($event, type)">
+                      <a class="dropdown-item" href="#">
+                        <i class="fa dropdown-icon"
+                          [ngClass]="type.icon"></i>
+                          <span class="dropdown-text">{{ type.name }}</span>
+                      </a>
+                    </li>
+                  </ul>
+              </span>
+            </div>
+            </section>
+          </div>
+          <div class="form-group">
+            <section class="f8-detail__area">
+              <label class="pull-left padding-left-15 control-label">
+                State
+              </label>
+              <div class="f8-detail__content">
+                <span *ngIf="loadingStates"
+                  class="spinner spinner-sm spinner-inline">
+                </span>
+                <span class="dropdown" dropdown
+                  *ngIf="loggedIn && !loadingStates" [isDisabled]="!workItem?.editable">
+                  <span class="pointer"
+                    id="wi-preview-state"
+                    dropdownToggle>
+                    <span class="dropdown-icon"
+                      almIcon
+                      [iconType]="workItem.state">
+                    </span>
+                    <span class="padding-left-5">
+                      {{ workItem.state }}
+                    </span>
+                  </span>
+                  <ul class="dropdown-ul dropdown-menu"
+                    id="wi-status-dropdown"
+                    role="menu"
+                    *dropdownMenu>
+                    <li class="dropdown-li"
+                      (click)="onChangeState(state)"
+                      *ngFor="let state of workItemStates">
+                      <a>
+                        <span class='dropdown-icon'
+                          almIcon
+                          [iconType]="state">
+                        </span>
+                        <span class='dropdown-text'>{{ state }}</span>
+                      </a>
+                    </li>
+                  </ul>
+                </span>
+               </div>
+              </section>
+            </div>
+          <div class="form-group">
+            <!-- assignee -->
             <section class="f8-detail__assignee">
               <label class="pull-left padding-left-15 control-label">
                 {{ type.fields['system.assignees']?.label || 'Label' }}
@@ -210,32 +176,6 @@
               </div>
             </section>
           </div>
-
-          <!-- Creator -->
-          <div class="form-group">
-            <section class="f8-detail__area">
-              <label class="pull-left padding-left-15 control-label ">
-                {{ type.fields['system.creator']?.label || 'Label' }}
-              </label>
-              <div class="f8-detail__content" *ngIf="workItem?.creatorObs | async; let creator">
-                <span *ngIf="!creator"
-                  class="pficon pficon-user user-creator-icon"
-                  id="user_creator_icon">
-                </span>
-                <user-avatar
-                  id="WI_details_reporter_img"
-                  *ngIf="creator"
-                  [imgSrc]="creator?.avatar | almAvatarSize: 25">
-                </user-avatar>
-                <div class="dib">
-                  <span id="WI_details_reporter_user">
-                    {{ creator.name }}
-                  </span>
-                </div>
-              </div>
-            </section>
-          </div>
-
           <!-- area -->
           <div class="form-group">
             <section class="f8-detail__area">
