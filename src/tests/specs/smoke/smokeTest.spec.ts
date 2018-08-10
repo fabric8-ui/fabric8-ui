@@ -59,7 +59,9 @@ describe('Planner Smoke Tests:', () => {
     expect(await planner.quickPreview.getTitleError()).toBe('Empty title not allowed');
   });
 
-  it('Check WorkItem creator name and image is reflected', async () => {
+  //creator is no more a field in the quick-preview/detail-page as per the new design
+  //it might change again so not remmoving the test
+  xit('Check WorkItem creator name and image is reflected', async () => {
     let prodAvatar = 'https://avatars0.githubusercontent.com/u/563119?v=3&s=25',
       prodPreviewAvatar = 'https://www.gravatar.com/avatar/d77d23eebe9907842b8ad9f1d9905454.jpg&s=25';
     await planner.workItemList.clickWorkItem(c.workItemTitle2);
