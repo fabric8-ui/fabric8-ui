@@ -8,14 +8,14 @@
   -->
   <ul class="f8-link__nav-list nav nav-tabs nav-tabs-pf">
     <li class="f8-toggle-caret"
-      (click)="showLinkComponent=!showLinkComponent; showLinkView=false;">
+      (click)="showLinkComponent=!showLinkComponent;">
       <i class="fa fa-icon f8-toggle-caret-right"
        [ngClass]="{'fa-angle-down': showLinkComponent,
             'fa-angle-right': !showLinkComponent}"></i>
     </li>
     <li
       [class.active]="showLinkComponent"
-      (click)="showLinkComponent=!showLinkComponent; showLinkView=false;">
+      (click)="showLinkComponent=!showLinkComponent;">
       <a *ngLet="(workItemLinksCountSource | async) as linkCount;">
         <span>Links</span>
         <!--
@@ -54,50 +54,38 @@
       -->
       <ng-container *ngIf="linkCount > -1; else loadingContainer;">
         <ng-container *ngLet="(workItemLinksSource | async) as links;">
-          <!-- no existing links template -->
-          <div class="f8-link__content-create-link"
-            *ngIf="!links.length && !showLinkView; else linkView;">
-            <i class="pficon pficon-add-circle-o add-circle-icon"></i>
-            <p>Work Item Links</p>
-            <span class="margin-right-10 margin-left-10">There are no items linked to this issue</span>
-            <button class="btn btn-primary db f8-link__create-btn"
-              id="create-link-button"
-              (click)="showLinkView=true">Create Link</button>
+
+          <!-- Link creator -->
+          <div class="f8-link__content-editor width-100"
+            *ngLet="linkTypesSource | async as lTypes">
+            <div><label>Create Link</label></div>
+            <span>This item</span>
+            <common-selector
+              class="type-selector margin-left-5 margin-right-5"
+              [allowUpdate]="!lockCreation"
+              [noValueLabel]="'None'"
+              [headerText]="'Choose a link type'"
+              [items]="lTypes"
+              [selectedItems]="selectedLinkType ? [selectedLinkType] : []"
+              (onCloseSelector)="onSelectRelation($event)">
+            </common-selector>
+            <span> item </span>
+            <f8-typeahead-selector
+              class="type-selector margin-left-5"
+              [allowUpdate]="!lockCreation"
+              [dataSource]="searchWorkItem.bind(this)"
+              [selectedItems]="selectedWorkItem ? [selectedWorkItem] : []"
+              [noValueLabel]="'None'"
+              [headerText]="'Search for work item'"
+              (onCloseSelector)="onSelectWorkItem($event)"
+            ></f8-typeahead-selector>
+            <span>.</span>
+            <button
+              [class.disabled]="!(selectedLinkType && selectedWorkItem && !lockCreation)"
+              (click)="createLink($event)"
+              class="btn btn-primary pull-right margin-right-10">Create Link</button>
           </div>
-          <!-- no existing links template end -->
-
-
-          <ng-template #linkView>
-            <div class="f8-link__content-editor width-100"
-              *ngLet="linkTypesSource | async as lTypes">
-              <div><label>Create Link</label></div>
-              <span>This item</span>
-              <common-selector
-                class="type-selector margin-left-5 margin-right-5"
-                [allowUpdate]="!lockCreation"
-                [noValueLabel]="'None'"
-                [headerText]="'Choose a link type'"
-                [items]="lTypes"
-                [selectedItems]="selectedLinkType ? [selectedLinkType] : []"
-                (onCloseSelector)="onSelectRelation($event)">
-              </common-selector>
-              <span> item </span>
-              <f8-typeahead-selector
-                class="type-selector margin-left-5"
-                [allowUpdate]="!lockCreation"
-                [dataSource]="searchWorkItem.bind(this)"
-                [selectedItems]="selectedWorkItem ? [selectedWorkItem] : []"
-                [noValueLabel]="'None (click to search)'"
-                [headerText]="'Search for work item'"
-                (onCloseSelector)="onSelectWorkItem($event)"
-              ></f8-typeahead-selector>
-              <span>.</span>
-              <button
-                [class.disabled]="!(selectedLinkType && selectedWorkItem && !lockCreation)"
-                (click)="createLink($event)"
-                class="btn btn-primary pull-right margin-right-10">Create Link</button>
-            </div>
-          </ng-template>
+          <!-- Link creator ends -->
 
           <!-- List of links -->
           <!-- This part should go in a different component-->

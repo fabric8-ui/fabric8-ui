@@ -47,7 +47,6 @@ export class WorkItemLinkComponent implements OnInit, OnDestroy {
       this.store.dispatch(
         new WorkItemLinkActions.Get(this.workItem.link + '/relationships/links')
       );
-      this.showLinkView = false;
       // Reset links value for the new work item first
       this.store.dispatch(new WorkItemLinkActions.ResetLinks());
       this.setSearchNotAllowedIds();
@@ -75,7 +74,6 @@ export class WorkItemLinkComponent implements OnInit, OnDestroy {
   workItemLinksCountSource: Observable<number> =
     this.workItemLinkQuery.getWorkItemLinksCount;
   showLinkComponent: Boolean = false;
-  showLinkView: Boolean = false;
   lockCreation: boolean = false;
 
   // This holds the work item ids not allowed to be in search result

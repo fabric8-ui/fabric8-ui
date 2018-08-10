@@ -15,18 +15,21 @@
     <span
       [class.toggle]="allowUpdate"
       [class.active]="isOpen"
-      [class.disable]="!allowUpdate"
-      *ngFor="let item of _selectedItemsBackup">
-      <i *ngIf="item?.icon"
-        [ngClass]="['margin-right-10', item.icon]"></i>
-      {{ item.value }}
-    </span>
-    <span
-      [class.toggle]="allowUpdate"
-      [class.active]="isOpen"
-      [class.disable]="!allowUpdate"
-      *ngIf="!_selectedItemsBackup.length">
-      {{ noValueLabel }}
+      [class.disable]="!allowUpdate">
+      <span
+        *ngFor="let item of _selectedItemsBackup">
+        <i *ngIf="item?.icon"
+          [ngClass]="['margin-right-10', item.icon]"></i>
+        {{ item.value }}
+      </span>
+      <span
+        *ngIf="!_selectedItemsBackup.length">
+        {{ noValueLabel }}
+      </span>
+      <span
+        [class.fa-angle-up]="isOpen"
+        [class.fa-angle-down]="!isOpen"
+        class="fa"></span>
     </span>
   </ng-template>
   <ng-template #dropdownItem
