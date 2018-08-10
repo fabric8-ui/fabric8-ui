@@ -149,7 +149,6 @@ export class WorkItemLinkComponent implements OnInit, OnDestroy {
           return {
             key: item.id,
             value: `${item.attributes['system.number']} - ${item.attributes['system.title']}`,
-            displayValue: `${item.attributes['system.number']} - ${item.attributes['system.title']}`,
             selected: false
           };
         });

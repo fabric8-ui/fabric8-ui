@@ -11,7 +11,6 @@ import {
 export type TypeaheadDropdownItem = {
   key: string;
   value: string;
-  displayValue: string;
   selected: boolean;
 };
 
