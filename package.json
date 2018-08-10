@@ -83,6 +83,7 @@
     "ng2-dragula": "^1.5.0",
     "ng2-truncate": "^1.3.11",
     "ngx-bootstrap": "^1.9.3",
+    "ngx-feature-flag": "^0.6.0",
     "ngx-modal": "^0.0.29",
     "ngx-widgets": "2.4.5",
     "patternfly-ng": "^3.10.3",
