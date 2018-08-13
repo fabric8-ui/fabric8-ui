@@ -163,7 +163,7 @@
                   [items]="areaSource | async"
                   [selectedItems]="selectedAreas | async"
                   [itemTruncate]="-25"
-                  [toggleTruncate]="-25"
+                  [toggleTruncate]="1000"
                   (onCloseSelector)="areaUpdated($event)">
                 </common-selector>
               </div>
@@ -189,7 +189,7 @@
                   [noValueLabel]="'None'"
                   [selectedItems]="selectedIterations | async"
                   [itemTruncate]="-25"
-                  [toggleTruncate]="-25"
+                  [toggleTruncate]="1000"
                   (onCloseSelector)="iterationUpdated($event)">
                 </common-selector>
               </div>

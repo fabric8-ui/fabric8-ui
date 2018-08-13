@@ -61,6 +61,7 @@
             <div><label>Create Link</label></div>
             <span>This item</span>
             <common-selector
+              id="wi-link-type"
               class="type-selector margin-left-5 margin-right-5"
               [allowUpdate]="!lockCreation"
               [noValueLabel]="'None'"
@@ -71,6 +72,7 @@
             </common-selector>
             <span> item </span>
             <f8-typeahead-selector
+              id="workitem-link-search"
               class="type-selector margin-left-5"
               [allowUpdate]="!lockCreation"
               [dataSource]="searchWorkItem.bind(this)"
@@ -82,6 +84,7 @@
             ></f8-typeahead-selector>
             <span>.</span>
             <button
+              id="bind-link"
               [class.disabled]="!(selectedLinkType && selectedWorkItem && !lockCreation)"
               (click)="createLink($event)"
               class="btn btn-primary pull-right margin-right-10">Create Link</button>
