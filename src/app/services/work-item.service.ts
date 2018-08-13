@@ -185,7 +185,7 @@ export class WorkItemService {
     if (this._currentSpace) {
       let url = '';
       this.workItemUrl = this._currentSpace.links.self.split('spaces')[0] + 'search';
-      url = this.workItemUrl + '?page[limit]=' + pageSize + '&' + Object.keys(filters).map(k => 'filter[' + k + ']=' + JSON.stringify(filters[k])).join('&');
+      url = this.workItemUrl + '?page[limit]=' + pageSize + '&' + Object.keys(filters).map(k => 'filter[' + k + ']=' + encodeURIComponent(JSON.stringify(filters[k]))).join('&');
       return this.http.get(url)
         .map((resp) => {
           return {

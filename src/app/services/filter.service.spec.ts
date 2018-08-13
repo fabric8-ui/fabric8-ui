@@ -666,4 +666,8 @@ describe('Unit Test :: Filter Service', () => {
 
   });
 
+  fit('should convert to json', () => {
+    expect(filterService.queryToJson('typegroup.name:Work Items $AND iteration.name:Sprint #101')).toEqual({'$AND': [{'typegroup.name': {'$EQ': 'Work Items'}}, {'iteration.name': {'$EQ': 'Sprint #101'}}]});
+  });
+
 });
