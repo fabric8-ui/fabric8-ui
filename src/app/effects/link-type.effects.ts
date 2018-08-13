@@ -40,7 +40,9 @@ export class LinkTypeEffects {
               name: linkType.attributes['forward_name'],
               id: linkType.id,
               linkType: 'forward',
-              description: linkType.attributes['description']
+              description: linkType.attributes['forward_description'] ?
+                linkType.attributes['forward_description'] :
+                linkType.attributes['description']
             });
           });
           lts.backwardLinks.forEach((linkType) => {
@@ -48,7 +50,9 @@ export class LinkTypeEffects {
               name: linkType.attributes['reverse_name'],
               id: linkType.id,
               linkType: 'reverse',
-              description: linkType.attributes['description']
+              description: linkType.attributes['reverse_description'] ?
+                linkType.attributes['reverse_description'] :
+                linkType.attributes['description']
             });
           });
           return new LinkTypeActions.GetSuccess(linkTypes);
